@@ -36,7 +36,6 @@ public class XdocParser
         }
         catch ( Exception ex )
         {
-            ex.printStackTrace();
             throw new ParseException( "Error parsing the model.", ex );
         }
     }

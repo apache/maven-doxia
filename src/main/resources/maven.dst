@@ -73,12 +73,12 @@
 
 *section2()
 {
-<h2>
+<h5>
 }
 
 *section2_()
 {
-</h2>
+</h5>
 }
 
 *section3()
