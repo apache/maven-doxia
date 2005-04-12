@@ -1,0 +1,730 @@
+
+Using aptconvert
+~~~~~~~~~~~~~~~~
+
+* Converting APT documents to other formats
+~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
+
+  An aptconvert command looks like: \
+  <<aptconvert>> <option> ... <option> <output_file> <input_file> ... 
+  <input_file>.
+
+  For example, the document you are currently reading, the APT User Guide, is
+  contained in 4 input files: intro.txt, format.txt, install.txt and using.txt.
+  Converting it to HTML is as simple as running \
+  <<<aptconvert userguide.html intro.txt format.txt install.txt using.txt>>>.
+
+  Converting the format section (a valid APT document on its own) to PDF can be
+  done by executing \
+  <<<aptconvert format.pdf format.txt>>>.
+
+** Options
+~~~~~~~~~~
+
+      [-v] Print external commands (latex, ps2pdf, graphics conversion on the
+          fly, etc) being executed . 
+
+          Default: not verbose.
+
+      [-toc] Insert a table of content at the beginning of the generated
+          document. Not supported by all output formats. 
+
+	  Default: no table of contents.
+
+      [-index] Insert a simple index at the end of the generated document. Not
+          supported by all output formats.
+	  
+	  APT anchors are used as index entries.
+
+	  Default: no index.
+
+      [-nonum] Do not number sections. 
+
+          Default: sections are numbered.
+
+      [-meta <meta_key> <meta_value>] Add meta-information named <meta_key>
+          with value <meta_value> to the output document. Not supported by all
+          output formats. 
+
+	  Example: <<<-meta keywords "XML XSL XSLT XPath">>>.
+
+	  Default: no metas.
+
+      [-pi <format> <pi_key> <pi_value>] Specify a <<P>>rocessing
+          <<I>>nstruction named <pi_key> with value <pi_value>, to be used
+          when generating format <format>. 
+
+          Example: <<<-pi html homeURL http://www.pixware.fr>>>.
+
+	  Default: no PIs.
+
+      [-rule <src_ext> <dst_ext> <src_to_dst_rule>] Specify a graphics
+          conversion rule: execute command <src_to_dst_rule> to convert
+          graphics file whose extension is <src_ext> to graphics file whose
+          extension is <dst_ext>.
+
+	  Example: <<<-rule fig jpg 'fig2dev -L jpeg %F %G'>>>
+
+	  <Src_to_dst_rule> is a command template where all occurences of
+	  <<<%F>>> are substituted with the source graphics file name and
+	  where all occurences of <<<%G>>> are substituted with the
+	  destination graphics file name.
+
+          Default: no rules.
+
+      [-paper <paper>] Specifies paper size. Not all sizes are supported by
+          all output formats.
+
+          Default: a4.
+
+      [-lang <language>] Specifies the document language. For example, this is
+          used to translate ``Contents'' to ``Table des mati\350res'' if
+          <language> is <<fr>>. Not all languages are supported by all output
+          formats.
+
+          Default: en.
+
+      [-enc <encoding>] Specifies the encoding of the document. Not all
+          encodings are supported by all output formats.
+
+          Default: your platform default encoding.
+
+      [-? <ext>] Print info about converter or extractor associated to file
+          extension <ext>.
+
+	  A converter is a backend which translates an APT document to another
+	  format. A converter is associated to a file name extension. For
+	  example, the LaTeX converter is automatically used when the output
+	  file ends with <<<.tex>>>.
+
+	  An extractor is a preprocessor which extracts an APT document
+	  embedded into source code (i.e. \340 la javadoc). A extractor is
+	  associated to a file name extension. For example, the Tcl extractor
+	  is automatically used when the input file ends with <<<.tcl>>>.
+
+** Configuration files
+~~~~~~~~~~~~~~~~~~~~~~
+
+  Options which are common to all the APT documents processed on your site
+  (-lang, -paper, -rule) should be put in a system-wide configuration file
+  rather than being passed to the command line. See {{installing aptconvert}}.
+
+  An aptconvert configuration file is a text file (a Java property file)
+  containing lines in the form <property>=<value>. 
+
+  Example:
+
++--+
+v=1
+
+toc=1
+
+lang=fr
+
+paper=a4
+
+latex.usepackage.0=bookman
+
+# Screen resolution is 110dpi not 72dpi (72/120=0.65).
+.gif.eps=giftopnm %F | pnmtops -scale 0.65 -rle > %G
+.fig.jpg=fig2dev -L jpeg %F %G
+
+keywords=pixware realtime \
+data acquisition
++--+
+
+  Blank lines are allowed. Lines beginning with <<<#>>> are ignored. A
+  <<<\\>>> at the end of each line must be used if <value> is more than one
+  line long.
+
+  Properties corresponding to PIs are named <format><<.>><pi_key> and
+  properties corresponding to rules are named <<.>><src_ext><<.>><dst_ext>.
+  Other properties not containing dots and not recognized as options are
+  assumed to be metas.
+
+  Each time aptconvert is run, it attempts to read options from:
+
+      [[1]] The configuration file specified using the <<<aptconvertrc>>> Java
+            property \
+            (i.e. <<<java -Daptconvertrc=/usr/lib/aptconvert.rc>>>).
+
+      [[2]] The configuration file found in the <<<$HOME>>> user directory
+            named <<<.aptconvert>>> on Unix and <<<aptconvert.ini>>> on
+            Windows.
+
+      [[3]] The command line.
+
+** APT figures and graphics files
+~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
+
+  This example describes how aptconvert handles figures. What follows are the
+  actions taken by aptconvert when converting to HTML an APT document
+  containing a {{figure}} named <<<images/architecture>>>:
+
+      [[1]] HTML needs GIF or JPEG images. (PNG is not yet well supported by
+            browsers.)
+
+            Therefore aptconvert tries to access a file named
+	    <input_file_directory>/images/architecture.gif. If it finds such
+	    file, it copies it to <output_file_directory> (unless input and
+	    output file directories are the same) and that's it.
+
+      [[2]] If it doesn't find such file, it tries to copy
+	    <input_file_directory>/images/architecture.jpeg.
+
+      [[3]] If it doesn't find such file, it tries to copy
+	    <input_file_directory>/images/architecture.jpg.
+
+      [[4]] Let's say that steps 1, 2 and 3 have failed but that, wisely
+            enough, the aptconvert user has defined three graphics conversion
+            rules:
+
+---
+.gif.eps=giftopnm %F | pnmtops -scale 0.65 -rle > %G
+.fig.eps=fig2dev -L ps %F %G
+.fig.jpg=fig2dev -L jpeg %F %G
+---
+
+	    Aptconvert tries to access a file named
+	    <input_file_directory>/images/architecture.gif because first rule
+	    begins with <<<.gif>>>, but this fails like step 1.
+
+      [[5]] Aptconvert succeeds to access a file named
+	    <input_file_directory>/images/architecture.fig (because second and
+	    third rules begin with <<<.fig>>>).
+
+	    Therefore it attempts to find a rule converting Fig graphics to
+	    GIF, but this fails.
+
+      [[6]] It finds a rule that may be used to convert Fig graphics to JPEG.
+
+	    Aptconvert runs the <<<fig2dev>>> graphics converter with
+	    appropriate arguments and the generated HTML document finally gets
+	    its image.
+ 
+* Output formats
+~~~~~~~~~~~~~~~~
+
+** HTML
+~~~~~~~
+
+*-------------------:-----------------------------------------------------+
+| Extensions        | html htm
+*-------------------:-----------------------------------------------------+
+| -toc              | yes
+*-------------------:-----------------------------------------------------+
+| -index            | yes
+*-------------------:-----------------------------------------------------+
+| -paper            | N/A
+*-------------------:-----------------------------------------------------+
+| -lang             | en es de fr it
+*-------------------:-----------------------------------------------------+
+| -encoding         | ASCII ISO8859_1 ISO8859_2 ISO8859_3 ISO8859_4
+|                   | ISO8859_5 ISO8859_6 ISO8859_7 ISO8859_8 ISO8859_9
+|                   | SJIS UTF8 UTF16 Cp1250 Cp1251 Cp1252 Cp1253
+*-------------------:-----------------------------------------------------+
+| Graphics formats  | gif jpeg png
+*-------------------:-----------------------------------------------------+
+
+  Processing instructions:
+
+      [-pi html paging <level>] Create an HTML page for each section whose
+          level is <level> (1 to 5, 0 means no paging).
+
+	  When paging is enabled, a navigation toolbar is automatically added
+	  at the top of generated HTML pages.
+
+	  When paging is enabled, the output file name is used as a template
+	  to give each page its own file name. Example: <<<aptconvert -pi html
+	  paging 2 -toc -index userguide.html intro.txt format.txt install.txt
+	  using.txt>>> generates files named: userguide1.html,
+	  userguide2.html, userguide2_1.html, ..., userguidetoc.html,
+	  userguideindex.html.
+
+	  Default: 0 (single-page document).
+
+      [-pi html css <file_name>] Copy file named <file_name> to output
+          directory. Add a corresponding style sheet link to generated HTML
+          pages. In XML mode, also add a corresponding \<?xml-stylesheet?\>
+          processing instruction.
+
+	  Default: no style sheet.
+
+      [-pi html homeURL <URL>] Add a home icon to navigation toolbar pointing
+          to URL <URL>. 
+
+	  Default: no home icon.
+
+      [-pi html xml yes|no] xml=yes means generate
+          {{{http://www.w3.org/TR/xhtml1/}XHTML}} (XML mode), xml=no means
+          generate plain HTML (SGML mode).
+
+          Default: if the output file name ends with <<<.xhtml>>> or
+          <<<.xhtm>>>, the default value is yes, otherwise it is no.
+
+          Note that the generated XHTML conforms to the compatibility
+          guidelines recommended by the W3C and is therefore well supported by
+          most browsers.
+
+      [-pi html systemId <URL>|<file>] Specify the system identifier of the
+          DTD.
+
+	  Default: none in SGML mode; 
+	           http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd\
+		   or http://www.w3.org/TR/xhtml1/DTD/xhtml1-strict.dtd\
+		   in XML mode (valid XML documents must have a systemId).
+
+      [-pi html strict yes|no] strict=yes means use the strict DTD rather than
+          the transitional DTD. 
+
+          When using the transitional DTD, some deprecated elements and
+          attributes (such as center, border, compact, etc) well supported by
+          old browsers are generated.
+
+	  When using the strict DTD, these deprecated elements and attributes
+          are replaced by equivalent CSS style attributes.
+
+	  Default: no in SGML mode; yes in XML mode.
+
+  Meta-information: 
+
+      [any] Any meta found by aptconvert is added to all generated HTML pages.
+
+** LaTeX
+~~~~~~~~
+
+*-------------------:-----------------------------------------------------+
+| Extensions        | tex
+*-------------------:-----------------------------------------------------+
+| -toc              | yes
+*-------------------:-----------------------------------------------------+
+| -index            | yes
+*-------------------:-----------------------------------------------------+
+| -paper            | a4 a5 b5 letter legal executive
+*-------------------:-----------------------------------------------------+
+| -lang             | br ca hr cs da nl en eo et fi fr gl de el he
+|                   | hu ga it no pl pt ro ru gd sk sl es sv tr cy
+*-------------------:-----------------------------------------------------+
+| -encoding         | ASCII Cp1250 Cp1252 Cp437 Cp850
+|                   | Cp852 Cp865 ISO8859_1 ISO8859_2 ISO8859_3
+|                   | ISO8859_5
+*-------------------:-----------------------------------------------------+
+| Graphics formats  | eps
+*-------------------:-----------------------------------------------------+
+
+  Processing instructions:
+
+      [-pi latex documentclass <class>] Specify LaTeX document class: article
+          or report.  The class name may be preceeded by options specified
+          using the LaTeX syntax.
+
+	  Example: <<<-pi latex documentclass [11pt]report>>>.
+
+	  Default: [<P>]article, <P> specified by -paper.
+
+      [-pi latex usepackage.<N> <package>] Specify LaTeX packages augmenting
+          or replacing packages used by default. The package name may be
+          preceeded by options specified using the LaTeX syntax.
+
+	  <N> varies for 0 to 10, so there are 11 such PIs available.
+
+	  Example: <<<-pi latex usepackage.5 [french]babel>>>.
+
+	  Default packages:
+
+	      * a4wide if -paper a4, unless classic=yes.
+
+	      * fancyhdr if needed, see pagestyle.
+
+	      * [<L>]babel, <L> specified by -lang.
+
+	      * graphics.
+
+	      * times, unless classic=yes.
+
+	      * [T1]fontenc.
+
+	      * [<E>]inputenc, <E> specified by -enc.
+
+      [-pi latex pagestyle <style>] Specify page style (plain, empty,
+          headings, etc).
+
+	  Default: plain if classic=yes or if the document has no title,
+	  otherwise a custom style using the fancyhdr package.
+
+      [-pi latex hyphenation.<N> <list>] Specify how to hyphenate some words.
+          <list> is a list of ``pre-hyphenated'' words separated by spaces.
+
+	  <N> varies for 0 to 10, so there are 11 such PIs available.
+
+	  Example: <<<-pi latex hyphenation.0 "gno-mon gno-mons gno-mon-ly">>>.
+
+	  Default: builtin TeX hyphenation rules.
+
+      [-pi latex resizegraphics yes|no] If resizegraphics is set to yes,
+          graphics too large are automatically shrinked to accommodate the
+          page size.
+
+          Default: no.
+
+      [-pi latex classic yes|no] classic=yes means: do not attempt to improve
+          LaTeX classic look by using PostScript fonts, using vertical space
+          rather than indentation to separate paragraphs, etc.
+
+          Default: no (not the classic look!).
+
+  Meta-information:
+
+      [author] If the document begins with a title block and if the author
+        sub-block is not explicitely specified, an author sub-block is created
+        from the value of the <<author>> meta, if any.
+
+        Therefore it is possible to specify once for all that you are the
+        author of all the documents your write by adding, for example, the
+        following lines into your .aptconvertrc or aptconvert.ini:
+
++--+
+author=Joe User\n\
+juser@incredible-widgets.com
++--+
+
+** PostScript
+~~~~~~~~~~~~~
+
+  The APT document is first converted to LaTeX before being converted to
+  PostScript using the commands specified by <<pass1>> and
+  <<pass2>>. Therefore everything said about LaTeX is relevant when outputting
+  PostScript.
+
+  Extension is ps. 
+
+  Processing instructions:
+
+      [-pi ps pass1 <latex_to_dvi_command_template>] Specify the command
+          template used to convert LaTeX to DVI. 
+
+          Default: <<<latex doc>>>.
+
+      [-pi ps pass2 <dvi_to_ps_command_template>] Specify the command
+          template used to convert DVI to PS. 
+
+          Default: <<<dvips -o %O doc>>>.
+
+  About command templates:
+
+      * The passes work as follows:
+
+            [[1]] A temporary directory is created.
+
+            [[2]] This temporary directory becomes the current directory.
+
+            [[3]] The APT input files are translated to file <<<./doc.tex>>>.
+
+            [[4]] <Pass1> is run as many times as needed.
+
+            [[5]] <Pass2>, if specified, is run one time.
+
+            [[6]] <Pass3>, if specified, is run one time.
+
+            [[7]] The temporary directory and all its content is destroyed.
+
+      * These variables are substituted in order to turn the template into an
+        actual command:
+
+            [%T] The absolute path of the temporary directory created to
+                 contain all the files needed by latex.
+
+            [%O] The absolute path of the output file name.
+
+      * An empty string may be used to suppress a pass.
+
+** PDF
+~~~~~~
+
+  The APT document is first converted to LaTeX before being converted to
+  PDF using the commands specified by <<pass1>>, <<pass2>>, and
+  <<pass3>>. Therefore everything said about LaTeX is relevant when outputting
+  PDF.
+
+  Extension is pdf. 
+
+      [-pi pdf pass1 <latex_to_dvi_command_template>] Specify the command
+          template used to convert LaTeX to DVI. 
+
+          Default: <<<latex doc>>>.
+
+      [-pi pdf pass2 <dvi_to_ps_command_template>] Specify the command
+          template used to convert DVI to PS. 
+
+          Default: <<<dvips -o doc.ps doc>>>.
+
+      [-pi pdf pass3 <ps_to_pdf_command_template>] Specify the command
+          template used to convert PS to PDF. 
+
+          Default: <<<ps2pdf doc.ps %O>>>.
+
+  Example 1: add this to your .aptconvert/aptconvert.ini if you want an
+  hypertext TOC and/or Index.
+
++-------------------------------------+
+latex.usepackage.0=hyperref
+
+pdf.pass1=latex doc
+pdf.pass2=dvips -z -o doc.ps doc
+pdf.pass3=ps2pdf doc.ps %O
++-------------------------------------+
+
+  Example 2: add this to your .aptconvert/aptconvert.ini if you prefer to
+  use pdflatex (you still have a problem with graphics because pdflatex does
+  not support EPS). Note how pass3 has been suppressed.
+
++---------------------------+
+pdf.pass1=pdflatex doc
+pdf.pass2=mv doc.pdf %O
+pdf.pass3=
++---------------------------+
+
+** DocBook
+~~~~~~~~~~
+
+*-------------------:-----------------------------------------------------+
+| Extensions        | sgml (DocBook/SGML) xml (DocBook/XML)
+*-------------------:-----------------------------------------------------+
+| -toc              | N/A
+*-------------------:-----------------------------------------------------+
+| -index            | N/A
+*-------------------:-----------------------------------------------------+
+| -paper            | N/A
+*-------------------:-----------------------------------------------------+
+| -lang             | any (not checked)
+*-------------------:-----------------------------------------------------+
+| -encoding         | ASCII ISO8859_1 ISO8859_2 ISO8859_3 ISO8859_4
+|                   | ISO8859_5 ISO8859_6 ISO8859_7 ISO8859_8 ISO8859_9
+|                   | SJIS UTF8 UTF16 Cp1250 Cp1251 Cp1252 Cp1253
+*-------------------:-----------------------------------------------------+
+| Graphics formats  | gif jpeg eps
+*-------------------:-----------------------------------------------------+
+
+  Processing instructions:
+
+      [-pi docbook publicId <publicId>] Specify the public identifier of the
+          DTD.
+
+	  Default: -//OASIS//DTD\ DocBook\ V4.1//EN in SGML mode;
+                   -//OASIS//DTD\ DocBook\ XML\ V4.0//EN in XML mode.
+
+      [-pi docbook systemId <URL>|<file>] Specify the system identifier of the
+          DTD.
+
+	  Default: none in SGML mode; 
+                   http://www.oasis-open.org/docbook/xml/4.0/docbookx.dtd
+		   in XML mode (valid XML documents must have a systemId).
+
+      [-pi docbook css <file_name>] XML mode only. Copy file named <file_name>
+          to output directory. Add a corresponding \<?xml-stylesheet?\>
+          processing instruction to the generated document.
+
+	  Default: no style sheet.
+
+      [-pi docbook italic <elemTag>] Specify the starting tag of the DocBook
+          element to be generated when an APT italic element is found.
+
+	  Default: \<emphasis\>.
+
+      [-pi docbook bold <elemTag>] Specify the starting tag of the DocBook
+          element to be generated when an APT bold element is found.
+
+	  Default: \<emphasis role="bold"\>.
+
+      [-pi docbook monospaced <elemTag>] Specify the starting tag of the
+          DocBook element to be generated when an APT monospaced element is
+          found.
+
+	  Default: \<literal\>.
+
+      [-pi docbook horizontalRule <string>] Specify the string (generally a
+          comment) to be generated when an APT horizontalRule element is
+          found.
+
+	  Default: \<!-- HR --\>.
+
+      [-pi docbook pageBreak <string>] Specify the string (generally a
+          comment) to be generated when an APT pageBreak element is found.
+
+	  Default: \<!-- PB --\>.
+
+      [-pi docbook lineBreak <string>] Specify the string (generally a
+          comment) to be generated when an APT lineBreak element is found.
+
+	  Default: \<!-- LB --\>.
+
+  Meta-information: not yet implemented.
+
+* Embedding APT documents into source code
+~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
+
+  An APT document may be embedded into source code files. In fact, APT was
+  originally designed to speed up the authoring of reference manuals
+  for C++ class libraries by embedding documentation into the header files.
+
+  When given an input file which ends with the right extension, for example
+  <<<.h>>> for a C header file, aptconvert will automatically try to extract
+  APT document fragments out of it.
+
+** Tcl
+~~~~~~
+
+  The input file must end with <<<.tcl>>>.
+
+  Single line comment containing a document fragment:
+
++--+
+#x  eof - Check for end of file condition on channel
++--+
+
+  is extracted and rendered as:
+
+  eof - Check for end of file condition on channel
+
+  Note that comment line begins with <<<#x>>> (<<<x>>> like e<<X>>tract),
+  followed by two spaces because the document fragment is a paragraph.
+
+  Multi-line comment block containing a document fragment:
+
++--+
+    #x
+    #=====================
+    #
+    #  <<eof>> <channelId>
+    #
++--+
+
+  is extracted and rendered as:
+
+=====================
+  <<eof>> <channelId>
+
+  First comment line contains exclusively the <<<#x>>> marker. Following lines
+  begin with a single <<<#>>>. Note that indentation of the comment block
+  containing the document fragment is allowed.
+
+  An open line after single or multi-line document fragments is
+  mandatory. Otherwise the source code found immediatly after a fragment is
+  extracted to and put into a verbatim display.
+
+  Example:
+
++--+
+#x
+#
+#  Returns  1 if an end of file condition occurred during the
+#  most recent input operation on channelId (such as gets), 0
+#  otherwise.
+#
+proc eof {channelId} {
+     return [eofImpl $channelId]
+}
++--+
+
+  is extracted and rendered as:
+
+---
+proc eof {channelId} {
+     return [eofImpl $channelId]
+}
+---
+
+  Returns  1 if an end of file condition occurred during the
+  most recent input operation on channelId (such as gets), 0
+  otherwise.
+
+  By default the verbatim display is inserted before the document fragment. It
+  is possible to specify another place by using the <<<~~x>>> extraction
+  directive.
+
+  Example:
+
++--+
+#x
+#===
+#
+#~~x
+#
+#  Returns  1 if an end of file condition occurred during the
+#  most recent input operation on channelId (such as gets), 0
+#  otherwise.
+#
+proc eof {channelId} {
+     return [eofImpl $channelId]
+}
++--+
+
+  is extracted and rendered as:
+
+===
+
+---
+proc eof {channelId} {
+     return [eofImpl $channelId]
+}
+---
+
+  Returns  1 if an end of file condition occurred during the
+  most recent input operation on channelId (such as gets), 0
+  otherwise.
+
+  A box is drawn around extracted verbatim displays by using the
+  <<<tcl.verbatim>>> PI:
+
+      [-pi tcl verbatim plain|box] Default: plain.
+
+** C/C++
+~~~~~~~~
+
+  Document extraction from C/C++ source file works exactly like extraction
+  from {{Tcl}} files. The main difference is that C/C++ comments do not begin
+  <<<#>>>.
+
+  The input file must end with <<<.c>>>, <<<.h>>>, <<<.cpp>>>, <<<.hpp>>>,
+  <<<.cxx>>>, <<<.hxx>>>, <<<.cc>>> or <<<.hh>>>. 
+
+  The PI used to draw a box around extracted verbatim displays is
+  <<<c.verbatim>>>.
+
+  Examples:
+
++--+
+//x  Single line paragraph.
+
+    //x
+    //  First line.
+    //  Second line.
+    //
+
+/*x Single line paragraph. */
+
+/*x
+  First line.
+  Second line.
+*/
+
+    /** Single line paragraph. */
+
+    /**
+     *  Returns the value of the attribute called <name> 
+     *  if such attribute exists or null otherwise.
+     */
+    virtual const xstAnyValue* FindAttribute(const char* name);
++--+
+
+  Notes:
+
+      * A comment block using the <<</**>>> marker and then using a <<<*>>> 
+        at the beginning of each line may be indented.
+  
+      * A comment block using the <<</*x>>> marker and then using no special
+        character at the beginning of each line may not be indented.
+
+      * A multi-line comment block using the <<</**>>> or <<</*x>>> marker
+        must end with a line beginning with <<<*/>>>.
+

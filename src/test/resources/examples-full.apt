@@ -1,0 +1,110 @@
+ -----
+ Why not just use Ant?
+ -----
+ Jason van Zyl
+ -----
+
+Introduction
+
+ Drools is an augmented implementation of Forgy's Rete algorithm tailored for
+ the Java language. Adapting Rete to an object-oriented interface allows for
+ more natural expression of business rules with regards to business objects.
+
+ More importantly, Drools provides for Declarative Programming and is
+ flexible enough to match the semantics of your problem domain. The various
+ parts that compose a rule may be extended to lend domain-specific sense to
+ the rule.
+
++-----+
+
+public class Foo
+    extends Bar
+{
+  int monkey;
+}
+
++-----+
+
++-----+
+<project default="jar"/> 
++-----+
+
+ It can't get much simpler than that. Here's the equivalent Ant build file:
+
++-----+
+<project default="jar">
+ <target name="compile">
+   <javac/>
+ </target> 
+ <target name="jar">
+   <jar/>
+ </target>
+</project>
++-----+
+
+ It's not much more complex, but it's about as simple as
+ Ant gets, and it gets worse from there.  Still, if all we were talking
+ about doing was saving a couple of lines in a build file, nobody would
+ care much.  The real value of Maven comes when you're building large
+ projects.  In the Ant world, the build.xml file is the whole thing.
+ You have to describe how to build every part of the project. That's not
+ too bad if it's a simple project, but if it's a complex project, with
+ lots of different modules, you could end up with chaos.  The developer
+ who works on every module is liable to organize his work differently,
+ write his part of the build file differently, and in general, do what
+ makes the most sense to him, without taking into account the rest of the
+ project.  It works, but it's probably not very pretty.	But still, there's
+ no real reason for project infrastructure to be pretty. Or is there?
+ Projects start small, but they tend to grow if they're successful. And a
+ small bit of ugliness can become a large mess very quickly. What happens
+ when you introduce new developers into the project, and they have to
+ understand how their piece fits into the overall structure? What happens
+ if one part of the build process breaks, or you decide to switch to
+ a new application server? How many changes will you need to make, and
+ how much time will you spend re-engineering your ant build.xml files?
+ These are the sorts of problems Maven solves.  Maven allows you to place
+ some overall structure on your project, so that all of its subprojects
+ build the same way.  It's easy for new developers to come up to speed
+ on the project; it's easy for them to understand how to organize their
+ own piece of the project (this decision has already been made for them).
+ Because the whole build process is more orderly and structured, a change
+ in one part is less likely to break something else. And if you need
+ to make a major change, like moving to a different servlet engine, the
+ damage is minimized.
+
+* Foo
+
+ The first thing to understand is that Maven
+ and Ant are entirely different animals.  Ant and Maven are both tools,
+ but that's where the comparison ends. Ant is a tool but provides users
+ with no technique in that Ant provides no standard guidelines for the
+ way in which Ant tasks are used, and the number of ways Ant tasks can be
+ partnered is limitless. At first glance the notion of endless possibility
+ seems like a boon, but the degree of complexity you can attain using Ant
+ is surprisingly high especially when dealing multiple component builds.
+ Projects often start small but they rarely stay that way.  A developer
+ will initially focus on one concern and write code to satisfy the
+ requirements for that particular concern, but as all developers know
+ concerns seem to multiply and source code can seem to have a life of its
+ own. You may initially start off with a simple model for an application,
+ but soon a lot of utility piles up, server code may crop up too, as well
+ as various bits of client code.  Projects with no initial constraints with
+ regard to structure tend to grow organically and may be comprehensible
+ to the developers working on that particular only because they work
+ with the project on a daily basis. As new elements of the project build
+ are required little tweaks are made to the directory structure of the
+ project and little tweaks are made to the Ant build file to accommodate
+ these directory structure changes: you add a new source directory and
+ concordantly changes are made to the use of javac Ant task in your
+ Ant build file.  This approach is typical with Ant but has some serious
+ drawbacks with respect to overall comprehensibility and coherence.  Let us
+ say that the project we are describing above is one that is doing well,
+ and it is decided that more developers should be added to the project in
+ order to decrease time to market for this particular application. As you
+ might well imagine, the first task for the existing developers is to get
+ the new developers up to speed.  The most important question is whether
+ or not the existing developers can succinctly describe what is actually
+ contained in their project build? The existing developers having worked
+ on this project build daily have probably never thought about succinctly
+ describing what their build does and produces but this becomes critical
+ when new people become involved.

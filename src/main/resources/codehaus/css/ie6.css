@@ -1,0 +1,5 @@
+.panelBox {height: 100%;}
+.panel{float: left; padding-top: 130px; padding-bottom: 50px;}
+.one{height: 100%;}
+.two{height: 100%;width: 100%;padding-right: 200px;padding-left: 180px;margin-left: -180px;}
+.three {height: 100%; margin-left: -200px;}

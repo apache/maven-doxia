@@ -1,0 +1,24 @@
+ -----
+ Maven: the cute and fully build tool.
+ -----
+ Jason van Zyl
+ -----
+
+Maven: the cute and fluffy build tool that's good for the whole family
+
+ Maven will make you laugh; Maven will make you jump for joy; Maven will
+ make you put that dirty little tool called Ant in the litter box with
+ the cat treats where it belongs!
+
+* Say Goodbye the build time stains!
+
+ Maven helps you get rid of those <hard to get rid of> build stains. Wash with Maven
+ and go!
+
+* Hello
+
+ {{{http://foo.bar.com}bar}}
+
+~~%{snippet|id=foo|url=http://cvs.doxia.codehaus.org/*checkout*/doxia/doxia-core/src/test/java/org/codehaus/doxia/XhtmlSinkTest.java}
+
+%{echo|a=one|b=two}

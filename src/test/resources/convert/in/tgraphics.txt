@@ -1,0 +1,4 @@
+  Testing graphics conversion.
+
+[pixware] This is the logo of the Pixware company.
+

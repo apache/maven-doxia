@@ -1,0 +1,48 @@
+<!DOCTYPE html PUBLIC "-//W3C//DTD HTML 4.01 Transitional//EN">
+<html lang="en">
+<head>
+<meta http-equiv="Content-Type" content="text/html; charset=ISO-8859-1">
+<title></title>
+</head>
+<body>
+<h1>1 Package help</h1>
+<div class="box" style="border: 2px solid; width: 100%"><pre>proc findHelp {name} {
+}</pre></div><p><a id="findhelp" name="findhelp">findHelp</a> returns the help
+document named <i>name</i> if this document is found or the empty string
+otherwise.</p><p>More precisely, for an HTML based help system, if the
+application is installed in directory <i>dir</i> (see
+<a href="#apphome">appHome</a>), findHelp first searches for a file called
+<i>dir</i>/docs/<i>name</i>/<i>name</i>.html then for a file called
+<i>dir</i>/../docs/<i>name</i>/<i>name</i>.html. If one of these two files
+exists, findHelp returns the URL of its directory, or the empty string
+otherwise.</p><p>If findHelp returns a non empty string, it may used as the
+first argument of
+<a href="#openhelp">openHelp</a>.</p><pre>% findHelp styledit
+file:///usr/local/ange/pixware/docs/styledit</pre><hr><div class="box" style="border: 2px solid; width: 100%"><pre>proc openHelp {document chapter {topic &quot;&quot;}} {
+}</pre></div><p><a id="openhelp" name="openhelp">openHelp</a> first tries to
+request a running help browser to display topic <i>topic</i> (or the beginning
+of chapter <i>chapter</i> if <i>topic</i> is not specified) of chapter
+<i>chapter</i> of help document <i>document</i>. If no running help browser is
+found, openHelp starts a new one and tries to make it display
+<i>topic</i>.</p><p>For an HTML based help system,
+<i>document</i>&nbsp;<i>chapter</i>&nbsp;<i>topic</i> corresponds to
+<i>document</i>/<i>chapter</i>#<i>mangled_topic</i>.</p><p><i>mangled_topic</i>
+is string <i>topic</i> where all characters different from a-zA-Z0-9 are
+replaced by %<i>xx</i> (character '%' followed by two hexadecimal digits which
+represent the ISO&nbsp;8859&nbsp;1 code of the character to be
+replaced).</p><pre>% openHelp file:///usr/local/ange/pixware/docs/styledit styledit Introduction</pre><p><a id="closehelp" name="closehelp">closeHelp</a>
+requests the help browser to exit if it has been started by
+<a href="#openhelp">openHelp</a>.</p><p>List:</p><ul>
+<li>Item 1.</li>
+<li>Item 2.</li>
+<li>Item 3.</li>
+</ul><div class="box" style="border: 2px solid; width: 100%"><pre>proc closeHelp {} {
+    for {set i 0} {i &lt; 4} {incr i} {
+        if {$foo == &quot;bar&quot;} {
+            break;
+        }
+    }
+}</pre></div><p>Single line
+1.</p><div class="box" style="border: 2px solid; width: 100%"><pre>proc foo {arg1 {arg2 1} args} {
+}</pre></div><p>Single line 2.</p></body>
+</html>

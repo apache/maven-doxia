@@ -1,0 +1,8 @@
+# verbose
+v=1
+
+pdf.pass1=pdflatex doc
+pdf.pass2=mv doc.pdf %O
+pdf.pass3=
+
+

@@ -1,0 +1,10 @@
+# verbose
+v=1
+
+latex.usepackage.0=hyperref
+
+pdf.pass1=latex doc
+pdf.pass2=dvips -z -o doc.ps doc
+pdf.pass3=ps2pdf doc.ps %O
+
+

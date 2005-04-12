@@ -1,0 +1,3 @@
+latex.documentclass=[11pt,a5paper]report
+latex.pagestyle=headings
+

@@ -1,0 +1,52 @@
+<!DOCTYPE html PUBLIC "-//W3C//DTD HTML 4.01 Transitional//EN">
+<html lang="en">
+<head>
+<meta http-equiv="Content-Type" content="text/html; charset=ISO-8859-1">
+<title>The PTF Format and Related Utilities</title>
+<meta name="author" content="Pixware
+Immeuble Capricorne
+23 rue Colbert
+78180 Montigny Le Bretonneux
+France
+Phone: (33) 01 30 60 07 00
+Fax: (33) 01 30 96 05 23
+Email: info@pixware.fr">
+<meta name="date" content="9 October 1999">
+</head>
+<body>
+<center><table border="0" cellspacing="0" cellpadding="0">
+<tr>
+<td><a href="http://localhost/~hussein"
+><img src="apt_home.gif" border="0" width="30" height="20"
+alt="http://localhost/~hussein"></a></td>
+<td><a href="thtml12_toc.html"
+><img src="apt_first.gif" border="0" width="30" height="20"
+alt="Contents"></a></td>
+<td><a href="thtml12_7.html"
+><img src="apt_prev.gif" border="0" width="30" height="20"
+alt="Tables"></a></td>
+<td><img src="apt_noup.gif" border="0" width="30" height="20"
+alt=""></td>
+<td><a href="thtml12_9.html"
+><img src="apt_next.gif" border="0" width="30" height="20"
+alt="Hypertext links"></a></td>
+<td><a href="thtml12_index.html"
+><img src="apt_last.gif" border="0" width="30" height="20"
+alt="Index"></a></td>
+</tr>
+</table></center>
+<h1><a id="id.s8" name="id.s8">8 </a>Figures</h1>
+<p>In order to specify a figure in PTF, a file name <i>without any suffix</i>
+must be put between [ and ] <i>at column 0</i>, optionally followed by the
+caption of the figure.</p><p>If the file name is something like
+<tt>images/myfig</tt>, tools such as docc generally expect to find actual
+files called:</p><ul>
+<li><tt>images/myfig.eps</tt> when converting PTF to LaTeX or to troff.</li>
+<li><tt>images/myfig.gif</tt> when converting PTF to HTML.</li>
+<li><tt>images/myfig.bmp</tt> when converting PTF to RTF.</li>
+</ul><p>This command may not be supported by all output
+formats.</p><p>Example:</p><pre>[pixware] This is the logo of the Pixware company.</pre><p>is
+rendered as:</p><center><p><img src="pixware.gif"
+alt="pixware"></p><p><i>This is the logo of the Pixware
+company.</i></p></center></body>
+</html>

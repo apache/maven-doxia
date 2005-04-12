@@ -1,0 +1,24 @@
+#header {
+  display: none;
+}
+
+.panelBox {
+  border: none;
+}
+
+.panel {
+  padding-top: 10px;
+  padding-bottom: 10px;
+}
+
+.one {
+  display: none;
+}
+
+.three {
+  display: none;
+}
+
+#footer {
+  display: none;
+}

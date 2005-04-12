@@ -1,0 +1,48 @@
+ Numbered List #1
+
+  [[1]] item #1
+
+  [[1]] item #2
+
+  [[1]] item #3\
+        item #3 (continued)
+
+ Numbered List #2
+
+  [[A]] item #1
+
+  [[A]] item #2
+
+        This item contains a nested list.
+
+         [[a]] item #1 of nested list
+
+         [[a]] item #2 of nested list
+
+  [[A]] item #3
+
+ Numbered List #3
+
+  [[I]] one
+
+  [[I]] two
+
+  [[I]] three
+
+  [[I]] four
+
+  [[I]] five
+
+  [[I]] six
+
+  [[I]] seven
+
+  [[I]] eight
+
+ Numbered List #4
+
+  [[i]] one
+
+  [[i]] two
+
+  [[i]] three
