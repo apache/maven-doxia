@@ -6,9 +6,7 @@ package org.codehaus.doxia.site.renderer;
 import org.codehaus.doxia.Doxia;
 import org.codehaus.doxia.module.xhtml.SinkDescriptorReader;
 import org.codehaus.doxia.module.xhtml.XhtmlSink;
-import org.codehaus.doxia.module.xhtml.decoration.render.RenderingContext;
 import org.codehaus.doxia.module.xhtml.decoration.model.MavenDecorationModel;
-import org.codehaus.doxia.module.xhtml.decoration.model.MavenDecorationModelReader;
 import org.codehaus.doxia.module.xhtml.decoration.model.MavenDecorationModelReader;
 import org.codehaus.doxia.module.xhtml.decoration.render.RenderingContext;
 import org.codehaus.doxia.site.module.SiteModule;
@@ -43,6 +41,8 @@ public class DefaultSiteRenderer
     public void render( String siteDirectory, String generatedSiteDirectory, String outputDirectory )
         throws Exception
     {
+        String flavour = "maven";
+
         MavenDecorationModelReader mavenDecorationModelReader = new MavenDecorationModelReader();
 
         File siteDescriptor = new File( siteDirectory, "site.xml" );
@@ -70,7 +70,7 @@ public class DefaultSiteRenderer
                 continue;
             }
 
-            generateModuleDocumentation( module, moduleBasedir, mavenDecorationModel, outputDirectory );
+            generateModuleDocumentation( flavour, module, moduleBasedir, mavenDecorationModel, outputDirectory );
         }
 
         // ----------------------------------------------------------------------
@@ -90,7 +90,7 @@ public class DefaultSiteRenderer
                 continue;
             }
 
-            generateModuleDocumentation( module, moduleBasedir, mavenDecorationModel, outputDirectory );
+            generateModuleDocumentation( flavour, module, moduleBasedir, mavenDecorationModel, outputDirectory );
         }
 
         // ----------------------------------------------------------------------
@@ -99,12 +99,16 @@ public class DefaultSiteRenderer
 
         // set default flavour in site.xml but allow it to be overridden
 
-        copyResources( outputDirectory, "codehaus" );
+        copyResources( outputDirectory, flavour );
 
         FileUtils.copyDirectory( new File( siteDirectory, "images" ), new File( outputDirectory, "images" ) );
     }
 
-    protected void generateModuleDocumentation( SiteModule module, File moduleBasedir, MavenDecorationModel mavenDecorationModel, String outputDirectory )
+    protected void generateModuleDocumentation( String flavour,
+                                                SiteModule module,
+                                                File moduleBasedir,
+                                                MavenDecorationModel mavenDecorationModel,
+                                                String outputDirectory )
         throws Exception
     {
         List docs = FileUtils.getFileNames( moduleBasedir, "**/*." + module.getExtension(), null, false );
@@ -124,7 +128,7 @@ public class DefaultSiteRenderer
                 outputFile.getParentFile().mkdirs();
             }
 
-            InputStream is = getClass().getResourceAsStream( "/codehaus.dst" );
+            InputStream is = getClass().getResourceAsStream( "/" + flavour + ".dst" );
 
             Reader r = new InputStreamReader( is );
 

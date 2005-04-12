@@ -24,7 +24,7 @@ public class NavigationRenderer
         {
             Menu menu = (Menu) renderingContext.getMavenDecorationModel().getMenus().get( i );
 
-            writer.startElement( "h3" );
+            writer.startElement( "h5" );
 
             writer.writeText( menu.getName() );
 
