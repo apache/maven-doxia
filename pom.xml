@@ -5,7 +5,7 @@
   <version>1.0-alpha-2-SNAPSHOT</version>
   <name>Doxia Core</name>
   <ciManagement>
-    <system>dev@doxia.codehaus.org</system>
+    <system>continuum</system>
     <notifiers>
       <notifier>
         <address>dev@doxia.codehaus.org</address>
