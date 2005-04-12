@@ -37,7 +37,7 @@
   </dependencies>
   <scm>
     <connection>scm:svn://svn.codehaus.org:/home/projects/doxia/scm:doxia-core/trunk</connection>
-    <developerConnection>scm:cvs:ext:${maven.username}@cvs.doxia.codehaus.org:/home/projects/doxia/scm:doxia/doxia-core</developerConnection>
+    <developerConnection>scm:svn+ssh://${maven.username}@svn.codehaus.org:/home/projects/doxia/scm:doxia-core/trunk</developerConnection>
     <url>http://cvs.doxia.codehaus.org/</url>
   </scm>
   <build>
