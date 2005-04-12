@@ -36,7 +36,7 @@
     </dependency>
   </dependencies>
   <scm>
-    <connection>scm:cvs:pserver:anoncvs@cvs.doxia.codehaus.org:/home/projects/doxia/scm:doxia/doxia-core</connection>
+    <connection>scm:svn://svn.codehaus.org:/home/projects/doxia/scm:doxia-core/trunk</connection>
     <developerConnection>scm:cvs:ext:${maven.username}@cvs.doxia.codehaus.org:/home/projects/doxia/scm:doxia/doxia-core</developerConnection>
     <url>http://cvs.doxia.codehaus.org/</url>
   </scm>
