@@ -56,7 +56,7 @@
   <distributionManagement>
     <site>
       <id>website</id>
-      <url>scp://beaver.codehaus.org//home/projects/doxia/public_html</url>
+      <url>scp://beaver.codehaus.org/home/projects/doxia/public_html</url>
     </site>
     <repository>
       <id>repo1</id>
