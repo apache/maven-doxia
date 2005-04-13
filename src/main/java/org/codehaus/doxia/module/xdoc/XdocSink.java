@@ -20,7 +20,7 @@ public class XdocSink
 {
     private LineBreaker out;
 
-    private StringBuffer buffer;
+    private StringBuffer buffer = new StringBuffer();
 
     private boolean headFlag;
     private boolean itemFlag;

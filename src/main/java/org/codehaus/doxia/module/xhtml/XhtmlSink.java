@@ -28,7 +28,7 @@ import java.util.Date;
 public class XhtmlSink
     extends AbstractXhtmlSink
 {
-    private StringBuffer buffer;
+    private StringBuffer buffer = new StringBuffer();
 
     private boolean headFlag;
 
