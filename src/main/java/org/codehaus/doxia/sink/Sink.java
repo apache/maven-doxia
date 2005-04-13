@@ -106,6 +106,18 @@ public interface Sink
 
     void sectionTitle_();
 
+    void sectionTitle1();
+
+    void sectionTitle1_();
+
+    void sectionTitle2();
+
+    void sectionTitle2_();
+
+    void sectionTitle3();
+
+    void sectionTitle3_();
+
     void paragraph();
 
     void paragraph_();

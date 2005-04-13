@@ -194,37 +194,52 @@ public class XhtmlSink
 
     public void section1()
     {
-        sectionLevel = 1;
+        directive( "section1()" );
     }
 
     public void section2()
     {
-        sectionLevel = 2;
+        directive( "section2()" );
     }
 
     public void section3()
     {
-        sectionLevel = 3;
+        directive( "section3()" );
     }
 
-    public void section4()
+    public void section1_()
     {
-        sectionLevel = 4;
+        directive( "section1_()" );
     }
 
-    public void section5()
+    public void section2_()
     {
-        sectionLevel = 5;
+        directive( "section2_()" );
     }
 
-    public void sectionTitle()
+    public void section3_()
     {
-        directive( "section" + sectionLevel + "()" );
+        directive( "section3_()" );
     }
 
-    public void sectionTitle_()
+    public void sectionTitle1()
     {
-        directive( "section" + sectionLevel + "_()" );
+        directive( "sectionTitle1()" );
+    }
+
+    public void sectionTitle1_()
+    {
+        directive( "sectionTitle1_()" );
+    }
+
+    public void sectionTitle2()
+    {
+        directive( "sectionTitle2()" );
+    }
+
+    public void sectionTitle2_()
+    {
+        directive( "sectionTitle2_()" );
     }
 
     // ----------------------------------------------------------------------
@@ -409,11 +424,11 @@ public class XhtmlSink
     {
         if ( headerRow )
         {
-            directive( "tableCell()" );
+            directive( "tableHeaderCell()" );
         }
         else
         {
-            directive( "tableHeaderCell()" );
+            directive( "tableCell()" );
         }
     }
 
@@ -431,11 +446,11 @@ public class XhtmlSink
     {
         if ( headerRow )
         {
-            directive( "tableCell_()" );
+            directive( "tableHeaderCell_()" );
         }
         else
         {
-            directive( "tableHeaderCell_()" );
+            directive( "tableCell_()" );
         }
 
         ++cellCount;
@@ -588,7 +603,7 @@ public class XhtmlSink
     }
 
     protected void directive( String key )
-    {
+    {                
         writer.write( directives.get( key ) );
     }
 

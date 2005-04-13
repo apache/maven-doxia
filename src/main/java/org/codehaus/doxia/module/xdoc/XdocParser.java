@@ -1,12 +1,11 @@
 package org.codehaus.doxia.module.xdoc;
 
-import org.codehaus.doxia.sink.Sink;
-import org.codehaus.doxia.parser.Parser;
-import org.codehaus.doxia.parser.ParseException;
-import org.codehaus.doxia.parser.AbstractParser;
 import org.codehaus.doxia.macro.MacroRequest;
-import org.codehaus.plexus.util.xml.pull.XmlPullParser;
+import org.codehaus.doxia.parser.AbstractParser;
+import org.codehaus.doxia.parser.ParseException;
+import org.codehaus.doxia.sink.Sink;
 import org.codehaus.plexus.util.xml.pull.MXParser;
+import org.codehaus.plexus.util.xml.pull.XmlPullParser;
 
 import java.io.Reader;
 import java.util.HashMap;
@@ -65,11 +64,21 @@ public class XdocParser
                 {
                     sink.section1();
 
-                    sink.sectionTitle();
+                    sink.sectionTitle1();
 
                     sink.text( parser.getAttributeValue( null, "name" ) );
 
-                    sink.sectionTitle_();
+                    sink.sectionTitle1_();
+                }
+                else if ( parser.getName().equals( "subsection" ) )
+                {
+                    sink.section2();
+
+                    sink.sectionTitle2();
+
+                    sink.text( parser.getAttributeValue( null, "name" ) );
+
+                    sink.sectionTitle2_();
                 }
                 else if ( parser.getName().equals( "p" ) )
                 {
@@ -136,7 +145,7 @@ public class XdocParser
                 }
                 else if ( parser.getName().equals( "th" ) )
                 {
-                    sink.tableCell();
+                    sink.tableHeaderCell();
                 }
                 else if ( parser.getName().equals( "td" ) )
                 {
@@ -189,10 +198,10 @@ public class XdocParser
                 {
                     sink.link_();
                 }
+
                 // ----------------------------------------------------------------------
                 // Tables
                 // ----------------------------------------------------------------------
-
 
                 else if ( parser.getName().equals( "table" ) )
                 {
@@ -204,13 +213,29 @@ public class XdocParser
                 }
                 else if ( parser.getName().equals( "th" ) )
                 {
-                    sink.tableCell_();
+                    sink.tableHeaderCell_();
                 }
                 else if ( parser.getName().equals( "td" ) )
                 {
                     sink.tableCell_();
                 }
 
+                // ----------------------------------------------------------------------
+                // Sections
+                // ----------------------------------------------------------------------
+
+                else if ( parser.getName().equals( "section" ) )
+                {
+                    sink.section1_();
+                }
+                else if ( parser.getName().equals( "subsection" ) )
+                {
+                    sink.section2_();
+                }
+
+                // ----------------------------------------------------------------------
+                // Sections
+                // ----------------------------------------------------------------------
             }
             else if ( eventType == XmlPullParser.TEXT )
             {

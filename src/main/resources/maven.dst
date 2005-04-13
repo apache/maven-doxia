@@ -63,22 +63,22 @@
 
 *section1()
 {
-<h2>
+<div class="section">
 }
 
 *section1_()
 {
-</h2>
+</div>
 }
 
 *section2()
 {
-<h5>
+<div class="subsection">
 }
 
 *section2_()
 {
-</h5>
+</div>
 }
 
 *section3()
@@ -186,7 +186,7 @@
 }
 
 *tableRow() {
-<tr>
+<tr class="a">
 }
 
 *tableRow_() {
@@ -213,10 +213,20 @@
 *date_() {
 }
 
-*sectionTitle() {
+*sectionTitle1() {
+<h2>
 }
 
-*sectionTitle_() {
+*sectionTitle1_() {
+</h2>
+}
+
+*sectionTitle2() {
+<h3>
+}
+
+*sectionTitle2_() {
+</h3>
 }
 
 *paragraph() {
@@ -228,7 +238,7 @@
 }
 
 *verbatim() {
-<div class="code">
+<div class="source">
 <pre>
 }
 

@@ -149,6 +149,8 @@ public class DefaultSiteRenderer
             }
             catch ( Exception e )
             {
+                e.printStackTrace();
+
                 System.out.println( "Error rendering " + fullPathDoc + ": " + e );
             }
         }
