@@ -396,9 +396,25 @@ public class XhtmlSink
         table_();
     }
 
+    private int rowMarker = 0;
+
+    //TODO: could probably make this more flexible but really i would just like a standard xhtml structure.
     public void tableRow()
     {
-        directive( "tableRow()" );
+        if ( rowMarker == 0 )
+        {
+            writer.write( "<tr class=\"a\"" );
+
+            rowMarker = 1;
+        }
+        else
+        {
+            writer.write( "<tr class=\"b\"" );
+
+            rowMarker = 0;
+        }
+
+        //directive( "tableRow()" );
 
         cellCount = 0;
     }
@@ -603,7 +619,7 @@ public class XhtmlSink
     }
 
     protected void directive( String key )
-    {                
+    {
         writer.write( directives.get( key ) );
     }
 
