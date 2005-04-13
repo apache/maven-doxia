@@ -326,5 +326,9 @@ public class SinkAdapter implements Sink
     public void text( String text )
     {
     }
+
+    public void rawText( String text )
+    {
+    }
 }
 

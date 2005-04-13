@@ -108,6 +108,10 @@ public class XdocParser
                 {
                     sink.bold();
                 }
+                else if ( parser.getName().equals( "i" ) )
+                {
+                    sink.italic();
+                }
                 else if ( parser.getName().equals( "a" ) )
                 {
                     sink.link( parser.getAttributeValue( null, "href" ) );
@@ -150,6 +154,31 @@ public class XdocParser
                 else if ( parser.getName().equals( "td" ) )
                 {
                     sink.tableCell();
+                }
+                else
+                {
+                    sink.rawText( "<" );
+
+                    sink.rawText( parser.getName() );
+
+                    int count = parser.getAttributeCount();
+
+                    for ( int i = 0; i < count; i++ )
+                    {
+                        sink.rawText( " " );
+
+                        sink.rawText( parser.getAttributeName( i ) );
+
+                        sink.rawText( "=" );
+
+                        sink.rawText( "\"" );
+
+                        sink.rawText( parser.getAttributeValue( i ) );
+
+                        sink.rawText( "\"" );
+                    }
+
+                    sink.rawText( ">" );
                 }
             }
             else if ( eventType == XmlPullParser.END_TAG )
@@ -194,6 +223,10 @@ public class XdocParser
                 {
                     sink.bold_();
                 }
+                else if ( parser.getName().equals( "i" ) )
+                {
+                    sink.italic_();
+                }
                 else if ( parser.getName().equals( "a" ) )
                 {
                     sink.link_();
@@ -231,6 +264,14 @@ public class XdocParser
                 else if ( parser.getName().equals( "subsection" ) )
                 {
                     sink.section2_();
+                }
+                else
+                {
+                    sink.rawText( "</" );
+
+                    sink.rawText( parser.getName() );
+
+                    sink.rawText( ">" );
                 }
 
                 // ----------------------------------------------------------------------

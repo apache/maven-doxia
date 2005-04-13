@@ -177,5 +177,7 @@ public interface Sink
     void nonBreakingSpace();
 
     void text( String text );
+
+    void rawText( String text );
 }
 
