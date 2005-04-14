@@ -403,13 +403,13 @@ public class XhtmlSink
     {
         if ( rowMarker == 0 )
         {
-            writer.write( "<tr class=\"a\"" );
+            write( "<tr class=\"a\"" );
 
             rowMarker = 1;
         }
         else
         {
-            writer.write( "<tr class=\"b\"" );
+            write( "<tr class=\"b\"" );
 
             rowMarker = 0;
         }
@@ -625,18 +625,18 @@ public class XhtmlSink
 
     protected void directive( String key )
     {
-        writer.write( directives.get( key ) );
+        write( directives.get( key ) );
     }
 
     protected void content( String text )
     {
-        writer.write( escapeHTML( text ) );
+        write( escapeHTML( text ) );
     }
 
     protected void verbatimContent( String text )
 
     {
-        writer.write( escapeHTML( text ) );
+        write( escapeHTML( text ) );
     }
 
     public static String escapeHTML( String text )
