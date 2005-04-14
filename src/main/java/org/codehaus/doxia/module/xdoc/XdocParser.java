@@ -48,7 +48,11 @@ public class XdocParser
         {
             if ( eventType == XmlPullParser.START_TAG )
             {
-                if ( parser.getName().equals( "title" ) )
+                if ( parser.getName().equals( "document" ) )
+                {
+                    //Do nothing
+                }
+                else if ( parser.getName().equals( "title" ) )
                 {
                     sink.title();
                 }
@@ -183,7 +187,11 @@ public class XdocParser
             }
             else if ( eventType == XmlPullParser.END_TAG )
             {
-                if ( parser.getName().equals( "title" ) )
+                if ( parser.getName().equals( "document" ) )
+                {
+                    //Do nothing
+                }
+                else if ( parser.getName().equals( "title" ) )
                 {
                     sink.title_();
                 }
