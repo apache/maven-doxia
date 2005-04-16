@@ -49,7 +49,7 @@ public class XhtmlSinkTest
 
         Map directives = sdr.read( reader );
 
-        XhtmlSink sink = new XhtmlSink( getTestWriter(), renderingContext, directives );
+        XhtmlSink sink = new XhtmlSink( getTestWriter(), renderingContext, directives, null );
 
         return sink;
     }

@@ -12,6 +12,7 @@ import org.codehaus.doxia.module.xhtml.decoration.render.RenderingContext;
 import org.codehaus.doxia.site.module.SiteModule;
 import org.codehaus.doxia.site.module.manager.SiteModuleManager;
 import org.codehaus.plexus.util.FileUtils;
+import org.codehaus.plexus.util.PathTool;
 
 import java.io.File;
 import java.io.FileOutputStream;
@@ -139,7 +140,9 @@ public class DefaultSiteRenderer
             RenderingContext renderingContext =
                 new RenderingContext( moduleBasedir.getPath(), doc, mavenDecorationModel );
 
-            XhtmlSink sink = new XhtmlSink( new FileWriter( outputFile ), renderingContext, directives );
+            String relativePathToBasedir = PathTool.getRelativePath( moduleBasedir.getAbsolutePath(), fullPathDoc );
+
+            XhtmlSink sink = new XhtmlSink( new FileWriter( outputFile ), renderingContext, directives, relativePathToBasedir );
 
             try
             {
