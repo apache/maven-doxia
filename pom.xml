@@ -4,6 +4,10 @@
   <artifactId>doxia-core</artifactId>
   <version>1.0-alpha-2-SNAPSHOT</version>
   <name>Doxia Core</name>
+  <issueManagement>
+    <system>jira</system>
+    <url>http://jira.codehaus.org/browse/DOXIA</url>
+  </issueManagement>
   <ciManagement>
     <system>continuum</system>
     <notifiers>
