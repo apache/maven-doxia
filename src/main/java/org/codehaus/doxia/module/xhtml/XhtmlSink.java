@@ -573,7 +573,7 @@ public class XhtmlSink
         }
         else
         {
-            directive( "linkBreak()" );
+            directive( "lineBreak()" );
         }
     }
 
