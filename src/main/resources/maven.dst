@@ -285,9 +285,13 @@
 
 *pageBreak() {}
 
-*anchor(String $name ) {}
+*anchor() {
+<a name="$name">
+}
 
-*anchor_() {}
+*anchor_() {
+</a>
+}
 
 *link() {
 <a href="$name">

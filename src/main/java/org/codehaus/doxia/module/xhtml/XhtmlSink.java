@@ -490,7 +490,7 @@ public class XhtmlSink
     {
         if ( !headFlag )
         {
-            String id = encodeFragment( name );
+            write( StringUtils.replaceOnce( directiveValue( "anchor()" ), "$name", name ) );
         }
     }
 
@@ -498,6 +498,7 @@ public class XhtmlSink
     {
         if ( !headFlag )
         {
+            directive( "link_()" );
         }
     }
 
