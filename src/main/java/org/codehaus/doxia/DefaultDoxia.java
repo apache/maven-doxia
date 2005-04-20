@@ -6,7 +6,6 @@ import org.codehaus.doxia.parser.manager.ParserManager;
 import org.codehaus.doxia.parser.manager.ParserNotFoundException;
 import org.codehaus.doxia.parser.Parser;
 import org.codehaus.doxia.parser.ParseException;
-import org.codehaus.doxia.sink.manager.SinkManager;
 import org.codehaus.doxia.sink.manager.SinkNotFoundException;
 import org.codehaus.doxia.sink.Sink;
 
@@ -20,7 +19,7 @@ import java.io.Reader;
 public class DefaultDoxia
     implements Doxia
 {
-    //protected SinkManager sinkManager;
+    // protected SinkManager sinkManager;
 
     protected ParserManager parserManager;
 
@@ -35,11 +34,11 @@ public class DefaultDoxia
     public void parse( Reader source, String parserId, String sinkId )
         throws ParserNotFoundException, SinkNotFoundException, ParseException
     {
-        //Parser parser = parserManager.getParser( parserId );
+        // Parser parser = parserManager.getParser( parserId );
 
-        //Sink sink = sinkManager.getSink( sinkId );
+        // Sink sink = sinkManager.getSink( sinkId );
 
-        //parser.parse( source, sink );
+        // parser.parse( source, sink );
     }
 
     // ----------------------------------------------------------------------
@@ -48,8 +47,7 @@ public class DefaultDoxia
     // which can probably be done away with.
     // ----------------------------------------------------------------------
 
-    public void parse( Reader source, String parserId, Sink sink )
-        throws ParserNotFoundException, ParseException
+    public void parse( Reader source, String parserId, Sink sink ) throws ParserNotFoundException, ParseException
     {
         Parser parser = parserManager.getParser( parserId );
 
@@ -64,11 +62,8 @@ public class DefaultDoxia
     // ----------------------------------------------------------------------
 
     /*
-    public SinkManager getSinkManager()
-    {
-        return sinkManager;
-    }
-    */
+     * public SinkManager getSinkManager() { return sinkManager; }
+     */
 
     public ParserManager getParserManager()
     {

@@ -292,7 +292,7 @@
   <report>maven-checkstyle-plugin</report>
   <report>maven-changes-plugin</report>
   <report>maven-changelog-plugin</report>
-  <report>maven-developer-activity-plugin
+  <report>maven-developer-activity-plugin</report>
   <report>maven-file-activity-plugin</report>
   <report>maven-license-plugin</report>
   <report>maven-javadoc-plugin</report>
@@ -404,8 +404,8 @@
   <ant:classpath>
     <ant:pathelement location="${plugin.getDependencyPath('checkstyle:checkstyle')}"/>
     <ant:path refid="maven.dependency.classpath"/>
-  <ant:classpath>
-<ant:taskdef>]]></source>
+  </ant:classpath>
+</ant:taskdef>]]></source>
       </answer>
     </faq>
 
@@ -521,7 +521,7 @@
         and <code>maven:pluginVar</code>.)</p>
         <p>Example:</p>
         <source><![CDATA[<maven:get plugin="maven-war-plugin" property="maven.war.src" var="warSourceDir" />
-<echo>The WAR source directory is ${warSourceDir}<echo>
+<echo>The WAR source directory is ${warSourceDir}</echo>
 ...
 <maven:set plugin="maven-multiproject-plugin" property="maven.multiproject.includes" value="subprojects/*/project.xml"/>]]></source>
       </answer>
@@ -532,7 +532,7 @@
       <answer>
         <p>
           For example, before starting unit tests you might need to start a DB server. The DB server blocks until it is
-          terminated, so it needs to be started in the background. <code>&lt;ant:parallel&gt;</code> does not seem to 
+          terminated, so it needs to be started in the background. <code>&lt;ant:parallel/&gt;</code> does not seem to 
           work in this case because it blocks the main execution thread, which is exactly what needs to be avoided.
         </p>
         <p>

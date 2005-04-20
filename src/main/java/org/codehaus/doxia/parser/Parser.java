@@ -1,7 +1,6 @@
 package org.codehaus.doxia.parser;
 
 import org.codehaus.doxia.sink.Sink;
-import org.codehaus.doxia.macro.manager.MacroManager;
 
 import java.io.Reader;
 

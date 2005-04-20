@@ -5,11 +5,7 @@ package org.codehaus.doxia;
 
 import org.codehaus.doxia.module.xhtml.decoration.model.MavenDecorationModel;
 import org.codehaus.doxia.module.xhtml.decoration.model.MavenDecorationModelReader;
-import org.codehaus.doxia.module.xhtml.decoration.model.MavenDecorationModel;
-import org.codehaus.doxia.module.xhtml.decoration.model.MavenDecorationModelReader;
 import org.codehaus.doxia.module.xhtml.decoration.render.RenderingContext;
-import org.codehaus.doxia.module.xhtml.decoration.render.RenderingContext;
-import org.codehaus.doxia.module.xhtml.codehaus.CodehausXhtmlSink;
 import org.codehaus.doxia.module.xhtml.codehaus.CodehausXhtmlSink;
 import org.codehaus.doxia.sink.Sink;
 

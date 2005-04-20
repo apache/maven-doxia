@@ -1,6 +1,5 @@
 package org.codehaus.doxia;
 
-import org.codehaus.doxia.sink.manager.SinkManager;
 import org.codehaus.doxia.sink.manager.SinkNotFoundException;
 import org.codehaus.doxia.sink.Sink;
 import org.codehaus.doxia.parser.manager.ParserManager;
@@ -22,10 +21,9 @@ public interface Doxia
     void parse( Reader source, String parserId, String sinkId )
         throws ParserNotFoundException, SinkNotFoundException, ParseException;
 
-    void parse( Reader source, String parserId, Sink sink )
-        throws ParserNotFoundException, ParseException;
+    void parse( Reader source, String parserId, Sink sink ) throws ParserNotFoundException, ParseException;
 
-    //SinkManager getSinkManager();
+    // SinkManager getSinkManager();
 
     ParserManager getParserManager();
 

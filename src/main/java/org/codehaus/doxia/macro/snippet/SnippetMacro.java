@@ -1,6 +1,5 @@
 package org.codehaus.doxia.macro.snippet;
 
-import org.codehaus.doxia.macro.Macro;
 import org.codehaus.doxia.macro.MacroRequest;
 import org.codehaus.doxia.macro.AbstractMacro;
 import org.codehaus.doxia.sink.Sink;

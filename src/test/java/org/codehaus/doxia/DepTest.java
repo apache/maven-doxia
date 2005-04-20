@@ -3,21 +3,21 @@
  */
 package org.codehaus.doxia;
 
-import junit.framework.TestCase;
+import org.apache.maven.model.Model;
+import org.apache.maven.model.io.xpp3.MavenXpp3Reader;
+import org.codehaus.doxia.module.xhtml.codehaus.CodehausXhtmlSink;
 import org.codehaus.doxia.module.xhtml.decoration.model.MavenDecorationModel;
 import org.codehaus.doxia.module.xhtml.decoration.model.MavenDecorationModelReader;
 import org.codehaus.doxia.module.xhtml.decoration.render.RenderingContext;
-import org.codehaus.doxia.module.xhtml.decoration.render.RenderingContext;
-import org.codehaus.doxia.module.xhtml.codehaus.CodehausXhtmlSink;
 import org.codehaus.doxia.plugin.maven.DependenciesRenderer;
 import org.codehaus.doxia.sink.Sink;
-import org.apache.maven.model.io.xpp3.MavenXpp3Reader;
-import org.apache.maven.model.Model;
 
 import java.io.File;
+import java.io.FileReader;
 import java.io.FileWriter;
 import java.io.Writer;
-import java.io.FileReader;
+
+import junit.framework.TestCase;
 
 /**
  * @author <a href="mailto:jason@maven.org">Jason van Zyl</a>
@@ -26,8 +26,7 @@ import java.io.FileReader;
 public class DepTest
     extends TestCase
 {
-    public void testApt()
-        throws Exception
+    public void testApt() throws Exception
     {
         Writer writer = new FileWriter( "dependencies.html" );
 
@@ -37,7 +36,7 @@ public class DepTest
 
         String basedir = System.getProperty( "basedir" );
 
-        String siteXml = new File( basedir, "src/test/site/site.xml").getPath();
+        String siteXml = new File( basedir, "src/test/site/site.xml" ).getPath();
 
         String xdoc = "repository-upload.xml";
 
@@ -45,9 +44,8 @@ public class DepTest
 
         MavenDecorationModel navigation = b.createNavigation( siteXml );
 
-        RenderingContext renderingContext = new RenderingContext( basedir,
-                                                                  new File( basedir, xdoc ).getPath(),
-                                                                  navigation );
+        RenderingContext renderingContext = new RenderingContext( basedir, new File( basedir, xdoc ).getPath(),
+            navigation );
 
         // ----------------------------------------------------------------------
         //

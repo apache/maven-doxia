@@ -3,24 +3,14 @@
  */
 package org.codehaus.doxia;
 
-import junit.framework.TestCase;
-import org.codehaus.doxia.module.xhtml.decoration.model.MavenDecorationModel;
-import org.codehaus.doxia.module.xhtml.decoration.model.MavenDecorationModelReader;
-import org.codehaus.doxia.module.xhtml.decoration.render.RenderingContext;
 import org.codehaus.doxia.module.xhtml.SinkDescriptorReader;
-import org.codehaus.doxia.module.xhtml.codehaus.CodehausXhtmlSink;
-import org.codehaus.doxia.module.xhtml.SinkDescriptorReader;
-import org.codehaus.doxia.plugin.maven.DependenciesRenderer;
-import org.codehaus.doxia.sink.Sink;
-import org.apache.maven.model.io.xpp3.MavenXpp3Reader;
-import org.apache.maven.model.Model;
 
 import java.io.File;
-import java.io.FileWriter;
-import java.io.Writer;
 import java.io.FileReader;
 import java.util.Map;
 import java.util.Iterator;
+
+import junit.framework.TestCase;
 
 /**
  * @author <a href="mailto:jason@maven.org">Jason van Zyl</a>

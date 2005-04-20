@@ -3,11 +3,7 @@ package org.codehaus.doxia;
 import org.codehaus.doxia.module.xdoc.XdocParser;
 import org.codehaus.doxia.module.xhtml.decoration.render.RenderingContext;
 import org.codehaus.doxia.module.xhtml.codehaus.CodehausXhtmlSink;
-import org.codehaus.doxia.module.xhtml.codehaus.CodehausXhtmlSink;
-import org.codehaus.doxia.module.xhtml.decoration.model.PathTool;
 import org.codehaus.doxia.module.xhtml.decoration.model.MavenDecorationModel;
-import org.codehaus.doxia.module.xhtml.decoration.model.MavenDecorationModel;
-import org.codehaus.doxia.module.xhtml.decoration.model.MavenDecorationModelReader;
 import org.codehaus.doxia.module.xhtml.decoration.model.MavenDecorationModelReader;
 import org.codehaus.doxia.sink.Sink;
 import junit.framework.TestCase;
@@ -25,12 +21,11 @@ import java.io.Writer;
 public class XdocParserTest
     extends TestCase
 {
-    public void testApt()
-        throws Exception
+    public void testApt() throws Exception
     {
         String basedir = System.getProperty( "basedir" );
 
-        String siteXml = new File( basedir, "src/test/site/site.xml").getPath();
+        String siteXml = new File( basedir, "src/test/site/site.xml" ).getPath();
 
         XdocParser xdocParser = new XdocParser();
 
@@ -44,9 +39,8 @@ public class XdocParserTest
 
         MavenDecorationModel navigation = b.createNavigation( siteXml );
 
-        RenderingContext renderingContext = new RenderingContext( basedir, 
-                                                                  new File( basedir, xdoc ).getPath(),
-                                                                  navigation );
+        RenderingContext renderingContext = new RenderingContext( basedir, new File( basedir, xdoc ).getPath(),
+            navigation );
 
         Sink sink = new CodehausXhtmlSink( writer, renderingContext );
 

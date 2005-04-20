@@ -1,9 +1,7 @@
 package org.codehaus.doxia.module.xhtml.decoration.render;
 
-import org.codehaus.doxia.module.xhtml.decoration.model.PathTool;
 import org.codehaus.doxia.module.xhtml.decoration.model.MavenDecorationModel;
 import org.codehaus.doxia.module.xhtml.decoration.model.PathTool;
-import org.codehaus.doxia.module.xhtml.decoration.model.MavenDecorationModel;
 
 import java.io.File;
 

@@ -1,16 +1,14 @@
 package org.codehaus.doxia.module.xhtml.codehaus;
 
-import org.codehaus.doxia.module.xhtml.decoration.model.Hyperlink;
-import org.codehaus.doxia.module.xhtml.decoration.model.Link;
-import org.codehaus.doxia.module.xhtml.decoration.model.Hyperlink;
-import org.codehaus.doxia.module.xhtml.decoration.render.NavigationRenderer;
 import org.codehaus.doxia.module.HTMLSink;
 import org.codehaus.doxia.module.xhtml.AbstractXhtmlSink;
+import org.codehaus.doxia.module.xhtml.decoration.model.Hyperlink;
+import org.codehaus.doxia.module.xhtml.decoration.model.Link;
 import org.codehaus.doxia.module.xhtml.decoration.render.NavigationRenderer;
 import org.codehaus.doxia.module.xhtml.decoration.render.RenderingContext;
 import org.codehaus.doxia.sink.StructureSink;
-import org.codehaus.plexus.util.xml.XMLWriter;
 import org.codehaus.plexus.util.xml.PrettyPrintXMLWriter;
+import org.codehaus.plexus.util.xml.XMLWriter;
 
 import java.io.IOException;
 import java.io.Writer;
@@ -19,12 +17,12 @@ import java.util.List;
 
 // Note this is highly maven-site centric at the moment with the rendering
 // context and the notion of a static site. I want this particular sink to
-// funciton in the context of a wiki/blog so some refactoring will be
+// function in the context of a wiki/blog so some refactoring will be
 // necessary.
 
 /**
  * A doxia sink which produces xhtml
- *
+ * 
  * @author <a href="mailto:jason@maven.org">Jason van Zyl</a>
  * @plexus.component
  */
@@ -89,7 +87,8 @@ public class CodehausXhtmlSink
         {
             writer.write( "<?xml version=\"1.0\">\n" );
 
-            writer.write( "<!DOCTYPE HTML PUBLIC \"-//W3C//DTD XHTML 1.0 Transitional//EN\" \"http://www.w3.org/TR/xhtml1-transitional.dtd\">\n" );
+            writer
+                .write( "<!DOCTYPE HTML PUBLIC \"-//W3C//DTD XHTML 1.0 Transitional//EN\" \"http://www.w3.org/TR/xhtml1-transitional.dtd\">\n" );
         }
         catch ( IOException e )
         {
@@ -330,7 +329,7 @@ public class CodehausXhtmlSink
     {
         w.startElement( "body" );
 
-        //!!
+        // !!
         header();
 
         w.startElement( "div" );
@@ -341,7 +340,7 @@ public class CodehausXhtmlSink
 
         w.addAttribute( "class", "panelRow" );
 
-        //!!
+        // !!
         leftColumn();
 
         w.startElement( "div" );
@@ -354,7 +353,7 @@ public class CodehausXhtmlSink
         // panel two
         w.endElement();
 
-        //!!
+        // !!
         rightColumn();
 
         // panelRow
@@ -363,7 +362,7 @@ public class CodehausXhtmlSink
         // panelBox
         w.endElement();
 
-        //!!
+        // !!
         footer();
 
         // body
@@ -605,7 +604,7 @@ public class CodehausXhtmlSink
 
     public void tableCell( boolean headerRow )
     {
-        w.startElement( "t" + ( headerRow ? 'h' : 'd' ) );
+        w.startElement( "t" + (headerRow ? 'h' : 'd') );
     }
 
     public void tableCell_()

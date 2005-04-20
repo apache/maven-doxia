@@ -5,9 +5,6 @@ import org.codehaus.doxia.module.xhtml.decoration.model.MavenDecorationModel;
 import org.codehaus.doxia.module.xhtml.decoration.render.RenderingContext;
 import org.codehaus.doxia.module.xhtml.SinkDescriptorReader;
 import org.codehaus.doxia.module.xhtml.XhtmlSink;
-import org.codehaus.doxia.module.xhtml.SinkDescriptorReader;
-import org.codehaus.doxia.module.xhtml.XhtmlSink;
-import org.codehaus.doxia.module.xhtml.decoration.render.RenderingContext;
 import org.codehaus.doxia.sink.Sink;
 
 import java.io.File;
@@ -27,9 +24,8 @@ public class XhtmlSinkTest
     }
 
     // START SNIPPET: foo
-    
-    protected Sink createSink()
-        throws Exception
+
+    protected Sink createSink() throws Exception
     {
         String xdoc = "test.apt";
 
@@ -37,9 +33,8 @@ public class XhtmlSinkTest
 
         MavenDecorationModel navigation = b.createNavigation( "site.xml" );
 
-        RenderingContext renderingContext = new RenderingContext( basedir,
-                                                                  new File( basedir, xdoc ).getPath(),
-                                                                  navigation );
+        RenderingContext renderingContext = new RenderingContext( basedir, new File( basedir, xdoc ).getPath(),
+            navigation );
 
         String basedir = System.getProperty( "basedir" );
 
@@ -53,6 +48,6 @@ public class XhtmlSinkTest
 
         return sink;
     }
-    
+
     // END SNIPPET: foo
 }

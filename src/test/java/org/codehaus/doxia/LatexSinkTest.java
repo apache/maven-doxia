@@ -3,16 +3,8 @@
  */
 package org.codehaus.doxia;
 
-import junit.framework.TestCase;
-import org.codehaus.doxia.module.apt.AptParser;
-import org.codehaus.doxia.module.apt.AptReaderSource;
 import org.codehaus.doxia.module.latex.LatexSink;
 import org.codehaus.doxia.sink.Sink;
-
-import java.io.File;
-import java.io.FileReader;
-import java.io.FileWriter;
-import java.io.Writer;
 
 /**
  * @author <a href="mailto:jason@maven.org">Jason van Zyl</a>
@@ -26,9 +18,8 @@ public class LatexSinkTest
         return "tex";
     }
 
-    protected Sink createSink()
-        throws Exception
+    protected Sink createSink() throws Exception
     {
-        return  new LatexSink( getTestWriter() );
-    }    
+        return new LatexSink( getTestWriter() );
+    }
 }

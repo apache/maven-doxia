@@ -3,9 +3,6 @@ package org.codehaus.doxia.module.xhtml.decoration.render;
 import org.codehaus.doxia.module.xhtml.decoration.model.Item;
 import org.codehaus.doxia.module.xhtml.decoration.model.Menu;
 import org.codehaus.doxia.module.xhtml.decoration.model.PathTool;
-import org.codehaus.doxia.module.xhtml.decoration.model.Item;
-import org.codehaus.doxia.module.xhtml.decoration.model.Menu;
-import org.codehaus.doxia.module.xhtml.decoration.model.PathTool;
 import org.codehaus.doxia.module.xhtml.decoration.render.DecorationRenderer;
 import org.codehaus.plexus.util.xml.XMLWriter;
 
@@ -51,9 +48,11 @@ public class NavigationRenderer
 
         String collapse;
 
-        //boolean expandedNavigation = href.equals( renderingContext.outputName );
+        // boolean expandedNavigation = href.equals( renderingContext.outputName
+        // );
 
-        String currentGroup = (String) renderingContext.getMavenDecorationModel().getItemGroups().get( renderingContext.getOutputName() );
+        String currentGroup = (String) renderingContext.getMavenDecorationModel().getItemGroups().get(
+            renderingContext.getOutputName() );
 
         if ( item.isFoldable() )
         {
@@ -104,7 +103,6 @@ public class NavigationRenderer
         }
 
         int count = item.getItems().size();
-
 
         for ( int i = 0; i < count; i++ )
         {

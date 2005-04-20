@@ -3,17 +3,10 @@
  */
 package org.codehaus.doxia;
 
-import junit.framework.TestCase;
-import org.codehaus.doxia.module.apt.AptParser;
-import org.codehaus.doxia.module.apt.AptReaderSource;
-import org.codehaus.doxia.module.latex.LatexSink;
 import org.codehaus.doxia.module.rtf.RtfSink;
 import org.codehaus.doxia.sink.Sink;
 
 import java.io.File;
-import java.io.FileReader;
-import java.io.FileWriter;
-import java.io.Writer;
 import java.io.FileOutputStream;
 
 /**
@@ -28,8 +21,7 @@ public class RtfSinkTest
         return "tex";
     }
 
-    protected Sink createSink()
-        throws Exception
+    protected Sink createSink() throws Exception
     {
         return new RtfSink( new FileOutputStream( new File( basedir, "target/output/test.rtf" ) ) );
     }
