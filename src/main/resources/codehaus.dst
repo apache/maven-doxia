@@ -238,6 +238,18 @@
 *sectionTitle3_() {
 }
 
+*sectionTitle4() {
+}
+
+*sectionTitle4_() {
+}
+
+*sectionTitle5() {
+}
+
+*sectionTitle5_() {
+}
+
 *paragraph() {
 <p>
 }

@@ -83,28 +83,28 @@
 
 *section3()
 {
-<h3>
+<div class="subsection">
 }
 
 *section3_()
 {
-</h3>
+</div>
 }
 
 *section4() {
-<h4>
+<div class="subsection">
 }
 
 *section4_() {
-</h4>
+</div>
 }
 
 *section5() {
-<h5>
+<div class="subsection">
 }
 
 *section5_() {
-</h5>
+</div>
 }
 
 *list() {
@@ -227,6 +227,30 @@
 
 *sectionTitle2_() {
 </h3>
+}
+
+*sectionTitle3() {
+<h4>
+}
+
+*sectionTitle3_() {
+</h4>
+}
+
+*sectionTitle4() {
+<h5>
+}
+
+*sectionTitle4_() {
+</h5>
+}
+
+*sectionTitle5() {
+<h6>
+}
+
+*sectionTitle5_() {
+</h6>
 }
 
 *paragraph() {

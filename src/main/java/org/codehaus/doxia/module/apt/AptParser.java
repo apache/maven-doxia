@@ -1309,6 +1309,22 @@ public class AptParser
             {
             }
 
+            public void sectionTitle4()
+            {
+            }
+
+            public void sectionTitle4_()
+            {
+            }
+
+            public void sectionTitle5()
+            {
+            }
+
+            public void sectionTitle5_()
+            {
+            }
+
             public void paragraph()
             {
             }
@@ -1755,6 +1771,16 @@ public class AptParser
         {
             super( SECTION4, indent, firstLine );
         }
+
+        public void Title()
+        {
+            AptParser.this.sink.sectionTitle4();
+        }
+
+        public void Title_()
+        {
+            AptParser.this.sink.sectionTitle4_();
+        }
     }
 
     private class Section5 extends Section
@@ -1762,6 +1788,16 @@ public class AptParser
         public Section5( int indent, String firstLine ) throws AptParseException
         {
             super( SECTION5, indent, firstLine );
+        }
+
+        public void Title()
+        {
+            AptParser.this.sink.sectionTitle5();
+        }
+
+        public void Title_()
+        {
+            AptParser.this.sink.sectionTitle5_();
         }
     }
 

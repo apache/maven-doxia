@@ -211,6 +211,16 @@ public class XhtmlSink
         directive( "section3()" );
     }
 
+    public void section4()
+    {
+        directive( "section4()" );
+    }
+
+    public void section5()
+    {
+        directive( "section5()" );
+    }
+
     public void section1_()
     {
         directive( "section1_()" );
@@ -224,6 +234,16 @@ public class XhtmlSink
     public void section3_()
     {
         directive( "section3_()" );
+    }
+
+    public void section4_()
+    {
+        directive( "section4_()" );
+    }
+
+    public void section5_()
+    {
+        directive( "section5_()" );
     }
 
     public void sectionTitle1()
@@ -244,6 +264,36 @@ public class XhtmlSink
     public void sectionTitle2_()
     {
         directive( "sectionTitle2_()" );
+    }
+
+    public void sectionTitle3()
+    {
+        directive( "sectionTitle3()" );
+    }
+
+    public void sectionTitle3_()
+    {
+        directive( "sectionTitle3_()" );
+    }
+
+    public void sectionTitle4()
+    {
+        directive( "sectionTitle4()" );
+    }
+
+    public void sectionTitle4_()
+    {
+        directive( "sectionTitle4_()" );
+    }
+
+    public void sectionTitle5()
+    {
+        directive( "sectionTitle5()" );
+    }
+
+    public void sectionTitle5_()
+    {
+        directive( "sectionTitle5_()" );
     }
 
     // ----------------------------------------------------------------------
@@ -639,6 +689,9 @@ public class XhtmlSink
 
     protected void directive( String key )
     {
+        //write( directives.get( key ) );
+        System.out.println(key);
+        System.out.println(directives.get( key ) );
         write( directives.get( key ) );
     }
 

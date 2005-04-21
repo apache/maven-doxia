@@ -207,6 +207,22 @@ public class SinkAdapter implements Sink
     {
     }
 
+    public void sectionTitle4()
+    {
+    }
+
+    public void sectionTitle4_()
+    {
+    }
+
+    public void sectionTitle5()
+    {
+    }
+
+    public void sectionTitle5_()
+    {
+    }
+
     public void paragraph()
     {
     }
