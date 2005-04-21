@@ -689,9 +689,6 @@ public class XhtmlSink
 
     protected void directive( String key )
     {
-        //write( directives.get( key ) );
-        System.out.println(key);
-        System.out.println(directives.get( key ) );
         write( directives.get( key ) );
     }
 
