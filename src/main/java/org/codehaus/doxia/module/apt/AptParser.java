@@ -1679,8 +1679,18 @@ public class AptParser
 
         public void traverse() throws AptParseException
         {
-            AptParser.this.sink.sectionTitle();
+            Title();
             traverseText( skipLeadingBullets() );
+            Title_();
+        }
+
+        public void Title()
+        {
+            AptParser.this.sink.sectionTitle();
+        }
+
+        public void Title_()
+        {
             AptParser.this.sink.sectionTitle_();
         }
     }
@@ -1691,6 +1701,16 @@ public class AptParser
         {
             super( SECTION1, indent, firstLine );
         }
+
+        public void Title()
+        {
+            AptParser.this.sink.sectionTitle1();
+        }
+
+        public void Title_()
+        {
+            AptParser.this.sink.sectionTitle1_();
+        }
     }
 
     private class Section2 extends Section
@@ -1699,6 +1719,16 @@ public class AptParser
         {
             super( SECTION2, indent, firstLine );
         }
+
+        public void Title()
+        {
+            AptParser.this.sink.sectionTitle2();
+        }
+
+        public void Title_()
+        {
+            AptParser.this.sink.sectionTitle2_();
+        }
     }
 
     private class Section3 extends Section
@@ -1706,6 +1736,16 @@ public class AptParser
         public Section3( int indent, String firstLine ) throws AptParseException
         {
             super( SECTION3, indent, firstLine );
+        }
+
+        public void Title()
+        {
+            AptParser.this.sink.sectionTitle3();
+        }
+
+        public void Title_()
+        {
+            AptParser.this.sink.sectionTitle3_();
         }
     }
 

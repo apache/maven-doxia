@@ -220,6 +220,24 @@
 *sectionTitle_() {
 }
 
+*sectionTitle1() {
+}
+
+*sectionTitle1_() {
+}
+
+*sectionTitle2() {
+}
+
+*sectionTitle2_() {
+}
+
+*sectionTitle3() {
+}
+
+*sectionTitle3_() {
+}
+
 *paragraph() {
 <p>
 }
