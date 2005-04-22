@@ -1,7 +1,7 @@
 package org.codehaus.doxia.module.xhtml.decoration.render;
 
 import org.codehaus.doxia.module.xhtml.decoration.model.DecorationModel;
-import org.codehaus.doxia.module.xhtml.decoration.model.PathTool;
+import org.codehaus.plexus.util.PathTool;
 
 import java.io.File;
 
