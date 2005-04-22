@@ -15,7 +15,7 @@ public class LinksRenderer
 {
     public void render( XMLWriter w, RenderingContext renderingContext )
     {
-        List links = renderingContext.getMavenDecorationModel().getLinks();
+        List links = renderingContext.getDecorationModel().getLinks();
 
         for ( int i = 0; i < links.size(); i++ )
         {

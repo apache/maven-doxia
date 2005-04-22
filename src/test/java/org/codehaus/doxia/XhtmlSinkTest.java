@@ -1,7 +1,7 @@
 package org.codehaus.doxia;
 
-import org.codehaus.doxia.module.xhtml.decoration.model.MavenDecorationModelReader;
-import org.codehaus.doxia.module.xhtml.decoration.model.MavenDecorationModel;
+import org.codehaus.doxia.module.xhtml.decoration.model.DecorationModelReader;
+import org.codehaus.doxia.module.xhtml.decoration.model.DecorationModel;
 import org.codehaus.doxia.module.xhtml.decoration.render.RenderingContext;
 import org.codehaus.doxia.module.xhtml.SinkDescriptorReader;
 import org.codehaus.doxia.module.xhtml.XhtmlSink;
@@ -29,9 +29,9 @@ public class XhtmlSinkTest
     {
         String xdoc = "test.apt";
 
-        MavenDecorationModelReader b = new MavenDecorationModelReader();
+        DecorationModelReader b = new DecorationModelReader();
 
-        MavenDecorationModel navigation = b.createNavigation( "site.xml" );
+        DecorationModel navigation = b.createNavigation( "site.xml" );
 
         RenderingContext renderingContext = new RenderingContext( basedir, new File( basedir, xdoc ).getPath(),
             navigation );

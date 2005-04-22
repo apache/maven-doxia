@@ -13,7 +13,7 @@ import java.util.Map;
  * @author <a href="mailto:jason@maven.org">Jason van Zyl</a>
  * @version $Id: Site.java,v 1.2 2004/09/09 19:54:20 jvanzyl Exp $
  */
-public class MavenDecorationModel
+public class DecorationModel
 {
     private Hyperlink bannerLeft;
 

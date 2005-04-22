@@ -3,8 +3,8 @@
  */
 package org.codehaus.doxia;
 
-import org.codehaus.doxia.module.xhtml.decoration.model.MavenDecorationModel;
-import org.codehaus.doxia.module.xhtml.decoration.model.MavenDecorationModelReader;
+import org.codehaus.doxia.module.xhtml.decoration.model.DecorationModel;
+import org.codehaus.doxia.module.xhtml.decoration.model.DecorationModelReader;
 import org.codehaus.doxia.module.xhtml.decoration.render.RenderingContext;
 import org.codehaus.doxia.module.xhtml.codehaus.CodehausXhtmlSink;
 import org.codehaus.doxia.sink.Sink;
@@ -32,9 +32,9 @@ public class CodehausXhtmlSinkTest
 
         String siteXml = new File( basedir, "src/test/site/site.xml").getPath();
 
-        MavenDecorationModelReader b = new MavenDecorationModelReader();
+        DecorationModelReader b = new DecorationModelReader();
 
-        MavenDecorationModel navigation = b.createNavigation( siteXml );
+        DecorationModel navigation = b.createNavigation( siteXml );
 
         RenderingContext renderingContext = new RenderingContext( basedir,
                                                                   new File( basedir, xdoc ).getPath(),

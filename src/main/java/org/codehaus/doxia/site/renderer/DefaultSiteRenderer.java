@@ -6,8 +6,8 @@ package org.codehaus.doxia.site.renderer;
 import org.codehaus.doxia.Doxia;
 import org.codehaus.doxia.module.xhtml.SinkDescriptorReader;
 import org.codehaus.doxia.module.xhtml.XhtmlSink;
-import org.codehaus.doxia.module.xhtml.decoration.model.MavenDecorationModel;
-import org.codehaus.doxia.module.xhtml.decoration.model.MavenDecorationModelReader;
+import org.codehaus.doxia.module.xhtml.decoration.model.DecorationModel;
+import org.codehaus.doxia.module.xhtml.decoration.model.DecorationModelReader;
 import org.codehaus.doxia.module.xhtml.decoration.render.RenderingContext;
 import org.codehaus.doxia.site.module.SiteModule;
 import org.codehaus.doxia.site.module.manager.SiteModuleManager;
@@ -44,7 +44,7 @@ public class DefaultSiteRenderer
     {
         String flavour = "maven";
 
-        MavenDecorationModelReader mavenDecorationModelReader = new MavenDecorationModelReader();
+        DecorationModelReader decorationModelReader = new DecorationModelReader();
 
         File siteDescriptor = new File( siteDirectory, "site.xml" );
 
@@ -53,7 +53,7 @@ public class DefaultSiteRenderer
             throw new Exception( "The site descriptor is not present!" );
         }
 
-        MavenDecorationModel mavenDecorationModel = mavenDecorationModelReader.createNavigation( siteDescriptor.getPath() );
+        DecorationModel decorationModel = decorationModelReader.createNavigation( siteDescriptor.getPath() );
 
         // ----------------------------------------------------------------------
         // Generate the documentation for each active module for the static
@@ -71,7 +71,7 @@ public class DefaultSiteRenderer
                 continue;
             }
 
-            generateModuleDocumentation( flavour, module, moduleBasedir, mavenDecorationModel, outputDirectory );
+            generateModuleDocumentation( flavour, module, moduleBasedir, decorationModel, outputDirectory );
         }
 
         // ----------------------------------------------------------------------
@@ -91,7 +91,7 @@ public class DefaultSiteRenderer
                 continue;
             }
 
-            generateModuleDocumentation( flavour, module, moduleBasedir, mavenDecorationModel, outputDirectory );
+            generateModuleDocumentation( flavour, module, moduleBasedir, decorationModel, outputDirectory );
         }
 
         // ----------------------------------------------------------------------
@@ -108,7 +108,7 @@ public class DefaultSiteRenderer
     protected void generateModuleDocumentation( String flavour,
                                                 SiteModule module,
                                                 File moduleBasedir,
-                                                MavenDecorationModel mavenDecorationModel,
+                                                DecorationModel decorationModel,
                                                 String outputDirectory )
         throws Exception
     {
@@ -138,7 +138,7 @@ public class DefaultSiteRenderer
             Map directives = sdr.read( r );
 
             RenderingContext renderingContext =
-                new RenderingContext( moduleBasedir.getPath(), doc, mavenDecorationModel );
+                new RenderingContext( moduleBasedir.getPath(), doc, decorationModel );
 
             String relativePathToBasedir = PathTool.getRelativePath( moduleBasedir.getAbsolutePath(), fullPathDoc );
 

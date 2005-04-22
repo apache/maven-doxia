@@ -1,6 +1,6 @@
 package org.codehaus.doxia.module.xhtml.decoration.render;
 
-import org.codehaus.doxia.module.xhtml.decoration.model.MavenDecorationModel;
+import org.codehaus.doxia.module.xhtml.decoration.model.DecorationModel;
 import org.codehaus.doxia.module.xhtml.decoration.model.PathTool;
 
 import java.io.File;
@@ -17,9 +17,9 @@ public class RenderingContext
 
     private String outputName;
 
-    private MavenDecorationModel mavenDecorationModel;
+    private DecorationModel decorationModel;
 
-    public RenderingContext( String basedir, String document, MavenDecorationModel mavenDecorationModel )
+    public RenderingContext( String basedir, String document, DecorationModel decorationModel )
     {
         this.basedir = basedir;
 
@@ -28,7 +28,7 @@ public class RenderingContext
 
         relativePath = PathTool.getRelativePath( basedir, new File( basedir, document ).getPath() );
 
-        this.mavenDecorationModel = mavenDecorationModel;
+        this.decorationModel = decorationModel;
     }
 
     public String getBasedir()
@@ -46,8 +46,8 @@ public class RenderingContext
         return outputName;
     }
 
-    public MavenDecorationModel getMavenDecorationModel()
+    public DecorationModel getDecorationModel()
     {
-        return mavenDecorationModel;
+        return decorationModel;
     }
 }

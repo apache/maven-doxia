@@ -15,11 +15,11 @@ public class NavigationRenderer
 {
     public void render( XMLWriter writer, RenderingContext renderingContext )
     {
-        int menus = renderingContext.getMavenDecorationModel().getMenus().size();
+        int menus = renderingContext.getDecorationModel().getMenus().size();
 
         for ( int i = 0; i < menus; i++ )
         {
-            Menu menu = (Menu) renderingContext.getMavenDecorationModel().getMenus().get( i );
+            Menu menu = (Menu) renderingContext.getDecorationModel().getMenus().get( i );
 
             writer.startElement( "h5" );
 
@@ -51,7 +51,7 @@ public class NavigationRenderer
         // boolean expandedNavigation = href.equals( renderingContext.outputName
         // );
 
-        String currentGroup = (String) renderingContext.getMavenDecorationModel().getItemGroups().get(
+        String currentGroup = (String) renderingContext.getDecorationModel().getItemGroups().get(
             renderingContext.getOutputName() );
 
         if ( item.isFoldable() )

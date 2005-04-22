@@ -6,12 +6,12 @@ import org.codehaus.plexus.util.xml.Xpp3DomBuilder;
 import java.io.File;
 import java.io.FileReader;
 
-public class MavenDecorationModelReader
+public class DecorationModelReader
 {
-    public MavenDecorationModel createNavigation( String siteFile )
+    public DecorationModel createNavigation( String siteFile )
         throws Exception
     {
-        MavenDecorationModel mavenDecorationModel = new MavenDecorationModel();
+        DecorationModel decorationModel = new DecorationModel();
 
         File navigationFile = new File( siteFile );
 
@@ -27,7 +27,7 @@ public class MavenDecorationModelReader
 
             bl.setName( be.getChild( "name" ).getValue() );
 
-            mavenDecorationModel.setBannerLeft( bl );
+            decorationModel.setBannerLeft( bl );
 
             bl = new Hyperlink();
 
@@ -37,7 +37,7 @@ public class MavenDecorationModelReader
 
             bl.setName( be.getChild( "name" ).getValue() );
 
-            mavenDecorationModel.setBannerRight( bl );
+            decorationModel.setBannerRight( bl );
 
             Xpp3Dom body = siteElement.getChild( "body" );
 
@@ -57,10 +57,10 @@ public class MavenDecorationModelReader
                     {
                         Xpp3Dom itemElement = element.getChild( j );
 
-                        menu.addItem( processItem( itemElement, mavenDecorationModel ) );
+                        menu.addItem( processItem( itemElement, decorationModel ) );
                     }
 
-                    mavenDecorationModel.addMenu( menu );
+                    decorationModel.addMenu( menu );
                 }
                 else if ( element.getName().equals( "links" ) )
                 {
@@ -72,20 +72,20 @@ public class MavenDecorationModelReader
 
                         Link link = new Link( item.getAttribute( "name" ), item.getAttribute( "href" ) );
 
-                        mavenDecorationModel.addLink( link );
+                        decorationModel.addLink( link );
                     }
                 }
                 else if ( element.getName().equals( "search" ) )
                 {
-                    mavenDecorationModel.setSearch( true );
+                    decorationModel.setSearch( true );
                 }
             }
         }
 
-        return mavenDecorationModel;
+        return decorationModel;
     }
 
-    private Item processItem( Xpp3Dom itemElement, MavenDecorationModel navigation )
+    private Item processItem( Xpp3Dom itemElement, DecorationModel navigation )
     {
         String name = itemElement.getAttribute( "name" );
 

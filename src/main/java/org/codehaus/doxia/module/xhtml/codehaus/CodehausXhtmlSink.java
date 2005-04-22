@@ -219,7 +219,7 @@ public class CodehausXhtmlSink
 
         w.addAttribute( "class", "bannerElement" );
 
-        bannerLink( w, renderingContext.getMavenDecorationModel().getBannerLeft() );
+        bannerLink( w, renderingContext.getDecorationModel().getBannerLeft() );
 
         w.endElement();
 
@@ -229,7 +229,7 @@ public class CodehausXhtmlSink
 
         w.addAttribute( "class", "bannerElement" );
 
-        bannerLink( w, renderingContext.getMavenDecorationModel().getBannerRight() );
+        bannerLink( w, renderingContext.getDecorationModel().getBannerRight() );
 
         w.endElement();
 
@@ -259,7 +259,7 @@ public class CodehausXhtmlSink
         //
         // ----------------------------------------------------------------------
 
-        List links = renderingContext.getMavenDecorationModel().getLinks();
+        List links = renderingContext.getDecorationModel().getLinks();
 
         for ( int i = 0; i < links.size(); i++ )
         {

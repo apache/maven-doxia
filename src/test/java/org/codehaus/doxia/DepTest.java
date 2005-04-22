@@ -6,8 +6,8 @@ package org.codehaus.doxia;
 import org.apache.maven.model.Model;
 import org.apache.maven.model.io.xpp3.MavenXpp3Reader;
 import org.codehaus.doxia.module.xhtml.codehaus.CodehausXhtmlSink;
-import org.codehaus.doxia.module.xhtml.decoration.model.MavenDecorationModel;
-import org.codehaus.doxia.module.xhtml.decoration.model.MavenDecorationModelReader;
+import org.codehaus.doxia.module.xhtml.decoration.model.DecorationModel;
+import org.codehaus.doxia.module.xhtml.decoration.model.DecorationModelReader;
 import org.codehaus.doxia.module.xhtml.decoration.render.RenderingContext;
 import org.codehaus.doxia.plugin.maven.DependenciesRenderer;
 import org.codehaus.doxia.sink.Sink;
@@ -40,9 +40,9 @@ public class DepTest
 
         String xdoc = "repository-upload.xml";
 
-        MavenDecorationModelReader b = new MavenDecorationModelReader();
+        DecorationModelReader b = new DecorationModelReader();
 
-        MavenDecorationModel navigation = b.createNavigation( siteXml );
+        DecorationModel navigation = b.createNavigation( siteXml );
 
         RenderingContext renderingContext = new RenderingContext( basedir, new File( basedir, xdoc ).getPath(),
             navigation );
