@@ -3,9 +3,9 @@
  */
 package org.codehaus.doxia;
 
-import junit.framework.TestCase;
 import org.codehaus.doxia.module.apt.AptParser;
 import org.codehaus.doxia.sink.Sink;
+import org.codehaus.plexus.PlexusTestCase;
 
 import java.io.File;
 import java.io.FileWriter;
@@ -19,10 +19,8 @@ import java.io.Writer;
  * @version $Id: AbstractSinkTestCase.java,v 1.4 2004/09/22 00:01:43 jvanzyl Exp $
  */
 public abstract class AbstractSinkTestCase
-    extends TestCase
+    extends PlexusTestCase
 {
-    protected String basedir = System.getProperty( "basedir" );
-
     protected Writer testWriter;
 
     // ----------------------------------------------------------------------
@@ -76,5 +74,14 @@ public abstract class AbstractSinkTestCase
         InputStreamReader reader = new InputStreamReader( is );
 
         return reader;
+    }
+
+    // ----------------------------------------------------------------------
+    // Utility methods
+    // ----------------------------------------------------------------------
+
+    public File getBasedirFile()
+    {
+        return new File( getBasedir() );
     }
 }

@@ -50,17 +50,13 @@ public class XhtmlSink
 
     private RenderingContext renderingContext;
 
-    private String relativePathToBasedir;
-
-    public XhtmlSink( Writer writer, RenderingContext renderingContext, Map directives, String relativePathToBasedir )
+    public XhtmlSink( Writer writer, RenderingContext renderingContext, Map directives )
     {
         this.writer = new PrintWriter( writer );
 
         this.directives = new StringsMap( directives );
 
         this.renderingContext = renderingContext;
-
-        this.relativePathToBasedir = relativePathToBasedir;
     }
 
     protected void resetState()
@@ -670,6 +666,8 @@ public class XhtmlSink
 
     protected void write( String text )
     {
+        String relativePathToBasedir = renderingContext.getRelativePath();
+
         if ( relativePathToBasedir != null )
         {
             text = StringUtils.replace( text, "$relativePath", relativePathToBasedir );

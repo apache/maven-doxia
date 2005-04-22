@@ -33,18 +33,17 @@ public class XhtmlSinkTest
 
         DecorationModel navigation = b.createNavigation( "site.xml" );
 
-        RenderingContext renderingContext = new RenderingContext( basedir, new File( basedir, xdoc ).getPath(),
-            navigation );
+        RenderingContext renderingContext = new RenderingContext( getBasedirFile(),
+                                                                  new File( getBasedirFile(), xdoc ).getPath(),
+                                                                  navigation );
 
-        String basedir = System.getProperty( "basedir" );
-
-        FileReader reader = new FileReader( new File( basedir, "src/main/resources/codehaus.dst" ) );
+        FileReader reader = new FileReader( new File( getBasedirFile(), "src/main/resources/codehaus.dst" ) );
 
         SinkDescriptorReader sdr = new SinkDescriptorReader();
 
         Map directives = sdr.read( reader );
 
-        XhtmlSink sink = new XhtmlSink( getTestWriter(), renderingContext, directives, null );
+        XhtmlSink sink = new XhtmlSink( getTestWriter(), renderingContext, directives );
 
         return sink;
     }

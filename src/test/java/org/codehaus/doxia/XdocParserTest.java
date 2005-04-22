@@ -39,8 +39,9 @@ public class XdocParserTest
 
         DecorationModel navigation = b.createNavigation( siteXml );
 
-        RenderingContext renderingContext = new RenderingContext( basedir, new File( basedir, xdoc ).getPath(),
-            navigation );
+        RenderingContext renderingContext = new RenderingContext( new File( basedir ),
+                                                                  new File( basedir, xdoc ).getPath(),
+                                                                  navigation );
 
         Sink sink = new CodehausXhtmlSink( writer, renderingContext );
 

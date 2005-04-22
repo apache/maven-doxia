@@ -40,7 +40,7 @@ public class FmlParserTest
 
         DecorationModel navigation = b.createNavigation( siteXml );
 
-        RenderingContext renderingContext = new RenderingContext( basedir, 
+        RenderingContext renderingContext = new RenderingContext( new File( basedir ), 
                                                                   new File( basedir, xdoc ).getPath(),
                                                                   navigation );
 

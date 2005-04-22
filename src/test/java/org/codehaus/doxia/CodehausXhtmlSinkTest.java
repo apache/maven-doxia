@@ -36,8 +36,8 @@ public class CodehausXhtmlSinkTest
 
         DecorationModel navigation = b.createNavigation( siteXml );
 
-        RenderingContext renderingContext = new RenderingContext( basedir,
-                                                                  new File( basedir, xdoc ).getPath(),
+        RenderingContext renderingContext = new RenderingContext( getBasedirFile(),
+                                                                  new File( getBasedirFile(), xdoc ).getPath(),
                                                                   navigation );
 
         CodehausXhtmlSink sink = new CodehausXhtmlSink( getTestWriter(), renderingContext );

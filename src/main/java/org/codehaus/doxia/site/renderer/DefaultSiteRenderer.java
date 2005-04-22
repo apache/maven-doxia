@@ -138,11 +138,9 @@ public class DefaultSiteRenderer
             Map directives = sdr.read( r );
 
             RenderingContext renderingContext =
-                new RenderingContext( moduleBasedir.getPath(), doc, decorationModel );
+                new RenderingContext( moduleBasedir, doc, decorationModel );
 
-            String relativePathToBasedir = PathTool.getRelativePath( moduleBasedir.getAbsolutePath(), fullPathDoc );
-
-            XhtmlSink sink = new XhtmlSink( new FileWriter( outputFile ), renderingContext, directives, relativePathToBasedir );
+            XhtmlSink sink = new XhtmlSink( new FileWriter( outputFile ), renderingContext, directives );
 
             try
             {

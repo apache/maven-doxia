@@ -11,7 +11,7 @@ import java.io.File;
  */
 public class RenderingContext
 {
-    private String basedir;
+    private File basedir;
 
     private String relativePath;
 
@@ -19,19 +19,19 @@ public class RenderingContext
 
     private DecorationModel decorationModel;
 
-    public RenderingContext( String basedir, String document, DecorationModel decorationModel )
+    public RenderingContext( File basedir, String document, DecorationModel decorationModel )
     {
         this.basedir = basedir;
 
         // For site comparisons we'll prepend a "/"
         this.outputName = "/" + document.substring( 0, document.lastIndexOf( "." ) + 1 ) + "html";
 
-        relativePath = PathTool.getRelativePath( basedir, new File( basedir, document ).getPath() );
+        relativePath = PathTool.getRelativePath( basedir.getPath(), new File( basedir, document ).getPath() );
 
         this.decorationModel = decorationModel;
     }
 
-    public String getBasedir()
+    public File getBasedir()
     {
         return basedir;
     }
