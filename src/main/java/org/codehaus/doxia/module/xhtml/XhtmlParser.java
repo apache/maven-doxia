@@ -3,6 +3,8 @@
  */
 package org.codehaus.doxia.module.xhtml;
 
+import org.codehaus.doxia.parser.Parser;
+import org.codehaus.doxia.parser.ParseException;
 import org.codehaus.doxia.sink.Sink;
 import org.codehaus.plexus.util.xml.pull.MXParser;
 import org.codehaus.plexus.util.xml.pull.XmlPullParser;
@@ -17,9 +19,10 @@ import java.io.Reader;
  * @version $Id: XhtmlParser.java,v 1.3 2004/11/02 03:40:48 jvanzyl Exp $
  */
 public class XhtmlParser
+    implements Parser
 {
     public void parse( Reader reader, Sink sink )
-        throws Exception
+        throws ParseException
     {
         try
         {
@@ -31,7 +34,7 @@ public class XhtmlParser
         }
         catch ( Exception ex )
         {
-            throw new Exception( "Error parsing the model.", ex );
+            throw new ParseException( "Error parsing the model.", ex );
         }
     }
 

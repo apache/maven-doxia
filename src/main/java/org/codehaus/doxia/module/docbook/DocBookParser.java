@@ -3,6 +3,8 @@
  */
 package org.codehaus.doxia.module.docbook;
 
+import org.codehaus.doxia.parser.Parser;
+import org.codehaus.doxia.parser.ParseException;
 import org.codehaus.doxia.sink.Sink;
 import org.codehaus.plexus.util.xml.pull.XmlPullParser;
 import org.codehaus.plexus.util.xml.pull.MXParser;
@@ -15,11 +17,13 @@ import java.io.Reader;
  * 
  * @author <a href="mailto:jason@maven.org">Jason van Zyl</a>
  * @version $Id: DocBookParser.java,v 1.4 2004/11/02 03:40:48 jvanzyl Exp $
+ * @plexus.component
  */
 public class DocBookParser
+    implements Parser
 {
     public void parse( Reader reader, Sink sink )
-        throws Exception
+        throws ParseException
     {
         try
         {
@@ -31,7 +35,7 @@ public class DocBookParser
         }
         catch ( Exception ex )
         {
-            throw new Exception( "Error parsing the model.", ex );
+            throw new ParseException( "Error parsing the model.", ex );
         }
     }
 

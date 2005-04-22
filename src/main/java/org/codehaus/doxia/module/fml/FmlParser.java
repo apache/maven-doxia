@@ -3,7 +3,7 @@ package org.codehaus.doxia.module.fml;
 import org.codehaus.doxia.module.fml.model.Faq;
 import org.codehaus.doxia.module.fml.model.Faqs;
 import org.codehaus.doxia.module.fml.model.Part;
-import org.codehaus.doxia.parser.AbstractParser;
+import org.codehaus.doxia.parser.Parser;
 import org.codehaus.doxia.parser.ParseException;
 import org.codehaus.doxia.sink.Sink;
 import org.codehaus.plexus.util.xml.pull.MXParser;
@@ -20,9 +20,10 @@ import java.util.Iterator;
  * @plexus.component
  */
 public class FmlParser
-    extends AbstractParser
+    implements Parser
 {
-    public void parse( Reader reader, Sink sink ) throws ParseException
+    public void parse( Reader reader, Sink sink )
+        throws ParseException
     {
         Faqs faqs;
         try
