@@ -15,10 +15,12 @@ import org.codehaus.plexus.util.FileUtils;
 import org.codehaus.plexus.util.PathTool;
 
 import java.io.File;
+import java.io.FileInputStream;
 import java.io.FileOutputStream;
 import java.io.FileReader;
 import java.io.FileWriter;
 import java.io.InputStream;
+import java.io.IOException;
 import java.io.InputStreamReader;
 import java.io.LineNumberReader;
 import java.io.OutputStream;
@@ -42,11 +44,24 @@ public class DefaultSiteRenderer
     public void render( String siteDirectory, String generatedSiteDirectory, String outputDirectory )
         throws Exception
     {
-        String flavour = "maven";
+        render( siteDirectory, generatedSiteDirectory, outputDirectory, null, "site.xml" );
+    }
+
+    public void render( String siteDirectory, String generatedSiteDirectory, String outputDirectory, String flavour )
+        throws Exception
+    {
+        render( siteDirectory, generatedSiteDirectory, outputDirectory, flavour, "site.xml" );
+    }
+
+    public void render( String siteDirectory, String generatedSiteDirectory, String outputDirectory,
+                        String flavour, String siteDescriptorName )
+        throws Exception
+    {
+        String siteFlavour = flavour;
 
         DecorationModelReader decorationModelReader = new DecorationModelReader();
 
-        File siteDescriptor = new File( siteDirectory, "site.xml" );
+        File siteDescriptor = new File( siteDirectory, siteDescriptorName );
 
         if ( !siteDescriptor.exists() )
         {
@@ -54,6 +69,21 @@ public class DefaultSiteRenderer
         }
 
         DecorationModel decorationModel = decorationModelReader.createNavigation( siteDescriptor.getPath() );
+
+        // ----------------------------------------------------------------------
+        // Define the flavour to use
+        // ----------------------------------------------------------------------
+        if ( siteFlavour == null )
+        {
+            if ( decorationModel.getFlavour() == null )
+            {
+                siteFlavour = "maven";
+            }
+            else
+            {
+                siteFlavour = decorationModel.getFlavour();
+            }
+        }
 
         // ----------------------------------------------------------------------
         // Generate the documentation for each active module for the static
@@ -71,7 +101,7 @@ public class DefaultSiteRenderer
                 continue;
             }
 
-            generateModuleDocumentation( flavour, module, moduleBasedir, decorationModel, outputDirectory );
+            generateModuleDocumentation( siteFlavour, siteDirectory, module, moduleBasedir, decorationModel, outputDirectory );
         }
 
         // ----------------------------------------------------------------------
@@ -91,21 +121,22 @@ public class DefaultSiteRenderer
                 continue;
             }
 
-            generateModuleDocumentation( flavour, module, moduleBasedir, decorationModel, outputDirectory );
+            generateModuleDocumentation( siteFlavour, siteDirectory, module, moduleBasedir, decorationModel, outputDirectory );
         }
 
         // ----------------------------------------------------------------------
         // Copy over the necessary resources
         // ----------------------------------------------------------------------
 
-        // set default flavour in site.xml but allow it to be overridden
+        copyResources( outputDirectory, siteFlavour, siteDirectory );
 
-        copyResources( outputDirectory, flavour );
+        FileUtils.copyDirectory( new File( siteDirectory, "css" ), new File( outputDirectory, "css" ) );
 
         FileUtils.copyDirectory( new File( siteDirectory, "images" ), new File( outputDirectory, "images" ) );
     }
 
     protected void generateModuleDocumentation( String flavour,
+                                                String siteDirectory,
                                                 SiteModule module,
                                                 File moduleBasedir,
                                                 DecorationModel decorationModel,
@@ -130,6 +161,18 @@ public class DefaultSiteRenderer
             }
 
             InputStream is = getClass().getResourceAsStream( "/" + flavour + ".dst" );
+
+            if ( is == null )
+            {
+                File flavourTemplate = new File( getFlavourDirectory( siteDirectory ), flavour + ".dst" );
+
+                if ( ! flavourTemplate.exists() )
+                {
+                    throw new IOException( "The flavour " + flavourTemplate.getAbsolutePath() + " doesn't exists.");
+                }
+
+                is = new FileInputStream( flavourTemplate );
+            }
 
             Reader r = new InputStreamReader( is );
 
@@ -157,10 +200,30 @@ public class DefaultSiteRenderer
         }
     }
 
-    private void copyResources( String outputDirectory, String flavour )
+    private void copyResources( String outputDirectory, String flavour, String siteDirectory )
         throws Exception
     {
+        boolean isProjectResources = false;
+
         InputStream resourceList = getStream( flavour + "/resources.txt" );
+
+        if ( resourceList == null )
+        {
+            File flavourResources = new File( getFlavourResourcesDirectory( siteDirectory, flavour ), "resources.txt" );
+
+            if ( ! flavourResources.exists() )
+            {
+                throw new IOException( "The flavour resources file" + flavourResources.getAbsolutePath() + " doesn't exists.");
+            }
+
+            resourceList = new FileInputStream( flavourResources );
+
+            isProjectResources = true;
+        }
+        else
+        {
+            System.out.println(flavour + " : argsss");
+        }
 
         LineNumberReader reader = new LineNumberReader( new InputStreamReader( resourceList ) );
 
@@ -168,11 +231,22 @@ public class DefaultSiteRenderer
 
         while ( ( line = reader.readLine() ) != null )
         {
-            InputStream is = getStream( flavour + "/" + line );
+            InputStream is = null;
+
+            if ( isProjectResources )
+            {
+                File resourceLine = new File( getFlavourResourcesDirectory( siteDirectory, flavour ), line );
+
+                is = new FileInputStream( resourceLine );
+            }
+            else
+            {
+                is = getStream( flavour + "/" + line );
+            }
 
             if ( is == null )
             {
-                continue;
+                throw new IOException( "The resource " + line + " doesn't exists in " + flavour + " flavour.");
             }
 
             File outputFile = new File( outputDirectory, line );
@@ -237,5 +311,15 @@ public class DefaultSiteRenderer
         throws Exception
     {
         return DefaultSiteRenderer.class.getClassLoader().getResourceAsStream( name );
+    }
+    
+    private String getFlavourDirectory( String siteDirectory )
+    {
+        return siteDirectory + "/flavour";
+    }
+    
+    private String getFlavourResourcesDirectory( String siteDirectory, String flavour )
+    {
+        return getFlavourDirectory( siteDirectory ) + "/" + flavour;
     }
 }

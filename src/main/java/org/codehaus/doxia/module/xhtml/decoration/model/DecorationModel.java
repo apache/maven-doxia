@@ -15,6 +15,8 @@ import java.util.Map;
  */
 public class DecorationModel
 {
+    private String flavour;
+
     private Hyperlink bannerLeft;
 
     private Hyperlink bannerRight;
@@ -105,5 +107,15 @@ public class DecorationModel
     public void setBannerRight( Hyperlink bannerRight )
     {
         this.bannerRight = bannerRight;
+    }
+
+    public String getFlavour()
+    {
+        return flavour;
+    }
+
+    public void setFlavour( String flavour )
+    {
+        this.flavour = flavour;
     }
 }

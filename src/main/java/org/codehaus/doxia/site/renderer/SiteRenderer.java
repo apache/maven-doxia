@@ -10,4 +10,11 @@ public interface SiteRenderer
 
     void render( String siteDirectory, String generatedSiteDirectory, String outputDirectory )
         throws Exception;
+
+    void render( String siteDirectory, String generatedSiteDirectory, String outputDirectory, String flavour )
+        throws Exception;
+
+    void render( String siteDirectory, String generatedSiteDirectory, String outputDirectory, String flavour,
+                 String siteDescriptorName )
+        throws Exception;
 }

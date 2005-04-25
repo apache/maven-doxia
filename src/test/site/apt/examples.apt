@@ -19,6 +19,6 @@ Maven: the cute and fluffy build tool that's good for the whole family
 
  {{{http://foo.bar.com}bar}}
 
-~~%{snippet|id=foo|url=http://cvs.doxia.codehaus.org/*checkout*/doxia/doxia-core/src/test/java/org/codehaus/doxia/XhtmlSinkTest.java}
+~~%{snippet|id=foo|url=http://svn.doxia.codehaus.org/doxia-core/trunk/src/test/java/org/codehaus/doxia/XhtmlSinkTest.java}
 
 %{echo|a=one|b=two}

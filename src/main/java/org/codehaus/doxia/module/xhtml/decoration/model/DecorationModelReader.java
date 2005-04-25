@@ -19,6 +19,13 @@ public class DecorationModelReader
         {
             Xpp3Dom siteElement = Xpp3DomBuilder.build( new FileReader( navigationFile ) );
 
+            Xpp3Dom flavourChild = siteElement.getChild( "flavour" );
+
+            if ( flavourChild != null )
+            {
+                decorationModel.setFlavour( flavourChild.getChild( "name" ).getValue() );
+            }
+
             Hyperlink bl = new Hyperlink();
 
             Xpp3Dom be = siteElement.getChild( "bannerLeft" );
