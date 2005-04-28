@@ -220,10 +220,6 @@ public class DefaultSiteRenderer
 
             isProjectResources = true;
         }
-        else
-        {
-            System.out.println(flavour + " : argsss");
-        }
 
         LineNumberReader reader = new LineNumberReader( new InputStreamReader( resourceList ) );
 
