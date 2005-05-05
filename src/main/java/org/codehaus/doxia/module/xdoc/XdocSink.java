@@ -321,10 +321,12 @@ public class XdocSink
 
     public void table()
     {
+        markup( "<table align=\"center\">\n" );
     }
 
     public void table_()
     {
+        markup( "</table>" );
     }
 
     public void tableRows( int[] justification, boolean grid )
@@ -388,7 +390,7 @@ public class XdocSink
         }
         else
         {
-            markup( "<t" + ( headerRow ? 'h' : 'd' ) + "\">" );
+            markup( "<t" + ( headerRow ? 'h' : 'd' ) + ">" );
         }
     }
 
