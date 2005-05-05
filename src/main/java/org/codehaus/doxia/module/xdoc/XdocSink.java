@@ -363,21 +363,33 @@ public class XdocSink
 
     public void tableCell( boolean headerRow )
     {
-        String justif;
-        switch ( cellJustif[cellCount] )
+        String justif = null;
+
+        if ( cellJustif != null )
         {
-            case AptParser.JUSTIFY_LEFT:
-                justif = "left";
-                break;
-            case AptParser.JUSTIFY_RIGHT:
-                justif = "right";
-                break;
-            case AptParser.JUSTIFY_CENTER:
-            default:
-                justif = "center";
-                break;
+            switch ( cellJustif[cellCount] )
+            {
+                case AptParser.JUSTIFY_LEFT:
+                    justif = "left";
+                    break;
+                case AptParser.JUSTIFY_RIGHT:
+                    justif = "right";
+                    break;
+                case AptParser.JUSTIFY_CENTER:
+                default:
+                    justif = "center";
+                    break;
+            }
         }
-        markup( "<t" + ( headerRow ? 'h' : 'd' ) + " align=\"" + justif + "\">" );
+
+        if ( justif != null )
+        {
+            markup( "<t" + ( headerRow ? 'h' : 'd' ) + " align=\"" + justif + "\">" );
+        }
+        else
+        {
+            markup( "<t" + ( headerRow ? 'h' : 'd' ) + "\">" );
+        }
     }
 
     public void tableCell_()
