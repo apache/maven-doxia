@@ -5,91 +5,105 @@ import org.codehaus.plexus.util.xml.Xpp3DomBuilder;
 
 import java.io.File;
 import java.io.FileReader;
+import java.io.Reader;
 
 public class DecorationModelReader
 {
     public DecorationModel createNavigation( String siteFile )
         throws Exception
     {
-        DecorationModel decorationModel = new DecorationModel();
-
         File navigationFile = new File( siteFile );
 
         if ( navigationFile.exists() )
         {
-            Xpp3Dom siteElement = Xpp3DomBuilder.build( new FileReader( navigationFile ) );
+            return createNavigation( new FileReader( navigationFile ) );
+        }
 
-            Xpp3Dom flavourChild = siteElement.getChild( "flavour" );
+        return getDecorationModel();
+    }
 
-            if ( flavourChild != null )
+    public DecorationModel createNavigation( Reader reader )
+        throws Exception
+    {
+        DecorationModel decorationModel = getDecorationModel();
+
+        Xpp3Dom siteElement = Xpp3DomBuilder.build( reader );
+
+        Xpp3Dom flavourChild = siteElement.getChild( "flavour" );
+
+        if ( flavourChild != null )
+        {
+            decorationModel.setFlavour( flavourChild.getChild( "name" ).getValue() );
+        }
+
+        Hyperlink bl = new Hyperlink();
+
+        Xpp3Dom be = siteElement.getChild( "bannerLeft" );
+
+        bl.setHref( be.getChild( "href" ).getValue() );
+
+        bl.setName( be.getChild( "name" ).getValue() );
+
+        decorationModel.setBannerLeft( bl );
+
+        bl = new Hyperlink();
+
+        be = siteElement.getChild( "bannerRight" );
+
+        bl.setHref( be.getChild( "href" ).getValue() );
+
+        bl.setName( be.getChild( "name" ).getValue() );
+
+        decorationModel.setBannerRight( bl );
+
+        Xpp3Dom body = siteElement.getChild( "body" );
+
+        int children = body.getChildCount();
+
+        for ( int i = 0; i < children; i++ )
+        {
+            Xpp3Dom element = body.getChild( i );
+
+            if ( element.getName().equals( "menu" ) )
             {
-                decorationModel.setFlavour( flavourChild.getChild( "name" ).getValue() );
+                Menu menu = new Menu( element.getAttribute( "name" ) );
+
+                int items = element.getChildCount();
+
+                for ( int j = 0; j < items; j++ )
+                {
+                    Xpp3Dom itemElement = element.getChild( j );
+
+                    menu.addItem( processItem( itemElement, decorationModel ) );
+                }
+
+                decorationModel.addMenu( menu );
             }
-
-            Hyperlink bl = new Hyperlink();
-
-            Xpp3Dom be = siteElement.getChild( "bannerLeft" );
-
-            bl.setHref( be.getChild( "href" ).getValue() );
-
-            bl.setName( be.getChild( "name" ).getValue() );
-
-            decorationModel.setBannerLeft( bl );
-
-            bl = new Hyperlink();
-
-            be = siteElement.getChild( "bannerRight" );
-
-            bl.setHref( be.getChild( "href" ).getValue() );
-
-            bl.setName( be.getChild( "name" ).getValue() );
-
-            decorationModel.setBannerRight( bl );
-
-            Xpp3Dom body = siteElement.getChild( "body" );
-
-            int children = body.getChildCount();
-
-            for ( int i = 0; i < children; i++ )
+            else if ( element.getName().equals( "links" ) )
             {
-                Xpp3Dom element = body.getChild( i );
+                int count = element.getChildCount();
 
-                if ( element.getName().equals( "menu" ) )
+                for ( int j = 0; j < count; j++ )
                 {
-                    Menu menu = new Menu( element.getAttribute( "name" ) );
+                    Xpp3Dom item = element.getChild( j );
 
-                    int items = element.getChildCount();
+                    Link link = new Link( item.getAttribute( "name" ), item.getAttribute( "href" ) );
 
-                    for ( int j = 0; j < items; j++ )
-                    {
-                        Xpp3Dom itemElement = element.getChild( j );
-
-                        menu.addItem( processItem( itemElement, decorationModel ) );
-                    }
-
-                    decorationModel.addMenu( menu );
+                    decorationModel.addLink( link );
                 }
-                else if ( element.getName().equals( "links" ) )
-                {
-                    int count = element.getChildCount();
-
-                    for ( int j = 0; j < count; j++ )
-                    {
-                        Xpp3Dom item = element.getChild( j );
-
-                        Link link = new Link( item.getAttribute( "name" ), item.getAttribute( "href" ) );
-
-                        decorationModel.addLink( link );
-                    }
-                }
-                else if ( element.getName().equals( "search" ) )
-                {
-                    decorationModel.setSearch( true );
-                }
+            }
+            else if ( element.getName().equals( "search" ) )
+            {
+                decorationModel.setSearch( true );
             }
         }
 
         return decorationModel;
+    }
+
+    private DecorationModel getDecorationModel()
+    {
+        return new DecorationModel();
     }
 
     private Item processItem( Xpp3Dom itemElement, DecorationModel navigation )
