@@ -1,5 +1,8 @@
 package org.codehaus.doxia.site.renderer;
 
+import org.codehaus.doxia.module.xhtml.XhtmlSink;
+
+import java.io.File;
 import java.io.InputStream;
 
 /**
@@ -22,5 +25,13 @@ public interface SiteRenderer
 
     void render( String siteDirectory, String generatedSiteDirectory, String outputDirectory,
                  String flavour, InputStream siteDescriptor )
+        throws Exception;
+
+    XhtmlSink createSink( File moduleBasedir, String siteDirectory, String doc, String outputDirectory,
+                          String siteDescriptorName, String flavour )
+        throws Exception;
+
+    XhtmlSink createSink( File moduleBasedir, String siteDirectory, String doc, String outputDirectory,
+                          InputStream siteDescriptor, String flavour )
         throws Exception;
 }
