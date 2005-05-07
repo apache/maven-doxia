@@ -77,6 +77,10 @@ public class NavigationRenderer
         {
             writer.startElement( "li" );
 
+            writer.addAttribute( "class", collapse );
+
+            writer.startElement( "strong" );
+
             writer.startElement( "a" );
 
             writer.addAttribute( "href", PathTool.calculateLink( href, renderingContext.getRelativePath() ) );
@@ -86,10 +90,14 @@ public class NavigationRenderer
             writer.endElement();
 
             writer.endElement();
+
+            writer.endElement();
         }
         else
         {
             writer.startElement( "li" );
+
+            writer.addAttribute( "class", collapse );
 
             writer.startElement( "a" );
 
@@ -110,7 +118,11 @@ public class NavigationRenderer
 
             if ( subitem.getGroup().equals( currentGroup ) )
             {
+                writer.startElement( "ul" );
+
                 writeMenuItem( subitem, writer, renderingContext );
+
+                writer.endElement();
             }
         }
     }
