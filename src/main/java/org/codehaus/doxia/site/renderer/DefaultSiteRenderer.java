@@ -20,6 +20,7 @@ import java.io.FileOutputStream;
 import java.io.FileReader;
 import java.io.FileWriter;
 import java.io.InputStream;
+import java.io.InputStreamReader;
 import java.io.IOException;
 import java.io.InputStreamReader;
 import java.io.LineNumberReader;
@@ -57,8 +58,6 @@ public class DefaultSiteRenderer
                         String flavour, String siteDescriptorName )
         throws Exception
     {
-        String siteFlavour = flavour;
-
         DecorationModelReader decorationModelReader = new DecorationModelReader();
 
         File siteDescriptor = new File( siteDirectory, siteDescriptorName );
@@ -69,6 +68,31 @@ public class DefaultSiteRenderer
         }
 
         DecorationModel decorationModel = decorationModelReader.createNavigation( siteDescriptor.getPath() );
+
+        render( siteDirectory, generatedSiteDirectory, outputDirectory, flavour, decorationModel );
+    }
+
+    public void render( String siteDirectory, String generatedSiteDirectory, String outputDirectory,
+                        String flavour, InputStream siteDescriptor )
+        throws Exception
+    {
+        DecorationModelReader decorationModelReader = new DecorationModelReader();
+
+        if ( siteDescriptor == null )
+        {
+            throw new Exception( "The site descriptor is not present!" );
+        }
+
+        DecorationModel decorationModel = decorationModelReader.createNavigation( new InputStreamReader( siteDescriptor ) );
+
+        render( siteDirectory, generatedSiteDirectory, outputDirectory, flavour, decorationModel );
+    }
+
+    private void render( String siteDirectory, String generatedSiteDirectory, String outputDirectory,
+                         String flavour, DecorationModel decorationModel )
+        throws Exception
+    {
+        String siteFlavour = flavour;
 
         // ----------------------------------------------------------------------
         // Define the flavour to use
