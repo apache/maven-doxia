@@ -175,39 +175,7 @@ public class DefaultSiteRenderer
 
             String fullPathDoc = new File( moduleBasedir, doc ).getPath();
 
-            String outputName = doc.substring( 0, doc.indexOf( "." ) + 1 ) + "html";
-
-            File outputFile = new File( outputDirectory, outputName );
-
-            if ( !outputFile.getParentFile().exists() )
-            {
-                outputFile.getParentFile().mkdirs();
-            }
-
-            InputStream is = getClass().getResourceAsStream( "/" + flavour + ".dst" );
-
-            if ( is == null )
-            {
-                File flavourTemplate = new File( getFlavourDirectory( siteDirectory ), flavour + ".dst" );
-
-                if ( ! flavourTemplate.exists() )
-                {
-                    throw new IOException( "The flavour " + flavourTemplate.getAbsolutePath() + " doesn't exists.");
-                }
-
-                is = new FileInputStream( flavourTemplate );
-            }
-
-            Reader r = new InputStreamReader( is );
-
-            SinkDescriptorReader sdr = new SinkDescriptorReader();
-
-            Map directives = sdr.read( r );
-
-            RenderingContext renderingContext =
-                new RenderingContext( moduleBasedir, doc, decorationModel );
-
-            XhtmlSink sink = new XhtmlSink( new FileWriter( outputFile ), renderingContext, directives );
+            XhtmlSink sink = createSink( moduleBasedir, siteDirectory, doc, outputDirectory, decorationModel, flavour );
 
             try
             {
@@ -222,6 +190,83 @@ public class DefaultSiteRenderer
                 System.out.println( "Error rendering " + fullPathDoc + ": " + e );
             }
         }
+    }
+
+    private Map getDirectives( String siteDirectory, String flavour )
+        throws Exception
+    {
+        InputStream is = getClass().getResourceAsStream( "/" + flavour + ".dst" );
+
+        if ( is == null )
+        {
+            File flavourTemplate = new File( getFlavourDirectory( siteDirectory ), flavour + ".dst" );
+
+            if ( ! flavourTemplate.exists() )
+            {
+                throw new IOException( "The flavour " + flavourTemplate.getAbsolutePath() + " doesn't exists.");
+            }
+
+            is = new FileInputStream( flavourTemplate );
+        }
+
+        Reader r = new InputStreamReader( is );
+
+        SinkDescriptorReader sdr = new SinkDescriptorReader();
+
+        return sdr.read( r );
+    }
+
+    public XhtmlSink createSink( File moduleBasedir, String siteDirectory, String doc, String outputDirectory,
+                                 String siteDescriptorName, String flavour )
+        throws Exception
+    {
+        DecorationModelReader decorationModelReader = new DecorationModelReader();
+
+        File siteDescriptor = new File( siteDirectory, siteDescriptorName );
+
+        if ( !siteDescriptor.exists() )
+        {
+            throw new Exception( "The site descriptor is not present!" );
+        }
+
+        DecorationModel decorationModel = decorationModelReader.createNavigation( siteDescriptor.getPath() );
+
+        return createSink( moduleBasedir, siteDirectory, doc, outputDirectory, decorationModel, flavour );
+    }
+
+    public XhtmlSink createSink( File moduleBasedir, String siteDirectory, String doc, String outputDirectory,
+                                 InputStream siteDescriptor, String flavour )
+        throws Exception
+    {
+        DecorationModelReader decorationModelReader = new DecorationModelReader();
+
+        DecorationModel decorationModel = decorationModelReader.createNavigation( new InputStreamReader( siteDescriptor ) );
+
+
+        return createSink( moduleBasedir, siteDirectory, doc, outputDirectory, decorationModel, flavour );
+    }
+
+    private XhtmlSink createSink( File moduleBasedir, String siteDirectory, String doc, String outputDirectory,
+                                 DecorationModel decorationModel, String flavour )
+        throws Exception
+    {
+        String fullPathDoc = new File( moduleBasedir, doc ).getPath();
+
+        String outputName = doc.substring( 0, doc.indexOf( "." ) + 1 ) + "html";
+
+        File outputFile = new File( outputDirectory, outputName );
+
+        if ( !outputFile.getParentFile().exists() )
+        {
+            outputFile.getParentFile().mkdirs();
+        }
+
+        Map directives = getDirectives( siteDirectory, flavour );
+
+        RenderingContext renderingContext =
+            new RenderingContext( moduleBasedir, doc, decorationModel );
+
+        return new XhtmlSink( new FileWriter( outputFile ), renderingContext, directives );
     }
 
     private void copyResources( String outputDirectory, String flavour, String siteDirectory )
