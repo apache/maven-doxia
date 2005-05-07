@@ -153,10 +153,6 @@ public class DefaultSiteRenderer
         // ----------------------------------------------------------------------
 
         copyResources( outputDirectory, siteFlavour, siteDirectory );
-
-        FileUtils.copyDirectory( new File( siteDirectory, "css" ), new File( outputDirectory, "css" ) );
-
-        FileUtils.copyDirectory( new File( siteDirectory, "images" ), new File( outputDirectory, "images" ) );
     }
 
     protected void generateModuleDocumentation( String flavour,
@@ -269,7 +265,7 @@ public class DefaultSiteRenderer
         return new XhtmlSink( new FileWriter( outputFile ), renderingContext, directives );
     }
 
-    private void copyResources( String outputDirectory, String flavour, String siteDirectory )
+    public void copyResources( String outputDirectory, String flavour, String siteDirectory )
         throws Exception
     {
         boolean isProjectResources = false;
@@ -325,6 +321,10 @@ public class DefaultSiteRenderer
 
             copy( is, w );
         }
+
+        FileUtils.copyDirectory( new File( siteDirectory, "css" ), new File( outputDirectory, "css" ) );
+
+        FileUtils.copyDirectory( new File( siteDirectory, "images" ), new File( outputDirectory, "images" ) );
     }
 
     private void copy( InputStream input, OutputStream output )

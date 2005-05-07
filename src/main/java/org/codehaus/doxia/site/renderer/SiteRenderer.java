@@ -34,4 +34,7 @@ public interface SiteRenderer
     XhtmlSink createSink( File moduleBasedir, String siteDirectory, String doc, String outputDirectory,
                           InputStream siteDescriptor, String flavour )
         throws Exception;
+
+    void copyResources( String outputDirectory, String flavour, String siteDirectory )
+        throws Exception;
 }
