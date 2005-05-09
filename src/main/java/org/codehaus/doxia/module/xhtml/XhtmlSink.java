@@ -453,13 +453,13 @@ public class XhtmlSink
     {
         if ( rowMarker == 0 )
         {
-            write( "<tr class=\"a\"" );
+            write( "<tr class=\"a\">" );
 
             rowMarker = 1;
         }
         else
         {
-            write( "<tr class=\"b\"" );
+            write( "<tr class=\"b\">" );
 
             rowMarker = 0;
         }
