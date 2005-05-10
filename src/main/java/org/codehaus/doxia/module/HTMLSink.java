@@ -12,6 +12,11 @@ public class HTMLSink extends SinkAdapter
 {
     public static String escapeHTML( String text )
     {
+        if ( text == null )
+        {
+            return "";
+        }
+
         int length = text.length();
         StringBuffer buffer = new StringBuffer( length );
 
