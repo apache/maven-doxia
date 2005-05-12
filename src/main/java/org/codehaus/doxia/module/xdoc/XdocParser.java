@@ -118,7 +118,23 @@ public class XdocParser
                 }
                 else if ( parser.getName().equals( "a" ) )
                 {
-                    sink.link( parser.getAttributeValue( null, "href" ) );
+                    String href = parser.getAttributeValue( null, "href" );
+                    if ( href != null )
+                    {
+                        sink.link( href );
+                    }
+                    else
+                    {
+                        String name = parser.getAttributeValue( null, "name" );
+                        if ( name != null )
+                        {
+                            sink.anchor( name );
+                        }
+                        else
+                        {
+                            handleRawText( sink, parser );
+                        }
+                    }
                 }
                 else if ( parser.getName().equals( "macro" ) )
                 {
@@ -142,7 +158,6 @@ public class XdocParser
                 // Tables
                 // ----------------------------------------------------------------------
 
-
                 else if ( parser.getName().equals( "table" ) )
                 {
                     sink.table();
@@ -161,28 +176,7 @@ public class XdocParser
                 }
                 else
                 {
-                    sink.rawText( "<" );
-
-                    sink.rawText( parser.getName() );
-
-                    int count = parser.getAttributeCount();
-
-                    for ( int i = 0; i < count; i++ )
-                    {
-                        sink.rawText( " " );
-
-                        sink.rawText( parser.getAttributeName( i ) );
-
-                        sink.rawText( "=" );
-
-                        sink.rawText( "\"" );
-
-                        sink.rawText( parser.getAttributeValue( i ) );
-
-                        sink.rawText( "\"" );
-                    }
-
-                    sink.rawText( ">" );
+                    handleRawText( sink, parser );
                 }
             }
             else if ( eventType == XmlPullParser.END_TAG )
@@ -237,6 +231,7 @@ public class XdocParser
                 }
                 else if ( parser.getName().equals( "a" ) )
                 {
+                    // TODO: Note there will be badness if link_ != anchor != </a>
                     sink.link_();
                 }
 
@@ -293,5 +288,31 @@ public class XdocParser
 
             eventType = parser.next();
         }
+    }
+
+    private void handleRawText( Sink sink, XmlPullParser parser )
+    {
+        sink.rawText( "<" );
+
+        sink.rawText( parser.getName() );
+
+        int count = parser.getAttributeCount();
+
+        for ( int i = 0; i < count; i++ )
+        {
+            sink.rawText( " " );
+
+            sink.rawText( parser.getAttributeName( i ) );
+
+            sink.rawText( "=" );
+
+            sink.rawText( "\"" );
+
+            sink.rawText( parser.getAttributeValue( i ) );
+
+            sink.rawText( "\"" );
+        }
+
+        sink.rawText( ">" );
     }
 }

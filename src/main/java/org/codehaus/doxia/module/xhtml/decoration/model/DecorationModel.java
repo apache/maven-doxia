@@ -16,9 +16,9 @@ public class DecorationModel
 {
     private String flavour;
 
-    private Image bannerLeft;
+    private Banner bannerLeft;
 
-    private Image bannerRight;
+    private Banner bannerRight;
 
     private List menus = new ArrayList();
 
@@ -88,22 +88,22 @@ public class DecorationModel
     //
     // ----------------------------------------------------------------------
 
-    public Image getBannerLeft()
+    public Banner getBannerLeft()
     {
         return bannerLeft;
     }
 
-    public void setBannerLeft( Image bannerLeft )
+    public void setBannerLeft( Banner bannerLeft )
     {
         this.bannerLeft = bannerLeft;
     }
 
-    public Image getBannerRight()
+    public Banner getBannerRight()
     {
         return bannerRight;
     }
 
-    public void setBannerRight( Image bannerRight )
+    public void setBannerRight( Banner bannerRight )
     {
         this.bannerRight = bannerRight;
     }

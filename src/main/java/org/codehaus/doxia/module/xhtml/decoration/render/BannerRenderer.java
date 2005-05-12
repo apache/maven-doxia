@@ -2,11 +2,12 @@ package org.codehaus.doxia.module.xhtml.decoration.render;
 
 import org.codehaus.doxia.module.xhtml.decoration.model.Image;
 import org.codehaus.doxia.module.xhtml.decoration.model.Link;
+import org.codehaus.doxia.module.xhtml.decoration.model.Banner;
 import org.codehaus.plexus.util.xml.XMLWriter;
 
 /**
  * @author <a href="mailto:brett@codehaus.org">Brett Porter</a>
- * @version $Id:$
+ * @version $Id$
  */
 public class BannerRenderer
     implements DecorationRenderer
@@ -20,20 +21,20 @@ public class BannerRenderer
 
     public void render( XMLWriter w, RenderingContext renderingContext )
     {
-        Image image;
+        Banner banner;
 
         if ( id.equals( "bannerLeft" ) )
         {
-            image = renderingContext.getDecorationModel().getBannerLeft();
+            banner = renderingContext.getDecorationModel().getBannerLeft();
         }
         else
         {
-            image = renderingContext.getDecorationModel().getBannerRight();
+            banner = renderingContext.getDecorationModel().getBannerRight();
         }
 
-        if ( image != null )
+        if ( banner != null )
         {
-            Link link = image.getLink();
+            Link link = banner.getLink();
 
             if ( link != null )
             {
@@ -50,21 +51,29 @@ public class BannerRenderer
                 w.addAttribute( "id", id );
             }
 
-            w.startElement( "img" );
-
-            w.addAttribute( "src", image.getSrc() );
-
-            if ( image.getAlt() != null )
+            Image image = banner.getImage();
+            if ( image != null )
             {
-                w.addAttribute( "alt", image.getAlt() );
-            }
+                w.startElement( "img" );
 
-            if ( image.getTitle() != null )
+                w.addAttribute( "src", image.getSrc() );
+
+                if ( image.getAlt() != null )
+                {
+                    w.addAttribute( "alt", image.getAlt() );
+                }
+
+                if ( image.getTitle() != null )
+                {
+                    w.addAttribute( "title", image.getTitle() );
+                }
+
+                w.endElement();
+            }
+            else
             {
-                w.addAttribute( "title", image.getTitle() );
+                w.writeText( banner.getName() );
             }
-
-            w.endElement();
 
             w.endElement();
         }

@@ -1,22 +1,20 @@
-*head()
-{
+*head() {
 <!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
 <html>
   <head>
 }
 
-*head_()
-{
+*head_() {
     <style type="text/css" media="all">
       @import url("$relativePath/css/maven-base.css");
-      @import url("$relativePath/css/maven-theme.css");@import url("$relativePath/css/site.css");</style>
+      @import url("$relativePath/css/maven-theme.css");@import url("$relativePath/css/site.css");
+    </style>
     <link rel="stylesheet" href="$relativePath/style/print.css" type="text/css" media="print"></link>
     <meta http-equiv="Content-Type" content="text/html; charset=ISO-8859-1"></meta>
   </head>
 }
 
-*body()
-{
+*body() {
   <body class="composite">
     <div id="banner">
       ${bannerLeft}
@@ -40,8 +38,7 @@
       <div id="contentBox">
 }
 
-*body_()
-{
+*body_() {
       </div>
     </div>
     <div class="clear">
@@ -57,33 +54,27 @@
 </html>
 }
 
-*section1()
-{
+*section1() {
 <div class="section">
 }
 
-*section1_()
-{
+*section1_() {
 </div>
 }
 
-*section2()
-{
+*section2() {
 <div class="subsection">
 }
 
-*section2_()
-{
+*section2_() {
 </div>
 }
 
-*section3()
-{
+*section3() {
 <div class="subsection">
 }
 
-*section3_()
-{
+*section3_() {
 </div>
 }
 
@@ -189,65 +180,37 @@
 </tr>
 }
 
-*title() {
-<title>
-}
+*title() {<title>}
 
-*title_() {
-</title>
-}
+*title_() {</title>}
 
-*author() {
-}
+*author() {}
 
-*author_() {
-}
+*author_() {}
 
-*date() {
-}
+*date() {}
 
-*date_() {
-}
+*date_() {}
 
-*sectionTitle1() {
-<h2>
-}
+*sectionTitle1() {<h2>}
 
-*sectionTitle1_() {
-</h2>
-}
+*sectionTitle1_() {</h2>}
 
-*sectionTitle2() {
-<h3>
-}
+*sectionTitle2() {<h3>}
 
-*sectionTitle2_() {
-</h3>
-}
+*sectionTitle2_() {</h3>}
 
-*sectionTitle3() {
-<h4>
-}
+*sectionTitle3() {<h4>}
 
-*sectionTitle3_() {
-</h4>
-}
+*sectionTitle3_() {</h4>}
 
-*sectionTitle4() {
-<h5>
-}
+*sectionTitle4() {<h5>}
 
-*sectionTitle4_() {
-</h5>
-}
+*sectionTitle4_() {</h5>}
 
-*sectionTitle5() {
-<h6>
-}
+*sectionTitle5() {<h6>}
 
-*sectionTitle5_() {
-</h6>
-}
+*sectionTitle5_() {</h6>}
 
 *paragraph() {
 <p>
@@ -259,11 +222,9 @@
 
 *verbatim() {
 <div class="source">
-<pre>
-}
+<pre>}
 
-*verbatim_() {
-</pre>
+*verbatim_() {</pre>
 </div>
 }
 
@@ -281,13 +242,9 @@
 </td>
 }
 
-*tableHeaderCell() {
-<th>
-}
+*tableHeaderCell() {<th>}
 
-*tableHeaderCell_() {
-</th>
-}
+*tableHeaderCell_() {</th>}
 
 *tableCaption() {
 <blockquote>
@@ -297,7 +254,7 @@
 </blockquote>
 }
 
-*figureGraphics(String name ) {
+*figureGraphics( String name ) {
 }
 
 *horizontalRule() {
@@ -306,50 +263,28 @@
 
 *pageBreak() {}
 
-*anchor() {
-<a name="$name">
-}
+*anchor() {<a name="$name">}
 
-*anchor_() {
-</a>
-}
+*anchor_() {</a>}
 
-*link() {
-<a href="$name">
-}
+*link() {<a href="$name">}
 
-*link_() {
-</a>
-}
+*link_() {</a>}
 
-*italic() {
-<i>
-}
+*italic() {<i>}
 
-*italic_() {
-</i>
-}
+*italic_() {</i>}
 
-*bold() {
-<b>
-}
+*bold() {<b>}
 
-*bold_() {
-</b>
-}
+*bold_() {</b>}
 
-*monospaced() {
-<tt>
-}
+*monospaced() {<tt>}
 
-*monospaced_() {
-</tt>
-}
+*monospaced_() {</tt>}
 
 *lineBreak() {
 <br/>
 }
 
-*nonBreakingSpace() {
-&#160;
-}
+*nonBreakingSpace() {&#160;}

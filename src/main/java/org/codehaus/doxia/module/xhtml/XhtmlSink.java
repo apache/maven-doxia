@@ -91,20 +91,20 @@ public class XhtmlSink
         directive( "head_()" );
     }
 
+    public void title()
+    {
+        directive( "title()" );
+    }
+
     public void title_()
     {
-        if ( buffer.length() > 0 )
-        {
-            directive( "title()" );
+        write( buffer.toString() );
 
-            write( buffer.toString() );
+        directive( "title_()" );
 
-            directive( "title_()" );
+        buffer = new StringBuffer();
 
-            buffer = new StringBuffer();
-
-            hasTitle = true;
-        }
+        hasTitle = true;
     }
 
     public void author_()

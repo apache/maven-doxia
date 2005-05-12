@@ -25,7 +25,7 @@ public class LinksRenderer
 
             w.addAttribute( "href", link.getHref() );
 
-            w.writeText( link.getName() );
+            w.writeText( link.getText() );
 
             w.endElement();
 

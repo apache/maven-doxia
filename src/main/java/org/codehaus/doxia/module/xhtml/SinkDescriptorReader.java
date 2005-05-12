@@ -29,24 +29,55 @@ public class SinkDescriptorReader
 
         while ( ( line = br.readLine() ) != null )
         {
-            if ( line.startsWith( "//" ) || line.startsWith( "{" ) || line.trim().length() == 0 )
+            line = line.trim();
+
+            if ( line.startsWith( "//" ) || line.startsWith( "{" ) || line.length() == 0 )
             {
                 continue;
             }
             else if ( line.startsWith( "*" ) )
             {
-                directive = line.substring( 1 ).trim();
+                directive = line.substring( 1 );
 
-                if ( directive.endsWith( "{" ) )
+                int index = directive.indexOf( "{" );
+                if ( index >= 0 )
                 {
-                    directive = directive.substring( 0, directive.length() - 1 ).trim();
+                    if ( index < directive.length() )
+                    {
+                        line = directive.substring( index + 1 );
+                    }
+                    directive = directive.substring( 0, index ).trim();
+                }
+                else
+                {
+                    continue;
                 }
             }
-            else if ( line.trim().equals( "}" ) )
-            {
-                directives.put( directive, directiveBody.toString() );
 
-                directiveBody = new StringBuffer();
+            if ( line.endsWith( "}" ) )
+            {
+                int index = 0;
+                while ( index >= 0 && index < line.length() - 1 )
+                {
+                    index = line.indexOf( "${", index );
+                    if ( index >= 0 )
+                    {
+                        index = line.indexOf( "}", index );
+                    }
+                }
+
+                if ( index <= 0 )
+                {
+                    directiveBody.append( line.substring( 0, line.length() - 1 ) );
+
+                    directives.put( directive, directiveBody.toString() );
+
+                    directiveBody = new StringBuffer();
+                }
+                else
+                {
+                    directiveBody.append( line ).append( "\n" );
+                }
             }
             else
             {

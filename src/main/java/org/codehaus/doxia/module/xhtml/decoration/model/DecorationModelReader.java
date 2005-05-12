@@ -40,14 +40,14 @@ public class DecorationModelReader
 
         if ( be != null )
         {
-            decorationModel.setBannerLeft( processImage( be ) );
+            decorationModel.setBannerLeft( processBanner( be ) );
         }
 
         be = siteElement.getChild( "bannerRight" );
 
         if ( be != null )
         {
-            decorationModel.setBannerRight( processImage( be ) );
+            decorationModel.setBannerRight( processBanner( be ) );
         }
 
         Xpp3Dom body = siteElement.getChild( "body" );
@@ -95,8 +95,10 @@ public class DecorationModelReader
         return decorationModel;
     }
 
-    private static Image processImage( Xpp3Dom be )
+    private static Banner processBanner( Xpp3Dom be )
     {
+        Banner b = new Banner();
+
         Image i = new Image();
 
         if ( be.getChild( "href" ) != null )
@@ -105,17 +107,26 @@ public class DecorationModelReader
 
             bl.setHref( be.getChild( "href" ).getValue() );
 
-            i.setLink( bl );
+            b.setLink( bl );
         }
 
         if ( be.getChild( "name" ) != null )
         {
-            i.setTitle( be.getChild( "name" ).getValue() );
+            String value = be.getChild( "name" ).getValue();
+
+            i.setTitle( value );
+
+            b.setName( value );
         }
 
-        i.setSrc( be.getChild( "src" ).getValue() );
+        if ( be.getChild( "src" ) != null )
+        {
+            i.setSrc( be.getChild( "src" ).getValue() );
 
-        return i;
+            b.setImage( i );
+        }
+
+        return b;
     }
 
     private DecorationModel getDecorationModel()
