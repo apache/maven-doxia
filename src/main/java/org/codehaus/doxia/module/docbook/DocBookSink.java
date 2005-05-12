@@ -854,4 +854,14 @@ public class DocBookSink extends SinkAdapter
     }
 
     // -----------------------------------------------------------------------
+
+    public void flush()
+    {
+        out.flush();
+    }
+
+    public void close()
+    {
+        out.close();
+    }
 }

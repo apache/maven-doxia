@@ -610,4 +610,14 @@ public class LatexSink
         "\\setlength{\\parskip}{\\pparskipamount}\n\n";
 
     // -----------------------------------------------------------------------
+
+    public void flush()
+    {
+        out.flush();
+    }
+
+    public void close()
+    {
+        out.close();
+    }
 }

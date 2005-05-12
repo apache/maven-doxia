@@ -1,6 +1,6 @@
 package org.codehaus.doxia.module.xdoc;
 
-import org.codehaus.doxia.module.HTMLSink;
+import org.codehaus.doxia.module.HtmlTools;
 import org.codehaus.doxia.module.apt.AptParser;
 import org.codehaus.doxia.sink.SinkAdapter;
 import org.codehaus.doxia.sink.StructureSink;
@@ -549,11 +549,21 @@ public class XdocSink
 
     public static String escapeHTML( String text )
     {
-        return HTMLSink.escapeHTML( text );
+        return HtmlTools.escapeHTML( text );
     }
 
     public static String encodeURL( String text )
     {
-        return HTMLSink.encodeURL( text );
+        return HtmlTools.encodeURL( text );
+    }
+
+    public void flush()
+    {
+        out.flush();
+    }
+
+    public void close()
+    {
+        out.close();
     }
 }

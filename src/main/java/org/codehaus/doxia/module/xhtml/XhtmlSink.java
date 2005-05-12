@@ -1,6 +1,6 @@
 package org.codehaus.doxia.module.xhtml;
 
-import org.codehaus.doxia.module.HTMLSink;
+import org.codehaus.doxia.module.HtmlTools;
 import org.codehaus.doxia.module.xhtml.decoration.render.BannerRenderer;
 import org.codehaus.doxia.module.xhtml.decoration.render.LinksRenderer;
 import org.codehaus.doxia.module.xhtml.decoration.render.NavigationRenderer;
@@ -201,10 +201,6 @@ public class XhtmlSink
         body = StringUtils.interpolate( body, map );
 
         write( body );
-
-        //directive( "body_()" );
-
-        writer.close();
 
         resetState();
     }
@@ -724,7 +720,7 @@ public class XhtmlSink
 
     public static String escapeHTML( String text )
     {
-        return HTMLSink.escapeHTML( text );
+        return HtmlTools.escapeHTML( text );
     }
 
     public static String encodeFragment( String text )
@@ -734,6 +730,16 @@ public class XhtmlSink
 
     public static String encodeURL( String text )
     {
-        return HTMLSink.encodeURL( text );
+        return HtmlTools.encodeURL( text );
+    }
+
+    public void flush()
+    {
+        writer.flush();
+    }
+
+    public void close()
+    {
+        writer.close();
     }
 }

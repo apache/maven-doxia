@@ -1,7 +1,5 @@
 package org.codehaus.doxia.module.xhtml;
 
-import org.codehaus.doxia.sink.SinkAdapter;
-
 import java.io.BufferedReader;
 import java.io.Reader;
 import java.util.HashMap;
@@ -12,7 +10,6 @@ import java.util.Map;
  * @version $Id: SinkDescriptorReader.java,v 1.1 2004/09/22 00:01:42 jvanzyl Exp $
  */
 public class SinkDescriptorReader
-    extends SinkAdapter
 {
     public Map read( Reader reader )
         throws Exception

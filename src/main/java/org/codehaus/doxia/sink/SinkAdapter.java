@@ -346,5 +346,13 @@ public class SinkAdapter implements Sink
     public void rawText( String text )
     {
     }
+
+    public void flush()
+    {
+    }
+
+    public void close()
+    {
+    }
 }
 

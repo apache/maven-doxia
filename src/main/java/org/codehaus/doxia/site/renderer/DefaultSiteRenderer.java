@@ -4,6 +4,7 @@
 package org.codehaus.doxia.site.renderer;
 
 import org.codehaus.doxia.Doxia;
+import org.codehaus.doxia.sink.Sink;
 import org.codehaus.doxia.module.xhtml.SinkDescriptorReader;
 import org.codehaus.doxia.module.xhtml.XhtmlSink;
 import org.codehaus.doxia.module.xhtml.decoration.model.DecorationModel;
@@ -12,6 +13,7 @@ import org.codehaus.doxia.module.xhtml.decoration.render.RenderingContext;
 import org.codehaus.doxia.site.module.SiteModule;
 import org.codehaus.doxia.site.module.manager.SiteModuleManager;
 import org.codehaus.plexus.util.FileUtils;
+import org.codehaus.plexus.util.IOUtil;
 
 import java.io.File;
 import java.io.FileInputStream;
@@ -24,6 +26,7 @@ import java.io.InputStreamReader;
 import java.io.LineNumberReader;
 import java.io.OutputStream;
 import java.io.Reader;
+import java.io.StringWriter;
 import java.util.Iterator;
 import java.util.List;
 import java.util.Map;
@@ -39,6 +42,8 @@ public class DefaultSiteRenderer
     private SiteModuleManager siteModuleManager;
 
     private Doxia doxia;
+
+    private StringWriter writer = new StringWriter();
 
     public void render( String siteDirectory, String generatedSiteDirectory, String outputDirectory )
         throws Exception
@@ -169,7 +174,7 @@ public class DefaultSiteRenderer
 
             String fullPathDoc = new File( moduleBasedir, doc ).getPath();
 
-            XhtmlSink sink = createSink( moduleBasedir, siteDirectory, doc, outputDirectory, decorationModel, flavour );
+            Sink sink = createSink( moduleBasedir, siteDirectory, doc, outputDirectory, decorationModel, flavour );
 
             try
             {
@@ -182,6 +187,11 @@ public class DefaultSiteRenderer
                 e.printStackTrace();
 
                 System.out.println( "Error rendering " + fullPathDoc + ": " + e );
+            }
+            finally
+            {
+                sink.flush();
+                sink.close();
             }
         }
     }
@@ -235,7 +245,6 @@ public class DefaultSiteRenderer
         DecorationModelReader decorationModelReader = new DecorationModelReader();
 
         DecorationModel decorationModel = decorationModelReader.createNavigation( new InputStreamReader( siteDescriptor ) );
-
 
         return createSink( moduleBasedir, siteDirectory, doc, outputDirectory, decorationModel, flavour );
     }
@@ -315,57 +324,16 @@ public class DefaultSiteRenderer
 
             FileOutputStream w = new FileOutputStream( outputFile );
 
-            copy( is, w );
+            IOUtil.copy( is, w );
+
+            IOUtil.close( is );
+
+            IOUtil.close( w );
         }
 
         FileUtils.copyDirectory( new File( siteDirectory, "css" ), new File( outputDirectory, "css" ) );
 
         FileUtils.copyDirectory( new File( siteDirectory, "images" ), new File( outputDirectory, "images" ) );
-    }
-
-    private void copy( InputStream input, OutputStream output )
-        throws Exception
-    {
-        byte[] buffer = new byte[1024];
-
-        int n;
-
-        while ( -1 != ( n = input.read( buffer ) ) )
-        {
-            output.write( buffer, 0, n );
-        }
-
-        shutdownStream( input );
-
-        shutdownStream( output );
-    }
-
-    protected void shutdownStream( InputStream input )
-    {
-        if ( input != null )
-        {
-            try
-            {
-                input.close();
-            }
-            catch ( Exception e )
-            {
-            }
-        }
-    }
-
-    protected void shutdownStream( OutputStream output )
-    {
-        if ( output != null )
-        {
-            try
-            {
-                output.close();
-            }
-            catch ( Exception e )
-            {
-            }
-        }
     }
 
     private InputStream getStream( String name )

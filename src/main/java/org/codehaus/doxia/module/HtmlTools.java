@@ -8,7 +8,7 @@ import org.codehaus.doxia.sink.StructureSink;
 
 import java.io.UnsupportedEncodingException;
 
-public class HTMLSink extends SinkAdapter
+public class HtmlTools
 {
     public static String escapeHTML( String text )
     {

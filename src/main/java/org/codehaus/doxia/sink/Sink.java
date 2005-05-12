@@ -187,5 +187,9 @@ public interface Sink
     void text( String text );
 
     void rawText( String text );
+
+    void flush();
+
+    void close();
 }
 

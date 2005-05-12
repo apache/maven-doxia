@@ -8,6 +8,8 @@
  */
 package org.codehaus.doxia.util;
 
+import org.codehaus.plexus.util.IOUtil;
+
 import java.io.BufferedWriter;
 import java.io.IOException;
 import java.io.Writer;
@@ -119,5 +121,10 @@ public class LineBreaker
 
             lineLength += length;
         }
+    }
+
+    public void close()
+    {
+        IOUtil.close( writer );
     }
 }
