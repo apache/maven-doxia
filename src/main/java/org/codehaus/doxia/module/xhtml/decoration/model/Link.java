@@ -7,9 +7,13 @@ package org.codehaus.doxia.module.xhtml.decoration.model;
  */
 public class Link
 {
-    String name;
+    private String name;
 
-    String href;
+    private String href;
+
+    public Link()
+    {
+    }
 
     public Link( String name, String href )
     {
@@ -21,6 +25,16 @@ public class Link
     public String getName()
     {
         return name;
+    }
+
+    public void setName( String name )
+    {
+        this.name = name;
+    }
+
+    public void setHref( String href )
+    {
+        this.href = href;
     }
 
     public String getHref()

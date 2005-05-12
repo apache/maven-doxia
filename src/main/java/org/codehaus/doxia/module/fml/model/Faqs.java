@@ -5,7 +5,7 @@ import java.util.List;
 
 public class Faqs
 {
-    private String title;
+    private String title = "FAQ";
 
     private List parts;
 

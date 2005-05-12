@@ -42,7 +42,7 @@ public class SinkDescriptorReader
                     directive = directive.substring( 0, directive.length() - 1 ).trim();
                 }
             }
-            else if ( line.endsWith( "}" ) )
+            else if ( line.trim().equals( "}" ) )
             {
                 directives.put( directive, directiveBody.toString() );
 

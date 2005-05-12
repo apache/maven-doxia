@@ -1,6 +1,5 @@
 package org.codehaus.doxia.module.xhtml.decoration.model;
 
-import org.codehaus.doxia.module.xhtml.decoration.model.Hyperlink;
 import org.codehaus.doxia.module.xhtml.decoration.model.Link;
 import org.codehaus.doxia.module.xhtml.decoration.model.Menu;
 
@@ -17,9 +16,9 @@ public class DecorationModel
 {
     private String flavour;
 
-    private Hyperlink bannerLeft;
+    private Image bannerLeft;
 
-    private Hyperlink bannerRight;
+    private Image bannerRight;
 
     private List menus = new ArrayList();
 
@@ -89,22 +88,22 @@ public class DecorationModel
     //
     // ----------------------------------------------------------------------
 
-    public Hyperlink getBannerLeft()
+    public Image getBannerLeft()
     {
         return bannerLeft;
     }
 
-    public void setBannerLeft( Hyperlink bannerLeft )
+    public void setBannerLeft( Image bannerLeft )
     {
         this.bannerLeft = bannerLeft;
     }
 
-    public Hyperlink getBannerRight()
+    public Image getBannerRight()
     {
         return bannerRight;
     }
 
-    public void setBannerRight( Hyperlink bannerRight )
+    public void setBannerRight( Image bannerRight )
     {
         this.bannerRight = bannerRight;
     }

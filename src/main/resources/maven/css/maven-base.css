@@ -26,23 +26,18 @@ div.clear{
 div.clear hr{
   display: none;
 }
-#projectLogo {
+#bannerLeft, #bannerRight {
   font-size: xx-large; 
   font-weight: bold;
 }
-#organizationLogo img, #projectLogo img, #projectLogo span{
+#bannerLeft img, #bannerRight img {
   margin: 8px;
 }
-#projectLogo span{
-    border: 1px solid;
-    padding: 4px 10px 4px 10px;
-    background-color: #eee;
-    cursor: pointer;
-}
-.xleft, #organizationLogo img{
+.xleft, #bannerLeft img {
   float:left;
-} 
-.xright, #projectLogo img, #projectLogo span{
+  text-shadow: #7CFC00;
+}
+.xright, #bannerRight img {
   float:right;
   text-shadow: #7CFC00;
 }

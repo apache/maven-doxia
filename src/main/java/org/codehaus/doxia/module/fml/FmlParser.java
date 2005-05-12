@@ -8,6 +8,7 @@ import org.codehaus.doxia.parser.ParseException;
 import org.codehaus.doxia.sink.Sink;
 import org.codehaus.plexus.util.xml.pull.MXParser;
 import org.codehaus.plexus.util.xml.pull.XmlPullParser;
+import org.codehaus.plexus.util.StringUtils;
 
 import java.io.Reader;
 import java.util.Iterator;
@@ -73,7 +74,11 @@ public class FmlParser
             {
                 if ( parser.getName().equals( "faqs" ) )
                 {
-                    faqs.setTitle( parser.getAttributeValue( null, "title" ) );
+                    String title = parser.getAttributeValue( null, "title" );
+                    if ( title != null )
+                    {
+                        faqs.setTitle( title );
+                    }
                 }
                 else if ( parser.getName().equals( "part" ) )
                 {
@@ -203,9 +208,12 @@ public class FmlParser
         {
             Part part = (Part) partIterator.next();
             sink.paragraph();
-            sink.bold();
-            sink.text( part.getTitle() );
-            sink.bold_();
+            if ( StringUtils.isNotEmpty( part.getTitle() ) )
+            {
+                sink.bold();
+                sink.text( part.getTitle() );
+                sink.bold_();
+            }
 
             sink.numberedList( Sink.NUMBERING_DECIMAL );
             for ( Iterator faqIterator = part.getFaqs().iterator(); faqIterator.hasNext(); )
@@ -227,9 +235,12 @@ public class FmlParser
         {
             Part part = (Part) partIterator.next();
             sink.section1();
-            sink.sectionTitle1();
-            sink.text( part.getTitle() );
-            sink.sectionTitle1_();
+            if ( StringUtils.isNotEmpty( part.getTitle() ) )
+            {
+                sink.sectionTitle1();
+                sink.text( part.getTitle() );
+                sink.sectionTitle1_();
+            }
 
             sink.definitionList();
             for ( Iterator faqIterator = part.getFaqs().iterator(); faqIterator.hasNext(); )
@@ -245,6 +256,10 @@ public class FmlParser
                 sink.rawText( faq.getAnswer() );
                 sink.paragraph_();
                 sink.definition_();
+                if ( faqIterator.hasNext() )
+                {
+                    sink.horizontalRule();
+                }
             }
             sink.definitionList_();
             sink.section1();

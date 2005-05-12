@@ -12,16 +12,14 @@ import org.codehaus.doxia.module.xhtml.decoration.render.RenderingContext;
 import org.codehaus.doxia.site.module.SiteModule;
 import org.codehaus.doxia.site.module.manager.SiteModuleManager;
 import org.codehaus.plexus.util.FileUtils;
-import org.codehaus.plexus.util.PathTool;
 
 import java.io.File;
 import java.io.FileInputStream;
 import java.io.FileOutputStream;
 import java.io.FileReader;
 import java.io.FileWriter;
-import java.io.InputStream;
-import java.io.InputStreamReader;
 import java.io.IOException;
+import java.io.InputStream;
 import java.io.InputStreamReader;
 import java.io.LineNumberReader;
 import java.io.OutputStream;
@@ -246,8 +244,6 @@ public class DefaultSiteRenderer
                                  DecorationModel decorationModel, String flavour )
         throws Exception
     {
-        String fullPathDoc = new File( moduleBasedir, doc ).getPath();
-
         String outputName = doc.substring( 0, doc.indexOf( "." ) + 1 ) + "html";
 
         File outputFile = new File( outputDirectory, outputName );

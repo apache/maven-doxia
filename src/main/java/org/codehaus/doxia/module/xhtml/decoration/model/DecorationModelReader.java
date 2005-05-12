@@ -36,25 +36,19 @@ public class DecorationModelReader
             decorationModel.setFlavour( flavourChild.getChild( "name" ).getValue() );
         }
 
-        Hyperlink bl = new Hyperlink();
-
         Xpp3Dom be = siteElement.getChild( "bannerLeft" );
 
-        bl.setHref( be.getChild( "href" ).getValue() );
-
-        bl.setName( be.getChild( "name" ).getValue() );
-
-        decorationModel.setBannerLeft( bl );
-
-        bl = new Hyperlink();
+        if ( be != null )
+        {
+            decorationModel.setBannerLeft( processImage( be ) );
+        }
 
         be = siteElement.getChild( "bannerRight" );
 
-        bl.setHref( be.getChild( "href" ).getValue() );
-
-        bl.setName( be.getChild( "name" ).getValue() );
-
-        decorationModel.setBannerRight( bl );
+        if ( be != null )
+        {
+            decorationModel.setBannerRight( processImage( be ) );
+        }
 
         Xpp3Dom body = siteElement.getChild( "body" );
 
@@ -99,6 +93,29 @@ public class DecorationModelReader
         }
 
         return decorationModel;
+    }
+
+    private static Image processImage( Xpp3Dom be )
+    {
+        Image i = new Image();
+
+        if ( be.getChild( "href" ) != null )
+        {
+            Link bl = new Link();
+
+            bl.setHref( be.getChild( "href" ).getValue() );
+
+            i.setLink( bl );
+        }
+
+        if ( be.getChild( "name" ) != null )
+        {
+            i.setTitle( be.getChild( "name" ).getValue() );
+        }
+
+        i.setSrc( be.getChild( "src" ).getValue() );
+
+        return i;
     }
 
     private DecorationModel getDecorationModel()

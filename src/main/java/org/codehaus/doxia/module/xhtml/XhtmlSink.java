@@ -1,6 +1,7 @@
 package org.codehaus.doxia.module.xhtml;
 
 import org.codehaus.doxia.module.HTMLSink;
+import org.codehaus.doxia.module.xhtml.decoration.render.BannerRenderer;
 import org.codehaus.doxia.module.xhtml.decoration.render.LinksRenderer;
 import org.codehaus.doxia.module.xhtml.decoration.render.NavigationRenderer;
 import org.codehaus.doxia.module.xhtml.decoration.render.RenderingContext;
@@ -12,9 +13,9 @@ import org.codehaus.plexus.util.xml.XMLWriter;
 import java.io.PrintWriter;
 import java.io.StringWriter;
 import java.io.Writer;
+import java.util.Date;
 import java.util.HashMap;
 import java.util.Map;
-import java.util.Date;
 
 // Note this is highly maven-site centric at the moment with the rendering
 // context and the notion of a static site. I want this particular sink to
@@ -150,7 +151,27 @@ public class XhtmlSink
 
         lr.render( w, renderingContext );
 
-        map.put( "links", sw.toString()  );
+        map.put( "links", sw.toString() );
+
+        sw = new StringWriter();
+
+        w = new PrettyPrintXMLWriter( sw );
+
+        BannerRenderer br = new BannerRenderer( "bannerLeft" );
+
+        br.render( w, renderingContext );
+
+        map.put( "bannerLeft", sw.toString() );
+
+        sw = new StringWriter();
+
+        w = new PrettyPrintXMLWriter( sw );
+
+        br = new BannerRenderer( "bannerRight" );
+
+        br.render( w, renderingContext );
+
+        map.put( "bannerRight", sw.toString() );
 
         map.put( "navBarLeft", "Last Published: " + new Date() );
 
@@ -682,7 +703,7 @@ public class XhtmlSink
 
     protected String directiveValue( String key )
     {
-        return directives.get( key ) ;
+        return directives.get( key );
     }
 
     protected void directive( String key )

@@ -9,7 +9,7 @@
 {
     <style type="text/css" media="all">
       @import url("$relativePath/css/maven-base.css");
-      @import url("$relativePath/css/maven-theme.css");@import url("$relativePath/style/project.css");</style>
+      @import url("$relativePath/css/maven-theme.css");@import url("$relativePath/css/site.css");</style>
     <link rel="stylesheet" href="$relativePath/style/print.css" type="text/css" media="print"></link>
     <meta http-equiv="Content-Type" content="text/html; charset=ISO-8859-1"></meta>
   </head>
@@ -19,21 +19,17 @@
 {
   <body class="composite">
     <div id="banner">
-      <a href="http://www.apache.org/" id="organizationLogo">
-        <img alt="Apache Software Foundation" src="http://maven.apache.org/images/apache-maven-project.png"></img>
-      </a>
-      <a href="http://maven.apache.org/maven2/" id="projectLogo">
-        <img alt="Maven 2" src="http://maven.apache.org/images/maven-small.gif"></img>
-      </a>
+      ${bannerLeft}
+      ${bannerRight}
       <div class="clear">
-        <hr></hr>
+        <hr/>
       </div>
     </div>
     <div id="breadcrumbs">
       <div class="xleft">${navBarLeft}</div>
       <div class="xright">${links}</div>
       <div class="clear">
-        <hr></hr>
+        <hr/>
       </div>
     </div>
     <div id="leftColumn"><div id="navcolumn">${mainMenu}<a href="http://maven.apache.org/" title="Built by Maven" id="poweredBy">
@@ -49,12 +45,12 @@
       </div>
     </div>
     <div class="clear">
-      <hr></hr>
+      <hr/>
     </div>
     <div id="footer">
-      <div class="xright">2002-2005, Apache Software Foundation</div>
+      <div class="xright">&#169; 2002-2005, Apache Software Foundation</div>
       <div class="clear">
-        <hr></hr>
+        <hr/>
       </div>
     </div>
   </body>
@@ -301,7 +297,8 @@
 </blockquote>
 }
 
-*figureGraphics(String name ) {}
+*figureGraphics(String name ) {
+}
 
 *horizontalRule() {
 <hr/>
