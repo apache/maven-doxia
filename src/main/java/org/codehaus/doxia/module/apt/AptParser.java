@@ -699,7 +699,8 @@ public class AptParser
 
         if ( blockType != type )
         {
-            throw new AptParseException( "expected " + typeNames[type] + ", found " + typeNames[blockType], source );
+            throw new AptParseException( "expected " + typeNames[type] + ", found " + typeNames[blockType] +
+                                         " at line " + getSourceLineNumber(), source );
         }
     }
 

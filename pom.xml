@@ -2,7 +2,7 @@
   <modelVersion>4.0.0</modelVersion>
   <groupId>doxia</groupId>
   <artifactId>doxia-core</artifactId>
-  <version>1.0-alpha-2</version>
+  <version>1.0-alpha-3-SNAPSHOT</version>
   <name>Doxia Core</name>
   <issueManagement>
     <system>jira</system>
@@ -49,12 +49,6 @@
             <id>descriptor</id>
           </goal>
         </goals>
-      </plugin>
-      <plugin>
-        <artifactId>maven-site-plugin</artifactId>
-        <configuration>
-          <flavour>toto</flavour>
-        </configuration>
       </plugin>
     </plugins>
   </build>
