@@ -71,9 +71,6 @@ public class AptParser
         ' ', ' ', ' ', ' ', ' ', ' ', ' ', ' ', ' ', ' ', ' ', ' ', ' ', ' ', ' ', ' ', ' '
     };
 
-    public static final int JUSTIFY_CENTER = 0;
-    public static final int JUSTIFY_LEFT = 1;
-    public static final int JUSTIFY_RIGHT = 2;
     public static final int TAB_WIDTH = 8;
 
     // -----------------------------------------------------------------------

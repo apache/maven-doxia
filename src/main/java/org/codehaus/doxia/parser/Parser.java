@@ -12,6 +12,10 @@ public interface Parser
 {
     String ROLE = Parser.class.getName();
 
+    int JUSTIFY_CENTER = 0;
+    int JUSTIFY_LEFT = 1;
+    int JUSTIFY_RIGHT = 2;
+
     void parse( Reader source, Sink sink )
         throws ParseException;
 }

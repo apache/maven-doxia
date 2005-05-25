@@ -5,6 +5,7 @@ import org.codehaus.doxia.module.xhtml.decoration.render.BannerRenderer;
 import org.codehaus.doxia.module.xhtml.decoration.render.LinksRenderer;
 import org.codehaus.doxia.module.xhtml.decoration.render.NavigationRenderer;
 import org.codehaus.doxia.module.xhtml.decoration.render.RenderingContext;
+import org.codehaus.doxia.parser.Parser;
 import org.codehaus.doxia.sink.StructureSink;
 import org.codehaus.plexus.util.StringUtils;
 import org.codehaus.plexus.util.xml.PrettyPrintXMLWriter;
@@ -50,6 +51,8 @@ public class XhtmlSink
     private StringsMap directives;
 
     private RenderingContext renderingContext;
+
+    private int[] cellJustif;
 
     public XhtmlSink( Writer writer, RenderingContext renderingContext, Map directives )
     {
@@ -455,12 +458,16 @@ public class XhtmlSink
 
     public void tableRows( int[] justification, boolean grid )
     {
-        table();
+        write( "<tbody>" );
+
+        cellJustif = justification;
     }
 
     public void tableRows_()
     {
-        table_();
+        write( "</tbody>" );
+
+        cellJustif = null;
     }
 
     private int rowMarker = 0;
@@ -480,8 +487,6 @@ public class XhtmlSink
 
             rowMarker = 0;
         }
-
-        //directive( "tableRow()" );
 
         cellCount = 0;
     }
@@ -505,14 +510,39 @@ public class XhtmlSink
 
     public void tableCell( boolean headerRow )
     {
+    	String justif = null;
+
+        if ( cellJustif != null )
+        {
+        	switch ( cellJustif[cellCount] )
+        	{
+            	case Parser.JUSTIFY_LEFT:
+            	    justif = "left";
+            	    break;
+            	case Parser.JUSTIFY_RIGHT:
+            	    justif = "right";
+            	    break;
+            	case Parser.JUSTIFY_CENTER:
+            	    justif = "center";
+            	    break;
+        	}
+        }
+
         if ( headerRow )
         {
-            directive( "tableHeaderCell()" );
+            write( "<th" );
         }
         else
         {
-            directive( "tableCell()" );
+            write( "<td" );
         }
+
+        if ( justif != null )
+        {
+            write( " align=\"" + justif + "\"" );
+        }
+
+        write( ">" );
     }
 
     public void tableCell_()
@@ -529,11 +559,11 @@ public class XhtmlSink
     {
         if ( headerRow )
         {
-            directive( "tableHeaderCell_()" );
+            write( "</th>" );
         }
         else
         {
-            directive( "tableCell_()" );
+            write( "</td>" );
         }
 
         ++cellCount;
@@ -541,12 +571,12 @@ public class XhtmlSink
 
     public void tableCaption()
     {
-        directive( "tableCaption()" );
+        write( "<caption>" );
     }
 
     public void tableCaption_()
     {
-        directive( "tableCaption_()" );
+        write( "</caption>" );
     }
 
     public void anchor( String name )
