@@ -13,28 +13,29 @@ public interface SiteRenderer
 {
     String ROLE = SiteRenderer.class.getName();
 
-    void render( String siteDirectory, String generatedSiteDirectory, String outputDirectory )
-        throws Exception;
-
-    void render( String siteDirectory, String generatedSiteDirectory, String outputDirectory, String flavour )
+    void render( String siteDirectory, String generatedSiteDirectory, String outputDirectory,
+                 File resourcesDirectory )
         throws Exception;
 
     void render( String siteDirectory, String generatedSiteDirectory, String outputDirectory, String flavour,
-                 String siteDescriptorName )
+                 File resourcesDirectory )
         throws Exception;
 
-    void render( String siteDirectory, String generatedSiteDirectory, String outputDirectory,
-                 String flavour, InputStream siteDescriptor )
+    void render( String siteDirectory, String generatedSiteDirectory, String outputDirectory, String flavour,
+                 String siteDescriptorName, File resourcesDirectory )
         throws Exception;
 
-    XhtmlSink createSink( File moduleBasedir, String siteDirectory, String doc, String outputDirectory,
-                          String siteDescriptorName, String flavour )
+    void render( String siteDirectory, String generatedSiteDirectory, String outputDirectory, String flavour,
+                 InputStream siteDescriptor, File resourcesDirectory )
         throws Exception;
 
-    XhtmlSink createSink( File moduleBasedir, String siteDirectory, String doc, String outputDirectory,
-                          InputStream siteDescriptor, String flavour )
+    XhtmlSink createSink( File moduleBasedir, String doc, String outputDirectory, File siteDescriptor, String flavour )
         throws Exception;
 
-    void copyResources( String outputDirectory, String flavour, String siteDirectory )
+    XhtmlSink createSink( File moduleBasedir, String doc, String outputDirectory, InputStream siteDescriptor,
+                          String flavour )
+        throws Exception;
+
+    void copyResources( String outputDirectory, String flavour )
         throws Exception;
 }

@@ -28,6 +28,9 @@ public class SiteRenderingTest
             outputDirectory.mkdirs();
         }
 
-        r.render( siteDirectory.getPath(), generatedSiteDirectory.getPath(), outputDirectory.getPath() );
+        File resourcesDirectory = new File( siteDirectory, "resources" );
+
+        r.render( siteDirectory.getPath(), generatedSiteDirectory.getPath(), outputDirectory.getPath(),
+                  resourcesDirectory );
     }
 }

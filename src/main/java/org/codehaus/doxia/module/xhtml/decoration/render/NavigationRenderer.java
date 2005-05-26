@@ -2,7 +2,6 @@ package org.codehaus.doxia.module.xhtml.decoration.render;
 
 import org.codehaus.doxia.module.xhtml.decoration.model.Item;
 import org.codehaus.doxia.module.xhtml.decoration.model.Menu;
-import org.codehaus.doxia.module.xhtml.decoration.render.DecorationRenderer;
 import org.codehaus.plexus.util.PathTool;
 import org.codehaus.plexus.util.xml.XMLWriter;
 
