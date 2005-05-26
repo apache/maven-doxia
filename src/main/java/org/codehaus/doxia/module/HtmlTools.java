@@ -3,7 +3,6 @@
  */
 package org.codehaus.doxia.module;
 
-import org.codehaus.doxia.sink.SinkAdapter;
 import org.codehaus.doxia.sink.StructureSink;
 
 import java.io.UnsupportedEncodingException;

@@ -96,14 +96,14 @@ public class XhtmlSink
 
     public void title()
     {
-        directive( "title()" );
+        write( "<title>" );
     }
 
     public void title_()
     {
         write( buffer.toString() );
 
-        directive( "title_()" );
+        write( "</title>" );
 
         buffer = new StringBuffer();
 
@@ -114,6 +114,9 @@ public class XhtmlSink
     {
         if ( buffer.length() > 0 )
         {
+            write( "<meta name=\"author\" content=\"" );
+            write( buffer.toString() );
+            write( "\" />\n" );
             buffer = new StringBuffer();
         }
     }
@@ -122,6 +125,9 @@ public class XhtmlSink
     {
         if ( buffer.length() > 0 )
         {
+            write( "<meta name=\"date\" content=\"" );
+            write( buffer.toString() );
+            write( "\" />\n" );
             buffer = new StringBuffer();
         }
     }
@@ -187,8 +193,6 @@ public class XhtmlSink
         // ----------------------------------------------------------------------
 
         write( body );
-
-        //directive( "body()" );
     }
 
     public void body_()
@@ -214,102 +218,102 @@ public class XhtmlSink
 
     public void section1()
     {
-        directive( "section1()" );
+        write( "<div class=\"section\">" );
     }
 
     public void section2()
     {
-        directive( "section2()" );
+        write( "<div class=\"section\">" );
     }
 
     public void section3()
     {
-        directive( "section3()" );
+        write( "<div class=\"section\">" );
     }
 
     public void section4()
     {
-        directive( "section4()" );
+        write( "<div class=\"section\">" );
     }
 
     public void section5()
     {
-        directive( "section5()" );
+        write( "<div class=\"section\">" );
     }
 
     public void section1_()
     {
-        directive( "section1_()" );
+        write( "</div>" );
     }
 
     public void section2_()
     {
-        directive( "section2_()" );
+        write( "</div>" );
     }
 
     public void section3_()
     {
-        directive( "section3_()" );
+        write( "</div>" );
     }
 
     public void section4_()
     {
-        directive( "section4_()" );
+        write( "</div>" );
     }
 
     public void section5_()
     {
-        directive( "section5_()" );
+        write( "</div>" );
     }
 
     public void sectionTitle1()
     {
-        directive( "sectionTitle1()" );
+        write( "<h2>" );
     }
 
     public void sectionTitle1_()
     {
-        directive( "sectionTitle1_()" );
+        write( "</h2>" );
     }
 
     public void sectionTitle2()
     {
-        directive( "sectionTitle2()" );
+        write( "<h3>" );
     }
 
     public void sectionTitle2_()
     {
-        directive( "sectionTitle2_()" );
+        write( "</h3>" );
     }
 
     public void sectionTitle3()
     {
-        directive( "sectionTitle3()" );
+        write( "<h4>" );
     }
 
     public void sectionTitle3_()
     {
-        directive( "sectionTitle3_()" );
+        write( "</h4>" );
     }
 
     public void sectionTitle4()
     {
-        directive( "sectionTitle4()" );
+        write( "<h5>" );
     }
 
     public void sectionTitle4_()
     {
-        directive( "sectionTitle4_()" );
+        write( "</h5>" );
     }
 
     public void sectionTitle5()
     {
-        directive( "sectionTitle5()" );
+        write( "<h6>" );
     }
 
     public void sectionTitle5_()
     {
-        directive( "sectionTitle5_()" );
+        write( "</h6>" );
     }
 
     // ----------------------------------------------------------------------
@@ -318,17 +322,17 @@ public class XhtmlSink
 
     public void list()
     {
-        directive( "list()" );
+        write( "<ul>" );
     }
 
     public void list_()
     {
-        directive( "list_()" );
+        write( "</ul>" );
     }
 
     public void listItem()
     {
-        directive( "listItem()" );
+        write( "<li>" );
 
         itemFlag = true;
         // What follows is at least a paragraph.
@@ -336,22 +340,22 @@ public class XhtmlSink
 
     public void listItem_()
     {
-        directive( "listItem_()" );
+        write( "</li>" );
     }
 
     public void numberedList( int numbering )
     {
-        directive( "numberedList()" );
+        write( "<ol>" );
     }
 
     public void numberedList_()
     {
-        directive( "numberedList_()" );
+        write( "</ol>" );
     }
 
     public void numberedListItem()
     {
-        directive( "numberedListItem()" );
+        write( "<li>" );
 
         itemFlag = true;
         // What follows is at least a paragraph.
@@ -359,32 +363,32 @@ public class XhtmlSink
 
     public void numberedListItem_()
     {
-        directive( "numberedListItem_()" );
+        write( "</li>" );
     }
 
     public void definitionList()
     {
-        directive( "definitionList()" );
+        write( "<dl>" );
     }
 
     public void definitionList_()
     {
-        directive( "definitionList_()" );
+        write( "</dl>" );
     }
 
     public void definedTerm()
     {
-        directive( "definedTerm()" );
+        write( "<dt>" );
     }
 
     public void definedTerm_()
     {
-        directive( "definedTerm_()" );
+        write( "</dt>" );
     }
 
     public void definition()
     {
-        directive( "definition()" );
+        write( "<dd>" );
 
         itemFlag = true;
         // What follows is at least a paragraph.
@@ -392,14 +396,14 @@ public class XhtmlSink
 
     public void definition_()
     {
-        directive( "definition_()" );
+        write( "</dd>" );
     }
 
     public void paragraph()
     {
         if ( !itemFlag )
         {
-            directive( "paragraph()" );
+            write( "<p>" );
         }
     }
 
@@ -411,7 +415,7 @@ public class XhtmlSink
         }
         else
         {
-            directive( "paragraph_()" );
+            write( "</p>" );
         }
     }
 
@@ -421,20 +425,12 @@ public class XhtmlSink
 
         boxedFlag = boxed;
 
-        directive( "verbatim()" );
-
-        if ( boxed )
-        {
-        }
+        write( "<div class=\"source\"><pre>" );
     }
 
     public void verbatim_()
     {
-        directive( "verbatim_()" );
-
-        if ( boxedFlag )
-        {
-        }
+        write( "</pre></div>" );
 
         verbatimFlag = false;
 
@@ -443,17 +439,17 @@ public class XhtmlSink
 
     public void horizontalRule()
     {
-        directive( "horizontalRule()" );
+        write( "<hr />" );
     }
 
     public void table()
     {
-        directive( "table()" );
+        write( "<table class=\"bodyTable\">" );
     }
 
     public void table_()
     {
-        directive( "table_()" );
+        write( "</table>");
     }
 
     public void tableRows( int[] justification, boolean grid )
@@ -493,7 +489,7 @@ public class XhtmlSink
 
     public void tableRow_()
     {
-        directive( "tableRow_()" );
+        write( "</tr>" );
 
         cellCount = 0;
     }
@@ -583,7 +579,7 @@ public class XhtmlSink
     {
         if ( !headFlag )
         {
-            write( StringUtils.replaceOnce( directiveValue( "anchor()" ), "$name", name ) );
+            write( "<a name=\"" + name + "\">" );
         }
     }
 
@@ -591,7 +587,7 @@ public class XhtmlSink
     {
         if ( !headFlag )
         {
-            directive( "link_()" );
+            write( "</a>" );
         }
     }
 
@@ -599,7 +595,15 @@ public class XhtmlSink
     {
         if ( !headFlag )
         {
-            write( StringUtils.replaceOnce( directiveValue( "link()" ), "$name", name ) );
+            write( "<a href=\"" + name + "\">" );
+        }
+    }
+
+    public void link( String name, String target )
+    {
+        if ( !headFlag )
+        {
+            write( "<a href=\"" + name + "\" target=\"" + target + "\">" );
         }
     }
 
@@ -607,7 +611,7 @@ public class XhtmlSink
     {
         if ( !headFlag )
         {
-            directive( "link_()" );
+            write( "</a>" );
         }
     }
 
@@ -615,7 +619,7 @@ public class XhtmlSink
     {
         if ( !headFlag )
         {
-            directive( "italic()" );
+            write( "<i>" );
         }
     }
 
@@ -623,7 +627,7 @@ public class XhtmlSink
     {
         if ( !headFlag )
         {
-            directive( "italic_()" );
+            write( "</i>" );
         }
     }
 
@@ -631,7 +635,7 @@ public class XhtmlSink
     {
         if ( !headFlag )
         {
-            directive( "bold()" );
+            write( "<b>" );
         }
     }
 
@@ -639,7 +643,7 @@ public class XhtmlSink
     {
         if ( !headFlag )
         {
-            directive( "bold_()" );
+            write( "</b>" );
         }
     }
 
@@ -647,7 +651,7 @@ public class XhtmlSink
     {
         if ( !headFlag )
         {
-            directive( "monospaced()" );
+            write( "<tt>" );
         }
     }
 
@@ -655,7 +659,7 @@ public class XhtmlSink
     {
         if ( !headFlag )
         {
-            directive( "monospaced_()" );
+            write( "</tt>" );
         }
     }
 
@@ -667,7 +671,7 @@ public class XhtmlSink
         }
         else
         {
-            directive( "lineBreak()" );
+            write( "<br />" );
         }
     }
 
@@ -679,7 +683,7 @@ public class XhtmlSink
         }
         else
         {
-            directive( "nonBreakingSpace()" );
+            write( "&#160;" );
         }
     }
 
