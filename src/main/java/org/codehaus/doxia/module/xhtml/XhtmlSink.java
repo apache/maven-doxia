@@ -63,6 +63,11 @@ public class XhtmlSink
         this.renderingContext = renderingContext;
     }
 
+    protected StringBuffer getBuffer()
+    {
+        return buffer;
+    }
+    
     protected void resetState()
     {
         headFlag = false;
