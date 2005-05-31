@@ -67,12 +67,17 @@ public class XhtmlSink
     {
         return buffer;
     }
-    
+
+    protected void setHeadFlag( boolean headFlag )
+    {
+        this.headFlag = headFlag;
+    }
+
     protected void resetState()
     {
         headFlag = false;
 
-        buffer = new StringBuffer();
+        resetBuffer();
 
         itemFlag = false;
 
@@ -81,6 +86,11 @@ public class XhtmlSink
         verbatimFlag = false;
 
         cellCount = 0;
+    }
+
+    protected void resetBuffer()
+    {
+        buffer = new StringBuffer();
     }
 
     public void head()
@@ -110,7 +120,7 @@ public class XhtmlSink
 
         write( "</title>" );
 
-        buffer = new StringBuffer();
+        resetBuffer();
 
         hasTitle = true;
     }
@@ -122,7 +132,7 @@ public class XhtmlSink
             write( "<meta name=\"author\" content=\"" );
             write( buffer.toString() );
             write( "\" />\n" );
-            buffer = new StringBuffer();
+            resetBuffer();
         }
     }
 
@@ -133,7 +143,7 @@ public class XhtmlSink
             write( "<meta name=\"date\" content=\"" );
             write( buffer.toString() );
             write( "\" />\n" );
-            buffer = new StringBuffer();
+            resetBuffer();
         }
     }
 
