@@ -62,6 +62,10 @@ public class BannerRenderer
                 {
                     w.addAttribute( "alt", image.getAlt() );
                 }
+                else
+                {
+                    w.addAttribute( "alt", "" );
+                }
 
                 if ( image.getTitle() != null )
                 {

@@ -207,12 +207,13 @@ public class FmlParser
         for ( Iterator partIterator = faqs.getParts().iterator(); partIterator.hasNext(); )
         {
             Part part = (Part) partIterator.next();
-            sink.paragraph();
             if ( StringUtils.isNotEmpty( part.getTitle() ) )
             {
+                sink.paragraph();
                 sink.bold();
                 sink.text( part.getTitle() );
                 sink.bold_();
+                sink.paragraph_();
             }
 
             sink.numberedList( Sink.NUMBERING_DECIMAL );
@@ -226,7 +227,6 @@ public class FmlParser
                 sink.numberedListItem_();
             }
             sink.numberedList_();
-            sink.paragraph_();
         }
         sink.section1_();
 
@@ -255,14 +255,14 @@ public class FmlParser
                 sink.paragraph();
                 sink.rawText( faq.getAnswer() );
                 sink.paragraph_();
-                sink.definition_();
                 if ( faqIterator.hasNext() )
                 {
                     sink.horizontalRule();
                 }
+                sink.definition_();
             }
             sink.definitionList_();
-            sink.section1();
+            sink.section1_();
         }
 
         sink.body_();

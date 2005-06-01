@@ -23,7 +23,7 @@ public abstract class AbstractParserTestCase
     {
         Sink sink = new SinkAdapter();
 
-        Reader reader = new FileReader( getTestFile( basedir, getDocument() ) );
+        Reader reader = new FileReader( getTestFile( getBasedir(), getDocument() ) );
 
         getParser().parse( reader, sink );
     }
