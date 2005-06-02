@@ -12,6 +12,8 @@ import java.util.Map;
 
 /**
  * @plexus.component
+ *   role="org.codehaus.doxia.macro.Macro"
+ *   role-hint="snippet"
  */
 public class SnippetMacro
     extends AbstractMacro

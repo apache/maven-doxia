@@ -12,19 +12,30 @@ import org.codehaus.doxia.sink.Sink;
 import java.io.Reader;
 
 /**
- * @plexus.component
  * @author <a href="mailto:jason@maven.org">Jason van Zyl</a>
  * @version $Id: DefaultDoxia.java,v 1.7 2004/11/02 05:00:40 jvanzyl Exp $
+ * 
+ * @plexus.component
+ *   role="org.codehaus.doxia.Doxia"
  */
 public class DefaultDoxia
     implements Doxia
 {
     // protected SinkManager sinkManager;
 
+    /**
+     * @plexus.requirement
+     */
     protected ParserManager parserManager;
 
+    /**
+     * @plexus.requirement
+     */
     protected MacroManager macroManager;
 
+    /**
+     * @plexus.requirement
+     */
     protected PluginManager pluginManager;
 
     // ----------------------------------------------------------------------

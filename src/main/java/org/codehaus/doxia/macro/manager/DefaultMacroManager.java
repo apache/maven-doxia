@@ -7,11 +7,17 @@ import java.util.Map;
 /**
  * @author <a href="mailto:jason@maven.org">Jason van Zyl</a>
  * @version $Id: DefaultMacroManager.java,v 1.5 2004/11/02 05:00:40 jvanzyl Exp $
+ * 
  * @plexus.component
+ *   role="org.codehaus.doxia.macro.manager.MacroManager"
  */
 public class DefaultMacroManager
     implements MacroManager
 {
+    /**
+     * @plexus.requirement
+     *   role="org.codehaus.doxia.macro.Macro"
+     */
     private Map macros;
 
     public Macro getMacro( String id )

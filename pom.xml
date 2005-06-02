@@ -43,9 +43,8 @@
     <plugins>
       <!-- TODO: update once we ascertain the correct version to use, and make any necessary CDC updates -->
       <plugin>
-        <groupId>plexus</groupId>
-        <artifactId>plexus-maven-plugin</artifactId>
-        <version>1.0-alpha-1-20050513.055437-1</version>
+        <artifactId>maven-plexus-plugin</artifactId>
+        <version>1.1-alpha-3-SNAPSHOT</version>
         <goals>
           <goal>
             <id>descriptor</id>

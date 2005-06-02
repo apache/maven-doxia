@@ -21,6 +21,8 @@ import java.util.StringTokenizer;
 
 /**
  * @plexus.component
+ *   role="org.codehaus.doxia.parser.Parser"
+ *   role-hint="apt"
  */
 public class AptParser
     extends AbstractParser

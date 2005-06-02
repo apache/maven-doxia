@@ -6,6 +6,8 @@ import java.util.Iterator;
 
 /**
  * @plexus.component
+ *   role="org.codehaus.doxia.macro.Macro"
+ *   role-hint="echo"
  */
 public class EchoMacro
     extends AbstractMacro

@@ -27,6 +27,8 @@ import java.util.Vector;
 
 /**
  * @plexus.component
+ *   role="org.codehaus.doxia.sink.Sink"
+ *   role-hint="rtf"
  */
 public class RtfSink extends SinkAdapter
 {

@@ -1,6 +1,3 @@
-/*
- * CopyrightPlugin (c) 2004 Your Corporation. All Rights Reserved.
- */
 package org.codehaus.doxia.site.renderer;
 
 import org.codehaus.doxia.Doxia;
@@ -32,13 +29,21 @@ import java.util.Map;
 /**
  * @author <a href="mailto:jason@maven.org">Jason van Zyl</a>
  * @version $Id: DefaultSiteRenderer.java,v 1.6 2004/11/02 05:00:40 jvanzyl Exp $
+ * 
  * @plexus.component
+ *   role="org.codehaus.doxia.site.renderer.SiteRenderer"
  */
 public class DefaultSiteRenderer
     implements SiteRenderer
 {
+    /**
+     * @plexus.requirement
+     */
     private SiteModuleManager siteModuleManager;
 
+    /**
+     * @plexus.requirement
+     */
     private Doxia doxia;
 
     private StringWriter writer = new StringWriter();
