@@ -1,6 +1,3 @@
-/*
- * CopyrightPlugin (c) 2004 Your Corporation. All Rights Reserved.
- */
 package org.codehaus.doxia;
 
 import org.codehaus.doxia.module.apt.AptParser;
@@ -53,7 +50,7 @@ public abstract class AbstractSinkTestCase
     {
         if ( testWriter == null )
         {
-            File outputDirectory = new File( basedir, "target/output" );
+            File outputDirectory = new File( getBasedirFile(), "target/output" );
 
             if ( !outputDirectory.exists() )
             {

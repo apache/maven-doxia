@@ -1,6 +1,3 @@
-/*
- * CopyrightPlugin (c) 2004 Your Corporation. All Rights Reserved.
- */
 package org.codehaus.doxia;
 
 import org.codehaus.doxia.module.rtf.RtfSink;
@@ -23,6 +20,6 @@ public class RtfSinkTest
 
     protected Sink createSink() throws Exception
     {
-        return new RtfSink( new FileOutputStream( new File( basedir, "target/output/test.rtf" ) ) );
+        return new RtfSink( new FileOutputStream( new File( getBasedirFile(), "target/output/test.rtf" ) ) );
     }
 }
