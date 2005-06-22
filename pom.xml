@@ -1,8 +1,10 @@
+<?xml version="1.0" encoding="UTF-8"?>
+
 <project>
   <modelVersion>4.0.0</modelVersion>
   <groupId>doxia</groupId>
   <artifactId>doxia-core</artifactId>
-  <version>1.0-alpha-3-SNAPSHOT</version>
+  <version>1.0-alpha-3</version>
   <name>Doxia Core</name>
   <issueManagement>
     <system>jira</system>
@@ -42,14 +44,18 @@
   <build>
     <plugins>
       <!-- TODO: update once we ascertain the correct version to use, and make any necessary CDC updates -->
+
       <plugin>
         <artifactId>maven-plexus-plugin</artifactId>
         <!-- version>1.1-alpha-3-SNAPSHOT</version -->
+
         <goals>
           <goal>
             <id>descriptor</id>
           </goal>
         </goals>
+        <groupId>org.apache.maven.plugins</groupId>
+        <version>1.1-alpha-3-20050620.064306-5</version>
       </plugin>
     </plugins>
   </build>
@@ -65,4 +71,3 @@
     </repository>
   </distributionManagement>
 </project>
-
