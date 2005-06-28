@@ -590,6 +590,47 @@ public class XhtmlSink
         write( "</caption>" );
     }
 
+    /**
+     * @see org.codehaus.doxia.sink.SinkAdapter#figure()
+     */
+    public void figure()
+    {
+        write( "<img" );
+    }
+
+    /**
+     * @see org.codehaus.doxia.sink.SinkAdapter#figure_()
+     */
+    public void figure_()
+    {
+        write( " />" );
+    }
+
+
+    /**
+     * @see org.codehaus.doxia.sink.SinkAdapter#figureCaption()
+     */
+    public void figureCaption()
+    {
+        write( " alt=\"" );
+    }
+
+    /**
+     * @see org.codehaus.doxia.sink.SinkAdapter#figureCaption_()
+     */
+    public void figureCaption_()
+    {
+        write( "\"" );
+    }
+
+    /**
+     * @see org.codehaus.doxia.sink.SinkAdapter#figureGraphics(java.lang.String)
+     */
+    public void figureGraphics( String name )
+    {
+        write( " src=\"" + name + "\"" );
+    }
+
     public void anchor( String name )
     {
         if ( !headFlag )
