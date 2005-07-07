@@ -256,7 +256,7 @@ public class FmlParser
                 sink.definedTerm_();
                 sink.definition();
                 sink.paragraph();
-                sink.rawText( faq.getAnswer() );
+                writeAnswer( sink, faq.getAnswer() );
                 sink.paragraph_();
                 if ( faqIterator.hasNext() )
                 {
@@ -269,5 +269,23 @@ public class FmlParser
         }
 
         sink.body_();
+    }
+
+    private void writeAnswer( Sink sink, String answer )
+    {
+        int startSource = answer.indexOf( "<source>" );
+        int endSource = answer.indexOf( "</source>" );
+        if ( startSource != -1 )
+        {
+            sink.rawText( answer.substring( 0, startSource ) );
+            sink.verbatim( true );
+            sink.text( answer.substring( startSource + "<source>".length(), endSource ) );
+            sink.verbatim_();
+            sink.rawText( answer.substring( endSource + "</source>".length() ) );
+        }
+        else
+        {
+            sink.rawText( answer );
+        }
     }
 }
