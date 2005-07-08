@@ -2,7 +2,7 @@ package org.codehaus.doxia.macro.manager;
 
 /**
  * @author <a href="mailto:jason@maven.org">Jason van Zyl</a>
- * @version $Id: MacroNotFoundException.java,v 1.1 2004/09/14 14:26:38 jvanzyl Exp $
+ * @version $Id$
  */
 public class MacroNotFoundException
     extends Exception

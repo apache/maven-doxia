@@ -13,7 +13,7 @@ import java.io.Writer;
 
 /**
  * @author <a href="mailto:jason@maven.org">Jason van Zyl</a>
- * @version $Id: AbstractSinkTestCase.java,v 1.4 2004/09/22 00:01:43 jvanzyl Exp $
+ * @version $Id$
  */
 public abstract class AbstractSinkTestCase
     extends PlexusTestCase

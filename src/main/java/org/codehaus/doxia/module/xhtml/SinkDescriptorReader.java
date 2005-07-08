@@ -7,7 +7,7 @@ import java.util.Map;
 
 /**
  * @author <a href="mailto:jason@maven.org">Jason van Zyl</a>
- * @version $Id: SinkDescriptorReader.java,v 1.1 2004/09/22 00:01:42 jvanzyl Exp $
+ * @version $Id$
  */
 public class SinkDescriptorReader
 {

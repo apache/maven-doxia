@@ -12,7 +12,7 @@ import java.io.Writer;
  * A doxia Sink which produces an xdoc document.
  *
  * @author <a href="mailto:james@jamestaylor.org">James Taylor</a>
- * @version $Id: XdocSink.java,v 1.7 2004/11/02 03:40:48 jvanzyl Exp $
+ * @version $Id$
  * @componentx
  */
 public class XdocSink

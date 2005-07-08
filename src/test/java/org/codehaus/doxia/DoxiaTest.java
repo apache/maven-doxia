@@ -4,7 +4,7 @@ import org.codehaus.plexus.PlexusTestCase;
 
 /**
  * @author <a href="mailto:jason@maven.org">Jason van Zyl</a>
- * @version $Id: DoxiaTest.java,v 1.2 2004/11/02 03:40:48 jvanzyl Exp $
+ * @version $Id$
  */
 public class DoxiaTest
     extends PlexusTestCase

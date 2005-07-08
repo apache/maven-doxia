@@ -7,7 +7,7 @@ import java.util.Map;
 
 /**
  * @author <a href="mailto:jason@maven.org">Jason van Zyl</a>
- * @version $Id: MacroRequest.java,v 1.2 2004/09/15 21:16:44 jvanzyl Exp $
+ * @version $Id$
  */
 public class MacroRequest
 {

@@ -7,7 +7,7 @@ import java.io.File;
 
 /**
  * @author <a href="mailto:jason@maven.org">Jason van Zyl</a>
- * @version $Id: SiteRenderingTest.java,v 1.6 2004/09/15 15:07:56 jvanzyl Exp $
+ * @version $Id$
  */
 public class SiteRenderingTest
     extends PlexusTestCase

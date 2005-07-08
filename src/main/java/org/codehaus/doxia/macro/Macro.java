@@ -7,7 +7,7 @@ import org.codehaus.doxia.sink.Sink;
 
 /**
  * @author <a href="mailto:jason@maven.org">Jason van Zyl</a>
- * @version $Id: Macro.java,v 1.3 2004/09/15 15:07:55 jvanzyl Exp $
+ * @version $Id$
  */
 public interface Macro
 {

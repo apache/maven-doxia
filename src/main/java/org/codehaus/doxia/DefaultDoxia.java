@@ -13,7 +13,7 @@ import java.io.Reader;
 
 /**
  * @author <a href="mailto:jason@maven.org">Jason van Zyl</a>
- * @version $Id: DefaultDoxia.java,v 1.7 2004/11/02 05:00:40 jvanzyl Exp $
+ * @version $Id$
  * 
  * @plexus.component
  *   role="org.codehaus.doxia.Doxia"

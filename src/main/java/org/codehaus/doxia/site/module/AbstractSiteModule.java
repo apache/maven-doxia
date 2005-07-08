@@ -2,7 +2,7 @@ package org.codehaus.doxia.site.module;
 
 /**
  * @author <a href="mailto:jason@maven.org">Jason van Zyl</a>
- * @version $Id: AbstractSiteModule.java,v 1.6 2004/11/02 05:00:40 jvanzyl Exp $
+ * @version $Id$
  * @plexus.component
  */
 public abstract class AbstractSiteModule

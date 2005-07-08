@@ -16,7 +16,7 @@ import java.util.Map;
  * Sink.
  *
  * @author <a href="mailto:jason@maven.org">Jason van Zyl</a>
- * @version $Id: XdocParser.java,v 1.11 2004/11/02 05:00:40 jvanzyl Exp $
+ * @version $Id$
  * 
  * @plexus.component
  *   role="org.codehaus.doxia.parser.Parser"

@@ -4,7 +4,7 @@ import org.codehaus.doxia.macro.Macro;
 
 /**
  * @author <a href="mailto:jason@maven.org">Jason van Zyl</a>
- * @version $Id: MacroManager.java,v 1.2 2004/09/15 19:32:42 jvanzyl Exp $
+ * @version $Id$
  */
 public interface MacroManager
 {

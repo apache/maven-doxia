@@ -7,7 +7,7 @@ import org.codehaus.doxia.parser.AbstractParserTestCase;
 /**
  * @author <a href="mailto:jason@maven.org">Jason van Zyl</a>
  * @author <a href="mailto:evenisse@codehaus.org">Emmanuel Venisse</a>
- * @version $Id: XdocParserTest.java,v 1.4 2004/09/14 14:26:38 jvanzyl Exp $
+ * @version $Id$
  */
 public class XdocParserTest
     extends AbstractParserTestCase

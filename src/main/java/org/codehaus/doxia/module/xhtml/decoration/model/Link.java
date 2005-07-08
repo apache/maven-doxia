@@ -3,7 +3,7 @@ package org.codehaus.doxia.module.xhtml.decoration.model;
 
 /**
  * @author <a href="mailto:jason@maven.org">Jason van Zyl</a>
- * @version $Id: Link.java,v 1.1.1.1 2004/09/09 17:09:40 jvanzyl Exp $
+ * @version $Id$
  */
 public class Link
 {

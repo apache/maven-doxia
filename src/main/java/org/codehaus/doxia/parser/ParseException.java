@@ -2,7 +2,7 @@ package org.codehaus.doxia.parser;
 
 /**
  * @author <a href="mailto:jason@maven.org">Jason van Zyl</a>
- * @version $Id: ParseException.java,v 1.3 2005/02/16 01:46:02 brett Exp $
+ * @version $Id$
  */
 public class ParseException
     extends Exception

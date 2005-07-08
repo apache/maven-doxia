@@ -6,7 +6,7 @@ import java.util.Map;
 
 /**
  * @author <a href="mailto:jason@maven.org">Jason van Zyl</a>
- * @version $Id: DefaultMacroManager.java,v 1.5 2004/11/02 05:00:40 jvanzyl Exp $
+ * @version $Id$
  * 
  * @plexus.component
  *   role="org.codehaus.doxia.macro.manager.MacroManager"

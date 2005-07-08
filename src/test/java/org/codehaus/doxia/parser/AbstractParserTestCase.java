@@ -9,7 +9,7 @@ import java.io.Reader;
 
 /**
  * @author <a href="mailto:evenisse@codehaus.org">Emmanuel Venisse</a>
- * @version $Id: AbstractSinkTestCase.java,v 1.4 2004/09/22 00:01:43 jvanzyl Exp $
+ * @version $Id$
  */
 public abstract class AbstractParserTestCase
     extends PlexusTestCase

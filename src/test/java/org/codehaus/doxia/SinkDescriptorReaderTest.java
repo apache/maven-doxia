@@ -14,7 +14,7 @@ import junit.framework.TestCase;
 
 /**
  * @author <a href="mailto:jason@maven.org">Jason van Zyl</a>
- * @version $Id: SinkDescriptorReaderTest.java,v 1.1 2004/09/22 00:01:43 jvanzyl Exp $
+ * @version $Id$
  */
 public class SinkDescriptorReaderTest
     extends TestCase

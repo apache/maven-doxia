@@ -8,7 +8,7 @@ import org.codehaus.doxia.sink.Sink;
 
 /**
  * @author <a href="mailto:jason@maven.org">Jason van Zyl</a>
- * @version $Id: LatexSinkTest.java,v 1.2 2004/09/14 14:26:38 jvanzyl Exp $
+ * @version $Id$
  */
 public class LatexSinkTest
     extends AbstractSinkTestCase

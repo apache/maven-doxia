@@ -6,7 +6,7 @@ import java.util.Collection;
 
 /**
  * @author <a href="mailto:jason@maven.org">Jason van Zyl</a>
- * @version $Id: SiteModuleManager.java,v 1.1 2004/09/15 01:04:04 jvanzyl Exp $
+ * @version $Id$
  */
 public interface SiteModuleManager
 {

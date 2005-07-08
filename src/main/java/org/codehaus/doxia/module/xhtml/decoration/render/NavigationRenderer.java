@@ -7,7 +7,7 @@ import org.codehaus.plexus.util.xml.XMLWriter;
 
 /**
  * @author <a href="mailto:jason@maven.org">Jason van Zyl</a>
- * @version $Id: NavigationRenderer.java,v 1.2 2004/11/02 03:40:48 jvanzyl Exp $
+ * @version $Id$
  */
 public class NavigationRenderer
     implements DecorationRenderer

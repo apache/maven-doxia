@@ -8,7 +8,7 @@ import org.codehaus.doxia.sink.Sink;
 
 /**
  * @author <a href="mailto:jason@maven.org">Jason van Zyl</a>
- * @version $Id: AbstractParser.java,v 1.3 2004/11/02 05:00:40 jvanzyl Exp $
+ * @version $Id$
  * 
  * @plexus.component
  */

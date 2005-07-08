@@ -16,7 +16,7 @@ import java.io.Reader;
  * Sink.
  * 
  * @author <a href="mailto:jason@maven.org">Jason van Zyl</a>
- * @version $Id: DocBookParser.java,v 1.4 2004/11/02 03:40:48 jvanzyl Exp $
+ * @version $Id$
  * 
  * @plexus.component
  *   role="org.codehaus.doxia.parser.Parser"

@@ -3,10 +3,9 @@ package org.codehaus.doxia;
 import org.codehaus.doxia.module.fml.FmlParser;
 import org.codehaus.doxia.parser.Parser;
 import org.codehaus.doxia.parser.AbstractParserTestCase;
-
 /**
  * @author <a href="mailto:evenisse@codehaus.org">Jason van Zyl</a>
- * @version $Id: XdocParserTest.java,v 1.4 2004/09/14 14:26:38 jvanzyl Exp $
+ * @version $Id$
  */
 public class FmlParserTest
     extends AbstractParserTestCase

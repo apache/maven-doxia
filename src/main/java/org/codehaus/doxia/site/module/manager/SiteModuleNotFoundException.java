@@ -5,7 +5,7 @@ package org.codehaus.doxia.site.module.manager;
 
 /**
  * @author <a href="mailto:jason@maven.org">Jason van Zyl</a>
- * @version $Id: SiteModuleNotFoundException.java,v 1.1 2004/09/15 01:04:04 jvanzyl Exp $
+ * @version $Id$
  */
 public class SiteModuleNotFoundException
     extends Exception

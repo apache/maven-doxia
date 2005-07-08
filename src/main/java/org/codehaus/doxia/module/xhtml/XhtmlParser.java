@@ -1,6 +1,3 @@
-/*
- * Copyright (c) 2004 Your Corporation. All Rights Reserved.
- */
 package org.codehaus.doxia.module.xhtml;
 
 import org.codehaus.doxia.parser.Parser;
@@ -16,7 +13,7 @@ import java.io.Reader;
  * Sink.
  * 
  * @author <a href="mailto:jason@maven.org">Jason van Zyl</a>
- * @version $Id: XhtmlParser.java,v 1.3 2004/11/02 03:40:48 jvanzyl Exp $
+ * @version $Id$
  */
 public class XhtmlParser
     implements Parser
