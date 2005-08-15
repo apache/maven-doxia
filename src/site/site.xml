@@ -1,11 +1,12 @@
 <?xml version="1.0" encoding="ISO-8859-1"?>
-<project name="Maven">
+<project name="Doxia">
   <bannerLeft>
     <name>Doxia</name>
     <href>http://doxia.codehaus.org</href>
   </bannerLeft>
   <bannerRight>
-    <name>http://codehaus.org/codehaus-small.png</name>
+    <name>Codehaus</name>
+    <src>http://codehaus.org/codehaus-small.png</src>
     <href>http://www.codehaus.org</href>
   </bannerRight>
   <body>
@@ -14,11 +15,8 @@
       <item name="The Codehaus" href="http://www.codehaus.org"/>
     </links>
     <menu name="Quick Links">
-      <item name="Download" href=""/>
-      <item name="Javadoc" href=""/>
-      <item name="Source Repository" href="http://cvs.doxia.codehaus.org"/>
+      <item name="APT Reference" href="format.html"/>
     </menu>
-    <menu name="Plugins">
-    </menu>
+    ${reports}
   </body>
 </project>

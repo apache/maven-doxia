@@ -42,14 +42,59 @@
     </dependency>
   </dependencies>
   <scm>
-    <connection>scm:svn://svn.codehaus.org/home/projects/doxia/scm/doxia-core/trunk</connection>
-    <developerConnection>scm:svn:https://svn.codehaus.org/doxia/doxia-core/trunk</developerConnection>
+    <connection>scm:svn:https://svn.codehaus.org/doxia/doxia-core/trunk</connection>
+    <developerConnection>scm:svn:svn+ssh://svn.codehaus.org/home/projects/doxia/scm/doxia-core/trunk</developerConnection>
     <url>http://svn.doxia.codehaus.org/</url>
   </scm>
+  <mailingLists>
+    <mailingList>
+      <name>Doxia Announce List</name>
+      <subscribe>mailto:announce-subscribe@doxia.codehaus.org</subscribe>
+      <unsubscribe>mailto:announce-unsubscribe@doxia.codehaus.org</unsubscribe>
+      <archive>http://archive.doxia.codehaus.org/announce/</archive>
+    </mailingList>
+    <mailingList>
+      <name>Doxia Developer List</name>
+      <subscribe>mailto:dev-subscribe@doxia.codehaus.org</subscribe>
+      <unsubscribe>mailto:dev-unsubscribe@doxia.codehaus.org</unsubscribe>
+      <archive>http://archive.doxia.codehaus.org/dev/</archive>
+    </mailingList>
+    <mailingList>
+      <name>Doxia User List</name>
+      <subscribe>mailto:user-subscribe@doxia.codehaus.org</subscribe>
+      <unsubscribe>mailto:user-unsubscribe@doxia.codehaus.org</unsubscribe>
+      <archive>http://archive.doxia.codehaus.org/user/</archive>
+    </mailingList>
+    <mailingList>
+      <name>Doxia Commits List</name>
+      <subscribe>mailto:scm-subscribe@doxia.codehaus.org</subscribe>
+      <unsubscribe>mailto:scm-unsubscribe@doxia.codehaus.org</unsubscribe>
+      <archive>http://archive.doxia.codehaus.org/scm/</archive>
+    </mailingList>
+  </mailingLists>
+  <developers>
+    <developer>
+      <!-- <id>jvanzyl<id> -->
+      <name>Jason van Zyl</name>
+      <email>jason@maven.org</email>
+      <roles>
+        <role>Developer</role>
+      </roles>
+      <timezone>-5</timezone>
+    </developer>
+    <developer>
+      <!-- <id>evenisse<id> -->
+      <name>Emmanuel Evenisse</name>
+      <email>emmanuel@venisse.net</email>
+      <roles>
+        <role>Developer</role>
+      </roles>
+      <timezone>1</timezone>
+    </developer>
+  </developers>
   <build>
     <plugins>
       <!-- TODO: update once we ascertain the correct version to use, and make any necessary CDC updates -->
-
       <plugin>
         <artifactId>maven-plexus-plugin</artifactId>
         <groupId>org.apache.maven.plugins</groupId>
@@ -75,4 +120,12 @@
       <url>scp://repo1.maven.org/home/projects/maven/repository-staging/to-ibiblio/maven2</url>
     </repository>
   </distributionManagement>
+  <reporting>
+    <plugins>
+      <plugin>
+        <groupId>org.apache.maven.plugins</groupId>
+        <artifactId>maven-project-info-reports-plugin</artifactId>
+      </plugin>
+    </plugins>
+  </reporting>
 </project>
