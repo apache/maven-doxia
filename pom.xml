@@ -92,13 +92,13 @@
       <timezone>1</timezone>
     </developer>
   </developers>
+
   <build>
     <plugins>
-      <!-- TODO: update once we ascertain the correct version to use, and make any necessary CDC updates -->
       <plugin>
         <artifactId>maven-plexus-plugin</artifactId>
         <groupId>org.apache.maven.plugins</groupId>
-        <version>1.1-alpha-3-SNAPSHOT</version>
+        <version>1.1-alpha-6-SNAPSHOT</version>
         <executions>
           <execution>
             <goals>
@@ -109,6 +109,7 @@
       </plugin>
     </plugins>
   </build>
+
   <distributionManagement>
     <site>
       <id>website</id>
@@ -119,7 +120,33 @@
       <name>Maven Central Repository</name>
       <url>scp://repo1.maven.org/home/projects/maven/repository-staging/to-ibiblio/maven2</url>
     </repository>
+    <snapshotRepository>
+      <id>snapshots</id>
+      <name>Maven Central Development Repository</name>
+      <url>scp://repo1.maven.org/home/projects/maven/repository-staging/snapshots/maven2</url>
+    </snapshotRepository>
   </distributionManagement>
+  <repositories>
+    <repository>
+      <id>snapshots</id>
+      <name>Maven Snapshot Development Repository</name>
+      <url>http://snapshots.maven.codehaus.org/maven2</url>
+      <releases>
+        <enabled>false</enabled>
+      </releases>
+    </repository>
+  </repositories>
+  <pluginRepositories>
+    <pluginRepository>
+      <id>snapshots-plugins</id>
+      <name>Maven Snapshot Plugins Development Repository</name>
+      <url>http://snapshots.maven.codehaus.org/maven2/plugins</url>
+      <releases>
+        <enabled>false</enabled>
+      </releases>
+    </pluginRepository>
+  </pluginRepositories>
+
   <reporting>
     <plugins>
       <plugin>
