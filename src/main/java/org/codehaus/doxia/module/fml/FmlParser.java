@@ -274,7 +274,7 @@ public class FmlParser
     private void writeAnswer( Sink sink, String answer )
     {
         int startSource = answer.indexOf( "<source>" );
-        int endSource = answer.indexOf( "</source>" );
+        int endSource = answer.lastIndexOf( "</source>" );
         if ( startSource != -1 )
         {
             sink.rawText( answer.substring( 0, startSource ) );
