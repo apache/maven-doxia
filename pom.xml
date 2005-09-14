@@ -22,7 +22,7 @@
     <dependency>
       <groupId>doxia</groupId>
       <artifactId>doxia-sink-api</artifactId>
-      <version>1.0-alpha-4-SNAPSHOT</version>
+      <version>1.0-alpha-4</version>
     </dependency>
     <dependency>
       <groupId>oro</groupId>
@@ -32,12 +32,12 @@
     <dependency>
       <groupId>plexus</groupId>
       <artifactId>plexus-utils</artifactId>
-      <version>1.0.1-SNAPSHOT</version>
+      <version>1.0.2</version>
     </dependency>
     <dependency>
       <groupId>plexus</groupId>
       <artifactId>plexus-container-default</artifactId>
-      <version>1.0-alpha-4</version>
+      <version>1.0-alpha-6</version>
       <scope>test</scope>
     </dependency>
   </dependencies>
@@ -98,7 +98,7 @@
       <plugin>
         <artifactId>maven-plexus-plugin</artifactId>
         <groupId>org.apache.maven.plugins</groupId>
-        <version>1.1-alpha-6-SNAPSHOT</version>
+        <version>1.1-alpha-5</version>
         <executions>
           <execution>
             <goals>
