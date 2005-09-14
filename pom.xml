@@ -1,11 +1,9 @@
-<?xml version="1.0" encoding="UTF-8"?>
-
 <project>
   <modelVersion>4.0.0</modelVersion>
   <groupId>doxia</groupId>
   <artifactId>doxia-core</artifactId>
-  <version>1.0-alpha-4-SNAPSHOT</version>
   <name>Doxia Core</name>
+  <version>1.0-alpha-4</version>
   <issueManagement>
     <system>jira</system>
     <url>http://jira.codehaus.org/browse/DOXIA</url>
@@ -18,34 +16,6 @@
       </notifier>
     </notifiers>
   </ciManagement>
-  <dependencies>
-    <dependency>
-      <groupId>doxia</groupId>
-      <artifactId>doxia-sink-api</artifactId>
-      <version>1.0-alpha-4-SNAPSHOT</version>
-    </dependency>
-    <dependency>
-      <groupId>oro</groupId>
-      <artifactId>oro</artifactId>
-      <version>2.0.7</version>
-    </dependency>
-    <dependency>
-      <groupId>plexus</groupId>
-      <artifactId>plexus-utils</artifactId>
-      <version>1.0.1-SNAPSHOT</version>
-    </dependency>
-    <dependency>
-      <groupId>plexus</groupId>
-      <artifactId>plexus-container-default</artifactId>
-      <version>1.0-alpha-4</version>
-      <scope>test</scope>
-    </dependency>
-  </dependencies>
-  <scm>
-    <connection>scm:svn:https://svn.codehaus.org/doxia/doxia-core/trunk</connection>
-    <developerConnection>scm:svn:svn+ssh://svn.codehaus.org/home/projects/doxia/scm/doxia-core/trunk</developerConnection>
-    <url>http://svn.doxia.codehaus.org/</url>
-  </scm>
   <mailingLists>
     <mailingList>
       <name>Doxia Announce List</name>
@@ -74,7 +44,6 @@
   </mailingLists>
   <developers>
     <developer>
-      <!-- <id>jvanzyl<id> -->
       <name>Jason van Zyl</name>
       <email>jason@maven.org</email>
       <roles>
@@ -83,7 +52,6 @@
       <timezone>-5</timezone>
     </developer>
     <developer>
-      <!-- <id>evenisse<id> -->
       <name>Emmanuel Evenisse</name>
       <email>emmanuel@venisse.net</email>
       <roles>
@@ -92,29 +60,70 @@
       <timezone>1</timezone>
     </developer>
   </developers>
-
+  <scm>
+    <connection>scm:svn:https://svn.codehaus.org/doxia/doxia-core/tags/doxia-core-1.0-alpha-4</connection>
+    <developerConnection>scm:svn:svn+ssh://svn.codehaus.org/home/projects/doxia/scm/doxia-core/tags/doxia-core-1.0-alpha-4</developerConnection>
+    <url>http://svn.doxia.codehaus.org/</url>
+  </scm>
   <build>
     <plugins>
       <plugin>
         <artifactId>maven-plexus-plugin</artifactId>
-        <groupId>org.apache.maven.plugins</groupId>
-        <version>1.1-alpha-6-SNAPSHOT</version>
+        <version>1.1-alpha-5</version>
         <executions>
           <execution>
             <goals>
               <goal>descriptor</goal>
-          </goals>
+            </goals>
           </execution>
         </executions>
       </plugin>
     </plugins>
   </build>
-
+  <repositories>
+    <repository>
+      <releases>
+        <enabled>false</enabled>
+      </releases>
+      <id>snapshots</id>
+      <name>Maven Snapshot Development Repository</name>
+      <url>http://snapshots.maven.codehaus.org/maven2</url>
+    </repository>
+  </repositories>
+  <pluginRepositories>
+    <pluginRepository>
+      <releases>
+        <enabled>false</enabled>
+      </releases>
+      <id>snapshots-plugins</id>
+      <name>Maven Snapshot Plugins Development Repository</name>
+      <url>http://snapshots.maven.codehaus.org/maven2/plugins</url>
+    </pluginRepository>
+  </pluginRepositories>
+  <dependencies>
+    <dependency>
+      <groupId>oro</groupId>
+      <artifactId>oro</artifactId>
+      <version>2.0.7</version>
+    </dependency>
+    <dependency>
+      <groupId>plexus</groupId>
+      <artifactId>plexus-utils</artifactId>
+      <version>1.0.2</version>
+    </dependency>
+    <dependency>
+      <groupId>doxia</groupId>
+      <artifactId>doxia-sink-api</artifactId>
+      <version>1.0-alpha-4</version>
+    </dependency>
+    <dependency>
+      <groupId>plexus</groupId>
+      <artifactId>plexus-container-default</artifactId>
+      <version>1.0-alpha-6</version>
+      <scope>test</scope>
+    </dependency>
+  </dependencies>
   <distributionManagement>
-    <site>
-      <id>website</id>
-      <url>scp://beaver.codehaus.org/home/projects/doxia/public_html</url>
-    </site>
     <repository>
       <id>repo1</id>
       <name>Maven Central Repository</name>
@@ -125,34 +134,9 @@
       <name>Maven Central Development Repository</name>
       <url>scp://repo1.maven.org/home/projects/maven/repository-staging/snapshots/maven2</url>
     </snapshotRepository>
+    <site>
+      <id>website</id>
+      <url>scp://beaver.codehaus.org/home/projects/doxia/public_html</url>
+    </site>
   </distributionManagement>
-  <repositories>
-    <repository>
-      <id>snapshots</id>
-      <name>Maven Snapshot Development Repository</name>
-      <url>http://snapshots.maven.codehaus.org/maven2</url>
-      <releases>
-        <enabled>false</enabled>
-      </releases>
-    </repository>
-  </repositories>
-  <pluginRepositories>
-    <pluginRepository>
-      <id>snapshots-plugins</id>
-      <name>Maven Snapshot Plugins Development Repository</name>
-      <url>http://snapshots.maven.codehaus.org/maven2/plugins</url>
-      <releases>
-        <enabled>false</enabled>
-      </releases>
-    </pluginRepository>
-  </pluginRepositories>
-
-  <reporting>
-    <plugins>
-      <plugin>
-        <groupId>org.apache.maven.plugins</groupId>
-        <artifactId>maven-project-info-reports-plugin</artifactId>
-      </plugin>
-    </plugins>
-  </reporting>
 </project>
