@@ -3,7 +3,7 @@
   <groupId>doxia</groupId>
   <artifactId>doxia-sink-api</artifactId>
   <name>Doxia Core</name>
-  <version>1.0-alpha-4</version>
+  <version>1.0-alpha-5-SNAPSHOT</version>
   <issueManagement>
     <system>jira</system>
     <url>http://jira.codehaus.org/browse/DOXIA</url>
@@ -17,8 +17,8 @@
     </notifiers>
   </ciManagement>
   <scm>
-    <connection>scm:svn://svn.codehaus.org/home/projects/doxia/scm/doxia-sink-api/tags/doxia-sink-api-1.0-alpha-4</connection>
-    <developerConnection>scm:svn:https://svn.codehaus.org/doxia/doxia-sink-api/tags/doxia-sink-api-1.0-alpha-4</developerConnection>
+    <connection>scm:svn://svn.codehaus.org/home/projects/doxia/scm/doxia-sink-api/trunk</connection>
+    <developerConnection>scm:svn:https://svn.codehaus.org/doxia/doxia-sink-api/trunk</developerConnection>
     <url>http://svn.doxia.codehaus.org/</url>
   </scm>
   <distributionManagement>
