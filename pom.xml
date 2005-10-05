@@ -68,8 +68,8 @@
   <build>
     <plugins>
       <plugin>
-        <artifactId>maven-plexus-plugin</artifactId>
-        <version>1.1-alpha-5</version>
+        <groupId>org.codehaus.plexus</groupId>
+        <artifactId>plexus-maven-plugin</artifactId>
         <executions>
           <execution>
             <goals>
