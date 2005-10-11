@@ -225,7 +225,7 @@ public class FmlParser
                 Faq faq = (Faq) faqIterator.next();
                 sink.numberedListItem();
                 sink.link( "#" + faq.getId() );
-                sink.text( faq.getQuestion() );
+                sink.rawText( faq.getQuestion() );
                 sink.link_();
                 sink.numberedListItem_();
             }
