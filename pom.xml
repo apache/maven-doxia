@@ -102,9 +102,9 @@
   </pluginRepositories>
   <dependencies>
     <dependency>
-      <groupId>plexus</groupId>
+      <groupId>org.codehaus.plexus</groupId>
       <artifactId>plexus-utils</artifactId>
-      <version>1.0.2</version>
+      <version>1.0.4-SNAPSHOT</version>
     </dependency>
     <dependency>
       <groupId>oro</groupId>
@@ -117,9 +117,9 @@
       <version>1.0-alpha-4</version>
     </dependency>
     <dependency>
-      <groupId>plexus</groupId>
+      <groupId>org.codehaus.plexus</groupId>
       <artifactId>plexus-container-default</artifactId>
-      <version>1.0-alpha-6</version>
+      <version>1.0-alpha-7</version>
       <scope>test</scope>
     </dependency>
   </dependencies>
