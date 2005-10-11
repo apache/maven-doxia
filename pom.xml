@@ -97,7 +97,7 @@
       </releases>
       <id>snapshots-plugins</id>
       <name>Maven Snapshot Plugins Development Repository</name>
-      <url>http://snapshots.maven.codehaus.org/maven2/plugins</url>
+      <url>http://snapshots.maven.codehaus.org/maven2</url>
     </pluginRepository>
   </pluginRepositories>
   <dependencies>
