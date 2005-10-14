@@ -143,10 +143,14 @@ public interface Sink
     void figureCaption_();
 
     void tableCell();
+    
+    void tableCell(String width);
 
     void tableCell_();
 
     void tableHeaderCell();
+    
+    void tableHeaderCell(String width);
 
     void tableHeaderCell_();
 
