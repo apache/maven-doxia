@@ -556,6 +556,56 @@ public class XhtmlSink
         write( ">" );
     }
 
+    public void tableCell(String width)
+    {
+        tableCell( false, width );
+    }
+
+    public void tableHeaderCell(String width)
+    {
+        tableCell( true, width );
+    }
+    
+    public void tableCell( boolean headerRow, String width )
+    {
+        String justif = null;
+
+        if ( cellJustif != null )
+        {
+            switch ( cellJustif[cellCount] )
+            {
+                case Parser.JUSTIFY_LEFT:
+                    justif = "left";
+                    break;
+                case Parser.JUSTIFY_RIGHT:
+                    justif = "right";
+                    break;
+                case Parser.JUSTIFY_CENTER:
+                    justif = "center";
+                    break;
+            }
+        }
+
+        String cellWidth = "width=\"" + width + "\"";
+            
+        if ( headerRow )
+        {
+            write( "<th " );
+        }
+        else
+        {
+            write( "<td " );
+        }
+        
+        if ( justif != null )
+        {
+            write( " align=\"" + justif + "\"" );
+        }
+
+        write( cellWidth + " >" );
+    }
+
+    
     public void tableCell_()
     {
         tableCell_( false );

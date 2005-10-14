@@ -259,11 +259,19 @@ public class SinkAdapter implements Sink
     {
     }
 
+    public void tableCell(String width)
+    {
+    }
+
     public void tableCell_()
     {
     }
 
     public void tableHeaderCell()
+    {
+    }
+
+    public void tableHeaderCell(String width)
     {
     }
 
