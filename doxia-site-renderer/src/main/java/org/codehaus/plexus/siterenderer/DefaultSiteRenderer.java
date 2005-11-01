@@ -52,18 +52,17 @@ import java.util.Locale;
 import java.util.Map;
 
 /**
- * @plexus.component
- *   role="org.codehaus.plexus.siterenderer.Renderer"
- * 
  * @author <a href="mailto:evenisse@codehaus.org">Emmanuel Venisse</a>
+ * @author <a href="mailto:vincent.siveton@gmail.com">Vincent Siveton</a>
  * @version $Id$
+ * @plexus.component role="org.codehaus.plexus.siterenderer.Renderer"
  */
 public class DefaultSiteRenderer
     extends AbstractLogEnabled
     implements Renderer
 {
     private static final String DEFAULT_OUTPUT_ENCODING = "UTF-8";
-    
+
     // ----------------------------------------------------------------------
     // Requirements
     // ----------------------------------------------------------------------
@@ -115,7 +114,7 @@ public class DefaultSiteRenderer
      * @see org.codehaus.plexus.siterenderer.Renderer#render(java.io.File, java.io.File, java.io.File, java.lang.String, java.util.Map)
      */
     public void render( File siteDirectory, File outputDirectory, File siteDescriptor, String templateName,
-                       Map templateProperties )
+                        Map templateProperties )
         throws RendererException, IOException
     {
         render( siteDirectory, outputDirectory, siteDescriptor, templateName, templateProperties, defaultLocale );
@@ -125,18 +124,18 @@ public class DefaultSiteRenderer
      * @see org.codehaus.plexus.siterenderer.Renderer#render(java.io.File, java.io.File, java.io.File, java.lang.String, java.util.Map, java.util.Locale)
      */
     public void render( File siteDirectory, File outputDirectory, File siteDescriptor, String templateName,
-                       Map templateProperties, Locale locale )
+                        Map templateProperties, Locale locale )
         throws RendererException, IOException
     {
-        render( siteDirectory, outputDirectory, new FileInputStream( siteDescriptor ), templateName,
-                templateProperties, locale );
+        render( siteDirectory, outputDirectory, new FileInputStream( siteDescriptor ), templateName, templateProperties,
+                locale );
     }
 
     /**
      * @see org.codehaus.plexus.siterenderer.Renderer#render(java.io.File, java.io.File, java.lang.String, java.lang.String, Map)
      */
     public void render( File siteDirectory, File outputDirectory, String siteDescriptor, String templateName,
-                       Map templateProperties )
+                        Map templateProperties )
         throws RendererException, IOException
     {
         render( siteDirectory, outputDirectory, siteDescriptor, templateName, templateProperties, defaultLocale );
@@ -146,7 +145,7 @@ public class DefaultSiteRenderer
      * @see org.codehaus.plexus.siterenderer.Renderer#render(java.io.File, java.io.File, java.lang.String, java.lang.String, java.util.Map, java.util.Locale)
      */
     public void render( File siteDirectory, File outputDirectory, String siteDescriptor, String templateName,
-                       Map templateProperties, Locale locale )
+                        Map templateProperties, Locale locale )
         throws RendererException, IOException
     {
         render( siteDirectory, outputDirectory, new StringInputStream( siteDescriptor ), templateName,
@@ -157,7 +156,7 @@ public class DefaultSiteRenderer
      * @see org.codehaus.plexus.siterenderer.Renderer#render(File, File, InputStream, String, Map)
      */
     public void render( File siteDirectory, File outputDirectory, InputStream siteDescriptor, String templateName,
-                       Map templateProperties )
+                        Map templateProperties )
         throws RendererException, IOException
     {
         render( siteDirectory, outputDirectory, siteDescriptor, templateName, templateProperties, defaultLocale );
@@ -167,26 +166,28 @@ public class DefaultSiteRenderer
      * @see org.codehaus.plexus.siterenderer.Renderer#render(java.io.File, java.io.File, java.io.InputStream, java.lang.String, java.util.Map, java.util.Locale)
      */
     public void render( File siteDirectory, File outputDirectory, InputStream siteDescriptor, String templateName,
-                       Map templateProperties, Locale locale )
+                        Map templateProperties, Locale locale )
         throws RendererException, IOException
     {
-        render( siteDirectory, outputDirectory, siteDescriptor, templateName, templateProperties, defaultLocale, DEFAULT_OUTPUT_ENCODING );
+        render( siteDirectory, outputDirectory, siteDescriptor, templateName, templateProperties, locale,
+                DEFAULT_OUTPUT_ENCODING );
     }
-    
+
     //per module
-    public void render( File siteDirectory, File outputDirectory, String module, String moduleExtension, String moduleParserId, 
-                    String siteDescriptor, String templateName, Map templateProperties, Locale locale, String outputEncoding )
-         throws RendererException, IOException
+    public void render( File siteDirectory, File outputDirectory, String module, String moduleExtension,
+                        String moduleParserId, String siteDescriptor, String templateName, Map templateProperties,
+                        Locale locale, String outputEncoding )
+        throws RendererException, IOException
     {
-        render( siteDirectory, outputDirectory, module, moduleExtension, moduleParserId, new StringInputStream( siteDescriptor ),
-                templateName, templateProperties, locale, outputEncoding);
+        render( siteDirectory, outputDirectory, module, moduleExtension, moduleParserId,
+                new StringInputStream( siteDescriptor ), templateName, templateProperties, locale, outputEncoding );
     }
 
     /**
      * @see org.codehaus.plexus.siterenderer.Renderer#render(java.io.File, java.io.File, java.io.InputStream, java.lang.String, java.util.Map, java.util.Locale, java.lang.String)
      */
     public void render( File siteDirectory, File outputDirectory, InputStream siteDescriptor, String templateName,
-                       Map templateProperties, Locale locale, String outputEncoding )
+                        Map templateProperties, Locale locale, String outputEncoding )
         throws RendererException, IOException
     {
         try
@@ -236,8 +237,8 @@ public class DefaultSiteRenderer
                         outputFile.getParentFile().mkdirs();
                     }
 
-                    
-                    generateDocument( new OutputStreamWriter( new FileOutputStream( outputFile ), outputEncoding ), templateName, templateProperties, sink, locale );
+                    generateDocument( new OutputStreamWriter( new FileOutputStream( outputFile ), outputEncoding ),
+                                      templateName, templateProperties, sink, locale );
                 }
                 catch ( Exception e )
                 {
@@ -253,10 +254,11 @@ public class DefaultSiteRenderer
             }
         }
     }
-    
+
     // per module renderer
-    public void render( File siteDirectory, File outputDirectory, String module, String moduleExtension, String moduleParserId, 
-                        InputStream siteDescriptor, String templateName, Map templateProperties, Locale locale, String outputEncoding )
+    public void render( File siteDirectory, File outputDirectory, String module, String moduleExtension,
+                        String moduleParserId, InputStream siteDescriptor, String templateName, Map templateProperties,
+                        Locale locale, String outputEncoding )
         throws RendererException, IOException
     {
         try
@@ -295,7 +297,8 @@ public class DefaultSiteRenderer
                 {
                     outputFile.getParentFile().mkdirs();
                 }
-                generateDocument( new OutputStreamWriter( new FileOutputStream( outputFile ), outputEncoding ), templateName, templateProperties, sink, locale );
+                generateDocument( new OutputStreamWriter( new FileOutputStream( outputFile ), outputEncoding ),
+                                  templateName, templateProperties, sink, locale );
             }
             catch ( Exception e )
             {
@@ -309,8 +312,8 @@ public class DefaultSiteRenderer
                 sink.close();
             }
         }
-    }    
-    
+    }
+
     /**
      * @see org.codehaus.plexus.siterenderer.Renderer#generateDocument(java.io.Writer, java.lang.String, java.util.Map, org.codehaus.plexus.siterenderer.sink.SiteRendererSink)
      */
@@ -324,7 +327,7 @@ public class DefaultSiteRenderer
      * @see org.codehaus.plexus.siterenderer.Renderer#generateDocument(java.io.Writer, java.lang.String, java.util.Map, org.codehaus.plexus.siterenderer.sink.SiteRendererSink, java.util.Locale)
      */
     public void generateDocument( Writer writer, String templateName, Map templateProperties, SiteRendererSink sink,
-                                 Locale locale )
+                                  Locale locale )
         throws RendererException
     {
         VelocityContext context = new VelocityContext();
@@ -408,14 +411,14 @@ public class DefaultSiteRenderer
             }
             catch ( Exception e )
             {
-                throw new RendererException( "Could not find the template '" + templateName + "' in "
-                                             + Thread.currentThread().getContextClassLoader() );
+                throw new RendererException( "Could not find the template '" + templateName + "' in " +
+                    Thread.currentThread().getContextClassLoader() );
             }
-    
+
             try
             {
                 template.merge( context, writer );
-    
+
                 writer.close();
             }
             catch ( Exception e )
@@ -462,7 +465,6 @@ public class DefaultSiteRenderer
     }
 
     private SiteRendererSink createSink( File moduleBaseDir, String document )
-        throws RendererException
     {
         currentDocument = document;
 
