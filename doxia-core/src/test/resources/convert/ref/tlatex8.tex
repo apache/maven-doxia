@@ -1,0 +1,216 @@
+\batchmode
+\newcommand{\psectioni}[1]{\section*{#1}}
+\newcommand{\psectionii}[1]{\subsection*{#1}}
+\newcommand{\psectioniii}[1]{\subsubsection*{#1}}
+\newcommand{\psectioniv}[1]{\paragraph*{#1}}
+\newcommand{\psectionv}[1]{\subparagraph*{#1}}
+\newcommand{\ptitle}[1]{\title{#1}}
+\newcommand{\pauthor}[1]{\author{#1}}
+\newcommand{\pdate}[1]{\date{#1}}
+\newcommand{\pmaketitle}{\maketitle}
+\newenvironment{plist}{\begin{itemize}}{\end{itemize}}
+\newenvironment{pnumberedlist}{\begin{enumerate}}{\end{enumerate}}
+\newcommand{\pdef}[1]{\textbf{#1}\hfill}
+\newenvironment{pdefinitionlist}
+{\begin{list}{}{\settowidth{\labelwidth}{\textbf{999.}}
+                \setlength{\leftmargin}{\labelwidth}
+                \addtolength{\leftmargin}{\labelsep}
+                \renewcommand{\makelabel}{\pdef}}}
+{\end{list}}
+\newenvironment{pfigure}{\begin{center}}{\end{center}}
+\newcommand{\pfigurecaption}[1]{\\* \vspace{\pparskipamount}
+                                \textit{#1}}
+\newenvironment{ptable}{\begin{center}}{\end{center}}
+\newenvironment{ptablerows}[1]{\begin{tabular}{#1}}{\end{tabular}}
+\newenvironment{pcell}[1]{\begin{tabular}[t]{#1}}{\end{tabular}}
+\newcommand{\ptablecaption}[1]{\\* \vspace{\pparskipamount}
+                               \textit{#1}}
+\newenvironment{pverbatim}{\begin{small}}{\end{small}}
+\newsavebox{\pbox}
+\newenvironment{pverbatimbox}
+{\begin{lrbox}{\pbox}\begin{minipage}{\linewidth}\begin{small}}
+{\end{small}\end{minipage}\end{lrbox}\fbox{\usebox{\pbox}}}
+\newcommand{\phorizontalrule}{\begin{center}
+                              \rule[0.5ex]{\linewidth}{1pt}
+                              \end{center}}
+\newcommand{\panchor}[1]{\index{#1}}
+\newcommand{\plink}[1]{#1}
+\newcommand{\pitalic}[1]{\textit{#1}}
+\newcommand{\pbold}[1]{\textbf{#1}}
+\newcommand{\pmonospaced}[1]{\texttt{\small #1}}
+\newcommand{\pfiguregraphics}[1]{\includegraphics{#1.eps}}
+
+\documentclass[letterpaper]{article}
+\usepackage[english]{babel}
+\usepackage{graphicx}
+\usepackage{ifthen}
+\usepackage[T1]{fontenc}
+\usepackage[latin1]{inputenc}
+
+\pagestyle{plain}
+
+\newlength{\pparskipamount}
+\setlength{\pparskipamount}{1ex}
+
+\begin{document}
+
+\newpage
+
+\psectioni{The docc\panchor{docc} utility}
+
+See also the docx utility.
+
+docc is auto\symbol{45}documented. Simply type \pmonospaced{docc} to list its
+generic options:
+
+\begin{pverbatim}
+\begin{verbatim}
+$ docc
+usage: docc target_format [generic_options] [format_options] {input_file}+
+
+target_format: latex, man, html, rtf or href (pseudo-format)
+
+Note that PTF comments are automatically extracted from C/C++ source files
+using docx if the extension of the input file name is .[hH]* or .[cC]*. Tcl
+source files are supported too if the extension of the input file name is .tcl
+or .TCL.
+
+generic_options:
+-c 
+Each input file is individually translated to a stand-alone
+documentation file (like 'cc -c').
+Default: all input files are translated to a single output file.
+-o <%255s>
+Specify the name of the output file (like 'cc -o').
+Default: the basename of the input file+a format specific suffix.
+-href (-h) <%255s>
+Specify the name of the hypertext references file to be loaded
+(generated during a first pass using the 'href' pseudo-format).
+Default: none.
+-sed (-s) <%255s>
+Specify the name of a file which contains sed commands. These
+sed commands are applied to all PTF source files (even if
+automatically extracted using docx) just before their translation
+to the target format.
+Default: none.
+-borders (-b) 
+Tell docx to add borders around extracted code.
+Default: no borders.
+
+Type 'docc target_format' to list the options related to
+target_format.
+\end{verbatim}
+\end{pverbatim}
+
+Then, for example, type \pmonospaced{docc rtf} to list the options related to
+the RTF format:
+
+\begin{pverbatim}
+\begin{verbatim}
+$ docc rtf
+-linear (-li) 
+The output RTF file does not contain hypertext links a la WinHelp.
+Default: non linear (WinHelp).
+-adobefonts (-af) 
+Use Adobe fonts (Helvetica, Times, etc).
+Default: Windows fonts (Arial, Time New Roman, etc).
+\end{verbatim}
+\end{pverbatim}
+
+\psectionii{Examples}
+
+\psectioniii{LaTeX}
+
+PTF comments are directly extracted from C/C++ sources files.
+
+\begin{pverbatim}
+\begin{verbatim}
+$ cd tmp
+$ docc latex -dc article -dco a4paper \
+-ti 'The PTF Format and Related Utilties' \
+-o ptf.tex ptf.txt docc.cc docx.cc
+$ ls
+ptf.tex
+\end{verbatim}
+\end{pverbatim}
+
+\psectioniii{troff \symbol{45}man}
+
+docc is run on docc.cc and then on docx.cc to generate two man pages with
+different headers.
+
+\begin{pverbatim}
+\begin{verbatim}
+$ cd tmp
+$ docc man -c -ti docc -se 1 -he 'Text Utilities' -fo Pixware docc.cc
+$ docc man -c -ti docx -se 1 -he 'Text Utilities' -fo Pixware docx.cc
+$ ls
+docc.man        docx.man
+\end{verbatim}
+\end{pverbatim}
+
+\psectioniii{HTML}
+
+The hardest format to generate is HTML because in this case you must run docc
+twice, example:
+
+\begin{pdefinitionlist}
+
+\item[\mbox{First pass}] Resolve all hypertext links and save them in a file
+called \pmonospaced{hrefs}. To do this, you need to use the \pitalic{href}
+pseudo\symbol{45}format.
+
+\begin{pverbatim}
+\begin{verbatim}
+$ cd tmp
+$ docc href -o hrefs ptf.txt docc.cc docx.cc
+$ ls
+hrefs
+\end{verbatim}
+\end{pverbatim}
+
+\item[\mbox{Second pass}] For each input file, generate an HTML file (the
+\symbol{45}c option). Load file \pmonospaced{hrefs} (the \symbol{45}h hrefs
+option) to be able to resolve hypertext links.
+
+\begin{pverbatim}
+\begin{verbatim}
+$ docc html -br -h hrefs -c ptf.txt docc.cc docx.cc
+$ ls
+docc.html        hrefs           previous.gif
+docx.html        next.gif        ptf.html
+\end{verbatim}
+\end{pverbatim}
+
+The \symbol{45}br option is used to chain the generated HTML files not only
+through hypertext links but also sequentially (i.e. like the pages of a book).
+
+\end{pdefinitionlist}
+
+\psectioniii{RTF}
+
+Always use \symbol{45}o when generating non\symbol{45}linear RTF format
+(WinHelp) to get a single .rtf file and a single .hpj (help project) file.
+
+\begin{pverbatim}
+\begin{verbatim}
+$ cd tmp
+$ docc rtf -o docc.rtf ptf.txt docc.cc docx.cc
+$ ls
+docc.hpj        docc.rtf
+\end{verbatim}
+\end{pverbatim}
+
+Unlike the HTML format, the generation of WinHelp files does not require
+running docc twice. The hypertext links are resolved by the help compiler
+(example \pmonospaced{hc31.exe}) that you must run under DOS on the generated
+.hpj file.
+
+\begin{pverbatim}
+\begin{verbatim}
+C> hc31 docc
+\end{verbatim}
+\end{pverbatim}
+
+\end{document}
+

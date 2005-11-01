@@ -1,0 +1,2 @@
+#!/bin/sh
+for i in *.xpm; do echo $i; convert $i `basename $i .xpm`.gif; done

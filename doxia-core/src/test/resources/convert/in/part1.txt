@@ -1,0 +1,512 @@
+	----------------------------------------------------------
+	The <<P>><<T>><<F>> <<F>><ormat> and Related {<Utilities>}
+	----------------------------------------------------------
+			    Pixware
+		       Immeuble Capricorne
+			  23 rue Colbert
+		    78180 Montigny Le Bretonneux
+			    France
+		     Phone: (33) 01 30 60 07 00 
+		     Fax: (33) 01 30 96 05 23
+		     Email: info@pixware.fr
+	----------------------------------------------------------
+		          9 October 1999
+	----------------------------------------------------------
+
+
+  This document describes a format called <PTF> ({<<P>>oor <<T>>ext
+  <<F>>ormat}).
+
+  PTF documents are:
+
+      * Readable. The PTF reader use as few markup as possible to 
+	recognize the structure of a document. Instead this reader 
+	generally uses the <relative> indentation of paragraphs.
+
+      * Easy to type using any text editor.
+
+      * Easy to translate to real document formats such
+	as LaTeX, troff, HTML or RTF.
+
+  PTF is a good format for writing README files and C/C++ comments.
+  With a tool such as docc you can automatically extract these
+  comments from your source files and convert the extracted PTF chunks 
+  into an acceptable reference manual.
+
+  Send bug reports to {{mailto:info@pixware.fr}}.
+
+
+Sections
+~~~~~~~~
+
+  The title of a section must not be indented at all. The title of a 
+  section is typically rendered using a large bold font.
+
+  Example:
+
+---
+*This is a subsection
+
+**This is a subsubsection
+
+  First paragraph of first subsubsection.
+
+**This is a another subsubsection
+
+  First paragraph of the other subsubsection.
+
+*This is another subsection
+
+  First paragraph of the other subsection.
+---
+
+  is rendered as:
+
+*This is a subsection
+
+**This is a subsubsection
+
+  First paragraph of first subsubsection.
+
+**This is a another subsubsection
+
+  First paragraph of the other subsubsection.
+
+*This is another subsection
+
+  First paragraph of the other subsection.
+
+
+Paragraphs
+~~~~~~~~~~
+
+  Paragraphs  must  be  indented  (by  an  arbitrary   amount). 
+  The amount of white space between words is not important  but 
+  at least one open line must be used to  specify the end  of a 
+  paragraph.
+
+  Do not forget this open line after all sections, paragraphs or list
+  items otherwise expect very strange results.
+
+  When used to determine the indentation of a paragraph, the tab
+  character is counted as 8 white spaces. This means that you'd better set
+  your favorite text editor tab width to 8.
+
+  The maximum line width is 255 characters.
+
+
+Lists
+~~~~~
+
+    * List item 1. List items are indented too. Inside lists, indentation --  
+      <i.e. the amount of white space found at the beginning of the
+      first line of a paragraph> -- must be used consistently because it is 
+      used to find out when to end a list or when to begin a nested sub-list.
+
+	[{A<i\ j>}] Nested labeled list item <<A>><i\ j>. 
+
+	[B] Nested labeled list item <<B>>. Item labels are rendered
+	    using a bold font.
+
+	    \[ is a special character which is used to specify labeled
+            list items. Note that \[ is a special character only if it 
+            is the first character of an indented paragraph. 
+
+	    \\ may be used to quote special characters. As usual, 
+            the character \\ itself is specified  by typing \\\\.
+
+	    \* is another special character which is used to specify ``ticked''
+            list items. The '*' tick character is generally replaced by a 
+            nicer tick symbol such as a bullet or a little square when the 
+	    document is translated into a real typesetting system such as TeX.
+
+	    Like \[, \* is a special character only if it is the first 
+	    character of an indented paragraph.
+
+    * List item 2.
+
+	** Nested list item 1. Several '*' may be used to make 
+	list items more readable. Only a single tick will appear in
+	the formatted text.
+
+	** Nested list item 2.
+
+
+
+	    *** Deeply nested.
+
+		**** Very deeply nested.
+
+    * List item 3.
+
+  Numbered lists:
+
+    [[1]] Decimal numbering. 
+
+	    [[A]] Upper-alpha numbering. Item #1.
+
+	    [[B]] Upper-alpha numbering. Item #2.
+
+	    [[C]] Upper-alpha numbering. Item #3.
+
+          Item #1.
+
+	    [[a]] Lower-alpha numbering. Item #1.
+
+	    [[b]] Lower-alpha numbering. Item #2.
+
+	    [[c]] Lower-alpha numbering. Item #3.
+
+    [[2]] Decimal numbering. 
+
+          Item #2.
+
+    [[3]] Decimal numbering. 
+
+	    [[I]] Upper-roman numbering. Item #1.
+
+	    [[II]] Upper-roman numbering. Item #2.
+
+	    [[III]] Upper-roman numbering. Item #3.
+
+		    [[i]] Lower-roman numbering. Item #1.
+
+		    [[ii]] Lower-roman numbering. Item #2.
+
+		    [[iii]] Lower-roman numbering. Item #3.
+
+          Item #3.
+
+Fonts
+~~~~~
+
+    * Text between \< and \> is rendered in an <italic> font.
+
+    * Text between \<\< and \>\> is rendered in a <<bold>> font.
+
+    * Text between \<\<\< and \>\>\> is rendered in a <<<fixed-pitch>>> font.
+
+  It is not possible to nest font commands. 
+
+  Do not try to specify fonts in section titles, list item labels, etc, 
+  because this kind of text is generally associated with specific
+  presentation attributes.
+
+
+Horizontal line
+~~~~~~~~~~~~~~~
+
+  A line which is not indented and which begins with at least 3 '='
+  (equal) characters is rendered as an horizontal line which is as
+  wide as a page. Past the 3 first '=' characters, the rest of the
+  line is ignored.
+
+  Example:
+
+===
+
+
+Preformatted paragraphs
+~~~~~~~~~~~~~~~~~~~~~~~
+
+  It is possible to specify that a paragraph is preformatted by
+  placing the text between two lines which are not indented and which
+  begin with at least 3 '-' (minus) characters.
+
+  This preformatted paragraph (typically source code) is rendered
+  using a fixed-pitch font.
+
+  Example:
+
+---
+int main(int	argc,
+         char*	argv[])
+{
+    puts("Hello MMMarvelous World!!!");
+    return 0;
+}
+---
+
+  Note that borders are drawn around preformatted paragraphs if the sequence 
+  '<<<+-->>>' is used instead of sequence '<<<--->>>'.
+
+  Preformatted paragraph with borders may not be supported by all output 
+  formats.
+
+  Preformatted paragraphs are always displayed at current indentation
+  level. Example:
+
+      * List item 1
+
+          ** Sublist item 1
+
++-----------------+
+ A  	|	B
+ -------+---------
+ 10	|	20
+ 30	|	40
++-----------------+
+
+             Nested figure:
+
+[pixware] Nested\
+figure caption.
+
+	     Nested line:
+
+==================================================
+
+	     End of sublist.
+
+      * List item 2
+
+==================================================
+
+
+  []
+
+  Non nested line:
+
+==================================================
+
+  Non nested figure:
+
+[pixware]
+
+  No caption.
+
+Tables
+~~~~~~
+
+  This is a table without a caption:
+
+*-----------------------*--------------------*
+  <<Cell>> 1            | <<Cell 2>>, <line 1>
+                        | <line 2>
+                        | <line 3>
+*-----------------------*--------------------*
+  {Unix} pipe = ``\|''  | Cell 4
+*-----------------------*--------------------*
+
+  This is another table:
+
+*--------------------:-------+-------+
+| <<Display screen>> |       |       |
+|         <<number>> | <<1>> | <<2>> |
+*--------------------:-------+-------+
+*--------------------:-------+-------+
+|              width | 1024  | 1280  |
+*--------------------:-------+-------+
+|             height | 768   | 1024  |
+*--------------------:-------+-------+
+|              depth | 16    | 24    |
+*--------------------:-------+-------+
+Long, long, long, long, long, long\
+table caption.
+
+Figures
+~~~~~~~
+
+  In order to specify a figure in PTF, a file name <without any suffix> must
+  be put between [ and ] <at column 0>, optionally followed by the caption
+  of the figure.
+
+  If the file name is something like <<<images/myfig>>>, tools such as docc
+  generally expect to find actual files called:
+
+    * <<<images/myfig.eps>>> when converting PTF to LaTeX or to troff.
+
+    * <<<images/myfig.gif>>> when converting PTF to HTML.
+
+    * <<<images/myfig.bmp>>> when converting PTF to RTF.
+
+  This command may not be supported by all output formats.
+
+  Example:
+
+---
+[pixware] This is the logo of the Pixware company.
+---
+
+  is rendered as:
+
+[pixware] This is the logo of the Pixware company.
+
+
+Hypertext links
+~~~~~~~~~~~~~~~
+
+  It is possible to specify hypertext links in PTF. 
+
+      * Text between \{ and } is an hypertext link target (i.e. 
+	you can go there if you click on an hypertext ``button'').
+
+	This text, which may be converted to an index entry by 
+	systems such as LaTeX, should be at most a few words long.
+
+      * Text between \{\{ and }} is an hypertext link start 
+	(i.e. a ``button'' you can click on to jump to the 
+	corresponding target). 
+
+	This text must be defined somewhere else (possibly in 
+	another file -- see the documentation of docc) as an 
+	hypertext target.
+
+	hypertext ``buttons'' are generally rendered using specific
+	presentation attributes so you don't need to add your own 
+	font commands.
+
+  Example:
+
+  If this document is translated to HTML or to non-linear (winhelp) RTF,
+  click on {{{poortextformat}Poor Text Format}} to jump to the introduction.
+
+
+Comments
+~~~~~~~~
+
+  Text between 2 '~' (tilde) characters and the end of line is ignored.
+
+  ~~More comments.
+
+  This is also a very convenient way to make sections stand out very
+  cleary above paragraphs by underlining them using lines of ~'s.
+
+
+More cryptic commands
+~~~~~~~~~~~~~~~~~~~~~
+
+  These commands are generally generated by programs such as <<<sed>>> or
+  <<<docx>>> (see {{the docx utility}}). You'll rarely need to use these
+  commands.
+
+
+      [\\NNN] <<<NNN>>> is a 3-digit octal number between 0 and 255 which
+              represent an 8-bit character belonging to the ISO  Latin 1 
+              character set. 
+
+              Note that if you have a 8-bit text editor, you don't need to 
+              use \\NNN commands at all because you can directly type any 
+              ISO Latin 1 character.
+
+	      Example:
+
+---
+This paragraph contains ISO Latin 1 characters such as 
+the dollar sign \044, the copyright sign \251 or small e 
+accute accent \351 which is heavily used <en fran\347ais>.
+---
+
+	      is rendered as:
+
+              This paragraph contains ISO Latin 1 characters such as 
+              the dollar sign \44, the copyright sign \251 or small e 
+	      accute accent \xE9 which is heavily used <en fran\u00e7ais>.
+
+
+      [\\\<SPACE\>] (the '\\' character followed by a space) Non breaking 
+	            space.
+
+	            Example:
+
+---
+Word\ 1 word\ 2 word\ 3 word\ 4 word\ 5 word\ 6
+word\ 7 word\ 8 word\ 9 word\ 10 word\ 11 word\ 12
+word\ 13 word\ 14 word\ 15 word\ 16 word\ 17 word\ 18
+word\ 19 word\ 20 word\ 21 word\ 22 word\ 23 word\ 24.
+---
+
+		    is rendered as:
+
+		    Word\ 1 word\ 2 word\ 3 word\ 4 word\ 5 word\ 6
+		    word\ 7 word\ 8 word\ 9 word\ 10 word\ 11 word\ 12
+		    word\ 13 word\ 14 word\ 15 word\ 16 word\ 17 word\ 18
+		    word\ 19 word\ 20 word\ 21 word\ 22 word\ 23 word\ 24.
+
+		    This command may not be supported by all output formats.
+
+
+      [\\\<CR\>] (the '\\' character followed by a carriage return) Line break.
+
+	         Example:
+
+---
+First line.\                 
+Second line.\                 
+Third line.                 
+---
+
+		 is rendered as:
+
+		 First line.\
+		 Second line.\
+		 Third line.
+
+		 This command may not be supported by all output formats.   
+
+
+      [\[\]] List break. An indented line which contains only [] may be used
+             to force the end of a list. The indentation of the line specifies
+             which list (or nested lists) is to be ended. This command is
+             especially useful for preformatted paragraphs.
+
+	     Example:
+
+------
+		 * list 1 item 1
+
+		 * list 1 item 2
+
+		     ** list 2 item a
+
+		     ** list 2 item b
+
+		     ** list 2 item c
+
+	         []
+
+ +--
+ Without the [], this paragraph would have been contained 
+ inside list 1 item 2.
+ +--
+------
+
+	     is rendered as:
+
+		 * list 1 item 1
+
+		 * list 1 item 2
+
+		     ** list 2 item a
+
+		     ** list 2 item b
+
+		     ** list 2 item c
+
+	         []
+
++--
+Without the [], this paragraph would have been contained 
+inside list 1 item 2.
++--
+
+             Note that horizontal lines, figures and page breaks force 
+	     all nested lists to end.
+
+
+      [^L] (a formfeed character <at column 0>) Page break. 
+
+	   This command may not be supported by all output formats.
+
+	   Example:
+
+---
+^L
+  This paragraph should be located at the top of a new page.
+---
+
+	   is rendered as:
+
+
+  This paragraph should be located at the top of a new page.
+

@@ -1,0 +1,19 @@
+ Table #1
+
+*--+-*-:
+| left-aligned column | centered column | right-aligned column
+*--
+| <italic> | <<bold>> | <<<monospaced>>>
+*--
+| single line | multi-line
+| | cell
+*--
+Table #1
+
+ Table #2
+
+*--+-*-:
+1 | 2 | 3
+*--
+a b <c> | a <<b>> c | <<<a>>> b c
+*--

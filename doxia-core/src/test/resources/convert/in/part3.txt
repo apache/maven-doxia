@@ -1,0 +1,96 @@
+
+The {docx} utility
+~~~~~~~~~~~~~~~~~~
+
+  docx is a simple preprocessor used by {{docc}} to extract comments 
+  written in PTF ({{<P>oor <T>ext <F>ormat}}) and associated C/C++ 
+  code from source files.
+
+  docx has no command line options:
+
+------
+docx [-l c|tcl] [-b] [input_file [output_file]]
+------
+
+  When <input_file> and <output_file> are not specified, docx reads 
+  its standard input and writes its standard output.
+
+  The <<-l>> option may be used to specify the programming language.
+  Currently only Tcl and C/C++ are supported. C/C++ is the default 
+  language.
+
+  The <<-b>> option may be used to add a border around the extracted code.
+
+  Comments which are to be extracted must be marked by adding an x 
+  just after the beginning of comments character sequence.
+
+  Example 1, C style comments:
+
+------
+/*x
+Title
+    paragraph paragraph paragraph paragraph paragraph 
+    paragraph paragraph paragraph paragraph paragraph 
+		.
+		.
+		.
+------
+
+  Example 2, C++ style comments:
+
+------
+//x
+//Title
+//    paragraph paragraph paragraph paragraph paragraph 
+//    paragraph paragraph paragraph paragraph paragraph 
+		.
+		.
+		.
+------
+
+  Example 3, Tcl style comments:
+
+------
+#x
+#Title
+#    paragraph paragraph paragraph paragraph paragraph 
+#    paragraph paragraph paragraph paragraph paragraph 
+		.
+		.
+		.
+------
+
+  All characters between /*x or //x and the end of the line are ignored
+  (except, of course, the end of comments character sequence for C style 
+  comments).
+
+  Associated C/C++ code (if any) must immediately follow the PTF comments. 
+  An open line, EOF, or other comments must be used to end this associated 
+  code. Example:
+
+------
+//x
+//    Returns the maximum of <x> and <y>.
+#define MAX(x, y) \
+    (((x) > (y))? (x) : (y))
+
+------
+
+  Associated code is unindented before (by default) being inserted as 
+  a verbatim section at the beginning of the PTF comments. 
+
+  The place where associated code is to be inserted may be specified by 
+  putting a line which begins with the '~' '~' 'x' sequence inside PTF 
+  comments. Example:
+
+------
+//x
+//    Returns the maximum of <x> and <y>.
+//
+//~~x
+//
+//    Note that <x> and <y> may be any type for which the '>' operator
+//    is defined.
+#define MAX(x, y) (((x) > (y))? (x) : (y))
+
+------

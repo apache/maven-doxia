@@ -1,0 +1,641 @@
+<!DOCTYPE article PUBLIC "-//OASIS//DTD DocBook V4.1//EN">
+<article lang="en">
+  <articleinfo>
+    <title>The
+      <emphasis role="bold">P</emphasis>
+      <emphasis role="bold">T</emphasis>
+      <emphasis role="bold">F</emphasis>
+      <emphasis role="bold">F</emphasis>
+      <emphasis>ormat</emphasis> and Related
+      <anchor id="a.utilities">
+      <emphasis>Utilities</emphasis>
+    </title>
+    <corpauthor>Pixware<!-- LB -->
+Immeuble Capricorne<!-- LB -->
+23 rue Colbert<!-- LB -->
+78180 Montigny Le Bretonneux<!-- LB -->
+France<!-- LB -->
+Phone: (33) 01 30 60 07 00<!-- LB -->
+Fax: (33) 01 30 96 05 23<!-- LB -->
+Email: info@pixware.fr</corpauthor>
+    <date>9 October 1999</date>
+  </articleinfo>
+  <para>This document describes a format called
+    <emphasis>PTF</emphasis>
+(
+    <anchor id="a.poortextformat">
+    <emphasis role="bold">P</emphasis>oor
+    <emphasis role="bold">T</emphasis>ext
+    <emphasis role="bold">F</emphasis>ormat).
+  </para>
+  <para>PTF documents are:</para>
+  <itemizedlist>
+    <listitem>
+      <para>Readable. The PTF reader use as few markup as possible to recognize the
+structure of a document. Instead this reader generally uses the
+        <emphasis>relative</emphasis> indentation of paragraphs.
+      </para>
+    </listitem>
+    <listitem>
+      <para>Easy to type using any text editor.</para>
+    </listitem>
+    <listitem>
+      <para>Easy to translate to real document formats such as LaTeX, troff, HTML or
+RTF.</para>
+    </listitem>
+  </itemizedlist>
+  <para>PTF is a good format for writing README files and C/C++ comments. With a
+tool such as docc you can automatically extract these comments from your
+source files and convert the extracted PTF chunks into an acceptable reference
+manual.</para>
+  <para>Send bug reports to
+    <ulink url="mailto:info@pixware.fr">mailto:info@pixware.fr</ulink>.
+  </para>
+  <section>
+    <title id="s.1">Sections</title>
+    <para>The title of a section must not be indented at all. The title of a
+section is typically rendered using a large bold font.</para>
+    <para>Example:</para>
+    <programlisting>*This is a subsection
+
+**This is a subsubsection
+
+  First paragraph of first subsubsection.
+
+**This is a another subsubsection
+
+  First paragraph of the other subsubsection.
+
+*This is another subsection
+
+  First paragraph of the other subsection.</programlisting>
+    <para>is rendered as:</para>
+    <section>
+      <title id="s.1.1">This is a subsection</title>
+      <section>
+        <title id="s.1.1.1">This is a subsubsection</title>
+        <para>First paragraph of first subsubsection.</para>
+      </section>
+      <section>
+        <title id="s.1.1.2">This is a another subsubsection</title>
+        <para>First paragraph of the other subsubsection.</para>
+      </section>
+    </section>
+    <section>
+      <title id="s.1.2">This is another subsection</title>
+      <para>First paragraph of the other subsection.</para>
+    </section>
+  </section>
+  <section>
+    <title id="s.2">Paragraphs</title>
+    <para>Paragraphs must be indented (by an arbitrary amount). The amount of
+white space between words is not important but at least one open line must be
+used to specify the end of a paragraph.</para>
+    <para>Do not forget this open line after all sections, paragraphs or list
+items otherwise expect very strange results.</para>
+    <para>When used to determine the indentation of a paragraph, the tab character
+is counted as 8 white spaces. This means that you'd better set your favorite
+text editor tab width to 8.</para>
+    <para>The maximum line width is 255 characters.</para>
+  </section>
+  <section>
+    <title id="s.3">Lists</title>
+    <itemizedlist>
+      <listitem>
+        <para>List item 1. List items are indented too. Inside lists, indentation --
+          <emphasis>i.e. the amount of white space found at the beginning of the first
+line of a paragraph</emphasis> -- must be used consistently because it is used
+to find out when to end a list or when to begin a nested sub-list.
+        </para>
+        <variablelist>
+          <varlistentry>
+            <term>
+              <anchor id="a.aij">A
+              <emphasis>i&nbsp;j</emphasis>
+            </term>
+            <listitem>
+              <para>Nested labeled list item
+                <emphasis role="bold">A</emphasis>
+                <emphasis>i&nbsp;j</emphasis>.
+              </para>
+            </listitem>
+          </varlistentry>
+          <varlistentry>
+            <term>B</term>
+            <listitem>
+              <para>Nested labeled list item
+                <emphasis role="bold">B</emphasis>. Item labels
+are rendered using a bold font.
+              </para>
+              <para>[ is a special character which is used to specify labeled list items.
+Note that [ is a special character only if it is the first character of an
+indented paragraph. </para>
+              <para>\ may be used to quote special characters. As usual, the character \
+itself is specified by typing \\.</para>
+              <para>* is another special character which is used to specify ``ticked'' list
+items. The '*' tick character is generally replaced by a nicer tick symbol
+such as a bullet or a little square when the document is translated into a
+real typesetting system such as TeX.</para>
+              <para>Like [, * is a special character only if it is the first character of an
+indented paragraph.</para>
+            </listitem>
+          </varlistentry>
+        </variablelist>
+      </listitem>
+      <listitem>
+        <para>List item 2.</para>
+        <itemizedlist>
+          <listitem>
+            <para>Nested list item 1. Several '*' may be used to make list items more
+readable. Only a single tick will appear in the formatted text.</para>
+          </listitem>
+          <listitem>
+            <para>Nested list item 2.</para>
+            <!-- PB -->
+            <itemizedlist>
+              <listitem>
+                <para>Deeply nested.</para>
+                <itemizedlist>
+                  <listitem>
+                    <para>Very deeply nested.</para>
+                  </listitem>
+                </itemizedlist>
+              </listitem>
+            </itemizedlist>
+          </listitem>
+        </itemizedlist>
+      </listitem>
+      <listitem>
+        <para>List item 3.</para>
+      </listitem>
+    </itemizedlist>
+    <para>Numbered lists:</para>
+    <orderedlist numeration="arabic">
+      <listitem>
+        <para>Decimal numbering. </para>
+        <orderedlist numeration="upperalpha">
+          <listitem>
+            <para>Upper-alpha numbering. Item #1.</para>
+          </listitem>
+          <listitem>
+            <para>Upper-alpha numbering. Item #2.</para>
+          </listitem>
+          <listitem>
+            <para>Upper-alpha numbering. Item #3.</para>
+          </listitem>
+        </orderedlist>
+        <para>Item #1.</para>
+        <orderedlist numeration="loweralpha">
+          <listitem>
+            <para>Lower-alpha numbering. Item #1.</para>
+          </listitem>
+          <listitem>
+            <para>Lower-alpha numbering. Item #2.</para>
+          </listitem>
+          <listitem>
+            <para>Lower-alpha numbering. Item #3.</para>
+          </listitem>
+        </orderedlist>
+      </listitem>
+      <listitem>
+        <para>Decimal numbering. </para>
+        <para>Item #2.</para>
+      </listitem>
+      <listitem>
+        <para>Decimal numbering. </para>
+        <orderedlist numeration="upperroman">
+          <listitem>
+            <para>Upper-roman numbering. Item #1.</para>
+          </listitem>
+          <listitem>
+            <para>Upper-roman numbering. Item #2.</para>
+          </listitem>
+          <listitem>
+            <para>Upper-roman numbering. Item #3.</para>
+            <orderedlist numeration="lowerroman">
+              <listitem>
+                <para>Lower-roman numbering. Item #1.</para>
+              </listitem>
+              <listitem>
+                <para>Lower-roman numbering. Item #2.</para>
+              </listitem>
+              <listitem>
+                <para>Lower-roman numbering. Item #3.</para>
+              </listitem>
+            </orderedlist>
+          </listitem>
+        </orderedlist>
+        <para>Item #3.</para>
+      </listitem>
+    </orderedlist>
+  </section>
+  <section>
+    <title id="s.4">Fonts</title>
+    <itemizedlist>
+      <listitem>
+        <para>Text between &lt; and &gt; is rendered in an
+          <emphasis>italic</emphasis>
+font.
+        </para>
+      </listitem>
+      <listitem>
+        <para>Text between &lt;&lt; and &gt;&gt; is rendered in a
+          <emphasis role="bold">bold</emphasis> font.
+        </para>
+      </listitem>
+      <listitem>
+        <para>Text between &lt;&lt;&lt; and &gt;&gt;&gt; is rendered in a
+          <literal>fixed-pitch</literal> font.
+        </para>
+      </listitem>
+    </itemizedlist>
+    <para>It is not possible to nest font commands. </para>
+    <para>Do not try to specify fonts in section titles, list item labels, etc,
+because this kind of text is generally associated with specific presentation
+attributes.</para>
+  </section>
+  <section>
+    <title id="s.5">Horizontal line</title>
+    <para>A line which is not indented and which begins with at least 3 '='
+(equal) characters is rendered as an horizontal line which is as wide as a
+page. Past the 3 first '=' characters, the rest of the line is ignored.</para>
+    <para>Example:</para>
+    <!-- HR -->
+  </section>
+  <section>
+    <title id="s.6">Preformatted paragraphs</title>
+    <para>It is possible to specify that a paragraph is preformatted by placing
+the text between two lines which are not indented and which begin with at
+least 3 '-' (minus) characters.</para>
+    <para>This preformatted paragraph (typically source code) is rendered using a
+fixed-pitch font.</para>
+    <para>Example:</para>
+    <programlisting>int main(int    argc,
+         char*  argv[])
+{
+    puts(&quot;Hello MMMarvelous World!!!&quot;);
+    return 0;
+}</programlisting>
+    <para>Note that borders are drawn around preformatted paragraphs if the
+sequence '
+      <literal>+--</literal>' is used instead of sequence
+'
+      <literal>---</literal>'.
+    </para>
+    <para>Preformatted paragraph with borders may not be supported by all output
+formats.</para>
+    <para>Preformatted paragraphs are always displayed at current indentation
+level. Example:</para>
+    <itemizedlist>
+      <listitem>
+        <para>List item 1</para>
+        <itemizedlist>
+          <listitem>
+            <para>Sublist item 1</para>
+            <programlisting> A      |       B
+ -------+---------
+ 10     |       20
+ 30     |       40</programlisting>
+            <para>Nested figure:</para>
+            <figure>
+              <title>Nested<!-- LB -->
+figure caption.</title>
+              <mediaobject>
+                <imageobject>
+                  <imagedata format="JPEG"
+                    fileref="pixware.jpeg">
+                </imageobject>
+              </mediaobject>
+            </figure>
+            <para>Nested line:</para>
+            <!-- HR -->
+            <para>End of sublist.</para>
+          </listitem>
+        </itemizedlist>
+      </listitem>
+      <listitem>
+        <para>List item 2</para>
+        <!-- HR -->
+      </listitem>
+    </itemizedlist>
+    <para>Non nested line:</para>
+    <!-- HR -->
+    <para>Non nested figure:</para>
+    <mediaobject>
+      <imageobject>
+        <imagedata format="JPEG"
+          fileref="pixware.jpeg">
+      </imageobject>
+    </mediaobject>
+    <para>No caption.</para>
+  </section>
+  <section>
+    <title id="s.7">Tables</title>
+    <para>This is a table without a caption:</para>
+    <informaltable frame="none" rowsep="0" colsep="0">
+      <tgroup cols="2">
+        <colspec align="center">
+        <colspec align="center">
+        <tbody>
+          <row>
+            <entry>
+              <para>
+                <emphasis role="bold">Cell</emphasis> 1
+              </para>
+            </entry>
+            <entry>
+              <para>
+                <emphasis role="bold">Cell 2</emphasis>,
+                <emphasis>line
+1</emphasis><!-- LB -->
+                <emphasis>line 2</emphasis><!-- LB -->
+                <emphasis>line 3</emphasis>
+              </para>
+            </entry>
+          </row>
+          <row>
+            <entry>
+              <para>
+                <anchor id="a.unix">Unix pipe = ``|''
+              </para>
+            </entry>
+            <entry>
+              <para>Cell 4</para>
+            </entry>
+          </row>
+        </tbody>
+      </tgroup>
+    </informaltable>
+    <para>This is another table:</para>
+    <table frame="all" rowsep="1" colsep="1">
+      <title>Long, long, long, long, long, long<!-- LB -->
+table caption.</title>
+      <tgroup cols="3">
+        <colspec align="right">
+        <colspec align="left">
+        <colspec align="left">
+        <tbody>
+          <row>
+            <entry>
+              <para>
+                <emphasis role="bold">Display screen</emphasis><!-- LB -->
+                <emphasis role="bold">number</emphasis>
+              </para>
+            </entry>
+            <entry>
+              <para>
+                <emphasis role="bold">1</emphasis>
+              </para>
+            </entry>
+            <entry>
+              <para>
+                <emphasis role="bold">2</emphasis>
+              </para>
+            </entry>
+          </row>
+          <row>
+            <entry>
+              <para>width</para>
+            </entry>
+            <entry>
+              <para>1024</para>
+            </entry>
+            <entry>
+              <para>1280</para>
+            </entry>
+          </row>
+          <row>
+            <entry>
+              <para>height</para>
+            </entry>
+            <entry>
+              <para>768</para>
+            </entry>
+            <entry>
+              <para>1024</para>
+            </entry>
+          </row>
+          <row>
+            <entry>
+              <para>depth</para>
+            </entry>
+            <entry>
+              <para>16</para>
+            </entry>
+            <entry>
+              <para>24</para>
+            </entry>
+          </row>
+        </tbody>
+      </tgroup>
+    </table>
+  </section>
+  <section>
+    <title id="s.8">Figures</title>
+    <para>In order to specify a figure in PTF, a file name
+      <emphasis>without any
+suffix</emphasis> must be put between [ and ]
+      <emphasis>at column
+0</emphasis>, optionally followed by the caption of the figure.
+    </para>
+    <para>If the file name is something like
+      <literal>images/myfig</literal>,
+tools such as docc generally expect to find actual files called:
+    </para>
+    <itemizedlist>
+      <listitem>
+        <para>
+          <literal>images/myfig.eps</literal> when converting PTF to LaTeX or to
+troff.
+        </para>
+      </listitem>
+      <listitem>
+        <para>
+          <literal>images/myfig.gif</literal> when converting PTF to HTML.
+        </para>
+      </listitem>
+      <listitem>
+        <para>
+          <literal>images/myfig.bmp</literal> when converting PTF to RTF.
+        </para>
+      </listitem>
+    </itemizedlist>
+    <para>This command may not be supported by all output formats.</para>
+    <para>Example:</para>
+    <programlisting>[pixware] This is the logo of the Pixware company.</programlisting>
+    <para>is rendered as:</para>
+    <figure>
+      <title>This is the logo of the Pixware company.</title>
+      <mediaobject>
+        <imageobject>
+          <imagedata format="JPEG"
+            fileref="pixware.jpeg">
+        </imageobject>
+      </mediaobject>
+    </figure>
+  </section>
+  <section>
+    <title id="s.9">Hypertext links</title>
+    <para>It is possible to specify hypertext links in PTF. </para>
+    <itemizedlist>
+      <listitem>
+        <para>Text between { and } is an hypertext link target (i.e. you can go there
+if you click on an hypertext ``button'').</para>
+        <para>This text, which may be converted to an index entry by systems such as
+LaTeX, should be at most a few words long.</para>
+      </listitem>
+      <listitem>
+        <para>Text between {{ and }} is an hypertext link start (i.e. a ``button'' you
+can click on to jump to the corresponding target). </para>
+        <para>This text must be defined somewhere else (possibly in another file --
+see the documentation of docc) as an hypertext target.</para>
+        <para>hypertext ``buttons'' are generally rendered using specific presentation
+attributes so you don't need to add your own font commands.</para>
+      </listitem>
+    </itemizedlist>
+    <para>Example:</para>
+    <para>If this document is translated to HTML or to non-linear (winhelp) RTF,
+click on
+      <link linkend="a.poortextformat">Poor Text Format</link> to jump to
+the introduction.
+    </para>
+  </section>
+  <section>
+    <title id="s.10">Comments</title>
+    <para>Text between 2 '~' (tilde) characters and the end of line is
+ignored.</para>
+    <para>This is also a very convenient way to make sections stand out very
+cleary above paragraphs by underlining them using lines of ~'s.</para>
+  </section>
+  <section>
+    <title id="s.11">More cryptic commands</title>
+    <para>These commands are generally generated by programs such as
+      <literal>sed</literal> or
+      <literal>docx</literal> (see
+      <link linkend="a.thedocxutility">the docx utility</link>). You'll rarely need
+to use these commands.
+    </para>
+    <variablelist>
+      <varlistentry>
+        <term>\NNN</term>
+        <listitem>
+          <para>
+            <literal>NNN</literal> is a 3-digit octal number between 0 and 255 which
+represent an 8-bit character belonging to the ISO Latin 1 character set.
+          </para>
+          <para>Note that if you have a 8-bit text editor, you don't need to use \NNN
+commands at all because you can directly type any ISO Latin 1
+character.</para>
+          <para>Example:</para>
+          <programlisting>This paragraph contains ISO Latin 1 characters such as
+the dollar sign \044, the copyright sign \251 or small e 
+accute accent \351 which is heavily used &lt;en fran\347ais&gt;.</programlisting>
+          <para>is rendered as:</para>
+          <para>This paragraph contains ISO Latin 1 characters such as the dollar sign
+$, the copyright sign &#169; or small e accute accent &#233; which is heavily
+used
+            <emphasis>en fran&#231;ais</emphasis>.
+          </para>
+        </listitem>
+      </varlistentry>
+      <varlistentry>
+        <term>\&lt;SPACE&gt;</term>
+        <listitem>
+          <para>(the '\' character followed by a space) Non breaking space.</para>
+          <para>Example:</para>
+          <programlisting>Word\ 1 word\ 2 word\ 3 word\ 4 word\ 5 word\ 6
+word\ 7 word\ 8 word\ 9 word\ 10 word\ 11 word\ 12
+word\ 13 word\ 14 word\ 15 word\ 16 word\ 17 word\ 18
+word\ 19 word\ 20 word\ 21 word\ 22 word\ 23 word\ 24.</programlisting>
+          <para>is rendered as:</para>
+          <para>Word&nbsp;1 word&nbsp;2 word&nbsp;3 word&nbsp;4 word&nbsp;5 word&nbsp;6
+word&nbsp;7 word&nbsp;8 word&nbsp;9 word&nbsp;10 word&nbsp;11 word&nbsp;12
+word&nbsp;13 word&nbsp;14 word&nbsp;15 word&nbsp;16 word&nbsp;17 word&nbsp;18
+word&nbsp;19 word&nbsp;20 word&nbsp;21 word&nbsp;22 word&nbsp;23
+word&nbsp;24.</para>
+          <para>This command may not be supported by all output formats.</para>
+        </listitem>
+      </varlistentry>
+      <varlistentry>
+        <term>\&lt;CR&gt;</term>
+        <listitem>
+          <para>(the '\' character followed by a carriage return) Line break.</para>
+          <para>Example:</para>
+          <programlisting>First line.\
+Second line.\                 
+Third line.                 </programlisting>
+          <para>is rendered as:</para>
+          <para>First line.<!-- LB -->
+Second line.<!-- LB -->
+Third line.</para>
+          <para>This command may not be supported by all output formats. </para>
+        </listitem>
+      </varlistentry>
+      <varlistentry>
+        <term>[]</term>
+        <listitem>
+          <para>List break. An indented line which contains only [] may be used to force
+the end of a list. The indentation of the line specifies which list (or nested
+lists) is to be ended. This command is especially useful for preformatted
+paragraphs.</para>
+          <para>Example:</para>
+          <programlisting>                 * list 1 item 1
+
+                 * list 1 item 2
+
+                     ** list 2 item a
+
+                     ** list 2 item b
+
+                     ** list 2 item c
+
+                 []
+
+ +--
+ Without the [], this paragraph would have been contained 
+ inside list 1 item 2.
+ +--</programlisting>
+          <para>is rendered as:</para>
+          <itemizedlist>
+            <listitem>
+              <para>list 1 item 1</para>
+            </listitem>
+            <listitem>
+              <para>list 1 item 2</para>
+              <itemizedlist>
+                <listitem>
+                  <para>list 2 item a</para>
+                </listitem>
+                <listitem>
+                  <para>list 2 item b</para>
+                </listitem>
+                <listitem>
+                  <para>list 2 item c</para>
+                </listitem>
+              </itemizedlist>
+            </listitem>
+          </itemizedlist>
+          <programlisting>Without the [], this paragraph would have been contained
+inside list 1 item 2.</programlisting>
+          <para>Note that horizontal lines, figures and page breaks force all nested
+lists to end.</para>
+        </listitem>
+      </varlistentry>
+      <varlistentry>
+        <term>^L</term>
+        <listitem>
+          <para>(a formfeed character
+            <emphasis>at column 0</emphasis>) Page break.
+          </para>
+          <para>This command may not be supported by all output formats.</para>
+          <para>Example:</para>
+          <programlisting>^L
+  This paragraph should be located at the top of a new page.</programlisting>
+          <para>is rendered as:</para>
+          <!-- PB -->
+        </listitem>
+      </varlistentry>
+    </variablelist>
+    <para>This paragraph should be located at the top of a new page.</para>
+  </section>
+</article>

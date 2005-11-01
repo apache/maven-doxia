@@ -1,0 +1,485 @@
+<!DOCTYPE html PUBLIC "-//W3C//DTD HTML 4.01 Transitional//EN">
+<html lang="fr">
+<head>
+<meta http-equiv="Content-Type" content="text/html; charset=ISO-8859-1">
+<title>The PTF Format and Related Utilities</title>
+<meta name="author" content="Pixware
+Immeuble Capricorne
+23 rue Colbert
+78180 Montigny Le Bretonneux
+France
+Phone: (33) 01 30 60 07 00
+Fax: (33) 01 30 96 05 23
+Email: info@pixware.fr">
+<meta name="date" content="9 October 1999">
+<meta name="keywords" content="PTF docc docx">
+</head>
+<body>
+<h1><a id="id.toc" name="id.toc">Table des Matières</a></h1>
+<dl>
+<dd><a href="#id.s1">Sections</a><dl>
+<dd><a href="#id.s1.1">This is a subsection</a><dl>
+<dd><a href="#id.s1.1.1">This is a subsubsection</a></dd>
+<dd><a href="#id.s1.1.2">This is a another subsubsection</a></dd>
+</dl></dd>
+<dd><a href="#id.s1.2">This is another subsection</a></dd>
+</dl></dd>
+<dd><a href="#id.s2">Paragraphs</a></dd>
+<dd><a href="#id.s3">Lists</a></dd>
+<dd><a href="#id.s4">Fonts</a></dd>
+<dd><a href="#id.s5">Horizontal line</a></dd>
+<dd><a href="#id.s6">Preformatted paragraphs</a></dd>
+<dd><a href="#id.s7">Tables</a></dd>
+<dd><a href="#id.s8">Figures</a></dd>
+<dd><a href="#id.s9">Hypertext links</a></dd>
+<dd><a href="#id.s10">Comments</a></dd>
+<dd><a href="#id.s11">More cryptic commands</a></dd>
+<dd><a href="#id.s12">The docc utility</a><dl>
+<dd><a href="#id.s12.1">Examples</a><dl>
+<dd><a href="#id.s12.1.1">LaTeX</a></dd>
+<dd><a href="#id.s12.1.2">troff -man</a></dd>
+<dd><a href="#id.s12.1.3">HTML</a></dd>
+<dd><a href="#id.s12.1.4">RTF</a></dd>
+</dl></dd>
+</dl></dd>
+<dd><a href="#id.s13">The docx utility</a></dd>
+<dd><a href="#id.idx">Index</a></dd>
+</dl><hr>
+<p>This document describes a format called <i>PTF</i>
+(<a id="poortextformat" name="poortextformat"><b>P</b>oor <b>T</b>ext
+<b>F</b>ormat</a>).</p><p>PTF documents are:</p><ul>
+<li>Readable. The PTF reader use as few markup as possible to recognize the
+structure of a document. Instead this reader generally uses the
+<i>relative</i> indentation of paragraphs.</li>
+<li>Easy to type using any text editor.</li>
+<li>Easy to translate to real document formats such as LaTeX, troff, HTML or
+RTF.</li>
+</ul><p>PTF is a good format for writing README files and C/C++ comments. With
+a tool such as docc you can automatically extract these comments from your
+source files and convert the extracted PTF chunks into an acceptable reference
+manual.</p><p>Send bug reports to
+<a href="mailto:info@pixware.fr">mailto:info@pixware.fr</a>.</p><h1><a id="id.s1" name="id.s1"></a>Sections<a href="#id.toc"><img src="apt_toc.gif" border="0" width="30" height="11" alt="Table des Matières"></a></h1>
+<p>The title of a section must not be indented at all. The title of a section
+is typically rendered using a large bold
+font.</p><p>Example:</p><pre>*This is a subsection
+
+**This is a subsubsection
+
+  First paragraph of first subsubsection.
+
+**This is a another subsubsection
+
+  First paragraph of the other subsubsection.
+
+*This is another subsection
+
+  First paragraph of the other subsection.</pre><p>is rendered
+as:</p><h2><a id="id.s1.1" name="id.s1.1"></a>This is a
+subsection<a href="#id.toc"><img src="apt_toc.gif" border="0" width="30" height="11" alt="Table des Matières"></a></h2>
+<h3><a id="id.s1.1.1" name="id.s1.1.1"></a>This is a
+subsubsection<a href="#id.toc"><img src="apt_toc.gif" border="0" width="30" height="11" alt="Table des Matières"></a></h3>
+<p>First paragraph of first
+subsubsection.</p><h3><a id="id.s1.1.2" name="id.s1.1.2"></a>This is a another
+subsubsection<a href="#id.toc"><img src="apt_toc.gif" border="0" width="30" height="11" alt="Table des Matières"></a></h3>
+<p>First paragraph of the other
+subsubsection.</p><h2><a id="id.s1.2" name="id.s1.2"></a>This is another
+subsection<a href="#id.toc"><img src="apt_toc.gif" border="0" width="30" height="11" alt="Table des Matières"></a></h2>
+<p>First paragraph of the other
+subsection.</p><h1><a id="id.s2" name="id.s2"></a>Paragraphs<a href="#id.toc"><img src="apt_toc.gif" border="0" width="30" height="11" alt="Table des Matières"></a></h1>
+<p>Paragraphs must be indented (by an arbitrary amount). The amount of white
+space between words is not important but at least one open line must be used
+to specify the end of a paragraph.</p><p>Do not forget this open line after
+all sections, paragraphs or list items otherwise expect very strange
+results.</p><p>When used to determine the indentation of a paragraph, the tab
+character is counted as 8 white spaces. This means that you'd better set your
+favorite text editor tab width to 8.</p><p>The maximum line width is 255
+characters.</p><h1><a id="id.s3" name="id.s3"></a>Lists<a href="#id.toc"><img src="apt_toc.gif" border="0" width="30" height="11" alt="Table des Matières"></a></h1>
+<ul>
+<li>List item 1. List items are indented too. Inside lists, indentation --
+<i>i.e. the amount of white space found at the beginning of the first line of
+a paragraph</i> -- must be used consistently because it is used to find out
+when to end a list or when to begin a nested sub-list.<dl compact>
+<dt><b><a id="aij" name="aij">A<i>i&nbsp;j</i></a></b></dt>
+<dd>Nested labeled list item <b>A</b><i>i&nbsp;j</i>. </dd>
+<dt><b>B</b></dt>
+<dd>Nested labeled list item <b>B</b>. Item labels are rendered using a bold
+font.<p>[ is a special character which is used to specify labeled list items.
+Note that [ is a special character only if it is the first character of an
+indented paragraph. </p><p>\ may be used to quote special characters. As
+usual, the character \ itself is specified by typing \\.</p><p>* is another
+special character which is used to specify ``ticked'' list items. The '*' tick
+character is generally replaced by a nicer tick symbol such as a bullet or a
+little square when the document is translated into a real typesetting system
+such as TeX.</p><p>Like [, * is a special character only if it is the first
+character of an indented paragraph.</p></dd>
+</dl></li>
+<li>List item 2.<ul>
+<li>Nested list item 1. Several '*' may be used to make list items more
+readable. Only a single tick will appear in the formatted text.</li>
+<li>Nested list item 2.<ul>
+<li>Deeply nested.<ul>
+<li>Very deeply nested.</li>
+</ul></li>
+</ul></li>
+</ul></li>
+<li>List item 3.</li>
+</ul><p>Numbered lists:</p><ol style="list-style-type: decimal">
+<li>Decimal numbering. <ol style="list-style-type: upper-alpha">
+<li>Upper-alpha numbering. Item #1.</li>
+<li>Upper-alpha numbering. Item #2.</li>
+<li>Upper-alpha numbering. Item #3.</li>
+</ol><p>Item #1.</p><ol style="list-style-type: lower-alpha">
+<li>Lower-alpha numbering. Item #1.</li>
+<li>Lower-alpha numbering. Item #2.</li>
+<li>Lower-alpha numbering. Item #3.</li>
+</ol></li>
+<li>Decimal numbering. <p>Item #2.</p></li>
+<li>Decimal numbering. <ol style="list-style-type: upper-roman">
+<li>Upper-roman numbering. Item #1.</li>
+<li>Upper-roman numbering. Item #2.</li>
+<li>Upper-roman numbering. Item #3.<ol style="list-style-type: lower-roman">
+<li>Lower-roman numbering. Item #1.</li>
+<li>Lower-roman numbering. Item #2.</li>
+<li>Lower-roman numbering. Item #3.</li>
+</ol></li>
+</ol><p>Item #3.</p></li>
+</ol><h1><a id="id.s4" name="id.s4"></a>Fonts<a href="#id.toc"><img src="apt_toc.gif" border="0" width="30" height="11" alt="Table des Matières"></a></h1>
+<ul>
+<li>Text between &lt; and &gt; is rendered in an <i>italic</i> font.</li>
+<li>Text between &lt;&lt; and &gt;&gt; is rendered in a <b>bold</b> font.</li>
+<li>Text between &lt;&lt;&lt; and &gt;&gt;&gt; is rendered in a
+<tt>fixed-pitch</tt> font.</li>
+</ul><p>It is not possible to nest font commands. </p><p>Do not try to specify
+fonts in section titles, list item labels, etc, because this kind of text is
+generally associated with specific presentation
+attributes.</p><h1><a id="id.s5" name="id.s5"></a>Horizontal
+line<a href="#id.toc"><img src="apt_toc.gif" border="0" width="30" height="11" alt="Table des Matières"></a></h1>
+<p>A line which is not indented and which begins with at least 3 '=' (equal)
+characters is rendered as an horizontal line which is as wide as a page. Past
+the 3 first '=' characters, the rest of the line is
+ignored.</p><p>Example:</p><hr><h1><a id="id.s6" name="id.s6"></a>Preformatted
+paragraphs<a href="#id.toc"><img src="apt_toc.gif" border="0" width="30" height="11" alt="Table des Matières"></a></h1>
+<p>It is possible to specify that a paragraph is preformatted by placing the
+text between two lines which are not indented and which begin with at least 3
+'-' (minus) characters.</p><p>This preformatted paragraph (typically source
+code) is rendered using a fixed-pitch
+font.</p><p>Example:</p><pre>int main(int    argc,
+         char*  argv[])
+{
+    puts(&quot;Hello MMMarvelous World!!!&quot;);
+    return 0;
+}</pre><p>Note that borders are drawn around preformatted paragraphs if the
+sequence '<tt>+--</tt>' is used instead of sequence
+'<tt>---</tt>'.</p><p>Preformatted paragraph with borders may not be supported
+by all output formats.</p><p>Preformatted paragraphs are always displayed at
+current indentation level. Example:</p><ul>
+<li>List item 1<ul>
+<li>Sublist item
+1<div class="box" style="border: 2px solid; width: 100%"><pre> A      |       B
+ -------+---------
+ 10     |       20
+ 30     |       40</pre></div><p>Nested
+figure:</p><center><p><img src="pixware.gif"
+alt="pixware"></p><p><i>Nested<br>figure caption.</i></p></center><p>Nested
+line:</p><hr><p>End of sublist.</p></li>
+</ul></li>
+<li>List item 2<hr></li>
+</ul><p>Non nested line:</p><hr><p>Non nested
+figure:</p><center><p><img src="pixware.gif"
+alt="pixware"></p></center><p>No
+caption.</p><h1><a id="id.s7" name="id.s7"></a>Tables<a href="#id.toc"><img src="apt_toc.gif" border="0" width="30" height="11" alt="Table des Matières"></a></h1>
+<p>This is a table without a caption:</p><center><table border="0">
+<tr valign="top">
+<td align="center"><b>Cell</b> 1</td>
+<td align="center"><b>Cell 2</b>, <i>line 1</i><br><i>line 2</i><br><i>line
+3</i></td>
+</tr>
+<tr valign="top">
+<td align="center"><a id="unix" name="unix">Unix</a> pipe = ``|''</td>
+<td align="center">Cell 4</td>
+</tr>
+</table></center><p>This is another table:</p><center><table border="1">
+<tr valign="top">
+<td align="right"><b>Display screen</b><br><b>number</b></td>
+<td align="left"><b>1</b></td>
+<td align="left"><b>2</b></td>
+</tr>
+<tr valign="top">
+<td align="right">width</td>
+<td align="left">1024</td>
+<td align="left">1280</td>
+</tr>
+<tr valign="top">
+<td align="right">height</td>
+<td align="left">768</td>
+<td align="left">1024</td>
+</tr>
+<tr valign="top">
+<td align="right">depth</td>
+<td align="left">16</td>
+<td align="left">24</td>
+</tr>
+</table><p><i>Long, long, long, long, long, long<br>table
+caption.</i></p></center><h1><a id="id.s8" name="id.s8"></a>Figures<a href="#id.toc"><img src="apt_toc.gif" border="0" width="30" height="11" alt="Table des Matières"></a></h1>
+<p>In order to specify a figure in PTF, a file name <i>without any suffix</i>
+must be put between [ and ] <i>at column 0</i>, optionally followed by the
+caption of the figure.</p><p>If the file name is something like
+<tt>images/myfig</tt>, tools such as docc generally expect to find actual
+files called:</p><ul>
+<li><tt>images/myfig.eps</tt> when converting PTF to LaTeX or to troff.</li>
+<li><tt>images/myfig.gif</tt> when converting PTF to HTML.</li>
+<li><tt>images/myfig.bmp</tt> when converting PTF to RTF.</li>
+</ul><p>This command may not be supported by all output
+formats.</p><p>Example:</p><pre>[pixware] This is the logo of the Pixware company.</pre><p>is
+rendered as:</p><center><p><img src="pixware.gif"
+alt="pixware"></p><p><i>This is the logo of the Pixware
+company.</i></p></center><h1><a id="id.s9" name="id.s9"></a>Hypertext
+links<a href="#id.toc"><img src="apt_toc.gif" border="0" width="30" height="11" alt="Table des Matières"></a></h1>
+<p>It is possible to specify hypertext links in PTF. </p><ul>
+<li>Text between { and } is an hypertext link target (i.e. you can go there if
+you click on an hypertext ``button'').<p>This text, which may be converted to
+an index entry by systems such as LaTeX, should be at most a few words
+long.</p></li>
+<li>Text between {{ and }} is an hypertext link start (i.e. a ``button'' you
+can click on to jump to the corresponding target). <p>This text must be
+defined somewhere else (possibly in another file -- see the documentation of
+docc) as an hypertext target.</p><p>hypertext ``buttons'' are generally
+rendered using specific presentation attributes so you don't need to add your
+own font commands.</p></li>
+</ul><p>Example:</p><p>If this document is translated to HTML or to non-linear
+(winhelp) RTF, click on <a href="#poortextformat">Poor Text Format</a> to jump
+to the
+introduction.</p><h1><a id="id.s10" name="id.s10"></a>Comments<a href="#id.toc"><img src="apt_toc.gif" border="0" width="30" height="11" alt="Table des Matières"></a></h1>
+<p>Text between 2 '~' (tilde) characters and the end of line is
+ignored.</p><p>This is also a very convenient way to make sections stand out
+very cleary above paragraphs by underlining them using lines of
+~'s.</p><h1><a id="id.s11" name="id.s11"></a>More cryptic
+commands<a href="#id.toc"><img src="apt_toc.gif" border="0" width="30" height="11" alt="Table des Matières"></a></h1>
+<p>These commands are generally generated by programs such as <tt>sed</tt> or
+<tt>docx</tt> (see <a href="#id.s13">the docx utility</a>). You'll rarely need
+to use these commands.</p><dl compact>
+<dt><b>\NNN</b></dt>
+<dd><tt>NNN</tt> is a 3-digit octal number between 0 and 255 which represent
+an 8-bit character belonging to the ISO Latin 1 character set. <p>Note that if
+you have a 8-bit text editor, you don't need to use \NNN commands at all
+because you can directly type any ISO Latin 1
+character.</p><p>Example:</p><pre>This paragraph contains ISO Latin 1 characters such as 
+the dollar sign \044, the copyright sign \251 or small e 
+accute accent \351 which is heavily used &lt;en fran\347ais&gt;.</pre><p>is
+rendered as:</p><p>This paragraph contains ISO Latin 1 characters such as the
+dollar sign $, the copyright sign © or small e accute accent é which is
+heavily used <i>en français</i>.</p></dd>
+<dt><b>\&lt;SPACE&gt;</b></dt>
+<dd>(the '\' character followed by a space) Non breaking
+space.<p>Example:</p><pre>Word\ 1 word\ 2 word\ 3 word\ 4 word\ 5 word\ 6
+word\ 7 word\ 8 word\ 9 word\ 10 word\ 11 word\ 12
+word\ 13 word\ 14 word\ 15 word\ 16 word\ 17 word\ 18
+word\ 19 word\ 20 word\ 21 word\ 22 word\ 23 word\ 24.</pre><p>is rendered
+as:</p><p>Word&nbsp;1 word&nbsp;2 word&nbsp;3 word&nbsp;4 word&nbsp;5
+word&nbsp;6 word&nbsp;7 word&nbsp;8 word&nbsp;9 word&nbsp;10 word&nbsp;11
+word&nbsp;12 word&nbsp;13 word&nbsp;14 word&nbsp;15 word&nbsp;16 word&nbsp;17
+word&nbsp;18 word&nbsp;19 word&nbsp;20 word&nbsp;21 word&nbsp;22 word&nbsp;23
+word&nbsp;24.</p><p>This command may not be supported by all output
+formats.</p></dd>
+<dt><b>\&lt;CR&gt;</b></dt>
+<dd>(the '\' character followed by a carriage return) Line
+break.<p>Example:</p><pre>First line.\                 
+Second line.\                 
+Third line.                 </pre><p>is rendered as:</p><p>First
+line.<br>Second line.<br>Third line.</p><p>This command may not be supported
+by all output formats. </p></dd>
+<dt><b>[]</b></dt>
+<dd>List break. An indented line which contains only [] may be used to force
+the end of a list. The indentation of the line specifies which list (or nested
+lists) is to be ended. This command is especially useful for preformatted
+paragraphs.<p>Example:</p><pre>                 * list 1 item 1
+
+                 * list 1 item 2
+
+                     ** list 2 item a
+
+                     ** list 2 item b
+
+                     ** list 2 item c
+
+                 []
+
+ +--
+ Without the [], this paragraph would have been contained 
+ inside list 1 item 2.
+ +--</pre><p>is rendered as:</p><ul>
+<li>list 1 item 1</li>
+<li>list 1 item 2<ul>
+<li>list 2 item a</li>
+<li>list 2 item b</li>
+<li>list 2 item c</li>
+</ul></li>
+</ul><div class="box" style="border: 2px solid; width: 100%"><pre>Without the [], this paragraph would have been contained 
+inside list 1 item 2.</pre></div><p>Note that horizontal lines, figures and
+page breaks force all nested lists to end.</p></dd>
+<dt><b>^L</b></dt>
+<dd>(a formfeed character <i>at column 0</i>) Page break. <p>This command may
+not be supported by all output formats.</p><p>Example:</p><pre>^L
+  This paragraph should be located at the top of a new page.</pre><p>is
+rendered as:</p></dd>
+</dl><p>This paragraph should be located at the top of a new
+page.</p><h1><a id="id.s12" name="id.s12"></a>The
+<a id="docc" name="docc">docc</a>
+utility<a href="#id.toc"><img src="apt_toc.gif" border="0" width="30" height="11" alt="Table des Matières"></a></h1>
+<p>See also <a href="#id.s13">the docx utility</a>.</p><p>docc is
+auto-documented. Simply type <tt>docc</tt> to list its generic
+options:</p><pre>$ docc
+usage: docc target_format [generic_options] [format_options] {input_file}+
+
+target_format: latex, man, html, rtf or href (pseudo-format)
+
+Note that PTF comments are automatically extracted from C/C++ source files
+using docx if the extension of the input file name is .[hH]* or .[cC]*. Tcl
+source files are supported too if the extension of the input file name is .tcl
+or .TCL.
+
+generic_options:
+-c 
+Each input file is individually translated to a stand-alone
+documentation file (like 'cc -c').
+Default: all input files are translated to a single output file.
+-o &lt;%255s&gt;
+Specify the name of the output file (like 'cc -o').
+Default: the basename of the input file+a format specific suffix.
+-href (-h) &lt;%255s&gt;
+Specify the name of the hypertext references file to be loaded
+(generated during a first pass using the 'href' pseudo-format).
+Default: none.
+-sed (-s) &lt;%255s&gt;
+Specify the name of a file which contains sed commands. These
+sed commands are applied to all PTF source files (even if
+automatically extracted using docx) just before their translation
+to the target format.
+Default: none.
+-borders (-b) 
+Tell docx to add borders around extracted code.
+Default: no borders.
+
+Type 'docc target_format' to list the options related to
+target_format.</pre><p>Then, for example, type <tt>docc rtf</tt> to list the
+options related to the RTF format:</p><pre>$ docc rtf
+-linear (-li) 
+The output RTF file does not contain hypertext links a la WinHelp.
+Default: non linear (WinHelp).
+-adobefonts (-af) 
+Use Adobe fonts (Helvetica, Times, etc).
+Default: Windows fonts (Arial, Time New Roman, etc).</pre><h2><a id="id.s12.1" name="id.s12.1"></a>Examples<a href="#id.toc"><img src="apt_toc.gif" border="0" width="30" height="11" alt="Table des Matières"></a></h2>
+<h3><a id="id.s12.1.1" name="id.s12.1.1"></a>LaTeX<a href="#id.toc"><img src="apt_toc.gif" border="0" width="30" height="11" alt="Table des Matières"></a></h3>
+<p>PTF comments are directly extracted from C/C++ sources
+files.</p><pre>$ cd tmp
+$ docc latex -dc article -dco a4paper \
+-ti 'The PTF Format and Related Utilties' \
+-o ptf.tex ptf.txt docc.cc docx.cc
+$ ls
+ptf.tex</pre><h3><a id="id.s12.1.2" name="id.s12.1.2"></a>troff
+-man<a href="#id.toc"><img src="apt_toc.gif" border="0" width="30" height="11" alt="Table des Matières"></a></h3>
+<p>docc is run on docc.cc and then on docx.cc to generate two man pages with
+different headers.</p><pre>$ cd tmp
+$ docc man -c -ti docc -se 1 -he 'Text Utilities' -fo Pixware docc.cc
+$ docc man -c -ti docx -se 1 -he 'Text Utilities' -fo Pixware docx.cc
+$ ls
+docc.man        docx.man</pre><h3><a id="id.s12.1.3" name="id.s12.1.3"></a>HTML<a href="#id.toc"><img src="apt_toc.gif" border="0" width="30" height="11" alt="Table des Matières"></a></h3>
+<p>The hardest format to generate is HTML because in this case you must run
+docc twice, example:</p><dl compact>
+<dt><b>First pass</b></dt>
+<dd>Resolve all hypertext links and save them in a file called <tt>hrefs</tt>.
+To do this, you need to use the <i>href</i> pseudo-format.<pre>$ cd tmp
+$ docc href -o hrefs ptf.txt docc.cc docx.cc
+$ ls
+hrefs</pre></dd>
+<dt><b>Second pass</b></dt>
+<dd>For each input file, generate an HTML file (the -c option). Load file
+<tt>hrefs</tt> (the -h hrefs option) to be able to resolve hypertext
+links.<pre>$ docc html -br -h hrefs -c ptf.txt docc.cc docx.cc
+$ ls
+docc.html        hrefs           previous.gif
+docx.html        next.gif        ptf.html</pre><p>The -br option is used to
+chain the generated HTML files not only through hypertext links but also
+sequentially (i.e. like the pages of a book).</p></dd>
+</dl><h3><a id="id.s12.1.4" name="id.s12.1.4"></a>RTF<a href="#id.toc"><img src="apt_toc.gif" border="0" width="30" height="11" alt="Table des Matières"></a></h3>
+<p>Always use -o when generating non-linear RTF format (WinHelp) to get a
+single .rtf file and a single .hpj (help project) file.</p><pre>$ cd tmp
+$ docc rtf -o docc.rtf ptf.txt docc.cc docx.cc
+$ ls
+docc.hpj        docc.rtf</pre><p>Unlike the HTML format, the generation of
+WinHelp files does not require running docc twice. The hypertext links are
+resolved by the help compiler (example <tt>hc31.exe</tt>) that you must run
+under DOS on the generated .hpj
+file.</p><pre>C&gt; hc31 docc</pre><h1><a id="id.s13" name="id.s13"></a>The
+<a id="docx" name="docx">docx</a>
+utility<a href="#id.toc"><img src="apt_toc.gif" border="0" width="30" height="11" alt="Table des Matières"></a></h1>
+<p>docx is a simple preprocessor used by <a href="#docc">docc</a> to extract
+comments written in PTF (<a href="#poortextformat"><i>P</i>oor <i>T</i>ext
+<i>F</i>ormat</a>) and associated C/C++ code from source files.</p><p>docx has
+no command line
+options:</p><pre>docx [-l c|tcl] [-b] [input_file [output_file]]</pre><p>When
+<i>input_file</i> and <i>output_file</i> are not specified, docx reads its
+standard input and writes its standard output.</p><p>The <b>-l</b> option may
+be used to specify the programming language. Currently only Tcl and C/C++ are
+supported. C/C++ is the default language.</p><p>The <b>-b</b> option may be
+used to add a border around the extracted code.</p><p>Comments which are to be
+extracted must be marked by adding an x just after the beginning of comments
+character sequence.</p><p>Example 1, C style comments:</p><pre>/*x
+Title
+    paragraph paragraph paragraph paragraph paragraph 
+    paragraph paragraph paragraph paragraph paragraph 
+                .
+                .
+                .</pre><p>Example 2, C++ style comments:</p><pre>//x
+//Title
+//    paragraph paragraph paragraph paragraph paragraph 
+//    paragraph paragraph paragraph paragraph paragraph 
+                .
+                .
+                .</pre><p>Example 3, Tcl style comments:</p><pre>#x
+#Title
+#    paragraph paragraph paragraph paragraph paragraph 
+#    paragraph paragraph paragraph paragraph paragraph 
+                .
+                .
+                .</pre><p>All characters between /*x or //x and the end of the
+line are ignored (except, of course, the end of comments character sequence
+for C style comments).</p><p>Associated C/C++ code (if any) must immediately
+follow the PTF comments. An open line, EOF, or other comments must be used to
+end this associated code. Example:</p><pre>//x
+//    Returns the maximum of &lt;x&gt; and &lt;y&gt;.
+#define MAX(x, y) \
+    (((x) &gt; (y))? (x) : (y))
+</pre><p>Associated code is unindented before (by default) being inserted as a
+verbatim section at the beginning of the PTF comments. </p><p>The place where
+associated code is to be inserted may be specified by putting a line which
+begins with the '~' '~' 'x' sequence inside PTF comments. Example:</p><pre>//x
+//    Returns the maximum of &lt;x&gt; and &lt;y&gt;.
+//
+//~~x
+//
+//    Note that &lt;x&gt; and &lt;y&gt; may be any type for which the '&gt;' operator
+//    is defined.
+#define MAX(x, y) (((x) &gt; (y))? (x) : (y))
+</pre><hr>
+<h1><a id="id.idx" name="id.idx">Index</a></h1>
+<dl>
+<dt><big><b>A</b></big></dt>
+<dd><a href="#aij">Ai j</a></dd>
+</dl>
+<dl>
+<dt><big><b>D</b></big></dt>
+<dd><a href="#docc">docc</a></dd>
+<dd><a href="#docx">docx</a></dd>
+</dl>
+<dl>
+<dt><big><b>P</b></big></dt>
+<dd><a href="#poortextformat">Poor Text Format</a></dd>
+</dl>
+<dl>
+<dt><big><b>U</b></big></dt>
+<dd><a href="#unix">Unix</a></dd>
+<dd><a href="#utilities">Utilities</a></dd>
+</dl>
+</body>
+</html>

@@ -1,0 +1,18 @@
+/* XPM */
+static char * apt_toc_xpm[] = {
+"30 11 4 1",
+" 	c None",
+".	c #B0B0D8",
+"X	c #666699",
+"o	c #383C58",
+"                         .    ",
+"                        .X.   ",
+"                       .XXX.  ",
+"                      .XXXXX. ",
+"                     .XXXXXXX.",
+"                     ooo.Xoooo",
+"                        .Xo   ",
+"                        .Xo   ",
+".........................Xo   ",
+".XXXXXXXXXXXXXXXXXXXXXXXXXo   ",
+".oooooooooooooooooooooooooo   "};
