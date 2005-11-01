@@ -1,0 +1,92 @@
+ -----
+ Plexus Component Descriptor Creator
+ -----
+ Trygve Laugstøl
+ -----
+ 25th May 2005
+ -----
+
+Plexus Component Descriptor Creator
+
+ <<NOTE: This document and the CDC itself is currently a work in progres.>>
+
+ The Component Descriptor Creator (or CDC for short) is a tool that will create
+ the <<<components.xml>>> file from your Java code. It uses a set of JavaDoc
+ tags to gather the information it needs to create the component descriptor.
+
+* Component Tags
+
+*-------------------------------*--------------*---------------------------------------------*
+| <<Tag>>                       | <<Required>> | <<Description>>                             |
+*-------------------------------*---*--------------------------------------------------------*
+| @plexus.component             | y | Marker tag to mark a class as a Plexus component.      |
+*-------------------------------*---*--------------------------------------------------------*
+| @plexus.role                  | y | The role of the component.                             |
+*-------------------------------*---*--------------------------------------------------------*
+| @plexus.version               | n | The component version.                                 |
+*-------------------------------*---*--------------------------------------------------------*
+| @plexus.lifecycle-handler     | n | The lifecycle handler of the component.                |
+|                               |   | <TODO: link to the different lifecycle handlers>       |
+*-------------------------------*---*--------------------------------------------------------*
+| @plexus.instatiation-strategy | n | The instantiation strategy of the component.           |
+|                               |   | <TODO: link to the different instantiation strategies> |
+*-------------------------------*---*--------------------------------------------------------*
+~~ TODO: This line will be incorrectly render the *name* of the table as well as the caption
+~~ [plexus-component-tags] Plexus Component Tags
+
++---+
+/**
+ * @plexus.component
+ * @plexus.lifecycle-handler plexus-configurable
+ */
+public class DefaultActionManager
+    extends AbstractLogEnabled
+    implements ActionManager, Serviceable
+{
++---+
+~~ [example-class-tags] Example Class Tags
+
+* Requirement Tags
+
+ These tags are used on fields to state requirements. TODO: it should be
+ possible to override the role for a normal field.
+
+*-------------------------------*----------------*-------------------------------------------*
+| <<Tag>>                       | <<Required>> | <<Description>>                             |
+*-------------------------------*-----*------------------------------------------------------*
+| @plexus.requirement           | y   | Marker tag to mark this field as requirement         |
+*-------------------------------*-----*------------------------------------------------------*
+| @plexus.role                  | y/n | Only required if the field is a List or Map          |
+*-------------------------------*-----*------------------------------------------------------*
+| @plexus.role-hint             | n   | |
+*-------------------------------*-----*------------------------------------------------------*
+
++---+
+/**
+ * @plexus.requirement
+ */
+private ActionManager actionManager; 
++---+
+~~ [example-requirement-tags] Example Requirement Tags
+
+* Configuration Tags
+
+ Note that the default value tag won't be required in the future when these
+ tags will be used to generate a separate configuration declaration section.
+
+*-------------------------------*--------------*---------------------------------------------*
+| <<Tag>>                       | <<Required>> | <<Description>>                             |
+*-------------------------------*---*--------------------------------------------------------*
+| @plexus.configuration         | y | Marker tag to mark this field as configureable         |
+*-------------------------------*---*--------------------------------------------------------*
+| @plexus.default-value         | y | Sets the default value for the configuration field     |
+*-------------------------------*---*--------------------------------------------------------*
+
++---+
+/**
+ * @plexus.requirement
+ * @plexus.role-hint velocity
+ */
+private Renderer renderer; 
++---+
+~~ [example-requirement-tags] Example Requirement Tags

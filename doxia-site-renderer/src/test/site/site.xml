@@ -1,0 +1,20 @@
+<?xml version="1.0" encoding="ISO-8859-1"?>
+<project name="Plexus">
+  <bannerLeft>
+    <name>Plexus</name>
+    <href>http://plexus.codehaus.org</href>
+  </bannerLeft>
+  <bannerRight>
+    <src>http://codehaus.org/codehaus-small.png</src>
+    <href>http://www.codehaus.org</href>
+  </bannerRight>
+  <body>
+    <links>
+      <item name="Plexus" href="http://plexus.codehaus.org"/>
+      <item name="The Codehaus" href="http://www.codehaus.org"/>
+    </links>
+    <menu name="Quick Links">
+      <item name="CDC" href="/cdc.html"/>    
+    </menu>
+  </body>
+</project>
