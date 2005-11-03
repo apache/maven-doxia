@@ -5,7 +5,7 @@ import java.util.List;
 
 public class Faqs
 {
-    private boolean toplink = false; 
+    private boolean toplink = true; 
     
     private String title = "FAQ";
 
