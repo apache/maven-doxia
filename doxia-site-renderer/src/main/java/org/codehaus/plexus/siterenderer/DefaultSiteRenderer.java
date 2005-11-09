@@ -45,6 +45,7 @@ import java.io.InputStreamReader;
 import java.io.OutputStreamWriter;
 import java.io.StringWriter;
 import java.io.Writer;
+import java.text.SimpleDateFormat;
 import java.util.Date;
 import java.util.Iterator;
 import java.util.List;
@@ -249,6 +250,7 @@ public class DefaultSiteRenderer
                 finally
                 {
                     sink.flush();
+
                     sink.close();
                 }
             }
@@ -309,6 +311,7 @@ public class DefaultSiteRenderer
             finally
             {
                 sink.flush();
+
                 sink.close();
             }
         }
@@ -349,6 +352,8 @@ public class DefaultSiteRenderer
         context.put( "siteDescriptor", siteDescriptor );
 
         context.put( "currentDate", new Date() );
+
+        context.put( "dateFormat", new SimpleDateFormat() );
 
         context.put( "currentFileName", PathTool.calculateLink( "/" + currentDocument, renderingContext
             .getRelativePath() ) );
