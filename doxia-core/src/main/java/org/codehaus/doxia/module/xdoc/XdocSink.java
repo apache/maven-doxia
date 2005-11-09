@@ -23,7 +23,7 @@ public class XdocSink
     private StringBuffer buffer = new StringBuffer();
 
     private boolean headFlag;
-    private boolean itemFlag;
+    private int itemFlag;
     private boolean boxedFlag;
     private boolean verbatimFlag;
     private int[] cellJustif;
@@ -39,7 +39,7 @@ public class XdocSink
     {
         headFlag = false;
         buffer = new StringBuffer();
-        itemFlag = false;
+        itemFlag = 0;
         boxedFlag = false;
         verbatimFlag = false;
         cellJustif = null;
@@ -188,7 +188,7 @@ public class XdocSink
     public void listItem()
     {
         markup( "<li>" );
-        itemFlag = true;
+        itemFlag++;
         // What follows is at least a paragraph.
     }
 
@@ -229,7 +229,7 @@ public class XdocSink
     public void numberedListItem()
     {
         markup( "<li>" );
-        itemFlag = true;
+        itemFlag++;
         // What follows is at least a paragraph.
     }
 
@@ -261,7 +261,7 @@ public class XdocSink
     public void definition()
     {
         markup( "<dd>" );
-        itemFlag = true;
+        itemFlag++;
         // What follows is at least a paragraph.
     }
 
@@ -272,16 +272,23 @@ public class XdocSink
 
     public void paragraph()
     {
-        if ( !itemFlag )
+        if ( itemFlag == 0 )
+        {
             markup( "<p>" );
+        }
     }
 
     public void paragraph_()
     {
-        if ( itemFlag )
-            itemFlag = false;
-        else
+        if ( itemFlag == 0 )
+        {
             markup( "</p>" );
+        }
+        else
+        {
+            itemFlag--;
+        }
+            
     }
 
     public void verbatim( boolean boxed )

@@ -34,7 +34,7 @@ public class XhtmlSink
 
     private boolean headFlag;
 
-    private boolean itemFlag;
+    private int itemFlag;
 
     private boolean boxedFlag;
 
@@ -79,7 +79,7 @@ public class XhtmlSink
 
         resetBuffer();
 
-        itemFlag = false;
+        itemFlag = 0;
 
         boxedFlag = false;
 
@@ -349,7 +349,7 @@ public class XhtmlSink
     {
         write( "<li>" );
 
-        itemFlag = true;
+        itemFlag++;
         // What follows is at least a paragraph.
     }
 
@@ -372,7 +372,7 @@ public class XhtmlSink
     {
         write( "<li>" );
 
-        itemFlag = true;
+        itemFlag++;
         // What follows is at least a paragraph.
     }
 
@@ -405,7 +405,7 @@ public class XhtmlSink
     {
         write( "<dd>" );
 
-        itemFlag = true;
+        itemFlag++;
         // What follows is at least a paragraph.
     }
 
@@ -416,7 +416,7 @@ public class XhtmlSink
 
     public void paragraph()
     {
-        if ( !itemFlag )
+        if ( itemFlag == 0 )
         {
             write( "<p>" );
         }
@@ -424,13 +424,13 @@ public class XhtmlSink
 
     public void paragraph_()
     {
-        if ( itemFlag )
+        if ( itemFlag == 0 )
         {
-            itemFlag = false;
+            write( "</p>" );
         }
         else
         {
-            write( "</p>" );
+            itemFlag--;
         }
     }
 
