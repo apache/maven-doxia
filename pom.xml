@@ -67,21 +67,6 @@
     <developerConnection>scm:svn:svn+ssh://svn.codehaus.org/home/projects/doxia/scm/trunk</developerConnection>
     <url>http://svn.doxia.codehaus.org/</url>
   </scm>
-  <build>
-    <plugins>
-      <plugin>
-        <groupId>org.codehaus.plexus</groupId>
-        <artifactId>plexus-maven-plugin</artifactId>
-        <executions>
-          <execution>
-            <goals>
-              <goal>descriptor</goal>
-            </goals>
-          </execution>
-        </executions>
-      </plugin>
-    </plugins>
-  </build>
   <repositories>
     <repository>
       <releases>
