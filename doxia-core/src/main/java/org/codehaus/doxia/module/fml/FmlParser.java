@@ -297,14 +297,15 @@ public class FmlParser
     private void writeAnswer( Sink sink, String answer )
     {
         int startSource = answer.indexOf( "<source>" );
-        int endSource = answer.lastIndexOf( "</source>" );
+        int endSource = answer.indexOf( "</source>" );
         if ( startSource != -1 )
         {
             sink.rawText( answer.substring( 0, startSource ) );
             sink.verbatim( true );
             sink.text( answer.substring( startSource + "<source>".length(), endSource ) );
             sink.verbatim_();
-            sink.rawText( answer.substring( endSource + "</source>".length() ) );
+            // need to write the end of answer that can contain other source tag
+            writeAnswer( sink, answer.substring( endSource + "</source>".length() ) );
         }
         else
         {
