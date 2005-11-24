@@ -697,7 +697,14 @@ public class XhtmlSink
     {
         if ( !headFlag )
         {
-            write( "<a name=\"" + name + "\">" );
+            if ( name != null && !name.startsWith( "#" ) )
+            {
+                write( "<a name=\"#" + name + "\">" );
+            }
+            else
+            {
+                write( "<a name=\"" + name + "\">" );
+            }
         }
     }
 
