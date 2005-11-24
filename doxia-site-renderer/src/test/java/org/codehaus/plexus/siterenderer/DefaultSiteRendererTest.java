@@ -1,7 +1,5 @@
 package org.codehaus.plexus.siterenderer;
 
-import org.codehaus.plexus.PlexusTestCase;
-
 /*
  * Copyright 2004-2005 The Apache Software Foundation.
  *
@@ -17,6 +15,8 @@ import org.codehaus.plexus.PlexusTestCase;
  * See the License for the specific language governing permissions and
  * limitations under the License.
  */
+
+import org.codehaus.plexus.PlexusTestCase;
 
 /**
  * @author <a href="mailto:evenisse@codehaus.org>Emmanuel Venisse</a>

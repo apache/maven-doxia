@@ -1,6 +1,6 @@
 <project>
   <modelVersion>4.0.0</modelVersion>
-  <groupId>org.codehaus.doxia</groupId>
+  <groupId>org.apache.maven.doxia</groupId>
   <artifactId>doxia</artifactId>
   <name>Doxia</name>
   <version>1.0-alpha-6-SNAPSHOT</version>
@@ -14,34 +14,28 @@
     <system>continuum</system>
     <notifiers>
       <notifier>
-        <address>dev@doxia.codehaus.org</address>
+        <address>doxia-dev@maven.apache.org</address>
       </notifier>
     </notifiers>
   </ciManagement>
   <mailingLists>
     <mailingList>
-      <name>Doxia Announce List</name>
-      <subscribe>mailto:announce-subscribe@doxia.codehaus.org</subscribe>
-      <unsubscribe>mailto:announce-unsubscribe@doxia.codehaus.org</unsubscribe>
-      <archive>http://archive.doxia.codehaus.org/announce/</archive>
-    </mailingList>
-    <mailingList>
       <name>Doxia Developer List</name>
-      <subscribe>mailto:dev-subscribe@doxia.codehaus.org</subscribe>
-      <unsubscribe>mailto:dev-unsubscribe@doxia.codehaus.org</unsubscribe>
-      <archive>http://archive.doxia.codehaus.org/dev/</archive>
+      <subscribe>doxia-dev-subscribe@maven.apache.org</subscribe>
+      <unsubscribe>doxia-dev-unsubscribe@maven.apache.org</unsubscribe>
+      <archive>http://mail-archives.apache.org/mod_mbox/maven-doxia-dev/</archive>
     </mailingList>
     <mailingList>
       <name>Doxia User List</name>
-      <subscribe>mailto:user-subscribe@doxia.codehaus.org</subscribe>
-      <unsubscribe>mailto:user-unsubscribe@doxia.codehaus.org</unsubscribe>
-      <archive>http://archive.doxia.codehaus.org/user/</archive>
+      <subscribe>doxia-users-subscribe@maven.apache.org</subscribe>
+      <unsubscribe>doxia-users-unsubscribe@maven.apache.org</unsubscribe>
+      <archive>http://mail-archives.apache.org/mod_mbox/maven-doxia-users/</archive>
     </mailingList>
     <mailingList>
       <name>Doxia Commits List</name>
-      <subscribe>mailto:scm-subscribe@doxia.codehaus.org</subscribe>
-      <unsubscribe>mailto:scm-unsubscribe@doxia.codehaus.org</unsubscribe>
-      <archive>http://archive.doxia.codehaus.org/scm/</archive>
+      <subscribe>doxia-commits-subscribe@maven.apache.org</subscribe>
+      <unsubscribe>doxia-commits-unsubscribe@maven.apache.org</unsubscribe>
+      <archive>http://mail-archives.apache.org/mod_mbox/maven-doxia-commits/</archive>
     </mailingList>
   </mailingLists>
   <developers>
@@ -54,7 +48,15 @@
       <timezone>-5</timezone>
     </developer>
     <developer>
-      <name>Emmanuel Evenisse</name>
+      <name>Brett Porter</name>
+      <email>brett@apache.org</email>
+      <roles>
+        <role>Developer</role>
+      </roles>
+      <timezone>+10</timezone>
+    </developer>
+    <developer>
+      <name>Emmanuel Venisse</name>
       <email>emmanuel@venisse.net</email>
       <roles>
         <role>Developer</role>
@@ -63,9 +65,9 @@
     </developer>
   </developers>
   <scm>
-    <connection>scm:svn:https://svn.codehaus.org/doxia/trunk</connection>
-    <developerConnection>scm:svn:svn+ssh://svn.codehaus.org/home/projects/doxia/scm/trunk</developerConnection>
-    <url>http://svn.doxia.codehaus.org/</url>
+    <connection>scm:svn:http://svn.apache.org/repos/asf/maven/doxia/trunk</connection>
+    <developerConnection>scm:svn:https://svn.apache.org/repos/asf/maven/doxia/trunk</developerConnection>
+    <url>http://svn.apache.org/viewcvs.cgi/maven/doxia/trunk</url>
   </scm>
   <build>
     <plugins>
@@ -82,26 +84,6 @@
       </plugin>
     </plugins>
   </build>
-  <repositories>
-    <repository>
-      <releases>
-        <enabled>false</enabled>
-      </releases>
-      <id>snapshots</id>
-      <name>Maven Snapshot Development Repository</name>
-      <url>http://snapshots.maven.codehaus.org/maven2</url>
-    </repository>
-  </repositories>
-  <pluginRepositories>
-    <pluginRepository>
-      <releases>
-        <enabled>false</enabled>
-      </releases>
-      <id>snapshots-plugins</id>
-      <name>Maven Snapshot Plugins Development Repository</name>
-      <url>http://snapshots.maven.codehaus.org/maven2</url>
-    </pluginRepository>
-  </pluginRepositories>
   <distributionManagement>
     <repository>
       <id>repo1</id>
@@ -109,13 +91,13 @@
       <url>scp://repo1.maven.org/home/projects/maven/repository-staging/to-ibiblio/maven2</url>
     </repository>
     <snapshotRepository>
-      <id>snapshots</id>
-      <name>Maven Central Development Repository</name>
-      <url>scp://repo1.maven.org/home/projects/maven/repository-staging/snapshots/maven2</url>
+      <id>apache.snapshots</id>
+      <name>Apache Development Repository</name>
+      <url>scp://cvs.apache.org/www/cvs.apache.org/maven-snapshot-repository</url>
     </snapshotRepository>
     <site>
       <id>website</id>
-      <url>scp://beaver.codehaus.org/home/projects/doxia/public_html</url>
+      <url>scp://minotaur.apache.org/www/maven.apache.org/doxia/</url>
     </site>
   </distributionManagement>
   <modules>

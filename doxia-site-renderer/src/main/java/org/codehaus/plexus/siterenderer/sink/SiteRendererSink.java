@@ -1,12 +1,5 @@
 package org.codehaus.plexus.siterenderer.sink;
 
-import org.codehaus.doxia.module.xhtml.XhtmlSink;
-import org.codehaus.doxia.module.xhtml.decoration.render.RenderingContext;
-
-import java.io.StringWriter;
-import java.util.ArrayList;
-import java.util.List;
-
 /*
  * Copyright 2004-2005 The Apache Software Foundation.
  *
@@ -22,6 +15,13 @@ import java.util.List;
  * See the License for the specific language governing permissions and
  * limitations under the License.
  */
+
+import org.apache.maven.doxia.module.xhtml.XhtmlSink;
+import org.apache.maven.doxia.module.xhtml.decoration.render.RenderingContext;
+
+import java.io.StringWriter;
+import java.util.ArrayList;
+import java.util.List;
 
 /**
  * @author <a href="mailto:evenisse@codehaus.org>Emmanuel Venisse</a>
@@ -46,7 +46,7 @@ public class SiteRendererSink
     }
 
     /**
-     * @see org.codehaus.doxia.module.xhtml.XhtmlSink#title_()
+     * @see org.apache.maven.doxia.module.xhtml.XhtmlSink#title_()
      */
     public void title_()
     {
@@ -59,7 +59,7 @@ public class SiteRendererSink
     }
 
     /**
-     * @see org.codehaus.doxia.module.xhtml.XhtmlSink#title()
+     * @see org.apache.maven.doxia.module.xhtml.XhtmlSink#title()
      */
     public void title()
     {
@@ -71,7 +71,7 @@ public class SiteRendererSink
     }
 
     /**
-     * @see org.codehaus.doxia.module.xhtml.XhtmlSink#author_()
+     * @see org.apache.maven.doxia.module.xhtml.XhtmlSink#author_()
      */
     public void author_()
     {
@@ -89,7 +89,7 @@ public class SiteRendererSink
     }
 
     /**
-     * @see org.codehaus.doxia.module.xhtml.XhtmlSink#date_()
+     * @see org.apache.maven.doxia.module.xhtml.XhtmlSink#date_()
      */
     public void date_()
     {
@@ -107,14 +107,14 @@ public class SiteRendererSink
     }
 
     /**
-     * @see org.codehaus.doxia.module.xhtml.XhtmlSink#body_()
+     * @see org.apache.maven.doxia.module.xhtml.XhtmlSink#body_()
      */
     public void body_()
     {
     }
 
     /**
-     * @see org.codehaus.doxia.module.xhtml.XhtmlSink#body()
+     * @see org.apache.maven.doxia.module.xhtml.XhtmlSink#body()
      */
     public void body()
     {
@@ -124,8 +124,9 @@ public class SiteRendererSink
     {
         return writer.toString();
     }
+
     /**
-     * @see org.codehaus.doxia.module.xhtml.XhtmlSink#head_()
+     * @see org.apache.maven.doxia.module.xhtml.XhtmlSink#head_()
      */
     public void head_()
     {
@@ -133,7 +134,7 @@ public class SiteRendererSink
     }
 
     /**
-     * @see org.codehaus.doxia.module.xhtml.XhtmlSink#head()
+     * @see org.apache.maven.doxia.module.xhtml.XhtmlSink#head()
      */
     public void head()
     {

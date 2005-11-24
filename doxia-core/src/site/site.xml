@@ -2,21 +2,23 @@
 <project name="Doxia">
   <bannerLeft>
     <name>Doxia</name>
-    <href>http://doxia.codehaus.org</href>
+    <src>http://maven.apache.org/images/apache-maven-project-2.png</src>
+    <href>http://maven.apache.org/doxia/</href>
   </bannerLeft>
   <bannerRight>
-    <name>Codehaus</name>
-    <src>http://codehaus.org/codehaus-small.png</src>
-    <href>http://www.codehaus.org</href>
+    <src>http://maven.apache.org/images/maven-logo-2.gif</src>
   </bannerRight>
   <body>
     <links>
-      <item name="Plexus" href="http://plexus.codehaus.org"/>
-      <item name="The Codehaus" href="http://www.codehaus.org"/>
+      <item name="Apache" href="http://www.apache.org/"/>
+      <item name="Maven 1.x" href="http://maven.apache.org/maven-1.x"/>
+      <item name="Maven 2.x" href="http://maven.apache.org/"/>
+      <item name="Continuum" href="http://maven.apache.org/continuum"/>
+      <item name="SCM" href="http://maven.apache.org/scm"/>
+      <item name="Wagon" href="http://maven.apache.org/wagon"/>
+      <item name="JXR" href="http://maven.apache.org/jxr"/>
+      <item name="Doxia" href="http://maven.apache.org/doxia"/>
     </links>
-    <menu name="Quick Links">
-      <item name="APT Reference" href="format.html"/>
-    </menu>
     ${reports}
   </body>
 </project>

@@ -16,13 +16,13 @@ package org.codehaus.plexus.siterenderer;
  * limitations under the License.
  */
 
+import org.apache.maven.doxia.Doxia;
+import org.apache.maven.doxia.module.xhtml.decoration.render.RenderingContext;
+import org.apache.maven.doxia.site.module.SiteModule;
+import org.apache.maven.doxia.site.module.manager.SiteModuleManager;
 import org.apache.velocity.Template;
 import org.apache.velocity.VelocityContext;
 import org.apache.velocity.context.Context;
-import org.codehaus.doxia.Doxia;
-import org.codehaus.doxia.module.xhtml.decoration.render.RenderingContext;
-import org.codehaus.doxia.site.module.SiteModule;
-import org.codehaus.doxia.site.module.manager.SiteModuleManager;
 import org.codehaus.plexus.i18n.I18N;
 import org.codehaus.plexus.logging.AbstractLogEnabled;
 import org.codehaus.plexus.siterenderer.sink.SiteRendererSink;
