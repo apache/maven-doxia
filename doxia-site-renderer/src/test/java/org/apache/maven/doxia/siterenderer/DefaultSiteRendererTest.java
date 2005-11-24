@@ -20,7 +20,7 @@ import org.codehaus.plexus.PlexusTestCase;
 
 /**
  * @author <a href="mailto:evenisse@codehaus.org>Emmanuel Venisse</a>
- * @version $Id$
+ * @version $Id:DefaultSiteRendererTest.java 348612 2005-11-24 12:54:19 +1100 (Thu, 24 Nov 2005) brett $
  */
 public class DefaultSiteRendererTest
     extends PlexusTestCase

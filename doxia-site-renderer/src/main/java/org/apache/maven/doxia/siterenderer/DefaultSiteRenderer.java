@@ -55,7 +55,7 @@ import java.util.Map;
 /**
  * @author <a href="mailto:evenisse@codehaus.org">Emmanuel Venisse</a>
  * @author <a href="mailto:vincent.siveton@gmail.com">Vincent Siveton</a>
- * @version $Id$
+ * @version $Id:DefaultSiteRenderer.java 348612 2005-11-24 12:54:19 +1100 (Thu, 24 Nov 2005) brett $
  * @plexus.component role="org.apache.maven.doxia.siterenderer.Renderer"
  */
 public class DefaultSiteRenderer

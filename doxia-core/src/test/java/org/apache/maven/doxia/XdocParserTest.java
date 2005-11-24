@@ -23,7 +23,7 @@ import org.apache.maven.doxia.parser.Parser;
 /**
  * @author <a href="mailto:jason@maven.org">Jason van Zyl</a>
  * @author <a href="mailto:evenisse@codehaus.org">Emmanuel Venisse</a>
- * @version $Id$
+ * @version $Id:XdocParserTest.java 348605 2005-11-24 12:02:44 +1100 (Thu, 24 Nov 2005) brett $
  */
 public class XdocParserTest
     extends AbstractParserTestCase

@@ -16,7 +16,7 @@ package org.apache.maven.doxia.module.xhtml.decoration.model;/*
 
 /**
  * @author <a href="mailto:brett@codehaus.org">Brett Porter</a>
- * @version $Id$
+ * @version $Id:Banner.java 348605 2005-11-24 12:02:44 +1100 (Thu, 24 Nov 2005) brett $
  */
 public class Banner
 {

@@ -25,7 +25,7 @@ import java.io.Reader;
 
 /**
  * @author <a href="mailto:evenisse@codehaus.org">Emmanuel Venisse</a>
- * @version $Id$
+ * @version $Id:AbstractParserTestCase.java 348605 2005-11-24 12:02:44 +1100 (Thu, 24 Nov 2005) brett $
  */
 public abstract class AbstractParserTestCase
     extends PlexusTestCase

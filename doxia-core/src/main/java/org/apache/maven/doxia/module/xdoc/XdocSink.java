@@ -28,7 +28,7 @@ import java.io.Writer;
  * A doxia Sink which produces an xdoc document.
  *
  * @author <a href="mailto:james@jamestaylor.org">James Taylor</a>
- * @version $Id$
+ * @version $Id:XdocSink.java 348605 2005-11-24 12:02:44 +1100 (Thu, 24 Nov 2005) brett $
  * @componentx
  */
 public class XdocSink

@@ -23,7 +23,7 @@ import org.codehaus.plexus.util.xml.XMLWriter;
 
 /**
  * @author <a href="mailto:brett@codehaus.org">Brett Porter</a>
- * @version $Id$
+ * @version $Id:BannerRenderer.java 348605 2005-11-24 12:02:44 +1100 (Thu, 24 Nov 2005) brett $
  */
 public class BannerRenderer
     implements DecorationRenderer

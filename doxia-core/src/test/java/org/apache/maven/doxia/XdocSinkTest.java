@@ -21,7 +21,7 @@ import org.apache.maven.doxia.sink.Sink;
 
 /**
  * @author <a href="mailto:jason@maven.org">Jason van Zyl</a>
- * @version $Id$
+ * @version $Id:XdocSinkTest.java 348605 2005-11-24 12:02:44 +1100 (Thu, 24 Nov 2005) brett $
  */
 public class XdocSinkTest
     extends AbstractSinkTestCase
