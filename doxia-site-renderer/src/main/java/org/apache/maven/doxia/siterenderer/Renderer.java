@@ -1,4 +1,4 @@
-package org.codehaus.plexus.siterenderer;
+package org.apache.maven.doxia.siterenderer;
 
 /*
  * Copyright 2004-2005 The Apache Software Foundation.
@@ -16,7 +16,7 @@ package org.codehaus.plexus.siterenderer;
  * limitations under the License.
  */
 
-import org.codehaus.plexus.siterenderer.sink.SiteRendererSink;
+import org.apache.maven.doxia.siterenderer.sink.SiteRendererSink;
 
 import java.io.File;
 import java.io.IOException;
@@ -34,40 +34,42 @@ public interface Renderer
     String ROLE = Renderer.class.getName();
 
     void render( File siteDirectory, File outputDirectory, File siteDescriptor, String templateName,
-                Map templateProperties )
+                 Map templateProperties )
         throws RendererException, IOException;
 
     void render( File siteDirectory, File outputDirectory, InputStream siteDescriptor, String templateName,
-                Map templateProperties )
+                 Map templateProperties )
         throws RendererException, IOException;
 
     void render( File siteDirectory, File outputDirectory, String siteDescriptor, String templateName,
-                Map templateProperties )
+                 Map templateProperties )
         throws RendererException, IOException;
 
     void render( File siteDirectory, File outputDirectory, File siteDescriptor, String templateName,
                  Map templateProperties, Locale locale )
-         throws RendererException, IOException;
+        throws RendererException, IOException;
 
-     void render( File siteDirectory, File outputDirectory, InputStream siteDescriptor, String templateName,
+    void render( File siteDirectory, File outputDirectory, InputStream siteDescriptor, String templateName,
                  Map templateProperties, Locale locale )
-         throws RendererException, IOException;
+        throws RendererException, IOException;
 
-     void render( File siteDirectory, File outputDirectory, String siteDescriptor, String templateName,
+    void render( File siteDirectory, File outputDirectory, String siteDescriptor, String templateName,
                  Map templateProperties, Locale locale )
-         throws RendererException, IOException;
+        throws RendererException, IOException;
 
-     void render( File siteDirectory, File outputDirectory, InputStream siteDescriptor, String templateName,
+    void render( File siteDirectory, File outputDirectory, InputStream siteDescriptor, String templateName,
                  Map templateProperties, Locale locale, String outputEncoding )
-         throws RendererException, IOException;
-     
-     void render( File siteDirectory, File outputDirectory, String module, String moduleExtension, String moduleParserId, 
-                    String siteDescriptor, String templateName, Map templateProperties, Locale locale, String outputEncoding )
-         throws RendererException, IOException;     
-     
-     void render( File siteDirectory, File outputDirectory, String module, String moduleExtension, String moduleParserId, 
-                    InputStream siteDescriptor, String templateName, Map templateProperties, Locale locale, String outputEncoding )
-         throws RendererException, IOException;
+        throws RendererException, IOException;
+
+    void render( File siteDirectory, File outputDirectory, String module, String moduleExtension, String moduleParserId,
+                 String siteDescriptor, String templateName, Map templateProperties, Locale locale,
+                 String outputEncoding )
+        throws RendererException, IOException;
+
+    void render( File siteDirectory, File outputDirectory, String module, String moduleExtension, String moduleParserId,
+                 InputStream siteDescriptor, String templateName, Map templateProperties, Locale locale,
+                 String outputEncoding )
+        throws RendererException, IOException;
 
     void generateDocument( Writer writer, String templateName, Map templateProperties, SiteRendererSink sink )
         throws RendererException;

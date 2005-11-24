@@ -1,4 +1,4 @@
-package org.codehaus.plexus.siterenderer;
+package org.apache.maven.doxia.siterenderer;
 
 /*
  * Copyright 2004-2005 The Apache Software Foundation.
@@ -20,12 +20,12 @@ import org.apache.maven.doxia.Doxia;
 import org.apache.maven.doxia.module.xhtml.decoration.render.RenderingContext;
 import org.apache.maven.doxia.site.module.SiteModule;
 import org.apache.maven.doxia.site.module.manager.SiteModuleManager;
+import org.apache.maven.doxia.siterenderer.sink.SiteRendererSink;
 import org.apache.velocity.Template;
 import org.apache.velocity.VelocityContext;
 import org.apache.velocity.context.Context;
 import org.codehaus.plexus.i18n.I18N;
 import org.codehaus.plexus.logging.AbstractLogEnabled;
-import org.codehaus.plexus.siterenderer.sink.SiteRendererSink;
 import org.codehaus.plexus.util.FileUtils;
 import org.codehaus.plexus.util.PathTool;
 import org.codehaus.plexus.util.StringInputStream;
@@ -56,7 +56,7 @@ import java.util.Map;
  * @author <a href="mailto:evenisse@codehaus.org">Emmanuel Venisse</a>
  * @author <a href="mailto:vincent.siveton@gmail.com">Vincent Siveton</a>
  * @version $Id$
- * @plexus.component role="org.codehaus.plexus.siterenderer.Renderer"
+ * @plexus.component role="org.apache.maven.doxia.siterenderer.Renderer"
  */
 public class DefaultSiteRenderer
     extends AbstractLogEnabled
@@ -112,7 +112,7 @@ public class DefaultSiteRenderer
     // ----------------------------------------------------------------------
 
     /**
-     * @see org.codehaus.plexus.siterenderer.Renderer#render(java.io.File, java.io.File, java.io.File, java.lang.String, java.util.Map)
+     * @see org.apache.maven.doxia.siterenderer.Renderer#render(java.io.File, java.io.File, java.io.File, java.lang.String, java.util.Map)
      */
     public void render( File siteDirectory, File outputDirectory, File siteDescriptor, String templateName,
                         Map templateProperties )
@@ -122,7 +122,7 @@ public class DefaultSiteRenderer
     }
 
     /**
-     * @see org.codehaus.plexus.siterenderer.Renderer#render(java.io.File, java.io.File, java.io.File, java.lang.String, java.util.Map, java.util.Locale)
+     * @see org.apache.maven.doxia.siterenderer.Renderer#render(java.io.File, java.io.File, java.io.File, java.lang.String, java.util.Map, java.util.Locale)
      */
     public void render( File siteDirectory, File outputDirectory, File siteDescriptor, String templateName,
                         Map templateProperties, Locale locale )
@@ -133,7 +133,7 @@ public class DefaultSiteRenderer
     }
 
     /**
-     * @see org.codehaus.plexus.siterenderer.Renderer#render(java.io.File, java.io.File, java.lang.String, java.lang.String, Map)
+     * @see org.apache.maven.doxia.siterenderer.Renderer#render(java.io.File, java.io.File, java.lang.String, java.lang.String, Map)
      */
     public void render( File siteDirectory, File outputDirectory, String siteDescriptor, String templateName,
                         Map templateProperties )
@@ -143,7 +143,7 @@ public class DefaultSiteRenderer
     }
 
     /**
-     * @see org.codehaus.plexus.siterenderer.Renderer#render(java.io.File, java.io.File, java.lang.String, java.lang.String, java.util.Map, java.util.Locale)
+     * @see org.apache.maven.doxia.siterenderer.Renderer#render(java.io.File, java.io.File, java.lang.String, java.lang.String, java.util.Map, java.util.Locale)
      */
     public void render( File siteDirectory, File outputDirectory, String siteDescriptor, String templateName,
                         Map templateProperties, Locale locale )
@@ -154,7 +154,7 @@ public class DefaultSiteRenderer
     }
 
     /**
-     * @see org.codehaus.plexus.siterenderer.Renderer#render(File, File, InputStream, String, Map)
+     * @see org.apache.maven.doxia.siterenderer.Renderer#render(File, File, InputStream, String, Map)
      */
     public void render( File siteDirectory, File outputDirectory, InputStream siteDescriptor, String templateName,
                         Map templateProperties )
@@ -164,7 +164,7 @@ public class DefaultSiteRenderer
     }
 
     /**
-     * @see org.codehaus.plexus.siterenderer.Renderer#render(java.io.File, java.io.File, java.io.InputStream, java.lang.String, java.util.Map, java.util.Locale)
+     * @see org.apache.maven.doxia.siterenderer.Renderer#render(java.io.File, java.io.File, java.io.InputStream, java.lang.String, java.util.Map, java.util.Locale)
      */
     public void render( File siteDirectory, File outputDirectory, InputStream siteDescriptor, String templateName,
                         Map templateProperties, Locale locale )
@@ -185,7 +185,7 @@ public class DefaultSiteRenderer
     }
 
     /**
-     * @see org.codehaus.plexus.siterenderer.Renderer#render(java.io.File, java.io.File, java.io.InputStream, java.lang.String, java.util.Map, java.util.Locale, java.lang.String)
+     * @see org.apache.maven.doxia.siterenderer.Renderer#render(java.io.File, java.io.File, java.io.InputStream, java.lang.String, java.util.Map, java.util.Locale, java.lang.String)
      */
     public void render( File siteDirectory, File outputDirectory, InputStream siteDescriptor, String templateName,
                         Map templateProperties, Locale locale, String outputEncoding )
@@ -318,7 +318,7 @@ public class DefaultSiteRenderer
     }
 
     /**
-     * @see org.codehaus.plexus.siterenderer.Renderer#generateDocument(java.io.Writer, java.lang.String, java.util.Map, org.codehaus.plexus.siterenderer.sink.SiteRendererSink)
+     * @see org.apache.maven.doxia.siterenderer.Renderer#generateDocument(java.io.Writer, java.lang.String, java.util.Map, org.apache.maven.doxia.siterenderer.sink.SiteRendererSink)
      */
     public void generateDocument( Writer writer, String templateName, Map templateProperties, SiteRendererSink sink )
         throws RendererException
@@ -327,7 +327,7 @@ public class DefaultSiteRenderer
     }
 
     /**
-     * @see org.codehaus.plexus.siterenderer.Renderer#generateDocument(java.io.Writer, java.lang.String, java.util.Map, org.codehaus.plexus.siterenderer.sink.SiteRendererSink, java.util.Locale)
+     * @see org.apache.maven.doxia.siterenderer.Renderer#generateDocument(java.io.Writer, java.lang.String, java.util.Map, org.apache.maven.doxia.siterenderer.sink.SiteRendererSink, java.util.Locale)
      */
     public void generateDocument( Writer writer, String templateName, Map templateProperties, SiteRendererSink sink,
                                   Locale locale )

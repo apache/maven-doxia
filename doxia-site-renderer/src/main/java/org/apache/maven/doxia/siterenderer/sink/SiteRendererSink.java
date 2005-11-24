@@ -1,4 +1,4 @@
-package org.codehaus.plexus.siterenderer.sink;
+package org.apache.maven.doxia.siterenderer.sink;
 
 /*
  * Copyright 2004-2005 The Apache Software Foundation.
