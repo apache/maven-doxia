@@ -48,7 +48,7 @@ This command will install the file in your local repository along with your cust
 
 h3. Are there any ways of including/excluding the other modules in the navigation menu in the parent site?
 
-http://jira.codehaus.org/browse/MNG-661, provides a simple patch which provides parent and module links using the project URLs which as you
+[http://jira.codehaus.org/browse/MNG-661], provides a simple patch which provides parent and module links using the project URLs which as you
 correctly point out only work when the site is deployed.
 
 h3. Where is the ______ plugin?
@@ -198,6 +198,12 @@ This isn't actually possible with the plugin, unless perhaps you do this:
 Ideally, you would write a plugin for these goals (Ant support for
 plugins will be available soon, currently you must write them in java
 or beanshell).
+
+h3. When I extend a mojo from another plugin, it's variables are not properly populated. Why?
+
+The field metadata when creating plugins is read from source files, so is not available when the original source is not. The metadata is available in the plugin in {{META-INF/maven/plugin.xml}}, but at this point there is no way to incorporate it when building a new plugin.
+
+We currently recommend building your plugins using composition instead of inheritence.
 
 h1. Unanswered Questions
 
