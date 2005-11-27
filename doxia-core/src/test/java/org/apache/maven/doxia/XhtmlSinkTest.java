@@ -48,7 +48,7 @@ public class XhtmlSinkTest
 
         DecorationModelReader b = new DecorationModelReader();
 
-        DecorationModel navigation = b.createNavigation( "site.xml" );
+        DecorationModel navigation = b.createNavigation( new File( getBasedir(), "src/test/site/site.xml" ).getPath() );
 
         RenderingContext renderingContext =
             new RenderingContext( getBasedirFile(), new File( getBasedirFile(), xdoc ).getPath(), navigation );
