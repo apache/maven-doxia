@@ -25,7 +25,9 @@ import org.apache.maven.doxia.module.common.ByLineSource;
 import org.apache.maven.doxia.module.confluence.parser.BlockParser;
 import org.apache.maven.doxia.module.confluence.parser.Block;
 import org.apache.maven.doxia.module.confluence.parser.BoldBlock;
+import org.apache.maven.doxia.module.confluence.parser.TextBlock;
 import org.apache.maven.doxia.parser.ParseException;
+import org.codehaus.plexus.util.StringUtils;
 
 
 /**
@@ -37,12 +39,12 @@ import org.apache.maven.doxia.parser.ParseException;
 public class TableBlockParser
     implements BlockParser
 {
-    public final boolean accept( final String line )
+    public  boolean accept(  String line )
     {
         return line.startsWith( "|" );
     }
 
-    public final Block visit( final String line, final ByLineSource source )
+    public  Block visit(  String line,  ByLineSource source )
         throws ParseException
     {
         if ( !accept( line ) )
@@ -50,39 +52,48 @@ public class TableBlockParser
             throw new IllegalAccessError( "call accept before this ;)" );
         }
 
-        final List rows = new ArrayList();
+         List rows = new ArrayList();
 
         String l = line;
 
         do
         {
-            /*
-            final Matcher m = TABLE_PATTERN.matcher( l );
-            if ( m.lookingAt() )
+            List cells = new ArrayList();
+
+            if ( l.startsWith( "||" ) )
             {
-                final List<Block> cells = new ArrayList<Block>();
+                String[] text = StringUtils.split( l, "||" );
 
-                // for each cell...
-                for ( int lh = l.indexOf( '|' ) + 1, rh; ( rh = l.indexOf( '|', lh ) ) != -1; lh = rh + 1 )
+
+                for ( int i = 0; i < text.length; i++ )
                 {
-                    final Block [] bs = textParser.parse( l.substring( lh, rh ).trim() );
+                    List textBlocks = new ArrayList();
 
-                    if ( bs.length == 1 && bs[0] instanceof BoldBlock )
-                    {
-                        final Block []tmp = ( (BoldBlock) bs[0] ).getBlocks();
+                    textBlocks.add( new TextBlock( text[i] ) );
 
-                        cells.add( new TableCellHeaderBlock( tmp ) );
-                    }
-                    else
-                    {
-                        cells.add( new TableCellBlock( bs ) );
-                    }
+                    List blocks = new ArrayList();
+
+                    blocks.add( new BoldBlock( textBlocks ) );
+
+                    cells.add( new TableCellHeaderBlock( blocks ) );
                 }
-                rows.add( new TableRowBlock( cells.toArray( new Block[]{} ) ) );
-
             }
-            */
+            else
+            {
+                String[] text = StringUtils.split( l, "|" );
 
+
+                for ( int i = 0; i < text.length; i++ )
+                {
+                    List blocks = new ArrayList();
+
+                    blocks.add( new TextBlock( text[i] ) );
+
+                    cells.add( new TableCellBlock( blocks ) );
+                }
+            }
+
+            rows.add( new TableRowBlock( cells ) );
         }
         while ( ( l = source.getNextLine() ) != null && accept( l ) );
 

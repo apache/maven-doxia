@@ -24,15 +24,13 @@ import java.util.List;
 public class NumberedListBlock
     extends ListBlock
 {
-    public NumberedListBlock( final List childBlocks )
+    public NumberedListBlock(  List childBlocks )
     {
         super( childBlocks );
     }
 
     public void before( Sink sink )
     {
-        System.out.println( "!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!" );
-
         sink.numberedList( Sink.NUMBERING_DECIMAL );
     }
 

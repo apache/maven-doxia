@@ -8,12 +8,12 @@ import org.apache.maven.doxia.parser.ParseException;
 
 /**
  * @author <a href="mailto:jason@maven.org">Jason van Zyl</a>
- * @version $Id:$
+ * @version $Id$
  */
 public class VerbatimBlockParser
     implements BlockParser
 {
-    static final String LS = System.getProperty( "line.separator" );
+    static  String LS = System.getProperty( "line.separator" );
 
     public boolean accept( String line )
     {

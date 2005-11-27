@@ -21,9 +21,9 @@ import org.apache.maven.doxia.sink.Sink;
 public class AnchorBlock
     implements Block
 {
-    private final String name;
+    private  String name;
 
-    public AnchorBlock( final String name ) throws IllegalArgumentException
+    public AnchorBlock(  String name ) throws IllegalArgumentException
     {
         if ( name == null )
         {
@@ -32,7 +32,7 @@ public class AnchorBlock
         this.name = name;
     }
 
-    public final void traverse( final Sink sink )
+    public  void traverse(  Sink sink )
     {
         sink.anchor( name );
         sink.anchor_();

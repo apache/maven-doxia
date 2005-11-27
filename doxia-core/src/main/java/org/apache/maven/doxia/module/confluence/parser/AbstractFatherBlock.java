@@ -25,13 +25,13 @@ import org.apache.maven.doxia.sink.Sink;
 public abstract class AbstractFatherBlock
     implements Block
 {
-    private final List blocks;
+    private  List blocks;
 
     public abstract void before( Sink sink );
 
     public abstract void after( Sink sink );
 
-    public AbstractFatherBlock( final List childBlocks )
+    public AbstractFatherBlock(  List childBlocks )
     {
         if ( childBlocks == null )
         {
@@ -41,7 +41,7 @@ public abstract class AbstractFatherBlock
         this.blocks = childBlocks;
     }
 
-    public final void traverse( final Sink sink )
+    public  void traverse(  Sink sink )
     {
         before( sink );
 
@@ -55,7 +55,7 @@ public abstract class AbstractFatherBlock
         after( sink );
     }
 
-    public final List getBlocks()
+    public  List getBlocks()
     {
         return blocks;
     }

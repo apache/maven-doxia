@@ -24,6 +24,7 @@ import org.apache.maven.doxia.module.confluence.parser.SectionBlockParser;
 import org.apache.maven.doxia.module.confluence.parser.ParagraphBlockParser;
 import org.apache.maven.doxia.module.confluence.parser.VerbatimBlockParser;
 import org.apache.maven.doxia.module.confluence.parser.HorizontalRuleBlockParser;
+import org.apache.maven.doxia.module.confluence.parser.table.TableBlockParser;
 import org.apache.maven.doxia.module.confluence.parser.list.ListBlockParser;
 import org.apache.maven.doxia.parser.AbstractParser;
 import org.apache.maven.doxia.parser.ParseException;
@@ -50,6 +51,7 @@ public class ConfluenceParser
         BlockParser horizontalRuleParser = new HorizontalRuleBlockParser();
         BlockParser paragraphParser = new ParagraphBlockParser();
         BlockParser listParser = new ListBlockParser();
+        BlockParser tableParser = new TableBlockParser();
 
         parsers = new BlockParser[]
             {
@@ -57,6 +59,7 @@ public class ConfluenceParser
                 verbatimParser,
                 horizontalRuleParser,
                 listParser,
+                tableParser,
                 paragraphParser
             };
     }
@@ -109,7 +112,7 @@ public class ConfluenceParser
         return blocks;
     }
 
-    public final synchronized void parse( Reader reader, Sink sink )
+    public  synchronized void parse( Reader reader, Sink sink )
         throws ParseException
     {
         List blocks;
@@ -120,11 +123,11 @@ public class ConfluenceParser
         {
             blocks = parse( source );
         }
-        catch ( final ParseException e )
+        catch (  ParseException e )
         {
             throw e;
         }
-        catch ( final Exception e )
+        catch (  Exception e )
         {
             throw new ParseException( e, source.getName(), source.getLineNumber() );
         }

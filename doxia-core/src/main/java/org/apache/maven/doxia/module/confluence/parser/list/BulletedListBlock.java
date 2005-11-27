@@ -21,12 +21,12 @@ import java.util.List;/*
 
 /**
  * @author <a href="mailto:jason@maven.org">Jason van Zyl</a>
- * @version $Id:$
+ * @version $Id$
  */
 public class BulletedListBlock
     extends ListBlock
 {
-    public BulletedListBlock( final List childBlocks )
+    public BulletedListBlock(  List childBlocks )
     {
         super( childBlocks );
     }

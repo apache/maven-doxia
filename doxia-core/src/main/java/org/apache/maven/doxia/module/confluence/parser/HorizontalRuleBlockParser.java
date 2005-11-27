@@ -25,12 +25,12 @@ import org.apache.maven.doxia.parser.ParseException;
 public class HorizontalRuleBlockParser
     implements BlockParser
 {
-    public final boolean accept( final String line )
+    public  boolean accept(  String line )
     {
         return line.startsWith( "----" );
     }
 
-    public final Block visit( final String line, final ByLineSource source )
+    public  Block visit(  String line,  ByLineSource source )
         throws ParseException
     {
         return new HorizontalRuleBlock();

@@ -20,5 +20,5 @@ import org.apache.maven.doxia.sink.Sink;
 
 public interface Block
 {
-    void traverse( final Sink sink );
+    void traverse(  Sink sink );
 }

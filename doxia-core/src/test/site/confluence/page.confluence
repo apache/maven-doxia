@@ -22,6 +22,9 @@ Some more text
 # number two
 # number three
 
+||one||two||three||
+|foo|bar|baz|
+
 h1. I am h1
 
 this is how you would code a mojo!

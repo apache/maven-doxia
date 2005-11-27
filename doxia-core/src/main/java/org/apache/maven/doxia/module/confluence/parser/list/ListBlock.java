@@ -20,12 +20,12 @@ import java.util.List;/*
 
 /**
  * @author <a href="mailto:jason@maven.org">Jason van Zyl</a>
- * @version $Id:$
+ * @version $Id$
  */
 public abstract class ListBlock
     extends AbstractFatherBlock
 {
-    protected ListBlock( final List childBlocks )
+    protected ListBlock(  List childBlocks )
     {
         super( childBlocks );
     }

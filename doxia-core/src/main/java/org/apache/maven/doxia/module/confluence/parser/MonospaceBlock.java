@@ -27,12 +27,12 @@ public class MonospaceBlock extends AbstractFatherBlock
         super( childBlocks );
     }
 
-    public final void before( final Sink sink )
+    public  void before(  Sink sink )
     {
         sink.monospaced();
     }
 
-    public final void after( final Sink sink )
+    public  void after(  Sink sink )
     {
         sink.monospaced_();
     }

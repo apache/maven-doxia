@@ -21,7 +21,7 @@ import org.apache.maven.doxia.sink.Sink;
 public class HorizontalRuleBlock 
     implements Block
 {
-    public final void traverse( final Sink sink )
+    public  void traverse(  Sink sink )
     {
         sink.horizontalRule();
     }

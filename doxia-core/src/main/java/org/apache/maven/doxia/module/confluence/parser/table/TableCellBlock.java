@@ -29,12 +29,12 @@ public class TableCellBlock
         super( childBlocks );
     }
 
-    public final void before( final Sink sink )
+    public  void before(  Sink sink )
     {
         sink.tableCell();
     }
 
-    public final void after( final Sink sink )
+    public  void after(  Sink sink )
     {
         sink.tableCell_();
     }

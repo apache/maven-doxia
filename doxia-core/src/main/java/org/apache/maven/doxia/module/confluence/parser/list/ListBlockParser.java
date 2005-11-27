@@ -23,7 +23,7 @@ import org.apache.maven.doxia.parser.ParseException;
 
 /**
  * @author <a href="mailto:jason@maven.org">Jason van Zyl</a>
- * @version $Id:$
+ * @version $Id$
  */
 public class ListBlockParser
     implements BlockParser
@@ -42,10 +42,10 @@ public class ListBlockParser
         return false;
     }
 
-    public final Block visit( final String line, final ByLineSource source )
+    public  Block visit(  String line,  ByLineSource source )
         throws ParseException
     {
-        final TreeListBuilder treeListBuilder = new TreeListBuilder();
+         TreeListBuilder treeListBuilder = new TreeListBuilder();
 
         String l = line;
 

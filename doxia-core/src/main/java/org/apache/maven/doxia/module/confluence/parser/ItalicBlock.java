@@ -28,12 +28,12 @@ public class ItalicBlock
         super( childBlocks );
     }
 
-    public final void before( final Sink sink )
+    public  void before(  Sink sink )
     {
         sink.italic();
     }
 
-    public final void after( final Sink sink )
+    public  void after(  Sink sink )
     {
         sink.italic_();
     }

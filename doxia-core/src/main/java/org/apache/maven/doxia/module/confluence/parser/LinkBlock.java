@@ -22,11 +22,11 @@ import org.apache.maven.doxia.sink.Sink;
 public class LinkBlock
     implements Block
 {
-    private final String reference;
+    private  String reference;
 
-    private final String text;
+    private  String text;
 
-    public LinkBlock( final String reference, final String text )
+    public LinkBlock(  String reference,  String text )
         throws IllegalArgumentException
     {
         if ( reference == null || text == null )
@@ -37,7 +37,7 @@ public class LinkBlock
         this.text = text;
     }
 
-    public final void traverse( final Sink sink )
+    public  void traverse(  Sink sink )
     {
         sink.link( reference );
 

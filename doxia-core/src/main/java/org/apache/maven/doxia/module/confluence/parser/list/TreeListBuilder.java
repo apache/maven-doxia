@@ -24,7 +24,7 @@ import java.util.Iterator;
 
 public class TreeListBuilder
 {
-    private final TreeComponent root;
+    private  TreeComponent root;
 
     private TreeComponent current;
 
@@ -110,8 +110,6 @@ public class TreeListBuilder
         for ( Iterator i = tc.getChildren().iterator(); i.hasNext(); )
         {
             TreeComponent child = (TreeComponent) i.next();
-
-            System.out.println( "child.getText() = " + child.getText() );
 
             List text = new ArrayList();
 

@@ -24,15 +24,15 @@ import java.util.List;
 public class ListItemBlock
     extends AbstractFatherBlock
 {
-    private final ListBlock innerList;
+    private  ListBlock innerList;
 
-    public ListItemBlock( final List blocks )
+    public ListItemBlock(  List blocks )
         throws IllegalArgumentException
     {
         this( blocks, null );
     }
 
-    public ListItemBlock( final List blocks, final ListBlock innerList )
+    public ListItemBlock(  List blocks,  ListBlock innerList )
         throws IllegalArgumentException
     {
         super( blocks );
@@ -40,12 +40,12 @@ public class ListItemBlock
         this.innerList = innerList;
     }
 
-    public final void before( final Sink sink )
+    public  void before(  Sink sink )
     {
         sink.listItem();
     }
 
-    public final void after( final Sink sink )
+    public  void after(  Sink sink )
     {
         if ( innerList != null )
         {
@@ -55,7 +55,7 @@ public class ListItemBlock
         sink.listItem_();
     }
 
-    public final ListBlock getInnerList()
+    public  ListBlock getInnerList()
     {
         return innerList;
     }
