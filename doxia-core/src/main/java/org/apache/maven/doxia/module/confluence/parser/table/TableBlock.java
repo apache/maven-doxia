@@ -1,4 +1,4 @@
-package org.apache.maven.doxia.module.confluence.parser;
+package org.apache.maven.doxia.module.confluence.parser.table;
 
 /*
  * Copyright 2004-2005 The Apache Software Foundation.
@@ -16,33 +16,27 @@ package org.apache.maven.doxia.module.confluence.parser;
  * limitations under the License.
  */
 
+import org.apache.maven.doxia.module.confluence.parser.AbstractFatherBlock;
 import org.apache.maven.doxia.sink.Sink;
 
+import java.util.List;
 
-public class LinkBlock
-    implements Block
+
+public class TableBlock
+    extends AbstractFatherBlock
 {
-    private final String reference;
-
-    private final String text;
-
-    public LinkBlock( final String reference, final String text )
-        throws IllegalArgumentException
+    public TableBlock( List childBlocks )
     {
-        if ( reference == null || text == null )
-        {
-            throw new IllegalArgumentException( "arguments can't be null" );
-        }
-        this.reference = reference;
-        this.text = text;
+        super( childBlocks );
     }
 
-    public final void traverse( final Sink sink )
+    public final void before( final Sink sink )
     {
-        sink.link( reference );
+        sink.table();
+    }
 
-        sink.text( text );
-
-        sink.link_();
+    public final void after( final Sink sink )
+    {
+        sink.table_();
     }
 }

@@ -1,5 +1,21 @@
 package org.apache.maven.doxia.module.confluence;
 
+/*
+ * Copyright 2004-2005 The Apache Software Foundation.
+ *
+ * Licensed under the Apache License, Version 2.0 (the "License");
+ * you may not use this file except in compliance with the License.
+ * You may obtain a copy of the License at
+ *
+ *      http://www.apache.org/licenses/LICENSE-2.0
+ *
+ * Unless required by applicable law or agreed to in writing, software
+ * distributed under the License is distributed on an "AS IS" BASIS,
+ * WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
+ * See the License for the specific language governing permissions and
+ * limitations under the License.
+ */
+
 import org.apache.maven.doxia.module.common.ByLineReaderSource;
 import org.apache.maven.doxia.module.common.ByLineSource;
 import org.apache.maven.doxia.module.confluence.parser.Block;
@@ -8,6 +24,7 @@ import org.apache.maven.doxia.module.confluence.parser.SectionBlockParser;
 import org.apache.maven.doxia.module.confluence.parser.ParagraphBlockParser;
 import org.apache.maven.doxia.module.confluence.parser.VerbatimBlockParser;
 import org.apache.maven.doxia.module.confluence.parser.HorizontalRuleBlockParser;
+import org.apache.maven.doxia.module.confluence.parser.list.ListBlockParser;
 import org.apache.maven.doxia.parser.AbstractParser;
 import org.apache.maven.doxia.parser.ParseException;
 import org.apache.maven.doxia.sink.Sink;
@@ -32,12 +49,14 @@ public class ConfluenceParser
         BlockParser verbatimParser = new VerbatimBlockParser();
         BlockParser horizontalRuleParser = new HorizontalRuleBlockParser();
         BlockParser paragraphParser = new ParagraphBlockParser();
+        BlockParser listParser = new ListBlockParser();
 
         parsers = new BlockParser[]
             {
                 headingParser,
                 verbatimParser,
                 horizontalRuleParser,
+                listParser,
                 paragraphParser
             };
     }
@@ -64,10 +83,12 @@ public class ConfluenceParser
 
                 if ( parser.accept( line ) )
                 {
+                    /*
                     System.out.println( "------------------------------------------------------------" );
                     System.out.println( "line = " + line );
                     System.out.println( "line accepted by: " + parser );
                     System.out.println( "------------------------------------------------------------" );
+                    */
 
                     accepted = true;
 

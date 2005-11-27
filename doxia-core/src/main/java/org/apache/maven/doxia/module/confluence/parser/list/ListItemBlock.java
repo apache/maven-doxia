@@ -1,4 +1,4 @@
-package org.apache.maven.doxia.module.confluence.parser;
+package org.apache.maven.doxia.module.confluence.parser.list;
 
 /*
  * Copyright 2004-2005 The Apache Software Foundation.
@@ -16,30 +16,47 @@ package org.apache.maven.doxia.module.confluence.parser;
  * limitations under the License.
  */
 
+import org.apache.maven.doxia.module.confluence.parser.AbstractFatherBlock;
 import org.apache.maven.doxia.sink.Sink;
 
 import java.util.List;
 
-/**
- * @author Juan F. Codagnone
- * @since Nov 1, 2005
- */
-public class ParagraphBlock
+public class ListItemBlock
     extends AbstractFatherBlock
 {
-    public ParagraphBlock( List blocks )
+    private final ListBlock innerList;
+
+    public ListItemBlock( final List blocks )
+        throws IllegalArgumentException
+    {
+        this( blocks, null );
+    }
+
+    public ListItemBlock( final List blocks, final ListBlock innerList )
         throws IllegalArgumentException
     {
         super( blocks );
+
+        this.innerList = innerList;
     }
 
-    public  void before(  Sink sink )
+    public final void before( final Sink sink )
     {
-        sink.paragraph();
+        sink.listItem();
     }
 
-    public  void after(  Sink sink )
+    public final void after( final Sink sink )
     {
-        sink.paragraph_();
+        if ( innerList != null )
+        {
+            innerList.traverse( sink );
+        }
+
+        sink.listItem_();
+    }
+
+    public final ListBlock getInnerList()
+    {
+        return innerList;
     }
 }

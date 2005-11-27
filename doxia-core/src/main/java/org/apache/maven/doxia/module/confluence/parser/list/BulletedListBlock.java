@@ -1,6 +1,9 @@
-package org.apache.maven.doxia.module.confluence.parser;
+package org.apache.maven.doxia.module.confluence.parser.list;
 
-/*
+import org.apache.maven.doxia.sink.Sink;
+import org.apache.maven.doxia.module.confluence.parser.AbstractFatherBlock;
+
+import java.util.List;/*
  * Copyright 2004-2005 The Apache Software Foundation.
  *
  * Licensed under the Apache License, Version 2.0 (the "License");
@@ -16,30 +19,25 @@ package org.apache.maven.doxia.module.confluence.parser;
  * limitations under the License.
  */
 
-import org.apache.maven.doxia.sink.Sink;
-
-import java.util.List;
-
 /**
- * @author Juan F. Codagnone
- * @since Nov 1, 2005
+ * @author <a href="mailto:jason@maven.org">Jason van Zyl</a>
+ * @version $Id:$
  */
-public class ParagraphBlock
-    extends AbstractFatherBlock
+public class BulletedListBlock
+    extends ListBlock
 {
-    public ParagraphBlock( List blocks )
-        throws IllegalArgumentException
+    public BulletedListBlock( final List childBlocks )
     {
-        super( blocks );
+        super( childBlocks );
     }
 
-    public  void before(  Sink sink )
+    public void before( Sink sink )
     {
-        sink.paragraph();
+        sink.list();
     }
 
-    public  void after(  Sink sink )
+    public void after( Sink sink )
     {
-        sink.paragraph_();
+        sink.list_();
     }
 }

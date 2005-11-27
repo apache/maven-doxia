@@ -1,4 +1,4 @@
-package org.apache.maven.doxia.module.confluence.parser;
+package org.apache.maven.doxia.module.confluence.parser.list;
 
 /*
  * Copyright 2004-2005 The Apache Software Foundation.
@@ -16,33 +16,28 @@ package org.apache.maven.doxia.module.confluence.parser;
  * limitations under the License.
  */
 
+import org.apache.maven.doxia.module.confluence.parser.AbstractFatherBlock;
 import org.apache.maven.doxia.sink.Sink;
 
+import java.util.List;
 
-public class LinkBlock
-    implements Block
+public class NumberedListBlock
+    extends ListBlock
 {
-    private final String reference;
-
-    private final String text;
-
-    public LinkBlock( final String reference, final String text )
-        throws IllegalArgumentException
+    public NumberedListBlock( final List childBlocks )
     {
-        if ( reference == null || text == null )
-        {
-            throw new IllegalArgumentException( "arguments can't be null" );
-        }
-        this.reference = reference;
-        this.text = text;
+        super( childBlocks );
     }
 
-    public final void traverse( final Sink sink )
+    public void before( Sink sink )
     {
-        sink.link( reference );
+        System.out.println( "!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!" );
 
-        sink.text( text );
+        sink.numberedList( Sink.NUMBERING_DECIMAL );
+    }
 
-        sink.link_();
+    public void after( Sink sink )
+    {
+        sink.numberedList_();
     }
 }
