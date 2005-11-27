@@ -82,8 +82,18 @@ public class ParagraphBlockParser
                     case ']':
                         if ( insideLink )
                         {
-                            String[] pieces = StringUtils.split( text.toString(), "|" );
-                            blocks.add( new LinkBlock( pieces[1], pieces[0] ) );
+                            String link = text.toString();
+
+                            if ( link.indexOf( "|" ) > 0 )
+                            {
+                                String[] pieces = StringUtils.split( text.toString(), "|" );
+                                blocks.add( new LinkBlock( pieces[1], pieces[0] ) );
+                            }
+                            else
+                            {
+                                blocks.add( new LinkBlock( link, link ) );
+                            }
+
                             text = new StringBuffer();
                         }
 

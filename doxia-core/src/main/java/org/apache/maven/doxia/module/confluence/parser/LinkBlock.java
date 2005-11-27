@@ -27,7 +27,9 @@ public class LinkBlock
     public final void traverse( final Sink sink )
     {
         sink.link( reference );
+
         sink.text( text );
+
         sink.link_();
     }
 }
