@@ -32,9 +32,22 @@ public class ListBlockParser
 
     public static int NUMBERED_LIST = 1;
 
-    public boolean accept( String line )
+    public boolean accept( String line, ByLineSource source )
     {
-        if ( isList( line ) )
+        String nextLine = null;
+
+        try
+        {
+            nextLine = source.getNextLine();
+
+            source.ungetLine();
+        }
+        catch ( ParseException e )
+        {
+            // do nothing
+        }
+
+        if ( isList( line ) && isList( nextLine ) )
         {
             return true;
         }
@@ -51,7 +64,7 @@ public class ListBlockParser
 
         do
         {
-            if ( !accept( l ) )
+            if ( !isList( l ) )
             {
                 break;
             }
@@ -70,11 +83,6 @@ public class ListBlockParser
             }
         }
         while ( ( l = source.getNextLine() ) != null );
-
-        if ( l != null )
-        {
-            source.ungetLine();
-        }
 
         return treeListBuilder.getBlock();
     }

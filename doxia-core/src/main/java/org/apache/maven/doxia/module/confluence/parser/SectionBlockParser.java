@@ -8,12 +8,12 @@ import org.apache.maven.doxia.parser.ParseException;
 
 /**
  * @author <a href="mailto:jason@maven.org">Jason van Zyl</a>
- * @version $Id:$
+ * @version $Id$
  */
 public class SectionBlockParser
     implements BlockParser
 {
-    public boolean accept( String line )
+    public boolean accept( String line, ByLineSource source )
     {
         if ( line.startsWith( "h1." ) )
         {

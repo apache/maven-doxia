@@ -22,7 +22,7 @@ import org.apache.maven.doxia.parser.ParseException;
 
 public interface BlockParser
 {
-    boolean accept( String line );
+    boolean accept( String line, ByLineSource source );
 
     Block visit( String line, ByLineSource source ) throws ParseException;
 }

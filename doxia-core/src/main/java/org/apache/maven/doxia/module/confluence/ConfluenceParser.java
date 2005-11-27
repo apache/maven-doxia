@@ -89,7 +89,7 @@ public class ConfluenceParser
                     continue;
                 }
 
-                if ( parser.accept( line ) )
+                if ( parser.accept( line, source ) )
                 {
                     /*
                     System.out.println( "------------------------------------------------------------" );

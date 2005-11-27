@@ -130,8 +130,7 @@ public class ByLineReaderSource implements ByLineSource
     {
         if ( ungetted )
         {
-            throw new IllegalStateException(
-                "we support only one level of ungetLine()" );
+            throw new IllegalStateException( "we support only one level of ungetLine()" );
         }
         ungetted = true;
     }

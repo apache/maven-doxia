@@ -15,7 +15,7 @@ public class VerbatimBlockParser
 {
     static  String LS = System.getProperty( "line.separator" );
 
-    public boolean accept( String line )
+    public boolean accept( String line, ByLineSource source )
     {
         if ( line.startsWith( "{code}" ) || line.startsWith( "{noformat}" ) )
         {
@@ -40,7 +40,6 @@ public class VerbatimBlockParser
             // TODO
             text.append( line ).append( LS );
         }
-
 
         return new VerbatimBlock( text.toString() );
     }

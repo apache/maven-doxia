@@ -16,16 +16,13 @@ package org.apache.maven.doxia.module.confluence.parser;
  * limitations under the License.
  */
 
-import java.util.regex.Matcher;
-import java.util.regex.Pattern;
-
 import org.apache.maven.doxia.module.common.ByLineSource;
 import org.apache.maven.doxia.parser.ParseException;
 
 public class HorizontalRuleBlockParser
     implements BlockParser
 {
-    public  boolean accept(  String line )
+    public  boolean accept( String line, ByLineSource source )
     {
         return line.startsWith( "----" );
     }

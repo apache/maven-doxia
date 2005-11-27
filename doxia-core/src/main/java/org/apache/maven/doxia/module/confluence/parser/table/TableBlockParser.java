@@ -18,8 +18,6 @@ package org.apache.maven.doxia.module.confluence.parser.table;
 
 import java.util.ArrayList;
 import java.util.List;
-import java.util.regex.Matcher;
-import java.util.regex.Pattern;
 
 import org.apache.maven.doxia.module.common.ByLineSource;
 import org.apache.maven.doxia.module.confluence.parser.BlockParser;
@@ -39,7 +37,7 @@ import org.codehaus.plexus.util.StringUtils;
 public class TableBlockParser
     implements BlockParser
 {
-    public  boolean accept(  String line )
+    public  boolean accept( String line, ByLineSource source )
     {
         return line.startsWith( "|" );
     }
@@ -47,7 +45,7 @@ public class TableBlockParser
     public  Block visit(  String line,  ByLineSource source )
         throws ParseException
     {
-        if ( !accept( line ) )
+        if ( !accept( line, source ) )
         {
             throw new IllegalAccessError( "call accept before this ;)" );
         }
@@ -95,7 +93,7 @@ public class TableBlockParser
 
             rows.add( new TableRowBlock( cells ) );
         }
-        while ( ( l = source.getNextLine() ) != null && accept( l ) );
+        while ( ( l = source.getNextLine() ) != null && accept( l, source ) );
 
         assert rows.size() >= 1;
 
