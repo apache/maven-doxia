@@ -86,7 +86,7 @@ public class TableBlockParser
         }
         while ( ( l = source.getNextLine() ) != null && accept( l ) );
 
-        //assert rows.size() >= 1;
+        assert rows.size() >= 1;
 
         return new TableBlock( rows );
     }
