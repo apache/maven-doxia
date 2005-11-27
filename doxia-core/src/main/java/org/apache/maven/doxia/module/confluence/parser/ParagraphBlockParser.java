@@ -146,6 +146,15 @@ public class ParagraphBlockParser
                 }
             }
         }
+        // TODO: instead of just flying along we should probably test new lines in the other parsers
+        // to make sure there aren't things that should be handled by other parsers. For example, right
+        // now:
+        // Blah blah blah blah
+        // # one
+        // # two
+        //
+        // Will not get processed correctly. This parser will try to deal with it when it should be handled
+        // by the list parser.
         while ( ( line = source.getNextLine() ) != null );
 
         if ( text.length() > 0 )
