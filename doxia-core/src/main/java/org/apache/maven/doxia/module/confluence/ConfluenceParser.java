@@ -64,6 +64,11 @@ public class ConfluenceParser
             };
     }
 
+    //TODO:
+    // (empty line) Produces a new paragraph
+    // \\ 	Creates a line break. Not often needed, most of the time Confluence will guess new lines for you appropriately.
+    // better support for anchors
+
     public List parse( ByLineSource source )
         throws ParseException
     {
