@@ -58,7 +58,6 @@ public class AnchorBlock implements Block
     /**
      * @see Object#equals(Object)
      */
-    @Override
     public final boolean equals( final Object obj )
     {
         boolean ret = false;
@@ -80,7 +79,6 @@ public class AnchorBlock implements Block
     /**
      * @see Object#hashCode()
      */
-    @Override
     public final int hashCode()
     {
         return name.hashCode();

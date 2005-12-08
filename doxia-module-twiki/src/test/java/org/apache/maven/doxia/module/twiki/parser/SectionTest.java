@@ -181,7 +181,7 @@ public class SectionTest extends AbstractBlockTestCase
                 } ),
             } ),
         };
-        blocks = twikiParser.parse( source ).toArray( new Block[]{} );
+        blocks = (Block[]) twikiParser.parse( source ).toArray( new Block[]{} );
         assertTrue( Arrays.equals( expected, blocks ) );
     }
 }

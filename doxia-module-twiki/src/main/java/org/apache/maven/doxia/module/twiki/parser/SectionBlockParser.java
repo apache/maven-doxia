@@ -70,7 +70,7 @@ public class SectionBlockParser implements BlockParser
         }
 
         String newLine;
-        final ArrayList<Block> blocks = new ArrayList<Block>();
+        final ArrayList blocks = new ArrayList();
 
         while ( ( newLine = source.getNextLine() ) != null && !accept( newLine ) )
         {
@@ -90,7 +90,7 @@ public class SectionBlockParser implements BlockParser
         }
 
         return new SectionBlock( m.group( 2 ), getLevel( m.group( 1 ) ),
-                                 blocks.toArray( new Block[]{} ) );
+                                 (Block[]) blocks.toArray( new Block[]{} ) );
     }
 
     /**

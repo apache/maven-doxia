@@ -38,7 +38,7 @@ public class NopBlock implements Block
     /**
      * @see Object#equals(Object)
      */
-    @Override
+    
     public final boolean equals( final Object obj )
     {
         return this == obj && getClass().equals( obj.getClass() );
@@ -47,7 +47,7 @@ public class NopBlock implements Block
     /**
      * @see Object#hashCode()
      */
-    @Override
+    
     public final int hashCode()
     {
         final int magic = 518409602;

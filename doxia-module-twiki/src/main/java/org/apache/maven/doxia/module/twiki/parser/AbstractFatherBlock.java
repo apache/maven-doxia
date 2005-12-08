@@ -76,8 +76,10 @@ public abstract class AbstractFatherBlock implements Block
     public final void traverse( final Sink sink )
     {
         before( sink );
-        for ( Block block : childBlocks )
+        for ( int i = 0; i < childBlocks.length; i++ )
         {
+            Block block = childBlocks[i];
+            
             block.traverse( sink );
         }
         after( sink );
@@ -97,7 +99,6 @@ public abstract class AbstractFatherBlock implements Block
      * @see Object#equals(Object)
      */
     // CHECKSTYLE:DESIGN:OFF
-    @Override
     public boolean equals( final Object obj )
     {
         boolean ret = false;
@@ -125,10 +126,18 @@ public abstract class AbstractFatherBlock implements Block
     /**
      * @see Object#hashCode()
      */
-    @Override
     public int hashCode()
     {
-        return Arrays.hashCode( childBlocks );
+        int result = 1;
+        if ( childBlocks != null )
+        {
+            for ( int i = 0; i < childBlocks.length; i++ )
+            {
+                result += childBlocks[i].hashCode();
+            }
+        }
+        
+        return result;
     }
     // CHECKSTYLE:DESIGN:ON
 }

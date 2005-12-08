@@ -54,7 +54,7 @@ public class NumeratedListBlock extends ListBlock
     /**
      * @see AbstractFatherBlock#before(org.apache.maven.doxia.sink.Sink)
      */
-    @Override
+    
     public final void before( final Sink sink )
     {
         sink.numberedList( type );
@@ -63,7 +63,7 @@ public class NumeratedListBlock extends ListBlock
     /**
      * @see AbstractFatherBlock#after(org.apache.maven.doxia.sink.Sink)
      */
-    @Override
+    
     public final void after( final Sink sink )
     {
         sink.numberedList_();
@@ -72,7 +72,7 @@ public class NumeratedListBlock extends ListBlock
     /**
      * @see AbstractFatherBlock#equals(Object)
      */
-    @Override
+    
     public final boolean equals( final Object obj )
     {
         boolean ret = false;
@@ -88,7 +88,7 @@ public class NumeratedListBlock extends ListBlock
     /**
      * @see AbstractFatherBlock#hashCode()
      */
-    @Override
+    
     public final int hashCode()
     {
         final int magic = 17;

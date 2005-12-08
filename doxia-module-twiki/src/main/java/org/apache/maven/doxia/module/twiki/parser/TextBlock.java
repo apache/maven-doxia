@@ -58,10 +58,10 @@ public class TextBlock implements Block
     /**
      * @see Object#toString()
      */
-    @Override
+    
     public final String toString()
     {
-        return getClass().getName() + ": [" + text.replace( "\n", "\\n" ) + "]";
+        return getClass().getName() + ": [" + text.replaceAll( "\n", "\\n" ) + "]";
     }
 
 
@@ -78,7 +78,7 @@ public class TextBlock implements Block
     /**
      * @see Object#equals(Object)
      */
-    @Override
+    
     public final boolean equals( final Object obj )
     {
         boolean ret = false;
@@ -99,7 +99,7 @@ public class TextBlock implements Block
     /**
      * @see Object#hashCode()
      */
-    @Override
+    
     public final int hashCode()
     {
         return text.hashCode();

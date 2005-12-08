@@ -22,7 +22,7 @@ import java.util.Iterator;
 
 /**
  * @author <a href="mailto:jason@maven.org">Jason van Zyl</a>
- * @version $Id:$
+ * @version $Id$
  */
 public class TreeComponent
 {
@@ -86,7 +86,7 @@ public class TreeComponent
 
     public String toString( String indent )
     {
-        StringBuilder sb = new StringBuilder();
+        StringBuffer sb = new StringBuffer();
 
         if ( father != null )
         {

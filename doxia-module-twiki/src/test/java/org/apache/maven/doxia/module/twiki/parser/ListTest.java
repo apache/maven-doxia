@@ -61,8 +61,10 @@ public class ListTest extends AbstractBlockTestCase
         final Block []firstLevelBlocks = ( (UnorderedListBlock) b ).getBlocks();
         final int numberOfChild = 4;
         assertEquals( numberOfChild, firstLevelBlocks.length );
-        for ( Block block : firstLevelBlocks )
+        
+        for ( int i = 0; i < firstLevelBlocks.length; i++ )
         {
+            Block block = firstLevelBlocks[i];
             assertEquals( ListItemBlock.class, block.getClass() );
         }
 

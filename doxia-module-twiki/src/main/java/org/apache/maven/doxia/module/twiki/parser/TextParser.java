@@ -18,7 +18,6 @@ package org.apache.maven.doxia.module.twiki.parser;
 import java.util.ArrayList;
 import java.util.List;
 import java.util.StringTokenizer;
-import java.util.regex.MatchResult;
 import java.util.regex.Matcher;
 import java.util.regex.Pattern;
 
@@ -61,9 +60,9 @@ public class TextParser
      * @param line line to parse
      * @return a list of block that represents the input
      */
-    public final List<Block> parse( final String line )
+    public final List parse( final String line )
     {
-        final List<Block> ret = new ArrayList<Block>();
+        final List ret = new ArrayList();
 
         final Matcher linkMatcher = SPECIFICLINK_PATTERN.matcher( line );
         final Matcher wikiMatcher = WIKIWORD_PATTERN.matcher( line );
@@ -102,27 +101,24 @@ public class TextParser
         return ret;
     }
 
-    private void parseUrl( final String line, final List<Block> ret,
+    private void parseUrl( final String line, final List ret,
                            final Matcher urlMatcher )
     {
-        final MatchResult result = urlMatcher.toMatchResult();
-        ret.addAll( parse( line.substring( 0, result.start() ) ) );
+        ret.addAll( parse( line.substring( 0, urlMatcher.start() ) ) );
         final String url = urlMatcher.group( 0 );
         ret.add( new LinkBlock( url, url ) );
-        ret.addAll( parse( line.substring( result.end(), line.length() ) ) );
+        ret.addAll( parse( line.substring( urlMatcher.end(), line.length() ) ) );
     }
 
-    private void parseAnchor( final String line, final List<Block> ret,
+    private void parseAnchor( final String line, final List ret,
                               final Matcher anchorMatcher )
     {
-        final MatchResult result = anchorMatcher.toMatchResult();
-
-        ret.addAll( parse( line.substring( 0, result.start() ) ) );
+        ret.addAll( parse( line.substring( 0, anchorMatcher.start() ) ) );
         ret.add( new AnchorBlock( anchorMatcher.group( 1 ) ) );
-        ret.addAll( parse( line.substring( result.end(), line.length() ) ) );
+        ret.addAll( parse( line.substring( anchorMatcher.end(), line.length() ) ) );
     }
 
-    private void parseForcedLink( final String line, final List<Block> ret,
+    private void parseForcedLink( final String line, final List ret,
                                   final Matcher forcedLinkMatcher )
     {
         if ( forcedLinkMatcher.group( 1 ) != null )
@@ -151,7 +147,7 @@ public class TextParser
             {
                 final StringTokenizer tokenizer =
                     new StringTokenizer( showText );
-                final StringBuilder sb = new StringBuilder();
+                final StringBuffer sb = new StringBuffer();
 
                 while ( tokenizer.hasMoreElements() )
                 {
@@ -160,20 +156,18 @@ public class TextParser
                     sb.append( s.substring( 1 ) );
                 }
 
-                final MatchResult r = forcedLinkMatcher.toMatchResult();
-                ret.addAll( parse( line.substring( 0, r.start() ) ) );
+                ret.addAll( parse( line.substring( 0, forcedLinkMatcher.start() ) ) );
                 ret.add( new WikiWordBlock( sb.toString(), showText ) );
-                ret.addAll( parse( line.substring( r.end(), line.length() ) ) );
+                ret.addAll( parse( line.substring( forcedLinkMatcher.end(), line.length() ) ) );
             }
         }
     }
 
-    private void parseWiki( final String line, final List<Block> ret,
+    private void parseWiki( final String line, final List ret,
                             final Matcher wikiMatcher )
     {
-        final MatchResult result = wikiMatcher.toMatchResult();
         final String wikiWord = wikiMatcher.group();
-        ret.addAll( parse( line.substring( 0, result.start() ) ) );
+        ret.addAll( parse( line.substring( 0, wikiMatcher.start() ) ) );
         if ( wikiWord.startsWith( "!" ) )
         { // link prevention
             ret.add( new TextBlock( wikiWord.substring( 1 ) ) );
@@ -182,27 +176,25 @@ public class TextParser
         {
             ret.add( new WikiWordBlock( wikiWord ) );
         }
-        ret.addAll( parse( line.substring( result.end(), line.length() ) ) );
+        ret.addAll( parse( line.substring( wikiMatcher.end(), line.length() ) ) );
     }
 
 
-    private void parseLink( final String line, final List<Block> ret,
+    private void parseLink( final String line, final List ret,
                             final Matcher linkMatcher )
     {
-        final MatchResult result = linkMatcher.toMatchResult();
-
-        ret.addAll( parse( line.substring( 0, result.start() ) ) );
-        if ( line.charAt( result.start() ) == '!' )
+        ret.addAll( parse( line.substring( 0, linkMatcher.start() ) ) );
+        if ( line.charAt( linkMatcher.start() ) == '!' )
         {
-            ret.add( new TextBlock( line.substring( result.start() + 1,
-                                                    result.end() ) ) );
+            ret.add( new TextBlock( line.substring( linkMatcher.start() + 1,
+                                                    linkMatcher.end() ) ) );
         }
         else
         {
             ret.add( new LinkBlock( linkMatcher.group( 1 ),
                                     linkMatcher.group( 2 ) ) );
         }
-        ret.addAll( parse( line.substring( result.end(), line.length() ) ) );
+        ret.addAll( parse( line.substring( linkMatcher.end(), line.length() ) ) );
     }
 
     /**
@@ -218,8 +210,7 @@ public class TextParser
 
     private boolean startLikeWord( final Matcher m, final String line )
     {
-        final MatchResult result = m.toMatchResult();
-        final int start = result.start();
+        final int start = m.start();
 
         boolean ret = false;
         if ( start == 0 )
@@ -239,8 +230,7 @@ public class TextParser
 
     private boolean endLikeWord( final Matcher m, final String line )
     {
-        final MatchResult result = m.toMatchResult();
-        final int end = result.end();
+        final int end = m.end();
 
         boolean ret = true;
         if ( end < line.length() )

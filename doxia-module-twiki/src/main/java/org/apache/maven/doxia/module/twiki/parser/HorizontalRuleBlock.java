@@ -38,7 +38,7 @@ public class HorizontalRuleBlock implements Block
     /**
      * @see Object#equals(Object)
      */
-    @Override
+    
     public final boolean equals( final Object obj )
     {
         return obj == this
@@ -48,7 +48,7 @@ public class HorizontalRuleBlock implements Block
     /**
      * @see Object#hashCode()
      */
-    @Override
+    
     public final int hashCode()
     {
         final int hashCode = 214905655;

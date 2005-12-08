@@ -69,7 +69,7 @@ public class SectionBlock extends AbstractFatherBlock
     /**
      * @see AbstractFatherBlock#before(org.apache.maven.doxia.sink.Sink)
      */
-    @Override
+    
     public final void before( final Sink sink )
     {
         sectionStart( sink );
@@ -82,7 +82,7 @@ public class SectionBlock extends AbstractFatherBlock
     /**
      * @see AbstractFatherBlock#after(org.apache.maven.doxia.sink.Sink)
      */
-    @Override
+    
     public final void after( final Sink sink )
     {
         sectionEnd( sink );
@@ -128,9 +128,9 @@ public class SectionBlock extends AbstractFatherBlock
         }
         catch ( Exception e )
         {
-            // TODO tirar una mejor exception
+            // FIXME
             throw new IllegalArgumentException( "invoking sink's " + name
-                + " method", e );
+                + " method: " + e.getMessage() );
         }
     }
 
@@ -157,18 +157,20 @@ public class SectionBlock extends AbstractFatherBlock
     /**
      * @see Object#toString()
      */
-    @Override
+    
     public final String toString()
     {
-        final StringBuilder sb = new StringBuilder();
+        final StringBuffer sb = new StringBuffer();
 
         sb.append( "Section  {title: '" );
         sb.append( getTitle() );
         sb.append( "' level: " );
         sb.append( getLevel() );
         sb.append( "}: [" );
-        for ( final Block block : getBlocks() )
+        for ( int i = 0; i < getBlocks().length; i++ )
         {
+            final Block block = getBlocks()[i];
+
             sb.append( block.toString() );
             sb.append( ", " );
         }

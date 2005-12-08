@@ -67,7 +67,7 @@ public class LinkBlock implements Block
     /**
      * @see Object#equals(Object)
      */
-    @Override
+    
     public final boolean equals( final Object obj )
     {
         boolean ret = false;
@@ -89,7 +89,7 @@ public class LinkBlock implements Block
     /**
      * @see Object#hashCode()
      */
-    @Override
+    
     public final int hashCode()
     {
         final int magic1 = 17;

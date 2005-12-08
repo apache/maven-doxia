@@ -34,8 +34,7 @@ public class FormatedTextParser
     /**
      * map used to create blocks dependening on the text format
      */
-    private static final Map<String, FormatBlockFactory> FACTORY_MAP =
-        new HashMap<String, FormatBlockFactory>();
+    private static final Map FACTORY_MAP = new HashMap();
 
     /**
      * creates bold blocks
@@ -117,7 +116,7 @@ public class FormatedTextParser
      */
     public final Block []parse( final String line )
     {
-        return parseFormat( line ).toArray( new Block []{} );
+        return (Block[]) parseFormat( line ).toArray( new Block []{} );
     }
 
     /**
@@ -156,9 +155,9 @@ public class FormatedTextParser
      * @param line line to parse
      * @return list of blocks
      */
-    private List<Block> parseFormat( final String line )
+    private List parseFormat( final String line )
     {
-        final List<Block> ret = new ArrayList<Block>();
+        final List ret = new ArrayList();
         final int []lhOffsets = new int[SPECIAL_CHAR.length];
         final int []rhOffsets = new int[SPECIAL_CHAR.length];
 
@@ -254,8 +253,8 @@ public class FormatedTextParser
         {
             int len = SPECIAL_CHAR[charType].length();
             ret.addAll( parseFormat( line.substring( 0, minIndex ) ) );
-            ret.add( FACTORY_MAP.get( SPECIAL_CHAR[charType] ).createBlock(
-                parseFormat(
+            ret.add( ( (FormatBlockFactory) FACTORY_MAP.get( SPECIAL_CHAR[charType] ) ).createBlock(
+                (Block[]) parseFormat(
                     line.substring( minIndex + len, rhOffsets[charType] )
                 ).toArray( new Block[]{} )
             ) );

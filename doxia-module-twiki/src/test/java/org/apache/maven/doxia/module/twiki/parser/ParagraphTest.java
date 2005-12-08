@@ -194,7 +194,7 @@ public class ParagraphTest extends AbstractBlockTestCase
             new HorizontalRuleBlock(),
             new ParagraphBlock( new Block[]{new TextBlock( "More text" )} ),
         };
-        blocks = twikiParser.parse( source ).toArray( new Block[]{} );
+        blocks = (Block[]) twikiParser.parse( source ).toArray( new Block[]{} );
         assertTrue( Arrays.equals( expected, blocks ) );
     }
 }

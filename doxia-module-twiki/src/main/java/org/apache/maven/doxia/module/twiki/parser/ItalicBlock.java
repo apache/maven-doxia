@@ -40,7 +40,7 @@ public class ItalicBlock extends AbstractFatherBlock
     /**
      * @see AbstractFatherBlock#before(org.apache.maven.doxia.sink.Sink)
      */
-    @Override
+    
     public final void before( final Sink sink )
     {
         sink.italic();
@@ -49,7 +49,7 @@ public class ItalicBlock extends AbstractFatherBlock
     /**
      * @see AbstractFatherBlock#after(org.apache.maven.doxia.sink.Sink)
      */
-    @Override
+    
     public final void after( final Sink sink )
     {
         sink.italic_();

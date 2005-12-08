@@ -55,7 +55,7 @@ public class ListItemBlock extends AbstractFatherBlock
     /**
      * @see AbstractFatherBlock#before(org.apache.maven.doxia.sink.Sink)
      */
-    @Override
+    
     public final void before( final Sink sink )
     {
         sink.listItem();
@@ -64,7 +64,7 @@ public class ListItemBlock extends AbstractFatherBlock
     /**
      * @see AbstractFatherBlock#after(org.apache.maven.doxia.sink.Sink)
      */
-    @Override
+    
     public final void after( final Sink sink )
     {
         if ( innerList != null )
@@ -87,7 +87,7 @@ public class ListItemBlock extends AbstractFatherBlock
     /**
      * @see Object#equals(Object)
      */
-    @Override
+    
     public final boolean equals( final Object obj )
     {
         boolean ret = false;
@@ -123,7 +123,7 @@ public class ListItemBlock extends AbstractFatherBlock
     /**
      * @see Object#hashCode()
      */
-    @Override
+    
     public final int hashCode()
     {
         final int magic1 = 17;

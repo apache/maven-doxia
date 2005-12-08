@@ -77,8 +77,8 @@ public class ParagraphBlockParser implements BlockParser
     public final Block visit( final String line, final ByLineSource source )
         throws ParseException
     {
-        StringBuilder sb = new StringBuilder();
-        List<Block> childs = new ArrayList<Block>();
+        StringBuffer sb = new StringBuffer();
+        List childs = new ArrayList();
 
         boolean sawText = false;
 
@@ -113,7 +113,7 @@ public class ParagraphBlockParser implements BlockParser
                     {
                         childs.addAll( Arrays.asList( textParser
                             .parse( sb.toString().trim() ) ) );
-                        sb = new StringBuilder();
+                        sb = new StringBuffer();
                     }
                     childs.add( listParser.visit( l, source ) );
                 }
@@ -139,11 +139,17 @@ public class ParagraphBlockParser implements BlockParser
         {
             childs.addAll( Arrays.asList( textParser
                 .parse( sb.toString().trim() ) ) );
-            sb = new StringBuilder();
+            sb = new StringBuffer();
         }
 
-        return childs.size() == 0 ? NOP
-            : new ParagraphBlock( childs.toArray( new Block[]{} ) );
+        if ( childs.size() == 0 )
+        {
+            return NOP;
+        }
+        else
+        {
+            return new ParagraphBlock( (Block[]) childs.toArray( new Block[]{} ) );
+        }
     }
 
 

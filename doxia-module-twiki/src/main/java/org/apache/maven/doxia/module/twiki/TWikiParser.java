@@ -17,6 +17,7 @@ package org.apache.maven.doxia.module.twiki;
 
 import java.io.Reader;
 import java.util.ArrayList;
+import java.util.Iterator;
 import java.util.List;
 
 import org.apache.maven.doxia.module.common.ByLineReaderSource;
@@ -100,18 +101,20 @@ public class TWikiParser extends AbstractParser
      * @return the blocks that represent source
      * @throws ParseException on error
      */
-    public final List<Block> parse( final ByLineSource source )
+    public final List parse( final ByLineSource source )
         throws ParseException
     {
-        final List<Block> ret = new ArrayList<Block>();
+        final List ret = new ArrayList();
 
         String line;
         while ( ( line = source.getNextLine() ) != null )
         {
             boolean accepted = false;
 
-            for ( final BlockParser parser : parsers )
+            for ( int i = 0; i < parsers.length; i++ )
             {
+                final BlockParser parser = parsers[i];
+                
                 if ( parser.accept( line ) )
                 {
                     accepted = true;
@@ -137,7 +140,7 @@ public class TWikiParser extends AbstractParser
         throws ParseException
     {
 
-        List<Block> blocks;
+        List blocks;
         final ByLineSource source = new ByLineReaderSource( reader );
 
         try
@@ -157,8 +160,10 @@ public class TWikiParser extends AbstractParser
         sink.head();
         sink.head_();
         sink.body();
-        for ( final Block block : blocks )
+        for ( Iterator it = blocks.iterator(); it.hasNext(); )
         {
+            final Block block = (Block) it.next();
+            
             block.traverse( sink );
         }
         sink.body_();
