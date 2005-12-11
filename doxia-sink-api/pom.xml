@@ -2,9 +2,10 @@
   <parent>
     <artifactId>doxia</artifactId>
     <groupId>org.apache.maven.doxia</groupId>
-    <version>1.0-alpha-6-SNAPSHOT</version>
+    <version>1.0-alpha-6</version>
   </parent>
   <modelVersion>4.0.0</modelVersion>
   <artifactId>doxia-sink-api</artifactId>
   <name>Doxia Sink API</name>
+  <version>1.0-alpha-6</version>
 </project>
