@@ -70,6 +70,13 @@
     <url>http://svn.apache.org/viewcvs.cgi/maven/doxia/tags/doxia-1.0-alpha-6</url>
   </scm>
   <build>
+    <extensions>
+      <extension>
+        <groupId>org.apache.maven.wagon</groupId>
+        <artifactId>wagon-ssh-external</artifactId>
+        <version>RELEASE</version>
+      </extension>
+    </extensions>
     <plugins>
       <plugin>
         <groupId>org.codehaus.plexus</groupId>
@@ -93,16 +100,16 @@
     <repository>
       <id>repo1</id>
       <name>Maven Central Repository</name>
-      <url>scp://repo1.maven.org/home/projects/maven/repository-staging/to-ibiblio/maven2</url>
+      <url>scpexe://repo1.maven.org/home/projects/maven/repository-staging/to-ibiblio/maven2</url>
     </repository>
     <snapshotRepository>
       <id>snapshots</id>
       <name>Maven Central Development Repository</name>
-      <url>scp://repo1.maven.org/home/projects/maven/repository-staging/snapshots/maven2</url>
+      <url>scpexe://repo1.maven.org/home/projects/maven/repository-staging/snapshots/maven2</url>
     </snapshotRepository>
     <site>
       <id>website</id>
-      <url>scp://minotaur.apache.org/www/maven.apache.org/doxia/</url>
+      <url>scpexe://minotaur.apache.org/www/maven.apache.org/doxia/</url>
     </site>
   </distributionManagement>
 </project>
