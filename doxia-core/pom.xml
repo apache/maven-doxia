@@ -2,12 +2,12 @@
   <parent>
     <artifactId>doxia</artifactId>
     <groupId>org.apache.maven.doxia</groupId>
-    <version>1.0-alpha-6</version>
+    <version>1.0-alpha-7-SNAPSHOT</version>
   </parent>
   <modelVersion>4.0.0</modelVersion>
   <artifactId>doxia-core</artifactId>
   <name>Doxia Core</name>
-  <version>1.0-alpha-6</version>
+  <version>1.0-alpha-7-SNAPSHOT</version>
   <build>
     <plugins>
       <plugin>
@@ -28,7 +28,7 @@
     <dependency>
       <groupId>org.apache.maven.doxia</groupId>
       <artifactId>doxia-sink-api</artifactId>
-      <version>1.0-alpha-6</version>
+      <version>1.0-alpha-7-SNAPSHOT</version>
     </dependency>
     <dependency>
       <groupId>org.codehaus.plexus</groupId>
