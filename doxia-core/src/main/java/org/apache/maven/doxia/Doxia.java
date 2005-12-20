@@ -16,13 +16,9 @@ package org.apache.maven.doxia;
  * limitations under the License.
  */
 
-import org.apache.maven.doxia.macro.manager.MacroManager;
 import org.apache.maven.doxia.parser.ParseException;
-import org.apache.maven.doxia.parser.manager.ParserManager;
 import org.apache.maven.doxia.parser.manager.ParserNotFoundException;
-import org.apache.maven.doxia.plugin.manager.PluginManager;
 import org.apache.maven.doxia.sink.Sink;
-import org.apache.maven.doxia.sink.manager.SinkNotFoundException;
 
 import java.io.Reader;
 
@@ -34,17 +30,7 @@ public interface Doxia
 {
     String ROLE = Doxia.class.getName();
 
-    void parse( Reader source, String parserId, String sinkId )
-        throws ParserNotFoundException, SinkNotFoundException, ParseException;
-
     void parse( Reader source, String parserId, Sink sink )
         throws ParserNotFoundException, ParseException;
 
-    // SinkManager getSinkManager();
-
-    ParserManager getParserManager();
-
-    MacroManager getMacroManager();
-
-    PluginManager getPluginManager();
 }

@@ -16,14 +16,11 @@ package org.apache.maven.doxia;
  * limitations under the License.
  */
 
-import org.apache.maven.doxia.macro.manager.MacroManager;
 import org.apache.maven.doxia.parser.ParseException;
 import org.apache.maven.doxia.parser.Parser;
 import org.apache.maven.doxia.parser.manager.ParserManager;
 import org.apache.maven.doxia.parser.manager.ParserNotFoundException;
-import org.apache.maven.doxia.plugin.manager.PluginManager;
 import org.apache.maven.doxia.sink.Sink;
-import org.apache.maven.doxia.sink.manager.SinkNotFoundException;
 
 import java.io.Reader;
 
@@ -35,36 +32,10 @@ import java.io.Reader;
 public class DefaultDoxia
     implements Doxia
 {
-    // protected SinkManager sinkManager;
-
     /**
      * @plexus.requirement
      */
-    protected ParserManager parserManager;
-
-    /**
-     * @plexus.requirement
-     */
-    protected MacroManager macroManager;
-
-    /**
-     * @plexus.requirement
-     */
-    protected PluginManager pluginManager;
-
-    // ----------------------------------------------------------------------
-    //
-    // ----------------------------------------------------------------------
-
-    public void parse( Reader source, String parserId, String sinkId )
-        throws ParserNotFoundException, SinkNotFoundException, ParseException
-    {
-        // Parser parser = parserManager.getParser( parserId );
-
-        // Sink sink = sinkManager.getSink( sinkId );
-
-        // parser.parse( source, sink );
-    }
+    private ParserManager parserManager;
 
     // ----------------------------------------------------------------------
     // This remains because the sinks are not threadsafe which they probably
@@ -80,29 +51,4 @@ public class DefaultDoxia
         parser.parse( source, sink );
     }
 
-    // ----------------------------------------------------------------------
-    // Managers:
-    //
-    // Not sure if access to the managers will be required but until I flesh
-    // out the functionality I'm just not certain.
-    // ----------------------------------------------------------------------
-
-    /*
-     * public SinkManager getSinkManager() { return sinkManager; }
-     */
-
-    public ParserManager getParserManager()
-    {
-        return parserManager;
-    }
-
-    public MacroManager getMacroManager()
-    {
-        return macroManager;
-    }
-
-    public PluginManager getPluginManager()
-    {
-        return pluginManager;
-    }
 }
