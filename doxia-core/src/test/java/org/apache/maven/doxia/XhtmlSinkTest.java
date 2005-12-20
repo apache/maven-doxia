@@ -53,7 +53,7 @@ public class XhtmlSinkTest
         RenderingContext renderingContext =
             new RenderingContext( getBasedirFile(), new File( getBasedirFile(), xdoc ).getPath(), navigation );
 
-        FileReader reader = new FileReader( new File( getBasedirFile(), "src/main/resources/codehaus.dst" ) );
+        FileReader reader = new FileReader( new File( getBasedirFile(), "src/test/resources/codehaus.dst" ) );
 
         SinkDescriptorReader sdr = new SinkDescriptorReader();
 

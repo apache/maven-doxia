@@ -35,7 +35,7 @@ public class SinkDescriptorReaderTest
     {
         String basedir = System.getProperty( "basedir" );
 
-        FileReader reader = new FileReader( new File( basedir, "src/main/resources/codehaus.dst" ) );
+        FileReader reader = new FileReader( new File( basedir, "src/test/resources/codehaus.dst" ) );
 
         SinkDescriptorReader sdr = new SinkDescriptorReader();
 

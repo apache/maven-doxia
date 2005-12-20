@@ -35,22 +35,13 @@ public abstract class AbstractParser
      */
     private MacroManager macroManager;
 
-    public MacroManager getMacroManager()
-    {
-        return macroManager;
-    }
-
     // Made public right now because of the structure of the APT parser and
     // all its inner classes.
     public void executeMacro( String macroId, MacroRequest request, Sink sink )
     {
         try
         {
-//            System.out.println( "macroId = " + macroId );
-//
-//            System.out.println( "getMacroManager() = " + getMacroManager() );
-
-            Macro macro = getMacroManager().getMacro( macroId );
+            Macro macro = macroManager.getMacro( macroId );
 
             try
             {

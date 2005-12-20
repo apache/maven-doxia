@@ -17,6 +17,10 @@ package org.apache.maven.doxia.siterenderer;
  */
 
 import org.apache.maven.doxia.Doxia;
+import org.apache.maven.doxia.module.xhtml.SinkDescriptorReader;
+import org.apache.maven.doxia.module.xhtml.XhtmlSink;
+import org.apache.maven.doxia.module.xhtml.decoration.model.DecorationModel;
+import org.apache.maven.doxia.module.xhtml.decoration.model.DecorationModelReader;
 import org.apache.maven.doxia.module.xhtml.decoration.render.RenderingContext;
 import org.apache.maven.doxia.site.module.SiteModule;
 import org.apache.maven.doxia.site.module.manager.SiteModuleManager;
@@ -27,6 +31,7 @@ import org.apache.velocity.context.Context;
 import org.codehaus.plexus.i18n.I18N;
 import org.codehaus.plexus.logging.AbstractLogEnabled;
 import org.codehaus.plexus.util.FileUtils;
+import org.codehaus.plexus.util.IOUtil;
 import org.codehaus.plexus.util.PathTool;
 import org.codehaus.plexus.util.StringInputStream;
 import org.codehaus.plexus.util.StringUtils;
@@ -39,10 +44,13 @@ import java.io.File;
 import java.io.FileInputStream;
 import java.io.FileOutputStream;
 import java.io.FileReader;
+import java.io.FileWriter;
 import java.io.IOException;
 import java.io.InputStream;
 import java.io.InputStreamReader;
+import java.io.LineNumberReader;
 import java.io.OutputStreamWriter;
+import java.io.Reader;
 import java.io.StringWriter;
 import java.io.Writer;
 import java.text.SimpleDateFormat;
@@ -477,4 +485,80 @@ public class DefaultSiteRenderer
 
         return new SiteRendererSink( new StringWriter(), renderingContext );
     }
+
+    public XhtmlSink createSink( File moduleBasedir, String doc, String outputDirectory, InputStream siteDescriptor,
+                                 String flavour )
+        throws Exception
+    {
+        DecorationModelReader decorationModelReader = new DecorationModelReader();
+
+        DecorationModel decorationModel =
+            decorationModelReader.createNavigation( new InputStreamReader( siteDescriptor ) );
+
+        String outputName = doc.substring( 0, doc.indexOf( "." ) + 1 ) + "html";
+
+        File outputFile = new File( outputDirectory, outputName );
+
+        if ( !outputFile.getParentFile().exists() )
+        {
+            outputFile.getParentFile().mkdirs();
+        }
+
+        InputStream is = getClass().getResourceAsStream( "/" + flavour + ".dst" );
+
+        Reader r = new InputStreamReader( is );
+
+        SinkDescriptorReader sdr = new SinkDescriptorReader();
+
+        Map directives = sdr.read( r );
+
+        RenderingContext renderingContext = new RenderingContext( moduleBasedir, doc, decorationModel );
+
+        return new XhtmlSink( new FileWriter( outputFile ), renderingContext, directives );
+    }
+
+    public void copyResources( String outputDirectory, String flavour )
+        throws Exception
+    {
+        InputStream resourceList = getStream( flavour + "/resources.txt" );
+
+        if ( resourceList != null )
+        {
+            LineNumberReader reader = new LineNumberReader( new InputStreamReader( resourceList ) );
+
+            String line;
+
+            while ( ( line = reader.readLine() ) != null )
+            {
+                InputStream is = getStream( flavour + "/" + line );
+
+                if ( is == null )
+                {
+                    throw new IOException( "The resource " + line + " doesn't exists in " + flavour + " flavour." );
+                }
+
+                File outputFile = new File( outputDirectory, line );
+
+                if ( !outputFile.getParentFile().exists() )
+                {
+                    outputFile.getParentFile().mkdirs();
+                }
+
+                FileOutputStream w = new FileOutputStream( outputFile );
+
+                IOUtil.copy( is, w );
+
+                IOUtil.close( is );
+
+                IOUtil.close( w );
+            }
+        }
+    }
+
+    private InputStream getStream( String name )
+        throws Exception
+    {
+        return DefaultSiteRenderer.class.getClassLoader().getResourceAsStream( name );
+    }
+
 }
