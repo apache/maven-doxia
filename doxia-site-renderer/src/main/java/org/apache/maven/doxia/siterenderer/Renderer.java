@@ -89,6 +89,4 @@ public interface Renderer
 
     void setTemplateClassLoader( ClassLoader templateClassLoader );
 
-    void copyResources( String outputDirectory, String flavour )
-        throws Exception;
 }

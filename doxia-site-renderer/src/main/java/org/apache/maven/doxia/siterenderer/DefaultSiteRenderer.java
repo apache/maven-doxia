@@ -22,6 +22,8 @@ import org.apache.maven.doxia.module.xhtml.XhtmlSink;
 import org.apache.maven.doxia.module.xhtml.decoration.model.DecorationModel;
 import org.apache.maven.doxia.module.xhtml.decoration.model.DecorationModelReader;
 import org.apache.maven.doxia.module.xhtml.decoration.render.RenderingContext;
+import org.apache.maven.doxia.parser.ParseException;
+import org.apache.maven.doxia.parser.manager.ParserNotFoundException;
 import org.apache.maven.doxia.site.module.SiteModule;
 import org.apache.maven.doxia.site.module.manager.SiteModuleManager;
 import org.apache.maven.doxia.siterenderer.sink.SiteRendererSink;
@@ -48,7 +50,6 @@ import java.io.FileWriter;
 import java.io.IOException;
 import java.io.InputStream;
 import java.io.InputStreamReader;
-import java.io.LineNumberReader;
 import java.io.OutputStreamWriter;
 import java.io.Reader;
 import java.io.StringWriter;
@@ -216,50 +217,51 @@ public class DefaultSiteRenderer
 
             File moduleBasedir = new File( siteDirectory, module.getSourceDirectory() );
 
-            if ( !moduleBasedir.exists() )
+            if ( moduleBasedir.exists() )
             {
-                continue;
-            }
+                List docs = FileUtils.getFileNames( moduleBasedir, "**/*." + module.getExtension(), null, false );
 
-            List docs = FileUtils.getFileNames( moduleBasedir, "**/*." + module.getExtension(), null, false );
-
-            for ( Iterator j = docs.iterator(); j.hasNext(); )
-            {
-                String doc = (String) j.next();
-
-                String outputName = doc.substring( 0, doc.indexOf( "." ) + 1 ) + "html";
-
-                String fullPathDoc = new File( moduleBasedir, doc ).getPath();
-
-                SiteRendererSink sink = createSink( moduleBasedir, outputName );
-
-                try
+                for ( Iterator j = docs.iterator(); j.hasNext(); )
                 {
-                    FileReader reader = new FileReader( fullPathDoc );
+                    String doc = (String) j.next();
 
-                    doxia.parse( reader, module.getParserId(), sink );
+                    String outputName = doc.substring( 0, doc.indexOf( "." ) + 1 ) + "html";
 
-                    File outputFile = new File( outputDirectory, outputName );
+                    String fullPathDoc = new File( moduleBasedir, doc ).getPath();
 
-                    if ( !outputFile.getParentFile().exists() )
+                    SiteRendererSink sink = createSink( moduleBasedir, outputName );
+
+                    try
                     {
-                        outputFile.getParentFile().mkdirs();
+                        FileReader reader = new FileReader( fullPathDoc );
+
+                        doxia.parse( reader, module.getParserId(), sink );
+
+                        File outputFile = new File( outputDirectory, outputName );
+
+                        if ( !outputFile.getParentFile().exists() )
+                        {
+                            outputFile.getParentFile().mkdirs();
+                        }
+
+                        generateDocument( new OutputStreamWriter( new FileOutputStream( outputFile ), outputEncoding ),
+                                          templateName, templateProperties, sink, locale );
                     }
+                    catch ( ParserNotFoundException e )
+                    {
+                        throw new RendererException(
+                            "Error getting a parser for " + fullPathDoc + ": " + e.getMessage() );
+                    }
+                    catch ( ParseException e )
+                    {
+                        getLogger().error( "Error parsing " + fullPathDoc + ": " + e.getMessage(), e );
+                    }
+                    finally
+                    {
+                        sink.flush();
 
-                    generateDocument( new OutputStreamWriter( new FileOutputStream( outputFile ), outputEncoding ),
-                                      templateName, templateProperties, sink, locale );
-                }
-                catch ( Exception e )
-                {
-                    e.printStackTrace();
-
-                    getLogger().error( "Error rendering " + fullPathDoc + ": " + e.getMessage(), e );
-                }
-                finally
-                {
-                    sink.flush();
-
-                    sink.close();
+                        sink.close();
+                    }
                 }
             }
         }
@@ -281,9 +283,8 @@ public class DefaultSiteRenderer
         {
             throw new RendererException( "Can't read site descriptor.", e );
         }
-        File moduleBasedir = siteDirectory;
 
-        List docs = FileUtils.getFileNames( moduleBasedir, "**/*." + moduleExtension, null, false );
+        List docs = FileUtils.getFileNames( siteDirectory, "**/*." + moduleExtension, null, false );
 
         for ( Iterator j = docs.iterator(); j.hasNext(); )
         {
@@ -291,9 +292,9 @@ public class DefaultSiteRenderer
 
             String outputName = doc.substring( 0, doc.indexOf( "." ) + 1 ) + "html";
 
-            String fullPathDoc = new File( moduleBasedir, doc ).getPath();
+            String fullPathDoc = new File( siteDirectory, doc ).getPath();
 
-            SiteRendererSink sink = createSink( moduleBasedir, outputName );
+            SiteRendererSink sink = createSink( siteDirectory, outputName );
 
             try
             {
@@ -310,11 +311,13 @@ public class DefaultSiteRenderer
                 generateDocument( new OutputStreamWriter( new FileOutputStream( outputFile ), outputEncoding ),
                                   templateName, templateProperties, sink, locale );
             }
-            catch ( Exception e )
+            catch ( ParserNotFoundException e )
             {
-                e.printStackTrace();
-
-                getLogger().error( "Error rendering " + fullPathDoc + ": " + e.getMessage(), e );
+                throw new RendererException( "Error getting a parser for " + fullPathDoc + ": " + e.getMessage() );
+            }
+            catch ( ParseException e )
+            {
+                getLogger().error( "Error parsing " + fullPathDoc + ": " + e.getMessage(), e );
             }
             finally
             {
@@ -398,11 +401,9 @@ public class DefaultSiteRenderer
         writeTemplate( templateName, writer, context );
     }
 
-    protected void writeTemplate( String templateName, Writer writer, Context context )
+    private void writeTemplate( String templateName, Writer writer, Context context )
         throws RendererException
     {
-        Template template = null;
-
         ClassLoader old = null;
 
         if ( templateClassLoader != null )
@@ -418,33 +419,43 @@ public class DefaultSiteRenderer
 
         try
         {
-            try
-            {
-                template = velocity.getEngine().getTemplate( templateName );
-            }
-            catch ( Exception e )
-            {
-                throw new RendererException( "Could not find the template '" + templateName + "' in " +
-                    Thread.currentThread().getContextClassLoader() );
-            }
-
-            try
-            {
-                template.merge( context, writer );
-
-                writer.close();
-            }
-            catch ( Exception e )
-            {
-                throw new RendererException( "Error while generating code.", e );
-            }
+            processTemplate( templateName, context, writer );
         }
         finally
         {
+            IOUtil.close( writer );
+
             if ( old != null )
             {
                 Thread.currentThread().setContextClassLoader( old );
             }
+        }
+    }
+
+    /**
+     * @noinspection OverlyBroadCatchBlock,UnusedCatchParameter
+     */
+    private void processTemplate( String templateName, Context context, Writer writer )
+        throws RendererException
+    {
+        Template template;
+
+        try
+        {
+            template = velocity.getEngine().getTemplate( templateName );
+        }
+        catch ( Exception e )
+        {
+            throw new RendererException( "Could not find the template '" + templateName );
+        }
+
+        try
+        {
+            template.merge( context, writer );
+        }
+        catch ( Exception e )
+        {
+            throw new RendererException( "Error while generating code.", e );
         }
     }
 
@@ -488,7 +499,7 @@ public class DefaultSiteRenderer
 
     public XhtmlSink createSink( File moduleBasedir, String doc, String outputDirectory, InputStream siteDescriptor,
                                  String flavour )
-        throws Exception
+        throws IOException, XmlPullParserException
     {
         DecorationModelReader decorationModelReader = new DecorationModelReader();
 
@@ -515,50 +526,6 @@ public class DefaultSiteRenderer
         RenderingContext renderingContext = new RenderingContext( moduleBasedir, doc, decorationModel );
 
         return new XhtmlSink( new FileWriter( outputFile ), renderingContext, directives );
-    }
-
-    public void copyResources( String outputDirectory, String flavour )
-        throws Exception
-    {
-        InputStream resourceList = getStream( flavour + "/resources.txt" );
-
-        if ( resourceList != null )
-        {
-            LineNumberReader reader = new LineNumberReader( new InputStreamReader( resourceList ) );
-
-            String line;
-
-            while ( ( line = reader.readLine() ) != null )
-            {
-                InputStream is = getStream( flavour + "/" + line );
-
-                if ( is == null )
-                {
-                    throw new IOException( "The resource " + line + " doesn't exists in " + flavour + " flavour." );
-                }
-
-                File outputFile = new File( outputDirectory, line );
-
-                if ( !outputFile.getParentFile().exists() )
-                {
-                    outputFile.getParentFile().mkdirs();
-                }
-
-                FileOutputStream w = new FileOutputStream( outputFile );
-
-                IOUtil.copy( is, w );
-
-                IOUtil.close( is );
-
-                IOUtil.close( w );
-            }
-        }
-    }
-
-    private InputStream getStream( String name )
-        throws Exception
-    {
-        return DefaultSiteRenderer.class.getClassLoader().getResourceAsStream( name );
     }
 
 }

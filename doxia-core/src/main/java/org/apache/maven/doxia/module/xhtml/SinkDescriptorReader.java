@@ -17,6 +17,7 @@ package org.apache.maven.doxia.module.xhtml;
  */
 
 import java.io.BufferedReader;
+import java.io.IOException;
 import java.io.Reader;
 import java.util.HashMap;
 import java.util.Map;
@@ -28,7 +29,7 @@ import java.util.Map;
 public class SinkDescriptorReader
 {
     public Map read( Reader reader )
-        throws Exception
+        throws IOException
     {
         Map directives = new HashMap();
 
