@@ -37,6 +37,8 @@ public class DefaultDecorationModelInheritanceAssembler
 {
     public void assembleModelInheritance( DecorationModel child, DecorationModel parent )
     {
+        // TODO: align hrefs to the base URL of the project
+
         // cannot inherit from null parent.
         if ( parent != null )
         {
