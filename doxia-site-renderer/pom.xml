@@ -22,6 +22,11 @@
   <dependencies>
     <dependency>
       <groupId>org.apache.maven.doxia</groupId>
+      <artifactId>doxia-decoration-model</artifactId>
+      <version>1.0-alpha-7-SNAPSHOT</version>
+    </dependency>
+    <dependency>
+      <groupId>org.apache.maven.doxia</groupId>
       <artifactId>doxia-core</artifactId>
       <version>1.0-alpha-7-SNAPSHOT</version>
     </dependency>

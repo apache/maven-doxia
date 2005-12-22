@@ -16,7 +16,6 @@ package org.apache.maven.doxia.module.xhtml.decoration.render;
  * limitations under the License.
  */
 
-import org.apache.maven.doxia.module.xhtml.decoration.model.DecorationModel;
 import org.codehaus.plexus.util.PathTool;
 
 import java.io.File;
@@ -33,9 +32,7 @@ public class RenderingContext
 
     private String outputName;
 
-    private DecorationModel decorationModel;
-
-    public RenderingContext( File basedir, String document, DecorationModel decorationModel )
+    public RenderingContext( File basedir, String document )
     {
         this.basedir = basedir;
 
@@ -43,8 +40,6 @@ public class RenderingContext
         this.outputName = "/" + document.substring( 0, document.lastIndexOf( "." ) + 1 ) + "html";
 
         relativePath = PathTool.getRelativePath( basedir.getPath(), new File( basedir, document ).getPath() );
-
-        this.decorationModel = decorationModel;
     }
 
     public File getBasedir()
@@ -62,8 +57,4 @@ public class RenderingContext
         return outputName;
     }
 
-    public DecorationModel getDecorationModel()
-    {
-        return decorationModel;
-    }
 }

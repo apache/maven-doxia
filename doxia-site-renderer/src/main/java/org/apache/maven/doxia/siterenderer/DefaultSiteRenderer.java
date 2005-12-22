@@ -17,10 +17,6 @@ package org.apache.maven.doxia.siterenderer;
  */
 
 import org.apache.maven.doxia.Doxia;
-import org.apache.maven.doxia.module.xhtml.SinkDescriptorReader;
-import org.apache.maven.doxia.module.xhtml.XhtmlSink;
-import org.apache.maven.doxia.module.xhtml.decoration.model.DecorationModel;
-import org.apache.maven.doxia.module.xhtml.decoration.model.DecorationModelReader;
 import org.apache.maven.doxia.module.xhtml.decoration.render.RenderingContext;
 import org.apache.maven.doxia.parser.ParseException;
 import org.apache.maven.doxia.parser.manager.ParserNotFoundException;
@@ -35,30 +31,19 @@ import org.codehaus.plexus.logging.AbstractLogEnabled;
 import org.codehaus.plexus.util.FileUtils;
 import org.codehaus.plexus.util.IOUtil;
 import org.codehaus.plexus.util.PathTool;
-import org.codehaus.plexus.util.StringInputStream;
 import org.codehaus.plexus.util.StringUtils;
-import org.codehaus.plexus.util.xml.Xpp3Dom;
-import org.codehaus.plexus.util.xml.Xpp3DomBuilder;
-import org.codehaus.plexus.util.xml.pull.XmlPullParserException;
 import org.codehaus.plexus.velocity.VelocityComponent;
 
 import java.io.File;
-import java.io.FileInputStream;
 import java.io.FileOutputStream;
 import java.io.FileReader;
-import java.io.FileWriter;
 import java.io.IOException;
-import java.io.InputStream;
-import java.io.InputStreamReader;
 import java.io.OutputStreamWriter;
-import java.io.Reader;
-import java.io.StringWriter;
 import java.io.Writer;
 import java.text.SimpleDateFormat;
 import java.util.Date;
 import java.util.Iterator;
 import java.util.List;
-import java.util.Locale;
 import java.util.Map;
 
 /**
@@ -98,119 +83,18 @@ public class DefaultSiteRenderer
     private I18N i18n;
 
     // ----------------------------------------------------------------------
-    // Fields
-    // ----------------------------------------------------------------------
-
-    private String currentDocument;
-
-    private RenderingContext renderingContext;
-
-    private ClassLoader templateClassLoader;
-
-    private Xpp3Dom siteDescriptor;
-
-    private Locale defaultLocale = Locale.ENGLISH;
-
-    public void setTemplateClassLoader( ClassLoader templateClassLoader )
-    {
-        this.templateClassLoader = templateClassLoader;
-    }
-
-    // ----------------------------------------------------------------------
     // Renderer implementation
     // ----------------------------------------------------------------------
 
-    /**
-     * @see org.apache.maven.doxia.siterenderer.Renderer#render(java.io.File, java.io.File, java.io.File, java.lang.String, java.util.Map)
-     */
-    public void render( File siteDirectory, File outputDirectory, File siteDescriptor, String templateName,
-                        Map templateProperties )
+    public void render( File siteDirectory, File outputDirectory, SiteRenderingContext context )
         throws RendererException, IOException
     {
-        render( siteDirectory, outputDirectory, siteDescriptor, templateName, templateProperties, defaultLocale );
+        render( siteDirectory, outputDirectory, context, DEFAULT_OUTPUT_ENCODING );
     }
 
-    /**
-     * @see org.apache.maven.doxia.siterenderer.Renderer#render(java.io.File, java.io.File, java.io.File, java.lang.String, java.util.Map, java.util.Locale)
-     */
-    public void render( File siteDirectory, File outputDirectory, File siteDescriptor, String templateName,
-                        Map templateProperties, Locale locale )
+    public void render( File siteDirectory, File outputDirectory, SiteRenderingContext context, String outputEncoding )
         throws RendererException, IOException
     {
-        render( siteDirectory, outputDirectory, new FileInputStream( siteDescriptor ), templateName, templateProperties,
-                locale );
-    }
-
-    /**
-     * @see org.apache.maven.doxia.siterenderer.Renderer#render(java.io.File, java.io.File, java.lang.String, java.lang.String, Map)
-     */
-    public void render( File siteDirectory, File outputDirectory, String siteDescriptor, String templateName,
-                        Map templateProperties )
-        throws RendererException, IOException
-    {
-        render( siteDirectory, outputDirectory, siteDescriptor, templateName, templateProperties, defaultLocale );
-    }
-
-    /**
-     * @see org.apache.maven.doxia.siterenderer.Renderer#render(java.io.File, java.io.File, java.lang.String, java.lang.String, java.util.Map, java.util.Locale)
-     */
-    public void render( File siteDirectory, File outputDirectory, String siteDescriptor, String templateName,
-                        Map templateProperties, Locale locale )
-        throws RendererException, IOException
-    {
-        render( siteDirectory, outputDirectory, new StringInputStream( siteDescriptor ), templateName,
-                templateProperties, locale );
-    }
-
-    /**
-     * @see org.apache.maven.doxia.siterenderer.Renderer#render(File, File, InputStream, String, Map)
-     */
-    public void render( File siteDirectory, File outputDirectory, InputStream siteDescriptor, String templateName,
-                        Map templateProperties )
-        throws RendererException, IOException
-    {
-        render( siteDirectory, outputDirectory, siteDescriptor, templateName, templateProperties, defaultLocale );
-    }
-
-    /**
-     * @see org.apache.maven.doxia.siterenderer.Renderer#render(java.io.File, java.io.File, java.io.InputStream, java.lang.String, java.util.Map, java.util.Locale)
-     */
-    public void render( File siteDirectory, File outputDirectory, InputStream siteDescriptor, String templateName,
-                        Map templateProperties, Locale locale )
-        throws RendererException, IOException
-    {
-        render( siteDirectory, outputDirectory, siteDescriptor, templateName, templateProperties, locale,
-                DEFAULT_OUTPUT_ENCODING );
-    }
-
-    //per module
-    public void render( File siteDirectory, File outputDirectory, String module, String moduleExtension,
-                        String moduleParserId, String siteDescriptor, String templateName, Map templateProperties,
-                        Locale locale, String outputEncoding )
-        throws RendererException, IOException
-    {
-        render( siteDirectory, outputDirectory, module, moduleExtension, moduleParserId,
-                new StringInputStream( siteDescriptor ), templateName, templateProperties, locale, outputEncoding );
-    }
-
-    /**
-     * @see org.apache.maven.doxia.siterenderer.Renderer#render(java.io.File, java.io.File, java.io.InputStream, java.lang.String, java.util.Map, java.util.Locale, java.lang.String)
-     */
-    public void render( File siteDirectory, File outputDirectory, InputStream siteDescriptor, String templateName,
-                        Map templateProperties, Locale locale, String outputEncoding )
-        throws RendererException, IOException
-    {
-        try
-        {
-            InputStreamReader xmlReader = new InputStreamReader( siteDescriptor );
-
-            this.siteDescriptor = Xpp3DomBuilder.build( xmlReader );
-        }
-        catch ( XmlPullParserException e )
-        {
-            throw new RendererException( "Can't read site descriptor.", e );
-        }
-
         for ( Iterator i = siteModuleManager.getSiteModules().iterator(); i.hasNext(); )
         {
             SiteModule module = (SiteModule) i.next();
@@ -245,7 +129,7 @@ public class DefaultSiteRenderer
                         }
 
                         generateDocument( new OutputStreamWriter( new FileOutputStream( outputFile ), outputEncoding ),
-                                          templateName, templateProperties, sink, locale );
+                                          sink, context );
                     }
                     catch ( ParserNotFoundException e )
                     {
@@ -269,21 +153,9 @@ public class DefaultSiteRenderer
 
     // per module renderer
     public void render( File siteDirectory, File outputDirectory, String module, String moduleExtension,
-                        String moduleParserId, InputStream siteDescriptor, String templateName, Map templateProperties,
-                        Locale locale, String outputEncoding )
+                        String moduleParserId, SiteRenderingContext context, String outputEncoding )
         throws RendererException, IOException
     {
-        try
-        {
-            InputStreamReader xmlReader = new InputStreamReader( siteDescriptor );
-
-            this.siteDescriptor = Xpp3DomBuilder.build( xmlReader );
-        }
-        catch ( XmlPullParserException e )
-        {
-            throw new RendererException( "Can't read site descriptor.", e );
-        }
-
         List docs = FileUtils.getFileNames( siteDirectory, "**/*." + moduleExtension, null, false );
 
         for ( Iterator j = docs.iterator(); j.hasNext(); )
@@ -308,8 +180,8 @@ public class DefaultSiteRenderer
                 {
                     outputFile.getParentFile().mkdirs();
                 }
-                generateDocument( new OutputStreamWriter( new FileOutputStream( outputFile ), outputEncoding ),
-                                  templateName, templateProperties, sink, locale );
+                generateDocument( new OutputStreamWriter( new FileOutputStream( outputFile ), outputEncoding ), sink,
+                                  context );
             }
             catch ( ParserNotFoundException e )
             {
@@ -328,20 +200,7 @@ public class DefaultSiteRenderer
         }
     }
 
-    /**
-     * @see org.apache.maven.doxia.siterenderer.Renderer#generateDocument(java.io.Writer, java.lang.String, java.util.Map, org.apache.maven.doxia.siterenderer.sink.SiteRendererSink)
-     */
-    public void generateDocument( Writer writer, String templateName, Map templateProperties, SiteRendererSink sink )
-        throws RendererException
-    {
-        generateDocument( writer, templateName, templateProperties, sink, defaultLocale );
-    }
-
-    /**
-     * @see org.apache.maven.doxia.siterenderer.Renderer#generateDocument(java.io.Writer, java.lang.String, java.util.Map, org.apache.maven.doxia.siterenderer.sink.SiteRendererSink, java.util.Locale)
-     */
-    public void generateDocument( Writer writer, String templateName, Map templateProperties, SiteRendererSink sink,
-                                  Locale locale )
+    public void generateDocument( Writer writer, SiteRendererSink sink, SiteRenderingContext siteContext )
         throws RendererException
     {
         VelocityContext context = new VelocityContext();
@@ -350,7 +209,9 @@ public class DefaultSiteRenderer
         // Data objects
         // ----------------------------------------------------------------------
 
-        context.put( "relativePath", renderingContext.getRelativePath() );
+        RenderingContext renderingContext = sink.getRenderingContext();
+        String relativePath = renderingContext.getRelativePath();
+        context.put( "relativePath", relativePath );
 
         // Add infos from document
         context.put( "authors", sink.getAuthors() );
@@ -359,19 +220,20 @@ public class DefaultSiteRenderer
 
         context.put( "bodyContent", sink.getBody() );
 
-        // Add infos from siteDescriptor
-        context.put( "siteDescriptor", siteDescriptor );
+        context.put( "decoration", siteContext.getDecoration() );
 
         context.put( "currentDate", new Date() );
 
         context.put( "dateFormat", new SimpleDateFormat() );
 
-        context.put( "currentFileName", PathTool.calculateLink( "/" + currentDocument, renderingContext
-            .getRelativePath() ) );
+        String currentFileName = PathTool.calculateLink( renderingContext.getOutputName(), relativePath );
 
-        context.put( "locale", locale );
+        context.put( "currentFileName", currentFileName );
+
+        context.put( "locale", siteContext.getLocale() );
 
         // Add user properties
+        Map templateProperties = siteContext.getTemplateProperties();
         if ( templateProperties != null )
         {
             for ( Iterator i = templateProperties.keySet().iterator(); i.hasNext(); )
@@ -398,10 +260,10 @@ public class DefaultSiteRenderer
         //
         // ----------------------------------------------------------------------
 
-        writeTemplate( templateName, writer, context );
+        writeTemplate( siteContext.getTemplate(), writer, context, siteContext.getTemplateClassLoader() );
     }
 
-    private void writeTemplate( String templateName, Writer writer, Context context )
+    private void writeTemplate( String templateName, Writer writer, Context context, ClassLoader templateClassLoader )
         throws RendererException
     {
         ClassLoader old = null;
@@ -459,73 +321,9 @@ public class DefaultSiteRenderer
         }
     }
 
-    public SiteRendererSink createSink( File moduleBaseDir, String document, File siteDescriptor )
-        throws RendererException, IOException
+    public SiteRendererSink createSink( File moduleBaseDir, String document )
     {
-        return createSink( moduleBaseDir, document, new FileInputStream( siteDescriptor ) );
-    }
-
-    public SiteRendererSink createSink( File moduleBaseDir, String document, String siteDescriptor )
-        throws RendererException, IOException
-    {
-        return createSink( moduleBaseDir, document, new StringInputStream( siteDescriptor ) );
-    }
-
-    public SiteRendererSink createSink( File moduleBaseDir, String document, InputStream siteDescriptor )
-        throws RendererException, IOException
-    {
-        try
-        {
-            InputStreamReader xmlReader = new InputStreamReader( siteDescriptor );
-
-            this.siteDescriptor = Xpp3DomBuilder.build( xmlReader );
-        }
-        catch ( XmlPullParserException e )
-        {
-            throw new RendererException( "Can't read site descriptor.", e );
-        }
-
-        return createSink( moduleBaseDir, document );
-    }
-
-    private SiteRendererSink createSink( File moduleBaseDir, String document )
-    {
-        currentDocument = document;
-
-        renderingContext = new RenderingContext( moduleBaseDir, document, null );
-
-        return new SiteRendererSink( new StringWriter(), renderingContext );
-    }
-
-    public XhtmlSink createSink( File moduleBasedir, String doc, String outputDirectory, InputStream siteDescriptor,
-                                 String flavour )
-        throws IOException, XmlPullParserException
-    {
-        DecorationModelReader decorationModelReader = new DecorationModelReader();
-
-        DecorationModel decorationModel =
-            decorationModelReader.createNavigation( new InputStreamReader( siteDescriptor ) );
-
-        String outputName = doc.substring( 0, doc.indexOf( "." ) + 1 ) + "html";
-
-        File outputFile = new File( outputDirectory, outputName );
-
-        if ( !outputFile.getParentFile().exists() )
-        {
-            outputFile.getParentFile().mkdirs();
-        }
-
-        InputStream is = getClass().getResourceAsStream( "/" + flavour + ".dst" );
-
-        Reader r = new InputStreamReader( is );
-
-        SinkDescriptorReader sdr = new SinkDescriptorReader();
-
-        Map directives = sdr.read( r );
-
-        RenderingContext renderingContext = new RenderingContext( moduleBasedir, doc, decorationModel );
-
-        return new XhtmlSink( new FileWriter( outputFile ), renderingContext, directives );
+        return new SiteRendererSink( new RenderingContext( moduleBaseDir, document ) );
     }
 
 }

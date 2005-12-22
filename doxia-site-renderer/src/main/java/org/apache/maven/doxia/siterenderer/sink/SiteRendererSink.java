@@ -20,6 +20,7 @@ import org.apache.maven.doxia.module.xhtml.XhtmlSink;
 import org.apache.maven.doxia.module.xhtml.decoration.render.RenderingContext;
 
 import java.io.StringWriter;
+import java.io.Writer;
 import java.util.ArrayList;
 import java.util.List;
 
@@ -37,9 +38,14 @@ public class SiteRendererSink
 
     private List authors = new ArrayList();
 
-    private StringWriter writer;
+    private final Writer writer;
 
-    public SiteRendererSink( StringWriter writer, RenderingContext renderingContext )
+    public SiteRendererSink( RenderingContext renderingContext )
+    {
+        this( new StringWriter(), renderingContext );
+    }
+
+    private SiteRendererSink( StringWriter writer, RenderingContext renderingContext )
     {
         super( writer, renderingContext, null );
 

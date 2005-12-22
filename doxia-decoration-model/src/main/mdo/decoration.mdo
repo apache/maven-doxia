@@ -1,0 +1,250 @@
+<?xml version="1.0"?>
+
+<model>
+  <id>decoration</id>
+  <name>Decoration</name>
+  <description><![CDATA[Model for site decoration in Doxia.]]></description>
+  <defaults>
+    <default>
+      <key>package</key>
+      <value>org.apache.maven.doxia.site.decoration</value>
+    </default>
+  </defaults>
+  <classes>
+    <class rootElement="true" xml.tagName="project">
+      <name>DecorationModel</name>
+      <description>Describes the overall project decoration model.</description>
+      <version>1.0.0</version>
+      <fields>
+        <field xml.attribute="true">
+          <name>name</name>
+          <version>1.0.0</version>
+          <type>String</type>
+        </field>
+        <field>
+          <name>bannerLeft</name>
+          <description>Banner logo on the masthead of the site to the left.</description>
+          <version>1.0.0</version>
+          <association>
+            <type>Banner</type>
+          </association>
+        </field>
+        <field>
+          <name>bannerRight</name>
+          <description>Banner logo on the masthead of the site to the right.</description>
+          <version>1.0.0</version>
+          <association>
+            <type>Banner</type>
+          </association>
+        </field>
+        <field>
+          <name>publishDate</name>
+          <description>Modify the date published display properties.</description>
+          <version>1.0.0</version>
+          <association>
+            <type>PublishDate</type>
+          </association>
+        </field>
+        <field xml.associationTagName="logo">
+          <name>poweredBy</name>
+          <description>Powered by logos.</description>
+          <version>1.0.0</version>
+          <association>
+            <type>Logo</type>
+            <multiplicity>*</multiplicity>
+          </association>
+        </field>
+        <field>
+          <name>body</name>
+          <description>The main site content decoration.</description>
+          <version>1.0.0</version>
+          <association>
+            <type>Body</type>
+          </association>
+        </field>
+        <field>
+          <name>custom</name>
+          <description>Custom configuration for use with customised velocity templates.</description>
+          <version>1.0.0</version>
+          <type>DOM</type>
+        </field>
+      </fields>
+    </class>
+    <class>
+      <name>Banner</name>
+      <description>A banner logo on the masthead of the site.</description>
+      <version>1.0.0</version>
+      <fields>
+        <field>
+          <name>name</name>
+          <version>1.0.0</version>
+          <description>Description of the banner.</description>
+          <type>String</type>
+        </field>
+        <field>
+          <name>src</name>
+          <version>1.0.0</version>
+          <description>The href of an image for the banner</description>
+          <type>String</type>
+        </field>
+        <field>
+          <name>alt</name>
+          <version>1.0.0</version>
+          <description>Alt description for the banner image.</description>
+          <type>String</type>
+        </field>
+        <field>
+          <name>href</name>
+          <version>1.0.0</version>
+          <description>The href of a link to use for the banner</description>
+          <type>String</type>
+        </field>
+      </fields>
+    </class>
+    <class>
+      <name>PublishDate</name>
+      <description>Modify display properties for date published.</description>
+      <version>1.0.0</version>
+      <fields>
+        <field xml.attribute="true">
+          <name>position</name>
+          <description>Where to place the date published (left, right, navigation-top, navigation-bottom,
+            bottom).</description>
+          <version>1.0.0</version>
+          <type>String</type>
+        </field>
+        <field xml.attribute="true">
+          <name>format</name>
+          <description>Date format to use. The default is MM/dd/yyyy.</description>
+          <version>1.0.0</version>
+          <type>String</type>
+        </field>
+      </fields>
+    </class>
+    <class>
+      <name>Logo</name>
+      <description>Logo.</description>
+      <version>1.0.0</version>
+      <superClass>LinkItem</superClass>
+      <fields>
+        <field xml.attribute="true">
+          <name>img</name>
+          <description>Logo image href.</description>
+          <version>1.0.0</version>
+          <type>String</type>
+        </field>
+      </fields>
+    </class>
+    <class>
+      <name>Body</name>
+      <description>The main content decoration.</description>
+      <version>1.0.0</version>
+      <fields>
+        <field>
+          <name>head</name>
+          <description>Additional content to include in the HEAD block of the generated pages.</description>
+          <version>1.0.0</version>
+          <type>DOM</type>
+        </field>
+        <field xml.associationTagName="item">
+          <name>links</name>
+          <description>A list of links to display in the navigation.</description>
+          <version>1.0.0</version>
+          <association>
+            <type>LinkItem</type>
+            <multiplicity>*</multiplicity>
+          </association>
+        </field>
+        <field xml.associationTagName="item">
+          <name>breadcrumbs</name>
+          <description>A list of breadcrumbs to display in the navigation.</description>
+          <version>1.0.0</version>
+          <association>
+            <type>LinkItem</type>
+            <multiplicity>*</multiplicity>
+          </association>
+        </field>
+        <field xml.listStyle="flat">
+          <name>menus</name>
+          <description>Menus to include in the navigation.</description>
+          <version>1.0.0</version>
+          <association>
+            <type>Menu</type>
+            <multiplicity>*</multiplicity>
+          </association>
+        </field>
+      </fields>
+    </class>
+    <class>
+      <name>LinkItem</name>
+      <description>A link in the navigation.</description>
+      <version>1.0.0</version>
+      <fields>
+        <field xml.attribute="true">
+          <name>name</name>
+          <description>The name to use for the link.</description>
+          <version>1.0.0</version>
+          <type>String</type>
+        </field>
+        <field xml.attribute="true">
+          <name>href</name>
+          <description>The href to use for the link.</description>
+          <version>1.0.0</version>
+          <type>String</type>
+        </field>
+      </fields>
+    </class>
+    <class>
+      <name>Menu</name>
+      <description>A menu in the navigation.</description>
+      <version>1.0.0</version>
+      <fields>
+        <field xml.attribute="true">
+          <name>name</name>
+          <description>The name to use for the menu.</description>
+          <version>1.0.0</version>
+          <type>String</type>
+        </field>
+        <field xml.attribute="true">
+          <name>inherit</name>
+          <description>The way in which the menu is inherited.</description>
+          <version>1.0.0</version>
+          <type>String</type>
+        </field>
+        <field xml.listStyle="flat">
+          <name>items</name>
+          <description>Menu item.</description>
+          <version>1.0.0</version>
+          <association>
+            <type>MenuItem</type>
+            <multiplicity>*</multiplicity>
+          </association>
+        </field>
+      </fields>
+    </class>
+    <class>
+      <name>MenuItem</name>
+      <description>A menu item.</description>
+      <version>1.0.0</version>
+      <superClass>LinkItem</superClass>
+      <fields>
+        <field xml.attribute="true">
+          <name>collapse</name>
+          <description>Whether the item is collapsed by default when it has children elements.</description>
+          <version>1.0.0</version>
+          <type>boolean</type>
+        </field>
+        <field xml.listStyle="flat">
+          <name>items</name>
+          <description>Menu item.</description>
+          <version>1.0.0</version>
+          <association>
+            <type>MenuItem</type>
+            <multiplicity>*</multiplicity>
+          </association>
+        </field>
+      </fields>
+    </class>
+  </classes>
+</model>
+

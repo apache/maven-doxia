@@ -88,6 +88,7 @@
     <module>doxia-core</module>
     <module>doxia-sink-api</module>
     <module>doxia-site-renderer</module>
+    <module>doxia-decoration-model</module>
   </modules>
   <distributionManagement>
     <repository>

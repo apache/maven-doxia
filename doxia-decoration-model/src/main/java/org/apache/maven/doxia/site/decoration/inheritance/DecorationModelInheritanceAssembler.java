@@ -1,4 +1,4 @@
-package org.apache.maven.doxia.module.xhtml.decoration.render;
+package org.apache.maven.doxia.site.decoration.inheritance;
 
 /*
  * Copyright 2004-2005 The Apache Software Foundation.
@@ -8,21 +8,24 @@ package org.apache.maven.doxia.module.xhtml.decoration.render;
  * You may obtain a copy of the License at
  *
  *      http://www.apache.org/licenses/LICENSE-2.0
- *
  * Unless required by applicable law or agreed to in writing, software
  * distributed under the License is distributed on an "AS IS" BASIS,
  * WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
  * See the License for the specific language governing permissions and
  * limitations under the License.
+ *
  */
 
-import org.codehaus.plexus.util.xml.XMLWriter;
+import org.apache.maven.doxia.site.decoration.DecorationModel;
 
 /**
- * @author <a href="mailto:jason@maven.org">Jason van Zyl</a>
- * @version $Id:DecorationRenderer.java 348605 2005-11-24 12:02:44 +1100 (Thu, 24 Nov 2005) brett $
+ * Manage inheritance of the decoration model.
+ *
+ * @author <a href="mailto:brett@apache.org">Brett Porter</a>
  */
-public interface DecorationRenderer
+public interface DecorationModelInheritanceAssembler
 {
-    void render( XMLWriter writer, RenderingContext renderingContext );
+    String ROLE = DecorationModelInheritanceAssembler.class.getName();
+
+    void assembleModelInheritance( DecorationModel child, DecorationModel parent );
 }

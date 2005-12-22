@@ -17,21 +17,13 @@ package org.apache.maven.doxia.module.xhtml;
  */
 
 import org.apache.maven.doxia.module.HtmlTools;
-import org.apache.maven.doxia.module.xhtml.decoration.render.BannerRenderer;
-import org.apache.maven.doxia.module.xhtml.decoration.render.LinksRenderer;
-import org.apache.maven.doxia.module.xhtml.decoration.render.NavigationRenderer;
 import org.apache.maven.doxia.module.xhtml.decoration.render.RenderingContext;
 import org.apache.maven.doxia.parser.Parser;
 import org.apache.maven.doxia.sink.StructureSink;
 import org.codehaus.plexus.util.StringUtils;
-import org.codehaus.plexus.util.xml.PrettyPrintXMLWriter;
-import org.codehaus.plexus.util.xml.XMLWriter;
 
 import java.io.PrintWriter;
-import java.io.StringWriter;
 import java.io.Writer;
-import java.util.Date;
-import java.util.HashMap;
 import java.util.Map;
 
 /**
@@ -48,15 +40,9 @@ public class XhtmlSink
 
     private int itemFlag;
 
-    private boolean boxedFlag;
-
     private boolean verbatimFlag;
 
     private int cellCount;
-
-    private boolean hasTitle;
-
-    private int sectionLevel;
 
     private PrintWriter writer;
 
@@ -92,8 +78,6 @@ public class XhtmlSink
         resetBuffer();
 
         itemFlag = 0;
-
-        boxedFlag = false;
 
         verbatimFlag = false;
 
@@ -133,8 +117,6 @@ public class XhtmlSink
         write( "</title>" );
 
         resetBuffer();
-
-        hasTitle = true;
     }
 
     public void author_()
@@ -163,76 +145,12 @@ public class XhtmlSink
     {
         String body = directiveValue( "body()" );
 
-        // ----------------------------------------------------------------------
-        //
-        // ----------------------------------------------------------------------
-
-        NavigationRenderer r = new NavigationRenderer();
-
-        StringWriter sw = new StringWriter();
-
-        XMLWriter w = new PrettyPrintXMLWriter( sw );
-
-        r.render( w, renderingContext );
-
-        Map map = new HashMap();
-
-        map.put( "mainMenu", sw.toString() );
-
-        sw = new StringWriter();
-
-        w = new PrettyPrintXMLWriter( sw );
-
-        LinksRenderer lr = new LinksRenderer();
-
-        lr.render( w, renderingContext );
-
-        map.put( "links", sw.toString() );
-
-        sw = new StringWriter();
-
-        w = new PrettyPrintXMLWriter( sw );
-
-        BannerRenderer br = new BannerRenderer( "bannerLeft" );
-
-        br.render( w, renderingContext );
-
-        map.put( "bannerLeft", sw.toString() );
-
-        sw = new StringWriter();
-
-        w = new PrettyPrintXMLWriter( sw );
-
-        br = new BannerRenderer( "bannerRight" );
-
-        br.render( w, renderingContext );
-
-        map.put( "bannerRight", sw.toString() );
-
-        map.put( "navBarLeft", "Last Published: " + new Date() );
-
-        map.put( "rightColumn", " " );
-
-        body = StringUtils.interpolate( body, map );
-
-        // ----------------------------------------------------------------------
-        //
-        // ----------------------------------------------------------------------
-
         write( body );
     }
 
     public void body_()
     {
         String body = directiveValue( "body_()" );
-
-        Map map = new HashMap();
-
-        map.put( "rightColumn", " " );
-
-        map.put( "footer", "Powered by Doxia 2004 (c)" );
-
-        body = StringUtils.interpolate( body, map );
 
         write( body );
 
@@ -450,8 +368,6 @@ public class XhtmlSink
     {
         verbatimFlag = true;
 
-        boxedFlag = boxed;
-
         write( "<div class=\"source\"><pre>" );
     }
 
@@ -461,7 +377,6 @@ public class XhtmlSink
 
         verbatimFlag = false;
 
-        boxedFlag = false;
     }
 
     public void horizontalRule()
@@ -900,5 +815,10 @@ public class XhtmlSink
     public void close()
     {
         writer.close();
+    }
+
+    public RenderingContext getRenderingContext()
+    {
+        return renderingContext;
     }
 }

@@ -20,10 +20,7 @@ import org.apache.maven.doxia.siterenderer.sink.SiteRendererSink;
 
 import java.io.File;
 import java.io.IOException;
-import java.io.InputStream;
 import java.io.Writer;
-import java.util.Locale;
-import java.util.Map;
 
 /**
  * @author <a href="mailto:evenisse@codehaus.org>Emmanuel Venisse</a>
@@ -33,60 +30,20 @@ public interface Renderer
 {
     String ROLE = Renderer.class.getName();
 
-    void render( File siteDirectory, File outputDirectory, File siteDescriptor, String templateName,
-                 Map templateProperties )
+    void render( File siteDirectory, File outputDirectory, SiteRenderingContext context )
         throws RendererException, IOException;
 
-    void render( File siteDirectory, File outputDirectory, InputStream siteDescriptor, String templateName,
-                 Map templateProperties )
-        throws RendererException, IOException;
-
-    void render( File siteDirectory, File outputDirectory, String siteDescriptor, String templateName,
-                 Map templateProperties )
-        throws RendererException, IOException;
-
-    void render( File siteDirectory, File outputDirectory, File siteDescriptor, String templateName,
-                 Map templateProperties, Locale locale )
-        throws RendererException, IOException;
-
-    void render( File siteDirectory, File outputDirectory, InputStream siteDescriptor, String templateName,
-                 Map templateProperties, Locale locale )
-        throws RendererException, IOException;
-
-    void render( File siteDirectory, File outputDirectory, String siteDescriptor, String templateName,
-                 Map templateProperties, Locale locale )
-        throws RendererException, IOException;
-
-    void render( File siteDirectory, File outputDirectory, InputStream siteDescriptor, String templateName,
-                 Map templateProperties, Locale locale, String outputEncoding )
+    void render( File siteDirectory, File outputDirectory, SiteRenderingContext context, String outputEncoding )
         throws RendererException, IOException;
 
     void render( File siteDirectory, File outputDirectory, String module, String moduleExtension, String moduleParserId,
-                 String siteDescriptor, String templateName, Map templateProperties, Locale locale,
-                 String outputEncoding )
+                 SiteRenderingContext context, String outputEncoding )
         throws RendererException, IOException;
 
-    void render( File siteDirectory, File outputDirectory, String module, String moduleExtension, String moduleParserId,
-                 InputStream siteDescriptor, String templateName, Map templateProperties, Locale locale,
-                 String outputEncoding )
-        throws RendererException, IOException;
-
-    void generateDocument( Writer writer, String templateName, Map templateProperties, SiteRendererSink sink )
+    void generateDocument( Writer writer, SiteRendererSink sink, SiteRenderingContext siteContext )
         throws RendererException;
 
-    void generateDocument( Writer writer, String templateName, Map templateProperties, SiteRendererSink sink,
-                           Locale locale )
-        throws RendererException;
-
-    SiteRendererSink createSink( File moduleBaseDir, String document, File siteDescriptor )
+    SiteRendererSink createSink( File moduleBaseDir, String document )
         throws RendererException, IOException;
-
-    SiteRendererSink createSink( File moduleBaseDir, String document, String siteDescriptor )
-        throws RendererException, IOException;
-
-    SiteRendererSink createSink( File moduleBaseDir, String document, InputStream siteDescriptor )
-        throws RendererException, IOException;
-
-    void setTemplateClassLoader( ClassLoader templateClassLoader );
 
 }

@@ -16,7 +16,13 @@ package org.apache.maven.doxia.siterenderer;
  * limitations under the License.
  */
 
+import org.apache.maven.doxia.site.decoration.DecorationModel;
+import org.apache.maven.doxia.site.decoration.io.xpp3.DecorationXpp3Reader;
 import org.codehaus.plexus.PlexusTestCase;
+import org.codehaus.plexus.util.xml.pull.XmlPullParserException;
+
+import java.io.FileReader;
+import java.io.IOException;
 
 /**
  * @author <a href="mailto:evenisse@codehaus.org>Emmanuel Venisse</a>
@@ -26,11 +32,6 @@ public class DefaultSiteRendererTest
     extends PlexusTestCase
 {
     private Renderer renderer;
-
-    public DefaultSiteRendererTest()
-    {
-        super();
-    }
 
     /**
      * @see org.codehaus.plexus.PlexusTestCase#setUp()
@@ -53,16 +54,14 @@ public class DefaultSiteRendererTest
     }
 
     public void testRender()
+        throws RendererException, IOException, XmlPullParserException
     {
-        try
-        {
-            renderer.render( getTestFile( "src/test/site" ), getTestFile( "target/output" ),
-                             getTestFile( "src/test/site/site.xml" ), "maven-site.vm", null );
-        }
-        catch ( Exception e )
-        {
-            e.printStackTrace();
-            fail( e.getMessage() );
-        }
+        DecorationModel decoration =
+            new DecorationXpp3Reader().read( new FileReader( getTestFile( "src/test/site/site.xml" ) ) );
+        SiteRenderingContext context = new SiteRenderingContext();
+        context.setTemplate( "maven-site.vm" );
+        context.setTemplateClassLoader( getClassLoader() );
+        context.setDecoration( decoration );
+        renderer.render( getTestFile( "src/test/site" ), getTestFile( "target/output" ), context );
     }
 }
