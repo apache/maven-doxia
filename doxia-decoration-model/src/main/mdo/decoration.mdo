@@ -20,6 +20,7 @@
           <name>name</name>
           <version>1.0.0</version>
           <type>String</type>
+          <identifier>true</identifier>
         </field>
         <field>
           <name>bannerLeft</name>
@@ -28,6 +29,7 @@
           <association>
             <type>Banner</type>
           </association>
+          <identifier>true</identifier>
         </field>
         <field>
           <name>bannerRight</name>
@@ -36,6 +38,7 @@
           <association>
             <type>Banner</type>
           </association>
+          <identifier>true</identifier>
         </field>
         <field>
           <name>publishDate</name>
@@ -44,6 +47,7 @@
           <association>
             <type>PublishDate</type>
           </association>
+          <identifier>true</identifier>
         </field>
         <field xml.associationTagName="logo">
           <name>poweredBy</name>
@@ -53,6 +57,7 @@
             <type>Logo</type>
             <multiplicity>*</multiplicity>
           </association>
+          <identifier>true</identifier>
         </field>
         <field>
           <name>body</name>
@@ -61,12 +66,14 @@
           <association>
             <type>Body</type>
           </association>
+          <identifier>true</identifier>
         </field>
         <field>
           <name>custom</name>
           <description>Custom configuration for use with customised velocity templates.</description>
           <version>1.0.0</version>
           <type>DOM</type>
+          <identifier>true</identifier>
         </field>
       </fields>
     </class>
@@ -80,24 +87,28 @@
           <version>1.0.0</version>
           <description>Description of the banner.</description>
           <type>String</type>
+          <identifier>true</identifier>
         </field>
         <field>
           <name>src</name>
           <version>1.0.0</version>
           <description>The href of an image for the banner</description>
           <type>String</type>
+          <identifier>true</identifier>
         </field>
         <field>
           <name>alt</name>
           <version>1.0.0</version>
           <description>Alt description for the banner image.</description>
           <type>String</type>
+          <identifier>true</identifier>
         </field>
         <field>
           <name>href</name>
           <version>1.0.0</version>
           <description>The href of a link to use for the banner</description>
           <type>String</type>
+          <identifier>true</identifier>
         </field>
       </fields>
     </class>
@@ -112,12 +123,14 @@
             bottom).</description>
           <version>1.0.0</version>
           <type>String</type>
+          <identifier>true</identifier>
         </field>
         <field xml.attribute="true">
           <name>format</name>
           <description>Date format to use. The default is MM/dd/yyyy.</description>
           <version>1.0.0</version>
           <type>String</type>
+          <identifier>true</identifier>
         </field>
       </fields>
     </class>
@@ -132,6 +145,7 @@
           <description>Logo image href.</description>
           <version>1.0.0</version>
           <type>String</type>
+          <identifier>true</identifier>
         </field>
       </fields>
     </class>
@@ -145,6 +159,7 @@
           <description>Additional content to include in the HEAD block of the generated pages.</description>
           <version>1.0.0</version>
           <type>DOM</type>
+          <identifier>true</identifier>
         </field>
         <field xml.associationTagName="item">
           <name>links</name>
@@ -154,6 +169,7 @@
             <type>LinkItem</type>
             <multiplicity>*</multiplicity>
           </association>
+          <identifier>true</identifier>
         </field>
         <field xml.associationTagName="item">
           <name>breadcrumbs</name>
@@ -162,7 +178,9 @@
           <association>
             <type>LinkItem</type>
             <multiplicity>*</multiplicity>
+            <identifier>true</identifier>
           </association>
+          <identifier>true</identifier>
         </field>
         <field xml.listStyle="flat">
           <name>menus</name>
@@ -172,6 +190,7 @@
             <type>Menu</type>
             <multiplicity>*</multiplicity>
           </association>
+          <identifier>true</identifier>
         </field>
       </fields>
     </class>
@@ -185,12 +204,14 @@
           <description>The name to use for the link.</description>
           <version>1.0.0</version>
           <type>String</type>
+          <identifier>true</identifier>
         </field>
         <field xml.attribute="true">
           <name>href</name>
           <description>The href to use for the link.</description>
           <version>1.0.0</version>
           <type>String</type>
+          <identifier>true</identifier>
         </field>
       </fields>
     </class>
@@ -204,12 +225,14 @@
           <description>The name to use for the menu.</description>
           <version>1.0.0</version>
           <type>String</type>
+          <identifier>true</identifier>
         </field>
         <field xml.attribute="true">
           <name>inherit</name>
           <description>The way in which the menu is inherited.</description>
           <version>1.0.0</version>
           <type>String</type>
+          <identifier>true</identifier>
         </field>
         <field xml.listStyle="flat">
           <name>items</name>
@@ -219,6 +242,7 @@
             <type>MenuItem</type>
             <multiplicity>*</multiplicity>
           </association>
+          <identifier>true</identifier>
         </field>
       </fields>
     </class>
@@ -233,6 +257,7 @@
           <description>Whether the item is collapsed by default when it has children elements.</description>
           <version>1.0.0</version>
           <type>boolean</type>
+          <identifier>true</identifier>
         </field>
         <field xml.listStyle="flat">
           <name>items</name>
@@ -242,6 +267,7 @@
             <type>MenuItem</type>
             <multiplicity>*</multiplicity>
           </association>
+          <identifier>true</identifier>
         </field>
       </fields>
     </class>
