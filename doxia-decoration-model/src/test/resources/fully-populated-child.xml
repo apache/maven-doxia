@@ -32,6 +32,11 @@
     <logo name="Maven" href="http://maven.apache.org" img="http://maven.apache.org/images/maven-feather.png"/>
   </poweredBy>
 
+  <skin>
+    <groupId>org.apache.maven.skins</groupId>
+    <artifactId>maven-default-skin</artifactId>
+  </skin>
+
   <body>
     <links>
       <item name="Bouncy Castle" href="http://www.bouncycastle.org"/>

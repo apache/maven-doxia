@@ -67,6 +67,11 @@ public class DefaultDecorationModelInheritanceAssembler
                 child.setPublishDate( parent.getPublishDate() );
             }
 
+            if ( child.getSkin() == null )
+            {
+                child.setSkin( parent.getSkin() );
+            }
+
             child.setPoweredBy(
                 mergePoweredByLists( child.getPoweredBy(), parent.getPoweredBy(), prefix, parentBaseUrl ) );
 

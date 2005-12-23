@@ -28,6 +28,10 @@
   <poweredBy>
     <logo name="Maven" href="http://maven.apache.org" img="images/maven-feather.png"/>
   </poweredBy>
+  <skin>
+    <groupId>org.apache.maven.skins</groupId>
+    <artifactId>maven-default-skin</artifactId>
+  </skin>
   <body>
     <breadcrumbs>
       <item name="Apache" href="http://www.apache.org/"/>
