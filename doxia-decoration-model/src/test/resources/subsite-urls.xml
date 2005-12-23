@@ -14,36 +14,33 @@
   ~
   -->
 
-<project name="Empty">
+<project name="Parent Name">
   <bannerLeft>
-    <name>name</name>
-    <src>../src</src>
-    <href>../href</href>
+    <name>The Jakarta Project</name>
+    <src>http://maven.apache.org/images/jakarta-logo.gif</src>
+    <href>http://maven.apache.org/banner/left</href>
   </bannerLeft>
   <bannerRight>
-    <name>name</name>
-    <src>../src</src>
-    <href>../href</href>
+    <name>Jakarta Commons Sandbox</name>
+    <src>http://maven.apache.org/commons/images/logo.png</src>
+    <href>http://maven.apache.org/banner/right/</href>
   </bannerRight>
 
-  <publishDate format="fmt" position="top"/>
-
   <poweredBy>
-    <logo name="Maven" href="http://maven.apache.org" img="../images/maven-feather.png"/>
+    <logo name="Tomcat" href="tomcat" img="http://maven.apache.org/tomcat/logo.gif"/>
   </poweredBy>
 
   <body>
+    <breadcrumbs>
+      <item name="Apache" href="http://maven.apache.org/apache"/>
+    </breadcrumbs>
+
     <links>
-      <item name="Bouncy Castle" href="http://www.bouncycastle.org"/>
+      <item name="Bouncy Castle" href="http://maven.apache.org/bouncycastle/"/>
     </links>
 
-    <head>
-      <meta name="blah" value="blah"/>
-    </head>
-
+    <menu name="Special" inherit="top">
+      <item name="Special" href="http://maven.apache.org/special/"/>
+    </menu>
   </body>
-
-  <custom>
-    <junk>junk</junk>
-  </custom>
 </project>

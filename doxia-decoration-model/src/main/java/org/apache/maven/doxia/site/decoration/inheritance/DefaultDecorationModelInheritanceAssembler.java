@@ -52,14 +52,14 @@ public class DefaultDecorationModelInheritanceAssembler
             {
                 child.setBannerLeft( parent.getBannerLeft() );
 
-                resolveBannerPaths( child.getBannerLeft(), prefix );
+                resolveBannerPaths( child.getBannerLeft(), prefix, parentBaseUrl );
             }
 
             if ( child.getBannerRight() == null )
             {
                 child.setBannerRight( parent.getBannerRight() );
 
-                resolveBannerPaths( child.getBannerRight(), prefix );
+                resolveBannerPaths( child.getBannerRight(), prefix, parentBaseUrl );
             }
 
             if ( child.getPublishDate() == null )
@@ -67,26 +67,32 @@ public class DefaultDecorationModelInheritanceAssembler
                 child.setPublishDate( parent.getPublishDate() );
             }
 
-            child.setPoweredBy( mergePoweredByLists( child.getPoweredBy(), parent.getPoweredBy(), prefix ) );
+            child.setPoweredBy(
+                mergePoweredByLists( child.getPoweredBy(), parent.getPoweredBy(), prefix, parentBaseUrl ) );
 
-            assembleBodyInheritance( child, parent, prefix );
+            assembleBodyInheritance( child, parent, prefix, parentBaseUrl );
 
             assembleCustomInheritance( child, parent );
         }
     }
 
-    private void resolveBannerPaths( Banner banner, String prefix )
+    private void resolveBannerPaths( Banner banner, String prefix, String baseUrl )
     {
         if ( banner != null )
         {
-            banner.setHref( resolvePath( banner.getHref(), prefix ) );
-            banner.setSrc( resolvePath( banner.getSrc(), prefix ) );
+            banner.setHref( resolvePath( banner.getHref(), prefix, baseUrl ) );
+            banner.setSrc( resolvePath( banner.getSrc(), prefix, baseUrl ) );
         }
     }
 
-    private String resolvePath( String href, String prefix )
+    private String resolvePath( String href, String prefix, String baseUrl )
     {
         String relativePath = href;
+        if ( relativePath.startsWith( baseUrl ) )
+        {
+            relativePath = relativePath.substring( baseUrl.length() );
+        }
+
         if ( relativePath.startsWith( "/" ) )
         {
             relativePath = relativePath.substring( 1 );
@@ -106,7 +112,7 @@ public class DefaultDecorationModelInheritanceAssembler
         }
     }
 
-    private void assembleBodyInheritance( DecorationModel child, DecorationModel parent, String prefix )
+    private void assembleBodyInheritance( DecorationModel child, DecorationModel parent, String prefix, String baseUrl )
     {
         Body cBody = child.getBody();
         Body pBody = parent.getBody();
@@ -128,14 +134,15 @@ public class DefaultDecorationModelInheritanceAssembler
                 cBody.setHead( Xpp3Dom.mergeXpp3Dom( (Xpp3Dom) cBody.getHead(), (Xpp3Dom) pBody.getHead() ) );
             }
 
-            cBody.setLinks( mergeLinkItemLists( cBody.getLinks(), pBody.getLinks(), prefix ) );
-            cBody.setBreadcrumbs( mergeLinkItemLists( cBody.getBreadcrumbs(), pBody.getBreadcrumbs(), prefix ) );
+            cBody.setLinks( mergeLinkItemLists( cBody.getLinks(), pBody.getLinks(), prefix, baseUrl ) );
+            cBody.setBreadcrumbs(
+                mergeLinkItemLists( cBody.getBreadcrumbs(), pBody.getBreadcrumbs(), prefix, baseUrl ) );
 
-            cBody.setMenus( mergeMenus( cBody.getMenus(), pBody.getMenus(), prefix ) );
+            cBody.setMenus( mergeMenus( cBody.getMenus(), pBody.getMenus(), prefix, baseUrl ) );
         }
     }
 
-    private List mergeMenus( List dominant, List recessive, String prefix )
+    private List mergeMenus( List dominant, List recessive, String prefix, String baseUrl )
     {
         List menus = new ArrayList();
 
@@ -156,41 +163,41 @@ public class DefaultDecorationModelInheritanceAssembler
                 menus.add( topCounter, menu );
                 topCounter++;
 
-                resolveMenuPaths( menu.getItems(), prefix );
+                resolveMenuPaths( menu.getItems(), prefix, baseUrl );
             }
             else if ( "bottom".equals( menu.getInherit() ) )
             {
                 menus.add( menu );
 
-                resolveMenuPaths( menu.getItems(), prefix );
+                resolveMenuPaths( menu.getItems(), prefix, baseUrl );
             }
         }
 
         return menus;
     }
 
-    private void resolveMenuPaths( List items, String prefix )
+    private void resolveMenuPaths( List items, String prefix, String baseUrl )
     {
         for ( Iterator i = items.iterator(); i.hasNext(); )
         {
             MenuItem item = (MenuItem) i.next();
-            resolveLinkItemPaths( item, prefix );
-            resolveMenuPaths( item.getItems(), prefix );
+            resolveLinkItemPaths( item, prefix, baseUrl );
+            resolveMenuPaths( item.getItems(), prefix, baseUrl );
         }
     }
 
-    private void resolveLinkItemPaths( LinkItem item, String prefix )
+    private void resolveLinkItemPaths( LinkItem item, String prefix, String baseUrl )
     {
-        item.setHref( resolvePath( item.getHref(), prefix ) );
+        item.setHref( resolvePath( item.getHref(), prefix, baseUrl ) );
     }
 
-    private void resolveLogoPaths( Logo logo, String prefix )
+    private void resolveLogoPaths( Logo logo, String prefix, String baseUrl )
     {
-        logo.setImg( resolvePath( logo.getImg(), prefix ) );
-        resolveLinkItemPaths( logo, prefix );
+        logo.setImg( resolvePath( logo.getImg(), prefix, baseUrl ) );
+        resolveLinkItemPaths( logo, prefix, baseUrl );
     }
 
-    private List mergeLinkItemLists( List dominant, List recessive, String prefix )
+    private List mergeLinkItemLists( List dominant, List recessive, String prefix, String baseUrl )
     {
         List items = new ArrayList();
 
@@ -209,14 +216,14 @@ public class DefaultDecorationModelInheritanceAssembler
             {
                 items.add( item );
 
-                resolveLinkItemPaths( item, prefix );
+                resolveLinkItemPaths( item, prefix, baseUrl );
             }
         }
 
         return items;
     }
 
-    private List mergePoweredByLists( List dominant, List recessive, String prefix )
+    private List mergePoweredByLists( List dominant, List recessive, String prefix, String baseUrl )
     {
         List logos = new ArrayList();
 
@@ -235,7 +242,7 @@ public class DefaultDecorationModelInheritanceAssembler
             {
                 logos.add( logo );
 
-                resolveLogoPaths( logo, prefix );
+                resolveLogoPaths( logo, prefix, baseUrl );
             }
         }
 

@@ -124,6 +124,35 @@ public class DecorationModelInheritenceAssemblerTest
         assertEquals( "check menu item href", "../special/", menuItem.getHref() );
     }
 
+    public void testPathsResolvedForSubsiteUrls()
+        throws IOException, XmlPullParserException
+    {
+        DecorationModel parentModel = readModel( "subsite-urls.xml" );
+        DecorationModel childModel = readModel( "empty.xml" );
+        assembler.assembleModelInheritance( childModel, parentModel, "http://maven.apache.org/doxia/",
+                                            "http://maven.apache.org" );
+
+        assertEquals( "check left banner href", "../banner/left", childModel.getBannerLeft().getHref() );
+        assertEquals( "check left banner image", "../images/jakarta-logo.gif", childModel.getBannerLeft().getSrc() );
+
+        assertEquals( "check right banner href", "../banner/right/", childModel.getBannerRight().getHref() );
+        assertEquals( "check right banner image", "../commons/images/logo.png", childModel.getBannerRight().getSrc() );
+
+        Logo poweredBy = (Logo) childModel.getPoweredBy().get( 0 );
+        assertEquals( "check powered by logo href", "../tomcat", poweredBy.getHref() );
+        assertEquals( "check powered by logo image", "../tomcat/logo.gif", poweredBy.getImg() );
+
+        LinkItem breadcrumb = (LinkItem) childModel.getBody().getBreadcrumbs().get( 0 );
+        assertEquals( "check breadcrumb href", "../apache", breadcrumb.getHref() );
+
+        LinkItem link = (LinkItem) childModel.getBody().getLinks().get( 0 );
+        assertEquals( "check link href", "../bouncycastle/", link.getHref() );
+
+        Menu menu = (Menu) childModel.getBody().getMenus().get( 0 );
+        LinkItem menuItem = (LinkItem) menu.getItems().get( 0 );
+        assertEquals( "check menu item href", "../special/", menuItem.getHref() );
+    }
+
     public void testPathsResolvedForRelativeUrlsDepthOfTwo()
         throws IOException, XmlPullParserException
     {
