@@ -64,7 +64,7 @@
           <description>The artifact containing the skin for the site</description>
           <version>1.0.0</version>
           <association>
-            <type>Artifact</type>
+            <type>Skin</type>
           </association>
           <identifier>true</identifier>
         </field>
@@ -281,8 +281,8 @@
       </fields>
     </class>
     <class>
-      <name>Artifact</name>
-      <description>An artifact declaration</description>
+      <name>Skin</name>
+      <description>An skin artifact declaration</description>
       <version>1.0.0</version>
       <fields>
         <field>
@@ -309,6 +309,20 @@
           <identifier>true</identifier>
         </field>
       </fields>
+      <codeSegments>
+        <codeSegment>
+          <version>1.0.0</version>
+          <code>
+            public static Skin getDefaultSkin()
+            {
+                Skin skin = new Skin();
+                skin.setGroupId( "org.apache.maven.skins" );
+                skin.setArtifactId( "maven-default-skin" );
+                return skin;
+            }
+          </code>
+        </codeSegment>
+      </codeSegments>
     </class>
   </classes>
 </model>
