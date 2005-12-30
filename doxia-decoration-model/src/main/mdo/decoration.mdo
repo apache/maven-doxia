@@ -49,6 +49,15 @@
           </association>
           <identifier>true</identifier>
         </field>
+        <field>
+          <name>version</name>
+          <description>Modify the version display properties.</description>
+          <version>1.0.0</version>
+          <association>
+            <type>Version</type>
+          </association>
+          <identifier>true</identifier>
+        </field>
         <field xml.associationTagName="logo">
           <name>poweredBy</name>
           <description>Powered by logos.</description>
@@ -137,6 +146,21 @@
         <field xml.attribute="true">
           <name>format</name>
           <description>Date format to use. The default is MM/dd/yyyy.</description>
+          <version>1.0.0</version>
+          <type>String</type>
+          <identifier>true</identifier>
+        </field>
+      </fields>
+    </class>
+    <class>
+      <name>Version</name>
+      <description>Modify display properties for version.</description>
+      <version>1.0.0</version>
+      <fields>
+        <field xml.attribute="true">
+          <name>position</name>
+          <description>Where to place the date published (left, right, navigation-top, navigation-bottom,
+            bottom).</description>
           <version>1.0.0</version>
           <type>String</type>
           <identifier>true</identifier>
