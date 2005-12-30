@@ -1755,6 +1755,7 @@ public class AptParser
             int rows = 0;
             int columns = 0;
             StringBuffer[] cells = null;
+            boolean[] headers = null;
             boolean grid = false;
 
             AptParser.this.sink.table();
@@ -1790,14 +1791,16 @@ public class AptParser
                         justification = parseJustification( line, lineLength );
                         columns = justification.length;
                         cells = new StringBuffer[columns];
+                        headers = new boolean[columns];
                         for ( i = 0; i < columns; ++i )
                         {
                             cells[i] = new StringBuffer();
+                            headers[i] = false;
                         }
                     }
                     else
                     {
-                        if ( traverseRow( cells ) )
+                        if ( traverseRow( cells, headers ) )
                         {
                             ++rows;
                         }
@@ -1812,13 +1815,29 @@ public class AptParser
                         AptParser.this.sink.tableRows( justification, grid );
                     }
 
-                    line = replaceAll( ( grid ? line.substring( 1 ) : line ), "\\|", "\\174" );
-                    StringTokenizer cellLines = new StringTokenizer( line, "|" );
+                    line = replaceAll( line, "\\|", "\\174" );
+
+                    StringTokenizer cellLines = new StringTokenizer( line, "|", true );
 
                     i = 0;
+                    boolean processedGrid = false;
                     while ( cellLines.hasMoreTokens() )
                     {
                         String cellLine = cellLines.nextToken();
+                        if ( "|".equals( cellLine ) )
+                        {
+                            if ( processedGrid )
+                            {
+                                headers[i] = true;
+                            }
+                            else
+                            {
+                                processedGrid = true;
+                                headers[i] = false;
+                            }
+                            continue;
+                        }
+                        processedGrid = false;
                         cellLine = replaceAll( cellLine, "\\ ", "\\240" );
                         cellLine = cellLine.trim();
 
@@ -1901,7 +1920,7 @@ public class AptParser
             return justification;
         }
 
-        private boolean traverseRow( StringBuffer[] cells )
+        private boolean traverseRow( StringBuffer[] cells, boolean[] headers )
             throws AptParseException
         {
             // Skip empty row (a decorative line).
@@ -1921,13 +1940,27 @@ public class AptParser
                 for ( int i = 0; i < cells.length; ++i )
                 {
                     StringBuffer cell = cells[i];
-                    AptParser.this.sink.tableCell();
+                    if ( headers[i] )
+                    {
+                        AptParser.this.sink.tableHeaderCell();
+                    }
+                    else
+                    {
+                        AptParser.this.sink.tableCell();
+                    }
                     if ( cell.length() > 0 )
                     {
                         AptParser.doTraverseText( cell.toString(), 0, cell.length(), AptParser.this.sink );
                         cell.setLength( 0 );
                     }
-                    AptParser.this.sink.tableCell_();
+                    if ( headers[i] )
+                    {
+                        AptParser.this.sink.tableHeaderCell_();
+                    }
+                    else
+                    {
+                        AptParser.this.sink.tableCell_();
+                    }
                 }
                 AptParser.this.sink.tableRow_();
             }
