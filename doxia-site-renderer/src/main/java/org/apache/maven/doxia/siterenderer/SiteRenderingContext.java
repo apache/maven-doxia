@@ -37,6 +37,8 @@ public class SiteRenderingContext
 
     private DecorationModel decoration;
 
+    private String defaultWindowTitle;
+
     public String getTemplate()
     {
         return template;
@@ -85,5 +87,15 @@ public class SiteRenderingContext
     public void setDecoration( DecorationModel decoration )
     {
         this.decoration = decoration;
+    }
+
+    public void setDefaultWindowTitle( String defaultWindowTitle )
+    {
+        this.defaultWindowTitle = defaultWindowTitle;
+    }
+
+    public String getDefaultWindowTitle()
+    {
+        return defaultWindowTitle;
     }
 }
