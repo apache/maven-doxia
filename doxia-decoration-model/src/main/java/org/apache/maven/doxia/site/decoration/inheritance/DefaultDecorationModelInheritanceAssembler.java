@@ -330,7 +330,18 @@ public class DefaultDecorationModelInheritanceAssembler
 
     private static String getParentPrefix( String parentUrl, String childUrl )
     {
+        if ( parentUrl == null )
+        {
+            parentUrl = "";
+        }
+
+        if ( childUrl == null )
+        {
+            childUrl = "";
+        }
+
         String prefix = parentUrl;
+
         if ( childUrl.startsWith( parentUrl ) )
         {
             prefix = getRelativePath( childUrl, parentUrl );
