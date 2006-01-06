@@ -345,6 +345,7 @@ public class DecorationModelInheritenceAssemblerTest
         assertEquals( "Check result", resolvedModel, model );
     }
 
+/*
     public void testResolvingAllSiteChildUrls()
         throws IOException, XmlPullParserException
     {
@@ -377,6 +378,8 @@ public class DecorationModelInheritenceAssemblerTest
         DecorationModel resolvedModel = readModel( "subsite-relative-urls-resolved.xml" );
         assertEquals( "Check result", resolvedModel, model );
     }
+
+*/
 
     public void testResolvingEmptyDescriptor()
         throws IOException, XmlPullParserException

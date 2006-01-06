@@ -319,6 +319,7 @@ public class DefaultDecorationModelInheritanceAssembler
         {
             prefix = getRelativePath( parentUrl, childUrl );
         }
+/*
         else
         {
             String[] parentSplit = splitUrl( parentUrl );
@@ -351,6 +352,7 @@ public class DefaultDecorationModelInheritanceAssembler
                 }
             }
         }
+*/
 
         return prefix;
     }
