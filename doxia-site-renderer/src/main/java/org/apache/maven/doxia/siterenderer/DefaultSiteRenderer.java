@@ -243,6 +243,7 @@ public class DefaultSiteRenderer
         context.put( "dateFormat", new SimpleDateFormat() );
 
         String currentFileName = PathTool.calculateLink( renderingContext.getOutputName(), relativePath );
+        currentFileName = currentFileName.replace( '\\', '/' );
 
         context.put( "currentFileName", currentFileName );
 

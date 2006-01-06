@@ -37,6 +37,7 @@
       <item name="Apache" href="http://www.apache.org/"/>
       <item name="Jakarta Commons" href="http://jakarta.apache.org/commons/"/>
       <item name="Sandbox" href="http://jakarta.apache.org/commons/sandbox/"/>
+      <item name="Name" href="http://maven.apache.org/doxia"/>
     </breadcrumbs>
     <links>
       <item name="Bouncy Castle" href="http://www.bouncycastle.org"/>

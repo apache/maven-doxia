@@ -27,7 +27,7 @@ public interface DecorationModelInheritanceAssembler
 {
     String ROLE = DecorationModelInheritanceAssembler.class.getName();
 
-    void assembleModelInheritance( DecorationModel child, DecorationModel parent, String childBaseUrl,
+    void assembleModelInheritance( String name, DecorationModel child, DecorationModel parent, String childBaseUrl,
                                    String parentBaseUrl );
 
     void resolvePaths( DecorationModel decoration, String baseUrl );

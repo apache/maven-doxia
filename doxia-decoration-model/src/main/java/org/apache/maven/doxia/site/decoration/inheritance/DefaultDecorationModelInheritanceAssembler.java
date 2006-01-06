@@ -40,8 +40,8 @@ import java.util.StringTokenizer;
 public class DefaultDecorationModelInheritanceAssembler
     implements DecorationModelInheritanceAssembler
 {
-    public void assembleModelInheritance( DecorationModel child, DecorationModel parent, String childBaseUrl,
-                                          String parentBaseUrl )
+    public void assembleModelInheritance( String name, DecorationModel child, DecorationModel parent,
+                                          String childBaseUrl, String parentBaseUrl )
     {
         String prefix = getParentPrefix( parentBaseUrl, childBaseUrl );
 
@@ -80,7 +80,7 @@ public class DefaultDecorationModelInheritanceAssembler
             child.setPoweredBy(
                 mergePoweredByLists( child.getPoweredBy(), parent.getPoweredBy(), prefix, parentBaseUrl ) );
 
-            assembleBodyInheritance( child, parent, prefix, parentBaseUrl );
+            assembleBodyInheritance( name, childBaseUrl, child, parent, prefix, parentBaseUrl );
 
             assembleCustomInheritance( child, parent );
         }
@@ -164,19 +164,25 @@ public class DefaultDecorationModelInheritanceAssembler
         }
     }
 
-    private void assembleBodyInheritance( DecorationModel child, DecorationModel parent, String prefix, String baseUrl )
+    private void assembleBodyInheritance( String name, String childUrl, DecorationModel child, DecorationModel parent,
+                                          String prefix, String baseUrl )
     {
         Body cBody = child.getBody();
         Body pBody = parent.getBody();
 
-        if ( cBody == null && pBody != null )
+        if ( cBody != null || pBody != null )
         {
-            cBody = new Body();
-            child.setBody( cBody );
-        }
+            if ( cBody == null )
+            {
+                cBody = new Body();
+                child.setBody( cBody );
+            }
 
-        if ( pBody != null )
-        {
+            if ( pBody == null )
+            {
+                pBody = new Body();
+            }
+
             if ( cBody.getHead() == null )
             {
                 cBody.setHead( pBody.getHead() );
@@ -187,6 +193,14 @@ public class DefaultDecorationModelInheritanceAssembler
             }
 
             cBody.setLinks( mergeLinkItemLists( cBody.getLinks(), pBody.getLinks(), prefix, baseUrl ) );
+
+            if ( cBody.getBreadcrumbs().isEmpty() && !pBody.getBreadcrumbs().isEmpty() )
+            {
+                LinkItem breadcrumb = new LinkItem();
+                breadcrumb.setName( name );
+                breadcrumb.setHref( childUrl );
+                cBody.getBreadcrumbs().add( breadcrumb );
+            }
             cBody.setBreadcrumbs(
                 mergeLinkItemLists( cBody.getBreadcrumbs(), pBody.getBreadcrumbs(), prefix, baseUrl ) );
 
@@ -240,7 +254,14 @@ public class DefaultDecorationModelInheritanceAssembler
 
     private void resolveLinkItemPaths( LinkItem item, String prefix, String baseUrl )
     {
-        item.setHref( resolvePath( item.getHref(), prefix, baseUrl ) );
+        if ( item.getHref() != null )
+        {
+            item.setHref( resolvePath( item.getHref(), prefix, baseUrl ) );
+        }
+        else
+        {
+            item.setHref( "" );
+        }
     }
 
     private void resolveLogoPaths( Logo logo, String prefix, String baseUrl )
@@ -249,52 +270,58 @@ public class DefaultDecorationModelInheritanceAssembler
         resolveLinkItemPaths( logo, prefix, baseUrl );
     }
 
-    private List mergeLinkItemLists( List dominant, List recessive, String prefix, String baseUrl )
+    private List mergeLinkItemLists( List childList, List parentList, String prefix, String baseUrl )
     {
         List items = new ArrayList();
 
-        for ( Iterator it = dominant.iterator(); it.hasNext(); )
+        for ( Iterator it = parentList.iterator(); it.hasNext(); )
         {
             LinkItem item = (LinkItem) it.next();
 
-            items.add( item );
+            resolveLinkItemPaths( item, prefix, baseUrl );
+
+            if ( !items.contains( item ) )
+            {
+                items.add( item );
+            }
         }
 
-        for ( Iterator it = recessive.iterator(); it.hasNext(); )
+        for ( Iterator it = childList.iterator(); it.hasNext(); )
         {
             LinkItem item = (LinkItem) it.next();
 
             if ( !items.contains( item ) )
             {
                 items.add( item );
-
-                resolveLinkItemPaths( item, prefix, baseUrl );
             }
         }
 
         return items;
     }
 
-    private List mergePoweredByLists( List dominant, List recessive, String prefix, String baseUrl )
+    private List mergePoweredByLists( List childList, List parentList, String prefix, String baseUrl )
     {
         List logos = new ArrayList();
 
-        for ( Iterator it = dominant.iterator(); it.hasNext(); )
-        {
-            Logo logo = (Logo) it.next();
-
-            logos.add( logo );
-        }
-
-        for ( Iterator it = recessive.iterator(); it.hasNext(); )
+        for ( Iterator it = parentList.iterator(); it.hasNext(); )
         {
             Logo logo = (Logo) it.next();
 
             if ( !logos.contains( logo ) )
             {
                 logos.add( logo );
+            }
 
-                resolveLogoPaths( logo, prefix, baseUrl );
+            resolveLogoPaths( logo, prefix, baseUrl );
+        }
+
+        for ( Iterator it = childList.iterator(); it.hasNext(); )
+        {
+            Logo logo = (Logo) it.next();
+
+            if ( !logos.contains( logo ) )
+            {
+                logos.add( logo );
             }
         }
 
@@ -319,7 +346,7 @@ public class DefaultDecorationModelInheritanceAssembler
         {
             prefix = getRelativePath( parentUrl, childUrl );
         }
-/*
+/* [MSITE-62] This is to test the ../ relative paths, which I am inclined not to use
         else
         {
             String[] parentSplit = splitUrl( parentUrl );
@@ -357,6 +384,7 @@ public class DefaultDecorationModelInheritanceAssembler
         return prefix;
     }
 
+/* [MSITE-62] This is to test the ../ relative paths, which I am inclined not to use
     private static String[] splitUrl( String url )
     {
         String[] retValue = null;
@@ -388,6 +416,7 @@ public class DefaultDecorationModelInheritanceAssembler
         }
         return retValue;
     }
+*/
 
     private static String getRelativePath( String childUrl, String parentUrl )
     {

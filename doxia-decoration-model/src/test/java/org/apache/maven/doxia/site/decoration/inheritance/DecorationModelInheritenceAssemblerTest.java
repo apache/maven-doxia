@@ -17,6 +17,7 @@ package org.apache.maven.doxia.site.decoration.inheritance;
  */
 
 import junit.framework.TestCase;
+import org.apache.maven.doxia.site.decoration.Body;
 import org.apache.maven.doxia.site.decoration.DecorationModel;
 import org.apache.maven.doxia.site.decoration.LinkItem;
 import org.apache.maven.doxia.site.decoration.Logo;
@@ -37,13 +38,15 @@ public class DecorationModelInheritenceAssemblerTest
 {
     private DecorationModelInheritanceAssembler assembler = new DefaultDecorationModelInheritanceAssembler();
 
+    private static final String NAME = "Name";
+
     public void testInheritence()
         throws IOException, XmlPullParserException
     {
         DecorationModel childModel = readModel( "child.xml" );
         DecorationModel parentModel = readModel( "parent.xml" );
 
-        assembler.assembleModelInheritance( childModel, parentModel, "http://maven.apache.org/doxia",
+        assembler.assembleModelInheritance( NAME, childModel, parentModel, "http://maven.apache.org/doxia",
                                             "http://maven.apache.org" );
 
         DecorationModel mergedModel = readModel( "merged.xml" );
@@ -56,7 +59,7 @@ public class DecorationModelInheritenceAssemblerTest
         // Test an empty model avoids NPEs
         DecorationModel childModel = readModel( "empty.xml" );
         DecorationModel parentModel = readModel( "empty.xml" );
-        assembler.assembleModelInheritance( childModel, parentModel, "http://maven.apache.org/doxia",
+        assembler.assembleModelInheritance( NAME, childModel, parentModel, "http://maven.apache.org/doxia",
                                             "http://maven.apache.org" );
 
         DecorationModel mergedModel = readModel( "empty.xml" );
@@ -68,7 +71,7 @@ public class DecorationModelInheritenceAssemblerTest
     {
         DecorationModel parentModel = readModel( "external-urls.xml" );
         DecorationModel childModel = readModel( "empty.xml" );
-        assembler.assembleModelInheritance( childModel, parentModel, "http://maven.apache.org/doxia",
+        assembler.assembleModelInheritance( NAME, childModel, parentModel, "http://maven.apache.org/doxia",
                                             "http://maven.apache.org" );
 
         assertEquals( "check left banner href", "http://jakarta.apache.org/", childModel.getBannerLeft().getHref() );
@@ -100,7 +103,7 @@ public class DecorationModelInheritenceAssemblerTest
     {
         DecorationModel parentModel = readModel( "relative-urls.xml" );
         DecorationModel childModel = readModel( "empty.xml" );
-        assembler.assembleModelInheritance( childModel, parentModel, "http://maven.apache.org/doxia/",
+        assembler.assembleModelInheritance( NAME, childModel, parentModel, "http://maven.apache.org/doxia/",
                                             "http://maven.apache.org" );
 
         assertEquals( "check left banner href", "../banner/left", childModel.getBannerLeft().getHref() );
@@ -129,7 +132,7 @@ public class DecorationModelInheritenceAssemblerTest
     {
         DecorationModel parentModel = readModel( "subsite-urls.xml" );
         DecorationModel childModel = readModel( "empty.xml" );
-        assembler.assembleModelInheritance( childModel, parentModel, "http://maven.apache.org/doxia/",
+        assembler.assembleModelInheritance( NAME, childModel, parentModel, "http://maven.apache.org/doxia/",
                                             "http://maven.apache.org" );
 
         assertEquals( "check left banner href", "../banner/left", childModel.getBannerLeft().getHref() );
@@ -158,7 +161,7 @@ public class DecorationModelInheritenceAssemblerTest
     {
         DecorationModel parentModel = readModel( "relative-urls.xml" );
         DecorationModel childModel = readModel( "empty.xml" );
-        assembler.assembleModelInheritance( childModel, parentModel, "http://maven.apache.org/doxia/core",
+        assembler.assembleModelInheritance( NAME, childModel, parentModel, "http://maven.apache.org/doxia/core",
                                             "http://maven.apache.org" );
 
         assertEquals( "check left banner href", "../../banner/left", childModel.getBannerLeft().getHref() );
@@ -188,7 +191,7 @@ public class DecorationModelInheritenceAssemblerTest
     {
         DecorationModel parentModel = readModel( "relative-urls.xml" );
         DecorationModel childModel = readModel( "empty.xml" );
-        assembler.assembleModelInheritance( childModel, parentModel, "http://maven.apache.org/",
+        assembler.assembleModelInheritance( NAME, childModel, parentModel, "http://maven.apache.org/",
                                             "http://maven.apache.org/doxia/" );
 
         assertEquals( "check left banner href", "doxia/banner/left", childModel.getBannerLeft().getHref() );
@@ -218,7 +221,7 @@ public class DecorationModelInheritenceAssemblerTest
     {
         DecorationModel parentModel = readModel( "relative-urls.xml" );
         DecorationModel childModel = readModel( "empty.xml" );
-        assembler.assembleModelInheritance( childModel, parentModel, "http://maven.apache.org/",
+        assembler.assembleModelInheritance( NAME, childModel, parentModel, "http://maven.apache.org/",
                                             "http://maven.apache.org/doxia/core/" );
 
         assertEquals( "check left banner href", "doxia/core/banner/left", childModel.getBannerLeft().getHref() );
@@ -249,7 +252,7 @@ public class DecorationModelInheritenceAssemblerTest
     {
         DecorationModel parentModel = readModel( "relative-urls.xml" );
         DecorationModel childModel = readModel( "empty.xml" );
-        assembler.assembleModelInheritance( childModel, parentModel, "http://maven.apache.org",
+        assembler.assembleModelInheritance( NAME, childModel, parentModel, "http://maven.apache.org",
                                             "http://jakarta.apache.org" );
 
         assertEquals( "check left banner href", "http://jakarta.apache.org/banner/left",
@@ -281,7 +284,7 @@ public class DecorationModelInheritenceAssemblerTest
         throws IOException, XmlPullParserException
     {
         DecorationModel childModel = readModel( "empty.xml" );
-        assembler.assembleModelInheritance( childModel, null, "http://maven.apache.org/doxia",
+        assembler.assembleModelInheritance( NAME, childModel, null, "http://maven.apache.org/doxia",
                                             "http://maven.apache.org" );
 
         DecorationModel mergedModel = readModel( "empty.xml" );
@@ -293,11 +296,11 @@ public class DecorationModelInheritenceAssemblerTest
     {
         DecorationModel childModel = readModel( "fully-populated-child.xml" );
         DecorationModel parentModel = readModel( "fully-populated-child.xml" );
-        assembler.assembleModelInheritance( childModel, parentModel, "http://maven.apache.org/doxia",
-                                            "http://maven.apache.org" );
+        assembler.assembleModelInheritance( NAME, childModel, parentModel, "http://foo.apache.org/doxia",
+                                            "http://foo.apache.org" );
 
         DecorationModel mergedModel = readModel( "fully-populated-child.xml" );
-        assertEquals( "Check result", mergedModel, childModel );
+        assertEquals( "Check result", mergedModel.toString(), childModel.toString() );
     }
 
     public void testFullyPopulatedParentAndEmptyChild()
@@ -305,7 +308,7 @@ public class DecorationModelInheritenceAssemblerTest
     {
         DecorationModel childModel = readModel( "empty.xml" );
         DecorationModel parentModel = readModel( "fully-populated-child.xml" );
-        assembler.assembleModelInheritance( childModel, parentModel, "http://maven.apache.org/doxia",
+        assembler.assembleModelInheritance( NAME, childModel, parentModel, "http://maven.apache.org/doxia",
                                             "http://maven.apache.org" );
 
         DecorationModel mergedModel = readModel( "fully-populated-merged.xml" );
@@ -345,7 +348,7 @@ public class DecorationModelInheritenceAssemblerTest
         assertEquals( "Check result", resolvedModel, model );
     }
 
-/*
+/* [MSITE-62] This is to test the ../ relative paths, which I am inclined not to use
     public void testResolvingAllSiteChildUrls()
         throws IOException, XmlPullParserException
     {
@@ -389,6 +392,79 @@ public class DecorationModelInheritenceAssemblerTest
 
         DecorationModel resolvedModel = readModel( "empty.xml" );
         assertEquals( "Check result", resolvedModel, model );
+    }
+
+    public void testDuplicateParentElements()
+    {
+        DecorationModel model = new DecorationModel();
+        model.setBody( new Body() );
+        model.getBody().addLink( createLinkItem( "Foo", "http://foo.apache.org" ) );
+        model.getBody().addLink( createLinkItem( "Foo", "http://foo.apache.org" ) );
+
+        model.addPoweredBy( createLogo( "Foo", "http://foo.apache.org", "http://foo.apache.org/foo.jpg" ) );
+        model.addPoweredBy( createLogo( "Foo", "http://foo.apache.org", "http://foo.apache.org/foo.jpg" ) );
+
+        DecorationModel child = new DecorationModel();
+        assembler.assembleModelInheritance( NAME, child, model, "http://maven.apache.org/doxia",
+                                            "http://maven.apache.org" );
+
+        assertEquals( "Check size", 1, child.getBody().getLinks().size() );
+        assertEquals( "Check item", createLinkItem( "Foo", "http://foo.apache.org" ),
+                      child.getBody().getLinks().get( 0 ) );
+
+        assertEquals( "Check size", 1, child.getPoweredBy().size() );
+        assertEquals( "Check item", createLogo( "Foo", "http://foo.apache.org", "http://foo.apache.org/foo.jpg" ),
+                      child.getPoweredBy().get( 0 ) );
+    }
+
+    public void testDuplicateChildElements()
+    {
+        DecorationModel model = new DecorationModel();
+        model.setBody( new Body() );
+        model.getBody().addLink( createLinkItem( "Foo", "http://foo.apache.org" ) );
+        model.getBody().addLink( createLinkItem( "Foo", "http://foo.apache.org" ) );
+
+        model.addPoweredBy( createLogo( "Foo", "http://foo.apache.org", "http://foo.apache.org/foo.jpg" ) );
+        model.addPoweredBy( createLogo( "Foo", "http://foo.apache.org", "http://foo.apache.org/foo.jpg" ) );
+
+        DecorationModel parent = new DecorationModel();
+        assembler.assembleModelInheritance( NAME, model, parent, "http://maven.apache.org/doxia",
+                                            "http://maven.apache.org" );
+
+        assertEquals( "Check size", 1, model.getBody().getLinks().size() );
+        assertEquals( "Check item", createLinkItem( "Foo", "http://foo.apache.org" ),
+                      model.getBody().getLinks().get( 0 ) );
+
+        assertEquals( "Check size", 1, model.getPoweredBy().size() );
+        assertEquals( "Check item", createLogo( "Foo", "http://foo.apache.org", "http://foo.apache.org/foo.jpg" ),
+                      model.getPoweredBy().get( 0 ) );
+    }
+
+    public void testBreadcrumbWithoutHref()
+    {
+        DecorationModel model = new DecorationModel();
+        model.setBody( new Body() );
+        model.getBody().addBreadcrumb( createLinkItem( "Foo", null ) );
+        assembler.resolvePaths( model, "http://foo.apache.org" );
+        assertEquals( "Check size", 1, model.getBody().getBreadcrumbs().size() );
+        assertEquals( "Check item", createLinkItem( "Foo", "" ), model.getBody().getBreadcrumbs().get( 0 ) );
+    }
+
+    private Logo createLogo( String name, String href, String img )
+    {
+        Logo logo = new Logo();
+        logo.setHref( href );
+        logo.setImg( img );
+        logo.setName( name );
+        return logo;
+    }
+
+    private static LinkItem createLinkItem( String name, String href )
+    {
+        LinkItem item = new LinkItem();
+        item.setName( name );
+        item.setHref( href );
+        return item;
     }
 
     private DecorationModel readModel( String name )
