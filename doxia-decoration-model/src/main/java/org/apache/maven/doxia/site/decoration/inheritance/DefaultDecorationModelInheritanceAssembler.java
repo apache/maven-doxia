@@ -45,6 +45,11 @@ public class DefaultDecorationModelInheritanceAssembler
     {
         String prefix = getParentPrefix( parentBaseUrl, childBaseUrl );
 
+        if ( !prefix.endsWith( "/" ) )
+        {
+            prefix += "/";
+        }
+
         // cannot inherit from null parent.
         if ( parent != null )
         {
@@ -81,6 +86,52 @@ public class DefaultDecorationModelInheritanceAssembler
         }
     }
 
+    public void resolvePaths( DecorationModel decoration, String baseUrl )
+    {
+        String prefix = ".";
+
+        if ( decoration.getBannerLeft() != null )
+        {
+            resolveBannerPaths( decoration.getBannerLeft(), prefix, baseUrl );
+        }
+
+        if ( decoration.getBannerRight() != null )
+        {
+            resolveBannerPaths( decoration.getBannerRight(), prefix, baseUrl );
+        }
+
+        for ( Iterator i = decoration.getPoweredBy().iterator(); i.hasNext(); )
+        {
+            Logo logo = (Logo) i.next();
+
+            resolveLogoPaths( logo, prefix, baseUrl );
+        }
+
+        if ( decoration.getBody() != null )
+        {
+            for ( Iterator i = decoration.getBody().getLinks().iterator(); i.hasNext(); )
+            {
+                LinkItem linkItem = (LinkItem) i.next();
+
+                resolveLinkItemPaths( linkItem, prefix, baseUrl );
+            }
+
+            for ( Iterator i = decoration.getBody().getBreadcrumbs().iterator(); i.hasNext(); )
+            {
+                LinkItem linkItem = (LinkItem) i.next();
+
+                resolveLinkItemPaths( linkItem, prefix, baseUrl );
+            }
+
+            for ( Iterator i = decoration.getBody().getMenus().iterator(); i.hasNext(); )
+            {
+                Menu menu = (Menu) i.next();
+
+                resolveMenuPaths( menu.getItems(), prefix, baseUrl );
+            }
+        }
+    }
+
     private void resolveBannerPaths( Banner banner, String prefix, String baseUrl )
     {
         if ( banner != null )
@@ -92,11 +143,7 @@ public class DefaultDecorationModelInheritanceAssembler
 
     private String resolvePath( String href, String prefix, String baseUrl )
     {
-        String relativePath = href;
-        if ( relativePath.startsWith( baseUrl ) )
-        {
-            relativePath = relativePath.substring( baseUrl.length() );
-        }
+        String relativePath = getParentPrefix( href, baseUrl );
 
         if ( relativePath.startsWith( "/" ) )
         {
@@ -272,13 +319,79 @@ public class DefaultDecorationModelInheritanceAssembler
         {
             prefix = getRelativePath( parentUrl, childUrl );
         }
-
-        if ( !prefix.endsWith( "/" ) )
+        else
         {
-            prefix += "/";
+            String[] parentSplit = splitUrl( parentUrl );
+            String[] childSplit = splitUrl( childUrl );
+
+            if ( parentSplit != null && childSplit != null )
+            {
+                if ( parentSplit[0].equals( childSplit[0] ) && parentSplit[1].equals( childSplit[1] ) )
+                {
+                    prefix = "";
+                    boolean mismatched = false;
+                    String parentPath = parentSplit[2].substring( 1 );
+                    String childPath = childSplit[2].substring( 1 );
+                    StringTokenizer tok = new StringTokenizer( childPath, "/" );
+                    while ( tok.hasMoreTokens() )
+                    {
+                        String part = tok.nextToken();
+
+                        if ( !mismatched && parentPath.startsWith( part ) )
+                        {
+                            parentPath = parentPath.substring( part.length() );
+                            if ( parentPath.startsWith( "/" ) )
+                            {
+                                parentPath = parentPath.substring( 1 );
+                            }
+                        }
+                        else
+                        {
+                            mismatched = true;
+                            if ( parentPath.length() > 0 )
+                            {
+                                prefix += "../";
+                            }
+                        }
+                    }
+                    prefix += parentPath;
+                }
+            }
         }
 
         return prefix;
+    }
+
+    private static String[] splitUrl( String url )
+    {
+        String[] retValue = null;
+
+        int protocolIndex = url.indexOf( "://" );
+
+        if ( protocolIndex >= 0 )
+        {
+            String protocol = url.substring( 0, protocolIndex );
+
+            String host = url.substring( protocolIndex + 3 );
+
+            int pathIndex = host.indexOf( '/' );
+
+            if ( pathIndex >= 0 )
+            {
+                String path = host.substring( pathIndex );
+                host = host.substring( 0, pathIndex );
+                if ( host.length() == 0 && "file".equals( "protocol" ) )
+                {
+                    host = "localhost";
+                }
+
+                retValue = new String[3];
+                retValue[0] = protocol;
+                retValue[1] = host;
+                retValue[2] = path;
+            }
+        }
+        return retValue;
     }
 
     private static String getRelativePath( String childUrl, String parentUrl )
@@ -287,10 +400,6 @@ public class DefaultDecorationModelInheritanceAssembler
         if ( relative.startsWith( "/" ) )
         {
             relative = relative.substring( 1 );
-        }
-        if ( !relative.endsWith( "/" ) )
-        {
-            relative += "/";
         }
         return relative;
     }

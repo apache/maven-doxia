@@ -29,4 +29,6 @@ public interface DecorationModelInheritanceAssembler
 
     void assembleModelInheritance( DecorationModel child, DecorationModel parent, String childBaseUrl,
                                    String parentBaseUrl );
+
+    void resolvePaths( DecorationModel decoration, String baseUrl );
 }

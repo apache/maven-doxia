@@ -312,6 +312,50 @@ public class DecorationModelInheritenceAssemblerTest
         assertEquals( "Check result", mergedModel, childModel );
     }
 
+    public void testResolvingAllExternalUrls()
+        throws IOException, XmlPullParserException
+    {
+        DecorationModel model = readModel( "external-urls.xml" );
+
+        assembler.resolvePaths( model, "http://foo.com/" );
+
+        DecorationModel resolvedModel = readModel( "external-urls.xml" );
+        assertEquals( "Check result", resolvedModel, model );
+    }
+
+    public void testResolvingAllRelativeUrls()
+        throws IOException, XmlPullParserException
+    {
+        DecorationModel model = readModel( "relative-urls.xml" );
+
+        assembler.resolvePaths( model, "http://foo.com/" );
+
+        DecorationModel resolvedModel = readModel( "relative-urls-resolved.xml" );
+        assertEquals( "Check result", resolvedModel, model );
+    }
+
+    public void testResolvingAllSiteUrls()
+        throws IOException, XmlPullParserException
+    {
+        DecorationModel model = readModel( "subsite-urls.xml" );
+
+        assembler.resolvePaths( model, "http://maven.apache.org/" );
+
+        DecorationModel resolvedModel = readModel( "relative-urls-resolved.xml" );
+        assertEquals( "Check result", resolvedModel, model );
+    }
+
+    public void testResolvingAllSiteChildUrls()
+        throws IOException, XmlPullParserException
+    {
+        DecorationModel model = readModel( "subsite-urls.xml" );
+
+        assembler.resolvePaths( model, "http://maven.apache.org/foo" );
+
+        DecorationModel resolvedModel = readModel( "subsite-relative-urls-resolved.xml" );
+        assertEquals( "Check result", resolvedModel, model );
+    }
+
     private DecorationModel readModel( String name )
         throws IOException, XmlPullParserException
     {
