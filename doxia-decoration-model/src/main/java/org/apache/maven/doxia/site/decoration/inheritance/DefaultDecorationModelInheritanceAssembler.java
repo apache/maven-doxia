@@ -339,19 +339,12 @@ public class DefaultDecorationModelInheritanceAssembler
 
                         if ( !mismatched && parentPath.startsWith( part ) )
                         {
-                            parentPath = parentPath.substring( part.length() );
-                            if ( parentPath.startsWith( "/" ) )
-                            {
-                                parentPath = parentPath.substring( 1 );
-                            }
+                            parentPath = parentPath.substring( part.length() + 1 );
                         }
                         else
                         {
                             mismatched = true;
-                            if ( parentPath.length() > 0 )
-                            {
-                                prefix += "../";
-                            }
+                            prefix += "../";
                         }
                     }
                     prefix += parentPath;
@@ -380,7 +373,7 @@ public class DefaultDecorationModelInheritanceAssembler
             {
                 String path = host.substring( pathIndex );
                 host = host.substring( 0, pathIndex );
-                if ( host.length() == 0 && "file".equals( "protocol" ) )
+                if ( host.length() == 0 && "file".equals( protocol ) )
                 {
                     host = "localhost";
                 }

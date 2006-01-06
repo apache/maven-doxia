@@ -356,6 +356,38 @@ public class DecorationModelInheritenceAssemblerTest
         assertEquals( "Check result", resolvedModel, model );
     }
 
+    public void testResolvingAllSiteChildUrlsMultipleLevels()
+        throws IOException, XmlPullParserException
+    {
+        DecorationModel model = readModel( "subsite-urls.xml" );
+
+        assembler.resolvePaths( model, "http://maven.apache.org/banner/right" );
+
+        DecorationModel resolvedModel = readModel( "subsite-relative-urls-multiple-resolved.xml" );
+        assertEquals( "Check result", resolvedModel, model );
+    }
+
+    public void testResolvingAllSiteChildFilesystemUrls()
+        throws IOException, XmlPullParserException
+    {
+        DecorationModel model = readModel( "subsite-urls-file.xml" );
+
+        assembler.resolvePaths( model, "file://localhost/www/maven.apache.org/foo" );
+
+        DecorationModel resolvedModel = readModel( "subsite-relative-urls-resolved.xml" );
+        assertEquals( "Check result", resolvedModel, model );
+    }
+
+    public void testResolvingEmptyDescriptor()
+        throws IOException, XmlPullParserException
+    {
+        DecorationModel model = readModel( "empty.xml" );
+        assembler.resolvePaths( model, "http://maven.apache.org" );
+
+        DecorationModel resolvedModel = readModel( "empty.xml" );
+        assertEquals( "Check result", resolvedModel, model );
+    }
+
     private DecorationModel readModel( String name )
         throws IOException, XmlPullParserException
     {
