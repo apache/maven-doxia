@@ -17,6 +17,7 @@ package org.apache.maven.doxia.site.decoration.inheritance;
  */
 
 import junit.framework.TestCase;
+import org.apache.maven.doxia.site.decoration.Banner;
 import org.apache.maven.doxia.site.decoration.Body;
 import org.apache.maven.doxia.site.decoration.DecorationModel;
 import org.apache.maven.doxia.site.decoration.LinkItem;
@@ -448,6 +449,41 @@ public class DecorationModelInheritenceAssemblerTest
         assembler.resolvePaths( model, "http://foo.apache.org" );
         assertEquals( "Check size", 1, model.getBody().getBreadcrumbs().size() );
         assertEquals( "Check item", createLinkItem( "Foo", "" ), model.getBody().getBreadcrumbs().get( 0 ) );
+    }
+
+    public void testBannerWithoutHref()
+    {
+        DecorationModel model = new DecorationModel();
+        model.setBody( new Body() );
+
+        Banner banner = createBanner( "Left", null, "/images/src.gif", "alt" );
+
+        model.setBannerLeft( banner );
+
+        assembler.resolvePaths( model, "http://foo.apache.org" );
+
+        assertEquals( "Check banner", createBanner( "Left", null, "images/src.gif", "alt" ), model.getBannerLeft() );
+    }
+
+    public void testLogoWithoutImage()
+    {
+        // This should actually be validated in the model, it doesn't really make sense
+        DecorationModel model = new DecorationModel();
+        model.setBody( new Body() );
+        model.addPoweredBy( createLogo( "Foo", "http://foo.apache.org", null ) );
+        assembler.resolvePaths( model, "http://foo.apache.org" );
+        assertEquals( "Check size", 1, model.getPoweredBy().size() );
+        assertEquals( "Check item", createLogo( "Foo", "http://foo.apache.org", null ), model.getPoweredBy().get( 0 ) );
+    }
+
+    private static Banner createBanner( String name, String href, String src, String alt )
+    {
+        Banner banner = new Banner();
+        banner.setName( name );
+        banner.setHref( href );
+        banner.setSrc( src );
+        banner.setAlt( alt );
+        return banner;
     }
 
     private Logo createLogo( String name, String href, String img )

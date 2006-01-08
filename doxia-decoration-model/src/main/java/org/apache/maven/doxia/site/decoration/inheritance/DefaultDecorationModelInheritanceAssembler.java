@@ -143,13 +143,18 @@ public class DefaultDecorationModelInheritanceAssembler
 
     private String resolvePath( String href, String prefix, String baseUrl )
     {
-        String relativePath = getParentPrefix( href, baseUrl );
-
-        if ( relativePath.startsWith( "/" ) )
+        String path = null;
+        if ( href != null )
         {
-            relativePath = relativePath.substring( 1 );
+            String relativePath = getParentPrefix( href, baseUrl );
+
+            if ( relativePath.startsWith( "/" ) )
+            {
+                relativePath = relativePath.substring( 1 );
+            }
+            path = PathTool.calculateLink( relativePath, prefix );
         }
-        return PathTool.calculateLink( relativePath, prefix );
+        return path;
     }
 
     private void assembleCustomInheritance( DecorationModel child, DecorationModel parent )
@@ -330,16 +335,6 @@ public class DefaultDecorationModelInheritanceAssembler
 
     private static String getParentPrefix( String parentUrl, String childUrl )
     {
-        if ( parentUrl == null )
-        {
-            parentUrl = "";
-        }
-
-        if ( childUrl == null )
-        {
-            childUrl = "";
-        }
-
         String prefix = parentUrl;
 
         if ( childUrl.startsWith( parentUrl ) )
@@ -357,7 +352,8 @@ public class DefaultDecorationModelInheritanceAssembler
         {
             prefix = getRelativePath( parentUrl, childUrl );
         }
-/* [MSITE-62] This is to test the ../ relative paths, which I am inclined not to use
+/*
+        // [MSITE-62] This is to test the ../ relative paths, which I am inclined not to use
         else
         {
             String[] parentSplit = splitUrl( parentUrl );
