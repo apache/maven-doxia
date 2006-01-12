@@ -4,7 +4,7 @@
   <artifactId>doxia</artifactId>
   <packaging>pom</packaging>
   <name>Doxia</name>
-  <version>1.0-alpha-7</version>
+  <version>1.0-alpha-8-SNAPSHOT</version>
   <url>http://maven.apache.org/doxia</url>
   <issueManagement>
     <system>jira</system>
@@ -65,9 +65,9 @@
     </developer>
   </developers>
   <scm>
-    <connection>scm:svn:http://svn.apache.org/repos/asf/maven/doxia/tags/doxia-1.0-alpha-7</connection>
-    <developerConnection>scm:svn:https://svn.apache.org/repos/asf/maven/doxia/tags/doxia-1.0-alpha-7</developerConnection>
-    <url>http://svn.apache.org/viewcvs.cgi/maven/doxia/tags/doxia-1.0-alpha-7</url>
+    <connection>scm:svn:http://svn.apache.org/repos/asf/maven/doxia/trunk</connection>
+    <developerConnection>scm:svn:https://svn.apache.org/repos/asf/maven/doxia/trunk</developerConnection>
+    <url>http://svn.apache.org/viewcvs.cgi/maven/doxia/trunk</url>
   </scm>
   <build>
     <plugins>
