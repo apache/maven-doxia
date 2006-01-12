@@ -1,13 +1,13 @@
-<project>
+<?xml version="1.0" encoding="UTF-8"?><project xmlns="http://maven.apache.org/POM/4.0.0" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:schemaLocation="http://maven.apache.org/POM/4.0.0 http://maven.apache.org/maven-v4_0_0.xsd">
   <parent>
     <artifactId>doxia</artifactId>
     <groupId>org.apache.maven.doxia</groupId>
-    <version>1.0-alpha-7-SNAPSHOT</version>
+    <version>1.0-alpha-7</version>
   </parent>
   <modelVersion>4.0.0</modelVersion>
   <artifactId>doxia-site-renderer</artifactId>
   <name>Doxia Site Renderer Component</name>
-  <version>1.0-alpha-7-SNAPSHOT</version>
+  <version>1.0-alpha-7</version>
   <contributors>
     <contributor>
       <name>Vincent Siveton</name>
@@ -22,13 +22,8 @@
   <dependencies>
     <dependency>
       <groupId>org.apache.maven.doxia</groupId>
-      <artifactId>doxia-decoration-model</artifactId>
-      <version>1.0-alpha-7-SNAPSHOT</version>
-    </dependency>
-    <dependency>
-      <groupId>org.apache.maven.doxia</groupId>
       <artifactId>doxia-core</artifactId>
-      <version>1.0-alpha-7-SNAPSHOT</version>
+      <version>1.0-alpha-7</version>
     </dependency>
     <dependency>
       <groupId>org.codehaus.plexus</groupId>
@@ -39,6 +34,11 @@
       <groupId>org.codehaus.plexus</groupId>
       <artifactId>plexus-velocity</artifactId>
       <version>1.1.2</version>
+    </dependency>
+    <dependency>
+      <groupId>org.apache.maven.doxia</groupId>
+      <artifactId>doxia-decoration-model</artifactId>
+      <version>1.0-alpha-7</version>
     </dependency>
   </dependencies>
 </project>
