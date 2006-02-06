@@ -1,11 +1,11 @@
 <project>
   <modelVersion>4.0.0</modelVersion>
   <parent>
-    <artifactId>doxia</artifactId>
+    <artifactId>doxia-modules</artifactId>
     <groupId>org.apache.maven.doxia</groupId>
     <version>1.0-alpha-8-SNAPSHOT</version>
   </parent>
-  <artifactId>doxia-module-twiki</artifactId>
+  <artifactId>doxia-module-confluence</artifactId>
   <name>Doxia TWiki sink</name>
   <version>1.0-alpha-8-SNAPSHOT</version>
   <developers>
@@ -17,6 +17,13 @@
       </roles>
       <timezone>-3</timezone>
     </developer>
+    <developer>
+      <name>Jason van Zyl</name>
+      <roles>
+        <role>Developer</role>
+      </roles>
+      <timezone>-5</timezone>
+    </developer>    
   </developers>
   <dependencies>
     <dependency>
