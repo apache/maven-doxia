@@ -18,7 +18,7 @@ package org.apache.maven.doxia.module.rtf;
 
 import org.apache.maven.doxia.module.rtf.RtfSink;
 import org.apache.maven.doxia.sink.Sink;
-import org.apache.maven.doxia.AbstractSinkTestCase;
+import org.apache.maven.doxia.sink.AbstractSinkTestCase;
 
 import java.io.File;
 import java.io.FileOutputStream;

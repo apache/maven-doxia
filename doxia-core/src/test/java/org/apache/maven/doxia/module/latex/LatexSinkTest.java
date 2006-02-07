@@ -18,7 +18,7 @@ package org.apache.maven.doxia.module.latex;
 
 import org.apache.maven.doxia.module.latex.LatexSink;
 import org.apache.maven.doxia.sink.Sink;
-import org.apache.maven.doxia.AbstractSinkTestCase;
+import org.apache.maven.doxia.sink.AbstractSinkTestCase;
 
 /**
  * @author <a href="mailto:jason@maven.org">Jason van Zyl</a>

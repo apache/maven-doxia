@@ -1,4 +1,4 @@
-package org.apache.maven.doxia;
+package org.apache.maven.doxia.sink;
 
 /*
  * Copyright 2004-2005 The Apache Software Foundation.

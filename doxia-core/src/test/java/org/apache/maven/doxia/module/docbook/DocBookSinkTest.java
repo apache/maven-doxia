@@ -18,7 +18,7 @@ package org.apache.maven.doxia.module.docbook;
 
 import org.apache.maven.doxia.module.docbook.DocBookSink;
 import org.apache.maven.doxia.sink.Sink;
-import org.apache.maven.doxia.AbstractSinkTestCase;
+import org.apache.maven.doxia.sink.AbstractSinkTestCase;
 
 /**
  * @author <a href="mailto:jason@maven.org">Jason van Zyl</a>
