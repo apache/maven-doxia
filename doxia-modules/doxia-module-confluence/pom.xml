@@ -6,7 +6,7 @@
     <version>1.0-alpha-8-SNAPSHOT</version>
   </parent>
   <artifactId>doxia-module-confluence</artifactId>
-  <name>Doxia TWiki sink</name>
+  <name>Doxia Confluence Module</name>
   <version>1.0-alpha-8-SNAPSHOT</version>
   <developers>
     <developer>
@@ -25,19 +25,6 @@
       <timezone>-5</timezone>
     </developer>    
   </developers>
-  <dependencies>
-    <dependency>
-      <groupId>org.apache.maven.doxia</groupId>
-      <artifactId>doxia-core</artifactId>
-      <version>1.0-alpha-8-SNAPSHOT</version>
-    </dependency>
-    <dependency>
-      <groupId>junit</groupId>
-      <artifactId>junit</artifactId>
-      <version>3.8.1</version>
-      <scope>test</scope>
-    </dependency>
-  </dependencies>
   <build>
     <plugins>
       <plugin>

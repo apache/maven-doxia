@@ -1,0 +1,24 @@
+<project>
+  <modelVersion>4.0.0</modelVersion>
+  <parent>
+    <artifactId>doxia</artifactId>
+    <groupId>org.apache.maven.doxia</groupId>
+    <version>1.0-alpha-8-SNAPSHOT</version>
+  </parent>
+  <artifactId>doxia-module-docbook</artifactId>
+  <name>Doxia Docbook Module</name>
+  <version>1.0-alpha-8-SNAPSHOT</version>
+  <dependencies>
+    <dependency>
+      <groupId>org.apache.maven.doxia</groupId>
+      <artifactId>doxia-core</artifactId>
+      <version>1.0-alpha-8-SNAPSHOT</version>
+    </dependency>
+    <dependency>
+      <groupId>junit</groupId>
+      <artifactId>junit</artifactId>
+      <version>3.8.1</version>
+      <scope>test</scope>
+    </dependency>
+  </dependencies>
+</project>
