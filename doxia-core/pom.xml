@@ -50,7 +50,6 @@
       <groupId>org.codehaus.plexus</groupId>
       <artifactId>plexus-container-default</artifactId>
       <version>1.0-alpha-8</version>
-      <scope>test</scope>
     </dependency>
   </dependencies>
 </project>
