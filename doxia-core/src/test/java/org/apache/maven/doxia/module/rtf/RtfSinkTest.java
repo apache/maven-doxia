@@ -1,4 +1,4 @@
-package org.apache.maven.doxia;
+package org.apache.maven.doxia.module.rtf;
 
 /*
  * Copyright 2004-2005 The Apache Software Foundation.
@@ -16,25 +16,28 @@ package org.apache.maven.doxia;
  * limitations under the License.
  */
 
-import org.apache.maven.doxia.module.xdoc.XdocParser;
-import org.apache.maven.doxia.parser.AbstractParserTestCase;
-import org.apache.maven.doxia.parser.Parser;
+import org.apache.maven.doxia.module.rtf.RtfSink;
+import org.apache.maven.doxia.sink.Sink;
+import org.apache.maven.doxia.AbstractSinkTestCase;
+
+import java.io.File;
+import java.io.FileOutputStream;
 
 /**
  * @author <a href="mailto:jason@maven.org">Jason van Zyl</a>
- * @author <a href="mailto:evenisse@codehaus.org">Emmanuel Venisse</a>
- * @version $Id:XdocParserTest.java 348605 2005-11-24 12:02:44 +1100 (Thu, 24 Nov 2005) brett $
+ * @version $Id:RtfSinkTest.java 348605 2005-11-24 12:02:44 +1100 (Thu, 24 Nov 2005) brett $
  */
-public class XdocParserTest
-    extends AbstractParserTestCase
+public class RtfSinkTest
+    extends AbstractSinkTestCase
 {
-    protected Parser getParser()
+    protected String outputExtension()
     {
-        return new XdocParser();
+        return "tex";
     }
 
-    protected String getDocument()
+    protected Sink createSink()
+        throws Exception
     {
-        return "src/test/site/xdoc/report.xml";
+        return new RtfSink( new FileOutputStream( new File( getBasedirFile(), "target/output/test.rtf" ) ) );
     }
 }

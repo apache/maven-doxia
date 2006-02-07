@@ -1,4 +1,4 @@
-package org.apache.maven.doxia;
+package org.apache.maven.doxia.module.latex;
 
 /*
  * Copyright 2004-2005 The Apache Software Foundation.
@@ -16,24 +16,25 @@ package org.apache.maven.doxia;
  * limitations under the License.
  */
 
-import org.apache.maven.doxia.module.xdoc.XdocSink;
+import org.apache.maven.doxia.module.latex.LatexSink;
 import org.apache.maven.doxia.sink.Sink;
+import org.apache.maven.doxia.AbstractSinkTestCase;
 
 /**
  * @author <a href="mailto:jason@maven.org">Jason van Zyl</a>
- * @version $Id:XdocSinkTest.java 348605 2005-11-24 12:02:44 +1100 (Thu, 24 Nov 2005) brett $
+ * @version $Id:LatexSinkTest.java 348605 2005-11-24 12:02:44 +1100 (Thu, 24 Nov 2005) brett $
  */
-public class XdocSinkTest
+public class LatexSinkTest
     extends AbstractSinkTestCase
 {
     protected String outputExtension()
     {
-        return "xml";
+        return "tex";
     }
 
     protected Sink createSink()
         throws Exception
     {
-        return new XdocSink( getTestWriter() );
+        return new LatexSink( getTestWriter() );
     }
 }

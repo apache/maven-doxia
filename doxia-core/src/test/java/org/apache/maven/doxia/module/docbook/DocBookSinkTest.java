@@ -1,4 +1,4 @@
-package org.apache.maven.doxia;
+package org.apache.maven.doxia.module.docbook;
 
 /*
  * Copyright 2004-2005 The Apache Software Foundation.
@@ -18,6 +18,7 @@ package org.apache.maven.doxia;
 
 import org.apache.maven.doxia.module.docbook.DocBookSink;
 import org.apache.maven.doxia.sink.Sink;
+import org.apache.maven.doxia.AbstractSinkTestCase;
 
 /**
  * @author <a href="mailto:jason@maven.org">Jason van Zyl</a>

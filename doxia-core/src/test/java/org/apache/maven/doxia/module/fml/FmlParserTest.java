@@ -1,4 +1,4 @@
-package org.apache.maven.doxia;
+package org.apache.maven.doxia.module.fml;
 
 /*
  * Copyright 2004-2005 The Apache Software Foundation.
@@ -16,27 +16,24 @@ package org.apache.maven.doxia;
  * limitations under the License.
  */
 
-import org.apache.maven.doxia.module.rtf.RtfSink;
-import org.apache.maven.doxia.sink.Sink;
-
-import java.io.File;
-import java.io.FileOutputStream;
+import org.apache.maven.doxia.module.fml.FmlParser;
+import org.apache.maven.doxia.parser.AbstractParserTestCase;
+import org.apache.maven.doxia.parser.Parser;
 
 /**
- * @author <a href="mailto:jason@maven.org">Jason van Zyl</a>
- * @version $Id:RtfSinkTest.java 348605 2005-11-24 12:02:44 +1100 (Thu, 24 Nov 2005) brett $
+ * @author <a href="mailto:evenisse@codehaus.org">Jason van Zyl</a>
+ * @version $Id:FmlParserTest.java 348605 2005-11-24 12:02:44 +1100 (Thu, 24 Nov 2005) brett $
  */
-public class RtfSinkTest
-    extends AbstractSinkTestCase
+public class FmlParserTest
+    extends AbstractParserTestCase
 {
-    protected String outputExtension()
+    protected Parser getParser()
     {
-        return "tex";
+        return new FmlParser();
     }
 
-    protected Sink createSink()
-        throws Exception
+    protected String getDocument()
     {
-        return new RtfSink( new FileOutputStream( new File( getBasedirFile(), "target/output/test.rtf" ) ) );
+        return "src/test/site/fml/faq.fml";
     }
 }

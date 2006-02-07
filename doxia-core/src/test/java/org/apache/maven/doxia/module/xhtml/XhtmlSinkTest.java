@@ -1,4 +1,4 @@
-package org.apache.maven.doxia;
+package org.apache.maven.doxia.module.xhtml;
 
 /*
  * Copyright 2004-2005 The Apache Software Foundation.
@@ -20,6 +20,7 @@ import org.apache.maven.doxia.module.xhtml.SinkDescriptorReader;
 import org.apache.maven.doxia.module.xhtml.XhtmlSink;
 import org.apache.maven.doxia.module.xhtml.decoration.render.RenderingContext;
 import org.apache.maven.doxia.sink.Sink;
+import org.apache.maven.doxia.AbstractSinkTestCase;
 
 import java.io.File;
 import java.io.FileReader;

@@ -1,4 +1,4 @@
-package org.apache.maven.doxia;
+package org.apache.maven.doxia.module.xdoc;
 
 /*
  * Copyright 2004-2005 The Apache Software Foundation.
@@ -16,24 +16,25 @@ package org.apache.maven.doxia;
  * limitations under the License.
  */
 
-import org.apache.maven.doxia.module.fml.FmlParser;
+import org.apache.maven.doxia.module.xdoc.XdocParser;
 import org.apache.maven.doxia.parser.AbstractParserTestCase;
 import org.apache.maven.doxia.parser.Parser;
 
 /**
- * @author <a href="mailto:evenisse@codehaus.org">Jason van Zyl</a>
- * @version $Id:FmlParserTest.java 348605 2005-11-24 12:02:44 +1100 (Thu, 24 Nov 2005) brett $
+ * @author <a href="mailto:jason@maven.org">Jason van Zyl</a>
+ * @author <a href="mailto:evenisse@codehaus.org">Emmanuel Venisse</a>
+ * @version $Id:XdocParserTest.java 348605 2005-11-24 12:02:44 +1100 (Thu, 24 Nov 2005) brett $
  */
-public class FmlParserTest
+public class XdocParserTest
     extends AbstractParserTestCase
 {
     protected Parser getParser()
     {
-        return new FmlParser();
+        return new XdocParser();
     }
 
     protected String getDocument()
     {
-        return "src/test/site/fml/faq.fml";
+        return "src/test/site/xdoc/report.xml";
     }
 }
