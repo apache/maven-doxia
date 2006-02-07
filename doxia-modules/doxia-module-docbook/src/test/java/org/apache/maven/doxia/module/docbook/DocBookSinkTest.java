@@ -16,9 +16,8 @@ package org.apache.maven.doxia.module.docbook;
  * limitations under the License.
  */
 
-import org.apache.maven.doxia.module.docbook.DocBookSink;
+import org.apache.maven.doxia.sink.AbstractSinkTestCase;
 import org.apache.maven.doxia.sink.Sink;
-import org.apache.maven.doxia.AbstractSinkTestCase;
 
 /**
  * @author <a href="mailto:jason@maven.org">Jason van Zyl</a>

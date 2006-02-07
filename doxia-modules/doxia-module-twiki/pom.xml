@@ -1,7 +1,7 @@
 <project>
   <modelVersion>4.0.0</modelVersion>
   <parent>
-    <artifactId>doxia</artifactId>
+    <artifactId>doxia-modules</artifactId>
     <groupId>org.apache.maven.doxia</groupId>
     <version>1.0-alpha-8-SNAPSHOT</version>
   </parent>
