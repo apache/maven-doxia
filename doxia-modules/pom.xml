@@ -1,0 +1,24 @@
+<?xml version="1.0" encoding="UTF-8"?><project xmlns="http://maven.apache.org/POM/4.0.0" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:schemaLocation="http://maven.apache.org/POM/4.0.0 http://maven.apache.org/maven-v4_0_0.xsd">
+  <parent>
+    <artifactId>doxia</artifactId>
+    <groupId>org.apache.maven.doxia</groupId>
+    <version>1.0-alpha-8-SNAPSHOT</version>
+  </parent>
+  <modelVersion>4.0.0</modelVersion>
+  <artifactId>doxia-modules</artifactId>
+  <name>Doxia Modules</name>
+  <version>1.0-alpha-8-SNAPSHOT</version>
+  <packaging>pom</packaging>
+  <dependencies>
+    <dependency>
+      <groupId>org.apache.maven.doxia</groupId>
+      <artifactId>doxia-core</artifactId>
+      <version>1.0-alpha-8-SNAPSHOT</version>
+    </dependency>
+  </dependencies>
+  <modules>
+    <module>doxia-module-confluence</module>
+    <module>doxia-module-docbook-simple</module>
+    <module>doxia-module-twiki</module>
+  </modules>
+</project>
