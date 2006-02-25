@@ -15,6 +15,12 @@
       <artifactId>doxia-core</artifactId>
       <version>1.0-alpha-8-SNAPSHOT</version>
     </dependency>
+    <dependency>
+      <groupId>org.apache.maven.doxia</groupId>
+      <artifactId>doxia-core</artifactId>
+      <version>1.0-alpha-8-SNAPSHOT</version>
+      <type>test-jar</type>
+    </dependency>    
   </dependencies>
   <modules>
     <module>doxia-module-confluence</module>
