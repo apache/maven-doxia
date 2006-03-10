@@ -83,6 +83,8 @@ public class XdocParser
                 }
                 else if ( parser.getName().equals( "section" ) )
                 {
+                    sink.anchor( parser.getAttributeValue( null, "name" ) );
+                    
                     sink.section1();
 
                     sink.sectionTitle1();
@@ -90,9 +92,13 @@ public class XdocParser
                     sink.text( parser.getAttributeValue( null, "name" ) );
 
                     sink.sectionTitle1_();
+
+                    
                 }
                 else if ( parser.getName().equals( "subsection" ) )
                 {
+                    sink.anchor( parser.getAttributeValue( null, "name" ) );
+                    
                     sink.section2();
 
                     sink.sectionTitle2();
@@ -100,6 +106,8 @@ public class XdocParser
                     sink.text( parser.getAttributeValue( null, "name" ) );
 
                     sink.sectionTitle2_();
+                    
+                    
                 }
                 else if ( parser.getName().equals( "p" ) )
                 {

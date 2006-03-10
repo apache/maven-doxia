@@ -20,6 +20,7 @@ import org.apache.maven.doxia.module.HtmlTools;
 import org.apache.maven.doxia.module.xhtml.decoration.render.RenderingContext;
 import org.apache.maven.doxia.parser.Parser;
 import org.apache.maven.doxia.sink.StructureSink;
+import org.apache.maven.doxia.util.StringUtil;
 import org.codehaus.plexus.util.StringUtils;
 
 import java.io.PrintWriter;
@@ -532,7 +533,6 @@ public class XhtmlSink
         write( cellWidth + " >" );
     }
 
-
     public void tableCell_()
     {
         tableCell_( false );
@@ -583,7 +583,6 @@ public class XhtmlSink
         write( " />" );
     }
 
-
     /**
      * @see org.apache.maven.doxia.sink.SinkAdapter#figureCaption()
      */
@@ -608,18 +607,16 @@ public class XhtmlSink
         write( " src=\"" + name + "\"" );
     }
 
+    
     public void anchor( String name )
     {
         if ( !headFlag )
         {
-            if ( name != null && !name.startsWith( "#" ) )
+            if (StringUtils.isEmpty( name ))
             {
-                write( "<a name=\"#" + name + "\">" );
+                return;
             }
-            else
-            {
-                write( "<a name=\"" + name + "\">" );
-            }
+            write( "<a name=\"" + name + "\">" );
         }
     }
 
