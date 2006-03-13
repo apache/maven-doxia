@@ -18,6 +18,7 @@ package org.apache.maven.doxia.siterenderer;
 
 import org.apache.maven.doxia.site.decoration.DecorationModel;
 
+import java.io.File;
 import java.util.Locale;
 import java.util.Map;
 
@@ -27,11 +28,11 @@ import java.util.Map;
  */
 public class SiteRenderingContext
 {
-    private String template;
-
-    private Map templateProperties;
+    private String templateName;
 
     private ClassLoader templateClassLoader;
+
+    private Map templateProperties;
 
     private Locale locale = Locale.getDefault();
 
@@ -39,24 +40,15 @@ public class SiteRenderingContext
 
     private String defaultWindowTitle;
 
-    public String getTemplate()
-    {
-        return template;
-    }
+    private File skinJarFile;
 
-    public void setTemplate( String template )
-    {
-        this.template = template;
-    }
+    private boolean usingDefaultTemplate;
 
-    public Map getTemplateProperties()
-    {
-        return templateProperties;
-    }
+    private File resourcesDirectory;
 
-    public void setTemplateProperties( Map templateProperties )
+    public String getTemplateName()
     {
-        this.templateProperties = templateProperties;
+        return templateName;
     }
 
     public ClassLoader getTemplateClassLoader()
@@ -67,6 +59,16 @@ public class SiteRenderingContext
     public void setTemplateClassLoader( ClassLoader templateClassLoader )
     {
         this.templateClassLoader = templateClassLoader;
+    }
+
+    public Map getTemplateProperties()
+    {
+        return templateProperties;
+    }
+
+    public void setTemplateProperties( Map templateProperties )
+    {
+        this.templateProperties = templateProperties;
     }
 
     public Locale getLocale()
@@ -97,5 +99,40 @@ public class SiteRenderingContext
     public String getDefaultWindowTitle()
     {
         return defaultWindowTitle;
+    }
+
+    public File getSkinJarFile()
+    {
+        return skinJarFile;
+    }
+
+    public void setSkinJarFile( File skinJarFile )
+    {
+        this.skinJarFile = skinJarFile;
+    }
+
+    public void setTemplateName( String templateName )
+    {
+        this.templateName = templateName;
+    }
+
+    public void setUsingDefaultTemplate( boolean usingDefaultTemplate )
+    {
+        this.usingDefaultTemplate = usingDefaultTemplate;
+    }
+
+    public boolean isUsingDefaultTemplate()
+    {
+        return usingDefaultTemplate;
+    }
+
+    public void setResourcesDirectory( File resourcesDirectory )
+    {
+        this.resourcesDirectory = resourcesDirectory;
+    }
+
+    public File getResourcesDirectory()
+    {
+        return resourcesDirectory;
     }
 }

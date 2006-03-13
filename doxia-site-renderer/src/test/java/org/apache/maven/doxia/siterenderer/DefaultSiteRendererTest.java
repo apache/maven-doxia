@@ -59,7 +59,7 @@ public class DefaultSiteRendererTest
         DecorationModel decoration =
             new DecorationXpp3Reader().read( new FileReader( getTestFile( "src/test/site/site.xml" ) ) );
         SiteRenderingContext context = new SiteRenderingContext();
-        context.setTemplate( "default-site.vm" );
+        context.setTemplateName( "default-site.vm" );
         context.setTemplateClassLoader( getClassLoader() );
         context.setDecoration( decoration );
         renderer.render( getTestFile( "src/test/site" ), getTestFile( "target/output" ), context );

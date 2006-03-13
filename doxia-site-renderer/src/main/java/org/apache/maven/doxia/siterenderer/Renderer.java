@@ -16,11 +16,15 @@ package org.apache.maven.doxia.siterenderer;
  * limitations under the License.
  */
 
+import org.apache.maven.doxia.site.decoration.DecorationModel;
 import org.apache.maven.doxia.siterenderer.sink.SiteRendererSink;
 
 import java.io.File;
 import java.io.IOException;
 import java.io.Writer;
+import java.net.MalformedURLException;
+import java.util.Locale;
+import java.util.Map;
 
 /**
  * @author <a href="mailto:evenisse@codehaus.org>Emmanuel Venisse</a>
@@ -36,7 +40,7 @@ public interface Renderer
     void render( File siteDirectory, File outputDirectory, SiteRenderingContext context, String outputEncoding )
         throws RendererException, IOException;
 
-    void render( File siteDirectory, File outputDirectory, String module, String moduleExtension, String moduleParserId,
+    void render( File moduleBasedir, File outputDirectory, String module, String moduleExtension, String moduleParserId,
                  SiteRenderingContext context, String outputEncoding )
         throws RendererException, IOException;
 
@@ -46,4 +50,15 @@ public interface Renderer
     SiteRendererSink createSink( File moduleBaseDir, String document )
         throws RendererException, IOException;
 
+    SiteRenderingContext createContextForSkin( File skinFile, Map attributes, DecorationModel decoration, Locale locale,
+                                               String defaultWindowTitle, File resourcesDirectory )
+        throws IOException;
+
+    SiteRenderingContext createContextForTemplate( File templateFile, Map attributes, DecorationModel decoration,
+                                                   Locale locale, String defaultWindowTitle, File skinFile,
+                                                   File resourcesDirectory )
+        throws MalformedURLException;
+
+    void copyResources( File outputDirectory, SiteRenderingContext siteContext )
+        throws IOException;
 }
