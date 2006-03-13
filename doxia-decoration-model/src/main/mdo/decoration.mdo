@@ -105,6 +105,8 @@
     {
         if ( menusByRef == null )
         {
+            menusByRef = new java.util.HashMap();
+
             for ( java.util.Iterator i = body.getMenus().iterator(); i.hasNext(); )
             {
                 Menu menu = (Menu) i.next();
@@ -384,13 +386,15 @@
         <codeSegment>
           <version>1.0.0</version>
           <code>
-            public static Skin getDefaultSkin()
-            {
-            Skin skin = new Skin();
-            skin.setGroupId( "org.apache.maven.skins" );
-            skin.setArtifactId( "maven-default-skin" );
-            return skin;
-            }
+            <![CDATA[
+    public static Skin getDefaultSkin()
+    {
+        Skin skin = new Skin();
+        skin.setGroupId( "org.apache.maven.skins" );
+        skin.setArtifactId( "maven-default-skin" );
+        return skin;
+    }
+            ]]>
           </code>
         </codeSegment>
       </codeSegments>

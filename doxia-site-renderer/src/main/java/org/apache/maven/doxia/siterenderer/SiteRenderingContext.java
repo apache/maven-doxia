@@ -19,6 +19,9 @@ package org.apache.maven.doxia.siterenderer;
 import org.apache.maven.doxia.site.decoration.DecorationModel;
 
 import java.io.File;
+import java.util.ArrayList;
+import java.util.Collections;
+import java.util.List;
 import java.util.Locale;
 import java.util.Map;
 
@@ -44,7 +47,9 @@ public class SiteRenderingContext
 
     private boolean usingDefaultTemplate;
 
-    private File resourcesDirectory;
+    private List siteDirectories = new ArrayList();
+
+    private List modules = new ArrayList();
 
     public String getTemplateName()
     {
@@ -68,7 +73,7 @@ public class SiteRenderingContext
 
     public void setTemplateProperties( Map templateProperties )
     {
-        this.templateProperties = templateProperties;
+        this.templateProperties = Collections.unmodifiableMap( templateProperties );
     }
 
     public Locale getLocale()
@@ -126,13 +131,24 @@ public class SiteRenderingContext
         return usingDefaultTemplate;
     }
 
-    public void setResourcesDirectory( File resourcesDirectory )
+    public void addSiteDirectory( File file )
     {
-        this.resourcesDirectory = resourcesDirectory;
+        this.siteDirectories.add( file );
     }
 
-    public File getResourcesDirectory()
+    public void addModuleDirectory( File file, String moduleParserId )
     {
-        return resourcesDirectory;
+        this.modules.add( new ModuleReference( moduleParserId, file ) );
     }
+
+    public List getSiteDirectories()
+    {
+        return siteDirectories;
+    }
+
+    public List getModules()
+    {
+        return modules;
+    }
+
 }

@@ -26,20 +26,32 @@ import java.io.File;
  */
 public class RenderingContext
 {
-    private File basedir;
+    private final File basedir;
 
-    private String relativePath;
+    private final String inputName;
 
-    private String outputName;
+    private final String outputName;
+
+    private final String parserId;
+
+    private final String relativePath;
 
     public RenderingContext( File basedir, String document )
     {
+        this( basedir, document, null );
+    }
+
+    public RenderingContext( File basedir, String document, String parserId )
+    {
         this.basedir = basedir;
 
-        // For site comparisons we'll prepend a "/"
-        this.outputName = "/" + document.substring( 0, document.lastIndexOf( "." ) + 1 ) + "html";
+        this.outputName = document.substring( 0, document.lastIndexOf( "." ) ) + ".html";
 
-        relativePath = PathTool.getRelativePath( basedir.getPath(), new File( basedir, document ).getPath() );
+        this.relativePath = PathTool.getRelativePath( basedir.getPath(), new File( basedir, document ).getPath() );
+
+        this.inputName = document;
+
+        this.parserId = parserId;
     }
 
     public File getBasedir()
@@ -47,9 +59,9 @@ public class RenderingContext
         return basedir;
     }
 
-    public String getRelativePath()
+    public String getInputName()
     {
-        return relativePath;
+        return inputName;
     }
 
     public String getOutputName()
@@ -57,4 +69,13 @@ public class RenderingContext
         return outputName;
     }
 
+    public String getParserId()
+    {
+        return parserId;
+    }
+
+    public String getRelativePath()
+    {
+        return relativePath;
+    }
 }

@@ -16,6 +16,7 @@ package org.apache.maven.doxia.siterenderer;
  * limitations under the License.
  */
 
+import org.apache.maven.doxia.module.xhtml.decoration.render.RenderingContext;
 import org.apache.maven.doxia.site.decoration.DecorationModel;
 import org.apache.maven.doxia.siterenderer.sink.SiteRendererSink;
 
@@ -23,6 +24,7 @@ import java.io.File;
 import java.io.IOException;
 import java.io.Writer;
 import java.net.MalformedURLException;
+import java.util.Collection;
 import java.util.Locale;
 import java.util.Map;
 
@@ -34,31 +36,31 @@ public interface Renderer
 {
     String ROLE = Renderer.class.getName();
 
-    void render( File siteDirectory, File outputDirectory, SiteRenderingContext context )
+    void render( Collection documents, SiteRenderingContext siteRenderingContext, File outputDirectory )
         throws RendererException, IOException;
 
-    void render( File siteDirectory, File outputDirectory, SiteRenderingContext context, String outputEncoding )
+    void render( Collection documents, SiteRenderingContext siteRenderingContext, File outputDirectory,
+                 String outputEncoding )
         throws RendererException, IOException;
 
-    void render( File moduleBasedir, File outputDirectory, String module, String moduleExtension, String moduleParserId,
-                 SiteRenderingContext context, String outputEncoding )
-        throws RendererException, IOException;
-
-    void generateDocument( Writer writer, SiteRendererSink sink, SiteRenderingContext siteContext )
+    void generateDocument( Writer writer, SiteRendererSink sink, SiteRenderingContext siteRenderingContext )
         throws RendererException;
 
-    SiteRendererSink createSink( File moduleBaseDir, String document )
+    SiteRendererSink createSink( RenderingContext renderingContext )
         throws RendererException, IOException;
 
-    SiteRenderingContext createContextForSkin( File skinFile, Map attributes, DecorationModel decoration, Locale locale,
-                                               String defaultWindowTitle, File resourcesDirectory )
+    SiteRenderingContext createContextForSkin( File skinFile, Map attributes, DecorationModel decoration,
+                                               String defaultWindowTitle, Locale locale )
         throws IOException;
 
-    SiteRenderingContext createContextForTemplate( File templateFile, Map attributes, DecorationModel decoration,
-                                                   Locale locale, String defaultWindowTitle, File skinFile,
-                                                   File resourcesDirectory )
+    SiteRenderingContext createContextForTemplate( File templateFile, File skinFile, Map attributes,
+                                                   DecorationModel decoration, String defaultWindowTitle,
+                                                   Locale locale )
         throws MalformedURLException;
 
-    void copyResources( File outputDirectory, SiteRenderingContext siteContext )
+    void copyResources( SiteRenderingContext siteRenderingContext, File resourcesDirectory, File outputDirectory )
         throws IOException;
+
+    Map locateDocumentFiles( SiteRenderingContext siteRenderingContext )
+        throws IOException, RendererException;
 }

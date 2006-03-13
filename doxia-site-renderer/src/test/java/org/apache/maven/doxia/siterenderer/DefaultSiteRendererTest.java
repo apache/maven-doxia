@@ -62,6 +62,7 @@ public class DefaultSiteRendererTest
         context.setTemplateName( "default-site.vm" );
         context.setTemplateClassLoader( getClassLoader() );
         context.setDecoration( decoration );
-        renderer.render( getTestFile( "src/test/site" ), getTestFile( "target/output" ), context );
+        context.addSiteDirectory( getTestFile( "src/test/site" ) );
+        renderer.render( renderer.locateDocumentFiles( context ).values(), context, getTestFile( "target/output" ) );
     }
 }

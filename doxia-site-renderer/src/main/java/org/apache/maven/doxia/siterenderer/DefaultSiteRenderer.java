@@ -23,6 +23,7 @@ import org.apache.maven.doxia.parser.manager.ParserNotFoundException;
 import org.apache.maven.doxia.site.decoration.DecorationModel;
 import org.apache.maven.doxia.site.module.SiteModule;
 import org.apache.maven.doxia.site.module.manager.SiteModuleManager;
+import org.apache.maven.doxia.site.module.manager.SiteModuleNotFoundException;
 import org.apache.maven.doxia.siterenderer.sink.SiteRendererSink;
 import org.apache.velocity.Template;
 import org.apache.velocity.VelocityContext;
@@ -50,9 +51,11 @@ import java.net.URL;
 import java.net.URLClassLoader;
 import java.text.DateFormat;
 import java.util.Arrays;
+import java.util.Collection;
 import java.util.Date;
 import java.util.Enumeration;
 import java.util.Iterator;
+import java.util.LinkedHashMap;
 import java.util.List;
 import java.util.Locale;
 import java.util.Map;
@@ -105,62 +108,118 @@ public class DefaultSiteRenderer
     // Renderer implementation
     // ----------------------------------------------------------------------
 
-    public void render( File siteDirectory, File outputDirectory, SiteRenderingContext context )
+    public void render( Collection documents, SiteRenderingContext siteRenderingContext, File outputDirectory )
         throws RendererException, IOException
     {
-        render( siteDirectory, outputDirectory, context, DEFAULT_OUTPUT_ENCODING );
+        render( documents, siteRenderingContext, outputDirectory, DEFAULT_OUTPUT_ENCODING );
     }
 
-    public void render( File siteDirectory, File outputDirectory, SiteRenderingContext context, String outputEncoding )
+    // TODO [IMPORTART] fix sigs
+    public void render( Collection documents, SiteRenderingContext siteRenderingContext, File outputDirectory,
+                        String outputEncoding )
         throws RendererException, IOException
     {
-        for ( Iterator i = siteModuleManager.getSiteModules().iterator(); i.hasNext(); )
+        renderModule( documents, siteRenderingContext, outputDirectory, outputEncoding );
+
+        for ( Iterator i = siteRenderingContext.getSiteDirectories().iterator(); i.hasNext(); )
         {
-            SiteModule module = (SiteModule) i.next();
+            File siteDirectory = (File) i.next();
+            copyResources( siteRenderingContext, new File( siteDirectory, "resources" ), outputDirectory );
+        }
+    }
 
-            File moduleBasedir = new File( siteDirectory, module.getSourceDirectory() );
+    public Map locateDocumentFiles( SiteRenderingContext siteRenderingContext )
+        throws IOException, RendererException
+    {
+        Map files = new LinkedHashMap();
 
-            if ( moduleBasedir.exists() )
+        for ( Iterator i = siteRenderingContext.getSiteDirectories().iterator(); i.hasNext(); )
+        {
+            File siteDirectory = (File) i.next();
+            if ( siteDirectory.exists() )
             {
-                renderModule( moduleBasedir, module.getExtension(), module.getParserId(), outputDirectory,
-                              outputEncoding, context );
+                for ( Iterator j = siteModuleManager.getSiteModules().iterator(); j.hasNext(); )
+                {
+                    SiteModule module = (SiteModule) j.next();
+
+                    File moduleBasedir = new File( siteDirectory, module.getSourceDirectory() );
+
+                    addModuleFiles( moduleBasedir, module, files );
+                }
             }
         }
 
-        copyResources( outputDirectory, context );
+        for ( Iterator i = siteRenderingContext.getModules().iterator(); i.hasNext(); )
+        {
+            ModuleReference module = (ModuleReference) i.next();
+
+            try
+            {
+                addModuleFiles( module.getBasedir(), siteModuleManager.getSiteModule( module.getParserId() ), files );
+            }
+            catch ( SiteModuleNotFoundException e )
+            {
+                throw new RendererException( "Unable to find module: " + e.getMessage(), e );
+            }
+        }
+        return files;
     }
 
-    private void renderModule( File moduleBasedir, String moduleExtension, String moduleParserId, File outputDirectory,
-                               String outputEncoding, SiteRenderingContext context )
+    private void addModuleFiles( File moduleBasedir, SiteModule module, Map files )
         throws IOException, RendererException
     {
-        List docs = FileUtils.getFileNames( moduleBasedir, "**/*." + moduleExtension, null, false );
-
-        for ( Iterator j = docs.iterator(); j.hasNext(); )
+        if ( moduleBasedir.exists() )
         {
-            String doc = (String) j.next();
+            List docs = FileUtils.getFileNames( moduleBasedir, "**/*." + module.getExtension(), null, false );
 
-            String outputName = doc.substring( 0, doc.indexOf( "." ) + 1 ) + "html";
+            for ( Iterator k = docs.iterator(); k.hasNext(); )
+            {
+                String doc = (String) k.next();
 
-            String fullPathDoc = new File( moduleBasedir, doc ).getPath();
+                RenderingContext context = new RenderingContext( moduleBasedir, doc, module.getParserId() );
 
-            SiteRendererSink sink = createSink( moduleBasedir, outputName );
+                String key = context.getOutputName().toLowerCase( Locale.getDefault() );
+
+                if ( files.containsKey( key ) )
+                {
+                    RenderingContext originalContext = (RenderingContext) files.get( key );
+                    File originalDoc = new File( originalContext.getBasedir(), originalContext.getInputName() );
+                    throw new RendererException( "Files '" + doc + "' clashes with existing '" + originalDoc + "'" );
+                }
+
+                files.put( key, context );
+            }
+        }
+    }
+
+    private void renderModule( Collection docs, SiteRenderingContext siteRenderingContext, File outputDirectory,
+                               String outputEncoding )
+        throws IOException, RendererException
+    {
+        for ( Iterator i = docs.iterator(); i.hasNext(); )
+        {
+            RenderingContext renderingContext = (RenderingContext) i.next();
+
+            String fullPathDoc = new File( renderingContext.getBasedir(), renderingContext.getInputName() ).getPath();
+
+            SiteRendererSink sink = createSink( renderingContext );
 
             try
             {
                 FileReader reader = new FileReader( fullPathDoc );
 
-                doxia.parse( reader, moduleParserId, sink );
+                doxia.parse( reader, renderingContext.getParserId(), sink );
 
-                File outputFile = new File( outputDirectory, outputName );
+                File outputFile = new File( outputDirectory, renderingContext.getOutputName() );
 
                 if ( !outputFile.getParentFile().exists() )
                 {
                     outputFile.getParentFile().mkdirs();
                 }
 
-                generateDocument( new OutputStreamWriter( new FileOutputStream( outputFile ), outputEncoding ), sink,
-                                  context );
+                OutputStreamWriter writer =
+                    new OutputStreamWriter( new FileOutputStream( outputFile ), outputEncoding );
+                generateDocument( writer, sink, siteRenderingContext );
             }
             catch ( ParserNotFoundException e )
             {
@@ -179,16 +238,7 @@ public class DefaultSiteRenderer
         }
     }
 
-    public void render( File moduleBasedir, File outputDirectory, String module, String moduleExtension,
-                        String moduleParserId, SiteRenderingContext context, String outputEncoding )
-        throws RendererException, IOException
-    {
-        renderModule( moduleBasedir, moduleExtension, moduleParserId, outputDirectory, outputEncoding, context );
-
-        copyResources( outputDirectory, context );
-    }
-
-    public void generateDocument( Writer writer, SiteRendererSink sink, SiteRenderingContext siteContext )
+    public void generateDocument( Writer writer, SiteRendererSink sink, SiteRenderingContext siteRenderingContext )
         throws RendererException
     {
         VelocityContext context = new VelocityContext();
@@ -198,20 +248,19 @@ public class DefaultSiteRenderer
         // ----------------------------------------------------------------------
 
         RenderingContext renderingContext = sink.getRenderingContext();
-        String relativePath = renderingContext.getRelativePath();
-        context.put( "relativePath", relativePath );
+        context.put( "relativePath", renderingContext.getRelativePath() );
 
         // Add infos from document
         context.put( "authors", sink.getAuthors() );
 
         String title = "";
-        if ( siteContext.getDecoration().getName() != null )
+        if ( siteRenderingContext.getDecoration().getName() != null )
         {
-            title = siteContext.getDecoration().getName();
+            title = siteRenderingContext.getDecoration().getName();
         }
-        else if ( siteContext.getDefaultWindowTitle() != null )
+        else if ( siteRenderingContext.getDefaultWindowTitle() != null )
         {
-            title = siteContext.getDefaultWindowTitle();
+            title = siteRenderingContext.getDefaultWindowTitle();
         }
 
         if ( title.length() > 0 )
@@ -224,21 +273,19 @@ public class DefaultSiteRenderer
 
         context.put( "bodyContent", sink.getBody() );
 
-        context.put( "decoration", siteContext.getDecoration() );
+        context.put( "decoration", siteRenderingContext.getDecoration() );
 
         context.put( "currentDate", new Date() );
 
-        context.put( "dateFormat", DateFormat.getDateInstance( DateFormat.DEFAULT, siteContext.getLocale() ) );
+        Locale locale = siteRenderingContext.getLocale();
+        context.put( "dateFormat", DateFormat.getDateInstance( DateFormat.DEFAULT, locale ) );
 
-        String currentFileName = PathTool.calculateLink( renderingContext.getOutputName(), relativePath );
-        currentFileName = currentFileName.replace( '\\', '/' );
+        context.put( "currentFileName", renderingContext.getOutputName().replace( '\\', '/' ) );
 
-        context.put( "currentFileName", currentFileName );
-
-        context.put( "locale", siteContext.getLocale() );
+        context.put( "locale", locale );
 
         // Add user properties
-        Map templateProperties = siteContext.getTemplateProperties();
+        Map templateProperties = siteRenderingContext.getTemplateProperties();
         if ( templateProperties != null )
         {
             for ( Iterator i = templateProperties.keySet().iterator(); i.hasNext(); )
@@ -265,7 +312,7 @@ public class DefaultSiteRenderer
         //
         // ----------------------------------------------------------------------
 
-        writeTemplate( writer, context, siteContext );
+        writeTemplate( writer, context, siteRenderingContext );
     }
 
     private void writeTemplate( Writer writer, Context context, SiteRenderingContext siteContext )
@@ -326,14 +373,13 @@ public class DefaultSiteRenderer
         }
     }
 
-    public SiteRendererSink createSink( File moduleBaseDir, String document )
+    public SiteRendererSink createSink( RenderingContext renderingContext )
     {
-        return new SiteRendererSink( new RenderingContext( moduleBaseDir, document ) );
+        return new SiteRendererSink( renderingContext );
     }
 
     public SiteRenderingContext createContextForSkin( File skinFile, Map attributes, DecorationModel decoration,
-                                                      Locale locale, String defaultWindowTitle,
-                                                      File resourcesDirectory )
+                                                      String defaultWindowTitle, Locale locale )
         throws IOException
     {
         SiteRenderingContext context = new SiteRenderingContext();
@@ -364,14 +410,13 @@ public class DefaultSiteRenderer
         context.setDecoration( decoration );
         context.setDefaultWindowTitle( defaultWindowTitle );
         context.setSkinJarFile( skinFile );
-        context.setResourcesDirectory( resourcesDirectory );
 
         return context;
     }
 
-    public SiteRenderingContext createContextForTemplate( File templateFile, Map attributes, DecorationModel decoration,
-                                                          Locale locale, String defaultWindowTitle, File skinFile,
-                                                          File resourcesDirectory )
+    public SiteRenderingContext createContextForTemplate( File templateFile, File skinFile, Map attributes,
+                                                          DecorationModel decoration, String defaultWindowTitle,
+                                                          Locale locale )
         throws MalformedURLException
     {
         SiteRenderingContext context = new SiteRenderingContext();
@@ -384,7 +429,6 @@ public class DefaultSiteRenderer
         context.setDecoration( decoration );
         context.setDefaultWindowTitle( defaultWindowTitle );
         context.setSkinJarFile( skinFile );
-        context.setResourcesDirectory( resourcesDirectory );
 
         return context;
     }
@@ -402,13 +446,7 @@ public class DefaultSiteRenderer
         }
     }
 
-    /**
-     * Copy Resources
-     *
-     * @param outputDir the output directory
-     * @throws java.io.IOException if any
-     */
-    public void copyResources( File outputDir, SiteRenderingContext siteContext )
+    public void copyResources( SiteRenderingContext siteContext, File resourcesDirectory, File outputDirectory )
         throws IOException
     {
         if ( siteContext.getSkinJarFile() != null )
@@ -423,21 +461,12 @@ public class DefaultSiteRenderer
 
                     if ( !entry.getName().startsWith( "META-INF/" ) )
                     {
-                        File destFile = new File( outputDir, entry.getName() );
+                        File destFile = new File( outputDirectory, entry.getName() );
                         if ( !entry.isDirectory() )
                         {
                             destFile.getParentFile().mkdirs();
 
-                            FileOutputStream fos = new FileOutputStream( destFile );
-
-                            try
-                            {
-                                IOUtil.copy( file.getInputStream( entry ), fos );
-                            }
-                            finally
-                            {
-                                IOUtil.close( fos );
-                            }
+                            copyFileFromZip( file, entry, destFile );
                         }
                         else
                         {
@@ -472,7 +501,7 @@ public class DefaultSiteRenderer
                         throw new IOException( "The resource " + line + " doesn't exist." );
                     }
 
-                    File outputFile = new File( outputDir, line );
+                    File outputFile = new File( outputDirectory, line );
 
                     if ( !outputFile.getParentFile().exists() )
                     {
@@ -492,16 +521,27 @@ public class DefaultSiteRenderer
             }
         }
 
-        File resourcesDirectory = siteContext.getResourcesDirectory();
-
         // Copy extra site resources
-        // TODO: this should be accommodating locale
-        // TODO: this should be automatically looking into ${siteDirectory}/resources
         if ( resourcesDirectory != null && resourcesDirectory.exists() )
         {
-            copyDirectory( resourcesDirectory, outputDir );
+            copyDirectory( resourcesDirectory, outputDirectory );
         }
 
+    }
+
+    private void copyFileFromZip( ZipFile file, ZipEntry entry, File destFile )
+        throws IOException
+    {
+        FileOutputStream fos = new FileOutputStream( destFile );
+
+        try
+        {
+            IOUtil.copy( file.getInputStream( entry ), fos );
+        }
+        finally
+        {
+            IOUtil.close( fos );
+        }
     }
 
     /**

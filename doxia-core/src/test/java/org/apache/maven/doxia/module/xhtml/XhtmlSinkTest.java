@@ -16,11 +16,9 @@ package org.apache.maven.doxia.module.xhtml;
  * limitations under the License.
  */
 
-import org.apache.maven.doxia.module.xhtml.SinkDescriptorReader;
-import org.apache.maven.doxia.module.xhtml.XhtmlSink;
 import org.apache.maven.doxia.module.xhtml.decoration.render.RenderingContext;
-import org.apache.maven.doxia.sink.Sink;
 import org.apache.maven.doxia.sink.AbstractSinkTestCase;
+import org.apache.maven.doxia.sink.Sink;
 
 import java.io.File;
 import java.io.FileReader;
@@ -43,10 +41,10 @@ public class XhtmlSinkTest
     protected Sink createSink()
         throws Exception
     {
-        String xdoc = "test.apt";
+        String apt = "test.apt";
 
         RenderingContext renderingContext =
-            new RenderingContext( getBasedirFile(), new File( getBasedirFile(), xdoc ).getPath() );
+            new RenderingContext( getBasedirFile(), new File( getBasedirFile(), apt ).getPath(), "apt" );
 
         FileReader reader = new FileReader( new File( getBasedirFile(), "src/test/resources/codehaus.dst" ) );
 
@@ -54,9 +52,7 @@ public class XhtmlSinkTest
 
         Map directives = sdr.read( reader );
 
-        XhtmlSink sink = new XhtmlSink( getTestWriter(), renderingContext, directives );
-
-        return sink;
+        return new XhtmlSink( getTestWriter(), renderingContext, directives );
     }
 
     // END SNIPPET: foo
