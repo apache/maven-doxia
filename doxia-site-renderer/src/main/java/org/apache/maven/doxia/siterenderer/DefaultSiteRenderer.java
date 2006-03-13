@@ -95,7 +95,7 @@ public class DefaultSiteRenderer
      */
     private I18N i18n;
 
-    private static final String RESOURCE_DIR = "org/apache/maven/plugins/site";
+    private static final String RESOURCE_DIR = "org/apache/maven/doxia/siterenderer/resources";
 
     private static final String DEFAULT_TEMPLATE = RESOURCE_DIR + "/default-site.vm";
 
@@ -411,42 +411,45 @@ public class DefaultSiteRenderer
     public void copyResources( File outputDir, SiteRenderingContext siteContext )
         throws IOException
     {
-        // TODO: plexus-archiver, if it could do the excludes
-        ZipFile file = new ZipFile( siteContext.getSkinJarFile() );
-        try
+        if ( siteContext.getSkinJarFile() != null )
         {
-            for ( Enumeration e = file.entries(); e.hasMoreElements(); )
+            // TODO: plexus-archiver, if it could do the excludes
+            ZipFile file = new ZipFile( siteContext.getSkinJarFile() );
+            try
             {
-                ZipEntry entry = (ZipEntry) e.nextElement();
-
-                if ( !entry.getName().startsWith( "META-INF/" ) )
+                for ( Enumeration e = file.entries(); e.hasMoreElements(); )
                 {
-                    File destFile = new File( outputDir, entry.getName() );
-                    if ( !entry.isDirectory() )
-                    {
-                        destFile.getParentFile().mkdirs();
+                    ZipEntry entry = (ZipEntry) e.nextElement();
 
-                        FileOutputStream fos = new FileOutputStream( destFile );
-
-                        try
-                        {
-                            IOUtil.copy( file.getInputStream( entry ), fos );
-                        }
-                        finally
-                        {
-                            IOUtil.close( fos );
-                        }
-                    }
-                    else
+                    if ( !entry.getName().startsWith( "META-INF/" ) )
                     {
-                        destFile.mkdirs();
+                        File destFile = new File( outputDir, entry.getName() );
+                        if ( !entry.isDirectory() )
+                        {
+                            destFile.getParentFile().mkdirs();
+
+                            FileOutputStream fos = new FileOutputStream( destFile );
+
+                            try
+                            {
+                                IOUtil.copy( file.getInputStream( entry ), fos );
+                            }
+                            finally
+                            {
+                                IOUtil.close( fos );
+                            }
+                        }
+                        else
+                        {
+                            destFile.mkdirs();
+                        }
                     }
                 }
             }
-        }
-        finally
-        {
-            file.close();
+            finally
+            {
+                file.close();
+            }
         }
 
         if ( siteContext.isUsingDefaultTemplate() )
