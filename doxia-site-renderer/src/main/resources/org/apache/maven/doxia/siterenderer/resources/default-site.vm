@@ -89,7 +89,10 @@
       #set ( $collapse = "collapsed" )
     #end
 
-    #if ( $currentFileName == $currentItemHref )
+    #set ( $display = false )
+    #displayTree( $display $item )
+
+    #if ( $currentFileName == $currentItemHref || $display )
       #set ( $collapse = "expanded" )
     #end
   #end
@@ -100,10 +103,7 @@
       <a href="$currentItemHref">$item.name</a>
     #end
   #if ( $item && $item.items && $item.items.size() > 0 )
-    #set ( $display = false )
-    #displayTree( $display $item )
-
-    #if ( $collapse == "expanded" || $display )
+    #if ( $collapse == "expanded" )
       <ul>
         #foreach( $subitem in $item.items )
           #menuItem( $subitem )
