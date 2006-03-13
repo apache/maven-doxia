@@ -94,6 +94,45 @@
           <identifier>true</identifier>
         </field>
       </fields>
+      <codeSegments>
+        <codeSegment>
+          <version>1.0.0</version>
+          <code>
+            <![CDATA[
+    private java.util.Map menusByRef;
+
+    public Menu getMenuRef( String key )
+    {
+        if ( menusByRef == null )
+        {
+            for ( java.util.Iterator i = body.getMenus().iterator(); i.hasNext(); )
+            {
+                Menu menu = (Menu) i.next();
+
+                if ( menu.getRef() != null )
+                {
+                    menusByRef.put( menu.getRef(), menu );
+                }
+            }
+        }
+        return (Menu) menusByRef.get( key );
+    }
+
+    public void removeMenuRef( String key )
+    {
+        for ( java.util.Iterator i = body.getMenus().iterator(); i.hasNext(); )
+        {
+            Menu menu = (Menu) i.next();
+            if ( key.equals( menu.getRef() ) )
+            {
+                i.remove();
+            }
+        }
+    }
+            ]]>
+          </code>
+        </codeSegment>
+      </codeSegments>
     </class>
     <class>
       <name>Banner</name>
@@ -267,6 +306,14 @@
           <type>String</type>
           <identifier>true</identifier>
         </field>
+        <field xml.attribute="true">
+          <name>ref</name>
+          <description><![CDATA[A reference to a pre-defined menu, such as <code>project-info</code> or
+            <code>project-reports</code>.]]></description>
+          <version>1.0.0</version>
+          <type>String</type>
+          <identifier>true</identifier>
+        </field>
         <field xml.listStyle="flat">
           <name>items</name>
           <description>Menu item.</description>
@@ -339,10 +386,10 @@
           <code>
             public static Skin getDefaultSkin()
             {
-                Skin skin = new Skin();
-                skin.setGroupId( "org.apache.maven.skins" );
-                skin.setArtifactId( "maven-default-skin" );
-                return skin;
+            Skin skin = new Skin();
+            skin.setGroupId( "org.apache.maven.skins" );
+            skin.setArtifactId( "maven-default-skin" );
+            return skin;
             }
           </code>
         </codeSegment>
