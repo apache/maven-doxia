@@ -26,13 +26,9 @@ Plexus Component Descriptor Creator
 | @plexus.version               | n | The component version.                                 |
 *-------------------------------*---*--------------------------------------------------------*
 | @plexus.lifecycle-handler     | n | The lifecycle handler of the component.                |
-|                               |   | <TODO: link to the different lifecycle handlers>       |
 *-------------------------------*---*--------------------------------------------------------*
 | @plexus.instatiation-strategy | n | The instantiation strategy of the component.           |
-|                               |   | <TODO: link to the different instantiation strategies> |
 *-------------------------------*---*--------------------------------------------------------*
-~~ TODO: This line will be incorrectly render the *name* of the table as well as the caption
-~~ [plexus-component-tags] Plexus Component Tags
 
 +---+
 /**
@@ -48,8 +44,7 @@ public class DefaultActionManager
 
 * Requirement Tags
 
- These tags are used on fields to state requirements. TODO: it should be
- possible to override the role for a normal field.
+ These tags are used on fields to state requirements. 
 
 *-------------------------------*----------------*-------------------------------------------*
 | <<Tag>>                       | <<Required>> | <<Description>>                             |
