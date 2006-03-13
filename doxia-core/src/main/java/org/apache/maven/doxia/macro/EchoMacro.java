@@ -28,7 +28,6 @@ public class EchoMacro
     extends AbstractMacro
 {
     public void execute( Sink sink, MacroRequest request )
-        throws Exception
     {
         sink.verbatim( true );
 

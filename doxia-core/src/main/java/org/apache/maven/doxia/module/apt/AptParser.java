@@ -16,7 +16,9 @@ package org.apache.maven.doxia.module.apt;
  * limitations under the License.
  */
 
+import org.apache.maven.doxia.macro.MacroExecutionException;
 import org.apache.maven.doxia.macro.MacroRequest;
+import org.apache.maven.doxia.macro.manager.MacroNotFoundException;
 import org.apache.maven.doxia.parser.AbstractParser;
 import org.apache.maven.doxia.sink.Sink;
 import org.apache.maven.doxia.sink.SinkAdapter;
@@ -84,9 +86,6 @@ public class AptParser
 
     private AptSource source;
 
-    /**
-     * @ignore
-     */
     private Sink sink;
 
     private String line;
@@ -2134,7 +2133,18 @@ public class AptParser
 
             MacroRequest request = new MacroRequest( parameters );
 
-            AptParser.this.executeMacro( macroId, request, sink );
+            try
+            {
+                AptParser.this.executeMacro( macroId, request, sink );
+            }
+            catch ( MacroExecutionException e )
+            {
+                throw new AptParseException( "Unable to execute macro in the APT document", source, e );
+            }
+            catch ( MacroNotFoundException e )
+            {
+                throw new AptParseException( "Unable to find macro used in the APT document", source, e );
+            }
         }
     }
 

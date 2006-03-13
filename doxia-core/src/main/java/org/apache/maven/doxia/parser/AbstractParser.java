@@ -17,6 +17,7 @@ package org.apache.maven.doxia.parser;
  */
 
 import org.apache.maven.doxia.macro.Macro;
+import org.apache.maven.doxia.macro.MacroExecutionException;
 import org.apache.maven.doxia.macro.MacroRequest;
 import org.apache.maven.doxia.macro.manager.MacroManager;
 import org.apache.maven.doxia.macro.manager.MacroNotFoundException;
@@ -38,25 +39,10 @@ public abstract class AbstractParser
     // Made public right now because of the structure of the APT parser and
     // all its inner classes.
     public void executeMacro( String macroId, MacroRequest request, Sink sink )
+        throws MacroExecutionException, MacroNotFoundException
     {
-        try
-        {
-            Macro macro = macroManager.getMacro( macroId );
+        Macro macro = macroManager.getMacro( macroId );
 
-            try
-            {
-                macro.execute( sink, request );
-            }
-            catch ( Exception e )
-            {
-                // TODO: this is not right
-                e.printStackTrace();
-            }
-        }
-        catch ( MacroNotFoundException e )
-        {
-            // TODO: this should probably be thrown out somewhere
-            System.out.println( "The requested macro with id = " + macroId + " cannot be found." );
-        }
+        macro.execute( sink, request );
     }
 }

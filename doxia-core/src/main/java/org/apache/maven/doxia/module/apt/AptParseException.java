@@ -26,6 +26,11 @@ public class AptParseException
         super( null, message, source.getName(), source.getLineNumber() );
     }
 
+    public AptParseException( String message, AptSource source, Exception e )
+    {
+        super( e, message, source.getName(), source.getLineNumber() );
+    }
+
     public AptParseException( String message )
     {
         super( message );

@@ -1,7 +1,7 @@
 package org.apache.maven.doxia.macro;
 
 /*
- * Copyright 2004-2005 The Apache Software Foundation.
+ * Copyright 2001-2005 The Apache Software Foundation.
  *
  * Licensed under the Apache License, Version 2.0 (the "License");
  * you may not use this file except in compliance with the License.
@@ -16,17 +16,16 @@ package org.apache.maven.doxia.macro;
  * limitations under the License.
  */
 
-import org.apache.maven.doxia.sink.Sink;
-
 /**
- * @author <a href="mailto:jason@maven.org">Jason van Zyl</a>
- * @version $Id:Macro.java 348605 2005-11-24 12:02:44 +1100 (Thu, 24 Nov 2005) brett $
+ * Warp an exception that occurs during the execution of a Doxia macro.
+ *
+ * @author <a href="mailto:brett@apache.org">Brett Porter</a>
  */
-public interface Macro
+public class MacroExecutionException
+    extends Exception
 {
-    String ROLE = Macro.class.getName();
-
-    void execute( Sink sink, MacroRequest request )
-        throws MacroExecutionException;
-
+    public MacroExecutionException( String message, Throwable cause )
+    {
+        super( message, cause );
+    }
 }

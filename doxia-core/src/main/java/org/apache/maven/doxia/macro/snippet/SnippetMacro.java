@@ -17,6 +17,7 @@ package org.apache.maven.doxia.macro.snippet;
  */
 
 import org.apache.maven.doxia.macro.AbstractMacro;
+import org.apache.maven.doxia.macro.MacroExecutionException;
 import org.apache.maven.doxia.macro.MacroRequest;
 import org.apache.maven.doxia.sink.Sink;
 
@@ -44,7 +45,7 @@ public class SnippetMacro
     private boolean debug = false;
 
     public void execute( Sink sink, MacroRequest request )
-        throws Exception
+        throws MacroExecutionException
     {
         String id = (String) request.getParameter( "id" );
 
@@ -67,7 +68,15 @@ public class SnippetMacro
 
         String lang = (String) request.getParameter( "lang" );
 
-        StringBuffer snippet = getSnippet( url, id );
+        StringBuffer snippet = null;
+        try
+        {
+            snippet = getSnippet( url, id );
+        }
+        catch ( IOException e )
+        {
+            throw new MacroExecutionException( "Error reading snippet", e );
+        }
 
         sink.verbatim( true );
 
