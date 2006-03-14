@@ -21,6 +21,7 @@ import org.apache.maven.doxia.site.decoration.DecorationModel;
 import org.apache.maven.doxia.siterenderer.sink.SiteRendererSink;
 
 import java.io.File;
+import java.io.FileNotFoundException;
 import java.io.IOException;
 import java.io.Writer;
 import java.net.MalformedURLException;
@@ -63,4 +64,7 @@ public interface Renderer
 
     Map locateDocumentFiles( SiteRenderingContext siteRenderingContext )
         throws IOException, RendererException;
+
+    void renderDocument( Writer writer, RenderingContext renderingContext, SiteRenderingContext context )
+        throws RendererException, FileNotFoundException;
 }

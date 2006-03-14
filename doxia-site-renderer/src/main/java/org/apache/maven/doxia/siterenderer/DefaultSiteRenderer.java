@@ -38,6 +38,7 @@ import org.codehaus.plexus.util.StringUtils;
 import org.codehaus.plexus.velocity.VelocityComponent;
 
 import java.io.File;
+import java.io.FileNotFoundException;
 import java.io.FileOutputStream;
 import java.io.FileReader;
 import java.io.IOException;
@@ -200,41 +201,55 @@ public class DefaultSiteRenderer
         {
             RenderingContext renderingContext = (RenderingContext) i.next();
 
-            String fullPathDoc = new File( renderingContext.getBasedir(), renderingContext.getInputName() ).getPath();
+            File outputFile = new File( outputDirectory, renderingContext.getOutputName() );
 
-            SiteRendererSink sink = createSink( renderingContext );
+            if ( !outputFile.getParentFile().exists() )
+            {
+                outputFile.getParentFile().mkdirs();
+            }
+
+            OutputStreamWriter writer = new OutputStreamWriter( new FileOutputStream( outputFile ), outputEncoding );
 
             try
             {
-                FileReader reader = new FileReader( fullPathDoc );
-
-                doxia.parse( reader, renderingContext.getParserId(), sink );
-
-                File outputFile = new File( outputDirectory, renderingContext.getOutputName() );
-
-                if ( !outputFile.getParentFile().exists() )
-                {
-                    outputFile.getParentFile().mkdirs();
-                }
-
-                OutputStreamWriter writer =
-                    new OutputStreamWriter( new FileOutputStream( outputFile ), outputEncoding );
-                generateDocument( writer, sink, siteRenderingContext );
-            }
-            catch ( ParserNotFoundException e )
-            {
-                throw new RendererException( "Error getting a parser for " + fullPathDoc + ": " + e.getMessage() );
-            }
-            catch ( ParseException e )
-            {
-                getLogger().error( "Error parsing " + fullPathDoc + ": " + e.getMessage(), e );
+                renderDocument( writer, renderingContext, siteRenderingContext );
             }
             finally
             {
-                sink.flush();
-
-                sink.close();
+                IOUtil.close( writer );
             }
+        }
+    }
+
+    public void renderDocument( Writer writer, RenderingContext renderingContext,
+                                SiteRenderingContext siteRenderingContext )
+        throws RendererException, FileNotFoundException
+    {
+        SiteRendererSink sink = createSink( renderingContext );
+
+        String fullPathDoc = new File( renderingContext.getBasedir(), renderingContext.getInputName() ).getPath();
+
+        try
+        {
+            FileReader reader = new FileReader( fullPathDoc );
+
+            doxia.parse( reader, renderingContext.getParserId(), sink );
+
+            generateDocument( writer, sink, siteRenderingContext );
+        }
+        catch ( ParserNotFoundException e )
+        {
+            throw new RendererException( "Error getting a parser for " + fullPathDoc + ": " + e.getMessage() );
+        }
+        catch ( ParseException e )
+        {
+            getLogger().error( "Error parsing " + fullPathDoc + ": " + e.getMessage(), e );
+        }
+        finally
+        {
+            sink.flush();
+
+            sink.close();
         }
     }
 
