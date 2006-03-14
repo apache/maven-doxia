@@ -188,7 +188,7 @@ public class DefaultSiteRenderer
                     throw new RendererException( "Files '" + doc + "' clashes with existing '" + originalDoc + "'" );
                 }
 
-                files.put( key, context );
+                files.put( key, new DoxiaDocumentRenderer( context ) );
             }
         }
     }
@@ -199,9 +199,9 @@ public class DefaultSiteRenderer
     {
         for ( Iterator i = docs.iterator(); i.hasNext(); )
         {
-            RenderingContext renderingContext = (RenderingContext) i.next();
+            DocumentRenderer docRenderer = (DocumentRenderer) i.next();
 
-            File outputFile = new File( outputDirectory, renderingContext.getOutputName() );
+            File outputFile = new File( outputDirectory, docRenderer.getOutputName() );
 
             if ( !outputFile.getParentFile().exists() )
             {
@@ -212,7 +212,7 @@ public class DefaultSiteRenderer
 
             try
             {
-                renderDocument( writer, renderingContext, siteRenderingContext );
+                docRenderer.renderDocument( writer, this, siteRenderingContext );
             }
             finally
             {
@@ -221,11 +221,10 @@ public class DefaultSiteRenderer
         }
     }
 
-    public void renderDocument( Writer writer, RenderingContext renderingContext,
-                                SiteRenderingContext siteRenderingContext )
+    public void renderDocument( Writer writer, RenderingContext renderingContext, SiteRenderingContext context )
         throws RendererException, FileNotFoundException
     {
-        SiteRendererSink sink = createSink( renderingContext );
+        SiteRendererSink sink = new SiteRendererSink( renderingContext );
 
         String fullPathDoc = new File( renderingContext.getBasedir(), renderingContext.getInputName() ).getPath();
 
@@ -235,7 +234,7 @@ public class DefaultSiteRenderer
 
             doxia.parse( reader, renderingContext.getParserId(), sink );
 
-            generateDocument( writer, sink, siteRenderingContext );
+            generateDocument( writer, sink, context );
         }
         catch ( ParserNotFoundException e )
         {
@@ -386,11 +385,6 @@ public class DefaultSiteRenderer
         {
             throw new RendererException( "Error while generating code.", e );
         }
-    }
-
-    public SiteRendererSink createSink( RenderingContext renderingContext )
-    {
-        return new SiteRendererSink( renderingContext );
     }
 
     public SiteRenderingContext createContextForSkin( File skinFile, Map attributes, DecorationModel decoration,

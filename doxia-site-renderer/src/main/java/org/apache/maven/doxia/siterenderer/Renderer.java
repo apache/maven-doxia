@@ -47,9 +47,6 @@ public interface Renderer
     void generateDocument( Writer writer, SiteRendererSink sink, SiteRenderingContext siteRenderingContext )
         throws RendererException;
 
-    SiteRendererSink createSink( RenderingContext renderingContext )
-        throws RendererException, IOException;
-
     SiteRenderingContext createContextForSkin( File skinFile, Map attributes, DecorationModel decoration,
                                                String defaultWindowTitle, Locale locale )
         throws IOException;
