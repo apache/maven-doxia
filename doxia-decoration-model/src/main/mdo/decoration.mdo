@@ -131,6 +131,20 @@
             }
         }
     }
+
+    public java.util.List getMenus()
+    {
+        java.util.List menus;
+        if ( body != null && body.getMenus() != null )
+        {
+            menus = body.getMenus();
+        }
+        else
+        {
+            menus = java.util.Collections.EMPTY_LIST;
+        }
+        return menus;
+    }
             ]]>
           </code>
         </codeSegment>
@@ -310,8 +324,8 @@
         </field>
         <field xml.attribute="true">
           <name>ref</name>
-          <description><![CDATA[A reference to a pre-defined menu, such as <code>project-info</code> or
-            <code>project-reports</code>.]]></description>
+          <description><![CDATA[A reference to a pre-defined menu, such as a <code>reports</code>, <code>modules</code>
+          or <code>parentProject</code>.]]></description>
           <version>1.0.0</version>
           <type>String</type>
           <identifier>true</identifier>
@@ -334,11 +348,26 @@
       <version>1.0.0</version>
       <superClass>LinkItem</superClass>
       <fields>
+        <field>
+          <name>description</name>
+          <description>A description of the menu item. This is used on any summary pages for a menu.</description>
+          <version>1.0.0</version>
+          <type>String</type>
+          <identifier>true</identifier>
+        </field>
         <field xml.attribute="true">
           <name>collapse</name>
           <description>Whether the item is collapsed by default when it has children elements.</description>
           <version>1.0.0</version>
           <type>boolean</type>
+          <identifier>true</identifier>
+        </field>
+        <field xml.attribute="true">
+          <name>ref</name>
+          <description><![CDATA[A reference to a pre-defined menu item, such as a report (specified by the report goal
+          name). Any elements explicitly given override those from the pre-defined reference.]]></description>
+          <version>1.0.0</version>
+          <type>String</type>
           <identifier>true</identifier>
         </field>
         <field xml.listStyle="flat">

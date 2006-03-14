@@ -170,22 +170,22 @@
 
   #if ( $datePosition.equalsIgnoreCase( $position ) )
     #if ( ( $datePosition.equalsIgnoreCase( "right" ) ) || ( $datePosition.equalsIgnoreCase( "bottom" ) ) )
-      &nbsp;| $i18n.getString( "site-plugin", $locale, "template.lastpublished" ): $dateToday
+      &nbsp;| $i18n.getString( "site-renderer", $locale, "template.lastpublished" ): $dateToday
       #if ( $versionPosition.equalsIgnoreCase( $position ) )
-        &nbsp;| $i18n.getString( "site-plugin", $locale, "template.version" ): ${project.version}
+        &nbsp;| $i18n.getString( "site-renderer", $locale, "template.version" ): ${project.version}
       #end
     #elseif ( ( $datePosition.equalsIgnoreCase( "navigation-bottom" ) ) || ( $datePosition.equalsIgnoreCase( "navigation-top" ) ) )
       <div id="lastPublished">
-        $i18n.getString( "site-plugin", $locale, "template.lastpublished" ): $dateToday
+        $i18n.getString( "site-renderer", $locale, "template.lastpublished" ): $dateToday
         #if ( $versionPosition.equalsIgnoreCase( $position ) )
-          &nbsp;| $i18n.getString( "site-plugin", $locale, "template.version" ): ${project.version}
+          &nbsp;| $i18n.getString( "site-renderer", $locale, "template.version" ): ${project.version}
         #end
       </div>
     #elseif ( $datePosition.equalsIgnoreCase("left") )
       <div class="xleft">
-        $i18n.getString( "site-plugin", $locale, "template.lastpublished" ): $dateToday
+        $i18n.getString( "site-renderer", $locale, "template.lastpublished" ): $dateToday
         #if ( $versionPosition.equalsIgnoreCase( $position ) )
-          &nbsp;| $i18n.getString( "site-plugin", $locale, "template.version" ): ${project.version}
+          &nbsp;| $i18n.getString( "site-renderer", $locale, "template.version" ): ${project.version}
         #end
         #if ( $breadcrumbs && $breadcrumbs.size() > 0 )
           | #breadcrumbs( $breadcrumbs )
@@ -194,14 +194,14 @@
     #end
   #elseif ( $versionPosition.equalsIgnoreCase( $position ) )
     #if ( ( $versionPosition.equalsIgnoreCase( "right" ) ) || ( $versionPosition.equalsIgnoreCase( "bottom" ) ) )
-      &nbsp;| $i18n.getString( "site-plugin", $locale, "template.version" ): ${project.version}
+      &nbsp;| $i18n.getString( "site-renderer", $locale, "template.version" ): ${project.version}
     #elseif ( ( $versionPosition.equalsIgnoreCase( "navigation-bottom" ) ) || ( $versionPosition.equalsIgnoreCase( "navigation-top" ) ) )
       <div id="lastPublished">
-        $i18n.getString( "site-plugin", $locale, "template.version" ): ${project.version}
+        $i18n.getString( "site-renderer", $locale, "template.version" ): ${project.version}
       </div>
     #elseif ( $versionPosition.equalsIgnoreCase("left") )
       <div class="xleft">
-        $i18n.getString( "site-plugin", $locale, "template.version" ): ${project.version}
+        $i18n.getString( "site-renderer", $locale, "template.version" ): ${project.version}
         #if ( $breadcrumbs && $breadcrumbs.size() > 0 )
           | #breadcrumbs( $breadcrumbs )
         #end
@@ -228,7 +228,7 @@
             #if( $item.name )
                 #set ( $name = $item.name )
             #else
-                #set ( $name = $i18n.getString( "site-plugin", $locale, "template.builtby" )  )
+                #set ( $name = $i18n.getString( "site-renderer", $locale, "template.builtby" )  )
                 #set ( $name = "${name} Maven"  )
             #end
 
@@ -245,13 +245,13 @@
             </a>
         #end
         #if( $poweredBy.isEmpty() )
-          <a href="http://maven.apache.org/" title="$i18n.getString( "site-plugin", $locale, "template.builtby" ) Maven" id="poweredBy">
-            <img alt="$i18n.getString( "site-plugin", $locale, "template.builtby" ) Maven" src="$relativePath/images/logos/maven-feather.png"></img>
+          <a href="http://maven.apache.org/" title="$i18n.getString( "site-renderer", $locale, "template.builtby" ) Maven" id="poweredBy">
+            <img alt="$i18n.getString( "site-renderer", $locale, "template.builtby" ) Maven" src="$relativePath/images/logos/maven-feather.png"></img>
           </a>
         #end
     #else
-        <a href="http://maven.apache.org/" title="$i18n.getString( "site-plugin", $locale, "template.builtby" ) Maven" id="poweredBy">
-          <img alt="$i18n.getString( "site-plugin", $locale, "template.builtby" ) Maven" src="$relativePath/images/logos/maven-feather.png"></img>
+        <a href="http://maven.apache.org/" title="$i18n.getString( "site-renderer", $locale, "template.builtby" ) Maven" id="poweredBy">
+          <img alt="$i18n.getString( "site-renderer", $locale, "template.builtby" ) Maven" src="$relativePath/images/logos/maven-feather.png"></img>
         </a>
     #end
 #end
