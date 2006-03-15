@@ -41,4 +41,11 @@
       <version>1.0-alpha-8-SNAPSHOT</version>
     </dependency>
   </dependencies>
+  <repositories>
+    <repository>
+      <!-- for plexus-velocity -->
+      <id>snapshots</id>
+      <url>http://snapshots.maven.codehaus.org/maven2</url>
+    </repository>
+  </repositories>
 </project>
