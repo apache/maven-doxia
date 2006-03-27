@@ -39,7 +39,7 @@ public class RtfSinkTest
         throws Exception
     {
         File outputFile = new File( getBasedirFile(), "target/output/test.rtf" );
-        System.out.println( "Test file: " + outputFile );
+	outputFile.getParentFile().mkdirs();
         return new RtfSink( new FileOutputStream( outputFile ) );
     }
 }
