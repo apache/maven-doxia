@@ -32,12 +32,14 @@ public class RtfSinkTest
 {
     protected String outputExtension()
     {
-        return "tex";
+        return "rtf";
     }
 
     protected Sink createSink()
         throws Exception
     {
-        return new RtfSink( new FileOutputStream( new File( getBasedirFile(), "target/output/test.rtf" ) ) );
+        File outputFile = new File( getBasedirFile(), "target/output/test.rtf" );
+        System.out.println( "Test file: " + outputFile );
+        return new RtfSink( new FileOutputStream( outputFile ) );
     }
 }
