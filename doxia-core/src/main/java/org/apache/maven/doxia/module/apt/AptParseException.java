@@ -21,15 +21,38 @@ import org.apache.maven.doxia.parser.ParseException;
 public class AptParseException
     extends ParseException
 {
+    /**
+     * @deprecated source isn't a safe place to get linenumbers from
+     * @param message
+     * @param source
+     */
     public AptParseException( String message, AptSource source )
     {
         super( null, message, source.getName(), source.getLineNumber() );
     }
 
+    /**
+     * @deprecated source isn't a safe place to get linenumbers from
+     * @param message
+     * @param source
+     * @param e
+     */
     public AptParseException( String message, AptSource source, Exception e )
     {
         super( e, message, source.getName(), source.getLineNumber() );
     }
+
+
+    public AptParseException( String message, String name, int lineNumber, Exception e)
+    {
+        super( e, message, name, lineNumber);
+    }
+
+    public AptParseException( String message, Exception e )
+    {
+        super( message, e );
+    }
+
 
     public AptParseException( String message )
     {

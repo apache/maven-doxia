@@ -242,7 +242,7 @@ public class DefaultSiteRenderer
         }
         catch ( ParseException e )
         {
-            getLogger().error( "Error parsing " + fullPathDoc + ": " + e.getMessage(), e );
+            getLogger().error( "Error parsing " + fullPathDoc + ": line [" + e.getLineNumber() + "] " + e.getMessage() , e );
         }
         finally
         {

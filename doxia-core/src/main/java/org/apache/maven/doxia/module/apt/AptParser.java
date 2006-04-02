@@ -101,27 +101,34 @@ public class AptParser
     public void parse( Reader source, Sink sink )
         throws AptParseException
     {
-        this.source = new AptReaderSource( source );
+        try
+        {
+            this.source = new AptReaderSource( source );
 
-        this.sink = sink;
+            this.sink = sink;
 
-        blockFileName = null;
+            blockFileName = null;
 
-        blockLineNumber = -1;
+            blockLineNumber = -1;
 
-        // Lookahead line.
-        nextLine();
+            // Lookahead line.
+            nextLine();
 
-        // Lookahead block.
-        nextBlock( /*first*/ true );
+            // Lookahead block.
+            nextBlock( /*first*/ true );
 
-        traverseHead();
+            traverseHead();
 
-        traverseBody();
+            traverseBody();
 
-        this.source = null;
+            this.source = null;
 
-        this.sink = null;
+            this.sink = null;
+        }
+        catch ( AptParseException ape )
+        {
+            throw new AptParseException( ape.getMessage(), getSourceName(), getSourceLineNumber(), ape );
+        }
     }
 
     public String getSourceName()
@@ -768,8 +775,7 @@ public class AptParser
         if ( blockType != type )
         {
             throw new AptParseException(
-                "expected " + typeNames[type] + ", found " + typeNames[blockType] + " at line " + getSourceLineNumber(),
-                source );
+                "expected " + typeNames[type] + ", found " + typeNames[blockType] );
         }
     }
 
@@ -2139,11 +2145,11 @@ public class AptParser
             }
             catch ( MacroExecutionException e )
             {
-                throw new AptParseException( "Unable to execute macro in the APT document", source, e );
+                throw new AptParseException( "Unable to execute macro in the APT document", e );
             }
             catch ( MacroNotFoundException e )
             {
-                throw new AptParseException( "Unable to find macro used in the APT document", source, e );
+                throw new AptParseException( "Unable to find macro used in the APT document", e );
             }
         }
     }
