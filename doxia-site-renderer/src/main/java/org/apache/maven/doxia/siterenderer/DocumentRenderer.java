@@ -16,6 +16,8 @@ package org.apache.maven.doxia.siterenderer;
  * limitations under the License.
  */
 
+import org.apache.maven.doxia.module.xhtml.decoration.render.RenderingContext;
+
 import java.io.FileNotFoundException;
 import java.io.Writer;
 
@@ -26,8 +28,10 @@ import java.io.Writer;
  */
 public interface DocumentRenderer
 {
-    void renderDocument( Writer writer, Renderer renderer, SiteRenderingContext siteRenderingContext )
+    public void renderDocument( Writer writer, Renderer renderer, SiteRenderingContext siteRenderingContext )
         throws RendererException, FileNotFoundException;
 
-    String getOutputName();
+    public String getOutputName();
+
+    public RenderingContext getRenderingContext();
 }

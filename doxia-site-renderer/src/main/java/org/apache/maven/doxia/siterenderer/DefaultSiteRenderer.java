@@ -201,22 +201,35 @@ public class DefaultSiteRenderer
         {
             DocumentRenderer docRenderer = (DocumentRenderer) i.next();
 
-            File outputFile = new File( outputDirectory, docRenderer.getOutputName() );
+            RenderingContext renderingContext = docRenderer.getRenderingContext();
 
-            if ( !outputFile.getParentFile().exists() )
+            File outputFile = new File ( outputDirectory, docRenderer.getOutputName() );
+
+            File inputFile = new File ( renderingContext.getBasedir(), renderingContext.getInputName() );
+
+
+            if ( !outputFile.exists() || inputFile.lastModified() > outputFile.lastModified() )
             {
-                outputFile.getParentFile().mkdirs();
+                if ( !outputFile.getParentFile().exists() )
+                {
+                    outputFile.getParentFile().mkdirs();
+                }
+
+                OutputStreamWriter writer =
+                    new OutputStreamWriter( new FileOutputStream( outputFile ), outputEncoding );
+
+                try
+                {
+                    docRenderer.renderDocument( writer, this, siteRenderingContext );
+                }
+                finally
+                {
+                    IOUtil.close( writer );
+                }
             }
-
-            OutputStreamWriter writer = new OutputStreamWriter( new FileOutputStream( outputFile ), outputEncoding );
-
-            try
+            else
             {
-                docRenderer.renderDocument( writer, this, siteRenderingContext );
-            }
-            finally
-            {
-                IOUtil.close( writer );
+                getLogger().info( inputFile + " unchanged, not regenerating..." );
             }
         }
     }

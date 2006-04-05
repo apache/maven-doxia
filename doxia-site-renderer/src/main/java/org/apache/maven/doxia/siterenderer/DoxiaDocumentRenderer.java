@@ -47,4 +47,9 @@ public class DoxiaDocumentRenderer
         return renderingContext.getOutputName();
     }
 
+    public RenderingContext getRenderingContext()
+    {
+        return renderingContext;
+    }
+
 }
