@@ -229,7 +229,7 @@ public class DefaultSiteRenderer
             }
             else
             {
-                getLogger().info( inputFile + " unchanged, not regenerating..." );
+                getLogger().debug( inputFile + " unchanged, not regenerating..." );
             }
         }
     }
