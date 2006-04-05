@@ -28,10 +28,10 @@ import java.io.Writer;
  */
 public interface DocumentRenderer
 {
-    public void renderDocument( Writer writer, Renderer renderer, SiteRenderingContext siteRenderingContext )
+    void renderDocument( Writer writer, Renderer renderer, SiteRenderingContext siteRenderingContext )
         throws RendererException, FileNotFoundException;
 
-    public String getOutputName();
+    String getOutputName();
 
-    public RenderingContext getRenderingContext();
+    RenderingContext getRenderingContext();
 }
