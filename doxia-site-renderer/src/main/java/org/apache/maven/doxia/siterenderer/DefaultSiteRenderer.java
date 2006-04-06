@@ -148,7 +148,8 @@ public class DefaultSiteRenderer
 
                     if ( moduleExcludes != null && moduleExcludes.containsKey( module.getParserId() ) )
                     {
-                        addModuleFiles( moduleBasedir, module, (String)moduleExcludes.get( module.getParserId() ), files );
+                        addModuleFiles( moduleBasedir, module, (String) moduleExcludes.get( module.getParserId() ),
+                                        files );
                     }
                     else
                     {
@@ -166,11 +167,13 @@ public class DefaultSiteRenderer
             {
                 if ( moduleExcludes != null && moduleExcludes.containsKey( module.getParserId() ) )
                 {
-                    addModuleFiles( module.getBasedir(), siteModuleManager.getSiteModule( module.getParserId() ), (String)moduleExcludes.get( module.getParserId() ), files );
+                    addModuleFiles( module.getBasedir(), siteModuleManager.getSiteModule( module.getParserId() ),
+                                    (String) moduleExcludes.get( module.getParserId() ), files );
                 }
                 else
                 {
-                    addModuleFiles( module.getBasedir(), siteModuleManager.getSiteModule( module.getParserId() ), null, files );
+                    addModuleFiles( module.getBasedir(), siteModuleManager.getSiteModule( module.getParserId() ), null,
+                                    files );
                 }
             }
             catch ( SiteModuleNotFoundException e )
@@ -198,7 +201,8 @@ public class DefaultSiteRenderer
 
                 if ( files.containsKey( key ) )
                 {
-                    RenderingContext originalContext = (RenderingContext) files.get( key );
+                    DocumentRenderer renderer = (DocumentRenderer) files.get( key );
+                    RenderingContext originalContext = renderer.getRenderingContext();
                     File originalDoc = new File( originalContext.getBasedir(), originalContext.getInputName() );
                     throw new RendererException( "Files '" + doc + "' clashes with existing '" + originalDoc + "'" );
                 }
@@ -218,10 +222,9 @@ public class DefaultSiteRenderer
 
             RenderingContext renderingContext = docRenderer.getRenderingContext();
 
-            File outputFile = new File ( outputDirectory, docRenderer.getOutputName() );
+            File outputFile = new File( outputDirectory, docRenderer.getOutputName() );
 
-            File inputFile = new File ( renderingContext.getBasedir(), renderingContext.getInputName() );
-
+            File inputFile = new File( renderingContext.getBasedir(), renderingContext.getInputName() );
 
             if ( !outputFile.exists() || inputFile.lastModified() > outputFile.lastModified() )
             {
@@ -270,7 +273,8 @@ public class DefaultSiteRenderer
         }
         catch ( ParseException e )
         {
-            getLogger().error( "Error parsing " + fullPathDoc + ": line [" + e.getLineNumber() + "] " + e.getMessage() , e );
+            getLogger().error( "Error parsing " + fullPathDoc + ": line [" + e.getLineNumber() + "] " + e.getMessage(),
+                               e );
         }
         finally
         {
