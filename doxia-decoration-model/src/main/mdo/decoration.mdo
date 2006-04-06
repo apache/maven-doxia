@@ -330,6 +330,13 @@
           <type>String</type>
           <identifier>true</identifier>
         </field>
+        <field xml.attribute="true">
+          <name>img</name>
+          <description>Image href.</description>
+          <version>1.0.0</version>
+          <type>String</type>
+          <identifier>true</identifier>
+        </field>
         <field xml.listStyle="flat">
           <name>items</name>
           <description>Menu item.</description>

@@ -97,6 +97,15 @@
     #end
   #end
   <li class="$collapse">
+    #if ( $item.img )
+      #if ( ! ( $item.img.toLowerCase().startsWith("http") || $item.img.toLowerCase().startsWith("https") ) )
+        #set ( $src = $PathTool.calculateLink( $item.img, $relativePath ) )
+        #set ( $src = $item.img.replaceAll( "\\", "/" ) )
+        <img src="$src"/>
+      #else
+        <img src="$item.img" align="absbottom" style="border-width: 0"/>
+      #end
+    #end
     #if ( $currentFileName == $currentItemHref )
       <strong><a href="$currentFileName">$item.name</a></strong>
     #else
