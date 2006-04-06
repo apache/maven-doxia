@@ -133,6 +133,7 @@ public class DefaultSiteRenderer
         throws IOException, RendererException
     {
         Map files = new LinkedHashMap();
+        Map moduleExcludes = siteRenderingContext.getModuleExcludes();
 
         for ( Iterator i = siteRenderingContext.getSiteDirectories().iterator(); i.hasNext(); )
         {
@@ -145,7 +146,14 @@ public class DefaultSiteRenderer
 
                     File moduleBasedir = new File( siteDirectory, module.getSourceDirectory() );
 
-                    addModuleFiles( moduleBasedir, module, files );
+                    if ( moduleExcludes != null && moduleExcludes.containsKey( module.getParserId() ) )
+                    {
+                        addModuleFiles( moduleBasedir, module, (String)moduleExcludes.get( module.getParserId() ), files );
+                    }
+                    else
+                    {
+                        addModuleFiles( moduleBasedir, module, null, files );
+                    }
                 }
             }
         }
@@ -156,7 +164,14 @@ public class DefaultSiteRenderer
 
             try
             {
-                addModuleFiles( module.getBasedir(), siteModuleManager.getSiteModule( module.getParserId() ), files );
+                if ( moduleExcludes != null && moduleExcludes.containsKey( module.getParserId() ) )
+                {
+                    addModuleFiles( module.getBasedir(), siteModuleManager.getSiteModule( module.getParserId() ), (String)moduleExcludes.get( module.getParserId() ), files );
+                }
+                else
+                {
+                    addModuleFiles( module.getBasedir(), siteModuleManager.getSiteModule( module.getParserId() ), null, files );
+                }
             }
             catch ( SiteModuleNotFoundException e )
             {
@@ -166,12 +181,12 @@ public class DefaultSiteRenderer
         return files;
     }
 
-    private void addModuleFiles( File moduleBasedir, SiteModule module, Map files )
+    private void addModuleFiles( File moduleBasedir, SiteModule module, String excludes, Map files )
         throws IOException, RendererException
     {
         if ( moduleBasedir.exists() )
         {
-            List docs = FileUtils.getFileNames( moduleBasedir, "**/*." + module.getExtension(), null, false );
+            List docs = FileUtils.getFileNames( moduleBasedir, "**/*." + module.getExtension(), excludes, false );
 
             for ( Iterator k = docs.iterator(); k.hasNext(); )
             {

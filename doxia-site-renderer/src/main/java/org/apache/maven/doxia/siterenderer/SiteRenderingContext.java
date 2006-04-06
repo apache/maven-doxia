@@ -49,6 +49,8 @@ public class SiteRenderingContext
 
     private List siteDirectories = new ArrayList();
 
+    private Map moduleExcludes;
+
     private List modules = new ArrayList();
 
     public String getTemplateName()
@@ -151,4 +153,13 @@ public class SiteRenderingContext
         return modules;
     }
 
+    public Map getModuleExcludes()
+    {
+        return moduleExcludes;
+    }
+
+    public void setModuleExcludes( Map moduleExcludes )
+    {
+        this.moduleExcludes = moduleExcludes;
+    }
 }
