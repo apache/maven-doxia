@@ -19,6 +19,7 @@ package org.apache.maven.doxia.module.xhtml;
 import org.apache.maven.doxia.module.HtmlTools;
 import org.apache.maven.doxia.module.xhtml.decoration.render.RenderingContext;
 import org.apache.maven.doxia.parser.Parser;
+import org.apache.maven.doxia.sink.Sink;
 import org.apache.maven.doxia.sink.StructureSink;
 import org.apache.maven.doxia.util.StringUtil;
 import org.codehaus.plexus.util.StringUtils;
@@ -291,7 +292,26 @@ public class XhtmlSink
 
     public void numberedList( int numbering )
     {
-        write( "<ol>" );
+        write("<ol type=\"");
+        switch ( numbering )
+        {
+            case Sink.NUMBERING_LOWER_ALPHA:
+                write("a");
+                break;
+            case Sink.NUMBERING_UPPER_ALPHA:
+                write("A");
+                break;
+            case Sink.NUMBERING_LOWER_ROMAN:
+                write("i");
+                break;
+            case Sink.NUMBERING_UPPER_ROMAN:
+                write("I");
+                break;
+            case Sink.NUMBERING_DECIMAL:
+            default:
+                write("1");
+        }
+        write("\">");
     }
 
     public void numberedList_()
