@@ -323,7 +323,10 @@ public class DefaultSiteRenderer
         Locale locale = siteRenderingContext.getLocale();
         context.put( "dateFormat", DateFormat.getDateInstance( DateFormat.DEFAULT, locale ) );
 
-        context.put( "currentFileName", renderingContext.getOutputName().replace( '\\', '/' ) );
+        String currentFileName = renderingContext.getOutputName().replace( '\\', '/' );
+        context.put( "currentFileName", currentFileName );
+
+        context.put( "alignedFileName", PathTool.calculateLink( currentFileName, renderingContext.getRelativePath() ) );
 
         context.put( "locale", locale );
 

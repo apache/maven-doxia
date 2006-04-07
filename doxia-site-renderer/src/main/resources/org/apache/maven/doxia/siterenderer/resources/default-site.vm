@@ -36,7 +36,9 @@
   #set ( $counter = 0 )
   #foreach( $item in $links )
     #set ( $counter = $counter + 1 )
-    <a href="$item.href">$item.name</a>
+    #set ( $currentItemHref = $PathTool.calculateLink( $item.href, $relativePath ) )
+    #set ( $currentItemHref = $currentItemHref.replaceAll( "\\", "/" ) )
+    <a href="$currentItemHref">$item.name</a>
     #if ( $links.size() > $counter )
       |
     #end
@@ -50,10 +52,10 @@
     #set ( $currentItemHref = $PathTool.calculateLink( $item.href, $relativePath ) )
     #set ( $currentItemHref = $currentItemHref.replaceAll( "\\", "/" ) )
 
-    #if ( $currentItemHref == $currentFileName || $currentItemHref == "" )
+    #if ( $currentItemHref == $alignedFileName || $currentItemHref == "" )
       $item.name
     #else
-      <a href="$item.href">$item.name</a>
+      <a href="$currentItemHref">$item.name</a>
     #end
     #if ( $breadcrumbs.size() > $counter )
       &gt;
@@ -67,7 +69,7 @@
       #set ( $subitemHref = $PathTool.calculateLink( $subitem.href, $relativePath ) )
       #set ( $subitemHref = $subitemHref.replaceAll( "\\", "/" ) )
 
-      #if ( $currentFileName == $subitemHref )
+      #if ( $alignedFileName == $subitemHref )
         #set ( $display = true )
       #end
 
@@ -92,7 +94,7 @@
     #set ( $display = false )
     #displayTree( $display $item )
 
-    #if ( $currentFileName == $currentItemHref || $display )
+    #if ( $alignedFileName == $currentItemHref || $display )
       #set ( $collapse = "expanded" )
     #end
   #end
@@ -106,7 +108,7 @@
         <img src="$item.img" align="absbottom" style="border-width: 0"/>
       #end
     #end
-    #if ( $currentFileName == $currentItemHref )
+    #if ( $alignedFileName == $currentItemHref )
       <strong><a href="$currentFileName">$item.name</a></strong>
     #else
       <a href="$currentItemHref">$item.name</a>
@@ -229,7 +231,8 @@
     #if( $poweredBy )
         #foreach ($item in $poweredBy)
             #if( $item.href )
-                #set ( $href = $item.href )
+                #set ( $href = $PathTool.calculateLink( $item.href, $relativePath ) )
+                #set ( $href = $href.replaceAll( "\\", "/" ) )
             #else
                 #set ( $href="http://maven.apache.org/" )
             #end
@@ -244,11 +247,11 @@
             #if( $item.img )
                 #set ( $img = $item.img )
             #else
-                #set ( $img = "maven-feather.png" )
+                #set ( $img = "images/logos/maven-feather.png" )
             #end
 
             <a href="$href" title="$name" id="poweredBy">
-              #set ( $img = $PathTool.calculateLink( $img, "$relativePath/images/logos" ) )
+              #set ( $img = $PathTool.calculateLink( $img, $relativePath ) )
               #set ( $img = $img.replaceAll( "\\", "/" ) )
               <img alt="$name" src="$img" />
             </a>
