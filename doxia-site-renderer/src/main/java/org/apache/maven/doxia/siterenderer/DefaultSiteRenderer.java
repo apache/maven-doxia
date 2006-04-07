@@ -217,7 +217,13 @@ public class DefaultSiteRenderer
 
             File inputFile = new File( renderingContext.getBasedir(), renderingContext.getInputName() );
 
+            boolean modified = false;
             if ( !outputFile.exists() || inputFile.lastModified() > outputFile.lastModified() )
+            {
+                modified = true;
+            }
+
+            if ( modified || docRenderer.isOverwrite() )
             {
                 if ( !outputFile.getParentFile().exists() )
                 {

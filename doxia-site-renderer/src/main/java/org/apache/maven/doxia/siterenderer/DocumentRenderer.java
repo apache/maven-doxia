@@ -35,4 +35,10 @@ public interface DocumentRenderer
     String getOutputName();
 
     RenderingContext getRenderingContext();
+
+    /**
+     * Whether to always overwrite the document, or only do so when it is changed.
+     * @return whether to overwrite
+     */
+    boolean isOverwrite();
 }

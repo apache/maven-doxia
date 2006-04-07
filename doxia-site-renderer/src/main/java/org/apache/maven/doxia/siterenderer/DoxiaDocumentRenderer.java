@@ -53,4 +53,9 @@ public class DoxiaDocumentRenderer
         return renderingContext;
     }
 
+    public boolean isOverwrite()
+    {
+        return false;
+    }
+
 }
