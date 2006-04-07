@@ -16,6 +16,7 @@ package org.apache.maven.doxia.module.fml;
  * limitations under the License.
  */
 
+import org.apache.maven.doxia.module.HtmlTools;
 import org.apache.maven.doxia.module.fml.model.Faq;
 import org.apache.maven.doxia.module.fml.model.Faqs;
 import org.apache.maven.doxia.module.fml.model.Part;
@@ -157,7 +158,7 @@ public class FmlParser
 
                         buffer.append( "\"" );
 
-                        buffer.append( parser.getAttributeValue( i ) );
+                        buffer.append( HtmlTools.escapeHTML( parser.getAttributeValue( i ) ) );
 
                         buffer.append( "\"" );
                     }
@@ -201,11 +202,25 @@ public class FmlParser
                 }
                 else if ( inQuestion || inAnswer )
                 {
+                    if ( buffer.charAt( buffer.length() - 1 ) == ' ' )
+                    {
+                        buffer.deleteCharAt( buffer.length() - 1 );
+                    }
+
                     buffer.append( "</" );
 
                     buffer.append( parser.getName() );
 
                     buffer.append( ">" );
+                }
+            }
+            else if ( eventType == XmlPullParser.CDSECT )
+            {
+                if ( buffer != null && parser.getText() != null )
+                {
+                    buffer.append( "<![CDATA[" );
+                    buffer.append( parser.getText() );
+                    buffer.append( "]]>" );
                 }
             }
             else if ( eventType == XmlPullParser.TEXT )
@@ -216,7 +231,7 @@ public class FmlParser
                 }
             }
 
-            eventType = parser.next();
+            eventType = parser.nextToken();
         }
 
         return faqs;
@@ -231,11 +246,11 @@ public class FmlParser
         sink.head_();
 
         sink.body();
-        sink.anchor( "top" );
-        sink.anchor_();
         sink.section1();
         sink.sectionTitle1();
+        sink.anchor( "top" );
         sink.text( faqs.getTitle() );
+        sink.anchor_();
         sink.sectionTitle1_();
 
         // Write summary
@@ -269,9 +284,9 @@ public class FmlParser
         for ( Iterator partIterator = faqs.getParts().iterator(); partIterator.hasNext(); )
         {
             Part part = (Part) partIterator.next();
-            sink.section1();
             if ( StringUtils.isNotEmpty( part.getTitle() ) )
             {
+                sink.section1();
                 sink.sectionTitle1();
                 sink.text( part.getTitle() );
                 sink.sectionTitle1_();
@@ -303,7 +318,11 @@ public class FmlParser
                 sink.definition_();
             }
             sink.definitionList_();
-            sink.section1_();
+
+            if ( StringUtils.isNotEmpty( part.getTitle() ) )
+            {
+                sink.section1_();
+            }
         }
 
         sink.body_();
@@ -330,7 +349,7 @@ public class FmlParser
 
     private void writeTopLink( Sink sink )
     {
-        sink.rawText( "<table border=0>" );
+        sink.rawText( "<table border=\"0\">" );
         sink.rawText( "<tr><td align=\"right\">" );
 
         sink.link( "#top" );
@@ -339,6 +358,5 @@ public class FmlParser
 
         sink.rawText( "</td></tr>" );
         sink.rawText( "</table>" );
-
     }
 }
