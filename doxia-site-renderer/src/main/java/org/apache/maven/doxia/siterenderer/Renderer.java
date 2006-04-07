@@ -23,6 +23,7 @@ import org.apache.maven.doxia.siterenderer.sink.SiteRendererSink;
 import java.io.File;
 import java.io.FileNotFoundException;
 import java.io.IOException;
+import java.io.UnsupportedEncodingException;
 import java.io.Writer;
 import java.net.MalformedURLException;
 import java.util.Collection;
@@ -38,10 +39,6 @@ public interface Renderer
     String ROLE = Renderer.class.getName();
 
     void render( Collection documents, SiteRenderingContext siteRenderingContext, File outputDirectory )
-        throws RendererException, IOException;
-
-    void render( Collection documents, SiteRenderingContext siteRenderingContext, File outputDirectory,
-                 String outputEncoding )
         throws RendererException, IOException;
 
     void generateDocument( Writer writer, SiteRendererSink sink, SiteRenderingContext siteRenderingContext )
@@ -63,5 +60,5 @@ public interface Renderer
         throws IOException, RendererException;
 
     void renderDocument( Writer writer, RenderingContext renderingContext, SiteRenderingContext context )
-        throws RendererException, FileNotFoundException;
+        throws RendererException, FileNotFoundException, UnsupportedEncodingException;
 }

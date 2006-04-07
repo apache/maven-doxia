@@ -19,6 +19,7 @@ package org.apache.maven.doxia.siterenderer;
 import org.apache.maven.doxia.module.xhtml.decoration.render.RenderingContext;
 
 import java.io.FileNotFoundException;
+import java.io.UnsupportedEncodingException;
 import java.io.Writer;
 
 /**
@@ -29,7 +30,7 @@ import java.io.Writer;
 public interface DocumentRenderer
 {
     void renderDocument( Writer writer, Renderer renderer, SiteRenderingContext siteRenderingContext )
-        throws RendererException, FileNotFoundException;
+        throws RendererException, FileNotFoundException, UnsupportedEncodingException;
 
     String getOutputName();
 

@@ -31,6 +31,14 @@ import java.util.Map;
  */
 public class SiteRenderingContext
 {
+    private static final String DEFAULT_INPUT_ENCODING = "UTF-8";
+
+    private static final String DEFAULT_OUTPUT_ENCODING = "UTF-8";
+
+    private String inputEncoding = DEFAULT_INPUT_ENCODING;
+
+    private String outputEncoding = DEFAULT_OUTPUT_ENCODING;
+
     private String templateName;
 
     private ClassLoader templateClassLoader;
@@ -161,5 +169,25 @@ public class SiteRenderingContext
     public void setModuleExcludes( Map moduleExcludes )
     {
         this.moduleExcludes = moduleExcludes;
+    }
+
+    public String getInputEncoding()
+    {
+        return inputEncoding;
+    }
+
+    public void setInputEncoding( String inputEncoding )
+    {
+        this.inputEncoding = inputEncoding;
+    }
+
+    public String getOutputEncoding()
+    {
+        return outputEncoding;
+    }
+
+    public void setOutputEncoding( String outputEncoding )
+    {
+        this.outputEncoding = outputEncoding;
     }
 }

@@ -38,14 +38,16 @@ import org.codehaus.plexus.util.StringUtils;
 import org.codehaus.plexus.velocity.VelocityComponent;
 
 import java.io.File;
+import java.io.FileInputStream;
 import java.io.FileNotFoundException;
 import java.io.FileOutputStream;
-import java.io.FileReader;
 import java.io.IOException;
 import java.io.InputStream;
 import java.io.InputStreamReader;
 import java.io.LineNumberReader;
 import java.io.OutputStreamWriter;
+import java.io.Reader;
+import java.io.UnsupportedEncodingException;
 import java.io.Writer;
 import java.net.MalformedURLException;
 import java.net.URL;
@@ -73,8 +75,6 @@ public class DefaultSiteRenderer
     extends AbstractLogEnabled
     implements Renderer
 {
-    private static final String DEFAULT_OUTPUT_ENCODING = "UTF-8";
-
     // ----------------------------------------------------------------------
     // Requirements
     // ----------------------------------------------------------------------
@@ -112,15 +112,7 @@ public class DefaultSiteRenderer
     public void render( Collection documents, SiteRenderingContext siteRenderingContext, File outputDirectory )
         throws RendererException, IOException
     {
-        render( documents, siteRenderingContext, outputDirectory, DEFAULT_OUTPUT_ENCODING );
-    }
-
-    // TODO [IMPORTART] fix sigs
-    public void render( Collection documents, SiteRenderingContext siteRenderingContext, File outputDirectory,
-                        String outputEncoding )
-        throws RendererException, IOException
-    {
-        renderModule( documents, siteRenderingContext, outputDirectory, outputEncoding );
+        renderModule( documents, siteRenderingContext, outputDirectory );
 
         for ( Iterator i = siteRenderingContext.getSiteDirectories().iterator(); i.hasNext(); )
         {
@@ -212,8 +204,7 @@ public class DefaultSiteRenderer
         }
     }
 
-    private void renderModule( Collection docs, SiteRenderingContext siteRenderingContext, File outputDirectory,
-                               String outputEncoding )
+    private void renderModule( Collection docs, SiteRenderingContext siteRenderingContext, File outputDirectory )
         throws IOException, RendererException
     {
         for ( Iterator i = docs.iterator(); i.hasNext(); )
@@ -233,8 +224,8 @@ public class DefaultSiteRenderer
                     outputFile.getParentFile().mkdirs();
                 }
 
-                OutputStreamWriter writer =
-                    new OutputStreamWriter( new FileOutputStream( outputFile ), outputEncoding );
+                OutputStreamWriter writer = new OutputStreamWriter( new FileOutputStream( outputFile ),
+                                                                    siteRenderingContext.getOutputEncoding() );
 
                 try
                 {
@@ -253,7 +244,7 @@ public class DefaultSiteRenderer
     }
 
     public void renderDocument( Writer writer, RenderingContext renderingContext, SiteRenderingContext context )
-        throws RendererException, FileNotFoundException
+        throws RendererException, FileNotFoundException, UnsupportedEncodingException
     {
         SiteRendererSink sink = new SiteRendererSink( renderingContext );
 
@@ -261,7 +252,7 @@ public class DefaultSiteRenderer
 
         try
         {
-            FileReader reader = new FileReader( fullPathDoc );
+            Reader reader = new InputStreamReader( new FileInputStream( fullPathDoc ), context.getInputEncoding() );
 
             doxia.parse( reader, renderingContext.getParserId(), sink );
 
