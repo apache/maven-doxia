@@ -107,13 +107,16 @@
         {
             menusByRef = new java.util.HashMap();
 
-            for ( java.util.Iterator i = body.getMenus().iterator(); i.hasNext(); )
+            if ( body != null )
             {
-                Menu menu = (Menu) i.next();
-
-                if ( menu.getRef() != null )
+                for ( java.util.Iterator i = body.getMenus().iterator(); i.hasNext(); )
                 {
-                    menusByRef.put( menu.getRef(), menu );
+                    Menu menu = (Menu) i.next();
+
+                    if ( menu.getRef() != null )
+                    {
+                        menusByRef.put( menu.getRef(), menu );
+                    }
                 }
             }
         }
@@ -122,12 +125,15 @@
 
     public void removeMenuRef( String key )
     {
-        for ( java.util.Iterator i = body.getMenus().iterator(); i.hasNext(); )
+        if ( body != null )
         {
-            Menu menu = (Menu) i.next();
-            if ( key.equals( menu.getRef() ) )
+            for ( java.util.Iterator i = body.getMenus().iterator(); i.hasNext(); )
             {
-                i.remove();
+                Menu menu = (Menu) i.next();
+                if ( key.equals( menu.getRef() ) )
+                {
+                    i.remove();
+                }
             }
         }
     }
