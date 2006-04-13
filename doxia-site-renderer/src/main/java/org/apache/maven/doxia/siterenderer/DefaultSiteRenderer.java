@@ -230,6 +230,7 @@ public class DefaultSiteRenderer
                     outputFile.getParentFile().mkdirs();
                 }
 
+                getLogger().debug( "Generating " + outputFile );
                 OutputStreamWriter writer = new OutputStreamWriter( new FileOutputStream( outputFile ),
                                                                     siteRenderingContext.getOutputEncoding() );
 
