@@ -109,7 +109,7 @@
       #end
     #end
     #if ( $alignedFileName == $currentItemHref )
-      <strong><a href="$currentFileName">$item.name</a></strong>
+      <strong>$item.name</strong>
     #else
       <a href="$currentItemHref">$item.name</a>
     #end
