@@ -1,5 +1,7 @@
-package org.apache.maven.doxia.util;/*
- * Copyright 2004-2005 The Apache Software Foundation.
+package org.apache.maven.doxia.util;
+
+/*
+ * Copyright 2004-2006 The Apache Software Foundation.
  *
  * Licensed under the Apache License, Version 2.0 (the "License");
  * you may not use this file except in compliance with the License.
@@ -164,7 +166,6 @@ public class StringUtil
      */
     public static String[] removeAt( String[] strings, int index )
     {
-        String string = strings[index];
         String[] newStrings = new String[strings.length - 1];
 
         if ( index > 0 )
@@ -185,7 +186,7 @@ public class StringUtil
     // -----------------------------------------------------------------------
 
     /**
-     * Like {@link #escape} but puts a double quote character (<tt>'\"'</tt>)
+     * Like {@link #escape(String)} but puts a double quote character (<tt>'\"'</tt>)
      * around the escaped string.
      */
     public static String protect( String string )
@@ -282,7 +283,7 @@ public class StringUtil
     }
 
     /**
-     * Like {@link #unescape} but removes the double quote characters
+     * Like {@link #unescape(String)} but removes the double quote characters
      * (<tt>'\"'</tt>), if any, before unescaping the string.
      */
     public static String unprotect( String string )
@@ -394,7 +395,7 @@ public class StringUtil
     }
 
     /**
-     * A simple test for {@link #escape} and {@link #unescape}.
+     * A simple test for {@link #escape(String)} and {@link #unescape(String)}.
      */
     public static final void main( String[] args )
     {
@@ -573,7 +574,7 @@ public class StringUtil
      * @param oldSub the substring to replace
      * @param newSub the replacement substring
      * @return a string where all replacements have been performed
-     * @see String#replace
+     * @see String#replaceAll(String, String)
      */
     public static String replaceAll( String string, String oldSub, String newSub )
     {
@@ -604,9 +605,9 @@ public class StringUtil
      */
     /*
     public static final void main(String[] args) {
-	System.out.println("'" +
-			   StringUtil.replaceAll(args[0], args[1], args[2]) +
-			   "'");
+    System.out.println("'" +
+               StringUtil.replaceAll(args[0], args[1], args[2]) +
+               "'");
     }
     */
 }
