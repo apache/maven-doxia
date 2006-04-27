@@ -1,7 +1,7 @@
 package org.apache.maven.doxia.module.confluence;
 
 /*
- * Copyright 2004-2005 The Apache Software Foundation.
+ * Copyright 2004-2006 The Apache Software Foundation.
  *
  * Licensed under the Apache License, Version 2.0 (the "License");
  * you may not use this file except in compliance with the License.
@@ -64,10 +64,9 @@ public class ConfluenceParser
             };
     }
 
-    //TODO:
-    // (empty line) Produces a new paragraph
-    // \\ 	Creates a line break. Not often needed, most of the time Confluence will guess new lines for you appropriately.
-    // better support for anchors
+    //TODO: (empty line) Produces a new paragraph
+    //TODO: \\ Creates a line break. Not often needed, most of the time Confluence will guess new lines for you appropriately.
+    //TODO: better support for anchors
 
     public List parse( ByLineSource source )
         throws ParseException
