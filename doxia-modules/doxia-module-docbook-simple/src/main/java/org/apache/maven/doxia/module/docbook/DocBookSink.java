@@ -1,7 +1,7 @@
 package org.apache.maven.doxia.module.docbook;
 
 /*
- * Copyright 2004-2005 The Apache Software Foundation.
+ * Copyright 2004-2006 The Apache Software Foundation.
  *
  * Licensed under the Apache License, Version 2.0 (the "License");
  * you may not use this file except in compliance with the License.
@@ -29,6 +29,8 @@ import java.util.StringTokenizer;
 public class DocBookSink
     extends SinkAdapter
 {
+    private static final String EOL = System.getProperty( "line.separator" );
+
     public static final String DEFAULT_SGML_PUBLIC_ID = "-//OASIS//DTD DocBook V4.1//EN";
 
     public static final String DEFAULT_XML_PUBLIC_ID = "-//OASIS//DTD DocBook XML V4.1.2//EN";
@@ -330,7 +332,7 @@ public class DocBookSink
 
             if ( styleSheet != null )
             {
-                markup( "<?xml-stylesheet type=\"text/css\"\n" + "href=\"" + styleSheet + "\" ?>\n" );
+                markup( "<?xml-stylesheet type=\"text/css\"" + EOL + "href=\"" + styleSheet + "\" ?>" + EOL );
             }
         }
 
@@ -359,11 +361,11 @@ public class DocBookSink
         }
         if ( sysId == null )
         {
-            markup( ">\n" );
+            markup( ">" + EOL );
         }
         else
         {
-            markup( "\n\"" + sysId + "\">\n" );
+            markup( EOL + "\"" + sysId + "\">" + EOL );
         }
 
         markup( "<article" );
@@ -371,21 +373,21 @@ public class DocBookSink
         {
             markup( " lang=\"" + lang + "\"" );
         }
-        markup( ">\n" );
+        markup( ">" + EOL );
     }
 
     public void head_()
     {
         if ( hasTitle )
         {
-            markup( "</articleinfo>\n" );
+            markup( "</articleinfo>" + EOL );
             hasTitle = false;
         }
     }
 
     public void title()
     {
-        markup( "<articleinfo>\n" );
+        markup( "<articleinfo>" + EOL );
 
         hasTitle = true;
         markup( "<title>" );
@@ -393,7 +395,7 @@ public class DocBookSink
 
     public void title_()
     {
-        markup( "</title>\n" );
+        markup( "</title>" + EOL );
     }
 
     public void author()
@@ -404,7 +406,7 @@ public class DocBookSink
 
     public void author_()
     {
-        markup( "</corpauthor>\n" );
+        markup( "</corpauthor>" + EOL );
         authorDateFlag = false;
     }
 
@@ -416,65 +418,65 @@ public class DocBookSink
 
     public void date_()
     {
-        markup( "</date>\n" );
+        markup( "</date>" + EOL );
         authorDateFlag = false;
     }
 
     public void body_()
     {
-        markup( "</article>\n" );
+        markup( "</article>" + EOL );
         out.flush();
         resetState();
     }
 
     public void section1()
     {
-        markup( "<section>\n" );
+        markup( "<section>" + EOL );
     }
 
     public void section1_()
     {
-        markup( "</section>\n" );
+        markup( "</section>" + EOL );
     }
 
     public void section2()
     {
-        markup( "<section>\n" );
+        markup( "<section>" + EOL );
     }
 
     public void section2_()
     {
-        markup( "</section>\n" );
+        markup( "</section>" + EOL );
     }
 
     public void section3()
     {
-        markup( "<section>\n" );
+        markup( "<section>" + EOL );
     }
 
     public void section3_()
     {
-        markup( "</section>\n" );
+        markup( "</section>" + EOL );
     }
 
     public void section4()
     {
-        markup( "<section>\n" );
+        markup( "<section>" + EOL );
     }
 
     public void section4_()
     {
-        markup( "</section>\n" );
+        markup( "</section>" + EOL );
     }
 
     public void section5()
     {
-        markup( "<section>\n" );
+        markup( "<section>" + EOL );
     }
 
     public void section5_()
     {
-        markup( "</section>\n" );
+        markup( "</section>" + EOL );
     }
 
     public void sectionTitle()
@@ -484,27 +486,27 @@ public class DocBookSink
 
     public void sectionTitle_()
     {
-        markup( "</title>\n" );
+        markup( "</title>" + EOL );
     }
 
     public void list()
     {
-        markup( "<itemizedlist>\n" );
+        markup( "<itemizedlist>" + EOL );
     }
 
     public void list_()
     {
-        markup( "</itemizedlist>\n" );
+        markup( "</itemizedlist>" + EOL );
     }
 
     public void listItem()
     {
-        markup( "<listitem>\n" );
+        markup( "<listitem>" + EOL );
     }
 
     public void listItem_()
     {
-        markup( "</listitem>\n" );
+        markup( "</listitem>" + EOL );
     }
 
     public void numberedList( int numbering )
@@ -528,42 +530,42 @@ public class DocBookSink
             default:
                 numeration = "arabic";
         }
-        markup( "<orderedlist numeration=\"" + numeration + "\">\n" );
+        markup( "<orderedlist numeration=\"" + numeration + "\">" + EOL );
     }
 
     public void numberedList_()
     {
-        markup( "</orderedlist>\n" );
+        markup( "</orderedlist>" + EOL );
     }
 
     public void numberedListItem()
     {
-        markup( "<listitem>\n" );
+        markup( "<listitem>" + EOL );
     }
 
     public void numberedListItem_()
     {
-        markup( "</listitem>\n" );
+        markup( "</listitem>" + EOL );
     }
 
     public void definitionList()
     {
-        markup( "<variablelist>\n" );
+        markup( "<variablelist>" + EOL );
     }
 
     public void definitionList_()
     {
-        markup( "</variablelist>\n" );
+        markup( "</variablelist>" + EOL );
     }
 
     public void definitionListItem()
     {
-        markup( "<varlistentry>\n" );
+        markup( "<varlistentry>" + EOL );
     }
 
     public void definitionListItem_()
     {
-        markup( "</varlistentry>\n" );
+        markup( "</varlistentry>" + EOL );
     }
 
     public void definedTerm()
@@ -573,17 +575,17 @@ public class DocBookSink
 
     public void definedTerm_()
     {
-        markup( "</term>\n" );
+        markup( "</term>" + EOL );
     }
 
     public void definition()
     {
-        markup( "<listitem>\n" );
+        markup( "<listitem>" + EOL );
     }
 
     public void definition_()
     {
-        markup( "</listitem>\n" );
+        markup( "</listitem>"+ EOL);
     }
 
     public void paragraph()
@@ -593,7 +595,7 @@ public class DocBookSink
 
     public void paragraph_()
     {
-        markup( "</para>\n" );
+        markup( "</para>"  + EOL );
     }
 
     public void verbatim( boolean boxed )
@@ -604,18 +606,18 @@ public class DocBookSink
 
     public void verbatim_()
     {
-        markup( "</programlisting>\n" );
+        markup( "</programlisting>" + EOL );
         verbatimFlag = false;
     }
 
     public void horizontalRule()
     {
-        markup( horizontalRuleElement + '\n' );
+        markup( horizontalRuleElement + EOL );
     }
 
     public void pageBreak()
     {
-        markup( pageBreakElement + '\n' );
+        markup( pageBreakElement + EOL );
     }
 
     public void figure_()
@@ -633,18 +635,18 @@ public class DocBookSink
                 format = "JPEG";
             }
 
-            markup( "<mediaobject>\n<imageobject>\n" );
+            markup( "<mediaobject>" + EOL + "<imageobject>" + EOL );
             markup(
-                "<imagedata format=\"" + format + "\"\nfileref=\"" + escapeSGML( graphicsFileName, xmlMode ) + '\"' );
+                "<imagedata format=\"" + format + "\"" + EOL + "fileref=\"" + escapeSGML( graphicsFileName, xmlMode ) + '\"' );
             if ( xmlMode )
             {
-                markup( "/>\n" );
+                markup( "/>" + EOL );
             }
             else
             {
-                markup( ">\n" );
+                markup( ">" + EOL );
             }
-            markup( "</imageobject>\n</mediaobject>\n" );
+            markup( "</imageobject>" + EOL + "</mediaobject>" + EOL );
             graphicsFileName = null;
         }
     }
@@ -656,15 +658,15 @@ public class DocBookSink
 
     public void figureCaption()
     {
-        markup( "<figure>\n" );
+        markup( "<figure>" + EOL );
         markup( "<title>" );
     }
 
     public void figureCaption_()
     {
-        markup( "</title>\n" );
+        markup( "</title>" + EOL );
         graphicElement();
-        markup( "</figure>\n" );
+        markup( "</figure>" + EOL );
     }
 
     public void table()
@@ -680,7 +682,7 @@ public class DocBookSink
             // Formal table+title already written to original destination ---
 
             out.write( tableRows, /*preserveSpace*/ true );
-            markup( "</table>\n" );
+            markup( "</table>" + EOL );
         }
         else
         {
@@ -697,9 +699,9 @@ public class DocBookSink
                 sep = 0;
             }
 
-            markup( "<informaltable frame=\"" + frame + "\" rowsep=\"" + sep + "\" colsep=\"" + sep + "\">\n" );
+            markup( "<informaltable frame=\"" + frame + "\" rowsep=\"" + sep + "\" colsep=\"" + sep + "\">" + EOL );
             out.write( tableRows, /*preserveSpace*/ true );
-            markup( "</informaltable>\n" );
+            markup( "</informaltable>" + EOL );
         }
 
         tableRows = null;
@@ -716,7 +718,7 @@ public class DocBookSink
         savedOut = out;
         out = new LineBreaker( new StringWriter() );
 
-        markup( "<tgroup cols=\"" + justification.length + "\">\n" );
+        markup( "<tgroup cols=\"" + justification.length + "\">" + EOL );
         for ( int i = 0; i < justification.length; ++i )
         {
             String justif;
@@ -736,21 +738,21 @@ public class DocBookSink
             markup( "<colspec align=\"" + justif + "\"" );
             if ( xmlMode )
             {
-                markup( "/>\n" );
+                markup( "/>" + EOL );
             }
             else
             {
-                markup( ">\n" );
+                markup( ">" + EOL );
             }
         }
 
-        markup( "<tbody>\n" );
+        markup( "<tbody>" + EOL );
     }
 
     public void tableRows_()
     {
-        markup( "</tbody>\n" );
-        markup( "</tgroup>\n" );
+        markup( "</tbody>" + EOL );
+        markup( "</tgroup>" + EOL );
 
         // Remember diverted output and restore original destination ---
         out.flush();
@@ -760,12 +762,12 @@ public class DocBookSink
 
     public void tableRow()
     {
-        markup( "<row>\n" );
+        markup( "<row>" + EOL );
     }
 
     public void tableRow_()
     {
-        markup( "</row>\n" );
+        markup( "</row>" + EOL );
     }
 
     public void tableCell()
@@ -775,7 +777,7 @@ public class DocBookSink
 
     public void tableCell_()
     {
-        markup( "</para></entry>\n" );
+        markup( "</para></entry>" + EOL );
     }
 
     public void tableCaption()
@@ -795,13 +797,13 @@ public class DocBookSink
             sep = 0;
         }
 
-        markup( "<table frame=\"" + frame + "\" rowsep=\"" + sep + "\" colsep=\"" + sep + "\">\n" );
+        markup( "<table frame=\"" + frame + "\" rowsep=\"" + sep + "\" colsep=\"" + sep + "\">" + EOL );
         markup( "<title>" );
     }
 
     public void tableCaption_()
     {
-        markup( "</title>\n" );
+        markup( "</title>" + EOL );
     }
 
     public void anchor( String name )
@@ -886,7 +888,7 @@ public class DocBookSink
 
     public void lineBreak()
     {
-        markup( lineBreakElement + '\n' );
+        markup( lineBreakElement + EOL );
     }
 
     public void nonBreakingSpace()

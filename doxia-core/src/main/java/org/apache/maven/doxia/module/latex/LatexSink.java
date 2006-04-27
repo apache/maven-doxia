@@ -1,7 +1,7 @@
 package org.apache.maven.doxia.module.latex;
 
 /*
- * Copyright 2004-2005 The Apache Software Foundation.
+ * Copyright 2004-2006 The Apache Software Foundation.
  *
  * Licensed under the Apache License, Version 2.0 (the "License");
  * you may not use this file except in compliance with the License.
@@ -28,6 +28,8 @@ import java.io.Writer;
 public class LatexSink
     extends SinkAdapter
 {
+    private static final String EOL = System.getProperty( "line.separator" );
+
     private LineBreaker out;
 
     private String preamble;
@@ -86,7 +88,7 @@ public class LatexSink
         cellCount = 0;
 
         markup( preamble );
-        markup( "\\begin{document}\n\n" );
+        markup( "\\begin{document}" + EOL + EOL );
     }
 
     public void body()
@@ -94,13 +96,13 @@ public class LatexSink
         if ( titleFlag )
         {
             titleFlag = false;
-            markup( "\\pmaketitle\n\n" );
+            markup( "\\pmaketitle" + EOL + EOL );
         }
     }
 
     public void body_()
     {
-        markup( "\\end{document}\n\n" );
+        markup( "\\end{document}" + EOL + EOL );
         out.flush();
     }
 
@@ -131,12 +133,12 @@ public class LatexSink
 
     public void list()
     {
-        markup( "\\begin{plist}\n\n" );
+        markup( "\\begin{plist}" + EOL + EOL );
     }
 
     public void list_()
     {
-        markup( "\\end{plist}\n\n" );
+        markup( "\\end{plist}" + EOL + EOL );
     }
 
     public void listItem()
@@ -185,13 +187,13 @@ public class LatexSink
                 style = "arabic";
         }
 
-        markup( "\\begin{pnumberedlist}\n" );
-        markup( "\\renewcommand{\\the" + counter + "}{\\" + style + "{" + counter + "}}\n\n" );
+        markup( "\\begin{pnumberedlist}" + EOL );
+        markup( "\\renewcommand{\\the" + counter + "}{\\" + style + "{" + counter + "}}" + EOL + EOL );
     }
 
     public void numberedList_()
     {
-        markup( "\\end{pnumberedlist}\n\n" );
+        markup( "\\end{pnumberedlist}" + EOL + EOL );
         --numberedListNesting;
     }
 
@@ -202,35 +204,35 @@ public class LatexSink
 
     public void definitionList()
     {
-        markup( "\\begin{pdefinitionlist}\n\n" );
+        markup( "\\begin{pdefinitionlist}" + EOL + EOL );
     }
 
     public void definitionList_()
     {
-        markup( "\\end{pdefinitionlist}\n\n" );
+        markup( "\\end{pdefinitionlist}" + EOL + EOL );
     }
 
     public void figure()
     {
         figureFlag = true;
-        markup( "\\begin{pfigure}\n" );
+        markup( "\\begin{pfigure}" + EOL );
     }
 
     public void figure_()
     {
-        markup( "\\end{pfigure}\n\n" );
+        markup( "\\end{pfigure}" + EOL + EOL );
         figureFlag = false;
     }
 
     public void table()
     {
         tableFlag = true;
-        markup( "\\begin{ptable}\n" );
+        markup( "\\begin{ptable}" + EOL );
     }
 
     public void table_()
     {
-        markup( "\\end{ptable}\n\n" );
+        markup( "\\end{ptable}" + EOL + EOL );
         tableFlag = false;
     }
 
@@ -262,10 +264,10 @@ public class LatexSink
             justif.append( '|' );
         }
 
-        markup( "\\begin{ptablerows}{" + justif.toString() + "}\n" );
+        markup( "\\begin{ptablerows}{" + justif.toString() + "}" + EOL );
         if ( grid )
         {
-            markup( "\\hline\n" );
+            markup( "\\hline" + EOL );
         }
         gridFlag = grid;
         cellJustif = justification;
@@ -273,7 +275,7 @@ public class LatexSink
 
     public void tableRows_()
     {
-        markup( "\\end{ptablerows}\n" );
+        markup( "\\end{ptablerows}" + EOL );
         gridFlag = false;
         cellJustif = null;
     }
@@ -285,10 +287,10 @@ public class LatexSink
 
     public void tableRow_()
     {
-        markup( "\\\\\n" );
+        markup( "\\\\" + EOL );
         if ( gridFlag )
         {
-            markup( "\\hline\n" );
+            markup( "\\hline" + EOL );
         }
         cellCount = 0;
     }
@@ -301,7 +303,7 @@ public class LatexSink
 
     public void title_()
     {
-        markup( "}\n" );
+        markup( "}" + EOL );
     }
 
     public void author()
@@ -311,7 +313,7 @@ public class LatexSink
 
     public void author_()
     {
-        markup( "}\n" );
+        markup( "}" + EOL );
     }
 
     public void date()
@@ -321,30 +323,30 @@ public class LatexSink
 
     public void date_()
     {
-        markup( "}\n" );
+        markup( "}" + EOL );
     }
 
     public void sectionTitle_()
     {
-        markup( "}\n\n" );
+        markup( "}" + EOL + EOL );
     }
 
     public void paragraph_()
     {
-        markup( "\n\n" );
+        markup( EOL + EOL );
     }
 
     public void verbatim( boolean boxed )
     {
         if ( boxed )
         {
-            markup( "\\begin{pverbatimbox}\n" );
+            markup( "\\begin{pverbatimbox}" + EOL );
         }
         else
         {
-            markup( "\\begin{pverbatim}\n" );
+            markup( "\\begin{pverbatim}" + EOL );
         }
-        markup( "\\begin{verbatim}\n" );
+        markup( "\\begin{verbatim}" + EOL );
 
         verbatimFlag = true;
         boxFlag = boxed;
@@ -352,14 +354,14 @@ public class LatexSink
 
     public void verbatim_()
     {
-        markup( "\n\\end{verbatim}\n" );
+        markup( EOL + "\\end{verbatim}" + EOL );
         if ( boxFlag )
         {
-            markup( "\\end{pverbatimbox}\n\n" );
+            markup( "\\end{pverbatimbox}" + EOL + EOL );
         }
         else
         {
-            markup( "\\end{pverbatim}\n\n" );
+            markup( "\\end{pverbatim}" + EOL + EOL );
         }
 
         verbatimFlag = false;
@@ -383,14 +385,14 @@ public class LatexSink
 
     public void figureCaption_()
     {
-        markup( "}\n" );
+        markup( "}" + EOL );
     }
 
     public void tableCell()
     {
         if ( cellCount > 0 )
         {
-            markup( " &\n" );
+            markup( " &" + EOL );
         }
 
         char justif;
@@ -423,22 +425,22 @@ public class LatexSink
 
     public void tableCaption_()
     {
-        markup( "}\n" );
+        markup( "}" + EOL );
     }
 
     public void figureGraphics( String name )
     {
-        markup( "\\pfiguregraphics{" + name + "}\n" );
+        markup( "\\pfiguregraphics{" + name + "}" + EOL );
     }
 
     public void horizontalRule()
     {
-        markup( "\\phorizontalrule\n\n" );
+        markup( "\\phorizontalrule" + EOL + EOL );
     }
 
     public void pageBreak()
     {
-        markup( "\\newpage\n\n" );
+        markup( "\\newpage" + EOL + EOL );
     }
 
     public void anchor( String name )
@@ -493,7 +495,7 @@ public class LatexSink
 
     public void lineBreak()
     {
-        markup( ( figureFlag || tableFlag || titleFlag ) ? "\\\\\n" : "\\newline\n" );
+        markup( ( figureFlag || tableFlag || titleFlag ) ? "\\\\" + EOL : "\\newline" + EOL );
     }
 
     public void nonBreakingSpace()
@@ -590,42 +592,55 @@ public class LatexSink
 
     // -----------------------------------------------------------------------
 
-    private static final String defaultPreamble = "\\newcommand{\\ptitle}[1]{\\title{#1}}\n" +
-        "\\newcommand{\\pauthor}[1]{\\author{#1}}\n" + "\\newcommand{\\pdate}[1]{\\date{#1}}\n" +
-        "\\newcommand{\\pmaketitle}{\\maketitle}\n" + "\\newcommand{\\psectioni}[1]{\\section{#1}}\n" +
-        "\\newcommand{\\psectionii}[1]{\\subsection{#1}}\n" + "\\newcommand{\\psectioniii}[1]{\\subsubsection{#1}}\n" +
-        "\\newcommand{\\psectioniv}[1]{\\paragraph{#1}}\n" + "\\newcommand{\\psectionv}[1]{\\subparagraph{#1}}\n" +
-        "\\newenvironment{plist}{\\begin{itemize}}{\\end{itemize}}\n" +
-        "\\newenvironment{pnumberedlist}{\\begin{enumerate}}{\\end{enumerate}}\n" +
-        "\\newcommand{\\pdef}[1]{\\textbf{#1}\\hfill}\n" + "\\newenvironment{pdefinitionlist}\n" +
-        "{\\begin{list}{}{\\settowidth{\\labelwidth}{\\textbf{999.}}\n" +
-        "                \\setlength{\\leftmargin}{\\labelwidth}\n" +
-        "                \\addtolength{\\leftmargin}{\\labelsep}\n" +
-        "                \\renewcommand{\\makelabel}{\\pdef}}}\n" + "{\\end{list}}\n" +
-        "\\newenvironment{pfigure}{\\begin{center}}{\\end{center}}\n" +
-        "\\newcommand{\\pfiguregraphics}[1]{\\includegraphics{#1.eps}}\n" +
-        "\\newcommand{\\pfigurecaption}[1]{\\\\ \\vspace{\\pparskipamount}\n" +
-        "                                \\textit{#1}}\n" +
-        "\\newenvironment{ptable}{\\begin{center}}{\\end{center}}\n" +
-        "\\newenvironment{ptablerows}[1]{\\begin{tabular}{#1}}{\\end{tabular}}\n" +
-        "\\newenvironment{pcell}[1]{\\begin{tabular}[t]{#1}}{\\end{tabular}}\n" +
-        "\\newcommand{\\ptablecaption}[1]{\\\\ \\vspace{\\pparskipamount}\n" +
-        "                               \\textit{#1}}\n" +
-        "\\newenvironment{pverbatim}{\\begin{small}}{\\end{small}}\n" + "\\newsavebox{\\pbox}\n" +
-        "\\newenvironment{pverbatimbox}\n" + "{\\begin{lrbox}{\\pbox}\\begin{minipage}{\\linewidth}\\begin{small}}\n" +
-        "{\\end{small}\\end{minipage}\\end{lrbox}\\fbox{\\usebox{\\pbox}}}\n" +
-        "\\newcommand{\\phorizontalrule}{\\begin{center}\n" +
-        "                              \\rule[0.5ex]{\\linewidth}{1pt}\n" +
-        "                              \\end{center}}\n" +
-        "\\newcommand{\\panchor}[1]{\\textcolor{panchorcolor}{#1}}\n" +
-        "\\newcommand{\\plink}[1]{\\textcolor{plinkcolor}{#1}}\n" + "\\newcommand{\\pitalic}[1]{\\textit{#1}}\n" +
-        "\\newcommand{\\pbold}[1]{\\textbf{#1}}\n" + "\\newcommand{\\pmonospaced}[1]{\\texttt{\\small #1}}\n\n" +
-        "\\documentclass[a4paper]{article}\n" + "\\usepackage{a4wide}\n" + "\\usepackage{color}\n" +
-        "\\usepackage{graphics}\n" + "\\usepackage{times}\n" + "\\usepackage[latin1]{inputenc}\n" +
-        "\\usepackage[T1]{fontenc}\n\n" + "\\pagestyle{plain}\n\n" + "\\definecolor{plinkcolor}{rgb}{0,0,0.54}\n" +
-        "\\definecolor{panchorcolor}{rgb}{0.54,0,0}\n\n" + "\\newlength{\\pparskipamount}\n" +
-        "\\setlength{\\pparskipamount}{1ex}\n" + "\\setlength{\\parindent}{0pt}\n" +
-        "\\setlength{\\parskip}{\\pparskipamount}\n\n";
+    private static final String defaultPreamble = "\\newcommand{\\ptitle}[1]{\\title{#1}}" + EOL +
+        "\\newcommand{\\pauthor}[1]{\\author{#1}}" + EOL +
+        "\\newcommand{\\pdate}[1]{\\date{#1}}" + EOL +
+        "\\newcommand{\\pmaketitle}{\\maketitle}" + EOL +
+        "\\newcommand{\\psectioni}[1]{\\section{#1}}" + EOL +
+        "\\newcommand{\\psectionii}[1]{\\subsection{#1}}" + EOL +
+        "\\newcommand{\\psectioniii}[1]{\\subsubsection{#1}}" + EOL +
+        "\\newcommand{\\psectioniv}[1]{\\paragraph{#1}}" + EOL +
+        "\\newcommand{\\psectionv}[1]{\\subparagraph{#1}}" + EOL +
+        "\\newenvironment{plist}{\\begin{itemize}}{\\end{itemize}}" + EOL +
+        "\\newenvironment{pnumberedlist}{\\begin{enumerate}}{\\end{enumerate}}" + EOL +
+        "\\newcommand{\\pdef}[1]{\\textbf{#1}\\hfill}" + EOL +
+        "\\newenvironment{pdefinitionlist}" + EOL +
+        "{\\begin{list}{}{\\settowidth{\\labelwidth}{\\textbf{999.}}" + EOL +
+        "                \\setlength{\\leftmargin}{\\labelwidth}" + EOL +
+        "                \\addtolength{\\leftmargin}{\\labelsep}" + EOL +
+        "                \\renewcommand{\\makelabel}{\\pdef}}}" + EOL + "{\\end{list}}" + EOL +
+        "\\newenvironment{pfigure}{\\begin{center}}{\\end{center}}" + EOL +
+        "\\newcommand{\\pfiguregraphics}[1]{\\includegraphics{#1.eps}}" + EOL +
+        "\\newcommand{\\pfigurecaption}[1]{\\\\ \\vspace{\\pparskipamount}" + EOL +
+        "                                \\textit{#1}}" + EOL +
+        "\\newenvironment{ptable}{\\begin{center}}{\\end{center}}" + EOL +
+        "\\newenvironment{ptablerows}[1]{\\begin{tabular}{#1}}{\\end{tabular}}" + EOL +
+        "\\newenvironment{pcell}[1]{\\begin{tabular}[t]{#1}}{\\end{tabular}}" + EOL +
+        "\\newcommand{\\ptablecaption}[1]{\\\\ \\vspace{\\pparskipamount}" + EOL +
+        "                               \\textit{#1}}" + EOL +
+        "\\newenvironment{pverbatim}{\\begin{small}}{\\end{small}}" + EOL + "\\newsavebox{\\pbox}" + EOL +
+        "\\newenvironment{pverbatimbox}" + EOL + "{\\begin{lrbox}{\\pbox}\\begin{minipage}{\\linewidth}\\begin{small}}" + EOL +
+        "{\\end{small}\\end{minipage}\\end{lrbox}\\fbox{\\usebox{\\pbox}}}" + EOL +
+        "\\newcommand{\\phorizontalrule}{\\begin{center}" + EOL +
+        "                              \\rule[0.5ex]{\\linewidth}{1pt}" + EOL +
+        "                              \\end{center}}" + EOL +
+        "\\newcommand{\\panchor}[1]{\\textcolor{panchorcolor}{#1}}" + EOL +
+        "\\newcommand{\\plink}[1]{\\textcolor{plinkcolor}{#1}}" + EOL + "\\newcommand{\\pitalic}[1]{\\textit{#1}}" + EOL +
+        "\\newcommand{\\pbold}[1]{\\textbf{#1}}" + EOL +
+        "\\newcommand{\\pmonospaced}[1]{\\texttt{\\small #1}}" + EOL + EOL +
+        "\\documentclass[a4paper]{article}" + EOL + "\\usepackage{a4wide}" + EOL +
+        "\\usepackage{color}" + EOL +
+        "\\usepackage{graphics}" + EOL +
+        "\\usepackage{times}" + EOL +
+        "\\usepackage[latin1]{inputenc}" + EOL +
+        "\\usepackage[T1]{fontenc}" + EOL + EOL +
+        "\\pagestyle{plain}" + EOL + EOL +
+        "\\definecolor{plinkcolor}{rgb}{0,0,0.54}" + EOL +
+        "\\definecolor{panchorcolor}{rgb}{0.54,0,0}" + EOL + EOL +
+        "\\newlength{\\pparskipamount}" + EOL +
+        "\\setlength{\\pparskipamount}{1ex}" + EOL +
+        "\\setlength{\\parindent}{0pt}" + EOL +
+        "\\setlength{\\parskip}{\\pparskipamount}" + EOL + EOL;
 
     // -----------------------------------------------------------------------
 

@@ -1,7 +1,7 @@
 package org.apache.maven.doxia.module.rtf;
 
 /*
- * Copyright 2004-2005 The Apache Software Foundation.
+ * Copyright 2004-2006 The Apache Software Foundation.
  *
  * Licensed under the Apache License, Version 2.0 (the "License");
  * you may not use this file except in compliance with the License.
@@ -39,6 +39,8 @@ import java.util.Vector;
 public class RtfSink
     extends SinkAdapter
 {
+    private static final String EOL = System.getProperty( "line.separator" );
+
     public static final double DEFAULT_PAPER_WIDTH = 21.;   /*cm*/
 
     public static final double DEFAULT_PAPER_HEIGHT = 29.7; /*cm*/
@@ -931,11 +933,11 @@ public class RtfSink
 
         beginParagraph( paragraph );
 
-        StringTokenizer t = new StringTokenizer( text, "\n", true );
+        StringTokenizer t = new StringTokenizer( text, EOL, true );
         while ( t.hasMoreTokens() )
         {
             String s = t.nextToken();
-            if ( s.equals( "\n" ) && t.hasMoreTokens() )
+            if ( s.equals( EOL ) && t.hasMoreTokens() )
             {
                 writer.println( "\\line" );
             }
@@ -1334,11 +1336,11 @@ public class RtfSink
                 break;
 
             case CONTEXT_TABLE:
-                StringTokenizer t = new StringTokenizer( text, "\n", true );
+                StringTokenizer t = new StringTokenizer( text, EOL, true );
                 while ( t.hasMoreTokens() )
                 {
                     String token = t.nextToken();
-                    if ( token.equals( "\n" ) )
+                    if ( token.equals( EOL ) )
                     {
                         cell.add( line );
                         line = new Line();
@@ -1444,7 +1446,7 @@ public class RtfSink
     private static int textWidth( String text, Font font )
     {
         int width = 0;
-        StringTokenizer t = new StringTokenizer( text, "\n" );
+        StringTokenizer t = new StringTokenizer( text, EOL );
 
         while ( t.hasMoreTokens() )
         {

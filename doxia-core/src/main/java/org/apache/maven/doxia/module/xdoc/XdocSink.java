@@ -1,7 +1,7 @@
 package org.apache.maven.doxia.module.xdoc;
 
 /*
- * Copyright 2004-2005 The Apache Software Foundation.
+ * Copyright 2004-2006 The Apache Software Foundation.
  *
  * Licensed under the Apache License, Version 2.0 (the "License");
  * you may not use this file except in compliance with the License.
@@ -34,6 +34,8 @@ import java.io.Writer;
 public class XdocSink
     extends SinkAdapter
 {
+    private static final String EOL = System.getProperty( "line.separator" );
+
     private LineBreaker out;
 
     private StringBuffer buffer = new StringBuffer();
@@ -74,18 +76,18 @@ public class XdocSink
 
         headFlag = true;
 
-        markup( "<?xml version=\"1.0\" ?>\n" );
+        markup( "<?xml version=\"1.0\" ?>" + EOL );
 
-        markup( "<document>\n" );
+        markup( "<document>" + EOL );
 
-        markup( "<properties>\n" );
+        markup( "<properties>" + EOL );
     }
 
     public void head_()
     {
         headFlag = false;
 
-        markup( "</properties>\n" );
+        markup( "</properties>" + EOL );
     }
 
     public void title_()
@@ -94,7 +96,7 @@ public class XdocSink
         {
             markup( "<title>" );
             content( buffer.toString() );
-            markup( "</title>\n" );
+            markup( "</title>" + EOL );
             buffer = new StringBuffer();
         }
     }
@@ -105,7 +107,7 @@ public class XdocSink
         {
             markup( "<author>" );
             content( buffer.toString() );
-            markup( "</author>\n" );
+            markup( "</author>" + EOL );
             buffer = new StringBuffer();
         }
     }
@@ -123,14 +125,14 @@ public class XdocSink
 
     public void body()
     {
-        markup( "<body>\n" );
+        markup( "<body>" + EOL );
     }
 
     public void body_()
     {
-        markup( "</body>\n" );
+        markup( "</body>" + EOL );
 
-        markup( "</document>\n" );
+        markup( "</document>" + EOL );
 
         out.flush();
 
@@ -199,7 +201,7 @@ public class XdocSink
 
     public void list()
     {
-        markup( "<ul>\n" );
+        markup( "<ul>" + EOL );
     }
 
     public void list_()
@@ -216,7 +218,7 @@ public class XdocSink
 
     public void listItem_()
     {
-        markup( "</li>\n" );
+        markup( "</li>" + EOL );
     }
 
     public void numberedList( int numbering )
@@ -240,7 +242,7 @@ public class XdocSink
             default:
                 style = "decimal";
         }
-        markup( "<ol style=\"list-style-type: " + style + "\">\n" );
+        markup( "<ol style=\"list-style-type: " + style + "\">" + EOL );
     }
 
     public void numberedList_()
@@ -257,12 +259,12 @@ public class XdocSink
 
     public void numberedListItem_()
     {
-        markup( "</li>\n" );
+        markup( "</li>" + EOL );
     }
 
     public void definitionList()
     {
-        markup( "<dl compact=\"compact\">\n" );
+        markup( "<dl compact=\"compact\">" + EOL );
     }
 
     public void definitionList_()
@@ -277,7 +279,7 @@ public class XdocSink
 
     public void definedTerm_()
     {
-        markup( "</b></dt>\n" );
+        markup( "</b></dt>" + EOL );
     }
 
     public void definition()
@@ -289,7 +291,7 @@ public class XdocSink
 
     public void definition_()
     {
-        markup( "</dd>\n" );
+        markup( "</dd>" + EOL );
     }
 
     public void paragraph()
@@ -350,7 +352,7 @@ public class XdocSink
 
     public void table()
     {
-        markup( "<table align=\"center\">\n" );
+        markup( "<table align=\"center\">" + EOL );
     }
 
     public void table_()
@@ -361,7 +363,7 @@ public class XdocSink
     public void tableRows( int[] justification, boolean grid )
 
     {
-        markup( "<table align=\"center\" border=\"" + ( grid ? 1 : 0 ) + "\">\n" );
+        markup( "<table align=\"center\" border=\"" + ( grid ? 1 : 0 ) + "\">" + EOL );
         this.cellJustif = justification;
     }
 
@@ -372,13 +374,13 @@ public class XdocSink
 
     public void tableRow()
     {
-        markup( "<tr valign=\"top\">\n" );
+        markup( "<tr valign=\"top\">" + EOL );
         cellCount = 0;
     }
 
     public void tableRow_()
     {
-        markup( "</tr>\n" );
+        markup( "</tr>" + EOL );
         cellCount = 0;
     }
 
@@ -435,7 +437,7 @@ public class XdocSink
 
     public void tableCell_( boolean headerRow )
     {
-        markup( "</t" + ( headerRow ? 'h' : 'd' ) + ">\n" );
+        markup( "</t" + ( headerRow ? 'h' : 'd' ) + ">" + EOL );
         ++cellCount;
     }
 
@@ -534,7 +536,7 @@ public class XdocSink
     {
         if ( headFlag )
         {
-            buffer.append( '\n' );
+            buffer.append( EOL );
         }
         else
         {

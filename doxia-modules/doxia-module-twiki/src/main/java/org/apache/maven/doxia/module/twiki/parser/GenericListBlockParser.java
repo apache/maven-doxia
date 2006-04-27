@@ -1,3 +1,5 @@
+package org.apache.maven.doxia.module.twiki.parser;
+
 /*
  *  Copyright 2005 Zauber <info /at/ zauber dot com dot ar>
  *
@@ -13,7 +15,22 @@
  *  See the License for the specific language governing permissions and
  *  limitations under the License.
  */
-package org.apache.maven.doxia.module.twiki.parser;
+
+/*
+ * Copyright 2006 The Apache Software Foundation.
+ *
+ * Licensed under the Apache License, Version 2.0 (the "License");
+ * you may not use this file except in compliance with the License.
+ * You may obtain a copy of the License at
+ *
+ *      http://www.apache.org/licenses/LICENSE-2.0
+ *
+ * Unless required by applicable law or agreed to in writing, software
+ * distributed under the License is distributed on an "AS IS" BASIS,
+ * WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
+ * See the License for the specific language governing permissions and
+ * limitations under the License.
+ */
 
 import org.apache.maven.doxia.module.common.ByLineSource;
 import org.apache.maven.doxia.parser.ParseException;
@@ -25,7 +42,6 @@ import java.util.List;
 import java.util.regex.Matcher;
 import java.util.regex.Pattern;
 
-
 /**
  * Generic list parser
  *
@@ -34,6 +50,8 @@ import java.util.regex.Pattern;
  */
 public class GenericListBlockParser implements BlockParser
 {
+    static final String EOL = System.getProperty( "line.separator" );
+
     /**
      * parser used to create text blocks
      */
@@ -538,7 +556,7 @@ class TreeListBuilder
                 sb.append( indent );
                 sb.append( "- " );
                 sb.append( text );
-                sb.append( '\n' );
+                sb.append( GenericListBlockParser.EOL );
             }
             for ( Iterator it = children.iterator(); it.hasNext(); )
             {

@@ -1,7 +1,7 @@
 package org.apache.maven.doxia.module.xhtml;
 
 /*
- * Copyright 2004-2005 The Apache Software Foundation.
+ * Copyright 2004-2006 The Apache Software Foundation.
  *
  * Licensed under the Apache License, Version 2.0 (the "License");
  * you may not use this file except in compliance with the License.
@@ -28,6 +28,8 @@ import java.util.Map;
  */
 public class SinkDescriptorReader
 {
+    private static final String EOL = System.getProperty( "line.separator" );
+
     public Map read( Reader reader )
         throws IOException
     {
@@ -90,12 +92,12 @@ public class SinkDescriptorReader
                 }
                 else
                 {
-                    directiveBody.append( line ).append( "\n" );
+                    directiveBody.append( line ).append( EOL );
                 }
             }
             else
             {
-                directiveBody.append( line ).append( "\n" );
+                directiveBody.append( line ).append( EOL );
             }
         }
 

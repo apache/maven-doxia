@@ -1,7 +1,7 @@
 package org.apache.maven.doxia.module.xhtml;
 
 /*
- * Copyright 2004-2005 The Apache Software Foundation.
+ * Copyright 2004-2006 The Apache Software Foundation.
  *
  * Licensed under the Apache License, Version 2.0 (the "License");
  * you may not use this file except in compliance with the License.
@@ -21,7 +21,6 @@ import org.apache.maven.doxia.module.xhtml.decoration.render.RenderingContext;
 import org.apache.maven.doxia.parser.Parser;
 import org.apache.maven.doxia.sink.Sink;
 import org.apache.maven.doxia.sink.StructureSink;
-import org.apache.maven.doxia.util.StringUtil;
 import org.codehaus.plexus.util.StringUtils;
 
 import java.io.PrintWriter;
@@ -36,6 +35,8 @@ import java.util.Map;
 public class XhtmlSink
     extends AbstractXhtmlSink
 {
+    private static final String EOL = System.getProperty( "line.separator" );
+
     private StringBuffer buffer = new StringBuffer();
 
     private boolean headFlag;
@@ -127,7 +128,7 @@ public class XhtmlSink
         {
             write( "<meta name=\"author\" content=\"" );
             write( buffer.toString() );
-            write( "\" />\n" );
+            write( "\" />" + EOL );
             resetBuffer();
         }
     }
@@ -138,7 +139,7 @@ public class XhtmlSink
         {
             write( "<meta name=\"date\" content=\"" );
             write( buffer.toString() );
-            write( "\" />\n" );
+            write( "\" />" + EOL );
             resetBuffer();
         }
     }
@@ -724,7 +725,7 @@ public class XhtmlSink
     {
         if ( headFlag )
         {
-            buffer.append( '\n' );
+            buffer.append( EOL );
         }
         else
         {

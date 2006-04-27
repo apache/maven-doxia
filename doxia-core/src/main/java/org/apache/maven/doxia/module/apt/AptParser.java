@@ -1,7 +1,7 @@
 package org.apache.maven.doxia.module.apt;
 
 /*
- * Copyright 2004-2005 The Apache Software Foundation.
+ * Copyright 2004-2006 The Apache Software Foundation.
  *
  * Licensed under the Apache License, Version 2.0 (the "License");
  * you may not use this file except in compliance with the License.
@@ -36,6 +36,8 @@ import java.util.StringTokenizer;
 public class AptParser
     extends AbstractParser
 {
+    private static final String EOL = System.getProperty( "line.separator" );
+
     private static final int TITLE = 0;
 
     private static final int SECTION1 = 1;
@@ -1279,7 +1281,7 @@ public class AptParser
                         break;
                     }
 
-                    buffer.append( '\n' );
+                    buffer.append( EOL );
                     buffer.append( l );
 
                     AptParser.this.nextLine();
@@ -1383,7 +1385,7 @@ public class AptParser
         public void traverse()
             throws AptParseException
         {
-            StringTokenizer lines = new StringTokenizer( text, "\n" );
+            StringTokenizer lines = new StringTokenizer( text, EOL );
             int separator = -1;
             boolean firstLine = true;
             boolean title = false;
@@ -1684,7 +1686,7 @@ public class AptParser
                         buffer.append( c );
                     }
                 }
-                buffer.append( '\n' );
+                buffer.append( EOL );
 
                 AptParser.this.nextLine();
             }

@@ -1,7 +1,7 @@
 package org.apache.maven.doxia.module.confluence.parser.list;
 
 /*
-* Copyright 2004-2005 The Apache Software Foundation.
+* Copyright 2004-2006 The Apache Software Foundation.
 *
 * Licensed under the Apache License, Version 2.0 (the "License");
 * you may not use this file except in compliance with the License.
@@ -26,6 +26,8 @@ import java.util.Iterator;
  */
 public class TreeComponent
 {
+    private static final String EOL = System.getProperty( "line.separator" );
+
     private List children = new ArrayList();
 
     private String text;
@@ -93,7 +95,7 @@ public class TreeComponent
             sb.append( indent );
             sb.append( "- " );
             sb.append( text );
-            sb.append( '\n' );
+            sb.append( EOL );
         }
 
         for ( Iterator i = children.iterator(); i.hasNext(); )

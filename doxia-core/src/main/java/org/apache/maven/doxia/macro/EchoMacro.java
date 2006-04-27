@@ -1,7 +1,7 @@
 package org.apache.maven.doxia.macro;
 
 /*
- * Copyright 2004-2005 The Apache Software Foundation.
+ * Copyright 2004-2006 The Apache Software Foundation.
  *
  * Licensed under the Apache License, Version 2.0 (the "License");
  * you may not use this file except in compliance with the License.
@@ -27,17 +27,19 @@ import java.util.Iterator;
 public class EchoMacro
     extends AbstractMacro
 {
+    private static final String EOL = System.getProperty( "line.separator" );
+
     public void execute( Sink sink, MacroRequest request )
     {
         sink.verbatim( true );
 
-        sink.text( "echo\n" );
+        sink.text( "echo" + EOL );
 
         for ( Iterator i = request.getParameters().keySet().iterator(); i.hasNext(); )
         {
             String key = (String) i.next();
 
-            sink.text( key + " ---> " + request.getParameter( key ) + "\n" );
+            sink.text( key + " ---> " + request.getParameter( key ) + EOL );
         }
 
         sink.verbatim_();
