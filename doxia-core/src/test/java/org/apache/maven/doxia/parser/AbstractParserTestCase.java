@@ -1,7 +1,7 @@
 package org.apache.maven.doxia.parser;
 
 /*
- * Copyright 2004-2005 The Apache Software Foundation.
+ * Copyright 2004-2006 The Apache Software Foundation.
  *
  * Licensed under the Apache License, Version 2.0 (the "License");
  * you may not use this file except in compliance with the License.
@@ -24,23 +24,50 @@ import java.io.FileReader;
 import java.io.Reader;
 
 /**
+ * Test the parsing of sample input files
+ * 
+ * @author <a href="mailto:carlos@apache.org">Carlos Sanchez</a>
  * @author <a href="mailto:evenisse@codehaus.org">Emmanuel Venisse</a>
  * @version $Id:AbstractParserTestCase.java 348605 2005-11-24 12:02:44 +1100 (Thu, 24 Nov 2005) brett $
  */
 public abstract class AbstractParserTestCase
     extends PlexusTestCase
 {
+    /**
+     * Parser to use to convert input to sink events
+     * 
+     * @return the parser to use
+     */
     protected abstract Parser getParser();
 
+    /**
+     * Path of the document to test, relative to basedir
+     * 
+     * @return the relative path
+     */
     protected abstract String getDocument();
+    
+    /**
+     * Sink to write the output of the parsing
+     * 
+     * @return a SinkAdapter if not overridden
+     */
+    protected Sink getSink()
+    {
+        return new SinkAdapter();
+    }
 
+    /**
+     * Parse the document in the path specified by {@link #getDocument()},
+     * with parser from {@link #getParser()}, and output to sink from {@link #getSink()}
+     * 
+     * @throws Exception
+     */
     public void testParser()
         throws Exception
     {
-        Sink sink = new SinkAdapter();
-
         Reader reader = new FileReader( getTestFile( getBasedir(), getDocument() ) );
 
-        getParser().parse( reader, sink );
+        getParser().parse( reader, getSink() );
     }
 }
