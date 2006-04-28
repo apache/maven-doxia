@@ -1,5 +1,7 @@
-package org.apache.maven.doxia.sink;/*
- * Copyright 2004-2005 The Apache Software Foundation.
+package org.apache.maven.doxia.sink;
+
+/*
+ * Copyright 2004-2006 The Apache Software Foundation.
  *
  * Licensed under the Apache License, Version 2.0 (the "License");
  * you may not use this file except in compliance with the License.
@@ -14,11 +16,12 @@ package org.apache.maven.doxia.sink;/*
  * limitations under the License.
  */
 
+/**
+ * Empty implementation of the Sink interface. Useful for testing purposes.
+ */
 public class SinkAdapter
     implements Sink
 {
-    // Not abstract. Useful just to apt a document without converting it.
-
     public void head()
     {
     }
