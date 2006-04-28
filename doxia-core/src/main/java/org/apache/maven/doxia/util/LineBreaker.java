@@ -26,6 +26,8 @@ public class LineBreaker
 {
     public static final int DEFAULT_MAX_LINE_LENGTH = 78;
 
+    private static final String EOL = System.getProperty( "line.separator" );
+
     private Writer destination;
 
     private BufferedWriter writer;
@@ -88,7 +90,7 @@ public class LineBreaker
 
                     case '\n':
                         writeWord();
-                        writer.write( '\n' );
+                        writer.write( EOL );
                         lineLength = 0;
                         break;
 
@@ -126,7 +128,7 @@ public class LineBreaker
             {
                 if ( lineLength + 1 + length > maxLineLength )
                 {
-                    writer.write( '\n' );
+                    writer.write( EOL );
                     lineLength = 0;
                 }
                 else
