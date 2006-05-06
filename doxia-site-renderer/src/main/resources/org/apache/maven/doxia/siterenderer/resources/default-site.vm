@@ -127,7 +127,9 @@
 
 #macro ( mainMenu $menus )
   #foreach( $menu in $menus )
+    #if ( $menu.name )
     <h5>$menu.name</h5>
+    #end
     <ul>
       #foreach( $item in $menu.items )
         #menuItem( $item )
