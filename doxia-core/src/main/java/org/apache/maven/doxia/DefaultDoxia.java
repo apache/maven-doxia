@@ -25,9 +25,10 @@ import org.apache.maven.doxia.sink.Sink;
 import java.io.Reader;
 
 /**
+ * @plexus.component role="org.apache.maven.doxia.Doxia"
+ *
  * @author <a href="mailto:jason@maven.org">Jason van Zyl</a>
  * @version $Id:DefaultDoxia.java 348605 2005-11-24 12:02:44 +1100 (Thu, 24 Nov 2005) brett $
- * @plexus.component role="org.apache.maven.doxia.Doxia"
  */
 public class DefaultDoxia
     implements Doxia
@@ -50,5 +51,4 @@ public class DefaultDoxia
 
         parser.parse( source, sink );
     }
-
 }

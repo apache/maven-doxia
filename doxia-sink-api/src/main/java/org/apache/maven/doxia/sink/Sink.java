@@ -1,4 +1,6 @@
-package org.apache.maven.doxia.sink;/*
+package org.apache.maven.doxia.sink;
+
+/*
  * Copyright 2004-2005 The Apache Software Foundation.
  *
  * Licensed under the Apache License, Version 2.0 (the "License");
@@ -206,4 +208,3 @@ public interface Sink
 
     void close();
 }
-

@@ -31,7 +31,7 @@ import java.io.Reader;
 import java.util.Iterator;
 
 /**
- * Parse a fml document and emit events into the specified doxia Sink.
+ * Parse a fml model and emit events into the specified doxia Sink.
  *
  * @author <a href="mailto:evenisse@codehaus.org">Emmanuel Venisse</a>
  * @version $Id:FmlParser.java 348605 2005-11-24 12:02:44 +1100 (Thu, 24 Nov 2005) brett $

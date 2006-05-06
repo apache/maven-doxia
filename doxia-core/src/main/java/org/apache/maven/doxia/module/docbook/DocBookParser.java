@@ -31,7 +31,7 @@ import java.util.Iterator;
 import java.util.Stack;
 
 /**
- * Parse a DocBook document and emit events into the specified doxia
+ * Parse a DocBook model and emit events into the specified doxia
  * Sink.
  *
  * @author <a href="mailto:jason@maven.org">Jason van Zyl</a>

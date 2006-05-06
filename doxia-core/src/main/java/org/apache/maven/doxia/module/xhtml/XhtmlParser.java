@@ -26,7 +26,7 @@ import java.io.Reader;
 import java.util.Stack;
 
 /**
- * Parse an xdoc document and emit events into the specified doxia
+ * Parse an xdoc model and emit events into the specified doxia
  * Sink.
  *
  * @author <a href="mailto:jason@maven.org">Jason van Zyl</a>
@@ -90,8 +90,8 @@ public class XhtmlParser
                 }
                 /*
                  * The ADDRESS element may be used by authors to supply contact information 
-                 * for a document or a major part of a document such as a form. This element
-                 *  often appears at the beginning or end of a document.
+                 * for a model or a major part of a model such as a form. This element
+                 *  often appears at the beginning or end of a model.
                  */
                 else if ( parser.getName().equals( "address" ) )
                 {

@@ -30,8 +30,7 @@ import java.util.Map;
 import java.util.StringTokenizer;
 
 /**
- * @plexus.component role="org.apache.maven.doxia.parser.Parser"
- * role-hint="apt"
+ * @plexus.component role="org.apache.maven.doxia.parser.Parser" role-hint="apt"
  */
 public class AptParser
     extends AbstractParser

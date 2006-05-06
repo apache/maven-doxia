@@ -41,7 +41,7 @@ public abstract class AbstractParserTestCase
     protected abstract Parser getParser();
 
     /**
-     * Path of the document to test, relative to basedir
+     * Path of the model to test, relative to basedir
      * 
      * @return the relative path
      */
@@ -58,7 +58,7 @@ public abstract class AbstractParserTestCase
     }
 
     /**
-     * Parse the document in the path specified by {@link #getDocument()},
+     * Parse the model in the path specified by {@link #getDocument()},
      * with parser from {@link #getParser()}, and output to sink from {@link #getSink()}
      * 
      * @throws Exception

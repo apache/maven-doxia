@@ -25,7 +25,7 @@ import org.apache.maven.doxia.util.LineBreaker;
 import java.io.Writer;
 
 /**
- * A doxia Sink which produces an xdoc document.
+ * A doxia Sink which produces an xdoc model.
  *
  * @author <a href="mailto:james@jamestaylor.org">James Taylor</a>
  * @version $Id:XdocSink.java 348605 2005-11-24 12:02:44 +1100 (Thu, 24 Nov 2005) brett $

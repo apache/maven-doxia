@@ -20,7 +20,7 @@ import java.lang.reflect.Method;
 
 
 /**
- * Advisor that prints the hierarchy of a document as is beeing generated
+ * Advisor that prints the hierarchy of a model as is beeing generated
  *
  * @author Juan F. Codagnone
  * @since Nov 6, 2005

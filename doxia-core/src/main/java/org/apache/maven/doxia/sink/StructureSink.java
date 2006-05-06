@@ -20,9 +20,6 @@ import java.io.File;
 
 public class StructureSink
 {
-
-    // -----------------------------------------------------------------------
-
     public static boolean isExternalLink( String text )
     {
         text = text.toLowerCase();
