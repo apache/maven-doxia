@@ -329,6 +329,13 @@
           <identifier>true</identifier>
         </field>
         <field xml.attribute="true">
+          <name>inheritAsRef</name>
+          <description>If this is a reference, setting inheritAsRef means that it will be populated in the project,
+            whereas if it is false it is populated in the parent and then inherited.</description>
+          <version>1.0.0</version>
+          <type>boolean</type>
+        </field>
+        <field xml.attribute="true">
           <name>ref</name>
           <description><![CDATA[A reference to a pre-defined menu, such as a <code>reports</code>, <code>modules</code>
           or <code>parentProject</code>.]]></description>
