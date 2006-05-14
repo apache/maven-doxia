@@ -3,11 +3,11 @@
   <parent>
     <artifactId>doxia-modules</artifactId>
     <groupId>org.apache.maven.doxia</groupId>
-    <version>1.0-alpha-8</version>
+    <version>1.0-alpha-9-SNAPSHOT</version>
   </parent>
   <artifactId>doxia-module-confluence</artifactId>
   <name>Doxia Confluence Module</name>
-  <version>1.0-alpha-8</version>
+  <version>1.0-alpha-9-SNAPSHOT</version>
   <developers>
     <developer>
       <name>Juan F. Codagnone</name>
