@@ -93,20 +93,24 @@ public final class ITextSink
 
     private int depth = 0;
 
-    /**
-     * Default constructor
-     *
-     * @param w a writer
-     */
-    public ITextSink( Writer w )
+    public ITextSink( Writer writer )
     {
-        this.writer = w;
+        this.writer = writer;
 
         this.actionContext = new SinkActionContext();
         this.font = new ITextFont();
         this.header = new ITextHeader();
 
         this.xmlWriter = new PrettyPrintXMLWriter( this.writer, "UTF-8", null );//, DOCTYPE );
+    }
+
+    public ITextSink( PrettyPrintXMLWriter xmlWriter )
+    {
+        this.actionContext = new SinkActionContext();
+        this.font = new ITextFont();
+        this.header = new ITextHeader();
+
+        this.xmlWriter = xmlWriter;
     }
 
     /**
@@ -132,17 +136,12 @@ public final class ITextSink
     // ----------------------------------------------------------------------
     // Document
     // ----------------------------------------------------------------------
-    /**
-     * @see org.apache.maven.doxia.sink.Sink#close()
-     */
+
     public void close()
     {
         IOUtil.close( this.writer );
     }
 
-    /**
-     * @see org.apache.maven.doxia.sink.Sink#flush()
-     */
     public void flush()
     {
         super.flush();
@@ -151,65 +150,42 @@ public final class ITextSink
     // ----------------------------------------------------------------------
     // Header
     // ----------------------------------------------------------------------
-    /**
-     * @see org.apache.maven.doxia.sink.Sink#head_()
-     */
+
     public void head_()
     {
         this.actionContext.release();
     }
 
-    /**
-     * @see org.apache.maven.doxia.sink.Sink#head()
-     */
     public void head()
     {
         this.actionContext.setAction( SinkActionContext.HEAD );
     }
 
-    /**
-     * @see org.apache.maven.doxia.sink.SinkAdapter#author_()
-     */
     public void author_()
     {
         this.actionContext.release();
     }
 
-    /**
-     * @see org.apache.maven.doxia.sink.SinkAdapter#author()
-     */
     public void author()
     {
         this.actionContext.setAction( SinkActionContext.AUTHOR );
     }
 
-    /**
-     * @see org.apache.maven.doxia.sink.SinkAdapter#date_()
-     */
     public void date_()
     {
         this.actionContext.release();
     }
 
-    /**
-     * @see org.apache.maven.doxia.sink.SinkAdapter#date()
-     */
     public void date()
     {
         this.actionContext.setAction( SinkActionContext.DATE );
     }
 
-    /**
-     * @see org.apache.maven.doxia.sink.SinkAdapter#title_()
-     */
     public void title_()
     {
         this.actionContext.release();
     }
 
-    /**
-     * @see org.apache.maven.doxia.sink.SinkAdapter#title()
-     */
     public void title()
     {
         this.actionContext.setAction( SinkActionContext.TITLE );
@@ -218,9 +194,7 @@ public final class ITextSink
     // ----------------------------------------------------------------------
     // Body
     // ----------------------------------------------------------------------
-    /**
-     * @see org.apache.maven.doxia.sink.Sink#body_()
-     */
+
     public void body_()
     {
         writeEndElement(); // ElementTags.CHAPTER
@@ -280,25 +254,17 @@ public final class ITextSink
     // ----------------------------------------------------------------------
     // Sections
     // ----------------------------------------------------------------------
-    /**
-     * @see org.apache.maven.doxia.sink.Sink#sectionTitle()
-     */
+
     public void sectionTitle()
     {
         this.actionContext.release();
     }
 
-    /**
-     * @see org.apache.maven.doxia.sink.Sink#sectionTitle_()
-     */
     public void sectionTitle_()
     {
         this.actionContext.setAction( SinkActionContext.SECTION_TITLE );
     }
 
-    /**
-     * @see org.apache.maven.doxia.sink.SinkAdapter#section1_()
-     */
     public void section1_()
     {
         writeEndElement(); // ElementTags.SECTION
@@ -309,9 +275,6 @@ public final class ITextSink
         this.actionContext.release();
     }
 
-    /**
-     * @see org.apache.maven.doxia.sink.SinkAdapter#section1()
-     */
     public void section1()
     {
         this.numberDepth++;
@@ -327,9 +290,6 @@ public final class ITextSink
         this.actionContext.setAction( SinkActionContext.SECTION_1 );
     }
 
-    /**
-     * @see org.apache.maven.doxia.sink.Sink#sectionTitle1_()
-     */
     public void sectionTitle1_()
     {
         writeEndElement(); // ElementTags.TITLE
@@ -340,9 +300,6 @@ public final class ITextSink
         this.actionContext.release();
     }
 
-    /**
-     * @see org.apache.maven.doxia.sink.Sink#sectionTitle()
-     */
     public void sectionTitle1()
     {
         this.font.setSize( ITextFont.getSectionFontSize( 1 ) );
@@ -361,9 +318,6 @@ public final class ITextSink
         this.actionContext.setAction( SinkActionContext.SECTION_TITLE_1 );
     }
 
-    /**
-     * @see org.apache.maven.doxia.sink.SinkAdapter#section2_()
-     */
     public void section2_()
     {
         writeEndElement(); // ElementTags.SECTION
@@ -374,9 +328,6 @@ public final class ITextSink
         this.actionContext.release();
     }
 
-    /**
-     * @see org.apache.maven.doxia.sink.SinkAdapter#section2()
-     */
     public void section2()
     {
         this.numberDepth++;
@@ -392,9 +343,6 @@ public final class ITextSink
         this.actionContext.setAction( SinkActionContext.SECTION_2 );
     }
 
-    /**
-     * @see org.apache.maven.doxia.sink.SinkAdapter#sectionTitle2_()
-     */
     public void sectionTitle2_()
     {
         writeEndElement(); // ElementTags.TITLE
@@ -405,9 +353,6 @@ public final class ITextSink
         this.actionContext.release();
     }
 
-    /**
-     * @see org.apache.maven.doxia.sink.SinkAdapter#sectionTitle2()
-     */
     public void sectionTitle2()
     {
         this.font.setSize( ITextFont.getSectionFontSize( 2 ) );
@@ -426,9 +371,6 @@ public final class ITextSink
         this.actionContext.setAction( SinkActionContext.SECTION_TITLE_2 );
     }
 
-    /**
-     * @see org.apache.maven.doxia.sink.SinkAdapter#section3_()
-     */
     public void section3_()
     {
         writeEndElement(); // ElementTags.SECTION
@@ -439,9 +381,6 @@ public final class ITextSink
         this.actionContext.release();
     }
 
-    /**
-     * @see org.apache.maven.doxia.sink.SinkAdapter#section3()
-     */
     public void section3()
     {
         this.numberDepth++;
@@ -457,9 +396,6 @@ public final class ITextSink
         this.actionContext.setAction( SinkActionContext.SECTION_3 );
     }
 
-    /**
-     * @see org.apache.maven.doxia.sink.SinkAdapter#sectionTitle3_()
-     */
     public void sectionTitle3_()
     {
         writeEndElement(); // ElementTags.TITLE
@@ -470,9 +406,6 @@ public final class ITextSink
         this.actionContext.release();
     }
 
-    /**
-     * @see org.apache.maven.doxia.sink.SinkAdapter#sectionTitle3()
-     */
     public void sectionTitle3()
     {
         this.font.setSize( ITextFont.getSectionFontSize( 3 ) );
@@ -491,9 +424,6 @@ public final class ITextSink
         this.actionContext.setAction( SinkActionContext.SECTION_TITLE_3 );
     }
 
-    /**
-     * @see org.apache.maven.doxia.sink.SinkAdapter#section4_()
-     */
     public void section4_()
     {
         writeEndElement(); // ElementTags.SECTION
@@ -504,9 +434,6 @@ public final class ITextSink
         this.actionContext.release();
     }
 
-    /**
-     * @see org.apache.maven.doxia.sink.SinkAdapter#section4()
-     */
     public void section4()
     {
         this.numberDepth++;
@@ -522,9 +449,6 @@ public final class ITextSink
         this.actionContext.setAction( SinkActionContext.SECTION_4 );
     }
 
-    /**
-     * @see org.apache.maven.doxia.sink.SinkAdapter#sectionTitle4_()
-     */
     public void sectionTitle4_()
     {
         writeEndElement(); // ElementTags.TITLE
@@ -535,9 +459,6 @@ public final class ITextSink
         this.actionContext.release();
     }
 
-    /**
-     * @see org.apache.maven.doxia.sink.SinkAdapter#sectionTitle4()
-     */
     public void sectionTitle4()
     {
         this.font.setSize( ITextFont.getSectionFontSize( 4 ) );
@@ -556,9 +477,6 @@ public final class ITextSink
         this.actionContext.setAction( SinkActionContext.SECTION_TITLE_4 );
     }
 
-    /**
-     * @see org.apache.maven.doxia.sink.SinkAdapter#section5_()
-     */
     public void section5_()
     {
         writeEndElement(); // ElementTags.SECTION
@@ -569,9 +487,6 @@ public final class ITextSink
         this.actionContext.release();
     }
 
-    /**
-     * @see org.apache.maven.doxia.sink.SinkAdapter#section5()
-     */
     public void section5()
     {
         this.numberDepth++;
@@ -587,9 +502,6 @@ public final class ITextSink
         this.actionContext.setAction( SinkActionContext.SECTION_5 );
     }
 
-    /**
-     * @see org.apache.maven.doxia.sink.SinkAdapter#sectionTitle5_()
-     */
     public void sectionTitle5_()
     {
         writeEndElement(); // ElementTags.TITLE
@@ -600,9 +512,6 @@ public final class ITextSink
         this.actionContext.release();
     }
 
-    /**
-     * @see org.apache.maven.doxia.sink.SinkAdapter#sectionTitle5()
-     */
     public void sectionTitle5()
     {
         this.font.setSize( ITextFont.getSectionFontSize( 5 ) );
@@ -624,9 +533,7 @@ public final class ITextSink
     // ----------------------------------------------------------------------
     // Paragraph
     // ----------------------------------------------------------------------
-    /**
-     * @see org.apache.maven.doxia.sink.SinkAdapter#paragraph_()
-     */
+
     public void paragraph_()
     {
         // Special case
@@ -642,9 +549,6 @@ public final class ITextSink
         this.actionContext.release();
     }
 
-    /**
-     * @see org.apache.maven.doxia.sink.SinkAdapter#paragraph()
-     */
     public void paragraph()
     {
         // Special case
@@ -666,9 +570,7 @@ public final class ITextSink
     // ----------------------------------------------------------------------
     // Lists
     // ----------------------------------------------------------------------
-    /**
-     * @see org.apache.maven.doxia.sink.SinkAdapter#list_()
-     */
+
     public void list_()
     {
         writeEndElement(); // ElementTags.LIST
@@ -678,9 +580,6 @@ public final class ITextSink
         this.actionContext.release();
     }
 
-    /**
-     * @see org.apache.maven.doxia.sink.SinkAdapter#list()
-     */
     public void list()
     {
         writeStartElement( ElementTags.CHUNK );
@@ -698,9 +597,6 @@ public final class ITextSink
         this.actionContext.setAction( SinkActionContext.LIST );
     }
 
-    /**
-     * @see org.apache.maven.doxia.sink.SinkAdapter#listItem_()
-     */
     public void listItem_()
     {
         writeEndElement(); // ElementTags.LISTITEM
@@ -708,9 +604,6 @@ public final class ITextSink
         this.actionContext.release();
     }
 
-    /**
-     * @see org.apache.maven.doxia.sink.SinkAdapter#listItem()
-     */
     public void listItem()
     {
         writeStartElement( ElementTags.LISTITEM );
@@ -719,9 +612,6 @@ public final class ITextSink
         this.actionContext.setAction( SinkActionContext.LIST_ITEM );
     }
 
-    /**
-     * @see org.apache.maven.doxia.sink.SinkAdapter#numberedList_()
-     */
     public void numberedList_()
     {
         writeEndElement(); // ElementTags.LIST
@@ -731,9 +621,6 @@ public final class ITextSink
         this.actionContext.release();
     }
 
-    /**
-     * @see org.apache.maven.doxia.sink.SinkAdapter#numberedList(int)
-     */
     public void numberedList( int numbering )
     {
         writeStartElement( ElementTags.CHUNK );
@@ -779,9 +666,6 @@ public final class ITextSink
         this.actionContext.setAction( SinkActionContext.NUMBERED_LIST );
     }
 
-    /**
-     * @see org.apache.maven.doxia.sink.SinkAdapter#numberedListItem_()
-     */
     public void numberedListItem_()
     {
         writeEndElement(); // ElementTags.LISTITEM
@@ -789,9 +673,6 @@ public final class ITextSink
         this.actionContext.release();
     }
 
-    /**
-     * @see org.apache.maven.doxia.sink.SinkAdapter#numberedListItem()
-     */
     public void numberedListItem()
     {
         writeStartElement( ElementTags.LISTITEM );
@@ -800,25 +681,16 @@ public final class ITextSink
         this.actionContext.setAction( SinkActionContext.NUMBERED_LIST_ITEM );
     }
 
-    /**
-     * @see org.apache.maven.doxia.sink.SinkAdapter#definitionList_()
-     */
     public void definitionList_()
     {
         this.actionContext.release();
     }
 
-    /**
-     * @see org.apache.maven.doxia.sink.SinkAdapter#definitionList()
-     */
     public void definitionList()
     {
         this.actionContext.setAction( SinkActionContext.DEFINITION_LIST );
     }
 
-    /**
-     * @see org.apache.maven.doxia.sink.SinkAdapter#definedTerm_()
-     */
     public void definedTerm_()
     {
         writeEndElement(); // ElementTags.CELL
@@ -832,9 +704,6 @@ public final class ITextSink
         this.actionContext.release();
     }
 
-    /**
-     * @see org.apache.maven.doxia.sink.SinkAdapter#definedTerm()
-     */
     public void definedTerm()
     {
         writeStartElement( ElementTags.CHUNK );
@@ -868,9 +737,6 @@ public final class ITextSink
         this.actionContext.setAction( SinkActionContext.DEFINED_TERM );
     }
 
-    /**
-     * @see org.apache.maven.doxia.sink.SinkAdapter#definition_()
-     */
     public void definition_()
     {
         writeEndElement(); // ElementTags.CELL
@@ -884,9 +750,6 @@ public final class ITextSink
         this.actionContext.release();
     }
 
-    /**
-     * @see org.apache.maven.doxia.sink.SinkAdapter#definition()
-     */
     public void definition()
     {
         writeStartElement( ElementTags.CHUNK );
@@ -931,18 +794,12 @@ public final class ITextSink
         this.actionContext.setAction( SinkActionContext.DEFINITION );
     }
 
-    /**
-     * @see org.apache.maven.doxia.sink.SinkAdapter#definitionListItem_()
-     */
     public void definitionListItem_()
     {
         // nop
         this.actionContext.release();
     }
 
-    /**
-     * @see org.apache.maven.doxia.sink.SinkAdapter#definitionListItem()
-     */
     public void definitionListItem()
     {
         // nop
@@ -953,9 +810,7 @@ public final class ITextSink
     // ----------------------------------------------------------------------
     // Tables
     // ----------------------------------------------------------------------
-    /**
-     * @see org.apache.maven.doxia.sink.SinkAdapter#table_()
-     */
+
     public void table_()
     {
         writeEndElement(); // ElementTags.TABLE
@@ -965,9 +820,6 @@ public final class ITextSink
         this.actionContext.release();
     }
 
-    /**
-     * @see org.apache.maven.doxia.sink.SinkAdapter#table()
-     */
     public void table()
     {
         writeStartElement( ElementTags.CHUNK );
@@ -993,25 +845,16 @@ public final class ITextSink
         this.actionContext.setAction( SinkActionContext.TABLE );
     }
 
-    /**
-     * @see org.apache.maven.doxia.sink.SinkAdapter#tableCaption_()
-     */
     public void tableCaption_()
     {
         this.actionContext.release();
     }
 
-    /**
-     * @see org.apache.maven.doxia.sink.SinkAdapter#tableCaption()
-     */
     public void tableCaption()
     {
         this.actionContext.setAction( SinkActionContext.TABLE_CAPTION );
     }
 
-    /**
-     * @see org.apache.maven.doxia.sink.SinkAdapter#tableCell_()
-     */
     public void tableCell_()
     {
         writeEndElement(); // ElementTags.CELL
@@ -1019,9 +862,6 @@ public final class ITextSink
         this.actionContext.release();
     }
 
-    /**
-     * @see org.apache.maven.doxia.sink.SinkAdapter#tableCell()
-     */
     public void tableCell()
     {
         writeStartElement( ElementTags.CELL );
@@ -1034,17 +874,11 @@ public final class ITextSink
         this.actionContext.setAction( SinkActionContext.TABLE_CELL );
     }
 
-    /**
-     * @see org.apache.maven.doxia.sink.SinkAdapter#tableCell(java.lang.String)
-     */
     public void tableCell( String width )
     {
         this.actionContext.setAction( SinkActionContext.TABLE_CELL );
     }
 
-    /**
-     * @see org.apache.maven.doxia.sink.SinkAdapter#tableHeaderCell_()
-     */
     public void tableHeaderCell_()
     {
         writeEndElement(); // ElementTags.CELL
@@ -1052,9 +886,6 @@ public final class ITextSink
         this.actionContext.release();
     }
 
-    /**
-     * @see org.apache.maven.doxia.sink.SinkAdapter#tableHeaderCell()
-     */
     public void tableHeaderCell()
     {
         writeStartElement( ElementTags.CELL );
@@ -1071,17 +902,11 @@ public final class ITextSink
         this.actionContext.setAction( SinkActionContext.TABLE_HEADER_CELL );
     }
 
-    /**
-     * @see org.apache.maven.doxia.sink.SinkAdapter#tableHeaderCell(java.lang.String)
-     */
     public void tableHeaderCell( String width )
     {
         this.actionContext.setAction( SinkActionContext.TABLE_HEADER_CELL );
     }
 
-    /**
-     * @see org.apache.maven.doxia.sink.SinkAdapter#tableRow_()
-     */
     public void tableRow_()
     {
         writeEndElement(); // ElementTags.ROW
@@ -1089,9 +914,6 @@ public final class ITextSink
         this.actionContext.release();
     }
 
-    /**
-     * @see org.apache.maven.doxia.sink.SinkAdapter#tableRow()
-     */
     public void tableRow()
     {
         writeStartElement( ElementTags.ROW );
@@ -1099,9 +921,6 @@ public final class ITextSink
         this.actionContext.setAction( SinkActionContext.TABLE_ROW );
     }
 
-    /**
-     * @see org.apache.maven.doxia.sink.SinkAdapter#tableRows_()
-     */
     public void tableRows_()
     {
         //writeEndElement(); // ElementTags.TABLE
@@ -1109,9 +928,6 @@ public final class ITextSink
         this.actionContext.release();
     }
 
-    /**
-     * @see org.apache.maven.doxia.sink.SinkAdapter#tableRows(int[], boolean)
-     */
     public void tableRows( int[] justification, boolean grid )
     {
         // ElementTags.TABLE
@@ -1123,9 +939,7 @@ public final class ITextSink
     // ----------------------------------------------------------------------
     // Verbatim
     // ----------------------------------------------------------------------
-    /**
-     * @see org.apache.maven.doxia.sink.Sink#verbatim_()
-     */
+
     public void verbatim_()
     {
         writeEndElement(); // ElementTags.CELL
@@ -1139,9 +953,6 @@ public final class ITextSink
         this.actionContext.release();
     }
 
-    /**
-     * @see org.apache.maven.doxia.sink.Sink#verbatim(boolean)
-     */
     public void verbatim( boolean boxed )
     {
         // Always boxed
@@ -1179,9 +990,7 @@ public final class ITextSink
     // ----------------------------------------------------------------------
     // Figures
     // ----------------------------------------------------------------------
-    /**
-     * @see org.apache.maven.doxia.sink.SinkAdapter#figure_()
-     */
+
     public void figure_()
     {
         writeEndElement(); // ElementTags.IMAGE
@@ -1191,9 +1000,6 @@ public final class ITextSink
         this.actionContext.release();
     }
 
-    /**
-     * @see org.apache.maven.doxia.sink.SinkAdapter#figure()
-     */
     public void figure()
     {
         writeStartElement( ElementTags.CHUNK );
@@ -1209,25 +1015,16 @@ public final class ITextSink
         this.actionContext.setAction( SinkActionContext.FIGURE );
     }
 
-    /**
-     * @see org.apache.maven.doxia.sink.SinkAdapter#figureCaption_()
-     */
     public void figureCaption_()
     {
         this.actionContext.release();
     }
 
-    /**
-     * @see org.apache.maven.doxia.sink.SinkAdapter#figureCaption()
-     */
     public void figureCaption()
     {
         this.actionContext.setAction( SinkActionContext.FIGURE_CAPTION );
     }
 
-    /**
-     * @see org.apache.maven.doxia.sink.Sink#figureGraphics(java.lang.String)
-     */
     public void figureGraphics( String name )
     {
         String urlName = null;
@@ -1293,49 +1090,32 @@ public final class ITextSink
     // ----------------------------------------------------------------------
     // Fonts
     // ----------------------------------------------------------------------
-    /**
-     * @see org.apache.maven.doxia.sink.SinkAdapter#bold_()
-     */
+
     public void bold_()
     {
         this.font.removeBold();
     }
 
-    /**
-     * @see org.apache.maven.doxia.sink.SinkAdapter#bold()
-     */
     public void bold()
     {
         this.font.addBold();
     }
 
-    /**
-     * @see org.apache.maven.doxia.sink.SinkAdapter#italic_()
-     */
     public void italic_()
     {
         this.font.removeItalic();
     }
 
-    /**
-     * @see org.apache.maven.doxia.sink.SinkAdapter#italic()
-     */
     public void italic()
     {
         this.font.addItalic();
     }
 
-    /**
-     * @see org.apache.maven.doxia.sink.Sink#monospaced_()
-     */
     public void monospaced_()
     {
         this.font.setMonoSpaced( false );
     }
 
-    /**
-     * @see org.apache.maven.doxia.sink.Sink#monospaced()
-     */
     public void monospaced()
     {
         this.font.setMonoSpaced( true );
@@ -1344,9 +1124,7 @@ public final class ITextSink
     // ----------------------------------------------------------------------
     // Links
     // ----------------------------------------------------------------------
-    /**
-     * @see org.apache.maven.doxia.sink.SinkAdapter#link_()
-     */
+
     public void link_()
     {
         writeEndElement(); // ElementTags.ANCHOR
@@ -1357,9 +1135,6 @@ public final class ITextSink
         this.actionContext.release();
     }
 
-    /**
-     * @see org.apache.maven.doxia.sink.SinkAdapter#link(java.lang.String)
-     */
     public void link( String name )
     {
         this.font.setColor( Color.BLUE );
@@ -1377,9 +1152,6 @@ public final class ITextSink
         this.actionContext.setAction( SinkActionContext.LINK );
     }
 
-    /**
-     * @see org.apache.maven.doxia.sink.SinkAdapter#anchor_()
-     */
     public void anchor_()
     {
         writeEndElement(); // ElementTags.ANCHOR
@@ -1387,9 +1159,6 @@ public final class ITextSink
         this.actionContext.release();
     }
 
-    /**
-     * @see org.apache.maven.doxia.sink.SinkAdapter#anchor(java.lang.String)
-     */
     public void anchor( String name )
     {
         writeStartElement( ElementTags.ANCHOR );
@@ -1401,9 +1170,7 @@ public final class ITextSink
     // ----------------------------------------------------------------------
     // Misc
     // ----------------------------------------------------------------------
-    /**
-     * @see org.apache.maven.doxia.sink.Sink#lineBreak()
-     */
+
     public void lineBreak()
     {
         // Special case for the header
@@ -1418,26 +1185,17 @@ public final class ITextSink
         writeEndElement();
     }
 
-    /**
-     * @see org.apache.maven.doxia.sink.Sink#nonBreakingSpace()
-     */
     public void nonBreakingSpace()
     {
         write( " " );
     }
 
-    /**
-     * @see org.apache.maven.doxia.sink.SinkAdapter#pageBreak()
-     */
     public void pageBreak()
     {
         writeStartElement( ElementTags.NEWPAGE );
         writeEndElement();
     }
 
-    /**
-     * @see org.apache.maven.doxia.sink.Sink#horizontalRule()
-     */
     public void horizontalRule()
     {
         writeStartElement( ElementTags.HORIZONTALRULE );
@@ -1447,9 +1205,7 @@ public final class ITextSink
     // ----------------------------------------------------------------------
     // Text
     // ----------------------------------------------------------------------
-    /**
-     * @see org.apache.maven.doxia.sink.Sink#rawText(java.lang.String)
-     */
+
     public void rawText( String text )
     {
         writeStartElement( ElementTags.CHUNK );
@@ -1465,9 +1221,6 @@ public final class ITextSink
         writeEndElement(); // ElementTags.CHUNK
     }
 
-    /**
-     * @see org.apache.maven.doxia.sink.Sink#text(java.lang.String)
-     */
     public void text( String text )
     {
         switch ( this.actionContext.getCurrentAction() )
