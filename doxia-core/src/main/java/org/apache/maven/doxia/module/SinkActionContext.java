@@ -1,5 +1,7 @@
 package org.apache.maven.doxia.module;
 
+import java.util.Stack;
+
 /**
  * @author Jason van Zyl
  */
@@ -52,20 +54,20 @@ public class SinkActionContext
     public static final int ANCHOR = 81;
     public static final int UNDEFINED = 82;
 
-    private int currentAction;
+    private Stack stack = new Stack();
 
     public int getCurrentAction()
     {
-        return currentAction;
+        return ((Integer)stack.peek()).intValue();
     }
 
     public void release()
     {
-        currentAction = -1;
+        stack.pop();
     }
 
     public void setAction( int action )
     {
-        currentAction = action;
+        stack.push( new Integer( action ) );
     }
 }
