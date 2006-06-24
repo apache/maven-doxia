@@ -16,16 +16,10 @@ package org.apache.maven.doxia.module.itext;
  * limitations under the License.
  */
 
-import java.awt.Color;
-import java.io.IOException;
-import java.io.LineNumberReader;
-import java.io.StringReader;
-import java.io.Writer;
-import java.net.MalformedURLException;
-import java.net.URL;
-
+import com.lowagie.text.BadElementException;
+import com.lowagie.text.ElementTags;
+import com.lowagie.text.Image;
 import org.apache.maven.doxia.module.HtmlTools;
-import org.apache.maven.doxia.module.SinkActionContext;
 import org.apache.maven.doxia.sink.Sink;
 import org.apache.maven.doxia.sink.SinkAdapter;
 import org.codehaus.plexus.util.IOUtil;
@@ -33,9 +27,13 @@ import org.codehaus.plexus.util.StringUtils;
 import org.codehaus.plexus.util.xml.PrettyPrintXMLWriter;
 import org.codehaus.plexus.util.xml.XMLWriter;
 
-import com.lowagie.text.BadElementException;
-import com.lowagie.text.ElementTags;
-import com.lowagie.text.Image;
+import java.awt.*;
+import java.io.IOException;
+import java.io.LineNumberReader;
+import java.io.StringReader;
+import java.io.Writer;
+import java.net.MalformedURLException;
+import java.net.URL;
 
 /**
  * <p>A doxia Sink which produces an XML Front End document for <code>iText</code> framework.</p>
@@ -808,7 +806,7 @@ public final class ITextSink
     }
 
     // ----------------------------------------------------------------------
-    // Tables
+    //  Tables
     // ----------------------------------------------------------------------
 
     public void table_()

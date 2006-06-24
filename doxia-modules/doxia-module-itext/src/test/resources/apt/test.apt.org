@@ -173,19 +173,35 @@ clipping of nose hairs. Please upload!
  its life time and we are trying create tools to help normal people sort out licensing issues. For example, knowing all the licenses
  for a particular graph of artifacts we could have some strategies that would identify potential licensing problems.
 
-~~* Maven partners
+* Maven partners
 
-~~ The following sites sync automatically their project repository with the central one.
-~~ If you want a project from any of this sites to be uploaded to ibiblio you'll have to
-~~ contact the project maintainers.
+ The following sites sync automatically their project repository with the central one.
+ If you want a project from any of this sites to be uploaded to ibiblio you'll have to
+ contact the project maintainers.
 
-~~ * {{{http://www.apache.org}The Apache Software Foundation}}
+ * {{{http://www.apache.org}The Apache Software Foundation}}
 
-~~ * {{{http://www.codehaus.org}Codehaus}}
+ * {{{http://www.codehaus.org}Codehaus}}
 
-~~ * {{{http://jetty.mortbay.org}MortBay Jetty}}
+ * {{{http://jetty.mortbay.org}MortBay Jetty}}
 
-~~ * {{{http://www.opensymphony.com/}OpenSymphony}}
+ * {{{http://www.opensymphony.com/}OpenSymphony}}
 
-~~ * {{{http://www.osjava.org}OS Java}}
+ * {{{http://www.osjava.org}OS Java}}
+
+
+*-------------------------+---------+----------+-----------+
+|                         | Mirrors | Checksum | Signature |
+*-------------------------+---------+----------+-----------+
+| Maven 2.0.3 (tar.bz2)     | {{{http://www.apache.org/dyn/closer.cgi/maven/binaries/maven-2.0.3-bin.tar.bz2} maven-2.0.3-bin.tar.bz2}} | {{{http://www.apache.org/dist/maven/binaries/maven-2.0.3-bin.tar.bz2.md5} maven-2.0.3-bin.tar.bz2.md5}} | {{{http://www.apache.org/dist/maven/binaries/maven-2.0.3-bin.tar.bz2.asc} maven-2.0.3-bin.tar.bz2.asc}} |
+*-------------------------+---------+----------+-----------+
+| Maven 2.0.3 (tar.gz)      | {{{http://www.apache.org/dyn/closer.cgi/maven/binaries/maven-2.0.3-bin.tar.gz} maven-2.0.3-bin.tar.gz}} | {{{http://www.apache.org/dist/maven/binaries/maven-2.0.3-bin.tar.gz.md5} maven-2.0.3-bin.tar.gz.md5}} | {{{http://www.apache.org/dist/maven/binaries/maven-2.0.3-bin.tar.gz.asc} maven-2.0.3-bin.tar.gz.asc}} |
+*-------------------------+---------+----------+-----------+
+| Maven 2.0.3 (zip)         | {{{http://www.apache.org/dyn/closer.cgi/maven/binaries/maven-2.0.3-bin.zip} maven-2.0.3-bin.zip}} | {{{http://www.apache.org/dist/maven/binaries/maven-2.0.3-bin.zip.md5} maven-2.0.3-bin.zip.md5}} | {{{http://www.apache.org/dist/maven/binaries/maven-2.0.3-bin.zip.asc} maven-2.0.3-bin.zip.asc}} |
+*-------------------------+---------+----------+-----------+
+| Maven 2.0.3 Tasks for Ant | {{{http://www.apache.org/dyn/closer.cgi/maven/binaries/maven-artifact-ant-2.0.3-dep.jar} maven-artifact-ant-2.0.3-dep.jar}} | {{{http://www.apache.org/dist/maven/binaries/maven-artifact-ant-2.0.3-dep.jar.md5} maven-artifact-ant-2.0.3-dep.jar.md5}} | {{{http://www.apache.org/dist/maven/binaries/maven-artifact-ant-2.0.3-dep.jar.asc} maven-artifact-ant-2.0.3-dep.jar.asc}} |
+*-------------------------+---------+----------+-----------+
+| Maven 2.0.3 Embedder | {{{http://www.apache.org/dyn/closer.cgi/maven/binaries/maven-embedder-2.0.3-dep.jar} maven-embedder-2.0.3-dep.jar}} | {{{http://www.apache.org/dist/maven/binaries/maven-embedder-2.0.3-dep.jar.md5} maven-embedder-2.0.3-dep.jar.md5}} | {{{http://www.apache.org/dist/maven/binaries/maven-embedder-2.0.3-dep.jar.asc} maven-embedder-2.0.3-dep.jar.asc}} |
+*-------------------------+---------+----------+-----------+
+Table caption
 

@@ -1,4 +1,4 @@
-package org.apache.maven.doxia.module;
+package org.apache.maven.doxia.module.itext;
 
 import java.util.Stack;
 
@@ -56,18 +56,24 @@ public class SinkActionContext
 
     private Stack stack = new Stack();
 
+    private int currentAction;
+
     public int getCurrentAction()
     {
+        //return currentAction;
         return ((Integer)stack.peek()).intValue();
     }
 
     public void release()
     {
+        //currentAction = -1;
         stack.pop();
     }
 
     public void setAction( int action )
     {
+        //currentAction = action;
+
         stack.push( new Integer( action ) );
     }
 }

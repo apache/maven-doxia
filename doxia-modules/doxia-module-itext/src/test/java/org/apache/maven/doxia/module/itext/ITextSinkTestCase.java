@@ -70,6 +70,7 @@ public class ITextSinkTestCase
         throws Exception
     {
         ITextSink sink = new ITextSink( new FileWriter( getGeneratedFile( prefix, suffix ) ) );
+
         sink.setClassLoader( new URLClassLoader( new URL[] { ITextSinkTestCase.class.getResource( "/images/" ) } ) );
 
         return sink;
@@ -105,6 +106,15 @@ public class ITextSinkTestCase
         return reader;
     }
 
+    public void testGeneratingPDFFromITextXml()
+        throws Exception
+    {
+        File f = new File( getBasedir(), "src/test/resources/apt/itext.xml" );
+
+        ITextUtil.writePdf( new FileInputStream( f ),
+                            new FileOutputStream( getGeneratedFile( "test_itext_apt", ".pdf" ) ) );
+    }
+
     /**
      * Generate a pdf and a rtf from an <code>apt</code> file
      *
@@ -120,8 +130,8 @@ public class ITextSinkTestCase
 
         sink.close();
 
-        //ITextUtil.writePdf( new FileInputStream( getGeneratedFile( "test_apt", ".xml" ) ),
-          //                  new FileOutputStream( getGeneratedFile( "test_apt", ".pdf" ) ) );
+        ITextUtil.writePdf( new FileInputStream( getGeneratedFile( "test_apt", ".xml" ) ),
+                            new FileOutputStream( getGeneratedFile( "test_apt", ".pdf" ) ) );
 
         //ITextUtil.writeRtf( new FileInputStream( getGeneratedFile( "test_apt", ".xml" ) ),
           //                  new FileOutputStream( getGeneratedFile( "test_apt", ".rtf" ) ) );

@@ -16,18 +16,18 @@ package org.apache.maven.doxia.module.itext;
  * limitations under the License.
  */
 
-import java.io.InputStream;
-import java.io.OutputStream;
-import java.lang.reflect.Field;
-import java.lang.reflect.Modifier;
-import java.util.Locale;
-
 import com.lowagie.text.DocumentException;
 import com.lowagie.text.PageSize;
 import com.lowagie.text.Rectangle;
 import com.lowagie.text.xml.XmlToHtml;
 import com.lowagie.text.xml.XmlToPdf;
 import com.lowagie.text.xml.XmlToRtf;
+
+import java.io.InputStream;
+import java.io.OutputStream;
+import java.lang.reflect.Field;
+import java.lang.reflect.Modifier;
+import java.util.Locale;
 
 /**
  * A set of util methods for the <code>iText</code> framework
@@ -41,15 +41,14 @@ public class ITextUtil
      * Set the default page size for the document depending the user's country.
      * TODO Maybe more generic?
      *
-     * @see com.lowagie.text.PageSize
-     *
      * @return the page size
+     * @see com.lowagie.text.PageSize
      */
     public static Rectangle getDefaultPageSize()
     {
         String defaultCountry = Locale.getDefault().getCountry();
-        if ( defaultCountry != null
-            && ( defaultCountry.equals( Locale.US.getCountry() ) || defaultCountry.equals( Locale.CANADA.getCountry() ) ) )
+        if ( defaultCountry != null &&
+            ( defaultCountry.equals( Locale.US.getCountry() ) || defaultCountry.equals( Locale.CANADA.getCountry() ) ) )
         {
             return PageSize.LETTER;
         }
@@ -60,10 +59,9 @@ public class ITextUtil
     /**
      * Return a page size as String.
      *
-     * @see com.lowagie.text.PageSize
-     *
      * @param rect a Rectangle
      * @return a page size as String
+     * @see com.lowagie.text.PageSize
      */
     public static String getPageSize( Rectangle rect )
     {
@@ -78,10 +76,9 @@ public class ITextUtil
     /**
      * Return true if the page size is supported by <code>PageSize</code> class, false otherwise
      *
-     * @see com.lowagie.text.PageSize
-     *
      * @param aPageSize a page size
      * @return true if the page size is supported, false otherwise
+     * @see com.lowagie.text.PageSize
      */
     public static boolean isPageSizeSupported( String aPageSize )
     {
@@ -89,9 +86,9 @@ public class ITextUtil
         for ( int i = 0; i < sizes.length; i++ )
         {
             Field currentField = sizes[i];
-            if ( ( currentField.getName().equalsIgnoreCase( aPageSize ) )
-                && ( Modifier.isStatic( currentField.getModifiers() ) )
-                && ( currentField.getType().equals( Rectangle.class ) ) )
+            if ( ( currentField.getName().equalsIgnoreCase( aPageSize ) ) &&
+                ( Modifier.isStatic( currentField.getModifiers() ) ) &&
+                ( currentField.getType().equals( Rectangle.class ) ) )
             {
                 return true;
             }
@@ -104,19 +101,21 @@ public class ITextUtil
      * Parse an iText XML from the specified <CODE>InputStream</CODE>, writing an Pdf document
      * specified <CODE>OutputStream</CODE>.
      *
-     * @see com.lowagie.text.xml.XmlToPdf
-     *
      * @param is the <CODE>InputStream</CODE> from which the XML is read.
      * @param os the <CODE>OutputStream</CODE> to which the result as Pdf is written.
      * @throws RuntimeException if any
+     * @see com.lowagie.text.xml.XmlToPdf
      */
-    public static void writePdf( InputStream is, OutputStream os )
+    public static void writePdf( InputStream is,
+                                 OutputStream os )
         throws RuntimeException
     {
         try
         {
             XmlToPdf x = new XmlToPdf();
+
             x.parse( is, os );
+
         }
         catch ( DocumentException e )
         {
@@ -128,13 +127,13 @@ public class ITextUtil
      * Parse an iText XML from the specified <CODE>InputStream</CODE>, writing an rtf document
      * specified <CODE>OutputStream</CODE>.
      *
-     * @see com.lowagie.text.xml.XmlToRtf
-     *
      * @param is the <CODE>InputStream</CODE> from which the XML is read.
      * @param os the <CODE>OutputStream</CODE> to which the result as RTF is written.
      * @throws RuntimeException if any
+     * @see com.lowagie.text.xml.XmlToRtf
      */
-    public static void writeRtf( InputStream is, OutputStream os )
+    public static void writeRtf( InputStream is,
+                                 OutputStream os )
         throws RuntimeException
     {
         try
@@ -152,13 +151,13 @@ public class ITextUtil
      * Parse an iText XML from the specified <CODE>InputStream</CODE>, writing an html document
      * specified <CODE>OutputStream</CODE>.
      *
-     * @see com.lowagie.text.xml.XmlToHtml
-     *
      * @param is the <CODE>InputStream</CODE> from which the XML is read.
      * @param os the <CODE>OutputStream</CODE> to which the result as Html is written.
      * @throws RuntimeException if any
+     * @see com.lowagie.text.xml.XmlToHtml
      */
-    public static void writeHtml( InputStream is, OutputStream os )
+    public static void writeHtml( InputStream is,
+                                  OutputStream os )
         throws RuntimeException
     {
         try
