@@ -1,0 +1,29 @@
+<book>
+  <id>plexus-user-guide</id>
+  <chapters>
+    <chapter>
+      <id>chapter-1</id>
+      <title>Chapter 1</title>
+      <sections>
+        <section>
+          <id>section-1</id>
+        </section>
+        <section>
+          <id>section-2</id>
+        </section>
+      </sections>
+    </chapter>
+    <chapter>
+      <id>chapter-2</id>
+      <title>Chapter 2</title>
+      <sections>
+        <section>
+          <id>section-3</id>
+        </section>
+        <section>
+          <id>section-4</id>
+        </section>
+      </sections>
+    </chapter>
+  </chapters>
+</book>
