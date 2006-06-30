@@ -20,6 +20,7 @@ import java.util.Collection;
 import java.util.Iterator;
 import java.util.List;
 import java.util.Map;
+import java.util.TreeMap;
 
 /**
  * @author <a href="mailto:trygvis@inamo.no">Trygve Laugst&oslash;l</a>
@@ -80,7 +81,7 @@ public class DefaultBookDoxia
 
         if ( !validationResult.isAllOk() )
         {
-            throw new BookDoxiaException( "Could not validate the book model." );
+            throw new InvalidBookDescriptorException( validationResult );
         }
 
         // ----------------------------------------------------------------------
@@ -121,6 +122,22 @@ public class DefaultBookDoxia
 
                     context.getFiles().put( name, bookFile );
                 }
+            }
+        }
+
+        if ( getLogger().isDebugEnabled() )
+        {
+            getLogger().debug( "Dumping document <-> id mapping:" );
+
+            Map map = new TreeMap( context.getFiles() );
+
+            for ( Iterator it = map.entrySet().iterator(); it.hasNext(); )
+            {
+                Map.Entry entry = (Map.Entry) it.next();
+
+                BookContext.BookFile file = (BookContext.BookFile) entry.getValue();
+
+                getLogger().debug( " " + entry.getKey() + "=" + file.getFile() + ", parser: " + file.getParserId() );
             }
         }
 

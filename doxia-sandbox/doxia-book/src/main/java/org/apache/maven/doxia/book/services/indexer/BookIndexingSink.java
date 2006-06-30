@@ -111,7 +111,7 @@ public class BookIndexingSink
         {
             List entries = parent.getChildEntries();
 
-            parent = (TOCEntry) entries.get( entries.size() );
+            parent = (TOCEntry) entries.get( entries.size() - 1 );
         }
 
         parent.getChildEntries().add( entry );

@@ -9,10 +9,13 @@ import org.apache.maven.doxia.module.itext.ITextSink;
 import org.apache.maven.doxia.module.itext.ITextUtil;
 import org.apache.maven.doxia.sink.Sink;
 import org.apache.maven.doxia.Doxia;
+import org.apache.maven.doxia.editor.io.DebugSink;
+import org.apache.maven.doxia.editor.io.PipelineSink;
 import org.apache.maven.doxia.parser.manager.ParserNotFoundException;
 import org.apache.maven.doxia.parser.ParseException;
 import org.codehaus.plexus.logging.AbstractLogEnabled;
 import org.codehaus.plexus.util.xml.PrettyPrintXMLWriter;
+import org.codehaus.plexus.util.StringUtils;
 
 import java.io.File;
 import java.io.FileWriter;
@@ -23,6 +26,8 @@ import java.io.FileOutputStream;
 import java.io.FileInputStream;
 import java.util.Iterator;
 import java.util.Date;
+import java.util.List;
+import java.util.ArrayList;
 import java.text.DateFormat;
 
 /**
@@ -74,10 +79,41 @@ public class ITextBookRenderer
         // Create the XML File
         // ----------------------------------------------------------------------
 
-        PrettyPrintXMLWriter writer = new PrettyPrintXMLWriter( fileWriter );
+        PrettyPrintXMLWriter writer = new PrettyPrintXMLWriter( fileWriter, "UTF-8", null);
         writer.startElement( "itext" );
         writer.addAttribute( "creationdate", DateFormat.getDateTimeInstance().format( new Date() ) );
         writer.addAttribute( "producer", "Doxia iText" );
+
+//        writer.startElement( "paragraph" );
+//        writer.addAttribute( "leading", "18.0" );
+//        writer.addAttribute( "font", "unknown" );
+//        writer.addAttribute( "align", "Default" );
+//        writer.writeText( "Please visit my" + System.getProperty( "line.separator" ) );
+//
+//        writer.startElement( "anchor" );
+//        writer.addAttribute( "leading", "18.0" );
+//        writer.addAttribute( "font", "Helvetica" );
+//        writer.addAttribute( "size", "12.0" );
+//        writer.addAttribute( "fontstyle", "normal, underline" );
+//        writer.addAttribute( "red", "0" );
+//        writer.addAttribute( "green", "0" );
+//        writer.addAttribute( "blue", "255" );
+//        writer.addAttribute( "name", "top" );
+//        writer.addAttribute( "reference", "http://www.lowagie.com/iText/" );
+//
+//        writer.startElement( "chunk" );
+//        writer.addAttribute( "font", "Helvetica" );
+//        writer.addAttribute( "size", "12.0" );
+//        writer.addAttribute( "fontstyle", "normal, underline" );
+//        writer.addAttribute( "red", "0" );
+//        writer.addAttribute( "green", "0" );
+//        writer.addAttribute( "blue", "255" );
+//        writer.writeText( "website (external reference)" );
+//        writer.endElement();
+//
+//        writer.endElement(); // anchor
+//
+//        writer.endElement(); // paragraph
 
         // TODO: Write out TOC
 
@@ -131,12 +167,14 @@ public class ITextBookRenderer
         chunk( writer, chapter.getTitle(), "Helvetica", "24.0", "normal","255", "0", "0" );
         writer.endElement(); // title
 
+//        writer.startElement( "sectioncontent" );
         for ( Iterator it = chapter.getSections().iterator(); it.hasNext(); )
         {
             Section section = (Section) it.next();
 
             renderSection( writer, section, context );
         }
+//        writer.endElement(); // sectioncontent
 
         writer.endElement(); // chapter
     }
@@ -161,7 +199,12 @@ public class ITextBookRenderer
         //
         // ----------------------------------------------------------------------
 
-        Sink sink = new ITextSink( writer );
+        Sink itextSink = new ITextSink( writer );
+
+        List pipeline = new ArrayList();
+//        pipeline.add( DebugSink.newInstance() );
+        pipeline.add( itextSink );
+        Sink sink = PipelineSink.newInstance( pipeline );
 
         try
         {
@@ -206,8 +249,14 @@ public class ITextBookRenderer
         writer.addAttribute( "red", red );
         writer.addAttribute( "green", green );
         writer.addAttribute( "blue", blue );
-        // TODO: Handle empty title
-        writer.writeText( title );
+        if ( StringUtils.isNotEmpty( title ) )
+        {
+            writer.writeText( title );
+        }
+        else
+        {
+            writer.writeText( "<Missing title>" );
+        }
         writer.endElement(); // chunk
     }
 }

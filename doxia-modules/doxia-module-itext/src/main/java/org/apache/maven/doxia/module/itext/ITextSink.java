@@ -49,10 +49,10 @@ import java.net.URL;
  *
  * @see <a href="http://www.lowagie.com/iText/tutorial/ch07.html">http://www.lowagie.com/iText/tutorial/ch07.html</a>
  *
+ * @plexus.component role="org.apache.maven.doxia.sink.Sink" role-hint="pdf"
+ *
  * @author <a href="mailto:vincent.siveton@gmail.com">Vincent Siveton</a>
  * @version $Id$
- * @plexus.component role="org.apache.maven.doxia.sink.Sink"
- * role-hint="pdf"
  */
 public final class ITextSink
     extends SinkAdapter
@@ -81,6 +81,8 @@ public final class ITextSink
     /** The XML Writer used */
     private XMLWriter xmlWriter;
 
+    private boolean writeStart;
+
     /** The Header object */
     private ITextHeader header;
 
@@ -95,20 +97,23 @@ public final class ITextSink
     {
         this.writer = writer;
 
-        this.actionContext = new SinkActionContext();
-        this.font = new ITextFont();
-        this.header = new ITextHeader();
+        actionContext = new SinkActionContext();
+        font = new ITextFont();
+        header = new ITextHeader();
 
-        this.xmlWriter = new PrettyPrintXMLWriter( this.writer, "UTF-8", null );//, DOCTYPE );
+        xmlWriter = new PrettyPrintXMLWriter( this.writer, "UTF-8", null );//, DOCTYPE );
+        writeStart = true;
     }
 
     public ITextSink( PrettyPrintXMLWriter xmlWriter )
     {
-        this.actionContext = new SinkActionContext();
-        this.font = new ITextFont();
-        this.header = new ITextHeader();
-
         this.xmlWriter = xmlWriter;
+
+        actionContext = new SinkActionContext();
+        font = new ITextFont();
+        header = new ITextHeader();
+
+        writeStart = false;
     }
 
     /**
@@ -118,7 +123,7 @@ public final class ITextSink
      */
     public ClassLoader getClassLoader()
     {
-        return this.currentClassLoader;
+        return currentClassLoader;
     }
 
     /**
@@ -128,7 +133,7 @@ public final class ITextSink
      */
     public void setClassLoader( ClassLoader cl )
     {
-        this.currentClassLoader = cl;
+        currentClassLoader = cl;
     }
 
     // ----------------------------------------------------------------------
@@ -137,7 +142,7 @@ public final class ITextSink
 
     public void close()
     {
-        IOUtil.close( this.writer );
+        IOUtil.close( writer );
     }
 
     public void flush()
@@ -151,42 +156,42 @@ public final class ITextSink
 
     public void head_()
     {
-        this.actionContext.release();
+        actionContext.release();
     }
 
     public void head()
     {
-        this.actionContext.setAction( SinkActionContext.HEAD );
+        actionContext.setAction( SinkActionContext.HEAD );
     }
 
     public void author_()
     {
-        this.actionContext.release();
+        actionContext.release();
     }
 
     public void author()
     {
-        this.actionContext.setAction( SinkActionContext.AUTHOR );
+        actionContext.setAction( SinkActionContext.AUTHOR );
     }
 
     public void date_()
     {
-        this.actionContext.release();
+        actionContext.release();
     }
 
     public void date()
     {
-        this.actionContext.setAction( SinkActionContext.DATE );
+        actionContext.setAction( SinkActionContext.DATE );
     }
 
     public void title_()
     {
-        this.actionContext.release();
+        actionContext.release();
     }
 
     public void title()
     {
-        this.actionContext.setAction( SinkActionContext.TITLE );
+        actionContext.setAction( SinkActionContext.TITLE );
     }
 
     // ----------------------------------------------------------------------
@@ -195,58 +200,63 @@ public final class ITextSink
 
     public void body_()
     {
-        writeEndElement(); // ElementTags.CHAPTER
+        if ( writeStart )
+        {
+            writeEndElement(); // ElementTags.CHAPTER
 
-        writeEndElement(); // ElementTags.ITEXT
+            writeEndElement(); // ElementTags.ITEXT
+        }
 
-        this.actionContext.release();
+        actionContext.release();
     }
 
-    /**
-     * @see org.apache.maven.doxia.sink.Sink#body()
-     */
     public void body()
     {
-        writeStartElement( ElementTags.ITEXT );
-        writeAddAttribute( ElementTags.TITLE, this.header.getTitle() );
-        writeAddAttribute( ElementTags.AUTHOR, this.header.getAuthors() );
-        writeAddAttribute( ElementTags.CREATIONDATE, this.header.getDate() );
-        writeAddAttribute( ElementTags.SUBJECT, this.header.getTitle() );
-        writeAddAttribute( ElementTags.KEYWORDS, "" );
-        writeAddAttribute( ElementTags.PRODUCER, "Generated with Doxia by " + System.getProperty( "user.name" ) );
-        writeAddAttribute( ElementTags.PAGE_SIZE, ITextUtil.getPageSize( ITextUtil.getDefaultPageSize() ) );
+        if ( writeStart )
+        {
+            writeStartElement( ElementTags.ITEXT );
+            writeAddAttribute( ElementTags.TITLE, header.getTitle() );
+            writeAddAttribute( ElementTags.AUTHOR, header.getAuthors() );
+            writeAddAttribute( ElementTags.CREATIONDATE, header.getDate() );
+            writeAddAttribute( ElementTags.SUBJECT, header.getTitle() );
+            writeAddAttribute( ElementTags.KEYWORDS, "" );
+            writeAddAttribute( ElementTags.PRODUCER, "Generated with Doxia by " + System.getProperty( "user.name" ) );
+            writeAddAttribute( ElementTags.PAGE_SIZE, ITextUtil.getPageSize( ITextUtil.getDefaultPageSize() ) );
 
-        writeStartElement( ElementTags.CHAPTER );
-        writeAddAttribute( ElementTags.NUMBERDEPTH, this.numberDepth );
-        writeAddAttribute( ElementTags.DEPTH, this.depth );
-        writeAddAttribute( ElementTags.INDENT, "0.0" );
+            writeStartElement( ElementTags.CHAPTER );
+            writeAddAttribute( ElementTags.NUMBERDEPTH, numberDepth );
+            writeAddAttribute( ElementTags.DEPTH, depth );
+            writeAddAttribute( ElementTags.INDENT, "0.0" );
 
-        writeStartElement( ElementTags.TITLE );
-        writeAddAttribute( ElementTags.LEADING, DEFAULT_CHAPTER_TITLE_LEADING );
-        writeAddAttribute( ElementTags.FONT, ITextFont.DEFAULT_FONT_NAME );
-        writeAddAttribute( ElementTags.SIZE, ITextFont.getSectionFontSize( 0 ) );
-        writeAddAttribute( ElementTags.STYLE, ITextFont.BOLD );
-        writeAddAttribute( ElementTags.BLUE, ITextFont.DEFAULT_FONT_COLOR_BLUE );
-        writeAddAttribute( ElementTags.GREEN, ITextFont.DEFAULT_FONT_COLOR_GREEN );
-        writeAddAttribute( ElementTags.RED, ITextFont.DEFAULT_FONT_COLOR_RED );
-        writeAddAttribute( ElementTags.ALIGN, ElementTags.ALIGN_CENTER );
+            writeStartElement( ElementTags.TITLE );
+            writeAddAttribute( ElementTags.LEADING, DEFAULT_CHAPTER_TITLE_LEADING );
+            writeAddAttribute( ElementTags.FONT, ITextFont.DEFAULT_FONT_NAME );
+            writeAddAttribute( ElementTags.SIZE, ITextFont.getSectionFontSize( 0 ) );
+            writeAddAttribute( ElementTags.STYLE, ITextFont.BOLD );
+            writeAddAttribute( ElementTags.BLUE, ITextFont.DEFAULT_FONT_COLOR_BLUE );
+            writeAddAttribute( ElementTags.GREEN, ITextFont.DEFAULT_FONT_COLOR_GREEN );
+            writeAddAttribute( ElementTags.RED, ITextFont.DEFAULT_FONT_COLOR_RED );
+            writeAddAttribute( ElementTags.ALIGN, ElementTags.ALIGN_CENTER );
 
-        writeStartElement( ElementTags.CHUNK );
-        writeAddAttribute( ElementTags.FONT, ITextFont.DEFAULT_FONT_NAME );
-        writeAddAttribute( ElementTags.SIZE, ITextFont.getSectionFontSize( 0 ) );
-        writeAddAttribute( ElementTags.STYLE, ITextFont.BOLD );
-        writeAddAttribute( ElementTags.BLUE, ITextFont.DEFAULT_FONT_COLOR_BLUE );
-        writeAddAttribute( ElementTags.GREEN, ITextFont.DEFAULT_FONT_COLOR_GREEN );
-        writeAddAttribute( ElementTags.RED, ITextFont.DEFAULT_FONT_COLOR_RED );
-        writeAddAttribute( ElementTags.LOCALDESTINATION, "top" );
+//            startChunk( ITextFont.DEFAULT_FONT_NAME, ITextFont.getSectionFontSize( 0 ), ITextFont.BOLD, ITextFont.DEFAULT_FONT_COLOR_BLUE, ITextFont.DEFAULT_FONT_COLOR_GREEN, ITextFont.DEFAULT_FONT_COLOR_RED, "top" );
 
-        write( this.header.getTitle() );
+            writeStartElement( ElementTags.CHUNK );
+            writeAddAttribute( ElementTags.FONT, ITextFont.DEFAULT_FONT_NAME );
+            writeAddAttribute( ElementTags.SIZE, ITextFont.getSectionFontSize( 0 ) );
+            writeAddAttribute( ElementTags.STYLE, ITextFont.BOLD );
+            writeAddAttribute( ElementTags.BLUE, ITextFont.DEFAULT_FONT_COLOR_BLUE );
+            writeAddAttribute( ElementTags.GREEN, ITextFont.DEFAULT_FONT_COLOR_GREEN );
+            writeAddAttribute( ElementTags.RED, ITextFont.DEFAULT_FONT_COLOR_RED );
+//            writeAddAttribute( ElementTags.LOCALDESTINATION, "top" );
 
-        writeEndElement(); // ElementTags.CHUNK
+            write( header.getTitle() );
 
-        writeEndElement(); // ElementTags.TITLE
+            writeEndElement(); // ElementTags.CHUNK
 
-        this.actionContext.setAction( SinkActionContext.BODY );
+            writeEndElement(); // ElementTags.TITLE
+        }
+
+        actionContext.setAction( SinkActionContext.BODY );
     }
 
     // ----------------------------------------------------------------------
@@ -255,277 +265,282 @@ public final class ITextSink
 
     public void sectionTitle()
     {
-        this.actionContext.release();
+        actionContext.release();
     }
 
     public void sectionTitle_()
     {
-        this.actionContext.setAction( SinkActionContext.SECTION_TITLE );
+        actionContext.setAction( SinkActionContext.SECTION_TITLE );
     }
 
     public void section1_()
     {
         writeEndElement(); // ElementTags.SECTION
 
-        this.numberDepth--;
-        this.depth = 0;
+        numberDepth--;
+        depth = 0;
 
-        this.actionContext.release();
+        actionContext.release();
     }
 
     public void section1()
     {
-        this.numberDepth++;
-        this.depth = 1;
+        numberDepth++;
+        depth = 1;
 
         writeStartElement( ElementTags.SECTION );
-        writeAddAttribute( ElementTags.NUMBERDEPTH, this.numberDepth );
-        writeAddAttribute( ElementTags.DEPTH, this.depth );
+        writeAddAttribute( ElementTags.NUMBERDEPTH, numberDepth );
+        writeAddAttribute( ElementTags.DEPTH, depth );
         writeAddAttribute( ElementTags.INDENT, "0.0" );
 
         lineBreak();
 
-        this.actionContext.setAction( SinkActionContext.SECTION_1 );
+        actionContext.setAction( SinkActionContext.SECTION_1 );
     }
 
     public void sectionTitle1_()
     {
         writeEndElement(); // ElementTags.TITLE
 
-        this.font.setSize( ITextFont.DEFAULT_FONT_SIZE );
+        font.setSize( ITextFont.DEFAULT_FONT_SIZE );
         bold_();
 
-        this.actionContext.release();
+        actionContext.release();
     }
 
     public void sectionTitle1()
     {
-        this.font.setSize( ITextFont.getSectionFontSize( 1 ) );
-        this.font.setColor( Color.BLACK );
+        font.setSize( ITextFont.getSectionFontSize( 1 ) );
+        font.setColor( Color.BLACK );
         bold();
 
         writeStartElement( ElementTags.TITLE );
         writeAddAttribute( ElementTags.LEADING, DEFAULT_SECTION_TITLE_LEADING );
-        writeAddAttribute( ElementTags.FONT, this.font.getFontName() );
-        writeAddAttribute( ElementTags.SIZE, this.font.getFontSize() );
-        writeAddAttribute( ElementTags.STYLE, this.font.getFontStyle() );
-        writeAddAttribute( ElementTags.BLUE, this.font.getFontColorBlue() );
-        writeAddAttribute( ElementTags.GREEN, this.font.getFontColorGreen() );
-        writeAddAttribute( ElementTags.RED, this.font.getFontColorRed() );
+        writeAddAttribute( ElementTags.FONT, font.getFontName() );
+        writeAddAttribute( ElementTags.SIZE, font.getFontSize() );
+        writeAddAttribute( ElementTags.STYLE, font.getFontStyle() );
+        writeAddAttribute( ElementTags.BLUE, font.getFontColorBlue() );
+        writeAddAttribute( ElementTags.GREEN, font.getFontColorGreen() );
+        writeAddAttribute( ElementTags.RED, font.getFontColorRed() );
+//        writeAddAttribute( ElementTags.LOCALDESTINATION, "top" ); // trygve
 
-        this.actionContext.setAction( SinkActionContext.SECTION_TITLE_1 );
+        actionContext.setAction( SinkActionContext.SECTION_TITLE_1 );
     }
 
     public void section2_()
     {
         writeEndElement(); // ElementTags.SECTION
 
-        this.numberDepth--;
-        this.depth = 0;
+        numberDepth--;
+        depth = 0;
 
-        this.actionContext.release();
+        actionContext.release();
     }
 
     public void section2()
     {
-        this.numberDepth++;
-        this.depth = 1;
+        numberDepth++;
+        depth = 1;
 
         writeStartElement( ElementTags.SECTION );
-        writeAddAttribute( ElementTags.NUMBERDEPTH, this.numberDepth );
-        writeAddAttribute( ElementTags.DEPTH, this.depth );
+        writeAddAttribute( ElementTags.NUMBERDEPTH, numberDepth );
+        writeAddAttribute( ElementTags.DEPTH, depth );
         writeAddAttribute( ElementTags.INDENT, "0.0" );
 
         lineBreak();
 
-        this.actionContext.setAction( SinkActionContext.SECTION_2 );
+        actionContext.setAction( SinkActionContext.SECTION_2 );
     }
 
     public void sectionTitle2_()
     {
         writeEndElement(); // ElementTags.TITLE
 
-        this.font.setSize( ITextFont.DEFAULT_FONT_SIZE );
+        font.setSize( ITextFont.DEFAULT_FONT_SIZE );
         bold_();
 
-        this.actionContext.release();
+        actionContext.release();
     }
 
     public void sectionTitle2()
     {
-        this.font.setSize( ITextFont.getSectionFontSize( 2 ) );
-        this.font.setColor( Color.BLACK );
+        font.setSize( ITextFont.getSectionFontSize( 2 ) );
+        font.setColor( Color.BLACK );
         bold();
 
         writeStartElement( ElementTags.TITLE );
         writeAddAttribute( ElementTags.LEADING, DEFAULT_SECTION_TITLE_LEADING );
-        writeAddAttribute( ElementTags.FONT, this.font.getFontName() );
-        writeAddAttribute( ElementTags.SIZE, this.font.getFontSize() );
-        writeAddAttribute( ElementTags.STYLE, this.font.getFontStyle() );
-        writeAddAttribute( ElementTags.BLUE, this.font.getFontColorBlue() );
-        writeAddAttribute( ElementTags.GREEN, this.font.getFontColorGreen() );
-        writeAddAttribute( ElementTags.RED, this.font.getFontColorRed() );
+        writeAddAttribute( ElementTags.FONT, font.getFontName() );
+        writeAddAttribute( ElementTags.SIZE, font.getFontSize() );
+        writeAddAttribute( ElementTags.STYLE, font.getFontStyle() );
+        writeAddAttribute( ElementTags.BLUE, font.getFontColorBlue() );
+        writeAddAttribute( ElementTags.GREEN, font.getFontColorGreen() );
+        writeAddAttribute( ElementTags.RED, font.getFontColorRed() );
+//        writeAddAttribute( ElementTags.LOCALDESTINATION, "top" ); // trygve
 
-        this.actionContext.setAction( SinkActionContext.SECTION_TITLE_2 );
+        actionContext.setAction( SinkActionContext.SECTION_TITLE_2 );
     }
 
     public void section3_()
     {
         writeEndElement(); // ElementTags.SECTION
 
-        this.numberDepth--;
-        this.depth = 1;
+        numberDepth--;
+        depth = 1;
 
-        this.actionContext.release();
+        actionContext.release();
     }
 
     public void section3()
     {
-        this.numberDepth++;
-        this.depth = 1;
+        numberDepth++;
+        depth = 1;
 
         writeStartElement( ElementTags.SECTION );
-        writeAddAttribute( ElementTags.NUMBERDEPTH, this.numberDepth );
-        writeAddAttribute( ElementTags.DEPTH, this.depth );
+        writeAddAttribute( ElementTags.NUMBERDEPTH, numberDepth );
+        writeAddAttribute( ElementTags.DEPTH, depth );
         writeAddAttribute( ElementTags.INDENT, "0.0" );
 
         lineBreak();
 
-        this.actionContext.setAction( SinkActionContext.SECTION_3 );
+        actionContext.setAction( SinkActionContext.SECTION_3 );
     }
 
     public void sectionTitle3_()
     {
         writeEndElement(); // ElementTags.TITLE
 
-        this.font.setSize( ITextFont.DEFAULT_FONT_SIZE );
+        font.setSize( ITextFont.DEFAULT_FONT_SIZE );
         bold_();
 
-        this.actionContext.release();
+        actionContext.release();
     }
 
     public void sectionTitle3()
     {
-        this.font.setSize( ITextFont.getSectionFontSize( 3 ) );
-        this.font.setColor( Color.BLACK );
+        font.setSize( ITextFont.getSectionFontSize( 3 ) );
+        font.setColor( Color.BLACK );
         bold();
 
         writeStartElement( ElementTags.TITLE );
         writeAddAttribute( ElementTags.LEADING, DEFAULT_SECTION_TITLE_LEADING );
-        writeAddAttribute( ElementTags.FONT, this.font.getFontName() );
-        writeAddAttribute( ElementTags.SIZE, this.font.getFontSize() );
-        writeAddAttribute( ElementTags.STYLE, this.font.getFontStyle() );
-        writeAddAttribute( ElementTags.BLUE, this.font.getFontColorBlue() );
-        writeAddAttribute( ElementTags.GREEN, this.font.getFontColorGreen() );
-        writeAddAttribute( ElementTags.RED, this.font.getFontColorRed() );
+        writeAddAttribute( ElementTags.FONT, font.getFontName() );
+        writeAddAttribute( ElementTags.SIZE, font.getFontSize() );
+        writeAddAttribute( ElementTags.STYLE, font.getFontStyle() );
+        writeAddAttribute( ElementTags.BLUE, font.getFontColorBlue() );
+        writeAddAttribute( ElementTags.GREEN, font.getFontColorGreen() );
+        writeAddAttribute( ElementTags.RED, font.getFontColorRed() );
+//        writeAddAttribute( ElementTags.LOCALDESTINATION, "top" ); // trygve
 
-        this.actionContext.setAction( SinkActionContext.SECTION_TITLE_3 );
+        actionContext.setAction( SinkActionContext.SECTION_TITLE_3 );
     }
 
     public void section4_()
     {
         writeEndElement(); // ElementTags.SECTION
 
-        this.numberDepth--;
-        this.depth = 1;
+        numberDepth--;
+        depth = 1;
 
-        this.actionContext.release();
+        actionContext.release();
     }
 
     public void section4()
     {
-        this.numberDepth++;
-        this.depth = 1;
+        numberDepth++;
+        depth = 1;
 
         writeStartElement( ElementTags.SECTION );
-        writeAddAttribute( ElementTags.NUMBERDEPTH, this.numberDepth );
-        writeAddAttribute( ElementTags.DEPTH, this.depth );
+        writeAddAttribute( ElementTags.NUMBERDEPTH, numberDepth );
+        writeAddAttribute( ElementTags.DEPTH, depth );
         writeAddAttribute( ElementTags.INDENT, "0.0" );
 
         lineBreak();
 
-        this.actionContext.setAction( SinkActionContext.SECTION_4 );
+        actionContext.setAction( SinkActionContext.SECTION_4 );
     }
 
     public void sectionTitle4_()
     {
         writeEndElement(); // ElementTags.TITLE
 
-        this.font.setSize( ITextFont.DEFAULT_FONT_SIZE );
+        font.setSize( ITextFont.DEFAULT_FONT_SIZE );
         bold_();
 
-        this.actionContext.release();
+        actionContext.release();
     }
 
     public void sectionTitle4()
     {
-        this.font.setSize( ITextFont.getSectionFontSize( 4 ) );
-        this.font.setColor( Color.BLACK );
+        font.setSize( ITextFont.getSectionFontSize( 4 ) );
+        font.setColor( Color.BLACK );
         bold();
 
         writeStartElement( ElementTags.TITLE );
         writeAddAttribute( ElementTags.LEADING, DEFAULT_SECTION_TITLE_LEADING );
-        writeAddAttribute( ElementTags.FONT, this.font.getFontName() );
-        writeAddAttribute( ElementTags.SIZE, this.font.getFontSize() );
-        writeAddAttribute( ElementTags.STYLE, this.font.getFontStyle() );
-        writeAddAttribute( ElementTags.BLUE, this.font.getFontColorBlue() );
-        writeAddAttribute( ElementTags.GREEN, this.font.getFontColorGreen() );
-        writeAddAttribute( ElementTags.RED, this.font.getFontColorRed() );
+        writeAddAttribute( ElementTags.FONT, font.getFontName() );
+        writeAddAttribute( ElementTags.SIZE, font.getFontSize() );
+        writeAddAttribute( ElementTags.STYLE, font.getFontStyle() );
+        writeAddAttribute( ElementTags.BLUE, font.getFontColorBlue() );
+        writeAddAttribute( ElementTags.GREEN, font.getFontColorGreen() );
+        writeAddAttribute( ElementTags.RED, font.getFontColorRed() );
+//        writeAddAttribute( ElementTags.LOCALDESTINATION, "top" ); // trygve
 
-        this.actionContext.setAction( SinkActionContext.SECTION_TITLE_4 );
+        actionContext.setAction( SinkActionContext.SECTION_TITLE_4 );
     }
 
     public void section5_()
     {
         writeEndElement(); // ElementTags.SECTION
 
-        this.numberDepth--;
-        this.depth = 1;
+        numberDepth--;
+        depth = 1;
 
-        this.actionContext.release();
+        actionContext.release();
     }
 
     public void section5()
     {
-        this.numberDepth++;
-        this.depth = 1;
+        numberDepth++;
+        depth = 1;
 
         writeStartElement( ElementTags.SECTION );
-        writeAddAttribute( ElementTags.NUMBERDEPTH, this.numberDepth );
-        writeAddAttribute( ElementTags.DEPTH, this.depth );
+        writeAddAttribute( ElementTags.NUMBERDEPTH, numberDepth );
+        writeAddAttribute( ElementTags.DEPTH, depth );
         writeAddAttribute( ElementTags.INDENT, "0.0" );
 
         lineBreak();
 
-        this.actionContext.setAction( SinkActionContext.SECTION_5 );
+        actionContext.setAction( SinkActionContext.SECTION_5 );
     }
 
     public void sectionTitle5_()
     {
         writeEndElement(); // ElementTags.TITLE
 
-        this.font.setSize( ITextFont.DEFAULT_FONT_SIZE );
+        font.setSize( ITextFont.DEFAULT_FONT_SIZE );
         bold_();
 
-        this.actionContext.release();
+        actionContext.release();
     }
 
     public void sectionTitle5()
     {
-        this.font.setSize( ITextFont.getSectionFontSize( 5 ) );
-        this.font.setColor( Color.BLACK );
+        font.setSize( ITextFont.getSectionFontSize( 5 ) );
+        font.setColor( Color.BLACK );
         bold();
 
         writeStartElement( ElementTags.TITLE );
         writeAddAttribute( ElementTags.LEADING, DEFAULT_SECTION_TITLE_LEADING );
-        writeAddAttribute( ElementTags.FONT, this.font.getFontName() );
-        writeAddAttribute( ElementTags.SIZE, this.font.getFontSize() );
-        writeAddAttribute( ElementTags.STYLE, this.font.getFontStyle() );
-        writeAddAttribute( ElementTags.BLUE, this.font.getFontColorBlue() );
-        writeAddAttribute( ElementTags.GREEN, this.font.getFontColorGreen() );
-        writeAddAttribute( ElementTags.RED, this.font.getFontColorRed() );
+        writeAddAttribute( ElementTags.FONT, font.getFontName() );
+        writeAddAttribute( ElementTags.SIZE, font.getFontSize() );
+        writeAddAttribute( ElementTags.STYLE, font.getFontStyle() );
+        writeAddAttribute( ElementTags.BLUE, font.getFontColorBlue() );
+        writeAddAttribute( ElementTags.GREEN, font.getFontColorGreen() );
+        writeAddAttribute( ElementTags.RED, font.getFontColorRed() );
+//        writeAddAttribute( ElementTags.LOCALDESTINATION, "top" ); // trygve
 
-        this.actionContext.setAction( SinkActionContext.SECTION_TITLE_5 );
+        actionContext.setAction( SinkActionContext.SECTION_TITLE_5 );
     }
 
     // ----------------------------------------------------------------------
@@ -535,34 +550,33 @@ public final class ITextSink
     public void paragraph_()
     {
         // Special case
-        if ( ( this.actionContext.getCurrentAction() == SinkActionContext.LIST_ITEM )
-            || ( this.actionContext.getCurrentAction() == SinkActionContext.NUMBERED_LIST_ITEM )
-            || ( this.actionContext.getCurrentAction() == SinkActionContext.DEFINITION ) )
+        if ( ( actionContext.getCurrentAction() == SinkActionContext.LIST_ITEM )
+            || ( actionContext.getCurrentAction() == SinkActionContext.NUMBERED_LIST_ITEM )
+            || ( actionContext.getCurrentAction() == SinkActionContext.DEFINITION ) )
         {
             return;
         }
 
         writeEndElement(); // ElementTags.PARAGRAPH
 
-        this.actionContext.release();
+        actionContext.release();
     }
 
     public void paragraph()
     {
         // Special case
-        if ( ( this.actionContext.getCurrentAction() == SinkActionContext.LIST_ITEM )
-            || ( this.actionContext.getCurrentAction() == SinkActionContext.NUMBERED_LIST_ITEM )
-            || ( this.actionContext.getCurrentAction() == SinkActionContext.DEFINITION ) )
+        if ( ( actionContext.getCurrentAction() == SinkActionContext.LIST_ITEM )
+            || ( actionContext.getCurrentAction() == SinkActionContext.NUMBERED_LIST_ITEM )
+            || ( actionContext.getCurrentAction() == SinkActionContext.DEFINITION ) )
         {
             return;
         }
 
         writeStartElement( ElementTags.PARAGRAPH );
-
         writeStartElement( ElementTags.NEWLINE );
         writeEndElement();
 
-        this.actionContext.setAction( SinkActionContext.PARAGRAPH );
+        actionContext.setAction( SinkActionContext.PARAGRAPH );
     }
 
     // ----------------------------------------------------------------------
@@ -575,31 +589,31 @@ public final class ITextSink
 
         writeEndElement(); // ElementTags.CHUNK
 
-        this.actionContext.release();
+        actionContext.release();
     }
 
     public void list()
     {
         writeStartElement( ElementTags.CHUNK );
-        writeAddAttribute( ElementTags.FONT, this.font.getFontName() );
-        writeAddAttribute( ElementTags.SIZE, this.font.getFontSize() );
-        writeAddAttribute( ElementTags.STYLE, this.font.getFontStyle() );
-        writeAddAttribute( ElementTags.BLUE, this.font.getFontColorBlue() );
-        writeAddAttribute( ElementTags.GREEN, this.font.getFontColorGreen() );
-        writeAddAttribute( ElementTags.RED, this.font.getFontColorRed() );
+        writeAddAttribute( ElementTags.FONT, font.getFontName() );
+        writeAddAttribute( ElementTags.SIZE, font.getFontSize() );
+        writeAddAttribute( ElementTags.STYLE, font.getFontStyle() );
+        writeAddAttribute( ElementTags.BLUE, font.getFontColorBlue() );
+        writeAddAttribute( ElementTags.GREEN, font.getFontColorGreen() );
+        writeAddAttribute( ElementTags.RED, font.getFontColorRed() );
 
         writeStartElement( ElementTags.LIST );
         writeAddAttribute( ElementTags.NUMBERED, Boolean.FALSE.toString() );
         writeAddAttribute( ElementTags.SYMBOLINDENT, "15" );
 
-        this.actionContext.setAction( SinkActionContext.LIST );
+        actionContext.setAction( SinkActionContext.LIST );
     }
 
     public void listItem_()
     {
         writeEndElement(); // ElementTags.LISTITEM
 
-        this.actionContext.release();
+        actionContext.release();
     }
 
     public void listItem()
@@ -607,7 +621,7 @@ public final class ITextSink
         writeStartElement( ElementTags.LISTITEM );
         writeAddAttribute( ElementTags.INDENTATIONLEFT, "20.0" );
 
-        this.actionContext.setAction( SinkActionContext.LIST_ITEM );
+        actionContext.setAction( SinkActionContext.LIST_ITEM );
     }
 
     public void numberedList_()
@@ -616,18 +630,18 @@ public final class ITextSink
 
         writeEndElement(); // ElementTags.CHUNK
 
-        this.actionContext.release();
+        actionContext.release();
     }
 
     public void numberedList( int numbering )
     {
         writeStartElement( ElementTags.CHUNK );
-        writeAddAttribute( ElementTags.FONT, this.font.getFontName() );
-        writeAddAttribute( ElementTags.SIZE, this.font.getFontSize() );
-        writeAddAttribute( ElementTags.STYLE, this.font.getFontStyle() );
-        writeAddAttribute( ElementTags.BLUE, this.font.getFontColorBlue() );
-        writeAddAttribute( ElementTags.GREEN, this.font.getFontColorGreen() );
-        writeAddAttribute( ElementTags.RED, this.font.getFontColorRed() );
+        writeAddAttribute( ElementTags.FONT, font.getFontName() );
+        writeAddAttribute( ElementTags.SIZE, font.getFontSize() );
+        writeAddAttribute( ElementTags.STYLE, font.getFontStyle() );
+        writeAddAttribute( ElementTags.BLUE, font.getFontColorBlue() );
+        writeAddAttribute( ElementTags.GREEN, font.getFontColorGreen() );
+        writeAddAttribute( ElementTags.RED, font.getFontColorRed() );
 
         writeStartElement( ElementTags.LIST );
         writeAddAttribute( ElementTags.NUMBERED, Boolean.TRUE.toString() );
@@ -661,14 +675,14 @@ public final class ITextSink
                 writeAddAttribute( ElementTags.LETTERED, Boolean.FALSE.toString() );
         }
 
-        this.actionContext.setAction( SinkActionContext.NUMBERED_LIST );
+        actionContext.setAction( SinkActionContext.NUMBERED_LIST );
     }
 
     public void numberedListItem_()
     {
         writeEndElement(); // ElementTags.LISTITEM
 
-        this.actionContext.release();
+        actionContext.release();
     }
 
     public void numberedListItem()
@@ -676,17 +690,17 @@ public final class ITextSink
         writeStartElement( ElementTags.LISTITEM );
         writeAddAttribute( ElementTags.INDENTATIONLEFT, "20" );
 
-        this.actionContext.setAction( SinkActionContext.NUMBERED_LIST_ITEM );
+        actionContext.setAction( SinkActionContext.NUMBERED_LIST_ITEM );
     }
 
     public void definitionList_()
     {
-        this.actionContext.release();
+        actionContext.release();
     }
 
     public void definitionList()
     {
-        this.actionContext.setAction( SinkActionContext.DEFINITION_LIST );
+        actionContext.setAction( SinkActionContext.DEFINITION_LIST );
     }
 
     public void definedTerm_()
@@ -699,18 +713,18 @@ public final class ITextSink
 
         writeEndElement(); // ElementTags.CHUNK
 
-        this.actionContext.release();
+        actionContext.release();
     }
 
     public void definedTerm()
     {
         writeStartElement( ElementTags.CHUNK );
-        writeAddAttribute( ElementTags.FONT, this.font.getFontName() );
-        writeAddAttribute( ElementTags.SIZE, this.font.getFontSize() );
-        writeAddAttribute( ElementTags.STYLE, this.font.getFontStyle() );
-        writeAddAttribute( ElementTags.BLUE, this.font.getFontColorBlue() );
-        writeAddAttribute( ElementTags.GREEN, this.font.getFontColorGreen() );
-        writeAddAttribute( ElementTags.RED, this.font.getFontColorRed() );
+        writeAddAttribute( ElementTags.FONT, font.getFontName() );
+        writeAddAttribute( ElementTags.SIZE, font.getFontSize() );
+        writeAddAttribute( ElementTags.STYLE, font.getFontStyle() );
+        writeAddAttribute( ElementTags.BLUE, font.getFontColorBlue() );
+        writeAddAttribute( ElementTags.GREEN, font.getFontColorGreen() );
+        writeAddAttribute( ElementTags.RED, font.getFontColorRed() );
 
         writeStartElement( ElementTags.TABLE );
         writeAddAttribute( ElementTags.COLUMNS, "1" );
@@ -732,7 +746,7 @@ public final class ITextSink
         writeAddAttribute( ElementTags.TOP, Boolean.FALSE.toString() );
         writeAddAttribute( ElementTags.BOTTOM, Boolean.FALSE.toString() );
 
-        this.actionContext.setAction( SinkActionContext.DEFINED_TERM );
+        actionContext.setAction( SinkActionContext.DEFINED_TERM );
     }
 
     public void definition_()
@@ -745,18 +759,18 @@ public final class ITextSink
 
         writeEndElement(); // ElementTags.CHUNK
 
-        this.actionContext.release();
+        actionContext.release();
     }
 
     public void definition()
     {
         writeStartElement( ElementTags.CHUNK );
-        writeAddAttribute( ElementTags.FONT, this.font.getFontName() );
-        writeAddAttribute( ElementTags.SIZE, this.font.getFontSize() );
-        writeAddAttribute( ElementTags.STYLE, this.font.getFontStyle() );
-        writeAddAttribute( ElementTags.BLUE, this.font.getFontColorBlue() );
-        writeAddAttribute( ElementTags.GREEN, this.font.getFontColorGreen() );
-        writeAddAttribute( ElementTags.RED, this.font.getFontColorRed() );
+        writeAddAttribute( ElementTags.FONT, font.getFontName() );
+        writeAddAttribute( ElementTags.SIZE, font.getFontSize() );
+        writeAddAttribute( ElementTags.STYLE, font.getFontStyle() );
+        writeAddAttribute( ElementTags.BLUE, font.getFontColorBlue() );
+        writeAddAttribute( ElementTags.GREEN, font.getFontColorGreen() );
+        writeAddAttribute( ElementTags.RED, font.getFontColorRed() );
 
         writeStartElement( ElementTags.TABLE );
         writeAddAttribute( ElementTags.COLUMNS, "2" );
@@ -789,20 +803,20 @@ public final class ITextSink
         writeAddAttribute( ElementTags.TOP, Boolean.FALSE.toString() );
         writeAddAttribute( ElementTags.BOTTOM, Boolean.FALSE.toString() );
 
-        this.actionContext.setAction( SinkActionContext.DEFINITION );
+        actionContext.setAction( SinkActionContext.DEFINITION );
     }
 
     public void definitionListItem_()
     {
         // nop
-        this.actionContext.release();
+        actionContext.release();
     }
 
     public void definitionListItem()
     {
         // nop
 
-        this.actionContext.setAction( SinkActionContext.DEFINITION_LIST_ITEM );
+        actionContext.setAction( SinkActionContext.DEFINITION_LIST_ITEM );
     }
 
     // ----------------------------------------------------------------------
@@ -815,18 +829,18 @@ public final class ITextSink
 
         writeEndElement(); // ElementTags.CHUNK
 
-        this.actionContext.release();
+        actionContext.release();
     }
 
     public void table()
     {
         writeStartElement( ElementTags.CHUNK );
-        writeAddAttribute( ElementTags.FONT, this.font.getFontName() );
-        writeAddAttribute( ElementTags.SIZE, this.font.getFontSize() );
-        writeAddAttribute( ElementTags.STYLE, this.font.getFontStyle() );
-        writeAddAttribute( ElementTags.BLUE, this.font.getFontColorBlue() );
-        writeAddAttribute( ElementTags.GREEN, this.font.getFontColorGreen() );
-        writeAddAttribute( ElementTags.RED, this.font.getFontColorRed() );
+        writeAddAttribute( ElementTags.FONT, font.getFontName() );
+        writeAddAttribute( ElementTags.SIZE, font.getFontSize() );
+        writeAddAttribute( ElementTags.STYLE, font.getFontStyle() );
+        writeAddAttribute( ElementTags.BLUE, font.getFontColorBlue() );
+        writeAddAttribute( ElementTags.GREEN, font.getFontColorGreen() );
+        writeAddAttribute( ElementTags.RED, font.getFontColorRed() );
 
         writeStartElement( ElementTags.TABLE );
         writeAddAttribute( ElementTags.LEFT, Boolean.TRUE.toString() );
@@ -840,24 +854,24 @@ public final class ITextSink
         writeAddAttribute( ElementTags.CELLPADDING, "10" );
         //writeAddAttribute( ElementTags.COLUMNS, "2" );
 
-        this.actionContext.setAction( SinkActionContext.TABLE );
+        actionContext.setAction( SinkActionContext.TABLE );
     }
 
     public void tableCaption_()
     {
-        this.actionContext.release();
+        actionContext.release();
     }
 
     public void tableCaption()
     {
-        this.actionContext.setAction( SinkActionContext.TABLE_CAPTION );
+        actionContext.setAction( SinkActionContext.TABLE_CAPTION );
     }
 
     public void tableCell_()
     {
         writeEndElement(); // ElementTags.CELL
 
-        this.actionContext.release();
+        actionContext.release();
     }
 
     public void tableCell()
@@ -869,19 +883,19 @@ public final class ITextSink
         writeAddAttribute( ElementTags.BOTTOM, Boolean.TRUE.toString() );
         writeAddAttribute( ElementTags.HORIZONTALALIGN, ElementTags.ALIGN_LEFT );
 
-        this.actionContext.setAction( SinkActionContext.TABLE_CELL );
+        actionContext.setAction( SinkActionContext.TABLE_CELL );
     }
 
     public void tableCell( String width )
     {
-        this.actionContext.setAction( SinkActionContext.TABLE_CELL );
+        actionContext.setAction( SinkActionContext.TABLE_CELL );
     }
 
     public void tableHeaderCell_()
     {
         writeEndElement(); // ElementTags.CELL
 
-        this.actionContext.release();
+        actionContext.release();
     }
 
     public void tableHeaderCell()
@@ -897,33 +911,33 @@ public final class ITextSink
         writeAddAttribute( ElementTags.BGGREEN, Color.GRAY.getGreen() );
         writeAddAttribute( ElementTags.HORIZONTALALIGN, ElementTags.ALIGN_CENTER );
 
-        this.actionContext.setAction( SinkActionContext.TABLE_HEADER_CELL );
+        actionContext.setAction( SinkActionContext.TABLE_HEADER_CELL );
     }
 
     public void tableHeaderCell( String width )
     {
-        this.actionContext.setAction( SinkActionContext.TABLE_HEADER_CELL );
+        actionContext.setAction( SinkActionContext.TABLE_HEADER_CELL );
     }
 
     public void tableRow_()
     {
         writeEndElement(); // ElementTags.ROW
 
-        this.actionContext.release();
+        actionContext.release();
     }
 
     public void tableRow()
     {
         writeStartElement( ElementTags.ROW );
 
-        this.actionContext.setAction( SinkActionContext.TABLE_ROW );
+        actionContext.setAction( SinkActionContext.TABLE_ROW );
     }
 
     public void tableRows_()
     {
         //writeEndElement(); // ElementTags.TABLE
 
-        this.actionContext.release();
+        actionContext.release();
     }
 
     public void tableRows( int[] justification, boolean grid )
@@ -931,7 +945,7 @@ public final class ITextSink
         // ElementTags.TABLE
         writeAddAttribute( ElementTags.COLUMNS, justification.length );
 
-        this.actionContext.setAction( SinkActionContext.TABLE_ROWS );
+        actionContext.setAction( SinkActionContext.TABLE_ROWS );
     }
 
     // ----------------------------------------------------------------------
@@ -948,19 +962,19 @@ public final class ITextSink
 
         writeEndElement(); // ElementTags.CHUNK
 
-        this.actionContext.release();
+        actionContext.release();
     }
 
     public void verbatim( boolean boxed )
     {
         // Always boxed
         writeStartElement( ElementTags.CHUNK );
-        writeAddAttribute( ElementTags.FONT, this.font.getFontName() );
-        writeAddAttribute( ElementTags.SIZE, this.font.getFontSize() );
-        writeAddAttribute( ElementTags.STYLE, this.font.getFontStyle() );
-        writeAddAttribute( ElementTags.BLUE, this.font.getFontColorBlue() );
-        writeAddAttribute( ElementTags.GREEN, this.font.getFontColorGreen() );
-        writeAddAttribute( ElementTags.RED, this.font.getFontColorRed() );
+        writeAddAttribute( ElementTags.FONT, font.getFontName() );
+        writeAddAttribute( ElementTags.SIZE, font.getFontSize() );
+        writeAddAttribute( ElementTags.STYLE, font.getFontStyle() );
+        writeAddAttribute( ElementTags.BLUE, font.getFontColorBlue() );
+        writeAddAttribute( ElementTags.GREEN, font.getFontColorGreen() );
+        writeAddAttribute( ElementTags.RED, font.getFontColorRed() );
 
         writeStartElement( ElementTags.TABLE );
         writeAddAttribute( ElementTags.COLUMNS, "1" );
@@ -982,7 +996,7 @@ public final class ITextSink
         writeAddAttribute( ElementTags.TOP, Boolean.TRUE.toString() );
         writeAddAttribute( ElementTags.BOTTOM, Boolean.TRUE.toString() );
 
-        this.actionContext.setAction( SinkActionContext.VERBATIM );
+        actionContext.setAction( SinkActionContext.VERBATIM );
     }
 
     // ----------------------------------------------------------------------
@@ -995,32 +1009,32 @@ public final class ITextSink
 
         writeEndElement(); // ElementTags.CHUNK
 
-        this.actionContext.release();
+        actionContext.release();
     }
 
     public void figure()
     {
         writeStartElement( ElementTags.CHUNK );
-        writeAddAttribute( ElementTags.FONT, this.font.getFontName() );
-        writeAddAttribute( ElementTags.SIZE, this.font.getFontSize() );
-        writeAddAttribute( ElementTags.STYLE, this.font.getFontStyle() );
-        writeAddAttribute( ElementTags.BLUE, this.font.getFontColorBlue() );
-        writeAddAttribute( ElementTags.GREEN, this.font.getFontColorGreen() );
-        writeAddAttribute( ElementTags.RED, this.font.getFontColorRed() );
+        writeAddAttribute( ElementTags.FONT, font.getFontName() );
+        writeAddAttribute( ElementTags.SIZE, font.getFontSize() );
+        writeAddAttribute( ElementTags.STYLE, font.getFontStyle() );
+        writeAddAttribute( ElementTags.BLUE, font.getFontColorBlue() );
+        writeAddAttribute( ElementTags.GREEN, font.getFontColorGreen() );
+        writeAddAttribute( ElementTags.RED, font.getFontColorRed() );
 
         writeStartElement( ElementTags.IMAGE );
 
-        this.actionContext.setAction( SinkActionContext.FIGURE );
+        actionContext.setAction( SinkActionContext.FIGURE );
     }
 
     public void figureCaption_()
     {
-        this.actionContext.release();
+        actionContext.release();
     }
 
     public void figureCaption()
     {
-        this.actionContext.setAction( SinkActionContext.FIGURE_CAPTION );
+        actionContext.setAction( SinkActionContext.FIGURE_CAPTION );
     }
 
     public void figureGraphics( String name )
@@ -1082,7 +1096,7 @@ public final class ITextSink
         writeAddAttribute( ElementTags.PLAINWIDTH, String.valueOf( width ) );
         writeAddAttribute( ElementTags.PLAINHEIGHT, String.valueOf( height ) );
 
-        this.actionContext.setAction( SinkActionContext.FIGURE_GRAPHICS );
+        actionContext.setAction( SinkActionContext.FIGURE_GRAPHICS );
     }
 
     // ----------------------------------------------------------------------
@@ -1091,32 +1105,32 @@ public final class ITextSink
 
     public void bold_()
     {
-        this.font.removeBold();
+        font.removeBold();
     }
 
     public void bold()
     {
-        this.font.addBold();
+        font.addBold();
     }
 
     public void italic_()
     {
-        this.font.removeItalic();
+        font.removeItalic();
     }
 
     public void italic()
     {
-        this.font.addItalic();
+        font.addItalic();
     }
 
     public void monospaced_()
     {
-        this.font.setMonoSpaced( false );
+        font.setMonoSpaced( false );
     }
 
     public void monospaced()
     {
-        this.font.setMonoSpaced( true );
+        font.setMonoSpaced( true );
     }
 
     // ----------------------------------------------------------------------
@@ -1127,34 +1141,34 @@ public final class ITextSink
     {
         writeEndElement(); // ElementTags.ANCHOR
 
-        this.font.setColor( Color.BLACK );
-        this.font.removeUnderlined();
+        font.setColor( Color.BLACK );
+        font.removeUnderlined();
 
-        this.actionContext.release();
+        actionContext.release();
     }
 
     public void link( String name )
     {
-        this.font.setColor( Color.BLUE );
-        this.font.addUnderlined();
+        font.setColor( Color.BLUE );
+        font.addUnderlined();
 
         writeStartElement( ElementTags.ANCHOR );
         writeAddAttribute( ElementTags.REFERENCE, HtmlTools.escapeHTML( name ) );
-        writeAddAttribute( ElementTags.FONT, this.font.getFontName() );
-        writeAddAttribute( ElementTags.SIZE, this.font.getFontSize() );
-        writeAddAttribute( ElementTags.STYLE, this.font.getFontStyle() );
-        writeAddAttribute( ElementTags.BLUE, this.font.getFontColorBlue() );
-        writeAddAttribute( ElementTags.GREEN, this.font.getFontColorGreen() );
-        writeAddAttribute( ElementTags.RED, this.font.getFontColorRed() );
+        writeAddAttribute( ElementTags.FONT, font.getFontName() );
+        writeAddAttribute( ElementTags.SIZE, font.getFontSize() );
+        writeAddAttribute( ElementTags.STYLE, font.getFontStyle() );
+        writeAddAttribute( ElementTags.BLUE, font.getFontColorBlue() );
+        writeAddAttribute( ElementTags.GREEN, font.getFontColorGreen() );
+        writeAddAttribute( ElementTags.RED, font.getFontColorRed() );
 
-        this.actionContext.setAction( SinkActionContext.LINK );
+        actionContext.setAction( SinkActionContext.LINK );
     }
 
     public void anchor_()
     {
         writeEndElement(); // ElementTags.ANCHOR
 
-        this.actionContext.release();
+        actionContext.release();
     }
 
     public void anchor( String name )
@@ -1162,7 +1176,7 @@ public final class ITextSink
         writeStartElement( ElementTags.ANCHOR );
         writeAddAttribute( ElementTags.NAME, name );
 
-        this.actionContext.setAction( SinkActionContext.ANCHOR );
+        actionContext.setAction( SinkActionContext.ANCHOR );
     }
 
     // ----------------------------------------------------------------------
@@ -1172,9 +1186,9 @@ public final class ITextSink
     public void lineBreak()
     {
         // Special case for the header
-        if ( ( this.actionContext.getCurrentAction() == SinkActionContext.AUTHOR )
-            || ( this.actionContext.getCurrentAction() == SinkActionContext.DATE )
-            || ( this.actionContext.getCurrentAction() == SinkActionContext.TITLE ) )
+        if ( ( actionContext.getCurrentAction() == SinkActionContext.AUTHOR )
+            || ( actionContext.getCurrentAction() == SinkActionContext.DATE )
+            || ( actionContext.getCurrentAction() == SinkActionContext.TITLE ) )
         {
             return;
         }
@@ -1207,12 +1221,12 @@ public final class ITextSink
     public void rawText( String text )
     {
         writeStartElement( ElementTags.CHUNK );
-        writeAddAttribute( ElementTags.FONT, this.font.getFontName() );
-        writeAddAttribute( ElementTags.SIZE, this.font.getFontSize() );
-        writeAddAttribute( ElementTags.STYLE, this.font.getFontStyle() );
-        writeAddAttribute( ElementTags.BLUE, this.font.getFontColorBlue() );
-        writeAddAttribute( ElementTags.GREEN, this.font.getFontColorGreen() );
-        writeAddAttribute( ElementTags.RED, this.font.getFontColorRed() );
+        writeAddAttribute( ElementTags.FONT, font.getFontName() );
+        writeAddAttribute( ElementTags.SIZE, font.getFontSize() );
+        writeAddAttribute( ElementTags.STYLE, font.getFontStyle() );
+        writeAddAttribute( ElementTags.BLUE, font.getFontColorBlue() );
+        writeAddAttribute( ElementTags.GREEN, font.getFontColorGreen() );
+        writeAddAttribute( ElementTags.RED, font.getFontColorRed() );
 
         write( text, false );
 
@@ -1221,7 +1235,7 @@ public final class ITextSink
 
     public void text( String text )
     {
-        switch ( this.actionContext.getCurrentAction() )
+        switch ( actionContext.getCurrentAction() )
         {
             case SinkActionContext.UNDEFINED:
                 break;
@@ -1230,25 +1244,25 @@ public final class ITextSink
                 break;
 
             case SinkActionContext.AUTHOR:
-                this.header.addAuthor( text );
+                header.addAuthor( text );
                 break;
 
             case SinkActionContext.DATE:
-                this.header.setDate( text );
+                header.setDate( text );
                 break;
 
             case SinkActionContext.TITLE:
-                this.header.setTitle( text );
+                header.setTitle( text );
                 break;
 
             case SinkActionContext.SECTION_TITLE_1:
                 writeStartElement( ElementTags.CHUNK );
-                writeAddAttribute( ElementTags.FONT, this.font.getFontName() );
-                writeAddAttribute( ElementTags.SIZE, this.font.getFontSize() );
-                writeAddAttribute( ElementTags.STYLE, this.font.getFontStyle() );
-                writeAddAttribute( ElementTags.BLUE, this.font.getFontColorBlue() );
-                writeAddAttribute( ElementTags.GREEN, this.font.getFontColorGreen() );
-                writeAddAttribute( ElementTags.RED, this.font.getFontColorRed() );
+                writeAddAttribute( ElementTags.FONT, font.getFontName() );
+                writeAddAttribute( ElementTags.SIZE, font.getFontSize() );
+                writeAddAttribute( ElementTags.STYLE, font.getFontStyle() );
+                writeAddAttribute( ElementTags.BLUE, font.getFontColorBlue() );
+                writeAddAttribute( ElementTags.GREEN, font.getFontColorGreen() );
+                writeAddAttribute( ElementTags.RED, font.getFontColorRed() );
 
                 write( text );
 
@@ -1257,12 +1271,12 @@ public final class ITextSink
 
             case SinkActionContext.SECTION_TITLE_2:
                 writeStartElement( ElementTags.CHUNK );
-                writeAddAttribute( ElementTags.FONT, this.font.getFontName() );
-                writeAddAttribute( ElementTags.SIZE, this.font.getFontSize() );
-                writeAddAttribute( ElementTags.STYLE, this.font.getFontStyle() );
-                writeAddAttribute( ElementTags.BLUE, this.font.getFontColorBlue() );
-                writeAddAttribute( ElementTags.GREEN, this.font.getFontColorGreen() );
-                writeAddAttribute( ElementTags.RED, this.font.getFontColorRed() );
+                writeAddAttribute( ElementTags.FONT, font.getFontName() );
+                writeAddAttribute( ElementTags.SIZE, font.getFontSize() );
+                writeAddAttribute( ElementTags.STYLE, font.getFontStyle() );
+                writeAddAttribute( ElementTags.BLUE, font.getFontColorBlue() );
+                writeAddAttribute( ElementTags.GREEN, font.getFontColorGreen() );
+                writeAddAttribute( ElementTags.RED, font.getFontColorRed() );
 
                 write( text );
 
@@ -1271,12 +1285,12 @@ public final class ITextSink
 
             case SinkActionContext.SECTION_TITLE_3:
                 writeStartElement( ElementTags.CHUNK );
-                writeAddAttribute( ElementTags.FONT, this.font.getFontName() );
-                writeAddAttribute( ElementTags.SIZE, this.font.getFontSize() );
-                writeAddAttribute( ElementTags.STYLE, this.font.getFontStyle() );
-                writeAddAttribute( ElementTags.BLUE, this.font.getFontColorBlue() );
-                writeAddAttribute( ElementTags.GREEN, this.font.getFontColorGreen() );
-                writeAddAttribute( ElementTags.RED, this.font.getFontColorRed() );
+                writeAddAttribute( ElementTags.FONT, font.getFontName() );
+                writeAddAttribute( ElementTags.SIZE, font.getFontSize() );
+                writeAddAttribute( ElementTags.STYLE, font.getFontStyle() );
+                writeAddAttribute( ElementTags.BLUE, font.getFontColorBlue() );
+                writeAddAttribute( ElementTags.GREEN, font.getFontColorGreen() );
+                writeAddAttribute( ElementTags.RED, font.getFontColorRed() );
 
                 write( text );
 
@@ -1285,12 +1299,12 @@ public final class ITextSink
 
             case SinkActionContext.SECTION_TITLE_4:
                 writeStartElement( ElementTags.CHUNK );
-                writeAddAttribute( ElementTags.FONT, this.font.getFontName() );
-                writeAddAttribute( ElementTags.SIZE, this.font.getFontSize() );
-                writeAddAttribute( ElementTags.STYLE, this.font.getFontStyle() );
-                writeAddAttribute( ElementTags.BLUE, this.font.getFontColorBlue() );
-                writeAddAttribute( ElementTags.GREEN, this.font.getFontColorGreen() );
-                writeAddAttribute( ElementTags.RED, this.font.getFontColorRed() );
+                writeAddAttribute( ElementTags.FONT, font.getFontName() );
+                writeAddAttribute( ElementTags.SIZE, font.getFontSize() );
+                writeAddAttribute( ElementTags.STYLE, font.getFontStyle() );
+                writeAddAttribute( ElementTags.BLUE, font.getFontColorBlue() );
+                writeAddAttribute( ElementTags.GREEN, font.getFontColorGreen() );
+                writeAddAttribute( ElementTags.RED, font.getFontColorRed() );
 
                 write( text );
 
@@ -1299,12 +1313,12 @@ public final class ITextSink
 
             case SinkActionContext.SECTION_TITLE_5:
                 writeStartElement( ElementTags.CHUNK );
-                writeAddAttribute( ElementTags.FONT, this.font.getFontName() );
-                writeAddAttribute( ElementTags.SIZE, this.font.getFontSize() );
-                writeAddAttribute( ElementTags.STYLE, this.font.getFontStyle() );
-                writeAddAttribute( ElementTags.BLUE, this.font.getFontColorBlue() );
-                writeAddAttribute( ElementTags.GREEN, this.font.getFontColorGreen() );
-                writeAddAttribute( ElementTags.RED, this.font.getFontColorRed() );
+                writeAddAttribute( ElementTags.FONT, font.getFontName() );
+                writeAddAttribute( ElementTags.SIZE, font.getFontSize() );
+                writeAddAttribute( ElementTags.STYLE, font.getFontStyle() );
+                writeAddAttribute( ElementTags.BLUE, font.getFontColorBlue() );
+                writeAddAttribute( ElementTags.GREEN, font.getFontColorGreen() );
+                writeAddAttribute( ElementTags.RED, font.getFontColorRed() );
 
                 write( text );
 
@@ -1313,12 +1327,12 @@ public final class ITextSink
 
             case SinkActionContext.LIST_ITEM:
                 writeStartElement( ElementTags.CHUNK );
-                writeAddAttribute( ElementTags.FONT, this.font.getFontName() );
-                writeAddAttribute( ElementTags.SIZE, this.font.getFontSize() );
-                writeAddAttribute( ElementTags.STYLE, this.font.getFontStyle() );
-                writeAddAttribute( ElementTags.BLUE, this.font.getFontColorBlue() );
-                writeAddAttribute( ElementTags.GREEN, this.font.getFontColorGreen() );
-                writeAddAttribute( ElementTags.RED, this.font.getFontColorRed() );
+                writeAddAttribute( ElementTags.FONT, font.getFontName() );
+                writeAddAttribute( ElementTags.SIZE, font.getFontSize() );
+                writeAddAttribute( ElementTags.STYLE, font.getFontStyle() );
+                writeAddAttribute( ElementTags.BLUE, font.getFontColorBlue() );
+                writeAddAttribute( ElementTags.GREEN, font.getFontColorGreen() );
+                writeAddAttribute( ElementTags.RED, font.getFontColorRed() );
 
                 write( text );
 
@@ -1327,12 +1341,12 @@ public final class ITextSink
 
             case SinkActionContext.NUMBERED_LIST_ITEM:
                 writeStartElement( ElementTags.CHUNK );
-                writeAddAttribute( ElementTags.FONT, this.font.getFontName() );
-                writeAddAttribute( ElementTags.SIZE, this.font.getFontSize() );
-                writeAddAttribute( ElementTags.STYLE, this.font.getFontStyle() );
-                writeAddAttribute( ElementTags.BLUE, this.font.getFontColorBlue() );
-                writeAddAttribute( ElementTags.GREEN, this.font.getFontColorGreen() );
-                writeAddAttribute( ElementTags.RED, this.font.getFontColorRed() );
+                writeAddAttribute( ElementTags.FONT, font.getFontName() );
+                writeAddAttribute( ElementTags.SIZE, font.getFontSize() );
+                writeAddAttribute( ElementTags.STYLE, font.getFontStyle() );
+                writeAddAttribute( ElementTags.BLUE, font.getFontColorBlue() );
+                writeAddAttribute( ElementTags.GREEN, font.getFontColorGreen() );
+                writeAddAttribute( ElementTags.RED, font.getFontColorRed() );
 
                 write( text );
 
@@ -1341,12 +1355,12 @@ public final class ITextSink
 
             case SinkActionContext.DEFINED_TERM:
                 writeStartElement( ElementTags.CHUNK );
-                writeAddAttribute( ElementTags.FONT, this.font.getFontName() );
-                writeAddAttribute( ElementTags.SIZE, this.font.getFontSize() );
-                writeAddAttribute( ElementTags.STYLE, this.font.getFontStyle() );
-                writeAddAttribute( ElementTags.BLUE, this.font.getFontColorBlue() );
-                writeAddAttribute( ElementTags.GREEN, this.font.getFontColorGreen() );
-                writeAddAttribute( ElementTags.RED, this.font.getFontColorRed() );
+                writeAddAttribute( ElementTags.FONT, font.getFontName() );
+                writeAddAttribute( ElementTags.SIZE, font.getFontSize() );
+                writeAddAttribute( ElementTags.STYLE, font.getFontStyle() );
+                writeAddAttribute( ElementTags.BLUE, font.getFontColorBlue() );
+                writeAddAttribute( ElementTags.GREEN, font.getFontColorGreen() );
+                writeAddAttribute( ElementTags.RED, font.getFontColorRed() );
 
                 write( text );
 
@@ -1355,12 +1369,12 @@ public final class ITextSink
 
             case SinkActionContext.DEFINITION:
                 writeStartElement( ElementTags.CHUNK );
-                writeAddAttribute( ElementTags.FONT, this.font.getFontName() );
-                writeAddAttribute( ElementTags.SIZE, this.font.getFontSize() );
-                writeAddAttribute( ElementTags.STYLE, this.font.getFontStyle() );
-                writeAddAttribute( ElementTags.BLUE, this.font.getFontColorBlue() );
-                writeAddAttribute( ElementTags.GREEN, this.font.getFontColorGreen() );
-                writeAddAttribute( ElementTags.RED, this.font.getFontColorRed() );
+                writeAddAttribute( ElementTags.FONT, font.getFontName() );
+                writeAddAttribute( ElementTags.SIZE, font.getFontSize() );
+                writeAddAttribute( ElementTags.STYLE, font.getFontStyle() );
+                writeAddAttribute( ElementTags.BLUE, font.getFontColorBlue() );
+                writeAddAttribute( ElementTags.GREEN, font.getFontColorGreen() );
+                writeAddAttribute( ElementTags.RED, font.getFontColorRed() );
 
                 write( text );
 
@@ -1375,12 +1389,12 @@ public final class ITextSink
 
             case SinkActionContext.TABLE_HEADER_CELL:
                 writeStartElement( ElementTags.CHUNK );
-                writeAddAttribute( ElementTags.FONT, this.font.getFontName() );
-                writeAddAttribute( ElementTags.SIZE, this.font.getFontSize() );
-                writeAddAttribute( ElementTags.STYLE, this.font.getFontStyle() );
-                writeAddAttribute( ElementTags.BLUE, this.font.getFontColorBlue() );
-                writeAddAttribute( ElementTags.GREEN, this.font.getFontColorGreen() );
-                writeAddAttribute( ElementTags.RED, this.font.getFontColorRed() );
+                writeAddAttribute( ElementTags.FONT, font.getFontName() );
+                writeAddAttribute( ElementTags.SIZE, font.getFontSize() );
+                writeAddAttribute( ElementTags.STYLE, font.getFontStyle() );
+                writeAddAttribute( ElementTags.BLUE, font.getFontColorBlue() );
+                writeAddAttribute( ElementTags.GREEN, font.getFontColorGreen() );
+                writeAddAttribute( ElementTags.RED, font.getFontColorRed() );
 
                 write( text );
 
@@ -1389,12 +1403,12 @@ public final class ITextSink
 
             case SinkActionContext.TABLE_CELL:
                 writeStartElement( ElementTags.CHUNK );
-                writeAddAttribute( ElementTags.FONT, this.font.getFontName() );
-                writeAddAttribute( ElementTags.SIZE, this.font.getFontSize() );
-                writeAddAttribute( ElementTags.STYLE, this.font.getFontStyle() );
-                writeAddAttribute( ElementTags.BLUE, this.font.getFontColorBlue() );
-                writeAddAttribute( ElementTags.GREEN, this.font.getFontColorGreen() );
-                writeAddAttribute( ElementTags.RED, this.font.getFontColorRed() );
+                writeAddAttribute( ElementTags.FONT, font.getFontName() );
+                writeAddAttribute( ElementTags.SIZE, font.getFontSize() );
+                writeAddAttribute( ElementTags.STYLE, font.getFontStyle() );
+                writeAddAttribute( ElementTags.BLUE, font.getFontColorBlue() );
+                writeAddAttribute( ElementTags.GREEN, font.getFontColorGreen() );
+                writeAddAttribute( ElementTags.RED, font.getFontColorRed() );
 
                 write( text );
 
@@ -1419,12 +1433,12 @@ public final class ITextSink
                     while ( ( line = lnr.readLine() ) != null )
                     {
                         writeStartElement( ElementTags.CHUNK );
-                        writeAddAttribute( ElementTags.FONT, this.font.getFontName() );
-                        writeAddAttribute( ElementTags.SIZE, this.font.getFontSize() );
-                        writeAddAttribute( ElementTags.STYLE, this.font.getFontStyle() );
-                        writeAddAttribute( ElementTags.BLUE, this.font.getFontColorBlue() );
-                        writeAddAttribute( ElementTags.GREEN, this.font.getFontColorGreen() );
-                        writeAddAttribute( ElementTags.RED, this.font.getFontColorRed() );
+                        writeAddAttribute( ElementTags.FONT, font.getFontName() );
+                        writeAddAttribute( ElementTags.SIZE, font.getFontSize() );
+                        writeAddAttribute( ElementTags.STYLE, font.getFontStyle() );
+                        writeAddAttribute( ElementTags.BLUE, font.getFontColorBlue() );
+                        writeAddAttribute( ElementTags.GREEN, font.getFontColorGreen() );
+                        writeAddAttribute( ElementTags.RED, font.getFontColorRed() );
 
                         write( "<![CDATA[", true );
                         // Special case
@@ -1453,12 +1467,12 @@ public final class ITextSink
 
             case SinkActionContext.LINK:
                 writeStartElement( ElementTags.CHUNK );
-                writeAddAttribute( ElementTags.FONT, this.font.getFontName() );
-                writeAddAttribute( ElementTags.SIZE, this.font.getFontSize() );
-                writeAddAttribute( ElementTags.STYLE, this.font.getFontStyle() );
-                writeAddAttribute( ElementTags.BLUE, this.font.getFontColorBlue() );
-                writeAddAttribute( ElementTags.GREEN, this.font.getFontColorGreen() );
-                writeAddAttribute( ElementTags.RED, this.font.getFontColorRed() );
+                writeAddAttribute( ElementTags.FONT, font.getFontName() );
+                writeAddAttribute( ElementTags.SIZE, font.getFontSize() );
+                writeAddAttribute( ElementTags.STYLE, font.getFontStyle() );
+                writeAddAttribute( ElementTags.BLUE, font.getFontColorBlue() );
+                writeAddAttribute( ElementTags.GREEN, font.getFontColorGreen() );
+                writeAddAttribute( ElementTags.RED, font.getFontColorRed() );
 
                 write( text );
 
@@ -1467,12 +1481,12 @@ public final class ITextSink
 
             case SinkActionContext.ANCHOR:
                 writeStartElement( ElementTags.CHUNK );
-                writeAddAttribute( ElementTags.FONT, this.font.getFontName() );
-                writeAddAttribute( ElementTags.SIZE, this.font.getFontSize() );
-                writeAddAttribute( ElementTags.STYLE, this.font.getFontStyle() );
-                writeAddAttribute( ElementTags.BLUE, this.font.getFontColorBlue() );
-                writeAddAttribute( ElementTags.GREEN, this.font.getFontColorGreen() );
-                writeAddAttribute( ElementTags.RED, this.font.getFontColorRed() );
+                writeAddAttribute( ElementTags.FONT, font.getFontName() );
+                writeAddAttribute( ElementTags.SIZE, font.getFontSize() );
+                writeAddAttribute( ElementTags.STYLE, font.getFontStyle() );
+                writeAddAttribute( ElementTags.BLUE, font.getFontColorBlue() );
+                writeAddAttribute( ElementTags.GREEN, font.getFontColorGreen() );
+                writeAddAttribute( ElementTags.RED, font.getFontColorRed() );
 
                 write( text );
 
@@ -1490,12 +1504,12 @@ public final class ITextSink
             case SinkActionContext.PARAGRAPH:
             default:
                 writeStartElement( ElementTags.CHUNK );
-                writeAddAttribute( ElementTags.FONT, this.font.getFontName() );
-                writeAddAttribute( ElementTags.SIZE, this.font.getFontSize() );
-                writeAddAttribute( ElementTags.STYLE, this.font.getFontStyle() );
-                writeAddAttribute( ElementTags.BLUE, this.font.getFontColorBlue() );
-                writeAddAttribute( ElementTags.GREEN, this.font.getFontColorGreen() );
-                writeAddAttribute( ElementTags.RED, this.font.getFontColorRed() );
+                writeAddAttribute( ElementTags.FONT, font.getFontName() );
+                writeAddAttribute( ElementTags.SIZE, font.getFontSize() );
+                writeAddAttribute( ElementTags.STYLE, font.getFontStyle() );
+                writeAddAttribute( ElementTags.BLUE, font.getFontColorBlue() );
+                writeAddAttribute( ElementTags.GREEN, font.getFontColorGreen() );
+                writeAddAttribute( ElementTags.RED, font.getFontColorRed() );
 
                 write( text );
 
@@ -1510,7 +1524,7 @@ public final class ITextSink
      */
     private void writeStartElement( String tag )
     {
-        this.xmlWriter.startElement( tag );
+        xmlWriter.startElement( tag );
     }
 
     /**
@@ -1521,7 +1535,7 @@ public final class ITextSink
      */
     private void writeAddAttribute( String key, String value )
     {
-        this.xmlWriter.addAttribute( key, value );
+        xmlWriter.addAttribute( key, value );
     }
 
     /**
@@ -1532,7 +1546,7 @@ public final class ITextSink
      */
     private void writeAddAttribute( String key, int value )
     {
-        this.xmlWriter.addAttribute( key, String.valueOf( value ) );
+        xmlWriter.addAttribute( key, String.valueOf( value ) );
     }
 
     /**
@@ -1540,7 +1554,7 @@ public final class ITextSink
      */
     private void writeEndElement()
     {
-        this.xmlWriter.endElement();
+        xmlWriter.endElement();
     }
 
     /**
@@ -1606,11 +1620,11 @@ public final class ITextSink
         }
         if ( escapeHtml )
         {
-            this.xmlWriter.writeMarkup( aString );
+            xmlWriter.writeMarkup( aString );
         }
         else
         {
-            this.xmlWriter.writeText( aString );
+            xmlWriter.writeText( aString );
         }
     }
 
@@ -1634,5 +1648,17 @@ public final class ITextSink
         }
 
         return sb.toString().trim();
+    }
+
+    private void startChunk( String fontName, int fontSize, String fontStyle, int fontColorBlue, int fontColorGreen, int fontColorRed, String localDestination )
+    {
+        writeStartElement( ElementTags.CHUNK );
+        writeAddAttribute( ElementTags.FONT, fontName );
+        writeAddAttribute( ElementTags.SIZE, fontSize );
+        writeAddAttribute( ElementTags.STYLE, fontStyle );
+        writeAddAttribute( ElementTags.BLUE, fontColorBlue );
+        writeAddAttribute( ElementTags.GREEN, fontColorGreen );
+        writeAddAttribute( ElementTags.RED, fontColorRed );
+//        writeAddAttribute( ElementTags.LOCALDESTINATION, localDestination );
     }
 }

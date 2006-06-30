@@ -106,16 +106,13 @@ public class ITextUtil
      * @throws RuntimeException if any
      * @see com.lowagie.text.xml.XmlToPdf
      */
-    public static void writePdf( InputStream is,
-                                 OutputStream os )
-        throws RuntimeException
+    public static void writePdf( InputStream is, OutputStream os )
     {
         try
         {
             XmlToPdf x = new XmlToPdf();
 
             x.parse( is, os );
-
         }
         catch ( DocumentException e )
         {
@@ -132,9 +129,7 @@ public class ITextUtil
      * @throws RuntimeException if any
      * @see com.lowagie.text.xml.XmlToRtf
      */
-    public static void writeRtf( InputStream is,
-                                 OutputStream os )
-        throws RuntimeException
+    public static void writeRtf( InputStream is, OutputStream os )
     {
         try
         {
@@ -156,9 +151,7 @@ public class ITextUtil
      * @throws RuntimeException if any
      * @see com.lowagie.text.xml.XmlToHtml
      */
-    public static void writeHtml( InputStream is,
-                                  OutputStream os )
-        throws RuntimeException
+    public static void writeHtml( InputStream is, OutputStream os )
     {
         try
         {
