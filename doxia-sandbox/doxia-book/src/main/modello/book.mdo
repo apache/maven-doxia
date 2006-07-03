@@ -23,7 +23,17 @@
           <identifier>true</identifier>
         </field>
         <field>
-          <name>name</name>
+          <name>title</name>
+          <version>1.0.0</version>
+          <type>String</type>
+        </field>
+        <field>
+          <name>author</name>
+          <version>1.0.0</version>
+          <type>String</type>
+        </field>
+        <field>
+          <name>date</name>
           <version>1.0.0</version>
           <type>String</type>
         </field>

@@ -43,6 +43,8 @@ public class DefaultBookValidator
                 Chapter chapter = (Chapter) it.next();
 
                 validateChapter( result, chapter );
+
+                // TODO: Validate the chapter id
             }
         }
 
@@ -62,9 +64,14 @@ public class DefaultBookValidator
             return;
         }
 
+        if ( StringUtils.isEmpty( chapter.getTitle() ) )
+        {
+            result.getErrors().add( "Missing title. Chapter id: " + chapter.getId() );
+        }
+
         if ( chapter.getSections().size() == 0 )
         {
-            result.getErrors().add( "Each chapter has to contain at least one section. Chapter id: " + chapter.getId() );
+            result.getErrors().add( "Chapter doesn't have any sections. Chapter id: " + chapter.getId() );
         }
     }
 }
