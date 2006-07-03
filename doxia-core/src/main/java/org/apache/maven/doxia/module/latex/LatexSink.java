@@ -19,18 +19,28 @@ package org.apache.maven.doxia.module.latex;
 import org.apache.maven.doxia.module.apt.AptParser;
 import org.apache.maven.doxia.sink.SinkAdapter;
 import org.apache.maven.doxia.util.LineBreaker;
+import org.codehaus.plexus.util.IOUtil;
+import org.codehaus.plexus.util.StringUtils;
 
 import java.io.Writer;
+import java.io.IOException;
+import java.io.InputStream;
 
-/**
- * @componentx
- */
 public class LatexSink
     extends SinkAdapter
 {
     private static final String EOL = System.getProperty( "line.separator" );
 
+    /**
+     * Flag that indicates if the document to be written is only a fragment.
+     *
+     * This implies that <code>\\begin{document}</code>, <code>\\ptitle{..}</code> will not be output.
+     */
+    private boolean fragmentDocument;
+
     private LineBreaker out;
+
+    private String sinkCommands;
 
     private String preamble;
 
@@ -52,28 +62,57 @@ public class LatexSink
 
     private int cellCount;
 
-    // -----------------------------------------------------------------------
+    private boolean isTitle;
+
+    private String title;
+
+    // ----------------------------------------------------------------------
+    //
+    // ----------------------------------------------------------------------
 
     public LatexSink( Writer out )
+        throws IOException
     {
-        this( out, defaultPreamble );
+        this( out, IOUtil.toString( getDefaultSinkCommands() ), IOUtil.toString( getDefaultPreamble() ) );
     }
 
-    public LatexSink( Writer out, String preamble )
+    public LatexSink( Writer out, String sinkCommands, String preamble )
     {
         this.out = new LineBreaker( out );
-        setPreamble( preamble );
-    }
-
-    public void setPreamble( String preamble )
-    {
+        this.sinkCommands = sinkCommands;
         this.preamble = preamble;
     }
 
-    public String getPreamble()
+    public LatexSink( Writer out, String sinkCommands, String preamble, boolean fragmentDocument )
     {
-        return preamble;
+        this.out = new LineBreaker( out );
+        this.sinkCommands = sinkCommands;
+        this.preamble = preamble;
+        this.fragmentDocument = fragmentDocument;
     }
+
+    // ----------------------------------------------------------------------
+    // Overridables
+    // ----------------------------------------------------------------------
+
+    protected String getDocumentStart()
+    {
+        return "\\documentclass[a4paper]{article}";
+    }
+
+    protected String getDocumentBegin()
+    {
+        return "\\begin{document}";
+    }
+
+    protected String getDocumentEnd()
+    {
+        return "\\end{document}" + EOL;
+    }
+
+    // ----------------------------------------------------------------------
+    // Sink Implementation
+    // ----------------------------------------------------------------------
 
     public void head()
     {
@@ -87,13 +126,21 @@ public class LatexSink
         cellJustif = null;
         cellCount = 0;
 
-        markup( preamble );
-        markup( "\\begin{document}" + EOL + EOL );
+        if ( !fragmentDocument )
+        {
+            markup( sinkCommands );
+
+            markup( preamble );
+
+            markup( getDocumentStart() );
+
+            markup( getDocumentBegin() );
+        }
     }
 
     public void body()
     {
-        if ( titleFlag )
+        if ( !fragmentDocument && titleFlag )
         {
             titleFlag = false;
             markup( "\\pmaketitle" + EOL + EOL );
@@ -102,34 +149,137 @@ public class LatexSink
 
     public void body_()
     {
-        markup( "\\end{document}" + EOL + EOL );
+        if ( !fragmentDocument )
+        {
+            markup( getDocumentEnd() );
+        }
+
         out.flush();
     }
 
-    public void section1()
+    // ----------------------------------------------------------------------
+    // Section Title 1
+    // ----------------------------------------------------------------------
+
+    public void sectionTitle1()
     {
-        markup( "\\psectioni{" );
+        isTitle = true;
     }
 
-    public void section2()
+    public void sectionTitle1_()
     {
-        markup( "\\psectionii{" );
+        isTitle = false;
     }
 
-    public void section3()
+    public void section1_()
     {
-        markup( "\\psectioniii{" );
+        if ( StringUtils.isNotEmpty( title ) )
+        {
+            markup( "\\psectioni{" + title + "}" );
+
+            title = null;
+        }
     }
 
-    public void section4()
+    // ----------------------------------------------------------------------
+    // Section Title 2
+    // ----------------------------------------------------------------------
+
+    public void sectionTitle2()
     {
-        markup( "\\psectioniv{" );
+        isTitle = true;
     }
 
-    public void section5()
+    public void sectionTitle2_()
     {
-        markup( "\\psectionv{" );
+        isTitle = false;
     }
+
+    public void section2_()
+    {
+        if ( StringUtils.isNotEmpty( title ) )
+        {
+            markup( "\\psectionii{" + title + "}" );
+
+            title = null;
+        }
+    }
+
+    // ----------------------------------------------------------------------
+    // Section Title 3
+    // ----------------------------------------------------------------------
+
+    public void sectionTitle3()
+    {
+        isTitle = true;
+    }
+
+    public void sectionTitle3_()
+    {
+        isTitle = false;
+    }
+
+    public void section3_()
+    {
+        if ( StringUtils.isNotEmpty( title ) )
+        {
+            markup( "\\psectioniii{" + title + "}" );
+
+            title = null;
+        }
+    }
+
+    // ----------------------------------------------------------------------
+    // Section Title 4
+    // ----------------------------------------------------------------------
+
+    public void sectionTitle4()
+    {
+        isTitle = true;
+    }
+
+    public void sectionTitle4_()
+    {
+        isTitle = false;
+    }
+
+    public void section4_()
+    {
+        if ( StringUtils.isNotEmpty( title ) )
+        {
+            markup( "\\psectioniv{" + title + "}" );
+
+            title = null;
+        }
+    }
+
+    // ----------------------------------------------------------------------
+    // Section Title 5
+    // ----------------------------------------------------------------------
+
+    public void sectionTitle5()
+    {
+        isTitle = true;
+    }
+
+    public void sectionTitle5_()
+    {
+        isTitle = false;
+    }
+
+    public void section5_()
+    {
+        if ( StringUtils.isNotEmpty( title ) )
+        {
+            markup( "\\psectionv{" + title + "}" );
+
+            title = null;
+        }
+    }
+
+    // ----------------------------------------------------------------------
+    //
+    // ----------------------------------------------------------------------
 
     public void list()
     {
@@ -297,33 +447,51 @@ public class LatexSink
 
     public void title()
     {
-        titleFlag = true;
-        markup( "\\ptitle{" );
+        if ( !fragmentDocument )
+        {
+            titleFlag = true;
+            markup( "\\ptitle{" );
+        }
     }
 
     public void title_()
     {
-        markup( "}" + EOL );
+        if ( !fragmentDocument )
+        {
+            markup( "}" + EOL );
+        }
     }
 
     public void author()
     {
-        markup( "\\pauthor{" );
+        if ( !fragmentDocument )
+        {
+            markup( "\\pauthor{" );
+        }
     }
 
     public void author_()
     {
-        markup( "}" + EOL );
+        if ( !fragmentDocument )
+        {
+            markup( "}" + EOL );
+        }
     }
 
     public void date()
     {
-        markup( "\\pdate{" );
+        if ( !fragmentDocument )
+        {
+            markup( "\\pdate{" );
+        }
     }
 
     public void date_()
     {
-        markup( "}" + EOL );
+        if ( !fragmentDocument )
+        {
+            markup( "}" + EOL );
+        }
     }
 
     public void sectionTitle_()
@@ -505,7 +673,11 @@ public class LatexSink
 
     public void text( String text )
     {
-        if ( verbatimFlag )
+        if ( isTitle )
+        {
+            title = text;
+        }
+        else if ( verbatimFlag )
         {
             verbatimContent( text );
         }
@@ -519,7 +691,10 @@ public class LatexSink
 
     protected void markup( String text )
     {
-        out.write( text, /*preserveSpace*/ true );
+        if ( text != null )
+        {
+            out.write( text, /*preserveSpace*/ true );
+        }
     }
 
     protected void content( String text )
@@ -547,7 +722,7 @@ public class LatexSink
                 case '-':
                 case '<':
                 case '>':
-                    buffer.append( "\\symbol{" + ( (int) c ) + "}" );
+                    buffer.append( "\\symbol{" ).append( (int) c ).append( "}" );
                     break;
                 case '~':
                     buffer.append( "\\textasciitilde " );
@@ -590,59 +765,9 @@ public class LatexSink
         return buffer.toString();
     }
 
-    // -----------------------------------------------------------------------
-
-    private static final String defaultPreamble = "\\newcommand{\\ptitle}[1]{\\title{#1}}" + EOL +
-        "\\newcommand{\\pauthor}[1]{\\author{#1}}" + EOL +
-        "\\newcommand{\\pdate}[1]{\\date{#1}}" + EOL +
-        "\\newcommand{\\pmaketitle}{\\maketitle}" + EOL +
-        "\\newcommand{\\psectioni}[1]{\\section{#1}}" + EOL +
-        "\\newcommand{\\psectionii}[1]{\\subsection{#1}}" + EOL +
-        "\\newcommand{\\psectioniii}[1]{\\subsubsection{#1}}" + EOL +
-        "\\newcommand{\\psectioniv}[1]{\\paragraph{#1}}" + EOL +
-        "\\newcommand{\\psectionv}[1]{\\subparagraph{#1}}" + EOL +
-        "\\newenvironment{plist}{\\begin{itemize}}{\\end{itemize}}" + EOL +
-        "\\newenvironment{pnumberedlist}{\\begin{enumerate}}{\\end{enumerate}}" + EOL +
-        "\\newcommand{\\pdef}[1]{\\textbf{#1}\\hfill}" + EOL +
-        "\\newenvironment{pdefinitionlist}" + EOL +
-        "{\\begin{list}{}{\\settowidth{\\labelwidth}{\\textbf{999.}}" + EOL +
-        "                \\setlength{\\leftmargin}{\\labelwidth}" + EOL +
-        "                \\addtolength{\\leftmargin}{\\labelsep}" + EOL +
-        "                \\renewcommand{\\makelabel}{\\pdef}}}" + EOL + "{\\end{list}}" + EOL +
-        "\\newenvironment{pfigure}{\\begin{center}}{\\end{center}}" + EOL +
-        "\\newcommand{\\pfiguregraphics}[1]{\\includegraphics{#1.eps}}" + EOL +
-        "\\newcommand{\\pfigurecaption}[1]{\\\\ \\vspace{\\pparskipamount}" + EOL +
-        "                                \\textit{#1}}" + EOL +
-        "\\newenvironment{ptable}{\\begin{center}}{\\end{center}}" + EOL +
-        "\\newenvironment{ptablerows}[1]{\\begin{tabular}{#1}}{\\end{tabular}}" + EOL +
-        "\\newenvironment{pcell}[1]{\\begin{tabular}[t]{#1}}{\\end{tabular}}" + EOL +
-        "\\newcommand{\\ptablecaption}[1]{\\\\ \\vspace{\\pparskipamount}" + EOL +
-        "                               \\textit{#1}}" + EOL +
-        "\\newenvironment{pverbatim}{\\begin{small}}{\\end{small}}" + EOL + "\\newsavebox{\\pbox}" + EOL +
-        "\\newenvironment{pverbatimbox}" + EOL + "{\\begin{lrbox}{\\pbox}\\begin{minipage}{\\linewidth}\\begin{small}}" + EOL +
-        "{\\end{small}\\end{minipage}\\end{lrbox}\\fbox{\\usebox{\\pbox}}}" + EOL +
-        "\\newcommand{\\phorizontalrule}{\\begin{center}" + EOL +
-        "                              \\rule[0.5ex]{\\linewidth}{1pt}" + EOL +
-        "                              \\end{center}}" + EOL +
-        "\\newcommand{\\panchor}[1]{\\textcolor{panchorcolor}{#1}}" + EOL +
-        "\\newcommand{\\plink}[1]{\\textcolor{plinkcolor}{#1}}" + EOL + "\\newcommand{\\pitalic}[1]{\\textit{#1}}" + EOL +
-        "\\newcommand{\\pbold}[1]{\\textbf{#1}}" + EOL +
-        "\\newcommand{\\pmonospaced}[1]{\\texttt{\\small #1}}" + EOL + EOL +
-        "\\documentclass[a4paper]{article}" + EOL + "\\usepackage{a4wide}" + EOL +
-        "\\usepackage{color}" + EOL +
-        "\\usepackage{graphics}" + EOL +
-        "\\usepackage{times}" + EOL +
-        "\\usepackage[latin1]{inputenc}" + EOL +
-        "\\usepackage[T1]{fontenc}" + EOL + EOL +
-        "\\pagestyle{plain}" + EOL + EOL +
-        "\\definecolor{plinkcolor}{rgb}{0,0,0.54}" + EOL +
-        "\\definecolor{panchorcolor}{rgb}{0.54,0,0}" + EOL + EOL +
-        "\\newlength{\\pparskipamount}" + EOL +
-        "\\setlength{\\pparskipamount}{1ex}" + EOL +
-        "\\setlength{\\parindent}{0pt}" + EOL +
-        "\\setlength{\\parskip}{\\pparskipamount}" + EOL + EOL;
-
-    // -----------------------------------------------------------------------
+    // ----------------------------------------------------------------------
+    //
+    // ----------------------------------------------------------------------
 
     public void flush()
     {
@@ -652,5 +777,21 @@ public class LatexSink
     public void close()
     {
         out.close();
+    }
+
+    // ----------------------------------------------------------------------
+    //
+    // ----------------------------------------------------------------------
+
+    public static InputStream getDefaultSinkCommands()
+        throws IOException
+    {
+        return LatexSink.class.getResource( "default_sink_commands.tex" ).openStream();
+    }
+
+    public static InputStream getDefaultPreamble()
+        throws IOException
+    {
+        return LatexSink.class.getResource( "default_preamble.tex" ).openStream();
     }
 }
