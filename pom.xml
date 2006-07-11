@@ -62,6 +62,7 @@
     <module>doxia-site-renderer</module>
     <module>doxia-decoration-model</module>
     <module>doxia-modules</module>
+    <module>doxia-sandbox</module>
   </modules>
   <distributionManagement>
     <site>

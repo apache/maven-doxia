@@ -7,6 +7,7 @@
   </parent>
   <artifactId>doxia-editor</artifactId>
   <version>1.0-alpha-1-SNAPSHOT</version>
+  <name>Doxia Swing Editor</name>
   <dependencies>
     <dependency>
       <groupId>${project.groupId}</groupId>

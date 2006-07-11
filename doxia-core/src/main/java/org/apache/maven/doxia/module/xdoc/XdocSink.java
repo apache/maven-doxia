@@ -29,18 +29,17 @@ import java.io.Writer;
  *
  * @author <a href="mailto:james@jamestaylor.org">James Taylor</a>
  * @version $Id:XdocSink.java 348605 2005-11-24 12:02:44 +1100 (Thu, 24 Nov 2005) brett $
- * @componentx
  */
 public class XdocSink
     extends SinkAdapter
 {
-    private static final String EOL = System.getProperty( "line.separator" );
+    protected static final String EOL = System.getProperty( "line.separator" );
 
-    private LineBreaker out;
+    protected LineBreaker out;
 
-    private StringBuffer buffer = new StringBuffer();
+    protected StringBuffer buffer = new StringBuffer();
 
-    private boolean headFlag;
+    protected boolean headFlag;
 
     private int itemFlag;
 
@@ -141,35 +140,10 @@ public class XdocSink
 
     public void section1()
     {
-        section = "section";
+        markup( "<section name=\"" );
     }
 
-    public void section2()
-    {
-        section = "subsection";
-    }
-
-    public void section3()
-    {
-        section = "subsection";
-    }
-
-    public void section4()
-    {
-        section = "subsection";
-    }
-
-    public void section5()
-    {
-        section = "subsection";
-    }
-
-    public void sectionTitle()
-    {
-        markup( "<" + section + " name=\"" );
-    }
-
-    public void sectionTitle_()
+    public void sectionTitle1_()
     {
         markup( "\">" );
     }
@@ -179,9 +153,29 @@ public class XdocSink
         markup( "</section>" );
     }
 
+    public void section2()
+    {
+        markup( "<subsection name=\"" );
+    }
+
+    public void sectionTitle2_()
+    {
+        sectionTitle1_();
+    }
+
     public void section2_()
     {
         markup( "</subsection>" );
+    }
+
+    public void section3()
+    {
+        markup( "<subsection name=\"" );
+    }
+
+    public void sectionTitle3_()
+    {
+        sectionTitle1_();
     }
 
     public void section3_()
@@ -189,9 +183,29 @@ public class XdocSink
         markup( "</subsection>" );
     }
 
+    public void section4()
+    {
+        markup( "<subsection name=\"" );
+    }
+
+    public void sectionTitle4_()
+    {
+        sectionTitle1_();
+    }
+
     public void section4_()
     {
         markup( "</subsection>" );
+    }
+
+    public void section5()
+    {
+        markup( "<subsection name=\"" );
+    }
+
+    public void sectionTitle5_()
+    {
+        sectionTitle1_();
     }
 
     public void section5_()

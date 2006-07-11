@@ -20,12 +20,10 @@ public class BookRendererTest
 
         File book1 = getTestFile( "src/test/resources/book-1.xml" );
 
-        File itextOutput = getTestFile( "target/book-1-itext" );
-        File xhtmlOutput = getTestFile( "target/book-1-xhtml" );
-
         List files = FileUtils.getFiles( getTestFile( "src/test/resources/book-1" ), "**/*.apt, **/*.xml", "" );
 
-        doxia.renderBook( book1, "itext", files, itextOutput );
-//        doxia.renderBook( book1, "xhtml", files, xhtmlOutput );
+//        doxia.renderBook( book1, "itext", files, getTestFile( "target/book-1-itext" ) );
+//        doxia.renderBook( book1, "xhtml", files, getTestFile( "target/book-1-xhtml" ) );
+        doxia.renderBook( book1, "xdoc", files, getTestFile( "target/book-1-xdoc" ) );
     }
 }

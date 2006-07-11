@@ -39,7 +39,8 @@ public class DoxiaRenderBooksMojo
     private File basedir;
 
     /**
-     * @parameter expression="${project.reporting.outputDirectory}"
+     * @p-arameter expression="${project.reporting.outputDirectory}"
+     * @parameter expression="${project.build.directory}/generated-site"
      */
     private File outputDirectory;
 

@@ -1,6 +1,8 @@
 package org.apache.maven.doxia.book.services.indexer;
 
 import org.apache.maven.doxia.book.context.BookContext;
+import org.apache.maven.doxia.book.context.IndexEntry;
+import org.apache.maven.doxia.book.context.BookIndex;
 import org.apache.maven.doxia.book.model.Book;
 import org.apache.maven.doxia.book.model.Chapter;
 import org.apache.maven.doxia.book.model.Section;
@@ -36,32 +38,38 @@ public class DefaultBookIndexer
     public void indexBook( Book book, BookContext bookContext )
         throws BookDoxiaException
     {
-        BookIndexingSink sink = new BookIndexingSink( bookContext );
+        BookIndex index = new BookIndex();
 
         for ( Iterator it = book.getChapters().iterator(); it.hasNext(); )
         {
             Chapter chapter = (Chapter) it.next();
 
-            indexChapter( bookContext, chapter, sink );
+            indexChapter( bookContext, index, chapter );
         }
+
+        bookContext.setIndex( index );
     }
 
     // ----------------------------------------------------------------------
     // Private
     // ----------------------------------------------------------------------
 
-    private void indexChapter( BookContext bookContext, Chapter chapter, BookIndexingSink sink )
+    private void indexChapter( BookContext context, IndexEntry bookEntry, Chapter chapter )
         throws BookDoxiaException
     {
+        IndexEntry chapterEntry = new IndexEntry( bookEntry, chapter.getId( ) );
+
+        chapterEntry.setTitle( chapter.getTitle() );
+
         for ( Iterator it = chapter.getSections().iterator(); it.hasNext(); )
         {
             Section section = (Section) it.next();
 
-            indexSection( bookContext, section, sink );
+            indexSection( context, chapterEntry, section );
         }
     }
 
-    private void indexSection( BookContext bookContext, Section section, BookIndexingSink sink )
+    private void indexSection( BookContext bookContext, IndexEntry chapterEntry, Section section )
         throws BookDoxiaException
     {
         BookContext.BookFile bookFile = (BookContext.BookFile) bookContext.getFiles().get( section.getId() );
@@ -74,6 +82,10 @@ public class DefaultBookIndexer
         // ----------------------------------------------------------------------
         //
         // ----------------------------------------------------------------------
+
+        IndexEntry sectionEntry = new IndexEntry( chapterEntry, section.getId() );
+
+        BookIndexingSink sink = new BookIndexingSink( sectionEntry );
 
         try
         {
@@ -91,5 +103,7 @@ public class DefaultBookIndexer
         {
             throw new BookDoxiaException( "Could not find document: " + bookFile.getFile().getAbsolutePath() + ".", e );
         }
+
+        sectionEntry.setTitle( sink.getTitle() );
     }
 }

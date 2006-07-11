@@ -1,11 +1,10 @@
 package org.apache.maven.doxia.book.services.indexer;
 
 import org.apache.maven.doxia.sink.SinkAdapter;
-import org.apache.maven.doxia.book.context.BookContext;
-import org.apache.maven.doxia.book.context.TOCEntry;
-import org.apache.maven.doxia.book.BookDoxiaException;
+import org.apache.maven.doxia.book.context.IndexEntry;
 
 import java.util.List;
+import java.util.Stack;
 
 /**
  * @author <a href="mailto:trygvis@inamo.no">Trygve Laugst&oslash;l</a>
@@ -22,6 +21,7 @@ public class BookIndexingSink
     private final static int TYPE_DEFINED_TERM = 6;
     private final static int TYPE_FIGURE = 7;
     private final static int TYPE_TABLE = 8;
+    private final static int TITLE = 9;
 
     private int type;
 
@@ -29,91 +29,149 @@ public class BookIndexingSink
     //
     // ----------------------------------------------------------------------
 
-    private BookContext bookContext;
+    private String title;
 
-    public BookIndexingSink( BookContext bookContext )
+    private Stack stack = new Stack();
+
+    public BookIndexingSink( IndexEntry sectionEntry )
     {
-        this.bookContext = bookContext;
+        stack.push( sectionEntry );
+    }
+
+    public String getTitle()
+    {
+        return title;
     }
 
     // ----------------------------------------------------------------------
     // Sink Overrides
     // ----------------------------------------------------------------------
 
-    public void sectionTitle1_()
+    public void title()
+    {
+        super.title();
+
+        type = TITLE;
+    }
+
+    public void sectionTitle1()
     {
         type = TYPE_SECTION_1;
     }
 
-    public void sectionTitle2_()
+    public void section1_()
+    {
+        pop();
+    }
+
+    public void sectionTitle2()
     {
         type = TYPE_SECTION_2;
     }
 
-    public void sectionTitle3_()
+    public void section2_()
+    {
+        pop();
+    }
+
+    public void sectionTitle3()
     {
         type = TYPE_SECTION_3;
     }
 
-    public void sectionTitle4_()
+    public void section3_()
+    {
+        pop();
+    }
+
+    public void sectionTitle4()
     {
         type = TYPE_SECTION_4;
     }
 
-    public void sectionTitle5_()
+    public void section4_()
+    {
+        pop();
+    }
+
+    public void sectionTitle5()
     {
         type = TYPE_SECTION_5;
     }
 
-    public void definedTerm_()
+    public void section5_()
     {
-        type = TYPE_DEFINED_TERM;
+        pop();
     }
 
-    public void figureCaption_()
-    {
-        type = TYPE_FIGURE;
-    }
-
-    public void tableCaption_()
-    {
-        type = TYPE_TABLE;
-    }
+//    public void definedTerm()
+//    {
+//        type = TYPE_DEFINED_TERM;
+//    }
+//
+//    public void figureCaption()
+//    {
+//        type = TYPE_FIGURE;
+//    }
+//
+//    public void tableCaption()
+//    {
+//        type = TYPE_TABLE;
+//    }
 
     public void text( String text )
     {
-        if ( bookContext == null )
-        {
-            throw new RuntimeException( new BookDoxiaException( "The book context has to be set first." ) );
-        }
-
-        TOCEntry entry = new TOCEntry();
-        entry.setTitle( text );
+        IndexEntry entry;
 
         switch( type )
         {
-            case TYPE_SECTION_1: addSection( 0, entry ); break;
-            case TYPE_SECTION_2: addSection( 1, entry ); break;
-            case TYPE_SECTION_3: addSection( 2, entry ); break;
-            case TYPE_SECTION_4: addSection( 3, entry ); break;
-            case TYPE_SECTION_5: addSection( 4, entry ); break;
+            case TITLE:
+                this.title = text;
+                break;
+            case TYPE_SECTION_1:
+            case TYPE_SECTION_2:
+            case TYPE_SECTION_3:
+            case TYPE_SECTION_4:
+            case TYPE_SECTION_5:
+                // -----------------------------------------------------------------------
+                // Sanitize the id. The most important step is to remove any blanks
+                // -----------------------------------------------------------------------
+
+                String id = text.toLowerCase().replace( ' ', '_' );
+
+                // -----------------------------------------------------------------------
+                //
+                // -----------------------------------------------------------------------
+
+                entry = new IndexEntry( peek(), id );
+
+                entry.setTitle( text );
+
+                push( entry );
+                break;
+            // Dunno how to handle these yet
             case TYPE_DEFINED_TERM:
             case TYPE_FIGURE:
             case TYPE_TABLE:
         }
+
+        type = 0;
     }
 
-    private void addSection( int depth, TOCEntry entry )
+    public void push( IndexEntry entry )
     {
-        TOCEntry parent = bookContext.getRootTOCEntry();
+//        System.out.println(  "push: " + entry.getId() );
+        stack.push( entry );
+    }
 
-        for ( int i = 0; i < depth; i++ )
-        {
-            List entries = parent.getChildEntries();
+    public void pop()
+    {
+//        System.out.println(  "pop: " + peek().getId() );
+        stack.pop();
+    }
 
-            parent = (TOCEntry) entries.get( entries.size() - 1 );
-        }
-
-        parent.getChildEntries().add( entry );
+    public IndexEntry peek()
+    {
+        return (IndexEntry) stack.peek();
     }
 }

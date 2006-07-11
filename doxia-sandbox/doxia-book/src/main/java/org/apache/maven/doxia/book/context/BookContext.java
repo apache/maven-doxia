@@ -2,7 +2,6 @@ package org.apache.maven.doxia.book.context;
 
 import org.apache.maven.doxia.book.model.Book;
 
-import java.util.List;
 import java.util.Map;
 import java.util.HashMap;
 import java.io.File;
@@ -19,7 +18,7 @@ public class BookContext
 
     private File outputDirectory;
 
-    private TOCEntry rootTOCEntry;
+    private BookIndex index;
 
     // ----------------------------------------------------------------------
     //
@@ -87,13 +86,13 @@ public class BookContext
         this.outputDirectory = outputDirectory;
     }
 
-    public TOCEntry getRootTOCEntry()
+    public BookIndex getIndex()
     {
-        return rootTOCEntry;
+        return index;
     }
 
-    public void setRootTOCEntry( TOCEntry rootTOCEntry )
+    public void setIndex( BookIndex index )
     {
-        this.rootTOCEntry = rootTOCEntry;
+        this.index = index;
     }
 }
