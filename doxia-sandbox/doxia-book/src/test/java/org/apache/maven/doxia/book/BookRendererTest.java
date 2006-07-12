@@ -2,6 +2,7 @@ package org.apache.maven.doxia.book;
 
 import org.codehaus.plexus.PlexusTestCase;
 import org.codehaus.plexus.util.FileUtils;
+import org.apache.maven.doxia.book.model.BookModel;
 
 import java.io.File;
 import java.util.List;
@@ -22,8 +23,10 @@ public class BookRendererTest
 
         List files = FileUtils.getFiles( getTestFile( "src/test/resources/book-1" ), "**/*.apt, **/*.xml", "" );
 
-//        doxia.renderBook( book1, "itext", files, getTestFile( "target/book-1-itext" ) );
-//        doxia.renderBook( book1, "xhtml", files, getTestFile( "target/book-1-xhtml" ) );
-        doxia.renderBook( book1, "xdoc", files, getTestFile( "target/book-1-xdoc" ) );
+        BookModel book = doxia.loadBook( book1 );
+
+//        doxia.renderBook( "itext", files, getTestFile( "target/book-1-itext" ) );
+//        doxia.renderBook( "xhtml", files, getTestFile( "target/book-1-xhtml" ) );
+        doxia.renderBook( book, "xdoc", files, getTestFile( "target/book-1-xdoc" ) );
     }
 }

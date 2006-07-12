@@ -3,6 +3,7 @@ package org.apache.maven.doxia.plugin;
 import org.apache.maven.doxia.book.BookDoxia;
 import org.apache.maven.doxia.book.BookDoxiaException;
 import org.apache.maven.doxia.book.InvalidBookDescriptorException;
+import org.apache.maven.doxia.book.model.BookModel;
 import org.apache.maven.doxia.book.services.validation.ValidationResult;
 import org.apache.maven.plugin.AbstractMojo;
 import org.apache.maven.plugin.MojoExecutionException;
@@ -39,10 +40,9 @@ public class DoxiaRenderBooksMojo
     private File basedir;
 
     /**
-     * @p-arameter expression="${project.reporting.outputDirectory}"
      * @parameter expression="${project.build.directory}/generated-site"
      */
-    private File outputDirectory;
+    private File generatedDocs;
 
     /**
      * @component
@@ -119,10 +119,13 @@ public class DoxiaRenderBooksMojo
             // Find all the files to pass to the renderer.
             // ----------------------------------------------------------------------
 
-            getLog().debug( "Locating files to include in the book:" );
-            getLog().debug( "Basedir: " + basedir );
-            getLog().debug( "Includes: " + includes );
-            getLog().debug( "Excludes: " + excludes );
+            if ( getLog().isDebugEnabled() )
+            {
+                getLog().debug( "Locating files to include in the book:" );
+                getLog().debug( "Basedir: " + basedir );
+                getLog().debug( "Includes: " + includes );
+                getLog().debug( "Excludes: " + excludes );
+            }
 
             List files;
 
@@ -138,18 +141,40 @@ public class DoxiaRenderBooksMojo
                     "excludes=" + excludes, e );
             }
 
+            // -----------------------------------------------------------------------
+            // Load the model
+            // -----------------------------------------------------------------------
+
+            BookModel bookModel;
+
+            try
+            {
+                bookModel = bookDoxia.loadBook( descriptor );
+            }
+            catch ( InvalidBookDescriptorException e )
+            {
+                throw new MojoFailureException( "Invalid book descriptor: " + LINE_SEPARATOR +
+                    formatResult( e.getValidationResult() ) );
+            }
+            catch ( BookDoxiaException e )
+            {
+                throw new MojoExecutionException( "Error while loading the book descriptor", e );
+            }
+
+            // -----------------------------------------------------------------------
+            // Render the book in all the formats
+            // -----------------------------------------------------------------------
+
             for ( Iterator j = book.getFormats().iterator(); j.hasNext(); )
             {
-                String format = (String) j.next();
+                Format format = (Format) j.next();
+
+                File outputDirectory = new File( generatedDocs, format.getId() );
+                File directory = new File( outputDirectory, bookModel.getId() );
 
                 try
                 {
-                    bookDoxia.renderBook( descriptor, format, files, new File( outputDirectory, format ) );
-                }
-                catch ( InvalidBookDescriptorException e )
-                {
-                    throw new MojoFailureException( "Invalid book descriptor: " + LINE_SEPARATOR +
-                        formatResult( e.getValidationResult() ) );
+                    bookDoxia.renderBook( bookModel, format.getId(), files, directory );
                 }
                 catch ( BookDoxiaException e )
                 {

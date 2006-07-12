@@ -137,6 +137,20 @@ public class IndexEntry
         }
     }
 
+    public IndexEntry getLastEntry()
+    {
+        List entries = getChildEntries();
+
+        if ( entries.size() == 0 )
+        {
+            return null;
+        }
+        else
+        {
+            return (IndexEntry) entries.get( entries.size() - 1 );
+        }
+    }
+
     public IndexEntry getRootEntry()
     {
         List entries = getChildEntries();

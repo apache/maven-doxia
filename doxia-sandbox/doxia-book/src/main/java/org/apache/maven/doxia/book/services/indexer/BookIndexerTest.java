@@ -3,7 +3,7 @@ package org.apache.maven.doxia.book.services.indexer;
 import org.codehaus.plexus.PlexusTestCase;
 import org.codehaus.plexus.util.FileUtils;
 import org.apache.maven.doxia.book.services.io.BookIo;
-import org.apache.maven.doxia.book.model.Book;
+import org.apache.maven.doxia.book.model.BookModel;
 import org.apache.maven.doxia.book.context.BookContext;
 import org.apache.maven.doxia.book.context.IndexEntry;
 
@@ -21,7 +21,7 @@ public class BookIndexerTest
 
         BookIndexer indexer = (BookIndexer) lookup( BookIndexer.ROLE );
 
-        Book book = io.readBook( getTestFile( "src/test/resources/book-1.xml" ) );
+        BookModel book = io.readBook( getTestFile( "src/test/resources/book-1.xml" ) );
 
         BookContext context = new BookContext();
 

@@ -1,6 +1,6 @@
 package org.apache.maven.doxia.book.services.validation;
 
-import org.apache.maven.doxia.book.model.Book;
+import org.apache.maven.doxia.book.model.BookModel;
 
 /**
  * @author <a href="mailto:trygvis@inamo.no">Trygve Laugst&oslash;l</a>
@@ -10,5 +10,5 @@ public interface BookValidator
 {
     String ROLE = BookValidator.class.getName();
 
-    ValidationResult validateBook( Book book );
+    ValidationResult validateBook( BookModel book );
 }

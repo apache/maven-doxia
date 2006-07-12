@@ -1,5 +1,7 @@
 package org.apache.maven.doxia.book;
 
+import org.apache.maven.doxia.book.model.BookModel;
+
 import java.io.File;
 import java.util.List;
 
@@ -11,6 +13,9 @@ public interface BookDoxia
 {
     String ROLE = BookDoxia.class.getName();
 
-    void renderBook( File bookDescriptor, String bookRendererId, List files, File outputDirectory )
+    BookModel loadBook( File bookDescriptor )
+        throws BookDoxiaException;
+
+    void renderBook( BookModel book, String bookRendererId, List files, File outputDirectory )
         throws BookDoxiaException;
 }

@@ -1,5 +1,6 @@
 <book>
   <id>plexus-user-guide</id>
+  <title>Test Book</title>
   <chapters>
     <chapter>
       <id>chapter-1</id>

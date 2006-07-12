@@ -1,8 +1,7 @@
 package org.apache.maven.doxia.book;
 
 import org.apache.maven.doxia.book.context.BookContext;
-import org.apache.maven.doxia.book.context.IndexEntry;
-import org.apache.maven.doxia.book.model.Book;
+import org.apache.maven.doxia.book.model.BookModel;
 import org.apache.maven.doxia.book.services.indexer.BookIndexer;
 import org.apache.maven.doxia.book.services.io.BookIo;
 import org.apache.maven.doxia.book.services.renderer.BookRenderer;
@@ -47,11 +46,15 @@ public class DefaultBookDoxia
     // BookDoxia Implementation
     // ----------------------------------------------------------------------
 
-    public void renderBook( File bookDescriptor, String bookRendererId, List files, File outputDirectory )
+    public BookModel loadBook( File bookDescriptor )
         throws BookDoxiaException
     {
-        Book book = bookIo.readBook( bookDescriptor );
+        return bookIo.readBook( bookDescriptor );
+    }
 
+    public void renderBook( BookModel book, String bookRendererId, List files, File outputDirectory )
+        throws BookDoxiaException
+    {
         // ----------------------------------------------------------------------
         //
         // ----------------------------------------------------------------------

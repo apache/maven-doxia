@@ -1,6 +1,6 @@
 package org.apache.maven.doxia.book.context;
 
-import org.apache.maven.doxia.book.model.Book;
+import org.apache.maven.doxia.book.model.BookModel;
 
 import java.util.Map;
 import java.util.HashMap;
@@ -12,7 +12,7 @@ import java.io.File;
  */
 public class BookContext
 {
-    private Book book;
+    private BookModel book;
 
     private Map files;
 
@@ -51,12 +51,12 @@ public class BookContext
     // Accessors
     // ----------------------------------------------------------------------
 
-    public Book getBook()
+    public BookModel getBook()
     {
         return book;
     }
 
-    public void setBook( Book book )
+    public void setBook( BookModel book )
     {
         this.book = book;
     }

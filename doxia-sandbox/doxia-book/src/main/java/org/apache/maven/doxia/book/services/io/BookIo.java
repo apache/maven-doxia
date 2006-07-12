@@ -1,6 +1,6 @@
 package org.apache.maven.doxia.book.services.io;
 
-import org.apache.maven.doxia.book.model.Book;
+import org.apache.maven.doxia.book.model.BookModel;
 import org.apache.maven.doxia.book.BookDoxiaException;
 import org.apache.maven.doxia.book.context.BookContext;
 
@@ -15,7 +15,7 @@ public interface BookIo
 {
     String ROLE = BookIo.class.getName();
 
-    Book readBook( File bookDescriptor )
+    BookModel readBook( File bookDescriptor )
         throws BookDoxiaException;
 
     void loadFiles( BookContext context, List files );

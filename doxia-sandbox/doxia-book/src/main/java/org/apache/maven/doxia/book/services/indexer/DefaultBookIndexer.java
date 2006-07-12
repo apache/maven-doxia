@@ -3,7 +3,7 @@ package org.apache.maven.doxia.book.services.indexer;
 import org.apache.maven.doxia.book.context.BookContext;
 import org.apache.maven.doxia.book.context.IndexEntry;
 import org.apache.maven.doxia.book.context.BookIndex;
-import org.apache.maven.doxia.book.model.Book;
+import org.apache.maven.doxia.book.model.BookModel;
 import org.apache.maven.doxia.book.model.Chapter;
 import org.apache.maven.doxia.book.model.Section;
 import org.apache.maven.doxia.book.BookDoxiaException;
@@ -35,7 +35,7 @@ public class DefaultBookIndexer
     // BookIndexer Implementation
     // ----------------------------------------------------------------------
 
-    public void indexBook( Book book, BookContext bookContext )
+    public void indexBook( BookModel book, BookContext bookContext )
         throws BookDoxiaException
     {
         BookIndex index = new BookIndex();

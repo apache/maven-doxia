@@ -1,7 +1,7 @@
 package org.apache.maven.doxia.book.services.io;
 
 import org.apache.maven.doxia.book.model.io.xpp3.BookXpp3Reader;
-import org.apache.maven.doxia.book.model.Book;
+import org.apache.maven.doxia.book.model.BookModel;
 import org.apache.maven.doxia.book.BookDoxiaException;
 import org.apache.maven.doxia.book.context.BookContext;
 import org.apache.maven.doxia.site.module.SiteModule;
@@ -37,7 +37,7 @@ public class DefaultBookIo
     // DefaultBookIo Implementation
     // -----------------------------------------------------------------------
 
-    public Book readBook( File bookDescriptor )
+    public BookModel readBook( File bookDescriptor )
         throws BookDoxiaException
     {
         try

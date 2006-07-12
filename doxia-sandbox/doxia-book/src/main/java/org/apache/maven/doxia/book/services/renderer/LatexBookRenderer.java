@@ -3,7 +3,7 @@ package org.apache.maven.doxia.book.services.renderer;
 import org.apache.maven.doxia.book.BookDoxiaException;
 import org.apache.maven.doxia.book.services.renderer.latex.LatexBookSink;
 import org.apache.maven.doxia.book.context.BookContext;
-import org.apache.maven.doxia.book.model.Book;
+import org.apache.maven.doxia.book.model.BookModel;
 import org.apache.maven.doxia.book.model.Chapter;
 import org.apache.maven.doxia.book.model.Section;
 import org.apache.maven.doxia.module.latex.LatexSink;
@@ -20,8 +20,6 @@ import java.io.PrintWriter;
 import java.io.FileReader;
 import java.io.FileNotFoundException;
 import java.util.Iterator;
-import java.util.List;
-import java.util.ArrayList;
 import java.util.Map;
 import java.util.HashMap;
 
@@ -46,7 +44,7 @@ public class LatexBookRenderer
     public void renderBook( BookContext context )
         throws BookDoxiaException
     {
-        Book book = context.getBook();
+        BookModel book = context.getBook();
 
         if ( !context.getOutputDirectory().exists() )
         {
@@ -90,7 +88,7 @@ public class LatexBookRenderer
         private String title;
     }
 
-    private void writeBook( Book book, BookContext context, PrintWriter writer )
+    private void writeBook( BookModel book, BookContext context, PrintWriter writer )
         throws IOException, BookDoxiaException
     {
         // ----------------------------------------------------------------------

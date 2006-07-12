@@ -72,6 +72,8 @@ public class XdocBookSink
         markup( "<table width=\"100%\" align=\"center\">" + EOL );
         markup( "<tr>" + EOL );
 
+        IndexEntry parent = indexEntry.getParent();
+
         // -----------------------------------------------------------------------
         // Prev
         // -----------------------------------------------------------------------
@@ -86,7 +88,17 @@ public class XdocBookSink
         }
         else
         {
-            string = "&lt;first section&gt;";
+            IndexEntry prevChapter = parent.getPrevEntry();
+
+            if ( prevChapter == null )
+            {
+                string = "<i>Start of book</i>";
+            }
+            else
+            {
+                IndexEntry lastEntry = prevChapter.getLastEntry();
+                string = "Previous: <a href='" + lastEntry.getId() + ".html'>" + lastEntry.getTitle() + "</a>";
+            }
         }
 
         markup( "<td><div align='left'>" + string + "</div></td>" + EOL );
@@ -95,9 +107,7 @@ public class XdocBookSink
         // Parent
         // -----------------------------------------------------------------------
 
-        IndexEntry parent = indexEntry.getParent();
-
-        markup( "<td><div align='center'>Up: <a href='" + parent.getId() + ".html'>" + parent.getTitle() + "</a></div></td>" + EOL );
+        markup( "<td><div align='center'><b><i>NOT IMPLEMENTED</i></b> Up: <a href='" + parent.getId() + ".html'>" + parent.getTitle() + "</a></div></td>" + EOL );
 
         // -----------------------------------------------------------------------
         //
@@ -111,7 +121,17 @@ public class XdocBookSink
         }
         else
         {
-            string = "&lt;last section&gt;";
+            IndexEntry nextChapter = parent.getNextEntry();
+
+            if ( nextChapter == null )
+            {
+                string = "<i>End of book</i>";
+            }
+            else
+            {
+                IndexEntry firstEntry = nextChapter.getFirstEntry();
+                string = "Next: <a href='" + firstEntry.getId() + ".html'>" + firstEntry.getTitle() + "</a>";
+            }
         }
 
         markup( "<td><div align='right'>" + string + "</div></td>" + EOL );

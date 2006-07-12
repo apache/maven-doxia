@@ -3,7 +3,7 @@ package org.apache.maven.doxia.book.services.renderer;
 import org.apache.maven.doxia.Doxia;
 import org.apache.maven.doxia.book.context.BookContext;
 import org.apache.maven.doxia.book.BookDoxiaException;
-import org.apache.maven.doxia.book.model.Book;
+import org.apache.maven.doxia.book.model.BookModel;
 import org.apache.maven.doxia.book.model.Chapter;
 import org.apache.maven.doxia.book.model.Section;
 import org.codehaus.plexus.logging.AbstractLogEnabled;
@@ -36,7 +36,7 @@ public class XHtmlBookRenderer
     public void renderBook( BookContext context )
         throws BookDoxiaException
     {
-        Book book = context.getBook();
+        BookModel book = context.getBook();
 
         if ( !context.getOutputDirectory().exists() )
         {

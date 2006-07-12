@@ -1,10 +1,8 @@
 package org.apache.maven.doxia.book.services.validation;
 
-import org.codehaus.plexus.personality.plexus.lifecycle.phase.InitializationException;
-import org.codehaus.plexus.personality.plexus.lifecycle.phase.Initializable;
 import org.codehaus.plexus.logging.AbstractLogEnabled;
 import org.codehaus.plexus.util.StringUtils;
-import org.apache.maven.doxia.book.model.Book;
+import org.apache.maven.doxia.book.model.BookModel;
 import org.apache.maven.doxia.book.model.Chapter;
 
 import java.util.Iterator;
@@ -23,13 +21,18 @@ public class DefaultBookValidator
     // BookValidator Implementation
     // ----------------------------------------------------------------------
 
-    public ValidationResult validateBook( Book book )
+    public ValidationResult validateBook( BookModel book )
     {
         ValidationResult result = new ValidationResult();
 
         if ( StringUtils.isEmpty( book.getId() ) )
         {
             result.getErrors().add( "Book is missing id." );
+        }
+
+        if ( StringUtils.isEmpty( book.getTitle() ) )
+        {
+            result.getErrors().add( "Book is missing title." );
         }
 
         if ( book.getChapters().size() == 0 )

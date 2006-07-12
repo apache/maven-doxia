@@ -2,7 +2,7 @@
 
 <model>
   <id>book</id>
-  <name>Book</name>
+  <name>BookModel</name>
   <description>Model for a book in Doxia</description>
   <defaults>
     <default>
