@@ -59,21 +59,17 @@ public class SnippetMacro
 
         String fileParam = (String) request.getParameter( "file" );
 
-        StringBuffer snippet;
+        URL url;
 
         if ( !StringUtils.isEmpty( urlParam ) )
         {
             try
             {
-                snippet = getSnippet( new URL( urlParam ), id );
+                url = new URL( urlParam );
             }
             catch ( MalformedURLException e )
             {
                 throw new IllegalArgumentException( urlParam + " is a malformed URL" );
-            }
-            catch ( IOException e )
-            {
-                throw new MacroExecutionException( "Error reading snippet", e );
             }
         }
         else if ( !StringUtils.isEmpty( fileParam ) )
@@ -87,20 +83,27 @@ public class SnippetMacro
 
             try
             {
-                snippet = new StringBuffer( FileUtils.fileRead( f ) );
+                url = f.toURL();
             }
-            catch ( FileNotFoundException e )
+            catch ( MalformedURLException e )
             {
-                throw new MacroExecutionException( "No such file: '" + f.getAbsolutePath() + "'." );
-            }
-            catch ( IOException e )
-            {
-                throw new MacroExecutionException( "Error while readin file: '" + f.getAbsolutePath() + "'.", e );
+                throw new IllegalArgumentException( urlParam + " is a malformed URL" );
             }
         }
         else
         {
             throw new IllegalArgumentException( "Either the 'url' or the 'file' param has to be given." );
+        }
+
+        StringBuffer snippet;
+
+        try
+        {
+            snippet = getSnippet( url, id );
+        }
+        catch ( IOException e )
+        {
+            throw new MacroExecutionException( "Error reading snippet", e );
         }
 
         sink.verbatim( true );
