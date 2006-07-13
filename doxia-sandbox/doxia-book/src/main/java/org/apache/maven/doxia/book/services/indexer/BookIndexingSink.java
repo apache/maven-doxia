@@ -137,7 +137,11 @@ public class BookIndexingSink
                 // Sanitize the id. The most important step is to remove any blanks
                 // -----------------------------------------------------------------------
 
-                String id = text.toLowerCase().replace( ' ', '_' );
+                String id = text;
+                id = id.toLowerCase();
+                id = id.replace( '\'', '_' );
+                id = id.replace( '\"', '_' );
+                id = id.replace( ' ', '_' );
 
                 // -----------------------------------------------------------------------
                 //

@@ -66,7 +66,7 @@ public class DoxiaRenderBooksMojo
             // Validate
             // ----------------------------------------------------------------------
 
-            if ( StringUtils.isEmpty( book.getDirectory() ) )
+            if ( StringUtils.isEmpty( book.getDescriptor() ) )
             {
                 throw new MojoFailureException( "Invalid configuration: The book is required to have a descriptor set." );
             }

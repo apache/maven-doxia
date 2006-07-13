@@ -80,11 +80,13 @@ public class XdocBookSink
 
         IndexEntry prevEntry = indexEntry.getPrevEntry();
 
-        String string;
+        markup( "<td><div align='left'>" );
 
         if ( prevEntry != null )
         {
-            string = "Previous: <a href='" + prevEntry.getId() + ".html'>" + prevEntry.getTitle() + "</a>";
+            markup( "Previous: <a href='" + prevEntry.getId() + ".html'>" );
+            content( prevEntry.getTitle() );
+            markup( "</a>" );
         }
         else
         {
@@ -92,16 +94,19 @@ public class XdocBookSink
 
             if ( prevChapter == null )
             {
-                string = "<i>Start of book</i>";
+                markup( "<i>Start of book</i>" );
             }
             else
             {
                 IndexEntry lastEntry = prevChapter.getLastEntry();
-                string = "Previous: <a href='" + lastEntry.getId() + ".html'>" + lastEntry.getTitle() + "</a>";
+
+                markup( "Previous: <a href='" + lastEntry.getId() + ".html'>" );
+                content( lastEntry.getTitle() );
+                markup( "</a>" );
             }
         }
 
-        markup( "<td><div align='left'>" + string + "</div></td>" + EOL );
+        markup( "</div></td>" + EOL );
 
         // -----------------------------------------------------------------------
         // Parent
@@ -115,9 +120,13 @@ public class XdocBookSink
 
         IndexEntry nextEntry = indexEntry.getNextEntry();
 
+        markup( "<td><div align='right'>" );
+
         if ( nextEntry != null )
         {
-            string = "Next: <a href='" + nextEntry.getId() + ".html'>" + nextEntry.getTitle() + "</a>";
+            markup( "Next: <a href='" + nextEntry.getId() + ".html'>" );
+            content( nextEntry.getTitle() );
+            markup( "</a>" );
         }
         else
         {
@@ -125,16 +134,18 @@ public class XdocBookSink
 
             if ( nextChapter == null )
             {
-                string = "<i>End of book</i>";
+                markup( "<i>End of book</i>" );
             }
             else
             {
                 IndexEntry firstEntry = nextChapter.getFirstEntry();
-                string = "Next: <a href='" + firstEntry.getId() + ".html'>" + firstEntry.getTitle() + "</a>";
+                markup( "Next: <a href='" + firstEntry.getId() + ".html'>" );
+                content( firstEntry.getTitle() );
+                markup( "</a>" );
             }
         }
 
-        markup( "<td><div align='right'>" + string + "</div></td>" + EOL );
+        markup( "</div></td>" + EOL );
 
         // -----------------------------------------------------------------------
         //

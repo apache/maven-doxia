@@ -3,7 +3,7 @@
   <parent>
     <groupId>org.apache.maven.doxia</groupId>
     <artifactId>doxia</artifactId>
-  <version>1.0-alpha-8-SNAPSHOT</version>
+    <version>1.0-alpha-9-SNAPSHOT</version>
   </parent>
   <artifactId>doxia-book</artifactId>
   <version>1.0-alpha-1-SNAPSHOT</version>
@@ -41,20 +41,17 @@
         </configuration>
         <executions>
           <execution>
+            <id>site-docs</id>
+            <phase>pre-site</phase>
+            <goals>
+              <goal>xdoc</goal>
+              <goal>xsd</goal>
+            </goals>
+          </execution>
+          <execution>
             <goals>
               <goal>java</goal>
               <goal>xpp3-reader</goal>
-            </goals>
-          </execution>
-        </executions>
-      </plugin>
-      <plugin>
-        <groupId>org.codehaus.plexus</groupId>
-        <artifactId>plexus-maven-plugin</artifactId>
-        <executions>
-          <execution>
-            <goals>
-              <goal>descriptor</goal>
             </goals>
           </execution>
         </executions>
