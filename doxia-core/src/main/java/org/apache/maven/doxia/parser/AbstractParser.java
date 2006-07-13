@@ -60,9 +60,6 @@ public abstract class AbstractParser
             return new File( basedir );
         }
 
-        System.out.println(
-            "new File( new File( \"\" ).getAbsolutePath() ) = " + new File( new File( "" ).getAbsolutePath() ) );
-
         return new File( new File( "" ).getAbsolutePath() );
     }
 }
