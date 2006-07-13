@@ -46,6 +46,7 @@
       <plugin>
         <groupId>org.codehaus.plexus</groupId>
         <artifactId>plexus-maven-plugin</artifactId>
+        <version>1.2</version>
         <executions>
           <execution>
             <goals>
@@ -63,6 +64,7 @@
     <module>doxia-decoration-model</module>
     <module>doxia-modules</module>
     <module>doxia-sandbox</module>
+    <module>doxia-site</module>
   </modules>
   <distributionManagement>
     <site>

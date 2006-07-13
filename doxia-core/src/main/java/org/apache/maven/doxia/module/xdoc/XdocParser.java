@@ -85,7 +85,7 @@ public class XdocParser
                 {
                     sink.anchor( parser.getAttributeValue( null, "name" ) );
                     sink.anchor_();
-                    
+
                     sink.section1();
 
                     sink.sectionTitle1();
@@ -98,7 +98,7 @@ public class XdocParser
                 {
                     sink.anchor( parser.getAttributeValue( null, "name" ) );
                     sink.anchor_();
-                    
+
                     sink.section2();
 
                     sink.sectionTitle2();
@@ -172,7 +172,7 @@ public class XdocParser
                         parameters.put( parser.getAttributeName( i ), parser.getAttributeValue( i ) );
                     }
 
-                    MacroRequest request = new MacroRequest( parameters );
+                    MacroRequest request = new MacroRequest( parameters, getBasedir() );
 
                     executeMacro( macroId, request, sink );
                 }

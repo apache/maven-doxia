@@ -17,6 +17,7 @@ package org.apache.maven.doxia.macro;
  */
 
 import java.util.Map;
+import java.io.File;
 
 /**
  * @author <a href="mailto:jason@maven.org">Jason van Zyl</a>
@@ -24,16 +25,29 @@ import java.util.Map;
  */
 public class MacroRequest
 {
+    private File basedir;
+
     private Map parameters;
+
+    public MacroRequest( Map parameters, File basedir )
+    {
+        this.parameters = parameters;
+        this.basedir = basedir;
+    }
+
+    public File getBasedir()
+    {
+        return basedir;
+    }
+
+    public void setBasedir( File basedir )
+    {
+        this.basedir = basedir;
+    }
 
     public Map getParameters()
     {
         return parameters;
-    }
-
-    public MacroRequest( Map parameters )
-    {
-        this.parameters = parameters;
     }
 
     public Object getParameter( String key )

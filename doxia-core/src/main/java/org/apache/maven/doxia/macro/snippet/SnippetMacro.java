@@ -20,8 +20,12 @@ import org.apache.maven.doxia.macro.AbstractMacro;
 import org.apache.maven.doxia.macro.MacroExecutionException;
 import org.apache.maven.doxia.macro.MacroRequest;
 import org.apache.maven.doxia.sink.Sink;
+import org.codehaus.plexus.util.StringUtils;
+import org.codehaus.plexus.util.FileUtils;
 
 import java.io.IOException;
+import java.io.File;
+import java.io.FileNotFoundException;
 import java.net.MalformedURLException;
 import java.net.URL;
 import java.util.HashMap;
@@ -53,29 +57,50 @@ public class SnippetMacro
 
         String urlParam = (String) request.getParameter( "url" );
 
-        required( urlParam, "url" );
+        String fileParam = (String) request.getParameter( "file" );
 
-        URL url;
+        StringBuffer snippet;
 
-        try
+        if ( !StringUtils.isEmpty( urlParam ) )
         {
-            url = new URL( urlParam );
+            try
+            {
+                snippet = getSnippet( new URL( urlParam ), id );
+            }
+            catch ( MalformedURLException e )
+            {
+                throw new IllegalArgumentException( urlParam + " is a malformed URL" );
+            }
+            catch ( IOException e )
+            {
+                throw new MacroExecutionException( "Error reading snippet", e );
+            }
         }
-        catch ( MalformedURLException e )
+        else if ( !StringUtils.isEmpty( fileParam ) )
         {
-            throw new IllegalArgumentException( urlParam + " is a malformed URL" );
-        }
+            File f = new File( fileParam );
 
-        String lang = (String) request.getParameter( "lang" );
+            if ( !f.isAbsolute() )
+            {
+                f = new File( request.getBasedir(), fileParam );
+            }
 
-        StringBuffer snippet = null;
-        try
-        {
-            snippet = getSnippet( url, id );
+            try
+            {
+                snippet = new StringBuffer( FileUtils.fileRead( f ) );
+            }
+            catch ( FileNotFoundException e )
+            {
+                throw new MacroExecutionException( "No such file: '" + f.getAbsolutePath() + "'." );
+            }
+            catch ( IOException e )
+            {
+                throw new MacroExecutionException( "Error while readin file: '" + f.getAbsolutePath() + "'.", e );
+            }
         }
-        catch ( IOException e )
+        else
         {
-            throw new MacroExecutionException( "Error reading snippet", e );
+            throw new IllegalArgumentException( "Either the 'url' or the 'file' param has to be given." );
         }
 
         sink.verbatim( true );
@@ -85,7 +110,7 @@ public class SnippetMacro
         sink.verbatim_();
     }
 
-    StringBuffer getSnippet( URL url, String id )
+    private StringBuffer getSnippet( URL url, String id )
         throws IOException
     {
         StringBuffer result;
@@ -109,7 +134,7 @@ public class SnippetMacro
 
             if ( debug )
             {
-                result.append( "(Fetched from url, cache content " + cache + ")" );
+                result.append( "(Fetched from url, cache content " ).append( cache ).append( ")" );
             }
         }
 

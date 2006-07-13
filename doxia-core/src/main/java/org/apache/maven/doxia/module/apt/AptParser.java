@@ -564,7 +564,7 @@ public class AptParser
         sink.definitionList_();
     }
 
-    private final void nextLine()
+    private void nextLine()
         throws AptParseException
     {
         line = source.getNextLine();
@@ -782,17 +782,17 @@ public class AptParser
 
     // -----------------------------------------------------------------------
 
-    private static final boolean isOctalChar( char c )
+    private static boolean isOctalChar( char c )
     {
         return ( c >= '0' && c <= '7' );
     }
 
-    private static final boolean isHexChar( char c )
+    private static boolean isHexChar( char c )
     {
         return ( ( c >= '0' && c <= '9' ) || ( c >= 'a' && c <= 'f' ) || ( c >= 'A' && c <= 'F' ) );
     }
 
-    private static final char charAt( String string, int length, int i )
+    private static char charAt( String string, int length, int i )
     {
         return ( i < length ) ? string.charAt( i ) : '\0';
     }
@@ -1106,7 +1106,7 @@ public class AptParser
         flushTraversed( buffer, sink );
     }
 
-    private static final void flushTraversed( StringBuffer buffer, Sink sink )
+    private static void flushTraversed( StringBuffer buffer, Sink sink )
     {
         if ( buffer.length() > 0 )
         {
@@ -1762,7 +1762,7 @@ public class AptParser
             int columns = 0;
             StringBuffer[] cells = null;
             boolean[] headers = null;
-            boolean grid = false;
+            boolean grid;
 
             AptParser.this.sink.table();
 
@@ -2138,7 +2138,7 @@ public class AptParser
                 parameters.put( param[0], param[1] );
             }
 
-            MacroRequest request = new MacroRequest( parameters );
+            MacroRequest request = new MacroRequest( parameters, getBasedir() );
 
             try
             {

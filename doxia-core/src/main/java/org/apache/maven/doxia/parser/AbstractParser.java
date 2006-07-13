@@ -22,6 +22,9 @@ import org.apache.maven.doxia.macro.MacroRequest;
 import org.apache.maven.doxia.macro.manager.MacroManager;
 import org.apache.maven.doxia.macro.manager.MacroNotFoundException;
 import org.apache.maven.doxia.sink.Sink;
+import org.codehaus.plexus.util.StringUtils;
+
+import java.io.File;
 
 /**
  * @author <a href="mailto:jason@maven.org">Jason van Zyl</a>
@@ -44,5 +47,22 @@ public abstract class AbstractParser
         Macro macro = macroManager.getMacro( macroId );
 
         macro.execute( sink, request );
+    }
+
+    protected File getBasedir()
+    {
+        // TODO: This is baaad, it should come in with the request.
+
+        String basedir = System.getProperty( "basedir" );
+
+        if ( basedir != null )
+        {
+            return new File( basedir );
+        }
+
+        System.out.println(
+            "new File( new File( \"\" ).getAbsolutePath() ) = " + new File( new File( "" ).getAbsolutePath() ) );
+
+        return new File( new File( "" ).getAbsolutePath() );
     }
 }
