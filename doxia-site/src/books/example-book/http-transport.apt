@@ -1,0 +1,78 @@
+ -----
+ HTTP Transport
+ -----
+ XFire User's Guide
+ -----
+
+HTTP Transport
+
+* XFireServlet
+
+ The core of the HTTP Transport takes place in the XFireServletController. Your own servlets can delegate appropriate
+ requests to this class or you can use one of XFire's internal servlet classes. The XFireServlet is just a thin
+ wrapper for the controller. The XFireServletController provides an xml configuration layer on top of this.
+
+ XFire also provides the XFireConfigurableServlet which reads the services.xml format automatically for you and the
+ XFireSpringServlet which provides Sprign integration.
+
+* HttpServletRequest/HttpServletResponse
+
+ The HttpServletRequest/HttpServletResponse can be accessed via the XFireServletController.
+
++---------------------------------------------------------------------------------------------------------------------+
+HttpServletRequest request = XFireServletController.getRequest();
+HttpServletResponse response = XFireServletController.getResponse();
++---------------------------------------------------------------------------------------------------------------------+
+
+ This method will work all the XFire servlets (XFireServlet, XFireConfigurableServlet, XFireSpringServlet).
+
+* Client authentication
+
+ The Apache Jakarta HttpClient is used under the covers to provide HTTP client support. There are two ways which you
+ can override the HttpClient settings:
+
+ [[1]] You can set the USERNAME/PASSWORD
+
++---------------------------------------------------------------------------------------------------------------------+
+// Create your client
+Client client = ....;
+
+// Or get it from your proxy
+Client client = ((XFireProxy) Proxy.getInvocationHandler(myClientProxy)).getClient();
+
+client.setProperty(Channel.USERNAME, "username");
+client.setProperty(Channel.PASSWORD, "pass");
++---------------------------------------------------------------------------------------------------------------------+
+
+ [[1]] You can supply your own HttpClientParms
+
++---------------------------------------------------------------------------------------------------------------------+
+client.setProperty(CommonsHttpMessageSender.HTTP_CLIENT_PARAMS, myParams);
++---------------------------------------------------------------------------------------------------------------------+
+
+ The HTTPClient javadocs provide information on how to configure the HttpClientParams.
+
+* Proxy Support
+
+ Proxy support looks very similar to the username/password scenario:
+
++---------------------------------------------------------------------------------------------------------------------+
+// Create your client
+Client client = ....;
+
+// Or get it from your proxy
+Client client = ((XFireProxy) Proxy.getInvocationHandler(myClientProxy)).getClient();
+client.setProperty(CommonsHttpMessageSender.HTTP_PROXY_HOST, "host");
+client.setProperty(CommonsHttpMessageSender.HTTP_PROXY_PORT, "8080");
++---------------------------------------------------------------------------------------------------------------------+
+
+* HTTP Chunking
+
+ You'll need to enable HTTP chunking on the client if you are sending large files which can't be cached in memory:
+
++---------------------------------------------------------------------------------------------------------------------+
+import org.codehaus.xfire.transport.http.HttpTransport;
+
+Client client = ....;
+client.setProperty(HttpTransport.CHUNKING_ENABLED, "true");
++---------------------------------------------------------------------------------------------------------------------+

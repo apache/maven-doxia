@@ -1,0 +1,23 @@
+ -----
+ Local Transport
+ -----
+ XFire User's Guide
+ -----
+
+Local Transport
+
+ XFire includes an in-JVM transport called the LocalTransport. If you are using the XFire client or the Channel API,
+ you can address a local service like so:
+
++---------------------------------------------------------------------------------------------------------------------+
+xfire.local://FooService
++---------------------------------------------------------------------------------------------------------------------+
+
+ For example, when creating a service:
+
++---------------------------------------------------------------------------------------------------------------------+
+Service service = getServiceRegistry().getService("FooService");
+
+XFireProxyFactory factory = new XFireProxyFactory(getXFire());
+FooService foo = (FooService) factory.create(service, "xfire.local://FooService");
++---------------------------------------------------------------------------------------------------------------------+
