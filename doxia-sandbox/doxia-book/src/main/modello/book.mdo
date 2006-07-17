@@ -12,7 +12,7 @@
   </defaults>
   <classes>
     <class rootElement="true" xml.tagName="project">
-      <name>Book</name>
+      <name>BookModel</name>
       <description></description>
       <version>1.0.0</version>
       <fields>

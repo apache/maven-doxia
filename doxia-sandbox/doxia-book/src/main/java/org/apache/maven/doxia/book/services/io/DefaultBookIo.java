@@ -1,6 +1,6 @@
 package org.apache.maven.doxia.book.services.io;
 
-import org.apache.maven.doxia.book.model.io.xpp3.BookXpp3Reader;
+import org.apache.maven.doxia.book.model.io.xpp3.BookModelXpp3Reader;
 import org.apache.maven.doxia.book.model.BookModel;
 import org.apache.maven.doxia.book.BookDoxiaException;
 import org.apache.maven.doxia.book.context.BookContext;
@@ -42,7 +42,7 @@ public class DefaultBookIo
     {
         try
         {
-            return new BookXpp3Reader().read( new FileReader( bookDescriptor ), true );
+            return new BookModelXpp3Reader().read( new FileReader( bookDescriptor ), true );
         }
         catch ( IOException e )
         {
