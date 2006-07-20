@@ -66,10 +66,4 @@
     <module>doxia-sandbox</module>
     <module>doxia-site</module>
   </modules>
-  <distributionManagement>
-    <site>
-      <id>website</id>
-      <url>scp://minotaur.apache.org/www/maven.apache.org/doxia/</url>
-    </site>
-  </distributionManagement>
 </project>
