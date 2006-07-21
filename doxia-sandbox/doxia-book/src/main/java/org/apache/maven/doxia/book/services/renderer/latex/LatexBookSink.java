@@ -21,7 +21,6 @@ public class LatexBookSink
     // ----------------------------------------------------------------------
 
     public LatexBookSink( Writer out )
-        throws IOException
     {
         super( out, null, null, true );
     }

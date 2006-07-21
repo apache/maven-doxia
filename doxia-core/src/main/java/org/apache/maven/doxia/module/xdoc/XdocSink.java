@@ -41,6 +41,13 @@ public class XdocSink
 
     protected boolean headFlag;
 
+    /**
+     * An indication on if we're inside a title.
+     *
+     * This will prevent the styling of titles.
+     */
+    protected boolean titleFlag;
+
     private int itemFlag;
 
     private boolean boxedFlag;
@@ -138,80 +145,149 @@ public class XdocSink
         resetState();
     }
 
+    // -----------------------------------------------------------------------
+    //
+    // -----------------------------------------------------------------------
+
     public void section1()
     {
-        markup( "<section name=\"" );
+        onSection( 1 );
+    }
+
+    public void sectionTitle1()
+    {
+        onSectionTitle( 1 );
     }
 
     public void sectionTitle1_()
     {
-        markup( "\">" );
+        onSectionTitle_( 1 );
     }
 
     public void section1_()
     {
-        markup( "</section>" );
+        onSection_( 1 );
     }
 
     public void section2()
     {
-        markup( "<subsection name=\"" );
+        onSection( 2 );
+    }
+
+    public void sectionTitle2()
+    {
+        onSectionTitle( 2 );
     }
 
     public void sectionTitle2_()
     {
-        sectionTitle1_();
+        onSectionTitle_( 2 );
     }
 
     public void section2_()
     {
-        markup( "</subsection>" );
+        onSection_( 2 );
     }
 
     public void section3()
     {
-        markup( "<subsection name=\"" );
+        onSection( 3 );
+    }
+
+    public void sectionTitle3()
+    {
+        onSectionTitle( 3 );
     }
 
     public void sectionTitle3_()
     {
-        sectionTitle1_();
+        onSectionTitle_( 3 );
     }
 
     public void section3_()
     {
-        markup( "</subsection>" );
+        onSection_( 3 );
     }
 
     public void section4()
     {
-        markup( "<subsection name=\"" );
+        onSection( 4 );
+    }
+
+    public void sectionTitle4()
+    {
+        onSectionTitle( 4 );
     }
 
     public void sectionTitle4_()
     {
-        sectionTitle1_();
+        onSectionTitle_( 4 );
     }
 
     public void section4_()
     {
-        markup( "</subsection>" );
+        onSection_( 4 );
     }
 
     public void section5()
     {
-        markup( "<subsection name=\"" );
+        onSection( 5 );
+    }
+
+    public void sectionTitle5()
+    {
+        onSectionTitle( 5 );
     }
 
     public void sectionTitle5_()
     {
-        sectionTitle1_();
+        onSectionTitle_( 5 );
     }
 
     public void section5_()
     {
-        markup( "</subsection>" );
+        onSection_( 5 );
     }
+
+    private void onSection( int depth )
+    {
+        if ( depth == 1 )
+        {
+            markup( "<section name=\"" );
+        }
+        else
+        {
+            markup( "<subsection name=\"" );
+        }
+    }
+
+    private void onSectionTitle( int depth )
+    {
+        titleFlag = true;
+    }
+
+    private void onSectionTitle_( int depth )
+    {
+        markup( "\">" );
+
+        titleFlag = false;
+    }
+
+    private void onSection_( int depth )
+    {
+        if ( depth == 1 )
+        {
+            markup( "</section>" );
+        }
+        else
+        {
+            markup( "</subsection>" );
+        }
+    }
+
+    // -----------------------------------------------------------------------
+    //
+    // -----------------------------------------------------------------------
 
     public void list()
     {
@@ -467,7 +543,7 @@ public class XdocSink
 
     public void anchor( String name )
     {
-        if ( !headFlag )
+        if ( !headFlag && !titleFlag )
         {
             String id = StructureSink.linkToKey( name );
             markup( "<a id=\"" + id + "\" name=\"" + id + "\">" );
@@ -476,7 +552,7 @@ public class XdocSink
 
     public void anchor_()
     {
-        if ( !headFlag )
+        if ( !headFlag && !titleFlag )
         {
             markup( "</a>" );
         }
@@ -484,7 +560,7 @@ public class XdocSink
 
     public void link( String name )
     {
-        if ( !headFlag )
+        if ( !headFlag && !titleFlag )
         {
             markup( "<a href=\"" + name + "\">" );
         }
@@ -492,7 +568,7 @@ public class XdocSink
 
     public void link_()
     {
-        if ( !headFlag )
+        if ( !headFlag && !titleFlag )
         {
             markup( "</a>" );
         }
@@ -500,7 +576,7 @@ public class XdocSink
 
     public void italic()
     {
-        if ( !headFlag )
+        if ( !headFlag && !titleFlag )
         {
             markup( "<i>" );
         }
@@ -508,7 +584,7 @@ public class XdocSink
 
     public void italic_()
     {
-        if ( !headFlag )
+        if ( !headFlag && !titleFlag )
         {
             markup( "</i>" );
         }
@@ -516,7 +592,7 @@ public class XdocSink
 
     public void bold()
     {
-        if ( !headFlag )
+        if ( !headFlag && !titleFlag )
         {
             markup( "<b>" );
         }
@@ -524,7 +600,7 @@ public class XdocSink
 
     public void bold_()
     {
-        if ( !headFlag )
+        if ( !headFlag && !titleFlag )
         {
             markup( "</b>" );
         }
@@ -532,7 +608,7 @@ public class XdocSink
 
     public void monospaced()
     {
-        if ( !headFlag )
+        if ( !headFlag && !titleFlag )
         {
             markup( "<tt>" );
         }
@@ -540,7 +616,7 @@ public class XdocSink
 
     public void monospaced_()
     {
-        if ( !headFlag )
+        if ( !headFlag && !titleFlag )
         {
             markup( "</tt>" );
         }
@@ -548,7 +624,7 @@ public class XdocSink
 
     public void lineBreak()
     {
-        if ( headFlag )
+        if ( headFlag || titleFlag )
         {
             buffer.append( EOL );
         }
@@ -560,7 +636,7 @@ public class XdocSink
 
     public void nonBreakingSpace()
     {
-        if ( headFlag )
+        if ( headFlag || titleFlag )
         {
             buffer.append( ' ' );
         }
@@ -576,16 +652,13 @@ public class XdocSink
         {
             buffer.append( text );
         }
+        else if ( verbatimFlag )
+        {
+            verbatimContent( text );
+        }
         else
         {
-            if ( verbatimFlag )
-            {
-                verbatimContent( text );
-            }
-            else
-            {
-                content( text );
-            }
+            content( text );
         }
     }
 

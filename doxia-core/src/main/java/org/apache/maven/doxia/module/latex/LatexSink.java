@@ -38,6 +38,8 @@ public class LatexSink
      */
     private boolean fragmentDocument;
 
+    private boolean ignoreText;
+
     private LineBreaker out;
 
     private String sinkCommands;
@@ -140,10 +142,17 @@ public class LatexSink
 
     public void body()
     {
-        if ( !fragmentDocument && titleFlag )
+        if ( titleFlag )
         {
-            titleFlag = false;
-            markup( "\\pmaketitle" + EOL + EOL );
+            if ( fragmentDocument  )
+            {
+                markup( "\\psection" );
+            }
+            else
+            {
+                titleFlag = false;
+                markup( "\\pmaketitle" + EOL + EOL );
+            }
         }
     }
 
@@ -169,10 +178,7 @@ public class LatexSink
     public void sectionTitle1_()
     {
         isTitle = false;
-    }
 
-    public void section1_()
-    {
         if ( StringUtils.isNotEmpty( title ) )
         {
             markup( "\\psectioni{" + title + "}" );
@@ -193,10 +199,7 @@ public class LatexSink
     public void sectionTitle2_()
     {
         isTitle = false;
-    }
 
-    public void section2_()
-    {
         if ( StringUtils.isNotEmpty( title ) )
         {
             markup( "\\psectionii{" + title + "}" );
@@ -217,10 +220,7 @@ public class LatexSink
     public void sectionTitle3_()
     {
         isTitle = false;
-    }
 
-    public void section3_()
-    {
         if ( StringUtils.isNotEmpty( title ) )
         {
             markup( "\\psectioniii{" + title + "}" );
@@ -241,10 +241,7 @@ public class LatexSink
     public void sectionTitle4_()
     {
         isTitle = false;
-    }
 
-    public void section4_()
-    {
         if ( StringUtils.isNotEmpty( title ) )
         {
             markup( "\\psectioniv{" + title + "}" );
@@ -265,10 +262,7 @@ public class LatexSink
     public void sectionTitle5_()
     {
         isTitle = false;
-    }
 
-    public void section5_()
-    {
         if ( StringUtils.isNotEmpty( title ) )
         {
             markup( "\\psectionv{" + title + "}" );
@@ -452,6 +446,10 @@ public class LatexSink
             titleFlag = true;
             markup( "\\ptitle{" );
         }
+        else
+        {
+            ignoreText = true;
+        }
     }
 
     public void title_()
@@ -459,6 +457,10 @@ public class LatexSink
         if ( !fragmentDocument )
         {
             markup( "}" + EOL );
+        }
+        else
+        {
+            ignoreText = false;
         }
     }
 
@@ -468,6 +470,10 @@ public class LatexSink
         {
             markup( "\\pauthor{" );
         }
+        else
+        {
+            ignoreText = true;
+        }
     }
 
     public void author_()
@@ -475,6 +481,10 @@ public class LatexSink
         if ( !fragmentDocument )
         {
             markup( "}" + EOL );
+        }
+        else
+        {
+            ignoreText = false;
         }
     }
 
@@ -484,6 +494,10 @@ public class LatexSink
         {
             markup( "\\pdate{" );
         }
+        else
+        {
+            ignoreText = true;
+        }
     }
 
     public void date_()
@@ -491,6 +505,10 @@ public class LatexSink
         if ( !fragmentDocument )
         {
             markup( "}" + EOL );
+        }
+        else
+        {
+            ignoreText = false;
         }
     }
 
@@ -673,6 +691,10 @@ public class LatexSink
 
     public void text( String text )
     {
+        if ( ignoreText )
+        {
+            return;
+        }
         if ( isTitle )
         {
             title = text;
