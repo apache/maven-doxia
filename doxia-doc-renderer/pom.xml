@@ -4,7 +4,7 @@
   <parent>
     <artifactId>doxia</artifactId>
     <groupId>org.apache.maven.doxia</groupId>
-    <version>1.0-alpha-8-SNAPSHOT</version>
+    <version>1.0-alpha-9-SNAPSHOT</version>
   </parent>
   <artifactId>doxia-doc-renderer</artifactId>
   <name>Doxia Document Renderer Component</name>
