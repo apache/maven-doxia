@@ -92,17 +92,20 @@ public class DoxiaRenderBooksMojo
 
             if ( StringUtils.isEmpty( book.getDescriptor() ) )
             {
-                throw new MojoFailureException( "Invalid configuration: The book is required to have a descriptor set." );
+                throw new MojoFailureException( "Invalid configuration: "
+                    + "The book is required to have a descriptor set." );
             }
 
             if ( StringUtils.isEmpty( book.getDirectory() ) )
             {
-                throw new MojoFailureException( "Invalid configuration: The book is required to have a directory set." );
+                throw new MojoFailureException( "Invalid configuration: "
+                    + "The book is required to have a directory set." );
             }
 
             if ( book.getFormats() == null || book.getFormats().size() == 0 )
             {
-                throw new MojoFailureException( "Invalid configuration: The book is required to have at least one format set." );
+                throw new MojoFailureException( "Invalid configuration: "
+                    + "The book is required to have at least one format set." );
             }
 
             // ----------------------------------------------------------------------
@@ -159,10 +162,8 @@ public class DoxiaRenderBooksMojo
             }
             catch ( IOException e )
             {
-                throw new MojoExecutionException( "Error while looking for input files. " +
-                    "Basedir=" + basedir.getAbsolutePath() + ", " +
-                    "includes=" + includes + ", " +
-                    "excludes=" + excludes, e );
+                throw new MojoExecutionException( "Error while looking for input files. " + "Basedir="
+                    + basedir.getAbsolutePath() + ", " + "includes=" + includes + ", " + "excludes=" + excludes, e );
             }
 
             // -----------------------------------------------------------------------
@@ -177,8 +178,8 @@ public class DoxiaRenderBooksMojo
             }
             catch ( InvalidBookDescriptorException e )
             {
-                throw new MojoFailureException( "Invalid book descriptor: " + LINE_SEPARATOR +
-                    formatResult( e.getValidationResult() ) );
+                throw new MojoFailureException( "Invalid book descriptor: " + LINE_SEPARATOR
+                    + formatResult( e.getValidationResult() ) );
             }
             catch ( BookDoxiaException e )
             {
@@ -202,7 +203,9 @@ public class DoxiaRenderBooksMojo
                 }
                 catch ( BookDoxiaException e )
                 {
-                    throw new MojoExecutionException( "Error while generating book in format '" + format + "'.", e );
+                    throw new MojoExecutionException(
+                                                      "Error while generating book in format '" + format.getId() + "'.",
+                                                      e );
                 }
             }
         }
