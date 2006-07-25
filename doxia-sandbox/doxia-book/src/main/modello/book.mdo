@@ -1,9 +1,38 @@
 <?xml version="1.0"?>
 
+<!--
+/*
+ * Copyright 2001-2006 The Apache Software Foundation.
+ *
+ * Licensed under the Apache License, Version 2.0 (the "License");
+ * you may not use this file except in compliance with the License.
+ * You may obtain a copy of the License at
+ *
+ *      http://www.apache.org/licenses/LICENSE-2.0
+ *
+ * Unless required by applicable law or agreed to in writing, software
+ * distributed under the License is distributed on an "AS IS" BASIS,
+ * WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
+ * See the License for the specific language governing permissions and
+ * limitations under the License.
+ */
+ -->
+ 
 <model>
   <id>book</id>
   <name>BookModel</name>
-  <description>Model for a book in Doxia</description>
+  <description>
+    <![CDATA[
+    <p>
+      This descriptor specifies the metadatas and the content for 
+      a book.
+    </p>
+    <p>
+      A book is defined by a collection of chapters, a chapter by a 
+      collection of sections, a section by a file.
+    </p>
+    ]]>
+  </description>
   <defaults>
     <default>
       <key>package</key>
@@ -13,7 +42,9 @@
   <classes>
     <class rootElement="true" xml.tagName="project">
       <name>BookModel</name>
-      <description></description>
+      <description>
+        Describes the book layout and packaging.
+      </description>
       <version>1.0.0</version>
       <fields>
         <field>
@@ -21,25 +52,41 @@
           <version>1.0.0</version>
           <type>String</type>
           <identifier>true</identifier>
+          <description>
+            Specifies the id of this book. This is a symbolic name for a
+            particular book from this project.
+          </description>
         </field>
         <field>
           <name>title</name>
           <version>1.0.0</version>
           <type>String</type>
+          <description>
+            Specifies the title of this book.
+          </description>
         </field>
         <field>
           <name>author</name>
           <version>1.0.0</version>
           <type>String</type>
+          <description>
+            Specifies the author of this book.
+          </description>
         </field>
         <field>
           <name>date</name>
           <version>1.0.0</version>
           <type>String</type>
+          <description>
+            Specifies the date of this book.
+          </description>
         </field>
         <field>
           <name>chapters</name>
           <version>1.0.0</version>
+          <description>
+            Specifies a collection of chapters.
+          </description>
           <association>
             <type>Chapter</type>
             <multiplicity>*</multiplicity>
@@ -129,15 +176,25 @@
           <version>1.0.0</version>
           <type>String</type>
           <identifier>true</identifier>
+          <description>
+            Specifies the id of this chapter. This is a symbolic name for a
+            particular chapter.
+          </description>
         </field>
         <field>
           <name>title</name>
           <version>1.0.0</version>
           <type>String</type>
+          <description>
+            Specifies the title of this chapter.
+          </description>
         </field>
         <field>
           <name>sections</name>
           <version>1.0.0</version>
+          <description>
+            Specifies a collection of sections.
+          </description>
           <association>
             <type>Section</type>
             <multiplicity>*</multiplicity>
@@ -154,16 +211,26 @@
           <version>1.0.0</version>
           <type>String</type>
           <identifier>true</identifier>
+          <description>
+            Specifies the id of this section. This is a symbolic name for a
+            particular section.
+          </description>
         </field>
         <field>
           <name>title</name>
           <version>1.0.0</version>
           <type>String</type>
+          <description>
+            Specifies the title of this section.
+          </description>
         </field>
         <field>
           <name>file</name>
           <version>1.0.0</version>
           <type>String</type>
+          <description>
+            Specifies the file of this section.
+          </description>
         </field>
       </fields>
     </class>
