@@ -628,16 +628,13 @@ public class XhtmlSink
         write( " src=\"" + name + "\"" );
     }
 
-    
+
     public void anchor( String name )
     {
         if ( !headFlag )
         {
-            if (StringUtils.isEmpty( name ))
-            {
-                return;
-            }
-            write( "<a name=\"" + name + "\">" );
+            String id = HtmlTools.encodeId(name);
+            write( "<a name=\"" + id + "\">" );
         }
     }
 

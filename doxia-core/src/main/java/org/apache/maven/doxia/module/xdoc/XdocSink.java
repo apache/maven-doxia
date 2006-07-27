@@ -21,6 +21,7 @@ import org.apache.maven.doxia.module.apt.AptParser;
 import org.apache.maven.doxia.sink.SinkAdapter;
 import org.apache.maven.doxia.sink.StructureSink;
 import org.apache.maven.doxia.util.LineBreaker;
+import org.codehaus.plexus.util.StringUtils;
 
 import java.io.Writer;
 
@@ -545,7 +546,7 @@ public class XdocSink
     {
         if ( !headFlag && !titleFlag )
         {
-            String id = StructureSink.linkToKey( name );
+            String id = HtmlTools.encodeId(name);
             markup( "<a id=\"" + id + "\" name=\"" + id + "\">" );
         }
     }
