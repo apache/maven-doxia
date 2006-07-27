@@ -16,16 +16,16 @@ package org.apache.maven.doxia.module.xhtml;
  * limitations under the License.
  */
 
+import java.io.PrintWriter;
+import java.io.Writer;
+import java.util.Map;
+
 import org.apache.maven.doxia.module.HtmlTools;
 import org.apache.maven.doxia.module.xhtml.decoration.render.RenderingContext;
 import org.apache.maven.doxia.parser.Parser;
 import org.apache.maven.doxia.sink.Sink;
 import org.apache.maven.doxia.sink.StructureSink;
 import org.codehaus.plexus.util.StringUtils;
-
-import java.io.PrintWriter;
-import java.io.Writer;
-import java.util.Map;
 
 /**
  * A doxia sink which produces xhtml
@@ -283,36 +283,36 @@ public class XhtmlSink
         write( "<li>" );
 
         itemFlag++;
-        // What follows is at least a paragraph.
     }
 
     public void listItem_()
     {
+        itemFlag--;
         write( "</li>" );
     }
 
     public void numberedList( int numbering )
     {
-        write("<ol type=\"");
+        write( "<ol type=\"" );
         switch ( numbering )
         {
             case Sink.NUMBERING_LOWER_ALPHA:
-                write("a");
+                write( "a" );
                 break;
             case Sink.NUMBERING_UPPER_ALPHA:
-                write("A");
+                write( "A" );
                 break;
             case Sink.NUMBERING_LOWER_ROMAN:
-                write("i");
+                write( "i" );
                 break;
             case Sink.NUMBERING_UPPER_ROMAN:
-                write("I");
+                write( "I" );
                 break;
             case Sink.NUMBERING_DECIMAL:
             default:
-                write("1");
+                write( "1" );
         }
-        write("\">");
+        write( "\">" );
     }
 
     public void numberedList_()
@@ -325,11 +325,11 @@ public class XhtmlSink
         write( "<li>" );
 
         itemFlag++;
-        // What follows is at least a paragraph.
     }
 
     public void numberedListItem_()
     {
+        itemFlag--;
         write( "</li>" );
     }
 
@@ -358,11 +358,11 @@ public class XhtmlSink
         write( "<dd>" );
 
         itemFlag++;
-        // What follows is at least a paragraph.
     }
 
     public void definition_()
     {
+        itemFlag--;
         write( "</dd>" );
     }
 
@@ -383,6 +383,10 @@ public class XhtmlSink
         else
         {
             itemFlag--;
+            if ( itemFlag < 0 )
+            {
+                itemFlag = 0;
+            }
         }
     }
 
@@ -628,12 +632,11 @@ public class XhtmlSink
         write( " src=\"" + name + "\"" );
     }
 
-
     public void anchor( String name )
     {
         if ( !headFlag )
         {
-            String id = HtmlTools.encodeId(name);
+            String id = HtmlTools.encodeId( name );
             write( "<a name=\"" + id + "\">" );
         }
     }

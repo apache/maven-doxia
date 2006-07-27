@@ -16,14 +16,12 @@ package org.apache.maven.doxia.module.xdoc;
  * limitations under the License.
  */
 
+import java.io.Writer;
+
 import org.apache.maven.doxia.module.HtmlTools;
 import org.apache.maven.doxia.module.apt.AptParser;
 import org.apache.maven.doxia.sink.SinkAdapter;
-import org.apache.maven.doxia.sink.StructureSink;
 import org.apache.maven.doxia.util.LineBreaker;
-import org.codehaus.plexus.util.StringUtils;
-
-import java.io.Writer;
 
 /**
  * A doxia Sink which produces an xdoc model.
@@ -304,11 +302,11 @@ public class XdocSink
     {
         markup( "<li>" );
         itemFlag++;
-        // What follows is at least a paragraph.
     }
 
     public void listItem_()
     {
+        itemFlag--;
         markup( "</li>" + EOL );
     }
 
@@ -345,11 +343,11 @@ public class XdocSink
     {
         markup( "<li>" );
         itemFlag++;
-        // What follows is at least a paragraph.
     }
 
     public void numberedListItem_()
     {
+        itemFlag--;
         markup( "</li>" + EOL );
     }
 
@@ -377,11 +375,11 @@ public class XdocSink
     {
         markup( "<dd>" );
         itemFlag++;
-        // What follows is at least a paragraph.
     }
 
     public void definition_()
     {
+        itemFlag--;
         markup( "</dd>" + EOL );
     }
 
@@ -402,8 +400,11 @@ public class XdocSink
         else
         {
             itemFlag--;
+            if ( itemFlag < 0 )
+            {
+                itemFlag = 0;
+            }
         }
-
     }
 
     public void verbatim( boolean boxed )
