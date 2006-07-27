@@ -1,11 +1,28 @@
 package org.apache.maven.doxia.book.services.indexer;
 
+/*
+ * Copyright 2006 The Apache Software Foundation.
+ *
+ * Licensed under the Apache License, Version 2.0 (the "License");
+ * you may not use this file except in compliance with the License.
+ * You may obtain a copy of the License at
+ *
+ *      http://www.apache.org/licenses/LICENSE-2.0
+ *
+ * Unless required by applicable law or agreed to in writing, software
+ * distributed under the License is distributed on an "AS IS" BASIS,
+ * WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
+ * See the License for the specific language governing permissions and
+ * limitations under the License.
+ */
+
 import org.codehaus.plexus.PlexusTestCase;
 import org.codehaus.plexus.util.FileUtils;
 import org.apache.maven.doxia.book.services.io.BookIo;
 import org.apache.maven.doxia.book.model.BookModel;
 import org.apache.maven.doxia.book.context.BookContext;
 import org.apache.maven.doxia.book.context.IndexEntry;
+import org.apache.maven.doxia.module.HtmlTools;
 
 /**
  * @author <a href="mailto:trygve.laugstol@objectware.no">Trygve Laugst&oslash;l</a>
@@ -89,7 +106,7 @@ public class BookIndexerTest
 
         assertEquals( title, indexEntry.getTitle() );
 
-        assertEquals( id, indexEntry.getId() );
+        assertEquals( HtmlTools.encodeId( id ), indexEntry.getId() );
 
         assertEquals( childCount, indexEntry.getChildEntries().size() );
 

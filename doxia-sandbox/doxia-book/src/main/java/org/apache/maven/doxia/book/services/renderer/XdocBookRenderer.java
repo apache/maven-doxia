@@ -1,31 +1,56 @@
 package org.apache.maven.doxia.book.services.renderer;
 
+/*
+ * Copyright 2006 The Apache Software Foundation.
+ *
+ * Licensed under the Apache License, Version 2.0 (the "License");
+ * you may not use this file except in compliance with the License.
+ * You may obtain a copy of the License at
+ *
+ *      http://www.apache.org/licenses/LICENSE-2.0
+ *
+ * Unless required by applicable law or agreed to in writing, software
+ * distributed under the License is distributed on an "AS IS" BASIS,
+ * WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
+ * See the License for the specific language governing permissions and
+ * limitations under the License.
+ */
+
+import java.io.File;
+import java.io.FileNotFoundException;
+import java.io.FileReader;
+import java.io.FileWriter;
+import java.io.IOException;
+import java.util.ArrayList;
+import java.util.Iterator;
+import java.util.List;
+import java.util.Locale;
+
 import org.apache.maven.doxia.Doxia;
-import org.apache.maven.doxia.module.xdoc.XdocSink;
 import org.apache.maven.doxia.book.BookDoxiaException;
 import org.apache.maven.doxia.book.context.BookContext;
 import org.apache.maven.doxia.book.context.IndexEntry;
 import org.apache.maven.doxia.book.model.BookModel;
 import org.apache.maven.doxia.book.model.Chapter;
 import org.apache.maven.doxia.book.model.Section;
-import org.apache.maven.doxia.book.services.renderer.xdoc.XdocBookSink;
+import org.apache.maven.doxia.book.services.renderer.xdoc.ChapterXdocBookSink;
+import org.apache.maven.doxia.book.services.renderer.xdoc.IndexXdocBookSink;
+import org.apache.maven.doxia.book.services.renderer.xdoc.SectionXdocBookSink;
 import org.apache.maven.doxia.editor.io.PipelineSink;
+import org.apache.maven.doxia.module.HtmlTools;
+import org.apache.maven.doxia.module.xdoc.XdocSink;
 import org.apache.maven.doxia.parser.ParseException;
 import org.apache.maven.doxia.parser.manager.ParserNotFoundException;
 import org.apache.maven.doxia.sink.Sink;
+import org.codehaus.plexus.i18n.I18N;
 import org.codehaus.plexus.logging.AbstractLogEnabled;
-
-import java.io.FileNotFoundException;
-import java.io.FileReader;
-import java.io.FileWriter;
-import java.io.IOException;
-import java.io.File;
-import java.util.ArrayList;
-import java.util.Iterator;
-import java.util.List;
+import org.codehaus.plexus.util.StringUtils;
 
 /**
+ * An implementation of <code>BookRenderer</code> for Xdoc
+ *
  * @author <a href="mailto:trygvis@inamo.no">Trygve Laugst&oslash;l</a>
+ * @author <a href="mailto:vincent.siveton@gmail.com">Vincent Siveton</a>
  * @version $Id$
  * @plexus.component role-hint="xdoc"
  */
@@ -37,6 +62,11 @@ public class XdocBookRenderer
      * @plexus.requirement
      */
     private Doxia doxia;
+
+    /**
+     * @plexus.requirement
+     */
+    private I18N i18n;
 
     // ----------------------------------------------------------------------
     // BookRenderer Implementation
@@ -51,29 +81,50 @@ public class XdocBookRenderer
         {
             if ( !context.getOutputDirectory().mkdirs() )
             {
-                throw new BookDoxiaException(
-                    "Could not make directory: " + context.getOutputDirectory().getAbsolutePath() + "." );
+                throw new BookDoxiaException( "Could not make directory: "
+                    + context.getOutputDirectory().getAbsolutePath() + "." );
             }
         }
 
-        // -----------------------------------------------------------------------
-        //
-        // -----------------------------------------------------------------------
-
         renderBook( book, context );
+    }
+
+    // -----------------------------------------------------------------------
+    // Protected
+    // -----------------------------------------------------------------------
+
+    /**
+     * Gets a trimmed String for the given key from the resource bundle defined by Plexus.
+     *
+     * @param key the key for the desired string
+     * @return the string for the given key
+     * @throws IllegalArgumentException if the parameter is empty.
+     */
+    protected String getString( String key )
+    {
+        if ( StringUtils.isEmpty( key ) )
+        {
+            throw new IllegalArgumentException( "The key cannot be empty" );
+        }
+
+        // TODO Handle locale
+        return i18n.getString( "book-renderer", Locale.getDefault(), key ).trim();
     }
 
     // -----------------------------------------------------------------------
     // Private
     // -----------------------------------------------------------------------
 
+    /**
+     * Render the book, ie the book index and all chapter index
+     *
+     * @param book
+     * @param context
+     * @throws BookDoxiaException if any
+     */
     private void renderBook( BookModel book, BookContext context )
         throws BookDoxiaException
     {
-        // -----------------------------------------------------------------------
-        // Render the book index.xml page
-        // -----------------------------------------------------------------------
-
         File index = new File( context.getOutputDirectory(), "index.xml" );
 
         try
@@ -84,12 +135,6 @@ public class XdocBookRenderer
         {
             throw new BookDoxiaException( "Error while rendering index page to: '" + index.getAbsolutePath() + "'.", e );
         }
-
-        // -----------------------------------------------------------------------
-        // Render the index.html files for each chapter
-        // -----------------------------------------------------------------------
-
-        // TODO: Implement
 
         // -----------------------------------------------------------------------
         // Render all the chapters
@@ -105,14 +150,20 @@ public class XdocBookRenderer
         }
     }
 
-    // -----------------------------------------------------------------------
-    // Index Rendering
-    // -----------------------------------------------------------------------
-
+    /**
+     * Write the book index, ie a TOC
+     *
+     * @param index
+     * @param book
+     * @param context
+     * @throws IOException if any
+     */
     private void writeBookIndex( File index, BookModel book, BookContext context )
         throws IOException
     {
-        XdocSink sink = new XdocSink( new FileWriter( index ) );
+        FileWriter writer = new FileWriter( index );
+
+        XdocSink sink = new IndexXdocBookSink( writer, context.getIndex().getFirstEntry(), i18n );
 
         // -----------------------------------------------------------------------
         // Head
@@ -121,7 +172,7 @@ public class XdocBookRenderer
         sink.head();
 
         sink.title();
-        sink.text( book.getTitle() + " - Index" );
+        sink.text( book.getTitle() + " - " + getString( "toc" ) );
         sink.title_();
 
         sink.head_();
@@ -134,7 +185,7 @@ public class XdocBookRenderer
 
         sink.section1();
         sink.sectionTitle1();
-        sink.text( book.getTitle() + " - Index" );
+        sink.text( book.getTitle() + " - " + getString( "toc" ) );
         sink.sectionTitle1_();
 
         sink.list();
@@ -149,6 +200,12 @@ public class XdocBookRenderer
         sink.body_();
     }
 
+    /**
+     * Write the chapter index for the book index
+     *
+     * @param sink
+     * @param chapterEntry
+     */
     private void writeChapterIndexForBookIndex( XdocSink sink, IndexEntry chapterEntry )
     {
         sink.listItem();
@@ -167,6 +224,12 @@ public class XdocBookRenderer
         sink.listItem_();
     }
 
+    /**
+     * Write the section index for the book index
+     *
+     * @param sink
+     * @param sectionIndex
+     */
     private void writeSectionIndexForBookIndex( XdocSink sink, IndexEntry sectionIndex )
     {
         sink.listItem();
@@ -185,10 +248,17 @@ public class XdocBookRenderer
         sink.listItem_();
     }
 
+    /**
+     * Write subsection index for the book index
+     *
+     * @param sink
+     * @param sectionIndex
+     * @param subsectionIndex
+     */
     private void writeSubsectionIndexForBookIndex( XdocSink sink, IndexEntry sectionIndex, IndexEntry subsectionIndex )
     {
         sink.listItem();
-        sink.link( sectionIndex.getId() + ".html#" + subsectionIndex.getId() );
+        sink.link( sectionIndex.getId() + ".html#" + HtmlTools.encodeId( subsectionIndex.getId() ) );
         sink.text( subsectionIndex.getTitle() );
         sink.link_();
         sink.listItem_();
@@ -198,9 +268,28 @@ public class XdocBookRenderer
     // Rendering
     // -----------------------------------------------------------------------
 
+    /**
+     * Render all chapter index
+     *
+     * @param chapter
+     * @param context
+     * @param chapterIndex
+     * @throws BookDoxiaException if any
+     */
     private void renderChapter( Chapter chapter, BookContext context, IndexEntry chapterIndex )
         throws BookDoxiaException
     {
+        File index = new File( context.getOutputDirectory(), chapter.getId() + ".xml" );
+
+        try
+        {
+            writeChapterIndex( index, chapter, chapterIndex );
+        }
+        catch ( IOException e )
+        {
+            throw new BookDoxiaException( "Error while rendering index page to: '" + index.getAbsolutePath() + "'.", e );
+        }
+
         Iterator ii = chapterIndex.getChildEntries().iterator();
 
         for ( Iterator it = chapter.getSections().iterator(); it.hasNext(); )
@@ -211,6 +300,65 @@ public class XdocBookRenderer
         }
     }
 
+    /**
+     * Write a chapter index
+     *
+     * @param index
+     * @param chapter
+     * @param chapterIndex
+     * @throws IOException
+     */
+    private void writeChapterIndex( File index, Chapter chapter, IndexEntry chapterIndex )
+        throws IOException
+    {
+        FileWriter writer = new FileWriter( index );
+
+        ChapterXdocBookSink sink = new ChapterXdocBookSink( writer, chapterIndex, i18n );
+
+        // -----------------------------------------------------------------------
+        // Head
+        // -----------------------------------------------------------------------
+
+        sink.head();
+
+        sink.title();
+        sink.text( chapter.getTitle() );
+        sink.title_();
+
+        sink.head_();
+
+        // -----------------------------------------------------------------------
+        // Body
+        // -----------------------------------------------------------------------
+
+        sink.body();
+
+        sink.section1();
+        sink.sectionTitle1();
+        sink.text( chapter.getTitle() );
+        sink.sectionTitle1_();
+
+        sink.list();
+        for ( Iterator it = chapterIndex.getChildEntries().iterator(); it.hasNext(); )
+        {
+            IndexEntry sectionIndex = (IndexEntry) it.next();
+            writeSectionIndexForBookIndex( sink, sectionIndex );
+        }
+        sink.list_();
+
+        sink.section1_();
+
+        sink.body_();
+    }
+
+    /**
+     * Render all section pages
+     *
+     * @param context
+     * @param section
+     * @param sectionIndex
+     * @throws BookDoxiaException if any
+     */
     private void renderSection( BookContext context, Section section, IndexEntry sectionIndex )
         throws BookDoxiaException
     {
@@ -218,18 +366,17 @@ public class XdocBookRenderer
         {
             FileWriter writer = new FileWriter( context.getOutputDirectory() + "/" + section.getId() + ".xml" );
 
-            XdocBookSink sink = new XdocBookSink( writer, sectionIndex );
+            SectionXdocBookSink sink = new SectionXdocBookSink( writer, sectionIndex, i18n );
 
             BookContext.BookFile bookFile = (BookContext.BookFile) context.getFiles().get( section.getId() );
 
             if ( bookFile == null )
             {
-                throw new BookDoxiaException(
-                    "No document that matches section with id=" + section.getId() + "." );
+                throw new BookDoxiaException( "No document that matches section with id=" + section.getId() + "." );
             }
 
             List pipeline = new ArrayList();
-//            pipeline.add( DebugSink.newInstance() );
+            //            pipeline.add( DebugSink.newInstance() );
             pipeline.add( sink );
             Sink pipelineSink = PipelineSink.newInstance( pipeline );
 
@@ -243,13 +390,13 @@ public class XdocBookRenderer
             }
             catch ( ParseException e )
             {
-                throw new BookDoxiaException(
-                    "Error while parsing document: " + bookFile.getFile().getAbsolutePath() + ".", e );
+                throw new BookDoxiaException( "Error while parsing document: " + bookFile.getFile().getAbsolutePath()
+                    + ".", e );
             }
             catch ( FileNotFoundException e )
             {
-                throw new BookDoxiaException(
-                    "Could not find document: " + bookFile.getFile().getAbsolutePath() + ".", e );
+                throw new BookDoxiaException( "Could not find document: " + bookFile.getFile().getAbsolutePath() + ".",
+                                              e );
             }
         }
         catch ( IOException e )
