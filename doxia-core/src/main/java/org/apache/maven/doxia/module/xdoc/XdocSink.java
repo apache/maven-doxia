@@ -47,7 +47,7 @@ public class XdocSink
      */
     protected boolean titleFlag;
 
-    private int itemFlag;
+    private boolean itemFlag;
 
     private boolean boxedFlag;
 
@@ -68,7 +68,7 @@ public class XdocSink
     {
         headFlag = false;
         buffer = new StringBuffer();
-        itemFlag = 0;
+        itemFlag = false;
         boxedFlag = false;
         verbatimFlag = false;
         cellJustif = null;
@@ -301,12 +301,12 @@ public class XdocSink
     public void listItem()
     {
         markup( "<li>" );
-        itemFlag++;
+        itemFlag = true;
+        // What follows is at least a paragraph.
     }
 
     public void listItem_()
     {
-        itemFlag--;
         markup( "</li>" + EOL );
     }
 
@@ -342,12 +342,12 @@ public class XdocSink
     public void numberedListItem()
     {
         markup( "<li>" );
-        itemFlag++;
+        itemFlag = true;
+        // What follows is at least a paragraph.
     }
 
     public void numberedListItem_()
     {
-        itemFlag--;
         markup( "</li>" + EOL );
     }
 
@@ -374,18 +374,18 @@ public class XdocSink
     public void definition()
     {
         markup( "<dd>" );
-        itemFlag++;
+        itemFlag = true;
+        // What follows is at least a paragraph.
     }
 
     public void definition_()
     {
-        itemFlag--;
         markup( "</dd>" + EOL );
     }
 
     public void paragraph()
     {
-        if ( itemFlag == 0 )
+        if ( !itemFlag )
         {
             markup( "<p>" );
         }
@@ -393,17 +393,13 @@ public class XdocSink
 
     public void paragraph_()
     {
-        if ( itemFlag == 0 )
+        if ( itemFlag )
         {
-            markup( "</p>" );
+            itemFlag = false;
         }
         else
         {
-            itemFlag--;
-            if ( itemFlag < 0 )
-            {
-                itemFlag = 0;
-            }
+            markup( "</p>" );
         }
     }
 
@@ -547,7 +543,7 @@ public class XdocSink
     {
         if ( !headFlag && !titleFlag )
         {
-            String id = HtmlTools.encodeId(name);
+            String id = HtmlTools.encodeId( name );
             markup( "<a id=\"" + id + "\" name=\"" + id + "\">" );
         }
     }

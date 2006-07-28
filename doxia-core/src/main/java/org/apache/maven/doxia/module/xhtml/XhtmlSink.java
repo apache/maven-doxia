@@ -41,7 +41,7 @@ public class XhtmlSink
 
     private boolean headFlag;
 
-    private int itemFlag;
+    private boolean itemFlag;
 
     private boolean verbatimFlag;
 
@@ -77,13 +77,9 @@ public class XhtmlSink
     protected void resetState()
     {
         headFlag = false;
-
         resetBuffer();
-
-        itemFlag = 0;
-
+        itemFlag = false;
         verbatimFlag = false;
-
         cellCount = 0;
     }
 
@@ -281,13 +277,12 @@ public class XhtmlSink
     public void listItem()
     {
         write( "<li>" );
-
-        itemFlag++;
+        itemFlag = true;
+        // What follows is at least a paragraph.
     }
 
     public void listItem_()
     {
-        itemFlag--;
         write( "</li>" );
     }
 
@@ -323,13 +318,12 @@ public class XhtmlSink
     public void numberedListItem()
     {
         write( "<li>" );
-
-        itemFlag++;
+        itemFlag = true;
+        // What follows is at least a paragraph.
     }
 
     public void numberedListItem_()
     {
-        itemFlag--;
         write( "</li>" );
     }
 
@@ -356,19 +350,18 @@ public class XhtmlSink
     public void definition()
     {
         write( "<dd>" );
-
-        itemFlag++;
+        itemFlag = true;
+        // What follows is at least a paragraph.
     }
 
     public void definition_()
     {
-        itemFlag--;
         write( "</dd>" );
     }
 
     public void paragraph()
     {
-        if ( itemFlag == 0 )
+        if ( !itemFlag )
         {
             write( "<p>" );
         }
@@ -376,17 +369,13 @@ public class XhtmlSink
 
     public void paragraph_()
     {
-        if ( itemFlag == 0 )
+        if ( itemFlag )
         {
-            write( "</p>" );
+            itemFlag = false;
         }
         else
         {
-            itemFlag--;
-            if ( itemFlag < 0 )
-            {
-                itemFlag = 0;
-            }
+            write( "</p>" );
         }
     }
 
