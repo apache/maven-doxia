@@ -116,7 +116,7 @@ public class XdocBookRenderer
     // -----------------------------------------------------------------------
 
     /**
-     * Render the book, ie the book index and all chapter index
+     * Render the book, ie the book index and all chapter index and pages
      *
      * @param book
      * @param context
@@ -125,6 +125,10 @@ public class XdocBookRenderer
     private void renderBook( BookModel book, BookContext context )
         throws BookDoxiaException
     {
+        // -----------------------------------------------------------------------
+        // Render the book index.xml page
+        // -----------------------------------------------------------------------
+
         File index = new File( context.getOutputDirectory(), "index.xml" );
 
         try
@@ -137,7 +141,7 @@ public class XdocBookRenderer
         }
 
         // -----------------------------------------------------------------------
-        // Render all the chapters
+        // Render all the chapter pages
         // -----------------------------------------------------------------------
 
         Iterator ii = context.getIndex().getChildEntries().iterator();
@@ -269,7 +273,7 @@ public class XdocBookRenderer
     // -----------------------------------------------------------------------
 
     /**
-     * Render all chapter index
+     * Render the chapter index and all section pages
      *
      * @param chapter
      * @param context
@@ -279,6 +283,10 @@ public class XdocBookRenderer
     private void renderChapter( Chapter chapter, BookContext context, IndexEntry chapterIndex )
         throws BookDoxiaException
     {
+        // -----------------------------------------------------------------------
+        // Render the chapter index page
+        // -----------------------------------------------------------------------
+
         File index = new File( context.getOutputDirectory(), chapter.getId() + ".xml" );
 
         try
@@ -289,6 +297,10 @@ public class XdocBookRenderer
         {
             throw new BookDoxiaException( "Error while rendering index page to: '" + index.getAbsolutePath() + "'.", e );
         }
+
+        // -----------------------------------------------------------------------
+        // Render all section pages
+        // -----------------------------------------------------------------------
 
         Iterator ii = chapterIndex.getChildEntries().iterator();
 
