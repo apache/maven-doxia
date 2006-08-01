@@ -296,6 +296,7 @@ public class XdocSink
     public void list_()
     {
         markup( "</ul>" );
+        itemFlag = false;
     }
 
     public void listItem()
@@ -337,6 +338,7 @@ public class XdocSink
     public void numberedList_()
     {
         markup( "</ol>" );
+        itemFlag = false;
     }
 
     public void numberedListItem()
@@ -359,6 +361,7 @@ public class XdocSink
     public void definitionList_()
     {
         markup( "</dl>" );
+        itemFlag = false;
     }
 
     public void definedTerm()

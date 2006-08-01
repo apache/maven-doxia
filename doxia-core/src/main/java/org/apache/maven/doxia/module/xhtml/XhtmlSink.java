@@ -272,6 +272,7 @@ public class XhtmlSink
     public void list_()
     {
         write( "</ul>" );
+        itemFlag = false;
     }
 
     public void listItem()
@@ -313,6 +314,7 @@ public class XhtmlSink
     public void numberedList_()
     {
         write( "</ol>" );
+        itemFlag = false;
     }
 
     public void numberedListItem()
@@ -335,6 +337,7 @@ public class XhtmlSink
     public void definitionList_()
     {
         write( "</dl>" );
+        itemFlag = false;
     }
 
     public void definedTerm()

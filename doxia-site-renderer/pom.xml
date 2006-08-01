@@ -39,5 +39,11 @@
       <artifactId>doxia-decoration-model</artifactId>
       <version>1.0-alpha-8</version>
     </dependency>
+    <dependency>
+      <groupId>htmlunit</groupId>
+      <artifactId>htmlunit</artifactId>
+      <version>1.9</version>
+      <scope>test</scope>
+    </dependency>
   </dependencies>
 </project>

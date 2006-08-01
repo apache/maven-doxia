@@ -1,0 +1,174 @@
+<?xml version="1.0"?>
+<document>
+    <properties>
+        <title>Test List Issue</title>
+    </properties>
+
+    <body>
+        <section name="List Section">
+            <h4>Unordered lists</h4>            
+            <p>
+               Below is an unordered list, followed by six paragraphs.
+            </p>
+            <ul>
+                <li>
+                    Item 1.
+                    <ul>
+                        <li>
+                            <p>Item 11.</p>
+                        </li>
+                        <li>
+                            <p>Item 12.</p>
+                        </li>
+                        <li>
+                            Item 13.
+                        </li>
+                        <li>
+                            Item 14.
+                        </li>
+                    </ul>
+                </li>
+                <li>
+                    Item 2.
+                </li>
+                <li>
+                    Item 3.
+                </li>
+                <li>
+                    Item 4.
+                    <ul>
+                        <li>
+                            Item 41.
+                        </li>
+                        <li>
+                            Item 42.
+                        </li>
+                        <li>
+                            Item 43.
+                        </li>
+                        <li>
+                            Item 44.
+                        </li>
+                    </ul>
+                </li>
+            </ul>
+            <p>
+               Paragraph 1 below list.
+            </p>
+            <p>
+               Paragraph 2 below list.
+            </p>
+            <p>
+               Paragraph 3 below list.
+            </p>
+            <p>
+               Paragraph 4 below list.
+            </p>
+            <p>
+               Paragraph 5 below list.
+            </p>
+            <p>
+               Paragraph 6 below list.
+            </p>
+
+            <h4>Ordered lists</h4>            
+            <p>
+               Below is an ordered list, followed by six paragraphs.
+            </p>
+            <ol>
+                <li>
+                    Item 1.
+                    <ol>
+                        <li>
+                            Item 11.
+                        </li>
+                        <li>
+                            Item 12.
+                        </li>
+                        <li>
+                            Item 13.
+                        </li>
+                        <li>
+                            Item 14.
+                        </li>
+                    </ol>
+                </li>
+                <li>
+                    Item 2.
+                </li>
+                <li>
+                    Item 3.
+                </li>
+                <li>
+                    Item 4.
+                    <ol>
+                        <li>
+                            Item 41.
+                        </li>
+                        <li>
+                            Item 42.
+                        </li>
+                        <li>
+                            Item 43.
+                        </li>
+                        <li>
+                            Item 44.
+                        </li>
+                    </ol>
+                </li>
+            </ol>
+            <p>
+               Paragraph 1 below list.
+            </p>
+            <p>
+               Paragraph 2 below list.
+            </p>
+            <p>
+               Paragraph 3 below list.
+            </p>
+            <p>
+               Paragraph 4 below list.
+            </p>
+            <p>
+               Paragraph 5 below list.
+            </p>
+            <p>
+               Paragraph 6 below list.
+            </p>
+            
+            <h4>Definition lists</h4>            
+            <p>
+               Below is a definition list, followed by six paragraphs.
+            </p>
+            <dl>
+                <dt>Term 1.</dt>
+                <dd>Description 1.</dd>
+                <dt>Term 2.</dt>
+                <dd>Description 2.
+                  <dl>
+                    <dt>Term 21.</dt>
+                    <dd>Description 21.</dd>
+                  </dl>
+                </dd>
+            </dl>
+            <p>
+               Paragraph 1 below list.
+            </p>
+            <p>
+               Paragraph 2 below list.
+            </p>
+            <p>
+               Paragraph 3 below list.
+            </p>
+            <p>
+               Paragraph 4 below list.
+            </p>
+            <p>
+               Paragraph 5 below list.
+            </p>
+            <p>
+               Paragraph 6 below list.
+            </p>
+        </section>
+    </body>
+</document>

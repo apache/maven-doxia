@@ -2,10 +2,11 @@
 <project name="Plexus">
   <bannerLeft>
     <name>Plexus</name>
+    <src>http://plexus.codehaus.org/images/plexus-logo.png</src>
     <href>http://plexus.codehaus.org</href>
   </bannerLeft>
   <bannerRight>
-    <src>http://codehaus.org/codehaus-small.png</src>
+    <src>http://media.codehaus.org/images/unity-codehaus-logo.png</src>
     <href>http://www.codehaus.org</href>
   </bannerRight>
   <body>
@@ -14,7 +15,8 @@
       <item name="The Codehaus" href="http://www.codehaus.org"/>
     </links>
     <menu name="Quick Links">
-      <item name="CDC" href="/cdc.html"/>    
+      <item name="CDC" href="/cdc.html"/>
+      <item name="nestedItems" href="/nestedItems.html"/>
     </menu>
   </body>
 </project>

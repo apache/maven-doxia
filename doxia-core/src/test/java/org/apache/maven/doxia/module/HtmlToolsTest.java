@@ -16,7 +16,7 @@ package org.apache.maven.doxia.module;
  * limitations under the License.
  */
 
-import junit.framework.TestCase;
+import org.codehaus.plexus.PlexusTestCase;
 
 /**
  * Test case for <code>HtmlTools</code>
@@ -25,9 +25,8 @@ import junit.framework.TestCase;
  * @version $Id$
  */
 public class HtmlToolsTest
-    extends TestCase
+    extends PlexusTestCase
 {
-
     /**
      * Verify the awaited results
      */
