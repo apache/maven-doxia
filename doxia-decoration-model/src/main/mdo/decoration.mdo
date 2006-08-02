@@ -1,9 +1,31 @@
 <?xml version="1.0"?>
 
+<!--
+  ~ Copyright 2006 The Apache Software Foundation.
+  ~
+  ~ Licensed under the Apache License, Version 2.0 (the "License");
+  ~ you may not use this file except in compliance with the License.
+  ~ You may obtain a copy of the License at
+  ~
+  ~      http://www.apache.org/licenses/LICENSE-2.0
+  ~
+  ~ Unless required by applicable law or agreed to in writing, software
+  ~ distributed under the License is distributed on an "AS IS" BASIS,
+  ~ WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
+  ~ See the License for the specific language governing permissions and
+  ~ limitations under the License.
+  -->
+
 <model>
   <id>decoration</id>
   <name>Decoration</name>
-  <description><![CDATA[Model for site decoration in Doxia.]]></description>
+  <description><![CDATA[
+    <p>This is a reference for the site decoration descriptor used in Doxia.</p>
+    <p>An XSD is available at:</p>
+    <ul>
+      <li><a href="http://maven.apache.org/decoration-1.0.0.xsd">http://maven.apache.org/decoration-1.0.0.xsd</a> for Maven 2.0.</li>
+    </ul>
+  ]]></description>
   <defaults>
     <default>
       <key>package</key>
@@ -13,18 +35,26 @@
   <classes>
     <class rootElement="true" xml.tagName="project">
       <name>DecorationModel</name>
-      <description>Describes the overall project decoration model.</description>
+      <description><![CDATA[
+         The <code>&lt;project&gt;</code> element is the root of the site decoration descriptor.
+         The following table lists all of the possible child elements.
+      ]]></description>
       <version>1.0.0</version>
       <fields>
         <field xml.attribute="true">
           <name>name</name>
+          <description><![CDATA[
+            The full name of the project.
+          ]]></description>
           <version>1.0.0</version>
           <type>String</type>
           <identifier>true</identifier>
         </field>
         <field>
           <name>bannerLeft</name>
-          <description>Banner logo on the masthead of the site to the left.</description>
+          <description><![CDATA[
+            Banner logo on the masthead of the site to the left.
+          ]]></description>
           <version>1.0.0</version>
           <association>
             <type>Banner</type>
@@ -33,7 +63,9 @@
         </field>
         <field>
           <name>bannerRight</name>
-          <description>Banner logo on the masthead of the site to the right.</description>
+          <description><![CDATA[
+            Banner logo on the masthead of the site to the right.
+          ]]></description>
           <version>1.0.0</version>
           <association>
             <type>Banner</type>
@@ -42,7 +74,9 @@
         </field>
         <field>
           <name>publishDate</name>
-          <description>Modify the date published display properties.</description>
+          <description><![CDATA[
+            Modify the date published display properties.
+          ]]></description>
           <version>1.0.0</version>
           <association>
             <type>PublishDate</type>
@@ -51,7 +85,9 @@
         </field>
         <field>
           <name>version</name>
-          <description>Modify the version display properties.</description>
+          <description><![CDATA[
+            Modify the version published display properties.
+          ]]></description>
           <version>1.0.0</version>
           <association>
             <type>Version</type>
@@ -60,7 +96,9 @@
         </field>
         <field xml.associationTagName="logo">
           <name>poweredBy</name>
-          <description>Powered by logos.</description>
+          <description><![CDATA[
+            Powered by logos list.
+          ]]></description>
           <version>1.0.0</version>
           <association>
             <type>Logo</type>
@@ -70,7 +108,9 @@
         </field>
         <field>
           <name>skin</name>
-          <description>The artifact containing the skin for the site</description>
+          <description><![CDATA[
+            The artifact containing the skin for the site.
+          ]]></description>
           <version>1.0.0</version>
           <association>
             <type>Skin</type>
@@ -79,7 +119,9 @@
         </field>
         <field>
           <name>body</name>
-          <description>The main site content decoration.</description>
+          <description><![CDATA[
+            The main site content decoration.
+          ]]></description>
           <version>1.0.0</version>
           <association>
             <type>Body</type>
@@ -88,7 +130,9 @@
         </field>
         <field>
           <name>custom</name>
-          <description>Custom configuration for use with customised velocity templates.</description>
+          <description><![CDATA[
+            Custom configuration for use with customised Velocity templates.
+          ]]></description>
           <version>1.0.0</version>
           <type>DOM</type>
           <identifier>true</identifier>
@@ -158,34 +202,44 @@
     </class>
     <class>
       <name>Banner</name>
-      <description>A banner logo on the masthead of the site.</description>
+      <description><![CDATA[
+        Banner logo on the masthead of the site.
+      ]]></description>
       <version>1.0.0</version>
       <fields>
         <field>
           <name>name</name>
           <version>1.0.0</version>
-          <description>Description of the banner.</description>
+          <description><![CDATA[
+            The name of the banner.
+          ]]></description>
           <type>String</type>
           <identifier>true</identifier>
         </field>
         <field>
           <name>src</name>
           <version>1.0.0</version>
-          <description>The href of an image for the banner</description>
+          <description><![CDATA[
+            The location of an image for the banner.
+          ]]></description>
           <type>String</type>
           <identifier>true</identifier>
         </field>
         <field>
           <name>alt</name>
           <version>1.0.0</version>
-          <description>Alt description for the banner image.</description>
+          <description><![CDATA[
+            The alt description for the banner image.
+          ]]></description>
           <type>String</type>
           <identifier>true</identifier>
         </field>
         <field>
           <name>href</name>
           <version>1.0.0</version>
-          <description>The href of a link to use for the banner</description>
+          <description><![CDATA[
+            The href of a link to be used for the banner image.
+          ]]></description>
           <type>String</type>
           <identifier>true</identifier>
         </field>
@@ -193,20 +247,25 @@
     </class>
     <class>
       <name>PublishDate</name>
-      <description>Modify display properties for date published.</description>
+      <description><![CDATA[
+        Modify display properties for date published.
+      ]]></description>
       <version>1.0.0</version>
       <fields>
         <field xml.attribute="true">
           <name>position</name>
-          <description>Where to place the date published (left, right, navigation-top, navigation-bottom,
-            bottom).</description>
+          <description><![CDATA[
+            Where to place the date published (left, right, navigation-top, navigation-bottom, bottom).
+          ]]></description>
           <version>1.0.0</version>
           <type>String</type>
           <identifier>true</identifier>
         </field>
         <field xml.attribute="true">
           <name>format</name>
-          <description>Date format to use. The default is MM/dd/yyyy.</description>
+          <description><![CDATA[
+            Date format to use. The default is MM/dd/yyyy.
+          ]]></description>
           <version>1.0.0</version>
           <type>String</type>
           <identifier>true</identifier>
@@ -215,13 +274,16 @@
     </class>
     <class>
       <name>Version</name>
-      <description>Modify display properties for version.</description>
+      <description><![CDATA[
+        Modify display properties for version published.
+      ]]></description>
       <version>1.0.0</version>
       <fields>
         <field xml.attribute="true">
           <name>position</name>
-          <description>Where to place the date published (left, right, navigation-top, navigation-bottom,
-            bottom).</description>
+          <description><![CDATA[
+            Where to place the version published (left, right, navigation-top, navigation-bottom, bottom).
+          ]]></description>
           <version>1.0.0</version>
           <type>String</type>
           <identifier>true</identifier>
@@ -230,13 +292,17 @@
     </class>
     <class>
       <name>Logo</name>
-      <description>Logo.</description>
+      <description><![CDATA[
+        Power by logo on the navigation.
+      ]]></description>
       <version>1.0.0</version>
       <superClass>LinkItem</superClass>
       <fields>
         <field xml.attribute="true">
           <name>img</name>
-          <description>Logo image href.</description>
+          <description><![CDATA[
+            The href of a link to be used for the power by image.
+          ]]></description>
           <version>1.0.0</version>
           <type>String</type>
           <identifier>true</identifier>
@@ -245,19 +311,25 @@
     </class>
     <class>
       <name>Body</name>
-      <description>The main content decoration.</description>
+      <description><![CDATA[
+        The main content decoration.
+      ]]></description>
       <version>1.0.0</version>
       <fields>
         <field>
           <name>head</name>
-          <description>Additional content to include in the HEAD block of the generated pages.</description>
+          <description><![CDATA[
+            Additional content (like Javascript) to include in the HEAD block of the generated pages.
+          ]]></description>
           <version>1.0.0</version>
           <type>DOM</type>
           <identifier>true</identifier>
         </field>
         <field xml.associationTagName="item">
           <name>links</name>
-          <description>A list of links to display in the navigation.</description>
+          <description><![CDATA[
+            A list of links to display in the navigation.
+          ]]></description>
           <version>1.0.0</version>
           <association>
             <type>LinkItem</type>
@@ -267,7 +339,9 @@
         </field>
         <field xml.associationTagName="item">
           <name>breadcrumbs</name>
-          <description>A list of breadcrumbs to display in the navigation.</description>
+          <description><![CDATA[
+            A list of breadcrumbs to display in the navigation.
+          ]]></description>
           <version>1.0.0</version>
           <association>
             <type>LinkItem</type>
@@ -278,7 +352,9 @@
         </field>
         <field xml.listStyle="flat">
           <name>menus</name>
-          <description>Menus to include in the navigation.</description>
+          <description><![CDATA[
+            A list of menus to include in the navigation.
+          ]]></description>
           <version>1.0.0</version>
           <association>
             <type>Menu</type>
@@ -290,19 +366,25 @@
     </class>
     <class>
       <name>LinkItem</name>
-      <description>A link in the navigation.</description>
+      <description><![CDATA[
+        A link in the navigation.
+      ]]></description>
       <version>1.0.0</version>
       <fields>
         <field xml.attribute="true">
           <name>name</name>
-          <description>The name to use for the link.</description>
+          <description><![CDATA[
+            The name to display for the link.
+          ]]></description>
           <version>1.0.0</version>
           <type>String</type>
           <identifier>true</identifier>
         </field>
         <field xml.attribute="true">
           <name>href</name>
-          <description>The href to use for the link.</description>
+          <description><![CDATA[
+            The href to use for the link.
+          ]]></description>
           <version>1.0.0</version>
           <type>String</type>
           <identifier>true</identifier>
@@ -311,48 +393,62 @@
     </class>
     <class>
       <name>Menu</name>
-      <description>A menu in the navigation.</description>
+      <description><![CDATA[
+        A menu in the navigation.
+      ]]></description>
       <version>1.0.0</version>
       <fields>
         <field xml.attribute="true">
           <name>name</name>
-          <description>The name to use for the menu.</description>
+          <description><![CDATA[
+            The name to display for the menu.
+          ]]></description>
           <version>1.0.0</version>
           <type>String</type>
           <identifier>true</identifier>
         </field>
         <field xml.attribute="true">
           <name>inherit</name>
-          <description>The way in which the menu is inherited.</description>
+          <description><![CDATA[
+            The way in which the menu is inherited.
+          ]]></description>
           <version>1.0.0</version>
           <type>String</type>
           <identifier>true</identifier>
         </field>
         <field xml.attribute="true">
           <name>inheritAsRef</name>
-          <description>If this is a reference, setting inheritAsRef means that it will be populated in the project,
-            whereas if it is false it is populated in the parent and then inherited.</description>
+          <description><![CDATA[
+            If this is a reference, setting <inheritAsRef>true</inheritAsRef> means that it will be populated
+            in the project, whereas if it is false, it is populated in the parent and then inherited.
+          ]]></description>
           <version>1.0.0</version>
           <type>boolean</type>
         </field>
         <field xml.attribute="true">
           <name>ref</name>
-          <description><![CDATA[A reference to a pre-defined menu, such as a <code>reports</code>, <code>modules</code>
-          or <code>parentProject</code>.]]></description>
+          <description><![CDATA[
+            A reference to a pre-defined menu, such as a <code>reports</code>, <code>modules</code>
+            or <code>parentProject</code>.
+          ]]></description>
           <version>1.0.0</version>
           <type>String</type>
           <identifier>true</identifier>
         </field>
         <field xml.attribute="true">
           <name>img</name>
-          <description>Image href.</description>
+          <description><![CDATA[
+            The location of an image.
+          ]]></description>
           <version>1.0.0</version>
           <type>String</type>
           <identifier>true</identifier>
         </field>
         <field xml.listStyle="flat">
           <name>items</name>
-          <description>Menu item.</description>
+          <description><![CDATA[
+            A list of menu item.
+          ]]></description>
           <version>1.0.0</version>
           <association>
             <type>MenuItem</type>
@@ -364,28 +460,36 @@
     </class>
     <class>
       <name>MenuItem</name>
-      <description>A menu item.</description>
+      <description><![CDATA[
+        A menu item.
+      ]]></description>
       <version>1.0.0</version>
       <superClass>LinkItem</superClass>
       <fields>
         <field>
           <name>description</name>
-          <description>A description of the menu item. This is used on any summary pages for a menu.</description>
+          <description><![CDATA[
+           A description of the menu item. This is used on any summary pages for a menu.
+          ]]></description>
           <version>1.0.0</version>
           <type>String</type>
           <identifier>true</identifier>
         </field>
         <field xml.attribute="true">
           <name>collapse</name>
-          <description>Whether the item is collapsed by default when it has children elements.</description>
+          <description><![CDATA[
+           Whether to collapse children elements of an item menu (by default).
+          ]]></description>
           <version>1.0.0</version>
           <type>boolean</type>
           <identifier>true</identifier>
         </field>
         <field xml.attribute="true">
           <name>ref</name>
-          <description><![CDATA[A reference to a pre-defined menu item, such as a report (specified by the report goal
-          name). Any elements explicitly given override those from the pre-defined reference.]]></description>
+          <description><![CDATA[
+            A reference to a pre-defined menu item, such as a report (specified by the report goal
+            name). Any elements explicitly given override those from the pre-defined reference.
+          ]]></description>
           <version>1.0.0</version>
           <type>String</type>
           <identifier>true</identifier>
@@ -404,12 +508,16 @@
     </class>
     <class>
       <name>Skin</name>
-      <description>An skin artifact declaration</description>
+      <description><![CDATA[
+        An skin artifact declaratio.
+      ]]></description>
       <version>1.0.0</version>
       <fields>
         <field>
           <name>groupId</name>
-          <description>The group ID</description>
+          <description><![CDATA[
+            The skin group ID.
+          ]]></description>
           <version>1.0.0</version>
           <type>String</type>
           <required>true</required>
@@ -417,7 +525,9 @@
         </field>
         <field>
           <name>artifactId</name>
-          <description>The artifact ID</description>
+          <description><![CDATA[
+            The skin artifact ID.
+          ]]></description>
           <version>1.0.0</version>
           <type>String</type>
           <required>true</required>
@@ -425,7 +535,9 @@
         </field>
         <field>
           <name>version</name>
-          <description>The version</description>
+          <description><![CDATA[
+            The skin version.
+          ]]></description>
           <version>1.0.0</version>
           <type>String</type>
           <identifier>true</identifier>
@@ -450,4 +562,3 @@
     </class>
   </classes>
 </model>
-
