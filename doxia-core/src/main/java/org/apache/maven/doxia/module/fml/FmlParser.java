@@ -230,6 +230,13 @@ public class FmlParser
                     buffer.append( parser.getText() );
                 }
             }
+            else if ( eventType == XmlPullParser.ENTITY_REF )
+            {
+                if ( buffer != null && parser.getText() != null )
+                {
+                    buffer.append( HtmlTools.escapeHTML( parser.getText() ) );
+                }
+            }
 
             eventType = parser.nextToken();
         }
