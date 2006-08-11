@@ -16,27 +16,6 @@ package org.apache.maven.doxia.siterenderer;
  * limitations under the License.
  */
 
-import org.apache.maven.doxia.Doxia;
-import org.apache.maven.doxia.module.xhtml.decoration.render.RenderingContext;
-import org.apache.maven.doxia.parser.ParseException;
-import org.apache.maven.doxia.parser.manager.ParserNotFoundException;
-import org.apache.maven.doxia.site.decoration.DecorationModel;
-import org.apache.maven.doxia.site.module.SiteModule;
-import org.apache.maven.doxia.site.module.manager.SiteModuleManager;
-import org.apache.maven.doxia.site.module.manager.SiteModuleNotFoundException;
-import org.apache.maven.doxia.siterenderer.sink.SiteRendererSink;
-import org.apache.velocity.Template;
-import org.apache.velocity.VelocityContext;
-import org.apache.velocity.context.Context;
-import org.codehaus.plexus.i18n.I18N;
-import org.codehaus.plexus.logging.AbstractLogEnabled;
-import org.codehaus.plexus.util.DirectoryScanner;
-import org.codehaus.plexus.util.FileUtils;
-import org.codehaus.plexus.util.IOUtil;
-import org.codehaus.plexus.util.PathTool;
-import org.codehaus.plexus.util.StringUtils;
-import org.codehaus.plexus.velocity.VelocityComponent;
-
 import java.io.File;
 import java.io.FileInputStream;
 import java.io.FileNotFoundException;
@@ -64,6 +43,28 @@ import java.util.Locale;
 import java.util.Map;
 import java.util.zip.ZipEntry;
 import java.util.zip.ZipFile;
+
+import org.apache.maven.doxia.Doxia;
+import org.apache.maven.doxia.module.xhtml.decoration.render.RenderingContext;
+import org.apache.maven.doxia.parser.ParseException;
+import org.apache.maven.doxia.parser.manager.ParserNotFoundException;
+import org.apache.maven.doxia.site.decoration.DecorationModel;
+import org.apache.maven.doxia.site.module.SiteModule;
+import org.apache.maven.doxia.site.module.manager.SiteModuleManager;
+import org.apache.maven.doxia.site.module.manager.SiteModuleNotFoundException;
+import org.apache.maven.doxia.siterenderer.sink.SiteRendererSink;
+import org.apache.velocity.Template;
+import org.apache.velocity.VelocityContext;
+import org.apache.velocity.context.Context;
+import org.codehaus.plexus.i18n.I18N;
+import org.codehaus.plexus.logging.AbstractLogEnabled;
+import org.codehaus.plexus.util.DirectoryScanner;
+import org.codehaus.plexus.util.FileUtils;
+import org.codehaus.plexus.util.IOUtil;
+import org.codehaus.plexus.util.Os;
+import org.codehaus.plexus.util.PathTool;
+import org.codehaus.plexus.util.StringUtils;
+import org.codehaus.plexus.velocity.VelocityComponent;
 
 /**
  * @author <a href="mailto:evenisse@codehaus.org">Emmanuel Venisse</a>
@@ -189,14 +190,34 @@ public class DefaultSiteRenderer
 
                 RenderingContext context = new RenderingContext( moduleBasedir, doc, module.getParserId() );
 
-                String key = context.getOutputName().toLowerCase( Locale.getDefault() );
+                String key = context.getOutputName();
 
                 if ( files.containsKey( key ) )
                 {
                     DocumentRenderer renderer = (DocumentRenderer) files.get( key );
                     RenderingContext originalContext = renderer.getRenderingContext();
                     File originalDoc = new File( originalContext.getBasedir(), originalContext.getInputName() );
-                    throw new RendererException( "Files '" + doc + "' clashes with existing '" + originalDoc + "'" );
+                    throw new RendererException( "Files '" + doc + "' clashes with existing '" + originalDoc + "'." );
+                }
+                // -----------------------------------------------------------------------
+                // Handle key without case differences
+                // -----------------------------------------------------------------------
+                for ( Iterator iter = files.entrySet().iterator(); iter.hasNext(); )
+                {
+                    Map.Entry entry = (Map.Entry) iter.next();
+                    if ( entry.getKey().toString().toLowerCase().equals( key.toLowerCase() ) )
+                    {
+                        DocumentRenderer renderer = (DocumentRenderer) files.get( entry.getKey() );
+                        RenderingContext originalContext = renderer.getRenderingContext();
+                        File originalDoc = new File( originalContext.getBasedir(), originalContext.getInputName() );
+                        if ( Os.isFamily( "windows" ) )
+                        {
+                            throw new RendererException( "Files '" + doc + "' clashes with existing '" + originalDoc
+                                + "'." );
+                        }
+
+                        getLogger().warn( "Files '" + doc + "' could clashes with existing '" + originalDoc + "'." );
+                    }
                 }
 
                 files.put( key, new DoxiaDocumentRenderer( context ) );
@@ -433,7 +454,7 @@ public class DefaultSiteRenderer
             if ( zipFile.getEntry( SKIN_TEMPLATE_LOCATION ) != null )
             {
                 context.setTemplateName( SKIN_TEMPLATE_LOCATION );
-                context.setTemplateClassLoader( new URLClassLoader( new URL[]{skinFile.toURL()} ) );
+                context.setTemplateClassLoader( new URLClassLoader( new URL[] { skinFile.toURL() } ) );
             }
             else
             {
@@ -464,7 +485,7 @@ public class DefaultSiteRenderer
         SiteRenderingContext context = new SiteRenderingContext();
 
         context.setTemplateName( templateFile.getName() );
-        context.setTemplateClassLoader( new URLClassLoader( new URL[]{templateFile.getParentFile().toURL()} ) );
+        context.setTemplateClassLoader( new URLClassLoader( new URL[] { templateFile.getParentFile().toURL() } ) );
 
         context.setTemplateProperties( attributes );
         context.setLocale( locale );
@@ -525,8 +546,8 @@ public class DefaultSiteRenderer
 
         if ( siteContext.isUsingDefaultTemplate() )
         {
-            InputStream resourceList =
-                getClass().getClassLoader().getResourceAsStream( RESOURCE_DIR + "/resources.txt" );
+            InputStream resourceList = getClass().getClassLoader()
+                .getResourceAsStream( RESOURCE_DIR + "/resources.txt" );
 
             if ( resourceList != null )
             {
@@ -600,7 +621,7 @@ public class DefaultSiteRenderer
         {
             DirectoryScanner scanner = new DirectoryScanner();
 
-            String[] includedResources = {"**/**"};
+            String[] includedResources = { "**/**" };
 
             scanner.setIncludes( includedResources );
 
