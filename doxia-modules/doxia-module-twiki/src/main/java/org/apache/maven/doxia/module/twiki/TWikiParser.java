@@ -32,7 +32,7 @@ import org.apache.maven.doxia.sink.Sink;
  * twiki file format</a>
  *
  * @author Juan F. Codagnone
- * @plexus.component role="org.apache.doxia.parser.Parser" role-hint="twiki"
+ * @plexus.component role="org.apache.maven.doxia.parser.Parser" role-hint="twiki"
  * @since Oct 31, 2005
  */
 public class TWikiParser extends AbstractParser

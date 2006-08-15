@@ -22,8 +22,7 @@ import org.apache.maven.doxia.site.module.SiteModule;
  * the twiki file format.
  *
  * @author Juan F. Codagnone
- * @plexus.component role="org.apache.doxia.site.module.SiteModule"
- * role-hint="twiki"
+ * @plexus.component role="org.apache.maven.doxia.site.module.SiteModule" role-hint="twiki"
  * @since Oct 31, 2005
  */
 public final class TWikiSiteModule implements SiteModule
