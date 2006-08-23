@@ -16,6 +16,10 @@ package org.apache.maven.doxia.module.fml;
  * limitations under the License.
  */
 
+import java.io.Reader;
+import java.io.StringReader;
+import java.util.Iterator;
+
 import org.apache.maven.doxia.module.HtmlTools;
 import org.apache.maven.doxia.module.fml.model.Faq;
 import org.apache.maven.doxia.module.fml.model.Faqs;
@@ -26,9 +30,6 @@ import org.apache.maven.doxia.sink.Sink;
 import org.codehaus.plexus.util.StringUtils;
 import org.codehaus.plexus.util.xml.pull.MXParser;
 import org.codehaus.plexus.util.xml.pull.XmlPullParser;
-
-import java.io.Reader;
-import java.util.Iterator;
 
 /**
  * Parse a fml model and emit events into the specified doxia Sink.
@@ -41,6 +42,9 @@ import java.util.Iterator;
 public class FmlParser
     implements Parser
 {
+    /**
+     * @see org.apache.maven.doxia.parser.Parser#parse(java.io.Reader, org.apache.maven.doxia.sink.Sink)
+     */
     public void parse( Reader reader, Sink sink )
         throws ParseException
     {
@@ -55,15 +59,23 @@ public class FmlParser
         }
         catch ( Exception ex )
         {
-            throw new ParseException( "Error parsing the model.", ex );
+            throw new ParseException( "Error parsing the model: " + ex.getMessage(), ex );
         }
 
-        createSink( faqs, sink );
+        try
+        {
+            createSink( faqs, sink );
+        }
+        catch ( Exception e )
+        {
+            throw new ParseException( "Error creating sink: " + e.getMessage(), e );
+        }
     }
 
     /**
      * @param parser
      * @param sink
+     * @return Faqs
      * @throws Exception
      */
     public Faqs parseFml( XmlPullParser parser, Sink sink )
@@ -244,7 +256,13 @@ public class FmlParser
         return faqs;
     }
 
+    /**
+     * @param faqs
+     * @param sink
+     * @throws Exception
+     */
     private void createSink( Faqs faqs, Sink sink )
+        throws Exception
     {
         sink.head();
         sink.title();
@@ -335,18 +353,18 @@ public class FmlParser
         sink.body_();
     }
 
+    /**
+     * @param sink
+     * @param answer
+     * @throws Exception
+     */
     private void writeAnswer( Sink sink, String answer )
+        throws Exception
     {
         int startSource = answer.indexOf( "<source>" );
-        int endSource = answer.indexOf( "</source>" );
         if ( startSource != -1 )
         {
-            sink.rawText( answer.substring( 0, startSource ) );
-            sink.verbatim( true );
-            sink.text( answer.substring( startSource + "<source>".length(), endSource ) );
-            sink.verbatim_();
-            // need to write the end of answer that can contain other source tag
-            writeAnswer( sink, answer.substring( endSource + "</source>".length() ) );
+            writeAnswerWithSource( sink, answer );
         }
         else
         {
@@ -354,6 +372,9 @@ public class FmlParser
         }
     }
 
+    /**
+     * @param sink
+     */
     private void writeTopLink( Sink sink )
     {
         sink.rawText( "<table border=\"0\">" );
@@ -365,5 +386,94 @@ public class FmlParser
 
         sink.rawText( "</td></tr>" );
         sink.rawText( "</table>" );
+    }
+
+    /**
+     * @param sink
+     * @param answer
+     * @throws Exception
+     */
+    private void writeAnswerWithSource( Sink sink, String answer )
+        throws Exception
+    {
+        XmlPullParser parser = new MXParser();
+        parser.setInput( new StringReader( "<answer>" + answer + "</answer>" ) );
+
+        int countSource = 0;
+        int eventType = parser.getEventType();
+
+        while ( eventType != XmlPullParser.END_DOCUMENT )
+        {
+            if ( eventType == XmlPullParser.START_TAG )
+            {
+                if ( parser.getName().equals( "source" ) && countSource == 0 )
+                {
+                    sink.verbatim( true );
+                    countSource++;
+                }
+                else if ( parser.getName().equals( "source" ) )
+                {
+                    sink.rawText( HtmlTools.escapeHTML( "<" + parser.getName() + ">" ) );
+                    countSource++;
+                }
+                else if ( parser.getName().equals( "answer" ) )
+                {
+                    // nop
+                }
+                else
+                {
+                    if ( countSource > 0 )
+                    {
+                        sink.rawText( HtmlTools.escapeHTML( "<" + parser.getName() + ">" ) );
+                    }
+                    else
+                    {
+                        sink.rawText( "<" + parser.getName() + ">" );
+                    }
+                }
+            }
+            else if ( eventType == XmlPullParser.END_TAG )
+            {
+                if ( parser.getName().equals( "source" ) && countSource == 1 )
+                {
+                    countSource--;
+                    sink.verbatim_();
+                }
+                else if ( parser.getName().equals( "source" ) )
+                {
+                    sink.rawText( HtmlTools.escapeHTML( "</" + parser.getName() + ">" ) );
+                    countSource--;
+                }
+                else if ( parser.getName().equals( "answer" ) )
+                {
+                    // nop
+                }
+                else
+                {
+                    if ( countSource > 0 )
+                    {
+                        sink.rawText( HtmlTools.escapeHTML( "</" + parser.getName() + ">" ) );
+                    }
+                    else
+                    {
+                        sink.rawText( "</" + parser.getName() + ">" );
+                    }
+                }
+            }
+            else if ( eventType == XmlPullParser.CDSECT )
+            {
+                sink.rawText( HtmlTools.escapeHTML( parser.getText() ) );
+            }
+            else if ( eventType == XmlPullParser.TEXT )
+            {
+                sink.rawText( HtmlTools.escapeHTML( parser.getText() ) );
+            }
+            else if ( eventType == XmlPullParser.ENTITY_REF )
+            {
+                sink.rawText( HtmlTools.escapeHTML( parser.getText() ) );
+            }
+
+            eventType = parser.nextToken();
+        }
     }
 }
