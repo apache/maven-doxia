@@ -278,7 +278,10 @@ public class FmlParser
         sink.anchor_();
         sink.sectionTitle1_();
 
+        // ----------------------------------------------------------------------
         // Write summary
+        // ----------------------------------------------------------------------
+
         for ( Iterator partIterator = faqs.getParts().iterator(); partIterator.hasNext(); )
         {
             Part part = (Part) partIterator.next();
@@ -296,7 +299,7 @@ public class FmlParser
             {
                 Faq faq = (Faq) faqIterator.next();
                 sink.numberedListItem();
-                sink.link( "#" + faq.getId() );
+                sink.link( "#" + HtmlTools.encodeId( faq.getId() ) );
                 sink.rawText( faq.getQuestion() );
                 sink.link_();
                 sink.numberedListItem_();
@@ -305,7 +308,10 @@ public class FmlParser
         }
         sink.section1_();
 
+        // ----------------------------------------------------------------------
         // Write content
+        // ----------------------------------------------------------------------
+
         for ( Iterator partIterator = faqs.getParts().iterator(); partIterator.hasNext(); )
         {
             Part part = (Part) partIterator.next();
@@ -428,7 +434,29 @@ public class FmlParser
                     }
                     else
                     {
-                        sink.rawText( "<" + parser.getName() + ">" );
+                        StringBuffer buffer = new StringBuffer();
+                        buffer.append( "<" + parser.getName() );
+
+                        int count = parser.getAttributeCount();
+
+                        for ( int i = 0; i < count; i++ )
+                        {
+                            buffer.append( " " );
+
+                            buffer.append( parser.getAttributeName( i ) );
+
+                            buffer.append( "=" );
+
+                            buffer.append( "\"" );
+
+                            buffer.append( HtmlTools.escapeHTML( parser.getAttributeValue( i ) ) );
+
+                            buffer.append( "\"" );
+                        }
+
+                        buffer.append( ">" );
+
+                        sink.rawText( buffer.toString() );
                     }
                 }
             }
