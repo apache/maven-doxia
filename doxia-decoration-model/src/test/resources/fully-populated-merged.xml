@@ -27,6 +27,7 @@
   </bannerRight>
 
   <publishDate format="fmt" position="top"/>
+  <version position="right" />
 
   <poweredBy>
     <logo name="Maven" href="http://maven.apache.org" img="../images/maven-feather.png"/>

@@ -72,6 +72,11 @@ public class DefaultDecorationModelInheritanceAssembler
                 child.setPublishDate( parent.getPublishDate() );
             }
 
+            if ( child.getVersion() == null )
+            {
+                child.setVersion( parent.getVersion() );
+            }
+
             if ( child.getSkin() == null )
             {
                 child.setSkin( parent.getSkin() );
