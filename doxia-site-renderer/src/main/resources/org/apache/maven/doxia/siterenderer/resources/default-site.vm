@@ -180,10 +180,17 @@
   #end
 
   #set ( $breadcrumbs = $decoration.body.breadcrumbs )
+  #set ( $links = $decoration.body.links )
+
+  #if ( $datePosition.equalsIgnoreCase( "right" ) && $links && $links.size() > 0 )
+    #set ( $prefix = "&nbsp;|" )
+  #else
+    #set ( $prefix = "" )
+  #end
 
   #if ( $datePosition.equalsIgnoreCase( $position ) )
     #if ( ( $datePosition.equalsIgnoreCase( "right" ) ) || ( $datePosition.equalsIgnoreCase( "bottom" ) ) )
-      &nbsp;| $i18n.getString( "site-renderer", $locale, "template.lastpublished" ): $dateToday
+      $prefix $i18n.getString( "site-renderer", $locale, "template.lastpublished" ): $dateToday
       #if ( $versionPosition.equalsIgnoreCase( $position ) )
         &nbsp;| $i18n.getString( "site-renderer", $locale, "template.version" ): ${project.version}
       #end
@@ -207,7 +214,7 @@
     #end
   #elseif ( $versionPosition.equalsIgnoreCase( $position ) )
     #if ( ( $versionPosition.equalsIgnoreCase( "right" ) ) || ( $versionPosition.equalsIgnoreCase( "bottom" ) ) )
-      &nbsp;| $i18n.getString( "site-renderer", $locale, "template.version" ): ${project.version}
+      $prefix $i18n.getString( "site-renderer", $locale, "template.version" ): ${project.version}
     #elseif ( ( $versionPosition.equalsIgnoreCase( "navigation-bottom" ) ) || ( $versionPosition.equalsIgnoreCase( "navigation-top" ) ) )
       <div id="lastPublished">
         $i18n.getString( "site-renderer", $locale, "template.version" ): ${project.version}
