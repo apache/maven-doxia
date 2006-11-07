@@ -25,7 +25,7 @@ import java.io.Reader;
 
 /**
  * @author <a href="mailto:lars@trieloff.net">Lars Trieloff</a>
- * @version $Id: SinkDescriptorReaderTest.java 131 2005-10-25 05:16:26Z trygvis $
+ * @version $Id$
  */
 public class XhtmlParserTest
     extends AbstractParserTestCase
