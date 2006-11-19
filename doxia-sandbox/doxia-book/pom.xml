@@ -56,6 +56,11 @@
       <artifactId>plexus-i18n</artifactId>
       <version>1.0-beta-6</version>
     </dependency>
+    <dependency>
+      <groupId>org.codehaus.plexus</groupId>
+      <artifactId>plexus-cli</artifactId>
+      <version>1.0-SNAPSHOT</version>
+    </dependency>
   </dependencies>
   <build>
     <plugins>
