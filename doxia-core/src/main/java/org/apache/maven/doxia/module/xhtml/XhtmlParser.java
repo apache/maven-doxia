@@ -16,14 +16,14 @@ package org.apache.maven.doxia.module.xhtml;
  * limitations under the License.
  */
 
+import java.io.Reader;
+import java.util.Stack;
+
 import org.apache.maven.doxia.parser.ParseException;
 import org.apache.maven.doxia.parser.Parser;
 import org.apache.maven.doxia.sink.Sink;
 import org.codehaus.plexus.util.xml.pull.MXParser;
 import org.codehaus.plexus.util.xml.pull.XmlPullParser;
-
-import java.io.Reader;
-import java.util.Stack;
 
 /**
  * Parse an xdoc model and emit events into the specified doxia
@@ -181,7 +181,7 @@ public class XhtmlParser
                 }
                 else if ( parser.getName().equals( "br" ) )
                 {
-                    sink.pageBreak();
+                	sink.lineBreak();
                 }
                 else if ( parser.getName().equals( "hr" ) )
                 {
@@ -200,13 +200,13 @@ public class XhtmlParser
                     if ( title != null )
                     {
                         sink.figureCaption();
-                        sink.text( title );
+                        text( sink, title );
                         sink.figureCaption_();
                     }
                     else if ( alt != null )
                     {
                         sink.figureCaption();
-                        sink.text( alt );
+                        text( sink, alt );
                         sink.figureCaption_();
                     }
                     sink.figure_();
@@ -329,11 +329,37 @@ public class XhtmlParser
             }
             else if ( eventType == XmlPullParser.TEXT )
             {
-                sink.text( parser.getText() );
+                text( sink, parser.getText() );
             }
 
             eventType = parser.next();
         }
+    }
+
+    /**
+     * Sends the text to the sink, utilizing the nonBreakingspace of the sink.
+     * @param sink
+     * @param text
+     */
+    private static void text( Sink sink, String text )
+    {
+    	if( text.startsWith( "&nbsp;" ) )
+    	{
+    		sink.nonBreakingSpace();
+    	}
+    	String[] s = text.split( "&nbsp;" );
+    	for( int i = 0; i < s.length; i++ )
+    	{
+        	sink.text( s[i] );
+        	if( i + 1 < s.length )
+        	{
+        		sink.nonBreakingSpace();
+        	}
+		}
+    	if( text.endsWith( "&nbsp;" ) )
+    	{
+    		sink.nonBreakingSpace();
+    	}
     }
 
     private void closeSubordinatedSections( String level, Sink sink )
