@@ -49,7 +49,7 @@
     <dependency>
       <groupId>org.codehaus.plexus</groupId>
       <artifactId>plexus-container-default</artifactId>
-      <version>1.0-alpha-8</version>
+      <version>1.0-alpha-10</version>
     </dependency>
     <dependency>
       <groupId>org.codehaus.plexus</groupId>
@@ -59,7 +59,7 @@
     <dependency>
       <groupId>org.codehaus.plexus</groupId>
       <artifactId>plexus-cli</artifactId>
-      <version>1.0-SNAPSHOT</version>
+      <version>1.0</version>
     </dependency>
   </dependencies>
   <build>
@@ -87,6 +87,17 @@
             </goals>
           </execution>
         </executions>
+      </plugin>
+      <plugin>
+        <artifactId>maven-assembly-plugin</artifactId>
+        <configuration>
+          <descriptorId>jar-with-dependencies</descriptorId>
+          <archive>
+            <manifest>
+              <mainClass>org.apache.maven.doxia.book.BookDoxiaCli</mainClass>
+            </manifest>
+          </archive>
+        </configuration>
       </plugin>
     </plugins>
   </build>
