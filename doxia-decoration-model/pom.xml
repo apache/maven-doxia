@@ -45,7 +45,6 @@
               <version>1.0.0</version>
             </configuration>
           </execution>
-          <!-- Due to MODELLO-53 and MODELLO-54
           <execution>
             <id>descriptor-site</id>
             <phase>pre-site</phase>
@@ -58,7 +57,6 @@
               <version>1.0.0</version>
             </configuration>
           </execution>
-          -->
         </executions>
       </plugin>
     </plugins>
