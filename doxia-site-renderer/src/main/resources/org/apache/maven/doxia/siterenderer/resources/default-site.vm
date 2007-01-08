@@ -1,5 +1,13 @@
 <!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
 
+#macro ( link $href $name )
+  #if ( ( $href.toLowerCase().startsWith("http") || $href.toLowerCase().startsWith("https") ) )
+    <a href="$href" class="externalLink">$name</a>
+  #else
+    <a href="$href">$name</a>
+  #end
+#end
+
 #macro ( banner $banner $id )
   #if ( $banner )
     #if( $banner.href )
@@ -38,7 +46,7 @@
     #set ( $counter = $counter + 1 )
     #set ( $currentItemHref = $PathTool.calculateLink( $item.href, $relativePath ) )
     #set ( $currentItemHref = $currentItemHref.replaceAll( "\\", "/" ) )
-    <a href="$currentItemHref">$item.name</a>
+    #link( $currentItemHref $item.name )
     #if ( $links.size() > $counter )
       |
     #end
@@ -55,7 +63,7 @@
     #if ( $currentItemHref == $alignedFileName || $currentItemHref == "" )
       $item.name
     #else
-      <a href="$currentItemHref">$item.name</a>
+      #link( $currentItemHref $item.name )
     #end
     #if ( $breadcrumbs.size() > $counter )
       &gt;
@@ -111,7 +119,7 @@
     #if ( $alignedFileName == $currentItemHref )
       <strong>$item.name</strong>
     #else
-      <a href="$currentItemHref">$item.name</a>
+      #link( $currentItemHref $item.name )
     #end
   #if ( $item && $item.items && $item.items.size() > 0 )
     #if ( $collapse == "expanded" )

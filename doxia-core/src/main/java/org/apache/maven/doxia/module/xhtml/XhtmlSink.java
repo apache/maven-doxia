@@ -645,7 +645,14 @@ public class XhtmlSink
     {
         if ( !headFlag )
         {
-            write( "<a href=\"" + HtmlTools.escapeHTML( name ) + "\">" );
+            if ( isExternalLink( name ) )
+            {
+                write( "<a href=\"" + HtmlTools.escapeHTML( name ) + "\" class=\"externalLink\">" );
+            }
+            else
+            {
+                write( "<a href=\"" + HtmlTools.escapeHTML( name ) + "\">" );
+            }
         }
     }
 
@@ -653,8 +660,21 @@ public class XhtmlSink
     {
         if ( !headFlag )
         {
-            write( "<a href=\"" + HtmlTools.escapeHTML( name ) + "\" target=\"" + target + "\">" );
+            if ( isExternalLink( name ) )
+            {
+                write( "<a href=\"" + HtmlTools.escapeHTML( name ) + "\" class=\"externalLink\" target=\"" + target +
+                    "\">" );
+            }
+            else
+            {
+                write( "<a href=\"" + HtmlTools.escapeHTML( name ) + "\" target=\"" + target + "\">" );
+            }
         }
+    }
+
+    private static boolean isExternalLink( String href )
+    {
+        return href.toLowerCase().startsWith( "http" ) || href.toLowerCase().startsWith( "https" );
     }
 
     public void link_()
