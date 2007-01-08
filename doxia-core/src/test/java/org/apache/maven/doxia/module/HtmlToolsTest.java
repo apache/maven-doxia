@@ -28,6 +28,19 @@ public class HtmlToolsTest
     extends PlexusTestCase
 {
     /**
+     * Verify the expected results.
+     */
+    public void testEscapeHTML()
+    {
+        assertEquals( HtmlTools.escapeHTML( "" ), "" );
+        assertEquals( HtmlTools.escapeHTML( "<" ), "&lt;" );
+        assertEquals( HtmlTools.escapeHTML( ">" ), "&gt;" );
+        assertEquals( HtmlTools.escapeHTML( "&" ), "&amp;" );
+        assertEquals( HtmlTools.escapeHTML( "\"" ), "&quot;" );
+        assertEquals( HtmlTools.escapeHTML( "&amp;" ), "&amp;amp;" );
+    }
+
+    /**
      * Verify the awaited results
      */
     public void testEncodeId()
