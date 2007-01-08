@@ -645,7 +645,7 @@ public class XhtmlSink
     {
         if ( !headFlag )
         {
-            write( "<a href=\"" + name + "\">" );
+            write( "<a href=\"" + HtmlTools.escapeHTML( name ) + "\">" );
         }
     }
 
@@ -653,7 +653,7 @@ public class XhtmlSink
     {
         if ( !headFlag )
         {
-            write( "<a href=\"" + name + "\" target=\"" + target + "\">" );
+            write( "<a href=\"" + HtmlTools.escapeHTML( name ) + "\" target=\"" + target + "\">" );
         }
     }
 
