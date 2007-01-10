@@ -37,7 +37,7 @@ div.clear hr{
   float:left;
   text-shadow: #7CFC00;
 }
-.xright, #bannerRight img {
+.xright, #bannerRight {
   float:right;
   text-shadow: #7CFC00;
 }
