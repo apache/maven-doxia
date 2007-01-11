@@ -840,6 +840,7 @@ public class AptParser
                                 flushTraversed( buffer, sink );
                                 sink.nonBreakingSpace();
                                 break;
+                            case '\r':
                             case '\n':
                                 ++i;
                                 // Skip white space which may follow a line break.
