@@ -161,7 +161,7 @@ public class XdocParser
                 }
                 else if ( parser.getName().equals( "macro" ) )
                 {
-                    String macroId = parser.getAttributeValue( null, "id" );
+                    String macroName = parser.getAttributeValue( null, "name" );
 
                     int count = parser.getAttributeCount();
 
@@ -174,7 +174,7 @@ public class XdocParser
 
                     MacroRequest request = new MacroRequest( parameters, getBasedir() );
 
-                    executeMacro( macroId, request, sink );
+                    executeMacro( macroName, request, sink );
                 }
 
                 // ----------------------------------------------------------------------

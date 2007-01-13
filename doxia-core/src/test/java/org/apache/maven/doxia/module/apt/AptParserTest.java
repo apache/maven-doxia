@@ -36,12 +36,25 @@ public class AptParserTest
 {
     private static final String EOL = System.getProperty( "line.separator" );
 
+    private AptParser parser;
+
+    /**
+     * @see junit.framework.TestCase#setUp()
+     */
+    protected void setUp()
+        throws Exception
+    {
+        super.setUp();
+
+        parser = (AptParser) lookup( Parser.ROLE, "apt" );
+    }
+
     /**
      * @see org.apache.maven.doxia.parser.AbstractParserTestCase#getParser()
      */
     protected Parser getParser()
     {
-        return new AptParser();
+        return parser;
     }
 
     /**
@@ -70,6 +83,32 @@ public class AptParserTest
             getParser().parse( reader, sink );
 
             assertTrue( output.toString().indexOf( "Line\\" + EOL + "break." ) != -1 );
+        }
+        finally
+        {
+            output.close();
+            reader.close();
+        }
+    }
+
+    /**
+     * @throws Exception
+     */
+    public void testSnippetMacro()
+        throws Exception
+    {
+        StringWriter output = null;
+        Reader reader = null;
+
+        try
+        {
+            output = new StringWriter();
+            reader = new FileReader( getTestFile( getBasedir(), "src/test/site/apt/macro.apt" ) );
+
+            Sink sink = new AptSink( output );
+            getParser().parse( reader, sink );
+
+            assertTrue( output.toString().indexOf( "<modelVersion\\>4.0.0\\</modelVersion\\>" ) != -1 );
         }
         finally
         {
