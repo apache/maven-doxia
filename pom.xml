@@ -83,7 +83,6 @@
     <module>doxia-site-renderer</module>
     <module>doxia-decoration-model</module>
     <module>doxia-modules</module>
-    <module>doxia-sandbox</module>
     <module>doxia-doc-renderer</module>
   </modules>
 </project>
