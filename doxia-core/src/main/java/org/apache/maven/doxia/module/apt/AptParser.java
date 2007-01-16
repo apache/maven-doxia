@@ -22,9 +22,13 @@ import org.apache.maven.doxia.macro.manager.MacroNotFoundException;
 import org.apache.maven.doxia.parser.AbstractParser;
 import org.apache.maven.doxia.sink.Sink;
 import org.apache.maven.doxia.sink.SinkAdapter;
+import org.codehaus.plexus.util.IOUtil;
 import org.codehaus.plexus.util.StringUtils;
 
+import java.io.IOException;
 import java.io.Reader;
+import java.io.StringReader;
+import java.io.StringWriter;
 import java.util.HashMap;
 import java.util.Map;
 import java.util.StringTokenizer;
@@ -85,6 +89,8 @@ public class AptParser
 
     // -----------------------------------------------------------------------
 
+    private String sourceContent;
+
     private AptSource source;
 
     private Sink sink;
@@ -104,7 +110,18 @@ public class AptParser
     {
         try
         {
-            this.source = new AptReaderSource( source );
+            try
+            {
+                StringWriter contentWriter = new StringWriter();
+                IOUtil.copy( source, contentWriter );
+                sourceContent = contentWriter.toString();
+            }
+            catch ( IOException e )
+            {
+                throw new AptParseException( "IOException: " + e.getMessage(), e );
+            }
+
+            this.source = new AptReaderSource( new StringReader( sourceContent ) );
 
             this.sink = sink;
 
@@ -2122,6 +2139,11 @@ public class AptParser
         public void traverse()
             throws AptParseException
         {
+            if ( secondParsing )
+            {
+                return;
+            }
+
             String s = text;
 
             s = s.substring( 2, s.length() - 1 );
@@ -2139,8 +2161,13 @@ public class AptParser
                 parameters.put( param[0], param[1] );
             }
 
-            MacroRequest request = new MacroRequest( parameters, getBasedir() );
+            parameters.put( "sourceContent", sourceContent );
 
+            AptParser aptParser = new AptParser();
+            aptParser.setSecondParsing( true );
+            parameters.put( "parser", aptParser );
+
+            MacroRequest request = new MacroRequest( parameters, getBasedir() );
             try
             {
                 AptParser.this.executeMacro( macroId, request, sink );

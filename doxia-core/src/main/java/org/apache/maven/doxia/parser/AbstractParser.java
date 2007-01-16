@@ -16,15 +16,14 @@ package org.apache.maven.doxia.parser;
  * limitations under the License.
  */
 
+import java.io.File;
+
 import org.apache.maven.doxia.macro.Macro;
 import org.apache.maven.doxia.macro.MacroExecutionException;
 import org.apache.maven.doxia.macro.MacroRequest;
 import org.apache.maven.doxia.macro.manager.MacroManager;
 import org.apache.maven.doxia.macro.manager.MacroNotFoundException;
 import org.apache.maven.doxia.sink.Sink;
-import org.codehaus.plexus.util.StringUtils;
-
-import java.io.File;
 
 /**
  * @author <a href="mailto:jason@maven.org">Jason van Zyl</a>
@@ -34,6 +33,8 @@ import java.io.File;
 public abstract class AbstractParser
     implements Parser
 {
+    protected boolean secondParsing = false;
+
     /**
      * @plexus.requirement
      */
@@ -61,5 +62,15 @@ public abstract class AbstractParser
         }
 
         return new File( new File( "" ).getAbsolutePath() );
+    }
+
+    /**
+     * Set <code>secondParsing</code> to true, if we need a second parsing
+     *
+     * @param secondParsing
+     */
+    public void setSecondParsing( boolean secondParsing )
+    {
+        this.secondParsing = secondParsing;
     }
 }

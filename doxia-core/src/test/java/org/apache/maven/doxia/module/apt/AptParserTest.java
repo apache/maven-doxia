@@ -116,4 +116,32 @@ public class AptParserTest
             reader.close();
         }
     }
+
+    /**
+     * @throws Exception
+     */
+    public void testTocMacro()
+        throws Exception
+    {
+        StringWriter output = null;
+        Reader reader = null;
+
+        try
+        {
+            output = new StringWriter();
+            reader = new FileReader( getTestFile( getBasedir(), "src/test/site/apt/toc.apt" ) );
+
+            Sink sink = new AptSink( output );
+            getParser().parse( reader, sink );
+
+            // No section, only subsection 1 and 2
+            assertTrue( output.toString().indexOf( "* {{{#subsection_1}SubSection 1}}" ) != -1 );
+            assertTrue( output.toString().indexOf( "* {{{#subsection_1211}SubSection 1211}}" ) == -1 );
+        }
+        finally
+        {
+            output.close();
+            reader.close();
+        }
+    }
 }

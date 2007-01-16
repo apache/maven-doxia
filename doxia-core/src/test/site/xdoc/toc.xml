@@ -1,0 +1,45 @@
+<?xml version="1.0"?>
+<document>
+  <properties>
+    <title>Test DOXIA-40</title>
+    <author email="vsiveton@apache.org">Vincent Siveton</author>
+  </properties>
+  <body>
+      <p>
+        Test DOXIA-40
+      </p>
+      <section name="Section 1">
+        <p>
+          Section 1
+        </p>
+        <p>
+          <macro name="toc" section="1" fromDepth="1" toDepth="2"/>
+        </p>
+        <subsection name="Section 11">
+          <p>
+            Section 11
+          </p>
+        </subsection>
+        <subsection name="Section 12">
+          <p>
+            Section 12
+          </p>
+          <subsection name="Section 121">
+            <p>
+              Section 121
+            </p>
+            <subsection name="Section 1211">
+              <p>
+                Section 1211
+              </p>
+            </subsection>
+          </subsection>
+        </subsection>
+        <subsection name="Section 13">
+          <p>
+            Section 13
+          </p>
+        </subsection>
+      </section>
+  </body>
+</document>

@@ -16,16 +16,19 @@ package org.apache.maven.doxia.module.xdoc;
  * limitations under the License.
  */
 
+import java.io.Reader;
+import java.io.StringReader;
+import java.io.StringWriter;
+import java.util.HashMap;
+import java.util.Map;
+
 import org.apache.maven.doxia.macro.MacroRequest;
 import org.apache.maven.doxia.parser.AbstractParser;
 import org.apache.maven.doxia.parser.ParseException;
 import org.apache.maven.doxia.sink.Sink;
+import org.codehaus.plexus.util.IOUtil;
 import org.codehaus.plexus.util.xml.pull.MXParser;
 import org.codehaus.plexus.util.xml.pull.XmlPullParser;
-
-import java.io.Reader;
-import java.util.HashMap;
-import java.util.Map;
 
 /**
  * Parse an xdoc model and emit events into the specified doxia
@@ -39,14 +42,20 @@ import java.util.Map;
 public class XdocParser
     extends AbstractParser
 {
+    private String sourceContent;
+
     public void parse( Reader reader, Sink sink )
         throws ParseException
     {
         try
         {
+            StringWriter contentWriter = new StringWriter();
+            IOUtil.copy( reader, contentWriter );
+            sourceContent = contentWriter.toString();
+
             XmlPullParser parser = new MXParser();
 
-            parser.setInput( reader );
+            parser.setInput( new StringReader( sourceContent ) );
 
             parseXdoc( parser, sink );
         }
@@ -161,20 +170,29 @@ public class XdocParser
                 }
                 else if ( parser.getName().equals( "macro" ) )
                 {
-                    String macroName = parser.getAttributeValue( null, "name" );
-
-                    int count = parser.getAttributeCount();
-
-                    Map parameters = new HashMap();
-
-                    for ( int i = 1; i < count; i++ )
+                    if ( !secondParsing )
                     {
-                        parameters.put( parser.getAttributeName( i ), parser.getAttributeValue( i ) );
+                        String macroName = parser.getAttributeValue( null, "name" );
+
+                        int count = parser.getAttributeCount();
+
+                        Map parameters = new HashMap();
+
+                        for ( int i = 1; i < count; i++ )
+                        {
+                            parameters.put( parser.getAttributeName( i ), parser.getAttributeValue( i ) );
+                        }
+
+                        parameters.put( "sourceContent", sourceContent );
+
+                        XdocParser xdocParser = new XdocParser();
+                        xdocParser.setSecondParsing( true );
+                        parameters.put( "parser", xdocParser );
+
+                        MacroRequest request = new MacroRequest( parameters, getBasedir() );
+
+                        executeMacro( macroName, request, sink );
                     }
-
-                    MacroRequest request = new MacroRequest( parameters, getBasedir() );
-
-                    executeMacro( macroName, request, sink );
                 }
 
                 // ----------------------------------------------------------------------

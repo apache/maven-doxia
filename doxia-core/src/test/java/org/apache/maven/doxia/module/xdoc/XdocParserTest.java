@@ -89,4 +89,32 @@ public class XdocParserTest
             reader.close();
         }
     }
+
+    /**
+     * @throws Exception
+     */
+    public void testTocMacro()
+        throws Exception
+    {
+        StringWriter output = null;
+        Reader reader = null;
+
+        try
+        {
+            output = new StringWriter();
+            reader = new FileReader( getTestFile( getBasedir(), "src/test/site/xdoc/toc.xml" ) );
+
+            Sink sink = new XdocSink( output );
+            getParser().parse( reader, sink );
+
+            // No section, only subsection 1 and 2
+            assertTrue( output.toString().indexOf( "<li><a href=\"#section_11\">Section 11</a></li>" ) != -1 );
+            assertTrue( output.toString().indexOf( "<li><a href=\"#section_1211\">Section 1211</a></li>" ) == -1 );
+        }
+        finally
+        {
+            output.close();
+            reader.close();
+        }
+    }
 }
