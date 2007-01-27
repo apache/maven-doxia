@@ -28,6 +28,7 @@ import java.util.Map;
 import org.apache.maven.doxia.site.decoration.DecorationModel;
 import org.apache.maven.doxia.site.decoration.io.xpp3.DecorationXpp3Reader;
 import org.codehaus.plexus.PlexusTestCase;
+import org.codehaus.plexus.util.FileUtils;
 
 import com.gargoylesoftware.htmlunit.WebClient;
 import com.gargoylesoftware.htmlunit.html.HtmlAnchor;
@@ -52,6 +53,8 @@ import com.gargoylesoftware.htmlunit.html.HtmlUnorderedList;
 public class DefaultSiteRendererTest
     extends PlexusTestCase
 {
+    private static final String OUTPUT = "target/output";
+
     private Renderer renderer;
 
     /**
@@ -62,6 +65,9 @@ public class DefaultSiteRendererTest
     {
         super.setUp();
         renderer = (Renderer) lookup( Renderer.ROLE );
+
+        // Safety
+        FileUtils.deleteDirectory( getTestFile( OUTPUT ) );
     }
 
     /**
@@ -74,6 +80,9 @@ public class DefaultSiteRendererTest
         super.tearDown();
     }
 
+    /**
+     * @throws Exception
+     */
     public void testRender()
         throws Exception
     {
@@ -93,15 +102,19 @@ public class DefaultSiteRendererTest
         context.setDecoration( decoration );
         context.addSiteDirectory( getTestFile( "src/test/site" ) );
 
-        renderer.render( renderer.locateDocumentFiles( context ).values(), context, getTestFile( "target/output" ) );
+        renderer.render( renderer.locateDocumentFiles( context ).values(), context, getTestFile( OUTPUT ) );
 
         // ----------------------------------------------------------------------
         // Verify specific pages
         // ----------------------------------------------------------------------
         verifyCdcPage();
         verifyNestedItemsPage();
+        verifyMultipleBlock();
     }
 
+    /**
+     * @throws Exception
+     */
     public void verifyCdcPage()
         throws Exception
     {
@@ -110,6 +123,9 @@ public class DefaultSiteRendererTest
         assertTrue( nestedItems.exists() );
     }
 
+    /**
+     * @throws Exception
+     */
     public void verifyNestedItemsPage()
         throws Exception
     {
@@ -129,6 +145,10 @@ public class DefaultSiteRendererTest
 
         Iterator elementIterator = division.getAllHtmlChildElements();
 
+        // ----------------------------------------------------------------------
+        // Verify link
+        // ----------------------------------------------------------------------
+
         HtmlAnchor a = (HtmlAnchor) elementIterator.next();
         assertNotNull( a );
         assertEquals( a.getAttributeValue( "name" ), "list_section" );
@@ -139,14 +159,14 @@ public class DefaultSiteRendererTest
 
         HtmlHeader2 h2 = (HtmlHeader2) elementIterator.next();
         assertNotNull( h2 );
-        assertEquals( h2.asText(), "List Section");
+        assertEquals( h2.asText(), "List Section" );
 
         // ----------------------------------------------------------------------
         // Unordered lists
         // ----------------------------------------------------------------------
         HtmlHeader4 h4 = (HtmlHeader4) elementIterator.next();
         assertNotNull( h4 );
-        assertEquals( h4.asText(), "Unordered lists");
+        assertEquals( h4.asText(), "Unordered lists" );
 
         HtmlParagraph p = (HtmlParagraph) elementIterator.next();
         assertNotNull( p );
@@ -168,7 +188,6 @@ public class DefaultSiteRendererTest
         assertNotNull( li );
         // No paragraph renderer
         assertEquals( li.getFirstChild().asText(), "Item 11." );
-        System.out.println(li.getFirstChild().asText() );
         li = (HtmlListItem) elementIterator.next();
         assertNotNull( li );
         // No paragraph renderer
@@ -230,7 +249,7 @@ public class DefaultSiteRendererTest
         // ----------------------------------------------------------------------
         h4 = (HtmlHeader4) elementIterator.next();
         assertNotNull( h4 );
-        assertEquals( h4.asText(), "Ordered lists");
+        assertEquals( h4.asText(), "Ordered lists" );
 
         p = (HtmlParagraph) elementIterator.next();
         assertNotNull( p );
@@ -311,7 +330,7 @@ public class DefaultSiteRendererTest
         // ----------------------------------------------------------------------
         h4 = (HtmlHeader4) elementIterator.next();
         assertNotNull( h4 );
-        assertEquals( h4.asText(), "Definition lists");
+        assertEquals( h4.asText(), "Definition lists" );
 
         p = (HtmlParagraph) elementIterator.next();
         assertNotNull( p );
@@ -363,6 +382,107 @@ public class DefaultSiteRendererTest
         p = (HtmlParagraph) elementIterator.next();
         assertNotNull( p );
         assertEquals( p.asText(), "Paragraph 6 below list." );
+
+        assertFalse( elementIterator.hasNext() );
+    }
+
+    /**
+     * @throws Exception
+     */
+    public void verifyMultipleBlock()
+        throws Exception
+    {
+        File multipleblock = getTestFile( "target/output/multipleblock.html" );
+        assertNotNull( multipleblock );
+        assertTrue( multipleblock.exists() );
+
+        // HtmlUnit
+        WebClient webClient = new WebClient();
+        HtmlPage page = (HtmlPage) webClient.getPage( multipleblock.toURL() );
+        assertNotNull( page );
+
+        HtmlElement element = page.getHtmlElementById( "contentBox" );
+        assertNotNull( element );
+        HtmlDivision division = (HtmlDivision) element;
+        assertNotNull( division );
+
+        Iterator elementIterator = division.getAllHtmlChildElements();
+
+        // ----------------------------------------------------------------------
+        // Verify link
+        // ----------------------------------------------------------------------
+
+        HtmlAnchor a = (HtmlAnchor) elementIterator.next();
+        assertNotNull( a );
+        assertEquals( a.getAttributeValue( "name" ), "section_name" );
+
+        HtmlDivision div = (HtmlDivision) elementIterator.next();
+        assertNotNull( div );
+        assertEquals( div.getAttributeValue( "class" ), "section" );
+
+        HtmlHeader2 h2 = (HtmlHeader2) elementIterator.next();
+        assertNotNull( h2 );
+        assertEquals( h2.asText(), "section name" );
+
+        // ----------------------------------------------------------------------
+        // Paragraph
+        // ----------------------------------------------------------------------
+
+        HtmlParagraph p = (HtmlParagraph) elementIterator.next();
+        assertNotNull( p );
+        assertEquals( p.asText(), "text" );
+
+        // ----------------------------------------------------------------------
+        // Unordered list
+        // ----------------------------------------------------------------------
+
+        HtmlUnorderedList ul = (HtmlUnorderedList) elementIterator.next();
+        assertNotNull( ul );
+        assertEquals( ul.getFirstChild().asText(), "" );
+
+        HtmlListItem li = (HtmlListItem) elementIterator.next();
+        assertNotNull( li );
+        assertEquals( li.getFirstChild().asText(), "list1" );
+
+        // ----------------------------------------------------------------------
+        // Paragraph
+        // ----------------------------------------------------------------------
+
+        p = (HtmlParagraph) elementIterator.next();
+        assertNotNull( p );
+        assertEquals( p.asText(), "text2" );
+
+        // ----------------------------------------------------------------------
+        // Unordered list
+        // ----------------------------------------------------------------------
+
+        ul = (HtmlUnorderedList) elementIterator.next();
+        assertNotNull( ul );
+        assertEquals( ul.getFirstChild().asText(), "" );
+
+        li = (HtmlListItem) elementIterator.next();
+        assertNotNull( li );
+        assertEquals( li.getFirstChild().asText(), "list1" );
+
+        // ----------------------------------------------------------------------
+        // Paragraph
+        // ----------------------------------------------------------------------
+
+        p = (HtmlParagraph) elementIterator.next();
+        assertNotNull( p );
+        assertEquals( p.asText(), "text3" );
+
+        // ----------------------------------------------------------------------
+        // Unordered list
+        // ----------------------------------------------------------------------
+
+        ul = (HtmlUnorderedList) elementIterator.next();
+        assertNotNull( ul );
+        assertEquals( ul.getFirstChild().asText(), "" );
+
+        li = (HtmlListItem) elementIterator.next();
+        assertNotNull( li );
+        assertEquals( li.getFirstChild().asText(), "list1" );
 
         assertFalse( elementIterator.hasNext() );
     }

@@ -1,5 +1,13 @@
 <!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
 
+#macro ( link $href $name )
+  #if ( ( $href.toLowerCase().startsWith("http") || $href.toLowerCase().startsWith("https") ) )
+    <a href="$href" class="externalLink">$name</a>
+  #else
+    <a href="$href">$name</a>
+  #end
+#end
+
 #macro ( banner $banner $id )
   #if ( $banner )
     #if( $banner.href )
@@ -38,7 +46,7 @@
     #set ( $counter = $counter + 1 )
     #set ( $currentItemHref = $PathTool.calculateLink( $item.href, $relativePath ) )
     #set ( $currentItemHref = $currentItemHref.replaceAll( "\\", "/" ) )
-    <a href="$currentItemHref">$item.name</a>
+    #link( $currentItemHref $item.name )
     #if ( $links.size() > $counter )
       |
     #end
@@ -55,7 +63,7 @@
     #if ( $currentItemHref == $alignedFileName || $currentItemHref == "" )
       $item.name
     #else
-      <a href="$currentItemHref">$item.name</a>
+      #link( $currentItemHref $item.name )
     #end
     #if ( $breadcrumbs.size() > $counter )
       &gt;
@@ -102,7 +110,7 @@
     #if ( $item.img )
       #if ( ! ( $item.img.toLowerCase().startsWith("http") || $item.img.toLowerCase().startsWith("https") ) )
         #set ( $src = $PathTool.calculateLink( $item.img, $relativePath ) )
-        #set ( $src = $item.img.replaceAll( "\\", "/" ) )
+        #set ( $src = $src.replaceAll( "\\", "/" ) )
         <img src="$src"/>
       #else
         <img src="$item.img" align="absbottom" style="border-width: 0"/>
@@ -111,7 +119,7 @@
     #if ( $alignedFileName == $currentItemHref )
       <strong>$item.name</strong>
     #else
-      <a href="$currentItemHref">$item.name</a>
+      #link( $currentItemHref $item.name )
     #end
   #if ( $item && $item.items && $item.items.size() > 0 )
     #if ( $collapse == "expanded" )
@@ -130,11 +138,13 @@
     #if ( $menu.name )
     <h5>$menu.name</h5>
     #end
+    #if ( $menu.items && $menu.items.size() > 0 )
     <ul>
       #foreach( $item in $menu.items )
         #menuItem( $item )
       #end
     </ul>
+    #end
   #end
 #end
 
@@ -180,10 +190,17 @@
   #end
 
   #set ( $breadcrumbs = $decoration.body.breadcrumbs )
+  #set ( $links = $decoration.body.links )
+
+  #if ( $datePosition.equalsIgnoreCase( "right" ) && $links && $links.size() > 0 )
+    #set ( $prefix = "&nbsp;|" )
+  #else
+    #set ( $prefix = "" )
+  #end
 
   #if ( $datePosition.equalsIgnoreCase( $position ) )
     #if ( ( $datePosition.equalsIgnoreCase( "right" ) ) || ( $datePosition.equalsIgnoreCase( "bottom" ) ) )
-      &nbsp;| $i18n.getString( "site-renderer", $locale, "template.lastpublished" ): $dateToday
+      $prefix $i18n.getString( "site-renderer", $locale, "template.lastpublished" ): $dateToday
       #if ( $versionPosition.equalsIgnoreCase( $position ) )
         &nbsp;| $i18n.getString( "site-renderer", $locale, "template.version" ): ${project.version}
       #end
@@ -207,7 +224,7 @@
     #end
   #elseif ( $versionPosition.equalsIgnoreCase( $position ) )
     #if ( ( $versionPosition.equalsIgnoreCase( "right" ) ) || ( $versionPosition.equalsIgnoreCase( "bottom" ) ) )
-      &nbsp;| $i18n.getString( "site-renderer", $locale, "template.version" ): ${project.version}
+      $prefix $i18n.getString( "site-renderer", $locale, "template.version" ): ${project.version}
     #elseif ( ( $versionPosition.equalsIgnoreCase( "navigation-bottom" ) ) || ( $versionPosition.equalsIgnoreCase( "navigation-top" ) ) )
       <div id="lastPublished">
         $i18n.getString( "site-renderer", $locale, "template.version" ): ${project.version}
@@ -252,19 +269,19 @@
                 #set ( $img = "images/logos/maven-feather.png" )
             #end
 
-            <a href="$href" title="$name" id="poweredBy">
+            <a href="$href" title="$name" class="poweredBy">
               #set ( $img = $PathTool.calculateLink( $img, $relativePath ) )
               #set ( $img = $img.replaceAll( "\\", "/" ) )
               <img alt="$name" src="$img" />
             </a>
         #end
         #if( $poweredBy.isEmpty() )
-          <a href="http://maven.apache.org/" title="$i18n.getString( "site-renderer", $locale, "template.builtby" ) Maven" id="poweredBy">
+          <a href="http://maven.apache.org/" title="$i18n.getString( "site-renderer", $locale, "template.builtby" ) Maven" class="poweredBy">
             <img alt="$i18n.getString( "site-renderer", $locale, "template.builtby" ) Maven" src="$relativePath/images/logos/maven-feather.png"></img>
           </a>
         #end
     #else
-        <a href="http://maven.apache.org/" title="$i18n.getString( "site-renderer", $locale, "template.builtby" ) Maven" id="poweredBy">
+        <a href="http://maven.apache.org/" title="$i18n.getString( "site-renderer", $locale, "template.builtby" ) Maven" class="poweredBy">
           <img alt="$i18n.getString( "site-renderer", $locale, "template.builtby" ) Maven" src="$relativePath/images/logos/maven-feather.png"></img>
         </a>
     #end
