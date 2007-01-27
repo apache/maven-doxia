@@ -278,6 +278,10 @@ public class XdocParser
                     // TODO: Note there will be badness if link_ != anchor != </a>
                     sink.link_();
                 }
+                else if ( parser.getName().equals( "macro" ) )
+                {
+                    //Do nothing
+                }
 
                 // ----------------------------------------------------------------------
                 // Tables

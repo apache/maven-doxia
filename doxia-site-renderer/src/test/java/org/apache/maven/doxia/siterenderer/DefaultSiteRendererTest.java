@@ -29,6 +29,7 @@ import org.apache.maven.doxia.site.decoration.DecorationModel;
 import org.apache.maven.doxia.site.decoration.io.xpp3.DecorationXpp3Reader;
 import org.codehaus.plexus.PlexusTestCase;
 import org.codehaus.plexus.util.FileUtils;
+import org.codehaus.plexus.util.IOUtil;
 
 import com.gargoylesoftware.htmlunit.WebClient;
 import com.gargoylesoftware.htmlunit.html.HtmlAnchor;
@@ -110,6 +111,7 @@ public class DefaultSiteRendererTest
         verifyCdcPage();
         verifyNestedItemsPage();
         verifyMultipleBlock();
+        verifyMacro();
     }
 
     /**
@@ -485,5 +487,19 @@ public class DefaultSiteRendererTest
         assertEquals( li.getFirstChild().asText(), "list1" );
 
         assertFalse( elementIterator.hasNext() );
+    }
+
+    /**
+     * @throws Exception
+     */
+    public void verifyMacro()
+        throws Exception
+    {
+        File macro = getTestFile( "target/output/macro.html" );
+        assertNotNull( macro );
+        assertTrue( macro.exists() );
+
+        String content = IOUtil.toString( new FileReader( macro ) );
+        assertEquals( content.indexOf( "</macro>" ), -1 );
     }
 }
