@@ -1,0 +1,224 @@
+ -----
+ Aegis Binding
+ -----
+ XFire User's Guide
+ -----
+
+Aegis Binding
+
+ Aegis is the default XFire binding which maps XML to POJOs. It supports code first development only at this point -
+ i.e. you write your service in POJOs and it will generate the XML schema/wsdl for you.
+
+XML and Annotation Mapping Overview
+
+ Aegis has a flexible mapping system so you can control how your beans are controlled. By default your POJOs are
+ serialized based on their name and namespaces. If you have a class in the "org.codehaus.xfire" package named
+ "Employee" it would be serialized in namespace "http://xfire.codehaus.org" with the local name "YourBean."
+
+ Fore example, the java class:
+
++---------------------------------------------------------------------------------------------------------------------+
+public class Employee
+{
+  private String name;
+  private String title;
+
+  public String getName() { return name; }
+  public void setName(String name) { this.name = name; }
+
+  public String getTitle() { return title; }
+  public void setTitle(String title) { this.title = title; }
+}
++---------------------------------------------------------------------------------------------------------------------+
+
+ In XML this translates to:
+
++---------------------------------------------------------------------------------------------------------------------+
+<Employee xmlns="http://xfire.codehaus.org">
+  <name>Santa Claus</name>
+  <title>Chief Present Officer (CPO)</title>
+</Employee>
++---------------------------------------------------------------------------------------------------------------------+
+
+ In XML Schema this would become a complex type:
+
++---------------------------------------------------------------------------------------------------------------------+
+<xsd:complexType name="Employee">
+  <xsd:sequence>
+    <xsd:element name="name" type="xsd:string" minOccurs="0" maxOccurs="1/>
+    <xsd:element name="title" type="xsd:string" minOccurs="0" maxOccurs="1/>
+  </xsd:sequence>
+</xsd:complexType>
++---------------------------------------------------------------------------------------------------------------------+
+
+ <Validate your mapping!> You can find an XML Schema for Aegis mapping files
+ {{{http://xfire.codehaus.org/schemas/1.0/mapping.xsd}here}}.
+
+* Supported Types
+
+ * Basic types: int, double, float, long, byte[], short, String, BigDecimal
+
+ * Arrays
+
+ * Collections
+
+ * Dates: java.util.Date, java.util.Calendar, java.sql.Timestamp, java.sql.Date, java.sql.Time
+
+ * XML: org.w3c.dom.Docmument, org.jdom.Element, XMLStreamReader, Source
+
+ * Complex types which are aggregations of the above
+
+ []
+
+ If you have constructors defined in your Java beans, make sure a default constructor (i.e. no arguments) is also
+ declared. (Aegis needs a no-argument contstructor to instantiate client Java classes.) Controlling Mappings with
+ XML
+
+ Its easy to control how your service and its beans are mapped to xml. If you are using Java 5.0 skip straight down to
+ that section otherwise read on to learn how to configure serialization via mapping files.
+
+ Mapping files must exist in the same package as your bean or service class on the class path. In the above example
+ the mapping file would be named "/org/codehaus/xfire/YourBean.aegis.xml", with the following format:
+
++---------------------------------------------------------------------------------------------------------------------+
+<mappings>
+  <mapping uri="" name="">
+    <method name="methodName">
+      <return-type mappedName="" componentType=""/>
+      <parameter index="" mappedName=""/>
+    </method>
+    <property name="" mappedName="" style="attribute|element" componentType=""/>
+  </mapping>
+</mappings>
++---------------------------------------------------------------------------------------------------------------------+
+
+ Note that <<< <method> >>> is used to configure methods on your service and <property> is used to configure properties on your
+ javabeans.
+
+ The above example highlights many of the possible elements, most are optional and the format encourages minimally
+ specified mappings.
+
+Controlling Naming
+
+ Lets pretend that in the above example you would like the elements names to be capatilized and in the namespace
+ "urn:north-pole:operations". You could achieve this through a mapping file like so:
+
++---------------------------------------------------------------------------------------------------------------------+
+<mappings xmlns:np="urn:north-pole:operations">
+  <mapping name="np:Employee">
+    <property name="name" mappedName="Name"/>
+    <property name="title" mappedName="Title"/>
+  </mapping>
+</mappings>
++---------------------------------------------------------------------------------------------------------------------+
+
+ Notice that the namespace was declared on the mappings element and then the prefix was used to specify the element
+ QNames for the name/title properties.
+
+ This will result in a mapping like so:
+
++---------------------------------------------------------------------------------------------------------------------+
+<np:Employee xmlns:np="urn:north-pole:operations">
+  <np:Name>Santa Claus</np:Name>
+  <np:Title>Chief Present Officer (CPO)</np:Title>
+</np:Employee>
++---------------------------------------------------------------------------------------------------------------------+
+
+* Ignoring properties
+
+ If you don't want to serialize a certain property it is easy to ignore it:
+
++---------------------------------------------------------------------------------------------------------------------+
+<mappings>
+  <mapping>
+    <property name="propertyName" ignore="true"/>
+  </mapping>
+</mappings>
++---------------------------------------------------------------------------------------------------------------------+
+
+* Handling Collections
+
+ You undoubtedly use Collections in your code. Pre Java 5 it is impossible to determine the "component type" of a
+ Collection by introspection. So you need to give Aegis some hints. For a service which returned a Collection of
+ employees like so:
+
++---------------------------------------------------------------------------------------------------------------------+
+public class EmployeeService
+{
+    Collection getEmployees(String id) { ... }
+}
++---------------------------------------------------------------------------------------------------------------------+
+
+ You would need to supply metadata which gave the component type in a mapping file like this one:
+
++---------------------------------------------------------------------------------------------------------------------+
+<mappings>
+  <mapping>
+    <method name="getEmployees">
+      <return-type componentType="org.codehaus.xfire.Employee" />
+    </method>
+  </mapping>
+</mappings>
++---------------------------------------------------------------------------------------------------------------------+
+
+* Handling Maps
+
+ Java Maps don't map well to XML Schema (no pun intended) because there is no Map concept in XML Schema so your
+ clients. Maps are transformed to a collection of {key, value} tuples instead. In addition to providing the type of
+ the value, you must also provide Aegis with the type of the key:
+
++---------------------------------------------------------------------------------------------------------------------+
+public class GiftService
+{
+    Map getGiftList() { /* returns a map of NiceChild => Present */ }
+}
++---------------------------------------------------------------------------------------------------------------------+
+
+ The mapping file should look like this:
+
++---------------------------------------------------------------------------------------------------------------------+
+<mappings>
+  <mapping>
+    <method name="getGiftList">
+      <return-type keyType="org.codehaus.xfire.NiceChild" componentType="org.codehaus.xfire.Present">
+    </method>
+  </mapping>
+</mappings>
++---------------------------------------------------------------------------------------------------------------------+
+
+ This will generate the following type:
+
++---------------------------------------------------------------------------------------------------------------------+
+<xsd:complexType name="NiceChild2PresentMap">
+  <xsd:sequence>
+    <xsd:element name="entry" minOccurs="0" maxOccurs="unbounded">
+      <xsd:complexType>
+        <xsd:sequence>
+          <xsd:element name="key" type="ns1:NiceChild" minOccurs="0" maxOccurs="1"/>
+          <xsd:element name="value" type="ns1:Present" minOccurs="0" maxOccurs="1"/>
+        </xsd:sequence>
+      </xsd:complexType>
+    </xsd:element>
+  </xsd:sequence>
+</xsd:complexType>
++---------------------------------------------------------------------------------------------------------------------+
+
+Interfaces and Aegis
+
+ The Aegis binding will automatically create proxies for your interfaces when reading XML. So if you have an interface
+ like this:
+
++---------------------------------------------------------------------------------------------------------------------+
+public interface User {
+  public String getUsername();
+  public String getPasswrod();
+}
++---------------------------------------------------------------------------------------------------------------------+
+
+ It will then create its own implementation of User and provide a username and password from the XML. You can specify
+ your implementation class (in 1.1+) by setting a property on your service:
+
++---------------------------------------------------------------------------------------------------------------------+
+Service service = ...;
+service.setProperty("com.acme.User.implementation", "com.acme.UserImpl");
++---------------------------------------------------------------------------------------------------------------------+

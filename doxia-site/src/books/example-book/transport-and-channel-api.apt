@@ -1,0 +1,61 @@
+ -----
+ Transport and Channel API
+ -----
+ XFire User's Guide
+ -----
+
+Transports and Channels
+
+ Channels and Transports provide the basic unit of communication in XFire. A Channel simply sends messages (via send())
+ and listens for messages (via receive()). If you want to send a message to a particular URL you do:
+
++---------------------------------------------------------------------------------------------------------------------+
+TransportManager tm = ...;
+Transport t = tm.getTransportForUri("http://foo");
+
+OutMessage msg = ...; // create an outmessage yourself
+Channel c = t.createChannel(); // create an anonymous endpoint
+MessageContext context = new MessageContext();
+c.send(msg, context);
++---------------------------------------------------------------------------------------------------------------------+
+
+ Each transport is responsible for creating its own protocol specific listener, for example a servlet in the case of
+ HTTP. This listener then passes whatever messages it receives to the channel via Channel.receive(MessageContext,
+ InMessage). Channels simply delegate their receive() to a ChannelEndpoint which application specific handling of what
+ to do with the message. The default endpoint is aptly named DefaultEndpoint and will be covered in the next section.
+
+* InMessage and OutMessage
+
+* MessageSerializer
+
+ Each OutMessage has a MessageSerializer. A message serializer takes the message body (message.getBody()) and writes
+ it to an XMLStreamWriter that the Channel provides. The semantics of MessageSerializers should be such that they can
+ be invoked multiple times.
+
+* Channels/Transports without Services
+
+ Its important to note that Channels and transports are completely independent of XFire's Services. So I can use a
+ channel to send a receive messages and never even create a service. I simply need to provide my own ChannelEndpoint.
+
+* DefaultEndpoint and the processing flow
+
+ DefaultEndpoint takes a message, creates a default message exchange called InMessageExchange and creates a message
+ pipeline. The message pipeline at first consists of the global in handlers from XFire.getInHandlers() and the
+ transport handlers from Transport.getInHandlers. Later on when the service is resolved, the service's handlers get
+ added into the pipeline. Once the operation is resolved, if there is an out message to be set an Out pipeline is
+ created and added to the MessageContext.
+
+* Phases and Handlers
+
+ See Processing Pipeline for now.
+
+* SOAP Processing
+
+ SOAPTransport.createTransport() adds SOAP support to a particular transport. It does so by adding three additional
+ handlers:
+
+ [[1]] ReadHeaderHandler - this handler reads in the soap headers. It stops reading the XML stream the moment the whitespace stops after the <Body> tag. If it encounters a <Fault> in the Body, an XFireFault is thrown.
+ [[1]] ValidateHeadersHandler - Ensure that all the necessary headers are understood by the receiving handlers.
+ [[1]] SoapSerializerHandler - Services provide a MessageSerializer of their own which is responsible for serializing the soap body. But what about the message headers? This is written out by the SoapSerializer. What the SoapSerializerHandler does is replace the outMessage.MessageSerializer with new SoapSerializer(outMsg.getMessageSerializer()).
+
+* MessageExchanges
