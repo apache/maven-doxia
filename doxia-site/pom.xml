@@ -152,7 +152,7 @@
               <goal>xsd</goal>
             </goals>
             <configuration>
-              <model>../trunk/doxia-sandbox/doxia-book/src/main/modello/book.mdo</model>
+              <model>../../sandbox/doxia/doxia-book/src/main/modello/book.mdo</model>
               <version>1.0.0</version>
             </configuration>
           </execution>
