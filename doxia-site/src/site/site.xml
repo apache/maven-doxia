@@ -59,6 +59,7 @@
     <menu name="Doxia">
       <item name="Overview" href="index.html"/>
       <item name="APT Format" href="format.html"/>
+      <item name="Macros" href="guide-doxia-macros.html"/>
       <item name="Writing Books" href="book/index.html"/>
     </menu>
 
