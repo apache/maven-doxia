@@ -25,7 +25,7 @@ import java.util.Collection;
 import java.util.Map;
 
 /**
- * @author <a href="mailto:jason@maven.org">Jason van Zyl</a>
+ * @author Jason van Zyl
  * @version $Id:DefaultSiteModuleManager.java 348605 2005-11-24 12:02:44 +1100 (Thu, 24 Nov 2005) brett $
  * @plexus.component role="org.apache.maven.doxia.site.module.manager.SiteModuleManager"
  */
