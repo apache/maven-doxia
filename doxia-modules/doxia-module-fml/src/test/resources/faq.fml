@@ -1,0 +1,765 @@
+<?xml version="1.0" encoding="ISO-8859-1"?>
+<!-- 
+/*
+ * Copyright 2001-2004 The Apache Software Foundation.
+ * 
+ * Licensed under the Apache License, Version 2.0 (the "License");
+ * you may not use this file except in compliance with the License.
+ * You may obtain a copy of the License at
+ * 
+ *      http://www.apache.org/licenses/LICENSE-2.0
+ * 
+ * Unless required by applicable law or agreed to in writing, software
+ * distributed under the License is distributed on an "AS IS" BASIS,
+ * WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
+ * See the License for the specific language governing permissions and
+ * limitations under the License.
+ */
+ -->
+
+<!-- TODO [later]: faqs need some sorting -->
+<faqs title="Frequently Asked Questions">
+
+  <part id="general">
+    <title>General</title>
+   
+    <faq id="maven-definition">
+      <question>What does Maven mean?</question>
+      <answer><p>A maven (yi.=meyvn) is an experienced or knowledgeable person, such as an expert or freak.</p></answer>
+    </faq>
+
+  </part>
+  <part id="help">
+    <title>Where Can I Get Help?</title>
+   
+    <faq id="where-get-help">
+      <question>Where do I get help on Maven?</question>
+      <answer>
+        <p>
+          For help getting started, or basic use of Maven, refer to the documentation
+          that can be found from the left navigation of this site.
+        </p>
+        <p>
+          If these documents, and the other questions in this FAQ don't help you with your problem, the
+          <a href="mail-lists.html">Maven User List</a> is a good source for help.
+          Lots of problems have already been discussed there, so please search the mailing list archive
+          before posting a question or a new idea.
+          Most of the Maven developers are subscribed to the Maven User List, so there is no need to post
+          to the Maven Developers list unless you want to discuss making a change to Maven itself.
+        </p>
+        <p>
+          Maven developers meet via IRC: <a href="irc://irc.codehaus.org#maven">irc.codehaus.org</a>,
+          channel <code>#maven</code>.
+          But please don't ask for solutions to Maven problems there, as
+          Maven user problems should be discussed at the mailing list
+          for several good reasons (e.g. mail archive, more subscribers) and 
+          usually you get a quick answer on the mailing list. But feel free to drop in and say hi.
+        </p>
+        <p>
+          You should not mail developers directly for Maven related issues, for 2 reasons. The most important
+          is that the project operates in the public, so all discussions should be kept on the list (for the
+          same reasons as given above). Secondly, they are busy and in various timezones, so mailing to the
+          list ensures you get the most prompt response from someone available and able to commit their time
+          at the moment. Direct questions to developers will rarely be answered.
+        </p>
+      </answer>
+    </faq>
+
+    <faq id="plugin-docs">
+      <question>How do I find help on a specific goal?</question>
+      <answer>
+        <p>
+          All Maven goals are provided by plugins. For example, the goals <code>jar</code> and <code>jar:install</code>
+          are provided by the <a href="reference/plugins/jar/index.html">jar plugin</a>. You can find a list of
+          plugins and there documentation <a href="reference/plugins/index.html">here</a>.
+        </p>
+      </answer>
+    </faq>
+
+    <faq id="jelly-help">
+      <question>Where can I get help on Jelly?</question>
+      <answer>
+        <p>
+          Jelly is a reasonably active project of it's own, used beyond Maven. If you have any questions about
+          it, including how to do certain Jelly things in a Maven build file, you should ask the question on
+          the <a href="http://jakarta.apache.org/commons/jelly/mail-lists.html">Jelly mailing lists</a>.
+        </p>
+        <p>
+          While the Maven User List archive is a good place to search for answers, it is preferred that you
+          only ask Jelly specific questions there if you were unable to find an answer on the Jelly lists.
+        </p>
+      </answer>
+    </faq>
+  </part>
+
+  <!-- TODO [later]: probably a document -->
+  <part id="contributing">
+    <title>Contributing</title>
+    <faq id="bug-reporting">
+      <question>I found a bug. How do I report it?</question>
+      <answer>
+        <p>
+          First, we'd appreciate if you search the <a href="/mail-lists.html">Mailing List Archives</a>
+          to see if anyone else has encountered it and found a resolution or a workaround.
+        </p>
+        <p>
+          If you are not using the current release of Maven, it is also worth trying that, and specifically
+          checking the release notes to see if that bug might have already been addressed.
+        </p>
+        <p>
+          If you are sure it is a bug, then it should go into JIRA, the issue tracking application for Maven.
+          First, search the Maven project (or related plugin) to see if the bug has already been reported.
+          If not, create a new issue. You must be registered and logged in to do so. This enables you to be
+          contacted if the bug is fixed or more information is required.
+        </p>
+        <p>
+          The location of Maven's JIRA instance is listed on the <a href="/issue-tracking.html">Issue Tracking</a>
+          page.
+        </p>
+        <p>
+          Please be patient. While the issue will usually be reviewed immediately, bugs do not always get fixed as
+          quickly. However, if you are able to submit your own fix, it will usually be applied for the next release.
+          See <a href="#submitting-patches">Submitting Patches</a> for more information.
+        </p>
+      </answer>
+    </faq>
+    <faq id="feature-suggestions">
+      <question>I have such a cool new idea for a feature. Where do I suggest it?</question>
+      <answer>
+        <p>
+          Great! The process is very similar as for <a href="#bug-reporting">Filing a Bug Report</a>.
+        </p>
+        <p>
+          Firstly - are you sure its a new idea? Try searching the <a href="/mail-lists.html">Mailing List Archives</a>
+          for <i>both</i> the user and developer lists to see if a similar idea has already been discussed.
+        </p>
+        <p>
+          Likewise, you should also search <a href="/issue-tracking.html">JIRA</a> to see if someone has proposed
+          it as a feature request already.
+        </p>
+        <p>
+          If not, there are two ways to proceed. If you have a rough idea but think it needs some discussion with
+          the developers, try posting to the developers mailing list. So that they know initially that you have
+          already thought this through, briefly detail what you did or didn't find when searching the mail archives.
+        </p>
+        <p>
+          Once you are confident that the idea is solid and fits the current direction of the project, submit it to
+          JIRA as a feature request.
+        </p>
+        <p>
+          Please be patient. While the issue will usually be reviewed immediately, features are usually not
+          implemented until the start of the next major development cycle.
+          However, if you are able to submit your own implementation, it will usually be applied for the next release.
+          See <a href="#submitting-patches">Submitting Patches</a> for more information.
+        </p>
+      </answer>
+    </faq>
+
+    <faq id="submitting-patches">
+      <question>How do I submit my own fix or new feature?</question>
+      <answer>
+        <p>
+          Bug fixes and features submitted by non-committers of the project take the form of a patch.
+          Submitting your own patch will ensure that the bug or feature gets addressed sooner, and gives
+          the submitter the warm fuzzy feeling from helping out!
+        </p>
+        <p>
+          Before working on a patch for a bug fix or new feature, it is essential that the steps above are followed
+          to ensure that there isn't already a patch, or that a new feature has been previously decided against
+          because it does not match the direction of the project. You don't want to waste time preparing a patch
+          if it won't be used, so please take the time to consult the current developers list in advance.
+        </p>
+        <p>
+          When preparing the patch, make sure it is against the latest code in version control by doing a full update
+          and testing it again. The easiest way to prepare the patch is then to run this in the base directory of
+          your source control checkout:
+        </p>
+        <source>maven scm:create-patch</source>
+        <p>
+          This is basically equivalent to running <code>svn diff</code>. Attach the resulting patch file to a JIRA
+          issue. Please rename it to the name of the JIRA issue so a developer can save it and still know what it is.
+          Do not mail it directly to a particular developer, or to the developers mailing list as attachments are
+          often stripped or the mails lost.
+        </p>
+        <p>
+          If you did not create the original JIRA issue, it is important that you select to "watch" the issue so
+          that feedback on the patch can be given.
+        </p>
+        <p>
+          If you are fixing a bug, make sure you submit a test case that fails without the patch, but succeeds with
+          the patch applied, proving that it works.
+        </p>
+        <p>
+          If you are submitting a new feature, it is important that you include test cases to verify the feature
+          works, and documentation for users on how it works.
+        </p>
+        <p>
+          It is important that you <b>don't</b> submit whole replacement files instead of differences or differences
+          where unrelated code is changed - such as changing formatting or spacing. Patches that violate these
+          rules will often not be applied.
+        </p>
+        <p>
+          Finally, adhere to the coding standards of the project, respecting the settings of the code surrounding
+          that of the change. This includes whitespace, and ensuring that spaces are used instead of tab characters.
+        </p>
+        <p>
+          If these rules are followed, you will usually find that developers will joyfully and quickly apply
+          the patch, and be appreciative of the efforts put in to help out.
+        </p>
+      </answer>
+    </faq>
+  </part>
+  
+  <part id="using">
+    <title>Using Maven</title>
+    <faq id="using-entities">
+      <question>What's the problem with entities in <code>project.xml</code>?</question>
+      <answer>
+        <p>
+          As of Maven 1.1, external entities will not be enabled by default in
+          <code>project.xml</code>, and their use is discouraged in Maven 1.0.x as well.
+          There will still be the ability to use them, but it will have to be enabled.
+        </p>
+        <p>
+          There are several reasons for this, but the main reason is that
+          the content of <code>project.xml</code> needs to be completely self-contained and
+          and able to be reproduced from a history at any point in time.
+        </p>
+        <p>
+          For this reason, using Jelly expressions other than <code>${pom.*}</code> references is
+          also not recommended and likely to be unsupported in future.
+        </p>
+        <p>
+          The most common use of this technique is to manage dependencies
+          across multiple projects. You should strongly consider using inheritence for this purpose.
+        </p>
+        <p>
+          <b>Note:</b> special character entities will always be supported and should
+          not have any current issues.
+        </p>
+      </answer>
+    </faq>
+
+    <faq id="masters-of-the-inheritence">
+      <question>How do I stop my top level properties being inherited in subprojects? I only want to inherit the
+        <code>project.xml</code> file.</question>
+      <answer>
+        <p>
+          This is a result of using the same project file at the top level of your multiple project structure as the
+          <i>master build</i> (ie, where you run your <code>multiproject</code> goals from) and the root of your
+          project inheritence tree.
+        </p>
+        <p>
+          We recommend that you separate these concerns by having both a master build project and a parent project
+          for extension (see the <code>maven-plugins</code> CVS tree for an example). Ther master build should remain
+          in the top level directory, but the shared project file should be in a subdirectory such as
+          <code>common-build</code>.
+        </p>
+      </answer>
+    </faq>
+    
+    <faq id="ignoring-broken-tests">
+      <question>How do I make my build complete even with broken tests?</question>
+      <answer>
+        <p>
+          See the <a href="./reference/plugins/test/properties.html">Test Plugin Reference</a>.
+          Most notably, <code>maven.test.skip</code> and <code>maven.test.failure.ignore</code>.
+          <b>Heed the warnings!</b>
+        </p>
+      </answer>
+    </faq>
+
+    <faq id="find-junit-messages">
+      <question>Where does the output from my JUnit tests go?</question>
+      <answer>
+        <p>If you are running <code>test:test</code>, the exceptions will usually be output to
+        <code>./target/test-reports/some.package.SomeClassTest.txt</code>.
+        If you want to see the errors in the output, set the property <code>maven.junit.usefile</code> to 
+        <code>false</code>.</p>
+      </answer>
+    </faq>
+
+    <faq id="disable-reports">
+      <question>How do I disable a report on my site?</question>
+      <answer>
+        <p>
+          The preferred way is to specify your own <code>&lt;reports/&gt;</code> section in the POM.
+          Reports are not inherited from parent projects, so only those included will be used.
+          The default reports are:
+        </p>
+        <source><![CDATA[<reports>
+  <report>maven-jdepend-plugin</report>
+  <report>maven-checkstyle-plugin</report>
+  <report>maven-changes-plugin</report>
+  <report>maven-changelog-plugin</report>
+  <report>maven-developer-activity-plugin</report>
+  <report>maven-file-activity-plugin</report>
+  <report>maven-license-plugin</report>
+  <report>maven-javadoc-plugin</report>
+  <report>maven-jxr-plugin</report>
+  <report>maven-junit-report-plugin</report>
+  <report>maven-linkcheck-plugin</report>
+  <report>maven-tasklist-plugin</report>
+</reports>]]></source>
+        <p>
+          If there is one specific report you want to disable, you can do so with a post-goal. For example,
+          to disable linkcheck whenever the <code>maven.linkcheck.disable</code> property is set, add this to
+          your <code>maven.xml</code> file:
+        </p>
+        <source><![CDATA[<!-- Conditionally disable linkcheck based on a property. -->
+<postGoal name="xdoc:register-reports">
+  <j:if test="${maven.linkcheck.disable}">
+    <attainGoal name="maven-linkcheck-plugin:deregister"/>
+    <echo>linkcheck is disabled.</echo>
+  </j:if>
+</postGoal>]]></source>
+      </answer>
+    </faq>
+
+    <faq id="using-xdoclet">
+      <question>How do I use Maven with XDoclet?</question>
+      <answer>
+        <p>The XDoclet plugin is provided by the XDoclet developers. All questions
+        about it should be directed to the XDoclet mailing lists.</p>
+      </answer>
+    </faq>
+
+    <faq id="speeding-maven">
+      <question>Maven takes a long time to load. Is there anyway to speed things up?</question>
+      <answer>
+        <p>You can use the
+        <a href="reference/plugins/console/index.html">Console Plugin</a> to
+        get an interactive shell that will let load Maven once and run as many
+        goals as you want. On average machines it takes something like
+        ten seconds to compile and run unit tests, so that you can build often
+        and test your code often.</p>
+      </answer>
+    </faq>
+
+    <faq id="transitive-dependencies">
+      <question>Do I need to specify all the dependencies in the POM?</question>
+      <answer>
+        <p>The short answer is YES. Maven 2 will have a transitive dependency discovery mechanism
+        that will avoid this.</p>
+      </answer>
+    </faq>
+
+    <faq id="multiple-source-directories">
+      <question>How do I provide multiple source directories in my <code>project.xml</code>?</question>
+      <answer>
+        <p>You can't. However, if you really need it, you can use a snippet in <code>maven.xml</code>:</p>
+<source><![CDATA[<preGoal name="java:compile">
+   <ant:path
+       id="my.other.src.dir"
+       location="${basedir}/debug/src"/>
+   <maven:addPath
+       id="maven.compile.src.set"
+       refid="my.other.src.dir"/>
+</preGoal>]]></source>
+        <p>Please think about the reason you need this, and carefully consider whether it is necessary. Usually this
+        is used for writing plugins that handle source generation.</p>
+      </answer>
+    </faq>
+
+    <faq id="site-configuration">
+      <question>How can I customise the configuration for an entire installation?</question>
+      <answer>
+        <p>
+          Currently you can only configure settings at a project and per-user level.
+          There are no site-wise configuration settings available.
+        </p>
+      </answer>
+    </faq>
+
+    <faq id="log-output">
+      <question>How can I customise Maven's logging?</question>
+      <answer>
+        <p>
+          Maven uses <a href="http://logging.apache.org/log4j/">Log4J</a> to log all of its output.
+        </p>
+        <p>
+          If you would like to write certain information to a file and piping is not an option or you want
+          greater control over what is controlled, you can override the log4j configuration. Refer to the log4j
+          documentation for how to override this using system properties.
+        </p>
+      </answer>
+    </faq>
+
+    <faq id="classloader-property">
+      <question>Why shouldn't I use the dependency classloader override property?</question>
+      <answer>
+        <p>
+          Because in most cases it isn't needed. <code>root.maven</code> is equivalent to the project classloader,
+          so is never needed.
+          While <code>root</code> is the Ant classloader and has some <a href="#BadXSLT">valid uses</a>, you should 
+          not load tasks into it unless absolutely necessary as it will then force itself
+          on the other plugins executed afterwards. In particular any jakarta-commons libraries should not be in the 
+          root classloader as these can clash with Jelly.
+        </p>
+        <p>
+          The correct way to use ant tasks in <code>maven.xml</code> or a plugin is something like:
+        </p>
+        <source><![CDATA[<ant:taskdef name="checkstyle"
+  classname="com.puppycrawl.tools.checkstyle.CheckStyleTask">
+  <ant:classpath>
+    <ant:pathelement location="${plugin.getDependencyPath('checkstyle:checkstyle')}"/>
+    <ant:path refid="maven.dependency.classpath"/>
+  </ant:classpath>
+</ant:taskdef>]]></source>
+      </answer>
+    </faq>
+
+    <faq id="add-jar-to-local-repository">
+      <question>How do I add a JAR from a non-Maven project to my local repository?</question>
+      <answer>
+        <p>
+          If it is a JAR that cannot be uploaded to Ibiblio because of a license, or it is private,
+          you must manually copy it to your local repository. After picking a sensible group ID, and making
+          sure the filename is in the format <code>artifactId-version.jar</code>, copy it to
+          <code>${maven.repo.local}/groupId/jars/artifactId-version.jar</code>.
+        </p>
+      </answer>
+    </faq>
+
+    <faq id="share-local-repository">
+      <question>I share a development machine. How can I share the local repository to save downloading?</question>
+      <answer>
+        <p>
+          It is recommended that you <b>do not</b> share your local repository. The reason for this is that as you
+          build your projects, part of the process is usually to install your changes there for sharing with other
+          projects you are working on that depend on it.
+        </p>
+        <p>
+          If you share this with multiple developers, you will have to communicate with them about when you will
+          be developing a certain project to ensure your changes don't clash, and ensure each person is always
+          completely up to date.
+        </p>
+        <p>
+          Usually, it is better to work with a shared remote repository that you run yourself. This means that
+          dependencies are only downloaded once from the internet, and then downloaded to the local cache for each
+          developer as they need it. Company artifacts can also be published there.
+        </p>
+        <p>
+          See <a href="using/repositories.html">Working with Repositories</a> for more information.
+        </p>
+        <p>
+          If after this you really want to share a local repository, you can set the <code>maven.repo.local</code>
+          property. This is a directory (not a URL). The directory pointed to must be readable by all of the users
+          and may need to be writable if the users will be allowed to download dependencies or publish their changes.
+          The file system mask must also be set correctly so that changes retain the correct permissions.
+        </p>
+        <p>
+          Please note that this solution will not be supported by the Maven Users Mailing List, however.
+        </p>
+      </answer>
+    </faq>
+  </part>
+
+  <part id="ibiblio">
+    <title>Ibiblio</title>
+
+    <faq id="ibiblio-repository">
+      <question>Why is the Maven repository on Ibiblio and not at Apache?</question>
+      <answer>
+        <p>There are several reasons why the Maven Repository was setup at
+        Ibiblio. Ibiblio is a massive archive of almost everything you could
+        imagine but one of the stated goals of Ibiblio is to "Expand and improve the distribution
+        of open source software". There is really no limit to how much we can stuff
+        in the repository at Ibiblio and it will be archived indefinitely. They have
+        a lot of bandwith, good redundancy and have a very secure setup. Another reason
+        we placed the repository there was that it is Apache policy not to store
+        any (L)GPL artifacts on our servers. We wanted Maven to work for as many
+        Java developers as possible so we chose Ibiblio where there is no restriction
+        on store (L)GPL artifacts. You can find out more about Ibiblio
+        <a href="http://www.ibiblio.org/about.html">here</a>.</p>
+      </answer>
+    </faq>
+
+    <faq id="ibiblio-upload">
+      <question>How do I upload a resource to or update a resource on http://www.ibiblio.org/maven?</question>
+      <answer>
+        <p>Read <a href="reference/repository-upload.html">Uploading to Ibiblio Instructions</a>.</p>
+      </answer>
+    </faq>
+
+    <faq id="ibiblio-mirrors">
+      <question>Are there any mirrors for the Maven repository at ibiblio?</question>
+      <answer>
+        <p>Yes, there are at least the following:</p>
+        <ul>
+          <li>http://www.ibiblio.org/maven/</li>
+          <li>http://public.planetmirror.com/pub/maven/</li>
+          <li>http://mirrors.sunsite.dk/maven/</li>
+          <li>http://ftp.up.ac.za/pub/linux/maven/</li>
+          <li>http://download.au.kde.org/pub/maven/</li>
+        </ul>
+      </answer>
+    </faq>
+
+    <faq id="search-repositories">
+      <question>Can I search the repositories?</question>
+      <answer>
+        <p>
+         There is a service available at 
+         <a href="http://maven.ozacc.com/">http://maven.ozacc.com/</a> 
+         that provides a search service, though not affiliated with the
+         Maven project.
+        </p>
+      </answer>
+    </faq>
+  </part>
+
+  <part id="scripting">
+    <title>Scripting</title>
+    <faq id="plugin-variables">
+      <question>How do I get or set plugin properties from Jelly?</question>
+      <answer>
+        <p>Plugin properties can be used with the following tags: 
+        <a href="reference/maven-jelly-tags/tags.html#maven:get">maven:get</a> and 
+        <a href="reference/maven-jelly-tags/tags.html#maven:set">maven:set</a>.
+        (These replace the deprecated versions of <code>${pom.getPluginContext(...).get/setVariable()}</code>
+        and <code>maven:pluginVar</code>.)</p>
+        <p>Example:</p>
+        <source><![CDATA[<maven:get plugin="maven-war-plugin" property="maven.war.src" var="warSourceDir" />
+<echo>The WAR source directory is ${warSourceDir}</echo>
+...
+<maven:set plugin="maven-multiproject-plugin" property="maven.multiproject.includes" value="subprojects/*/project.xml"/>]]></source>
+      </answer>
+    </faq>
+
+    <faq id="multiple-threads">
+      <question>How do I spin off a background process in a goal?</question>
+      <answer>
+        <p>
+          For example, before starting unit tests you might need to start a DB server. The DB server blocks until it is
+          terminated, so it needs to be started in the background. <code>&lt;ant:parallel/&gt;</code> does not seem to 
+          work in this case because it blocks the main execution thread, which is exactly what needs to be avoided.
+        </p>
+        <p>
+          The solution is given in
+          <a href="http://marc.theaimsgroup.com/?l=turbine-maven-user&amp;m=105911458328637&amp;w=2">this
+          thread</a>.
+        </p>
+      </answer>
+    </faq>
+
+    <faq id="BadXSLT">
+      <question>How do I get the XSLT tasks to work?</question>
+      <answer>
+        <p>
+          A common symptom is that the Jelly or Ant tag are output instead of being processed.
+          See <a href="http://jira.codehaus.org/secure/ViewIssue.jspa?key=MAVEN-156">MAVEN-156</a>.
+        </p>
+        <p>
+          The solution is to add the JAXP system property via the Jelly script.
+        </p>
+        <source><![CDATA[${systemScope.setProperty('javax.xml.transform.TransformerFactory','org.apache.xalan.processor.TransformerFactoryImpl')} 
+<ant:style in="${basedir}/some.xml" out="${maven.build.dest}/other.xml" style="${basedir}/sheet.xsl" processor="trax"/> 
+]]></source>
+        <p>
+          Also make sure that Xalan is declared as dependencies in your project file, and added to the root classloader 
+          so that Ant can find it:
+        </p>
+        <source><![CDATA[<dependency>
+  <groupId>xalan</groupId> 
+  <artifactId>xalan</artifactId> 
+  <version>2.3.1</version> 
+  <url>http://xml.apache.org/xalan/</url> 
+  <properties>
+    <classloader>root</classloader>
+  </properties>
+</dependency>]]></source>
+      </answer>
+    </faq>
+  
+    <faq id="shareCode">
+      <question>How do I share build code between projects?</question>
+      <answer>
+        <p>
+          Write your own Maven plugin. It's not as difficult as you may
+          think it is, and it will probably save you much time when
+          your code grows in size.
+        </p>
+        <p>
+          Please read the <a href="using/developing-plugins.html">Developing Plugins</a>
+          documentation for instructions on how to do this.
+        </p>
+        <p>
+          It can also be helpful to refer to the source code for the existing
+          Maven plugins which you already have installed.
+        </p>
+      </answer>
+    </faq>
+
+    <faq id="sharing-plugins">
+      <question>How do I share my Maven plugin with others?</question>
+      <answer>
+        Read <a href="reference/sharing-plugins.html">Sharing Plugins</a>.
+      </answer>
+    </faq>
+  </part>
+    
+  <part id="troubleshooting">
+    <title>Troubleshooting Maven</title>
+
+    <faq id="debug-maven">
+      <question>How can I get Maven to give more verbose output?</question>
+      <answer>
+        <p>
+          If you received an exception at the end and want a full stack trace for more
+          information, you can run the same <code>maven</code> command again with the <code>-e</code>
+          switch, eg:
+        </p>
+        <source>maven -e jar:jar</source>
+        <p>
+          If you would like a full set of debugging information to trace what Maven is doing,
+          you can run the same <code>maven</code> command again with the <code>-X</code>
+          switch, eg:
+        </p>
+        <source>maven -X jar:jar</source>
+        <p>Note that <code>-X</code> implies <code>-e</code>, so there is no need to use both.</p>
+      </answer>
+    </faq>
+    
+    <faq id="unit-test-14">
+      <question>Why do the unit tests fail under Java 1.4?</question>
+      <answer>
+        <p>It is possible that the XML parser included with Maven is
+        interfering with the XML parser included in Java 1.4. Please set
+        the <code>${maven.junit.fork}</code>
+        <a href="reference/plugins/test/properties.html">property</a> to
+        <code>yes</code>.</p>
+      </answer>
+    </faq>
+    
+    <faq id="changelog-no-local-copy">
+      <question>Why does change log ask me to check out the source code?</question>
+      <answer>
+        <p>When you run the cvs change log report in Maven, you may see an
+        error occasionally, such as:</p>
+        <source><![CDATA[cvs [log aborted]: there is no version here; do 'cvs checkout' first
+ ChangeLog found: 5 entries]]></source>
+        <p>This is caused by the cvs log command finding a directory in it's
+        repository that you don't have locally. Note: The directory may not
+        appear on a checkout or update if it is empty in the repository.
+        Please do a clean checkout of the code and retry the report.</p>
+      </answer>
+    </faq>
+
+    <faq id="changelog-broken">
+      <question>I have problems generating the changelog report. Why?</question>
+      <answer>
+        <p>
+        When you run the cvs change log report in Maven, the report hangs or the
+        final output is blank.
+        </p>
+        <p>
+          This is typically caused by the cvs command not running correctly.
+          The first port of call is to check Maven's output, search the lines containing for "SCM".
+        </p>
+        <p>
+          <source><![CDATA[SCM Working Directory: D:\Data\workspace\maven
+SCM Command Line[0]: cvs
+SCM Command Line[1]: -d
+SCM Command Line[2]: :pserver:bwalding@cvs.apache.org:/home/cvsroot
+SCM Command Line[3]: log
+SCM Command Line[4]: -d 2003-01-27]]></source>
+        </p>
+        <p>
+          Try running the command that you find in the log file manually. The results typically
+          speak for themselves.
+        </p>
+      </answer>
+    </faq>
+
+    <faq id="jelly-site-error">
+      <question>maven site fails with bizarre Jelly errors, what can I do?</question>
+      <answer>
+        When I try to generate my site I get something like this:
+
+        <source><![CDATA[BUILD FAILED
+null:58:46:
+<x:parse> Invalid source argument. Must be a String, Reader,
+InputStream or URL. Was type; java.io.File with value:
+/home/jvanzyl/js/com.werken/drools/target/jdepend-raw-report.xml
+Total time:  12 seconds]]></source>
+        <p>
+          This problem has been observed when a version of Jelly used as a
+          dependency is different than the one distributed with Maven.
+          If you align your versions of Jelly you should be able to generate
+          your site.
+        </p>
+      </answer>
+    </faq>
+  </part>
+
+  <part id="ant">
+    <title>Ant</title>
+
+    <faq id="project-help">
+      <question>What is the equivalent of <code>ant -projecthelp</code> in Maven?</question>
+      <answer>
+        <p>
+          To some extent, <code>maven -u</code> behaves the same way. For more information, please read the
+          <a href="start/quick-start.html">Quick Start</a> guide.
+        </p>
+      </answer>
+    </faq>
+    <faq id="maven-vs-ant-speed">
+      <question>I've heard Maven is much slower than Ant. Is there anything I can do to make it faster?</question>
+      <answer>
+        <p>
+          This has become a bit of an urban myth now, as Maven takes very little more than Ant
+          to initialise (with the exception of the very first run when plugins must be unpacked and parsed).
+        </p>
+        <p>
+          Part of the misconception comes from claims that building the site or building 30 projects
+          takes a lot of CPU and memory. Well, this would happen in Ant too if it were attempted!
+          Some extensions to Ant that build a web site take considerably longer than Maven to do that task.
+          This area is also a focus for future development so that generating these parts of the build
+          are much faster.
+        </p>
+        <p>
+          When it comes down to your day to day development and edit-build-test cycle, you
+          <i>can</i> speed up Maven's initialisation time by running the console, as shown in
+          <a href="#speeding-maven">this FAQ answer</a>.
+          This console keeps Maven loaded and ready to do your bidding for a specific project, and
+          <b>makes Maven faster than Ant for performing equivalent, subsequent builds!</b>
+        </p>
+      </answer>
+    </faq>
+
+    <faq id="filtering-resources">
+      <question>How can I filter properties into resource files as part of the build?</question>
+      <answer>
+        <p>
+          This can be done using resource filtering. In your POM, add the filtering property to your existing
+          resources definition. Please refer to <a href="using/resources.html">Resources</a> for more information.
+        </p>
+      </answer>
+    </faq>
+  </part>
+
+  <part id="building">
+    <title>Building Maven</title>
+
+    <faq id="how-to-build">
+      <question>How do I build Maven?</question>
+      <answer>
+        <p>Please see the <a href="developers/building-from-source.html">Building Maven from Source</a> document.</p>
+      </answer>
+    </faq>
+
+    <faq id="build-firewall">
+      <question>How do I build Maven from behind a firewall?</question>
+      <answer>
+        <p>You typically need to set your HTTP proxy host and port details so that Maven can tunnel through your
+        HTTP Proxy. To do this you typically need to set the <code>maven.proxy.host</code> and 
+        <code>maven.proxy.port</code> properties.</p>
+        See the
+        <a href="./reference/properties.html#Proxy_Properties">Properties Reference</a> for more details.
+      </answer>
+    </faq>
+  </part>
+</faqs>
+   

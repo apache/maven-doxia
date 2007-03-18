@@ -37,6 +37,6 @@ public class FmlParserTest
 
     protected String getDocument()
     {
-        return "src/test/site/fml/faq.fml";
+        return "src/test/resources/faq.fml";
     }
 }

@@ -23,7 +23,7 @@ import java.io.Reader;
 import java.io.StringReader;
 import java.util.Iterator;
 
-import org.apache.maven.doxia.module.HtmlTools;
+import org.apache.maven.doxia.util.HtmlTools;
 import org.apache.maven.doxia.module.fml.model.Faq;
 import org.apache.maven.doxia.module.fml.model.Faqs;
 import org.apache.maven.doxia.module.fml.model.Part;
