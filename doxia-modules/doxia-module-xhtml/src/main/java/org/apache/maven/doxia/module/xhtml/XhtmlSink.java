@@ -23,7 +23,7 @@ import java.io.PrintWriter;
 import java.io.Writer;
 import java.util.Map;
 
-import org.apache.maven.doxia.module.HtmlTools;
+import org.apache.maven.doxia.util.HtmlTools;
 import org.apache.maven.doxia.module.xhtml.decoration.render.RenderingContext;
 import org.apache.maven.doxia.parser.Parser;
 import org.apache.maven.doxia.sink.Sink;
@@ -33,7 +33,7 @@ import org.codehaus.plexus.util.StringUtils;
 /**
  * A doxia sink which produces xhtml
  *
- * @author <a href="mailto:jason@maven.org">Jason van Zyl</a>
+ * @author Jason van Zyl
  */
 public class XhtmlSink
     extends AbstractXhtmlSink

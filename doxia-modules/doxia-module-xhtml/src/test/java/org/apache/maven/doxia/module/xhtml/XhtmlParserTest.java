@@ -40,7 +40,7 @@ public class XhtmlParserTest
 
     protected String getDocument()
     {
-        return "src/test/site/xhtml/fun.html";
+        return "src/test/resources/fun.html";
     }
 
     public void testParser()

@@ -22,13 +22,19 @@ package org.apache.maven.doxia.module.xhtml;
 import org.apache.maven.doxia.module.xhtml.decoration.render.RenderingContext;
 import org.apache.maven.doxia.sink.AbstractSinkTestCase;
 import org.apache.maven.doxia.sink.Sink;
+import org.apache.maven.doxia.parser.Parser;
 
 import java.io.File;
 import java.io.FileReader;
+import java.io.Reader;
+import java.io.InputStream;
+import java.io.InputStreamReader;
 import java.util.Map;
+import java.util.Collections;
+import java.util.HashMap;
 
 /**
- * @author <a href="mailto:jason@maven.org">Jason van Zyl</a>
+ * @author Jason van Zyl
  * @version $Id:XhtmlSinkTest.java 348605 2005-11-24 12:02:44 +1100 (Thu, 24 Nov 2005) brett $
  */
 public class XhtmlSinkTest
@@ -41,6 +47,11 @@ public class XhtmlSinkTest
 
     // START SNIPPET: foo
 
+    protected Parser createParser()
+    {
+        return new XhtmlParser();
+    }
+
     protected Sink createSink()
         throws Exception
     {
@@ -49,14 +60,30 @@ public class XhtmlSinkTest
         RenderingContext renderingContext =
             new RenderingContext( getBasedirFile(), new File( getBasedirFile(), apt ).getPath(), "apt" );
 
-        FileReader reader = new FileReader( new File( getBasedirFile(), "src/test/resources/codehaus.dst" ) );
+        //PLXAPI: This horrible fake map is being used because someone neutered the directives approach in the
+        // site renderer so that it half worked. Put it back and make it work properly.
 
-        SinkDescriptorReader sdr = new SinkDescriptorReader();
+        return new XhtmlSink( getTestWriter(), renderingContext, new FakeMap() );
+    }
 
-        Map directives = sdr.read( reader );
+    protected Reader getTestReader()
+        throws Exception
+    {
+        InputStream is = Thread.currentThread().getContextClassLoader().getResourceAsStream( "fun.html" );
 
-        return new XhtmlSink( getTestWriter(), renderingContext, directives );
+        InputStreamReader reader = new InputStreamReader( is );
+
+        return reader;
     }
 
     // END SNIPPET: foo
+
+    class FakeMap
+        extends HashMap
+    {
+        public Object get( Object key )
+        {
+            return "fake";
+        }
+    }
 }
