@@ -19,12 +19,16 @@ package org.apache.maven.doxia.module.rtf;
  * under the License.
  */
 
-import org.apache.maven.doxia.module.rtf.RtfSink;
 import org.apache.maven.doxia.sink.Sink;
 import org.apache.maven.doxia.sink.AbstractSinkTestCase;
+import org.apache.maven.doxia.parser.Parser;
+import org.apache.maven.doxia.module.apt.AptParser;
 
 import java.io.File;
 import java.io.FileOutputStream;
+import java.io.Reader;
+import java.io.InputStream;
+import java.io.InputStreamReader;
 
 /**
  * @author <a href="mailto:jason@maven.org">Jason van Zyl</a>
@@ -38,11 +42,26 @@ public class RtfSinkTest
         return "rtf";
     }
 
+    protected Parser createParser()
+    {
+        return new AptParser();
+    }
+
     protected Sink createSink()
         throws Exception
     {
         File outputFile = new File( getBasedirFile(), "target/output/test.rtf" );
         outputFile.getParentFile().mkdirs();
         return new RtfSink( new FileOutputStream( outputFile ) );
+    }
+
+    protected Reader getTestReader()
+        throws Exception
+    {
+        InputStream is = Thread.currentThread().getContextClassLoader().getResourceAsStream( "test.apt" );
+
+        InputStreamReader reader = new InputStreamReader( is );
+
+        return reader;
     }
 }

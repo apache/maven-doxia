@@ -19,9 +19,9 @@ package org.apache.maven.doxia.module.rtf;
  * under the License.
  */
 
-import org.apache.maven.doxia.module.apt.AptParser;
 import org.apache.maven.doxia.sink.Sink;
 import org.apache.maven.doxia.sink.SinkAdapter;
+import org.apache.maven.doxia.parser.Parser;
 
 import java.awt.*;
 import java.io.BufferedOutputStream;
@@ -370,7 +370,7 @@ public class RtfSink
     public void title()
     {
         Paragraph paragraph = new Paragraph( STYLE_BOLD, fontSize + 6 );
-        paragraph.justification = AptParser.JUSTIFY_CENTER;
+        paragraph.justification = Parser.JUSTIFY_CENTER;
         beginParagraph( paragraph );
         emptyHeader = false;
     }
@@ -383,7 +383,7 @@ public class RtfSink
     public void author()
     {
         Paragraph paragraph = new Paragraph( STYLE_ROMAN, fontSize + 2 );
-        paragraph.justification = AptParser.JUSTIFY_CENTER;
+        paragraph.justification = Parser.JUSTIFY_CENTER;
         beginParagraph( paragraph );
         emptyHeader = false;
     }
@@ -396,7 +396,7 @@ public class RtfSink
     public void date()
     {
         Paragraph paragraph = new Paragraph( STYLE_ROMAN, fontSize );
-        paragraph.justification = AptParser.JUSTIFY_CENTER;
+        paragraph.justification = Parser.JUSTIFY_CENTER;
         beginParagraph( paragraph );
         emptyHeader = false;
     }
@@ -816,14 +816,14 @@ public class RtfSink
     {
         switch ( justification )
         {
-            case AptParser.JUSTIFY_LEFT:
+            case Parser.JUSTIFY_LEFT:
             default:
                 writer.println( "\\ql" );
                 break;
-            case AptParser.JUSTIFY_CENTER:
+            case Parser.JUSTIFY_CENTER:
                 writer.println( "\\qc" );
                 break;
-            case AptParser.JUSTIFY_RIGHT:
+            case Parser.JUSTIFY_RIGHT:
                 writer.println( "\\qr" );
                 break;
         }
@@ -872,7 +872,7 @@ public class RtfSink
     public void tableCaption()
     {
         Paragraph paragraph = new Paragraph();
-        paragraph.justification = AptParser.JUSTIFY_CENTER;
+        paragraph.justification = Parser.JUSTIFY_CENTER;
         paragraph.spaceBefore /= 2;
         beginParagraph( paragraph );
     }
@@ -973,7 +973,7 @@ public class RtfSink
         name = buf.toString();
 
         Paragraph paragraph = new Paragraph();
-        paragraph.justification = AptParser.JUSTIFY_CENTER;
+        paragraph.justification = Parser.JUSTIFY_CENTER;
         beginParagraph( paragraph );
 
         try
@@ -1179,7 +1179,7 @@ public class RtfSink
     public void figureCaption()
     {
         Paragraph paragraph = new Paragraph();
-        paragraph.justification = AptParser.JUSTIFY_CENTER;
+        paragraph.justification = Parser.JUSTIFY_CENTER;
         paragraph.spaceBefore /= 2;
         beginParagraph( paragraph );
     }
@@ -1531,7 +1531,7 @@ public class RtfSink
 
         int style = 0;
 
-        int justification = AptParser.JUSTIFY_LEFT;
+        int justification = Parser.JUSTIFY_LEFT;
 
         int leftIndent = indentation.get();
 
@@ -1568,13 +1568,13 @@ public class RtfSink
             }
             switch ( justification )
             {
-                case AptParser.JUSTIFY_LEFT:
+                case Parser.JUSTIFY_LEFT:
                 default:
                     break;
-                case AptParser.JUSTIFY_CENTER:
+                case Parser.JUSTIFY_CENTER:
                     writer.print( "\\qc" );
                     break;
-                case AptParser.JUSTIFY_RIGHT:
+                case Parser.JUSTIFY_RIGHT:
                     writer.print( "\\qr" );
                     break;
             }
