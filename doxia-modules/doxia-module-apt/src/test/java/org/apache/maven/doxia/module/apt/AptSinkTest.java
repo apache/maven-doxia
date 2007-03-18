@@ -21,6 +21,7 @@ package org.apache.maven.doxia.module.apt;
 
 import org.apache.maven.doxia.sink.AbstractSinkTestCase;
 import org.apache.maven.doxia.sink.Sink;
+import org.apache.maven.doxia.parser.Parser;
 
 public class AptSinkTest
 	extends AbstractSinkTestCase
@@ -39,6 +40,11 @@ public class AptSinkTest
 
 	    sink.flush();
 	}
+
+    protected Parser createParser()
+    {
+        return new AptParser();
+    }
 
     protected Sink createSink()
         throws Exception

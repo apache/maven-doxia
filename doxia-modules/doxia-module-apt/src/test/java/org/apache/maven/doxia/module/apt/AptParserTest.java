@@ -38,9 +38,7 @@ public class AptParserTest
 
     private AptParser parser;
 
-    /**
-     * @see junit.framework.TestCase#setUp()
-     */
+    /** @see junit.framework.TestCase#setUp() */
     protected void setUp()
         throws Exception
     {
@@ -49,25 +47,19 @@ public class AptParserTest
         parser = (AptParser) lookup( Parser.ROLE, "apt" );
     }
 
-    /**
-     * @see org.apache.maven.doxia.parser.AbstractParserTestCase#getParser()
-     */
+    /** @see org.apache.maven.doxia.parser.AbstractParserTestCase#getParser() */
     protected Parser getParser()
     {
         return parser;
     }
 
-    /**
-     * @see org.apache.maven.doxia.parser.AbstractParserTestCase#getDocument()
-     */
+    /** @see org.apache.maven.doxia.parser.AbstractParserTestCase#getDocument() */
     protected String getDocument()
     {
-        return "src/test/site/apt/linebreak.apt";
+        return "src/test/resources/test/linebreak.apt";
     }
 
-    /**
-     * @throws Exception
-     */
+    /** @throws Exception  */
     public void testLineBreak()
         throws Exception
     {
@@ -91,9 +83,7 @@ public class AptParserTest
         }
     }
 
-    /**
-     * @throws Exception
-     */
+    /** @throws Exception  */
     public void testSnippetMacro()
         throws Exception
     {
@@ -103,7 +93,7 @@ public class AptParserTest
         try
         {
             output = new StringWriter();
-            reader = new FileReader( getTestFile( getBasedir(), "src/test/site/apt/macro.apt" ) );
+            reader = new FileReader( getTestFile( getBasedir(), "src/test/resources/test/macro.apt" ) );
 
             Sink sink = new AptSink( output );
             getParser().parse( reader, sink );
@@ -117,9 +107,7 @@ public class AptParserTest
         }
     }
 
-    /**
-     * @throws Exception
-     */
+    /** @throws Exception  */
     public void testTocMacro()
         throws Exception
     {
@@ -129,7 +117,7 @@ public class AptParserTest
         try
         {
             output = new StringWriter();
-            reader = new FileReader( getTestFile( getBasedir(), "src/test/site/apt/toc.apt" ) );
+            reader = new FileReader( getTestFile( getBasedir(), "src/test/resources/test/toc.apt" ) );
 
             Sink sink = new AptSink( output );
             getParser().parse( reader, sink );
@@ -140,8 +128,15 @@ public class AptParserTest
         }
         finally
         {
-            output.close();
-            reader.close();
+            if ( output != null )
+            {
+                output.close();
+            }
+
+            if ( reader != null )
+            {
+                reader.close();
+            }
         }
     }
 }

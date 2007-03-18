@@ -23,13 +23,14 @@ import java.io.PrintWriter;
 import java.io.Writer;
 import java.util.Stack;
 
-import org.apache.maven.doxia.module.HtmlTools;
+import org.apache.maven.doxia.util.HtmlTools;
 import org.apache.maven.doxia.sink.SinkAdapter;
 import org.codehaus.plexus.util.StringUtils;
 
 /**
  * APT Sink implementation.
  * @author eredmond
+ * @plexus.component
  */
 public class AptSink extends SinkAdapter
 {

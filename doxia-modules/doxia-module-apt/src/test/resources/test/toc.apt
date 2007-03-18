@@ -1,0 +1,55 @@
+ ----
+ Test DOXIA-40
+ -----
+ Vincent Siveton
+ -----
+ January 2007
+ -----
+
+Test DOXIA-40
+
+Section 1
+
+%{toc|section=2|fromDepth=2|toDepth=4}
+
+* {SubSection 1}
+
+ SubSection 1
+
+** {SubSection 11}
+
+ SubSection 11
+
+** {SubSection 12}
+
+ SubSection 12
+
+*** {SubSection 121}
+
+ SubSection 121
+
+**** {SubSection 1211}
+
+ SubSection 1211
+
+*** {SubSection 122}
+
+ SubSection 122
+
+* {SubSection 2}
+
+ SubSection 2
+
+* {SubSection 3}
+
+ SubSection 3
+
+* {SubSection 4}
+
+ SubSection 4
+
+Section 2
+
+* {SubSection 1}
+
+ SubSection 1
