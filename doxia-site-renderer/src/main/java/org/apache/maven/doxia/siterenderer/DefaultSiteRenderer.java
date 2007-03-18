@@ -19,34 +19,6 @@ package org.apache.maven.doxia.siterenderer;
  * under the License.
  */
 
-import java.io.File;
-import java.io.FileInputStream;
-import java.io.FileNotFoundException;
-import java.io.FileOutputStream;
-import java.io.IOException;
-import java.io.InputStream;
-import java.io.InputStreamReader;
-import java.io.LineNumberReader;
-import java.io.OutputStreamWriter;
-import java.io.Reader;
-import java.io.UnsupportedEncodingException;
-import java.io.Writer;
-import java.net.MalformedURLException;
-import java.net.URL;
-import java.net.URLClassLoader;
-import java.text.DateFormat;
-import java.util.Arrays;
-import java.util.Collection;
-import java.util.Date;
-import java.util.Enumeration;
-import java.util.Iterator;
-import java.util.LinkedHashMap;
-import java.util.List;
-import java.util.Locale;
-import java.util.Map;
-import java.util.zip.ZipEntry;
-import java.util.zip.ZipFile;
-
 import org.apache.maven.doxia.Doxia;
 import org.apache.maven.doxia.module.xhtml.decoration.render.RenderingContext;
 import org.apache.maven.doxia.parser.ParseException;
@@ -68,12 +40,43 @@ import org.codehaus.plexus.util.Os;
 import org.codehaus.plexus.util.PathTool;
 import org.codehaus.plexus.util.StringUtils;
 import org.codehaus.plexus.velocity.VelocityComponent;
+import org.codehaus.plexus.velocity.SiteResourceLoader;
+
+import java.io.File;
+import java.io.FileInputStream;
+import java.io.FileNotFoundException;
+import java.io.FileOutputStream;
+import java.io.IOException;
+import java.io.InputStream;
+import java.io.InputStreamReader;
+import java.io.LineNumberReader;
+import java.io.OutputStreamWriter;
+import java.io.Reader;
+import java.io.UnsupportedEncodingException;
+import java.io.Writer;
+import java.io.StringWriter;
+import java.io.StringReader;
+import java.net.MalformedURLException;
+import java.net.URL;
+import java.net.URLClassLoader;
+import java.text.DateFormat;
+import java.util.Arrays;
+import java.util.Collection;
+import java.util.Date;
+import java.util.Enumeration;
+import java.util.Iterator;
+import java.util.LinkedHashMap;
+import java.util.List;
+import java.util.Locale;
+import java.util.Map;
+import java.util.zip.ZipEntry;
+import java.util.zip.ZipFile;
 
 /**
  * @author <a href="mailto:evenisse@codehaus.org">Emmanuel Venisse</a>
  * @author <a href="mailto:vincent.siveton@gmail.com">Vincent Siveton</a>
  * @version $Id:DefaultSiteRenderer.java 348612 2005-11-24 12:54:19 +1100 (Thu, 24 Nov 2005) brett $
- * @plexus.component role="org.apache.maven.doxia.siterenderer.Renderer"
+ * @plexus.component role-hint="default"
  */
 public class DefaultSiteRenderer
     extends AbstractLogEnabled
@@ -83,24 +86,16 @@ public class DefaultSiteRenderer
     // Requirements
     // ----------------------------------------------------------------------
 
-    /**
-     * @plexus.requirement
-     */
+    /** @plexus.requirement */
     private VelocityComponent velocity;
 
-    /**
-     * @plexus.requirement
-     */
+    /** @plexus.requirement */
     private SiteModuleManager siteModuleManager;
 
-    /**
-     * @plexus.requirement
-     */
+    /** @plexus.requirement */
     private Doxia doxia;
 
-    /**
-     * @plexus.requirement
-     */
+    /** @plexus.requirement */
     private I18N i18n;
 
     private static final String RESOURCE_DIR = "org/apache/maven/doxia/siterenderer/resources";
@@ -113,7 +108,9 @@ public class DefaultSiteRenderer
     // Renderer implementation
     // ----------------------------------------------------------------------
 
-    public void render( Collection documents, SiteRenderingContext siteRenderingContext, File outputDirectory )
+    public void render( Collection documents,
+                        SiteRenderingContext siteRenderingContext,
+                        File outputDirectory )
         throws RendererException, IOException
     {
         renderModule( documents, siteRenderingContext, outputDirectory );
@@ -180,7 +177,10 @@ public class DefaultSiteRenderer
         return files;
     }
 
-    private void addModuleFiles( File moduleBasedir, SiteModule module, String excludes, Map files )
+    private void addModuleFiles( File moduleBasedir,
+                                 SiteModule module,
+                                 String excludes,
+                                 Map files )
         throws IOException, RendererException
     {
         if ( moduleBasedir.exists() )
@@ -215,8 +215,8 @@ public class DefaultSiteRenderer
                         File originalDoc = new File( originalContext.getBasedir(), originalContext.getInputName() );
                         if ( Os.isFamily( "windows" ) )
                         {
-                            throw new RendererException( "Files '" + doc + "' clashes with existing '" + originalDoc
-                                + "'." );
+                            throw new RendererException(
+                                "Files '" + doc + "' clashes with existing '" + originalDoc + "'." );
                         }
 
                         getLogger().warn( "Files '" + doc + "' could clashes with existing '" + originalDoc + "'." );
@@ -228,7 +228,9 @@ public class DefaultSiteRenderer
         }
     }
 
-    private void renderModule( Collection docs, SiteRenderingContext siteRenderingContext, File outputDirectory )
+    private void renderModule( Collection docs,
+                               SiteRenderingContext siteRenderingContext,
+                               File outputDirectory )
         throws IOException, RendererException
     {
         for ( Iterator i = docs.iterator(); i.hasNext(); )
@@ -255,6 +257,7 @@ public class DefaultSiteRenderer
                 }
 
                 getLogger().debug( "Generating " + outputFile );
+
                 OutputStreamWriter writer = new OutputStreamWriter( new FileOutputStream( outputFile ),
                                                                     siteRenderingContext.getOutputEncoding() );
 
@@ -274,7 +277,9 @@ public class DefaultSiteRenderer
         }
     }
 
-    public void renderDocument( Writer writer, RenderingContext renderingContext, SiteRenderingContext context )
+    public void renderDocument( Writer writer,
+                                RenderingContext renderingContext,
+                                SiteRenderingContext context )
         throws RendererException, FileNotFoundException, UnsupportedEncodingException
     {
         SiteRendererSink sink = new SiteRendererSink( renderingContext );
@@ -283,7 +288,36 @@ public class DefaultSiteRenderer
 
         try
         {
-            Reader reader = new InputStreamReader( new FileInputStream( fullPathDoc ), context.getInputEncoding() );
+            Reader reader;
+
+            String resource = new File( fullPathDoc ).getAbsolutePath();
+
+            try
+            {
+                SiteResourceLoader.setResource( resource );
+
+                Context vc = createContext( sink, context );
+
+                StringWriter sw = new StringWriter();
+
+                velocity.getEngine().mergeTemplate( resource, vc, sw );
+
+                reader = new StringReader( sw.toString() );
+            }
+            catch ( Exception e )
+            {
+                if ( getLogger().isDebugEnabled() )
+                {
+                    getLogger().error( "Error parsing " + resource + " as a velocity template, using as text.", e );
+                }
+                else
+                {
+                    getLogger().error( "Error parsing " + resource + " as a velocity template, using as text." );
+                }
+
+
+                reader = new InputStreamReader( new FileInputStream( fullPathDoc ), context.getInputEncoding() );
+            }
 
             doxia.parse( reader, renderingContext.getParserId(), sink );
 
@@ -306,8 +340,8 @@ public class DefaultSiteRenderer
         }
     }
 
-    public void generateDocument( Writer writer, SiteRendererSink sink, SiteRenderingContext siteRenderingContext )
-        throws RendererException
+    private Context createContext( SiteRendererSink sink,
+                                   SiteRenderingContext siteRenderingContext )
     {
         VelocityContext context = new VelocityContext();
 
@@ -357,6 +391,7 @@ public class DefaultSiteRenderer
 
         // Add user properties
         Map templateProperties = siteRenderingContext.getTemplateProperties();
+
         if ( templateProperties != null )
         {
             for ( Iterator i = templateProperties.keySet().iterator(); i.hasNext(); )
@@ -379,14 +414,22 @@ public class DefaultSiteRenderer
 
         context.put( "i18n", i18n );
 
-        // ----------------------------------------------------------------------
-        //
-        // ----------------------------------------------------------------------
+        return context;
+    }
+
+    public void generateDocument( Writer writer,
+                                  SiteRendererSink sink,
+                                  SiteRenderingContext siteRenderingContext )
+        throws RendererException
+    {
+        Context context = createContext( sink, siteRenderingContext );
 
         writeTemplate( writer, context, siteRenderingContext );
     }
 
-    private void writeTemplate( Writer writer, Context context, SiteRenderingContext siteContext )
+    private void writeTemplate( Writer writer,
+                                Context context,
+                                SiteRenderingContext siteContext )
         throws RendererException
     {
         ClassLoader old = null;
@@ -417,10 +460,10 @@ public class DefaultSiteRenderer
         }
     }
 
-    /**
-     * @noinspection OverlyBroadCatchBlock,UnusedCatchParameter
-     */
-    private void processTemplate( String templateName, Context context, Writer writer )
+    /** @noinspection OverlyBroadCatchBlock,UnusedCatchParameter */
+    private void processTemplate( String templateName,
+                                  Context context,
+                                  Writer writer )
         throws RendererException
     {
         Template template;
@@ -444,8 +487,11 @@ public class DefaultSiteRenderer
         }
     }
 
-    public SiteRenderingContext createContextForSkin( File skinFile, Map attributes, DecorationModel decoration,
-                                                      String defaultWindowTitle, Locale locale )
+    public SiteRenderingContext createContextForSkin( File skinFile,
+                                                      Map attributes,
+                                                      DecorationModel decoration,
+                                                      String defaultWindowTitle,
+                                                      Locale locale )
         throws IOException
     {
         SiteRenderingContext context = new SiteRenderingContext();
@@ -457,7 +503,7 @@ public class DefaultSiteRenderer
             if ( zipFile.getEntry( SKIN_TEMPLATE_LOCATION ) != null )
             {
                 context.setTemplateName( SKIN_TEMPLATE_LOCATION );
-                context.setTemplateClassLoader( new URLClassLoader( new URL[] { skinFile.toURL() } ) );
+                context.setTemplateClassLoader( new URLClassLoader( new URL[]{skinFile.toURL()} ) );
             }
             else
             {
@@ -480,15 +526,18 @@ public class DefaultSiteRenderer
         return context;
     }
 
-    public SiteRenderingContext createContextForTemplate( File templateFile, File skinFile, Map attributes,
-                                                          DecorationModel decoration, String defaultWindowTitle,
+    public SiteRenderingContext createContextForTemplate( File templateFile,
+                                                          File skinFile,
+                                                          Map attributes,
+                                                          DecorationModel decoration,
+                                                          String defaultWindowTitle,
                                                           Locale locale )
         throws MalformedURLException
     {
         SiteRenderingContext context = new SiteRenderingContext();
 
         context.setTemplateName( templateFile.getName() );
-        context.setTemplateClassLoader( new URLClassLoader( new URL[] { templateFile.getParentFile().toURL() } ) );
+        context.setTemplateClassLoader( new URLClassLoader( new URL[]{templateFile.getParentFile().toURL()} ) );
 
         context.setTemplateProperties( attributes );
         context.setLocale( locale );
@@ -512,7 +561,9 @@ public class DefaultSiteRenderer
         }
     }
 
-    public void copyResources( SiteRenderingContext siteContext, File resourcesDirectory, File outputDirectory )
+    public void copyResources( SiteRenderingContext siteContext,
+                               File resourcesDirectory,
+                               File outputDirectory )
         throws IOException
     {
         if ( siteContext.getSkinJarFile() != null )
@@ -595,7 +646,9 @@ public class DefaultSiteRenderer
 
     }
 
-    private void copyFileFromZip( ZipFile file, ZipEntry entry, File destFile )
+    private void copyFileFromZip( ZipFile file,
+                                  ZipEntry entry,
+                                  File destFile )
         throws IOException
     {
         FileOutputStream fos = new FileOutputStream( destFile );
@@ -617,14 +670,15 @@ public class DefaultSiteRenderer
      * @param destination destination file
      * @throws java.io.IOException if any
      */
-    protected void copyDirectory( File source, File destination )
+    protected void copyDirectory( File source,
+                                  File destination )
         throws IOException
     {
         if ( source.exists() )
         {
             DirectoryScanner scanner = new DirectoryScanner();
 
-            String[] includedResources = { "**/**" };
+            String[] includedResources = {"**/**"};
 
             scanner.setIncludes( includedResources );
 

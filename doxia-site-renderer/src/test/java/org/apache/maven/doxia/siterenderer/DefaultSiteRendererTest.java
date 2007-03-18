@@ -19,18 +19,6 @@ package org.apache.maven.doxia.siterenderer;
  * under the License.
  */
 
-import java.io.File;
-import java.io.FileReader;
-import java.util.HashMap;
-import java.util.Iterator;
-import java.util.Map;
-
-import org.apache.maven.doxia.site.decoration.DecorationModel;
-import org.apache.maven.doxia.site.decoration.io.xpp3.DecorationXpp3Reader;
-import org.codehaus.plexus.PlexusTestCase;
-import org.codehaus.plexus.util.FileUtils;
-import org.codehaus.plexus.util.IOUtil;
-
 import com.gargoylesoftware.htmlunit.WebClient;
 import com.gargoylesoftware.htmlunit.html.HtmlAnchor;
 import com.gargoylesoftware.htmlunit.html.HtmlDefinitionDescription;
@@ -45,6 +33,17 @@ import com.gargoylesoftware.htmlunit.html.HtmlOrderedList;
 import com.gargoylesoftware.htmlunit.html.HtmlPage;
 import com.gargoylesoftware.htmlunit.html.HtmlParagraph;
 import com.gargoylesoftware.htmlunit.html.HtmlUnorderedList;
+import org.apache.maven.doxia.site.decoration.DecorationModel;
+import org.apache.maven.doxia.site.decoration.io.xpp3.DecorationXpp3Reader;
+import org.codehaus.plexus.PlexusTestCase;
+import org.codehaus.plexus.util.FileUtils;
+import org.codehaus.plexus.util.IOUtil;
+
+import java.io.File;
+import java.io.FileReader;
+import java.util.HashMap;
+import java.util.Iterator;
+import java.util.Map;
 
 /**
  * @author <a href="mailto:vincent.siveton@gmail.com">Vincent Siveton</a>
@@ -65,6 +64,7 @@ public class DefaultSiteRendererTest
         throws Exception
     {
         super.setUp();
+        
         renderer = (Renderer) lookup( Renderer.ROLE );
 
         // Safety
