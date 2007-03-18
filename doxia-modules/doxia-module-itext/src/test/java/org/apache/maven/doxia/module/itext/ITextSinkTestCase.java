@@ -118,6 +118,8 @@ public class ITextSinkTestCase
                             new FileOutputStream( getGeneratedFile( "test_itext_apt", ".pdf" ) ) );
     }
 
+    // DOXIA-
+
     /**
      * Generate a pdf and a rtf from an <code>apt</code> file
      *
@@ -129,15 +131,13 @@ public class ITextSinkTestCase
         Sink sink = createSink( "test_apt", ".xml" );
 
         AptParser parser = new AptParser();
+
         parser.parse( getAptReader( "apt/test.apt" ), sink );
 
         sink.close();
 
         ITextUtil.writePdf( new FileInputStream( getGeneratedFile( "test_apt", ".xml" ) ),
                             new FileOutputStream( getGeneratedFile( "test_apt", ".pdf" ) ) );
-
-        //ITextUtil.writeRtf( new FileInputStream( getGeneratedFile( "test_apt", ".xml" ) ),
-          //                  new FileOutputStream( getGeneratedFile( "test_apt", ".rtf" ) ) );
     }
 
     /**
@@ -151,6 +151,7 @@ public class ITextSinkTestCase
         Sink sink = createSink( "guide-ide-netbeans_apt", ".xml" );
 
         AptParser parser = new AptParser();
+
         parser.parse( getAptReader( "apt/guide-ide-netbeans.apt" ), sink );
 
         sink.close();
@@ -173,6 +174,7 @@ public class ITextSinkTestCase
         Sink sink = createSink( "test_xdoc", ".xml" );
 
         XdocParser parser = new XdocParser();
+
         parser.parse( getXdocReader( "xdoc/test.xml" ), sink );
 
         sink.close();

@@ -22,7 +22,7 @@ package org.apache.maven.doxia.module.itext;
 import com.lowagie.text.BadElementException;
 import com.lowagie.text.ElementTags;
 import com.lowagie.text.Image;
-import org.apache.maven.doxia.module.HtmlTools;
+import org.apache.maven.doxia.util.HtmlTools;
 import org.apache.maven.doxia.sink.Sink;
 import org.apache.maven.doxia.sink.SinkAdapter;
 import org.codehaus.plexus.util.IOUtil;
