@@ -24,8 +24,7 @@ import org.apache.maven.doxia.sink.Sink;
 import java.util.Iterator;
 
 /**
- * @plexus.component role="org.apache.maven.doxia.macro.Macro"
- * role-hint="echo"
+ * @plexus.component role-hint="echo"
  */
 public class EchoMacro
     extends AbstractMacro

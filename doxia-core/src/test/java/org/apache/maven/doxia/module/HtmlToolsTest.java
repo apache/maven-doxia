@@ -20,6 +20,7 @@ package org.apache.maven.doxia.module;
  */
 
 import org.codehaus.plexus.PlexusTestCase;
+import org.apache.maven.doxia.util.HtmlTools;
 
 /**
  * Test case for <code>HtmlTools</code>

@@ -26,14 +26,12 @@ import java.util.Map;
 /**
  * @author <a href="mailto:jason@maven.org">Jason van Zyl</a>
  * @version $Id:DefaultMacroManager.java 348605 2005-11-24 12:02:44 +1100 (Thu, 24 Nov 2005) brett $
- * @plexus.component role="org.apache.maven.doxia.macro.manager.MacroManager"
+ * @plexus.component
  */
 public class DefaultMacroManager
     implements MacroManager
 {
-    /**
-     * @plexus.requirement role="org.apache.maven.doxia.macro.Macro"
-     */
+    /** @plexus.requirement role="org.apache.maven.doxia.macro.Macro" */
     private Map macros;
 
     public Macro getMacro( String id )

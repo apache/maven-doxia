@@ -35,8 +35,7 @@ import java.util.HashMap;
 import java.util.Map;
 
 /**
- * @plexus.component role="org.apache.maven.doxia.macro.Macro"
- * role-hint="snippet"
+ * @plexus.component role-hint="snippet"
  */
 public class SnippetMacro
     extends AbstractMacro

@@ -27,7 +27,7 @@ import org.apache.maven.doxia.index.IndexingSink;
 import org.apache.maven.doxia.macro.AbstractMacro;
 import org.apache.maven.doxia.macro.MacroExecutionException;
 import org.apache.maven.doxia.macro.MacroRequest;
-import org.apache.maven.doxia.module.HtmlTools;
+import org.apache.maven.doxia.util.HtmlTools;
 import org.apache.maven.doxia.parser.ParseException;
 import org.apache.maven.doxia.parser.Parser;
 import org.apache.maven.doxia.sink.Sink;
@@ -63,8 +63,7 @@ import org.codehaus.plexus.util.StringUtils;
  * &lt;macro name="toc" section="1" fromDepth="1" toDepth="2"/&gt;
  * </pre>
  *
- * @plexus.component role="org.apache.maven.doxia.macro.Macro"
- * role-hint="toc"
+ * @plexus.component role-hint="toc"
  *
  * @author <a href="mailto:vincent.siveton@gmail.com">Vincent Siveton</a>
  * @version $Id$

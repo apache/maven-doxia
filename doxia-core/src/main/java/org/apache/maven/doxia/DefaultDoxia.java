@@ -28,9 +28,9 @@ import org.apache.maven.doxia.sink.Sink;
 import java.io.Reader;
 
 /**
- * @plexus.component role="org.apache.maven.doxia.Doxia"
+ * @plexus.component
  *
- * @author <a href="mailto:jason@maven.org">Jason van Zyl</a>
+ * @author Jason van Zyl
  * @version $Id:DefaultDoxia.java 348605 2005-11-24 12:02:44 +1100 (Thu, 24 Nov 2005) brett $
  */
 public class DefaultDoxia

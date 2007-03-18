@@ -19,8 +19,7 @@ package org.apache.maven.doxia.sink;
  * under the License.
  */
 
-import org.apache.maven.doxia.module.apt.AptParser;
-import org.apache.maven.doxia.sink.Sink;
+import org.apache.maven.doxia.parser.Parser;
 import org.codehaus.plexus.PlexusTestCase;
 
 import java.io.File;
@@ -46,7 +45,7 @@ public abstract class AbstractSinkTestCase
     public void testApt()
         throws Exception
     {
-        AptParser parser = new AptParser();
+        Parser parser = createParser();
 
         parser.parse( getTestReader(), createSink() );
     }
@@ -56,6 +55,8 @@ public abstract class AbstractSinkTestCase
     // ----------------------------------------------------------------------
 
     protected abstract String outputExtension();
+
+    protected abstract Parser createParser();
 
     protected abstract Sink createSink()
         throws Exception;
@@ -85,7 +86,7 @@ public abstract class AbstractSinkTestCase
     protected Reader getTestReader()
         throws Exception
     {
-        InputStream is = Thread.currentThread().getContextClassLoader().getResourceAsStream( "test/test.apt" );
+        InputStream is = Thread.currentThread().getContextClassLoader().getResourceAsStream( "test.apt" );
 
         InputStreamReader reader = new InputStreamReader( is );
 

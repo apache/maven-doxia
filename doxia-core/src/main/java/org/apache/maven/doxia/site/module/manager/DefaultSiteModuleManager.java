@@ -27,7 +27,7 @@ import java.util.Map;
 /**
  * @author Jason van Zyl
  * @version $Id:DefaultSiteModuleManager.java 348605 2005-11-24 12:02:44 +1100 (Thu, 24 Nov 2005) brett $
- * @plexus.component role="org.apache.maven.doxia.site.module.manager.SiteModuleManager"
+ * @plexus.component
  */
 public class DefaultSiteModuleManager
     implements SiteModuleManager

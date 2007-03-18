@@ -602,15 +602,4 @@ public class StringUtil
 
         return replaced.toString();
     }
-
-    /**
-     * A simple test for {@link #replaceAll}.
-     */
-    /*
-    public static final void main(String[] args) {
-    System.out.println("'" +
-               StringUtil.replaceAll(args[0], args[1], args[2]) +
-               "'");
-    }
-    */
 }

@@ -1,3 +1,0 @@
-.bmp.ppm=bmptoppm %F > %G
-.fig.jpg=fig2dev -L jpeg %F %G
-
