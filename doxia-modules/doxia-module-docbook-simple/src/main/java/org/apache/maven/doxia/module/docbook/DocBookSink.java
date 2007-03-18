@@ -19,7 +19,7 @@ package org.apache.maven.doxia.module.docbook;
  * under the License.
  */
 
-import org.apache.maven.doxia.module.apt.AptParser;
+import org.apache.maven.doxia.parser.Parser;
 import org.apache.maven.doxia.sink.SinkAdapter;
 import org.apache.maven.doxia.sink.StructureSink;
 import org.apache.maven.doxia.util.FileUtil;
@@ -727,13 +727,13 @@ public class DocBookSink
             String justif;
             switch ( justification[i] )
             {
-                case AptParser.JUSTIFY_LEFT:
+                case Parser.JUSTIFY_LEFT:
                     justif = "left";
                     break;
-                case AptParser.JUSTIFY_RIGHT:
+                case Parser.JUSTIFY_RIGHT:
                     justif = "right";
                     break;
-                case AptParser.JUSTIFY_CENTER:
+                case Parser.JUSTIFY_CENTER:
                 default:
                     justif = "center";
                     break;

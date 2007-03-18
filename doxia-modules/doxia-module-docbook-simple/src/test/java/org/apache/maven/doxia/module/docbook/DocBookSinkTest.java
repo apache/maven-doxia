@@ -21,6 +21,11 @@ package org.apache.maven.doxia.module.docbook;
 
 import org.apache.maven.doxia.sink.AbstractSinkTestCase;
 import org.apache.maven.doxia.sink.Sink;
+import org.apache.maven.doxia.parser.Parser;
+
+import java.io.Reader;
+import java.io.InputStream;
+import java.io.InputStreamReader;
 
 /**
  * @author <a href="mailto:jason@maven.org">Jason van Zyl</a>
@@ -34,9 +39,24 @@ public class DocBookSinkTest
         return "docbook";
     }
 
+    protected Parser createParser()
+    {
+        return new DocBookParser();
+    }
+
     protected Sink createSink()
         throws Exception
     {
         return new DocBookSink( getTestWriter() );
+    }
+
+    protected Reader getTestReader()
+        throws Exception
+    {
+        InputStream is = Thread.currentThread().getContextClassLoader().getResourceAsStream( "guide.xml" );
+
+        InputStreamReader reader = new InputStreamReader( is );
+
+        return reader;
     }
 }
