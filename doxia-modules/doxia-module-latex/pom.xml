@@ -5,17 +5,13 @@
     <version>1.0-alpha-9-SNAPSHOT</version>
   </parent>
   <modelVersion>4.0.0</modelVersion>
-  <groupId>org.apache.maven.doxia</groupId>
   <artifactId>doxia-module-latex</artifactId>
-  <name>doxia-module-latex</name>
-  <version>1.0-SNAPSHOT</version>
-  <url>http://maven.apache.org</url>
   <dependencies>
     <dependency>
-      <groupId>junit</groupId>
-      <artifactId>junit</artifactId>
-      <version>3.8.1</version>
+      <groupId>org.apache.maven.doxia</groupId>
+      <artifactId>doxia-module-apt</artifactId>
+      <version>${projectVersion}</version>
       <scope>test</scope>
     </dependency>
-  </dependencies>
+  </dependencies>  
 </project>

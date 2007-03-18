@@ -20,8 +20,14 @@ package org.apache.maven.doxia.module.latex;
  */
 
 import org.apache.maven.doxia.module.latex.LatexSink;
+import org.apache.maven.doxia.module.apt.AptParser;
 import org.apache.maven.doxia.sink.Sink;
 import org.apache.maven.doxia.sink.AbstractSinkTestCase;
+import org.apache.maven.doxia.parser.Parser;
+
+import java.io.Reader;
+import java.io.InputStream;
+import java.io.InputStreamReader;
 
 /**
  * @author <a href="mailto:jason@maven.org">Jason van Zyl</a>
@@ -35,9 +41,24 @@ public class LatexSinkTest
         return "tex";
     }
 
+    protected Parser createParser()
+    {
+        return new AptParser();
+    }
+
     protected Sink createSink()
         throws Exception
     {
         return new LatexSink( getTestWriter() );
+    }
+
+    protected Reader getTestReader()
+        throws Exception
+    {
+        InputStream is = Thread.currentThread().getContextClassLoader().getResourceAsStream( "test.apt" );
+
+        InputStreamReader reader = new InputStreamReader( is );
+
+        return reader;
     }
 }

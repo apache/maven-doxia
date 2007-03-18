@@ -19,15 +19,15 @@ package org.apache.maven.doxia.module.latex;
  * under the License.
  */
 
-import org.apache.maven.doxia.module.apt.AptParser;
+import org.apache.maven.doxia.parser.Parser;
 import org.apache.maven.doxia.sink.SinkAdapter;
 import org.apache.maven.doxia.util.LineBreaker;
 import org.codehaus.plexus.util.IOUtil;
 import org.codehaus.plexus.util.StringUtils;
 
-import java.io.Writer;
 import java.io.IOException;
 import java.io.InputStream;
+import java.io.Writer;
 
 public class LatexSink
     extends SinkAdapter
@@ -395,13 +395,13 @@ public class LatexSink
             }
             switch ( justification[i] )
             {
-                case AptParser.JUSTIFY_CENTER:
+                case Parser.JUSTIFY_CENTER:
                     justif.append( 'c' );
                     break;
-                case AptParser.JUSTIFY_LEFT:
+                case Parser.JUSTIFY_LEFT:
                     justif.append( 'l' );
                     break;
-                case AptParser.JUSTIFY_RIGHT:
+                case Parser.JUSTIFY_RIGHT:
                     justif.append( 'r' );
                     break;
             }
@@ -587,13 +587,13 @@ public class LatexSink
         char justif;
         switch ( cellJustif[cellCount] )
         {
-            case AptParser.JUSTIFY_LEFT:
+            case Parser.JUSTIFY_LEFT:
                 justif = 'l';
                 break;
-            case AptParser.JUSTIFY_RIGHT:
+            case Parser.JUSTIFY_RIGHT:
                 justif = 'r';
                 break;
-            case AptParser.JUSTIFY_CENTER:
+            case Parser.JUSTIFY_CENTER:
             default:
                 justif = 'c';
                 break;
