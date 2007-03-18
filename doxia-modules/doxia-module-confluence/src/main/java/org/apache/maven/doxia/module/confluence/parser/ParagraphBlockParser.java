@@ -23,7 +23,7 @@ import java.util.ArrayList;
 import java.util.List;
 import java.util.Arrays;
 
-import org.apache.maven.doxia.module.common.ByLineSource;
+import org.apache.maven.doxia.util.ByLineSource;
 import org.apache.maven.doxia.parser.ParseException;
 import org.codehaus.plexus.util.StringUtils;
 

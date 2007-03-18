@@ -19,7 +19,7 @@ package org.apache.maven.doxia.module.confluence.parser;
  * under the License.
  */
 
-import org.apache.maven.doxia.module.common.ByLineSource;
+import org.apache.maven.doxia.util.ByLineSource;
 import org.apache.maven.doxia.parser.ParseException;
 
 public class HorizontalRuleBlockParser

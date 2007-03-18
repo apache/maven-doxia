@@ -19,7 +19,7 @@ package org.apache.maven.doxia.module.confluence.parser.list;
  * under the License.
  */
 
-import org.apache.maven.doxia.module.common.ByLineSource;
+import org.apache.maven.doxia.util.ByLineSource;
 import org.apache.maven.doxia.module.confluence.parser.Block;
 import org.apache.maven.doxia.module.confluence.parser.BlockParser;
 import org.apache.maven.doxia.parser.ParseException;

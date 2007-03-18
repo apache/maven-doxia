@@ -19,8 +19,8 @@ package org.apache.maven.doxia.module.confluence;
  * under the License.
  */
 
-import org.apache.maven.doxia.module.common.ByLineReaderSource;
-import org.apache.maven.doxia.module.common.ByLineSource;
+import org.apache.maven.doxia.util.ByLineReaderSource;
+import org.apache.maven.doxia.util.ByLineSource;
 import org.apache.maven.doxia.module.confluence.parser.Block;
 import org.apache.maven.doxia.module.confluence.parser.BlockParser;
 import org.apache.maven.doxia.module.confluence.parser.SectionBlockParser;
@@ -38,10 +38,7 @@ import java.util.ArrayList;
 import java.util.Iterator;
 import java.util.List;
 
-/**
- * @plexus.component role="org.apache.maven.doxia.parser.Parser"
- * role-hint="confluence"
- */
+/** @plexus.component role-hint="confluence" */
 public class ConfluenceParser
     extends AbstractParser
 {
@@ -56,15 +53,8 @@ public class ConfluenceParser
         BlockParser listParser = new ListBlockParser();
         BlockParser tableParser = new TableBlockParser();
 
-        parsers = new BlockParser[]
-            {
-                headingParser,
-                verbatimParser,
-                horizontalRuleParser,
-                listParser,
-                tableParser,
-                paragraphParser
-            };
+        parsers = new BlockParser[]{headingParser, verbatimParser, horizontalRuleParser, listParser, tableParser,
+            paragraphParser};
     }
 
     //TODO: (empty line) Produces a new paragraph
@@ -119,7 +109,8 @@ public class ConfluenceParser
         return blocks;
     }
 
-    public  synchronized void parse( Reader reader, Sink sink )
+    public synchronized void parse( Reader reader,
+                                    Sink sink )
         throws ParseException
     {
         List blocks;
@@ -130,11 +121,11 @@ public class ConfluenceParser
         {
             blocks = parse( source );
         }
-        catch (  ParseException e )
+        catch ( ParseException e )
         {
             throw e;
         }
-        catch (  Exception e )
+        catch ( Exception e )
         {
             throw new ParseException( e, source.getName(), source.getLineNumber() );
         }

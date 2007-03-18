@@ -22,7 +22,7 @@ package org.apache.maven.doxia.module.confluence.parser.table;
 import java.util.ArrayList;
 import java.util.List;
 
-import org.apache.maven.doxia.module.common.ByLineSource;
+import org.apache.maven.doxia.util.ByLineSource;
 import org.apache.maven.doxia.module.confluence.parser.BlockParser;
 import org.apache.maven.doxia.module.confluence.parser.Block;
 import org.apache.maven.doxia.module.confluence.parser.BoldBlock;
