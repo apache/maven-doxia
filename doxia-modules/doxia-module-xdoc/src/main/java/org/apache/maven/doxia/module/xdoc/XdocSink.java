@@ -21,10 +21,10 @@ package org.apache.maven.doxia.module.xdoc;
 
 import java.io.Writer;
 
-import org.apache.maven.doxia.module.HtmlTools;
-import org.apache.maven.doxia.module.apt.AptParser;
+import org.apache.maven.doxia.util.HtmlTools;
 import org.apache.maven.doxia.sink.SinkAdapter;
 import org.apache.maven.doxia.util.LineBreaker;
+import org.apache.maven.doxia.parser.Parser;
 
 /**
  * A doxia Sink which produces an xdoc model.
@@ -496,13 +496,13 @@ public class XdocSink
         {
             switch ( cellJustif[cellCount] )
             {
-                case AptParser.JUSTIFY_LEFT:
+                case Parser.JUSTIFY_LEFT:
                     justif = "left";
                     break;
-                case AptParser.JUSTIFY_RIGHT:
+                case Parser.JUSTIFY_RIGHT:
                     justif = "right";
                     break;
-                case AptParser.JUSTIFY_CENTER:
+                case Parser.JUSTIFY_CENTER:
                 default:
                     justif = "center";
                     break;

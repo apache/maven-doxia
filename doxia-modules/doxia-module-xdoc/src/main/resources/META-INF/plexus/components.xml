@@ -1,0 +1,23 @@
+<component-set>
+  <components>
+    <component>
+      <role>org.apache.maven.doxia.parser.Parser</role>
+      <role-hint>xdoc</role-hint>
+      <implementation>org.apache.maven.doxia.module.xdoc.XdocParser</implementation>
+      <requirements>
+        <requirement>
+          <role>org.apache.maven.doxia.macro.manager.MacroManager</role>
+          <field-name>macroManager</field-name>
+        </requirement>
+      </requirements>
+<description>Parse an xdoc model and emit events into the specified doxia
+Sink.</description>
+    </component>
+    <component>
+      <role>org.apache.maven.doxia.site.module.SiteModule</role>
+      <role-hint>xdoc</role-hint>
+      <implementation>org.apache.maven.doxia.module.xdoc.XdocSiteModule</implementation>
+      <description></description>
+    </component>
+  </components>
+</component-set>

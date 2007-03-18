@@ -37,9 +37,7 @@ public class XdocParserTest
 {
     private XdocParser parser;
 
-    /**
-     * @see junit.framework.TestCase#setUp()
-     */
+    /** @see junit.framework.TestCase#setUp() */
     protected void setUp()
         throws Exception
     {
@@ -48,25 +46,19 @@ public class XdocParserTest
         parser = (XdocParser) lookup( Parser.ROLE, "xdoc" );
     }
 
-    /**
-     * @see org.apache.maven.doxia.parser.AbstractParserTestCase#getParser()
-     */
+    /** @see org.apache.maven.doxia.parser.AbstractParserTestCase#getParser() */
     protected Parser getParser()
     {
         return parser;
     }
 
-    /**
-     * @see org.apache.maven.doxia.parser.AbstractParserTestCase#getDocument()
-     */
+    /** @see org.apache.maven.doxia.parser.AbstractParserTestCase#getDocument() */
     protected String getDocument()
     {
-        return "src/test/site/xdoc/report.xml";
+        return "src/test/resources/report.xml";
     }
 
-    /**
-     * @throws Exception
-     */
+    /** @throws Exception  */
     public void testSnippetMacro()
         throws Exception
     {
@@ -76,7 +68,7 @@ public class XdocParserTest
         try
         {
             output = new StringWriter();
-            reader = new FileReader( getTestFile( getBasedir(), "src/test/site/xdoc/macro.xml" ) );
+            reader = new FileReader( getTestFile( getBasedir(), "src/test/resources/macro.xml" ) );
 
             Sink sink = new XdocSink( output );
             getParser().parse( reader, sink );
@@ -85,14 +77,19 @@ public class XdocParserTest
         }
         finally
         {
-            output.close();
-            reader.close();
+            if ( output != null )
+            {
+                output.close();
+            }
+
+            if ( reader != null )
+            {
+                reader.close();
+            }
         }
     }
 
-    /**
-     * @throws Exception
-     */
+    /** @throws Exception  */
     public void testTocMacro()
         throws Exception
     {
@@ -102,7 +99,7 @@ public class XdocParserTest
         try
         {
             output = new StringWriter();
-            reader = new FileReader( getTestFile( getBasedir(), "src/test/site/xdoc/toc.xml" ) );
+            reader = new FileReader( getTestFile( getBasedir(), "src/test/resources/toc.xml" ) );
 
             Sink sink = new XdocSink( output );
             getParser().parse( reader, sink );
@@ -113,8 +110,15 @@ public class XdocParserTest
         }
         finally
         {
-            output.close();
-            reader.close();
+            if ( output != null )
+            {
+                output.close();
+            }
+
+            if ( reader != null )
+            {
+                reader.close();
+            }
         }
     }
 }

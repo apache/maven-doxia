@@ -22,6 +22,11 @@ package org.apache.maven.doxia.module.xdoc;
 import org.apache.maven.doxia.module.xdoc.XdocSink;
 import org.apache.maven.doxia.sink.Sink;
 import org.apache.maven.doxia.sink.AbstractSinkTestCase;
+import org.apache.maven.doxia.parser.Parser;
+
+import java.io.Reader;
+import java.io.InputStream;
+import java.io.InputStreamReader;
 
 /**
  * @author <a href="mailto:jason@maven.org">Jason van Zyl</a>
@@ -35,9 +40,24 @@ public class XdocSinkTest
         return "xml";
     }
 
+    protected Parser createParser()
+    {
+        return new XdocParser();
+    }
+
     protected Sink createSink()
         throws Exception
     {
         return new XdocSink( getTestWriter() );
+    }
+
+    protected Reader getTestReader()
+        throws Exception
+    {
+        InputStream is = Thread.currentThread().getContextClassLoader().getResourceAsStream( "report.xml" );
+
+        InputStreamReader reader = new InputStreamReader( is );
+
+        return reader;
     }
 }
