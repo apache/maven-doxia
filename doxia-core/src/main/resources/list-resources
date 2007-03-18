@@ -1,3 +1,0 @@
-#!/bin/sh
-( cd $1; find -name '*~' -exec rm -f {} \; )
-( cd $1; find | grep -v CVS | sed 's/^\.\///' | grep / | grep \\. | grep -v resources.txt > resources.txt )
