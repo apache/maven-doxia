@@ -6,6 +6,7 @@
   </parent>
   <modelVersion>4.0.0</modelVersion>
   <artifactId>doxia-module-latex</artifactId>
+  <name>Doxia :: Latex Module</name>
   <dependencies>
     <dependency>
       <groupId>org.apache.maven.doxia</groupId>

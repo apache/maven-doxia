@@ -1,4 +1,4 @@
-package org.apache.maven.doxia.module.xhtml.decoration.render;
+package org.apache.maven.doxia.module.xhtml;
 
 /*
  * Licensed to the Apache Software Foundation (ASF) under one

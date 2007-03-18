@@ -6,4 +6,5 @@
   </parent>
   <modelVersion>4.0.0</modelVersion>
   <artifactId>doxia-module-xhtml</artifactId>
+  <name>Doxia :: XHTML Module</name>
 </project>

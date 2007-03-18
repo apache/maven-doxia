@@ -118,8 +118,6 @@ public class ITextSinkTestCase
                             new FileOutputStream( getGeneratedFile( "test_itext_apt", ".pdf" ) ) );
     }
 
-    // DOXIA-
-
     /**
      * Generate a pdf and a rtf from an <code>apt</code> file
      *

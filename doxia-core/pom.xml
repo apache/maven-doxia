@@ -27,7 +27,7 @@ under the License.
     <version>1.0-alpha-9-SNAPSHOT</version>
   </parent>
   <artifactId>doxia-core</artifactId>
-  <name>Doxia Core</name>
+  <name>Doxia :: Core</name>
   <build>
     <plugins>
       <plugin>

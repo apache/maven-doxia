@@ -27,7 +27,7 @@ under the License.
     <version>1.0-alpha-9-SNAPSHOT</version>
   </parent>
   <artifactId>doxia-module-twiki</artifactId>
-  <name>Doxia TWiki Module</name>
+  <name>Doxia :: TWiki Module</name>
    <developers>
     <developer>
       <name>Juan F. Codagnone</name>

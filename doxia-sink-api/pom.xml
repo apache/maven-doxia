@@ -27,5 +27,5 @@ under the License.
     <version>1.0-alpha-9-SNAPSHOT</version>
   </parent>
   <artifactId>doxia-sink-api</artifactId>
-  <name>Doxia Sink API</name>
+  <name>Doxia :: Sink API</name>
 </project>

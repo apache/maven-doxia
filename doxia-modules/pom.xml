@@ -24,7 +24,7 @@ under the License.
     <version>1.0-alpha-9-SNAPSHOT</version>
   </parent>
   <artifactId>doxia-modules</artifactId>
-  <name>Doxia Modules</name>
+  <name>Doxia :: Modules</name>
   <packaging>pom</packaging>
   <dependencies>
     <dependency>

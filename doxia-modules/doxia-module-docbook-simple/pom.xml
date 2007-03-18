@@ -25,5 +25,5 @@ under the License.
     <version>1.0-alpha-9-SNAPSHOT</version>
   </parent>
   <artifactId>doxia-module-docbook-simple</artifactId>
-  <name>Doxia Docbook Simple Module</name>
+  <name>Doxia :: Docbook Simple Module</name>
 </project>

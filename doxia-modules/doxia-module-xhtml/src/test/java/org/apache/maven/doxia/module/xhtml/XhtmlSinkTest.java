@@ -19,18 +19,15 @@ package org.apache.maven.doxia.module.xhtml;
  * under the License.
  */
 
-import org.apache.maven.doxia.module.xhtml.decoration.render.RenderingContext;
+import org.apache.maven.doxia.module.xhtml.RenderingContext;
 import org.apache.maven.doxia.sink.AbstractSinkTestCase;
 import org.apache.maven.doxia.sink.Sink;
 import org.apache.maven.doxia.parser.Parser;
 
 import java.io.File;
-import java.io.FileReader;
 import java.io.Reader;
 import java.io.InputStream;
 import java.io.InputStreamReader;
-import java.util.Map;
-import java.util.Collections;
 import java.util.HashMap;
 
 /**

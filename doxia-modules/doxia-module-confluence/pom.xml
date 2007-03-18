@@ -25,7 +25,7 @@ under the License.
     <version>1.0-alpha-9-SNAPSHOT</version>
   </parent>
   <artifactId>doxia-module-confluence</artifactId>
-  <name>Doxia Confluence Module</name>
+  <name>Doxia :: Confluence Module</name>
   <developers>
     <developer>
       <name>Juan F. Codagnone</name>
