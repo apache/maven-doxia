@@ -28,8 +28,7 @@ under the License.
   </parent>
   <artifactId>doxia-module-twiki</artifactId>
   <name>Doxia TWiki Module</name>
-  <version>1.0-alpha-9-SNAPSHOT</version>
-  <developers>
+   <developers>
     <developer>
       <name>Juan F. Codagnone</name>
       <email>juan *at* zauber dot. com dot. ar</email>

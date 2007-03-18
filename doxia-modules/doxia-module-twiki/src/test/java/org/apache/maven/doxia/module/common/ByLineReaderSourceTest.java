@@ -22,12 +22,13 @@ package org.apache.maven.doxia.module.common;
 import java.io.StringReader;
 
 import org.apache.maven.doxia.parser.ParseException;
+import org.apache.maven.doxia.util.ByLineReaderSource;
 
 import junit.framework.TestCase;
 
 
 /**
- * Unit test for {@link org.apache.maven.doxia.module.common.ByLineReaderSource}.
+ * Unit test for {@link org.apache.maven.doxia.util.ByLineReaderSource}.
  *
  * @author Juan F. Codagnone
  * @since Nov 1, 2005

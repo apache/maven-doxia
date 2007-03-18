@@ -25,7 +25,7 @@ import java.util.List;
 import java.util.regex.Matcher;
 import java.util.regex.Pattern;
 
-import org.apache.maven.doxia.module.common.ByLineSource;
+import org.apache.maven.doxia.util.ByLineSource;
 import org.apache.maven.doxia.parser.ParseException;
 
 

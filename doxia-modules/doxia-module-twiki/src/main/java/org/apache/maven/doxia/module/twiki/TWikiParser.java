@@ -19,17 +19,25 @@ package org.apache.maven.doxia.module.twiki;
  * under the License.
  */
 
+import org.apache.maven.doxia.module.twiki.parser.Block;
+import org.apache.maven.doxia.module.twiki.parser.BlockParser;
+import org.apache.maven.doxia.module.twiki.parser.FormatedTextParser;
+import org.apache.maven.doxia.module.twiki.parser.GenericListBlockParser;
+import org.apache.maven.doxia.module.twiki.parser.HRuleBlockParser;
+import org.apache.maven.doxia.module.twiki.parser.ParagraphBlockParser;
+import org.apache.maven.doxia.module.twiki.parser.SectionBlockParser;
+import org.apache.maven.doxia.module.twiki.parser.TableBlockParser;
+import org.apache.maven.doxia.module.twiki.parser.TextParser;
+import org.apache.maven.doxia.parser.AbstractParser;
+import org.apache.maven.doxia.parser.ParseException;
+import org.apache.maven.doxia.sink.Sink;
+import org.apache.maven.doxia.util.ByLineReaderSource;
+import org.apache.maven.doxia.util.ByLineSource;
+
 import java.io.Reader;
 import java.util.ArrayList;
 import java.util.Iterator;
 import java.util.List;
-
-import org.apache.maven.doxia.module.common.ByLineReaderSource;
-import org.apache.maven.doxia.module.common.ByLineSource;
-import org.apache.maven.doxia.module.twiki.parser.*;
-import org.apache.maven.doxia.parser.AbstractParser;
-import org.apache.maven.doxia.parser.ParseException;
-import org.apache.maven.doxia.sink.Sink;
 
 /**
  * Parse the <a href="http://twiki.org/cgi-bin/view/TWiki/TextFormattingRules">

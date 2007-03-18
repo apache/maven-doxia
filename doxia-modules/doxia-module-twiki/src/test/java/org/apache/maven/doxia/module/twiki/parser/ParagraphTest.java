@@ -22,7 +22,7 @@ package org.apache.maven.doxia.module.twiki.parser;
 import java.io.StringReader;
 import java.util.Arrays;
 
-import org.apache.maven.doxia.module.common.ByLineReaderSource;
+import org.apache.maven.doxia.util.ByLineReaderSource;
 import org.apache.maven.doxia.parser.ParseException;
 
 

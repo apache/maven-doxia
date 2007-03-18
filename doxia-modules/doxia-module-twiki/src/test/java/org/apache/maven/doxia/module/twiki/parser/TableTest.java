@@ -21,8 +21,8 @@ package org.apache.maven.doxia.module.twiki.parser;
 
 import java.io.StringReader;
 
-import org.apache.maven.doxia.module.common.ByLineReaderSource;
-import org.apache.maven.doxia.module.common.ByLineSource;
+import org.apache.maven.doxia.util.ByLineReaderSource;
+import org.apache.maven.doxia.util.ByLineSource;
 import org.apache.maven.doxia.parser.ParseException;
 
 

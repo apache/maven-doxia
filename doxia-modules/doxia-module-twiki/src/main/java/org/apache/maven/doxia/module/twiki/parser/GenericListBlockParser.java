@@ -19,7 +19,7 @@ package org.apache.maven.doxia.module.twiki.parser;
  * under the License.
  */
 
-import org.apache.maven.doxia.module.common.ByLineSource;
+import org.apache.maven.doxia.util.ByLineSource;
 import org.apache.maven.doxia.parser.ParseException;
 import org.apache.maven.doxia.sink.Sink;
 
@@ -76,7 +76,7 @@ public class GenericListBlockParser implements BlockParser
     }
 
     /**
-     * @see BlockParser#visit(String, ByLineSource)
+     * @see BlockParser#visit(String,org.apache.maven.doxia.util.ByLineSource)
      */
     public final Block visit( final String line, final ByLineSource source )
         throws ParseException
