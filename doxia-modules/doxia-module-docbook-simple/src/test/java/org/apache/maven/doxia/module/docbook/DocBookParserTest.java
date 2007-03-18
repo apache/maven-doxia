@@ -36,6 +36,6 @@ public class DocBookParserTest
 
     protected String getDocument()
     {
-        return "src/test/site/docbook/guide.xml";
+        return "src/test/resources/guide.xml";
     }
 }
