@@ -19,16 +19,16 @@ package org.apache.maven.doxia.module.xhtml;
  * under the License.
  */
 
-import java.io.PrintWriter;
-import java.io.Writer;
-import java.util.Map;
-
-import org.apache.maven.doxia.util.HtmlTools;
-import org.apache.maven.doxia.module.xhtml.RenderingContext;
+import org.apache.maven.doxia.module.xhtml.decoration.render.RenderingContext;
 import org.apache.maven.doxia.parser.Parser;
 import org.apache.maven.doxia.sink.Sink;
 import org.apache.maven.doxia.sink.StructureSink;
+import org.apache.maven.doxia.util.HtmlTools;
 import org.codehaus.plexus.util.StringUtils;
+
+import java.io.PrintWriter;
+import java.io.Writer;
+import java.util.Map;
 
 /**
  * A doxia sink which produces xhtml
@@ -52,7 +52,7 @@ public class XhtmlSink
 
     private PrintWriter writer;
 
-    private StringsMap directives;
+    //private StringsMap directives;
 
     private RenderingContext renderingContext;
 
@@ -61,8 +61,6 @@ public class XhtmlSink
     public XhtmlSink( Writer writer, RenderingContext renderingContext, Map directives )
     {
         this.writer = new PrintWriter( writer );
-
-        this.directives = new StringsMap( directives );
 
         this.renderingContext = renderingContext;
     }
@@ -93,7 +91,8 @@ public class XhtmlSink
 
     public void head()
     {
-        directive( "head()" );
+        // Not used overridden in site renderer
+        // directive( "head()" );
 
         resetState();
 
@@ -104,7 +103,8 @@ public class XhtmlSink
     {
         headFlag = false;
 
-        directive( "head_()" );
+        // Not used overridden in site renderer
+        //directive( "head_()" );
     }
 
     public void title()
@@ -145,18 +145,17 @@ public class XhtmlSink
 
     public void body()
     {
-        String body = directiveValue( "body()" );
-
-        write( body );
+        // Not used overridden in site renderer
+        //String body = directiveValue( "body()" );
+        //write( body );
     }
 
     public void body_()
     {
-        String body = directiveValue( "body_()" );
-
-        write( body );
-
-        resetState();
+        // Not used overridden in site renderer
+        //String body = directiveValue( "body_()" );
+        //write( body );
+        //resetState();
     }
 
     // ----------------------------------------------------------------------
@@ -802,16 +801,6 @@ public class XhtmlSink
         }
 
         writer.write( text );
-    }
-
-    protected String directiveValue( String key )
-    {
-        return directives.get( key );
-    }
-
-    protected void directive( String key )
-    {
-        write( directives.get( key ) );
     }
 
     protected void content( String text )
