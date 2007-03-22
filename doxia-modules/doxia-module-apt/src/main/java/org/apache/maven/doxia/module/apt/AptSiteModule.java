@@ -24,8 +24,7 @@ import org.apache.maven.doxia.site.module.AbstractSiteModule;
 /**
  * @author <a href="mailto:jason@maven.org">Jason van Zyl</a>
  * @version $Id:AptSiteModule.java 348605 2005-11-24 12:02:44 +1100 (Thu, 24 Nov 2005) brett $
- * @plexus.component role="org.apache.maven.doxia.site.module.SiteModule"
- * role-hint="apt"
+ * @plexus.component role="org.apache.maven.doxia.site.module.SiteModule" role-hint="apt"
  */
 public class AptSiteModule
     extends AbstractSiteModule
