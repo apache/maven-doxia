@@ -2192,6 +2192,8 @@ public class AptParser
             String s = text;
 
             s = s.substring( 2, s.length() - 1 );
+            
+            s = escapeForMacro( s );
 
             String[] params = StringUtils.split( s, "|" );
 
@@ -2203,7 +2205,10 @@ public class AptParser
             {
                 String[] param = StringUtils.split( params[i], "=" );
 
-                parameters.put( param[0], param[1] );
+                String key = unescapeForMacro( param[0] );
+                String value = unescapeForMacro( param[1] );
+                
+                parameters.put( key, value );
             }
 
             parameters.put( "sourceContent", sourceContent );
@@ -2225,6 +2230,38 @@ public class AptParser
             {
                 throw new AptParseException( "Unable to find macro used in the APT document", e );
             }
+        }
+
+        private String escapeForMacro( String s )
+        {
+            if ( s == null || s.length() < 1 )
+            {
+                return s;
+            }
+            
+            String result = s;
+            
+            // use some outrageously out-of-place chars for text 
+            // (these are device control one/two in unicode)
+            result = StringUtils.replace( result, "\\=", "\u0011" );
+            result = StringUtils.replace( result, "\\|", "\u0012" );
+            
+            return result;
+        }
+        
+        private String unescapeForMacro( String s )
+        {
+            if ( s == null || s.length() < 1 )
+            {
+                return s;
+            }
+            
+            String result = s;
+            
+            result = StringUtils.replace( result, "\u0011", "=" );
+            result = StringUtils.replace( result, "\u0012", "|" );
+            
+            return result;
         }
     }
 
