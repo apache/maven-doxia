@@ -166,7 +166,7 @@ public class SwfMacro
             .append( "codebase=\"http://download.macromedia.com/pub/shockwave/cabs/flash/swflash.cab#version=" )
             .append( version ).append( "\" width=\"" ).append( width ).append( "\" height=\"" ).append( height )
             .append( "\" id=\"" ).append( id ).append( "\">" ).append( EOL );
-        content.append( "<param name=\"movie\" value=\"" ).append( src ).append( ".swf\">" ).append( EOL );
+        content.append( "<param name=\"movie\" value=\"" ).append( src ).append( "\">" ).append( EOL );
         content.append( "<param name=\"quality\" value=\"" ).append( quality ).append( "\">" ).append( EOL );
         content.append( "<param name=\"menu\" value=\"" ).append( menu ).append( "\">" ).append( EOL );
         content.append( "<param name=\"loop\" value=\"" ).append( loop ).append( "\">" ).append( EOL );
