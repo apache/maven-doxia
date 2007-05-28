@@ -389,6 +389,31 @@ public class XdocSink
         markup( "</dd>" + EOL );
     }
 
+    public void figure()
+    {
+        markup( "<img" );
+    }
+
+    public void figure_()
+    {
+        markup( " />" );
+    }
+
+    public void figureGraphics(String s)
+    {
+        markup( " src=\"" + s + "\"" );
+    }
+
+    public void figureCaption()
+    {
+        markup( " alt=\"" );
+    }
+
+    public void figureCaption_()
+    {
+        markup( "\"" );
+    }
+
     public void paragraph()
     {
         if ( !itemFlag )
