@@ -533,15 +533,15 @@ public class XhtmlSink
             }
         }
 
-        String cellWidth = "width=\"" + width + "\"";
+        String cellWidth = (width != null) ? " colspan=\"" + width + "\"" : "";
 
         if ( headerRow )
         {
-            write( "<th " );
+            write( "<th" );
         }
         else
         {
-            write( "<td " );
+            write( "<td" );
         }
 
         if ( justif != null )
