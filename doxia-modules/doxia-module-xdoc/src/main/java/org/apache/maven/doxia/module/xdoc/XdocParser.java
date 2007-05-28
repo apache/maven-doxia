@@ -212,11 +212,11 @@ public class XdocParser
                 }
                 else if ( parser.getName().equals( "th" ) )
                 {
-                    sink.tableHeaderCell();
+                    sink.tableHeaderCell(parser.getAttributeValue( null, "colspan" ));
                 }
                 else if ( parser.getName().equals( "td" ) )
                 {
-                    sink.tableCell();
+                    sink.tableCell(parser.getAttributeValue( null, "colspan" ));
                 }
                 else
                 {
