@@ -1,4 +1,4 @@
-package org.codehaus.doxia.module.xdoc;
+package org.apache.maven.doxia.module.xdoc;
 
 /*
  * Licensed to the Apache Software Foundation (ASF) under one
@@ -19,11 +19,12 @@ package org.codehaus.doxia.module.xdoc;
  * under the License.
  */
 
-import org.apache.maven.doxia.util.HtmlTools;                                                                                  
-import org.apache.maven.doxia.sink.SinkAdapter;                                                                                
+import org.apache.maven.doxia.parser.Parser;
+import org.apache.maven.doxia.sink.SinkAdapter;
 import org.apache.maven.doxia.sink.StructureSink;
+import org.apache.maven.doxia.util.HtmlTools;
+import org.apache.maven.doxia.util.StringUtil;
 import org.codehaus.plexus.util.xml.XMLWriter;
-import org.apache.maven.doxia.parser.Parser;                                                                                   
 
 /**
  * A doxia Sink which produces an xdoc document.
@@ -54,7 +55,6 @@ public class XmlWriterXdocSink
             throw new IllegalArgumentException("argument can't be null");
         }
         this.writer = writer;
-        
     }
 
     protected void resetState()
@@ -81,8 +81,8 @@ public class XmlWriterXdocSink
     public void head_()
     {
         headFlag = false;
-        
-        writer.endElement(); // properties    
+
+        writer.endElement(); // properties
     }
 
     public void title_()
@@ -402,7 +402,6 @@ public class XmlWriterXdocSink
             }
         }
 
-        
         writer.startElement("t" + ( headerRow ? 'h' : 'd' ));
         if ( justif != null )
             writer.addAttribute("align", justif);
@@ -535,7 +534,7 @@ public class XmlWriterXdocSink
         {
             buffer.append( text );
         }
-        else if ( sectionTitleFlag ) 
+        else if ( sectionTitleFlag )
         {
             buffer.append( text );
         }
@@ -564,7 +563,7 @@ public class XmlWriterXdocSink
 
     protected void verbatimContent( String text )
     {
-        writer.writeText( text.replace(" ", "&nbsp;"));
+        writer.writeText( StringUtil.replaceAll( text, " ", "&nbsp;" ) );
     }
 
     public static String escapeHTML( String text )
