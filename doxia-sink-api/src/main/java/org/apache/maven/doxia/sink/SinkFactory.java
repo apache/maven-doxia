@@ -22,9 +22,17 @@ package org.apache.maven.doxia.sink;
 import java.io.File;
 
 /**
+ * A factory that creates a <code>Sink</code> object.
+ *
  * @author <a href="kenney@apache.org">Kenney Westerhof</a>
+ * @version $Id$
  */
 public interface SinkFactory
 {
+    /**
+     * @param outputDir the output dir
+     * @param outputName the output name
+     * @return a <code>Sink</code> instance
+     */
     Sink createSink( File outputDir, String outputName );
 }
