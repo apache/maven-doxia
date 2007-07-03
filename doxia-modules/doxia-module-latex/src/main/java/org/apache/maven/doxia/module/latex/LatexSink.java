@@ -102,12 +102,12 @@ public class LatexSink
 
     protected String getDocumentStart()
     {
-        return "\\documentclass[a4paper]{article}";
+        return "\\documentclass[a4paper]{article}" + EOL + EOL;
     }
 
     protected String getDocumentBegin()
     {
-        return "\\begin{document}";
+        return "\\begin{document}" + EOL + EOL;
     }
 
     protected String getDocumentEnd()
@@ -135,9 +135,9 @@ public class LatexSink
         {
             markup( sinkCommands );
 
-            markup( preamble );
-
             markup( getDocumentStart() );
+
+            markup( preamble );
 
             markup( getDocumentBegin() );
         }
@@ -184,7 +184,7 @@ public class LatexSink
 
         if ( StringUtils.isNotEmpty( title ) )
         {
-            markup( "\\psectioni{" + title + "}" );
+            markup( "\\psectioni{" + title + "}" + EOL );
 
             title = null;
         }
@@ -205,7 +205,7 @@ public class LatexSink
 
         if ( StringUtils.isNotEmpty( title ) )
         {
-            markup( "\\psectionii{" + title + "}" );
+            markup( "\\psectionii{" + title + "}" + EOL );
 
             title = null;
         }
@@ -226,7 +226,7 @@ public class LatexSink
 
         if ( StringUtils.isNotEmpty( title ) )
         {
-            markup( "\\psectioniii{" + title + "}" );
+            markup( "\\psectioniii{" + title + "}" + EOL );
 
             title = null;
         }
@@ -247,7 +247,7 @@ public class LatexSink
 
         if ( StringUtils.isNotEmpty( title ) )
         {
-            markup( "\\psectioniv{" + title + "}" );
+            markup( "\\psectioniv{" + title + "}" + EOL );
 
             title = null;
         }
@@ -268,7 +268,7 @@ public class LatexSink
 
         if ( StringUtils.isNotEmpty( title ) )
         {
-            markup( "\\psectionv{" + title + "}" );
+            markup( "\\psectionv{" + title + "}" + EOL );
 
             title = null;
         }
