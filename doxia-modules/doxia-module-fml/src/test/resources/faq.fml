@@ -1,28 +1,29 @@
 <?xml version="1.0" encoding="ISO-8859-1"?>
-<!-- 
-/*
- * Copyright 2001-2004 The Apache Software Foundation.
- * 
- * Licensed under the Apache License, Version 2.0 (the "License");
- * you may not use this file except in compliance with the License.
- * You may obtain a copy of the License at
- * 
- *      http://www.apache.org/licenses/LICENSE-2.0
- * 
- * Unless required by applicable law or agreed to in writing, software
- * distributed under the License is distributed on an "AS IS" BASIS,
- * WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
- * See the License for the specific language governing permissions and
- * limitations under the License.
- */
- -->
+<!--
+Licensed to the Apache Software Foundation (ASF) under one
+or more contributor license agreements.  See the NOTICE file
+distributed with this work for additional information
+regarding copyright ownership.  The ASF licenses this file
+to you under the Apache License, Version 2.0 (the
+"License"); you may not use this file except in compliance
+with the License.  You may obtain a copy of the License at
+
+  http://www.apache.org/licenses/LICENSE-2.0
+
+Unless required by applicable law or agreed to in writing,
+software distributed under the License is distributed on an
+"AS IS" BASIS, WITHOUT WARRANTIES OR CONDITIONS OF ANY
+KIND, either express or implied.  See the License for the
+specific language governing permissions and limitations
+under the License.
+-->
 
 <!-- TODO [later]: faqs need some sorting -->
 <faqs title="Frequently Asked Questions">
 
   <part id="general">
     <title>General</title>
-   
+
     <faq id="maven-definition">
       <question>What does Maven mean?</question>
       <answer><p>A maven (yi.=meyvn) is an experienced or knowledgeable person, such as an expert or freak.</p></answer>
@@ -31,7 +32,7 @@
   </part>
   <part id="help">
     <title>Where Can I Get Help?</title>
-   
+
     <faq id="where-get-help">
       <question>Where do I get help on Maven?</question>
       <answer>
@@ -52,7 +53,7 @@
           channel <code>#maven</code>.
           But please don't ask for solutions to Maven problems there, as
           Maven user problems should be discussed at the mailing list
-          for several good reasons (e.g. mail archive, more subscribers) and 
+          for several good reasons (e.g. mail archive, more subscribers) and
           usually you get a quick answer on the mailing list. But feel free to drop in and say hi.
         </p>
         <p>
@@ -209,7 +210,7 @@
       </answer>
     </faq>
   </part>
-  
+
   <part id="using">
     <title>Using Maven</title>
     <faq id="using-entities">
@@ -257,7 +258,7 @@
         </p>
       </answer>
     </faq>
-    
+
     <faq id="ignoring-broken-tests">
       <question>How do I make my build complete even with broken tests?</question>
       <answer>
@@ -274,7 +275,7 @@
       <answer>
         <p>If you are running <code>test:test</code>, the exceptions will usually be output to
         <code>./target/test-reports/some.package.SomeClassTest.txt</code>.
-        If you want to see the errors in the output, set the property <code>maven.junit.usefile</code> to 
+        If you want to see the errors in the output, set the property <code>maven.junit.usefile</code> to
         <code>false</code>.</p>
       </answer>
     </faq>
@@ -391,9 +392,9 @@
         <p>
           Because in most cases it isn't needed. <code>root.maven</code> is equivalent to the project classloader,
           so is never needed.
-          While <code>root</code> is the Ant classloader and has some <a href="#BadXSLT">valid uses</a>, you should 
+          While <code>root</code> is the Ant classloader and has some <a href="#BadXSLT">valid uses</a>, you should
           not load tasks into it unless absolutely necessary as it will then force itself
-          on the other plugins executed afterwards. In particular any jakarta-commons libraries should not be in the 
+          on the other plugins executed afterwards. In particular any jakarta-commons libraries should not be in the
           root classloader as these can clash with Jelly.
         </p>
         <p>
@@ -500,8 +501,8 @@
       <question>Can I search the repositories?</question>
       <answer>
         <p>
-         There is a service available at 
-         <a href="http://maven.ozacc.com/">http://maven.ozacc.com/</a> 
+         There is a service available at
+         <a href="http://maven.ozacc.com/">http://maven.ozacc.com/</a>
          that provides a search service, though not affiliated with the
          Maven project.
         </p>
@@ -514,8 +515,8 @@
     <faq id="plugin-variables">
       <question>How do I get or set plugin properties from Jelly?</question>
       <answer>
-        <p>Plugin properties can be used with the following tags: 
-        <a href="reference/maven-jelly-tags/tags.html#maven:get">maven:get</a> and 
+        <p>Plugin properties can be used with the following tags:
+        <a href="reference/maven-jelly-tags/tags.html#maven:get">maven:get</a> and
         <a href="reference/maven-jelly-tags/tags.html#maven:set">maven:set</a>.
         (These replace the deprecated versions of <code>${pom.getPluginContext(...).get/setVariable()}</code>
         and <code>maven:pluginVar</code>.)</p>
@@ -532,7 +533,7 @@
       <answer>
         <p>
           For example, before starting unit tests you might need to start a DB server. The DB server blocks until it is
-          terminated, so it needs to be started in the background. <code>&lt;ant:parallel/&gt;</code> does not seem to 
+          terminated, so it needs to be started in the background. <code>&lt;ant:parallel/&gt;</code> does not seem to
           work in this case because it blocks the main execution thread, which is exactly what needs to be avoided.
         </p>
         <p>
@@ -553,25 +554,25 @@
         <p>
           The solution is to add the JAXP system property via the Jelly script.
         </p>
-        <source><![CDATA[${systemScope.setProperty('javax.xml.transform.TransformerFactory','org.apache.xalan.processor.TransformerFactoryImpl')} 
-<ant:style in="${basedir}/some.xml" out="${maven.build.dest}/other.xml" style="${basedir}/sheet.xsl" processor="trax"/> 
+        <source><![CDATA[${systemScope.setProperty('javax.xml.transform.TransformerFactory','org.apache.xalan.processor.TransformerFactoryImpl')}
+<ant:style in="${basedir}/some.xml" out="${maven.build.dest}/other.xml" style="${basedir}/sheet.xsl" processor="trax"/>
 ]]></source>
         <p>
-          Also make sure that Xalan is declared as dependencies in your project file, and added to the root classloader 
+          Also make sure that Xalan is declared as dependencies in your project file, and added to the root classloader
           so that Ant can find it:
         </p>
         <source><![CDATA[<dependency>
-  <groupId>xalan</groupId> 
-  <artifactId>xalan</artifactId> 
-  <version>2.3.1</version> 
-  <url>http://xml.apache.org/xalan/</url> 
+  <groupId>xalan</groupId>
+  <artifactId>xalan</artifactId>
+  <version>2.3.1</version>
+  <url>http://xml.apache.org/xalan/</url>
   <properties>
     <classloader>root</classloader>
   </properties>
 </dependency>]]></source>
       </answer>
     </faq>
-  
+
     <faq id="shareCode">
       <question>How do I share build code between projects?</question>
       <answer>
@@ -598,7 +599,7 @@
       </answer>
     </faq>
   </part>
-    
+
   <part id="troubleshooting">
     <title>Troubleshooting Maven</title>
 
@@ -620,7 +621,7 @@
         <p>Note that <code>-X</code> implies <code>-e</code>, so there is no need to use both.</p>
       </answer>
     </faq>
-    
+
     <faq id="unit-test-14">
       <question>Why do the unit tests fail under Java 1.4?</question>
       <answer>
@@ -631,7 +632,7 @@
         <code>yes</code>.</p>
       </answer>
     </faq>
-    
+
     <faq id="changelog-no-local-copy">
       <question>Why does change log ask me to check out the source code?</question>
       <answer>
@@ -754,7 +755,7 @@ Total time:  12 seconds]]></source>
       <question>How do I build Maven from behind a firewall?</question>
       <answer>
         <p>You typically need to set your HTTP proxy host and port details so that Maven can tunnel through your
-        HTTP Proxy. To do this you typically need to set the <code>maven.proxy.host</code> and 
+        HTTP Proxy. To do this you typically need to set the <code>maven.proxy.host</code> and
         <code>maven.proxy.port</code> properties.</p>
         See the
         <a href="./reference/properties.html#Proxy_Properties">Properties Reference</a> for more details.
@@ -762,4 +763,4 @@ Total time:  12 seconds]]></source>
     </faq>
   </part>
 </faqs>
-   
+
