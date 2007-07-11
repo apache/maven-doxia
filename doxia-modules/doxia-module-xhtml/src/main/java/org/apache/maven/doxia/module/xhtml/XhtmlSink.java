@@ -645,38 +645,46 @@ public class XhtmlSink
 
     public void link( String name )
     {
-        if ( !headFlag )
-        {
-            if ( isExternalLink( name ) )
-            {
-                write( "<a href=\"" + HtmlTools.escapeHTML( name ) + "\" class=\"externalLink\">" );
-            }
-            else
-            {
-                write( "<a href=\"" + HtmlTools.escapeHTML( name ) + "\">" );
-            }
-        }
+        link( name, null );
     }
 
     public void link( String name, String target )
     {
         if ( !headFlag )
         {
-            if ( isExternalLink( name ) )
+
+            String targ = "";
+            if ( target != null )
             {
-                write( "<a href=\"" + HtmlTools.escapeHTML( name ) + "\" class=\"externalLink\" target=\"" + target +
-                    "\">" );
+                targ = " target=\"" + target + "\"";
+            }
+
+            if ( StructureSink.isExternalLink( name ) )
+            {
+                String clas = "";
+                if ( isExternalLink( name ) )
+                {
+                    clas = " class=\"externalLink\"";
+                }
+                write( "<a href=\"" + HtmlTools.escapeHTML( name ) + "\"" + clas + targ + ">" );
             }
             else
             {
-                write( "<a href=\"" + HtmlTools.escapeHTML( name ) + "\" target=\"" + target + "\">" );
+                write( "<a href=\"#" + HtmlTools.escapeHTML( name ) + "\"" + targ + ">" );
             }
         }
     }
 
-    private static boolean isExternalLink( String href )
+    /* StructureSink.isExternalLink also treats links to other documents as
+     * external links, those should not have a class="externalLink" attribute.
+     */
+    private boolean isExternalLink( String href )
     {
-        return href.toLowerCase().startsWith( "http" ) || href.toLowerCase().startsWith( "https" );
+        String text = href.toLowerCase();
+        return ( text.indexOf( "http:/" ) == 0 || text.indexOf( "https:/" ) == 0
+            || text.indexOf( "ftp:/" ) == 0 || text.indexOf( "mailto:" ) == 0
+            || text.indexOf( "file:/" ) == 0 );
+
     }
 
     public void link_()
