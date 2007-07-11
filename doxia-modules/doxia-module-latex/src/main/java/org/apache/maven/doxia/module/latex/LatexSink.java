@@ -435,11 +435,12 @@ public class LatexSink
     public void tableRow_()
     {
         markup( "\\\\" + EOL );
-        if ( gridFlag )
+        if ( gridFlag || lastCellWasHeader )
         {
             markup( "\\hline" + EOL );
         }
         cellCount = 0;
+        lastCellWasHeader = false;
     }
 
     public void title()
@@ -579,6 +580,30 @@ public class LatexSink
 
     public void tableCell()
     {
+        tableCell( false );
+    }
+    
+    public void tableCell_()
+    {
+        tableCell_( false );
+    }
+
+    public void tableHeaderCell()
+    {
+        tableCell( true );
+    }
+    
+    public void tableHeaderCell_()
+    {
+        tableCell_( true );
+    }
+    
+    private boolean lastCellWasHeader = false;
+    
+    public void tableCell( boolean header )
+    {
+        lastCellWasHeader = header;
+        
         if ( cellCount > 0 )
         {
             markup( " &" + EOL );
@@ -601,7 +626,7 @@ public class LatexSink
         markup( "\\begin{pcell}{" + justif + "}" );
     }
 
-    public void tableCell_()
+    public void tableCell_( boolean header )
     {
         markup( "\\end{pcell}" );
         ++cellCount;

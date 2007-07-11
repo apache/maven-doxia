@@ -857,6 +857,16 @@ public class RtfSink
         table.add( row );
     }
 
+    public void tableHeaderCell()
+    {
+        tableCell();
+    }
+   
+    public void tableHeaderCell_()
+    {
+        tableCell_();
+    }
+    
     public void tableCell()
     {
         cell = new Cell();

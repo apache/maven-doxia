@@ -77,9 +77,9 @@ public class SectionBlock extends AbstractFatherBlock
     public final void before( final Sink sink )
     {
         sectionStart( sink );
-        sink.sectionTitle();
+        sectionTitle( sink );
         sink.text( title );
-        sink.sectionTitle_();
+        sectionTitle_( sink );
 
     }
 
@@ -182,4 +182,15 @@ public class SectionBlock extends AbstractFatherBlock
         return sb.toString();
     }
 
+    /** @param sink */
+    private void sectionTitle( final Sink sink ) 
+    {
+        invokeVoidVoid( sink, "sectionTitle" + level );
+    }
+    
+    /** @param sink */
+    private void sectionTitle_( final Sink sink ) 
+    {
+        invokeVoidVoid( sink, "sectionTitle" + level + "_" );
+    }
 }
