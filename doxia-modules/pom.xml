@@ -35,7 +35,8 @@ under the License.
       <groupId>org.apache.maven.doxia</groupId>
       <artifactId>doxia-core</artifactId>
       <classifier>tests</classifier>
-    </dependency>    
+      <scope>test</scope>
+    </dependency>
   </dependencies>
   <modules>
     <module>doxia-module-confluence</module>
