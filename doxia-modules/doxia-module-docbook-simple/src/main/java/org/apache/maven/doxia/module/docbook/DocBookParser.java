@@ -155,6 +155,7 @@ public class DocBookParser
         DocBookParser.monospaceElements.add( "sgmltag" );
         DocBookParser.monospaceElements.add( "tag" );//DocBook 5
         DocBookParser.monospaceElements.add( "uri" );
+        DocBookParser.monospaceElements.add( "filename" );
     }
 
     // ----------------------------------------------------------------------
