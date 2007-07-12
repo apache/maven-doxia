@@ -332,8 +332,7 @@ public class AptSink extends SinkAdapter
 
     public void pageBreak()
     {
-    	// TODO: APT parse defect... pagebreak is never used.
-    	write( EOL + "^L" + EOL );
+        write( EOL + "\f" + EOL );
     }
 
     public void paragraph()
