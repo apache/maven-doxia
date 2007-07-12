@@ -163,11 +163,7 @@ public class ByLineReaderSource implements ByLineSource
         {
             throw new IllegalArgumentException( "argument can't be null" );
         }
-        if ( s.length() == 0 )
-        {
-            // dont do anything
-        }
-        else
+        if ( s.length() != 0 )
         {
             ungetLine();
             lastLine = s;

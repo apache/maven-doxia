@@ -225,6 +225,7 @@ public class HtmlTools
 
             if ( ( Character.isLetterOrDigit( c ) ) || ( c == '-' ) || ( c == '_' ) || ( c == ':' ) || ( c == '.' ) )
             {
+                // TODO: why? see DOXIA-131
                 buffer.append( Character.toLowerCase( c ) );
             }
             // Not part of W3C recommandation, just to produce much nicer id
