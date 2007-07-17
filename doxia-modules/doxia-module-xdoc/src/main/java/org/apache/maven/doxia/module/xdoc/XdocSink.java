@@ -257,7 +257,7 @@ public class XdocSink
         {
             markup( "<section name=\"" );
         }
-        else
+        else if ( depth == 2 )
         {
             markup( "<subsection name=\"" );
         }
@@ -265,12 +265,40 @@ public class XdocSink
 
     private void onSectionTitle( int depth )
     {
+        if ( depth == 3 )
+        {
+            markup( "<h4>" );
+        }
+        else if ( depth == 4 )
+        {
+            markup( "<h5>" );
+        }
+        else if ( depth == 5 )
+        {
+            markup( "<h6>" );
+        }
+
         titleFlag = true;
     }
 
     private void onSectionTitle_( int depth )
     {
-        markup( "\">" );
+        if ( depth == 1 || depth == 2 )
+        {
+            markup( "\">" );
+        }
+        else if ( depth == 3 )
+        {
+            markup( "</h4>" );
+        }
+        else if ( depth == 4 )
+        {
+            markup( "</h5>" );
+        }
+        else if ( depth == 5 )
+        {
+            markup( "</h6>" );
+        }
 
         titleFlag = false;
     }
@@ -281,7 +309,7 @@ public class XdocSink
         {
             markup( "</section>" );
         }
-        else
+        else if ( depth == 2 )
         {
             markup( "</subsection>" );
         }
@@ -358,7 +386,7 @@ public class XdocSink
 
     public void definitionList()
     {
-        markup( "<dl compact=\"compact\">" + EOL );
+        markup( "<dl>" + EOL );
     }
 
     public void definitionList_()
@@ -369,12 +397,12 @@ public class XdocSink
 
     public void definedTerm()
     {
-        markup( "<dt><b>" );
+        markup( "<dt>" );
     }
 
     public void definedTerm_()
     {
-        markup( "</b></dt>" + EOL );
+        markup( "</dt>" + EOL );
     }
 
     public void definition()

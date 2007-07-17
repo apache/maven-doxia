@@ -29,6 +29,7 @@ import org.apache.maven.doxia.macro.MacroRequest;
 import org.apache.maven.doxia.parser.AbstractParser;
 import org.apache.maven.doxia.parser.ParseException;
 import org.apache.maven.doxia.sink.Sink;
+
 import org.codehaus.plexus.util.IOUtil;
 import org.codehaus.plexus.util.xml.pull.MXParser;
 import org.codehaus.plexus.util.xml.pull.XmlPullParser;
@@ -49,6 +50,8 @@ public class XdocParser
 
     private boolean isLink;
     private boolean isAnchor;
+    private boolean isEmptyElement;
+    private int orderedListDepth = 0;
 
     public void parse( Reader reader, Sink sink )
         throws ParseException
@@ -98,9 +101,6 @@ public class XdocParser
                 }
                 else if ( parser.getName().equals( "section" ) )
                 {
-                    sink.anchor( parser.getAttributeValue( null, "name" ) );
-                    sink.anchor_();
-
                     sink.section1();
 
                     sink.sectionTitle1();
@@ -111,9 +111,6 @@ public class XdocParser
                 }
                 else if ( parser.getName().equals( "subsection" ) )
                 {
-                    sink.anchor( parser.getAttributeValue( null, "name" ) );
-                    sink.anchor_();
-
                     sink.section2();
 
                     sink.sectionTitle2();
@@ -121,6 +118,19 @@ public class XdocParser
                     sink.text( parser.getAttributeValue( null, "name" ) );
 
                     sink.sectionTitle2_();
+                }
+                // TODO section3 section4 section5
+                else if ( parser.getName().equals( "h4" ) )
+                {
+                    sink.sectionTitle3();
+                }
+                else if ( parser.getName().equals( "h5" ) )
+                {
+                    sink.sectionTitle4();
+                }
+                else if ( parser.getName().equals( "h6" ) )
+                {
+                    sink.sectionTitle5();
                 }
                 else if ( parser.getName().equals( "p" ) )
                 {
@@ -137,10 +147,31 @@ public class XdocParser
                 else if ( parser.getName().equals( "ol" ) )
                 {
                     sink.numberedList( Sink.NUMBERING_DECIMAL );
+                    orderedListDepth++;
                 }
                 else if ( parser.getName().equals( "li" ) )
                 {
-                    sink.listItem();
+                    if ( orderedListDepth == 0 )
+                    {
+                        sink.listItem();
+                    }
+                    else
+                    {
+                        sink.numberedListItem();
+                    }
+                }
+                else if ( parser.getName().equals( "dl" ) )
+                {
+                    sink.definitionList();
+                }
+                else if ( parser.getName().equals( "dt" ) )
+                {
+                    sink.definitionListItem();
+                    sink.definedTerm();
+                }
+                else if ( parser.getName().equals( "dd" ) )
+                {
+                    sink.definition();
                 }
                 else if ( parser.getName().equals( "properties" ) )
                 {
@@ -153,6 +184,10 @@ public class XdocParser
                 else if ( parser.getName().equals( "i" ) )
                 {
                     sink.italic();
+                }
+                else if ( parser.getName().equals( "tt" ) )
+                {
+                    sink.monospaced();
                 }
                 else if ( parser.getName().equals( "a" ) )
                 {
@@ -217,16 +252,65 @@ public class XdocParser
                 }
                 else if ( parser.getName().equals( "th" ) )
                 {
-                    sink.tableHeaderCell(parser.getAttributeValue( null, "colspan" ));
+                    String colspan = parser.getAttributeValue( null, "colspan" );
+                    if ( colspan ==  null)
+                    {
+                        sink.tableHeaderCell();
+                    }
+                    else
+                    {
+                        sink.tableHeaderCell( colspan );
+                    }
                 }
                 else if ( parser.getName().equals( "td" ) )
                 {
-                    sink.tableCell(parser.getAttributeValue( null, "colspan" ));
+                    String colspan = parser.getAttributeValue( null, "colspan" );
+                    if ( colspan ==  null)
+                    {
+                        sink.tableCell();
+                    }
+                    else
+                    {
+                        sink.tableCell( colspan );
+                    }
+                }
+
+                // ----------------------------------------------------------------------
+                // Empty elements: <br/>, <hr/> and <img />
+                // ----------------------------------------------------------------------
+
+                else if ( parser.getName().equals( "br" ) )
+                {
+                    sink.lineBreak();
+                }
+                else if ( parser.getName().equals( "hr" ) )
+                {
+                    sink.horizontalRule();
+                }
+                else if ( parser.getName().equals( "img" ) )
+                {
+                    String src = parser.getAttributeValue( null, "src" );
+                    String alt = parser.getAttributeValue( null, "alt" );
+
+                    sink.figure();
+                    sink.figureGraphics( src );
+
+                    if ( alt != null )
+                    {
+                        sink.figureCaption();
+                        sink.text( alt );
+                        sink.figureCaption_();
+                    }
+
+                    sink.figure_();
                 }
                 else
                 {
                     handleRawText( sink, parser );
                 }
+
+                isEmptyElement = parser.isEmptyElementTag();
+
             }
             else if ( eventType == XmlPullParser.END_TAG )
             {
@@ -261,10 +345,31 @@ public class XdocParser
                 else if ( parser.getName().equals( "ol" ) )
                 {
                     sink.numberedList_();
+                    orderedListDepth--;
                 }
                 else if ( parser.getName().equals( "li" ) )
                 {
-                    sink.listItem_();
+                    if ( orderedListDepth == 0 )
+                    {
+                        sink.listItem_();
+                    }
+                    else
+                    {
+                        sink.numberedListItem_();
+                    }
+                }
+                else if ( parser.getName().equals( "dl" ) )
+                {
+                    sink.definitionList_();
+                }
+                else if ( parser.getName().equals( "dt" ) )
+                {
+                    sink.definedTerm_();
+                }
+                else if ( parser.getName().equals( "dd" ) )
+                {
+                    sink.definition_();
+                    sink.definitionListItem_();
                 }
                 else if ( parser.getName().equals( "properties" ) )
                 {
@@ -277,6 +382,10 @@ public class XdocParser
                 else if ( parser.getName().equals( "i" ) )
                 {
                     sink.italic_();
+                }
+                else if ( parser.getName().equals( "tt" ) )
+                {
+                    sink.monospaced_();
                 }
                 else if ( parser.getName().equals( "a" ) )
                 {
@@ -329,7 +438,19 @@ public class XdocParser
                 {
                     sink.section2_();
                 }
-                else
+                else if ( parser.getName().equals( "h4" ) )
+                {
+                    sink.sectionTitle3_();
+                }
+                else if ( parser.getName().equals( "h5" ) )
+                {
+                    sink.sectionTitle4_();
+                }
+                else if ( parser.getName().equals( "h6" ) )
+                {
+                    sink.sectionTitle5_();
+                }
+                else if ( !isEmptyElement )
                 {
                     sink.rawText( "</" );
 
@@ -337,14 +458,19 @@ public class XdocParser
 
                     sink.rawText( ">" );
                 }
+                else
+                {
+                    isEmptyElement = false;
+                }
 
-                // ----------------------------------------------------------------------
-                // Sections
-                // ----------------------------------------------------------------------
             }
             else if ( eventType == XmlPullParser.TEXT )
             {
-                sink.text( parser.getText() );
+                String text = parser.getText();
+                if ( !"".equals( text.trim() ) )
+                {
+                    sink.text( text );
+                }
             }
 
             eventType = parser.next();
