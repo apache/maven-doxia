@@ -23,12 +23,22 @@ import java.io.File;
 
 public class StructureSink
 {
-    public static boolean isExternalLink( String text )
+    /**
+     * Checks if the given string corresponds to an external URI,
+     * ie is not a link within the same document. 
+     * @param link The link to check.
+     * @return True if the link (ignoring case) starts with either of the
+     * following: "http:/", "https:/", "ftp:/", "mailto:", "file:/",
+     * "../" or "./". Note that Windows style separators "\" are not allowed
+     * for URIs, see  http://www.ietf.org/rfc/rfc2396.txt , section 2.4.3.
+     */
+    public static boolean isExternalLink( String link )
     {
-        text = text.toLowerCase();
+        String text = link.toLowerCase();
+
         return ( text.indexOf( "http:/" ) == 0 || text.indexOf( "https:/" ) == 0 || text.indexOf( "ftp:/" ) == 0 ||
             text.indexOf( "mailto:" ) == 0 || text.indexOf( "file:/" ) == 0 ||
-            text.indexOf( ".." + File.separatorChar ) == 0 || text.indexOf( "." + File.separatorChar ) == 0 );
+            text.indexOf( "../" ) == 0 || text.indexOf( "./" ) == 0 );
     }
 
     public static String linkToKey( String text )
