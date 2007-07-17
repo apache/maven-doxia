@@ -47,6 +47,9 @@ public class XdocParser
 {
     private String sourceContent;
 
+    private boolean isLink;
+    private boolean isAnchor;
+
     public void parse( Reader reader, Sink sink )
         throws ParseException
     {
@@ -157,6 +160,7 @@ public class XdocParser
                     if ( href != null )
                     {
                         sink.link( href );
+                        isLink = true;
                     }
                     else
                     {
@@ -164,6 +168,7 @@ public class XdocParser
                         if ( name != null )
                         {
                             sink.anchor( name );
+                            isAnchor = true;
                         }
                         else
                         {
@@ -275,8 +280,16 @@ public class XdocParser
                 }
                 else if ( parser.getName().equals( "a" ) )
                 {
-                    // TODO: Note there will be badness if link_ != anchor != </a>
-                    sink.link_();
+                    if ( isLink )
+                    {
+                        sink.link_();
+                        isLink = false;
+                    }
+                    else if ( isAnchor )
+                    {
+                        sink.anchor_();
+                        isAnchor = false;
+                    }
                 }
                 else if ( parser.getName().equals( "macro" ) )
                 {
