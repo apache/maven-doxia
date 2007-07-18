@@ -48,6 +48,13 @@ under the License.
          </execution>
        </executions>
      </plugin>
+      <plugin>
+        <groupId>org.apache.maven.plugins</groupId>
+        <artifactId>maven-javadoc-plugin</artifactId>
+        <configuration>
+          <sourcepath>${basedir}/src/main/java;${basedir}/src/test/java</sourcepath>
+        </configuration>
+      </plugin>
     </plugins>
   </build>
   <dependencies>
