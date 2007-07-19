@@ -29,16 +29,19 @@ import org.apache.maven.doxia.site.module.AbstractSiteModule;
 public class XdocSiteModule
     extends AbstractSiteModule
 {
+    /** {@inheritDoc} */
     public String getSourceDirectory()
     {
         return "xdoc";
     }
 
+    /** {@inheritDoc} */
     public String getExtension()
     {
         return "xml";
     }
 
+    /** {@inheritDoc} */
     public String getParserId()
     {
         return "xdoc";

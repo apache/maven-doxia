@@ -37,26 +37,47 @@ import org.codehaus.plexus.util.xml.XMLWriter;
 public class XmlWriterXdocSink
     extends SinkAdapter
 {
+    /** The XMLWriter to write the result. */
     private final XMLWriter writer;
 
+    /** Used to collect text events. */
     private StringBuffer buffer = new StringBuffer();
 
+    /** An indication on if we're inside a head. */
     private boolean headFlag;
-    //private boolean itemFlag;
+
+    /** An indication on if we're in verbatim mode. */
     private boolean verbatimFlag;
+
+    /** Justification of table cells. */
     private int[] cellJustif;
+
+    /** Number of cells in a table row. */
     private int cellCount;
+
+    /** An indication on if we're inside a item. */
     private int itemFlag;
+
+    /** An indication on if we're inside a section title. */
     private boolean sectionTitleFlag;
 
-    public XmlWriterXdocSink( XMLWriter writer)
+    /**
+     * Constructor, initialize the XMLWriter.
+     *
+     * @param out The XMLWriter to write the result.
+     */
+    public XmlWriterXdocSink( XMLWriter out )
     {
-        if(writer == null) {
-            throw new IllegalArgumentException("argument can't be null");
+        if ( out == null )
+        {
+            throw new IllegalArgumentException( "Argument can't be null!" );
         }
-        this.writer = writer;
+        this.writer = out;
     }
 
+    /**
+     * Reset all variables.
+     */
     protected void resetState()
     {
         headFlag = false;
@@ -68,16 +89,18 @@ public class XmlWriterXdocSink
         sectionTitleFlag = false;
     }
 
+    /** {@inheritDoc} */
     public void head()
     {
         resetState();
 
         headFlag = true;
 
-        writer.startElement("document");
-        writer.startElement("properties");
+        writer.startElement( "document" );
+        writer.startElement( "properties" );
     }
 
+    /** {@inheritDoc} */
     public void head_()
     {
         headFlag = false;
@@ -85,44 +108,49 @@ public class XmlWriterXdocSink
         writer.endElement(); // properties
     }
 
+    /** {@inheritDoc} */
     public void title_()
     {
         if ( buffer.length() > 0 )
         {
-            writer.startElement("title");
+            writer.startElement( "title" );
             content( buffer.toString() );
             writer.endElement(); // title
             buffer = new StringBuffer();
         }
     }
 
+    /** {@inheritDoc} */
     public void author_()
     {
         if ( buffer.length() > 0 )
         {
-            writer.startElement("author");
+            writer.startElement( "author" );
             content( buffer.toString() );
             writer.endElement(); // author
             buffer = new StringBuffer();
         }
     }
 
+    /** {@inheritDoc} */
     public void date_()
     {
         if ( buffer.length() > 0 )
         {
-            writer.startElement("date");
+            writer.startElement( "date" );
             content( buffer.toString() );
             writer.endElement();
             buffer = new StringBuffer();
         }
     }
 
+    /** {@inheritDoc} */
     public void body()
     {
-        writer.startElement("body");
+        writer.startElement( "body" );
     }
 
+    /** {@inheritDoc} */
     public void body_()
     {
         writer.endElement(); // body
@@ -132,90 +160,107 @@ public class XmlWriterXdocSink
         resetState();
     }
 
+    /** {@inheritDoc} */
     public void section1()
     {
-        writer.startElement("section");
+        writer.startElement( "section" );
     }
 
+    /** {@inheritDoc} */
     public void section2()
     {
-        writer.startElement("subsection");
+        writer.startElement( "subsection" );
     }
 
+    /** {@inheritDoc} */
     public void section3()
     {
-        writer.startElement("subsection");
+        writer.startElement( "subsection" );
     }
 
+    /** {@inheritDoc} */
     public void section4()
     {
-        writer.startElement("subsection");
+        writer.startElement( "subsection" );
     }
 
+    /** {@inheritDoc} */
     public void section5()
     {
-        writer.startElement("subsection");
+        writer.startElement( "subsection" );
     }
 
+    /** {@inheritDoc} */
     public void sectionTitle()
     {
         sectionTitleFlag = true;
         buffer = new StringBuffer();
     }
 
+    /** {@inheritDoc} */
     public void sectionTitle_()
     {
         sectionTitleFlag = false;
-        writer.addAttribute("name", buffer.toString());
+        writer.addAttribute( "name", buffer.toString() );
     }
 
+    /** {@inheritDoc} */
     public void section1_()
     {
         writer.endElement();
     }
 
+    /** {@inheritDoc} */
     public void section2_()
     {
         writer.endElement();
     }
 
+    /** {@inheritDoc} */
     public void section3_()
     {
         writer.endElement();
     }
 
+    /** {@inheritDoc} */
     public void section4_()
     {
         writer.endElement();
     }
 
+    /** {@inheritDoc} */
     public void section5_()
     {
         writer.endElement();
     }
 
+    /** {@inheritDoc} */
     public void list()
     {
-        writer.startElement("ul");
+        writer.startElement( "ul" );
     }
 
+    /** {@inheritDoc} */
     public void list_()
     {
         writer.endElement();
     }
 
+    /** {@inheritDoc} */
     public void listItem()
     {
-        writer.startElement("li");
+        writer.startElement( "li" );
         itemFlag++;
         // What follows is at least a paragraph.
     }
 
+    /** {@inheritDoc} */
     public void listItem_()
     {
         writer.endElement();
     }
 
+    /** {@inheritDoc} */
     public void numberedList( int numbering )
     {
         String style;
@@ -237,89 +282,108 @@ public class XmlWriterXdocSink
             default:
                 style = "decimal";
         }
-        writer.startElement("ol");
-        writer.addAttribute("style", "list-style-type: " + style);
+        writer.startElement( "ol" );
+        writer.addAttribute( "style", "list-style-type: " + style );
     }
 
+    /** {@inheritDoc} */
     public void numberedList_()
     {
         writer.endElement();
     }
 
+    /** {@inheritDoc} */
     public void numberedListItem()
     {
-        writer.startElement("li");
+        writer.startElement( "li" );
         itemFlag++;
         // What follows is at least a paragraph.
     }
 
+    /** {@inheritDoc} */
     public void numberedListItem_()
     {
         writer.endElement();
     }
 
+    /** {@inheritDoc} */
     public void definitionList()
     {
-        writer.startElement("dl");
-        writer.addAttribute("compact", "compact");
+        writer.startElement( "dl" );
+        writer.addAttribute( "compact", "compact" );
     }
 
+    /** {@inheritDoc} */
     public void definitionList_()
     {
         writer.endElement();
     }
 
+    /** {@inheritDoc} */
     public void definedTerm()
     {
-        writer.startElement("dt");
-        writer.startElement("b");
+        writer.startElement( "dt" );
+        writer.startElement( "b" );
     }
 
+    /** {@inheritDoc} */
     public void definedTerm_()
     {
         writer.endElement();
         writer.endElement();
     }
 
+    /** {@inheritDoc} */
     public void definition()
     {
-        writer.startElement("dd");
+        writer.startElement( "dd" );
         itemFlag++;
         // What follows is at least a paragraph.
     }
 
+    /** {@inheritDoc} */
     public void definition_()
     {
         writer.endElement();
     }
 
+    /** {@inheritDoc} */
     public void paragraph()
     {
         if ( itemFlag == 0 )
-            writer.startElement("p");
+        {
+            writer.startElement( "p" );
+        }
     }
 
+    /** {@inheritDoc} */
     public void paragraph_()
     {
-        if ( itemFlag == 0)
+        if ( itemFlag == 0 )
+        {
             writer.endElement();
+        }
         else
+        {
             itemFlag--;
+        }
     }
 
+    /** {@inheritDoc} */
     public void verbatim( boolean boxed )
     {
         verbatimFlag = true;
         if ( boxed )
         {
-            writer.startElement("source" );
+            writer.startElement( "source" );
         }
         else
         {
-            writer.startElement("pre");
+            writer.startElement( "pre" );
         }
     }
 
+    /** {@inheritDoc} */
     public void verbatim_()
     {
         writer.endElement();
@@ -327,60 +391,73 @@ public class XmlWriterXdocSink
         verbatimFlag = false;
     }
 
+    /** {@inheritDoc} */
     public void horizontalRule()
     {
-        writer.startElement("hr");
+        writer.startElement( "hr" );
         writer.endElement();
     }
 
+    /** {@inheritDoc} */
     public void table()
     {
-        writer.startElement("table");
-        writer.addAttribute("align", "center");
+        writer.startElement( "table" );
+        writer.addAttribute( "align", "center" );
     }
 
+    /** {@inheritDoc} */
     public void table_()
     {
         writer.endElement();
     }
 
+    /** {@inheritDoc} */
     public void tableRows( int[] justification, boolean grid )
-
     {
-        writer.startElement("table");
-        writer.addAttribute("align", "center");
-        writer.addAttribute("border", String.valueOf(grid ? 1 : 0) );
+        writer.startElement( "table" );
+        writer.addAttribute( "align", "center" );
+        writer.addAttribute( "border", String.valueOf( grid ? 1 : 0 ) );
         this.cellJustif = justification;
     }
 
+    /** {@inheritDoc} */
     public void tableRows_()
     {
         writer.endElement();
     }
 
+    /** {@inheritDoc} */
     public void tableRow()
     {
-        writer.startElement("tr");
-        writer.addAttribute("valign", "top");
+        writer.startElement( "tr" );
+        writer.addAttribute( "valign", "top" );
         cellCount = 0;
     }
 
+    /** {@inheritDoc} */
     public void tableRow_()
     {
         writer.endElement();
         cellCount = 0;
     }
 
+    /** {@inheritDoc} */
     public void tableCell()
     {
         tableCell( false );
     }
 
+    /** {@inheritDoc} */
     public void tableHeaderCell()
     {
         tableCell( true );
     }
 
+    /**
+     * Starts a table cell.
+     *
+     * @param headerRow If this cell is part of a header row.
+     */
     public void tableCell( boolean headerRow )
     {
         String justif = null;
@@ -402,107 +479,145 @@ public class XmlWriterXdocSink
             }
         }
 
-        writer.startElement("t" + ( headerRow ? 'h' : 'd' ));
+        writer.startElement( "t" + ( headerRow ? 'h' : 'd' ) );
         if ( justif != null )
-            writer.addAttribute("align", justif);
+        {
+            writer.addAttribute( "align", justif );
+        }
     }
 
+    /** {@inheritDoc} */
     public void tableCell_()
     {
         tableCell_( false );
     }
 
+    /** {@inheritDoc} */
     public void tableHeaderCell_()
     {
         tableCell_( true );
     }
 
+    /**
+     * Ends a table cell.
+     *
+     * @param headerRow If this cell is part of a header row.
+     */
     public void tableCell_( boolean headerRow )
     {
         writer.endElement();
         ++cellCount;
     }
 
+    /** {@inheritDoc} */
     public void tableCaption()
     {
-        writer.startElement("p");
-        writer.startElement("i");
+        writer.startElement( "p" );
+        writer.startElement( "i" );
     }
 
+    /** {@inheritDoc} */
     public void tableCaption_()
     {
         writer.endElement();
         writer.endElement();
     }
 
+    /** {@inheritDoc} */
     public void anchor( String name )
     {
         if ( !headFlag )
         {
             String id = StructureSink.linkToKey( name );
-            writer.startElement("a");
-            writer.addAttribute("id", id);
-            writer.addAttribute("name", id);
+            writer.startElement( "a" );
+            writer.addAttribute( "id", id );
+            writer.addAttribute( "name", id );
         }
     }
 
+    /** {@inheritDoc} */
     public void anchor_()
     {
         if ( !headFlag )
+        {
             writer.endElement();
+        }
     }
 
+    /** {@inheritDoc} */
     public void link( String name )
     {
         if ( !headFlag )
         {
-            writer.startElement("a");
-            writer.addAttribute("href", name);
+            writer.startElement( "a" );
+            writer.addAttribute( "href", name );
         }
     }
 
+    /** {@inheritDoc} */
     public void link_()
     {
         if ( !headFlag )
+        {
             writer.endElement();
+        }
     }
 
+    /** {@inheritDoc} */
     public void italic()
     {
         if ( !headFlag )
-            writer.startElement("i");
+        {
+            writer.startElement( "i" );
+        }
     }
 
+    /** {@inheritDoc} */
     public void italic_()
     {
         if ( !headFlag )
+        {
             writer.endElement();
+        }
     }
 
+    /** {@inheritDoc} */
     public void bold()
     {
         if ( !headFlag )
-            writer.startElement("b");
+        {
+            writer.startElement( "b" );
+        }
     }
 
+    /** {@inheritDoc} */
     public void bold_()
     {
         if ( !headFlag )
+        {
             writer.endElement();
+        }
     }
 
+    /** {@inheritDoc} */
     public void monospaced()
     {
         if ( !headFlag )
-            writer.startElement("tt");
+        {
+            writer.startElement( "tt" );
+        }
     }
 
+    /** {@inheritDoc} */
     public void monospaced_()
     {
         if ( !headFlag )
+        {
             writer.endElement();
+        }
     }
 
+    /** {@inheritDoc} */
     public void lineBreak()
     {
         if ( headFlag )
@@ -511,11 +626,12 @@ public class XmlWriterXdocSink
         }
         else
         {
-            writer.startElement("br");
+            writer.startElement( "br" );
             writer.endElement();
         }
     }
 
+    /** {@inheritDoc} */
     public void nonBreakingSpace()
     {
         if ( headFlag )
@@ -528,6 +644,7 @@ public class XmlWriterXdocSink
         }
     }
 
+    /** {@inheritDoc} */
     public void text( String text )
     {
         if ( headFlag )
@@ -556,30 +673,56 @@ public class XmlWriterXdocSink
     // ----------------------------------------------------------------------
 
 
+    /**
+     * Write HTML escaped text to output.
+     *
+     * @param text The text to write.
+     */
     protected void content( String text )
     {
-        writer.writeText(escapeHTML( text ));
+        writer.writeText( escapeHTML( text ) );
     }
 
+    /**
+     * Write text to output, preserving white space.
+     *
+     * @param text The text to write.
+     */
     protected void verbatimContent( String text )
     {
         writer.writeText( StringUtil.replaceAll( text, " ", "&nbsp;" ) );
     }
 
+    /**
+     * Forward to HtmlTools.escapeHTML( text ).
+     *
+     * @param text the String to escape, may be null
+     * @return the text escaped, "" if null String input
+     * @see org.apache.maven.doxia.util.HtmlTools#escapeHTML(String).
+     */
     public static String escapeHTML( String text )
     {
         return HtmlTools.escapeHTML( text );
     }
 
+    /**
+     * Forward to HtmlTools.encodeURL( text ).
+     *
+     * @param text the String to encode, may be null.
+     * @return the text encoded, null if null String input.
+     * @see org.apache.maven.doxia.util.HtmlTools#encodeURL(String).
+     */
     public static String encodeURL( String text )
     {
         return HtmlTools.encodeURL( text );
     }
 
+    /** {@inheritDoc} */
     public void flush()
     {
     }
 
+    /** {@inheritDoc} */
     public void close()
     {
     }
