@@ -165,6 +165,10 @@ public class XdocParser
         }
         else if ( parser.getName().equals( "section" ) )
         {
+            // TODO this should go into a sink? kept for compat for the moment
+            sink.anchor( parser.getAttributeValue( null, "name" ) );
+            sink.anchor_();
+
             sink.section1();
 
             sink.sectionTitle1();
@@ -175,6 +179,10 @@ public class XdocParser
         }
         else if ( parser.getName().equals( "subsection" ) )
         {
+            // TODO this should go into a sink? kept for compat for the moment
+            sink.anchor( parser.getAttributeValue( null, "name" ) );
+            sink.anchor_();
+
             sink.section2();
 
             sink.sectionTitle2();
