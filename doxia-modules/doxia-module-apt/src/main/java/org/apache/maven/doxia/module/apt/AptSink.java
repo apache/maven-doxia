@@ -34,7 +34,7 @@ import org.codehaus.plexus.util.StringUtils;
  */
 public class AptSink extends SinkAdapter
 {
-    private static final String EOL = System.getProperty("line.separator");
+    private static final String EOL = System.getProperty( "line.separator" );
     private StringBuffer buffer;
     private StringBuffer tableCaptionBuffer;
     private String author;
@@ -54,25 +54,43 @@ public class AptSink extends SinkAdapter
     private String listNestingIndent;
     private Stack listStyles;
 
+    /**
+     * Constructor, initialize the variables.
+     *
+     * @param writer The writer to write the result.
+     */
     public AptSink( Writer writer )
     {
-    	this.buffer = new StringBuffer();
+        this.buffer = new StringBuffer();
         this.tableCaptionBuffer = new StringBuffer();
-        this.writer = new PrintWriter(writer);
+        this.writer = new PrintWriter( writer );
         this.listNestingIndent = "";
         this.listStyles = new Stack();
     }
 
+    /**
+     * Returns the buffer that holds the current text.
+     *
+     * @return A StringBuffer.
+     */
     protected StringBuffer getBuffer()
     {
         return buffer;
     }
 
-    protected void setHeadFlag(boolean headFlag)
+    /**
+     * Used to determine whether we are in head mode.
+     *
+     * @param headFlag True for head mode.
+     */
+    protected void setHeadFlag( boolean headFlag )
     {
         this.headerFlag = headFlag;
     }
 
+    /**
+     * Reset all variables.
+     */
     protected void resetState()
     {
         headerFlag = false;
@@ -82,22 +100,30 @@ public class AptSink extends SinkAdapter
         cellCount = 0;
     }
 
+    /**
+     * Reset the StringBuffer.
+     */
     protected void resetBuffer()
     {
         buffer = new StringBuffer();
     }
 
+    /**
+     * Reset the TableCaptionBuffer.
+     */
     protected void resetTableCaptionBuffer()
     {
-    	tableCaptionBuffer = new StringBuffer();
+        tableCaptionBuffer = new StringBuffer();
     }
 
+    /** {@inheritDoc} */
     public void head()
     {
-    	resetState();
-    	headerFlag = true;
+        resetState();
+        headerFlag = true;
     }
 
+    /** {@inheritDoc} */
     public void head_()
     {
         headerFlag = false;
@@ -111,143 +137,170 @@ public class AptSink extends SinkAdapter
         write( " -----" + EOL );
     }
 
+    /** {@inheritDoc} */
     public void title_()
     {
-        if(buffer.length() > 0)
+        if ( buffer.length() > 0 )
         {
-        	title = buffer.toString();
+            title = buffer.toString();
             resetBuffer();
         }
     }
 
+    /** {@inheritDoc} */
     public void author_()
     {
-        if(buffer.length() > 0)
+        if ( buffer.length() > 0 )
         {
-        	author = buffer.toString();
+            author = buffer.toString();
             resetBuffer();
         }
     }
 
+    /** {@inheritDoc} */
     public void date_()
     {
-        if(buffer.length() > 0)
+        if ( buffer.length() > 0 )
         {
-        	date = buffer.toString();
+            date = buffer.toString();
             resetBuffer();
         }
     }
 
+    /** {@inheritDoc} */
     public void section1_()
     {
         write( EOL );
     }
 
+    /** {@inheritDoc} */
     public void section2_()
     {
         write( EOL );
     }
 
+    /** {@inheritDoc} */
     public void section3_()
     {
         write( EOL );
     }
 
+    /** {@inheritDoc} */
     public void section4_()
     {
         write( EOL );
     }
 
+    /** {@inheritDoc} */
     public void section5_()
     {
         write( EOL );
     }
 
+    /** {@inheritDoc} */
     public void sectionTitle1()
     {
         write( EOL );
     }
 
+    /** {@inheritDoc} */
     public void sectionTitle1_()
     {
         write( EOL + EOL );
     }
 
+    /** {@inheritDoc} */
     public void sectionTitle2()
     {
         write( EOL + "*" );
     }
 
+    /** {@inheritDoc} */
     public void sectionTitle2_()
     {
         write( EOL + EOL );
     }
 
+    /** {@inheritDoc} */
     public void sectionTitle3()
     {
         write( EOL + "**" );
     }
 
+    /** {@inheritDoc} */
     public void sectionTitle3_()
     {
         write( EOL + EOL );
     }
 
+    /** {@inheritDoc} */
     public void sectionTitle4()
     {
         write( EOL + "***" );
     }
 
+    /** {@inheritDoc} */
     public void sectionTitle4_()
     {
         write( EOL + EOL );
     }
 
+    /** {@inheritDoc} */
     public void sectionTitle5()
     {
         write( EOL + "****" );
     }
 
+    /** {@inheritDoc} */
     public void sectionTitle5_()
     {
         write( EOL + EOL );
     }
 
+    /** {@inheritDoc} */
     public void list()
     {
-    	listNestingIndent += " ";
-    	listStyles.push( "*" );
-    	write( EOL );
+        listNestingIndent += " ";
+        listStyles.push( "*" );
+        write( EOL );
     }
 
+    /** {@inheritDoc} */
     public void list_()
     {
-    	if( listNestingIndent.length() <= 1 )
-    		write( EOL + listNestingIndent + "[]" + EOL );
-    	else
-    		write( EOL );
+        if ( listNestingIndent.length() <= 1 )
+        {
+            write( EOL + listNestingIndent + "[]" + EOL );
+        }
+        else
+        {
+            write( EOL );
+        }
         listNestingIndent = StringUtils.chomp( listNestingIndent, " " );
-    	listStyles.pop();
-    	itemFlag = false;
+        listStyles.pop();
+        itemFlag = false;
     }
 
+    /** {@inheritDoc} */
     public void listItem()
     {
-    	//if( !numberedList )
-    	//write( EOL + listNestingIndent + "*" );
-    	//else
-    	numberedListItem();
+        //if ( !numberedList )
+        //write( EOL + listNestingIndent + "*" );
+        //else
+        numberedListItem();
         itemFlag = true;
     }
 
+    /** {@inheritDoc} */
     public void listItem_()
     {
-    	write( EOL );
+        write( EOL );
     }
 
+    /** {@inheritDoc} */
     public void numberedList( int numbering )
     {
-    	listNestingIndent += " ";
+        listNestingIndent += " ";
         write( EOL );
 
         String style;
@@ -273,367 +326,503 @@ public class AptSink extends SinkAdapter
         listStyles.push( style );
     }
 
+    /** {@inheritDoc} */
     public void numberedList_()
     {
-    	if( listNestingIndent.length() <= 1 )
-    		write( EOL + listNestingIndent + "[]" + EOL );
-    	else
-    		write( EOL );
-    	listNestingIndent = StringUtils.chomp( listNestingIndent, " " );
-    	listStyles.pop();
+        if ( listNestingIndent.length() <= 1 )
+        {
+            write( EOL + listNestingIndent + "[]" + EOL );
+        }
+        else
+        {
+            write( EOL );
+        }
+        listNestingIndent = StringUtils.chomp( listNestingIndent, " " );
+        listStyles.pop();
         itemFlag = false;
     }
 
+    /** {@inheritDoc} */
     public void numberedListItem()
     {
-    	String style = (String)listStyles.peek();
-    	if( style == "*" )
-        	write( EOL + listNestingIndent + "* " );
-    	else
-    		write( EOL + listNestingIndent + "[[" + style + "]] " );
+        String style = (String) listStyles.peek();
+        if ( style == "*" )
+        {
+            write( EOL + listNestingIndent + "* " );
+        }
+        else
+        {
+            write( EOL + listNestingIndent + "[[" + style + "]] " );
+        }
         itemFlag = true;
     }
 
+    /** {@inheritDoc} */
     public void numberedListItem_()
     {
         write( EOL );
     }
 
+    /** {@inheritDoc} */
     public void definitionList()
     {
         write( EOL );
     }
 
+    /** {@inheritDoc} */
     public void definitionList_()
     {
         write( EOL );
         itemFlag = false;
     }
 
+    /** {@inheritDoc} */
     public void definedTerm()
     {
         write( EOL + " [" );
     }
 
+    /** {@inheritDoc} */
     public void definedTerm_()
     {
-        write("]");
+        write( "]" );
     }
 
+    /** {@inheritDoc} */
     public void definition()
     {
         itemFlag = true;
     }
 
+    /** {@inheritDoc} */
     public void definition_()
     {
         write( EOL );
     }
 
+    /** {@inheritDoc} */
     public void pageBreak()
     {
         write( EOL + "\f" + EOL );
     }
 
+    /** {@inheritDoc} */
     public void paragraph()
     {
-        if(!itemFlag)
-            write( EOL + " ");
+        if ( !itemFlag )
+        {
+            write( EOL + " " );
+        }
     }
 
+    /** {@inheritDoc} */
     public void paragraph_()
     {
-        if(itemFlag)
+        if ( itemFlag )
+        {
             itemFlag = false;
+        }
         else
+        {
             write( EOL + EOL );
+        }
     }
 
+    /** {@inheritDoc} */
     public void verbatim( boolean boxed )
     {
         verbatimFlag = true;
         this.boxed = boxed;
-        if( boxed )
-        	write("\n+------+\n");
+        if ( boxed )
+        {
+            write( "\n+------+\n" );
+        }
         else
-        	write("\n------\n");
+        {
+            write( "\n------\n" );
+        }
     }
 
+    /** {@inheritDoc} */
     public void verbatim_()
     {
-        if( boxed )
-        	write("\n+------+\n");
+        if ( boxed )
+        {
+            write( "\n+------+\n" );
+        }
         else
-        	write("\n------\n");
+        {
+            write( "\n------\n" );
+        }
         boxed = false;
         verbatimFlag = false;
     }
 
+    /** {@inheritDoc} */
     public void horizontalRule()
     {
-        write(EOL + "========" + EOL );
+        write( EOL + "========" + EOL );
     }
 
+    /** {@inheritDoc} */
     public void table()
     {
-    	write( EOL );
+        write( EOL );
     }
 
+    /** {@inheritDoc} */
     public void table_()
     {
-    	if( rowLine != null )
-    		write( rowLine );
-    	rowLine = null;
+        if ( rowLine != null )
+        {
+            write( rowLine );
+        }
+        rowLine = null;
 
-    	if( tableCaptionBuffer.length() > 0 )
-    		text( tableCaptionBuffer.toString() + EOL );
+        if ( tableCaptionBuffer.length() > 0 )
+        {
+            text( tableCaptionBuffer.toString() + EOL );
+        }
 
-    	resetTableCaptionBuffer();
+        resetTableCaptionBuffer();
     }
 
-    public void tableRows(int justification[], boolean grid)
+    /** {@inheritDoc} */
+    public void tableRows( int justification[], boolean grid )
     {
         cellJustif = justification;
         gridFlag = grid;
     }
 
+    /** {@inheritDoc} */
     public void tableRows_()
     {
         cellJustif = null;
         gridFlag = false;
     }
 
+    /** {@inheritDoc} */
     public void tableRow()
     {
-    	bufferFlag = true;
-    	cellCount = 0;
+        bufferFlag = true;
+        cellCount = 0;
     }
 
+    /** {@inheritDoc} */
     public void tableRow_()
     {
-    	bufferFlag = false;
+        bufferFlag = false;
 
-    	// write out the header row first, then the data in the buffer
-    	buildRowLine();
+        // write out the header row first, then the data in the buffer
+        buildRowLine();
 
-    	write( rowLine );
+        write( rowLine );
 
-    	// TODO: This will need to be more clever, for multi-line cells
-    	if( gridFlag )
-    		write( "|" );
+        // TODO: This will need to be more clever, for multi-line cells
+        if ( gridFlag )
+        {
+            write( "|" );
+        }
 
-		write( buffer.toString() );
+        write( buffer.toString() );
 
-    	resetBuffer();
+        resetBuffer();
 
-    	write( EOL );
+        write( EOL );
 
-    	// only reset cell count if this is the last row
-    	cellCount = 0;
+        // only reset cell count if this is the last row
+        cellCount = 0;
     }
 
+    /** Construct a table row. */
     private void buildRowLine()
     {
-    	StringBuffer rowLine = new StringBuffer();
-    	rowLine.append( "*--" );
+        StringBuffer rowLine = new StringBuffer();
+        rowLine.append( "*--" );
 
-    	for(int i = 0; i < cellCount; i++)
-    	{
-    		if(cellJustif != null)
-    			switch(cellJustif[i])
-    			{
-    			case 1:
-    				rowLine.append( "--+" );
-    				break;
-    			case 2:
-    				rowLine.append( "--:" );
-    				break;
-    			default:
-    				rowLine.append( "--*" );
-    			}
-    		else
-    			rowLine.append( "--*" );
-    	}
-    	rowLine.append( EOL );
+        for ( int i = 0; i < cellCount; i++ )
+        {
+            if ( cellJustif != null )
+            {
+                switch ( cellJustif[i] )
+                {
+                // TODO: use Parser constants
+                case 1:
+                    rowLine.append( "--+" );
+                    break;
+                case 2:
+                    rowLine.append( "--:" );
+                    break;
+                default:
+                    rowLine.append( "--*" );
+                }
+            }
+            else
+            {
+                rowLine.append( "--*" );
+            }
+        }
+        rowLine.append( EOL );
 
-    	this.rowLine = rowLine.toString();
+        this.rowLine = rowLine.toString();
     }
 
+    /** {@inheritDoc} */
     public void tableCell_()
     {
-        tableCell_(false);
+        tableCell_( false );
     }
 
+    /** {@inheritDoc} */
     public void tableHeaderCell_()
     {
-        tableCell_(true);
+        tableCell_( true );
     }
 
-    public void tableCell_(boolean headerRow)
+    /** {@inheritDoc} */
+    public void tableCell_( boolean headerRow )
     {
-        buffer.append("|");
+        buffer.append( "|" );
         cellCount++;
     }
 
+    /** {@inheritDoc} */
     public void tableCaption()
     {
-    	tableCaptionFlag = true;
+        tableCaptionFlag = true;
     }
 
+    /** {@inheritDoc} */
     public void tableCaption_()
     {
-    	tableCaptionFlag = false;
+        tableCaptionFlag = false;
     }
 
+    /** {@inheritDoc} */
     public void figureCaption_()
     {
         write( EOL );
     }
 
-    public void figureGraphics(String name)
+    /** {@inheritDoc} */
+    public void figureGraphics( String name )
     {
-        write( EOL + "[" + name + "] ");
+        write( EOL + "[" + name + "] " );
     }
 
-    public void anchor(String name)
+    /** {@inheritDoc} */
+    public void anchor( String name )
     {
-//    	String id = HtmlTools.encodeId(name);
-    	write("{");
+//        String id = HtmlTools.encodeId(name);
+        write( "{" );
     }
 
+    /** {@inheritDoc} */
     public void anchor_()
     {
-    	write("}");
+        write( "}" );
     }
 
-    public void link(String name)
+    /** {@inheritDoc} */
+    public void link( String name )
     {
-        if(!headerFlag)
+        if ( !headerFlag )
         {
-        	write("{{{");
-        	text( name );
-        	write( "}" );
+            write( "{{{" );
+            text( name );
+            write( "}" );
         }
     }
 
+    /** {@inheritDoc} */
     public void link_()
     {
-        if(!headerFlag)
+        if ( !headerFlag )
         {
-        	write( "}}" );
+            write( "}}" );
         }
     }
 
-    public void link(String name, String target)
+    /** {@inheritDoc} */
+    public void link( String name, String target )
     {
-        if(!headerFlag)
+        if ( !headerFlag )
         {
-        	write("{{{");
-        	text( target );
-        	write( "}" );
-        	text( name );
+            write( "{{{" );
+            text( target );
+            write( "}" );
+            text( name );
         }
     }
 
+    /** {@inheritDoc} */
     public void italic()
     {
-        if(!headerFlag)
-        	write("<");
+        if ( !headerFlag )
+        {
+            write( "<" );
+        }
     }
 
+    /** {@inheritDoc} */
     public void italic_()
     {
-        if(!headerFlag)
-        	write(">");
+        if ( !headerFlag )
+        {
+            write( ">" );
+        }
     }
 
+    /** {@inheritDoc} */
     public void bold()
     {
-        if(!headerFlag)
-        	write("<<");
+        if ( !headerFlag )
+        {
+            write( "<<" );
+        }
     }
 
+    /** {@inheritDoc} */
     public void bold_()
     {
-        if(!headerFlag)
-        	write(">>");
+        if ( !headerFlag )
+        {
+            write( ">>" );
+        }
     }
 
+    /** {@inheritDoc} */
     public void monospaced()
     {
-        if(!headerFlag)
-        	write("<<<");
+        if ( !headerFlag )
+        {
+            write( "<<<" );
+        }
     }
 
+    /** {@inheritDoc} */
     public void monospaced_()
     {
-        if(!headerFlag)
-        	write(">>>");
+        if ( !headerFlag )
+        {
+            write( ">>>" );
+        }
     }
 
+    /** {@inheritDoc} */
     public void lineBreak()
     {
-        if(headerFlag || bufferFlag)
-            buffer.append(EOL);
+        if ( headerFlag || bufferFlag )
+        {
+            buffer.append( EOL );
+        }
         else
-            write( "\\" + EOL);
+        {
+            write( "\\" + EOL );
+        }
     }
 
+    /** {@inheritDoc} */
     public void nonBreakingSpace()
     {
-        if(headerFlag || bufferFlag)
-            buffer.append("\\ ");
+        if ( headerFlag || bufferFlag )
+        {
+            buffer.append( "\\ " );
+        }
         else
+        {
             write( "\\ " );
+        }
     }
 
+    /** {@inheritDoc} */
     public void text( String text )
     {
-    	if( tableCaptionFlag )
-    		tableCaptionBuffer.append( text );
-    	else if( headerFlag || bufferFlag )
-            buffer.append(text);
-        else if( verbatimFlag )
-            verbatimContent(text);
+        if ( tableCaptionFlag )
+        {
+            tableCaptionBuffer.append( text );
+        }
+        else if ( headerFlag || bufferFlag )
+        {
+            buffer.append( text );
+        }
+        else if ( verbatimFlag )
+        {
+            verbatimContent( text );
+        }
         else
-            content(text);
+        {
+            content( text );
+        }
     }
 
-    public void rawText(String text)
+    /** {@inheritDoc} */
+    public void rawText( String text )
     {
-        write(text);
+        write( text );
     }
 
-    protected void write(String text)
+    /**
+     * Write text to output.
+     *
+     * @param text The text to write.
+     */
+    protected void write( String text )
     {
-    	writer.write(text);
+        writer.write( text );
     }
 
-    protected void content(String text)
+    /**
+     * Write Apt escaped text to output.
+     *
+     * @param text The text to write.
+     */
+    protected void content( String text )
     {
-        write(escapeAPT(text));
+        write( escapeAPT( text ) );
     }
 
-    protected void verbatimContent(String text)
+    /**
+     * Write Apt escaped text to output.
+     *
+     * @param text The text to write.
+     */
+    protected void verbatimContent( String text )
     {
-        write(escapeAPT(text));
+        write( escapeAPT( text ) );
     }
 
-    public static String encodeFragment(String text)
+    /**
+     * Forward to HtmlTools.encodeFragment( text ).
+     *
+     * @param text the String to fragment, may be null.
+     * @return the fragmented text, null if null String input.
+     * @see org.apache.maven.doxia.util.HtmlTools#encodeURL(String).
+     */
+    public static String encodeFragment( String text )
     {
-        return HtmlTools.encodeFragment(text);
+        return HtmlTools.encodeFragment( text );
     }
 
-    public static String encodeURL(String text)
+    /**
+     * Forward to HtmlTools.encodeURL( text ).
+     *
+     * @param text the String to encode, may be null.
+     * @return the text encoded, null if null String input.
+     * @see org.apache.maven.doxia.util.HtmlTools#encodeURL(String).
+     */
+    public static String encodeURL( String text )
     {
-        return HtmlTools.encodeURL(text);
+        return HtmlTools.encodeURL( text );
     }
 
+    /** {@inheritDoc} */
     public void flush()
     {
         writer.flush();
     }
 
+    /** {@inheritDoc} */
     public void close()
     {
         writer.close();
@@ -680,18 +869,24 @@ public class AptSink extends SinkAdapter
                     buffer.append( c );
                     break;
                 default:
-                	if( c > 127 )
-                	{
-                		buffer.append( "\\u" );
-                		String hex = Integer.toHexString( c );
-                		if( hex.length() == 2 )
-                    		buffer.append( "00" );
-                		else if( hex.length() == 3 )
-                    		buffer.append( "0" );
-                		buffer.append( hex );
-                	}
-                	else
-                		buffer.append( c );
+                    if ( c > 127 )
+                    {
+                        buffer.append( "\\u" );
+                        String hex = Integer.toHexString( c );
+                        if ( hex.length() == 2 )
+                        {
+                            buffer.append( "00" );
+                        }
+                        else if ( hex.length() == 3 )
+                        {
+                            buffer.append( "0" );
+                        }
+                        buffer.append( hex );
+                    }
+                    else
+                    {
+                        buffer.append( c );
+                    }
             }
         }
 
