@@ -568,6 +568,31 @@ public class AptSink extends SinkAdapter
     }
 
     /** {@inheritDoc} */
+    public void tableCell()
+    {
+        tableCell( false );
+    }
+
+    /** {@inheritDoc} */
+    public void tableHeaderCell()
+    {
+        tableCell( true );
+    }
+
+    /**
+     * Starts a table cell.
+     *
+     * @param headerRow If this cell is part of a header row.
+     */
+    public void tableCell( boolean headerRow )
+    {
+        if ( headerRow )
+        {
+            buffer.append( "|" );
+        }
+    }
+
+    /** {@inheritDoc} */
     public void tableCell_()
     {
         tableCell_( false );
