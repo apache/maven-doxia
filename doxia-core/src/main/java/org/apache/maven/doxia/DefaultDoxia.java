@@ -28,6 +28,9 @@ import org.apache.maven.doxia.sink.Sink;
 import java.io.Reader;
 
 /**
+ * Simple implementation of the Doxia interface:
+ * uses a ParserManager to lookup a parser.
+ *
  * @plexus.component
  *
  * @author Jason van Zyl
@@ -47,6 +50,7 @@ public class DefaultDoxia
     // which can probably be done away with.
     // ----------------------------------------------------------------------
 
+    /** {@inheritDoc} */
     public void parse( Reader source, String parserId, Sink sink )
         throws ParserNotFoundException, ParseException
     {

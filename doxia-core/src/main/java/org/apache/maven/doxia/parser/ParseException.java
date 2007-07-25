@@ -20,49 +20,116 @@ package org.apache.maven.doxia.parser;
  */
 
 /**
+ * Encapsulate a Doxia parse error.
+ *
  * @author <a href="mailto:jason@maven.org">Jason van Zyl</a>
  * @version $Id:ParseException.java 348605 2005-11-24 12:02:44 +1100 (Thu, 24 Nov 2005) brett $
  */
 public class ParseException
     extends Exception
 {
+    /** 
+     * The file that caused the ParseException..
+     *
+     * @todo Make private.
+     */
     protected String fileName;
 
+    /** 
+     * Line number where the parse exception occurred.
+     *
+     * @todo Make private.
+     */
     protected int lineNumber;
 
+    /**
+     * Construct a new ParseException with the specified detail message.
+     *
+     * @param message The detailed message.
+     * This can later be retrieved by the Throwable.getMessage() method.
+     */
     public ParseException( String message )
     {
         this( null, message, null, -1 );
     }
 
+    /**
+     * Construct a new ParseException with the specified detail message and cause.
+     *
+     * @param message The detailed message.
+     * This can later be retrieved by the Throwable.getMessage() method.
+     * @param e the cause. This can be retrieved later by the Throwable.getCause() method.
+     * (A null value is permitted, and indicates that the cause is nonexistent or unknown.)
+     */
     public ParseException( String message, Exception e )
     {
         this( e, message, null, -1 );
     }
 
+    /**
+     * Constructs a new exception with the specified cause and a detail message of
+     *  (cause == null ? null : cause.toString() ).
+     *
+     * @param e the cause. This can be retrieved later by the Throwable.getCause() method.
+     * (A null value is permitted, and indicates that the cause is nonexistent or unknown.)
+     */
     public ParseException( Exception e )
     {
         this( e, null, null, -1 );
     }
 
-    public ParseException( Exception e, String fileName, int lineNumber )
+    /**
+     * Construct a new ParseException with the specified cause,
+     * filename and linenumber.
+     *
+     * @param e the cause. This can be retrieved later by the Throwable.getCause() method.
+     * (A null value is permitted, and indicates that the cause is nonexistent or unknown.)
+     * @param file Name of a file that couldn't be parsed.
+     * This can later be retrieved by the getFileName() method.
+     * @param line The line number where the parsing failed.
+     * This can later be retrieved by the getLineNumber() method.
+     */
+    public ParseException( Exception e, String file, int line )
     {
-        this( e, null, fileName, lineNumber );
+        this( e, null, file, line );
     }
 
-    public ParseException( Exception e, String message, String fileName, int lineNumber )
+    /**
+     * Construct a new ParseException with the specified cause, detail message,
+     * filename and linenumber.
+     *
+     * @param e the cause. This can be retrieved later by the Throwable.getCause() method.
+     * (A null value is permitted, and indicates that the cause is nonexistent or unknown.)
+     * @param message The detailed message.
+     * This can later be retrieved by the Throwable.getMessage() method.
+     * @param file Name of a file that couldn't be parsed.
+     * This can later be retrieved by the getFileName() method.
+     * @param line The line number where the parsing failed.
+     * This can later be retrieved by the getLineNumber() method.
+     */
+    public ParseException( Exception e, String message, String file, int line )
     {
         super( ( message == null ) ? ( ( e == null ) ? null : e.getMessage() ) : message, e );
 
-        this.fileName = fileName;
-        this.lineNumber = lineNumber;
+        this.fileName = file;
+        this.lineNumber = line;
     }
 
+    /** 
+     * Returns the file that caused the ParseException.
+     *
+     * @return the file that caused the ParseException.
+     */
     public String getFileName()
     {
         return fileName;
     }
 
+    /** 
+     * Returns the line number where the  ParseException ocurred.
+     *
+     * @return the line number.
+     */
     public int getLineNumber()
     {
         return lineNumber;

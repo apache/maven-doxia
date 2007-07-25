@@ -25,50 +25,86 @@ import java.io.BufferedWriter;
 import java.io.IOException;
 import java.io.Writer;
 
+/** Allows to specify the line-length of an output writer. */
 public class LineBreaker
 {
+    /** The default maximal line length. */
     public static final int DEFAULT_MAX_LINE_LENGTH = 78;
 
+    /** The system dependent EOL. */
     private static final String EOL = System.getProperty( "line.separator" );
 
+    /** The destination writer. */
     private Writer destination;
 
+    /** The writer to use. */
     private BufferedWriter writer;
 
+    /** The maximal line length. */
     private int maxLineLength;
 
+    /** The current line length. */
     private int lineLength = 0;
 
+    /** The string buffer to store the current text. */
     private StringBuffer word = new StringBuffer( 1024 );
 
+    /**
+     * Constructs a new LineBreaker with DEFAULT_MAX_LINE_LENGTH.
+     *
+     * @param out The writer to use.
+     */
     public LineBreaker( Writer out )
     {
         this( out, DEFAULT_MAX_LINE_LENGTH );
     }
 
-    public LineBreaker( Writer out, int maxLineLength )
+    /**
+     * Constructs a new LineBreaker with the given max line length.
+     *
+     * @param out The writer to use.
+     * @param max The maximal line length.
+     */
+    public LineBreaker( Writer out, int max )
     {
-        if ( maxLineLength <= 0 )
+        if ( max <= 0 )
         {
-            throw new IllegalArgumentException( "maxLineLength<=0" );
+            throw new IllegalArgumentException( "maxLineLength <= 0" );
         }
 
         destination = out;
-        this.maxLineLength = maxLineLength;
+        this.maxLineLength = max;
         writer = new BufferedWriter( out );
     }
 
+    /**
+     * Returns the current destination writer.
+     *
+     * @return The destination.
+     */
     public Writer getDestination()
     {
         return destination;
     }
 
+    /**
+     * Writes the given text to the writer. White space is not preserved.
+     *
+     * @param text The text to write.
+     * @throws IOException if there's a problem writing the text.
+     */
     public void write( String text )
         throws IOException
     {
         write( text, /*preserveSpace*/ false );
     }
 
+    /**
+     * Writes the given text to the writer.
+     *
+     * @param text The text to write.
+     * @param preserveSpace True to preserve white space.
+     */
     public void write( String text, boolean preserveSpace )
     {
         int length = text.length();
@@ -105,10 +141,14 @@ public class LineBreaker
         }
         catch ( Exception e )
         {
-
+            // TODO: log
         }
     }
 
+    /**
+     * Write out the current StringBuffer and flush the writer.
+     * Any IOException will be swallowed.
+     */
     public void flush()
     {
         try
@@ -118,9 +158,15 @@ public class LineBreaker
         }
         catch ( IOException e )
         {
+            // TODO: log
         }
     }
 
+    /**
+     * Writes the current StringBuffer to the writer.
+     *
+     * @throws IOException if an exception occurs during writing.
+     */
     private void writeWord()
         throws IOException
     {
@@ -148,6 +194,7 @@ public class LineBreaker
         }
     }
 
+    /** Close the writer. */
     public void close()
     {
         IOUtil.close( writer );

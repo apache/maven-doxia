@@ -19,13 +19,13 @@ package org.apache.maven.doxia.sink;
  * under the License.
  */
 
-import java.io.File;
-
+/** Utility methods for Sinks. */
 public class StructureSink
 {
     /**
      * Checks if the given string corresponds to an external URI,
      * ie is not a link within the same document. 
+     *
      * @param link The link to check.
      * @return True if the link (ignoring case) starts with either of the
      * following: "http:/", "https:/", "ftp:/", "mailto:", "file:/",
@@ -36,11 +36,19 @@ public class StructureSink
     {
         String text = link.toLowerCase();
 
-        return ( text.indexOf( "http:/" ) == 0 || text.indexOf( "https:/" ) == 0 || text.indexOf( "ftp:/" ) == 0 ||
-            text.indexOf( "mailto:" ) == 0 || text.indexOf( "file:/" ) == 0 ||
-            text.indexOf( "../" ) == 0 || text.indexOf( "./" ) == 0 );
+        return ( text.indexOf( "http:/" ) == 0 || text.indexOf( "https:/" ) == 0
+            || text.indexOf( "ftp:/" ) == 0 || text.indexOf( "mailto:" ) == 0
+            || text.indexOf( "file:/" ) == 0 || text.indexOf( "../" ) == 0
+            || text.indexOf( "./" ) == 0 );
     }
 
+    /**
+     * Transforms the given text such that it can be used as a link.
+     *
+     * @param text The text to transform.
+     * @return A text with escaped special characters.
+     * @todo This is apt specific, need to clarify general use.
+     */
     public static String linkToKey( String text )
     {
         int length = text.length();

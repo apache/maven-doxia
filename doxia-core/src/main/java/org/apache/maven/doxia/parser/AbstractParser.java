@@ -29,6 +29,9 @@ import org.apache.maven.doxia.macro.manager.MacroNotFoundException;
 import org.apache.maven.doxia.sink.Sink;
 
 /**
+ * An abstract base class that defines some convenience methods for parsers.
+ * Provides a macro mechanism to give dynamic functionalities for the parsing.
+ *
  * @author Jason van Zyl
  * @version $Id:AbstractParser.java 348605 2005-11-24 12:02:44 +1100 (Thu, 24 Nov 2005) brett $
  * @plexus.component
@@ -36,11 +39,21 @@ import org.apache.maven.doxia.sink.Sink;
 public abstract class AbstractParser
     implements Parser
 {
+    /** Indicates that a second parsing is required. */
     protected boolean secondParsing = false;
 
     /** @plexus.requirement */
     protected MacroManager macroManager;
 
+    /**
+     * Execute a macro on the given sink.
+     *
+     * @param macroId An id to lookup the macro.
+     * @param request The corresponding MacroRequest.
+     * @param sink The sink to receive the events.
+     * @throws MacroExecutionException if an error occurred during execution.
+     * @throws MacroNotFoundException if the macro could not be found.
+     */
     // Made public right now because of the structure of the APT parser and
     // all its inner classes.
     public void executeMacro( String macroId,
@@ -53,6 +66,11 @@ public abstract class AbstractParser
         macro.execute( sink, request );
     }
 
+    /**
+     * Returns the current base directory.
+     *
+     * @return The base directory.
+     */
     protected File getBasedir()
     {
         // TODO: This is baaad, it should come in with the request.
@@ -68,12 +86,12 @@ public abstract class AbstractParser
     }
 
     /**
-     * Set <code>secondParsing</code> to true, if we need a second parsing
+     * Set <code>secondParsing</code> to true, if we need a second parsing.
      *
-     * @param secondParsing
+     * @param second True for second parsing.
      */
-    public void setSecondParsing( boolean secondParsing )
+    public void setSecondParsing( boolean second )
     {
-        this.secondParsing = secondParsing;
+        this.secondParsing = second;
     }
 }

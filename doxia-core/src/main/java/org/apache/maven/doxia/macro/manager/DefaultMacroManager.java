@@ -34,6 +34,7 @@ public class DefaultMacroManager
     /** @plexus.requirement role="org.apache.maven.doxia.macro.Macro" */
     private Map macros;
 
+    /** {@inheritDoc} */
     public Macro getMacro( String id )
         throws MacroNotFoundException
     {

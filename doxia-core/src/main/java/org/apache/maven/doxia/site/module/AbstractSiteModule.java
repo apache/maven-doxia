@@ -20,6 +20,8 @@ package org.apache.maven.doxia.site.module;
  */
 
 /**
+ * An abstract base class that implements the SiteModule interface.
+ *
  * @author <a href="mailto:jason@maven.org">Jason van Zyl</a>
  * @version $Id:AbstractSiteModule.java 348605 2005-11-24 12:02:44 +1100 (Thu, 24 Nov 2005) brett $
  * @plexus.component
@@ -27,15 +29,19 @@ package org.apache.maven.doxia.site.module;
 public abstract class AbstractSiteModule
     implements SiteModule
 {
+    /** The source directory. */
     private String sourceDirectory;
 
+    /** The default file extension. */
     private String extension;
 
+    /** {@inheritDoc} */
     public String getSourceDirectory()
     {
         return sourceDirectory;
     }
 
+    /** {@inheritDoc} */
     public String getExtension()
     {
         return extension;

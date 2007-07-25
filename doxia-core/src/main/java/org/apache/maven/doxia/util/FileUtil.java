@@ -23,7 +23,6 @@ import java.io.BufferedInputStream;
 import java.io.ByteArrayOutputStream;
 import java.io.File;
 import java.io.FileInputStream;
-import java.io.FileNotFoundException;
 import java.io.FileOutputStream;
 import java.io.IOException;
 import java.io.InputStream;
@@ -369,6 +368,8 @@ public class FileUtil
 
     /**
      * A simple test for all functions dealing with file path names.
+     *
+     * @param args An array of file path names to test.
      */
     public static void main( String[] args )
     {
@@ -505,7 +506,7 @@ public class FileUtil
      * @throws IOException if there is an IO problem
      */
     public static String loadString( String fileName )
-        throws FileNotFoundException, IOException
+        throws IOException
     {
         return loadString( new FileInputStream( fileName ) );
     }
@@ -740,6 +741,7 @@ public class FileUtil
 
     // -----------------------------------------------------------------------
 
+    /** The default character encoding for this platform. */
     private static String platformDefaultEncoding;
 
     static

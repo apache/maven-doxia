@@ -22,13 +22,24 @@ package org.apache.maven.doxia.macro;
 import org.apache.maven.doxia.sink.Sink;
 
 /**
+ * Base interface of a macro.
+ *
  * @author <a href="mailto:jason@maven.org">Jason van Zyl</a>
  * @version $Id:Macro.java 348605 2005-11-24 12:02:44 +1100 (Thu, 24 Nov 2005) brett $
  */
 public interface Macro
 {
+    /** The Plexus lookup role. */
     String ROLE = Macro.class.getName();
 
+    /**
+     * Execute the current macro using the given MacroRequest,
+     * and emit events into the given sink.
+     *
+     * @param sink The sink to receive the events.
+     * @param request The corresponding MacroRequest.
+     * @throws MacroExecutionException if an error occurred during execution.
+     */
     void execute( Sink sink, MacroRequest request )
         throws MacroExecutionException;
 

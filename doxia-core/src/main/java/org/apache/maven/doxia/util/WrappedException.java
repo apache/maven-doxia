@@ -27,6 +27,7 @@ package org.apache.maven.doxia.util;
 public abstract class WrappedException
     extends Exception
 {
+    /** The <em>original</em> exception. */
     private Exception rootException;
 
     /**
@@ -85,12 +86,25 @@ public abstract class WrappedException
         return rootException;
     }
 
+    /**
+     * Returns the message of the original exception.
+     *
+     * @param e The Exception.
+     * @return the original exception message, or <code>null</code>
+     * if the root exception is null.
+     */
     private static String makeMessage( Exception e )
     {
         Exception rootEx = findRootException( e );
         return ( rootEx == null ) ? null : rootEx.getMessage();
     }
 
+    /**
+     * Returns the original exception.
+     *
+     * @param e The Exception.
+     * @return the original exception, or <code>null</code> if there is none.
+     */
     private static Exception findRootException( Exception e )
     {
         Exception rootEx = null;

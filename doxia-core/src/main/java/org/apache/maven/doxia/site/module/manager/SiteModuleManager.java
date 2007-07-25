@@ -24,15 +24,31 @@ import org.apache.maven.doxia.site.module.SiteModule;
 import java.util.Collection;
 
 /**
+ * Handles SiteModule lookups.
+ *
  * @author <a href="mailto:jason@maven.org">Jason van Zyl</a>
  * @version $Id:SiteModuleManager.java 348605 2005-11-24 12:02:44 +1100 (Thu, 24 Nov 2005) brett $
  */
 public interface SiteModuleManager
 {
+    /** The Plexus lookup role. */
     String ROLE = SiteModuleManager.class.getName();
 
+    /**
+     * Returns a collection of SiteModules.
+     *
+     * @return The SiteModules.
+     */
     Collection getSiteModules();
 
+    /**
+     * Returns the SiteModule that corresponds to the given id.
+     *
+     * @param id The identifier.
+     * @return The corresponding SiteModule.
+     * @throws SiteModuleNotFoundException if no SiteModule could be found
+     * for the given id.
+     */
     SiteModule getSiteModule( String id )
         throws SiteModuleNotFoundException;
 }

@@ -24,13 +24,17 @@ import org.apache.maven.doxia.sink.Sink;
 import java.util.Iterator;
 
 /**
+ * A simple macro that prints out the key and value of some supplied parameters.
+ *
  * @plexus.component role-hint="echo"
  */
 public class EchoMacro
     extends AbstractMacro
 {
+    /** System-dependent EOL. */
     private static final String EOL = System.getProperty( "line.separator" );
 
+    /** {@inheritDoc} */
     public void execute( Sink sink, MacroRequest request )
     {
         sink.verbatim( true );

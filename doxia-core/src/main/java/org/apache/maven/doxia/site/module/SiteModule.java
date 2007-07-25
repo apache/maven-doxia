@@ -20,16 +20,31 @@ package org.apache.maven.doxia.site.module;
  */
 
 /**
+ * Provides definitions for a Doxia module. This is used by the doxia site tools.
+ *
  * @author <a href="mailto:jason@maven.org">Jason van Zyl</a>
  * @version $Id:SiteModule.java 348605 2005-11-24 12:02:44 +1100 (Thu, 24 Nov 2005) brett $
  */
 public interface SiteModule
 {
+    /** The Plexus lookup role. */
     String ROLE = SiteModule.class.getName();
 
+    /** Returns the directory that contains source files for a given module.
+     *
+     * @return The source directory.
+     */
     String getSourceDirectory();
 
+    /** Returns the default file extension for a given module.
+     *
+     * @return The default file extension.
+     */
     String getExtension();
 
+    /** Returns the parser id for a given module.
+     *
+     * @return The parser id.
+     */
     String getParserId();
 }

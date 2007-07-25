@@ -22,13 +22,24 @@ package org.apache.maven.doxia.macro.manager;
 import org.apache.maven.doxia.macro.Macro;
 
 /**
+ * Handles MacroManager lookups.
+ *
  * @author <a href="mailto:jason@maven.org">Jason van Zyl</a>
  * @version $Id:MacroManager.java 348605 2005-11-24 12:02:44 +1100 (Thu, 24 Nov 2005) brett $
  */
 public interface MacroManager
 {
+    /** The Plexus lookup role. */
     String ROLE = MacroManager.class.getName();
 
+    /**
+     * Returns the MacroManager that corresponds to the given id.
+     *
+     * @param id The identifier.
+     * @return The corresponding MacroManager.
+     * @throws MacroNotFoundException if no MacroManager could be found
+     * for the given id.
+     */
     Macro getMacro( String id )
         throws MacroNotFoundException;
 

@@ -191,6 +191,9 @@ public class StringUtil
     /**
      * Like {@link #escape(String)} but puts a double quote character (<tt>'\"'</tt>)
      * around the escaped string.
+     *
+     * @param string The string to protect.
+     * @return The escaped string.
      */
     public static String protect( String string )
     {
@@ -220,6 +223,15 @@ public class StringUtil
         return buffer.toString();
     }
 
+    /**
+     * Dumps the specified string with all non-ASCII characters and
+     * non-printable ASCII characters replaced by the corresponding Java
+     * escape sequences (that is <tt>'\n'</tt>, <tt>'\u00E9'</tt>, etc),
+     * into the given StringBuffer.
+     *
+     * @param string the String to be escaped.
+     * @param buffer the StringBuffer to hold the result.
+     */
     private static void escape( String string, StringBuffer buffer )
     {
         int length = string.length();
@@ -288,6 +300,9 @@ public class StringUtil
     /**
      * Like {@link #unescape(String)} but removes the double quote characters
      * (<tt>'\"'</tt>), if any, before unescaping the string.
+     *
+     * @param string The string to escape.
+     * @return The escaped string.
      */
     public static String unprotect( String string )
     {
@@ -317,6 +332,17 @@ public class StringUtil
         return unescape( string, 0, string.length() );
     }
 
+    /**
+     * Returns the specified string with Java escape sequences (that is
+     * <tt>'\n'</tt>, <tt>'\u00E9'</tt>, etc) replaced by the corresponding
+     * character.
+     *
+     * @param string the String to be unescaped
+     * @param offset The offset to start with.
+     * @param length The length of the string to escape.
+     * @return the specified string with Java escape sequences replaced by the
+     *         corresponding character
+     */
     private static String unescape( String string, int offset, int length )
     {
         StringBuffer buffer = new StringBuffer();
@@ -399,6 +425,8 @@ public class StringUtil
 
     /**
      * A simple test for {@link #escape(String)} and {@link #unescape(String)}.
+     *
+     * @param args An array of Strings to test.
      */
     public static final void main( String[] args )
     {

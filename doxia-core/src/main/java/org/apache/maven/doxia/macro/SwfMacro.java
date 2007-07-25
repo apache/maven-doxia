@@ -37,11 +37,10 @@ import java.util.Iterator;
 public class SwfMacro
     extends AbstractMacro
 {
+    /** System-dependent EOL. */
     private static final String EOL = System.getProperty( "line.separator" );
 
-    /**
-     * @see org.apache.maven.doxia.macro.Macro#execute(org.apache.maven.doxia.sink.Sink, org.apache.maven.doxia.macro.MacroRequest)
-     */
+    /** {@inheritDoc} */
     public void execute( Sink sink, MacroRequest request )
         throws MacroExecutionException
     {

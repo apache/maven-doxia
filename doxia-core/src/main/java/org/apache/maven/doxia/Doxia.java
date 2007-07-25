@@ -26,13 +26,27 @@ import org.apache.maven.doxia.sink.Sink;
 import java.io.Reader;
 
 /**
+ * Basic interface of the Doxia framework.
+ *
  * @author Jason van Zyl
  * @version $Id:Doxia.java 348605 2005-11-24 12:02:44 +1100 (Thu, 24 Nov 2005) brett $
  */
 public interface Doxia
 {
+    /** The Plexus lookup role. */
     String ROLE = Doxia.class.getName();
 
+    /**
+     * Parses the given source model using a parser with given id,
+     * and emits Doxia events into the given sink.
+     *
+     * @param source A reader that provides the source document.
+     * @param parserId Identifier for the parser to use.
+     * @param sink A sink that consumes the Doxia events.
+     * @throws ParserNotFoundException if no parser could be found
+     * for the given id.
+     * @throws ParseException if the model could not be parsed.
+     */
     void parse( Reader source, String parserId, Sink sink )
         throws ParserNotFoundException, ParseException;
 

@@ -34,34 +34,46 @@ import org.apache.maven.doxia.sink.SinkAdapter;
 public class IndexingSink
     extends SinkAdapter
 {
-    private final static int TYPE_SECTION_1 = 1;
+    /** Section 1. */
+    private static final int TYPE_SECTION_1 = 1;
 
-    private final static int TYPE_SECTION_2 = 2;
+    /** Section 2. */
+    private static final int TYPE_SECTION_2 = 2;
 
-    private final static int TYPE_SECTION_3 = 3;
+    /** Section 3. */
+    private static final int TYPE_SECTION_3 = 3;
 
-    private final static int TYPE_SECTION_4 = 4;
+    /** Section 4. */
+    private static final int TYPE_SECTION_4 = 4;
 
-    private final static int TYPE_SECTION_5 = 5;
+    /** Section 5. */
+    private static final int TYPE_SECTION_5 = 5;
 
-    private final static int TYPE_DEFINED_TERM = 6;
+    /** Defined term. */
+    private static final int TYPE_DEFINED_TERM = 6;
 
-    private final static int TYPE_FIGURE = 7;
+    /** Figure. */
+    private static final int TYPE_FIGURE = 7;
 
-    private final static int TYPE_TABLE = 8;
+    /** Table. */
+    private static final int TYPE_TABLE = 8;
 
-    private final static int TITLE = 9;
+    /** Title. */
+    private static final int TITLE = 9;
 
+    /** The current type. */
     private int type;
 
+    /** The current title. */
     private String title;
 
+    /** The stack. */
     private Stack stack = new Stack();
 
     /**
-     * Default constructor
+     * Default constructor.
      *
-     * @param sectionEntry
+     * @param sectionEntry The first index entry.
      */
     public IndexingSink( IndexEntry sectionEntry )
     {
@@ -80,6 +92,7 @@ public class IndexingSink
     // Sink Overrides
     // ----------------------------------------------------------------------
 
+    /** {@inheritDoc} */
     public void title()
     {
         super.title();
@@ -87,51 +100,61 @@ public class IndexingSink
         type = TITLE;
     }
 
+    /** {@inheritDoc} */
     public void sectionTitle1()
     {
         type = TYPE_SECTION_1;
     }
 
+    /** {@inheritDoc} */
     public void section1_()
     {
         pop();
     }
 
+    /** {@inheritDoc} */
     public void sectionTitle2()
     {
         type = TYPE_SECTION_2;
     }
 
+    /** {@inheritDoc} */
     public void section2_()
     {
         pop();
     }
 
+    /** {@inheritDoc} */
     public void sectionTitle3()
     {
         type = TYPE_SECTION_3;
     }
 
+    /** {@inheritDoc} */
     public void section3_()
     {
         pop();
     }
 
+    /** {@inheritDoc} */
     public void sectionTitle4()
     {
         type = TYPE_SECTION_4;
     }
 
+    /** {@inheritDoc} */
     public void section4_()
     {
         pop();
     }
 
+    /** {@inheritDoc} */
     public void sectionTitle5()
     {
         type = TYPE_SECTION_5;
     }
 
+    /** {@inheritDoc} */
     public void section5_()
     {
         pop();
@@ -152,6 +175,7 @@ public class IndexingSink
     //        type = TYPE_TABLE;
     //    }
 
+    /** {@inheritDoc} */
     public void text( String text )
     {
         IndexEntry entry;

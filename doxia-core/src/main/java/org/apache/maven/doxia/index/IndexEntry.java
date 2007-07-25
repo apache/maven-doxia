@@ -32,78 +32,129 @@ import java.util.Collections;
  */
 public class IndexEntry
 {
+    /** The parent entry. */
     private IndexEntry parent;
 
+    /** The id of the entry. */
     private String id;
 
+    /** The entry title. */
     private String title;
 
+    /** The child entries. */
     private List childEntries = new ArrayList();
 
+    /** System-dependent EOL. */
     private static final String EOL = System.getProperty( "line.separator" );
 
-    public IndexEntry( String id )
+    /**
+     * Constructor.
+     *
+     * @param newId The id.
+     */
+    public IndexEntry( String newId )
     {
-        this.id = id;
+        this.id = newId;
     }
 
-    public IndexEntry( IndexEntry parent, String id )
+    /**
+     * Constructor.
+     *
+     * @param newParent The parent. Cannot be null.
+     * @param newId The id. Cannot be null.
+     */
+    public IndexEntry( IndexEntry newParent, String newId )
     {
-        if ( parent == null )
+        if ( newParent == null )
         {
             throw new NullPointerException( "parent cannot be null." );
         }
 
-        if ( id == null )
+        if ( newId == null )
         {
-            throw new NullPointerException( "parent cannot be null." );
+            throw new NullPointerException( "id cannot be null." );
         }
 
-        this.parent = parent;
-        this.id = id;
+        this.parent = newParent;
+        this.id = newId;
 
         parent.childEntries.add( this );
     }
 
+    /**
+     * Returns the parent entry.
+     *
+     * @return the parent entry.
+     */
     public IndexEntry getParent()
     {
         return parent;
     }
 
+    /**
+     * Returns the id.
+     *
+     * @return the id.
+     */
     public String getId()
     {
         return id;
     }
 
+    /**
+     * Returns the title.
+     *
+     * @return the title.
+     */
     public String getTitle()
     {
         return title;
     }
 
-    public void setTitle( String title )
+    /**
+     * Sets the title.
+     *
+     * @param newTitle the title.
+     */
+    public void setTitle( String newTitle )
     {
-        this.title = title;
+        this.title = newTitle;
     }
 
+    /**
+     * Returns an unmodifiableList of the child entries.
+     *
+     * @return child entries.
+     */
     public List getChildEntries()
     {
         return Collections.unmodifiableList( childEntries );
     }
 
-    public void setChildEntries( List childEntries )
+    /**
+     * Sets the child entriesor creates a new ArrayList if entries == null.
+     *
+     * @param entries the entries.
+     */
+    public void setChildEntries( List entries )
     {
-        if ( childEntries == null )
+        if ( entries == null )
         {
             childEntries = new ArrayList();
         }
 
-        this.childEntries = childEntries;
+        this.childEntries = entries;
     }
 
     // -----------------------------------------------------------------------
     // Utils
     // -----------------------------------------------------------------------
 
+    /**
+     * Returns the next entry.
+     *
+     * @return the next entry, or null if there is none.
+     */
     public IndexEntry getNextEntry()
     {
         if ( parent == null )
@@ -123,6 +174,11 @@ public class IndexEntry
         return (IndexEntry) entries.get( index + 1 );
     }
 
+    /**
+     * Returns the previous entry.
+     *
+     * @return the previous entry, or null if there is none.
+     */
     public IndexEntry getPrevEntry()
     {
         if ( parent == null )
@@ -142,6 +198,11 @@ public class IndexEntry
         return (IndexEntry) entries.get( index - 1 );
     }
 
+    /**
+     * Returns the first entry.
+     *
+     * @return the first entry, or null if there is none.
+     */
     public IndexEntry getFirstEntry()
     {
         List entries = getChildEntries();
@@ -156,6 +217,11 @@ public class IndexEntry
         }
     }
 
+    /**
+     * Returns the last entry.
+     *
+     * @return the last entry, or null if there is none.
+     */
     public IndexEntry getLastEntry()
     {
         List entries = getChildEntries();
@@ -170,6 +236,11 @@ public class IndexEntry
         }
     }
 
+    /**
+     * Returns the root entry.
+     *
+     * @return the root entry, or null if there is none.
+     */
     public IndexEntry getRootEntry()
     {
         List entries = getChildEntries();
@@ -192,11 +263,22 @@ public class IndexEntry
     // Object Overrides
     // -----------------------------------------------------------------------
 
+    /**
+     * Returns a string representation of the object.
+     *
+     * @return A string.
+     */
     public String toString()
     {
         return toString( 0 );
     }
 
+    /**
+     * Returns a string representation of all objects to the given depth.
+     *
+     * @param depth The depth to descent to.
+     * @return A string.
+     */
     public String toString( int depth )
     {
         StringBuffer message = new StringBuffer();

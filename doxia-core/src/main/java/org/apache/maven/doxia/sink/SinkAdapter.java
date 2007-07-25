@@ -30,710 +30,535 @@ package org.apache.maven.doxia.sink;
 public class SinkAdapter
     implements Sink
 {
-    /**
-     * @see org.apache.maven.doxia.sink.Sink#head()
-     */
+    /** {@inheritDoc} */
     public void head()
     {
         // nop
     }
 
-    /**
-     * @see org.apache.maven.doxia.sink.Sink#head_()
-     */
+    /** {@inheritDoc} */
     public void head_()
     {
         // nop
     }
 
-    /**
-     * @see org.apache.maven.doxia.sink.Sink#body()
-     */
+    /** {@inheritDoc} */
     public void body()
     {
         // nop
     }
 
-    /**
-     * @see org.apache.maven.doxia.sink.Sink#body_()
-     */
+    /** {@inheritDoc} */
     public void body_()
     {
         // nop
     }
 
-    /**
-     * @see org.apache.maven.doxia.sink.Sink#section1()
-     */
+    /** {@inheritDoc} */
     public void section1()
     {
         // nop
     }
 
-    /**
-     * @see org.apache.maven.doxia.sink.Sink#section1_()
-     */
+    /** {@inheritDoc} */
     public void section1_()
     {
         // nop
     }
 
-    /**
-     * @see org.apache.maven.doxia.sink.Sink#section2()
-     */
+    /** {@inheritDoc} */
     public void section2()
     {
         // nop
     }
 
-    /**
-     * @see org.apache.maven.doxia.sink.Sink#section2_()
-     */
+    /** {@inheritDoc} */
     public void section2_()
     {
         // nop
     }
 
-    /**
-     * @see org.apache.maven.doxia.sink.Sink#section3()
-     */
+    /** {@inheritDoc} */
     public void section3()
     {
         // nop
     }
 
-    /**
-     * @see org.apache.maven.doxia.sink.Sink#section3_()
-     */
+    /** {@inheritDoc} */
     public void section3_()
     {
         // nop
     }
 
-    /**
-     * @see org.apache.maven.doxia.sink.Sink#section4()
-     */
+    /** {@inheritDoc} */
     public void section4()
     {
         // nop
     }
 
-    /**
-     * @see org.apache.maven.doxia.sink.Sink#section4_()
-     */
+    /** {@inheritDoc} */
     public void section4_()
     {
         // nop
     }
 
-    /**
-     * @see org.apache.maven.doxia.sink.Sink#section5()
-     */
+    /** {@inheritDoc} */
     public void section5()
     {
         // nop
     }
 
-    /**
-     * @see org.apache.maven.doxia.sink.Sink#section5_()
-     */
+    /** {@inheritDoc} */
     public void section5_()
     {
         // nop
     }
 
-    /**
-     * @see org.apache.maven.doxia.sink.Sink#list()
-     */
+    /** {@inheritDoc} */
     public void list()
     {
         // nop
     }
 
-    /**
-     * @see org.apache.maven.doxia.sink.Sink#list_()
-     */
+    /** {@inheritDoc} */
     public void list_()
     {
         // nop
     }
 
-    /**
-     * @see org.apache.maven.doxia.sink.Sink#listItem()
-     */
+    /** {@inheritDoc} */
     public void listItem()
     {
         // nop
     }
 
-    /**
-     * @see org.apache.maven.doxia.sink.Sink#listItem_()
-     */
+    /** {@inheritDoc} */
     public void listItem_()
     {
         // nop
     }
 
-    /**
-     * @see org.apache.maven.doxia.sink.Sink#numberedList(int)
-     */
+    /** {@inheritDoc} */
     public void numberedList( int numbering )
     {
         // nop
     }
 
-    /**
-     * @see org.apache.maven.doxia.sink.Sink#numberedList_()
-     */
+    /** {@inheritDoc} */
     public void numberedList_()
     {
         // nop
     }
 
-    /**
-     * @see org.apache.maven.doxia.sink.Sink#numberedListItem()
-     */
+    /** {@inheritDoc} */
     public void numberedListItem()
     {
         // nop
     }
 
-    /**
-     * @see org.apache.maven.doxia.sink.Sink#numberedListItem_()
-     */
+    /** {@inheritDoc} */
     public void numberedListItem_()
     {
         // nop
     }
 
-    /**
-     * @see org.apache.maven.doxia.sink.Sink#definitionList()
-     */
+    /** {@inheritDoc} */
     public void definitionList()
     {
         // nop
     }
 
-    /**
-     * @see org.apache.maven.doxia.sink.Sink#definitionList_()
-     */
+    /** {@inheritDoc} */
     public void definitionList_()
     {
         // nop
     }
 
-    /**
-     * @see org.apache.maven.doxia.sink.Sink#definitionListItem()
-     */
+    /** {@inheritDoc} */
     public void definitionListItem()
     {
         // nop
     }
 
-    /**
-     * @see org.apache.maven.doxia.sink.Sink#definitionListItem_()
-     */
+    /** {@inheritDoc} */
     public void definitionListItem_()
     {
         // nop
     }
 
-    /**
-     * @see org.apache.maven.doxia.sink.Sink#definition()
-     */
+    /** {@inheritDoc} */
     public void definition()
     {
         // nop
     }
 
-    /**
-     * @see org.apache.maven.doxia.sink.Sink#definition_()
-     */
+    /** {@inheritDoc} */
     public void definition_()
     {
         // nop
     }
 
-    /**
-     * @see org.apache.maven.doxia.sink.Sink#figure()
-     */
+    /** {@inheritDoc} */
     public void figure()
     {
         // nop
     }
 
-    /**
-     * @see org.apache.maven.doxia.sink.Sink#figure_()
-     */
+    /** {@inheritDoc} */
     public void figure_()
     {
         // nop
     }
 
-    /**
-     * @see org.apache.maven.doxia.sink.Sink#table()
-     */
+    /** {@inheritDoc} */
     public void table()
     {
         // nop
     }
 
-    /**
-     * @see org.apache.maven.doxia.sink.Sink#table_()
-     */
+    /** {@inheritDoc} */
     public void table_()
     {
         // nop
     }
 
-    /**
-     * @see org.apache.maven.doxia.sink.Sink#tableRows(int[], boolean)
-     */
+    /** {@inheritDoc} */
     public void tableRows( int[] justification, boolean grid )
     {
         // nop
     }
 
-    /**
-     * @see org.apache.maven.doxia.sink.Sink#tableRows_()
-     */
+    /** {@inheritDoc} */
     public void tableRows_()
     {
         // nop
     }
 
-    /**
-     * @see org.apache.maven.doxia.sink.Sink#tableRow()
-     */
+    /** {@inheritDoc} */
     public void tableRow()
     {
         // nop
     }
 
-    /**
-     * @see org.apache.maven.doxia.sink.Sink#tableRow_()
-     */
+    /** {@inheritDoc} */
     public void tableRow_()
     {
         // nop
     }
 
-    /**
-     * @see org.apache.maven.doxia.sink.Sink#title()
-     */
+    /** {@inheritDoc} */
     public void title()
     {
         // nop
     }
 
-    /**
-     * @see org.apache.maven.doxia.sink.Sink#title_()
-     */
+    /** {@inheritDoc} */
     public void title_()
     {
         // nop
     }
 
-    /**
-     * @see org.apache.maven.doxia.sink.Sink#author()
-     */
+    /** {@inheritDoc} */
     public void author()
     {
         // nop
     }
 
-    /**
-     * @see org.apache.maven.doxia.sink.Sink#author_()
-     */
+    /** {@inheritDoc} */
     public void author_()
     {
         // nop
     }
 
-    /**
-     * @see org.apache.maven.doxia.sink.Sink#date()
-     */
+    /** {@inheritDoc} */
     public void date()
     {
         // nop
     }
 
-    /**
-     * @see org.apache.maven.doxia.sink.Sink#date_()
-     */
+    /** {@inheritDoc} */
     public void date_()
     {
         // nop
     }
 
-    /**
-     * @see org.apache.maven.doxia.sink.Sink#sectionTitle()
-     */
+    /** {@inheritDoc} */
     public void sectionTitle()
     {
         // nop
     }
 
-    /**
-     * @see org.apache.maven.doxia.sink.Sink#sectionTitle_()
-     */
+    /** {@inheritDoc} */
     public void sectionTitle_()
     {
         // nop
     }
 
-    /**
-     * @see org.apache.maven.doxia.sink.Sink#sectionTitle1()
-     */
+    /** {@inheritDoc} */
     public void sectionTitle1()
     {
         // nop
     }
 
-    /**
-     * @see org.apache.maven.doxia.sink.Sink#sectionTitle1_()
-     */
+    /** {@inheritDoc} */
     public void sectionTitle1_()
     {
         // nop
     }
 
+    /** {@inheritDoc} */
     public void sectionTitle2()
     {
         // nop
     }
 
-    /**
-     * @see org.apache.maven.doxia.sink.Sink#sectionTitle2_()
-     */
+    /** {@inheritDoc} */
     public void sectionTitle2_()
     {
         // nop
     }
 
-    /**
-     * @see org.apache.maven.doxia.sink.Sink#sectionTitle3()
-     */
+    /** {@inheritDoc} */
     public void sectionTitle3()
     {
         // nop
     }
 
-    /**
-     * @see org.apache.maven.doxia.sink.Sink#sectionTitle3_()
-     */
+    /** {@inheritDoc} */
     public void sectionTitle3_()
     {
         // nop
     }
 
-    /**
-     * @see org.apache.maven.doxia.sink.Sink#sectionTitle4()
-     */
+    /** {@inheritDoc} */
     public void sectionTitle4()
     {
         // nop
     }
 
-    /**
-     * @see org.apache.maven.doxia.sink.Sink#sectionTitle4_()
-     */
+    /** {@inheritDoc} */
     public void sectionTitle4_()
     {
         // nop
     }
 
-    /**
-     * @see org.apache.maven.doxia.sink.Sink#sectionTitle5()
-     */
+    /** {@inheritDoc} */
     public void sectionTitle5()
     {
         // nop
     }
 
-    /**
-     * @see org.apache.maven.doxia.sink.Sink#sectionTitle5_()
-     */
+    /** {@inheritDoc} */
     public void sectionTitle5_()
     {
         // nop
     }
 
-    /**
-     * @see org.apache.maven.doxia.sink.Sink#paragraph()
-     */
+    /** {@inheritDoc} */
     public void paragraph()
     {
         // nop
     }
 
-    /**
-     * @see org.apache.maven.doxia.sink.Sink#paragraph_()
-     */
+    /** {@inheritDoc} */
     public void paragraph_()
     {
         // nop
     }
 
-    /**
-     * @see org.apache.maven.doxia.sink.Sink#verbatim(boolean)
-     */
+    /** {@inheritDoc} */
     public void verbatim( boolean boxed )
     {
         // nop
     }
 
-    /**
-     * @see org.apache.maven.doxia.sink.Sink#verbatim_()
-     */
+    /** {@inheritDoc} */
     public void verbatim_()
     {
         // nop
     }
 
-    /**
-     * @see org.apache.maven.doxia.sink.Sink#definedTerm()
-     */
+    /** {@inheritDoc} */
     public void definedTerm()
     {
         // nop
     }
 
-    /**
-     * @see org.apache.maven.doxia.sink.Sink#definedTerm_()
-     */
+    /** {@inheritDoc} */
     public void definedTerm_()
     {
         // nop
     }
 
-    /**
-     * @see org.apache.maven.doxia.sink.Sink#figureCaption()
-     */
+    /** {@inheritDoc} */
     public void figureCaption()
     {
         // nop
     }
 
-    /**
-     * @see org.apache.maven.doxia.sink.Sink#figureCaption_()
-     */
+    /** {@inheritDoc} */
     public void figureCaption_()
     {
         // nop
     }
 
-    /**
-     * @see org.apache.maven.doxia.sink.Sink#tableCell()
-     */
+    /** {@inheritDoc} */
     public void tableCell()
     {
         // nop
     }
 
-    /**
-     * @see org.apache.maven.doxia.sink.Sink#tableCell(java.lang.String)
-     */
+    /** {@inheritDoc} */
     public void tableCell( String width )
     {
         // nop
     }
 
-    /**
-     * @see org.apache.maven.doxia.sink.Sink#tableCell_()
-     */
+    /** {@inheritDoc} */
     public void tableCell_()
     {
         // nop
     }
 
-    /**
-     * @see org.apache.maven.doxia.sink.Sink#tableHeaderCell()
-     */
+    /** {@inheritDoc} */
     public void tableHeaderCell()
     {
         // nop
     }
 
-    /**
-     * @see org.apache.maven.doxia.sink.Sink#tableHeaderCell(java.lang.String)
-     */
+    /** {@inheritDoc} */
     public void tableHeaderCell( String width )
     {
         // nop
     }
 
-    /**
-     * @see org.apache.maven.doxia.sink.Sink#tableHeaderCell_()
-     */
+    /** {@inheritDoc} */
     public void tableHeaderCell_()
     {
         // nop
     }
 
-    /**
-     * @see org.apache.maven.doxia.sink.Sink#tableCaption()
-     */
+    /** {@inheritDoc} */
     public void tableCaption()
     {
         // nop
     }
 
-    /**
-     * @see org.apache.maven.doxia.sink.Sink#tableCaption_()
-     */
+    /** {@inheritDoc} */
     public void tableCaption_()
     {
         // nop
     }
 
-    /**
-     * @see org.apache.maven.doxia.sink.Sink#figureGraphics(java.lang.String)
-     */
+    /** {@inheritDoc} */
     public void figureGraphics( String name )
     {
         // nop
     }
 
-    /**
-     * @see org.apache.maven.doxia.sink.Sink#horizontalRule()
-     */
+    /** {@inheritDoc} */
     public void horizontalRule()
     {
         // nop
     }
 
-    /**
-     * @see org.apache.maven.doxia.sink.Sink#pageBreak()
-     */
+    /** {@inheritDoc} */
     public void pageBreak()
     {
         // nop
     }
 
-    /**
-     * @see org.apache.maven.doxia.sink.Sink#anchor(java.lang.String)
-     */
+    /** {@inheritDoc} */
     public void anchor( String name )
     {
         // nop
     }
 
-    /**
-     * @see org.apache.maven.doxia.sink.Sink#anchor_()
-     */
+    /** {@inheritDoc} */
     public void anchor_()
     {
         // nop
     }
 
-    /**
-     * @see org.apache.maven.doxia.sink.Sink#link(java.lang.String)
-     */
+    /** {@inheritDoc} */
     public void link( String name )
     {
         // nop
     }
 
-    /**
-     * @see org.apache.maven.doxia.sink.Sink#link_()
-     */
+    /** {@inheritDoc} */
     public void link_()
     {
         // nop
     }
 
-    /**
-     * @see org.apache.maven.doxia.sink.Sink#italic()
-     */
+    /** {@inheritDoc} */
     public void italic()
     {
         // nop
     }
 
-    /**
-     * @see org.apache.maven.doxia.sink.Sink#italic_()
-     */
+    /** {@inheritDoc} */
     public void italic_()
     {
         // nop
     }
 
-    /**
-     * @see org.apache.maven.doxia.sink.Sink#bold()
-     */
+    /** {@inheritDoc} */
     public void bold()
     {
         // nop
     }
 
-    /**
-     * @see org.apache.maven.doxia.sink.Sink#bold_()
-     */
+    /** {@inheritDoc} */
     public void bold_()
     {
         // nop
     }
 
-    /**
-     * @see org.apache.maven.doxia.sink.Sink#monospaced()
-     */
+    /** {@inheritDoc} */
     public void monospaced()
     {
         // nop
     }
 
-    /**
-     * @see org.apache.maven.doxia.sink.Sink#monospaced_()
-     */
+    /** {@inheritDoc} */
     public void monospaced_()
     {
         // nop
     }
 
-    /**
-     * @see org.apache.maven.doxia.sink.Sink#lineBreak()
-     */
+    /** {@inheritDoc} */
     public void lineBreak()
     {
         // nop
     }
 
-    /**
-     * @see org.apache.maven.doxia.sink.Sink#nonBreakingSpace()
-     */
+    /** {@inheritDoc} */
     public void nonBreakingSpace()
     {
         // nop
     }
 
-    /**
-     * @see org.apache.maven.doxia.sink.Sink#text(java.lang.String)
-     */
+    /** {@inheritDoc} */
     public void text( String text )
     {
         // nop
     }
 
-    /**
-     * @see org.apache.maven.doxia.sink.Sink#rawText(java.lang.String)
-     */
+    /** {@inheritDoc} */
     public void rawText( String text )
     {
         // nop
     }
 
-    /**
-     * @see org.apache.maven.doxia.sink.Sink#flush()
-     */
+    /** {@inheritDoc} */
     public void flush()
     {
         // nop
     }
 
-    /**
-     * @see org.apache.maven.doxia.sink.Sink#close()
-     */
+    /** {@inheritDoc} */
     public void close()
     {
         // nop

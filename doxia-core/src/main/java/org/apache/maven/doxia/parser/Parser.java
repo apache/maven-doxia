@@ -24,19 +24,34 @@ import org.apache.maven.doxia.sink.Sink;
 import java.io.Reader;
 
 /**
+ * A Parser is responsible for parsing any document in a supported front-end
+ * format, and emitting the standard Doxia events, which can then be consumed
+ * by any Doxia Sink.
+ *
  * @author <a href="mailto:jason@maven.org">Jason van Zyl</a>
  * @version $Id:Parser.java 348605 2005-11-24 12:02:44 +1100 (Thu, 24 Nov 2005) brett $
  */
 public interface Parser
 {
+    /** The Plexus lookup role. */
     String ROLE = Parser.class.getName();
 
+    /** Used for table cells: justify center. */
     int JUSTIFY_CENTER = 0;
 
+    /** Used for table cells: justify left. */
     int JUSTIFY_LEFT = 1;
 
+    /** Used for table cells: justify right. */
     int JUSTIFY_RIGHT = 2;
 
+    /**
+     * Parses the given source model and emits Doxia events into the given sink.
+     * 
+     * @param source A reader that provides the source document.
+     * @param sink A sink that consumes the Doxia events.
+     * @throws ParseException if the model could not be parsed.
+     */
     void parse( Reader source, Sink sink )
         throws ParseException;
 }

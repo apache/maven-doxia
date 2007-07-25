@@ -34,10 +34,12 @@ import org.apache.maven.doxia.sink.Sink;
 import org.codehaus.plexus.util.StringUtils;
 
 /**
- * Macro to display a <code>Table Of Content</code> in a given <code>Sink</code>. The input for this macro are:
+ * Macro to display a <code>Table Of Content</code> in a given <code>Sink</code>.
+ * The input for this macro are:
  * <dl>
  * <dt>section</dt>
- * <dd>Display the specificated section number or all sections if 0 (in this case, other paramaters are ignored).<br/>
+ * <dd>Display the specificated section number or all sections if 0
+ * (in this case, other paramaters are ignored).<br/>
  * Positive int, not mandatory, 0 by default.</dd>
  * <dt>fromDepth</dt>
  * <dd>Display the depth starting for the given section number.<br/>
@@ -49,11 +51,14 @@ import org.codehaus.plexus.util.StringUtils;
  * For instance, in an APT file, you could write:
  * <dl>
  * <dt>%{toc|section=2|fromDepth=2|toDepth=2}</dt>
- * <dd>Display a TOC for the section number 2 in the document, from the subsection depth 1 to the subsection depth 2</dd>
+ * <dd>Display a TOC for the section number 2 in the document, from the
+ * subsection depth 1 to the subsection depth 2</dd>
  * <dt>%{toc}</dt>
- * <dd>display a TOC with all section and subsections (similar to %{toc|section=0} )</dd>
+ * <dd>display a TOC with all section and subsections
+ * (similar to %{toc|section=0} )</dd>
  * </dl>
- * Moreover, you need to write APT link for section to allow anchor, for instance:
+ * Moreover, you need to write APT link for section to allow anchor,
+ * for instance:
  * <pre>
  * * {SubSection 1}
  * </pre>
@@ -71,15 +76,19 @@ import org.codehaus.plexus.util.StringUtils;
 public class TocMacro
     extends AbstractMacro
 {
+    /** The section to display. */
     private int section;
 
+    /** Start depth. */
     private int fromDepth;
 
+    /** End depth. */
     private int toDepth;
 
-    /**
-     * @see org.apache.maven.doxia.macro.Macro#execute(org.apache.maven.doxia.sink.Sink, org.apache.maven.doxia.macro.MacroRequest)
-     */
+    /** The default end depth. */
+    private static final int DEFAULT_DEPTH = 5;
+
+    /** {@inheritDoc} */
     public void execute( Sink sink, MacroRequest request )
         throws MacroExecutionException
     {
@@ -90,12 +99,12 @@ public class TocMacro
         if ( section != 0 )
         {
             fromDepth = getInt( request, "fromDepth", 0 );
-            toDepth = getInt( request, "toDepth", 5 );
+            toDepth = getInt( request, "toDepth", DEFAULT_DEPTH );
         }
         else
         {
             fromDepth = 0;
-            toDepth = 5;
+            toDepth = DEFAULT_DEPTH;
         }
         IndexEntry index = new IndexEntry( "index" );
         IndexingSink tocSink = new IndexingSink( index );
@@ -133,9 +142,9 @@ public class TocMacro
     }
 
     /**
-     * @param sink
-     * @param sectionIndex
-     * @param n
+     * @param sink The sink to write to.
+     * @param sectionIndex The section index.
+     * @param n The toc depth.
      */
     private void writeSubSectionN( Sink sink, IndexEntry sectionIndex, int n )
     {
@@ -158,7 +167,7 @@ public class TocMacro
                 for ( Iterator it = sectionIndex.getChildEntries().iterator(); it.hasNext(); )
                 {
                     IndexEntry subsectionIndex = (IndexEntry) it.next();
-                    if ( n == 5 )
+                    if ( n == DEFAULT_DEPTH )
                     {
                         sink.listItem();
                         sink.link( "#" + HtmlTools.encodeId( subsectionIndex.getId() ) );
@@ -185,11 +194,11 @@ public class TocMacro
     }
 
     /**
-     * @param request
-     * @param parameter
-     * @param defaultValue
-     * @return the int value of an parameter in the request.
-     * @throws MacroExecutionException
+     * @param request The MacroRequest.
+     * @param parameter The parameter.
+     * @param defaultValue the default value.
+     * @return the int value of a parameter in the request.
+     * @throws MacroExecutionException if something goes wrong.
      */
     private static int getInt( MacroRequest request, String parameter, int defaultValue )
         throws MacroExecutionException

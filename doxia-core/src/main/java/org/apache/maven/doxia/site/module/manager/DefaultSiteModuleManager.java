@@ -25,6 +25,8 @@ import java.util.Collection;
 import java.util.Map;
 
 /**
+ * Simple implementation of the SiteModuleManager interface.
+ *
  * @author Jason van Zyl
  * @version $Id:DefaultSiteModuleManager.java 348605 2005-11-24 12:02:44 +1100 (Thu, 24 Nov 2005) brett $
  * @plexus.component
@@ -37,11 +39,13 @@ public class DefaultSiteModuleManager
      */
     private Map siteModules;
 
+    /** {@inheritDoc} */
     public Collection getSiteModules()
     {
         return siteModules.values();
     }
 
+    /** {@inheritDoc} */
     public SiteModule getSiteModule( String id )
         throws SiteModuleNotFoundException
     {

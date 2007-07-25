@@ -28,31 +28,61 @@ import java.io.File;
  */
 public class MacroRequest
 {
+    /** The current base directory. */
     private File basedir;
 
+    /** A map of parameters. */
     private Map parameters;
 
-    public MacroRequest( Map parameters, File basedir )
+    /**
+     * Constructor.
+     *
+     * @param param A map of parameters.
+     * @param base The current base directory.
+     */
+    public MacroRequest( Map param, File base )
     {
-        this.parameters = parameters;
-        this.basedir = basedir;
+        this.parameters = param;
+        this.basedir = base;
     }
 
+    /**
+     * Returns the current base directory.
+     *
+     * @return The base dir.
+     */
     public File getBasedir()
     {
         return basedir;
     }
 
-    public void setBasedir( File basedir )
+    /**
+     * Sets the current base directory.
+     *
+     * @param base The current base directory.
+     */
+    public void setBasedir( File base )
     {
-        this.basedir = basedir;
+        this.basedir = base;
     }
 
+    /**
+     * Returns the map of parameters.
+     *
+     * @return The map of parameters.
+     */
     public Map getParameters()
     {
         return parameters;
     }
 
+    /**
+     * Returns on object from the map of parameters
+     * that corresponds to the given key.
+     *
+     * @param key The key to lookup the object.
+     * @return The value object.
+     */
     public Object getParameter( String key )
     {
         return parameters.get( key );

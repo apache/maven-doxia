@@ -1,7 +1,3 @@
-/*
- * Originaly from org.apache.doxia.module.apt.AptReaderSource. It was modified
- * to get unget support 
- */
 package org.apache.maven.doxia.util;
 
 /*
@@ -23,6 +19,11 @@ package org.apache.maven.doxia.util;
  * under the License.
  */
 
+/*
+ * Originally from org.apache.doxia.module.apt.AptReaderSource. It was modified
+ * to get unget support 
+ */
+
 import java.io.IOException;
 import java.io.LineNumberReader;
 import java.io.Reader;
@@ -38,6 +39,7 @@ public class ByLineReaderSource implements ByLineSource
      * reader
      */
     private LineNumberReader reader;
+
     /**
      * current line number
      */
@@ -66,9 +68,7 @@ public class ByLineReaderSource implements ByLineSource
         lineNumber = -1;
     }
 
-    /**
-     * @see ByLineSource#getNextLine()
-     */
+    /** {@inheritDoc} */
     public final String getNextLine() throws ParseException
     {
         if ( reader == null )
@@ -107,25 +107,19 @@ public class ByLineReaderSource implements ByLineSource
         return line;
     }
 
-    /**
-     * @see ByLineSource#getName()
-     */
+    /** {@inheritDoc} */
     public final String getName()
     {
         return "";
     }
 
-    /**
-     * @see ByLineSource#getLineNumber()
-     */
+    /** {@inheritDoc} */
     public final int getLineNumber()
     {
         return lineNumber;
     }
 
-    /**
-     * @see ByLineSource#close()
-     */
+    /** {@inheritDoc} */
     public final void close()
     {
         if ( reader != null )
@@ -142,9 +136,7 @@ public class ByLineReaderSource implements ByLineSource
         reader = null;
     }
 
-    /**
-     * @see ByLineSource#ungetLine()
-     */
+    /** {@inheritDoc} */
     public final void ungetLine() throws IllegalStateException
     {
         if ( ungetted )
@@ -154,9 +146,7 @@ public class ByLineReaderSource implements ByLineSource
         ungetted = true;
     }
 
-    /**
-     * @see ByLineSource#unget(String)
-     */
+    /** {@inheritDoc} */
     public final void unget( final String s ) throws IllegalStateException
     {
         if ( s == null )

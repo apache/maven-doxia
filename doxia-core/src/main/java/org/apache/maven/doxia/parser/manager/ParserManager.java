@@ -22,13 +22,24 @@ package org.apache.maven.doxia.parser.manager;
 import org.apache.maven.doxia.parser.Parser;
 
 /**
+ * Handles parser lookups.
+ *
  * @author <a href="mailto:jason@maven.org">Jason van Zyl</a>
  * @version $Id:ParserManager.java 348605 2005-11-24 12:02:44 +1100 (Thu, 24 Nov 2005) brett $
  */
 public interface ParserManager
 {
+    /** The Plexus lookup role. */
     String ROLE = ParserManager.class.getName();
 
+    /**
+     * Returns the parser that corresponds to the given id.
+     *
+     * @param id The identifier.
+     * @return The corresponding parser.
+     * @throws ParserNotFoundException if no parser could be found
+     * for the given id.
+     */
     Parser getParser( String id )
         throws ParserNotFoundException;
 }

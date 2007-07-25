@@ -20,22 +20,49 @@ package org.apache.maven.doxia.macro.manager;
  */
 
 /**
+ * Encapsulate an exception that indicates that a Macro
+ * does not exist or could not be found.
+ *
  * @author <a href="mailto:jason@maven.org">Jason van Zyl</a>
  * @version $Id:MacroNotFoundException.java 348605 2005-11-24 12:02:44 +1100 (Thu, 24 Nov 2005) brett $
  */
 public class MacroNotFoundException
     extends Exception
 {
+    /**
+     * Construct a new MacroNotFoundException with the specified detail message.
+     *
+     * @param message The detailed message.
+     * This can later be retrieved by the Throwable.getMessage() method.
+     */
     public MacroNotFoundException( String message )
     {
         super( message );
     }
 
+    /**
+     * Constructs a new MacroNotFoundException with the specified cause
+     * and a detail message of (cause == null ? null : cause.toString() ).
+     *
+     * @param cause the cause. This can be retrieved later by the
+     * Throwable.getCause() method. (A null value is permitted, and indicates
+     * that the cause is nonexistent or unknown.)
+     */
     public MacroNotFoundException( Throwable cause )
     {
         super( cause );
     }
 
+    /**
+     * Construct a new MacroNotFoundException with the specified
+     * detail message and cause.
+     *
+     * @param message The detailed message.
+     * This can later be retrieved by the Throwable.getMessage() method.
+     * @param cause the cause. This can be retrieved later by the
+     * Throwable.getCause() method. (A null value is permitted, and indicates
+     * that the cause is nonexistent or unknown.)
+     */
     public MacroNotFoundException( String message, Throwable cause )
     {
         super( message, cause );
