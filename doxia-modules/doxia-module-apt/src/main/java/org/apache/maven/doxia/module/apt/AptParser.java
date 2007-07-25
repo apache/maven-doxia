@@ -22,7 +22,6 @@ package org.apache.maven.doxia.module.apt;
 import org.apache.maven.doxia.macro.MacroExecutionException;
 import org.apache.maven.doxia.macro.MacroRequest;
 import org.apache.maven.doxia.macro.manager.MacroNotFoundException;
-import org.apache.maven.doxia.macro.manager.MacroManager;
 import org.apache.maven.doxia.parser.AbstractParser;
 import org.apache.maven.doxia.sink.Sink;
 import org.apache.maven.doxia.sink.SinkAdapter;
@@ -904,6 +903,7 @@ public class AptParser
                                     }
                                     catch ( NumberFormatException e )
                                     {
+                                        // TODO: log
                                     }
 
                                     i += 3;
@@ -926,6 +926,7 @@ public class AptParser
                                     }
                                     catch ( NumberFormatException e )
                                     {
+                                        // TODO: log
                                     }
 
                                     i += 5;
@@ -955,6 +956,7 @@ public class AptParser
                                     }
                                     catch ( NumberFormatException e )
                                     {
+                                        // TODO: log
                                     }
 
                                     i += octalChars;

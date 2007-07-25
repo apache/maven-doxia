@@ -29,16 +29,19 @@ import org.apache.maven.doxia.site.module.AbstractSiteModule;
 public class AptSiteModule
     extends AbstractSiteModule
 {
+    /** {@inheritDoc} */
     public String getSourceDirectory()
     {
         return "apt";
     }
 
+    /** {@inheritDoc} */
     public String getExtension()
     {
         return "apt";
     }
 
+    /** {@inheritDoc} */
     public String getParserId()
     {
         return "apt";
