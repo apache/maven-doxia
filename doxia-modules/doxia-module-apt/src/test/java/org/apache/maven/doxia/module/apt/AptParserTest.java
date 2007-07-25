@@ -19,12 +19,15 @@ package org.apache.maven.doxia.module.apt;
  * under the License.
  */
 
-import java.io.FileReader;
+import java.io.IOException;
 import java.io.Reader;
 import java.io.StringWriter;
+import java.io.Writer;
 
-import org.apache.maven.doxia.parser.AbstractParserTestCase;
+import org.apache.maven.doxia.parser.AbstractParserTest;
 import org.apache.maven.doxia.parser.Parser;
+import org.apache.maven.doxia.parser.ParseException;
+
 import org.apache.maven.doxia.sink.Sink;
 
 /**
@@ -32,7 +35,7 @@ import org.apache.maven.doxia.sink.Sink;
  * @version $Id$
  */
 public class AptParserTest
-    extends AbstractParserTestCase
+    extends AbstractParserTest
 {
     private static final String EOL = System.getProperty( "line.separator" );
 
@@ -47,16 +50,10 @@ public class AptParserTest
         parser = (AptParser) lookup( Parser.ROLE, "apt" );
     }
 
-    /** @see org.apache.maven.doxia.parser.AbstractParserTestCase#getParser() */
-    protected Parser getParser()
+    /** @see org.apache.maven.doxia.parser.AbstractParserTest#createParser() */
+    protected Parser createParser()
     {
         return parser;
-    }
-
-    /** @see org.apache.maven.doxia.parser.AbstractParserTestCase#getDocument() */
-    protected String getDocument()
-    {
-        return "src/test/resources/test/linebreak.apt";
     }
 
     /** @throws Exception  */
@@ -69,10 +66,10 @@ public class AptParserTest
         try
         {
             output = new StringWriter();
-            reader = new FileReader( getTestFile( getBasedir(), getDocument() ) );
+            reader = getTestReader( "test/linebreak", "apt" );
 
             Sink sink = new AptSink( output );
-            getParser().parse( reader, sink );
+            createParser().parse( reader, sink );
 
             assertTrue( output.toString().indexOf( "Line\\" + EOL + "break." ) != -1 );
         }
@@ -93,10 +90,10 @@ public class AptParserTest
         try
         {
             output = new StringWriter();
-            reader = new FileReader( getTestFile( getBasedir(), "src/test/resources/test/macro.apt" ) );
+            reader = getTestReader( "test/macro", "apt" );
 
             Sink sink = new AptSink( output );
-            getParser().parse( reader, sink );
+            createParser().parse( reader, sink );
 
             assertTrue( output.toString().indexOf( "<modelVersion\\>4.0.0\\</modelVersion\\>" ) != -1 );
         }
@@ -117,10 +114,10 @@ public class AptParserTest
         try
         {
             output = new StringWriter();
-            reader = new FileReader( getTestFile( getBasedir(), "src/test/resources/test/toc.apt" ) );
+            reader = getTestReader( "test/toc", "apt" );
 
             Sink sink = new AptSink( output );
-            getParser().parse( reader, sink );
+            createParser().parse( reader, sink );
 
             // No section, only subsection 1 and 2
             assertTrue( output.toString().indexOf( "* {{{#subsection_1}SubSection 1}}" ) != -1 );
@@ -139,4 +136,45 @@ public class AptParserTest
             }
         }
     }
+
+    /**
+     * Parses the test document test.apt and re-emits
+     * it into parser/test.apt.
+     */
+    public void testTestDocument()
+        throws IOException, ParseException
+    {
+        Writer writer = null;
+
+        Reader reader = null;
+
+        try
+        {
+            writer = getTestWriter( "test" );
+            reader = getTestReader( "test" );
+
+            Sink sink = new AptSink( writer );
+
+            createParser().parse( reader, sink );
+        }
+        finally
+        {
+            if ( writer  != null )
+            {
+                writer.close();
+            }
+
+            if ( reader != null )
+            {
+                reader.close();
+            }
+        }
+    }
+
+    /** {@inheritDoc} */
+    protected String outputExtension()
+    {
+        return "apt";
+    }
+
 }

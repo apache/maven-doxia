@@ -19,36 +19,199 @@ package org.apache.maven.doxia.module.apt;
  * under the License.
  */
 
-import org.apache.maven.doxia.sink.AbstractSinkTestCase;
-import org.apache.maven.doxia.sink.Sink;
-import org.apache.maven.doxia.parser.Parser;
+import java.io.Writer;
 
-public class AptSinkTest
-	extends AbstractSinkTestCase
+import org.apache.maven.doxia.sink.AbstractSinkTest;
+import org.apache.maven.doxia.sink.Sink;
+
+public class AptSinkTest extends AbstractSinkTest
 {
+    /** {@inheritDoc} */
     protected String outputExtension()
     {
         return "apt";
     }
 
-    public void testApt()
-	    throws Exception
-	{
-	    Sink sink = createSink();
-
-	    new AptParser().parse( getTestReader(), createSink() );
-
-	    sink.flush();
-	}
-
-    protected Parser createParser()
+    /** {@inheritDoc} */
+    protected Sink createSink( Writer writer )
     {
-        return new AptParser();
+        return new AptSink( writer );
     }
 
-    protected Sink createSink()
-        throws Exception
+    /** {@inheritDoc} */
+    protected String getTitleBlock( String title )
     {
-        return new AptSink( getTestWriter() );
+        return title;
     }
+
+    /** {@inheritDoc} */
+    protected String getAuthorBlock( String author )
+    {
+        return author;
+    }
+
+    /** {@inheritDoc} */
+    protected String getDateBlock( String date )
+    {
+        return date;
+    }
+
+    /** {@inheritDoc} */
+    protected String getHeadBlock()
+    {
+        return " ----- null ----- null ----- null -----";
+    }
+
+    /** {@inheritDoc} */
+    protected String getBodyBlock()
+    {
+        return "";
+    }
+
+    /** {@inheritDoc} */
+    protected String getSectionTitleBlock( String title )
+    {
+        return title;
+    }
+
+    /** {@inheritDoc} */
+    protected String getSection1Block( String title )
+    {
+        return title;
+    }
+
+    /** {@inheritDoc} */
+    protected String getSection2Block( String title )
+    {
+        return "*" + title;
+    }
+
+    /** {@inheritDoc} */
+    protected String getSection3Block( String title )
+    {
+        return "**" + title;
+    }
+
+    /** {@inheritDoc} */
+    protected String getSection4Block( String title )
+    {
+        return "***" + title;
+    }
+
+    /** {@inheritDoc} */
+    protected String getSection5Block( String title )
+    {
+        return "****" + title;
+    }
+
+    /** {@inheritDoc} */
+    protected String getListBlock( String item )
+    {
+        return " * " + item + " []";
+    }
+
+    /** {@inheritDoc} */
+    protected String getNumberedListBlock( String item )
+    {
+        return " [[i]] " + item + " []";
+    }
+
+    /** {@inheritDoc} */
+    protected String getDefinitionListBlock( String definum, String definition )
+    {
+        return " [" + definum + "]" + definition;
+    }
+
+    /** {@inheritDoc} */
+    protected String getFigureBlock( String source, String caption )
+    {
+        return "[" + source + "] " + caption;
+    }
+
+    /** {@inheritDoc} */
+    protected String getTableBlock( String cell, String caption )
+    {
+        return "*----*" + cell + "|*----*" + caption;
+    }
+
+    /** {@inheritDoc} */
+    protected String getParagraphBlock( String text )
+    {
+        return " " + text;
+    }
+
+    /** {@inheritDoc} */
+    protected String getVerbatimBlock( String text )
+    {
+        return "+------+" + text + "+------+";
+    }
+
+    /** {@inheritDoc} */
+    protected String getHorizontalRuleBlock()
+    {
+        return "========";
+    }
+
+    /** {@inheritDoc} */
+    protected String getPageBreakBlock()
+    {
+        return "\f";
+    }
+
+    /** {@inheritDoc} */
+    protected String getAnchorBlock( String anchor )
+    {
+        return "{" + anchor + "}";
+    }
+
+    /** {@inheritDoc} */
+    protected String getLinkBlock( String link, String text )
+    {
+        return "{{{" + link + "}" + text + "}}";
+    }
+
+    /** {@inheritDoc} */
+    protected String getItalicBlock( String text )
+    {
+        return "<" + text + ">";
+    }
+
+    /** {@inheritDoc} */
+    protected String getBoldBlock( String text )
+    {
+        return "<<" + text + ">>";
+    }
+
+    /** {@inheritDoc} */
+    protected String getMonospacedBlock( String text )
+    {
+        return "<<<" + text + ">>>";
+    }
+
+    /** {@inheritDoc} */
+    protected String getLineBreakBlock()
+    {
+        return "\\";
+    }
+
+    /** {@inheritDoc} */
+    protected String getNonBreakingSpaceBlock()
+    {
+        return "\\ ";
+    }
+
+    /** {@inheritDoc} */
+    protected String getTextBlock( String text )
+    {
+        // TODO: need to be able to retreive those from outside the sink
+        return "\\~, \\=, \\-, \\+, \\*, \\[, \\], \\<, \\>, \\{, \\}, \\\\";
+    }
+
+    /** {@inheritDoc} */
+    protected String getRawTextBlock( String text )
+    {
+        return text;
+    }
+
+
 }
