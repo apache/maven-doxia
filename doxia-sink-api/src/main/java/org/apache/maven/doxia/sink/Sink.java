@@ -20,7 +20,26 @@ package org.apache.maven.doxia.sink;
  */
 
 /**
- * Generic document processing interface.
+ * A <i>Sink</i> consumes Doxia events in a resultant output format like
+ * Docbook, PDF, or XHTML.
+ * <br/>
+ * The upshot is that you can parse any front-end format, the parser is
+ * responsible for emitting the standard Doxia events which can then be
+ * consumed by any Doxia Sink. This is what allow us to parse the front-
+ * end format like APT, FML, and Xdoc for the Maven site plugin and have
+ * them all contribute to the final XHTML version of a site. All
+ * documents being parsed results in a stream of Doxia events
+ * (paragraph, bold, italic, text) which are then fed in the XHTML sink
+ * which results in a set of XHTML pages.
+ * <br/>
+ * A sink if ultimately responsible for the final format and structure.
+ * So, for example, you can take a series of APT documents and have that
+ * be fed into a Sink which makes a single PDF, a book, a site, or a
+ * Word document. The Sink is fully responsible for the final output.
+ * Once you have Doxia events you can leverage any existing Sink. So if
+ * you wanted to integrate your custom XML format, or custom Wiki
+ * format, you would create a Doxia parser which could then be fed into
+ * any Sink to produce your desired final output.
  *
  * @since 1.0
  * @author <a href="mailto:jason@maven.org">Jason van Zyl</a>
