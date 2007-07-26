@@ -659,7 +659,7 @@ public class XhtmlSink
                 targ = " target=\"" + target + "\"";
             }
 
-            if ( StructureSink.isExternalLink( name ) )
+            if ( StructureSink.isExternalLink( name ) || isExternalHtml( name ) )
             {
                 String clas = "";
                 if ( isExternalLink( name ) )
@@ -684,6 +684,18 @@ public class XhtmlSink
         return ( text.indexOf( "http:/" ) == 0 || text.indexOf( "https:/" ) == 0
             || text.indexOf( "ftp:/" ) == 0 || text.indexOf( "mailto:" ) == 0
             || text.indexOf( "file:/" ) == 0 );
+
+    }
+
+    /* Legacy: treat links to other html documents as external links.
+     * Note that links to other file formats (images, pdf) will still be broken,
+     * links to other documents should always start with "./" or "../".
+     */
+    private boolean isExternalHtml( String href )
+    {
+        String text = href.toLowerCase();
+        return ( text.indexOf( ".html#" ) != -1 || text.indexOf( ".htm#" ) != -1
+            || text.endsWith( ".htm" ) || text.endsWith( ".html" ) );
 
     }
 
