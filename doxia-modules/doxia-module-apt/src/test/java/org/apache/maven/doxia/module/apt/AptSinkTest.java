@@ -143,7 +143,7 @@ public class AptSinkTest extends AbstractSinkTest
     /** {@inheritDoc} */
     protected String getVerbatimBlock( String text )
     {
-        return "+------+" + text + "+------+";
+        return "\n+------+\n" + text + "\n+------+\n";
     }
 
     /** {@inheritDoc} */
