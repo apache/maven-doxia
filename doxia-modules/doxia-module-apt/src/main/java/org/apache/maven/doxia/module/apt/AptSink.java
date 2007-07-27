@@ -29,12 +29,19 @@ import org.codehaus.plexus.util.StringUtils;
 
 /**
  * APT Sink implementation.
+ *
+ * @since 1.0
  * @author eredmond
  * @plexus.component
  */
-public class AptSink extends SinkAdapter
+public class AptSink
+    extends SinkAdapter
+    implements AptMarkup
 {
-    private static final String EOL = System.getProperty( "line.separator" );
+    // ----------------------------------------------------------------------
+    // Instance fields
+    // ----------------------------------------------------------------------
+
     private StringBuffer buffer;
     private StringBuffer tableCaptionBuffer;
     private String author;
@@ -53,6 +60,10 @@ public class AptSink extends SinkAdapter
     private String rowLine;
     private String listNestingIndent;
     private Stack listStyles;
+
+    // ----------------------------------------------------------------------
+    // Public protected methods
+    // ----------------------------------------------------------------------
 
     /**
      * Constructor, initialize the variables.
@@ -128,13 +139,13 @@ public class AptSink extends SinkAdapter
     {
         headerFlag = false;
 
-        write( " -----" + EOL );
+        write( HEADER_START + EOL );
         write( " " + title + EOL  );
-        write( " -----" + EOL );
+        write( HEADER_START + EOL );
         write( " " + author + EOL  );
-        write( " -----" + EOL );
+        write( HEADER_START + EOL );
         write( " " + date + EOL  );
-        write( " -----" + EOL );
+        write( HEADER_START + EOL );
     }
 
     /** {@inheritDoc} */
@@ -212,7 +223,7 @@ public class AptSink extends SinkAdapter
     /** {@inheritDoc} */
     public void sectionTitle2()
     {
-        write( EOL + "*" );
+        write( EOL + SECTION_TITLE_START );
     }
 
     /** {@inheritDoc} */
@@ -224,7 +235,7 @@ public class AptSink extends SinkAdapter
     /** {@inheritDoc} */
     public void sectionTitle3()
     {
-        write( EOL + "**" );
+        write( EOL + StringUtils.repeat( SECTION_TITLE_START, 2 ) );
     }
 
     /** {@inheritDoc} */
@@ -236,7 +247,7 @@ public class AptSink extends SinkAdapter
     /** {@inheritDoc} */
     public void sectionTitle4()
     {
-        write( EOL + "***" );
+        write( EOL + StringUtils.repeat( SECTION_TITLE_START, 3 ) );
     }
 
     /** {@inheritDoc} */
@@ -248,7 +259,7 @@ public class AptSink extends SinkAdapter
     /** {@inheritDoc} */
     public void sectionTitle5()
     {
-        write( EOL + "****" );
+        write( EOL + StringUtils.repeat( SECTION_TITLE_START, 4 ) );
     }
 
     /** {@inheritDoc} */
@@ -261,7 +272,7 @@ public class AptSink extends SinkAdapter
     public void list()
     {
         listNestingIndent += " ";
-        listStyles.push( "*" );
+        listStyles.push( LIST_START );
         write( EOL );
     }
 
@@ -270,7 +281,7 @@ public class AptSink extends SinkAdapter
     {
         if ( listNestingIndent.length() <= 1 )
         {
-            write( EOL + listNestingIndent + "[]" + EOL );
+            write( EOL + listNestingIndent + LIST_END + EOL );
         }
         else
         {
@@ -331,7 +342,7 @@ public class AptSink extends SinkAdapter
     {
         if ( listNestingIndent.length() <= 1 )
         {
-            write( EOL + listNestingIndent + "[]" + EOL );
+            write( EOL + listNestingIndent + LIST_END + EOL );
         }
         else
         {
@@ -346,13 +357,15 @@ public class AptSink extends SinkAdapter
     public void numberedListItem()
     {
         String style = (String) listStyles.peek();
-        if ( style == "*" )
+        if ( style.equals( String.valueOf( AptParser.STAR_MARKUP ) ) )
         {
-            write( EOL + listNestingIndent + "* " );
+            write( EOL + listNestingIndent + AptParser.STAR_MARKUP + "" + AptParser.SPACE_MARKUP );
         }
         else
         {
-            write( EOL + listNestingIndent + "[[" + style + "]] " );
+            write( EOL + listNestingIndent + AptParser.LEFT_SQUARE_BRACKET_MARKUP + ""
+                + AptParser.LEFT_SQUARE_BRACKET_MARKUP + style + AptParser.RIGHT_SQUARE_BRACKET_MARKUP + ""
+                + AptParser.RIGHT_SQUARE_BRACKET_MARKUP + "" + AptParser.SPACE_MARKUP );
         }
         itemFlag = true;
     }
@@ -403,7 +416,7 @@ public class AptSink extends SinkAdapter
     /** {@inheritDoc} */
     public void pageBreak()
     {
-        write( EOL + "\f" + EOL );
+        write( EOL + PAGE_BREAK + EOL );
     }
 
     /** {@inheritDoc} */
@@ -435,11 +448,11 @@ public class AptSink extends SinkAdapter
         this.boxed = boxed;
         if ( boxed )
         {
-            write( "\n+------+\n" );
+            write( "\n" + BOXED_VERBATIM_START + "\n" );
         }
         else
         {
-            write( "\n------\n" );
+            write( "\n" + NON_BOXED_VERBATIM_START + "\n" );
         }
     }
 
@@ -448,11 +461,11 @@ public class AptSink extends SinkAdapter
     {
         if ( boxed )
         {
-            write( "\n+------+\n" );
+            write( "\n" + BOXED_VERBATIM_END + "\n" );
         }
         else
         {
-            write( "\n------\n" );
+            write( "\n" + NON_BOXED_VERBATIM_END + "\n" );
         }
         boxed = false;
         verbatimFlag = false;
@@ -461,7 +474,7 @@ public class AptSink extends SinkAdapter
     /** {@inheritDoc} */
     public void horizontalRule()
     {
-        write( EOL + "========" + EOL );
+        write( EOL + HORIZONTAL_RULE + EOL );
     }
 
     /** {@inheritDoc} */
@@ -521,7 +534,7 @@ public class AptSink extends SinkAdapter
         // TODO: This will need to be more clever, for multi-line cells
         if ( gridFlag )
         {
-            write( "|" );
+            write( TABLE_ROW_SEPARATOR );
         }
 
         write( buffer.toString() );
@@ -538,7 +551,7 @@ public class AptSink extends SinkAdapter
     private void buildRowLine()
     {
         StringBuffer rowLine = new StringBuffer();
-        rowLine.append( "*--" );
+        rowLine.append( TABLE_ROW_START );
 
         for ( int i = 0; i < cellCount; i++ )
         {
@@ -546,20 +559,19 @@ public class AptSink extends SinkAdapter
             {
                 switch ( cellJustif[i] )
                 {
-                // TODO: use Parser constants
                 case 1:
-                    rowLine.append( "--+" );
+                    rowLine.append( TABLE_COL_LEFT_ALIGNED );
                     break;
                 case 2:
-                    rowLine.append( "--:" );
+                    rowLine.append( TABLE_COL_RIGHT_ALIGNED );
                     break;
                 default:
-                    rowLine.append( "--*" );
+                    rowLine.append( TABLE_COL_CENTERED_ALIGNED );
                 }
             }
             else
             {
-                rowLine.append( "--*" );
+                rowLine.append( TABLE_COL_CENTERED_ALIGNED );
             }
         }
         rowLine.append( EOL );
@@ -588,7 +600,7 @@ public class AptSink extends SinkAdapter
     {
         if ( headerRow )
         {
-            buffer.append( "|" );
+            buffer.append( TABLE_CELL_SEPARATOR );
         }
     }
 
@@ -607,7 +619,7 @@ public class AptSink extends SinkAdapter
     /** {@inheritDoc} */
     public void tableCell_( boolean headerRow )
     {
-        buffer.append( "|" );
+        buffer.append( TABLE_CELL_SEPARATOR );
         cellCount++;
     }
 
@@ -639,13 +651,13 @@ public class AptSink extends SinkAdapter
     public void anchor( String name )
     {
 //        String id = HtmlTools.encodeId(name);
-        write( "{" );
+        write( ANCHOR_START );
     }
 
     /** {@inheritDoc} */
     public void anchor_()
     {
-        write( "}" );
+        write( ANCHOR_END );
     }
 
     /** {@inheritDoc} */
@@ -653,9 +665,9 @@ public class AptSink extends SinkAdapter
     {
         if ( !headerFlag )
         {
-            write( "{{{" );
+            write( LINK_START_1 );
             text( name );
-            write( "}" );
+            write( LINK_START_2 );
         }
     }
 
@@ -664,7 +676,7 @@ public class AptSink extends SinkAdapter
     {
         if ( !headerFlag )
         {
-            write( "}}" );
+            write( LINK_END );
         }
     }
 
@@ -673,9 +685,9 @@ public class AptSink extends SinkAdapter
     {
         if ( !headerFlag )
         {
-            write( "{{{" );
+            write( LINK_START_1 );
             text( target );
-            write( "}" );
+            write( LINK_START_2 );
             text( name );
         }
     }
@@ -685,7 +697,7 @@ public class AptSink extends SinkAdapter
     {
         if ( !headerFlag )
         {
-            write( "<" );
+            write( ITALIC_START );
         }
     }
 
@@ -694,7 +706,7 @@ public class AptSink extends SinkAdapter
     {
         if ( !headerFlag )
         {
-            write( ">" );
+            write( ITALIC_END );
         }
     }
 
@@ -703,7 +715,7 @@ public class AptSink extends SinkAdapter
     {
         if ( !headerFlag )
         {
-            write( "<<" );
+            write( BOLD_START );
         }
     }
 
@@ -712,7 +724,7 @@ public class AptSink extends SinkAdapter
     {
         if ( !headerFlag )
         {
-            write( ">>" );
+            write( BOLD_END );
         }
     }
 
@@ -721,7 +733,7 @@ public class AptSink extends SinkAdapter
     {
         if ( !headerFlag )
         {
-            write( "<<<" );
+            write( MONOSPACED_START );
         }
     }
 
@@ -730,7 +742,7 @@ public class AptSink extends SinkAdapter
     {
         if ( !headerFlag )
         {
-            write( ">>>" );
+            write( MONOSPACED_END );
         }
     }
 
@@ -752,11 +764,11 @@ public class AptSink extends SinkAdapter
     {
         if ( headerFlag || bufferFlag )
         {
-            buffer.append( "\\ " );
+            buffer.append( NON_BREAKING_SPACE );
         }
         else
         {
-            write( "\\ " );
+            write( NON_BREAKING_SPACE );
         }
     }
 
@@ -852,6 +864,10 @@ public class AptSink extends SinkAdapter
     {
         writer.close();
     }
+
+    // ----------------------------------------------------------------------
+    // Private methods
+    // ----------------------------------------------------------------------
 
     /**
      * Escape special characters in a text in APT:

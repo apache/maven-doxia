@@ -36,44 +36,67 @@ import java.util.HashMap;
 import java.util.Map;
 import java.util.StringTokenizer;
 
-/** @plexus.component role="org.apache.maven.doxia.parser.Parser" role-hint="apt" */
+/**
+ * The APT parser.
+ * <br/>
+ * Based on the <a href="http://www.xmlmind.com/aptconvert.html">APTconvert</a> project.
+ *
+ * @since 1.0
+ * @plexus.component role="org.apache.maven.doxia.parser.Parser" role-hint="apt"
+ */
 public class AptParser
     extends AbstractParser
+    implements AptMarkup
 {
-    private static final String EOL = System.getProperty( "line.separator" );
-
+    /** Title event id */
     private static final int TITLE = 0;
 
+    /** Section 1 event id */
     private static final int SECTION1 = 1;
 
+    /** Section 2 event id */
     private static final int SECTION2 = 2;
 
+    /** Section 3 event id */
     private static final int SECTION3 = 3;
 
+    /** Section 4 event id */
     private static final int SECTION4 = 4;
 
+    /** Section 5 event id */
     private static final int SECTION5 = 5;
 
+    /** Paragraph event id */
     private static final int PARAGRAPH = 6;
 
+    /** Verbatim event id */
     private static final int VERBATIM = 7;
 
+    /** Figure event id */
     private static final int FIGURE = 8;
 
+    /** Table event id */
     private static final int TABLE = 9;
 
+    /** List event id */
     private static final int LIST_ITEM = 10;
 
+    /** Numbered list event id */
     private static final int NUMBERED_LIST_ITEM = 11;
 
+    /** Definition list event id */
     private static final int DEFINITION_LIST_ITEM = 12;
 
+    /** Horizontal rule event id */
     private static final int HORIZONTAL_RULE = 13;
 
+    /** Page break event id */
     private static final int PAGE_BREAK = 14;
 
+    /** List break event id */
     private static final int LIST_BREAK = 15;
 
+    /** Macro event id */
     private static final int MACRO = 16;
 
     private static final String typeNames[] = {"TITLE", "SECTION1", "SECTION2", "SECTION3", "SECTION4", "SECTION5",
@@ -88,7 +111,9 @@ public class AptParser
 
     public static final int TAB_WIDTH = 8;
 
-    // -----------------------------------------------------------------------
+    // ----------------------------------------------------------------------
+    // Instance fields
+    // ----------------------------------------------------------------------
 
     private String sourceContent;
 
@@ -104,7 +129,9 @@ public class AptParser
 
     private int blockLineNumber;
 
-    // -----------------------------------------------------------------------
+    // ----------------------------------------------------------------------
+    // Public methods
+    // ----------------------------------------------------------------------
 
     public void parse( Reader source,
                        Sink sink )
@@ -162,6 +189,10 @@ public class AptParser
         // Use this rather than source.getLineNumber() to report errors.
         return blockLineNumber;
     }
+
+    // ----------------------------------------------------------------------
+    // Private methods
+    // ----------------------------------------------------------------------
 
     private void traverseHead()
         throws AptParseException
@@ -617,14 +648,14 @@ public class AptParser
             {
                 switch ( line.charAt( i ) )
                 {
-                    case' ':
+                    case SPACE_MARKUP:
                         ++indent;
                         break;
-                    case'\t':
+                    case TAB_MARKUP:
                         indent += 8;
                         break;
-                    case'~':
-                        if ( charAt( line, length, i + 1 ) == '~' )
+                    case COMMENT_MARKUP:
+                        if ( charAt( line, length, i + 1 ) == COMMENT_MARKUP )
                         {
                             // Comment.
                             i = length;
@@ -650,18 +681,18 @@ public class AptParser
         block = null;
         switch ( line.charAt( i ) )
         {
-            case'*':
+            case STAR_MARKUP:
                 if ( indent == 0 )
                 {
-                    if ( charAt( line, length, i + 1 ) == '-' && charAt( line, length, i + 2 ) == '-' )
+                    if ( charAt( line, length, i + 1 ) == MINUS_MARKUP && charAt( line, length, i + 2 ) == MINUS_MARKUP )
                     {
                         block = new Table( indent, line );
                     }
-                    else if ( charAt( line, length, i + 1 ) == '*' )
+                    else if ( charAt( line, length, i + 1 ) == STAR_MARKUP )
                     {
-                        if ( charAt( line, length, i + 2 ) == '*' )
+                        if ( charAt( line, length, i + 2 ) == STAR_MARKUP )
                         {
-                            if ( charAt( line, length, i + 3 ) == '*' )
+                            if ( charAt( line, length, i + 3 ) == STAR_MARKUP )
                             {
                                 block = new Section5( indent, line );
                             }
@@ -685,8 +716,8 @@ public class AptParser
                     block = new ListItem( indent, line );
                 }
                 break;
-            case'[':
-                if ( charAt( line, length, i + 1 ) == ']' )
+            case LEFT_SQUARE_BRACKET_MARKUP:
+                if ( charAt( line, length, i + 1 ) == RIGHT_SQUARE_BRACKET_MARKUP )
                 {
                     block = new ListBreak( indent, line );
                 }
@@ -698,25 +729,25 @@ public class AptParser
                     }
                     else
                     {
-                        if ( charAt( line, length, i + 1 ) == '[' )
+                        if ( charAt( line, length, i + 1 ) == LEFT_SQUARE_BRACKET_MARKUP )
                         {
                             int numbering;
 
                             switch ( charAt( line, length, i + 2 ) )
                             {
-                                case'a':
+                                case NUMBERING_LOWER_ALPHA_MARKUP:
                                     numbering = Sink.NUMBERING_LOWER_ALPHA;
                                     break;
-                                case'A':
+                                case NUMBERING_UPPER_ALPHA_MARKUP:
                                     numbering = Sink.NUMBERING_UPPER_ALPHA;
                                     break;
-                                case'i':
+                                case NUMBERING_LOWER_ROMAN_MARKUP:
                                     numbering = Sink.NUMBERING_LOWER_ROMAN;
                                     break;
-                                case'I':
+                                case NUMBERING_UPPER_ROMAN_MARKUP:
                                     numbering = Sink.NUMBERING_UPPER_ROMAN;
                                     break;
-                                case'1':
+                                case NUMBERING_MARKUP:
                                 default:
                                     // The first item establishes the numbering
                                     // scheme for the whole list.
@@ -732,8 +763,8 @@ public class AptParser
                     }
                 }
                 break;
-            case'-':
-                if ( charAt( line, length, i + 1 ) == '-' && charAt( line, length, i + 2 ) == '-' )
+            case MINUS_MARKUP:
+                if ( charAt( line, length, i + 1 ) == MINUS_MARKUP && charAt( line, length, i + 2 ) == MINUS_MARKUP )
                 {
                     if ( indent == 0 )
                     {
@@ -748,26 +779,26 @@ public class AptParser
                     }
                 }
                 break;
-            case'+':
-                if ( indent == 0 && charAt( line, length, i + 1 ) == '-' && charAt( line, length, i + 2 ) == '-' )
+            case PLUS_MARKUP:
+                if ( indent == 0 && charAt( line, length, i + 1 ) == MINUS_MARKUP && charAt( line, length, i + 2 ) == MINUS_MARKUP )
                 {
                     block = new Verbatim( indent, line );
                 }
                 break;
-            case'=':
-                if ( indent == 0 && charAt( line, length, i + 1 ) == '=' && charAt( line, length, i + 2 ) == '=' )
+            case EQUAL_MARKUP:
+                if ( indent == 0 && charAt( line, length, i + 1 ) == EQUAL_MARKUP && charAt( line, length, i + 2 ) == EQUAL_MARKUP )
                 {
                     block = new HorizontalRule( indent, line );
                 }
                 break;
-            case'\f':
+            case PAGE_BREAK_MARKUP:
                 if ( indent == 0 )
                 {
                     block = new PageBreak( indent, line );
                 }
                 break;
-            case'%':
-                if ( indent == 0 && charAt( line, length, i + 1 ) == '{' )
+            case PERCENT_MARKUP:
+                if ( indent == 0 && charAt( line, length, i + 1 ) == LEFT_CURLY_BRACKET_MARKUP )
                 {
                     block = new MacroBlock( indent, line );
                 }
@@ -826,8 +857,8 @@ public class AptParser
         {
             switch ( string.charAt( i ) )
             {
-                case' ':
-                case'\t':
+                case SPACE_MARKUP:
+                case TAB_MARKUP:
                     break;
                 default:
                     break loop;
@@ -854,19 +885,19 @@ public class AptParser
             char c = text.charAt( i );
             switch ( c )
             {
-                case'\\':
+                case BACKSLASH_MARKUP:
                     if ( i + 1 < end )
                     {
                         char escaped = text.charAt( i + 1 );
                         switch ( escaped )
                         {
-                            case' ':
+                            case SPACE_MARKUP:
                                 ++i;
                                 flushTraversed( buffer, sink );
                                 sink.nonBreakingSpace();
                                 break;
-                            case'\r':
-                            case'\n':
+                            case '\r':
+                            case '\n':
                                 ++i;
                                 // Skip white space which may follow a line break.
                                 while ( i + 1 < end && Character.isWhitespace( text.charAt( i + 1 ) ) )
@@ -876,23 +907,23 @@ public class AptParser
                                 flushTraversed( buffer, sink );
                                 sink.lineBreak();
                                 break;
-                            case'\\':
-                            case'|':
-                            case'~':
-                            case'=':
-                            case'-':
-                            case'+':
-                            case'*':
-                            case'[':
-                            case']':
-                            case'<':
-                            case'>':
-                            case'{':
-                            case'}':
+                            case BACKSLASH_MARKUP:
+                            case PIPE_MARKUP:
+                            case COMMENT_MARKUP:
+                            case EQUAL_MARKUP:
+                            case MINUS_MARKUP:
+                            case PLUS_MARKUP:
+                            case STAR_MARKUP:
+                            case LEFT_SQUARE_BRACKET_MARKUP:
+                            case RIGHT_SQUARE_BRACKET_MARKUP:
+                            case LESS_THAN_MARKUP:
+                            case GREATER_THAN_MARKUP:
+                            case LEFT_CURLY_BRACKET_MARKUP:
+                            case RIGHT_CURLY_BRACKET_MARKUP:
                                 ++i;
                                 buffer.append( escaped );
                                 break;
-                            case'x':
+                            case 'x':
                                 if ( i + 3 < end && isHexChar( text.charAt( i + 2 ) ) &&
                                     isHexChar( text.charAt( i + 3 ) ) )
                                 {
@@ -911,10 +942,10 @@ public class AptParser
                                 }
                                 else
                                 {
-                                    buffer.append( '\\' );
+                                    buffer.append( BACKSLASH_MARKUP );
                                 }
                                 break;
-                            case'u':
+                            case 'u':
                                 if ( i + 5 < end && isHexChar( text.charAt( i + 2 ) ) &&
                                     isHexChar( text.charAt( i + 3 ) ) && isHexChar( text.charAt( i + 4 ) ) &&
                                     isHexChar( text.charAt( i + 5 ) ) )
@@ -934,7 +965,7 @@ public class AptParser
                                 }
                                 else
                                 {
-                                    buffer.append( '\\' );
+                                    buffer.append( BACKSLASH_MARKUP );
                                 }
                                 break;
                             default:
@@ -964,20 +995,20 @@ public class AptParser
                                 }
                                 else
                                 {
-                                    buffer.append( '\\' );
+                                    buffer.append( BACKSLASH_MARKUP );
                                 }
                         }
                     }
                     else
                     {
-                        buffer.append( '\\' );
+                        buffer.append( BACKSLASH_MARKUP );
                     }
                     break;
 
-                case'{': /*}*/
+                case LEFT_CURLY_BRACKET_MARKUP: /*}*/
                     if ( !anchor && !link )
                     {
-                        if ( i + 1 < end && text.charAt( i + 1 ) == '{' /*}*/ )
+                        if ( i + 1 < end && text.charAt( i + 1 ) == LEFT_CURLY_BRACKET_MARKUP /*}*/ )
                         {
                             ++i;
                             link = true;
@@ -985,7 +1016,7 @@ public class AptParser
 
                             String linkAnchor = null;
 
-                            if ( i + 1 < end && text.charAt( i + 1 ) == '{' /*}*/ )
+                            if ( i + 1 < end && text.charAt( i + 1 ) == LEFT_CURLY_BRACKET_MARKUP /*}*/ )
                             {
                                 ++i;
                                 StringBuffer buf = new StringBuffer();
@@ -1013,8 +1044,8 @@ public class AptParser
                     }
                     break;
 
-                case /*{*/ '}':
-                    if ( link && i + 1 < end && text.charAt( i + 1 ) == /*{*/ '}' )
+                case /*{*/ RIGHT_CURLY_BRACKET_MARKUP:
+                    if ( link && i + 1 < end && text.charAt( i + 1 ) == /*{*/ RIGHT_CURLY_BRACKET_MARKUP )
                     {
                         ++i;
                         link = false;
@@ -1033,12 +1064,12 @@ public class AptParser
                     }
                     break;
 
-                case'<':
+                case LESS_THAN_MARKUP:
                     if ( !italic && !bold && !monospaced )
                     {
-                        if ( i + 1 < end && text.charAt( i + 1 ) == '<' )
+                        if ( i + 1 < end && text.charAt( i + 1 ) == LESS_THAN_MARKUP )
                         {
-                            if ( i + 2 < end && text.charAt( i + 2 ) == '<' )
+                            if ( i + 2 < end && text.charAt( i + 2 ) == LESS_THAN_MARKUP )
                             {
                                 i += 2;
                                 monospaced = true;
@@ -1066,15 +1097,15 @@ public class AptParser
                     }
                     break;
 
-                case'>':
-                    if ( monospaced && i + 2 < end && text.charAt( i + 1 ) == '>' && text.charAt( i + 2 ) == '>' )
+                case GREATER_THAN_MARKUP:
+                    if ( monospaced && i + 2 < end && text.charAt( i + 1 ) == GREATER_THAN_MARKUP && text.charAt( i + 2 ) == GREATER_THAN_MARKUP )
                     {
                         i += 2;
                         monospaced = false;
                         flushTraversed( buffer, sink );
                         sink.monospaced_();
                     }
-                    else if ( bold && i + 1 < end && text.charAt( i + 1 ) == '>' )
+                    else if ( bold && i + 1 < end && text.charAt( i + 1 ) == GREATER_THAN_MARKUP )
                     {
                         ++i;
                         bold = false;
@@ -1096,7 +1127,7 @@ public class AptParser
                 default:
                     if ( Character.isWhitespace( c ) )
                     {
-                        buffer.append( ' ' );
+                        buffer.append( SPACE_MARKUP );
 
                         // Skip to the last char of a sequence of white spaces.
                         while ( i + 1 < end && Character.isWhitespace( text.charAt( i + 1 ) ) )
@@ -1113,23 +1144,23 @@ public class AptParser
 
         if ( monospaced )
         {
-            throw new AptParseException( "missing '>>>'" );
+            throw new AptParseException( "missing '" + GREATER_THAN_MARKUP + GREATER_THAN_MARKUP + GREATER_THAN_MARKUP + "'" );
         }
         if ( bold )
         {
-            throw new AptParseException( "missing '>>'" );
+            throw new AptParseException( "missing '" + GREATER_THAN_MARKUP + GREATER_THAN_MARKUP + "'" );
         }
         if ( italic )
         {
-            throw new AptParseException( "missing '>'" );
+            throw new AptParseException( "missing '" + GREATER_THAN_MARKUP + "'" );
         }
         if ( link )
         {
-            throw new AptParseException( "missing '}}'" );
+            throw new AptParseException( "missing '" + RIGHT_CURLY_BRACKET_MARKUP + RIGHT_CURLY_BRACKET_MARKUP + "'" );
         }
         if ( anchor )
         {
-            throw new AptParseException( "missing '}'" );
+            throw new AptParseException( "missing '" + RIGHT_CURLY_BRACKET_MARKUP + "'" );
         }
 
         flushTraversed( buffer, sink );
@@ -1158,9 +1189,9 @@ public class AptParser
             char c = text.charAt( i );
             switch ( c )
             {
-                case'}':
+                case RIGHT_CURLY_BRACKET_MARKUP:
                     break loop;
-                case'\\':
+                case BACKSLASH_MARKUP:
                     if ( i + 1 < end )
                     {
                         ++i;
@@ -1168,7 +1199,7 @@ public class AptParser
                     }
                     else
                     {
-                        linkAnchor.append( '\\' );
+                        linkAnchor.append( BACKSLASH_MARKUP );
                     }
                     break;
                 default:
@@ -1177,7 +1208,7 @@ public class AptParser
         }
         if ( i == end )
         {
-            throw new AptParseException( "missing '}'" );
+            throw new AptParseException( "missing '" + RIGHT_CURLY_BRACKET_MARKUP + "'" );
         }
 
         return i;
@@ -1188,14 +1219,14 @@ public class AptParser
                                             int end )
         throws AptParseException
     {
-        char previous2 = '{';
-        char previous = '{';
+        char previous2 = LEFT_CURLY_BRACKET_MARKUP;
+        char previous = LEFT_CURLY_BRACKET_MARKUP;
         int i;
 
         for ( i = begin; i < end; ++i )
         {
             char c = text.charAt( i );
-            if ( c == '}' && previous == '}' && previous2 != '\\' )
+            if ( c == RIGHT_CURLY_BRACKET_MARKUP && previous == RIGHT_CURLY_BRACKET_MARKUP && previous2 != BACKSLASH_MARKUP )
             {
                 break;
             }
@@ -1205,7 +1236,7 @@ public class AptParser
         }
         if ( i == end )
         {
-            throw new AptParseException( "missing '}}'" );
+            throw new AptParseException( "missing '" + LEFT_CURLY_BRACKET_MARKUP + LEFT_CURLY_BRACKET_MARKUP + "'" );
         }
 
         return doGetTraversedLink( text, begin, i - 1 );
@@ -1216,13 +1247,13 @@ public class AptParser
                                               int end )
         throws AptParseException
     {
-        char previous = '{';
+        char previous = LEFT_CURLY_BRACKET_MARKUP;
         int i;
 
         for ( i = begin; i < end; ++i )
         {
             char c = text.charAt( i );
-            if ( c == '}' && previous != '\\' )
+            if ( c == RIGHT_CURLY_BRACKET_MARKUP && previous != BACKSLASH_MARKUP )
             {
                 break;
             }
@@ -1231,7 +1262,7 @@ public class AptParser
         }
         if ( i == end )
         {
-            throw new AptParseException( "missing '}'" );
+            throw new AptParseException( "missing '" + RIGHT_CURLY_BRACKET_MARKUP + "'" );
         }
 
         return doGetTraversedLink( text, begin, i );
@@ -1248,12 +1279,12 @@ public class AptParser
         {
             public void lineBreak()
             {
-                buffer.append( ' ' );
+                buffer.append( SPACE_MARKUP );
             }
 
             public void nonBreakingSpace()
             {
-                buffer.append( ' ' );
+                buffer.append( SPACE_MARKUP );
             }
 
             public void text( String text )
@@ -1314,7 +1345,7 @@ public class AptParser
 
                     i = skipSpace( l, length, i );
                     if ( i == length ||
-                        ( AptParser.charAt( l, length, i ) == '~' && AptParser.charAt( l, length, i + 1 ) == '~' ) )
+                        ( AptParser.charAt( l, length, i ) == COMMENT_MARKUP && AptParser.charAt( l, length, i + 1 ) == COMMENT_MARKUP ) )
                     {
                         // Stop after open or comment line and skip it.
                         // (A comment line is considered to be an open line.)
@@ -1364,7 +1395,7 @@ public class AptParser
             int i = skipSpaceFrom( 0 );
             for ( ; i < textLength; ++i )
             {
-                if ( text.charAt( i ) != '*' )
+                if ( text.charAt( i ) != STAR_MARKUP )
                 {
                     break;
                 }
@@ -1375,11 +1406,11 @@ public class AptParser
         protected int skipFromLeftToRightBracket( int i )
             throws AptParseException
         {
-            char previous = '[';
+            char previous = LEFT_SQUARE_BRACKET_MARKUP;
             for ( ++i; i < textLength; ++i )
             {
                 char c = text.charAt( i );
-                if ( c == ']' && previous != '\\' )
+                if ( c == RIGHT_SQUARE_BRACKET_MARKUP && previous != BACKSLASH_MARKUP )
                 {
                     break;
                 }
@@ -1387,7 +1418,7 @@ public class AptParser
             }
             if ( i == textLength )
             {
-                throw new AptParseException( "missing ']'" );
+                throw new AptParseException( "missing '" + RIGHT_SQUARE_BRACKET_MARKUP + "'" );
             }
 
             return i;
@@ -1442,8 +1473,8 @@ public class AptParser
                 String line = lines.nextToken().trim();
                 int lineLength = line.length();
 
-                if ( AptParser.charAt( line, lineLength, 0 ) == '-' && AptParser.charAt( line, lineLength, 1 ) == '-' &&
-                    AptParser.charAt( line, lineLength, 2 ) == '-' )
+                if ( AptParser.charAt( line, lineLength, 0 ) == MINUS_MARKUP && AptParser.charAt( line, lineLength, 1 ) == MINUS_MARKUP &&
+                    AptParser.charAt( line, lineLength, 2 ) == MINUS_MARKUP )
                 {
                     switch ( separator )
                     {
@@ -1700,15 +1731,15 @@ public class AptParser
 
             StringBuffer buffer = new StringBuffer();
             char firstChar = firstLine.charAt( 0 );
-            boxed = ( firstChar == '+' );
+            boxed = ( firstChar == PLUS_MARKUP );
 
             while ( AptParser.this.line != null )
             {
                 String l = AptParser.this.line;
                 int length = l.length();
 
-                if ( AptParser.charAt( l, length, 0 ) == firstChar && AptParser.charAt( l, length, 1 ) == '-' &&
-                    AptParser.charAt( l, length, 2 ) == '-' )
+                if ( AptParser.charAt( l, length, 0 ) == firstChar && AptParser.charAt( l, length, 1 ) == MINUS_MARKUP &&
+                    AptParser.charAt( l, length, 2 ) == MINUS_MARKUP )
                 {
                     AptParser.this.nextLine();
 
@@ -1725,7 +1756,7 @@ public class AptParser
                 {
                     char c = l.charAt( i );
 
-                    if ( c == '\t' )
+                    if ( c == TAB_MARKUP )
                     {
                         prevColumn = column;
 
@@ -1873,7 +1904,7 @@ public class AptParser
                     if ( init == 1 )
                     {
                         init = 0;
-                        grid = ( AptParser.charAt( line, lineLength, 0 ) == '|' );
+                        grid = ( AptParser.charAt( line, lineLength, 0 ) == PIPE_MARKUP );
                         AptParser.this.sink.tableRows( justification, grid );
                     }
 
@@ -1949,9 +1980,9 @@ public class AptParser
             {
                 switch ( line.charAt( i ) )
                 {
-                    case'*':
-                    case'+':
-                    case':':
+                    case STAR_MARKUP:
+                    case PLUS_MARKUP:
+                    case COLON_MARKUP:
                         ++columns;
                         break;
                 }
@@ -1968,13 +1999,13 @@ public class AptParser
             {
                 switch ( line.charAt( i ) )
                 {
-                    case'*':
+                    case STAR_MARKUP:
                         justification[columns++] = JUSTIFY_CENTER;
                         break;
-                    case'+':
+                    case PLUS_MARKUP:
                         justification[columns++] = JUSTIFY_LEFT;
                         break;
-                    case':':
+                    case COLON_MARKUP:
                         justification[columns++] = JUSTIFY_RIGHT;
                         break;
                 }
@@ -2084,11 +2115,11 @@ public class AptParser
         {
             int i = skipSpaceFrom( 0 );
 
-            char prevChar = ' ';
+            char prevChar = SPACE_MARKUP;
             for ( ; i < textLength; ++i )
             {
                 char c = text.charAt( i );
-                if ( c == ']' && prevChar == ']' )
+                if ( c == RIGHT_SQUARE_BRACKET_MARKUP && prevChar == RIGHT_SQUARE_BRACKET_MARKUP )
                 {
                     break;
                 }
@@ -2097,7 +2128,7 @@ public class AptParser
 
             if ( i == textLength )
             {
-                throw new AptParseException( "missing ']]'" );
+                throw new AptParseException( "missing '" + RIGHT_SQUARE_BRACKET_MARKUP + RIGHT_SQUARE_BRACKET_MARKUP + "'" );
             }
 
             return skipSpaceFrom( i + 1 );
@@ -2194,7 +2225,7 @@ public class AptParser
             String s = text;
 
             s = s.substring( 2, s.length() - 1 );
-            
+
             s = escapeForMacro( s );
 
             String[] params = StringUtils.split( s, "|" );
@@ -2209,7 +2240,7 @@ public class AptParser
 
                 String key = unescapeForMacro( param[0] );
                 String value = unescapeForMacro( param[1] );
-                
+
                 parameters.put( key, value );
             }
 
@@ -2240,29 +2271,29 @@ public class AptParser
             {
                 return s;
             }
-            
+
             String result = s;
-            
-            // use some outrageously out-of-place chars for text 
+
+            // use some outrageously out-of-place chars for text
             // (these are device control one/two in unicode)
             result = StringUtils.replace( result, "\\=", "\u0011" );
             result = StringUtils.replace( result, "\\|", "\u0012" );
-            
+
             return result;
         }
-        
+
         private String unescapeForMacro( String s )
         {
             if ( s == null || s.length() < 1 )
             {
                 return s;
             }
-            
+
             String result = s;
-            
+
             result = StringUtils.replace( result, "\u0011", "=" );
             result = StringUtils.replace( result, "\u0012", "|" );
-            
+
             return result;
         }
     }
