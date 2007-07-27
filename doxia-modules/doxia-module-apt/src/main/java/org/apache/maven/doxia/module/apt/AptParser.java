@@ -1144,23 +1144,23 @@ public class AptParser
 
         if ( monospaced )
         {
-            throw new AptParseException( "missing '" + GREATER_THAN_MARKUP + GREATER_THAN_MARKUP + GREATER_THAN_MARKUP + "'" );
+            throw new AptParseException( "missing '" + MONOSPACED_END + "'" );
         }
         if ( bold )
         {
-            throw new AptParseException( "missing '" + GREATER_THAN_MARKUP + GREATER_THAN_MARKUP + "'" );
+            throw new AptParseException( "missing '" + BOLD_END + "'" );
         }
         if ( italic )
         {
-            throw new AptParseException( "missing '" + GREATER_THAN_MARKUP + "'" );
+            throw new AptParseException( "missing '" + ITALIC_END + "'" );
         }
         if ( link )
         {
-            throw new AptParseException( "missing '" + RIGHT_CURLY_BRACKET_MARKUP + RIGHT_CURLY_BRACKET_MARKUP + "'" );
+            throw new AptParseException( "missing '" + LINK_END + "'" );
         }
         if ( anchor )
         {
-            throw new AptParseException( "missing '" + RIGHT_CURLY_BRACKET_MARKUP + "'" );
+            throw new AptParseException( "missing '" + ANCHOR_END + "'" );
         }
 
         flushTraversed( buffer, sink );
