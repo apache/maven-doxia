@@ -28,17 +28,28 @@ import org.codehaus.plexus.util.StringUtils;
 
 import java.io.PrintWriter;
 import java.io.Writer;
+import java.util.Enumeration;
 import java.util.Map;
 
+import javax.swing.text.AttributeSet;
+import javax.swing.text.MutableAttributeSet;
+import javax.swing.text.SimpleAttributeSet;
+import javax.swing.text.html.HTML.Attribute;
+import javax.swing.text.html.HTML.Tag;
+
 /**
- * A doxia sink which produces xhtml
+ * Xhtml sink implementation.
  *
  * @author Jason van Zyl
+ * @since 1.0
  */
 public class XhtmlSink
     extends AbstractXhtmlSink
+    implements XhtmlMarkup
 {
-    private static final String EOL = System.getProperty( "line.separator" );
+    // ----------------------------------------------------------------------
+    // Instance fields
+    // ----------------------------------------------------------------------
 
     private StringBuffer buffer = new StringBuffer();
 
@@ -58,6 +69,15 @@ public class XhtmlSink
 
     private int[] cellJustif;
 
+    // ----------------------------------------------------------------------
+    //
+    // ----------------------------------------------------------------------
+
+    /**
+     * @param writer
+     * @param renderingContext
+     * @param directives
+     */
     public XhtmlSink( Writer writer, RenderingContext renderingContext, Map directives )
     {
         this.writer = new PrintWriter( writer );
@@ -65,16 +85,29 @@ public class XhtmlSink
         this.renderingContext = renderingContext;
     }
 
+    // ----------------------------------------------------------------------
+    // Public protected methods
+    // ----------------------------------------------------------------------
+
+    /**
+     * @return the current buffer
+     */
     protected StringBuffer getBuffer()
     {
         return buffer;
     }
 
+    /**
+     * @param headFlag an header flag
+     */
     protected void setHeadFlag( boolean headFlag )
     {
         this.headFlag = headFlag;
     }
 
+    /**
+     * Reset all the Sink state.
+     */
     protected void resetState()
     {
         headFlag = false;
@@ -84,11 +117,15 @@ public class XhtmlSink
         cellCount = 0;
     }
 
+    /**
+     * Reset the buffer.
+     */
     protected void resetBuffer()
     {
         buffer = new StringBuffer();
     }
 
+    /** {@inheritDoc} */
     public void head()
     {
         // Not used overridden in site renderer
@@ -99,6 +136,7 @@ public class XhtmlSink
         headFlag = true;
     }
 
+    /** {@inheritDoc} */
     public void head_()
     {
         headFlag = false;
@@ -107,42 +145,65 @@ public class XhtmlSink
         //directive( "head_()" );
     }
 
+    /**
+     * {@inheritDoc}
+     * @see javax.swing.text.html.HTML.Tag#TITLE
+     */
     public void title()
     {
-        write( "<title>" );
+        writeStartTag( Tag.TITLE );
     }
 
+    /**
+     * {@inheritDoc}
+     * @see javax.swing.text.html.HTML.Tag#TITLE
+     */
     public void title_()
     {
         write( buffer.toString() );
 
-        write( "</title>" );
+        writeEndTag( Tag.TITLE );
 
         resetBuffer();
     }
 
+    /**
+     * {@inheritDoc}
+     * @see javax.swing.text.html.HTML.Tag#META
+     */
     public void author_()
     {
         if ( buffer.length() > 0 )
         {
-            write( "<meta name=\"author\" content=\"" );
-            write( buffer.toString() );
-            write( "\" />" + EOL );
+            MutableAttributeSet att = new SimpleAttributeSet();
+            att.addAttribute( Attribute.NAME, "author" );
+            att.addAttribute( Attribute.CONTENT, buffer.toString() );
+
+            writeSimpleTag( Tag.META, att );
+
             resetBuffer();
         }
     }
 
+    /**
+     * {@inheritDoc}
+     * @see javax.swing.text.html.HTML.Tag#META
+     */
     public void date_()
     {
         if ( buffer.length() > 0 )
         {
-            write( "<meta name=\"date\" content=\"" );
-            write( buffer.toString() );
-            write( "\" />" + EOL );
+            MutableAttributeSet att = new SimpleAttributeSet();
+            att.addAttribute( Attribute.NAME, "date" );
+            att.addAttribute( Attribute.CONTENT, buffer.toString() );
+
+            writeSimpleTag( Tag.META, att );
+
             resetBuffer();
         }
     }
 
+    /** {@inheritDoc} */
     public void body()
     {
         // Not used overridden in site renderer
@@ -150,6 +211,7 @@ public class XhtmlSink
         //write( body );
     }
 
+    /** {@inheritDoc} */
     public void body_()
     {
         // Not used overridden in site renderer
@@ -162,216 +224,389 @@ public class XhtmlSink
     // Sections
     // ----------------------------------------------------------------------
 
+    /**
+     * The default class style is <code>section</code>.
+     *
+     * {@inheritDoc}
+     * @see javax.swing.text.html.HTML.Tag#DIV
+     */
     public void section1()
     {
-        write( "<div class=\"section\">" );
+        MutableAttributeSet att = new SimpleAttributeSet();
+        att.addAttribute( Attribute.CLASS, "section" );
+
+        writeStartTag( Tag.DIV, att );
     }
 
+    /**
+     * The default class style is <code>section</code>.
+     *
+     * {@inheritDoc}
+     * @see javax.swing.text.html.HTML.Tag#DIV
+     */
     public void section2()
     {
-        write( "<div class=\"section\">" );
+        MutableAttributeSet att = new SimpleAttributeSet();
+        att.addAttribute( Attribute.CLASS, "section" );
+
+        writeStartTag( Tag.DIV, att );
     }
 
+    /**
+     * The default class style is <code>section</code>.
+     *
+     * {@inheritDoc}
+     * @see javax.swing.text.html.HTML.Tag#DIV
+     */
     public void section3()
     {
-        write( "<div class=\"section\">" );
+        MutableAttributeSet att = new SimpleAttributeSet();
+        att.addAttribute( Attribute.CLASS, "section" );
+
+        writeStartTag( Tag.DIV, att );
     }
 
+    /**
+     * The default class style is <code>section</code>.
+     *
+     * {@inheritDoc}
+     * @see javax.swing.text.html.HTML.Tag#DIV
+     */
     public void section4()
     {
-        write( "<div class=\"section\">" );
+        MutableAttributeSet att = new SimpleAttributeSet();
+        att.addAttribute( Attribute.CLASS, "section" );
+
+        writeStartTag( Tag.DIV, att );
     }
 
+    /**
+     * The default class style is <code>section</code>.
+     *
+     * {@inheritDoc}
+     * @see javax.swing.text.html.HTML.Tag#DIV
+     */
     public void section5()
     {
-        write( "<div class=\"section\">" );
+        MutableAttributeSet att = new SimpleAttributeSet();
+        att.addAttribute( Attribute.CLASS, "section" );
+
+        writeStartTag( Tag.DIV, att );
     }
 
+    /**
+     * {@inheritDoc}
+     * @see javax.swing.text.html.HTML.Tag#DIV
+     */
     public void section1_()
     {
-        write( "</div>" );
+        writeEndTag( Tag.DIV );
     }
 
+    /**
+     * {@inheritDoc}
+     * @see javax.swing.text.html.HTML.Tag#DIV
+     */
     public void section2_()
     {
-        write( "</div>" );
+        writeEndTag( Tag.DIV );
     }
 
+    /**
+     * {@inheritDoc}
+     * @see javax.swing.text.html.HTML.Tag#DIV
+     */
     public void section3_()
     {
-        write( "</div>" );
+        writeEndTag( Tag.DIV );
     }
 
+    /**
+     * {@inheritDoc}
+     * @see javax.swing.text.html.HTML.Tag#DIV
+     */
     public void section4_()
     {
-        write( "</div>" );
+        writeEndTag( Tag.DIV );
     }
 
+    /**
+     * {@inheritDoc}
+     * @see javax.swing.text.html.HTML.Tag#DIV
+     */
     public void section5_()
     {
-        write( "</div>" );
+        writeEndTag( Tag.DIV );
     }
 
+    /**
+     * {@inheritDoc}
+     * @see javax.swing.text.html.HTML.Tag#H2
+     */
     public void sectionTitle1()
     {
-        write( "<h2>" );
+        writeStartTag( Tag.H2 );
     }
 
+    /**
+     * {@inheritDoc}
+     * @see javax.swing.text.html.HTML.Tag#H2
+     */
     public void sectionTitle1_()
     {
-        write( "</h2>" );
+        writeEndTag( Tag.H2 );
     }
 
+    /**
+     * {@inheritDoc}
+     * @see javax.swing.text.html.HTML.Tag#H3
+     */
     public void sectionTitle2()
     {
-        write( "<h3>" );
+        writeStartTag( Tag.H3 );
     }
 
+    /**
+     * {@inheritDoc}
+     * @see javax.swing.text.html.HTML.Tag#H3
+     */
     public void sectionTitle2_()
     {
-        write( "</h3>" );
+        writeEndTag( Tag.H3 );
     }
 
+    /**
+     * {@inheritDoc}
+     * @see javax.swing.text.html.HTML.Tag#H4
+     */
     public void sectionTitle3()
     {
-        write( "<h4>" );
+        writeStartTag( Tag.H4 );
     }
 
+    /**
+     * {@inheritDoc}
+     * @see javax.swing.text.html.HTML.Tag#H4
+     */
     public void sectionTitle3_()
     {
-        write( "</h4>" );
+        writeEndTag( Tag.H4 );
     }
 
+    /**
+     * {@inheritDoc}
+     * @see javax.swing.text.html.HTML.Tag#H5
+     */
     public void sectionTitle4()
     {
-        write( "<h5>" );
+        writeStartTag( Tag.H5 );
     }
 
+    /**
+     * {@inheritDoc}
+     * @see javax.swing.text.html.HTML.Tag#H5
+     */
     public void sectionTitle4_()
     {
-        write( "</h5>" );
+        writeEndTag( Tag.H5 );
     }
 
+    /**
+     * {@inheritDoc}
+     * @see javax.swing.text.html.HTML.Tag#H6
+     */
     public void sectionTitle5()
     {
-        write( "<h6>" );
+        writeStartTag( Tag.H6 );
     }
 
+    /**
+     * {@inheritDoc}
+     * @see javax.swing.text.html.HTML.Tag#H6
+     */
     public void sectionTitle5_()
     {
-        write( "</h6>" );
+        writeEndTag( Tag.H6 );
     }
 
     // ----------------------------------------------------------------------
     //
     // ----------------------------------------------------------------------
 
+    /**
+     * {@inheritDoc}
+     * @see javax.swing.text.html.HTML.Tag#UL
+     */
     public void list()
     {
-        write( "<ul>" );
+        writeStartTag( Tag.UL );
     }
 
+    /**
+     * {@inheritDoc}
+     * @see javax.swing.text.html.HTML.Tag#UL
+     */
     public void list_()
     {
-        write( "</ul>" );
+        writeEndTag( Tag.UL );
         itemFlag = false;
     }
 
+    /**
+     * {@inheritDoc}
+     * @see javax.swing.text.html.HTML.Tag#LI
+     */
     public void listItem()
     {
-        write( "<li>" );
+        writeStartTag( Tag.LI );
         itemFlag = true;
         // What follows is at least a paragraph.
     }
 
+    /**
+     * {@inheritDoc}
+     * @see javax.swing.text.html.HTML.Tag#LI
+     */
     public void listItem_()
     {
-        write( "</li>" );
+        writeEndTag( Tag.LI );
     }
 
+    /**
+     * {@inheritDoc}
+     * @see javax.swing.text.html.HTML.Tag#OL
+     */
     public void numberedList( int numbering )
     {
-        write( "<ol type=\"" );
+        String type;
         switch ( numbering )
         {
             case Sink.NUMBERING_LOWER_ALPHA:
-                write( "a" );
+                type = "a";
                 break;
             case Sink.NUMBERING_UPPER_ALPHA:
-                write( "A" );
+                type = "A";
                 break;
             case Sink.NUMBERING_LOWER_ROMAN:
-                write( "i" );
+                type = "i";
                 break;
             case Sink.NUMBERING_UPPER_ROMAN:
-                write( "I" );
+                type = "I";
                 break;
             case Sink.NUMBERING_DECIMAL:
             default:
-                write( "1" );
+                type = "1";
         }
-        write( "\">" );
+
+        MutableAttributeSet att = new SimpleAttributeSet();
+        att.addAttribute( Attribute.TYPE, type );
+
+        writeStartTag( Tag.OL, att );
     }
 
+    /**
+     * {@inheritDoc}
+     * @see javax.swing.text.html.HTML.Tag#OL
+     */
     public void numberedList_()
     {
-        write( "</ol>" );
+        writeEndTag( Tag.OL );
         itemFlag = false;
     }
 
+    /**
+     * {@inheritDoc}
+     * @see javax.swing.text.html.HTML.Tag#LI
+     */
     public void numberedListItem()
     {
-        write( "<li>" );
+        writeStartTag( Tag.LI );
         itemFlag = true;
         // What follows is at least a paragraph.
     }
 
+    /**
+     * {@inheritDoc}
+     * @see javax.swing.text.html.HTML.Tag#LI
+     */
     public void numberedListItem_()
     {
-        write( "</li>" );
+        writeEndTag( Tag.LI );
     }
 
+    /**
+     * {@inheritDoc}
+     * @see javax.swing.text.html.HTML.Tag#DL
+     */
     public void definitionList()
     {
-        write( "<dl>" );
+        writeStartTag( Tag.DL );
     }
 
+    /**
+     * {@inheritDoc}
+     * @see javax.swing.text.html.HTML.Tag#DL
+     */
     public void definitionList_()
     {
-        write( "</dl>" );
+        writeEndTag( Tag.DL );
         itemFlag = false;
     }
 
+    /**
+     * {@inheritDoc}
+     * @see javax.swing.text.html.HTML.Tag#DT
+     */
     public void definedTerm()
     {
-        write( "<dt>" );
+        writeStartTag( Tag.DT );
     }
 
+    /**
+     * {@inheritDoc}
+     * @see javax.swing.text.html.HTML.Tag#DT
+     */
     public void definedTerm_()
     {
-        write( "</dt>" );
+        writeEndTag( Tag.DT );
     }
 
+    /**
+     * {@inheritDoc}
+     * @see javax.swing.text.html.HTML.Tag#DD
+     */
     public void definition()
     {
-        write( "<dd>" );
+        writeStartTag( Tag.DD );
         itemFlag = true;
         // What follows is at least a paragraph.
     }
 
+    /**
+     * {@inheritDoc}
+     * @see javax.swing.text.html.HTML.Tag#DD
+     */
     public void definition_()
     {
-        write( "</dd>" );
+        writeEndTag( Tag.DD );
     }
 
+    /**
+     * {@inheritDoc}
+     * @see javax.swing.text.html.HTML.Tag#P
+     */
     public void paragraph()
     {
         if ( !itemFlag )
         {
-            write( "<p>" );
+            writeStartTag( Tag.P );
         }
     }
 
+    /**
+     * {@inheritDoc}
+     * @see javax.swing.text.html.HTML.Tag#P
+     */
     public void paragraph_()
     {
         if ( itemFlag )
@@ -380,68 +615,122 @@ public class XhtmlSink
         }
         else
         {
-            write( "</p>" );
+            writeEndTag( Tag.P );
         }
     }
 
+    /**
+     * The default class style is <code>source</code>.
+     *
+     * {@inheritDoc}
+     * @see javax.swing.text.html.HTML.Tag#DIV
+     * @see javax.swing.text.html.HTML.Tag#PRE
+     */
     public void verbatim( boolean boxed )
     {
         verbatimFlag = true;
 
-        write( "<div class=\"source\"><pre>" );
+        MutableAttributeSet att = new SimpleAttributeSet();
+        att.addAttribute( Attribute.CLASS, "source" );
+
+        writeStartTag( Tag.DIV, att );
+        writeStartTag( Tag.PRE );
     }
 
+    /**
+     * {@inheritDoc}
+     * @see javax.swing.text.html.HTML.Tag#DIV
+     * @see javax.swing.text.html.HTML.Tag#PRE
+     */
     public void verbatim_()
     {
-        write( "</pre></div>" );
+        writeEndTag( Tag.PRE );
+        writeEndTag( Tag.DIV );
 
         verbatimFlag = false;
 
     }
 
+    /**
+     * {@inheritDoc}
+     * @see javax.swing.text.html.HTML.Tag#HR
+     */
     public void horizontalRule()
     {
-        write( "<hr />" );
+        writeSimpleTag( Tag.HR );
     }
 
+    /**
+     * The default class style is <code>bodyTable</code>.
+     *
+     * {@inheritDoc}
+     * @see javax.swing.text.html.HTML.Tag#TABLE
+     */
     public void table()
     {
-        write( "<table class=\"bodyTable\">" );
+        MutableAttributeSet att = new SimpleAttributeSet();
+        att.addAttribute( Attribute.CLASS, "bodyTable" );
+
+        writeStartTag( Tag.TABLE, att );
     }
 
+    /**
+     * {@inheritDoc}
+     * @see javax.swing.text.html.HTML.Tag#TABLE
+     */
     public void table_()
     {
-        write( "</table>" );
+        writeEndTag( Tag.TABLE );
     }
 
+    /**
+     * {@inheritDoc}
+     * @see XhtmlMarkup#TBODY_TAG
+     */
     public void tableRows( int[] justification, boolean grid )
     {
-        write( "<tbody>" );
+        writeStartTag( TBODY_TAG );
 
         cellJustif = justification;
     }
 
+    /**
+     * {@inheritDoc}
+     * @see XhtmlMarkup#TBODY_TAG
+     */
     public void tableRows_()
     {
-        write( "</tbody>" );
+        writeEndTag( TBODY_TAG );
 
         cellJustif = null;
     }
 
     private int rowMarker = 0;
 
+    /**
+     * The default class style is <code>a</code> or <code>b</code> depending the row id.
+     *
+     * {@inheritDoc}
+     * @see javax.swing.text.html.HTML.Tag#TR
+     */
     //TODO: could probably make this more flexible but really i would just like a standard xhtml structure.
     public void tableRow()
     {
         if ( rowMarker == 0 )
         {
-            write( "<tr class=\"a\">" );
+            MutableAttributeSet att = new SimpleAttributeSet();
+            att.addAttribute( Attribute.CLASS, "a" );
+
+            writeStartTag( Tag.TR, att );
 
             rowMarker = 1;
         }
         else
         {
-            write( "<tr class=\"b\">" );
+            MutableAttributeSet att = new SimpleAttributeSet();
+            att.addAttribute( Attribute.CLASS, "b" );
+
+            writeStartTag( Tag.TR, att );
 
             rowMarker = 0;
         }
@@ -449,23 +738,34 @@ public class XhtmlSink
         cellCount = 0;
     }
 
+    /**
+     * {@inheritDoc}
+     * @see javax.swing.text.html.HTML.Tag#TR
+     */
     public void tableRow_()
     {
-        write( "</tr>" );
+        writeEndTag( Tag.TR );
 
         cellCount = 0;
     }
 
+    /** {@inheritDoc} */
     public void tableCell()
     {
         tableCell( false );
     }
 
+    /** {@inheritDoc} */
     public void tableHeaderCell()
     {
         tableCell( true );
     }
 
+    /**
+     * @param headerRow true if it is an header row
+     * @see javax.swing.text.html.HTML.Tag#TH
+     * @see javax.swing.text.html.HTML.Tag#TD
+     */
     public void tableCell( boolean headerRow )
     {
         String justif = null;
@@ -486,33 +786,38 @@ public class XhtmlSink
             }
         }
 
-        if ( headerRow )
-        {
-            write( "<th" );
-        }
-        else
-        {
-            write( "<td" );
-        }
+
+        Tag t = ( headerRow ? Tag.TH : Tag.TD );
+
+        MutableAttributeSet att = null;
 
         if ( justif != null )
         {
-            write( " align=\"" + justif + "\"" );
+            att = new SimpleAttributeSet();
+            att.addAttribute( Attribute.ALIGN, justif );
         }
 
-        write( ">" );
+        writeStartTag( t, att );
     }
 
+    /** {@inheritDoc} */
     public void tableCell( String width )
     {
         tableCell( false, width );
     }
 
+    /** {@inheritDoc} */
     public void tableHeaderCell( String width )
     {
         tableCell( true, width );
     }
 
+    /**
+     * @param headerRow true if it is an header row
+     * @param width the cell size
+     * @see javax.swing.text.html.HTML.Tag#TH
+     * @see javax.swing.text.html.HTML.Tag#TD
+     */
     public void tableCell( boolean headerRow, String width )
     {
         String justif = null;
@@ -533,149 +838,177 @@ public class XhtmlSink
             }
         }
 
-        String cellWidth = (width != null) ? " colspan=\"" + width + "\"" : "";
 
-        if ( headerRow )
+        Tag t = ( headerRow ? Tag.TH : Tag.TD );
+
+        MutableAttributeSet att = new SimpleAttributeSet();
+
+        if ( width != null )
         {
-            write( "<th" );
-        }
-        else
-        {
-            write( "<td" );
+            att.addAttribute( Attribute.COLSPAN, width );
         }
 
         if ( justif != null )
         {
-            write( " align=\"" + justif + "\"" );
+            att.addAttribute( Attribute.ALIGN, justif );
         }
 
-        write( cellWidth + " >" );
+        writeStartTag( t, att );
     }
 
+    /** {@inheritDoc} */
     public void tableCell_()
     {
         tableCell_( false );
     }
 
+    /** {@inheritDoc} */
     public void tableHeaderCell_()
     {
         tableCell_( true );
     }
 
+    /**
+     * @param headerRow true if it is an header row
+     * @see javax.swing.text.html.HTML.Tag#TH
+     * @see javax.swing.text.html.HTML.Tag#TD
+     */
     public void tableCell_( boolean headerRow )
     {
-        if ( headerRow )
-        {
-            write( "</th>" );
-        }
-        else
-        {
-            write( "</td>" );
-        }
+        Tag t = ( headerRow ? Tag.TH : Tag.TD );
+
+        writeEndTag( t );
 
         ++cellCount;
     }
 
+    /**
+     * {@inheritDoc}
+     * @see javax.swing.text.html.HTML.Tag#CAPTION
+     */
     public void tableCaption()
     {
-        write( "<caption>" );
-    }
-
-    public void tableCaption_()
-    {
-        write( "</caption>" );
+        writeStartTag( Tag.CAPTION );
     }
 
     /**
-     * @see org.apache.maven.doxia.sink.SinkAdapter#figure()
+     * {@inheritDoc}
+     * @see javax.swing.text.html.HTML.Tag#CAPTION
+     */
+    public void tableCaption_()
+    {
+        writeEndTag( Tag.CAPTION );
+    }
+
+    /**
+     * {@inheritDoc}
+     * @see javax.swing.text.html.HTML.Tag#IMG
      */
     public void figure()
     {
-        write( "<img" );
+        write( START_MARKUP + Tag.IMG );
     }
 
-    /**
-     * @see org.apache.maven.doxia.sink.SinkAdapter#figure_()
-     */
+    /** {@inheritDoc} */
     public void figure_()
     {
-        write( " />" );
+        write( SPACE_MARKUP + SLASH_MARKUP + END_MARKUP );
     }
 
-    /**
-     * @see org.apache.maven.doxia.sink.SinkAdapter#figureCaption()
-     */
+    /** {@inheritDoc} */
     public void figureCaption()
     {
-        write( " alt=\"" );
+        write( SPACE_MARKUP + Attribute.ALT + EQUAL_MARKUP + QUOTE_MARKUP );
     }
 
-    /**
-     * @see org.apache.maven.doxia.sink.SinkAdapter#figureCaption_()
-     */
+    /** {@inheritDoc} */
     public void figureCaption_()
     {
-        write( "\"" );
+        write( QUOTE_MARKUP );
+    }
+
+    /** {@inheritDoc} */
+    public void figureGraphics( String name )
+    {
+        write( SPACE_MARKUP + Attribute.SRC + EQUAL_MARKUP + QUOTE_MARKUP + name + QUOTE_MARKUP );
     }
 
     /**
-     * @see org.apache.maven.doxia.sink.SinkAdapter#figureGraphics(java.lang.String)
+     * {@inheritDoc}
+     * @see javax.swing.text.html.HTML.Tag#A
      */
-    public void figureGraphics( String name )
-    {
-        write( " src=\"" + name + "\"" );
-    }
-
     public void anchor( String name )
     {
         if ( !headFlag )
         {
             String id = HtmlTools.encodeId( name );
-            write( "<a name=\"" + id + "\">" );
+
+            MutableAttributeSet att = new SimpleAttributeSet();
+            att.addAttribute( Attribute.NAME, id );
+
+            writeStartTag( Tag.A, att );
         }
     }
 
+    /**
+     * {@inheritDoc}
+     * @see javax.swing.text.html.HTML.Tag#A
+     */
     public void anchor_()
     {
         if ( !headFlag )
         {
-            write( "</a>" );
+            writeEndTag( Tag.A );
         }
     }
 
+    /** {@inheritDoc} */
     public void link( String name )
     {
         link( name, null );
     }
 
+    /**
+     * The default style class for external link is <code>externalLink</code>.
+     *
+     * @param name
+     * @param target
+     * @see javax.swing.text.html.HTML.Tag#A
+     */
     public void link( String name, String target )
     {
         if ( !headFlag )
         {
 
-            String targ = "";
+            MutableAttributeSet att = new SimpleAttributeSet();
+
             if ( target != null )
             {
-                targ = " target=\"" + target + "\"";
+                att.addAttribute( Attribute.TARGET, target );
             }
 
             if ( StructureSink.isExternalLink( name ) || isExternalHtml( name ) )
             {
-                String clas = "";
                 if ( isExternalLink( name ) )
                 {
-                    clas = " class=\"externalLink\"";
+                    att.addAttribute( Attribute.CLASS, "externalLink" );
                 }
-                write( "<a href=\"" + HtmlTools.escapeHTML( name ) + "\"" + clas + targ + ">" );
+
+                att.addAttribute( Attribute.HREF, HtmlTools.escapeHTML( name ) );
+
+                writeStartTag( Tag.A, att );
             }
             else
             {
-                write( "<a href=\"#" + HtmlTools.escapeHTML( name ) + "\"" + targ + ">" );
+                att.addAttribute( Attribute.HREF, "#" + HtmlTools.escapeHTML( name ) );
+
+                writeStartTag( Tag.A, att );
             }
         }
     }
 
-    /* StructureSink.isExternalLink also treats links to other documents as
+    /**
+     * {@link StructureSink#isExternalLink(String)} also treats links to other documents as
      * external links, those should not have a class="externalLink" attribute.
      */
     private boolean isExternalLink( String href )
@@ -687,7 +1020,8 @@ public class XhtmlSink
 
     }
 
-    /* Legacy: treat links to other html documents as external links.
+    /**
+     * Legacy: treat links to other html documents as external links.
      * Note that links to other file formats (images, pdf) will still be broken,
      * links to other documents should always start with "./" or "../".
      */
@@ -699,62 +1033,94 @@ public class XhtmlSink
 
     }
 
+    /**
+     * {@inheritDoc}
+     * @see javax.swing.text.html.HTML.Tag#A
+     */
     public void link_()
     {
         if ( !headFlag )
         {
-            write( "</a>" );
+            writeEndTag( Tag.A );
         }
     }
 
+    /**
+     * {@inheritDoc}
+     * @see javax.swing.text.html.HTML.Tag#I
+     */
     public void italic()
     {
         if ( !headFlag )
         {
-            write( "<i>" );
+            writeStartTag( Tag.I );
         }
     }
 
+    /**
+     * {@inheritDoc}
+     * @see javax.swing.text.html.HTML.Tag#I
+     */
     public void italic_()
     {
         if ( !headFlag )
         {
-            write( "</i>" );
+            writeEndTag( Tag.I );
         }
     }
 
+    /**
+     * {@inheritDoc}
+     * @see javax.swing.text.html.HTML.Tag#B
+     */
     public void bold()
     {
         if ( !headFlag )
         {
-            write( "<b>" );
+            writeStartTag( Tag.B );
         }
     }
 
+    /**
+     * {@inheritDoc}
+     * @see javax.swing.text.html.HTML.Tag#B
+     */
     public void bold_()
     {
         if ( !headFlag )
         {
-            write( "</b>" );
+            writeEndTag( Tag.B );
         }
     }
 
+    /**
+     * {@inheritDoc}
+     * @see javax.swing.text.html.HTML.Tag#TT
+     */
     public void monospaced()
     {
         if ( !headFlag )
         {
-            write( "<tt>" );
+            writeStartTag( Tag.TT );
         }
     }
 
+    /**
+     * {@inheritDoc}
+     * @see javax.swing.text.html.HTML.Tag#TT
+     */
     public void monospaced_()
     {
         if ( !headFlag )
         {
-            write( "</tt>" );
+            writeEndTag( Tag.TT );
         }
     }
 
+    /**
+     * {@inheritDoc}
+     * @see javax.swing.text.html.HTML.Tag#BR
+     */
     public void lineBreak()
     {
         if ( headFlag )
@@ -763,10 +1129,11 @@ public class XhtmlSink
         }
         else
         {
-            write( "<br />" );
+            writeSimpleTag( Tag.BR );
         }
     }
 
+    /** {@inheritDoc} */
     public void nonBreakingSpace()
     {
         if ( headFlag )
@@ -779,6 +1146,7 @@ public class XhtmlSink
         }
     }
 
+    /** {@inheritDoc} */
     public void text( String text )
     {
         if ( headFlag )
@@ -798,15 +1166,31 @@ public class XhtmlSink
         }
     }
 
+    /** {@inheritDoc} */
     public void rawText( String text )
     {
         write( text );
+    }
+
+    /** {@inheritDoc} */
+    public void flush()
+    {
+        writer.flush();
+    }
+
+    /** {@inheritDoc} */
+    public void close()
+    {
+        writer.close();
     }
 
     // ----------------------------------------------------------------------
     //
     // ----------------------------------------------------------------------
 
+    /**
+     * @param text
+     */
     protected void write( String text )
     {
         String relativePathToBasedir = renderingContext.getRelativePath();
@@ -834,33 +1218,186 @@ public class XhtmlSink
         write( escapeHTML( text ) );
     }
 
+    /**
+     * Forward to HtmlTools.escapeHTML( text ).
+     *
+     * @param text the String to escape, may be null
+     * @return the text escaped, "" if null String input
+     * @see org.apache.maven.doxia.util.HtmlTools#escapeHTML(String)
+     */
     public static String escapeHTML( String text )
     {
         return HtmlTools.escapeHTML( text );
     }
 
+    /**
+     * @param text
+     * @return a fragment encoded
+     * @see #encodeURL(String)
+     */
     public static String encodeFragment( String text )
     {
         return encodeURL( StructureSink.linkToKey( text ) );
     }
 
+    /**
+     * Forward to HtmlTools.encodeURL( text ).
+     *
+     * @param text the String to encode, may be null.
+     * @return the text encoded, null if null String input.
+     * @see org.apache.maven.doxia.util.HtmlTools#encodeURL(String)
+     */
     public static String encodeURL( String text )
     {
         return HtmlTools.encodeURL( text );
     }
 
-    public void flush()
-    {
-        writer.flush();
-    }
-
-    public void close()
-    {
-        writer.close();
-    }
-
+    /**
+     * @return the current rendering context
+     */
     public RenderingContext getRenderingContext()
     {
         return renderingContext;
+    }
+
+    // ----------------------------------------------------------------------
+    // TODO Move these in core utils
+    // ----------------------------------------------------------------------
+
+    /**
+     * Starts a Tag, for instance:
+     * <pre>
+     * &lt;tag&gt;
+     * </pre>
+     *
+     * @param t a non null tag
+     * @param att a set of attributes
+     * @see #writeStartTag(Tag, MutableAttributeSet)
+     */
+    private void writeStartTag ( Tag t )
+    {
+        writeStartTag ( t, null );
+    }
+
+    /**
+     * Starts a Tag with attributes, for instance:
+     * <pre>
+     * &lt;tag attName="attValue" &gt;
+     * </pre>
+     *
+     * @param t a non null tag
+     * @param att a set of attributes
+     * @see #writeStartTag(Tag, MutableAttributeSet, boolean)
+     */
+    private void writeStartTag ( Tag t, MutableAttributeSet att )
+    {
+        writeStartTag ( t, att, false );
+    }
+
+    /**
+     * Starts a Tag with attributes, for instance:
+     * <pre>
+     * &lt;tag attName="attValue" &gt;
+     * </pre>
+     *
+     * @param t a non null tag
+     * @param att a set of attributes
+     * @param isSimpleTag boolean to write as a simple tag
+     */
+    private void writeStartTag( Tag t, MutableAttributeSet att, boolean isSimpleTag )
+    {
+        if ( t == null )
+        {
+            throw new IllegalArgumentException( "A tag is required" );
+        }
+
+        StringBuffer sb = new StringBuffer();
+        sb.append( START_MARKUP );
+        sb.append( t.toString() );
+
+        if ( att != null )
+        {
+            Enumeration names = att.getAttributeNames();
+
+            while ( names.hasMoreElements() )
+            {
+                Object key = names.nextElement();
+                Object value = att.getAttribute( key );
+
+                if ( value instanceof AttributeSet )
+                {
+                    // ignored
+                }
+                else
+                {
+                    sb.append( SPACE_MARKUP ).append( key.toString() ).append( EQUAL_MARKUP ).append( QUOTE_MARKUP )
+                        .append( value.toString() ).append( QUOTE_MARKUP );
+                }
+            }
+        }
+
+        if ( isSimpleTag )
+        {
+            sb.append( SLASH_MARKUP );
+        }
+
+        sb.append( END_MARKUP );
+
+        if ( isSimpleTag )
+        {
+            sb.append( EOL );
+        }
+
+        write( sb.toString() );
+    }
+
+    /**
+     * Ends a Tag, for instance:
+     * <pre>
+     * &lt;/tag&gt;
+     * </pre>
+     *
+     * @param t a tag
+     */
+    private void writeEndTag( Tag t )
+    {
+        StringBuffer sb = new StringBuffer();
+        sb.append( START_MARKUP );
+        sb.append( SLASH_MARKUP );
+        sb.append( t.toString() );
+        sb.append( END_MARKUP );
+
+        sb.append( EOL );
+
+        write( sb.toString() );
+    }
+
+    /**
+     * Starts a simple Tag, for instance:
+     * <pre>
+     * &lt;tag /&gt;
+     * </pre>
+     *
+     * @param t a non null tag
+     * @see #writeSimpleTag(Tag, MutableAttributeSet)
+     */
+    private void writeSimpleTag ( Tag t )
+    {
+        writeSimpleTag ( t, null );
+    }
+
+    /**
+     * Starts a simple Tag with attributes, for instance:
+     * <pre>
+     * &lt;tag attName="attValue" /&gt;
+     * </pre>
+     *
+     * @param t a non null tag
+     * @param att a set of attributes
+     * @see #writeStartTag(Tag, MutableAttributeSet, boolean)
+     */
+    private void writeSimpleTag ( Tag t, MutableAttributeSet att )
+    {
+        writeStartTag ( t, att, true );
     }
 }

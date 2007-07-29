@@ -105,8 +105,8 @@ public class XdocParserTest
             getParser().parse( reader, sink );
 
             // No section, only subsection 1 and 2
-            assertTrue( output.toString().indexOf( "<li><a href=\"#section_11\">Section 11</a></li>" ) != -1 );
-            assertTrue( output.toString().indexOf( "<li><a href=\"#section_1211\">Section 1211</a></li>" ) == -1 );
+            assertTrue( noNewLine( output.toString() ).indexOf( "<li><a href=\"#section_11\">Section 11</a></li>" ) != -1 );
+            assertTrue( noNewLine( output.toString() ).indexOf( "<li><a href=\"#section_1211\">Section 1211</a></li>" ) == -1 );
         }
         finally
         {
@@ -120,5 +120,17 @@ public class XdocParserTest
                 reader.close();
             }
         }
+    }
+
+    /**
+     * TODO move me!
+     *
+     * @param text
+     * @return
+     */
+    private String noNewLine( String text )
+    {
+        String EOL = System.getProperty( "line.separator" );
+        return text.replaceAll( EOL, "" );
     }
 }

@@ -19,24 +19,30 @@ package org.apache.maven.doxia.module.xhtml;
  * under the License.
  */
 
+import java.io.IOException;
 import java.io.Reader;
 import java.util.Stack;
+
+import javax.swing.text.html.HTML.Attribute;
+import javax.swing.text.html.HTML.Tag;
 
 import org.apache.maven.doxia.parser.ParseException;
 import org.apache.maven.doxia.parser.Parser;
 import org.apache.maven.doxia.sink.Sink;
 import org.codehaus.plexus.util.xml.pull.MXParser;
 import org.codehaus.plexus.util.xml.pull.XmlPullParser;
+import org.codehaus.plexus.util.xml.pull.XmlPullParserException;
 
 /**
  * Parse an xdoc model and emit events into the specified doxia
  * Sink.
  *
  * @author <a href="mailto:jason@maven.org">Jason van Zyl</a>
- * @version $Id:XhtmlParser.java 348605 2005-11-24 12:02:44 +1100 (Thu, 24 Nov 2005) brett $
+ * @version $Id$
+ * @since 1.0
  */
 public class XhtmlParser
-    implements Parser
+    implements Parser, XhtmlMarkup
 {
     /**
      * This stack is needed to keep track of the different link and anchor-types
@@ -61,6 +67,7 @@ public class XhtmlParser
      */
     private static final String ANCHOR = "anchor";
 
+    /** {@inheritDoc} */
     public void parse( Reader reader, Sink sink )
         throws ParseException
     {
@@ -70,7 +77,7 @@ public class XhtmlParser
 
             parser.setInput( reader );
 
-            parseXdoc( parser, sink );
+            parseXhtml( parser, sink );
         }
         catch ( Exception ex )
         {
@@ -78,8 +85,14 @@ public class XhtmlParser
         }
     }
 
-    public void parseXdoc( XmlPullParser parser, Sink sink )
-        throws Exception
+
+    /**
+     * @param parser
+     * @param sink
+     * @throws IOException if any
+     * @throws XmlPullParserException if any
+     */
+    public void parseXhtml( XmlPullParser parser, Sink sink ) throws XmlPullParserException, IOException
     {
         int eventType = parser.getEventType();
 
@@ -87,26 +100,26 @@ public class XhtmlParser
         {
             if ( eventType == XmlPullParser.START_TAG )
             {
-                if ( parser.getName().equals( "title" ) )
+                if ( parser.getName().equals( Tag.TITLE.toString() ) )
                 {
                     sink.title();
                 }
                 /*
-                 * The ADDRESS element may be used by authors to supply contact information 
+                 * The ADDRESS element may be used by authors to supply contact information
                  * for a model or a major part of a model such as a form. This element
                  *  often appears at the beginning or end of a model.
                  */
-                else if ( parser.getName().equals( "address" ) )
+                else if ( parser.getName().equals( Tag.ADDRESS.toString() ) )
                 {
                     sink.author();
                 }
-                else if ( parser.getName().equals( "body" ) )
+                else if ( parser.getName().equals( Tag.BODY.toString() ) )
                 {
                     sink.body();
                 }
-                else if ( parser.getName().equals( "h1" ) || parser.getName().equals( "h2" ) ||
-                    parser.getName().equals( "h3" ) || parser.getName().equals( "h4" ) ||
-                    parser.getName().equals( "h5" ) )
+                else if ( parser.getName().equals( Tag.H1.toString() ) || parser.getName().equals( Tag.H2.toString() ) ||
+                    parser.getName().equals( Tag.H3.toString() ) || parser.getName().equals( Tag.H4.toString() ) ||
+                    parser.getName().equals( Tag.H5.toString() ) )
                 {
                     this.closeSubordinatedSections( parser.getName(), sink );
                     this.startSection( this.sections.size(), sink );
@@ -114,58 +127,58 @@ public class XhtmlParser
                     this.sections.push( parser.getName() );
 
                 }
-                else if ( parser.getName().equals( "p" ) )
+                else if ( parser.getName().equals( Tag.P.toString() ) )
                 {
                     sink.paragraph();
                 }
                 /*
-                 * The PRE element tells visual user agents that the enclosed text is 
+                 * The PRE element tells visual user agents that the enclosed text is
                  * "preformatted". When handling preformatted text, visual user agents:
                  * - May leave white space intact.
                  * - May render text with a fixed-pitch font.
                  * - May disable automatic word wrap.
                  * - Must not disable bidirectional processing.
                  * Non-visual user agents are not required to respect extra white space
-                 * in the content of a PRE element.  
+                 * in the content of a PRE element.
                  */
-                else if ( parser.getName().equals( "pre" ) )
+                else if ( parser.getName().equals( Tag.PRE.toString() ) )
                 {
                     sink.verbatim( true );
                 }
-                else if ( ( parser.getName().equals( "code" ) ) || ( parser.getName().equals( "samp" ) ) ||
-                    ( parser.getName().equals( "tt" ) ) )
+                else if ( ( parser.getName().equals( Tag.CODE.toString() ) ) || ( parser.getName().equals( Tag.SAMP.toString() ) ) ||
+                    ( parser.getName().equals( Tag.TT.toString() ) ) )
                 {
                     sink.monospaced();
                 }
-                else if ( parser.getName().equals( "ul" ) )
+                else if ( parser.getName().equals( Tag.UL.toString() ) )
                 {
                     sink.list();
                 }
-                else if ( parser.getName().equals( "ol" ) )
+                else if ( parser.getName().equals( Tag.OL.toString() ) )
                 {
                     sink.numberedList( Sink.NUMBERING_DECIMAL );
                 }
-                else if ( parser.getName().equals( "li" ) )
+                else if ( parser.getName().equals( Tag.LI.toString() ) )
                 {
                     sink.listItem();
                 }
-                else if ( parser.getName().equals( "head" ) )
+                else if ( parser.getName().equals( Tag.HEAD.toString() ) )
                 {
                     sink.head();
                 }
-                else if ( ( parser.getName().equals( "b" ) ) || ( parser.getName().equals( "strong" ) ) )
+                else if ( ( parser.getName().equals( Tag.B.toString() ) ) || ( parser.getName().equals( Tag.STRONG.toString() ) ) )
                 {
                     sink.bold();
                 }
-                else if ( ( parser.getName().equals( "i" ) ) || ( parser.getName().equals( "em" ) ) )
+                else if ( ( parser.getName().equals( Tag.I.toString() ) ) || ( parser.getName().equals( Tag.EM.toString() ) ) )
                 {
                     sink.italic();
                 }
-                else if ( parser.getName().equals( "a" ) )
+                else if ( parser.getName().equals( Tag.A.toString() ) )
                 {
-                    String href = parser.getAttributeValue( null, "href" );
-                    String name = parser.getAttributeValue( null, "name" );
-                    String id = parser.getAttributeValue( null, "id" );
+                    String href = parser.getAttributeValue( null, Attribute.HREF.toString() );
+                    String name = parser.getAttributeValue( null, Attribute.NAME.toString() );
+                    String id = parser.getAttributeValue( null, Attribute.ID.toString() );
                     if ( href != null )
                     {
                         sink.link( href );
@@ -182,20 +195,20 @@ public class XhtmlParser
                         this.linktypes.push( XhtmlParser.ANCHOR );
                     }
                 }
-                else if ( parser.getName().equals( "br" ) )
+                else if ( parser.getName().equals( Tag.BR.toString() ) )
                 {
-                	sink.lineBreak();
+                    sink.lineBreak();
                 }
-                else if ( parser.getName().equals( "hr" ) )
+                else if ( parser.getName().equals( Tag.HR.toString() ) )
                 {
                     sink.horizontalRule();
                 }
-                else if ( parser.getName().equals( "img" ) )
+                else if ( parser.getName().equals( Tag.IMG.toString() ) )
                 {
                     sink.figure();
-                    String src = parser.getAttributeValue( null, "src" );
-                    String title = parser.getAttributeValue( null, "title" );
-                    String alt = parser.getAttributeValue( null, "alt" );
+                    String src = parser.getAttributeValue( null, Attribute.SRC.toString() );
+                    String title = parser.getAttributeValue( null, Attribute.TITLE.toString() );
+                    String alt = parser.getAttributeValue( null, Attribute.ALT.toString() );
                     if ( src != null )
                     {
                         sink.figureGraphics( src );
@@ -218,19 +231,19 @@ public class XhtmlParser
                 // Tables
                 // ----------------------------------------------------------------------
 
-                else if ( parser.getName().equals( "table" ) )
+                else if ( parser.getName().equals( Tag.TABLE.toString() ) )
                 {
                     sink.table();
                 }
-                else if ( parser.getName().equals( "tr" ) )
+                else if ( parser.getName().equals( Tag.TR.toString() ) )
                 {
                     sink.tableRow();
                 }
-                else if ( parser.getName().equals( "th" ) )
+                else if ( parser.getName().equals( Tag.TH.toString() ) )
                 {
                     sink.tableCell();
                 }
-                else if ( parser.getName().equals( "td" ) )
+                else if ( parser.getName().equals( Tag.TD.toString() ) )
                 {
                     sink.tableCell();
                 }
@@ -238,64 +251,64 @@ public class XhtmlParser
             }
             else if ( eventType == XmlPullParser.END_TAG )
             {
-                if ( parser.getName().equals( "title" ) )
+                if ( parser.getName().equals( Tag.TITLE.toString() ) )
                 {
                     sink.title_();
                 }
-                else if ( parser.getName().equals( "address" ) )
+                else if ( parser.getName().equals( Tag.ADDRESS.toString() ) )
                 {
                     sink.author_();
                 }
-                else if ( parser.getName().equals( "body" ) )
+                else if ( parser.getName().equals( Tag.BODY.toString() ) )
                 {
                     //close all sections that are still open
                     closeSubordinatedSections( "h0", sink );
                     sink.body_();
                 }
-                else if ( parser.getName().equals( "h1" ) || parser.getName().equals( "h2" ) ||
-                    parser.getName().equals( "h3" ) || parser.getName().equals( "h4" ) ||
-                    parser.getName().equals( "h5" ) )
+                else if ( parser.getName().equals( Tag.H1.toString() ) || parser.getName().equals( Tag.H2.toString() ) ||
+                    parser.getName().equals( Tag.H3.toString() ) || parser.getName().equals( Tag.H4.toString() ) ||
+                    parser.getName().equals( Tag.H5.toString() ) )
                 {
                     this.closeSectionTitle( this.sections.size() - 1, sink );
                 }
-                else if ( parser.getName().equals( "p" ) )
+                else if ( parser.getName().equals( Tag.P.toString() ) )
                 {
                     sink.paragraph_();
                 }
-                else if ( parser.getName().equals( "pre" ) )
+                else if ( parser.getName().equals( Tag.PRE.toString() ) )
                 {
                     sink.verbatim_();
                 }
-                else if ( ( parser.getName().equals( "code" ) ) || ( parser.getName().equals( "samp" ) ) ||
-                    ( parser.getName().equals( "tt" ) ) )
+                else if ( ( parser.getName().equals( Tag.CODE.toString() ) ) || ( parser.getName().equals( Tag.SAMP.toString() ) ) ||
+                    ( parser.getName().equals( Tag.TT.toString() ) ) )
                 {
                     sink.monospaced_();
                 }
-                else if ( parser.getName().equals( "ul" ) )
+                else if ( parser.getName().equals( Tag.UL.toString() ) )
                 {
                     sink.list_();
                 }
-                else if ( parser.getName().equals( "ol" ) )
+                else if ( parser.getName().equals( Tag.OL.toString() ) )
                 {
                     sink.numberedList_();
                 }
-                else if ( parser.getName().equals( "li" ) )
+                else if ( parser.getName().equals( Tag.LI.toString() ) )
                 {
                     sink.listItem_();
                 }
-                else if ( parser.getName().equals( "head" ) )
+                else if ( parser.getName().equals( Tag.HEAD.toString() ) )
                 {
                     sink.head_();
                 }
-                else if ( ( parser.getName().equals( "b" ) ) || ( parser.getName().equals( "strong" ) ) )
+                else if ( ( parser.getName().equals( Tag.B.toString() ) ) || ( parser.getName().equals( Tag.STRONG.toString() ) ) )
                 {
                     sink.bold_();
                 }
-                else if ( ( parser.getName().equals( "i" ) ) || ( parser.getName().equals( "em" ) ) )
+                else if ( ( parser.getName().equals( Tag.I.toString() ) ) || ( parser.getName().equals( Tag.EM.toString() ) ) )
                 {
                     sink.italic_();
                 }
-                else if ( parser.getName().equals( "a" ) )
+                else if ( parser.getName().equals( Tag.A.toString() ) )
                 {
                     String linktype = (String) this.linktypes.pop();
                     //the equals operation is ok here, because we always use the class constant
@@ -312,19 +325,19 @@ public class XhtmlParser
                 // Tables
                 // ----------------------------------------------------------------------
 
-                else if ( parser.getName().equals( "table" ) )
+                else if ( parser.getName().equals( Tag.TABLE.toString() ) )
                 {
                     sink.table_();
                 }
-                else if ( parser.getName().equals( "tr" ) )
+                else if ( parser.getName().equals( Tag.TR.toString() ) )
                 {
                     sink.tableRow_();
                 }
-                else if ( parser.getName().equals( "th" ) )
+                else if ( parser.getName().equals( Tag.TH.toString() ) )
                 {
                     sink.tableCell_();
                 }
-                else if ( parser.getName().equals( "td" ) )
+                else if ( parser.getName().equals( Tag.TD.toString() ) )
                 {
                     sink.tableCell_();
                 }
@@ -346,23 +359,23 @@ public class XhtmlParser
      */
     private static void text( Sink sink, String text )
     {
-    	if( text.startsWith( "&nbsp;" ) )
-    	{
-    		sink.nonBreakingSpace();
-    	}
-    	String[] s = text.split( "&nbsp;" );
-    	for( int i = 0; i < s.length; i++ )
-    	{
-        	sink.text( s[i] );
-        	if( i + 1 < s.length )
-        	{
-        		sink.nonBreakingSpace();
-        	}
-		}
-    	if( text.endsWith( "&nbsp;" ) )
-    	{
-    		sink.nonBreakingSpace();
-    	}
+        if( text.startsWith( "&nbsp;" ) )
+        {
+            sink.nonBreakingSpace();
+        }
+        String[] s = text.split( "&nbsp;" );
+        for( int i = 0; i < s.length; i++ )
+        {
+            sink.text( s[i] );
+            if( i + 1 < s.length )
+            {
+                sink.nonBreakingSpace();
+            }
+        }
+        if( text.endsWith( "&nbsp;" ) )
+        {
+            sink.nonBreakingSpace();
+        }
     }
 
     private void closeSubordinatedSections( String level, Sink sink )

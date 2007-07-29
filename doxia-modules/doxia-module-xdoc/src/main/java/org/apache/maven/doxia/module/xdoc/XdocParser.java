@@ -26,6 +26,9 @@ import java.io.StringWriter;
 import java.util.HashMap;
 import java.util.Map;
 
+import javax.swing.text.html.HTML.Attribute;
+import javax.swing.text.html.HTML.Tag;
+
 import org.apache.maven.doxia.macro.MacroExecutionException;
 import org.apache.maven.doxia.macro.manager.MacroNotFoundException;
 import org.apache.maven.doxia.macro.MacroRequest;
@@ -42,11 +45,13 @@ import org.codehaus.plexus.util.xml.pull.XmlPullParserException;
  * Parse an xdoc model and emit events into the specified doxia Sink.
  *
  * @author <a href="mailto:jason@maven.org">Jason van Zyl</a>
- * @version $Id:XdocParser.java 348605 2005-11-24 12:02:44 +1100 (Thu, 24 Nov 2005) brett $
+ * @version $Id$
+ * @since 1.0
  * @plexus.component role="org.apache.maven.doxia.parser.Parser" role-hint="xdoc"
  */
 public class XdocParser
     extends AbstractParser
+    implements XdocMarkup
 {
     /** The source content of the input reader. Used to pass into macros. */
     private String sourceContent;
@@ -146,82 +151,82 @@ public class XdocParser
     {
         isEmptyElement = parser.isEmptyElementTag();
 
-        if ( parser.getName().equals( "document" ) )
+        if ( parser.getName().equals( DOCUMENT_TAG.toString() ) )
         {
             //Do nothing
             return;
         }
-        else if ( parser.getName().equals( "title" ) )
+        else if ( parser.getName().equals( Tag.TITLE.toString() ) )
         {
             sink.title();
         }
-        else if ( parser.getName().equals( "author" ) )
+        else if ( parser.getName().equals( AUTHOR_TAG.toString() ) )
         {
             sink.author();
         }
-        else if ( parser.getName().equals( "body" ) )
+        else if ( parser.getName().equals( Tag.BODY.toString() ) )
         {
             sink.body();
         }
-        else if ( parser.getName().equals( "section" ) )
+        else if ( parser.getName().equals( SECTION_TAG.toString() ) )
         {
             // TODO this should go into a sink? kept for compat for the moment
-            sink.anchor( parser.getAttributeValue( null, "name" ) );
+            sink.anchor( parser.getAttributeValue( null, Attribute.NAME.toString() ) );
             sink.anchor_();
 
             sink.section1();
 
             sink.sectionTitle1();
 
-            sink.text( parser.getAttributeValue( null, "name" ) );
+            sink.text( parser.getAttributeValue( null, Attribute.NAME.toString() ) );
 
             sink.sectionTitle1_();
         }
-        else if ( parser.getName().equals( "subsection" ) )
+        else if ( parser.getName().equals( SUBSECTION_TAG.toString() ) )
         {
             // TODO this should go into a sink? kept for compat for the moment
-            sink.anchor( parser.getAttributeValue( null, "name" ) );
+            sink.anchor( parser.getAttributeValue( null, Attribute.NAME.toString() ) );
             sink.anchor_();
 
             sink.section2();
 
             sink.sectionTitle2();
 
-            sink.text( parser.getAttributeValue( null, "name" ) );
+            sink.text( parser.getAttributeValue( null, Attribute.NAME.toString() ) );
 
             sink.sectionTitle2_();
         }
         // TODO section3 section4 section5
-        else if ( parser.getName().equals( "h4" ) )
+        else if ( parser.getName().equals( Tag.H4.toString() ) )
         {
             sink.sectionTitle3();
         }
-        else if ( parser.getName().equals( "h5" ) )
+        else if ( parser.getName().equals( Tag.H5.toString() ) )
         {
             sink.sectionTitle4();
         }
-        else if ( parser.getName().equals( "h6" ) )
+        else if ( parser.getName().equals( Tag.H6.toString() ) )
         {
             sink.sectionTitle5();
         }
-        else if ( parser.getName().equals( "p" ) )
+        else if ( parser.getName().equals( Tag.P.toString() ) )
         {
             sink.paragraph();
         }
-        else if ( parser.getName().equals( "source" ) )
+        else if ( parser.getName().equals( SOURCE_TAG.toString() ) )
         {
             sink.verbatim( true );
         }
-        else if ( parser.getName().equals( "ul" ) )
+        else if ( parser.getName().equals( Tag.UL.toString() ) )
         {
             sink.list();
         }
-        else if ( parser.getName().equals( "ol" ) )
+        else if ( parser.getName().equals( Tag.OL.toString() ) )
         {
             sink.numberedList( Sink.NUMBERING_DECIMAL );
             orderedListDepth++;
         }
-        else if ( parser.getName().equals( "li" ) )
+        else if ( parser.getName().equals( Tag.LI.toString() ) )
         {
             if ( orderedListDepth == 0 )
             {
@@ -232,38 +237,38 @@ public class XdocParser
                 sink.numberedListItem();
             }
         }
-        else if ( parser.getName().equals( "dl" ) )
+        else if ( parser.getName().equals( Tag.DL.toString() ) )
         {
             sink.definitionList();
         }
-        else if ( parser.getName().equals( "dt" ) )
+        else if ( parser.getName().equals( Tag.DT.toString() ) )
         {
             sink.definitionListItem();
             sink.definedTerm();
         }
-        else if ( parser.getName().equals( "dd" ) )
+        else if ( parser.getName().equals( Tag.DD.toString() ) )
         {
             sink.definition();
         }
-        else if ( parser.getName().equals( "properties" ) )
+        else if ( parser.getName().equals( PROPERTIES_TAG.toString() ) )
         {
             sink.head();
         }
-        else if ( parser.getName().equals( "b" ) )
+        else if ( parser.getName().equals( Tag.B.toString() ) )
         {
             sink.bold();
         }
-        else if ( parser.getName().equals( "i" ) )
+        else if ( parser.getName().equals( Tag.I.toString() ) )
         {
             sink.italic();
         }
-        else if ( parser.getName().equals( "tt" ) )
+        else if ( parser.getName().equals( Tag.TT.toString() ) )
         {
             sink.monospaced();
         }
-        else if ( parser.getName().equals( "a" ) )
+        else if ( parser.getName().equals( Tag.A.toString() ) )
         {
-            String href = parser.getAttributeValue( null, "href" );
+            String href = parser.getAttributeValue( null, Attribute.HREF.toString() );
             if ( href != null )
             {
                 sink.link( href );
@@ -271,7 +276,7 @@ public class XdocParser
             }
             else
             {
-                String name = parser.getAttributeValue( null, "name" );
+                String name = parser.getAttributeValue( null, Attribute.NAME.toString() );
                 if ( name != null )
                 {
                     sink.anchor( name );
@@ -283,11 +288,11 @@ public class XdocParser
                 }
             }
         }
-        else if ( parser.getName().equals( "macro" ) )
+        else if ( parser.getName().equals( MACRO_TAG.toString() ) )
         {
             if ( !secondParsing )
             {
-                String macroName = parser.getAttributeValue( null, "name" );
+                String macroName = parser.getAttributeValue( null, Attribute.NAME.toString() );
 
                 int count = parser.getAttributeCount();
 
@@ -298,6 +303,7 @@ public class XdocParser
                     parameters.put( parser.getAttributeName( i ), parser.getAttributeValue( i ) );
                 }
 
+                // TODO handles specific attributes
                 parameters.put( "sourceContent", sourceContent );
 
                 XdocParser xdocParser = new XdocParser();
@@ -321,17 +327,17 @@ public class XdocParser
         // Tables
         // ----------------------------------------------------------------------
 
-        else if ( parser.getName().equals( "table" ) )
+        else if ( parser.getName().equals( Tag.TABLE.toString() ) )
         {
             sink.table();
         }
-        else if ( parser.getName().equals( "tr" ) )
+        else if ( parser.getName().equals( Tag.TR.toString() ) )
         {
             sink.tableRow();
         }
-        else if ( parser.getName().equals( "th" ) )
+        else if ( parser.getName().equals( Tag.TH.toString() ) )
         {
-            String colspan = parser.getAttributeValue( null, "colspan" );
+            String colspan = parser.getAttributeValue( null, Attribute.COLSPAN.toString() );
             if ( colspan ==  null )
             {
                 sink.tableHeaderCell();
@@ -341,9 +347,9 @@ public class XdocParser
                 sink.tableHeaderCell( colspan );
             }
         }
-        else if ( parser.getName().equals( "td" ) )
+        else if ( parser.getName().equals( Tag.TD.toString() ) )
         {
-            String colspan = parser.getAttributeValue( null, "colspan" );
+            String colspan = parser.getAttributeValue( null, Attribute.COLSPAN.toString() );
             if ( colspan ==  null )
             {
                 sink.tableCell();
@@ -358,18 +364,18 @@ public class XdocParser
         // Empty elements: <br/>, <hr/> and <img />
         // ----------------------------------------------------------------------
 
-        else if ( parser.getName().equals( "br" ) )
+        else if ( parser.getName().equals( Tag.BR.toString() ) )
         {
             sink.lineBreak();
         }
-        else if ( parser.getName().equals( "hr" ) )
+        else if ( parser.getName().equals( Tag.HR.toString() ) )
         {
             sink.horizontalRule();
         }
-        else if ( parser.getName().equals( "img" ) )
+        else if ( parser.getName().equals( Tag.IMG.toString() ) )
         {
-            String src = parser.getAttributeValue( null, "src" );
-            String alt = parser.getAttributeValue( null, "alt" );
+            String src = parser.getAttributeValue( null, Attribute.SRC.toString() );
+            String alt = parser.getAttributeValue( null, Attribute.ALT.toString() );
 
             sink.figure();
             sink.figureGraphics( src );
@@ -398,41 +404,41 @@ public class XdocParser
      */
     private void handleEndTag( XmlPullParser parser, Sink sink )
     {
-        if ( parser.getName().equals( "document" ) )
+        if ( parser.getName().equals( DOCUMENT_TAG.toString() ) )
         {
             //Do nothing
             return;
         }
-        else if ( parser.getName().equals( "title" ) )
+        else if ( parser.getName().equals( Tag.TITLE.toString() ) )
         {
             sink.title_();
         }
-        else if ( parser.getName().equals( "author" ) )
+        else if ( parser.getName().equals( AUTHOR_TAG.toString() ) )
         {
             sink.author_();
         }
-        else if ( parser.getName().equals( "body" ) )
+        else if ( parser.getName().equals( Tag.BODY.toString() ) )
         {
             sink.body_();
         }
-        else if ( parser.getName().equals( "p" ) )
+        else if ( parser.getName().equals( Tag.P.toString() ) )
         {
             sink.paragraph_();
         }
-        else if ( parser.getName().equals( "source" ) )
+        else if ( parser.getName().equals( SOURCE_TAG.toString() ) )
         {
             sink.verbatim_();
         }
-        else if ( parser.getName().equals( "ul" ) )
+        else if ( parser.getName().equals( Tag.UL.toString() ) )
         {
             sink.list_();
         }
-        else if ( parser.getName().equals( "ol" ) )
+        else if ( parser.getName().equals( Tag.OL.toString() ) )
         {
             sink.numberedList_();
             orderedListDepth--;
         }
-        else if ( parser.getName().equals( "li" ) )
+        else if ( parser.getName().equals( Tag.LI.toString() ) )
         {
             if ( orderedListDepth == 0 )
             {
@@ -443,36 +449,36 @@ public class XdocParser
                 sink.numberedListItem_();
             }
         }
-        else if ( parser.getName().equals( "dl" ) )
+        else if ( parser.getName().equals( Tag.DL.toString() ) )
         {
             sink.definitionList_();
         }
-        else if ( parser.getName().equals( "dt" ) )
+        else if ( parser.getName().equals( Tag.DT.toString() ) )
         {
             sink.definedTerm_();
         }
-        else if ( parser.getName().equals( "dd" ) )
+        else if ( parser.getName().equals( Tag.DD.toString() ) )
         {
             sink.definition_();
             sink.definitionListItem_();
         }
-        else if ( parser.getName().equals( "properties" ) )
+        else if ( parser.getName().equals( PROPERTIES_TAG.toString() ) )
         {
             sink.head_();
         }
-        else if ( parser.getName().equals( "b" ) )
+        else if ( parser.getName().equals( Tag.B.toString() ) )
         {
             sink.bold_();
         }
-        else if ( parser.getName().equals( "i" ) )
+        else if ( parser.getName().equals( Tag.I.toString() ) )
         {
             sink.italic_();
         }
-        else if ( parser.getName().equals( "tt" ) )
+        else if ( parser.getName().equals( Tag.TT.toString() ) )
         {
             sink.monospaced_();
         }
-        else if ( parser.getName().equals( "a" ) )
+        else if ( parser.getName().equals( Tag.A.toString() ) )
         {
             if ( isLink )
             {
@@ -485,54 +491,54 @@ public class XdocParser
                 isAnchor = false;
             }
         }
-        else if ( parser.getName().equals( "macro" ) )
+        else if ( parser.getName().equals( MACRO_TAG.toString() ) )
         {
             //Do nothing
             return;
         }
-        else if ( parser.getName().equals( "table" ) )
+        else if ( parser.getName().equals( Tag.TABLE.toString() ) )
         {
             sink.table_();
         }
-        else if ( parser.getName().equals( "tr" ) )
+        else if ( parser.getName().equals( Tag.TR.toString() ) )
         {
             sink.tableRow_();
         }
-        else if ( parser.getName().equals( "th" ) )
+        else if ( parser.getName().equals( Tag.TH.toString() ) )
         {
             sink.tableHeaderCell_();
         }
-        else if ( parser.getName().equals( "td" ) )
+        else if ( parser.getName().equals( Tag.TD.toString() ) )
         {
             sink.tableCell_();
         }
-        else if ( parser.getName().equals( "section" ) )
+        else if ( parser.getName().equals( SECTION_TAG.toString() ) )
         {
             sink.section1_();
         }
-        else if ( parser.getName().equals( "subsection" ) )
+        else if ( parser.getName().equals( SUBSECTION_TAG.toString() ) )
         {
             sink.section2_();
         }
-        else if ( parser.getName().equals( "h4" ) )
+        else if ( parser.getName().equals( Tag.H4.toString() ) )
         {
             sink.sectionTitle3_();
         }
-        else if ( parser.getName().equals( "h5" ) )
+        else if ( parser.getName().equals( Tag.H5.toString() ) )
         {
             sink.sectionTitle4_();
         }
-        else if ( parser.getName().equals( "h6" ) )
+        else if ( parser.getName().equals( Tag.H6.toString() ) )
         {
             sink.sectionTitle5_();
         }
         else if ( !isEmptyElement )
         {
-            sink.rawText( "</" );
+            sink.rawText( START_MARKUP + SLASH_MARKUP );
 
             sink.rawText( parser.getName() );
 
-            sink.rawText( ">" );
+            sink.rawText( END_MARKUP );
         }
         else
         {
@@ -564,7 +570,7 @@ public class XdocParser
      */
     private void handleRawText( Sink sink, XmlPullParser parser )
     {
-        sink.rawText( "<" );
+        sink.rawText( START_MARKUP );
 
         sink.rawText( parser.getName() );
 
@@ -572,19 +578,19 @@ public class XdocParser
 
         for ( int i = 0; i < count; i++ )
         {
-            sink.rawText( " " );
+            sink.rawText( SPACE_MARKUP );
 
             sink.rawText( parser.getAttributeName( i ) );
 
-            sink.rawText( "=" );
+            sink.rawText( EQUAL_MARKUP );
 
-            sink.rawText( "\"" );
+            sink.rawText( QUOTE_MARKUP );
 
             sink.rawText( parser.getAttributeValue( i ) );
 
-            sink.rawText( "\"" );
+            sink.rawText( QUOTE_MARKUP );
         }
 
-        sink.rawText( ">" );
+        sink.rawText( END_MARKUP );
     }
 }
