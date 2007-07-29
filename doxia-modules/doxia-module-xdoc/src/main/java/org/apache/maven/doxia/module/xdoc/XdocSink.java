@@ -361,7 +361,7 @@ public class XdocSink
      *
      * @param depth The level of the section title.
      * @see javax.swing.text.html.HTML.Tag#H4
-     * @see javax.swing.text.html.HTML.Tag#H4
+     * @see javax.swing.text.html.HTML.Tag#H5
      * @see javax.swing.text.html.HTML.Tag#H6
      */
     private void onSectionTitle( int depth )
@@ -387,7 +387,7 @@ public class XdocSink
      *
      * @param depth The level of the section title.
      * @see javax.swing.text.html.HTML.Tag#H4
-     * @see javax.swing.text.html.HTML.Tag#H4
+     * @see javax.swing.text.html.HTML.Tag#H5
      * @see javax.swing.text.html.HTML.Tag#H6
      */
     private void onSectionTitle_( int depth )
@@ -874,8 +874,8 @@ public class XdocSink
      */
     public void tableCaption_()
     {
-        writeEndTag( Tag.P );
         writeEndTag( Tag.I );
+        writeEndTag( Tag.P );
     }
 
     /**
@@ -1134,7 +1134,6 @@ public class XdocSink
      * </pre>
      *
      * @param t a non null tag
-     * @param att a set of attributes
      * @see #writeStartTag(Tag, MutableAttributeSet)
      */
     private void writeStartTag ( Tag t )
@@ -1145,7 +1144,7 @@ public class XdocSink
     /**
      * Starts a Tag with attributes, for instance:
      * <pre>
-     * &lt;tag attName="attValue" &gt;
+     * &lt;tag attName="attValue"&gt;
      * </pre>
      *
      * @param t a non null tag
@@ -1160,7 +1159,7 @@ public class XdocSink
     /**
      * Starts a Tag with attributes, for instance:
      * <pre>
-     * &lt;tag attName="attValue" &gt;
+     * &lt;tag attName="attValue"&gt;
      * </pre>
      *
      * @param t a non null tag
@@ -1201,7 +1200,7 @@ public class XdocSink
 
         if ( isSimpleTag )
         {
-            sb.append( SLASH_MARKUP );
+            sb.append( SPACE_MARKUP ).append( SLASH_MARKUP );
         }
 
         sb.append( END_MARKUP );
