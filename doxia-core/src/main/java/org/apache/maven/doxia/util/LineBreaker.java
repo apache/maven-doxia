@@ -96,7 +96,7 @@ public class LineBreaker
     public void write( String text )
         throws IOException
     {
-        write( text, /*preserveSpace*/ false );
+        write( text, /*preserveSpace*/false );
     }
 
     /**
@@ -114,6 +114,8 @@ public class LineBreaker
             for ( int i = 0; i < length; ++i )
             {
                 char c = text.charAt( i );
+                String os = System.getProperty( "os.name" ).toLowerCase();
+
                 switch ( c )
                 {
                     case ' ':
@@ -126,6 +128,13 @@ public class LineBreaker
                             writeWord();
                         }
                         break;
+
+                    case '\r':
+                        // if \r\n (windows) then just pass along \n
+                        if ( os.indexOf( "windows" ) != -1 )
+                        {
+                            break;
+                        }
 
                     case '\n':
                         writeWord();
