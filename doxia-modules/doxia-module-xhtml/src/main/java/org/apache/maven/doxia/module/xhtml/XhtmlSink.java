@@ -1271,7 +1271,6 @@ public class XhtmlSink
      * </pre>
      *
      * @param t a non null tag
-     * @param att a set of attributes
      * @see #writeStartTag(Tag, MutableAttributeSet)
      */
     private void writeStartTag ( Tag t )
@@ -1282,7 +1281,7 @@ public class XhtmlSink
     /**
      * Starts a Tag with attributes, for instance:
      * <pre>
-     * &lt;tag attName="attValue" &gt;
+     * &lt;tag attName="attValue"&gt;
      * </pre>
      *
      * @param t a non null tag
@@ -1297,7 +1296,7 @@ public class XhtmlSink
     /**
      * Starts a Tag with attributes, for instance:
      * <pre>
-     * &lt;tag attName="attValue" &gt;
+     * &lt;tag attName="attValue"&gt;
      * </pre>
      *
      * @param t a non null tag
@@ -1338,7 +1337,7 @@ public class XhtmlSink
 
         if ( isSimpleTag )
         {
-            sb.append( SLASH_MARKUP );
+            sb.append( SPACE_MARKUP ).append( SLASH_MARKUP );
         }
 
         sb.append( END_MARKUP );
