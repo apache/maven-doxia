@@ -28,6 +28,7 @@ import org.apache.maven.doxia.sink.StructureSink;
  *
  * @author <a href="mailto:vincent.siveton@gmail.com">Vincent Siveton</a>
  * @version $Id$
+ * @since 1.0
  */
 public class HtmlTools
 {
@@ -186,7 +187,7 @@ public class HtmlTools
     }
 
     /**
-     * According to the <a href="http://www.w3.org/TR/html4/types.html#type-name">W3C recommandation</a>:
+     * According to the <a href="http://www.w3.org/TR/html4/types.html#type-name">W3C recommendation</a>:
      * <p><i>
      * ID and NAME tokens must begin with a letter ([A-Za-z]) and may be followed by any number
      * of letters, digits ([0-9]), hyphens ("-"), underscores ("_"), colons (":"), and periods (".").</i>
@@ -228,7 +229,7 @@ public class HtmlTools
                 // TODO: why? see DOXIA-131
                 buffer.append( Character.toLowerCase( c ) );
             }
-            // Not part of W3C recommandation, just to produce much nicer id
+            // Not part of W3C recommendation, just to produce much nicer id
             if ( c == ' ' )
             {
                 buffer.append( "_" );
