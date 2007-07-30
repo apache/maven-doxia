@@ -68,6 +68,39 @@ under the License.
     <developerConnection>scm:svn:https://svn.apache.org/repos/asf/maven/doxia/doxia/trunk</developerConnection>
     <url>http://svn.apache.org/viewcvs.cgi/maven/doxia/doxia/trunk</url>
   </scm>
+
+  <reporting>
+    <plugins>
+      <plugin>
+        <groupId>org.apache.maven.plugins</groupId>
+        <artifactId>maven-javadoc-plugin</artifactId>
+        <configuration>
+          <source>1.4</source>
+          <aggregate>true</aggregate>
+          <links>
+            <link>http://java.sun.com/j2se/1.4.2/docs/api/</link>
+            <link>http://plexus.codehaus.org/plexus-utils/apidocs/</link>
+            <link>http://junit.sourceforge.net/javadoc/</link>
+          </links>
+          <reportSets>
+            <reportSet>
+              <id>html</id>
+              <reports>
+                <report>javadoc</report>
+              </reports>
+            </reportSet>
+            <reportSet>
+              <id>test-html</id>
+              <reports>
+                <report>test-javadoc</report>
+              </reports>
+            </reportSet>
+          </reportSets>
+        </configuration>
+      </plugin>
+    </plugins>
+  </reporting>
+
   <build>
     <plugins>
       <plugin>
