@@ -26,4 +26,5 @@ under the License.
   </parent>
   <artifactId>doxia-module-docbook-simple</artifactId>
   <name>Doxia :: Docbook Simple Module</name>
+  <description>A Doxia module for Docbook source documents.</description>
 </project>

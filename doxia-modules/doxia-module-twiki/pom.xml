@@ -28,6 +28,8 @@ under the License.
   </parent>
   <artifactId>doxia-module-twiki</artifactId>
   <name>Doxia :: TWiki Module</name>
+  <description>A Doxia module for Twiki source documents.</description>
+
    <developers>
     <developer>
       <name>Juan F. Codagnone</name>

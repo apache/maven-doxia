@@ -7,6 +7,7 @@
   <modelVersion>4.0.0</modelVersion>
   <artifactId>doxia-module-apt</artifactId>
   <name>Doxia :: APT Module</name>
+  <description>A Doxia module for Almost Plain Text source documents.</description>
 
   <build>
     <plugins>

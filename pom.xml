@@ -32,6 +32,7 @@ under the License.
   <artifactId>doxia</artifactId>
   <packaging>pom</packaging>
   <name>Doxia</name>
+  <description>Doxia is a content generation framework that provides powerful techniques for generating static and dynamic content, supporting a variety of markup languages.</description>
   <version>1.0-alpha-9-SNAPSHOT</version>
   <url>http://maven.apache.org/doxia</url>
   <issueManagement>

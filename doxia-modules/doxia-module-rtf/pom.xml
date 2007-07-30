@@ -7,6 +7,8 @@
   <modelVersion>4.0.0</modelVersion>
   <artifactId>doxia-module-rtf</artifactId>
   <name>Doxia :: RTF Module</name>
+  <description>A Doxia module for Rich Text Format source documents.</description>
+
   <dependencies>
     <dependency>
       <groupId>org.apache.maven.doxia</groupId>

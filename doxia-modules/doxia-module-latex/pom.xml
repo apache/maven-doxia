@@ -7,6 +7,8 @@
   <modelVersion>4.0.0</modelVersion>
   <artifactId>doxia-module-latex</artifactId>
   <name>Doxia :: Latex Module</name>
+  <description>A Doxia module for LaTeX source documents.</description>
+
   <dependencies>
     <dependency>
       <groupId>org.apache.maven.doxia</groupId>

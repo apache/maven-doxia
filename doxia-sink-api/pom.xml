@@ -28,4 +28,5 @@ under the License.
   </parent>
   <artifactId>doxia-sink-api</artifactId>
   <name>Doxia :: Sink API</name>
+  <description>Doxia Sink API.</description>
 </project>

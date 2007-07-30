@@ -26,6 +26,8 @@ under the License.
   </parent>
   <artifactId>doxia-module-confluence</artifactId>
   <name>Doxia :: Confluence Module</name>
+  <description>A Doxia module for Confluence source documents.</description>
+
   <developers>
     <developer>
       <name>Juan F. Codagnone</name>

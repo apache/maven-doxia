@@ -7,4 +7,5 @@
   <modelVersion>4.0.0</modelVersion>
   <artifactId>doxia-module-xhtml</artifactId>
   <name>Doxia :: XHTML Module</name>
+  <description>A Doxia module for Xhtml source documents.</description>
 </project>
