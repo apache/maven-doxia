@@ -19,13 +19,16 @@ package org.apache.maven.doxia.module.xdoc;
  * under the License.
  */
 
+import java.io.File;
 import java.io.FileReader;
+import java.io.FileWriter;
 import java.io.Reader;
 import java.io.StringWriter;
 
 import org.apache.maven.doxia.parser.AbstractParserTestCase;
 import org.apache.maven.doxia.parser.Parser;
 import org.apache.maven.doxia.sink.Sink;
+import org.codehaus.plexus.util.IOUtil;
 
 /**
  * @author <a href="mailto:jason@maven.org">Jason van Zyl</a>
@@ -62,64 +65,78 @@ public class XdocParserTest
     public void testSnippetMacro()
         throws Exception
     {
-        StringWriter output = null;
+        FileWriter output = null;
         Reader reader = null;
+        File f = getTestFile( getBasedir(), "target/output/macro.xml" );
 
         try
         {
-            output = new StringWriter();
+            output = new FileWriter( f );
             reader = new FileReader( getTestFile( getBasedir(), "src/test/resources/macro.xml" ) );
 
             Sink sink = new XdocSink( output );
             getParser().parse( reader, sink );
-
-            assertTrue( output.toString().indexOf( "&lt;modelVersion&gt;4.0.0&lt;/modelVersion&gt;" ) != -1 );
         }
         finally
         {
-            if ( output != null )
-            {
-                output.close();
-            }
-
-            if ( reader != null )
-            {
-                reader.close();
-            }
+            IOUtil.close( output );
+            IOUtil.close( reader );
         }
+
+        assertTrue( "The file " + f.getAbsolutePath() + " was not created", f.exists() );
+
+        String content;
+        try
+        {
+            reader = new FileReader( f );
+            content = IOUtil.toString( reader );
+        }
+        finally
+        {
+            IOUtil.close( reader );
+        }
+
+        assertTrue( content.indexOf( "&lt;modelVersion&gt;4.0.0&lt;/modelVersion&gt;" ) != -1 );
     }
 
     /** @throws Exception  */
     public void testTocMacro()
         throws Exception
     {
-        StringWriter output = null;
+        FileWriter output = null;
         Reader reader = null;
+        File f = getTestFile( getBasedir(), "target/output/toc.xml" );
 
         try
         {
-            output = new StringWriter();
+            output = new FileWriter( getTestFile( getBasedir(), "target/output/toc.xml" ) );
             reader = new FileReader( getTestFile( getBasedir(), "src/test/resources/toc.xml" ) );
 
             Sink sink = new XdocSink( output );
             getParser().parse( reader, sink );
-
-            // No section, only subsection 1 and 2
-            assertTrue( noNewLine( output.toString() ).indexOf( "<li><a href=\"#section_11\">Section 11</a></li>" ) != -1 );
-            assertTrue( noNewLine( output.toString() ).indexOf( "<li><a href=\"#section_1211\">Section 1211</a></li>" ) == -1 );
         }
         finally
         {
-            if ( output != null )
-            {
-                output.close();
-            }
-
-            if ( reader != null )
-            {
-                reader.close();
-            }
+            IOUtil.close( output );
+            IOUtil.close( reader );
         }
+
+        assertTrue( "The file " + f.getAbsolutePath() + " was not created", f.exists() );
+
+        String content;
+        try
+        {
+            reader = new FileReader( f );
+            content = IOUtil.toString( reader );
+        }
+        finally
+        {
+            IOUtil.close( reader );
+        }
+
+        // No section, only subsection 1 and 2
+        assertTrue( noNewLine( content ).indexOf( "<li><a href=\"#section_11\">Section 11</a></li>" ) != -1 );
+        assertTrue( noNewLine( content ).indexOf( "<li><a href=\"#section_1211\">Section 1211</a></li>" ) == -1 );
     }
 
     /**

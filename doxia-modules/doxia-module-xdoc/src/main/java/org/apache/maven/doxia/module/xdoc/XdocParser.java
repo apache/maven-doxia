@@ -37,6 +37,7 @@ import org.apache.maven.doxia.parser.ParseException;
 import org.apache.maven.doxia.sink.Sink;
 
 import org.codehaus.plexus.util.IOUtil;
+import org.codehaus.plexus.util.StringUtils;
 import org.codehaus.plexus.util.xml.pull.MXParser;
 import org.codehaus.plexus.util.xml.pull.XmlPullParser;
 import org.codehaus.plexus.util.xml.pull.XmlPullParserException;
@@ -67,6 +68,12 @@ public class XdocParser
 
     /** Used for nested lists. */
     private int orderedListDepth = 0;
+
+    /** A macro name. */
+    private String macroName;
+
+    /** The macro parameters. */
+    private Map macroParameters = new HashMap();
 
     /** {@inheritDoc} */
     public void parse( Reader reader, Sink sink )
@@ -144,10 +151,9 @@ public class XdocParser
      * @param parser A parser.
      * @param sink the sink to receive the events.
      * @throws XmlPullParserException if there's a problem parsing the model
-     * @throws MacroExecutionException if there's a problem executing a macro
      */
     private void handleStartTag( XmlPullParser parser, Sink sink )
-        throws XmlPullParserException, MacroExecutionException
+        throws XmlPullParserException
     {
         isEmptyElement = parser.isEmptyElementTag();
 
@@ -288,37 +294,47 @@ public class XdocParser
                 }
             }
         }
+
+        // ----------------------------------------------------------------------
+        // Macro
+        // ----------------------------------------------------------------------
+
         else if ( parser.getName().equals( MACRO_TAG.toString() ) )
         {
             if ( !secondParsing )
             {
-                String macroName = parser.getAttributeValue( null, Attribute.NAME.toString() );
+                macroName = parser.getAttributeValue( null, Attribute.NAME.toString() );
 
-                int count = parser.getAttributeCount();
-
-                Map parameters = new HashMap();
-
-                for ( int i = 1; i < count; i++ )
+                if ( StringUtils.isEmpty( macroName ) )
                 {
-                    parameters.put( parser.getAttributeName( i ), parser.getAttributeValue( i ) );
+                    // TODO use logging?
+                    throw new IllegalArgumentException( "The '" + Attribute.NAME.toString() + "' attribute for the '"
+                        + MACRO_TAG.toString() + "' tag is required." );
                 }
-
-                // TODO handles specific attributes
-                parameters.put( "sourceContent", sourceContent );
-
-                XdocParser xdocParser = new XdocParser();
-                xdocParser.setSecondParsing( true );
-                parameters.put( "parser", xdocParser );
-
-                MacroRequest request = new MacroRequest( parameters, getBasedir() );
-
-                try
+            }
+        }
+        else if ( parser.getName().equals( Tag.PARAM.toString() ) )
+        {
+            if ( !secondParsing )
+            {
+                if ( StringUtils.isNotEmpty( macroName ) )
                 {
-                    executeMacro( macroName, request, sink );
-                }
-                catch ( MacroNotFoundException me )
-                {
-                    throw new MacroExecutionException( "Macro not found: " + macroName, me );
+                    if ( macroParameters == null )
+                    {
+                        macroParameters = new HashMap();
+                    }
+
+                    String paramName = parser.getAttributeValue( null, Attribute.NAME.toString() );
+                    String paramValue = parser.getAttributeValue( null, Attribute.VALUE.toString() );
+
+                    if ( StringUtils.isEmpty( paramName ) || StringUtils.isEmpty( paramValue ) )
+                    {
+                        throw new IllegalArgumentException( "'" + Attribute.NAME.toString() + "' and '"
+                            + Attribute.VALUE.toString() + "' attributes for the '" + Tag.PARAM.toString()
+                            + "' tag are required inside the '" + MACRO_TAG.toString() + "' tag." );
+                    }
+
+                    macroParameters.put( paramName, paramValue );
                 }
             }
         }
@@ -401,8 +417,10 @@ public class XdocParser
      *
      * @param parser A parser.
      * @param sink the sink to receive the events.
+     * @throws MacroExecutionException if there's a problem executing a macro
      */
     private void handleEndTag( XmlPullParser parser, Sink sink )
+        throws MacroExecutionException
     {
         if ( parser.getName().equals( DOCUMENT_TAG.toString() ) )
         {
@@ -491,11 +509,50 @@ public class XdocParser
                 isAnchor = false;
             }
         }
+
+        // ----------------------------------------------------------------------
+        // Macro
+        // ----------------------------------------------------------------------
+
         else if ( parser.getName().equals( MACRO_TAG.toString() ) )
         {
-            //Do nothing
-            return;
+            if ( !secondParsing )
+            {
+                if ( StringUtils.isNotEmpty( macroName ) )
+                {
+                    // TODO handles specific macro attributes
+                    macroParameters.put( "sourceContent", sourceContent );
+
+                    XdocParser xdocParser = new XdocParser();
+                    xdocParser.setSecondParsing( true );
+                    macroParameters.put( "parser", xdocParser );
+
+                    MacroRequest request = new MacroRequest( macroParameters, getBasedir() );
+
+                    try
+                    {
+                        executeMacro( macroName, request, sink );
+                    }
+                    catch ( MacroNotFoundException me )
+                    {
+                        throw new MacroExecutionException( "Macro not found: " + macroName, me );
+                    }
+                }
+            }
+
+            // Reinit macro
+            macroName = null;
+            macroParameters = null;
         }
+        else if ( parser.getName().equals( Tag.PARAM.toString() ) )
+        {
+            // do nothing
+        }
+
+        // ----------------------------------------------------------------------
+        // Tables
+        // ----------------------------------------------------------------------
+
         else if ( parser.getName().equals( Tag.TABLE.toString() ) )
         {
             sink.table_();

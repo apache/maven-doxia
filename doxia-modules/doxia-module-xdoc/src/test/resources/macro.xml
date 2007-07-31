@@ -27,6 +27,9 @@ under the License.
       <p>
         Test DOXIA-77
       </p>
-      <macro name="snippet" id="superpom" url="http://svn.apache.org/repos/asf/maven/components/trunk/maven-project/src/main/resources/org/apache/maven/project/pom-4.0.0.xml"/>
+      <macro name="snippet">
+        <param name="id" value="superpom"/>
+        <param name="url" value="http://svn.apache.org/repos/asf/maven/components/trunk/maven-project/src/main/resources/org/apache/maven/project/pom-4.0.0.xml"/>
+      </macro>
   </body>
 </document>

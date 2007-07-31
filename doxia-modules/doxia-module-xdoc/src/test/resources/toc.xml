@@ -32,7 +32,11 @@ under the License.
           Section 1
         </p>
         <p>
-          <macro name="toc" section="1" fromDepth="1" toDepth="2"/>
+          <macro name="toc">
+           <param name="section" value="1"/>
+           <param name="fromDepth" value="1"/>
+           <param name="toDepth" value="2"/>
+          </macro>
         </p>
         <subsection name="Section 11">
           <p>
