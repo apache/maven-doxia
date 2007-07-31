@@ -39,7 +39,7 @@ import org.codehaus.plexus.util.StringUtils;
  * <dl>
  * <dt>section</dt>
  * <dd>Display the specificated section number or all sections if 0
- * (in this case, other paramaters are ignored).<br/>
+ * (in this case, other parameters are ignored).<br/>
  * Positive int, not mandatory, 0 by default.</dd>
  * <dt>fromDepth</dt>
  * <dd>Display the depth starting for the given section number.<br/>
@@ -63,9 +63,13 @@ import org.codehaus.plexus.util.StringUtils;
  * * {SubSection 1}
  * </pre>
  *
- * Similary, in an XDOC file, you could write:
+ * Similarly, in an XDOC file, you could write:
  * <pre>
- * &lt;macro name="toc" section="1" fromDepth="1" toDepth="2"/&gt;
+ * &lt;macro name="toc"&gt;
+ *   &lt;param name="section" value="1" /&gt;
+ *   &lt;param name="fromDepth" value="1" /&gt;
+ *   &lt;param name="toDepth" value="2" /&gt;
+ * &lt;/macro&gt;
  * </pre>
  *
  * @plexus.component role-hint="toc"
