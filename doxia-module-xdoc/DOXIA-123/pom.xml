@@ -12,6 +12,53 @@
   <build>
     <plugins>
       <plugin>
+        <groupId>org.apache.maven.plugins</groupId>
+        <artifactId>maven-antrun-plugin</artifactId>
+        <executions>
+          <execution>
+            <phase>site</phase>
+            <configuration>
+              <tasks>
+
+                <taskdef name="xsddoc"
+                         classname="net.sf.xframe.xsddoc.Task"
+                         classpathref="maven.plugin.classpath"/>
+
+                <mkdir dir="${project.reporting.outputDirectory}/xsddoc/"/>
+
+                <tstamp>
+                  <format property="currentYear" pattern="yyyy" />
+                </tstamp>
+
+                <echo message="Generate Schema Documentation for Xdoc-2.0"/>
+                <xsddoc file="${basedir}/src/main/resources/xdoc-2.0.xsd"
+                  out="${project.reporting.outputDirectory}/xsddoc"
+                  doctitle="Schema documentation for Xdoc-2.0"
+                  bottom="Copyright &#169; ${project.inceptionYear}-${currentYear} ${project.organization.name}. All Rights Reserved."
+                  verbose="false"/>
+
+              </tasks>
+            </configuration>
+            <goals>
+              <goal>run</goal>
+            </goals>
+          </execution>
+        </executions>
+
+        <dependencies>
+          <dependency>
+            <groupId>xsddoc</groupId>
+            <artifactId>xsddoc</artifactId>
+            <version>1.0</version>
+          </dependency>
+          <dependency>
+            <groupId>xalan</groupId>
+            <artifactId>xalan</artifactId>
+            <version>2.7.0</version>
+          </dependency>
+        </dependencies>
+      </plugin>
+      <plugin>
         <groupId>org.codehaus.plexus</groupId>
         <artifactId>plexus-maven-plugin</artifactId>
         <configuration>
@@ -30,5 +77,4 @@
       </plugin>
     </plugins>
   </build>
-
 </project>
