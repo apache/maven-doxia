@@ -79,12 +79,11 @@ public class XhtmlParser
 
             parseXhtml( parser, sink );
         }
-        catch ( Exception ex )
+        catch ( XmlPullParserException ex )
         {
-            throw new ParseException( "Error parsing the model.", ex );
+            throw new ParseException( "Error parsing the model!", ex );
         }
     }
-
 
     /**
      * @param parser
@@ -92,7 +91,7 @@ public class XhtmlParser
      * @throws IOException if any
      * @throws XmlPullParserException if any
      */
-    public void parseXhtml( XmlPullParser parser, Sink sink ) throws XmlPullParserException, IOException
+    public void parseXhtml( XmlPullParser parser, Sink sink ) throws XmlPullParserException
     {
         int eventType = parser.getEventType();
 
@@ -100,256 +99,294 @@ public class XhtmlParser
         {
             if ( eventType == XmlPullParser.START_TAG )
             {
-                if ( parser.getName().equals( Tag.TITLE.toString() ) )
-                {
-                    sink.title();
-                }
-                /*
-                 * The ADDRESS element may be used by authors to supply contact information
-                 * for a model or a major part of a model such as a form. This element
-                 *  often appears at the beginning or end of a model.
-                 */
-                else if ( parser.getName().equals( Tag.ADDRESS.toString() ) )
-                {
-                    sink.author();
-                }
-                else if ( parser.getName().equals( Tag.BODY.toString() ) )
-                {
-                    sink.body();
-                }
-                else if ( parser.getName().equals( Tag.H1.toString() ) || parser.getName().equals( Tag.H2.toString() ) ||
-                    parser.getName().equals( Tag.H3.toString() ) || parser.getName().equals( Tag.H4.toString() ) ||
-                    parser.getName().equals( Tag.H5.toString() ) )
-                {
-                    this.closeSubordinatedSections( parser.getName(), sink );
-                    this.startSection( this.sections.size(), sink );
-                    this.startSectionTitle( this.sections.size(), sink );
-                    this.sections.push( parser.getName() );
-
-                }
-                else if ( parser.getName().equals( Tag.P.toString() ) )
-                {
-                    sink.paragraph();
-                }
-                /*
-                 * The PRE element tells visual user agents that the enclosed text is
-                 * "preformatted". When handling preformatted text, visual user agents:
-                 * - May leave white space intact.
-                 * - May render text with a fixed-pitch font.
-                 * - May disable automatic word wrap.
-                 * - Must not disable bidirectional processing.
-                 * Non-visual user agents are not required to respect extra white space
-                 * in the content of a PRE element.
-                 */
-                else if ( parser.getName().equals( Tag.PRE.toString() ) )
-                {
-                    sink.verbatim( true );
-                }
-                else if ( ( parser.getName().equals( Tag.CODE.toString() ) ) || ( parser.getName().equals( Tag.SAMP.toString() ) ) ||
-                    ( parser.getName().equals( Tag.TT.toString() ) ) )
-                {
-                    sink.monospaced();
-                }
-                else if ( parser.getName().equals( Tag.UL.toString() ) )
-                {
-                    sink.list();
-                }
-                else if ( parser.getName().equals( Tag.OL.toString() ) )
-                {
-                    sink.numberedList( Sink.NUMBERING_DECIMAL );
-                }
-                else if ( parser.getName().equals( Tag.LI.toString() ) )
-                {
-                    sink.listItem();
-                }
-                else if ( parser.getName().equals( Tag.HEAD.toString() ) )
-                {
-                    sink.head();
-                }
-                else if ( ( parser.getName().equals( Tag.B.toString() ) ) || ( parser.getName().equals( Tag.STRONG.toString() ) ) )
-                {
-                    sink.bold();
-                }
-                else if ( ( parser.getName().equals( Tag.I.toString() ) ) || ( parser.getName().equals( Tag.EM.toString() ) ) )
-                {
-                    sink.italic();
-                }
-                else if ( parser.getName().equals( Tag.A.toString() ) )
-                {
-                    String href = parser.getAttributeValue( null, Attribute.HREF.toString() );
-                    String name = parser.getAttributeValue( null, Attribute.NAME.toString() );
-                    String id = parser.getAttributeValue( null, Attribute.ID.toString() );
-                    if ( href != null )
-                    {
-                        sink.link( href );
-                        this.linktypes.push( XhtmlParser.LINK );
-                    }
-                    else if ( name != null )
-                    {
-                        sink.anchor( name );
-                        this.linktypes.push( XhtmlParser.ANCHOR );
-                    }
-                    else if ( id != null )
-                    {
-                        sink.anchor( id );
-                        this.linktypes.push( XhtmlParser.ANCHOR );
-                    }
-                }
-                else if ( parser.getName().equals( Tag.BR.toString() ) )
-                {
-                    sink.lineBreak();
-                }
-                else if ( parser.getName().equals( Tag.HR.toString() ) )
-                {
-                    sink.horizontalRule();
-                }
-                else if ( parser.getName().equals( Tag.IMG.toString() ) )
-                {
-                    sink.figure();
-                    String src = parser.getAttributeValue( null, Attribute.SRC.toString() );
-                    String title = parser.getAttributeValue( null, Attribute.TITLE.toString() );
-                    String alt = parser.getAttributeValue( null, Attribute.ALT.toString() );
-                    if ( src != null )
-                    {
-                        sink.figureGraphics( src );
-                    }
-                    if ( title != null )
-                    {
-                        sink.figureCaption();
-                        text( sink, title );
-                        sink.figureCaption_();
-                    }
-                    else if ( alt != null )
-                    {
-                        sink.figureCaption();
-                        text( sink, alt );
-                        sink.figureCaption_();
-                    }
-                    sink.figure_();
-                }
-                // ----------------------------------------------------------------------
-                // Tables
-                // ----------------------------------------------------------------------
-
-                else if ( parser.getName().equals( Tag.TABLE.toString() ) )
-                {
-                    sink.table();
-                }
-                else if ( parser.getName().equals( Tag.TR.toString() ) )
-                {
-                    sink.tableRow();
-                }
-                else if ( parser.getName().equals( Tag.TH.toString() ) )
-                {
-                    sink.tableCell();
-                }
-                else if ( parser.getName().equals( Tag.TD.toString() ) )
-                {
-                    sink.tableCell();
-                }
-
+                handleStartTag( parser, sink );
             }
             else if ( eventType == XmlPullParser.END_TAG )
             {
-                if ( parser.getName().equals( Tag.TITLE.toString() ) )
-                {
-                    sink.title_();
-                }
-                else if ( parser.getName().equals( Tag.ADDRESS.toString() ) )
-                {
-                    sink.author_();
-                }
-                else if ( parser.getName().equals( Tag.BODY.toString() ) )
-                {
-                    //close all sections that are still open
-                    closeSubordinatedSections( "h0", sink );
-                    sink.body_();
-                }
-                else if ( parser.getName().equals( Tag.H1.toString() ) || parser.getName().equals( Tag.H2.toString() ) ||
-                    parser.getName().equals( Tag.H3.toString() ) || parser.getName().equals( Tag.H4.toString() ) ||
-                    parser.getName().equals( Tag.H5.toString() ) )
-                {
-                    this.closeSectionTitle( this.sections.size() - 1, sink );
-                }
-                else if ( parser.getName().equals( Tag.P.toString() ) )
-                {
-                    sink.paragraph_();
-                }
-                else if ( parser.getName().equals( Tag.PRE.toString() ) )
-                {
-                    sink.verbatim_();
-                }
-                else if ( ( parser.getName().equals( Tag.CODE.toString() ) ) || ( parser.getName().equals( Tag.SAMP.toString() ) ) ||
-                    ( parser.getName().equals( Tag.TT.toString() ) ) )
-                {
-                    sink.monospaced_();
-                }
-                else if ( parser.getName().equals( Tag.UL.toString() ) )
-                {
-                    sink.list_();
-                }
-                else if ( parser.getName().equals( Tag.OL.toString() ) )
-                {
-                    sink.numberedList_();
-                }
-                else if ( parser.getName().equals( Tag.LI.toString() ) )
-                {
-                    sink.listItem_();
-                }
-                else if ( parser.getName().equals( Tag.HEAD.toString() ) )
-                {
-                    sink.head_();
-                }
-                else if ( ( parser.getName().equals( Tag.B.toString() ) ) || ( parser.getName().equals( Tag.STRONG.toString() ) ) )
-                {
-                    sink.bold_();
-                }
-                else if ( ( parser.getName().equals( Tag.I.toString() ) ) || ( parser.getName().equals( Tag.EM.toString() ) ) )
-                {
-                    sink.italic_();
-                }
-                else if ( parser.getName().equals( Tag.A.toString() ) )
-                {
-                    String linktype = (String) this.linktypes.pop();
-                    //the equals operation is ok here, because we always use the class constant
-                    if ( linktype == XhtmlParser.LINK )
-                    {
-                        sink.link_();
-                    }
-                    else
-                    {
-                        sink.anchor_();
-                    }
-                }
-                // ----------------------------------------------------------------------
-                // Tables
-                // ----------------------------------------------------------------------
-
-                else if ( parser.getName().equals( Tag.TABLE.toString() ) )
-                {
-                    sink.table_();
-                }
-                else if ( parser.getName().equals( Tag.TR.toString() ) )
-                {
-                    sink.tableRow_();
-                }
-                else if ( parser.getName().equals( Tag.TH.toString() ) )
-                {
-                    sink.tableCell_();
-                }
-                else if ( parser.getName().equals( Tag.TD.toString() ) )
-                {
-                    sink.tableCell_();
-                }
-
+                handleEndTag( parser, sink );
             }
             else if ( eventType == XmlPullParser.TEXT )
             {
-                text( sink, parser.getText() );
+                handleText( parser, sink );
             }
 
-            eventType = parser.next();
+            try
+            {
+                eventType = parser.next();
+            }
+            catch ( IOException io )
+            {
+                throw new XmlPullParserException( "Error parsing the model.", parser, io );
+            }
         }
+    }
+
+    /**
+     * Goes through the possible start tags.
+     *
+     * @param parser A parser.
+     * @param sink the sink to receive the events.
+     */
+    private void handleStartTag( XmlPullParser parser, Sink sink )
+    {
+        if ( parser.getName().equals( Tag.TITLE.toString() ) )
+        {
+            sink.title();
+        }
+        /*
+         * The ADDRESS element may be used by authors to supply contact information
+         * for a model or a major part of a model such as a form. This element
+         *  often appears at the beginning or end of a model.
+         */
+        else if ( parser.getName().equals( Tag.ADDRESS.toString() ) )
+        {
+            sink.author();
+        }
+        else if ( parser.getName().equals( Tag.BODY.toString() ) )
+        {
+            sink.body();
+        }
+        else if ( parser.getName().equals( Tag.H1.toString() ) || parser.getName().equals( Tag.H2.toString() ) ||
+            parser.getName().equals( Tag.H3.toString() ) || parser.getName().equals( Tag.H4.toString() ) ||
+            parser.getName().equals( Tag.H5.toString() ) )
+        {
+            this.closeSubordinatedSections( parser.getName(), sink );
+            this.startSection( this.sections.size(), sink );
+            this.startSectionTitle( this.sections.size(), sink );
+            this.sections.push( parser.getName() );
+
+        }
+        else if ( parser.getName().equals( Tag.P.toString() ) )
+        {
+            sink.paragraph();
+        }
+        /*
+         * The PRE element tells visual user agents that the enclosed text is
+         * "preformatted". When handling preformatted text, visual user agents:
+         * - May leave white space intact.
+         * - May render text with a fixed-pitch font.
+         * - May disable automatic word wrap.
+         * - Must not disable bidirectional processing.
+         * Non-visual user agents are not required to respect extra white space
+         * in the content of a PRE element.
+         */
+        else if ( parser.getName().equals( Tag.PRE.toString() ) )
+        {
+            sink.verbatim( true );
+        }
+        else if ( ( parser.getName().equals( Tag.CODE.toString() ) ) || ( parser.getName().equals( Tag.SAMP.toString() ) ) ||
+            ( parser.getName().equals( Tag.TT.toString() ) ) )
+        {
+            sink.monospaced();
+        }
+        else if ( parser.getName().equals( Tag.UL.toString() ) )
+        {
+            sink.list();
+        }
+        else if ( parser.getName().equals( Tag.OL.toString() ) )
+        {
+            sink.numberedList( Sink.NUMBERING_DECIMAL );
+        }
+        else if ( parser.getName().equals( Tag.LI.toString() ) )
+        {
+            sink.listItem();
+        }
+        else if ( parser.getName().equals( Tag.HEAD.toString() ) )
+        {
+            sink.head();
+        }
+        else if ( ( parser.getName().equals( Tag.B.toString() ) ) || ( parser.getName().equals( Tag.STRONG.toString() ) ) )
+        {
+            sink.bold();
+        }
+        else if ( ( parser.getName().equals( Tag.I.toString() ) ) || ( parser.getName().equals( Tag.EM.toString() ) ) )
+        {
+            sink.italic();
+        }
+        else if ( parser.getName().equals( Tag.A.toString() ) )
+        {
+            String href = parser.getAttributeValue( null, Attribute.HREF.toString() );
+            String name = parser.getAttributeValue( null, Attribute.NAME.toString() );
+            String id = parser.getAttributeValue( null, Attribute.ID.toString() );
+            if ( href != null )
+            {
+                sink.link( href );
+                this.linktypes.push( XhtmlParser.LINK );
+            }
+            else if ( name != null )
+            {
+                sink.anchor( name );
+                this.linktypes.push( XhtmlParser.ANCHOR );
+            }
+            else if ( id != null )
+            {
+                sink.anchor( id );
+                this.linktypes.push( XhtmlParser.ANCHOR );
+            }
+        }
+        else if ( parser.getName().equals( Tag.BR.toString() ) )
+        {
+            sink.lineBreak();
+        }
+        else if ( parser.getName().equals( Tag.HR.toString() ) )
+        {
+            sink.horizontalRule();
+        }
+        else if ( parser.getName().equals( Tag.IMG.toString() ) )
+        {
+            sink.figure();
+            String src = parser.getAttributeValue( null, Attribute.SRC.toString() );
+            String title = parser.getAttributeValue( null, Attribute.TITLE.toString() );
+            String alt = parser.getAttributeValue( null, Attribute.ALT.toString() );
+            if ( src != null )
+            {
+                sink.figureGraphics( src );
+            }
+            if ( title != null )
+            {
+                sink.figureCaption();
+                text( sink, title );
+                sink.figureCaption_();
+            }
+            else if ( alt != null )
+            {
+                sink.figureCaption();
+                text( sink, alt );
+                sink.figureCaption_();
+            }
+            sink.figure_();
+        }
+        // ----------------------------------------------------------------------
+        // Tables
+        // ----------------------------------------------------------------------
+
+        else if ( parser.getName().equals( Tag.TABLE.toString() ) )
+        {
+            sink.table();
+        }
+        else if ( parser.getName().equals( Tag.TR.toString() ) )
+        {
+            sink.tableRow();
+        }
+        else if ( parser.getName().equals( Tag.TH.toString() ) )
+        {
+            sink.tableCell();
+        }
+        else if ( parser.getName().equals( Tag.TD.toString() ) )
+        {
+            sink.tableCell();
+        }
+    }
+
+    /**
+     * Goes through the possible end tags.
+     *
+     * @param parser A parser.
+     * @param sink the sink to receive the events.
+     */
+    private void handleEndTag( XmlPullParser parser, Sink sink )
+    {
+        if ( parser.getName().equals( Tag.TITLE.toString() ) )
+        {
+            sink.title_();
+        }
+        else if ( parser.getName().equals( Tag.ADDRESS.toString() ) )
+        {
+            sink.author_();
+        }
+        else if ( parser.getName().equals( Tag.BODY.toString() ) )
+        {
+            //close all sections that are still open
+            closeSubordinatedSections( "h0", sink );
+            sink.body_();
+        }
+        else if ( parser.getName().equals( Tag.H1.toString() ) || parser.getName().equals( Tag.H2.toString() ) ||
+            parser.getName().equals( Tag.H3.toString() ) || parser.getName().equals( Tag.H4.toString() ) ||
+            parser.getName().equals( Tag.H5.toString() ) )
+        {
+            this.closeSectionTitle( this.sections.size() - 1, sink );
+        }
+        else if ( parser.getName().equals( Tag.P.toString() ) )
+        {
+            sink.paragraph_();
+        }
+        else if ( parser.getName().equals( Tag.PRE.toString() ) )
+        {
+            sink.verbatim_();
+        }
+        else if ( ( parser.getName().equals( Tag.CODE.toString() ) ) || ( parser.getName().equals( Tag.SAMP.toString() ) ) ||
+            ( parser.getName().equals( Tag.TT.toString() ) ) )
+        {
+            sink.monospaced_();
+        }
+        else if ( parser.getName().equals( Tag.UL.toString() ) )
+        {
+            sink.list_();
+        }
+        else if ( parser.getName().equals( Tag.OL.toString() ) )
+        {
+            sink.numberedList_();
+        }
+        else if ( parser.getName().equals( Tag.LI.toString() ) )
+        {
+            sink.listItem_();
+        }
+        else if ( parser.getName().equals( Tag.HEAD.toString() ) )
+        {
+            sink.head_();
+        }
+        else if ( ( parser.getName().equals( Tag.B.toString() ) ) || ( parser.getName().equals( Tag.STRONG.toString() ) ) )
+        {
+            sink.bold_();
+        }
+        else if ( ( parser.getName().equals( Tag.I.toString() ) ) || ( parser.getName().equals( Tag.EM.toString() ) ) )
+        {
+            sink.italic_();
+        }
+        else if ( parser.getName().equals( Tag.A.toString() ) )
+        {
+            String linktype = (String) this.linktypes.pop();
+            //the equals operation is ok here, because we always use the class constant
+            if ( linktype == XhtmlParser.LINK )
+            {
+                sink.link_();
+            }
+            else
+            {
+                sink.anchor_();
+            }
+        }
+        // ----------------------------------------------------------------------
+        // Tables
+        // ----------------------------------------------------------------------
+
+        else if ( parser.getName().equals( Tag.TABLE.toString() ) )
+        {
+            sink.table_();
+        }
+        else if ( parser.getName().equals( Tag.TR.toString() ) )
+        {
+            sink.tableRow_();
+        }
+        else if ( parser.getName().equals( Tag.TH.toString() ) )
+        {
+            sink.tableCell_();
+        }
+        else if ( parser.getName().equals( Tag.TD.toString() ) )
+        {
+            sink.tableCell_();
+        }
+    }
+
+    /**
+     * Handles text events.
+     *
+     * @param parser A parser.
+     * @param sink the sink to receive the events.
+     */
+    private void handleText( XmlPullParser parser, Sink sink )
+    {
+        text( sink, parser.getText() );
     }
 
     /**
