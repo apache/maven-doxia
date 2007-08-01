@@ -1,0 +1,34 @@
+<?xml version="1.0"?><project>
+  <parent>
+    <artifactId>doxia-modules</artifactId>
+    <groupId>org.apache.maven.doxia</groupId>
+    <version>1.0-alpha-9-SNAPSHOT</version>
+  </parent>
+  <modelVersion>4.0.0</modelVersion>
+  <artifactId>doxia-module-xdoc</artifactId>
+  <name>Doxia :: XDoc Module</name>
+  <description>A Doxia module for Xdoc source documents.</description>
+
+  <build>
+    <plugins>
+      <plugin>
+        <groupId>org.codehaus.plexus</groupId>
+        <artifactId>plexus-maven-plugin</artifactId>
+        <configuration>
+          <descriptors>
+            <descriptor>src/main/components/components.xml</descriptor>
+            <descriptor>target/generated-resources/plexus/META-INF/plexus/components.xml</descriptor>
+          </descriptors>
+        </configuration>
+        <executions>
+          <execution>
+            <goals>
+              <goal>merge-descriptors</goal>
+            </goals>
+          </execution>
+        </executions>
+      </plugin>
+    </plugins>
+  </build>
+
+</project>
