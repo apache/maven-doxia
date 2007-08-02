@@ -187,23 +187,55 @@ public class HtmlTools
     }
 
     /**
-     * According to the <a href="http://www.w3.org/TR/html4/types.html#type-name">W3C recommendation</a>:
-     * <p><i>
-     * ID and NAME tokens must begin with a letter ([A-Za-z]) and may be followed by any number
-     * of letters, digits ([0-9]), hyphens ("-"), underscores ("_"), colons (":"), and periods (".").</i>
+     * According to the <a href="http://www.w3.org/TR/html4/types.html#type-name">
+     * HTML 4.01 specification section 6.2 SGML basic types</a>:
      * <p>
+     * <i>ID and NAME tokens must begin with a letter ([A-Za-z]) and may be
+     * followed by any number of letters, digits ([0-9]), hyphens ("-"),
+     * underscores ("_"), colons (":"), and periods (".").</i>
+     * </p>
      *
+     * <p>
+     * According to <a href="http://www.w3.org/TR/xhtml1/#C_8">XHTML 1.0
+     * section C.8. Fragment Identifiers</a>:
+     * </p>
+     * <p>
+     * <i>When defining fragment identifiers to be backward-compatible, only
+     * strings matching the pattern [A-Za-z][A-Za-z0-9:_.-]* should be used.</i>
+     * </p>
+     *
+     * <p>
+     * To achieve this we need to convert the <i>id</i> String. Two conversions
+     * are necessary and one is done to get prettier ids:
+     * </p>
+     * <ol>
+     * <li>If the first character is not a letter, prepend the id with the
+     * letter 'a'</li>
+     * <li>A space is replaced with an underscore '_'</li>
+     * <li>Remove whitespace at the start and end before starting to process</li>
+     * </ol>
+     *
+     * <p>
+     * For letters, the case is preserved in the conversion.
+     * </p>
+     * 
+     * <p>
+     * Here are some examples:
+     * </p>
      * <pre>
-     * HtmlTools.encodeId( null ) = null
-     * HtmlTools.encodeId( "" ) = ""
-     * HtmlTools.encodeId( "1anchor" ) = "a1anchor"
-     * HtmlTools.encodeId( "_anchor" ) = "a_anchor"
+     * HtmlTools.encodeId( null )        = null
+     * HtmlTools.encodeId( "" )          = ""
+     * HtmlTools.encodeId( " _ " )       = "a_"
+     * HtmlTools.encodeId( "1" )         = "a1"
+     * HtmlTools.encodeId( "1anchor" )   = "a1anchor"
+     * HtmlTools.encodeId( "_anchor" )   = "a_anchor"
      * HtmlTools.encodeId( "a b-c123 " ) = "a_b-c123"
      * HtmlTools.encodeId( "   anchor" ) = "anchor"
+     * HtmlTools.encodeId( "myAnchor" )  = "myAnchor"
      * </pre>
      *
-     * @param id an id to be format
-     * @return the id trimmed and well formated
+     * @param id The id to be encoded
+     * @return The id trimmed and encoded
      */
     public static String encodeId( String id )
     {
@@ -223,16 +255,13 @@ public class HtmlTools
             {
                 buffer.append( "a" );
             }
-
-            if ( ( Character.isLetterOrDigit( c ) ) || ( c == '-' ) || ( c == '_' ) || ( c == ':' ) || ( c == '.' ) )
-            {
-                // TODO: why? see DOXIA-131
-                buffer.append( Character.toLowerCase( c ) );
-            }
-            // Not part of W3C recommendation, just to produce much nicer id
             if ( c == ' ' )
             {
                 buffer.append( "_" );
+            }
+            else if ( ( Character.isLetterOrDigit( c ) ) || ( c == '-' ) || ( c == '_' ) || ( c == ':' ) || ( c == '.' ) )
+            {
+                buffer.append( c );
             }
         }
 

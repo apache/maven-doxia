@@ -20,10 +20,9 @@ package org.apache.maven.doxia.util;
  */
 
 import org.codehaus.plexus.PlexusTestCase;
-import org.apache.maven.doxia.util.HtmlTools;
 
 /**
- * Test case for <code>HtmlTools</code>
+ * Test case for <code>HtmlTools</code>.
  *
  * @author <a href="mailto:vincent.siveton@gmail.com">Vincent Siveton</a>
  * @version $Id$
@@ -45,15 +44,19 @@ public class HtmlToolsTest
     }
 
     /**
-     * Verify the awaited results
+     * Verify the expected results
      */
     public void testEncodeId()
     {
-        assertTrue( HtmlTools.encodeId( null ) == null );
-        assertTrue( HtmlTools.encodeId( "" ).equals( "" ) );
-        assertTrue( HtmlTools.encodeId( "1anchor" ).equals( "a1anchor" ) );
-        assertTrue( HtmlTools.encodeId( "_anchor" ).equals( "a_anchor" ) );
-        assertTrue( HtmlTools.encodeId( "a b-c123 " ).equals( "a_b-c123" ) );
-        assertTrue( HtmlTools.encodeId( "   anchor" ).equals( "anchor" ) );
+        assertEquals( HtmlTools.encodeId( null ), null );
+        assertEquals( HtmlTools.encodeId( "" ), "" );
+        assertEquals( HtmlTools.encodeId( " " ), "" );
+        assertEquals( HtmlTools.encodeId( " _ " ), "a_" );
+        assertEquals( HtmlTools.encodeId( "1" ), "a1" );
+        assertEquals( HtmlTools.encodeId( "1anchor" ), "a1anchor" );
+        assertEquals( HtmlTools.encodeId( "_anchor" ), "a_anchor" );
+        assertEquals( HtmlTools.encodeId( "a b-c123 " ), "a_b-c123" );
+        assertEquals( HtmlTools.encodeId( "   anchor" ), "anchor" );
+        assertEquals( HtmlTools.encodeId( "myAnchor" ), "myAnchor" );
     }
 }
