@@ -65,8 +65,7 @@ public class AptSinkTest extends AbstractSinkTest
     /** {@inheritDoc} */
     protected String getHeadBlock()
     {
-        return AptMarkup.HEADER_START + " null" + AptMarkup.HEADER_START + " null" + AptMarkup.HEADER_START + " null"
-            + AptMarkup.HEADER_START;
+        return AptMarkup.HEADER_START + AptMarkup.HEADER_START + AptMarkup.HEADER_START + AptMarkup.HEADER_START;
     }
 
     /** {@inheritDoc} */

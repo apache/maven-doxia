@@ -140,11 +140,20 @@ public class AptSink
         headerFlag = false;
 
         write( HEADER_START + EOL );
-        write( " " + title + EOL  );
+        if ( title != null )
+        {
+            write( " " + title + EOL );
+        }
         write( HEADER_START + EOL );
-        write( " " + author + EOL  );
+        if ( author != null )
+        {
+            write( " " + author + EOL );
+        }
         write( HEADER_START + EOL );
-        write( " " + date + EOL  );
+        if ( date != null )
+        {
+            write( " " + date + EOL );
+        }
         write( HEADER_START + EOL );
     }
 
