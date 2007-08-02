@@ -120,8 +120,8 @@ public class AptParserTest
             createParser().parse( reader, sink );
 
             // No section, only subsection 1 and 2
-            assertTrue( output.toString().indexOf( "* {{{#subsection_1}SubSection 1}}" ) != -1 );
-            assertTrue( output.toString().indexOf( "* {{{#subsection_1211}SubSection 1211}}" ) == -1 );
+            assertTrue( output.toString().indexOf( "* {{{#SubSection_1}SubSection 1}}" ) != -1 );
+            assertTrue( output.toString().indexOf( "* {{{#SubSection_1211}SubSection 1211}}" ) == -1 );
         }
         finally
         {

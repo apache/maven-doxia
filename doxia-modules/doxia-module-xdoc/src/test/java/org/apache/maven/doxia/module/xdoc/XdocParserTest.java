@@ -135,8 +135,8 @@ public class XdocParserTest
         }
 
         // No section, only subsection 1 and 2
-        assertTrue( noNewLine( content ).indexOf( "<li><a href=\"#section_11\">Section 11</a></li>" ) != -1 );
-        assertTrue( noNewLine( content ).indexOf( "<li><a href=\"#section_1211\">Section 1211</a></li>" ) == -1 );
+        assertTrue( noNewLine( content ).indexOf( "<a href=\"#Section_11\">Section 11</a>" ) != -1 );
+        assertTrue( noNewLine( content ).indexOf( "<a href=\"#Section_1211\">Section 1211</a>" ) == -1 );
     }
 
     /**
