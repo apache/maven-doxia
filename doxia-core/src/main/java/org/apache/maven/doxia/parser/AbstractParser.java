@@ -33,7 +33,8 @@ import org.apache.maven.doxia.sink.Sink;
  * Provides a macro mechanism to give dynamic functionalities for the parsing.
  *
  * @author Jason van Zyl
- * @version $Id:AbstractParser.java 348605 2005-11-24 12:02:44 +1100 (Thu, 24 Nov 2005) brett $
+ * @version $Id$
+ * @since 1.0
  * @plexus.component
  */
 public abstract class AbstractParser
@@ -56,9 +57,7 @@ public abstract class AbstractParser
      */
     // Made public right now because of the structure of the APT parser and
     // all its inner classes.
-    public void executeMacro( String macroId,
-                              MacroRequest request,
-                              Sink sink )
+    public void executeMacro( String macroId, MacroRequest request, Sink sink )
         throws MacroExecutionException, MacroNotFoundException
     {
         Macro macro = macroManager.getMacro( macroId );
