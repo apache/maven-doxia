@@ -29,7 +29,8 @@ import java.io.Reader;
  * by any Doxia Sink.
  *
  * @author <a href="mailto:jason@maven.org">Jason van Zyl</a>
- * @version $Id:Parser.java 348605 2005-11-24 12:02:44 +1100 (Thu, 24 Nov 2005) brett $
+ * @version $Id$
+ * @since 1.0
  */
 public interface Parser
 {
@@ -47,7 +48,7 @@ public interface Parser
 
     /**
      * Parses the given source model and emits Doxia events into the given sink.
-     * 
+     *
      * @param source A reader that provides the source document.
      * @param sink A sink that consumes the Doxia events.
      * @throws ParseException if the model could not be parsed.
