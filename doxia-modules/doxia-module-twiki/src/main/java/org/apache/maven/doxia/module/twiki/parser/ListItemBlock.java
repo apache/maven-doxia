@@ -34,7 +34,7 @@ public class ListItemBlock extends AbstractFatherBlock
     private final ListBlock innerList;
 
     /**
-     * @see #ListItemBlock(TextBlock[], UnorderedListBlock)
+     * @see #ListItemBlock(Block[], ListBlock)
      */
     public ListItemBlock( final Block [] blocks )
         throws IllegalArgumentException
