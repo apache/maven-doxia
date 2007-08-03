@@ -1,4 +1,4 @@
-package org.apache.maven.doxia.module.common;
+package org.apache.maven.doxia.util;
 
 /*
  * Licensed to the Apache Software Foundation (ASF) under one
