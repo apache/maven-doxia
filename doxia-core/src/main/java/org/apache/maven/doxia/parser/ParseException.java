@@ -23,24 +23,21 @@ package org.apache.maven.doxia.parser;
  * Encapsulate a Doxia parse error.
  *
  * @author <a href="mailto:jason@maven.org">Jason van Zyl</a>
- * @version $Id:ParseException.java 348605 2005-11-24 12:02:44 +1100 (Thu, 24 Nov 2005) brett $
+ * @version $Id$
+ * @since 1.0
  */
 public class ParseException
     extends Exception
 {
-    /** 
+    /**
      * The file that caused the ParseException..
-     *
-     * @todo Make private.
      */
-    protected String fileName;
+    private String fileName;
 
-    /** 
+    /**
      * Line number where the parse exception occurred.
-     *
-     * @todo Make private.
      */
-    protected int lineNumber;
+    private int lineNumber;
 
     /**
      * Construct a new ParseException with the specified detail message.
@@ -115,7 +112,7 @@ public class ParseException
         this.lineNumber = line;
     }
 
-    /** 
+    /**
      * Returns the file that caused the ParseException.
      *
      * @return the file that caused the ParseException.
@@ -125,7 +122,7 @@ public class ParseException
         return fileName;
     }
 
-    /** 
+    /**
      * Returns the line number where the  ParseException ocurred.
      *
      * @return the line number.
