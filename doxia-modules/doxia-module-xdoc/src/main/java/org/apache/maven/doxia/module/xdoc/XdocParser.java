@@ -32,13 +32,12 @@ import javax.swing.text.html.HTML.Tag;
 import org.apache.maven.doxia.macro.MacroExecutionException;
 import org.apache.maven.doxia.macro.manager.MacroNotFoundException;
 import org.apache.maven.doxia.macro.MacroRequest;
-import org.apache.maven.doxia.parser.AbstractParser;
+import org.apache.maven.doxia.parser.AbstractXmlParser;
 import org.apache.maven.doxia.parser.ParseException;
 import org.apache.maven.doxia.sink.Sink;
 
 import org.codehaus.plexus.util.IOUtil;
 import org.codehaus.plexus.util.StringUtils;
-import org.codehaus.plexus.util.xml.pull.MXParser;
 import org.codehaus.plexus.util.xml.pull.XmlPullParser;
 import org.codehaus.plexus.util.xml.pull.XmlPullParserException;
 
@@ -51,7 +50,7 @@ import org.codehaus.plexus.util.xml.pull.XmlPullParserException;
  * @plexus.component role="org.apache.maven.doxia.parser.Parser" role-hint="xdoc"
  */
 public class XdocParser
-    extends AbstractParser
+    extends AbstractXmlParser
     implements XdocMarkup
 {
     /** The source content of the input reader. Used to pass into macros. */
@@ -76,84 +75,32 @@ public class XdocParser
     private Map macroParameters = new HashMap();
 
     /** {@inheritDoc} */
-    public void parse( Reader reader, Sink sink )
+    public void parse( Reader source, Sink sink )
         throws ParseException
     {
         try
         {
             StringWriter contentWriter = new StringWriter();
-            IOUtil.copy( reader, contentWriter );
+            IOUtil.copy( source, contentWriter );
             sourceContent = contentWriter.toString();
-
-            XmlPullParser parser = new MXParser();
-
-            parser.setInput( new StringReader( sourceContent ) );
-
-            parseXdoc( parser, sink );
-        }
-        catch ( XmlPullParserException ex )
-        {
-            throw new ParseException( "Error parsing the model!", ex );
         }
         catch ( IOException ex )
         {
-            throw new ParseException( "Error reading the input model!", ex );
+            throw new ParseException( "Error reading the input source: " + ex.getMessage(), ex );
         }
-        catch ( MacroExecutionException ex )
+        finally
         {
-            throw new ParseException( "Macro execution failed!", ex );
+            IOUtil.close( source );
         }
+
+        Reader tmp = new StringReader( sourceContent );
+
+        super.parse( tmp, sink );
     }
 
-    /**
-     * Parse the model from the XmlPullParser into the given sink.
-     *
-     * @param parser A parser.
-     * @param sink the sink to receive the events.
-     * @throws XmlPullParserException if there's a problem parsing the model
-     * @throws MacroExecutionException if there's a problem executing a macro
-     */
-    public void parseXdoc( XmlPullParser parser, Sink sink )
+    /** {@inheritDoc} */
+    protected void handleStartTag( XmlPullParser parser, Sink sink )
         throws XmlPullParserException, MacroExecutionException
-    {
-        int eventType = parser.getEventType();
-
-        while ( eventType != XmlPullParser.END_DOCUMENT )
-        {
-            if ( eventType == XmlPullParser.START_TAG )
-            {
-                handleStartTag( parser, sink );
-            }
-            else if ( eventType == XmlPullParser.END_TAG )
-            {
-                handleEndTag( parser, sink );
-            }
-            else if ( eventType == XmlPullParser.TEXT )
-            {
-                handleText( parser, sink );
-            }
-
-            try
-            {
-                eventType = parser.next();
-            }
-            catch ( IOException io )
-            {
-                throw new XmlPullParserException(
-                    "Error parsing the model!", parser, io );
-            }
-        }
-    }
-
-    /**
-     * Goes through the possible start tags.
-     *
-     * @param parser A parser.
-     * @param sink the sink to receive the events.
-     * @throws XmlPullParserException if there's a problem parsing the model
-     */
-    private void handleStartTag( XmlPullParser parser, Sink sink )
-        throws XmlPullParserException
     {
         isEmptyElement = parser.isEmptyElementTag();
 
@@ -409,18 +356,11 @@ public class XdocParser
         {
             handleRawText( sink, parser );
         }
-
     }
 
-    /**
-     * Goes through the possible end tags.
-     *
-     * @param parser A parser.
-     * @param sink the sink to receive the events.
-     * @throws MacroExecutionException if there's a problem executing a macro
-     */
-    private void handleEndTag( XmlPullParser parser, Sink sink )
-        throws MacroExecutionException
+    /** {@inheritDoc} */
+    protected void handleEndTag( XmlPullParser parser, Sink sink )
+        throws XmlPullParserException, MacroExecutionException
     {
         if ( parser.getName().equals( DOCUMENT_TAG.toString() ) )
         {
@@ -591,11 +531,11 @@ public class XdocParser
         }
         else if ( !isEmptyElement )
         {
-            sink.rawText( START_MARKUP + SLASH_MARKUP );
+            sink.rawText( String.valueOf( LESS_THAN ) + String.valueOf( SLASH ) );
 
             sink.rawText( parser.getName() );
 
-            sink.rawText( END_MARKUP );
+            sink.rawText( String.valueOf( GREATER_THAN ) );
         }
         else
         {
@@ -603,13 +543,9 @@ public class XdocParser
         }
     }
 
-    /**
-     * Handles text events.
-     *
-     * @param parser A parser.
-     * @param sink the sink to receive the events.
-     */
-    private void handleText( XmlPullParser parser, Sink sink )
+    /** {@inheritDoc} */
+    protected void handleText( XmlPullParser parser, Sink sink )
+        throws XmlPullParserException
     {
         String text = parser.getText();
 
@@ -619,6 +555,10 @@ public class XdocParser
         }
     }
 
+    // ----------------------------------------------------------------------
+    // Private methods
+    // ----------------------------------------------------------------------
+
     /**
      * Handles raw text events.
      *
@@ -627,7 +567,7 @@ public class XdocParser
      */
     private void handleRawText( Sink sink, XmlPullParser parser )
     {
-        sink.rawText( START_MARKUP );
+        sink.rawText( String.valueOf( LESS_THAN ) );
 
         sink.rawText( parser.getName() );
 
@@ -635,19 +575,19 @@ public class XdocParser
 
         for ( int i = 0; i < count; i++ )
         {
-            sink.rawText( SPACE_MARKUP );
+            sink.rawText( String.valueOf( SPACE ) );
 
             sink.rawText( parser.getAttributeName( i ) );
 
-            sink.rawText( EQUAL_MARKUP );
+            sink.rawText( String.valueOf( EQUAL ) );
 
-            sink.rawText( QUOTE_MARKUP );
+            sink.rawText( String.valueOf( QUOTE ) );
 
             sink.rawText( parser.getAttributeValue( i ) );
 
-            sink.rawText( QUOTE_MARKUP );
+            sink.rawText( String.valueOf( QUOTE ) );
         }
 
-        sink.rawText( END_MARKUP );
+        sink.rawText( String.valueOf( GREATER_THAN ) );
     }
 }

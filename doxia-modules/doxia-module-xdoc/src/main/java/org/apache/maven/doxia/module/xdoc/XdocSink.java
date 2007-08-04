@@ -20,15 +20,13 @@ package org.apache.maven.doxia.module.xdoc;
  */
 
 import java.io.Writer;
-import java.util.Enumeration;
 
-import javax.swing.text.AttributeSet;
 import javax.swing.text.MutableAttributeSet;
 import javax.swing.text.SimpleAttributeSet;
 import javax.swing.text.html.HTML.Attribute;
 import javax.swing.text.html.HTML.Tag;
 
-import org.apache.maven.doxia.sink.SinkAdapter;
+import org.apache.maven.doxia.sink.AbstractXmlSink;
 import org.apache.maven.doxia.util.HtmlTools;
 import org.apache.maven.doxia.util.LineBreaker;
 import org.apache.maven.doxia.parser.Parser;
@@ -41,7 +39,7 @@ import org.apache.maven.doxia.parser.Parser;
  * @since 1.0
  */
 public class XdocSink
-    extends SinkAdapter
+    extends AbstractXmlSink
     implements XdocMarkup
 {
     // ----------------------------------------------------------------------
@@ -346,13 +344,13 @@ public class XdocSink
     {
         if ( depth == 1 )
         {
-            markup( START_MARKUP + SECTION_TAG.toString() + SPACE_MARKUP + Attribute.NAME + EQUAL_MARKUP
-                + QUOTE_MARKUP );
+            markup( String.valueOf( LESS_THAN ) + SECTION_TAG.toString() + String.valueOf( SPACE ) + Attribute.NAME
+                + String.valueOf( EQUAL ) + String.valueOf( QUOTE ) );
         }
         else if ( depth == 2 )
         {
-            markup( START_MARKUP + SUBSECTION_TAG.toString() + SPACE_MARKUP + Attribute.NAME + EQUAL_MARKUP
-                + QUOTE_MARKUP );
+            markup( String.valueOf( LESS_THAN ) + SUBSECTION_TAG.toString() + String.valueOf( SPACE ) + Attribute.NAME
+                + String.valueOf( EQUAL ) + String.valueOf( QUOTE ) );
         }
     }
 
@@ -394,7 +392,7 @@ public class XdocSink
     {
         if ( depth == 1 || depth == 2 )
         {
-            markup( QUOTE_MARKUP + END_MARKUP );
+            markup( String.valueOf( QUOTE ) + String.valueOf( GREATER_THAN ) );
         }
         else if ( depth == 3 )
         {
@@ -601,31 +599,32 @@ public class XdocSink
      */
     public void figure()
     {
-        markup( START_MARKUP + Tag.IMG );
+        markup( String.valueOf( SPACE ) + Tag.IMG );
     }
 
     /** {@inheritDoc} */
     public void figure_()
     {
-        markup( SPACE_MARKUP + SLASH_MARKUP + END_MARKUP );
+        markup( String.valueOf( SPACE ) + String.valueOf( SLASH ) + String.valueOf( GREATER_THAN ) );
     }
 
     /** {@inheritDoc} */
     public void figureGraphics( String s )
     {
-        markup( SPACE_MARKUP + Attribute.SRC + EQUAL_MARKUP + QUOTE_MARKUP + s + QUOTE_MARKUP );
+        markup( String.valueOf( SPACE ) + Attribute.SRC + String.valueOf( EQUAL ) + String.valueOf( QUOTE ) + s
+            + String.valueOf( QUOTE ) );
     }
 
     /** {@inheritDoc} */
     public void figureCaption()
     {
-        markup( SPACE_MARKUP + Attribute.ALT + EQUAL_MARKUP + QUOTE_MARKUP );
+        markup( String.valueOf( SPACE ) + Attribute.ALT + String.valueOf( EQUAL ) + String.valueOf( QUOTE ) );
     }
 
     /** {@inheritDoc} */
     public void figureCaption_()
     {
-        markup( QUOTE_MARKUP );
+        markup( String.valueOf( QUOTE ) );
     }
 
     /**
@@ -1123,143 +1122,9 @@ public class XdocSink
         out.close();
     }
 
-    // ----------------------------------------------------------------------
-    // TODO Move these in core utils
-    // ----------------------------------------------------------------------
-
-    /**
-     * Starts a Tag, for instance:
-     * <pre>
-     * &lt;tag&gt;
-     * </pre>
-     *
-     * @param t a non null tag
-     * @see #writeStartTag(Tag, MutableAttributeSet)
-     */
-    private void writeStartTag ( Tag t )
+    /** {@inheritDoc} */
+    protected void write( String text )
     {
-        writeStartTag ( t, null );
-    }
-
-    /**
-     * Starts a Tag with attributes, for instance:
-     * <pre>
-     * &lt;tag attName="attValue"&gt;
-     * </pre>
-     *
-     * @param t a non null tag
-     * @param att a set of attributes
-     * @see #writeStartTag(Tag, MutableAttributeSet, boolean)
-     */
-    private void writeStartTag ( Tag t, MutableAttributeSet att )
-    {
-        writeStartTag ( t, att, false );
-    }
-
-    /**
-     * Starts a Tag with attributes, for instance:
-     * <pre>
-     * &lt;tag attName="attValue"&gt;
-     * </pre>
-     *
-     * @param t a non null tag
-     * @param att a set of attributes
-     * @param isSimpleTag boolean to write as a simple tag
-     */
-    private void writeStartTag( Tag t, MutableAttributeSet att, boolean isSimpleTag )
-    {
-        if ( t == null )
-        {
-            throw new IllegalArgumentException( "A tag is required" );
-        }
-
-        StringBuffer sb = new StringBuffer();
-        sb.append( START_MARKUP );
-        sb.append( t.toString() );
-
-        if ( att != null )
-        {
-            Enumeration names = att.getAttributeNames();
-
-            while ( names.hasMoreElements() )
-            {
-                Object key = names.nextElement();
-                Object value = att.getAttribute( key );
-
-                if ( value instanceof AttributeSet )
-                {
-                    // ignored
-                }
-                else
-                {
-                    sb.append( SPACE_MARKUP ).append( key.toString() ).append( EQUAL_MARKUP ).append( QUOTE_MARKUP )
-                        .append( value.toString() ).append( QUOTE_MARKUP );
-                }
-            }
-        }
-
-        if ( isSimpleTag )
-        {
-            sb.append( SPACE_MARKUP ).append( SLASH_MARKUP );
-        }
-
-        sb.append( END_MARKUP );
-
-        if ( isSimpleTag )
-        {
-            sb.append( EOL );
-        }
-
-        markup( sb.toString() );
-    }
-
-    /**
-     * Ends a Tag, for instance:
-     * <pre>
-     * &lt;/tag&gt;
-     * </pre>
-     *
-     * @param t a tag
-     */
-    private void writeEndTag( Tag t )
-    {
-        StringBuffer sb = new StringBuffer();
-        sb.append( START_MARKUP );
-        sb.append( SLASH_MARKUP );
-        sb.append( t.toString() );
-        sb.append( END_MARKUP );
-
-        sb.append( EOL );
-
-        markup( sb.toString() );
-    }
-
-    /**
-     * Starts a simple Tag, for instance:
-     * <pre>
-     * &lt;tag /&gt;
-     * </pre>
-     *
-     * @param t a non null tag
-     * @see #writeSimpleTag(Tag, MutableAttributeSet)
-     */
-    private void writeSimpleTag( Tag t )
-    {
-        writeSimpleTag( t, null );
-    }
-
-    /**
-     * Starts a simple Tag with attributes, for instance:
-     * <pre>
-     * &lt;tag attName="attValue" /&gt;
-     * </pre>
-     *
-     * @param t a non null tag
-     * @param att a set of attributes
-     * @see #writeStartTag(Tag, MutableAttributeSet, boolean)
-     */
-    private void writeSimpleTag ( Tag t, MutableAttributeSet att )
-    {
-        writeStartTag ( t, att, true );
+        markup( text );
     }
 }

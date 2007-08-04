@@ -21,6 +21,8 @@ package org.apache.maven.doxia.module.xdoc;
 
 import javax.swing.text.html.HTML.Tag;
 
+import org.apache.maven.doxia.markup.XmlMarkup;
+
 /**
  * List of <code>Xdoc</code> markups.
  * <br/>
@@ -32,35 +34,8 @@ import javax.swing.text.html.HTML.Tag;
  * @since 1.0
  */
 public interface XdocMarkup
+    extends XmlMarkup
 {
-    /** The vm line separator */
-    /** TODO should be in a super interface */
-    String EOL = System.getProperty( "line.separator" );
-
-    // ----------------------------------------------------------------------
-    // Markup separators
-    // ----------------------------------------------------------------------
-
-    /** TODO should be in a super XML interface */
-
-    /** Xhtml start markup: '<' */
-    String START_MARKUP = "<";
-
-    /** Xhtml end markup: '>' */
-    String END_MARKUP = ">";
-
-    /** Xhtml quote markup: '\"' */
-    String QUOTE_MARKUP = "\"";
-
-    /** Xhtml slash markup: '/' */
-    String SLASH_MARKUP = "/";
-
-    /** Xhtml space markup: ' ' */
-    String SPACE_MARKUP = " ";
-
-    /** Xhtml equal markup: '=' */
-    String EQUAL_MARKUP = "=";
-
     // ----------------------------------------------------------------------
     // Specific Xdoc tags
     // ----------------------------------------------------------------------
