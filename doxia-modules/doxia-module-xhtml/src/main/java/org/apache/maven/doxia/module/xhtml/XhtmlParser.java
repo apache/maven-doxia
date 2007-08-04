@@ -19,17 +19,14 @@ package org.apache.maven.doxia.module.xhtml;
  * under the License.
  */
 
-import java.io.IOException;
-import java.io.Reader;
 import java.util.Stack;
 
 import javax.swing.text.html.HTML.Attribute;
 import javax.swing.text.html.HTML.Tag;
 
-import org.apache.maven.doxia.parser.ParseException;
-import org.apache.maven.doxia.parser.Parser;
+import org.apache.maven.doxia.macro.MacroExecutionException;
+import org.apache.maven.doxia.parser.AbstractXmlParser;
 import org.apache.maven.doxia.sink.Sink;
-import org.codehaus.plexus.util.xml.pull.MXParser;
 import org.codehaus.plexus.util.xml.pull.XmlPullParser;
 import org.codehaus.plexus.util.xml.pull.XmlPullParserException;
 
@@ -42,7 +39,8 @@ import org.codehaus.plexus.util.xml.pull.XmlPullParserException;
  * @since 1.0
  */
 public class XhtmlParser
-    implements Parser, XhtmlMarkup
+    extends AbstractXmlParser
+    implements XhtmlMarkup
 {
     /**
      * This stack is needed to keep track of the different link and anchor-types
@@ -68,66 +66,8 @@ public class XhtmlParser
     private static final String ANCHOR = "anchor";
 
     /** {@inheritDoc} */
-    public void parse( Reader reader, Sink sink )
-        throws ParseException
-    {
-        try
-        {
-            XmlPullParser parser = new MXParser();
-
-            parser.setInput( reader );
-
-            parseXhtml( parser, sink );
-        }
-        catch ( XmlPullParserException ex )
-        {
-            throw new ParseException( "Error parsing the model!", ex );
-        }
-    }
-
-    /**
-     * @param parser
-     * @param sink
-     * @throws IOException if any
-     * @throws XmlPullParserException if any
-     */
-    public void parseXhtml( XmlPullParser parser, Sink sink ) throws XmlPullParserException
-    {
-        int eventType = parser.getEventType();
-
-        while ( eventType != XmlPullParser.END_DOCUMENT )
-        {
-            if ( eventType == XmlPullParser.START_TAG )
-            {
-                handleStartTag( parser, sink );
-            }
-            else if ( eventType == XmlPullParser.END_TAG )
-            {
-                handleEndTag( parser, sink );
-            }
-            else if ( eventType == XmlPullParser.TEXT )
-            {
-                handleText( parser, sink );
-            }
-
-            try
-            {
-                eventType = parser.next();
-            }
-            catch ( IOException io )
-            {
-                throw new XmlPullParserException( "Error parsing the model.", parser, io );
-            }
-        }
-    }
-
-    /**
-     * Goes through the possible start tags.
-     *
-     * @param parser A parser.
-     * @param sink the sink to receive the events.
-     */
-    private void handleStartTag( XmlPullParser parser, Sink sink )
+    protected void handleStartTag( XmlPullParser parser, Sink sink )
+        throws XmlPullParserException, MacroExecutionException
     {
         if ( parser.getName().equals( Tag.TITLE.toString() ) )
         {
@@ -278,13 +218,9 @@ public class XhtmlParser
         }
     }
 
-    /**
-     * Goes through the possible end tags.
-     *
-     * @param parser A parser.
-     * @param sink the sink to receive the events.
-     */
-    private void handleEndTag( XmlPullParser parser, Sink sink )
+    /** {@inheritDoc} */
+    protected void handleEndTag( XmlPullParser parser, Sink sink )
+        throws XmlPullParserException, MacroExecutionException
     {
         if ( parser.getName().equals( Tag.TITLE.toString() ) )
         {
@@ -378,16 +314,16 @@ public class XhtmlParser
         }
     }
 
-    /**
-     * Handles text events.
-     *
-     * @param parser A parser.
-     * @param sink the sink to receive the events.
-     */
-    private void handleText( XmlPullParser parser, Sink sink )
+    /** {@inheritDoc} */
+    protected void handleText( XmlPullParser parser, Sink sink )
+        throws XmlPullParserException
     {
         text( sink, parser.getText() );
     }
+
+    // ----------------------------------------------------------------------
+    // Private methods
+    // ----------------------------------------------------------------------
 
     /**
      * Sends the text to the sink, utilizing the nonBreakingspace of the sink.

@@ -21,6 +21,7 @@ package org.apache.maven.doxia.module.xhtml;
 
 import org.apache.maven.doxia.module.xhtml.decoration.render.RenderingContext;
 import org.apache.maven.doxia.parser.Parser;
+import org.apache.maven.doxia.sink.AbstractXmlSink;
 import org.apache.maven.doxia.sink.Sink;
 import org.apache.maven.doxia.sink.StructureSink;
 import org.apache.maven.doxia.util.HtmlTools;
@@ -28,10 +29,8 @@ import org.codehaus.plexus.util.StringUtils;
 
 import java.io.PrintWriter;
 import java.io.Writer;
-import java.util.Enumeration;
 import java.util.Map;
 
-import javax.swing.text.AttributeSet;
 import javax.swing.text.MutableAttributeSet;
 import javax.swing.text.SimpleAttributeSet;
 import javax.swing.text.html.HTML.Attribute;
@@ -41,10 +40,11 @@ import javax.swing.text.html.HTML.Tag;
  * Xhtml sink implementation.
  *
  * @author Jason van Zyl
+ * @version $Id$
  * @since 1.0
  */
 public class XhtmlSink
-    extends AbstractXhtmlSink
+    extends AbstractXmlSink
     implements XhtmlMarkup
 {
     // ----------------------------------------------------------------------
@@ -906,31 +906,32 @@ public class XhtmlSink
      */
     public void figure()
     {
-        write( START_MARKUP + Tag.IMG );
+        write( String.valueOf( LESS_THAN ) + Tag.IMG );
     }
 
     /** {@inheritDoc} */
     public void figure_()
     {
-        write( SPACE_MARKUP + SLASH_MARKUP + END_MARKUP );
+        write( String.valueOf( LESS_THAN ) + String.valueOf( SLASH ) + String.valueOf( GREATER_THAN ) );
     }
 
     /** {@inheritDoc} */
     public void figureCaption()
     {
-        write( SPACE_MARKUP + Attribute.ALT + EQUAL_MARKUP + QUOTE_MARKUP );
+        write( String.valueOf( LESS_THAN ) + Attribute.ALT + String.valueOf( EQUAL ) + String.valueOf( QUOTE ) );
     }
 
     /** {@inheritDoc} */
     public void figureCaption_()
     {
-        write( QUOTE_MARKUP );
+        write( String.valueOf( QUOTE ) );
     }
 
     /** {@inheritDoc} */
     public void figureGraphics( String name )
     {
-        write( SPACE_MARKUP + Attribute.SRC + EQUAL_MARKUP + QUOTE_MARKUP + name + QUOTE_MARKUP );
+        write( String.valueOf( SPACE ) + Attribute.SRC + String.valueOf( EQUAL ) + String.valueOf( QUOTE ) + name
+            + String.valueOf( QUOTE ) );
     }
 
     /**
@@ -977,33 +978,34 @@ public class XhtmlSink
      */
     public void link( String name, String target )
     {
-        if ( !headFlag )
+        if ( headFlag )
         {
+            return;
+        }
 
-            MutableAttributeSet att = new SimpleAttributeSet();
+        MutableAttributeSet att = new SimpleAttributeSet();
 
-            if ( target != null )
+        if ( target != null )
+        {
+            att.addAttribute( Attribute.TARGET, target );
+        }
+
+        if ( StructureSink.isExternalLink( name ) || isExternalHtml( name ) )
+        {
+            if ( isExternalLink( name ) )
             {
-                att.addAttribute( Attribute.TARGET, target );
+                att.addAttribute( Attribute.CLASS, "externalLink" );
             }
 
-            if ( StructureSink.isExternalLink( name ) || isExternalHtml( name ) )
-            {
-                if ( isExternalLink( name ) )
-                {
-                    att.addAttribute( Attribute.CLASS, "externalLink" );
-                }
+            att.addAttribute( Attribute.HREF, HtmlTools.escapeHTML( name ) );
 
-                att.addAttribute( Attribute.HREF, HtmlTools.escapeHTML( name ) );
+            writeStartTag( Tag.A, att );
+        }
+        else
+        {
+            att.addAttribute( Attribute.HREF, "#" + HtmlTools.escapeHTML( name ) );
 
-                writeStartTag( Tag.A, att );
-            }
-            else
-            {
-                att.addAttribute( Attribute.HREF, "#" + HtmlTools.escapeHTML( name ) );
-
-                writeStartTag( Tag.A, att );
-            }
+            writeStartTag( Tag.A, att );
         }
     }
 
@@ -1184,13 +1186,7 @@ public class XhtmlSink
         writer.close();
     }
 
-    // ----------------------------------------------------------------------
-    //
-    // ----------------------------------------------------------------------
-
-    /**
-     * @param text
-     */
+    /** {@inheritDoc} */
     protected void write( String text )
     {
         String relativePathToBasedir = renderingContext.getRelativePath();
@@ -1206,6 +1202,11 @@ public class XhtmlSink
 
         writer.write( text );
     }
+
+    // ----------------------------------------------------------------------
+    //
+    // ----------------------------------------------------------------------
+
 
     protected void content( String text )
     {
@@ -1258,145 +1259,5 @@ public class XhtmlSink
     public RenderingContext getRenderingContext()
     {
         return renderingContext;
-    }
-
-    // ----------------------------------------------------------------------
-    // TODO Move these in core utils
-    // ----------------------------------------------------------------------
-
-    /**
-     * Starts a Tag, for instance:
-     * <pre>
-     * &lt;tag&gt;
-     * </pre>
-     *
-     * @param t a non null tag
-     * @see #writeStartTag(Tag, MutableAttributeSet)
-     */
-    private void writeStartTag ( Tag t )
-    {
-        writeStartTag ( t, null );
-    }
-
-    /**
-     * Starts a Tag with attributes, for instance:
-     * <pre>
-     * &lt;tag attName="attValue"&gt;
-     * </pre>
-     *
-     * @param t a non null tag
-     * @param att a set of attributes
-     * @see #writeStartTag(Tag, MutableAttributeSet, boolean)
-     */
-    private void writeStartTag ( Tag t, MutableAttributeSet att )
-    {
-        writeStartTag ( t, att, false );
-    }
-
-    /**
-     * Starts a Tag with attributes, for instance:
-     * <pre>
-     * &lt;tag attName="attValue"&gt;
-     * </pre>
-     *
-     * @param t a non null tag
-     * @param att a set of attributes
-     * @param isSimpleTag boolean to write as a simple tag
-     */
-    private void writeStartTag( Tag t, MutableAttributeSet att, boolean isSimpleTag )
-    {
-        if ( t == null )
-        {
-            throw new IllegalArgumentException( "A tag is required" );
-        }
-
-        StringBuffer sb = new StringBuffer();
-        sb.append( START_MARKUP );
-        sb.append( t.toString() );
-
-        if ( att != null )
-        {
-            Enumeration names = att.getAttributeNames();
-
-            while ( names.hasMoreElements() )
-            {
-                Object key = names.nextElement();
-                Object value = att.getAttribute( key );
-
-                if ( value instanceof AttributeSet )
-                {
-                    // ignored
-                }
-                else
-                {
-                    sb.append( SPACE_MARKUP ).append( key.toString() ).append( EQUAL_MARKUP ).append( QUOTE_MARKUP )
-                        .append( value.toString() ).append( QUOTE_MARKUP );
-                }
-            }
-        }
-
-        if ( isSimpleTag )
-        {
-            sb.append( SPACE_MARKUP ).append( SLASH_MARKUP );
-        }
-
-        sb.append( END_MARKUP );
-
-        if ( isSimpleTag )
-        {
-            sb.append( EOL );
-        }
-
-        write( sb.toString() );
-    }
-
-    /**
-     * Ends a Tag, for instance:
-     * <pre>
-     * &lt;/tag&gt;
-     * </pre>
-     *
-     * @param t a tag
-     */
-    private void writeEndTag( Tag t )
-    {
-        StringBuffer sb = new StringBuffer();
-        sb.append( START_MARKUP );
-        sb.append( SLASH_MARKUP );
-        sb.append( t.toString() );
-        sb.append( END_MARKUP );
-
-        sb.append( EOL );
-
-        write( sb.toString() );
-    }
-
-    /**
-     * Starts a simple Tag, for instance:
-     * <pre>
-     * &lt;tag /&gt;
-     * </pre>
-     *
-     * @param t a non null tag
-     * @see #writeSimpleTag(Tag, MutableAttributeSet)
-     */
-    private void writeSimpleTag ( Tag t )
-    {
-        writeSimpleTag ( t, null );
-    }
-
-    /**
-     * Starts a simple Tag with attributes, for instance:
-     * <pre>
-     * &lt;tag attName="attValue" /&gt;
-     * </pre>
-     *
-     * @param t a non null tag
-     * @param att a set of attributes
-     * @see #writeStartTag(Tag, MutableAttributeSet, boolean)
-     */
-    private void writeSimpleTag ( Tag t, MutableAttributeSet att )
-    {
-        writeStartTag ( t, att, true );
     }
 }
