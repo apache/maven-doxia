@@ -1,4 +1,4 @@
-package org.apache.maven.doxia.site.module;
+package org.apache.maven.doxia.module.site;
 
 /*
  * Licensed to the Apache Software Foundation (ASF) under one
@@ -20,31 +20,31 @@ package org.apache.maven.doxia.site.module;
  */
 
 /**
- * Provides definitions for a Doxia module. This is used by the doxia site tools.
+ * An abstract base class that implements the SiteModule interface.
  *
  * @author <a href="mailto:jason@maven.org">Jason van Zyl</a>
- * @version $Id:SiteModule.java 348605 2005-11-24 12:02:44 +1100 (Thu, 24 Nov 2005) brett $
+ * @version $Id$
+ * @since 1.0
+ * @plexus.component
  */
-public interface SiteModule
+public abstract class AbstractSiteModule
+    implements SiteModule
 {
-    /** The Plexus lookup role. */
-    String ROLE = SiteModule.class.getName();
+    /** The source directory. */
+    private String sourceDirectory;
 
-    /** Returns the directory that contains source files for a given module.
-     *
-     * @return The source directory.
-     */
-    String getSourceDirectory();
+    /** The default file extension. */
+    private String extension;
 
-    /** Returns the default file extension for a given module.
-     *
-     * @return The default file extension.
-     */
-    String getExtension();
+    /** {@inheritDoc} */
+    public String getSourceDirectory()
+    {
+        return sourceDirectory;
+    }
 
-    /** Returns the parser id for a given module.
-     *
-     * @return The parser id.
-     */
-    String getParserId();
+    /** {@inheritDoc} */
+    public String getExtension()
+    {
+        return extension;
+    }
 }

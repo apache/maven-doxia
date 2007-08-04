@@ -1,4 +1,4 @@
-package org.apache.maven.doxia.site.module.manager;
+package org.apache.maven.doxia.module.site;
 
 /*
  * Licensed to the Apache Software Foundation (ASF) under one
@@ -19,36 +19,33 @@ package org.apache.maven.doxia.site.module.manager;
  * under the License.
  */
 
-import org.apache.maven.doxia.site.module.SiteModule;
-
-import java.util.Collection;
-
 /**
- * Handles SiteModule lookups.
+ * Provides definitions for a Doxia module. This is used by the doxia site tools.
  *
  * @author <a href="mailto:jason@maven.org">Jason van Zyl</a>
- * @version $Id:SiteModuleManager.java 348605 2005-11-24 12:02:44 +1100 (Thu, 24 Nov 2005) brett $
+ * @version $Id$
+ * @since 1.0
  */
-public interface SiteModuleManager
+public interface SiteModule
 {
     /** The Plexus lookup role. */
-    String ROLE = SiteModuleManager.class.getName();
+    String ROLE = SiteModule.class.getName();
 
-    /**
-     * Returns a collection of SiteModules.
+    /** Returns the directory that contains source files for a given module.
      *
-     * @return The SiteModules.
+     * @return The source directory.
      */
-    Collection getSiteModules();
+    String getSourceDirectory();
 
-    /**
-     * Returns the SiteModule that corresponds to the given id.
+    /** Returns the default file extension for a given module.
      *
-     * @param id The identifier.
-     * @return The corresponding SiteModule.
-     * @throws SiteModuleNotFoundException if no SiteModule could be found
-     * for the given id.
+     * @return The default file extension.
      */
-    SiteModule getSiteModule( String id )
-        throws SiteModuleNotFoundException;
+    String getExtension();
+
+    /** Returns the parser id for a given module.
+     *
+     * @return The parser id.
+     */
+    String getParserId();
 }

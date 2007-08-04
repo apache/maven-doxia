@@ -19,15 +19,16 @@ package org.apache.maven.doxia.module.twiki;
  * under the License.
  */
 
-import org.apache.maven.doxia.site.module.SiteModule;
+import org.apache.maven.doxia.module.site.SiteModule;
 
 /**
- * {@link org.apache.maven.doxia.site.module.SiteModule} implementation for
+ * {@link org.apache.maven.doxia.module.site.SiteModule} implementation for
  * the twiki file format.
  *
  * @author Juan F. Codagnone
+ * @version $Id$
+ * @since 1.0
  * @plexus.component role="org.apache.maven.doxia.site.module.SiteModule" role-hint="twiki"
- * @since Oct 31, 2005
  */
 public final class TWikiSiteModule implements SiteModule
 {

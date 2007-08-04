@@ -1,4 +1,4 @@
-package org.apache.maven.doxia.site.module.manager;
+package org.apache.maven.doxia.module.site.manager;
 
 /*
  * Licensed to the Apache Software Foundation (ASF) under one
@@ -19,7 +19,7 @@ package org.apache.maven.doxia.site.module.manager;
  * under the License.
  */
 
-import org.apache.maven.doxia.site.module.SiteModule;
+import org.apache.maven.doxia.module.site.SiteModule;
 
 import java.util.Collection;
 import java.util.Map;
@@ -28,7 +28,8 @@ import java.util.Map;
  * Simple implementation of the SiteModuleManager interface.
  *
  * @author Jason van Zyl
- * @version $Id:DefaultSiteModuleManager.java 348605 2005-11-24 12:02:44 +1100 (Thu, 24 Nov 2005) brett $
+ * @version $Id$
+ * @since 1.0
  * @plexus.component
  */
 public class DefaultSiteModuleManager

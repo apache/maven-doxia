@@ -19,11 +19,12 @@ package org.apache.maven.doxia.module.fml;
  * under the License.
  */
 
-import org.apache.maven.doxia.site.module.AbstractSiteModule;
+import org.apache.maven.doxia.module.site.AbstractSiteModule;
 
 /**
  * @author <a href="mailto:evenisse@codehaus.org">Emmanuel Venisse</a>
- * @version $Id:FmlSiteModule.java 348605 2005-11-24 12:02:44 +1100 (Thu, 24 Nov 2005) brett $
+ * @version $Id$
+ * @since 1.0
  * @plexus.component role="org.apache.maven.doxia.site.module.SiteModule" role-hint="fml"
  */
 public class FmlSiteModule

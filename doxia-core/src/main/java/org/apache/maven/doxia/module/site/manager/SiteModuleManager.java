@@ -1,4 +1,4 @@
-package org.apache.maven.doxia.site.module;
+package org.apache.maven.doxia.module.site.manager;
 
 /*
  * Licensed to the Apache Software Foundation (ASF) under one
@@ -19,31 +19,37 @@ package org.apache.maven.doxia.site.module;
  * under the License.
  */
 
+import org.apache.maven.doxia.module.site.SiteModule;
+
+import java.util.Collection;
+
 /**
- * An abstract base class that implements the SiteModule interface.
+ * Handles SiteModule lookups.
  *
  * @author <a href="mailto:jason@maven.org">Jason van Zyl</a>
- * @version $Id:AbstractSiteModule.java 348605 2005-11-24 12:02:44 +1100 (Thu, 24 Nov 2005) brett $
- * @plexus.component
+ * @version $Id$
+ * @since 1.0
  */
-public abstract class AbstractSiteModule
-    implements SiteModule
+public interface SiteModuleManager
 {
-    /** The source directory. */
-    private String sourceDirectory;
+    /** The Plexus lookup role. */
+    String ROLE = SiteModuleManager.class.getName();
 
-    /** The default file extension. */
-    private String extension;
+    /**
+     * Returns a collection of SiteModules.
+     *
+     * @return The SiteModules.
+     */
+    Collection getSiteModules();
 
-    /** {@inheritDoc} */
-    public String getSourceDirectory()
-    {
-        return sourceDirectory;
-    }
-
-    /** {@inheritDoc} */
-    public String getExtension()
-    {
-        return extension;
-    }
+    /**
+     * Returns the SiteModule that corresponds to the given id.
+     *
+     * @param id The identifier.
+     * @return The corresponding SiteModule.
+     * @throws SiteModuleNotFoundException if no SiteModule could be found
+     * for the given id.
+     */
+    SiteModule getSiteModule( String id )
+        throws SiteModuleNotFoundException;
 }
