@@ -13,7 +13,7 @@
       </requirements>
     </component>
     <component>
-      <role>org.apache.maven.doxia.site.module.SiteModule</role>
+      <role>org.apache.maven.doxia.module.site.SiteModule</role>
       <role-hint>apt</role-hint>
       <implementation>org.apache.maven.doxia.module.apt.AptSiteModule</implementation>
       <description></description>
