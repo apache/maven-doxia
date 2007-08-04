@@ -41,6 +41,7 @@ import java.util.StringTokenizer;
  * <br/>
  * Based on the <a href="http://www.xmlmind.com/aptconvert.html">APTconvert</a> project.
  *
+ * @version $Id$
  * @since 1.0
  * @plexus.component role="org.apache.maven.doxia.parser.Parser" role-hint="apt"
  */

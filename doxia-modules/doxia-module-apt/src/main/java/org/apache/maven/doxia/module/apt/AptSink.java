@@ -30,8 +30,9 @@ import org.codehaus.plexus.util.StringUtils;
 /**
  * APT Sink implementation.
  *
- * @since 1.0
  * @author eredmond
+ * @version $Id$
+ * @since 1.0
  * @plexus.component
  */
 public class AptSink
