@@ -458,11 +458,11 @@ public class AptSink
         this.boxed = boxed;
         if ( boxed )
         {
-            write( "\n" + BOXED_VERBATIM_START_MARKUP + "\n" );
+            write( EOL + BOXED_VERBATIM_START_MARKUP + EOL );
         }
         else
         {
-            write( "\n" + NON_BOXED_VERBATIM_START_MARKUP + "\n" );
+            write( EOL + NON_BOXED_VERBATIM_START_MARKUP + EOL );
         }
     }
 
@@ -471,11 +471,11 @@ public class AptSink
     {
         if ( boxed )
         {
-            write( "\n" + BOXED_VERBATIM_END_MARKUP + "\n" );
+            write( EOL + BOXED_VERBATIM_END_MARKUP + EOL );
         }
         else
         {
-            write( "\n" + NON_BOXED_VERBATIM_END_MARKUP + "\n" );
+            write( EOL + NON_BOXED_VERBATIM_END_MARKUP + EOL );
         }
         boxed = false;
         verbatimFlag = false;

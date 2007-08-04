@@ -158,7 +158,8 @@ public class AptSinkTest extends AbstractSinkTest
     /** {@inheritDoc} */
     protected String getVerbatimBlock( String text )
     {
-        return "\n" + AptMarkup.BOXED_VERBATIM_START_MARKUP + "\n" + text + "\n" + AptMarkup.BOXED_VERBATIM_START_MARKUP + "\n";
+        return Markup.EOL + AptMarkup.BOXED_VERBATIM_START_MARKUP + Markup.EOL + text + Markup.EOL
+            + AptMarkup.BOXED_VERBATIM_START_MARKUP + Markup.EOL;
     }
 
     /** {@inheritDoc} */
