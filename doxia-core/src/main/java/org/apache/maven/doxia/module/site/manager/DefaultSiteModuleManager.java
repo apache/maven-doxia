@@ -36,7 +36,7 @@ public class DefaultSiteModuleManager
     implements SiteModuleManager
 {
     /**
-     * @plexus.requirement role="org.apache.maven.doxia.site.module.SiteModule"
+     * @plexus.requirement role="org.apache.maven.doxia.module.site.SiteModule"
      */
     private Map siteModules;
 

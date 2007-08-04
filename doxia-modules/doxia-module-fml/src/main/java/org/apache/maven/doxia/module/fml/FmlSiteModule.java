@@ -25,7 +25,7 @@ import org.apache.maven.doxia.module.site.AbstractSiteModule;
  * @author <a href="mailto:evenisse@codehaus.org">Emmanuel Venisse</a>
  * @version $Id$
  * @since 1.0
- * @plexus.component role="org.apache.maven.doxia.site.module.SiteModule" role-hint="fml"
+ * @plexus.component role="org.apache.maven.doxia.module.site.SiteModule" role-hint="fml"
  */
 public class FmlSiteModule
     extends AbstractSiteModule

@@ -28,7 +28,7 @@ import org.apache.maven.doxia.module.site.SiteModule;
  * @author Juan F. Codagnone
  * @version $Id$
  * @since 1.0
- * @plexus.component role="org.apache.maven.doxia.site.module.SiteModule" role-hint="twiki"
+ * @plexus.component role="org.apache.maven.doxia.module.site.SiteModule" role-hint="twiki"
  */
 public final class TWikiSiteModule implements SiteModule
 {

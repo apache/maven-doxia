@@ -25,7 +25,7 @@ import org.apache.maven.doxia.module.site.AbstractSiteModule;
  * @author <a href="mailto:evenisse@codehaus.org">Emmanuel Venisse</a>
  * @version $Id$
  * @since 1.0
- * @plexus.component role="org.apache.maven.doxia.site.module.SiteModule" role-hint="doc-book"
+ * @plexus.component role="org.apache.maven.doxia.module.site.SiteModule" role-hint="doc-book"
  */
 public class DocBookSiteModule
     extends AbstractSiteModule

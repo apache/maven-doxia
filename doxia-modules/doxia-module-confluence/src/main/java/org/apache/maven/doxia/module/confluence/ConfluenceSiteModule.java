@@ -25,7 +25,7 @@ import org.apache.maven.doxia.module.site.AbstractSiteModule;
  * @author <a href="mailto:jason@maven.org">Jason van Zyl</a>
  * @version $Id$
  * @since 1.0
- * @plexus.component role="org.apache.maven.doxia.site.module.SiteModule"
+ * @plexus.component role="org.apache.maven.doxia.module.site.SiteModule"
  * role-hint="confluence"
  */
 public class ConfluenceSiteModule
