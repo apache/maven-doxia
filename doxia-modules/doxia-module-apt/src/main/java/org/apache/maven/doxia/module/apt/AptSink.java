@@ -24,7 +24,7 @@ import java.io.Writer;
 import java.util.Stack;
 
 import org.apache.maven.doxia.util.HtmlTools;
-import org.apache.maven.doxia.sink.SinkAdapter;
+import org.apache.maven.doxia.sink.AbstractTextSink;
 import org.codehaus.plexus.util.StringUtils;
 
 /**
@@ -35,7 +35,7 @@ import org.codehaus.plexus.util.StringUtils;
  * @plexus.component
  */
 public class AptSink
-    extends SinkAdapter
+    extends AbstractTextSink
     implements AptMarkup
 {
     // ----------------------------------------------------------------------
@@ -139,22 +139,22 @@ public class AptSink
     {
         headerFlag = false;
 
-        write( HEADER_START + EOL );
+        write( HEADER_START_MARKUP + EOL );
         if ( title != null )
         {
             write( " " + title + EOL );
         }
-        write( HEADER_START + EOL );
+        write( HEADER_START_MARKUP + EOL );
         if ( author != null )
         {
             write( " " + author + EOL );
         }
-        write( HEADER_START + EOL );
+        write( HEADER_START_MARKUP + EOL );
         if ( date != null )
         {
             write( " " + date + EOL );
         }
-        write( HEADER_START + EOL );
+        write( HEADER_START_MARKUP + EOL );
     }
 
     /** {@inheritDoc} */
@@ -232,7 +232,7 @@ public class AptSink
     /** {@inheritDoc} */
     public void sectionTitle2()
     {
-        write( EOL + SECTION_TITLE_START );
+        write( EOL + SECTION_TITLE_START_MARKUP );
     }
 
     /** {@inheritDoc} */
@@ -244,7 +244,7 @@ public class AptSink
     /** {@inheritDoc} */
     public void sectionTitle3()
     {
-        write( EOL + StringUtils.repeat( SECTION_TITLE_START, 2 ) );
+        write( EOL + StringUtils.repeat( SECTION_TITLE_START_MARKUP, 2 ) );
     }
 
     /** {@inheritDoc} */
@@ -256,7 +256,7 @@ public class AptSink
     /** {@inheritDoc} */
     public void sectionTitle4()
     {
-        write( EOL + StringUtils.repeat( SECTION_TITLE_START, 3 ) );
+        write( EOL + StringUtils.repeat( SECTION_TITLE_START_MARKUP, 3 ) );
     }
 
     /** {@inheritDoc} */
@@ -268,7 +268,7 @@ public class AptSink
     /** {@inheritDoc} */
     public void sectionTitle5()
     {
-        write( EOL + StringUtils.repeat( SECTION_TITLE_START, 4 ) );
+        write( EOL + StringUtils.repeat( SECTION_TITLE_START_MARKUP, 4 ) );
     }
 
     /** {@inheritDoc} */
@@ -281,7 +281,7 @@ public class AptSink
     public void list()
     {
         listNestingIndent += " ";
-        listStyles.push( LIST_START );
+        listStyles.push( LIST_START_MARKUP );
         write( EOL );
     }
 
@@ -290,7 +290,7 @@ public class AptSink
     {
         if ( listNestingIndent.length() <= 1 )
         {
-            write( EOL + listNestingIndent + LIST_END + EOL );
+            write( EOL + listNestingIndent + LIST_END_MARKUP + EOL );
         }
         else
         {
@@ -327,20 +327,20 @@ public class AptSink
         switch ( numbering )
         {
             case NUMBERING_UPPER_ALPHA:
-                style = "A";
+                style = String.valueOf( NUMBERING_UPPER_ALPHA_CHAR );
                 break;
             case NUMBERING_LOWER_ALPHA:
-                style = "a";
+                style = String.valueOf( NUMBERING_LOWER_ALPHA_CHAR );
                 break;
             case NUMBERING_UPPER_ROMAN:
-                style = "I";
+                style = String.valueOf( NUMBERING_UPPER_ROMAN_CHAR );
                 break;
             case NUMBERING_LOWER_ROMAN:
-                style = "i";
+                style = String.valueOf( NUMBERING_LOWER_ROMAN_CHAR );
                 break;
             case NUMBERING_DECIMAL:
             default:
-                style = "1";
+                style = String.valueOf( NUMBERING );
         }
 
         listStyles.push( style );
@@ -351,7 +351,7 @@ public class AptSink
     {
         if ( listNestingIndent.length() <= 1 )
         {
-            write( EOL + listNestingIndent + LIST_END + EOL );
+            write( EOL + listNestingIndent + LIST_END_MARKUP + EOL );
         }
         else
         {
@@ -366,15 +366,15 @@ public class AptSink
     public void numberedListItem()
     {
         String style = (String) listStyles.peek();
-        if ( style.equals( String.valueOf( AptParser.STAR_MARKUP ) ) )
+        if ( style.equals( String.valueOf( STAR ) ) )
         {
-            write( EOL + listNestingIndent + AptParser.STAR_MARKUP + "" + AptParser.SPACE_MARKUP );
+            write( EOL + listNestingIndent + String.valueOf( STAR ) + String.valueOf( SPACE ) );
         }
         else
         {
-            write( EOL + listNestingIndent + AptParser.LEFT_SQUARE_BRACKET_MARKUP + ""
-                + AptParser.LEFT_SQUARE_BRACKET_MARKUP + style + AptParser.RIGHT_SQUARE_BRACKET_MARKUP + ""
-                + AptParser.RIGHT_SQUARE_BRACKET_MARKUP + "" + AptParser.SPACE_MARKUP );
+            write( EOL + listNestingIndent + String.valueOf( LEFT_SQUARE_BRACKET )
+                + String.valueOf( LEFT_SQUARE_BRACKET ) + style + String.valueOf( RIGHT_SQUARE_BRACKET )
+                + String.valueOf( RIGHT_SQUARE_BRACKET ) + String.valueOf( SPACE ) );
         }
         itemFlag = true;
     }
@@ -457,11 +457,11 @@ public class AptSink
         this.boxed = boxed;
         if ( boxed )
         {
-            write( "\n" + BOXED_VERBATIM_START + "\n" );
+            write( "\n" + BOXED_VERBATIM_START_MARKUP + "\n" );
         }
         else
         {
-            write( "\n" + NON_BOXED_VERBATIM_START + "\n" );
+            write( "\n" + NON_BOXED_VERBATIM_START_MARKUP + "\n" );
         }
     }
 
@@ -470,11 +470,11 @@ public class AptSink
     {
         if ( boxed )
         {
-            write( "\n" + BOXED_VERBATIM_END + "\n" );
+            write( "\n" + BOXED_VERBATIM_END_MARKUP + "\n" );
         }
         else
         {
-            write( "\n" + NON_BOXED_VERBATIM_END + "\n" );
+            write( "\n" + NON_BOXED_VERBATIM_END_MARKUP + "\n" );
         }
         boxed = false;
         verbatimFlag = false;
@@ -483,7 +483,7 @@ public class AptSink
     /** {@inheritDoc} */
     public void horizontalRule()
     {
-        write( EOL + HORIZONTAL_RULE + EOL );
+        write( EOL + HORIZONTAL_RULE_MARKUP + EOL );
     }
 
     /** {@inheritDoc} */
@@ -543,7 +543,7 @@ public class AptSink
         // TODO: This will need to be more clever, for multi-line cells
         if ( gridFlag )
         {
-            write( TABLE_ROW_SEPARATOR );
+            write( TABLE_ROW_SEPARATOR_MARKUP );
         }
 
         write( buffer.toString() );
@@ -560,7 +560,7 @@ public class AptSink
     private void buildRowLine()
     {
         StringBuffer rowLine = new StringBuffer();
-        rowLine.append( TABLE_ROW_START );
+        rowLine.append( TABLE_ROW_START_MARKUP );
 
         for ( int i = 0; i < cellCount; i++ )
         {
@@ -569,18 +569,18 @@ public class AptSink
                 switch ( cellJustif[i] )
                 {
                 case 1:
-                    rowLine.append( TABLE_COL_LEFT_ALIGNED );
+                    rowLine.append( TABLE_COL_LEFT_ALIGNED_MARKUP );
                     break;
                 case 2:
-                    rowLine.append( TABLE_COL_RIGHT_ALIGNED );
+                    rowLine.append( TABLE_COL_RIGHT_ALIGNED_MARKUP );
                     break;
                 default:
-                    rowLine.append( TABLE_COL_CENTERED_ALIGNED );
+                    rowLine.append( TABLE_COL_CENTERED_ALIGNED_MARKUP );
                 }
             }
             else
             {
-                rowLine.append( TABLE_COL_CENTERED_ALIGNED );
+                rowLine.append( TABLE_COL_CENTERED_ALIGNED_MARKUP );
             }
         }
         rowLine.append( EOL );
@@ -609,7 +609,7 @@ public class AptSink
     {
         if ( headerRow )
         {
-            buffer.append( TABLE_CELL_SEPARATOR );
+            buffer.append( TABLE_CELL_SEPARATOR_MARKUP );
         }
     }
 
@@ -628,7 +628,7 @@ public class AptSink
     /** {@inheritDoc} */
     public void tableCell_( boolean headerRow )
     {
-        buffer.append( TABLE_CELL_SEPARATOR );
+        buffer.append( TABLE_CELL_SEPARATOR_MARKUP );
         cellCount++;
     }
 
@@ -660,13 +660,13 @@ public class AptSink
     public void anchor( String name )
     {
 //        String id = HtmlTools.encodeId(name);
-        write( ANCHOR_START );
+        write( ANCHOR_START_MARKUP );
     }
 
     /** {@inheritDoc} */
     public void anchor_()
     {
-        write( ANCHOR_END );
+        write( ANCHOR_END_MARKUP );
     }
 
     /** {@inheritDoc} */
@@ -674,9 +674,9 @@ public class AptSink
     {
         if ( !headerFlag )
         {
-            write( LINK_START_1 );
+            write( LINK_START_1_MARKUP );
             text( name );
-            write( LINK_START_2 );
+            write( LINK_START_2_MARKUP );
         }
     }
 
@@ -685,7 +685,7 @@ public class AptSink
     {
         if ( !headerFlag )
         {
-            write( LINK_END );
+            write( LINK_END_MARKUP );
         }
     }
 
@@ -694,9 +694,9 @@ public class AptSink
     {
         if ( !headerFlag )
         {
-            write( LINK_START_1 );
+            write( LINK_START_1_MARKUP );
             text( target );
-            write( LINK_START_2 );
+            write( LINK_START_2_MARKUP );
             text( name );
         }
     }
@@ -706,7 +706,7 @@ public class AptSink
     {
         if ( !headerFlag )
         {
-            write( ITALIC_START );
+            write( ITALIC_START_MARKUP );
         }
     }
 
@@ -715,7 +715,7 @@ public class AptSink
     {
         if ( !headerFlag )
         {
-            write( ITALIC_END );
+            write( ITALIC_END_MARKUP );
         }
     }
 
@@ -724,7 +724,7 @@ public class AptSink
     {
         if ( !headerFlag )
         {
-            write( BOLD_START );
+            write( BOLD_START_MARKUP );
         }
     }
 
@@ -733,7 +733,7 @@ public class AptSink
     {
         if ( !headerFlag )
         {
-            write( BOLD_END );
+            write( BOLD_END_MARKUP );
         }
     }
 
@@ -742,7 +742,7 @@ public class AptSink
     {
         if ( !headerFlag )
         {
-            write( MONOSPACED_START );
+            write( MONOSPACED_START_MARKUP );
         }
     }
 
@@ -751,7 +751,7 @@ public class AptSink
     {
         if ( !headerFlag )
         {
-            write( MONOSPACED_END );
+            write( MONOSPACED_END_MARKUP );
         }
     }
 
@@ -773,11 +773,11 @@ public class AptSink
     {
         if ( headerFlag || bufferFlag )
         {
-            buffer.append( NON_BREAKING_SPACE );
+            buffer.append( NON_BREAKING_SPACE_MARKUP );
         }
         else
         {
-            write( NON_BREAKING_SPACE );
+            write( NON_BREAKING_SPACE_MARKUP );
         }
     }
 

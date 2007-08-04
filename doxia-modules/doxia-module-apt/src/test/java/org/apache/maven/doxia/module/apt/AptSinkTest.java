@@ -21,6 +21,7 @@ package org.apache.maven.doxia.module.apt;
 
 import java.io.Writer;
 
+import org.apache.maven.doxia.markup.Markup;
 import org.apache.maven.doxia.sink.AbstractSinkTest;
 import org.apache.maven.doxia.sink.Sink;
 import org.codehaus.plexus.util.StringUtils;
@@ -65,7 +66,8 @@ public class AptSinkTest extends AbstractSinkTest
     /** {@inheritDoc} */
     protected String getHeadBlock()
     {
-        return AptMarkup.HEADER_START + AptMarkup.HEADER_START + AptMarkup.HEADER_START + AptMarkup.HEADER_START;
+        return AptMarkup.HEADER_START_MARKUP + AptMarkup.HEADER_START_MARKUP + AptMarkup.HEADER_START_MARKUP
+            + AptMarkup.HEADER_START_MARKUP;
     }
 
     /** {@inheritDoc} */
@@ -89,128 +91,128 @@ public class AptSinkTest extends AbstractSinkTest
     /** {@inheritDoc} */
     protected String getSection2Block( String title )
     {
-        return AptMarkup.SECTION_TITLE_START + title;
+        return AptMarkup.SECTION_TITLE_START_MARKUP + title;
     }
 
     /** {@inheritDoc} */
     protected String getSection3Block( String title )
     {
-        return StringUtils.repeat( String.valueOf( AptMarkup.SECTION_TITLE_START ), 2 ) + title;
+        return StringUtils.repeat( String.valueOf( AptMarkup.SECTION_TITLE_START_MARKUP ), 2 ) + title;
     }
 
     /** {@inheritDoc} */
     protected String getSection4Block( String title )
     {
-        return StringUtils.repeat( String.valueOf( AptMarkup.SECTION_TITLE_START ), 3 ) + title;
+        return StringUtils.repeat( String.valueOf( AptMarkup.SECTION_TITLE_START_MARKUP ), 3 ) + title;
     }
 
     /** {@inheritDoc} */
     protected String getSection5Block( String title )
     {
-        return StringUtils.repeat( String.valueOf( AptMarkup.SECTION_TITLE_START ), 4 ) + title;
+        return StringUtils.repeat( String.valueOf( AptMarkup.SECTION_TITLE_START_MARKUP ), 4 ) + title;
     }
 
     /** {@inheritDoc} */
     protected String getListBlock( String item )
     {
-        return AptMarkup.SPACE_MARKUP + "" + AptMarkup.LIST_START + "" + AptMarkup.SPACE_MARKUP + item
-            + AptMarkup.SPACE_MARKUP + "" + AptMarkup.LIST_END;
+        return Markup.SPACE + "" + AptMarkup.LIST_START_MARKUP + "" + Markup.SPACE + item
+            + Markup.SPACE + "" + AptMarkup.LIST_END_MARKUP;
     }
 
     /** {@inheritDoc} */
     protected String getNumberedListBlock( String item )
     {
-        return AptMarkup.SPACE_MARKUP + "" + AptMarkup.LEFT_SQUARE_BRACKET_MARKUP + ""
-            + AptMarkup.LEFT_SQUARE_BRACKET_MARKUP + AptMarkup.NUMBERING_LOWER_ROMAN_MARKUP + ""
-            + AptMarkup.RIGHT_SQUARE_BRACKET_MARKUP + "" + AptMarkup.RIGHT_SQUARE_BRACKET_MARKUP
-            + AptMarkup.SPACE_MARKUP + item + AptMarkup.SPACE_MARKUP + "" + AptMarkup.LIST_END;
+        return Markup.SPACE + "" + Markup.LEFT_SQUARE_BRACKET + ""
+            + Markup.LEFT_SQUARE_BRACKET + AptMarkup.NUMBERING_LOWER_ROMAN_CHAR + ""
+            + Markup.RIGHT_SQUARE_BRACKET + "" + Markup.RIGHT_SQUARE_BRACKET
+            + Markup.SPACE + item + Markup.SPACE + "" + AptMarkup.LIST_END_MARKUP;
     }
 
     /** {@inheritDoc} */
     protected String getDefinitionListBlock( String definum, String definition )
     {
-        return AptMarkup.SPACE_MARKUP + "" + AptMarkup.LEFT_SQUARE_BRACKET_MARKUP + definum
-            + AptMarkup.RIGHT_SQUARE_BRACKET_MARKUP + "" + definition;
+        return Markup.SPACE + "" + Markup.LEFT_SQUARE_BRACKET + definum
+            + Markup.RIGHT_SQUARE_BRACKET + "" + definition;
     }
 
     /** {@inheritDoc} */
     protected String getFigureBlock( String source, String caption )
     {
-        return AptMarkup.LEFT_SQUARE_BRACKET_MARKUP + source + AptMarkup.RIGHT_SQUARE_BRACKET_MARKUP
-            + AptMarkup.SPACE_MARKUP + caption;
+        return Markup.LEFT_SQUARE_BRACKET + source + Markup.RIGHT_SQUARE_BRACKET
+            + Markup.SPACE + caption;
     }
 
     /** {@inheritDoc} */
     protected String getTableBlock( String cell, String caption )
     {
-        return AptMarkup.TABLE_ROW_START + AptMarkup.TABLE_COL_CENTERED_ALIGNED + cell
-        + AptMarkup.TABLE_ROW_SEPARATOR + AptMarkup.TABLE_ROW_START + AptMarkup.TABLE_COL_CENTERED_ALIGNED  + caption;
+        return AptMarkup.TABLE_ROW_START_MARKUP + AptMarkup.TABLE_COL_CENTERED_ALIGNED_MARKUP + cell
+        + AptMarkup.TABLE_ROW_SEPARATOR_MARKUP + AptMarkup.TABLE_ROW_START_MARKUP + AptMarkup.TABLE_COL_CENTERED_ALIGNED_MARKUP  + caption;
     }
 
     /** {@inheritDoc} */
     protected String getParagraphBlock( String text )
     {
-        return AptMarkup.SPACE_MARKUP + text;
+        return Markup.SPACE + text;
     }
 
     /** {@inheritDoc} */
     protected String getVerbatimBlock( String text )
     {
-        return "\n" + AptMarkup.BOXED_VERBATIM_START + "\n" + text + "\n" + AptMarkup.BOXED_VERBATIM_START + "\n";
+        return "\n" + AptMarkup.BOXED_VERBATIM_START_MARKUP + "\n" + text + "\n" + AptMarkup.BOXED_VERBATIM_START_MARKUP + "\n";
     }
 
     /** {@inheritDoc} */
     protected String getHorizontalRuleBlock()
     {
-        return AptMarkup.HORIZONTAL_RULE;
+        return AptMarkup.HORIZONTAL_RULE_MARKUP;
     }
 
     /** {@inheritDoc} */
     protected String getPageBreakBlock()
     {
-        return AptMarkup.PAGE_BREAK;
+        return AptMarkup.PAGE_BREAK_MARKUP;
     }
 
     /** {@inheritDoc} */
     protected String getAnchorBlock( String anchor )
     {
-        return AptMarkup.ANCHOR_START + anchor + AptMarkup.ANCHOR_END;
+        return AptMarkup.ANCHOR_START_MARKUP + anchor + AptMarkup.ANCHOR_END_MARKUP;
     }
 
     /** {@inheritDoc} */
     protected String getLinkBlock( String link, String text )
     {
-        return AptMarkup.LINK_START_1 + link + AptMarkup.LINK_START_2 + text + AptMarkup.LINK_END;
+        return AptMarkup.LINK_START_1_MARKUP + link + AptMarkup.LINK_START_2_MARKUP + text + AptMarkup.LINK_END_MARKUP;
     }
 
     /** {@inheritDoc} */
     protected String getItalicBlock( String text )
     {
-        return AptMarkup.ITALIC_START + text + AptMarkup.ITALIC_END;
+        return AptMarkup.ITALIC_START_MARKUP + text + AptMarkup.ITALIC_END_MARKUP;
     }
 
     /** {@inheritDoc} */
     protected String getBoldBlock( String text )
     {
-        return AptMarkup.BOLD_START + text + AptMarkup.BOLD_END;
+        return AptMarkup.BOLD_START_MARKUP + text + AptMarkup.BOLD_END_MARKUP;
     }
 
     /** {@inheritDoc} */
     protected String getMonospacedBlock( String text )
     {
-        return AptMarkup.MONOSPACED_START + text + AptMarkup.MONOSPACED_END;
+        return AptMarkup.MONOSPACED_START_MARKUP + text + AptMarkup.MONOSPACED_END_MARKUP;
     }
 
     /** {@inheritDoc} */
     protected String getLineBreakBlock()
     {
-        return AptMarkup.BACKSLASH_MARKUP + "";
+        return String.valueOf( AptMarkup.BACKSLASH );
     }
 
     /** {@inheritDoc} */
     protected String getNonBreakingSpaceBlock()
     {
-        return AptMarkup.NON_BREAKING_SPACE;
+        return AptMarkup.NON_BREAKING_SPACE_MARKUP;
     }
 
     /** {@inheritDoc} */
@@ -218,18 +220,18 @@ public class AptSinkTest extends AbstractSinkTest
     {
         // "\\~, \\=, \\-, \\+, \\*, \\[, \\], \\<, \\>, \\{, \\}, \\\\"
         StringBuffer sb = new StringBuffer();
-        sb.append( getSpecialCharacters( AptMarkup.COMMENT_MARKUP ) ).append( ", " );
-        sb.append( getSpecialCharacters( AptMarkup.EQUAL_MARKUP ) ).append( ", " );
-        sb.append( getSpecialCharacters( AptMarkup.MINUS_MARKUP ) ).append( ", " );
-        sb.append( getSpecialCharacters( AptMarkup.PLUS_MARKUP ) ).append( ", " );
-        sb.append( getSpecialCharacters( AptMarkup.STAR_MARKUP ) ).append( ", " );
-        sb.append( getSpecialCharacters( AptMarkup.LEFT_SQUARE_BRACKET_MARKUP ) ).append( ", " );
-        sb.append( getSpecialCharacters( AptMarkup.RIGHT_SQUARE_BRACKET_MARKUP ) ).append( ", " );
-        sb.append( getSpecialCharacters( AptMarkup.LESS_THAN_MARKUP ) ).append( ", " );
-        sb.append( getSpecialCharacters( AptMarkup.GREATER_THAN_MARKUP ) ).append( ", " );
-        sb.append( getSpecialCharacters( AptMarkup.LEFT_CURLY_BRACKET_MARKUP ) ).append( ", " );
-        sb.append( getSpecialCharacters( AptMarkup.RIGHT_CURLY_BRACKET_MARKUP ) ).append( ", " );
-        sb.append( getSpecialCharacters( AptMarkup.BACKSLASH_MARKUP ) );
+        sb.append( getSpecialCharacters( AptMarkup.COMMENT ) ).append( ", " );
+        sb.append( getSpecialCharacters( Markup.EQUAL ) ).append( ", " );
+        sb.append( getSpecialCharacters( Markup.MINUS ) ).append( ", " );
+        sb.append( getSpecialCharacters( Markup.PLUS ) ).append( ", " );
+        sb.append( getSpecialCharacters( Markup.STAR ) ).append( ", " );
+        sb.append( getSpecialCharacters( Markup.LEFT_SQUARE_BRACKET ) ).append( ", " );
+        sb.append( getSpecialCharacters( Markup.RIGHT_SQUARE_BRACKET ) ).append( ", " );
+        sb.append( getSpecialCharacters( Markup.LESS_THAN ) ).append( ", " );
+        sb.append( getSpecialCharacters( Markup.GREATER_THAN ) ).append( ", " );
+        sb.append( getSpecialCharacters( Markup.LEFT_CURLY_BRACKET ) ).append( ", " );
+        sb.append( getSpecialCharacters( Markup.RIGHT_CURLY_BRACKET ) ).append( ", " );
+        sb.append( getSpecialCharacters( AptMarkup.BACKSLASH ) );
 
         return sb.toString();
     }
@@ -248,6 +250,6 @@ public class AptSinkTest extends AbstractSinkTest
      */
     private static String getSpecialCharacters( char c )
     {
-        return AptMarkup.BACKSLASH_MARKUP + "" + c;
+        return AptMarkup.BACKSLASH + "" + c;
     }
 }
