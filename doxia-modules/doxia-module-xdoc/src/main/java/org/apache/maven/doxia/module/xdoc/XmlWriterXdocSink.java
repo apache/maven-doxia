@@ -23,7 +23,7 @@ import org.apache.maven.doxia.parser.Parser;
 import org.apache.maven.doxia.sink.SinkAdapter;
 import org.apache.maven.doxia.sink.StructureSink;
 import org.apache.maven.doxia.util.HtmlTools;
-import org.apache.maven.doxia.util.StringUtil;
+import org.codehaus.plexus.util.StringUtils;
 import org.codehaus.plexus.util.xml.XMLWriter;
 
 /**
@@ -690,7 +690,7 @@ public class XmlWriterXdocSink
      */
     protected void verbatimContent( String text )
     {
-        writer.writeText( StringUtil.replaceAll( text, " ", "&nbsp;" ) );
+        writer.writeText( StringUtils.replace( text, " ", "&nbsp;" ) );
     }
 
     /**

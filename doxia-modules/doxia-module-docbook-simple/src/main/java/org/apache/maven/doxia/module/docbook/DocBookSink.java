@@ -22,8 +22,8 @@ package org.apache.maven.doxia.module.docbook;
 import org.apache.maven.doxia.parser.Parser;
 import org.apache.maven.doxia.sink.SinkAdapter;
 import org.apache.maven.doxia.sink.StructureSink;
-import org.apache.maven.doxia.util.FileUtil;
 import org.apache.maven.doxia.util.LineBreaker;
+import org.codehaus.plexus.util.FileUtils;
 
 import java.io.StringWriter;
 import java.io.Writer;
@@ -632,7 +632,7 @@ public class DocBookSink
     {
         if ( graphicsFileName != null )
         {
-            String format = FileUtil.fileExtension( graphicsFileName ).toUpperCase();
+            String format = FileUtils.extension( graphicsFileName ).toUpperCase();
             if ( format.length() == 0 )
             {
                 format = "JPEG";
