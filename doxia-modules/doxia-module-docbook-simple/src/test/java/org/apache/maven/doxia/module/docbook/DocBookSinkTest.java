@@ -29,27 +29,31 @@ import java.io.InputStreamReader;
 
 /**
  * @author <a href="mailto:jason@maven.org">Jason van Zyl</a>
- * @version $Id:DocBookSinkTest.java 348605 2005-11-24 12:02:44 +1100 (Thu, 24 Nov 2005) brett $
+ * @version $Id$
  */
 public class DocBookSinkTest
     extends AbstractSinkTestCase
 {
+    /** {@inheritDoc} */
     protected String outputExtension()
     {
         return "docbook";
     }
 
+    /** {@inheritDoc} */
     protected Parser createParser()
     {
         return new DocBookParser();
     }
 
+    /** {@inheritDoc} */
     protected Sink createSink()
         throws Exception
     {
         return new DocBookSink( getTestWriter() );
     }
 
+    /** {@inheritDoc} */
     protected Reader getTestReader()
         throws Exception
     {

@@ -24,16 +24,18 @@ import org.apache.maven.doxia.parser.Parser;
 
 /**
  * @author <a href="mailto:lars@trieloff.net">Lars Trieloff</a>
- * @version $Id:DocBookParserTest.java 348605 2005-11-24 01:02:44Z brett $
+ * @version $Id$
  */
 public class DocBookParserTest
     extends AbstractParserTestCase
 {
+    /** {@inheritDoc} */
     protected Parser getParser()
     {
         return new DocBookParser();
     }
 
+    /** {@inheritDoc} */
     protected String getDocument()
     {
         return "src/test/resources/guide.xml";

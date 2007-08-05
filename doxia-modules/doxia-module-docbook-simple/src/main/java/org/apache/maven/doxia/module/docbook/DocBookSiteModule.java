@@ -30,16 +30,19 @@ import org.apache.maven.doxia.module.site.AbstractSiteModule;
 public class DocBookSiteModule
     extends AbstractSiteModule
 {
+    /** {@inheritDoc} */
     public String getSourceDirectory()
     {
         return "docbook";
     }
 
+    /** {@inheritDoc} */
     public String getExtension()
     {
         return "xml";
     }
 
+    /** {@inheritDoc} */
     public String getParserId()
     {
         return "doc-book";
