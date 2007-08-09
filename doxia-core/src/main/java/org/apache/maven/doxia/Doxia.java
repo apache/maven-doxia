@@ -20,6 +20,7 @@ package org.apache.maven.doxia;
  */
 
 import org.apache.maven.doxia.parser.ParseException;
+import org.apache.maven.doxia.parser.Parser;
 import org.apache.maven.doxia.parser.manager.ParserNotFoundException;
 import org.apache.maven.doxia.sink.Sink;
 
@@ -29,7 +30,8 @@ import java.io.Reader;
  * Basic interface of the Doxia framework.
  *
  * @author Jason van Zyl
- * @version $Id:Doxia.java 348605 2005-11-24 12:02:44 +1100 (Thu, 24 Nov 2005) brett $
+ * @version $Id$
+ * @since 1.0
  */
 public interface Doxia
 {
@@ -50,4 +52,14 @@ public interface Doxia
     void parse( Reader source, String parserId, Sink sink )
         throws ParserNotFoundException, ParseException;
 
+    /**
+     * Return a parser for the given <code>parserId</code>.
+     *
+     * @param parserId Identifier for the parser to use.
+     * @return the parser defining by parserId.
+     * @throws ParserNotFoundException if no parser could be found
+     * for the given id.
+     */
+    Parser getParser( String parserId )
+        throws ParserNotFoundException;
 }

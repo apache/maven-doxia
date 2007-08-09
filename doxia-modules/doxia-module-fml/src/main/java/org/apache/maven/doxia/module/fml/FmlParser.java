@@ -38,15 +38,14 @@ import org.codehaus.plexus.util.xml.pull.XmlPullParser;
  * Parse a fml model and emit events into the specified doxia Sink.
  *
  * @author <a href="mailto:evenisse@codehaus.org">Emmanuel Venisse</a>
- * @version $Id:FmlParser.java 348605 2005-11-24 12:02:44 +1100 (Thu, 24 Nov 2005) brett $
+ * @version $Id$
+ * @since 1.0
  * @plexus.component role-hint="fml"
  */
 public class FmlParser
     implements Parser
 {
-    /**
-     * @see org.apache.maven.doxia.parser.Parser#parse(java.io.Reader, org.apache.maven.doxia.sink.Sink)
-     */
+    /** {@inheritDoc} */
     public void parse( Reader reader, Sink sink )
         throws ParseException
     {
@@ -72,6 +71,12 @@ public class FmlParser
         {
             throw new ParseException( "Error creating sink: " + e.getMessage(), e );
         }
+    }
+
+    /** {@inheritDoc} */
+    public int getType()
+    {
+        return XML_TYPE;
     }
 
     /**

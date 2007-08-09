@@ -32,6 +32,9 @@ public abstract class AbstractTextParser
     extends AbstractParser
     implements TextMarkup
 {
-
+    /** {@inheritDoc} */
+    public final int getType()
+    {
+        return TXT_TYPE;
+    }
 }
-

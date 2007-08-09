@@ -29,7 +29,7 @@ import org.apache.maven.doxia.module.confluence.parser.VerbatimBlockParser;
 import org.apache.maven.doxia.module.confluence.parser.HorizontalRuleBlockParser;
 import org.apache.maven.doxia.module.confluence.parser.table.TableBlockParser;
 import org.apache.maven.doxia.module.confluence.parser.list.ListBlockParser;
-import org.apache.maven.doxia.parser.AbstractParser;
+import org.apache.maven.doxia.parser.AbstractTextParser;
 import org.apache.maven.doxia.parser.ParseException;
 import org.apache.maven.doxia.sink.Sink;
 
@@ -38,9 +38,17 @@ import java.util.ArrayList;
 import java.util.Iterator;
 import java.util.List;
 
-/** @plexus.component role-hint="confluence" */
+/**
+ * Parse the <a href="http://www.atlassian.com/software/confluence/">Confluence</a>.
+ * See <a href="http://confluence.atlassian.com/display/CONF25/Confluence+Notation+Guide+Overview">
+ * Confluence Notation Guide Overview</a>
+ *
+ * @version $Id$
+ * @since 1.0
+ * plexus.component role-hint="confluence"
+ */
 public class ConfluenceParser
-    extends AbstractParser
+    extends AbstractTextParser
 {
     private BlockParser[] parsers;
 
@@ -109,6 +117,7 @@ public class ConfluenceParser
         return blocks;
     }
 
+    /** {@inheritDoc} */
     public synchronized void parse( Reader reader,
                                     Sink sink )
         throws ParseException

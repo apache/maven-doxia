@@ -37,6 +37,15 @@ public interface Parser
     /** The Plexus lookup role. */
     String ROLE = Parser.class.getName();
 
+    /** Unknown parser type */
+    int UNKNOWN_TYPE = 0;
+
+    /** Text parser type */
+    int TXT_TYPE = 1;
+
+    /** XML parser type */
+    int XML_TYPE = 2;
+
     /** Used for table cells: justify center. */
     int JUSTIFY_CENTER = 0;
 
@@ -55,4 +64,12 @@ public interface Parser
      */
     void parse( Reader source, Sink sink )
         throws ParseException;
+
+    /**
+     * The parser type value could be {@link #UNKNOWN_TYPE}, {@link #TXT_TYPE} or
+     * {@link #XML_TYPE}.
+     *
+     * @return the type of Parser
+     */
+    int getType();
 }

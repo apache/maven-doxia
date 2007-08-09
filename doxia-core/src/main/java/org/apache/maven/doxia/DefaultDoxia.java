@@ -31,10 +31,10 @@ import java.io.Reader;
  * Simple implementation of the Doxia interface:
  * uses a ParserManager to lookup a parser.
  *
- * @plexus.component
- *
  * @author Jason van Zyl
- * @version $Id:DefaultDoxia.java 348605 2005-11-24 12:02:44 +1100 (Thu, 24 Nov 2005) brett $
+ * @version $Id$
+ * @since 1.0
+ * @plexus.component
  */
 public class DefaultDoxia
     implements Doxia
@@ -57,5 +57,12 @@ public class DefaultDoxia
         Parser parser = parserManager.getParser( parserId );
 
         parser.parse( source, sink );
+    }
+
+    /** {@inheritDoc} */
+    public Parser getParser( String parserId )
+        throws ParserNotFoundException
+    {
+        return parserManager.getParser( parserId );
     }
 }

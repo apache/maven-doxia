@@ -28,7 +28,7 @@ import org.apache.maven.doxia.module.twiki.parser.ParagraphBlockParser;
 import org.apache.maven.doxia.module.twiki.parser.SectionBlockParser;
 import org.apache.maven.doxia.module.twiki.parser.TableBlockParser;
 import org.apache.maven.doxia.module.twiki.parser.TextParser;
-import org.apache.maven.doxia.parser.AbstractParser;
+import org.apache.maven.doxia.parser.AbstractTextParser;
 import org.apache.maven.doxia.parser.ParseException;
 import org.apache.maven.doxia.sink.Sink;
 import org.apache.maven.doxia.util.ByLineReaderSource;
@@ -44,10 +44,12 @@ import java.util.List;
  * twiki file format</a>
  *
  * @author Juan F. Codagnone
+ * @version $Id$
+ * @since 1.0
  * @plexus.component role="org.apache.maven.doxia.parser.Parser" role-hint="twiki"
- * @since Oct 31, 2005
  */
-public class TWikiParser extends AbstractParser
+public class TWikiParser
+    extends AbstractTextParser
 {
     /**
      * paragraph parser. stateless
@@ -126,7 +128,7 @@ public class TWikiParser extends AbstractParser
             for ( int i = 0; i < parsers.length; i++ )
             {
                 final BlockParser parser = parsers[i];
-                
+
                 if ( parser.accept( line ) )
                 {
                     accepted = true;
@@ -144,10 +146,7 @@ public class TWikiParser extends AbstractParser
         return ret;
     }
 
-    /**
-     * @see org.apache.maven.doxia.parser.Parser#parse(java.io.Reader,
-     *      org.apache.maven.doxia.sink.Sink)
-     */
+    /** {@inheritDoc} */
     public final synchronized void parse( final Reader reader, final Sink sink )
         throws ParseException
     {
@@ -175,7 +174,7 @@ public class TWikiParser extends AbstractParser
         for ( Iterator it = blocks.iterator(); it.hasNext(); )
         {
             final Block block = (Block) it.next();
-            
+
             block.traverse( sink );
         }
         sink.body_();

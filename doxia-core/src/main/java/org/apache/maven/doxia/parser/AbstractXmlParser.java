@@ -62,6 +62,12 @@ public abstract class AbstractXmlParser
         }
     }
 
+    /** {@inheritDoc} */
+    public final int getType()
+    {
+        return XML_TYPE;
+    }
+
     /**
      * Parse the model from the XmlPullParser into the given sink.
      *

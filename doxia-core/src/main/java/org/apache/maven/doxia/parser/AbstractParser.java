@@ -46,6 +46,12 @@ public abstract class AbstractParser
     /** @plexus.requirement */
     protected MacroManager macroManager;
 
+    /** {@inheritDoc} */
+    public int getType()
+    {
+        return UNKNOWN_TYPE;
+    }
+
     /**
      * Execute a macro on the given sink.
      *
