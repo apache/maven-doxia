@@ -19,30 +19,32 @@ package org.apache.maven.doxia.module.docbook;
  * under the License.
  */
 
-import org.apache.maven.doxia.parser.ParseException;
-import org.apache.maven.doxia.parser.Parser;
+import org.apache.maven.doxia.macro.MacroExecutionException;
+import org.apache.maven.doxia.parser.AbstractXmlParser;
 import org.apache.maven.doxia.sink.Sink;
-import org.codehaus.plexus.util.xml.pull.MXParser;
 import org.codehaus.plexus.util.xml.pull.XmlPullParser;
 import org.codehaus.plexus.util.xml.pull.XmlPullParserException;
 
 import java.io.IOException;
-import java.io.Reader;
 import java.util.Collection;
 import java.util.HashSet;
-import java.util.Iterator;
 import java.util.Stack;
 
+import javax.swing.text.html.HTML.Attribute;
+import javax.swing.text.html.HTML.Tag;
+
 /**
- * Parse a DocBook document and emit events into the specified doxia
+ * Parse a <code>Docbook</code> document and emit events into the specified doxia
  * Sink.
  *
  * @author <a href="mailto:jason@maven.org">Jason van Zyl</a>
- * @version $Id:DocBookParser.java 348605 2005-11-24 12:02:44 +1100 (Thu, 24 Nov 2005) brett $
+ * @version $Id$
+ * @since 1.0
  * @plexus.component role-hint="doc-book"
  */
 public class DocBookParser
-    implements Parser
+    extends AbstractXmlParser
+    implements DocbookMarkup
 {
     /**
      * Level counter for calculating the section level.
@@ -162,522 +164,524 @@ public class DocBookParser
     //
     // ----------------------------------------------------------------------
 
-    public void parse( Reader reader, Sink sink )
-        throws ParseException
+//    public void parseDocBook( XmlPullParser parser, Sink sink )
+//        throws XmlPullParserException, IOException
+//    {
+//
+//        // TODO: This should go through some monitor
+//        if ( !failedElements.isEmpty() )
+//        {
+//            System.out.println( "Doxia was unable to handle following elements" );
+//            for ( Iterator i = failedElements.iterator(); i.hasNext(); )
+//            {
+//                System.out.print( i.next().toString() + " " );
+//            }
+//
+//            System.out.println();
+//        }
+//    }
+
+    /** {@inheritDoc} */
+    protected void handleStartTag( XmlPullParser parser, Sink sink )
+        throws XmlPullParserException, MacroExecutionException
     {
-        try
+        String id = getAttributeValue( parser, Attribute.ID.toString() );
+        //catch link targets
+        if ( id != null )
         {
-            XmlPullParser parser = new MXParser();
-
-            parser.setInput( reader );
-
-            parseDocBook( parser, sink );
+            sink.anchor( id );
         }
-        catch ( XmlPullParserException e )
+
+        //If the element introduces a new level of hierarchy, raise the stack
+        if ( hierElements.contains( parser.getName() ) )
         {
-            throw new ParseException( "Error parsing the model.", e );
+            //increase the nesting level
+            level++;
+            //if this is the root element, handle it as body
+            if ( level == 1 )
+            {
+                sink.body();
+            }
+            else if ( level == 2 )
+            {
+                sink.section1();
+            }
+            else if ( level == 3 )
+            {
+                sink.section2();
+            }
+            else if ( level == 4 )
+            {
+                sink.section3();
+            }
+            else if ( level == 5 )
+            {
+                sink.section4();
+            }
+            else if ( level == 6 )
+            {
+                sink.section5();
+            }
         }
-        catch ( IOException e )
+        //Match all *info-Elements for metainformation, but only consider the root element
+        else if ( ( parser.getName().endsWith( INFO_TAG.toString() ) ) && ( level == 1 ) )
         {
-            throw new ParseException( "Error parsing the model.", e );
+            sink.head();
+            parent.push( parser.getName() );
+        }
+        //handle lists
+        else if ( parser.getName().equals( ITEMIZEDLIST_TAG.toString() ) )
+        {
+            sink.list();
+            //for itemizedlists in variablelists
+            parent.push( parser.getName() );
+        }
+        else if ( parser.getName().equals( ORDEREDLIST_TAG.toString() ) )
+        {
+            //default enumeration style is decimal
+            int numeration = Sink.NUMBERING_DECIMAL;
+            String style = getAttributeValue( parser, NUMERATION_ATTRIBUTE );
+            if ( style.equals( ARABIC_STYLE ) )
+            {
+                numeration = Sink.NUMBERING_DECIMAL;
+            }
+            else if ( style.equals( LOWERALPHA_STYLE ) )
+            {
+                numeration = Sink.NUMBERING_LOWER_ALPHA;
+            }
+            else if ( style.equals( LOWERROMAN_STYLE ) )
+            {
+                numeration = Sink.NUMBERING_LOWER_ROMAN;
+            }
+            else if ( style.equals( UPPERALPHA_STYLE ) )
+            {
+                numeration = Sink.NUMBERING_UPPER_ALPHA;
+            }
+            else if ( style.equals( UPPERROMAN_STYLE ) )
+            {
+                numeration = Sink.NUMBERING_UPPER_ROMAN;
+            }
+            sink.numberedList( numeration );
+            parent.push( parser.getName() );
+        }
+        else if ( parser.getName().equals( LISTITEM_TAG.toString() ) )
+        {
+            if ( isParent( VARIABLELIST_TAG.toString() ) )
+            {
+                sink.definition();
+            }
+            else
+            {
+                sink.listItem();
+            }
+        }
+        else if ( parser.getName().equals( VARIABLELIST_TAG.toString() ) )
+        {
+            sink.definitionList();
+            parent.push( parser.getName() );
+        }
+        else if ( parser.getName().equals( VARLISTENTRY_TAG.toString() ) )
+        {
+            sink.definitionListItem();
+        }
+        else if ( parser.getName().equals( TERM_TAG.toString() ) )
+        {
+            sink.definedTerm();
+        }
+        //handle figures
+        else if ( parser.getName().equals( FIGURE_TAG.toString() )
+            || parser.getName().equals( INFORMALFIGURE_TAG.toString() ) )
+        {
+            sink.figure();
+            parent.push( parser.getName() );
+        }
+        else if ( parser.getName().equals( IMAGEOBJECT_TAG.toString() ) )
+        {
+            String fileref = getAttributeValue( parser, FILEREF_ATTRIBUTE );
+            if ( fileref != null )
+            {
+                sink.figureGraphics( fileref );
+                parent.push( parser.getName() );
+            }
+        }
+        else if ( parser.getName().equals( Tag.CAPTION.toString() ) && isParent( FIGURE_TAG.toString() ) )
+        {
+            sink.figureCaption();
+        }
+        else if ( parser.getName().equals( Tag.TABLE.toString() )
+            || parser.getName().equals( INFORMALTABLE_TAG.toString() ) )
+        {
+            sink.table();
+            //TODO handle tgroups
+            parent.push( parser.getName() );
+        }
+        else if ( parser.getName().equals( THEAD_TAG.toString() ) )
+        {
+            parent.push( parser.getName() );
+        }
+        else if ( parser.getName().equals( Tag.TR.toString() ) || parser.getName().equals( ROW_TAG.toString() ) )
+        {
+            sink.tableRow();
+        }
+        else if ( parser.getName().equals( ENTRY_TAG.toString() ) && isParent( THEAD_TAG.toString() )
+            || parser.getName().equals( Tag.TH.toString() ) )
+        {
+            sink.tableHeaderCell();
+        }
+        else if ( parser.getName().equals( ENTRY_TAG.toString() ) )
+        {
+            sink.tableCell();
+        }
+        else
+        if ( parser.getName().equals( Tag.CAPTION.toString() )
+            && ( isParent( INFORMALTABLE_TAG.toString() ) || isParent( Tag.TABLE.toString() ) ) )
+        {
+            sink.tableCaption();
+        }
+        else if ( ( parser.getName().equals( PARA_TAG.toString() ) || parser.getName().equals( SIMPARA_TAG.toString() ) )
+            && !isParent( FORMALPARA_TAG.toString() ) )
+        {
+            sink.paragraph();
+        }
+        else if ( parser.getName().equals( FORMALPARA_TAG.toString() ) )
+        {
+            parent.push( parser.getName() );
+            sink.paragraph();
+        }
+        else if ( parser.getName().equals( Tag.TITLE.toString() ) && isParent( FORMALPARA_TAG.toString() ) )
+        {
+            sink.bold();
+        }
+        else if ( DocBookParser.verbatimElements.contains( parser.getName() ) )
+        {
+            sink.verbatim( true );
+        }
+
+        else if ( DocBookParser.boldElements.contains( parser.getName() ) &&
+            DocBookParser.monospaceElements.contains( parser.getName() ) )
+        {
+            sink.bold();
+            sink.monospaced();
+        }
+        else if ( DocBookParser.italicElements.contains( parser.getName() ) &&
+            DocBookParser.monospaceElements.contains( parser.getName() ) )
+        {
+            sink.italic();
+            sink.monospaced();
+        }
+        else if ( DocBookParser.boldElements.contains( parser.getName() ) )
+        {
+            sink.bold();
+        }
+        else if ( DocBookParser.italicElements.contains( parser.getName() ) )
+        {
+            sink.italic();
+        }
+        else if ( DocBookParser.monospaceElements.contains( parser.getName() ) )
+        {
+            sink.monospaced();
+        }
+
+        else if ( parser.getName().equals( Tag.TITLE.toString() ) )
+        {
+            if ( parser.getName().equals( FIGURE_TAG.toString() )
+                || parser.getName().equals( INFORMALFIGURE_TAG.toString() ) )
+            {
+                sink.figureCaption();
+            }
+            else if ( parser.getName().equals( Tag.TABLE.toString() )
+                || parser.getName().equals( INFORMALTABLE_TAG.toString() ) )
+            {
+                sink.tableCaption();
+            }
+            else if ( level == 1 )
+            {
+                sink.title();
+            }
+            else if ( level == 2 )
+            {
+                sink.sectionTitle1();
+            }
+            else if ( level == 3 )
+            {
+                sink.sectionTitle2();
+            }
+            else if ( level == 4 )
+            {
+                sink.sectionTitle3();
+            }
+            else if ( level == 5 )
+            {
+                sink.sectionTitle4();
+            }
+            else if ( level == 6 )
+            {
+                sink.sectionTitle5();
+            }
+        }
+        else if ( parser.getName().equals( ULINK_TAG.toString() ) )
+        {
+            String url = getAttributeValue( parser, URL_TAG.toString() );
+            if ( url != null )
+            {
+                parent.push( parser.getName() );
+                sink.link( url );
+            }
+        }
+        else if ( parser.getName().equals( EMAIL_TAG.toString() ) )
+        {
+            String mailto;
+            try
+            {
+                mailto = parser.nextText();
+            }
+            catch ( IOException e )
+            {
+                throw new XmlPullParserException( "IOException: " + e.getMessage(), parser, e );
+            }
+            sink.link( "mailto:" + mailto );
+            sink.link_();
+        }
+        else if ( parser.getName().equals( LINK_TAG.toString() ) )
+        {
+            String linkend = getAttributeValue( parser, LINKEND_ATTRIBUTE );
+            if ( linkend != null )
+            {
+                parent.push( parser.getName() );
+                sink.link( "#" + linkend );
+            }
+        }
+        else if ( parser.getName().equals( XREF_TAG.toString() ) )
+        {
+            String linkend = getAttributeValue( parser, LINKEND_ATTRIBUTE );
+            if ( linkend != null )
+            {
+                sink.link( "#" + linkend );
+                sink.text( "Link" );//TODO: determine text of link target
+                sink.link_();
+            }
+        }
+        else
+        {
+            failedElements.add( parser.getName() );
         }
     }
 
-    public void parseDocBook( XmlPullParser parser, Sink sink )
-        throws XmlPullParserException, IOException
+    /** {@inheritDoc} */
+    protected void handleEndTag( XmlPullParser parser, Sink sink )
+        throws XmlPullParserException, MacroExecutionException
     {
-        int eventType = parser.getEventType();
 
-        while ( eventType != XmlPullParser.END_DOCUMENT )
+        //If the element introduces a new level of hierarchy, lower the stack
+        if ( hierElements.contains( parser.getName() ) )
         {
-
-            if ( eventType == XmlPullParser.START_TAG )
+            //increase the nesting level
+            level--;
+            //if this is the root element, handle it as body
+            if ( level == 1 )
             {
-                String id = getAttributeValue( parser, "id" );
-                //catch link targets
-                if ( id != null )
-                {
-                    sink.anchor( id );
-                }
-
-                //If the element introduces a new level of hierarchy, raise the stack
-                if ( hierElements.contains( parser.getName() ) )
-                {
-                    //increase the nesting level
-                    level++;
-                    //if this is the root element, handle it as body
-                    if ( level == 1 )
-                    {
-                        sink.body();
-                    }
-                    else if ( level == 2 )
-                    {
-                        sink.section1();
-                    }
-                    else if ( level == 3 )
-                    {
-                        sink.section2();
-                    }
-                    else if ( level == 4 )
-                    {
-                        sink.section3();
-                    }
-                    else if ( level == 5 )
-                    {
-                        sink.section4();
-                    }
-                    else if ( level == 6 )
-                    {
-                        sink.section5();
-                    }
-                }
-                //Match all *info-Elements for metainformation, but only consider the root element
-                else if ( ( parser.getName().endsWith( "info" ) ) && ( level == 1 ) )
-                {
-                    sink.head();
-                    parent.push( parser.getName() );
-                }
-                //handle lists
-                else if ( parser.getName().equals( "itemizedlist" ) )
-                {
-                    sink.list();
-                    //for itemizedlists in variablelists
-                    parent.push( parser.getName() );
-                }
-                else if ( parser.getName().equals( "orderedlist" ) )
-                {
-                    //default enumeration style is decimal
-                    int numeration = Sink.NUMBERING_DECIMAL;
-                    String style = getAttributeValue( parser, "numeration" );
-                    if ( style.equals( "arabic" ) )
-                    {
-                        numeration = Sink.NUMBERING_DECIMAL;
-                    }
-                    else if ( style.equals( "loweralpha" ) )
-                    {
-                        numeration = Sink.NUMBERING_LOWER_ALPHA;
-                    }
-                    else if ( style.equals( "lowerroman" ) )
-                    {
-                        numeration = Sink.NUMBERING_LOWER_ROMAN;
-                    }
-                    else if ( style.equals( "upperalpha" ) )
-                    {
-                        numeration = Sink.NUMBERING_UPPER_ALPHA;
-                    }
-                    else if ( style.equals( "upperroman" ) )
-                    {
-                        numeration = Sink.NUMBERING_UPPER_ROMAN;
-                    }
-                    sink.numberedList( numeration );
-                    parent.push( parser.getName() );
-                }
-                else if ( parser.getName().equals( "listitem" ) )
-                {
-                    if ( isParent( "variablelist" ) )
-                    {
-                        sink.definition();
-                    }
-                    else
-                    {
-                        sink.listItem();
-                    }
-                }
-                else if ( parser.getName().equals( "variablelist" ) )
-                {
-                    sink.definitionList();
-                    parent.push( parser.getName() );
-                }
-                else if ( parser.getName().equals( "varlistentry" ) )
-                {
-                    sink.definitionListItem();
-                }
-                else if ( parser.getName().equals( "term" ) )
-                {
-                    sink.definedTerm();
-                }
-                //handle figures
-                else if ( parser.getName().equals( "figure" ) || parser.getName().equals( "informalfigure" ) )
-                {
-                    sink.figure();
-                    parent.push( parser.getName() );
-                }
-                else if ( parser.getName().equals( "imageobject" ) )
-                {
-                    String fileref = getAttributeValue( parser, "fileref" );
-                    if ( fileref != null )
-                    {
-                        sink.figureGraphics( fileref );
-                        parent.push( parser.getName() );
-                    }
-                }
-                else if ( parser.getName().equals( "caption" ) && isParent( "figure" ) )
-                {
-                    sink.figureCaption();
-                }
-                else if ( parser.getName().equals( "table" ) || parser.getName().equals( "informaltable" ) )
-                {
-                    sink.table();
-                    //TODO handle tgroups
-                    parent.push( parser.getName() );
-                }
-                else if ( parser.getName().equals( "thead" ) )
-                {
-                    parent.push( parser.getName() );
-                }
-                else if ( parser.getName().equals( "tr" ) || parser.getName().equals( "row" ) )
-                {
-                    sink.tableRow();
-                }
-                else if ( parser.getName().equals( "entry" ) && isParent( "thead" ) || parser.getName().equals( "th" ) )
-                {
-                    sink.tableHeaderCell();
-                }
-                else if ( parser.getName().equals( "entry" ) )
-                {
-                    sink.tableCell();
-                }
-                else
-                if ( parser.getName().equals( "caption" ) && ( isParent( "informaltable" ) || isParent( "table" ) ) )
-                {
-                    sink.tableCaption();
-                }
-
-                else if ( ( parser.getName().equals( "para" ) || parser.getName().equals( "simpara" ) ) &&
-                    !isParent( "formalpara" ) )
-                {
-                    sink.paragraph();
-                }
-                else if ( parser.getName().equals( "formalpara" ) )
-                {
-                    parent.push( parser.getName() );
-                    sink.paragraph();
-                }
-                else if ( parser.getName().equals( "title" ) && isParent( "formalpara" ) )
-                {
-                    sink.bold();
-                }
-                else if ( DocBookParser.verbatimElements.contains( parser.getName() ) )
-                {
-                    sink.verbatim( true );
-                }
-
-                else if ( DocBookParser.boldElements.contains( parser.getName() ) &&
-                    DocBookParser.monospaceElements.contains( parser.getName() ) )
-                {
-                    sink.bold();
-                    sink.monospaced();
-                }
-                else if ( DocBookParser.italicElements.contains( parser.getName() ) &&
-                    DocBookParser.monospaceElements.contains( parser.getName() ) )
-                {
-                    sink.italic();
-                    sink.monospaced();
-                }
-                else if ( DocBookParser.boldElements.contains( parser.getName() ) )
-                {
-                    sink.bold();
-                }
-                else if ( DocBookParser.italicElements.contains( parser.getName() ) )
-                {
-                    sink.italic();
-                }
-                else if ( DocBookParser.monospaceElements.contains( parser.getName() ) )
-                {
-                    sink.monospaced();
-                }
-
-                else if ( parser.getName().equals( "title" ) )
-                {
-                    if ( parser.getName().equals( "figure" ) || parser.getName().equals( "informalfigure" ) )
-                    {
-                        sink.figureCaption();
-                    }
-                    else if ( parser.getName().equals( "table" ) || parser.getName().equals( "informaltable" ) )
-                    {
-                        sink.tableCaption();
-                    }
-                    else if ( level == 1 )
-                    {
-                        sink.title();
-                    }
-                    else if ( level == 2 )
-                    {
-                        sink.sectionTitle1();
-                    }
-                    else if ( level == 3 )
-                    {
-                        sink.sectionTitle2();
-                    }
-                    else if ( level == 4 )
-                    {
-                        sink.sectionTitle3();
-                    }
-                    else if ( level == 5 )
-                    {
-                        sink.sectionTitle4();
-                    }
-                    else if ( level == 6 )
-                    {
-                        sink.sectionTitle5();
-                    }
-                }
-                else if ( parser.getName().equals( "ulink" ) )
-                {
-                    String url = getAttributeValue( parser, "url" );
-                    if ( url != null )
-                    {
-                        parent.push( parser.getName() );
-                        sink.link( url );
-                    }
-                }
-                else if ( parser.getName().equals( "email" ) )
-                {
-                    sink.link( "mailto:" + parser.nextText() );
-                    sink.link_();
-                }
-                else if ( parser.getName().equals( "link" ) )
-                {
-                    String linkend = getAttributeValue( parser, "linkend" );
-                    if ( linkend != null )
-                    {
-                        parent.push( parser.getName() );
-                        sink.link( "#" + linkend );
-                    }
-                }
-                else if ( parser.getName().equals( "xref" ) )
-                {
-                    String linkend = getAttributeValue( parser, "linkend" );
-                    if ( linkend != null )
-                    {
-                        sink.link( "#" + linkend );
-                        sink.text( "Link" );//TODO: determine text of link target
-                        sink.link_();
-                    }
-                }
-                else
-                {
-                    failedElements.add( parser.getName() );
-                }
+                sink.body_();
             }
-            else if ( eventType == XmlPullParser.END_TAG )
+            else if ( level == 2 )
             {
-                //If the element introduces a new level of hierarchy, lower the stack
-                if ( hierElements.contains( parser.getName() ) )
-                {
-                    //increase the nesting level
-                    level--;
-                    //if this is the root element, handle it as body
-                    if ( level == 1 )
-                    {
-                        sink.body_();
-                    }
-                    else if ( level == 2 )
-                    {
-                        sink.section1_();
-                    }
-                    else if ( level == 3 )
-                    {
-                        sink.section2_();
-                    }
-                    else if ( level == 4 )
-                    {
-                        sink.section3_();
-                    }
-                    else if ( level == 5 )
-                    {
-                        sink.section4_();
-                    }
-                    else if ( level == 6 )
-                    {
-                        sink.section5_();
-                    }
-                }
-                //Match all *info-Elements for metainformation, but only consider the root element
-                else if ( parser.getName().endsWith( "info" ) && level == 1 )
-                {
-                    sink.head_();
-                    parent.pop();
-                }
-                //handle lists
-                else if ( parser.getName().equals( "itemizedlist" ) )
-                {
-                    sink.list_();
-                    parent.pop();
-                }
-                else if ( parser.getName().equals( "orderedlist" ) )
-                {
-                    sink.numberedList_();
-                    parent.pop();
-                }
-                else if ( parser.getName().equals( "listitem" ) )
-                {
-                    if ( isParent( "variablelist" ) )
-                    {
-                        sink.definition_();
-                    }
-                    else
-                    {
-                        sink.listItem_();
-                    }
-                }
-                else if ( parser.getName().equals( "variablelist" ) )
-                {
-                    sink.definitionList_();
-                }
-                else if ( parser.getName().equals( "varlistentry" ) )
-                {
-                    sink.definitionListItem_();
-                }
-                else if ( parser.getName().equals( "term" ) )
-                {
-                    sink.definedTerm_();
-                }
-                //handle figures
-                else if ( parser.getName().equals( "figure" ) || parser.getName().equals( "informalfigure" ) )
-                {
-                    sink.figure_();
-                    parent.pop();
-                }
-                else if ( parser.getName().equals( "caption" ) && isParent( "figure" ) )
-                {
-                    sink.figureCaption_();
-                }
-                else if ( parser.getName().equals( "table" ) || parser.getName().equals( "informaltable" ) )
-                {
-                    sink.table_();
-                    //TODO handle tgroups
-                    parent.pop();
-                }
-                else if ( parser.getName().equals( "thead" ) )
-                {
-                    parent.pop();
-                }
-                else if ( parser.getName().equals( "tr" ) || parser.getName().equals( "row" ) )
-                {
-                    sink.tableRow_();
-                }
-                else if ( parser.getName().equals( "entry" ) && isParent( "thead" ) || parser.getName().equals( "th" ) )
-                {
-                    sink.tableHeaderCell_();
-                }
-                else if ( parser.getName().equals( "entry" ) )
-                {
-                    sink.tableCell_();
-                }
-                else
-                if ( parser.getName().equals( "caption" ) && ( isParent( "informaltable" ) || isParent( "table" ) ) )
-                {
-                    sink.tableCaption_();
-                }
-                else if ( ( parser.getName().equals( "para" ) || parser.getName().equals( "simpara" ) ) &&
-                    !isParent( "formalpara" ) )
-                {
-                    sink.paragraph_();
-                }
-                else if ( parser.getName().equals( "formalpara" ) )
-                {
-                    parent.pop();
-                    sink.paragraph_();
-                }
-                else if ( parser.getName().equals( "title" ) && isParent( "formalpara" ) )
-                {
-                    sink.text( ". " );//Inline Running head
-                    sink.bold_();
-                }
-                else if ( DocBookParser.verbatimElements.contains( parser.getName() ) )
-                {
-                    sink.verbatim_();
-                }
-                else if ( DocBookParser.boldElements.contains( parser.getName() ) &&
-                    DocBookParser.monospaceElements.contains( parser.getName() ) )
-                {
-                    sink.bold_();
-                    sink.monospaced_();
-                }
-                else if ( DocBookParser.italicElements.contains( parser.getName() ) &&
-                    DocBookParser.monospaceElements.contains( parser.getName() ) )
-                {
-                    sink.italic_();
-                    sink.monospaced_();
-                }
-                else if ( DocBookParser.boldElements.contains( parser.getName() ) )
-                {
-                    sink.bold_();
-                }
-                else if ( DocBookParser.italicElements.contains( parser.getName() ) )
-                {
-                    sink.italic_();
-                }
-                else if ( DocBookParser.monospaceElements.contains( parser.getName() ) )
-                {
-                    sink.monospaced_();
-                }
-
-                else if ( parser.getName().equals( "title" ) )
-                {
-                    if ( parser.getName().equals( "figure" ) || parser.getName().equals( "informalfigure" ) )
-                    {
-                        sink.figureCaption_();
-                    }
-                    else if ( parser.getName().equals( "table" ) || parser.getName().equals( "informaltable" ) )
-                    {
-                        sink.tableCaption_();
-                    }
-                    else if ( level == 1 )
-                    {
-                        sink.title_();
-                    }
-                    else if ( level == 2 )
-                    {
-                        sink.sectionTitle1_();
-                    }
-                    else if ( level == 3 )
-                    {
-                        sink.sectionTitle2_();
-                    }
-                    else if ( level == 4 )
-                    {
-                        sink.sectionTitle3_();
-                    }
-                    else if ( level == 5 )
-                    {
-                        sink.sectionTitle4_();
-                    }
-                    else if ( level == 6 )
-                    {
-                        sink.sectionTitle5_();
-                    }
-                }
-                else if ( parser.getName().equals( "ulink" ) || parser.getName().equals( "link" ) )
-                {
-                    if ( isParent( parser.getName() ) )
-                    {
-                        parent.pop();
-                        sink.link_();
-                    }
-                }
+                sink.section1_();
             }
-            else if ( eventType == XmlPullParser.TEXT )
+            else if ( level == 3 )
             {
-                sink.text( parser.getText() );
+                sink.section2_();
             }
-
-            eventType = parser.next();
+            else if ( level == 4 )
+            {
+                sink.section3_();
+            }
+            else if ( level == 5 )
+            {
+                sink.section4_();
+            }
+            else if ( level == 6 )
+            {
+                sink.section5_();
+            }
+        }
+        //Match all *info-Elements for metainformation, but only consider the root element
+        else if ( parser.getName().endsWith( INFO_TAG.toString() ) && level == 1 )
+        {
+            sink.head_();
+            parent.pop();
+        }
+        //handle lists
+        else if ( parser.getName().equals( ITEMIZEDLIST_TAG.toString() ) )
+        {
+            sink.list_();
+            parent.pop();
+        }
+        else if ( parser.getName().equals( ORDEREDLIST_TAG.toString() ) )
+        {
+            sink.numberedList_();
+            parent.pop();
+        }
+        else if ( parser.getName().equals( LISTITEM_TAG.toString() ) )
+        {
+            if ( isParent( VARIABLELIST_TAG.toString() ) )
+            {
+                sink.definition_();
+            }
+            else
+            {
+                sink.listItem_();
+            }
+        }
+        else if ( parser.getName().equals( VARIABLELIST_TAG.toString() ) )
+        {
+            sink.definitionList_();
+        }
+        else if ( parser.getName().equals( VARLISTENTRY_TAG.toString() ) )
+        {
+            sink.definitionListItem_();
+        }
+        else if ( parser.getName().equals( TERM_TAG.toString() ) )
+        {
+            sink.definedTerm_();
+        }
+        //handle figures
+        else if ( parser.getName().equals( FIGURE_TAG.toString() )
+            || parser.getName().equals( INFORMALFIGURE_TAG.toString() ) )
+        {
+            sink.figure_();
+            parent.pop();
+        }
+        else if ( parser.getName().equals( Tag.CAPTION.toString() ) && isParent( FIGURE_TAG.toString() ) )
+        {
+            sink.figureCaption_();
+        }
+        else if ( parser.getName().equals( Tag.TABLE.toString() )
+            || parser.getName().equals( INFORMALTABLE_TAG.toString() ) )
+        {
+            sink.table_();
+            //TODO handle tgroups
+            parent.pop();
+        }
+        else if ( parser.getName().equals( THEAD_TAG.toString() ) )
+        {
+            parent.pop();
+        }
+        else if ( parser.getName().equals( Tag.TR.toString() ) || parser.getName().equals( ROW_TAG.toString() ) )
+        {
+            sink.tableRow_();
+        }
+        else if ( parser.getName().equals( ENTRY_TAG.toString() ) && isParent( THEAD_TAG.toString() )
+            || parser.getName().equals( Tag.TH.toString() ) )
+        {
+            sink.tableHeaderCell_();
+        }
+        else if ( parser.getName().equals( ENTRY_TAG.toString() ) )
+        {
+            sink.tableCell_();
+        }
+        else
+        if ( parser.getName().equals( Tag.CAPTION.toString() )
+            && ( isParent( INFORMALTABLE_TAG.toString() ) || isParent( Tag.TABLE.toString() ) ) )
+        {
+            sink.tableCaption_();
+        }
+        else if ( ( parser.getName().equals( PARA_TAG.toString() ) || parser.getName().equals( SIMPARA_TAG.toString() ) )
+            && !isParent( FORMALPARA_TAG.toString() ) )
+        {
+            sink.paragraph_();
+        }
+        else if ( parser.getName().equals( FORMALPARA_TAG.toString() ) )
+        {
+            parent.pop();
+            sink.paragraph_();
+        }
+        else if ( parser.getName().equals( Tag.TITLE.toString() ) && isParent( FORMALPARA_TAG.toString() ) )
+        {
+            sink.text( ". " );//Inline Running head
+            sink.bold_();
+        }
+        else if ( DocBookParser.verbatimElements.contains( parser.getName() ) )
+        {
+            sink.verbatim_();
+        }
+        else if ( DocBookParser.boldElements.contains( parser.getName() ) &&
+            DocBookParser.monospaceElements.contains( parser.getName() ) )
+        {
+            sink.bold_();
+            sink.monospaced_();
+        }
+        else if ( DocBookParser.italicElements.contains( parser.getName() ) &&
+            DocBookParser.monospaceElements.contains( parser.getName() ) )
+        {
+            sink.italic_();
+            sink.monospaced_();
+        }
+        else if ( DocBookParser.boldElements.contains( parser.getName() ) )
+        {
+            sink.bold_();
+        }
+        else if ( DocBookParser.italicElements.contains( parser.getName() ) )
+        {
+            sink.italic_();
+        }
+        else if ( DocBookParser.monospaceElements.contains( parser.getName() ) )
+        {
+            sink.monospaced_();
         }
 
-        // TODO: This should go through some monitor
-        if ( !failedElements.isEmpty() )
+        else if ( parser.getName().equals( Tag.TITLE.toString() ) )
         {
-            System.out.println( "Doxia was unable to handle following elements" );
-            for ( Iterator i = failedElements.iterator(); i.hasNext(); )
+            if ( parser.getName().equals( FIGURE_TAG.toString() )
+                || parser.getName().equals( INFORMALFIGURE_TAG.toString() ) )
             {
-                System.out.print( i.next().toString() + " " );
+                sink.figureCaption_();
             }
-
-            System.out.println();
+            else if ( parser.getName().equals( Tag.TABLE.toString() )
+                || parser.getName().equals( INFORMALTABLE_TAG.toString() ) )
+            {
+                sink.tableCaption_();
+            }
+            else if ( level == 1 )
+            {
+                sink.title_();
+            }
+            else if ( level == 2 )
+            {
+                sink.sectionTitle1_();
+            }
+            else if ( level == 3 )
+            {
+                sink.sectionTitle2_();
+            }
+            else if ( level == 4 )
+            {
+                sink.sectionTitle3_();
+            }
+            else if ( level == 5 )
+            {
+                sink.sectionTitle4_();
+            }
+            else if ( level == 6 )
+            {
+                sink.sectionTitle5_();
+            }
+        }
+        else if ( parser.getName().equals( ULINK_TAG.toString() ) || parser.getName().equals( LINK_TAG.toString() ) )
+        {
+            if ( isParent( parser.getName() ) )
+            {
+                parent.pop();
+                sink.link_();
+            }
         }
     }
+
+    /** {@inheritDoc} */
+    protected void handleText( XmlPullParser parser, Sink sink )
+        throws XmlPullParserException
+    {
+        sink.text( parser.getText() );
+    }
+
 
     // ----------------------------------------------------------------------
     //

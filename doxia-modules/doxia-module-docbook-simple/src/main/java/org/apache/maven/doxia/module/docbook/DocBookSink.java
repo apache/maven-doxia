@@ -20,8 +20,9 @@ package org.apache.maven.doxia.module.docbook;
  */
 
 import org.apache.maven.doxia.parser.Parser;
-import org.apache.maven.doxia.sink.SinkAdapter;
+import org.apache.maven.doxia.sink.AbstractXmlSink;
 import org.apache.maven.doxia.sink.StructureSink;
+import org.apache.maven.doxia.util.HtmlTools;
 import org.apache.maven.doxia.util.LineBreaker;
 import org.codehaus.plexus.util.FileUtils;
 
@@ -29,15 +30,28 @@ import java.io.StringWriter;
 import java.io.Writer;
 import java.util.StringTokenizer;
 
-public class DocBookSink
-    extends SinkAdapter
-{
-    private static final String EOL = System.getProperty( "line.separator" );
+import javax.swing.text.MutableAttributeSet;
+import javax.swing.text.SimpleAttributeSet;
+import javax.swing.text.html.HTML.Attribute;
+import javax.swing.text.html.HTML.Tag;
 
+/**
+ * A doxia Sink which produces a <code>Docbook</code> model.
+ *
+ * @version $Id$
+ * @since 1.0
+ */
+public class DocBookSink
+    extends AbstractXmlSink
+    implements DocbookMarkup
+{
+    /** DocBook V4.1 SGML public id: "-//OASIS//DTD DocBook V4.1//EN" */
     public static final String DEFAULT_SGML_PUBLIC_ID = "-//OASIS//DTD DocBook V4.1//EN";
 
+    /** DocBook XML V4.1.2 XML public id: "-//OASIS//DTD DocBook XML V4.1.2//EN" */
     public static final String DEFAULT_XML_PUBLIC_ID = "-//OASIS//DTD DocBook XML V4.1.2//EN";
 
+    /** DocBook XML V4.0 XML system id: "http://www.oasis-open.org/docbook/xml/4.0/docbookx.dtd" */
     public static final String DEFAULT_XML_SYSTEM_ID = "http://www.oasis-open.org/docbook/xml/4.0/docbookx.dtd";
 
     private LineBreaker out;
@@ -92,6 +106,9 @@ public class DocBookSink
 
     // -----------------------------------------------------------------------
 
+    /**
+     * @param out the default writer
+     */
     public DocBookSink( Writer out )
     {
         this.out = new LineBreaker( out );
@@ -103,6 +120,13 @@ public class DocBookSink
         setLineBreakElement( "<!-- LB -->" );
     }
 
+    /**
+     * TODO Try to replace by {@link HtmlTools#escapeHTML(String)}
+     *
+     * @param text
+     * @param xmlMode
+     * @return
+     */
     public static final String escapeSGML( String text, boolean xmlMode )
     {
         int length = text.length();
@@ -320,6 +344,17 @@ public class DocBookSink
         tableHasGrid = false;
     }
 
+    // ----------------------------------------------------------------------
+    //
+    // ----------------------------------------------------------------------
+
+    /**
+     * {@inheritDoc}
+     * @see #DEFAULT_XML_PUBLIC_ID
+     * @see #DEFAULT_SGML_PUBLIC_ID
+     * @see #DEFAULT_XML_SYSTEM_ID
+     * @see DocbookMarkup#ARTICLE_TAG
+     */
     public void head()
     {
         resetState();
@@ -371,263 +406,440 @@ public class DocBookSink
             markup( EOL + "\"" + sysId + "\">" + EOL );
         }
 
-        markup( "<article" );
+        MutableAttributeSet att = new SimpleAttributeSet();
         if ( lang != null )
         {
-            markup( " lang=\"" + lang + "\"" );
+            att.addAttribute( Attribute.LANG, lang );
         }
-        markup( ">" + EOL );
+
+        writeStartTag( ARTICLE_TAG, att );
     }
 
+    /**
+     * {@inheritDoc}
+     * @see DocbookMarkup#ARTICLEINFO_TAG
+     */
     public void head_()
     {
         if ( hasTitle )
         {
-            markup( "</articleinfo>" + EOL );
+            writeEndTag( ARTICLEINFO_TAG );
             hasTitle = false;
         }
     }
 
+    /**
+     * {@inheritDoc}
+     * @see DocbookMarkup#ARTICLEINFO_TAG
+     * @see javax.swing.text.html.HTML.Tag#TITLE
+     */
     public void title()
     {
-        markup( "<articleinfo>" + EOL );
+        writeStartTag( ARTICLEINFO_TAG );
 
         hasTitle = true;
-        markup( "<title>" );
+        writeStartTag( Tag.TITLE );
     }
 
+    /**
+     * {@inheritDoc}
+     * @see javax.swing.text.html.HTML.Tag#TITLE
+     */
     public void title_()
     {
-        markup( "</title>" + EOL );
+        writeEndTag( Tag.TITLE );
     }
 
+    /**
+     * {@inheritDoc}
+     * @see DocbookMarkup#CORPAUTHOR_TAG
+     */
     public void author()
     {
         authorDateFlag = true;
-        markup( "<corpauthor>" );
+        writeStartTag( CORPAUTHOR_TAG );
     }
 
+    /**
+     * {@inheritDoc}
+     * @see DocbookMarkup#CORPAUTHOR_TAG
+     */
     public void author_()
     {
-        markup( "</corpauthor>" + EOL );
+        writeEndTag( CORPAUTHOR_TAG );
         authorDateFlag = false;
     }
 
+    /**
+     * {@inheritDoc}
+     * @see DocbookMarkup#DATE_TAG
+     */
     public void date()
     {
         authorDateFlag = true;
-        markup( "<date>" );
+        writeStartTag( DATE_TAG );
     }
 
+    /**
+     * {@inheritDoc}
+     * @see DocbookMarkup#DATE_TAG
+     */
     public void date_()
     {
-        markup( "</date>" + EOL );
+        writeEndTag( DATE_TAG );
         authorDateFlag = false;
     }
 
+    /**
+     * {@inheritDoc}
+     * @see DocbookMarkup#ARTICLE_TAG
+     */
     public void body_()
     {
-        markup( "</article>" + EOL );
+        writeEndTag( ARTICLE_TAG );
         out.flush();
         resetState();
     }
 
+    /**
+     * {@inheritDoc}
+     * @see DocbookMarkup#SECTION_TAG
+     */
     public void section1()
     {
-        markup( "<section>" + EOL );
+        writeStartTag( SECTION_TAG );
     }
 
+    /**
+     * {@inheritDoc}
+     * @see DocbookMarkup#SECTION_TAG
+     */
     public void section1_()
     {
-        markup( "</section>" + EOL );
+        writeEndTag( SECTION_TAG );
     }
 
+    /**
+     * {@inheritDoc}
+     * @see DocbookMarkup#SECTION_TAG
+     */
     public void section2()
     {
-        markup( "<section>" + EOL );
+        writeStartTag( SECTION_TAG );
     }
 
+    /**
+     * {@inheritDoc}
+     * @see DocbookMarkup#SECTION_TAG
+     */
     public void section2_()
     {
-        markup( "</section>" + EOL );
+        writeEndTag( SECTION_TAG );
     }
 
+    /**
+     * {@inheritDoc}
+     * @see DocbookMarkup#SECTION_TAG
+     */
     public void section3()
     {
-        markup( "<section>" + EOL );
+        writeStartTag( SECTION_TAG );
     }
 
+    /**
+     * {@inheritDoc}
+     * @see DocbookMarkup#SECTION_TAG
+     */
     public void section3_()
     {
-        markup( "</section>" + EOL );
+        writeEndTag( SECTION_TAG );
     }
 
+    /**
+     * {@inheritDoc}
+     * @see DocbookMarkup#SECTION_TAG
+     */
     public void section4()
     {
-        markup( "<section>" + EOL );
+        writeStartTag( SECTION_TAG );
     }
 
+    /**
+     * {@inheritDoc}
+     * @see DocbookMarkup#SECTION_TAG
+     */
     public void section4_()
     {
-        markup( "</section>" + EOL );
+        writeEndTag( SECTION_TAG );
     }
 
+    /**
+     * {@inheritDoc}
+     * @see DocbookMarkup#SECTION_TAG
+     */
     public void section5()
     {
-        markup( "<section>" + EOL );
+        writeStartTag( SECTION_TAG );
     }
 
+    /**
+     * {@inheritDoc}
+     * @see DocbookMarkup#SECTION_TAG
+     */
     public void section5_()
     {
-        markup( "</section>" + EOL );
+        writeEndTag( SECTION_TAG );
     }
 
+    /**
+     * {@inheritDoc}
+     * @see javax.swing.text.html.HTML.Tag#TITLE
+     */
     public void sectionTitle()
     {
-        markup( "<title>" );
+        writeStartTag( Tag.TITLE );
     }
 
+    /**
+     * {@inheritDoc}
+     * @see javax.swing.text.html.HTML.Tag#TITLE
+     */
     public void sectionTitle_()
     {
-        markup( "</title>" + EOL );
+        writeEndTag( Tag.TITLE );
     }
 
+    /**
+     * {@inheritDoc}
+     * @see DocbookMarkup#ITEMIZEDLIST_TAG
+     */
     public void list()
     {
-        markup( "<itemizedlist>" + EOL );
+        writeStartTag( ITEMIZEDLIST_TAG );
     }
 
+    /**
+     * {@inheritDoc}
+     * @see DocbookMarkup#ITEMIZEDLIST_TAG
+     */
     public void list_()
     {
-        markup( "</itemizedlist>" + EOL );
+        writeEndTag( ITEMIZEDLIST_TAG );
     }
 
+    /**
+     * {@inheritDoc}
+     * @see DocbookMarkup#LISTITEM_TAG
+     */
     public void listItem()
     {
-        markup( "<listitem>" + EOL );
+        writeStartTag( LISTITEM_TAG );
     }
 
+    /**
+     * {@inheritDoc}
+     * @see DocbookMarkup#LISTITEM_TAG
+     */
     public void listItem_()
     {
-        markup( "</listitem>" + EOL );
+        writeEndTag( LISTITEM_TAG );
     }
 
+    /**
+     * {@inheritDoc}
+     * @see DocbookMarkup#ORDEREDLIST_TAG
+     * @see DocbookMarkup#NUMERATION_ATTRIBUTE
+     */
     public void numberedList( int numbering )
     {
         String numeration;
         switch ( numbering )
         {
             case NUMBERING_UPPER_ALPHA:
-                numeration = "upperalpha";
+                numeration = UPPERALPHA_STYLE;
                 break;
             case NUMBERING_LOWER_ALPHA:
-                numeration = "loweralpha";
+                numeration = LOWERALPHA_STYLE;
                 break;
             case NUMBERING_UPPER_ROMAN:
-                numeration = "upperroman";
+                numeration = UPPERROMAN_STYLE;
                 break;
             case NUMBERING_LOWER_ROMAN:
-                numeration = "lowerroman";
+                numeration = LOWERROMAN_STYLE;
                 break;
             case NUMBERING_DECIMAL:
             default:
-                numeration = "arabic";
+                numeration = ARABIC_STYLE;
         }
-        markup( "<orderedlist numeration=\"" + numeration + "\">" + EOL );
+
+        MutableAttributeSet att = new SimpleAttributeSet();
+        att.addAttribute( NUMERATION_ATTRIBUTE, numeration );
+
+        writeStartTag( ORDEREDLIST_TAG, att );
     }
 
+    /**
+     * {@inheritDoc}
+     * @see DocbookMarkup#ORDEREDLIST_TAG
+     */
     public void numberedList_()
     {
-        markup( "</orderedlist>" + EOL );
+        writeEndTag( ORDEREDLIST_TAG );
     }
 
+    /**
+     * {@inheritDoc}
+     * @see DocbookMarkup#LISTITEM_TAG
+     */
     public void numberedListItem()
     {
-        markup( "<listitem>" + EOL );
+        writeStartTag( LISTITEM_TAG );
     }
 
+    /**
+     * {@inheritDoc}
+     * @see DocbookMarkup#LISTITEM_TAG
+     */
     public void numberedListItem_()
     {
-        markup( "</listitem>" + EOL );
+        writeEndTag( LISTITEM_TAG );
     }
 
+    /**
+     * {@inheritDoc}
+     * @see DocbookMarkup#VARIABLELIST_TAG
+     */
     public void definitionList()
     {
-        markup( "<variablelist>" + EOL );
+        writeStartTag( VARIABLELIST_TAG );
     }
 
+    /**
+     * {@inheritDoc}
+     * @see DocbookMarkup#VARIABLELIST_TAG
+     */
     public void definitionList_()
     {
-        markup( "</variablelist>" + EOL );
+        writeEndTag( VARIABLELIST_TAG );
     }
 
+    /**
+     * {@inheritDoc}
+     * @see DocbookMarkup#VARLISTENTRY_TAG
+     */
     public void definitionListItem()
     {
-        markup( "<varlistentry>" + EOL );
+        writeStartTag( VARLISTENTRY_TAG );
     }
 
+    /**
+     * {@inheritDoc}
+     * @see DocbookMarkup#VARLISTENTRY_TAG
+     */
     public void definitionListItem_()
     {
-        markup( "</varlistentry>" + EOL );
+        writeEndTag( VARLISTENTRY_TAG );
     }
 
+    /**
+     * {@inheritDoc}
+     * @see DocbookMarkup#TERM_TAG
+     */
     public void definedTerm()
     {
-        markup( "<term>" );
+        writeStartTag( TERM_TAG );
     }
 
+    /**
+     * {@inheritDoc}
+     * @see DocbookMarkup#TERM_TAG
+     */
     public void definedTerm_()
     {
-        markup( "</term>" + EOL );
+        writeEndTag( TERM_TAG );
     }
 
+    /**
+     * {@inheritDoc}
+     * @see DocbookMarkup#LISTITEM_TAG
+     */
     public void definition()
     {
-        markup( "<listitem>" + EOL );
+        writeStartTag( LISTITEM_TAG );
     }
 
+    /**
+     * {@inheritDoc}
+     * @see DocbookMarkup#LISTITEM_TAG
+     */
     public void definition_()
     {
-        markup( "</listitem>"+ EOL);
+        writeEndTag( LISTITEM_TAG );
     }
 
+    /**
+     * {@inheritDoc}
+     * @see DocbookMarkup#PARA_TAG
+     */
     public void paragraph()
     {
-        markup( "<para>" );
+        writeStartTag( PARA_TAG );
     }
 
+    /**
+     * {@inheritDoc}
+     * @see DocbookMarkup#PARA_TAG
+     */
     public void paragraph_()
     {
-        markup( "</para>"  + EOL );
+        writeEndTag( PARA_TAG );
     }
 
+    /**
+     * {@inheritDoc}
+     * @see DocbookMarkup#PROGRAMLISTING_TAG
+     */
     public void verbatim( boolean boxed )
     {
         verbatimFlag = true;
-        markup( "<programlisting>" );
+        writeStartTag( PROGRAMLISTING_TAG );
     }
 
+    /**
+     * {@inheritDoc}
+     * @see DocbookMarkup#PROGRAMLISTING_TAG
+     */
     public void verbatim_()
     {
-        markup( "</programlisting>" + EOL );
+        writeEndTag( PROGRAMLISTING_TAG );
         verbatimFlag = false;
     }
 
+    /** {@inheritDoc} */
     public void horizontalRule()
     {
         markup( horizontalRuleElement + EOL );
     }
 
+    /** {@inheritDoc} */
     public void pageBreak()
     {
         markup( pageBreakElement + EOL );
     }
 
+    /** {@inheritDoc} */
     public void figure_()
     {
         graphicElement();
     }
 
+    /**
+     * @see DocbookMarkup#MEDIAOBJECT_TAG
+     * @see DocbookMarkup#IMAGEOBJECT_TAG
+     * @see DocbookMarkup#IMAGEDATA_TAG
+     * @see DocbookMarkup#FORMAT_ATTRIBUTE
+     * @see DocbookMarkup#FILEREF_ATTRIBUTE
+     */
     protected void graphicElement()
     {
         if ( graphicsFileName != null )
@@ -638,45 +850,71 @@ public class DocBookSink
                 format = "JPEG";
             }
 
-            markup( "<mediaobject>" + EOL + "<imageobject>" + EOL );
-            markup(
-                "<imagedata format=\"" + format + "\"" + EOL + "fileref=\"" + escapeSGML( graphicsFileName, xmlMode ) + '\"' );
+            writeStartTag( MEDIAOBJECT_TAG );
+            writeStartTag( IMAGEOBJECT_TAG );
+
+            MutableAttributeSet att = new SimpleAttributeSet();
+            att.addAttribute( FORMAT_ATTRIBUTE, format );
+            att.addAttribute( FILEREF_ATTRIBUTE, escapeSGML( graphicsFileName, xmlMode ) );
+
             if ( xmlMode )
             {
-                markup( "/>" + EOL );
+                writeSimpleTag( IMAGEDATA_TAG, att );
             }
             else
             {
-                markup( ">" + EOL );
+                writeStartTag( IMAGEDATA_TAG, att );
             }
-            markup( "</imageobject>" + EOL + "</mediaobject>" + EOL );
+
+            writeEndTag( IMAGEOBJECT_TAG );
+            writeEndTag( MEDIAOBJECT_TAG );
             graphicsFileName = null;
         }
     }
 
+    /** {@inheritDoc} */
     public void figureGraphics( String name )
     {
         graphicsFileName = name + ".jpeg";
     }
 
+    /**
+     * {@inheritDoc}
+     * @see DocbookMarkup#FIGURE_TAG
+     * @see javax.swing.text.html.HTML.Tag#TITLE
+     */
     public void figureCaption()
     {
-        markup( "<figure>" + EOL );
-        markup( "<title>" );
+        writeStartTag( FIGURE_TAG );
+        writeStartTag( Tag.TITLE );
     }
 
+    /**
+     * {@inheritDoc}
+     * @see DocbookMarkup#FIGURE_TAG
+     * @see javax.swing.text.html.HTML.Tag#TITLE
+     */
     public void figureCaption_()
     {
-        markup( "</title>" + EOL );
+        writeEndTag( Tag.TITLE );
         graphicElement();
-        markup( "</figure>" + EOL );
+        writeEndTag( FIGURE_TAG );
     }
 
+    /** {@inheritDoc} */
     public void table()
     {
         tableHasCaption = false;
     }
 
+    /**
+     * {@inheritDoc}
+     * @see DocbookMarkup#INFORMALTABLE_TAG
+     * @see DocbookMarkup#FRAME_ATTRIBUTE
+     * @see DocbookMarkup#ROWSEP_ATTRIBUTE
+     * @see DocbookMarkup#COLSEP_ATTRIBUTE
+     * @see javax.swing.text.html.HTML.Tag#TABLE
+     */
     public void table_()
     {
         if ( tableHasCaption )
@@ -685,7 +923,7 @@ public class DocBookSink
             // Formal table+title already written to original destination ---
 
             out.write( tableRows, /*preserveSpace*/ true );
-            markup( "</table>" + EOL );
+            writeEndTag( Tag.TABLE );
         }
         else
         {
@@ -702,17 +940,29 @@ public class DocBookSink
                 sep = 0;
             }
 
-            markup( "<informaltable frame=\"" + frame + "\" rowsep=\"" + sep + "\" colsep=\"" + sep + "\">" + EOL );
+            MutableAttributeSet att = new SimpleAttributeSet();
+            att.addAttribute( FRAME_ATTRIBUTE, frame );
+            att.addAttribute( ROWSEP_ATTRIBUTE, String.valueOf( sep ) );
+            att.addAttribute( COLSEP_ATTRIBUTE, String.valueOf( sep )  );
+
+            writeStartTag( INFORMALTABLE_TAG, att );
+
             out.write( tableRows, /*preserveSpace*/ true );
-            markup( "</informaltable>" + EOL );
+
+            writeEndTag( INFORMALTABLE_TAG );
         }
 
         tableRows = null;
         tableHasGrid = false;
     }
 
+    /**
+     * {@inheritDoc}
+     * @see DocbookMarkup#TGROUP_TAG
+     * @see DocbookMarkup#COLS_ATTRIBUTE
+     * @see DocbookMarkup#COLSPEC_TAG
+     */
     public void tableRows( int[] justification, boolean grid )
-
     {
         tableHasGrid = grid;
 
@@ -721,7 +971,11 @@ public class DocBookSink
         savedOut = out;
         out = new LineBreaker( new StringWriter() );
 
-        markup( "<tgroup cols=\"" + justification.length + "\">" + EOL );
+        MutableAttributeSet att = new SimpleAttributeSet();
+        att.addAttribute( COLS_ATTRIBUTE, String.valueOf( justification.length ) );
+
+        writeStartTag( TGROUP_TAG, att );
+
         for ( int i = 0; i < justification.length; ++i )
         {
             String justif;
@@ -738,24 +992,32 @@ public class DocBookSink
                     justif = "center";
                     break;
             }
-            markup( "<colspec align=\"" + justif + "\"" );
+
+            att = new SimpleAttributeSet();
+            att.addAttribute( Attribute.ALIGN.toString(), justif );
+
             if ( xmlMode )
             {
-                markup( "/>" + EOL );
+                writeSimpleTag( COLSPEC_TAG, att );
             }
             else
             {
-                markup( ">" + EOL );
+                writeStartTag( COLSPEC_TAG, att );
             }
         }
 
-        markup( "<tbody>" + EOL );
+        writeStartTag( TBODY_TAG );
     }
 
+    /**
+     * {@inheritDoc}
+     * @see DocbookMarkup#TGROUP_TAG
+     * @see DocbookMarkup#TBODY_TAG
+     */
     public void tableRows_()
     {
-        markup( "</tbody>" + EOL );
-        markup( "</tgroup>" + EOL );
+        writeEndTag( TBODY_TAG );
+        writeEndTag( TGROUP_TAG );
 
         // Remember diverted output and restore original destination ---
         out.flush();
@@ -763,26 +1025,54 @@ public class DocBookSink
         out = savedOut;
     }
 
+    /**
+     * {@inheritDoc}
+     * @see DocbookMarkup#ROW_TAG
+     */
     public void tableRow()
     {
-        markup( "<row>" + EOL );
+        writeStartTag( ROW_TAG );
     }
 
+    /**
+     * {@inheritDoc}
+     * @see DocbookMarkup#ROW_TAG
+     */
     public void tableRow_()
     {
-        markup( "</row>" + EOL );
+        writeEndTag( ROW_TAG );
     }
 
+    /**
+     * {@inheritDoc}
+     * @see DocbookMarkup#ENTRY_TAG
+     * @see DocbookMarkup#PARA_TAG
+     */
     public void tableCell()
     {
-        markup( "<entry><para>" );
+        writeStartTag( ENTRY_TAG );
+        writeStartTag( PARA_TAG );
     }
 
+    /**
+     * {@inheritDoc}
+     * @see DocbookMarkup#ENTRY_TAG
+     * @see DocbookMarkup#PARA_TAG
+     */
     public void tableCell_()
     {
-        markup( "</para></entry>" + EOL );
+        writeEndTag( PARA_TAG );
+        writeEndTag( ENTRY_TAG );
     }
 
+    /**
+     * {@inheritDoc}
+     * @see javax.swing.text.html.HTML.Tag#TABLE
+     * @see DocbookMarkup#FRAME_ATTRIBUTE
+     * @see DocbookMarkup#ROWSEP_ATTRIBUTE
+     * @see DocbookMarkup#COLSEP_ATTRIBUTE
+     * @see javax.swing.text.html.HTML.Tag#TITLE
+     */
     public void tableCaption()
     {
         tableHasCaption = true;
@@ -800,79 +1090,118 @@ public class DocBookSink
             sep = 0;
         }
 
-        markup( "<table frame=\"" + frame + "\" rowsep=\"" + sep + "\" colsep=\"" + sep + "\">" + EOL );
-        markup( "<title>" );
+        MutableAttributeSet att = new SimpleAttributeSet();
+        att.addAttribute( FRAME_ATTRIBUTE, frame );
+        att.addAttribute( ROWSEP_ATTRIBUTE, String.valueOf( sep ) );
+        att.addAttribute( COLSEP_ATTRIBUTE, String.valueOf( sep ) );
+
+        writeStartTag( Tag.TABLE, att );
+
+        writeStartTag( Tag.TITLE );
     }
 
+    /**
+     * {@inheritDoc}
+     * @see javax.swing.text.html.HTML.Tag#TITLE
+     */
     public void tableCaption_()
     {
-        markup( "</title>" + EOL );
+        writeEndTag( Tag.TITLE );
     }
 
+    /**
+     * {@inheritDoc}
+     * @see DocbookMarkup#ANCHOR_TAG
+     */
     public void anchor( String name )
     {
         if ( !authorDateFlag )
         {
             // First char of ID cannot be a digit.
-            markup( "<anchor id=\"a." + StructureSink.linkToKey( name ) + "\"" );
+            MutableAttributeSet att = new SimpleAttributeSet();
+            att.addAttribute( Attribute.ID, "a." + StructureSink.linkToKey( name ) );
+
             if ( xmlMode )
             {
-                markup( "/>" );
+                writeSimpleTag( ANCHOR_TAG, att );
             }
             else
             {
-                markup( ">" );
+                writeStartTag( ANCHOR_TAG, att );
             }
         }
     }
 
+    /**
+     * {@inheritDoc}
+     * @see DocbookMarkup#ULINK_TAG
+     * @see DocbookMarkup#URL_ATTRIBUTE
+     * @see DocbookMarkup#LINK_TAG
+     * @see DocbookMarkup#LINKEND_ATTRIBUTE
+     */
     public void link( String name )
     {
         if ( StructureSink.isExternalLink( name ) )
         {
             externalLinkFlag = true;
-            markup( "<ulink url=\"" + escapeSGML( name, xmlMode ) + "\">" );
+            MutableAttributeSet att = new SimpleAttributeSet();
+            att.addAttribute( URL_ATTRIBUTE, escapeSGML( name, xmlMode ) );
+
+            writeStartTag( ULINK_TAG, att );
         }
         else
         {
             // First char of ID cannot be a digit.
-            markup( "<link linkend=\"a." + StructureSink.linkToKey( name ) + "\">" );
+            MutableAttributeSet att = new SimpleAttributeSet();
+            att.addAttribute( LINKEND_ATTRIBUTE, "a." + StructureSink.linkToKey( name ) );
+
+            writeStartTag( LINK_TAG, att );
         }
     }
 
+    /**
+     * {@inheritDoc}
+     * @see DocbookMarkup#ULINK_TAG
+     * @see DocbookMarkup#LINK_TAG
+     */
     public void link_()
     {
         if ( externalLinkFlag )
         {
-            markup( "</ulink>" );
+            writeEndTag( ULINK_TAG );
             externalLinkFlag = false;
         }
         else
         {
-            markup( "</link>" );
+            writeEndTag( LINK_TAG );
         }
     }
 
+    /** {@inheritDoc} */
     public void italic()
     {
         markup( italicBeginTag );
     }
 
+    /** {@inheritDoc} */
     public void italic_()
     {
         markup( italicEndTag );
     }
 
+    /** {@inheritDoc} */
     public void bold()
     {
         markup( boldBeginTag );
     }
 
+    /** {@inheritDoc} */
     public void bold_()
     {
         markup( boldEndTag );
     }
 
+    /** {@inheritDoc} */
     public void monospaced()
     {
         if ( !authorDateFlag )
@@ -881,6 +1210,7 @@ public class DocBookSink
         }
     }
 
+    /** {@inheritDoc} */
     public void monospaced_()
     {
         if ( !authorDateFlag )
@@ -889,17 +1219,20 @@ public class DocBookSink
         }
     }
 
+    /** {@inheritDoc} */
     public void lineBreak()
     {
         markup( lineBreakElement + EOL );
     }
 
+    /** {@inheritDoc} */
     public void nonBreakingSpace()
     {
         //markup("&#x00A0;");
         markup( "&nbsp;" );
     }
 
+    /** {@inheritDoc} */
     public void text( String text )
     {
         if ( verbatimFlag )
@@ -931,13 +1264,21 @@ public class DocBookSink
 
     // -----------------------------------------------------------------------
 
+    /** {@inheritDoc} */
     public void flush()
     {
         out.flush();
     }
 
+    /** {@inheritDoc} */
     public void close()
     {
         out.close();
+    }
+
+    /** {@inheritDoc} */
+    protected void write( String text )
+    {
+        markup( text );
     }
 }
