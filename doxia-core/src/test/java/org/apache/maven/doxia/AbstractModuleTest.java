@@ -106,7 +106,6 @@ public abstract class AbstractModuleTest
      * in the test target output directory.
      *
      * @param baseName The name of the resource file to read.
-     * @param extension The file extension of the resource file to read.
      * @return An InputStreamReader.
      */
     protected Reader getTestReader( String baseName )
