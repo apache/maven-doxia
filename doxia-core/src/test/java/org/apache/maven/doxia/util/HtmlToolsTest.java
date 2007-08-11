@@ -59,4 +59,25 @@ public class HtmlToolsTest
         assertEquals( HtmlTools.encodeId( "   anchor" ), "anchor" );
         assertEquals( HtmlTools.encodeId( "myAnchor" ), "myAnchor" );
     }
+
+    /**
+     * Verify the expected results
+     */
+    public void testIsId()
+    {
+        assertFalse( HtmlTools.isId( null ));
+        assertFalse( HtmlTools.isId( "" ) );
+        assertFalse( HtmlTools.isId( " " ) );
+        assertFalse( HtmlTools.isId( " _ " ) );
+        assertFalse( HtmlTools.isId( "1" ) );
+        assertFalse( HtmlTools.isId( "1anchor" ) );
+        assertFalse( HtmlTools.isId( "_anchor" ) );
+        assertFalse( HtmlTools.isId( "a b-c123 " ) );
+        assertFalse( HtmlTools.isId( "   anchor" ) );
+        assertTrue( HtmlTools.isId( "myAnchor" ) );
+        assertTrue( HtmlTools.isId( "a_" ) );
+        assertTrue( HtmlTools.isId( "a-" ) );
+        assertTrue( HtmlTools.isId( "a:" ) );
+        assertTrue( HtmlTools.isId( "a." ) );
+    }
 }

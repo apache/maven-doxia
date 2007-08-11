@@ -1031,8 +1031,8 @@ public class XhtmlSink
     {
         String text = href.toLowerCase();
         return ( text.indexOf( ".html#" ) != -1 || text.indexOf( ".htm#" ) != -1
-            || text.endsWith( ".htm" ) || text.endsWith( ".html" ) );
-
+            || text.endsWith( ".htm" ) || text.endsWith( ".html" )
+            || !HtmlTools.isId( text ) );
     }
 
     /**

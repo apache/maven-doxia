@@ -267,4 +267,39 @@ public class HtmlTools
 
         return buffer.toString();
     }
+
+    /**
+     * Determines if the specified text is a valid id according to the rules
+     * laid out in encodeId(String).
+     *
+     * @see #encodeId(String)
+     * @param text The text to be tested
+     * @return <code>true</code> if the text is a valid id, otherwise <code>false</code>
+     */
+    public static boolean isId( String text )
+    {
+        if ( text == null || text.length() == 0 )
+        {
+            return false;
+        }
+
+        for ( int i = 0; i < text.length(); ++i )
+        {
+            char c = text.charAt( i );
+            if ( i == 0 && !Character.isLetter( c ) )
+            {
+                return false;
+            }
+            if ( c == ' ' )
+            {
+                return false;
+            }
+            else if ( !Character.isLetterOrDigit( c ) && c != '-' && c != '_' && c != ':' && c != '.' )
+            {
+                return false;
+            }
+        }
+
+        return true;
+    }
 }
