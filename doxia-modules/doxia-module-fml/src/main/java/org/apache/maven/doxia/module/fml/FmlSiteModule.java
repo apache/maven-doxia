@@ -30,20 +30,21 @@ import org.apache.maven.doxia.module.site.AbstractSiteModule;
 public class FmlSiteModule
     extends AbstractSiteModule
 {
-
+    /** {@inheritDoc} */
     public String getSourceDirectory()
     {
         return "fml";
     }
 
+    /** {@inheritDoc} */
     public String getExtension()
     {
         return "fml";
     }
 
+    /** {@inheritDoc} */
     public String getParserId()
     {
         return "fml";
     }
-
 }
