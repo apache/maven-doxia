@@ -25,16 +25,18 @@ import org.apache.maven.doxia.parser.Parser;
 
 /**
  * @author <a href="mailto:evenisse@codehaus.org">Jason van Zyl</a>
- * @version $Id:FmlParserTest.java 348605 2005-11-24 12:02:44 +1100 (Thu, 24 Nov 2005) brett $
+ * @version $Id$
  */
 public class FmlParserTest
     extends AbstractParserTestCase
 {
+    /** {@inheritDoc} */
     protected Parser getParser()
     {
         return new FmlParser();
     }
 
+    /** {@inheritDoc} */
     protected String getDocument()
     {
         return "src/test/resources/faq.fml";
