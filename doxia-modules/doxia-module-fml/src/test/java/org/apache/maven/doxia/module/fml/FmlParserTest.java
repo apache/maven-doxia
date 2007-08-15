@@ -20,7 +20,7 @@ package org.apache.maven.doxia.module.fml;
  */
 
 import org.apache.maven.doxia.module.fml.FmlParser;
-import org.apache.maven.doxia.parser.AbstractParserTestCase;
+import org.apache.maven.doxia.parser.AbstractParserTest;
 import org.apache.maven.doxia.parser.Parser;
 
 /**
@@ -28,17 +28,19 @@ import org.apache.maven.doxia.parser.Parser;
  * @version $Id$
  */
 public class FmlParserTest
-    extends AbstractParserTestCase
+    extends AbstractParserTest
 {
     /** {@inheritDoc} */
-    protected Parser getParser()
+    protected Parser createParser()
     {
         return new FmlParser();
     }
 
     /** {@inheritDoc} */
-    protected String getDocument()
+    protected String outputExtension()
     {
-        return "src/test/resources/faq.fml";
+        return "fml";
     }
+
+
 }
