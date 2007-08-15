@@ -66,6 +66,8 @@ public abstract class AbstractIdentityTest extends AbstractModuleTest
      * is the same as the original model. Currently, this doesn't actually
      * assert anything, but the two generated output files, expected.txt
      * and actual.txt can be compared for differences.
+     * @throws IOException if there's a problem reading/writing a test file.
+     * @throws ParseException if a model cannot be parsed.
      */
     public void testIdentity()
         throws IOException, ParseException
@@ -85,7 +87,8 @@ public abstract class AbstractIdentityTest extends AbstractModuleTest
 
             // write to file for comparison
             fileWriter = getTestWriter( "expected", "txt" );
-            SinkTestDocument.generate( new TextSink( fileWriter ) );
+            fileWriter.write( expected );
+            fileWriter.flush();
 
 
             // generate the actual model
@@ -99,8 +102,8 @@ public abstract class AbstractIdentityTest extends AbstractModuleTest
 
             // write to file for comparison
             fileWriter = getTestWriter( "actual", "txt" );
-            reader.reset();
-            createParser().parse( reader, new TextSink( fileWriter ) );
+            fileWriter.write( actual );
+            fileWriter.flush();
 
             // Disabled for now, it's unlikely that any of our modules
             // will pass this test any time soon, but the generated
