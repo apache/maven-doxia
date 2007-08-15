@@ -78,6 +78,7 @@ public abstract class AbstractSinkTest
         sink.title();
         sink.text( title );
         sink.title_();
+        sink.flush();
 
         String expected = noNewLine( writer.toString() );
         assertEquals( "Wrong title!",
@@ -96,6 +97,7 @@ public abstract class AbstractSinkTest
         sink.author();
         sink.text( author );
         sink.author_();
+        sink.flush();
 
         String expected = noNewLine( writer.toString() );
         assertEquals( "Wrong author!",
@@ -113,6 +115,7 @@ public abstract class AbstractSinkTest
         sink.date();
         sink.text( date );
         sink.date_();
+        sink.flush();
 
         String expected = noNewLine( writer.toString() );
         assertEquals( "Wrong date!",
@@ -128,6 +131,7 @@ public abstract class AbstractSinkTest
     {
         sink.head();
         sink.head_();
+        sink.flush();
 
         String expected = noNewLine( writer.toString() );
         assertEquals( "Wrong head!", expected, noNewLine( getHeadBlock() ) );
@@ -142,6 +146,7 @@ public abstract class AbstractSinkTest
     {
         sink.body();
         sink.body_();
+        sink.flush();
 
         String expected = noNewLine( writer.toString() );
         assertEquals( "Wrong body!", expected, noNewLine( getBodyBlock() ) );
@@ -160,6 +165,7 @@ public abstract class AbstractSinkTest
         sink.sectionTitle();
         sink.text( title );
         sink.sectionTitle_();
+        sink.flush();
 
         String expected = noNewLine( writer.toString() );
         assertEquals( "Wrong sectionTitle!",
@@ -181,6 +187,7 @@ public abstract class AbstractSinkTest
         sink.text( title );
         sink.sectionTitle1_();
         sink.section1_();
+        sink.flush();
 
         String expected = noNewLine( writer.toString() );
         assertEquals( "Wrong section1 block!",
@@ -202,6 +209,7 @@ public abstract class AbstractSinkTest
         sink.text( title );
         sink.sectionTitle2_();
         sink.section2_();
+        sink.flush();
 
         String expected = noNewLine( writer.toString() );
         assertEquals( "Wrong section2 block!",
@@ -223,6 +231,7 @@ public abstract class AbstractSinkTest
         sink.text( title );
         sink.sectionTitle3_();
         sink.section3_();
+        sink.flush();
 
         String expected = noNewLine( writer.toString() );
         assertEquals( "Wrong section3 block!",
@@ -244,6 +253,7 @@ public abstract class AbstractSinkTest
         sink.text( title );
         sink.sectionTitle4_();
         sink.section4_();
+        sink.flush();
 
         String expected = noNewLine( writer.toString() );
         assertEquals( "Wrong section4 block!",
@@ -265,6 +275,7 @@ public abstract class AbstractSinkTest
         sink.text( title );
         sink.sectionTitle5_();
         sink.section5_();
+        sink.flush();
 
         String expected = noNewLine( writer.toString() );
         assertEquals( "Wrong section5 block!",
@@ -285,6 +296,7 @@ public abstract class AbstractSinkTest
         sink.text( item );
         sink.listItem_();
         sink.list_();
+        sink.flush();
 
         String expected = noNewLine( writer.toString() );
         assertEquals( "Wrong list!",
@@ -307,6 +319,7 @@ public abstract class AbstractSinkTest
         sink.text( item );
         sink.numberedListItem_();
         sink.numberedList_();
+        sink.flush();
 
         String expected = noNewLine( writer.toString() );
         assertEquals( "Wrong numbered list!",
@@ -335,6 +348,7 @@ public abstract class AbstractSinkTest
         sink.definition_();
         sink.definitionListItem_();
         sink.definitionList_();
+        sink.flush();
 
         String expected = noNewLine( writer.toString() );
         assertEquals( "Wrong definition list!", expected,
@@ -358,7 +372,7 @@ public abstract class AbstractSinkTest
         sink.text( caption );
         sink.figureCaption_();
         sink.figure_();
-
+        sink.flush();
 
         String expected = noNewLine( writer.toString() );
         assertEquals( "Wrong figure!", expected,
@@ -391,7 +405,7 @@ public abstract class AbstractSinkTest
         sink.text( caption );
         sink.tableCaption_();
         sink.table_();
-
+        sink.flush();
 
         String expected = noNewLine( writer.toString() );
         assertEquals( "Wrong table!", expected,
@@ -409,6 +423,7 @@ public abstract class AbstractSinkTest
         sink.paragraph();
         sink.text( text );
         sink.paragraph_();
+        sink.flush();
 
         String expected = noNewLine( writer.toString() );
         assertEquals( "Wrong paragraph!",
@@ -427,6 +442,7 @@ public abstract class AbstractSinkTest
         sink.verbatim( true );
         sink.text( text );
         sink.verbatim_();
+        sink.flush();
 
         String expected = noNewLine( writer.toString() );
         assertEquals( "Wrong verbatim!",
@@ -442,6 +458,7 @@ public abstract class AbstractSinkTest
     public void testHorizontalRule()
     {
         sink.horizontalRule();
+        sink.flush();
 
         String expected = noNewLine( writer.toString() );
         assertEquals( "Wrong horizontal rule!",
@@ -456,6 +473,7 @@ public abstract class AbstractSinkTest
     public void testPageBreak()
     {
         sink.pageBreak();
+        sink.flush();
 
         String expected = noNewLine( writer.toString() );
         assertEquals( "Wrong pageBreak!",
@@ -474,6 +492,7 @@ public abstract class AbstractSinkTest
         sink.anchor( anchor );
         sink.text( anchor );
         sink.anchor_();
+        sink.flush();
 
         String expected = noNewLine( writer.toString() );
         assertEquals( "Wrong anchor!",
@@ -493,6 +512,7 @@ public abstract class AbstractSinkTest
         sink.link( link );
         sink.text( text );
         sink.link_();
+        sink.flush();
 
         String expected = noNewLine( writer.toString() );
         assertEquals( "Wrong link!",
@@ -510,6 +530,7 @@ public abstract class AbstractSinkTest
         sink.italic();
         sink.text( text );
         sink.italic_();
+        sink.flush();
 
         String expected = noNewLine( writer.toString() );
         assertEquals( "Wrong italic!",
@@ -527,6 +548,7 @@ public abstract class AbstractSinkTest
         sink.bold();
         sink.text( text );
         sink.bold_();
+        sink.flush();
 
         String expected = noNewLine( writer.toString() );
         assertEquals( "Wrong bold!",
@@ -545,6 +567,7 @@ public abstract class AbstractSinkTest
         sink.monospaced();
         sink.text( text );
         sink.monospaced_();
+        sink.flush();
 
         String expected = noNewLine( writer.toString() );
         assertEquals( "Wrong monospaced!",
@@ -559,6 +582,7 @@ public abstract class AbstractSinkTest
     public void testLineBreak()
     {
         sink.lineBreak();
+        sink.flush();
 
         String expected = noNewLine( writer.toString() );
         assertEquals( "Wrong lineBreak!",
@@ -574,6 +598,7 @@ public abstract class AbstractSinkTest
     public void testNonBreakingSpace()
     {
         sink.nonBreakingSpace();
+        sink.flush();
 
         String expected = noNewLine( writer.toString() );
         assertEquals( "Wrong nonBreakingSpace!",
@@ -589,6 +614,7 @@ public abstract class AbstractSinkTest
     {
         String text = "~, =, -, +, *, [, ], <, >, {, }, \\";
         sink.text( text );
+        sink.flush();
 
         String expected = noNewLine( writer.toString() );
         assertEquals( "Wrong text!",
@@ -604,6 +630,7 @@ public abstract class AbstractSinkTest
     {
         String text = "~, =, -, +, *, [, ], <, >, {, }, \\";
         sink.rawText( text );
+        sink.flush();
 
         String expected = noNewLine( writer.toString() );
         assertEquals( "Wrong rawText!",
