@@ -8,13 +8,4 @@
   <artifactId>doxia-module-latex</artifactId>
   <name>Doxia :: Latex Module</name>
   <description>A Doxia module for LaTeX source documents.</description>
-
-  <dependencies>
-    <dependency>
-      <groupId>org.apache.maven.doxia</groupId>
-      <artifactId>doxia-module-apt</artifactId>
-      <version>${projectVersion}</version>
-      <scope>test</scope>
-    </dependency>
-  </dependencies>  
 </project>

@@ -76,16 +76,13 @@ public class LatexSink
     // ----------------------------------------------------------------------
 
     public LatexSink( Writer out )
-        throws IOException
     {
-        this( out, IOUtil.toString( getDefaultSinkCommands() ), IOUtil.toString( getDefaultPreamble() ) );
+        this( out, defaultSinkCommands(), defaultPreamble() );
     }
 
     public LatexSink( Writer out, String sinkCommands, String preamble )
     {
-        this.out = new LineBreaker( out );
-        this.sinkCommands = sinkCommands;
-        this.preamble = preamble;
+        this( out, sinkCommands, preamble, false );
     }
 
     public LatexSink( Writer out, String sinkCommands, String preamble, boolean fragmentDocument )
@@ -166,7 +163,7 @@ public class LatexSink
             markup( getDocumentEnd() );
         }
 
-        out.flush();
+        flush();
     }
 
     // ----------------------------------------------------------------------
@@ -518,6 +515,7 @@ public class LatexSink
 
     public void sectionTitle_()
     {
+        // TODO: closing bracket?
         markup( "}" + EOL + EOL );
     }
 
@@ -844,4 +842,37 @@ public class LatexSink
     {
         return LatexSink.class.getResource( "default_preamble.tex" ).openStream();
     }
+
+    public static String defaultSinkCommands()
+    {
+        String commands = "";
+
+        try
+        {
+            commands = IOUtil.toString( getDefaultSinkCommands() );
+        }
+        catch ( IOException ioe )
+        {
+            // TODO: log
+        }
+
+        return commands;
+    }
+
+    public static String defaultPreamble()
+    {
+        String preamble = "";
+
+        try
+        {
+            preamble = IOUtil.toString( getDefaultPreamble() );
+        }
+        catch ( IOException ioe )
+        {
+            // TODO: log
+        }
+
+        return preamble;
+    }
+
 }
