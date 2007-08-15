@@ -349,7 +349,7 @@ public class SinkTestDocument
         sink.text( "Right-aligned" );
         sink.lineBreak();
         sink.text( "cell 1,3" );
-        sink.table_();
+        sink.tableCell_();
         sink.tableRow_();
 
         sink.tableRow();
