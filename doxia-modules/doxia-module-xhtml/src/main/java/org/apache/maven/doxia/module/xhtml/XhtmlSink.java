@@ -912,13 +912,13 @@ public class XhtmlSink
     /** {@inheritDoc} */
     public void figure_()
     {
-        write( String.valueOf( LESS_THAN ) + String.valueOf( SLASH ) + String.valueOf( GREATER_THAN ) );
+        write( String.valueOf( SPACE ) + String.valueOf( SLASH ) + String.valueOf( GREATER_THAN ) );
     }
 
     /** {@inheritDoc} */
     public void figureCaption()
     {
-        write( String.valueOf( LESS_THAN ) + Attribute.ALT + String.valueOf( EQUAL ) + String.valueOf( QUOTE ) );
+        write( String.valueOf( SPACE ) + Attribute.ALT + String.valueOf( EQUAL ) + String.valueOf( QUOTE ) );
     }
 
     /** {@inheritDoc} */

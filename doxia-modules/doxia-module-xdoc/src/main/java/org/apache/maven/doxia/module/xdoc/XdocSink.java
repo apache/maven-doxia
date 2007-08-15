@@ -599,7 +599,7 @@ public class XdocSink
      */
     public void figure()
     {
-        markup( String.valueOf( SPACE ) + Tag.IMG );
+        markup( String.valueOf( LESS_THAN ) + Tag.IMG );
     }
 
     /** {@inheritDoc} */
