@@ -95,6 +95,21 @@ public abstract class AbstractXmlParser
             {
                 handleText( parser, sink );
             }
+            else if ( eventType == XmlPullParser.CDSECT )
+            {
+                // TODO
+                // handleCdsect( parser, sink );
+            }
+            else if ( eventType == XmlPullParser.COMMENT )
+            {
+                // TODO
+                // handleComment( parser, sink );
+            }
+            else if ( eventType == XmlPullParser.ENTITY_REF )
+            {
+                // TODO
+                // handleEntity( parser, sink );
+            }
 
             try
             {
