@@ -35,4 +35,11 @@ public interface XmlMarkup
 
     /** bang character: '!' */
     char BANG = '!';
+
+    // ----------------------------------------------------------------------
+    // Xml constants
+    // ----------------------------------------------------------------------
+
+    /** CDATA string: "CDATA" */
+    String CDATA = "CDATA";
 }
