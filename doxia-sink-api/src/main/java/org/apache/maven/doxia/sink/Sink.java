@@ -22,7 +22,12 @@ package org.apache.maven.doxia.sink;
 /**
  * A <i>Sink</i> consumes Doxia events in a resultant output format like
  * Docbook, PDF, or XHTML.
- * <br/>
+ * <p>
+ * Doxia allows you to parse any supported input document format
+ * (ie for which a parser exists) and generate any supported output
+ * document format (ie for which a sink exists).
+ * </p>
+ * <p>
  * The upshot is that you can parse any front-end format, the parser is
  * responsible for emitting the standard Doxia events which can then be
  * consumed by any Doxia Sink. This is what allow us to parse the front-
@@ -31,8 +36,9 @@ package org.apache.maven.doxia.sink;
  * documents being parsed results in a stream of Doxia events
  * (paragraph, bold, italic, text) which are then fed in the XHTML sink
  * which results in a set of XHTML pages.
- * <br/>
- * A sink if ultimately responsible for the final format and structure.
+ * </p>
+ * <p>
+ * A sink is ultimately responsible for the final format and structure.
  * So, for example, you can take a series of APT documents and have that
  * be fed into a Sink which makes a single PDF, a book, a site, or a
  * Word document. The Sink is fully responsible for the final output.
@@ -40,6 +46,7 @@ package org.apache.maven.doxia.sink;
  * you wanted to integrate your custom XML format, or custom Wiki
  * format, you would create a Doxia parser which could then be fed into
  * any Sink to produce your desired final output.
+ * </p>
  *
  * @since 1.0
  * @author <a href="mailto:jason@maven.org">Jason van Zyl</a>
@@ -57,31 +64,61 @@ public interface Sink
      * A numbering to handle a number list.
      * @see #numberedList(int)
      */
-    static final int NUMBERING_DECIMAL = 0;
+    int NUMBERING_DECIMAL = 0;
 
     /**
      * A numbering to handle a lower alpha list.
      * @see #numberedList(int)
      */
-    static final int NUMBERING_LOWER_ALPHA = 1;
+    int NUMBERING_LOWER_ALPHA = 1;
 
     /**
      * A numbering to handle a upper alpha list.
      * @see #numberedList(int)
      */
-    static final int NUMBERING_UPPER_ALPHA = 2;
+    int NUMBERING_UPPER_ALPHA = 2;
 
     /**
      * A numbering to handle a lower roman list.
      * @see #numberedList(int)
      */
-    static final int NUMBERING_LOWER_ROMAN = 3;
+    int NUMBERING_LOWER_ROMAN = 3;
 
     /**
      * A numbering to handle a upper roman list.
      * @see #numberedList(int)
      */
-    static final int NUMBERING_UPPER_ROMAN = 4;
+    int NUMBERING_UPPER_ROMAN = 4;
+
+    /**
+     * A level 1 section (section).
+     * @see #section1()
+     */
+    int SECTION_LEVEL_1 = 1;
+
+    /**
+     * A level 2 section (subsection).
+     * @see #section2()
+     */
+    int SECTION_LEVEL_2 = 2;
+
+    /**
+     * A level 3 section (sub-subsection).
+     * @see #section3()
+     */
+    int SECTION_LEVEL_3 = 3;
+
+    /**
+     * A level 4 section (sub-sub-subsection).
+     * @see #section4()
+     */
+    int SECTION_LEVEL_4 = 4;
+
+    /**
+     * A level 5 section (sub-sub-sub-subsection).
+     * @see #section5()
+     */
+    int SECTION_LEVEL_5 = 5;
 
     /**
      * Starting the head element which contains information about the current document,
@@ -527,21 +564,21 @@ public interface Sink
     void lineBreak();
 
     /**
-     * Adding a non breaking space, i.e. a space without any special formatting operations.
+     * Adding a non breaking space, <i>ie</i> a space without any special formatting operations.
      */
     void nonBreakingSpace();
 
     /**
      * Adding a text.
      *
-     * @param text
+     * @param text The text to write.
      */
     void text( String text );
 
     /**
-     * Adding a raw text, i.e. a text without any special formatting operations.
+     * Adding a raw text, <i>ie</i> a text without any special formatting operations.
      *
-     * @param text
+     * @param text The text to write.
      */
     void rawText( String text );
 
