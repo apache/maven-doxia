@@ -64,7 +64,7 @@ public class ParseException
     }
 
     /**
-     * Constructs a new exception with the specified cause and a detail message of
+     * Constructs a new exception with the specified cause. The error message is
      *  (cause == null ? null : cause.toString() ).
      *
      * @param e the cause. This can be retrieved later by the Throwable.getCause() method.

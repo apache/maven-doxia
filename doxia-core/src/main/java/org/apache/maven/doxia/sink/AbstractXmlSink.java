@@ -39,36 +39,36 @@ public abstract class AbstractXmlSink
     implements XmlMarkup
 {
     /**
-     * Starts a Tag, for instance:
+     * Starts a Tag. For instance:
      * <pre>
      * &lt;tag&gt;
      * </pre>
      *
      * @param t a non null tag
-     * @see #writeStartTag(Tag, MutableAttributeSet)
+     * @see #writeStartTag(javax.swing.text.html.HTML.Tag, javax.swing.text.MutableAttributeSet)
      */
-    protected void writeStartTag ( Tag t )
+    protected void writeStartTag( Tag t )
     {
         writeStartTag ( t, null );
     }
 
     /**
-     * Starts a Tag with attributes, for instance:
+     * Starts a Tag with attributes. For instance:
      * <pre>
      * &lt;tag attName="attValue"&gt;
      * </pre>
      *
      * @param t a non null tag
      * @param att a set of attributes
-     * @see #writeStartTag(Tag, MutableAttributeSet, boolean)
+     * @see #writeStartTag(javax.swing.text.html.HTML.Tag, javax.swing.text.MutableAttributeSet, boolean)
      */
-    protected void writeStartTag ( Tag t, MutableAttributeSet att )
+    protected void writeStartTag( Tag t, MutableAttributeSet att )
     {
         writeStartTag ( t, att, false );
     }
 
     /**
-     * Starts a Tag with attributes, for instance:
+     * Starts a Tag with attributes. For instance:
      * <pre>
      * &lt;tag attName="attValue"&gt;
      * </pre>
@@ -125,7 +125,7 @@ public abstract class AbstractXmlSink
     }
 
     /**
-     * Ends a Tag, for instance:
+     * Ends a Tag. For instance:
      * <pre>
      * &lt;/tag&gt;
      * </pre>
@@ -146,13 +146,13 @@ public abstract class AbstractXmlSink
     }
 
     /**
-     * Starts a simple Tag, for instance:
+     * Starts a simple Tag. For instance:
      * <pre>
      * &lt;tag /&gt;
      * </pre>
      *
      * @param t a non null tag
-     * @see #writeSimpleTag(Tag, MutableAttributeSet)
+     * @see #writeSimpleTag(javax.swing.text.html.HTML.Tag, javax.swing.text.MutableAttributeSet)
      */
     protected void writeSimpleTag( Tag t )
     {
@@ -160,16 +160,16 @@ public abstract class AbstractXmlSink
     }
 
     /**
-     * Starts a simple Tag with attributes, for instance:
+     * Starts a simple Tag with attributes. For instance:
      * <pre>
      * &lt;tag attName="attValue" /&gt;
      * </pre>
      *
      * @param t a non null tag
      * @param att a set of attributes
-     * @see #writeStartTag(Tag, MutableAttributeSet, boolean)
+     * @see #writeStartTag(javax.swing.text.html.HTML.Tag, javax.swing.text.MutableAttributeSet, boolean)
      */
-    protected void writeSimpleTag ( Tag t, MutableAttributeSet att )
+    protected void writeSimpleTag( Tag t, MutableAttributeSet att )
     {
         writeStartTag ( t, att, true );
     }

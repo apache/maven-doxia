@@ -33,7 +33,7 @@ import org.apache.maven.doxia.sink.StructureSink;
 public class HtmlTools
 {
     /**
-     * Escape special characters in a text in HTML:
+     * Escape special characters in a text in HTML.
      *
      * <pre>
      * < becomes <code>&</code>lt;
@@ -166,7 +166,7 @@ public class HtmlTools
     }
 
     /**
-     * Replace all characters in a text
+     * Replace all characters in a text.
      *
      * <pre>
      * HtmlTools.encodeFragment( null ) = null
@@ -187,8 +187,11 @@ public class HtmlTools
     }
 
     /**
+     * Construct a valid id.
+     * <p>
      * According to the <a href="http://www.w3.org/TR/html4/types.html#type-name">
      * HTML 4.01 specification section 6.2 SGML basic types</a>:
+     * </p>
      * <p>
      * <i>ID and NAME tokens must begin with a letter ([A-Za-z]) and may be
      * followed by any number of letters, digits ([0-9]), hyphens ("-"),
