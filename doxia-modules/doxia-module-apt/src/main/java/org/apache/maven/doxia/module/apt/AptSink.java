@@ -626,8 +626,12 @@ public class AptSink
         tableCell_( true );
     }
 
-    /** {@inheritDoc} */
-    public void tableCell_( boolean headerRow )
+    /**
+     * Ends a table cell.
+     *
+     * @param headerRow If this cell is part of a header row.
+     */
+    private void tableCell_( boolean headerRow )
     {
         buffer.append( TABLE_CELL_SEPARATOR_MARKUP );
         cellCount++;
@@ -690,7 +694,12 @@ public class AptSink
         }
     }
 
-    /** {@inheritDoc} */
+    /**
+     * A link with a target.
+     *
+     * @param name The name of the link.
+     * @param target The link target.
+     */
     public void link( String name, String target )
     {
         if ( !headerFlag )
