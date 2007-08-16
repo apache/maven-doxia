@@ -25,22 +25,24 @@ import org.apache.maven.doxia.module.site.AbstractSiteModule;
  * @author <a href="mailto:jason@maven.org">Jason van Zyl</a>
  * @version $Id$
  * @since 1.0
- * @plexus.component role="org.apache.maven.doxia.module.site.SiteModule"
- * role-hint="confluence"
+ * @plexus.component role="org.apache.maven.doxia.module.site.SiteModule" role-hint="confluence"
  */
 public class ConfluenceSiteModule
     extends AbstractSiteModule
 {
+    /** {@inheritDoc} */
     public String getSourceDirectory()
     {
         return "confluence";
     }
 
+    /** {@inheritDoc} */
     public String getExtension()
     {
         return "confluence";
     }
 
+    /** {@inheritDoc} */
     public String getParserId()
     {
         return "confluence";
