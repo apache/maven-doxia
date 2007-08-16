@@ -20,7 +20,7 @@ package org.apache.maven.doxia.module.latex;
  */
 
 import org.apache.maven.doxia.parser.Parser;
-import org.apache.maven.doxia.sink.SinkAdapter;
+import org.apache.maven.doxia.sink.AbstractTextSink;
 import org.apache.maven.doxia.util.LineBreaker;
 import org.codehaus.plexus.util.IOUtil;
 import org.codehaus.plexus.util.StringUtils;
@@ -30,10 +30,8 @@ import java.io.InputStream;
 import java.io.Writer;
 
 public class LatexSink
-    extends SinkAdapter
+    extends AbstractTextSink
 {
-    private static final String EOL = System.getProperty( "line.separator" );
-
     /**
      * Flag that indicates if the document to be written is only a fragment.
      *
