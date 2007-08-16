@@ -24,20 +24,21 @@ import java.io.Writer;
 import org.apache.maven.doxia.module.latex.LatexSink;
 import org.apache.maven.doxia.sink.Sink;
 import org.apache.maven.doxia.sink.AbstractSinkTest;
-import org.apache.maven.doxia.parser.Parser;
 
 /**
  * @author <a href="mailto:jason@maven.org">Jason van Zyl</a>
- * @version $Id:LatexSinkTest.java 348605 2005-11-24 12:02:44 +1100 (Thu, 24 Nov 2005) brett $
+ * @version $Id$
  */
 public class LatexSinkTest
     extends AbstractSinkTest
 {
+    /** {@inheritDoc} */
     protected String outputExtension()
     {
         return "tex";
     }
 
+    /** {@inheritDoc} */
     protected Sink createSink( Writer writer )
     {
         return new LatexSink( writer );
@@ -223,5 +224,4 @@ public class LatexSinkTest
         // TODO: not implemented
         return "";
     }
-
 }
