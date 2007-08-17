@@ -21,11 +21,11 @@ package org.apache.maven.doxia.module.xdoc;
 
 import java.io.File;
 import java.io.FileReader;
-import java.io.FileWriter;
 import java.io.Reader;
 import java.io.StringWriter;
+import java.io.Writer;
 
-import org.apache.maven.doxia.parser.AbstractParserTestCase;
+import org.apache.maven.doxia.parser.AbstractParserTest;
 import org.apache.maven.doxia.parser.Parser;
 import org.apache.maven.doxia.sink.Sink;
 import org.codehaus.plexus.util.IOUtil;
@@ -36,7 +36,7 @@ import org.codehaus.plexus.util.IOUtil;
  * @version $Id:XdocParserTest.java 348605 2005-11-24 12:02:44 +1100 (Thu, 24 Nov 2005) brett $
  */
 public class XdocParserTest
-    extends AbstractParserTestCase
+    extends AbstractParserTest
 {
     private XdocParser parser;
 
@@ -49,33 +49,32 @@ public class XdocParserTest
         parser = (XdocParser) lookup( Parser.ROLE, "xdoc" );
     }
 
-    /** @see org.apache.maven.doxia.parser.AbstractParserTestCase#getParser() */
-    protected Parser getParser()
+    /** {@inheritDoc} */
+    protected String outputExtension()
     {
-        return parser;
+        return "xml";
     }
 
-    /** @see org.apache.maven.doxia.parser.AbstractParserTestCase#getDocument() */
-    protected String getDocument()
+    /** {@inheritDoc} */
+    protected Parser createParser()
     {
-        return "src/test/resources/report.xml";
+        return parser;
     }
 
     /** @throws Exception  */
     public void testSnippetMacro()
         throws Exception
     {
-        FileWriter output = null;
+        Writer output = null;
         Reader reader = null;
-        File f = getTestFile( getBasedir(), "target/output/macro.xml" );
 
         try
         {
-            output = new FileWriter( f );
-            reader = new FileReader( getTestFile( getBasedir(), "src/test/resources/macro.xml" ) );
+            output = getTestWriter( "macro" );
+            reader = getTestReader( "macro" );
 
             Sink sink = new XdocSink( output );
-            getParser().parse( reader, sink );
+            createParser().parse( reader, sink );
         }
         finally
         {
@@ -83,6 +82,7 @@ public class XdocParserTest
             IOUtil.close( reader );
         }
 
+        File f = getTestFile( getBasedir(), outputBaseDir() + getOutputDir() + "macro.xml" );
         assertTrue( "The file " + f.getAbsolutePath() + " was not created", f.exists() );
 
         String content;
@@ -103,17 +103,16 @@ public class XdocParserTest
     public void testTocMacro()
         throws Exception
     {
-        FileWriter output = null;
+        Writer output = null;
         Reader reader = null;
-        File f = getTestFile( getBasedir(), "target/output/toc.xml" );
 
         try
         {
-            output = new FileWriter( getTestFile( getBasedir(), "target/output/toc.xml" ) );
-            reader = new FileReader( getTestFile( getBasedir(), "src/test/resources/toc.xml" ) );
+            output = getTestWriter( "toc" );
+            reader = getTestReader( "toc" );
 
             Sink sink = new XdocSink( output );
-            getParser().parse( reader, sink );
+            createParser().parse( reader, sink );
         }
         finally
         {
@@ -121,6 +120,7 @@ public class XdocParserTest
             IOUtil.close( reader );
         }
 
+        File f = getTestFile( getBasedir(), outputBaseDir() + getOutputDir() + "toc.xml" );
         assertTrue( "The file " + f.getAbsolutePath() + " was not created", f.exists() );
 
         String content;

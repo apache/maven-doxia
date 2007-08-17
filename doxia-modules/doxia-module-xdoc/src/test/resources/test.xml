@@ -1,0 +1,121 @@
+<?xml version="1.0" ?>
+
+<document>
+
+<properties>
+    <title>Title</title>
+    <author>Author</author>
+    <date>Date</date>
+</properties>
+
+<body>
+
+  <p>Paragraph 1, line 1. Paragraph 1, line 2.</p>
+  <p>Paragraph 2, line 1. Paragraph 2, line 2.</p>
+
+  <section name="Section title">
+    <subsection name="Sub-section title">
+      <h4>Sub-sub-section title</h4>
+        <h5>Sub-sub-sub-section</h5>
+          <h6>Sub-sub-sub-sub-section</h6>
+
+    <ul>
+      <li>List item 1.</li>
+      <li>List item 2.
+        <p>Paragraph contained in list item 2.</p>
+        <ul>
+          <li>Sub-list item 1.</li>
+          <li>Sub-list item 2.</li>
+        </ul>
+      </li>
+      <li>List item 3. Force end of list:</li>
+    </ul>
+
+    <source>Verbatim text not contained in list item 3</source>
+
+    <ol style="list-style-type: decimal">
+      <li>Numbered item 1.
+        <ol style="list-style-type: upper-alpha">
+          <li>Numbered item A.</li>
+          <li>Numbered item B.</li>
+        </ol>
+      </li>
+      <li>Numbered item 2.</li>
+    </ol>
+
+    <p>List numbering schemes: [[1]], [[a]], [[A]], [[i]], [[I]].</p>
+
+    <dl compact="compact">
+      <dt><b>Defined term 1</b></dt>
+      <dd>of definition list.</dd>
+      <dt><b>Defined term 2</b></dt>
+      <dd>of definition list.
+<source>Verbatim text
+                            in a box        </source>
+      </dd>
+    </dl>
+
+    <p>--- instead of +-- suppresses the box around verbatim text.</p>
+
+    <img src="figure" alt="Figure caption" />
+
+    <table align="center">
+      <table align="center" border="1">
+        <tr valign="top">
+          <th align="center">Centered<br />cell 1,1</th>
+          <th align="left">Left-aligned<br />cell 1,2</th>
+          <th align="right">Right-aligned<br />cell 1,3</th>
+        </tr>
+        <tr valign="top">
+          <td align="center">cell 2,1</td>
+          <td align="left">cell 2,2</td>
+          <td align="right">cell 2,3</td>
+        </tr>
+      </table>
+    <p><i>Table caption</i></p>
+    </table>
+
+    <p>No grid, no caption:</p>
+
+    <table align="center">
+      <table align="center" border="0">
+        <tr valign="top">
+          <td align="center">cell</td>
+          <td align="center">cell</td>
+        </tr>
+        <tr valign="top">
+          <td align="center">cell</td>
+          <td align="center">cell</td>
+        </tr>
+      </table>
+    </table>
+
+    <p>Horizontal line:</p>
+    <hr />
+
+    <p>New page.</p>
+
+    <p><i>Italic</i> font. <b>Bold</b> font. <tt>Monospaced</tt> font.</p>
+
+    <p>
+      <a id="anchor" name="anchor">Anchor</a>.
+      Link to <a href="anchor">Anchor</a>.
+      Link to <a href="http://www.pixware.fr">http://www.pixware.fr</a>.
+      Link to <a href="anchor">showing alternate text</a>.
+      Link to <a href="http://www.pixware.fr">Pixware home page</a>.
+    </p>
+
+    <p>Force line<br />break.</p>
+
+    <p>Non&#160;breaking&#160;space.</p>
+
+    <p>Escaped special characters: ~, =, -, +, *, [, ], &lt;, &gt;, {, }, \.</p>
+
+    <p>Copyright symbol: &#169; &#169; &#169;.</p>
+
+      </subsection>
+    </section>
+
+</body>
+
+</document>

@@ -19,45 +19,208 @@ package org.apache.maven.doxia.module.xdoc;
  * under the License.
  */
 
-import org.apache.maven.doxia.module.xdoc.XdocSink;
 import org.apache.maven.doxia.sink.Sink;
-import org.apache.maven.doxia.sink.AbstractSinkTestCase;
-import org.apache.maven.doxia.parser.Parser;
+import org.apache.maven.doxia.sink.AbstractSinkTest;
+import org.apache.maven.doxia.util.HtmlTools;
 
-import java.io.Reader;
-import java.io.InputStream;
-import java.io.InputStreamReader;
+import java.io.Writer;
 
 /**
  * @author <a href="mailto:jason@maven.org">Jason van Zyl</a>
  * @version $Id:XdocSinkTest.java 348605 2005-11-24 12:02:44 +1100 (Thu, 24 Nov 2005) brett $
  */
 public class XdocSinkTest
-    extends AbstractSinkTestCase
+    extends AbstractSinkTest
 {
+    /** {@inheritDoc} */
     protected String outputExtension()
     {
         return "xml";
     }
 
-    protected Parser createParser()
+    /** {@inheritDoc} */
+    protected Sink createSink( Writer writer )
     {
-        return new XdocParser();
+        return new XdocSink( writer );
     }
 
-    protected Sink createSink()
-        throws Exception
+    /** {@inheritDoc} */
+    protected String getTitleBlock( String title )
     {
-        return new XdocSink( getTestWriter() );
+        return title;
     }
 
-    protected Reader getTestReader()
-        throws Exception
+    /** {@inheritDoc} */
+    protected String getAuthorBlock( String author )
     {
-        InputStream is = Thread.currentThread().getContextClassLoader().getResourceAsStream( "report.xml" );
-
-        InputStreamReader reader = new InputStreamReader( is );
-
-        return reader;
+        return author;
     }
+
+    /** {@inheritDoc} */
+    protected String getDateBlock( String date )
+    {
+        return date;
+    }
+
+    /** {@inheritDoc} */
+    protected String getHeadBlock()
+    {
+        return "<?xml version=\"1.0\" ?><document><properties></properties>";
+    }
+
+    /** {@inheritDoc} */
+    protected String getBodyBlock()
+    {
+        return "<body></body></document>";
+    }
+
+    /** {@inheritDoc} */
+    protected String getSectionTitleBlock( String title )
+    {
+        return title;
+    }
+
+    /** {@inheritDoc} */
+    protected String getSection1Block( String title )
+    {
+        return "<section name=\"" + title + "\"></section>";
+    }
+
+    /** {@inheritDoc} */
+    protected String getSection2Block( String title )
+    {
+        return "<subsection name=\"" + title + "\"></subsection>";
+    }
+
+    /** {@inheritDoc} */
+    protected String getSection3Block( String title )
+    {
+        return "<h4>" + title + "</h4>";
+    }
+
+    /** {@inheritDoc} */
+    protected String getSection4Block( String title )
+    {
+        return "<h5>" + title + "</h5>";
+    }
+
+    /** {@inheritDoc} */
+    protected String getSection5Block( String title )
+    {
+        return "<h6>" + title + "</h6>";
+    }
+
+    /** {@inheritDoc} */
+    protected String getListBlock( String item )
+    {
+        return "<ul><li>" + item + "</li></ul>";
+    }
+
+    /** {@inheritDoc} */
+    protected String getNumberedListBlock( String item )
+    {
+        return "<ol style=\"list-style-type: lower-roman\"><li>" + item + "</li></ol>";
+    }
+
+    /** {@inheritDoc} */
+    protected String getDefinitionListBlock( String definum, String definition )
+    {
+        return "<dl><dt>" + definum + "</dt><dd>" + definition + "</dd></dl>";
+    }
+
+    /** {@inheritDoc} */
+    protected String getFigureBlock( String source, String caption )
+    {
+        return "<img src=\"" + source + "\" alt=\"" + caption + "\" />";
+    }
+
+    /** {@inheritDoc} */
+    protected String getTableBlock( String cell, String caption )
+    {
+        return "<table align=\"center\"><table align=\"center\" border=\"0\"><tr valign=\"top\"><td>"
+            + cell + "</td></tr></table><p><i>" + caption + "</i></p></table>";
+    }
+
+    /** {@inheritDoc} */
+    protected String getParagraphBlock( String text )
+    {
+        return "<p>" + text + "</p>";
+    }
+
+    /** {@inheritDoc} */
+    protected String getVerbatimBlock( String text )
+    {
+        return "<source>" + text + "</source>";
+    }
+
+    /** {@inheritDoc} */
+    protected String getHorizontalRuleBlock()
+    {
+        return "<hr />";
+    }
+
+    /** {@inheritDoc} */
+    protected String getPageBreakBlock()
+    {
+        return "";
+    }
+
+    /** {@inheritDoc} */
+    protected String getAnchorBlock( String anchor )
+    {
+        return "<a name=\"" + anchor + "\" id=\""
+            + anchor + "\">" + anchor + "</a>";
+    }
+
+    /** {@inheritDoc} */
+    protected String getLinkBlock( String link, String text )
+    {
+        return "<a href=\"" + link + "\">" + text + "</a>";
+    }
+
+    /** {@inheritDoc} */
+    protected String getItalicBlock( String text )
+    {
+        return "<i>" + text + "</i>";
+    }
+
+    /** {@inheritDoc} */
+    protected String getBoldBlock( String text )
+    {
+        return "<b>" + text + "</b>";
+    }
+
+    /** {@inheritDoc} */
+    protected String getMonospacedBlock( String text )
+    {
+        return "<tt>" + text + "</tt>";
+    }
+
+    /** {@inheritDoc} */
+    protected String getLineBreakBlock()
+    {
+        return "<br />";
+    }
+
+    /** {@inheritDoc} */
+    protected String getNonBreakingSpaceBlock()
+    {
+        return "&#160;";
+    }
+
+    /** {@inheritDoc} */
+    protected String getTextBlock( String text )
+    {
+        // TODO: need to be able to retreive those from outside the sink
+        return HtmlTools.escapeHTML( text );
+    }
+
+    /** {@inheritDoc} */
+    protected String getRawTextBlock( String text )
+    {
+        // TODO
+        return "";
+    }
+
+
 }
