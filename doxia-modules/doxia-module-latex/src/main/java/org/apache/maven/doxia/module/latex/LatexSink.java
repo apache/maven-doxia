@@ -29,6 +29,12 @@ import java.io.IOException;
 import java.io.InputStream;
 import java.io.Writer;
 
+/**
+ * Latex Sink implementation.
+ *
+ * @since 1.0
+ * @plexus.component role="org.apache.maven.doxia.sink.Sink" role-hint="tex"
+ */
 public class LatexSink
     extends AbstractTextSink
 {

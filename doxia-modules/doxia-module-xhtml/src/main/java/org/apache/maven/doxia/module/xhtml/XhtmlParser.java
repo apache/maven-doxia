@@ -31,12 +31,13 @@ import org.codehaus.plexus.util.xml.pull.XmlPullParser;
 import org.codehaus.plexus.util.xml.pull.XmlPullParserException;
 
 /**
- * Parse an xdoc model and emit events into the specified doxia
+ * Parse an xhtml model and emit events into the specified doxia
  * Sink.
  *
  * @author <a href="mailto:jason@maven.org">Jason van Zyl</a>
  * @version $Id$
  * @since 1.0
+ * @plexus.component role="org.apache.maven.doxia.parser.Parser" role-hint="xhtml"
  */
 public class XhtmlParser
     extends AbstractXmlParser

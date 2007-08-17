@@ -42,6 +42,7 @@ import javax.swing.text.html.HTML.Tag;
  * @author Jason van Zyl
  * @version $Id$
  * @since 1.0
+ * @plexus.component role="org.apache.maven.doxia.sink.Sink" role-hint="xhtml"
  */
 public class XhtmlSink
     extends AbstractXmlSink
