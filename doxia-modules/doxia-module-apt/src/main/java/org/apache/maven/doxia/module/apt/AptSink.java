@@ -33,7 +33,7 @@ import org.codehaus.plexus.util.StringUtils;
  * @author eredmond
  * @version $Id$
  * @since 1.0
- * @plexus.component
+ * @plexus.component role="org.apache.maven.doxia.sink.Sink" role-hint="apt"
  */
 public class AptSink
     extends AbstractTextSink
