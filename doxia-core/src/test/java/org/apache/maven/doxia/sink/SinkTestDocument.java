@@ -36,7 +36,7 @@ public class SinkTestDocument
 
     /**
      * Dumps a full model that mimics aptconvert's test.apt,
-     * into the specified sink. The sink is closed.
+     * into the specified sink. The sink is flushed but not closed.
      *
      * @param sink The sink to receive the events.
      */
@@ -139,7 +139,6 @@ public class SinkTestDocument
         sink.body_();
 
         sink.flush();
-        sink.close();
     }
 
     /**

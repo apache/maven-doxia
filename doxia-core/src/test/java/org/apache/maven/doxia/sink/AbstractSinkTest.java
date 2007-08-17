@@ -422,6 +422,7 @@ public abstract class AbstractSinkTest
         assertEquals( "Wrong table!", expected,
             noNewLine( getTableBlock( cell, caption ) ) );
     }
+
     /**
      * Checks that the sequence <code>[paragraph(), text( text ),
      * paragraph_()]</code>, invoked on the current sink, produces
