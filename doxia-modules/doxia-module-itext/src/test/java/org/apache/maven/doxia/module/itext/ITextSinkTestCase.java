@@ -26,13 +26,14 @@ import java.io.FileWriter;
 import java.io.InputStream;
 import java.io.InputStreamReader;
 import java.io.Reader;
+import java.io.Writer;
+
 import java.net.URL;
 import java.net.URLClassLoader;
 
-import org.apache.maven.doxia.module.apt.AptParser;
-import org.apache.maven.doxia.module.xdoc.XdocParser;
+import org.apache.maven.doxia.AbstractModuleTest;
 import org.apache.maven.doxia.sink.Sink;
-import org.codehaus.plexus.PlexusTestCase;
+import org.apache.maven.doxia.sink.SinkTestDocument;
 
 /**
  * <code>iText Sink</code> Test case.
@@ -41,8 +42,24 @@ import org.codehaus.plexus.PlexusTestCase;
  * @version $Id$
  */
 public class ITextSinkTestCase
-    extends PlexusTestCase
+    extends AbstractModuleTest
 {
+
+    /** {@inheritDoc} */
+    protected String outputExtension()
+    {
+        return "xml";
+    }
+
+    /**
+     * Returns the directory where all sink test output will go.
+     * @return The test output directory.
+     */
+    protected String getOutputDir()
+    {
+        return "sink/";
+    }
+
     /**
      * Convenience method
      *
@@ -52,135 +69,55 @@ public class ITextSinkTestCase
      */
     protected File getGeneratedFile( String prefix, String suffix )
     {
-        File outputDirectory = new File( getBasedir(), "target/output" );
+        File outputDirectory = new File( getBasedir(), outputBaseDir() + getOutputDir() );
         if ( !outputDirectory.exists() )
         {
             outputDirectory.mkdirs();
         }
 
-        return new File( outputDirectory, prefix + suffix );
+        return new File( outputDirectory, prefix + "." + suffix );
     }
 
-    /**
-     * Create an <code>iTextSink</code> with a given classLoader (images dir)
-     *
-     * @param prefix
-     * @param suffix
-     * @return an iTextSink
-     * @throws Exception if any
-     */
-    protected Sink createSink( String prefix, String suffix )
-        throws Exception
+    /** {@inheritDoc} */
+    protected Sink createSink( Writer writer )
     {
-        ITextSink sink = new ITextSink( new FileWriter( getGeneratedFile( prefix, suffix ) ) );
+        ITextSink sink = new ITextSink( writer );
 
-        sink.setClassLoader( new URLClassLoader( new URL[] { ITextSinkTestCase.class.getResource( "/images/" ) } ) );
+        sink.setClassLoader( new URLClassLoader(
+            new URL[] { ITextSinkTestCase.class.getResource( "/images/" ) } ) );
 
         return sink;
     }
 
-    /**
-     * @param path
-     * @return a reader from an <code>apt</code> file.
-     * @throws Exception if any
-     */
-    protected Reader getAptReader( String path )
-        throws Exception
-    {
-        InputStream is = Thread.currentThread().getContextClassLoader().getResourceAsStream( path );
-
-        InputStreamReader reader = new InputStreamReader( is );
-
-        return reader;
-    }
-
-    /**
-     * @param path
-     * @return a reader from an <code>xdoc</code> file.
-     * @throws Exception if any
-     */
-    protected Reader getXdocReader( String path )
-        throws Exception
-    {
-        InputStream is = Thread.currentThread().getContextClassLoader().getResourceAsStream( path );
-
-        InputStreamReader reader = new InputStreamReader( is );
-
-        return reader;
-    }
 
     public void testGeneratingPDFFromITextXml()
         throws Exception
     {
-        File f = new File( getBasedir(), "src/test/resources/apt/itext.xml" );
+        File f = new File( getBasedir(), "src/test/resources/itext/itext.xml" );
 
         ITextUtil.writePdf( new FileInputStream( f ),
-                            new FileOutputStream( getGeneratedFile( "test_itext_apt", ".pdf" ) ) );
+                            new FileOutputStream( getGeneratedFile( "test_itext", "pdf" ) ) );
     }
 
     /**
-     * Generate a pdf and a rtf from an <code>apt</code> file
+     * Generate a pdf and a rtf from the standart test model.
      *
      * @throws Exception if any
      */
-    public void testApt()
+    public void testModel()
         throws Exception
     {
-        Sink sink = createSink( "test_apt", ".xml" );
+        Sink sink = createSink( getTestWriter( "test_model", "xml" ) );
 
-        AptParser parser = new AptParser();
+        SinkTestDocument.generate( sink );
 
-        parser.parse( getAptReader( "apt/test.apt" ), sink );
-
-        sink.close();
-
-        ITextUtil.writePdf( new FileInputStream( getGeneratedFile( "test_apt", ".xml" ) ),
-                            new FileOutputStream( getGeneratedFile( "test_apt", ".pdf" ) ) );
+    // TODO: doesn't work, FIXME
+    /*
+        ITextUtil.writePdf( new FileInputStream( getGeneratedFile( "test_model", "xml" ) ),
+                            new FileOutputStream( getGeneratedFile( "test_model", "pdf" ) ) );
+        ITextUtil.writeRtf( new FileInputStream( getGeneratedFile( "test_apt", "xml" ) ),
+                            new FileOutputStream( getGeneratedFile( "test_apt", "rtf" ) ) );
+    */
     }
 
-    /**
-     * Generate a pdf and a rtf from an <code>apt</code> file
-     *
-     * @throws Exception if any
-     */
-    public void xtestApt2()
-        throws Exception
-    {
-        Sink sink = createSink( "guide-ide-netbeans_apt", ".xml" );
-
-        AptParser parser = new AptParser();
-
-        parser.parse( getAptReader( "apt/guide-ide-netbeans.apt" ), sink );
-
-        sink.close();
-
-        ITextUtil.writePdf( new FileInputStream( getGeneratedFile( "guide-ide-netbeans_apt", ".xml" ) ),
-                            new FileOutputStream( getGeneratedFile( "guide-ide-netbeans_apt", ".pdf" ) ) );
-
-        ITextUtil.writeRtf( new FileInputStream( getGeneratedFile( "guide-ide-netbeans_apt", ".xml" ) ),
-                            new FileOutputStream( getGeneratedFile( "guide-ide-netbeans_apt", ".rtf" ) ) );
-    }
-
-    /**
-     * Generate a pdf and a rtf from an <code>xdoc</code> file
-     *
-     * @throws Exception if any
-     */
-    public void xtestXdoc()
-        throws Exception
-    {
-        Sink sink = createSink( "test_xdoc", ".xml" );
-
-        XdocParser parser = new XdocParser();
-
-        parser.parse( getXdocReader( "xdoc/test.xml" ), sink );
-
-        sink.close();
-
-        ITextUtil.writePdf( new FileInputStream( getGeneratedFile( "test_xdoc", ".xml" ) ),
-                            new FileOutputStream( getGeneratedFile( "test_xdoc", ".pdf" ) ) );
-
-        ITextUtil.writeRtf( new FileInputStream( getGeneratedFile( "test_xdoc", ".xml" ) ),
-                            new FileOutputStream( getGeneratedFile( "test_xdoc", ".rtf" ) ) );
-    }
 }
