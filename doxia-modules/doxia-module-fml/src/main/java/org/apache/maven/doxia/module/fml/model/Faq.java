@@ -19,41 +19,75 @@ package org.apache.maven.doxia.module.fml.model;
  * under the License.
  */
 
+/** Encapsulates a model of a FAQ. */
 public class Faq
 {
+    /** An id for the FAQ. */
     private String id;
 
+    /** The question. */
     private String question;
 
+     /** The answer. */
     private String answer;
 
+    /**
+     * Returns the id of this FAQ.
+     *
+     * @return the id.
+     */
     public String getId()
     {
         return id;
     }
 
-    public void setId( String id )
+    /**
+     * Sets the id of this FAQ.
+     *
+     * @param newId the id to set.
+     */
+    public void setId( String newId )
     {
-        this.id = id;
+        this.id = newId;
     }
 
+    /**
+     * Returns the answer of this FAQ.
+     *
+     * @return the answer.
+     */
     public String getAnswer()
     {
         return answer;
     }
 
-    public void setAnswer( String answer )
+    /**
+     * Sets the answer of this FAQ.
+     *
+     * @param newAnswer the id to set.
+     */
+    public void setAnswer( String newAnswer )
     {
-        this.answer = answer;
+        this.answer = newAnswer;
     }
 
+    /**
+     * Returns the question of this FAQ.
+     *
+     * @return the question.
+     */
     public String getQuestion()
     {
         return question;
     }
 
-    public void setQuestion( String question )
+    /**
+     * Sets the question of this FAQ.
+     *
+     * @param newQuestion the id to set.
+     */
+    public void setQuestion( String newQuestion )
     {
-        this.question = question;
+        this.question = newQuestion;
     }
 }

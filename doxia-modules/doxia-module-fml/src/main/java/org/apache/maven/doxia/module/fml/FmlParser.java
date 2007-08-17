@@ -19,6 +19,7 @@ package org.apache.maven.doxia.module.fml;
  * under the License.
  */
 
+import java.io.IOException;
 import java.io.Reader;
 import java.io.StringReader;
 import java.util.Iterator;
@@ -33,6 +34,7 @@ import org.apache.maven.doxia.sink.Sink;
 import org.codehaus.plexus.util.StringUtils;
 import org.codehaus.plexus.util.xml.pull.MXParser;
 import org.codehaus.plexus.util.xml.pull.XmlPullParser;
+import org.codehaus.plexus.util.xml.pull.XmlPullParserException;
 
 /**
  * Parse a fml model and emit events into the specified doxia Sink.
@@ -58,18 +60,26 @@ public class FmlParser
 
             faqs = parseFml( parser, sink );
         }
-        catch ( Exception ex )
+        catch ( XmlPullParserException ex )
         {
             throw new ParseException( "Error parsing the model: " + ex.getMessage(), ex );
+        }
+        catch ( IOException ex )
+        {
+            throw new ParseException( "Error reading the model: " + ex.getMessage(), ex );
         }
 
         try
         {
             createSink( faqs, sink );
         }
-        catch ( Exception e )
+        catch ( XmlPullParserException e )
         {
             throw new ParseException( "Error creating sink: " + e.getMessage(), e );
+        }
+        catch ( IOException e )
+        {
+            throw new ParseException( "Error writing to sink: " + e.getMessage(), e );
         }
     }
 
@@ -80,23 +90,22 @@ public class FmlParser
     }
 
     /**
-     * @param parser
-     * @param sink
-     * @return Faqs
-     * @throws Exception
+     * Parses an fml and emits the events into the given sink.
+     *
+     * @param parser The parser to use.
+     * @param sink The sink to consume the event.
+     * @return Faqs The parsed faqs model.
+     * @throws IOException if the model cannot be read.
+     * @throws XmlPullParserException if the model cannot be parsed.
      */
     public Faqs parseFml( XmlPullParser parser, Sink sink )
-        throws Exception
+        throws IOException, XmlPullParserException
     {
         Faqs faqs = new Faqs();
 
         Part currentPart = null;
 
         Faq currentFaq = null;
-
-        boolean inFaq = false;
-
-        boolean inPart = false;
 
         boolean inQuestion = false;
 
@@ -135,7 +144,6 @@ public class FmlParser
                 }
                 else if ( parser.getName().equals( "part" ) )
                 {
-                    inPart = true;
                     currentPart = new Part();
                     currentPart.setId( parser.getAttributeValue( null, "id" ) );
                 }
@@ -145,7 +153,6 @@ public class FmlParser
                 }
                 else if ( parser.getName().equals( "faq" ) )
                 {
-                    inFaq = true;
                     currentFaq = new Faq();
                     currentFaq.setId( parser.getAttributeValue( null, "id" ) );
                 }
@@ -196,16 +203,12 @@ public class FmlParser
                     faqs.addPart( currentPart );
 
                     currentPart = null;
-
-                    inPart = false;
                 }
                 else if ( parser.getName().equals( "faq" ) )
                 {
                     currentPart.addFaq( currentFaq );
 
                     currentFaq = null;
-
-                    inFaq = false;
                 }
                 if ( parser.getName().equals( "question" ) )
                 {
@@ -264,12 +267,15 @@ public class FmlParser
     }
 
     /**
-     * @param faqs
-     * @param sink
-     * @throws Exception
+     * Writes the faqs to the specified sink.
+     *
+     * @param faqs The faqs to emit.
+     * @param sink The sink to consume the event.
+     * @throws IOException if something goes wrong.
+     * @throws XmlPullParserException if something goes wrong.
      */
     private void createSink( Faqs faqs, Sink sink )
-        throws Exception
+        throws IOException, XmlPullParserException
     {
         sink.head();
         sink.title();
@@ -367,12 +373,15 @@ public class FmlParser
     }
 
     /**
-     * @param sink
-     * @param answer
-     * @throws Exception
+     * Writes an answer to the sink.
+     *
+     * @param sink The sink to consume the event.
+     * @param answer The answer to be written.
+     * @throws IOException if something goes wrong.
+     * @throws XmlPullParserException if something goes wrong.
      */
     private void writeAnswer( Sink sink, String answer )
-        throws Exception
+        throws IOException, XmlPullParserException
     {
         int startSource = answer.indexOf( "<source>" );
         if ( startSource != -1 )
@@ -386,7 +395,9 @@ public class FmlParser
     }
 
     /**
-     * @param sink
+     * Writes a toplink element.
+     *
+     * @param sink The sink to consume the event.
      */
     private void writeTopLink( Sink sink )
     {
@@ -402,12 +413,15 @@ public class FmlParser
     }
 
     /**
-     * @param sink
-     * @param answer
-     * @throws Exception
+     * Writes an answer to the sink that contains a <source> element.
+     *
+     * @param sink The sink to consume the event.
+     * @param answer The answer to be written.
+     * @throws IOException if something goes wrong.
+     * @throws XmlPullParserException if something goes wrong.
      */
     private void writeAnswerWithSource( Sink sink, String answer )
-        throws Exception
+        throws IOException, XmlPullParserException
     {
         XmlPullParser parser = new MXParser();
         parser.setInput( new StringReader( "<answer>" + answer + "</answer>" ) );

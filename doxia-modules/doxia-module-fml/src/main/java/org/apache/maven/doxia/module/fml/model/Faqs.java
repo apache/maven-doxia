@@ -22,24 +22,43 @@ package org.apache.maven.doxia.module.fml.model;
 import java.util.ArrayList;
 import java.util.List;
 
+/** Encapsulates a model of a collection of FAQs. */
 public class Faqs
 {
+    /** Whether to create toplinks. */
     private boolean toplink = true;
 
+    /** The FAQ title. */
     private String title = "FAQ";
 
+     /** The FAQ parts. */
     private List parts;
 
+    /**
+     * Returns the parts of this FAQ.
+     *
+     * @return the parts.
+     */
     public List getParts()
     {
         return parts;
     }
 
-    public void setParts( List parts )
+    /**
+     * Sets the parts of this FAQ.
+     *
+     * @param newParts the parts to set.
+     */
+    public void setParts( List newParts )
     {
-        this.parts = parts;
+        this.parts = newParts;
     }
 
+    /**
+     * Adds the given Part to the parts of this FAQ.
+     *
+     * @param part the part to add.
+     */
     public void addPart( Part part )
     {
         if ( parts == null )
@@ -50,21 +69,41 @@ public class Faqs
         parts.add( part );
     }
 
+    /**
+     * Returns the title of this FAQ. Defaults to "FAQ".
+     *
+     * @return the title.
+     */
     public String getTitle()
     {
         return title;
     }
 
-    public void setTitle( String title )
+    /**
+     * Sets the title of this FAQ.
+     *
+     * @param newTitle the title to set.
+     */
+    public void setTitle( String newTitle )
     {
-        this.title = title;
+        this.title = newTitle;
     }
 
-    public void setToplink( boolean toplink )
+    /**
+     * Sets the toplink of this FAQ.
+     *
+     * @param newToplink the toplink to set.
+     */
+    public void setToplink( boolean newToplink )
     {
-        this.toplink = toplink;
+        this.toplink = newToplink;
     }
 
+    /**
+     * Whether to create toplinks. Defaults to true.
+     *
+     * @return True if toplinks are created.
+     */
     public boolean isToplink()
     {
         return toplink;
