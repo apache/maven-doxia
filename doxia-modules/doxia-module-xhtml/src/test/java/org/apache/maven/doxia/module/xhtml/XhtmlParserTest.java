@@ -20,7 +20,7 @@ package org.apache.maven.doxia.module.xhtml;
  */
 
 import org.apache.maven.doxia.WellformednessCheckingSink;
-import org.apache.maven.doxia.parser.AbstractParserTestCase;
+import org.apache.maven.doxia.parser.AbstractParserTest;
 import org.apache.maven.doxia.parser.Parser;
 
 import java.io.FileReader;
@@ -31,28 +31,16 @@ import java.io.Reader;
  * @version $Id$
  */
 public class XhtmlParserTest
-    extends AbstractParserTestCase
+    extends AbstractParserTest
 {
-    protected Parser getParser()
+    protected Parser createParser()
     {
         return new XhtmlParser();
     }
 
-    protected String getDocument()
+    protected String outputExtension()
     {
-        return "src/test/resources/fun.html";
+        return "xhtml";
     }
 
-    public void testParser()
-        throws Exception
-    {
-        //use the new wellformedness checking sink.
-        WellformednessCheckingSink sink = new WellformednessCheckingSink();
-
-        Reader reader = new FileReader( getTestFile( getBasedir(), getDocument() ) );
-
-        getParser().parse( reader, sink );
-
-        assertTrue( "Input not wellformed, offending element: " + sink.getOffender(), sink.isWellformed() );
-    }
 }
