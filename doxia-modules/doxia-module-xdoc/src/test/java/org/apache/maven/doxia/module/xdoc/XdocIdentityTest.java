@@ -27,7 +27,7 @@ import org.apache.maven.doxia.sink.Sink;
 
 
 /**
- * Check that piping a full model through an AptParser and an AptSink
+ * Check that piping a full model through an XdocParser and an XdocSink
  * leaves the model unchanged.
  */
 public class XdocIdentityTest extends AbstractIdentityTest
