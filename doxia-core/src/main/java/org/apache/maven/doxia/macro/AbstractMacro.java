@@ -20,10 +20,14 @@ package org.apache.maven.doxia.macro;
  */
 
 /**
+ * Abstract base class to execute <code>Macro</code>.
+ *
  * @author <a href="mailto:jason@maven.org">Jason van Zyl</a>
- * @version $Id:AbstractMacro.java 348605 2005-11-24 12:02:44 +1100 (Thu, 24 Nov 2005) brett $
+ * @version $Id$
+ * @since 1.0
  */
 public abstract class AbstractMacro
     implements Macro
 {
+    // nop
 }

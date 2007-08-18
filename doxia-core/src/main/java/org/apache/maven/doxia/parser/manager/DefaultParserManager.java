@@ -24,10 +24,11 @@ import org.apache.maven.doxia.parser.Parser;
 import java.util.Map;
 
 /**
- * Simple implementation of the ParserManager interface.
+ * Simple implementation of the <code>ParserManager</code> interface.
  *
  * @author <a href="mailto:jason@maven.org">Jason van Zyl</a>
- * @version $Id:DefaultParserManager.java 348605 2005-11-24 12:02:44 +1100 (Thu, 24 Nov 2005) brett $
+ * @version $Id$
+ * @since 1.0
  * @plexus.component
  */
 public class DefaultParserManager

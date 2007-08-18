@@ -25,7 +25,8 @@ import org.apache.maven.doxia.sink.Sink;
  * Base interface of a macro.
  *
  * @author <a href="mailto:jason@maven.org">Jason van Zyl</a>
- * @version $Id:Macro.java 348605 2005-11-24 12:02:44 +1100 (Thu, 24 Nov 2005) brett $
+ * @version $Id$
+ * @since 1.0
  */
 public interface Macro
 {
@@ -42,5 +43,4 @@ public interface Macro
      */
     void execute( Sink sink, MacroRequest request )
         throws MacroExecutionException;
-
 }
