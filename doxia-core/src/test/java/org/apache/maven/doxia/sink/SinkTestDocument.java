@@ -19,6 +19,8 @@ package org.apache.maven.doxia.sink;
  * under the License.
  */
 
+import java.io.UnsupportedEncodingException;
+
 import org.apache.maven.doxia.parser.Parser;
 import org.apache.maven.doxia.sink.Sink;
 
@@ -365,11 +367,11 @@ public class SinkTestDocument
 
         sink.tableRows_();
 
+        sink.table_();
+
         sink.tableCaption();
         sink.text( "Table caption" );
         sink.tableCaption_();
-
-        sink.table_();
     }
 
     /**
@@ -595,10 +597,17 @@ public class SinkTestDocument
         sink.paragraph_();
 
         sink.paragraph();
-        String copyright = String.valueOf( '\u00a9' );
+        String copyright;
+        try
+        {
+            copyright = new String( String.valueOf( '\u00a9' ).getBytes( "UTF-8" ) );
+        }
+        catch ( UnsupportedEncodingException e )
+        {
+            throw new IllegalArgumentException( e.getMessage() );
+        }
         sink.text( "Copyright symbol: " + copyright + ", "
             + copyright + ", " + copyright + "." );
         sink.paragraph_();
     }
-
 }
