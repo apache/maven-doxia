@@ -96,6 +96,8 @@ public final class ITextSink
 
     private int depth = 0;
 
+    private String tableCaption = null;
+
     /**
      * @param writer
      */
@@ -892,6 +894,19 @@ public final class ITextSink
         writeEndElement(); // ElementTags.CHUNK
 
         actionContext.release();
+
+        if ( tableCaption != null )
+        {
+                writeStartElement( ElementTags.PARAGRAPH );
+                writeAddAttribute( ElementTags.ALIGN, ElementTags.ALIGN_CENTER );
+
+                write( tableCaption );
+
+                writeEndElement(); // ElementTags.PARAGRAPH
+
+                tableCaption = null;
+        }
+
     }
 
     /** {@inheritDoc} */
@@ -1516,12 +1531,7 @@ public final class ITextSink
                 break;
 
             case SinkActionContext.TABLE_CAPTION:
-                writeStartElement( ElementTags.PARAGRAPH );
-                writeAddAttribute( ElementTags.ALIGN, ElementTags.ALIGN_CENTER );
-
-                write( text );
-
-                writeEndElement(); // ElementTags.PARAGRAPH
+                this.tableCaption = text;
                 break;
 
             case SinkActionContext.VERBATIM:
