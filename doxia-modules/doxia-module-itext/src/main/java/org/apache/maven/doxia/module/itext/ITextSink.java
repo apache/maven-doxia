@@ -96,6 +96,9 @@ public final class ITextSink
 
     private int depth = 0;
 
+    /**
+     * @param writer
+     */
     public ITextSink( Writer writer )
     {
         this.writer = writer;
@@ -108,6 +111,9 @@ public final class ITextSink
         writeStart = true;
     }
 
+    /**
+     * @param xmlWriter
+     */
     public ITextSink( PrettyPrintXMLWriter xmlWriter )
     {
         this.xmlWriter = xmlWriter;
@@ -143,11 +149,13 @@ public final class ITextSink
     // Document
     // ----------------------------------------------------------------------
 
+    /** {@inheritDoc} */
     public void close()
     {
         IOUtil.close( writer );
     }
 
+    /** {@inheritDoc} */
     public void flush()
     {
         super.flush();
@@ -157,41 +165,49 @@ public final class ITextSink
     // Header
     // ----------------------------------------------------------------------
 
+    /** {@inheritDoc} */
     public void head_()
     {
         actionContext.release();
     }
 
+    /** {@inheritDoc} */
     public void head()
     {
         actionContext.setAction( SinkActionContext.HEAD );
     }
 
+    /** {@inheritDoc} */
     public void author_()
     {
         actionContext.release();
     }
 
+    /** {@inheritDoc} */
     public void author()
     {
         actionContext.setAction( SinkActionContext.AUTHOR );
     }
 
+    /** {@inheritDoc} */
     public void date_()
     {
         actionContext.release();
     }
 
+    /** {@inheritDoc} */
     public void date()
     {
         actionContext.setAction( SinkActionContext.DATE );
     }
 
+    /** {@inheritDoc} */
     public void title_()
     {
         actionContext.release();
     }
 
+    /** {@inheritDoc} */
     public void title()
     {
         actionContext.setAction( SinkActionContext.TITLE );
@@ -201,6 +217,7 @@ public final class ITextSink
     // Body
     // ----------------------------------------------------------------------
 
+    /** {@inheritDoc} */
     public void body_()
     {
         if ( writeStart )
@@ -213,6 +230,7 @@ public final class ITextSink
         actionContext.release();
     }
 
+    /** {@inheritDoc} */
     public void body()
     {
         if ( writeStart )
@@ -266,16 +284,19 @@ public final class ITextSink
     // Sections
     // ----------------------------------------------------------------------
 
+    /** {@inheritDoc} */
     public void sectionTitle()
     {
         actionContext.release();
     }
 
+    /** {@inheritDoc} */
     public void sectionTitle_()
     {
         actionContext.setAction( SinkActionContext.SECTION_TITLE );
     }
 
+    /** {@inheritDoc} */
     public void section1_()
     {
         writeEndElement(); // ElementTags.SECTION
@@ -286,6 +307,7 @@ public final class ITextSink
         actionContext.release();
     }
 
+    /** {@inheritDoc} */
     public void section1()
     {
         numberDepth++;
@@ -301,6 +323,7 @@ public final class ITextSink
         actionContext.setAction( SinkActionContext.SECTION_1 );
     }
 
+    /** {@inheritDoc} */
     public void sectionTitle1_()
     {
         writeEndElement(); // ElementTags.TITLE
@@ -311,6 +334,7 @@ public final class ITextSink
         actionContext.release();
     }
 
+    /** {@inheritDoc} */
     public void sectionTitle1()
     {
         font.setSize( ITextFont.getSectionFontSize( 1 ) );
@@ -330,6 +354,7 @@ public final class ITextSink
         actionContext.setAction( SinkActionContext.SECTION_TITLE_1 );
     }
 
+    /** {@inheritDoc} */
     public void section2_()
     {
         writeEndElement(); // ElementTags.SECTION
@@ -340,6 +365,7 @@ public final class ITextSink
         actionContext.release();
     }
 
+    /** {@inheritDoc} */
     public void section2()
     {
         numberDepth++;
@@ -355,6 +381,7 @@ public final class ITextSink
         actionContext.setAction( SinkActionContext.SECTION_2 );
     }
 
+    /** {@inheritDoc} */
     public void sectionTitle2_()
     {
         writeEndElement(); // ElementTags.TITLE
@@ -365,6 +392,7 @@ public final class ITextSink
         actionContext.release();
     }
 
+    /** {@inheritDoc} */
     public void sectionTitle2()
     {
         font.setSize( ITextFont.getSectionFontSize( 2 ) );
@@ -384,6 +412,7 @@ public final class ITextSink
         actionContext.setAction( SinkActionContext.SECTION_TITLE_2 );
     }
 
+    /** {@inheritDoc} */
     public void section3_()
     {
         writeEndElement(); // ElementTags.SECTION
@@ -394,6 +423,7 @@ public final class ITextSink
         actionContext.release();
     }
 
+    /** {@inheritDoc} */
     public void section3()
     {
         numberDepth++;
@@ -409,6 +439,7 @@ public final class ITextSink
         actionContext.setAction( SinkActionContext.SECTION_3 );
     }
 
+    /** {@inheritDoc} */
     public void sectionTitle3_()
     {
         writeEndElement(); // ElementTags.TITLE
@@ -419,6 +450,7 @@ public final class ITextSink
         actionContext.release();
     }
 
+    /** {@inheritDoc} */
     public void sectionTitle3()
     {
         font.setSize( ITextFont.getSectionFontSize( 3 ) );
@@ -438,6 +470,7 @@ public final class ITextSink
         actionContext.setAction( SinkActionContext.SECTION_TITLE_3 );
     }
 
+    /** {@inheritDoc} */
     public void section4_()
     {
         writeEndElement(); // ElementTags.SECTION
@@ -448,6 +481,7 @@ public final class ITextSink
         actionContext.release();
     }
 
+    /** {@inheritDoc} */
     public void section4()
     {
         numberDepth++;
@@ -463,6 +497,7 @@ public final class ITextSink
         actionContext.setAction( SinkActionContext.SECTION_4 );
     }
 
+    /** {@inheritDoc} */
     public void sectionTitle4_()
     {
         writeEndElement(); // ElementTags.TITLE
@@ -473,6 +508,7 @@ public final class ITextSink
         actionContext.release();
     }
 
+    /** {@inheritDoc} */
     public void sectionTitle4()
     {
         font.setSize( ITextFont.getSectionFontSize( 4 ) );
@@ -492,6 +528,7 @@ public final class ITextSink
         actionContext.setAction( SinkActionContext.SECTION_TITLE_4 );
     }
 
+    /** {@inheritDoc} */
     public void section5_()
     {
         writeEndElement(); // ElementTags.SECTION
@@ -502,6 +539,7 @@ public final class ITextSink
         actionContext.release();
     }
 
+    /** {@inheritDoc} */
     public void section5()
     {
         numberDepth++;
@@ -517,6 +555,7 @@ public final class ITextSink
         actionContext.setAction( SinkActionContext.SECTION_5 );
     }
 
+    /** {@inheritDoc} */
     public void sectionTitle5_()
     {
         writeEndElement(); // ElementTags.TITLE
@@ -527,6 +566,7 @@ public final class ITextSink
         actionContext.release();
     }
 
+    /** {@inheritDoc} */
     public void sectionTitle5()
     {
         font.setSize( ITextFont.getSectionFontSize( 5 ) );
@@ -550,6 +590,7 @@ public final class ITextSink
     // Paragraph
     // ----------------------------------------------------------------------
 
+    /** {@inheritDoc} */
     public void paragraph_()
     {
         // Special case
@@ -565,6 +606,7 @@ public final class ITextSink
         actionContext.release();
     }
 
+    /** {@inheritDoc} */
     public void paragraph()
     {
         // Special case
@@ -586,6 +628,7 @@ public final class ITextSink
     // Lists
     // ----------------------------------------------------------------------
 
+    /** {@inheritDoc} */
     public void list_()
     {
         writeEndElement(); // ElementTags.LIST
@@ -595,6 +638,7 @@ public final class ITextSink
         actionContext.release();
     }
 
+    /** {@inheritDoc} */
     public void list()
     {
         writeStartElement( ElementTags.CHUNK );
@@ -612,6 +656,7 @@ public final class ITextSink
         actionContext.setAction( SinkActionContext.LIST );
     }
 
+    /** {@inheritDoc} */
     public void listItem_()
     {
         writeEndElement(); // ElementTags.LISTITEM
@@ -619,6 +664,7 @@ public final class ITextSink
         actionContext.release();
     }
 
+    /** {@inheritDoc} */
     public void listItem()
     {
         writeStartElement( ElementTags.LISTITEM );
@@ -627,6 +673,7 @@ public final class ITextSink
         actionContext.setAction( SinkActionContext.LIST_ITEM );
     }
 
+    /** {@inheritDoc} */
     public void numberedList_()
     {
         writeEndElement(); // ElementTags.LIST
@@ -636,6 +683,7 @@ public final class ITextSink
         actionContext.release();
     }
 
+    /** {@inheritDoc} */
     public void numberedList( int numbering )
     {
         writeStartElement( ElementTags.CHUNK );
@@ -681,6 +729,7 @@ public final class ITextSink
         actionContext.setAction( SinkActionContext.NUMBERED_LIST );
     }
 
+    /** {@inheritDoc} */
     public void numberedListItem_()
     {
         writeEndElement(); // ElementTags.LISTITEM
@@ -688,6 +737,7 @@ public final class ITextSink
         actionContext.release();
     }
 
+    /** {@inheritDoc} */
     public void numberedListItem()
     {
         writeStartElement( ElementTags.LISTITEM );
@@ -696,16 +746,19 @@ public final class ITextSink
         actionContext.setAction( SinkActionContext.NUMBERED_LIST_ITEM );
     }
 
+    /** {@inheritDoc} */
     public void definitionList_()
     {
         actionContext.release();
     }
 
+    /** {@inheritDoc} */
     public void definitionList()
     {
         actionContext.setAction( SinkActionContext.DEFINITION_LIST );
     }
 
+    /** {@inheritDoc} */
     public void definedTerm_()
     {
         writeEndElement(); // ElementTags.CELL
@@ -719,6 +772,7 @@ public final class ITextSink
         actionContext.release();
     }
 
+    /** {@inheritDoc} */
     public void definedTerm()
     {
         writeStartElement( ElementTags.CHUNK );
@@ -752,6 +806,7 @@ public final class ITextSink
         actionContext.setAction( SinkActionContext.DEFINED_TERM );
     }
 
+    /** {@inheritDoc} */
     public void definition_()
     {
         writeEndElement(); // ElementTags.CELL
@@ -765,6 +820,7 @@ public final class ITextSink
         actionContext.release();
     }
 
+    /** {@inheritDoc} */
     public void definition()
     {
         writeStartElement( ElementTags.CHUNK );
@@ -809,12 +865,14 @@ public final class ITextSink
         actionContext.setAction( SinkActionContext.DEFINITION );
     }
 
+    /** {@inheritDoc} */
     public void definitionListItem_()
     {
         // nop
         actionContext.release();
     }
 
+    /** {@inheritDoc} */
     public void definitionListItem()
     {
         // nop
@@ -826,6 +884,7 @@ public final class ITextSink
     //  Tables
     // ----------------------------------------------------------------------
 
+    /** {@inheritDoc} */
     public void table_()
     {
         writeEndElement(); // ElementTags.TABLE
@@ -835,6 +894,7 @@ public final class ITextSink
         actionContext.release();
     }
 
+    /** {@inheritDoc} */
     public void table()
     {
         writeStartElement( ElementTags.CHUNK );
@@ -860,16 +920,19 @@ public final class ITextSink
         actionContext.setAction( SinkActionContext.TABLE );
     }
 
+    /** {@inheritDoc} */
     public void tableCaption_()
     {
         actionContext.release();
     }
 
+    /** {@inheritDoc} */
     public void tableCaption()
     {
         actionContext.setAction( SinkActionContext.TABLE_CAPTION );
     }
 
+    /** {@inheritDoc} */
     public void tableCell_()
     {
         writeEndElement(); // ElementTags.CELL
@@ -877,6 +940,7 @@ public final class ITextSink
         actionContext.release();
     }
 
+    /** {@inheritDoc} */
     public void tableCell()
     {
         writeStartElement( ElementTags.CELL );
@@ -889,11 +953,13 @@ public final class ITextSink
         actionContext.setAction( SinkActionContext.TABLE_CELL );
     }
 
+    /** {@inheritDoc} */
     public void tableCell( String width )
     {
         actionContext.setAction( SinkActionContext.TABLE_CELL );
     }
 
+    /** {@inheritDoc} */
     public void tableHeaderCell_()
     {
         writeEndElement(); // ElementTags.CELL
@@ -901,6 +967,7 @@ public final class ITextSink
         actionContext.release();
     }
 
+    /** {@inheritDoc} */
     public void tableHeaderCell()
     {
         writeStartElement( ElementTags.CELL );
@@ -917,11 +984,13 @@ public final class ITextSink
         actionContext.setAction( SinkActionContext.TABLE_HEADER_CELL );
     }
 
+    /** {@inheritDoc} */
     public void tableHeaderCell( String width )
     {
         actionContext.setAction( SinkActionContext.TABLE_HEADER_CELL );
     }
 
+    /** {@inheritDoc} */
     public void tableRow_()
     {
         writeEndElement(); // ElementTags.ROW
@@ -929,6 +998,7 @@ public final class ITextSink
         actionContext.release();
     }
 
+    /** {@inheritDoc} */
     public void tableRow()
     {
         writeStartElement( ElementTags.ROW );
@@ -936,6 +1006,7 @@ public final class ITextSink
         actionContext.setAction( SinkActionContext.TABLE_ROW );
     }
 
+    /** {@inheritDoc} */
     public void tableRows_()
     {
         //writeEndElement(); // ElementTags.TABLE
@@ -943,6 +1014,7 @@ public final class ITextSink
         actionContext.release();
     }
 
+    /** {@inheritDoc} */
     public void tableRows( int[] justification, boolean grid )
     {
         // ElementTags.TABLE
@@ -955,6 +1027,7 @@ public final class ITextSink
     // Verbatim
     // ----------------------------------------------------------------------
 
+    /** {@inheritDoc} */
     public void verbatim_()
     {
         writeEndElement(); // ElementTags.CELL
@@ -968,6 +1041,7 @@ public final class ITextSink
         actionContext.release();
     }
 
+    /** {@inheritDoc} */
     public void verbatim( boolean boxed )
     {
         // Always boxed
@@ -1006,6 +1080,7 @@ public final class ITextSink
     // Figures
     // ----------------------------------------------------------------------
 
+    /** {@inheritDoc} */
     public void figure_()
     {
         writeEndElement(); // ElementTags.IMAGE
@@ -1015,6 +1090,7 @@ public final class ITextSink
         actionContext.release();
     }
 
+    /** {@inheritDoc} */
     public void figure()
     {
         writeStartElement( ElementTags.CHUNK );
@@ -1030,16 +1106,19 @@ public final class ITextSink
         actionContext.setAction( SinkActionContext.FIGURE );
     }
 
+    /** {@inheritDoc} */
     public void figureCaption_()
     {
         actionContext.release();
     }
 
+    /** {@inheritDoc} */
     public void figureCaption()
     {
         actionContext.setAction( SinkActionContext.FIGURE_CAPTION );
     }
 
+    /** {@inheritDoc} */
     public void figureGraphics( String name )
     {
         String urlName = null;
@@ -1106,31 +1185,37 @@ public final class ITextSink
     // Fonts
     // ----------------------------------------------------------------------
 
+    /** {@inheritDoc} */
     public void bold_()
     {
         font.removeBold();
     }
 
+    /** {@inheritDoc} */
     public void bold()
     {
         font.addBold();
     }
 
+    /** {@inheritDoc} */
     public void italic_()
     {
         font.removeItalic();
     }
 
+    /** {@inheritDoc} */
     public void italic()
     {
         font.addItalic();
     }
 
+    /** {@inheritDoc} */
     public void monospaced_()
     {
         font.setMonoSpaced( false );
     }
 
+    /** {@inheritDoc} */
     public void monospaced()
     {
         font.setMonoSpaced( true );
@@ -1140,6 +1225,7 @@ public final class ITextSink
     // Links
     // ----------------------------------------------------------------------
 
+    /** {@inheritDoc} */
     public void link_()
     {
         writeEndElement(); // ElementTags.ANCHOR
@@ -1150,6 +1236,7 @@ public final class ITextSink
         actionContext.release();
     }
 
+    /** {@inheritDoc} */
     public void link( String name )
     {
         font.setColor( Color.BLUE );
@@ -1167,6 +1254,7 @@ public final class ITextSink
         actionContext.setAction( SinkActionContext.LINK );
     }
 
+    /** {@inheritDoc} */
     public void anchor_()
     {
         writeEndElement(); // ElementTags.ANCHOR
@@ -1174,6 +1262,7 @@ public final class ITextSink
         actionContext.release();
     }
 
+    /** {@inheritDoc} */
     public void anchor( String name )
     {
         writeStartElement( ElementTags.ANCHOR );
@@ -1186,6 +1275,7 @@ public final class ITextSink
     // Misc
     // ----------------------------------------------------------------------
 
+    /** {@inheritDoc} */
     public void lineBreak()
     {
         // Special case for the header
@@ -1200,17 +1290,20 @@ public final class ITextSink
         writeEndElement();
     }
 
+    /** {@inheritDoc} */
     public void nonBreakingSpace()
     {
         write( " " );
     }
 
+    /** {@inheritDoc} */
     public void pageBreak()
     {
         writeStartElement( ElementTags.NEWPAGE );
         writeEndElement();
     }
 
+    /** {@inheritDoc} */
     public void horizontalRule()
     {
         writeStartElement( ElementTags.PARAGRAPH );
@@ -1223,6 +1316,7 @@ public final class ITextSink
     // Text
     // ----------------------------------------------------------------------
 
+    /** {@inheritDoc} */
     public void rawText( String text )
     {
         writeStartElement( ElementTags.CHUNK );
@@ -1238,6 +1332,7 @@ public final class ITextSink
         writeEndElement(); // ElementTags.CHUNK
     }
 
+    /** {@inheritDoc} */
     public void text( String text )
     {
         switch ( actionContext.getCurrentAction() )
