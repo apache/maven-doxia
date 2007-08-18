@@ -30,12 +30,20 @@ import java.io.Reader;
 import java.io.Writer;
 
 /**
- * Provide some common convenience methods to
- * test Doxia modules (parsers and sinks).
+ * Provide some common convenience methods to test Doxia modules (parsers and sinks).
  */
 public abstract class AbstractModuleTest
     extends PlexusTestCase
 {
+    /**
+     * Set the system property <code>line.separator</code> to <code>\n</code> (Unix) to prevent
+     * failure on windows.
+     */
+    static
+    {
+        // Safety
+        System.setProperty( "line.separator", "\n" );
+    }
 
     // ----------------------------------------------------------------------
     // Methods for creating test reader and writer

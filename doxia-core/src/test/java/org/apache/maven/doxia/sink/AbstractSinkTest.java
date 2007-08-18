@@ -41,18 +41,12 @@ public abstract class AbstractSinkTest
 
     /**
      * Resets the writer and creates a new sink with it.
-     * <br/>
-     * Set the system property <code>line.separator</code> to <code>\n</code> (Unix) to prevent
-     * failure on windows.
      *
-     * @see #noNewLine(String)
+     * {@inheritDoc}
      */
     protected void setUp()
         throws Exception
     {
-        // Safety
-        System.setProperty( "line.separator", "\n" );
-
         super.setUp();
 
         writer.reset();
