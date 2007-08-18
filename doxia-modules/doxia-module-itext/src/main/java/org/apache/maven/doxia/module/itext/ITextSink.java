@@ -104,7 +104,7 @@ public final class ITextSink
         font = new ITextFont();
         header = new ITextHeader();
 
-        xmlWriter = new PrettyPrintXMLWriter( this.writer, "UTF-8", null );//, DOCTYPE );
+        xmlWriter = new PrettyPrintXMLWriter( this.writer, "UTF-8", null );
         writeStart = true;
     }
 
@@ -1213,7 +1213,9 @@ public final class ITextSink
 
     public void horizontalRule()
     {
+        writeStartElement( ElementTags.PARAGRAPH );
         writeStartElement( ElementTags.HORIZONTALRULE );
+        writeEndElement();
         writeEndElement();
     }
 
