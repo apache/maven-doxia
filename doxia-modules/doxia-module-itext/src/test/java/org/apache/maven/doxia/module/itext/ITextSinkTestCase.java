@@ -111,13 +111,13 @@ public class ITextSinkTestCase
 
         SinkTestDocument.generate( sink );
 
-    // TODO: doesn't work, FIXME
-    /*
+        sink.close();
+
         ITextUtil.writePdf( new FileInputStream( getGeneratedFile( "test_model", "xml" ) ),
                             new FileOutputStream( getGeneratedFile( "test_model", "pdf" ) ) );
-        ITextUtil.writeRtf( new FileInputStream( getGeneratedFile( "test_apt", "xml" ) ),
-                            new FileOutputStream( getGeneratedFile( "test_apt", "rtf" ) ) );
-    */
+        ITextUtil.writeRtf( new FileInputStream( getGeneratedFile( "test_model", "xml" ) ),
+                            new FileOutputStream( getGeneratedFile( "test_model", "rtf" ) ) );
+
     }
 
 }
