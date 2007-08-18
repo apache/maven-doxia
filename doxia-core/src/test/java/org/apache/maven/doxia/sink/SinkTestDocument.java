@@ -367,11 +367,11 @@ public class SinkTestDocument
 
         sink.tableRows_();
 
-        sink.table_();
-
         sink.tableCaption();
         sink.text( "Table caption" );
         sink.tableCaption_();
+
+        sink.table_();
     }
 
     /**
