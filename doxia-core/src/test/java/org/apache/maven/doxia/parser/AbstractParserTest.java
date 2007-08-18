@@ -26,22 +26,25 @@ import org.apache.maven.doxia.sink.Sink;
 import org.apache.maven.doxia.sink.TextSink;
 import org.apache.maven.doxia.parser.ParseException;
 
-import java.io.FileReader;
 import java.io.IOException;
 import java.io.Reader;
 import java.io.Writer;
 
 /**
  * Test the parsing of sample input files.
+ * <br/>
  * <b>Note</b>: you have to provide a sample "test." + outputExtension()
  * file in the test resources directory if you extend this class.
+ *
+ * @version $Id$
+ * @since 1.0
  */
 public abstract class AbstractParserTest
     extends AbstractModuleTest
 {
     /**
      * Create a new instance of the parser to test.
-     * 
+     *
      * @return the parser to test.
      */
     protected abstract Parser createParser();
