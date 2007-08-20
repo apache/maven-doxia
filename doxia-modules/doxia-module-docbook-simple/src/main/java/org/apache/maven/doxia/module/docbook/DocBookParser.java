@@ -22,6 +22,7 @@ package org.apache.maven.doxia.module.docbook;
 import org.apache.maven.doxia.macro.MacroExecutionException;
 import org.apache.maven.doxia.parser.AbstractXmlParser;
 import org.apache.maven.doxia.sink.Sink;
+
 import org.codehaus.plexus.util.xml.pull.XmlPullParser;
 import org.codehaus.plexus.util.xml.pull.XmlPullParserException;
 
@@ -40,7 +41,7 @@ import javax.swing.text.html.HTML.Tag;
  * @author <a href="mailto:jason@maven.org">Jason van Zyl</a>
  * @version $Id$
  * @since 1.0
- * @plexus.component role-hint="doc-book"
+ * @plexus.component role="org.apache.maven.doxia.parser.Parser" role-hint="doc-book"
  */
 public class DocBookParser
     extends AbstractXmlParser
@@ -49,7 +50,7 @@ public class DocBookParser
     /**
      * Level counter for calculating the section level.
      */
-    private int level = 0;
+    private int level = -1;
 
     /**
      * A selective stack of parent elements
@@ -65,99 +66,99 @@ public class DocBookParser
      * The list of DocBook elements that introduce a new level of
      * hierarchy.
      */
-    private static final Collection hierElements = new HashSet();
+    private static final Collection HIER_ELEMENTS = new HashSet();
 
     /**
      * The list of DocBook elements that will be rendered verbatim
      */
-    private static final Collection verbatimElements = new HashSet();
+    private static final Collection VERBATIM_ELEMENTS = new HashSet();
 
     /**
      * The list of DocBook elements that will be rendered inline and bold
      */
-    private static final Collection boldElements = new HashSet();
+    private static final Collection BOLD_ELEMENTS = new HashSet();
 
     /**
      * The list of DocBook elements that will be rendered inline and italic
      */
-    private static final Collection italicElements = new HashSet();
+    private static final Collection ITALIC_ELEMENTS = new HashSet();
 
     /**
      * The list of DocBook elements that will be rendered inline and monospace
      */
-    private static final Collection monospaceElements = new HashSet();
+    private static final Collection MONOSPACE_ELEMENTS = new HashSet();
 
     static
     {
-        DocBookParser.hierElements.add( "set" );
-        DocBookParser.hierElements.add( "book" );
-        DocBookParser.hierElements.add( "part" );
-        DocBookParser.hierElements.add( "chapter" );
-        DocBookParser.hierElements.add( "section" );
-        DocBookParser.hierElements.add( "sect1" );
-        DocBookParser.hierElements.add( "sect2" );
-        DocBookParser.hierElements.add( "sect3" );
-        DocBookParser.hierElements.add( "sect4" );
-        DocBookParser.hierElements.add( "sect5" );
-        DocBookParser.hierElements.add( "article" );
-        DocBookParser.hierElements.add( "preface" );
-        DocBookParser.hierElements.add( "partintro" );
-        DocBookParser.hierElements.add( "appendix" );
-        DocBookParser.hierElements.add( "bibliography" );
-        DocBookParser.hierElements.add( "reference" );
-        DocBookParser.hierElements.add( "bibliography" );
-        DocBookParser.hierElements.add( "bibliodiv" );
-        DocBookParser.hierElements.add( "glossary" );
-        DocBookParser.hierElements.add( "refentry" );
-        DocBookParser.hierElements.add( "refnamediv" );
-        DocBookParser.hierElements.add( "refsection" );
-        DocBookParser.hierElements.add( "refsect1" );
-        DocBookParser.hierElements.add( "refsect2" );
-        DocBookParser.hierElements.add( "refsect3" );
+        DocBookParser.HIER_ELEMENTS.add( "set" );
+        DocBookParser.HIER_ELEMENTS.add( "book" );
+        DocBookParser.HIER_ELEMENTS.add( "part" );
+        DocBookParser.HIER_ELEMENTS.add( "chapter" );
+        DocBookParser.HIER_ELEMENTS.add( "section" );
+        DocBookParser.HIER_ELEMENTS.add( "sect1" );
+        DocBookParser.HIER_ELEMENTS.add( "sect2" );
+        DocBookParser.HIER_ELEMENTS.add( "sect3" );
+        DocBookParser.HIER_ELEMENTS.add( "sect4" );
+        DocBookParser.HIER_ELEMENTS.add( "sect5" );
+        DocBookParser.HIER_ELEMENTS.add( "article" );
+        DocBookParser.HIER_ELEMENTS.add( "preface" );
+        DocBookParser.HIER_ELEMENTS.add( "partintro" );
+        DocBookParser.HIER_ELEMENTS.add( "appendix" );
+        DocBookParser.HIER_ELEMENTS.add( "bibliography" );
+        DocBookParser.HIER_ELEMENTS.add( "reference" );
+        DocBookParser.HIER_ELEMENTS.add( "bibliography" );
+        DocBookParser.HIER_ELEMENTS.add( "bibliodiv" );
+        DocBookParser.HIER_ELEMENTS.add( "glossary" );
+        DocBookParser.HIER_ELEMENTS.add( "refentry" );
+        DocBookParser.HIER_ELEMENTS.add( "refnamediv" );
+        DocBookParser.HIER_ELEMENTS.add( "refsection" );
+        DocBookParser.HIER_ELEMENTS.add( "refsect1" );
+        DocBookParser.HIER_ELEMENTS.add( "refsect2" );
+        DocBookParser.HIER_ELEMENTS.add( "refsect3" );
 
-        DocBookParser.verbatimElements.add( "programlisting" );
-        DocBookParser.verbatimElements.add( "screen" );
-        DocBookParser.verbatimElements.add( "literallayout" );
-        DocBookParser.verbatimElements.add( "synopsis" );
+        DocBookParser.VERBATIM_ELEMENTS.add( "programlisting" );
+        DocBookParser.VERBATIM_ELEMENTS.add( "screen" );
+        DocBookParser.VERBATIM_ELEMENTS.add( "literallayout" );
+        DocBookParser.VERBATIM_ELEMENTS.add( "synopsis" );
 
-        DocBookParser.boldElements.add( "command" );
-        DocBookParser.boldElements.add( "keycap" );
-        DocBookParser.boldElements.add( "shortcut" );
-        DocBookParser.boldElements.add( "userinput" );
+        DocBookParser.BOLD_ELEMENTS.add( "command" );
+        DocBookParser.BOLD_ELEMENTS.add( "keycap" );
+        DocBookParser.BOLD_ELEMENTS.add( "shortcut" );
+        DocBookParser.BOLD_ELEMENTS.add( "userinput" );
 
-        DocBookParser.italicElements.add( "parameter" );
-        DocBookParser.italicElements.add( "replaceable" );
-        DocBookParser.italicElements.add( "medialabel" );
-        DocBookParser.italicElements.add( "structfield" );
-        DocBookParser.italicElements.add( "systemitem" );
-        DocBookParser.italicElements.add( "citetitle" );
-        DocBookParser.italicElements.add( "emphasis" );
-        DocBookParser.italicElements.add( "foreignphrase" );
-        DocBookParser.italicElements.add( "wordasword" );
+        DocBookParser.ITALIC_ELEMENTS.add( "parameter" );
+        DocBookParser.ITALIC_ELEMENTS.add( "replaceable" );
+        DocBookParser.ITALIC_ELEMENTS.add( "medialabel" );
+        DocBookParser.ITALIC_ELEMENTS.add( "structfield" );
+        DocBookParser.ITALIC_ELEMENTS.add( "systemitem" );
+        DocBookParser.ITALIC_ELEMENTS.add( "citetitle" );
+        DocBookParser.ITALIC_ELEMENTS.add( "emphasis" );
+        DocBookParser.ITALIC_ELEMENTS.add( "foreignphrase" );
+        DocBookParser.ITALIC_ELEMENTS.add( "wordasword" );
 
-        DocBookParser.monospaceElements.add( "classname" );
-        DocBookParser.monospaceElements.add( "exceptionname" );
-        DocBookParser.monospaceElements.add( "interfacename" );
-        DocBookParser.monospaceElements.add( "methodname" );
-        DocBookParser.monospaceElements.add( "computeroutput" );
-        DocBookParser.monospaceElements.add( "constant" );
-        DocBookParser.monospaceElements.add( "envar" );
-        DocBookParser.monospaceElements.add( "function" );
-        DocBookParser.monospaceElements.add( "parameter" );
-        DocBookParser.monospaceElements.add( "replaceable" );
-        DocBookParser.monospaceElements.add( "literal" );
-        DocBookParser.monospaceElements.add( "code" );
-        DocBookParser.monospaceElements.add( "option" );
-        DocBookParser.monospaceElements.add( "prompt" );
-        DocBookParser.monospaceElements.add( "structfield" );
-        DocBookParser.monospaceElements.add( "systemitem" );
-        DocBookParser.monospaceElements.add( "structfield" );
-        DocBookParser.monospaceElements.add( "userinput" );
-        DocBookParser.monospaceElements.add( "varname" );
-        DocBookParser.monospaceElements.add( "sgmltag" );
-        DocBookParser.monospaceElements.add( "tag" );//DocBook 5
-        DocBookParser.monospaceElements.add( "uri" );
-        DocBookParser.monospaceElements.add( "filename" );
+        DocBookParser.MONOSPACE_ELEMENTS.add( "classname" );
+        DocBookParser.MONOSPACE_ELEMENTS.add( "exceptionname" );
+        DocBookParser.MONOSPACE_ELEMENTS.add( "interfacename" );
+        DocBookParser.MONOSPACE_ELEMENTS.add( "methodname" );
+        DocBookParser.MONOSPACE_ELEMENTS.add( "computeroutput" );
+        DocBookParser.MONOSPACE_ELEMENTS.add( "constant" );
+        DocBookParser.MONOSPACE_ELEMENTS.add( "envar" );
+        DocBookParser.MONOSPACE_ELEMENTS.add( "function" );
+        DocBookParser.MONOSPACE_ELEMENTS.add( "parameter" );
+        DocBookParser.MONOSPACE_ELEMENTS.add( "replaceable" );
+        DocBookParser.MONOSPACE_ELEMENTS.add( "literal" );
+        DocBookParser.MONOSPACE_ELEMENTS.add( "code" );
+        DocBookParser.MONOSPACE_ELEMENTS.add( "option" );
+        DocBookParser.MONOSPACE_ELEMENTS.add( "prompt" );
+        DocBookParser.MONOSPACE_ELEMENTS.add( "structfield" );
+        DocBookParser.MONOSPACE_ELEMENTS.add( "systemitem" );
+        DocBookParser.MONOSPACE_ELEMENTS.add( "structfield" );
+        DocBookParser.MONOSPACE_ELEMENTS.add( "userinput" );
+        DocBookParser.MONOSPACE_ELEMENTS.add( "varname" );
+        DocBookParser.MONOSPACE_ELEMENTS.add( "sgmltag" );
+        DocBookParser.MONOSPACE_ELEMENTS.add( "tag" ); //DocBook 5
+        DocBookParser.MONOSPACE_ELEMENTS.add( "uri" );
+        DocBookParser.MONOSPACE_ELEMENTS.add( "filename" );
     }
 
     // ----------------------------------------------------------------------
@@ -190,41 +191,42 @@ public class DocBookParser
         if ( id != null )
         {
             sink.anchor( id );
+            sink.anchor_();
         }
 
         //If the element introduces a new level of hierarchy, raise the stack
-        if ( hierElements.contains( parser.getName() ) )
+        if ( HIER_ELEMENTS.contains( parser.getName() ) )
         {
             //increase the nesting level
             level++;
             //if this is the root element, handle it as body
-            if ( level == 1 )
+            if ( level == 0 )
             {
                 sink.body();
             }
-            else if ( level == 2 )
+            else if ( level == Sink.SECTION_LEVEL_1 )
             {
                 sink.section1();
             }
-            else if ( level == 3 )
+            else if ( level == Sink.SECTION_LEVEL_2 )
             {
                 sink.section2();
             }
-            else if ( level == 4 )
+            else if ( level == Sink.SECTION_LEVEL_3 )
             {
                 sink.section3();
             }
-            else if ( level == 5 )
+            else if ( level == Sink.SECTION_LEVEL_4 )
             {
                 sink.section4();
             }
-            else if ( level == 6 )
+            else if ( level == Sink.SECTION_LEVEL_5 )
             {
                 sink.section5();
             }
         }
         //Match all *info-Elements for metainformation, but only consider the root element
-        else if ( ( parser.getName().endsWith( INFO_TAG.toString() ) ) && ( level == 1 ) )
+        else if ( ( parser.getName().endsWith( INFO_TAG.toString() ) ) && ( level == 0 ) )
         {
             sink.head();
             parent.push( parser.getName() );
@@ -338,7 +340,8 @@ public class DocBookParser
         {
             sink.tableCaption();
         }
-        else if ( ( parser.getName().equals( PARA_TAG.toString() ) || parser.getName().equals( SIMPARA_TAG.toString() ) )
+        else if ( ( parser.getName().equals( PARA_TAG.toString() )
+            || parser.getName().equals( SIMPARA_TAG.toString() ) )
             && !isParent( FORMALPARA_TAG.toString() ) )
         {
             sink.paragraph();
@@ -352,32 +355,32 @@ public class DocBookParser
         {
             sink.bold();
         }
-        else if ( DocBookParser.verbatimElements.contains( parser.getName() ) )
+        else if ( DocBookParser.VERBATIM_ELEMENTS.contains( parser.getName() ) )
         {
             sink.verbatim( true );
         }
 
-        else if ( DocBookParser.boldElements.contains( parser.getName() ) &&
-            DocBookParser.monospaceElements.contains( parser.getName() ) )
+        else if ( DocBookParser.BOLD_ELEMENTS.contains( parser.getName() )
+            && DocBookParser.MONOSPACE_ELEMENTS.contains( parser.getName() ) )
         {
             sink.bold();
             sink.monospaced();
         }
-        else if ( DocBookParser.italicElements.contains( parser.getName() ) &&
-            DocBookParser.monospaceElements.contains( parser.getName() ) )
+        else if ( DocBookParser.ITALIC_ELEMENTS.contains( parser.getName() )
+            && DocBookParser.MONOSPACE_ELEMENTS.contains( parser.getName() ) )
         {
             sink.italic();
             sink.monospaced();
         }
-        else if ( DocBookParser.boldElements.contains( parser.getName() ) )
+        else if ( DocBookParser.BOLD_ELEMENTS.contains( parser.getName() ) )
         {
             sink.bold();
         }
-        else if ( DocBookParser.italicElements.contains( parser.getName() ) )
+        else if ( DocBookParser.ITALIC_ELEMENTS.contains( parser.getName() ) )
         {
             sink.italic();
         }
-        else if ( DocBookParser.monospaceElements.contains( parser.getName() ) )
+        else if ( DocBookParser.MONOSPACE_ELEMENTS.contains( parser.getName() ) )
         {
             sink.monospaced();
         }
@@ -394,27 +397,27 @@ public class DocBookParser
             {
                 sink.tableCaption();
             }
-            else if ( level == 1 )
+            else if ( level == 0 )
             {
                 sink.title();
             }
-            else if ( level == 2 )
+            else if ( level == Sink.SECTION_LEVEL_1 )
             {
                 sink.sectionTitle1();
             }
-            else if ( level == 3 )
+            else if ( level == Sink.SECTION_LEVEL_2 )
             {
                 sink.sectionTitle2();
             }
-            else if ( level == 4 )
+            else if ( level == Sink.SECTION_LEVEL_3 )
             {
                 sink.sectionTitle3();
             }
-            else if ( level == 5 )
+            else if ( level == Sink.SECTION_LEVEL_4 )
             {
                 sink.sectionTitle4();
             }
-            else if ( level == 6 )
+            else if ( level == Sink.SECTION_LEVEL_5 )
             {
                 sink.sectionTitle5();
             }
@@ -457,7 +460,7 @@ public class DocBookParser
             if ( linkend != null )
             {
                 sink.link( "#" + linkend );
-                sink.text( "Link" );//TODO: determine text of link target
+                sink.text( "Link" ); //TODO: determine text of link target
                 sink.link_();
             }
         }
@@ -473,38 +476,38 @@ public class DocBookParser
     {
 
         //If the element introduces a new level of hierarchy, lower the stack
-        if ( hierElements.contains( parser.getName() ) )
+        if ( HIER_ELEMENTS.contains( parser.getName() ) )
         {
-            //increase the nesting level
-            level--;
             //if this is the root element, handle it as body
-            if ( level == 1 )
+            if ( level == 0 )
             {
                 sink.body_();
             }
-            else if ( level == 2 )
+            else if ( level == Sink.SECTION_LEVEL_1 )
             {
                 sink.section1_();
             }
-            else if ( level == 3 )
+            else if ( level == Sink.SECTION_LEVEL_2 )
             {
                 sink.section2_();
             }
-            else if ( level == 4 )
+            else if ( level == Sink.SECTION_LEVEL_3 )
             {
                 sink.section3_();
             }
-            else if ( level == 5 )
+            else if ( level == Sink.SECTION_LEVEL_4 )
             {
                 sink.section4_();
             }
-            else if ( level == 6 )
+            else if ( level == Sink.SECTION_LEVEL_5 )
             {
                 sink.section5_();
             }
+            //decrease the nesting level
+            level--;
         }
         //Match all *info-Elements for metainformation, but only consider the root element
-        else if ( parser.getName().endsWith( INFO_TAG.toString() ) && level == 1 )
+        else if ( parser.getName().endsWith( INFO_TAG.toString() ) && level == 0 )
         {
             sink.head_();
             parent.pop();
@@ -584,7 +587,8 @@ public class DocBookParser
         {
             sink.tableCaption_();
         }
-        else if ( ( parser.getName().equals( PARA_TAG.toString() ) || parser.getName().equals( SIMPARA_TAG.toString() ) )
+        else if ( ( parser.getName().equals( PARA_TAG.toString() )
+            || parser.getName().equals( SIMPARA_TAG.toString() ) )
             && !isParent( FORMALPARA_TAG.toString() ) )
         {
             sink.paragraph_();
@@ -596,34 +600,34 @@ public class DocBookParser
         }
         else if ( parser.getName().equals( Tag.TITLE.toString() ) && isParent( FORMALPARA_TAG.toString() ) )
         {
-            sink.text( ". " );//Inline Running head
+            sink.text( ". " ); //Inline Running head
             sink.bold_();
         }
-        else if ( DocBookParser.verbatimElements.contains( parser.getName() ) )
+        else if ( DocBookParser.VERBATIM_ELEMENTS.contains( parser.getName() ) )
         {
             sink.verbatim_();
         }
-        else if ( DocBookParser.boldElements.contains( parser.getName() ) &&
-            DocBookParser.monospaceElements.contains( parser.getName() ) )
+        else if ( DocBookParser.BOLD_ELEMENTS.contains( parser.getName() )
+            && DocBookParser.MONOSPACE_ELEMENTS.contains( parser.getName() ) )
         {
             sink.bold_();
             sink.monospaced_();
         }
-        else if ( DocBookParser.italicElements.contains( parser.getName() ) &&
-            DocBookParser.monospaceElements.contains( parser.getName() ) )
+        else if ( DocBookParser.ITALIC_ELEMENTS.contains( parser.getName() )
+            && DocBookParser.MONOSPACE_ELEMENTS.contains( parser.getName() ) )
         {
             sink.italic_();
             sink.monospaced_();
         }
-        else if ( DocBookParser.boldElements.contains( parser.getName() ) )
+        else if ( DocBookParser.BOLD_ELEMENTS.contains( parser.getName() ) )
         {
             sink.bold_();
         }
-        else if ( DocBookParser.italicElements.contains( parser.getName() ) )
+        else if ( DocBookParser.ITALIC_ELEMENTS.contains( parser.getName() ) )
         {
             sink.italic_();
         }
-        else if ( DocBookParser.monospaceElements.contains( parser.getName() ) )
+        else if ( DocBookParser.MONOSPACE_ELEMENTS.contains( parser.getName() ) )
         {
             sink.monospaced_();
         }
@@ -640,27 +644,27 @@ public class DocBookParser
             {
                 sink.tableCaption_();
             }
-            else if ( level == 1 )
+            else if ( level == 0 )
             {
                 sink.title_();
             }
-            else if ( level == 2 )
+            else if ( level == Sink.SECTION_LEVEL_1 )
             {
                 sink.sectionTitle1_();
             }
-            else if ( level == 3 )
+            else if ( level == Sink.SECTION_LEVEL_2 )
             {
                 sink.sectionTitle2_();
             }
-            else if ( level == 4 )
+            else if ( level == Sink.SECTION_LEVEL_3 )
             {
                 sink.sectionTitle3_();
             }
-            else if ( level == 5 )
+            else if ( level == Sink.SECTION_LEVEL_4 )
             {
                 sink.sectionTitle4_();
             }
-            else if ( level == 6 )
+            else if ( level == Sink.SECTION_LEVEL_5 )
             {
                 sink.sectionTitle5_();
             }
@@ -687,6 +691,13 @@ public class DocBookParser
     //
     // ----------------------------------------------------------------------
 
+    /**
+     * Returns the value of the given attribute.
+     *
+     * @param parser the parser to scan.
+     * @param name the attribute name.
+     * @return the attribute value.
+     */
     private String getAttributeValue( XmlPullParser parser, String name )
     {
         for ( int i = 0; i < parser.getAttributeCount(); i++ )
@@ -700,6 +711,12 @@ public class DocBookParser
         return null;
     }
 
+    /**
+     * Determines if the given element is a parent element.
+     *
+     * @param element the element to determine.
+     * @return true if the given element is a parent element.
+     */
     private boolean isParent( String element )
     {
         if ( parent.size() > 0 )

@@ -22,7 +22,6 @@ package org.apache.maven.doxia.module.docbook;
 import org.apache.maven.doxia.parser.Parser;
 import org.apache.maven.doxia.sink.AbstractXmlSink;
 import org.apache.maven.doxia.sink.StructureSink;
-import org.apache.maven.doxia.util.HtmlTools;
 import org.apache.maven.doxia.util.LineBreaker;
 import org.codehaus.plexus.util.FileUtils;
 
@@ -54,64 +53,89 @@ public class DocBookSink
     /** DocBook XML V4.0 XML system id: "http://www.oasis-open.org/docbook/xml/4.0/docbookx.dtd" */
     public static final String DEFAULT_XML_SYSTEM_ID = "http://www.oasis-open.org/docbook/xml/4.0/docbookx.dtd";
 
+    /** The output writer. */
     private LineBreaker out;
 
+    /** xmlMode. */
     private boolean xmlMode = false;
 
+    /** encoding. */
     private String encoding = null;
 
+    /** styleSheet. */
     private String styleSheet = null;
 
+    /** language. */
     private String lang = null;
 
+    /** publicId. */
     private String publicId = null;
 
+    /** systemId. */
     private String systemId = null;
 
+    /** italicBegin. */
     private String italicBeginTag;
 
+    /** italicEnd. */
     private String italicEndTag;
 
+    /** boldBegin. */
     private String boldBeginTag;
 
+    /** boldEnd. */
     private String boldEndTag;
 
+    /** monospacedBegin. */
     private String monospacedBeginTag;
 
+    /** monospacedEnd. */
     private String monospacedEndTag;
 
+    /** horizontalRule. */
     private String horizontalRuleElement;
 
+    /** pageBreak. */
     private String pageBreakElement;
 
+    /** lineBreak. */
     private String lineBreakElement;
 
-    protected String graphicsFileName;
+    /** An image source file. */
+    private String graphicsFileName;
 
+    /** hasTitle. */
     private boolean hasTitle;
 
+    /** authorDate. */
     private boolean authorDateFlag;
 
+    /** verbatim. */
     private boolean verbatimFlag;
 
+    /** externalLink. */
     private boolean externalLinkFlag;
 
+    /** tableHasCaption. */
     private boolean tableHasCaption;
 
+    /** Used for table rows. */
     private LineBreaker savedOut;
 
+    /** tableRows. */
     private String tableRows;
 
+    /** tableHasGrid. */
     private boolean tableHasGrid;
 
     // -----------------------------------------------------------------------
 
     /**
-     * @param out the default writer
+     * @param writer the default writer.
      */
-    public DocBookSink( Writer out )
+    public DocBookSink( Writer writer )
     {
-        this.out = new LineBreaker( out );
+        this.out = new LineBreaker( writer );
         setItalicElement( "<emphasis>" );
         setBoldElement( "<emphasis role=\"bold\">" );
         setMonospacedElement( "<literal>" );
@@ -121,12 +145,12 @@ public class DocBookSink
     }
 
     /**
-     * TODO Try to replace by {@link HtmlTools#escapeHTML(String)}
      *
-     * @param text
-     * @param xmlMode
-     * @return
+     * @param text The text to escape.
+     * @param xmlMode xmlMode.
+     * @return The escaped text.
      */
+    // TODO: Try to replace by HtmlTools#escapeHTML(String).
     public static final String escapeSGML( String text, boolean xmlMode )
     {
         int length = text.length();
@@ -174,76 +198,147 @@ public class DocBookSink
         return buffer.toString();
     }
 
-    public void setXMLMode( boolean xmlMode )
+    /**
+     * Sets the xml mode.
+     *
+     * @param mode the mode to set.
+     */
+    public void setXMLMode( boolean mode )
     {
-        this.xmlMode = xmlMode;
+        this.xmlMode = mode;
     }
 
+    /**
+     * Returns the current xmlMode.
+     *
+     * @return the current xmlMode.
+     */
     public boolean isXMLMode()
     {
         return xmlMode;
     }
 
-    public void setEncoding( String encoding )
+    /**
+     * Sets the encoding.
+     *
+     * @param enc the encoding to set.
+     */
+    public void setEncoding( String enc )
     {
-        this.encoding = encoding;
+        this.encoding = enc;
     }
 
+    /**
+     * Returns the current encoding.
+     *
+     * @return the current encoding.
+     */
     public String getEncoding()
     {
         return encoding;
     }
 
-    public void setStyleSheet( String styleSheet )
+    /**
+     * Sets the styleSheet.
+     *
+     * @param sheet the styleSheet to set.
+     */
+    public void setStyleSheet( String sheet )
     {
-        this.styleSheet = styleSheet;
+        this.styleSheet = sheet;
     }
 
+    /**
+     * Returns the current styleSheet.
+     *
+     * @return the current styleSheet.
+     */
     public String getStyleSheet()
     {
         return styleSheet;
     }
 
-    public void setPublicId( String publicId )
+    /**
+     * Sets the publicId.
+     *
+     * @param id the publicId to set.
+     */
+    public void setPublicId( String id )
     {
-        this.publicId = publicId;
+        this.publicId = id;
     }
 
+    /**
+     * Returns the current publicId.
+     *
+     * @return the current publicId.
+     */
     public String getPublicId()
     {
         return publicId;
     }
 
-    public void setSystemId( String systemId )
+    /**
+     * Sets the systemId.
+     *
+     * @param id the systemId to set.
+     */
+    public void setSystemId( String id )
     {
-        this.systemId = systemId;
+        this.systemId = id;
     }
 
+    /**
+     * Returns the current systemId.
+     *
+     * @return the current systemId.
+     */
     public String getSystemId()
     {
         return systemId;
     }
 
-    public void setLanguage( String lang )
+    /**
+     * Sets the language.
+     *
+     * @param language the language to set.
+     */
+    public void setLanguage( String language )
     {
-        this.lang = lang;
+        this.lang = language;
     }
 
+    /**
+     * Returns the current language.
+     *
+     * @return the current language.
+     */
     public String getLanguage()
     {
         return lang;
     }
 
-    public void setItalicElement( String italicBeginTag )
+    /**
+     * Sets the current italicBeginTag and constructs the corresponding end tag from it.
+     *
+     * @param tag the tag to set. If tag is null, the empty string is used.
+     */
+    public void setItalicElement( String tag )
     {
-        if ( italicBeginTag == null )
+        if ( tag == null )
         {
-            italicBeginTag = "";
+            tag = "";
         }
-        this.italicBeginTag = italicBeginTag;
+        this.italicBeginTag = tag;
         italicEndTag = makeEndTag( italicBeginTag );
     }
 
+    /**
+     * Constructs the corresponding end tag from the given begin tag.
+     *
+     * @param beginTag the begin tag to set. If null, the empty string is returned.
+     * @return the corresponding end tag.
+     */
     private String makeEndTag( String beginTag )
     {
         int length = beginTag.length();
@@ -266,71 +361,129 @@ public class DocBookSink
         return "</" + tokens.nextToken() + ">";
     }
 
+    /**
+     * Returns the current italicBeginTag.
+     *
+     * @return the current italicBeginTag. Defaults to "<emphasis>".
+     */
     public String getItalicElement()
     {
         return italicBeginTag;
     }
 
-    public void setBoldElement( String boldBeginTag )
+    /**
+     * Sets the current boldBeginTag and constructs the corresponding end tag from it.
+     *
+     * @param tag the tag to set. If tag is null, the empty string is used.
+     */
+    public void setBoldElement( String tag )
     {
-        if ( boldBeginTag == null )
+        if ( tag == null )
         {
-            boldBeginTag = "";
+            tag = "";
         }
-        this.boldBeginTag = boldBeginTag;
+        this.boldBeginTag = tag;
         boldEndTag = makeEndTag( boldBeginTag );
     }
 
+    /**
+     * Returns the current boldBeginTag.
+     *
+     * @return the current boldBeginTag. Defaults to "<emphasis role=\"bold\">".
+     */
     public String getBoldElement()
     {
         return boldBeginTag;
     }
 
-    public void setMonospacedElement( String monospacedBeginTag )
+    /**
+     * Sets the current monospacedBeginTag and constructs the corresponding end tag from it.
+     *
+     * @param tag the tag to set. If tag is null, the empty string is used.
+     */
+    public void setMonospacedElement( String tag )
     {
-        if ( monospacedBeginTag == null )
+        if ( tag == null )
         {
-            monospacedBeginTag = "";
+            tag = "";
         }
-        this.monospacedBeginTag = monospacedBeginTag;
+        this.monospacedBeginTag = tag;
         monospacedEndTag = makeEndTag( monospacedBeginTag );
     }
 
+    /**
+     * Returns the current monospacedBeginTag.
+     *
+     * @return the current monospacedBeginTag. Defaults to "<literal>>".
+     */
     public String getMonospacedElement()
     {
         return monospacedBeginTag;
     }
 
-    public void setHorizontalRuleElement( String horizontalRuleElement )
+    /**
+     * Sets the current horizontalRuleElement.
+     *
+     * @param element the element to set.
+     */
+    public void setHorizontalRuleElement( String element )
     {
-        this.horizontalRuleElement = horizontalRuleElement;
+        this.horizontalRuleElement = element;
     }
 
+    /**
+     * Returns the current horizontalRuleElement.
+     *
+     * @return the current horizontalRuleElement. Defaults to "<!-- HR -->".
+     */
     public String getHorizontalRuleElement()
     {
         return horizontalRuleElement;
     }
 
-    public void setPageBreakElement( String pageBreakElement )
+    /**
+     * Sets the current pageBreakElement.
+     *
+     * @param element the element to set.
+     */
+    public void setPageBreakElement( String element )
     {
-        this.pageBreakElement = pageBreakElement;
+        this.pageBreakElement = element;
     }
 
+    /**
+     * Returns the current pageBreakElement.
+     *
+     * @return the current pageBreakElement. Defaults to "<!-- PB -->".
+     */
     public String getPageBreakElement()
     {
         return pageBreakElement;
     }
 
-    public void setLineBreakElement( String lineBreakElement )
+    /**
+     * Sets the current lineBreakElement.
+     *
+     * @param element the element to set.
+     */
+    public void setLineBreakElement( String element )
     {
-        this.lineBreakElement = lineBreakElement;
+        this.lineBreakElement = element;
     }
 
+    /**
+     * Returns the current lineBreakElement.
+     *
+     * @return the current lineBreakElement. Defaults to "<!-- LB -->".
+     */
     public String getLineBreakElement()
     {
         return lineBreakElement;
     }
 
+    /**
+     * Reset all variables.
+     */
     private void resetState()
     {
         hasTitle = false;
@@ -857,6 +1010,7 @@ public class DocBookSink
             att.addAttribute( FORMAT_ATTRIBUTE, format );
             att.addAttribute( FILEREF_ATTRIBUTE, escapeSGML( graphicsFileName, xmlMode ) );
 
+            // TODO: why?
             if ( xmlMode )
             {
                 writeSimpleTag( IMAGEDATA_TAG, att );
@@ -864,6 +1018,7 @@ public class DocBookSink
             else
             {
                 writeStartTag( IMAGEDATA_TAG, att );
+                writeEndTag( IMAGEDATA_TAG );
             }
 
             writeEndTag( IMAGEOBJECT_TAG );
@@ -875,6 +1030,7 @@ public class DocBookSink
     /** {@inheritDoc} */
     public void figureGraphics( String name )
     {
+        // TODO: extension?
         graphicsFileName = name + ".jpeg";
     }
 
@@ -996,6 +1152,7 @@ public class DocBookSink
             att = new SimpleAttributeSet();
             att.addAttribute( Attribute.ALIGN.toString(), justif );
 
+            // TODO: why?
             if ( xmlMode )
             {
                 writeSimpleTag( COLSPEC_TAG, att );
@@ -1003,6 +1160,7 @@ public class DocBookSink
             else
             {
                 writeStartTag( COLSPEC_TAG, att );
+                writeEndTag( COLSPEC_TAG );
             }
         }
 
@@ -1121,6 +1279,7 @@ public class DocBookSink
             MutableAttributeSet att = new SimpleAttributeSet();
             att.addAttribute( Attribute.ID, "a." + StructureSink.linkToKey( name ) );
 
+            // TODO: why?
             if ( xmlMode )
             {
                 writeSimpleTag( ANCHOR_TAG, att );
@@ -1128,6 +1287,21 @@ public class DocBookSink
             else
             {
                 writeStartTag( ANCHOR_TAG, att );
+            }
+        }
+    }
+
+    /**
+     * {@inheritDoc}
+     * @see DocbookMarkup#ANCHOR_TAG
+     */
+    public void anchor_()
+    {
+        if ( !authorDateFlag )
+        {
+            if ( !xmlMode )
+            {
+                writeEndTag( ANCHOR_TAG );
             }
         }
     }
@@ -1228,8 +1402,8 @@ public class DocBookSink
     /** {@inheritDoc} */
     public void nonBreakingSpace()
     {
-        //markup("&#x00A0;");
-        markup( "&nbsp;" );
+        markup( "&#x00A0;" );
+        //markup( "&nbsp;" );
     }
 
     /** {@inheritDoc} */
@@ -1247,16 +1421,31 @@ public class DocBookSink
 
     // -----------------------------------------------------------------------
 
+    /**
+     * Write text to output, preserving white space.
+     *
+     * @param text The text to write.
+     */
     protected void markup( String text )
     {
         out.write( text, /*preserveSpace*/ true );
     }
 
+    /**
+     * Write SGML escaped text to output, not preserving white space.
+     *
+     * @param text The text to write.
+     */
     protected void content( String text )
     {
         out.write( escapeSGML( text, xmlMode ), /*preserveSpace*/ false );
     }
 
+    /**
+     * Write SGML escaped text to output, preserving white space.
+     *
+     * @param text The text to write.
+     */
     protected void verbatimContent( String text )
     {
         out.write( escapeSGML( text, xmlMode ), /*preserveSpace*/ true );

@@ -19,25 +19,80 @@ package org.apache.maven.doxia.module.docbook;
  * under the License.
  */
 
-import org.apache.maven.doxia.parser.AbstractParserTestCase;
+import java.io.IOException;
+import java.io.Reader;
+import java.io.Writer;
+
+import org.apache.maven.doxia.parser.AbstractParserTest;
 import org.apache.maven.doxia.parser.Parser;
+import org.apache.maven.doxia.parser.ParseException;
+import org.apache.maven.doxia.sink.Sink;
 
 /**
  * @author <a href="mailto:lars@trieloff.net">Lars Trieloff</a>
  * @version $Id$
  */
-public class DocBookParserTest
-    extends AbstractParserTestCase
+public class DocBookParserTest extends AbstractParserTest
 {
+    /** The parser to test. */
+    private DocBookParser parser;
+
     /** {@inheritDoc} */
-    protected Parser getParser()
+    protected void setUp()
+        throws Exception
     {
-        return new DocBookParser();
+        super.setUp();
+
+        parser = (DocBookParser) lookup( Parser.ROLE, "doc-book" );
     }
 
     /** {@inheritDoc} */
-    protected String getDocument()
+    protected Parser createParser()
     {
-        return "src/test/resources/guide.xml";
+        return parser;
     }
+
+    /** {@inheritDoc} */
+    protected String outputExtension()
+    {
+        return "xml";
+    }
+
+    /**
+     * Parses the test document test.xml and re-emits it into test.docbook.
+     *
+     * @throws IOException if something goes wrong
+     * @throws ParseException if something goes wrong
+     */
+    public void testTestDocument()
+        throws IOException, ParseException
+    {
+        Writer writer = null;
+
+        Reader reader = null;
+
+        try
+        {
+            writer = getTestWriter( "test", "docbook" );
+            reader = getTestReader( "test" );
+
+            Sink sink = new DocBookSink( writer );
+
+            createParser().parse( reader, sink );
+        }
+        finally
+        {
+            if ( writer  != null )
+            {
+                writer.close();
+            }
+
+            if ( reader != null )
+            {
+                reader.close();
+            }
+        }
+    }
+
+
 }
