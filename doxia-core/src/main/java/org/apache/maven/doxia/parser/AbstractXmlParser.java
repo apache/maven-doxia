@@ -97,22 +97,23 @@ public abstract class AbstractXmlParser
             }
             else if ( eventType == XmlPullParser.CDSECT )
             {
-                // TODO
+                // TODO: handle CDATA sections
                 // handleCdsect( parser, sink );
             }
             else if ( eventType == XmlPullParser.COMMENT )
             {
-                // TODO
+                // TODO: handle comments, see DOXIA-137
                 // handleComment( parser, sink );
             }
             else if ( eventType == XmlPullParser.ENTITY_REF )
             {
-                // TODO
+                // TODO: handle entities
                 // handleEntity( parser, sink );
             }
 
             try
             {
+                // TODO: use nextToken() to report CDSECT, COMMENT and ENTITY_REF
                 eventType = parser.next();
             }
             catch ( IOException io )
