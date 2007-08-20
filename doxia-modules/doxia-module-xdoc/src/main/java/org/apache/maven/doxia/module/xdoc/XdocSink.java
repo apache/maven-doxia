@@ -229,109 +229,109 @@ public class XdocSink
     /** {@inheritDoc} */
     public void sectionTitle1_()
     {
-        onSectionTitle_( 1 );
+        onSectionTitle_( SECTION_LEVEL_1 );
     }
 
     /** {@inheritDoc} */
     public void section1_()
     {
-        onSection_( 1 );
+        onSection_( SECTION_LEVEL_1 );
     }
 
     /** {@inheritDoc} */
     public void section2()
     {
-        onSection( 2 );
+        onSection( SECTION_LEVEL_2 );
     }
 
     /** {@inheritDoc} */
     public void sectionTitle2()
     {
-        onSectionTitle( 2 );
+        onSectionTitle( SECTION_LEVEL_2 );
     }
 
     /** {@inheritDoc} */
     public void sectionTitle2_()
     {
-        onSectionTitle_( 2 );
+        onSectionTitle_( SECTION_LEVEL_2 );
     }
 
     /** {@inheritDoc} */
     public void section2_()
     {
-        onSection_( 2 );
+        onSection_( SECTION_LEVEL_2 );
     }
 
     /** {@inheritDoc} */
     public void section3()
     {
-        onSection( 3 );
+        onSection( SECTION_LEVEL_3 );
     }
 
     /** {@inheritDoc} */
     public void sectionTitle3()
     {
-        onSectionTitle( 3 );
+        onSectionTitle( SECTION_LEVEL_3 );
     }
 
     /** {@inheritDoc} */
     public void sectionTitle3_()
     {
-        onSectionTitle_( 3 );
+        onSectionTitle_( SECTION_LEVEL_3 );
     }
 
     /** {@inheritDoc} */
     public void section3_()
     {
-        onSection_( 3 );
+        onSection_( SECTION_LEVEL_3 );
     }
 
     /** {@inheritDoc} */
     public void section4()
     {
-        onSection( 4 );
+        onSection( SECTION_LEVEL_4 );
     }
 
     /** {@inheritDoc} */
     public void sectionTitle4()
     {
-        onSectionTitle( 4 );
+        onSectionTitle( SECTION_LEVEL_4 );
     }
 
     /** {@inheritDoc} */
     public void sectionTitle4_()
     {
-        onSectionTitle_( 4 );
+        onSectionTitle_( SECTION_LEVEL_4 );
     }
 
     /** {@inheritDoc} */
     public void section4_()
     {
-        onSection_( 4 );
+        onSection_( SECTION_LEVEL_4 );
     }
 
     /** {@inheritDoc} */
     public void section5()
     {
-        onSection( 5 );
+        onSection( SECTION_LEVEL_5 );
     }
 
     /** {@inheritDoc} */
     public void sectionTitle5()
     {
-        onSectionTitle( 5 );
+        onSectionTitle( SECTION_LEVEL_5 );
     }
 
     /** {@inheritDoc} */
     public void sectionTitle5_()
     {
-        onSectionTitle_( 5 );
+        onSectionTitle_( SECTION_LEVEL_5 );
     }
 
     /** {@inheritDoc} */
     public void section5_()
     {
-        onSection_( 5 );
+        onSection_( SECTION_LEVEL_5 );
     }
 
     /**
@@ -343,12 +343,12 @@ public class XdocSink
      */
     private void onSection( int depth )
     {
-        if ( depth == 1 )
+        if ( depth == SECTION_LEVEL_1 )
         {
             markup( String.valueOf( LESS_THAN ) + SECTION_TAG.toString() + String.valueOf( SPACE ) + Attribute.NAME
                 + String.valueOf( EQUAL ) + String.valueOf( QUOTE ) );
         }
-        else if ( depth == 2 )
+        else if ( depth == SECTION_LEVEL_2 )
         {
             markup( String.valueOf( LESS_THAN ) + SUBSECTION_TAG.toString() + String.valueOf( SPACE ) + Attribute.NAME
                 + String.valueOf( EQUAL ) + String.valueOf( QUOTE ) );
@@ -365,15 +365,15 @@ public class XdocSink
      */
     private void onSectionTitle( int depth )
     {
-        if ( depth == 3 )
+        if ( depth == SECTION_LEVEL_3 )
         {
             writeStartTag( Tag.H4 );
         }
-        else if ( depth == 4 )
+        else if ( depth == SECTION_LEVEL_4 )
         {
             writeStartTag( Tag.H5 );
         }
-        else if ( depth == 5 )
+        else if ( depth == SECTION_LEVEL_5 )
         {
             writeStartTag( Tag.H6 );
         }
@@ -391,19 +391,19 @@ public class XdocSink
      */
     private void onSectionTitle_( int depth )
     {
-        if ( depth == 1 || depth == 2 )
+        if ( depth == SECTION_LEVEL_1 || depth == SECTION_LEVEL_2 )
         {
             markup( String.valueOf( QUOTE ) + String.valueOf( GREATER_THAN ) );
         }
-        else if ( depth == 3 )
+        else if ( depth == SECTION_LEVEL_3 )
         {
             writeEndTag( Tag.H4 );
         }
-        else if ( depth == 4 )
+        else if ( depth == SECTION_LEVEL_4 )
         {
             writeEndTag( Tag.H5 );
         }
-        else if ( depth == 5 )
+        else if ( depth == SECTION_LEVEL_5 )
         {
             writeEndTag( Tag.H6 );
         }
@@ -420,11 +420,11 @@ public class XdocSink
      */
     private void onSection_( int depth )
     {
-        if ( depth == 1 )
+        if ( depth == SECTION_LEVEL_1 )
         {
             writeEndTag( SECTION_TAG );
         }
-        else if ( depth == 2 )
+        else if ( depth == SECTION_LEVEL_2 )
         {
             writeEndTag( SUBSECTION_TAG );
         }
