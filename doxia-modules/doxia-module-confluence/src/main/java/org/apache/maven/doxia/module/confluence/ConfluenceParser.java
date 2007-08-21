@@ -45,7 +45,7 @@ import java.util.List;
  *
  * @version $Id$
  * @since 1.0
- * plexus.component role-hint="confluence"
+ * @plexus.component role="org.apache.maven.doxia.parser.Parser" role-hint="confluence"
  */
 public class ConfluenceParser
     extends AbstractTextParser
