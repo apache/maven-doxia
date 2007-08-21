@@ -24,24 +24,24 @@ import org.apache.maven.doxia.sink.AbstractSinkTest;
 import org.apache.maven.doxia.sink.Sink;
 
 import java.io.File;
-import java.io.Reader;
-import java.io.InputStream;
-import java.io.InputStreamReader;
 import java.io.Writer;
 import java.util.HashMap;
 
 /**
  * @author Jason van Zyl
- * @version $Id:XhtmlSinkTest.java 348605 2005-11-24 12:02:44 +1100 (Thu, 24 Nov 2005) brett $
+ * @version $Id$
+ * @since 1.0
  */
 public class XhtmlSinkTest
     extends AbstractSinkTest
 {
+    /** {@inheritDoc} */
     protected String outputExtension()
     {
         return "xhtml";
     }
 
+    /** {@inheritDoc} */
     protected Sink createSink( Writer writer )
     {
         String apt = "test.apt";
@@ -251,6 +251,7 @@ public class XhtmlSinkTest
     class FakeMap
         extends HashMap
     {
+        /** {@inheritDoc} */
         public Object get( Object key )
         {
             return "fake";

@@ -22,7 +22,6 @@ package org.apache.maven.doxia.module.xdoc;
 import java.io.File;
 import java.io.FileReader;
 import java.io.Reader;
-import java.io.StringWriter;
 import java.io.Writer;
 
 import org.apache.maven.doxia.parser.AbstractParserTest;
@@ -33,7 +32,8 @@ import org.codehaus.plexus.util.IOUtil;
 /**
  * @author <a href="mailto:jason@maven.org">Jason van Zyl</a>
  * @author <a href="mailto:evenisse@codehaus.org">Emmanuel Venisse</a>
- * @version $Id:XdocParserTest.java 348605 2005-11-24 12:02:44 +1100 (Thu, 24 Nov 2005) brett $
+ * @version $Id$
+ * @since 1.0
  */
 public class XdocParserTest
     extends AbstractParserTest
