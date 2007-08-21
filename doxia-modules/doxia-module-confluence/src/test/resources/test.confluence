@@ -1,0 +1,98 @@
+This the way that we would like to *translate* sites that are primarily
+authored in confluence while at the same time having the site be rendered in
+a _standard way on a static website_.
+
+----
+
+Here is a link to [JIRA|http://jira.codehaus.org]
+
+Here is a link with no text [http://jira.codehaus.org]
+
+This is some {{monospaced}} text.
+
+* item one
+** foo
+** bar
+* item two
+* item three
+
+Some more text
+
+# number one
+# number two
+# number three
+
+||one||two||three||
+|foo|bar|baz|
+
+h1. I am h1
+
+this is how you would code a mojo!
+
+{code}
+public class MyMojo
+    extends AbstractMojo
+{
+    /**
+     * @parameter expression="${plugin.artifacts}"
+     * @required
+     */
+    private List pluginArtifacts;
+
+    public void execute()
+        throws MojoExecutionException
+    {
+        ...
+        for ( Iterator i = pluginArtifacts.iterator(); i.hasNext(); )
+        {
+            Artifact pluginArtifact = (Artifact) i.next();
+        }
+        ...
+    }
+}
+{code}
+
+h2. I am h2
+
+this is the way of the world
+
+{noformat}
+public class MyMojo
+    extends AbstractMojo
+{
+    /**
+     * @parameter expression="${plugin.artifacts}"
+     * @required
+     */
+    private List pluginArtifacts;
+
+    public void execute()
+        throws MojoExecutionException
+    {
+        ...
+        for ( Iterator i = pluginArtifacts.iterator(); i.hasNext(); )
+        {
+            Artifact pluginArtifact = (Artifact) i.next();
+        }
+        ...
+    }
+}
+{noformat}
+
+h3. I am h3
+
+this is the way of the world
+
+h4. I am h4
+
+this is the way of the world
+
+h5. I am h5
+
+this is the way of the world
+
+h1. Answered Questions
+
+h3. What can I do to get the Maven love?
+
+Well, you just have to be calm and the maven love will come your way.
