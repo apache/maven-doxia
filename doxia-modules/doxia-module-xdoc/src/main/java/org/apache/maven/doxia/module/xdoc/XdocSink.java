@@ -63,9 +63,6 @@ public class XdocSink
      */
     protected boolean titleFlag;
 
-    /** An indication on if we're inside a item. */
-    private boolean itemFlag;
-
     /** An indication on if we're inside a box (verbatim). */
     private boolean boxedFlag;
 
@@ -103,7 +100,6 @@ public class XdocSink
     {
         headFlag = false;
         buffer = new StringBuffer();
-        itemFlag = false;
         boxedFlag = false;
         verbatimFlag = false;
         cellJustif = null;
@@ -450,7 +446,6 @@ public class XdocSink
     public void list_()
     {
         writeEndTag( Tag.UL );
-        itemFlag = false;
     }
 
     /**
@@ -460,8 +455,6 @@ public class XdocSink
     public void listItem()
     {
         writeStartTag( Tag.LI );
-        itemFlag = true;
-        // What follows is at least a paragraph.
     }
 
     /**
@@ -514,7 +507,6 @@ public class XdocSink
     public void numberedList_()
     {
         writeEndTag( Tag.OL );
-        itemFlag = false;
     }
 
     /**
@@ -524,8 +516,6 @@ public class XdocSink
     public void numberedListItem()
     {
         writeStartTag( Tag.LI );
-        itemFlag = true;
-        // What follows is at least a paragraph.
     }
 
     /**
@@ -553,7 +543,6 @@ public class XdocSink
     public void definitionList_()
     {
         writeEndTag( Tag.DL );
-        itemFlag = false;
     }
 
     /**
@@ -581,8 +570,6 @@ public class XdocSink
     public void definition()
     {
         writeStartTag( Tag.DD );
-        itemFlag = true;
-        // What follows is at least a paragraph.
     }
 
     /**
@@ -634,10 +621,7 @@ public class XdocSink
      */
     public void paragraph()
     {
-        if ( !itemFlag )
-        {
-            writeStartTag( Tag.P );
-        }
+        writeStartTag( Tag.P );
     }
 
     /**
@@ -646,14 +630,7 @@ public class XdocSink
      */
     public void paragraph_()
     {
-        if ( itemFlag )
-        {
-            itemFlag = false;
-        }
-        else
-        {
-            writeEndTag( Tag.P );
-        }
+        writeEndTag( Tag.P );
     }
 
     /**
