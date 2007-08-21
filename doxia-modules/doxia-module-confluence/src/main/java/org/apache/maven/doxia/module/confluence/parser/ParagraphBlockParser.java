@@ -129,7 +129,7 @@ public class ParagraphBlockParser
                         break;
                     case '}':
 
-                        System.out.println( "line = " + line );
+                        //System.out.println( "line = " + line );
 
                         if ( line.charAt( i + 1 ) == '}' )
                         {
