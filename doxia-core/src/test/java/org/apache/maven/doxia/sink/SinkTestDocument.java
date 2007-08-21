@@ -54,13 +54,11 @@ public class SinkTestDocument
         //sink.sectionTitle_();
 
         sink.paragraph();
-        sink.text( "Paragraph 1, line 1. " );
-        sink.text( "Paragraph 1, line 2." );
+        sink.text( "Paragraph 1, line 1. Paragraph 1, line 2." );
         sink.paragraph_();
 
         sink.paragraph();
-        sink.text( "Paragraph 2, line 1. " );
-        sink.text( "Paragraph 2, line 2." );
+        sink.text( "Paragraph 2, line 1. Paragraph 2, line 2." );
         sink.paragraph_();
 
         sink.section1();
@@ -211,8 +209,7 @@ public class SinkTestDocument
 
         sink.listItem();
         sink.paragraph();
-        sink.text( "List item 3. " );
-        sink.text( "Force end of list:" );
+        sink.text( "List item 3. Force end of list:" );
         sink.paragraph_();
         sink.listItem_();
 
@@ -269,6 +266,8 @@ public class SinkTestDocument
      */
     public static void generateDefinitionList( Sink sink )
     {
+        String EOL = System.getProperty( "line.separator" );
+
         sink.definitionList();
 
         sink.definitionListItem();
@@ -291,7 +290,7 @@ public class SinkTestDocument
         sink.text( "of definition list." );
         sink.paragraph_();
         sink.verbatim( true );
-        sink.text( "Verbatim text\n                        in a box        " );
+        sink.text( "Verbatim text" + EOL + "                        in a box        " );
         sink.verbatim_();
         sink.definition_();
         sink.definitionListItem_();
@@ -592,8 +591,7 @@ public class SinkTestDocument
     public static void generateSpecialCharacters( Sink sink )
     {
         sink.paragraph();
-        sink.text( "Escaped special characters: " );
-        sink.text( "~, =, -, +, *, [, ], <, >, {, }, \\." );
+        sink.text( "Escaped special characters: ~, =, -, +, *, [, ], <, >, {, }, \\." );
         sink.paragraph_();
 
         sink.paragraph();
