@@ -40,27 +40,27 @@ public class SectionBlock
 
     public void traverse( Sink sink )
     {
-        if ( level == 1 )
+        if ( level == Sink.SECTION_LEVEL_1 )
         {
             sink.section1();
             sink.sectionTitle1();
         }
-        else if ( level == 2 )
+        else if ( level == Sink.SECTION_LEVEL_2 )
         {
             sink.section2();
             sink.sectionTitle2();
         }
-        else if ( level == 3 )
+        else if ( level == Sink.SECTION_LEVEL_3 )
         {
             sink.section3();
             sink.sectionTitle3();
         }
-        else if ( level == 4 )
+        else if ( level == Sink.SECTION_LEVEL_4 )
         {
             sink.section4();
             sink.sectionTitle4();
         }
-        else if ( level == 5 )
+        else if ( level == Sink.SECTION_LEVEL_5 )
         {
             sink.section5();
             sink.sectionTitle5();
@@ -68,31 +68,31 @@ public class SectionBlock
 
         sink.text( title );
 
-        if ( level == 1 )
+        if ( level == Sink.SECTION_LEVEL_1 )
         {
-            sink.section1_();
             sink.sectionTitle1_();
+            sink.section1_();
         }
-        else if ( level == 2 )
+        else if ( level == Sink.SECTION_LEVEL_2 )
         {
-            sink.section2_();
             sink.sectionTitle2_();
+            sink.section2_();
         }
-        else if ( level == 3 )
+        else if ( level == Sink.SECTION_LEVEL_3 )
         {
-            sink.section3_();
             sink.sectionTitle3_();
+            sink.section3_();
 
         }
-        else if ( level == 4 )
+        else if ( level == Sink.SECTION_LEVEL_4 )
         {
-            sink.section4_();
             sink.sectionTitle4_();
+            sink.section4_();
         }
-        else if ( level == 5 )
+        else if ( level == Sink.SECTION_LEVEL_5 )
         {
-            sink.section5_();
             sink.sectionTitle5_();
+            sink.section5_();
         }
     }
 }
