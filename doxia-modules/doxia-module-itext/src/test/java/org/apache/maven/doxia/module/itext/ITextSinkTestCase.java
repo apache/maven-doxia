@@ -22,10 +22,6 @@ package org.apache.maven.doxia.module.itext;
 import java.io.File;
 import java.io.FileInputStream;
 import java.io.FileOutputStream;
-import java.io.FileWriter;
-import java.io.InputStream;
-import java.io.InputStreamReader;
-import java.io.Reader;
 import java.io.Writer;
 
 import java.net.URL;
@@ -44,17 +40,13 @@ import org.apache.maven.doxia.sink.SinkTestDocument;
 public class ITextSinkTestCase
     extends AbstractModuleTest
 {
-
     /** {@inheritDoc} */
     protected String outputExtension()
     {
         return "xml";
     }
 
-    /**
-     * Returns the directory where all sink test output will go.
-     * @return The test output directory.
-     */
+    /** {@inheritDoc} */
     protected String getOutputDir()
     {
         return "sink/";
@@ -89,7 +81,11 @@ public class ITextSinkTestCase
         return sink;
     }
 
-
+    /**
+     * Test PDF generation
+     *
+     * @throws Exception
+     */
     public void testGeneratingPDFFromITextXml()
         throws Exception
     {
@@ -107,7 +103,7 @@ public class ITextSinkTestCase
     public void testModel()
         throws Exception
     {
-        Sink sink = createSink( getTestWriter( "test_model", "xml" ) );
+        Sink sink = createSink( getXmlTestWriter( "test_model", "xml" ) );
 
         SinkTestDocument.generate( sink );
 
@@ -117,7 +113,5 @@ public class ITextSinkTestCase
                             new FileOutputStream( getGeneratedFile( "test_model", "pdf" ) ) );
         ITextUtil.writeRtf( new FileInputStream( getGeneratedFile( "test_model", "xml" ) ),
                             new FileOutputStream( getGeneratedFile( "test_model", "rtf" ) ) );
-
     }
-
 }

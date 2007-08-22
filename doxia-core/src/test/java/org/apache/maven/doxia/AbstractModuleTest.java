@@ -20,9 +20,9 @@ package org.apache.maven.doxia;
  */
 
 import org.codehaus.plexus.PlexusTestCase;
+import org.codehaus.plexus.util.WriterFactory;
 
 import java.io.File;
-import java.io.FileWriter;
 import java.io.IOException;
 import java.io.InputStream;
 import java.io.InputStreamReader;
@@ -69,7 +69,31 @@ public abstract class AbstractModuleTest
             outputDirectory.mkdirs();
         }
 
-        return new FileWriter(
+        return WriterFactory.newPlatformWriter(
+            new File( outputDirectory, baseName + "." + extension ) );
+    }
+
+    /**
+     * Returns an XML FileWriter to write to a file with the given name
+     * in the test target output directory.
+     *
+     * @param baseName The name of the target file.
+     * @param extension The file extension of the file to write.
+     * @return An XML FileWriter.
+     * @throws IOException If the FileWriter could not be generated.
+     */
+    protected Writer getXmlTestWriter( String baseName, String extension )
+        throws IOException
+    {
+        File outputDirectory =
+            new File( getBasedirFile(), outputBaseDir() + getOutputDir() );
+
+        if ( !outputDirectory.exists() )
+        {
+            outputDirectory.mkdirs();
+        }
+
+        return WriterFactory.newXmlWriter(
             new File( outputDirectory, baseName + "." + extension ) );
     }
 
