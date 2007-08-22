@@ -128,7 +128,21 @@ public class DocBookSink
     /** tableHasGrid. */
     private boolean tableHasGrid;
 
+    // books have chapters and no headers
+    private boolean isBook;
+
+    private boolean skip;
+
+    private boolean outputBookHead;
+
     // -----------------------------------------------------------------------
+
+    public DocBookSink( Writer out, boolean isBook )
+    {
+        this( out );
+        this.isBook = isBook;
+        this.outputBookHead = true;
+    }
 
     /**
      * @param writer the default writer.
@@ -512,6 +526,8 @@ public class DocBookSink
     {
         resetState();
 
+        skip = isBook && !outputBookHead;
+
         if ( xmlMode )
         {
             markup( "<?xml version=\"1.0\"" );
@@ -528,7 +544,15 @@ public class DocBookSink
         }
 
         String pubId;
-        markup( "<!DOCTYPE article PUBLIC" );
+        if ( isBook )
+        {
+            markup( "<!DOCTYPE book PUBLIC" );
+        }
+        else
+        {
+            markup( "<!DOCTYPE article PUBLIC" );
+        }
+        
         if ( publicId == null )
         {
             if ( xmlMode )
@@ -565,7 +589,15 @@ public class DocBookSink
             att.addAttribute( Attribute.LANG, lang );
         }
 
-        writeStartTag( ARTICLE_TAG, att );
+        if ( isBook )
+        {
+            skip = false;
+            writeStartTag( CHAPTER_TAG, att );
+        }
+        else
+        {
+            writeStartTag( ARTICLE_TAG, att );
+        }
     }
 
     /**
@@ -576,8 +608,18 @@ public class DocBookSink
     {
         if ( hasTitle )
         {
-            writeEndTag( ARTICLEINFO_TAG );
+            if ( isBook )
+            {
+                writeEndTag( BOOKINFO_TAG );
+            }
+            else
+            {
+                writeEndTag( ARTICLEINFO_TAG );
+            }
+            
             hasTitle = false;
+            skip = false;
+            outputBookHead = false;
         }
     }
 
@@ -588,7 +630,14 @@ public class DocBookSink
      */
     public void title()
     {
-        writeStartTag( ARTICLEINFO_TAG );
+        if ( isBook )
+        {
+            writeStartTag( BOOKINFO_TAG );
+        }
+        else
+        {
+            writeStartTag( ARTICLEINFO_TAG );
+        }
 
         hasTitle = true;
         writeStartTag( Tag.TITLE );
@@ -649,9 +698,36 @@ public class DocBookSink
      */
     public void body_()
     {
-        writeEndTag( ARTICLE_TAG );
+        if ( isBook )
+        {
+            writeEndTag( CHAPTER_TAG );
+        }
+        else
+        {
+            writeEndTag( ARTICLE_TAG );
+        }
+        
         out.flush();
         resetState();
+    }
+    
+    /**
+     * {@inheritDoc}
+     * @see DocbookMarkup#BOOK_TAG
+     */
+    public void book()
+    {
+        writeStartTag( BOOK_TAG );
+    }
+    
+    /**
+     * {@inheritDoc}
+     * @see DocbookMarkup#BOOK_TAG
+     */
+    public void book_()
+    {
+        writeEndTag( BOOK_TAG );
+        out.flush();
     }
 
     /**
@@ -1428,7 +1504,10 @@ public class DocBookSink
      */
     protected void markup( String text )
     {
-        out.write( text, /*preserveSpace*/ true );
+        if ( !skip )
+        {
+            out.write( text, /*preserveSpace*/ true );
+        }
     }
 
     /**
@@ -1438,7 +1517,10 @@ public class DocBookSink
      */
     protected void content( String text )
     {
-        out.write( escapeSGML( text, xmlMode ), /*preserveSpace*/ false );
+        if ( !skip )
+        {
+            out.write( escapeSGML( text, xmlMode ), /*preserveSpace*/ false );
+        }
     }
 
     /**
@@ -1448,7 +1530,10 @@ public class DocBookSink
      */
     protected void verbatimContent( String text )
     {
-        out.write( escapeSGML( text, xmlMode ), /*preserveSpace*/ true );
+        if ( !skip )
+        {
+            out.write( escapeSGML( text, xmlMode ), /*preserveSpace*/ true );
+        }
     }
 
     // -----------------------------------------------------------------------

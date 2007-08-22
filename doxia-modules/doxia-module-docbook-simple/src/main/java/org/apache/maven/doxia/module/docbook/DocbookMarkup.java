@@ -56,7 +56,7 @@ public interface DocbookMarkup
             return "article";
         }
     };
-
+    
     /** Docbook tag for <code>articleinfo</code> */
     Tag ARTICLEINFO_TAG = new Tag()
     {
@@ -64,6 +64,36 @@ public interface DocbookMarkup
         public String toString()
         {
             return "articleinfo";
+        }
+    };
+
+    /** Docbook tag for <code>book</code> */
+    Tag BOOK_TAG = new Tag()
+    {
+        /** {@inheritDoc} */
+        public String toString()
+        {
+            return "book";
+        }
+    };
+
+    /** Docbook tag for <code>bookinfo</code> */
+    Tag BOOKINFO_TAG = new Tag()
+    {
+        /** {@inheritDoc} */
+        public String toString()
+        {
+            return "bookinfo";
+        }
+    };
+
+    /** Docbook tag for <code>chapter</code> */
+    Tag CHAPTER_TAG = new Tag()
+    {
+        /** {@inheritDoc} */
+        public String toString()
+        {
+            return "chapter";
         }
     };
 
