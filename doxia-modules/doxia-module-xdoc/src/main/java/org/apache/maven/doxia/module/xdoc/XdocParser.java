@@ -35,6 +35,7 @@ import org.apache.maven.doxia.macro.MacroRequest;
 import org.apache.maven.doxia.parser.AbstractXmlParser;
 import org.apache.maven.doxia.parser.ParseException;
 import org.apache.maven.doxia.sink.Sink;
+import org.apache.maven.doxia.util.HtmlTools;
 
 import org.codehaus.plexus.util.IOUtil;
 import org.codehaus.plexus.util.StringUtils;
@@ -123,13 +124,13 @@ public class XdocParser
         }
         else if ( parser.getName().equals( SECTION_TAG.toString() ) )
         {
-            // TODO this should go into a sink? kept for compat for the moment
-            sink.anchor( parser.getAttributeValue( null, Attribute.NAME.toString() ) );
-            sink.anchor_();
-
             sink.section1();
 
             sink.sectionTitle1();
+
+            // TODO this should go into a sink? kept for compat for the moment
+            sink.anchor( HtmlTools.encodeId( parser.getAttributeValue( null, Attribute.NAME.toString() ) ) );
+            sink.anchor_();
 
             sink.text( parser.getAttributeValue( null, Attribute.NAME.toString() ) );
 
@@ -137,13 +138,13 @@ public class XdocParser
         }
         else if ( parser.getName().equals( SUBSECTION_TAG.toString() ) )
         {
-            // TODO this should go into a sink? kept for compat for the moment
-            sink.anchor( parser.getAttributeValue( null, Attribute.NAME.toString() ) );
-            sink.anchor_();
-
             sink.section2();
 
             sink.sectionTitle2();
+
+            // TODO this should go into a sink? kept for compat for the moment
+            sink.anchor( HtmlTools.encodeId( parser.getAttributeValue( null, Attribute.NAME.toString() ) ) );
+            sink.anchor_();
 
             sink.text( parser.getAttributeValue( null, Attribute.NAME.toString() ) );
 
