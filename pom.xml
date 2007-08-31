@@ -83,6 +83,7 @@ under the License.
             <link>http://plexus.codehaus.org/plexus-utils/apidocs/</link>
             <link>http://junit.sourceforge.net/javadoc/</link>
           </links>
+<!--
           <taglets>
             <taglet>
               <tagletClass>org.codehaus.plexus.javadoc.PlexusComponentTaglet</tagletClass>
@@ -109,6 +110,7 @@ under the License.
               </tagletArtifact>
             </taglet>
           </taglets>
+-->
           <reportSets>
             <reportSet>
               <id>html</id>
