@@ -19,24 +19,25 @@ package org.apache.maven.doxia.module.itext;
  * under the License.
  */
 
-import com.lowagie.text.BadElementException;
-import com.lowagie.text.ElementTags;
-import com.lowagie.text.Image;
-import org.apache.maven.doxia.util.HtmlTools;
-import org.apache.maven.doxia.sink.Sink;
-import org.apache.maven.doxia.sink.SinkAdapter;
-import org.codehaus.plexus.util.IOUtil;
-import org.codehaus.plexus.util.StringUtils;
-import org.codehaus.plexus.util.xml.PrettyPrintXMLWriter;
-import org.codehaus.plexus.util.xml.XMLWriter;
-
-import java.awt.*;
+import java.awt.Color;
 import java.io.IOException;
 import java.io.LineNumberReader;
 import java.io.StringReader;
 import java.io.Writer;
 import java.net.MalformedURLException;
 import java.net.URL;
+
+import org.apache.maven.doxia.sink.Sink;
+import org.apache.maven.doxia.sink.SinkAdapter;
+import org.apache.maven.doxia.util.HtmlTools;
+import org.codehaus.plexus.util.IOUtil;
+import org.codehaus.plexus.util.StringUtils;
+import org.codehaus.plexus.util.xml.PrettyPrintXMLWriter;
+import org.codehaus.plexus.util.xml.XMLWriter;
+
+import com.lowagie.text.BadElementException;
+import com.lowagie.text.ElementTags;
+import com.lowagie.text.Image;
 
 /**
  * <p>A doxia Sink which produces an XML Front End document for <code>iText</code> framework.</p>
@@ -1281,7 +1282,7 @@ public final class ITextSink
     public void anchor( String name )
     {
         writeStartElement( ElementTags.ANCHOR );
-        writeAddAttribute( ElementTags.NAME, name );
+        writeAddAttribute( ElementTags.NAME, HtmlTools.encodeId( name ) );
 
         actionContext.setAction( SinkActionContext.ANCHOR );
     }
