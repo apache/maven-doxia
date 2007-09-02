@@ -64,8 +64,6 @@ public class XhtmlSink
 
     private PrintWriter writer;
 
-    //private StringsMap directives;
-
     private RenderingContext renderingContext;
 
     private int[] cellJustif;
@@ -76,8 +74,28 @@ public class XhtmlSink
 
     /**
      * @param writer
+     */
+    public XhtmlSink( Writer writer )
+    {
+        this( writer, null );
+    }
+
+    /**
+     * @param writer
+     * @param renderingContext
+     */
+    public XhtmlSink( Writer writer, RenderingContext renderingContext )
+    {
+        this.writer = new PrintWriter( writer );
+
+        this.renderingContext = renderingContext;
+    }
+
+    /**
+     * @param writer
      * @param renderingContext
      * @param directives
+     * @todo directives Map is not used
      */
     public XhtmlSink( Writer writer, RenderingContext renderingContext, Map directives )
     {
@@ -129,12 +147,14 @@ public class XhtmlSink
     /** {@inheritDoc} */
     public void head()
     {
-        // Not used overridden in site renderer
-        // directive( "head()" );
-
         resetState();
 
         headFlag = true;
+
+        write( "<!DOCTYPE html PUBLIC \"-//W3C//DTD XHTML 1.0 Transitional//EN\" \"http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd\">" );
+        write( "<html xmlns=\"http://www.w3.org/1999/xhtml\">" );
+
+        writeStartTag( Tag.HEAD );
     }
 
     /** {@inheritDoc} */
@@ -142,8 +162,7 @@ public class XhtmlSink
     {
         headFlag = false;
 
-        // Not used overridden in site renderer
-        //directive( "head_()" );
+        writeEndTag( Tag.HEAD );
     }
 
     /**
@@ -207,18 +226,14 @@ public class XhtmlSink
     /** {@inheritDoc} */
     public void body()
     {
-        // Not used overridden in site renderer
-        //String body = directiveValue( "body()" );
-        //write( body );
+        writeStartTag( Tag.BODY );
     }
 
     /** {@inheritDoc} */
     public void body_()
     {
-        // Not used overridden in site renderer
-        //String body = directiveValue( "body_()" );
-        //write( body );
-        //resetState();
+        writeEndTag( Tag.BODY );
+        writeEndTag( Tag.HTML );
     }
 
     // ----------------------------------------------------------------------
@@ -1190,15 +1205,19 @@ public class XhtmlSink
     /** {@inheritDoc} */
     protected void write( String text )
     {
-        String relativePathToBasedir = renderingContext.getRelativePath();
+        // TODO: this doesn't belong here
+        if ( renderingContext != null )
+        {
+            String relativePathToBasedir = renderingContext.getRelativePath();
 
-        if ( relativePathToBasedir != null )
-        {
-            text = StringUtils.replace( text, "$relativePath", relativePathToBasedir );
-        }
-        else
-        {
-            text = StringUtils.replace( text, "$relativePath", "." );
+            if ( relativePathToBasedir == null )
+            {
+                text = StringUtils.replace( text, "$relativePath", "." );
+            }
+            else
+            {
+                text = StringUtils.replace( text, "$relativePath", relativePathToBasedir );
+            }
         }
 
         writer.write( text );

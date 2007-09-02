@@ -44,15 +44,7 @@ public class XhtmlSinkTest
     /** {@inheritDoc} */
     protected Sink createSink( Writer writer )
     {
-        String apt = "test.apt";
-
-        RenderingContext renderingContext =
-            new RenderingContext( getBasedirFile(), new File( getBasedirFile(), apt ).getPath(), "apt" );
-
-        //PLXAPI: This horrible fake map is being used because someone neutered the directives approach in the
-        // site renderer so that it half worked. Put it back and make it work properly.
-
-        return new XhtmlSink( writer, renderingContext, new FakeMap() );
+        return new XhtmlSink( writer );
     }
 
     public void testLinks()
@@ -92,13 +84,13 @@ public class XhtmlSinkTest
     /** {@inheritDoc} */
     protected String getHeadBlock()
     {
-        return "";
+        return "<!DOCTYPE html PUBLIC \"-//W3C//DTD XHTML 1.0 Transitional//EN\" \"http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd\"><html xmlns=\"http://www.w3.org/1999/xhtml\"><head></head>";
     }
 
     /** {@inheritDoc} */
     protected String getBodyBlock()
     {
-        return "";
+        return "<body></body></html>";
     }
 
     /** {@inheritDoc} */
@@ -247,14 +239,4 @@ public class XhtmlSinkTest
         return text;
     }
 
-
-    class FakeMap
-        extends HashMap
-    {
-        /** {@inheritDoc} */
-        public Object get( Object key )
-        {
-            return "fake";
-        }
-    }
 }
