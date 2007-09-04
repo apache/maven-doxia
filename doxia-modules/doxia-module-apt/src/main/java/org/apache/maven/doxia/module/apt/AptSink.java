@@ -43,23 +43,58 @@ public class AptSink
     // Instance fields
     // ----------------------------------------------------------------------
 
+    /**  A buffer that holds the current text. */
     private StringBuffer buffer;
+
+    /**  A buffer that holds the table caption. */
     private StringBuffer tableCaptionBuffer;
+
+    /**  author. */
     private String author;
+
+    /**  title. */
     private String title;
+
+    /**  date. */
     private String date;
+
+    /**  tableCaptionFlag. */
     private boolean tableCaptionFlag;
+
+    /**  headerFlag. */
     private boolean headerFlag;
+
+    /**  bufferFlag. */
     private boolean bufferFlag;
+
+    /**  itemFlag. */
     private boolean itemFlag;
+
+    /**  verbatimFlag. */
     private boolean verbatimFlag;
+
+    /**  boxed verbatim. */
     private boolean boxed;
+
+    /**  gridFlag for tables. */
     private boolean gridFlag;
+
+    /**  number of cells in a table. */
     private int cellCount;
+
+    /**  The writer to use. */
     private PrintWriter writer;
+
+    /**  justification of table cells. */
     private int cellJustif[];
+
+    /**  a line of a row in a table. */
     private String rowLine;
+
+    /**  listNestingIndent. */
     private String listNestingIndent;
+
+    /**  listStyles. */
     private Stack listStyles;
 
     // ----------------------------------------------------------------------

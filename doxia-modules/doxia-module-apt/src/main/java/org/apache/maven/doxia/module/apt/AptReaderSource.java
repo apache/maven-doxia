@@ -23,13 +23,21 @@ import java.io.IOException;
 import java.io.LineNumberReader;
 import java.io.Reader;
 
+/** Reader for apt source documents. */
 public class AptReaderSource
     implements AptSource
 {
+    /** A reader. */
     private LineNumberReader reader;
 
+    /** lineNumber. */
     private int lineNumber;
 
+    /**
+     * Constructor: intialize reader.
+     *
+     * @param in the reader.
+     */
     public AptReaderSource( Reader in )
     {
         reader = new LineNumberReader( in );
@@ -37,6 +45,7 @@ public class AptReaderSource
         lineNumber = -1;
     }
 
+    /** {@inheritDoc} */
     public String getNextLine()
         throws AptParseException
     {
@@ -68,16 +77,19 @@ public class AptReaderSource
         return line;
     }
 
+    /** {@inheritDoc} */
     public String getName()
     {
         return "";
     }
 
+    /** {@inheritDoc} */
     public int getLineNumber()
     {
         return lineNumber;
     }
 
+    /** Closes the reader associated with this AptReaderSource. */
     public void close()
     {
         if ( reader != null )
@@ -88,6 +100,7 @@ public class AptReaderSource
             }
             catch ( IOException ignored )
             {
+                // TODO: log
             }
         }
         reader = null;

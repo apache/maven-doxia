@@ -100,40 +100,51 @@ public class AptParser
     /** Macro event id */
     private static final int MACRO = 16;
 
-    private static final String typeNames[] = {"TITLE", "SECTION1", "SECTION2", "SECTION3", "SECTION4", "SECTION5",
+    /** String representations of event ids */
+    private static final String TYPE_NAMES[] = {"TITLE", "SECTION1", "SECTION2", "SECTION3", "SECTION4", "SECTION5",
         "PARAGRAPH", "VERBATIM", "FIGURE", "TABLE", "LIST_ITEM", "NUMBERED_LIST_ITEM", "DEFINITION_LIST_ITEM",
         "HORIZONTAL_RULE", "PAGE_BREAK", "LIST_BREAK", "MACRO"};
 
-    private static final char spaces[] = {' ', ' ', ' ', ' ', ' ', ' ', ' ', ' ', ' ', ' ', ' ', ' ', ' ', ' ', ' ',
+    /** An array of spaces. */
+    private static final char SPACES[] = {' ', ' ', ' ', ' ', ' ', ' ', ' ', ' ', ' ', ' ', ' ', ' ', ' ', ' ', ' ',
         ' ', ' ', ' ', ' ', ' ', ' ', ' ', ' ', ' ', ' ', ' ', ' ', ' ', ' ', ' ', ' ', ' ', ' ', ' ', ' ', ' ', ' ',
         ' ', ' ', ' ', ' ', ' ', ' ', ' ', ' ', ' ', ' ', ' ', ' ', ' ', ' ', ' ', ' ', ' ', ' ', ' ', ' ', ' ', ' ',
         ' ', ' ', ' ', ' ', ' ', ' ', ' ', ' ', ' ', ' ', ' ', ' ', ' ', ' ', ' ', ' ', ' ', ' ', ' ', ' ', ' ', ' ',
         ' ', ' ', ' ', ' '};
 
+    /** Default tab width. */
     public static final int TAB_WIDTH = 8;
 
     // ----------------------------------------------------------------------
     // Instance fields
     // ----------------------------------------------------------------------
 
+    /** sourceContent. */
     private String sourceContent;
 
+    /** the AptSource. */
     private AptSource source;
 
+    /** the sink to receive the events. */
     private Sink sink;
 
+    /** a line of AptSource. */
     private String line;
 
+    /** a block of AptSource. */
     private Block block;
 
+    /** blockFileName. */
     private String blockFileName;
 
+    /** blockLineNumber. */
     private int blockLineNumber;
 
     // ----------------------------------------------------------------------
     // Public methods
     // ----------------------------------------------------------------------
 
+    /** {@inheritDoc} */
     public void parse( Reader source,
                        Sink sink )
         throws AptParseException
@@ -179,12 +190,22 @@ public class AptParser
         }
     }
 
+    /**
+     * Returns the name of the Apt source document.
+     *
+     * @return the source name.
+     */
     public String getSourceName()
     {
         // Use this rather than source.getName() to report errors.
         return blockFileName;
     }
 
+    /**
+     * Returns the current line number of the Apt source document.
+     *
+     * @return the line number.
+     */
     public int getSourceLineNumber()
     {
         // Use this rather than source.getLineNumber() to report errors.
@@ -195,6 +216,11 @@ public class AptParser
     // Private methods
     // ----------------------------------------------------------------------
 
+    /**
+     * Parse the head of the Apt source document.
+     *
+     * @throws AptParseException if something goes wrong.
+     */
     private void traverseHead()
         throws AptParseException
     {
@@ -209,6 +235,11 @@ public class AptParser
         sink.head_();
     }
 
+    /**
+     * Parse the body of the Apt source document.
+     *
+     * @throws AptParseException if something goes wrong.
+     */
     private void traverseBody()
         throws AptParseException
     {
@@ -227,6 +258,12 @@ public class AptParser
         sink.body_();
     }
 
+    /**
+     * Parse a section of the Apt source document.
+     *
+     * @param level The section level.
+     * @throws AptParseException if something goes wrong.
+     */
     private void traverseSection( int level )
         throws AptParseException
     {
@@ -255,6 +292,8 @@ public class AptParser
                 break;
             case 4:
                 sink.section5();
+                break;
+            default:
                 break;
         }
 
@@ -291,9 +330,16 @@ public class AptParser
             case 4:
                 sink.section5_();
                 break;
+            default:
+                break;
         }
     }
 
+    /**
+     * Parse the section blocks of the Apt source document.
+     *
+     * @throws AptParseException if something goes wrong.
+     */
     private void traverseSectionBlocks()
         throws AptParseException
     {
@@ -338,6 +384,11 @@ public class AptParser
         }
     }
 
+    /**
+     * Parse a list of the Apt source document.
+     *
+     * @throws AptParseException if something goes wrong.
+     */
     private void traverseList()
         throws AptParseException
     {
@@ -433,6 +484,11 @@ public class AptParser
         sink.list_();
     }
 
+    /**
+     * Parse a numbered list of the Apt source document.
+     *
+     * @throws AptParseException if something goes wrong.
+     */
     private void traverseNumberedList()
         throws AptParseException
     {
@@ -523,6 +579,11 @@ public class AptParser
         sink.numberedList_();
     }
 
+    /**
+     * Parse a definition list of the Apt source document.
+     *
+     * @throws AptParseException if something goes wrong.
+     */
     private void traverseDefinitionList()
         throws AptParseException
     {
@@ -615,18 +676,34 @@ public class AptParser
         sink.definitionList_();
     }
 
+    /**
+     * Parse the next line of the Apt source document.
+     *
+     * @throws AptParseException if something goes wrong.
+     */
     private void nextLine()
         throws AptParseException
     {
         line = source.getNextLine();
     }
 
+    /**
+     * Parse the next block of the Apt source document.
+     *
+     * @throws AptParseException if something goes wrong.
+     */
     private void nextBlock()
         throws AptParseException
     {
         nextBlock( /*first*/ false );
     }
 
+    /**
+     * Parse the next block of the Apt source document.
+     *
+     * @param firstBlock True if this is the first block of the Apt source document.
+     * @throws AptParseException if something goes wrong.
+     */
     private void nextBlock( boolean firstBlock )
         throws AptParseException
     {
@@ -804,6 +881,8 @@ public class AptParser
                     block = new MacroBlock( indent, line );
                 }
                 break;
+            default:
+                break;
         }
 
         if ( block == null )
@@ -819,6 +898,12 @@ public class AptParser
         }
     }
 
+    /**
+     * Checks that the current block is of the expected type.
+     *
+     * @param type the expected type.
+     * @throws AptParseException if something goes wrong.
+     */
     private void expectedBlock( int type )
         throws AptParseException
     {
@@ -826,22 +911,42 @@ public class AptParser
 
         if ( blockType != type )
         {
-            throw new AptParseException( "expected " + typeNames[type] + ", found " + typeNames[blockType] );
+            throw new AptParseException( "expected " + TYPE_NAMES[type] + ", found " + TYPE_NAMES[blockType] );
         }
     }
 
     // -----------------------------------------------------------------------
 
+    /**
+     * Determin if c is an octal character.
+     *
+     * @param c the character.
+     * @return boolean
+     */
     private static boolean isOctalChar( char c )
     {
         return ( c >= '0' && c <= '7' );
     }
 
+    /**
+     * Determin if c is an hex character.
+     *
+     * @param c the character.
+     * @return boolean
+     */
     private static boolean isHexChar( char c )
     {
         return ( ( c >= '0' && c <= '9' ) || ( c >= 'a' && c <= 'f' ) || ( c >= 'A' && c <= 'F' ) );
     }
 
+    /**
+     * Returns the character at position i of the given string.
+     *
+     * @param string the string.
+     * @param length length.
+     * @param i offset.
+     * @return the character, or '\0' if i > length.
+     */
     private static char charAt( String string,
                                 int length,
                                 int i )
@@ -849,6 +954,14 @@ public class AptParser
         return ( i < length ) ? string.charAt( i ) : '\0';
     }
 
+    /**
+     * Skip spaces.
+     *
+     * @param string string.
+     * @param length length.
+     * @param i offset.
+     * @return int.
+     */
     private static int skipSpace( String string,
                                   int length,
                                   int i )
@@ -868,6 +981,15 @@ public class AptParser
         return i;
     }
 
+    /**
+     * Parse the given text.
+     *
+     * @param text the text to parse.
+     * @param begin offset.
+     * @param end offset.
+     * @param sink the sink to receive the events.
+     * @throws AptParseException if something goes wrong.
+     */
     private static void doTraverseText( String text,
                                         int begin,
                                         int end,
@@ -925,8 +1047,8 @@ public class AptParser
                                 buffer.append( escaped );
                                 break;
                             case 'x':
-                                if ( i + 3 < end && isHexChar( text.charAt( i + 2 ) ) &&
-                                    isHexChar( text.charAt( i + 3 ) ) )
+                                if ( i + 3 < end && isHexChar( text.charAt( i + 2 ) )
+                                    && isHexChar( text.charAt( i + 3 ) ) )
                                 {
                                     int value = '?';
                                     try
@@ -947,9 +1069,10 @@ public class AptParser
                                 }
                                 break;
                             case 'u':
-                                if ( i + 5 < end && isHexChar( text.charAt( i + 2 ) ) &&
-                                    isHexChar( text.charAt( i + 3 ) ) && isHexChar( text.charAt( i + 4 ) ) &&
-                                    isHexChar( text.charAt( i + 5 ) ) )
+                                if ( i + 5 < end && isHexChar( text.charAt( i + 2 ) )
+                                            && isHexChar( text.charAt( i + 3 ) )
+                                            && isHexChar( text.charAt( i + 4 ) )
+                                            && isHexChar( text.charAt( i + 5 ) ) )
                                 {
                                     int value = '?';
                                     try
@@ -1099,7 +1222,8 @@ public class AptParser
                     break;
 
                 case GREATER_THAN:
-                    if ( monospaced && i + 2 < end && text.charAt( i + 1 ) == GREATER_THAN && text.charAt( i + 2 ) == GREATER_THAN )
+                    if ( monospaced && i + 2 < end && text.charAt( i + 1 ) == GREATER_THAN
+                            && text.charAt( i + 2 ) == GREATER_THAN )
                     {
                         i += 2;
                         monospaced = false;
@@ -1167,6 +1291,12 @@ public class AptParser
         flushTraversed( buffer, sink );
     }
 
+    /**
+     * Emits the text so far parsed into the given sink.
+     *
+     * @param buffer A StringBuffer that contains the text to be flushed.
+     * @param sink The sink to receive the text.
+     */
     private static void flushTraversed( StringBuffer buffer,
                                         Sink sink )
     {
@@ -1177,6 +1307,16 @@ public class AptParser
         }
     }
 
+    /**
+     * Parse the given text.
+     *
+     * @param text the text to parse.
+     * @param begin offset.
+     * @param end offset.
+     * @param linkAnchor a StringBuffer.
+     * @return int
+     * @throws AptParseException if something goes wrong.
+     */
     private static int skipTraversedLinkAnchor( String text,
                                                 int begin,
                                                 int end,
@@ -1215,6 +1355,15 @@ public class AptParser
         return i;
     }
 
+    /**
+     * Parse the given text.
+     *
+     * @param text the text to parse.
+     * @param begin offset.
+     * @param end offset.
+     * @return String
+     * @throws AptParseException if something goes wrong.
+     */
     private static String getTraversedLink( String text,
                                             int begin,
                                             int end )
@@ -1243,6 +1392,15 @@ public class AptParser
         return doGetTraversedLink( text, begin, i - 1 );
     }
 
+    /**
+     * Parse the given text.
+     *
+     * @param text the text to parse.
+     * @param begin offset.
+     * @param end offset.
+     * @return String
+     * @throws AptParseException if something goes wrong.
+     */
     private static String getTraversedAnchor( String text,
                                               int begin,
                                               int end )
@@ -1269,6 +1427,15 @@ public class AptParser
         return doGetTraversedLink( text, begin, i );
     }
 
+    /**
+     * Parse the given text.
+     *
+     * @param text the text to parse.
+     * @param begin offset.
+     * @param end offset.
+     * @return String
+     * @throws AptParseException if something goes wrong.
+     */
     private static String doGetTraversedLink( String text,
                                               int begin,
                                               int end )
@@ -1300,16 +1467,28 @@ public class AptParser
 
     // -----------------------------------------------------------------------
 
+    /** A block of an apt source document. */
     private abstract class Block
     {
+        /** type. */
         protected int type;
 
+        /** indent. */
         protected int indent;
 
+        /** text. */
         protected String text;
 
+        /** textLength. */
         protected int textLength;
 
+        /**
+         * Constructor.
+         *
+         * @param type the block type.
+         * @param indent indent.
+         * @throws AptParseException AptParseException
+         */
         public Block( int type,
                       int indent )
             throws AptParseException
@@ -1317,6 +1496,14 @@ public class AptParser
             this( type, indent, null );
         }
 
+        /**
+         * Constructor.
+         *
+         * @param type type.
+         * @param indent indent.
+         * @param firstLine the first line.
+         * @throws AptParseException AptParseException
+         */
         public Block( int type,
                       int indent,
                       String firstLine )
@@ -1345,8 +1532,9 @@ public class AptParser
                     int i = 0;
 
                     i = skipSpace( l, length, i );
-                    if ( i == length ||
-                        ( AptParser.charAt( l, length, i ) == COMMENT && AptParser.charAt( l, length, i + 1 ) == COMMENT ) )
+                    if ( i == length
+                        || ( AptParser.charAt( l, length, i ) == COMMENT
+                            && AptParser.charAt( l, length, i + 1 ) == COMMENT ) )
                     {
                         // Stop after open or comment line and skip it.
                         // (A comment line is considered to be an open line.)
@@ -1365,25 +1553,53 @@ public class AptParser
             }
         }
 
+        /**
+         * Return the block type.
+         *
+         * @return int
+         */
         public final int getType()
         {
             return type;
         }
 
+        /**
+         * Return the block indent.
+         *
+         * @return int
+         */
         public final int getIndent()
         {
             return indent;
         }
 
+        /**
+         * Parse the block.
+         *
+         * @throws AptParseException if something goes wrong.
+         */
         public abstract void traverse()
             throws AptParseException;
 
+        /**
+         * Traverse the text.
+         *
+         * @param begin offset.
+         * @throws AptParseException if something goes wrong.
+         */
         protected void traverseText( int begin )
             throws AptParseException
         {
             traverseText( begin, text.length() );
         }
 
+        /**
+         * Traverse the text.
+         *
+         * @param begin offset.
+         * @param end offset.
+         * @throws AptParseException if something goes wrong.
+         */
         protected void traverseText( int begin,
                                      int end )
             throws AptParseException
@@ -1391,6 +1607,11 @@ public class AptParser
             AptParser.doTraverseText( text, begin, end, AptParser.this.sink );
         }
 
+        /**
+         * Skip spaces.
+         *
+         * @return int.
+         */
         protected int skipLeadingBullets()
         {
             int i = skipSpaceFrom( 0 );
@@ -1404,6 +1625,13 @@ public class AptParser
             return skipSpaceFrom( i );
         }
 
+        /**
+         * Skip brackets.
+         *
+         * @param i offset.
+         * @return int.
+         * @throws AptParseException if something goes wrong.
+         */
         protected int skipFromLeftToRightBracket( int i )
             throws AptParseException
         {
@@ -1425,15 +1653,29 @@ public class AptParser
             return i;
         }
 
+        /**
+         * Skip spaces.
+         *
+         * @param i offset.
+         * @return int.
+         */
         protected final int skipSpaceFrom( int i )
         {
             return AptParser.skipSpace( text, textLength, i );
         }
     }
 
+    /** A ListBreak Block. */
     private class ListBreak
         extends AptParser.Block
     {
+        /**
+         * Constructor.
+         *
+         * @param indent indent.
+         * @param firstLine the first line.
+         * @throws AptParseException AptParseException
+         */
         public ListBreak( int indent,
                           String firstLine )
             throws AptParseException
@@ -1441,6 +1683,7 @@ public class AptParser
             super( AptParser.LIST_BREAK, indent );
         }
 
+        /** {@inheritDoc} */
         public void traverse()
             throws AptParseException
         {
@@ -1448,9 +1691,17 @@ public class AptParser
         }
     }
 
+    /** A Title Block. */
     private class Title
         extends Block
     {
+        /**
+         * Constructor.
+         *
+         * @param indent indent.
+         * @param firstLine the first line.
+         * @throws AptParseException AptParseException
+         */
         public Title( int indent,
                       String firstLine )
             throws AptParseException
@@ -1458,6 +1709,7 @@ public class AptParser
             super( TITLE, indent, firstLine );
         }
 
+        /** {@inheritDoc} */
         public void traverse()
             throws AptParseException
         {
@@ -1474,8 +1726,9 @@ public class AptParser
                 String line = lines.nextToken().trim();
                 int lineLength = line.length();
 
-                if ( AptParser.charAt( line, lineLength, 0 ) == MINUS && AptParser.charAt( line, lineLength, 1 ) == MINUS &&
-                    AptParser.charAt( line, lineLength, 2 ) == MINUS )
+                if ( AptParser.charAt( line, lineLength, 0 ) == MINUS
+                    && AptParser.charAt( line, lineLength, 1 ) == MINUS
+                    && AptParser.charAt( line, lineLength, 2 ) == MINUS )
                 {
                     switch ( separator )
                     {
@@ -1499,6 +1752,8 @@ public class AptParser
                             // Note that an extra decorative line is allowed
                             // at the end of the author.
                             break loop;
+                        default:
+                            break;
                     }
 
                     ++separator;
@@ -1522,6 +1777,8 @@ public class AptParser
                             case 2:
                                 date = true;
                                 AptParser.this.sink.date();
+                                break;
+                            default:
                                 break;
                         }
                     }
@@ -1559,13 +1816,24 @@ public class AptParser
                         AptParser.this.sink.date_();
                     }
                     break;
+                default:
+                    break;
             }
         }
     }
 
+    /** A Section Block. */
     private class Section
         extends Block
     {
+        /**
+         * Constructor.
+         *
+         * @param type type.
+         * @param indent indent.
+         * @param firstLine the first line.
+         * @throws AptParseException AptParseException
+         */
         public Section( int type,
                         int indent,
                         String firstLine )
@@ -1574,6 +1842,7 @@ public class AptParser
             super( type, indent, firstLine );
         }
 
+        /** {@inheritDoc} */
         public void traverse()
             throws AptParseException
         {
@@ -1582,20 +1851,30 @@ public class AptParser
             Title_();
         }
 
+        /** Start a title. */
         public void Title()
         {
             AptParser.this.sink.sectionTitle();
         }
 
+        /** End a title. */
         public void Title_()
         {
             AptParser.this.sink.sectionTitle_();
         }
     }
 
+    /** A Section1 Block. */
     private class Section1
         extends Section
     {
+        /**
+         * Constructor.
+         *
+         * @param indent indent.
+         * @param firstLine the first line.
+         * @throws AptParseException AptParseException
+         */
         public Section1( int indent,
                          String firstLine )
             throws AptParseException
@@ -1603,20 +1882,30 @@ public class AptParser
             super( SECTION1, indent, firstLine );
         }
 
+        /** {@inheritDoc} */
         public void Title()
         {
             AptParser.this.sink.sectionTitle1();
         }
 
+        /** {@inheritDoc} */
         public void Title_()
         {
             AptParser.this.sink.sectionTitle1_();
         }
     }
 
+    /** A Section2 Block. */
     private class Section2
         extends Section
     {
+        /**
+         * Constructor.
+         *
+         * @param indent indent.
+         * @param firstLine the first line.
+         * @throws AptParseException AptParseException
+         */
         public Section2( int indent,
                          String firstLine )
             throws AptParseException
@@ -1624,20 +1913,30 @@ public class AptParser
             super( SECTION2, indent, firstLine );
         }
 
+        /** {@inheritDoc} */
         public void Title()
         {
             AptParser.this.sink.sectionTitle2();
         }
 
+        /** {@inheritDoc} */
         public void Title_()
         {
             AptParser.this.sink.sectionTitle2_();
         }
     }
 
+    /** A Section3 Block. */
     private class Section3
         extends Section
     {
+        /**
+         * Constructor.
+         *
+         * @param indent indent.
+         * @param firstLine the first line.
+         * @throws AptParseException AptParseException
+         */
         public Section3( int indent,
                          String firstLine )
             throws AptParseException
@@ -1645,20 +1944,30 @@ public class AptParser
             super( SECTION3, indent, firstLine );
         }
 
+        /** {@inheritDoc} */
         public void Title()
         {
             AptParser.this.sink.sectionTitle3();
         }
 
+        /** {@inheritDoc} */
         public void Title_()
         {
             AptParser.this.sink.sectionTitle3_();
         }
     }
 
+    /** A Section4 Block. */
     private class Section4
         extends Section
     {
+        /**
+         * Constructor.
+         *
+         * @param indent indent.
+         * @param firstLine the first line.
+         * @throws AptParseException AptParseException
+         */
         public Section4( int indent,
                          String firstLine )
             throws AptParseException
@@ -1666,20 +1975,30 @@ public class AptParser
             super( SECTION4, indent, firstLine );
         }
 
+        /** {@inheritDoc} */
         public void Title()
         {
             AptParser.this.sink.sectionTitle4();
         }
 
+        /** {@inheritDoc} */
         public void Title_()
         {
             AptParser.this.sink.sectionTitle4_();
         }
     }
 
+    /** A Section5 Block. */
     private class Section5
         extends Section
     {
+        /**
+         * Constructor.
+         *
+         * @param indent indent.
+         * @param firstLine the first line.
+         * @throws AptParseException AptParseException
+         */
         public Section5( int indent,
                          String firstLine )
             throws AptParseException
@@ -1687,20 +2006,30 @@ public class AptParser
             super( SECTION5, indent, firstLine );
         }
 
+        /** {@inheritDoc} */
         public void Title()
         {
             AptParser.this.sink.sectionTitle5();
         }
 
+        /** {@inheritDoc} */
         public void Title_()
         {
             AptParser.this.sink.sectionTitle5_();
         }
     }
 
+    /** A Paragraph Block. */
     private class Paragraph
         extends Block
     {
+        /**
+         * Constructor.
+         *
+         * @param indent indent.
+         * @param firstLine the first line.
+         * @throws AptParseException AptParseException
+         */
         public Paragraph( int indent,
                           String firstLine )
             throws AptParseException
@@ -1708,6 +2037,7 @@ public class AptParser
             super( PARAGRAPH, indent, firstLine );
         }
 
+        /** {@inheritDoc} */
         public void traverse()
             throws AptParseException
         {
@@ -1717,11 +2047,20 @@ public class AptParser
         }
     }
 
+    /** A Verbatim Block. */
     private class Verbatim
         extends Block
     {
+        /** boxed. */
         private boolean boxed;
 
+        /**
+         * Constructor.
+         *
+         * @param indent indent.
+         * @param firstLine the first line.
+         * @throws AptParseException AptParseException
+         */
         public Verbatim( int indent,
                          String firstLine )
             throws AptParseException
@@ -1739,8 +2078,9 @@ public class AptParser
                 String l = AptParser.this.line;
                 int length = l.length();
 
-                if ( AptParser.charAt( l, length, 0 ) == firstChar && AptParser.charAt( l, length, 1 ) == MINUS &&
-                    AptParser.charAt( l, length, 2 ) == MINUS )
+                if ( AptParser.charAt( l, length, 0 ) == firstChar
+                    && AptParser.charAt( l, length, 1 ) == MINUS
+                    && AptParser.charAt( l, length, 2 ) == MINUS )
                 {
                     AptParser.this.nextLine();
 
@@ -1763,7 +2103,7 @@ public class AptParser
 
                         column = ( ( column + 1 + TAB_WIDTH - 1 ) / TAB_WIDTH ) * TAB_WIDTH;
 
-                        buffer.append( spaces, 0, column - prevColumn );
+                        buffer.append( SPACES, 0, column - prevColumn );
                     }
                     else
                     {
@@ -1790,6 +2130,7 @@ public class AptParser
             text = buffer.toString();
         }
 
+        /** {@inheritDoc} */
         public void traverse()
             throws AptParseException
         {
@@ -1799,9 +2140,17 @@ public class AptParser
         }
     }
 
+    /** A Figure Block. */
     private class Figure
         extends Block
     {
+        /**
+         * Constructor.
+         *
+         * @param indent indent.
+         * @param firstLine the first line.
+         * @throws AptParseException AptParseException
+         */
         public Figure( int indent,
                        String firstLine )
             throws AptParseException
@@ -1809,6 +2158,7 @@ public class AptParser
             super( FIGURE, indent, firstLine );
         }
 
+        /** {@inheritDoc} */
         public void traverse()
             throws AptParseException
         {
@@ -1829,9 +2179,17 @@ public class AptParser
         }
     }
 
+    /** A Table Block. */
     private class Table
         extends Block
     {
+        /**
+         * Constructor.
+         *
+         * @param indent indent.
+         * @param firstLine the first line.
+         * @throws AptParseException AptParseException
+         */
         public Table( int indent,
                       String firstLine )
             throws AptParseException
@@ -1839,6 +2197,7 @@ public class AptParser
             super( TABLE, indent, firstLine );
         }
 
+        /** {@inheritDoc} */
         public void traverse()
             throws AptParseException
         {
@@ -1971,7 +2330,15 @@ public class AptParser
             AptParser.this.sink.table_();
         }
 
-        private int[] parseJustification( String line,
+        /**
+         * Parse a table justification line.
+         *
+         * @param jline the justification line.
+         * @param lineLength the length of the line. Must be > 2.
+         * @return int[]
+         * @throws AptParseException if something goes wrong.
+         */
+        private int[] parseJustification( String jline,
                                           int lineLength )
             throws AptParseException
         {
@@ -1979,12 +2346,14 @@ public class AptParser
 
             for ( int i = 2 /*Skip '*--'*/; i < lineLength; ++i )
             {
-                switch ( line.charAt( i ) )
+                switch ( jline.charAt( i ) )
                 {
                     case STAR:
                     case PLUS:
                     case COLON:
                         ++columns;
+                        break;
+                    default:
                         break;
                 }
             }
@@ -1998,7 +2367,7 @@ public class AptParser
             columns = 0;
             for ( int i = 2; i < lineLength; ++i )
             {
-                switch ( line.charAt( i ) )
+                switch ( jline.charAt( i ) )
                 {
                     case STAR:
                         justification[columns++] = JUSTIFY_CENTER;
@@ -2009,12 +2378,22 @@ public class AptParser
                     case COLON:
                         justification[columns++] = JUSTIFY_RIGHT;
                         break;
+                    default:
+                        break;
                 }
             }
 
             return justification;
         }
 
+        /**
+         * Traverse a table row.
+         *
+         * @param cells The table cells.
+         * @param headers true for header cells.
+         * @return boolean
+         * @throws AptParseException if something goes wrong.
+         */
         private boolean traverseRow( StringBuffer[] cells,
                                      boolean[] headers )
             throws AptParseException
@@ -2065,9 +2444,17 @@ public class AptParser
         }
     }
 
+    /** A ListItem Block. */
     private class ListItem
         extends Block
     {
+        /**
+         * Constructor.
+         *
+         * @param indent indent.
+         * @param firstLine the first line.
+         * @throws AptParseException AptParseException
+         */
         public ListItem( int indent,
                          String firstLine )
             throws AptParseException
@@ -2075,6 +2462,7 @@ public class AptParser
             super( LIST_ITEM, indent, firstLine );
         }
 
+        /** {@inheritDoc} */
         public void traverse()
             throws AptParseException
         {
@@ -2084,25 +2472,41 @@ public class AptParser
         }
     }
 
+    /** A NumberedListItem Block. */
     private class NumberedListItem
         extends Block
     {
+        /** numbering. */
         private int numbering;
 
+        /**
+         * Constructor.
+         *
+         * @param indent indent.
+         * @param firstLine the first line.
+         * @param number numbering.
+         * @throws AptParseException AptParseException
+         */
         public NumberedListItem( int indent,
                                  String firstLine,
-                                 int numbering )
+                                 int number )
             throws AptParseException
         {
             super( NUMBERED_LIST_ITEM, indent, firstLine );
-            this.numbering = numbering;
+            this.numbering = number;
         }
 
+        /**
+         * getNumbering.
+         *
+         * @return int
+         */
         public int getNumbering()
         {
             return numbering;
         }
 
+        /** {@inheritDoc} */
         public void traverse()
             throws AptParseException
         {
@@ -2111,6 +2515,12 @@ public class AptParser
             AptParser.this.sink.paragraph_();
         }
 
+        /**
+         * skipItemNumber.
+         *
+         * @return int
+         * @throws AptParseException AptParseException
+         */
         private int skipItemNumber()
             throws AptParseException
         {
@@ -2136,9 +2546,17 @@ public class AptParser
         }
     }
 
+    /** A DefinitionListItem Block. */
     private class DefinitionListItem
         extends Block
     {
+        /**
+         * Constructor.
+         *
+         * @param indent indent.
+         * @param firstLine the first line.
+         * @throws AptParseException AptParseException
+         */
         public DefinitionListItem( int indent,
                                    String firstLine )
             throws AptParseException
@@ -2146,6 +2564,7 @@ public class AptParser
             super( DEFINITION_LIST_ITEM, indent, firstLine );
         }
 
+        /** {@inheritDoc} */
         public void traverse()
             throws AptParseException
         {
@@ -2169,9 +2588,17 @@ public class AptParser
         }
     }
 
+    /** A HorizontalRule Block. */
     private class HorizontalRule
         extends Block
     {
+        /**
+         * Constructor.
+         *
+         * @param indent indent.
+         * @param firstLine the first line.
+         * @throws AptParseException AptParseException
+         */
         public HorizontalRule( int indent,
                                String firstLine )
             throws AptParseException
@@ -2179,6 +2606,7 @@ public class AptParser
             super( HORIZONTAL_RULE, indent );
         }
 
+        /** {@inheritDoc} */
         public void traverse()
             throws AptParseException
         {
@@ -2186,9 +2614,17 @@ public class AptParser
         }
     }
 
+    /** A PageBreak Block. */
     private class PageBreak
         extends Block
     {
+        /**
+         * Constructor.
+         *
+         * @param indent indent.
+         * @param firstLine the first line.
+         * @throws AptParseException AptParseException
+         */
         public PageBreak( int indent,
                           String firstLine )
             throws AptParseException
@@ -2196,6 +2632,7 @@ public class AptParser
             super( PAGE_BREAK, indent );
         }
 
+        /** {@inheritDoc} */
         public void traverse()
             throws AptParseException
         {
@@ -2203,9 +2640,17 @@ public class AptParser
         }
     }
 
+    /** A MacroBlock Block. */
     private class MacroBlock
         extends Block
     {
+        /**
+         * Constructor.
+         *
+         * @param indent indent.
+         * @param firstLine the first line.
+         * @throws AptParseException AptParseException
+         */
         public MacroBlock( int indent,
                            String firstLine )
             throws AptParseException
@@ -2215,6 +2660,7 @@ public class AptParser
             text = firstLine;
         }
 
+        /** {@inheritDoc} */
         public void traverse()
             throws AptParseException
         {
@@ -2266,6 +2712,12 @@ public class AptParser
             }
         }
 
+        /**
+         * escapeForMacro
+         *
+         * @param s String
+         * @return String
+         */
         private String escapeForMacro( String s )
         {
             if ( s == null || s.length() < 1 )
@@ -2283,6 +2735,12 @@ public class AptParser
             return result;
         }
 
+        /**
+         * unescapeForMacro
+         *
+         * @param s String
+         * @return String
+         */
         private String unescapeForMacro( String s )
         {
             if ( s == null || s.length() < 1 )
@@ -2301,6 +2759,14 @@ public class AptParser
 
     // -----------------------------------------------------------------------
 
+    /**
+     * Replace part of a string.
+     *
+     * @param string the string
+     * @param oldSub the substring to replace
+     * @param newSub the replacement string
+     * @return String
+     */
     private static String replaceAll( String string,
                                       String oldSub,
                                       String newSub )

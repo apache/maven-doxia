@@ -21,13 +21,14 @@ package org.apache.maven.doxia.module.apt;
 
 import org.apache.maven.doxia.parser.ParseException;
 
+/** Wraps an exception when parsing apt source documents. */
 public class AptParseException
     extends ParseException
 {
     /**
-     * @deprecated source isn't a safe place to get linenumbers from
-     * @param message
-     * @param source
+     * @deprecated source isn't a safe place to get linenumbers from.
+     * @param message the error message.
+     * @param source the AptSource.
      */
     public AptParseException( String message, AptSource source )
     {
@@ -36,32 +37,64 @@ public class AptParseException
 
     /**
      * @deprecated source isn't a safe place to get linenumbers from
-     * @param message
-     * @param source
-     * @param e
+     * @param message the error message.
+     * @param source the AptSource.
+     * @param e the Exception.
      */
     public AptParseException( String message, AptSource source, Exception e )
     {
         super( e, message, source.getName(), source.getLineNumber() );
     }
 
-
-    public AptParseException( String message, String name, int lineNumber, Exception e)
+    /**
+     * Construct a new AptParseException with the specified cause, detail message,
+     * filename and linenumber.
+     *
+     * @param message The detailed message.
+     * This can later be retrieved by the Throwable.getMessage() method.
+     * @param name Name of a file that couldn't be parsed.
+     * This can later be retrieved by the getFileName() method.
+     * @param lineNumber The line number where the parsing failed.
+     * This can later be retrieved by the getLineNumber() method.
+     * @param e the cause. This can be retrieved later by the Throwable.getCause() method.
+     * (A null value is permitted, and indicates that the cause is nonexistent or unknown.)
+     */
+    public AptParseException( String message, String name, int lineNumber, Exception e )
     {
-        super( e, message, name, lineNumber);
+        super( e, message, name, lineNumber );
     }
 
+    /**
+     * Construct a new AptParseException with the specified detail message and cause.
+     *
+     * @param message The detailed message.
+     * This can later be retrieved by the Throwable.getMessage() method.
+     * @param e the cause. This can be retrieved later by the Throwable.getCause() method.
+     * (A null value is permitted, and indicates that the cause is nonexistent or unknown.)
+     */
     public AptParseException( String message, Exception e )
     {
         super( message, e );
     }
 
-
+    /**
+     * Construct a new AptParseException with the specified detail message.
+     *
+     * @param message The detailed message.
+     * This can later be retrieved by the Throwable.getMessage() method.
+     */
     public AptParseException( String message )
     {
         super( message );
     }
 
+    /**
+     * Constructs a new AptParseException with the specified cause. The error message is
+     *  (cause == null ? null : cause.toString() ).
+     *
+     * @param e the cause. This can be retrieved later by the Throwable.getCause() method.
+     * (A null value is permitted, and indicates that the cause is nonexistent or unknown.)
+     */
     public AptParseException( Exception e )
     {
         super( e );

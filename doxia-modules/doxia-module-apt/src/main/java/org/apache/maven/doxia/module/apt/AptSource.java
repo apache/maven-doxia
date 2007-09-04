@@ -19,13 +19,30 @@ package org.apache.maven.doxia.module.apt;
  * under the License.
  */
 
+/** An interface to read apt source documents. */
 public interface AptSource
 {
+    /**
+     * Returns a line of the apt source document.
+     *
+     * @return a line of the apt source.
+     * @throws AptParseException if the document can't be parsed.
+     */
     String getNextLine()
         throws AptParseException;
 
+    /**
+     * Returns the name the apt source document.
+     *
+     * @return the name the apt source document.
+     */
     String getName();
 
+    /**
+     * Gets the current line number while parsing the document.
+     *
+     * @return the line number.
+     */
     int getLineNumber();
 }
 
