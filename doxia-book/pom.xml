@@ -32,13 +32,6 @@ under the License.
   <version>1.0-alpha-1-SNAPSHOT</version>
   <name>Doxia :: Book Components</name>
   <dependencies>
-  <!--
-    <dependency>
-      <groupId>${project.groupId}</groupId>
-      <artifactId>doxia-editor</artifactId>
-      <version>1.0-alpha-1-SNAPSHOT</version>
-    </dependency>
-   -->
     <dependency>
       <groupId>${project.groupId}</groupId>
       <artifactId>doxia-core</artifactId>
