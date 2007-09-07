@@ -1,0 +1,20 @@
+ -----
+ Doxia Maven Plugin
+ -----
+ Lukas Theussl
+ -----
+
+Introduction
+
+ Doxia allows you to write books like user manuals and guides in any format supported by Doxia. Combined with the
+ Doxia Book Maven you are able to include the manuals directly in your generated site with links to the off-line
+ friendly formats like XDoc, PDF, RTF and LaTeX.
+
+* How It Works
+
+ First you need a simple book descriptor which is used to specify the layout of your book, ie
+ the ordering of the sections and the names for the chapters.
+ See {{{http://maven.apache.org/doxia/book/index.html}The Book Descriptor Reference}}
+ for a reference to the descriptor.
+
+ An example for configuring the Doxia Maven Plugin is found on the {{{./usage.html}usage}} page.

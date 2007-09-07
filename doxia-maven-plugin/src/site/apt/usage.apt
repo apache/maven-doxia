@@ -1,0 +1,49 @@
+ -----
+ Usage
+ -----
+ Lukas Theussl
+ -----
+
+Usage
+
+ Below is a sample pom.xml illustrate how to use it.
+
++------------------------------------------------------
+      <plugin>
+        <groupId>org.apache.maven.doxia</groupId>
+        <artifactId>doxia-maven-plugin</artifactId>
+        <version>1.0-SNAPSHOT</version>
+        <executions>
+          <execution>
+            <phase>pre-site</phase>
+            <goals>
+              <goal>render-books</goal>
+            </goals>
+          </execution>
+        </executions>
+        <configuration>
+          <books>
+            <book>
+              <directory>src/books/example-book</directory>
+              <descriptor>src/books/example-book.xml</descriptor>
+              <formats>
+                <format>
+                  <id>latex</id>
+                </format>
+                <format>
+                  <id>xdoc</id>
+                </format>
+                <format>
+                  <id>pdf</id>
+                </format>
+                <format>
+                  <id>rtf</id>
+                </format>
+              </formats>
+            </book>
+          </books>
+        </configuration>
+      </plugin>
++------------------------------------------------------
+
+ See also the sample given on the main Doxia {{{http://maven.apache.org/doxia/book/index.html}site}}.
