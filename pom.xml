@@ -38,7 +38,7 @@ under the License.
   <url>http://maven.apache.org/doxia/doxia</url>
   
   <properties>
-    <projectVersion>1.0-alpha-9-SNAPSHOT</projectVersion>
+    <projectVersion>${project.version}</projectVersion>
   </properties>
   
   <mailingLists>
