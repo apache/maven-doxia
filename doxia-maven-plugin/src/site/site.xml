@@ -22,39 +22,10 @@
  -->
 
 <project name="Doxia">
-
-  <bannerLeft>
-    <name>Doxia</name>
-    <src>images/apache-maven-project-2.png</src>
-  </bannerLeft>
-
-  <bannerRight>
-    <src>images/maven-logo-2.gif</src>
-  </bannerRight>
-
-  <publishDate format="dd MMM yyyy" position="right" />
-
-  <skin>
-    <groupId>org.apache.maven.skins</groupId>
-    <artifactId>maven-stylus-skin</artifactId>
-    <version>1.0.1</version>
-  </skin>
-
   <body>
-
-    <links>
-      <item name="Apache" href="http://www.apache.org/"/>
-      <item name="Maven 1.x" href="http://maven.apache.org/maven-1.x"/>
-      <item name="Maven 2.x" href="http://maven.apache.org/"/>
-      <item name="Continuum" href="http://maven.apache.org/continuum/"/>
-      <item name="SCM" href="http://maven.apache.org/scm/"/>
-      <item name="Wagon" href="http://maven.apache.org/wagon/"/>
-      <item name="JXR" href="http://maven.apache.org/jxr/"/>
-      <item name="Doxia" href="http://maven.apache.org/doxia/"/>
-    </links>
-
-    <menu name="About Doxia :: Maven Plugin">
+    <menu name="Overview">
       <item name="Introduction" href="index.html"/>
+      <item name="Goals" href="plugin-info.html"/>
       <item name="Usage" href="usage.html"/>
       <!--<item name="FAQ" href="faq.html"/>-->
     </menu>
@@ -62,5 +33,4 @@
     <menu ref="reports"/>
 
   </body>
-
 </project>

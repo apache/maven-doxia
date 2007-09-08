@@ -10,11 +10,21 @@ Introduction
  Doxia Book Maven you are able to include the manuals directly in your generated site with links to the off-line
  friendly formats like XDoc, PDF, RTF and LaTeX.
 
-* How It Works
+* Goals Overview
 
- First you need a simple book descriptor which is used to specify the layout of your book, ie
+ The Doxia Maven Plugin has one goal:
+
+ * {{{render-books-mojo.html}doxia:render-books}} to create books in different output formats.
+
+* Usage
+
+ First you need a simple book descriptor which is used to specify the layout of your book, i.e.
  the ordering of the sections and the names for the chapters.
  See {{{http://maven.apache.org/doxia/book/index.html}The Book Descriptor Reference}}
  for a reference to the descriptor.
 
  An example for configuring the Doxia Maven Plugin is found on the {{{./usage.html}usage}} page.
+
+* Examples
+
+ An Xdoc output example which has been rendered into this site can be viewed {{{http://maven.apache.org/doxia/doxia-example-book/index.html}here}}.
