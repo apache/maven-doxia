@@ -30,15 +30,12 @@ under the License.
   </parent>
   <groupId>org.apache.maven.doxia</groupId>
   <artifactId>doxia</artifactId>
+  <version>1.0-alpha-9-SNAPSHOT</version>
   <packaging>pom</packaging>
+
   <name>Doxia</name>
   <description>Doxia is a content generation framework that provides powerful techniques for generating static and dynamic content, supporting a variety of markup languages.</description>
-  <version>1.0-alpha-9-SNAPSHOT</version>
   <url>http://maven.apache.org/doxia</url>
-  <issueManagement>
-    <system>jira</system>
-    <url>http://jira.codehaus.org/browse/DOXIA</url>
-  </issueManagement>
   
   <properties>
     <projectVersion>1.0-alpha-9-SNAPSHOT</projectVersion>
@@ -86,6 +83,12 @@ under the License.
       <archive>http://mail-archives.apache.org/mod_mbox/maven-notifications/</archive>
     </mailingList>
   </mailingLists>
+
+  <issueManagement>
+    <system>jira</system>
+    <url>http://jira.codehaus.org/browse/DOXIA</url>
+  </issueManagement>
+
   <scm>
     <connection>scm:svn:http://svn.apache.org/repos/asf/maven/doxia/doxia/trunk</connection>
     <developerConnection>scm:svn:https://svn.apache.org/repos/asf/maven/doxia/doxia/trunk</developerConnection>
@@ -178,6 +181,7 @@ under the License.
       </plugins>
     </pluginManagement>
   </build>
+
   <dependencyManagement>
     <dependencies>
       <dependency>
@@ -214,6 +218,7 @@ under the License.
       </dependency>
     </dependencies>
   </dependencyManagement>
+
   <dependencies>
     <dependency>
       <groupId>junit</groupId>
@@ -222,6 +227,7 @@ under the License.
       <scope>test</scope>
     </dependency>
   </dependencies>
+
   <modules>
     <module>doxia-core</module>
     <module>doxia-sink-api</module>
