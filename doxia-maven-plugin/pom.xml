@@ -30,6 +30,7 @@ under the License.
   <version>1.0-SNAPSHOT</version>
   <packaging>maven-plugin</packaging>
   <name>Doxia :: Maven Plugin</name>
+  <description>A Maven plugin for Doxia.</description>
   <prerequisites>
     <maven>2.0.2</maven>
   </prerequisites>

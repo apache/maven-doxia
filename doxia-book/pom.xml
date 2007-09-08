@@ -30,7 +30,8 @@ under the License.
   </parent>
   <artifactId>doxia-book</artifactId>
   <version>1.0-alpha-1-SNAPSHOT</version>
-  <name>Doxia :: Book Components</name>
+  <name>Doxia :: Book Component</name>
+  <description>A component to write books like user manuals and guides in any format supported by Doxia.</description>
   <dependencies>
     <dependency>
       <groupId>${project.groupId}</groupId>
