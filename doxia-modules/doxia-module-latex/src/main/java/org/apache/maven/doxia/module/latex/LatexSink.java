@@ -79,16 +79,36 @@ public class LatexSink
     //
     // ----------------------------------------------------------------------
 
+    /**
+     * Constructor.
+     *
+     * @param out The writer to use.
+     */
     public LatexSink( Writer out )
     {
         this( out, defaultSinkCommands(), defaultPreamble() );
     }
 
+    /**
+     * Constructor.
+     *
+     * @param out The writer to use.
+     * @param sinkCommands A String representation of commands that go before \documentclass.
+     * @param preamble A String representation of commands that go between \documentclass and \begin{document}.
+     */
     public LatexSink( Writer out, String sinkCommands, String preamble )
     {
         this( out, sinkCommands, preamble, false );
     }
 
+    /**
+     * Constructor.
+     *
+     * @param out The writer to use.
+     * @param sinkCommands A String representation of commands that go before \documentclass.
+     * @param preamble A String representation of commands that go between \documentclass and \begin{document}.
+     * @param fragmentDocument If this receives events that that are only part of a document.
+     * Typically, headers are omitted if this is true.     */
     public LatexSink( Writer out, String sinkCommands, String preamble, boolean fragmentDocument )
     {
         this.out = new LineBreaker( out );
@@ -101,16 +121,31 @@ public class LatexSink
     // Overridables
     // ----------------------------------------------------------------------
 
+    /**
+     * Returns a default \documentclass declaration.
+     *
+     * @return String.
+     */
     protected String getDocumentStart()
     {
         return "\\documentclass[a4paper]{article}" + EOL + EOL;
     }
 
+    /**
+     * Returns a default \begin{document} declaration.
+     *
+     * @return String.
+     */
     protected String getDocumentBegin()
     {
         return "\\begin{document}" + EOL + EOL;
     }
 
+    /**
+     * Returns a default \end{document} declaration.
+     *
+     * @return String.
+     */
     protected String getDocumentEnd()
     {
         return "\\end{document}" + EOL;
@@ -120,6 +155,9 @@ public class LatexSink
     // Sink Implementation
     // ----------------------------------------------------------------------
 
+    /**
+     * {@inheritDoc}
+     */
     public void head()
     {
         titleFlag = false;
@@ -144,6 +182,9 @@ public class LatexSink
         }
     }
 
+    /**
+     * {@inheritDoc}
+     */
     public void body()
     {
         if ( titleFlag )
@@ -160,6 +201,9 @@ public class LatexSink
         }
     }
 
+    /**
+     * {@inheritDoc}
+     */
     public void body_()
     {
         if ( !fragmentDocument )
@@ -174,11 +218,17 @@ public class LatexSink
     // Section Title 1
     // ----------------------------------------------------------------------
 
+    /**
+     * {@inheritDoc}
+     */
     public void sectionTitle1()
     {
         isTitle = true;
     }
 
+    /**
+     * {@inheritDoc}
+     */
     public void sectionTitle1_()
     {
         isTitle = false;
@@ -195,11 +245,17 @@ public class LatexSink
     // Section Title 2
     // ----------------------------------------------------------------------
 
+    /**
+     * {@inheritDoc}
+     */
     public void sectionTitle2()
     {
         isTitle = true;
     }
 
+    /**
+     * {@inheritDoc}
+     */
     public void sectionTitle2_()
     {
         isTitle = false;
@@ -216,11 +272,17 @@ public class LatexSink
     // Section Title 3
     // ----------------------------------------------------------------------
 
+    /**
+     * {@inheritDoc}
+     */
     public void sectionTitle3()
     {
         isTitle = true;
     }
 
+    /**
+     * {@inheritDoc}
+     */
     public void sectionTitle3_()
     {
         isTitle = false;
@@ -237,11 +299,17 @@ public class LatexSink
     // Section Title 4
     // ----------------------------------------------------------------------
 
+    /**
+     * {@inheritDoc}
+     */
     public void sectionTitle4()
     {
         isTitle = true;
     }
 
+    /**
+     * {@inheritDoc}
+     */
     public void sectionTitle4_()
     {
         isTitle = false;
@@ -258,11 +326,17 @@ public class LatexSink
     // Section Title 5
     // ----------------------------------------------------------------------
 
+    /**
+     * {@inheritDoc}
+     */
     public void sectionTitle5()
     {
         isTitle = true;
     }
 
+    /**
+     * {@inheritDoc}
+     */
     public void sectionTitle5_()
     {
         isTitle = false;
@@ -279,21 +353,33 @@ public class LatexSink
     //
     // ----------------------------------------------------------------------
 
+    /**
+     * {@inheritDoc}
+     */
     public void list()
     {
         markup( "\\begin{plist}" + EOL + EOL );
     }
 
+    /**
+     * {@inheritDoc}
+     */
     public void list_()
     {
         markup( "\\end{plist}" + EOL + EOL );
     }
 
+    /**
+     * {@inheritDoc}
+     */
     public void listItem()
     {
         markup( "\\item{} " );
     }
 
+    /**
+     * {@inheritDoc}
+     */
     public void numberedList( int numbering )
     {
         ++numberedListNesting;
@@ -339,51 +425,78 @@ public class LatexSink
         markup( "\\renewcommand{\\the" + counter + "}{\\" + style + "{" + counter + "}}" + EOL + EOL );
     }
 
+    /**
+     * {@inheritDoc}
+     */
     public void numberedList_()
     {
         markup( "\\end{pnumberedlist}" + EOL + EOL );
         --numberedListNesting;
     }
 
+    /**
+     * {@inheritDoc}
+     */
     public void numberedListItem()
     {
         markup( "\\item{} " );
     }
 
+    /**
+     * {@inheritDoc}
+     */
     public void definitionList()
     {
         markup( "\\begin{pdefinitionlist}" + EOL + EOL );
     }
 
+    /**
+     * {@inheritDoc}
+     */
     public void definitionList_()
     {
         markup( "\\end{pdefinitionlist}" + EOL + EOL );
     }
 
+    /**
+     * {@inheritDoc}
+     */
     public void figure()
     {
         figureFlag = true;
         markup( "\\begin{pfigure}" + EOL );
     }
 
+    /**
+     * {@inheritDoc}
+     */
     public void figure_()
     {
         markup( "\\end{pfigure}" + EOL + EOL );
         figureFlag = false;
     }
 
+    /**
+     * {@inheritDoc}
+     */
     public void table()
     {
         tableFlag = true;
         markup( "\\begin{ptable}" + EOL );
     }
 
+    /**
+     * {@inheritDoc}
+     */
     public void table_()
     {
         markup( "\\end{ptable}" + EOL + EOL );
         tableFlag = false;
     }
 
+    /**
+     * {@inheritDoc}
+     */
     public void tableRows( int[] justification, boolean grid )
 
     {
@@ -421,6 +534,9 @@ public class LatexSink
         cellJustif = justification;
     }
 
+    /**
+     * {@inheritDoc}
+     */
     public void tableRows_()
     {
         markup( "\\end{ptablerows}" + EOL );
@@ -428,11 +544,17 @@ public class LatexSink
         cellJustif = null;
     }
 
+    /**
+     * {@inheritDoc}
+     */
     public void tableRow()
     {
         cellCount = 0;
     }
 
+    /**
+     * {@inheritDoc}
+     */
     public void tableRow_()
     {
         markup( "\\\\" + EOL );
@@ -444,6 +566,9 @@ public class LatexSink
         lastCellWasHeader = false;
     }
 
+    /**
+     * {@inheritDoc}
+     */
     public void title()
     {
         if ( !fragmentDocument )
@@ -457,6 +582,9 @@ public class LatexSink
         }
     }
 
+    /**
+     * {@inheritDoc}
+     */
     public void title_()
     {
         if ( !fragmentDocument )
@@ -469,6 +597,9 @@ public class LatexSink
         }
     }
 
+    /**
+     * {@inheritDoc}
+     */
     public void author()
     {
         if ( !fragmentDocument )
@@ -481,6 +612,9 @@ public class LatexSink
         }
     }
 
+    /**
+     * {@inheritDoc}
+     */
     public void author_()
     {
         if ( !fragmentDocument )
@@ -493,6 +627,9 @@ public class LatexSink
         }
     }
 
+    /**
+     * {@inheritDoc}
+     */
     public void date()
     {
         if ( !fragmentDocument )
@@ -505,6 +642,9 @@ public class LatexSink
         }
     }
 
+    /**
+     * {@inheritDoc}
+     */
     public void date_()
     {
         if ( !fragmentDocument )
@@ -517,17 +657,26 @@ public class LatexSink
         }
     }
 
+    /**
+     * {@inheritDoc}
+     */
     public void sectionTitle_()
     {
         // TODO: closing bracket?
         markup( "}" + EOL + EOL );
     }
 
+    /**
+     * {@inheritDoc}
+     */
     public void paragraph_()
     {
         markup( EOL + EOL );
     }
 
+    /**
+     * {@inheritDoc}
+     */
     public void verbatim( boolean boxed )
     {
         if ( boxed )
@@ -544,6 +693,9 @@ public class LatexSink
         boxFlag = boxed;
     }
 
+    /**
+     * {@inheritDoc}
+     */
     public void verbatim_()
     {
         markup( EOL + "\\end{verbatim}" + EOL );
@@ -560,41 +712,65 @@ public class LatexSink
         boxFlag = false;
     }
 
+    /**
+     * {@inheritDoc}
+     */
     public void definedTerm()
     {
         markup( "\\item[\\mbox{" );
     }
 
+    /**
+     * {@inheritDoc}
+     */
     public void definedTerm_()
     {
         markup( "}] " );
     }
 
+    /**
+     * {@inheritDoc}
+     */
     public void figureCaption()
     {
         markup( "\\pfigurecaption{" );
     }
 
+    /**
+     * {@inheritDoc}
+     */
     public void figureCaption_()
     {
         markup( "}" + EOL );
     }
 
+    /**
+     * {@inheritDoc}
+     */
     public void tableCell()
     {
         tableCell( false );
     }
     
+    /**
+     * {@inheritDoc}
+     */
     public void tableCell_()
     {
         tableCell_( false );
     }
 
+    /**
+     * {@inheritDoc}
+     */
     public void tableHeaderCell()
     {
         tableCell( true );
     }
     
+    /**
+     * {@inheritDoc}
+     */
     public void tableHeaderCell_()
     {
         tableCell_( true );
@@ -602,6 +778,11 @@ public class LatexSink
     
     private boolean lastCellWasHeader = false;
     
+    /**
+     * Starts a table cell.
+     *
+     * @param header True if this is a header cell.
+     */
     public void tableCell( boolean header )
     {
         lastCellWasHeader = header;
@@ -628,97 +809,156 @@ public class LatexSink
         markup( "\\begin{pcell}{" + justif + "}" );
     }
 
+    /**
+     * Ends a table cell.
+     *
+     * @param header True if this is a header cell.
+     */
     public void tableCell_( boolean header )
     {
         markup( "\\end{pcell}" );
         ++cellCount;
     }
 
+    /**
+     * {@inheritDoc}
+     */
     public void tableCaption()
     {
         markup( "\\ptablecaption{" );
     }
 
+    /**
+     * {@inheritDoc}
+     */
     public void tableCaption_()
     {
         markup( "}" + EOL );
     }
 
+    /**
+     * {@inheritDoc}
+     */
     public void figureGraphics( String name )
     {
         markup( "\\pfiguregraphics{" + name + "}" + EOL );
     }
 
+    /**
+     * {@inheritDoc}
+     */
     public void horizontalRule()
     {
         markup( "\\phorizontalrule" + EOL + EOL );
     }
 
+    /**
+     * {@inheritDoc}
+     */
     public void pageBreak()
     {
         markup( "\\newpage" + EOL + EOL );
     }
 
+    /**
+     * {@inheritDoc}
+     */
     public void anchor( String name )
     {
         markup( "\\panchor{" );
     }
 
+    /**
+     * {@inheritDoc}
+     */
     public void anchor_()
     {
         markup( "}" );
     }
 
+    /**
+     * {@inheritDoc}
+     */
     public void link( String name )
     {
         markup( "\\plink{" );
     }
 
+    /**
+     * {@inheritDoc}
+     */
     public void link_()
     {
         markup( "}" );
     }
 
+    /**
+     * {@inheritDoc}
+     */
     public void italic()
     {
         markup( "\\pitalic{" );
     }
 
+    /**
+     * {@inheritDoc}
+     */
     public void italic_()
     {
         markup( "}" );
     }
 
+    /**
+     * {@inheritDoc}
+     */
     public void bold()
     {
         markup( "\\pbold{" );
     }
 
+    /**
+     * {@inheritDoc}
+     */
     public void bold_()
     {
         markup( "}" );
     }
 
+    /**
+     * {@inheritDoc}
+     */
     public void monospaced()
     {
         markup( "\\pmonospaced{" );
     }
 
+    /**
+     * {@inheritDoc}
+     */
     public void monospaced_()
     {
         markup( "}" );
     }
 
+    /**
+     * {@inheritDoc}
+     */
     public void lineBreak()
     {
         markup( ( figureFlag || tableFlag || titleFlag ) ? "\\\\" + EOL : "\\newline" + EOL );
     }
 
+    /**
+     * {@inheritDoc}
+     */
     public void nonBreakingSpace()
     {
         markup( "~" );
     }
 
+    /**
+     * {@inheritDoc}
+     */
     public void text( String text )
     {
         if ( ignoreText )
@@ -741,6 +981,11 @@ public class LatexSink
 
     // -----------------------------------------------------------------------
 
+    /**
+     * Writes the text, preserving whitespace.
+     *
+     * @param text the text to write.
+     */
     protected void markup( String text )
     {
         if ( text != null )
@@ -749,11 +994,21 @@ public class LatexSink
         }
     }
 
+    /**
+     * Writes the text, without preserving whitespace.
+     *
+     * @param text the text to write.
+     */
     protected void content( String text )
     {
         out.write( escaped( text ), /*preserveSpace*/ false );
     }
 
+    /**
+     * Writes the text, preserving whitespace.
+     *
+     * @param text the text to write.
+     */
     protected void verbatimContent( String text )
     {
         out.write( text, /*preserveSpace*/ true );
@@ -761,6 +1016,12 @@ public class LatexSink
 
     // -----------------------------------------------------------------------
 
+    /**
+     * Escapes special characters.
+     *
+     * @param text The text to escape.
+     * @return The text with special characters replaced.
+     */
     protected static String escaped( String text )
     {
         int length = text.length();
@@ -821,11 +1082,17 @@ public class LatexSink
     //
     // ----------------------------------------------------------------------
 
+    /**
+     * {@inheritDoc}
+     */
     public void flush()
     {
         out.flush();
     }
 
+    /**
+     * {@inheritDoc}
+     */
     public void close()
     {
         out.close();
@@ -835,18 +1102,35 @@ public class LatexSink
     //
     // ----------------------------------------------------------------------
 
+    /**
+     * Returns the default sink commands from a resource.
+     *
+     * @throws java.io.IOException if the resource file cannot be read.
+     * @return InputStream
+     */
     public static InputStream getDefaultSinkCommands()
         throws IOException
     {
         return LatexSink.class.getResource( "default_sink_commands.tex" ).openStream();
     }
 
+    /**
+     * Returns the default preamble from a resource.
+     *
+     * @return InputStream
+     * @throws java.io.IOException if the resource file cannot be read.
+     */
     public static InputStream getDefaultPreamble()
         throws IOException
     {
         return LatexSink.class.getResource( "default_preamble.tex" ).openStream();
     }
 
+    /**
+     * Returns the default sink commands.
+     *
+     * @return String.
+     */
     public static String defaultSinkCommands()
     {
         String commands = "";
@@ -863,6 +1147,11 @@ public class LatexSink
         return commands;
     }
 
+    /**
+     * Returns the default preamble.
+     *
+     * @return String.
+     */
     public static String defaultPreamble()
     {
         String preamble = "";
