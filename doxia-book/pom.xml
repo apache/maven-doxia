@@ -29,7 +29,7 @@ under the License.
     <version>1.0-alpha-9-SNAPSHOT</version>
   </parent>
   <artifactId>doxia-book</artifactId>
-  <version>1.0-alpha-1-SNAPSHOT</version>
+  <version>1.0-alpha-9-SNAPSHOT</version>
   <name>Doxia :: Book Component</name>
   <description>A component to write books like user manuals and guides in any format supported by Doxia.</description>
   <dependencies>
