@@ -27,7 +27,6 @@ under the License.
     <version>1.0-alpha-9-SNAPSHOT</version>
   </parent>
   <artifactId>doxia-maven-plugin</artifactId>
-  <version>1.0-alpha-9-SNAPSHOT</version>
   <packaging>maven-plugin</packaging>
   <name>Doxia :: Maven Plugin</name>
   <description>A Maven plugin for Doxia.</description>
@@ -53,7 +52,7 @@ under the License.
     <dependency>
       <groupId>${project.groupId}</groupId>
       <artifactId>doxia-book</artifactId>
-      <version>1.0-alpha-9-SNAPSHOT</version>
+      <version>${projectVersion}</version>
     </dependency>
     <dependency>
       <groupId>org.codehaus.plexus</groupId>

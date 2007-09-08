@@ -29,44 +29,43 @@ under the License.
     <version>1.0-alpha-9-SNAPSHOT</version>
   </parent>
   <artifactId>doxia-book</artifactId>
-  <version>1.0-alpha-9-SNAPSHOT</version>
   <name>Doxia :: Book Component</name>
   <description>A component to write books like user manuals and guides in any format supported by Doxia.</description>
   <dependencies>
     <dependency>
       <groupId>${project.groupId}</groupId>
       <artifactId>doxia-core</artifactId>
-      <version>1.0-alpha-9-SNAPSHOT</version>
+      <version>${projectVersion}</version>
     </dependency>
     <dependency>
       <groupId>${project.groupId}</groupId>
       <artifactId>doxia-module-xdoc</artifactId>
-      <version>1.0-alpha-9-SNAPSHOT</version>
+      <version>${projectVersion}</version>
     </dependency>
     <dependency>
       <groupId>${project.groupId}</groupId>
       <artifactId>doxia-module-xhtml</artifactId>
-      <version>1.0-alpha-9-SNAPSHOT</version>
+      <version>${projectVersion}</version>
     </dependency>
     <dependency>
       <groupId>${project.groupId}</groupId>
       <artifactId>doxia-module-apt</artifactId>
-      <version>1.0-alpha-9-SNAPSHOT</version>
+      <version>${projectVersion}</version>
     </dependency>
     <dependency>
       <groupId>${project.groupId}</groupId>
       <artifactId>doxia-module-itext</artifactId>
-      <version>1.0-alpha-9-SNAPSHOT</version>
+      <version>${projectVersion}</version>
     </dependency>
     <dependency>
       <groupId>${project.groupId}</groupId>
       <artifactId>doxia-module-latex</artifactId>
-      <version>1.0-alpha-9-SNAPSHOT</version>
+      <version>${projectVersion}</version>
     </dependency>
     <dependency>
       <groupId>${project.groupId}</groupId>
       <artifactId>doxia-module-docbook-simple</artifactId>
-      <version>1.0-alpha-9-SNAPSHOT</version>
+      <version>${projectVersion}</version>
     </dependency>
     <dependency>
       <groupId>org.codehaus.plexus</groupId>
