@@ -235,4 +235,11 @@ under the License.
     <module>doxia-book</module>
     <module>doxia-maven-plugin</module>
   </modules>
+
+  <distributionManagement>
+    <site>
+      <id>apache.website</id>
+      <url>scp://people.apache.org/www/maven.apache.org/doxia/doxia</url>
+    </site>
+  </distributionManagement>
 </project>
