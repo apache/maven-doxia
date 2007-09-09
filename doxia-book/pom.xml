@@ -3,7 +3,7 @@
   <parent>
     <groupId>org.apache.maven.doxia</groupId>
     <artifactId>doxia</artifactId>
-    <version>1.0-alpha-9</version>
+    <version>1.0-alpha-10-SNAPSHOT</version>
   </parent>
   <artifactId>doxia-book</artifactId>
   <name>Doxia :: Book Component</name>
