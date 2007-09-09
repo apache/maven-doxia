@@ -29,7 +29,7 @@ under the License.
   </parent>
   <groupId>org.apache.maven.doxia</groupId>
   <artifactId>doxia</artifactId>
-  <version>1.0-alpha-9-SNAPSHOT</version>
+  <version>1.0-alpha-9</version>
   <packaging>pom</packaging>
 
   <name>Doxia</name>
@@ -89,9 +89,9 @@ under the License.
   </issueManagement>
 
   <scm>
-    <connection>scm:svn:http://svn.apache.org/repos/asf/maven/doxia/doxia/trunk</connection>
-    <developerConnection>scm:svn:https://svn.apache.org/repos/asf/maven/doxia/doxia/trunk</developerConnection>
-    <url>http://svn.apache.org/viewcvs.cgi/maven/doxia/doxia/trunk</url>
+    <connection>scm:svn:https://svn.apache.org/repos/asf/maven/doxia/doxia/tags/doxia-1.0-alpha-9</connection>
+    <developerConnection>scm:svn:https://svn.apache.org/repos/asf/maven/doxia/doxia/tags/doxia-1.0-alpha-9</developerConnection>
+    <url>https://svn.apache.org/repos/asf/maven/doxia/doxia/tags/doxia-1.0-alpha-9</url>
   </scm>
 
   <reporting>
