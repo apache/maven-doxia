@@ -24,7 +24,7 @@ under the License.
   <parent>
     <groupId>org.apache.maven.doxia</groupId>
     <artifactId>doxia</artifactId>
-    <version>1.0-alpha-9-SNAPSHOT</version>
+    <version>1.0-alpha-9</version>
   </parent>
   <artifactId>doxia-maven-plugin</artifactId>
   <packaging>maven-plugin</packaging>

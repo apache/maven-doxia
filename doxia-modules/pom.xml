@@ -21,7 +21,7 @@ under the License.
   <parent>
     <artifactId>doxia</artifactId>
     <groupId>org.apache.maven.doxia</groupId>
-    <version>1.0-alpha-9-SNAPSHOT</version>
+    <version>1.0-alpha-9</version>
   </parent>
   <artifactId>doxia-modules</artifactId>
   <name>Doxia :: Modules</name>
