@@ -38,6 +38,60 @@ public abstract class AbstractXmlSink
     extends SinkAdapter
     implements XmlMarkup
 {
+    /** Default namespace prepended to all tags */
+    private String nameSpace;
+
+    /**
+     * Sets the default namespace that is prepended to all tags written by this sink.
+     *
+     * @param ns the default namespace.
+     */
+    public void setNameSpace( String ns )
+    {
+        this.nameSpace = ns;
+    }
+
+    /**
+     * Return the default namespace that is prepended to all tags written by this sink.
+     *
+     * @return the current default namespace.
+     */
+    public String getNameSpace()
+    {
+        return this.nameSpace;
+    }
+
+    /**
+     * Utility method to get an AttributeSet as a String.
+     *
+     * @param att The AttributeSet.
+     * @return String
+     */
+    public static String getAttributeString( MutableAttributeSet att )
+    {
+        StringBuffer sb = new StringBuffer();
+
+        if ( att != null )
+        {
+            Enumeration names = att.getAttributeNames();
+
+            while ( names.hasMoreElements() )
+            {
+                Object key = names.nextElement();
+                Object value = att.getAttribute( key );
+
+                // AttributeSets are ignored
+                if ( !(value instanceof AttributeSet) )
+                {
+                    sb.append( String.valueOf( SPACE ) ).append( key.toString() ).append( String.valueOf( EQUAL ) )
+                        .append( String.valueOf( QUOTE ) ).append( value.toString() ).append( String.valueOf( QUOTE ) );
+                }
+            }
+        }
+
+        return sb.toString();
+    }
+
     /**
      * Starts a Tag. For instance:
      * <pre>
@@ -86,28 +140,15 @@ public abstract class AbstractXmlSink
 
         StringBuffer sb = new StringBuffer();
         sb.append( String.valueOf( LESS_THAN ) );
+
+        if ( nameSpace != null )
+        {
+            sb.append( nameSpace ).append( ":" );
+        }
+
         sb.append( t.toString() );
 
-        if ( att != null )
-        {
-            Enumeration names = att.getAttributeNames();
-
-            while ( names.hasMoreElements() )
-            {
-                Object key = names.nextElement();
-                Object value = att.getAttribute( key );
-
-                if ( value instanceof AttributeSet )
-                {
-                    // ignored
-                }
-                else
-                {
-                    sb.append( String.valueOf( SPACE ) ).append( key.toString() ).append( String.valueOf( EQUAL ) )
-                        .append( String.valueOf( QUOTE ) ).append( value.toString() ).append( String.valueOf( QUOTE ) );
-                }
-            }
-        }
+        sb.append( getAttributeString( att ) );
 
         if ( isSimpleTag )
         {
@@ -137,6 +178,12 @@ public abstract class AbstractXmlSink
         StringBuffer sb = new StringBuffer();
         sb.append( String.valueOf( LESS_THAN ) );
         sb.append( String.valueOf( SLASH ) );
+
+        if ( nameSpace != null )
+        {
+            sb.append( nameSpace ).append( ":" );
+        }
+
         sb.append( t.toString() );
         sb.append( String.valueOf( GREATER_THAN ) );
 
