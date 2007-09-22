@@ -75,6 +75,12 @@ public class XdocParser
     /** The macro parameters. */
     private Map macroParameters = new HashMap();
 
+    /** For tables. */
+    private boolean hasCaption;
+
+    /** Counts section level. */
+    private int sectionLevel;
+
     /** {@inheritDoc} */
     public void parse( Reader source, Sink sink )
         throws ParseException
@@ -124,6 +130,8 @@ public class XdocParser
         }
         else if ( parser.getName().equals( SECTION_TAG.toString() ) )
         {
+            closeOpenSections( Sink.SECTION_LEVEL_1, sink );
+
             sink.section1();
 
             sink.sectionTitle1();
@@ -138,6 +146,8 @@ public class XdocParser
         }
         else if ( parser.getName().equals( SUBSECTION_TAG.toString() ) )
         {
+            closeOpenSections( Sink.SECTION_LEVEL_2, sink );
+
             sink.section2();
 
             sink.sectionTitle2();
@@ -150,17 +160,28 @@ public class XdocParser
 
             sink.sectionTitle2_();
         }
-        // TODO section3 section4 section5
         else if ( parser.getName().equals( Tag.H4.toString() ) )
         {
+            closeOpenSections( Sink.SECTION_LEVEL_3, sink );
+
+            sink.section3();
+
             sink.sectionTitle3();
         }
         else if ( parser.getName().equals( Tag.H5.toString() ) )
         {
+            closeOpenSections( Sink.SECTION_LEVEL_4, sink );
+
+            sink.section4();
+
             sink.sectionTitle4();
         }
         else if ( parser.getName().equals( Tag.H6.toString() ) )
         {
+            closeOpenSections( Sink.SECTION_LEVEL_5, sink );
+
+            sink.section5();
+
             sink.sectionTitle5();
         }
         else if ( parser.getName().equals( Tag.P.toString() ) )
@@ -177,7 +198,36 @@ public class XdocParser
         }
         else if ( parser.getName().equals( Tag.OL.toString() ) )
         {
-            sink.numberedList( Sink.NUMBERING_DECIMAL );
+            int numbering = Sink.NUMBERING_DECIMAL;
+
+            // this will have to be generalized if we handle styles
+            String style = parser.getAttributeValue( null, Attribute.STYLE.toString() );
+
+            if ( style != null )
+            {
+                if ( "list-style-type: upper-alpha".equals( style ) )
+                {
+                    numbering = Sink.NUMBERING_UPPER_ALPHA;
+                }
+                else if ( "list-style-type: lower-alpha".equals( style ) )
+                {
+                    numbering = Sink.NUMBERING_LOWER_ALPHA;
+                }
+                else if ( "list-style-type: upper-roman".equals( style ) )
+                {
+                    numbering = Sink.NUMBERING_UPPER_ROMAN;
+                }
+                else if ( "list-style-type: lower-roman".equals( style ) )
+                {
+                    numbering = Sink.NUMBERING_LOWER_ROMAN;
+                }
+                else if ( "list-style-type: decimal".equals( style ) )
+                {
+                    numbering = Sink.NUMBERING_DECIMAL;
+                }
+            }
+
+            sink.numberedList( numbering );
             orderedListDepth++;
         }
         else if ( parser.getName().equals( Tag.LI.toString() ) )
@@ -294,6 +344,30 @@ public class XdocParser
         else if ( parser.getName().equals( Tag.TABLE.toString() ) )
         {
             sink.table();
+
+            String border = parser.getAttributeValue( null, Attribute.BORDER.toString() );
+
+            boolean grid = true;
+
+            if ( "0".equals( border ) )
+            {
+                grid = false;
+            }
+
+            String align = parser.getAttributeValue( null, Attribute.ALIGN.toString() );
+
+            int[] justif = { JUSTIFY_CENTER };
+
+            if ( "left".equals( align ) )
+            {
+                justif[0] = JUSTIFY_LEFT;
+            }
+            else if ( "right".equals( align ) )
+            {
+                justif[0] = JUSTIFY_RIGHT;
+            }
+
+            sink.tableRows( justif, grid );
         }
         else if ( parser.getName().equals( Tag.TR.toString() ) )
         {
@@ -322,6 +396,12 @@ public class XdocParser
             {
                 sink.tableCell( colspan );
             }
+        }
+        else if ( parser.getName().equals( Tag.CAPTION.toString() ) )
+        {
+            sink.tableRows_();
+            this.hasCaption = true;
+            sink.tableCaption();
         }
 
         // ----------------------------------------------------------------------
@@ -378,6 +458,8 @@ public class XdocParser
         }
         else if ( parser.getName().equals( Tag.BODY.toString() ) )
         {
+            closeOpenSections( 0, sink );
+
             sink.body_();
         }
         else if ( parser.getName().equals( Tag.P.toString() ) )
@@ -496,6 +578,13 @@ public class XdocParser
 
         else if ( parser.getName().equals( Tag.TABLE.toString() ) )
         {
+            if ( !hasCaption )
+            {
+                sink.tableRows_();
+            }
+
+            this.hasCaption = false;
+
             sink.table_();
         }
         else if ( parser.getName().equals( Tag.TR.toString() ) )
@@ -510,12 +599,20 @@ public class XdocParser
         {
             sink.tableCell_();
         }
+        else if ( parser.getName().equals( Tag.CAPTION.toString() ) )
+        {
+            sink.tableCaption_();
+        }
         else if ( parser.getName().equals( SECTION_TAG.toString() ) )
         {
+            closeOpenSections( 0, sink );
+
             sink.section1_();
         }
         else if ( parser.getName().equals( SUBSECTION_TAG.toString() ) )
         {
+            closeOpenSections( Sink.SECTION_LEVEL_1, sink );
+
             sink.section2_();
         }
         else if ( parser.getName().equals( Tag.H4.toString() ) )
@@ -591,4 +688,34 @@ public class XdocParser
 
         sink.rawText( String.valueOf( GREATER_THAN ) );
     }
+
+    /**
+     * Close open h4, h5, h6 sections. The current level is set to newLevel afterwards.
+     *
+     * @param newLevel the new section level, all upper levels have to be closed.
+     * @param sink the sink to receive the events.
+     */
+    private void closeOpenSections( int newLevel, Sink sink )
+    {
+        while ( this.sectionLevel > newLevel )
+        {
+            if ( sectionLevel == Sink.SECTION_LEVEL_5)
+            {
+                sink.section5_();
+            }
+            else if ( sectionLevel == Sink.SECTION_LEVEL_4)
+            {
+                sink.section4_();
+            }
+            else if ( sectionLevel == Sink.SECTION_LEVEL_3)
+            {
+                sink.section3_();
+            }
+
+            this.sectionLevel--;
+        }
+
+        this.sectionLevel = newLevel;
+    }
+
 }

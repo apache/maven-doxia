@@ -690,10 +690,7 @@ public class XdocSink
      */
     public void table()
     {
-        MutableAttributeSet att = new SimpleAttributeSet();
-        att.addAttribute( Attribute.ALIGN, "center" );
-
-        writeStartTag( Tag.TABLE, att );
+        // start table with tableRows
     }
 
     /**
@@ -713,6 +710,8 @@ public class XdocSink
      */
     public void tableRows( int[] justification, boolean grid )
     {
+        this.cellJustif = justification;
+
         MutableAttributeSet att = new SimpleAttributeSet();
         att.addAttribute( Attribute.ALIGN, "center" );
         att.addAttribute( Attribute.BORDER, ( grid ? "1" : "0" ) );
@@ -726,7 +725,7 @@ public class XdocSink
      */
     public void tableRows_()
     {
-        writeEndTag( Tag.TABLE );
+        // nop
     }
 
     /**
@@ -835,24 +834,21 @@ public class XdocSink
 
     /**
      * {@inheritDoc}
-     * @see javax.swing.text.html.HTML.Tag#P
-     * @see javax.swing.text.html.HTML.Tag#I
+     * @see javax.swing.text.html.HTML.Tag#CAPTION
      */
     public void tableCaption()
     {
-        writeStartTag( Tag.P );
-        writeStartTag( Tag.I );
+        // TODO: tableCaption should be written before tableRows
+        writeStartTag( Tag.CAPTION );
     }
 
     /**
      * {@inheritDoc}
-     * @see javax.swing.text.html.HTML.Tag#P
-     * @see javax.swing.text.html.HTML.Tag#I
+     * @see javax.swing.text.html.HTML.Tag#CAPTION
      */
     public void tableCaption_()
     {
-        writeEndTag( Tag.I );
-        writeEndTag( Tag.P );
+        writeEndTag( Tag.CAPTION );
     }
 
     /**
