@@ -697,7 +697,7 @@ public class XdocParser
      */
     private void closeOpenSections( int newLevel, Sink sink )
     {
-        while ( this.sectionLevel > newLevel )
+        while ( this.sectionLevel >= newLevel )
         {
             if ( sectionLevel == Sink.SECTION_LEVEL_5)
             {
