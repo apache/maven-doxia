@@ -21,17 +21,14 @@ under the License.
 
 <project xmlns="http://maven.apache.org/POM/4.0.0" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:schemaLocation="http://maven.apache.org/POM/4.0.0 http://maven.apache.org/maven-v4_0_0.xsd">
   <parent>
-    <artifactId>doxia</artifactId>
+    <artifactId>doxia-modules</artifactId>
     <groupId>org.apache.maven.doxia</groupId>
     <version>1.0-beta-1-SNAPSHOT</version>
   </parent>
   <modelVersion>4.0.0</modelVersion>
   <artifactId>doxia-module-fo</artifactId>
   <name>Doxia :: FO Module</name>
-
-  <properties>
-    <doxiaVersion>1.0-beta-1-SNAPSHOT</doxiaVersion>
-  </properties>
+  <description>A Doxia module for FO (Formatting Objects) source documents.</description>
 
   <developers>
     <developer>
@@ -48,18 +45,8 @@ under the License.
   <dependencies>
     <dependency>
       <groupId>org.apache.maven.doxia</groupId>
-      <artifactId>doxia-core</artifactId>
-      <version>${doxiaVersion}</version>
-    </dependency>
-    <dependency>
-      <groupId>org.apache.maven.doxia</groupId>
-      <artifactId>doxia-sink-api</artifactId>
-      <version>${doxiaVersion}</version>
-    </dependency>
-    <dependency>
-      <groupId>org.apache.maven.doxia</groupId>
       <artifactId>doxia-doc-renderer</artifactId>
-      <version>${doxiaVersion}</version>
+      <version>${projectVersion}</version>
     </dependency>
     <dependency>
       <groupId>commons-configuration</groupId>
@@ -70,20 +57,6 @@ under the License.
       <groupId>org.apache.xmlgraphics</groupId>
       <artifactId>fop</artifactId>
       <version>0.93</version>
-    </dependency>
-    <!-- test dependencies -->
-    <dependency>
-      <groupId>junit</groupId>
-      <artifactId>junit</artifactId>
-      <version>3.8.1</version>
-      <scope>test</scope>
-    </dependency>
-    <dependency>
-      <groupId>org.apache.maven.doxia</groupId>
-      <artifactId>doxia-core</artifactId>
-      <version>${doxiaVersion}</version>
-      <classifier>tests</classifier>
-      <scope>test</scope>
     </dependency>
   </dependencies>
   <build>
