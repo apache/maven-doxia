@@ -298,4 +298,33 @@ public interface FoMarkup
         }
     };
 
+    /** FO tag for <code>bookmark-tree</code>. */
+    Tag BOOKMARK_TREE_TAG = new Tag()
+    {
+        /** {@inheritDoc} */
+        public String toString()
+        {
+            return "bookmark-tree";
+        }
+    };
+
+    /** FO tag for <code>bookmark</code>. */
+    Tag BOOKMARK_TAG = new Tag()
+    {
+        /** {@inheritDoc} */
+        public String toString()
+        {
+            return "bookmark";
+        }
+    };
+
+    /** FO tag for <code>bookmark-title</code>. */
+    Tag BOOKMARK_TITLE_TAG = new Tag()
+    {
+        /** {@inheritDoc} */
+        public String toString()
+        {
+            return "bookmark-title";
+        }
+    };
 }

@@ -934,6 +934,8 @@ public class FoSink
         writeEndTag( SIMPLE_PAGE_MASTER_TAG );
 
         writeEndTag( LAYOUT_MASTER_SET_TAG );
+
+        pdfBookmarks();
     }
 
     /**
@@ -1175,4 +1177,11 @@ public class FoSink
         // do nothing, overridden by AggregateSink
     }
 
+    /**
+     * Writes a fo:bookmark-tree. By default does nothing, gets overridden by AggregateSink.
+     */
+    protected void pdfBookmarks()
+    {
+        // do nothing, overridden by AggregateSink
+    }
 }

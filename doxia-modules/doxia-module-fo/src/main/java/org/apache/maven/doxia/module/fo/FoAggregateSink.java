@@ -26,6 +26,7 @@ import java.util.Iterator;
 import javax.swing.text.html.HTML.Tag;
 
 import org.apache.maven.doxia.docrenderer.document.DocumentMeta;
+import org.apache.maven.doxia.docrenderer.document.DocumentModel;
 import org.apache.maven.doxia.docrenderer.document.DocumentTOC;
 import org.apache.maven.doxia.docrenderer.document.DocumentTOCItem;
 import org.apache.maven.doxia.util.HtmlTools;
@@ -39,6 +40,8 @@ import org.apache.maven.doxia.util.HtmlTools;
  */
 public class FoAggregateSink extends FoSink
 {
+    /** The document model to be used by this sink. */
+    private DocumentModel docModel;
 
     /** Counts the current chapter level. */
     private int chapter = 0;
@@ -168,6 +171,17 @@ public class FoAggregateSink extends FoSink
     public void setDocumentName( String name )
     {
         this.docName = getIdName( name );
+    }
+
+    /**
+     * Sets the DocumentModel to be used by this sink. The DocumentModel provides all the meta-information
+     * required to render a document, eg settings for the cover page, table of contents, etc.
+     *
+     * @param model the DocumentModel.
+     */
+    public void setDocumentModel( DocumentModel model )
+    {
+        this.docModel = model;
     }
 
     /**
@@ -579,12 +593,22 @@ public class FoAggregateSink extends FoSink
     }
 
     /**
-     * Writes a table of contents.
-     *
-     * @param toc The DocumentTOC object that contains all information for the table of contents.
+     * Writes a table of contents. The DocumentModel has to contain a DocumentTOC for this to work.
      */
-    public void toc( DocumentTOC toc )
+    public void toc()
     {
+        if ( this.docModel == null )
+        {
+            return;
+        }
+
+        DocumentTOC toc = docModel.getToc();
+
+        if ( toc == null )
+        {
+            return;
+        }
+
         writeln( "<fo:page-sequence master-reference=\"toc\" initial-page-number=\"1\" format=\"i\">" );
         regionBefore( toc.getName() );
         regionAfter( getFooterText() );
@@ -636,12 +660,61 @@ public class FoAggregateSink extends FoSink
     }
 
     /**
-     * Writes a cover page.
-     *
-     * @param meta The DocumentMeta object that contains all information for the cover page.
+     * Writes a fo:bookmark-tree. The DocumentModel has to contain a DocumentTOC for this to work.
      */
-    public void coverPage( DocumentMeta meta )
+    protected void pdfBookmarks()
     {
+        if ( this.docModel == null )
+        {
+            return;
+        }
+
+        DocumentTOC toc = docModel.getToc();
+
+        if ( toc == null )
+        {
+            return;
+        }
+
+        writeStartTag( BOOKMARK_TREE_TAG, "" );
+
+        for ( Iterator k = toc.getItems().iterator(); k.hasNext(); )
+        {
+            DocumentTOCItem tocItem = (DocumentTOCItem) k.next();
+
+            String ref = getIdName( tocItem.getRef() );
+
+            writeStartTag( BOOKMARK_TAG, "internal-destination", ref );
+
+            writeStartTag( BOOKMARK_TITLE_TAG, "" );
+
+            write( tocItem.getName() );
+
+            writeEndTag( BOOKMARK_TITLE_TAG );
+
+            writeEndTag( BOOKMARK_TAG );
+        }
+
+        writeEndTag( BOOKMARK_TREE_TAG );
+    }
+
+    /**
+     * Writes a cover page. The DocumentModel has to contain a DocumentMeta for this to work.
+     */
+    public void coverPage()
+    {
+        if ( this.docModel == null )
+        {
+            return;
+        }
+
+        DocumentMeta meta = docModel.getMeta();
+
+        if ( meta == null )
+        {
+            return;
+        }
+
         String title = meta.getTitle();
         String author = meta.getAuthor();
 

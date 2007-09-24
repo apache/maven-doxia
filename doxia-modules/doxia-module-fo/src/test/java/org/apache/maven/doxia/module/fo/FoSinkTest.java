@@ -23,6 +23,7 @@ import java.io.File;
 import java.io.Writer;
 
 import org.apache.maven.doxia.docrenderer.document.DocumentMeta;
+import org.apache.maven.doxia.docrenderer.document.DocumentModel;
 import org.apache.maven.doxia.docrenderer.document.DocumentTOC;
 import org.apache.maven.doxia.docrenderer.document.DocumentTOCItem;
 
@@ -65,11 +66,13 @@ public class FoSinkTest extends AbstractSinkTest
     {
         FoAggregateSink fosink = new FoAggregateSink( getTestWriter( "aggregate" ) );
 
+        fosink.setDocumentModel( getModel() );
+
         fosink.beginDocument();
 
-        fosink.coverPage( getMeta() );
+        fosink.coverPage();
 
-        fosink.toc( getToc() );
+        fosink.toc();
 
         fosink.setDocumentName( "doc1" );
         fosink.setDocumentTitle( "Document 1" );
@@ -84,6 +87,14 @@ public class FoSinkTest extends AbstractSinkTest
 
         // then generate PDF
         fo2pdf( "aggregate" );
+    }
+
+    private DocumentModel getModel()
+    {
+        DocumentModel model = new DocumentModel();
+        model.setToc( getToc() );
+        model.setMeta( getMeta() );
+        return model ;
     }
 
     private DocumentMeta getMeta()
