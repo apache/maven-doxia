@@ -47,6 +47,7 @@ under the License.
     <module>doxia-module-itext</module>
     <module>doxia-module-apt</module>
     <module>doxia-module-fml</module>
+    <module>doxia-module-fo</module>
     <module>doxia-module-latex</module>
     <module>doxia-module-rtf</module>
     <module>doxia-module-xdoc</module>
