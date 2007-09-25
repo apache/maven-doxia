@@ -136,10 +136,6 @@ public class XdocParser
 
             sink.sectionTitle1();
 
-            // TODO this should go into a sink? kept for compat for the moment
-            sink.anchor( HtmlTools.encodeId( parser.getAttributeValue( null, Attribute.NAME.toString() ) ) );
-            sink.anchor_();
-
             sink.text( parser.getAttributeValue( null, Attribute.NAME.toString() ) );
 
             sink.sectionTitle1_();
@@ -151,10 +147,6 @@ public class XdocParser
             sink.section2();
 
             sink.sectionTitle2();
-
-            // TODO this should go into a sink? kept for compat for the moment
-            sink.anchor( HtmlTools.encodeId( parser.getAttributeValue( null, Attribute.NAME.toString() ) ) );
-            sink.anchor_();
 
             sink.text( parser.getAttributeValue( null, Attribute.NAME.toString() ) );
 
