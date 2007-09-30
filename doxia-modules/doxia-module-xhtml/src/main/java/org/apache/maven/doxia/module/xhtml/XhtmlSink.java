@@ -861,7 +861,7 @@ public class XhtmlSink
 
         if ( width != null )
         {
-            att.addAttribute( Attribute.COLSPAN, width );
+            att.addAttribute( Attribute.WIDTH, width );
         }
 
         if ( justif != null )
