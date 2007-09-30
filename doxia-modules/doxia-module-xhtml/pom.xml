@@ -29,4 +29,14 @@ under the License.
   <artifactId>doxia-module-xhtml</artifactId>
   <name>Doxia :: XHTML Module</name>
   <description>A Doxia module for Xhtml source documents.</description>
+  <dependencies>
+    <dependency>
+      <groupId>org.apache.maven.doxia</groupId>
+      <artifactId>doxia-sink-api</artifactId>
+    </dependency>
+    <dependency>
+      <groupId>org.codehaus.plexus</groupId>
+      <artifactId>plexus-utils</artifactId>
+    </dependency>
+  </dependencies>
 </project>
