@@ -31,44 +31,61 @@ under the License.
   <description>A component to write books like user manuals and guides in any format supported by Doxia.</description>
   <dependencies>
     <dependency>
-      <groupId>${project.groupId}</groupId>
+      <groupId>org.apache.maven.doxia</groupId>
       <artifactId>doxia-core</artifactId>
-      <version>${projectVersion}</version>
     </dependency>
     <dependency>
-      <groupId>${project.groupId}</groupId>
+      <groupId>org.apache.maven.doxia</groupId>
       <artifactId>doxia-module-xdoc</artifactId>
       <version>${projectVersion}</version>
     </dependency>
     <dependency>
-      <groupId>${project.groupId}</groupId>
+      <groupId>org.apache.maven.doxia</groupId>
       <artifactId>doxia-module-xhtml</artifactId>
       <version>${projectVersion}</version>
     </dependency>
     <dependency>
-      <groupId>${project.groupId}</groupId>
+      <groupId>org.apache.maven.doxia</groupId>
       <artifactId>doxia-module-apt</artifactId>
       <version>${projectVersion}</version>
     </dependency>
     <dependency>
-      <groupId>${project.groupId}</groupId>
+      <groupId>org.apache.maven.doxia</groupId>
       <artifactId>doxia-module-itext</artifactId>
       <version>${projectVersion}</version>
     </dependency>
     <dependency>
-      <groupId>${project.groupId}</groupId>
+      <groupId>org.apache.maven.doxia</groupId>
       <artifactId>doxia-module-latex</artifactId>
       <version>${projectVersion}</version>
     </dependency>
     <dependency>
-      <groupId>${project.groupId}</groupId>
+      <groupId>org.apache.maven.doxia</groupId>
       <artifactId>doxia-module-docbook-simple</artifactId>
       <version>${projectVersion}</version>
+    </dependency>
+    <dependency>
+      <groupId>org.apache.maven.doxia</groupId>
+      <artifactId>doxia-sink-api</artifactId>
+    </dependency>
+
+    <dependency>
+      <groupId>commons-cli</groupId>
+      <artifactId>commons-cli</artifactId>
+      <version>1.0</version>
+    </dependency>
+    <dependency>
+      <groupId>org.codehaus.plexus</groupId>
+      <artifactId>plexus-container-default</artifactId>
     </dependency>
     <dependency>
       <groupId>org.codehaus.plexus</groupId>
       <artifactId>plexus-i18n</artifactId>
       <version>1.0-beta-6</version>
+    </dependency>
+    <dependency>
+      <groupId>org.codehaus.plexus</groupId>
+      <artifactId>plexus-utils</artifactId>
     </dependency>
     <dependency>
       <groupId>org.codehaus.plexus</groupId>
