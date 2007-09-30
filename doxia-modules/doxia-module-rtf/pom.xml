@@ -31,10 +31,6 @@ under the License.
   <description>A Doxia module for Rich Text Format source documents.</description>
 
   <dependencies>
-    <dependency>
-      <groupId>org.apache.maven.doxia</groupId>
-      <artifactId>doxia-sink-api</artifactId>
-    </dependency>
     <!-- test -->
     <dependency>
       <groupId>org.apache.maven.doxia</groupId>
