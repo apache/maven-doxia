@@ -89,19 +89,36 @@ public class DefaultBookIo
 
             String extension = siteModule.getExtension();
 
+            String sourceDirectory = File.separator + siteModule.getSourceDirectory() + File.separator;
+
+            String parserId = siteModule.getParserId();
+
             for ( Iterator j = files.iterator(); j.hasNext(); )
             {
                 File file = (File) j.next();
 
                 String name = file.getName();
 
-                if ( name.endsWith( extension ) )
+                String path = file.getAbsolutePath();
+
+                // first check if the file path contains one of the recognized source dir identifiers
+                // (there's trouble if a pathname contains 2 identifiers), then match file extensions (not unique).
+
+                if ( path.indexOf( sourceDirectory ) != -1 )
                 {
-                    name = name.substring( 0, name.length() - siteModule.getExtension().length() - 1 );
+                    name = name.substring( 0, name.length() - extension.length() - 1 );
 
-                    BookContext.BookFile bookFile = new BookContext.BookFile( file, siteModule.getParserId() );
+                    context.getFiles().put( name, new BookContext.BookFile( file, parserId ) );
+                }
+                else if ( name.endsWith( extension ) )
+                {
+                    name = name.substring( 0, name.length() - extension.length() - 1 );
 
-                    context.getFiles().put( name, bookFile );
+                    // don't overwrite if it's there already
+                    if ( !context.getFiles().containsKey( name ) )
+                    {
+                        context.getFiles().put( name, new BookContext.BookFile( file, parserId ) );
+                    }
                 }
             }
         }
