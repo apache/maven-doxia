@@ -97,24 +97,20 @@ public abstract class AbstractXmlParser
             }
             else if ( eventType == XmlPullParser.CDSECT )
             {
-                // TODO: handle CDATA sections
-                // handleCdsect( parser, sink );
+                handleCdsect( parser, sink );
             }
             else if ( eventType == XmlPullParser.COMMENT )
             {
-                // TODO: handle comments, see DOXIA-137
-                // handleComment( parser, sink );
+                handleComment( parser, sink );
             }
             else if ( eventType == XmlPullParser.ENTITY_REF )
             {
-                // TODO: handle entities
-                // handleEntity( parser, sink );
+                handleEntity( parser, sink );
             }
 
             try
             {
-                // TODO: use nextToken() to report CDSECT, COMMENT and ENTITY_REF
-                eventType = parser.next();
+                eventType = parser.nextToken();
             }
             catch ( IOException io )
             {
@@ -154,4 +150,35 @@ public abstract class AbstractXmlParser
      */
     protected abstract void handleText( XmlPullParser parser, Sink sink )
         throws XmlPullParserException;
+
+    /**
+     * Handles CDATA sections.
+     *
+     * @param parser A parser.
+     * @param sink the sink to receive the events.
+     * @throws XmlPullParserException if there's a problem parsing the model
+     */
+    protected abstract void handleCdsect( XmlPullParser parser, Sink sink )
+        throws XmlPullParserException;
+
+    /**
+     * Handles comments.
+     *
+     * @param parser A parser.
+     * @param sink the sink to receive the events.
+     * @throws XmlPullParserException if there's a problem parsing the model
+     */
+    protected abstract void handleComment( XmlPullParser parser, Sink sink )
+        throws XmlPullParserException;
+
+    /**
+     * Handles entities.
+     *
+     * @param parser A parser.
+     * @param sink the sink to receive the events.
+     * @throws XmlPullParserException if there's a problem parsing the model
+     */
+    protected abstract void handleEntity( XmlPullParser parser, Sink sink )
+        throws XmlPullParserException;
+
 }

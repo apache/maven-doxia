@@ -553,6 +553,12 @@ public class SinkAdapter
     }
 
     /** {@inheritDoc} */
+    public void comment( String comment )
+    {
+        // nop
+    }
+
+    /** {@inheritDoc} */
     public void flush()
     {
         // nop

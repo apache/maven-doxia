@@ -186,13 +186,13 @@ public class XhtmlParser
             if ( title != null )
             {
                 sink.figureCaption();
-                text( sink, title );
+                sink.text( title );
                 sink.figureCaption_();
             }
             else if ( alt != null )
             {
                 sink.figureCaption();
-                text( sink, alt );
+                sink.text( alt );
                 sink.figureCaption_();
             }
             sink.figure_();
@@ -319,38 +319,55 @@ public class XhtmlParser
     protected void handleText( XmlPullParser parser, Sink sink )
         throws XmlPullParserException
     {
-        text( sink, parser.getText() );
+        String text = parser.getText();
+
+        if ( !"".equals( text.trim() ) )
+        {
+            sink.text( text );
+        }
+    }
+
+    /** {@inheritDoc} */
+    protected void handleCdsect( XmlPullParser parser, Sink sink )
+        throws XmlPullParserException
+    {
+        String text = parser.getText();
+
+        sink.rawText( text );
+    }
+
+    /** {@inheritDoc} */
+    protected void handleComment( XmlPullParser parser, Sink sink )
+        throws XmlPullParserException
+    {
+        String text = parser.getText();
+
+        sink.comment( text );
+    }
+
+    /** {@inheritDoc} */
+    protected void handleEntity( XmlPullParser parser, Sink sink )
+        throws XmlPullParserException
+    {
+        String text = parser.getText();
+
+        int[] holder = new int[] {0, 0};
+        char[] chars = parser.getTextCharacters( holder );
+        String textChars = String.valueOf( chars, holder[0], holder[1] );
+
+        if ( "#160".equals( textChars ) )
+        {
+            sink.nonBreakingSpace();
+        }
+        else
+        {
+            sink.text( text );
+        }
     }
 
     // ----------------------------------------------------------------------
     // Private methods
     // ----------------------------------------------------------------------
-
-    /**
-     * Sends the text to the sink, utilizing the nonBreakingspace of the sink.
-     * @param sink
-     * @param text
-     */
-    private static void text( Sink sink, String text )
-    {
-        if( text.startsWith( "&nbsp;" ) )
-        {
-            sink.nonBreakingSpace();
-        }
-        String[] s = text.split( "&nbsp;" );
-        for( int i = 0; i < s.length; i++ )
-        {
-            sink.text( s[i] );
-            if( i + 1 < s.length )
-            {
-                sink.nonBreakingSpace();
-            }
-        }
-        if( text.endsWith( "&nbsp;" ) )
-        {
-            sink.nonBreakingSpace();
-        }
-    }
 
     private void closeSubordinatedSections( String level, Sink sink )
     {

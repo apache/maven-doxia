@@ -853,6 +853,13 @@ public class AptSink
         write( text );
     }
 
+    /** {@inheritDoc} */
+    public void comment( String comment )
+    {
+        rawText( EOL + "~~ " + comment );
+    }
+
+
     /**
      * Write text to output.
      *

@@ -568,6 +568,12 @@ public class TextSink
     }
 
     /** {@inheritDoc} */
+    public void comment( String comment )
+    {
+        write( "comment: " + comment );
+    }
+
+    /** {@inheritDoc} */
     public void flush()
     {
         try

@@ -1194,6 +1194,12 @@ public class XhtmlSink
     }
 
     /** {@inheritDoc} */
+    public void comment( String comment )
+    {
+        rawText( "<!--" + comment + "-->" );
+    }
+
+    /** {@inheritDoc} */
     public void flush()
     {
         writer.flush();

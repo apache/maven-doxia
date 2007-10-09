@@ -1495,6 +1495,12 @@ public class DocBookSink
         }
     }
 
+    /** {@inheritDoc} */
+    public void comment( String comment )
+    {
+        markup( "<!--" + comment + "-->" );
+    }
+
     // -----------------------------------------------------------------------
 
     /**

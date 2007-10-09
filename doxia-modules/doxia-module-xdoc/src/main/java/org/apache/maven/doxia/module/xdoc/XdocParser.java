@@ -63,6 +63,9 @@ public class XdocParser
     /** Used to distinguish <a href=""> from <a name="">. */
     private boolean isAnchor;
 
+    /** True if a <script></script> block is read. CDATA sections within are handles as rawText. */
+    private boolean scriptBlock;
+
     /** Empty elements don't write a closing tag. */
     private boolean isEmptyElement;
 
@@ -123,6 +126,10 @@ public class XdocParser
         else if ( parser.getName().equals( AUTHOR_TAG.toString() ) )
         {
             sink.author();
+        }
+        else if ( parser.getName().equals( DATE_TAG.toString() ) )
+        {
+            sink.date();
         }
         else if ( parser.getName().equals( Tag.BODY.toString() ) )
         {
@@ -425,6 +432,11 @@ public class XdocParser
 
             sink.figure_();
         }
+        else if ( parser.getName().equals( Tag.SCRIPT.toString() ) )
+        {
+            handleRawText( sink, parser );
+            scriptBlock = true;
+        }
         else
         {
             handleRawText( sink, parser );
@@ -447,6 +459,10 @@ public class XdocParser
         else if ( parser.getName().equals( AUTHOR_TAG.toString() ) )
         {
             sink.author_();
+        }
+        else if ( parser.getName().equals( DATE_TAG.toString() ) )
+        {
+            sink.date_();
         }
         else if ( parser.getName().equals( Tag.BODY.toString() ) )
         {
@@ -619,8 +635,22 @@ public class XdocParser
         {
             sink.sectionTitle5_();
         }
+        else if ( parser.getName().equals( Tag.SCRIPT.toString() ) )
+        {
+            // TODO: this is HTML specific, factor out into a specialized parser
+
+            sink.rawText( String.valueOf( LESS_THAN ) + String.valueOf( SLASH ) );
+
+            sink.rawText( parser.getName() );
+
+            sink.rawText( String.valueOf( GREATER_THAN ) );
+
+            scriptBlock = false;
+        }
         else if ( !isEmptyElement )
         {
+            // TODO: this is HTML specific, factor out into a specialized parser
+
             sink.rawText( String.valueOf( LESS_THAN ) + String.valueOf( SLASH ) );
 
             sink.rawText( parser.getName() );
@@ -645,6 +675,51 @@ public class XdocParser
         }
     }
 
+    /** {@inheritDoc} */
+    protected void handleCdsect( XmlPullParser parser, Sink sink )
+        throws XmlPullParserException
+    {
+        String text = parser.getText();
+
+        if ( scriptBlock )
+        {
+            sink.rawText( text );
+        }
+        else
+        {
+            sink.text( text );
+        }
+    }
+
+    /** {@inheritDoc} */
+    protected void handleComment( XmlPullParser parser, Sink sink )
+        throws XmlPullParserException
+    {
+        String text = parser.getText();
+
+        sink.comment( text );
+    }
+
+    /** {@inheritDoc} */
+    protected void handleEntity( XmlPullParser parser, Sink sink )
+        throws XmlPullParserException
+    {
+        String text = parser.getText();
+
+        int[] holder = new int[] {0, 0};
+        char[] chars = parser.getTextCharacters( holder );
+        String textChars = String.valueOf( chars, holder[0], holder[1] );
+
+        if ( "#160".equals( textChars ) )
+        {
+            sink.nonBreakingSpace();
+        }
+        else
+        {
+            sink.text( text );
+        }
+    }
+
     // ----------------------------------------------------------------------
     // Private methods
     // ----------------------------------------------------------------------
@@ -654,6 +729,7 @@ public class XdocParser
      *
      * @param sink the sink to receive the events.
      * @param parser A parser.
+     * @todo this is HTML specific, factor out into a specialized parser
      */
     private void handleRawText( Sink sink, XmlPullParser parser )
     {

@@ -583,6 +583,13 @@ public interface Sink
     void rawText( String text );
 
     /**
+     * Add a comment.
+     *
+     * @param comment The comment to write.
+     */
+    void comment( String comment );
+
+    /**
      * Flush the writer or the stream, if needed.
      */
     void flush();

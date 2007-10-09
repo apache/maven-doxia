@@ -138,6 +138,8 @@ public class SinkTestDocument
 
         sink.body_();
 
+        sink.comment( "A comment!" );
+
         sink.flush();
     }
 

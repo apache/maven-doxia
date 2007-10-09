@@ -486,6 +486,11 @@ public class WellformednessCheckingSink
     {
     }
 
+    /** {@inheritDoc} */
+    public void comment( String comment )
+    {
+    }
+
     public void flush()
     {
     }
