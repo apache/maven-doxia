@@ -292,7 +292,9 @@ public class SinkTestDocument
         sink.text( "of definition list." );
         sink.paragraph_();
         sink.verbatim( true );
-        sink.text( "Verbatim text" + EOL + "                        in a box        " );
+        sink.text( "Verbatim text" );
+        sink.lineBreak();
+        sink.text( "                        in a box        " );
         sink.verbatim_();
         sink.definition_();
         sink.definitionListItem_();
@@ -593,7 +595,31 @@ public class SinkTestDocument
     public static void generateSpecialCharacters( Sink sink )
     {
         sink.paragraph();
-        sink.text( "Escaped special characters: ~, =, -, +, *, [, ], <, >, {, }, \\." );
+        sink.text( "Escaped special characters:" );
+        sink.lineBreak();
+        sink.text( "~" );
+        sink.lineBreak();
+        sink.text( "=" );
+        sink.lineBreak();
+        sink.text( "-" );
+        sink.lineBreak();
+        sink.text( "+" );
+        sink.lineBreak();
+        sink.text( "*" );
+        sink.lineBreak();
+        sink.text( "[" );
+        sink.lineBreak();
+        sink.text( "]" );
+        sink.lineBreak();
+        sink.text( "<" );
+        sink.lineBreak();
+        sink.text( ">" );
+        sink.lineBreak();
+        sink.text( "{" );
+        sink.lineBreak();
+        sink.text( "}" );
+        sink.lineBreak();
+        sink.text( "\\" );
         sink.paragraph_();
 
         sink.paragraph();
