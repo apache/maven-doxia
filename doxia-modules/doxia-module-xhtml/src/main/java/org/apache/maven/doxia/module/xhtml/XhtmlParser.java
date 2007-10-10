@@ -167,6 +167,19 @@ public class XhtmlParser
                 sink.numberedListItem();
             }
         }
+        else if ( parser.getName().equals( Tag.DL.toString() ) )
+        {
+            sink.definitionList();
+        }
+        else if ( parser.getName().equals( Tag.DT.toString() ) )
+        {
+            sink.definitionListItem();
+            sink.definedTerm();
+        }
+        else if ( parser.getName().equals( Tag.DD.toString() ) )
+        {
+            sink.definition();
+        }
         else if ( parser.getName().equals( Tag.HEAD.toString() ) )
         {
             sink.head();
@@ -314,6 +327,19 @@ public class XhtmlParser
             {
                 sink.numberedListItem_();
             }
+        }
+        else if ( parser.getName().equals( Tag.DL.toString() ) )
+        {
+            sink.definitionList_();
+        }
+        else if ( parser.getName().equals( Tag.DT.toString() ) )
+        {
+            sink.definedTerm_();
+        }
+        else if ( parser.getName().equals( Tag.DD.toString() ) )
+        {
+            sink.definition_();
+            sink.definitionListItem_();
         }
         else if ( parser.getName().equals( Tag.HEAD.toString() ) )
         {
