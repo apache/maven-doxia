@@ -32,8 +32,7 @@ import org.codehaus.plexus.util.xml.pull.XmlPullParser;
 import org.codehaus.plexus.util.xml.pull.XmlPullParserException;
 
 /**
- * Parse an xhtml model and emit events into the specified doxia
- * Sink.
+ * Parse an xhtml model and emit events into the specified doxia Sink.
  *
  * @author <a href="mailto:jason@maven.org">Jason van Zyl</a>
  * @version $Id$
@@ -116,11 +115,6 @@ public class XhtmlParser
         {
             sink.verbatim( true );
         }
-        else if ( ( parser.getName().equals( Tag.CODE.toString() ) ) || ( parser.getName().equals( Tag.SAMP.toString() ) ) ||
-            ( parser.getName().equals( Tag.TT.toString() ) ) )
-        {
-            sink.monospaced();
-        }
         else if ( parser.getName().equals( Tag.UL.toString() ) )
         {
             sink.list();
@@ -144,6 +138,11 @@ public class XhtmlParser
         else if ( ( parser.getName().equals( Tag.I.toString() ) ) || ( parser.getName().equals( Tag.EM.toString() ) ) )
         {
             sink.italic();
+        }
+        else if ( ( parser.getName().equals( Tag.CODE.toString() ) ) || ( parser.getName().equals( Tag.SAMP.toString() ) ) ||
+            ( parser.getName().equals( Tag.TT.toString() ) ) )
+        {
+            sink.monospaced();
         }
         else if ( parser.getName().equals( Tag.A.toString() ) )
         {
@@ -176,14 +175,17 @@ public class XhtmlParser
         }
         else if ( parser.getName().equals( Tag.IMG.toString() ) )
         {
-            sink.figure();
             String src = parser.getAttributeValue( null, Attribute.SRC.toString() );
             String title = parser.getAttributeValue( null, Attribute.TITLE.toString() );
             String alt = parser.getAttributeValue( null, Attribute.ALT.toString() );
+
+            sink.figure();
+
             if ( src != null )
             {
                 sink.figureGraphics( src );
             }
+
             if ( title != null )
             {
                 sink.figureCaption();
@@ -196,6 +198,7 @@ public class XhtmlParser
                 sink.text( alt );
                 sink.figureCaption_();
             }
+
             sink.figure_();
         }
         // ----------------------------------------------------------------------
@@ -252,11 +255,6 @@ public class XhtmlParser
         {
             sink.verbatim_();
         }
-        else if ( ( parser.getName().equals( Tag.CODE.toString() ) ) || ( parser.getName().equals( Tag.SAMP.toString() ) ) ||
-            ( parser.getName().equals( Tag.TT.toString() ) ) )
-        {
-            sink.monospaced_();
-        }
         else if ( parser.getName().equals( Tag.UL.toString() ) )
         {
             sink.list_();
@@ -280,6 +278,11 @@ public class XhtmlParser
         else if ( ( parser.getName().equals( Tag.I.toString() ) ) || ( parser.getName().equals( Tag.EM.toString() ) ) )
         {
             sink.italic_();
+        }
+        else if ( ( parser.getName().equals( Tag.CODE.toString() ) ) || ( parser.getName().equals( Tag.SAMP.toString() ) ) ||
+            ( parser.getName().equals( Tag.TT.toString() ) ) )
+        {
+            sink.monospaced_();
         }
         else if ( parser.getName().equals( Tag.A.toString() ) )
         {

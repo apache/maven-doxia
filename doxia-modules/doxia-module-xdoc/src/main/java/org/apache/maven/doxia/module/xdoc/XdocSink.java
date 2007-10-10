@@ -26,10 +26,10 @@ import javax.swing.text.SimpleAttributeSet;
 import javax.swing.text.html.HTML.Attribute;
 import javax.swing.text.html.HTML.Tag;
 
+import org.apache.maven.doxia.parser.Parser;
 import org.apache.maven.doxia.sink.AbstractXmlSink;
 import org.apache.maven.doxia.util.HtmlTools;
 import org.apache.maven.doxia.util.LineBreaker;
-import org.apache.maven.doxia.parser.Parser;
 
 /**
  * A doxia Sink which produces an xdoc model.
@@ -94,16 +94,32 @@ public class XdocSink
     // ----------------------------------------------------------------------
 
     /**
+     * @return the current buffer
+     */
+    protected StringBuffer getBuffer()
+    {
+        return buffer;
+    }
+
+    /**
      * Reset all variables.
      */
     protected void resetState()
     {
         headFlag = false;
-        buffer = new StringBuffer();
+        resetBuffer();
         boxedFlag = false;
         verbatimFlag = false;
         cellJustif = null;
         cellCount = 0;
+    }
+
+    /**
+     * Reset the buffer.
+     */
+    protected void resetBuffer()
+    {
+        buffer = new StringBuffer();
     }
 
     /**
@@ -147,7 +163,7 @@ public class XdocSink
             writeStartTag( Tag.TITLE );
             content( buffer.toString() );
             writeEndTag( Tag.TITLE );
-            buffer = new StringBuffer();
+            resetBuffer();
         }
     }
 
@@ -162,7 +178,7 @@ public class XdocSink
             writeStartTag( AUTHOR_TAG );
             content( buffer.toString() );
             writeEndTag( AUTHOR_TAG );
-            buffer = new StringBuffer();
+            resetBuffer();
         }
     }
 
@@ -177,7 +193,7 @@ public class XdocSink
             writeStartTag( DATE_TAG );
             content( buffer.toString() );
             writeEndTag( DATE_TAG );
-            buffer = new StringBuffer();
+            resetBuffer();
         }
     }
 
@@ -207,7 +223,7 @@ public class XdocSink
     }
 
     // -----------------------------------------------------------------------
-    //
+    // Sections
     // -----------------------------------------------------------------------
 
     /** {@inheritDoc} */
@@ -750,6 +766,7 @@ public class XdocSink
     public void tableRow_()
     {
         writeEndTag( Tag.TR );
+
         cellCount = 0;
     }
 
@@ -828,7 +845,9 @@ public class XdocSink
     public void tableCell_( boolean headerRow )
     {
         Tag t = ( headerRow ? Tag.TH : Tag.TD );
+
         writeEndTag( t );
+
         ++cellCount;
     }
 

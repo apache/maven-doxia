@@ -257,15 +257,16 @@ public class XdocParser
         {
             sink.head();
         }
-        else if ( parser.getName().equals( Tag.B.toString() ) )
+        else if ( ( parser.getName().equals( Tag.B.toString() ) ) || ( parser.getName().equals( Tag.STRONG.toString() ) ) )
         {
             sink.bold();
         }
-        else if ( parser.getName().equals( Tag.I.toString() ) )
+        else if ( ( parser.getName().equals( Tag.I.toString() ) ) || ( parser.getName().equals( Tag.EM.toString() ) ) )
         {
             sink.italic();
         }
-        else if ( parser.getName().equals( Tag.TT.toString() ) )
+        else if ( ( parser.getName().equals( Tag.CODE.toString() ) ) || ( parser.getName().equals( Tag.SAMP.toString() ) ) ||
+            ( parser.getName().equals( Tag.TT.toString() ) ) )
         {
             sink.monospaced();
         }
@@ -515,15 +516,16 @@ public class XdocParser
         {
             sink.head_();
         }
-        else if ( parser.getName().equals( Tag.B.toString() ) )
+        else if ( ( parser.getName().equals( Tag.B.toString() ) ) || ( parser.getName().equals( Tag.STRONG.toString() ) ) )
         {
             sink.bold_();
         }
-        else if ( parser.getName().equals( Tag.I.toString() ) )
+        else if ( ( parser.getName().equals( Tag.I.toString() ) ) || ( parser.getName().equals( Tag.EM.toString() ) ) )
         {
             sink.italic_();
         }
-        else if ( parser.getName().equals( Tag.TT.toString() ) )
+        else if ( ( parser.getName().equals( Tag.CODE.toString() ) ) || ( parser.getName().equals( Tag.SAMP.toString() ) ) ||
+            ( parser.getName().equals( Tag.TT.toString() ) ) )
         {
             sink.monospaced_();
         }

@@ -19,14 +19,6 @@ package org.apache.maven.doxia.module.xhtml;
  * under the License.
  */
 
-import org.apache.maven.doxia.module.xhtml.decoration.render.RenderingContext;
-import org.apache.maven.doxia.parser.Parser;
-import org.apache.maven.doxia.sink.AbstractXmlSink;
-import org.apache.maven.doxia.sink.Sink;
-import org.apache.maven.doxia.sink.StructureSink;
-import org.apache.maven.doxia.util.HtmlTools;
-import org.codehaus.plexus.util.StringUtils;
-
 import java.io.PrintWriter;
 import java.io.Writer;
 import java.util.Map;
@@ -35,6 +27,14 @@ import javax.swing.text.MutableAttributeSet;
 import javax.swing.text.SimpleAttributeSet;
 import javax.swing.text.html.HTML.Attribute;
 import javax.swing.text.html.HTML.Tag;
+
+import org.apache.maven.doxia.module.xhtml.decoration.render.RenderingContext;
+import org.apache.maven.doxia.parser.Parser;
+import org.apache.maven.doxia.sink.AbstractXmlSink;
+import org.apache.maven.doxia.sink.Sink;
+import org.apache.maven.doxia.sink.StructureSink;
+import org.apache.maven.doxia.util.HtmlTools;
+import org.codehaus.plexus.util.StringUtils;
 
 /**
  * Xhtml sink implementation.
@@ -125,7 +125,7 @@ public class XhtmlSink
     }
 
     /**
-     * Reset all the Sink state.
+     * Reset all variables.
      */
     protected void resetState()
     {
@@ -223,13 +223,20 @@ public class XhtmlSink
         }
     }
 
-    /** {@inheritDoc} */
+    /**
+     * {@inheritDoc}
+     * @see javax.swing.text.html.HTML.Tag#BODY
+     */
     public void body()
     {
         writeStartTag( Tag.BODY );
     }
 
-    /** {@inheritDoc} */
+    /**
+     * {@inheritDoc}
+     * @see javax.swing.text.html.HTML.Tag#BODY
+     * @see javax.swing.text.html.HTML.Tag#HTML
+     */
     public void body_()
     {
         writeEndTag( Tag.BODY );
@@ -248,111 +255,7 @@ public class XhtmlSink
      */
     public void section1()
     {
-        MutableAttributeSet att = new SimpleAttributeSet();
-        att.addAttribute( Attribute.CLASS, "section" );
-
-        writeStartTag( Tag.DIV, att );
-    }
-
-    /**
-     * The default class style is <code>section</code>.
-     *
-     * {@inheritDoc}
-     * @see javax.swing.text.html.HTML.Tag#DIV
-     */
-    public void section2()
-    {
-        MutableAttributeSet att = new SimpleAttributeSet();
-        att.addAttribute( Attribute.CLASS, "section" );
-
-        writeStartTag( Tag.DIV, att );
-    }
-
-    /**
-     * The default class style is <code>section</code>.
-     *
-     * {@inheritDoc}
-     * @see javax.swing.text.html.HTML.Tag#DIV
-     */
-    public void section3()
-    {
-        MutableAttributeSet att = new SimpleAttributeSet();
-        att.addAttribute( Attribute.CLASS, "section" );
-
-        writeStartTag( Tag.DIV, att );
-    }
-
-    /**
-     * The default class style is <code>section</code>.
-     *
-     * {@inheritDoc}
-     * @see javax.swing.text.html.HTML.Tag#DIV
-     */
-    public void section4()
-    {
-        MutableAttributeSet att = new SimpleAttributeSet();
-        att.addAttribute( Attribute.CLASS, "section" );
-
-        writeStartTag( Tag.DIV, att );
-    }
-
-    /**
-     * The default class style is <code>section</code>.
-     *
-     * {@inheritDoc}
-     * @see javax.swing.text.html.HTML.Tag#DIV
-     */
-    public void section5()
-    {
-        MutableAttributeSet att = new SimpleAttributeSet();
-        att.addAttribute( Attribute.CLASS, "section" );
-
-        writeStartTag( Tag.DIV, att );
-    }
-
-    /**
-     * {@inheritDoc}
-     * @see javax.swing.text.html.HTML.Tag#DIV
-     */
-    public void section1_()
-    {
-        writeEndTag( Tag.DIV );
-    }
-
-    /**
-     * {@inheritDoc}
-     * @see javax.swing.text.html.HTML.Tag#DIV
-     */
-    public void section2_()
-    {
-        writeEndTag( Tag.DIV );
-    }
-
-    /**
-     * {@inheritDoc}
-     * @see javax.swing.text.html.HTML.Tag#DIV
-     */
-    public void section3_()
-    {
-        writeEndTag( Tag.DIV );
-    }
-
-    /**
-     * {@inheritDoc}
-     * @see javax.swing.text.html.HTML.Tag#DIV
-     */
-    public void section4_()
-    {
-        writeEndTag( Tag.DIV );
-    }
-
-    /**
-     * {@inheritDoc}
-     * @see javax.swing.text.html.HTML.Tag#DIV
-     */
-    public void section5_()
-    {
-        writeEndTag( Tag.DIV );
+        onSection();
     }
 
     /**
@@ -375,6 +278,26 @@ public class XhtmlSink
 
     /**
      * {@inheritDoc}
+     * @see javax.swing.text.html.HTML.Tag#DIV
+     */
+    public void section1_()
+    {
+        writeEndTag( Tag.DIV );
+    }
+
+    /**
+     * The default class style is <code>section</code>.
+     *
+     * {@inheritDoc}
+     * @see javax.swing.text.html.HTML.Tag#DIV
+     */
+    public void section2()
+    {
+        onSection();
+    }
+
+    /**
+     * {@inheritDoc}
      * @see javax.swing.text.html.HTML.Tag#H3
      */
     public void sectionTitle2()
@@ -389,6 +312,26 @@ public class XhtmlSink
     public void sectionTitle2_()
     {
         writeEndTag( Tag.H3 );
+    }
+
+    /**
+     * {@inheritDoc}
+     * @see javax.swing.text.html.HTML.Tag#DIV
+     */
+    public void section2_()
+    {
+        writeEndTag( Tag.DIV );
+    }
+
+    /**
+     * The default class style is <code>section</code>.
+     *
+     * {@inheritDoc}
+     * @see javax.swing.text.html.HTML.Tag#DIV
+     */
+    public void section3()
+    {
+        onSection();
     }
 
     /**
@@ -411,6 +354,26 @@ public class XhtmlSink
 
     /**
      * {@inheritDoc}
+     * @see javax.swing.text.html.HTML.Tag#DIV
+     */
+    public void section3_()
+    {
+        writeEndTag( Tag.DIV );
+    }
+
+    /**
+     * The default class style is <code>section</code>.
+     *
+     * {@inheritDoc}
+     * @see javax.swing.text.html.HTML.Tag#DIV
+     */
+    public void section4()
+    {
+        onSection();
+    }
+
+    /**
+     * {@inheritDoc}
      * @see javax.swing.text.html.HTML.Tag#H5
      */
     public void sectionTitle4()
@@ -429,6 +392,26 @@ public class XhtmlSink
 
     /**
      * {@inheritDoc}
+     * @see javax.swing.text.html.HTML.Tag#DIV
+     */
+    public void section4_()
+    {
+        writeEndTag( Tag.DIV );
+    }
+
+    /**
+     * The default class style is <code>section</code>.
+     *
+     * {@inheritDoc}
+     * @see javax.swing.text.html.HTML.Tag#DIV
+     */
+    public void section5()
+    {
+        onSection();
+    }
+
+    /**
+     * {@inheritDoc}
      * @see javax.swing.text.html.HTML.Tag#H6
      */
     public void sectionTitle5()
@@ -443,6 +426,29 @@ public class XhtmlSink
     public void sectionTitle5_()
     {
         writeEndTag( Tag.H6 );
+    }
+
+    /**
+     * {@inheritDoc}
+     * @see javax.swing.text.html.HTML.Tag#DIV
+     */
+    public void section5_()
+    {
+        writeEndTag( Tag.DIV );
+    }
+
+    /**
+     * Starts a section.
+     *
+     * @param depth The level of the section.
+     * @see javax.swing.text.html.HTML.Tag#DIV
+     */
+    private void onSection()
+    {
+        MutableAttributeSet att = new SimpleAttributeSet();
+        att.addAttribute( Attribute.CLASS, "section" );
+
+        writeStartTag( Tag.DIV, att );
     }
 
     // ----------------------------------------------------------------------
@@ -605,6 +611,40 @@ public class XhtmlSink
     public void definition_()
     {
         writeEndTag( Tag.DD );
+    }
+
+    /**
+     * {@inheritDoc}
+     * @see javax.swing.text.html.HTML.Tag#IMG
+     */
+    public void figure()
+    {
+        write( String.valueOf( LESS_THAN ) + Tag.IMG );
+    }
+
+    /** {@inheritDoc} */
+    public void figure_()
+    {
+        write( String.valueOf( SPACE ) + String.valueOf( SLASH ) + String.valueOf( GREATER_THAN ) );
+    }
+
+    /** {@inheritDoc} */
+    public void figureGraphics( String name )
+    {
+        write( String.valueOf( SPACE ) + Attribute.SRC + String.valueOf( EQUAL ) + String.valueOf( QUOTE ) + name
+            + String.valueOf( QUOTE ) );
+    }
+
+    /** {@inheritDoc} */
+    public void figureCaption()
+    {
+        write( String.valueOf( SPACE ) + Attribute.ALT + String.valueOf( EQUAL ) + String.valueOf( QUOTE ) );
+    }
+
+    /** {@inheritDoc} */
+    public void figureCaption_()
+    {
+        write( String.valueOf( QUOTE ) );
     }
 
     /**
@@ -778,6 +818,8 @@ public class XhtmlSink
     }
 
     /**
+     * Starts a table cell.
+     *
      * @param headerRow true if it is an header row
      * @see javax.swing.text.html.HTML.Tag#TH
      * @see javax.swing.text.html.HTML.Tag#TD
@@ -797,11 +839,11 @@ public class XhtmlSink
                     justif = "right";
                     break;
                 case Parser.JUSTIFY_CENTER:
+                default:
                     justif = "center";
                     break;
             }
         }
-
 
         Tag t = ( headerRow ? Tag.TH : Tag.TD );
 
@@ -885,6 +927,8 @@ public class XhtmlSink
     }
 
     /**
+     * Ends a table cell.
+     *
      * @param headerRow true if it is an header row
      * @see javax.swing.text.html.HTML.Tag#TH
      * @see javax.swing.text.html.HTML.Tag#TD
@@ -904,6 +948,7 @@ public class XhtmlSink
      */
     public void tableCaption()
     {
+        // TODO: tableCaption should be written before tableRows
         writeStartTag( Tag.CAPTION );
     }
 
@@ -914,40 +959,6 @@ public class XhtmlSink
     public void tableCaption_()
     {
         writeEndTag( Tag.CAPTION );
-    }
-
-    /**
-     * {@inheritDoc}
-     * @see javax.swing.text.html.HTML.Tag#IMG
-     */
-    public void figure()
-    {
-        write( String.valueOf( LESS_THAN ) + Tag.IMG );
-    }
-
-    /** {@inheritDoc} */
-    public void figure_()
-    {
-        write( String.valueOf( SPACE ) + String.valueOf( SLASH ) + String.valueOf( GREATER_THAN ) );
-    }
-
-    /** {@inheritDoc} */
-    public void figureCaption()
-    {
-        write( String.valueOf( SPACE ) + Attribute.ALT + String.valueOf( EQUAL ) + String.valueOf( QUOTE ) );
-    }
-
-    /** {@inheritDoc} */
-    public void figureCaption_()
-    {
-        write( String.valueOf( QUOTE ) );
-    }
-
-    /** {@inheritDoc} */
-    public void figureGraphics( String name )
-    {
-        write( String.valueOf( SPACE ) + Attribute.SRC + String.valueOf( EQUAL ) + String.valueOf( QUOTE ) + name
-            + String.valueOf( QUOTE ) );
     }
 
     /**
@@ -1180,16 +1191,13 @@ public class XhtmlSink
         {
             buffer.append( text );
         }
+        else if ( verbatimFlag )
+        {
+            verbatimContent( text );
+        }
         else
         {
-            if ( verbatimFlag )
-            {
-                verbatimContent( text );
-            }
-            else
-            {
-                content( text );
-            }
+            content( text );
         }
     }
 
