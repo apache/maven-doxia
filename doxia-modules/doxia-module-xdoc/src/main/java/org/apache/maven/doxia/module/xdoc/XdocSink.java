@@ -1062,13 +1062,13 @@ public class XdocSink
     }
 
     /**
-     * Write HTML escaped text to output, not preserving white space.
+     * Write HTML escaped text to output, preserving white space.
      *
      * @param text The text to write.
      */
     protected void content( String text )
     {
-        out.write( escapeHTML( text ), false );
+        out.write( escapeHTML( text ), true );
     }
 
     /**

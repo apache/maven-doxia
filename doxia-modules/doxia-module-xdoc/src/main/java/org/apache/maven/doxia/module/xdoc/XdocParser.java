@@ -669,9 +669,15 @@ public class XdocParser
     {
         String text = parser.getText();
 
-        if ( !"".equals( text.trim() ) )
+        if ( StringUtils.isNotEmpty( text.trim() ) )
         {
-            sink.text( text );
+            // emit separate text events for different lines
+            String[] lines = StringUtils.split( text, EOL );
+
+            for ( int i = 0; i < lines.length; i++ )
+            {
+                sink.text( lines[i] );
+            }
         }
     }
 
@@ -703,7 +709,7 @@ public class XdocParser
         }
         else
         {
-            sink.comment( text );
+            sink.comment( text.trim() );
         }
     }
 

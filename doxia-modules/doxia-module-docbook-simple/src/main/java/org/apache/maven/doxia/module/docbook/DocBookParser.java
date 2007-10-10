@@ -23,6 +23,7 @@ import org.apache.maven.doxia.macro.MacroExecutionException;
 import org.apache.maven.doxia.parser.AbstractXmlParser;
 import org.apache.maven.doxia.sink.Sink;
 
+import org.codehaus.plexus.util.StringUtils;
 import org.codehaus.plexus.util.xml.pull.XmlPullParser;
 import org.codehaus.plexus.util.xml.pull.XmlPullParserException;
 
@@ -685,9 +686,15 @@ public class DocBookParser
     {
         String text = parser.getText();
 
-        if ( !"".equals( text.trim() ) )
+        if ( StringUtils.isNotEmpty( text.trim() ) )
         {
-            sink.text( text );
+            // emit separate text events for different lines
+            String[] lines = StringUtils.split( text, EOL );
+
+            for ( int i = 0; i < lines.length; i++ )
+            {
+                sink.text( lines[i] );
+            }
         }
     }
 
@@ -712,7 +719,7 @@ public class DocBookParser
         }
         else
         {
-            sink.comment( text );
+            sink.comment( text.trim() );
         }
     }
 
