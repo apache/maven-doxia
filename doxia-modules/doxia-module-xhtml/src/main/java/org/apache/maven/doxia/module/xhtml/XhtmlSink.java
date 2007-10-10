@@ -56,8 +56,6 @@ public class XhtmlSink
 
     private boolean headFlag;
 
-    private boolean itemFlag;
-
     private boolean verbatimFlag;
 
     private int cellCount;
@@ -131,7 +129,6 @@ public class XhtmlSink
     {
         headFlag = false;
         resetBuffer();
-        itemFlag = false;
         verbatimFlag = false;
         cellCount = 0;
     }
@@ -471,7 +468,6 @@ public class XhtmlSink
     public void list_()
     {
         writeEndTag( Tag.UL );
-        itemFlag = false;
     }
 
     /**
@@ -481,8 +477,6 @@ public class XhtmlSink
     public void listItem()
     {
         writeStartTag( Tag.LI );
-        itemFlag = true;
-        // What follows is at least a paragraph.
     }
 
     /**
@@ -533,7 +527,6 @@ public class XhtmlSink
     public void numberedList_()
     {
         writeEndTag( Tag.OL );
-        itemFlag = false;
     }
 
     /**
@@ -543,8 +536,6 @@ public class XhtmlSink
     public void numberedListItem()
     {
         writeStartTag( Tag.LI );
-        itemFlag = true;
-        // What follows is at least a paragraph.
     }
 
     /**
@@ -572,7 +563,6 @@ public class XhtmlSink
     public void definitionList_()
     {
         writeEndTag( Tag.DL );
-        itemFlag = false;
     }
 
     /**
@@ -600,8 +590,6 @@ public class XhtmlSink
     public void definition()
     {
         writeStartTag( Tag.DD );
-        itemFlag = true;
-        // What follows is at least a paragraph.
     }
 
     /**
@@ -653,10 +641,7 @@ public class XhtmlSink
      */
     public void paragraph()
     {
-        if ( !itemFlag )
-        {
-            writeStartTag( Tag.P );
-        }
+        writeStartTag( Tag.P );
     }
 
     /**
@@ -665,14 +650,7 @@ public class XhtmlSink
      */
     public void paragraph_()
     {
-        if ( itemFlag )
-        {
-            itemFlag = false;
-        }
-        else
-        {
-            writeEndTag( Tag.P );
-        }
+        writeEndTag( Tag.P );
     }
 
     /**
