@@ -138,7 +138,7 @@ public class XhtmlSinkTest
     /** {@inheritDoc} */
     protected String getNumberedListBlock( String item )
     {
-        return "<ol type=\"i\"><li>" + item + "</li></ol>";
+        return "<ol style=\"list-style-type: lower-roman\"><li>" + item + "</li></ol>";
     }
 
     /** {@inheritDoc} */

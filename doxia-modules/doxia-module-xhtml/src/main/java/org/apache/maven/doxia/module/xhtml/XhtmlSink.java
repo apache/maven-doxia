@@ -489,33 +489,35 @@ public class XhtmlSink
     }
 
     /**
+     * The default list style depends on the numbering.
+     *
      * {@inheritDoc}
      * @see javax.swing.text.html.HTML.Tag#OL
      */
     public void numberedList( int numbering )
     {
-        String type;
+        String style;
         switch ( numbering )
         {
-            case Sink.NUMBERING_LOWER_ALPHA:
-                type = "a";
+            case NUMBERING_UPPER_ALPHA:
+                style = "upper-alpha";
                 break;
-            case Sink.NUMBERING_UPPER_ALPHA:
-                type = "A";
+            case NUMBERING_LOWER_ALPHA:
+                style = "lower-alpha";
                 break;
-            case Sink.NUMBERING_LOWER_ROMAN:
-                type = "i";
+            case NUMBERING_UPPER_ROMAN:
+                style = "upper-roman";
                 break;
-            case Sink.NUMBERING_UPPER_ROMAN:
-                type = "I";
+            case NUMBERING_LOWER_ROMAN:
+                style = "lower-roman";
                 break;
-            case Sink.NUMBERING_DECIMAL:
+            case NUMBERING_DECIMAL:
             default:
-                type = "1";
+                style = "decimal";
         }
 
         MutableAttributeSet att = new SimpleAttributeSet();
-        att.addAttribute( Attribute.TYPE, type );
+        att.addAttribute( Attribute.STYLE, "list-style-type: " + style );
 
         writeStartTag( Tag.OL, att );
     }

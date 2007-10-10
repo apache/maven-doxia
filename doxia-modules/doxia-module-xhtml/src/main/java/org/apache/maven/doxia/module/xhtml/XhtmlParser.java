@@ -66,6 +66,9 @@ public class XhtmlParser
      */
     private static final String ANCHOR = "anchor";
 
+    /** Used for nested lists. */
+    private int orderedListDepth = 0;
+
     /** {@inheritDoc} */
     protected void handleStartTag( XmlPullParser parser, Sink sink )
         throws XmlPullParserException, MacroExecutionException
@@ -121,11 +124,48 @@ public class XhtmlParser
         }
         else if ( parser.getName().equals( Tag.OL.toString() ) )
         {
-            sink.numberedList( Sink.NUMBERING_DECIMAL );
+            int numbering = Sink.NUMBERING_DECIMAL;
+
+            // this will have to be generalized if we handle styles
+            String style = parser.getAttributeValue( null, Attribute.STYLE.toString() );
+
+            if ( style != null )
+            {
+                if ( "list-style-type: upper-alpha".equals( style ) )
+                {
+                    numbering = Sink.NUMBERING_UPPER_ALPHA;
+                }
+                else if ( "list-style-type: lower-alpha".equals( style ) )
+                {
+                    numbering = Sink.NUMBERING_LOWER_ALPHA;
+                }
+                else if ( "list-style-type: upper-roman".equals( style ) )
+                {
+                    numbering = Sink.NUMBERING_UPPER_ROMAN;
+                }
+                else if ( "list-style-type: lower-roman".equals( style ) )
+                {
+                    numbering = Sink.NUMBERING_LOWER_ROMAN;
+                }
+                else if ( "list-style-type: decimal".equals( style ) )
+                {
+                    numbering = Sink.NUMBERING_DECIMAL;
+                }
+            }
+
+            sink.numberedList( numbering );
+            orderedListDepth++;
         }
         else if ( parser.getName().equals( Tag.LI.toString() ) )
         {
-            sink.listItem();
+            if ( orderedListDepth == 0 )
+            {
+                sink.listItem();
+            }
+            else
+            {
+                sink.numberedListItem();
+            }
         }
         else if ( parser.getName().equals( Tag.HEAD.toString() ) )
         {
@@ -262,10 +302,18 @@ public class XhtmlParser
         else if ( parser.getName().equals( Tag.OL.toString() ) )
         {
             sink.numberedList_();
+            orderedListDepth--;
         }
         else if ( parser.getName().equals( Tag.LI.toString() ) )
         {
-            sink.listItem_();
+            if ( orderedListDepth == 0 )
+            {
+                sink.listItem_();
+            }
+            else
+            {
+                sink.numberedListItem_();
+            }
         }
         else if ( parser.getName().equals( Tag.HEAD.toString() ) )
         {
