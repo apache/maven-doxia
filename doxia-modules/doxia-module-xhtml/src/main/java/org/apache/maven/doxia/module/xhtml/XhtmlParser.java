@@ -342,7 +342,14 @@ public class XhtmlParser
     {
         String text = parser.getText();
 
-        sink.comment( text );
+        if ( "PB".equals( text.trim() ) )
+        {
+            sink.pageBreak();
+        }
+        else
+        {
+            sink.comment( text );
+        }
     }
 
     /** {@inheritDoc} */

@@ -181,7 +181,7 @@ public class XhtmlSinkTest
     /** {@inheritDoc} */
     protected String getPageBreakBlock()
     {
-        return "";
+        return "<!-- PB -->";
     }
 
     /** {@inheritDoc} */

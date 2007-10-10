@@ -1498,7 +1498,15 @@ public class DocBookSink
     /** {@inheritDoc} */
     public void comment( String comment )
     {
-        markup( "<!--" + comment + "-->" );
+        StringBuffer buffer = new StringBuffer( comment.length() + 9 );
+
+        buffer.append( LESS_THAN ).append( BANG ).append( MINUS ).append( MINUS ).append( SPACE );
+
+        buffer.append( comment );
+
+        buffer.append( SPACE ).append( MINUS ).append( MINUS ).append( GREATER_THAN );
+
+        markup( buffer.toString() );
     }
 
     // -----------------------------------------------------------------------
