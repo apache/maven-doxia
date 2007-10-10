@@ -50,13 +50,6 @@ public class XhtmlParser
     private Stack linktypes = new Stack();
 
     /**
-     * This stack is needed to keep track of the section nesting. Each time
-     * a lower section heading is encounted, this stack raises, each time a
-     * higher section heading is encountered, this stack lowers.
-     */
-    private Stack sections = new Stack();
-
-    /**
      * Indicates the last a-tag denoted a link
      */
     private static final String LINK = "link";
@@ -68,6 +61,12 @@ public class XhtmlParser
 
     /** Used for nested lists. */
     private int orderedListDepth = 0;
+
+    /** For tables. */
+    private boolean hasCaption;
+
+    /** Counts section level. */
+    private int sectionLevel;
 
     /** {@inheritDoc} */
     protected void handleStartTag( XmlPullParser parser, Sink sink )
@@ -90,15 +89,45 @@ public class XhtmlParser
         {
             sink.body();
         }
-        else if ( parser.getName().equals( Tag.H1.toString() ) || parser.getName().equals( Tag.H2.toString() ) ||
-            parser.getName().equals( Tag.H3.toString() ) || parser.getName().equals( Tag.H4.toString() ) ||
-            parser.getName().equals( Tag.H5.toString() ) )
+        else if ( parser.getName().equals( Tag.H2.toString() ) )
         {
-            this.closeSubordinatedSections( parser.getName(), sink );
-            this.startSection( this.sections.size(), sink );
-            this.startSectionTitle( this.sections.size(), sink );
-            this.sections.push( parser.getName() );
+            closeOpenSections( Sink.SECTION_LEVEL_1, sink );
 
+            sink.section1();
+
+            sink.sectionTitle1();
+        }
+        else if ( parser.getName().equals( Tag.H3.toString() ) )
+        {
+            closeOpenSections( Sink.SECTION_LEVEL_2, sink );
+
+            sink.section2();
+
+            sink.sectionTitle2();
+        }
+        else if ( parser.getName().equals( Tag.H4.toString() ) )
+        {
+            closeOpenSections( Sink.SECTION_LEVEL_3, sink );
+
+            sink.section3();
+
+            sink.sectionTitle3();
+        }
+        else if ( parser.getName().equals( Tag.H5.toString() ) )
+        {
+            closeOpenSections( Sink.SECTION_LEVEL_4, sink );
+
+            sink.section4();
+
+            sink.sectionTitle4();
+        }
+        else if ( parser.getName().equals( Tag.H6.toString() ) )
+        {
+            closeOpenSections( Sink.SECTION_LEVEL_5, sink );
+
+            sink.section5();
+
+            sink.sectionTitle5();
         }
         else if ( parser.getName().equals( Tag.P.toString() ) )
         {
@@ -261,6 +290,30 @@ public class XhtmlParser
         else if ( parser.getName().equals( Tag.TABLE.toString() ) )
         {
             sink.table();
+
+            String border = parser.getAttributeValue( null, Attribute.BORDER.toString() );
+
+            boolean grid = true;
+
+            if ( "0".equals( border ) )
+            {
+                grid = false;
+            }
+
+            String align = parser.getAttributeValue( null, Attribute.ALIGN.toString() );
+
+            int[] justif = { JUSTIFY_CENTER };
+
+            if ( "left".equals( align ) )
+            {
+                justif[0] = JUSTIFY_LEFT;
+            }
+            else if ( "right".equals( align ) )
+            {
+                justif[0] = JUSTIFY_RIGHT;
+            }
+
+            sink.tableRows( justif, grid );
         }
         else if ( parser.getName().equals( Tag.TR.toString() ) )
         {
@@ -268,11 +321,33 @@ public class XhtmlParser
         }
         else if ( parser.getName().equals( Tag.TH.toString() ) )
         {
-            sink.tableCell();
+            String colspan = parser.getAttributeValue( null, Attribute.COLSPAN.toString() );
+            if ( colspan ==  null )
+            {
+                sink.tableHeaderCell();
+            }
+            else
+            {
+                sink.tableHeaderCell( colspan );
+            }
         }
         else if ( parser.getName().equals( Tag.TD.toString() ) )
         {
-            sink.tableCell();
+            String colspan = parser.getAttributeValue( null, Attribute.COLSPAN.toString() );
+            if ( colspan ==  null )
+            {
+                sink.tableCell();
+            }
+            else
+            {
+                sink.tableCell( colspan );
+            }
+        }
+        else if ( parser.getName().equals( Tag.CAPTION.toString() ) )
+        {
+            sink.tableRows_();
+            this.hasCaption = true;
+            sink.tableCaption();
         }
     }
 
@@ -290,15 +365,9 @@ public class XhtmlParser
         }
         else if ( parser.getName().equals( Tag.BODY.toString() ) )
         {
-            //close all sections that are still open
-            closeSubordinatedSections( "h0", sink );
+            closeOpenSections( 0, sink );
+
             sink.body_();
-        }
-        else if ( parser.getName().equals( Tag.H1.toString() ) || parser.getName().equals( Tag.H2.toString() ) ||
-            parser.getName().equals( Tag.H3.toString() ) || parser.getName().equals( Tag.H4.toString() ) ||
-            parser.getName().equals( Tag.H5.toString() ) )
-        {
-            this.closeSectionTitle( this.sections.size() - 1, sink );
         }
         else if ( parser.getName().equals( Tag.P.toString() ) )
         {
@@ -377,6 +446,13 @@ public class XhtmlParser
 
         else if ( parser.getName().equals( Tag.TABLE.toString() ) )
         {
+            if ( !hasCaption )
+            {
+                sink.tableRows_();
+            }
+
+            this.hasCaption = false;
+
             sink.table_();
         }
         else if ( parser.getName().equals( Tag.TR.toString() ) )
@@ -385,11 +461,35 @@ public class XhtmlParser
         }
         else if ( parser.getName().equals( Tag.TH.toString() ) )
         {
-            sink.tableCell_();
+            sink.tableHeaderCell_();
         }
         else if ( parser.getName().equals( Tag.TD.toString() ) )
         {
             sink.tableCell_();
+        }
+        else if ( parser.getName().equals( Tag.CAPTION.toString() ) )
+        {
+            sink.tableCaption_();
+        }
+        else if ( parser.getName().equals( Tag.H2.toString() ) )
+        {
+            sink.sectionTitle1_();
+        }
+        else if ( parser.getName().equals( Tag.H3.toString() ) )
+        {
+            sink.sectionTitle2_();
+        }
+        else if ( parser.getName().equals( Tag.H4.toString() ) )
+        {
+            sink.sectionTitle3_();
+        }
+        else if ( parser.getName().equals( Tag.H5.toString() ) )
+        {
+            sink.sectionTitle4_();
+        }
+        else if ( parser.getName().equals( Tag.H6.toString() ) )
+        {
+            sink.sectionTitle5_();
         }
     }
 
@@ -460,131 +560,41 @@ public class XhtmlParser
     // Private methods
     // ----------------------------------------------------------------------
 
-    private void closeSubordinatedSections( String level, Sink sink )
+    /**
+     * Close open sections. The current level is set to newLevel afterwards.
+     *
+     * @param newLevel the new section level, all upper levels have to be closed.
+     * @param sink the sink to receive the events.
+     */
+    private void closeOpenSections( int newLevel, Sink sink )
     {
-        if ( this.sections.size() > 0 )
+        while ( this.sectionLevel >= newLevel )
         {
-            String heading = (String) this.sections.peek();
-            int otherlevel = Integer.parseInt( heading.substring( 1 ) );
-            int mylevel = Integer.parseInt( level.substring( 1 ) );
-            if ( otherlevel >= mylevel )
+            if ( sectionLevel == Sink.SECTION_LEVEL_5)
             {
-                closeSection( this.sections.size(), sink );
-                closeSubordinatedSections( level, sink );
-            }
-        }
-    }
-
-    /**
-     * Close a section of the specified level.
-     *
-     * @param level level of the section to close
-     * @param sink  the sink to write to
-     */
-    private void closeSection( int level, Sink sink )
-    {
-        this.sections.pop();
-        switch ( level )
-        {
-            case 1:
-                sink.section1_();
-                break;
-            case 2:
-                sink.section2_();
-                break;
-            case 3:
-                sink.section3_();
-                break;
-            case 4:
-                sink.section4_();
-                break;
-            case 5:
                 sink.section5_();
-                break;
+            }
+            else if ( sectionLevel == Sink.SECTION_LEVEL_4)
+            {
+                sink.section4_();
+            }
+            else if ( sectionLevel == Sink.SECTION_LEVEL_3)
+            {
+                sink.section3_();
+            }
+            else if ( sectionLevel == Sink.SECTION_LEVEL_2)
+            {
+                sink.section2_();
+            }
+            else if ( sectionLevel == Sink.SECTION_LEVEL_1)
+            {
+                sink.section1_();
+            }
+
+            this.sectionLevel--;
         }
+
+        this.sectionLevel = newLevel;
     }
 
-    /**
-     * Starts a new section of the specified level
-     *
-     * @param level level of the new section
-     * @param sink  the sink to write to
-     */
-    private void startSection( int level, Sink sink )
-    {
-        switch ( level )
-        {
-            case 0:
-                sink.section1();
-                break;
-            case 1:
-                sink.section2();
-                break;
-            case 2:
-                sink.section3();
-                break;
-            case 3:
-                sink.section4();
-                break;
-            case 4:
-                sink.section5();
-                break;
-        }
-    }
-
-    /**
-     * Closes the title of a section
-     *
-     * @param level level of the section
-     * @param sink  the sink to write to
-     */
-    private void closeSectionTitle( int level, Sink sink )
-    {
-        switch ( level )
-        {
-            case 0:
-                sink.sectionTitle1_();
-                break;
-            case 1:
-                sink.sectionTitle2_();
-                break;
-            case 2:
-                sink.sectionTitle3_();
-                break;
-            case 3:
-                sink.sectionTitle4_();
-                break;
-            case 4:
-                sink.sectionTitle5_();
-                break;
-        }
-    }
-
-    /**
-     * Starts the title of a new section
-     *
-     * @param level level of the new section
-     * @param sink  the sink to write to
-     */
-    private void startSectionTitle( int level, Sink sink )
-    {
-        switch ( level )
-        {
-            case 0:
-                sink.sectionTitle1();
-                break;
-            case 1:
-                sink.sectionTitle2();
-                break;
-            case 2:
-                sink.sectionTitle3();
-                break;
-            case 3:
-                sink.sectionTitle4();
-                break;
-            case 4:
-                sink.sectionTitle5();
-                break;
-        }
-    }
 }
