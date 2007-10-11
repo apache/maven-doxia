@@ -436,7 +436,7 @@ public interface Sink
     /**
      * Starting a cell element which defines a cell that contains data.
      *
-     * @param width the number of columns spanned by the cell (corresponds to html's colspan attribute).
+     * @param width the size of the cell.
      */
     void tableCell( String width );
 
@@ -453,7 +453,7 @@ public interface Sink
     /**
      * Starting a cell element which defines a cell that contains header information.
      *
-     * @param width the number of columns spanned by the cell (corresponds to html's colspan attribute).
+     * @param width the size of the header cell.
      */
     void tableHeaderCell( String width );
 
