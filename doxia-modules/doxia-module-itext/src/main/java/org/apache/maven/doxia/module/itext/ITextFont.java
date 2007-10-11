@@ -21,11 +21,11 @@ package org.apache.maven.doxia.module.itext;
 
 import java.awt.Color;
 
+import com.lowagie.text.ExceptionConverter;
 import com.lowagie.text.Font;
 import com.lowagie.text.FontFactory;
 import com.lowagie.text.markup.MarkupTags;
-import com.lowagie.text.pdf.DefaultFontMapper;
-import com.lowagie.text.pdf.FontMapper;
+import com.lowagie.text.pdf.BaseFont;
 
 /**
  * <code>iText</code> wrapper object for font.
@@ -66,9 +66,6 @@ public class ITextFont
 
     /** A default Black color definition */
     public static final int DEFAULT_FONT_COLOR_BLUE = Color.BLACK.getBlue();
-
-    /** To specify monoSpaced font */
-    private static final FontMapper FONT_MAPPER = new DefaultFontMapper();
 
     private boolean monoSpaced = false;
 
@@ -340,7 +337,14 @@ public class ITextFont
      */
     public static Font getMonoSpacedFont( int style, float size, Color color )
     {
-        return new Font( FONT_MAPPER.awtToPdf( new java.awt.Font( "Monospaced", 0, 0 ) ), size, style, color );
+        try
+        {
+            return new Font( BaseFont.createFont( BaseFont.COURIER, BaseFont.CP1252, false ), size, style, color );
+        }
+        catch ( Exception e )
+        {
+            throw new ExceptionConverter( e );
+        }
     }
 
     /**
