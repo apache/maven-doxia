@@ -72,9 +72,37 @@ public class XhtmlParser
     protected void handleStartTag( XmlPullParser parser, Sink sink )
         throws XmlPullParserException, MacroExecutionException
     {
-        if ( parser.getName().equals( Tag.TITLE.toString() ) )
+        if ( parser.getName().equals( Tag.HTML.toString() ) )
+        {
+            //Do nothing
+            return;
+        }
+        else if ( parser.getName().equals( Tag.TITLE.toString() ) )
         {
             sink.title();
+        }
+        else if ( parser.getName().equals( Tag.META.toString() ) )
+        {
+            String name = parser.getAttributeValue( null, Attribute.NAME.toString() );
+
+            String content = parser.getAttributeValue( null, Attribute.CONTENT.toString() );
+
+            if ( "author".equals( name ) )
+            {
+                sink.author();
+
+                sink.text( content );
+
+                sink.author_();
+            }
+            else if ( "date".equals( name ) )
+            {
+                sink.date();
+
+                sink.text( content );
+
+                sink.date_();
+            }
         }
         /*
          * The ADDRESS element may be used by authors to supply contact information
@@ -362,7 +390,12 @@ public class XhtmlParser
     protected void handleEndTag( XmlPullParser parser, Sink sink )
         throws XmlPullParserException, MacroExecutionException
     {
-        if ( parser.getName().equals( Tag.TITLE.toString() ) )
+        if ( parser.getName().equals( Tag.HTML.toString() ) )
+        {
+            //Do nothing
+            return;
+        }
+        else if ( parser.getName().equals( Tag.TITLE.toString() ) )
         {
             sink.title_();
         }

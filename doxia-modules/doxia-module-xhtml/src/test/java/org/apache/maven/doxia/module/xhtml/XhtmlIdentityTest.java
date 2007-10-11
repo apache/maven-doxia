@@ -37,6 +37,13 @@ import org.apache.maven.doxia.sink.Sink;
 public class XhtmlIdentityTest extends AbstractIdentityTest
 {
     /** {@inheritDoc} */
+    protected void setUp()
+        throws Exception
+    {
+        assertIdentity( true );
+    }
+
+    /** {@inheritDoc} */
     protected Sink createSink( Writer writer )
     {
         return new XhtmlSink( writer );
