@@ -233,7 +233,14 @@ public class XhtmlParser
             String id = parser.getAttributeValue( null, Attribute.ID.toString() );
             if ( href != null )
             {
-                sink.link( href );
+                String link = href;
+
+                if ( link.startsWith( "#" ) )
+                {
+                    link = link.substring( 1 );
+                }
+
+                sink.link( link );
                 this.linktypes.push( XhtmlParser.LINK );
             }
             else if ( name != null )
