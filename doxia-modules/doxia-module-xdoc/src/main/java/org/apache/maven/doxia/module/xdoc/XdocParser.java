@@ -273,22 +273,40 @@ public class XdocParser
         else if ( parser.getName().equals( Tag.A.toString() ) )
         {
             String href = parser.getAttributeValue( null, Attribute.HREF.toString() );
+
             if ( href != null )
             {
-                sink.link( href );
+                String link = href;
+
+                if ( link.startsWith( "#" ) )
+                {
+                    link = link.substring( 1 );
+                }
+
+                sink.link( link );
+
                 isLink = true;
             }
             else
             {
                 String name = parser.getAttributeValue( null, Attribute.NAME.toString() );
+
                 if ( name != null )
                 {
                     sink.anchor( name );
+
                     isAnchor = true;
                 }
                 else
                 {
-                    handleRawText( sink, parser );
+                    String id = parser.getAttributeValue( null, Attribute.ID.toString() );
+
+                    if ( id != null )
+                    {
+                        sink.anchor( id );
+
+                        isAnchor = true;
+                    }
                 }
             }
         }
@@ -536,11 +554,13 @@ public class XdocParser
             if ( isLink )
             {
                 sink.link_();
+
                 isLink = false;
             }
             else if ( isAnchor )
             {
                 sink.anchor_();
+
                 isAnchor = false;
             }
         }

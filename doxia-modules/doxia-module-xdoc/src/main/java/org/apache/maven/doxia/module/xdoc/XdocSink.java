@@ -28,6 +28,7 @@ import javax.swing.text.html.HTML.Tag;
 
 import org.apache.maven.doxia.parser.Parser;
 import org.apache.maven.doxia.sink.AbstractXmlSink;
+import org.apache.maven.doxia.sink.StructureSink;
 import org.apache.maven.doxia.util.HtmlTools;
 import org.apache.maven.doxia.util.LineBreaker;
 
@@ -359,11 +360,15 @@ public class XdocSink
         {
             markup( String.valueOf( LESS_THAN ) + SECTION_TAG.toString() + String.valueOf( SPACE ) + Attribute.NAME
                 + String.valueOf( EQUAL ) + String.valueOf( QUOTE ) );
+
+            titleFlag = true;
         }
         else if ( depth == SECTION_LEVEL_2 )
         {
             markup( String.valueOf( LESS_THAN ) + SUBSECTION_TAG.toString() + String.valueOf( SPACE ) + Attribute.NAME
                 + String.valueOf( EQUAL ) + String.valueOf( QUOTE ) );
+
+            titleFlag = true;
         }
     }
 
@@ -881,8 +886,11 @@ public class XdocSink
             String id = HtmlTools.encodeId( name );
 
             MutableAttributeSet att = new SimpleAttributeSet();
-            att.addAttribute( Attribute.ID, id );
-            att.addAttribute( Attribute.NAME, id );
+
+            if ( id != null )
+            {
+                att.addAttribute( Attribute.NAME, id );
+            }
 
             writeStartTag( Tag.A, att );
         }
@@ -906,13 +914,36 @@ public class XdocSink
      */
     public void link( String name )
     {
-        if ( !headFlag && !titleFlag )
+        if ( headFlag || titleFlag )
         {
-            MutableAttributeSet att = new SimpleAttributeSet();
-            att.addAttribute( Attribute.HREF, name );
-
-            writeStartTag( Tag.A, att );
+            return;
         }
+
+        MutableAttributeSet att = new SimpleAttributeSet();
+
+        if ( StructureSink.isExternalLink( name ) || isExternalHtml( name ) )
+        {
+            att.addAttribute( Attribute.HREF, HtmlTools.escapeHTML( name ) );
+        }
+        else
+        {
+            att.addAttribute( Attribute.HREF, "#" + HtmlTools.escapeHTML( name ) );
+        }
+
+        writeStartTag( Tag.A, att );
+    }
+
+    /**
+     * Legacy: treat links to other html documents as external links.
+     * Note that links to other file formats (images, pdf) will still be broken,
+     * links to other documents should always start with "./" or "../".
+     */
+    private boolean isExternalHtml( String href )
+    {
+        String text = href.toLowerCase();
+        return ( text.indexOf( ".html#" ) != -1 || text.indexOf( ".htm#" ) != -1
+            || text.endsWith( ".htm" ) || text.endsWith( ".html" )
+            || !HtmlTools.isId( text ) );
     }
 
     /**

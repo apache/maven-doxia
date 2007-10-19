@@ -99,9 +99,9 @@
 
     <p>
       <a id="anchor" name="anchor">Anchor</a>.
-      Link to <a href="anchor">Anchor</a>.
+      Link to <a href="#anchor">Anchor</a>.
       Link to <a href="http://www.pixware.fr">http://www.pixware.fr</a>.
-      Link to <a href="anchor">showing alternate text</a>.
+      Link to <a href="#anchor">showing alternate text</a>.
       Link to <a href="http://www.pixware.fr">Pixware home page</a>.
     </p>
 

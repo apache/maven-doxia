@@ -19,8 +19,6 @@ package org.apache.maven.doxia.module.xhtml;
  * under the License.
  */
 
-import java.util.Stack;
-
 import javax.swing.text.html.HTML.Attribute;
 import javax.swing.text.html.HTML.Tag;
 
@@ -43,21 +41,11 @@ public class XhtmlParser
     extends AbstractXmlParser
     implements XhtmlMarkup
 {
-    /**
-     * This stack is needed to keep track of the different link and anchor-types
-     * which utilize the same element
-     */
-    private Stack linktypes = new Stack();
+    /** Used to distinguish <a href=""> from <a name="">. */
+    private boolean isLink;
 
-    /**
-     * Indicates the last a-tag denoted a link
-     */
-    private static final String LINK = "link";
-
-    /**
-     * Indicates the last a-tag denoted an anchor
-     */
-    private static final String ANCHOR = "anchor";
+    /** Used to distinguish <a href=""> from <a name="">. */
+    private boolean isAnchor;
 
     /** Used for nested lists. */
     private int orderedListDepth = 0;
@@ -257,8 +245,7 @@ public class XhtmlParser
         else if ( parser.getName().equals( Tag.A.toString() ) )
         {
             String href = parser.getAttributeValue( null, Attribute.HREF.toString() );
-            String name = parser.getAttributeValue( null, Attribute.NAME.toString() );
-            String id = parser.getAttributeValue( null, Attribute.ID.toString() );
+
             if ( href != null )
             {
                 String link = href;
@@ -269,17 +256,30 @@ public class XhtmlParser
                 }
 
                 sink.link( link );
-                this.linktypes.push( XhtmlParser.LINK );
+
+                isLink = true;
             }
-            else if ( name != null )
+            else
             {
-                sink.anchor( name );
-                this.linktypes.push( XhtmlParser.ANCHOR );
-            }
-            else if ( id != null )
-            {
-                sink.anchor( id );
-                this.linktypes.push( XhtmlParser.ANCHOR );
+                String name = parser.getAttributeValue( null, Attribute.NAME.toString() );
+
+                if ( name != null )
+                {
+                    sink.anchor( name );
+
+                    isAnchor = true;
+                }
+                else
+                {
+                    String id = parser.getAttributeValue( null, Attribute.ID.toString() );
+
+                    if ( id != null )
+                    {
+                        sink.anchor( id );
+
+                        isAnchor = true;
+                    }
+                }
             }
         }
         else if ( parser.getName().equals( Tag.BR.toString() ) )
@@ -471,15 +471,17 @@ public class XhtmlParser
         }
         else if ( parser.getName().equals( Tag.A.toString() ) )
         {
-            String linktype = (String) this.linktypes.pop();
-            //the equals operation is ok here, because we always use the class constant
-            if ( linktype == XhtmlParser.LINK )
+            if ( isLink )
             {
                 sink.link_();
+
+                isLink = false;
             }
-            else
+            else if ( isAnchor )
             {
                 sink.anchor_();
+
+                isAnchor = false;
             }
         }
         // ----------------------------------------------------------------------

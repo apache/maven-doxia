@@ -952,6 +952,7 @@ public class XhtmlSink
             String id = HtmlTools.encodeId( name );
 
             MutableAttributeSet att = new SimpleAttributeSet();
+
             if ( id != null )
             {
                 att.addAttribute( Attribute.NAME, id );
@@ -1008,15 +1009,13 @@ public class XhtmlSink
             }
 
             att.addAttribute( Attribute.HREF, HtmlTools.escapeHTML( name ) );
-
-            writeStartTag( Tag.A, att );
         }
         else
         {
             att.addAttribute( Attribute.HREF, "#" + HtmlTools.escapeHTML( name ) );
-
-            writeStartTag( Tag.A, att );
         }
+
+        writeStartTag( Tag.A, att );
     }
 
     /**
