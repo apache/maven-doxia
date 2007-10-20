@@ -301,26 +301,28 @@ public class XdocParser
         }
         else if ( parser.getName().equals( Tag.TH.toString() ) )
         {
-            String colspan = parser.getAttributeValue( null, Attribute.COLSPAN.toString() );
-            if ( colspan ==  null )
+            String width = parser.getAttributeValue( null, Attribute.WIDTH.toString() );
+
+            if ( width ==  null )
             {
                 sink.tableHeaderCell();
             }
             else
             {
-                sink.tableHeaderCell( colspan );
+                sink.tableHeaderCell( width );
             }
         }
         else if ( parser.getName().equals( Tag.TD.toString() ) )
         {
-            String colspan = parser.getAttributeValue( null, Attribute.COLSPAN.toString() );
-            if ( colspan ==  null )
+            String width = parser.getAttributeValue( null, Attribute.WIDTH.toString() );
+
+            if ( width ==  null )
             {
                 sink.tableCell();
             }
             else
             {
-                sink.tableCell( colspan );
+                sink.tableCell( width );
             }
         }
 
