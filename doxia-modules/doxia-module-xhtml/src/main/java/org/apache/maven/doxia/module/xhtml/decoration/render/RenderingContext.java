@@ -53,7 +53,7 @@ public class RenderingContext
     {
         this.basedir = basedir;
 
-        this.outputName = document.substring( 0, document.indexOf( "." ) ).replace( '\\', '/' ) + ".html";
+        this.outputName = document.substring( 0, document.lastIndexOf( "." ) ).replace( '\\', '/' ) + ".html";
 
         this.relativePath = PathTool.getRelativePath( basedir.getPath(), new File( basedir, document ).getPath() );
 
