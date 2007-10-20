@@ -89,9 +89,9 @@ under the License.
   </issueManagement>
 
   <scm>
-    <connection>scm:svn:https://svn.apache.org/repos/asf/maven/doxia/doxia/tags/doxia-1.0-alpha-9</connection>
-    <developerConnection>scm:svn:https://svn.apache.org/repos/asf/maven/doxia/doxia/tags/doxia-1.0-alpha-9</developerConnection>
-    <url>https://svn.apache.org/repos/asf/maven/doxia/doxia/tags/doxia-1.0-alpha-9</url>
+    <connection>scm:svn:https://svn.apache.org/repos/asf/maven/doxia/doxia/branches/doxia-1.0-alpha-x/</connection>
+    <developerConnection>scm:svn:https://svn.apache.org/repos/asf/maven/doxia/doxia/branches/doxia-1.0-alpha-x/</developerConnection>
+    <url>https://svn.apache.org/viewvc/maven/doxia/doxia/branches/doxia-1.0-alpha-x/</url>
   </scm>
 
   <reporting>
