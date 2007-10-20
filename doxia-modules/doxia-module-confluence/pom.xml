@@ -57,4 +57,10 @@ under the License.
       </plugin>
     </plugins>  
   </build>
+  <dependencies>
+    <dependency>
+      <groupId>org.codehaus.plexus</groupId>
+      <artifactId>plexus-utils</artifactId>
+    </dependency>
+  </dependencies>
 </project>

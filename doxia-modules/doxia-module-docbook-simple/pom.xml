@@ -27,4 +27,10 @@ under the License.
   <artifactId>doxia-module-docbook-simple</artifactId>
   <name>Doxia :: Docbook Simple Module</name>
   <description>A Doxia module for Docbook source documents.</description>
+  <dependencies>
+    <dependency>
+      <groupId>org.codehaus.plexus</groupId>
+      <artifactId>plexus-utils</artifactId>
+    </dependency>
+  </dependencies>
 </project>

@@ -29,4 +29,10 @@ under the License.
   <artifactId>doxia-module-latex</artifactId>
   <name>Doxia :: Latex Module</name>
   <description>A Doxia module for LaTeX source documents.</description>
+  <dependencies>
+    <dependency>
+      <groupId>org.codehaus.plexus</groupId>
+      <artifactId>plexus-utils</artifactId>
+    </dependency>
+  </dependencies>
 </project>

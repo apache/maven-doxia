@@ -31,6 +31,7 @@ under the License.
   <description>A Doxia module for Rich Text Format source documents.</description>
 
   <dependencies>
+    <!-- test -->
     <dependency>
       <groupId>org.apache.maven.doxia</groupId>
       <artifactId>doxia-module-apt</artifactId>
