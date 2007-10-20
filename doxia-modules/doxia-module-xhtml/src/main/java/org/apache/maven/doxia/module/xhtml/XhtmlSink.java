@@ -961,7 +961,11 @@ public class XhtmlSink
             String id = HtmlTools.encodeId( name );
 
             MutableAttributeSet att = new SimpleAttributeSet();
-            att.addAttribute( Attribute.NAME, id );
+
+            if ( id != null )
+            {
+                att.addAttribute( Attribute.NAME, id );
+            }
 
             writeStartTag( Tag.A, att );
         }
