@@ -20,6 +20,7 @@ package org.apache.maven.doxia.module.xhtml.decoration.render;
  */
 
 import org.codehaus.plexus.util.PathTool;
+import org.codehaus.plexus.util.StringUtils;
 
 import java.io.File;
 import java.util.HashMap;
@@ -42,6 +43,8 @@ public class RenderingContext
 
     private final String relativePath;
 
+    private final String extension;
+    
     private Map attributes;
 
     public RenderingContext( File basedir, String document )
@@ -51,10 +54,28 @@ public class RenderingContext
 
     public RenderingContext( File basedir, String document, String parserId )
     {
+        this( basedir, document, null, null );
+        
+    }
+    
+    public RenderingContext( File basedir, String document, String parserId, String extension )
+    {
         this.basedir = basedir;
-
-        this.outputName = document.substring( 0, document.indexOf( "." ) ).replace( '\\', '/' ) + ".html";
-
+        this.extension = extension;
+        if ( StringUtils.isNotEmpty( extension ) )
+        {
+            // here we now the parserId we can play with this
+            // index.xml -> index.html
+            // index.xml.vm -> index.html
+            // download.apt.vm --> download.html
+            int startIndexOfExtension = document.indexOf( "." + extension );
+            String fileNameWithoutExt = document.substring( 0, startIndexOfExtension );
+            this.outputName = fileNameWithoutExt + ".html";
+        }
+        else
+        {
+            this.outputName = document.substring( 0, document.indexOf( "." ) ).replace( '\\', '/' ) + ".html";
+        }
         this.relativePath = PathTool.getRelativePath( basedir.getPath(), new File( basedir, document ).getPath() );
 
         this.inputName = document;
@@ -97,5 +118,10 @@ public class RenderingContext
     public String getAttribute( String key )
     {
         return (String) attributes.get( key );
+    }
+
+    public String getExtension()
+    {
+        return extension;
     }
 }
