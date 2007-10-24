@@ -38,8 +38,20 @@ public class RenderingContextTest
         File baseDir = new File( getBasedir() + File.separatorChar + "test" + File.separatorChar + "resources" );
         String docName = "file.with.dot.in.name.xml";
 
-        RenderingContext renderingContext = new RenderingContext( baseDir, docName );
+        RenderingContext renderingContext = new RenderingContext( baseDir, docName, "", "xml" );
         assertEquals( "file.with.dot.in.name.html", renderingContext.getOutputName() );
+        assertEquals( ".", renderingContext.getRelativePath() );
+        
+        docName = "index.xml.vm";
+        
+        renderingContext = new RenderingContext( baseDir, docName, "", "xml" );
+        assertEquals( "index.html", renderingContext.getOutputName() );
+        assertEquals( ".", renderingContext.getRelativePath() );
+
+        docName = "download.apt.vm";
+
+        renderingContext = new RenderingContext( baseDir, docName, "", "apt" );
+        assertEquals( "download.html", renderingContext.getOutputName() );
         assertEquals( ".", renderingContext.getRelativePath() );
     }
     
