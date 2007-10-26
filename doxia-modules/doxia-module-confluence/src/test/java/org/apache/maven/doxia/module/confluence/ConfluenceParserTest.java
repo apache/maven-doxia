@@ -36,6 +36,13 @@ public class ConfluenceParserTest
 {
     private ConfluenceParser parser;
 
+    private StringWriter output;
+
+    private Reader reader;
+
+    private Writer writer;
+
+
     /** {@inheritDoc} */
     protected void setUp()
         throws Exception
@@ -43,6 +50,10 @@ public class ConfluenceParserTest
         super.setUp();
 
         parser = (ConfluenceParser) lookup( Parser.ROLE, "confluence" );
+
+        output = null;
+        reader = null;
+        writer = null;
     }
 
     /** {@inheritDoc} */
@@ -62,10 +73,6 @@ public class ConfluenceParserTest
         throws Exception
     {
         String lineBreak = getLineBreakString();
-
-        StringWriter output = null;
-        Reader reader = null;
-        Writer writer = null;
 
         try
         {
@@ -93,14 +100,47 @@ public class ConfluenceParserTest
         }
     }
 
-    private String getLineBreakString()
+    public void testSectionTitles()
+        throws Exception
     {
-        StringWriter output = new StringWriter();
-        Sink sink = new TextSink( output );
-        sink.lineBreak();
+        try
+        {
+            output = new StringWriter();
+            reader = getTestReader( "section", outputExtension() );
+            writer = getTestWriter( "section", "txt" );
 
-        return output.toString();
+            Sink sink = new TextSink( output );
+            createParser().parse( reader, sink );
+
+            // write to file
+            String expected = output.toString();
+            writer.write( expected );
+            writer.flush();
+
+            for ( int i = 1; i <= 5; i++ )
+            {
+                assertTrue( "Could not locate section " + i + " title",
+                            expected.indexOf( "sectionTitle" + i + EOL + "text: " + "Section" + i ) != -1 );
+            }
+
+            assertTrue( "Section title has leading space",
+                         expected.indexOf( "sectionTitle1" + EOL + "text: " + "TitleWithLeadingSpace" ) != -1 );
+        }
+        finally
+        {
+            output.close();
+            reader.close();
+            writer.close();
+        }
     }
 
+    private String getLineBreakString()
+    {
+        StringWriter sw = new StringWriter();
+        Sink sink = new TextSink( sw );
+        sink.lineBreak();
+
+        return sw.toString();
+    }
 
 }

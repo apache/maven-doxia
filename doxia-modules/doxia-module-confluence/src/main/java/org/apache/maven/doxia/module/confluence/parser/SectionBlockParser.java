@@ -60,7 +60,7 @@ public class SectionBlockParser
     {
         int level = Integer.parseInt( Character.toString( line.charAt( 1 ) ) );
 
-        String title = line.substring( 3 );
+        String title = line.substring( 3 ).trim();
 
         return new SectionBlock( title, level );
     }
