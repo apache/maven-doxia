@@ -19,13 +19,20 @@ package org.apache.maven.doxia.module.confluence;
  * under the License.
  */
 
+import java.io.Reader;
+import java.io.StringWriter;
+import java.io.Writer;
+
 import org.apache.maven.doxia.parser.AbstractParserTest;
 import org.apache.maven.doxia.parser.Parser;
+import org.apache.maven.doxia.sink.Sink;
+import org.apache.maven.doxia.sink.TextSink;
 
 /**
  * Test class for ConfluenceParser.
  */
-public class ConfluenceParserTest extends AbstractParserTest
+public class ConfluenceParserTest
+    extends AbstractParserTest
 {
     private ConfluenceParser parser;
 
@@ -49,5 +56,51 @@ public class ConfluenceParserTest extends AbstractParserTest
     {
         return "confluence";
     }
+
+    /** @throws Exception */
+    public void testLineBreak()
+        throws Exception
+    {
+        String lineBreak = getLineBreakString();
+
+        StringWriter output = null;
+        Reader reader = null;
+        Writer writer = null;
+
+        try
+        {
+            output = new StringWriter();
+            reader = getTestReader( "linebreak", outputExtension() );
+            writer = getTestWriter( "linebreak", "txt" );
+
+            Sink sink = new TextSink( output );
+            createParser().parse( reader, sink );
+
+            // write to file
+            String expected = output.toString();
+            writer.write( expected );
+            writer.flush();
+
+            assertTrue( expected.indexOf( "Line" + EOL + lineBreak ) != -1 );
+            assertTrue( expected.indexOf( "with 2" + EOL + lineBreak ) != -1 );
+            assertTrue( expected.indexOf( "inline" + EOL + lineBreak ) != -1 );
+        }
+        finally
+        {
+            output.close();
+            reader.close();
+            writer.close();
+        }
+    }
+
+    private String getLineBreakString()
+    {
+        StringWriter output = new StringWriter();
+        Sink sink = new TextSink( output );
+        sink.lineBreak();
+
+        return output.toString();
+    }
+
 
 }

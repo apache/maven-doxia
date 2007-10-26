@@ -19,24 +19,24 @@ package org.apache.maven.doxia.module.confluence;
  * under the License.
  */
 
-import org.apache.maven.doxia.util.ByLineReaderSource;
-import org.apache.maven.doxia.util.ByLineSource;
-import org.apache.maven.doxia.module.confluence.parser.Block;
-import org.apache.maven.doxia.module.confluence.parser.BlockParser;
-import org.apache.maven.doxia.module.confluence.parser.SectionBlockParser;
-import org.apache.maven.doxia.module.confluence.parser.ParagraphBlockParser;
-import org.apache.maven.doxia.module.confluence.parser.VerbatimBlockParser;
-import org.apache.maven.doxia.module.confluence.parser.HorizontalRuleBlockParser;
-import org.apache.maven.doxia.module.confluence.parser.table.TableBlockParser;
-import org.apache.maven.doxia.module.confluence.parser.list.ListBlockParser;
-import org.apache.maven.doxia.parser.AbstractTextParser;
-import org.apache.maven.doxia.parser.ParseException;
-import org.apache.maven.doxia.sink.Sink;
-
 import java.io.Reader;
 import java.util.ArrayList;
 import java.util.Iterator;
 import java.util.List;
+
+import org.apache.maven.doxia.module.confluence.parser.Block;
+import org.apache.maven.doxia.module.confluence.parser.BlockParser;
+import org.apache.maven.doxia.module.confluence.parser.HorizontalRuleBlockParser;
+import org.apache.maven.doxia.module.confluence.parser.ParagraphBlockParser;
+import org.apache.maven.doxia.module.confluence.parser.SectionBlockParser;
+import org.apache.maven.doxia.module.confluence.parser.VerbatimBlockParser;
+import org.apache.maven.doxia.module.confluence.parser.list.ListBlockParser;
+import org.apache.maven.doxia.module.confluence.parser.table.TableBlockParser;
+import org.apache.maven.doxia.parser.AbstractTextParser;
+import org.apache.maven.doxia.parser.ParseException;
+import org.apache.maven.doxia.sink.Sink;
+import org.apache.maven.doxia.util.ByLineReaderSource;
+import org.apache.maven.doxia.util.ByLineSource;
 
 /**
  * Parse the <a href="http://www.atlassian.com/software/confluence/">Confluence</a>.
@@ -50,6 +50,7 @@ import java.util.List;
 public class ConfluenceParser
     extends AbstractTextParser
 {
+    
     private BlockParser[] parsers;
 
     public ConfluenceParser()
@@ -66,7 +67,6 @@ public class ConfluenceParser
     }
 
     //TODO: (empty line) Produces a new paragraph
-    //TODO: \\ Creates a line break. Not often needed, most of the time Confluence will guess new lines for you appropriately.
     //TODO: better support for anchors
 
     public List parse( ByLineSource source )

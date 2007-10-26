@@ -20,16 +20,17 @@ package org.apache.maven.doxia.module.confluence.parser;
  */
 
 import java.util.ArrayList;
-import java.util.List;
 import java.util.Arrays;
+import java.util.List;
 
-import org.apache.maven.doxia.util.ByLineSource;
 import org.apache.maven.doxia.parser.ParseException;
+import org.apache.maven.doxia.util.ByLineSource;
 import org.codehaus.plexus.util.StringUtils;
 
 public class ParagraphBlockParser
     implements BlockParser
 {
+
     public boolean accept( String line, ByLineSource source )
     {
         return true;
@@ -48,6 +49,7 @@ public class ParagraphBlockParser
 
         do
         {
+
             if ( line.trim().length() == 0 )
             {
                 break;
@@ -63,7 +65,7 @@ public class ParagraphBlockParser
                         if ( insideBold )
                         {
                             TextBlock tb = new TextBlock( text.toString() );
-                            blocks.add( new BoldBlock( Arrays.asList( new Block[]{tb} ) ) );
+                            blocks.add( new BoldBlock( Arrays.asList( new Block[] { tb } ) ) );
                             text = new StringBuffer();
                         }
                         else
@@ -78,7 +80,7 @@ public class ParagraphBlockParser
                         if ( insideItalic )
                         {
                             TextBlock tb = new TextBlock( text.toString() );
-                            blocks.add( new ItalicBlock( Arrays.asList( new Block[]{tb} ) ) );
+                            blocks.add( new ItalicBlock( Arrays.asList( new Block[] { tb } ) ) );
                             text = new StringBuffer();
                         }
                         else
@@ -129,13 +131,13 @@ public class ParagraphBlockParser
                         break;
                     case '}':
 
-                        //System.out.println( "line = " + line );
+                        // System.out.println( "line = " + line );
 
                         if ( line.charAt( i + 1 ) == '}' )
                         {
                             i++;
                             TextBlock tb = new TextBlock( text.toString() );
-                            blocks.add( new MonospaceBlock( Arrays.asList( new Block[]{tb} ) ) );
+                            blocks.add( new MonospaceBlock( Arrays.asList( new Block[] { tb } ) ) );
                             text = new StringBuffer();
                         }
                         else
@@ -144,19 +146,39 @@ public class ParagraphBlockParser
                         }
 
                         break;
+                    case '\\':
+
+                        // System.out.println( "line = " + line );
+
+                        if ( line.charAt( i + 1 ) == '\\' )
+                        {
+                            i++;
+                            blocks.add( new TextBlock( text.toString() ) );
+                            text = new StringBuffer();
+                            blocks.add( new LinebreakBlock() );
+                        }
+                        else
+                        {
+                            text.append( line.charAt( i + 1 ) );
+                        }
+
+                        break;
                     default:
                         text.append( c );
                 }
             }
         }
-        // TODO: instead of just flying along we should probably test new lines in the other parsers
-        // to make sure there aren't things that should be handled by other parsers. For example, right
+        // TODO: instead of just flying along we should probably test new lines
+        // in the other parsers
+        // to make sure there aren't things that should be handled by other
+        // parsers. For example, right
         // now:
         // Blah blah blah blah
         // # one
         // # two
         //
-        // Will not get processed correctly. This parser will try to deal with it when it should be handled
+        // Will not get processed correctly. This parser will try to deal with
+        // it when it should be handled
         // by the list parser.
         while ( ( line = source.getNextLine() ) != null );
 
