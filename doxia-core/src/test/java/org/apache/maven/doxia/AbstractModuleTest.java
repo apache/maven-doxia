@@ -19,6 +19,8 @@ package org.apache.maven.doxia;
  * under the License.
  */
 
+import org.apache.maven.doxia.markup.Markup;
+
 import org.codehaus.plexus.PlexusTestCase;
 import org.codehaus.plexus.util.WriterFactory;
 
@@ -34,6 +36,7 @@ import java.io.Writer;
  */
 public abstract class AbstractModuleTest
     extends PlexusTestCase
+    implements Markup
 {
     /**
      * Set the system property <code>line.separator</code> to <code>\n</code> (Unix) to prevent
