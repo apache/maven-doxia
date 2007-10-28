@@ -96,6 +96,14 @@ public class XdocSink
     }
 
     /**
+     * @param headFlag an header flag
+     */
+    protected void setHeadFlag( boolean headFlag )
+    {
+        this.headFlag = headFlag;
+    }
+
+    /**
      * Reset all variables.
      */
     protected void resetState()
