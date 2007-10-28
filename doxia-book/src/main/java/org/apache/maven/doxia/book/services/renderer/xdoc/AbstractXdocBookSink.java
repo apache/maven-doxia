@@ -59,13 +59,13 @@ public abstract class AbstractXdocBookSink
     {
         resetState();
 
-        headFlag = true;
+        setHeadFlag( true );
 
-        markup( "<?xml version=\"1.0\" ?>" + EOL );
+        write( "<?xml version=\"1.0\" ?>" + EOL );
 
-        markup( "<document>" + EOL );
+        write( "<document>" + EOL );
 
-        markup( "<properties>" + EOL );
+        write( "<properties>" + EOL );
 
     }
 
@@ -74,9 +74,9 @@ public abstract class AbstractXdocBookSink
      */
     public void head_()
     {
-        headFlag = false;
+        setHeadFlag( false );
 
-        markup( "</properties>" + EOL );
+        write( "</properties>" + EOL );
     }
 
     /**
@@ -84,12 +84,12 @@ public abstract class AbstractXdocBookSink
      */
     public void author_()
     {
-        if ( buffer.length() > 0 )
+        if ( getBuffer().length() > 0 )
         {
-            markup( "<author>" );
-            content( buffer.toString() );
-            markup( "</author>" + EOL );
-            buffer = new StringBuffer();
+            write( "<author>" );
+            content( getBuffer().toString() );
+            write( "</author>" + EOL );
+            resetBuffer();
         }
     }
 
@@ -106,7 +106,7 @@ public abstract class AbstractXdocBookSink
      */
     public void body()
     {
-        markup( "<body>" + EOL );
+        write( "<body>" + EOL );
 
         navigationPanel();
 
@@ -122,11 +122,11 @@ public abstract class AbstractXdocBookSink
 
         navigationPanel();
 
-        markup( "</body>" + EOL );
+        write( "</body>" + EOL );
 
-        markup( "</document>" + EOL );
+        write( "</document>" + EOL );
 
-        out.flush();
+        flush();
 
         resetState();
     }
@@ -136,12 +136,12 @@ public abstract class AbstractXdocBookSink
      */
     public void title_()
     {
-        if ( buffer.length() > 0 )
+        if ( getBuffer().length() > 0 )
         {
-            markup( "<title>" );
-            content( buffer.toString() );
-            markup( "</title>" + EOL );
-            buffer = new StringBuffer();
+            write( "<title>" );
+            content( getBuffer().toString() );
+            write( "</title>" + EOL );
+            resetBuffer();
         }
     }
 
