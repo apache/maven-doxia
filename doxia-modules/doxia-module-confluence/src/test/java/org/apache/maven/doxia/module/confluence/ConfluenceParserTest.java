@@ -171,6 +171,28 @@ public class ConfluenceParserTest
         assertEquals( 6, result.split( "end:listItem\n" ).length );
     }
 
+    /** @throws Exception */
+    public void testAnchor()
+        throws Exception
+    {
+        String result = locateAndParseTestSourceFile( "anchor" );
+ 
+        assertContainsLines( result, "begin:paragraph\nbegin:anchor, name: start\nend:anchor" );
+        assertContainsLines( result, "begin:anchor, name: middle\nend:anchor" );
+        assertContainsLines( result, "begin:paragraph\ntext: Simple paragraph\nbegin:anchor, name: end\nend:anchor" );
+         // 3 anchors in the input...
+        assertEquals( 4, result.split( "end:anchor\n" ).length );
+    }
+
+    /** @throws Exception */
+    public void testUnknownMacro()
+        throws Exception
+    {
+        String result = locateAndParseTestSourceFile( "unknown-macro" );
+ 
+        assertContainsLines( result, "begin:paragraph\ntext: {unknown:start}" );
+   }
+
     private void assertContainsLines( String message, String result, String lines )
     {
         lines = StringUtils.replace( lines, "\n", EOL );

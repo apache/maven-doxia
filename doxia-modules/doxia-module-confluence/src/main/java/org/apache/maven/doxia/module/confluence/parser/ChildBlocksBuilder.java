@@ -66,8 +66,7 @@ public class ChildBlocksBuilder
                     }
                     else
                     {
-                        blocks.add( new TextBlock( text.toString() ) );
-                        text = new StringBuffer();
+                        text = addTextBlockIfNecessary( blocks, text );
                         insideBold = true;
                     }
 
@@ -81,16 +80,14 @@ public class ChildBlocksBuilder
                     }
                     else
                     {
-                        blocks.add( new TextBlock( text.toString() ) );
-                        text = new StringBuffer();
+                        text = addTextBlockIfNecessary( blocks, text );
                         insideItalic = true;
                     }
 
                     break;
                 case '[':
                     insideLink = true;
-                    blocks.add( new TextBlock( text.toString() ) );
-                    text = new StringBuffer();
+                    text = addTextBlockIfNecessary( blocks, text );
                     break;
                 case ']':
                     if ( insideLink )
@@ -113,16 +110,12 @@ public class ChildBlocksBuilder
                     break;
                 case '{':
 
-                    if ( input.charAt( i + 1 ) == '{' )
+                    if ( input.charAt( i + 1 ) == '{' ) // it's monospaced
                     {
                         i++;
-                        blocks.add( new TextBlock( text.toString() ) );
-                        text = new StringBuffer();
                     }
-                    else
-                    {
-                        text.append( c );
-                    }
+                    // else it's a confluence macro...
+                    text = addTextBlockIfNecessary( blocks, text );
 
                     break;
                 case '}':
@@ -138,7 +131,16 @@ public class ChildBlocksBuilder
                     }
                     else
                     {
-                        text.append( c );
+                        String name = text.toString();
+                        if ( name.startsWith( "anchor:" ) )
+                        {
+                            blocks.add( new AnchorBlock( name.substring( "anchor:".length() ) ) );
+                        }
+                        else
+                        {
+                            blocks.add( new TextBlock( "{" + name + "}" ) );
+                        }
+                        text = new StringBuffer();
                     }
 
                     break;
@@ -149,8 +151,7 @@ public class ChildBlocksBuilder
                     if ( input.charAt( i + 1 ) == '\\' )
                     {
                         i++;
-                        blocks.add( new TextBlock( text.toString() ) );
-                        text = new StringBuffer();
+                        text = addTextBlockIfNecessary( blocks, text );
                         blocks.add( new LinebreakBlock() );
                     }
                     else
@@ -171,5 +172,15 @@ public class ChildBlocksBuilder
         }
 
         return blocks;
+    }
+
+    private StringBuffer addTextBlockIfNecessary( List blocks, StringBuffer text )
+    {
+        if ( text.length() == 0 )
+        {
+            return text;
+        }
+        blocks.add( new TextBlock( text.toString() ) );
+        return new StringBuffer();
     }
 }

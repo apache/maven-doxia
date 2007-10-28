@@ -1,0 +1,7 @@
+h1. Section Title
+
+{anchor:start}Simple paragraph.
+
+Simple paragraph{anchor:end}.
+
+Simple {anchor:middle} paragraph.
