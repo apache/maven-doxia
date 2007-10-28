@@ -29,6 +29,7 @@ import org.apache.maven.doxia.book.services.validation.ValidationResult;
 import org.codehaus.plexus.logging.AbstractLogEnabled;
 
 import java.io.File;
+import java.util.Collections;
 import java.util.List;
 import java.util.Map;
 import java.util.Set;
@@ -133,7 +134,7 @@ public class DefaultBookDoxia
      */
     public Set getAvailableBookRenderers()
     {
-        return bookRenderers.keySet();
+        return Collections.unmodifiableSet( bookRenderers.keySet() );
     }
 
 }
