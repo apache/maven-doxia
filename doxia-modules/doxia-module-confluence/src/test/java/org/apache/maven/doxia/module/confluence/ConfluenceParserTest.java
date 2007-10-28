@@ -113,6 +113,19 @@ public class ConfluenceParserTest
     }
 
     /** @throws Exception */
+    public void testEscapes()
+        throws Exception
+    {
+        String result = locateAndParseTestSourceFile( "escapes" );
+
+        assertContainsLines( result, "asterisk *" );
+        assertContainsLines( result, "underline _" );
+        assertContainsLines( result, "asterisk *not bold*" );
+        assertContainsLines( result, "underline _not italic_" );
+        assertContainsLines( result, "normal character" );
+    }
+
+    /** @throws Exception */
     public void testSectionTitles()
         throws Exception
     {

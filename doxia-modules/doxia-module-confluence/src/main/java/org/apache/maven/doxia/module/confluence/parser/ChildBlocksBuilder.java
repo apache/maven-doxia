@@ -155,7 +155,8 @@ public class ChildBlocksBuilder
                     }
                     else
                     {
-                        text.append( input.charAt( i + 1 ) );
+                        i++;
+                        text.append( input.charAt( i ) );
                     }
 
                     break;
