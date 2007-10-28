@@ -19,13 +19,8 @@ package org.apache.maven.doxia.module.confluence.parser;
  * under the License.
  */
 
-import java.util.ArrayList;
-import java.util.Arrays;
-import java.util.List;
-
 import org.apache.maven.doxia.parser.ParseException;
 import org.apache.maven.doxia.util.ByLineSource;
-import org.codehaus.plexus.util.StringUtils;
 
 public class ParagraphBlockParser
     implements BlockParser
@@ -39,11 +34,6 @@ public class ParagraphBlockParser
     public Block visit( String line, ByLineSource source )
         throws ParseException
     {
-        boolean insideBold = false;
-        boolean insideItalic = false;
-        boolean insideLink = false;
-
-        List blocks = new ArrayList();
 
         StringBuffer text = new StringBuffer();
 
@@ -55,118 +45,15 @@ public class ParagraphBlockParser
                 break;
             }
 
-            for ( int i = 0; i < line.length(); i++ )
+            if ( text.length() == 0 )
             {
-                char c = line.charAt( i );
-
-                switch ( c )
-                {
-                    case '*':
-                        if ( insideBold )
-                        {
-                            TextBlock tb = new TextBlock( text.toString() );
-                            blocks.add( new BoldBlock( Arrays.asList( new Block[] { tb } ) ) );
-                            text = new StringBuffer();
-                        }
-                        else
-                        {
-                            blocks.add( new TextBlock( text.toString() ) );
-                            text = new StringBuffer();
-                            insideBold = true;
-                        }
-
-                        break;
-                    case '_':
-                        if ( insideItalic )
-                        {
-                            TextBlock tb = new TextBlock( text.toString() );
-                            blocks.add( new ItalicBlock( Arrays.asList( new Block[] { tb } ) ) );
-                            text = new StringBuffer();
-                        }
-                        else
-                        {
-                            blocks.add( new TextBlock( text.toString() ) );
-                            text = new StringBuffer();
-                            insideItalic = true;
-                        }
-
-                        break;
-                    case '[':
-                        insideLink = true;
-                        blocks.add( new TextBlock( text.toString() ) );
-                        text = new StringBuffer();
-                        break;
-                    case ']':
-                        if ( insideLink )
-                        {
-                            String link = text.toString();
-
-                            if ( link.indexOf( "|" ) > 0 )
-                            {
-                                String[] pieces = StringUtils.split( text.toString(), "|" );
-                                blocks.add( new LinkBlock( pieces[1], pieces[0] ) );
-                            }
-                            else
-                            {
-                                blocks.add( new LinkBlock( link, link ) );
-                            }
-
-                            text = new StringBuffer();
-                        }
-
-                        break;
-                    case '{':
-
-                        if ( line.charAt( i + 1 ) == '{' )
-                        {
-                            i++;
-                            blocks.add( new TextBlock( text.toString() ) );
-                            text = new StringBuffer();
-                        }
-                        else
-                        {
-                            text.append( c );
-                        }
-
-                        break;
-                    case '}':
-
-                        // System.out.println( "line = " + line );
-
-                        if ( line.charAt( i + 1 ) == '}' )
-                        {
-                            i++;
-                            TextBlock tb = new TextBlock( text.toString() );
-                            blocks.add( new MonospaceBlock( Arrays.asList( new Block[] { tb } ) ) );
-                            text = new StringBuffer();
-                        }
-                        else
-                        {
-                            text.append( c );
-                        }
-
-                        break;
-                    case '\\':
-
-                        // System.out.println( "line = " + line );
-
-                        if ( line.charAt( i + 1 ) == '\\' )
-                        {
-                            i++;
-                            blocks.add( new TextBlock( text.toString() ) );
-                            text = new StringBuffer();
-                            blocks.add( new LinebreakBlock() );
-                        }
-                        else
-                        {
-                            text.append( line.charAt( i + 1 ) );
-                        }
-
-                        break;
-                    default:
-                        text.append( c );
-                }
+                text.append( line.trim() );
             }
+            else
+            {
+                text.append( " " + line.trim() );
+            }
+
         }
         // TODO: instead of just flying along we should probably test new lines
         // in the other parsers
@@ -182,11 +69,9 @@ public class ParagraphBlockParser
         // by the list parser.
         while ( ( line = source.getNextLine() ) != null );
 
-        if ( text.length() > 0 )
-        {
-            blocks.add( new TextBlock( text.toString() ) );
-        }
+        ChildBlocksBuilder builder = new ChildBlocksBuilder();
+        
 
-        return new ParagraphBlock( blocks );
+        return new ParagraphBlock( builder.getBlocks( text.toString() ) );
     }
 }

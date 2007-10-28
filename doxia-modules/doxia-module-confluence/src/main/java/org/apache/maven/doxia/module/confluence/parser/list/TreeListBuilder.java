@@ -19,11 +19,11 @@ package org.apache.maven.doxia.module.confluence.parser.list;
  * under the License.
  */
 
-import org.apache.maven.doxia.module.confluence.parser.TextBlock;
-
 import java.util.ArrayList;
-import java.util.List;
 import java.util.Iterator;
+import java.util.List;
+
+import org.apache.maven.doxia.module.confluence.parser.ChildBlocksBuilder;
 
 public class TreeListBuilder
 {
@@ -114,20 +114,20 @@ public class TreeListBuilder
         {
             TreeComponent child = (TreeComponent) i.next();
 
-            List text = new ArrayList();
+            List childBlocks = new ArrayList();
 
             if ( child.getFather() != null )
             {
-                text.add( new TextBlock( child.getText() ) );
+                childBlocks.addAll( new ChildBlocksBuilder().getBlocks( child.getText() ) );
             }
 
             if ( child.getChildren().size() != 0 )
             {
-                blocks.add( new ListItemBlock( text, getList( child ) ) );
+                blocks.add( new ListItemBlock( childBlocks, getList( child ) ) );
             }
             else
             {
-                blocks.add( new ListItemBlock( text ) );
+                blocks.add( new ListItemBlock( childBlocks ) );
             }
         }
 
