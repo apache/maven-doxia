@@ -1280,22 +1280,36 @@ public class DocBookSink
     /**
      * {@inheritDoc}
      * @see DocbookMarkup#ENTRY_TAG
-     * @see DocbookMarkup#PARA_TAG
      */
     public void tableCell()
     {
         writeStartTag( ENTRY_TAG );
-        writeStartTag( PARA_TAG );
     }
 
     /**
      * {@inheritDoc}
      * @see DocbookMarkup#ENTRY_TAG
-     * @see DocbookMarkup#PARA_TAG
      */
     public void tableCell_()
     {
-        writeEndTag( PARA_TAG );
+        writeEndTag( ENTRY_TAG );
+    }
+
+    /**
+     * {@inheritDoc}
+     * @see DocbookMarkup#ENTRY_TAG
+     */
+    public void tableHeaderCell()
+    {
+        writeStartTag( ENTRY_TAG );
+    }
+
+    /**
+     * {@inheritDoc}
+     * @see DocbookMarkup#ENTRY_TAG
+     */
+    public void tableHeaderCell_()
+    {
         writeEndTag( ENTRY_TAG );
     }
 

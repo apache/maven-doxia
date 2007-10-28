@@ -144,8 +144,8 @@ public class DocBookSinkTest extends AbstractSinkTest
     protected String getTableBlock( String cell, String caption )
     {
         return "<table frame=\"none\" rowsep=\"0\" colsep=\"0\"><title>" + caption
-            + "</title><tgroup cols=\"1\"><colspec align=\"center\"></colspec><tbody><row><entry><para>"
-            + cell  + "</para></entry></row></tbody></tgroup></table>";
+            + "</title><tgroup cols=\"1\"><colspec align=\"center\"></colspec><tbody><row><entry>"
+            + cell  + "</entry></row></tbody></tgroup></table>";
     }
 
     /** {@inheritDoc} */

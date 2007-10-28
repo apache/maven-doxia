@@ -54,6 +54,11 @@ public class DocBookParser
     private int level = -1;
 
     /**
+     * Used to distinguish italic from bold.
+     */
+    private boolean isBold;
+
+    /**
      * A selective stack of parent elements
      */
     private Stack parent = new Stack();
@@ -273,6 +278,10 @@ public class DocBookParser
             {
                 sink.definition();
             }
+            else if ( isParent( ORDEREDLIST_TAG.toString() ) )
+            {
+                sink.numberedListItem();
+            }
             else
             {
                 sink.listItem();
@@ -377,6 +386,13 @@ public class DocBookParser
         {
             sink.bold();
         }
+        else if ( DocBookParser.ITALIC_ELEMENTS.contains( parser.getName() )
+            && "bold".equals( parser.getAttributeValue( null, "role" ) ) )
+        {
+            sink.bold();
+
+            isBold = true;
+        }
         else if ( DocBookParser.ITALIC_ELEMENTS.contains( parser.getName() ) )
         {
             sink.italic();
@@ -422,6 +438,14 @@ public class DocBookParser
             {
                 sink.sectionTitle5();
             }
+        }
+        else if ( parser.getName().equals( CORPAUTHOR_TAG.toString() ) )
+        {
+            sink.author();
+        }
+        else if ( parser.getName().equals( DATE_TAG.toString() ) )
+        {
+            sink.date();
         }
         else if ( parser.getName().equals( ULINK_TAG.toString() ) )
         {
@@ -530,6 +554,10 @@ public class DocBookParser
             {
                 sink.definition_();
             }
+            else if ( isParent( ORDEREDLIST_TAG.toString() ) )
+            {
+                sink.numberedListItem_();
+            }
             else
             {
                 sink.listItem_();
@@ -626,7 +654,16 @@ public class DocBookParser
         }
         else if ( DocBookParser.ITALIC_ELEMENTS.contains( parser.getName() ) )
         {
-            sink.italic_();
+            if ( isBold )
+            {
+                sink.bold_();
+
+                isBold = false;
+            }
+            else
+            {
+                sink.italic_();
+            }
         }
         else if ( DocBookParser.MONOSPACE_ELEMENTS.contains( parser.getName() ) )
         {
@@ -669,6 +706,14 @@ public class DocBookParser
             {
                 sink.sectionTitle5_();
             }
+        }
+        else if ( parser.getName().equals( CORPAUTHOR_TAG.toString() ) )
+        {
+            sink.author_();
+        }
+        else if ( parser.getName().equals( DATE_TAG.toString() ) )
+        {
+            sink.date_();
         }
         else if ( parser.getName().equals( ULINK_TAG.toString() ) || parser.getName().equals( LINK_TAG.toString() ) )
         {
@@ -716,6 +761,14 @@ public class DocBookParser
         if ( "PB".equals( text.trim() ) )
         {
             sink.pageBreak();
+        }
+        else if ( "HR".equals( text.trim() ) )
+        {
+            sink.horizontalRule();
+        }
+        else if ( "LB".equals( text.trim() ) )
+        {
+            sink.lineBreak();
         }
         else
         {
