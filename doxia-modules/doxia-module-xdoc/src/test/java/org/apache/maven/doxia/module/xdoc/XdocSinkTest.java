@@ -48,7 +48,7 @@ public class XdocSinkTest
     /** {@inheritDoc} */
     protected String getTitleBlock( String title )
     {
-        return title;
+        return "<title>" + title + "</title>";
     }
 
     /** {@inheritDoc} */
@@ -235,8 +235,7 @@ public class XdocSinkTest
     /** {@inheritDoc} */
     protected String getRawTextBlock( String text )
     {
-        // TODO
-        return "";
+        return "~, =, -, +, *, [, ], <, >, {, }, \\";
     }
 
 

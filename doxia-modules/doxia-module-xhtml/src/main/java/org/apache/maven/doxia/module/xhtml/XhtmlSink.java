@@ -31,7 +31,6 @@ import javax.swing.text.html.HTML.Tag;
 import org.apache.maven.doxia.module.xhtml.decoration.render.RenderingContext;
 import org.apache.maven.doxia.parser.Parser;
 import org.apache.maven.doxia.sink.AbstractXmlSink;
-import org.apache.maven.doxia.sink.Sink;
 import org.apache.maven.doxia.sink.StructureSink;
 import org.apache.maven.doxia.util.HtmlTools;
 import org.codehaus.plexus.util.StringUtils;
@@ -52,19 +51,29 @@ public class XhtmlSink
     // Instance fields
     // ----------------------------------------------------------------------
 
-    private StringBuffer buffer = new StringBuffer();
-
-    private boolean headFlag;
-
-    private boolean verbatimFlag;
-
-    private int cellCount;
-
+    /** The PrintWriter to write the result. */
     private PrintWriter writer;
 
+    /** Used to collect text events. */
+    private StringBuffer buffer = new StringBuffer();
+
+    /** An indication on if we're inside a head. */
+    private boolean headFlag;
+
+    /** An indication on if we're in verbatim mode. */
+    private boolean verbatimFlag;
+
+    // TODO: this doesn't belong here
     private RenderingContext renderingContext;
 
+    /** Justification of table cells. */
     private int[] cellJustif;
+
+    /** Number of cells in a table row. */
+    private int cellCount;
+
+    /** Used to style successive table rows differently. */
+    private boolean evenTableRow = true;
 
     // ----------------------------------------------------------------------
     //
@@ -97,9 +106,7 @@ public class XhtmlSink
      */
     public XhtmlSink( Writer writer, RenderingContext renderingContext, Map directives )
     {
-        this.writer = new PrintWriter( writer );
-
-        this.renderingContext = renderingContext;
+        this( writer, renderingContext );
     }
 
     // ----------------------------------------------------------------------
@@ -130,6 +137,7 @@ public class XhtmlSink
         headFlag = false;
         resetBuffer();
         verbatimFlag = false;
+        cellJustif = null;
         cellCount = 0;
     }
 
@@ -177,7 +185,7 @@ public class XhtmlSink
      */
     public void title_()
     {
-        write( buffer.toString() );
+        content( buffer.toString() );
 
         writeEndTag( Tag.TITLE );
 
@@ -237,220 +245,240 @@ public class XhtmlSink
     public void body_()
     {
         writeEndTag( Tag.BODY );
+
         writeEndTag( Tag.HTML );
+
+        flush();
+
+        resetState();
     }
 
     // ----------------------------------------------------------------------
     // Sections
     // ----------------------------------------------------------------------
 
-    /**
-     * The default class style is <code>section</code>.
-     *
-     * {@inheritDoc}
-     * @see javax.swing.text.html.HTML.Tag#DIV
-     */
+    /** {@inheritDoc} */
     public void section1()
     {
-        onSection();
+        onSection( SECTION_LEVEL_1 );
     }
 
-    /**
-     * {@inheritDoc}
-     * @see javax.swing.text.html.HTML.Tag#H2
-     */
+    /** {@inheritDoc} */
     public void sectionTitle1()
     {
-        writeStartTag( Tag.H2 );
+        onSectionTitle( SECTION_LEVEL_1 );
     }
 
-    /**
-     * {@inheritDoc}
-     * @see javax.swing.text.html.HTML.Tag#H2
-     */
+    /** {@inheritDoc} */
     public void sectionTitle1_()
     {
-        writeEndTag( Tag.H2 );
+        onSectionTitle_( SECTION_LEVEL_1 );
     }
 
-    /**
-     * {@inheritDoc}
-     * @see javax.swing.text.html.HTML.Tag#DIV
-     */
+    /** {@inheritDoc} */
     public void section1_()
     {
-        writeEndTag( Tag.DIV );
+        onSection_( SECTION_LEVEL_1 );
     }
 
-    /**
-     * The default class style is <code>section</code>.
-     *
-     * {@inheritDoc}
-     * @see javax.swing.text.html.HTML.Tag#DIV
-     */
+    /** {@inheritDoc} */
     public void section2()
     {
-        onSection();
+        onSection( SECTION_LEVEL_2 );
     }
 
-    /**
-     * {@inheritDoc}
-     * @see javax.swing.text.html.HTML.Tag#H3
-     */
+    /** {@inheritDoc} */
     public void sectionTitle2()
     {
-        writeStartTag( Tag.H3 );
+        onSectionTitle( SECTION_LEVEL_2 );
     }
 
-    /**
-     * {@inheritDoc}
-     * @see javax.swing.text.html.HTML.Tag#H3
-     */
+    /** {@inheritDoc} */
     public void sectionTitle2_()
     {
-        writeEndTag( Tag.H3 );
+        onSectionTitle_( SECTION_LEVEL_2 );
     }
 
-    /**
-     * {@inheritDoc}
-     * @see javax.swing.text.html.HTML.Tag#DIV
-     */
+    /** {@inheritDoc} */
     public void section2_()
     {
-        writeEndTag( Tag.DIV );
+        onSection_( SECTION_LEVEL_2 );
     }
 
-    /**
-     * The default class style is <code>section</code>.
-     *
-     * {@inheritDoc}
-     * @see javax.swing.text.html.HTML.Tag#DIV
-     */
+    /** {@inheritDoc} */
     public void section3()
     {
-        onSection();
+        onSection( SECTION_LEVEL_3 );
     }
 
-    /**
-     * {@inheritDoc}
-     * @see javax.swing.text.html.HTML.Tag#H4
-     */
+    /** {@inheritDoc} */
     public void sectionTitle3()
     {
-        writeStartTag( Tag.H4 );
+        onSectionTitle( SECTION_LEVEL_3 );
     }
 
-    /**
-     * {@inheritDoc}
-     * @see javax.swing.text.html.HTML.Tag#H4
-     */
+    /** {@inheritDoc} */
     public void sectionTitle3_()
     {
-        writeEndTag( Tag.H4 );
+        onSectionTitle_( SECTION_LEVEL_3 );
     }
 
-    /**
-     * {@inheritDoc}
-     * @see javax.swing.text.html.HTML.Tag#DIV
-     */
+    /** {@inheritDoc} */
     public void section3_()
     {
-        writeEndTag( Tag.DIV );
+        onSection_( SECTION_LEVEL_3 );
     }
 
-    /**
-     * The default class style is <code>section</code>.
-     *
-     * {@inheritDoc}
-     * @see javax.swing.text.html.HTML.Tag#DIV
-     */
+    /** {@inheritDoc} */
     public void section4()
     {
-        onSection();
+        onSection( SECTION_LEVEL_4 );
     }
 
-    /**
-     * {@inheritDoc}
-     * @see javax.swing.text.html.HTML.Tag#H5
-     */
+    /** {@inheritDoc} */
     public void sectionTitle4()
     {
-        writeStartTag( Tag.H5 );
+        onSectionTitle( SECTION_LEVEL_4 );
     }
 
-    /**
-     * {@inheritDoc}
-     * @see javax.swing.text.html.HTML.Tag#H5
-     */
+    /** {@inheritDoc} */
     public void sectionTitle4_()
     {
-        writeEndTag( Tag.H5 );
+        onSectionTitle_( SECTION_LEVEL_4 );
     }
 
-    /**
-     * {@inheritDoc}
-     * @see javax.swing.text.html.HTML.Tag#DIV
-     */
+    /** {@inheritDoc} */
     public void section4_()
     {
-        writeEndTag( Tag.DIV );
+        onSection_( SECTION_LEVEL_4 );
     }
 
-    /**
-     * The default class style is <code>section</code>.
-     *
-     * {@inheritDoc}
-     * @see javax.swing.text.html.HTML.Tag#DIV
-     */
+    /** {@inheritDoc} */
     public void section5()
     {
-        onSection();
+        onSection( SECTION_LEVEL_5 );
     }
 
-    /**
-     * {@inheritDoc}
-     * @see javax.swing.text.html.HTML.Tag#H6
-     */
+    /** {@inheritDoc} */
     public void sectionTitle5()
     {
-        writeStartTag( Tag.H6 );
+        onSectionTitle( SECTION_LEVEL_5 );
     }
 
-    /**
-     * {@inheritDoc}
-     * @see javax.swing.text.html.HTML.Tag#H6
-     */
+    /** {@inheritDoc} */
     public void sectionTitle5_()
     {
-        writeEndTag( Tag.H6 );
+        onSectionTitle_( SECTION_LEVEL_5 );
     }
 
-    /**
-     * {@inheritDoc}
-     * @see javax.swing.text.html.HTML.Tag#DIV
-     */
+    /** {@inheritDoc} */
     public void section5_()
     {
-        writeEndTag( Tag.DIV );
+        onSection_( SECTION_LEVEL_5 );
     }
 
     /**
-     * Starts a section.
+     * Starts a section. The default class style is <code>section</code>.
      *
      * @param depth The level of the section.
      * @see javax.swing.text.html.HTML.Tag#DIV
      */
-    private void onSection()
+    private void onSection( int depth )
     {
-        MutableAttributeSet att = new SimpleAttributeSet();
-        att.addAttribute( Attribute.CLASS, "section" );
+        if ( depth >= SECTION_LEVEL_1 && depth <= SECTION_LEVEL_5 )
+        {
+            MutableAttributeSet att = new SimpleAttributeSet();
+            att.addAttribute( Attribute.CLASS, "section" );
 
-        writeStartTag( Tag.DIV, att );
+            writeStartTag( Tag.DIV, att );
+        }
     }
 
-    // ----------------------------------------------------------------------
+    /**
+     * Ends a section.
+     *
+     * @param depth The level of the section.
+     * @see javax.swing.text.html.HTML.Tag#DIV
+     */
+    private void onSection_( int depth )
+    {
+        if ( depth >= SECTION_LEVEL_1 && depth <= SECTION_LEVEL_5 )
+        {
+            writeEndTag( Tag.DIV );
+        }
+    }
+
+    /**
+     * Starts a section title.
+     *
+     * @param depth The level of the section title.
+     * @see javax.swing.text.html.HTML.Tag#H2
+     * @see javax.swing.text.html.HTML.Tag#H3
+     * @see javax.swing.text.html.HTML.Tag#H4
+     * @see javax.swing.text.html.HTML.Tag#H5
+     * @see javax.swing.text.html.HTML.Tag#H6
+     */
+    private void onSectionTitle( int depth )
+    {
+        if ( depth == SECTION_LEVEL_1 )
+        {
+            writeStartTag( Tag.H2 );
+        }
+        else if ( depth == SECTION_LEVEL_2 )
+        {
+            writeStartTag( Tag.H3 );
+        }
+        else if ( depth == SECTION_LEVEL_3 )
+        {
+            writeStartTag( Tag.H4 );
+        }
+        else if ( depth == SECTION_LEVEL_4 )
+        {
+            writeStartTag( Tag.H5 );
+        }
+        else if ( depth == SECTION_LEVEL_5 )
+        {
+            writeStartTag( Tag.H6 );
+        }
+    }
+
+    /**
+     * Ends a section title.
+     *
+     * @param depth The level of the section title.
+     * @see javax.swing.text.html.HTML.Tag#H2
+     * @see javax.swing.text.html.HTML.Tag#H3
+     * @see javax.swing.text.html.HTML.Tag#H4
+     * @see javax.swing.text.html.HTML.Tag#H5
+     * @see javax.swing.text.html.HTML.Tag#H6
+     */
+    private void onSectionTitle_( int depth )
+    {
+        if ( depth == SECTION_LEVEL_1 )
+        {
+            writeEndTag( Tag.H2 );
+        }
+        else if ( depth == SECTION_LEVEL_2 )
+        {
+            writeEndTag( Tag.H3 );
+        }
+        else if ( depth == SECTION_LEVEL_3 )
+        {
+            writeEndTag( Tag.H4 );
+        }
+        else if ( depth == SECTION_LEVEL_4 )
+        {
+            writeEndTag( Tag.H5 );
+        }
+        else if ( depth == SECTION_LEVEL_5 )
+        {
+            writeEndTag( Tag.H6 );
+        }
+    }
+
+    // -----------------------------------------------------------------------
     //
-    // ----------------------------------------------------------------------
+    // -----------------------------------------------------------------------
 
     /**
      * {@inheritDoc}
@@ -667,7 +695,11 @@ public class XhtmlSink
         verbatimFlag = true;
 
         MutableAttributeSet att = new SimpleAttributeSet();
-        att.addAttribute( Attribute.CLASS, "source" );
+
+        if ( boxed )
+        {
+            att.addAttribute( Attribute.CLASS, "source" );
+        }
 
         writeStartTag( Tag.DIV, att );
         writeStartTag( Tag.PRE );
@@ -741,35 +773,28 @@ public class XhtmlSink
         cellJustif = null;
     }
 
-    private int rowMarker = 0;
-
     /**
      * The default class style is <code>a</code> or <code>b</code> depending the row id.
      *
      * {@inheritDoc}
      * @see javax.swing.text.html.HTML.Tag#TR
      */
-    //TODO: could probably make this more flexible but really i would just like a standard xhtml structure.
     public void tableRow()
     {
-        if ( rowMarker == 0 )
+        MutableAttributeSet att = new SimpleAttributeSet();
+
+        if ( evenTableRow )
         {
-            MutableAttributeSet att = new SimpleAttributeSet();
             att.addAttribute( Attribute.CLASS, "a" );
-
-            writeStartTag( Tag.TR, att );
-
-            rowMarker = 1;
         }
         else
         {
-            MutableAttributeSet att = new SimpleAttributeSet();
             att.addAttribute( Attribute.CLASS, "b" );
-
-            writeStartTag( Tag.TR, att );
-
-            rowMarker = 0;
         }
+
+        writeStartTag( Tag.TR, att );
+
+        evenTableRow = !evenTableRow;
 
         cellCount = 0;
     }
@@ -806,36 +831,7 @@ public class XhtmlSink
      */
     public void tableCell( boolean headerRow )
     {
-        String justif = null;
-
-        if ( cellJustif != null )
-        {
-            switch ( cellJustif[cellCount] )
-            {
-                case Parser.JUSTIFY_LEFT:
-                    justif = "left";
-                    break;
-                case Parser.JUSTIFY_RIGHT:
-                    justif = "right";
-                    break;
-                case Parser.JUSTIFY_CENTER:
-                default:
-                    justif = "center";
-                    break;
-            }
-        }
-
-        Tag t = ( headerRow ? Tag.TH : Tag.TD );
-
-        MutableAttributeSet att = null;
-
-        if ( justif != null )
-        {
-            att = new SimpleAttributeSet();
-            att.addAttribute( Attribute.ALIGN, justif );
-        }
-
-        writeStartTag( t, att );
+        tableCell( headerRow, null );
     }
 
     /** {@inheritDoc} */
@@ -871,6 +867,7 @@ public class XhtmlSink
                     justif = "right";
                     break;
                 case Parser.JUSTIFY_CENTER:
+                default:
                     justif = "center";
                     break;
             }
@@ -1212,39 +1209,27 @@ public class XhtmlSink
         writer.close();
     }
 
-    /** {@inheritDoc} */
-    protected void write( String text )
-    {
-        // TODO: this doesn't belong here
-        if ( renderingContext != null )
-        {
-            String relativePathToBasedir = renderingContext.getRelativePath();
-
-            if ( relativePathToBasedir == null )
-            {
-                text = StringUtils.replace( text, "$relativePath", "." );
-            }
-            else
-            {
-                text = StringUtils.replace( text, "$relativePath", relativePathToBasedir );
-            }
-        }
-
-        writer.write( text );
-    }
-
     // ----------------------------------------------------------------------
     //
     // ----------------------------------------------------------------------
 
 
+    /**
+     * Write HTML escaped text to output.
+     *
+     * @param text The text to write.
+     */
     protected void content( String text )
     {
         write( escapeHTML( text ) );
     }
 
+    /**
+     * Write HTML escaped text to output.
+     *
+     * @param text The text to write.
+     */
     protected void verbatimContent( String text )
-
     {
         write( escapeHTML( text ) );
     }
@@ -1281,6 +1266,27 @@ public class XhtmlSink
     public static String encodeURL( String text )
     {
         return HtmlTools.encodeURL( text );
+    }
+
+    /** {@inheritDoc} */
+    protected void write( String text )
+    {
+        // TODO: this doesn't belong here
+        if ( renderingContext != null )
+        {
+            String relativePathToBasedir = renderingContext.getRelativePath();
+
+            if ( relativePathToBasedir == null )
+            {
+                text = StringUtils.replace( text, "$relativePath", "." );
+            }
+            else
+            {
+                text = StringUtils.replace( text, "$relativePath", relativePathToBasedir );
+            }
+        }
+
+        writer.write( text );
     }
 
     /**

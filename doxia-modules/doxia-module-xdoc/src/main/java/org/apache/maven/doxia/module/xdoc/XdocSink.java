@@ -19,6 +19,7 @@ package org.apache.maven.doxia.module.xdoc;
  * under the License.
  */
 
+import java.io.PrintWriter;
 import java.io.Writer;
 
 import javax.swing.text.MutableAttributeSet;
@@ -30,7 +31,6 @@ import org.apache.maven.doxia.parser.Parser;
 import org.apache.maven.doxia.sink.AbstractXmlSink;
 import org.apache.maven.doxia.sink.StructureSink;
 import org.apache.maven.doxia.util.HtmlTools;
-import org.apache.maven.doxia.util.LineBreaker;
 
 /**
  * A doxia Sink which produces an xdoc model.
@@ -48,21 +48,14 @@ public class XdocSink
     // Instance fields
     // ----------------------------------------------------------------------
 
-    /** The LineBreaker to write the result. */
-    protected LineBreaker out;
+    /** The PrintWriter to write the result. */
+    private PrintWriter writer;
 
     /** Used to collect text events. */
-    protected StringBuffer buffer = new StringBuffer();
+    private StringBuffer buffer = new StringBuffer();
 
     /** An indication on if we're inside a head. */
-    protected boolean headFlag;
-
-    /**
-     * An indication on if we're inside a title.
-     *
-     * This will prevent the styling of titles.
-     */
-    protected boolean titleFlag;
+    private boolean headFlag;
 
     /** An indication on if we're inside a box (verbatim). */
     private boolean boxedFlag;
@@ -81,13 +74,13 @@ public class XdocSink
     // ----------------------------------------------------------------------
 
     /**
-     * Constructor, initialize the LineBreaker.
+     * Constructor, initialize the PrintWriter.
      *
      * @param writer The writer to write the result.
      */
     public XdocSink( Writer writer )
     {
-        this.out = new LineBreaker( writer );
+        this.writer = new PrintWriter( writer );
     }
 
     // ----------------------------------------------------------------------
@@ -134,7 +127,7 @@ public class XdocSink
 
         headFlag = true;
 
-        markup( "<?xml version=\"1.0\" ?>" + EOL );
+        write( "<?xml version=\"1.0\" ?>" + EOL );
 
         writeStartTag( DOCUMENT_TAG );
 
@@ -157,15 +150,22 @@ public class XdocSink
      * {@inheritDoc}
      * @see javax.swing.text.html.HTML.Tag#TITLE
      */
+    public void title()
+    {
+        writeStartTag( Tag.TITLE );
+    }
+
+    /**
+     * {@inheritDoc}
+     * @see javax.swing.text.html.HTML.Tag#TITLE
+     */
     public void title_()
     {
-        if ( buffer.length() > 0 )
-        {
-            writeStartTag( Tag.TITLE );
-            content( buffer.toString() );
-            writeEndTag( Tag.TITLE );
-            resetBuffer();
-        }
+        content( buffer.toString() );
+
+        writeEndTag( Tag.TITLE );
+
+        resetBuffer();
     }
 
     /**
@@ -218,25 +218,25 @@ public class XdocSink
 
         writeEndTag( DOCUMENT_TAG );
 
-        out.flush();
+        flush();
 
         resetState();
     }
 
-    // -----------------------------------------------------------------------
+    // ----------------------------------------------------------------------
     // Sections
-    // -----------------------------------------------------------------------
+    // ----------------------------------------------------------------------
 
     /** {@inheritDoc} */
     public void section1()
     {
-        onSection( 1 );
+        onSection( SECTION_LEVEL_1 );
     }
 
     /** {@inheritDoc} */
     public void sectionTitle1()
     {
-        onSectionTitle( 1 );
+        onSectionTitle( SECTION_LEVEL_1 );
     }
 
     /** {@inheritDoc} */
@@ -358,17 +358,32 @@ public class XdocSink
     {
         if ( depth == SECTION_LEVEL_1 )
         {
-            markup( String.valueOf( LESS_THAN ) + SECTION_TAG.toString() + String.valueOf( SPACE ) + Attribute.NAME
+            write( String.valueOf( LESS_THAN ) + SECTION_TAG.toString() + String.valueOf( SPACE ) + Attribute.NAME
                 + String.valueOf( EQUAL ) + String.valueOf( QUOTE ) );
-
-            titleFlag = true;
         }
         else if ( depth == SECTION_LEVEL_2 )
         {
-            markup( String.valueOf( LESS_THAN ) + SUBSECTION_TAG.toString() + String.valueOf( SPACE ) + Attribute.NAME
+            write( String.valueOf( LESS_THAN ) + SUBSECTION_TAG.toString() + String.valueOf( SPACE ) + Attribute.NAME
                 + String.valueOf( EQUAL ) + String.valueOf( QUOTE ) );
+        }
+    }
 
-            titleFlag = true;
+    /**
+     * Ends a section.
+     *
+     * @param depth The level of the section.
+     * @see XdocMarkup#SECTION_TAG
+     * @see XdocMarkup#SUBSECTION_TAG
+     */
+    private void onSection_( int depth )
+    {
+        if ( depth == SECTION_LEVEL_1 )
+        {
+            writeEndTag( SECTION_TAG );
+        }
+        else if ( depth == SECTION_LEVEL_2 )
+        {
+            writeEndTag( SUBSECTION_TAG );
         }
     }
 
@@ -394,8 +409,6 @@ public class XdocSink
         {
             writeStartTag( Tag.H6 );
         }
-
-        titleFlag = true;
     }
 
     /**
@@ -410,7 +423,7 @@ public class XdocSink
     {
         if ( depth == SECTION_LEVEL_1 || depth == SECTION_LEVEL_2 )
         {
-            markup( String.valueOf( QUOTE ) + String.valueOf( GREATER_THAN ) );
+            write( String.valueOf( QUOTE ) + String.valueOf( GREATER_THAN ) );
         }
         else if ( depth == SECTION_LEVEL_3 )
         {
@@ -423,27 +436,6 @@ public class XdocSink
         else if ( depth == SECTION_LEVEL_5 )
         {
             writeEndTag( Tag.H6 );
-        }
-
-        titleFlag = false;
-    }
-
-    /**
-     * Ends a section.
-     *
-     * @param depth The level of the section.
-     * @see XdocMarkup#SECTION_TAG
-     * @see XdocMarkup#SUBSECTION_TAG
-     */
-    private void onSection_( int depth )
-    {
-        if ( depth == SECTION_LEVEL_1 )
-        {
-            writeEndTag( SECTION_TAG );
-        }
-        else if ( depth == SECTION_LEVEL_2 )
-        {
-            writeEndTag( SUBSECTION_TAG );
         }
     }
 
@@ -608,32 +600,32 @@ public class XdocSink
      */
     public void figure()
     {
-        markup( String.valueOf( LESS_THAN ) + Tag.IMG );
+        write( String.valueOf( LESS_THAN ) + Tag.IMG );
     }
 
     /** {@inheritDoc} */
     public void figure_()
     {
-        markup( String.valueOf( SPACE ) + String.valueOf( SLASH ) + String.valueOf( GREATER_THAN ) );
+        write( String.valueOf( SPACE ) + String.valueOf( SLASH ) + String.valueOf( GREATER_THAN ) );
     }
 
     /** {@inheritDoc} */
-    public void figureGraphics( String s )
+    public void figureGraphics( String name )
     {
-        markup( String.valueOf( SPACE ) + Attribute.SRC + String.valueOf( EQUAL ) + String.valueOf( QUOTE ) + s
+        write( String.valueOf( SPACE ) + Attribute.SRC + String.valueOf( EQUAL ) + String.valueOf( QUOTE ) + name
             + String.valueOf( QUOTE ) );
     }
 
     /** {@inheritDoc} */
     public void figureCaption()
     {
-        markup( String.valueOf( SPACE ) + Attribute.ALT + String.valueOf( EQUAL ) + String.valueOf( QUOTE ) );
+        write( String.valueOf( SPACE ) + Attribute.ALT + String.valueOf( EQUAL ) + String.valueOf( QUOTE ) );
     }
 
     /** {@inheritDoc} */
     public void figureCaption_()
     {
-        markup( String.valueOf( QUOTE ) );
+        write( String.valueOf( QUOTE ) );
     }
 
     /**
@@ -662,7 +654,9 @@ public class XdocSink
     public void verbatim( boolean boxed )
     {
         verbatimFlag = true;
+
         boxedFlag = boxed;
+
         if ( boxed )
         {
             writeStartTag( SOURCE_TAG );
@@ -796,6 +790,29 @@ public class XdocSink
      */
     public void tableCell( boolean headerRow )
     {
+        tableCell( headerRow, null );
+    }
+
+    /** {@inheritDoc} */
+    public void tableCell( String width )
+    {
+        tableCell( false, width );
+    }
+
+    /** {@inheritDoc} */
+    public void tableHeaderCell( String width )
+    {
+        tableCell( true, width );
+    }
+
+    /**
+     * @param headerRow true if it is an header row
+     * @param width the cell size
+     * @see javax.swing.text.html.HTML.Tag#TH
+     * @see javax.swing.text.html.HTML.Tag#TD
+     */
+    public void tableCell( boolean headerRow, String width )
+    {
         String justif = null;
 
         if ( cellJustif != null )
@@ -815,13 +832,18 @@ public class XdocSink
             }
         }
 
+
         Tag t = ( headerRow ? Tag.TH : Tag.TD );
 
-        MutableAttributeSet att = null;
+        MutableAttributeSet att = new SimpleAttributeSet();
+
+        if ( width != null )
+        {
+            att.addAttribute( Attribute.WIDTH, width );
+        }
 
         if ( justif != null )
         {
-            att = new SimpleAttributeSet();
             att.addAttribute( Attribute.ALIGN, justif );
         }
 
@@ -881,7 +903,7 @@ public class XdocSink
      */
     public void anchor( String name )
     {
-        if ( !headFlag && !titleFlag )
+        if ( !headFlag )
         {
             String id = HtmlTools.encodeId( name );
 
@@ -902,7 +924,7 @@ public class XdocSink
      */
     public void anchor_()
     {
-        if ( !headFlag && !titleFlag )
+        if ( !headFlag )
         {
             writeEndTag( Tag.A );
         }
@@ -914,7 +936,7 @@ public class XdocSink
      */
     public void link( String name )
     {
-        if ( headFlag || titleFlag )
+        if ( headFlag )
         {
             return;
         }
@@ -952,7 +974,7 @@ public class XdocSink
      */
     public void link_()
     {
-        if ( !headFlag && !titleFlag )
+        if ( !headFlag )
         {
             writeEndTag( Tag.A );
         }
@@ -964,7 +986,7 @@ public class XdocSink
      */
     public void italic()
     {
-        if ( !headFlag && !titleFlag )
+        if ( !headFlag )
         {
             writeStartTag( Tag.I );
         }
@@ -976,7 +998,7 @@ public class XdocSink
      */
     public void italic_()
     {
-        if ( !headFlag && !titleFlag )
+        if ( !headFlag )
         {
             writeEndTag( Tag.I );
         }
@@ -988,7 +1010,7 @@ public class XdocSink
      */
     public void bold()
     {
-        if ( !headFlag && !titleFlag )
+        if ( !headFlag )
         {
             writeStartTag( Tag.B );
         }
@@ -1000,7 +1022,7 @@ public class XdocSink
      */
     public void bold_()
     {
-        if ( !headFlag && !titleFlag )
+        if ( !headFlag )
         {
             writeEndTag( Tag.B );
         }
@@ -1012,7 +1034,7 @@ public class XdocSink
      */
     public void monospaced()
     {
-        if ( !headFlag && !titleFlag )
+        if ( !headFlag )
         {
             writeStartTag( Tag.TT );
         }
@@ -1024,7 +1046,7 @@ public class XdocSink
      */
     public void monospaced_()
     {
-        if ( !headFlag && !titleFlag )
+        if ( !headFlag )
         {
             writeEndTag( Tag.TT );
         }
@@ -1036,7 +1058,7 @@ public class XdocSink
      */
     public void lineBreak()
     {
-        if ( headFlag || titleFlag )
+        if ( headFlag )
         {
             buffer.append( EOL );
         }
@@ -1055,13 +1077,13 @@ public class XdocSink
     /** {@inheritDoc} */
     public void nonBreakingSpace()
     {
-        if ( headFlag || titleFlag )
+        if ( headFlag )
         {
             buffer.append( ' ' );
         }
         else
         {
-            markup( "&#160;" );
+            write( "&#160;" );
         }
     }
 
@@ -1083,6 +1105,12 @@ public class XdocSink
     }
 
     /** {@inheritDoc} */
+    public void rawText( String text )
+    {
+        write( text );
+    }
+
+    /** {@inheritDoc} */
     public void comment( String comment )
     {
         StringBuffer buffer = new StringBuffer( comment.length() + 9 );
@@ -1093,9 +1121,20 @@ public class XdocSink
 
         buffer.append( SPACE ).append( MINUS ).append( MINUS ).append( GREATER_THAN );
 
-        markup( buffer.toString() );
+        rawText( buffer.toString() );
     }
 
+    /** {@inheritDoc} */
+    public void flush()
+    {
+        writer.flush();
+    }
+
+    /** {@inheritDoc} */
+    public void close()
+    {
+        writer.close();
+    }
 
     // ----------------------------------------------------------------------
     //
@@ -1105,30 +1144,31 @@ public class XdocSink
      * Write text to output, preserving white space.
      *
      * @param text The text to write.
+     * @deprecated use write(String)
      */
     protected void markup( String text )
     {
-        out.write( text, true );
+        write( text );
     }
 
     /**
-     * Write HTML escaped text to output, preserving white space.
+     * Write HTML escaped text to output.
      *
      * @param text The text to write.
      */
     protected void content( String text )
     {
-        out.write( escapeHTML( text ), true );
+        write( escapeHTML( text ) );
     }
 
     /**
-     * Write HTML escaped text to output, preserving white space.
+     * Write HTML escaped text to output.
      *
      * @param text The text to write.
      */
     protected void verbatimContent( String text )
     {
-        out.write( escapeHTML( text ), true );
+        write( escapeHTML( text ) );
     }
 
     /**
@@ -1156,20 +1196,8 @@ public class XdocSink
     }
 
     /** {@inheritDoc} */
-    public void flush()
-    {
-        out.flush();
-    }
-
-    /** {@inheritDoc} */
-    public void close()
-    {
-        out.close();
-    }
-
-    /** {@inheritDoc} */
     protected void write( String text )
     {
-        markup( text );
+        writer.write( text );
     }
 }
