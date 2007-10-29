@@ -146,7 +146,8 @@ public class ConfluenceParserTest
     {
         String result = locateAndParseTestSourceFile( "nested-list" );
 
-        assertContainsLines( "Nested list not found", result, "begin:listItem\ntext:  A top level list item\nbegin:list" );
+        assertContainsLines( "Nested list not found", result,
+                             "begin:listItem\ntext:  A top level list item\nbegin:list" );
         // two lists in the input...
         assertEquals( 3, result.split( "end:list\n" ).length );
         // ...and 4 list items
@@ -158,7 +159,7 @@ public class ConfluenceParserTest
         throws Exception
     {
         String result = locateAndParseTestSourceFile( "simple-list" );
- 
+
         assertContainsLines( result, "begin:bold\ntext: bold\n" );
         assertContainsLines( result, "begin:italic\ntext: italic\n" );
         assertContainsLines( result, "begin:monospaced\ntext: monospaced\n" );
@@ -176,11 +177,11 @@ public class ConfluenceParserTest
         throws Exception
     {
         String result = locateAndParseTestSourceFile( "anchor" );
- 
+
         assertContainsLines( result, "begin:paragraph\nbegin:anchor, name: start\nend:anchor" );
         assertContainsLines( result, "begin:anchor, name: middle\nend:anchor" );
         assertContainsLines( result, "begin:paragraph\ntext: Simple paragraph\nbegin:anchor, name: end\nend:anchor" );
-         // 3 anchors in the input...
+        // 3 anchors in the input...
         assertEquals( 4, result.split( "end:anchor\n" ).length );
     }
 
@@ -189,9 +190,22 @@ public class ConfluenceParserTest
         throws Exception
     {
         String result = locateAndParseTestSourceFile( "unknown-macro" );
- 
+
         assertContainsLines( result, "begin:paragraph\ntext: {unknown:start}" );
-   }
+    }
+
+    /** @throws Exception */
+    public void testCodeMacro()
+        throws Exception
+    {
+        String result = locateAndParseTestSourceFile( "code" );
+
+        assertContainsLines( result, "begin:verbatim, boxed: true\ntext: public class Cat {" );
+        // 3 paragraphs in the input...
+        assertEquals( 4, result.split( "end:paragraph\n" ).length );
+        // 1 verbatim in the input...
+        assertEquals( 2, result.split( "end:verbatim\n" ).length );
+    }
 
     private void assertContainsLines( String message, String result, String lines )
     {

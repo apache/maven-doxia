@@ -33,7 +33,7 @@ public class VerbatimBlockParser
 
     public boolean accept( String line, ByLineSource source )
     {
-        if ( line.startsWith( "{code}" ) || line.startsWith( "{noformat}" ) )
+        if ( line.startsWith( "{code" ) || line.startsWith( "{noformat}" ) )
         {
             return true;
         }

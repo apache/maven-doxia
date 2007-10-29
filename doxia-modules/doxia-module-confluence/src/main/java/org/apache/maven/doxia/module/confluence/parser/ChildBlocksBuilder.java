@@ -122,7 +122,7 @@ public class ChildBlocksBuilder
 
                     // System.out.println( "line = " + line );
 
-                    if ( input.charAt( i + 1 ) == '}' )
+                    if ( input.length() > i + 1 && input.charAt( i + 1 ) == '}' )
                     {
                         i++;
                         TextBlock tb = new TextBlock( text.toString() );
