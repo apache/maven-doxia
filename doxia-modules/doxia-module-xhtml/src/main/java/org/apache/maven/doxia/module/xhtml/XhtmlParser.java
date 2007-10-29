@@ -56,6 +56,9 @@ public class XhtmlParser
     /** Counts section level. */
     private int sectionLevel;
 
+    /** For boxed verbatim. */
+    private boolean boxed;
+
     /** {@inheritDoc} */
     protected void handleStartTag( XmlPullParser parser, Sink sink )
         throws XmlPullParserException, MacroExecutionException
@@ -149,6 +152,15 @@ public class XhtmlParser
         {
             sink.paragraph();
         }
+        else if ( parser.getName().equals( Tag.DIV.toString() ) )
+        {
+            String divclass = parser.getAttributeValue( null, Attribute.CLASS.toString() );
+
+            if ( "source".equals( divclass ) )
+            {
+                this.boxed = true;
+            }
+        }
         /*
          * The PRE element tells visual user agents that the enclosed text is
          * "preformatted". When handling preformatted text, visual user agents:
@@ -161,7 +173,14 @@ public class XhtmlParser
          */
         else if ( parser.getName().equals( Tag.PRE.toString() ) )
         {
-            sink.verbatim( true );
+            if ( this.boxed )
+            {
+                sink.verbatim( true );
+            }
+            else
+            {
+                sink.verbatim( false );
+            }
         }
         else if ( parser.getName().equals( Tag.UL.toString() ) )
         {
@@ -282,42 +301,7 @@ public class XhtmlParser
                 }
             }
         }
-        else if ( parser.getName().equals( Tag.BR.toString() ) )
-        {
-            sink.lineBreak();
-        }
-        else if ( parser.getName().equals( Tag.HR.toString() ) )
-        {
-            sink.horizontalRule();
-        }
-        else if ( parser.getName().equals( Tag.IMG.toString() ) )
-        {
-            String src = parser.getAttributeValue( null, Attribute.SRC.toString() );
-            String title = parser.getAttributeValue( null, Attribute.TITLE.toString() );
-            String alt = parser.getAttributeValue( null, Attribute.ALT.toString() );
 
-            sink.figure();
-
-            if ( src != null )
-            {
-                sink.figureGraphics( src );
-            }
-
-            if ( title != null )
-            {
-                sink.figureCaption();
-                sink.text( title );
-                sink.figureCaption_();
-            }
-            else if ( alt != null )
-            {
-                sink.figureCaption();
-                sink.text( alt );
-                sink.figureCaption_();
-            }
-
-            sink.figure_();
-        }
         // ----------------------------------------------------------------------
         // Tables
         // ----------------------------------------------------------------------
@@ -386,6 +370,47 @@ public class XhtmlParser
             this.hasCaption = true;
             sink.tableCaption();
         }
+
+        // ----------------------------------------------------------------------
+        // Empty elements: <br/>, <hr/> and <img />
+        // ----------------------------------------------------------------------
+
+        else if ( parser.getName().equals( Tag.BR.toString() ) )
+        {
+            sink.lineBreak();
+        }
+        else if ( parser.getName().equals( Tag.HR.toString() ) )
+        {
+            sink.horizontalRule();
+        }
+        else if ( parser.getName().equals( Tag.IMG.toString() ) )
+        {
+            String src = parser.getAttributeValue( null, Attribute.SRC.toString() );
+            String title = parser.getAttributeValue( null, Attribute.TITLE.toString() );
+            String alt = parser.getAttributeValue( null, Attribute.ALT.toString() );
+
+            sink.figure();
+
+            if ( src != null )
+            {
+                sink.figureGraphics( src );
+            }
+
+            if ( title != null )
+            {
+                sink.figureCaption();
+                sink.text( title );
+                sink.figureCaption_();
+            }
+            else if ( alt != null )
+            {
+                sink.figureCaption();
+                sink.text( alt );
+                sink.figureCaption_();
+            }
+
+            sink.figure_();
+        }
     }
 
     /** {@inheritDoc} */
@@ -414,6 +439,10 @@ public class XhtmlParser
         else if ( parser.getName().equals( Tag.P.toString() ) )
         {
             sink.paragraph_();
+        }
+        else if ( parser.getName().equals( Tag.DIV.toString() ) )
+        {
+            this.boxed = false;
         }
         else if ( parser.getName().equals( Tag.PRE.toString() ) )
         {

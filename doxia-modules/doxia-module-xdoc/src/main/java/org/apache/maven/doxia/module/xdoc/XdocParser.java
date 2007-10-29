@@ -191,6 +191,20 @@ public class XdocParser
         {
             sink.verbatim( true );
         }
+        /*
+         * The PRE element tells visual user agents that the enclosed text is
+         * "preformatted". When handling preformatted text, visual user agents:
+         * - May leave white space intact.
+         * - May render text with a fixed-pitch font.
+         * - May disable automatic word wrap.
+         * - Must not disable bidirectional processing.
+         * Non-visual user agents are not required to respect extra white space
+         * in the content of a PRE element.
+         */
+        else if ( parser.getName().equals( Tag.PRE.toString() ) )
+        {
+            sink.verbatim( false );
+        }
         else if ( parser.getName().equals( Tag.UL.toString() ) )
         {
             sink.list();
@@ -439,12 +453,23 @@ public class XdocParser
         else if ( parser.getName().equals( Tag.IMG.toString() ) )
         {
             String src = parser.getAttributeValue( null, Attribute.SRC.toString() );
+            String title = parser.getAttributeValue( null, Attribute.TITLE.toString() );
             String alt = parser.getAttributeValue( null, Attribute.ALT.toString() );
 
             sink.figure();
-            sink.figureGraphics( src );
 
-            if ( alt != null )
+            if ( src != null )
+            {
+                sink.figureGraphics( src );
+            }
+
+            if ( title != null )
+            {
+                sink.figureCaption();
+                sink.text( title );
+                sink.figureCaption_();
+            }
+            else if ( alt != null )
             {
                 sink.figureCaption();
                 sink.text( alt );
@@ -496,6 +521,10 @@ public class XdocParser
             sink.paragraph_();
         }
         else if ( parser.getName().equals( SOURCE_TAG.toString() ) )
+        {
+            sink.verbatim_();
+        }
+        else if ( parser.getName().equals( Tag.PRE.toString() ) )
         {
             sink.verbatim_();
         }
