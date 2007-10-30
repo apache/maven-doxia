@@ -19,26 +19,40 @@ package org.apache.maven.doxia.module.confluence.parser;
  * under the License.
  */
 
-import org.apache.maven.doxia.parser.ParseException;
-import org.apache.maven.doxia.util.ByLineSource;
+import org.apache.maven.doxia.sink.Sink;
 
-public class ParagraphBlockParser
-    implements BlockParser
+public class FigureBlock
+    implements Block
 {
 
-    public boolean accept( String line, ByLineSource source )
+    private String location;
+
+    private String caption;
+
+    public FigureBlock( String location )
     {
-        return true;
+        this.location = location;
     }
 
-    public Block visit( String line, ByLineSource source )
-        throws ParseException
+    public FigureBlock( String image, String caption )
     {
-
-        ChildBlocksBuilder builder = new ChildBlocksBuilder();
-        StringBuffer text = new StringBuffer( line );
-        text.append( builder.appendUntilEmptyLine( source ) );
-
-        return new ParagraphBlock( builder.getBlocks( text.toString() ) );
+        this.location = image;
+        this.caption = caption;
     }
+
+    public void traverse( Sink sink )
+    {
+        sink.figure();
+        sink.figureGraphics( location );
+
+        if ( caption != null && caption.length() > 0 )
+        {
+            sink.figureCaption();
+            new TextBlock( caption ).traverse( sink );
+            sink.figureCaption_();
+        }
+
+        sink.figure_();
+    }
+
 }

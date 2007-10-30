@@ -22,23 +22,35 @@ package org.apache.maven.doxia.module.confluence.parser;
 import org.apache.maven.doxia.parser.ParseException;
 import org.apache.maven.doxia.util.ByLineSource;
 
-public class ParagraphBlockParser
+public class FigureBlockParser
     implements BlockParser
 {
-
     public boolean accept( String line, ByLineSource source )
     {
-        return true;
+        return line.startsWith( "!" ) && line.lastIndexOf( "!" ) > 1;
     }
 
     public Block visit( String line, ByLineSource source )
         throws ParseException
     {
+        String image = line.substring( 1, line.lastIndexOf( "!" ) );
+        line = line.substring( line.lastIndexOf( "!" ) + 1 ).trim();
+
+        if ( line.startsWith( "\\\\" ) )
+        {
+            // ignore linebreak at start of caption
+            line = line.substring( 2 );
+        }
 
         ChildBlocksBuilder builder = new ChildBlocksBuilder();
-        StringBuffer text = new StringBuffer( line );
-        text.append( builder.appendUntilEmptyLine( source ) );
 
-        return new ParagraphBlock( builder.getBlocks( text.toString() ) );
+        String caption = line + builder.appendUntilEmptyLine( source );
+
+        if ( caption.trim().length() > 0 )
+        {
+            return new FigureBlock( image, caption );
+        }
+
+        return new FigureBlock( image );
     }
 }

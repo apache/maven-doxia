@@ -1,0 +1,16 @@
+Simple paragraph.
+
+!images/photo.jpg!
+
+Simple paragraph with attempted inline !image.jpg! (should fail).
+
+!images/photo.jpg! With caption on same line
+
+!images/linebreak.jpg!\\
+With caption underneath and linebreak
+
+!images/nolinebreak.jpg!
+With caption underneath and no linebreak
+
+!images/bold.jpg!
+With *bold* caption underneath

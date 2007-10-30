@@ -26,6 +26,7 @@ import java.util.List;
 
 import org.apache.maven.doxia.module.confluence.parser.Block;
 import org.apache.maven.doxia.module.confluence.parser.BlockParser;
+import org.apache.maven.doxia.module.confluence.parser.FigureBlockParser;
 import org.apache.maven.doxia.module.confluence.parser.HorizontalRuleBlockParser;
 import org.apache.maven.doxia.module.confluence.parser.ParagraphBlockParser;
 import org.apache.maven.doxia.module.confluence.parser.SectionBlockParser;
@@ -50,24 +51,21 @@ import org.apache.maven.doxia.util.ByLineSource;
 public class ConfluenceParser
     extends AbstractTextParser
 {
-    
     private BlockParser[] parsers;
 
     public ConfluenceParser()
     {
         BlockParser headingParser = new SectionBlockParser();
+        BlockParser figureParser = new FigureBlockParser();
         BlockParser verbatimParser = new VerbatimBlockParser();
         BlockParser horizontalRuleParser = new HorizontalRuleBlockParser();
         BlockParser paragraphParser = new ParagraphBlockParser();
         BlockParser listParser = new ListBlockParser();
         BlockParser tableParser = new TableBlockParser();
 
-        parsers = new BlockParser[]{headingParser, verbatimParser, horizontalRuleParser, listParser, tableParser,
-            paragraphParser};
+        parsers = new BlockParser[] { headingParser, figureParser, verbatimParser, horizontalRuleParser, listParser,
+                tableParser, paragraphParser };
     }
-
-    //TODO: (empty line) Produces a new paragraph
-    //TODO: better support for anchors
 
     public List parse( ByLineSource source )
         throws ParseException

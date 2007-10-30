@@ -207,6 +207,29 @@ public class ConfluenceParserTest
         assertEquals( 2, result.split( "end:verbatim\n" ).length );
     }
 
+    /** @throws Exception */
+    public void testFigure()
+        throws Exception
+    {
+        String result = locateAndParseTestSourceFile( "figure" );
+
+        assertContainsLines( result, "begin:figure\nfigureGraphics, name: images/photo.jpg\nend:figure\n" );
+        assertContainsLines( result, "attempted inline !image.jpg! (should fail)" );
+        // this isn't ideal... Doxia captions are not the same as what people would use to add text to a confluence
+        assertContainsLines( result, "figureGraphics, name: images/photo.jpg\n"
+            + "begin:figureCaption\ntext: With caption on same line\n" + "end:figureCaption" );
+        assertContainsLines( result, "figureGraphics, name: images/nolinebreak.jpg\n"
+                             + "begin:figureCaption\ntext: With caption underneath and no linebreak\nend:figureCaption" );
+        // ignore linebreak after figure insert...
+        assertContainsLines( result, "figureGraphics, name: images/linebreak.jpg\n"
+                             + "begin:figureCaption\ntext: With caption underneath and linebreak\nend:figureCaption" );
+        // ignore formtting in caption...
+        assertContainsLines( result, "figureGraphics, name: images/bold.jpg\n"
+                             + "begin:figureCaption\ntext: With *bold* caption underneath\nend:figureCaption" );
+        // 2 paragraphs in the input... (the figures do not go in a paragraph by analogy with AptParser)
+        assertEquals( 3, result.split( "end:paragraph\n" ).length );
+    }
+
     private void assertContainsLines( String message, String result, String lines )
     {
         lines = StringUtils.replace( lines, "\n", EOL );
