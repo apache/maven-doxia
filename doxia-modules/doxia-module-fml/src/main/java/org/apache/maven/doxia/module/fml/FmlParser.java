@@ -346,9 +346,7 @@ public class FmlParser
                 sink.anchor_();
                 sink.definedTerm_();
                 sink.definition();
-                sink.paragraph();
                 writeAnswer( sink, faq.getAnswer() );
-                sink.paragraph_();
 
                 if ( faqs.isToplink() )
                 {
