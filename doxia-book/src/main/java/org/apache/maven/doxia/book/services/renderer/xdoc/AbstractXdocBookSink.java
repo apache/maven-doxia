@@ -22,6 +22,8 @@ package org.apache.maven.doxia.book.services.renderer.xdoc;
 import java.io.Writer;
 import java.util.Locale;
 
+import javax.swing.text.html.HTML.Tag;
+
 import org.apache.maven.doxia.module.xdoc.XdocSink;
 import org.codehaus.plexus.i18n.I18N;
 import org.codehaus.plexus.util.StringUtils;
@@ -53,47 +55,6 @@ public abstract class AbstractXdocBookSink
     }
 
     /**
-     * @see org.apache.maven.doxia.module.xdoc.XdocSink#head()
-     */
-    public void head()
-    {
-        resetState();
-
-        setHeadFlag( true );
-
-        write( "<?xml version=\"1.0\" ?>" + EOL );
-
-        write( "<document>" + EOL );
-
-        write( "<properties>" + EOL );
-
-    }
-
-    /**
-     * @see org.apache.maven.doxia.module.xdoc.XdocSink#head_()
-     */
-    public void head_()
-    {
-        setHeadFlag( false );
-
-        write( "</properties>" + EOL );
-    }
-
-    /**
-     * @see org.apache.maven.doxia.module.xdoc.XdocSink#author_()
-     */
-    public void author_()
-    {
-        if ( getBuffer().length() > 0 )
-        {
-            write( "<author>" );
-            content( getBuffer().toString() );
-            write( "</author>" + EOL );
-            resetBuffer();
-        }
-    }
-
-    /**
      * @see org.apache.maven.doxia.module.xdoc.XdocSink#date_()
      */
     public void date_()
@@ -106,7 +67,7 @@ public abstract class AbstractXdocBookSink
      */
     public void body()
     {
-        write( "<body>" + EOL );
+        writeStartTag( Tag.BODY );
 
         navigationPanel();
 
@@ -122,27 +83,13 @@ public abstract class AbstractXdocBookSink
 
         navigationPanel();
 
-        write( "</body>" + EOL );
+        writeEndTag( Tag.BODY );
 
-        write( "</document>" + EOL );
+        writeEndTag( DOCUMENT_TAG );
 
         flush();
 
         resetState();
-    }
-
-    /**
-     * @see org.apache.maven.doxia.module.xdoc.XdocSink#title_()
-     */
-    public void title_()
-    {
-        if ( getBuffer().length() > 0 )
-        {
-            write( "<title>" );
-            content( getBuffer().toString() );
-            write( "</title>" + EOL );
-            resetBuffer();
-        }
     }
 
     // -----------------------------------------------------------------------
