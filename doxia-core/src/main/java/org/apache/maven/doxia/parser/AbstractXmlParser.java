@@ -21,6 +21,7 @@ package org.apache.maven.doxia.parser;
 
 import java.io.IOException;
 import java.io.Reader;
+import java.io.StringReader;
 
 import org.apache.maven.doxia.macro.MacroExecutionException;
 import org.apache.maven.doxia.markup.XmlMarkup;
@@ -60,6 +61,20 @@ public abstract class AbstractXmlParser
         {
             throw new ParseException( "Macro execution failed: " + ex.getMessage(), ex );
         }
+    }
+
+    /**
+     * Convenience method to parse an arbitrary string and emit any xml events into the given sink.
+     *
+     * @param string A string that provides the source input. The string has to be completely
+     * enclosed inside one xml root element, otherwise a ParseException is thrown.
+     * @param sink A sink that consumes the Doxia events.
+     * @throws ParseException if the string does not represent a well-formed xml snippet.
+     */
+    public void parse( String string, Sink sink )
+        throws ParseException
+    {
+        parse( new StringReader( string ), sink );
     }
 
     /** {@inheritDoc} */
