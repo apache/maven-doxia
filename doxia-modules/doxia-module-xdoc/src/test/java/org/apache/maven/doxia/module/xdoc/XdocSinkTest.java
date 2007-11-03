@@ -177,16 +177,7 @@ public class XdocSinkTest
     /** {@inheritDoc} */
     protected String getAnchorBlock( String anchor )
     {
-        return "<a name=\"" + anchor + "\" id=\""
-            + anchor + "\">" + anchor + "</a>";
-    }
-
-    // Disable testAnchor until the order of attributes issue is clarified
-    // TODO: remove
-    /** {@inheritDoc} */
-    public void testAnchor()
-    {
-        assertEquals( "Dummy!", "", "" );
+        return "<a name=\"" + anchor + "\">" + anchor + "</a>";
     }
 
     /** {@inheritDoc} */
