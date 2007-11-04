@@ -146,8 +146,7 @@ public class ConfluenceParserTest
     {
         String result = locateAndParseTestSourceFile( "nested-list" );
 
-        assertContainsLines( "Nested list not found", result,
-                             "begin:listItem\ntext:  A top level list item\nbegin:list" );
+        assertContainsLines( "Nested list not found", result, "begin:listItem\ntext: A top level list item\nbegin:list" );
         // two lists in the input...
         assertEquals( 3, result.split( "end:list\n" ).length );
         // ...and 4 list items
@@ -165,11 +164,13 @@ public class ConfluenceParserTest
         assertContainsLines( result, "begin:monospaced\ntext: monospaced\n" );
         assertContainsLines( result, "begin:link, name: http://jira.codehaus.org\ntext: http://jira.codehaus.org\n" );
         assertContainsLines( result, "begin:link, name: http://jira.codehaus.org\ntext: JIRA\n" );
-        assertContainsLines( result, "begin:listItem\ntext:  Item with no formatting\nend:listItem\n" );
-        // one list in the input...
-        assertEquals( 2, result.split( "end:list\n" ).length );
-        // ...and 5 list items
-        assertEquals( 6, result.split( "end:listItem\n" ).length );
+        assertContainsLines( result, "begin:listItem\ntext: Item with no formatting\nend:listItem\n" );
+        assertContainsLines( result, "begin:listItem\ntext: One bullet\nend:listItem\n" );
+        assertContainsLines( result, "begin:listItem\ntext: A list item with more than one line\nend:listItem\n" );
+        // 3 lists in the input...
+        assertEquals( 4, result.split( "end:list\n" ).length );
+        // ...and 7 list items
+        assertEquals( 8, result.split( "end:listItem\n" ).length );
     }
 
     /** @throws Exception */
@@ -219,13 +220,13 @@ public class ConfluenceParserTest
         assertContainsLines( result, "figureGraphics, name: images/photo.jpg\n"
             + "begin:figureCaption\ntext: With caption on same line\n" + "end:figureCaption" );
         assertContainsLines( result, "figureGraphics, name: images/nolinebreak.jpg\n"
-                             + "begin:figureCaption\ntext: With caption underneath and no linebreak\nend:figureCaption" );
+            + "begin:figureCaption\ntext: With caption underneath and no linebreak\nend:figureCaption" );
         // ignore linebreak after figure insert...
         assertContainsLines( result, "figureGraphics, name: images/linebreak.jpg\n"
-                             + "begin:figureCaption\ntext: With caption underneath and linebreak\nend:figureCaption" );
+            + "begin:figureCaption\ntext: With caption underneath and linebreak\nend:figureCaption" );
         // ignore formtting in caption...
         assertContainsLines( result, "figureGraphics, name: images/bold.jpg\n"
-                             + "begin:figureCaption\ntext: With *bold* caption underneath\nend:figureCaption" );
+            + "begin:figureCaption\ntext: With *bold* caption underneath\nend:figureCaption" );
         // 2 paragraphs in the input... (the figures do not go in a paragraph by analogy with AptParser)
         assertEquals( 3, result.split( "end:paragraph\n" ).length );
     }
@@ -245,6 +246,49 @@ public class ConfluenceParserTest
         assertEquals( 4, result.split( "end:paragraph\n" ).length );
         // 5 links in the input...
         assertEquals( 6, result.split( "end:link\n" ).length );
+    }
+
+    /** @throws Exception */
+    public void testParagraphWithList()
+        throws Exception
+    {
+        String result = locateAndParseTestSourceFile( "paragraph-list" );
+
+        assertContainsLines( result, "begin:paragraph\ntext: A paragraph\nend:paragraph\n" );
+        assertContainsLines( result, "begin:listItem\ntext: A nested list item\nend:listItem\n" );
+        assertContainsLines( result, "begin:listItem\ntext: Another nested list item with two lines\nend:listItem\n" );
+        // 2 paragraphs in the input...
+        assertEquals( 3, result.split( "end:paragraph\n" ).length );
+        // 1 list in the input...
+        assertEquals( 2, result.split( "end:list\n" ).length );
+    }
+
+    /** @throws Exception */
+    public void testParagraphWithFigure()
+        throws Exception
+    {
+        String result = locateAndParseTestSourceFile( "paragraph-figure" );
+
+        assertContainsLines( result, "begin:paragraph\ntext: A paragraph\nend:paragraph\n" );
+        assertContainsLines( result, "begin:figure\nfigureGraphics, name: images/logo.png\nbegin:figureCaption\ntext: with a figure\nend:figureCaption" );
+        // 2 paragraphs in the input...
+        assertEquals( 3, result.split( "end:paragraph\n" ).length );
+        // 1 figure in the input...
+        assertEquals( 2, result.split( "end:figure\n" ).length );
+    }
+
+    /** @throws Exception */
+    public void testParagraphWithHeader()
+        throws Exception
+    {
+        String result = locateAndParseTestSourceFile( "paragraph-header" );
+
+        assertContainsLines( result, "begin:paragraph\ntext: A paragraph\nend:paragraph\n" );
+        assertContainsLines( result, "begin:section2\nbegin:sectionTitle2\ntext: A header\nend:sectionTitle2" );
+        // 3 paragraphs in the input...
+        assertEquals( 4, result.split( "end:paragraph\n" ).length );
+        // 1 header in the input...
+        assertEquals( 2, result.split( "end:sectionTitle2\n" ).length );
     }
 
     private void assertContainsLines( String message, String result, String lines )

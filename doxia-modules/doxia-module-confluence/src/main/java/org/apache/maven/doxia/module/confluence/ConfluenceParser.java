@@ -59,11 +59,14 @@ public class ConfluenceParser
         BlockParser figureParser = new FigureBlockParser();
         BlockParser verbatimParser = new VerbatimBlockParser();
         BlockParser horizontalRuleParser = new HorizontalRuleBlockParser();
-        BlockParser paragraphParser = new ParagraphBlockParser();
         BlockParser listParser = new ListBlockParser();
         BlockParser tableParser = new TableBlockParser();
 
-        parsers = new BlockParser[] { headingParser, figureParser, verbatimParser, horizontalRuleParser, listParser,
+        BlockParser[] subparsers = new BlockParser[] { headingParser, figureParser, listParser, tableParser };
+        BlockParser paragraphParser = new ParagraphBlockParser( subparsers );
+
+        parsers =
+            new BlockParser[] { headingParser, figureParser, verbatimParser, horizontalRuleParser, listParser,
                 tableParser, paragraphParser };
     }
 
@@ -89,13 +92,6 @@ public class ConfluenceParser
 
                 if ( parser.accept( line, source ) )
                 {
-                    /*
-                    System.out.println( "------------------------------------------------------------" );
-                    System.out.println( "line = " + line );
-                    System.out.println( "line accepted by: " + parser );
-                    System.out.println( "------------------------------------------------------------" );
-                    */
-
                     accepted = true;
 
                     blocks.add( parser.visit( line, source ) );
@@ -104,20 +100,19 @@ public class ConfluenceParser
                 }
             }
 
-            /*
+/*
             if ( !accepted )
             {
-                throw new ParseException( "don't  know how to handle line: " + source.getLineNumber() + ": " + line );
+                throw new ParseException( "don't know how to handle line: " + source.getLineNumber() + ": " + line );
             }
-            */
+*/
         }
 
         return blocks;
     }
 
     /** {@inheritDoc} */
-    public synchronized void parse( Reader reader,
-                                    Sink sink )
+    public synchronized void parse( Reader reader, Sink sink )
         throws ParseException
     {
         List blocks;

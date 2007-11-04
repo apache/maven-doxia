@@ -42,9 +42,7 @@ public class FigureBlockParser
             line = line.substring( 2 );
         }
 
-        ChildBlocksBuilder builder = new ChildBlocksBuilder();
-
-        String caption = line + builder.appendUntilEmptyLine( source );
+        String caption = line + appendUntilEmptyLine( source );
 
         if ( caption.trim().length() > 0 )
         {
@@ -53,4 +51,42 @@ public class FigureBlockParser
 
         return new FigureBlock( image );
     }
+    
+    /**
+     * Slurp lines from the source starting with the given line appending them together into a StringBuffer until an
+     * empty line is reached, and while the source contains more lines.
+     * 
+     * @param source the source to read new lines from
+     * @return a StringBuffer appended with lines
+     * @throws ParseException
+     */
+    private String appendUntilEmptyLine(ByLineSource source )
+        throws ParseException
+    {
+        StringBuffer text = new StringBuffer();
+        
+        String line;
+
+        while ( ( line = source.getNextLine() ) != null )
+        {
+
+            if ( line.trim().length() == 0 )
+            {
+                break;
+            }
+
+            if ( text.length() == 0 )
+            {
+                text.append( line.trim() );
+            }
+            else
+            {
+                text.append( " " + line.trim() );
+            }
+
+        }
+ 
+        return text.toString();
+    }
+
 }

@@ -82,7 +82,7 @@ public class TreeListBuilder
                 }
             }
         }
-        current.addChildren( text, type );
+        current.addChildren( text.trim(), type );
     }
 
     public ListBlock getBlock()

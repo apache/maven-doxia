@@ -23,8 +23,6 @@ import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.List;
 
-import org.apache.maven.doxia.parser.ParseException;
-import org.apache.maven.doxia.util.ByLineSource;
 import org.codehaus.plexus.util.StringUtils;
 
 /**
@@ -199,54 +197,4 @@ public class ChildBlocksBuilder
         return new StringBuffer();
     }
 
-    /**
-     * Slurp lines from the source starting with the given line appending them together into a StringBuffer until an
-     * empty line is reached, and while the source contains more lines. The result can be passed to the
-     * {@link #getBlocks(String)} method.
-     * 
-     * @param line the first line
-     * @param source the source to read new lines from
-     * @return a StringBuffer appended with lines
-     * @throws ParseException
-     */
-    public String appendUntilEmptyLine( ByLineSource source )
-        throws ParseException
-    {
-        StringBuffer text = new StringBuffer();
-        
-        String line;
-
-        while ( ( line = source.getNextLine() ) != null )
-        {
-
-            if ( line.trim().length() == 0 )
-            {
-                break;
-            }
-
-            if ( text.length() == 0 )
-            {
-                text.append( line.trim() );
-            }
-            else
-            {
-                text.append( " " + line.trim() );
-            }
-
-        }
-        // TODO: instead of just flying along we should probably test new lines
-        // in the other parsers
-        // to make sure there aren't things that should be handled by other
-        // parsers. For example, right
-        // now:
-        // Blah blah blah blah
-        // # one
-        // # two
-        //
-        // Will not get processed correctly. This parser will try to deal with
-        // it when it should be handled
-        // by the list parser.
-
-        return text.toString();
-    }
 }

@@ -37,20 +37,7 @@ public class ListBlockParser
 
     public boolean accept( String line, ByLineSource source )
     {
-        String nextLine = null;
-
-        try
-        {
-            nextLine = source.getNextLine();
-
-            source.ungetLine();
-        }
-        catch ( ParseException e )
-        {
-            // do nothing
-        }
-
-        if ( isList( line ) && isList( nextLine ) )
+        if ( isList( line ) )
         {
             return true;
         }
@@ -58,43 +45,69 @@ public class ListBlockParser
         return false;
     }
 
-    public  Block visit(  String line,  ByLineSource source )
+    public Block visit( String line, ByLineSource source )
         throws ParseException
     {
-         TreeListBuilder treeListBuilder = new TreeListBuilder();
+        TreeListBuilder treeListBuilder = new TreeListBuilder();
 
-        String l = line;
+        StringBuffer text = new StringBuffer();
 
         do
         {
-            if ( !isList( l ) )
+            if ( line.trim().length() == 0 )
             {
                 break;
             }
-
-            if ( isBulletedList( l ) )
+            
+            if (text.length()>0 && isList( line ) )
             {
-                int level = getLevel( l, '*' );
+                // We reached a new line with list prefix
+                addItem( treeListBuilder, text );
+            }
 
-                treeListBuilder.feedEntry( BULLETED_LIST, level, l.substring( level ) );
+            if ( text.length() == 0 )
+            {
+                text.append( line.trim() );
             }
             else
             {
-                int level = getLevel( l, '#' );
-
-                treeListBuilder.feedEntry( NUMBERED_LIST, level, l.substring( level ) );
+                text.append( " " + line.trim() );
             }
+
         }
-        while ( ( l = source.getNextLine() ) != null );
+        while ( ( line = source.getNextLine() ) != null );
+
+        if ( text.length() > 0 )
+        {
+            addItem( treeListBuilder, text );
+        }
 
         return treeListBuilder.getBlock();
     }
 
-    private int  getLevel( String line, char c )
+    private void addItem( TreeListBuilder treeListBuilder, StringBuffer text )
+    {
+        String item = text.toString();
+        if ( isBulletedList( item ) )
+        {
+            int level = getLevel( item, '*' );
+
+            treeListBuilder.feedEntry( BULLETED_LIST, level, item.substring( level ) );
+        }
+        else
+        {
+            int level = getLevel( item, '#' );
+
+            treeListBuilder.feedEntry( NUMBERED_LIST, level, item.substring( level ) );
+        }
+        text.setLength( 0 );
+    }
+
+    private int getLevel( String line, char c )
     {
         int level = 0;
 
-        while ( line.charAt( level )  == c )
+        while ( line.charAt( level ) == c )
         {
             level++;
         }
