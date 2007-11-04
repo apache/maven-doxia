@@ -99,11 +99,19 @@ public class ChildBlocksBuilder
                         if ( link.indexOf( "|" ) > 0 )
                         {
                             String[] pieces = StringUtils.split( text.toString(), "|" );
+
                             blocks.add( new LinkBlock( pieces[1], pieces[0] ) );
                         }
                         else
                         {
-                            blocks.add( new LinkBlock( link, link ) );
+                            String value = link;
+
+                            if ( link.startsWith( "#" ) )
+                            {
+                                value = link.substring( 1 );
+                            }
+
+                            blocks.add( new LinkBlock( link, value ) );
                         }
 
                         text = new StringBuffer();

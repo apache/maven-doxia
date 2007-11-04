@@ -230,6 +230,23 @@ public class ConfluenceParserTest
         assertEquals( 3, result.split( "end:paragraph\n" ).length );
     }
 
+    /** @throws Exception */
+    public void testLink()
+        throws Exception
+    {
+        String result = locateAndParseTestSourceFile( "link" );
+
+        assertContainsLines( result, "begin:link, name: middle\ntext: middle\nend:link" );
+        assertContainsLines( result, "begin:link, name: end\ntext: end\nend:link" );
+        assertContainsLines( result, "begin:link, name: link\ntext: alias\nend:link" );
+        assertContainsLines( result, "begin:link, name: link#anchor\ntext: link#anchor\nend:link" );
+        assertContainsLines( result, "begin:link, name: #simple\ntext: simple\nend:link" );
+        // 3 paragraphs in the input...
+        assertEquals( 4, result.split( "end:paragraph\n" ).length );
+        // 5 links in the input...
+        assertEquals( 6, result.split( "end:link\n" ).length );
+    }
+
     private void assertContainsLines( String message, String result, String lines )
     {
         lines = StringUtils.replace( lines, "\n", EOL );
