@@ -85,9 +85,10 @@ public abstract class AbstractSinkTest
         sink.title_();
         sink.flush();
 
-        String expected = noNewLine( writer.toString() );
-        assertEquals( "Wrong title!",
-            expected, noNewLine( getTitleBlock( title ) ) );
+        String actual = noNewLine( writer.toString() );
+        String expected = noNewLine( getTitleBlock( title ) );
+
+        assertEquals( "Wrong title!", expected, actual );
     }
 
     /**
@@ -104,9 +105,10 @@ public abstract class AbstractSinkTest
         sink.author_();
         sink.flush();
 
-        String expected = noNewLine( writer.toString() );
-        assertEquals( "Wrong author!",
-            expected, noNewLine( getAuthorBlock( author ) ) );
+        String actual = noNewLine( writer.toString() );
+        String expected = noNewLine( getAuthorBlock( author ) );
+
+        assertEquals( "Wrong author!", expected, actual );
     }
 
     /**
@@ -122,9 +124,10 @@ public abstract class AbstractSinkTest
         sink.date_();
         sink.flush();
 
-        String expected = noNewLine( writer.toString() );
-        assertEquals( "Wrong date!",
-            expected, noNewLine( getDateBlock( date ) ) );
+        String actual = noNewLine( writer.toString() );
+        String expected = noNewLine( getDateBlock( date ) );
+
+        assertEquals( "Wrong date!", expected, actual );
     }
 
     /**
@@ -138,8 +141,10 @@ public abstract class AbstractSinkTest
         sink.head_();
         sink.flush();
 
-        String expected = noNewLine( writer.toString() );
-        assertEquals( "Wrong head!", expected, noNewLine( getHeadBlock() ) );
+        String actual = noNewLine( writer.toString() );
+        String expected = noNewLine( getHeadBlock() );
+
+        assertEquals( "Wrong head!", expected, actual );
     }
 
     /**
@@ -153,8 +158,10 @@ public abstract class AbstractSinkTest
         sink.body_();
         sink.flush();
 
-        String expected = noNewLine( writer.toString() );
-        assertEquals( "Wrong body!", expected, noNewLine( getBodyBlock() ) );
+        String actual = noNewLine( writer.toString() );
+        String expected = noNewLine( getBodyBlock() );
+
+        assertEquals( "Wrong body!", expected, actual );
     }
 
     /**
@@ -172,9 +179,10 @@ public abstract class AbstractSinkTest
         sink.sectionTitle_();
         sink.flush();
 
-        String expected = noNewLine( writer.toString() );
-        assertEquals( "Wrong sectionTitle!",
-            expected, noNewLine( getSectionTitleBlock( title ) ) );
+        String actual = noNewLine( writer.toString() );
+        String expected = noNewLine( getSectionTitleBlock( title ) );
+
+        assertEquals( "Wrong sectionTitle!", expected, actual );
     }
 
     /**
@@ -194,9 +202,10 @@ public abstract class AbstractSinkTest
         sink.section1_();
         sink.flush();
 
-        String expected = noNewLine( writer.toString() );
-        assertEquals( "Wrong section1 block!",
-            expected, noNewLine( getSection1Block( title ) ) );
+        String actual = noNewLine( writer.toString() );
+        String expected = noNewLine( getSection1Block( title ) );
+
+        assertEquals( "Wrong section1 block!", expected, actual );
     }
 
     /**
@@ -216,9 +225,10 @@ public abstract class AbstractSinkTest
         sink.section2_();
         sink.flush();
 
-        String expected = noNewLine( writer.toString() );
-        assertEquals( "Wrong section2 block!",
-            expected, noNewLine( getSection2Block( title ) ) );
+        String actual = noNewLine( writer.toString() );
+        String expected = noNewLine( getSection2Block( title ) );
+
+        assertEquals( "Wrong section2 block!", expected, actual );
     }
 
     /**
@@ -238,9 +248,10 @@ public abstract class AbstractSinkTest
         sink.section3_();
         sink.flush();
 
-        String expected = noNewLine( writer.toString() );
-        assertEquals( "Wrong section3 block!",
-            expected, noNewLine( getSection3Block( title ) ) );
+        String actual = noNewLine( writer.toString() );
+        String expected = noNewLine( getSection3Block( title ) );
+
+        assertEquals( "Wrong section3 block!", expected, actual );
     }
 
     /**
@@ -260,9 +271,10 @@ public abstract class AbstractSinkTest
         sink.section4_();
         sink.flush();
 
-        String expected = noNewLine( writer.toString() );
-        assertEquals( "Wrong section4 block!",
-            expected, noNewLine( getSection4Block( title ) ) );
+        String actual = noNewLine( writer.toString() );
+        String expected = noNewLine( getSection4Block( title ) );
+
+        assertEquals( "Wrong section4 block!", expected, actual );
     }
 
     /**
@@ -282,9 +294,10 @@ public abstract class AbstractSinkTest
         sink.section5_();
         sink.flush();
 
-        String expected = noNewLine( writer.toString() );
-        assertEquals( "Wrong section5 block!",
-            expected, noNewLine( getSection5Block( title ) ) );
+        String actual = noNewLine( writer.toString() );
+        String expected = noNewLine( getSection5Block( title ) );
+
+        assertEquals( "Wrong section5 block!", expected, actual );
     }
 
     /**
@@ -303,9 +316,10 @@ public abstract class AbstractSinkTest
         sink.list_();
         sink.flush();
 
-        String expected = noNewLine( writer.toString() );
-        assertEquals( "Wrong list!",
-            expected, noNewLine( getListBlock( item ) ) );
+        String actual = noNewLine( writer.toString() );
+        String expected = noNewLine( getListBlock( item ) );
+
+        assertEquals( "Wrong list!", expected, actual );
     }
 
     /**
@@ -326,9 +340,10 @@ public abstract class AbstractSinkTest
         sink.numberedList_();
         sink.flush();
 
-        String expected = noNewLine( writer.toString() );
-        assertEquals( "Wrong numbered list!",
-            expected, noNewLine( getNumberedListBlock( item ) ) );
+        String actual = noNewLine( writer.toString() );
+        String expected = noNewLine( getNumberedListBlock( item ) );
+
+        assertEquals( "Wrong numbered list!", expected, actual );
     }
 
     /**
@@ -355,9 +370,10 @@ public abstract class AbstractSinkTest
         sink.definitionList_();
         sink.flush();
 
-        String expected = noNewLine( writer.toString() );
-        assertEquals( "Wrong definition list!", expected,
-            noNewLine( getDefinitionListBlock( definum, definition ) ) );
+        String actual = noNewLine( writer.toString() );
+        String expected = noNewLine( getDefinitionListBlock( definum, definition ) );
+
+        assertEquals( "Wrong definition list!", expected, actual );
     }
 
     /**
@@ -379,9 +395,10 @@ public abstract class AbstractSinkTest
         sink.figure_();
         sink.flush();
 
-        String expected = noNewLine( writer.toString() );
-        assertEquals( "Wrong figure!", expected,
-            noNewLine( getFigureBlock( source, caption ) ) );
+        String actual = noNewLine( writer.toString() );
+        String expected = noNewLine( getFigureBlock( source, caption ) );
+
+        assertEquals( "Wrong figure!", expected, actual );
     }
 
     /**
@@ -412,9 +429,10 @@ public abstract class AbstractSinkTest
         sink.table_();
         sink.flush();
 
-        String expected = noNewLine( writer.toString() );
-        assertEquals( "Wrong table!", expected,
-            noNewLine( getTableBlock( cell, caption ) ) );
+        String actual = noNewLine( writer.toString() );
+        String expected = noNewLine( getTableBlock( cell, caption ) );
+
+        assertEquals( "Wrong table!", expected, actual );
     }
 
     /**
@@ -431,9 +449,10 @@ public abstract class AbstractSinkTest
         sink.paragraph_();
         sink.flush();
 
-        String expected = noNewLine( writer.toString() );
-        assertEquals( "Wrong paragraph!",
-            expected, noNewLine( getParagraphBlock( text ) ) );
+        String actual = noNewLine( writer.toString() );
+        String expected = noNewLine( getParagraphBlock( text ) );
+
+        assertEquals( "Wrong paragraph!", expected, actual );
     }
 
     /**
@@ -450,9 +469,10 @@ public abstract class AbstractSinkTest
         sink.verbatim_();
         sink.flush();
 
-        String expected = noNewLine( writer.toString() );
-        assertEquals( "Wrong verbatim!",
-            expected, noNewLine( getVerbatimBlock( text ) ) );
+        String actual = noNewLine( writer.toString() );
+        String expected = noNewLine( getVerbatimBlock( text ) );
+
+        assertEquals( "Wrong verbatim!", expected, actual );
     }
 
     /**
@@ -466,9 +486,10 @@ public abstract class AbstractSinkTest
         sink.horizontalRule();
         sink.flush();
 
-        String expected = noNewLine( writer.toString() );
-        assertEquals( "Wrong horizontal rule!",
-            expected, noNewLine( getHorizontalRuleBlock() ) );
+        String actual = noNewLine( writer.toString() );
+        String expected = noNewLine( getHorizontalRuleBlock() );
+
+        assertEquals( "Wrong horizontal rule!", expected, actual );
     }
 
     /**
@@ -481,9 +502,10 @@ public abstract class AbstractSinkTest
         sink.pageBreak();
         sink.flush();
 
-        String expected = noNewLine( writer.toString() );
-        assertEquals( "Wrong pageBreak!",
-            expected, noNewLine( getPageBreakBlock() ) );
+        String actual = noNewLine( writer.toString() );
+        String expected = noNewLine( getPageBreakBlock() );
+
+        assertEquals( "Wrong pageBreak!", expected, actual );
     }
 
     /**
@@ -500,9 +522,10 @@ public abstract class AbstractSinkTest
         sink.anchor_();
         sink.flush();
 
-        String expected = noNewLine( writer.toString() );
-        assertEquals( "Wrong anchor!",
-            expected, noNewLine( getAnchorBlock( anchor ) ) );
+        String actual = noNewLine( writer.toString() );
+        String expected = noNewLine( getAnchorBlock( anchor ) );
+
+        assertEquals( "Wrong anchor!", expected, actual );
     }
 
     /**
@@ -520,9 +543,10 @@ public abstract class AbstractSinkTest
         sink.link_();
         sink.flush();
 
-        String expected = noNewLine( writer.toString() );
-        assertEquals( "Wrong link!",
-            expected, noNewLine( getLinkBlock( link, text ) ) );
+        String actual = noNewLine( writer.toString() );
+        String expected = noNewLine( getLinkBlock( link, text ) );
+
+        assertEquals( "Wrong link!", expected, actual );
     }
 
     /**
@@ -538,9 +562,10 @@ public abstract class AbstractSinkTest
         sink.italic_();
         sink.flush();
 
-        String expected = noNewLine( writer.toString() );
-        assertEquals( "Wrong italic!",
-            expected, noNewLine( getItalicBlock( text ) ) );
+        String actual = noNewLine( writer.toString() );
+        String expected = noNewLine( getItalicBlock( text ) );
+
+        assertEquals( "Wrong italic!", expected, actual );
     }
 
     /**
@@ -556,9 +581,10 @@ public abstract class AbstractSinkTest
         sink.bold_();
         sink.flush();
 
-        String expected = noNewLine( writer.toString() );
-        assertEquals( "Wrong bold!",
-            expected, noNewLine( getBoldBlock( text ) ) );
+        String actual = noNewLine( writer.toString() );
+        String expected = noNewLine( getBoldBlock( text ) );
+
+        assertEquals( "Wrong bold!", expected, actual );
     }
 
     /**
@@ -575,9 +601,10 @@ public abstract class AbstractSinkTest
         sink.monospaced_();
         sink.flush();
 
-        String expected = noNewLine( writer.toString() );
-        assertEquals( "Wrong monospaced!",
-            expected, noNewLine( getMonospacedBlock( text ) ) );
+        String actual = noNewLine( writer.toString() );
+        String expected = noNewLine( getMonospacedBlock( text ) );
+
+        assertEquals( "Wrong monospaced!", expected, actual );
     }
 
     /**
@@ -590,9 +617,10 @@ public abstract class AbstractSinkTest
         sink.lineBreak();
         sink.flush();
 
-        String expected = noNewLine( writer.toString() );
-        assertEquals( "Wrong lineBreak!",
-            expected, noNewLine( getLineBreakBlock() ) );
+        String actual = noNewLine( writer.toString() );
+        String expected = noNewLine( getLineBreakBlock() );
+
+        assertEquals( "Wrong lineBreak!", expected, actual );
     }
 
     /**
@@ -606,9 +634,10 @@ public abstract class AbstractSinkTest
         sink.nonBreakingSpace();
         sink.flush();
 
-        String expected = noNewLine( writer.toString() );
-        assertEquals( "Wrong nonBreakingSpace!",
-            expected, noNewLine( getNonBreakingSpaceBlock() ) );
+        String actual = noNewLine( writer.toString() );
+        String expected = noNewLine( getNonBreakingSpaceBlock() );
+
+        assertEquals( "Wrong nonBreakingSpace!", expected, actual );
     }
 
     /**
@@ -622,9 +651,10 @@ public abstract class AbstractSinkTest
         sink.text( text );
         sink.flush();
 
-        String expected = noNewLine( writer.toString() );
-        assertEquals( "Wrong text!",
-            expected, noNewLine( getTextBlock( text ) ) );
+        String actual = noNewLine( writer.toString() );
+        String expected = noNewLine( getTextBlock( text ) );
+
+        assertEquals( "Wrong text!", expected, actual );
     }
 
     /**
@@ -638,9 +668,10 @@ public abstract class AbstractSinkTest
         sink.rawText( text );
         sink.flush();
 
-        String expected = noNewLine( writer.toString() );
-        assertEquals( "Wrong rawText!",
-            expected, noNewLine( getRawTextBlock( text ) ) );
+        String actual = noNewLine( writer.toString() );
+        String expected = noNewLine( getRawTextBlock( text ) );
+
+        assertEquals( "Wrong rawText!", expected, actual );
     }
 
 
