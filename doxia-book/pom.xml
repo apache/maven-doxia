@@ -92,6 +92,14 @@ under the License.
       <artifactId>plexus-cli</artifactId>
       <version>1.0</version>
     </dependency>
+
+    <!-- test -->
+    <dependency>
+      <groupId>org.apache.maven.doxia</groupId>
+      <artifactId>doxia-core</artifactId>
+      <classifier>tests</classifier>
+      <scope>test</scope>
+    </dependency>
   </dependencies>
   <build>
     <plugins>

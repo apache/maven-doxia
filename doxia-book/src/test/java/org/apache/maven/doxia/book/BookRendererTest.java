@@ -21,6 +21,7 @@ package org.apache.maven.doxia.book;
 
 import org.codehaus.plexus.PlexusTestCase;
 import org.codehaus.plexus.util.FileUtils;
+import org.codehaus.plexus.util.StringUtils;
 import org.apache.maven.doxia.book.model.BookModel;
 
 import java.io.File;
@@ -50,5 +51,23 @@ public class BookRendererTest
         doxia.renderBook( book, "latex", files, getTestFile( "target/test-output/latex" ) );
         doxia.renderBook( book, "doc-book", files, getTestFile( "target/test-output/doc-book" ) );
         doxia.renderBook( book, "rtf", files, getTestFile( "target/test-output/rtf" ) );
+
+        assertCorrectDocbook();
+    }
+
+    /**
+     * Regression test for the docbook output.
+     */
+    private void assertCorrectDocbook()
+        throws Exception
+    {
+        String expected =
+            FileUtils.fileRead( getTestFile( "src/test/resources/expected/doc-book/plexus-user-guide.xml" ) );
+
+        String actual =
+            FileUtils.fileRead( getTestFile( "target/test-output/doc-book/plexus-user-guide.xml" ) );
+
+        assertEquals( "Wrong docbook output!",
+            StringUtils.replace( expected, "\r", "" ), StringUtils.replace( actual, "\r", "" ) );
     }
 }

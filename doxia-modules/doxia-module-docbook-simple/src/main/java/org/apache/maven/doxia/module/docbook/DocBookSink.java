@@ -19,12 +19,6 @@ package org.apache.maven.doxia.module.docbook;
  * under the License.
  */
 
-import org.apache.maven.doxia.parser.Parser;
-import org.apache.maven.doxia.sink.AbstractXmlSink;
-import org.apache.maven.doxia.sink.StructureSink;
-import org.apache.maven.doxia.util.LineBreaker;
-import org.codehaus.plexus.util.FileUtils;
-
 import java.io.StringWriter;
 import java.io.Writer;
 import java.util.StringTokenizer;
@@ -33,6 +27,12 @@ import javax.swing.text.MutableAttributeSet;
 import javax.swing.text.SimpleAttributeSet;
 import javax.swing.text.html.HTML.Attribute;
 import javax.swing.text.html.HTML.Tag;
+
+import org.apache.maven.doxia.parser.Parser;
+import org.apache.maven.doxia.sink.AbstractXmlSink;
+import org.apache.maven.doxia.sink.StructureSink;
+import org.apache.maven.doxia.util.LineBreaker;
+import org.codehaus.plexus.util.FileUtils;
 
 /**
  * A doxia Sink which produces a <code>Docbook</code> model.
@@ -44,14 +44,17 @@ public class DocBookSink
     extends AbstractXmlSink
     implements DocbookMarkup
 {
-    /** DocBook V4.1 SGML public id: "-//OASIS//DTD DocBook V4.1//EN" */
-    public static final String DEFAULT_SGML_PUBLIC_ID = "-//OASIS//DTD DocBook V4.1//EN";
+    /** DocBook V4.4 SGML public id: "-//OASIS//DTD DocBook V4.4//EN" */
+    public static final String DEFAULT_SGML_PUBLIC_ID = "-//OASIS//DTD DocBook V4.4//EN";
 
-    /** DocBook XML V4.1.2 XML public id: "-//OASIS//DTD DocBook XML V4.1.2//EN" */
-    public static final String DEFAULT_XML_PUBLIC_ID = "-//OASIS//DTD DocBook XML V4.1.2//EN";
+    /** DocBook XML V4.4 XML public id: "-//OASIS//DTD DocBook XML V4.4//EN" */
+    public static final String DEFAULT_XML_PUBLIC_ID = "-//OASIS//DTD DocBook V4.4//EN";
 
-    /** DocBook XML V4.0 XML system id: "http://www.oasis-open.org/docbook/xml/4.0/docbookx.dtd" */
-    public static final String DEFAULT_XML_SYSTEM_ID = "http://www.oasis-open.org/docbook/xml/4.0/docbookx.dtd";
+    /** DocBook XML V4.4 XML system id: "http://www.oasis-open.org/docbook/xml/4.4/docbookx.dtd" */
+    public static final String DEFAULT_XML_SYSTEM_ID = "http://www.oasis-open.org/docbook/xml/4.4/docbookx.dtd";
+
+    /** DocBook XML V4.4 SGML system id: "http://www.oasis-open.org/docbook/xml/4.4/docbookx.dtd" */
+    public static final String DEFAULT_SGML_SYSTEM_ID = "http://www.oasis-open.org/docbook/sgml/4.4/docbookx.dtd";
 
     /** The output writer. */
     private LineBreaker out;
@@ -128,21 +131,7 @@ public class DocBookSink
     /** tableHasGrid. */
     private boolean tableHasGrid;
 
-    // books have chapters and no headers
-    private boolean isBook;
-
     private boolean skip;
-
-    private boolean outputBookHead;
-
-    // -----------------------------------------------------------------------
-
-    public DocBookSink( Writer out, boolean isBook )
-    {
-        this( out );
-        this.isBook = isBook;
-        this.outputBookHead = true;
-    }
 
     /**
      * @param writer the default writer.
@@ -159,7 +148,6 @@ public class DocBookSink
     }
 
     /**
-     *
      * @param text The text to escape.
      * @param xmlMode xmlMode.
      * @return The escaped text.
@@ -498,7 +486,7 @@ public class DocBookSink
     /**
      * Reset all variables.
      */
-    private void resetState()
+    protected void resetState()
     {
         hasTitle = false;
         authorDateFlag = false;
@@ -517,6 +505,7 @@ public class DocBookSink
 
     /**
      * {@inheritDoc}
+     *
      * @see #DEFAULT_XML_PUBLIC_ID
      * @see #DEFAULT_SGML_PUBLIC_ID
      * @see #DEFAULT_XML_SYSTEM_ID
@@ -526,16 +515,23 @@ public class DocBookSink
     {
         resetState();
 
-        skip = isBook && !outputBookHead;
+        MutableAttributeSet att = writeXmlHeader( "article" );
 
+        writeStartTag( ARTICLE_TAG, att );
+    }
+
+    protected MutableAttributeSet writeXmlHeader( String root )
+    {
         if ( xmlMode )
         {
             markup( "<?xml version=\"1.0\"" );
+
             if ( encoding != null )
             {
                 markup( " encoding=\"" + encoding + "\"" );
             }
-            markup( " ?>\n" );
+
+            markup( " ?>" + EOL );
 
             if ( styleSheet != null )
             {
@@ -544,15 +540,8 @@ public class DocBookSink
         }
 
         String pubId;
-        if ( isBook )
-        {
-            markup( "<!DOCTYPE book PUBLIC" );
-        }
-        else
-        {
-            markup( "<!DOCTYPE article PUBLIC" );
-        }
-        
+        markup( "<!DOCTYPE " + root + " PUBLIC" );
+
         if ( publicId == null )
         {
             if ( xmlMode )
@@ -570,81 +559,57 @@ public class DocBookSink
         }
         markup( " \"" + pubId + "\"" );
         String sysId = systemId;
-        if ( sysId == null && xmlMode )
-        {
-            sysId = DEFAULT_XML_SYSTEM_ID;
-        }
         if ( sysId == null )
         {
-            markup( ">" + EOL );
+            if ( xmlMode )
+            {
+                sysId = DEFAULT_XML_SYSTEM_ID;
+            }
+            else
+            {
+                sysId = DEFAULT_SGML_SYSTEM_ID;
+            }
         }
-        else
-        {
-            markup( EOL + "\"" + sysId + "\">" + EOL );
-        }
+        markup( EOL + "\"" + sysId + "\">" + EOL );
 
         MutableAttributeSet att = new SimpleAttributeSet();
         if ( lang != null )
         {
             att.addAttribute( Attribute.LANG, lang );
         }
-
-        if ( isBook )
-        {
-            skip = false;
-            writeStartTag( CHAPTER_TAG, att );
-        }
-        else
-        {
-            writeStartTag( ARTICLE_TAG, att );
-        }
+        return att;
     }
 
     /**
      * {@inheritDoc}
+     *
      * @see DocbookMarkup#ARTICLEINFO_TAG
      */
     public void head_()
     {
         if ( hasTitle )
         {
-            if ( isBook )
-            {
-                writeEndTag( BOOKINFO_TAG );
-            }
-            else
-            {
-                writeEndTag( ARTICLEINFO_TAG );
-            }
-            
+            writeEndTag( ARTICLEINFO_TAG );
             hasTitle = false;
-            skip = false;
-            outputBookHead = false;
         }
     }
 
     /**
      * {@inheritDoc}
+     *
      * @see DocbookMarkup#ARTICLEINFO_TAG
      * @see javax.swing.text.html.HTML.Tag#TITLE
      */
     public void title()
     {
-        if ( isBook )
-        {
-            writeStartTag( BOOKINFO_TAG );
-        }
-        else
-        {
-            writeStartTag( ARTICLEINFO_TAG );
-        }
-
-        hasTitle = true;
+        writeStartTag( ARTICLEINFO_TAG );
         writeStartTag( Tag.TITLE );
+        hasTitle = true;
     }
 
     /**
      * {@inheritDoc}
+     *
      * @see javax.swing.text.html.HTML.Tag#TITLE
      */
     public void title_()
@@ -654,6 +619,7 @@ public class DocBookSink
 
     /**
      * {@inheritDoc}
+     *
      * @see DocbookMarkup#CORPAUTHOR_TAG
      */
     public void author()
@@ -664,6 +630,7 @@ public class DocBookSink
 
     /**
      * {@inheritDoc}
+     *
      * @see DocbookMarkup#CORPAUTHOR_TAG
      */
     public void author_()
@@ -674,6 +641,7 @@ public class DocBookSink
 
     /**
      * {@inheritDoc}
+     *
      * @see DocbookMarkup#DATE_TAG
      */
     public void date()
@@ -684,6 +652,7 @@ public class DocBookSink
 
     /**
      * {@inheritDoc}
+     *
      * @see DocbookMarkup#DATE_TAG
      */
     public void date_()
@@ -694,44 +663,19 @@ public class DocBookSink
 
     /**
      * {@inheritDoc}
+     *
      * @see DocbookMarkup#ARTICLE_TAG
      */
     public void body_()
     {
-        if ( isBook )
-        {
-            writeEndTag( CHAPTER_TAG );
-        }
-        else
-        {
-            writeEndTag( ARTICLE_TAG );
-        }
-        
+        writeEndTag( ARTICLE_TAG );
         out.flush();
         resetState();
-    }
-    
-    /**
-     * {@inheritDoc}
-     * @see DocbookMarkup#BOOK_TAG
-     */
-    public void book()
-    {
-        writeStartTag( BOOK_TAG );
-    }
-    
-    /**
-     * {@inheritDoc}
-     * @see DocbookMarkup#BOOK_TAG
-     */
-    public void book_()
-    {
-        writeEndTag( BOOK_TAG );
-        out.flush();
     }
 
     /**
      * {@inheritDoc}
+     *
      * @see DocbookMarkup#SECTION_TAG
      */
     public void section1()
@@ -741,6 +685,7 @@ public class DocBookSink
 
     /**
      * {@inheritDoc}
+     *
      * @see DocbookMarkup#SECTION_TAG
      */
     public void section1_()
@@ -750,6 +695,7 @@ public class DocBookSink
 
     /**
      * {@inheritDoc}
+     *
      * @see DocbookMarkup#SECTION_TAG
      */
     public void section2()
@@ -759,6 +705,7 @@ public class DocBookSink
 
     /**
      * {@inheritDoc}
+     *
      * @see DocbookMarkup#SECTION_TAG
      */
     public void section2_()
@@ -768,6 +715,7 @@ public class DocBookSink
 
     /**
      * {@inheritDoc}
+     *
      * @see DocbookMarkup#SECTION_TAG
      */
     public void section3()
@@ -777,6 +725,7 @@ public class DocBookSink
 
     /**
      * {@inheritDoc}
+     *
      * @see DocbookMarkup#SECTION_TAG
      */
     public void section3_()
@@ -786,6 +735,7 @@ public class DocBookSink
 
     /**
      * {@inheritDoc}
+     *
      * @see DocbookMarkup#SECTION_TAG
      */
     public void section4()
@@ -795,6 +745,7 @@ public class DocBookSink
 
     /**
      * {@inheritDoc}
+     *
      * @see DocbookMarkup#SECTION_TAG
      */
     public void section4_()
@@ -804,6 +755,7 @@ public class DocBookSink
 
     /**
      * {@inheritDoc}
+     *
      * @see DocbookMarkup#SECTION_TAG
      */
     public void section5()
@@ -813,6 +765,7 @@ public class DocBookSink
 
     /**
      * {@inheritDoc}
+     *
      * @see DocbookMarkup#SECTION_TAG
      */
     public void section5_()
@@ -822,6 +775,7 @@ public class DocBookSink
 
     /**
      * {@inheritDoc}
+     *
      * @see javax.swing.text.html.HTML.Tag#TITLE
      */
     public void sectionTitle()
@@ -831,6 +785,7 @@ public class DocBookSink
 
     /**
      * {@inheritDoc}
+     *
      * @see javax.swing.text.html.HTML.Tag#TITLE
      */
     public void sectionTitle_()
@@ -840,6 +795,107 @@ public class DocBookSink
 
     /**
      * {@inheritDoc}
+     *
+     * @see javax.swing.text.html.HTML.Tag#TITLE
+     */
+    public void sectionTitle1()
+    {
+        writeStartTag( Tag.TITLE );
+    }
+
+    /**
+     * {@inheritDoc}
+     *
+     * @see javax.swing.text.html.HTML.Tag#TITLE
+     */
+    public void sectionTitle1_()
+    {
+        writeEndTag( Tag.TITLE );
+    }
+
+    /**
+     * {@inheritDoc}
+     *
+     * @see javax.swing.text.html.HTML.Tag#TITLE
+     */
+    public void sectionTitle2()
+    {
+        writeStartTag( Tag.TITLE );
+    }
+
+    /**
+     * {@inheritDoc}
+     *
+     * @see javax.swing.text.html.HTML.Tag#TITLE
+     */
+    public void sectionTitle2_()
+    {
+        writeEndTag( Tag.TITLE );
+    }
+
+    /**
+     * {@inheritDoc}
+     *
+     * @see javax.swing.text.html.HTML.Tag#TITLE
+     */
+    public void sectionTitle3()
+    {
+        writeStartTag( Tag.TITLE );
+    }
+
+    /**
+     * {@inheritDoc}
+     *
+     * @see javax.swing.text.html.HTML.Tag#TITLE
+     */
+    public void sectionTitle3_()
+    {
+        writeEndTag( Tag.TITLE );
+    }
+
+    /**
+     * {@inheritDoc}
+     *
+     * @see javax.swing.text.html.HTML.Tag#TITLE
+     */
+    public void sectionTitle4()
+    {
+        writeStartTag( Tag.TITLE );
+    }
+
+    /**
+     * {@inheritDoc}
+     *
+     * @see javax.swing.text.html.HTML.Tag#TITLE
+     */
+    public void sectionTitle4_()
+    {
+        writeEndTag( Tag.TITLE );
+    }
+
+    /**
+     * {@inheritDoc}
+     *
+     * @see javax.swing.text.html.HTML.Tag#TITLE
+     */
+    public void sectionTitle5()
+    {
+        writeStartTag( Tag.TITLE );
+    }
+
+    /**
+     * {@inheritDoc}
+     *
+     * @see javax.swing.text.html.HTML.Tag#TITLE
+     */
+    public void sectionTitle5_()
+    {
+        writeEndTag( Tag.TITLE );
+    }
+
+    /**
+     * {@inheritDoc}
+     *
      * @see DocbookMarkup#ITEMIZEDLIST_TAG
      */
     public void list()
@@ -849,6 +905,7 @@ public class DocBookSink
 
     /**
      * {@inheritDoc}
+     *
      * @see DocbookMarkup#ITEMIZEDLIST_TAG
      */
     public void list_()
@@ -858,6 +915,7 @@ public class DocBookSink
 
     /**
      * {@inheritDoc}
+     *
      * @see DocbookMarkup#LISTITEM_TAG
      */
     public void listItem()
@@ -867,6 +925,7 @@ public class DocBookSink
 
     /**
      * {@inheritDoc}
+     *
      * @see DocbookMarkup#LISTITEM_TAG
      */
     public void listItem_()
@@ -876,6 +935,7 @@ public class DocBookSink
 
     /**
      * {@inheritDoc}
+     *
      * @see DocbookMarkup#ORDEREDLIST_TAG
      * @see DocbookMarkup#NUMERATION_ATTRIBUTE
      */
@@ -909,6 +969,7 @@ public class DocBookSink
 
     /**
      * {@inheritDoc}
+     *
      * @see DocbookMarkup#ORDEREDLIST_TAG
      */
     public void numberedList_()
@@ -918,6 +979,7 @@ public class DocBookSink
 
     /**
      * {@inheritDoc}
+     *
      * @see DocbookMarkup#LISTITEM_TAG
      */
     public void numberedListItem()
@@ -927,6 +989,7 @@ public class DocBookSink
 
     /**
      * {@inheritDoc}
+     *
      * @see DocbookMarkup#LISTITEM_TAG
      */
     public void numberedListItem_()
@@ -936,6 +999,7 @@ public class DocBookSink
 
     /**
      * {@inheritDoc}
+     *
      * @see DocbookMarkup#VARIABLELIST_TAG
      */
     public void definitionList()
@@ -945,6 +1009,7 @@ public class DocBookSink
 
     /**
      * {@inheritDoc}
+     *
      * @see DocbookMarkup#VARIABLELIST_TAG
      */
     public void definitionList_()
@@ -954,6 +1019,7 @@ public class DocBookSink
 
     /**
      * {@inheritDoc}
+     *
      * @see DocbookMarkup#VARLISTENTRY_TAG
      */
     public void definitionListItem()
@@ -963,6 +1029,7 @@ public class DocBookSink
 
     /**
      * {@inheritDoc}
+     *
      * @see DocbookMarkup#VARLISTENTRY_TAG
      */
     public void definitionListItem_()
@@ -972,6 +1039,7 @@ public class DocBookSink
 
     /**
      * {@inheritDoc}
+     *
      * @see DocbookMarkup#TERM_TAG
      */
     public void definedTerm()
@@ -981,6 +1049,7 @@ public class DocBookSink
 
     /**
      * {@inheritDoc}
+     *
      * @see DocbookMarkup#TERM_TAG
      */
     public void definedTerm_()
@@ -990,6 +1059,7 @@ public class DocBookSink
 
     /**
      * {@inheritDoc}
+     *
      * @see DocbookMarkup#LISTITEM_TAG
      */
     public void definition()
@@ -999,6 +1069,7 @@ public class DocBookSink
 
     /**
      * {@inheritDoc}
+     *
      * @see DocbookMarkup#LISTITEM_TAG
      */
     public void definition_()
@@ -1008,6 +1079,7 @@ public class DocBookSink
 
     /**
      * {@inheritDoc}
+     *
      * @see DocbookMarkup#PARA_TAG
      */
     public void paragraph()
@@ -1017,6 +1089,7 @@ public class DocBookSink
 
     /**
      * {@inheritDoc}
+     *
      * @see DocbookMarkup#PARA_TAG
      */
     public void paragraph_()
@@ -1026,6 +1099,7 @@ public class DocBookSink
 
     /**
      * {@inheritDoc}
+     *
      * @see DocbookMarkup#PROGRAMLISTING_TAG
      */
     public void verbatim( boolean boxed )
@@ -1036,6 +1110,7 @@ public class DocBookSink
 
     /**
      * {@inheritDoc}
+     *
      * @see DocbookMarkup#PROGRAMLISTING_TAG
      */
     public void verbatim_()
@@ -1112,6 +1187,7 @@ public class DocBookSink
 
     /**
      * {@inheritDoc}
+     *
      * @see DocbookMarkup#FIGURE_TAG
      * @see javax.swing.text.html.HTML.Tag#TITLE
      */
@@ -1123,6 +1199,7 @@ public class DocBookSink
 
     /**
      * {@inheritDoc}
+     *
      * @see DocbookMarkup#FIGURE_TAG
      * @see javax.swing.text.html.HTML.Tag#TITLE
      */
@@ -1141,6 +1218,7 @@ public class DocBookSink
 
     /**
      * {@inheritDoc}
+     *
      * @see DocbookMarkup#INFORMALTABLE_TAG
      * @see DocbookMarkup#FRAME_ATTRIBUTE
      * @see DocbookMarkup#ROWSEP_ATTRIBUTE
@@ -1175,7 +1253,7 @@ public class DocBookSink
             MutableAttributeSet att = new SimpleAttributeSet();
             att.addAttribute( FRAME_ATTRIBUTE, frame );
             att.addAttribute( ROWSEP_ATTRIBUTE, String.valueOf( sep ) );
-            att.addAttribute( COLSEP_ATTRIBUTE, String.valueOf( sep )  );
+            att.addAttribute( COLSEP_ATTRIBUTE, String.valueOf( sep ) );
 
             writeStartTag( INFORMALTABLE_TAG, att );
 
@@ -1190,6 +1268,7 @@ public class DocBookSink
 
     /**
      * {@inheritDoc}
+     *
      * @see DocbookMarkup#TGROUP_TAG
      * @see DocbookMarkup#COLS_ATTRIBUTE
      * @see DocbookMarkup#COLSPEC_TAG
@@ -1245,6 +1324,7 @@ public class DocBookSink
 
     /**
      * {@inheritDoc}
+     *
      * @see DocbookMarkup#TGROUP_TAG
      * @see DocbookMarkup#TBODY_TAG
      */
@@ -1261,6 +1341,7 @@ public class DocBookSink
 
     /**
      * {@inheritDoc}
+     *
      * @see DocbookMarkup#ROW_TAG
      */
     public void tableRow()
@@ -1270,6 +1351,7 @@ public class DocBookSink
 
     /**
      * {@inheritDoc}
+     *
      * @see DocbookMarkup#ROW_TAG
      */
     public void tableRow_()
@@ -1279,6 +1361,7 @@ public class DocBookSink
 
     /**
      * {@inheritDoc}
+     *
      * @see DocbookMarkup#ENTRY_TAG
      */
     public void tableCell()
@@ -1288,6 +1371,7 @@ public class DocBookSink
 
     /**
      * {@inheritDoc}
+     *
      * @see DocbookMarkup#ENTRY_TAG
      */
     public void tableCell_()
@@ -1350,6 +1434,7 @@ public class DocBookSink
 
     /**
      * {@inheritDoc}
+     *
      * @see javax.swing.text.html.HTML.Tag#TITLE
      */
     public void tableCaption_()
@@ -1359,6 +1444,7 @@ public class DocBookSink
 
     /**
      * {@inheritDoc}
+     *
      * @see DocbookMarkup#ANCHOR_TAG
      */
     public void anchor( String name )
@@ -1383,6 +1469,7 @@ public class DocBookSink
 
     /**
      * {@inheritDoc}
+     *
      * @see DocbookMarkup#ANCHOR_TAG
      */
     public void anchor_()
@@ -1398,6 +1485,7 @@ public class DocBookSink
 
     /**
      * {@inheritDoc}
+     *
      * @see DocbookMarkup#ULINK_TAG
      * @see DocbookMarkup#URL_ATTRIBUTE
      * @see DocbookMarkup#LINK_TAG
@@ -1425,6 +1513,7 @@ public class DocBookSink
 
     /**
      * {@inheritDoc}
+     *
      * @see DocbookMarkup#ULINK_TAG
      * @see DocbookMarkup#LINK_TAG
      */
@@ -1582,5 +1671,13 @@ public class DocBookSink
     protected void write( String text )
     {
         markup( text );
+    }
+
+    /**
+     * @param skip the skip to set.
+     */
+    public void setSkip( boolean skip )
+    {
+        this.skip = skip;
     }
 }

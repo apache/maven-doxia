@@ -19,14 +19,10 @@ package org.apache.maven.doxia.module.docbook;
  * under the License.
  */
 
+import java.io.Writer;
+
 import org.apache.maven.doxia.sink.AbstractSinkTest;
 import org.apache.maven.doxia.sink.Sink;
-import org.apache.maven.doxia.parser.Parser;
-
-import java.io.Reader;
-import java.io.InputStream;
-import java.io.InputStreamReader;
-import java.io.Writer;
 
 /**
  * @author <a href="mailto:jason@maven.org">Jason van Zyl</a>
@@ -67,7 +63,8 @@ public class DocBookSinkTest extends AbstractSinkTest
     /** {@inheritDoc} */
     protected String getHeadBlock()
     {
-        return "<!DOCTYPE article PUBLIC \"-//OASIS//DTD DocBook V4.1//EN\"><article>";
+        return "<!DOCTYPE article PUBLIC \"" + DocBookSink.DEFAULT_SGML_PUBLIC_ID + "\""
+            + EOL + "\"" + DocBookSink.DEFAULT_SGML_SYSTEM_ID + "\"><article>";
     }
 
     /** {@inheritDoc} */
@@ -85,31 +82,31 @@ public class DocBookSinkTest extends AbstractSinkTest
     /** {@inheritDoc} */
     protected String getSection1Block( String title )
     {
-        return "<section>" + title + "</section>";
+        return "<section><title>" + title + "</title></section>";
     }
 
     /** {@inheritDoc} */
     protected String getSection2Block( String title )
     {
-        return "<section>" + title + "</section>";
+        return "<section><title>" + title + "</title></section>";
     }
 
     /** {@inheritDoc} */
     protected String getSection3Block( String title )
     {
-        return "<section>" + title + "</section>";
+        return "<section><title>" + title + "</title></section>";
     }
 
     /** {@inheritDoc} */
     protected String getSection4Block( String title )
     {
-        return "<section>" + title + "</section>";
+        return "<section><title>" + title + "</title></section>";
     }
 
     /** {@inheritDoc} */
     protected String getSection5Block( String title )
     {
-        return "<section>" + title + "</section>";
+        return "<section><title>" + title + "</title></section>";
     }
 
     /** {@inheritDoc} */
