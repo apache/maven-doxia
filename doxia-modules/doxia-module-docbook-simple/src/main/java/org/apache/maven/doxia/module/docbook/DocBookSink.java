@@ -151,8 +151,8 @@ public class DocBookSink
      * @param text The text to escape.
      * @param xmlMode xmlMode.
      * @return The escaped text.
+     * @deprecated Use HtmlTools#escapeHTML(String,boolean).
      */
-    // TODO: Try to replace by HtmlTools#escapeHTML(String).
     public static final String escapeSGML( String text, boolean xmlMode )
     {
         int length = text.length();
