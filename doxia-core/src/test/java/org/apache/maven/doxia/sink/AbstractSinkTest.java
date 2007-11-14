@@ -695,6 +695,15 @@ public abstract class AbstractSinkTest
     }
 
     /**
+     * Returns a String representation of all events that have been written to the sink.
+     * @return The Sink content as a String.
+     */
+    protected String getSinkContent()
+    {
+        return writer.toString();
+    }
+
+    /**
      * Returns the directory where all sink test output will go.
      * @return The test output directory.
      */
