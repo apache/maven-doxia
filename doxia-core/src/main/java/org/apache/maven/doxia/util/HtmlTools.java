@@ -33,19 +33,35 @@ import org.apache.maven.doxia.sink.StructureSink;
 public class HtmlTools
 {
     /**
-     * Escape special characters in a text in HTML.
+     * Escape special HTML characters in a String in <code>xml</code> mode.
      *
-     * <pre>
-     * < becomes <code>&</code>lt;
-     * > becomes <code>&</code>gt;
-     * & becomes <code>&</code>amp;
-     * " becomes <code>&</code>quot;
-     * </pre>
-     *
-     * @param text the String to escape, may be null
-     * @return the text escaped, "" if null String input
+     * @param text the String to escape, may be null.
+     * @return The escaped text or the empty string if text == null.
+     * @see #escapeHTML(String,boolean).
      */
     public static String escapeHTML( String text )
+    {
+        return escapeHTML( text, true );
+    }
+
+    /**
+     * Escape special HTML characters in a String.
+     *
+     * <pre>
+     * < becomes <code>&lt;</code>
+     * > becomes <code>&gt;</code>
+     * & becomes <code>&amp;</code>
+     * " becomes <code>&quot;</code>
+     * </pre>
+     *
+     * If <code>xmlMode</code> is true, every other character than the above remains unchanged,
+     * if <code>xmlMode</code> is false, non-ascii characters get replaced by their hex code.
+     *
+     * @param text The String to escape, may be null.
+     * @param xmlMode set to <code>false</code> to replace non-ascii characters.
+     * @return The escaped text or the empty string if text == null.
+     */
+    public static final String escapeHTML( String text, boolean xmlMode )
     {
         if ( text == null )
         {
@@ -73,7 +89,24 @@ public class HtmlTools
                     buffer.append( "&quot;" );
                     break;
                 default:
-                    buffer.append( c );
+                    if ( xmlMode )
+                    {
+                        buffer.append( c );
+                    }
+                    else
+                    {
+                        if ( c <= 0x7E )
+                        {
+                            // ASCII.
+                            buffer.append( c );
+                        }
+                        else
+                        {
+                            buffer.append( "&#" );
+                            buffer.append( (int) c );
+                            buffer.append( ';' );
+                        }
+                    }
             }
         }
 
