@@ -22,10 +22,10 @@ package org.apache.maven.doxia.module.fo;
 import java.io.File;
 import java.io.Writer;
 
-import org.apache.maven.doxia.docrenderer.document.DocumentMeta;
-import org.apache.maven.doxia.docrenderer.document.DocumentModel;
-import org.apache.maven.doxia.docrenderer.document.DocumentTOC;
-import org.apache.maven.doxia.docrenderer.document.DocumentTOCItem;
+import org.apache.maven.doxia.document.DocumentMeta;
+import org.apache.maven.doxia.document.DocumentModel;
+import org.apache.maven.doxia.document.DocumentTOC;
+import org.apache.maven.doxia.document.DocumentTOCItem;
 
 import org.apache.maven.doxia.sink.Sink;
 import org.apache.maven.doxia.sink.AbstractSinkTest;

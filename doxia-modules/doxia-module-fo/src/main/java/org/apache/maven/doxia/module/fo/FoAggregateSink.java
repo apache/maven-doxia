@@ -25,10 +25,10 @@ import java.util.Iterator;
 
 import javax.swing.text.html.HTML.Tag;
 
-import org.apache.maven.doxia.docrenderer.document.DocumentMeta;
-import org.apache.maven.doxia.docrenderer.document.DocumentModel;
-import org.apache.maven.doxia.docrenderer.document.DocumentTOC;
-import org.apache.maven.doxia.docrenderer.document.DocumentTOCItem;
+import org.apache.maven.doxia.document.DocumentMeta;
+import org.apache.maven.doxia.document.DocumentModel;
+import org.apache.maven.doxia.document.DocumentTOC;
+import org.apache.maven.doxia.document.DocumentTOCItem;
 import org.apache.maven.doxia.util.HtmlTools;
 
 /**
