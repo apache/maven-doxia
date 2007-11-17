@@ -130,6 +130,8 @@ public class SinkTestDocument
 
         generateSpecialCharacters( sink );
 
+        sink.comment( "A comment!" );
+
         sink.section5_();
         sink.section4_();
         sink.section3_();
@@ -137,8 +139,6 @@ public class SinkTestDocument
         sink.section1_();
 
         sink.body_();
-
-        sink.comment( "A comment!" );
 
         sink.flush();
     }
@@ -178,15 +178,11 @@ public class SinkTestDocument
         sink.list();
 
         sink.listItem();
-        sink.paragraph();
         sink.text( "List item 1." );
-        sink.paragraph_();
         sink.listItem_();
 
         sink.listItem();
-        sink.paragraph();
         sink.text( "List item 2." );
-        sink.paragraph_();
         sink.paragraph();
         sink.text( "Paragraph contained in list item 2." );
         sink.paragraph_();
@@ -194,15 +190,11 @@ public class SinkTestDocument
         sink.list();
 
         sink.listItem();
-        sink.paragraph();
         sink.text( "Sub-list item 1." );
-        sink.paragraph_();
         sink.listItem_();
 
         sink.listItem();
-        sink.paragraph();
         sink.text( "Sub-list item 2." );
-        sink.paragraph_();
         sink.listItem_();
 
         sink.list_();
@@ -210,9 +202,7 @@ public class SinkTestDocument
         sink.listItem_();
 
         sink.listItem();
-        sink.paragraph();
         sink.text( "List item 3. Force end of list:" );
-        sink.paragraph_();
         sink.listItem_();
 
         sink.list_();
@@ -229,22 +219,16 @@ public class SinkTestDocument
         sink.numberedList( Sink.NUMBERING_DECIMAL );
 
         sink.numberedListItem();
-        sink.paragraph();
         sink.text( "Numbered item 1." );
-        sink.paragraph_();
 
         sink.numberedList( Sink.NUMBERING_UPPER_ALPHA );
 
         sink.numberedListItem();
-        sink.paragraph();
         sink.text( "Numbered item A." );
-        sink.paragraph_();
         sink.numberedListItem_();
 
         sink.numberedListItem();
-        sink.paragraph();
         sink.text( "Numbered item B." );
-        sink.paragraph_();
         sink.numberedListItem_();
 
         sink.numberedList_();
@@ -252,9 +236,7 @@ public class SinkTestDocument
         sink.numberedListItem_();
 
         sink.numberedListItem();
-        sink.paragraph();
         sink.text( "Numbered item 2." );
-        sink.paragraph_();
         sink.numberedListItem_();
 
         sink.numberedList_();
@@ -277,9 +259,7 @@ public class SinkTestDocument
         sink.text( "Defined term 1" );
         sink.definedTerm_();
         sink.definition();
-        sink.paragraph();
         sink.text( "of definition list." );
-        sink.paragraph_();
         sink.definition_();
         sink.definitionListItem_();
 
@@ -288,9 +268,7 @@ public class SinkTestDocument
         sink.text( "Defined term 2" );
         sink.definedTerm_();
         sink.definition();
-        sink.paragraph();
         sink.text( "of definition list." );
-        sink.paragraph_();
         sink.verbatim( true );
         sink.text( "Verbatim text" );
         sink.lineBreak();
