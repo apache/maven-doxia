@@ -132,7 +132,8 @@ public class AptSinkTest extends AbstractSinkTest
     protected String getDefinitionListBlock( String definum, String definition )
     {
         return Markup.SPACE + "" + Markup.LEFT_SQUARE_BRACKET + definum
-            + Markup.RIGHT_SQUARE_BRACKET + "" + definition;
+            + Markup.RIGHT_SQUARE_BRACKET + "" + Markup.SPACE + definition
+            + Markup.SPACE + "" + Markup.LEFT_SQUARE_BRACKET + "" + Markup.RIGHT_SQUARE_BRACKET;
     }
 
     /** {@inheritDoc} */

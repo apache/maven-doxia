@@ -100,10 +100,13 @@ public class AptParser
     /** Macro event id */
     private static final int MACRO = 16;
 
+    /** Comment event id. */
+    private static final int COMMENT_BLOCK = 17;
+    
     /** String representations of event ids */
     private static final String TYPE_NAMES[] = {"TITLE", "SECTION1", "SECTION2", "SECTION3", "SECTION4", "SECTION5",
         "PARAGRAPH", "VERBATIM", "FIGURE", "TABLE", "LIST_ITEM", "NUMBERED_LIST_ITEM", "DEFINITION_LIST_ITEM",
-        "HORIZONTAL_RULE", "PAGE_BREAK", "LIST_BREAK", "MACRO"};
+        "HORIZONTAL_RULE", "PAGE_BREAK", "LIST_BREAK", "MACRO", "COMMENT_BLOCK"};
 
     /** An array of spaces. */
     private static final char SPACES[] = {' ', ' ', ' ', ' ', ' ', ' ', ' ', ' ', ' ', ' ', ' ', ' ', ' ', ' ', ' ',
@@ -355,6 +358,7 @@ public class AptParser
                 case HORIZONTAL_RULE:
                 case PAGE_BREAK:
                 case MACRO:
+                case COMMENT_BLOCK:
                     block.traverse();
                     nextBlock();
                     break;
@@ -732,17 +736,6 @@ public class AptParser
                     case TAB:
                         indent += 8;
                         break;
-                    case COMMENT:
-                        if ( charAt( line, length, i + 1 ) == COMMENT )
-                        {
-                            // Comment.
-                            i = length;
-                            break lineLoop;
-                        }
-                        else
-                        {
-                            break skipLoop;
-                        }
                     default:
                         break skipLoop;
                 }
@@ -869,7 +862,9 @@ public class AptParser
                     block = new HorizontalRule( indent, line );
                 }
                 break;
+            // TODO: this doesn't work?
             case PAGE_BREAK:
+            case '\f':
                 if ( indent == 0 )
                 {
                     block = new PageBreak( indent, line );
@@ -879,6 +874,12 @@ public class AptParser
                 if ( indent == 0 && charAt( line, length, i + 1 ) == LEFT_CURLY_BRACKET )
                 {
                     block = new MacroBlock( indent, line );
+                }
+                break;
+            case COMMENT:
+                if ( indent == 0 && charAt( line, length, i + 1 ) == COMMENT )
+                {
+                    block = new Comment( line.substring( 2 ).trim() );
                 }
                 break;
             default:
@@ -2047,6 +2048,31 @@ public class AptParser
         }
     }
 
+    /** A Comment Block. */
+    private class Comment
+        extends Block
+    {
+        /**
+         * Constructor.
+         *
+         * @param indent indent.
+         * @param firstLine the comment line.
+         * @throws AptParseException AptParseException
+         */
+        public Comment( String line )
+            throws AptParseException
+        {
+            super( COMMENT_BLOCK, 0, line );
+        }
+
+        /** {@inheritDoc} */
+        public void traverse()
+            throws AptParseException
+        {
+            AptParser.this.sink.comment( text );
+        }
+    }
+
     /** A Verbatim Block. */
     private class Verbatim
         extends Block
@@ -2135,6 +2161,7 @@ public class AptParser
             throws AptParseException
         {
             AptParser.this.sink.verbatim( boxed );
+            // TODO: filter out lineBreak
             AptParser.this.sink.text( text );
             AptParser.this.sink.verbatim_();
         }
@@ -2466,9 +2493,7 @@ public class AptParser
         public void traverse()
             throws AptParseException
         {
-            AptParser.this.sink.paragraph();
             traverseText( skipLeadingBullets() );
-            AptParser.this.sink.paragraph_();
         }
     }
 
@@ -2510,9 +2535,7 @@ public class AptParser
         public void traverse()
             throws AptParseException
         {
-            AptParser.this.sink.paragraph();
             traverseText( skipItemNumber() );
-            AptParser.this.sink.paragraph_();
         }
 
         /**
@@ -2578,13 +2601,12 @@ public class AptParser
             j = skipSpaceFrom( j + 1 );
             if ( j == textLength )
             {
-                throw new AptParseException( "no definition" );
+                // TODO: this doesn't handle the case of a dd in a paragraph
+                //throw new AptParseException( "no definition" );
             }
 
             AptParser.this.sink.definition();
-            AptParser.this.sink.paragraph();
             traverseText( j );
-            AptParser.this.sink.paragraph_();
         }
     }
 

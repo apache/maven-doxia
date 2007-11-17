@@ -351,6 +351,7 @@ public class AptSink
     public void listItem_()
     {
         write( EOL );
+        itemFlag = false;
     }
 
     /** {@inheritDoc} */
@@ -419,18 +420,30 @@ public class AptSink
     public void numberedListItem_()
     {
         write( EOL );
+        itemFlag = false;
     }
 
     /** {@inheritDoc} */
     public void definitionList()
     {
+        listNestingIndent += " ";
+        listStyles.push( "" );
         write( EOL );
     }
 
     /** {@inheritDoc} */
     public void definitionList_()
     {
-        write( EOL );
+        if ( listNestingIndent.length() <= 1 )
+        {
+            write( EOL + listNestingIndent + LIST_END_MARKUP + EOL );
+        }
+        else
+        {
+            write( EOL );
+        }
+        listNestingIndent = StringUtils.chomp( listNestingIndent, " " );
+        listStyles.pop();
         itemFlag = false;
     }
 
@@ -443,7 +456,7 @@ public class AptSink
     /** {@inheritDoc} */
     public void definedTerm_()
     {
-        write( "]" );
+        write( "] " );
     }
 
     /** {@inheritDoc} */
@@ -456,6 +469,7 @@ public class AptSink
     public void definition_()
     {
         write( EOL );
+        itemFlag = false;
     }
 
     /** {@inheritDoc} */
@@ -467,7 +481,11 @@ public class AptSink
     /** {@inheritDoc} */
     public void paragraph()
     {
-        if ( !itemFlag )
+        if ( itemFlag )
+        {
+            write( EOL + EOL + "  " + listNestingIndent );
+        }
+        else
         {
             write( EOL + " " );
         }
@@ -476,14 +494,7 @@ public class AptSink
     /** {@inheritDoc} */
     public void paragraph_()
     {
-        if ( itemFlag )
-        {
-            itemFlag = false;
-        }
-        else
-        {
-            write( EOL + EOL );
-        }
+        write( EOL + EOL );
     }
 
     /** {@inheritDoc} */
@@ -491,6 +502,7 @@ public class AptSink
     {
         verbatimFlag = true;
         this.boxed = boxed;
+        write( EOL );
         if ( boxed )
         {
             write( EOL + BOXED_VERBATIM_START_MARKUP + EOL );
@@ -807,6 +819,10 @@ public class AptSink
         {
             buffer.append( EOL );
         }
+        else if ( verbatimFlag )
+        {
+            write( EOL );
+        }
         else
         {
             write( "\\" + EOL );
@@ -856,7 +872,7 @@ public class AptSink
     /** {@inheritDoc} */
     public void comment( String comment )
     {
-        rawText( EOL + "~~ " + comment );
+        rawText( EOL + COMMENT + COMMENT + SPACE + comment.trim() );
     }
 
 
