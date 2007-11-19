@@ -862,9 +862,7 @@ public class AptParser
                     block = new HorizontalRule( indent, line );
                 }
                 break;
-            // TODO: this doesn't work?
-            case PAGE_BREAK:
-            case '\f':
+            case AptMarkup.PAGE_BREAK:
                 if ( indent == 0 )
                 {
                     block = new PageBreak( indent, line );
