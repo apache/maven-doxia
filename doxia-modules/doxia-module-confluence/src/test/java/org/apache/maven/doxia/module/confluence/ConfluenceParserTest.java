@@ -291,6 +291,28 @@ public class ConfluenceParserTest
         assertEquals( 2, result.split( "end:sectionTitle2\n" ).length );
     }
 
+    /** @throws Exception */
+    public void testNestedFormats()
+        throws Exception
+    {
+        String result = locateAndParseTestSourceFile( "nested-format" );
+        
+        assertContainsLines( result, "begin:bold\nbegin:italic\ntext: bold italic\nend:italic" );
+        assertContainsLines( result, "begin:italic\nbegin:bold\ntext: italic bold\nend:bold" );
+        assertContainsLines( result, "begin:bold\nbegin:monospaced\ntext: bold monospaced\nend:monospaced" );
+        assertContainsLines( result, "text: A paragraph with \nbegin:bold\ntext: bold \nbegin:italic\ntext: italic\nend:italic" );
+        assertContainsLines( result, "begin:italic\ntext: italic \nbegin:bold\ntext: bold\nend:bold" );
+        assertContainsLines( result, "begin:bold\ntext: bold \nbegin:monospaced\ntext: monospaced\nend:monospaced" );
+        // 2 paragraphs in the input...
+        assertEquals( 3, result.split( "end:paragraph\n" ).length );
+        // 6 bolds in the input...
+        assertEquals( 7, result.split( "end:bold\n" ).length );
+        // 4 italics in the input...
+        assertEquals( 5, result.split( "end:italic\n" ).length );
+        // 2 monospaced in the input...
+        assertEquals( 3, result.split( "end:monospaced\n" ).length );
+    }
+
     private void assertContainsLines( String message, String result, String lines )
     {
         lines = StringUtils.replace( lines, "\n", EOL );

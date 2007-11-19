@@ -19,9 +19,8 @@ package org.apache.maven.doxia.module.confluence.parser;
  * under the License.
  */
 
-import java.util.Arrays;
-import java.util.List;
 import java.util.Iterator;
+import java.util.List;
 
 import org.apache.maven.doxia.sink.Sink;
 

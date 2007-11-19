@@ -118,7 +118,7 @@ public class TreeListBuilder
 
             if ( child.getFather() != null )
             {
-                childBlocks.addAll( new ChildBlocksBuilder().getBlocks( child.getText() ) );
+                childBlocks.addAll( new ChildBlocksBuilder( child.getText() ).getBlocks() );
             }
 
             if ( child.getChildren().size() != 0 )

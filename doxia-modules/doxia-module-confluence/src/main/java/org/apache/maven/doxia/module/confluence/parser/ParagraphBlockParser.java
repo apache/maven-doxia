@@ -43,8 +43,8 @@ public class ParagraphBlockParser
         throws ParseException
     {
 
-        ChildBlocksBuilder builder = new ChildBlocksBuilder();
-        return new ParagraphBlock( builder.getBlocks( appendUntilEmptyLine( line, source ) ) );
+        ChildBlocksBuilder builder = new ChildBlocksBuilder( appendUntilEmptyLine( line, source ) );
+        return new ParagraphBlock( builder.getBlocks() );
     }
 
     /**

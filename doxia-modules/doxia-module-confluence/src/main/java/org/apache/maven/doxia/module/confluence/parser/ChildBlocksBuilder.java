@@ -20,36 +20,48 @@ package org.apache.maven.doxia.module.confluence.parser;
  */
 
 import java.util.ArrayList;
-import java.util.Arrays;
 import java.util.List;
 
 import org.codehaus.plexus.util.StringUtils;
 
 /**
  * Re-usable builder that can be used to generate paragraph and list item text from a string containing all the content
- * and wiki formatting.
- * 
+ * and wiki formatting. This class is intentionally stateful, but cheap to create, so create one as needed and keep it
+ * on the stack to preserve stateless behaviour in the caller.
+ *
  * @author Dave Syer
  */
 public class ChildBlocksBuilder
 {
 
+    private boolean insideBold = false;
+
+    private boolean insideItalic = false;
+
+    private boolean insideLink = false;
+
+    private List blocks = new ArrayList();
+
+    private StringBuffer text = new StringBuffer();
+
+    private String input;
+
+    private boolean insideMonospaced;
+
+    public ChildBlocksBuilder( String input )
+    {
+        this.input = input;
+    }
+
     /**
      * Utility method to convert marked up content into blocks for rendering.
-     * 
+     *
      * @param input a String with no line breaks
      * @return a list of Blocks that can be used to render it
      */
-    public List getBlocks( String input )
+    public List getBlocks()
     {
-
-        boolean insideBold = false;
-        boolean insideItalic = false;
-        boolean insideLink = false;
-
-        List blocks = new ArrayList();
-
-        StringBuffer text = new StringBuffer();
+        List specialBlocks = new ArrayList();
 
         for ( int i = 0; i < input.length(); i++ )
         {
@@ -60,13 +72,13 @@ public class ChildBlocksBuilder
                 case '*':
                     if ( insideBold )
                     {
-                        TextBlock tb = new TextBlock( text.toString() );
-                        blocks.add( new BoldBlock( Arrays.asList( new Block[] { tb } ) ) );
+                        insideBold = false;
+                        specialBlocks = getList( new BoldBlock( getChildren(text, specialBlocks) ), specialBlocks );
                         text = new StringBuffer();
                     }
                     else
                     {
-                        text = addTextBlockIfNecessary( blocks, text );
+                        text = addTextBlockIfNecessary( blocks, specialBlocks, text );
                         insideBold = true;
                     }
 
@@ -74,20 +86,20 @@ public class ChildBlocksBuilder
                 case '_':
                     if ( insideItalic )
                     {
-                        TextBlock tb = new TextBlock( text.toString() );
-                        blocks.add( new ItalicBlock( Arrays.asList( new Block[] { tb } ) ) );
+                        insideItalic = false;
+                        specialBlocks = getList( new ItalicBlock( getChildren( text, specialBlocks ) ), specialBlocks );
                         text = new StringBuffer();
                     }
                     else
                     {
-                        text = addTextBlockIfNecessary( blocks, text );
+                        text = addTextBlockIfNecessary( blocks, specialBlocks, text );
                         insideItalic = true;
                     }
 
                     break;
                 case '[':
                     insideLink = true;
-                    text = addTextBlockIfNecessary( blocks, text );
+                    text = addTextBlockIfNecessary( blocks, specialBlocks, text );
                     break;
                 case ']':
                     if ( insideLink )
@@ -113,17 +125,20 @@ public class ChildBlocksBuilder
                         }
 
                         text = new StringBuffer();
+                        insideLink = false;
                     }
 
                     break;
                 case '{':
 
+                    text = addTextBlockIfNecessary( blocks, specialBlocks, text );
+
                     if ( charAt( input, i ) == '{' ) // it's monospaced
                     {
                         i++;
+                        insideMonospaced = true;
                     }
                     // else it's a confluence macro...
-                    text = addTextBlockIfNecessary( blocks, text );
 
                     break;
                 case '}':
@@ -133,8 +148,8 @@ public class ChildBlocksBuilder
                     if ( charAt( input, i ) == '}' )
                     {
                         i++;
-                        TextBlock tb = new TextBlock( text.toString() );
-                        blocks.add( new MonospaceBlock( Arrays.asList( new Block[] { tb } ) ) );
+                        insideMonospaced = false;
+                        specialBlocks = getList( new MonospaceBlock( getChildren( text, specialBlocks ) ), specialBlocks );
                         text = new StringBuffer();
                     }
                     else
@@ -159,7 +174,7 @@ public class ChildBlocksBuilder
                     if ( charAt( input, i ) == '\\' )
                     {
                         i++;
-                        text = addTextBlockIfNecessary( blocks, text );
+                        text = addTextBlockIfNecessary( blocks, specialBlocks, text );
                         blocks.add( new LinebreakBlock() );
                     }
                     else
@@ -172,6 +187,16 @@ public class ChildBlocksBuilder
                 default:
                     text.append( c );
             }
+
+            if ( !specialBlocks.isEmpty() )
+            {
+                if ( !insideItalic && !insideBold && !insideMonospaced )
+                {
+                    blocks.addAll( specialBlocks );
+                    specialBlocks.clear();
+                }
+            }
+
         }
 
         if ( text.length() > 0 )
@@ -182,18 +207,69 @@ public class ChildBlocksBuilder
         return blocks;
     }
 
+    private List getList( Block block, List currentBlocks )
+    {
+        List list = new ArrayList();
+
+        if ( insideBold || insideItalic || insideMonospaced )
+        {
+            list.addAll( currentBlocks );
+        }
+
+        list.add( block );
+
+        return list;
+    }
+
+    private List getChildren( StringBuffer buffer, List currentBlocks )
+    {
+        String text = buffer.toString().trim();
+
+        if ( currentBlocks.isEmpty() && StringUtils.isEmpty( text ) )
+        {
+            return new ArrayList();
+        }
+
+        ArrayList list = new ArrayList();
+
+        if ( !insideBold && !insideItalic && !insideMonospaced )
+        {
+            list.addAll( currentBlocks );
+        }
+
+        if ( StringUtils.isEmpty( text ) )
+        {
+            return list;
+        }
+
+        list.add( new TextBlock(text) );
+
+        return list;
+    }
+
     private static char charAt( String input, int i )
     {
         return input.length() > i + 1 ? input.charAt( i + 1 ) : '\0';
     }
 
-    private StringBuffer addTextBlockIfNecessary( List blocks, StringBuffer text )
+    private StringBuffer addTextBlockIfNecessary( List blocks, List specialBlocks, StringBuffer text )
     {
         if ( text.length() == 0 )
         {
             return text;
         }
-        blocks.add( new TextBlock( text.toString() ) );
+
+        TextBlock textBlock = new TextBlock( text.toString() );
+
+        if ( !insideBold && !insideItalic && !insideMonospaced )
+        {
+            blocks.add( textBlock );
+        }
+        else
+        {
+            specialBlocks.add( textBlock );
+        }
+
         return new StringBuffer();
     }
 
