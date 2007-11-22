@@ -26,6 +26,7 @@ import java.util.List;
 
 import org.apache.maven.doxia.module.confluence.parser.Block;
 import org.apache.maven.doxia.module.confluence.parser.BlockParser;
+import org.apache.maven.doxia.module.confluence.parser.DefinitionListBlockParser;
 import org.apache.maven.doxia.module.confluence.parser.FigureBlockParser;
 import org.apache.maven.doxia.module.confluence.parser.HorizontalRuleBlockParser;
 import org.apache.maven.doxia.module.confluence.parser.ParagraphBlockParser;
@@ -58,6 +59,7 @@ public class ConfluenceParser
         BlockParser headingParser = new SectionBlockParser();
         BlockParser figureParser = new FigureBlockParser();
         BlockParser verbatimParser = new VerbatimBlockParser();
+        BlockParser definitionParser = new DefinitionListBlockParser();
         BlockParser horizontalRuleParser = new HorizontalRuleBlockParser();
         BlockParser listParser = new ListBlockParser();
         BlockParser tableParser = new TableBlockParser();
@@ -66,8 +68,8 @@ public class ConfluenceParser
         BlockParser paragraphParser = new ParagraphBlockParser( subparsers );
 
         parsers =
-            new BlockParser[] { headingParser, figureParser, verbatimParser, horizontalRuleParser, listParser,
-                tableParser, paragraphParser };
+            new BlockParser[] { headingParser, figureParser, verbatimParser, definitionParser, horizontalRuleParser,
+                listParser, tableParser, paragraphParser };
     }
 
     public List parse( ByLineSource source )

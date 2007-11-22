@@ -313,6 +313,27 @@ public class ConfluenceParserTest
         assertEquals( 3, result.split( "end:monospaced\n" ).length );
     }
 
+    /** @throws Exception */
+    public void testNoteInfoTipQuote()
+        throws Exception
+    {
+        String result = locateAndParseTestSourceFile( "note-tip-info" );
+
+        assertContainsLines( result, "begin:definedTerm\ntext: Be Careful\nend:definedTerm\n" );
+        assertContainsLines( result, "begin:definition\ntext: The body of the note here..\nend:definition" );
+        assertContainsLines( result, "begin:definedTerm\ntext: Guess What?\nend:definedTerm\n" );
+        assertContainsLines( result, "begin:definition\ntext: The body of the tip here..\nend:definition" );
+        assertContainsLines( result, "begin:definedTerm\ntext: Some Info\nend:definedTerm\n" );
+        assertContainsLines( result, "begin:definition\ntext: The body of the info here..\nend:definition" );
+        assertContainsLines( result, "begin:definedTerm\ntext: Simon Says\nend:definedTerm\n" );
+        assertContainsLines( result, "begin:definition\ntext: The body of the \nbegin:bold\ntext: quote\nend:bold" );
+
+        // 5 paragraphs in the input...
+        assertEquals( 6, result.split( "end:paragraph\n" ).length );
+        // 4 dinitionList in the input...
+        assertEquals( 5, result.split( "end:definitionList\n" ).length );
+    }
+
     private void assertContainsLines( String message, String result, String lines )
     {
         lines = StringUtils.replace( lines, "\n", EOL );

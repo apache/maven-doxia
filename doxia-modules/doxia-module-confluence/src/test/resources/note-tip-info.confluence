@@ -1,0 +1,27 @@
+Simple paragraph.
+
+{note:title=Be Careful}
+The body of the note here..
+{note}
+
+Tip
+
+{tip:title=Guess What?}
+The body of the tip here..
+{tip}
+
+Info
+
+{info:title=Some 
+Info}
+The body of the info here..
+{info}
+
+Quote
+
+{quote:title=Simon Says}
+The body of the *quote* here..
+{quote}
+
+(In all cases there is no way to reverse the Doxia output 
+back to confluence because they are all rendered as a defitionList.)
