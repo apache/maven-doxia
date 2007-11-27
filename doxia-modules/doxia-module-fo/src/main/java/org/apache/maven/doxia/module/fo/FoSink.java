@@ -780,7 +780,7 @@ public class FoSink
     /** {@inheritDoc} */
     public void anchor_()
     {
-        writeEndTag( INLINE_TAG );
+        writeEndTagWithoutEOL( INLINE_TAG );
     }
 
     /** {@inheritDoc} */
@@ -815,8 +815,8 @@ public class FoSink
     /** {@inheritDoc} */
     public void link_()
     {
-        writeEndTag( INLINE_TAG );
-        writeEndTag( BASIC_LINK_TAG );
+        writeEndTagWithoutEOL( INLINE_TAG );
+        writeEndTagWithoutEOL( BASIC_LINK_TAG );
     }
 
     /** {@inheritDoc} */
@@ -828,7 +828,7 @@ public class FoSink
     /** {@inheritDoc} */
     public void italic_()
     {
-        writeEndTag( INLINE_TAG );
+        writeEndTagWithoutEOL( INLINE_TAG );
     }
 
     /** {@inheritDoc} */
@@ -840,7 +840,7 @@ public class FoSink
     /** {@inheritDoc} */
     public void bold_()
     {
-        writeEndTag( INLINE_TAG );
+        writeEndTagWithoutEOL( INLINE_TAG );
     }
 
     /** {@inheritDoc} */
@@ -852,7 +852,7 @@ public class FoSink
     /** {@inheritDoc} */
     public void monospaced_()
     {
-        writeEndTag( INLINE_TAG );
+        writeEndTagWithoutEOL( INLINE_TAG );
     }
 
     /** {@inheritDoc} */

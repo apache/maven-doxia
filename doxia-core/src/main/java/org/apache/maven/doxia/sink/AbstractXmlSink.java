@@ -166,9 +166,8 @@ public abstract class AbstractXmlSink
     }
 
     /**
-     * Ends a Tag. For instance:
-     * <pre>
-     * &lt;/tag&gt;
+     * Ends a Tag followed by an EOL. For instance:
+     * <pre>&lt;/tag&gt;
      * </pre>
      *
      * @param t a tag
@@ -188,6 +187,29 @@ public abstract class AbstractXmlSink
         sb.append( String.valueOf( GREATER_THAN ) );
 
         sb.append( EOL );
+
+        write( sb.toString() );
+    }
+
+    /**
+     * Ends a Tag without an EOL. For instance:
+     * <pre>&lt;/tag&gt;</pre>
+     *
+     * @param t a tag
+     */
+    protected void writeEndTagWithoutEOL( Tag t )
+    {
+        StringBuffer sb = new StringBuffer();
+        sb.append( String.valueOf( LESS_THAN ) );
+        sb.append( String.valueOf( SLASH ) );
+
+        if ( nameSpace != null )
+        {
+            sb.append( nameSpace ).append( ":" );
+        }
+
+        sb.append( t.toString() );
+        sb.append( String.valueOf( GREATER_THAN ) );
 
         write( sb.toString() );
     }
