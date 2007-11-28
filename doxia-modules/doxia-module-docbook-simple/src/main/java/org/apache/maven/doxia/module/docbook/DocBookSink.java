@@ -1377,7 +1377,7 @@ public class DocBookSink
         {
             if ( !xmlMode )
             {
-                writeEndTag( ANCHOR_TAG );
+                writeEndTagWithoutEOL( ANCHOR_TAG );
             }
         }
     }
@@ -1418,12 +1418,12 @@ public class DocBookSink
     {
         if ( externalLinkFlag )
         {
-            writeEndTag( ULINK_TAG );
+            writeEndTagWithoutEOL( ULINK_TAG );
             externalLinkFlag = false;
         }
         else
         {
-            writeEndTag( LINK_TAG );
+            writeEndTagWithoutEOL( LINK_TAG );
         }
     }
 

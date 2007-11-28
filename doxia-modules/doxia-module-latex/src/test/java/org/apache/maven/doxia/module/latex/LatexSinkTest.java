@@ -142,7 +142,7 @@ public class LatexSinkTest
     protected String getTableBlock( String cell, String caption )
     {
         // TODO: something's wrong
-        return "\\begin{ptable}\\begin{ptablerows}{c}\\begin{pcell}{c}cell\\end{pcell}\\\\\\end{ptablerows}\\ptablecaption{Table caption}\\end{ptable}";
+        return "\\begin{ptable}\\begin{ptablerows}{c}\\begin{pcell}{c}cell\\end{pcell}\\\\\\end{ptablerows}\\ptablecaption{" + caption + "}\\end{ptable}";
     }
 
     /** {@inheritDoc} */

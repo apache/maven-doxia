@@ -881,7 +881,7 @@ public class XdocSink
     {
         if ( !headFlag && !titleFlag )
         {
-            writeEndTag( Tag.A );
+            writeEndTagWithoutEOL( Tag.A );
         }
     }
 
@@ -908,7 +908,7 @@ public class XdocSink
     {
         if ( !headFlag && !titleFlag )
         {
-            writeEndTag( Tag.A );
+            writeEndTagWithoutEOL( Tag.A );
         }
     }
 
@@ -932,7 +932,7 @@ public class XdocSink
     {
         if ( !headFlag && !titleFlag )
         {
-            writeEndTag( Tag.I );
+            writeEndTagWithoutEOL( Tag.I );
         }
     }
 
@@ -956,7 +956,7 @@ public class XdocSink
     {
         if ( !headFlag && !titleFlag )
         {
-            writeEndTag( Tag.B );
+            writeEndTagWithoutEOL( Tag.B );
         }
     }
 
@@ -980,7 +980,7 @@ public class XdocSink
     {
         if ( !headFlag && !titleFlag )
         {
-            writeEndTag( Tag.TT );
+            writeEndTagWithoutEOL( Tag.TT );
         }
     }
 

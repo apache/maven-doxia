@@ -85,7 +85,7 @@ public abstract class AbstractXmlSink
         }
 
         StringBuffer sb = new StringBuffer();
-        sb.append( String.valueOf( LESS_THAN ) );
+        sb.append( LESS_THAN );
         sb.append( t.toString() );
 
         if ( att != null )
@@ -103,18 +103,18 @@ public abstract class AbstractXmlSink
                 }
                 else
                 {
-                    sb.append( String.valueOf( SPACE ) ).append( key.toString() ).append( String.valueOf( EQUAL ) )
-                        .append( String.valueOf( QUOTE ) ).append( value.toString() ).append( String.valueOf( QUOTE ) );
+                    sb.append( SPACE ).append( key.toString() ).append( EQUAL )
+                        .append( QUOTE ).append( value.toString() ).append( QUOTE );
                 }
             }
         }
 
         if ( isSimpleTag )
         {
-            sb.append( String.valueOf( SPACE ) ).append( String.valueOf( SLASH ) );
+            sb.append( SPACE ).append( SLASH );
         }
 
-        sb.append( String.valueOf( GREATER_THAN ) );
+        sb.append( GREATER_THAN );
 
         if ( isSimpleTag )
         {
@@ -125,22 +125,31 @@ public abstract class AbstractXmlSink
     }
 
     /**
-     * Ends a Tag. For instance:
-     * <pre>
-     * &lt;/tag&gt;
+     * Ends a Tag followed by an EOL. For instance:
+     * <pre>&lt;/tag&gt;
      * </pre>
      *
      * @param t a tag
      */
     protected void writeEndTag( Tag t )
     {
-        StringBuffer sb = new StringBuffer();
-        sb.append( String.valueOf( LESS_THAN ) );
-        sb.append( String.valueOf( SLASH ) );
-        sb.append( t.toString() );
-        sb.append( String.valueOf( GREATER_THAN ) );
+        writeEndTagWithoutEOL( t );
+        write( EOL );
+    }
 
-        sb.append( EOL );
+    /**
+     * Ends a Tag without an EOL. For instance:
+     * <pre>&lt;/tag&gt;</pre>
+     *
+     * @param t a tag
+     */
+    protected void writeEndTagWithoutEOL( Tag t )
+    {
+        StringBuffer sb = new StringBuffer();
+        sb.append( LESS_THAN );
+        sb.append( SLASH );
+        sb.append( t.toString() );
+        sb.append( GREATER_THAN );
 
         write( sb.toString() );
     }
