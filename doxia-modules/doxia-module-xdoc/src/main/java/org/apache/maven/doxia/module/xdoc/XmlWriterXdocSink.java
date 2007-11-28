@@ -32,7 +32,7 @@ import org.codehaus.plexus.util.xml.XMLWriter;
  * @author juan <a href="mailto:james@jamestaylor.org">James Taylor</a>
  * @author Juan F. Codagnone  (replaced println with XmlWriterXdocSink)
  * @version $Id$
- * @componentx
+ * @component
  */
 public class XmlWriterXdocSink
     extends SinkAdapter
