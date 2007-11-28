@@ -83,8 +83,8 @@ public abstract class AbstractXmlSink
                 // AttributeSets are ignored
                 if ( !(value instanceof AttributeSet) )
                 {
-                    sb.append( String.valueOf( SPACE ) ).append( key.toString() ).append( String.valueOf( EQUAL ) )
-                        .append( String.valueOf( QUOTE ) ).append( value.toString() ).append( String.valueOf( QUOTE ) );
+                    sb.append( SPACE ).append( key.toString() ).append( EQUAL )
+                        .append( QUOTE ).append( value.toString() ).append( QUOTE );
                 }
             }
         }
@@ -139,11 +139,11 @@ public abstract class AbstractXmlSink
         }
 
         StringBuffer sb = new StringBuffer();
-        sb.append( String.valueOf( LESS_THAN ) );
+        sb.append( LESS_THAN );
 
         if ( nameSpace != null )
         {
-            sb.append( nameSpace ).append( ":" );
+            sb.append( nameSpace ).append( ':' );
         }
 
         sb.append( t.toString() );
@@ -152,10 +152,10 @@ public abstract class AbstractXmlSink
 
         if ( isSimpleTag )
         {
-            sb.append( String.valueOf( SPACE ) ).append( String.valueOf( SLASH ) );
+            sb.append( SPACE ).append( SLASH );
         }
 
-        sb.append( String.valueOf( GREATER_THAN ) );
+        sb.append( GREATER_THAN );
 
         if ( isSimpleTag )
         {
@@ -174,21 +174,8 @@ public abstract class AbstractXmlSink
      */
     protected void writeEndTag( Tag t )
     {
-        StringBuffer sb = new StringBuffer();
-        sb.append( String.valueOf( LESS_THAN ) );
-        sb.append( String.valueOf( SLASH ) );
-
-        if ( nameSpace != null )
-        {
-            sb.append( nameSpace ).append( ":" );
-        }
-
-        sb.append( t.toString() );
-        sb.append( String.valueOf( GREATER_THAN ) );
-
-        sb.append( EOL );
-
-        write( sb.toString() );
+        writeEndTagWithoutEOL( t );
+        write( EOL );
     }
 
     /**
@@ -200,16 +187,16 @@ public abstract class AbstractXmlSink
     protected void writeEndTagWithoutEOL( Tag t )
     {
         StringBuffer sb = new StringBuffer();
-        sb.append( String.valueOf( LESS_THAN ) );
-        sb.append( String.valueOf( SLASH ) );
+        sb.append( LESS_THAN );
+        sb.append( SLASH );
 
         if ( nameSpace != null )
         {
-            sb.append( nameSpace ).append( ":" );
+            sb.append( nameSpace ).append( ':' );
         }
 
         sb.append( t.toString() );
-        sb.append( String.valueOf( GREATER_THAN ) );
+        sb.append( GREATER_THAN );
 
         write( sb.toString() );
     }

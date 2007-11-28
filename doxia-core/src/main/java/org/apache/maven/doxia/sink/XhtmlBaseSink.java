@@ -586,20 +586,19 @@ public class XhtmlBaseSink
     /** {@inheritDoc} */
     public void figure_()
     {
-        write( String.valueOf( SPACE ) + String.valueOf( SLASH ) + String.valueOf( GREATER_THAN ) );
+        write( String.valueOf( SPACE ) + SLASH + GREATER_THAN );
     }
 
     /** {@inheritDoc} */
     public void figureGraphics( String name )
     {
-        write( String.valueOf( SPACE ) + Attribute.SRC + String.valueOf( EQUAL ) + String.valueOf( QUOTE ) + name
-            + String.valueOf( QUOTE ) );
+        write( String.valueOf( SPACE ) + Attribute.SRC + EQUAL + QUOTE + name + QUOTE );
     }
 
     /** {@inheritDoc} */
     public void figureCaption()
     {
-        write( String.valueOf( SPACE ) + Attribute.ALT + String.valueOf( EQUAL ) + String.valueOf( QUOTE ) );
+        write( String.valueOf( SPACE ) + Attribute.ALT + EQUAL + QUOTE );
     }
 
     /** {@inheritDoc} */
@@ -1129,11 +1128,11 @@ public class XhtmlBaseSink
     {
         StringBuffer buf = new StringBuffer( comment.length() + 9 );
 
-        buf.append( LESS_THAN ).append( BANG ).append( MINUS ).append( MINUS ).append( SPACE );
+        buf.append( "" + LESS_THAN + BANG + MINUS + MINUS + SPACE );
 
         buf.append( comment );
 
-        buf.append( SPACE ).append( MINUS ).append( MINUS ).append( GREATER_THAN );
+        buf.append( "" + SPACE + MINUS + MINUS + GREATER_THAN );
 
         rawText( buf.toString() );
     }
