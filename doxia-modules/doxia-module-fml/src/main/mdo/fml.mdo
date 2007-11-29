@@ -19,7 +19,7 @@ specific language governing permissions and limitations
 under the License.
 -->
 
-<model>
+<model xsd.namespace="http://maven.apache.org/FML/1.0.0" xsd.target-namespace="http://maven.apache.org/FML/1.0.0">
   <id>fml</id>
   <name>Fml</name>
   <description><![CDATA[
@@ -36,7 +36,7 @@ under the License.
     </default>
   </defaults>
   <classes>
-    <class rootElement="true" xml.tagName="faqs">
+    <class rootElement="true" xml.tagName="faqs" xsd.compositor="sequence">
       <name>Faqs</name>
       <description><![CDATA[
          The <code>&lt;faqs&gt;</code> element is the root of the FML descriptor.
@@ -78,7 +78,7 @@ under the License.
         </field>
       </fields>
     </class>
-    <class>
+    <class xsd.compositor="sequence">
       <name>Part</name>
       <description><![CDATA[
         FAQ part.
@@ -117,7 +117,7 @@ under the License.
         </field>
       </fields>
     </class>
-    <class>
+    <class xsd.compositor="sequence">
       <name>Faq</name>
       <description><![CDATA[
         A Faq.
