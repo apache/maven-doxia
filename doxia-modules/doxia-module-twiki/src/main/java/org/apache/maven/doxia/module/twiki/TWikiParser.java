@@ -29,13 +29,13 @@ import org.apache.maven.doxia.module.twiki.parser.SectionBlock;
 import org.apache.maven.doxia.module.twiki.parser.SectionBlockParser;
 import org.apache.maven.doxia.module.twiki.parser.TableBlockParser;
 import org.apache.maven.doxia.module.twiki.parser.TextParser;
+import org.apache.maven.doxia.module.twiki.parser.VerbatimBlockParser;
 import org.apache.maven.doxia.module.twiki.parser.XHTMLWikiWordLinkResolver;
 import org.apache.maven.doxia.parser.AbstractTextParser;
 import org.apache.maven.doxia.parser.ParseException;
 import org.apache.maven.doxia.sink.Sink;
 import org.apache.maven.doxia.util.ByLineReaderSource;
 import org.apache.maven.doxia.util.ByLineSource;
-import org.codehaus.plexus.util.StringUtils;
 
 import java.io.Reader;
 import java.util.ArrayList;
@@ -54,6 +54,7 @@ import java.util.List;
 public class TWikiParser
     extends AbstractTextParser
 {
+    private static final int EXTENSION_LENGTH = 6;
     /**
      * paragraph parser. stateless
      */
@@ -89,6 +90,11 @@ public class TWikiParser
     private final TableBlockParser tableParser = new TableBlockParser();
 
     /**
+     * verbatim parser
+     */
+    private final VerbatimBlockParser verbatimParser = new VerbatimBlockParser();
+    
+    /**
      * list of parsers to try to apply to the toplevel
      */
     private final BlockParser [] parsers;
@@ -103,8 +109,10 @@ public class TWikiParser
         paraParser.setTextParser( formatTextParser );
         paraParser.setHrulerParser( hrulerParser );
         paraParser.setTableBlockParser( tableParser );
+        paraParser.setVerbatimParser( verbatimParser );
         sectionParser.setParaParser( paraParser );
         sectionParser.setHrulerParser( hrulerParser );
+        sectionParser.setVerbatimBlockParser( verbatimParser );
         listParser.setTextParser( formatTextParser );
         formatTextParser.setTextParser( textParser );
         tableParser.setTextParser( formatTextParser );
@@ -112,6 +120,7 @@ public class TWikiParser
         parsers = new BlockParser[]{
             sectionParser,
             hrulerParser,
+            verbatimParser,
             paraParser,
         };
     }
@@ -177,7 +186,7 @@ public class TWikiParser
         sink.head();
         
         final String title = getTitle( blocks, source ); 
-        if( title != null ) 
+        if ( title != null ) 
         {
             sink.title();
             sink.text( title );
@@ -210,25 +219,25 @@ public class TWikiParser
         {
             final Block block = (Block) it.next();
             
-            if( block instanceof SectionBlock ) 
+            if ( block instanceof SectionBlock ) 
             {
                 final SectionBlock sectionBlock = (SectionBlock) block;
                 title = sectionBlock.getTitle();
             }
         }
         
-        if( title == null ) 
+        if ( title == null ) 
         {
             String name = source.getName();
-            if( name != null ) 
+            if ( name != null ) 
             {
                 name = name.trim();
                 
-                if( name.length() != 0 )
+                if ( name.length() != 0 )
                 {
-                    if(name.endsWith(".twiki")) 
+                    if ( name.endsWith( ".twiki" ) ) 
                     {
-                        title = name.substring( 0, name.length() - 6 );
+                        title = name.substring( 0, name.length() - EXTENSION_LENGTH );
                     }
                     else 
                     {

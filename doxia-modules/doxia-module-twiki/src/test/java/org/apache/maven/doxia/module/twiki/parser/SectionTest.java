@@ -150,6 +150,7 @@ public class SectionTest extends AbstractBlockTestCase
             + "Fine!! thanks";
 
         final SectionBlockParser parser = sectionParser;
+        parser.setVerbatimBlockParser( new VerbatimBlockParser() );
         final ByLineReaderSource source = new ByLineReaderSource(
             new StringReader( text ) );
         final SectionBlock block = (SectionBlock) parser.visit( source

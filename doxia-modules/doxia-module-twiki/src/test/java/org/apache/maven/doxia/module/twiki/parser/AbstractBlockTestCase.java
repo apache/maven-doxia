@@ -68,7 +68,10 @@ public abstract class AbstractBlockTestCase extends TestCase
      * TWiki used in all the tests
      */
     protected final TWikiParser twikiParser = new TWikiParser();
-
+    /** 
+     * Parser for verbatim blocks
+     */
+    private final VerbatimBlockParser verbatimParser = new VerbatimBlockParser();
     /**
      * Creates the AbstractBlockTestCase.
      */
@@ -81,8 +84,19 @@ public abstract class AbstractBlockTestCase extends TestCase
         paraParser.setTextParser( formatTextParser );
         paraParser.setHrulerParser( hruleParser );
         paraParser.setTableBlockParser( tableParser );
+        paraParser.setVerbatimParser( verbatimParser );
+        sectionParser.setVerbatimBlockParser( new VerbatimBlockParser() );
         listParser.setTextParser( formatTextParser );
         formatTextParser.setTextParser( textParser );
         tableParser.setTextParser( formatTextParser );
+    }
+    /**
+     * Returns the verbatimParser.
+     * 
+     * @return <code>VerbatimBlockParser</code> with the verbatimParser.
+     */
+    protected final VerbatimBlockParser getVerbatimParser() 
+    {
+        return verbatimParser;
     }
 }

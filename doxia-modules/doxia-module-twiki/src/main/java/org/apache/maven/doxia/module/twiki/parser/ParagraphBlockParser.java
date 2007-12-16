@@ -61,6 +61,11 @@ public class ParagraphBlockParser implements BlockParser
      * {@link TableBlockParser} to use. injected
      */
     private TableBlockParser tableBlockParser;
+    
+    /** 
+     *  {@link TableBlockParser} to use. injected
+     */
+    private VerbatimBlockParser verbatimParser;
 
     /**
      * no operation block
@@ -69,14 +74,22 @@ public class ParagraphBlockParser implements BlockParser
 
     /**
      * @see BlockParser#accept(String)
+     * @param line text line
+     * @return <code>true</code> if this class can handle this line
      */
     public final boolean accept( final String line )
     {
-        return !sectionParser.accept( line ) && !hrulerParser.accept( line );
+        return !sectionParser.accept( line ) 
+                && !hrulerParser.accept( line )
+                && !verbatimParser.accept( line );
     }
 
     /**
      * @see BlockParser#visit(String, ByLineSource)
+     * @param line   a line of text
+     * @param source the source of lines
+     * @return a block
+     * @throws ParseException on error
      */
     public final Block visit( final String line, final ByLineSource source )
         throws ParseException
@@ -97,11 +110,7 @@ public class ParagraphBlockParser implements BlockParser
 
             if ( m.lookingAt() )
             {
-                if ( !sawText )
-                {
-                    // ignore 
-                }
-                else
+                if ( sawText )
                 {
                     break;
                 }
@@ -131,8 +140,9 @@ public class ParagraphBlockParser implements BlockParser
                     sb.append( " " );
                 }
             }
+            l = source.getNextLine();
         }
-        while ( ( l = source.getNextLine() ) != null && accept( l ) );
+        while ( l != null && accept( l ) );
 
         if ( line != null )
         {
@@ -160,76 +170,92 @@ public class ParagraphBlockParser implements BlockParser
     /**
      * Sets the sectionParser.
      *
-     * @param sectionParser <code>SectionBlockParser</code> with the sectionParser.
+     * @param aSectionParser <code>SectionBlockParser</code> with the sectionParser.
      */
-    public final void setSectionParser( final SectionBlockParser sectionParser )
+    public final void setSectionParser( final SectionBlockParser aSectionParser )
     {
-        if ( sectionParser == null )
+        if ( aSectionParser == null )
         {
             throw new IllegalArgumentException( "arg can't be null" );
         }
-        this.sectionParser = sectionParser;
+        this.sectionParser = aSectionParser;
     }
 
 
     /**
      * Sets the listParser.
      *
-     * @param listParser <code>ListBlockParser</code> with the listParser.
+     * @param aListParser <code>ListBlockParser</code> with the listParser.
      */
-    public final void setListParser( final GenericListBlockParser listParser )
+    public final void setListParser( final GenericListBlockParser aListParser )
     {
-        if ( listParser == null )
+        if ( aListParser == null )
         {
             throw new IllegalArgumentException( "arg can't be null" );
         }
 
-        this.listParser = listParser;
+        this.listParser = aListParser;
     }
 
 
     /**
      * Sets the formatTextParser.
      *
-     * @param textParser <code>FormatedTextParser</code>
+     * @param aTextParser <code>FormatedTextParser</code>
      *                   with the formatTextParser.
      */
-    public final void setTextParser( final FormatedTextParser textParser )
+    public final void setTextParser( final FormatedTextParser aTextParser )
     {
-        if ( textParser == null )
+        if ( aTextParser == null )
         {
             throw new IllegalArgumentException( "arg can't be null" );
         }
-        this.textParser = textParser;
+        this.textParser = aTextParser;
     }
 
 
     /**
      * Sets the hrulerParser.
      *
-     * @param hrulerParser <code>HRuleBlockParser</code> with the hrulerParser.
+     * @param aHrulerParser <code>HRuleBlockParser</code> with the hrulerParser.
      */
-    public final void setHrulerParser( final HRuleBlockParser hrulerParser )
+    public final void setHrulerParser( final HRuleBlockParser aHrulerParser )
     {
-        if ( hrulerParser == null )
+        if ( aHrulerParser == null )
         {
             throw new IllegalArgumentException( "arg can't be null" );
         }
 
-        this.hrulerParser = hrulerParser;
+        this.hrulerParser = aHrulerParser;
     }
 
     /**
-     * @param tableBlockParser Table parser to use
+     * @param aTableBlockParser Table parser to use
      */
     public final void setTableBlockParser(
-        final TableBlockParser tableBlockParser )
+        final TableBlockParser aTableBlockParser )
     {
-        if ( tableBlockParser == null )
+        if ( aTableBlockParser == null )
         {
             throw new IllegalArgumentException( "arg can't be null" );
         }
 
-        this.tableBlockParser = tableBlockParser;
+        this.tableBlockParser = aTableBlockParser;
     }
+
+    /**
+     * Sets the verbatimParser. 
+     *
+     * @param aVerbatimParser <code>VerbatimBlockParser</code> with the verbatimParser.
+     */
+    public final void setVerbatimParser( final VerbatimBlockParser aVerbatimParser ) 
+    {
+        if ( aVerbatimParser == null )
+        {
+            throw new IllegalArgumentException( "arg can't be null" );
+        }
+        this.verbatimParser = aVerbatimParser;
+    }
+
+    
 }

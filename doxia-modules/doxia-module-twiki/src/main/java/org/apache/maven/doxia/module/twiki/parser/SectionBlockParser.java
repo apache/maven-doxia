@@ -49,6 +49,9 @@ public class SectionBlockParser implements BlockParser
      * {@link ParagraphBlockParser} to use. injected
      */
     private HRuleBlockParser hrulerParser;
+    
+    /** {@link VerbatimBlockParser} */
+    private VerbatimBlockParser verbatimBlockParser;
 
     /**
      * @see BlockParser#accept(String)
@@ -84,7 +87,11 @@ public class SectionBlockParser implements BlockParser
             }
             else
             {
-                blocks.add( paraParser.visit( newLine, source ) );
+                if(verbatimBlockParser.accept( newLine )) {
+                    blocks.add( verbatimBlockParser.visit( newLine, source ) );
+                } else {
+                    blocks.add( paraParser.visit( newLine, source ) );
+                }
             }
         }
 
@@ -144,4 +151,17 @@ public class SectionBlockParser implements BlockParser
         this.hrulerParser = hrulerParser;
     }
 
+    /**
+     * Sets the verbatimBlockParser. 
+     *
+     * @param verbatimBlockParser <code>VerbatimBlockParser</code> with the verbatimBlockParser.
+     */
+    public final void setVerbatimBlockParser(VerbatimBlockParser verbatimBlockParser) {
+        if ( verbatimBlockParser  == null )
+        {
+            throw new IllegalArgumentException( "argument can't be null" );
+        }
+        this.verbatimBlockParser = verbatimBlockParser;
+    }
+    
 }
