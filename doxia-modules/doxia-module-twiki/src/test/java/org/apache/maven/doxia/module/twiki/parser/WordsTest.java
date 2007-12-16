@@ -261,4 +261,22 @@ public class WordsTest extends AbstractBlockTestCase
             TOARRAY );
         assertTrue( Arrays.equals( expected, blocks ) );
     }
+    
+    /**
+     * unit test
+     */
+    public final void testAutomaticImage()
+    {
+        Block [] blocks, expected;
+
+        expected = new Block[]{
+            new TextBlock( "Go to " ),
+            new ImageBlock( "http://twiki.com/image.png" ),
+            new TextBlock( " thisisnotanimage.png and ..." ),
+        };
+        blocks = (Block[]) textParser.parse( "Go to http://twiki.com/image.png " 
+                + "thisisnotanimage.png and ..." ).toArray(
+            TOARRAY );
+        assertTrue( Arrays.equals( expected, blocks ) );
+    }
 }

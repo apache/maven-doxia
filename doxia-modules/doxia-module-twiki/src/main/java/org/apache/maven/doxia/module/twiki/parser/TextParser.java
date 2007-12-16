@@ -59,6 +59,12 @@ public class TextParser
      */
     private static final Pattern URL_PATTERN =
         Pattern.compile( "(\\w+):[/][/][^\\s]*" );
+    
+    /**
+     *  image pattern specification
+     */
+    private static final Pattern IMAGE_PATTERN = 
+        Pattern.compile( "(.*)\\.(png|jpg|gif|bmp)" );
 
     /**
      * @param line line to parse
@@ -105,15 +111,35 @@ public class TextParser
         return ret;
     }
 
+    /**
+     * Parses the url
+     * @param line
+     * @param ret
+     * @param urlMatcher
+     */
     private void parseUrl( final String line, final List ret,
                            final Matcher urlMatcher )
     {
         ret.addAll( parse( line.substring( 0, urlMatcher.start() ) ) );
         final String url = urlMatcher.group( 0 );
-        ret.add( new LinkBlock( url, url ) );
-        ret.addAll( parse( line.substring( urlMatcher.end(), line.length() ) ) );
+        final Matcher imageMatcher = IMAGE_PATTERN.matcher( url ); 
+        if ( imageMatcher.matches() ) 
+        {
+            ret.add( new ImageBlock( url ) );
+        } 
+        else 
+        {
+            ret.add( new LinkBlock( url, url ) );
+        }
+        ret.addAll( parse( line.substring( 
+                urlMatcher.end(), line.length() ) ) );
     }
 
+    /**
+     * @param line
+     * @param ret
+     * @param anchorMatcher
+     */
     private void parseAnchor( final String line, final List ret,
                               final Matcher anchorMatcher )
     {
@@ -122,6 +148,11 @@ public class TextParser
         ret.addAll( parse( line.substring( anchorMatcher.end(), line.length() ) ) );
     }
 
+    /**
+     * @param line
+     * @param ret
+     * @param forcedLinkMatcher
+     */
     private void parseForcedLink( final String line, final List ret,
                                   final Matcher forcedLinkMatcher )
     {
