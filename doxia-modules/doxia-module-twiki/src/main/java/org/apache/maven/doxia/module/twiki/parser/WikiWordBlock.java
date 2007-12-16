@@ -38,45 +38,58 @@ public class WikiWordBlock implements Block
      * text to show in the wiki word link
      */
     private final String showText;
+    /**
+     * Resolves WikiWord links
+     */
+    private final WikiWordLinkResolver wikiWordLinkResolver;
 
     /**
      * @see #WikiWordBlock(String, String)
+     * @param aWikiword the wikiWord
+     * @param resolver responsible of resolving the link to the wikiWord
      */
-    public WikiWordBlock( final String wikiword )
+    public WikiWordBlock( final String aWikiword, 
+            final WikiWordLinkResolver resolver )
     {
-        this( wikiword, wikiword );
+        this( aWikiword, aWikiword, resolver );
     }
 
     /**
      * Creates the WikiWordBlock.
      *
-     * @param wikiword the wiki word
-     * @param showText text to show in the wiki link
+     * @param aWikiword the wiki word
+     * @param aText text to show in the wiki link
+     * @param resolver responsible of resolving the link to the wikiWord 
      * @throws IllegalArgumentException if the wikiword is <code>null</code>
      */
-    public WikiWordBlock( final String wikiword, final String showText )
-        throws IllegalArgumentException
+    public WikiWordBlock( final String aWikiword, final String aText , 
+            final WikiWordLinkResolver resolver )
     {
-        if ( wikiword == null || showText == null )
+        if ( aWikiword == null || aText == null || resolver == null )
         {
             throw new IllegalArgumentException( "arguments can't be null" );
         }
-        this.wikiword = wikiword;
-        this.showText = showText;
+        this.wikiword = aWikiword;
+        this.showText = aText;
+        this.wikiWordLinkResolver = resolver;
     }
 
     /**
      * @see Block#traverse(org.apache.maven.doxia.sink.Sink)
+     * @param sink the sink that travers
      */
     public final void traverse( final Sink sink )
     {
-        sink.link( wikiword );
+        sink.link( wikiWordLinkResolver.resolveLink( wikiword ) );
         sink.text( showText );
         sink.link_();
     }
 
     /**
      * @see Object#equals(Object)
+     * @param   obj   the reference object with which to compare.
+     * @return  <code>true</code> if this object is the same as the obj
+     *          argument; <code>false</code> otherwise.
      */
     
     public final boolean equals( final Object obj )
@@ -99,6 +112,7 @@ public class WikiWordBlock implements Block
 
     /**
      * @see Object#hashCode()
+     * @return  a hash code value for this object.
      */
     
     public final int hashCode()

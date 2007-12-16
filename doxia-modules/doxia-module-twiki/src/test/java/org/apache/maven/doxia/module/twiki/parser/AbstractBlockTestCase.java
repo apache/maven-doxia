@@ -54,7 +54,8 @@ public abstract class AbstractBlockTestCase extends TestCase
     /**
      * TextParser used in all the tests
      */
-    protected final TextParser textParser = new TextParser();
+    protected final TextParser textParser = new TextParser( 
+            new XHTMLWikiWordLinkResolver() );
     /**
      * TextParser used in all the tests
      */

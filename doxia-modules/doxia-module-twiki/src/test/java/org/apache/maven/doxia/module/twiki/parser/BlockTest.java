@@ -48,16 +48,19 @@ public class BlockTest extends TestCase
      */
     public final void testWikiWordBlockEquals()
     {
-        testEquals( new WikiWordBlock( "bar" ), new WikiWordBlock( "bar" ),
-                    new WikiWordBlock( "foo" ) );
+        final WikiWordLinkResolver resolver = 
+                new XHTMLWikiWordLinkResolver();
+        testEquals( new WikiWordBlock( "bar", resolver ), 
+                    new WikiWordBlock( "bar", resolver ),
+                    new WikiWordBlock( "foo", resolver ) );
 
-        testEquals( new WikiWordBlock( "bar", "text" ),
-                    new WikiWordBlock( "bar", "text" ),
-                    new WikiWordBlock( "bar" ) );
+        testEquals( new WikiWordBlock( "bar", "text", resolver ),
+                    new WikiWordBlock( "bar", "text", resolver ),
+                    new WikiWordBlock( "bar", resolver ) );
 
-        testEquals( new WikiWordBlock( "bar", "text" ),
-                    new WikiWordBlock( "bar", "text" ),
-                    new WikiWordBlock( "text", "bar" ) );
+        testEquals( new WikiWordBlock( "bar", "text", resolver ),
+                    new WikiWordBlock( "bar", "text", resolver ),
+                    new WikiWordBlock( "text", "bar", resolver ) );
 
     }
 

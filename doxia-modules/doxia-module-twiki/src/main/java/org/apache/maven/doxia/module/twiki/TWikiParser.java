@@ -28,6 +28,7 @@ import org.apache.maven.doxia.module.twiki.parser.ParagraphBlockParser;
 import org.apache.maven.doxia.module.twiki.parser.SectionBlockParser;
 import org.apache.maven.doxia.module.twiki.parser.TableBlockParser;
 import org.apache.maven.doxia.module.twiki.parser.TextParser;
+import org.apache.maven.doxia.module.twiki.parser.XHTMLWikiWordLinkResolver;
 import org.apache.maven.doxia.parser.AbstractTextParser;
 import org.apache.maven.doxia.parser.ParseException;
 import org.apache.maven.doxia.sink.Sink;
@@ -71,8 +72,11 @@ public class TWikiParser
         new FormatedTextParser();
     /**
      * text parser. stateless
+     * This only works for xhtml output, but there is no way 
+     * of transforming a wikiWord in another context.
      */
-    private final TextParser textParser = new TextParser();
+    private final TextParser textParser = new TextParser( 
+            new XHTMLWikiWordLinkResolver() );
     /**
      * hruler parser. stateless
      */

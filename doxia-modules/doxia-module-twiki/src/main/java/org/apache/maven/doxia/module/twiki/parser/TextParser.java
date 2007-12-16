@@ -65,7 +65,20 @@ public class TextParser
      */
     private static final Pattern IMAGE_PATTERN = 
         Pattern.compile( "(.*)\\.(png|jpg|gif|bmp)" );
+    
+    /**
+     * resolves wikiWordLinks
+     */
+    private final WikiWordLinkResolver wikiWordLinkResolver;
 
+    /**
+     * Creates the TextParser.
+     * @param resolver resolver for wikiWord links
+     */
+    public TextParser( final WikiWordLinkResolver resolver ) 
+    {
+        this.wikiWordLinkResolver = resolver;
+    }
     /**
      * @param line line to parse
      * @return a list of block that represents the input
@@ -199,14 +212,14 @@ public class TextParser
      */
     private Block createLink( final String link, final String showText ) 
     {
-        if ( URL_PATTERN.matcher( showText ).matches() ) 
+        if ( URL_PATTERN.matcher( link ).matches() ) 
         {
-            return new LinkBlock( showText, showText );
+            return new LinkBlock( link, showText );
         }
         else
         {
             final StringTokenizer tokenizer =
-                new StringTokenizer( showText );
+                new StringTokenizer( link );
             final StringBuffer sb = new StringBuffer();
 
             while ( tokenizer.hasMoreElements() )
@@ -215,7 +228,7 @@ public class TextParser
                 sb.append( s.substring( 0, 1 ).toUpperCase() );
                 sb.append( s.substring( 1 ) );
             }
-            return new WikiWordBlock( sb.toString(), showText );
+            return new WikiWordBlock( sb.toString(), showText, wikiWordLinkResolver );
         }
     }
 
@@ -237,7 +250,7 @@ public class TextParser
         }
         else
         {
-            ret.add( new WikiWordBlock( wikiWord ) );
+            ret.add( new WikiWordBlock( wikiWord , wikiWordLinkResolver ) );
         }
         ret.addAll( parse( line.substring( wikiMatcher.end(), line.length() ) ) );
     }
@@ -260,7 +273,7 @@ public class TextParser
         }
         else
         {
-            ret.add( new LinkBlock( linkMatcher.group( 1 ),
+            ret.add( createLink( linkMatcher.group( 1 ),
                                     linkMatcher.group( 2 ) ) );
         }
         ret.addAll( parse( line.substring( linkMatcher.end(), line.length() ) ) );

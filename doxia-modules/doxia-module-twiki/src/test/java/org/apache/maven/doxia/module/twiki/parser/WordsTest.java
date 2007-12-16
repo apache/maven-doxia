@@ -34,6 +34,12 @@ public class WordsTest extends AbstractBlockTestCase
      * used to convert lists to arrays
      */
     private static final Block [] TOARRAY = new Block[]{};
+    
+    /**
+     * Resolves links for wikiWords
+     */
+    private final WikiWordLinkResolver resolver =
+        new XHTMLWikiWordLinkResolver();
 
     /**
      * ...
@@ -54,7 +60,7 @@ public class WordsTest extends AbstractBlockTestCase
     {
         Block [] blocks, expected;
 
-        expected = new Block[]{new WikiWordBlock( "WikiWord" )};
+        expected = new Block[]{new WikiWordBlock( "WikiWord", resolver )};
         blocks = (Block[]) textParser.parse( "WikiWord" ).toArray( TOARRAY );
         assertTrue( Arrays.equals( expected, blocks ) );
 
@@ -72,7 +78,7 @@ public class WordsTest extends AbstractBlockTestCase
         assertTrue( Arrays.equals( expected, blocks ) );
 
         expected = new Block[]{
-            new WikiWordBlock( "WikiWord" ), new TextBlock( "...." )
+            new WikiWordBlock( "WikiWord", resolver ), new TextBlock( "...." )
         };
         blocks = (Block[]) textParser.parse( "WikiWord...." ).toArray( TOARRAY );
         assertTrue( Arrays.equals( expected, blocks ) );
@@ -85,11 +91,11 @@ public class WordsTest extends AbstractBlockTestCase
     {
         Block [] blocks, expected;
 
-        expected = new Block[]{new WikiWordBlock( "Web.WikiWord" )};
+        expected = new Block[]{new WikiWordBlock( "Web.WikiWord", resolver )};
         blocks = (Block[]) textParser.parse( "Web.WikiWord" ).toArray( TOARRAY );
         assertTrue( Arrays.equals( expected, blocks ) );
 
-        expected = new Block[]{new WikiWordBlock( "My1Web.WikiWord" )};
+        expected = new Block[]{new WikiWordBlock( "My1Web.WikiWord", resolver )};
         blocks = (Block[]) textParser.parse( "My1Web.WikiWord" ).toArray( TOARRAY );
         assertTrue( Arrays.equals( expected, blocks ) );
     }
@@ -101,11 +107,11 @@ public class WordsTest extends AbstractBlockTestCase
     {
         Block [] blocks, expected;
 
-        expected = new Block[]{new WikiWordBlock( "WikiWord#anchor" )};
+        expected = new Block[]{new WikiWordBlock( "WikiWord#anchor", resolver )};
         blocks = (Block[]) textParser.parse( "WikiWord#anchor" ).toArray( TOARRAY );
         assertTrue( Arrays.equals( expected, blocks ) );
 
-        expected = new Block[]{new WikiWordBlock( "MyWeb.WikiWord#anchor" )};
+        expected = new Block[]{new WikiWordBlock( "MyWeb.WikiWord#anchor", resolver )};
         blocks = (Block[]) textParser.parse( "MyWeb.WikiWord#anchor" ).toArray( TOARRAY );
         assertTrue( Arrays.equals( expected, blocks ) );
 
@@ -114,29 +120,62 @@ public class WordsTest extends AbstractBlockTestCase
     /**
      * test Specific Links
      */
-    public final void testSpecificLinks()
+    public final void testURLSpecificLinks()
     {
         Block [] blocks, expected;
 
-        expected = new Block[]{new LinkBlock( "reference", "text" )};
-        blocks = (Block[]) textParser.parse( "[[reference][text]]" ).toArray( TOARRAY );
+        expected = new Block[]{new LinkBlock( "http://reference.com", "text" )};
+        blocks = (Block[]) textParser.parse( "[[http://reference.com][text]]" ).
+                    toArray( TOARRAY );
         assertTrue( Arrays.equals( expected, blocks ) );
 
         expected = new Block[]{
             new TextBlock( "foo" ),
-            new LinkBlock( "reference", "text" ),
+            new LinkBlock( "http://reference.com", "text" ),
             new TextBlock( "bar" ),
         };
-        blocks = (Block[]) textParser.parse( "foo[[reference][text]]bar" ).toArray( TOARRAY );
+        blocks = (Block[]) textParser.parse( "foo[[http://reference.com][text]]bar" ).
+                    toArray( TOARRAY );
         assertTrue( Arrays.equals( expected, blocks ) );
 
         expected = new Block[]{
             new TextBlock( " foo " ),
-            new LinkBlock( "reference", "text" ),
+            new LinkBlock( "http://reference.com", "text" ),
             new TextBlock( " bar " ),
         };
-        blocks = (Block[]) textParser.parse( " foo [[reference][text]] bar " )
-            .toArray( TOARRAY );
+        blocks = (Block[]) textParser.
+            parse( " foo [[http://reference.com][text]] bar " ).toArray( TOARRAY );
+        assertTrue( Arrays.equals( expected, blocks ) );
+    }
+    
+    /**
+     * test Specific Links with wikiWords
+     */
+    public final void testWikiSpecificLinks()
+    {
+        Block [] blocks, expected;
+
+        expected = new Block[]{new WikiWordBlock( "Reference", "text", resolver )};
+        blocks = (Block[]) textParser.parse( "[[reference][text]]" ).
+                    toArray( TOARRAY );
+        assertTrue( Arrays.equals( expected, blocks ) );
+
+        expected = new Block[]{
+            new TextBlock( "foo" ),
+            new WikiWordBlock( "ReferenceLink", "text", resolver ),
+            new TextBlock( "bar" ),
+        };
+        blocks = (Block[]) textParser.parse( "foo[[referenceLink][text]]bar" ).
+                    toArray( TOARRAY );
+        assertTrue( Arrays.equals( expected, blocks ) );
+
+        expected = new Block[]{
+            new TextBlock( " foo " ),
+            new WikiWordBlock( "ReferenceLink", "text", resolver ),
+            new TextBlock( " bar " ),
+        };
+        blocks = (Block[]) textParser.
+            parse( " foo [[reference link][text]] bar " ).toArray( TOARRAY );
         assertTrue( Arrays.equals( expected, blocks ) );
     }
 
@@ -180,7 +219,7 @@ public class WordsTest extends AbstractBlockTestCase
         Block [] blocks, expected;
 
         expected = new Block[]{
-            new WikiWordBlock( "WikiSyntax", "wiki syntax" ),
+            new WikiWordBlock( "WikiSyntax", "wiki syntax", resolver ),
         };
         blocks = (Block[]) textParser.parse( "[[wiki syntax]]" ).toArray( TOARRAY );
         assertTrue( Arrays.equals( expected, blocks ) );
@@ -193,7 +232,7 @@ public class WordsTest extends AbstractBlockTestCase
 
         expected = new Block[]{
             new TextBlock( "foo" ),
-            new WikiWordBlock( "WikiSyntax", "wiki syntax" ),
+            new WikiWordBlock( "WikiSyntax", "wiki syntax", resolver ), 
             new TextBlock( "bar" ),
         };
         blocks = (Block[]) textParser.parse( "foo[[wiki syntax]]bar" ).toArray( TOARRAY );
