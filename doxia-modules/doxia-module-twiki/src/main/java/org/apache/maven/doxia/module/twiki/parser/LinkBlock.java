@@ -37,24 +37,36 @@ public class LinkBlock implements Block
     /**
      * link text
      */
-    private final String text;
+    private final Block content;
 
     /**
      * Creates the LinkBlock.
      *
+     * @param reference reference anchor 
+     * @param text text to display
+     * @deprecated
+     */
+    public LinkBlock( final String reference, final String text ) 
+    {
+        this( reference, new TextBlock( text ) );
+    }
+    
+    /**
+     * Creates the LinkBlock.
+     *
      * @param reference reference anchor
-     * @param text      text to show
+     * @param content block with the displayed content
      * @throws IllegalArgumentException if any argument is <code>null</code>
      */
-    public LinkBlock( final String reference, final String text )
+    public LinkBlock( final String reference, final Block content )
         throws IllegalArgumentException
     {
-        if ( reference == null || text == null )
+        if ( reference == null || content == null )
         {
             throw new IllegalArgumentException( "arguments can't be null" );
         }
         this.reference = reference;
-        this.text = text;
+        this.content = content;
     }
 
     /**
@@ -63,7 +75,7 @@ public class LinkBlock implements Block
     public final void traverse( final Sink sink )
     {
         sink.link( reference );
-        sink.text( text );
+        content.traverse( sink );
         sink.link_();
 
     }
@@ -84,7 +96,7 @@ public class LinkBlock implements Block
         {
             final LinkBlock l = (LinkBlock) obj;
             ret = reference.equals( l.reference )
-                && text.equals( l.text );
+                && content.equals( l.content );
         }
 
         return ret;
@@ -100,7 +112,7 @@ public class LinkBlock implements Block
         final int magic2 = 37;
 
         return magic1 + magic2 * reference.hashCode()
-            + magic2 * text.hashCode();
+            + magic2 * content.hashCode();
     }
 
 }

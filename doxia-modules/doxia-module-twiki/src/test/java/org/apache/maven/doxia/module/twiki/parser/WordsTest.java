@@ -322,10 +322,24 @@ public class WordsTest extends AbstractBlockTestCase
         assertTrue( Arrays.equals( expected, blocks ) );
     }
     
-    /**
-     * unit test
-     */
+    /** unit test */
     public final void testAutomaticImage()
+    {
+        Block [] blocks, expected;
+
+        expected = new Block[]{
+            new LinkBlock( "http://twiki.org", 
+                    new ImageBlock( "http://twiki.org/logo.png" )),
+        };
+        blocks = (Block[]) textParser.parse( 
+            "[[http://twiki.org][http://twiki.org/logo.png]]").toArray( TOARRAY ); 
+        assertTrue( Arrays.equals( expected, blocks ) );
+    }
+    
+
+    
+    /** unit test */
+    public final void testLinkImage()
     {
         Block [] blocks, expected;
 

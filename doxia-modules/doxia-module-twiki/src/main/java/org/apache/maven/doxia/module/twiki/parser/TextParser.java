@@ -212,9 +212,19 @@ public class TextParser
      */
     private Block createLink( final String link, final String showText ) 
     {
+        final Block content;
+        if( URL_PATTERN.matcher( showText ).matches() && IMAGE_PATTERN.matcher( showText ).matches() ) 
+        {
+            content = new ImageBlock( showText );
+        }
+        else 
+        {
+            content = new TextBlock( showText );
+        }
+        
         if ( URL_PATTERN.matcher( link ).matches() ) 
         {
-            return new LinkBlock( link, showText );
+            return new LinkBlock( link, content );
         }
         else
         {
@@ -228,7 +238,7 @@ public class TextParser
                 sb.append( s.substring( 0, 1 ).toUpperCase() );
                 sb.append( s.substring( 1 ) );
             }
-            return new WikiWordBlock( sb.toString(), showText, wikiWordLinkResolver );
+            return new WikiWordBlock( sb.toString(), content, wikiWordLinkResolver );
         }
     }
 

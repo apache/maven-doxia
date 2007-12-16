@@ -35,14 +35,16 @@ public class WikiWordBlock implements Block
      */
     private final String wikiword;
     /**
-     * text to show in the wiki word link
+     * content to show in the wiki word link
      */
-    private final String showText;
+    private final Block content;
     /**
      * Resolves WikiWord links
      */
     private final WikiWordLinkResolver wikiWordLinkResolver;
 
+    
+    
     /**
      * @see #WikiWordBlock(String, String)
      * @param aWikiword the wikiWord
@@ -61,16 +63,31 @@ public class WikiWordBlock implements Block
      * @param aText text to show in the wiki link
      * @param resolver responsible of resolving the link to the wikiWord 
      * @throws IllegalArgumentException if the wikiword is <code>null</code>
+     * @deprecated
      */
     public WikiWordBlock( final String aWikiword, final String aText , 
             final WikiWordLinkResolver resolver )
     {
-        if ( aWikiword == null || aText == null || resolver == null )
+        this( aWikiword, new TextBlock( aText ), resolver );
+    }
+    
+    /**
+     * Creates the WikiWordBlock.
+     *
+     * @param aWikiword the wiki word
+     * @param aText text to show in the wiki link
+     * @param resolver responsible of resolving the link to the wikiWord 
+     * @throws IllegalArgumentException if the wikiword is <code>null</code>
+     */
+    public WikiWordBlock( final String aWikiword, final Block content , 
+            final WikiWordLinkResolver resolver )
+    {
+        if ( aWikiword == null || content == null || resolver == null )
         {
             throw new IllegalArgumentException( "arguments can't be null" );
         }
         this.wikiword = aWikiword;
-        this.showText = aText;
+        this.content = content;
         this.wikiWordLinkResolver = resolver;
     }
 
@@ -81,7 +98,7 @@ public class WikiWordBlock implements Block
     public final void traverse( final Sink sink )
     {
         sink.link( wikiWordLinkResolver.resolveLink( wikiword ) );
-        sink.text( showText );
+        content.traverse( sink );
         sink.link_();
     }
 
@@ -104,7 +121,7 @@ public class WikiWordBlock implements Block
         {
             final WikiWordBlock w = (WikiWordBlock) obj;
             ret = wikiword.equals( w.wikiword )
-                && showText.equals( w.showText );
+                && content.equals( w.content );
         }
 
         return ret;
@@ -121,6 +138,6 @@ public class WikiWordBlock implements Block
         final int magic2 = 37;
 
         return magic1 + magic2 * wikiword.hashCode()
-            + magic2 * showText.hashCode();
+            + magic2 * content.hashCode();
     }
 }
