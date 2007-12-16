@@ -113,9 +113,9 @@ public class TextParser
 
     /**
      * Parses the url
-     * @param line
-     * @param ret
-     * @param urlMatcher
+     * @param line the line to parse
+     * @param ret where the results live
+     * @param urlMatcher url matcher
      */
     private void parseUrl( final String line, final List ret,
                            final Matcher urlMatcher )
@@ -136,9 +136,10 @@ public class TextParser
     }
 
     /**
-     * @param line
-     * @param ret
-     * @param anchorMatcher
+     * Parses the anchor
+     * @param line the line to parse
+     * @param ret where the results live
+     * @param anchorMatcher anchor matcher
      */
     private void parseAnchor( final String line, final List ret,
                               final Matcher anchorMatcher )
@@ -149,9 +150,10 @@ public class TextParser
     }
 
     /**
-     * @param line
-     * @param ret
-     * @param forcedLinkMatcher
+     * Parses the link
+     * @param line line to parse
+     * @param ret where the results live
+     * @param forcedLinkMatcher forced link matcher 
      */
     private void parseForcedLink( final String line, final List ret,
                                   final Matcher forcedLinkMatcher )
@@ -198,6 +200,12 @@ public class TextParser
         }
     }
 
+    /**
+     * Parses a wiki word
+     * @param line the line to parse
+     * @param ret where the results live
+     * @param wikiMatcher wiki matcher
+     */
     private void parseWiki( final String line, final List ret,
                             final Matcher wikiMatcher )
     {
@@ -215,6 +223,12 @@ public class TextParser
     }
 
 
+    /**
+     * Parses a link
+     * @param line the line to parse
+     * @param ret where the results live
+     * @param linkMatcher link matcher
+     */
     private void parseLink( final String line, final List ret,
                             final Matcher linkMatcher )
     {
@@ -243,6 +257,11 @@ public class TextParser
         return startLikeWord( m, line ) && endLikeWord( m, line );
     }
 
+    /**
+     * @param m matcher to test
+     * @param line line to test
+     * @return true if it is the beggining of a word
+     */
     private boolean startLikeWord( final Matcher m, final String line )
     {
         final int start = m.start();
@@ -262,7 +281,12 @@ public class TextParser
 
         return ret;
     }
-
+    
+    /**
+     * @param m matcher to test
+     * @param line line to test
+     * @return true if it is the end of a word
+     */
     private boolean endLikeWord( final Matcher m, final String line )
     {
         final int end = m.end();

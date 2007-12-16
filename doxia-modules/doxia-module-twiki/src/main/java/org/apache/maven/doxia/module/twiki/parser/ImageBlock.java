@@ -52,19 +52,21 @@ public class ImageBlock implements Block
 
     /**
      * @see Block#traverse(org.apache.maven.doxia.sink.Sink)
+     * @param sink the sink that travers
      */
     public final void traverse( final Sink sink )
     {
         sink.figure();
         sink.figureGraphics( reference );
         sink.figure_();
-
     }
 
     /**
      * @see Object#equals(Object)
+     * @param   obj   the reference object with which to compare.
+     * @return  <code>true</code> if this object is the same as the obj
+     *          argument; <code>false</code> otherwise. 
      */
-    
     public final boolean equals( final Object obj )
     {
         boolean ret = false;
@@ -84,6 +86,7 @@ public class ImageBlock implements Block
 
     /**
      * @see Object#hashCode()
+     * @return  a hash code value for this object.
      */
     
     public final int hashCode()
