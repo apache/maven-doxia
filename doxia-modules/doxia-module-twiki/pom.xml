@@ -40,6 +40,16 @@ under the License.
       <timezone>-3</timezone>
     </developer>
   </developers>
+
+  <contributors>
+    <contributor>
+      <name>Christian Nardi</name>
+      <roles>
+        <role>Developer</role>
+      </roles>
+    </contributor>
+  </contributors>
+
   <build>
     <plugins>
       <plugin>
