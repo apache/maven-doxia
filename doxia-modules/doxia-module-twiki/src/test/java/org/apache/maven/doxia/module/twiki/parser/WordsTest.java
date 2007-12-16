@@ -198,6 +198,14 @@ public class WordsTest extends AbstractBlockTestCase
         };
         blocks = (Block[]) textParser.parse( "foo[[wiki syntax]]bar" ).toArray( TOARRAY );
         assertTrue( Arrays.equals( expected, blocks ) );
+        
+        expected = new Block[]{
+                new TextBlock( "foo" ),
+                new LinkBlock( "http://twiki.com", "http://twiki.com" ),
+                new TextBlock( "bar" ),
+            };
+            blocks = (Block[]) textParser.parse( "foo[[http://twiki.com]]bar" ).toArray( TOARRAY );
+            assertTrue( Arrays.equals( expected, blocks ) );
     }
 
     /**

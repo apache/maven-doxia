@@ -182,23 +182,43 @@ public class TextParser
             }
             else
             {
-                final StringTokenizer tokenizer =
-                    new StringTokenizer( showText );
-                final StringBuffer sb = new StringBuffer();
-
-                while ( tokenizer.hasMoreElements() )
-                {
-                    final String s = tokenizer.nextToken();
-                    sb.append( s.substring( 0, 1 ).toUpperCase() );
-                    sb.append( s.substring( 1 ) );
-                }
-
-                ret.addAll( parse( line.substring( 0, forcedLinkMatcher.start() ) ) );
-                ret.add( new WikiWordBlock( sb.toString(), showText ) );
-                ret.addAll( parse( line.substring( forcedLinkMatcher.end(), line.length() ) ) );
+                ret.addAll( parse( line.substring( 0, 
+                        forcedLinkMatcher.start() ) ) );
+                ret.add( createLink( showText, showText ) );
+                ret.addAll( parse( line.substring( forcedLinkMatcher.end(), 
+                        line.length() ) ) );
             }
         }
     }
+
+    /**
+     * Decides between a WikiWordBlock or a a LinkBlock
+     * @param link the link text
+     * @param showText the show text.
+     * @return either a WikiWordBlock or a LinkBlock
+     */
+    private Block createLink( final String link, final String showText ) 
+    {
+        if ( URL_PATTERN.matcher( showText ).matches() ) 
+        {
+            return new LinkBlock( showText, showText );
+        }
+        else
+        {
+            final StringTokenizer tokenizer =
+                new StringTokenizer( showText );
+            final StringBuffer sb = new StringBuffer();
+
+            while ( tokenizer.hasMoreElements() )
+            {
+                final String s = tokenizer.nextToken();
+                sb.append( s.substring( 0, 1 ).toUpperCase() );
+                sb.append( s.substring( 1 ) );
+            }
+            return new WikiWordBlock( sb.toString(), showText );
+        }
+    }
+
 
     /**
      * Parses a wiki word
