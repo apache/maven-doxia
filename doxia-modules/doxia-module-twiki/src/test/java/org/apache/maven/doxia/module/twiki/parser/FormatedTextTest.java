@@ -111,14 +111,16 @@ public class FormatedTextTest extends AbstractBlockTestCase
         String text;
         Block []blocks;
 
-        text = "mary =has= a =little= lamb";
+        text = "mary =has= a =little= lamb He followed her (=to school one day=)";
         blocks = formatTextParser.parse( text );
         assertTrue( Arrays.equals( new Block[]{
             new TextBlock( "mary " ),
             new MonospaceBlock( new Block[]{new TextBlock( "has" )} ),
             new TextBlock( " a " ),
             new MonospaceBlock( new Block[]{new TextBlock( "little" )} ),
-            new TextBlock( " lamb" ),
+            new TextBlock( " lamb He followed her (" ),
+            new MonospaceBlock( new Block[]{new TextBlock( "to school one day" )} ),
+            new TextBlock( ")" ),
         }, blocks ) );
     }
 

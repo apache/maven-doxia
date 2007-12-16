@@ -174,7 +174,8 @@ public class FormatedTextParser
             while ( t != -1 && ( t = line.indexOf( SPECIAL_CHAR[i], t ) ) != -1 )
             {
                 // and check if it at the begining of a word. 
-                if ( t == 0 || isSpace( line.charAt( t - 1 ) ) )
+                if ( t == 0 || isSpace( line.charAt( t - 1 ) ) 
+                        || isParenthesis( line.charAt( t - 1 ) ) )
                 {
                     // if it is, and if, check to avoid going beyond the string 
                     if ( t + specialLen < line.length() )
@@ -267,6 +268,14 @@ public class FormatedTextParser
 
         // profit
         return ret;
+    }
+
+    /**
+     * @param c character to test
+     * @return <code>true</code> if c is a parenthesis
+     */
+    private boolean isParenthesis( final char c ) {
+        return c == '(' || c == ')';
     }
 
     /**
