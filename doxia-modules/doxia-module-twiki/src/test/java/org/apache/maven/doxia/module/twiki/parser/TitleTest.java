@@ -1,0 +1,129 @@
+/*
+ * Licensed to the Apache Software Foundation (ASF) under one
+ * or more contributor license agreements.  See the NOTICE file
+ * distributed with this work for additional information
+ * regarding copyright ownership.  The ASF licenses this file
+ * to you under the Apache License, Version 2.0 (the
+ * "License"); you may not use this file except in compliance
+ * with the License.  You may obtain a copy of the License at
+ *
+ *   http://www.apache.org/licenses/LICENSE-2.0
+ *
+ * Unless required by applicable law or agreed to in writing,
+ * software distributed under the License is distributed on an
+ * "AS IS" BASIS, WITHOUT WARRANTIES OR CONDITIONS OF ANY
+ * KIND, either express or implied.  See the License for the
+ * specific language governing permissions and limitations
+ * under the License.
+ */
+package org.apache.maven.doxia.module.twiki.parser;
+
+import java.io.Reader;
+import java.io.StringReader;
+
+import org.apache.maven.doxia.module.twiki.TWikiParser;
+import org.apache.maven.doxia.parser.ParseException;
+import org.apache.maven.doxia.util.ByLineReaderSource;
+import org.apache.maven.doxia.util.ByLineSource;
+
+/**
+ * Tests for {@link TWikiParser#getTitle(java.util.List)}
+ * 
+ * 
+ * @author Juan F. Codagnone
+ * @since Nov 10, 2007
+ */
+public class TitleTest extends AbstractBlockTestCase
+{
+
+    public void testSectionTitle() throws Exception 
+    {
+        final ByLineSource source = new ByLineReaderSource( 
+                new StringReader( "---++ Test\n hello world" ) );
+        
+        final TWikiParser twikiParser = new TWikiParser();
+        
+        assertEquals("Test",  twikiParser.getTitle( twikiParser.parse(source),
+                source ) );
+    }
+    
+    public void testNoSectionTitle() throws Exception 
+    {
+        final ByLineSource source = new NamedByLineSource(
+                new ByLineReaderSource( 
+                        new StringReader( "hello world" )), "testpage" );
+        
+        final TWikiParser twikiParser = new TWikiParser();
+        
+        assertEquals("testpage",  twikiParser.getTitle( twikiParser.parse(source),
+                source ) );
+    }
+    
+    public void testNoSectionTwikiExtensionTitle() throws Exception 
+    {
+        final ByLineSource source = new NamedByLineSource(
+                new ByLineReaderSource( 
+                        new StringReader( "hello world" )), "testpage.twiki" );
+        
+        final TWikiParser twikiParser = new TWikiParser();
+        
+        assertEquals("testpage",  twikiParser.getTitle( twikiParser.parse(source),
+                source ) );
+    }
+    
+}
+
+class NamedByLineSource implements ByLineSource  
+{
+    /** reader */
+    private final ByLineReaderSource reader;
+    /** reader's name */
+    private final String name;
+
+    public NamedByLineSource( final ByLineReaderSource reader, final String name )
+    {
+        if( reader == null || name == null ) {
+            throw new IllegalArgumentException("null arguments are not allowed");
+        }
+        
+        this.reader = reader;
+        this.name = name;
+    }
+
+    /** @see ByLineReaderSource#close() */
+    public final void close() 
+    {
+        reader.close();
+    }
+
+    /** @see ByLineReaderSource#getLineNumber() */
+    public final int getLineNumber() 
+    {
+        return reader.getLineNumber();
+    }
+
+    /** @see ByLineReaderSource#getName() */
+    public final String getName() 
+    {
+        return name;
+    }
+
+    /** @see ByLineReaderSource#getNextLine() */
+    public final String getNextLine() throws ParseException 
+    {
+        return reader.getNextLine();
+    }
+
+
+    /** @see ByLineReaderSource#unget(java.lang.String) */
+    public final void unget( final String s ) throws IllegalStateException 
+    {
+        reader.unget(s);
+    }
+
+    /** @see ByLineReaderSource#ungetLine() */
+    public final void ungetLine() throws IllegalStateException 
+    {
+        reader.ungetLine();
+    }
+}

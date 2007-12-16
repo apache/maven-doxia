@@ -25,6 +25,7 @@ import org.apache.maven.doxia.module.twiki.parser.FormatedTextParser;
 import org.apache.maven.doxia.module.twiki.parser.GenericListBlockParser;
 import org.apache.maven.doxia.module.twiki.parser.HRuleBlockParser;
 import org.apache.maven.doxia.module.twiki.parser.ParagraphBlockParser;
+import org.apache.maven.doxia.module.twiki.parser.SectionBlock;
 import org.apache.maven.doxia.module.twiki.parser.SectionBlockParser;
 import org.apache.maven.doxia.module.twiki.parser.TableBlockParser;
 import org.apache.maven.doxia.module.twiki.parser.TextParser;
@@ -34,6 +35,7 @@ import org.apache.maven.doxia.parser.ParseException;
 import org.apache.maven.doxia.sink.Sink;
 import org.apache.maven.doxia.util.ByLineReaderSource;
 import org.apache.maven.doxia.util.ByLineSource;
+import org.codehaus.plexus.util.StringUtils;
 
 import java.io.Reader;
 import java.util.ArrayList;
@@ -173,6 +175,15 @@ public class TWikiParser
         }
 
         sink.head();
+        
+        final String title = getTitle( blocks, source ); 
+        if( title != null ) 
+        {
+            sink.title();
+            sink.text( title );
+            sink.title_();
+        }
+        
         sink.head_();
         sink.body();
         for ( Iterator it = blocks.iterator(); it.hasNext(); )
@@ -182,5 +193,52 @@ public class TWikiParser
             block.traverse( sink );
         }
         sink.body_();
+    }
+
+    /**  
+     * Guess a title for the page. It uses the first section that it finds.
+     * If it doesn't find any section tries to get it from 
+     * {@link ByLineReaderSource#getName()}
+     * 
+     * @return a title for a page
+     */
+    public final String getTitle( final List blocks, final ByLineSource source ) 
+    {
+        String title = null;
+        
+        for ( Iterator it = blocks.iterator(); title == null && it.hasNext(); )
+        {
+            final Block block = (Block) it.next();
+            
+            if( block instanceof SectionBlock ) 
+            {
+                final SectionBlock sectionBlock = (SectionBlock) block;
+                title = sectionBlock.getTitle();
+            }
+        }
+        
+        if( title == null ) 
+        {
+            String name = source.getName();
+            if( name != null ) 
+            {
+                name = name.trim();
+                
+                if( name.length() != 0 )
+                {
+                    if(name.endsWith(".twiki")) 
+                    {
+                        title = name.substring( 0, name.length() - 6 );
+                    }
+                    else 
+                    {
+                        title = name;
+                    }
+                }
+            }
+            
+        }
+        
+        return title;
     }
 }
