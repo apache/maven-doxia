@@ -146,6 +146,19 @@ public class WordsTest extends AbstractBlockTestCase
         blocks = (Block[]) textParser.
             parse( " foo [[http://reference.com][text]] bar " ).toArray( TOARRAY );
         assertTrue( Arrays.equals( expected, blocks ) );
+        
+        expected = new Block[]{
+                new LinkBlock( "http://www.apache.org/licenses/LICENSE-2.0", 
+                        "Apache License, version 2.0" ),
+                new TextBlock( ". You can download it " ),
+                new WikiWordBlock( "DoxiaDownload", "here", resolver ),
+            };
+            blocks = (Block[]) textParser.
+                parse( "[[http://www.apache.org/licenses/LICENSE-2.0]" 
+                        + "[Apache License, version 2.0]]. You can download it "
+                        + "[[DoxiaDownload][here]]" ).toArray( TOARRAY );
+            assertTrue( Arrays.equals( expected, blocks ) );
+         
     }
     
     /**

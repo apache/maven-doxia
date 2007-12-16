@@ -43,7 +43,7 @@ public class TextParser
      * pattern to detect SpecificLinks links [[reference][text]]
      */
     private static final Pattern SPECIFICLINK_PATTERN =
-        Pattern.compile( "!?\\[\\[(.+)\\]\\[(.+)\\]\\]" );
+        Pattern.compile( "!?\\[\\[([^\\]]+)\\]\\[([^\\]]+)\\]\\]" );
     /**
      * pattern to detect ForcedLinks links [[reference asd]]
      */
