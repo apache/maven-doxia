@@ -67,6 +67,15 @@ public class SnippetMacro
 
         String fileParam = (String) request.getParameter( "file" );
 
+        boolean verbatim = true;
+
+        String verbatimParam = (String) request.getParameter( "verbatim" );
+
+        if ( verbatimParam != null && !"".equals( verbatimParam ) )
+        {
+            verbatim = Boolean.valueOf( verbatimParam ).booleanValue();
+        }
+
         URL url;
 
         if ( !StringUtils.isEmpty( urlParam ) )
@@ -114,11 +123,17 @@ public class SnippetMacro
             throw new MacroExecutionException( "Error reading snippet", e );
         }
 
-        sink.verbatim( true );
+        if ( verbatim )
+        {
+            sink.verbatim( true );
 
-        sink.text( snippet.toString() );
+            sink.text( snippet.toString() );
 
-        sink.verbatim_();
+            sink.verbatim_();
+        }
+        else {
+            sink.rawText( snippet.toString() );
+        }
     }
 
     /**
