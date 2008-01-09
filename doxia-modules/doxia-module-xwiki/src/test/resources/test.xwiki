@@ -1,0 +1,77 @@
+This the way that we would like to *translate* sites that are primarily
+authored in confluence while at the same time having the site be rendered in
+a ~~standard way on a static website~~.
+
+----
+
+Here is a link to [JIRA>http://jira.codehaus.org]
+
+Here is a link with no text [http://jira.codehaus.org]
+
+This is some <tt>monospaced</tt> text.
+
+* item one
+** foo
+** bar
+* item two
+* item three
+
+Some more text
+
+1. number one
+1. number two
+1. number three
+
+{table}
+one|two|three
+foo|bar|baz
+{table}
+
+1 I am level 1
+
+this is how you would code a mojo!
+
+{code}
+public class MyMojo
+    extends AbstractMojo
+{
+    /**
+     * @parameter expression="${plugin.artifacts}"
+     * @required
+     */
+    private List pluginArtifacts;
+
+    public void execute()
+        throws MojoExecutionException
+    {
+        ...
+        for ( Iterator i = pluginArtifacts.iterator(); i.hasNext(); )
+        {
+            Artifact pluginArtifact = (Artifact) i.next();
+        }
+        ...
+    }
+}
+{code}
+
+1.1 I am level 2
+
+this is the way of the world
+
+1.1.1 I am level 3
+
+this is the way of the world
+
+1.1.1.1 I am level 4
+
+this is the way of the world
+
+1.1.1.1.1 I am level 5
+
+this is the way of the world
+
+1 Answered Questions
+
+1.1.1 What can I do to get the Maven love?
+
+Well, you just have to be calm and the maven love will come your way.
