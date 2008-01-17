@@ -198,6 +198,12 @@ public class XdocParser
 
                     macroParameters.put( paramName, paramValue );
                 }
+                else
+                {
+                    // param tag from non-macro object, see MSITE-288
+                    // TODO: remove
+                    handleRawText( sink, parser );
+                }
             }
         }
         else if ( parser.getName().equals( Tag.SCRIPT.toString() ) )
@@ -289,7 +295,12 @@ public class XdocParser
         }
         else if ( parser.getName().equals( Tag.PARAM.toString() ) )
         {
-            // do nothing
+            if ( !StringUtils.isNotEmpty( macroName ) )
+            {
+                // TODO: remove
+                sink.rawText( String.valueOf( LESS_THAN ) + String.valueOf( SLASH )
+                    + Tag.PARAM.toString() + String.valueOf( GREATER_THAN ));
+            }
         }
         else if ( parser.getName().equals( SECTION_TAG.toString() ) )
         {
