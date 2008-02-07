@@ -29,5 +29,19 @@ package org.apache.maven.doxia.macro;
 public abstract class AbstractMacro
     implements Macro
 {
-    // nop
+    /**
+     * Check if the given parameter is required. Throws an
+     * IllegalArgumentException if paramValue is null or empty.
+     *
+     * @param paramName The name of the parameter to check.
+     * @param paramValue The parameter value.
+     * @since 1.0-beta-1
+     */
+    protected void required( String paramName, String paramValue )
+    {
+        if ( paramValue == null || "".equals( paramValue.trim() ) )
+        {
+            throw new IllegalArgumentException( paramName + " is a required parameter!" );
+        }
+    }
 }

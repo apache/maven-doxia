@@ -61,8 +61,6 @@ public class SnippetMacro
     {
         String id = (String) request.getParameter( "id" );
 
-        required( id, "id" );
-
         String urlParam = (String) request.getParameter( "url" );
 
         String fileParam = (String) request.getParameter( "file" );
@@ -250,30 +248,23 @@ public class SnippetMacro
      *
      * @param url The URL to parse.
      * @param id The id of the snippet.
-     * @return An identifier, concatenated url and id.
+     * @return An identifier, concatenated url and id,
+     *  or just url.toString() if id is empty or null.
      */
     private String globalSnippetId( URL url, String id )
     {
-        return url + " " + id;
-    }
-
-    /**
-     * Check if the given parameter is required. Throws an
-     * IllegalArgumentException if id is null or empty.
-     *
-     * @param id The id of the snippet.
-     * @param param The parameter to check.
-     */
-    private void required( String id, String param )
-    {
-        if ( id == null || "".equals( id ) )
+        if ( StringUtils.isEmpty( id ) )
         {
-            throw new IllegalArgumentException( param + " is a required parameter" );
+            return url.toString();
+        }
+        else
+        {
+            return url + " " + id;
         }
     }
 
     /**
-     *Puts the given snippet into the cache.
+     * Puts the given snippet into the cache.
      *
      * @param url The URL to parse.
      * @param id The id of the snippet.

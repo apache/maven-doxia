@@ -123,17 +123,24 @@ public class SnippetReader
             String line;
             while ( ( line = reader.readLine() ) != null )
             {
-                if ( isStart( snippetId, line ) )
-                {
-                    capture = true;
-                }
-                else if ( isEnd( snippetId, line ) )
-                {
-                    break;
-                }
-                else if ( capture )
+                if ( snippetId == null || "".equals( snippetId.trim() ) )
                 {
                     lines.add( line );
+                }
+                else
+                {
+                    if ( isStart( snippetId, line ) )
+                    {
+                        capture = true;
+                    }
+                    else if ( isEnd( snippetId, line ) )
+                    {
+                        break;
+                    }
+                    else if ( capture )
+                    {
+                        lines.add( line );
+                    }
                 }
             }
         }
