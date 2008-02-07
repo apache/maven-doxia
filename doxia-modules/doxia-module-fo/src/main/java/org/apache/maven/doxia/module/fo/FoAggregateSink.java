@@ -30,6 +30,7 @@ import org.apache.maven.doxia.document.DocumentModel;
 import org.apache.maven.doxia.document.DocumentTOC;
 import org.apache.maven.doxia.document.DocumentTOCItem;
 import org.apache.maven.doxia.util.HtmlTools;
+import org.codehaus.plexus.util.StringUtils;
 
 /**
  * A Doxia Sink that produces an aggregated FO model.
@@ -193,6 +194,12 @@ public class FoAggregateSink extends FoSink
      */
     private String getIdName( String name )
     {
+        if ( StringUtils.isEmpty( name ) )
+        {
+            // TODO log this behavior
+            return "";
+        }
+
         String idName = name;
 
         // prepend "./" and strip extension
