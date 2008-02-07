@@ -104,7 +104,7 @@ public class SnippetMacro
             }
             catch ( MalformedURLException e )
             {
-                throw new IllegalArgumentException( urlParam + " is a malformed URL" );
+                throw new IllegalArgumentException( fileParam + " is a malformed URL" );
             }
         }
         else
