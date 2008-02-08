@@ -353,4 +353,21 @@ public class WordsTest extends AbstractBlockTestCase
             TOARRAY );
         assertTrue( Arrays.equals( expected, blocks ) );
     }
+
+    /**
+     * Test image inserted with a html img tag
+     */
+    public final void testRelativeImage()
+    {
+        Block [] blocks, expected;
+
+        expected = new Block[]{
+            new TextBlock( "My summer house: " ),
+            new ImageBlock( "images/summerhouse.png" ),
+            new TextBlock( " isn't it great?!" ),
+        };
+        blocks = (Block[]) textParser.parse(
+            "My summer house: <img class=\"some_class\" src=\"images/summerhouse.png\"/> isn't it great?!").toArray( TOARRAY );
+        assertTrue( Arrays.equals( expected, blocks ) );
+    }
 }

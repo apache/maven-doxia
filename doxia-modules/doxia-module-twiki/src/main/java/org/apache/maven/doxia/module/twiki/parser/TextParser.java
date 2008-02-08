@@ -67,6 +67,12 @@ public class TextParser
         Pattern.compile( "(.*)\\.(png|jpg|gif|bmp)" );
     
     /**
+     *  image tag pattern specification (used for images at relative URLs)
+     */
+    private static final Pattern IMAGE_TAG_PATTERN =
+        Pattern.compile( "<img\\b.*?\\bsrc=([\"'])(.*?)\\1.*>", Pattern.CASE_INSENSITIVE );
+
+    /**
      * resolves wikiWordLinks
      */
     private final WikiWordLinkResolver wikiWordLinkResolver;
@@ -92,6 +98,7 @@ public class TextParser
         final Matcher forcedLinkMatcher = FORCEDLINK_PATTERN.matcher( line );
         final Matcher anchorMatcher = ANCHOR_PATTERN.matcher( line );
         final Matcher urlMatcher = URL_PATTERN.matcher( line );
+        final Matcher imageTagMatcher = IMAGE_TAG_PATTERN.matcher( line );
 
         if ( linkMatcher.find() )
         {
@@ -113,6 +120,9 @@ public class TextParser
         {
             parseUrl( line, ret, urlMatcher );
         }
+        else if ( imageTagMatcher.find() ) {
+            parseImage( line, ret, imageTagMatcher );
+        }
         else
         {
             if ( line.length() != 0 )
@@ -122,6 +132,19 @@ public class TextParser
         }
 
         return ret;
+    }
+
+    /**
+     * Parses the image tag
+     * @param line the line to parse
+     * @param ret where the results live
+     * @param imageTagMatcher image tag matcher
+     */
+    private void parseImage(final String line, final List ret, final Matcher imageTagMatcher) {
+        ret.addAll( parse( line.substring( 0, imageTagMatcher.start() ) ) );
+        final String src = imageTagMatcher.group( 2 );
+        ret.add( new ImageBlock( src ) );
+        ret.addAll( parse( line.substring( imageTagMatcher.end(), line.length() ) ) );
     }
 
     /**
