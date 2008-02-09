@@ -20,12 +20,14 @@ under the License.
 -->
 
 <project xmlns="http://maven.apache.org/POM/4.0.0" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:schemaLocation="http://maven.apache.org/POM/4.0.0 http://maven.apache.org/maven-v4_0_0.xsd">
+  <modelVersion>4.0.0</modelVersion>
+
   <parent>
     <artifactId>doxia-modules</artifactId>
     <groupId>org.apache.maven.doxia</groupId>
     <version>1.0-beta-1-SNAPSHOT</version>
   </parent>
-  <modelVersion>4.0.0</modelVersion>
+
   <artifactId>doxia-module-fo</artifactId>
   <name>Doxia :: FO Module</name>
   <description>A Doxia module for FO (Formatting Objects) source documents.</description>
@@ -42,6 +44,7 @@ under the License.
       <timezone>+1</timezone>
     </developer>
   </developers>
+
   <dependencies>
     <dependency>
       <groupId>commons-configuration</groupId>
@@ -53,7 +56,13 @@ under the License.
       <artifactId>fop</artifactId>
       <version>0.93</version>
     </dependency>
+    <dependency>
+      <groupId>log4j</groupId>
+      <artifactId>log4j</artifactId>
+      <version>1.2.12</version>
+    </dependency>
   </dependencies>
+
   <build>
     <plugins>
       <plugin>
