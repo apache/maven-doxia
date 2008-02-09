@@ -310,11 +310,14 @@ public class FoAggregateSink extends FoSink
 
             String base = docName.substring( 0, docName.lastIndexOf( "/" ) );
 
-            while ( anchor.startsWith( "../" ) )
+            if ( base.indexOf( "/" ) != -1 )
             {
-                base = base.substring( 0, base.lastIndexOf( "/" ) );
+                while ( anchor.startsWith( "../" ) )
+                {
+                    base = base.substring( 0, base.lastIndexOf( "/" ) );
 
-                anchor = anchor.substring( 3 );
+                    anchor = anchor.substring( 3 );
+                }
             }
 
             // call again with resolved link
