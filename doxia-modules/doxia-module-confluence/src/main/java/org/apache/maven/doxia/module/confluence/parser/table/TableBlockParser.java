@@ -53,12 +53,14 @@ public class TableBlockParser
             throw new IllegalAccessError( "call accept before this ;)" );
         }
 
-         List rows = new ArrayList();
+        List rows = new ArrayList();
 
         String l = line;
 
         do
         {
+            l = l.substring( 0, l.lastIndexOf( "|" ) );
+
             List cells = new ArrayList();
 
             if ( l.startsWith( "||" ) )
@@ -96,7 +98,7 @@ public class TableBlockParser
 
             rows.add( new TableRowBlock( cells ) );
         }
-        
+
         while ( ( l = source.getNextLine() ) != null && accept( l, source ) );
 
         assert rows.size() >= 1;
