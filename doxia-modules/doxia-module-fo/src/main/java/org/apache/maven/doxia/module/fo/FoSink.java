@@ -67,6 +67,9 @@ public class FoSink
     /** Alignment of table cells. */
     private int[] cellJustif;
 
+    /** Justification of table cells. */
+    private boolean isCellJustif;
+
     /** Current table cell. */
     private int cellCount;
 
@@ -623,15 +626,19 @@ public class FoSink
     {
         this.tableGrid = grid;
         this.cellJustif = justification;
+        this.isCellJustif = true;
 
         // FOP hack to center the table, see
         // http://xmlgraphics.apache.org/fop/fo.html#fo-center-table-horizon
         writeln( "<fo:table-column column-width=\"proportional-column-width(1)\"/>" );
 
         // TODO: calculate width[i]
-        for ( int i = 0;  i < cellJustif.length; i++ )
+        if ( cellJustif != null )
         {
-            writeln( "<fo:table-column column-width=\"1in\"/>" );
+            for ( int i = 0;  i < cellJustif.length; i++ )
+            {
+                writeln( "<fo:table-column column-width=\"1in\"/>" );
+            }
         }
 
         writeln( "<fo:table-column column-width=\"proportional-column-width(1)\"/>" );
@@ -642,6 +649,7 @@ public class FoSink
     public void tableRows_()
     {
         this.cellJustif = null;
+        this.isCellJustif = false;
         writeEndTag( TABLE_BODY_TAG );
     }
 
@@ -694,8 +702,8 @@ public class FoSink
     private void tableCell( boolean headerRow )
     {
          String justif = null;
- 
-         if ( cellJustif != null )
+
+         if ( cellJustif != null && isCellJustif )
          {
              switch ( cellJustif[cellCount] )
              {
@@ -711,7 +719,7 @@ public class FoSink
                      break;
              }
          }
- 
+
          if ( justif != null )
          {
             // the column-number is needed for the hack to center the table, see tableRows.
@@ -734,7 +742,11 @@ public class FoSink
     {
         writeEndTag( BLOCK_TAG );
         writeEndTag( TABLE_CELL_TAG );
-        ++cellCount;
+
+        if ( isCellJustif )
+        {
+            ++cellCount;
+        }
     }
 
     /** {@inheritDoc} */

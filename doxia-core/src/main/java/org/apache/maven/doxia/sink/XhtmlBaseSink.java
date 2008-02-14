@@ -59,8 +59,11 @@ public class XhtmlBaseSink
     /** An indication on if we're in verbatim mode. */
     private boolean verbatimFlag;
 
-    /** Justification of table cells. */
+    /** Alignment of table cells. */
     private int[] cellJustif;
+
+    /** Justification of table cells. */
+    private boolean isCellJustif;
 
     /** Number of cells in a table row. */
     private int cellCount;
@@ -132,6 +135,7 @@ public class XhtmlBaseSink
     protected void setCellJustif( int[] justif )
     {
         this.cellJustif = justif;
+        this.isCellJustif = true;
     }
 
     /**
@@ -183,6 +187,7 @@ public class XhtmlBaseSink
         headFlag = false;
         verbatimFlag = false;
         cellJustif = null;
+        isCellJustif = false;
         cellCount = 0;
         evenTableRow = true;
     }
@@ -708,6 +713,7 @@ public class XhtmlBaseSink
     public void tableRows_()
     {
         this.cellJustif = null;
+        this.isCellJustif = false;
 
         this.evenTableRow = true;
     }
@@ -795,7 +801,7 @@ public class XhtmlBaseSink
     {
         String justif = null;
 
-        if ( cellJustif != null )
+        if ( cellJustif != null && isCellJustif )
         {
             switch ( cellJustif[cellCount] )
             {
@@ -855,7 +861,10 @@ public class XhtmlBaseSink
 
         writeEndTag( t );
 
-        ++cellCount;
+        if ( isCellJustif )
+        {
+            ++cellCount;
+        }
     }
 
     /**
