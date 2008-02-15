@@ -27,7 +27,7 @@ import java.io.Writer;
  * Useful for testing purposes.
  */
 public class TextSink
-    implements Sink
+    extends AbstractSink
 {
 
     /** System-dependent end-of-line string. */
@@ -582,7 +582,7 @@ public class TextSink
         }
         catch ( IOException e )
         {
-            // TODO: log
+            getLog().warn( "Could not flush sink: " + e.getMessage(), e );
         }
     }
 
@@ -595,7 +595,7 @@ public class TextSink
         }
         catch ( IOException e )
         {
-            // TODO: log
+            getLog().warn( "Could not close sink: " + e.getMessage(), e );
         }
     }
 
@@ -613,7 +613,7 @@ public class TextSink
         }
         catch ( IOException e )
         {
-            // TODO: log
+            getLog().warn( "Could not write to sink: " + e.getMessage(), e );
         }
     }
 
@@ -627,6 +627,4 @@ public class TextSink
         write( text );
         write( EOL );
     }
-
-
 }

@@ -56,7 +56,7 @@ public class XdocParser
     /** The source content of the input reader. Used to pass into macros. */
     private String sourceContent;
 
-    /** True if a <script></script> block is read. CDATA sections within are handled as rawText. */
+    /** True if a &lt;script&gt;&lt;/script&gt; block is read. CDATA sections within are handled as rawText. */
     private boolean scriptBlock;
 
     /** Empty elements don't write a closing tag. */
@@ -215,7 +215,14 @@ public class XdocParser
         {
             // TODO: remove
             handleRawText( sink, parser );
-            // TODO: log( "Unrecognized tag!" );
+            if ( getLog().isWarnEnabled() )
+            {
+                String position = "[" + parser.getLineNumber() + ":"
+                    + parser.getColumnNumber() + "]";
+                String tag = "<" + parser.getName() + ">";
+
+                getLog().warn( "Unrecognized tag: " + tag + " at " + position );
+            }
         }
     }
 

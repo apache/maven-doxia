@@ -1,4 +1,4 @@
-package org.apache.maven.doxia.macro;
+package org.apache.maven.doxia.sink;
 
 /*
  * Licensed to the Apache Software Foundation (ASF) under one
@@ -23,16 +23,16 @@ import org.apache.maven.doxia.logging.Log;
 import org.apache.maven.doxia.logging.SystemStreamLog;
 
 /**
- * Abstract base class to execute <code>Macro</code>.
+ * An abstract base class that defines some convenience methods for sinks.
  *
- * @author <a href="mailto:jason@maven.org">Jason van Zyl</a>
+ * @author ltheussl
+ * @author <a href="mailto:vincent.siveton@gmail.com">Vincent Siveton</a>
  * @version $Id$
- * @since 1.0
+ * @since 1.0-beta-1
  */
-public abstract class AbstractMacro
-    implements Macro
+public abstract class AbstractSink
+    implements Sink
 {
-    /** Log instance. */
     private Log log;
 
     /** {@inheritDoc} */
@@ -42,7 +42,7 @@ public abstract class AbstractMacro
     }
 
     /**
-     * Returns a logger for this macro.
+     * Returns a logger for this sink.
      * If no logger has been configured, a new SystemStreamLog is returned.
      *
      * @return Log
@@ -55,21 +55,5 @@ public abstract class AbstractMacro
         }
 
         return log;
-    }
-
-    /**
-     * Check if the given parameter is required. Throws an
-     * IllegalArgumentException if paramValue is null or empty.
-     *
-     * @param paramName The name of the parameter to check.
-     * @param paramValue The parameter value.
-     * @since 1.0-beta-1
-     */
-    protected void required( String paramName, String paramValue )
-    {
-        if ( paramValue == null || "".equals( paramValue.trim() ) )
-        {
-            throw new IllegalArgumentException( paramName + " is a required parameter!" );
-        }
     }
 }

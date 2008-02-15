@@ -19,7 +19,7 @@ package org.apache.maven.doxia;
  * under the License.
  */
 
-import org.apache.maven.doxia.sink.Sink;
+import org.apache.maven.doxia.sink.AbstractSink;
 
 import java.util.LinkedList;
 import java.util.List;
@@ -33,7 +33,7 @@ import java.util.Stack;
  * @version $Id$
  */
 public class WellformednessCheckingSink
-    implements Sink
+    extends AbstractSink
 {
     private Stack elements = new Stack();
 

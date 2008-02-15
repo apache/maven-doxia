@@ -21,6 +21,8 @@ package org.apache.maven.doxia.parser;
 
 import java.io.File;
 
+import org.apache.maven.doxia.logging.Log;
+import org.apache.maven.doxia.logging.SystemStreamLog;
 import org.apache.maven.doxia.macro.Macro;
 import org.apache.maven.doxia.macro.MacroExecutionException;
 import org.apache.maven.doxia.macro.MacroRequest;
@@ -46,6 +48,9 @@ public abstract class AbstractParser
     /** @plexus.requirement */
     protected MacroManager macroManager;
 
+    /** Log instance. */
+    private Log log;
+
     /** {@inheritDoc} */
     public int getType()
     {
@@ -67,6 +72,8 @@ public abstract class AbstractParser
         throws MacroExecutionException, MacroNotFoundException
     {
         Macro macro = macroManager.getMacro( macroId );
+
+        macro.enableLogging( getLog() );
 
         macro.execute( sink, request );
     }
@@ -98,5 +105,27 @@ public abstract class AbstractParser
     public void setSecondParsing( boolean second )
     {
         this.secondParsing = second;
+    }
+
+    /** {@inheritDoc} */
+    public void enableLogging( Log log )
+    {
+        this.log = log;
+    }
+
+    /**
+     * Returns the current logger for this parser.
+     * If no logger has been configured yet, a new SystemStreamLog is returned.
+     *
+     * @return Log
+     */
+    protected Log getLog()
+    {
+        if ( log == null )
+        {
+            log = new SystemStreamLog();
+        }
+
+        return log;
     }
 }

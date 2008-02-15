@@ -21,12 +21,14 @@ under the License.
 
 <project xmlns="http://maven.apache.org/POM/4.0.0" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:schemaLocation="http://maven.apache.org/POM/4.0.0 http://maven.apache.org/maven-v4_0_0.xsd">
   <modelVersion>4.0.0</modelVersion>
+
   <parent>
     <groupId>org.apache.maven</groupId>
     <artifactId>maven-parent</artifactId>
     <version>7</version>
     <relativePath>../../pom/maven/pom.xml</relativePath>
   </parent>
+
   <groupId>org.apache.maven.doxia</groupId>
   <artifactId>doxia</artifactId>
   <version>1.0-beta-1-SNAPSHOT</version>
@@ -199,6 +201,11 @@ under the License.
       </dependency>
       <dependency>
         <groupId>org.apache.maven.doxia</groupId>
+        <artifactId>doxia-logging-api</artifactId>
+        <version>${projectVersion}</version>
+      </dependency>
+      <dependency>
+        <groupId>org.apache.maven.doxia</groupId>
         <artifactId>doxia-core</artifactId>
         <version>${projectVersion}</version>
       </dependency>
@@ -233,6 +240,7 @@ under the License.
 
   <modules>
     <module>doxia-core</module>
+    <module>doxia-logging-api</module>
     <module>doxia-sink-api</module>
     <module>doxia-modules</module>
     <module>doxia-book</module>

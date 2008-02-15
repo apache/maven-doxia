@@ -41,10 +41,10 @@ import org.codehaus.plexus.util.xml.pull.XmlPullParserException;
 public class XhtmlBaseParser
     extends AbstractXmlParser
 {
-    /** Used to distinguish <a href=""> from <a name="">. */
+    /** Used to distinguish &lt;a href=""&gt; from &lt;a name=""&gt;. */
     private boolean isLink;
 
-    /** Used to distinguish <a href=""> from <a name="">. */
+    /** Used to distinguish &lt;a href=""&gt; from &lt;a name=""&gt;. */
     private boolean isAnchor;
 
     /** Used for nested lists. */
@@ -528,7 +528,14 @@ public class XhtmlBaseParser
     {
         if ( !baseStartTag( parser, sink ) )
         {
-            // TODO: log( "Unrecognized start tag!" );
+            if ( getLog().isWarnEnabled() )
+            {
+                String position = "[" + parser.getLineNumber() + ":"
+                    + parser.getColumnNumber() + "]";
+                String tag = "<" + parser.getName() + ">";
+
+                getLog().warn( "Unrecognized tag: " + tag + " at " + position );
+            }
         }
     }
 
@@ -543,7 +550,14 @@ public class XhtmlBaseParser
     {
         if ( !baseEndTag( parser, sink ) )
         {
-            // TODO: log( "Unrecognized end tag!" );
+            if ( getLog().isWarnEnabled() )
+            {
+                String position = "[" + parser.getLineNumber() + ":"
+                    + parser.getColumnNumber() + "]";
+                String tag = "<" + parser.getName() + ">";
+
+                getLog().warn( "Unrecognized tag: " + tag + " at " + position );
+            }
         }
     }
 

@@ -28,7 +28,7 @@ package org.apache.maven.doxia.sink;
  * @version $Id$
  */
 public class SinkAdapter
-    implements Sink
+    extends AbstractSink
 {
     /** {@inheritDoc} */
     public void head()
