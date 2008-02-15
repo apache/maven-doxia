@@ -700,6 +700,7 @@ public class XhtmlBaseSink
     public void tableRows( int[] justification, boolean grid )
     {
         this.cellJustif = justification;
+        this.isCellJustif = true;
 
         MutableAttributeSet att = new SimpleAttributeSet();
         att.addAttribute( Attribute.ALIGN, "center" );
