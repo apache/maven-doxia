@@ -106,6 +106,7 @@ under the License.
       <plugin>
         <groupId>org.codehaus.modello</groupId>
         <artifactId>modello-maven-plugin</artifactId>
+        <version>1.0-alpha-17</version>
         <configuration>
           <model>src/main/modello/book.mdo</model>
           <version>1.0.0</version>
