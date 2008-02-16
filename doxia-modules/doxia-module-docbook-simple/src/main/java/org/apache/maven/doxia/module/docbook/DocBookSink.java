@@ -30,8 +30,8 @@ import javax.swing.text.html.HTML.Tag;
 
 import org.apache.maven.doxia.parser.Parser;
 import org.apache.maven.doxia.sink.AbstractXmlSink;
-import org.apache.maven.doxia.sink.StructureSink;
 import org.apache.maven.doxia.util.LineBreaker;
+import org.apache.maven.doxia.util.StructureSinkUtils;
 import org.codehaus.plexus.util.FileUtils;
 
 /**
@@ -1453,7 +1453,7 @@ public class DocBookSink
         {
             // First char of ID cannot be a digit.
             MutableAttributeSet att = new SimpleAttributeSet();
-            att.addAttribute( Attribute.ID, "a." + StructureSink.linkToKey( name ) );
+            att.addAttribute( Attribute.ID, "a." + StructureSinkUtils.linkToKey( name ) );
 
             // TODO: why?
             if ( xmlMode )
@@ -1493,7 +1493,7 @@ public class DocBookSink
      */
     public void link( String name )
     {
-        if ( StructureSink.isExternalLink( name ) )
+        if ( StructureSinkUtils.isExternalLink( name ) )
         {
             externalLinkFlag = true;
             MutableAttributeSet att = new SimpleAttributeSet();
@@ -1505,7 +1505,7 @@ public class DocBookSink
         {
             // First char of ID cannot be a digit.
             MutableAttributeSet att = new SimpleAttributeSet();
-            att.addAttribute( LINKEND_ATTRIBUTE, "a." + StructureSink.linkToKey( name ) );
+            att.addAttribute( LINKEND_ATTRIBUTE, "a." + StructureSinkUtils.linkToKey( name ) );
 
             writeStartTag( LINK_TAG, att );
         }

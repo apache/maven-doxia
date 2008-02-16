@@ -26,9 +26,9 @@ import javax.swing.text.SimpleAttributeSet;
 import javax.swing.text.html.HTML.Attribute;
 import javax.swing.text.html.HTML.Tag;
 
-import org.apache.maven.doxia.sink.StructureSink;
 import org.apache.maven.doxia.sink.XhtmlBaseSink;
 import org.apache.maven.doxia.util.HtmlTools;
+import org.apache.maven.doxia.util.StructureSinkUtils;
 
 /**
  * A doxia Sink which produces an xdoc model.
@@ -378,7 +378,7 @@ public class XdocSink
             att.addAttribute( Attribute.TARGET, target );
         }
 
-        if ( StructureSink.isExternalLink( name ) || isExternalHtml( name ) )
+        if ( StructureSinkUtils.isExternalLink( name ) || isExternalHtml( name ) )
         {
             att.addAttribute( Attribute.HREF, HtmlTools.escapeHTML( name ) );
         }

@@ -21,8 +21,8 @@ package org.apache.maven.doxia.module.xdoc;
 
 import org.apache.maven.doxia.parser.Parser;
 import org.apache.maven.doxia.sink.SinkAdapter;
-import org.apache.maven.doxia.sink.StructureSink;
 import org.apache.maven.doxia.util.HtmlTools;
+import org.apache.maven.doxia.util.StructureSinkUtils;
 import org.codehaus.plexus.util.StringUtils;
 import org.codehaus.plexus.util.xml.XMLWriter;
 
@@ -528,7 +528,7 @@ public class XmlWriterXdocSink
     {
         if ( !headFlag )
         {
-            String id = StructureSink.linkToKey( name );
+            String id = StructureSinkUtils.linkToKey( name );
             writer.startElement( "a" );
             writer.addAttribute( "id", id );
             writer.addAttribute( "name", id );
