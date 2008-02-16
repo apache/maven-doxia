@@ -30,7 +30,7 @@ import javax.swing.text.html.HTML.Tag;
 import org.apache.maven.doxia.parser.Parser;
 import org.apache.maven.doxia.sink.AbstractXmlSink;
 import org.apache.maven.doxia.util.HtmlTools;
-import org.apache.maven.doxia.util.StructureSink;
+import org.apache.maven.doxia.util.StructureSinkUtils;
 
 /**
  * Abstract base xhtml sink implementation.
@@ -948,7 +948,7 @@ public class XhtmlBaseSink
             att.addAttribute( Attribute.TARGET, target );
         }
 
-        if ( StructureSink.isExternalLink( name ) || isExternalHtml( name ) )
+        if ( StructureSinkUtils.isExternalLink( name ) || isExternalHtml( name ) )
         {
             if ( isExternalLink( name ) )
             {
@@ -966,7 +966,7 @@ public class XhtmlBaseSink
     }
 
     /**
-     * {@link StructureSink#isExternalLink(String)} also treats links to other documents as
+     * {@link StructureSinkUtils#isExternalLink(String)} also treats links to other documents as
      * external links, those should not have a class="externalLink" attribute.
      */
     private boolean isExternalLink( String href )
@@ -1203,7 +1203,7 @@ public class XhtmlBaseSink
      */
     public static String encodeFragment( String text )
     {
-        return encodeURL( StructureSink.linkToKey( text ) );
+        return encodeURL( StructureSinkUtils.linkToKey( text ) );
     }
 
     /**

@@ -20,7 +20,7 @@ package org.apache.maven.doxia.util;
  */
 
 /** Utility methods for Sinks. */
-public class StructureSink
+public class StructureSinkUtils
 {
     /**
      * Checks if the given string corresponds to an external URI,

@@ -19,13 +19,13 @@ package org.apache.maven.doxia.util;
  * under the License.
  */
 
-import org.apache.maven.doxia.util.StructureSink;
+import org.apache.maven.doxia.util.StructureSinkUtils;
 import org.codehaus.plexus.PlexusTestCase;
 
 /**
  * Test for org.apache.maven.doxia.sink.StructureSink
  */
-public class StructureSinkTest
+public class StructureSinkUtilsTest
     extends PlexusTestCase
 {
 
@@ -36,44 +36,44 @@ public class StructureSinkTest
     {
         String link = "http://maven.apache.org/";
         assertTrue( "Should be an external link: " + link,
-            StructureSink.isExternalLink( link ) );
+            StructureSinkUtils.isExternalLink( link ) );
 
         link = "https://maven.apache.org/";
         assertTrue( "Should be an external link: " + link,
-            StructureSink.isExternalLink( link ) );
+            StructureSinkUtils.isExternalLink( link ) );
 
         link = "ftp:/maven.apache.org/";
         assertTrue( "Should be an external link: " + link,
-            StructureSink.isExternalLink( link ) );
+            StructureSinkUtils.isExternalLink( link ) );
 
         link = "mailto:maven@apache.org";
         assertTrue( "Should be an external link: " + link,
-            StructureSink.isExternalLink( link ) );
+            StructureSinkUtils.isExternalLink( link ) );
 
         link = "file:/index.html";
         assertTrue( "Should be an external link: " + link,
-            StructureSink.isExternalLink( link ) );
+            StructureSinkUtils.isExternalLink( link ) );
 
         link = "./index.html";
         assertTrue( "Should be an external link: " + link,
-            StructureSink.isExternalLink( link ) );
+            StructureSinkUtils.isExternalLink( link ) );
 
         link = "../index.html";
         assertTrue( "Should be an external link: " + link,
-            StructureSink.isExternalLink( link ) );
+            StructureSinkUtils.isExternalLink( link ) );
 
 
         link = "file:\\index.html";
         assertFalse( "Should NOT be an external link: " + link,
-            StructureSink.isExternalLink( link ) );
+            StructureSinkUtils.isExternalLink( link ) );
 
         link = ".\\index.html";
         assertFalse( "Should NOT be an external link: " + link,
-            StructureSink.isExternalLink( link ) );
+            StructureSinkUtils.isExternalLink( link ) );
 
         link = "..\\index.html";
         assertFalse( "Should NOT be an external link: " + link,
-            StructureSink.isExternalLink( link ) );
+            StructureSinkUtils.isExternalLink( link ) );
     }
 
 }

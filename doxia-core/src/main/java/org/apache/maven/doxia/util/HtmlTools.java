@@ -215,7 +215,7 @@ public class HtmlTools
         {
             return null;
         }
-        return encodeURL( StructureSink.linkToKey( text ) );
+        return encodeURL( StructureSinkUtils.linkToKey( text ) );
     }
 
     /**
