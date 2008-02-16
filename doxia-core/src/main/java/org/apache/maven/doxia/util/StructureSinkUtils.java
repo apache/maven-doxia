@@ -19,12 +19,17 @@ package org.apache.maven.doxia.util;
  * under the License.
  */
 
-/** Utility methods for Sinks. */
+/**
+ * Utility methods for Sinks.
+ *
+ * @version $Id$
+ * @since 1.0-beta-1
+ */
 public class StructureSinkUtils
 {
     /**
      * Checks if the given string corresponds to an external URI,
-     * ie is not a link within the same document. 
+     * ie is not a link within the same document.
      *
      * @param link The link to check.
      * @return True if the link (ignoring case) starts with either of the
