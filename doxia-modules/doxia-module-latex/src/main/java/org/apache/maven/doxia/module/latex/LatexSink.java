@@ -86,7 +86,9 @@ public class LatexSink
      */
     public LatexSink( Writer out )
     {
-        this( out, defaultSinkCommands(), defaultPreamble() );
+        this.out = new LineBreaker( out );
+        this.sinkCommands = defaultSinkCommands();
+        this.preamble = defaultPreamble();
     }
 
     /**
@@ -1108,7 +1110,7 @@ public class LatexSink
      * @throws java.io.IOException if the resource file cannot be read.
      * @return InputStream
      */
-    public static InputStream getDefaultSinkCommands()
+    private static InputStream getDefaultSinkCommands()
         throws IOException
     {
         return LatexSink.class.getResource( "default_sink_commands.tex" ).openStream();
@@ -1120,7 +1122,7 @@ public class LatexSink
      * @return InputStream
      * @throws java.io.IOException if the resource file cannot be read.
      */
-    public static InputStream getDefaultPreamble()
+    private static InputStream getDefaultPreamble()
         throws IOException
     {
         return LatexSink.class.getResource( "default_preamble.tex" ).openStream();
@@ -1131,7 +1133,7 @@ public class LatexSink
      *
      * @return String.
      */
-    public static String defaultSinkCommands()
+    protected String defaultSinkCommands()
     {
         String commands = "";
 
@@ -1141,7 +1143,11 @@ public class LatexSink
         }
         catch ( IOException ioe )
         {
-            // TODO: log
+            // this should not happen
+            getLog().warn( "Could not read default LaTeX commands, the generated LaTeX file will not compile!" );
+            getLog().debug( ioe );
+
+            return "";
         }
 
         return commands;
@@ -1152,7 +1158,7 @@ public class LatexSink
      *
      * @return String.
      */
-    public static String defaultPreamble()
+    protected String defaultPreamble()
     {
         String preamble = "";
 
@@ -1162,7 +1168,11 @@ public class LatexSink
         }
         catch ( IOException ioe )
         {
-            // TODO: log
+            // this should not happen
+            getLog().warn( "Could not read default LaTeX preamble, the generated LaTeX file will not compile!" );
+            getLog().debug( ioe );
+
+            return "";
         }
 
         return preamble;

@@ -169,8 +169,7 @@ public class XdocParser
 
                 if ( StringUtils.isEmpty( macroName ) )
                 {
-                    // TODO use logging?
-                    throw new IllegalArgumentException( "The '" + Attribute.NAME.toString() + "' attribute for the '"
+                    throw new MacroExecutionException( "The '" + Attribute.NAME.toString() + "' attribute for the '"
                         + MACRO_TAG.toString() + "' tag is required." );
                 }
             }
@@ -191,7 +190,7 @@ public class XdocParser
 
                     if ( StringUtils.isEmpty( paramName ) || StringUtils.isEmpty( paramValue ) )
                     {
-                        throw new IllegalArgumentException( "'" + Attribute.NAME.toString() + "' and '"
+                        throw new MacroExecutionException( "'" + Attribute.NAME.toString() + "' and '"
                             + Attribute.VALUE.toString() + "' attributes for the '" + Tag.PARAM.toString()
                             + "' tag are required inside the '" + MACRO_TAG.toString() + "' tag." );
                     }

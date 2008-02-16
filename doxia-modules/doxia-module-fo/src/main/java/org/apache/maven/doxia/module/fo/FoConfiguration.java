@@ -65,7 +65,8 @@ public class FoConfiguration
         }
         catch ( ConfigurationException cex )
         {
-            throw new RuntimeException( cex ); // TODO
+            // this should not happen
+            throw new RuntimeException( cex );
         }
 
         this.sets = config.getList( "xsl:attribute-set[@name]" );

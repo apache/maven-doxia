@@ -126,7 +126,7 @@ public class FoAggregateSink extends FoSink
 
         if ( docName == null )
         {
-            // TODO: log.warn( "No document root specified, local links will not be resolved correctly!" )
+            getLog().warn( "No document root specified, local links will not be resolved correctly!" );
         }
         else
         {
@@ -196,7 +196,7 @@ public class FoAggregateSink extends FoSink
     {
         if ( StringUtils.isEmpty( name ) )
         {
-            // TODO log this behavior
+            getLog().warn( "Empty document reference, links will not be resolved correctly!" );
             return "";
         }
 

@@ -168,6 +168,7 @@ public class AptParser
             this.source = new AptReaderSource( new StringReader( sourceContent ) );
 
             this.sink = sink;
+            sink.enableLogging( getLog() );
 
             blockFileName = null;
 
@@ -989,7 +990,7 @@ public class AptParser
      * @param sink the sink to receive the events.
      * @throws AptParseException if something goes wrong.
      */
-    private static void doTraverseText( String text,
+    private void doTraverseText( String text,
                                         int begin,
                                         int end,
                                         Sink sink )
@@ -1056,7 +1057,10 @@ public class AptParser
                                     }
                                     catch ( NumberFormatException e )
                                     {
-                                        // TODO: log
+                                        if ( getLog().isDebugEnabled() )
+                                        {
+                                            getLog().debug( "Not a number: " + text.substring( i + 2, i + 4 ) );
+                                        }
                                     }
 
                                     i += 3;
@@ -1080,7 +1084,10 @@ public class AptParser
                                     }
                                     catch ( NumberFormatException e )
                                     {
-                                        // TODO: log
+                                        if ( getLog().isDebugEnabled() )
+                                        {
+                                            getLog().debug( "Not a number: " + text.substring( i + 2, i + 6 ) );
+                                        }
                                     }
 
                                     i += 5;
@@ -1110,7 +1117,10 @@ public class AptParser
                                     }
                                     catch ( NumberFormatException e )
                                     {
-                                        // TODO: log
+                                        if ( getLog().isDebugEnabled() )
+                                        {
+                                            getLog().debug( "Not a number: " + text.substring( i + 1, i + 1 + octalChars ) );
+                                        }
                                     }
 
                                     i += octalChars;
@@ -1363,7 +1373,7 @@ public class AptParser
      * @return String
      * @throws AptParseException if something goes wrong.
      */
-    private static String getTraversedLink( String text,
+    private String getTraversedLink( String text,
                                             int begin,
                                             int end )
         throws AptParseException
@@ -1400,7 +1410,7 @@ public class AptParser
      * @return String
      * @throws AptParseException if something goes wrong.
      */
-    private static String getTraversedAnchor( String text,
+    private String getTraversedAnchor( String text,
                                               int begin,
                                               int end )
         throws AptParseException
@@ -1435,7 +1445,7 @@ public class AptParser
      * @return String
      * @throws AptParseException if something goes wrong.
      */
-    private static String doGetTraversedLink( String text,
+    private String doGetTraversedLink( String text,
                                               int begin,
                                               int end )
         throws AptParseException
@@ -1603,7 +1613,7 @@ public class AptParser
                                      int end )
             throws AptParseException
         {
-            AptParser.doTraverseText( text, begin, end, AptParser.this.sink );
+            AptParser.this.doTraverseText( text, begin, end, AptParser.this.sink );
         }
 
         /**
@@ -1787,7 +1797,7 @@ public class AptParser
                         AptParser.this.sink.lineBreak();
                     }
 
-                    AptParser.doTraverseText( line, 0, lineLength, AptParser.this.sink );
+                    AptParser.this.doTraverseText( line, 0, lineLength, AptParser.this.sink );
                 }
             }
 
@@ -2348,7 +2358,7 @@ public class AptParser
             if ( captionIndex >= 0 )
             {
                 AptParser.this.sink.tableCaption();
-                AptParser.doTraverseText( text, captionIndex, textLength, AptParser.this.sink );
+                AptParser.this.doTraverseText( text, captionIndex, textLength, AptParser.this.sink );
                 AptParser.this.sink.tableCaption_();
             }
 
@@ -2450,7 +2460,7 @@ public class AptParser
                     }
                     if ( cell.length() > 0 )
                     {
-                        AptParser.doTraverseText( cell.toString(), 0, cell.length(), AptParser.this.sink );
+                        AptParser.this.doTraverseText( cell.toString(), 0, cell.length(), AptParser.this.sink );
                         cell.setLength( 0 );
                     }
                     if ( headers[i] )

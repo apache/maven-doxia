@@ -41,13 +41,25 @@ public class FmlContentParser
     protected void handleStartTag( XmlPullParser parser, Sink sink )
         throws XmlPullParserException, MacroExecutionException
     {
-        if ( parser.getName().equals( SOURCE_TAG.toString() ) )
+        if ( parser.getName().equals( QUESTION_TAG.toString() )
+            || parser.getName().equals( ANSWER_TAG.toString() ) )
+        {
+            // ignore
+        }
+        else if ( parser.getName().equals( SOURCE_TAG.toString() ) )
         {
             sink.verbatim( true );
         }
         else if ( !baseStartTag( parser, sink ) )
         {
-            // TODO: log( "Unrecognized start tag!" );
+            if ( getLog().isWarnEnabled() )
+            {
+                String position = "[" + parser.getLineNumber() + ":"
+                    + parser.getColumnNumber() + "]";
+                String tag = "<" + parser.getName() + ">";
+
+                getLog().warn( "Unrecognized fml tag: " + tag + " at " + position );
+            }
         }
     }
 
@@ -61,7 +73,7 @@ public class FmlContentParser
         }
         else if ( !baseEndTag( parser, sink ) )
         {
-            // TODO: log( "Unrecognized end tag!" );
+            // unrecognized tag is already logged in StartTag
         }
     }
 }

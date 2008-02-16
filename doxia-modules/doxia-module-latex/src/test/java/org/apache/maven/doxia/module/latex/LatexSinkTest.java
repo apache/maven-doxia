@@ -65,9 +65,9 @@ public class LatexSinkTest
     /** {@inheritDoc} */
     protected String getHeadBlock()
     {
-        return LatexSink.defaultSinkCommands()
+        return ((LatexSink) getSink()).defaultSinkCommands()
             + "\\documentclass[a4paper]{article}"
-            + LatexSink.defaultPreamble()
+            + ((LatexSink) getSink()).defaultPreamble()
             + "\\begin{document}";
     }
 

@@ -289,6 +289,7 @@ public class FmlParser
         throws IOException, XmlPullParserException, ParseException
     {
         FmlContentParser xdocParser = new FmlContentParser();
+        xdocParser.enableLogging( getLog() );
 
         sink.head();
         sink.title();

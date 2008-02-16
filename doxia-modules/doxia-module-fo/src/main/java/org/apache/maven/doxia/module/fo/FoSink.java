@@ -901,7 +901,7 @@ public class FoSink
         }
         catch ( IOException e )
         {
-            // TODO: log
+            getLog().debug( e );
         }
     }
 
@@ -914,7 +914,7 @@ public class FoSink
         }
         catch ( IOException e )
         {
-            // TODO: log
+            getLog().debug( e );
         }
     }
 
@@ -1053,11 +1053,11 @@ public class FoSink
     {
         try
         {
-            out.write( text );
+            out.write( unifyEOLs( text ) );
         }
         catch ( IOException e )
         {
-            // TODO: log
+            getLog().debug( e );
         }
     }
 

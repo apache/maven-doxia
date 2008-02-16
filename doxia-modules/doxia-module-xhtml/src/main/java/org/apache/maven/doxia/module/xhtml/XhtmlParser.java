@@ -129,7 +129,14 @@ public class XhtmlParser
         }
         else if ( !baseStartTag( parser, sink ) )
         {
-            // TODO: log( "Unrecognized start tag!" );
+            if ( getLog().isWarnEnabled() )
+            {
+                String position = "[" + parser.getLineNumber() + ":"
+                    + parser.getColumnNumber() + "]";
+                String tag = "<" + parser.getName() + ">";
+
+                getLog().warn( "Unrecognized tag: " + tag + " at " + position );
+            }
         }
     }
 
@@ -166,7 +173,7 @@ public class XhtmlParser
         }
         else if ( !baseEndTag( parser, sink ) )
         {
-            // TODO: log( "Unrecognized end tag!" );
+            // unrecognized tag is already logged in StartTag
         }
     }
 
