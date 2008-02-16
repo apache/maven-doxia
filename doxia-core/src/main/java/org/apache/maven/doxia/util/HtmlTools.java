@@ -21,7 +21,6 @@ package org.apache.maven.doxia.util;
 
 import java.io.UnsupportedEncodingException;
 
-import org.apache.maven.doxia.sink.StructureSink;
 
 /**
  * The <code>HtmlTools</code> class defines methods to HTML handling.

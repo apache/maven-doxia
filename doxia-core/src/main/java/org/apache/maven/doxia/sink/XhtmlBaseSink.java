@@ -29,8 +29,8 @@ import javax.swing.text.html.HTML.Tag;
 
 import org.apache.maven.doxia.parser.Parser;
 import org.apache.maven.doxia.sink.AbstractXmlSink;
-import org.apache.maven.doxia.sink.StructureSink;
 import org.apache.maven.doxia.util.HtmlTools;
+import org.apache.maven.doxia.util.StructureSink;
 
 /**
  * Abstract base xhtml sink implementation.

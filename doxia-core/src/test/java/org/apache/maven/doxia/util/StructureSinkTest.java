@@ -1,4 +1,4 @@
-package org.apache.maven.doxia.sink;
+package org.apache.maven.doxia.util;
 
 /*
  * Licensed to the Apache Software Foundation (ASF) under one
@@ -19,6 +19,7 @@ package org.apache.maven.doxia.sink;
  * under the License.
  */
 
+import org.apache.maven.doxia.util.StructureSink;
 import org.codehaus.plexus.PlexusTestCase;
 
 /**
