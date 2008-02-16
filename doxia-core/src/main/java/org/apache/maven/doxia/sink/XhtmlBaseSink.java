@@ -1221,7 +1221,7 @@ public class XhtmlBaseSink
     /** {@inheritDoc} */
     protected void write( String text )
     {
-        writer.write( text );
+        writer.write( unifyEOLs( text ) );
     }
 
 }

@@ -21,6 +21,7 @@ package org.apache.maven.doxia.sink;
 
 import org.apache.maven.doxia.logging.Log;
 import org.apache.maven.doxia.logging.SystemStreamLog;
+import org.apache.maven.doxia.markup.Markup;
 
 /**
  * An abstract base class that defines some convenience methods for sinks.
@@ -31,7 +32,7 @@ import org.apache.maven.doxia.logging.SystemStreamLog;
  * @since 1.0-beta-1
  */
 public abstract class AbstractSink
-    implements Sink
+    implements Sink, Markup
 {
     private Log log;
 
@@ -55,5 +56,48 @@ public abstract class AbstractSink
         }
 
         return log;
+    }
+
+    /**
+     * Parses the given String and replaces all occurrences of
+     * '\n', '\r' and '\r\n' with the system EOL. All Sinks should
+     * make sure that text output is filtered through this method.
+     *
+     * @param text the text to scan.
+     * @return a String that contains only System EOLs.
+     */
+     protected String unifyEOLs( String text )
+     {
+        if ( text == null )
+        {
+            return null;
+        }
+
+        int length = text.length();
+
+        StringBuffer buffer = new StringBuffer( length );
+
+        for ( int i = 0; i < length; i++ )
+        {
+            if ( text.charAt(i) == '\r' )
+            {
+                if ( ( i + 1 ) < length && text.charAt( i + 1 ) == '\n' )
+                {
+                    i++;
+                }
+
+                buffer.append( EOL );
+            }
+            else if ( text.charAt( i ) == '\n' )
+            {
+                buffer.append( EOL );
+            }
+            else
+            {
+                buffer.append( text.charAt( i ) );
+            }
+        }
+
+        return buffer.toString();
     }
 }
