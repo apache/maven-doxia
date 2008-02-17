@@ -128,6 +128,7 @@ public class NumberedListItem
     public String getListItemSymbol()
     {
         int j = count() - 1;
+
         if ( j < 0 )
         {
             j = 0;
@@ -138,6 +139,7 @@ public class NumberedListItem
         }
 
         String symbol;
+
         switch ( format() )
         {
             case Sink.NUMBERING_UPPER_ALPHA:

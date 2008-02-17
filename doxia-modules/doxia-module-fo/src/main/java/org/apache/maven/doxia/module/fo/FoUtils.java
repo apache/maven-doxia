@@ -114,7 +114,7 @@ public class FoUtils
             }
             catch ( IOException e )
             {
-                // TODO: log
+                e.printStackTrace();
             }
         }
     }

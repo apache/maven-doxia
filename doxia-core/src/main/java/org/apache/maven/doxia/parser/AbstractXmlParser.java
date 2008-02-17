@@ -51,6 +51,8 @@ public abstract class AbstractXmlParser
 
             parser.setInput( source );
 
+            sink.enableLogging( getLog() );
+
             parseXml( parser, sink );
         }
         catch ( XmlPullParserException ex )

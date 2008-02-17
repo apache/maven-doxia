@@ -1162,8 +1162,7 @@ public final class ITextSink
 
         if ( urlName == null )
         {
-            //TODO
-            System.err.println( "The image " + name + " not found in the class loader. Try to call setClassLoader(ClassLoader) before." );
+            getLog().warn( "No image " + name + " found in the class loader. Try to call setClassLoader(ClassLoader) before." );
             return;
         }
 
