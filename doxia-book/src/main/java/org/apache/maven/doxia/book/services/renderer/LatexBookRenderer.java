@@ -160,8 +160,9 @@ public class LatexBookRenderer
             writer.println( "\\author{" + book.getDate() + "}" );
         }
 
-        writer.print( IOUtil.toString( LatexSink.getDefaultSinkCommands() ) );
-        writer.print( IOUtil.toString( LatexSink.getDefaultPreamble() ) );
+        LatexBookSink sink = new LatexBookSink( writer );
+        sink.defaultBookPreamble();
+
         writer.println( "\\begin{document}" );
         writer.println( "\\maketitle" );
         writer.println( "\\tableofcontents" );

@@ -101,4 +101,20 @@ public class LatexBookSink
     {
         return title;
     }
+
+    // ----------------------------------------------------------------------
+    //
+    // ----------------------------------------------------------------------
+
+    /**
+     * Writes the default LaTeX commands and preamble in the main book file.
+     */
+    public void defaultBookPreamble()
+    {
+        markup( defaultSinkCommands() );
+        markup( defaultPreamble() );
+        flush();
+    }
+
+
 }
