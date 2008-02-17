@@ -804,7 +804,7 @@ public class XhtmlBaseSink
 
         if ( cellJustif != null && isCellJustif )
         {
-            switch ( cellJustif[cellCount] )
+            switch ( cellJustif[Math.min( cellCount, cellJustif.length - 1 )] )
             {
                 case Parser.JUSTIFY_LEFT:
                     justif = "left";

@@ -274,11 +274,11 @@ public class XhtmlBaseParser
 
             String align = parser.getAttributeValue( null, Attribute.ALIGN.toString() );
 
-            int[] justif = { JUSTIFY_CENTER };
+            int[] justif = { JUSTIFY_LEFT };
 
-            if ( "left".equals( align ) )
+            if ( "center".equals( align ) )
             {
-                justif[0] = JUSTIFY_LEFT;
+                justif[0] = JUSTIFY_CENTER;
             }
             else if ( "right".equals( align ) )
             {
