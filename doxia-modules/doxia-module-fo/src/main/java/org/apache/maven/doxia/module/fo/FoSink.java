@@ -89,16 +89,6 @@ public class FoSink
         setNameSpace( "fo" );
     }
 
-    /**
-     * Returns the configuration object of this sink.
-     *
-     * @return The configuration object of this sink.
-     */
-    public FoConfiguration getFoConfiguration()
-    {
-        return config;
-    }
-
     // TODO add FOP compliance mode?
 
     /** {@inheritDoc} */
@@ -532,8 +522,7 @@ public class FoSink
     /** {@inheritDoc} */
     public void figureGraphics( String s )
     {
-        // TODO: figure out file extension.
-        writeln( " src=\"" + s + ".png\"/>" );
+        writeln( " src=\"" + s + "\"/>" );
     }
 
     /** {@inheritDoc} */
@@ -963,6 +952,16 @@ public class FoSink
     // ----------------------------------------------------------------------
     //
     // ----------------------------------------------------------------------
+
+    /**
+     * Returns the configuration object of this sink.
+     *
+     * @return The configuration object of this sink.
+     */
+    protected FoConfiguration getFoConfiguration()
+    {
+        return config;
+    }
 
     /**
      * Writes a start tag, prepending EOL.

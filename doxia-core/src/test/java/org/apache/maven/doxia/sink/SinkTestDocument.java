@@ -290,7 +290,7 @@ public class SinkTestDocument
     {
         sink.figure();
 
-        sink.figureGraphics( "figure" );
+        sink.figureGraphics( "figure.png" );
 
         sink.figureCaption();
         sink.text( "Figure caption" );

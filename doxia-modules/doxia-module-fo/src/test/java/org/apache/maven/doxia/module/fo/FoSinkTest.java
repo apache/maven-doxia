@@ -271,7 +271,7 @@ public class FoSinkTest extends AbstractSinkTest
         String dtAtts = getConfig().getAttributeString( "figure.graphics" );
         String ddAtts = getConfig().getAttributeString( "figure.caption" );
         return "<fo:block" + dlAtts + "><fo:external-graphic" + dtAtts
-            + " src=\"" + source + ".png" + "\"/><fo:block" + ddAtts
+            + " src=\"" + source +  "\"/><fo:block" + ddAtts
             + ">" + caption + "</fo:block></fo:block>";
     }
 

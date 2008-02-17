@@ -975,12 +975,10 @@ public class RtfSink
 
     public void figureGraphics( String name )
     {
-        /*
-         * The name argument is a path name without file extension.
-         */
-        StringBuffer buf = new StringBuffer( name );
-        buf.append( ".ppm" );
-        name = buf.toString();
+        if ( !name.endsWith( ".ppm" ) )
+        {
+            getLog().warn( "Unsupported image type: " + name );
+        }
 
         Paragraph paragraph = new Paragraph();
         paragraph.justification = Parser.JUSTIFY_CENTER;
