@@ -29,7 +29,7 @@ under the License.
   </parent>
 
   <artifactId>doxia-logging-api</artifactId>
-  <name>Doxia :: Sink API</name>
+  <name>Doxia :: Logging API</name>
   <description>Doxia Logging API.</description>
 
   <dependencies>
