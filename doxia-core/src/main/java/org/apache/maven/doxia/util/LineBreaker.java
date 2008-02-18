@@ -114,7 +114,6 @@ public class LineBreaker
             for ( int i = 0; i < length; ++i )
             {
                 char c = text.charAt( i );
-                String os = System.getProperty( "os.name" ).toLowerCase();
 
                 switch ( c )
                 {
@@ -131,7 +130,7 @@ public class LineBreaker
 
                     case '\r':
                         // if \r\n (windows) then just pass along \n
-                        if ( os.indexOf( "windows" ) != -1 )
+                        if ( i + 1 < length && text.charAt( i + 1 ) == '\n' )
                         {
                             break;
                         }
