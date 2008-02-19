@@ -223,7 +223,7 @@ public class XdocParser
                     + parser.getColumnNumber() + "]";
                 String tag = "<" + parser.getName() + ">";
 
-                getLog().warn( "Unrecognized tag: " + tag + " at " + position );
+                getLog().warn( "Unrecognized xdoc tag: " + tag + " at " + position );
             }
         }
     }

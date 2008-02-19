@@ -135,7 +135,7 @@ public class XhtmlParser
                     + parser.getColumnNumber() + "]";
                 String tag = "<" + parser.getName() + ">";
 
-                getLog().warn( "Unrecognized tag: " + tag + " at " + position );
+                getLog().warn( "Unrecognized xhtml tag: " + tag + " at " + position );
             }
         }
     }
