@@ -541,7 +541,7 @@ public class XhtmlBaseParser
                     + parser.getColumnNumber() + "]";
                 String tag = "<" + parser.getName() + ">";
 
-                getLog().warn( "Unrecognized tag: " + tag + " at " + position );
+                getLog().warn( "Unrecognized xml tag: " + tag + " at " + position );
             }
         }
     }
@@ -563,7 +563,7 @@ public class XhtmlBaseParser
                     + parser.getColumnNumber() + "]";
                 String tag = "<" + parser.getName() + ">";
 
-                getLog().warn( "Unrecognized tag: " + tag + " at " + position );
+                getLog().warn( "Unrecognized xml tag: " + tag + " at " + position );
             }
         }
     }
