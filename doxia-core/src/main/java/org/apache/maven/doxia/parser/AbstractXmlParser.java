@@ -21,7 +21,6 @@ package org.apache.maven.doxia.parser;
 
 import java.io.IOException;
 import java.io.Reader;
-import java.io.StringReader;
 
 import org.apache.maven.doxia.macro.MacroExecutionException;
 import org.apache.maven.doxia.markup.XmlMarkup;
@@ -76,7 +75,7 @@ public abstract class AbstractXmlParser
     public void parse( String string, Sink sink )
         throws ParseException
     {
-        parse( new StringReader( string ), sink );
+        super.parse( string, sink );
     }
 
     /** {@inheritDoc} */

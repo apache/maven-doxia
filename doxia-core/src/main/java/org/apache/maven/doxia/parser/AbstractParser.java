@@ -20,6 +20,7 @@ package org.apache.maven.doxia.parser;
  */
 
 import java.io.File;
+import java.io.StringReader;
 
 import org.apache.maven.doxia.logging.Log;
 import org.apache.maven.doxia.logging.SystemStreamLog;
@@ -95,6 +96,19 @@ public abstract class AbstractParser
         }
 
         return new File( new File( "" ).getAbsolutePath() );
+    }
+
+    /**
+     * Convenience method to parse an arbitrary string and emit events into the given sink.
+     *
+     * @param string A string that provides the source input.
+     * @param sink A sink that consumes the Doxia events.
+     * @throws ParseException if the string could not be parsed.
+     */
+    public void parse( String string, Sink sink )
+        throws ParseException
+    {
+        parse( new StringReader( string ), sink );
     }
 
     /**
