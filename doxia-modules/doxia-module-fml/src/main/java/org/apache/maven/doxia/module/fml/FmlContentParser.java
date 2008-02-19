@@ -48,11 +48,13 @@ public class FmlContentParser
         }
         else if ( parser.getName().equals( SOURCE_TAG.toString() ) )
         {
+            verbatim();
+
             sink.verbatim( true );
         }
         else if ( !baseStartTag( parser, sink ) )
         {
-            if ( getLog().isWarnEnabled() )
+            if ( !isVerbatim() && getLog().isWarnEnabled() )
             {
                 String position = "[" + parser.getLineNumber() + ":"
                     + parser.getColumnNumber() + "]";
@@ -69,6 +71,8 @@ public class FmlContentParser
     {
         if ( parser.getName().equals( SOURCE_TAG.toString() ) )
         {
+            verbatim_();
+
             sink.verbatim_();
         }
         else if ( !baseEndTag( parser, sink ) )

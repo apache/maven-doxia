@@ -56,6 +56,9 @@ public class XhtmlBaseParser
     /** Counts section level. */
     private int sectionLevel;
 
+    /** Verbatim level, increased whenever a &lt;pre&gt; tag is encountered. */
+    private int verbatimLevel;
+
     /**
      * <p>
      *   Goes through a common list of possible html start tags. These include only tags that can go into
@@ -137,6 +140,8 @@ public class XhtmlBaseParser
          */
         else if ( parser.getName().equals( Tag.PRE.toString() ) )
         {
+            verbatim();
+
             sink.verbatim( false );
         }
         else if ( parser.getName().equals( Tag.UL.toString() ) )
@@ -394,6 +399,8 @@ public class XhtmlBaseParser
         }
         else if ( parser.getName().equals( Tag.PRE.toString() ) )
         {
+            verbatim_();
+
             sink.verbatim_();
         }
         else if ( parser.getName().equals( Tag.UL.toString() ) )
@@ -677,6 +684,33 @@ public class XhtmlBaseParser
     protected void setSectionLevel( int newLevel )
     {
         this.sectionLevel = newLevel;
+    }
+
+    /**
+     * Decrease the current verbatim level.
+     */
+    protected void verbatim_()
+    {
+        verbatimLevel--;
+    }
+
+    /**
+     * Increases the current verbatim level.
+     * A value of 0 means that we are not in verbatim mode, every nested &lt;pre&gt; tag increases the level.
+     */
+    protected void verbatim()
+    {
+        verbatimLevel++;
+    }
+
+    /**
+     * Checks if we are currently insid a &lt;pre&gt; tag.
+     *
+     * @return true if we are currently in verbatim mode.
+     */
+    protected boolean isVerbatim()
+    {
+        return ( this.verbatimLevel != 0 );
     }
 
 }

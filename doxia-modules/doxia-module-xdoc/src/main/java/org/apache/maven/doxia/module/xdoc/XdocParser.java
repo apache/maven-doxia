@@ -150,6 +150,8 @@ public class XdocParser
         }
         else if ( parser.getName().equals( SOURCE_TAG.toString() ) )
         {
+            verbatim();
+
             sink.verbatim( true );
         }
         else if ( parser.getName().equals( PROPERTIES_TAG.toString() ) )
@@ -214,7 +216,8 @@ public class XdocParser
         {
             // TODO: remove
             handleRawText( sink, parser );
-            if ( getLog().isWarnEnabled() )
+
+            if ( !isVerbatim() && getLog().isWarnEnabled() )
             {
                 String position = "[" + parser.getLineNumber() + ":"
                     + parser.getColumnNumber() + "]";
@@ -258,6 +261,8 @@ public class XdocParser
         }
         else if ( parser.getName().equals( SOURCE_TAG.toString() ) )
         {
+            verbatim_();
+
             sink.verbatim_();
         }
         else if ( parser.getName().equals( PROPERTIES_TAG.toString() ) )
