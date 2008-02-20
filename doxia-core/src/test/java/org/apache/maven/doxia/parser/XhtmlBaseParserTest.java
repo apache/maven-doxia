@@ -137,5 +137,51 @@ public class XhtmlBaseParserTest
         assertFalse( it.hasNext() );
     }
 
+    /** @throws Exception  */
+    public void testSignificantWhiteSpace()
+        throws Exception
+    {
+        // NOTE significant white space
+        String text = "<p><b>word</b> <i>word</i></p>";
+
+        SinkEventTestingSink sink = new SinkEventTestingSink();
+
+        parser.parse( text, sink );
+
+        Iterator it = sink.getEventList().iterator();
+
+        assertEquals( "paragraph", ( (SinkEventElement) it.next() ).getName() );
+        assertEquals( "bold", ( (SinkEventElement) it.next() ).getName() );
+        assertEquals( "text", ( (SinkEventElement) it.next() ).getName() );
+        assertEquals( "bold_", ( (SinkEventElement) it.next() ).getName() );
+        // FIXME: DOXIA-222
+        //assertEquals( "text", ( (SinkEventElement) it.next() ).getName() );
+        assertEquals( "italic", ( (SinkEventElement) it.next() ).getName() );
+        assertEquals( "text", ( (SinkEventElement) it.next() ).getName() );
+        assertEquals( "italic_", ( (SinkEventElement) it.next() ).getName() );
+        assertEquals( "paragraph_", ( (SinkEventElement) it.next() ).getName() );
+        assertFalse( it.hasNext() );
+
+
+        String EOL = System.getProperty( "line.separator" );
+        text = "<p><b>word</b>" + EOL + "<i>word</i></p>";
+
+        sink.reset();
+        parser.parse( text, sink );
+        it = sink.getEventList().iterator();
+
+        assertEquals( "paragraph", ( (SinkEventElement) it.next() ).getName() );
+        assertEquals( "bold", ( (SinkEventElement) it.next() ).getName() );
+        assertEquals( "text", ( (SinkEventElement) it.next() ).getName() );
+        assertEquals( "bold_", ( (SinkEventElement) it.next() ).getName() );
+        // FIXME: DOXIA-222
+        //assertEquals( "text", ( (SinkEventElement) it.next() ).getName() );
+        assertEquals( "italic", ( (SinkEventElement) it.next() ).getName() );
+        assertEquals( "text", ( (SinkEventElement) it.next() ).getName() );
+        assertEquals( "italic_", ( (SinkEventElement) it.next() ).getName() );
+        assertEquals( "paragraph_", ( (SinkEventElement) it.next() ).getName() );
+        assertFalse( it.hasNext() );
+
+    }
 
 }
