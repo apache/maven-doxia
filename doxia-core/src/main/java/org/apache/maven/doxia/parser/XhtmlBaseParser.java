@@ -206,16 +206,19 @@ public class XhtmlBaseParser
         {
             sink.definition();
         }
-        else if ( ( parser.getName().equals( Tag.B.toString() ) ) || ( parser.getName().equals( Tag.STRONG.toString() ) ) )
+        else if ( ( parser.getName().equals( Tag.B.toString() ) )
+                || ( parser.getName().equals( Tag.STRONG.toString() ) ) )
         {
             sink.bold();
         }
-        else if ( ( parser.getName().equals( Tag.I.toString() ) ) || ( parser.getName().equals( Tag.EM.toString() ) ) )
+        else if ( ( parser.getName().equals( Tag.I.toString() ) )
+                || ( parser.getName().equals( Tag.EM.toString() ) ) )
         {
             sink.italic();
         }
-        else if ( ( parser.getName().equals( Tag.CODE.toString() ) ) || ( parser.getName().equals( Tag.SAMP.toString() ) ) ||
-            ( parser.getName().equals( Tag.TT.toString() ) ) )
+        else if ( ( parser.getName().equals( Tag.CODE.toString() ) )
+                || ( parser.getName().equals( Tag.SAMP.toString() ) )
+                || ( parser.getName().equals( Tag.TT.toString() ) ) )
         {
             sink.monospaced();
         }
@@ -436,16 +439,19 @@ public class XhtmlBaseParser
             sink.definition_();
             sink.definitionListItem_();
         }
-        else if ( ( parser.getName().equals( Tag.B.toString() ) ) || ( parser.getName().equals( Tag.STRONG.toString() ) ) )
+        else if ( ( parser.getName().equals( Tag.B.toString() ) )
+                || ( parser.getName().equals( Tag.STRONG.toString() ) ) )
         {
             sink.bold_();
         }
-        else if ( ( parser.getName().equals( Tag.I.toString() ) ) || ( parser.getName().equals( Tag.EM.toString() ) ) )
+        else if ( ( parser.getName().equals( Tag.I.toString() ) )
+                || ( parser.getName().equals( Tag.EM.toString() ) ) )
         {
             sink.italic_();
         }
-        else if ( ( parser.getName().equals( Tag.CODE.toString() ) ) || ( parser.getName().equals( Tag.SAMP.toString() ) ) ||
-            ( parser.getName().equals( Tag.TT.toString() ) ) )
+        else if ( ( parser.getName().equals( Tag.CODE.toString() ) )
+                || ( parser.getName().equals( Tag.SAMP.toString() ) )
+                || ( parser.getName().equals( Tag.TT.toString() ) ) )
         {
             sink.monospaced_();
         }
@@ -557,14 +563,7 @@ public class XhtmlBaseParser
     {
         if ( !baseEndTag( parser, sink ) )
         {
-            if ( getLog().isWarnEnabled() )
-            {
-                String position = "[" + parser.getLineNumber() + ":"
-                    + parser.getColumnNumber() + "]";
-                String tag = "<" + parser.getName() + ">";
-
-                getLog().warn( "Unrecognized xml tag: " + tag + " at " + position );
-            }
+            // unrecognized tag is already logged in StartTag
         }
     }
 

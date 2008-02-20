@@ -55,14 +55,13 @@ public class SinkEventElement
     }
 
     /**
-     * Check the name of the this event.
+     * Return the name of the this event.
      *
-     * @param name The name of the sink event to check.
-     * @return true if the names are equal.
+     * @return The name of the sink event.
      */
-    public boolean eventIs( String name )
+    public String getName()
     {
-        return methodName.equals( name );
+        return this.methodName;
     }
 
     /**

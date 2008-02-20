@@ -19,12 +19,14 @@ package org.apache.maven.doxia.module.xhtml;
  * under the License.
  */
 
+import java.util.Iterator;
+
 import org.apache.maven.doxia.WellformednessCheckingSink;
 import org.apache.maven.doxia.parser.AbstractParserTest;
 import org.apache.maven.doxia.parser.Parser;
+import org.apache.maven.doxia.sink.SinkEventElement;
+import org.apache.maven.doxia.sink.SinkEventTestingSink;
 
-import java.io.FileReader;
-import java.io.Reader;
 
 /**
  * @author <a href="mailto:lars@trieloff.net">Lars Trieloff</a>
@@ -41,6 +43,66 @@ public class XhtmlParserTest
     protected String outputExtension()
     {
         return "xhtml";
+    }
+
+    /** @throws Exception  */
+    public void testDocumentBodyEventsList()
+        throws Exception
+    {
+        String text = "<html><body></body></html>";
+
+        SinkEventTestingSink sink = new SinkEventTestingSink();
+
+        ( (XhtmlParser) createParser() ).parse( text, sink );
+
+        Iterator it = sink.getEventList().iterator();
+
+        assertEquals( "body", ( (SinkEventElement) it.next() ).getName() );
+        assertEquals( "body_", ( (SinkEventElement) it.next() ).getName() );
+        assertFalse( it.hasNext() );
+    }
+
+    /** @throws Exception  */
+    public void testHeadEventsList()
+        throws Exception
+    {
+        String text = "<head><title>Title</title><meta name=\"author\" content=\"Author\" /><meta name=\"date\" content=\"Date\" /></head>";
+
+        SinkEventTestingSink sink = new SinkEventTestingSink();
+
+        ( (XhtmlParser) createParser() ).parse( text, sink );
+
+        Iterator it = sink.getEventList().iterator();
+
+        assertEquals( "head", ( (SinkEventElement) it.next() ).getName() );
+        assertEquals( "title", ( (SinkEventElement) it.next() ).getName() );
+        assertEquals( "text", ( (SinkEventElement) it.next() ).getName() );
+        assertEquals( "title_", ( (SinkEventElement) it.next() ).getName() );
+        assertEquals( "author", ( (SinkEventElement) it.next() ).getName() );
+        assertEquals( "text", ( (SinkEventElement) it.next() ).getName() );
+        assertEquals( "author_", ( (SinkEventElement) it.next() ).getName() );
+        assertEquals( "date", ( (SinkEventElement) it.next() ).getName() );
+        assertEquals( "text", ( (SinkEventElement) it.next() ).getName() );
+        assertEquals( "date_", ( (SinkEventElement) it.next() ).getName() );
+        assertEquals( "head_", ( (SinkEventElement) it.next() ).getName() );
+        assertFalse( it.hasNext() );
+    }
+
+    /** @throws Exception  */
+    public void testPreEventsList()
+        throws Exception
+    {
+        String text = "<pre></pre>";
+
+        SinkEventTestingSink sink = new SinkEventTestingSink();
+
+        ( (XhtmlParser) createParser() ).parse( text, sink );
+
+        Iterator it = sink.getEventList().iterator();
+
+        assertEquals( "verbatim", ( (SinkEventElement) it.next() ).getName() );
+        assertEquals( "verbatim_", ( (SinkEventElement) it.next() ).getName() );
+        assertFalse( it.hasNext() );
     }
 
 }

@@ -48,6 +48,16 @@ public class SinkEventTestingSink
         return this.events;
     }
 
+    /** Clears the list of sink events. */
+    public void reset()
+    {
+        this.events.clear();
+    }
+
+      //
+     // sink methods
+    //
+
     /** {@inheritDoc} */
     public void head()
     {
@@ -603,7 +613,7 @@ public class SinkEventTestingSink
     }
 
     /**
-     * Adds a no-arg event to the list of events.
+     * Adds an event to the list of events.
      *
      * @param string the name of the event.
      * @param arguments The array of arguments to the sink method.
