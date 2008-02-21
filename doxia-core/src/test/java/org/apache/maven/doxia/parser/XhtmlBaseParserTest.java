@@ -163,6 +163,7 @@ public class XhtmlBaseParserTest
         assertFalse( it.hasNext() );
 
 
+        // same test with EOL
         String EOL = System.getProperty( "line.separator" );
         text = "<p><b>word</b>" + EOL + "<i>word</i></p>";
 
@@ -182,6 +183,25 @@ public class XhtmlBaseParserTest
         assertEquals( "paragraph_", ( (SinkEventElement) it.next() ).getName() );
         assertFalse( it.hasNext() );
 
-    }
 
+        // DOXIA-189: there should be no EOL after closing tag
+        text = "<p>There should be no space after the last <i>word</i>.</p>";
+
+        sink.reset();
+        parser.parse( text, sink );
+        it = sink.getEventList().iterator();
+
+        assertEquals( "paragraph", ( (SinkEventElement) it.next() ).getName() );
+        assertEquals( "text", ( (SinkEventElement) it.next() ).getName() );
+        assertEquals( "italic", ( (SinkEventElement) it.next() ).getName() );
+        assertEquals( "text", ( (SinkEventElement) it.next() ).getName() );
+        assertEquals( "italic_", ( (SinkEventElement) it.next() ).getName() );
+
+        SinkEventElement el = (SinkEventElement) it.next();
+        assertEquals( "text", el.getName() );
+        assertEquals( ".",  (String) el.getArgs()[0] );
+
+        assertEquals( "paragraph_", ( (SinkEventElement) it.next() ).getName() );
+        assertFalse( it.hasNext() );
+    }
 }
