@@ -23,10 +23,14 @@ import java.io.IOException;
 import java.io.Reader;
 import java.io.Writer;
 
+import java.util.Iterator;
+
 import org.apache.maven.doxia.parser.AbstractParserTest;
 import org.apache.maven.doxia.parser.Parser;
 import org.apache.maven.doxia.parser.ParseException;
 import org.apache.maven.doxia.sink.Sink;
+import org.apache.maven.doxia.sink.SinkEventElement;
+import org.apache.maven.doxia.sink.SinkEventTestingSink;
 
 /**
  * @author <a href="mailto:lars@trieloff.net">Lars Trieloff</a>
@@ -94,5 +98,57 @@ public class DocBookParserTest extends AbstractParserTest
         }
     }
 
+    /** @throws Exception  */
+    public void testSignificantWhiteSpace()
+        throws Exception
+    {
+        // NOTE significant white space
+        String text = "<para><command>word</command> <emphasis>word</emphasis></para>";
 
+        SinkEventTestingSink sink = new SinkEventTestingSink();
+
+        parser.parse( text, sink );
+
+        Iterator it = sink.getEventList().iterator();
+
+        assertEquals( "paragraph", ( (SinkEventElement) it.next() ).getName() );
+        assertEquals( "bold", ( (SinkEventElement) it.next() ).getName() );
+        assertEquals( "text", ( (SinkEventElement) it.next() ).getName() );
+        assertEquals( "bold_", ( (SinkEventElement) it.next() ).getName() );
+
+        SinkEventElement el = (SinkEventElement) it.next();
+        assertEquals( "text", el.getName() );
+        assertEquals( " ",  (String) el.getArgs()[0] );
+
+        assertEquals( "italic", ( (SinkEventElement) it.next() ).getName() );
+        assertEquals( "text", ( (SinkEventElement) it.next() ).getName() );
+        assertEquals( "italic_", ( (SinkEventElement) it.next() ).getName() );
+        assertEquals( "paragraph_", ( (SinkEventElement) it.next() ).getName() );
+        assertFalse( it.hasNext() );
+
+
+        // same test with EOL
+        String EOL = System.getProperty( "line.separator" );
+        text = "<para><command>word</command>" + EOL + "<emphasis>word</emphasis></para>";
+
+        sink.reset();
+        parser.parse( text, sink );
+        it = sink.getEventList().iterator();
+
+        assertEquals( "paragraph", ( (SinkEventElement) it.next() ).getName() );
+        assertEquals( "bold", ( (SinkEventElement) it.next() ).getName() );
+        assertEquals( "text", ( (SinkEventElement) it.next() ).getName() );
+        assertEquals( "bold_", ( (SinkEventElement) it.next() ).getName() );
+
+        el = (SinkEventElement) it.next();
+        assertEquals( "text", el.getName() );
+        assertEquals( EOL,  (String) el.getArgs()[0] );
+
+        assertEquals( "italic", ( (SinkEventElement) it.next() ).getName() );
+        assertEquals( "text", ( (SinkEventElement) it.next() ).getName() );
+        assertEquals( "italic_", ( (SinkEventElement) it.next() ).getName() );
+        assertEquals( "paragraph_", ( (SinkEventElement) it.next() ).getName() );
+        assertFalse( it.hasNext() );
+
+    }
 }
