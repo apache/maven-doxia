@@ -80,7 +80,14 @@ public class SinkActionContext
     public int getCurrentAction()
     {
         //return currentAction;
-        return ((Integer)stack.peek()).intValue();
+        if ( stack.empty() )
+        {
+            return UNDEFINED;
+        }
+        else
+        {
+            return ( (Integer) stack.peek() ).intValue();
+        }
     }
 
     public void release()
