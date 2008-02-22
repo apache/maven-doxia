@@ -66,7 +66,7 @@ public class XdocSinkTest
     /** {@inheritDoc} */
     protected String getHeadBlock()
     {
-        return "<?xml version=\"1.0\" ?><document><properties></properties>";
+        return "<?xml version=\"1.0\" ?>" + EOL + "<document><properties></properties>";
     }
 
     /** {@inheritDoc} */
@@ -226,7 +226,7 @@ public class XdocSinkTest
     /** {@inheritDoc} */
     protected String getRawTextBlock( String text )
     {
-        return "~, =, -, +, *, [, ], <, >, {, }, \\";
+        return "~,_=,_-,_+,_*,_[,_],_<,_>,_{,_},_\\";
     }
 
 

@@ -75,7 +75,6 @@ public abstract class AbstractSinkTest
      * Checks that the sequence <code>[title(), text( title ), title_()]</code>,
      * invoked on the current sink, produces the same result as
      * {@link #getTitleBlock getTitleBlock}( title ).
-     * NewLines are ignored.
      */
     public void testTitle()
     {
@@ -85,8 +84,8 @@ public abstract class AbstractSinkTest
         sink.title_();
         sink.flush();
 
-        String actual = noNewLine( writer.toString() );
-        String expected = noNewLine( getTitleBlock( title ) );
+        String actual = writer.toString();
+        String expected = getTitleBlock( title );
 
         assertEquals( "Wrong title!", expected, actual );
     }
@@ -95,18 +94,17 @@ public abstract class AbstractSinkTest
      * Checks that the sequence <code>[author(), text( author ), author_()]
      * </code>, invoked on the current sink, produces the same result as
      * {@link #getAuthorBlock getAuthorBlock}( author ).
-     * NewLines are ignored.
      */
     public void testAuthor()
     {
-        String author = "Georg Trakl";
+        String author = "Georg_Trakl";
         sink.author();
         sink.text( author );
         sink.author_();
         sink.flush();
 
-        String actual = noNewLine( writer.toString() );
-        String expected = noNewLine( getAuthorBlock( author ) );
+        String actual = writer.toString();
+        String expected = getAuthorBlock( author );
 
         assertEquals( "Wrong author!", expected, actual );
     }
@@ -114,7 +112,7 @@ public abstract class AbstractSinkTest
     /**
      * Checks that the sequence <code>[date(), text( date ), date_()]</code>,
      * invoked on the current sink, produces the same result as
-     * {@link #getDateBlock getDateBlock}( date ). NewLines are ignored.
+     * {@link #getDateBlock getDateBlock}( date ).
      */
     public void testDate()
     {
@@ -124,8 +122,8 @@ public abstract class AbstractSinkTest
         sink.date_();
         sink.flush();
 
-        String actual = noNewLine( writer.toString() );
-        String expected = noNewLine( getDateBlock( date ) );
+        String actual = writer.toString();
+        String expected = getDateBlock( date );
 
         assertEquals( "Wrong date!", expected, actual );
     }
@@ -133,7 +131,7 @@ public abstract class AbstractSinkTest
     /**
      * Checks that the sequence <code>[head(), head_()]</code>,
      * invoked on the current sink, produces the same result as
-     * {@link #getHeadBlock getHeadBlock()}. NewLines are ignored.
+     * {@link #getHeadBlock getHeadBlock()}.
      */
     public void testHead()
     {
@@ -141,8 +139,8 @@ public abstract class AbstractSinkTest
         sink.head_();
         sink.flush();
 
-        String actual = noNewLine( writer.toString() );
-        String expected = noNewLine( getHeadBlock() );
+        String actual = writer.toString();
+        String expected = getHeadBlock();
 
         assertEquals( "Wrong head!", expected, actual );
     }
@@ -150,7 +148,7 @@ public abstract class AbstractSinkTest
     /**
      * Checks that the sequence <code>[body(), body_()]</code>,
      * invoked on the current sink, produces the same result as
-     * {@link #getBodyBlock getBodyBlock()}. NewLines are ignored.
+     * {@link #getBodyBlock getBodyBlock()}.
      */
     public void testBody()
     {
@@ -158,8 +156,8 @@ public abstract class AbstractSinkTest
         sink.body_();
         sink.flush();
 
-        String actual = noNewLine( writer.toString() );
-        String expected = noNewLine( getBodyBlock() );
+        String actual = writer.toString();
+        String expected = getBodyBlock();
 
         assertEquals( "Wrong body!", expected, actual );
     }
@@ -169,7 +167,6 @@ public abstract class AbstractSinkTest
      * sectionTitle_()]</code>, invoked on the current sink, produces
      * the same result as
      * {@link #getSectionTitleBlock getSectionTitleBlock}( title ).
-     * NewLines are ignored.
      */
     public void testSectionTitle()
     {
@@ -179,8 +176,8 @@ public abstract class AbstractSinkTest
         sink.sectionTitle_();
         sink.flush();
 
-        String actual = noNewLine( writer.toString() );
-        String expected = noNewLine( getSectionTitleBlock( title ) );
+        String actual = writer.toString();
+        String expected = getSectionTitleBlock( title );
 
         assertEquals( "Wrong sectionTitle!", expected, actual );
     }
@@ -190,7 +187,6 @@ public abstract class AbstractSinkTest
      * text( title ), sectionTitle1_(), section1_()]</code>,
      * invoked on the current sink, produces the same result as
      * {@link #getSection1Block getSection1Block}( title ).
-     * NewLines are ignored.
      */
     public void testSection1()
     {
@@ -202,8 +198,8 @@ public abstract class AbstractSinkTest
         sink.section1_();
         sink.flush();
 
-        String actual = noNewLine( writer.toString() );
-        String expected = noNewLine( getSection1Block( title ) );
+        String actual = writer.toString();
+        String expected = getSection1Block( title );
 
         assertEquals( "Wrong section1 block!", expected, actual );
     }
@@ -213,7 +209,6 @@ public abstract class AbstractSinkTest
      * text( title ), sectionTitle2_(), section2_()]</code>,
      * invoked on the current sink, produces the same result as
      * {@link #getSection2Block getSection2Block}( title ).
-     * NewLines are ignored.
      */
     public void testSection2()
     {
@@ -225,8 +220,8 @@ public abstract class AbstractSinkTest
         sink.section2_();
         sink.flush();
 
-        String actual = noNewLine( writer.toString() );
-        String expected = noNewLine( getSection2Block( title ) );
+        String actual = writer.toString();
+        String expected = getSection2Block( title );
 
         assertEquals( "Wrong section2 block!", expected, actual );
     }
@@ -236,7 +231,6 @@ public abstract class AbstractSinkTest
      * text( title ), sectionTitle3_(), section3_()]</code>,
      * invoked on the current sink, produces the same result as
      * {@link #getSection3Block getSection3Block}( title ).
-     * NewLines are ignored.
      */
     public void testSection3()
     {
@@ -248,8 +242,8 @@ public abstract class AbstractSinkTest
         sink.section3_();
         sink.flush();
 
-        String actual = noNewLine( writer.toString() );
-        String expected = noNewLine( getSection3Block( title ) );
+        String actual = writer.toString();
+        String expected = getSection3Block( title );
 
         assertEquals( "Wrong section3 block!", expected, actual );
     }
@@ -259,7 +253,7 @@ public abstract class AbstractSinkTest
      * text( title ), sectionTitle4_(), section4_()]</code>,
      * invoked on the current sink, produces the same result as
      * {@link #getSection4Block getSection4Block}( title ).
-     * NewLines are ignored.
+     *
      */
     public void testSection4()
     {
@@ -271,8 +265,8 @@ public abstract class AbstractSinkTest
         sink.section4_();
         sink.flush();
 
-        String actual = noNewLine( writer.toString() );
-        String expected = noNewLine( getSection4Block( title ) );
+        String actual = writer.toString();
+        String expected = getSection4Block( title );
 
         assertEquals( "Wrong section4 block!", expected, actual );
     }
@@ -282,7 +276,6 @@ public abstract class AbstractSinkTest
      * text( title ), sectionTitle5_(), section5_()]</code>,
      * invoked on the current sink, produces the same result as
      * {@link #getSection5Block getSection5Block}( title ).
-     * NewLines are ignored.
      */
     public void testSection5()
     {
@@ -294,8 +287,8 @@ public abstract class AbstractSinkTest
         sink.section5_();
         sink.flush();
 
-        String actual = noNewLine( writer.toString() );
-        String expected = noNewLine( getSection5Block( title ) );
+        String actual = writer.toString();
+        String expected = getSection5Block( title );
 
         assertEquals( "Wrong section5 block!", expected, actual );
     }
@@ -304,11 +297,11 @@ public abstract class AbstractSinkTest
      * Checks that the sequence <code>[list(), listItem(), text( item ),
      * listItem_(), list_()]</code>, invoked on the current sink, produces
      * the same result as {@link #getListBlock getListBlock}( item ).
-     * NewLines are ignored.
+     *
      */
     public void testList()
     {
-        String item = "list item";
+        String item = "list_item";
         sink.list();
         sink.listItem();
         sink.text( item );
@@ -316,8 +309,8 @@ public abstract class AbstractSinkTest
         sink.list_();
         sink.flush();
 
-        String actual = noNewLine( writer.toString() );
-        String expected = noNewLine( getListBlock( item ) );
+        String actual = writer.toString();
+        String expected = getListBlock( item );
 
         assertEquals( "Wrong list!", expected, actual );
     }
@@ -328,11 +321,10 @@ public abstract class AbstractSinkTest
      * text( item ), numberedListItem_(), numberedList_()]</code>,
      * invoked on the current sink, produces the same result as
      * {@link #getNumberedListBlock getNumberedListBlock}( item ).
-     * NewLines are ignored.
      */
     public void testNumberedList()
     {
-        String item = "numbered list item";
+        String item = "numbered_list_item";
         sink.numberedList( Sink.NUMBERING_LOWER_ROMAN );
         sink.numberedListItem();
         sink.text( item );
@@ -340,8 +332,8 @@ public abstract class AbstractSinkTest
         sink.numberedList_();
         sink.flush();
 
-        String actual = noNewLine( writer.toString() );
-        String expected = noNewLine( getNumberedListBlock( item ) );
+        String actual = writer.toString();
+        String expected = getNumberedListBlock( item );
 
         assertEquals( "Wrong numbered list!", expected, actual );
     }
@@ -352,7 +344,7 @@ public abstract class AbstractSinkTest
      * text( definition ), definition_(), definitionListItem_(),
      * definitionList_()]</code>, invoked on the current sink, produces the same
      * result as {@link #getDefinitionListBlock getDefinitionListBlock}
-     * ( definum, definition ). NewLines are ignored.
+     * ( definum, definition ).
      */
     public void testDefinitionList()
     {
@@ -370,8 +362,8 @@ public abstract class AbstractSinkTest
         sink.definitionList_();
         sink.flush();
 
-        String actual = noNewLine( writer.toString() );
-        String expected = noNewLine( getDefinitionListBlock( definum, definition ) );
+        String actual = writer.toString();
+        String expected = getDefinitionListBlock( definum, definition );
 
         assertEquals( "Wrong definition list!", expected, actual );
     }
@@ -381,12 +373,11 @@ public abstract class AbstractSinkTest
      * figureCaption(), text( caption ), figureCaption_(), figure_()]</code>,
      * invoked on the current sink, produces the same result as
      * {@link #getFigureBlock getFigureBlock}( source, caption ).
-     * NewLines are ignored.
      */
     public void testFigure()
     {
-        String source = "figure";
-        String caption = "Figure caption";
+        String source = "figure.jpg";
+        String caption = "Figure_caption";
         sink.figure();
         sink.figureGraphics( source );
         sink.figureCaption();
@@ -395,8 +386,8 @@ public abstract class AbstractSinkTest
         sink.figure_();
         sink.flush();
 
-        String actual = noNewLine( writer.toString() );
-        String expected = noNewLine( getFigureBlock( source, caption ) );
+        String actual = writer.toString();
+        String expected = getFigureBlock( source, caption );
 
         assertEquals( "Wrong figure!", expected, actual );
     }
@@ -408,12 +399,11 @@ public abstract class AbstractSinkTest
      * text( caption ), tableCaption_(), table_()]</code>,
      * invoked on the current sink, produces the same result as
      * {@link #getTableBlock getTableBlock}( cell, caption ).
-     * NewLines are ignored.
      */
     public void testTable()
     {
         String cell = "cell";
-        String caption = "Table caption";
+        String caption = "Table_caption";
         int[] justify = { Parser.JUSTIFY_CENTER };
         sink.table();
         sink.tableRows( justify, false );
@@ -429,8 +419,8 @@ public abstract class AbstractSinkTest
         sink.table_();
         sink.flush();
 
-        String actual = noNewLine( writer.toString() );
-        String expected = noNewLine( getTableBlock( cell, caption ) );
+        String actual = writer.toString();
+        String expected = getTableBlock( cell, caption );
 
         assertEquals( "Wrong table!", expected, actual );
     }
@@ -439,7 +429,6 @@ public abstract class AbstractSinkTest
      * Checks that the sequence <code>[paragraph(), text( text ),
      * paragraph_()]</code>, invoked on the current sink, produces
      * the same result as {@link #getParagraphBlock getParagraphBlock}( text ).
-     * NewLines are ignored.
      */
     public void testParagraph()
     {
@@ -449,8 +438,8 @@ public abstract class AbstractSinkTest
         sink.paragraph_();
         sink.flush();
 
-        String actual = noNewLine( writer.toString() );
-        String expected = noNewLine( getParagraphBlock( text ) );
+        String actual = writer.toString();
+        String expected = getParagraphBlock( text );
 
         assertEquals( "Wrong paragraph!", expected, actual );
     }
@@ -459,7 +448,6 @@ public abstract class AbstractSinkTest
      * Checks that the sequence <code>[verbatim( true ), text( text ),
      * verbatim_()]</code>, invoked on the current sink, produces the
      * same result as {@link #getVerbatimBlock getVerbatimBlock}( text ).
-     * NewLines are ignored.
      */
     public void testVerbatim()
     {
@@ -469,8 +457,8 @@ public abstract class AbstractSinkTest
         sink.verbatim_();
         sink.flush();
 
-        String actual = noNewLine( writer.toString() );
-        String expected = noNewLine( getVerbatimBlock( text ) );
+        String actual = writer.toString();
+        String expected = getVerbatimBlock( text );
 
         assertEquals( "Wrong verbatim!", expected, actual );
     }
@@ -479,15 +467,14 @@ public abstract class AbstractSinkTest
      * Checks that the sequence <code>[horizontalRule()]</code>,
      * invoked on the current sink, produces the same result as
      * {@link #getHorizontalRuleBlock getHorizontalRuleBlock()}.
-     * NewLines are ignored.
      */
     public void testHorizontalRule()
     {
         sink.horizontalRule();
         sink.flush();
 
-        String actual = noNewLine( writer.toString() );
-        String expected = noNewLine( getHorizontalRuleBlock() );
+        String actual = writer.toString();
+        String expected = getHorizontalRuleBlock();
 
         assertEquals( "Wrong horizontal rule!", expected, actual );
     }
@@ -495,15 +482,15 @@ public abstract class AbstractSinkTest
     /**
      * Checks that the sequence <code>[pageBreak()]</code>,
      * invoked on the current sink, produces the same result as
-     * {@link #getPageBreakBlock getPageBreakBlock()}. NewLines are ignored.
+     * {@link #getPageBreakBlock getPageBreakBlock()}.
      */
     public void testPageBreak()
     {
         sink.pageBreak();
         sink.flush();
 
-        String actual = noNewLine( writer.toString() );
-        String expected = noNewLine( getPageBreakBlock() );
+        String actual = writer.toString();
+        String expected = getPageBreakBlock();
 
         assertEquals( "Wrong pageBreak!", expected, actual );
     }
@@ -512,7 +499,6 @@ public abstract class AbstractSinkTest
      * Checks that the sequence <code>[anchor( anchor ), text( anchor ),
      * anchor_()]</code>, invoked on the current sink, produces the same
      * result as {@link #getAnchorBlock getAnchorBlock}( anchor ).
-     * NewLines are ignored.
      */
     public void testAnchor()
     {
@@ -522,8 +508,8 @@ public abstract class AbstractSinkTest
         sink.anchor_();
         sink.flush();
 
-        String actual = noNewLine( writer.toString() );
-        String expected = noNewLine( getAnchorBlock( anchor ) );
+        String actual = writer.toString();
+        String expected = getAnchorBlock( anchor );
 
         assertEquals( "Wrong anchor!", expected, actual );
     }
@@ -532,7 +518,6 @@ public abstract class AbstractSinkTest
      * Checks that the sequence <code>[link( link ), text( text ),
      * link_()]</code>, invoked on the current sink, produces the same
      * result as {@link #getLinkBlock getLinkBlock}( link, text ).
-     * NewLines are ignored.
      */
     public void testLink()
     {
@@ -543,8 +528,8 @@ public abstract class AbstractSinkTest
         sink.link_();
         sink.flush();
 
-        String actual = noNewLine( writer.toString() );
-        String expected = noNewLine( getLinkBlock( link, text ) );
+        String actual = writer.toString();
+        String expected = getLinkBlock( link, text );
 
         assertEquals( "Wrong link!", expected, actual );
     }
@@ -552,7 +537,7 @@ public abstract class AbstractSinkTest
     /**
      * Checks that the sequence <code>[italic(), text( text ), italic_()]</code>,
      * invoked on the current sink, produces the same result as
-     * {@link #getItalicBlock getItalicBlock}( text ). NewLines are ignored.
+     * {@link #getItalicBlock getItalicBlock}( text ).
      */
     public void testItalic()
     {
@@ -562,8 +547,8 @@ public abstract class AbstractSinkTest
         sink.italic_();
         sink.flush();
 
-        String actual = noNewLine( writer.toString() );
-        String expected = noNewLine( getItalicBlock( text ) );
+        String actual = writer.toString();
+        String expected = getItalicBlock( text );
 
         assertEquals( "Wrong italic!", expected, actual );
     }
@@ -571,7 +556,7 @@ public abstract class AbstractSinkTest
     /**
      * Checks that the sequence <code>[bold(), text( text ), bold_()]</code>,
      * invoked on the current sink, produces the same result as
-     * {@link #getBoldBlock getBoldBlock}( text ). NewLines are ignored.
+     * {@link #getBoldBlock getBoldBlock}( text ).
      */
     public void testBold()
     {
@@ -581,8 +566,8 @@ public abstract class AbstractSinkTest
         sink.bold_();
         sink.flush();
 
-        String actual = noNewLine( writer.toString() );
-        String expected = noNewLine( getBoldBlock( text ) );
+        String actual = writer.toString();
+        String expected = getBoldBlock( text );
 
         assertEquals( "Wrong bold!", expected, actual );
     }
@@ -591,7 +576,6 @@ public abstract class AbstractSinkTest
      * Checks that the sequence <code>[monospaced(), text( text ),
      * monospaced_()]</code>, invoked on the current sink, produces the same
      * result as {@link #getMonospacedBlock getMonospacedBlock}( text ).
-     * NewLines are ignored.
      */
     public void testMonospaced()
     {
@@ -601,8 +585,8 @@ public abstract class AbstractSinkTest
         sink.monospaced_();
         sink.flush();
 
-        String actual = noNewLine( writer.toString() );
-        String expected = noNewLine( getMonospacedBlock( text ) );
+        String actual = writer.toString();
+        String expected = getMonospacedBlock( text );
 
         assertEquals( "Wrong monospaced!", expected, actual );
     }
@@ -610,15 +594,15 @@ public abstract class AbstractSinkTest
     /**
      * Checks that the sequence <code>[lineBreak()]</code>,
      * invoked on the current sink, produces the same result as
-     * {@link #getLineBreakBlock getLineBreakBlock()}. NewLines are ignored.
+     * {@link #getLineBreakBlock getLineBreakBlock()}.
      */
     public void testLineBreak()
     {
         sink.lineBreak();
         sink.flush();
 
-        String actual = noNewLine( writer.toString() );
-        String expected = noNewLine( getLineBreakBlock() );
+        String actual = writer.toString();
+        String expected = getLineBreakBlock();
 
         assertEquals( "Wrong lineBreak!", expected, actual );
     }
@@ -627,15 +611,14 @@ public abstract class AbstractSinkTest
      * Checks that the sequence <code>[nonBreakingSpace()]</code>,
      * invoked on the current sink, produces the same result as
      * {@link #getNonBreakingSpaceBlock getNonBreakingSpaceBlock()}.
-     * NewLines are ignored.
      */
     public void testNonBreakingSpace()
     {
         sink.nonBreakingSpace();
         sink.flush();
 
-        String actual = noNewLine( writer.toString() );
-        String expected = noNewLine( getNonBreakingSpaceBlock() );
+        String actual = writer.toString();
+        String expected = getNonBreakingSpaceBlock();
 
         assertEquals( "Wrong nonBreakingSpace!", expected, actual );
     }
@@ -643,16 +626,16 @@ public abstract class AbstractSinkTest
     /**
      * Checks that the sequence <code>[text( text )]</code>,
      * invoked on the current sink, produces the same result as
-     * {@link #getTextBlock getTextBlock()}. NewLines are ignored.
+     * {@link #getTextBlock getTextBlock()}.
      */
     public void testText()
     {
-        String text = "~, =, -, +, *, [, ], <, >, {, }, \\";
+        String text = "~,_=,_-,_+,_*,_[,_],_<,_>,_{,_},_\\";
         sink.text( text );
         sink.flush();
 
-        String actual = noNewLine( writer.toString() );
-        String expected = noNewLine( getTextBlock( text ) );
+        String actual = writer.toString();
+        String expected = getTextBlock( text );
 
         assertEquals( "Wrong text!", expected, actual );
     }
@@ -660,16 +643,16 @@ public abstract class AbstractSinkTest
     /**
      * Checks that the sequence <code>[rawText( text )]</code>,
      * invoked on the current sink, produces the same result as
-     * {@link #getRawTextBlock getRawTextBlock}( text ). NewLines are ignored.
+     * {@link #getRawTextBlock getRawTextBlock}( text ).
      */
     public void testRawText()
     {
-        String text = "~, =, -, +, *, [, ], <, >, {, }, \\";
+        String text = "~,_=,_-,_+,_*,_[,_],_<,_>,_{,_},_\\";
         sink.rawText( text );
         sink.flush();
 
-        String actual = noNewLine( writer.toString() );
-        String expected = noNewLine( getRawTextBlock( text ) );
+        String actual = writer.toString();
+        String expected = getRawTextBlock( text );
 
         assertEquals( "Wrong rawText!", expected, actual );
     }
@@ -678,12 +661,6 @@ public abstract class AbstractSinkTest
     // ----------------------------------------------------------------------
     // Utility methods
     // ----------------------------------------------------------------------
-
-    protected String noNewLine( String text )
-    {
-        String EOL = System.getProperty( "line.separator" );
-        return text.replaceAll( EOL, "" );
-    }
 
     /**
      * Returns the sink that is currently being tested.

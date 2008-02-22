@@ -239,7 +239,7 @@ public class XhtmlSinkTest
     protected String getTextBlock( String text )
     {
         // TODO: need to be able to retreive those from outside the sink
-        return "~, =, -, +, *, [, ], &lt;, &gt;, {, }, \\";
+        return "~,_=,_-,_+,_*,_[,_],_&lt;,_&gt;,_{,_},_\\";
     }
 
     /** {@inheritDoc} */

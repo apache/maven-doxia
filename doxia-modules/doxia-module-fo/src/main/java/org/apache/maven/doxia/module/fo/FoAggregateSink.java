@@ -76,7 +76,7 @@ public class FoAggregateSink extends FoSink
     public void head_()
     {
         ignoreText = false;
-        newline();
+        writeEOL();
     }
 
     /** {@inheritDoc} */
@@ -138,7 +138,7 @@ public class FoAggregateSink extends FoSink
     /** {@inheritDoc} */
     public void body_()
     {
-        newline();
+        writeEOL();
         writeEndTag( BLOCK_TAG );
         writeEndTag( FLOW_TAG );
         writeEndTag( PAGE_SEQUENCE_TAG );
@@ -453,7 +453,7 @@ public class FoAggregateSink extends FoSink
     {
         if ( !ignoreText )
         {
-            super.newline();
+            writeEOL();
         }
     }
 

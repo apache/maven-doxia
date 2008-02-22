@@ -47,126 +47,130 @@ public class LatexSinkTest
     /** {@inheritDoc} */
     protected String getTitleBlock( String title )
     {
-        return "\\ptitle{" + title + "}";
+        return "\\ptitle{" + LatexSink.escaped( title ) + "}" + EOL;
     }
 
     /** {@inheritDoc} */
     protected String getAuthorBlock( String author )
     {
-        return "\\pauthor{" + author + "}";
+        return "\\pauthor{" + LatexSink.escaped( author ) + "}" + EOL;
     }
 
     /** {@inheritDoc} */
     protected String getDateBlock( String date )
     {
-        return "\\pdate{" + date + "}";
+        return "\\pdate{" + LatexSink.escaped( date ) + "}" + EOL;
     }
 
     /** {@inheritDoc} */
     protected String getHeadBlock()
     {
         return ((LatexSink) getSink()).defaultSinkCommands()
-            + "\\documentclass[a4paper]{article}"
+            + "\\documentclass[a4paper]{article}" + EOL + EOL
             + ((LatexSink) getSink()).defaultPreamble()
-            + "\\begin{document}";
+            + "\\begin{document}" + EOL + EOL;
     }
 
     /** {@inheritDoc} */
     protected String getBodyBlock()
     {
-        return "\\end{document}";
+        return "\\end{document}" + EOL;
     }
 
     /** {@inheritDoc} */
     protected String getSectionTitleBlock( String title )
     {
         // TODO: closing bracket?
-        return title + "}";
+        return title + "}" + EOL + EOL;
     }
 
     /** {@inheritDoc} */
     protected String getSection1Block( String title )
     {
-        return "\\psectioni{" + title + "}";
+        return "\\psectioni{" + title + "}" + EOL;
     }
 
     /** {@inheritDoc} */
     protected String getSection2Block( String title )
     {
-        return "\\psectionii{" + title + "}";
+        return "\\psectionii{" + title + "}" + EOL;
     }
 
     /** {@inheritDoc} */
     protected String getSection3Block( String title )
     {
-        return "\\psectioniii{" + title + "}";
+        return "\\psectioniii{" + title + "}" + EOL;
     }
 
     /** {@inheritDoc} */
     protected String getSection4Block( String title )
     {
-        return "\\psectioniv{" + title + "}";
+        return "\\psectioniv{" + title + "}" + EOL;
     }
 
     /** {@inheritDoc} */
     protected String getSection5Block( String title )
     {
-        return "\\psectionv{" + title + "}";
+        return "\\psectionv{" + title + "}" + EOL;
     }
 
     /** {@inheritDoc} */
     protected String getListBlock( String item )
     {
-        return "\\begin{plist}\\item{} " + item + "\\end{plist}";
+        return "\\begin{plist}" + EOL + EOL + "\\item{} " + LatexSink.escaped( item ) + "\\end{plist}" + EOL + EOL;
     }
 
     /** {@inheritDoc} */
     protected String getNumberedListBlock( String item )
     {
-        return "\\begin{pnumberedlist}\\renewcommand{\\theenumi}{\\roman{enumi}}\\item{} " + item + "\\end{pnumberedlist}";
+        return "\\begin{pnumberedlist}" + EOL + "\\renewcommand{\\theenumi}{\\roman{enumi}}" + EOL + EOL + "\\item{} "
+            + LatexSink.escaped( item ) + "\\end{pnumberedlist}" + EOL + EOL;
     }
 
     /** {@inheritDoc} */
     protected String getDefinitionListBlock( String definum, String definition )
     {
-        return "\\begin{pdefinitionlist}\\item[\\mbox{" + definum + "}] " + definition + "\\end{pdefinitionlist}";
+        return "\\begin{pdefinitionlist}" + EOL + EOL + "\\item[\\mbox{" + definum + "}] " + definition + "\\end{pdefinitionlist}" + EOL + EOL;
     }
 
     /** {@inheritDoc} */
     protected String getFigureBlock( String source, String caption )
     {
-        return "\\begin{pfigure}\\pfiguregraphics{" + source + "}\\pfigurecaption{" + caption + "}\\end{pfigure}";
+        return "\\begin{pfigure}" + EOL + "\\pfiguregraphics{" + source + "}" + EOL + "\\pfigurecaption{"
+            + LatexSink.escaped( caption ) + "}" + EOL + "\\end{pfigure}" + EOL + EOL;
     }
 
     /** {@inheritDoc} */
     protected String getTableBlock( String cell, String caption )
     {
         // TODO: something's wrong
-        return "\\begin{ptable}\\begin{ptablerows}{c}\\begin{pcell}{c}cell\\end{pcell}\\\\\\end{ptablerows}\\ptablecaption{" + caption + "}\\end{ptable}";
+        return "\\begin{ptable}" + EOL + "\\begin{ptablerows}{c}" + EOL + "\\begin{pcell}{c}cell\\end{pcell}\\\\"
+            + EOL + "\\end{ptablerows}" + EOL + "\\ptablecaption{" + LatexSink.escaped( caption ) + "}"
+            + EOL + "\\end{ptable}" + EOL + EOL;
     }
 
     /** {@inheritDoc} */
     protected String getParagraphBlock( String text )
     {
-        return text;
+        return text + EOL + EOL;
     }
 
     /** {@inheritDoc} */
     protected String getVerbatimBlock( String text )
     {
-        return "\\begin{pverbatimbox}\\begin{verbatim}" + text + "\\end{verbatim}\\end{pverbatimbox}";
+        return "\\begin{pverbatimbox}" + EOL + "\\begin{verbatim}" + EOL + text + EOL + "\\end{verbatim}" + EOL + "\\end{pverbatimbox}" + EOL + EOL;
     }
 
     /** {@inheritDoc} */
     protected String getHorizontalRuleBlock()
     {
-        return "\\phorizontalrule";
+        return "\\phorizontalrule" + EOL + EOL;
     }
 
     /** {@inheritDoc} */
     protected String getPageBreakBlock()
     {
-        return "\\newpage";
+        return "\\newpage" + EOL + EOL;
     }
 
     /** {@inheritDoc} */
@@ -202,7 +206,7 @@ public class LatexSinkTest
     /** {@inheritDoc} */
     protected String getLineBreakBlock()
     {
-        return "\\newline";
+        return "\\newline" + EOL;
     }
 
     /** {@inheritDoc} */
@@ -215,7 +219,7 @@ public class LatexSinkTest
     protected String getTextBlock( String text )
     {
         // TODO: how to retrieve those outside the sink?
-        return "\\textasciitilde , =, \\symbol{45}, +, *, [, ], \\symbol{60}, \\symbol{62}, \\{,\\}, \\textbackslash";
+        return "\\textasciitilde" + EOL + ",\\_=,\\_\\symbol{45},\\_+,\\_*,\\_[,\\_],\\_\\symbol{60},\\_\\symbol{62},\\_\\{,\\_\\},\\_\\textbackslash";
     }
 
     /** {@inheritDoc} */

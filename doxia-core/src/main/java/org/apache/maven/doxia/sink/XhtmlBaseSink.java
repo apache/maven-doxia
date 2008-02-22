@@ -916,7 +916,7 @@ public class XhtmlBaseSink
     {
         if ( !headFlag )
         {
-            writeEndTagWithoutEOL( Tag.A );
+            writeEndTag( Tag.A );
         }
     }
 
@@ -999,7 +999,7 @@ public class XhtmlBaseSink
     {
         if ( !headFlag )
         {
-            writeEndTagWithoutEOL( Tag.A );
+            writeEndTag( Tag.A );
         }
     }
 
@@ -1023,7 +1023,7 @@ public class XhtmlBaseSink
     {
         if ( !headFlag )
         {
-            writeEndTagWithoutEOL( Tag.I );
+            writeEndTag( Tag.I );
         }
     }
 
@@ -1047,7 +1047,7 @@ public class XhtmlBaseSink
     {
         if ( !headFlag )
         {
-            writeEndTagWithoutEOL( Tag.B );
+            writeEndTag( Tag.B );
         }
     }
 
@@ -1071,7 +1071,7 @@ public class XhtmlBaseSink
     {
         if ( !headFlag )
         {
-            writeEndTagWithoutEOL( Tag.TT );
+            writeEndTag( Tag.TT );
         }
     }
 

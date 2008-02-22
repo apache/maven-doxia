@@ -590,6 +590,7 @@ public class DocBookSink
         if ( hasTitle )
         {
             writeEndTag( ARTICLEINFO_TAG );
+            writeEOL();
             hasTitle = false;
         }
     }
@@ -615,6 +616,7 @@ public class DocBookSink
     public void title_()
     {
         writeEndTag( Tag.TITLE );
+        writeEOL();
     }
 
     /**
@@ -636,6 +638,7 @@ public class DocBookSink
     public void author_()
     {
         writeEndTag( CORPAUTHOR_TAG );
+        writeEOL();
         authorDateFlag = false;
     }
 
@@ -658,6 +661,7 @@ public class DocBookSink
     public void date_()
     {
         writeEndTag( DATE_TAG );
+        writeEOL();
         authorDateFlag = false;
     }
 
@@ -669,6 +673,7 @@ public class DocBookSink
     public void body_()
     {
         writeEndTag( ARTICLE_TAG );
+        writeEOL();
         out.flush();
         resetState();
     }
@@ -691,6 +696,7 @@ public class DocBookSink
     public void section1_()
     {
         writeEndTag( SECTION_TAG );
+        writeEOL();
     }
 
     /**
@@ -711,6 +717,7 @@ public class DocBookSink
     public void section2_()
     {
         writeEndTag( SECTION_TAG );
+        writeEOL();
     }
 
     /**
@@ -731,6 +738,7 @@ public class DocBookSink
     public void section3_()
     {
         writeEndTag( SECTION_TAG );
+        writeEOL();
     }
 
     /**
@@ -751,6 +759,7 @@ public class DocBookSink
     public void section4_()
     {
         writeEndTag( SECTION_TAG );
+        writeEOL();
     }
 
     /**
@@ -771,6 +780,7 @@ public class DocBookSink
     public void section5_()
     {
         writeEndTag( SECTION_TAG );
+        writeEOL();
     }
 
     /**
@@ -791,6 +801,7 @@ public class DocBookSink
     public void sectionTitle_()
     {
         writeEndTag( Tag.TITLE );
+        writeEOL();
     }
 
     /**
@@ -811,6 +822,7 @@ public class DocBookSink
     public void sectionTitle1_()
     {
         writeEndTag( Tag.TITLE );
+        writeEOL();
     }
 
     /**
@@ -831,6 +843,7 @@ public class DocBookSink
     public void sectionTitle2_()
     {
         writeEndTag( Tag.TITLE );
+        writeEOL();
     }
 
     /**
@@ -851,6 +864,7 @@ public class DocBookSink
     public void sectionTitle3_()
     {
         writeEndTag( Tag.TITLE );
+        writeEOL();
     }
 
     /**
@@ -871,6 +885,7 @@ public class DocBookSink
     public void sectionTitle4_()
     {
         writeEndTag( Tag.TITLE );
+        writeEOL();
     }
 
     /**
@@ -891,6 +906,7 @@ public class DocBookSink
     public void sectionTitle5_()
     {
         writeEndTag( Tag.TITLE );
+        writeEOL();
     }
 
     /**
@@ -911,6 +927,7 @@ public class DocBookSink
     public void list_()
     {
         writeEndTag( ITEMIZEDLIST_TAG );
+        writeEOL();
     }
 
     /**
@@ -931,6 +948,7 @@ public class DocBookSink
     public void listItem_()
     {
         writeEndTag( LISTITEM_TAG );
+        writeEOL();
     }
 
     /**
@@ -975,6 +993,7 @@ public class DocBookSink
     public void numberedList_()
     {
         writeEndTag( ORDEREDLIST_TAG );
+        writeEOL();
     }
 
     /**
@@ -995,6 +1014,7 @@ public class DocBookSink
     public void numberedListItem_()
     {
         writeEndTag( LISTITEM_TAG );
+        writeEOL();
     }
 
     /**
@@ -1015,6 +1035,7 @@ public class DocBookSink
     public void definitionList_()
     {
         writeEndTag( VARIABLELIST_TAG );
+        writeEOL();
     }
 
     /**
@@ -1035,6 +1056,7 @@ public class DocBookSink
     public void definitionListItem_()
     {
         writeEndTag( VARLISTENTRY_TAG );
+        writeEOL();
     }
 
     /**
@@ -1055,6 +1077,7 @@ public class DocBookSink
     public void definedTerm_()
     {
         writeEndTag( TERM_TAG );
+        writeEOL();
     }
 
     /**
@@ -1075,6 +1098,7 @@ public class DocBookSink
     public void definition_()
     {
         writeEndTag( LISTITEM_TAG );
+        writeEOL();
     }
 
     /**
@@ -1095,6 +1119,7 @@ public class DocBookSink
     public void paragraph_()
     {
         writeEndTag( PARA_TAG );
+        writeEOL();
     }
 
     /**
@@ -1116,6 +1141,7 @@ public class DocBookSink
     public void verbatim_()
     {
         writeEndTag( PROGRAMLISTING_TAG );
+        writeEOL();
         verbatimFlag = false;
     }
 
@@ -1174,6 +1200,7 @@ public class DocBookSink
 
             writeEndTag( IMAGEOBJECT_TAG );
             writeEndTag( MEDIAOBJECT_TAG );
+            writeEOL();
             graphicsFileName = null;
         }
     }
@@ -1208,6 +1235,7 @@ public class DocBookSink
         writeEndTag( Tag.TITLE );
         graphicElement();
         writeEndTag( FIGURE_TAG );
+        writeEOL();
     }
 
     /** {@inheritDoc} */
@@ -1234,6 +1262,7 @@ public class DocBookSink
 
             out.write( tableRows, /*preserveSpace*/ true );
             writeEndTag( Tag.TABLE );
+            writeEOL();
         }
         else
         {
@@ -1260,6 +1289,7 @@ public class DocBookSink
             out.write( tableRows, /*preserveSpace*/ true );
 
             writeEndTag( INFORMALTABLE_TAG );
+            writeEOL();
         }
 
         tableRows = null;
@@ -1316,6 +1346,7 @@ public class DocBookSink
             {
                 writeStartTag( COLSPEC_TAG, att );
                 writeEndTag( COLSPEC_TAG );
+                writeEOL();
             }
         }
 
@@ -1332,6 +1363,7 @@ public class DocBookSink
     {
         writeEndTag( TBODY_TAG );
         writeEndTag( TGROUP_TAG );
+        writeEOL();
 
         // Remember diverted output and restore original destination ---
         out.flush();
@@ -1357,6 +1389,7 @@ public class DocBookSink
     public void tableRow_()
     {
         writeEndTag( ROW_TAG );
+        writeEOL();
     }
 
     /**
@@ -1377,6 +1410,7 @@ public class DocBookSink
     public void tableCell_()
     {
         writeEndTag( ENTRY_TAG );
+        writeEOL();
     }
 
     /**
@@ -1395,6 +1429,7 @@ public class DocBookSink
     public void tableHeaderCell_()
     {
         writeEndTag( ENTRY_TAG );
+        writeEOL();
     }
 
     /**
@@ -1440,6 +1475,7 @@ public class DocBookSink
     public void tableCaption_()
     {
         writeEndTag( Tag.TITLE );
+        writeEOL();
     }
 
     /**
@@ -1478,7 +1514,7 @@ public class DocBookSink
         {
             if ( !xmlMode )
             {
-                writeEndTagWithoutEOL( ANCHOR_TAG );
+                writeEndTag( ANCHOR_TAG );
             }
         }
     }
@@ -1521,12 +1557,12 @@ public class DocBookSink
     {
         if ( externalLinkFlag )
         {
-            writeEndTagWithoutEOL( ULINK_TAG );
+            writeEndTag( ULINK_TAG );
             externalLinkFlag = false;
         }
         else
         {
-            writeEndTagWithoutEOL( LINK_TAG );
+            writeEndTag( LINK_TAG );
         }
     }
 

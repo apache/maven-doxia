@@ -128,6 +128,7 @@ public class DocBookBookSink
     public void book_()
     {
         writeEndTag( BOOK_TAG );
+        writeEOL();
         flush();
     }
 
@@ -147,6 +148,7 @@ public class DocBookBookSink
         if ( hasHead )
         {
             writeEndTag( BOOKINFO_TAG );
+            writeEOL();
             hasHead = false;
         }
     }
@@ -200,6 +202,7 @@ public class DocBookBookSink
     public void chapter_()
     {
         writeEndTag( CHAPTER_TAG );
+        writeEOL();
     }
 
     /** Emit the chapter title start tag. */
@@ -212,5 +215,6 @@ public class DocBookBookSink
     public void chapterTitle_()
     {
         writeEndTag( Tag.TITLE );
+        writeEOL();
     }
 }

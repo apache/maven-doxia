@@ -1024,7 +1024,7 @@ public class LatexSink
      * @param text The text to escape.
      * @return The text with special characters replaced.
      */
-    protected static String escaped( String text )
+    public static String escaped( String text )
     {
         int length = text.length();
         StringBuffer buffer = new StringBuffer( length );

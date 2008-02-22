@@ -101,7 +101,7 @@ public class FoSink
     /** {@inheritDoc} */
     public void head_()
     {
-        newline();
+        writeEOL();
     }
 
     /** {@inheritDoc} */
@@ -114,6 +114,7 @@ public class FoSink
     public void title_()
     {
         writeEndTag( BLOCK_TAG );
+        writeEOL();
     }
 
     /** {@inheritDoc} */
@@ -126,6 +127,7 @@ public class FoSink
     public void author_()
     {
         writeEndTag( BLOCK_TAG );
+        writeEOL();
     }
 
     /** {@inheritDoc} */
@@ -138,6 +140,7 @@ public class FoSink
     public void date_()
     {
         writeEndTag( BLOCK_TAG );
+        writeEOL();
     }
 
     /** {@inheritDoc} */
@@ -149,9 +152,11 @@ public class FoSink
     /** {@inheritDoc} */
     public void body_()
     {
-        newline();
+        writeEOL();
         writeEndTag( FLOW_TAG );
+        writeEOL();
         writeEndTag( PAGE_SEQUENCE_TAG );
+        writeEOL();
         endDocument();
     }
 
@@ -300,7 +305,7 @@ public class FoSink
     /** Starts a section/subsection. */
     private void onSection()
     {
-        newline();
+        writeEOL();
         writeStartTag( BLOCK_TAG, "body.text" );
     }
 
@@ -315,7 +320,7 @@ public class FoSink
 
         title.append( getChapterString() );
 
-        newline();
+        writeEOL();
         if ( depth == Sink.SECTION_LEVEL_1 )
         {
             writeStartTag( BLOCK_TAG, "body.h1" );
@@ -350,12 +355,14 @@ public class FoSink
     private void onSectionTitle_()
     {
         writeEndTag( BLOCK_TAG );
+        writeEOL();
     }
 
     /** Ends a section/subsection. */
     private void onSection_()
     {
         writeEndTag( BLOCK_TAG );
+        writeEOL();
     }
 
     /**
@@ -385,7 +392,7 @@ public class FoSink
     /** {@inheritDoc} */
     public void list()
     {
-        newline();
+        writeEOL();
         writeStartTag( LIST_BLOCK_TAG, "list" );
     }
 
@@ -393,6 +400,7 @@ public class FoSink
     public void list_()
     {
         writeEndTag( LIST_BLOCK_TAG );
+        writeEOL();
     }
 
     /** {@inheritDoc} */
@@ -409,15 +417,18 @@ public class FoSink
     public void listItem_()
     {
         writeEndTag( BLOCK_TAG );
+        writeEOL();
         writeEndTag( LIST_ITEM_BODY_TAG );
+        writeEOL();
         writeEndTag( LIST_ITEM_TAG );
+        writeEOL();
     }
 
     /** {@inheritDoc} */
     public void numberedList( int numbering )
     {
         listStack.push( new NumberedListItem( numbering ) );
-        newline();
+        writeEOL();
         writeStartTag( LIST_BLOCK_TAG, "list" );
     }
 
@@ -426,6 +437,7 @@ public class FoSink
     {
         listStack.pop();
         writeEndTag( LIST_BLOCK_TAG );
+        writeEOL();
     }
 
     /** {@inheritDoc} */
@@ -440,7 +452,9 @@ public class FoSink
         writeStartTag( BLOCK_TAG, "" );
         write( current.getListItemSymbol() );
         writeEndTag( BLOCK_TAG );
+        writeEOL();
         writeEndTag( LIST_ITEM_LABEL_TAG );
+        writeEOL();
 
         writeStartTag( LIST_ITEM_BODY_TAG, "list.item" );
         writeStartTag( BLOCK_TAG, "" );
@@ -450,14 +464,17 @@ public class FoSink
     public void numberedListItem_()
     {
         writeEndTag( BLOCK_TAG );
+        writeEOL();
         writeEndTag( LIST_ITEM_BODY_TAG );
+        writeEOL();
         writeEndTag( LIST_ITEM_TAG );
+        writeEOL();
     }
 
     /** {@inheritDoc} */
     public void definitionList()
     {
-        newline();
+        writeEOL();
         writeStartTag( BLOCK_TAG, "dl" );
     }
 
@@ -465,6 +482,7 @@ public class FoSink
     public void definitionList_()
     {
         writeEndTag( BLOCK_TAG );
+        writeEOL();
     }
 
     /** {@inheritDoc} */
@@ -489,12 +507,13 @@ public class FoSink
     public void definedTerm_()
     {
         writeEndTag( BLOCK_TAG );
+        writeEOL();
     }
 
     /** {@inheritDoc} */
     public void definition()
     {
-        newline();
+        writeEOL();
         writeStartTag( BLOCK_TAG, "dd" );
     }
 
@@ -502,12 +521,13 @@ public class FoSink
     public void definition_()
     {
         writeEndTag( BLOCK_TAG );
+        writeEOL();
     }
 
     /** {@inheritDoc} */
     public void figure()
     {
-        newline();
+        writeEOL();
         writeStartTag( BLOCK_TAG, "figure.display" );
         write( "<fo:external-graphic"
             + config.getAttributeString( "figure.graphics" ) );
@@ -517,6 +537,7 @@ public class FoSink
     public void figure_()
     {
         writeEndTag( BLOCK_TAG );
+        writeEOL();
     }
 
     /** {@inheritDoc} */
@@ -535,6 +556,7 @@ public class FoSink
     public void figureCaption_()
     {
         writeEndTag( BLOCK_TAG );
+        writeEOL();
     }
 
     /** {@inheritDoc} */
@@ -547,6 +569,7 @@ public class FoSink
     public void paragraph_()
     {
         writeEndTag( BLOCK_TAG );
+        writeEOL();
     }
 
     /** {@inheritDoc} */
@@ -568,15 +591,17 @@ public class FoSink
     {
         this.verbatim = false;
         writeEndTag( BLOCK_TAG );
+        writeEOL();
     }
 
     /** {@inheritDoc} */
     public void horizontalRule()
     {
-        newline();
+        writeEOL();
         writeStartTag( BLOCK_TAG, "" );
         writeEmptyTag( LEADER_TAG, "body.rule" );
         writeEndTag( BLOCK_TAG );
+        writeEOL();
     }
 
     /** {@inheritDoc} */
@@ -584,13 +609,13 @@ public class FoSink
     {
         //writeln( "<fo:block break-before=\"page\"/>" );
         writeEmptyTag( BLOCK_TAG, "break-before", "page" );
-        newline();
+        writeEOL();
     }
 
     /** {@inheritDoc} */
     public void table()
     {
-        newline();
+        writeEOL();
         writeStartTag( BLOCK_TAG, "table.padding" );
 
         // <fo:table-and-caption> is XSL-FO 1.0 standard but not implemented in FOP 0.93
@@ -603,11 +628,13 @@ public class FoSink
     public void table_()
     {
         writeEndTag( TABLE_TAG );
+        writeEOL();
 
         // <fo:table-and-caption> is XSL-FO 1.0 standard but not implemented in FOP 0.93
         //writeEndTag( TABLE_AND_CAPTION_TAG );
 
         writeEndTag( BLOCK_TAG );
+        writeEOL();
     }
 
     /** {@inheritDoc} */
@@ -640,6 +667,7 @@ public class FoSink
         this.cellJustif = null;
         this.isCellJustif = false;
         writeEndTag( TABLE_BODY_TAG );
+        writeEOL();
     }
 
     /** {@inheritDoc} */
@@ -654,6 +682,7 @@ public class FoSink
     public void tableRow_()
     {
         writeEndTag( TABLE_ROW_TAG );
+        writeEOL();
     }
 
     /** {@inheritDoc} */
@@ -730,7 +759,9 @@ public class FoSink
     public void tableCell_()
     {
         writeEndTag( BLOCK_TAG );
+        writeEOL();
         writeEndTag( TABLE_CELL_TAG );
+        writeEOL();
 
         if ( isCellJustif )
         {
@@ -781,7 +812,7 @@ public class FoSink
     /** {@inheritDoc} */
     public void anchor_()
     {
-        writeEndTagWithoutEOL( INLINE_TAG );
+        writeEndTag( INLINE_TAG );
     }
 
     /** {@inheritDoc} */
@@ -816,8 +847,8 @@ public class FoSink
     /** {@inheritDoc} */
     public void link_()
     {
-        writeEndTagWithoutEOL( INLINE_TAG );
-        writeEndTagWithoutEOL( BASIC_LINK_TAG );
+        writeEndTag( INLINE_TAG );
+        writeEndTag( BASIC_LINK_TAG );
     }
 
     /** {@inheritDoc} */
@@ -829,7 +860,7 @@ public class FoSink
     /** {@inheritDoc} */
     public void italic_()
     {
-        writeEndTagWithoutEOL( INLINE_TAG );
+        writeEndTag( INLINE_TAG );
     }
 
     /** {@inheritDoc} */
@@ -841,7 +872,7 @@ public class FoSink
     /** {@inheritDoc} */
     public void bold_()
     {
-        writeEndTagWithoutEOL( INLINE_TAG );
+        writeEndTag( INLINE_TAG );
     }
 
     /** {@inheritDoc} */
@@ -853,13 +884,13 @@ public class FoSink
     /** {@inheritDoc} */
     public void monospaced_()
     {
-        writeEndTagWithoutEOL( INLINE_TAG );
+        writeEndTag( INLINE_TAG );
     }
 
     /** {@inheritDoc} */
     public void lineBreak()
     {
-        newline();
+        writeEOL();
         writeEmptyTag( BLOCK_TAG, "" );
     }
 
@@ -921,20 +952,24 @@ public class FoSink
         writeStartTag( SIMPLE_PAGE_MASTER_TAG, "layout.master.set.cover-page" );
         writeEmptyTag( REGION_BODY_TAG, "layout.master.set.cover-page.region-body" );
         writeEndTag( SIMPLE_PAGE_MASTER_TAG );
+        writeEOL();
 
         writeStartTag( SIMPLE_PAGE_MASTER_TAG, "layout.master.set.toc" );
         writeEmptyTag( REGION_BODY_TAG, "layout.master.set.toc.region-body" );
         writeEmptyTag( REGION_BEFORE_TAG, "layout.master.set.toc.region-before" );
         writeEmptyTag( REGION_AFTER_TAG, "layout.master.set.toc.region-after" );
         writeEndTag( SIMPLE_PAGE_MASTER_TAG );
+        writeEOL();
 
         writeStartTag( SIMPLE_PAGE_MASTER_TAG, "layout.master.set.body" );
         writeEmptyTag( REGION_BODY_TAG, "layout.master.set.body.region-body" );
         writeEmptyTag( REGION_BEFORE_TAG, "layout.master.set.body.region-before" );
         writeEmptyTag( REGION_AFTER_TAG, "layout.master.set.body.region-after" );
         writeEndTag( SIMPLE_PAGE_MASTER_TAG );
+        writeEOL();
 
         writeEndTag( LAYOUT_MASTER_SET_TAG );
+        writeEOL();
 
         pdfBookmarks();
     }
@@ -945,6 +980,8 @@ public class FoSink
     public void endDocument()
     {
         writeEndTag( ROOT_TAG );
+        writeEOL();
+
         flush();
         close();
     }
@@ -971,7 +1008,7 @@ public class FoSink
      */
     protected void writeStartTag( Tag tag, String attributeId )
     {
-        newline();
+        writeEOL();
         writeStartTag( tag, config.getAttributeSet( attributeId ) );
     }
 
@@ -984,7 +1021,7 @@ public class FoSink
      */
     protected void writeStartTag( Tag tag, String id, String name )
     {
-        newline();
+        writeEOL();
         MutableAttributeSet att = new SimpleAttributeSet();
         att.addAttribute( id, name );
 
@@ -1011,7 +1048,7 @@ public class FoSink
 
         att.addAttribute( id, name );
 
-        newline();
+        writeEOL();
         writeStartTag( tag, att );
     }
 
@@ -1027,7 +1064,7 @@ public class FoSink
         MutableAttributeSet att = new SimpleAttributeSet();
         att.addAttribute( id, name );
 
-        newline();
+        writeEOL();
         writeSimpleTag( tag, att );
     }
 
@@ -1039,7 +1076,7 @@ public class FoSink
      */
     protected void writeEmptyTag( Tag tag, String attributeId )
     {
-        newline();
+        writeEOL();
         writeSimpleTag( tag, config.getAttributeSet( attributeId ) );
     }
 
@@ -1068,7 +1105,7 @@ public class FoSink
     protected void writeln( String text )
     {
         write( text );
-        newline();
+        writeEOL();
     }
 
     /**
@@ -1079,12 +1116,6 @@ public class FoSink
     protected void content( String text )
     {
         write( escaped( text, verbatim ) );
-    }
-
-    /** Writes EOL. */
-    protected void newline()
-    {
-        write( EOL );
     }
 
     /**

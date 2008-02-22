@@ -157,34 +157,23 @@ public abstract class AbstractXmlSink
 
         sb.append( GREATER_THAN );
 
-        if ( isSimpleTag )
-        {
-            sb.append( EOL );
-        }
-
         write( sb.toString() );
     }
 
     /**
-     * Ends a Tag followed by an EOL. For instance:
-     * <pre>&lt;/tag&gt;
-     * </pre>
-     *
-     * @param t a tag
+     * Writes a system EOL.
      */
-    protected void writeEndTag( Tag t )
+    protected void writeEOL()
     {
-        writeEndTagWithoutEOL( t );
         write( EOL );
     }
 
     /**
-     * Ends a Tag without an EOL. For instance:
-     * <pre>&lt;/tag&gt;</pre>
+     * Ends a Tag without writing an EOL. For instance: <pre>&lt;/tag&gt;</pre>.
      *
-     * @param t a tag
+     * @param t a tag.
      */
-    protected void writeEndTagWithoutEOL( Tag t )
+    protected void writeEndTag( Tag t )
     {
         StringBuffer sb = new StringBuffer();
         sb.append( LESS_THAN );

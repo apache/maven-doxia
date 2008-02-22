@@ -66,8 +66,8 @@ public class AptSinkTest extends AbstractSinkTest
     /** {@inheritDoc} */
     protected String getHeadBlock()
     {
-        return AptMarkup.HEADER_START_MARKUP + AptMarkup.HEADER_START_MARKUP + AptMarkup.HEADER_START_MARKUP
-            + AptMarkup.HEADER_START_MARKUP;
+        return AptMarkup.HEADER_START_MARKUP + EOL + AptMarkup.HEADER_START_MARKUP + EOL + AptMarkup.HEADER_START_MARKUP
+             + EOL+ AptMarkup.HEADER_START_MARKUP + EOL;
     }
 
     /** {@inheritDoc} */
@@ -85,94 +85,95 @@ public class AptSinkTest extends AbstractSinkTest
     /** {@inheritDoc} */
     protected String getSection1Block( String title )
     {
-        return title;
+        return EOL + title + EOL + EOL + EOL;
     }
 
     /** {@inheritDoc} */
     protected String getSection2Block( String title )
     {
-        return AptMarkup.SECTION_TITLE_START_MARKUP + title;
+        return EOL + AptMarkup.SECTION_TITLE_START_MARKUP + title + EOL + EOL + EOL;
     }
 
     /** {@inheritDoc} */
     protected String getSection3Block( String title )
     {
-        return StringUtils.repeat( String.valueOf( AptMarkup.SECTION_TITLE_START_MARKUP ), 2 ) + title;
+        return EOL + StringUtils.repeat( String.valueOf( AptMarkup.SECTION_TITLE_START_MARKUP ), 2 ) + title + EOL + EOL + EOL;
     }
 
     /** {@inheritDoc} */
     protected String getSection4Block( String title )
     {
-        return StringUtils.repeat( String.valueOf( AptMarkup.SECTION_TITLE_START_MARKUP ), 3 ) + title;
+        return EOL + StringUtils.repeat( String.valueOf( AptMarkup.SECTION_TITLE_START_MARKUP ), 3 ) + title + EOL + EOL + EOL;
     }
 
     /** {@inheritDoc} */
     protected String getSection5Block( String title )
     {
-        return StringUtils.repeat( String.valueOf( AptMarkup.SECTION_TITLE_START_MARKUP ), 4 ) + title;
+        return EOL + StringUtils.repeat( String.valueOf( AptMarkup.SECTION_TITLE_START_MARKUP ), 4 ) + title + EOL + EOL + EOL;
     }
 
     /** {@inheritDoc} */
     protected String getListBlock( String item )
     {
-        return Markup.SPACE + "" + AptMarkup.LIST_START_MARKUP + "" + Markup.SPACE + item
-            + Markup.SPACE + "" + AptMarkup.LIST_END_MARKUP;
+        return EOL + EOL + Markup.SPACE + "" + AptMarkup.LIST_START_MARKUP + "" + Markup.SPACE + item + EOL + EOL
+            + Markup.SPACE + "" + AptMarkup.LIST_END_MARKUP + EOL;
     }
 
     /** {@inheritDoc} */
     protected String getNumberedListBlock( String item )
     {
-        return Markup.SPACE + "" + Markup.LEFT_SQUARE_BRACKET + ""
+        return EOL + EOL + Markup.SPACE + "" + Markup.LEFT_SQUARE_BRACKET + ""
             + Markup.LEFT_SQUARE_BRACKET + AptMarkup.NUMBERING_LOWER_ROMAN_CHAR + ""
             + Markup.RIGHT_SQUARE_BRACKET + "" + Markup.RIGHT_SQUARE_BRACKET
-            + Markup.SPACE + item + Markup.SPACE + "" + AptMarkup.LIST_END_MARKUP;
+            + Markup.SPACE + item + EOL + EOL + Markup.SPACE + "" + AptMarkup.LIST_END_MARKUP + EOL;
     }
 
     /** {@inheritDoc} */
     protected String getDefinitionListBlock( String definum, String definition )
     {
-        return Markup.SPACE + "" + Markup.LEFT_SQUARE_BRACKET + definum
-            + Markup.RIGHT_SQUARE_BRACKET + "" + Markup.SPACE + definition
-            + Markup.SPACE + "" + Markup.LEFT_SQUARE_BRACKET + "" + Markup.RIGHT_SQUARE_BRACKET;
+        return EOL + EOL + Markup.SPACE + "" + Markup.LEFT_SQUARE_BRACKET + definum
+            + Markup.RIGHT_SQUARE_BRACKET + "" + Markup.SPACE + definition + EOL + EOL
+            + Markup.SPACE + "" + AptMarkup.LIST_END_MARKUP + EOL;
     }
 
     /** {@inheritDoc} */
     protected String getFigureBlock( String source, String caption )
     {
-        return Markup.LEFT_SQUARE_BRACKET + source + Markup.RIGHT_SQUARE_BRACKET
-            + Markup.SPACE + caption;
+        return EOL + Markup.LEFT_SQUARE_BRACKET + source + Markup.RIGHT_SQUARE_BRACKET
+            + Markup.SPACE + caption + EOL;
     }
 
     /** {@inheritDoc} */
     protected String getTableBlock( String cell, String caption )
     {
-        return AptMarkup.TABLE_ROW_START_MARKUP + AptMarkup.TABLE_COL_CENTERED_ALIGNED_MARKUP + cell
-        + AptMarkup.TABLE_ROW_SEPARATOR_MARKUP + AptMarkup.TABLE_ROW_START_MARKUP + AptMarkup.TABLE_COL_CENTERED_ALIGNED_MARKUP  + caption;
+        return EOL + AptMarkup.TABLE_ROW_START_MARKUP + AptMarkup.TABLE_COL_CENTERED_ALIGNED_MARKUP + EOL + cell
+            + AptMarkup.TABLE_ROW_SEPARATOR_MARKUP + EOL + AptMarkup.TABLE_ROW_START_MARKUP
+            + AptMarkup.TABLE_COL_CENTERED_ALIGNED_MARKUP + EOL + caption + EOL;
     }
 
     /** {@inheritDoc} */
     protected String getParagraphBlock( String text )
     {
-        return Markup.SPACE + text;
+        return EOL + Markup.SPACE + text + EOL + EOL;
     }
 
     /** {@inheritDoc} */
     protected String getVerbatimBlock( String text )
     {
-        return Markup.EOL + AptMarkup.BOXED_VERBATIM_START_MARKUP + Markup.EOL + text + Markup.EOL
-            + AptMarkup.BOXED_VERBATIM_START_MARKUP + Markup.EOL;
+        return EOL + EOL + AptMarkup.BOXED_VERBATIM_START_MARKUP + EOL + text + EOL
+            + AptMarkup.BOXED_VERBATIM_START_MARKUP + EOL;
     }
 
     /** {@inheritDoc} */
     protected String getHorizontalRuleBlock()
     {
-        return AptMarkup.HORIZONTAL_RULE_MARKUP;
+        return EOL + AptMarkup.HORIZONTAL_RULE_MARKUP + EOL;
     }
 
     /** {@inheritDoc} */
     protected String getPageBreakBlock()
     {
-        return AptMarkup.PAGE_BREAK_MARKUP;
+        return EOL + AptMarkup.PAGE_BREAK_MARKUP + EOL;
     }
 
     /** {@inheritDoc} */
@@ -208,7 +209,7 @@ public class AptSinkTest extends AbstractSinkTest
     /** {@inheritDoc} */
     protected String getLineBreakBlock()
     {
-        return String.valueOf( AptMarkup.BACKSLASH );
+        return String.valueOf( AptMarkup.BACKSLASH ) + EOL;
     }
 
     /** {@inheritDoc} */
@@ -222,17 +223,17 @@ public class AptSinkTest extends AbstractSinkTest
     {
         // "\\~, \\=, \\-, \\+, \\*, \\[, \\], \\<, \\>, \\{, \\}, \\\\"
         StringBuffer sb = new StringBuffer();
-        sb.append( getSpecialCharacters( AptMarkup.COMMENT ) ).append( ", " );
-        sb.append( getSpecialCharacters( Markup.EQUAL ) ).append( ", " );
-        sb.append( getSpecialCharacters( Markup.MINUS ) ).append( ", " );
-        sb.append( getSpecialCharacters( Markup.PLUS ) ).append( ", " );
-        sb.append( getSpecialCharacters( Markup.STAR ) ).append( ", " );
-        sb.append( getSpecialCharacters( Markup.LEFT_SQUARE_BRACKET ) ).append( ", " );
-        sb.append( getSpecialCharacters( Markup.RIGHT_SQUARE_BRACKET ) ).append( ", " );
-        sb.append( getSpecialCharacters( Markup.LESS_THAN ) ).append( ", " );
-        sb.append( getSpecialCharacters( Markup.GREATER_THAN ) ).append( ", " );
-        sb.append( getSpecialCharacters( Markup.LEFT_CURLY_BRACKET ) ).append( ", " );
-        sb.append( getSpecialCharacters( Markup.RIGHT_CURLY_BRACKET ) ).append( ", " );
+        sb.append( getSpecialCharacters( AptMarkup.COMMENT ) ).append( ",_" );
+        sb.append( getSpecialCharacters( Markup.EQUAL ) ).append( ",_" );
+        sb.append( getSpecialCharacters( Markup.MINUS ) ).append( ",_" );
+        sb.append( getSpecialCharacters( Markup.PLUS ) ).append( ",_" );
+        sb.append( getSpecialCharacters( Markup.STAR ) ).append( ",_" );
+        sb.append( getSpecialCharacters( Markup.LEFT_SQUARE_BRACKET ) ).append( ",_" );
+        sb.append( getSpecialCharacters( Markup.RIGHT_SQUARE_BRACKET ) ).append( ",_" );
+        sb.append( getSpecialCharacters( Markup.LESS_THAN ) ).append( ",_" );
+        sb.append( getSpecialCharacters( Markup.GREATER_THAN ) ).append( ",_" );
+        sb.append( getSpecialCharacters( Markup.LEFT_CURLY_BRACKET ) ).append( ",_" );
+        sb.append( getSpecialCharacters( Markup.RIGHT_CURLY_BRACKET ) ).append( ",_" );
         sb.append( getSpecialCharacters( AptMarkup.BACKSLASH ) );
 
         return sb.toString();
