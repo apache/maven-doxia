@@ -21,7 +21,6 @@ package org.apache.maven.doxia.module.twiki.parser;
 
 import org.apache.maven.doxia.sink.Sink;
 
-
 /**
  * <pre>
  *    1. item1
@@ -31,9 +30,9 @@ import org.apache.maven.doxia.sink.Sink;
  * </pre>
  *
  * @author Juan F. Codagnone
- * @since Nov 8, 2005
+ * @version $Id$
  */
-public class NumeratedListBlock extends ListBlock
+class NumeratedListBlock extends ListBlock
 {
     /**
      * order item type. one of Sink#NUMBERING_....
@@ -47,36 +46,26 @@ public class NumeratedListBlock extends ListBlock
      * @param blocks list of list items
      * @throws IllegalArgumentException if listItemBlocks is <code>null</code>
      */
-    public NumeratedListBlock( final int type, final ListItemBlock[] blocks )
+    NumeratedListBlock( final int type, final ListItemBlock[] blocks )
         throws IllegalArgumentException
     {
         super( blocks );
         this.type = type;
     }
 
-
-    /**
-     * @see AbstractFatherBlock#before(org.apache.maven.doxia.sink.Sink)
-     */
-    
-    public final void before( final Sink sink )
+    /** {@inheritDoc} */
+    final void before( final Sink sink )
     {
         sink.numberedList( type );
     }
 
-    /**
-     * @see AbstractFatherBlock#after(org.apache.maven.doxia.sink.Sink)
-     */
-    
-    public final void after( final Sink sink )
+    /** {@inheritDoc} */
+    final void after( final Sink sink )
     {
         sink.numberedList_();
     }
 
-    /**
-     * @see AbstractFatherBlock#equals(Object)
-     */
-    
+    /** {@inheritDoc} */
     public final boolean equals( final Object obj )
     {
         boolean ret = false;
@@ -89,10 +78,7 @@ public class NumeratedListBlock extends ListBlock
         return ret;
     }
 
-    /**
-     * @see AbstractFatherBlock#hashCode()
-     */
-    
+    /** {@inheritDoc} */
     public final int hashCode()
     {
         final int magic = 17;

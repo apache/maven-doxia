@@ -26,33 +26,24 @@ import org.apache.maven.doxia.sink.Sink;
  * Represents an horizontal block
  *
  * @author Juan F. Codagnone
- * @since Nov 5, 2005
+ * @version $Id$
  */
-public class HorizontalRuleBlock implements Block
+class HorizontalRuleBlock implements Block
 {
-
-    /**
-     * @see Block#traverse(org.apache.maven.doxia.sink.Sink)
-     */
+    /** {@inheritDoc} */
     public final void traverse( final Sink sink )
     {
         sink.horizontalRule();
     }
 
-    /**
-     * @see Object#equals(Object)
-     */
-    
+    /** {@inheritDoc} */
     public final boolean equals( final Object obj )
     {
         return obj == this
             || ( obj != null && getClass().equals( obj.getClass() ) );
     }
 
-    /**
-     * @see Object#hashCode()
-     */
-    
+    /** {@inheritDoc} */
     public final int hashCode()
     {
         final int hashCode = 214905655;

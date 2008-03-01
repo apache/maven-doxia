@@ -21,42 +21,33 @@ package org.apache.maven.doxia.module.twiki.parser;
 
 import org.apache.maven.doxia.sink.Sink;
 
-
 /**
  * Block that represents the italic text format
  *
  * @author Juan F. Codagnone
- * @since Nov 2, 2005
+ * @version $Id$
  */
-public class ItalicBlock extends AbstractFatherBlock
+class ItalicBlock extends AbstractFatherBlock
 {
-
     /**
      * Creates the BoldBlock.
      *
      * @param childBlocks child blocks
      */
-    public ItalicBlock( final Block [] childBlocks )
+    ItalicBlock( final Block [] childBlocks )
     {
         super( childBlocks );
     }
 
-    /**
-     * @see AbstractFatherBlock#before(org.apache.maven.doxia.sink.Sink)
-     */
-    
-    public final void before( final Sink sink )
+    /** {@inheritDoc} */
+    final void before( final Sink sink )
     {
         sink.italic();
     }
 
-    /**
-     * @see AbstractFatherBlock#after(org.apache.maven.doxia.sink.Sink)
-     */
-    
-    public final void after( final Sink sink )
+    /** {@inheritDoc} */
+    final void after( final Sink sink )
     {
         sink.italic_();
     }
-
 }

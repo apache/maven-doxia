@@ -21,40 +21,32 @@ package org.apache.maven.doxia.module.twiki.parser;
 
 import org.apache.maven.doxia.sink.Sink;
 
-
 /**
  * Table Cell headear
  *
  * @author Juan F. Codagnone
- * @since Nov 10, 2005
+ * @version $Id$
  */
-public class TableCellHeaderBlock extends AbstractFatherBlock
+class TableCellHeaderBlock extends AbstractFatherBlock
 {
-
     /**
      * Creates the TableCellHeaderBlock.
      *
      * @param childBlocks childrens
      */
-    public TableCellHeaderBlock( final Block [] childBlocks )
+    TableCellHeaderBlock( final Block [] childBlocks )
     {
         super( childBlocks );
     }
 
-    /**
-     * @see AbstractFatherBlock#before(org.apache.maven.doxia.sink.Sink)
-     */
-    
-    public final void before( final Sink sink )
+    /** {@inheritDoc} */
+    final void before( final Sink sink )
     {
         sink.tableHeaderCell();
     }
 
-    /**
-     * @see AbstractFatherBlock#after(org.apache.maven.doxia.sink.Sink)
-     */
-    
-    public final void after( final Sink sink )
+    /** {@inheritDoc} */
+    final void after( final Sink sink )
     {
         sink.tableHeaderCell_();
     }

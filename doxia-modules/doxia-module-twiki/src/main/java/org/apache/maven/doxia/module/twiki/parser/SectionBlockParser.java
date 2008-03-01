@@ -26,12 +26,11 @@ import java.util.regex.Pattern;
 import org.apache.maven.doxia.util.ByLineSource;
 import org.apache.maven.doxia.parser.ParseException;
 
-
 /**
  * Parse looking for sections
  *
  * @author Juan F. Codagnone
- * @since Nov 1, 2005
+ * @version $Id$
  */
 public class SectionBlockParser implements BlockParser
 {
@@ -45,26 +44,22 @@ public class SectionBlockParser implements BlockParser
      * {@link ParagraphBlockParser} to use. injected
      */
     private ParagraphBlockParser paraParser;
+
     /**
      * {@link ParagraphBlockParser} to use. injected
      */
     private HRuleBlockParser hrulerParser;
-    
+
     /** {@link VerbatimBlockParser} */
     private VerbatimBlockParser verbatimBlockParser;
 
-    /**
-     * @see BlockParser#accept(String)
-     */
+    /** {@inheritDoc} */
     public final boolean accept( final String s )
     {
-
         return HEADER_DA.matcher( s ).lookingAt();
     }
 
-    /**
-     * @see BlockParser#visit(String)
-     */
+    /** {@inheritDoc} */
     public final Block visit( final String line, final ByLineSource source )
         throws ParseException
     {
@@ -136,7 +131,6 @@ public class SectionBlockParser implements BlockParser
         this.paraParser = paraParser;
     }
 
-
     /**
      * Sets the hrulerParser.
      *
@@ -152,7 +146,7 @@ public class SectionBlockParser implements BlockParser
     }
 
     /**
-     * Sets the verbatimBlockParser. 
+     * Sets the verbatimBlockParser.
      *
      * @param verbatimBlockParser <code>VerbatimBlockParser</code> with the verbatimBlockParser.
      */
@@ -163,5 +157,4 @@ public class SectionBlockParser implements BlockParser
         }
         this.verbatimBlockParser = verbatimBlockParser;
     }
-    
 }

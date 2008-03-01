@@ -27,12 +27,11 @@ import java.util.regex.Pattern;
 import org.apache.maven.doxia.parser.ParseException;
 import org.apache.maven.doxia.util.ByLineSource;
 
-
 /**
  * Parse verbatim blocks
- * 
+ *
  * @author Christian Nardi
- * @since Nov 8, 2007
+ * @version $Id$
  */
 public class VerbatimBlockParser implements BlockParser
 {
@@ -41,31 +40,20 @@ public class VerbatimBlockParser implements BlockParser
      */
     private static final Pattern VERBATIM_START_PATTERN =
         Pattern.compile( "\\s*<verbatim>" );
-    
+
     private static final Pattern VERBATIM_END_PATTERN =
         Pattern.compile( "</verbatim>" );
 
-    /**
-     * @see BlockParser#accept(String)
-     * @param line text line
-     * @return <code>true</code> if this class can handle this line
-     */
+    /** {@inheritDoc} */
     public final boolean accept( final String line )
     {
         return VERBATIM_START_PATTERN.matcher( line ).lookingAt();
     }
 
-    /**
-     * @see BlockParser#visit(String, ByLineSource)
-     * @param line   a line of text
-     * @param source the source of lines
-     * @return a block
-     * @throws ParseException on error
-     */
+    /** {@inheritDoc} */
     public final Block visit( final String line, final ByLineSource source )
         throws ParseException
     {
-
         if ( !accept( line ) )
         {
             throw new IllegalAccessError( "call accept before this ;)" );
@@ -79,7 +67,7 @@ public class VerbatimBlockParser implements BlockParser
         while ( l != null )
         {
             matcher = VERBATIM_END_PATTERN.matcher( l );
-            if ( matcher.find() ) 
+            if ( matcher.find() )
             {
                 lines.add( new TextBlock( l.substring( 0, matcher.start() ) + "\n" ) );
                 break;
@@ -87,7 +75,7 @@ public class VerbatimBlockParser implements BlockParser
             lines.add( new TextBlock( l + "\n" ) );
             l = source.getNextLine();
         }
-        
+
 
         return new VerbatimBlock( (Block[]) lines.toArray( new Block[]{} ) );
     }

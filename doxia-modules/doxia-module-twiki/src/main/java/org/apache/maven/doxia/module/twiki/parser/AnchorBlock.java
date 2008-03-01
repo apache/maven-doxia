@@ -26,9 +26,9 @@ import org.apache.maven.doxia.sink.Sink;
  * Represents an anchor
  *
  * @author Juan F. Codagnone
- * @since Nov 5, 2005
+ * @version $Id$
  */
-public class AnchorBlock implements Block
+class AnchorBlock implements Block
 {
     /**
      * anchor name
@@ -41,7 +41,7 @@ public class AnchorBlock implements Block
      * @param name name of the anchor
      * @throws IllegalArgumentException if the arguments are <code>null</code>
      */
-    public AnchorBlock( final String name ) throws IllegalArgumentException
+    AnchorBlock( final String name ) throws IllegalArgumentException
     {
         if ( name == null )
         {
@@ -50,18 +50,14 @@ public class AnchorBlock implements Block
         this.name = name;
     }
 
-    /**
-     * @see Block#traverse(org.apache.maven.doxia.sink.Sink)
-     */
+    /** {@inheritDoc}*/
     public final void traverse( final Sink sink )
     {
         sink.anchor( name );
         sink.anchor_();
     }
 
-    /**
-     * @see Object#equals(Object)
-     */
+    /** {@inheritDoc}*/
     public final boolean equals( final Object obj )
     {
         boolean ret = false;
@@ -80,9 +76,7 @@ public class AnchorBlock implements Block
         return ret;
     }
 
-    /**
-     * @see Object#hashCode()
-     */
+    /** {@inheritDoc}*/
     public final int hashCode()
     {
         return name.hashCode();

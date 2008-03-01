@@ -21,14 +21,13 @@ package org.apache.maven.doxia.module.twiki.parser;
 
 import org.apache.maven.doxia.sink.Sink;
 
-
 /**
  * Block that represents a link.
  *
  * @author Juan F. Codagnone
- * @since Nov 4, 2005
+ * @version $Id$
  */
-public class LinkBlock implements Block
+class LinkBlock implements Block
 {
     /**
      * link reference
@@ -42,15 +41,15 @@ public class LinkBlock implements Block
     /**
      * Creates the LinkBlock.
      *
-     * @param reference reference anchor 
+     * @param reference reference anchor
      * @param text text to display
      * @deprecated
      */
-    public LinkBlock( final String reference, final String text ) 
+    LinkBlock( final String reference, final String text )
     {
         this( reference, new TextBlock( text ) );
     }
-    
+
     /**
      * Creates the LinkBlock.
      *
@@ -58,7 +57,7 @@ public class LinkBlock implements Block
      * @param content block with the displayed content
      * @throws IllegalArgumentException if any argument is <code>null</code>
      */
-    public LinkBlock( final String reference, final Block content )
+    LinkBlock( final String reference, final Block content )
         throws IllegalArgumentException
     {
         if ( reference == null || content == null )
@@ -69,9 +68,7 @@ public class LinkBlock implements Block
         this.content = content;
     }
 
-    /**
-     * @see Block#traverse(org.apache.maven.doxia.sink.Sink)
-     */
+    /** {@inheritDoc} */
     public final void traverse( final Sink sink )
     {
         sink.link( reference );
@@ -80,10 +77,7 @@ public class LinkBlock implements Block
 
     }
 
-    /**
-     * @see Object#equals(Object)
-     */
-    
+    /** {@inheritDoc} */
     public final boolean equals( final Object obj )
     {
         boolean ret = false;
@@ -102,10 +96,7 @@ public class LinkBlock implements Block
         return ret;
     }
 
-    /**
-     * @see Object#hashCode()
-     */
-    
+    /** {@inheritDoc} */
     public final int hashCode()
     {
         final int magic1 = 17;
@@ -114,5 +105,4 @@ public class LinkBlock implements Block
         return magic1 + magic2 * reference.hashCode()
             + magic2 * content.hashCode();
     }
-
 }

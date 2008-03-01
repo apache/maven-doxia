@@ -21,37 +21,27 @@ package org.apache.maven.doxia.module.twiki.parser;
 
 import org.apache.maven.doxia.sink.Sink;
 
-
 /**
  * Block that not represent anything
  *
  * @author Juan F. Codagnone
- * @since Nov 6, 2005
+ * @version $Id$
  */
-public class NopBlock implements Block
+class NopBlock implements Block
 {
-
-    /**
-     * @see Block#traverse(org.apache.maven.doxia.sink.Sink)
-     */
+    /** {@inheritDoc} */
     public final void traverse( final Sink sink )
     {
         // nothing to do!!
     }
 
-    /**
-     * @see Object#equals(Object)
-     */
-    
+    /** {@inheritDoc} */
     public final boolean equals( final Object obj )
     {
         return this == obj && getClass().equals( obj.getClass() );
     }
 
-    /**
-     * @see Object#hashCode()
-     */
-    
+    /** {@inheritDoc} */
     public final int hashCode()
     {
         final int magic = 518409602;

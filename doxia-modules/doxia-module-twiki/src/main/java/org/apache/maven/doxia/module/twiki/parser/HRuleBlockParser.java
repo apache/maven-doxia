@@ -30,7 +30,7 @@ import org.apache.maven.doxia.parser.ParseException;
  * Block that represents an horizontal rule
  *
  * @author Juan F. Codagnone
- * @since Nov 5, 2005
+ * @version $Id$
  */
 public class HRuleBlockParser implements BlockParser
 {
@@ -40,9 +40,7 @@ public class HRuleBlockParser implements BlockParser
     private static final Pattern HRULE_PATTERN =
         Pattern.compile( "^(---)(-*)(.*)$" );
 
-    /**
-     * @see BlockParser#accept(String)
-     */
+    /** {@inheritDoc} */
     public final boolean accept( final String line )
     {
         final Matcher m = HRULE_PATTERN.matcher( line );
@@ -61,9 +59,7 @@ public class HRuleBlockParser implements BlockParser
         return ret;
     }
 
-    /**
-     * @see BlockParser#visit(String, ByLineSource)
-     */
+    /** {@inheritDoc} */
     public final Block visit( final String line, final ByLineSource source )
         throws ParseException
     {

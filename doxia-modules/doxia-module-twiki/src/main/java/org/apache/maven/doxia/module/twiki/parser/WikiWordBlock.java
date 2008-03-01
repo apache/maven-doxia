@@ -26,9 +26,9 @@ import org.apache.maven.doxia.sink.Sink;
  * Represent a WikiWord
  *
  * @author Juan F. Codagnone
- * @since Nov 4, 2005
+ * @version $Id$
  */
-public class WikiWordBlock implements Block
+class WikiWordBlock implements Block
 {
     /**
      * the wiki word
@@ -43,14 +43,12 @@ public class WikiWordBlock implements Block
      */
     private final WikiWordLinkResolver wikiWordLinkResolver;
 
-    
-    
     /**
      * @see #WikiWordBlock(String, String)
      * @param aWikiword the wikiWord
      * @param resolver responsible of resolving the link to the wikiWord
      */
-    public WikiWordBlock( final String aWikiword, 
+    WikiWordBlock( final String aWikiword,
             final WikiWordLinkResolver resolver )
     {
         this( aWikiword, aWikiword, resolver );
@@ -61,25 +59,25 @@ public class WikiWordBlock implements Block
      *
      * @param aWikiword the wiki word
      * @param aText text to show in the wiki link
-     * @param resolver responsible of resolving the link to the wikiWord 
+     * @param resolver responsible of resolving the link to the wikiWord
      * @throws IllegalArgumentException if the wikiword is <code>null</code>
      * @deprecated
      */
-    public WikiWordBlock( final String aWikiword, final String aText , 
+    WikiWordBlock( final String aWikiword, final String aText ,
             final WikiWordLinkResolver resolver )
     {
         this( aWikiword, new TextBlock( aText ), resolver );
     }
-    
+
     /**
      * Creates the WikiWordBlock.
      *
      * @param aWikiword the wiki word
      * @param aText text to show in the wiki link
-     * @param resolver responsible of resolving the link to the wikiWord 
+     * @param resolver responsible of resolving the link to the wikiWord
      * @throws IllegalArgumentException if the wikiword is <code>null</code>
      */
-    public WikiWordBlock( final String aWikiword, final Block content , 
+    WikiWordBlock( final String aWikiword, final Block content ,
             final WikiWordLinkResolver resolver )
     {
         if ( aWikiword == null || content == null || resolver == null )
@@ -91,10 +89,7 @@ public class WikiWordBlock implements Block
         this.wikiWordLinkResolver = resolver;
     }
 
-    /**
-     * @see Block#traverse(org.apache.maven.doxia.sink.Sink)
-     * @param sink the sink that travers
-     */
+    /** {@inheritDoc} */
     public final void traverse( final Sink sink )
     {
         sink.link( wikiWordLinkResolver.resolveLink( wikiword ) );
@@ -102,13 +97,7 @@ public class WikiWordBlock implements Block
         sink.link_();
     }
 
-    /**
-     * @see Object#equals(Object)
-     * @param   obj   the reference object with which to compare.
-     * @return  <code>true</code> if this object is the same as the obj
-     *          argument; <code>false</code> otherwise.
-     */
-    
+    /** {@inheritDoc} */
     public final boolean equals( final Object obj )
     {
         boolean ret = false;
@@ -127,11 +116,7 @@ public class WikiWordBlock implements Block
         return ret;
     }
 
-    /**
-     * @see Object#hashCode()
-     * @return  a hash code value for this object.
-     */
-    
+    /** {@inheritDoc} */
     public final int hashCode()
     {
         final int magic1 = 17;

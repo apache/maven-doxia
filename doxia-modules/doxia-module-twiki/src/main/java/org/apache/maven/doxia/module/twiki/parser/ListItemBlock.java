@@ -21,22 +21,20 @@ package org.apache.maven.doxia.module.twiki.parser;
 
 import org.apache.maven.doxia.sink.Sink;
 
-
 /**
  * Block that represents the item in a list
  *
  * @author Juan F. Codagnone
- * @since Nov 1, 2005
+ * @version $Id$
  */
-public class ListItemBlock extends AbstractFatherBlock
+class ListItemBlock extends AbstractFatherBlock
 {
-    /** */
     private final ListBlock innerList;
 
     /**
      * @see #ListItemBlock(Block[], ListBlock)
      */
-    public ListItemBlock( final Block [] blocks )
+    ListItemBlock( final Block [] blocks )
         throws IllegalArgumentException
     {
         this( blocks, null );
@@ -49,27 +47,21 @@ public class ListItemBlock extends AbstractFatherBlock
      * @param innerList child list
      * @throws IllegalArgumentException if textBlocks is null
      */
-    public ListItemBlock( final Block [] blocks, final ListBlock innerList )
+    ListItemBlock( final Block [] blocks, final ListBlock innerList )
         throws IllegalArgumentException
     {
         super( blocks );
         this.innerList = innerList;
     }
 
-    /**
-     * @see AbstractFatherBlock#before(org.apache.maven.doxia.sink.Sink)
-     */
-    
-    public final void before( final Sink sink )
+    /** {@inheritDoc} */
+    final void before( final Sink sink )
     {
         sink.listItem();
     }
 
-    /**
-     * @see AbstractFatherBlock#after(org.apache.maven.doxia.sink.Sink)
-     */
-    
-    public final void after( final Sink sink )
+    /** {@inheritDoc} */
+    final void after( final Sink sink )
     {
         if ( innerList != null )
         {
@@ -83,15 +75,12 @@ public class ListItemBlock extends AbstractFatherBlock
      *
      * @return <code>UnorderedListBlock</code> with the innerList.
      */
-    public final ListBlock getInnerList()
+    final ListBlock getInnerList()
     {
         return innerList;
     }
 
-    /**
-     * @see Object#equals(Object)
-     */
-    
+    /** {@inheritDoc} */
     public final boolean equals( final Object obj )
     {
         boolean ret = false;
@@ -124,10 +113,7 @@ public class ListItemBlock extends AbstractFatherBlock
         return ret;
     }
 
-    /**
-     * @see Object#hashCode()
-     */
-    
+    /** {@inheritDoc} */
     public final int hashCode()
     {
         final int magic1 = 17;

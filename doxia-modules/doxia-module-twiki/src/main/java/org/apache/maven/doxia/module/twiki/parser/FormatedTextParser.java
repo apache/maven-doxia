@@ -26,7 +26,7 @@ import java.util.*;
  * Parse looking for formated text (bold, italic, ...)
  *
  * @author Juan F. Codagnone
- * @since Nov 2, 2005
+ * @version $Id$
  */
 public class FormatedTextParser
 {
@@ -46,50 +46,59 @@ public class FormatedTextParser
     private static final FormatBlockFactory BOLD_FACTORY =
         new FormatBlockFactory()
         {
+            /** {@inheritDoc} */
             public Block createBlock( final Block [] childrens )
             {
                 return new BoldBlock( childrens );
             }
         };
+
     /**
      * creates italic blocks
      */
     private static final FormatBlockFactory ITALIC_FACTORY =
         new FormatBlockFactory()
         {
+            /** {@inheritDoc} */
             public Block createBlock( final Block [] childrens )
             {
                 return new ItalicBlock( childrens );
             }
         };
+
     /**
      * creates monospaced blocks
      */
     private static final FormatBlockFactory MONOSPACED_FACTORY =
         new FormatBlockFactory()
         {
+            /** {@inheritDoc} */
             public Block createBlock( final Block [] childrens )
             {
                 return new MonospaceBlock( childrens );
             }
         };
+
     /**
      * creates bold italic blocks
      */
     private static final FormatBlockFactory BOLDITALIC_FACTORY =
         new FormatBlockFactory()
         {
+            /** {@inheritDoc} */
             public Block createBlock( final Block [] childrens )
             {
                 return new BoldBlock( new Block[]{new ItalicBlock( childrens )} );
             }
         };
+
     /**
      * creates bold monospace blocks
      */
     private static final FormatBlockFactory BOLDMONO_FACTORY =
         new FormatBlockFactory()
         {
+            /** {@inheritDoc} */
             public Block createBlock( final Block [] childrens )
             {
                 return new BoldBlock( new Block[]{
@@ -118,7 +127,7 @@ public class FormatedTextParser
      * @param line line to parse
      * @return TextBlock, ItalicBlock, BoldBlock, MonospacedBlock, ...
      */
-    public final Block []parse( final String line )
+    final Block []parse( final String line )
     {
         return (Block[]) parseFormat( line ).toArray( new Block []{} );
     }
@@ -127,7 +136,7 @@ public class FormatedTextParser
      * @param c character to test
      * @return <code>true</code> if c is a space character
      */
-    private static boolean isSpace( final char c )
+    static boolean isSpace( final char c )
     {
         return c == ' ' || c == '\t';
     }
@@ -136,7 +145,7 @@ public class FormatedTextParser
      * @param c character to test
      * @return <code>true</code> if c is a character that limits the formats
      */
-    private static boolean isSpecial( final char c )
+    static boolean isSpecial( final char c )
     {
         boolean ret = false;
 
@@ -165,7 +174,7 @@ public class FormatedTextParser
         final int []lhOffsets = new int[SPECIAL_CHAR.length];
         final int []rhOffsets = new int[SPECIAL_CHAR.length];
 
-        // for each text format markers... 
+        // for each text format markers...
         for ( int i = 0; i < SPECIAL_CHAR.length; i++ )
         {
             final int specialLen = SPECIAL_CHAR[i].length();
@@ -173,11 +182,11 @@ public class FormatedTextParser
             // search the nearset instance of this marker...
             while ( t != -1 && ( t = line.indexOf( SPECIAL_CHAR[i], t ) ) != -1 )
             {
-                // and check if it at the begining of a word. 
-                if ( t == 0 || isSpace( line.charAt( t - 1 ) ) 
+                // and check if it at the begining of a word.
+                if ( t == 0 || isSpace( line.charAt( t - 1 ) )
                         || isParenthesis( line.charAt( t - 1 ) ) )
                 {
-                    // if it is, and if, check to avoid going beyond the string 
+                    // if it is, and if, check to avoid going beyond the string
                     if ( t + specialLen < line.length() )
                     {
                         // and if character after the format marker is another
@@ -297,7 +306,7 @@ public class FormatedTextParser
 
 /**
  * @author Juan F. Codagnone
- * @since Nov 3, 2005
+ * @version $Id$
  */
 interface FormatBlockFactory
 {

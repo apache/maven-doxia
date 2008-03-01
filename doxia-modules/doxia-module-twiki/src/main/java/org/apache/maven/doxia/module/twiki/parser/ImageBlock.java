@@ -21,14 +21,13 @@ package org.apache.maven.doxia.module.twiki.parser;
 
 import org.apache.maven.doxia.sink.Sink;
 
-
 /**
  * Block that represents an image.
- * 
+ *
  * @author Christian Nardi
- * @since Nov 6, 2007
+ * @version $Id$
  */
-public class ImageBlock implements Block
+class ImageBlock implements Block
 {
     /**
      * img reference
@@ -41,7 +40,7 @@ public class ImageBlock implements Block
      * @param imgReference img reference
      * @throws IllegalArgumentException if the argument is <code>null</code>
      */
-    public ImageBlock( final String imgReference )
+    ImageBlock( final String imgReference )
     {
         if ( imgReference == null )
         {
@@ -50,10 +49,7 @@ public class ImageBlock implements Block
         this.reference = imgReference;
     }
 
-    /**
-     * @see Block#traverse(org.apache.maven.doxia.sink.Sink)
-     * @param sink the sink that travers
-     */
+    /** {@inheritDoc} */
     public final void traverse( final Sink sink )
     {
         sink.figure();
@@ -61,12 +57,7 @@ public class ImageBlock implements Block
         sink.figure_();
     }
 
-    /**
-     * @see Object#equals(Object)
-     * @param   obj   the reference object with which to compare.
-     * @return  <code>true</code> if this object is the same as the obj
-     *          argument; <code>false</code> otherwise. 
-     */
+    /** {@inheritDoc} */
     public final boolean equals( final Object obj )
     {
         boolean ret = false;
@@ -84,11 +75,7 @@ public class ImageBlock implements Block
         return ret;
     }
 
-    /**
-     * @see Object#hashCode()
-     * @return  a hash code value for this object.
-     */
-    
+    /** {@inheritDoc} */
     public final int hashCode()
     {
         final int magic1 = 17;
@@ -96,5 +83,4 @@ public class ImageBlock implements Block
 
         return magic1 + magic2 * reference.hashCode();
     }
-
 }

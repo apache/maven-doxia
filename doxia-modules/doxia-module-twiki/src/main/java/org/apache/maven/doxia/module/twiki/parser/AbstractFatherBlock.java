@@ -23,14 +23,13 @@ import java.util.Arrays;
 
 import org.apache.maven.doxia.sink.Sink;
 
-
 /**
  * Generic Block for the Block that have child blocks.
  *
  * @author Juan F. Codagnone
- * @since Nov 1, 2005
+ * @version $Id$
  */
-public abstract class AbstractFatherBlock implements Block
+abstract class AbstractFatherBlock implements Block
 {
     /**
      * @see AbstractFatherBlock#AbstractFatherBlock(Block[])
@@ -42,21 +41,21 @@ public abstract class AbstractFatherBlock implements Block
      *
      * @param sink a sink to fill
      */
-    public abstract void before( Sink sink );
+    abstract void before( Sink sink );
 
     /**
      * method called after traversing the childs
      *
      * @param sink a sink to fill
      */
-    public abstract void after( Sink sink );
+    abstract void after( Sink sink );
 
     /**
      * Creates the AbstractFatherBlock.
      *
      * @param childBlocks child blocks
      */
-    public AbstractFatherBlock( final Block[] childBlocks )
+    AbstractFatherBlock( final Block[] childBlocks )
     {
         if ( childBlocks == null )
         {
@@ -74,16 +73,14 @@ public abstract class AbstractFatherBlock implements Block
         this.childBlocks = childBlocks;
     }
 
-    /**
-     * @see Block#traverse(org.apache.maven.doxia.sink.Sink)
-     */
+    /** {@inheritDoc} */
     public final void traverse( final Sink sink )
     {
         before( sink );
         for ( int i = 0; i < childBlocks.length; i++ )
         {
             Block block = childBlocks[i];
-            
+
             block.traverse( sink );
         }
         after( sink );
@@ -99,10 +96,7 @@ public abstract class AbstractFatherBlock implements Block
         return childBlocks;
     }
 
-    /**
-     * @see Object#equals(Object)
-     */
-    // CHECKSTYLE:DESIGN:OFF
+    /** {@inheritDoc}*/
     public boolean equals( final Object obj )
     {
         boolean ret = false;
@@ -127,9 +121,7 @@ public abstract class AbstractFatherBlock implements Block
         return ret;
     }
 
-    /**
-     * @see Object#hashCode()
-     */
+    /** {@inheritDoc}*/
     public int hashCode()
     {
         int result = 1;
@@ -140,8 +132,7 @@ public abstract class AbstractFatherBlock implements Block
                 result += childBlocks[i].hashCode();
             }
         }
-        
+
         return result;
     }
-    // CHECKSTYLE:DESIGN:ON
 }

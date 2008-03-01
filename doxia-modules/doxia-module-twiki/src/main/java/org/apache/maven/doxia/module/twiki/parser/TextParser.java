@@ -25,12 +25,11 @@ import java.util.StringTokenizer;
 import java.util.regex.Matcher;
 import java.util.regex.Pattern;
 
-
 /**
  * Parse almost plain text in search of WikiWords, links, ...
  *
  * @author Juan F. Codagnone
- * @since Nov 4, 2005
+ * @version $Id$
  */
 public class TextParser
 {
@@ -59,13 +58,13 @@ public class TextParser
      */
     private static final Pattern URL_PATTERN =
         Pattern.compile( "(\\w+):[/][/][^\\s]*" );
-    
+
     /**
      *  image pattern specification
      */
-    private static final Pattern IMAGE_PATTERN = 
+    private static final Pattern IMAGE_PATTERN =
         Pattern.compile( "(.*)\\.(png|jpg|gif|bmp)" );
-    
+
     /**
      *  image tag pattern specification (used for images at relative URLs)
      */
@@ -81,10 +80,11 @@ public class TextParser
      * Creates the TextParser.
      * @param resolver resolver for wikiWord links
      */
-    public TextParser( final WikiWordLinkResolver resolver ) 
+    public TextParser( final WikiWordLinkResolver resolver )
     {
         this.wikiWordLinkResolver = resolver;
     }
+
     /**
      * @param line line to parse
      * @return a list of block that represents the input
@@ -158,16 +158,16 @@ public class TextParser
     {
         ret.addAll( parse( line.substring( 0, urlMatcher.start() ) ) );
         final String url = urlMatcher.group( 0 );
-        final Matcher imageMatcher = IMAGE_PATTERN.matcher( url ); 
-        if ( imageMatcher.matches() ) 
+        final Matcher imageMatcher = IMAGE_PATTERN.matcher( url );
+        if ( imageMatcher.matches() )
         {
             ret.add( new ImageBlock( url ) );
-        } 
-        else 
+        }
+        else
         {
             ret.add( new LinkBlock( url, url ) );
         }
-        ret.addAll( parse( line.substring( 
+        ret.addAll( parse( line.substring(
                 urlMatcher.end(), line.length() ) ) );
     }
 
@@ -189,7 +189,7 @@ public class TextParser
      * Parses the link
      * @param line line to parse
      * @param ret where the results live
-     * @param forcedLinkMatcher forced link matcher 
+     * @param forcedLinkMatcher forced link matcher
      */
     private void parseForcedLink( final String line, final List ret,
                                   final Matcher forcedLinkMatcher )
@@ -218,10 +218,10 @@ public class TextParser
             }
             else
             {
-                ret.addAll( parse( line.substring( 0, 
+                ret.addAll( parse( line.substring( 0,
                         forcedLinkMatcher.start() ) ) );
                 ret.add( createLink( showText, showText ) );
-                ret.addAll( parse( line.substring( forcedLinkMatcher.end(), 
+                ret.addAll( parse( line.substring( forcedLinkMatcher.end(),
                         line.length() ) ) );
             }
         }
@@ -233,36 +233,34 @@ public class TextParser
      * @param showText the show text.
      * @return either a WikiWordBlock or a LinkBlock
      */
-    private Block createLink( final String link, final String showText ) 
+    private Block createLink( final String link, final String showText )
     {
         final Block content;
-        if( URL_PATTERN.matcher( showText ).matches() && IMAGE_PATTERN.matcher( showText ).matches() ) 
+        if( URL_PATTERN.matcher( showText ).matches() && IMAGE_PATTERN.matcher( showText ).matches() )
         {
             content = new ImageBlock( showText );
         }
-        else 
+        else
         {
             content = new TextBlock( showText );
         }
-        
-        if ( URL_PATTERN.matcher( link ).matches() ) 
+
+        if ( URL_PATTERN.matcher( link ).matches() )
         {
             return new LinkBlock( link, content );
         }
-        else
-        {
-            final StringTokenizer tokenizer =
-                new StringTokenizer( link );
-            final StringBuffer sb = new StringBuffer();
 
-            while ( tokenizer.hasMoreElements() )
-            {
-                final String s = tokenizer.nextToken();
-                sb.append( s.substring( 0, 1 ).toUpperCase() );
-                sb.append( s.substring( 1 ) );
-            }
-            return new WikiWordBlock( sb.toString(), content, wikiWordLinkResolver );
+        final StringTokenizer tokenizer =
+            new StringTokenizer( link );
+        final StringBuffer sb = new StringBuffer();
+
+        while ( tokenizer.hasMoreElements() )
+        {
+            final String s = tokenizer.nextToken();
+            sb.append( s.substring( 0, 1 ).toUpperCase() );
+            sb.append( s.substring( 1 ) );
         }
+        return new WikiWordBlock( sb.toString(), content, wikiWordLinkResolver );
     }
 
 
@@ -347,7 +345,7 @@ public class TextParser
 
         return ret;
     }
-    
+
     /**
      * @param m matcher to test
      * @param line line to test

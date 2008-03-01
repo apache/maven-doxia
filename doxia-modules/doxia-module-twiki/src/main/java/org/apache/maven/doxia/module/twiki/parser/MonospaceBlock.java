@@ -21,42 +21,33 @@ package org.apache.maven.doxia.module.twiki.parser;
 
 import org.apache.maven.doxia.sink.Sink;
 
-
 /**
  * Block that represents the monospaced text format
  *
  * @author Juan F. Codagnone
- * @since Nov 2, 2005
+ * @version $Id$
  */
-public class MonospaceBlock extends AbstractFatherBlock
+class MonospaceBlock extends AbstractFatherBlock
 {
-
     /**
      * Creates the MonospaceBlock.
      *
      * @param childBlocks child blocks
      */
-    public MonospaceBlock( final Block [] childBlocks )
+    MonospaceBlock( final Block [] childBlocks )
     {
         super( childBlocks );
     }
 
-    /**
-     * @see AbstractFatherBlock#before(org.apache.maven.doxia.sink.Sink)
-     */
-    
-    public final void before( final Sink sink )
+    /** {@inheritDoc} */
+    final void before( final Sink sink )
     {
         sink.monospaced();
     }
 
-    /**
-     * @see AbstractFatherBlock#after(org.apache.maven.doxia.sink.Sink)
-     */
-    
-    public final void after( final Sink sink )
+    /** {@inheritDoc} */
+    final void after( final Sink sink )
     {
         sink.monospaced_();
     }
-
 }

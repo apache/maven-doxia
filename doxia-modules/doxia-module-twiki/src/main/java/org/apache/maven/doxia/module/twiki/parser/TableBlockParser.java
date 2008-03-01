@@ -27,12 +27,11 @@ import java.util.regex.Pattern;
 import org.apache.maven.doxia.util.ByLineSource;
 import org.apache.maven.doxia.parser.ParseException;
 
-
 /**
  * Parse tables
  *
  * @author Juan F. Codagnone
- * @since Nov 9, 2005
+ * @version $Id$
  */
 public class TableBlockParser implements BlockParser
 {
@@ -46,21 +45,16 @@ public class TableBlockParser implements BlockParser
      */
     private FormatedTextParser textParser;
 
-    /**
-     * @see BlockParser#accept(String)
-     */
+    /** {@inheritDoc} */
     public final boolean accept( final String line )
     {
         return TABLE_PATTERN.matcher( line ).lookingAt();
     }
 
-    /**
-     * @see BlockParser#visit(String, ByLineSource)
-     */
+    /** {@inheritDoc} */
     public final Block visit( final String line, final ByLineSource source )
         throws ParseException
     {
-
         if ( !accept( line ) )
         {
             throw new IllegalAccessError( "call accept before this ;)" );
@@ -104,7 +98,6 @@ public class TableBlockParser implements BlockParser
         return new TableBlock( (Block[]) rows.toArray( new Block[]{} ) );
     }
 
-
     /**
      * @param textParser text parser to be set
      */
@@ -117,5 +110,4 @@ public class TableBlockParser implements BlockParser
 
         this.textParser = textParser;
     }
-
 }

@@ -21,43 +21,32 @@ package org.apache.maven.doxia.module.twiki.parser;
 
 import org.apache.maven.doxia.sink.Sink;
 
-
 /**
  * Represents a verbatim block
- * 
+ *
  * @author Christian Nardi
- * @since Nov 8, 2007
+ * @version $Id$
  */
-public class VerbatimBlock extends AbstractFatherBlock
+class VerbatimBlock extends AbstractFatherBlock
 {
-
     /**
      * Creates the VerbatimBlock.
      *
      * @param childBlocks child blocks
      */
-    public VerbatimBlock( final Block [] childBlocks )
+    VerbatimBlock( final Block [] childBlocks )
     {
         super( childBlocks );
     }
 
-
-    /**
-     * @see AbstractFatherBlock#before(org.apache.maven.doxia.sink.Sink)
-     * @param sink a sink to fill
-     */
-    
-    public final void before( final Sink sink )
+    /** {@inheritDoc} */
+    final void before( final Sink sink )
     {
         sink.verbatim( true );
     }
 
-    /**
-     * @see AbstractFatherBlock#after(org.apache.maven.doxia.sink.Sink)
-     * @param sink a sink to fill
-     */
-    
-    public final void after( final Sink sink )
+    /** {@inheritDoc} */
+    final void after( final Sink sink )
     {
         sink.verbatim_();
     }

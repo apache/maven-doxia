@@ -28,11 +28,10 @@ import org.apache.maven.doxia.sink.Sink;
  * Implementators should implement equals() and hashCode() to ease testing
  *
  * @author Juan F. Codagnone
- * @since Nov 1, 2005
+ * @version $Id$
  */
 public interface Block
 {
-
     /**
      * Traverse the block
      *

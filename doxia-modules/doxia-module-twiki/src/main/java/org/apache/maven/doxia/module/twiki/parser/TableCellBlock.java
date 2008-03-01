@@ -26,35 +26,28 @@ import org.apache.maven.doxia.sink.Sink;
  * Table cell
  *
  * @author Juan F. Codagnone
- * @since Nov 10, 2005
+ * @version $Id$
  */
 public class TableCellBlock extends AbstractFatherBlock
 {
-
     /**
      * Creates the TableCellBlock.
      *
      * @param childBlocks childrens
      */
-    public TableCellBlock( final Block [] childBlocks )
+    TableCellBlock( final Block [] childBlocks )
     {
         super( childBlocks );
     }
 
-    /**
-     * @see AbstractFatherBlock#before(org.apache.maven.doxia.sink.Sink)
-     */
-    
-    public final void before( final Sink sink )
+    /** {@inheritDoc} */
+    final void before( final Sink sink )
     {
         sink.tableCell();
     }
 
-    /**
-     * @see AbstractFatherBlock#after(org.apache.maven.doxia.sink.Sink)
-     */
-    
-    public final void after( final Sink sink )
+    /** {@inheritDoc} */
+    final void after( final Sink sink )
     {
         sink.tableCell_();
     }

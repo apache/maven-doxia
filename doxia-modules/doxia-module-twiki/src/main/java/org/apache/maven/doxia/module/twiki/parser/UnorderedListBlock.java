@@ -21,7 +21,6 @@ package org.apache.maven.doxia.module.twiki.parser;
 
 import org.apache.maven.doxia.sink.Sink;
 
-
 /**
  * <pre>
  *    - item1
@@ -31,9 +30,9 @@ import org.apache.maven.doxia.sink.Sink;
  * </pre>
  *
  * @author Juan F. Codagnone
- * @since Nov 1, 2005
+ * @version $Id$
  */
-public class UnorderedListBlock extends ListBlock
+class UnorderedListBlock extends ListBlock
 {
     /**
      * Creates the UnorderedListBlock.
@@ -41,29 +40,21 @@ public class UnorderedListBlock extends ListBlock
      * @param blocks list of list items
      * @throws IllegalArgumentException if listItemBlocks is <code>null</code>
      */
-    public UnorderedListBlock( final ListItemBlock[] blocks )
+    UnorderedListBlock( final ListItemBlock[] blocks )
         throws IllegalArgumentException
     {
         super( blocks );
     }
 
-
-    /**
-     * @see AbstractFatherBlock#before(org.apache.maven.doxia.sink.Sink)
-     */
-    
-    public final void before( final Sink sink )
+    /** {@inheritDoc} */
+    final void before( final Sink sink )
     {
         sink.list();
     }
 
-    /**
-     * @see AbstractFatherBlock#after(org.apache.maven.doxia.sink.Sink)
-     */
-    
-    public final void after( final Sink sink )
+    /** {@inheritDoc} */
+    final void after( final Sink sink )
     {
         sink.list_();
     }
-
 }

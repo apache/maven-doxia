@@ -20,23 +20,21 @@ package org.apache.maven.doxia.module.twiki.parser;
 
 /**
  * Transform WikiWord to HTML links
- * 
+ *
  * @author Christian Nardi
- * @since Nov 7, 2007
+ * @version $Id$
  */
-public class XHTMLWikiWordLinkResolver implements WikiWordLinkResolver 
+public class XHTMLWikiWordLinkResolver implements WikiWordLinkResolver
 {
-
-    /** @see org.apache.maven.doxia.module.twiki.parser.WikiWordLinkResolver#
-     * resolveLink(java.lang.String)
-     * This only works for xhtml output, but there is no way 
+    /**
+     * This only works for xhtml output, but there is no way
      * of transforming a wikiWord in another context.
      * @param wikiWord wikiWord to resolve
      * @return the link representation of the wikiWord.
+     * @see org.apache.maven.doxia.module.twiki.parser.WikiWordLinkResolver#resolveLink(java.lang.String)
      */
-    public final String resolveLink( final String wikiWord ) 
+    public final String resolveLink( final String wikiWord )
     {
         return "./" + wikiWord + ".html";
     }
-
 }

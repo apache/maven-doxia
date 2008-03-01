@@ -29,9 +29,9 @@ package org.apache.maven.doxia.module.twiki.parser;
  * </pre>
  *
  * @author Juan F. Codagnone
- * @since Nov 1, 2005
+ * @version $Id$
  */
-public abstract class ListBlock extends AbstractFatherBlock
+abstract class ListBlock extends AbstractFatherBlock
 {
     /**
      * Creates the ListBlock.
@@ -39,10 +39,9 @@ public abstract class ListBlock extends AbstractFatherBlock
      * @param blocks list of list items
      * @throws IllegalArgumentException if listItemBlocks is <code>null</code>
      */
-    public ListBlock( final ListItemBlock[] blocks )
+    ListBlock( final ListItemBlock[] blocks )
         throws IllegalArgumentException
     {
         super( blocks );
     }
-
 }

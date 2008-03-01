@@ -21,26 +21,26 @@ package org.apache.maven.doxia.module.twiki.parser;
 
 import org.apache.maven.doxia.sink.Sink;
 
-
 /**
  * @author Juan F. Codagnone
- * @since Nov 1, 2005
+ * @version $Id$
  */
-public class ParagraphBlock extends AbstractFatherBlock
+class ParagraphBlock extends AbstractFatherBlock
 {
-    public ParagraphBlock( final Block []blocks )
+    ParagraphBlock( final Block []blocks )
         throws IllegalArgumentException
     {
         super( blocks );
     }
 
-    public final void before( final Sink sink )
+    /** {@inheritDoc} */
+    final void before( final Sink sink )
     {
         sink.paragraph();
     }
 
-
-    public final void after( final Sink sink )
+    /** {@inheritDoc} */
+    final void after( final Sink sink )
     {
         sink.paragraph_();
     }

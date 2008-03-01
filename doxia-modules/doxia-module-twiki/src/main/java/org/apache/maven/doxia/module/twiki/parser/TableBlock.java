@@ -22,16 +22,14 @@ package org.apache.maven.doxia.module.twiki.parser;
 import org.apache.maven.doxia.parser.Parser;
 import org.apache.maven.doxia.sink.Sink;
 
-
 /**
  * Represents a table
  *
  * @author Juan F. Codagnone
- * @since Nov 10, 2005
+ * @version $Id$
  */
 public class TableBlock extends AbstractFatherBlock
 {
-
     /**
      * Creates the TableBlock.
      *
@@ -42,28 +40,20 @@ public class TableBlock extends AbstractFatherBlock
         super( childBlocks );
     }
 
-
-    /**
-     * @see AbstractFatherBlock#before(org.apache.maven.doxia.sink.Sink)
-     */
-    
-    public final void before( final Sink sink )
+    /** {@inheritDoc} */
+    final void before( final Sink sink )
     {
         sink.table();
         sink.tableRows( getJustification(), false );
     }
 
-    /**
-     * @see AbstractFatherBlock#after(org.apache.maven.doxia.sink.Sink)
-     */
-    
-    public final void after( final Sink sink )
+    /** {@inheritDoc} */
+    final void after( final Sink sink )
     {
         sink.tableRows_();
         sink.table_();
     }
-    
-    
+
     private final int [] getJustification() {
         int[] justification = new int[((AbstractFatherBlock)getBlocks()[0]).
                                       getBlocks().length];
@@ -71,7 +61,7 @@ public class TableBlock extends AbstractFatherBlock
         {
             justification[i] = Parser.JUSTIFY_CENTER;
         }
-        
+
         return justification;
     }
 }

@@ -21,14 +21,13 @@ package org.apache.maven.doxia.module.twiki.parser;
 
 import org.apache.maven.doxia.sink.Sink;
 
-
 /**
  * Block that holds plain text
  *
  * @author Juan F. Codagnone
- * @since Nov 1, 2005
+ * @version $Id$
  */
-public class TextBlock implements Block
+class TextBlock implements Block
 {
     /**
      * the text
@@ -41,7 +40,7 @@ public class TextBlock implements Block
      * @param text some text. can't ben <code>null</code>
      * @throws IllegalArgumentException if parameters are not in the domain
      */
-    public TextBlock( final String text ) throws IllegalArgumentException
+    TextBlock( final String text ) throws IllegalArgumentException
     {
         if ( text == null )
         {
@@ -51,38 +50,29 @@ public class TextBlock implements Block
         this.text = text;
     }
 
-    /**
-     * @see Block#traverse(org.apache.maven.doxia.sink.Sink)
-     */
+    /** {@inheritDoc} */
     public final void traverse( final Sink sink )
     {
         sink.text( text );
     }
 
-    /**
-     * @see Object#toString()
-     */
-    
+    /** {@inheritDoc} */
     public final String toString()
     {
         return getClass().getName() + ": [" + text.replaceAll( "\n", "\\n" ) + "]";
     }
-
 
     /**
      * Returns the text.
      *
      * @return <code>String</code> with the text.
      */
-    public final String getText()
+    final String getText()
     {
         return text;
     }
 
-    /**
-     * @see Object#equals(Object)
-     */
-    
+    /** {@inheritDoc} */
     public final boolean equals( final Object obj )
     {
         boolean ret = false;
@@ -100,10 +90,7 @@ public class TextBlock implements Block
         return ret;
     }
 
-    /**
-     * @see Object#hashCode()
-     */
-    
+    /** {@inheritDoc} */
     public final int hashCode()
     {
         return text.hashCode();

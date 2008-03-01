@@ -19,23 +19,19 @@ package org.apache.maven.doxia.module.twiki.parser;
  * under the License.
  */
 
-
-
 /**
  * Resolves the WikiWordLinks
  *
  * @author Christian D. Nardi
- * @since Nov 7, 2007
+ * @version $Id$
  */
-public interface WikiWordLinkResolver
+interface WikiWordLinkResolver
 {
-
     /**
      * Given a wikiWord, it returns a link string.
-     * 
+     *
      * @param wikiWord wikiWord to resolve
      * @return the link representation of the wikiWord.
      */
     String resolveLink( final String wikiWord );
-    
 }

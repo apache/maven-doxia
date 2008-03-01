@@ -28,12 +28,11 @@ import java.util.regex.Pattern;
 import org.apache.maven.doxia.util.ByLineSource;
 import org.apache.maven.doxia.parser.ParseException;
 
-
 /**
  * Parse paragraphs.
  *
  * @author Juan F. Codagnone
- * @since Nov 1, 2005
+ * @version $Id$
  */
 public class ParagraphBlockParser implements BlockParser
 {
@@ -61,8 +60,8 @@ public class ParagraphBlockParser implements BlockParser
      * {@link TableBlockParser} to use. injected
      */
     private TableBlockParser tableBlockParser;
-    
-    /** 
+
+    /**
      *  {@link TableBlockParser} to use. injected
      */
     private VerbatimBlockParser verbatimParser;
@@ -72,25 +71,15 @@ public class ParagraphBlockParser implements BlockParser
      */
     private static final NopBlock NOP = new NopBlock();
 
-    /**
-     * @see BlockParser#accept(String)
-     * @param line text line
-     * @return <code>true</code> if this class can handle this line
-     */
+    /** {@inheritDoc} */
     public final boolean accept( final String line )
     {
-        return !sectionParser.accept( line ) 
+        return !sectionParser.accept( line )
                 && !hrulerParser.accept( line )
                 && !verbatimParser.accept( line );
     }
 
-    /**
-     * @see BlockParser#visit(String, ByLineSource)
-     * @param line   a line of text
-     * @param source the source of lines
-     * @return a block
-     * @throws ParseException on error
-     */
+    /** {@inheritDoc} */
     public final Block visit( final String line, final ByLineSource source )
         throws ParseException
     {
@@ -160,12 +149,9 @@ public class ParagraphBlockParser implements BlockParser
         {
             return NOP;
         }
-        else
-        {
-            return new ParagraphBlock( (Block[]) childs.toArray( new Block[]{} ) );
-        }
-    }
 
+        return new ParagraphBlock( (Block[]) childs.toArray( new Block[]{} ) );
+    }
 
     /**
      * Sets the sectionParser.
@@ -180,7 +166,6 @@ public class ParagraphBlockParser implements BlockParser
         }
         this.sectionParser = aSectionParser;
     }
-
 
     /**
      * Sets the listParser.
@@ -197,7 +182,6 @@ public class ParagraphBlockParser implements BlockParser
         this.listParser = aListParser;
     }
 
-
     /**
      * Sets the formatTextParser.
      *
@@ -212,7 +196,6 @@ public class ParagraphBlockParser implements BlockParser
         }
         this.textParser = aTextParser;
     }
-
 
     /**
      * Sets the hrulerParser.
@@ -244,11 +227,11 @@ public class ParagraphBlockParser implements BlockParser
     }
 
     /**
-     * Sets the verbatimParser. 
+     * Sets the verbatimParser.
      *
      * @param aVerbatimParser <code>VerbatimBlockParser</code> with the verbatimParser.
      */
-    public final void setVerbatimParser( final VerbatimBlockParser aVerbatimParser ) 
+    public final void setVerbatimParser( final VerbatimBlockParser aVerbatimParser )
     {
         if ( aVerbatimParser == null )
         {
@@ -256,6 +239,4 @@ public class ParagraphBlockParser implements BlockParser
         }
         this.verbatimParser = aVerbatimParser;
     }
-
-    
 }

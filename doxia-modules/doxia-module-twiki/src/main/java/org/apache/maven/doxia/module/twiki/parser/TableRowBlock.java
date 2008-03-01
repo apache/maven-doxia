@@ -26,37 +26,29 @@ import org.apache.maven.doxia.sink.Sink;
  * Represens a Table Row
  *
  * @author Juan F. Codagnone
- * @since Nov 10, 2005
+ * @version $Id$
  */
-public class TableRowBlock extends AbstractFatherBlock
+class TableRowBlock extends AbstractFatherBlock
 {
-
     /**
      * Creates the TableRowBlock.
      *
      * @param childBlocks children blocks
      */
-    public TableRowBlock( final Block [] childBlocks )
+    TableRowBlock( final Block [] childBlocks )
     {
         super( childBlocks );
     }
 
-    /**
-     * @see AbstractFatherBlock#before(org.apache.maven.doxia.sink.Sink)
-     */
-    
-    public final void before( final Sink sink )
+    /** {@inheritDoc} */
+    final void before( final Sink sink )
     {
         sink.tableRow();
     }
 
-    /**
-     * @see AbstractFatherBlock#after(org.apache.maven.doxia.sink.Sink)
-     */
-    
-    public final void after( final Sink sink )
+    /** {@inheritDoc} */
+    final void after( final Sink sink )
     {
         sink.tableRow_();
     }
-
 }

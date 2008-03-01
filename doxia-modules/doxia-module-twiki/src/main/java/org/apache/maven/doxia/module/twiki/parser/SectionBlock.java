@@ -24,22 +24,18 @@ import java.util.Collections;
 
 import org.apache.maven.doxia.sink.Sink;
 
-
 /**
  * Block that represents a section
  *
  * @author Juan F. Codagnone
- * @since Nov 1, 2005
+ * @version $Id$
  */
 public class SectionBlock extends AbstractFatherBlock
 {
-    /**
-     * @see #SectionBlock(String, int, Block[])
-     */
+    /** {@inheritDoc} */
     private final String title;
-    /**
-     * @see #SectionBlock(String, int, Block[])
-     */
+
+    /** {@inheritDoc} */
     private final int level;
 
     /**
@@ -70,11 +66,8 @@ public class SectionBlock extends AbstractFatherBlock
         this.level = level;
     }
 
-    /**
-     * @see AbstractFatherBlock#before(org.apache.maven.doxia.sink.Sink)
-     */
-    
-    public final void before( final Sink sink )
+    /** {@inheritDoc} */
+    final void before( final Sink sink )
     {
         sectionStart( sink );
         sectionTitle( sink );
@@ -83,14 +76,10 @@ public class SectionBlock extends AbstractFatherBlock
 
     }
 
-    /**
-     * @see AbstractFatherBlock#after(org.apache.maven.doxia.sink.Sink)
-     */
-    
-    public final void after( final Sink sink )
+    /** {@inheritDoc} */
+    final void after( final Sink sink )
     {
         sectionEnd( sink );
-
     }
 
     /**
@@ -112,7 +101,6 @@ public class SectionBlock extends AbstractFatherBlock
     {
         invokeVoidVoid( sink, "section" + level + "_" );
     }
-
 
     /**
      * Let you call sink's methods that returns <code>null</code> and have
@@ -158,10 +146,7 @@ public class SectionBlock extends AbstractFatherBlock
         return title;
     }
 
-    /**
-     * @see Object#toString()
-     */
-    
+    /** {@inheritDoc} */
     public final String toString()
     {
         final StringBuffer sb = new StringBuffer();
@@ -183,13 +168,13 @@ public class SectionBlock extends AbstractFatherBlock
     }
 
     /** @param sink */
-    private void sectionTitle( final Sink sink ) 
+    private void sectionTitle( final Sink sink )
     {
         invokeVoidVoid( sink, "sectionTitle" + level );
     }
-    
+
     /** @param sink */
-    private void sectionTitle_( final Sink sink ) 
+    private void sectionTitle_( final Sink sink )
     {
         invokeVoidVoid( sink, "sectionTitle" + level + "_" );
     }

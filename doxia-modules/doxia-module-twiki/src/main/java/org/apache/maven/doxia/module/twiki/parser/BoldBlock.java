@@ -21,16 +21,14 @@ package org.apache.maven.doxia.module.twiki.parser;
 
 import org.apache.maven.doxia.sink.Sink;
 
-
 /**
  * Block that represents the bold text format
  *
  * @author Juan F. Codagnone
- * @since Nov 2, 2005
+ * @version $Id$
  */
 public class BoldBlock extends AbstractFatherBlock
 {
-
     /**
      * Creates the BoldBlock.
      *
@@ -41,20 +39,15 @@ public class BoldBlock extends AbstractFatherBlock
         super( childBlocks );
     }
 
-    /**
-     * @see AbstractFatherBlock#before(org.apache.maven.doxia.sink.Sink)
-     */
-    public final void before( final Sink sink )
+    /** {@inheritDoc} */
+    final void before( final Sink sink )
     {
         sink.bold();
     }
 
-    /**
-     * @see AbstractFatherBlock#after(org.apache.maven.doxia.sink.Sink)
-     */
-    public final void after( final Sink sink )
+    /** {@inheritDoc} */
+    final void after( final Sink sink )
     {
         sink.bold_();
     }
-
 }
