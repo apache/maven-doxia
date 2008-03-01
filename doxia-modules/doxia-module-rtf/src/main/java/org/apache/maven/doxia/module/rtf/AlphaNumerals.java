@@ -19,14 +19,17 @@ package org.apache.maven.doxia.module.rtf;
  * under the License.
  */
 
-public class AlphaNumerals
+/**
+ * @version $Id$
+ */
+class AlphaNumerals
 {
-    public static String toString( int n )
+    static String toString( int n )
     {
         return toString( n, false );
     }
 
-    public static String toString( int n, boolean lowerCase )
+    static String toString( int n, boolean lowerCase )
     {
         StringBuffer alpha = new StringBuffer();
         char zeroLetter = lowerCase ? '`' : '@';

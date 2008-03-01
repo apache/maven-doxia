@@ -19,9 +19,11 @@ package org.apache.maven.doxia.module.rtf;
  * under the License.
  */
 
+/**
+ * @version $Id$
+ */
 class FontMetrics
 {
-
     boolean fixedPitch;
 
     short ascent;
@@ -97,5 +99,4 @@ class FontMetrics
         }
 
     }
-
 }

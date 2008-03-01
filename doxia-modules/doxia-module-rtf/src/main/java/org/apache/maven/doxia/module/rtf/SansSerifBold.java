@@ -19,11 +19,13 @@ package org.apache.maven.doxia.module.rtf;
  * under the License.
  */
 
+/**
+ * @version $Id$
+ */
 class SansSerifBold
     extends FontMetrics
 {
-
-    public static final CharMetrics[] metrics = {new CharMetrics( 278, 0, 0, 0, 0, 0 ),
+    static final CharMetrics[] metrics = {new CharMetrics( 278, 0, 0, 0, 0, 0 ),
         new CharMetrics( 278, 0, 0, 0, 0, 0 ), new CharMetrics( 278, 0, 0, 0, 0, 0 ),
         new CharMetrics( 278, 0, 0, 0, 0, 0 ), new CharMetrics( 278, 0, 0, 0, 0, 0 ),
         new CharMetrics( 278, 0, 0, 0, 0, 0 ), new CharMetrics( 278, 0, 0, 0, 0, 0 ),
@@ -153,9 +155,8 @@ class SansSerifBold
         new CharMetrics( 556, 0, 10, -214, 539, 750 ), new CharMetrics( 611, 0, 62, -208, 578, 718 ),
         new CharMetrics( 556, 0, 10, -214, 539, 729 )};
 
-    public SansSerifBold()
+    SansSerifBold()
     {
         super( false, 718, -207, new CharMetrics( 0, 0, -170, -228, 1003, 962 ), metrics );
     }
-
 }

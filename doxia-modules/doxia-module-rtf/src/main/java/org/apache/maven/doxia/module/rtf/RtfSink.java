@@ -19,11 +19,7 @@ package org.apache.maven.doxia.module.rtf;
  * under the License.
  */
 
-import org.apache.maven.doxia.sink.Sink;
-import org.apache.maven.doxia.sink.SinkAdapter;
-import org.apache.maven.doxia.parser.Parser;
-
-import java.awt.*;
+import java.awt.Color;
 import java.io.BufferedOutputStream;
 import java.io.BufferedWriter;
 import java.io.IOException;
@@ -35,9 +31,13 @@ import java.util.Hashtable;
 import java.util.StringTokenizer;
 import java.util.Vector;
 
+import org.apache.maven.doxia.parser.Parser;
+import org.apache.maven.doxia.sink.Sink;
+import org.apache.maven.doxia.sink.SinkAdapter;
+
 /**
- * @plexus.component role="org.apache.maven.doxia.sink.Sink"
- * role-hint="rtf"
+ * @version $Id$
+ * @plexus.component role="org.apache.maven.doxia.sink.Sink" role-hint="rtf"
  */
 public class RtfSink
     extends SinkAdapter
@@ -861,12 +861,12 @@ public class RtfSink
     {
         tableCell();
     }
-   
+
     public void tableHeaderCell_()
     {
         tableCell_();
     }
-    
+
     public void tableCell()
     {
         cell = new Cell();
@@ -1212,52 +1212,63 @@ public class RtfSink
         writer.println( "\\plain\\fs1\\par" );
     }
 
+    /** {@inheritDoc} */
     public void pageBreak()
     {
         writer.println( "\\page" );
     }
 
+    /** {@inheritDoc} */
     public void anchor( String name )
     {
     }
 
+    /** {@inheritDoc} */
     public void anchor_()
     {
     }
 
+    /** {@inheritDoc} */
     public void link( String name )
     {
     }
 
+    /** {@inheritDoc} */
     public void link_()
     {
     }
 
+    /** {@inheritDoc} */
     public void italic()
     {
         beginStyle( STYLE_ITALIC );
     }
 
+    /** {@inheritDoc} */
     public void italic_()
     {
         endStyle();
     }
 
+    /** {@inheritDoc} */
     public void bold()
     {
         beginStyle( STYLE_BOLD );
     }
 
+    /** {@inheritDoc} */
     public void bold_()
     {
         endStyle();
     }
 
+    /** {@inheritDoc} */
     public void monospaced()
     {
         beginStyle( STYLE_TYPEWRITER );
     }
 
+    /** {@inheritDoc} */
     public void monospaced_()
     {
         endStyle();
@@ -1311,6 +1322,7 @@ public class RtfSink
         }
     }
 
+    /** {@inheritDoc} */
     public void lineBreak()
     {
         switch ( context.get() )
@@ -1325,6 +1337,7 @@ public class RtfSink
         }
     }
 
+    /** {@inheritDoc} */
     public void nonBreakingSpace()
     {
         switch ( context.get() )
@@ -1338,6 +1351,7 @@ public class RtfSink
         }
     }
 
+    /** {@inheritDoc} */
     public void text( String text )
     {
         switch ( context.get() )
@@ -1926,11 +1940,13 @@ public class RtfSink
 
     }
 
+    /** {@inheritDoc} */
     public void flush()
     {
         writer.flush();
     }
 
+    /** {@inheritDoc} */
     public void close()
     {
         writer.close();

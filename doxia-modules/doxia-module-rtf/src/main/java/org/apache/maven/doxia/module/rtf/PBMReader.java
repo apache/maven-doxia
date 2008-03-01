@@ -28,14 +28,16 @@ import java.io.IOException;
 import java.io.InputStream;
 import java.io.Reader;
 
-public class PBMReader
+/**
+ * @version $Id$
+ */
+class PBMReader
 {
+    static final int TYPE_PBM = 1;
 
-    public static final int TYPE_PBM = 1;
+    static final int TYPE_PGM = 2;
 
-    public static final int TYPE_PGM = 2;
-
-    public static final int TYPE_PPM = 3;
+    static final int TYPE_PPM = 3;
 
     private static final boolean TRACE = false;
 
@@ -61,7 +63,7 @@ public class PBMReader
 
     private InputStream stream;
 
-    public PBMReader( String fileName )
+    PBMReader( String fileName )
         throws Exception
     {
         HeaderReader header = new HeaderReader();
@@ -105,32 +107,32 @@ public class PBMReader
         skip( length );
     }
 
-    public int type()
+    int type()
     {
         return type;
     }
 
-    public int width()
+    int width()
     {
         return width;
     }
 
-    public int height()
+    int height()
     {
         return height;
     }
 
-    public int maxValue()
+    int maxValue()
     {
         return maxValue;
     }
 
-    public int bytesPerLine()
+    int bytesPerLine()
     {
         return bytesPerLine;
     }
 
-    public long skip( long count )
+    long skip( long count )
         throws IOException
     {
         long skipped = stream.skip( count );
@@ -153,7 +155,7 @@ public class PBMReader
         return skipped;
     }
 
-    public int read( byte[] b, int off, int len )
+    int read( byte[] b, int off, int len )
         throws IOException
     {
         int count = 0;
@@ -169,7 +171,7 @@ public class PBMReader
         return count;
     }
 
-    public static void main( String[] args )
+    static void main( String[] args )
         throws Exception
     {
         PBMReader pbm = new PBMReader( args[0] );
@@ -316,7 +318,5 @@ public class PBMReader
             {
             }
         }
-
     }
-
 }

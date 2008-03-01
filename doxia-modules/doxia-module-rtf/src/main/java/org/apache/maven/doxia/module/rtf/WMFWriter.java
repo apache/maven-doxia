@@ -28,19 +28,19 @@ import java.util.Vector;
 
 /**
  * A Windows MetaFile writer.
+ *
+ * @version $Id$
  */
-public class WMFWriter
+class WMFWriter
 {
-
-    /*
+    /**
      * See the libwmf library documentation
      * (http://www.wvware.com/wmf_doc_index.html)
      * for a description of WMF format.
      */
-
     private static Record trailer = new Record( 0, null );
 
-    /*
+    /**
      * standard header fields
      */
     private short fileType;
@@ -59,7 +59,7 @@ public class WMFWriter
 
     private Vector records;
 
-    public WMFWriter()
+    WMFWriter()
     {
         fileType = 2;
         headerSize = 9;
@@ -72,7 +72,7 @@ public class WMFWriter
         records = new Vector();
     }
 
-    public void add( Record record )
+    void add( Record record )
     {
         records.addElement( record );
 
@@ -84,12 +84,12 @@ public class WMFWriter
         }
     }
 
-    public int size()
+    int size()
     {
         return fileSize;
     }
 
-    public void write( String fileName )
+    void write( String fileName )
         throws IOException
     {
         BufferedOutputStream out = new BufferedOutputStream( new FileOutputStream( fileName ) );
@@ -98,7 +98,7 @@ public class WMFWriter
         out.close();
     }
 
-    public void write( OutputStream out )
+    void write( OutputStream out )
         throws IOException
     {
         write16( fileType, out );
@@ -121,7 +121,7 @@ public class WMFWriter
     /**
      * Writes a 16-bit integer in little-endian format.
      */
-    public static void write16( int word, OutputStream out )
+    static void write16( int word, OutputStream out )
         throws IOException
     {
         out.write( word );
@@ -131,7 +131,7 @@ public class WMFWriter
     /**
      * Writes a 32-bit integer in little-endian format.
      */
-    public static void write32( int dword, OutputStream out )
+    static void write32( int dword, OutputStream out )
         throws IOException
     {
         out.write( dword );
@@ -140,7 +140,7 @@ public class WMFWriter
         out.write( dword >> 24 );
     }
 
-    public void print( Writer out )
+    void print( Writer out )
         throws IOException
     {
         print16( fileType, out );
@@ -161,7 +161,7 @@ public class WMFWriter
         trailer.print( out );
     }
 
-    public static void print16( int word, Writer out )
+    static void print16( int word, Writer out )
         throws IOException
     {
         byte[] buf = new byte[2];
@@ -170,7 +170,7 @@ public class WMFWriter
         print( buf, 0, 2, out );
     }
 
-    public static void print32( int dword, Writer out )
+    static void print32( int dword, Writer out )
         throws IOException
     {
         byte[] buf = new byte[4];
@@ -181,7 +181,7 @@ public class WMFWriter
         print( buf, 0, 4, out );
     }
 
-    public static void print( byte[] buf, int off, int len, Writer out )
+    static void print( byte[] buf, int off, int len, Writer out )
         throws IOException
     {
         char[] cbuf = new char[2 * len];
@@ -211,7 +211,7 @@ public class WMFWriter
         out.write( cbuf );
     }
 
-    public static void print( byte[] buf, int off, int len, Writer out, int lw )
+    static void print( byte[] buf, int off, int len, Writer out, int lw )
         throws IOException
     {
         String ls = System.getProperty( "line.separator" );
@@ -228,16 +228,15 @@ public class WMFWriter
     /**
      * Standard data record.
      */
-    static public class Record
+    static class Record
     {
-
         protected int size;
 
         private short function;
 
         private short[] parameters;
 
-        public Record( int function, int[] parameters )
+        Record( int function, int[] parameters )
         {
             this.function = (short) function;
             if ( parameters != null )
@@ -251,12 +250,12 @@ public class WMFWriter
             size = 3 + ( parameters == null ? 0 : parameters.length );
         }
 
-        public int size()
+        int size()
         {
             return size;
         }
 
-        public void write( OutputStream out )
+        void write( OutputStream out )
             throws IOException
         {
             write32( size, out );
@@ -270,7 +269,7 @@ public class WMFWriter
             }
         }
 
-        public void print( Writer out )
+        void print( Writer out )
             throws IOException
         {
             print32( size, out );
@@ -289,50 +288,49 @@ public class WMFWriter
     /**
      * DIB data structure.
      */
-    static public class Dib
+    static class Dib
     {
-
-        /*
+        /**
          * compression types
          */
-        public static final int BI_RGB = 0;
+        static final int BI_RGB = 0;
 
-        public static final int BI_RLE8 = 1;
+        static final int BI_RLE8 = 1;
 
-        public static final int BI_RLE4 = 2;
+        static final int BI_RLE4 = 2;
 
-        public static final int BI_BITFIELDS = 3;
+        static final int BI_BITFIELDS = 3;
 
         /*
          * information header fields
          */
-        public final int biSize = 40;        // header size
+        final int biSize = 40;        // header size
 
-        public int biWidth;            // image width
+        int biWidth;            // image width
 
-        public int biHeight;            // image height
+        int biHeight;            // image height
 
-        public final short biPlanes = 1;    // number of planes
+        final short biPlanes = 1;    // number of planes
 
-        public short biBitCount;        // number of bits per pixel
+        short biBitCount;        // number of bits per pixel
 
-        public int biCompression;        // compression type
+        int biCompression;        // compression type
 
-        public int biSizeImage;            // image data size
+        int biSizeImage;            // image data size
 
-        public int biXPelsPerMeter;        // horizontal resolution
+        int biXPelsPerMeter;        // horizontal resolution
 
-        public int biYPelsPerMeter;        // vertical resolution
+        int biYPelsPerMeter;        // vertical resolution
 
-        public int biClrUsed;            // number of colors
+        int biClrUsed;            // number of colors
 
-        public int biClrImportant;        // number of required colors
+        int biClrImportant;        // number of required colors
 
-        public byte[] palette;            // color palette
+        byte[] palette;            // color palette
 
-        public byte[] bitmap;            // bitmap data
+        byte[] bitmap;            // bitmap data
 
-        public int size()
+        int size()
         {
             int size = biSize;
             if ( palette != null )
@@ -353,7 +351,7 @@ public class WMFWriter
             return size / 2;
         }
 
-        public void write( OutputStream out )
+        void write( OutputStream out )
             throws IOException
         {
             write32( biSize, out );
@@ -384,7 +382,7 @@ public class WMFWriter
             }
         }
 
-        public void print( Writer out )
+        void print( Writer out )
             throws IOException
         {
             String ls = System.getProperty( "line.separator" );
@@ -416,7 +414,7 @@ public class WMFWriter
             }
         }
 
-        public static int rlEncode8( byte[] inBuf, int inOff, int inLen, byte[] outBuf, int outOff )
+        static int rlEncode8( byte[] inBuf, int inOff, int inLen, byte[] outBuf, int outOff )
         {
             int i1, i2, j, k, n;
             int len;
@@ -494,60 +492,58 @@ public class WMFWriter
 
             return j - outOff;
         }
-
     }
 
-    static public class DibBitBltRecord
+    static class DibBitBltRecord
         extends Record
     {
-
-        /*
+        /**
          * parameter count
          */
-        public static final int P_COUNT = 8;
+        static final int P_COUNT = 8;
 
-        /*
+        /**
          * parameter indexes
          */
-        public static final int P_ROP_L = 0;
+        static final int P_ROP_L = 0;
 
-        public static final int P_ROP_H = 1;
+        static final int P_ROP_H = 1;
 
-        public static final int P_YSRC = 2;
+        static final int P_YSRC = 2;
 
-        public static final int P_XSRC = 3;
+        static final int P_XSRC = 3;
 
-        public static final int P_HEIGHT = 4;
+        static final int P_HEIGHT = 4;
 
-        public static final int P_WIDTH = 5;
+        static final int P_WIDTH = 5;
 
-        public static final int P_YDST = 6;
+        static final int P_YDST = 6;
 
-        public static final int P_XDST = 7;
+        static final int P_XDST = 7;
 
         private Dib dib;
 
-        public DibBitBltRecord( int[] parameters, Dib dib )
+        DibBitBltRecord( int[] parameters, Dib dib )
         {
             super( 0x0940, parameters );
             size += dib.size();
             this.dib = dib;
         }
 
-        public void write( OutputStream out )
+        /** {@inheritDoc} */
+        void write( OutputStream out )
             throws IOException
         {
             super.write( out );
             dib.write( out );
         }
 
-        public void print( Writer out )
+        /** {@inheritDoc} */
+        void print( Writer out )
             throws IOException
         {
             super.print( out );
             dib.print( out );
         }
-
     }
-
 }

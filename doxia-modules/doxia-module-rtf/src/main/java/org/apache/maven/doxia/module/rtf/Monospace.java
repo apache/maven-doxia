@@ -19,11 +19,13 @@ package org.apache.maven.doxia.module.rtf;
  * under the License.
  */
 
+/**
+ * @version $Id$
+ */
 class Monospace
     extends FontMetrics
 {
-
-    public static final CharMetrics[] metrics = {new CharMetrics( 600, 0, 0, 0, 0, 0 ),
+    static final CharMetrics[] metrics = {new CharMetrics( 600, 0, 0, 0, 0, 0 ),
         new CharMetrics( 600, 0, 0, 0, 0, 0 ), new CharMetrics( 600, 0, 0, 0, 0, 0 ),
         new CharMetrics( 600, 0, 0, 0, 0, 0 ), new CharMetrics( 600, 0, 0, 0, 0, 0 ),
         new CharMetrics( 600, 0, 0, 0, 0, 0 ), new CharMetrics( 600, 0, 0, 0, 0, 0 ),
@@ -153,9 +155,8 @@ class Monospace
         new CharMetrics( 600, 0, 7, -157, 592, 672 ), new CharMetrics( 600, 0, -6, -157, 555, 629 ),
         new CharMetrics( 600, 0, 7, -157, 592, 595 )};
 
-    public Monospace()
+    Monospace()
     {
         super( true, 629, -157, new CharMetrics( 0, 0, -28, -250, 628, 805 ), metrics );
     }
-
 }

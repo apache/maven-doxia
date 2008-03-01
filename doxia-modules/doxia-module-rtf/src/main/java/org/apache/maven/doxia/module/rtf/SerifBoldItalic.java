@@ -19,11 +19,13 @@ package org.apache.maven.doxia.module.rtf;
  * under the License.
  */
 
+/**
+ * @version $Id$
+ */
 class SerifBoldItalic
     extends FontMetrics
 {
-
-    public static final CharMetrics[] metrics = {new CharMetrics( 250, 0, 0, 0, 0, 0 ),
+    static final CharMetrics[] metrics = {new CharMetrics( 250, 0, 0, 0, 0, 0 ),
         new CharMetrics( 250, 0, 0, 0, 0, 0 ), new CharMetrics( 250, 0, 0, 0, 0, 0 ),
         new CharMetrics( 250, 0, 0, 0, 0, 0 ), new CharMetrics( 250, 0, 0, 0, 0, 0 ),
         new CharMetrics( 250, 0, 0, 0, 0, 0 ), new CharMetrics( 250, 0, 0, 0, 0, 0 ),
@@ -153,9 +155,8 @@ class SerifBoldItalic
         new CharMetrics( 444, 0, -94, -205, 435, 697 ), new CharMetrics( 500, 0, -120, -205, 446, 699 ),
         new CharMetrics( 444, 0, -94, -205, 438, 655 )};
 
-    public SerifBoldItalic()
+    SerifBoldItalic()
     {
         super( false, 699, -205, new CharMetrics( 0, 0, -200, -218, 996, 921 ), metrics );
     }
-
 }

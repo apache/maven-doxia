@@ -19,7 +19,10 @@ package org.apache.maven.doxia.module.rtf;
  * under the License.
  */
 
-public class RomanNumerals
+/**
+ * @version $Id$
+ */
+class RomanNumerals
 {
     private static final int[] NUMBERS = {1000, 900, 500, 400, 100, 90, 50, 40, 10, 9, 5, 4, 1};
 
@@ -31,12 +34,12 @@ public class RomanNumerals
 
     // -----------------------------------------------------------------------
 
-    public static String toString( int n )
+    static String toString( int n )
     {
         return toString( n, false );
     }
 
-    public static String toString( int n, boolean lowerCase )
+    static String toString( int n, boolean lowerCase )
     {
         StringBuffer roman = new StringBuffer();
         String[] letters = lowerCase ? LOWER_CASE_LETTERS : UPPER_CASE_LETTERS;

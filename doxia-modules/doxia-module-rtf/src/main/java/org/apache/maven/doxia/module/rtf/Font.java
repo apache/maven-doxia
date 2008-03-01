@@ -22,17 +22,18 @@ package org.apache.maven.doxia.module.rtf;
 /**
  * A basic font descriptor using standard PostScript font metrics to compute
  * text extents. All dimensions returned are in twips.
+ *
+ * @version $Id$
  */
-public class Font
+class Font
 {
-
     private int style;
 
     private int size;
 
     private FontMetrics metrics;
 
-    public Font( int style, int size /*pts*/ )
+    Font( int style, int size /*pts*/ )
         throws Exception
     {
         this.style = style;
@@ -40,17 +41,17 @@ public class Font
         metrics = FontMetrics.find( style );
     }
 
-    public int ascent()
+    int ascent()
     {
         return toTwips( metrics.ascent );
     }
 
-    public int descent()
+    int descent()
     {
         return toTwips( metrics.descent );
     }
 
-    public TextExtents textExtents( String text )
+    TextExtents textExtents( String text )
     {
         int i, n;
         int width = 0;
@@ -103,5 +104,4 @@ public class Font
         }
 
     }
-
 }
