@@ -22,14 +22,19 @@ package org.apache.maven.doxia.module.confluence.parser;
 import org.apache.maven.doxia.parser.ParseException;
 import org.apache.maven.doxia.util.ByLineSource;
 
+/**
+ * @version $Id$
+ */
 public class FigureBlockParser
     implements BlockParser
 {
+    /** {@inheritDoc} */
     public boolean accept( String line, ByLineSource source )
     {
         return line.startsWith( "!" ) && line.lastIndexOf( "!" ) > 1;
     }
 
+    /** {@inheritDoc} */
     public Block visit( String line, ByLineSource source )
         throws ParseException
     {
@@ -51,11 +56,11 @@ public class FigureBlockParser
 
         return new FigureBlock( image );
     }
-    
+
     /**
      * Slurp lines from the source starting with the given line appending them together into a StringBuffer until an
      * empty line is reached, and while the source contains more lines.
-     * 
+     *
      * @param source the source to read new lines from
      * @return a StringBuffer appended with lines
      * @throws ParseException
@@ -64,7 +69,7 @@ public class FigureBlockParser
         throws ParseException
     {
         StringBuffer text = new StringBuffer();
-        
+
         String line;
 
         while ( ( line = source.getNextLine() ) != null )
@@ -85,8 +90,7 @@ public class FigureBlockParser
             }
 
         }
- 
+
         return text.toString();
     }
-
 }

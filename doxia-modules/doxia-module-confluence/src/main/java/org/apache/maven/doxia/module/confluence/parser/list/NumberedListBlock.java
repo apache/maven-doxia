@@ -19,24 +19,31 @@ package org.apache.maven.doxia.module.confluence.parser.list;
  * under the License.
  */
 
-import org.apache.maven.doxia.module.confluence.parser.AbstractFatherBlock;
 import org.apache.maven.doxia.sink.Sink;
 
 import java.util.List;
 
+/**
+ * @version $Id$
+ */
 public class NumberedListBlock
     extends ListBlock
 {
-    public NumberedListBlock(  List childBlocks )
+    /**
+     * @param childBlocks
+     */
+    NumberedListBlock(  List childBlocks )
     {
         super( childBlocks );
     }
 
+    /** {@inheritDoc} */
     public void before( Sink sink )
     {
         sink.numberedList( Sink.NUMBERING_DECIMAL );
     }
 
+    /** {@inheritDoc} */
     public void after( Sink sink )
     {
         sink.numberedList_();

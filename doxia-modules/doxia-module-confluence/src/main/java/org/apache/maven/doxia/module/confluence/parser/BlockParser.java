@@ -23,9 +23,23 @@ import org.apache.maven.doxia.util.ByLineSource;
 import org.apache.maven.doxia.module.confluence.parser.Block;
 import org.apache.maven.doxia.parser.ParseException;
 
+/**
+ * @version $Id$
+ */
 public interface BlockParser
 {
+    /**
+     * @param line
+     * @param source
+     * @return
+     */
     boolean accept( String line, ByLineSource source );
 
+    /**
+     * @param line
+     * @param source
+     * @return
+     * @throws ParseException
+     */
     Block visit( String line, ByLineSource source ) throws ParseException;
 }

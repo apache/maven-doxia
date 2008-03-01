@@ -22,14 +22,19 @@ package org.apache.maven.doxia.module.confluence.parser;
 import org.apache.maven.doxia.util.ByLineSource;
 import org.apache.maven.doxia.parser.ParseException;
 
+/**
+ * @version $Id$
+ */
 public class HorizontalRuleBlockParser
     implements BlockParser
 {
+    /** {@inheritDoc} */
     public  boolean accept( String line, ByLineSource source )
     {
         return line.startsWith( "----" );
     }
 
+    /** {@inheritDoc} */
     public  Block visit(  String line,  ByLineSource source )
         throws ParseException
     {

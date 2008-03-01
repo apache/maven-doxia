@@ -23,11 +23,12 @@ import org.apache.maven.doxia.sink.Sink;
 
 /**
  * @author Dave Syer
- * @since 1.0
+ * @version $Id$
  */
-public class LinebreakBlock
+class LinebreakBlock
     implements Block
 {
+    /** {@inheritDoc} */
     public void traverse( Sink sink )
     {
         sink.lineBreak();

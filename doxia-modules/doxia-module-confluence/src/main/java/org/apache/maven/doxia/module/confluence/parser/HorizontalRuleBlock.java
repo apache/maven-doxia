@@ -21,9 +21,13 @@ package org.apache.maven.doxia.module.confluence.parser;
 
 import org.apache.maven.doxia.sink.Sink;
 
-public class HorizontalRuleBlock 
+/**
+ * @version $Id$
+ */
+class HorizontalRuleBlock
     implements Block
 {
+    /** {@inheritDoc} */
     public  void traverse(  Sink sink )
     {
         sink.horizontalRule();

@@ -21,25 +21,28 @@ package org.apache.maven.doxia.module.confluence.parser;
 
 import org.apache.maven.doxia.sink.Sink;
 
-public class FigureBlock
+/**
+ * @version $Id$
+ */
+class FigureBlock
     implements Block
 {
-
     private String location;
 
     private String caption;
 
-    public FigureBlock( String location )
+    FigureBlock( String location )
     {
         this.location = location;
     }
 
-    public FigureBlock( String image, String caption )
+    FigureBlock( String image, String caption )
     {
         this.location = image;
         this.caption = caption;
     }
 
+    /** {@inheritDoc} */
     public void traverse( Sink sink )
     {
         sink.figure();
@@ -54,5 +57,4 @@ public class FigureBlock
 
         sink.figure_();
     }
-
 }

@@ -24,15 +24,27 @@ import java.util.List;
 
 import org.apache.maven.doxia.sink.Sink;
 
+/**
+ * @version $Id$
+ */
 public abstract class AbstractFatherBlock
     implements Block
 {
     private  List blocks;
 
+    /**
+     * @param sink
+     */
     public abstract void before( Sink sink );
 
+    /**
+     * @param sink
+     */
     public abstract void after( Sink sink );
 
+    /**
+     * @param childBlocks
+     */
     public AbstractFatherBlock(  List childBlocks )
     {
         if ( childBlocks == null )
@@ -43,6 +55,7 @@ public abstract class AbstractFatherBlock
         this.blocks = childBlocks;
     }
 
+    /** {@inheritDoc} */
     public  void traverse(  Sink sink )
     {
         before( sink );

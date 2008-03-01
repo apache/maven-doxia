@@ -23,19 +23,24 @@ import org.apache.maven.doxia.sink.Sink;
 
 import java.util.List;
 
-public class ItalicBlock
+/**
+ * @version $Id$
+ */
+class ItalicBlock
     extends AbstractFatherBlock
 {
-    public ItalicBlock( List childBlocks )
+    ItalicBlock( List childBlocks )
     {
         super( childBlocks );
     }
 
+    /** {@inheritDoc} */
     public  void before(  Sink sink )
     {
         sink.italic();
     }
 
+    /** {@inheritDoc} */
     public  void after(  Sink sink )
     {
         sink.italic_();

@@ -25,22 +25,24 @@ import java.util.List;
 
 /**
  * @author Juan F. Codagnone
- * @since Nov 1, 2005
+ * @version $Id$
  */
-public class ParagraphBlock
+class ParagraphBlock
     extends AbstractFatherBlock
 {
-    public ParagraphBlock( List blocks )
+    ParagraphBlock( List blocks )
         throws IllegalArgumentException
     {
         super( blocks );
     }
 
+    /** {@inheritDoc} */
     public  void before(  Sink sink )
     {
         sink.paragraph();
     }
 
+    /** {@inheritDoc} */
     public  void after(  Sink sink )
     {
         sink.paragraph_();

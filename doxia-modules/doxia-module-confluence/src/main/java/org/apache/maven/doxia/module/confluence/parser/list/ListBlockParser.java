@@ -35,6 +35,7 @@ public class ListBlockParser
 
     public static int NUMBERED_LIST = 1;
 
+    /** {@inheritDoc} */
     public boolean accept( String line, ByLineSource source )
     {
         if ( isList( line ) )
@@ -45,6 +46,7 @@ public class ListBlockParser
         return false;
     }
 
+    /** {@inheritDoc} */
     public Block visit( String line, ByLineSource source )
         throws ParseException
     {
@@ -58,7 +60,7 @@ public class ListBlockParser
             {
                 break;
             }
-            
+
             if (text.length()>0 && isList( line ) )
             {
                 // We reached a new line with list prefix

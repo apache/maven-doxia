@@ -30,11 +30,15 @@ public class TextBlock
 {
     private String text;
 
+    /**
+     * @param text
+     */
     public TextBlock( String text )
     {
         this.text = text;
     }
 
+    /** {@inheritDoc} */
     public void traverse( Sink sink )
     {
         sink.text( text );

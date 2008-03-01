@@ -25,36 +25,40 @@ import org.apache.maven.doxia.sink.Sink;
 
 import java.util.List;
 
-
-public class TableBlock
+/**
+ * @version $Id$
+ */
+class TableBlock
     extends AbstractFatherBlock
 {
-    public TableBlock( List childBlocks )
+    TableBlock( List childBlocks )
     {
         super( childBlocks );
     }
 
+    /** {@inheritDoc} */
     public  void before(  Sink sink )
     {
         sink.table();
         sink.tableRows( getJustification(), false );
     }
 
+    /** {@inheritDoc} */
     public  void after(  Sink sink )
     {
         sink.tableRows_();
         sink.table_();
     }
-    
+
     private final int [] getJustification() {
-        final AbstractFatherBlock b = 
+        final AbstractFatherBlock b =
             ((AbstractFatherBlock)getBlocks().get( 0 ));
         int[] justification = new int[b.getBlocks().size()];
         for ( int i = 0; i < justification.length; i++ )
         {
             justification[i] = Parser.JUSTIFY_CENTER;
         }
-        
+
         return justification;
     }
 }

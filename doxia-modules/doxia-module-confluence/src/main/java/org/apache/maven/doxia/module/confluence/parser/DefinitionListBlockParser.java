@@ -31,12 +31,14 @@ public class DefinitionListBlockParser
 {
     static  String LS = System.getProperty( "line.separator" );
 
+    /** {@inheritDoc} */
     public boolean accept( String line, ByLineSource source )
     {
         return ( line.startsWith( "{note" ) || line.startsWith( "{tip" )
             || line.startsWith( "{info" ) || line.startsWith( "{quote" ) );
     }
 
+    /** {@inheritDoc} */
     public Block visit( String line, ByLineSource source )
         throws ParseException
     {

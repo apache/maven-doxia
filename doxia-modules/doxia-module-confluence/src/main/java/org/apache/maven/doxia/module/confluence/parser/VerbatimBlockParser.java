@@ -31,6 +31,7 @@ public class VerbatimBlockParser
 {
     static  String LS = System.getProperty( "line.separator" );
 
+    /** {@inheritDoc} */
     public boolean accept( String line, ByLineSource source )
     {
         if ( line.startsWith( "{code" ) || line.startsWith( "{noformat}" ) )
@@ -41,6 +42,7 @@ public class VerbatimBlockParser
         return false;
     }
 
+    /** {@inheritDoc} */
     public Block visit( String line, ByLineSource source )
         throws ParseException
     {

@@ -25,13 +25,16 @@ import java.util.List;
 
 import org.apache.maven.doxia.module.confluence.parser.ChildBlocksBuilder;
 
+/**
+ * @version $Id$
+ */
 public class TreeListBuilder
 {
     private  TreeComponent root;
 
     private TreeComponent current;
 
-    public TreeListBuilder()
+    TreeListBuilder()
         throws IllegalArgumentException
     {
         root = new TreeComponent( null, "root", 0 );
@@ -39,7 +42,7 @@ public class TreeListBuilder
         current = root;
     }
 
-    public void feedEntry( int type, int level, String text )
+    void feedEntry( int type, int level, String text )
     {
         int currentDepth = current.getDepth();
 
@@ -85,7 +88,7 @@ public class TreeListBuilder
         current.addChildren( text.trim(), type );
     }
 
-    public ListBlock getBlock()
+    ListBlock getBlock()
     {
         return getList( root );
     }
@@ -100,10 +103,8 @@ public class TreeListBuilder
         {
             return new BulletedListBlock( list );
         }
-        else
-        {
-            return new NumberedListBlock( list );
-        }
+
+        return new NumberedListBlock( list );
     }
 
     private List getListItems( TreeComponent tc )

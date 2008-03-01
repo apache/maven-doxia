@@ -21,15 +21,17 @@ package org.apache.maven.doxia.module.confluence.parser;
 
 import org.apache.maven.doxia.sink.Sink;
 
-
-public class LinkBlock
+/**
+ * @version $Id$
+ */
+class LinkBlock
     implements Block
 {
     private  String reference;
 
     private  String text;
 
-    public LinkBlock(  String reference,  String text )
+    LinkBlock(  String reference,  String text )
         throws IllegalArgumentException
     {
         if ( reference == null || text == null )
@@ -40,6 +42,7 @@ public class LinkBlock
         this.text = text;
     }
 
+    /** {@inheritDoc} */
     public  void traverse(  Sink sink )
     {
         sink.link( reference );

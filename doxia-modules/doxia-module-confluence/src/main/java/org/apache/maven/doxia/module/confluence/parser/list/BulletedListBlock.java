@@ -20,7 +20,6 @@ package org.apache.maven.doxia.module.confluence.parser.list;
  */
 
 import org.apache.maven.doxia.sink.Sink;
-import org.apache.maven.doxia.module.confluence.parser.AbstractFatherBlock;
 
 import java.util.List;
 
@@ -28,19 +27,21 @@ import java.util.List;
  * @author <a href="mailto:jason@maven.org">Jason van Zyl</a>
  * @version $Id$
  */
-public class BulletedListBlock
+class BulletedListBlock
     extends ListBlock
 {
-    public BulletedListBlock(  List childBlocks )
+    BulletedListBlock(  List childBlocks )
     {
         super( childBlocks );
     }
 
+    /** {@inheritDoc} */
     public void before( Sink sink )
     {
         sink.list();
     }
 
+    /** {@inheritDoc} */
     public void after( Sink sink )
     {
         sink.list_();

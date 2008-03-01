@@ -29,6 +29,7 @@ import org.apache.maven.doxia.parser.ParseException;
 public class SectionBlockParser
     implements BlockParser
 {
+    /** {@inheritDoc} */
     public boolean accept( String line, ByLineSource source )
     {
         if ( line.startsWith( "h1." ) )
@@ -55,6 +56,7 @@ public class SectionBlockParser
         return false;
     }
 
+    /** {@inheritDoc} */
     public Block visit( String line, ByLineSource source )
         throws ParseException
     {

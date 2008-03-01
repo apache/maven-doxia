@@ -35,16 +35,18 @@ import org.codehaus.plexus.util.StringUtils;
  * Parse tables
  *
  * @author Juan F. Codagnone
- * @since Nov 9, 2005
+ * @version $Id$
  */
 public class TableBlockParser
     implements BlockParser
 {
+    /** {@inheritDoc} */
     public  boolean accept( String line, ByLineSource source )
     {
         return line.startsWith( "|" );
     }
 
+    /** {@inheritDoc} */
     public  Block visit(  String line,  ByLineSource source )
         throws ParseException
     {

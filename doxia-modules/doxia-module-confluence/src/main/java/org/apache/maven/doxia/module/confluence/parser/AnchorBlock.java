@@ -21,12 +21,15 @@ package org.apache.maven.doxia.module.confluence.parser;
 
 import org.apache.maven.doxia.sink.Sink;
 
-public class AnchorBlock
+/**
+ * @version $Id$
+ */
+class AnchorBlock
     implements Block
 {
     private  String name;
 
-    public AnchorBlock(  String name ) throws IllegalArgumentException
+    AnchorBlock(  String name ) throws IllegalArgumentException
     {
         if ( name == null )
         {
@@ -35,6 +38,7 @@ public class AnchorBlock
         this.name = name;
     }
 
+    /** {@inheritDoc} */
     public  void traverse(  Sink sink )
     {
         sink.anchor( name );

@@ -27,7 +27,7 @@ import java.util.Iterator;
  * @author <a href="mailto:jason@maven.org">Jason van Zyl</a>
  * @version $Id$
  */
-public class TreeComponent
+class TreeComponent
 {
     private static final String EOL = System.getProperty( "line.separator" );
 
@@ -39,19 +39,19 @@ public class TreeComponent
 
     private int type;
 
-    public TreeComponent( TreeComponent father, String text, int type )
+    TreeComponent( TreeComponent father, String text, int type )
     {
         this.text = text;
         this.father = father;
         this.type = type;
     }
 
-    public List getChildren()
+    List getChildren()
     {
         return children;
     }
 
-    public TreeComponent addChildren( String t, int ttype )
+    TreeComponent addChildren( String t, int ttype )
     {
         if ( t == null )
         {
@@ -65,12 +65,12 @@ public class TreeComponent
         return ret;
     }
 
-    public TreeComponent getFather()
+    TreeComponent getFather()
     {
         return father;
     }
 
-    public int getDepth()
+    int getDepth()
     {
         int ret = 0;
 
@@ -84,12 +84,13 @@ public class TreeComponent
         return ret;
     }
 
+    /** {@inheritDoc} */
     public String toString()
     {
         return toString( "" );
     }
 
-    public String toString( String indent )
+    String toString( String indent )
     {
         StringBuffer sb = new StringBuffer();
 
@@ -111,12 +112,12 @@ public class TreeComponent
         return sb.toString();
     }
 
-    public String getText()
+    String getText()
     {
         return text;
     }
 
-    public int getType()
+    int getType()
     {
         return type;
     }

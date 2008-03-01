@@ -24,18 +24,21 @@ import org.apache.maven.doxia.sink.Sink;
 
 import java.util.List;
 
-public class ListItemBlock
+/**
+ * @version $Id$
+ */
+class ListItemBlock
     extends AbstractFatherBlock
 {
     private  ListBlock innerList;
 
-    public ListItemBlock(  List blocks )
+    ListItemBlock(  List blocks )
         throws IllegalArgumentException
     {
         this( blocks, null );
     }
 
-    public ListItemBlock(  List blocks,  ListBlock innerList )
+    ListItemBlock(  List blocks,  ListBlock innerList )
         throws IllegalArgumentException
     {
         super( blocks );
@@ -43,11 +46,13 @@ public class ListItemBlock
         this.innerList = innerList;
     }
 
+    /** {@inheritDoc} */
     public  void before(  Sink sink )
     {
         sink.listItem();
     }
 
+    /** {@inheritDoc} */
     public  void after(  Sink sink )
     {
         if ( innerList != null )
@@ -58,7 +63,7 @@ public class ListItemBlock
         sink.listItem_();
     }
 
-    public  ListBlock getInnerList()
+    ListBlock getInnerList()
     {
         return innerList;
     }

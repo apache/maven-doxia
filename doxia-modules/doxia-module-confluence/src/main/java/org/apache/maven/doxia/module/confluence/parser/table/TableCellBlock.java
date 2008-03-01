@@ -24,20 +24,24 @@ import org.apache.maven.doxia.sink.Sink;
 
 import java.util.List;
 
-
-public class TableCellBlock
+/**
+ * @version $Id$
+ */
+class TableCellBlock
     extends AbstractFatherBlock
 {
-    public TableCellBlock( List childBlocks )
+    TableCellBlock( List childBlocks )
     {
         super( childBlocks );
     }
 
+    /** {@inheritDoc} */
     public  void before(  Sink sink )
     {
         sink.tableCell();
     }
 
+    /** {@inheritDoc} */
     public  void after(  Sink sink )
     {
         sink.tableCell_();

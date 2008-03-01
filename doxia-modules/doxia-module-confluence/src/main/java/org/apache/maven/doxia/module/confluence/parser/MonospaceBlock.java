@@ -23,18 +23,23 @@ import org.apache.maven.doxia.sink.Sink;
 
 import java.util.List;
 
-public class MonospaceBlock extends AbstractFatherBlock
+/**
+ * @version $Id$
+ */
+class MonospaceBlock extends AbstractFatherBlock
 {
-    public MonospaceBlock( List childBlocks )
+    MonospaceBlock( List childBlocks )
     {
         super( childBlocks );
     }
 
+    /** {@inheritDoc} */
     public  void before(  Sink sink )
     {
         sink.monospaced();
     }
 
+    /** {@inheritDoc} */
     public  void after(  Sink sink )
     {
         sink.monospaced_();

@@ -22,23 +22,30 @@ package org.apache.maven.doxia.module.confluence.parser;
 import org.apache.maven.doxia.parser.ParseException;
 import org.apache.maven.doxia.util.ByLineSource;
 
+/**
+ * @version $Id$
+ */
 public class ParagraphBlockParser
     implements BlockParser
 {
-
     private BlockParser[] parsers;
 
+    /**
+     * @param parsers
+     */
     public ParagraphBlockParser( BlockParser[] parsers )
     {
         super();
         this.parsers = parsers;
     }
 
+    /** {@inheritDoc} */
     public boolean accept( String line, ByLineSource source )
     {
         return true;
     }
 
+    /** {@inheritDoc} */
     public Block visit( String line, ByLineSource source )
         throws ParseException
     {
@@ -51,7 +58,7 @@ public class ParagraphBlockParser
      * Slurp lines from the source starting with the given line appending them together into a StringBuffer until an
      * empty line is reached, and while the source contains more lines. The result can be passed to the
      * {@link #getBlocks(String)} method.
-     * 
+     *
      * @param line the first line
      * @param source the source to read new lines from
      * @return a StringBuffer appended with lines

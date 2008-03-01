@@ -25,19 +25,20 @@ import org.apache.maven.doxia.sink.Sink;
  * @author <a href="mailto:jason@maven.org">Jason van Zyl</a>
  * @version $Id$
  */
-public class SectionBlock
+class SectionBlock
     implements Block
 {
     private String title;
 
     private int level;
 
-    public SectionBlock( String title, int level )
+    SectionBlock( String title, int level )
     {
         this.title = title;
         this.level = level;
     }
 
+    /** {@inheritDoc} */
     public void traverse( Sink sink )
     {
         if ( level == Sink.SECTION_LEVEL_1 )

@@ -30,10 +30,10 @@ import org.codehaus.plexus.util.StringUtils;
  * on the stack to preserve stateless behaviour in the caller.
  *
  * @author Dave Syer
+ * @version $Id$
  */
 public class ChildBlocksBuilder
 {
-
     private boolean insideBold = false;
 
     private boolean insideItalic = false;
@@ -48,6 +48,9 @@ public class ChildBlocksBuilder
 
     private boolean insideMonospaced;
 
+    /**
+     * @param input
+     */
     public ChildBlocksBuilder( String input )
     {
         this.input = input;
@@ -56,7 +59,6 @@ public class ChildBlocksBuilder
     /**
      * Utility method to convert marked up content into blocks for rendering.
      *
-     * @param input a String with no line breaks
      * @return a list of Blocks that can be used to render it
      */
     public List getBlocks()

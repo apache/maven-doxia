@@ -25,20 +25,23 @@ import java.util.List;
 import org.apache.maven.doxia.sink.Sink;
 import org.codehaus.plexus.util.StringUtils;
 
-public class DefinitionListBlock
+/**
+ * @version $Id$
+ */
+class DefinitionListBlock
     implements Block
 {
-
     private String title;
 
     private List text;
 
-    public DefinitionListBlock( String title, String text )
+    DefinitionListBlock( String title, String text )
     {
         this.title = title;
         this.text = new ChildBlocksBuilder( text ).getBlocks();
     }
 
+    /** {@inheritDoc} */
     public void traverse( Sink sink )
     {
         sink.definitionList();
@@ -61,5 +64,4 @@ public class DefinitionListBlock
         sink.definition_();
         sink.definitionList_();
     }
-
 }

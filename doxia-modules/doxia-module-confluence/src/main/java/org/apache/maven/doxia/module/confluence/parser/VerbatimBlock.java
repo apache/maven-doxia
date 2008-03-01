@@ -25,16 +25,17 @@ import org.apache.maven.doxia.sink.Sink;
  * @author <a href="mailto:jason@maven.org">Jason van Zyl</a>
  * @version $Id$
  */
-public class VerbatimBlock
+class VerbatimBlock
     implements Block
 {
     private String text;
 
-    public VerbatimBlock( String text )
+    VerbatimBlock( String text )
     {
         this.text = text;
     }
 
+    /** {@inheritDoc} */
     public void traverse( Sink sink )
     {
         sink.verbatim( true );

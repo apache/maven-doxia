@@ -23,19 +23,27 @@ import org.apache.maven.doxia.sink.Sink;
 
 import java.util.List;
 
-public class BoldBlock 
+/**
+ * @version $Id$
+ */
+public class BoldBlock
     extends AbstractFatherBlock
 {
+    /**
+     * @param childBlocks
+     */
     public BoldBlock( List childBlocks )
     {
         super( childBlocks );
     }
 
+    /** {@inheritDoc} */
     public  void before(  Sink sink )
     {
         sink.bold();
     }
 
+    /** {@inheritDoc} */
     public  void after(  Sink sink )
     {
         sink.bold_();
