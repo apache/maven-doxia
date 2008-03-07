@@ -253,7 +253,7 @@ public class HtmlTools
      * <p>
      * For letters, the case is preserved in the conversion.
      * </p>
-     * 
+     *
      * <p>
      * Here are some examples:
      * </p>

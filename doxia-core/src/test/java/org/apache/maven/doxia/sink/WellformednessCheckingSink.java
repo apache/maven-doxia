@@ -1,4 +1,4 @@
-package org.apache.maven.doxia;
+package org.apache.maven.doxia.sink;
 
 /*
  * Licensed to the Apache Software Foundation (ASF) under one
@@ -19,11 +19,10 @@ package org.apache.maven.doxia;
  * under the License.
  */
 
-import org.apache.maven.doxia.sink.AbstractSink;
-
 import java.util.LinkedList;
 import java.util.List;
 import java.util.Stack;
+
 
 /**
  * This sink is used for testing purposes in order to check wether
@@ -57,7 +56,6 @@ public class WellformednessCheckingSink
     public void body_()
     {
         checkWellformedness( "body" );
-
     }
 
     public void section1()
@@ -68,7 +66,6 @@ public class WellformednessCheckingSink
     public void section1_()
     {
         checkWellformedness( "section1" );
-
     }
 
     public void section2()
@@ -79,7 +76,6 @@ public class WellformednessCheckingSink
     public void section2_()
     {
         checkWellformedness( "section2" );
-
     }
 
     public void section3()
@@ -90,7 +86,6 @@ public class WellformednessCheckingSink
     public void section3_()
     {
         checkWellformedness( "section3" );
-
     }
 
     public void section4()
@@ -101,7 +96,6 @@ public class WellformednessCheckingSink
     public void section4_()
     {
         checkWellformedness( "section4" );
-
     }
 
     public void section5()
@@ -112,7 +106,6 @@ public class WellformednessCheckingSink
     public void section5_()
     {
         checkWellformedness( "section5" );
-
     }
 
     public void list()
@@ -123,7 +116,6 @@ public class WellformednessCheckingSink
     public void list_()
     {
         checkWellformedness( "list" );
-
     }
 
     public void listItem()
@@ -134,19 +126,16 @@ public class WellformednessCheckingSink
     public void listItem_()
     {
         checkWellformedness( "listItem" );
-
     }
 
     public void numberedList( int numbering )
     {
         startElement( "numberedList" );
-
     }
 
     public void numberedList_()
     {
         checkWellformedness( "numberedList" );
-
     }
 
     public void numberedListItem()
@@ -157,43 +146,36 @@ public class WellformednessCheckingSink
     public void numberedListItem_()
     {
         checkWellformedness( "numberedListItem" );
-
     }
 
     public void definitionList()
     {
         startElement( "definitionList" );
-
     }
 
     public void definitionList_()
     {
         checkWellformedness( "definitionList" );
-
     }
 
     public void definitionListItem()
     {
         startElement( "definitionListItem" );
-
     }
 
     public void definitionListItem_()
     {
         checkWellformedness( "definitionListItem" );
-
     }
 
     public void definition()
     {
         startElement( "definition" );
-
     }
 
     public void definition_()
     {
         checkWellformedness( "definition" );
-
     }
 
     public void figure()
@@ -204,7 +186,6 @@ public class WellformednessCheckingSink
     public void figure_()
     {
         checkWellformedness( "figure" );
-
     }
 
     public void table()
@@ -225,7 +206,6 @@ public class WellformednessCheckingSink
     public void tableRows_()
     {
         checkWellformedness( "tableRows" );
-
     }
 
     public void tableRow()
@@ -561,5 +541,215 @@ public class WellformednessCheckingSink
     private void startElement( String string )
     {
         elements.push( string );
+    }
+
+    /** {@inheritDoc} */
+    public void head( SinkEventAttributes attributes )
+    {
+        head();
+    }
+
+    /** {@inheritDoc} */
+    public void title( SinkEventAttributes attributes )
+    {
+        title();
+    }
+
+    /** {@inheritDoc} */
+    public void author( SinkEventAttributes attributes )
+    {
+        author();
+    }
+
+    /** {@inheritDoc} */
+    public void date( SinkEventAttributes attributes )
+    {
+        date();
+    }
+
+    /** {@inheritDoc} */
+    public void body( SinkEventAttributes attributes )
+    {
+        body();
+    }
+
+    /** {@inheritDoc} */
+    public void section( int level, SinkEventAttributes attributes )
+    {
+        startElement( "section" + level );
+    }
+
+    /** {@inheritDoc} */
+    public void section_( int level )
+    {
+        checkWellformedness( "section" + level );
+    }
+
+    /** {@inheritDoc} */
+    public void sectionTitle( int level, SinkEventAttributes attributes )
+    {
+        startElement( "sectionTitle" + level );
+    }
+
+    /** {@inheritDoc} */
+    public void sectionTitle_( int level )
+    {
+        checkWellformedness( "sectionTitle" + level );
+    }
+
+    /** {@inheritDoc} */
+    public void list( SinkEventAttributes attributes )
+    {
+        list();
+    }
+
+    /** {@inheritDoc} */
+    public void listItem( SinkEventAttributes attributes )
+    {
+        listItem();
+    }
+
+    /** {@inheritDoc} */
+    public void numberedList( int numbering, SinkEventAttributes attributes )
+    {
+        numberedList( numbering );
+    }
+
+    /** {@inheritDoc} */
+    public void numberedListItem( SinkEventAttributes attributes )
+    {
+        numberedListItem();
+    }
+
+    /** {@inheritDoc} */
+    public void definitionList( SinkEventAttributes attributes )
+    {
+        definitionList();
+    }
+
+    /** {@inheritDoc} */
+    public void definitionListItem( SinkEventAttributes attributes )
+    {
+        definitionListItem();
+    }
+
+    /** {@inheritDoc} */
+    public void definition( SinkEventAttributes attributes )
+    {
+        definition();
+    }
+
+    /** {@inheritDoc} */
+    public void definedTerm( SinkEventAttributes attributes )
+    {
+        definedTerm();
+    }
+
+    /** {@inheritDoc} */
+    public void figure( SinkEventAttributes attributes )
+    {
+        figure();
+    }
+
+    /** {@inheritDoc} */
+    public void figureCaption( SinkEventAttributes attributes )
+    {
+        figureCaption();
+    }
+
+    /** {@inheritDoc} */
+    public void figureGraphics( String src, SinkEventAttributes attributes )
+    {
+        figureGraphics( src );
+    }
+
+    /** {@inheritDoc} */
+    public void table( SinkEventAttributes attributes )
+    {
+        table();
+    }
+
+    /** {@inheritDoc} */
+    public void tableRow( SinkEventAttributes attributes )
+    {
+        tableRow();
+    }
+
+    /** {@inheritDoc} */
+    public void tableCell( SinkEventAttributes attributes )
+    {
+        tableCell();
+    }
+
+    /** {@inheritDoc} */
+    public void tableHeaderCell( SinkEventAttributes attributes )
+    {
+        tableHeaderCell();
+    }
+
+    /** {@inheritDoc} */
+    public void tableCaption( SinkEventAttributes attributes )
+    {
+        tableCaption();
+    }
+
+    /** {@inheritDoc} */
+    public void paragraph( SinkEventAttributes attributes )
+    {
+        paragraph();
+    }
+
+    /** {@inheritDoc} */
+    public void verbatim( SinkEventAttributes attributes )
+    {
+        verbatim( false );
+    }
+
+    /** {@inheritDoc} */
+    public void horizontalRule( SinkEventAttributes attributes )
+    {
+        horizontalRule();
+    }
+
+    /** {@inheritDoc} */
+    public void anchor( String name, SinkEventAttributes attributes )
+    {
+        anchor( name );
+    }
+
+    /** {@inheritDoc} */
+    public void link( String name, SinkEventAttributes attributes )
+    {
+        link( name );
+    }
+
+    /** {@inheritDoc} */
+    public void italic( SinkEventAttributes attributes )
+    {
+        italic();
+    }
+
+    /** {@inheritDoc} */
+    public void bold( SinkEventAttributes attributes )
+    {
+        bold();
+    }
+
+    /** {@inheritDoc} */
+    public void monospaced( SinkEventAttributes attributes )
+    {
+        monospaced();
+    }
+
+    /** {@inheritDoc} */
+    public void lineBreak( SinkEventAttributes attributes )
+    {
+        lineBreak();
+    }
+
+    /** {@inheritDoc} */
+    public void text( String text, SinkEventAttributes attributes )
+    {
+        text( text );
     }
 }

@@ -20,11 +20,10 @@ package org.apache.maven.doxia.parser;
  */
 
 import org.apache.maven.doxia.AbstractModuleTest;
-import org.apache.maven.doxia.WellformednessCheckingSink;
+import org.apache.maven.doxia.sink.WellformednessCheckingSink;
 
 import org.apache.maven.doxia.sink.Sink;
 import org.apache.maven.doxia.sink.TextSink;
-import org.apache.maven.doxia.parser.ParseException;
 
 import java.io.IOException;
 import java.io.Reader;

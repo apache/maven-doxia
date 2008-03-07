@@ -26,6 +26,7 @@ import org.apache.maven.doxia.macro.MacroExecutionException;
 import org.apache.maven.doxia.parser.XhtmlBaseParser;
 import org.apache.maven.doxia.sink.Sink;
 
+import org.apache.maven.doxia.sink.SinkEventAttributeSet;
 import org.codehaus.plexus.util.xml.pull.XmlPullParser;
 import org.codehaus.plexus.util.xml.pull.XmlPullParserException;
 
@@ -48,6 +49,8 @@ public class XhtmlParser
     protected void handleStartTag( XmlPullParser parser, Sink sink )
         throws XmlPullParserException, MacroExecutionException
     {
+        SinkEventAttributeSet attribs = getAttributesFromParser( parser );
+
         if ( parser.getName().equals( Tag.HTML.toString() ) )
         {
             //Do nothing
@@ -55,11 +58,11 @@ public class XhtmlParser
         }
         else if ( parser.getName().equals( Tag.HEAD.toString() ) )
         {
-            sink.head();
+            sink.head( attribs );
         }
         else if ( parser.getName().equals( Tag.TITLE.toString() ) )
         {
-            sink.title();
+            sink.title( attribs );
         }
         else if ( parser.getName().equals( Tag.META.toString() ) )
         {
@@ -67,9 +70,12 @@ public class XhtmlParser
 
             String content = parser.getAttributeValue( null, Attribute.CONTENT.toString() );
 
+            attribs.removeAttribute( Attribute.NAME.toString() );
+            attribs.removeAttribute( Attribute.CONTENT.toString() );
+
             if ( "author".equals( name ) )
             {
-                sink.author();
+                sink.author( attribs );
 
                 sink.text( content );
 
@@ -77,7 +83,7 @@ public class XhtmlParser
             }
             else if ( "date".equals( name ) )
             {
-                sink.date();
+                sink.date( attribs );
 
                 sink.text( content );
 
@@ -91,11 +97,11 @@ public class XhtmlParser
          */
         else if ( parser.getName().equals( Tag.ADDRESS.toString() ) )
         {
-            sink.author();
+            sink.author( attribs );
         }
         else if ( parser.getName().equals( Tag.BODY.toString() ) )
         {
-            sink.body();
+            sink.body( attribs );
         }
         else if ( parser.getName().equals( Tag.DIV.toString() ) )
         {
@@ -118,14 +124,9 @@ public class XhtmlParser
          */
         else if ( parser.getName().equals( Tag.PRE.toString() ) )
         {
-            if ( this.boxed )
-            {
-                sink.verbatim( true );
-            }
-            else
-            {
-                sink.verbatim( false );
-            }
+            attribs.addAttribute( "boxed", Boolean.toString( boxed ) );
+
+            sink.verbatim( attribs );
         }
         else if ( !baseStartTag( parser, sink ) )
         {

@@ -25,6 +25,8 @@ import java.io.Reader;
 import org.apache.maven.doxia.macro.MacroExecutionException;
 import org.apache.maven.doxia.markup.XmlMarkup;
 import org.apache.maven.doxia.sink.Sink;
+import org.apache.maven.doxia.sink.SinkEventAttributeSet;
+
 import org.codehaus.plexus.util.xml.pull.MXParser;
 import org.codehaus.plexus.util.xml.pull.XmlPullParser;
 import org.codehaus.plexus.util.xml.pull.XmlPullParserException;
@@ -83,6 +85,32 @@ public abstract class AbstractXmlParser
     {
         return XML_TYPE;
     }
+
+    /**
+     * Converts the attributes of the current start tag of the given parser to a SinkEventAttributeSet.
+     *
+     * @param parser A parser.
+     * @param return a SinkEventAttributeSet or null if the current parser event is not a start tag.
+     */
+    protected SinkEventAttributeSet getAttributesFromParser( XmlPullParser parser )
+    {
+        int count = parser.getAttributeCount();
+
+        if ( count < 0 )
+        {
+            return null;
+        }
+
+        SinkEventAttributeSet atts = new SinkEventAttributeSet( count );
+
+        for ( int i = 0; i < count; i++ )
+        {
+            atts.addAttribute( parser.getAttributeName( i ), parser.getAttributeValue( i ) );
+        }
+
+        return atts;
+    }
+
 
     /**
      * Parse the model from the XmlPullParser into the given sink.

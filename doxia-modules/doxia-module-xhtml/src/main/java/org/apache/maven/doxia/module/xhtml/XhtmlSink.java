@@ -23,12 +23,12 @@ import java.io.Writer;
 import java.util.Map;
 
 import javax.swing.text.MutableAttributeSet;
-import javax.swing.text.SimpleAttributeSet;
 import javax.swing.text.html.HTML.Attribute;
 import javax.swing.text.html.HTML.Tag;
 
 import org.apache.maven.doxia.module.xhtml.decoration.render.RenderingContext;
 import org.apache.maven.doxia.sink.XhtmlBaseSink;
+import org.apache.maven.doxia.sink.SinkEventAttributeSet;
 import org.codehaus.plexus.util.StringUtils;
 
 /**
@@ -137,7 +137,7 @@ public class XhtmlSink
     {
         if ( getBuffer().length() > 0 )
         {
-            MutableAttributeSet att = new SimpleAttributeSet();
+            MutableAttributeSet att = new SinkEventAttributeSet();
             att.addAttribute( Attribute.NAME, "author" );
             att.addAttribute( Attribute.CONTENT, getBuffer().toString() );
 
@@ -155,7 +155,7 @@ public class XhtmlSink
     {
         if ( getBuffer().length() > 0 )
         {
-            MutableAttributeSet att = new SimpleAttributeSet();
+            MutableAttributeSet att = new SinkEventAttributeSet();
             att.addAttribute( Attribute.NAME, "date" );
             att.addAttribute( Attribute.CONTENT, getBuffer().toString() );
 

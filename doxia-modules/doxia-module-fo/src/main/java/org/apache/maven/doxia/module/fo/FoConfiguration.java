@@ -27,7 +27,7 @@ import javax.swing.text.SimpleAttributeSet;
 import org.apache.commons.configuration.ConfigurationException;
 import org.apache.commons.configuration.XMLConfiguration;
 
-import org.apache.maven.doxia.sink.AbstractXmlSink;
+import org.apache.maven.doxia.sink.SinkUtils;
 
 /**
  * A utility class to construct FO configuration parameters.
@@ -94,7 +94,7 @@ public class FoConfiguration
         reset();
         addAttributes( attributeId );
 
-        return AbstractXmlSink.getAttributeString( attributeSet );
+        return SinkUtils.getAttributeString( attributeSet );
     }
 
     /**

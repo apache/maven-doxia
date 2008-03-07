@@ -30,9 +30,6 @@ public class TextSink
     extends AbstractSink
 {
 
-    /** System-dependent end-of-line string. */
-    private static final String EOL = System.getProperty( "line.separator" );
-
     /** For writing the result. */
     private final Writer out;
 
@@ -599,6 +596,223 @@ public class TextSink
         }
     }
 
+    /** {@inheritDoc} */
+    public void head( SinkEventAttributes attributes )
+    {
+        head();
+    }
+
+    /** {@inheritDoc} */
+    public void title( SinkEventAttributes attributes )
+    {
+        title();
+    }
+
+    /** {@inheritDoc} */
+    public void author( SinkEventAttributes attributes )
+    {
+        author();
+    }
+
+    /** {@inheritDoc} */
+    public void date( SinkEventAttributes attributes )
+    {
+        date();
+    }
+
+    /** {@inheritDoc} */
+    public void body( SinkEventAttributes attributes )
+    {
+        body();
+    }
+
+    /** {@inheritDoc} */
+    public void section( int level, SinkEventAttributes attributes )
+    {
+        write( "begin:section" + level );
+    }
+
+    /** {@inheritDoc} */
+    public void section_( int level )
+    {
+        writeln( "end:section" + level );
+    }
+
+    /** {@inheritDoc} */
+    public void sectionTitle( int level, SinkEventAttributes attributes )
+    {
+        write( "begin:sectionTitle" + level );
+    }
+
+    /** {@inheritDoc} */
+    public void sectionTitle_( int level )
+    {
+        writeln( "end:sectionTitle" + level );
+    }
+
+    /** {@inheritDoc} */
+    public void list( SinkEventAttributes attributes )
+    {
+        list();
+    }
+
+    /** {@inheritDoc} */
+    public void listItem( SinkEventAttributes attributes )
+    {
+        listItem();
+    }
+
+    /** {@inheritDoc} */
+    public void numberedList( int numbering, SinkEventAttributes attributes )
+    {
+        numberedList( numbering );
+    }
+
+    /** {@inheritDoc} */
+    public void numberedListItem( SinkEventAttributes attributes )
+    {
+        numberedListItem();
+    }
+
+    /** {@inheritDoc} */
+    public void definitionList( SinkEventAttributes attributes )
+    {
+        definitionList();
+    }
+
+    /** {@inheritDoc} */
+    public void definitionListItem( SinkEventAttributes attributes )
+    {
+        definitionListItem();
+    }
+
+    /** {@inheritDoc} */
+    public void definition( SinkEventAttributes attributes )
+    {
+        definition();
+    }
+
+    /** {@inheritDoc} */
+    public void definedTerm( SinkEventAttributes attributes )
+    {
+        definedTerm();
+    }
+
+    /** {@inheritDoc} */
+    public void figure( SinkEventAttributes attributes )
+    {
+        write( "begin:figure" + SinkUtils.getAttributeString( attributes ) );
+    }
+
+    /** {@inheritDoc} */
+    public void figureCaption( SinkEventAttributes attributes )
+    {
+        figureCaption();
+    }
+
+    /** {@inheritDoc} */
+    public void figureGraphics( String src, SinkEventAttributes attributes )
+    {
+        figureGraphics( src );
+    }
+
+    /** {@inheritDoc} */
+    public void table( SinkEventAttributes attributes )
+    {
+        table();
+    }
+
+    /** {@inheritDoc} */
+    public void tableRow( SinkEventAttributes attributes )
+    {
+        tableRow();
+    }
+
+    /** {@inheritDoc} */
+    public void tableCell( SinkEventAttributes attributes )
+    {
+        tableCell();
+    }
+
+    /** {@inheritDoc} */
+    public void tableHeaderCell( SinkEventAttributes attributes )
+    {
+        tableHeaderCell();
+    }
+
+    /** {@inheritDoc} */
+    public void tableCaption( SinkEventAttributes attributes )
+    {
+        tableCaption();
+    }
+
+    /** {@inheritDoc} */
+    public void paragraph( SinkEventAttributes attributes )
+    {
+        paragraph();
+    }
+
+    /** {@inheritDoc} */
+    public void verbatim( SinkEventAttributes attributes )
+    {
+        boolean boxed = false;
+
+        if ( attributes != null && attributes.isDefined( "boxed" ) )
+        {
+            boxed = Boolean.valueOf(
+                (String) attributes.getAttribute( "boxed" ) ).booleanValue();
+        }
+
+        verbatim( boxed );
+    }
+
+    /** {@inheritDoc} */
+    public void horizontalRule( SinkEventAttributes attributes )
+    {
+        horizontalRule();
+    }
+
+    /** {@inheritDoc} */
+    public void anchor( String name, SinkEventAttributes attributes )
+    {
+        anchor( name );
+    }
+
+    /** {@inheritDoc} */
+    public void link( String name, SinkEventAttributes attributes )
+    {
+        link( name );
+    }
+
+    /** {@inheritDoc} */
+    public void italic( SinkEventAttributes attributes )
+    {
+        italic();
+    }
+
+    /** {@inheritDoc} */
+    public void bold( SinkEventAttributes attributes )
+    {
+        bold();
+    }
+
+    /** {@inheritDoc} */
+    public void monospaced( SinkEventAttributes attributes )
+    {
+        monospaced();
+    }
+
+    /** {@inheritDoc} */
+    public void lineBreak( SinkEventAttributes attributes )
+    {
+        lineBreak();
+    }
+
+    /** {@inheritDoc} */
+    public void text( String text, SinkEventAttributes attributes )
+    {
+        text( text );
+    }
 
     /**
      * Writes the given string + EOL.

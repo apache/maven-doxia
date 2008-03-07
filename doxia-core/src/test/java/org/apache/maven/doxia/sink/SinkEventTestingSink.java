@@ -19,8 +19,6 @@ package org.apache.maven.doxia.sink;
  * under the License.
  */
 
-import org.apache.maven.doxia.sink.AbstractSink;
-
 import java.util.LinkedList;
 import java.util.List;
 
@@ -596,6 +594,217 @@ public class SinkEventTestingSink
     public void close()
     {
         addEvent( "close" );
+    }
+
+    /** {@inheritDoc} */
+    public void head( SinkEventAttributes attributes )
+    {
+        head();
+    }
+
+    /** {@inheritDoc} */
+    public void title( SinkEventAttributes attributes )
+    {
+        title();
+    }
+
+    /** {@inheritDoc} */
+    public void author( SinkEventAttributes attributes )
+    {
+        author();
+    }
+
+    /** {@inheritDoc} */
+    public void date( SinkEventAttributes attributes )
+    {
+        date();
+    }
+
+    /** {@inheritDoc} */
+    public void body( SinkEventAttributes attributes )
+    {
+        body();
+    }
+
+    /** {@inheritDoc} */
+    public void section( int level, SinkEventAttributes attributes )
+    {
+        addEvent( "section" + level );
+    }
+
+    /** {@inheritDoc} */
+    public void section_( int level )
+    {
+        addEvent( "section" + level + "_" );
+    }
+
+    /** {@inheritDoc} */
+    public void sectionTitle( int level, SinkEventAttributes attributes )
+    {
+        addEvent( "sectionTitle" + level );
+    }
+
+    /** {@inheritDoc} */
+    public void sectionTitle_( int level )
+    {
+
+        addEvent( "sectionTitle" + level + "_" );
+    }
+
+    /** {@inheritDoc} */
+    public void list( SinkEventAttributes attributes )
+    {
+        list();
+    }
+
+    /** {@inheritDoc} */
+    public void listItem( SinkEventAttributes attributes )
+    {
+        listItem();
+    }
+
+    /** {@inheritDoc} */
+    public void numberedList( int numbering, SinkEventAttributes attributes )
+    {
+        numberedList( numbering );
+    }
+
+    /** {@inheritDoc} */
+    public void numberedListItem( SinkEventAttributes attributes )
+    {
+        numberedListItem();
+    }
+
+    /** {@inheritDoc} */
+    public void definitionList( SinkEventAttributes attributes )
+    {
+        definitionList();
+    }
+
+    /** {@inheritDoc} */
+    public void definitionListItem( SinkEventAttributes attributes )
+    {
+        definitionListItem();
+    }
+
+    /** {@inheritDoc} */
+    public void definition( SinkEventAttributes attributes )
+    {
+        definition();
+    }
+
+    /** {@inheritDoc} */
+    public void definedTerm( SinkEventAttributes attributes )
+    {
+        definedTerm();
+    }
+
+    /** {@inheritDoc} */
+    public void figure( SinkEventAttributes attributes )
+    {
+        addEvent( "figure", new Object[] {attributes} );
+    }
+
+    /** {@inheritDoc} */
+    public void figureCaption( SinkEventAttributes attributes )
+    {
+        figureCaption();
+    }
+
+    /** {@inheritDoc} */
+    public void figureGraphics( String src, SinkEventAttributes attributes )
+    {
+        figureGraphics( src );
+    }
+
+    /** {@inheritDoc} */
+    public void table( SinkEventAttributes attributes )
+    {
+        table();
+    }
+
+    /** {@inheritDoc} */
+    public void tableRow( SinkEventAttributes attributes )
+    {
+        tableRow();
+    }
+
+    /** {@inheritDoc} */
+    public void tableCell( SinkEventAttributes attributes )
+    {
+        tableCell();
+    }
+
+    /** {@inheritDoc} */
+    public void tableHeaderCell( SinkEventAttributes attributes )
+    {
+        tableHeaderCell();
+    }
+
+    /** {@inheritDoc} */
+    public void tableCaption( SinkEventAttributes attributes )
+    {
+        tableCaption();
+    }
+
+    /** {@inheritDoc} */
+    public void paragraph( SinkEventAttributes attributes )
+    {
+        paragraph();
+    }
+
+    /** {@inheritDoc} */
+    public void verbatim( SinkEventAttributes attributes )
+    {
+        verbatim( false );
+    }
+
+    /** {@inheritDoc} */
+    public void horizontalRule( SinkEventAttributes attributes )
+    {
+        horizontalRule();
+    }
+
+    /** {@inheritDoc} */
+    public void anchor( String name, SinkEventAttributes attributes )
+    {
+        anchor( name );
+    }
+
+    /** {@inheritDoc} */
+    public void link( String name, SinkEventAttributes attributes )
+    {
+        link( name );
+    }
+
+    /** {@inheritDoc} */
+    public void italic( SinkEventAttributes attributes )
+    {
+        italic();
+    }
+
+    /** {@inheritDoc} */
+    public void bold( SinkEventAttributes attributes )
+    {
+        bold();
+    }
+
+    /** {@inheritDoc} */
+    public void monospaced( SinkEventAttributes attributes )
+    {
+        monospaced();
+    }
+
+    /** {@inheritDoc} */
+    public void lineBreak( SinkEventAttributes attributes )
+    {
+        lineBreak();
+    }
+
+    /** {@inheritDoc} */
+    public void text( String text, SinkEventAttributes attributes )
+    {
+        text( text );
     }
 
       //

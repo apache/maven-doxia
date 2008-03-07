@@ -19,9 +19,6 @@ package org.apache.maven.doxia.sink;
  * under the License.
  */
 
-import java.util.Enumeration;
-
-import javax.swing.text.AttributeSet;
 import javax.swing.text.MutableAttributeSet;
 import javax.swing.text.html.HTML.Tag;
 
@@ -59,37 +56,6 @@ public abstract class AbstractXmlSink
     public String getNameSpace()
     {
         return this.nameSpace;
-    }
-
-    /**
-     * Utility method to get an AttributeSet as a String.
-     *
-     * @param att The AttributeSet.
-     * @return String
-     */
-    public static String getAttributeString( MutableAttributeSet att )
-    {
-        StringBuffer sb = new StringBuffer();
-
-        if ( att != null )
-        {
-            Enumeration names = att.getAttributeNames();
-
-            while ( names.hasMoreElements() )
-            {
-                Object key = names.nextElement();
-                Object value = att.getAttribute( key );
-
-                // AttributeSets are ignored
-                if ( !(value instanceof AttributeSet) )
-                {
-                    sb.append( SPACE ).append( key.toString() ).append( EQUAL )
-                        .append( QUOTE ).append( value.toString() ).append( QUOTE );
-                }
-            }
-        }
-
-        return sb.toString();
     }
 
     /**
@@ -148,7 +114,7 @@ public abstract class AbstractXmlSink
 
         sb.append( t.toString() );
 
-        sb.append( getAttributeString( att ) );
+        sb.append( SinkUtils.getAttributeString( att ) );
 
         if ( isSimpleTag )
         {
@@ -220,7 +186,7 @@ public abstract class AbstractXmlSink
     }
 
     /**
-     * TODO DOXIA-59 Need to uniform writing
+     * Write a text to the sink.
      *
      * @param text the given text to write
      */

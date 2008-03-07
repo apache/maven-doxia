@@ -21,12 +21,10 @@ package org.apache.maven.doxia.parser;
 
 import java.util.Iterator;
 
-import org.apache.maven.doxia.sink.Sink;
 import org.apache.maven.doxia.sink.SinkEventElement;
 import org.apache.maven.doxia.sink.SinkEventTestingSink;
 
 import org.codehaus.plexus.PlexusTestCase;
-import org.codehaus.plexus.util.xml.pull.MXParser;
 
 /**
  * Test for XhtmlBaseParser.
@@ -57,8 +55,6 @@ public class XhtmlBaseParserTest
         throws Exception
     {
         String text = "<p><h2></h2><h3></h3><h4></h4><h5></h5><h6></h6><h2></h2></p>";
-
-        SinkEventTestingSink sink = new SinkEventTestingSink();
 
         parser.parse( text, sink );
 
@@ -98,8 +94,6 @@ public class XhtmlBaseParserTest
     {
         String text = "<img src=\"source\" title=\"caption\" />";
 
-        SinkEventTestingSink sink = new SinkEventTestingSink();
-
         parser.parse( text, sink );
 
         Iterator it = sink.getEventList().iterator();
@@ -121,8 +115,6 @@ public class XhtmlBaseParserTest
 
         String text = "<table align=\"center\"><tr><th>Header</th></tr><tr><td>cell</td></tr></table>";
 
-        SinkEventTestingSink sink = new SinkEventTestingSink();
-
         parser.parse( text, sink );
 
         Iterator it = sink.getEventList().iterator();
@@ -141,7 +133,7 @@ public class XhtmlBaseParserTest
         assertEquals( "tableRow_", ( (SinkEventElement) it.next() ).getName() );
         assertEquals( "tableRows_", ( (SinkEventElement) it.next() ).getName() );
         assertEquals( "table_", ( (SinkEventElement) it.next() ).getName() );
-        
+
         assertFalse( it.hasNext() );
     }
 
@@ -151,8 +143,6 @@ public class XhtmlBaseParserTest
     {
         // NOTE significant white space
         String text = "<p><b>word</b> <i>word</i></p>";
-
-        SinkEventTestingSink sink = new SinkEventTestingSink();
 
         parser.parse( text, sink );
 

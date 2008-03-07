@@ -138,16 +138,8 @@ public class XdocSinkTest
     /** {@inheritDoc} */
     protected String getTableBlock( String cell, String caption )
     {
-        return "<table align=\"center\"><table align=\"center\" border=\"0\"><tr valign=\"top\"><td>"
-            + cell + "</td></tr></table><p><i>" + caption + "</i></p></table>";
-    }
-
-    // Disable testTable until the order of attributes issue is clarified
-    // TODO: remove
-    /** {@inheritDoc} */
-    public void testTable()
-    {
-        assertEquals( "Dummy!", "", "" );
+        return "<table align=\"center\" border=\"0\"><tr valign=\"top\"><td align=\"center\">"
+            + cell + "</td></tr><caption>" + caption + "</caption></table>";
     }
 
     /** {@inheritDoc} */

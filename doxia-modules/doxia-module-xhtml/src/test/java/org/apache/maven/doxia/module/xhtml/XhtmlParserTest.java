@@ -21,7 +21,6 @@ package org.apache.maven.doxia.module.xhtml;
 
 import java.util.Iterator;
 
-import org.apache.maven.doxia.WellformednessCheckingSink;
 import org.apache.maven.doxia.parser.AbstractParserTest;
 import org.apache.maven.doxia.parser.Parser;
 import org.apache.maven.doxia.sink.SinkEventElement;

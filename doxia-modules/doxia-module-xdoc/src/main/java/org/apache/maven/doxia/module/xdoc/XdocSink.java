@@ -22,10 +22,12 @@ package org.apache.maven.doxia.module.xdoc;
 import java.io.Writer;
 
 import javax.swing.text.MutableAttributeSet;
-import javax.swing.text.SimpleAttributeSet;
 import javax.swing.text.html.HTML.Attribute;
 import javax.swing.text.html.HTML.Tag;
 
+import org.apache.maven.doxia.sink.SinkEventAttributeSet;
+import org.apache.maven.doxia.sink.SinkEventAttributes;
+import org.apache.maven.doxia.sink.SinkUtils;
 import org.apache.maven.doxia.sink.XhtmlBaseSink;
 import org.apache.maven.doxia.util.HtmlTools;
 import org.apache.maven.doxia.util.StructureSinkUtils;
@@ -194,17 +196,21 @@ public class XdocSink
      * @see XdocMarkup#SECTION_TAG
      * @see XdocMarkup#SUBSECTION_TAG
      */
-    protected void onSection( int depth )
+    protected void onSection( int depth, SinkEventAttributes attributes )
     {
         if ( depth == SECTION_LEVEL_1 )
         {
             write( String.valueOf( LESS_THAN ) + SECTION_TAG.toString() + String.valueOf( SPACE ) + Attribute.NAME
-                + String.valueOf( EQUAL ) + String.valueOf( QUOTE ) );
+                + String.valueOf( EQUAL ) + String.valueOf( QUOTE )
+                + SinkUtils.getAttributeString( SinkUtils.filterAttributes(
+                    attributes, SinkUtils.SINK_BASE_ATTRIBUTES  ) ) );
         }
         else if ( depth == SECTION_LEVEL_2 )
         {
             write( String.valueOf( LESS_THAN ) + SUBSECTION_TAG.toString() + String.valueOf( SPACE ) + Attribute.NAME
-                + String.valueOf( EQUAL ) + String.valueOf( QUOTE ) );
+                + String.valueOf( EQUAL ) + String.valueOf( QUOTE )
+                + SinkUtils.getAttributeString( SinkUtils.filterAttributes(
+                    attributes, SinkUtils.SINK_BASE_ATTRIBUTES  ) ) );
         }
     }
 
@@ -235,19 +241,22 @@ public class XdocSink
      * @see javax.swing.text.html.HTML.Tag#H5
      * @see javax.swing.text.html.HTML.Tag#H6
      */
-    protected void onSectionTitle( int depth )
+    protected void onSectionTitle( int depth, SinkEventAttributes attributes )
     {
+        MutableAttributeSet atts = SinkUtils.filterAttributes(
+                attributes, SinkUtils.SINK_SECTION_ATTRIBUTES  );
+
         if ( depth == SECTION_LEVEL_3 )
         {
-            writeStartTag( Tag.H4 );
+            writeStartTag( Tag.H4, atts );
         }
         else if ( depth == SECTION_LEVEL_4 )
         {
-            writeStartTag( Tag.H5 );
+            writeStartTag( Tag.H5, atts );
         }
         else if ( depth == SECTION_LEVEL_5 )
         {
-            writeStartTag( Tag.H6 );
+            writeStartTag( Tag.H6, atts );
         }
     }
 
@@ -288,19 +297,38 @@ public class XdocSink
      * @see XdocMarkup#SOURCE_TAG
      * @see javax.swing.text.html.HTML.Tag#PRE
      */
-    public void verbatim( boolean boxed )
+    public void verbatim( SinkEventAttributes attributes )
     {
         setVerbatimFlag( true );
 
+        MutableAttributeSet atts = SinkUtils.filterAttributes(
+                attributes, SinkUtils.SINK_VERBATIM_ATTRIBUTES  );
+
+
+        if ( atts == null )
+        {
+            atts = new SinkEventAttributeSet();
+        }
+
+        boolean boxed = false;
+
+        if ( atts.isDefined( "boxed" ) )
+        {
+            boxed = Boolean.valueOf(
+                (String) atts.getAttribute( "boxed" ) ).booleanValue();
+        }
+
         boxedFlag = boxed;
+        atts.removeAttribute( "boxed" );
 
         if ( boxed )
         {
-            writeStartTag( SOURCE_TAG );
+            writeStartTag( SOURCE_TAG, atts );
         }
         else
         {
-            writeStartTag( Tag.PRE );
+            atts.removeAttribute( Attribute.ALIGN.toString() );
+            writeStartTag( Tag.PRE, atts );
         }
     }
 
@@ -335,7 +363,7 @@ public class XdocSink
     {
         setCellJustif( justification );
 
-        MutableAttributeSet att = new SimpleAttributeSet();
+        MutableAttributeSet att = new SinkEventAttributeSet();
         att.addAttribute( Attribute.ALIGN, "center" );
         att.addAttribute( Attribute.BORDER, ( grid ? "1" : "0" ) );
 
@@ -350,7 +378,7 @@ public class XdocSink
      */
     public void tableRow()
     {
-        MutableAttributeSet att = new SimpleAttributeSet();
+        MutableAttributeSet att = new SinkEventAttributeSet();
         att.addAttribute( Attribute.VALIGN, "top" );
 
         writeStartTag( Tag.TR, att );
@@ -371,7 +399,7 @@ public class XdocSink
             return;
         }
 
-        MutableAttributeSet att = new SimpleAttributeSet();
+        MutableAttributeSet att = new SinkEventAttributeSet();
 
         if ( target != null )
         {
@@ -388,19 +416,6 @@ public class XdocSink
         }
 
         writeStartTag( Tag.A, att );
-    }
-
-    /**
-     * Legacy: treat links to other html documents as external links.
-     * Note that links to other file formats (images, pdf) will still be broken,
-     * links to other documents should always start with "./" or "../".
-     */
-    private boolean isExternalHtml( String href )
-    {
-        String text = href.toLowerCase();
-        return ( text.indexOf( ".html#" ) != -1 || text.indexOf( ".htm#" ) != -1
-            || text.endsWith( ".htm" ) || text.endsWith( ".html" )
-            || !HtmlTools.isId( text ) );
     }
 
     // ----------------------------------------------------------------------

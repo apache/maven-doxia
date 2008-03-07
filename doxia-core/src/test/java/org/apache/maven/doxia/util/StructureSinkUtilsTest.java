@@ -19,7 +19,6 @@ package org.apache.maven.doxia.util;
  * under the License.
  */
 
-import org.apache.maven.doxia.util.StructureSinkUtils;
 import org.codehaus.plexus.PlexusTestCase;
 
 /**

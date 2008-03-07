@@ -235,7 +235,6 @@ public class XdocParserTest
      */
     private String noNewLine( String text )
     {
-        String EOL = System.getProperty( "line.separator" );
         return text.replaceAll( EOL, "" );
     }
 }

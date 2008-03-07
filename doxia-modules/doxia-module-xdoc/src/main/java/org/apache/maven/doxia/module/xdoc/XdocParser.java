@@ -36,6 +36,7 @@ import org.apache.maven.doxia.parser.ParseException;
 import org.apache.maven.doxia.parser.XhtmlBaseParser;
 import org.apache.maven.doxia.sink.Sink;
 
+import org.apache.maven.doxia.sink.SinkEventAttributeSet;
 import org.codehaus.plexus.util.IOUtil;
 import org.codehaus.plexus.util.StringUtils;
 import org.codehaus.plexus.util.xml.pull.XmlPullParser;
@@ -99,6 +100,8 @@ public class XdocParser
     {
         isEmptyElement = parser.isEmptyElementTag();
 
+        SinkEventAttributeSet attribs = getAttributesFromParser( parser );
+
         if ( parser.getName().equals( DOCUMENT_TAG.toString() ) )
         {
             //Do nothing
@@ -106,31 +109,31 @@ public class XdocParser
         }
         else if ( parser.getName().equals( Tag.HEAD.toString() ) )
         {
-            sink.head();
+            sink.head( attribs );
         }
         else if ( parser.getName().equals( Tag.TITLE.toString() ) )
         {
-            sink.title();
+            sink.title( attribs );
         }
         else if ( parser.getName().equals( AUTHOR_TAG.toString() ) )
         {
-            sink.author();
+            sink.author( attribs );
         }
         else if ( parser.getName().equals( DATE_TAG.toString() ) )
         {
-            sink.date();
+            sink.date( attribs );
         }
         else if ( parser.getName().equals( Tag.BODY.toString() ) )
         {
-            sink.body();
+            sink.body( attribs );
         }
         else if ( parser.getName().equals( SECTION_TAG.toString() ) )
         {
             closeOpenSections( Sink.SECTION_LEVEL_1, sink );
 
-            sink.section1();
+            sink.section( Sink.SECTION_LEVEL_1, attribs );
 
-            sink.sectionTitle1();
+            sink.sectionTitle( Sink.SECTION_LEVEL_1, attribs );
 
             sink.text( parser.getAttributeValue( null, Attribute.NAME.toString() ) );
 
@@ -140,9 +143,9 @@ public class XdocParser
         {
             closeOpenSections( Sink.SECTION_LEVEL_2, sink );
 
-            sink.section2();
+            sink.section( Sink.SECTION_LEVEL_2, attribs );
 
-            sink.sectionTitle2();
+            sink.sectionTitle( Sink.SECTION_LEVEL_2, attribs );
 
             sink.text( parser.getAttributeValue( null, Attribute.NAME.toString() ) );
 
@@ -152,7 +155,9 @@ public class XdocParser
         {
             verbatim();
 
-            sink.verbatim( true );
+            attribs.addAttribute( "boxed", "true");
+
+            sink.verbatim( attribs );
         }
         else if ( parser.getName().equals( PROPERTIES_TAG.toString() ) )
         {
@@ -382,15 +387,15 @@ public class XdocParser
     {
         while ( getSectionLevel() >= newLevel )
         {
-            if ( getSectionLevel() == Sink.SECTION_LEVEL_5)
+            if ( getSectionLevel() == Sink.SECTION_LEVEL_5 )
             {
                 sink.section5_();
             }
-            else if ( getSectionLevel() == Sink.SECTION_LEVEL_4)
+            else if ( getSectionLevel() == Sink.SECTION_LEVEL_4 )
             {
                 sink.section4_();
             }
-            else if ( getSectionLevel() == Sink.SECTION_LEVEL_3)
+            else if ( getSectionLevel() == Sink.SECTION_LEVEL_3 )
             {
                 sink.section3_();
             }

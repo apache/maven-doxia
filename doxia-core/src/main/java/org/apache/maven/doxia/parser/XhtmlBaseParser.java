@@ -23,8 +23,8 @@ import javax.swing.text.html.HTML.Attribute;
 import javax.swing.text.html.HTML.Tag;
 
 import org.apache.maven.doxia.macro.MacroExecutionException;
-import org.apache.maven.doxia.parser.AbstractXmlParser;
 import org.apache.maven.doxia.sink.Sink;
+import org.apache.maven.doxia.sink.SinkEventAttributeSet;
 
 import org.codehaus.plexus.util.StringUtils;
 import org.codehaus.plexus.util.xml.pull.XmlPullParser;
@@ -84,49 +84,51 @@ public class XhtmlBaseParser
     {
         boolean visited = true;
 
+        SinkEventAttributeSet attribs = getAttributesFromParser( parser );
+
         if ( parser.getName().equals( Tag.H2.toString() ) )
         {
             closeOpenSections( Sink.SECTION_LEVEL_1, sink );
 
-            sink.section1();
+            sink.section( Sink.SECTION_LEVEL_1, attribs );
 
-            sink.sectionTitle1();
+            sink.sectionTitle( Sink.SECTION_LEVEL_1, attribs );
         }
         else if ( parser.getName().equals( Tag.H3.toString() ) )
         {
             closeOpenSections( Sink.SECTION_LEVEL_2, sink );
 
-            sink.section2();
+            sink.section( Sink.SECTION_LEVEL_2, attribs );
 
-            sink.sectionTitle2();
+            sink.sectionTitle( Sink.SECTION_LEVEL_2, attribs );
         }
         else if ( parser.getName().equals( Tag.H4.toString() ) )
         {
             closeOpenSections( Sink.SECTION_LEVEL_3, sink );
 
-            sink.section3();
+            sink.section( Sink.SECTION_LEVEL_3, attribs );
 
-            sink.sectionTitle3();
+            sink.sectionTitle( Sink.SECTION_LEVEL_3, attribs );
         }
         else if ( parser.getName().equals( Tag.H5.toString() ) )
         {
             closeOpenSections( Sink.SECTION_LEVEL_4, sink );
 
-            sink.section4();
+            sink.section( Sink.SECTION_LEVEL_4, attribs );
 
-            sink.sectionTitle4();
+            sink.sectionTitle( Sink.SECTION_LEVEL_4, attribs );
         }
         else if ( parser.getName().equals( Tag.H6.toString() ) )
         {
             closeOpenSections( Sink.SECTION_LEVEL_5, sink );
 
-            sink.section5();
+            sink.section( Sink.SECTION_LEVEL_5, attribs );
 
-            sink.sectionTitle5();
+            sink.sectionTitle( Sink.SECTION_LEVEL_5, attribs );
         }
         else if ( parser.getName().equals( Tag.P.toString() ) )
         {
-            sink.paragraph();
+            sink.paragraph( attribs );
         }
         /*
          * The PRE element tells visual user agents that the enclosed text is
@@ -142,11 +144,13 @@ public class XhtmlBaseParser
         {
             verbatim();
 
-            sink.verbatim( false );
+            attribs.addAttribute( "boxed", "false");
+
+            sink.verbatim( attribs );
         }
         else if ( parser.getName().equals( Tag.UL.toString() ) )
         {
-            sink.list();
+            sink.list( attribs );
         }
         else if ( parser.getName().equals( Tag.OL.toString() ) )
         {
@@ -179,48 +183,48 @@ public class XhtmlBaseParser
                 }
             }
 
-            sink.numberedList( numbering );
+            sink.numberedList( numbering, attribs );
             orderedListDepth++;
         }
         else if ( parser.getName().equals( Tag.LI.toString() ) )
         {
             if ( orderedListDepth == 0 )
             {
-                sink.listItem();
+                sink.listItem( attribs );
             }
             else
             {
-                sink.numberedListItem();
+                sink.numberedListItem( attribs );
             }
         }
         else if ( parser.getName().equals( Tag.DL.toString() ) )
         {
-            sink.definitionList();
+            sink.definitionList( attribs );
         }
         else if ( parser.getName().equals( Tag.DT.toString() ) )
         {
-            sink.definitionListItem();
-            sink.definedTerm();
+            sink.definitionListItem( attribs );
+            sink.definedTerm( attribs );
         }
         else if ( parser.getName().equals( Tag.DD.toString() ) )
         {
-            sink.definition();
+            sink.definition( attribs );
         }
         else if ( ( parser.getName().equals( Tag.B.toString() ) )
                 || ( parser.getName().equals( Tag.STRONG.toString() ) ) )
         {
-            sink.bold();
+            sink.bold( attribs );
         }
         else if ( ( parser.getName().equals( Tag.I.toString() ) )
                 || ( parser.getName().equals( Tag.EM.toString() ) ) )
         {
-            sink.italic();
+            sink.italic( attribs );
         }
         else if ( ( parser.getName().equals( Tag.CODE.toString() ) )
                 || ( parser.getName().equals( Tag.SAMP.toString() ) )
                 || ( parser.getName().equals( Tag.TT.toString() ) ) )
         {
-            sink.monospaced();
+            sink.monospaced( attribs );
         }
         else if ( parser.getName().equals( Tag.A.toString() ) )
         {
@@ -235,7 +239,7 @@ public class XhtmlBaseParser
                     link = link.substring( 1 );
                 }
 
-                sink.link( link );
+                sink.link( link, attribs  );
 
                 isLink = true;
             }
@@ -245,7 +249,7 @@ public class XhtmlBaseParser
 
                 if ( name != null )
                 {
-                    sink.anchor( name );
+                    sink.anchor( name, attribs  );
 
                     isAnchor = true;
                 }
@@ -255,7 +259,7 @@ public class XhtmlBaseParser
 
                     if ( id != null )
                     {
-                        sink.anchor( id );
+                        sink.anchor( id, attribs  );
 
                         isAnchor = true;
                     }
@@ -269,7 +273,7 @@ public class XhtmlBaseParser
 
         else if ( parser.getName().equals( Tag.TABLE.toString() ) )
         {
-            sink.table();
+            sink.table( attribs );
 
             String border = parser.getAttributeValue( null, Attribute.BORDER.toString() );
 
@@ -297,39 +301,21 @@ public class XhtmlBaseParser
         }
         else if ( parser.getName().equals( Tag.TR.toString() ) )
         {
-            sink.tableRow();
+            sink.tableRow( attribs );
         }
         else if ( parser.getName().equals( Tag.TH.toString() ) )
         {
-            String width = parser.getAttributeValue( null, Attribute.WIDTH.toString() );
-
-            if ( width ==  null )
-            {
-                sink.tableHeaderCell();
-            }
-            else
-            {
-                sink.tableHeaderCell( width );
-            }
+            sink.tableHeaderCell( attribs );
         }
         else if ( parser.getName().equals( Tag.TD.toString() ) )
         {
-            String width = parser.getAttributeValue( null, Attribute.WIDTH.toString() );
-
-            if ( width ==  null )
-            {
-                sink.tableCell();
-            }
-            else
-            {
-                sink.tableCell( width );
-            }
+            sink.tableCell( attribs );
         }
         else if ( parser.getName().equals( Tag.CAPTION.toString() ) )
         {
             sink.tableRows_();
             this.hasCaption = true;
-            sink.tableCaption();
+            sink.tableCaption( attribs );
         }
 
         // ----------------------------------------------------------------------
@@ -338,11 +324,11 @@ public class XhtmlBaseParser
 
         else if ( parser.getName().equals( Tag.BR.toString() ) )
         {
-            sink.lineBreak();
+            sink.lineBreak( attribs );
         }
         else if ( parser.getName().equals( Tag.HR.toString() ) )
         {
-            sink.horizontalRule();
+            sink.horizontalRule( attribs );
         }
         else if ( parser.getName().equals( Tag.IMG.toString() ) )
         {
@@ -354,9 +340,10 @@ public class XhtmlBaseParser
 
             if ( src != null )
             {
-                sink.figureGraphics( src );
+                sink.figureGraphics( src, attribs );
             }
 
+            // TODO: remove, see DOXIA-75
             if ( title != null )
             {
                 sink.figureCaption();
@@ -576,10 +563,10 @@ public class XhtmlBaseParser
         /*
          * NOTE: Don't do any whitespace trimming here. Whitespace normalization has already been performed by the
          * parser so any whitespace that makes it here is significant.
-         */ 
+         */
         if ( StringUtils.isNotEmpty( text ) )
         {
-            // Emit separate text events for different lines, e.g. the input 
+            // Emit separate text events for different lines, e.g. the input
             // "\nLine1\n\nLine2\n\n" should deliver the event sequence "\n", "Line1\n", "\n", "Line2\n", "\n".
             // In other words, the concatenation of the text events must deliver the input sequence.
             // (according to section 2.11 of the XML spec, parsers must normalize line breaks to "\n")
