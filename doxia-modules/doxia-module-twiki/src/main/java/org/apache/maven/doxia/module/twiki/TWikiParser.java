@@ -162,16 +162,16 @@ public class TWikiParser
     }
 
     /** {@inheritDoc} */
-    public final synchronized void parse( final Reader reader, final Sink sink )
+    public final synchronized void parse( final Reader source, final Sink sink )
         throws ParseException
     {
 
         List blocks;
-        final ByLineSource source = new ByLineReaderSource( reader );
+        final ByLineSource src = new ByLineReaderSource( source );
 
         try
         {
-            blocks = parse( source );
+            blocks = parse( src );
         }
         catch ( final ParseException e )
         {
@@ -179,13 +179,13 @@ public class TWikiParser
         }
         catch ( final Exception e )
         {
-            throw new ParseException( e, source.getName(),
-                                      source.getLineNumber() );
+            throw new ParseException( e, src.getName(),
+                                      src.getLineNumber() );
         }
 
         sink.head();
         
-        final String title = getTitle( blocks, source ); 
+        final String title = getTitle( blocks, src ); 
         if ( title != null ) 
         {
             sink.title();
@@ -209,6 +209,8 @@ public class TWikiParser
      * If it doesn't find any section tries to get it from 
      * {@link ByLineReaderSource#getName()}
      * 
+     * @param blocks blocks to parse
+     * @param source source to parse
      * @return a title for a page
      */
     public final String getTitle( final List blocks, final ByLineSource source ) 

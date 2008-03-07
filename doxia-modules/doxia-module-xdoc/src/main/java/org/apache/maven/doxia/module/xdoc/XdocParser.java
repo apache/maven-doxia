@@ -170,7 +170,7 @@ public class XdocParser
 
         else if ( parser.getName().equals( MACRO_TAG.toString() ) )
         {
-            if ( !secondParsing )
+            if ( !isSecondParsing() )
             {
                 macroName = parser.getAttributeValue( null, Attribute.NAME.toString() );
 
@@ -183,7 +183,7 @@ public class XdocParser
         }
         else if ( parser.getName().equals( Tag.PARAM.toString() ) )
         {
-            if ( !secondParsing )
+            if ( !isSecondParsing() )
             {
                 if ( StringUtils.isNotEmpty( macroName ) )
                 {
@@ -281,7 +281,7 @@ public class XdocParser
 
         else if ( parser.getName().equals( MACRO_TAG.toString() ) )
         {
-            if ( !secondParsing )
+            if ( !isSecondParsing() )
             {
                 if ( StringUtils.isNotEmpty( macroName ) )
                 {

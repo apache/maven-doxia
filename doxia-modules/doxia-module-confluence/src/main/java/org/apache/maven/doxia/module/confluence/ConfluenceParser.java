@@ -72,7 +72,7 @@ public class ConfluenceParser
                 listParser, tableParser, paragraphParser };
     }
 
-    public List parse( ByLineSource source )
+    private List parse( ByLineSource source )
         throws ParseException
     {
         List blocks = new ArrayList();
@@ -114,16 +114,16 @@ public class ConfluenceParser
     }
 
     /** {@inheritDoc} */
-    public synchronized void parse( Reader reader, Sink sink )
+    public synchronized void parse( Reader source, Sink sink )
         throws ParseException
     {
         List blocks;
 
-        ByLineSource source = new ByLineReaderSource( reader );
+        ByLineSource src = new ByLineReaderSource( source );
 
         try
         {
-            blocks = parse( source );
+            blocks = parse( src  );
         }
         catch ( ParseException e )
         {
@@ -131,7 +131,7 @@ public class ConfluenceParser
         }
         catch ( Exception e )
         {
-            throw new ParseException( e, source.getName(), source.getLineNumber() );
+            throw new ParseException( e, src.getName(), src.getLineNumber() );
         }
 
         sink.head();

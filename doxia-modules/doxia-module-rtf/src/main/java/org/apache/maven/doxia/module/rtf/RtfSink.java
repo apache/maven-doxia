@@ -42,7 +42,6 @@ import org.apache.maven.doxia.sink.SinkAdapter;
 public class RtfSink
     extends SinkAdapter
 {
-    private static final String EOL = System.getProperty( "line.separator" );
 
     public static final double DEFAULT_PAPER_WIDTH = 21.;   /*cm*/
 
@@ -369,9 +368,9 @@ public class RtfSink
 
     public void title()
     {
-        Paragraph paragraph = new Paragraph( STYLE_BOLD, fontSize + 6 );
-        paragraph.justification = Parser.JUSTIFY_CENTER;
-        beginParagraph( paragraph );
+        Paragraph p = new Paragraph( STYLE_BOLD, fontSize + 6 );
+        p.justification = Parser.JUSTIFY_CENTER;
+        beginParagraph( p );
         emptyHeader = false;
     }
 
@@ -382,9 +381,9 @@ public class RtfSink
 
     public void author()
     {
-        Paragraph paragraph = new Paragraph( STYLE_ROMAN, fontSize + 2 );
-        paragraph.justification = Parser.JUSTIFY_CENTER;
-        beginParagraph( paragraph );
+        Paragraph p = new Paragraph( STYLE_ROMAN, fontSize + 2 );
+        p.justification = Parser.JUSTIFY_CENTER;
+        beginParagraph( p );
         emptyHeader = false;
     }
 
@@ -395,9 +394,9 @@ public class RtfSink
 
     public void date()
     {
-        Paragraph paragraph = new Paragraph( STYLE_ROMAN, fontSize );
-        paragraph.justification = Parser.JUSTIFY_CENTER;
-        beginParagraph( paragraph );
+        Paragraph p = new Paragraph( STYLE_ROMAN, fontSize );
+        p.justification = Parser.JUSTIFY_CENTER;
+        beginParagraph( p );
         emptyHeader = false;
     }
 
@@ -463,7 +462,7 @@ public class RtfSink
 
     public void sectionTitle()
     {
-        int style = STYLE_BOLD;
+        int stl = STYLE_BOLD;
         int size = fontSize;
 
         switch ( sectionLevel )
@@ -480,14 +479,14 @@ public class RtfSink
             case 4:
                 break;
             case 5:
-                style = STYLE_ROMAN;
+                stl = STYLE_ROMAN;
                 break;
         }
 
-        Paragraph paragraph = new Paragraph( style, size );
-        paragraph.style = styleNumber( sectionLevel );
+        Paragraph p = new Paragraph( stl, size );
+        p.style = styleNumber( sectionLevel );
 
-        beginParagraph( paragraph );
+        beginParagraph( p );
     }
 
     public void sectionTitle_()
@@ -514,10 +513,10 @@ public class RtfSink
 
     public void listItem()
     {
-        Paragraph paragraph = new Paragraph();
-        paragraph.leftIndent = indentation.get() + listItemIndent;
-        paragraph.firstLineIndent = ( -listItemIndent );
-        beginParagraph( paragraph );
+        Paragraph p = new Paragraph();
+        p.leftIndent = indentation.get() + listItemIndent;
+        p.firstLineIndent = ( -listItemIndent );
+        beginParagraph( p );
 
         beginStyle( STYLE_BOLD );
         writer.println( LIST_ITEM_HEADER );
@@ -565,10 +564,10 @@ public class RtfSink
             indent = textWidth( header, font );
         }
 
-        Paragraph paragraph = new Paragraph();
-        paragraph.leftIndent = indentation.get() + indent;
-        paragraph.firstLineIndent = ( -indent );
-        beginParagraph( paragraph );
+        Paragraph p = new Paragraph();
+        p.leftIndent = indentation.get() + indent;
+        p.firstLineIndent = ( -indent );
+        beginParagraph( p );
 
         beginStyle( STYLE_TYPEWRITER );
         writer.println( header );
@@ -881,10 +880,10 @@ public class RtfSink
 
     public void tableCaption()
     {
-        Paragraph paragraph = new Paragraph();
-        paragraph.justification = Parser.JUSTIFY_CENTER;
-        paragraph.spaceBefore /= 2;
-        beginParagraph( paragraph );
+        Paragraph p = new Paragraph();
+        p.justification = Parser.JUSTIFY_CENTER;
+        p.spaceBefore /= 2;
+        beginParagraph( p );
     }
 
     public void tableCaption_()
@@ -905,10 +904,10 @@ public class RtfSink
         endParagraph();
     }
 
-    private void beginParagraph( Paragraph paragraph )
+    private void beginParagraph( Paragraph p )
     {
-        paragraph.begin();
-        this.paragraph = paragraph;
+        p.begin();
+        this.paragraph = p;
         if ( style != STYLE_ROMAN )
         {
             beginStyle( style );
@@ -940,11 +939,11 @@ public class RtfSink
     {
         String text = verbatim.toString();
 
-        Paragraph paragraph = new Paragraph();
-        paragraph.fontStyle = STYLE_TYPEWRITER;
-        paragraph.frame = frame;
+        Paragraph p = new Paragraph();
+        p.fontStyle = STYLE_TYPEWRITER;
+        p.frame = frame;
 
-        beginParagraph( paragraph );
+        beginParagraph( p );
 
         StringTokenizer t = new StringTokenizer( text, EOL, true );
         while ( t.hasMoreTokens() )
@@ -980,9 +979,9 @@ public class RtfSink
             getLog().warn( "Unsupported image type: " + name );
         }
 
-        Paragraph paragraph = new Paragraph();
-        paragraph.justification = Parser.JUSTIFY_CENTER;
-        beginParagraph( paragraph );
+        Paragraph p = new Paragraph();
+        p.justification = Parser.JUSTIFY_CENTER;
+        beginParagraph( p );
 
         try
         {
@@ -1186,10 +1185,10 @@ public class RtfSink
 
     public void figureCaption()
     {
-        Paragraph paragraph = new Paragraph();
-        paragraph.justification = Parser.JUSTIFY_CENTER;
-        paragraph.spaceBefore /= 2;
-        beginParagraph( paragraph );
+        Paragraph p = new Paragraph();
+        p.justification = Parser.JUSTIFY_CENTER;
+        p.spaceBefore /= 2;
+        beginParagraph( p );
     }
 
     public void figureCaption_()
@@ -1697,9 +1696,9 @@ public class RtfSink
 
         int getNext()
         {
-            int next = this.next;
+            int nxt = this.next;
             this.next = space;
-            return next;
+            return nxt;
         }
 
         void skip()

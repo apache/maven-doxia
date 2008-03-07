@@ -785,7 +785,7 @@ public class LatexSink
      *
      * @param header True if this is a header cell.
      */
-    public void tableCell( boolean header )
+    private void tableCell( boolean header )
     {
         lastCellWasHeader = header;
         
@@ -816,7 +816,7 @@ public class LatexSink
      *
      * @param header True if this is a header cell.
      */
-    public void tableCell_( boolean header )
+    private void tableCell_( boolean header )
     {
         markup( "\\end{pcell}" );
         ++cellCount;
@@ -1160,11 +1160,9 @@ public class LatexSink
      */
     protected String defaultPreamble()
     {
-        String preamble = "";
-
         try
         {
-            preamble = IOUtil.toString( getDefaultPreamble() );
+            return IOUtil.toString( getDefaultPreamble() );
         }
         catch ( IOException ioe )
         {
@@ -1174,8 +1172,6 @@ public class LatexSink
 
             return "";
         }
-
-        return preamble;
     }
 
 }

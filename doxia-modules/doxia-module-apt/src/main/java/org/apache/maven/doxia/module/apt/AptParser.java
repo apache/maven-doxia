@@ -92,7 +92,7 @@ public class AptParser
     private static final int HORIZONTAL_RULE = 13;
 
     /** Page break event id */
-    private static final int PAGE_BREAK = 14;
+    private static final int PG_BREAK = 14;
 
     /** List break event id */
     private static final int LIST_BREAK = 15;
@@ -106,7 +106,7 @@ public class AptParser
     /** String representations of event ids */
     private static final String TYPE_NAMES[] = {"TITLE", "SECTION1", "SECTION2", "SECTION3", "SECTION4", "SECTION5",
         "PARAGRAPH", "VERBATIM", "FIGURE", "TABLE", "LIST_ITEM", "NUMBERED_LIST_ITEM", "DEFINITION_LIST_ITEM",
-        "HORIZONTAL_RULE", "PAGE_BREAK", "LIST_BREAK", "MACRO", "COMMENT_BLOCK"};
+        "HORIZONTAL_RULE", "PG_BREAK", "LIST_BREAK", "MACRO", "COMMENT_BLOCK"};
 
     /** An array of spaces. */
     private static final char SPACES[] = {' ', ' ', ' ', ' ', ' ', ' ', ' ', ' ', ' ', ' ', ' ', ' ', ' ', ' ', ' ',
@@ -147,7 +147,9 @@ public class AptParser
     // Public methods
     // ----------------------------------------------------------------------
 
-    /** {@inheritDoc} */
+    /** {@inheritDoc}
+     * @throws org.apache.maven.doxia.module.apt.AptParseException 
+     */
     public void parse( Reader source,
                        Sink sink )
         throws AptParseException
@@ -357,7 +359,7 @@ public class AptParser
                 case FIGURE:
                 case TABLE:
                 case HORIZONTAL_RULE:
-                case PAGE_BREAK:
+                case PG_BREAK:
                 case MACRO:
                 case COMMENT_BLOCK:
                     block.traverse();
@@ -431,7 +433,7 @@ public class AptParser
                 case FIGURE:
                 case TABLE:
                 case HORIZONTAL_RULE:
-                case PAGE_BREAK:
+                case PG_BREAK:
                     block.traverse();
                     nextBlock();
                     break;
@@ -526,7 +528,7 @@ public class AptParser
                 case FIGURE:
                 case TABLE:
                 case HORIZONTAL_RULE:
-                case PAGE_BREAK:
+                case PG_BREAK:
                     block.traverse();
                     nextBlock();
                     break;
@@ -621,7 +623,7 @@ public class AptParser
                 case FIGURE:
                 case TABLE:
                 case HORIZONTAL_RULE:
-                case PAGE_BREAK:
+                case PG_BREAK:
                     block.traverse();
                     nextBlock();
                     break;
@@ -863,7 +865,7 @@ public class AptParser
                     block = new HorizontalRule( indent, line );
                 }
                 break;
-            case AptMarkup.PAGE_BREAK:
+            case PAGE_BREAK:
                 if ( indent == 0 )
                 {
                     block = new PageBreak( indent, line );
@@ -1452,7 +1454,7 @@ public class AptParser
     {
         final StringBuffer buffer = new StringBuffer( end - begin );
 
-        Sink sink = new SinkAdapter()
+        Sink linkSink = new SinkAdapter()
         {
             public void lineBreak()
             {
@@ -1469,7 +1471,7 @@ public class AptParser
                 buffer.append( text );
             }
         };
-        doTraverseText( text, begin, end, sink );
+        doTraverseText( text, begin, end, linkSink );
 
         return buffer.toString().trim();
     }
@@ -2659,7 +2661,7 @@ public class AptParser
                           String firstLine )
             throws AptParseException
         {
-            super( PAGE_BREAK, indent );
+            super( PG_BREAK, indent );
         }
 
         /** {@inheritDoc} */
@@ -2694,7 +2696,7 @@ public class AptParser
         public void traverse()
             throws AptParseException
         {
-            if ( secondParsing )
+            if ( isSecondParsing() )
             {
                 return;
             }

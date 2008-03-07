@@ -80,7 +80,7 @@ public class XhtmlBaseParser
      * @param sink the sink to receive the events.
      * @return True if the event has been handled by this method, i.e. the tag was recognized, false otherwise.
      */
-    public boolean baseStartTag( XmlPullParser parser, Sink sink )
+    protected boolean baseStartTag( XmlPullParser parser, Sink sink )
     {
         boolean visited = true;
 
@@ -379,7 +379,7 @@ public class XhtmlBaseParser
      * @param sink the sink to receive the events.
      * @return True if the event has been handled by this method, false otherwise.
      */
-    public boolean baseEndTag( XmlPullParser parser, Sink sink )
+    protected boolean baseEndTag( XmlPullParser parser, Sink sink )
     {
         boolean visited = true;
 

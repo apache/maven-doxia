@@ -21,7 +21,6 @@ package org.apache.maven.doxia.module.fml;
 
 import java.io.IOException;
 import java.io.Reader;
-import java.io.StringReader;
 import java.util.Iterator;
 
 import javax.swing.text.html.HTML.Attribute;
@@ -34,12 +33,10 @@ import org.apache.maven.doxia.module.fml.model.Part;
 import org.apache.maven.doxia.parser.AbstractXmlParser;
 import org.apache.maven.doxia.parser.ParseException;
 import org.apache.maven.doxia.parser.Parser;
-import org.apache.maven.doxia.parser.XhtmlBaseParser;
 import org.apache.maven.doxia.sink.Sink;
 import org.apache.maven.doxia.util.HtmlTools;
 
 import org.codehaus.plexus.util.StringUtils;
-import org.codehaus.plexus.util.xml.pull.MXParser;
 import org.codehaus.plexus.util.xml.pull.XmlPullParser;
 import org.codehaus.plexus.util.xml.pull.XmlPullParserException;
 
@@ -76,11 +73,11 @@ public class FmlParser
 
 
     /** {@inheritDoc} */
-    public void parse( Reader reader, Sink sink )
+    public void parse( Reader source, Sink sink )
         throws ParseException
     {
         // this populates faqs
-        super.parse( reader, sink );
+        super.parse( source, sink );
 
         try
         {

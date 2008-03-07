@@ -1132,7 +1132,7 @@ public class XhtmlBaseSink
      * @see javax.swing.text.html.HTML.Tag#TH
      * @see javax.swing.text.html.HTML.Tag#TD
      */
-    public void tableCell_( boolean headerRow )
+    private void tableCell_( boolean headerRow )
     {
         Tag t = ( headerRow ? Tag.TH : Tag.TD );
 
@@ -1576,19 +1576,9 @@ public class XhtmlBaseSink
      * @return the text escaped, "" if null String input
      * @see org.apache.maven.doxia.util.HtmlTools#escapeHTML(String)
      */
-    public static String escapeHTML( String text )
+    protected static String escapeHTML( String text )
     {
         return HtmlTools.escapeHTML( text );
-    }
-
-    /**
-     * @param text
-     * @return a fragment encoded
-     * @see #encodeURL(String)
-     */
-    public static String encodeFragment( String text )
-    {
-        return encodeURL( StructureSinkUtils.linkToKey( text ) );
     }
 
     /**
@@ -1598,7 +1588,7 @@ public class XhtmlBaseSink
      * @return the text encoded, null if null String input.
      * @see org.apache.maven.doxia.util.HtmlTools#encodeURL(String)
      */
-    public static String encodeURL( String text )
+    protected static String encodeURL( String text )
     {
         return HtmlTools.encodeURL( text );
     }

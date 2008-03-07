@@ -44,10 +44,10 @@ public abstract class AbstractParser
     implements Parser
 {
     /** Indicates that a second parsing is required. */
-    protected boolean secondParsing = false;
+    private boolean secondParsing = false;
 
     /** @plexus.requirement */
-    protected MacroManager macroManager;
+    private MacroManager macroManager;
 
     /** Log instance. */
     private Log log;
@@ -72,7 +72,7 @@ public abstract class AbstractParser
     public void executeMacro( String macroId, MacroRequest request, Sink sink )
         throws MacroExecutionException, MacroNotFoundException
     {
-        Macro macro = macroManager.getMacro( macroId );
+        Macro macro = getMacroManager().getMacro( macroId );
 
         macro.enableLogging( getLog() );
 
@@ -121,6 +121,16 @@ public abstract class AbstractParser
         this.secondParsing = second;
     }
 
+    /**
+     * Indicates if we are currently parsing a second time.
+     *
+     * @return true if we are currently parsing a second time.
+     */
+    protected boolean isSecondParsing()
+    {
+        return secondParsing;
+    }
+
     /** {@inheritDoc} */
     public void enableLogging( Log log )
     {
@@ -141,5 +151,15 @@ public abstract class AbstractParser
         }
 
         return log;
+    }
+
+    /**
+     * Gets the current {@link MacroManager}.
+     *
+     * @return The current {@link MacroManager}.
+     */
+    protected MacroManager getMacroManager()
+    {
+        return macroManager;
     }
 }

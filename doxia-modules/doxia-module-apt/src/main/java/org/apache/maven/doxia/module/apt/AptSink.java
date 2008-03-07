@@ -23,7 +23,6 @@ import java.io.PrintWriter;
 import java.io.Writer;
 import java.util.Stack;
 
-import org.apache.maven.doxia.util.HtmlTools;
 import org.apache.maven.doxia.sink.AbstractTextSink;
 import org.codehaus.plexus.util.StringUtils;
 
@@ -607,8 +606,8 @@ public class AptSink
     /** Construct a table row. */
     private void buildRowLine()
     {
-        StringBuffer rowLine = new StringBuffer();
-        rowLine.append( TABLE_ROW_START_MARKUP );
+        StringBuffer rLine = new StringBuffer();
+        rLine.append( TABLE_ROW_START_MARKUP );
 
         for ( int i = 0; i < cellCount; i++ )
         {
@@ -617,23 +616,23 @@ public class AptSink
                 switch ( cellJustif[i] )
                 {
                 case 1:
-                    rowLine.append( TABLE_COL_LEFT_ALIGNED_MARKUP );
+                    rLine.append( TABLE_COL_LEFT_ALIGNED_MARKUP );
                     break;
                 case 2:
-                    rowLine.append( TABLE_COL_RIGHT_ALIGNED_MARKUP );
+                    rLine.append( TABLE_COL_RIGHT_ALIGNED_MARKUP );
                     break;
                 default:
-                    rowLine.append( TABLE_COL_CENTERED_ALIGNED_MARKUP );
+                    rLine.append( TABLE_COL_CENTERED_ALIGNED_MARKUP );
                 }
             }
             else
             {
-                rowLine.append( TABLE_COL_CENTERED_ALIGNED_MARKUP );
+                rLine.append( TABLE_COL_CENTERED_ALIGNED_MARKUP );
             }
         }
-        rowLine.append( EOL );
+        rLine.append( EOL );
 
-        this.rowLine = rowLine.toString();
+        this.rowLine = rLine.toString();
     }
 
     /** {@inheritDoc} */
@@ -904,30 +903,6 @@ public class AptSink
     protected void verbatimContent( String text )
     {
         write( escapeAPT( text ) );
-    }
-
-    /**
-     * Forward to HtmlTools.encodeFragment( text ).
-     *
-     * @param text the String to fragment, may be null.
-     * @return the fragmented text, null if null String input.
-     * @see org.apache.maven.doxia.util.HtmlTools#encodeURL(String).
-     */
-    public static String encodeFragment( String text )
-    {
-        return HtmlTools.encodeFragment( text );
-    }
-
-    /**
-     * Forward to HtmlTools.encodeURL( text ).
-     *
-     * @param text the String to encode, may be null.
-     * @return the text encoded, null if null String input.
-     * @see org.apache.maven.doxia.util.HtmlTools#encodeURL(String).
-     */
-    public static String encodeURL( String text )
-    {
-        return HtmlTools.encodeURL( text );
     }
 
     /** {@inheritDoc} */

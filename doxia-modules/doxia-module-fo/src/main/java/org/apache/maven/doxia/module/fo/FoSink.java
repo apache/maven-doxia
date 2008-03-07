@@ -541,9 +541,9 @@ public class FoSink
     }
 
     /** {@inheritDoc} */
-    public void figureGraphics( String s )
+    public void figureGraphics( String name )
     {
-        writeln( " src=\"" + s + "\"/>" );
+        writeln( " src=\"" + name + "\"/>" );
     }
 
     /** {@inheritDoc} */
