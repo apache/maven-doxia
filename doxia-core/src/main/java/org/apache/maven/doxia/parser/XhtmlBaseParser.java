@@ -26,6 +26,7 @@ import org.apache.maven.doxia.macro.MacroExecutionException;
 import org.apache.maven.doxia.sink.Sink;
 import org.apache.maven.doxia.sink.SinkEventAttributeSet;
 
+import org.apache.maven.doxia.sink.SinkEventAttributes;
 import org.codehaus.plexus.util.StringUtils;
 import org.codehaus.plexus.util.xml.pull.XmlPullParser;
 import org.codehaus.plexus.util.xml.pull.XmlPullParserException;
@@ -58,6 +59,9 @@ public class XhtmlBaseParser
 
     /** Verbatim level, increased whenever a &lt;pre&gt; tag is encountered. */
     private int verbatimLevel;
+
+    /** Used to recognize the case of img inside figure. */
+    private boolean inFigure;
 
     /**
      * <p>
@@ -128,7 +132,22 @@ public class XhtmlBaseParser
         }
         else if ( parser.getName().equals( Tag.P.toString() ) )
         {
-            sink.paragraph( attribs );
+            if ( !inFigure )
+            {
+                sink.paragraph( attribs );
+            }
+        }
+        else if ( parser.getName().equals( Tag.DIV.toString() ) )
+        {
+            String divclass = parser.getAttributeValue( null, Attribute.CLASS.toString() );
+
+            if ( "figure".equals( divclass ) )
+            {
+                this.inFigure = true;
+                SinkEventAttributeSet atts = new SinkEventAttributeSet( attribs );
+                atts.removeAttribute( SinkEventAttributes.CLASS );
+                sink.figure( atts );
+            }
         }
         /*
          * The PRE element tells visual user agents that the enclosed text is
@@ -218,7 +237,14 @@ public class XhtmlBaseParser
         else if ( ( parser.getName().equals( Tag.I.toString() ) )
                 || ( parser.getName().equals( Tag.EM.toString() ) ) )
         {
-            sink.italic( attribs );
+            if ( inFigure )
+            {
+                sink.figureCaption( attribs );
+            }
+            else
+            {
+                sink.italic( attribs );
+            }
         }
         else if ( ( parser.getName().equals( Tag.CODE.toString() ) )
                 || ( parser.getName().equals( Tag.SAMP.toString() ) )
@@ -333,31 +359,11 @@ public class XhtmlBaseParser
         else if ( parser.getName().equals( Tag.IMG.toString() ) )
         {
             String src = parser.getAttributeValue( null, Attribute.SRC.toString() );
-            String title = parser.getAttributeValue( null, Attribute.TITLE.toString() );
-            String alt = parser.getAttributeValue( null, Attribute.ALT.toString() );
-
-            sink.figure();
 
             if ( src != null )
             {
                 sink.figureGraphics( src, attribs );
             }
-
-            // TODO: remove, see DOXIA-75
-            if ( title != null )
-            {
-                sink.figureCaption();
-                sink.text( title );
-                sink.figureCaption_();
-            }
-            else if ( alt != null )
-            {
-                sink.figureCaption();
-                sink.text( alt );
-                sink.figureCaption_();
-            }
-
-            sink.figure_();
         }
         else
         {
@@ -385,7 +391,18 @@ public class XhtmlBaseParser
 
         if ( parser.getName().equals( Tag.P.toString() ) )
         {
-            sink.paragraph_();
+            if ( !inFigure )
+            {
+                sink.paragraph_();
+            }
+        }
+        else if ( parser.getName().equals( Tag.DIV.toString() ) )
+        {
+            if ( inFigure )
+            {
+                sink.figure_();
+                this.inFigure = false;
+            }
         }
         else if ( parser.getName().equals( Tag.PRE.toString() ) )
         {
@@ -434,7 +451,14 @@ public class XhtmlBaseParser
         else if ( ( parser.getName().equals( Tag.I.toString() ) )
                 || ( parser.getName().equals( Tag.EM.toString() ) ) )
         {
-            sink.italic_();
+            if ( inFigure )
+            {
+                sink.figureCaption_();
+            }
+            else
+            {
+                sink.italic_();
+            }
         }
         else if ( ( parser.getName().equals( Tag.CODE.toString() ) )
                 || ( parser.getName().equals( Tag.SAMP.toString() ) )

@@ -171,28 +171,30 @@ public class SinkUtils
      * ie it can be appended directly to an xml start tag. Attribute values that are itself
      * AttributeSets are ignored, all other keys and values are written as Strings.
      *
-     * @param att The AttributeSet.
+     * @param att The AttributeSet. May be null, in which case an empty String is returned.
      * @return the AttributeSet as a String in a form that can be appended to an xml start tag.
      */
     public static String getAttributeString( AttributeSet att )
     {
+        if ( att == null )
+        {
+            return "";
+        }
+
         StringBuffer sb = new StringBuffer();
 
-        if ( att != null )
+        Enumeration names = att.getAttributeNames();
+
+        while ( names.hasMoreElements() )
         {
-            Enumeration names = att.getAttributeNames();
+            Object key = names.nextElement();
+            Object value = att.getAttribute( key );
 
-            while ( names.hasMoreElements() )
+            // AttributeSets are ignored
+            if ( !(value instanceof AttributeSet) )
             {
-                Object key = names.nextElement();
-                Object value = att.getAttribute( key );
-
-                // AttributeSets are ignored
-                if ( !(value instanceof AttributeSet) )
-                {
-                    sb.append( Markup.SPACE ).append( key.toString() ).append( Markup.EQUAL )
-                        .append( Markup.QUOTE ).append( value.toString() ).append( Markup.QUOTE );
-                }
+                sb.append( Markup.SPACE ).append( key.toString() ).append( Markup.EQUAL )
+                    .append( Markup.QUOTE ).append( value.toString() ).append( Markup.QUOTE );
             }
         }
 

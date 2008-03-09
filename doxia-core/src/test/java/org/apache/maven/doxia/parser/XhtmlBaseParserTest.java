@@ -98,12 +98,7 @@ public class XhtmlBaseParserTest
 
         Iterator it = sink.getEventList().iterator();
 
-        assertEquals( "figure", ( (SinkEventElement) it.next() ).getName() );
         assertEquals( "figureGraphics", ( (SinkEventElement) it.next() ).getName() );
-        assertEquals( "figureCaption", ( (SinkEventElement) it.next() ).getName() );
-        assertEquals( "text", ( (SinkEventElement) it.next() ).getName() );
-        assertEquals( "figureCaption_", ( (SinkEventElement) it.next() ).getName() );
-        assertEquals( "figure_", ( (SinkEventElement) it.next() ).getName() );
         assertFalse( it.hasNext() );
     }
 

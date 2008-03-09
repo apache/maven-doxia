@@ -111,6 +111,7 @@ public class XhtmlParser
             {
                 this.boxed = true;
             }
+            super.baseStartTag( parser, sink ); // pick up other divs
         }
         /*
          * The PRE element tells visual user agents that the enclosed text is
@@ -171,6 +172,7 @@ public class XhtmlParser
         else if ( parser.getName().equals( Tag.DIV.toString() ) )
         {
             this.boxed = false;
+            super.baseEndTag( parser, sink );
         }
         else if ( !baseEndTag( parser, sink ) )
         {

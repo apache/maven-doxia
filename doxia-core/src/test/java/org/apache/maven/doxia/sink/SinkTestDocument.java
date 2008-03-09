@@ -286,12 +286,12 @@ public class SinkTestDocument
      */
     public static void generateFigure( Sink sink )
     {
-        sink.figure();
+        sink.figure( null );
 
-        sink.figureGraphics( "figure.png" );
+        sink.figureGraphics( "figure.png", null );
 
-        sink.figureCaption();
-        sink.text( "Figure caption" );
+        sink.figureCaption( null );
+        sink.text( "Figure caption", null );
         sink.figureCaption_();
 
         sink.figure_();

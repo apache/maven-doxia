@@ -72,6 +72,15 @@ public class XhtmlBaseSink
     /** used to store attributes passed to table(). */
     private MutableAttributeSet tableAttributes;
 
+    /** Used to distinguish old-style figure handling. */
+    private boolean legacyFigure;
+
+    /** Used to distinguish old-style figure handling. */
+    private boolean legacyFigureCaption;
+
+    /** Indicates that an image is part of a figure. */
+    private boolean inFigure;
+
     // ----------------------------------------------------------------------
     // Constructor
     // ----------------------------------------------------------------------
@@ -703,10 +712,14 @@ public class XhtmlBaseSink
     /**
      * {@inheritDoc}
      * @see javax.swing.text.html.HTML.Tag#IMG
+     * @deprecated Use {@link figure(SinkEventAttributes)}, this method is only kept for
+     * backward compatibility. Note that the behavior is different though, as this method
+     * writes an img tag, while correctly the img tag should be written by  figureGraphics().
      */
     public void figure()
     {
         write( String.valueOf( LESS_THAN ) + Tag.IMG );
+        legacyFigure = true;
     }
 
     /**
@@ -715,19 +728,44 @@ public class XhtmlBaseSink
      */
     public void figure( SinkEventAttributes attributes )
     {
+        inFigure = true;
+
         MutableAttributeSet atts = SinkUtils.filterAttributes(
                 attributes, SinkUtils.SINK_BASE_ATTRIBUTES  );
 
-        write( String.valueOf( LESS_THAN ) + Tag.IMG + SinkUtils.getAttributeString( atts ) );
+        if ( atts == null )
+        {
+            atts = new SinkEventAttributeSet( 1 );
+        }
+        
+        if ( !atts.isDefined( SinkEventAttributes.CLASS ) )
+        {
+            atts.addAttribute( SinkEventAttributes.CLASS, "figure" );
+        }
+        
+        writeStartTag( Tag.DIV, atts );
     }
 
     /** {@inheritDoc} */
     public void figure_()
     {
-        write( String.valueOf( SPACE ) + SLASH + GREATER_THAN );
+        if ( legacyFigure )
+        {
+            write( String.valueOf( SPACE ) + SLASH + GREATER_THAN );
+            legacyFigure = false;
+        }
+        else
+        {
+            writeEndTag( Tag.DIV );
+            inFigure = false;
+        }
     }
 
-    /** {@inheritDoc} */
+    /** {@inheritDoc}
+     * @deprecated Use {@link figureGraphics(String,SinkEventAttributes)},
+     * this method is only kept for backward compatibility. Note that the behavior is
+     * different though, as this method does not write the img tag, only the src attribute.
+     */
     public void figureGraphics( String name )
     {
         write( String.valueOf( SPACE ) + Attribute.SRC + EQUAL + QUOTE + name + QUOTE );
@@ -736,34 +774,73 @@ public class XhtmlBaseSink
     /** {@inheritDoc} */
     public void figureGraphics( String src, SinkEventAttributes attributes )
     {
-        MutableAttributeSet atts = SinkUtils.filterAttributes(
-                attributes, SinkUtils.SINK_IMG_ATTRIBUTES  );
-        // TODO: remove, see DOXIA-75
-        atts.removeAttribute( Attribute.ALT.toString() );
-        atts.removeAttribute( Attribute.TITLE.toString() );
-        atts.removeAttribute( Attribute.SRC.toString() );
-
-        write( String.valueOf( SPACE ) + Attribute.SRC + EQUAL
-                + QUOTE + src + QUOTE + SinkUtils.getAttributeString( atts ) );
+        if ( inFigure )
+        {
+            MutableAttributeSet atts = new SinkEventAttributeSet( 1 );
+            atts.addAttribute( SinkEventAttributes.ALIGN, "center" );
+            
+            writeStartTag( Tag.P, atts );
+        }
+        
+        int count = ( attributes == null ? 1 : attributes.getAttributeCount() + 1 );
+        
+        MutableAttributeSet atts = new SinkEventAttributeSet( count );
+        
+        atts.addAttribute( Attribute.SRC, src );
+        atts.addAttributes( SinkUtils.filterAttributes(
+                attributes, SinkUtils.SINK_IMG_ATTRIBUTES ) );
+        
+        writeStartTag( Tag.IMG, atts, true );
+        
+        if ( inFigure )
+        {
+            writeEndTag( Tag.P );
+        }
     }
 
-    /** {@inheritDoc} */
+    /** {@inheritDoc}
+     * @deprecated Use {@link figureCaption(SinkEventAttributes)},
+     * this method is only kept for backward compatibility. Note that the behavior is
+     * different though, as this method only writes an alt attribute.
+     */
     public void figureCaption()
     {
         write( String.valueOf( SPACE ) + Attribute.ALT + EQUAL + QUOTE );
+        legacyFigureCaption = true;
     }
 
     /** {@inheritDoc} */
     public void figureCaption( SinkEventAttributes attributes )
     {
-        // TODO: see DOXIA-75
-        write( String.valueOf( SPACE ) + Attribute.ALT + EQUAL + QUOTE );
+        if ( legacyFigureCaption )
+        {
+            write( String.valueOf( SPACE ) + Attribute.ALT + EQUAL + QUOTE );
+            legacyFigureCaption = false;
+        }
+        else
+        {
+            SinkEventAttributeSet atts = new SinkEventAttributeSet( 1 );
+            atts.addAttribute( SinkEventAttributes.ALIGN, "center" );
+            atts.addAttributes( SinkUtils.filterAttributes(
+                attributes, SinkUtils.SINK_BASE_ATTRIBUTES  ) );
+            
+            paragraph( atts );
+            italic();
+        }
     }
 
     /** {@inheritDoc} */
     public void figureCaption_()
     {
-        write( String.valueOf( QUOTE ) );
+        if ( legacyFigureCaption )
+        {
+            write( String.valueOf( QUOTE ) );
+        }
+        else
+        {
+            italic_();
+            paragraph_();
+        }
     }
 
     /**
