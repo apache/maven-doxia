@@ -98,7 +98,7 @@ public class SnippetMacro
 
             try
             {
-                url = f.toURL();
+                url = f.toURI().toURL();
             }
             catch ( MalformedURLException e )
             {

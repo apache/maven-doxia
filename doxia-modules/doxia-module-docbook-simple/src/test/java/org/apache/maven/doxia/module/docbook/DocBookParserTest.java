@@ -128,7 +128,6 @@ public class DocBookParserTest extends AbstractParserTest
 
 
         // same test with EOL
-        String EOL = System.getProperty( "line.separator" );
         text = "<para><command>word</command>" + EOL + "<emphasis>word</emphasis></para>";
 
         sink.reset();

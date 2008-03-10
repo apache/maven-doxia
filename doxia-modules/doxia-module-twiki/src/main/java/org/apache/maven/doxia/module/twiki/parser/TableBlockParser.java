@@ -51,7 +51,9 @@ public class TableBlockParser implements BlockParser
         return TABLE_PATTERN.matcher( line ).lookingAt();
     }
 
-    /** {@inheritDoc} */
+    /** {@inheritDoc}
+     * @throws org.apache.maven.doxia.parser.ParseException
+     */
     public final Block visit( final String line, final ByLineSource source )
         throws ParseException
     {

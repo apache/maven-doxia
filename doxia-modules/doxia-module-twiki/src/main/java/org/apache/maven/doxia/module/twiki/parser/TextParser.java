@@ -165,7 +165,7 @@ public class TextParser
         }
         else
         {
-            ret.add( new LinkBlock( url, url ) );
+            ret.add( new LinkBlock( url, new TextBlock( url ) ) );
         }
         ret.addAll( parse( line.substring(
                 urlMatcher.end(), line.length() ) ) );
@@ -213,7 +213,7 @@ public class TextParser
                 else
                 {
                     ret.add( new LinkBlock( s.substring( 0, i ),
-                                            s.substring( i ).trim() ) );
+                                            new TextBlock( s.substring( i ).trim() ) ) );
                 }
             }
             else

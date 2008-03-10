@@ -110,7 +110,9 @@ public class VerbatimTest extends AbstractBlockTestCase
         
     }
     
-    /** test */
+    /** test
+     * @throws org.apache.maven.doxia.parser.ParseException
+     */
     public void testVerbatimAfterSection() throws ParseException 
     {
         final StringReader sw = new StringReader( "---++ fooo\n"

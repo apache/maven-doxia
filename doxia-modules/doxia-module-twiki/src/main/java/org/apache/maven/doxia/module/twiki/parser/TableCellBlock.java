@@ -28,7 +28,7 @@ import org.apache.maven.doxia.sink.Sink;
  * @author Juan F. Codagnone
  * @version $Id$
  */
-public class TableCellBlock extends AbstractFatherBlock
+class TableCellBlock extends AbstractFatherBlock
 {
     /**
      * Creates the TableCellBlock.

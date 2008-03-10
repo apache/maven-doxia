@@ -37,7 +37,6 @@ import org.apache.maven.doxia.sink.Sink;
 public class AptParserTest
     extends AbstractParserTest
 {
-    private static final String EOL = System.getProperty( "line.separator" );
 
     private AptParser parser;
 
@@ -140,6 +139,8 @@ public class AptParserTest
     /**
      * Parses the test document test.apt and re-emits
      * it into parser/test.apt.
+     * @throws java.io.IOException
+     * @throws org.apache.maven.doxia.parser.ParseException
      */
     public void testTestDocument()
         throws IOException, ParseException

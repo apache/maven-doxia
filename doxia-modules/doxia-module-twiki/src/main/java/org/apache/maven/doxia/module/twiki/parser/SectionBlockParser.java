@@ -53,13 +53,17 @@ public class SectionBlockParser implements BlockParser
     /** {@link VerbatimBlockParser} */
     private VerbatimBlockParser verbatimBlockParser;
 
-    /** {@inheritDoc} */
+    /** {@inheritDoc}
+     * @param s the String.
+     */
     public final boolean accept( final String s )
     {
         return HEADER_DA.matcher( s ).lookingAt();
     }
 
-    /** {@inheritDoc} */
+    /** {@inheritDoc}
+     * @throws org.apache.maven.doxia.parser.ParseException 
+     */
     public final Block visit( final String line, final ByLineSource source )
         throws ParseException
     {

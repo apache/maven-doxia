@@ -21,7 +21,6 @@ package org.apache.maven.doxia.module.latex;
 
 import java.io.Writer;
 
-import org.apache.maven.doxia.module.latex.LatexSink;
 import org.apache.maven.doxia.sink.Sink;
 import org.apache.maven.doxia.sink.AbstractSinkTest;
 

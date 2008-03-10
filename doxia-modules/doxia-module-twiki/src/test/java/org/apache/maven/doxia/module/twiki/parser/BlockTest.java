@@ -54,13 +54,13 @@ public class BlockTest extends TestCase
                     new WikiWordBlock( "bar", resolver ),
                     new WikiWordBlock( "foo", resolver ) );
 
-        testEquals( new WikiWordBlock( "bar", "text", resolver ),
-                    new WikiWordBlock( "bar", "text", resolver ),
+        testEquals( new WikiWordBlock( "bar", new TextBlock( "text" ), resolver ),
+                    new WikiWordBlock( "bar", new TextBlock( "text" ), resolver ),
                     new WikiWordBlock( "bar", resolver ) );
 
-        testEquals( new WikiWordBlock( "bar", "text", resolver ),
-                    new WikiWordBlock( "bar", "text", resolver ),
-                    new WikiWordBlock( "text", "bar", resolver ) );
+        testEquals( new WikiWordBlock( "bar", new TextBlock( "text" ), resolver ),
+                    new WikiWordBlock( "bar", new TextBlock( "text" ), resolver ),
+                    new WikiWordBlock( "text", new TextBlock( "bar" ), resolver ) );
 
     }
 
@@ -69,8 +69,9 @@ public class BlockTest extends TestCase
      */
     public final void testLinkBlockEquals()
     {
-        testEquals( new LinkBlock( "foo", "bar" ), new LinkBlock( "foo", "bar" ),
-                    new LinkBlock( "bar", "foo" ) );
+        testEquals( new LinkBlock( "foo", new TextBlock( "bar" ) ),
+                    new LinkBlock( "foo", new TextBlock( "bar" ) ),
+                    new LinkBlock( "bar", new TextBlock( "foo" ) ) );
     }
 
     /**

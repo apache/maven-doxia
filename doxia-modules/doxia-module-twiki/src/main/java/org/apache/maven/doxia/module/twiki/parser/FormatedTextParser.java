@@ -1,5 +1,10 @@
 package org.apache.maven.doxia.module.twiki.parser;
 
+import java.util.ArrayList;
+import java.util.HashMap;
+import java.util.List;
+import java.util.Map;
+
 /*
  * Licensed to the Apache Software Foundation (ASF) under one
  * or more contributor license agreements.  See the NOTICE file
@@ -19,7 +24,7 @@ package org.apache.maven.doxia.module.twiki.parser;
  * under the License.
  */
 
-import java.util.*;
+
 
 
 /**

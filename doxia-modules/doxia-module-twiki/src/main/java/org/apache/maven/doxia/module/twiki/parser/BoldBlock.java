@@ -27,7 +27,7 @@ import org.apache.maven.doxia.sink.Sink;
  * @author Juan F. Codagnone
  * @version $Id$
  */
-public class BoldBlock extends AbstractFatherBlock
+class BoldBlock extends AbstractFatherBlock
 {
     /**
      * Creates the BoldBlock.

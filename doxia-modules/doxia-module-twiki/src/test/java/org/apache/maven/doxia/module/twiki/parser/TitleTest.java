@@ -18,7 +18,6 @@
  */
 package org.apache.maven.doxia.module.twiki.parser;
 
-import java.io.Reader;
 import java.io.StringReader;
 
 import org.apache.maven.doxia.module.twiki.TWikiParser;
@@ -41,10 +40,9 @@ public class TitleTest extends AbstractBlockTestCase
         final ByLineSource source = new ByLineReaderSource( 
                 new StringReader( "---++ Test\n hello world" ) );
         
-        final TWikiParser twikiParser = new TWikiParser();
+        final TWikiParser parser = new TWikiParser();
         
-        assertEquals("Test",  twikiParser.getTitle( twikiParser.parse(source),
-                source ) );
+        assertEquals( "Test",  parser.getTitle( parser.parse(source), source ) );
     }
     
     public void testNoSectionTitle() throws Exception 
@@ -53,10 +51,9 @@ public class TitleTest extends AbstractBlockTestCase
                 new ByLineReaderSource( 
                         new StringReader( "hello world" )), "testpage" );
         
-        final TWikiParser twikiParser = new TWikiParser();
+        final TWikiParser parser = new TWikiParser();
         
-        assertEquals("testpage",  twikiParser.getTitle( twikiParser.parse(source),
-                source ) );
+        assertEquals( "testpage",  parser.getTitle( parser.parse(source), source ) );
     }
     
     public void testNoSectionTwikiExtensionTitle() throws Exception 
@@ -65,10 +62,9 @@ public class TitleTest extends AbstractBlockTestCase
                 new ByLineReaderSource( 
                         new StringReader( "hello world" )), "testpage.twiki" );
         
-        final TWikiParser twikiParser = new TWikiParser();
+        final TWikiParser parser = new TWikiParser();
         
-        assertEquals("testpage",  twikiParser.getTitle( twikiParser.parse(source),
-                source ) );
+        assertEquals( "testpage",  parser.getTitle( parser.parse(source), source ) );
     }
     
 }

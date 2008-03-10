@@ -63,11 +63,17 @@ public class ConfluenceParserTest
         throws Exception
     {
         if ( output != null )
+        {
             output.close();
+        }
         if ( reader != null )
+        {
             reader.close();
+        }
         if ( writer != null )
+        {
             writer.close();
+        }
 
         super.tearDown();
     }

@@ -19,8 +19,6 @@ package org.apache.maven.doxia.logging;
  * under the License.
  */
 
-import org.apache.maven.doxia.logging.Log;
-
 import org.codehaus.plexus.logging.Logger;
 
 /**

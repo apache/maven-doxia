@@ -50,7 +50,9 @@ public class VerbatimBlockParser implements BlockParser
         return VERBATIM_START_PATTERN.matcher( line ).lookingAt();
     }
 
-    /** {@inheritDoc} */
+    /** {@inheritDoc}
+     * @throws org.apache.maven.doxia.parser.ParseException
+     */
     public final Block visit( final String line, final ByLineSource source )
         throws ParseException
     {

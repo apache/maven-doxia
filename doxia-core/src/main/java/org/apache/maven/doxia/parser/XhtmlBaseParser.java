@@ -26,7 +26,6 @@ import org.apache.maven.doxia.macro.MacroExecutionException;
 import org.apache.maven.doxia.sink.Sink;
 import org.apache.maven.doxia.sink.SinkEventAttributeSet;
 
-import org.apache.maven.doxia.sink.SinkEventAttributes;
 import org.codehaus.plexus.util.StringUtils;
 import org.codehaus.plexus.util.xml.pull.XmlPullParser;
 import org.codehaus.plexus.util.xml.pull.XmlPullParserException;
@@ -145,7 +144,7 @@ public class XhtmlBaseParser
             {
                 this.inFigure = true;
                 SinkEventAttributeSet atts = new SinkEventAttributeSet( attribs );
-                atts.removeAttribute( SinkEventAttributes.CLASS );
+                atts.removeAttribute( SinkEventAttributeSet.CLASS );
                 sink.figure( atts );
             }
         }
@@ -163,7 +162,7 @@ public class XhtmlBaseParser
         {
             verbatim();
 
-            attribs.addAttribute( "boxed", "false");
+            attribs.addAttribute( SinkEventAttributeSet.BOXED, "false");
 
             sink.verbatim( attribs );
         }

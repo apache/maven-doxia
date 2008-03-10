@@ -23,7 +23,6 @@ import java.io.Reader;
 
 import java.util.Iterator;
 
-import org.apache.maven.doxia.module.fml.FmlParser;
 import org.apache.maven.doxia.parser.AbstractParserTest;
 import org.apache.maven.doxia.parser.Parser;
 import org.apache.maven.doxia.sink.SinkEventElement;

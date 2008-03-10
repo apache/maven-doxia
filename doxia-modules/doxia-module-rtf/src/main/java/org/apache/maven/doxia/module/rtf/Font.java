@@ -65,15 +65,15 @@ class Font
             {
                 c = ' ';
             }
-            FontMetrics.CharMetrics metrics = this.metrics.charMetrics[c];
-            width += metrics.wx;
-            if ( metrics.ury > ascent )
+            FontMetrics.CharMetrics charMetrics = this.metrics.charMetrics[c];
+            width += charMetrics.wx;
+            if ( charMetrics.ury > ascent )
             {
-                ascent = metrics.ury;
+                ascent = charMetrics.ury;
             }
-            if ( metrics.lly < descent )
+            if ( charMetrics.lly < descent )
             {
-                descent = metrics.lly;
+                descent = charMetrics.lly;
             }
         }
 

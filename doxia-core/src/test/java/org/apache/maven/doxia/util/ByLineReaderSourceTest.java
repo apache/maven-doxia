@@ -22,7 +22,6 @@ package org.apache.maven.doxia.util;
 import java.io.StringReader;
 
 import org.apache.maven.doxia.parser.ParseException;
-import org.apache.maven.doxia.util.ByLineReaderSource;
 
 import junit.framework.TestCase;
 

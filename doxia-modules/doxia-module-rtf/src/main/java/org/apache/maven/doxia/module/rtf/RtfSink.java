@@ -587,15 +587,15 @@ public class RtfSink
 
     private String getItemHeader()
     {
-        int numbering = ( (Integer) this.numbering.lastElement() ).intValue();
-        int itemNumber = ( (Counter) this.itemNumber.lastElement() ).get();
+        int nmb = ( (Integer) this.numbering.lastElement() ).intValue();
+        int iNmb = ( (Counter) this.itemNumber.lastElement() ).get();
         StringBuffer buf = new StringBuffer();
 
-        switch ( numbering )
+        switch ( nmb )
         {
             case Sink.NUMBERING_DECIMAL:
             default:
-                buf.append( itemNumber );
+                buf.append( iNmb );
                 buf.append( ". " );
                 while ( buf.length() < 4 )
                 {
@@ -604,17 +604,17 @@ public class RtfSink
                 break;
 
             case Sink.NUMBERING_LOWER_ALPHA:
-                buf.append( AlphaNumerals.toString( itemNumber, true ) );
+                buf.append( AlphaNumerals.toString( iNmb, true ) );
                 buf.append( ") " );
                 break;
 
             case Sink.NUMBERING_UPPER_ALPHA:
-                buf.append( AlphaNumerals.toString( itemNumber, false ) );
+                buf.append( AlphaNumerals.toString( iNmb, false ) );
                 buf.append( ". " );
                 break;
 
             case Sink.NUMBERING_LOWER_ROMAN:
-                buf.append( RomanNumerals.toString( itemNumber, true ) );
+                buf.append( RomanNumerals.toString( iNmb, true ) );
                 buf.append( ") " );
                 while ( buf.length() < 6 )
                 {
@@ -623,7 +623,7 @@ public class RtfSink
                 break;
 
             case Sink.NUMBERING_UPPER_ROMAN:
-                buf.append( RomanNumerals.toString( itemNumber, false ) );
+                buf.append( RomanNumerals.toString( iNmb, false ) );
                 buf.append( ". " );
                 while ( buf.length() < 6 )
                 {
@@ -715,12 +715,12 @@ public class RtfSink
 
         for ( int i = 0; i < table.rows.size(); ++i )
         {
-            Row row = (Row) table.rows.elementAt( i );
+            Row r = (Row) table.rows.elementAt( i );
 
             writer.print( "\\trowd" );
             writer.print( "\\trleft" + x0 );
             writer.print( "\\trgaph" + CELL_HORIZONTAL_PAD );
-            writer.println( "\\trrh" + row.height() );
+            writer.println( "\\trrh" + r.height() );
 
             if ( table.grid )
             {
@@ -748,27 +748,27 @@ public class RtfSink
 
             for ( int j = 0; j < table.numColumns; ++j )
             {
-                if ( j >= row.cells.size() )
+                if ( j >= r.cells.size() )
                 {
                     break;
                 }
-                Cell cell = (Cell) row.cells.elementAt( j );
+                Cell c = (Cell) r.cells.elementAt( j );
 
                 writer.print( "\\pard\\intbl" );
                 setJustification( table.justification[j] );
                 writer.println( "\\plain\\f0\\fs" + ( 2 * fontSize ) );
 
-                for ( int k = 0; k < cell.lines.size(); ++k )
+                for ( int k = 0; k < c.lines.size(); ++k )
                 {
                     if ( k > 0 )
                     {
                         writer.println( "\\line" );
                     }
-                    Line line = (Line) cell.lines.elementAt( k );
+                    Line l = (Line) c.lines.elementAt( k );
 
-                    for ( int n = 0; n < line.items.size(); ++n )
+                    for ( int n = 0; n < l.items.size(); ++n )
                     {
-                        Item item = (Item) line.items.elementAt( n );
+                        Item item = (Item) l.items.elementAt( n );
                         writer.print( "{" );
                         setStyle( item.style );
                         writer.println( escape( item.text ) );
@@ -1020,16 +1020,16 @@ public class RtfSink
             bytesPerLine = 4 * ( ( 3 * srcWidth + 3 ) / 4 );
             dib.bitmap = new byte[srcHeight * bytesPerLine];
 
-            byte[] line = new byte[3 * srcWidth];
+            byte[] l = new byte[3 * srcWidth];
             for ( int i = ( srcHeight - 1 ); i >= 0; --i )
             {
-                ppm.read( line, 0, line.length );
-                for ( int j = 0, k = ( i * bytesPerLine ); j < line.length; j += 3 )
+                ppm.read( l, 0, l.length );
+                for ( int j = 0, k = ( i * bytesPerLine ); j < l.length; j += 3 )
                 {
                     // component order = BGR
-                    dib.bitmap[k++] = line[j + 2];
-                    dib.bitmap[k++] = line[j + 1];
-                    dib.bitmap[k++] = line[j];
+                    dib.bitmap[k++] = l[j + 2];
+                    dib.bitmap[k++] = l[j + 1];
+                    dib.bitmap[k++] = l[j];
                 }
             }
         }
@@ -1045,15 +1045,15 @@ public class RtfSink
             colors.addElement( Color.white );
             colors.addElement( Color.black );
 
-            byte[] line = new byte[3 * srcWidth];
+            byte[] l = new byte[3 * srcWidth];
             for ( int i = ( srcHeight - 1 ); i >= 0; --i )
             {
-                ppm.read( line, 0, line.length );
-                for ( int j = 0, k = ( i * bytesPerLine ); j < line.length; )
+                ppm.read( l, 0, l.length );
+                for ( int j = 0, k = ( i * bytesPerLine ); j < l.length; )
                 {
-                    int r = (int) line[j++] & 0xff;
-                    int g = (int) line[j++] & 0xff;
-                    int b = (int) line[j++] & 0xff;
+                    int r = (int) l[j++] & 0xff;
+                    int g = (int) l[j++] & 0xff;
+                    int b = (int) l[j++] & 0xff;
                     Color color = new Color( r, g, b );
                     int index = colors.indexOf( color );
                     if ( index < 0 )

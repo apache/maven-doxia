@@ -59,7 +59,9 @@ public class HRuleBlockParser implements BlockParser
         return ret;
     }
 
-    /** {@inheritDoc} */
+    /** {@inheritDoc}
+     * @throws org.apache.maven.doxia.parser.ParseException 
+     */
     public final Block visit( final String line, final ByLineSource source )
         throws ParseException
     {

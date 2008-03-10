@@ -79,7 +79,9 @@ public class ParagraphBlockParser implements BlockParser
                 && !verbatimParser.accept( line );
     }
 
-    /** {@inheritDoc} */
+    /** {@inheritDoc}
+     * @throws org.apache.maven.doxia.parser.ParseException
+     */
     public final Block visit( final String line, final ByLineSource source )
         throws ParseException
     {

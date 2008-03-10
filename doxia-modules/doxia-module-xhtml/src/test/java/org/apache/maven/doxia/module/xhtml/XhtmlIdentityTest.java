@@ -19,13 +19,9 @@ package org.apache.maven.doxia.module.xhtml;
  * under the License.
  */
 
-import java.io.File;
 import java.io.Writer;
 
-import java.util.HashMap;
-
 import org.apache.maven.doxia.module.AbstractIdentityTest;
-import org.apache.maven.doxia.module.xhtml.decoration.render.RenderingContext;
 import org.apache.maven.doxia.parser.Parser;
 import org.apache.maven.doxia.sink.Sink;
 

@@ -95,6 +95,7 @@ public class SectionTest extends AbstractBlockTestCase
     }
 
     /**
+     * @throws java.lang.Exception
      * @see SectionBlockParser
      */
     public final void testSectionParser() throws Exception

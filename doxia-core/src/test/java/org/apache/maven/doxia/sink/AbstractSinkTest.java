@@ -21,7 +21,6 @@ package org.apache.maven.doxia.sink;
 
 import org.apache.maven.doxia.AbstractModuleTest;
 import org.apache.maven.doxia.parser.Parser;
-import org.apache.maven.doxia.sink.Sink;
 
 import java.io.CharArrayWriter;
 import java.io.IOException;
