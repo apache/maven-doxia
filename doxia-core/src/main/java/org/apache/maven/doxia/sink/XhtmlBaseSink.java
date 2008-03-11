@@ -173,7 +173,7 @@ public class XhtmlBaseSink
     }
 
     /**
-     * @param verb an evenTableRow flag.
+     * @param even an evenTableRow flag.
      */
     protected void setEvenTableRow( boolean even )
     {
@@ -1366,6 +1366,9 @@ public class XhtmlBaseSink
     /**
      * {@link StructureSinkUtils#isExternalLink(String)} also treats links to other documents as
      * external links, those should not have a class="externalLink" attribute.
+     * @param href the link.
+     * @return true if the link starts with "http:/", "https:/", "ftp:/",
+     * "mailto:" or "file:/".
      */
     protected boolean isExternalLink( String href )
     {
@@ -1380,6 +1383,8 @@ public class XhtmlBaseSink
      * Legacy: treat links to other html documents as external links.
      * Note that links to other file formats (images, pdf) will still be broken,
      * links to other documents should always start with "./" or "../".
+     * @param href the link.
+     * @return true if the link points to another source document.
      */
     protected boolean isExternalHtml( String href )
     {
@@ -1586,6 +1591,52 @@ public class XhtmlBaseSink
         else
         {
             content( text );
+        }
+    }
+
+    public void text ( String text, SinkEventAttributes attributes )
+    {
+        if ( attributes == null )
+        {
+            text( text );
+        }
+        else
+        {
+            if ( attributes.containsAttribute(SinkEventAttributes.DECORATION, "underline") )
+            {
+                writeStartTag( Tag.U );
+            }
+            if ( attributes.containsAttribute(SinkEventAttributes.DECORATION, "line-through") )
+            {
+                writeStartTag( Tag.S );
+            }
+            if ( attributes.containsAttribute(SinkEventAttributes.VALIGN, "sub") )
+            {
+                writeStartTag( Tag.SUB );
+            }
+            if ( attributes.containsAttribute(SinkEventAttributes.VALIGN, "sup") )
+            {
+                writeStartTag( Tag.SUP );
+            }
+            
+            text( text );
+            
+            if ( attributes.containsAttribute(SinkEventAttributes.VALIGN, "sup") )
+            {
+                writeEndTag( Tag.SUP );
+            }
+            if ( attributes.containsAttribute(SinkEventAttributes.VALIGN, "sub") )
+            {
+                writeEndTag( Tag.SUB );
+            }
+            if ( attributes.containsAttribute(SinkEventAttributes.DECORATION, "line-through") )
+            {
+                writeEndTag( Tag.S );
+            }
+            if ( attributes.containsAttribute(SinkEventAttributes.DECORATION, "underline") )
+            {
+                writeEndTag( Tag.U );
+            }
         }
     }
 

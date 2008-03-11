@@ -872,7 +872,9 @@ public interface Sink
     
     /**
      * Adds a text. 
-     * Supported attributes are the {@link SinkEventAttributes base attributes}.
+     * Supported attributes are the {@link SinkEventAttributes base attributes}
+     * plus VALIGN (values "sub", "sup") and DECORATION (values "underline",
+     * "overline", "line-through").
      *
      * @param text The text to write.
      * @param attributes A set of {@link SinkEventAttributes}.

@@ -279,7 +279,8 @@ public interface SinkEventAttributes
     String SCOPE = "scope";
 
     /**
-     * Specifies the vertical alignment of an element.
+     * Specifies the vertical alignment of an element. Generally accepted values
+     * are "top", "baseline", "middle", "bottom", "sup", "sub".
      */
     String VALIGN = "valign";
 
@@ -289,4 +290,11 @@ public interface SinkEventAttributes
      * Whether to draw a border, or box around an element.
      */
     String BOXED = "boxed";
+
+    // text
+    /**
+     * Specifies a decoration for an element. Generally accepted values
+     * are "underline", "overline", "line-through".
+     */
+    String DECORATION = "decoration";
 }

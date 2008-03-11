@@ -62,6 +62,9 @@ public class XhtmlBaseParser
     /** Used to recognize the case of img inside figure. */
     private boolean inFigure;
 
+    /** Decoration properties, eg for texts. */
+    private String decoration;
+
     /**
      * <p>
      *   Goes through a common list of possible html start tags. These include only tags that can go into
@@ -128,6 +131,24 @@ public class XhtmlBaseParser
             sink.section( Sink.SECTION_LEVEL_5, attribs );
 
             sink.sectionTitle( Sink.SECTION_LEVEL_5, attribs );
+        }
+        else if ( parser.getName().equals( Tag.U.toString() ) )
+        {
+            this.decoration = "underline";
+        }
+        else if ( parser.getName().equals( Tag.S.toString() )
+                || parser.getName().equals( Tag.STRIKE.toString() )
+                || parser.getName().equals( "del" ) )
+        {
+            this.decoration = "line-through";
+        }
+        else if ( parser.getName().equals( Tag.SUB.toString() ) )
+        {
+            this.decoration = "sub";
+        }
+        else if ( parser.getName().equals( Tag.SUP.toString() ) )
+        {
+            this.decoration = "sup";
         }
         else if ( parser.getName().equals( Tag.P.toString() ) )
         {
@@ -395,6 +416,15 @@ public class XhtmlBaseParser
                 sink.paragraph_();
             }
         }
+        else if ( parser.getName().equals( Tag.U.toString() )
+                || parser.getName().equals( Tag.S.toString() )
+                || parser.getName().equals( Tag.STRIKE.toString() )
+                || parser.getName().equals( "del" )
+                || parser.getName().equals( Tag.SUB.toString() )
+                || parser.getName().equals( Tag.SUP.toString() ) )
+        {
+            this.decoration = null;
+        }
         else if ( parser.getName().equals( Tag.DIV.toString() ) )
         {
             if ( inFigure )
@@ -589,6 +619,20 @@ public class XhtmlBaseParser
          */
         if ( StringUtils.isNotEmpty( text ) )
         {
+            SinkEventAttributeSet atts = new SinkEventAttributeSet();
+
+            if ( StringUtils.isNotEmpty( decoration ) )
+            {
+                if ( "underline".equals( decoration ) || "line-through".equals( decoration ) )
+                {
+                    atts.addAttribute( SinkEventAttributeSet.DECORATION, decoration);
+                }
+                else if ( "sub".equals( decoration ) || "sup".equals( decoration ) )
+                {
+                    atts.addAttribute( SinkEventAttributeSet.VALIGN, decoration);
+                }
+            }
+
             // Emit separate text events for different lines, e.g. the input
             // "\nLine1\n\nLine2\n\n" should deliver the event sequence "\n", "Line1\n", "\n", "Line2\n", "\n".
             // In other words, the concatenation of the text events must deliver the input sequence.
@@ -597,12 +641,12 @@ public class XhtmlBaseParser
 
             for ( int i = 0; i < lines.length - 1; i++ )
             {
-                sink.text( lines[i] + EOL );
+                sink.text( lines[i] + EOL, atts );
             }
 
             if ( lines[lines.length - 1].length() > 0 )
             {
-                sink.text( lines[lines.length - 1] );
+                sink.text( lines[lines.length - 1], atts );
             }
         }
     }

@@ -90,7 +90,7 @@ public abstract class AbstractXmlParser
      * Converts the attributes of the current start tag of the given parser to a SinkEventAttributeSet.
      *
      * @param parser A parser.
-     * @param return a SinkEventAttributeSet or null if the current parser event is not a start tag.
+     * @return a SinkEventAttributeSet or null if the current parser event is not a start tag.
      */
     protected SinkEventAttributeSet getAttributesFromParser( XmlPullParser parser )
     {
