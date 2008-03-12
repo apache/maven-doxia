@@ -71,7 +71,8 @@ public class AptReaderSource
         }
         catch ( IOException e )
         {
-            throw new AptParseException( e );
+            // TODO handle column number
+            throw new AptParseException( "IOException: " + e.getMessage(), e, lineNumber, -1 );
         }
 
         return line;

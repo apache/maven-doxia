@@ -125,13 +125,10 @@ public class ConfluenceParser
         {
             blocks = parse( src  );
         }
-        catch ( ParseException e )
-        {
-            throw e;
-        }
         catch ( Exception e )
         {
-            throw new ParseException( e, src.getName(), src.getLineNumber() );
+            // TODO handle column number
+            throw new ParseException( e, src.getName(), src.getLineNumber(), -1 );
         }
 
         sink.head();

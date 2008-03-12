@@ -286,7 +286,8 @@ public class AptParser
         }
         catch ( AptParseException ape )
         {
-            throw new AptParseException( ape.getMessage(), getSourceName(), getSourceLineNumber(), ape );
+            // TODO handle column number
+            throw new AptParseException( ape.getMessage(), ape, getSourceName(), getSourceLineNumber(), -1 );
         }
     }
 

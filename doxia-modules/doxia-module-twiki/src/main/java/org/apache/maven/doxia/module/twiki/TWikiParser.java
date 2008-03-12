@@ -152,7 +152,7 @@ public class TWikiParser
             }
             if ( !accepted )
             {
-                throw new ParseException( "don't  know how to handle line: " + source.getLineNumber() + ": " + line );
+                throw new ParseException( "Line number not handle : " + source.getLineNumber() + ": " + line );
             }
         }
 
@@ -171,13 +171,10 @@ public class TWikiParser
         {
             blocks = parse( src );
         }
-        catch ( final ParseException e )
-        {
-            throw e;
-        }
         catch ( final Exception e )
         {
-            throw new ParseException( e, src.getName(), src.getLineNumber() );
+            // TODO handle column number
+            throw new ParseException( e, src.getName(), src.getLineNumber(), -1 );
         }
 
         sink.head();
@@ -244,7 +241,6 @@ public class TWikiParser
                     }
                 }
             }
-
         }
 
         return title;

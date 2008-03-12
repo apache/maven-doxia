@@ -79,18 +79,7 @@ public class FmlParser
         // this populates faqs
         super.parse( source, sink );
 
-        try
-        {
-            writeFaqs( faqs, sink );
-        }
-        catch ( XmlPullParserException e )
-        {
-            throw new ParseException( "Error creating sink: " + e.getMessage(), e );
-        }
-        catch ( IOException e )
-        {
-            throw new ParseException( "Error writing to sink: " + e.getMessage(), e );
-        }
+        writeFaqs( faqs, sink );
     }
 
     /** {@inheritDoc} */
@@ -278,12 +267,10 @@ public class FmlParser
      *
      * @param faqs The faqs to emit.
      * @param sink The sink to consume the event.
-     * @throws IOException if something goes wrong.
-     * @throws XmlPullParserException if something goes wrong.
      * @throws ParseException if something goes wrong.
      */
     private void writeFaqs( Faqs faqs, Sink sink )
-        throws IOException, XmlPullParserException, ParseException
+        throws ParseException
     {
         FmlContentParser xdocParser = new FmlContentParser();
         xdocParser.enableLogging( getLog() );
