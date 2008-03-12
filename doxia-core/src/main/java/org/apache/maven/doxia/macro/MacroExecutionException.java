@@ -23,15 +23,20 @@ package org.apache.maven.doxia.macro;
  * Wrap an exception that occurs during the execution of a Doxia macro.
  *
  * @author <a href="mailto:brett@apache.org">Brett Porter</a>
+ * @version $Id$
+ * @since 1.0
  */
 public class MacroExecutionException
     extends Exception
 {
+    /** serialVersionUID */
+    static final long serialVersionUID = -6314856898570018814L;
+
     /**
-     * Construct a new MacroExecutionException with the specified detail message.
+     * Construct a new <code>MacroExecutionException</code> with the specified detail message.
      *
      * @param message The detailed message.
-     * This can later be retrieved by the Throwable.getMessage() method.
+     * This can later be retrieved by the <code>Throwable.getMessage()</code> method.
      */
     public MacroExecutionException( String message )
     {
@@ -39,13 +44,13 @@ public class MacroExecutionException
     }
 
     /**
-     * Construct a new MacroExecutionException with the specified
+     * Construct a new <code>MacroExecutionException</code> with the specified
      * detail message and cause.
      *
      * @param message The detailed message.
-     * This can later be retrieved by the Throwable.getMessage() method.
+     * This can later be retrieved by the <code>Throwable.getMessage()</code> method.
      * @param cause the cause. This can be retrieved later by the
-     * Throwable.getCause() method. (A null value is permitted, and indicates
+     * <code>Throwable.getCause()</code> method. (A null value is permitted, and indicates
      * that the cause is nonexistent or unknown.)
      */
     public MacroExecutionException( String message, Throwable cause )
