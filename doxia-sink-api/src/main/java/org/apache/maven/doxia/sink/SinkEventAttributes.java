@@ -284,17 +284,10 @@ public interface SinkEventAttributes
      */
     String VALIGN = "valign";
 
-    // verbatim
-
-    /**
-     * Whether to draw a border, or box around an element.
-     */
-    String BOXED = "boxed";
-
     // text
     /**
      * Specifies a decoration for an element. Generally accepted values
-     * are "underline", "overline", "line-through".
+     * are "underline", "overline", "line-through", "boxed".
      */
     String DECORATION = "decoration";
 }

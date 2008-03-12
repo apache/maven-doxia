@@ -144,7 +144,7 @@ public class SinkUtils
                 join( SINK_BASE_ATTRIBUTES, new String[] {SinkEventAttributes.ALIGN}  );
         SINK_VERBATIM_ATTRIBUTES =
                 join( SINK_BASE_ATTRIBUTES,
-                new String[] {SinkEventAttributes.ALIGN, SinkEventAttributes.BOXED, SinkEventAttributes.WIDTH}  );
+                new String[] {SinkEventAttributes.ALIGN, SinkEventAttributes.DECORATION, SinkEventAttributes.WIDTH}  );
         SINK_HR_ATTRIBUTES = join( SINK_BASE_ATTRIBUTES, HR_ATTRIBUTES  );
         SINK_LINK_ATTRIBUTES = join( SINK_BASE_ATTRIBUTES, LINK_ATTRIBUTES  );
         SINK_TABLE_ATTRIBUTES = join( SINK_BASE_ATTRIBUTES, TABLE_ATTRIBUTES  );

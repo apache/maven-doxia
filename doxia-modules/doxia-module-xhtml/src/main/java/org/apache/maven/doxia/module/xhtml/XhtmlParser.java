@@ -125,7 +125,10 @@ public class XhtmlParser
          */
         else if ( parser.getName().equals( Tag.PRE.toString() ) )
         {
-            attribs.addAttribute( "boxed", Boolean.toString( boxed ) );
+            if ( boxed )
+            {
+                attribs.addAttribute( SinkEventAttributeSet.DECORATION, "boxed" );
+            }
 
             sink.verbatim( attribs );
         }

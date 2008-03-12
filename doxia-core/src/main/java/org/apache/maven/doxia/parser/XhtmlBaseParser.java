@@ -183,7 +183,7 @@ public class XhtmlBaseParser
         {
             verbatim();
 
-            attribs.addAttribute( SinkEventAttributeSet.BOXED, "false");
+            attribs.removeAttribute( SinkEventAttributeSet.DECORATION );
 
             sink.verbatim( attribs );
         }

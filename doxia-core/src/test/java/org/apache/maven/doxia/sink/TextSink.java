@@ -757,10 +757,10 @@ public class TextSink
     {
         boolean boxed = false;
 
-        if ( attributes != null && attributes.isDefined( "boxed" ) )
+        if ( attributes != null && attributes.isDefined( SinkEventAttributes.DECORATION ) )
         {
-            boxed = Boolean.valueOf(
-                (String) attributes.getAttribute( "boxed" ) ).booleanValue();
+            boxed = "boxed".equals(
+                (String) attributes.getAttribute( SinkEventAttributes.DECORATION ) );
         }
 
         verbatim( boxed );

@@ -312,14 +312,14 @@ public class XdocSink
 
         boolean boxed = false;
 
-        if ( atts.isDefined( "boxed" ) )
+        if ( atts.isDefined( SinkEventAttributes.DECORATION ) )
         {
-            boxed = Boolean.valueOf(
-                (String) atts.getAttribute( "boxed" ) ).booleanValue();
+            boxed = "boxed".equals(
+                (String) atts.getAttribute( SinkEventAttributes.DECORATION ) );
         }
 
         boxedFlag = boxed;
-        atts.removeAttribute( "boxed" );
+        atts.removeAttribute( SinkEventAttributes.DECORATION );
 
         if ( boxed )
         {

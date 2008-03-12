@@ -883,7 +883,11 @@ public class XhtmlBaseSink
     public void verbatim( boolean boxed )
     {
         SinkEventAttributeSet att = new SinkEventAttributeSet();
-        att.addAttribute( "boxed", Boolean.toString( boxed ) );
+
+        if ( boxed )
+        {
+            att.addAttribute( SinkEventAttributes.DECORATION, "boxed" );
+        }
 
         verbatim( att );
     }
@@ -909,10 +913,10 @@ public class XhtmlBaseSink
 
         boolean boxed = false;
 
-        if ( atts.isDefined( "boxed" ) )
+        if ( atts.isDefined( SinkEventAttributes.DECORATION ) )
         {
-            boxed = Boolean.valueOf(
-                (String) atts.getAttribute( "boxed" ) ).booleanValue();
+            boxed =
+                "boxed".equals( (String) atts.getAttribute( SinkEventAttributes.DECORATION ) );
         }
 
         if ( boxed )
@@ -920,7 +924,7 @@ public class XhtmlBaseSink
             atts.addAttribute( Attribute.CLASS, "source" );
         }
 
-        atts.removeAttribute( "boxed" );
+        atts.removeAttribute( SinkEventAttributes.DECORATION );
 
         String width = (String) atts.getAttribute( Attribute.WIDTH.toString() );
         atts.removeAttribute( Attribute.WIDTH.toString() );

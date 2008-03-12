@@ -716,7 +716,8 @@ public interface Sink
 
     /**
      * Starts a verbatim block, ie a block where whitespace has semantic relevance.
-     * Supported attributes are the {@link SinkEventAttributes base attributes} plus: "boxed", ALIGN, WIDTH.
+     * Supported attributes are the {@link SinkEventAttributes base attributes} plus:
+     * DECORATION (value: "boxed"), ALIGN, WIDTH.
      *
      * @param attributes A set of {@link SinkEventAttributes}.
      */
