@@ -55,35 +55,39 @@ public class TWikiParser
     extends AbstractTextParser
 {
     private static final int EXTENSION_LENGTH = 6;
+
     /**
      * paragraph parser. stateless
      */
     private final ParagraphBlockParser paraParser = new ParagraphBlockParser();
+
     /**
      * section parser. stateless
      */
     private final SectionBlockParser sectionParser = new SectionBlockParser();
+
     /**
      * enumeration parser. stateless
      */
-    private final GenericListBlockParser listParser =
-        new GenericListBlockParser();
+    private final GenericListBlockParser listParser = new GenericListBlockParser();
+
     /**
      * Text parser. stateless
      */
-    private final FormatedTextParser formatTextParser =
-        new FormatedTextParser();
+    private final FormatedTextParser formatTextParser = new FormatedTextParser();
+
     /**
      * text parser. stateless
-     * This only works for xhtml output, but there is no way 
+     * This only works for xhtml output, but there is no way
      * of transforming a wikiWord in another context.
      */
-    private final TextParser textParser = new TextParser( 
-            new XHTMLWikiWordLinkResolver() );
+    private final TextParser textParser = new TextParser( new XHTMLWikiWordLinkResolver() );
+
     /**
      * hruler parser. stateless
      */
     private final HRuleBlockParser hrulerParser = new HRuleBlockParser();
+
     /**
      * table parser
      */
@@ -93,11 +97,11 @@ public class TWikiParser
      * verbatim parser
      */
     private final VerbatimBlockParser verbatimParser = new VerbatimBlockParser();
-    
+
     /**
      * list of parsers to try to apply to the toplevel
      */
-    private final BlockParser [] parsers;
+    private final BlockParser[] parsers;
 
     /**
      * Creates the TWikiParser.
@@ -117,12 +121,7 @@ public class TWikiParser
         formatTextParser.setTextParser( textParser );
         tableParser.setTextParser( formatTextParser );
 
-        parsers = new BlockParser[]{
-            sectionParser,
-            hrulerParser,
-            verbatimParser,
-            paraParser,
-        };
+        parsers = new BlockParser[] { sectionParser, hrulerParser, verbatimParser, paraParser, };
     }
 
     /**
@@ -153,8 +152,7 @@ public class TWikiParser
             }
             if ( !accepted )
             {
-                throw new ParseException( "don't  know how to handle line: "
-                    + source.getLineNumber() + ": " + line );
+                throw new ParseException( "don't  know how to handle line: " + source.getLineNumber() + ": " + line );
             }
         }
 
@@ -179,20 +177,19 @@ public class TWikiParser
         }
         catch ( final Exception e )
         {
-            throw new ParseException( e, src.getName(),
-                                      src.getLineNumber() );
+            throw new ParseException( e, src.getName(), src.getLineNumber() );
         }
 
         sink.head();
-        
-        final String title = getTitle( blocks, src ); 
-        if ( title != null ) 
+
+        final String title = getTitle( blocks, src );
+        if ( title != null )
         {
             sink.title();
             sink.text( title );
             sink.title_();
         }
-        
+
         sink.head_();
         sink.body();
         for ( Iterator it = blocks.iterator(); it.hasNext(); )
@@ -204,52 +201,52 @@ public class TWikiParser
         sink.body_();
     }
 
-    /**  
+    /**
      * Guess a title for the page. It uses the first section that it finds.
-     * If it doesn't find any section tries to get it from 
+     * If it doesn't find any section tries to get it from
      * {@link ByLineReaderSource#getName()}
-     * 
+     *
      * @param blocks blocks to parse
      * @param source source to parse
      * @return a title for a page
      */
-    public final String getTitle( final List blocks, final ByLineSource source ) 
+    public final String getTitle( final List blocks, final ByLineSource source )
     {
         String title = null;
-        
+
         for ( Iterator it = blocks.iterator(); title == null && it.hasNext(); )
         {
             final Block block = (Block) it.next();
-            
-            if ( block instanceof SectionBlock ) 
+
+            if ( block instanceof SectionBlock )
             {
                 final SectionBlock sectionBlock = (SectionBlock) block;
                 title = sectionBlock.getTitle();
             }
         }
-        
-        if ( title == null ) 
+
+        if ( title == null )
         {
             String name = source.getName();
-            if ( name != null ) 
+            if ( name != null )
             {
                 name = name.trim();
-                
+
                 if ( name.length() != 0 )
                 {
-                    if ( name.endsWith( ".twiki" ) ) 
+                    if ( name.endsWith( ".twiki" ) )
                     {
                         title = name.substring( 0, name.length() - EXTENSION_LENGTH );
                     }
-                    else 
+                    else
                     {
                         title = name;
                     }
                 }
             }
-            
+
         }
-        
+
         return title;
     }
 }
