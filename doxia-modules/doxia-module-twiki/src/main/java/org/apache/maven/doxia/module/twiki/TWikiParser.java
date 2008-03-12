@@ -56,51 +56,35 @@ public class TWikiParser
 {
     private static final int EXTENSION_LENGTH = 6;
 
-    /**
-     * paragraph parser. stateless
-     */
+    /** paragraph parser. */
     private final ParagraphBlockParser paraParser = new ParagraphBlockParser();
 
-    /**
-     * section parser. stateless
-     */
+    /** section parser. */
     private final SectionBlockParser sectionParser = new SectionBlockParser();
 
-    /**
-     * enumeration parser. stateless
-     */
+    /** enumeration parser. */
     private final GenericListBlockParser listParser = new GenericListBlockParser();
 
-    /**
-     * Text parser. stateless
-     */
+    /** Text parser. */
     private final FormatedTextParser formatTextParser = new FormatedTextParser();
 
     /**
-     * text parser. stateless
+     * text parser.
      * This only works for xhtml output, but there is no way
      * of transforming a wikiWord in another context.
      */
     private final TextParser textParser = new TextParser( new XHTMLWikiWordLinkResolver() );
 
-    /**
-     * hruler parser. stateless
-     */
+    /** hruler parser. */
     private final HRuleBlockParser hrulerParser = new HRuleBlockParser();
 
-    /**
-     * table parser
-     */
+    /** table parser. */
     private final TableBlockParser tableParser = new TableBlockParser();
 
-    /**
-     * verbatim parser
-     */
+    /** verbatim parser. */
     private final VerbatimBlockParser verbatimParser = new VerbatimBlockParser();
 
-    /**
-     * list of parsers to try to apply to the toplevel
-     */
+    /** list of parsers to try to apply to the toplevel */
     private final BlockParser[] parsers;
 
     /**
