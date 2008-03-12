@@ -102,18 +102,115 @@ public class AptParser
 
     /** Comment event id. */
     private static final int COMMENT_BLOCK = 17;
-    
+
     /** String representations of event ids */
-    private static final String TYPE_NAMES[] = {"TITLE", "SECTION1", "SECTION2", "SECTION3", "SECTION4", "SECTION5",
-        "PARAGRAPH", "VERBATIM", "FIGURE", "TABLE", "LIST_ITEM", "NUMBERED_LIST_ITEM", "DEFINITION_LIST_ITEM",
-        "HORIZONTAL_RULE", "PG_BREAK", "LIST_BREAK", "MACRO", "COMMENT_BLOCK"};
+    private static final String TYPE_NAMES[] = {
+        "TITLE",
+        "SECTION1",
+        "SECTION2",
+        "SECTION3",
+        "SECTION4",
+        "SECTION5",
+        "PARAGRAPH",
+        "VERBATIM",
+        "FIGURE",
+        "TABLE",
+        "LIST_ITEM",
+        "NUMBERED_LIST_ITEM",
+        "DEFINITION_LIST_ITEM",
+        "HORIZONTAL_RULE",
+        "PG_BREAK",
+        "LIST_BREAK",
+        "MACRO",
+        "COMMENT_BLOCK" };
 
     /** An array of spaces. */
-    private static final char SPACES[] = {' ', ' ', ' ', ' ', ' ', ' ', ' ', ' ', ' ', ' ', ' ', ' ', ' ', ' ', ' ',
-        ' ', ' ', ' ', ' ', ' ', ' ', ' ', ' ', ' ', ' ', ' ', ' ', ' ', ' ', ' ', ' ', ' ', ' ', ' ', ' ', ' ', ' ',
-        ' ', ' ', ' ', ' ', ' ', ' ', ' ', ' ', ' ', ' ', ' ', ' ', ' ', ' ', ' ', ' ', ' ', ' ', ' ', ' ', ' ', ' ',
-        ' ', ' ', ' ', ' ', ' ', ' ', ' ', ' ', ' ', ' ', ' ', ' ', ' ', ' ', ' ', ' ', ' ', ' ', ' ', ' ', ' ', ' ',
-        ' ', ' ', ' ', ' '};
+    private static final char SPACES[] = {
+        ' ',
+        ' ',
+        ' ',
+        ' ',
+        ' ',
+        ' ',
+        ' ',
+        ' ',
+        ' ',
+        ' ',
+        ' ',
+        ' ',
+        ' ',
+        ' ',
+        ' ',
+        ' ',
+        ' ',
+        ' ',
+        ' ',
+        ' ',
+        ' ',
+        ' ',
+        ' ',
+        ' ',
+        ' ',
+        ' ',
+        ' ',
+        ' ',
+        ' ',
+        ' ',
+        ' ',
+        ' ',
+        ' ',
+        ' ',
+        ' ',
+        ' ',
+        ' ',
+        ' ',
+        ' ',
+        ' ',
+        ' ',
+        ' ',
+        ' ',
+        ' ',
+        ' ',
+        ' ',
+        ' ',
+        ' ',
+        ' ',
+        ' ',
+        ' ',
+        ' ',
+        ' ',
+        ' ',
+        ' ',
+        ' ',
+        ' ',
+        ' ',
+        ' ',
+        ' ',
+        ' ',
+        ' ',
+        ' ',
+        ' ',
+        ' ',
+        ' ',
+        ' ',
+        ' ',
+        ' ',
+        ' ',
+        ' ',
+        ' ',
+        ' ',
+        ' ',
+        ' ',
+        ' ',
+        ' ',
+        ' ',
+        ' ',
+        ' ',
+        ' ',
+        ' ',
+        ' ',
+        ' ',
+        ' ' };
 
     /** Default tab width. */
     public static final int TAB_WIDTH = 8;
@@ -147,11 +244,8 @@ public class AptParser
     // Public methods
     // ----------------------------------------------------------------------
 
-    /** {@inheritDoc}
-     * @throws org.apache.maven.doxia.module.apt.AptParseException 
-     */
-    public void parse( Reader source,
-                       Sink sink )
+    /** {@inheritDoc} */
+    public void parse( Reader source, Sink sink )
         throws AptParseException
     {
         try
@@ -180,7 +274,7 @@ public class AptParser
             nextLine();
 
             // Lookahead block.
-            nextBlock( /*first*/ true );
+            nextBlock( /*first*/true );
 
             traverseHead();
 
@@ -349,8 +443,7 @@ public class AptParser
     private void traverseSectionBlocks()
         throws AptParseException
     {
-        loop:
-        while ( block != null )
+        loop: while ( block != null )
         {
             switch ( block.getType() )
             {
@@ -416,8 +509,7 @@ public class AptParser
 
         nextBlock();
 
-        loop:
-        while ( block != null )
+        loop: while ( block != null )
         {
             int blockIndent = block.getIndent();
 
@@ -511,8 +603,7 @@ public class AptParser
         block.traverse();
         nextBlock();
 
-        loop:
-        while ( block != null )
+        loop: while ( block != null )
         {
             int blockIndent = block.getIndent();
 
@@ -606,8 +697,7 @@ public class AptParser
         block.traverse();
         nextBlock();
 
-        loop:
-        while ( block != null )
+        loop: while ( block != null )
         {
             int blockIndent = block.getIndent();
 
@@ -702,7 +792,7 @@ public class AptParser
     private void nextBlock()
         throws AptParseException
     {
-        nextBlock( /*first*/ false );
+        nextBlock( /*first*/false );
     }
 
     /**
@@ -717,8 +807,7 @@ public class AptParser
         // Skip open and comment lines.
         int length, indent, i;
 
-        skipLoop:
-        for ( ; ; )
+        skipLoop: for ( ;; )
         {
             if ( line == null )
             {
@@ -728,8 +817,7 @@ public class AptParser
 
             length = line.length();
             indent = 0;
-            lineLoop:
-            for ( i = 0; i < length; ++i )
+            lineLoop: for ( i = 0; i < length; ++i )
             {
                 switch ( line.charAt( i ) )
                 {
@@ -949,9 +1037,7 @@ public class AptParser
      * @param i offset.
      * @return the character, or '\0' if i > length.
      */
-    private static char charAt( String string,
-                                int length,
-                                int i )
+    private static char charAt( String string, int length, int i )
     {
         return ( i < length ) ? string.charAt( i ) : '\0';
     }
@@ -964,12 +1050,9 @@ public class AptParser
      * @param i offset.
      * @return int.
      */
-    private static int skipSpace( String string,
-                                  int length,
-                                  int i )
+    private static int skipSpace( String string, int length, int i )
     {
-        loop:
-        for ( ; i < length; ++i )
+        loop: for ( ; i < length; ++i )
         {
             switch ( string.charAt( i ) )
             {
@@ -992,10 +1075,7 @@ public class AptParser
      * @param sink the sink to receive the events.
      * @throws AptParseException if something goes wrong.
      */
-    private void doTraverseText( String text,
-                                        int begin,
-                                        int end,
-                                        Sink sink )
+    private void doTraverseText( String text, int begin, int end, Sink sink )
         throws AptParseException
     {
         boolean anchor = false;
@@ -1075,9 +1155,8 @@ public class AptParser
                                 break;
                             case 'u':
                                 if ( i + 5 < end && isHexChar( text.charAt( i + 2 ) )
-                                            && isHexChar( text.charAt( i + 3 ) )
-                                            && isHexChar( text.charAt( i + 4 ) )
-                                            && isHexChar( text.charAt( i + 5 ) ) )
+                                    && isHexChar( text.charAt( i + 3 ) ) && isHexChar( text.charAt( i + 4 ) )
+                                    && isHexChar( text.charAt( i + 5 ) ) )
                                 {
                                     int value = '?';
                                     try
@@ -1121,7 +1200,9 @@ public class AptParser
                                     {
                                         if ( getLog().isDebugEnabled() )
                                         {
-                                            getLog().debug( "Not a number: " + text.substring( i + 1, i + 1 + octalChars ) );
+                                            getLog().debug(
+                                                            "Not a number: "
+                                                                + text.substring( i + 1, i + 1 + octalChars ) );
                                         }
                                     }
 
@@ -1143,7 +1224,7 @@ public class AptParser
                 case LEFT_CURLY_BRACKET: /*}*/
                     if ( !anchor && !link )
                     {
-                        if ( i + 1 < end && text.charAt( i + 1 ) == LEFT_CURLY_BRACKET /*}*/ )
+                        if ( i + 1 < end && text.charAt( i + 1 ) == LEFT_CURLY_BRACKET /*}*/)
                         {
                             ++i;
                             link = true;
@@ -1151,7 +1232,7 @@ public class AptParser
 
                             String linkAnchor = null;
 
-                            if ( i + 1 < end && text.charAt( i + 1 ) == LEFT_CURLY_BRACKET /*}*/ )
+                            if ( i + 1 < end && text.charAt( i + 1 ) == LEFT_CURLY_BRACKET /*}*/)
                             {
                                 ++i;
                                 StringBuffer buf = new StringBuffer();
@@ -1179,8 +1260,8 @@ public class AptParser
                     }
                     break;
 
-                case /*{*/ RIGHT_CURLY_BRACKET:
-                    if ( link && i + 1 < end && text.charAt( i + 1 ) == /*{*/ RIGHT_CURLY_BRACKET )
+                case /*{*/RIGHT_CURLY_BRACKET:
+                    if ( link && i + 1 < end && text.charAt( i + 1 ) == /*{*/RIGHT_CURLY_BRACKET )
                     {
                         ++i;
                         link = false;
@@ -1234,7 +1315,7 @@ public class AptParser
 
                 case GREATER_THAN:
                     if ( monospaced && i + 2 < end && text.charAt( i + 1 ) == GREATER_THAN
-                            && text.charAt( i + 2 ) == GREATER_THAN )
+                        && text.charAt( i + 2 ) == GREATER_THAN )
                     {
                         i += 2;
                         monospaced = false;
@@ -1308,8 +1389,7 @@ public class AptParser
      * @param buffer A StringBuffer that contains the text to be flushed.
      * @param sink The sink to receive the text.
      */
-    private static void flushTraversed( StringBuffer buffer,
-                                        Sink sink )
+    private static void flushTraversed( StringBuffer buffer, Sink sink )
     {
         if ( buffer.length() > 0 )
         {
@@ -1328,15 +1408,11 @@ public class AptParser
      * @return int
      * @throws AptParseException if something goes wrong.
      */
-    private static int skipTraversedLinkAnchor( String text,
-                                                int begin,
-                                                int end,
-                                                StringBuffer linkAnchor )
+    private static int skipTraversedLinkAnchor( String text, int begin, int end, StringBuffer linkAnchor )
         throws AptParseException
     {
         int i;
-        loop:
-        for ( i = begin; i < end; ++i )
+        loop: for ( i = begin; i < end; ++i )
         {
             char c = text.charAt( i );
             switch ( c )
@@ -1375,9 +1451,7 @@ public class AptParser
      * @return String
      * @throws AptParseException if something goes wrong.
      */
-    private String getTraversedLink( String text,
-                                            int begin,
-                                            int end )
+    private String getTraversedLink( String text, int begin, int end )
         throws AptParseException
     {
         char previous2 = LEFT_CURLY_BRACKET;
@@ -1412,9 +1486,7 @@ public class AptParser
      * @return String
      * @throws AptParseException if something goes wrong.
      */
-    private String getTraversedAnchor( String text,
-                                              int begin,
-                                              int end )
+    private String getTraversedAnchor( String text, int begin, int end )
         throws AptParseException
     {
         char previous = LEFT_CURLY_BRACKET;
@@ -1447,9 +1519,7 @@ public class AptParser
      * @return String
      * @throws AptParseException if something goes wrong.
      */
-    private String doGetTraversedLink( String text,
-                                              int begin,
-                                              int end )
+    private String doGetTraversedLink( String text, int begin, int end )
         throws AptParseException
     {
         final StringBuffer buffer = new StringBuffer( end - begin );
@@ -1500,8 +1570,7 @@ public class AptParser
          * @param indent indent.
          * @throws AptParseException AptParseException
          */
-        public Block( int type,
-                      int indent )
+        public Block( int type, int indent )
             throws AptParseException
         {
             this( type, indent, null );
@@ -1515,9 +1584,7 @@ public class AptParser
          * @param firstLine the first line.
          * @throws AptParseException AptParseException
          */
-        public Block( int type,
-                      int indent,
-                      String firstLine )
+        public Block( int type, int indent, String firstLine )
             throws AptParseException
         {
             this.type = type;
@@ -1544,8 +1611,7 @@ public class AptParser
 
                     i = skipSpace( l, length, i );
                     if ( i == length
-                        || ( AptParser.charAt( l, length, i ) == COMMENT
-                            && AptParser.charAt( l, length, i + 1 ) == COMMENT ) )
+                        || ( AptParser.charAt( l, length, i ) == COMMENT && AptParser.charAt( l, length, i + 1 ) == COMMENT ) )
                     {
                         // Stop after open or comment line and skip it.
                         // (A comment line is considered to be an open line.)
@@ -1611,8 +1677,7 @@ public class AptParser
          * @param end offset.
          * @throws AptParseException if something goes wrong.
          */
-        protected void traverseText( int begin,
-                                     int end )
+        protected void traverseText( int begin, int end )
             throws AptParseException
         {
             AptParser.this.doTraverseText( text, begin, end, AptParser.this.sink );
@@ -1687,8 +1752,7 @@ public class AptParser
          * @param firstLine the first line.
          * @throws AptParseException AptParseException
          */
-        public ListBreak( int indent,
-                          String firstLine )
+        public ListBreak( int indent, String firstLine )
             throws AptParseException
         {
             super( AptParser.LIST_BREAK, indent );
@@ -1713,8 +1777,7 @@ public class AptParser
          * @param firstLine the first line.
          * @throws AptParseException AptParseException
          */
-        public Title( int indent,
-                      String firstLine )
+        public Title( int indent, String firstLine )
             throws AptParseException
         {
             super( TITLE, indent, firstLine );
@@ -1731,8 +1794,7 @@ public class AptParser
             boolean author = false;
             boolean date = false;
 
-            loop:
-            while ( lines.hasMoreTokens() )
+            loop: while ( lines.hasMoreTokens() )
             {
                 String line = lines.nextToken().trim();
                 int lineLength = line.length();
@@ -1845,9 +1907,7 @@ public class AptParser
          * @param firstLine the first line.
          * @throws AptParseException AptParseException
          */
-        public Section( int type,
-                        int indent,
-                        String firstLine )
+        public Section( int type, int indent, String firstLine )
             throws AptParseException
         {
             super( type, indent, firstLine );
@@ -1886,8 +1946,7 @@ public class AptParser
          * @param firstLine the first line.
          * @throws AptParseException AptParseException
          */
-        public Section1( int indent,
-                         String firstLine )
+        public Section1( int indent, String firstLine )
             throws AptParseException
         {
             super( SECTION1, indent, firstLine );
@@ -1917,8 +1976,7 @@ public class AptParser
          * @param firstLine the first line.
          * @throws AptParseException AptParseException
          */
-        public Section2( int indent,
-                         String firstLine )
+        public Section2( int indent, String firstLine )
             throws AptParseException
         {
             super( SECTION2, indent, firstLine );
@@ -1948,8 +2006,7 @@ public class AptParser
          * @param firstLine the first line.
          * @throws AptParseException AptParseException
          */
-        public Section3( int indent,
-                         String firstLine )
+        public Section3( int indent, String firstLine )
             throws AptParseException
         {
             super( SECTION3, indent, firstLine );
@@ -1979,8 +2036,7 @@ public class AptParser
          * @param firstLine the first line.
          * @throws AptParseException AptParseException
          */
-        public Section4( int indent,
-                         String firstLine )
+        public Section4( int indent, String firstLine )
             throws AptParseException
         {
             super( SECTION4, indent, firstLine );
@@ -2010,8 +2066,7 @@ public class AptParser
          * @param firstLine the first line.
          * @throws AptParseException AptParseException
          */
-        public Section5( int indent,
-                         String firstLine )
+        public Section5( int indent, String firstLine )
             throws AptParseException
         {
             super( SECTION5, indent, firstLine );
@@ -2041,8 +2096,7 @@ public class AptParser
          * @param firstLine the first line.
          * @throws AptParseException AptParseException
          */
-        public Paragraph( int indent,
-                          String firstLine )
+        public Paragraph( int indent, String firstLine )
             throws AptParseException
         {
             super( PARAGRAPH, indent, firstLine );
@@ -2097,8 +2151,7 @@ public class AptParser
          * @param firstLine the first line.
          * @throws AptParseException AptParseException
          */
-        public Verbatim( int indent,
-                         String firstLine )
+        public Verbatim( int indent, String firstLine )
             throws AptParseException
         {
             super( VERBATIM, indent, null );
@@ -2114,8 +2167,7 @@ public class AptParser
                 String l = AptParser.this.line;
                 int length = l.length();
 
-                if ( AptParser.charAt( l, length, 0 ) == firstChar
-                    && AptParser.charAt( l, length, 1 ) == MINUS
+                if ( AptParser.charAt( l, length, 0 ) == firstChar && AptParser.charAt( l, length, 1 ) == MINUS
                     && AptParser.charAt( l, length, 2 ) == MINUS )
                 {
                     AptParser.this.nextLine();
@@ -2188,8 +2240,7 @@ public class AptParser
          * @param firstLine the first line.
          * @throws AptParseException AptParseException
          */
-        public Figure( int indent,
-                       String firstLine )
+        public Figure( int indent, String firstLine )
             throws AptParseException
         {
             super( FIGURE, indent, firstLine );
@@ -2227,8 +2278,7 @@ public class AptParser
          * @param firstLine the first line.
          * @throws AptParseException AptParseException
          */
-        public Table( int indent,
-                      String firstLine )
+        public Table( int indent, String firstLine )
             throws AptParseException
         {
             super( TABLE, indent, firstLine );
@@ -2375,8 +2425,7 @@ public class AptParser
          * @return int[]
          * @throws AptParseException if something goes wrong.
          */
-        private int[] parseJustification( String jline,
-                                          int lineLength )
+        private int[] parseJustification( String jline, int lineLength )
             throws AptParseException
         {
             int columns = 0;
@@ -2431,8 +2480,7 @@ public class AptParser
          * @return boolean
          * @throws AptParseException if something goes wrong.
          */
-        private boolean traverseRow( StringBuffer[] cells,
-                                     boolean[] headers )
+        private boolean traverseRow( StringBuffer[] cells, boolean[] headers )
             throws AptParseException
         {
             // Skip empty row (a decorative line).
@@ -2492,8 +2540,7 @@ public class AptParser
          * @param firstLine the first line.
          * @throws AptParseException AptParseException
          */
-        public ListItem( int indent,
-                         String firstLine )
+        public ListItem( int indent, String firstLine )
             throws AptParseException
         {
             super( LIST_ITEM, indent, firstLine );
@@ -2522,9 +2569,7 @@ public class AptParser
          * @param number numbering.
          * @throws AptParseException AptParseException
          */
-        public NumberedListItem( int indent,
-                                 String firstLine,
-                                 int number )
+        public NumberedListItem( int indent, String firstLine, int number )
             throws AptParseException
         {
             super( NUMBERED_LIST_ITEM, indent, firstLine );
@@ -2590,8 +2635,7 @@ public class AptParser
          * @param firstLine the first line.
          * @throws AptParseException AptParseException
          */
-        public DefinitionListItem( int indent,
-                                   String firstLine )
+        public DefinitionListItem( int indent, String firstLine )
             throws AptParseException
         {
             super( DEFINITION_LIST_ITEM, indent, firstLine );
@@ -2631,8 +2675,7 @@ public class AptParser
          * @param firstLine the first line.
          * @throws AptParseException AptParseException
          */
-        public HorizontalRule( int indent,
-                               String firstLine )
+        public HorizontalRule( int indent, String firstLine )
             throws AptParseException
         {
             super( HORIZONTAL_RULE, indent );
@@ -2657,8 +2700,7 @@ public class AptParser
          * @param firstLine the first line.
          * @throws AptParseException AptParseException
          */
-        public PageBreak( int indent,
-                          String firstLine )
+        public PageBreak( int indent, String firstLine )
             throws AptParseException
         {
             super( PG_BREAK, indent );
@@ -2683,8 +2725,7 @@ public class AptParser
          * @param firstLine the first line.
          * @throws AptParseException AptParseException
          */
-        public MacroBlock( int indent,
-                           String firstLine )
+        public MacroBlock( int indent, String firstLine )
             throws AptParseException
         {
             super( MACRO, indent );
@@ -2799,9 +2840,7 @@ public class AptParser
      * @param newSub the replacement string
      * @return String
      */
-    private static String replaceAll( String string,
-                                      String oldSub,
-                                      String newSub )
+    private static String replaceAll( String string, String oldSub, String newSub )
     {
         StringBuffer replaced = new StringBuffer();
         int oldSubLength = oldSub.length();
