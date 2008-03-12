@@ -125,7 +125,7 @@ public class AptParser
         "COMMENT_BLOCK" };
 
     /** An array of spaces. */
-    private static final char SPACES[] = {
+    protected static final char SPACES[] = {
         ' ',
         ' ',
         ' ',
@@ -219,17 +219,8 @@ public class AptParser
     // Instance fields
     // ----------------------------------------------------------------------
 
-    /** sourceContent. */
-    private String sourceContent;
-
     /** the AptSource. */
     private AptSource source;
-
-    /** the sink to receive the events. */
-    private Sink sink;
-
-    /** a line of AptSource. */
-    private String line;
 
     /** a block of AptSource. */
     private Block block;
@@ -239,6 +230,15 @@ public class AptParser
 
     /** blockLineNumber. */
     private int blockLineNumber;
+
+    /** sourceContent. */
+    protected String sourceContent;
+
+    /** the sink to receive the events. */
+    protected Sink sink;
+
+    /** a line of AptSource. */
+    protected String line;
 
     // ----------------------------------------------------------------------
     // Public methods
@@ -310,6 +310,409 @@ public class AptParser
     {
         // Use this rather than source.getLineNumber() to report errors.
         return blockLineNumber;
+    }
+
+    // ----------------------------------------------------------------------
+    // Protected methods
+    // ----------------------------------------------------------------------
+
+    /**
+     * Parse the next line of the Apt source document.
+     *
+     * @throws AptParseException if something goes wrong.
+     */
+    protected void nextLine()
+        throws AptParseException
+    {
+        line = source.getNextLine();
+    }
+
+    /**
+     * Parse the given text.
+     *
+     * @param text the text to parse.
+     * @param begin offset.
+     * @param end offset.
+     * @param sink the sink to receive the events.
+     * @throws AptParseException if something goes wrong.
+     */
+    protected void doTraverseText( String text, int begin, int end, Sink sink )
+        throws AptParseException
+    {
+        boolean anchor = false;
+        boolean link = false;
+        boolean italic = false;
+        boolean bold = false;
+        boolean monospaced = false;
+        StringBuffer buffer = new StringBuffer( end - begin );
+
+        for ( int i = begin; i < end; ++i )
+        {
+            char c = text.charAt( i );
+            switch ( c )
+            {
+                case BACKSLASH:
+                    if ( i + 1 < end )
+                    {
+                        char escaped = text.charAt( i + 1 );
+                        switch ( escaped )
+                        {
+                            case SPACE:
+                                ++i;
+                                flushTraversed( buffer, sink );
+                                sink.nonBreakingSpace();
+                                break;
+                            case '\r':
+                            case '\n':
+                                ++i;
+                                // Skip white space which may follow a line break.
+                                while ( i + 1 < end && Character.isWhitespace( text.charAt( i + 1 ) ) )
+                                {
+                                    ++i;
+                                }
+                                flushTraversed( buffer, sink );
+                                sink.lineBreak();
+                                break;
+                            case BACKSLASH:
+                            case PIPE:
+                            case COMMENT:
+                            case EQUAL:
+                            case MINUS:
+                            case PLUS:
+                            case STAR:
+                            case LEFT_SQUARE_BRACKET:
+                            case RIGHT_SQUARE_BRACKET:
+                            case LESS_THAN:
+                            case GREATER_THAN:
+                            case LEFT_CURLY_BRACKET:
+                            case RIGHT_CURLY_BRACKET:
+                                ++i;
+                                buffer.append( escaped );
+                                break;
+                            case 'x':
+                                if ( i + 3 < end && isHexChar( text.charAt( i + 2 ) )
+                                    && isHexChar( text.charAt( i + 3 ) ) )
+                                {
+                                    int value = '?';
+                                    try
+                                    {
+                                        value = Integer.parseInt( text.substring( i + 2, i + 4 ), 16 );
+                                    }
+                                    catch ( NumberFormatException e )
+                                    {
+                                        if ( getLog().isDebugEnabled() )
+                                        {
+                                            getLog().debug( "Not a number: " + text.substring( i + 2, i + 4 ) );
+                                        }
+                                    }
+
+                                    i += 3;
+                                    buffer.append( (char) value );
+                                }
+                                else
+                                {
+                                    buffer.append( BACKSLASH );
+                                }
+                                break;
+                            case 'u':
+                                if ( i + 5 < end && isHexChar( text.charAt( i + 2 ) )
+                                    && isHexChar( text.charAt( i + 3 ) ) && isHexChar( text.charAt( i + 4 ) )
+                                    && isHexChar( text.charAt( i + 5 ) ) )
+                                {
+                                    int value = '?';
+                                    try
+                                    {
+                                        value = Integer.parseInt( text.substring( i + 2, i + 6 ), 16 );
+                                    }
+                                    catch ( NumberFormatException e )
+                                    {
+                                        if ( getLog().isDebugEnabled() )
+                                        {
+                                            getLog().debug( "Not a number: " + text.substring( i + 2, i + 6 ) );
+                                        }
+                                    }
+
+                                    i += 5;
+                                    buffer.append( (char) value );
+                                }
+                                else
+                                {
+                                    buffer.append( BACKSLASH );
+                                }
+                                break;
+                            default:
+                                if ( isOctalChar( escaped ) )
+                                {
+                                    int octalChars = 1;
+                                    if ( isOctalChar( charAt( text, end, i + 2 ) ) )
+                                    {
+                                        ++octalChars;
+                                        if ( isOctalChar( charAt( text, end, i + 3 ) ) )
+                                        {
+                                            ++octalChars;
+                                        }
+                                    }
+                                    int value = '?';
+                                    try
+                                    {
+                                        value = Integer.parseInt( text.substring( i + 1, i + 1 + octalChars ), 8 );
+                                    }
+                                    catch ( NumberFormatException e )
+                                    {
+                                        if ( getLog().isDebugEnabled() )
+                                        {
+                                            getLog().debug(
+                                                            "Not a number: "
+                                                                + text.substring( i + 1, i + 1 + octalChars ) );
+                                        }
+                                    }
+
+                                    i += octalChars;
+                                    buffer.append( (char) value );
+                                }
+                                else
+                                {
+                                    buffer.append( BACKSLASH );
+                                }
+                        }
+                    }
+                    else
+                    {
+                        buffer.append( BACKSLASH );
+                    }
+                    break;
+
+                case LEFT_CURLY_BRACKET: /*}*/
+                    if ( !anchor && !link )
+                    {
+                        if ( i + 1 < end && text.charAt( i + 1 ) == LEFT_CURLY_BRACKET /*}*/)
+                        {
+                            ++i;
+                            link = true;
+                            flushTraversed( buffer, sink );
+
+                            String linkAnchor = null;
+
+                            if ( i + 1 < end && text.charAt( i + 1 ) == LEFT_CURLY_BRACKET /*}*/)
+                            {
+                                ++i;
+                                StringBuffer buf = new StringBuffer();
+                                i = skipTraversedLinkAnchor( text, i + 1, end, buf );
+                                linkAnchor = buf.toString();
+                            }
+
+                            if ( linkAnchor == null )
+                            {
+                                linkAnchor = getTraversedLink( text, i + 1, end );
+                            }
+
+                            sink.link( linkAnchor );
+                        }
+                        else
+                        {
+                            anchor = true;
+                            flushTraversed( buffer, sink );
+                            sink.anchor( getTraversedAnchor( text, i + 1, end ) );
+                        }
+                    }
+                    else
+                    {
+                        buffer.append( c );
+                    }
+                    break;
+
+                case /*{*/RIGHT_CURLY_BRACKET:
+                    if ( link && i + 1 < end && text.charAt( i + 1 ) == /*{*/RIGHT_CURLY_BRACKET )
+                    {
+                        ++i;
+                        link = false;
+                        flushTraversed( buffer, sink );
+                        sink.link_();
+                    }
+                    else if ( anchor )
+                    {
+                        anchor = false;
+                        flushTraversed( buffer, sink );
+                        sink.anchor_();
+                    }
+                    else
+                    {
+                        buffer.append( c );
+                    }
+                    break;
+
+                case LESS_THAN:
+                    if ( !italic && !bold && !monospaced )
+                    {
+                        if ( i + 1 < end && text.charAt( i + 1 ) == LESS_THAN )
+                        {
+                            if ( i + 2 < end && text.charAt( i + 2 ) == LESS_THAN )
+                            {
+                                i += 2;
+                                monospaced = true;
+                                flushTraversed( buffer, sink );
+                                sink.monospaced();
+                            }
+                            else
+                            {
+                                ++i;
+                                bold = true;
+                                flushTraversed( buffer, sink );
+                                sink.bold();
+                            }
+                        }
+                        else
+                        {
+                            italic = true;
+                            flushTraversed( buffer, sink );
+                            sink.italic();
+                        }
+                    }
+                    else
+                    {
+                        buffer.append( c );
+                    }
+                    break;
+
+                case GREATER_THAN:
+                    if ( monospaced && i + 2 < end && text.charAt( i + 1 ) == GREATER_THAN
+                        && text.charAt( i + 2 ) == GREATER_THAN )
+                    {
+                        i += 2;
+                        monospaced = false;
+                        flushTraversed( buffer, sink );
+                        sink.monospaced_();
+                    }
+                    else if ( bold && i + 1 < end && text.charAt( i + 1 ) == GREATER_THAN )
+                    {
+                        ++i;
+                        bold = false;
+                        flushTraversed( buffer, sink );
+                        sink.bold_();
+                    }
+                    else if ( italic )
+                    {
+                        italic = false;
+                        flushTraversed( buffer, sink );
+                        sink.italic_();
+                    }
+                    else
+                    {
+                        buffer.append( c );
+                    }
+                    break;
+
+                default:
+                    if ( Character.isWhitespace( c ) )
+                    {
+                        buffer.append( SPACE );
+
+                        // Skip to the last char of a sequence of white spaces.
+                        while ( i + 1 < end && Character.isWhitespace( text.charAt( i + 1 ) ) )
+                        {
+                            ++i;
+                        }
+                    }
+                    else
+                    {
+                        buffer.append( c );
+                    }
+            }
+        }
+
+        if ( monospaced )
+        {
+            throw new AptParseException( "missing '" + MONOSPACED_END_MARKUP + "'" );
+        }
+        if ( bold )
+        {
+            throw new AptParseException( "missing '" + BOLD_END_MARKUP + "'" );
+        }
+        if ( italic )
+        {
+            throw new AptParseException( "missing '" + ITALIC_END_MARKUP + "'" );
+        }
+        if ( link )
+        {
+            throw new AptParseException( "missing '" + LINK_END_MARKUP + "'" );
+        }
+        if ( anchor )
+        {
+            throw new AptParseException( "missing '" + ANCHOR_END_MARKUP + "'" );
+        }
+
+        flushTraversed( buffer, sink );
+    }
+
+    // -----------------------------------------------------------------------
+
+    /**
+     * Returns the character at position i of the given string.
+     *
+     * @param string the string.
+     * @param length length.
+     * @param i offset.
+     * @return the character, or '\0' if i > length.
+     */
+    protected static char charAt( String string, int length, int i )
+    {
+        return ( i < length ) ? string.charAt( i ) : '\0';
+    }
+
+    /**
+     * Skip spaces.
+     *
+     * @param string string.
+     * @param length length.
+     * @param i offset.
+     * @return int.
+     */
+    protected static int skipSpace( String string, int length, int i )
+    {
+        loop: for ( ; i < length; ++i )
+        {
+            switch ( string.charAt( i ) )
+            {
+                case SPACE:
+                case TAB:
+                    break;
+                default:
+                    break loop;
+            }
+        }
+        return i;
+    }
+
+    /**
+     * Replace part of a string.
+     *
+     * @param string the string
+     * @param oldSub the substring to replace
+     * @param newSub the replacement string
+     * @return String
+     */
+    protected static String replaceAll( String string, String oldSub, String newSub )
+    {
+        StringBuffer replaced = new StringBuffer();
+        int oldSubLength = oldSub.length();
+        int begin, end;
+
+        begin = 0;
+        while ( ( end = string.indexOf( oldSub, begin ) ) >= 0 )
+        {
+            if ( end > begin )
+            {
+                replaced.append( string.substring( begin, end ) );
+            }
+            replaced.append( newSub );
+            begin = end + oldSubLength;
+        }
+        if ( begin < string.length() )
+        {
+            replaced.append( string.substring( begin ) );
+        }
+
+        return replaced.toString();
     }
 
     // ----------------------------------------------------------------------
@@ -774,17 +1177,6 @@ public class AptParser
     }
 
     /**
-     * Parse the next line of the Apt source document.
-     *
-     * @throws AptParseException if something goes wrong.
-     */
-    private void nextLine()
-        throws AptParseException
-    {
-        line = source.getNextLine();
-    }
-
-    /**
      * Parse the next block of the Apt source document.
      *
      * @throws AptParseException if something goes wrong.
@@ -1008,7 +1400,7 @@ public class AptParser
     // -----------------------------------------------------------------------
 
     /**
-     * Determin if c is an octal character.
+     * Determine if c is an octal character.
      *
      * @param c the character.
      * @return boolean
@@ -1019,7 +1411,7 @@ public class AptParser
     }
 
     /**
-     * Determin if c is an hex character.
+     * Determine if c is an hex character.
      *
      * @param c the character.
      * @return boolean
@@ -1027,360 +1419,6 @@ public class AptParser
     private static boolean isHexChar( char c )
     {
         return ( ( c >= '0' && c <= '9' ) || ( c >= 'a' && c <= 'f' ) || ( c >= 'A' && c <= 'F' ) );
-    }
-
-    /**
-     * Returns the character at position i of the given string.
-     *
-     * @param string the string.
-     * @param length length.
-     * @param i offset.
-     * @return the character, or '\0' if i > length.
-     */
-    private static char charAt( String string, int length, int i )
-    {
-        return ( i < length ) ? string.charAt( i ) : '\0';
-    }
-
-    /**
-     * Skip spaces.
-     *
-     * @param string string.
-     * @param length length.
-     * @param i offset.
-     * @return int.
-     */
-    private static int skipSpace( String string, int length, int i )
-    {
-        loop: for ( ; i < length; ++i )
-        {
-            switch ( string.charAt( i ) )
-            {
-                case SPACE:
-                case TAB:
-                    break;
-                default:
-                    break loop;
-            }
-        }
-        return i;
-    }
-
-    /**
-     * Parse the given text.
-     *
-     * @param text the text to parse.
-     * @param begin offset.
-     * @param end offset.
-     * @param sink the sink to receive the events.
-     * @throws AptParseException if something goes wrong.
-     */
-    private void doTraverseText( String text, int begin, int end, Sink sink )
-        throws AptParseException
-    {
-        boolean anchor = false;
-        boolean link = false;
-        boolean italic = false;
-        boolean bold = false;
-        boolean monospaced = false;
-        StringBuffer buffer = new StringBuffer( end - begin );
-
-        for ( int i = begin; i < end; ++i )
-        {
-            char c = text.charAt( i );
-            switch ( c )
-            {
-                case BACKSLASH:
-                    if ( i + 1 < end )
-                    {
-                        char escaped = text.charAt( i + 1 );
-                        switch ( escaped )
-                        {
-                            case SPACE:
-                                ++i;
-                                flushTraversed( buffer, sink );
-                                sink.nonBreakingSpace();
-                                break;
-                            case '\r':
-                            case '\n':
-                                ++i;
-                                // Skip white space which may follow a line break.
-                                while ( i + 1 < end && Character.isWhitespace( text.charAt( i + 1 ) ) )
-                                {
-                                    ++i;
-                                }
-                                flushTraversed( buffer, sink );
-                                sink.lineBreak();
-                                break;
-                            case BACKSLASH:
-                            case PIPE:
-                            case COMMENT:
-                            case EQUAL:
-                            case MINUS:
-                            case PLUS:
-                            case STAR:
-                            case LEFT_SQUARE_BRACKET:
-                            case RIGHT_SQUARE_BRACKET:
-                            case LESS_THAN:
-                            case GREATER_THAN:
-                            case LEFT_CURLY_BRACKET:
-                            case RIGHT_CURLY_BRACKET:
-                                ++i;
-                                buffer.append( escaped );
-                                break;
-                            case 'x':
-                                if ( i + 3 < end && isHexChar( text.charAt( i + 2 ) )
-                                    && isHexChar( text.charAt( i + 3 ) ) )
-                                {
-                                    int value = '?';
-                                    try
-                                    {
-                                        value = Integer.parseInt( text.substring( i + 2, i + 4 ), 16 );
-                                    }
-                                    catch ( NumberFormatException e )
-                                    {
-                                        if ( getLog().isDebugEnabled() )
-                                        {
-                                            getLog().debug( "Not a number: " + text.substring( i + 2, i + 4 ) );
-                                        }
-                                    }
-
-                                    i += 3;
-                                    buffer.append( (char) value );
-                                }
-                                else
-                                {
-                                    buffer.append( BACKSLASH );
-                                }
-                                break;
-                            case 'u':
-                                if ( i + 5 < end && isHexChar( text.charAt( i + 2 ) )
-                                    && isHexChar( text.charAt( i + 3 ) ) && isHexChar( text.charAt( i + 4 ) )
-                                    && isHexChar( text.charAt( i + 5 ) ) )
-                                {
-                                    int value = '?';
-                                    try
-                                    {
-                                        value = Integer.parseInt( text.substring( i + 2, i + 6 ), 16 );
-                                    }
-                                    catch ( NumberFormatException e )
-                                    {
-                                        if ( getLog().isDebugEnabled() )
-                                        {
-                                            getLog().debug( "Not a number: " + text.substring( i + 2, i + 6 ) );
-                                        }
-                                    }
-
-                                    i += 5;
-                                    buffer.append( (char) value );
-                                }
-                                else
-                                {
-                                    buffer.append( BACKSLASH );
-                                }
-                                break;
-                            default:
-                                if ( isOctalChar( escaped ) )
-                                {
-                                    int octalChars = 1;
-                                    if ( isOctalChar( charAt( text, end, i + 2 ) ) )
-                                    {
-                                        ++octalChars;
-                                        if ( isOctalChar( charAt( text, end, i + 3 ) ) )
-                                        {
-                                            ++octalChars;
-                                        }
-                                    }
-                                    int value = '?';
-                                    try
-                                    {
-                                        value = Integer.parseInt( text.substring( i + 1, i + 1 + octalChars ), 8 );
-                                    }
-                                    catch ( NumberFormatException e )
-                                    {
-                                        if ( getLog().isDebugEnabled() )
-                                        {
-                                            getLog().debug(
-                                                            "Not a number: "
-                                                                + text.substring( i + 1, i + 1 + octalChars ) );
-                                        }
-                                    }
-
-                                    i += octalChars;
-                                    buffer.append( (char) value );
-                                }
-                                else
-                                {
-                                    buffer.append( BACKSLASH );
-                                }
-                        }
-                    }
-                    else
-                    {
-                        buffer.append( BACKSLASH );
-                    }
-                    break;
-
-                case LEFT_CURLY_BRACKET: /*}*/
-                    if ( !anchor && !link )
-                    {
-                        if ( i + 1 < end && text.charAt( i + 1 ) == LEFT_CURLY_BRACKET /*}*/)
-                        {
-                            ++i;
-                            link = true;
-                            flushTraversed( buffer, sink );
-
-                            String linkAnchor = null;
-
-                            if ( i + 1 < end && text.charAt( i + 1 ) == LEFT_CURLY_BRACKET /*}*/)
-                            {
-                                ++i;
-                                StringBuffer buf = new StringBuffer();
-                                i = skipTraversedLinkAnchor( text, i + 1, end, buf );
-                                linkAnchor = buf.toString();
-                            }
-
-                            if ( linkAnchor == null )
-                            {
-                                linkAnchor = getTraversedLink( text, i + 1, end );
-                            }
-
-                            sink.link( linkAnchor );
-                        }
-                        else
-                        {
-                            anchor = true;
-                            flushTraversed( buffer, sink );
-                            sink.anchor( getTraversedAnchor( text, i + 1, end ) );
-                        }
-                    }
-                    else
-                    {
-                        buffer.append( c );
-                    }
-                    break;
-
-                case /*{*/RIGHT_CURLY_BRACKET:
-                    if ( link && i + 1 < end && text.charAt( i + 1 ) == /*{*/RIGHT_CURLY_BRACKET )
-                    {
-                        ++i;
-                        link = false;
-                        flushTraversed( buffer, sink );
-                        sink.link_();
-                    }
-                    else if ( anchor )
-                    {
-                        anchor = false;
-                        flushTraversed( buffer, sink );
-                        sink.anchor_();
-                    }
-                    else
-                    {
-                        buffer.append( c );
-                    }
-                    break;
-
-                case LESS_THAN:
-                    if ( !italic && !bold && !monospaced )
-                    {
-                        if ( i + 1 < end && text.charAt( i + 1 ) == LESS_THAN )
-                        {
-                            if ( i + 2 < end && text.charAt( i + 2 ) == LESS_THAN )
-                            {
-                                i += 2;
-                                monospaced = true;
-                                flushTraversed( buffer, sink );
-                                sink.monospaced();
-                            }
-                            else
-                            {
-                                ++i;
-                                bold = true;
-                                flushTraversed( buffer, sink );
-                                sink.bold();
-                            }
-                        }
-                        else
-                        {
-                            italic = true;
-                            flushTraversed( buffer, sink );
-                            sink.italic();
-                        }
-                    }
-                    else
-                    {
-                        buffer.append( c );
-                    }
-                    break;
-
-                case GREATER_THAN:
-                    if ( monospaced && i + 2 < end && text.charAt( i + 1 ) == GREATER_THAN
-                        && text.charAt( i + 2 ) == GREATER_THAN )
-                    {
-                        i += 2;
-                        monospaced = false;
-                        flushTraversed( buffer, sink );
-                        sink.monospaced_();
-                    }
-                    else if ( bold && i + 1 < end && text.charAt( i + 1 ) == GREATER_THAN )
-                    {
-                        ++i;
-                        bold = false;
-                        flushTraversed( buffer, sink );
-                        sink.bold_();
-                    }
-                    else if ( italic )
-                    {
-                        italic = false;
-                        flushTraversed( buffer, sink );
-                        sink.italic_();
-                    }
-                    else
-                    {
-                        buffer.append( c );
-                    }
-                    break;
-
-                default:
-                    if ( Character.isWhitespace( c ) )
-                    {
-                        buffer.append( SPACE );
-
-                        // Skip to the last char of a sequence of white spaces.
-                        while ( i + 1 < end && Character.isWhitespace( text.charAt( i + 1 ) ) )
-                        {
-                            ++i;
-                        }
-                    }
-                    else
-                    {
-                        buffer.append( c );
-                    }
-            }
-        }
-
-        if ( monospaced )
-        {
-            throw new AptParseException( "missing '" + MONOSPACED_END_MARKUP + "'" );
-        }
-        if ( bold )
-        {
-            throw new AptParseException( "missing '" + BOLD_END_MARKUP + "'" );
-        }
-        if ( italic )
-        {
-            throw new AptParseException( "missing '" + ITALIC_END_MARKUP + "'" );
-        }
-        if ( link )
-        {
-            throw new AptParseException( "missing '" + LINK_END_MARKUP + "'" );
-        }
-        if ( anchor )
-        {
-            throw new AptParseException( "missing '" + ANCHOR_END_MARKUP + "'" );
-        }
-
-        flushTraversed( buffer, sink );
     }
 
     /**
@@ -1526,16 +1564,19 @@ public class AptParser
 
         Sink linkSink = new SinkAdapter()
         {
+            /** {@inheritDoc} */
             public void lineBreak()
             {
                 buffer.append( SPACE );
             }
 
+            /** {@inheritDoc} */
             public void nonBreakingSpace()
             {
                 buffer.append( SPACE );
             }
 
+            /** {@inheritDoc} */
             public void text( String text )
             {
                 buffer.append( text );
@@ -2828,39 +2869,5 @@ public class AptParser
 
             return result;
         }
-    }
-
-    // -----------------------------------------------------------------------
-
-    /**
-     * Replace part of a string.
-     *
-     * @param string the string
-     * @param oldSub the substring to replace
-     * @param newSub the replacement string
-     * @return String
-     */
-    private static String replaceAll( String string, String oldSub, String newSub )
-    {
-        StringBuffer replaced = new StringBuffer();
-        int oldSubLength = oldSub.length();
-        int begin, end;
-
-        begin = 0;
-        while ( ( end = string.indexOf( oldSub, begin ) ) >= 0 )
-        {
-            if ( end > begin )
-            {
-                replaced.append( string.substring( begin, end ) );
-            }
-            replaced.append( newSub );
-            begin = end + oldSubLength;
-        }
-        if ( begin < string.length() )
-        {
-            replaced.append( string.substring( begin ) );
-        }
-
-        return replaced.toString();
     }
 }
