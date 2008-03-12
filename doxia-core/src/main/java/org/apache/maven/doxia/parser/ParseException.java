@@ -29,93 +29,170 @@ package org.apache.maven.doxia.parser;
 public class ParseException
     extends Exception
 {
-    /**
-     * The file that caused the ParseException..
-     */
+    /** serialVersionUID */
+    static final long serialVersionUID = 295967936746221567L;
+
+    /** The file that caused the ParseException. */
     private String fileName;
 
-    /**
-     * Line number where the parse exception occurred.
-     */
+    /** Line number where the parse exception occurred. */
     private int lineNumber;
 
+    /** Column number where the parse exception occurred. */
+    private int columnNumber;
+
     /**
-     * Construct a new ParseException with the specified detail message.
+     * Construct a new <code>ParseException</code> with the specified detail message.
+     * <br/>
+     * <b>Note</b>: no line or column number will be used.
      *
      * @param message The detailed message.
-     * This can later be retrieved by the Throwable.getMessage() method.
+     * This can later be retrieved by the <code>Throwable.getMessage()</code> method.
      */
     public ParseException( String message )
     {
-        this( null, message, null, -1 );
+        this( null, message, null, -1, -1 );
     }
 
     /**
-     * Construct a new ParseException with the specified detail message and cause.
+     * Construct a new <code>ParseException</code> with the specified detail message and cause.
+     * <br/>
+     * <b>Note</b>: no line or column number will be used.
      *
      * @param message The detailed message.
-     * This can later be retrieved by the Throwable.getMessage() method.
-     * @param e the cause. This can be retrieved later by the Throwable.getCause() method.
+     * This can later be retrieved by the <code>Throwable.getMessage()</code> method.
+     * @param e the cause. This can be retrieved later by the <code>Throwable.getCause()</code> method.
      * (A null value is permitted, and indicates that the cause is nonexistent or unknown.)
      */
     public ParseException( String message, Exception e )
     {
-        this( e, message, null, -1 );
+        this( e, message, null, -1, -1 );
+    }
+
+    /**
+     * Construct a new <code>ParseException</code> with the specified detail message,
+     * line number and column number.
+     *
+     * @param message The detailed message.
+     * This can later be retrieved by the <code>Throwable.getMessage()</code> method.
+     * @param line The line number where the parsing failed.
+     * This can later be retrieved by the getLineNumber() method.
+     * @param column The column number where the parsing failed.
+     * This can later be retrieved by the getColumnNumber() method.
+     */
+    public ParseException( String message, int line, int column )
+    {
+        this( null, message, null, line, column );
+    }
+
+    /**
+     * Construct a new <code>ParseException</code> with the specified detail message and cause,
+     * line number and column number.
+     *
+     * @param message The detailed message.
+     * This can later be retrieved by the <code>Throwable.getMessage()</code> method.
+     * @param e the cause. This can be retrieved later by the <code>Throwable.getCause()</code> method.
+     * (A null value is permitted, and indicates that the cause is nonexistent or unknown.)
+     * @param line The line number where the parsing failed.
+     * This can later be retrieved by the getLineNumber() method.
+     * @param column The column number where the parsing failed.
+     * This can later be retrieved by the getColumnNumber() method.
+     */
+    public ParseException( String message, Exception e, int line, int column )
+    {
+        this( e, message, null, line, column );
     }
 
     /**
      * Constructs a new exception with the specified cause. The error message is
      *  (cause == null ? null : cause.toString() ).
      *
-     * @param e the cause. This can be retrieved later by the Throwable.getCause() method.
+     * @param e the cause. This can be retrieved later by the <code>Throwable.getCause()</code> method.
      * (A null value is permitted, and indicates that the cause is nonexistent or unknown.)
+     * @deprecated Using {@link #ParseException(Exception, int, int)} to specify the line and column number.
      */
     public ParseException( Exception e )
     {
-        this( e, null, null, -1 );
+        this( e, null, null, -1, -1 );
     }
 
     /**
-     * Construct a new ParseException with the specified cause,
+     * Constructs a new exception with the specified cause, line number and column number. The error message is
+     *  (cause == null ? null : cause.toString() ).
+     *
+     * @param e the cause. This can be retrieved later by the <code>Throwable.getCause()</code> method.
+     * (A null value is permitted, and indicates that the cause is nonexistent or unknown.)
+     * @param line The line number where the parsing failed.
+     * This can later be retrieved by the getLineNumber() method.
+     * @param column The column number where the parsing failed.
+     * This can later be retrieved by the getColumnNumber() method.
+     */
+    public ParseException( Exception e, int line, int column )
+    {
+        this( e, null, null, line, column );
+    }
+
+    /**
+     * Construct a new <code>ParseException</code> with the specified cause,
      * filename and linenumber.
      *
-     * @param e the cause. This can be retrieved later by the Throwable.getCause() method.
+     * @param e the cause. This can be retrieved later by the <code>Throwable.getCause()</code> method.
      * (A null value is permitted, and indicates that the cause is nonexistent or unknown.)
      * @param file Name of a file that couldn't be parsed.
      * This can later be retrieved by the getFileName() method.
      * @param line The line number where the parsing failed.
      * This can later be retrieved by the getLineNumber() method.
+     * @deprecated Using {@link #ParseException(Exception, String, int, int)} to specify the column number.
      */
     public ParseException( Exception e, String file, int line )
     {
-        this( e, null, file, line );
+        this( e, null, file, line, -1 );
     }
 
     /**
-     * Construct a new ParseException with the specified cause, detail message,
-     * filename and linenumber.
+     * Construct a new <code>ParseException</code> with the specified cause,
+     * filename, line number and column number.
      *
-     * @param e the cause. This can be retrieved later by the Throwable.getCause() method.
+     * @param e the cause. This can be retrieved later by the <code>Throwable.getCause()</code> method.
      * (A null value is permitted, and indicates that the cause is nonexistent or unknown.)
-     * @param message The detailed message.
-     * This can later be retrieved by the Throwable.getMessage() method.
      * @param file Name of a file that couldn't be parsed.
      * This can later be retrieved by the getFileName() method.
      * @param line The line number where the parsing failed.
      * This can later be retrieved by the getLineNumber() method.
+     * @param column The column number where the parsing failed.
+     * This can later be retrieved by the getColumnNumber() method.
      */
-    public ParseException( Exception e, String message, String file, int line )
+    public ParseException( Exception e, String file, int line, int column )
+    {
+        this( e, null, file, line, column );
+    }
+
+    /**
+     * Construct a new <code>ParseException</code> with the specified cause, detail message,
+     * filename, line number and column number.
+     *
+     * @param e the cause. This can be retrieved later by the <code>Throwable.getCause()</code> method.
+     * (A null value is permitted, and indicates that the cause is nonexistent or unknown.)
+     * @param message The detailed message.
+     * This can later be retrieved by the <code>Throwable.getMessage()</code> method.
+     * @param file Name of a file that couldn't be parsed.
+     * This can later be retrieved by the getFileName() method.
+     * @param line The line number where the parsing failed.
+     * This can later be retrieved by the getLineNumber() method.
+     * @param column The column number where the parsing failed.
+     * This can later be retrieved by the getColumnNumber() method.
+     */
+    public ParseException( Exception e, String message, String file, int line, int column )
     {
         super( ( message == null ) ? ( ( e == null ) ? null : e.getMessage() ) : message, e );
 
         this.fileName = file;
         this.lineNumber = line;
+        this.columnNumber = column;
     }
 
     /**
-     * Returns the file that caused the ParseException.
-     *
-     * @return the file that caused the ParseException.
+     * @return the file name that caused the <code>ParseException</code>.
      */
     public String getFileName()
     {
@@ -123,12 +200,18 @@ public class ParseException
     }
 
     /**
-     * Returns the line number where the  ParseException ocurred.
-     *
-     * @return the line number.
+     * @return the line number where the <code>ParseException</code> occurred.
      */
     public int getLineNumber()
     {
         return lineNumber;
+    }
+
+    /**
+     * @return the column number where the <code>ParseException</code> occurred.
+     */
+    public int getColumnNumber()
+    {
+        return columnNumber;
     }
 }
