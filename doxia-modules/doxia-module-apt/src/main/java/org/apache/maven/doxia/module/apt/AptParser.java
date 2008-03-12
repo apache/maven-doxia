@@ -124,93 +124,8 @@ public class AptParser
         "MACRO",
         "COMMENT_BLOCK" };
 
-    /** An array of spaces. */
-    protected static final char SPACES[] = {
-        ' ',
-        ' ',
-        ' ',
-        ' ',
-        ' ',
-        ' ',
-        ' ',
-        ' ',
-        ' ',
-        ' ',
-        ' ',
-        ' ',
-        ' ',
-        ' ',
-        ' ',
-        ' ',
-        ' ',
-        ' ',
-        ' ',
-        ' ',
-        ' ',
-        ' ',
-        ' ',
-        ' ',
-        ' ',
-        ' ',
-        ' ',
-        ' ',
-        ' ',
-        ' ',
-        ' ',
-        ' ',
-        ' ',
-        ' ',
-        ' ',
-        ' ',
-        ' ',
-        ' ',
-        ' ',
-        ' ',
-        ' ',
-        ' ',
-        ' ',
-        ' ',
-        ' ',
-        ' ',
-        ' ',
-        ' ',
-        ' ',
-        ' ',
-        ' ',
-        ' ',
-        ' ',
-        ' ',
-        ' ',
-        ' ',
-        ' ',
-        ' ',
-        ' ',
-        ' ',
-        ' ',
-        ' ',
-        ' ',
-        ' ',
-        ' ',
-        ' ',
-        ' ',
-        ' ',
-        ' ',
-        ' ',
-        ' ',
-        ' ',
-        ' ',
-        ' ',
-        ' ',
-        ' ',
-        ' ',
-        ' ',
-        ' ',
-        ' ',
-        ' ',
-        ' ',
-        ' ',
-        ' ',
-        ' ' };
+    /** An array of 85 spaces. */
+    protected static final char[] SPACES;
 
     /** Default tab width. */
     public static final int TAB_WIDTH = 8;
@@ -239,6 +154,15 @@ public class AptParser
 
     /** a line of AptSource. */
     protected String line;
+
+    static
+    {
+        SPACES = new char[85];
+        for ( int i = 0; i < 85; i++ )
+        {
+            SPACES[i] = ' ';
+        }
+    }
 
     // ----------------------------------------------------------------------
     // Public methods
