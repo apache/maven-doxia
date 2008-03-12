@@ -21,55 +21,35 @@ package org.apache.maven.doxia.module.apt;
 
 import org.apache.maven.doxia.parser.ParseException;
 
-/** Wraps an exception when parsing apt source documents. */
+/**
+ * Wraps an exception when parsing apt source documents.
+ *
+ * @version $Id$
+ * @since 1.0
+ */
 public class AptParseException
     extends ParseException
 {
-    /**
-     * @deprecated source isn't a safe place to get linenumbers from.
-     * @param message the error message.
-     * @param source the AptSource.
-     */
-    public AptParseException( String message, AptSource source )
-    {
-        super( null, message, source.getName(), source.getLineNumber() );
-    }
+    /** serialVersionUID */
+    static final long serialVersionUID = 1694654412921168623L;
 
     /**
-     * @deprecated source isn't a safe place to get linenumbers from
-     * @param message the error message.
-     * @param source the AptSource.
-     * @param e the Exception.
-     */
-    public AptParseException( String message, AptSource source, Exception e )
-    {
-        super( e, message, source.getName(), source.getLineNumber() );
-    }
-
-    /**
-     * Construct a new AptParseException with the specified cause, detail message,
-     * filename and linenumber.
+     * Construct a new AptParseException with the specified detail message.
      *
      * @param message The detailed message.
-     * This can later be retrieved by the Throwable.getMessage() method.
-     * @param name Name of a file that couldn't be parsed.
-     * This can later be retrieved by the getFileName() method.
-     * @param lineNumber The line number where the parsing failed.
-     * This can later be retrieved by the getLineNumber() method.
-     * @param e the cause. This can be retrieved later by the Throwable.getCause() method.
-     * (A null value is permitted, and indicates that the cause is nonexistent or unknown.)
+     * This can later be retrieved by the <code>Throwable.getMessage()</code> method.
      */
-    public AptParseException( String message, String name, int lineNumber, Exception e )
+    public AptParseException( String message )
     {
-        super( e, message, name, lineNumber );
+        super( message );
     }
 
     /**
      * Construct a new AptParseException with the specified detail message and cause.
      *
      * @param message The detailed message.
-     * This can later be retrieved by the Throwable.getMessage() method.
-     * @param e the cause. This can be retrieved later by the Throwable.getCause() method.
+     * This can later be retrieved by the <code>Throwable.getMessage()</code> method.
+     * @param e the cause. This can be retrieved later by the <code>Throwable.getCause()</code> method.
      * (A null value is permitted, and indicates that the cause is nonexistent or unknown.)
      */
     public AptParseException( String message, Exception e )
@@ -78,25 +58,39 @@ public class AptParseException
     }
 
     /**
-     * Construct a new AptParseException with the specified detail message.
+     * Construct a new AptParseException with the specified cause, detail message,
+     * filename, line number and column number.
      *
      * @param message The detailed message.
-     * This can later be retrieved by the Throwable.getMessage() method.
+     * This can later be retrieved by the <code>Throwable.getMessage()</code> method.
+     * @param e the cause. This can be retrieved later by the <code>Throwable.getCause()</code> method.
+     * (A null value is permitted, and indicates that the cause is nonexistent or unknown.)
+     * @param name Name of a file that couldn't be parsed.
+     * This can later be retrieved by the getFileName() method.
+     * @param line The line number where the parsing failed.
+     * This can later be retrieved by the getLineNumber() method.
+     * @param column The column number where the parsing failed.
+     * This can later be retrieved by the getColumnNumber() method.
      */
-    public AptParseException( String message )
+    public AptParseException( String message, Exception e, String name, int line, int column )
     {
-        super( message );
+        super( e, message, name, line, column );
     }
 
     /**
-     * Constructs a new AptParseException with the specified cause. The error message is
-     *  (cause == null ? null : cause.toString() ).
+     * Construct a new AptParseException with the specified detail message and cause.
      *
-     * @param e the cause. This can be retrieved later by the Throwable.getCause() method.
+     * @param message The detailed message.
+     * This can later be retrieved by the <code>Throwable.getMessage()</code> method.
+     * @param e the cause. This can be retrieved later by the <code>Throwable.getCause()</code> method.
      * (A null value is permitted, and indicates that the cause is nonexistent or unknown.)
+     * @param line The line number where the parsing failed.
+     * This can later be retrieved by the getLineNumber() method.
+     * @param column The column number where the parsing failed.
+     * This can later be retrieved by the getColumnNumber() method.
      */
-    public AptParseException( Exception e )
+    public AptParseException( String message, Exception e, int line, int column )
     {
-        super( e );
+        super( message, e, line, column );
     }
 }
