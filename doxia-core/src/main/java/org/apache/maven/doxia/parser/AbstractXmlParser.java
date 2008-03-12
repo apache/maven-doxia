@@ -58,7 +58,8 @@ public abstract class AbstractXmlParser
         }
         catch ( XmlPullParserException ex )
         {
-            throw new ParseException( "Error parsing the model: " + ex.getMessage(), ex );
+            throw new ParseException( "Error parsing the model: " + ex.getMessage(), ex, ex.getLineNumber(), ex
+                .getColumnNumber() );
         }
         catch ( MacroExecutionException ex )
         {
