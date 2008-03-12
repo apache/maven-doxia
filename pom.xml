@@ -244,9 +244,9 @@ under the License.
   </dependencies>
 
   <modules>
-    <module>doxia-core</module>
     <module>doxia-logging-api</module>
     <module>doxia-sink-api</module>
+    <module>doxia-core</module>
     <module>doxia-modules</module>
     <module>doxia-book</module>
     <module>doxia-maven-plugin</module>
