@@ -573,7 +573,7 @@ public class XhtmlBaseParser
     /**
      * {@inheritDoc}
      *
-     * Just calls {@link baseStartTag(XmlPullParser,Sink)}, this should be
+     * Just calls {@link #baseStartTag(XmlPullParser,Sink)}, this should be
      * overridden by implementing parsers to include additional tags.
      */
     protected void handleStartTag( XmlPullParser parser, Sink sink )
@@ -595,7 +595,7 @@ public class XhtmlBaseParser
     /**
      * {@inheritDoc}
      *
-     * Just calls {@link baseEndTag(XmlPullParser,Sink)}, this should be
+     * Just calls {@link #baseEndTag(XmlPullParser,Sink)}, this should be
      * overridden by implementing parsers to include additional tags.
      */
     protected void handleEndTag( XmlPullParser parser, Sink sink )

@@ -126,7 +126,7 @@ public class SectionXdocBookSink
      * Add parent/up link.
      *
      * @param parent the parent IndexEntry.
-     * @see org.apache.maven.doxia.book.services.renderer.xdoc.ChapterXdocBookSink#up(org.apache.maven.doxia.book.context.IndexEntry)
+     * @see org.apache.maven.doxia.book.services.renderer.xdoc.ChapterXdocBookSink#up()
      */
     protected void up( IndexEntry parent )
     {

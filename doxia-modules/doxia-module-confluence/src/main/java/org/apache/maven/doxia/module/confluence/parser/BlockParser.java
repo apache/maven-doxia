@@ -31,14 +31,14 @@ public interface BlockParser
     /**
      * @param line
      * @param source
-     * @return
+     * @return boolean
      */
     boolean accept( String line, ByLineSource source );
 
     /**
      * @param line
      * @param source
-     * @return
+     * @return boolean
      * @throws ParseException
      */
     Block visit( String line, ByLineSource source ) throws ParseException;

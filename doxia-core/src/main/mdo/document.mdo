@@ -530,6 +530,7 @@
         <field xml.attribute="true">
           <name>targetFrame</name>
           <description><![CDATA[
+            the name of the default target frame.
             <p>
               Specifies the name of the default target frame in which to display
               a document referenced by a hyperlink.

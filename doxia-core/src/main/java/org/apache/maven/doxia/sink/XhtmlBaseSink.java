@@ -712,7 +712,7 @@ public class XhtmlBaseSink
     /**
      * {@inheritDoc}
      * @see javax.swing.text.html.HTML.Tag#IMG
-     * @deprecated Use {@link figure(SinkEventAttributes)}, this method is only kept for
+     * @deprecated Use {@link #figure(SinkEventAttributes)}, this method is only kept for
      * backward compatibility. Note that the behavior is different though, as this method
      * writes an img tag, while correctly the img tag should be written by  figureGraphics().
      */
@@ -762,7 +762,7 @@ public class XhtmlBaseSink
     }
 
     /** {@inheritDoc}
-     * @deprecated Use {@link figureGraphics(String,SinkEventAttributes)},
+     * @deprecated Use {@link #figureGraphics(String,SinkEventAttributes)},
      * this method is only kept for backward compatibility. Note that the behavior is
      * different though, as this method does not write the img tag, only the src attribute.
      */
@@ -799,7 +799,7 @@ public class XhtmlBaseSink
     }
 
     /** {@inheritDoc}
-     * @deprecated Use {@link figureCaption(SinkEventAttributes)},
+     * @deprecated Use {@link #figureCaption(SinkEventAttributes)},
      * this method is only kept for backward compatibility. Note that the behavior is
      * different though, as this method only writes an alt attribute.
      */

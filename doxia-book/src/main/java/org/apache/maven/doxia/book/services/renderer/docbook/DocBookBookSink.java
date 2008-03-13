@@ -44,7 +44,6 @@ public class DocBookBookSink
      * Construct a new DocBookSink.
      *
      * @param out the writer for the sink.
-     * @param context the RenderingContext.
      */
     public DocBookBookSink( Writer out )
     {

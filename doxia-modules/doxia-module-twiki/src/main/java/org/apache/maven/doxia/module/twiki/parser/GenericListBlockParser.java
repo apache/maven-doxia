@@ -49,7 +49,7 @@ public class GenericListBlockParser implements BlockParser
     private final Pattern [] patterns = new Pattern[TYPES.length];
 
     /**
-     * Creates the GenericListBlockParser. *
+     * Creates the GenericListBlockParser.
      */
     public GenericListBlockParser()
     {
