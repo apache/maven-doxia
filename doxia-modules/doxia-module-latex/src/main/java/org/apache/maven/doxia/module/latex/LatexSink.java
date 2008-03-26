@@ -22,6 +22,8 @@ package org.apache.maven.doxia.module.latex;
 import org.apache.maven.doxia.parser.Parser;
 import org.apache.maven.doxia.sink.AbstractTextSink;
 import org.apache.maven.doxia.util.LineBreaker;
+import org.apache.maven.doxia.util.StructureSinkUtils;
+
 import org.codehaus.plexus.util.IOUtil;
 import org.codehaus.plexus.util.StringUtils;
 
@@ -41,7 +43,7 @@ public class LatexSink
     /**
      * Flag that indicates if the document to be written is only a fragment.
      *
-     * This implies that <code>\\begin{document}</code>, <code>\\ptitle{..}</code> will not be output.
+     * This implies that <code>\\begin{document}</code>, <code>\\title{..}</code> will not be output.
      */
     private boolean fragmentDocument;
 
@@ -198,7 +200,7 @@ public class LatexSink
             else
             {
                 titleFlag = false;
-                markup( "\\pmaketitle" + EOL + EOL );
+                markup( "\\maketitle" + EOL + EOL );
             }
         }
     }
@@ -214,6 +216,97 @@ public class LatexSink
         }
 
         flush();
+    }
+
+    /**
+     * {@inheritDoc}
+     */
+    public void title()
+    {
+        if ( !fragmentDocument )
+        {
+            titleFlag = true;
+            markup( "\\title{" );
+        }
+        else
+        {
+            ignoreText = true;
+        }
+    }
+
+    /**
+     * {@inheritDoc}
+     */
+    public void title_()
+    {
+        if ( !fragmentDocument )
+        {
+            markup( "}" + EOL );
+        }
+        else
+        {
+            ignoreText = false;
+        }
+    }
+
+    /**
+     * {@inheritDoc}
+     */
+    public void author()
+    {
+        if ( !fragmentDocument )
+        {
+            markup( "\\author{" );
+        }
+        else
+        {
+            ignoreText = true;
+        }
+    }
+
+    /**
+     * {@inheritDoc}
+     */
+    public void author_()
+    {
+        if ( !fragmentDocument )
+        {
+            markup( "}" + EOL );
+        }
+        else
+        {
+            ignoreText = false;
+        }
+    }
+
+    /**
+     * {@inheritDoc}
+     */
+    public void date()
+    {
+        if ( !fragmentDocument )
+        {
+            markup( "\\date{" );
+        }
+        else
+        {
+            ignoreText = true;
+        }
+    }
+
+    /**
+     * {@inheritDoc}
+     */
+    public void date_()
+    {
+        if ( !fragmentDocument )
+        {
+            markup( "}" + EOL );
+        }
+        else
+        {
+            ignoreText = false;
+        }
     }
 
     // ----------------------------------------------------------------------
@@ -237,7 +330,7 @@ public class LatexSink
 
         if ( StringUtils.isNotEmpty( title ) )
         {
-            markup( "\\psectioni{" + title + "}" + EOL );
+            markup( "\\section{" + title + "}" + EOL );
 
             title = null;
         }
@@ -264,7 +357,7 @@ public class LatexSink
 
         if ( StringUtils.isNotEmpty( title ) )
         {
-            markup( "\\psectionii{" + title + "}" + EOL );
+            markup( "\\subsection{" + title + "}" + EOL );
 
             title = null;
         }
@@ -291,7 +384,7 @@ public class LatexSink
 
         if ( StringUtils.isNotEmpty( title ) )
         {
-            markup( "\\psectioniii{" + title + "}" + EOL );
+            markup( "\\subsubsection{" + title + "}" + EOL );
 
             title = null;
         }
@@ -318,7 +411,7 @@ public class LatexSink
 
         if ( StringUtils.isNotEmpty( title ) )
         {
-            markup( "\\psectioniv{" + title + "}" + EOL );
+            markup( "\\paragraph{" + title + "}" + EOL );
 
             title = null;
         }
@@ -345,14 +438,14 @@ public class LatexSink
 
         if ( StringUtils.isNotEmpty( title ) )
         {
-            markup( "\\psectionv{" + title + "}" + EOL );
+            markup( "\\subparagraph{" + title + "}" + EOL );
 
             title = null;
         }
     }
 
     // ----------------------------------------------------------------------
-    //
+    // List
     // ----------------------------------------------------------------------
 
     /**
@@ -360,7 +453,7 @@ public class LatexSink
      */
     public void list()
     {
-        markup( "\\begin{plist}" + EOL + EOL );
+        markup( "\\begin{itemize}" + EOL + EOL );
     }
 
     /**
@@ -368,7 +461,7 @@ public class LatexSink
      */
     public void list_()
     {
-        markup( "\\end{plist}" + EOL + EOL );
+        markup( "\\end{itemize}" + EOL + EOL );
     }
 
     /**
@@ -376,7 +469,7 @@ public class LatexSink
      */
     public void listItem()
     {
-        markup( "\\item{} " );
+        markup( "\\item " );
     }
 
     /**
@@ -423,7 +516,7 @@ public class LatexSink
                 style = "arabic";
         }
 
-        markup( "\\begin{pnumberedlist}" + EOL );
+        markup( "\\begin{enumerate}" + EOL );
         markup( "\\renewcommand{\\the" + counter + "}{\\" + style + "{" + counter + "}}" + EOL + EOL );
     }
 
@@ -432,7 +525,7 @@ public class LatexSink
      */
     public void numberedList_()
     {
-        markup( "\\end{pnumberedlist}" + EOL + EOL );
+        markup( "\\end{enumerate}" + EOL + EOL );
         --numberedListNesting;
     }
 
@@ -441,7 +534,7 @@ public class LatexSink
      */
     public void numberedListItem()
     {
-        markup( "\\item{} " );
+        markup( "\\item " );
     }
 
     /**
@@ -449,7 +542,7 @@ public class LatexSink
      */
     public void definitionList()
     {
-        markup( "\\begin{pdefinitionlist}" + EOL + EOL );
+        markup( "\\begin{description}" + EOL + EOL );
     }
 
     /**
@@ -457,8 +550,28 @@ public class LatexSink
      */
     public void definitionList_()
     {
-        markup( "\\end{pdefinitionlist}" + EOL + EOL );
+        markup( "\\end{description}" + EOL + EOL );
     }
+
+    /**
+     * {@inheritDoc}
+     */
+    public void definedTerm()
+    {
+        markup( "\\item[\\mbox{" );
+    }
+
+    /**
+     * {@inheritDoc}
+     */
+    public void definedTerm_()
+    {
+        markup( "}] " );
+    }
+
+    // ----------------------------------------------------------------------
+    // Figure
+    // ----------------------------------------------------------------------
 
     /**
      * {@inheritDoc}
@@ -466,7 +579,7 @@ public class LatexSink
     public void figure()
     {
         figureFlag = true;
-        markup( "\\begin{pfigure}" + EOL );
+        markup( "\\begin{figure}[htb]" + EOL );
     }
 
     /**
@@ -474,9 +587,46 @@ public class LatexSink
      */
     public void figure_()
     {
-        markup( "\\end{pfigure}" + EOL + EOL );
+        markup( "\\end{figure}" + EOL + EOL );
         figureFlag = false;
     }
+
+    /**
+     * {@inheritDoc}
+     */
+    public void figureGraphics( String name )
+    {
+        String src = name;
+
+        if ( !src.endsWith( ".eps" ) )
+        {
+            getLog().warn( "[latex-sink] Found non-eps figure graphics!" );
+        }
+
+        markup( "\\begin{center}" + EOL );
+        markup( "\\includegraphics{" + src + "}" + EOL );
+        markup( "\\end{center}" + EOL );
+    }
+
+    /**
+     * {@inheritDoc}
+     */
+    public void figureCaption()
+    {
+        markup( "\\caption{" );
+    }
+
+    /**
+     * {@inheritDoc}
+     */
+    public void figureCaption_()
+    {
+        markup( "}" + EOL );
+    }
+
+    // ----------------------------------------------------------------------
+    // Table
+    // ----------------------------------------------------------------------
 
     /**
      * {@inheritDoc}
@@ -484,7 +634,7 @@ public class LatexSink
     public void table()
     {
         tableFlag = true;
-        markup( "\\begin{ptable}" + EOL );
+        markup( "\\begin{table}[htp]" + EOL );
     }
 
     /**
@@ -492,7 +642,7 @@ public class LatexSink
      */
     public void table_()
     {
-        markup( "\\end{ptable}" + EOL + EOL );
+        markup( "\\end{table}" + EOL + EOL );
         tableFlag = false;
     }
 
@@ -527,7 +677,8 @@ public class LatexSink
             justif.append( '|' );
         }
 
-        markup( "\\begin{ptablerows}{" + justif.toString() + "}" + EOL );
+        markup( "\\begin{center}" + EOL );
+        markup( "\\begin{tabular}{" + justif.toString() + "}" + EOL );
         if ( grid )
         {
             markup( "\\hline" + EOL );
@@ -541,7 +692,9 @@ public class LatexSink
      */
     public void tableRows_()
     {
-        markup( "\\end{ptablerows}" + EOL );
+        markup( "\\end{tabular}" + EOL );
+        markup( "\\end{center}" + EOL );
+
         gridFlag = false;
         cellJustif = null;
     }
@@ -566,184 +719,6 @@ public class LatexSink
         }
         cellCount = 0;
         lastCellWasHeader = false;
-    }
-
-    /**
-     * {@inheritDoc}
-     */
-    public void title()
-    {
-        if ( !fragmentDocument )
-        {
-            titleFlag = true;
-            markup( "\\ptitle{" );
-        }
-        else
-        {
-            ignoreText = true;
-        }
-    }
-
-    /**
-     * {@inheritDoc}
-     */
-    public void title_()
-    {
-        if ( !fragmentDocument )
-        {
-            markup( "}" + EOL );
-        }
-        else
-        {
-            ignoreText = false;
-        }
-    }
-
-    /**
-     * {@inheritDoc}
-     */
-    public void author()
-    {
-        if ( !fragmentDocument )
-        {
-            markup( "\\pauthor{" );
-        }
-        else
-        {
-            ignoreText = true;
-        }
-    }
-
-    /**
-     * {@inheritDoc}
-     */
-    public void author_()
-    {
-        if ( !fragmentDocument )
-        {
-            markup( "}" + EOL );
-        }
-        else
-        {
-            ignoreText = false;
-        }
-    }
-
-    /**
-     * {@inheritDoc}
-     */
-    public void date()
-    {
-        if ( !fragmentDocument )
-        {
-            markup( "\\pdate{" );
-        }
-        else
-        {
-            ignoreText = true;
-        }
-    }
-
-    /**
-     * {@inheritDoc}
-     */
-    public void date_()
-    {
-        if ( !fragmentDocument )
-        {
-            markup( "}" + EOL );
-        }
-        else
-        {
-            ignoreText = false;
-        }
-    }
-
-    /**
-     * {@inheritDoc}
-     */
-    public void sectionTitle_()
-    {
-        // TODO: closing bracket?
-        markup( "}" + EOL + EOL );
-    }
-
-    /**
-     * {@inheritDoc}
-     */
-    public void paragraph_()
-    {
-        markup( EOL + EOL );
-    }
-
-    /**
-     * {@inheritDoc}
-     */
-    public void verbatim( boolean boxed )
-    {
-        if ( boxed )
-        {
-            markup( "\\begin{pverbatimbox}" + EOL );
-        }
-        else
-        {
-            markup( "\\begin{pverbatim}" + EOL );
-        }
-        markup( "\\begin{verbatim}" + EOL );
-
-        verbatimFlag = true;
-        boxFlag = boxed;
-    }
-
-    /**
-     * {@inheritDoc}
-     */
-    public void verbatim_()
-    {
-        markup( EOL + "\\end{verbatim}" + EOL );
-        if ( boxFlag )
-        {
-            markup( "\\end{pverbatimbox}" + EOL + EOL );
-        }
-        else
-        {
-            markup( "\\end{pverbatim}" + EOL + EOL );
-        }
-
-        verbatimFlag = false;
-        boxFlag = false;
-    }
-
-    /**
-     * {@inheritDoc}
-     */
-    public void definedTerm()
-    {
-        markup( "\\item[\\mbox{" );
-    }
-
-    /**
-     * {@inheritDoc}
-     */
-    public void definedTerm_()
-    {
-        markup( "}] " );
-    }
-
-    /**
-     * {@inheritDoc}
-     */
-    public void figureCaption()
-    {
-        markup( "\\pfigurecaption{" );
-    }
-
-    /**
-     * {@inheritDoc}
-     */
-    public void figureCaption_()
-    {
-        markup( "}" + EOL );
     }
 
     /**
@@ -808,7 +783,7 @@ public class LatexSink
                 justif = 'c';
                 break;
         }
-        markup( "\\begin{pcell}{" + justif + "}" );
+        markup( "\\begin{tabular}[t]{" + justif + "}" );
     }
 
     /**
@@ -818,7 +793,7 @@ public class LatexSink
      */
     private void tableCell_( boolean header )
     {
-        markup( "\\end{pcell}" );
+        markup( "\\end{tabular}" );
         ++cellCount;
     }
 
@@ -827,7 +802,7 @@ public class LatexSink
      */
     public void tableCaption()
     {
-        markup( "\\ptablecaption{" );
+        markup( "\\caption{" );
     }
 
     /**
@@ -841,9 +816,41 @@ public class LatexSink
     /**
      * {@inheritDoc}
      */
-    public void figureGraphics( String name )
+    public void paragraph_()
     {
-        markup( "\\pfiguregraphics{" + name + "}" + EOL );
+        markup( EOL + EOL );
+    }
+
+    /**
+     * {@inheritDoc}
+     */
+    public void verbatim( boolean boxed )
+    {
+        markup( EOL + "\\begin{small}" + EOL );
+
+        if ( boxed )
+        {
+            markup( "\\begin{Verbatim}[frame=single]" + EOL );
+        }
+        else
+        {
+            markup( "\\begin{Verbatim}" + EOL );
+        }
+
+        verbatimFlag = true;
+        boxFlag = boxed;
+    }
+
+    /**
+     * {@inheritDoc}
+     */
+    public void verbatim_()
+    {
+        markup( EOL + "\\end{Verbatim}" + EOL );
+        markup( "\\end{small}" + EOL + EOL );
+
+        verbatimFlag = false;
+        boxFlag = false;
     }
 
     /**
@@ -851,7 +858,7 @@ public class LatexSink
      */
     public void horizontalRule()
     {
-        markup( "\\phorizontalrule" + EOL + EOL );
+        markup( "\\begin{center}\\rule[0.5ex]{\\linewidth}{1pt}\\end{center}" + EOL + EOL );
     }
 
     /**
@@ -867,7 +874,7 @@ public class LatexSink
      */
     public void anchor( String name )
     {
-        markup( "\\panchor{" );
+        markup( "\\hypertarget{" + name + "}{" );
     }
 
     /**
@@ -883,7 +890,15 @@ public class LatexSink
      */
     public void link( String name )
     {
-        markup( "\\plink{" );
+        // TODO: use \\url for simple links
+        if ( StructureSinkUtils.isExternalLink( name ) )
+        {
+            markup( "\\href{" + name + "}{" );
+        }
+        else
+        {
+            markup( "\\hyperlink{" + name + "}{" );
+        }
     }
 
     /**
@@ -899,7 +914,7 @@ public class LatexSink
      */
     public void italic()
     {
-        markup( "\\pitalic{" );
+        markup( "\\textit{" );
     }
 
     /**
@@ -915,7 +930,7 @@ public class LatexSink
      */
     public void bold()
     {
-        markup( "\\pbold{" );
+        markup( "\\textbf{" );
     }
 
     /**
@@ -931,7 +946,7 @@ public class LatexSink
      */
     public void monospaced()
     {
-        markup( "\\pmonospaced{" );
+        markup( "\\texttt{\\small " );
     }
 
     /**
@@ -947,7 +962,7 @@ public class LatexSink
      */
     public void lineBreak()
     {
-        markup( ( figureFlag || tableFlag || titleFlag ) ? "\\\\" + EOL : "\\newline" + EOL );
+        markup( ( figureFlag || tableFlag || titleFlag || verbatimFlag ) ? EOL : "\\newline" + EOL );
     }
 
     /**

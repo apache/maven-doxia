@@ -46,19 +46,19 @@ public class LatexSinkTest
     /** {@inheritDoc} */
     protected String getTitleBlock( String title )
     {
-        return "\\ptitle{" + LatexSink.escaped( title ) + "}" + EOL;
+        return "\\title{" + LatexSink.escaped( title ) + "}" + EOL;
     }
 
     /** {@inheritDoc} */
     protected String getAuthorBlock( String author )
     {
-        return "\\pauthor{" + LatexSink.escaped( author ) + "}" + EOL;
+        return "\\author{" + LatexSink.escaped( author ) + "}" + EOL;
     }
 
     /** {@inheritDoc} */
     protected String getDateBlock( String date )
     {
-        return "\\pdate{" + LatexSink.escaped( date ) + "}" + EOL;
+        return "\\date{" + LatexSink.escaped( date ) + "}" + EOL;
     }
 
     /** {@inheritDoc} */
@@ -79,73 +79,72 @@ public class LatexSinkTest
     /** {@inheritDoc} */
     protected String getSectionTitleBlock( String title )
     {
-        // TODO: closing bracket?
-        return title + "}" + EOL + EOL;
+        return title;
     }
 
     /** {@inheritDoc} */
     protected String getSection1Block( String title )
     {
-        return "\\psectioni{" + title + "}" + EOL;
+        return "\\section{" + title + "}" + EOL;
     }
 
     /** {@inheritDoc} */
     protected String getSection2Block( String title )
     {
-        return "\\psectionii{" + title + "}" + EOL;
+        return "\\subsection{" + title + "}" + EOL;
     }
 
     /** {@inheritDoc} */
     protected String getSection3Block( String title )
     {
-        return "\\psectioniii{" + title + "}" + EOL;
+        return "\\subsubsection{" + title + "}" + EOL;
     }
 
     /** {@inheritDoc} */
     protected String getSection4Block( String title )
     {
-        return "\\psectioniv{" + title + "}" + EOL;
+        return "\\paragraph{" + title + "}" + EOL;
     }
 
     /** {@inheritDoc} */
     protected String getSection5Block( String title )
     {
-        return "\\psectionv{" + title + "}" + EOL;
+        return "\\subparagraph{" + title + "}" + EOL;
     }
 
     /** {@inheritDoc} */
     protected String getListBlock( String item )
     {
-        return "\\begin{plist}" + EOL + EOL + "\\item{} " + LatexSink.escaped( item ) + "\\end{plist}" + EOL + EOL;
+        return "\\begin{itemize}" + EOL + EOL + "\\item " + LatexSink.escaped( item ) + "\\end{itemize}" + EOL + EOL;
     }
 
     /** {@inheritDoc} */
     protected String getNumberedListBlock( String item )
     {
-        return "\\begin{pnumberedlist}" + EOL + "\\renewcommand{\\theenumi}{\\roman{enumi}}" + EOL + EOL + "\\item{} "
-            + LatexSink.escaped( item ) + "\\end{pnumberedlist}" + EOL + EOL;
+        return "\\begin{enumerate}" + EOL + "\\renewcommand{\\theenumi}{\\roman{enumi}}" + EOL + EOL + "\\item "
+            + LatexSink.escaped( item ) + "\\end{enumerate}" + EOL + EOL;
     }
 
     /** {@inheritDoc} */
     protected String getDefinitionListBlock( String definum, String definition )
     {
-        return "\\begin{pdefinitionlist}" + EOL + EOL + "\\item[\\mbox{" + definum + "}] " + definition + "\\end{pdefinitionlist}" + EOL + EOL;
+        return "\\begin{description}" + EOL + EOL + "\\item[\\mbox{" + definum + "}] " + definition + "\\end{description}" + EOL + EOL;
     }
 
     /** {@inheritDoc} */
     protected String getFigureBlock( String source, String caption )
     {
-        return "\\begin{pfigure}" + EOL + "\\pfiguregraphics{" + source + "}" + EOL + "\\pfigurecaption{"
-            + LatexSink.escaped( caption ) + "}" + EOL + "\\end{pfigure}" + EOL + EOL;
+        return "\\begin{figure}[htb]" + EOL + "\\begin{center}" + EOL + "\\includegraphics{" + source + "}" + EOL
+            + "\\end{center}" + EOL + "\\caption{Figure\\_caption}" + EOL + "\\end{figure}" + EOL + EOL;
     }
 
     /** {@inheritDoc} */
     protected String getTableBlock( String cell, String caption )
     {
-        // TODO: something's wrong
-        return "\\begin{ptable}" + EOL + "\\begin{ptablerows}{c}" + EOL + "\\begin{pcell}{c}cell\\end{pcell}\\\\"
-            + EOL + "\\end{ptablerows}" + EOL + "\\ptablecaption{" + LatexSink.escaped( caption ) + "}"
-            + EOL + "\\end{ptable}" + EOL + EOL;
+        
+        return "\\begin{table}[htp]" + EOL + "\\begin{center}" + EOL + "\\begin{tabular}{c}" + EOL
+            + "\\begin{tabular}[t]{c}cell\\end{tabular}\\\\" + EOL + "\\end{tabular}" + EOL
+            + "\\end{center}" + EOL + "\\caption{Table\\_caption}" + EOL + "\\end{table}" + EOL + EOL;
     }
 
     /** {@inheritDoc} */
@@ -157,13 +156,14 @@ public class LatexSinkTest
     /** {@inheritDoc} */
     protected String getVerbatimBlock( String text )
     {
-        return "\\begin{pverbatimbox}" + EOL + "\\begin{verbatim}" + EOL + text + EOL + "\\end{verbatim}" + EOL + "\\end{pverbatimbox}" + EOL + EOL;
+        return EOL + "\\begin{small}" + EOL + "\\begin{Verbatim}[frame=single]" + EOL + text + EOL
+            + "\\end{Verbatim}" + EOL + "\\end{small}" + EOL + EOL;
     }
 
     /** {@inheritDoc} */
     protected String getHorizontalRuleBlock()
     {
-        return "\\phorizontalrule" + EOL + EOL;
+        return "\\begin{center}\\rule[0.5ex]{\\linewidth}{1pt}\\end{center}" + EOL + EOL;
     }
 
     /** {@inheritDoc} */
@@ -175,31 +175,31 @@ public class LatexSinkTest
     /** {@inheritDoc} */
     protected String getAnchorBlock( String anchor )
     {
-        return "\\panchor{" + anchor + "}";
+        return "\\hypertarget{" + anchor + "}{" + anchor + "}";
     }
 
     /** {@inheritDoc} */
     protected String getLinkBlock( String link, String text )
     {
-        return "\\plink{" + text + "}";
+        return "\\hyperlink{" + link + "}{" + text + "}";
     }
 
     /** {@inheritDoc} */
     protected String getItalicBlock( String text )
     {
-        return "\\pitalic{" + text + "}";
+        return "\\textit{" + text + "}";
     }
 
     /** {@inheritDoc} */
     protected String getBoldBlock( String text )
     {
-        return "\\pbold{" + text + "}";
+        return "\\textbf{" + text + "}";
     }
 
     /** {@inheritDoc} */
     protected String getMonospacedBlock( String text )
     {
-        return "\\pmonospaced{" + text + "}";
+        return "\\texttt{\\small " + text + "}";
     }
 
     /** {@inheritDoc} */
