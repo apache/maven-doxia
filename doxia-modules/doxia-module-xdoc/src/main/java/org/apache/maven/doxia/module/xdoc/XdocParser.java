@@ -354,11 +354,9 @@ public class XdocParser
 
                 sink.rawText( String.valueOf( GREATER_THAN ) );
             }
-            else
-            {
-                isEmptyElement = false;
-            }
         }
+
+        isEmptyElement = false;
     }
 
     /** {@inheritDoc} */
