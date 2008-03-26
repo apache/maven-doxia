@@ -1,3 +1,4 @@
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
 <html xmlns="http://www.w3.org/1999/xhtml">
 
 <head>
@@ -52,10 +53,13 @@
 
 <p>--- instead of +-- suppresses the box around verbatim text.</p>
 
-<img src="figure" alt="Figure caption" />
+<div class="figure">
+  <p align="center"><img src="figure.png" alt="figure.png" /></p>
+  <p align="center"><i>Figure caption</i></p>
+</div>
 
-<table class="bodyTable">
-  <tbody>
+<table align="center" border="1" class="bodyTable">
+  <caption>Table caption</caption>
     <tr class="a">
       <th align="center">Centered<br />cell 1,1</th>
       <th align="left">Left-aligned<br />cell 1,2</th>
@@ -66,14 +70,11 @@
       <td align="left">cell 2,2</td>
       <td align="right">cell 2,3</td>
     </tr>
-  </tbody>
-  <caption>Table caption</caption>
 </table>
 
 <p>No grid, no caption:</p>
 
-<table class="bodyTable">
-  <tbody>
+<table align="center" border="0" class="bodyTable">
     <tr class="a">
       <td align="center">cell</td>
       <td align="center">cell</td>
@@ -82,16 +83,17 @@
       <td align="center">cell</td>
       <td align="center">cell</td>
     </tr>
-  </tbody>
 </table>
 
 <p>Horizontal line:</p><hr />
 
+<!-- PB -->
 <p>New page.</p>
 
 <p><i>Italic</i> font. <b>Bold</b> font. <tt>Monospaced</tt> font.</p>
 
-<p><a name="anchor">Anchor</a>.
+<p>
+  <a name="Anchor">Anchor</a>.
   Link to <a href="#Anchor">Anchor</a>.
   Link to <a href="http://www.pixware.fr" class="externalLink">http://www.pixware.fr</a>.
   Link to <a href="#Anchor">showing alternate text</a>.
@@ -117,7 +119,9 @@
   \
 </p>
 
-<p>Copyright symbol: ©, ©, ©.</p>
+<p>Copyright symbol: &#169;, &#169;, &#169;.</p>
+
+<!-- A comment! -->
 
 </div></div></div></div></div>
 
