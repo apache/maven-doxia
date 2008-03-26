@@ -85,91 +85,90 @@ public class LatexSinkTest
     /** {@inheritDoc} */
     protected String getSection1Block( String title )
     {
-        return "\\section{" + title + "}" + EOL;
+        return EOL + "\\section{" + title + "}" + EOL;
     }
 
     /** {@inheritDoc} */
     protected String getSection2Block( String title )
     {
-        return "\\subsection{" + title + "}" + EOL;
+        return EOL + "\\subsection{" + title + "}" + EOL;
     }
 
     /** {@inheritDoc} */
     protected String getSection3Block( String title )
     {
-        return "\\subsubsection{" + title + "}" + EOL;
+        return EOL + "\\subsubsection{" + title + "}" + EOL;
     }
 
     /** {@inheritDoc} */
     protected String getSection4Block( String title )
     {
-        return "\\paragraph{" + title + "}" + EOL;
+        return EOL + "\\paragraph{" + title + "}" + EOL;
     }
 
     /** {@inheritDoc} */
     protected String getSection5Block( String title )
     {
-        return "\\subparagraph{" + title + "}" + EOL;
+        return EOL + "\\subparagraph{" + title + "}" + EOL;
     }
 
     /** {@inheritDoc} */
     protected String getListBlock( String item )
     {
-        return "\\begin{itemize}" + EOL + EOL + "\\item " + LatexSink.escaped( item ) + "\\end{itemize}" + EOL + EOL;
+        return EOL + "\\begin{itemize}" + EOL + "\\item " + LatexSink.escaped( item ) + EOL + "\\end{itemize}" + EOL;
     }
 
     /** {@inheritDoc} */
     protected String getNumberedListBlock( String item )
     {
-        return "\\begin{enumerate}" + EOL + "\\renewcommand{\\theenumi}{\\roman{enumi}}" + EOL + EOL + "\\item "
-            + LatexSink.escaped( item ) + "\\end{enumerate}" + EOL + EOL;
+        return EOL + "\\begin{enumerate}" + EOL + "\\renewcommand{\\theenumi}{\\roman{enumi}}" + EOL + "\\item "
+            + LatexSink.escaped( item ) + EOL + "\\end{enumerate}" + EOL;
     }
 
     /** {@inheritDoc} */
     protected String getDefinitionListBlock( String definum, String definition )
     {
-        return "\\begin{description}" + EOL + EOL + "\\item[\\mbox{" + definum + "}] " + definition + "\\end{description}" + EOL + EOL;
+        return EOL + "\\begin{description}" + EOL + "\\item[\\mbox{" + definum + "}] " + definition + EOL + "\\end{description}" + EOL;
     }
 
     /** {@inheritDoc} */
     protected String getFigureBlock( String source, String caption )
     {
-        return "\\begin{figure}[htb]" + EOL + "\\begin{center}" + EOL + "\\includegraphics{" + source + "}" + EOL
-            + "\\end{center}" + EOL + "\\caption{Figure\\_caption}" + EOL + "\\end{figure}" + EOL + EOL;
+        return EOL + "\\begin{figure}[htb]" + EOL + "\\begin{center}" + EOL + "\\includegraphics{" + source + "}" + EOL
+            + "\\end{center}" + EOL + "\\caption{Figure\\_caption}" + EOL + "\\end{figure}" + EOL;
     }
 
     /** {@inheritDoc} */
     protected String getTableBlock( String cell, String caption )
     {
-        
-        return "\\begin{table}[htp]" + EOL + "\\begin{center}" + EOL + "\\begin{tabular}{c}" + EOL
+        return EOL + "\\begin{table}[htp]" + EOL + "\\begin{center}" + EOL + "\\begin{tabular}{c}" + EOL
             + "\\begin{tabular}[t]{c}cell\\end{tabular}\\\\" + EOL + "\\end{tabular}" + EOL
-            + "\\end{center}" + EOL + "\\caption{Table\\_caption}" + EOL + "\\end{table}" + EOL + EOL;
+            + "\\end{center}" + EOL + "\\caption{Table\\_caption}" + EOL + "\\end{table}" + EOL;
     }
 
     /** {@inheritDoc} */
     protected String getParagraphBlock( String text )
     {
-        return text + EOL + EOL;
+        return  EOL + EOL + text + EOL;
     }
 
     /** {@inheritDoc} */
     protected String getVerbatimBlock( String text )
     {
         return EOL + "\\begin{small}" + EOL + "\\begin{Verbatim}[frame=single]" + EOL + text + EOL
-            + "\\end{Verbatim}" + EOL + "\\end{small}" + EOL + EOL;
+            + "\\end{Verbatim}" + EOL + "\\end{small}" + EOL;
     }
 
     /** {@inheritDoc} */
     protected String getHorizontalRuleBlock()
     {
-        return "\\begin{center}\\rule[0.5ex]{\\linewidth}{1pt}\\end{center}" + EOL + EOL;
+        return EOL + "\\begin{center}\\rule[0.5ex]{\\linewidth}{1pt}\\end{center}" + EOL;
     }
 
     /** {@inheritDoc} */
     protected String getPageBreakBlock()
     {
-        return "\\newpage" + EOL + EOL;
+        return EOL + "\\newpage" + EOL;
     }
 
     /** {@inheritDoc} */

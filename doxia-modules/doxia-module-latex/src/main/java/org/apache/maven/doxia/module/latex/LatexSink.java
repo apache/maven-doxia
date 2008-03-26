@@ -195,7 +195,7 @@ public class LatexSink
         {
             if ( fragmentDocument  )
             {
-                markup( "\\psection" );
+                markup( "\\section" );
             }
             else
             {
@@ -330,7 +330,7 @@ public class LatexSink
 
         if ( StringUtils.isNotEmpty( title ) )
         {
-            markup( "\\section{" + title + "}" + EOL );
+            markup( EOL + "\\section{" + title + "}" + EOL );
 
             title = null;
         }
@@ -357,7 +357,7 @@ public class LatexSink
 
         if ( StringUtils.isNotEmpty( title ) )
         {
-            markup( "\\subsection{" + title + "}" + EOL );
+            markup( EOL + "\\subsection{" + title + "}" + EOL );
 
             title = null;
         }
@@ -384,7 +384,7 @@ public class LatexSink
 
         if ( StringUtils.isNotEmpty( title ) )
         {
-            markup( "\\subsubsection{" + title + "}" + EOL );
+            markup( EOL + "\\subsubsection{" + title + "}" + EOL );
 
             title = null;
         }
@@ -411,7 +411,7 @@ public class LatexSink
 
         if ( StringUtils.isNotEmpty( title ) )
         {
-            markup( "\\paragraph{" + title + "}" + EOL );
+            markup( EOL + "\\paragraph{" + title + "}" + EOL );
 
             title = null;
         }
@@ -438,7 +438,7 @@ public class LatexSink
 
         if ( StringUtils.isNotEmpty( title ) )
         {
-            markup( "\\subparagraph{" + title + "}" + EOL );
+            markup( EOL + "\\subparagraph{" + title + "}" + EOL );
 
             title = null;
         }
@@ -453,7 +453,7 @@ public class LatexSink
      */
     public void list()
     {
-        markup( "\\begin{itemize}" + EOL + EOL );
+        markup( EOL + "\\begin{itemize}" );
     }
 
     /**
@@ -461,7 +461,7 @@ public class LatexSink
      */
     public void list_()
     {
-        markup( "\\end{itemize}" + EOL + EOL );
+        markup( EOL + "\\end{itemize}" + EOL );
     }
 
     /**
@@ -469,7 +469,7 @@ public class LatexSink
      */
     public void listItem()
     {
-        markup( "\\item " );
+        markup( EOL + "\\item " );
     }
 
     /**
@@ -516,8 +516,8 @@ public class LatexSink
                 style = "arabic";
         }
 
-        markup( "\\begin{enumerate}" + EOL );
-        markup( "\\renewcommand{\\the" + counter + "}{\\" + style + "{" + counter + "}}" + EOL + EOL );
+        markup( EOL + "\\begin{enumerate}" + EOL );
+        markup( "\\renewcommand{\\the" + counter + "}{\\" + style + "{" + counter + "}}" + EOL );
     }
 
     /**
@@ -525,7 +525,7 @@ public class LatexSink
      */
     public void numberedList_()
     {
-        markup( "\\end{enumerate}" + EOL + EOL );
+        markup( EOL + "\\end{enumerate}" + EOL );
         --numberedListNesting;
     }
 
@@ -542,7 +542,7 @@ public class LatexSink
      */
     public void definitionList()
     {
-        markup( "\\begin{description}" + EOL + EOL );
+        markup( EOL + "\\begin{description}" );
     }
 
     /**
@@ -550,7 +550,7 @@ public class LatexSink
      */
     public void definitionList_()
     {
-        markup( "\\end{description}" + EOL + EOL );
+        markup( EOL + "\\end{description}" + EOL );
     }
 
     /**
@@ -558,7 +558,7 @@ public class LatexSink
      */
     public void definedTerm()
     {
-        markup( "\\item[\\mbox{" );
+        markup( EOL + "\\item[\\mbox{" );
     }
 
     /**
@@ -579,7 +579,7 @@ public class LatexSink
     public void figure()
     {
         figureFlag = true;
-        markup( "\\begin{figure}[htb]" + EOL );
+        markup( EOL + "\\begin{figure}[htb]" + EOL );
     }
 
     /**
@@ -587,7 +587,7 @@ public class LatexSink
      */
     public void figure_()
     {
-        markup( "\\end{figure}" + EOL + EOL );
+        markup( "\\end{figure}" + EOL );
         figureFlag = false;
     }
 
@@ -634,7 +634,7 @@ public class LatexSink
     public void table()
     {
         tableFlag = true;
-        markup( "\\begin{table}[htp]" + EOL );
+        markup( EOL + "\\begin{table}[htp]" + EOL );
     }
 
     /**
@@ -642,7 +642,7 @@ public class LatexSink
      */
     public void table_()
     {
-        markup( "\\end{table}" + EOL + EOL );
+        markup( "\\end{table}" + EOL );
         tableFlag = false;
     }
 
@@ -816,9 +816,17 @@ public class LatexSink
     /**
      * {@inheritDoc}
      */
-    public void paragraph_()
+    public void paragraph()
     {
         markup( EOL + EOL );
+    }
+
+    /**
+     * {@inheritDoc}
+     */
+    public void paragraph_()
+    {
+        markup( EOL );
     }
 
     /**
@@ -847,7 +855,7 @@ public class LatexSink
     public void verbatim_()
     {
         markup( EOL + "\\end{Verbatim}" + EOL );
-        markup( "\\end{small}" + EOL + EOL );
+        markup( "\\end{small}" + EOL );
 
         verbatimFlag = false;
         boxFlag = false;
@@ -858,7 +866,7 @@ public class LatexSink
      */
     public void horizontalRule()
     {
-        markup( "\\begin{center}\\rule[0.5ex]{\\linewidth}{1pt}\\end{center}" + EOL + EOL );
+        markup( EOL + "\\begin{center}\\rule[0.5ex]{\\linewidth}{1pt}\\end{center}" + EOL );
     }
 
     /**
@@ -866,7 +874,7 @@ public class LatexSink
      */
     public void pageBreak()
     {
-        markup( "\\newpage" + EOL + EOL );
+        markup( EOL + "\\newpage" + EOL );
     }
 
     /**
