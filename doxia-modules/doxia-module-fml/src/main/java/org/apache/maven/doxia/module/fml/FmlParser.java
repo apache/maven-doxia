@@ -117,6 +117,10 @@ public class FmlParser
         }
         else if ( parser.getName().equals( Tag.TITLE.toString() ) )
         {
+            if ( currentPart == null )
+            {
+                throw new XmlPullParserException( "The currentPart is not set" );
+            }
             try
             {
                 currentPart.setTitle( parser.nextText().trim() );
@@ -187,12 +191,20 @@ public class FmlParser
         }
         else if ( parser.getName().equals( FAQ_TAG.toString() ) )
         {
+            if ( currentPart == null )
+            {
+                throw new XmlPullParserException( "The currentPart is not set" );
+            }
             currentPart.addFaq( currentFaq );
 
             currentFaq = null;
         }
-        if ( parser.getName().equals( QUESTION_TAG.toString() ) )
+        else if ( parser.getName().equals( QUESTION_TAG.toString() ) )
         {
+            if ( currentFaq == null )
+            {
+                throw new XmlPullParserException( "The currentFaq is not set" );
+            }
             buffer.append( String.valueOf( LESS_THAN ) ).append( String.valueOf( SLASH ) )
                 .append( parser.getName() ).append( String.valueOf( GREATER_THAN ) );
 
@@ -202,6 +214,10 @@ public class FmlParser
         }
         else if ( parser.getName().equals( ANSWER_TAG.toString() ) )
         {
+            if ( currentFaq == null )
+            {
+                throw new XmlPullParserException( "The currentFaq is not set" );
+            }
             buffer.append( String.valueOf( LESS_THAN ) ).append( String.valueOf( SLASH ) )
                 .append( parser.getName() ).append( String.valueOf( GREATER_THAN ) );
 
@@ -313,7 +329,14 @@ public class FmlParser
                 Faq faq = (Faq) faqIterator.next();
                 sink.numberedListItem();
                 sink.link( faq.getId() );
-                xdocParser.parse( faq.getQuestion(), sink );
+                if ( StringUtils.isNotEmpty( faq.getQuestion() ) )
+                {
+                    xdocParser.parse( faq.getQuestion(), sink );
+                }
+                else
+                {
+                    throw new ParseException( "Question is missing for the FAQ '" + faq.getId() + "'" );
+                }
                 sink.link_();
                 sink.numberedListItem_();
             }
@@ -348,12 +371,26 @@ public class FmlParser
 
                 sink.definedTerm();
                 sink.anchor( faq.getId() );
-                xdocParser.parse( faq.getQuestion(), sink );
+                if ( StringUtils.isNotEmpty( faq.getQuestion() ) )
+                {
+                    xdocParser.parse( faq.getQuestion(), sink );
+                }
+                else
+                {
+                    throw new ParseException( "Question is missing for the FAQ '" + faq.getId() + "'" );
+                }
                 sink.anchor_();
                 sink.definedTerm_();
 
                 sink.definition();
-                xdocParser.parse( faq.getAnswer(), sink );
+                if ( StringUtils.isNotEmpty( faq.getAnswer() ) )
+                {
+                    xdocParser.parse( faq.getAnswer(), sink );
+                }
+                else
+                {
+                    throw new ParseException( "Answer is missing for the FAQ '" + faq.getId() + "'" );
+                }
 
                 if ( faqs.isToplink() )
                 {
