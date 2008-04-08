@@ -114,13 +114,21 @@ public class FmlParser
             currentPart = new Part();
 
             currentPart.setId( parser.getAttributeValue( null, Attribute.ID.toString() ) );
+
+            if ( currentPart.getId() == null )
+            {
+                throw new XmlPullParserException( "id attribute required for <part> at: ("
+                    + parser.getLineNumber() + ":" + parser.getColumnNumber() + ")" );
+            }
         }
         else if ( parser.getName().equals( Tag.TITLE.toString() ) )
         {
             if ( currentPart == null )
             {
-                throw new XmlPullParserException( "The currentPart is not set" );
+                throw new XmlPullParserException( "Missing <part> at: ("
+                    + parser.getLineNumber() + ":" + parser.getColumnNumber() + ")" );
             }
+
             try
             {
                 currentPart.setTitle( parser.nextText().trim() );
@@ -135,6 +143,12 @@ public class FmlParser
             currentFaq = new Faq();
 
             currentFaq.setId( parser.getAttributeValue( null, Attribute.ID.toString() ) );
+
+            if ( currentFaq.getId() == null )
+            {
+                throw new XmlPullParserException( "id attribute required for <faq> at: ("
+                    + parser.getLineNumber() + ":" + parser.getColumnNumber() + ")" );
+            }
         }
         if ( parser.getName().equals( QUESTION_TAG.toString() ) )
         {
@@ -193,8 +207,10 @@ public class FmlParser
         {
             if ( currentPart == null )
             {
-                throw new XmlPullParserException( "The currentPart is not set" );
+                throw new XmlPullParserException( "Missing <part>  at: ("
+                    + parser.getLineNumber() + ":" + parser.getColumnNumber() + ")" );
             }
+
             currentPart.addFaq( currentFaq );
 
             currentFaq = null;
@@ -203,8 +219,10 @@ public class FmlParser
         {
             if ( currentFaq == null )
             {
-                throw new XmlPullParserException( "The currentFaq is not set" );
+                throw new XmlPullParserException( "Missing <faq> at: ("
+                    + parser.getLineNumber() + ":" + parser.getColumnNumber() + ")" );
             }
+
             buffer.append( String.valueOf( LESS_THAN ) ).append( String.valueOf( SLASH ) )
                 .append( parser.getName() ).append( String.valueOf( GREATER_THAN ) );
 
@@ -216,7 +234,8 @@ public class FmlParser
         {
             if ( currentFaq == null )
             {
-                throw new XmlPullParserException( "The currentFaq is not set" );
+                throw new XmlPullParserException( "Missing <faq> at: ("
+                    + parser.getLineNumber() + ":" + parser.getColumnNumber() + ")" );
             }
             buffer.append( String.valueOf( LESS_THAN ) ).append( String.valueOf( SLASH ) )
                 .append( parser.getName() ).append( String.valueOf( GREATER_THAN ) );
@@ -329,14 +348,16 @@ public class FmlParser
                 Faq faq = (Faq) faqIterator.next();
                 sink.numberedListItem();
                 sink.link( faq.getId() );
+
                 if ( StringUtils.isNotEmpty( faq.getQuestion() ) )
                 {
                     xdocParser.parse( faq.getQuestion(), sink );
                 }
                 else
                 {
-                    throw new ParseException( "Question is missing for the FAQ '" + faq.getId() + "'" );
+                    throw new ParseException( "Missing <question> for FAQ '" + faq.getId() + "'" );
                 }
+
                 sink.link_();
                 sink.numberedListItem_();
             }
@@ -371,25 +392,28 @@ public class FmlParser
 
                 sink.definedTerm();
                 sink.anchor( faq.getId() );
+
                 if ( StringUtils.isNotEmpty( faq.getQuestion() ) )
                 {
                     xdocParser.parse( faq.getQuestion(), sink );
                 }
                 else
                 {
-                    throw new ParseException( "Question is missing for the FAQ '" + faq.getId() + "'" );
+                    throw new ParseException( "Missing <question> for FAQ '" + faq.getId() + "'" );
                 }
+
                 sink.anchor_();
                 sink.definedTerm_();
 
                 sink.definition();
+
                 if ( StringUtils.isNotEmpty( faq.getAnswer() ) )
                 {
                     xdocParser.parse( faq.getAnswer(), sink );
                 }
                 else
                 {
-                    throw new ParseException( "Answer is missing for the FAQ '" + faq.getId() + "'" );
+                    throw new ParseException( "Missing <answer> for FAQ '" + faq.getId() + "'" );
                 }
 
                 if ( faqs.isToplink() )
