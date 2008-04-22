@@ -44,13 +44,13 @@ public class SnippetMacro
     static final String EOL = System.getProperty( "line.separator" );
 
     /** Holds the cache. */
-    private Map cache = new HashMap();
+    private static Map cache = new HashMap();
 
     /** One hour default cache. */
     private long timeout = 60 * 60 * 1000;
 
     /** Holds the time cache. */
-    private Map timeCached = new HashMap();
+    private static Map timeCached = new HashMap();
 
     /** Debug. */
     private boolean debug = false;
