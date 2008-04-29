@@ -22,32 +22,29 @@ package org.apache.maven.doxia.sink;
 import org.apache.maven.doxia.logging.LogEnabled;
 
 /**
- * A <i>Sink</i> consumes Doxia events in a resultant output format like
- * Docbook, PDF, or XHTML.
+ * A <i>Sink</i> consumes Doxia events to produce a resultant output format
+ * (eg Docbook, PDF, XHTML...).
  * <p>
- * Doxia allows you to parse any supported input document format
- * (ie for which a parser exists) and generate any supported output
- * document format (ie for which a sink exists).
+ *   Doxia allows you to transform any supported input document format (ie for which a Parser exists)
+ *   into any supported output document format (ie for which a Sink exists).
  * </p>
  * <p>
- * The upshot is that you can parse any front-end format, the parser is
- * responsible for emitting the standard Doxia events which can then be
- * consumed by any Doxia Sink. This is what allow us to parse the front-
- * end format like APT, FML, and Xdoc for the Maven site plugin and have
- * them all contribute to the final XHTML version of a site. All
- * documents being parsed results in a stream of Doxia events
- * (paragraph, bold, italic, text) which are then fed in the XHTML sink
- * which results in a set of XHTML pages.
+ *   A parser is responsible for reading an input document and emitting a sequence of Doxia events
+ *   which can then be consumed by a Doxia Sink. Thus, you can parse any front- end format
+ *   (eg APT, FML, Xdoc, ...) and have them all contribute to a final XHTML version of a web site.
+ *   All documents being parsed result in a stream of Doxia events (eg paragraph, bold, italic,
+ *   text,...), which are then fed into a XHTML Sink to produce a set of XHTML pages.
  * </p>
  * <p>
- * A sink is ultimately responsible for the final format and structure.
- * So, for example, you can take a series of APT documents and have that
- * be fed into a Sink which makes a single PDF, a book, a site, or a
- * Word document. The Sink is fully responsible for the final output.
- * Once you have Doxia events you can leverage any existing Sink. So if
- * you wanted to integrate your custom XML format, or custom Wiki
- * format, you would create a Doxia parser which could then be fed into
- * any Sink to produce your desired final output.
+ *   A Sink is ultimately responsible for the final format and structure of the output document.
+ *   For example, you can take a collection of APT documents, let a Parser emit a series of Doxia
+ *   events and have that be fed into a Sink to produce a single PDF, a book, a site, or a
+ *   Word document. The Sink is fully responsible for the final output.
+ * </p>
+ * <p>
+ *   You can easily integrate any custom (XML, Wiki,...) format by creating a Doxia Parser which
+ *   reads your input document and produces a proper sequence of Doxia events.
+ *   Those can then be fed into an arbitrary Sink to produce any desired final output.
  * </p>
  *
  * @since 1.0
@@ -60,273 +57,359 @@ public interface Sink
     extends LogEnabled
 {
     /**
-     * The Plexus Sink Role
+     * The Plexus Sink Role.
      */
     String ROLE = Sink.class.getName();
 
     /**
      * A numbering to handle a number list.
-     * @see #numberedList(int)
+     * @see #numberedList(int,SinkEventAttributes).
      */
     int NUMBERING_DECIMAL = 0;
 
     /**
      * A numbering to handle a lower alpha list.
-     * @see #numberedList(int)
+     * @see #numberedList(int,SinkEventAttributes).
      */
     int NUMBERING_LOWER_ALPHA = 1;
 
     /**
      * A numbering to handle a upper alpha list.
-     * @see #numberedList(int)
+     * @see #numberedList(int,SinkEventAttributes).
      */
     int NUMBERING_UPPER_ALPHA = 2;
 
     /**
      * A numbering to handle a lower roman list.
-     * @see #numberedList(int)
+     * @see #numberedList(int,SinkEventAttributes).
      */
     int NUMBERING_LOWER_ROMAN = 3;
 
     /**
      * A numbering to handle a upper roman list.
-     * @see #numberedList(int)
+     * @see #numberedList(int,SinkEventAttributes).
      */
     int NUMBERING_UPPER_ROMAN = 4;
 
     /**
      * A level 1 section (section).
-     * @see #section1()
+     * @see #section(int,SinkEventAttributes).
      */
     int SECTION_LEVEL_1 = 1;
 
     /**
      * A level 2 section (subsection).
-     * @see #section2()
+     * @see #section(int,SinkEventAttributes).
      */
     int SECTION_LEVEL_2 = 2;
 
     /**
      * A level 3 section (sub-subsection).
-     * @see #section3()
+     * @see #section(int,SinkEventAttributes).
      */
     int SECTION_LEVEL_3 = 3;
 
     /**
      * A level 4 section (sub-sub-subsection).
-     * @see #section4()
+     * @see #section(int,SinkEventAttributes).
      */
     int SECTION_LEVEL_4 = 4;
 
     /**
      * A level 5 section (sub-sub-sub-subsection).
-     * @see #section5()
+     * @see #section(int,SinkEventAttributes).
      */
     int SECTION_LEVEL_5 = 5;
 
     /**
-     * Starting the head element which contains information about the current document,
-     * such as its title, that is not considered document content.
+     * Starts the head element.
+     *
+     * @see #head(SinkEventAttributes).
      */
     void head();
 
     /**
      * Starts the head element.
-     * Supported attributes are: "profile", DIR, LANG.
+     * <p>
+     *   This contains information about the current document, (eg its title) that is not
+     *   considered document content. The head element is optional but if it exists, it has to be
+     *   unique within a sequence of Sink events that produces one output document, and it has
+     *   to come before the {@link #body(SinkEventAttributes)} element.
+     * </p>
+     * <p>
+     *   The canonical sequence of events for the head element is:
+     * </p>
+     * <pre>
+     *   sink.head();
+     *
+     *   sink.title();
+     *   sink.text( "Title" );
+     *   sink.title_();
+     *
+     *   sink.author();
+     *   sink.text( "Author" );
+     *   sink.author_();
+     *
+     *   sink.date();
+     *   sink.text( "Date" );
+     *   sink.date_();
+     *
+     *   sink.head_();
+     * </pre>
+     * <p>
+     *   but none of the enclosed events is required.
+     *   However, if they exist they have to be unique and occur in the order shown.
+     * </p>
+     * <p>
+     *   Supported attributes are: "profile", DIR, LANG.
+     * </p>
      *
      * @param attributes A set of {@link SinkEventAttributes}.
      */
     void head( SinkEventAttributes attributes );
 
     /**
-     * Ending the head element.
+     * Ends the head element.
      */
     void head_();
 
     /**
-     * Starting the title element which is used to identify the document.
+     * Starts the title element.
+     *
+     * @see #title(SinkEventAttributes).
      */
     void title();
 
     /**
-     * Starts the title.
-     * Supported attributes are the {@link SinkEventAttributes base attributes}.
+     * Starts the title element. This is used to identify the document.
+     * <p>
+     *   Supported attributes are the {@link SinkEventAttributes base attributes}.
+     * </p>
      *
      * @param attributes A set of {@link SinkEventAttributes}.
+     * @see #head(SinkEventAttributes).
      */
     void title( SinkEventAttributes attributes );
 
     /**
-     * Ending the title element.
+     * Ends the title element.
      */
     void title_();
 
     /**
-     * Starting the author element which is used to identify the author of the document.
+     * Starts the author element.
+     *
+     * @see #author(SinkEventAttributes).
      */
     void author();
 
     /**
-     * Starts an author element.
-     * Supported attributes are: "email".
+     * Starts the author element. This is used to identify the author of the document.
+     * <p>
+     *   Supported attributes are: "email".
+     * </p>
      *
      * @param attributes A set of {@link SinkEventAttributes}.
+     * @see #head(SinkEventAttributes).
      */
     void author( SinkEventAttributes attributes );
 
     /**
-     * Ending the author element.
+     * Ends the author element.
      */
     void author_();
 
     /**
-     * Starting the date element which is used to identify the date of the document.
+     * Starts the date element.
+     *
+     * @see #date(SinkEventAttributes).
      */
     void date();
 
     /**
-     * Starts a date element.
-     * Supported attributes are: none.
+     * Starts the date element. This is used to identify the date of the document.
+     * <p>
+     *   Supported attributes are: none.
+     * </p>
      *
      * @param attributes A set of {@link SinkEventAttributes}.
+     * @see #head(SinkEventAttributes).
      */
     void date( SinkEventAttributes attributes );
 
     /**
-     * Ending the date element.
+     * Ends the date element.
      */
     void date_();
 
     /**
-     * Starting the body of a document which contains the document's content.
+     * Starts the body of a document.
+     *
+     * @see #body(SinkEventAttributes).
      */
     void body();
 
     /**
-     * Starts the body of a document which contains the document's content.
-     * Supported attributes are the {@link SinkEventAttributes base attributes}.
+     * Starts the body of a document. This contains the document's content.
+     * <p>
+     *   Supported attributes are the {@link SinkEventAttributes base attributes}.
+     * </p>
      *
      * @param attributes A set of {@link SinkEventAttributes}.
+     * @see #head(SinkEventAttributes).
      */
     void body( SinkEventAttributes attributes );
+
     /**
-     * Ending the body element.
+     * Ends the body element.
      */
     void body_();
 
     /**
-     * Starting a title heading element.
+     * Starts a title heading element.
      */
     void sectionTitle();
 
     /**
-     * Ending a title heading element.
+     * Ends a title heading element.
      */
     void sectionTitle_();
 
     /**
-     * Starting a first heading element which contains the topic of the section.
+     * Starts a first heading element which contains the topic of the section.
+     *
+     * @see #section(int,SinkEventAttributes).
      */
     void section1();
 
     /**
-     * Ending a first heading element.
+     * Ends a first heading element.
      */
     void section1_();
 
     /**
-     * Starting a first title heading element.
+     * Starts a first title heading element.
+     * This has to be contained within a {@link #section1()} element.
+     *
+     * @see #sectionTitle(int,SinkEventAttributes).
      */
     void sectionTitle1();
 
     /**
-     * Ending a first title heading element.
+     * Ends a first title heading element.
      */
     void sectionTitle1_();
 
     /**
-     * Starting a second heading element which contains the topic of the section.
+     * Starts a second heading element which contains the topic of the section.
+     * This has to be contained within a {@link #section1()} element.
+     *
+     * @see #section(int,SinkEventAttributes).
      */
     void section2();
 
     /**
-     * Ending a second heading element.
+     * Ends a second heading element.
      */
     void section2_();
 
     /**
-     * Starting a second title heading element.
+     * Starts a second title heading element.
+     * This has to be contained within a {@link #section2()} element.
+     *
+     * @see #sectionTitle(int,SinkEventAttributes).
      */
     void sectionTitle2();
 
     /**
-     * Ending a second title heading element.
+     * Ends a second title heading element.
      */
     void sectionTitle2_();
 
     /**
-     * Starting a third heading element which contains the topic of the section.
+     * Starts a third heading element which contains the topic of the section.
+     * This has to be contained within a {@link #section2()} element.
+     *
+     * @see #section(int,SinkEventAttributes).
      */
     void section3();
 
     /**
-     * Ending a third heading element.
+     * Ends a third heading element.
      */
     void section3_();
 
     /**
-     * Starting a third title heading element.
+     * Starts a third title heading element.
+     * This has to be contained within a {@link #section3()} element.
+     *
+     * @see #sectionTitle(int,SinkEventAttributes).
      */
     void sectionTitle3();
 
     /**
-     * Ending a third title heading element.
+     * Ends a third title heading element.
      */
     void sectionTitle3_();
 
     /**
-     * Starting a 4th heading element which contains the topic of the section.
+     * Starts a 4th heading element which contains the topic of the section.
+     * This has to be contained within a {@link #section3()} element.
+     *
+     * @see #section(int,SinkEventAttributes).
      */
     void section4();
 
     /**
-     * Ending a 4th heading element.
+     * Ends a 4th heading element.
      */
     void section4_();
 
     /**
-     * Starting a 4th title heading element.
+     * Starts a 4th title heading element.
+     * This has to be contained within a {@link #section4()} element.
+     *
+     * @see #sectionTitle(int,SinkEventAttributes).
      */
     void sectionTitle4();
 
     /**
-     * Ending a 4th title heading element.
+     * Ends a 4th title heading element.
      */
     void sectionTitle4_();
 
     /**
-     * Starting a 5th heading element which contains the topic of the section.
+     * Starts a 5th heading element which contains the topic of the section.
+     * This has to be contained within a {@link #section4()} element.
+     *
+     * @see #section(int,SinkEventAttributes).
      */
     void section5();
 
     /**
-     * Ending a 5th heading element.
+     * Ends a 5th heading element.
      */
     void section5_();
 
     /**
-     * Starting a 5th title heading element.
+     * Starts a 5th title heading element.
+     * This has to be contained within a {@link #section5()} element.
+     *
+     * @see #sectionTitle(int,SinkEventAttributes).
      */
     void sectionTitle5();
 
     /**
-     * Ending a 5th title heading element.
+     * Ends a 5th title heading element.
      */
     void sectionTitle5_();
 
     /**
-     * Start a new section at the given level.
-     * Supported attributes are the {@link SinkEventAttributes base attributes}.
+     * Start a new section at the given level. Sections with higher level should
+     * be contained within sections of lower level.
+     * <p>
+     *   Supported attributes are the {@link SinkEventAttributes base attributes}.
+     * </p>
      *
      * @param level the section level.
      * @param attributes A set of {@link SinkEventAttributes}.
@@ -342,7 +425,9 @@ public interface Sink
 
     /**
      * Start a new section title at the given level.
-     * Supported attributes are the {@link SinkEventAttributes base attributes} and ALIGN.
+     * <p>
+     *   Supported attributes are the {@link SinkEventAttributes base attributes} and ALIGN.
+     * </p>
      *
      * @param level the section title level.
      * @param attributes A set of {@link SinkEventAttributes}.
@@ -357,187 +442,261 @@ public interface Sink
     void sectionTitle_( int level );
 
     /**
-     * Starting an unordered list element.
+     * Starts an unordered list element.
+     *
+     * @see #list(SinkEventAttributes).
      */
     void list();
 
     /**
      * Starts an unordered list.
-     * Supported attributes are the {@link SinkEventAttributes base attributes}.
+     * <p>
+     *   Supported attributes are the {@link SinkEventAttributes base attributes}.
+     * </p>
      *
      * @param attributes A set of {@link SinkEventAttributes}.
      */
     void list( SinkEventAttributes attributes );
+
     /**
-     * Ending an unordered list element.
+     * Ends an unordered list element.
      */
     void list_();
 
     /**
-     * Starting a list item element within an unordered list.
+     * Starts a list item element within an unordered list.
+     *
+     * @see #listItem(SinkEventAttributes).
      */
     void listItem();
 
     /**
      * Starts a list item element within an unordered list.
-     * Supported attributes are the {@link SinkEventAttributes base attributes}.
+     * <p>
+     *   Supported attributes are the {@link SinkEventAttributes base attributes}.
+     * </p>
      *
      * @param attributes A set of {@link SinkEventAttributes}.
      */
     void listItem( SinkEventAttributes attributes );
 
     /**
-     * Ending a list item element within an unordered list.
+     * Ends a list item element within an unordered list.
      */
     void listItem_();
 
     /**
-     * Starting an ordered list element.
+     * Starts an ordered list element.
      *
      * @param numbering the numbering style.
+     * @see #numberedList(int,SinkEventAttributes).
+     */
+    void numberedList( int numbering );
+
+    /**
+     * Starts an ordered list element.
+     * <p>
+     *   Supported attributes are the {@link SinkEventAttributes base attributes}.
+     * </p>
+     *
+     * @param numbering the numbering style.
+     * @param attributes A set of {@link SinkEventAttributes}.
      * @see #NUMBERING_DECIMAL
      * @see #NUMBERING_LOWER_ALPHA
      * @see #NUMBERING_LOWER_ROMAN
      * @see #NUMBERING_UPPER_ALPHA
      * @see #NUMBERING_UPPER_ROMAN
      */
-    void numberedList( int numbering );
+    void numberedList( int numbering, SinkEventAttributes attributes );
 
     /**
-     * Starts an ordered list element.
-     * Supported attributes are the {@link SinkEventAttributes base attributes}.
-     *
-     * @param numbering the numbering style.
-     * @param attributes A set of {@link SinkEventAttributes}.
-     */
-    void numberedList( int numbering, SinkEventAttributes attributes );
-    /**
-     * Ending an ordered list element.
+     * Ends an ordered list element.
      */
     void numberedList_();
 
     /**
-     * Starting a list item element within an ordered list.
+     * Starts a list item element within an ordered list.
+     *
+     * @see #numberedListItem(SinkEventAttributes).
      */
     void numberedListItem();
 
     /**
      * Starts a list item element within an ordered list.
-     * Supported attributes are the {@link SinkEventAttributes base attributes}.
+     * <p>
+     *   Supported attributes are the {@link SinkEventAttributes base attributes}.
+     * </p>
      *
      * @param attributes A set of {@link SinkEventAttributes}.
      */
     void numberedListItem( SinkEventAttributes attributes );
 
     /**
-     * Ending a list item element within an ordered list.
+     * Ends a list item element within an ordered list.
      */
     void numberedListItem_();
 
     /**
-     * Starting a definition list element.
+     * Starts a definition list element.
+     *
+     * @see #definitionList(SinkEventAttributes).
      */
     void definitionList();
 
     /**
      * Starts a definition list.
-     * Supported attributes are the {@link SinkEventAttributes base attributes}.
+     * <p>
+     *   Supported attributes are the {@link SinkEventAttributes base attributes}.
+     * </p>
      *
      * @param attributes A set of {@link SinkEventAttributes}.
      */
     void definitionList( SinkEventAttributes attributes );
 
     /**
-     * Ending a definition list element.
+     * Ends a definition list element.
      */
     void definitionList_();
 
     /**
-     * Starting a list item element within a definition list.
+     * Starts a list item element within a definition list.
+     *
+     * @see #definitionListItem(SinkEventAttributes).
      */
     void definitionListItem();
 
     /**
-     * Starting a list item element within a definition list.
-     * Supported attributes are the {@link SinkEventAttributes base attributes}.
+     * Starts a list item element within a definition list. Every definitionListItem has to
+     * contain exactly one {@link #definedTerm(SinkEventAttributes)} and one
+     * {@link #definition(SinkEventAttributes)}, in this order.
+     * <p>
+     *   Supported attributes are the {@link SinkEventAttributes base attributes}.
+     * </p>
      *
      * @param attributes A set of {@link SinkEventAttributes}.
      */
     void definitionListItem( SinkEventAttributes attributes );
 
     /**
-     * Ending a list item element within a definition list.
+     * Ends a list item element within a definition list.
      */
     void definitionListItem_();
 
     /**
-     * Starting a definition element within a definition list.
+     * Starts a definition element within a definition list.
+     *
+     * @see #definition(SinkEventAttributes).
      */
     void definition();
 
     /**
      * Starts a definition element within a definition list.
-     * Supported attributes are the {@link SinkEventAttributes base attributes}.
+     * <p>
+     *   Supported attributes are the {@link SinkEventAttributes base attributes}.
+     * </p>
      *
      * @param attributes A set of {@link SinkEventAttributes}.
      */
     void definition( SinkEventAttributes attributes );
 
     /**
-     * Ending a definition element within a definition list.
+     * Ends a definition element within a definition list.
      */
     void definition_();
 
     /**
-     * Starting a definition term element within a definition list.
+     * Starts a definition term element within a definition list.
+     *
+     * @see #definedTerm(SinkEventAttributes).
      */
     void definedTerm();
 
     /**
      * Starts a definition term element within a definition list.
-     * Supported attributes are the {@link SinkEventAttributes base attributes}.
+     * <p>
+     *   Supported attributes are the {@link SinkEventAttributes base attributes}.
+     * </p>
      *
      * @param attributes A set of {@link SinkEventAttributes}.
      */
     void definedTerm( SinkEventAttributes attributes );
 
     /**
-     * Starting a definition term element within a definition list.
+     * Starts a definition term element within a definition list.
      */
     void definedTerm_();
 
     /**
-     * Starting a basic image embedding element.
+     * Starts a basic image embedding element.
+     *
+     * @see #figure(SinkEventAttributes).
      */
     void figure();
 
     /**
-     * Starting a basic image embedding element.
-     * Supported attributes are the {@link SinkEventAttributes base attributes}.
+     * Starts a basic image embedding element.
+     * <p>
+     *   The canonical sequence of events for the figure element is:
+     * </p>
+     * <pre>
+     *   sink.figure();
+     *
+     *   sink.figureGraphics( "figure.png" );
+     *
+     *   sink.figureCaption();
+     *   sink.text( "Figure caption",);
+     *   sink.figureCaption_();
+     *
+     *   sink.figure_();
+     * </pre>
+     * <p>
+     *   where the figureCaption element is optional.
+     * </p>
+     * <p>
+     *   However, <strong>NOTE</strong> that the order of figureCaption and
+     *   figureGraphics events is arbitrary,
+     *   ie a parser may emit the figureCaption before or after the figureGraphics.
+     *   Implementing sinks should be prepared to handle both possibilities.
+     * </p>
+     * <p>
+     *   <strong>NOTE</strong> also that the figureGraphics() event does not have to be embedded
+     *   inside figure(), in particular for in-line images the figureGraphics() should be used
+     *   stand-alone (in HTML language, figureGraphics() produces a <code>&lt;img&gt;</code>
+     *   tag, while figure() opens a paragraph- or <code>&lt;div&gt;</code>- like environment).
+     * </p>
+     * <p>
+     *   Supported attributes are the {@link SinkEventAttributes base attributes}.
+     * </p>
      *
      * @param attributes A set of {@link SinkEventAttributes}.
      */
     void figure( SinkEventAttributes attributes );
 
     /**
-     * Ending a basic image embedding element.
+     * Ends a basic image embedding element.
      */
     void figure_();
 
     /**
-     * Starting a caption of an image element.
+     * Starts a caption of an image element.
+     *
+     * @see #figureCaption(SinkEventAttributes).
      */
     void figureCaption();
 
     /**
      * Starts a figure caption.
-     * Supported attributes are the {@link SinkEventAttributes base attributes}.
+     * <p>
+     *   Supported attributes are the {@link SinkEventAttributes base attributes}.
+     * </p>
      *
      * @param attributes A set of {@link SinkEventAttributes}.
+     * @see #figure(SinkEventAttributes).
      */
     void figureCaption( SinkEventAttributes attributes );
+
     /**
-     * Ending a caption of an image.
+     * Ends a caption of an image.
      */
     void figureCaption_();
 
@@ -550,39 +709,89 @@ public interface Sink
 
     /**
      * Adds a graphic element.
-     * Supported attributes are the {@link SinkEventAttributes base attributes} plus:
+     * <p>
+     *   The <code>src</code> parameter should be a valid link, ie it can be an absolute
+     *   URL or a link relative to the current source document.
+     * </p>
+     * <p>
+     *   Supported attributes are the {@link SinkEventAttributes base attributes} plus:
+     * </p>
      * <blockquote>
-     * SRC, ALT, WIDTH, HEIGHT, ALIGN, BORDER, HSPACE, VSPACE, ISMAP, USEMAP.
+     *   SRC, ALT, WIDTH, HEIGHT, ALIGN, BORDER, HSPACE, VSPACE, ISMAP, USEMAP.
      * </blockquote>
-     * If the SRC attribute is specified, it will be overidden by the src parameter.
+     * <p>
+     * If the {@link SinkEventAttributes#SRC SRC} attribute is specified in SinkEventAttributes,
+     * it will be overidden by the <code>src</code> parameter.
+     * </p>
      *
-     * @param src the image source.
+     * @param src the image source, a valid URL.
      * @param attributes A set of {@link SinkEventAttributes}.
+     * @see #figure(SinkEventAttributes).
      */
     void figureGraphics( String src, SinkEventAttributes attributes );
 
     /**
-     * Starting a table element for marking up tabular information in a document.
+     * Starts a table element for marking up tabular information in a document.
+     *
+     * @see #table(SinkEventAttributes).
      */
     void table();
 
     /**
      * Starts a table.
-     * Supported attributes are the {@link SinkEventAttributes base attributes} plus:
-     * <blockquote>ALIGN, BGCOLOR, BORDER, CELLPADDING, CELLSPACING,
-     * "frame", "rules", "summary", WIDTH.</blockquote>
+     * <p>
+     *   The canonical sequence of events for the table element is:
+     * </p>
+     * <pre>
+     *   sink.table();
+     *
+     *   sink.tableRows( justify, true );
+     *
+     *   sink.tableRow();
+     *   sink.tableCell();
+     *   sink.text( "cell 1,1" );
+     *   sink.tableCell_();
+     *   sink.tableCell();
+     *   sink.text( "cell 1,2" );
+     *   sink.tableCell_();
+     *   sink.tableRow_();
+     *
+     *   sink.tableRows_();
+     *
+     *   sink.tableCaption();
+     *   sink.text( "Table caption" );
+     *   sink.tableCaption_();
+     *
+     *   sink.table_();
+     *
+     * </pre>
+     * <p>
+     *   where the tableCaption element is optional.
+     * </p>
+     * <p>
+     *   However, <strong>NOTE</strong> that the order of tableCaption and
+     *   {@link #tableRows(int[],boolean)} events is arbitrary,
+     *   ie a parser may emit the tableCaption before or after the tableRows.
+     *   Implementing sinks should be prepared to handle both possibilities.
+     * </p>
+     * <p>
+     *   Supported attributes are the {@link SinkEventAttributes base attributes} plus:
+     * </p>
+     * <blockquote>
+     *   ALIGN, BGCOLOR, BORDER, CELLPADDING, CELLSPACING, "frame", "rules", "summary", WIDTH.
+     * </blockquote>
      *
      * @param attributes A set of {@link SinkEventAttributes}.
      */
     void table( SinkEventAttributes attributes );
 
     /**
-     * Ending a table element.
+     * Ends a table element.
      */
     void table_();
 
     /**
-     * Starting an element contains rows of table data.
+     * Starts an element that contains rows of table data.
      *
      * @param justification the default justification of columns.
      * This can be overridden by individual table rows or table cells.
@@ -590,22 +799,27 @@ public interface Sink
      * has less elements than there are columns in the table then the value of
      * the last array element will be taken as default for the remaining table cells.
      * @param grid true to provide a grid, false otherwise.
+     * @see #table(SinkEventAttributes).
      */
     void tableRows( int[] justification, boolean grid );
 
     /**
-     * Ending an element contains rows of table data.
+     * Ends an element that contains rows of table data.
      */
     void tableRows_();
 
     /**
-     * Starting a row element which acts as a container for a row of table cells.
+     * Starts a row element which acts as a container for a row of table cells.
+     *
+     * @see #tableRow(SinkEventAttributes).
      */
     void tableRow();
 
     /**
      * Starts a table row.
-     * Supported attributes are the {@link SinkEventAttributes base attributes} plus:
+     * <p>
+     *   Supported attributes are the {@link SinkEventAttributes base attributes} plus:
+     * </p>
      * <blockquote>ALIGN, BGCOLOR, VALIGN.</blockquote>
      *
      * @param attributes A set of {@link SinkEventAttributes}.
@@ -613,25 +827,30 @@ public interface Sink
     void tableRow( SinkEventAttributes attributes );
 
     /**
-     * Ending a row element.
+     * Ends a row element.
      */
     void tableRow_();
 
     /**
-     * Starting a cell element which defines a cell that contains data.
+     * Starts a cell element which defines a cell that contains data.
+     *
+     * @see #tableCell(SinkEventAttributes).
      */
     void tableCell();
 
     /**
-     * Starting a cell element which defines a cell that contains data.
+     * Starts a cell element which defines a cell that contains data.
      *
      * @param width the size of the cell.
+     * @see #tableCell(SinkEventAttributes).
      */
     void tableCell( String width );
 
     /**
      * Starts a table cell.
-     * Supported attributes are the {@link SinkEventAttributes base attributes} plus:
+     * <p>
+     *   Supported attributes are the {@link SinkEventAttributes base attributes} plus:
+     * </p>
      * <blockquote>"abbrv", ALIGN, "axis", BGCOLOR, COLSPAN, "headers",
      * HEIGHT, NOWRAP, ROWSPAN, "scope", VALIGN, WIDTH.</blockquote>
      *
@@ -640,25 +859,30 @@ public interface Sink
     void tableCell( SinkEventAttributes attributes );
 
     /**
-     * Ending a cell element.
+     * Ends a cell element.
      */
     void tableCell_();
 
     /**
-     * Starting a cell element which defines a cell that contains header information.
+     * Starts a cell element which defines a cell that contains header information.
+     *
+     * @see #tableHeaderCell(SinkEventAttributes).
      */
     void tableHeaderCell();
 
     /**
-     * Starting a cell element which defines a cell that contains header information.
+     * Starts a cell element which defines a cell that contains header information.
      *
      * @param width the size of the header cell.
+     * @see #tableHeaderCell(SinkEventAttributes).
      */
     void tableHeaderCell( String width );
 
     /**
      * Starts a table header cell.
-     * Supported attributes are the {@link SinkEventAttributes base attributes} plus:
+     * <p>
+     *   Supported attributes are the {@link SinkEventAttributes base attributes} plus:
+     * </p>
      * <blockquote>"abbrv", ALIGN, "axis", BGCOLOR, COLSPAN, "headers",
      * HEIGHT, NOWRAP, ROWSPAN, "scope", VALIGN, WIDTH.</blockquote>
      *
@@ -667,56 +891,74 @@ public interface Sink
     void tableHeaderCell( SinkEventAttributes attributes );
 
     /**
-     * Ending a cell header element.
+     * Ends a cell header element.
      */
     void tableHeaderCell_();
 
     /**
-     * Starting a caption element of a table.
+     * Starts a caption element of a table.
+     *
+     * @see #tableCaption(SinkEventAttributes).
      */
     void tableCaption();
 
     /**
      * Starts a table caption.
-     * Supported attributes are the {@link SinkEventAttributes base attributes} plus ALIGN.
+     * <p>
+     *   Note that the order of tableCaption and
+     *   {@link #tableRows(int[],boolean)} events is arbitrary,
+     *   ie a parser may emit the tableCaption before or after the tableRows.
+     *   Implementing sinks should be prepared to handle both possibilities.
+     * </p>
+     * <p>
+     *   Supported attributes are the {@link SinkEventAttributes base attributes} plus ALIGN.
+     * </p>
      *
      * @param attributes A set of {@link SinkEventAttributes}.
+     * @see #table(SinkEventAttributes).
      */
     void tableCaption( SinkEventAttributes attributes );
 
     /**
-     * Ending a caption element of a table.
+     * Ends a caption element of a table.
      */
     void tableCaption_();
 
     /**
-     * Starting an element which represents a paragraph.
+     * Starts an element which represents a paragraph.
+     *
+     * @see #paragraph(SinkEventAttributes).
      */
     void paragraph();
 
     /**
      * Starts a paragraph.
-     * Supported attributes are the {@link SinkEventAttributes base attributes} plus ALIGN.
+     * <p>
+     *   Supported attributes are the {@link SinkEventAttributes base attributes} plus ALIGN.
+     * </p>
      *
      * @param attributes A set of {@link SinkEventAttributes}.
      */
     void paragraph( SinkEventAttributes attributes );
 
     /**
-     * Ending a paragraph element.
+     * Ends a paragraph element.
      */
     void paragraph_();
 
     /**
-     * Starting an element which indicates that whitespace in the enclosed text has semantic relevance.
+     * Starts an element which indicates that whitespace in the enclosed text has semantic relevance.
      *
      * @param boxed true to add a box, false otherwise
+     * @see #verbatim(SinkEventAttributes).
      */
     void verbatim( boolean boxed );
 
     /**
      * Starts a verbatim block, ie a block where whitespace has semantic relevance.
-     * Supported attributes are the {@link SinkEventAttributes base attributes} plus:
+     * <p>
+     *   Supported attributes are the {@link SinkEventAttributes base attributes} plus:
+     * </p>
      * DECORATION (value: "boxed"), ALIGN, WIDTH.
      *
      * @param attributes A set of {@link SinkEventAttributes}.
@@ -724,18 +966,22 @@ public interface Sink
     void verbatim( SinkEventAttributes attributes );
 
     /**
-     * Ending a verbatim element.
+     * Ends a verbatim element.
      */
     void verbatim_();
 
     /**
      * Adding a separator of sections from a text to each other.
+     *
+     * @see #horizontalRule(SinkEventAttributes).
      */
     void horizontalRule();
 
     /**
      * Adds a horizontal separator rule.
-     * Supported attributes are the {@link SinkEventAttributes base attributes} plus:
+     * <p>
+     *   Supported attributes are the {@link SinkEventAttributes base attributes} plus:
+     * </p>
      * ALIGN, NOSHADE, SIZE, WIDTH.
      *
      * @param attributes A set of {@link SinkEventAttributes}.
@@ -748,112 +994,155 @@ public interface Sink
     void pageBreak();
 
     /**
-     * Starting an element which defines an anchor.
+     * Starts an element which defines an anchor.
      *
      * @param name the name of the anchor.
+     * @see #anchor(String,SinkEventAttributes).
      */
     void anchor( String name );
 
     /**
      * Starts an element which defines an anchor.
-     * Supported attributes are the {@link SinkEventAttributes base attributes}.
-     * If NAME is specified in the SinkEventAttributes,
-     * it will be overwritten by the name parameter.
+     * <p>
+     *   The <code>name</code> parameter should be a valid SGML NAME token.
+     *   According to the <a href="http://www.w3.org/TR/html4/types.html#type-name">
+     *   HTML 4.01 specification section 6.2 SGML basic types</a>:
+     * </p>
+     * <p>
+     *   <i>ID and NAME tokens must begin with a letter ([A-Za-z]) and may be
+     *   followed by any number of letters, digits ([0-9]), hyphens ("-"),
+     *   underscores ("_"), colons (":"), and periods (".").</i>
+     * </p>
+     * <p>
+     *   Supported attributes are the {@link SinkEventAttributes base attributes}.
+     *   If {@link SinkEventAttributes#NAME NAME} is specified in the SinkEventAttributes,
+     *   it will be overwritten by the <code>name</code> parameter.
+     * </p>
      *
-     * @param name the name of the anchor.
+     * @param name the name of the anchor. This should be a valid SGML NAME token.
      * @param attributes A set of {@link SinkEventAttributes}.
      */
     void anchor( String name, SinkEventAttributes attributes );
+
     /**
-     * Ending an anchor element.
+     * Ends an anchor element.
      */
     void anchor_();
 
     /**
-     * Starting an element which defines a link.
+     * Starts an element which defines a link.
      *
      * @param name the name of the link.
+     * @see #link(String,SinkEventAttributes).
      */
     void link( String name );
 
     /**
      * Starts a link.
-     * Supported attributes are the {@link SinkEventAttributes base attributes} plus:
-     * <blockquote>"charset", COORDS, HREF, "hreflang", REL, REV, SHAPE,
-     * TARGET, TYPE.</blockquote> If HREF is specified in the
-     * SinkEventAttributes, it will be overwritten by the name parameter.
+     * <p>
+     *   The <code>name</code> parameter should be a valid html <code>href</code>
+     *   parameter, ie for internal links (links to an anchor within the same source
+     *   document), <code>name</code> should start with the character "#".
+     * </p>
+     * <p>
+     *   Supported attributes are the {@link SinkEventAttributes base attributes} plus:
+     * </p>
+     * <blockquote>
+     *   "charset", COORDS, HREF, "hreflang", REL, REV, SHAPE, TARGET, TYPE.
+     * </blockquote>
+     * <p>
+     *   If {@link SinkEventAttributes#HREF HREF} is specified in the
+     *   SinkEventAttributes, it will be overwritten by the <code>name</code> parameter.
+     * </p>
      *
      * @param name the name of the link.
      * @param attributes A set of {@link SinkEventAttributes}.
      */
     void link( String name, SinkEventAttributes attributes );
+
     /**
-     * Ending a link element.
+     * Ends a link element.
      */
     void link_();
 
     /**
-     * Starting an italic element.
+     * Starts an italic element.
+     *
+     * @see #italic(SinkEventAttributes).
      */
     void italic();
 
     /**
      * Starts an italic element.
-     * Supported attributes are the {@link SinkEventAttributes base attributes}.
+     * <p>
+     *   Supported attributes are the {@link SinkEventAttributes base attributes}.
+     * </p>
      *
      * @param attributes A set of {@link SinkEventAttributes}.
      */
     void italic( SinkEventAttributes attributes );
 
     /**
-     * Ending an italic element.
+     * Ends an italic element.
      */
     void italic_();
 
     /**
-     * Starting a bold element.
+     * Starts a bold element.
+     *
+     * @see #bold(SinkEventAttributes).
      */
     void bold();
 
     /**
      * Starts a bold element.
-     * Supported attributes are the {@link SinkEventAttributes base attributes}.
+     * <p>
+     *   Supported attributes are the {@link SinkEventAttributes base attributes}.
+     * </p>
      *
      * @param attributes A set of {@link SinkEventAttributes}.
      */
     void bold( SinkEventAttributes attributes );
 
     /**
-     * Ending a bold element.
+     * Ends a bold element.
      */
     void bold_();
 
     /**
-     * Starting a monospaced element.
+     * Starts a monospaced element.
+     *
+     * @see #monospaced(SinkEventAttributes).
      */
     void monospaced();
 
     /**
      * Starts a monospaced element.
-     * Supported attributes are the {@link SinkEventAttributes base attributes}.
+     * <p>
+     *   Supported attributes are the {@link SinkEventAttributes base attributes}.
+     * </p>
      *
      * @param attributes A set of {@link SinkEventAttributes}.
      */
     void monospaced( SinkEventAttributes attributes );
 
     /**
-     * Ending a monospaced element.
+     * Ends a monospaced element.
      */
     void monospaced_();
 
     /**
      * Adds a line break.
+     *
+     * @see #lineBreak(SinkEventAttributes).
      */
     void lineBreak();
 
     /**
      * Adds a line break.
-     * Supported attributes are ID, CLASS, TITLE and STYLE.
+     * <p>
+     *   Supported attributes are ID, CLASS, TITLE and STYLE.
+     * </p>
      *
      * @param attributes A set of {@link SinkEventAttributes}.
      */
@@ -868,14 +1157,26 @@ public interface Sink
      * Adding a text.
      *
      * @param text The text to write.
+     * @see #text(String,SinkEventAttributes).
      */
     void text( String text );
     
     /**
-     * Adds a text. 
-     * Supported attributes are the {@link SinkEventAttributes base attributes}
-     * plus VALIGN (values "sub", "sup") and DECORATION (values "underline",
-     * "overline", "line-through").
+     * Adds a text.
+     * <p>
+     *   The <code>text</code> parameter should contain only real content, ie any
+     *   ignorable/collapsable whitespace/EOLs or other pretty-printing should
+     *   be removed/normalized by a parser.
+     * </p>
+     * <p>
+     *   If <code>text</code> contains any variants of line terminators, they should
+     *   be normalized to the System EOL by an implementing Sink.
+     * </p>
+     * <p>
+     *   Supported attributes are the {@link SinkEventAttributes base attributes}
+     *   plus VALIGN (values "sub", "sup") and DECORATION (values "underline",
+     *   "overline", "line-through").
+     * </p>
      *
      * @param text The text to write.
      * @param attributes A set of {@link SinkEventAttributes}.
@@ -898,11 +1199,13 @@ public interface Sink
 
     /**
      * Flush the writer or the stream, if needed.
+     * Flushing a previously-flushed Sink has no effect.
      */
     void flush();
 
     /**
      * Close the writer or the stream, if needed.
+     * Closing a previously-closed Sink has no effect.
      */
     void close();
 }
