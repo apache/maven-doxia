@@ -143,9 +143,16 @@ public interface SinkEventAttributes
     String NOSHADE = "noshade";
 
     /**
-     * May specifies the size, or thickness, or height of an event element.
+     * Specifies the size, or thickness, or height of an event element.
      */
     String SIZE = "size";
+
+    // anchor
+
+    /**
+     * Specifies the name of an anchor.
+     */
+    String NAME = "name";
 
     // link
 
