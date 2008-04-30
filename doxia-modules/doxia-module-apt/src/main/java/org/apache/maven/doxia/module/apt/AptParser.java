@@ -1862,7 +1862,7 @@ public class AptParser
     }
 
     /** A Section Block. */
-    private class Section
+    private abstract class Section
         extends Block
     {
         /**
@@ -1889,16 +1889,10 @@ public class AptParser
         }
 
         /** Start a title. */
-        public void Title()
-        {
-            AptParser.this.sink.sectionTitle();
-        }
+        public abstract void Title();
 
         /** End a title. */
-        public void Title_()
-        {
-            AptParser.this.sink.sectionTitle_();
-        }
+        public abstract void Title_();
     }
 
     /** A Section1 Block. */
