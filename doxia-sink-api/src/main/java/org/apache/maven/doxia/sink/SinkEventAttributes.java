@@ -81,6 +81,19 @@ public interface SinkEventAttributes
      */
     String TITLE = "title";
 
+    // head
+
+    /**
+     * A space separated list of URL's that contains meta data information about the document.
+     */
+    String PROFILE = "profile";
+
+    /**
+     * An electonic mail address.
+     */
+    String EMAIL = "email";
+
+
     // img
 
     /**
