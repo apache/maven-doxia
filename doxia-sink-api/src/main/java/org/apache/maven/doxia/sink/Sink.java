@@ -895,7 +895,7 @@ public interface Sink
      * Starts a cell element which defines a cell that contains data.
      *
      * @param width the size of the cell.
-     * @see #tableCell(SinkEventAttributes).
+     * @deprecated Use #tableCell(SinkEventAttributes) instead.
      */
     void tableCell( String width );
 
@@ -934,7 +934,7 @@ public interface Sink
      * Starts a cell element which defines a cell that contains header information.
      *
      * @param width the size of the header cell.
-     * @see #tableHeaderCell(SinkEventAttributes).
+     * @deprecated Use #tableHeaderCell(SinkEventAttributes) instead.
      */
     void tableHeaderCell( String width );
 
@@ -1013,7 +1013,7 @@ public interface Sink
      * Starts an element which indicates that whitespace in the enclosed text has semantic relevance.
      *
      * @param boxed true to add a box, false otherwise
-     * @see #verbatim(SinkEventAttributes).
+     * @deprecated Use #verbatim(SinkEventAttributes) instead.
      */
     void verbatim( boolean boxed );
 
@@ -1145,69 +1145,48 @@ public interface Sink
     /**
      * Starts an italic element.
      *
-     * @see #italic(SinkEventAttributes).
+     * @deprecated Use {@link #text(String,SinkEventAttributes)} with
+     *              {@link SinkEventAttributes#STYLE STYLE} instead.
      */
     void italic();
 
     /**
-     * Starts an italic element.
-     *
-     * <p>
-     *   Supported attributes are the {@link SinkEventAttributes base attributes}.
-     * </p>
-     *
-     * @param attributes A set of {@link SinkEventAttributes}, may be <code>null</code>.
-     */
-    void italic( SinkEventAttributes attributes );
-
-    /**
      * Ends an italic element.
+     *
+     * @deprecated Use {@link #text(String,SinkEventAttributes)} with
+     *              {@link SinkEventAttributes#STYLE STYLE} instead.
      */
     void italic_();
 
     /**
      * Starts a bold element.
      *
-     * @see #bold(SinkEventAttributes).
+     * @deprecated Use {@link #text(String,SinkEventAttributes)} with
+     *              {@link SinkEventAttributes#STYLE STYLE} instead.
      */
     void bold();
 
     /**
-     * Starts a bold element.
-     *
-     * <p>
-     *   Supported attributes are the {@link SinkEventAttributes base attributes}.
-     * </p>
-     *
-     * @param attributes A set of {@link SinkEventAttributes}, may be <code>null</code>.
-     */
-    void bold( SinkEventAttributes attributes );
-
-    /**
      * Ends a bold element.
+     *
+     * @deprecated Use {@link #text(String,SinkEventAttributes)} with
+     *              {@link SinkEventAttributes#STYLE STYLE} instead.
      */
     void bold_();
 
     /**
      * Starts a monospaced element.
      *
-     * @see #monospaced(SinkEventAttributes).
+     * @deprecated Use {@link #text(String,SinkEventAttributes)} with
+     *              {@link SinkEventAttributes#STYLE STYLE} instead.
      */
     void monospaced();
 
     /**
-     * Starts a monospaced element.
-     *
-     * <p>
-     *   Supported attributes are the {@link SinkEventAttributes base attributes}.
-     * </p>
-     *
-     * @param attributes A set of {@link SinkEventAttributes}, may be <code>null</code>.
-     */
-    void monospaced( SinkEventAttributes attributes );
-
-    /**
      * Ends a monospaced element.
+     *
+     * @deprecated Use {@link #text(String,SinkEventAttributes)} with
+     *              {@link SinkEventAttributes#STYLE STYLE} instead.
      */
     void monospaced_();
 
@@ -1259,11 +1238,13 @@ public interface Sink
      *   be normalized to the System EOL by an implementing Sink.
      * </p>
      * <p>
-     *   Supported attributes are the {@link SinkEventAttributes base attributes}
-     *   plus {@link SinkEventAttributes#VALIGN VALIGN} (values "sub", "sup") and
-     *   {@link SinkEventAttributes#DECORATION DECORATION} (values "underline",
-     *   "overline", "line-through").
+     *   Supported attributes are the {@link SinkEventAttributes base attributes} plus
      * </p>
+     * <blockquote>
+     *   {@link SinkEventAttributes#VALIGN VALIGN} (values "sub", "sup"),
+     *   {@link SinkEventAttributes#DECORATION DECORATION} (values "underline", "overline", "line-through"),
+     *   {@link SinkEventAttributes#STYLE STYLE} (values "italic", "bold", "monospaced").
+     * </blockquote>
      *
      * @param text The text to write.
      * @param attributes A set of {@link SinkEventAttributes}, may be <code>null</code>.
