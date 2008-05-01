@@ -72,7 +72,24 @@ public interface SinkEventAttributes
 
     /**
      * An inline style definition.
-     * @todo specify recommended format with AttributSet values
+     *
+     * <p>
+     *   Generally supported values are "italic", "bold", "monospaced" and AttributeSets.
+     * </p>
+     * <p>
+     *   If the value of this Attribute is itself an AttributeSet, it is interpreted as a
+     *   sequence of CSS properties. For instance, the HTML paragraph opening
+     * </p>
+     * <pre>
+     *   &lt;p style="color: red; margin-left: 20px"&gt;
+     * </pre>
+     * <p>
+     *   can be produced by an HTML Sink via the event
+     *   <code>{@link Sink#paragraph(SinkEventAttributes)}</code>, where the value of the
+     *   SinkEventAttribute is an AttributeSet with two Attributes ("<code>color</code>" and
+     *   "<code>margin-left</code>" with values "<code>red</code>" and "<code>20px</code>",
+     *   respectively).
+     * </p>
      */
     String STYLE = "style";
 
@@ -89,7 +106,7 @@ public interface SinkEventAttributes
     String PROFILE = "profile";
 
     /**
-     * An electonic mail address.
+     * An electronic mail address.
      */
     String EMAIL = "email";
 
@@ -98,7 +115,10 @@ public interface SinkEventAttributes
 
     /**
      * Specifies the alignment of the event element within its parent element.
-     * Generally supported values are "left", "right", "center", "justify".
+     *
+     * <p>
+     *   Generally supported values are "left", "right", "center", "justify".
+     * </p>
      */
     String ALIGN = "align";
 
@@ -123,8 +143,7 @@ public interface SinkEventAttributes
     String HSPACE = "hspace";
 
     /**
-     * Defines an image as a server-side image map.
-     * Only used by the figureGraphics Sink event.
+     * Defines an image as a server-side image map. Only used by the figureGraphics Sink event.
      */
     String ISMAP = "ismap";
 
@@ -176,7 +195,10 @@ public interface SinkEventAttributes
 
     /**
      * May be used in conjunction with {@link #SHAPE}.
-     * Valid values are the same as for the corresponding HTML attributes.
+     *
+     * <p>
+     *   Valid values are the same as for the corresponding HTML attributes.
+     * </p>
      */
     String COORDS = "coords";
 
@@ -187,33 +209,48 @@ public interface SinkEventAttributes
 
     /**
      * Specifies the base language of the target URL.
-     * Used in conjunction with {@link #HREF}.
+     *
+     * <p>
+     *   Used in conjunction with {@link #HREF}.
+     * </p>
      */
     String HREFLANG = "hreflang";
 
     /**
      * For references to external resourcs, specifies the relationship between
      * the current document and the target URL.
-     * Valid values are the same as for the corresponding HTML attribute.
+     *
+     * <p>
+     *   Valid values are the same as for the corresponding HTML attribute.
+     * </p>
      */
     String REL = "rel";
 
     /**
      * For references to external resourcs, specifies the relationship between
      * the target URL and the current document.
-     * Valid values are the same as for the corresponding HTML attribute.
+     *
+     * <p>
+     *   Valid values are the same as for the corresponding HTML attribute.
+     * </p>
      */
     String REV = "rev";
 
     /**
      * Defines the type of region to be defined for a mapping.
-     * Used with the {@link #COORDS} attribute.
+     *
+     * <p>
+     *   Used with the {@link #COORDS} attribute.
+     * </p>
      */
     String SHAPE = "shape";
 
     /**
      * Where to open the target URL.
-     * Valid values are the same as for the corresponding HTML attribute.
+     *
+     * <p>
+     *   Valid values are the same as for the corresponding HTML attribute.
+     * </p>
      */
     String TARGET = "target";
 
@@ -242,7 +279,10 @@ public interface SinkEventAttributes
 
     /**
      * Specifies which sides of a border surrounding an element should be visible.
-     * Valid values are the same as for the corresponding HTML attribute.
+     *
+     * <p>
+     *   Valid values are the same as for the corresponding HTML attribute.
+     * </p>
      */
     String FRAME = "frame";
 
@@ -252,8 +292,7 @@ public interface SinkEventAttributes
     String RULES = "rules";
 
     /**
-     * Specifies a summary of an event attribute for
-     * speech-synthesizing/non-visual target output.
+     * Specifies a summary of an event attribute for speech-synthesizing/non-visual target output.
      */
     String SUMMARY = "summary";
 
@@ -299,15 +338,22 @@ public interface SinkEventAttributes
     String SCOPE = "scope";
 
     /**
-     * Specifies the vertical alignment of an element. Generally accepted values
-     * are "top", "baseline", "middle", "bottom", "sup", "sub".
+     * Specifies the vertical alignment of an element.
+     *
+     * <p>
+     *   Generally accepted values are "top", "baseline", "middle", "bottom", "sup", "sub".
+     * </p>
      */
     String VALIGN = "valign";
 
     // text
+
     /**
-     * Specifies a decoration for an element. Generally accepted values
-     * are "underline", "overline", "line-through", "boxed".
+     * Specifies a decoration for an element.
+     *
+     * <p>
+     *   Generally accepted values are "underline", "overline", "line-through", "boxed".
+     * </p>
      */
     String DECORATION = "decoration";
 }
