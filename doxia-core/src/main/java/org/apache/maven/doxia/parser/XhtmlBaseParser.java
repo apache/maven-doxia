@@ -252,7 +252,8 @@ public class XhtmlBaseParser
         else if ( ( parser.getName().equals( Tag.B.toString() ) )
                 || ( parser.getName().equals( Tag.STRONG.toString() ) ) )
         {
-            sink.bold( attribs );
+            // TODO: use SinkEventAttributes
+            sink.bold();
         }
         else if ( ( parser.getName().equals( Tag.I.toString() ) )
                 || ( parser.getName().equals( Tag.EM.toString() ) ) )
@@ -263,14 +264,16 @@ public class XhtmlBaseParser
             }
             else
             {
-                sink.italic( attribs );
+                // TODO: use SinkEventAttributes
+                sink.italic();
             }
         }
         else if ( ( parser.getName().equals( Tag.CODE.toString() ) )
                 || ( parser.getName().equals( Tag.SAMP.toString() ) )
                 || ( parser.getName().equals( Tag.TT.toString() ) ) )
         {
-            sink.monospaced( attribs );
+            // TODO: use SinkEventAttributes
+            sink.monospaced();
         }
         else if ( parser.getName().equals( Tag.A.toString() ) )
         {
