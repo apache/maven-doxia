@@ -24,7 +24,7 @@ under the License.
   <parent>
     <groupId>org.apache.maven</groupId>
     <artifactId>maven-parent</artifactId>
-    <version>6</version>
+    <version>8</version>
     <relativePath>../../pom/maven/pom.xml</relativePath>
   </parent>
   <groupId>org.apache.maven.doxia</groupId>
@@ -43,43 +43,48 @@ under the License.
   <mailingLists>
     <mailingList>
       <name>Doxia Developer List</name>
+      <post>doxia-dev@maven.apache.org</post>
       <subscribe>doxia-dev-subscribe@maven.apache.org</subscribe>
       <unsubscribe>doxia-dev-unsubscribe@maven.apache.org</unsubscribe>
       <archive>http://mail-archives.apache.org/mod_mbox/maven-doxia-dev/</archive>
+      <otherArchives>
+        <otherArchive>http://www.mail-archive.com/doxia-dev@maven.apache.org</otherArchive>
+        <otherArchive>http://www.nabble.com/Doxia---dev-f11816.html</otherArchive>
+        <otherArchive>http://maven.doxia.dev.markmail.org/</otherArchive>
+      </otherArchives>
     </mailingList>
     <mailingList>
       <name>Doxia User List</name>
+      <post>doxia-users@maven.apache.org</post>
       <subscribe>doxia-users-subscribe@maven.apache.org</subscribe>
       <unsubscribe>doxia-users-unsubscribe@maven.apache.org</unsubscribe>
       <archive>http://mail-archives.apache.org/mod_mbox/maven-doxia-users/</archive>
+      <otherArchives>
+        <otherArchive>http://www.mail-archive.com/doxia-users@maven.apache.org</otherArchive>
+        <otherArchive>http://www.nabble.com/Doxia---Users-f14483.html</otherArchive>
+        <otherArchive>http://maven.doxia.users.markmail.org/</otherArchive>
+      </otherArchives>
     </mailingList>
     <mailingList>
       <name>Doxia Commits List</name>
       <subscribe>doxia-commits-subscribe@maven.apache.org</subscribe>
       <unsubscribe>doxia-commits-unsubscribe@maven.apache.org</unsubscribe>
       <archive>http://mail-archives.apache.org/mod_mbox/maven-doxia-commits/</archive>
-    </mailingList>
-    <!-- duplication from parent pom - temporary until they inherit properly -->
-    <mailingList>
-      <name>Maven Announcements List</name>
-      <post>announce@maven.apache.org</post>
-      <subscribe>announce-subscribe@maven.apache.org</subscribe>
-      <unsubscribe>announce-unsubscribe@maven.apache.org</unsubscribe>
-      <archive>http://mail-archives.apache.org/mod_mbox/maven-announce/</archive>
+      <otherArchives>
+        <otherArchive>http://www.mail-archive.com/doxia-commits@maven.apache.org</otherArchive>
+        <otherArchive>http://maven.doxia.commits.markmail.org/</otherArchive>
+      </otherArchives>
     </mailingList>
     <mailingList>
       <name>Maven Issues List</name>
-      <post>issues@maven.apache.org</post>
       <subscribe>issues-subscribe@maven.apache.org</subscribe>
       <unsubscribe>issues-unsubscribe@maven.apache.org</unsubscribe>
       <archive>http://mail-archives.apache.org/mod_mbox/maven-issues/</archive>
-    </mailingList>
-    <mailingList>
-      <name>Maven Notifications List</name>
-      <post>notifications@maven.apache.org</post>
-      <subscribe>notifications-subscribe@maven.apache.org</subscribe>
-      <unsubscribe>notifications-unsubscribe@maven.apache.org</unsubscribe>
-      <archive>http://mail-archives.apache.org/mod_mbox/maven-notifications/</archive>
+      <otherArchives>
+        <otherArchive>http://www.mail-archive.com/issues@maven.apache.org</otherArchive>
+        <otherArchive>http://www.nabble.com/Maven---Issues-f15573.html</otherArchive>
+        <otherArchive>http://maven.issues.markmail.org/</otherArchive>
+      </otherArchives>
     </mailingList>
   </mailingLists>
 
