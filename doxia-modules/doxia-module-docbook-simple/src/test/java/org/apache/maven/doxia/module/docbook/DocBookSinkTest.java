@@ -174,15 +174,13 @@ public class DocBookSinkTest extends AbstractSinkTest
     /** {@inheritDoc} */
     protected String getAnchorBlock( String anchor )
     {
-        // TODO: fix id
-        return "<anchor id=\"a.anchor\">" + anchor + "</anchor>";
+        return "<anchor id=\"" + anchor + "\">" + anchor + "</anchor>";
     }
 
     /** {@inheritDoc} */
     protected String getLinkBlock( String link, String text )
     {
-        // TODO: fix link
-        return "<link linkend=\"a.link\">" + text + "</link>";
+        return "<link linkend=\"" + link + "\">" + text + "</link>";
     }
 
     /** {@inheritDoc} */

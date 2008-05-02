@@ -687,7 +687,7 @@ public class XhtmlBaseParser
         char[] chars = parser.getTextCharacters( holder );
         String textChars = String.valueOf( chars, holder[0], holder[1] );
 
-        if ( "#160".equals( textChars ) )
+        if ( "#160".equals( textChars ) || "nbsp".equals( textChars ) )
         {
             sink.nonBreakingSpace();
         }

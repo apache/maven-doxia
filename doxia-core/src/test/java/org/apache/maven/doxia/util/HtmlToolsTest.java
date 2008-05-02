@@ -41,10 +41,14 @@ public class HtmlToolsTest
         assertEquals( HtmlTools.escapeHTML( "&" ), "&amp;" );
         assertEquals( HtmlTools.escapeHTML( "\"" ), "&quot;" );
         assertEquals( HtmlTools.escapeHTML( "&amp;" ), "&amp;amp;" );
+
+        // xml mode
+        assertEquals( HtmlTools.escapeHTML( "\u00e4", true ), "\u00e4" );
+        assertEquals( HtmlTools.escapeHTML( "\u00e4", false ), "&#228;" );
     }
 
     /**
-     * Verify the expected results
+     * Verify the expected results.
      */
     public void testEncodeId()
     {
@@ -61,7 +65,24 @@ public class HtmlToolsTest
     }
 
     /**
-     * Verify the expected results
+     * Verify the expected results.
+     */
+    public void testEncodeURL()
+    {
+        assertNull( HtmlTools.encodeURL( null ) );
+        assertEquals( HtmlTools.encodeURL( "" ), "" );
+        assertEquals( HtmlTools.encodeURL(
+            "http://www.example.com/?This is a simple test." ),
+            "http://www.example.com/?This%20is%20a%20simple%20test." );
+
+        // TODO: the & is not encoded?
+        //assertEquals( HtmlTools.encodeURL(
+        //    "http://www.example.com/?This is a simple & short test." ),
+        //    "http://www.example.com/?This%20is%20a%20simple%20%26%20short%20test." );
+    }
+
+    /**
+     * Verify the expected results.
      */
     public void testIsId()
     {

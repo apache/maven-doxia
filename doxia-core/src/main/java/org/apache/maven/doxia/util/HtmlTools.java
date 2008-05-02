@@ -198,27 +198,6 @@ public class HtmlTools
     }
 
     /**
-     * Replace all characters in a text.
-     *
-     * <pre>
-     * HtmlTools.encodeFragment( null ) = null
-     * HtmlTools.encodeFragment( "" ) = ""
-     * HtmlTools.encodeFragment( "http://www.google.com" ) = "httpwwwgooglecom"
-     * </pre>
-     *
-     * @param text the String to check, may be null
-     * @return the text with only letter and digit, null if null String input
-     */
-    public static String encodeFragment( String text )
-    {
-        if ( text == null )
-        {
-            return null;
-        }
-        return encodeURL( StructureSinkUtils.linkToKey( text ) );
-    }
-
-    /**
      * Construct a valid id.
      * <p>
      * According to the <a href="http://www.w3.org/TR/html4/types.html#type-name">
@@ -269,8 +248,8 @@ public class HtmlTools
      * HtmlTools.encodeId( "myAnchor" )  = "myAnchor"
      * </pre>
      *
-     * @param id The id to be encoded
-     * @return The id trimmed and encoded
+     * @param id The id to be encoded.
+     * @return The trimmed and encoded id, or null if id is null.
      */
     public static String encodeId( String id )
     {
@@ -286,10 +265,12 @@ public class HtmlTools
         for ( int i = 0; i < length; ++i )
         {
             char c = id.charAt( i );
+
             if ( ( i == 0 ) && ( !Character.isLetter( c ) ) )
             {
                 buffer.append( "a" );
             }
+
             if ( c == ' ' )
             {
                 buffer.append( "_" );
@@ -305,11 +286,11 @@ public class HtmlTools
 
     /**
      * Determines if the specified text is a valid id according to the rules
-     * laid out in encodeId(String).
+     * laid out in {@link #encodeId(String)}.
      *
-     * @see #encodeId(String)
-     * @param text The text to be tested
-     * @return <code>true</code> if the text is a valid id, otherwise <code>false</code>
+     * @param text The text to be tested.
+     * @return <code>true</code> if the text is a valid id, otherwise <code>false</code>.
+     * @see #encodeId(String).
      */
     public static boolean isId( String text )
     {
@@ -321,10 +302,12 @@ public class HtmlTools
         for ( int i = 0; i < text.length(); ++i )
         {
             char c = text.charAt( i );
+
             if ( i == 0 && !Character.isLetter( c ) )
             {
                 return false;
             }
+
             if ( c == ' ' )
             {
                 return false;
@@ -337,4 +320,8 @@ public class HtmlTools
 
         return true;
     }
+
+    private HtmlTools() {
+        // utility class
+}
 }

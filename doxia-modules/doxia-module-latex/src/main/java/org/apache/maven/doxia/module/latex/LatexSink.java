@@ -21,8 +21,8 @@ package org.apache.maven.doxia.module.latex;
 
 import org.apache.maven.doxia.parser.Parser;
 import org.apache.maven.doxia.sink.AbstractTextSink;
+import org.apache.maven.doxia.util.DoxiaUtils;
 import org.apache.maven.doxia.util.LineBreaker;
-import org.apache.maven.doxia.util.StructureSinkUtils;
 
 import org.codehaus.plexus.util.IOUtil;
 import org.codehaus.plexus.util.StringUtils;
@@ -899,7 +899,7 @@ public class LatexSink
     public void link( String name )
     {
         // TODO: use \\url for simple links
-        if ( StructureSinkUtils.isExternalLink( name ) )
+        if ( DoxiaUtils.isExternalLink( name ) )
         {
             markup( "\\href{" + name + "}{" );
         }

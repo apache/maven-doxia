@@ -1,4 +1,4 @@
-package org.apache.maven.doxia.util;
+package org.apache.maven.doxia.module.apt;
 
 /*
  * Licensed to the Apache Software Foundation (ASF) under one
@@ -20,13 +20,36 @@ package org.apache.maven.doxia.util;
  */
 
 /**
- * Utility methods for Sinks.
+ * A collection of utility methods for dealing with APT documents.
  *
+ * @author ltheussl
+ * @since 1.0-beta-1
  * @version $Id$
- * @deprecated Use o.a.m.d.sink.SinkUtils for Sink Utility methods.
  */
-public class StructureSinkUtils
-{
+public class AptUtils {
+
+    /**
+     * Replace all characters in a text.
+     *
+     * <pre>
+     * AptTools.encodeFragment( null ) = null
+     * AptTools.encodeFragment( "" ) = ""
+     * AptTools.encodeFragment( "http://www.google.com" ) = "httpwwwgooglecom"
+     * </pre>
+     *
+     * @param text the String to check, may be null.
+     * @return the text with only letter and digit, null if null String input.
+     */
+    public static String encodeFragment( String text )
+    {
+        if ( text == null )
+        {
+            return null;
+        }
+
+        return linkToKey( text );
+    }
+
     /**
      * Checks if the given string corresponds to an external URI,
      * ie is not a link within the same document.
@@ -36,8 +59,6 @@ public class StructureSinkUtils
      * following: "http:/", "https:/", "ftp:/", "mailto:", "file:/",
      * "../" or "./". Note that Windows style separators "\" are not allowed
      * for URIs, see  http://www.ietf.org/rfc/rfc2396.txt , section 2.4.3.
-     * @deprecated This method is apt specific, it should not be used by a general Sink.
-     * Use DoxiaUtils.isExternalLink() or SinkUtils.isExternalLink() instead.
      */
     public static boolean isExternalLink( String link )
     {
@@ -51,11 +72,11 @@ public class StructureSinkUtils
 
     /**
      * Transforms the given text such that it can be used as a link.
+     * All non-LetterOrDigit characters are removed and the remaining
+     * characters are transformed to lower-case.
      *
      * @param text The text to transform.
-     * @return A text with escaped special characters.
-     * @deprecated This method is apt specific, it should not be used by a general Sink.
-     * Use AptUtils.linkToKey() instead.
+     * @return The text with all non-LetterOrDigit characters removed.
      */
     public static String linkToKey( String text )
     {
@@ -72,5 +93,9 @@ public class StructureSinkUtils
         }
 
         return buffer.toString();
+    }
+
+    private AptUtils() {
+        // utility class
     }
 }

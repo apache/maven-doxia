@@ -20,24 +20,37 @@ package org.apache.maven.doxia.util;
  */
 
 /**
- * Utility methods for Sinks.
+ * General Doxia utility methods. The methods in this class should not assume
+ * any specific Doxia module or document format.
  *
+ * @author ltheussl
+ * @since 1.0-beta-1
  * @version $Id$
- * @deprecated Use o.a.m.d.sink.SinkUtils for Sink Utility methods.
  */
-public class StructureSinkUtils
-{
+public class DoxiaUtils {
+
+    /**
+     * Checks if the given string corresponds to an internal link,
+     * ie it is a link to an anchor within the same document.
+     *
+     * @param link The link to check.
+     * @return True if the link starts with "#".
+     */
+    public static boolean isInternalLink( String link )
+    {
+        return link.startsWith( "#" );
+    }
+
     /**
      * Checks if the given string corresponds to an external URI,
-     * ie is not a link within the same document.
+     * ie is not a link within the same document nor a relative link
+     * to another document (a local link).
      *
      * @param link The link to check.
      * @return True if the link (ignoring case) starts with either of the
-     * following: "http:/", "https:/", "ftp:/", "mailto:", "file:/",
-     * "../" or "./". Note that Windows style separators "\" are not allowed
+     * following: "http:/", "https:/", "ftp:/", "mailto:", "file:/".
+     * Note that Windows style separators "\" are not allowed
      * for URIs, see  http://www.ietf.org/rfc/rfc2396.txt , section 2.4.3.
-     * @deprecated This method is apt specific, it should not be used by a general Sink.
-     * Use DoxiaUtils.isExternalLink() or SinkUtils.isExternalLink() instead.
      */
     public static boolean isExternalLink( String link )
     {
@@ -45,32 +58,22 @@ public class StructureSinkUtils
 
         return ( text.indexOf( "http:/" ) == 0 || text.indexOf( "https:/" ) == 0
             || text.indexOf( "ftp:/" ) == 0 || text.indexOf( "mailto:" ) == 0
-            || text.indexOf( "file:/" ) == 0 || text.indexOf( "../" ) == 0
-            || text.indexOf( "./" ) == 0 );
+            || text.indexOf( "file:/" ) == 0 );
     }
 
     /**
-     * Transforms the given text such that it can be used as a link.
+     * Checks if the given string corresponds to a relative link to another document.
      *
-     * @param text The text to transform.
-     * @return A text with escaped special characters.
-     * @deprecated This method is apt specific, it should not be used by a general Sink.
-     * Use AptUtils.linkToKey() instead.
+     * @param link The link to check.
+     * @return True if the link is neither an external nor an internal link.
      */
-    public static String linkToKey( String text )
+    public static boolean isLocalLink( String link )
     {
-        int length = text.length();
-        StringBuffer buffer = new StringBuffer( length );
-
-        for ( int i = 0; i < length; ++i )
-        {
-            char c = text.charAt( i );
-            if ( Character.isLetterOrDigit( c ) )
-            {
-                buffer.append( Character.toLowerCase( c ) );
-            }
-        }
-
-        return buffer.toString();
+        return ( !isExternalLink( link ) && !isInternalLink( link ) );
     }
+
+    private DoxiaUtils() {
+        // utility class
+    }
+
 }

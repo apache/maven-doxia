@@ -30,7 +30,6 @@ import org.apache.maven.doxia.sink.SinkEventAttributes;
 import org.apache.maven.doxia.sink.SinkUtils;
 import org.apache.maven.doxia.sink.XhtmlBaseSink;
 import org.apache.maven.doxia.util.HtmlTools;
-import org.apache.maven.doxia.util.StructureSinkUtils;
 
 /**
  * A doxia Sink which produces an xdoc model.
@@ -406,14 +405,7 @@ public class XdocSink
             att.addAttribute( Attribute.TARGET, target );
         }
 
-        if ( StructureSinkUtils.isExternalLink( name ) || isExternalHtml( name ) )
-        {
             att.addAttribute( Attribute.HREF, HtmlTools.escapeHTML( name ) );
-        }
-        else
-        {
-            att.addAttribute( Attribute.HREF, "#" + HtmlTools.escapeHTML( name ) );
-        }
 
         writeStartTag( Tag.A, att );
     }
