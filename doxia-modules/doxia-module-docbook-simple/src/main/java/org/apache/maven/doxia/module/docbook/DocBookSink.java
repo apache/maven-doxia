@@ -1487,21 +1487,36 @@ public class DocBookSink
      */
     public void anchor( String name )
     {
-        if ( !authorDateFlag )
+        if ( name == null )
         {
-            // First char of ID cannot be a digit.
-            MutableAttributeSet att = new SimpleAttributeSet();
-            att.addAttribute( Attribute.ID, HtmlTools.encodeId( name ) );
+            throw new NullPointerException( "Anchor name cannot be null!" );
+        }
 
-            // TODO: why?
-            if ( xmlMode )
-            {
-                writeSimpleTag( ANCHOR_TAG, att );
-            }
-            else
-            {
-                writeStartTag( ANCHOR_TAG, att );
-            }
+        if ( authorDateFlag )
+        {
+            return;
+        }
+
+        String id = name;
+
+        if ( !DoxiaUtils.isValidId( id ) )
+        {
+            id = DoxiaUtils.encodeId( name );
+
+            getLog().warn( "Modified invalid anchor name: " + name );
+        }
+
+        MutableAttributeSet att = new SimpleAttributeSet();
+        att.addAttribute( Attribute.ID, id );
+
+        // TODO: why?
+        if ( xmlMode )
+        {
+            writeSimpleTag( ANCHOR_TAG, att );
+        }
+        else
+        {
+            writeStartTag( ANCHOR_TAG, att );
         }
     }
 
@@ -1531,19 +1546,23 @@ public class DocBookSink
      */
     public void link( String name )
     {
+        if ( name == null )
+        {
+            throw new NullPointerException( "Link name cannot be null!" );
+        }
+
         if ( DoxiaUtils.isExternalLink( name ) )
         {
             externalLinkFlag = true;
             MutableAttributeSet att = new SimpleAttributeSet();
-            att.addAttribute( URL_ATTRIBUTE, escapeSGML( name, xmlMode ) );
+            att.addAttribute( URL_ATTRIBUTE, HtmlTools.escapeHTML( name, xmlMode ) );
 
             writeStartTag( ULINK_TAG, att );
         }
         else
         {
-            // First char of ID cannot be a digit.
             MutableAttributeSet att = new SimpleAttributeSet();
-            att.addAttribute( LINKEND_ATTRIBUTE, HtmlTools.encodeId( name ) );
+            att.addAttribute( LINKEND_ATTRIBUTE, HtmlTools.escapeHTML( name ) );
 
             writeStartTag( LINK_TAG, att );
         }

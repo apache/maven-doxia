@@ -520,7 +520,7 @@ public abstract class AbstractSinkTest
      */
     public void testLink()
     {
-        String link = "Link";
+        String link = "#Link";
         String text = "Text";
         sink.link( link );
         sink.text( text );

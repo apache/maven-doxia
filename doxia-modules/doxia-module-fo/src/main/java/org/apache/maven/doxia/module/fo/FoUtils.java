@@ -142,4 +142,9 @@ public class FoUtils
         return url;
     }
 
+    private FoUtils()
+    {
+        // Utility class
+    }
+
 }

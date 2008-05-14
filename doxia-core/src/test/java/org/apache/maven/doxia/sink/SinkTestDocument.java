@@ -478,7 +478,7 @@ public class SinkTestDocument
         sink.anchor_();
 
         sink.text( ". Link to " );
-        sink.link( "Anchor" );
+        sink.link( "#Anchor" );
         sink.text( "Anchor" );
         sink.link_();
 
@@ -488,7 +488,7 @@ public class SinkTestDocument
         sink.link_();
 
         sink.text( ". Link to " );
-        sink.link( "Anchor" );
+        sink.link( "#Anchor" );
         sink.text( "showing alternate text" );
         sink.link_();
 

@@ -38,6 +38,7 @@ import org.codehaus.plexus.util.xml.XMLWriter;
 import com.lowagie.text.BadElementException;
 import com.lowagie.text.ElementTags;
 import com.lowagie.text.Image;
+import org.apache.maven.doxia.util.DoxiaUtils;
 
 /**
  * <p>A doxia Sink which produces an XML Front End document for <code>iText</code> framework.</p>
@@ -1254,6 +1255,11 @@ public final class ITextSink
     /** {@inheritDoc} */
     public void link( String name )
     {
+        if ( name == null )
+        {
+            throw new NullPointerException( "Link name cannot be null!" );
+        }
+
         font.setColor( Color.BLUE );
         font.addUnderlined();
 
@@ -1280,8 +1286,22 @@ public final class ITextSink
     /** {@inheritDoc} */
     public void anchor( String name )
     {
+        if ( name == null )
+        {
+            throw new NullPointerException( "Anchor name cannot be null!" );
+        }
+
+        String id = name;
+
+        if ( !DoxiaUtils.isValidId( id ) )
+        {
+            id = DoxiaUtils.encodeId( name );
+
+            getLog().warn( "Modified invalid anchor name: " + name );
+        }
+
         writeStartElement( ElementTags.ANCHOR );
-        writeAddAttribute( ElementTags.NAME, HtmlTools.encodeId( name ) );
+        writeAddAttribute( ElementTags.NAME, id );
 
         actionContext.setAction( SinkActionContext.ANCHOR );
     }

@@ -29,7 +29,9 @@ import org.apache.maven.doxia.document.DocumentMeta;
 import org.apache.maven.doxia.document.DocumentModel;
 import org.apache.maven.doxia.document.DocumentTOC;
 import org.apache.maven.doxia.document.DocumentTOCItem;
+import org.apache.maven.doxia.util.DoxiaUtils;
 import org.apache.maven.doxia.util.HtmlTools;
+
 import org.codehaus.plexus.util.StringUtils;
 
 /**
@@ -225,16 +227,21 @@ public class FoAggregateSink extends FoSink
     /** {@inheritDoc} */
     public void anchor( String name )
     {
+        if ( name == null )
+        {
+            throw new NullPointerException( "Anchor name cannot be null!" );
+        }
+
         String anchor = name;
 
-        if ( anchor.startsWith( "#" ) )
+        if ( !DoxiaUtils.isValidId( anchor ) )
         {
-            anchor = "#" + HtmlTools.encodeId( anchor.substring( 1 ) );
+            anchor = DoxiaUtils.encodeId( name );
+
+            getLog().warn( "[FO Sink] Modified invalid anchor name: " + name );
         }
-        else
-        {
-            anchor = "#" + HtmlTools.encodeId( anchor );
-        }
+
+        anchor = "#" + anchor;
 
         if ( docName != null )
         {
@@ -248,45 +255,33 @@ public class FoAggregateSink extends FoSink
     /** {@inheritDoc} */
     public void link( String name )
     {
-        if ( name.startsWith( "http" ) || name.startsWith( "mailto" )
-            || name.startsWith( "ftp" ) )
+        if ( name == null )
+        {
+            throw new NullPointerException( "Link name cannot be null!" );
+        }
+
+        if ( DoxiaUtils.isExternalLink( name ) )
         {
             // external links
             writeStartTag( BASIC_LINK_TAG, "external-destination", HtmlTools.escapeHTML( name ) );
             writeStartTag( INLINE_TAG, "href.external" );
         }
-        else if ( name.startsWith( "./" ) )
+        else if ( DoxiaUtils.isInternalLink( name ) )
         {
-            // internal, non-local link (ie anchor is not in the same source document)
-            // and link destination source document is in the same directory
+            // internal link (ie anchor is in the same source document)
 
-            String anchor = name;
+            String anchor = name.substring( 1 );
 
-            int dot = anchor.indexOf( ".", 2 );
-
-            if ( dot != -1 )
+            if ( !DoxiaUtils.isValidId( anchor ) )
             {
-                int hash = anchor.indexOf( "#", dot );
+                anchor = DoxiaUtils.encodeId( anchor );
 
-                if ( hash != -1 )
-                {
-                    int dot2 = anchor.indexOf( ".", hash );
+                getLog().warn( "[FO Sink] Modified invalid link name: " + name );
+            }
 
-                    if ( dot2 != -1 )
-                    {
-                        anchor = anchor.substring( 0, dot ) + "#"
-                            + HtmlTools.encodeId( anchor.substring( hash + 1, dot2 ) );
-                    }
-                    else
-                    {
-                        anchor = anchor.substring( 0, dot ) + "#"
-                            + HtmlTools.encodeId( anchor.substring( hash + 1, anchor.length() ) );
-                    }
-                }
-                else
-                {
-                    anchor = anchor.substring( 0, dot );
-                }
+            if ( docName != null )
+            {
+                anchor = docName + "#" + anchor;
             }
 
             writeStartTag( BASIC_LINK_TAG, "internal-destination", HtmlTools.escapeHTML( anchor ) );
@@ -294,8 +289,7 @@ public class FoAggregateSink extends FoSink
         }
         else if ( name.startsWith( "../" ) )
         {
-            // internal, non-local link (ie anchor is not in the same source document)
-            // and link destination source document is in a different directory
+            // local link (ie anchor is not in the same source document)
 
             String anchor = name;
 
@@ -320,34 +314,63 @@ public class FoAggregateSink extends FoSink
                 }
             }
 
-            // call again with resolved link
-            link( base + "/" + anchor );
+            anchor = base + "/" + chopExtension ( anchor );
+
+            writeStartTag( BASIC_LINK_TAG, "internal-destination", HtmlTools.escapeHTML( anchor ) );
+            writeStartTag( INLINE_TAG, "href.internal" );
         }
         else
         {
-            // internal, local link (ie anchor is in the same source document)
+            // local link (ie anchor is not in the same source document)
 
             String anchor = name;
 
-            if ( anchor.startsWith( "#" ) )
+            if ( anchor.startsWith( "./" ) )
             {
-                anchor = "#" + HtmlTools.encodeId( anchor.substring( 1 ) );
-            }
-            else
-            {
-                anchor = "#" + HtmlTools.encodeId( anchor );
+                anchor = anchor.substring( 2 );
             }
 
-            if ( docName != null )
-            {
-                anchor = docName + anchor;
-            }
+            anchor = chopExtension ( anchor );
+
+            String base = docName.substring( 0, docName.lastIndexOf( "/" ) );
+            anchor = base + "/" + anchor;
 
             writeStartTag( BASIC_LINK_TAG, "internal-destination", HtmlTools.escapeHTML( anchor ) );
             writeStartTag( INLINE_TAG, "href.internal" );
         }
     }
 
+    private  String chopExtension( String anchor )
+    {
+        int dot = anchor.indexOf( "." );
+
+        if ( dot != -1 )
+        {
+            int hash = anchor.indexOf( "#", dot );
+
+            if ( hash != -1 )
+            {
+                int dot2 = anchor.indexOf( ".", hash );
+
+                if ( dot2 != -1 )
+                {
+                    anchor = anchor.substring( 0, dot ) + "#"
+                        + HtmlTools.encodeId( anchor.substring( hash + 1, dot2 ) );
+                }
+                else
+                {
+                    anchor = anchor.substring( 0, dot ) + "#"
+                        + HtmlTools.encodeId( anchor.substring( hash + 1, anchor.length() ) );
+                }
+            }
+            else
+            {
+                anchor = anchor.substring( 0, dot );
+            }
+        }
+
+        return anchor;
+    }
 
     // ----------------------------------------------------------------------
     //

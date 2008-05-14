@@ -30,6 +30,7 @@ import javax.swing.text.html.HTML.Tag;
 import org.apache.maven.doxia.sink.AbstractXmlSink;
 import org.apache.maven.doxia.sink.Sink;
 import org.apache.maven.doxia.parser.Parser;
+import org.apache.maven.doxia.util.DoxiaUtils;
 import org.apache.maven.doxia.util.HtmlTools;
 
 /**
@@ -795,16 +796,21 @@ public class FoSink
     /** {@inheritDoc} */
     public void anchor( String name )
     {
+        if ( name == null )
+        {
+            throw new NullPointerException( "Anchor name cannot be null!" );
+        }
+
         String anchor = name;
 
-        if ( anchor.startsWith( "#" ) )
+        if ( !DoxiaUtils.isValidId( anchor ) )
         {
-            anchor = "#" + HtmlTools.encodeId( anchor.substring( 1 ) );
+            anchor = DoxiaUtils.encodeId( name );
+
+            getLog().warn( "[FO Sink] Modified invalid anchor name: " + name );
         }
-        else
-        {
-            anchor = "#" + HtmlTools.encodeId( anchor );
-        }
+
+        anchor = "#" + name;
 
         writeStartTag( INLINE_TAG, "id", anchor );
     }
@@ -818,26 +824,36 @@ public class FoSink
     /** {@inheritDoc} */
     public void link( String name )
     {
-        if ( name.startsWith( "http" ) || name.startsWith( "mailto" )
-            || name.startsWith( "ftp" ) )
+        if ( name == null )
+        {
+            throw new NullPointerException( "Link name cannot be null!" );
+        }
+
+        if ( DoxiaUtils.isExternalLink( name ) )
         {
             writeStartTag( BASIC_LINK_TAG, "external-destination", HtmlTools.escapeHTML( name ) );
             writeStartTag( INLINE_TAG, "href.external" );
         }
+        else if ( DoxiaUtils.isInternalLink( name ) )
+        {
+            String anchor = name.substring( 1 );
+
+            if ( !DoxiaUtils.isValidId( anchor ) )
+            {
+                anchor = DoxiaUtils.encodeId( anchor );
+
+                getLog().warn( "[FO Sink] Modified invalid link name: " + name );
+            }
+
+            anchor = "#" + anchor;
+
+            writeStartTag( BASIC_LINK_TAG, "internal-destination", HtmlTools.escapeHTML( anchor ) );
+            writeStartTag( INLINE_TAG, "href.internal" );
+        }
         else
         {
-            // treat everything else as internal, local (ie anchor is in the same source document)
-
+            // treat everything else as is
             String anchor = name;
-
-            if ( anchor.startsWith( "#" ) )
-            {
-                anchor = "#" + HtmlTools.encodeId( anchor.substring( 1 ) );
-            }
-            else
-            {
-                anchor = "#" + HtmlTools.encodeId( anchor );
-            }
 
             writeStartTag( BASIC_LINK_TAG, "internal-destination", HtmlTools.escapeHTML( anchor ) );
             writeStartTag( INLINE_TAG, "href.internal" );

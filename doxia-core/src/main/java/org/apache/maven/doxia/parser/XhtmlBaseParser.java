@@ -25,6 +25,7 @@ import javax.swing.text.html.HTML.Tag;
 import org.apache.maven.doxia.macro.MacroExecutionException;
 import org.apache.maven.doxia.sink.Sink;
 import org.apache.maven.doxia.sink.SinkEventAttributeSet;
+import org.apache.maven.doxia.util.DoxiaUtils;
 
 import org.codehaus.plexus.util.StringUtils;
 import org.codehaus.plexus.util.xml.pull.XmlPullParser;
@@ -281,14 +282,7 @@ public class XhtmlBaseParser
 
             if ( href != null )
             {
-                String link = href;
-
-                if ( link.startsWith( "#" ) )
-                {
-                    link = link.substring( 1 );
-                }
-
-                sink.link( link, attribs  );
+                sink.link( href, attribs );
 
                 isLink = true;
             }
@@ -298,7 +292,7 @@ public class XhtmlBaseParser
 
                 if ( name != null )
                 {
-                    sink.anchor( name, attribs  );
+                    sink.anchor( validAnchor( name ), attribs );
 
                     isAnchor = true;
                 }
@@ -308,7 +302,7 @@ public class XhtmlBaseParser
 
                     if ( id != null )
                     {
-                        sink.anchor( id, attribs  );
+                        sink.anchor( validAnchor( id ), attribs );
 
                         isAnchor = true;
                     }
@@ -781,4 +775,22 @@ public class XhtmlBaseParser
         return ( this.verbatimLevel != 0 );
     }
 
+    /**
+     * Checks if the given id is a valid Doxia id and if not, returns a transformed one.
+     *
+     * @param The id to validate.
+     * @return A transformed id or the original id if it was already valid.
+     * @see DoxiaUtils#encodeId(String)
+     */
+    protected String validAnchor( String id )
+    {
+        if ( !DoxiaUtils.isValidId( id ) )
+        {
+            getLog().warn( "Modified invalid anchor name: " + id );
+
+            return DoxiaUtils.encodeId( id );
+        }
+
+        return id;
+    }
 }

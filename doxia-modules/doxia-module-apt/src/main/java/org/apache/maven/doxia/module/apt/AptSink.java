@@ -710,7 +710,6 @@ public class AptSink
     /** {@inheritDoc} */
     public void anchor( String name )
     {
-//        String id = HtmlTools.encodeId(name);
         write( ANCHOR_START_MARKUP );
     }
 

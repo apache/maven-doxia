@@ -34,6 +34,7 @@ import org.apache.maven.doxia.parser.AbstractXmlParser;
 import org.apache.maven.doxia.parser.ParseException;
 import org.apache.maven.doxia.parser.Parser;
 import org.apache.maven.doxia.sink.Sink;
+import org.apache.maven.doxia.util.DoxiaUtils;
 import org.apache.maven.doxia.util.HtmlTools;
 
 import org.codehaus.plexus.util.StringUtils;
@@ -120,6 +121,12 @@ public class FmlParser
                 throw new XmlPullParserException( "id attribute required for <part> at: ("
                     + parser.getLineNumber() + ":" + parser.getColumnNumber() + ")" );
             }
+            else if ( !DoxiaUtils.isValidId( currentPart.getId() ) )
+            {
+                getLog().warn( "Modified invalid id: " + currentPart.getId() );
+
+                currentPart.setId( DoxiaUtils.encodeId( currentPart.getId() ) );
+            }
         }
         else if ( parser.getName().equals( Tag.TITLE.toString() ) )
         {
@@ -148,6 +155,12 @@ public class FmlParser
             {
                 throw new XmlPullParserException( "id attribute required for <faq> at: ("
                     + parser.getLineNumber() + ":" + parser.getColumnNumber() + ")" );
+            }
+            else if ( !DoxiaUtils.isValidId( currentFaq.getId() ) )
+            {
+                getLog().warn( "Modified invalid id: " + currentFaq.getId() );
+
+                currentFaq.setId( DoxiaUtils.encodeId( currentFaq.getId() ) );
             }
         }
         if ( parser.getName().equals( QUESTION_TAG.toString() ) )
@@ -180,6 +193,7 @@ public class FmlParser
 
                 buffer.append( String.valueOf( EQUAL ) ).append( String.valueOf( QUOTE ) );
 
+                // TODO: why are attribute values HTML-encoded?
                 buffer.append( HtmlTools.escapeHTML( parser.getAttributeValue( i ) ) );
 
                 buffer.append( String.valueOf( QUOTE ) );
@@ -293,6 +307,7 @@ public class FmlParser
     {
         if ( buffer != null && parser.getText() != null )
         {
+            // TODO: why are entities HTML-escaped?
             buffer.append( HtmlTools.escapeHTML( parser.getText() ) );
         }
     }
@@ -347,7 +362,7 @@ public class FmlParser
             {
                 Faq faq = (Faq) faqIterator.next();
                 sink.numberedListItem();
-                sink.link( faq.getId() );
+                sink.link( "#" + faq.getId() );
 
                 if ( StringUtils.isNotEmpty( faq.getQuestion() ) )
                 {
@@ -455,7 +470,7 @@ public class FmlParser
 
         sink.tableRow();
         sink.tableCell();
-        sink.link( "top" );
+        sink.link( "#top" );
         sink.text( "[top]" );
         sink.link_();
         sink.tableCell_();

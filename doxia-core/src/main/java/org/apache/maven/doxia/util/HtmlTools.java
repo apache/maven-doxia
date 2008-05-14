@@ -323,5 +323,5 @@ public class HtmlTools
 
     private HtmlTools() {
         // utility class
-}
+    }
 }

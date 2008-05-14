@@ -27,8 +27,8 @@ import javax.swing.text.html.HTML.Attribute;
 import javax.swing.text.html.HTML.Tag;
 
 import org.apache.maven.doxia.parser.Parser;
+import org.apache.maven.doxia.util.DoxiaUtils;
 import org.apache.maven.doxia.util.HtmlTools;
-import org.apache.maven.doxia.util.StructureSinkUtils;
 
 /**
  * Abstract base xhtml sink implementation.
@@ -737,12 +737,12 @@ public class XhtmlBaseSink
         {
             atts = new SinkEventAttributeSet( 1 );
         }
-        
+
         if ( !atts.isDefined( SinkEventAttributes.CLASS ) )
         {
             atts.addAttribute( SinkEventAttributes.CLASS, "figure" );
         }
-        
+
         writeStartTag( Tag.DIV, atts );
     }
 
@@ -778,20 +778,20 @@ public class XhtmlBaseSink
         {
             MutableAttributeSet atts = new SinkEventAttributeSet( 1 );
             atts.addAttribute( SinkEventAttributes.ALIGN, "center" );
-            
+
             writeStartTag( Tag.P, atts );
         }
-        
+
         int count = ( attributes == null ? 1 : attributes.getAttributeCount() + 1 );
-        
+
         MutableAttributeSet atts = new SinkEventAttributeSet( count );
-        
+
         atts.addAttribute( Attribute.SRC, src );
         atts.addAttributes( SinkUtils.filterAttributes(
                 attributes, SinkUtils.SINK_IMG_ATTRIBUTES ) );
-        
+
         writeStartTag( Tag.IMG, atts, true );
-        
+
         if ( inFigure )
         {
             writeEndTag( Tag.P );
@@ -823,7 +823,7 @@ public class XhtmlBaseSink
             atts.addAttribute( SinkEventAttributes.ALIGN, "center" );
             atts.addAttributes( SinkUtils.filterAttributes(
                 attributes, SinkUtils.SINK_BASE_ATTRIBUTES  ) );
-            
+
             paragraph( atts );
             italic();
         }
@@ -1240,7 +1240,7 @@ public class XhtmlBaseSink
      */
     public void tableCaption( SinkEventAttributes attributes )
     {
-        // TODO: tableCaption should be written before tableRows
+        // TODO: tableCaption should be written before tableRows (DOXIA-177)
         MutableAttributeSet atts = SinkUtils.filterAttributes(
                 attributes, SinkUtils.SINK_SECTION_ATTRIBUTES  );
 
@@ -1271,24 +1271,33 @@ public class XhtmlBaseSink
      */
     public void anchor( String name, SinkEventAttributes attributes )
     {
-        if ( !headFlag )
+        if ( name == null )
         {
-            MutableAttributeSet atts = SinkUtils.filterAttributes(
-                    attributes, SinkUtils.SINK_BASE_ATTRIBUTES  );
-
-            String id = HtmlTools.encodeId( name );
-
-            MutableAttributeSet att = new SinkEventAttributeSet();
-
-            if ( id != null )
-            {
-                att.addAttribute( Attribute.NAME, id );
-            }
-
-            att.addAttributes( atts );
-
-            writeStartTag( Tag.A, att );
+            throw new NullPointerException( "Anchor name cannot be null!" );
         }
+
+        if ( headFlag )
+        {
+            return;
+        }
+
+        MutableAttributeSet atts = SinkUtils.filterAttributes(
+                attributes, SinkUtils.SINK_BASE_ATTRIBUTES  );
+
+        String id = name;
+
+        if ( !DoxiaUtils.isValidId( id ) )
+        {
+            id = DoxiaUtils.encodeId( name );
+
+            getLog().warn( "Modified invalid anchor name: " + name );
+        }
+
+        MutableAttributeSet att = new SinkEventAttributeSet();
+        att.addAttribute( Attribute.NAME, id );
+        att.addAttributes( atts );
+
+        writeStartTag( Tag.A, att );
     }
 
     /**
@@ -1331,6 +1340,11 @@ public class XhtmlBaseSink
      */
     private void link( String href, String target, MutableAttributeSet attributes )
     {
+        if ( href == null )
+        {
+            throw new NullPointerException( "Link name cannot be null!" );
+        }
+
         if ( headFlag )
         {
             return;
@@ -1338,19 +1352,12 @@ public class XhtmlBaseSink
 
         MutableAttributeSet att = new SinkEventAttributeSet();
 
-        if ( StructureSinkUtils.isExternalLink( href  ) || isExternalHtml( href  ) )
+        if ( DoxiaUtils.isExternalLink( href  ) )
         {
-            if ( isExternalLink( href  ) )
-            {
-                att.addAttribute( Attribute.CLASS, "externalLink" );
-            }
+            att.addAttribute( Attribute.CLASS, "externalLink" );
+        }
 
-            att.addAttribute( Attribute.HREF, HtmlTools.escapeHTML( href  ) );
-        }
-        else
-        {
-            att.addAttribute( Attribute.HREF, "#" + HtmlTools.escapeHTML( href  ) );
-        }
+        att.addAttribute( Attribute.HREF, HtmlTools.escapeHTML( href  ) );
 
         if ( target != null )
         {
@@ -1365,37 +1372,6 @@ public class XhtmlBaseSink
         }
 
         writeStartTag( Tag.A, att );
-    }
-
-    /**
-     * {@link StructureSinkUtils#isExternalLink(String)} also treats links to other documents as
-     * external links, those should not have a class="externalLink" attribute.
-     * @param href the link.
-     * @return true if the link starts with "http:/", "https:/", "ftp:/",
-     * "mailto:" or "file:/".
-     */
-    protected boolean isExternalLink( String href )
-    {
-        String text = href.toLowerCase();
-        return ( text.indexOf( "http:/" ) == 0 || text.indexOf( "https:/" ) == 0
-            || text.indexOf( "ftp:/" ) == 0 || text.indexOf( "mailto:" ) == 0
-            || text.indexOf( "file:/" ) == 0 );
-
-    }
-
-    /**
-     * Legacy: treat links to other html documents as external links.
-     * Note that links to other file formats (images, pdf) will still be broken,
-     * links to other documents should always start with "./" or "../".
-     * @param href the link.
-     * @return true if the link points to another source document.
-     */
-    protected boolean isExternalHtml( String href )
-    {
-        String text = href.toLowerCase();
-        return ( text.indexOf( ".html#" ) != -1 || text.indexOf( ".htm#" ) != -1
-            || text.endsWith( ".htm" ) || text.endsWith( ".html" )
-            || !HtmlTools.isId( text ) );
     }
 
     /**
@@ -1419,21 +1395,6 @@ public class XhtmlBaseSink
         if ( !headFlag )
         {
             writeStartTag( Tag.I );
-        }
-    }
-
-    /**
-     * {@inheritDoc}
-     * @see javax.swing.text.html.HTML.Tag#I
-     */
-    public void italic( SinkEventAttributes attributes )
-    {
-        if ( !headFlag )
-        {
-            MutableAttributeSet atts = SinkUtils.filterAttributes(
-                attributes, SinkUtils.SINK_BASE_ATTRIBUTES  );
-
-            writeStartTag( Tag.I, atts );
         }
     }
 
@@ -1465,21 +1426,6 @@ public class XhtmlBaseSink
      * {@inheritDoc}
      * @see javax.swing.text.html.HTML.Tag#B
      */
-    public void bold( SinkEventAttributes attributes )
-    {
-        if ( !headFlag )
-        {
-            MutableAttributeSet atts = SinkUtils.filterAttributes(
-                attributes, SinkUtils.SINK_BASE_ATTRIBUTES  );
-
-            writeStartTag( Tag.B, atts );
-        }
-    }
-
-    /**
-     * {@inheritDoc}
-     * @see javax.swing.text.html.HTML.Tag#B
-     */
     public void bold_()
     {
         if ( !headFlag )
@@ -1497,21 +1443,6 @@ public class XhtmlBaseSink
         if ( !headFlag )
         {
             writeStartTag( Tag.TT );
-        }
-    }
-
-    /**
-     * {@inheritDoc}
-     * @see javax.swing.text.html.HTML.Tag#TT
-     */
-    public void monospaced( SinkEventAttributes attributes )
-    {
-        if ( !headFlag )
-        {
-            MutableAttributeSet atts = SinkUtils.filterAttributes(
-                attributes, SinkUtils.SINK_BASE_ATTRIBUTES  );
-
-            writeStartTag( Tag.TT, atts );
         }
     }
 
@@ -1622,9 +1553,9 @@ public class XhtmlBaseSink
             {
                 writeStartTag( Tag.SUP );
             }
-            
+
             text( text );
-            
+
             if ( attributes.containsAttribute(SinkEventAttributes.VALIGN, "sup") )
             {
                 writeEndTag( Tag.SUP );

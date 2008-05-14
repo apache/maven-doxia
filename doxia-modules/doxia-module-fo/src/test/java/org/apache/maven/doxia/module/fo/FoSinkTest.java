@@ -323,7 +323,7 @@ public class FoSinkTest extends AbstractSinkTest
     /** {@inheritDoc} */
     protected String getAnchorBlock( String anchor )
     {
-        // assume that anchor doesn't start with #
+        // all anchors get '#' pre-pended
         return EOL + "<fo:inline id=\"#" + anchor + "\">" + anchor + "</fo:inline>";
     }
 
@@ -331,8 +331,7 @@ public class FoSinkTest extends AbstractSinkTest
     protected String getLinkBlock( String link, String text )
     {
         String attribs = getConfig().getAttributeString( "href.internal" );
-        // assume that link doesn't start with #
-        return EOL + "<fo:basic-link internal-destination=\"#" + link + "\">" + EOL + "<fo:inline"
+        return EOL + "<fo:basic-link internal-destination=\"" + link + "\">" + EOL + "<fo:inline"
             + attribs + ">" + text + "</fo:inline></fo:basic-link>";
     }
 

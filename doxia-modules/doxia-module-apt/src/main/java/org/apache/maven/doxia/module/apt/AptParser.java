@@ -25,6 +25,8 @@ import org.apache.maven.doxia.macro.manager.MacroNotFoundException;
 import org.apache.maven.doxia.parser.AbstractTextParser;
 import org.apache.maven.doxia.sink.Sink;
 import org.apache.maven.doxia.sink.SinkAdapter;
+import org.apache.maven.doxia.util.DoxiaUtils;
+
 import org.codehaus.plexus.util.IOUtil;
 import org.codehaus.plexus.util.StringUtils;
 
@@ -431,13 +433,44 @@ public class AptParser
                                 linkAnchor = getTraversedLink( text, i + 1, end );
                             }
 
+                            if ( !AptUtils.isExternalLink( linkAnchor ) )
+                            {
+                                linkAnchor = "#" + linkAnchor;
+                            }
+
+                            int hashIndex = linkAnchor.indexOf( "#" );
+
+                            if ( hashIndex != -1 )
+                            {
+                                String hash = linkAnchor.substring( hashIndex + 1 );
+
+                                if ( !DoxiaUtils.isValidId( hash ) )
+                                {
+                                    getLog().warn( "Modified invalid link: " + hash );
+
+                                    linkAnchor = linkAnchor.substring( 0, hashIndex ) + "#"
+                                        + DoxiaUtils.encodeId( hash );
+                                }
+                            }
+
                             sink.link( linkAnchor );
                         }
                         else
                         {
                             anchor = true;
                             flushTraversed( buffer, sink );
-                            sink.anchor( getTraversedAnchor( text, i + 1, end ) );
+
+                            String linkAnchor = getTraversedAnchor( text, i + 1, end );
+
+                            if ( !DoxiaUtils.isValidId( linkAnchor ) )
+                            {
+                                // debug only: anchors in apt may contain spaces
+                                getLog().debug( "Modified anchor name: " + linkAnchor );
+
+                                linkAnchor = DoxiaUtils.encodeId( linkAnchor );
+                            }
+
+                            sink.anchor( linkAnchor );
                         }
                     }
                     else

@@ -175,7 +175,7 @@ public class XdocSinkTest
     /** {@inheritDoc} */
     protected String getLinkBlock( String link, String text )
     {
-        return "<a href=\"#" + link + "\">" + text + "</a>";
+        return "<a href=\"" + link + "\">" + text + "</a>";
     }
 
     /** {@inheritDoc} */
