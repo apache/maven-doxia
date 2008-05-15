@@ -174,6 +174,11 @@ public class XdocParser
             {
                 macroName = parser.getAttributeValue( null, Attribute.NAME.toString() );
 
+                if ( macroParameters == null )
+                {
+                    macroParameters = new HashMap();
+                }
+
                 if ( StringUtils.isEmpty( macroName ) )
                 {
                     throw new MacroExecutionException( "The '" + Attribute.NAME.toString() + "' attribute for the '"
@@ -187,11 +192,6 @@ public class XdocParser
             {
                 if ( StringUtils.isNotEmpty( macroName ) )
                 {
-                    if ( macroParameters == null )
-                    {
-                        macroParameters = new HashMap();
-                    }
-
                     String paramName = parser.getAttributeValue( null, Attribute.NAME.toString() );
                     String paramValue = parser.getAttributeValue( null, Attribute.VALUE.toString() );
 
