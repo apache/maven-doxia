@@ -20,6 +20,7 @@ package org.apache.maven.doxia.util;
  */
 
 import java.io.UnsupportedEncodingException;
+import java.util.Locale;
 
 /**
  * General Doxia utility methods. The methods in this class should not assume
@@ -57,7 +58,7 @@ public class DoxiaUtils
      */
     public static boolean isExternalLink( String link )
     {
-        String text = link.toLowerCase();
+        String text = link.toLowerCase( Locale.ENGLISH );
 
         return ( text.indexOf( "http:/" ) == 0 || text.indexOf( "https:/" ) == 0
             || text.indexOf( "ftp:/" ) == 0 || text.indexOf( "mailto:" ) == 0

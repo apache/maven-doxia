@@ -26,6 +26,7 @@ import java.io.StringReader;
 import java.io.Writer;
 import java.net.MalformedURLException;
 import java.net.URL;
+import java.util.Locale;
 
 import org.apache.maven.doxia.sink.Sink;
 import org.apache.maven.doxia.sink.SinkAdapter;
@@ -1139,7 +1140,7 @@ public final class ITextSink
     public void figureGraphics( String name )
     {
         String urlName = null;
-        if ( ( name.toLowerCase().startsWith( "http://" ) ) || ( name.toLowerCase().startsWith( "https://" ) ) )
+        if ( ( name.toLowerCase( Locale.ENGLISH ).startsWith( "http://" ) ) || ( name.toLowerCase( Locale.ENGLISH ).startsWith( "https://" ) ) )
         {
             urlName = name;
         }

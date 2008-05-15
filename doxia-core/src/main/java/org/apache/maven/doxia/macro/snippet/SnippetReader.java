@@ -26,6 +26,7 @@ import java.net.URL;
 import java.util.ArrayList;
 import java.util.Iterator;
 import java.util.List;
+import java.util.Locale;
 
 /** Utility class for reading snippets. */
 public class SnippetReader
@@ -173,8 +174,8 @@ public class SnippetReader
      */
     protected boolean isDemarcator( String snippetId, String what, String line )
     {
-        String upper = line.toUpperCase();
-        return upper.indexOf( what.toUpperCase() ) != -1
+        String upper = line.toUpperCase( Locale.ENGLISH );
+        return upper.indexOf( what.toUpperCase( Locale.ENGLISH ) ) != -1
             && upper.indexOf( "SNIPPET" ) != -1
             && line.indexOf( snippetId ) != -1;
     }

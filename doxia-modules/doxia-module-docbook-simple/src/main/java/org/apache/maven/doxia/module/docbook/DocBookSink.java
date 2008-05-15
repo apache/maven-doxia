@@ -21,6 +21,7 @@ package org.apache.maven.doxia.module.docbook;
 
 import java.io.StringWriter;
 import java.io.Writer;
+import java.util.Locale;
 import java.util.StringTokenizer;
 
 import javax.swing.text.MutableAttributeSet;
@@ -1176,7 +1177,7 @@ public class DocBookSink
     {
         if ( graphicsFileName != null )
         {
-            String format = FileUtils.extension( graphicsFileName ).toUpperCase();
+            String format = FileUtils.extension( graphicsFileName ).toUpperCase( Locale.ENGLISH );
             if ( format.length() == 0 )
             {
                 format = "JPEG";
