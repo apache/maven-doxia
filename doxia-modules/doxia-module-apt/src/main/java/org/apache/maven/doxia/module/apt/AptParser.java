@@ -462,13 +462,7 @@ public class AptParser
 
                             String linkAnchor = getTraversedAnchor( text, i + 1, end );
 
-                            if ( !DoxiaUtils.isValidId( linkAnchor ) )
-                            {
-                                // debug only: anchors in apt may contain spaces
-                                getLog().debug( "Modified anchor name: " + linkAnchor );
-
-                                linkAnchor = DoxiaUtils.encodeId( linkAnchor );
-                            }
+                            linkAnchor = AptUtils.encodeAnchor( linkAnchor );
 
                             sink.anchor( linkAnchor );
                         }

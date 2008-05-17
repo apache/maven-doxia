@@ -24,6 +24,7 @@ import java.io.Writer;
 import java.util.Stack;
 
 import org.apache.maven.doxia.sink.AbstractTextSink;
+
 import org.codehaus.plexus.util.StringUtils;
 
 /**
@@ -725,7 +726,7 @@ public class AptSink
         if ( !headerFlag )
         {
             write( LINK_START_1_MARKUP );
-            text( name );
+            text( name.startsWith( "#" ) ? name.substring( 1 ) : name );
             write( LINK_START_2_MARKUP );
         }
     }

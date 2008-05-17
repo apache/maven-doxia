@@ -185,7 +185,8 @@ public class AptSinkTest extends AbstractSinkTest
     /** {@inheritDoc} */
     protected String getLinkBlock( String link, String text )
     {
-        return AptMarkup.LINK_START_1_MARKUP + link + AptMarkup.LINK_START_2_MARKUP + text + AptMarkup.LINK_END_MARKUP;
+        String lnk = link.startsWith( "#" ) ? link.substring( 1 ) : link;
+        return AptMarkup.LINK_START_1_MARKUP + lnk + AptMarkup.LINK_START_2_MARKUP + text + AptMarkup.LINK_END_MARKUP;
     }
 
     /** {@inheritDoc} */
