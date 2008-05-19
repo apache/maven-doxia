@@ -35,6 +35,79 @@ import javax.swing.text.AttributeSet;
 public class SinkEventAttributeSet
     implements SinkEventAttributes
 {
+    /**
+     * An attribute set containing only an underline attribute.
+     */
+    public static final SinkEventAttributes UNDERLINE;
+
+    /**
+     * An attribute set containing only an overline attribute.
+     */
+    public static final SinkEventAttributes OVERLINE;
+
+    /**
+     * An attribute set containing only a linethrough attribute.
+     */
+    public static final SinkEventAttributes LINETHROUGH;
+
+    /**
+     * An attribute set containing only a boxed attribute.
+     */
+    public static final SinkEventAttributes BOXED;
+
+    /**
+     * An attribute set containing only a bold attribute.
+     */
+    public static final SinkEventAttributes BOLD;
+
+    /**
+     * An attribute set containing only an italic attribute.
+     */
+    public static final SinkEventAttributes ITALIC;
+
+    /**
+     * An attribute set containing only a monospaced attribute.
+     */
+    public static final SinkEventAttributes MONOSPACED;
+
+    /**
+     * An attribute set containing only a left attribute.
+     */
+    public static final SinkEventAttributes LEFT;
+
+    /**
+     * An attribute set containing only a right attribute.
+     */
+    public static final SinkEventAttributes RIGHT;
+
+    /**
+     * An attribute set containing only a center attribute.
+     */
+    public static final SinkEventAttributes CENTER;
+
+    /**
+     * An attribute set containing only a justify attribute.
+     */
+    public static final SinkEventAttributes JUSTIFY;
+
+
+    static
+    {
+        UNDERLINE = new SinkEventAttributeSet( new String[] {DECORATION, "underline"} );
+        OVERLINE = new SinkEventAttributeSet( new String[] {DECORATION, "overline"} );
+        LINETHROUGH = new SinkEventAttributeSet( new String[] {DECORATION, "line-through"} );
+        BOXED = new SinkEventAttributeSet( new String[] {DECORATION, "boxed"} );
+
+        BOLD = new SinkEventAttributeSet( new String[] {STYLE, "bold"} );
+        ITALIC = new SinkEventAttributeSet( new String[] {STYLE, "italic"} );
+        MONOSPACED = new SinkEventAttributeSet( new String[] {STYLE, "monospaced"} );
+
+        LEFT = new SinkEventAttributeSet( new String[] {ALIGN, "left"} );
+        RIGHT = new SinkEventAttributeSet( new String[] {ALIGN, "right"} );
+        CENTER = new SinkEventAttributeSet( new String[] {ALIGN, "center"} );
+        JUSTIFY = new SinkEventAttributeSet( new String[] {ALIGN, "justify"} );
+    }
+
     private LinkedHashMap attribs;
 
     private AttributeSet resolveParent;
@@ -67,14 +140,14 @@ public class SinkEventAttributeSet
     public SinkEventAttributeSet( String[] attributes )
     {
         int n = attributes.length;
-        
+
         if ( ( n % 2 ) != 0 )
         {
             throw new IllegalArgumentException( "Missing attribute!" );
         }
-        
+
         attribs = new LinkedHashMap( n / 2 );
-        
+
         for ( int i = 0; i < n; i = i + 2 )
         {
             attribs.put( attributes[i], attributes[i + 1] );
