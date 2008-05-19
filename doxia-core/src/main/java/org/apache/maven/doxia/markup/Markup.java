@@ -73,4 +73,10 @@ public interface Markup
 
     /** star character: '*' */
     char STAR = '*';
+
+    /** colon character: ':' */
+    char COLON = ':';
+
+    /** semicolon character: ';' */
+    char SEMICOLON = ';';
 }

@@ -41,9 +41,6 @@ public interface AptMarkup
     /** APT backslash markup char: '\\' */
     char BACKSLASH = '\\';
 
-    /** colon character: ':' */
-    char COLON = ':';
-
     /** APT comment markup char: '~' */
     char COMMENT = '~';
 

@@ -27,6 +27,7 @@ import javax.swing.text.AttributeSet;
 import javax.swing.text.MutableAttributeSet;
 
 import org.apache.maven.doxia.markup.Markup;
+import org.apache.maven.doxia.sink.SinkEventAttributeSet;
 
 /**
  * Collection of common utility methods for sinks.
@@ -41,6 +42,7 @@ public class SinkUtils
     /** Do not instantiate. */
     private SinkUtils()
     {
+        // Utility class
     }
 
     /**
@@ -139,19 +141,19 @@ public class SinkUtils
 
     static
     {
-        SINK_IMG_ATTRIBUTES = join( SINK_BASE_ATTRIBUTES, IMG_ATTRIBUTES  );
+        SINK_IMG_ATTRIBUTES = join( SINK_BASE_ATTRIBUTES, IMG_ATTRIBUTES );
         SINK_SECTION_ATTRIBUTES =
-                join( SINK_BASE_ATTRIBUTES, new String[] {SinkEventAttributes.ALIGN}  );
+                join( SINK_BASE_ATTRIBUTES, new String[] {SinkEventAttributes.ALIGN} );
         SINK_VERBATIM_ATTRIBUTES =
                 join( SINK_BASE_ATTRIBUTES,
-                new String[] {SinkEventAttributes.ALIGN, SinkEventAttributes.DECORATION, SinkEventAttributes.WIDTH}  );
-        SINK_HR_ATTRIBUTES = join( SINK_BASE_ATTRIBUTES, HR_ATTRIBUTES  );
-        SINK_LINK_ATTRIBUTES = join( SINK_BASE_ATTRIBUTES, LINK_ATTRIBUTES  );
-        SINK_TABLE_ATTRIBUTES = join( SINK_BASE_ATTRIBUTES, TABLE_ATTRIBUTES  );
+                new String[] {SinkEventAttributes.ALIGN, SinkEventAttributes.DECORATION, SinkEventAttributes.WIDTH} );
+        SINK_HR_ATTRIBUTES = join( SINK_BASE_ATTRIBUTES, HR_ATTRIBUTES );
+        SINK_LINK_ATTRIBUTES = join( SINK_BASE_ATTRIBUTES, LINK_ATTRIBUTES );
+        SINK_TABLE_ATTRIBUTES = join( SINK_BASE_ATTRIBUTES, TABLE_ATTRIBUTES );
         SINK_TR_ATTRIBUTES =
                 join( SINK_BASE_ATTRIBUTES,
-                new String[] {SinkEventAttributes.ALIGN, SinkEventAttributes.BGCOLOR, SinkEventAttributes.VALIGN}  );
-        SINK_TD_ATTRIBUTES = join( SINK_BASE_ATTRIBUTES, TABLE_CELL_ATTRIBUTES  );
+                new String[] {SinkEventAttributes.ALIGN, SinkEventAttributes.BGCOLOR, SinkEventAttributes.VALIGN} );
+        SINK_TD_ATTRIBUTES = join( SINK_BASE_ATTRIBUTES, TABLE_CELL_ATTRIBUTES );
     }
 
     private static String[] join( String[] a, String[] b )
@@ -169,7 +171,10 @@ public class SinkUtils
      * Utility method to get an AttributeSet as a String.
      * The resulting String is in the form ' name1="value1" name2="value2" ...',
      * ie it can be appended directly to an xml start tag. Attribute values that are itself
-     * AttributeSets are ignored, all other keys and values are written as Strings.
+     * AttributeSets are ignored unless the Attribute name is SinkEventAttributeSet.STYLE,
+     * in which case they are written as outlined at
+     * {@link org.apache.maven.doxia.sink.SinkEventAttributes#STYLE SinkEventAttributes.STYLE}.
+     * All other keys and values are written as Strings.
      *
      * @param att The AttributeSet. May be null, in which case an empty String is returned.
      * @return the AttributeSet as a String in a form that can be appended to an xml start tag.
@@ -190,11 +195,47 @@ public class SinkUtils
             Object key = names.nextElement();
             Object value = att.getAttribute( key );
 
-            // AttributeSets are ignored
-            if ( !(value instanceof AttributeSet) )
+            if ( value instanceof AttributeSet )
+            {
+                // Other AttributeSets are ignored
+                if ( SinkEventAttributeSet.STYLE.equals( key.toString() ) )
+                {
+                    sb.append( Markup.SPACE ).append( key.toString() ).append( Markup.EQUAL )
+                        .append( Markup.QUOTE ).append( asCssString( (AttributeSet) value ) )
+                        .append( Markup.QUOTE );
+                }
+            }
+            else
             {
                 sb.append( Markup.SPACE ).append( key.toString() ).append( Markup.EQUAL )
                     .append( Markup.QUOTE ).append( value.toString() ).append( Markup.QUOTE );
+            }
+        }
+
+        return sb.toString();
+    }
+
+    private static String asCssString( AttributeSet att )
+    {
+        StringBuffer sb = new StringBuffer();
+
+        Enumeration names = att.getAttributeNames();
+
+        while ( names.hasMoreElements() )
+        {
+            Object key = names.nextElement();
+            Object value = att.getAttribute( key );
+
+            // don't go recursive
+            if ( !( value instanceof AttributeSet ) )
+            {
+                sb.append( key.toString() ).append( Markup.COLON )
+                    .append( Markup.SPACE ).append( value.toString() );
+
+                if ( names.hasMoreElements() )
+                {
+                    sb.append( Markup.SEMICOLON ).append( Markup.SPACE );
+                }
             }
         }
 
