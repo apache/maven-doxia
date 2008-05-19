@@ -45,6 +45,12 @@ public class EchoMacro
         {
             String key = (String) i.next();
 
+            // TODO: DOXIA-242: separate or define internal params
+            if ( "parser".equals( key ) || "sourceContent".equals( key ) )
+            {
+                continue;
+            }
+
             sink.text( key + " ---> " + request.getParameter( key ) + EOL );
         }
 
