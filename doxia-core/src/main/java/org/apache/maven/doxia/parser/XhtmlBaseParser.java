@@ -63,6 +63,7 @@ public class XhtmlBaseParser
     /** Used to recognize the case of img inside figure. */
     private boolean inFigure;
 
+    // TODO: replace by AttributeSet
     /** Decoration properties, eg for texts. */
     private String decoration;
 
@@ -168,6 +169,10 @@ public class XhtmlBaseParser
                 SinkEventAttributeSet atts = new SinkEventAttributeSet( attribs );
                 atts.removeAttribute( SinkEventAttributeSet.CLASS );
                 sink.figure( atts );
+            }
+            else
+            {
+                visited = false;
             }
         }
         /*
