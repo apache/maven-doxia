@@ -54,13 +54,18 @@ public class AptUtils {
 
     /**
      * Checks if the given string corresponds to an external URI,
-     * ie is not a link within the same document.
+     * ie is not a link within the same document nor a link to another
+     * document on the same filesystem.
      *
      * @param link The link to check.
      * @return True if the link (ignoring case) starts with either "http:/",
-     * "https:/", "ftp:/", "mailto:", "file:/", "../", "./" or contains the
-     * string "://". Note that Windows style separators "\" are not allowed
+     * "https:/", "ftp:/", "mailto:", "file:/", or contains the string "://".
+     * Note that Windows style separators "\" are not allowed
      * for URIs, see  http://www.ietf.org/rfc/rfc2396.txt , section 2.4.3.
+     *
+     * @see org.apache.maven.doxia.util.DoxiaUtils#isExternalLink(String)
+     * @see #isInternalLink(String)
+     * @see #isLocalLink(String)
      */
     public static boolean isExternalLink( String link )
     {
@@ -68,8 +73,40 @@ public class AptUtils {
 
         return ( text.indexOf( "http:/" ) == 0 || text.indexOf( "https:/" ) == 0
             || text.indexOf( "ftp:/" ) == 0 || text.indexOf( "mailto:" ) == 0
-            || text.indexOf( "file:/" ) == 0 || text.indexOf( "../" ) == 0
-            || text.indexOf( "./" ) == 0 || text.indexOf( "://" ) != -1 );
+            || text.indexOf( "file:/" ) == 0 || text.indexOf( "://" ) != -1 );
+    }
+
+    /**
+     * Checks if the given string corresponds to an internal link,
+     * ie it is a link to an anchor within the same document.
+     *
+     * @param link The link to check.
+     * @return True if link is neither an {@link #isExternalLink(String) external}
+     * nor a {@link #isLocalLink(String) local} link.
+     *
+     * @see org.apache.maven.doxia.util.DoxiaUtils#isInternalLink(String)
+     * @see #isExternalLink(String)
+     * @see #isLocalLink(String)
+     */
+    public static boolean isInternalLink( String link )
+    {
+        return ( !isExternalLink( link ) && !isLocalLink( link ) );
+    }
+
+    /**
+     * Checks if the given string corresponds to a relative link to another document
+     * within the same site.
+     *
+     * @param link The link to check.
+     * @return True if the link starts with either "/", "./" or "../".
+     *
+     * @see org.apache.maven.doxia.util.DoxiaUtils#isLocalLink(String)
+     * @see #isExternalLink(String)
+     * @see #isInternalLink(String)
+     */
+    public static boolean isLocalLink( String link )
+    {
+        return ( link.startsWith( "/" ) || link.startsWith( "./" ) || link.startsWith( "../" ) );
     }
 
     /**

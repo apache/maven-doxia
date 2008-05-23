@@ -25,6 +25,7 @@ import org.apache.maven.doxia.macro.manager.MacroNotFoundException;
 import org.apache.maven.doxia.parser.AbstractTextParser;
 import org.apache.maven.doxia.sink.Sink;
 import org.apache.maven.doxia.sink.SinkAdapter;
+import org.apache.maven.doxia.sink.SinkEventAttributeSet;
 import org.apache.maven.doxia.util.DoxiaUtils;
 
 import org.codehaus.plexus.util.IOUtil;
@@ -433,7 +434,7 @@ public class AptParser
                                 linkAnchor = getTraversedLink( text, i + 1, end );
                             }
 
-                            if ( !AptUtils.isExternalLink( linkAnchor ) )
+                            if ( AptUtils.isInternalLink( linkAnchor ) )
                             {
                                 linkAnchor = "#" + linkAnchor;
                             }
@@ -2209,7 +2210,7 @@ public class AptParser
         public void traverse()
             throws AptParseException
         {
-            AptParser.this.sink.verbatim( boxed );
+            AptParser.this.sink.verbatim( SinkEventAttributeSet.BOXED );
             // TODO: filter out lineBreak
             AptParser.this.sink.text( text );
             AptParser.this.sink.verbatim_();

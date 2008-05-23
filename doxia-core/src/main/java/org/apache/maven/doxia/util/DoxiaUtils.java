@@ -39,6 +39,9 @@ public class DoxiaUtils
      *
      * @param link The link to check.
      * @return True if the link starts with "#".
+     *
+     * @see #isExternalLink(String)
+     * @see #isLocalLink(String)
      */
     public static boolean isInternalLink( String link )
     {
@@ -48,13 +51,16 @@ public class DoxiaUtils
     /**
      * Checks if the given string corresponds to an external URI,
      * ie is not a link within the same document nor a relative link
-     * to another document (a local link).
+     * to another document (a local link) of the same site.
      *
      * @param link The link to check.
-     * @return True if the link (ignoring case) starts with either of the
-     * following: "http:/", "https:/", "ftp:/", "mailto:", "file:/".
+     * @return True if the link (ignoring case) starts with either "http:/",
+     * "https:/", "ftp:/", "mailto:", "file:/", or contains the string "://".
      * Note that Windows style separators "\" are not allowed
      * for URIs, see  http://www.ietf.org/rfc/rfc2396.txt , section 2.4.3.
+     *
+     * @see #isInternalLink(String)
+     * @see #isLocalLink(String)
      */
     public static boolean isExternalLink( String link )
     {
@@ -62,14 +68,19 @@ public class DoxiaUtils
 
         return ( text.indexOf( "http:/" ) == 0 || text.indexOf( "https:/" ) == 0
             || text.indexOf( "ftp:/" ) == 0 || text.indexOf( "mailto:" ) == 0
-            || text.indexOf( "file:/" ) == 0 );
+            || text.indexOf( "file:/" ) == 0 || text.indexOf( "://" ) != -1 );
     }
 
     /**
-     * Checks if the given string corresponds to a relative link to another document.
+     * Checks if the given string corresponds to a relative link to another document
+     * within the same site, ie it is neither an {@link #isInternalLink(String) internal}
+     * nor an {@link #isExternalLink(String) external} link.
      *
      * @param link The link to check.
      * @return True if the link is neither an external nor an internal link.
+     *
+     * @see #isExternalLink(String)
+     * @see #isInternalLink(String)
      */
     public static boolean isLocalLink( String link )
     {
