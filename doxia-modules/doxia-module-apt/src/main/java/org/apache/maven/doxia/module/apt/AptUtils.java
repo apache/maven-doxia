@@ -19,7 +19,7 @@ package org.apache.maven.doxia.module.apt;
  * under the License.
  */
 
-import java.util.Locale;
+import org.apache.maven.doxia.util.DoxiaUtils;
 
 /**
  * A collection of utility methods for dealing with APT documents.
@@ -55,13 +55,11 @@ public class AptUtils {
     /**
      * Checks if the given string corresponds to an external URI,
      * ie is not a link within the same document nor a link to another
-     * document on the same filesystem.
+     * document within the same site. This forwards to
+     * {@link org.apache.maven.doxia.util.DoxiaUtils#isExternalLink(String)}.
      *
      * @param link The link to check.
-     * @return True if the link (ignoring case) starts with either "http:/",
-     * "https:/", "ftp:/", "mailto:", "file:/", or contains the string "://".
-     * Note that Windows style separators "\" are not allowed
-     * for URIs, see  http://www.ietf.org/rfc/rfc2396.txt , section 2.4.3.
+     * @return True if DoxiaUtils.isExternalLink(link) returns true.
      *
      * @see org.apache.maven.doxia.util.DoxiaUtils#isExternalLink(String)
      * @see #isInternalLink(String)
@@ -69,11 +67,7 @@ public class AptUtils {
      */
     public static boolean isExternalLink( String link )
     {
-        String text = link.toLowerCase( Locale.ENGLISH );
-
-        return ( text.indexOf( "http:/" ) == 0 || text.indexOf( "https:/" ) == 0
-            || text.indexOf( "ftp:/" ) == 0 || text.indexOf( "mailto:" ) == 0
-            || text.indexOf( "file:/" ) == 0 || text.indexOf( "://" ) != -1 );
+        return DoxiaUtils.isExternalLink( link );
     }
 
     /**
