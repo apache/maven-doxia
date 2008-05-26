@@ -441,7 +441,7 @@ public class AptParser
 
                             int hashIndex = linkAnchor.indexOf( "#" );
 
-                            if ( hashIndex != -1 )
+                            if ( hashIndex != -1 && !AptUtils.isExternalLink( linkAnchor ) )
                             {
                                 String hash = linkAnchor.substring( hashIndex + 1 );
 
