@@ -19,6 +19,10 @@ package org.apache.maven.doxia.module.itext;
  * under the License.
  */
 
+import com.lowagie.text.BadElementException;
+import com.lowagie.text.ElementTags;
+import com.lowagie.text.Image;
+
 import java.awt.Color;
 import java.io.IOException;
 import java.io.LineNumberReader;
@@ -30,16 +34,15 @@ import java.util.Locale;
 
 import org.apache.maven.doxia.sink.Sink;
 import org.apache.maven.doxia.sink.SinkAdapter;
+import org.apache.maven.doxia.sink.SinkEventAttributes;
+import org.apache.maven.doxia.util.DoxiaUtils;
 import org.apache.maven.doxia.util.HtmlTools;
+
 import org.codehaus.plexus.util.IOUtil;
 import org.codehaus.plexus.util.StringUtils;
 import org.codehaus.plexus.util.xml.PrettyPrintXMLWriter;
 import org.codehaus.plexus.util.xml.XMLWriter;
 
-import com.lowagie.text.BadElementException;
-import com.lowagie.text.ElementTags;
-import com.lowagie.text.Image;
-import org.apache.maven.doxia.util.DoxiaUtils;
 
 /**
  * <p>A doxia Sink which produces an XML Front End document for <code>iText</code> framework.</p>
@@ -1646,6 +1649,19 @@ public final class ITextSink
 
                 writeEndElement(); // ElementTags.CHUNK
         }
+    }
+
+    /**
+     * Unkown events just log a warning message but are ignored otherwise.
+     *
+     * @param name The name of the event.
+     * @param requiredParams not used.
+     * @param attributes not used.
+     * @see org.apache.maven.doxia.sink.Sink#unknown(String,Object[],SinkEventAttributes)
+     */
+    public void unknown( String name, Object[] requiredParams, SinkEventAttributes attributes )
+    {
+        getLog().warn( "Unknown Sink event in ITextSink: " + name + ", ignoring!" );
     }
 
     /**

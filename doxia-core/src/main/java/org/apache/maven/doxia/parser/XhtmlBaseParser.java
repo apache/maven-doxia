@@ -697,6 +697,26 @@ public class XhtmlBaseParser
     }
 
     /**
+     * Handles an unkown event.
+     *
+     * @param parser the parser to get the event from.
+     * @param sink the sink to receive the event.
+     * @param type the tag event type. This should be one of HtmlMarkup.TAG_TYPE_SIMPLE,
+     * HtmlMarkup.TAG_TYPE_START or HtmlMarkup.TAG_TYPE_END. It will be passed as the first
+     * argument of the required parameters to the Sink
+     * {@link org.apache.maven.doxia.sink.Sink#unkown(String,Object[],SinkEventAttributes) unkown}
+     * method.
+     */
+    protected void handleUnknown( XmlPullParser parser, Sink sink, int type )
+    {
+        Object[] required = new Object[] { new Integer( type ) };
+
+        SinkEventAttributeSet attribs = getAttributesFromParser( parser );
+
+        sink.unknown( parser.getName(), required, attribs );
+    }
+
+    /**
      * Close open sections. The current level is set to newLevel afterwards.
      *
      * @param newLevel the new section level, all upper levels have to be closed.

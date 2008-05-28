@@ -844,4 +844,10 @@ public class SinkAdapter
     {
         text( text );
     }
+
+    /** {@inheritDoc} */
+    public void unknown( String name, Object[] requiredParams, SinkEventAttributes attributes )
+    {
+        // nop
+    }
 }

@@ -752,4 +752,10 @@ public class WellformednessCheckingSink
     {
         text( text );
     }
+
+    /** {@inheritDoc} */
+    public void unknown( String name, Object[] requiredParams, SinkEventAttributes attributes )
+    {
+        // ignore
+    }
 }

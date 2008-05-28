@@ -207,28 +207,33 @@ public class XdocParser
                 else
                 {
                     // param tag from non-macro object, see MSITE-288
-                    // TODO: remove
-                    handleRawText( sink, parser );
+                    handleUnknown( parser, sink, TAG_TYPE_START );
                 }
             }
         }
         else if ( parser.getName().equals( Tag.SCRIPT.toString() ) )
         {
-            handleRawText( sink, parser );
+            handleUnknown( parser, sink, TAG_TYPE_START );
             scriptBlock = true;
         }
         else if ( !baseStartTag( parser, sink ) )
         {
-            // TODO: remove
-            handleRawText( sink, parser );
+            if ( isEmptyElement )
+            {
+                handleUnknown( parser, sink, TAG_TYPE_SIMPLE );
+            }
+            else
+            {
+                handleUnknown( parser, sink, TAG_TYPE_START );
+            }
 
-            if ( !isVerbatim() && getLog().isWarnEnabled() )
+            if ( !isVerbatim() && getLog().isDebugEnabled() )
             {
                 String position = "[" + parser.getLineNumber() + ":"
                     + parser.getColumnNumber() + "]";
                 String tag = "<" + parser.getName() + ">";
 
-                getLog().warn( "Unrecognized xdoc tag: " + tag + " at " + position );
+                getLog().debug( "Unrecognized xdoc tag: " + tag + " at " + position );
             }
         }
     }
@@ -313,9 +318,7 @@ public class XdocParser
         {
             if ( !StringUtils.isNotEmpty( macroName ) )
             {
-                // TODO: remove
-                sink.rawText( String.valueOf( LESS_THAN ) + String.valueOf( SLASH )
-                    + Tag.PARAM.toString() + String.valueOf( GREATER_THAN ));
+                handleUnknown( parser, sink, TAG_TYPE_END );
             }
         }
         else if ( parser.getName().equals( SECTION_TAG.toString() ) )
@@ -332,13 +335,7 @@ public class XdocParser
         }
         else if ( parser.getName().equals( Tag.SCRIPT.toString() ) )
         {
-            // TODO: this is HTML specific, factor out into a specialized parser
-
-            sink.rawText( String.valueOf( LESS_THAN ) + String.valueOf( SLASH ) );
-
-            sink.rawText( parser.getName() );
-
-            sink.rawText( String.valueOf( GREATER_THAN ) );
+            handleUnknown( parser, sink, TAG_TYPE_END );
 
             scriptBlock = false;
         }
@@ -346,13 +343,7 @@ public class XdocParser
         {
             if ( !isEmptyElement )
             {
-                // TODO: this is HTML specific, factor out into a specialized parser
-
-                sink.rawText( String.valueOf( LESS_THAN ) + String.valueOf( SLASH ) );
-
-                sink.rawText( parser.getName() );
-
-                sink.rawText( String.valueOf( GREATER_THAN ) );
+                handleUnknown( parser, sink, TAG_TYPE_END );
             }
         }
 
@@ -402,43 +393,6 @@ public class XdocParser
         }
 
         setSectionLevel( newLevel );
-    }
-
-    // ----------------------------------------------------------------------
-    // Private methods
-    // ----------------------------------------------------------------------
-
-    /**
-     * Handles raw text events.
-     *
-     * @param sink the sink to receive the events.
-     * @param parser A parser.
-     * @todo this is HTML specific, factor out into a specialized parser
-     */
-    private void handleRawText( Sink sink, XmlPullParser parser )
-    {
-        sink.rawText( String.valueOf( LESS_THAN ) );
-
-        sink.rawText( parser.getName() );
-
-        int count = parser.getAttributeCount();
-
-        for ( int i = 0; i < count; i++ )
-        {
-            sink.rawText( String.valueOf( SPACE ) );
-
-            sink.rawText( parser.getAttributeName( i ) );
-
-            sink.rawText( String.valueOf( EQUAL ) );
-
-            sink.rawText( String.valueOf( QUOTE ) );
-
-            sink.rawText( parser.getAttributeValue( i ) );
-
-            sink.rawText( String.valueOf( QUOTE ) );
-        }
-
-        sink.rawText( String.valueOf( GREATER_THAN ) );
     }
 
 }

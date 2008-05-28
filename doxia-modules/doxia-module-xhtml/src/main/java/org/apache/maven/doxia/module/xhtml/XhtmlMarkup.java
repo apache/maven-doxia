@@ -19,9 +19,7 @@ package org.apache.maven.doxia.module.xhtml;
  * under the License.
  */
 
-import javax.swing.text.html.HTML.Tag;
-
-import org.apache.maven.doxia.markup.XmlMarkup;
+import org.apache.maven.doxia.markup.HtmlMarkup;
 
 /**
  * List of <code>Xhtml</code> markups.
@@ -34,19 +32,6 @@ import org.apache.maven.doxia.markup.XmlMarkup;
  * @since 1.0
  */
 public interface XhtmlMarkup
-    extends XmlMarkup
+    extends HtmlMarkup
 {
-    // ----------------------------------------------------------------------
-    // Specific XHTML tags
-    // ----------------------------------------------------------------------
-
-    /** Xhtml tag for <code>tbody</code> */
-    Tag TBODY_TAG = new Tag()
-    {
-        /** {@inheritDoc} */
-        public String toString()
-        {
-            return "tbody";
-        }
-    };
 }

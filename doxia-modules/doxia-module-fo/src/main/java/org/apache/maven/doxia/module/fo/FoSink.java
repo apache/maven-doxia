@@ -29,6 +29,7 @@ import javax.swing.text.html.HTML.Tag;
 
 import org.apache.maven.doxia.sink.AbstractXmlSink;
 import org.apache.maven.doxia.sink.Sink;
+import org.apache.maven.doxia.sink.SinkEventAttributes;
 import org.apache.maven.doxia.parser.Parser;
 import org.apache.maven.doxia.util.DoxiaUtils;
 import org.apache.maven.doxia.util.HtmlTools;
@@ -952,6 +953,19 @@ public class FoSink
         {
             getLog().debug( e );
         }
+    }
+
+    /**
+     * Unkown events just log a warning message but are ignored otherwise.
+     *
+     * @param name The name of the event.
+     * @param requiredParams not used.
+     * @param attributes not used.
+     * @see org.apache.maven.doxia.sink.Sink#unknown(String,Object[],SinkEventAttributes)
+     */
+    public void unknown( String name, Object[] requiredParams, SinkEventAttributes attributes )
+    {
+        getLog().warn( "Unknown Sink event in FoSink: " + name + ", ignoring!" );
     }
 
     /**

@@ -21,6 +21,7 @@ package org.apache.maven.doxia.module.latex;
 
 import org.apache.maven.doxia.parser.Parser;
 import org.apache.maven.doxia.sink.AbstractTextSink;
+import org.apache.maven.doxia.sink.SinkEventAttributes;
 import org.apache.maven.doxia.util.DoxiaUtils;
 import org.apache.maven.doxia.util.LineBreaker;
 
@@ -1002,6 +1003,19 @@ public class LatexSink
         {
             content( text );
         }
+    }
+
+    /**
+     * Unkown events just log a warning message but are ignored otherwise.
+     *
+     * @param name The name of the event.
+     * @param requiredParams not used.
+     * @param attributes not used.
+     * @see org.apache.maven.doxia.sink.Sink#unknown(String,Object[],SinkEventAttributes)
+     */
+    public void unknown( String name, Object[] requiredParams, SinkEventAttributes attributes )
+    {
+        getLog().warn( "Unknown Sink event in LatexSink: " + name + ", ignoring!" );
     }
 
     // -----------------------------------------------------------------------

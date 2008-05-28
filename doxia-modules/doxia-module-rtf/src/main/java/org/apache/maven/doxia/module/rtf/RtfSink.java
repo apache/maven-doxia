@@ -20,6 +20,7 @@ package org.apache.maven.doxia.module.rtf;
  */
 
 import java.awt.Color;
+
 import java.io.BufferedOutputStream;
 import java.io.BufferedWriter;
 import java.io.IOException;
@@ -27,6 +28,7 @@ import java.io.OutputStream;
 import java.io.OutputStreamWriter;
 import java.io.PrintWriter;
 import java.io.Writer;
+
 import java.util.Hashtable;
 import java.util.StringTokenizer;
 import java.util.Vector;
@@ -34,6 +36,7 @@ import java.util.Vector;
 import org.apache.maven.doxia.parser.Parser;
 import org.apache.maven.doxia.sink.Sink;
 import org.apache.maven.doxia.sink.SinkAdapter;
+import org.apache.maven.doxia.sink.SinkEventAttributes;
 
 /**
  * @version $Id$
@@ -1383,6 +1386,19 @@ public class RtfSink
                 }
                 writer.println( escape( normalize( text ) ) );
         }
+    }
+
+    /**
+     * Unkown events just log a warning message but are ignored otherwise.
+     *
+     * @param name The name of the event.
+     * @param requiredParams not used.
+     * @param attributes not used.
+     * @see org.apache.maven.doxia.sink.Sink#unknown(String,Object[],SinkEventAttributes)
+     */
+    public void unknown( String name, Object[] requiredParams, SinkEventAttributes attributes )
+    {
+        getLog().warn( "Unknown Sink event in RtfSink: " + name + ", ignoring!" );
     }
 
     private static String normalize( String s )

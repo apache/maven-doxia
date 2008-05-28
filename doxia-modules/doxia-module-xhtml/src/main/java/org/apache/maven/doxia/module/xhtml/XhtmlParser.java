@@ -45,10 +45,15 @@ public class XhtmlParser
     /** For boxed verbatim. */
     private boolean boxed;
 
+    /** Empty elements don't write a closing tag. */
+    private boolean isEmptyElement;
+
     /** {@inheritDoc} */
     protected void handleStartTag( XmlPullParser parser, Sink sink )
         throws XmlPullParserException, MacroExecutionException
     {
+        isEmptyElement = parser.isEmptyElementTag();
+
         SinkEventAttributeSet attribs = getAttributesFromParser( parser );
 
         if ( parser.getName().equals( Tag.HTML.toString() ) )
@@ -111,6 +116,7 @@ public class XhtmlParser
             {
                 this.boxed = true;
             }
+
             super.baseStartTag( parser, sink ); // pick up other divs
         }
         /*
@@ -134,13 +140,22 @@ public class XhtmlParser
         }
         else if ( !baseStartTag( parser, sink ) )
         {
-            if ( getLog().isWarnEnabled() )
+            if ( isEmptyElement )
+            {
+                handleUnknown( parser, sink, TAG_TYPE_SIMPLE );
+            }
+            else
+            {
+                handleUnknown( parser, sink, TAG_TYPE_START );
+            }
+
+            if ( getLog().isDebugEnabled() )
             {
                 String position = "[" + parser.getLineNumber() + ":"
                     + parser.getColumnNumber() + "]";
                 String tag = "<" + parser.getName() + ">";
 
-                getLog().warn( "Unrecognized xhtml tag: " + tag + " at " + position );
+                getLog().debug( "Unrecognized xhtml tag: " + tag + " at " + position );
             }
         }
     }
@@ -179,9 +194,13 @@ public class XhtmlParser
         }
         else if ( !baseEndTag( parser, sink ) )
         {
-            // unrecognized tag is already logged in StartTag
+            if ( !isEmptyElement )
+            {
+                handleUnknown( parser, sink, TAG_TYPE_END );
+            }
         }
-    }
 
+        isEmptyElement = false;
+    }
 
 }

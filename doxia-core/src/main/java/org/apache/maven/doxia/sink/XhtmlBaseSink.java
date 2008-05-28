@@ -26,6 +26,7 @@ import javax.swing.text.MutableAttributeSet;
 import javax.swing.text.html.HTML.Attribute;
 import javax.swing.text.html.HTML.Tag;
 
+import org.apache.maven.doxia.markup.HtmlMarkup;
 import org.apache.maven.doxia.parser.Parser;
 import org.apache.maven.doxia.util.DoxiaUtils;
 import org.apache.maven.doxia.util.HtmlTools;
@@ -40,6 +41,7 @@ import org.apache.maven.doxia.util.HtmlTools;
  */
 public class XhtmlBaseSink
     extends AbstractXmlSink
+    implements HtmlMarkup
 {
     // ----------------------------------------------------------------------
     // Instance fields
@@ -1593,6 +1595,54 @@ public class XhtmlBaseSink
         buf.append( "" + SPACE + MINUS + MINUS + GREATER_THAN );
 
         rawText( buf.toString() );
+    }
+
+    /**
+     * Adding an unkown event, <i>ie</i> an event that was not recognized by a parser.
+     * If {@link org.apache.maven.doxia.util.HtmlTools#getHtmlTag(String) HtmlTools.getHtmlTag( name )}
+     * does not return null, the corresponding tag will be written.
+     *
+     * @param name The name of the event.
+     * @param requiredParams If <code>name</code> is a defined HTML tag, the first element of
+     * this array has to be an Integer wrapping one of the TAG_TYPE constants in
+     * {@link org.apache.maven.doxia.markup.HtmlMarkup HtmlMarkup}, otherwise an
+     * IllegalArgumentException is thrown.
+     * @param attributes A set of optional {@link SinkEventAttributes}, may be <code>null</code>.
+     */
+    public void unknown( String name, Object[] requiredParams, SinkEventAttributes attributes )
+    {
+        Tag tag = HtmlTools.getHtmlTag( name );
+
+        if ( tag == null )
+        {
+            getLog().warn( "No HTML tag found for unknown Sink event: " + name + ", ignoring!" );
+        }
+        else
+        {
+            if ( requiredParams == null || !( requiredParams[0] instanceof Integer ) )
+            {
+                throw new IllegalArgumentException( "Missing required parameter: TAG_TYPE" );
+            }
+
+            int tagType = ( (Integer) requiredParams[0] ).intValue();
+
+            if ( tagType == TAG_TYPE_SIMPLE )
+            {
+                writeSimpleTag( tag, attributes );
+            }
+            else if ( tagType == TAG_TYPE_START )
+            {
+                writeStartTag( tag, attributes );
+            }
+            else if ( tagType == TAG_TYPE_END )
+            {
+                writeEndTag( tag );
+            }
+            else
+            {
+                throw new IllegalArgumentException( "Not a valid TAG_TYPE: " + tagType );
+            }
+        }
     }
 
     /** {@inheritDoc} */

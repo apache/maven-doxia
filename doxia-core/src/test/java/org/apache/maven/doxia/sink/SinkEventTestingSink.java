@@ -807,6 +807,12 @@ public class SinkEventTestingSink
         text( text );
     }
 
+    /** {@inheritDoc} */
+    public void unknown( String name, Object[] requiredParams, SinkEventAttributes attributes )
+    {
+        addEvent( name, requiredParams );
+    }
+
       //
      // private
     //

@@ -1266,6 +1266,19 @@ public interface Sink
     void comment( String comment );
 
     /**
+     * Add an unkown event. This may be used by parsers to notify a general Sink about
+     * an event that doesn't fit into any event defined by the Sink API.
+     * Depending on the parameters, a Sink may decide whether or not to process the event,
+     * emit it as raw text, as a comment, log it, etc.
+     *
+     * @param name The name of the event.
+     * @param requiredParams An optional array of required parameters to the event.
+     * May be <code>null</code>.
+     * @param attributes A set of {@link SinkEventAttributes}, may be <code>null</code>.
+     */
+    void unknown( String name, Object[] requiredParams, SinkEventAttributes attributes );
+
+    /**
      * Flush the writer or the stream, if needed.
      * Flushing a previously-flushed Sink has no effect.
      */

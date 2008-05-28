@@ -21,7 +21,7 @@ package org.apache.maven.doxia.module.fml;
 
 import javax.swing.text.html.HTML.Tag;
 
-import org.apache.maven.doxia.markup.XmlMarkup;
+import org.apache.maven.doxia.markup.HtmlMarkup;
 
 /**
  * List of <code>FML</code> markups.
@@ -34,7 +34,7 @@ import org.apache.maven.doxia.markup.XmlMarkup;
  * @since 1.0
  */
 public interface FmlMarkup
-    extends XmlMarkup
+    extends HtmlMarkup
 {
     // ----------------------------------------------------------------------
     // Specific Fml tags

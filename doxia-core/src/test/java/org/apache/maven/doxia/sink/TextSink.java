@@ -814,6 +814,12 @@ public class TextSink
         text( text );
     }
 
+    /** {@inheritDoc} */
+    public void unknown( String name, Object[] requiredParams, SinkEventAttributes attributes )
+    {
+        write( "unknown: " + name );
+    }
+
     /**
      * Writes the given string + EOL.
      *

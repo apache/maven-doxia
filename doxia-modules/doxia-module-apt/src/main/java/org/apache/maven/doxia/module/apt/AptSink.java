@@ -24,6 +24,7 @@ import java.io.Writer;
 import java.util.Stack;
 
 import org.apache.maven.doxia.sink.AbstractTextSink;
+import org.apache.maven.doxia.sink.SinkEventAttributes;
 
 import org.codehaus.plexus.util.StringUtils;
 
@@ -874,6 +875,18 @@ public class AptSink
         rawText( EOL + COMMENT + COMMENT + SPACE + comment.trim() );
     }
 
+    /**
+     * Unkown events just log a warning message but are ignored otherwise.
+     *
+     * @param name The name of the event.
+     * @param requiredParams not used.
+     * @param attributes not used.
+     * @see org.apache.maven.doxia.sink.Sink#unknown(String,Object[],SinkEventAttributes)
+     */
+    public void unknown( String name, Object[] requiredParams, SinkEventAttributes attributes )
+    {
+        getLog().warn( "Unknown Sink event in AptSink: " + name + ", ignoring!" );
+    }
 
     /**
      * Write text to output.

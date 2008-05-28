@@ -37,14 +37,20 @@ public class FmlContentParser
     extends XhtmlBaseParser
     implements FmlMarkup
 {
+    /** Empty elements don't write a closing tag. */
+    private boolean isEmptyElement;
+
     /** {@inheritDoc} */
     protected void handleStartTag( XmlPullParser parser, Sink sink )
         throws XmlPullParserException, MacroExecutionException
     {
+        isEmptyElement = parser.isEmptyElementTag();
+
         if ( parser.getName().equals( QUESTION_TAG.toString() )
             || parser.getName().equals( ANSWER_TAG.toString() ) )
         {
             // ignore
+            return;
         }
         else if ( parser.getName().equals( SOURCE_TAG.toString() ) )
         {
@@ -54,13 +60,22 @@ public class FmlContentParser
         }
         else if ( !baseStartTag( parser, sink ) )
         {
-            if ( !isVerbatim() && getLog().isWarnEnabled() )
+            if ( isEmptyElement )
+            {
+                handleUnknown( parser, sink, TAG_TYPE_SIMPLE );
+            }
+            else
+            {
+                handleUnknown( parser, sink, TAG_TYPE_START );
+            }
+
+            if ( !isVerbatim() && getLog().isDebugEnabled() )
             {
                 String position = "[" + parser.getLineNumber() + ":"
                     + parser.getColumnNumber() + "]";
                 String tag = "<" + parser.getName() + ">";
 
-                getLog().warn( "Unrecognized fml tag: " + tag + " at " + position );
+                getLog().debug( "Unrecognized fml tag: " + tag + " at " + position );
             }
         }
     }
@@ -69,7 +84,13 @@ public class FmlContentParser
     protected void handleEndTag( XmlPullParser parser, Sink sink )
         throws XmlPullParserException, MacroExecutionException
     {
-        if ( parser.getName().equals( SOURCE_TAG.toString() ) )
+        if ( parser.getName().equals( QUESTION_TAG.toString() )
+            || parser.getName().equals( ANSWER_TAG.toString() ) )
+        {
+            // ignore
+            return;
+        }
+        else if ( parser.getName().equals( SOURCE_TAG.toString() ) )
         {
             verbatim_();
 
@@ -77,7 +98,12 @@ public class FmlContentParser
         }
         else if ( !baseEndTag( parser, sink ) )
         {
-            // unrecognized tag is already logged in StartTag
+            if ( !isEmptyElement )
+            {
+                handleUnknown( parser, sink, TAG_TYPE_END );
+            }
         }
+
+        isEmptyElement = false;
     }
 }

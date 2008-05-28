@@ -21,6 +21,12 @@ package org.apache.maven.doxia.util;
 
 import java.io.UnsupportedEncodingException;
 
+import java.util.Hashtable;
+
+import javax.swing.text.html.HTML.Tag;
+
+import org.apache.maven.doxia.markup.HtmlMarkup;
+
 
 /**
  * The <code>HtmlTools</code> class defines methods to HTML handling.
@@ -31,6 +37,55 @@ import java.io.UnsupportedEncodingException;
  */
 public class HtmlTools
 {
+    private static final Tag[] allTags  =
+    {
+        HtmlMarkup.A, HtmlMarkup.ABBR, HtmlMarkup.ACRONYM, HtmlMarkup.ADDRESS, HtmlMarkup.APPLET,
+        HtmlMarkup.AREA, HtmlMarkup.B, HtmlMarkup.BASE, HtmlMarkup.BASEFONT, HtmlMarkup.BDO,
+        HtmlMarkup.BIG, HtmlMarkup.BLOCKQUOTE, HtmlMarkup.BODY, HtmlMarkup.BR, HtmlMarkup.BUTTON,
+        HtmlMarkup.CAPTION, HtmlMarkup.CENTER, HtmlMarkup.CITE, HtmlMarkup.CODE, HtmlMarkup.COL,
+        HtmlMarkup.COLGROUP, HtmlMarkup.DD, HtmlMarkup.DEL, HtmlMarkup.DFN, HtmlMarkup.DIR,
+        HtmlMarkup.DIV, HtmlMarkup.DL, HtmlMarkup.DT, HtmlMarkup.EM, HtmlMarkup.FIELDSET,
+        HtmlMarkup.FONT, HtmlMarkup.FORM, HtmlMarkup.FRAME, HtmlMarkup.FRAMESET, HtmlMarkup.H1,
+        HtmlMarkup.H2, HtmlMarkup.H3, HtmlMarkup.H4, HtmlMarkup.H5, HtmlMarkup.H6, HtmlMarkup.HEAD,
+        HtmlMarkup.HR, HtmlMarkup.HTML, HtmlMarkup.I, HtmlMarkup.IFRAME, HtmlMarkup.IMG,
+        HtmlMarkup.INPUT, HtmlMarkup.INS, HtmlMarkup.ISINDEX, HtmlMarkup.KBD, HtmlMarkup.LABEL,
+        HtmlMarkup.LEGEND, HtmlMarkup.LI, HtmlMarkup.LINK, HtmlMarkup.MAP, HtmlMarkup.MENU,
+        HtmlMarkup.META, HtmlMarkup.NOFRAMES, HtmlMarkup.NOSCRIPT, HtmlMarkup.OBJECT, HtmlMarkup.OL,
+        HtmlMarkup.OPTGROUP, HtmlMarkup.OPTION, HtmlMarkup.P, HtmlMarkup.PARAM, HtmlMarkup.PRE,
+        HtmlMarkup.Q, HtmlMarkup.S, HtmlMarkup.SAMP, HtmlMarkup.SCRIPT, HtmlMarkup.SELECT,
+        HtmlMarkup.SMALL, HtmlMarkup.SPAN, HtmlMarkup.STRIKE, HtmlMarkup.STRONG, HtmlMarkup.STYLE,
+        HtmlMarkup.SUB, HtmlMarkup.SUP, HtmlMarkup.TABLE, HtmlMarkup.TBODY, HtmlMarkup.TD,
+        HtmlMarkup.TEXTAREA, HtmlMarkup.TFOOT, HtmlMarkup.TH, HtmlMarkup.THEAD, HtmlMarkup.TITLE,
+        HtmlMarkup.TR, HtmlMarkup.TT, HtmlMarkup.U, HtmlMarkup.UL, HtmlMarkup.VAR
+    };
+
+    private static final Hashtable tagHashtable = new Hashtable( allTags.length );
+
+    static
+    {
+        for ( int i = 0; i < allTags.length; i++ )
+        {
+            tagHashtable.put( allTags[i].toString(), allTags[i] );
+        }
+    }
+
+    /**
+     * Returns a tag for a defined HTML tag name (i.e. one of
+     * the tags defined in {@link org.apache.maven.doxia.markup.HtmlMarkup}.
+     * If the given name does not represent one of the defined tags, then
+     * <code>null</code> will be returned.
+     *
+     * @param tagName the <code>String</code> name requested.
+     * @return a tag constant corresponding to the <code>tagName</code>,
+     *    or <code>null</code> if not found.
+     */
+    public static Tag getHtmlTag( String tagName )
+    {
+        Object t =  tagHashtable.get( tagName );
+
+        return ( t == null ? null : (Tag) t );
+    }
+
     /**
      * Escape special HTML characters in a String in <code>xml</code> mode.
      *
