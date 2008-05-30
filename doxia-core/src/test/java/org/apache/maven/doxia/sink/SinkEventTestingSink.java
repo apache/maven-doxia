@@ -778,24 +778,6 @@ public class SinkEventTestingSink
     }
 
     /** {@inheritDoc} */
-    public void italic( SinkEventAttributes attributes )
-    {
-        italic();
-    }
-
-    /** {@inheritDoc} */
-    public void bold( SinkEventAttributes attributes )
-    {
-        bold();
-    }
-
-    /** {@inheritDoc} */
-    public void monospaced( SinkEventAttributes attributes )
-    {
-        monospaced();
-    }
-
-    /** {@inheritDoc} */
     public void lineBreak( SinkEventAttributes attributes )
     {
         lineBreak();
