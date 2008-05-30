@@ -1466,7 +1466,7 @@ public class XhtmlBaseSink
      */
     public void lineBreak()
     {
-        if ( headFlag )
+        if ( headFlag || isVerbatimFlag() )
         {
             getBuffer().append( EOL );
         }

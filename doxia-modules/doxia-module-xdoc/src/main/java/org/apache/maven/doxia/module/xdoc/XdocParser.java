@@ -102,7 +102,17 @@ public class XdocParser
 
         SinkEventAttributeSet attribs = getAttributesFromParser( parser );
 
-        if ( parser.getName().equals( DOCUMENT_TAG.toString() ) )
+        if ( isVerbatim() )
+        {
+            if ( parser.getName().equals( SOURCE_TAG.toString() )
+                || parser.getName().equals( Tag.PRE.toString() ) )
+            {
+                verbatim();
+            }
+
+            sink.text( parser.getText() );
+        }
+        else if ( parser.getName().equals( DOCUMENT_TAG.toString() ) )
         {
             //Do nothing
             return;
@@ -242,7 +252,28 @@ public class XdocParser
     protected void handleEndTag( XmlPullParser parser, Sink sink )
         throws XmlPullParserException, MacroExecutionException
     {
-        if ( parser.getName().equals( DOCUMENT_TAG.toString() ) )
+        if ( isVerbatim() )
+        {
+            if ( parser.getName().equals( SOURCE_TAG.toString() )
+                || parser.getName().equals( Tag.PRE.toString() ) )
+            {
+                verbatim_();
+
+                if ( isVerbatim() )
+                {
+                    sink.text( parser.getText() );
+                }
+                else
+                {
+                    sink.verbatim_();
+                }
+            }
+            else
+            {
+                sink.text( parser.getText() );
+            }
+        }
+        else if ( parser.getName().equals( DOCUMENT_TAG.toString() ) )
         {
             //Do nothing
             return;

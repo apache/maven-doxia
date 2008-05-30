@@ -268,9 +268,7 @@ public class SinkTestDocument
         sink.definition();
         sink.text( "of definition list." );
         sink.verbatim( true );
-        sink.text( "Verbatim text" );
-        sink.lineBreak();
-        sink.text( "                        in a box        " );
+        sink.text( "Verbatim text" + EOL + "                        in a box        " );
         sink.verbatim_();
         sink.definition_();
         sink.definitionListItem_();

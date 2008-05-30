@@ -94,7 +94,16 @@ public class XhtmlBaseParser
 
         SinkEventAttributeSet attribs = getAttributesFromParser( parser );
 
-        if ( parser.getName().equals( Tag.H2.toString() ) )
+        if ( isVerbatim() )
+        {
+            if ( parser.getName().equals( Tag.PRE.toString() ) )
+            {
+                verbatim();
+            }
+
+            sink.text( parser.getText() );
+        }
+        else if ( parser.getName().equals( Tag.H2.toString() ) )
         {
             closeOpenSections( Sink.SECTION_LEVEL_1, sink );
 
@@ -411,7 +420,27 @@ public class XhtmlBaseParser
     {
         boolean visited = true;
 
-        if ( parser.getName().equals( Tag.P.toString() ) )
+        if ( isVerbatim() )
+        {
+            if ( parser.getName().equals( Tag.PRE.toString() ) )
+            {
+                verbatim_();
+
+                if ( isVerbatim() )
+                {
+                    sink.text( parser.getText() );
+                }
+                else
+                {
+                    sink.verbatim_();
+                }
+            }
+            else
+            {
+                sink.text( parser.getText() );
+            }
+        }
+        else if ( parser.getName().equals( Tag.P.toString() ) )
         {
             if ( !inFigure )
             {
@@ -635,21 +664,7 @@ public class XhtmlBaseParser
                 }
             }
 
-            // Emit separate text events for different lines, e.g. the input
-            // "\nLine1\n\nLine2\n\n" should deliver the event sequence "\n", "Line1\n", "\n", "Line2\n", "\n".
-            // In other words, the concatenation of the text events must deliver the input sequence.
-            // (according to section 2.11 of the XML spec, parsers must normalize line breaks to "\n")
-            String[] lines = text.split( "\n", -1 );
-
-            for ( int i = 0; i < lines.length - 1; i++ )
-            {
-                sink.text( lines[i] + EOL, atts );
-            }
-
-            if ( lines[lines.length - 1].length() > 0 )
-            {
-                sink.text( lines[lines.length - 1], atts );
-            }
+            sink.text( text, atts );
         }
     }
 

@@ -56,7 +56,16 @@ public class XhtmlParser
 
         SinkEventAttributeSet attribs = getAttributesFromParser( parser );
 
-        if ( parser.getName().equals( Tag.HTML.toString() ) )
+        if ( isVerbatim() )
+        {
+            if ( parser.getName().equals( Tag.PRE.toString() ) )
+            {
+                verbatim();
+            }
+
+            sink.text( parser.getText() );
+        }
+        else if ( parser.getName().equals( Tag.HTML.toString() ) )
         {
             //Do nothing
             return;
@@ -136,6 +145,8 @@ public class XhtmlParser
                 attribs.addAttribute( SinkEventAttributeSet.DECORATION, "boxed" );
             }
 
+            verbatim();
+
             sink.verbatim( attribs );
         }
         else if ( !baseStartTag( parser, sink ) )
@@ -164,7 +175,27 @@ public class XhtmlParser
     protected void handleEndTag( XmlPullParser parser, Sink sink )
         throws XmlPullParserException, MacroExecutionException
     {
-        if ( parser.getName().equals( Tag.HTML.toString() ) )
+        if ( isVerbatim() )
+        {
+            if ( parser.getName().equals( Tag.PRE.toString() ) )
+            {
+                verbatim_();
+
+                if ( isVerbatim() )
+                {
+                    sink.text( parser.getText() );
+                }
+                else
+                {
+                    sink.verbatim_();
+                }
+            }
+            else
+            {
+                sink.text( parser.getText() );
+            }
+        }
+        else if ( parser.getName().equals( Tag.HTML.toString() ) )
         {
             //Do nothing
             return;
