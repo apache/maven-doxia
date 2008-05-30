@@ -174,7 +174,8 @@ public class XhtmlBaseParserTest
 
         el = (SinkEventElement) it.next();
         assertEquals( "text", el.getName() );
-        assertEquals( EOL,  (String) el.getArgs()[0] );
+        // according to section 2.11 of the XML spec, parsers must normalize line breaks to "\n"
+        assertEquals( "\n",  (String) el.getArgs()[0] );
 
         assertEquals( "italic", ( (SinkEventElement) it.next() ).getName() );
         assertEquals( "text", ( (SinkEventElement) it.next() ).getName() );
