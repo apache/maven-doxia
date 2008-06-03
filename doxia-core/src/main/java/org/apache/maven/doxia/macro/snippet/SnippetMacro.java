@@ -31,6 +31,7 @@ import java.net.MalformedURLException;
 import java.net.URL;
 import java.util.HashMap;
 import java.util.Map;
+import org.apache.maven.doxia.sink.SinkEventAttributeSet;
 
 /**
  * A macro that prints out the content of a file or a URL.
@@ -123,7 +124,7 @@ public class SnippetMacro
 
         if ( verbatim )
         {
-            sink.verbatim( true );
+            sink.verbatim( SinkEventAttributeSet.BOXED );
 
             sink.text( snippet.toString() );
 

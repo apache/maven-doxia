@@ -22,6 +22,7 @@ package org.apache.maven.doxia.macro;
 import org.apache.maven.doxia.sink.Sink;
 
 import java.util.Iterator;
+import org.apache.maven.doxia.sink.SinkEventAttributeSet;
 
 /**
  * A simple macro that prints out the key and value of some supplied parameters.
@@ -37,7 +38,7 @@ public class EchoMacro
     /** {@inheritDoc} */
     public void execute( Sink sink, MacroRequest request )
     {
-        sink.verbatim( true );
+        sink.verbatim( SinkEventAttributeSet.BOXED );
 
         sink.text( "echo" + EOL );
 

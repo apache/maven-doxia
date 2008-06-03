@@ -22,10 +22,13 @@ package org.apache.maven.doxia.sink;
 import java.lang.reflect.InvocationHandler;
 import java.lang.reflect.Method;
 import java.lang.reflect.Proxy;
+
 import java.util.List;
 import java.util.Iterator;
 
 /**
+ * May be used to invoke the same method on a List of Sinks.
+ *
  * @author <a href="mailto:trygvis@inamo.no">Trygve Laugst&oslash;l</a>
  * @version $Id$
  */
@@ -34,16 +37,35 @@ public class PipelineSink
 {
     private List pipeline;
 
+    /**
+     * Constructs a PipelineSink for a given List of Sinks.
+     *
+     * @param pipeline A List of Sinks.
+     */
     public PipelineSink( List pipeline )
     {
         this.pipeline = pipeline;
     }
 
+    /**
+     * Add a Sink to the List of Sinks.
+     *
+     * @param sink the Sink to add.
+     */
     public void addSink( Sink sink )
     {
         pipeline.add( sink );
     }
 
+    /**
+     * Invoke a Method on this PipelineSink.
+     *
+     * @param proxy the proxy instance that the method was invoked on. Unused.
+     * @param method the Method to invoke.
+     * @param args an array of arguments to the Method.
+     * @return always returns null.
+     * @throws java.lang.Throwable the Exception to throw from the Method invocation.
+     */
     public Object invoke( Object proxy, Method method, Object[] args )
         throws Throwable
     {
@@ -57,6 +79,12 @@ public class PipelineSink
         return null;
     }
 
+    /**
+     * Returns an instance of a PipelineSink as a Sink.
+     *
+     * @param pipeline A List of Sinks.
+     * @return
+     */
     public static Sink newInstance( List pipeline )
     {
         return (Sink) Proxy.newProxyInstance( PipelineSink.class.getClassLoader(),

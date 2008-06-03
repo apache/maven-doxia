@@ -99,7 +99,7 @@ public class ByLineReaderSource implements ByLineSource
         }
         catch ( IOException e )
         {
-            throw new ParseException( e );
+            throw new ParseException( e, lineNumber, 0 );
         }
 
         lastLine = line;

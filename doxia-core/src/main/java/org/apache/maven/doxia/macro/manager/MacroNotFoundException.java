@@ -30,6 +30,9 @@ package org.apache.maven.doxia.macro.manager;
 public class MacroNotFoundException
     extends Exception
 {
+    /** serialVersionUID */
+    static final long serialVersionUID = 295967936746221567L;
+
     /**
      * Construct a new MacroNotFoundException with the specified detail message.
      *

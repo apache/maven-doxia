@@ -31,7 +31,7 @@ public interface ByLineSource
 {
     /**
      * @return the next line. <code>null</code> if we reached the end.
-     * @throws ParseException on I/O error
+     * @throws org.apache.maven.doxia.parser.ParseException on I/O error
      */
     String getNextLine() throws ParseException;
 
@@ -46,7 +46,7 @@ public interface ByLineSource
     int getLineNumber();
 
     /**
-     * @throws IllegalStateException if the ungetLine/unget is called more than
+     * @throws java.lang.IllegalStateException if the ungetLine/unget is called more than
      *                               one time without calling getNextLine()
      */
     void ungetLine() throws IllegalStateException;
@@ -54,7 +54,7 @@ public interface ByLineSource
 
     /**
      * @param s some text to push back to the parser
-     * @throws IllegalStateException if the ungetLine/unget is called more than
+     * @throws java.lang.IllegalStateException if the ungetLine/unget is called more than
      *                               one time without calling getNextLine()
      */
     void unget( String s ) throws IllegalStateException;

@@ -45,9 +45,9 @@ public interface Doxia
      * @param source A reader that provides the source document.
      * @param parserId Identifier for the parser to use.
      * @param sink A sink that consumes the Doxia events.
-     * @throws ParserNotFoundException if no parser could be found
-     * for the given id.
-     * @throws ParseException if the model could not be parsed.
+     * @throws org.apache.maven.doxia.parser.manager.ParserNotFoundException
+     * if no parser could be found for the given id.
+     * @throws org.apache.maven.doxia.parser.ParseException if the model could not be parsed.
      */
     void parse( Reader source, String parserId, Sink sink )
         throws ParserNotFoundException, ParseException;
@@ -57,8 +57,8 @@ public interface Doxia
      *
      * @param parserId Identifier for the parser to use.
      * @return the parser defining by parserId.
-     * @throws ParserNotFoundException if no parser could be found
-     * for the given id.
+     * @throws org.apache.maven.doxia.parser.manager.ParserNotFoundException
+     * if no parser could be found for the given id.
      */
     Parser getParser( String parserId )
         throws ParserNotFoundException;

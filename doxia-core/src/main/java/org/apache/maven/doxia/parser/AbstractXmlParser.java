@@ -118,8 +118,8 @@ public abstract class AbstractXmlParser
      *
      * @param parser A parser.
      * @param sink the sink to receive the events.
-     * @throws XmlPullParserException if there's a problem parsing the model
-     * @throws MacroExecutionException if there's a problem executing a macro
+     * @throws org.codehaus.plexus.util.xml.pull.XmlPullParserException if there's a problem parsing the model
+     * @throws org.apache.maven.doxia.macro.MacroExecutionException if there's a problem executing a macro
      */
     private void parseXml( XmlPullParser parser, Sink sink )
         throws XmlPullParserException, MacroExecutionException
@@ -169,8 +169,8 @@ public abstract class AbstractXmlParser
      *
      * @param parser A parser.
      * @param sink the sink to receive the events.
-     * @throws XmlPullParserException if there's a problem parsing the model
-     * @throws MacroExecutionException if there's a problem executing a macro
+     * @throws org.codehaus.plexus.util.xml.pull.XmlPullParserException if there's a problem parsing the model
+     * @throws org.apache.maven.doxia.macro.MacroExecutionException if there's a problem executing a macro
      */
     protected abstract void handleStartTag( XmlPullParser parser, Sink sink )
         throws XmlPullParserException, MacroExecutionException;
@@ -180,8 +180,8 @@ public abstract class AbstractXmlParser
      *
      * @param parser A parser.
      * @param sink the sink to receive the events.
-     * @throws XmlPullParserException if there's a problem parsing the model
-     * @throws MacroExecutionException if there's a problem executing a macro
+     * @throws org.codehaus.plexus.util.xml.pull.XmlPullParserException if there's a problem parsing the model
+     * @throws org.apache.maven.doxia.macro.MacroExecutionException if there's a problem executing a macro
      */
     protected abstract void handleEndTag( XmlPullParser parser, Sink sink )
         throws XmlPullParserException, MacroExecutionException;
@@ -191,7 +191,7 @@ public abstract class AbstractXmlParser
      *
      * @param parser A parser.
      * @param sink the sink to receive the events.
-     * @throws XmlPullParserException if there's a problem parsing the model
+     * @throws org.codehaus.plexus.util.xml.pull.XmlPullParserException if there's a problem parsing the model
      */
     protected abstract void handleText( XmlPullParser parser, Sink sink )
         throws XmlPullParserException;
@@ -201,7 +201,7 @@ public abstract class AbstractXmlParser
      *
      * @param parser A parser.
      * @param sink the sink to receive the events.
-     * @throws XmlPullParserException if there's a problem parsing the model
+     * @throws org.codehaus.plexus.util.xml.pull.XmlPullParserException if there's a problem parsing the model
      */
     protected abstract void handleCdsect( XmlPullParser parser, Sink sink )
         throws XmlPullParserException;
@@ -211,7 +211,7 @@ public abstract class AbstractXmlParser
      *
      * @param parser A parser.
      * @param sink the sink to receive the events.
-     * @throws XmlPullParserException if there's a problem parsing the model
+     * @throws org.codehaus.plexus.util.xml.pull.XmlPullParserException if there's a problem parsing the model
      */
     protected abstract void handleComment( XmlPullParser parser, Sink sink )
         throws XmlPullParserException;
@@ -221,7 +221,7 @@ public abstract class AbstractXmlParser
      *
      * @param parser A parser.
      * @param sink the sink to receive the events.
-     * @throws XmlPullParserException if there's a problem parsing the model
+     * @throws org.codehaus.plexus.util.xml.pull.XmlPullParserException if there's a problem parsing the model
      */
     protected abstract void handleEntity( XmlPullParser parser, Sink sink )
         throws XmlPullParserException;

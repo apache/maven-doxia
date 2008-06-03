@@ -818,7 +818,7 @@ public class XhtmlBaseParser
     /**
      * Checks if the given id is a valid Doxia id and if not, returns a transformed one.
      *
-     * @param The id to validate.
+     * @param id The id to validate.
      * @return A transformed id or the original id if it was already valid.
      * @see DoxiaUtils#encodeId(String)
      */

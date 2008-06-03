@@ -30,6 +30,9 @@ package org.apache.maven.doxia.parser.manager;
 public class ParserNotFoundException
     extends Exception
 {
+    /** serialVersionUID */
+    static final long serialVersionUID = 295967936746221567L;
+
     /**
      * Construct a new ParserNotFoundException with the specified detail message.
      *

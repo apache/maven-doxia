@@ -30,6 +30,9 @@ package org.apache.maven.doxia.module.site.manager;
 public class SiteModuleNotFoundException
     extends Exception
 {
+    /** serialVersionUID */
+    static final long serialVersionUID = 295967936746221567L;
+
     /**
      * Construct a new SiteModuleNotFoundException with the
      * specified detail message.

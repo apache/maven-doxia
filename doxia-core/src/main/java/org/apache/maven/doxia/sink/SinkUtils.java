@@ -27,7 +27,6 @@ import javax.swing.text.AttributeSet;
 import javax.swing.text.MutableAttributeSet;
 
 import org.apache.maven.doxia.markup.Markup;
-import org.apache.maven.doxia.sink.SinkEventAttributeSet;
 
 /**
  * Collection of common utility methods for sinks.
