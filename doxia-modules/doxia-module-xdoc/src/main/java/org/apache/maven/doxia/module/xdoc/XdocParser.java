@@ -141,6 +141,13 @@ public class XdocParser
         {
             closeOpenSections( Sink.SECTION_LEVEL_1, sink );
 
+            Object id = attribs.getAttribute( Attribute.ID.toString() );
+            if ( id != null )
+            {
+                sink.anchor( id.toString() );
+                sink.anchor_();
+            }
+            
             sink.section( Sink.SECTION_LEVEL_1, attribs );
 
             sink.sectionTitle( Sink.SECTION_LEVEL_1, attribs );
@@ -153,6 +160,13 @@ public class XdocParser
         {
             closeOpenSections( Sink.SECTION_LEVEL_2, sink );
 
+            Object id = attribs.getAttribute( Attribute.ID.toString() );
+            if ( id != null )
+            {
+                sink.anchor( id.toString() );
+                sink.anchor_();
+            }
+            
             sink.section( Sink.SECTION_LEVEL_2, attribs );
 
             sink.sectionTitle( Sink.SECTION_LEVEL_2, attribs );

@@ -24,6 +24,7 @@ import java.io.FileReader;
 import java.io.Reader;
 import java.io.Writer;
 
+import java.util.Arrays;
 import java.util.Iterator;
 
 import org.apache.maven.doxia.parser.AbstractParserTest;
@@ -237,4 +238,31 @@ public class XdocParserTest
     {
         return text.replaceAll( EOL, "" );
     }
+    
+    public void testSectionIdAnchor()
+        throws Exception
+    {
+        String text = "<section name=\"test\" id=\"test-id\">This is a test.</section>";
+
+        SinkEventTestingSink sink = new SinkEventTestingSink();
+
+        parser.parse( text, sink );
+
+        Iterator it = sink.getEventList().iterator();
+
+        SinkEventElement anchorEvt = (SinkEventElement) it.next();
+        
+        assertEquals( "anchor", anchorEvt.getName() );
+        assertEquals( "test-id", anchorEvt.getArgs()[0] );
+        
+        assertEquals( "anchor_", ( (SinkEventElement) it.next() ).getName() );
+        assertEquals( "section1", ( (SinkEventElement) it.next() ).getName() );
+        assertEquals( "sectionTitle1", ( (SinkEventElement) it.next() ).getName() );
+        assertEquals( "text", ( (SinkEventElement) it.next() ).getName() );
+        assertEquals( "sectionTitle1_", ( (SinkEventElement) it.next() ).getName() );
+        assertEquals( "text", ( (SinkEventElement) it.next() ).getName() );
+        assertEquals( "section1_", ( (SinkEventElement) it.next() ).getName() );
+        assertFalse( it.hasNext() );
+    }
+
 }
