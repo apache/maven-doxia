@@ -21,6 +21,7 @@ package org.apache.maven.doxia.module.confluence;
 
 import java.io.IOException;
 import java.io.Reader;
+import java.io.StringReader;
 import java.io.StringWriter;
 import java.io.Writer;
 
@@ -29,6 +30,7 @@ import org.apache.maven.doxia.parser.ParseException;
 import org.apache.maven.doxia.parser.Parser;
 import org.apache.maven.doxia.sink.Sink;
 import org.apache.maven.doxia.sink.TextSink;
+
 import org.codehaus.plexus.util.StringUtils;
 
 /**
@@ -338,6 +340,82 @@ public class ConfluenceParserTest
         assertEquals( 6, result.split( "end:paragraph\n" ).length );
         // 4 dinitionList in the input...
         assertEquals( 5, result.split( "end:definitionList\n" ).length );
+    }
+
+    /**
+     * DOXIA-247
+     *
+     * @throws ParseException
+     */
+    public void testEndBracket()
+        throws ParseException
+    {
+        String document = "Test"
+            + "\n\n* list1"
+            + "\n\n* list2"
+            + "\n\n* list2"
+            + "\n{pre}123{/pre}";
+
+        output = new StringWriter();
+        Sink sink = new TextSink( output );
+
+        /* parsing with additional space at end works */
+        createParser().parse( new StringReader( document + " " ), sink );
+        assertTrue( "generated document should have a size > 0", output.toString().length() > 0 );
+
+        /* parsing with document ending in } should not fail */
+        try
+        {
+            createParser().parse( new StringReader( document ), sink );
+        }
+        catch ( Exception e )
+        {
+            e.printStackTrace();
+            fail( "parsing with document ending in } should not fail" );
+        }
+
+        assertTrue( "generated document should have a size > 0", output.toString().length() > 0 );
+    }
+
+    /**
+     * DOXIA-247
+     *
+     * @throws ParseException 
+     */
+    public void testEndBracketInList()
+        throws ParseException
+    {
+        String document1 = "Test"
+            + "\n\n* list1"
+            + "\n\n* list2"
+            + "\n\n* list2{pre}123{/pre} "
+            + "\n123";
+
+        String document2 = "Test"
+            + "\n\n* list1"
+            + "\n\n* list2"
+            + "\n\n* list2{pre}123{/pre}"
+            + "\n123";    
+            
+        output = new StringWriter();
+        Sink sink = new TextSink( output );
+
+        /* parsing with additional space at end of list item works */
+        createParser().parse( new StringReader( document1 ), sink );
+        assertTrue( "generated document should have a size > 0", output.toString().length() > 0 );
+
+        /* parsing with end of list item ending in } should not fail */
+        try
+        {
+            createParser().parse( new StringReader( document2 ), sink );
+        }
+        catch ( Exception e )
+        {
+            e.printStackTrace();
+            fail( "parsing with end of list item ending in } should not fail" );
+        }
+
+        assertTrue( "generated document should have a size > 0", output.toString().length() > 0 );
     }
 
     private void assertContainsLines( String message, String result, String lines )
