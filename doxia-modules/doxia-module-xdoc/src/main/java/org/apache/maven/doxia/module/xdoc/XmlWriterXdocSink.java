@@ -19,7 +19,7 @@ package org.apache.maven.doxia.module.xdoc;
  * under the License.
  */
 
-import org.apache.maven.doxia.parser.Parser;
+import org.apache.maven.doxia.sink.Sink;
 import org.apache.maven.doxia.sink.SinkAdapter;
 import org.apache.maven.doxia.util.HtmlTools;
 import org.codehaus.plexus.util.StringUtils;
@@ -465,13 +465,13 @@ public class XmlWriterXdocSink
         {
             switch ( cellJustif[cellCount] )
             {
-                case Parser.JUSTIFY_LEFT:
+                case Sink.JUSTIFY_LEFT:
                     justif = "left";
                     break;
-                case Parser.JUSTIFY_RIGHT:
+                case Sink.JUSTIFY_RIGHT:
                     justif = "right";
                     break;
-                case Parser.JUSTIFY_CENTER:
+                case Sink.JUSTIFY_CENTER:
                 default:
                     justif = "center";
                     break;

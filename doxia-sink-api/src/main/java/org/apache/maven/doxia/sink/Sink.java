@@ -122,6 +122,24 @@ public interface Sink
     int SECTION_LEVEL_5 = 5;
 
     /**
+     * Center alignment for table cells.
+     * @see #tableRows(int[], boolean)
+     */
+    int JUSTIFY_CENTER = 0;
+
+    /**
+     * Left alignment for table cells.
+     * @see #tableRows(int[], boolean)
+     */
+    int JUSTIFY_LEFT = 1;
+
+    /**
+     * Right alignment for table cells.
+     * @see #tableRows(int[], boolean)
+     */
+    int JUSTIFY_RIGHT = 2;
+
+    /**
      * Starts the head element.
      *
      * @see #head(SinkEventAttributes).
@@ -848,7 +866,10 @@ public interface Sink
      * has less elements than there are columns in the table then the value of
      * the last array element will be taken as default for the remaining table cells.
      * @param grid true to provide a grid, false otherwise.
-     * @see #table(SinkEventAttributes).
+     * @see #table(SinkEventAttributes)
+     * @see #JUSTIFY_CENTER
+     * @see #JUSTIFY_LEFT
+     * @see #JUSTIFY_RIGHT
      */
     void tableRows( int[] justification, boolean grid );
 

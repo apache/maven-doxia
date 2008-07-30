@@ -343,15 +343,15 @@ public class XhtmlBaseParser
 
             String align = parser.getAttributeValue( null, Attribute.ALIGN.toString() );
 
-            int[] justif = { JUSTIFY_LEFT };
+            int[] justif = { Sink.JUSTIFY_LEFT };
 
             if ( "center".equals( align ) )
             {
-                justif[0] = JUSTIFY_CENTER;
+                justif[0] = Sink.JUSTIFY_CENTER;
             }
             else if ( "right".equals( align ) )
             {
-                justif[0] = JUSTIFY_RIGHT;
+                justif[0] = Sink.JUSTIFY_RIGHT;
             }
 
             sink.tableRows( justif, grid );

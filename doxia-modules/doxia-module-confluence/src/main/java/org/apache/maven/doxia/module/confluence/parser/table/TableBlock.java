@@ -19,7 +19,6 @@ package org.apache.maven.doxia.module.confluence.parser.table;
  * under the License.
  */
 
-import org.apache.maven.doxia.parser.Parser;
 import org.apache.maven.doxia.module.confluence.parser.AbstractFatherBlock;
 import org.apache.maven.doxia.sink.Sink;
 
@@ -56,7 +55,7 @@ class TableBlock
         int[] justification = new int[b.getBlocks().size()];
         for ( int i = 0; i < justification.length; i++ )
         {
-            justification[i] = Parser.JUSTIFY_CENTER;
+            justification[i] = Sink.JUSTIFY_CENTER;
         }
 
         return justification;

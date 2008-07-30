@@ -30,7 +30,6 @@ import javax.swing.text.html.HTML.Tag;
 import org.apache.maven.doxia.sink.AbstractXmlSink;
 import org.apache.maven.doxia.sink.Sink;
 import org.apache.maven.doxia.sink.SinkEventAttributes;
-import org.apache.maven.doxia.parser.Parser;
 import org.apache.maven.doxia.util.DoxiaUtils;
 import org.apache.maven.doxia.util.HtmlTools;
 
@@ -727,13 +726,13 @@ public class FoSink
          {
              switch ( cellJustif[Math.min( cellCount, cellJustif.length - 1 )] )
              {
-                 case Parser.JUSTIFY_LEFT:
+                 case Sink.JUSTIFY_LEFT:
                      justif = "left";
                      break;
-                 case Parser.JUSTIFY_RIGHT:
+                 case Sink.JUSTIFY_RIGHT:
                      justif = "right";
                      break;
-                 case Parser.JUSTIFY_CENTER:
+                 case Sink.JUSTIFY_CENTER:
                  default:
                      justif = "center";
                      break;

@@ -20,8 +20,6 @@ package org.apache.maven.doxia.sink;
  */
 
 
-import org.apache.maven.doxia.parser.Parser;
-
 /**
  * Static methods to generate standard Doxia sink events.
  */
@@ -305,7 +303,7 @@ public class SinkTestDocument
     {
         int[] justify =
         {
-             Parser.JUSTIFY_CENTER, Parser.JUSTIFY_LEFT, Parser.JUSTIFY_RIGHT
+             Sink.JUSTIFY_CENTER, Sink.JUSTIFY_LEFT, Sink.JUSTIFY_RIGHT
         };
 
         sink.table();
@@ -361,7 +359,7 @@ public class SinkTestDocument
     {
         int[] justify =
         {
-             Parser.JUSTIFY_CENTER, Parser.JUSTIFY_CENTER
+             Sink.JUSTIFY_CENTER, Sink.JUSTIFY_CENTER
         };
 
         sink.table();
@@ -401,7 +399,7 @@ public class SinkTestDocument
     {
         int[] justify =
         {
-             Parser.JUSTIFY_CENTER, Parser.JUSTIFY_CENTER
+             Sink.JUSTIFY_CENTER, Sink.JUSTIFY_CENTER
         };
 
         sink.table();

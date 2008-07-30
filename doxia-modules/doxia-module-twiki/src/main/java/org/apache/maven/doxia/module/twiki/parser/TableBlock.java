@@ -19,7 +19,6 @@ package org.apache.maven.doxia.module.twiki.parser;
  * under the License.
  */
 
-import org.apache.maven.doxia.parser.Parser;
 import org.apache.maven.doxia.sink.Sink;
 
 /**
@@ -59,7 +58,7 @@ class TableBlock extends AbstractFatherBlock
                                       getBlocks().length];
         for ( int i = 0; i < justification.length; i++ )
         {
-            justification[i] = Parser.JUSTIFY_CENTER;
+            justification[i] = Sink.JUSTIFY_CENTER;
         }
 
         return justification;

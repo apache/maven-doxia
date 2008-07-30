@@ -48,15 +48,6 @@ public interface Parser
     /** XML parser type */
     int XML_TYPE = 2;
 
-    /** Used for table cells: justify center. */
-    int JUSTIFY_CENTER = 0;
-
-    /** Used for table cells: justify left. */
-    int JUSTIFY_LEFT = 1;
-
-    /** Used for table cells: justify right. */
-    int JUSTIFY_RIGHT = 2;
-
     /**
      * Parses the given source model and emits Doxia events into the given sink.
      *

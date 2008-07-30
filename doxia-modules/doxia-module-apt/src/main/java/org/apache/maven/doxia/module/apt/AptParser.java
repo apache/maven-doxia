@@ -2444,13 +2444,13 @@ public class AptParser
                 switch ( jline.charAt( i ) )
                 {
                     case STAR:
-                        justification[columns++] = JUSTIFY_CENTER;
+                        justification[columns++] = Sink.JUSTIFY_CENTER;
                         break;
                     case PLUS:
-                        justification[columns++] = JUSTIFY_LEFT;
+                        justification[columns++] = Sink.JUSTIFY_LEFT;
                         break;
                     case COLON:
-                        justification[columns++] = JUSTIFY_RIGHT;
+                        justification[columns++] = Sink.JUSTIFY_RIGHT;
                         break;
                     default:
                         break;

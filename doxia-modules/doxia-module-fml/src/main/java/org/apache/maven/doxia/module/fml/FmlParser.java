@@ -32,7 +32,6 @@ import org.apache.maven.doxia.module.fml.model.Faqs;
 import org.apache.maven.doxia.module.fml.model.Part;
 import org.apache.maven.doxia.parser.AbstractXmlParser;
 import org.apache.maven.doxia.parser.ParseException;
-import org.apache.maven.doxia.parser.Parser;
 import org.apache.maven.doxia.sink.Sink;
 import org.apache.maven.doxia.util.DoxiaUtils;
 import org.apache.maven.doxia.util.HtmlTools;
@@ -462,7 +461,7 @@ public class FmlParser
      */
     private void writeTopLink( Sink sink )
     {
-        int[] justify = { Parser.JUSTIFY_RIGHT };
+        int[] justify = { Sink.JUSTIFY_RIGHT };
 
         sink.table();
 

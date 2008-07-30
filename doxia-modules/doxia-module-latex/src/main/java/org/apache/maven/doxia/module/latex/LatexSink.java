@@ -19,8 +19,8 @@ package org.apache.maven.doxia.module.latex;
  * under the License.
  */
 
-import org.apache.maven.doxia.parser.Parser;
 import org.apache.maven.doxia.sink.AbstractTextSink;
+import org.apache.maven.doxia.sink.Sink;
 import org.apache.maven.doxia.sink.SinkEventAttributes;
 import org.apache.maven.doxia.util.DoxiaUtils;
 import org.apache.maven.doxia.util.LineBreaker;
@@ -662,13 +662,13 @@ public class LatexSink
             }
             switch ( justification[i] )
             {
-                case Parser.JUSTIFY_CENTER:
+                case Sink.JUSTIFY_CENTER:
                     justif.append( 'c' );
                     break;
-                case Parser.JUSTIFY_LEFT:
+                case Sink.JUSTIFY_LEFT:
                     justif.append( 'l' );
                     break;
-                case Parser.JUSTIFY_RIGHT:
+                case Sink.JUSTIFY_RIGHT:
                     justif.append( 'r' );
                     break;
             }
@@ -773,13 +773,13 @@ public class LatexSink
         char justif;
         switch ( cellJustif[cellCount] )
         {
-            case Parser.JUSTIFY_LEFT:
+            case Sink.JUSTIFY_LEFT:
                 justif = 'l';
                 break;
-            case Parser.JUSTIFY_RIGHT:
+            case Sink.JUSTIFY_RIGHT:
                 justif = 'r';
                 break;
-            case Parser.JUSTIFY_CENTER:
+            case Sink.JUSTIFY_CENTER:
             default:
                 justif = 'c';
                 break;

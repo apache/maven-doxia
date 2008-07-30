@@ -20,7 +20,6 @@ package org.apache.maven.doxia.sink;
  */
 
 import org.apache.maven.doxia.AbstractModuleTest;
-import org.apache.maven.doxia.parser.Parser;
 
 import java.io.CharArrayWriter;
 import java.io.IOException;
@@ -393,7 +392,7 @@ public abstract class AbstractSinkTest
 
     /**
      * Checks that the sequence <code>[table(),
-     * tableRows( Parser.JUSTIFY_CENTER, false ), tableRow(), tableCell(),
+     * tableRows( Sink.JUSTIFY_CENTER, false ), tableRow(), tableCell(),
      * text( cell ), tableCell_(), tableRow_(), tableRows_(), tableCaption(),
      * text( caption ), tableCaption_(), table_()]</code>,
      * invoked on the current sink, produces the same result as
@@ -403,7 +402,7 @@ public abstract class AbstractSinkTest
     {
         String cell = "cell";
         String caption = "Table_caption";
-        int[] justify = { Parser.JUSTIFY_CENTER };
+        int[] justify = { Sink.JUSTIFY_CENTER };
         sink.table();
         sink.tableRows( justify, false );
         sink.tableRow();
