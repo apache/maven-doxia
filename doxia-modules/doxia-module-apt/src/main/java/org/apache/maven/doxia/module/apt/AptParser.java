@@ -1149,7 +1149,7 @@ public class AptParser
     private void nextBlock( boolean firstBlock )
         throws AptParseException
     {
-        // Skip open and comment lines.
+        // Skip open lines.
         int length, indent, i;
 
         skipLoop: for ( ;; )
@@ -1311,9 +1311,9 @@ public class AptParser
                 }
                 break;
             case COMMENT:
-                if ( indent == 0 && charAt( line, length, i + 1 ) == COMMENT )
+                if ( charAt( line, length, i + 1 ) == COMMENT )
                 {
-                    block = new Comment( line.substring( 2 ).trim() );
+                    block = new Comment( line.substring( i + 2 ).trim() );
                 }
                 break;
             default:
@@ -1604,11 +1604,9 @@ public class AptParser
                     int i = 0;
 
                     i = skipSpace( l, length, i );
-                    if ( i == length
-                        || ( AptParser.charAt( l, length, i ) == COMMENT && AptParser.charAt( l, length, i + 1 ) == COMMENT ) )
+                    if ( i == length )
                     {
-                        // Stop after open or comment line and skip it.
-                        // (A comment line is considered to be an open line.)
+                        // Stop after open line and skip it.
                         AptParser.this.nextLine();
                         break;
                     }
