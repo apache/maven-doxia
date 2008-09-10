@@ -66,7 +66,7 @@ public abstract class AbstractSink
      * @param text the text to scan.
      * @return a String that contains only System EOLs.
      */
-     protected String unifyEOLs( String text )
+     protected static String unifyEOLs( String text )
      {
         if ( text == null )
         {
