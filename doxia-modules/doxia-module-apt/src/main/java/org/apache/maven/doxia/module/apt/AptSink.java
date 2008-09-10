@@ -895,7 +895,7 @@ public class AptSink
      */
     protected void write( String text )
     {
-        writer.write( text );
+        writer.write( unifyEOLs( text ) );
     }
 
     /**

@@ -1742,7 +1742,7 @@ public class DocBookSink
     /** {@inheritDoc} */
     protected void write( String text )
     {
-        markup( text );
+        markup( unifyEOLs( text ) );
     }
 
     /**
