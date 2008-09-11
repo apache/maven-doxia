@@ -116,16 +116,11 @@ public class DocBookParserTest extends AbstractParserTest
         assertEquals( "text", ( (SinkEventElement) it.next() ).getName() );
         assertEquals( "bold_", ( (SinkEventElement) it.next() ).getName() );
 
-        SinkEventElement el = (SinkEventElement) it.next();
-        assertEquals( "text", el.getName() );
-        assertEquals( " ",  (String) el.getArgs()[0] );
-
         assertEquals( "italic", ( (SinkEventElement) it.next() ).getName() );
         assertEquals( "text", ( (SinkEventElement) it.next() ).getName() );
         assertEquals( "italic_", ( (SinkEventElement) it.next() ).getName() );
         assertEquals( "paragraph_", ( (SinkEventElement) it.next() ).getName() );
         assertFalse( it.hasNext() );
-
 
         // same test with EOL
         text = "<para><command>word</command>" + EOL + "<emphasis>word</emphasis></para>";
@@ -139,15 +134,10 @@ public class DocBookParserTest extends AbstractParserTest
         assertEquals( "text", ( (SinkEventElement) it.next() ).getName() );
         assertEquals( "bold_", ( (SinkEventElement) it.next() ).getName() );
 
-        el = (SinkEventElement) it.next();
-        assertEquals( "text", el.getName() );
-        assertEquals( EOL,  (String) el.getArgs()[0] );
-
         assertEquals( "italic", ( (SinkEventElement) it.next() ).getName() );
         assertEquals( "text", ( (SinkEventElement) it.next() ).getName() );
         assertEquals( "italic_", ( (SinkEventElement) it.next() ).getName() );
         assertEquals( "paragraph_", ( (SinkEventElement) it.next() ).getName() );
         assertFalse( it.hasNext() );
-
     }
 }

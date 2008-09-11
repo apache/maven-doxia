@@ -138,7 +138,10 @@ public abstract class AbstractXmlParser
             }
             else if ( eventType == XmlPullParser.TEXT )
             {
-                handleText( parser, sink );
+                if ( !parser.getText().trim().equals( "" ) )
+                {
+                    handleText( parser, sink );
+                }
             }
             else if ( eventType == XmlPullParser.CDSECT )
             {
@@ -151,6 +154,10 @@ public abstract class AbstractXmlParser
             else if ( eventType == XmlPullParser.ENTITY_REF )
             {
                 handleEntity( parser, sink );
+            }
+            else if ( eventType == XmlPullParser.IGNORABLE_WHITESPACE )
+            {
+                // nop
             }
 
             try
