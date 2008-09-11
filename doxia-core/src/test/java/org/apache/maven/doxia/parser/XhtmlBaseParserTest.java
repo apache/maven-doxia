@@ -148,11 +148,16 @@ public class XhtmlBaseParserTest
         assertEquals( "text", ( (SinkEventElement) it.next() ).getName() );
         assertEquals( "bold_", ( (SinkEventElement) it.next() ).getName() );
 
+        SinkEventElement el = (SinkEventElement) it.next();
+        assertEquals( "text", el.getName() );
+        assertEquals( " ",  (String) el.getArgs()[0] );
+
         assertEquals( "italic", ( (SinkEventElement) it.next() ).getName() );
         assertEquals( "text", ( (SinkEventElement) it.next() ).getName() );
         assertEquals( "italic_", ( (SinkEventElement) it.next() ).getName() );
         assertEquals( "paragraph_", ( (SinkEventElement) it.next() ).getName() );
         assertFalse( it.hasNext() );
+
 
         // same test with EOL
         String EOL = System.getProperty( "line.separator" );
@@ -166,6 +171,11 @@ public class XhtmlBaseParserTest
         assertEquals( "bold", ( (SinkEventElement) it.next() ).getName() );
         assertEquals( "text", ( (SinkEventElement) it.next() ).getName() );
         assertEquals( "bold_", ( (SinkEventElement) it.next() ).getName() );
+
+        el = (SinkEventElement) it.next();
+        assertEquals( "text", el.getName() );
+        // according to section 2.11 of the XML spec, parsers must normalize line breaks to "\n"
+        assertEquals( "\n",  (String) el.getArgs()[0] );
 
         assertEquals( "italic", ( (SinkEventElement) it.next() ).getName() );
         assertEquals( "text", ( (SinkEventElement) it.next() ).getName() );
@@ -187,7 +197,7 @@ public class XhtmlBaseParserTest
         assertEquals( "text", ( (SinkEventElement) it.next() ).getName() );
         assertEquals( "italic_", ( (SinkEventElement) it.next() ).getName() );
 
-        SinkEventElement el = (SinkEventElement) it.next();
+        el = (SinkEventElement) it.next();
         assertEquals( "text", el.getName() );
         assertEquals( ".",  (String) el.getArgs()[0] );
 
