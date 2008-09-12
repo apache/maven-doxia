@@ -27,6 +27,7 @@ import org.apache.maven.doxia.markup.XmlMarkup;
 import org.apache.maven.doxia.sink.Sink;
 import org.apache.maven.doxia.sink.SinkEventAttributeSet;
 
+import org.codehaus.plexus.util.StringUtils;
 import org.codehaus.plexus.util.xml.pull.MXParser;
 import org.codehaus.plexus.util.xml.pull.XmlPullParser;
 import org.codehaus.plexus.util.xml.pull.XmlPullParserException;
@@ -42,6 +43,12 @@ public abstract class AbstractXmlParser
     extends AbstractParser
     implements XmlMarkup
 {
+    private boolean ignorable;
+
+    private boolean collapsible;
+
+    private boolean trimmable;
+
     /** {@inheritDoc} */
     public void parse( Reader source, Sink sink )
         throws ParseException
@@ -90,7 +97,7 @@ public abstract class AbstractXmlParser
     /**
      * Converts the attributes of the current start tag of the given parser to a SinkEventAttributeSet.
      *
-     * @param parser A parser.
+     * @param parser A parser, not null.
      * @return a SinkEventAttributeSet or null if the current parser event is not a start tag.
      */
     protected SinkEventAttributeSet getAttributesFromParser( XmlPullParser parser )
@@ -112,11 +119,10 @@ public abstract class AbstractXmlParser
         return atts;
     }
 
-
     /**
      * Parse the model from the XmlPullParser into the given sink.
      *
-     * @param parser A parser.
+     * @param parser A parser, not null.
      * @param sink the sink to receive the events.
      * @throws org.codehaus.plexus.util.xml.pull.XmlPullParserException if there's a problem parsing the model
      * @throws org.apache.maven.doxia.macro.MacroExecutionException if there's a problem executing a macro
@@ -138,7 +144,19 @@ public abstract class AbstractXmlParser
             }
             else if ( eventType == XmlPullParser.TEXT )
             {
-                handleText( parser, sink );
+                String text = getText( parser );
+
+                if ( isIgnorableWhitespace() )
+                {
+                    if ( !text.trim().equals( "" ) )
+                    {
+                        handleText( parser, sink );
+                    }
+                }
+                else
+                {
+                    handleText( parser, sink );
+                }
             }
             else if ( eventType == XmlPullParser.CDSECT )
             {
@@ -151,6 +169,10 @@ public abstract class AbstractXmlParser
             else if ( eventType == XmlPullParser.ENTITY_REF )
             {
                 handleEntity( parser, sink );
+            }
+            else if ( eventType == XmlPullParser.IGNORABLE_WHITESPACE )
+            {
+                // nop
             }
 
             try
@@ -167,7 +189,7 @@ public abstract class AbstractXmlParser
     /**
      * Goes through the possible start tags.
      *
-     * @param parser A parser.
+     * @param parser A parser, not null.
      * @param sink the sink to receive the events.
      * @throws org.codehaus.plexus.util.xml.pull.XmlPullParserException if there's a problem parsing the model
      * @throws org.apache.maven.doxia.macro.MacroExecutionException if there's a problem executing a macro
@@ -178,7 +200,7 @@ public abstract class AbstractXmlParser
     /**
      * Goes through the possible end tags.
      *
-     * @param parser A parser.
+     * @param parser A parser, not null.
      * @param sink the sink to receive the events.
      * @throws org.codehaus.plexus.util.xml.pull.XmlPullParserException if there's a problem parsing the model
      * @throws org.apache.maven.doxia.macro.MacroExecutionException if there's a problem executing a macro
@@ -189,7 +211,7 @@ public abstract class AbstractXmlParser
     /**
      * Handles text events.
      *
-     * @param parser A parser.
+     * @param parser A parser, not null.
      * @param sink the sink to receive the events.
      * @throws org.codehaus.plexus.util.xml.pull.XmlPullParserException if there's a problem parsing the model
      */
@@ -199,7 +221,7 @@ public abstract class AbstractXmlParser
     /**
      * Handles CDATA sections.
      *
-     * @param parser A parser.
+     * @param parser A parser, not null.
      * @param sink the sink to receive the events.
      * @throws org.codehaus.plexus.util.xml.pull.XmlPullParserException if there's a problem parsing the model
      */
@@ -209,7 +231,7 @@ public abstract class AbstractXmlParser
     /**
      * Handles comments.
      *
-     * @param parser A parser.
+     * @param parser A parser, not null.
      * @param sink the sink to receive the events.
      * @throws org.codehaus.plexus.util.xml.pull.XmlPullParserException if there's a problem parsing the model
      */
@@ -219,11 +241,110 @@ public abstract class AbstractXmlParser
     /**
      * Handles entities.
      *
-     * @param parser A parser.
+     * @param parser A parser, not null.
      * @param sink the sink to receive the events.
      * @throws org.codehaus.plexus.util.xml.pull.XmlPullParserException if there's a problem parsing the model
      */
     protected abstract void handleEntity( XmlPullParser parser, Sink sink )
         throws XmlPullParserException;
 
+    /**
+     * @return <code>true</code> if whitespace will be ignored, <code>false</code> otherwise.
+     * @see #setIgnorableWhitespace(boolean)
+     */
+    protected boolean isIgnorableWhitespace()
+    {
+        return ignorable;
+    }
+
+    /**
+     * Specify that whitespace will be ignore i.e.:
+     * <pre>&lt;tr&gt; &lt;td/&gt; &lt;/tr&gt;</pre>
+     * is equivalent to
+     * <pre>&lt;tr&gt;&lt;td/&gt;&lt;/tr&gt;</pre>
+     *
+     * @param ignorable <code>true</code> to ignore whitespace, <code>false</code> otherwise.
+     */
+    protected void setIgnorableWhitespace( boolean ignorable )
+    {
+        this.ignorable = ignorable;
+    }
+
+    /**
+     * @return <code>true</code> if text will collapse, <code>false</code> otherwise.
+     * @see #setCollapsibleWhitespace(boolean)
+     */
+    protected boolean isCollapsibleWhitespace()
+    {
+        return collapsible;
+    }
+
+    /**
+     * Specify that text will be collapse i.e.:
+     * <pre>Text   Text</pre>
+     * is equivalent to
+     * <pre>Text Text</pre>
+     *
+     * @param collapsible <code>true</code> to allow collapsible text, <code>false</code> otherwise.
+     */
+    protected void setCollapsibleWhitespace( boolean collapsible )
+    {
+        this.collapsible = collapsible;
+    }
+
+    /**
+     * @return <code>true</code> if text will be trim, <code>false</code> otherwise.
+     * @see #setTrimmableWhitespace(boolean)
+     */
+    protected boolean isTrimmableWhitespace()
+    {
+        return trimmable;
+    }
+
+    /**
+     * Specify that text will be collapse i.e.:
+     * <pre>&lt;p&gt; Text &lt;/p&gt;</pre>
+     * is equivalent to
+     * <pre>&lt;p&gt;Text&lt;/p&gt;</pre>
+     *
+     * @param trimmable <code>true</code> to allow trimmable text, <code>false</code> otherwise.
+     */
+    protected void setTrimmableWhitespace( boolean trimmable )
+    {
+        this.trimmable = trimmable;
+    }
+
+    /**
+     * @param parser A parser, not null.
+     * @return the {@link XmlPullParser#getText()} taking care of trimmable or collapsible configuration.
+     * @see XmlPullParser#getText()
+     * @see #isCollapsibleWhitespace()
+     * @see #isTrimmableWhitespace()
+     */
+    protected String getText( XmlPullParser parser )
+    {
+        String text = parser.getText();
+
+        if ( isTrimmableWhitespace() )
+        {
+            text = text.trim();
+        }
+
+        if ( isCollapsibleWhitespace() )
+        {
+            StringBuffer newText = new StringBuffer();
+            String[] elts = StringUtils.split( text, " \r\n" );
+            for ( int i = 0; i < elts.length; i++ )
+            {
+                newText.append( elts[i] );
+                if ( ( i + 1 ) < elts.length )
+                {
+                    newText.append( " " );
+                }
+            }
+            text = newText.toString();
+        }
+
+        return text;
+    }
 }

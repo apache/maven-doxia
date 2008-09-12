@@ -101,7 +101,7 @@ public class XhtmlBaseParser
                 verbatim();
             }
 
-            sink.text( parser.getText() );
+            sink.text( getText( parser ) );
         }
         else if ( parser.getName().equals( Tag.H2.toString() ) )
         {
@@ -428,7 +428,7 @@ public class XhtmlBaseParser
 
                 if ( isVerbatim() )
                 {
-                    sink.text( parser.getText() );
+                    sink.text( getText( parser ) );
                 }
                 else
                 {
@@ -437,7 +437,7 @@ public class XhtmlBaseParser
             }
             else
             {
-                sink.text( parser.getText() );
+                sink.text( getText( parser ) );
             }
         }
         else if ( parser.getName().equals( Tag.P.toString() ) )
@@ -642,7 +642,7 @@ public class XhtmlBaseParser
     protected void handleText( XmlPullParser parser, Sink sink )
         throws XmlPullParserException
     {
-        String text = parser.getText();
+        String text = getText( parser );
 
         /*
          * NOTE: Don't do any whitespace trimming here. Whitespace normalization has already been performed by the
@@ -672,14 +672,14 @@ public class XhtmlBaseParser
     protected void handleCdsect( XmlPullParser parser, Sink sink )
         throws XmlPullParserException
     {
-        sink.text( parser.getText() );
+        sink.text( getText( parser ) );
     }
 
     /** {@inheritDoc} */
     protected void handleComment( XmlPullParser parser, Sink sink )
         throws XmlPullParserException
     {
-        String text = parser.getText();
+        String text = getText( parser );
 
         if ( "PB".equals( text.trim() ) )
         {
@@ -695,7 +695,7 @@ public class XhtmlBaseParser
     protected void handleEntity( XmlPullParser parser, Sink sink )
         throws XmlPullParserException
     {
-        String text = parser.getText();
+        String text = getText( parser );
 
         int[] holder = new int[] {0, 0};
         char[] chars = parser.getTextCharacters( holder );

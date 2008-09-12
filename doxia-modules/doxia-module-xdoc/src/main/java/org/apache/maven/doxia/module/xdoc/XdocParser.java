@@ -91,6 +91,8 @@ public class XdocParser
 
         Reader tmp = new StringReader( sourceContent );
 
+        setIgnorableWhitespace( true );
+
         super.parse( tmp, sink );
     }
 
@@ -110,7 +112,7 @@ public class XdocParser
                 verbatim();
             }
 
-            sink.text( parser.getText() );
+            sink.text( getText( parser ) );
         }
         else if ( parser.getName().equals( DOCUMENT_TAG.toString() ) )
         {
@@ -147,7 +149,7 @@ public class XdocParser
                 sink.anchor( id.toString() );
                 sink.anchor_();
             }
-            
+
             sink.section( Sink.SECTION_LEVEL_1, attribs );
 
             sink.sectionTitle( Sink.SECTION_LEVEL_1, attribs );
@@ -166,7 +168,7 @@ public class XdocParser
                 sink.anchor( id.toString() );
                 sink.anchor_();
             }
-            
+
             sink.section( Sink.SECTION_LEVEL_2, attribs );
 
             sink.sectionTitle( Sink.SECTION_LEVEL_2, attribs );
@@ -275,7 +277,7 @@ public class XdocParser
 
                 if ( isVerbatim() )
                 {
-                    sink.text( parser.getText() );
+                    sink.text( getText( parser ) );
                 }
                 else
                 {
@@ -284,7 +286,7 @@ public class XdocParser
             }
             else
             {
-                sink.text( parser.getText() );
+                sink.text( getText( parser ) );
             }
         }
         else if ( parser.getName().equals( DOCUMENT_TAG.toString() ) )
@@ -399,7 +401,7 @@ public class XdocParser
     protected void handleCdsect( XmlPullParser parser, Sink sink )
         throws XmlPullParserException
     {
-        String text = parser.getText();
+        String text = getText( parser );
 
         if ( scriptBlock )
         {
@@ -439,5 +441,4 @@ public class XdocParser
 
         setSectionLevel( newLevel );
     }
-
 }
