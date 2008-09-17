@@ -58,8 +58,6 @@ import org.codehaus.plexus.util.xml.XMLWriter;
  *
  * @see <a href="http://www.lowagie.com/iText/tutorial/ch07.html">http://www.lowagie.com/iText/tutorial/ch07.html</a>
  *
- * @plexus.component role="org.apache.maven.doxia.sink.Sink" role-hint="pdf"
- *
  * @author <a href="mailto:vincent.siveton@gmail.com">Vincent Siveton</a>
  * @version $Id$
  */

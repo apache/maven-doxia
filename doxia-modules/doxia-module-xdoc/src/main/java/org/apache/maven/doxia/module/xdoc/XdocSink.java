@@ -37,7 +37,6 @@ import org.apache.maven.doxia.util.HtmlTools;
  * @author <a href="mailto:james@jamestaylor.org">James Taylor</a>
  * @version $Id$
  * @since 1.0
- * @plexus.component role="org.apache.maven.doxia.sink.Sink" role-hint="xdoc"
  */
 public class XdocSink
     extends XhtmlBaseSink

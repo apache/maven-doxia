@@ -35,8 +35,8 @@ import java.io.Writer;
 /**
  * Latex Sink implementation.
  *
+ * @version $Id$
  * @since 1.0
- * @plexus.component role="org.apache.maven.doxia.sink.Sink" role-hint="tex"
  */
 public class LatexSink
     extends AbstractTextSink
@@ -729,7 +729,7 @@ public class LatexSink
     {
         tableCell( false );
     }
-    
+
     /**
      * {@inheritDoc}
      */
@@ -745,7 +745,7 @@ public class LatexSink
     {
         tableCell( true );
     }
-    
+
     /**
      * {@inheritDoc}
      */
@@ -753,9 +753,9 @@ public class LatexSink
     {
         tableCell_( true );
     }
-    
+
     private boolean lastCellWasHeader = false;
-    
+
     /**
      * Starts a table cell.
      *
@@ -764,7 +764,7 @@ public class LatexSink
     private void tableCell( boolean header )
     {
         lastCellWasHeader = header;
-        
+
         if ( cellCount > 0 )
         {
             markup( " &" + EOL );

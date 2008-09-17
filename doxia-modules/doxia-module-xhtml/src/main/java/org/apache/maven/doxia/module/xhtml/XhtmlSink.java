@@ -38,7 +38,6 @@ import org.codehaus.plexus.util.StringUtils;
  * @author ltheussl
  * @version $Id$
  * @since 1.0
- * @plexus.component role="org.apache.maven.doxia.sink.Sink" role-hint="xhtml"
  */
 public class XhtmlSink
     extends XhtmlBaseSink

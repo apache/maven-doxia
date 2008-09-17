@@ -39,7 +39,7 @@ import org.apache.maven.doxia.sink.SinkEventAttributes;
 
 /**
  * @version $Id$
- * @plexus.component role="org.apache.maven.doxia.sink.Sink" role-hint="rtf"
+ * @since 1.0
  */
 public class RtfSink
     extends SinkAdapter
