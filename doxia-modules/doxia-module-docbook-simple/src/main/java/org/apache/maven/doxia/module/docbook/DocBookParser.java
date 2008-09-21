@@ -42,7 +42,7 @@ import javax.swing.text.html.HTML.Tag;
  * @author <a href="mailto:jason@maven.org">Jason van Zyl</a>
  * @version $Id$
  * @since 1.0
- * @plexus.component role="org.apache.maven.doxia.parser.Parser" role-hint="doc-book"
+ * @plexus.component role="org.apache.maven.doxia.parser.Parser" role-hint="docbook"
  */
 public class DocBookParser
     extends AbstractXmlParser
@@ -734,10 +734,10 @@ public class DocBookParser
         /*
          * NOTE: Don't do any whitespace trimming here. Whitespace normalization has already been performed by the
          * parser so any whitespace that makes it here is significant.
-         */ 
+         */
         if ( StringUtils.isNotEmpty( text ) )
         {
-            // Emit separate text events for different lines, e.g. the input 
+            // Emit separate text events for different lines, e.g. the input
             // "\nLine1\n\nLine2\n\n" should deliver the event sequence "\n", "Line1\n", "\n", "Line2\n", "\n".
             // In other words, the concatenation of the text events must deliver the input sequence.
             // (according to section 2.11 of the XML spec, parsers must normalize line breaks to "\n")
