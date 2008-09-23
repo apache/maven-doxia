@@ -29,6 +29,7 @@ under the License.
   </parent>
 
   <artifactId>doxia-module-fo</artifactId>
+
   <name>Doxia :: FO Module</name>
   <description>A Doxia module for FO (Formatting Objects) source documents.</description>
 
