@@ -19,10 +19,12 @@ package org.apache.maven.doxia.module.site.manager;
  * under the License.
  */
 
-import org.apache.maven.doxia.module.site.SiteModule;
-
 import java.util.Collection;
+import java.util.Iterator;
+import java.util.LinkedHashMap;
 import java.util.Map;
+
+import org.apache.maven.doxia.module.site.SiteModule;
 
 /**
  * Simple implementation of the SiteModuleManager interface.
@@ -40,10 +42,23 @@ public class DefaultSiteModuleManager
      */
     private Map siteModules;
 
+    private Collection siteModulesValues;
+
     /** {@inheritDoc} */
     public Collection getSiteModules()
     {
-        return siteModules.values();
+        if ( siteModulesValues == null )
+        {
+            Map siteModulesTmp = new LinkedHashMap();
+            for ( Iterator it = siteModules.values().iterator(); it.hasNext(); )
+            {
+                Object obj = it.next();
+                siteModulesTmp.put( obj.getClass(), obj );
+            }
+            siteModulesValues = siteModulesTmp.values();
+        }
+
+        return siteModulesValues;
     }
 
     /** {@inheritDoc} */
