@@ -24,7 +24,9 @@ import javax.swing.text.html.HTML.Tag;
 import org.apache.maven.doxia.markup.XmlMarkup;
 
 /**
- * List of <code>Docbook</code> markups.
+ * List of <code>DocBook</code> markups.
+ * TODO: only use <a href="http://www.docbook.org/schemas/sdocbook/elements.html">Simplified DocBook elements</a>,
+ * remove full DocBook-only ones.
  *
  * @author <a href="mailto:vincent.siveton@gmail.com">Vincent Siveton</a>
  * @version $Id$
@@ -34,10 +36,10 @@ public interface DocbookMarkup
     extends XmlMarkup
 {
     // ----------------------------------------------------------------------
-    // Specific Docbook tags
+    // Specific DocBook tags
     // ----------------------------------------------------------------------
 
-    /** Docbook tag for <code>anchor</code> */
+    /** DocBook tag for <code>anchor</code> */
     Tag ANCHOR_TAG = new Tag()
     {
         /** {@inheritDoc} */
@@ -47,7 +49,7 @@ public interface DocbookMarkup
         }
     };
 
-    /** Docbook tag for <code>article</code> */
+    /** DocBook tag for <code>article</code> */
     Tag ARTICLE_TAG = new Tag()
     {
         /** {@inheritDoc} */
@@ -57,7 +59,7 @@ public interface DocbookMarkup
         }
     };
     
-    /** Docbook tag for <code>articleinfo</code> */
+    /** DocBook tag for <code>articleinfo</code> */
     Tag ARTICLEINFO_TAG = new Tag()
     {
         /** {@inheritDoc} */
@@ -67,7 +69,7 @@ public interface DocbookMarkup
         }
     };
 
-    /** Docbook tag for <code>book</code> */
+    /** DocBook tag for <code>book</code> */
     Tag BOOK_TAG = new Tag()
     {
         /** {@inheritDoc} */
@@ -77,7 +79,7 @@ public interface DocbookMarkup
         }
     };
 
-    /** Docbook tag for <code>bookinfo</code> */
+    /** DocBook tag for <code>bookinfo</code> */
     Tag BOOKINFO_TAG = new Tag()
     {
         /** {@inheritDoc} */
@@ -87,7 +89,7 @@ public interface DocbookMarkup
         }
     };
 
-    /** Docbook tag for <code>chapter</code> */
+    /** DocBook tag for <code>chapter</code> */
     Tag CHAPTER_TAG = new Tag()
     {
         /** {@inheritDoc} */
@@ -97,7 +99,7 @@ public interface DocbookMarkup
         }
     };
 
-    /** Docbook tag for <code>colspec</code> */
+    /** DocBook tag for <code>colspec</code> */
     Tag COLSPEC_TAG = new Tag()
     {
         /** {@inheritDoc} */
@@ -107,7 +109,7 @@ public interface DocbookMarkup
         }
     };
 
-    /** Docbook tag for <code>corpauthor</code> */
+    /** DocBook tag for <code>corpauthor</code> */
     Tag CORPAUTHOR_TAG = new Tag()
     {
         /** {@inheritDoc} */
@@ -117,7 +119,7 @@ public interface DocbookMarkup
         }
     };
 
-    /** Docbook tag for <code>date</code> */
+    /** DocBook tag for <code>date</code> */
     Tag DATE_TAG = new Tag()
     {
         /** {@inheritDoc} */
@@ -127,7 +129,7 @@ public interface DocbookMarkup
         }
     };
 
-    /** Docbook tag for <code>email</code> */
+    /** DocBook tag for <code>email</code> */
     Tag EMAIL_TAG = new Tag()
     {
         /** {@inheritDoc} */
@@ -137,7 +139,7 @@ public interface DocbookMarkup
         }
     };
 
-    /** Docbook tag for <code>entry</code> */
+    /** DocBook tag for <code>entry</code> */
     Tag ENTRY_TAG = new Tag()
     {
         /** {@inheritDoc} */
@@ -147,7 +149,7 @@ public interface DocbookMarkup
         }
     };
 
-    /** Docbook tag for <code>figure</code> */
+    /** DocBook tag for <code>figure</code> */
     Tag FIGURE_TAG = new Tag()
     {
         /** {@inheritDoc} */
@@ -157,7 +159,7 @@ public interface DocbookMarkup
         }
     };
 
-    /** Docbook tag for <code>formalpara</code> */
+    /** DocBook tag for <code>formalpara</code> */
     Tag FORMALPARA_TAG = new Tag()
     {
         /** {@inheritDoc} */
@@ -167,7 +169,7 @@ public interface DocbookMarkup
         }
     };
 
-    /** Docbook tag for <code>imagedata</code> */
+    /** DocBook tag for <code>imagedata</code> */
     Tag IMAGEDATA_TAG = new Tag()
     {
         /** {@inheritDoc} */
@@ -177,7 +179,7 @@ public interface DocbookMarkup
         }
     };
 
-    /** Docbook tag for <code>imageobject</code> */
+    /** DocBook tag for <code>imageobject</code> */
     Tag IMAGEOBJECT_TAG = new Tag()
     {
         /** {@inheritDoc} */
@@ -187,7 +189,7 @@ public interface DocbookMarkup
         }
     };
 
-    /** Docbook tag for <code>info</code> */
+    /** DocBook tag for <code>info</code> */
     Tag INFO_TAG = new Tag()
     {
         /** {@inheritDoc} */
@@ -197,7 +199,7 @@ public interface DocbookMarkup
         }
     };
 
-    /** Docbook tag for <code>informalfigure</code> */
+    /** DocBook tag for <code>informalfigure</code> */
     Tag INFORMALFIGURE_TAG = new Tag()
     {
         /** {@inheritDoc} */
@@ -207,7 +209,7 @@ public interface DocbookMarkup
         }
     };
 
-    /** Docbook tag for <code>informaltable</code> */
+    /** DocBook tag for <code>informaltable</code> */
     Tag INFORMALTABLE_TAG = new Tag()
     {
         /** {@inheritDoc} */
@@ -217,7 +219,7 @@ public interface DocbookMarkup
         }
     };
 
-    /** Docbook tag for <code>itemizedlist</code> */
+    /** DocBook tag for <code>itemizedlist</code> */
     Tag ITEMIZEDLIST_TAG = new Tag()
     {
         /** {@inheritDoc} */
@@ -227,7 +229,7 @@ public interface DocbookMarkup
         }
     };
 
-    /** Docbook tag for <code>link</code> */
+    /** DocBook tag for <code>link</code> */
     Tag LINK_TAG = new Tag()
     {
         /** {@inheritDoc} */
@@ -237,7 +239,7 @@ public interface DocbookMarkup
         }
     };
 
-    /** Docbook tag for <code>listitem</code> */
+    /** DocBook tag for <code>listitem</code> */
     Tag LISTITEM_TAG = new Tag()
     {
         /** {@inheritDoc} */
@@ -247,7 +249,7 @@ public interface DocbookMarkup
         }
     };
 
-    /** Docbook tag for <code>mediaobject</code> */
+    /** DocBook tag for <code>mediaobject</code> */
     Tag MEDIAOBJECT_TAG = new Tag()
     {
         /** {@inheritDoc} */
@@ -257,7 +259,7 @@ public interface DocbookMarkup
         }
     };
 
-    /** Docbook tag for <code>orderedlist</code> */
+    /** DocBook tag for <code>orderedlist</code> */
     Tag ORDEREDLIST_TAG = new Tag()
     {
         /** {@inheritDoc} */
@@ -267,7 +269,7 @@ public interface DocbookMarkup
         }
     };
 
-    /** Docbook tag for <code>para</code> */
+    /** DocBook tag for <code>para</code> */
     Tag PARA_TAG = new Tag()
     {
         /** {@inheritDoc} */
@@ -277,7 +279,7 @@ public interface DocbookMarkup
         }
     };
 
-    /** Docbook tag for <code>programlisting</code> */
+    /** DocBook tag for <code>programlisting</code> */
     Tag PROGRAMLISTING_TAG = new Tag()
     {
         /** {@inheritDoc} */
@@ -287,7 +289,7 @@ public interface DocbookMarkup
         }
     };
 
-    /** Docbook tag for <code>row</code> */
+    /** DocBook tag for <code>row</code> */
     Tag ROW_TAG = new Tag()
     {
         /** {@inheritDoc} */
@@ -297,7 +299,7 @@ public interface DocbookMarkup
         }
     };
 
-    /** Docbook tag for <code>section</code> */
+    /** DocBook tag for <code>section</code> */
     Tag SECTION_TAG = new Tag()
     {
         /** {@inheritDoc} */
@@ -307,7 +309,7 @@ public interface DocbookMarkup
         }
     };
 
-    /** Docbook tag for <code>simpara</code> */
+    /** DocBook tag for <code>simpara</code> */
     Tag SIMPARA_TAG = new Tag()
     {
         /** {@inheritDoc} */
@@ -317,7 +319,7 @@ public interface DocbookMarkup
         }
     };
 
-    /** Docbook tag for <code>tbody</code> */
+    /** DocBook tag for <code>tbody</code> */
     Tag TBODY_TAG = new Tag()
     {
         /** {@inheritDoc} */
@@ -327,7 +329,7 @@ public interface DocbookMarkup
         }
     };
 
-    /** Docbook tag for <code>term</code> */
+    /** DocBook tag for <code>term</code> */
     Tag TERM_TAG = new Tag()
     {
         /** {@inheritDoc} */
@@ -337,7 +339,7 @@ public interface DocbookMarkup
         }
     };
 
-    /** Docbook tag for <code>tgroup</code> */
+    /** DocBook tag for <code>tgroup</code> */
     Tag TGROUP_TAG = new Tag()
     {
         /** {@inheritDoc} */
@@ -347,7 +349,7 @@ public interface DocbookMarkup
         }
     };
 
-    /** Docbook tag for <code>thead</code> */
+    /** DocBook tag for <code>thead</code> */
     Tag THEAD_TAG = new Tag()
     {
         /** {@inheritDoc} */
@@ -357,7 +359,7 @@ public interface DocbookMarkup
         }
     };
 
-    /** Docbook tag for <code>ulink</code> */
+    /** DocBook tag for <code>ulink</code> */
     Tag ULINK_TAG = new Tag()
     {
         /** {@inheritDoc} */
@@ -367,7 +369,7 @@ public interface DocbookMarkup
         }
     };
 
-    /** Docbook tag for <code>url</code> */
+    /** DocBook tag for <code>url</code> */
     Tag URL_TAG = new Tag()
     {
         /** {@inheritDoc} */
@@ -377,7 +379,7 @@ public interface DocbookMarkup
         }
     };
 
-    /** Docbook tag for <code>variablelist</code> */
+    /** DocBook tag for <code>variablelist</code> */
     Tag VARIABLELIST_TAG = new Tag()
     {
         /** {@inheritDoc} */
@@ -387,7 +389,7 @@ public interface DocbookMarkup
         }
     };
 
-    /** Docbook tag for <code>varlistentry</code> */
+    /** DocBook tag for <code>varlistentry</code> */
     Tag VARLISTENTRY_TAG = new Tag()
     {
         /** {@inheritDoc} */
@@ -397,7 +399,7 @@ public interface DocbookMarkup
         }
     };
 
-    /** Docbook tag for <code>xref</code> */
+    /** DocBook tag for <code>xref</code> */
     Tag XREF_TAG = new Tag()
     {
         /** {@inheritDoc} */
@@ -411,31 +413,31 @@ public interface DocbookMarkup
     // Specific Docbook attributes
     // ----------------------------------------------------------------------
 
-    /** Docbook attribute <code>cols</code> used in <code>tgroup</code> tags */
+    /** DocBook attribute <code>cols</code> used in <code>tgroup</code> tags */
     String COLS_ATTRIBUTE = "cols";
 
-    /** Docbook attribute <code>colsep</code> used in <code>informaltable</code> tags */
+    /** DocBook attribute <code>colsep</code> used in <code>informaltable</code> tags */
     String COLSEP_ATTRIBUTE = "colsep";
 
-    /** Docbook attribute <code>fileref</code> used in <code>orderedlist, imageobject</code> tags */
+    /** DocBook attribute <code>fileref</code> used in <code>orderedlist, imageobject</code> tags */
     String FILEREF_ATTRIBUTE = "fileref";
 
-    /** Docbook attribute <code>format</code> used in <code>imagedata</code> tags */
+    /** DocBook attribute <code>format</code> used in <code>imagedata</code> tags */
     String FORMAT_ATTRIBUTE = "format";
 
-    /** Docbook attribute <code>frame</code> used in <code>informaltable</code> tags */
+    /** DocBook attribute <code>frame</code> used in <code>informaltable</code> tags */
     String FRAME_ATTRIBUTE = "frame";
 
-    /** Docbook attribute <code>linkend</code> used in <code>link</code> tag */
+    /** DocBook attribute <code>linkend</code> used in <code>link</code> tag */
     String LINKEND_ATTRIBUTE = "linkend";
 
-    /** Docbook attribute <code>numeration</code> used in <code>orderedlist</code> tag */
+    /** DocBook attribute <code>numeration</code> used in <code>orderedlist</code> tag */
     String NUMERATION_ATTRIBUTE = "numeration";
 
-    /** Docbook attribute <code>rowsep</code> used in <code>informaltable</code> tags */
+    /** DocBook attribute <code>rowsep</code> used in <code>informaltable</code> tags */
     String ROWSEP_ATTRIBUTE = "rowsep";
 
-    /** Docbook attribute <code>url</code> used in <code>ulink</code> tags */
+    /** DocBook attribute <code>url</code> used in <code>ulink</code> tags */
     String URL_ATTRIBUTE = "url";
 
     // ----------------------------------------------------------------------
@@ -445,15 +447,15 @@ public interface DocbookMarkup
     /** Docbook style <code>arabic</code> used in <code>numeration</code> attribute */
     String ARABIC_STYLE = "arabic";
 
-    /** Docbook style <code>loweralpha</code> used in <code>numeration</code> attribute */
+    /** DocBook style <code>loweralpha</code> used in <code>numeration</code> attribute */
     String LOWERALPHA_STYLE = "loweralpha";
 
-    /** Docbook style <code>lowerroman</code> used in <code>numeration</code> attribute */
+    /** DocBook style <code>lowerroman</code> used in <code>numeration</code> attribute */
     String LOWERROMAN_STYLE = "lowerroman";
 
-    /** Docbook style <code>upperalpha</code> used in <code>numeration</code> attribute */
+    /** DocBook style <code>upperalpha</code> used in <code>numeration</code> attribute */
     String UPPERALPHA_STYLE = "upperalpha";
 
-    /** Docbook style <code>upperroman</code> used in <code>numeration</code> attribute */
+    /** DocBook style <code>upperroman</code> used in <code>numeration</code> attribute */
     String UPPERROMAN_STYLE = "upperroman";
 }

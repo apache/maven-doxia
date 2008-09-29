@@ -30,8 +30,8 @@ under the License.
 
   <artifactId>doxia-module-docbook-simple</artifactId>
 
-  <name>Doxia :: Docbook Simple Module</name>
-  <description>A Doxia module for Docbook source documents.</description>
+  <name>Doxia :: Simplified DocBook Module</name>
+  <description>A Doxia module for Simplified DocBook source documents.</description>
 
   <dependencies>
     <dependency>
