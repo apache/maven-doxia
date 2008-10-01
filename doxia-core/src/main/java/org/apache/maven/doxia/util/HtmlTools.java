@@ -303,6 +303,8 @@ public class HtmlTools
      * HtmlTools.encodeId( "myAnchor" )  = "myAnchor"
      * </pre>
      *
+     * <b>Note</b>: this method is intentionally similar to {@link DoxiaUtils#encodeId(String)}.
+     *
      * @param id The id to be encoded.
      * @return The trimmed and encoded id, or null if id is null.
      */
