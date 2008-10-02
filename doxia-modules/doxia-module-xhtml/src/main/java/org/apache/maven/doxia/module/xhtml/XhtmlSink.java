@@ -44,6 +44,15 @@ public class XhtmlSink
     extends XhtmlBaseSink
     implements XhtmlMarkup
 {
+    /** XHTML 1.0 public id: "-//W3C//DTD XHTML 1.0 Transitional//EN" */
+    public static final String XHTML_PUBLIC_ID = "-//W3C//DTD XHTML 1.0 Transitional//EN";
+
+    /** XHTML 1.0 system id: "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd" */
+    public static final String XHTML_SYSTEM_ID = "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd";
+
+    /** XHTML xmlns: "http://www.w3.org/1999/xhtml" */
+    public static final String XHTML_XMLLNS = "http://www.w3.org/1999/xhtml";
+
     // ----------------------------------------------------------------------
     // Instance fields
     // ----------------------------------------------------------------------
@@ -93,8 +102,8 @@ public class XhtmlSink
 
         setHeadFlag( true );
 
-        write( "<!DOCTYPE html PUBLIC \"-//W3C//DTD XHTML 1.0 Transitional//EN\" \"http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd\">" );
-        write( "<html xmlns=\"http://www.w3.org/1999/xhtml\">" );
+        write( "<!DOCTYPE html PUBLIC \"" + XHTML_PUBLIC_ID + "\" \"" + XHTML_SYSTEM_ID + "\">" );
+        write( "<html xmlns=\"" + XHTML_XMLLNS + "\">" );
 
         writeStartTag( Tag.HEAD );
     }
