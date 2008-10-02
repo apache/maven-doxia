@@ -33,14 +33,18 @@ import org.apache.maven.doxia.parser.Parser;
 import org.apache.maven.doxia.sink.Sink;
 import org.apache.maven.doxia.sink.SinkTestDocument;
 import org.apache.maven.doxia.sink.TextSink;
+import org.codehaus.plexus.util.IOUtil;
 
 /**
  * If a module provides both Parser and Sink, this class
  * can be used to check that chaining them together
  * results in the identity transformation, ie the model is still the same
  * after being piped through a Parser and the corresponding Sink.
+ *
+ * @version $Id$
  */
-public abstract class AbstractIdentityTest extends AbstractModuleTest
+public abstract class AbstractIdentityTest
+    extends AbstractModuleTest
 {
     /**
      * Set to true if the identity transformation should actually be asserted,
@@ -87,7 +91,7 @@ public abstract class AbstractIdentityTest extends AbstractModuleTest
         try
         {
             // generate the expected model
-            writer =  new StringWriter();
+            writer = new StringWriter();
             SinkTestDocument.generate( new TextSink( writer ) );
             String expected = writer.toString();
 
@@ -96,13 +100,12 @@ public abstract class AbstractIdentityTest extends AbstractModuleTest
             fileWriter.write( expected );
             fileWriter.flush();
 
-
             // generate the actual model
-            writer =  new StringWriter();
+            writer = new StringWriter();
             SinkTestDocument.generate( createSink( writer ) );
             reader = new StringReader( writer.toString() );
 
-            writer =  new StringWriter();
+            writer = new StringWriter();
             createParser().parse( reader, new TextSink( writer ) );
             String actual = writer.toString();
 
@@ -124,20 +127,11 @@ public abstract class AbstractIdentityTest extends AbstractModuleTest
         }
         finally
         {
-            if ( writer  != null )
-            {
-                writer.close();
-            }
+            IOUtil.close( writer );
 
-            if ( fileWriter  != null )
-            {
-                fileWriter.close();
-            }
+            IOUtil.close( fileWriter );
 
-            if ( reader != null )
-            {
-                reader.close();
-            }
+            IOUtil.close( reader );
         }
     }
 
@@ -169,6 +163,4 @@ public abstract class AbstractIdentityTest extends AbstractModuleTest
     {
         this.assertIdentity = doAssert;
     }
-
-
 }
