@@ -32,7 +32,8 @@ import org.apache.maven.doxia.sink.SinkEventAttributeSet;
 import org.codehaus.plexus.util.StringUtils;
 
 /**
- * Xhtml sink implementation.
+ * Xhtml sink implementation. <br/>
+ * <b>Note</b>: The encoding used is UTF-8.
  *
  * @author Jason van Zyl
  * @author ltheussl
@@ -102,6 +103,9 @@ public class XhtmlSink
     public void head_()
     {
         setHeadFlag( false );
+
+        // always UTF-8
+        write( "<meta http-equiv=\"Content-Type\" content=\"text/html; charset=UTF-8\"/>" );
 
         writeEndTag( Tag.HEAD );
     }
