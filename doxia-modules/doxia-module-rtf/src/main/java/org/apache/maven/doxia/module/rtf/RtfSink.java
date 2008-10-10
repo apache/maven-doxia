@@ -1644,6 +1644,19 @@ public class RtfSink
         return width;
     }
 
+
+    /** {@inheritDoc} */
+    public void flush()
+    {
+        writer.flush();
+    }
+
+    /** {@inheritDoc} */
+    public void close()
+    {
+        writer.close();
+    }
+
     // -----------------------------------------------------------------------
 
     static class Counter
@@ -2076,17 +2089,5 @@ public class RtfSink
             this.width = width;
             this.height = height;
         }
-    }
-
-    /** {@inheritDoc} */
-    public void flush()
-    {
-        writer.flush();
-    }
-
-    /** {@inheritDoc} */
-    public void close()
-    {
-        writer.close();
     }
 }
