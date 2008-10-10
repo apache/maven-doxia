@@ -27,8 +27,6 @@ package org.apache.maven.doxia.module.rtf;
  */
 class Font
 {
-    private int style;
-
     private int size;
 
     private FontMetrics metrics;
@@ -36,7 +34,6 @@ class Font
     Font( int style, int size /*pts*/ )
         throws Exception
     {
-        this.style = style;
         this.size = size;
         metrics = FontMetrics.find( style );
     }
