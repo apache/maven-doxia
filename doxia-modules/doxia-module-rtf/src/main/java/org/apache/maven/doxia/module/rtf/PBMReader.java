@@ -49,15 +49,15 @@ class PBMReader
 
     private static final String UNSUPPORTED_DEPTH = "unsupported color depth";
 
-    private int type;
+    protected int type;
 
-    private boolean binary;
+    protected boolean binary;
 
-    private int width;
+    protected int width;
 
-    private int height;
+    protected int height;
 
-    private int maxValue;
+    protected int maxValue;
 
     private int bytesPerLine;
 
@@ -173,7 +173,7 @@ class PBMReader
 
     // -----------------------------------------------------------------------
 
-    private class HeaderReader
+    class HeaderReader
     {
 
         private Reader reader;
