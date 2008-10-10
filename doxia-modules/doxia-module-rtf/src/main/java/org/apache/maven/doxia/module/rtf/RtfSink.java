@@ -991,8 +991,7 @@ public class RtfSink
         }
         catch ( Exception e )
         {
-            e.printStackTrace();
-            System.exit( 2 );
+            getLog().error( e.getMessage(), e );
         }
 
         endParagraph();
