@@ -86,7 +86,9 @@ under the License.
               <goal>xsd</goal>
             </goals>
             <configuration>
-              <model>src/main/mdo/fml.mdo</model>
+              <models>
+                <model>src/main/mdo/fml.mdo</model>
+              </models>
               <version>1.0.0</version>
             </configuration>
           </execution>
@@ -98,7 +100,9 @@ under the License.
               <goal>xsd</goal>
             </goals>
             <configuration>
-              <model>src/main/mdo/fml.mdo</model>
+              <models>
+                <model>src/main/mdo/fml.mdo</model>
+              </models>
               <version>1.0.0</version>
             </configuration>
           </execution>
