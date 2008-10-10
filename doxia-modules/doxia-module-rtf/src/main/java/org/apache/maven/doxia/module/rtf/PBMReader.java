@@ -171,12 +171,6 @@ class PBMReader
         return count;
     }
 
-    static void main( String[] args )
-        throws Exception
-    {
-        PBMReader pbm = new PBMReader( args[0] );
-    }
-
     // -----------------------------------------------------------------------
 
     private class HeaderReader
