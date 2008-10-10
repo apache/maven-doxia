@@ -44,31 +44,43 @@ import org.apache.maven.doxia.sink.SinkEventAttributes;
 public class RtfSink
     extends SinkAdapter
 {
-
+    /** Paper width, 21 cm */
     public static final double DEFAULT_PAPER_WIDTH = 21.;   /*cm*/
 
+    /** Paper height, 29.7 cm */
     public static final double DEFAULT_PAPER_HEIGHT = 29.7; /*cm*/
 
+    /** Paper top margin, 2 cm */
     public static final double DEFAULT_TOP_MARGIN = 2.;    /*cm*/
 
+    /** Paper bottom margin, 2 cm */
     public static final double DEFAULT_BOTTOM_MARGIN = 2.; /*cm*/
 
+    /** Paper left margin, 2 cm */
     public static final double DEFAULT_LEFT_MARGIN = 2.;   /*cm*/
 
+    /** Paper right margin, 2 cm */
     public static final double DEFAULT_RIGHT_MARGIN = 2.;  /*cm*/
 
+    /** Font size, 10 pts */
     public static final int DEFAULT_FONT_SIZE = 10; /*pts*/
 
+    /** Spacing, 10 pts */
     public static final int DEFAULT_SPACING = 10;   /*pts*/
 
+    /** Resolution, 72 dpi */
     public static final int DEFAULT_RESOLUTION = 72; /*dpi*/
 
+    /** Image format, bmp */
     public static final String DEFAULT_IMAGE_FORMAT = "bmp";
 
+    /** Image type, palette */
     public static final String DEFAULT_IMAGE_TYPE = "palette";
 
+    /** Data format, ascii */
     public static final String DEFAULT_DATA_FORMAT = "ascii";
 
+    /** Codepage, 1252 */
     public static final int DEFAULT_CODE_PAGE = 1252;
 
     public static final int DEFAULT_CHAR_SET = 0;
@@ -131,7 +143,7 @@ public class RtfSink
 
     private double rightMargin = DEFAULT_RIGHT_MARGIN;
 
-    private int fontSize = DEFAULT_FONT_SIZE;
+    protected int fontSize = DEFAULT_FONT_SIZE;
 
     private int resolution = DEFAULT_RESOLUTION;
 
@@ -153,9 +165,9 @@ public class RtfSink
 
     private Paragraph paragraph;
 
-    private Indentation indentation;
+    protected Indentation indentation;
 
-    private Space space;
+    protected Space space;
 
     private int listItemIndent;
 
@@ -187,18 +199,30 @@ public class RtfSink
 
     // -----------------------------------------------------------------------
 
+    /**
+     * @throws IOException if any
+     */
     public RtfSink()
         throws IOException
     {
         this( System.out );
     }
 
+    /**
+     * @param output not null
+     * @throws IOException if any
+     */
     public RtfSink( OutputStream output )
         throws IOException
     {
         this( output, null );
     }
 
+    /**
+     * @param output not null
+     * @param encoding a valid charset
+     * @throws IOException if any
+     */
     public RtfSink( OutputStream output, String encoding )
         throws IOException
     {
@@ -228,77 +252,121 @@ public class RtfSink
         writer = new PrintWriter( new BufferedWriter( w ) );
     }
 
+    /**
+     * @param width in cm
+     * @param height in cm
+     */
     public void setPaperSize( double width /*cm*/, double height /*cm*/ )
     {
         paperWidth = width;
         paperHeight = height;
     }
 
+    /**
+     * @param margin
+     */
     public void setTopMargin( double margin )
     {
         topMargin = margin;
     }
 
+    /**
+     * @param margin
+     */
     public void setBottomMargin( double margin )
     {
         bottomMargin = margin;
     }
 
+    /**
+     * @param margin
+     */
     public void setLeftMargin( double margin )
     {
         leftMargin = margin;
     }
 
+    /**
+     * @param margin
+     */
     public void setRightMargin( double margin )
     {
         rightMargin = margin;
     }
 
+    /**
+     * @param size in pts
+     */
     public void setFontSize( int size /*pts*/ )
     {
         fontSize = size;
     }
 
+    /**
+     * @param spacing in pts
+     */
     public void setSpacing( int spacing /*pts*/ )
     {
         space.set( 20 * spacing );
     }
 
+    /**
+     * @param resolution in dpi
+     */
     public void setResolution( int resolution /*dpi*/ )
     {
         this.resolution = resolution;
     }
 
+    /**
+     * @param format
+     */
     public void setImageFormat( String format )
     {
         imageFormat = format;
     }
 
+    /**
+     * @param type
+     */
     public void setImageType( String type )
     {
         imageType = type;
     }
 
+    /**
+     * @param format
+     */
     public void setImageDataFormat( String format )
     {
         imageDataFormat = format;
     }
 
+    /**
+     * @param compression
+     */
     public void setImageCompression( boolean compression )
     {
         imageCompression = compression;
     }
 
+    /**
+     * @param cp
+     */
     public void setCodePage( int cp )
     {
         codePage = cp;
     }
 
+    /**
+     * @param cs
+     */
     public void setCharSet( int cs )
     {
         charSet = cs;
     }
 
+    /** {@inheritDoc} */
     public void head()
     {
         writer.println( "{\\rtf1\\ansi\\ansicpg" + codePage + "\\deff0" );
@@ -331,6 +399,7 @@ public class RtfSink
         emptyHeader = true;
     }
 
+    /** {@inheritDoc} */
     public void head_()
     {
         space.restore();
@@ -344,7 +413,7 @@ public class RtfSink
         }
     }
 
-    private int toTwips( double length, int unit )
+    protected int toTwips( double length, int unit )
     {
         double points;
 
@@ -368,6 +437,7 @@ public class RtfSink
         return (int) Math.rint( points * 20. );
     }
 
+    /** {@inheritDoc} */
     public void title()
     {
         Paragraph p = new Paragraph( STYLE_BOLD, fontSize + 6 );
@@ -376,11 +446,13 @@ public class RtfSink
         emptyHeader = false;
     }
 
+    /** {@inheritDoc} */
     public void title_()
     {
         endParagraph();
     }
 
+    /** {@inheritDoc} */
     public void author()
     {
         Paragraph p = new Paragraph( STYLE_ROMAN, fontSize + 2 );
@@ -389,11 +461,13 @@ public class RtfSink
         emptyHeader = false;
     }
 
+    /** {@inheritDoc} */
     public void author_()
     {
         endParagraph();
     }
 
+    /** {@inheritDoc} */
     public void date()
     {
         Paragraph p = new Paragraph( STYLE_ROMAN, fontSize );
@@ -402,66 +476,86 @@ public class RtfSink
         emptyHeader = false;
     }
 
+    /** {@inheritDoc} */
     public void date_()
     {
         endParagraph();
     }
 
+    /** {@inheritDoc} */
     public void body()
     {
+        // nop
     }
 
+    /** {@inheritDoc} */
     public void body_()
     {
         writer.println( "}" );
         writer.flush();
     }
 
+    /** {@inheritDoc} */
     public void section1()
     {
         sectionLevel = 1;
     }
 
+    /** {@inheritDoc} */
     public void section1_()
     {
+        // nop
     }
 
+    /** {@inheritDoc} */
     public void section2()
     {
         sectionLevel = 2;
     }
 
+    /** {@inheritDoc} */
     public void section2_()
     {
+        // nop
     }
 
+    /** {@inheritDoc} */
     public void section3()
     {
         sectionLevel = 3;
     }
 
+    /** {@inheritDoc} */
     public void section3_()
     {
+        // nop
     }
 
+    /** {@inheritDoc} */
     public void section4()
     {
         sectionLevel = 4;
     }
 
+    /** {@inheritDoc} */
     public void section4_()
     {
+        // nop
     }
 
+    /** {@inheritDoc} */
     public void section5()
     {
         sectionLevel = 5;
     }
 
+    /** {@inheritDoc} */
     public void section5_()
     {
+        // nop
     }
 
+    /** {@inheritDoc} */
     public void sectionTitle()
     {
         int stl = STYLE_BOLD;
@@ -491,6 +585,7 @@ public class RtfSink
         beginParagraph( p );
     }
 
+    /** {@inheritDoc} */
     public void sectionTitle_()
     {
         endParagraph();
@@ -501,18 +596,21 @@ public class RtfSink
         return level;
     }
 
+    /** {@inheritDoc} */
     public void list()
     {
         indentation.add( LIST_INDENT );
         space.set( space.get() / 2 );
     }
 
+    /** {@inheritDoc} */
     public void list_()
     {
         indentation.restore();
         space.restore();
     }
 
+    /** {@inheritDoc} */
     public void listItem()
     {
         Paragraph p = new Paragraph();
@@ -528,6 +626,7 @@ public class RtfSink
         space.set( space.get() / 2 );
     }
 
+    /** {@inheritDoc} */
     public void listItem_()
     {
         endParagraph();
@@ -536,6 +635,7 @@ public class RtfSink
         space.restore();
     }
 
+    /** {@inheritDoc} */
     public void numberedList( int numbering )
     {
         this.numbering.addElement( new Integer( numbering ) );
@@ -545,6 +645,7 @@ public class RtfSink
         space.set( space.get() / 2 );
     }
 
+    /** {@inheritDoc} */
     public void numberedList_()
     {
         numbering.removeElementAt( numbering.size() - 1 );
@@ -554,6 +655,7 @@ public class RtfSink
         space.restore();
     }
 
+    /** {@inheritDoc} */
     public void numberedListItem()
     {
         ( (Counter) itemNumber.lastElement() ).increment();
@@ -579,6 +681,7 @@ public class RtfSink
         space.set( space.get() / 2 );
     }
 
+    /** {@inheritDoc} */
     public void numberedListItem_()
     {
         endParagraph();
@@ -637,6 +740,7 @@ public class RtfSink
         return buf.toString();
     }
 
+    /** {@inheritDoc} */
     public void definitionList()
     {
         int next = space.getNext();
@@ -646,12 +750,14 @@ public class RtfSink
         space.setNext( next );
     }
 
+    /** {@inheritDoc} */
     public void definitionList_()
     {
         indentation.restore();
         space.restore();
     }
 
+    /** {@inheritDoc} */
     public void definitionListItem()
     {
         int next = space.getNext();
@@ -659,20 +765,25 @@ public class RtfSink
         space.setNext( next );
     }
 
+    /** {@inheritDoc} */
     public void definitionListItem_()
     {
         space.restore();
     }
 
+    /** {@inheritDoc} */
     public void definedTerm()
     {
+        // nop
     }
 
+    /** {@inheritDoc} */
     public void definedTerm_()
     {
         endParagraph();
     }
 
+    /** {@inheritDoc} */
     public void definition()
     {
         int next = space.getNext();
@@ -682,6 +793,7 @@ public class RtfSink
         space.setNext( next );
     }
 
+    /** {@inheritDoc} */
     public void definition_()
     {
         endParagraph();
@@ -690,14 +802,19 @@ public class RtfSink
         space.restore();
     }
 
+    /** {@inheritDoc} */
     public void table()
     {
+        // nop
     }
 
+    /** {@inheritDoc} */
     public void table_()
     {
+        // nop
     }
 
+    /** {@inheritDoc} */
     public void tableRows( int[] justification, boolean grid )
 
     {
@@ -705,6 +822,7 @@ public class RtfSink
         context.set( CONTEXT_TABLE );
     }
 
+    /** {@inheritDoc} */
     public void tableRows_()
     {
         boolean bb = false;
@@ -848,38 +966,45 @@ public class RtfSink
         }
     }
 
+    /** {@inheritDoc} */
     public void tableRow()
     {
         row = new Row();
     }
 
+    /** {@inheritDoc} */
     public void tableRow_()
     {
         table.add( row );
     }
 
+    /** {@inheritDoc} */
     public void tableHeaderCell()
     {
         tableCell();
     }
 
+    /** {@inheritDoc} */
     public void tableHeaderCell_()
     {
         tableCell_();
     }
 
+    /** {@inheritDoc} */
     public void tableCell()
     {
         cell = new Cell();
         line = new Line();
     }
 
+    /** {@inheritDoc} */
     public void tableCell_()
     {
         cell.add( line );
         row.add( cell );
     }
 
+    /** {@inheritDoc} */
     public void tableCaption()
     {
         Paragraph p = new Paragraph();
@@ -888,11 +1013,13 @@ public class RtfSink
         beginParagraph( p );
     }
 
+    /** {@inheritDoc} */
     public void tableCaption_()
     {
         endParagraph();
     }
 
+    /** {@inheritDoc} */
     public void paragraph()
     {
         if ( paragraph == null )
@@ -901,6 +1028,7 @@ public class RtfSink
         }
     }
 
+    /** {@inheritDoc} */
     public void paragraph_()
     {
         endParagraph();
@@ -929,6 +1057,7 @@ public class RtfSink
         }
     }
 
+    /** {@inheritDoc} */
     public void verbatim( boolean boxed )
     {
         verbatim = new StringBuffer();
@@ -937,6 +1066,7 @@ public class RtfSink
         context.set( CONTEXT_VERBATIM );
     }
 
+    /** {@inheritDoc} */
     public void verbatim_()
     {
         String text = verbatim.toString();
@@ -966,14 +1096,19 @@ public class RtfSink
         context.restore();
     }
 
+    /** {@inheritDoc} */
     public void figure()
     {
+        // nop
     }
 
+    /** {@inheritDoc} */
     public void figure_()
     {
+        // nop
     }
 
+    /** {@inheritDoc} */
     public void figureGraphics( String name )
     {
         if ( !name.endsWith( ".ppm" ) )
@@ -1184,6 +1319,7 @@ public class RtfSink
         writer.println( "}" );
     }
 
+    /** {@inheritDoc} */
     public void figureCaption()
     {
         Paragraph p = new Paragraph();
@@ -1192,11 +1328,13 @@ public class RtfSink
         beginParagraph( p );
     }
 
+    /** {@inheritDoc} */
     public void figureCaption_()
     {
         endParagraph();
     }
 
+    /** {@inheritDoc} */
     public void horizontalRule()
     {
         writer.print( "\\pard\\li" + indentation.get() );
@@ -1221,21 +1359,25 @@ public class RtfSink
     /** {@inheritDoc} */
     public void anchor( String name )
     {
+        // nop
     }
 
     /** {@inheritDoc} */
     public void anchor_()
     {
+        // nop
     }
 
     /** {@inheritDoc} */
     public void link( String name )
     {
+        // nop
     }
 
     /** {@inheritDoc} */
     public void link_()
     {
+        // nop
     }
 
     /** {@inheritDoc} */
@@ -1452,7 +1594,7 @@ public class RtfSink
         return buffer.toString();
     }
 
-    private Font getFont( int style, int size )
+    protected Font getFont( int style, int size )
     {
         Font font = null;
 
@@ -1471,6 +1613,10 @@ public class RtfSink
             }
             catch ( Exception ignored )
             {
+                if ( getLog().isDebugEnabled() )
+                {
+                    getLog().debug( ignored.getMessage(), ignored );
+                }
             }
         }
         else
@@ -1500,9 +1646,8 @@ public class RtfSink
 
     // -----------------------------------------------------------------------
 
-    private class Counter
+    static class Counter
     {
-
         private int value;
 
         Counter( int value )
@@ -1529,12 +1674,10 @@ public class RtfSink
         {
             this.value += value;
         }
-
     }
 
-    private class Context
+    static class Context
     {
-
         private int context = CONTEXT_UNDEFINED;
 
         private Vector stack = new Vector();
@@ -1558,12 +1701,10 @@ public class RtfSink
         {
             return context;
         }
-
     }
 
-    private class Paragraph
+    class Paragraph
     {
-
         int style = 0;
 
         int justification = Sink.JUSTIFY_LEFT;
@@ -1586,6 +1727,7 @@ public class RtfSink
 
         Paragraph()
         {
+            // nop
         }
 
         Paragraph( int style, int size )
@@ -1663,12 +1805,10 @@ public class RtfSink
         {
             writer.println( "\\par" );
         }
-
     }
 
-    private class Space
+    class Space
     {
-
         private int space;
 
         private int next;
@@ -1729,12 +1869,10 @@ public class RtfSink
             }
             writer.println( "\\plain\\fs1\\par" );
         }
-
     }
 
-    private class Indentation
+    static class Indentation
     {
-
         private int indent;
 
         private Vector stack = new Vector();
@@ -1768,12 +1906,10 @@ public class RtfSink
         {
             set( this.indent + indent );
         }
-
     }
 
-    private class Table
+    static class Table
     {
-
         int numColumns;
 
         int[] columnWidths;
@@ -1825,12 +1961,10 @@ public class RtfSink
             }
             return width;
         }
-
     }
 
-    private class Row
+    static class Row
     {
-
         Vector cells = new Vector();
 
         void add( Cell cell )
@@ -1853,12 +1987,10 @@ public class RtfSink
             }
             return height;
         }
-
     }
 
-    private class Cell
+    class Cell
     {
-
         Vector lines = new Vector();
 
         void add( Line line )
@@ -1908,24 +2040,20 @@ public class RtfSink
 
             return new Box( width, height );
         }
-
     }
 
-    private class Line
+    static class Line
     {
-
         Vector items = new Vector();
 
         void add( Item item )
         {
             items.addElement( item );
         }
-
     }
 
-    private class Item
+    static class Item
     {
-
         int style;
 
         String text;
@@ -1935,12 +2063,10 @@ public class RtfSink
             this.style = style;
             this.text = text;
         }
-
     }
 
-    private class Box
+    static class Box
     {
-
         int width;
 
         int height;
@@ -1950,7 +2076,6 @@ public class RtfSink
             this.width = width;
             this.height = height;
         }
-
     }
 
     /** {@inheritDoc} */
