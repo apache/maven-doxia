@@ -138,6 +138,7 @@ public abstract class AbstractXmlValidatorTest
                         // Exclude some xhtml errors
                         if ( message.indexOf( "Message: cvc-complex-type.4: Attribute 'alt' must appear on element 'img'." ) == -1
                             && message.indexOf( "Message: cvc-complex-type.2.4.a: Invalid content starting with element" ) == -1
+                            && message.indexOf( "Message: cvc-complex-type.2.4.a: Invalid content was found starting with element" ) == -1
                             && message.indexOf( "Message: cvc-datatype-valid.1.2.1:" ) == -1  // Doxia allow space
                             && message.indexOf( "Message: cvc-attribute.3:" ) == -1 ) // Doxia allow space
                         {
