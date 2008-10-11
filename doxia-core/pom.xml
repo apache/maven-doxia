@@ -118,7 +118,9 @@ under the License.
         </executions>
         <configuration>
           <version>1.0.0</version>
-          <model>src/main/mdo/document.mdo</model>
+          <models>
+            <model>src/main/mdo/document.mdo</model>
+          </models>
         </configuration>
       </plugin>
     </plugins>
