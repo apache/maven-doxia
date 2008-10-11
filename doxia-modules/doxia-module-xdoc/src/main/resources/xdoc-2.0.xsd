@@ -2758,10 +2758,9 @@
   <xs:element name="properties">
     <xs:complexType>
       <xs:sequence>
-        <!-- No ordering -->
-        <xs:element ref="author" minOccurs="0" maxOccurs="unbounded"/>
         <xs:element ref="title" minOccurs="1" maxOccurs="1" />
         <xs:element ref="author" minOccurs="0" maxOccurs="unbounded"/>
+        <xs:element ref="date" minOccurs="0" maxOccurs="1"/>
       </xs:sequence>
     </xs:complexType>
   </xs:element>
@@ -2770,6 +2769,10 @@
     <xs:complexType mixed="true">
       <xs:attribute name="email" use="optional" type="xs:string"/>
     </xs:complexType>
+  </xs:element>
+
+  <xs:element name="date">
+    <xs:complexType mixed="true"/>
   </xs:element>
 
   <xs:annotation>
