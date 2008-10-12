@@ -83,21 +83,6 @@ under the License.
             <phase>generate-sources</phase>
             <goals>
               <goal>java</goal>
-              <goal>xsd</goal>
-            </goals>
-            <configuration>
-              <models>
-                <model>src/main/mdo/fml.mdo</model>
-              </models>
-              <version>1.0.0</version>
-            </configuration>
-          </execution>
-          <execution>
-            <id>descriptor-site</id>
-            <phase>pre-site</phase>
-            <goals>
-              <goal>xdoc</goal>
-              <goal>xsd</goal>
             </goals>
             <configuration>
               <models>

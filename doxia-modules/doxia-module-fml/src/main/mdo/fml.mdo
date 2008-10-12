@@ -19,15 +19,11 @@ specific language governing permissions and limitations
 under the License.
 -->
 
-<model xsd.namespace="http://maven.apache.org/FML/1.0.0" xsd.target-namespace="http://maven.apache.org/FML/1.0.0">
+<model>
   <id>fml</id>
   <name>Fml</name>
   <description><![CDATA[
-    <p>This is a reference for the FML (FAQ Markup Language) descriptor used in Maven Doxia.</p>
-    <p>An XSD is available at:</p>
-    <ul>
-      <li><a href="http://maven.apache.org/xsd/fml-1.0.0.xsd">http://maven.apache.org/xsd/fml-1.0.0.xsd</a> for Doxia 1.0.</li>
-    </ul>
+    Model object of the FML (FAQ Markup Language) descriptor used in Maven Doxia.
   ]]></description>
   <defaults>
     <default>
