@@ -2739,13 +2739,48 @@
   </xs:annotation>
 
   <xs:element name="document">
+    <xs:annotation>
+      <xs:documentation source="version">2.0.0</xs:documentation>
+      <xs:documentation source="description">
+        The &lt;document/&gt; element is the root of the Xdoc descriptor.
+      </xs:documentation>
+    </xs:annotation>
     <xs:complexType>
       <xs:sequence>
-        <xs:element ref="properties" minOccurs="0" maxOccurs="1"/>
-        <xs:element ref="body" minOccurs="0" maxOccurs="1"/>
+        <xs:element ref="properties" minOccurs="0" maxOccurs="1">
+          <xs:annotation>
+            <xs:documentation source="version">2.0.0</xs:documentation>
+            <xs:documentation source="description">
+              Optional properties element for this document element.
+            </xs:documentation>
+          </xs:annotation>
+        </xs:element>
+        <xs:element ref="head" minOccurs="0" maxOccurs="1" >
+          <xs:annotation>
+            <xs:documentation source="version">2.0.0</xs:documentation>
+            <xs:documentation source="description">
+              Optional head element for this document element.
+            </xs:documentation>
+          </xs:annotation>
+        </xs:element>
+        <xs:element ref="body" minOccurs="1" maxOccurs="1">
+          <xs:annotation>
+            <xs:documentation source="version">2.0.0</xs:documentation>
+            <xs:documentation source="description">
+              Required body element for this document element.
+            </xs:documentation>
+          </xs:annotation>
+        </xs:element>
       </xs:sequence>
       <xs:attributeGroup ref="i18n"/>
-      <xs:attribute name="id" type="xs:ID"/>
+      <xs:attribute name="id" type="xs:string">
+        <xs:annotation>
+          <xs:documentation source="version">2.0.0</xs:documentation>
+          <xs:documentation source="description">
+            The identifier of this document element.
+          </xs:documentation>
+        </xs:annotation>
+      </xs:attribute>
     </xs:complexType>
   </xs:element>
 
@@ -2758,20 +2793,60 @@
   <xs:element name="properties">
     <xs:complexType>
       <xs:sequence>
-        <xs:element ref="title" minOccurs="1" maxOccurs="1" />
-        <xs:element ref="author" minOccurs="0" maxOccurs="unbounded"/>
-        <xs:element ref="date" minOccurs="0" maxOccurs="1"/>
+        <xs:element ref="title" minOccurs="1" maxOccurs="1">
+          <xs:annotation>
+            <xs:documentation source="version">2.0.0</xs:documentation>
+            <xs:documentation source="description">
+              Required title element for the document element.
+            </xs:documentation>
+          </xs:annotation>
+        </xs:element>
+        <xs:element ref="author" minOccurs="0" maxOccurs="unbounded">
+          <xs:annotation>
+            <xs:documentation source="version">2.0.0</xs:documentation>
+            <xs:documentation source="description">
+              Optional author element for the document element.
+            </xs:documentation>
+          </xs:annotation>
+        </xs:element>
+        <xs:element ref="date" minOccurs="0" maxOccurs="1">
+          <xs:annotation>
+            <xs:documentation source="version">2.0.0</xs:documentation>
+            <xs:documentation source="description">
+              Optional creation/last updated date for the document element.
+            </xs:documentation>
+          </xs:annotation>
+        </xs:element>
       </xs:sequence>
     </xs:complexType>
   </xs:element>
 
   <xs:element name="author">
+    <xs:annotation>
+      <xs:documentation source="version">2.0.0</xs:documentation>
+      <xs:documentation source="description">
+        An author element.
+      </xs:documentation>
+    </xs:annotation>
     <xs:complexType mixed="true">
-      <xs:attribute name="email" use="optional" type="xs:string"/>
+      <xs:attribute name="email" use="optional" type="xs:string">
+        <xs:annotation>
+          <xs:documentation source="version">2.0.0</xs:documentation>
+          <xs:documentation source="description">
+            The email attribute for the author element.
+          </xs:documentation>
+        </xs:annotation>
+      </xs:attribute>
     </xs:complexType>
   </xs:element>
 
   <xs:element name="date">
+    <xs:annotation>
+      <xs:documentation source="version">2.0.0</xs:documentation>
+      <xs:documentation source="description">
+        An date element.
+      </xs:documentation>
+    </xs:annotation>
     <xs:complexType mixed="true"/>
   </xs:element>
 
@@ -2782,9 +2857,22 @@
   </xs:annotation>
 
   <xs:element name="body">
+    <xs:annotation>
+      <xs:documentation source="version">2.0.0</xs:documentation>
+      <xs:documentation source="description">
+        The body element.
+      </xs:documentation>
+    </xs:annotation>
     <xs:complexType>
       <xs:sequence>
-        <xs:element ref="section" maxOccurs="unbounded"/>
+        <xs:element ref="section" maxOccurs="unbounded">
+          <xs:annotation>
+            <xs:documentation source="version">2.0.0</xs:documentation>
+            <xs:documentation source="description">
+              A section in the body element.
+            </xs:documentation>
+          </xs:annotation>
+        </xs:element>
       </xs:sequence>
       <xs:attributeGroup ref="attrs"/>
     </xs:complexType>
@@ -2792,7 +2880,10 @@
 
   <xs:element name="section">
     <xs:annotation>
-      <xs:documentation>a section element</xs:documentation>
+      <xs:documentation source="version">2.0.0</xs:documentation>
+      <xs:documentation source="description">
+        A section element.
+      </xs:documentation>
     </xs:annotation>
     <xs:complexType>
       <xs:choice minOccurs="0" maxOccurs="unbounded">
@@ -2800,7 +2891,14 @@
         <xs:element ref="form"/>
         <xs:group ref="inline"/>
         <xs:group ref="misc"/>
-        <xs:element ref="subsection"/>
+        <xs:element ref="subsection">
+          <xs:annotation>
+            <xs:documentation source="version">2.0.0</xs:documentation>
+            <xs:documentation source="description">
+              A subsection in the section element.
+            </xs:documentation>
+          </xs:annotation>
+        </xs:element>
       </xs:choice>
       <xs:attributeGroup ref="attrs"/>
       <xs:attribute name="name" use="required" type="Text"/>
@@ -2809,7 +2907,10 @@
 
   <xs:element name="subsection">
     <xs:annotation>
-      <xs:documentation>a subsection element</xs:documentation>
+      <xs:documentation source="version">2.0.0</xs:documentation>
+      <xs:documentation source="description">
+        A subsection element.
+      </xs:documentation>
     </xs:annotation>
     <xs:complexType>
       <xs:choice minOccurs="0" maxOccurs="unbounded">
@@ -2832,7 +2933,10 @@
 
   <xs:element name="source">
     <xs:annotation>
-      <xs:documentation>a source element</xs:documentation>
+      <xs:documentation source="version">2.0.0</xs:documentation>
+      <xs:documentation source="description">
+        A source element.
+      </xs:documentation>
     </xs:annotation>
     <xs:complexType mixed="true">
       <xs:sequence>
@@ -2843,7 +2947,10 @@
 
   <xs:element name="macro">
     <xs:annotation>
-      <xs:documentation>a macro element</xs:documentation>
+      <xs:documentation source="version">2.0.0</xs:documentation>
+      <xs:documentation source="description">
+        A macro element.
+      </xs:documentation>
     </xs:annotation>
     <xs:complexType>
       <xs:choice minOccurs="0" maxOccurs="unbounded">
