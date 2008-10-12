@@ -2738,37 +2738,132 @@
   </xs:annotation>
 
   <xs:element name="faqs">
+    <xs:annotation>
+      <xs:documentation source="version">1.0.0</xs:documentation>
+      <xs:documentation source="description">
+        The &lt;faqs/&gt; element is the root of the FML descriptor.
+      </xs:documentation>
+    </xs:annotation>
     <xs:complexType>
       <xs:sequence>
-        <xs:element ref="part" minOccurs="1" maxOccurs="unbounded"/>
+        <xs:element ref="part" minOccurs="1" maxOccurs="unbounded">
+          <xs:annotation>
+            <xs:documentation source="version">1.0.0</xs:documentation>
+            <xs:documentation source="description">
+              Required part element for this faqs element.
+            </xs:documentation>
+          </xs:annotation>
+        </xs:element>
       </xs:sequence>
       <xs:attributeGroup ref="i18n"/>
-      <xs:attribute name="id" type="xs:string"/>
-      <xs:attribute name="title" type="xs:string"/>
+      <xs:attribute name="id" type="xs:string" default="FAQ">
+        <xs:annotation>
+          <xs:documentation source="version">1.0.0</xs:documentation>
+          <xs:documentation source="description">
+            The identifier for this faqs element.
+          </xs:documentation>
+        </xs:annotation>
+      </xs:attribute>
+      <xs:attribute name="title" type="Text" default="Frequently Asked Questions">
+        <xs:annotation>
+          <xs:documentation source="version">1.0.0</xs:documentation>
+          <xs:documentation source="description">
+            The title for this faqs element.
+          </xs:documentation>
+        </xs:annotation>
+      </xs:attribute>
+      <xs:attribute name="toplink" type="xs:boolean" default="true">
+        <xs:annotation>
+          <xs:documentation source="version">1.0.0</xs:documentation>
+          <xs:documentation source="description">
+            Boolean to generate optionally [top] links.
+          </xs:documentation>
+        </xs:annotation>
+      </xs:attribute>
     </xs:complexType>
   </xs:element>
 
   <xs:element name="part">
+    <xs:annotation>
+      <xs:documentation source="version">1.0</xs:documentation>
+      <xs:documentation source="description">
+        A part element of the faqs element.
+      </xs:documentation>
+    </xs:annotation>
     <xs:complexType>
       <xs:sequence>
-        <xs:element ref="title" minOccurs="0" maxOccurs="1"/>
-        <xs:element ref="faq" minOccurs="1" maxOccurs="unbounded"/>
+        <xs:element ref="title" minOccurs="0" maxOccurs="1">
+          <xs:annotation>
+            <xs:documentation source="version">1.0.0</xs:documentation>
+            <xs:documentation source="description">
+              Optional title for this part element.
+            </xs:documentation>
+          </xs:annotation>
+        </xs:element>
+        <xs:element ref="faq" minOccurs="1" maxOccurs="unbounded">
+          <xs:annotation>
+            <xs:documentation source="version">1.0.0</xs:documentation>
+            <xs:documentation source="description">
+              Required faq element for this part element.
+            </xs:documentation>
+          </xs:annotation>
+        </xs:element>
       </xs:sequence>
-      <xs:attribute name="id" type="xs:string"/>
+      <xs:attribute name="id" type="xs:string">
+        <xs:annotation>
+          <xs:documentation source="version">1.0.0</xs:documentation>
+          <xs:documentation source="description">
+            The identifier for this part element.
+          </xs:documentation>
+        </xs:annotation>
+      </xs:attribute>
     </xs:complexType>
   </xs:element>
 
   <xs:element name="faq">
+    <xs:annotation>
+      <xs:documentation source="version">1.0.0</xs:documentation>
+      <xs:documentation source="description">
+        A faq element.
+      </xs:documentation>
+    </xs:annotation>
     <xs:complexType mixed="true">
       <xs:sequence>
-        <xs:element ref="question" minOccurs="1" maxOccurs="1"/>
-        <xs:element ref="answer" minOccurs="1" maxOccurs="1"/>
+        <xs:element ref="question" minOccurs="1" maxOccurs="1">
+          <xs:annotation>
+            <xs:documentation source="version">1.0.0</xs:documentation>
+            <xs:documentation source="description">
+              The question of this faq element.
+            </xs:documentation>
+          </xs:annotation>
+        </xs:element>
+        <xs:element ref="answer" minOccurs="1" maxOccurs="1">
+          <xs:annotation>
+            <xs:documentation source="version">1.0.0</xs:documentation>
+            <xs:documentation source="description">
+              The answer of this faq element.
+            </xs:documentation>
+          </xs:annotation>
+        </xs:element>
       </xs:sequence>
-      <xs:attribute name="id" type="xs:string"/>
+      <xs:attribute name="id" type="xs:string">
+        <xs:annotation>
+          <xs:documentation source="version">1.0.0</xs:documentation>
+          <xs:documentation source="description">
+            The identifier of this faq element.
+          </xs:documentation>
+        </xs:annotation>
+      </xs:attribute>
     </xs:complexType>
   </xs:element>
 
   <xs:element name="question">
+    <xs:annotation>
+      <xs:documentation source="version">1.0.0</xs:documentation>
+      <xs:documentation source="description">
+        A faq question element.
+      </xs:documentation>
+    </xs:annotation>
     <xs:complexType mixed="true">
       <xs:sequence>
         <xs:group ref="fontstyle" minOccurs="0" maxOccurs="unbounded"/>
@@ -2778,6 +2873,12 @@
   </xs:element>
 
   <xs:element name="answer">
+    <xs:annotation>
+      <xs:documentation source="version">1.0.0</xs:documentation>
+      <xs:documentation source="description">
+        A faq answer element.
+      </xs:documentation>
+    </xs:annotation>
     <xs:complexType mixed="true">
       <xs:choice minOccurs="0" maxOccurs="unbounded">
         <xs:group ref="block"/>
@@ -2797,7 +2898,10 @@
 
   <xs:element name="source">
     <xs:annotation>
-      <xs:documentation>a source element</xs:documentation>
+      <xs:documentation source="version">1.0.0</xs:documentation>
+      <xs:documentation source="description">
+        A source element.
+      </xs:documentation>
     </xs:annotation>
     <xs:complexType  mixed="true">
       <xs:sequence>
