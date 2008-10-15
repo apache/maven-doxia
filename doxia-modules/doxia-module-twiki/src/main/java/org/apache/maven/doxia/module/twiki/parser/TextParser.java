@@ -71,10 +71,16 @@ public class TextParser
     private static final Pattern IMAGE_TAG_PATTERN =
         Pattern.compile( "<img\\b.*?\\bsrc=([\"'])(.*?)\\1.*>", Pattern.CASE_INSENSITIVE );
 
+    /** HTML tag pattern */
+    private static final Pattern HTML_TAG_PATTERN = Pattern.compile( "<(/?)([\\w]*)(.*?)(/?)>", Pattern.DOTALL );
+
     /**
      * resolves wikiWordLinks
      */
     private final WikiWordLinkResolver wikiWordLinkResolver;
+
+    /** resolves noautolink tag */
+    private boolean noautolink;
 
     /**
      * Creates the TextParser.
@@ -100,11 +106,25 @@ public class TextParser
         final Matcher urlMatcher = URL_PATTERN.matcher( line );
         final Matcher imageTagMatcher = IMAGE_TAG_PATTERN.matcher( line );
 
-        if ( linkMatcher.find() )
+        final Matcher tagMatcher = HTML_TAG_PATTERN.matcher( line );
+        Matcher xhtmlMatcher = null;
+        if ( tagMatcher.find() )
+        {
+            String tag = tagMatcher.group( 2 );
+
+            Pattern pattern =
+                Pattern.compile( "(\\<" + tag + ".*\\>)(.*)?(\\<\\/" + tag + "\\>)(.*)?", Pattern.DOTALL );
+            xhtmlMatcher = pattern.matcher( line );
+        }
+
+        if ( xhtmlMatcher!= null && xhtmlMatcher.find() ) {
+            parseXHTML( line, ret, xhtmlMatcher );
+        }
+        else if ( linkMatcher.find() )
         {
             parseLink( line, ret, linkMatcher );
         }
-        else if ( wikiMatcher.find() && startLikeWord( wikiMatcher, line ) )
+        else if ( wikiMatcher.find() && startLikeWord( wikiMatcher, line ) && !noautolink )
         {
             parseWiki( line, ret, wikiMatcher );
         }
@@ -308,6 +328,39 @@ public class TextParser
                                     linkMatcher.group( 2 ) ) );
         }
         ret.addAll( parse( line.substring( linkMatcher.end(), line.length() ) ) );
+    }
+
+
+    /**
+     * Parses xhtml.
+     *
+     * @param line the line to parse
+     * @param ret where the results live
+     * @param xhtmlMatcher xhtml matcher
+     */
+    private void parseXHTML( final String line, final List ret, final Matcher xhtmlMatcher )
+    {
+        if ( xhtmlMatcher.group( 1 ).indexOf( "noautolink" ) != -1 )
+        {
+            noautolink = true;
+        }
+        else
+        {
+            ret.add( new XHTMLBlock( xhtmlMatcher.group( 1 ) ) );
+        }
+
+        ret.addAll( parse( xhtmlMatcher.group( 2 ) ) );
+
+        if ( xhtmlMatcher.group( 1 ).indexOf( "noautolink" ) != -1 )
+        {
+            noautolink = false;
+        }
+        else
+        {
+            ret.add( new XHTMLBlock( xhtmlMatcher.group( 3 ) ) );
+        }
+
+        ret.addAll( parse( xhtmlMatcher.group( 4 ) ) );
     }
 
     /**

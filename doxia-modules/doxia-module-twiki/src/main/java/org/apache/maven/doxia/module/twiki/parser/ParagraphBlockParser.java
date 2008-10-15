@@ -94,6 +94,7 @@ public class ParagraphBlockParser implements BlockParser
         * 1. Skip begininig new lines
         * 2. Get the text, while \n\n is not found
         */
+        boolean pre = false;
         String l = line;
         do
         {
@@ -128,7 +129,25 @@ public class ParagraphBlockParser implements BlockParser
                 else
                 {
                     sb.append( l );
-                    sb.append( " " );
+                    // specific
+                    if ( l.indexOf( "<pre>" ) != -1 )
+                    {
+                        pre = true;
+                    }
+                    if ( l.indexOf( "</pre>" ) != -1 )
+                    {
+                        pre = false;
+                    }
+
+                    if ( !pre )
+                    {
+                        sb.append( " " );
+                    }
+                    else
+                    {
+                        // TODO use EOL
+                        sb.append( "\n" );
+                    }
                 }
             }
             l = source.getNextLine();
