@@ -32,7 +32,8 @@ import org.apache.maven.doxia.sink.Sink;
  * @author Juan F. Codagnone
  * @version $Id$
  */
-class NumeratedListBlock extends ListBlock
+class NumeratedListBlock
+    extends ListBlock
 {
     /**
      * order item type. one of Sink#NUMBERING_....

@@ -21,23 +21,25 @@ package org.apache.maven.doxia.module.twiki.parser;
 
 import org.apache.maven.doxia.sink.Sink;
 
-
 /**
  * Represent a WikiWord
  *
  * @author Juan F. Codagnone
  * @version $Id$
  */
-class WikiWordBlock implements Block
+class WikiWordBlock
+    implements Block
 {
     /**
      * the wiki word
      */
     private final String wikiword;
+
     /**
      * content to show in the wiki word link
      */
     private final Block content;
+
     /**
      * Resolves WikiWord links
      */
@@ -48,8 +50,7 @@ class WikiWordBlock implements Block
      * @param aWikiword the wikiWord
      * @param resolver responsible of resolving the link to the wikiWord
      */
-    WikiWordBlock( final String aWikiword,
-            final WikiWordLinkResolver resolver )
+    WikiWordBlock( final String aWikiword, final WikiWordLinkResolver resolver )
     {
         this( aWikiword, aWikiword, resolver );
     }
@@ -63,8 +64,7 @@ class WikiWordBlock implements Block
      * @throws IllegalArgumentException if the wikiword is <code>null</code>
      * @deprecated
      */
-    WikiWordBlock( final String aWikiword, final String aText ,
-            final WikiWordLinkResolver resolver )
+    WikiWordBlock( final String aWikiword, final String aText, final WikiWordLinkResolver resolver )
     {
         this( aWikiword, new TextBlock( aText ), resolver );
     }
@@ -77,8 +77,7 @@ class WikiWordBlock implements Block
      * @param resolver responsible of resolving the link to the wikiWord
      * @throws IllegalArgumentException if the wikiword is <code>null</code>
      */
-    WikiWordBlock( final String aWikiword, final Block content ,
-            final WikiWordLinkResolver resolver )
+    WikiWordBlock( final String aWikiword, final Block content, final WikiWordLinkResolver resolver )
     {
         if ( aWikiword == null || content == null || resolver == null )
         {
@@ -109,8 +108,7 @@ class WikiWordBlock implements Block
         else if ( obj instanceof WikiWordBlock )
         {
             final WikiWordBlock w = (WikiWordBlock) obj;
-            ret = wikiword.equals( w.wikiword )
-                && content.equals( w.content );
+            ret = wikiword.equals( w.wikiword ) && content.equals( w.content );
         }
 
         return ret;
@@ -122,7 +120,6 @@ class WikiWordBlock implements Block
         final int magic1 = 17;
         final int magic2 = 37;
 
-        return magic1 + magic2 * wikiword.hashCode()
-            + magic2 * content.hashCode();
+        return magic1 + magic2 * wikiword.hashCode() + magic2 * content.hashCode();
     }
 }

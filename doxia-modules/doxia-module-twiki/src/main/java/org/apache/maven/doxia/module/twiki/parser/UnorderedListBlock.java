@@ -32,7 +32,8 @@ import org.apache.maven.doxia.sink.Sink;
  * @author Juan F. Codagnone
  * @version $Id$
  */
-class UnorderedListBlock extends ListBlock
+class UnorderedListBlock
+    extends ListBlock
 {
     /**
      * Creates the UnorderedListBlock.

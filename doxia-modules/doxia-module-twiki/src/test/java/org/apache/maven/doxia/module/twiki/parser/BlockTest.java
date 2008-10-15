@@ -23,7 +23,6 @@ import java.util.Arrays;
 
 import junit.framework.TestCase;
 
-
 /**
  * Generic unit tests for
  * {@link Block}s
@@ -31,7 +30,8 @@ import junit.framework.TestCase;
  * @author Juan F. Codagnone
  * @since Nov 2, 2005
  */
-public class BlockTest extends TestCase
+public class BlockTest
+    extends TestCase
 {
 
     /**
@@ -39,8 +39,7 @@ public class BlockTest extends TestCase
      */
     public final void testTextBlockEquals()
     {
-        testEquals( new TextBlock( "bar" ), new TextBlock( "bar" ),
-                    new TextBlock( "foo" ) );
+        testEquals( new TextBlock( "bar" ), new TextBlock( "bar" ), new TextBlock( "foo" ) );
     }
 
     /**
@@ -48,15 +47,13 @@ public class BlockTest extends TestCase
      */
     public final void testWikiWordBlockEquals()
     {
-        final WikiWordLinkResolver resolver = 
-                new XHTMLWikiWordLinkResolver();
-        testEquals( new WikiWordBlock( "bar", resolver ), 
-                    new WikiWordBlock( "bar", resolver ),
+        final WikiWordLinkResolver resolver = new XHTMLWikiWordLinkResolver();
+        testEquals( new WikiWordBlock( "bar", resolver ), new WikiWordBlock( "bar", resolver ),
                     new WikiWordBlock( "foo", resolver ) );
 
         testEquals( new WikiWordBlock( "bar", new TextBlock( "text" ), resolver ),
-                    new WikiWordBlock( "bar", new TextBlock( "text" ), resolver ),
-                    new WikiWordBlock( "bar", resolver ) );
+                    new WikiWordBlock( "bar", new TextBlock( "text" ), resolver ), new WikiWordBlock( "bar",
+                                                                                                      resolver ) );
 
         testEquals( new WikiWordBlock( "bar", new TextBlock( "text" ), resolver ),
                     new WikiWordBlock( "bar", new TextBlock( "text" ), resolver ),
@@ -70,8 +67,7 @@ public class BlockTest extends TestCase
     public final void testLinkBlockEquals()
     {
         testEquals( new LinkBlock( "foo", new TextBlock( "bar" ) ),
-                    new LinkBlock( "foo", new TextBlock( "bar" ) ),
-                    new LinkBlock( "bar", new TextBlock( "foo" ) ) );
+                    new LinkBlock( "foo", new TextBlock( "bar" ) ), new LinkBlock( "bar", new TextBlock( "foo" ) ) );
     }
 
     /**
@@ -79,12 +75,9 @@ public class BlockTest extends TestCase
      */
     public final void testListBlockEquals()
     {
-        final Block []blocks = new Block[]{
-            new TextBlock( "hello" )
-        };
+        final Block[] blocks = new Block[] { new TextBlock( "hello" ) };
 
-        testEquals( new ListItemBlock( blocks ), new ListItemBlock( blocks ),
-                    new ListItemBlock( new Block[]{} ) );
+        testEquals( new ListItemBlock( blocks ), new ListItemBlock( blocks ), new ListItemBlock( new Block[] {} ) );
     }
 
     /**
@@ -93,39 +86,30 @@ public class BlockTest extends TestCase
     public final void testNestedBlockEquals()
     {
 
-        testEquals(
-            new ParagraphBlock( new Block[]{
-                new BoldBlock( new Block[]{new TextBlock( "foo" )} )} ),
-            new ParagraphBlock( new Block[]{
-                new BoldBlock( new Block[]{new TextBlock( "foo" )} )} ),
-            new ParagraphBlock( new Block[]{
-                new BoldBlock( new Block[]{new TextBlock( "bar" )} )} )
-        );
+        testEquals( new ParagraphBlock( new Block[] { new BoldBlock( new Block[] { new TextBlock( "foo" ) } ) } ),
+                    new ParagraphBlock( new Block[] { new BoldBlock( new Block[] { new TextBlock( "foo" ) } ) } ),
+                    new ParagraphBlock( new Block[] { new BoldBlock( new Block[] { new TextBlock( "bar" ) } ) } ) );
     }
-
 
     /**
      * @see AbstractFatherBlock#equals(Object)
      */
     public final void testAbstractFatherBlockEquals()
     {
-        assertFalse( Arrays.equals( new Block[]{
-            new TextBlock( "mary " ),
-            new ItalicBlock( new Block[]{
-                new MonospaceBlock( new Block[]{
-                    new TextBlock( "has" )
-                } )
-            } ),
-        },
-                                    new Block[]{
+        assertFalse( Arrays
+                           .equals(
+                                    new Block[] {
                                         new TextBlock( "mary " ),
-                                        new BoldBlock( new Block[]{
-                                            new MonospaceBlock( new Block[]{
-                                                new TextBlock( "has" )
-                                            } )
-                                        } ),
-                                    }
-        ) );
+                                        new ItalicBlock(
+                                                         new Block[] { new MonospaceBlock(
+                                                                                           new Block[] { new TextBlock(
+                                                                                                                        "has" ) } ) } ), },
+                                    new Block[] {
+                                        new TextBlock( "mary " ),
+                                        new BoldBlock(
+                                                       new Block[] { new MonospaceBlock(
+                                                                                         new Block[] { new TextBlock(
+                                                                                                                      "has" ) } ) } ), } ) );
     }
 
     /**
@@ -133,8 +117,7 @@ public class BlockTest extends TestCase
      */
     public final void testAnchorBlockEquals()
     {
-        testEquals( new AnchorBlock( "anchor" ), new AnchorBlock( "anchor" ),
-                    new AnchorBlock( "anch" ) );
+        testEquals( new AnchorBlock( "anchor" ), new AnchorBlock( "anchor" ), new AnchorBlock( "anch" ) );
     }
 
     /**
@@ -150,8 +133,7 @@ public class BlockTest extends TestCase
      * @param b an object that is equals to a
      * @param c a diferent object
      */
-    public final void testEquals( final Object a, final Object b,
-                                  final Object c )
+    public final void testEquals( final Object a, final Object b, final Object c )
     {
         assertFalse( a.equals( null ) );
         assertFalse( b.equals( null ) );

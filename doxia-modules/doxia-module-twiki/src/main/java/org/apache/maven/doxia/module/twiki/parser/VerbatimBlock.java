@@ -27,14 +27,15 @@ import org.apache.maven.doxia.sink.Sink;
  * @author Christian Nardi
  * @version $Id$
  */
-class VerbatimBlock extends AbstractFatherBlock
+class VerbatimBlock
+    extends AbstractFatherBlock
 {
     /**
      * Creates the VerbatimBlock.
      *
      * @param childBlocks child blocks
      */
-    VerbatimBlock( final Block [] childBlocks )
+    VerbatimBlock( final Block[] childBlocks )
     {
         super( childBlocks );
     }

@@ -29,7 +29,8 @@ import org.apache.maven.doxia.sink.Sink;
  * @author Juan F. Codagnone
  * @version $Id$
  */
-abstract class AbstractFatherBlock implements Block
+abstract class AbstractFatherBlock
+    implements Block
 {
     /**
      * @see AbstractFatherBlock#AbstractFatherBlock(Block[])
@@ -66,8 +67,7 @@ abstract class AbstractFatherBlock implements Block
         {
             if ( childBlocks[i] == null )
             {
-                throw new IllegalArgumentException( "bucket " + i
-                    + " can't be null" );
+                throw new IllegalArgumentException( "bucket " + i + " can't be null" );
             }
         }
         this.childBlocks = childBlocks;
@@ -91,7 +91,7 @@ abstract class AbstractFatherBlock implements Block
      *
      * @return <code>Block[]</code> with the childBlocks.
      */
-    public final Block [] getBlocks()
+    public final Block[] getBlocks()
     {
         return childBlocks;
     }

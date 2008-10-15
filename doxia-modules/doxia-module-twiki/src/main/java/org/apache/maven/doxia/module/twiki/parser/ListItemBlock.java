@@ -27,14 +27,15 @@ import org.apache.maven.doxia.sink.Sink;
  * @author Juan F. Codagnone
  * @version $Id$
  */
-class ListItemBlock extends AbstractFatherBlock
+class ListItemBlock
+    extends AbstractFatherBlock
 {
     private final ListBlock innerList;
 
     /**
      * @see #ListItemBlock(Block[], ListBlock)
      */
-    ListItemBlock( final Block [] blocks )
+    ListItemBlock( final Block[] blocks )
         throws IllegalArgumentException
     {
         this( blocks, null );
@@ -47,7 +48,7 @@ class ListItemBlock extends AbstractFatherBlock
      * @param innerList child list
      * @throws IllegalArgumentException if textBlocks is null
      */
-    ListItemBlock( final Block [] blocks, final ListBlock innerList )
+    ListItemBlock( final Block[] blocks, final ListBlock innerList )
         throws IllegalArgumentException
     {
         super( blocks );
@@ -119,7 +120,6 @@ class ListItemBlock extends AbstractFatherBlock
         final int magic1 = 17;
         final int magic2 = 37;
 
-        return magic1 + magic2 * super.hashCode()
-            + ( innerList == null ? 0 : magic2 * innerList.hashCode() );
+        return magic1 + magic2 * super.hashCode() + ( innerList == null ? 0 : magic2 * innerList.hashCode() );
     }
 }

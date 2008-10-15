@@ -21,7 +21,6 @@ package org.apache.maven.doxia.module.twiki.parser;
 
 import org.apache.maven.doxia.sink.Sink;
 
-
 /**
  * Document objet model: we parse the document to a bunch of these.
  * <p/>

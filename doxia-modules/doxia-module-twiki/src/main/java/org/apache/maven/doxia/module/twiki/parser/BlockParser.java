@@ -42,5 +42,6 @@ public interface BlockParser
      * @return a block
      * @throws ParseException on error
      */
-    Block visit( String line, ByLineSource source ) throws ParseException;
+    Block visit( String line, ByLineSource source )
+        throws ParseException;
 }

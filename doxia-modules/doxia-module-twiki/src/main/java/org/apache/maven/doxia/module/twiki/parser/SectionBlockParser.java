@@ -32,13 +32,13 @@ import org.apache.maven.doxia.parser.ParseException;
  * @author Juan F. Codagnone
  * @version $Id$
  */
-public class SectionBlockParser implements BlockParser
+public class SectionBlockParser
+    implements BlockParser
 {
     /**
      * '---++ Header', '---## Header'
      */
-    private static final Pattern HEADER_DA = Pattern
-        .compile( "^---([+]+)\\s*(.+)\\s*$" );
+    private static final Pattern HEADER_DA = Pattern.compile( "^---([+]+)\\s*(.+)\\s*$" );
 
     /**
      * {@link ParagraphBlockParser} to use. injected
@@ -62,7 +62,7 @@ public class SectionBlockParser implements BlockParser
     }
 
     /** {@inheritDoc}
-     * @throws org.apache.maven.doxia.parser.ParseException 
+     * @throws org.apache.maven.doxia.parser.ParseException
      */
     public final Block visit( final String line, final ByLineSource source )
         throws ParseException
@@ -71,8 +71,7 @@ public class SectionBlockParser implements BlockParser
 
         if ( !m.lookingAt() )
         {
-            throw new IllegalArgumentException( "don't know how to handle: "
-                + line );
+            throw new IllegalArgumentException( "don't know how to handle: " + line );
         }
 
         String newLine;
@@ -86,9 +85,12 @@ public class SectionBlockParser implements BlockParser
             }
             else
             {
-                if(verbatimBlockParser.accept( newLine )) {
+                if ( verbatimBlockParser.accept( newLine ) )
+                {
                     blocks.add( verbatimBlockParser.visit( newLine, source ) );
-                } else {
+                }
+                else
+                {
                     blocks.add( paraParser.visit( newLine, source ) );
                 }
             }
@@ -99,8 +101,7 @@ public class SectionBlockParser implements BlockParser
             source.ungetLine();
         }
 
-        return new SectionBlock( m.group( 2 ), getLevel( m.group( 1 ) ),
-                                 (Block[]) blocks.toArray( new Block[]{} ) );
+        return new SectionBlock( m.group( 2 ), getLevel( m.group( 1 ) ), (Block[]) blocks.toArray( new Block[] {} ) );
     }
 
     /**
@@ -108,14 +109,14 @@ public class SectionBlockParser implements BlockParser
      * @return tha level of the section
      * @throws IllegalArgumentException on error
      */
-    static int getLevel( final String s ) throws IllegalArgumentException
+    static int getLevel( final String s )
+        throws IllegalArgumentException
     {
         for ( int i = 0, n = s.length(); i < n; i++ )
         {
             if ( s.charAt( i ) != '+' )
             {
-                throw new IllegalArgumentException( "the argument must have only"
-                    + " '+' characters" );
+                throw new IllegalArgumentException( "the argument must have only" + " '+' characters" );
             }
         }
         return s.length();
@@ -154,8 +155,9 @@ public class SectionBlockParser implements BlockParser
      *
      * @param verbatimBlockParser <code>VerbatimBlockParser</code> with the verbatimBlockParser.
      */
-    public final void setVerbatimBlockParser(VerbatimBlockParser verbatimBlockParser) {
-        if ( verbatimBlockParser  == null )
+    public final void setVerbatimBlockParser( VerbatimBlockParser verbatimBlockParser )
+    {
+        if ( verbatimBlockParser == null )
         {
             throw new IllegalArgumentException( "argument can't be null" );
         }

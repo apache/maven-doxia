@@ -25,14 +25,14 @@ import org.apache.maven.doxia.util.ByLineReaderSource;
 import org.apache.maven.doxia.util.ByLineSource;
 import org.apache.maven.doxia.parser.ParseException;
 
-
 /**
  * Tests the {@link org.apache.maven.doxia.module.twiki.parser.TableBlockParser}
  *
  * @author Juan F. Codagnone
  * @since Nov 9, 2005
  */
-public class TableTest extends AbstractBlockTestCase
+public class TableTest
+    extends AbstractBlockTestCase
 {
 
     /**
@@ -47,26 +47,20 @@ public class TableTest extends AbstractBlockTestCase
     /**
      * @throws ParseException on error
      */
-    public final void testTable() throws ParseException
+    public final void testTable()
+        throws ParseException
     {
-        final StringReader sw = new StringReader( ""
-            + "  |cell1|cell2|  \n"
-            + "|cell3|cell4|\n"
-        );
+        final StringReader sw = new StringReader( "" + "  |cell1|cell2|  \n" + "|cell3|cell4|\n" );
 
         final ByLineSource source = new ByLineReaderSource( sw );
 
         Block block, expected;
-        expected = new TableBlock( new Block[]{
-            new TableRowBlock( new Block[]{
-                new TableCellBlock( new Block[]{new TextBlock( "cell1" )} ),
-                new TableCellBlock( new Block[]{new TextBlock( "cell2" )} ),
-            } ),
-            new TableRowBlock( new Block[]{
-                new TableCellBlock( new Block[]{new TextBlock( "cell3" )} ),
-                new TableCellBlock( new Block[]{new TextBlock( "cell4" )} ),
-            } ),
-        } );
+        expected =
+            new TableBlock( new Block[] {
+                new TableRowBlock( new Block[] { new TableCellBlock( new Block[] { new TextBlock( "cell1" ) } ),
+                    new TableCellBlock( new Block[] { new TextBlock( "cell2" ) } ), } ),
+                new TableRowBlock( new Block[] { new TableCellBlock( new Block[] { new TextBlock( "cell3" ) } ),
+                    new TableCellBlock( new Block[] { new TextBlock( "cell4" ) } ), } ), } );
 
         block = tableParser.visit( source.getNextLine(), source );
         assertEquals( block, expected );
@@ -75,20 +69,18 @@ public class TableTest extends AbstractBlockTestCase
     /**
      * @throws ParseException on error
      */
-    public final void testTableHeader() throws ParseException
+    public final void testTableHeader()
+        throws ParseException
     {
-        final StringReader sw = new StringReader( "|*cell1*|*cell2*|\n"
-        );
+        final StringReader sw = new StringReader( "|*cell1*|*cell2*|\n" );
 
         final ByLineSource source = new ByLineReaderSource( sw );
 
         Block block, expected;
-        expected = new TableBlock( new Block[]{
-            new TableRowBlock( new Block[]{
-                new TableCellHeaderBlock( new Block[]{new TextBlock( "cell1" )} ),
-                new TableCellHeaderBlock( new Block[]{new TextBlock( "cell2" )} ),
-            } ),
-        } );
+        expected =
+            new TableBlock( new Block[] { new TableRowBlock( new Block[] {
+                new TableCellHeaderBlock( new Block[] { new TextBlock( "cell1" ) } ),
+                new TableCellHeaderBlock( new Block[] { new TextBlock( "cell2" ) } ), } ), } );
 
         block = tableParser.visit( source.getNextLine(), source );
         assertEquals( block, expected );

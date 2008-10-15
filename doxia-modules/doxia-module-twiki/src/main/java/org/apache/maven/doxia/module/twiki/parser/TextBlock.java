@@ -27,7 +27,8 @@ import org.apache.maven.doxia.sink.Sink;
  * @author Juan F. Codagnone
  * @version $Id$
  */
-class TextBlock implements Block
+class TextBlock
+    implements Block
 {
     /**
      * the text
@@ -40,7 +41,8 @@ class TextBlock implements Block
      * @param text some text. can't ben <code>null</code>
      * @throws IllegalArgumentException if parameters are not in the domain
      */
-    TextBlock( final String text ) throws IllegalArgumentException
+    TextBlock( final String text )
+        throws IllegalArgumentException
     {
         if ( text == null )
         {

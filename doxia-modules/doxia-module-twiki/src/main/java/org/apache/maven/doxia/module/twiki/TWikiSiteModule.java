@@ -30,7 +30,8 @@ import org.apache.maven.doxia.module.site.SiteModule;
  * @since 1.0
  * @plexus.component role="org.apache.maven.doxia.module.site.SiteModule" role-hint="twiki"
  */
-public final class TWikiSiteModule implements SiteModule
+public final class TWikiSiteModule
+    implements SiteModule
 {
 
     /**

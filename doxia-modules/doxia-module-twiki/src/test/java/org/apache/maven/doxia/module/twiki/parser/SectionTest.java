@@ -25,14 +25,14 @@ import java.util.Arrays;
 import org.apache.maven.doxia.util.ByLineReaderSource;
 import org.apache.maven.doxia.parser.ParseException;
 
-
 /**
  * Tests the {@link org.apache.maven.doxia.module.twiki.parser.SectionBlockParser}
  *
  * @author Juan F. Codagnone
  * @since Nov 1, 2005
  */
-public class SectionTest extends AbstractBlockTestCase
+public class SectionTest
+    extends AbstractBlockTestCase
 {
 
     /**
@@ -41,12 +41,12 @@ public class SectionTest extends AbstractBlockTestCase
     public final void testSectionBlockWrongArgs()
     {
         final int maxLevel = 5;
-        new SectionBlock( "hola", 1, new Block[]{} );
-        new SectionBlock( "hola", maxLevel, new Block[]{} );
+        new SectionBlock( "hola", 1, new Block[] {} );
+        new SectionBlock( "hola", maxLevel, new Block[] {} );
 
         try
         {
-            new SectionBlock( "hola", maxLevel + 1, new Block[]{} );
+            new SectionBlock( "hola", maxLevel + 1, new Block[] {} );
             fail();
         }
         catch ( final Throwable e )
@@ -56,7 +56,7 @@ public class SectionTest extends AbstractBlockTestCase
 
         try
         {
-            new SectionBlock( "hola", 0, new Block[]{} );
+            new SectionBlock( "hola", 0, new Block[] {} );
             fail();
         }
         catch ( final Throwable e )
@@ -74,7 +74,7 @@ public class SectionTest extends AbstractBlockTestCase
             // ok
         }
 
-        new SectionBlock( "", 1, new Block[]{} );
+        new SectionBlock( "", 1, new Block[] {} );
     }
 
     /**
@@ -98,7 +98,8 @@ public class SectionTest extends AbstractBlockTestCase
      * @throws java.lang.Exception
      * @see SectionBlockParser
      */
-    public final void testSectionParser() throws Exception
+    public final void testSectionParser()
+        throws Exception
     {
         final SectionBlockParser parser = sectionParser;
         assertTrue( parser.accept( "---+ Title1" ) );
@@ -109,8 +110,7 @@ public class SectionTest extends AbstractBlockTestCase
         assertTrue( parser.accept( "---+++++ Title6" ) );
 
         SectionBlock block;
-        block = (SectionBlock) parser.visit( "---++++ Title4",
-                                             new ByLineReaderSource( new StringReader( "" ) ) );
+        block = (SectionBlock) parser.visit( "---++++ Title4", new ByLineReaderSource( new StringReader( "" ) ) );
 
         final int level = 4;
         assertEquals( "Title4", block.getTitle() );
@@ -118,19 +118,17 @@ public class SectionTest extends AbstractBlockTestCase
         assertEquals( 0, block.getBlocks().length );
 
         // ejemplo un poco m�s complejo
-        block = (SectionBlock) parser.visit( "---+++ Title3",
-                                             new ByLineReaderSource( new StringReader(
-                                                 "This is *a* parragraph of a section.\n"
-                                                     + "Some text.\n"
-                                                     + "---+++ Another Title"
-                                                     + "... and more text" ) ) );
-        final SectionBlock expected = new SectionBlock( "Title3", 3, new Block[]{
-            new ParagraphBlock( new Block[]{
-                new TextBlock( "This is " ),
-                new BoldBlock( new Block[]{new TextBlock( "a" )} ),
-                new TextBlock( " parragraph of a section. Some text." ),
-            } )
-        } );
+        block =
+            (SectionBlock) parser.visit( "---+++ Title3",
+                                         new ByLineReaderSource( new StringReader(
+                                                                                   "This is *a* parragraph of a section.\n"
+                                                                                       + "Some text.\n"
+                                                                                       + "---+++ Another Title"
+                                                                                       + "... and more text" ) ) );
+        final SectionBlock expected =
+            new SectionBlock( "Title3", 3, new Block[] { new ParagraphBlock( new Block[] {
+                new TextBlock( "This is " ), new BoldBlock( new Block[] { new TextBlock( "a" ) } ),
+                new TextBlock( " parragraph of a section. Some text." ), } ) } );
         assertEquals( expected, block );
     }
 
@@ -139,55 +137,40 @@ public class SectionTest extends AbstractBlockTestCase
      *
      * @throws Exception on error
      */
-    public final void testSectionWithParagraphs() throws Exception
+    public final void testSectionWithParagraphs()
+        throws Exception
     {
-        final String text = ""
-            + "---++ Title\n"
-            + "\n"
-            + "hey!\n"
-            + "how are\n"
-            + "you?\n"
-            + "  \n  "
-            + "Fine!! thanks";
+        final String text =
+            "" + "---++ Title\n" + "\n" + "hey!\n" + "how are\n" + "you?\n" + "  \n  " + "Fine!! thanks";
 
         final SectionBlockParser parser = sectionParser;
         parser.setVerbatimBlockParser( new VerbatimBlockParser() );
-        final ByLineReaderSource source = new ByLineReaderSource(
-            new StringReader( text ) );
-        final SectionBlock block = (SectionBlock) parser.visit( source
-            .getNextLine(), source );
+        final ByLineReaderSource source = new ByLineReaderSource( new StringReader( text ) );
+        final SectionBlock block = (SectionBlock) parser.visit( source.getNextLine(), source );
         assertEquals( 2, block.getBlocks().length );
-        assertEquals( "hey! how are you?", ( (TextBlock) ( (ParagraphBlock) block
-            .getBlocks()[0] ).getBlocks()[0] ).getText() );
-        assertEquals( "Fine!! thanks", ( (TextBlock) ( (ParagraphBlock) block
-            .getBlocks()[1] ).getBlocks()[0] ).getText() );
+        assertEquals( "hey! how are you?",
+                      ( (TextBlock) ( (ParagraphBlock) block.getBlocks()[0] ).getBlocks()[0] ).getText() );
+        assertEquals( "Fine!! thanks",
+                      ( (TextBlock) ( (ParagraphBlock) block.getBlocks()[1] ).getBlocks()[0] ).getText() );
     }
 
     /**
      * @throws ParseException on error
      */
-    public final void testSectionAndParaAndHrule() throws ParseException
+    public final void testSectionAndParaAndHrule()
+        throws ParseException
     {
         Block[] blocks, expected;
         ByLineReaderSource source;
 
-        source = new ByLineReaderSource( new StringReader( ""
-            + "---++ Title\n"
-            + "Some text\n"
-            + "----------- More text\n"
-        ) );
-        expected = new Block[]{
-            new SectionBlock( "Title", 1, new Block[]{
-                new ParagraphBlock( new Block[]{
-                    new TextBlock( "Some text" )
-                } ),
-                new HorizontalRuleBlock(),
-                new ParagraphBlock( new Block[]{
-                    new TextBlock( "More text" )
-                } ),
-            } ),
-        };
-        blocks = (Block[]) twikiParser.parse( source ).toArray( new Block[]{} );
+        source =
+            new ByLineReaderSource( new StringReader( "" + "---++ Title\n" + "Some text\n"
+                + "----------- More text\n" ) );
+        expected =
+            new Block[] { new SectionBlock( "Title", 1, new Block[] {
+                new ParagraphBlock( new Block[] { new TextBlock( "Some text" ) } ), new HorizontalRuleBlock(),
+                new ParagraphBlock( new Block[] { new TextBlock( "More text" ) } ), } ), };
+        blocks = (Block[]) twikiParser.parse( source ).toArray( new Block[] {} );
         assertTrue( Arrays.equals( expected, blocks ) );
     }
 }

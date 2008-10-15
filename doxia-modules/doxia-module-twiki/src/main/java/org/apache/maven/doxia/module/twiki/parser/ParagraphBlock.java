@@ -25,9 +25,10 @@ import org.apache.maven.doxia.sink.Sink;
  * @author Juan F. Codagnone
  * @version $Id$
  */
-class ParagraphBlock extends AbstractFatherBlock
+class ParagraphBlock
+    extends AbstractFatherBlock
 {
-    ParagraphBlock( final Block []blocks )
+    ParagraphBlock( final Block[] blocks )
         throws IllegalArgumentException
     {
         super( blocks );

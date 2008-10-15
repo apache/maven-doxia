@@ -35,7 +35,8 @@ import java.util.regex.Pattern;
  * @author Juan F. Codagnone
  * @version $Id$
  */
-public class GenericListBlockParser implements BlockParser
+public class GenericListBlockParser
+    implements BlockParser
 {
     static final String EOL = System.getProperty( "line.separator" );
 
@@ -43,10 +44,11 @@ public class GenericListBlockParser implements BlockParser
      * parser used to create text blocks
      */
     private FormatedTextParser formatedTextParser;
+
     /**
      * supported patterns
      */
-    private final Pattern [] patterns = new Pattern[TYPES.length];
+    private final Pattern[] patterns = new Pattern[TYPES.length];
 
     /**
      * Creates the GenericListBlockParser.
@@ -55,8 +57,7 @@ public class GenericListBlockParser implements BlockParser
     {
         for ( int i = 0; i < TYPES.length; i++ )
         {
-            patterns[i] = Pattern.compile( "^((   )+)"
-                + TYPES[i].getItemPattern() + "(.*)$" );
+            patterns[i] = Pattern.compile( "^((   )+)" + TYPES[i].getItemPattern() + "(.*)$" );
         }
     }
 
@@ -74,13 +75,12 @@ public class GenericListBlockParser implements BlockParser
     }
 
     /** {@inheritDoc}
-     * @throws org.apache.maven.doxia.parser.ParseException 
+     * @throws org.apache.maven.doxia.parser.ParseException
      */
     public final Block visit( final String line, final ByLineSource source )
         throws ParseException
     {
-        final TreeListBuilder treeListBuilder =
-            new TreeListBuilder( formatedTextParser );
+        final TreeListBuilder treeListBuilder = new TreeListBuilder( formatedTextParser );
         // new TreeListBuilder(formatedTextParser);
         String l = line;
         do
@@ -99,8 +99,7 @@ public class GenericListBlockParser implements BlockParser
                     final int textGroup = 3;
                     assert m.group( 1 ).length() % numberOfSpaces == 0;
                     final int level = m.group( 1 ).length() / numberOfSpaces;
-                    treeListBuilder.feedEntry( TYPES[i], level,
-                                               m.group( textGroup ).trim() );
+                    treeListBuilder.feedEntry( TYPES[i], level, m.group( textGroup ).trim() );
                     break;
                 }
             }
@@ -115,7 +114,6 @@ public class GenericListBlockParser implements BlockParser
         return treeListBuilder.getBlock();
     }
 
-
     /**
      * Sets the formatTextParser.
      *
@@ -125,8 +123,7 @@ public class GenericListBlockParser implements BlockParser
     {
         if ( textParser == null )
         {
-            throw new IllegalArgumentException(
-                "formatTextParser can't be null" );
+            throw new IllegalArgumentException( "formatTextParser can't be null" );
         }
         this.formatedTextParser = textParser;
     }
@@ -142,14 +139,15 @@ public class GenericListBlockParser implements BlockParser
          * @param items children of the new listblock
          * @return a new ListBlock
          */
-        ListBlock createList( final ListItemBlock []items );
+        ListBlock createList( final ListItemBlock[] items );
 
     }
 
     /**
      * unordered list
      */
-    private static final Type LIST = new Type() {
+    private static final Type LIST = new Type()
+    {
         /** {@inheritDoc} */
         public String getItemPattern()
         {
@@ -157,7 +155,7 @@ public class GenericListBlockParser implements BlockParser
         }
 
         /** {@inheritDoc} */
-        public ListBlock createList( final ListItemBlock []items )
+        public ListBlock createList( final ListItemBlock[] items )
         {
             return new UnorderedListBlock( items );
         }
@@ -166,7 +164,8 @@ public class GenericListBlockParser implements BlockParser
     /**
      * a.
      */
-    private static final Type ORDERED_LOWER_ALPHA = new Type() {
+    private static final Type ORDERED_LOWER_ALPHA = new Type()
+    {
         /** {@inheritDoc} */
         public String getItemPattern()
         {
@@ -174,17 +173,17 @@ public class GenericListBlockParser implements BlockParser
         }
 
         /** {@inheritDoc} */
-        public ListBlock createList( final ListItemBlock []items )
+        public ListBlock createList( final ListItemBlock[] items )
         {
-            return new NumeratedListBlock( Sink.NUMBERING_LOWER_ALPHA,
-                                           items );
+            return new NumeratedListBlock( Sink.NUMBERING_LOWER_ALPHA, items );
         }
     };
 
     /**
      * A.
      */
-    private static final Type ORDERED_UPPER_ALPHA = new Type() {
+    private static final Type ORDERED_UPPER_ALPHA = new Type()
+    {
         /** {@inheritDoc} */
         public String getItemPattern()
         {
@@ -192,17 +191,17 @@ public class GenericListBlockParser implements BlockParser
         }
 
         /** {@inheritDoc} */
-        public ListBlock createList( final ListItemBlock []items )
+        public ListBlock createList( final ListItemBlock[] items )
         {
-            return new NumeratedListBlock( Sink.NUMBERING_UPPER_ALPHA,
-                                           items );
+            return new NumeratedListBlock( Sink.NUMBERING_UPPER_ALPHA, items );
         }
     };
 
     /**
      * 1.
      */
-    private static final Type ORDERERED_DECIMAL = new Type(){
+    private static final Type ORDERERED_DECIMAL = new Type()
+    {
         /** {@inheritDoc} */
         public String getItemPattern()
         {
@@ -210,17 +209,17 @@ public class GenericListBlockParser implements BlockParser
         }
 
         /** {@inheritDoc} */
-        public ListBlock createList( final ListItemBlock []items )
+        public ListBlock createList( final ListItemBlock[] items )
         {
-            return new NumeratedListBlock( Sink.NUMBERING_DECIMAL,
-                                           items );
+            return new NumeratedListBlock( Sink.NUMBERING_DECIMAL, items );
         }
     };
 
     /**
      * i.
      */
-    private static final Type ORDERERED_LOWER_ROMAN = new Type(){
+    private static final Type ORDERERED_LOWER_ROMAN = new Type()
+    {
         /** {@inheritDoc} */
         public String getItemPattern()
         {
@@ -228,17 +227,17 @@ public class GenericListBlockParser implements BlockParser
         }
 
         /** {@inheritDoc} */
-        public ListBlock createList( final ListItemBlock []items )
+        public ListBlock createList( final ListItemBlock[] items )
         {
-            return new NumeratedListBlock( Sink.NUMBERING_LOWER_ROMAN,
-                                           items );
+            return new NumeratedListBlock( Sink.NUMBERING_LOWER_ROMAN, items );
         }
     };
 
     /**
      * I.
      */
-    private static final Type ORDERERED_UPPER_ROMAN = new Type(){
+    private static final Type ORDERERED_UPPER_ROMAN = new Type()
+    {
         /** {@inheritDoc} */
         public String getItemPattern()
         {
@@ -246,16 +245,15 @@ public class GenericListBlockParser implements BlockParser
         }
 
         /** {@inheritDoc} */
-        public ListBlock createList( final ListItemBlock []items )
+        public ListBlock createList( final ListItemBlock[] items )
         {
-            return new NumeratedListBlock( Sink.NUMBERING_UPPER_ROMAN,
-                                           items );
+            return new NumeratedListBlock( Sink.NUMBERING_UPPER_ROMAN, items );
         }
     };
 
-    private static final Type[] TYPES = {
-        LIST, ORDERED_LOWER_ALPHA, ORDERED_UPPER_ALPHA, ORDERERED_DECIMAL, ORDERERED_LOWER_ROMAN, ORDERERED_UPPER_ROMAN
-    };
+    private static final Type[] TYPES =
+        { LIST, ORDERED_LOWER_ALPHA, ORDERED_UPPER_ALPHA, ORDERERED_DECIMAL, ORDERERED_LOWER_ROMAN,
+            ORDERERED_UPPER_ROMAN };
 
 }
 
@@ -271,10 +269,12 @@ class TreeListBuilder
      * parser that create text blocks
      */
     private final FormatedTextParser textParser;
+
     /**
      * tree root
      */
     private final TreeComponent root;
+
     /**
      * the current element of the tree
      */
@@ -306,8 +306,7 @@ class TreeListBuilder
      * @param level indentation level of the item
      * @param text  text of the item
      */
-    void feedEntry( final GenericListBlockParser.Type type,
-                           final int level, final String text )
+    void feedEntry( final GenericListBlockParser.Type type, final int level, final String text )
     {
         final int currentDepth = current.getDepth();
         final int incomingLevel = level - 1;
@@ -319,7 +318,7 @@ class TreeListBuilder
         else if ( incomingLevel > currentDepth )
         {
             // el actual ahora es el �ltimo que insert�
-            final TreeComponent []components = current.getChildren();
+            final TreeComponent[] components = current.getChildren();
             if ( components.length == 0 )
             {
                 /* for example:
@@ -367,7 +366,7 @@ class TreeListBuilder
      */
     private ListBlock getList( final TreeComponent tc )
     {
-        ListItemBlock[] li = (ListItemBlock[]) getListItems( tc ).toArray( new ListItemBlock[]{} );
+        ListItemBlock[] li = (ListItemBlock[]) getListItems( tc ).toArray( new ListItemBlock[] {} );
         return tc.getChildren()[0].getType().createList( li );
     }
 
@@ -383,7 +382,7 @@ class TreeListBuilder
         {
             final TreeComponent child = tc.getChildren()[i];
 
-            Block[] text = new Block[]{};
+            Block[] text = new Block[] {};
             if ( child.getFather() != null )
             {
                 text = textParser.parse( child.getText() );
@@ -414,14 +413,17 @@ class TreeListBuilder
          * childrens
          */
         private List children = new ArrayList();
+
         /**
          * node text
          */
         private String text;
+
         /**
          * the father
          */
         private TreeComponent father;
+
         /**
          * type of the list
          */
@@ -434,8 +436,7 @@ class TreeListBuilder
          * @param text   component text
          * @param type   component type
          */
-        TreeComponent( final TreeComponent father, final String text,
-                              final GenericListBlockParser.Type type )
+        TreeComponent( final TreeComponent father, final String text, final GenericListBlockParser.Type type )
         {
             this.text = text;
             this.father = father;
@@ -447,7 +448,7 @@ class TreeListBuilder
          */
         TreeComponent[] getChildren()
         {
-            return (TreeComponent[]) children.toArray( new TreeComponent[]{} );
+            return (TreeComponent[]) children.toArray( new TreeComponent[] {} );
         }
 
         /**
@@ -457,8 +458,7 @@ class TreeListBuilder
          * @param ttype component type
          * @return the new node created
          */
-        TreeComponent addChildren( final String t,
-                                          final GenericListBlockParser.Type ttype )
+        TreeComponent addChildren( final String t, final GenericListBlockParser.Type ttype )
         {
             if ( t == null || ttype == null )
             {

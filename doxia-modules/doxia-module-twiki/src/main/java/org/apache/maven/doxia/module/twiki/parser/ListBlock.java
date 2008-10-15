@@ -1,6 +1,5 @@
 package org.apache.maven.doxia.module.twiki.parser;
 
-
 /*
  * Licensed to the Apache Software Foundation (ASF) under one
  * or more contributor license agreements.  See the NOTICE file
@@ -31,7 +30,8 @@ package org.apache.maven.doxia.module.twiki.parser;
  * @author Juan F. Codagnone
  * @version $Id$
  */
-abstract class ListBlock extends AbstractFatherBlock
+abstract class ListBlock
+    extends AbstractFatherBlock
 {
     /**
      * Creates the ListBlock.

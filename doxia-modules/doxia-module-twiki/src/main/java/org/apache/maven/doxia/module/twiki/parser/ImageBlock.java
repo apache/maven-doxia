@@ -27,7 +27,8 @@ import org.apache.maven.doxia.sink.Sink;
  * @author Christian Nardi
  * @version $Id$
  */
-class ImageBlock implements Block
+class ImageBlock
+    implements Block
 {
     /**
      * img reference

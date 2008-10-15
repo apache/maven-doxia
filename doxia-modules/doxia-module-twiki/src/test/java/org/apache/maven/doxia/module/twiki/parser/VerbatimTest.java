@@ -27,15 +27,14 @@ import org.apache.maven.doxia.util.ByLineSource;
  * under the License.
  */
 
-
-
 /**
  * Tests the {@link org.apache.maven.doxia.module.twiki.parser.VerbatimBlock}
  *
  * @author Christian Nardi
  * @since Nov 8, 2007
  */
-public class VerbatimTest extends AbstractBlockTestCase
+public class VerbatimTest
+    extends AbstractBlockTestCase
 {
 
     /**
@@ -48,89 +47,69 @@ public class VerbatimTest extends AbstractBlockTestCase
         assertTrue( getVerbatimParser().accept( "<verbatim> a word" ) );
         assertTrue( getVerbatimParser().accept( "<verbatim> another Word" ) );
     }
-    
-    
+
     /**
      * @throws ParseException if the parser does not accept the line
-     * 
+     *
      */
-    public void testVerbatim() throws ParseException 
+    public void testVerbatim()
+        throws ParseException
     {
-        final StringReader sw = new StringReader( ""
-                + "  <verbatim> hello, \n"
-                + " this is a verbatim text \n"
-                + " which i would like to test \n"
-                + " Thanks </verbatim>"
-            );
+        final StringReader sw =
+            new StringReader( "" + "  <verbatim> hello, \n" + " this is a verbatim text \n"
+                + " which i would like to test \n" + " Thanks </verbatim>" );
 
-            final ByLineSource source = new ByLineReaderSource( sw );
+        final ByLineSource source = new ByLineReaderSource( sw );
 
-            Block block, expected;
-            expected = new VerbatimBlock( new Block[]{
-                    new TextBlock(  " hello, \n" ) ,
-                    new TextBlock(  " this is a verbatim text \n" ) ,
-                    new TextBlock(  " which i would like to test \n" ) ,
-                    new TextBlock(  " Thanks \n" ) ,
-            } );
+        Block block, expected;
+        expected =
+            new VerbatimBlock( new Block[] { new TextBlock( " hello, \n" ),
+                new TextBlock( " this is a verbatim text \n" ), new TextBlock( " which i would like to test \n" ),
+                new TextBlock( " Thanks \n" ), } );
 
-            block = getVerbatimParser().visit( source.getNextLine(), source );
-            assertEquals( block, expected );
+        block = getVerbatimParser().visit( source.getNextLine(), source );
+        assertEquals( block, expected );
     }
-    
+
     /**
      * @throws Exception .
      */
-    public void testTwiki() throws Exception 
+    public void testTwiki()
+        throws Exception
     {
-        final StringReader sw = new StringReader( "hello this is a paragraph \n"
-                + "  <verbatim> hello, \n"
-                + " this is a verbatim text \n"
-                + " which i would like to test \n"
-                + " Thanks </verbatim>"
-            );
+        final StringReader sw =
+            new StringReader( "hello this is a paragraph \n" + "  <verbatim> hello, \n"
+                + " this is a verbatim text \n" + " which i would like to test \n" + " Thanks </verbatim>" );
         final ByLineSource source = new ByLineReaderSource( sw );
 
         Block[] expected;
-        expected = new Block[]{
-                new ParagraphBlock( new Block[] {
-                        new TextBlock( "hello this is a paragraph" ),
-                } ),
-                new VerbatimBlock( new Block[]{
-                    new TextBlock(  " hello, \n" ) ,
-                    new TextBlock(  " this is a verbatim text \n" ) ,
-                    new TextBlock(  " which i would like to test \n" ) ,
-                    new TextBlock(  " Thanks \n" ) ,
-                    } ) 
-        };
+        expected =
+            new Block[] {
+                new ParagraphBlock( new Block[] { new TextBlock( "hello this is a paragraph" ), } ),
+                new VerbatimBlock( new Block[] { new TextBlock( " hello, \n" ),
+                    new TextBlock( " this is a verbatim text \n" ),
+                    new TextBlock( " which i would like to test \n" ), new TextBlock( " Thanks \n" ), } ) };
 
         List block = twikiParser.parse( source );
-        assertTrue( Arrays.equals( 
-                block.toArray(), expected ) );
+        assertTrue( Arrays.equals( block.toArray(), expected ) );
 
-        
     }
-    
+
     /** test
      * @throws org.apache.maven.doxia.parser.ParseException
      */
-    public void testVerbatimAfterSection() throws ParseException 
+    public void testVerbatimAfterSection()
+        throws ParseException
     {
-        final StringReader sw = new StringReader( "---++ fooo\n"
-                + "  <verbatim> hello, \n"
-                + " Thanks </verbatim>"
-            );
+        final StringReader sw =
+            new StringReader( "---++ fooo\n" + "  <verbatim> hello, \n" + " Thanks </verbatim>" );
         final ByLineSource source = new ByLineReaderSource( sw );
 
         Block[] expected;
-        expected = new Block[]{
-                new SectionBlock( "foo", 2, new Block[] {
-                        new VerbatimBlock( new Block[]{
-                                new TextBlock(  " hello, \n" ) ,
-                                new TextBlock(  " Thanks \n" ) ,
-                                } )
-                } ),
-        };
-        
+        expected =
+            new Block[] { new SectionBlock( "foo", 2, new Block[] { new VerbatimBlock( new Block[] {
+                new TextBlock( " hello, \n" ), new TextBlock( " Thanks \n" ), } ) } ), };
+
         List block = twikiParser.parse( source );
         assertTrue( Arrays.equals( block.toArray(), expected ) );
     }

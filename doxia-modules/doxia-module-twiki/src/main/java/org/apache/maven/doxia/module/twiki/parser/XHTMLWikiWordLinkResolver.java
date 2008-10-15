@@ -24,7 +24,8 @@ package org.apache.maven.doxia.module.twiki.parser;
  * @author Christian Nardi
  * @version $Id$
  */
-public class XHTMLWikiWordLinkResolver implements WikiWordLinkResolver
+public class XHTMLWikiWordLinkResolver
+    implements WikiWordLinkResolver
 {
     /**
      * This only works for xhtml output, but there is no way

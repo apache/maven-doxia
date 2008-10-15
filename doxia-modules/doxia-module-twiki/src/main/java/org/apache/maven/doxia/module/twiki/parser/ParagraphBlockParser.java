@@ -34,28 +34,34 @@ import org.apache.maven.doxia.parser.ParseException;
  * @author Juan F. Codagnone
  * @version $Id$
  */
-public class ParagraphBlockParser implements BlockParser
+public class ParagraphBlockParser
+    implements BlockParser
 {
     /**
      * pattern used to dectect end of paragraph
      */
     private final Pattern paragraphSeparator = Pattern.compile( "^(\\s*)$" );
+
     /**
      * {@link SectionBlockParser} to use. injected
      */
     private SectionBlockParser sectionParser;
+
     /**
      * {@link ListBlockParser} to use. injected
      */
     private GenericListBlockParser listParser;
+
     /**
      * {@link FormatedTextParser} to use. injected
      */
     private FormatedTextParser textParser;
+
     /**
      * {@link HRuleBlockParser} to use. injected
      */
     private HRuleBlockParser hrulerParser;
+
     /**
      * {@link TableBlockParser} to use. injected
      */
@@ -74,9 +80,7 @@ public class ParagraphBlockParser implements BlockParser
     /** {@inheritDoc} */
     public final boolean accept( final String line )
     {
-        return !sectionParser.accept( line )
-                && !hrulerParser.accept( line )
-                && !verbatimParser.accept( line );
+        return !sectionParser.accept( line ) && !hrulerParser.accept( line ) && !verbatimParser.accept( line );
     }
 
     /** {@inheritDoc}
@@ -116,8 +120,7 @@ public class ParagraphBlockParser implements BlockParser
                 {
                     if ( sb.length() != 0 )
                     {
-                        childs.addAll( Arrays.asList( textParser
-                            .parse( sb.toString().trim() ) ) );
+                        childs.addAll( Arrays.asList( textParser.parse( sb.toString().trim() ) ) );
                         sb = new StringBuffer();
                     }
                     childs.add( listParser.visit( l, source ) );
@@ -161,8 +164,7 @@ public class ParagraphBlockParser implements BlockParser
 
         if ( sb.length() != 0 )
         {
-            childs.addAll( Arrays.asList( textParser
-                .parse( sb.toString().trim() ) ) );
+            childs.addAll( Arrays.asList( textParser.parse( sb.toString().trim() ) ) );
             sb = new StringBuffer();
         }
 
@@ -171,7 +173,7 @@ public class ParagraphBlockParser implements BlockParser
             return NOP;
         }
 
-        return new ParagraphBlock( (Block[]) childs.toArray( new Block[]{} ) );
+        return new ParagraphBlock( (Block[]) childs.toArray( new Block[] {} ) );
     }
 
     /**
@@ -236,8 +238,7 @@ public class ParagraphBlockParser implements BlockParser
     /**
      * @param aTableBlockParser Table parser to use
      */
-    public final void setTableBlockParser(
-        final TableBlockParser aTableBlockParser )
+    public final void setTableBlockParser( final TableBlockParser aTableBlockParser )
     {
         if ( aTableBlockParser == null )
         {

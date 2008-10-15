@@ -27,7 +27,8 @@ import org.apache.maven.doxia.sink.Sink;
  * @author <a href="mailto:vincent.siveton@gmail.com">Vincent Siveton</a>
  * @version $Id$
  */
-class XHTMLBlock implements Block
+class XHTMLBlock
+    implements Block
 {
     private final String tag;
 
@@ -37,7 +38,8 @@ class XHTMLBlock implements Block
      * @param tag the tag, eg: &lt;pre&gt;
      * @throws IllegalArgumentException if the arguments are <code>null</code>
      */
-    XHTMLBlock( final String tag ) throws IllegalArgumentException
+    XHTMLBlock( final String tag )
+        throws IllegalArgumentException
     {
         if ( tag == null )
         {
@@ -49,7 +51,7 @@ class XHTMLBlock implements Block
     /** {@inheritDoc}*/
     public final void traverse( final Sink sink )
     {
-        if ( tag.trim().length() == 0)
+        if ( tag.trim().length() == 0 )
         {
             return;
         }

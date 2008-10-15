@@ -21,21 +21,21 @@ package org.apache.maven.doxia.module.twiki.parser;
 
 import org.apache.maven.doxia.sink.Sink;
 
-
 /**
  * Table cell
  *
  * @author Juan F. Codagnone
  * @version $Id$
  */
-class TableCellBlock extends AbstractFatherBlock
+class TableCellBlock
+    extends AbstractFatherBlock
 {
     /**
      * Creates the TableCellBlock.
      *
      * @param childBlocks childrens
      */
-    TableCellBlock( final Block [] childBlocks )
+    TableCellBlock( final Block[] childBlocks )
     {
         super( childBlocks );
     }

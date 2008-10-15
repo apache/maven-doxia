@@ -33,13 +33,14 @@ import org.apache.maven.doxia.parser.ParseException;
  * @author Juan F. Codagnone
  * @version $Id$
  */
-public class TableBlockParser implements BlockParser
+public class TableBlockParser
+    implements BlockParser
 {
     /**
      * pattern to detect tables
      */
-    private static final Pattern TABLE_PATTERN =
-        Pattern.compile( "^\\s*([|].*[|])+\\s*$" );
+    private static final Pattern TABLE_PATTERN = Pattern.compile( "^\\s*([|].*[|])+\\s*$" );
+
     /**
      * text parser
      */
@@ -73,15 +74,12 @@ public class TableBlockParser implements BlockParser
                 final List cells = new ArrayList();
 
                 /* for each cell... */
-                for ( int lh = l.indexOf( '|' ) + 1, rh;
-                      ( rh = l.indexOf( '|', lh ) ) != -1;
-                      lh = rh + 1 )
+                for ( int lh = l.indexOf( '|' ) + 1, rh; ( rh = l.indexOf( '|', lh ) ) != -1; lh = rh + 1 )
                 {
-                    final Block [] bs = textParser.parse( l.substring( lh, rh )
-                        .trim() );
+                    final Block[] bs = textParser.parse( l.substring( lh, rh ).trim() );
                     if ( bs.length == 1 && bs[0] instanceof BoldBlock )
                     {
-                        final Block []tmp = ( (BoldBlock) bs[0] ).getBlocks();
+                        final Block[] tmp = ( (BoldBlock) bs[0] ).getBlocks();
                         cells.add( new TableCellHeaderBlock( tmp ) );
                     }
                     else
@@ -89,7 +87,7 @@ public class TableBlockParser implements BlockParser
                         cells.add( new TableCellBlock( bs ) );
                     }
                 }
-                rows.add( new TableRowBlock( (Block[]) cells.toArray( new Block[]{} ) ) );
+                rows.add( new TableRowBlock( (Block[]) cells.toArray( new Block[] {} ) ) );
             }
 
         }
@@ -97,7 +95,7 @@ public class TableBlockParser implements BlockParser
 
         assert rows.size() >= 1;
 
-        return new TableBlock( (Block[]) rows.toArray( new Block[]{} ) );
+        return new TableBlock( (Block[]) rows.toArray( new Block[] {} ) );
     }
 
     /**

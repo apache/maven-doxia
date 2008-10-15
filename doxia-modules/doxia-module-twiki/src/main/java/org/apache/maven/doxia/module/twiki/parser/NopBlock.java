@@ -27,7 +27,8 @@ import org.apache.maven.doxia.sink.Sink;
  * @author Juan F. Codagnone
  * @version $Id$
  */
-class NopBlock implements Block
+class NopBlock
+    implements Block
 {
     /** {@inheritDoc} */
     public final void traverse( final Sink sink )

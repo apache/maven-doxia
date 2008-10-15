@@ -27,14 +27,15 @@ import org.apache.maven.doxia.sink.Sink;
  * @author Juan F. Codagnone
  * @version $Id$
  */
-class TableCellHeaderBlock extends AbstractFatherBlock
+class TableCellHeaderBlock
+    extends AbstractFatherBlock
 {
     /**
      * Creates the TableCellHeaderBlock.
      *
      * @param childBlocks childrens
      */
-    TableCellHeaderBlock( final Block [] childBlocks )
+    TableCellHeaderBlock( final Block[] childBlocks )
     {
         super( childBlocks );
     }

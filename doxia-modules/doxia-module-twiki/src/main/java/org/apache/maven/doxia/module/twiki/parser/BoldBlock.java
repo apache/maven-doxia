@@ -27,14 +27,15 @@ import org.apache.maven.doxia.sink.Sink;
  * @author Juan F. Codagnone
  * @version $Id$
  */
-class BoldBlock extends AbstractFatherBlock
+class BoldBlock
+    extends AbstractFatherBlock
 {
     /**
      * Creates the BoldBlock.
      *
      * @param childBlocks child blocks
      */
-    public BoldBlock( final Block [] childBlocks )
+    public BoldBlock( final Block[] childBlocks )
     {
         super( childBlocks );
     }

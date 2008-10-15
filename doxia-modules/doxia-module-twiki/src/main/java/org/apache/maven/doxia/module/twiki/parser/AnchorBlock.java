@@ -21,14 +21,14 @@ package org.apache.maven.doxia.module.twiki.parser;
 
 import org.apache.maven.doxia.sink.Sink;
 
-
 /**
  * Represents an anchor
  *
  * @author Juan F. Codagnone
  * @version $Id$
  */
-class AnchorBlock implements Block
+class AnchorBlock
+    implements Block
 {
     /**
      * anchor name
@@ -41,7 +41,8 @@ class AnchorBlock implements Block
      * @param name name of the anchor
      * @throws IllegalArgumentException if the arguments are <code>null</code>
      */
-    AnchorBlock( final String name ) throws IllegalArgumentException
+    AnchorBlock( final String name )
+        throws IllegalArgumentException
     {
         if ( name == null )
         {

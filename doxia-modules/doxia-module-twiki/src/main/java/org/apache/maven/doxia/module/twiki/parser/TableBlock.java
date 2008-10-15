@@ -27,14 +27,15 @@ import org.apache.maven.doxia.sink.Sink;
  * @author Juan F. Codagnone
  * @version $Id$
  */
-class TableBlock extends AbstractFatherBlock
+class TableBlock
+    extends AbstractFatherBlock
 {
     /**
      * Creates the TableBlock.
      *
      * @param childBlocks child blocks
      */
-    public TableBlock( final Block [] childBlocks )
+    public TableBlock( final Block[] childBlocks )
     {
         super( childBlocks );
     }
@@ -53,9 +54,9 @@ class TableBlock extends AbstractFatherBlock
         sink.table_();
     }
 
-    private final int [] getJustification() {
-        int[] justification = new int[((AbstractFatherBlock)getBlocks()[0]).
-                                      getBlocks().length];
+    private final int[] getJustification()
+    {
+        int[] justification = new int[( (AbstractFatherBlock) getBlocks()[0] ).getBlocks().length];
         for ( int i = 0; i < justification.length; i++ )
         {
             justification[i] = Sink.JUSTIFY_CENTER;

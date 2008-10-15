@@ -26,14 +26,14 @@ import org.apache.maven.doxia.util.ByLineSource;
 import org.apache.maven.doxia.parser.ParseException;
 import org.apache.maven.doxia.sink.Sink;
 
-
 /**
  * Units tests for Lists
  *
  * @author Juan F. Codagnone
  * @since Nov 1, 2005
  */
-public class ListTest extends AbstractBlockTestCase
+public class ListTest
+    extends AbstractBlockTestCase
 {
 
     /**
@@ -41,31 +41,22 @@ public class ListTest extends AbstractBlockTestCase
      *
      * @throws ParseException on error
      */
-    public final void testList() throws ParseException
+    public final void testList()
+        throws ParseException
     {
         final BlockParser parser = listParser;
 
-        final String text = ""
-            + "      * item1.1 \n"
-            + "   * item2\n"
-            + "      * item2.1\n"
-            + "   * item3\n"
-            + "      * item3.1\n"
-            + "      * item3.2\n"
-            + "         * item3.2.1\n"
-            + "         * item3.2.2\n"
-            + "         * item3.2.3\n"
-            + "      * item3.3\n"
-            + "         * item3.3.1\n"
-            + "   * item4";
+        final String text =
+            "" + "      * item1.1 \n" + "   * item2\n" + "      * item2.1\n" + "   * item3\n"
+                + "      * item3.1\n" + "      * item3.2\n" + "         * item3.2.1\n" + "         * item3.2.2\n"
+                + "         * item3.2.3\n" + "      * item3.3\n" + "         * item3.3.1\n" + "   * item4";
 
-        final ByLineSource source = new ByLineReaderSource( new StringReader(
-            text ) );
+        final ByLineSource source = new ByLineReaderSource( new StringReader( text ) );
         final Block b = parser.visit( source.getNextLine(), source );
-        final Block []firstLevelBlocks = ( (UnorderedListBlock) b ).getBlocks();
+        final Block[] firstLevelBlocks = ( (UnorderedListBlock) b ).getBlocks();
         final int numberOfChild = 4;
         assertEquals( numberOfChild, firstLevelBlocks.length );
-        
+
         for ( int i = 0; i < firstLevelBlocks.length; i++ )
         {
             Block block = firstLevelBlocks[i];
@@ -74,7 +65,7 @@ public class ListTest extends AbstractBlockTestCase
 
         ListBlock list;
         ListItemBlock item;
-        Block [] blocks;
+        Block[] blocks;
 
         item = (ListItemBlock) firstLevelBlocks[1];
         blocks = item.getBlocks();
@@ -92,23 +83,18 @@ public class ListTest extends AbstractBlockTestCase
     /**
      * @throws ParseException on error
      */
-    public final void testNumeringDecimal() throws ParseException
+    public final void testNumeringDecimal()
+        throws ParseException
     {
-        final String text = ""
-            + "   1. item1\n"
-            + "   1. item2\n"
-            + "   1. item3";
+        final String text = "" + "   1. item1\n" + "   1. item2\n" + "   1. item3";
 
-        final ByLineSource source = new ByLineReaderSource( new StringReader(
-            text ) );
+        final ByLineSource source = new ByLineReaderSource( new StringReader( text ) );
         Block blocks, expected;
-        expected = new NumeratedListBlock( Sink.NUMBERING_DECIMAL,
-                                           new ListItemBlock[]{
-                                               new ListItemBlock( new Block[]{new TextBlock( "item1" )} ),
-                                               new ListItemBlock( new Block[]{new TextBlock( "item2" )} ),
-                                               new ListItemBlock( new Block[]{new TextBlock( "item3" )} ),
-                                           }
-        );
+        expected =
+            new NumeratedListBlock( Sink.NUMBERING_DECIMAL, new ListItemBlock[] {
+                new ListItemBlock( new Block[] { new TextBlock( "item1" ) } ),
+                new ListItemBlock( new Block[] { new TextBlock( "item2" ) } ),
+                new ListItemBlock( new Block[] { new TextBlock( "item3" ) } ), } );
         blocks = listParser.visit( source.getNextLine(), source );
         assertEquals( expected, blocks );
     }
@@ -116,41 +102,26 @@ public class ListTest extends AbstractBlockTestCase
     /**
      * @throws ParseException on error
      */
-    public final void testHetero() throws ParseException
+    public final void testHetero()
+        throws ParseException
     {
-        final String text = ""
-            + "   A. item1\n"
-            + "      * item1.1\n"
-            + "      * item1.2\n"
-            + "   B. item2\n"
-            + "      i. item2.1\n"
-            + "      i. item2.2\n"
-            + "   C. item3";
+        final String text =
+            "" + "   A. item1\n" + "      * item1.1\n" + "      * item1.2\n" + "   B. item2\n"
+                + "      i. item2.1\n" + "      i. item2.2\n" + "   C. item3";
 
-        final ByLineSource source = new ByLineReaderSource( new StringReader(
-            text ) );
+        final ByLineSource source = new ByLineReaderSource( new StringReader( text ) );
         Block blocks, expected;
-        expected = new NumeratedListBlock( Sink.NUMBERING_UPPER_ALPHA,
-                                           new ListItemBlock[]{
-                                               new ListItemBlock( new Block[]{new TextBlock( "item1" )},
-                                                                  new UnorderedListBlock( new ListItemBlock[]{
-                                                                      new ListItemBlock( new Block[]{
-                                                                          new TextBlock( "item1.1" )} ),
-                                                                      new ListItemBlock( new Block[]{
-                                                                          new TextBlock( "item1.2" )} ),
-                                                                  } ) ),
-                                               new ListItemBlock( new Block[]{new TextBlock( "item2" )},
-                                                                  new NumeratedListBlock(
-                                                                      Sink.NUMBERING_LOWER_ROMAN,
-                                                                      new ListItemBlock[]{
-                                                                          new ListItemBlock( new Block[]{
-                                                                              new TextBlock( "item2.1" )} ),
-                                                                          new ListItemBlock( new Block[]{
-                                                                              new TextBlock( "item2.2" )} ),
-                                                                      } ) ),
-                                               new ListItemBlock( new Block[]{new TextBlock( "item3" )} ),
-                                           }
-        );
+        expected =
+            new NumeratedListBlock( Sink.NUMBERING_UPPER_ALPHA, new ListItemBlock[] {
+                new ListItemBlock( new Block[] { new TextBlock( "item1" ) },
+                                   new UnorderedListBlock( new ListItemBlock[] {
+                                       new ListItemBlock( new Block[] { new TextBlock( "item1.1" ) } ),
+                                       new ListItemBlock( new Block[] { new TextBlock( "item1.2" ) } ), } ) ),
+                new ListItemBlock( new Block[] { new TextBlock( "item2" ) },
+                                   new NumeratedListBlock( Sink.NUMBERING_LOWER_ROMAN, new ListItemBlock[] {
+                                       new ListItemBlock( new Block[] { new TextBlock( "item2.1" ) } ),
+                                       new ListItemBlock( new Block[] { new TextBlock( "item2.2" ) } ), } ) ),
+                new ListItemBlock( new Block[] { new TextBlock( "item3" ) } ), } );
         blocks = listParser.visit( source.getNextLine(), source );
         assertEquals( expected, blocks );
     }

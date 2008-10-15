@@ -23,55 +23,60 @@ import junit.framework.TestCase;
 
 import org.apache.maven.doxia.module.twiki.TWikiParser;
 
-
 /**
  * Common code to the Block unit tests
  *
  * @author Juan F. Codagnone
  * @since Nov 1, 2005
  */
-public abstract class AbstractBlockTestCase extends TestCase
+public abstract class AbstractBlockTestCase
+    extends TestCase
 {
     /**
      * sectionParser to use in all the tests
      */
     protected final SectionBlockParser sectionParser = new SectionBlockParser();
+
     /**
      * ParagraphBlockParser  to use in all the tests
      */
-    protected final ParagraphBlockParser paraParser =
-        new ParagraphBlockParser();
+    protected final ParagraphBlockParser paraParser = new ParagraphBlockParser();
+
     /**
      * ListBlockParser used in all the tests
      */
-    protected final GenericListBlockParser listParser =
-        new GenericListBlockParser();
+    protected final GenericListBlockParser listParser = new GenericListBlockParser();
+
     /**
      * FormatedTextParser used in all the tests
      */
-    protected final FormatedTextParser formatTextParser =
-        new FormatedTextParser();
+    protected final FormatedTextParser formatTextParser = new FormatedTextParser();
+
     /**
      * TextParser used in all the tests
      */
-    protected final TextParser textParser = new TextParser( 
-            new XHTMLWikiWordLinkResolver() );
+    protected final TextParser textParser = new TextParser( new XHTMLWikiWordLinkResolver() );
+
     /**
      * TextParser used in all the tests
      */
     protected final HRuleBlockParser hruleParser = new HRuleBlockParser();
+
     /**
      * TableBlockParser used in all the tests
      */
     protected final TableBlockParser tableParser = new TableBlockParser();
+
     /**
      * TWiki used in all the tests
      */
     protected final TWikiParser twikiParser = new TWikiParser();
-    /** 
+
+    /**
      * Parser for verbatim blocks
      */
     private final VerbatimBlockParser verbatimParser = new VerbatimBlockParser();
+
     /**
      * Creates the AbstractBlockTestCase.
      */
@@ -90,12 +95,13 @@ public abstract class AbstractBlockTestCase extends TestCase
         formatTextParser.setTextParser( textParser );
         tableParser.setTextParser( formatTextParser );
     }
+
     /**
      * Returns the verbatimParser.
-     * 
+     *
      * @return <code>VerbatimBlockParser</code> with the verbatimParser.
      */
-    protected final VerbatimBlockParser getVerbatimParser() 
+    protected final VerbatimBlockParser getVerbatimParser()
     {
         return verbatimParser;
     }

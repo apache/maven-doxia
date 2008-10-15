@@ -38,32 +38,31 @@ public class TextParser
      */
     private static final Pattern WIKIWORD_PATTERN =
         Pattern.compile( "(!?([A-Z]\\w*[.])?([A-Z][a-z]+){2,}(#\\w*)?)" );
+
     /**
      * pattern to detect SpecificLinks links [[reference][text]]
      */
-    private static final Pattern SPECIFICLINK_PATTERN =
-        Pattern.compile( "!?\\[\\[([^\\]]+)\\]\\[([^\\]]+)\\]\\]" );
+    private static final Pattern SPECIFICLINK_PATTERN = Pattern.compile( "!?\\[\\[([^\\]]+)\\]\\[([^\\]]+)\\]\\]" );
+
     /**
      * pattern to detect ForcedLinks links [[reference asd]]
      */
-    private static final Pattern FORCEDLINK_PATTERN =
-        Pattern.compile( "(!)?(\\[\\[(.+)\\]\\])" );
+    private static final Pattern FORCEDLINK_PATTERN = Pattern.compile( "(!)?(\\[\\[(.+)\\]\\])" );
+
     /**
      * anchor name
      */
-    private static final Pattern ANCHOR_PATTERN =
-        Pattern.compile( "#(([A-Z][A-Za-z]*){2,})" );
+    private static final Pattern ANCHOR_PATTERN = Pattern.compile( "#(([A-Z][A-Za-z]*){2,})" );
+
     /**
      * url word
      */
-    private static final Pattern URL_PATTERN =
-        Pattern.compile( "(\\w+):[/][/][^\\s]*" );
+    private static final Pattern URL_PATTERN = Pattern.compile( "(\\w+):[/][/][^\\s]*" );
 
     /**
      *  image pattern specification
      */
-    private static final Pattern IMAGE_PATTERN =
-        Pattern.compile( "(.*)\\.(png|jpg|gif|bmp)" );
+    private static final Pattern IMAGE_PATTERN = Pattern.compile( "(.*)\\.(png|jpg|gif|bmp)" );
 
     /**
      *  image tag pattern specification (used for images at relative URLs)
@@ -117,7 +116,8 @@ public class TextParser
             xhtmlMatcher = pattern.matcher( line );
         }
 
-        if ( xhtmlMatcher!= null && xhtmlMatcher.find() ) {
+        if ( xhtmlMatcher != null && xhtmlMatcher.find() )
+        {
             parseXHTML( line, ret, xhtmlMatcher );
         }
         else if ( linkMatcher.find() )
@@ -140,7 +140,8 @@ public class TextParser
         {
             parseUrl( line, ret, urlMatcher );
         }
-        else if ( imageTagMatcher.find() ) {
+        else if ( imageTagMatcher.find() )
+        {
             parseImage( line, ret, imageTagMatcher );
         }
         else
@@ -160,7 +161,8 @@ public class TextParser
      * @param ret where the results live
      * @param imageTagMatcher image tag matcher
      */
-    private void parseImage(final String line, final List ret, final Matcher imageTagMatcher) {
+    private void parseImage( final String line, final List ret, final Matcher imageTagMatcher )
+    {
         ret.addAll( parse( line.substring( 0, imageTagMatcher.start() ) ) );
         final String src = imageTagMatcher.group( 2 );
         ret.add( new ImageBlock( src ) );
@@ -173,8 +175,7 @@ public class TextParser
      * @param ret where the results live
      * @param urlMatcher url matcher
      */
-    private void parseUrl( final String line, final List ret,
-                           final Matcher urlMatcher )
+    private void parseUrl( final String line, final List ret, final Matcher urlMatcher )
     {
         ret.addAll( parse( line.substring( 0, urlMatcher.start() ) ) );
         final String url = urlMatcher.group( 0 );
@@ -187,8 +188,7 @@ public class TextParser
         {
             ret.add( new LinkBlock( url, new TextBlock( url ) ) );
         }
-        ret.addAll( parse( line.substring(
-                urlMatcher.end(), line.length() ) ) );
+        ret.addAll( parse( line.substring( urlMatcher.end(), line.length() ) ) );
     }
 
     /**
@@ -197,8 +197,7 @@ public class TextParser
      * @param ret where the results live
      * @param anchorMatcher anchor matcher
      */
-    private void parseAnchor( final String line, final List ret,
-                              final Matcher anchorMatcher )
+    private void parseAnchor( final String line, final List ret, final Matcher anchorMatcher )
     {
         ret.addAll( parse( line.substring( 0, anchorMatcher.start() ) ) );
         ret.add( new AnchorBlock( anchorMatcher.group( 1 ) ) );
@@ -211,8 +210,7 @@ public class TextParser
      * @param ret where the results live
      * @param forcedLinkMatcher forced link matcher
      */
-    private void parseForcedLink( final String line, final List ret,
-                                  final Matcher forcedLinkMatcher )
+    private void parseForcedLink( final String line, final List ret, final Matcher forcedLinkMatcher )
     {
         if ( forcedLinkMatcher.group( 1 ) != null )
         {
@@ -232,17 +230,14 @@ public class TextParser
                 }
                 else
                 {
-                    ret.add( new LinkBlock( s.substring( 0, i ),
-                                            new TextBlock( s.substring( i ).trim() ) ) );
+                    ret.add( new LinkBlock( s.substring( 0, i ), new TextBlock( s.substring( i ).trim() ) ) );
                 }
             }
             else
             {
-                ret.addAll( parse( line.substring( 0,
-                        forcedLinkMatcher.start() ) ) );
+                ret.addAll( parse( line.substring( 0, forcedLinkMatcher.start() ) ) );
                 ret.add( createLink( showText, showText ) );
-                ret.addAll( parse( line.substring( forcedLinkMatcher.end(),
-                        line.length() ) ) );
+                ret.addAll( parse( line.substring( forcedLinkMatcher.end(), line.length() ) ) );
             }
         }
     }
@@ -256,7 +251,7 @@ public class TextParser
     private Block createLink( final String link, final String showText )
     {
         final Block content;
-        if( URL_PATTERN.matcher( showText ).matches() && IMAGE_PATTERN.matcher( showText ).matches() )
+        if ( URL_PATTERN.matcher( showText ).matches() && IMAGE_PATTERN.matcher( showText ).matches() )
         {
             content = new ImageBlock( showText );
         }
@@ -270,8 +265,7 @@ public class TextParser
             return new LinkBlock( link, content );
         }
 
-        final StringTokenizer tokenizer =
-            new StringTokenizer( link );
+        final StringTokenizer tokenizer = new StringTokenizer( link );
         final StringBuffer sb = new StringBuffer();
 
         while ( tokenizer.hasMoreElements() )
@@ -283,15 +277,13 @@ public class TextParser
         return new WikiWordBlock( sb.toString(), content, wikiWordLinkResolver );
     }
 
-
     /**
      * Parses a wiki word
      * @param line the line to parse
      * @param ret where the results live
      * @param wikiMatcher wiki matcher
      */
-    private void parseWiki( final String line, final List ret,
-                            final Matcher wikiMatcher )
+    private void parseWiki( final String line, final List ret, final Matcher wikiMatcher )
     {
         final String wikiWord = wikiMatcher.group();
         ret.addAll( parse( line.substring( 0, wikiMatcher.start() ) ) );
@@ -301,11 +293,10 @@ public class TextParser
         }
         else
         {
-            ret.add( new WikiWordBlock( wikiWord , wikiWordLinkResolver ) );
+            ret.add( new WikiWordBlock( wikiWord, wikiWordLinkResolver ) );
         }
         ret.addAll( parse( line.substring( wikiMatcher.end(), line.length() ) ) );
     }
-
 
     /**
      * Parses a link
@@ -313,23 +304,19 @@ public class TextParser
      * @param ret where the results live
      * @param linkMatcher link matcher
      */
-    private void parseLink( final String line, final List ret,
-                            final Matcher linkMatcher )
+    private void parseLink( final String line, final List ret, final Matcher linkMatcher )
     {
         ret.addAll( parse( line.substring( 0, linkMatcher.start() ) ) );
         if ( line.charAt( linkMatcher.start() ) == '!' )
         {
-            ret.add( new TextBlock( line.substring( linkMatcher.start() + 1,
-                                                    linkMatcher.end() ) ) );
+            ret.add( new TextBlock( line.substring( linkMatcher.start() + 1, linkMatcher.end() ) ) );
         }
         else
         {
-            ret.add( createLink( linkMatcher.group( 1 ),
-                                    linkMatcher.group( 2 ) ) );
+            ret.add( createLink( linkMatcher.group( 1 ), linkMatcher.group( 2 ) ) );
         }
         ret.addAll( parse( line.substring( linkMatcher.end(), line.length() ) ) );
     }
-
 
     /**
      * Parses xhtml.

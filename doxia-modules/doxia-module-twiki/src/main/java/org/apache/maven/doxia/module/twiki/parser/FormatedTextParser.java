@@ -1,10 +1,5 @@
 package org.apache.maven.doxia.module.twiki.parser;
 
-import java.util.ArrayList;
-import java.util.HashMap;
-import java.util.List;
-import java.util.Map;
-
 /*
  * Licensed to the Apache Software Foundation (ASF) under one
  * or more contributor license agreements.  See the NOTICE file
@@ -24,8 +19,10 @@ import java.util.Map;
  * under the License.
  */
 
-
-
+import java.util.ArrayList;
+import java.util.HashMap;
+import java.util.List;
+import java.util.Map;
 
 /**
  * Parse looking for formated text (bold, italic, ...)
@@ -48,76 +45,67 @@ public class FormatedTextParser
     /**
      * creates bold blocks
      */
-    private static final FormatBlockFactory BOLD_FACTORY =
-        new FormatBlockFactory()
+    private static final FormatBlockFactory BOLD_FACTORY = new FormatBlockFactory()
+    {
+        /** {@inheritDoc} */
+        public Block createBlock( final Block[] childrens )
         {
-            /** {@inheritDoc} */
-            public Block createBlock( final Block [] childrens )
-            {
-                return new BoldBlock( childrens );
-            }
-        };
+            return new BoldBlock( childrens );
+        }
+    };
 
     /**
      * creates italic blocks
      */
-    private static final FormatBlockFactory ITALIC_FACTORY =
-        new FormatBlockFactory()
+    private static final FormatBlockFactory ITALIC_FACTORY = new FormatBlockFactory()
+    {
+        /** {@inheritDoc} */
+        public Block createBlock( final Block[] childrens )
         {
-            /** {@inheritDoc} */
-            public Block createBlock( final Block [] childrens )
-            {
-                return new ItalicBlock( childrens );
-            }
-        };
+            return new ItalicBlock( childrens );
+        }
+    };
 
     /**
      * creates monospaced blocks
      */
-    private static final FormatBlockFactory MONOSPACED_FACTORY =
-        new FormatBlockFactory()
+    private static final FormatBlockFactory MONOSPACED_FACTORY = new FormatBlockFactory()
+    {
+        /** {@inheritDoc} */
+        public Block createBlock( final Block[] childrens )
         {
-            /** {@inheritDoc} */
-            public Block createBlock( final Block [] childrens )
-            {
-                return new MonospaceBlock( childrens );
-            }
-        };
+            return new MonospaceBlock( childrens );
+        }
+    };
 
     /**
      * creates bold italic blocks
      */
-    private static final FormatBlockFactory BOLDITALIC_FACTORY =
-        new FormatBlockFactory()
+    private static final FormatBlockFactory BOLDITALIC_FACTORY = new FormatBlockFactory()
+    {
+        /** {@inheritDoc} */
+        public Block createBlock( final Block[] childrens )
         {
-            /** {@inheritDoc} */
-            public Block createBlock( final Block [] childrens )
-            {
-                return new BoldBlock( new Block[]{new ItalicBlock( childrens )} );
-            }
-        };
+            return new BoldBlock( new Block[] { new ItalicBlock( childrens ) } );
+        }
+    };
 
     /**
      * creates bold monospace blocks
      */
-    private static final FormatBlockFactory BOLDMONO_FACTORY =
-        new FormatBlockFactory()
+    private static final FormatBlockFactory BOLDMONO_FACTORY = new FormatBlockFactory()
+    {
+        /** {@inheritDoc} */
+        public Block createBlock( final Block[] childrens )
         {
-            /** {@inheritDoc} */
-            public Block createBlock( final Block [] childrens )
-            {
-                return new BoldBlock( new Block[]{
-                    new MonospaceBlock( childrens )
-                } );
-            }
-        };
+            return new BoldBlock( new Block[] { new MonospaceBlock( childrens ) } );
+        }
+    };
 
     /**
      * format characters
      */
-    private static final String [] SPECIAL_CHAR = new String []{
-        "__", "==", "*", "_", "="
-    };
+    private static final String[] SPECIAL_CHAR = new String[] { "__", "==", "*", "_", "=" };
 
     static
     {
@@ -132,9 +120,9 @@ public class FormatedTextParser
      * @param line line to parse
      * @return TextBlock, ItalicBlock, BoldBlock, MonospacedBlock, ...
      */
-    final Block []parse( final String line )
+    final Block[] parse( final String line )
     {
-        return (Block[]) parseFormat( line ).toArray( new Block []{} );
+        return (Block[]) parseFormat( line ).toArray( new Block[] {} );
     }
 
     /**
@@ -176,8 +164,8 @@ public class FormatedTextParser
     private List parseFormat( final String line )
     {
         final List ret = new ArrayList();
-        final int []lhOffsets = new int[SPECIAL_CHAR.length];
-        final int []rhOffsets = new int[SPECIAL_CHAR.length];
+        final int[] lhOffsets = new int[SPECIAL_CHAR.length];
+        final int[] rhOffsets = new int[SPECIAL_CHAR.length];
 
         // for each text format markers...
         for ( int i = 0; i < SPECIAL_CHAR.length; i++ )
@@ -188,8 +176,7 @@ public class FormatedTextParser
             while ( t != -1 && ( t = line.indexOf( SPECIAL_CHAR[i], t ) ) != -1 )
             {
                 // and check if it at the begining of a word.
-                if ( t == 0 || isSpace( line.charAt( t - 1 ) )
-                        || isParenthesis( line.charAt( t - 1 ) ) )
+                if ( t == 0 || isSpace( line.charAt( t - 1 ) ) || isParenthesis( line.charAt( t - 1 ) ) )
                 {
                     // if it is, and if, check to avoid going beyond the string
                     if ( t + specialLen < line.length() )
@@ -272,11 +259,16 @@ public class FormatedTextParser
         {
             int len = SPECIAL_CHAR[charType].length();
             ret.addAll( parseFormat( line.substring( 0, minIndex ) ) );
-            ret.add( ( (FormatBlockFactory) FACTORY_MAP.get( SPECIAL_CHAR[charType] ) ).createBlock(
-                (Block[]) parseFormat(
-                    line.substring( minIndex + len, rhOffsets[charType] )
-                ).toArray( new Block[]{} )
-            ) );
+            ret
+               .add( ( (FormatBlockFactory) FACTORY_MAP.get( SPECIAL_CHAR[charType] ) )
+                                                                                       .createBlock( (Block[]) parseFormat(
+                                                                                                                            line
+                                                                                                                                .substring(
+                                                                                                                                            minIndex
+                                                                                                                                                + len,
+                                                                                                                                            rhOffsets[charType] ) )
+                                                                                                                                                                   .toArray(
+                                                                                                                                                                             new Block[] {} ) ) );
             ret.addAll( parseFormat( line.substring( rhOffsets[charType] + len ) ) );
         }
 
@@ -288,7 +280,8 @@ public class FormatedTextParser
      * @param c character to test
      * @return <code>true</code> if c is a parenthesis
      */
-    private boolean isParenthesis( final char c ) {
+    private boolean isParenthesis( final char c )
+    {
         return c == '(' || c == ')';
     }
 

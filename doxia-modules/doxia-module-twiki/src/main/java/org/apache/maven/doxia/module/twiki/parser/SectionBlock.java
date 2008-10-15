@@ -30,7 +30,8 @@ import org.apache.maven.doxia.sink.Sink;
  * @author Juan F. Codagnone
  * @version $Id$
  */
-public class SectionBlock extends AbstractFatherBlock
+public class SectionBlock
+    extends AbstractFatherBlock
 {
     /** {@inheritDoc} */
     private final String title;
@@ -48,8 +49,8 @@ public class SectionBlock extends AbstractFatherBlock
      * @param blocks child blocks
      * @throws IllegalArgumentException if the parameters are not in the domain
      */
-    public SectionBlock( final String title, final int level,
-                         final Block []blocks ) throws IllegalArgumentException
+    public SectionBlock( final String title, final int level, final Block[] blocks )
+        throws IllegalArgumentException
     {
         super( blocks );
         final int maxLevel = 5;
@@ -115,14 +116,13 @@ public class SectionBlock extends AbstractFatherBlock
     {
         try
         {
-            final Method m = sink.getClass().getMethod( name, new Class[]{} );
+            final Method m = sink.getClass().getMethod( name, new Class[] {} );
             m.invoke( sink, Collections.EMPTY_LIST.toArray() );
         }
         catch ( Exception e )
         {
             // FIXME
-            throw new IllegalArgumentException( "invoking sink's " + name
-                + " method: " + e.getMessage() );
+            throw new IllegalArgumentException( "invoking sink's " + name + " method: " + e.getMessage() );
         }
     }
 

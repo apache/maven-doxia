@@ -33,16 +33,15 @@ import org.apache.maven.doxia.util.ByLineSource;
  * @author Christian Nardi
  * @version $Id$
  */
-public class VerbatimBlockParser implements BlockParser
+public class VerbatimBlockParser
+    implements BlockParser
 {
     /**
      * pattern to detect verbatim start tags
      */
-    private static final Pattern VERBATIM_START_PATTERN =
-        Pattern.compile( "\\s*<verbatim>" );
+    private static final Pattern VERBATIM_START_PATTERN = Pattern.compile( "\\s*<verbatim>" );
 
-    private static final Pattern VERBATIM_END_PATTERN =
-        Pattern.compile( "</verbatim>" );
+    private static final Pattern VERBATIM_END_PATTERN = Pattern.compile( "</verbatim>" );
 
     /** {@inheritDoc} */
     public final boolean accept( final String line )
@@ -78,7 +77,6 @@ public class VerbatimBlockParser implements BlockParser
             l = source.getNextLine();
         }
 
-
-        return new VerbatimBlock( (Block[]) lines.toArray( new Block[]{} ) );
+        return new VerbatimBlock( (Block[]) lines.toArray( new Block[] {} ) );
     }
 }

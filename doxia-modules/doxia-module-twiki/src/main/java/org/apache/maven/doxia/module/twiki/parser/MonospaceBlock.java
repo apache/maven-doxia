@@ -27,14 +27,15 @@ import org.apache.maven.doxia.sink.Sink;
  * @author Juan F. Codagnone
  * @version $Id$
  */
-class MonospaceBlock extends AbstractFatherBlock
+class MonospaceBlock
+    extends AbstractFatherBlock
 {
     /**
      * Creates the MonospaceBlock.
      *
      * @param childBlocks child blocks
      */
-    MonospaceBlock( final Block [] childBlocks )
+    MonospaceBlock( final Block[] childBlocks )
     {
         super( childBlocks );
     }

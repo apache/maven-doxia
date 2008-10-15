@@ -25,20 +25,19 @@ import java.util.regex.Pattern;
 import org.apache.maven.doxia.util.ByLineSource;
 import org.apache.maven.doxia.parser.ParseException;
 
-
 /**
  * Block that represents an horizontal rule
  *
  * @author Juan F. Codagnone
  * @version $Id$
  */
-public class HRuleBlockParser implements BlockParser
+public class HRuleBlockParser
+    implements BlockParser
 {
     /**
      * pattern used to detect horizontal rulers
      */
-    private static final Pattern HRULE_PATTERN =
-        Pattern.compile( "^(---)(-*)(.*)$" );
+    private static final Pattern HRULE_PATTERN = Pattern.compile( "^(---)(-*)(.*)$" );
 
     /** {@inheritDoc} */
     public final boolean accept( final String line )
@@ -60,7 +59,7 @@ public class HRuleBlockParser implements BlockParser
     }
 
     /** {@inheritDoc}
-     * @throws org.apache.maven.doxia.parser.ParseException 
+     * @throws org.apache.maven.doxia.parser.ParseException
      */
     public final Block visit( final String line, final ByLineSource source )
         throws ParseException

@@ -27,12 +27,14 @@ import org.apache.maven.doxia.sink.Sink;
  * @author Juan F. Codagnone
  * @version $Id$
  */
-class LinkBlock implements Block
+class LinkBlock
+    implements Block
 {
     /**
      * link reference
      */
     private final String reference;
+
     /**
      * link text
      */
@@ -89,8 +91,7 @@ class LinkBlock implements Block
         else if ( obj instanceof LinkBlock )
         {
             final LinkBlock l = (LinkBlock) obj;
-            ret = reference.equals( l.reference )
-                && content.equals( l.content );
+            ret = reference.equals( l.reference ) && content.equals( l.content );
         }
 
         return ret;
@@ -102,7 +103,6 @@ class LinkBlock implements Block
         final int magic1 = 17;
         final int magic2 = 37;
 
-        return magic1 + magic2 * reference.hashCode()
-            + magic2 * content.hashCode();
+        return magic1 + magic2 * reference.hashCode() + magic2 * content.hashCode();
     }
 }

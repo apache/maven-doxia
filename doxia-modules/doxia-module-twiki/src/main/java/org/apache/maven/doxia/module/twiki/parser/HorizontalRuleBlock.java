@@ -21,14 +21,14 @@ package org.apache.maven.doxia.module.twiki.parser;
 
 import org.apache.maven.doxia.sink.Sink;
 
-
 /**
  * Represents an horizontal block
  *
  * @author Juan F. Codagnone
  * @version $Id$
  */
-class HorizontalRuleBlock implements Block
+class HorizontalRuleBlock
+    implements Block
 {
     /** {@inheritDoc} */
     public final void traverse( final Sink sink )
@@ -39,8 +39,7 @@ class HorizontalRuleBlock implements Block
     /** {@inheritDoc} */
     public final boolean equals( final Object obj )
     {
-        return obj == this
-            || ( obj != null && getClass().equals( obj.getClass() ) );
+        return obj == this || ( obj != null && getClass().equals( obj.getClass() ) );
     }
 
     /** {@inheritDoc} */
