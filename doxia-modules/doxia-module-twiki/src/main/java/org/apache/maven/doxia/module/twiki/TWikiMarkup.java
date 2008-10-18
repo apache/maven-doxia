@@ -82,10 +82,10 @@ public interface TWikiMarkup
     /** Syntax for the link end markup: "]]" */
     String LINK_END_MARKUP = "]]";
 
-    /** Syntax for the link middle markup: "[[" */
+    /** Syntax for the link middle markup: "][" */
     String LINK_MIDDLE_MARKUP = "][";
 
-    /** Syntax for the link start markup: "]]" */
+    /** Syntax for the link start markup: "[[" */
     String LINK_START_MARKUP = "[[";
 
     /** Syntax for the list item markup: "* */
@@ -111,21 +111,6 @@ public interface TWikiMarkup
 
     /** Syntax for the numbering upper roman markup char: "I." */
     String NUMBERING_UPPER_ROMAN_MARKUP = "I.";
-
-    /** Syntax for the section title 1 markup: "---+" */
-    String SECTION_TITLE1_MARKUP = StringUtils.repeat( "-", 3 ) + "+";
-
-    /** Syntax for the section title 2 markup: "---++" */
-    String SECTION_TITLE2_MARKUP = StringUtils.repeat( "-", 3 ) + StringUtils.repeat( "+", 2 );
-
-    /** Syntax for the section title 3 markup: "---+++" */
-    String SECTION_TITLE3_MARKUP = StringUtils.repeat( "-", 3 ) + StringUtils.repeat( "+", 3 );
-
-    /** Syntax for the section title 4 markup: "---++++" */
-    String SECTION_TITLE4_MARKUP = StringUtils.repeat( "-", 3 ) + StringUtils.repeat( "+", 4 );
-
-    /** Syntax for the section title 5 markup: "---+++++" */
-    String SECTION_TITLE5_MARKUP = StringUtils.repeat( "-", 3 ) + StringUtils.repeat( "+", 5 );
 
     /** Syntax for the table cell header end markup: "* |" */
     String TABLE_CELL_HEADER_END_MARKUP = "* |";

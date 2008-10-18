@@ -555,11 +555,10 @@ public class TWikiSink
         numberedListItem();
     }
 
-    /** Not used.
-     * {@inheritDoc} */
+    /** {@inheritDoc} */
     public void numberedListItem_()
     {
-        // nop
+        writeEOL( true );
     }
 
     /** Not used.
@@ -687,76 +686,73 @@ public class TWikiSink
         // nop
     }
 
-    /** Not used.
-     * {@inheritDoc} */
+    /** {@inheritDoc} */
     public void sectionTitle( int level, SinkEventAttributes attributes )
     {
-        // nop
+        if ( level > 0 && level < 6 )
+        {
+            write( StringUtils.repeat( "-", 3 ) + StringUtils.repeat( "+", level ) );
+        }
     }
 
     /** {@inheritDoc} */
     public void sectionTitle1()
     {
-        write( SECTION_TITLE1_MARKUP );
+        sectionTitle( 1, null );
     }
 
     /** {@inheritDoc} */
     public void sectionTitle1_()
     {
-        writeEOL( true );
-        writeEOL();
+        sectionTitle_( 1 );
     }
 
     /** {@inheritDoc} */
     public void sectionTitle2()
     {
-        write( SECTION_TITLE2_MARKUP );
+        sectionTitle( 2, null );
     }
 
     /** {@inheritDoc} */
     public void sectionTitle2_()
     {
-        writeEOL( true );
-        writeEOL();
+        sectionTitle_( 2 );
     }
 
     /** {@inheritDoc} */
     public void sectionTitle3()
     {
-        write( SECTION_TITLE3_MARKUP );
+        sectionTitle( 3, null );
     }
 
     /** {@inheritDoc} */
     public void sectionTitle3_()
     {
-        writeEOL( true );
-        writeEOL();
+        sectionTitle_( 3 );
     }
 
     /** {@inheritDoc} */
     public void sectionTitle4()
     {
-        write( SECTION_TITLE4_MARKUP );
+        sectionTitle( 4, null );
     }
 
     /** {@inheritDoc} */
     public void sectionTitle4_()
     {
-        writeEOL( true );
-        writeEOL();
+        sectionTitle_( 4 );
     }
 
     /** {@inheritDoc} */
     public void sectionTitle5()
     {
-        write( SECTION_TITLE5_MARKUP );
+        sectionTitle( 5, null );
     }
 
     /** {@inheritDoc} */
     public void sectionTitle5_()
     {
-        writeEOL( true );
-        writeEOL();
+        sectionTitle_( 5 );
     }
 
     /** Not used.
@@ -766,11 +762,11 @@ public class TWikiSink
         // nop
     }
 
-    /** Not used.
-     * {@inheritDoc} */
+    /** {@inheritDoc} */
     public void sectionTitle_( int level )
     {
-        // nop
+        writeEOL( true );
+        writeEOL();
     }
 
     /** Not used.
@@ -901,10 +897,6 @@ public class TWikiSink
             return;
         }
 
-        if ( headFlag )
-        {
-            return;
-        }
         content( text );
     }
 
