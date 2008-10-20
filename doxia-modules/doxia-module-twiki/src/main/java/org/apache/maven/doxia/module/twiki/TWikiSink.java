@@ -189,10 +189,11 @@ public class TWikiSink
         // nop
     }
 
-    /** {@inheritDoc} */
+    /** Not used.
+     * {@inheritDoc} */
     public void definedTerm()
     {
-        write( " " );
+        // nop
     }
 
     /** {@inheritDoc} */
@@ -223,7 +224,7 @@ public class TWikiSink
     /** {@inheritDoc} */
     public void definition_()
     {
-        writeEOL( true );
+        writeEOL();
     }
 
     /** Not used.
@@ -249,8 +250,6 @@ public class TWikiSink
     /** {@inheritDoc} */
     public void definitionListItem()
     {
-        writeEOL( true );
-        writeEOL();
         write( DEFINITION_LIST_ITEM_MARKUP );
     }
 
@@ -283,14 +282,14 @@ public class TWikiSink
      * {@inheritDoc} */
     public void figure_()
     {
-        // nop
+        write( SLASH + String.valueOf( GREATER_THAN ) );
     }
 
     /** Not used.
      * {@inheritDoc} */
     public void figureCaption()
     {
-        // nop
+        write( Attribute.ALT.toString() + EQUAL + QUOTE );
     }
 
     /** {@inheritDoc} */
@@ -303,13 +302,13 @@ public class TWikiSink
      * {@inheritDoc} */
     public void figureCaption_()
     {
-        // nop;
+        write( QUOTE + String.valueOf( SPACE ) );
     }
 
     /** {@inheritDoc} */
     public void figureGraphics( String name )
     {
-        write( String.valueOf( SPACE ) + Attribute.SRC + EQUAL + QUOTE + name + QUOTE );
+        write( Attribute.SRC.toString() + EQUAL + QUOTE + name + QUOTE + String.valueOf( SPACE ) );
     }
 
     /** {@inheritDoc} */
@@ -503,12 +502,6 @@ public class TWikiSink
     public void numberedList( int numbering )
     {
         levelList++;
-    }
-
-    /** {@inheritDoc} */
-    public void numberedList( int numbering, SinkEventAttributes attributes )
-    {
-        numberedList( numbering );
 
         String style;
         switch ( numbering )
@@ -531,6 +524,12 @@ public class TWikiSink
         }
 
         listStyles.push( style );
+    }
+
+    /** {@inheritDoc} */
+    public void numberedList( int numbering, SinkEventAttributes attributes )
+    {
+        numberedList( numbering );
     }
 
     /** {@inheritDoc} */
@@ -1157,39 +1156,6 @@ public class TWikiSink
         sb.append( GREATER_THAN );
 
         write( sb.toString() );
-    }
-
-    /**
-     * Starts a simple Tag. For instance:
-     * <pre>
-     * &lt;tag /&gt;
-     * </pre>
-     * <br/>
-     * <b>Note</b>: Copy from {@link AbstractXmlSink#writeSimpleTag(javax.swing.text.html.HTML.Tag)}
-     *
-     * @param t a non null tag
-     * @see #writeSimpleTag(javax.swing.text.html.HTML.Tag, javax.swing.text.MutableAttributeSet)
-     */
-    private void writeSimpleTag( Tag t )
-    {
-        writeSimpleTag( t, null );
-    }
-
-    /**
-     * Starts a simple Tag with attributes. For instance:
-     * <pre>
-     * &lt;tag attName="attValue" /&gt;
-     * </pre>
-     * <br/>
-     * <b>Note</b>: Copy from {@link AbstractXmlSink#writeSimpleTag(javax.swing.text.html.HTML.Tag, javax.swing.text.MutableAttributeSet)}
-     *
-     * @param t a non null tag
-     * @param att a set of attributes
-     * @see #writeStartTag(javax.swing.text.html.HTML.Tag, javax.swing.text.MutableAttributeSet, boolean)
-     */
-    private void writeSimpleTag( Tag t, MutableAttributeSet att )
-    {
-        writeStartTag( t, att, true );
     }
 
     /**

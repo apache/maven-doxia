@@ -64,10 +64,10 @@ public interface TWikiMarkup
     /** Syntax for the bold monospaced markup: "==" */
     String BOLD_MONOSPACED_START_MARKUP = "==";
 
-    /** Syntax for the definition list item: "   " */
-    String DEFINITION_LIST_ITEM_MARKUP = THREE_SPACES_MARKUP + "$";
+    /** Syntax for the definition list item: "   $ " */
+    String DEFINITION_LIST_ITEM_MARKUP = THREE_SPACES_MARKUP + "$ ";
 
-    /** Syntax for the definition list definition: "   " */
+    /** Syntax for the definition list definition: ": " */
     String DEFINITION_LIST_DEFINITION_MARKUP = ": ";
 
     /** Syntax for the horizontal rule markup: "---" */
