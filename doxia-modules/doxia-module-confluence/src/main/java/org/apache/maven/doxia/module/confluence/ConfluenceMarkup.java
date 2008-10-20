@@ -19,8 +19,6 @@ package org.apache.maven.doxia.module.confluence;
  * under the License.
  */
 
-import javax.swing.text.html.HTML.Tag;
-
 import org.apache.maven.doxia.markup.TextMarkup;
 
 /**
