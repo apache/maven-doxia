@@ -33,6 +33,9 @@ import java.io.Writer;
 
 /**
  * Provide some common convenience methods to test Doxia modules (parsers and sinks).
+ *
+ * @version $Id$
+ * @since 1.0
  */
 public abstract class AbstractModuleTest
     extends PlexusTestCase
