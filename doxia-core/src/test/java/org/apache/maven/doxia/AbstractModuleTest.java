@@ -46,6 +46,7 @@ public abstract class AbstractModuleTest
     {
         // Safety
         System.setProperty( "line.separator", "\n" );
+        System.setProperty( "file.encoding", "UTF-8" );
     }
 
     // ----------------------------------------------------------------------
@@ -72,8 +73,7 @@ public abstract class AbstractModuleTest
             outputDirectory.mkdirs();
         }
 
-        return WriterFactory.newPlatformWriter(
-            new File( outputDirectory, baseName + "." + extension ) );
+        return WriterFactory.newWriter( new File( outputDirectory, baseName + "." + extension ), "UTF-8" );
     }
 
     /**
