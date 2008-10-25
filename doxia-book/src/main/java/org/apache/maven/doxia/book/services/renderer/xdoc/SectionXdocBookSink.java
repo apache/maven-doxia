@@ -55,10 +55,10 @@ public class SectionXdocBookSink
      */
     protected void navigationPanel()
     {
-        markup( "<!--Navigation Panel-->" + EOL );
+        markup( "<!--Navigation Panel-->" );
 
-        markup( "<table width=\"100%\" align=\"center\">" + EOL );
-        markup( "<tr>" + EOL );
+        markup( "<table width=\"100%\" align=\"center\">" );
+        markup( "<tr>" );
 
         IndexEntry parent = indexEntry.getParent();
 
@@ -72,7 +72,7 @@ public class SectionXdocBookSink
 
         previous( parent, prevEntry );
 
-        markup( "</div></td>" + EOL );
+        markup( "</div></td>" );
 
         // -----------------------------------------------------------------------
         // Parent
@@ -80,7 +80,7 @@ public class SectionXdocBookSink
 
         markup( "<td><div align='center'>" );
         up( parent );
-        markup( "</div></td>" + EOL );
+        markup( "</div></td>" );
 
         // -----------------------------------------------------------------------
         // Next
@@ -92,12 +92,12 @@ public class SectionXdocBookSink
 
         next( parent, nextEntry );
 
-        markup( "</div></td>" + EOL );
+        markup( "</div></td>" );
 
-        markup( "</tr>" + EOL );
-        markup( "</table>" + EOL );
+        markup( "</tr>" );
+        markup( "</table>" );
 
-        markup( "<!--End of Navigation Panel-->" + EOL );
+        markup( "<!--End of Navigation Panel-->" );
     }
 
     /**

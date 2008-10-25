@@ -2,6 +2,7 @@ package org.apache.maven.doxia.book.services.renderer.docbook;
 
 import java.io.Writer;
 
+import org.apache.maven.doxia.module.docbook.DocBookSink;
 import org.apache.maven.doxia.sink.AbstractSinkTest;
 import org.apache.maven.doxia.sink.Sink;
 
@@ -181,7 +182,7 @@ public class DocBookBookSinkTest extends AbstractSinkTest
      */
     protected String getBookTitleBlock( String title )
     {
-        return "<bookinfo><title>" + title + "</title>" + EOL;
+        return "<bookinfo><title>" + title + "</title>";
     }
 
     /**
@@ -192,7 +193,7 @@ public class DocBookBookSinkTest extends AbstractSinkTest
      */
     protected String getBookAuthorBlock( String author )
     {
-        return "<bookinfo><corpauthor>" + author + "</corpauthor>" + EOL;
+        return "<bookinfo><corpauthor>" + author + "</corpauthor>";
     }
 
     /**
@@ -203,7 +204,7 @@ public class DocBookBookSinkTest extends AbstractSinkTest
      */
     protected String getBookDateBlock( String date )
     {
-        return "<bookinfo><date>" + date + "</date>" + EOL;
+        return "<bookinfo><date>" + date + "</date>";
     }
 
     /**
@@ -223,8 +224,8 @@ public class DocBookBookSinkTest extends AbstractSinkTest
      */
     protected String getBookBlock()
     {
-        return "<?xml version=\"1.0\" ?>" + EOL + "<!DOCTYPE book PUBLIC \"" + DocBookBookSink.DEFAULT_XML_PUBLIC_ID
-            + "\"" + EOL + "\"" + DocBookBookSink.DEFAULT_XML_SYSTEM_ID + "\">" + EOL + "<book></book>" + EOL;
+        return "<?xml version=\"1.0\" ?><!DOCTYPE book PUBLIC \"" + DocBookSink.DEFAULT_XML_PUBLIC_ID
+            + "\" \"" + DocBookSink.DEFAULT_XML_SYSTEM_ID + "\"><book></book>";
     }
 
     /**
@@ -235,7 +236,7 @@ public class DocBookBookSinkTest extends AbstractSinkTest
      */
     protected String getChapterTitleBlock( String title )
     {
-        return "<title>" + title + "</title>" + EOL;
+        return "<title>" + title + "</title>";
     }
 
     /**
@@ -246,7 +247,7 @@ public class DocBookBookSinkTest extends AbstractSinkTest
      */
     protected String getChapterBlock()
     {
-        return "<chapter></chapter>" + EOL;
+        return "<chapter></chapter>";
     }
 
 
@@ -270,7 +271,7 @@ public class DocBookBookSinkTest extends AbstractSinkTest
     /** {@inheritDoc} */
     protected String getDateBlock( String date )
     {
-        return "<date>" + date + "</date>" + EOL;
+        return "<date>" + date + "</date>";
     }
 
     /** {@inheritDoc} */
@@ -288,58 +289,58 @@ public class DocBookBookSinkTest extends AbstractSinkTest
     /** {@inheritDoc} */
     protected String getSectionTitleBlock( String title )
     {
-        return "<title>" + title + "</title>" + EOL;
+        return "<title>" + title + "</title>";
     }
 
     /** {@inheritDoc} */
     protected String getSection1Block( String title )
     {
-        return "<section><title>" + title + "</title>" + EOL + "</section>" + EOL;
+        return "<section><title>" + title + "</title></section>";
     }
 
     /** {@inheritDoc} */
     protected String getSection2Block( String title )
     {
-        return "<section><title>" + title + "</title>" + EOL + "</section>" + EOL;
+        return "<section><title>" + title + "</title></section>";
     }
 
     /** {@inheritDoc} */
     protected String getSection3Block( String title )
     {
-        return "<section><title>" + title + "</title>" + EOL + "</section>" + EOL;
+        return "<section><title>" + title + "</title></section>";
     }
 
     /** {@inheritDoc} */
     protected String getSection4Block( String title )
     {
-        return "<section><title>" + title + "</title>" + EOL + "</section>" + EOL;
+        return "<section><title>" + title + "</title></section>";
     }
 
     /** {@inheritDoc} */
     protected String getSection5Block( String title )
     {
-        return "<section><title>" + title + "</title>" + EOL + "</section>" + EOL;
+        return "<section><title>" + title + "</title></section>";
     }
 
     /** {@inheritDoc} */
     protected String getListBlock( String item )
     {
-        return "<itemizedlist><listitem>" + item  + "</listitem>" + EOL + "</itemizedlist>" + EOL;
+        return "<itemizedlist><listitem>" + item  + "</listitem></itemizedlist>";
     }
 
     /** {@inheritDoc} */
     protected String getNumberedListBlock( String item )
     {
         return "<orderedlist numeration=\"lowerroman\"><listitem>"
-            + item  + "</listitem>" + EOL + "</orderedlist>" + EOL;
+            + item  + "</listitem></orderedlist>";
     }
 
     /** {@inheritDoc} */
     protected String getDefinitionListBlock( String definum, String definition )
     {
         return "<variablelist><varlistentry><term>" + definum
-            + "</term>" + EOL + "<listitem>" + definition
-            + "</listitem>" + EOL + "</varlistentry>" + EOL + "</variablelist>" + EOL;
+            + "</term><listitem>" + definition
+            + "</listitem></varlistentry></variablelist>";
     }
 
     /** {@inheritDoc} */
@@ -348,39 +349,39 @@ public class DocBookBookSinkTest extends AbstractSinkTest
         // TODO: fix source
         return "<figure><title>" + caption
             + "</title><mediaobject><imageobject><imagedata fileref=\"figure.jpg.jpeg\" format=\"JPEG\" /></imageobject></mediaobject>"
-            + EOL + "</figure>" + EOL;
+            + "</figure>";
     }
 
     /** {@inheritDoc} */
     protected String getTableBlock( String cell, String caption )
     {
         return "<table frame=\"none\" rowsep=\"0\" colsep=\"0\"><title>" + caption
-            + "</title>" + EOL + "<tgroup cols=\"1\"><colspec align=\"center\" /><tbody><row><entry>"
-            + cell  + "</entry>" + EOL + "</row>" + EOL + "</tbody></tgroup>" + EOL + "</table>" + EOL;
+            + "</title><tgroup cols=\"1\"><colspec align=\"center\" /><tbody><row><entry>"
+            + cell  + "</entry></row></tbody></tgroup></table>";
     }
 
     /** {@inheritDoc} */
     protected String getParagraphBlock( String text )
     {
-        return "<para>" + text + "</para>" + EOL;
+        return "<para>" + text + "</para>";
     }
 
     /** {@inheritDoc} */
     protected String getVerbatimBlock( String text )
     {
-        return "<programlisting>" + text + "</programlisting>" + EOL;
+        return "<programlisting>" + text + "</programlisting>";
     }
 
     /** {@inheritDoc} */
     protected String getHorizontalRuleBlock()
     {
-        return "<!-- HR -->" + EOL;
+        return "<!-- HR -->";
     }
 
     /** {@inheritDoc} */
     protected String getPageBreakBlock()
     {
-        return "<!-- PB -->" + EOL;
+        return "<!-- PB -->";
     }
 
     /** {@inheritDoc} */
@@ -416,7 +417,7 @@ public class DocBookBookSinkTest extends AbstractSinkTest
     /** {@inheritDoc} */
     protected String getLineBreakBlock()
     {
-        return "<!-- LB -->" + EOL;
+        return "<!-- LB -->";
     }
 
     /** {@inheritDoc} */

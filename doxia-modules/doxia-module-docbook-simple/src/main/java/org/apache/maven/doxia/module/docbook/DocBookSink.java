@@ -19,6 +19,7 @@ package org.apache.maven.doxia.module.docbook;
  * under the License.
  */
 
+import java.io.PrintWriter;
 import java.io.StringWriter;
 import java.io.Writer;
 import java.util.Locale;
@@ -34,7 +35,6 @@ import org.apache.maven.doxia.sink.SinkEventAttributes;
 import org.apache.maven.doxia.sink.Sink;
 import org.apache.maven.doxia.util.DoxiaUtils;
 import org.apache.maven.doxia.util.HtmlTools;
-import org.apache.maven.doxia.util.LineBreaker;
 
 import org.codehaus.plexus.util.FileUtils;
 
@@ -61,7 +61,7 @@ public class DocBookSink
     public static final String DEFAULT_SGML_SYSTEM_ID = "http://www.oasis-open.org/docbook/sgml/4.4/docbookx.dtd";
 
     /** The output writer. */
-    private LineBreaker out;
+    private PrintWriter out;
 
     /** xmlMode. */
     private boolean xmlMode = false;
@@ -127,22 +127,26 @@ public class DocBookSink
     private boolean tableHasCaption;
 
     /** Used for table rows. */
-    private LineBreaker savedOut;
+    private PrintWriter savedOut;
 
     /** tableRows. */
     private String tableRows;
+
+    /** tableRows writer. */
+    private StringWriter tableRowsWriter;
 
     /** tableHasGrid. */
     private boolean tableHasGrid;
 
     private boolean skip;
 
+
     /**
      * @param writer the default writer.
      */
     public DocBookSink( Writer writer )
     {
-        this.out = new LineBreaker( writer );
+        this.out = new PrintWriter( writer );
         setItalicElement( "<emphasis>" );
         setBoldElement( "<emphasis role=\"bold\">" );
         setMonospacedElement( "<literal>" );
@@ -535,11 +539,11 @@ public class DocBookSink
                 markup( " encoding=\"" + encoding + "\"" );
             }
 
-            markup( " ?>" + EOL );
+            markup( " ?>" );
 
             if ( styleSheet != null )
             {
-                markup( "<?xml-stylesheet type=\"text/css\"" + EOL + "href=\"" + styleSheet + "\" ?>" + EOL );
+                markup( "<?xml-stylesheet type=\"text/css\" href=\"" + styleSheet + "\" ?>" );
             }
         }
 
@@ -574,7 +578,7 @@ public class DocBookSink
                 sysId = DEFAULT_SGML_SYSTEM_ID;
             }
         }
-        markup( EOL + "\"" + sysId + "\">" + EOL );
+        markup( " \"" + sysId + "\">" );
 
         MutableAttributeSet att = new SimpleAttributeSet();
         if ( lang != null )
@@ -594,7 +598,6 @@ public class DocBookSink
         if ( hasTitle )
         {
             writeEndTag( ARTICLEINFO_TAG );
-            writeEOL();
             hasTitle = false;
         }
     }
@@ -620,7 +623,6 @@ public class DocBookSink
     public void title_()
     {
         writeEndTag( Tag.TITLE );
-        writeEOL();
     }
 
     /**
@@ -642,7 +644,6 @@ public class DocBookSink
     public void author_()
     {
         writeEndTag( CORPAUTHOR_TAG );
-        writeEOL();
         authorDateFlag = false;
     }
 
@@ -665,7 +666,6 @@ public class DocBookSink
     public void date_()
     {
         writeEndTag( DATE_TAG );
-        writeEOL();
         authorDateFlag = false;
     }
 
@@ -677,7 +677,6 @@ public class DocBookSink
     public void body_()
     {
         writeEndTag( ARTICLE_TAG );
-        writeEOL();
         out.flush();
         resetState();
     }
@@ -700,7 +699,6 @@ public class DocBookSink
     public void section1_()
     {
         writeEndTag( SECTION_TAG );
-        writeEOL();
     }
 
     /**
@@ -721,7 +719,6 @@ public class DocBookSink
     public void section2_()
     {
         writeEndTag( SECTION_TAG );
-        writeEOL();
     }
 
     /**
@@ -742,7 +739,6 @@ public class DocBookSink
     public void section3_()
     {
         writeEndTag( SECTION_TAG );
-        writeEOL();
     }
 
     /**
@@ -763,7 +759,6 @@ public class DocBookSink
     public void section4_()
     {
         writeEndTag( SECTION_TAG );
-        writeEOL();
     }
 
     /**
@@ -784,7 +779,6 @@ public class DocBookSink
     public void section5_()
     {
         writeEndTag( SECTION_TAG );
-        writeEOL();
     }
 
     /**
@@ -805,7 +799,6 @@ public class DocBookSink
     public void sectionTitle_()
     {
         writeEndTag( Tag.TITLE );
-        writeEOL();
     }
 
     /**
@@ -826,7 +819,6 @@ public class DocBookSink
     public void sectionTitle1_()
     {
         writeEndTag( Tag.TITLE );
-        writeEOL();
     }
 
     /**
@@ -847,7 +839,6 @@ public class DocBookSink
     public void sectionTitle2_()
     {
         writeEndTag( Tag.TITLE );
-        writeEOL();
     }
 
     /**
@@ -868,7 +859,6 @@ public class DocBookSink
     public void sectionTitle3_()
     {
         writeEndTag( Tag.TITLE );
-        writeEOL();
     }
 
     /**
@@ -889,7 +879,6 @@ public class DocBookSink
     public void sectionTitle4_()
     {
         writeEndTag( Tag.TITLE );
-        writeEOL();
     }
 
     /**
@@ -910,7 +899,6 @@ public class DocBookSink
     public void sectionTitle5_()
     {
         writeEndTag( Tag.TITLE );
-        writeEOL();
     }
 
     /**
@@ -931,7 +919,6 @@ public class DocBookSink
     public void list_()
     {
         writeEndTag( ITEMIZEDLIST_TAG );
-        writeEOL();
     }
 
     /**
@@ -952,7 +939,6 @@ public class DocBookSink
     public void listItem_()
     {
         writeEndTag( LISTITEM_TAG );
-        writeEOL();
     }
 
     /**
@@ -997,7 +983,6 @@ public class DocBookSink
     public void numberedList_()
     {
         writeEndTag( ORDEREDLIST_TAG );
-        writeEOL();
     }
 
     /**
@@ -1018,7 +1003,6 @@ public class DocBookSink
     public void numberedListItem_()
     {
         writeEndTag( LISTITEM_TAG );
-        writeEOL();
     }
 
     /**
@@ -1039,7 +1023,6 @@ public class DocBookSink
     public void definitionList_()
     {
         writeEndTag( VARIABLELIST_TAG );
-        writeEOL();
     }
 
     /**
@@ -1060,7 +1043,6 @@ public class DocBookSink
     public void definitionListItem_()
     {
         writeEndTag( VARLISTENTRY_TAG );
-        writeEOL();
     }
 
     /**
@@ -1081,7 +1063,6 @@ public class DocBookSink
     public void definedTerm_()
     {
         writeEndTag( TERM_TAG );
-        writeEOL();
     }
 
     /**
@@ -1102,7 +1083,6 @@ public class DocBookSink
     public void definition_()
     {
         writeEndTag( LISTITEM_TAG );
-        writeEOL();
     }
 
     /**
@@ -1123,7 +1103,6 @@ public class DocBookSink
     public void paragraph_()
     {
         writeEndTag( PARA_TAG );
-        writeEOL();
     }
 
     /**
@@ -1145,20 +1124,19 @@ public class DocBookSink
     public void verbatim_()
     {
         writeEndTag( PROGRAMLISTING_TAG );
-        writeEOL();
         verbatimFlag = false;
     }
 
     /** {@inheritDoc} */
     public void horizontalRule()
     {
-        markup( horizontalRuleElement + EOL );
+        markup( horizontalRuleElement );
     }
 
     /** {@inheritDoc} */
     public void pageBreak()
     {
-        markup( pageBreakElement + EOL );
+        markup( pageBreakElement );
     }
 
     /** {@inheritDoc} */
@@ -1204,7 +1182,6 @@ public class DocBookSink
 
             writeEndTag( IMAGEOBJECT_TAG );
             writeEndTag( MEDIAOBJECT_TAG );
-            writeEOL();
             graphicsFileName = null;
         }
     }
@@ -1239,7 +1216,6 @@ public class DocBookSink
         writeEndTag( Tag.TITLE );
         graphicElement();
         writeEndTag( FIGURE_TAG );
-        writeEOL();
     }
 
     /** {@inheritDoc} */
@@ -1264,9 +1240,8 @@ public class DocBookSink
             tableHasCaption = false;
             // Formal table+title already written to original destination ---
 
-            out.write( tableRows, /*preserveSpace*/ true );
+            out.write( tableRows  );
             writeEndTag( Tag.TABLE );
-            writeEOL();
         }
         else
         {
@@ -1290,10 +1265,9 @@ public class DocBookSink
 
             writeStartTag( INFORMALTABLE_TAG, att );
 
-            out.write( tableRows, /*preserveSpace*/ true );
+            out.write( tableRows  );
 
             writeEndTag( INFORMALTABLE_TAG );
-            writeEOL();
         }
 
         tableRows = null;
@@ -1314,7 +1288,8 @@ public class DocBookSink
         // Divert output to a string ---
         out.flush();
         savedOut = out;
-        out = new LineBreaker( new StringWriter() );
+        tableRowsWriter = new StringWriter();
+        out = new PrintWriter( tableRowsWriter );
 
         MutableAttributeSet att = new SimpleAttributeSet();
         att.addAttribute( COLS_ATTRIBUTE, String.valueOf( justification.length ) );
@@ -1350,7 +1325,6 @@ public class DocBookSink
             {
                 writeStartTag( COLSPEC_TAG, att );
                 writeEndTag( COLSPEC_TAG );
-                writeEOL();
             }
         }
 
@@ -1367,11 +1341,16 @@ public class DocBookSink
     {
         writeEndTag( TBODY_TAG );
         writeEndTag( TGROUP_TAG );
-        writeEOL();
 
         // Remember diverted output and restore original destination ---
         out.flush();
-        tableRows = ( (StringWriter) out.getDestination() ).toString();
+        if ( tableRowsWriter == null )
+        {
+            throw new IllegalArgumentException( "tableRows( int[] justification, boolean grid ) was not called before." );
+        }
+
+        tableRows = tableRowsWriter.toString();
+        tableRowsWriter = null;
         out = savedOut;
     }
 
@@ -1393,7 +1372,6 @@ public class DocBookSink
     public void tableRow_()
     {
         writeEndTag( ROW_TAG );
-        writeEOL();
     }
 
     /**
@@ -1414,7 +1392,6 @@ public class DocBookSink
     public void tableCell_()
     {
         writeEndTag( ENTRY_TAG );
-        writeEOL();
     }
 
     /**
@@ -1433,7 +1410,6 @@ public class DocBookSink
     public void tableHeaderCell_()
     {
         writeEndTag( ENTRY_TAG );
-        writeEOL();
     }
 
     /**
@@ -1479,7 +1455,6 @@ public class DocBookSink
     public void tableCaption_()
     {
         writeEndTag( Tag.TITLE );
-        writeEOL();
     }
 
     /**
@@ -1634,7 +1609,7 @@ public class DocBookSink
     /** {@inheritDoc} */
     public void lineBreak()
     {
-        markup( lineBreakElement + EOL );
+        markup( lineBreakElement );
     }
 
     /** {@inheritDoc} */
@@ -1695,7 +1670,7 @@ public class DocBookSink
     {
         if ( !skip )
         {
-            out.write( text, /*preserveSpace*/ true );
+            out.write( text );
         }
     }
 
@@ -1708,7 +1683,7 @@ public class DocBookSink
     {
         if ( !skip )
         {
-            out.write( escapeSGML( text, xmlMode ), /*preserveSpace*/ false );
+            out.write( escapeSGML( text, xmlMode ) );
         }
     }
 
@@ -1721,7 +1696,7 @@ public class DocBookSink
     {
         if ( !skip )
         {
-            out.write( escapeSGML( text, xmlMode ), /*preserveSpace*/ true );
+            out.write( escapeSGML( text, xmlMode ) );
         }
     }
 

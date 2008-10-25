@@ -56,10 +56,10 @@ public class IndexXdocBookSink
      */
     protected void navigationPanel()
     {
-        markup( "<!--Navigation Panel-->" + EOL );
+        markup( "<!--Navigation Panel-->" );
 
-        markup( "<table width=\"100%\" align=\"center\">" + EOL );
-        markup( "<tr>" + EOL );
+        markup( "<table width=\"100%\" align=\"center\">" );
+        markup( "<tr>" );
 
         // -----------------------------------------------------------------------
         // Next
@@ -73,12 +73,12 @@ public class IndexXdocBookSink
             content( firstEntry.getTitle() );
             markup( "</a>" );
 
-            markup( "</div></td>" + EOL );
+            markup( "</div></td>" );
         }
 
-        markup( "</tr>" + EOL );
-        markup( "</table>" + EOL );
+        markup( "</tr>" );
+        markup( "</table>" );
 
-        markup( "<!--End of Navigation Panel-->" + EOL );
+        markup( "<!--End of Navigation Panel-->" );
     }
 }

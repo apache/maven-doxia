@@ -55,10 +55,10 @@ public class ChapterXdocBookSink
      */
     protected void navigationPanel()
     {
-        markup( "<!--Navigation Panel-->" + EOL );
+        markup( "<!--Navigation Panel-->" );
 
-        markup( "<table width=\"100%\" align=\"center\">" + EOL );
-        markup( "<tr>" + EOL );
+        markup( "<table width=\"100%\" align=\"center\">" );
+        markup( "<tr>" );
 
         // -----------------------------------------------------------------------
         // Prev
@@ -70,7 +70,7 @@ public class ChapterXdocBookSink
 
         previous( prevChapter );
 
-        markup( "</div></td>" + EOL );
+        markup( "</div></td>" );
 
         // -----------------------------------------------------------------------
         // Parent
@@ -78,7 +78,7 @@ public class ChapterXdocBookSink
 
         markup( "<td><div align='center'>" );
         up();
-        markup( "</div></td>" + EOL );
+        markup( "</div></td>" );
 
         // -----------------------------------------------------------------------
         // Next
@@ -88,12 +88,12 @@ public class ChapterXdocBookSink
 
         next();
 
-        markup( "</div></td>" + EOL );
+        markup( "</div></td>" );
 
-        markup( "</tr>" + EOL );
-        markup( "</table>" + EOL );
+        markup( "</tr>" );
+        markup( "</table>" );
 
-        markup( "<!--End of Navigation Panel-->" + EOL );
+        markup( "<!--End of Navigation Panel-->" );
     }
 
     /**

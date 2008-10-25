@@ -63,9 +63,11 @@ public class BookRendererTest
     {
         String expected =
             FileUtils.fileRead( getTestFile( "src/test/resources/expected/doc-book/plexus-user-guide.xml" ) );
+        expected = StringUtils.deleteWhitespace( expected );
 
         String actual =
             FileUtils.fileRead( getTestFile( "target/test-output/doc-book/plexus-user-guide.xml" ) );
+        actual = StringUtils.deleteWhitespace( actual );
 
         assertEquals( "Wrong docbook output!",
             StringUtils.replace( expected, "\r", "" ), StringUtils.replace( actual, "\r", "" ) );

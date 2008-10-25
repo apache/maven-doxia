@@ -45,89 +45,89 @@ public class DocBookSinkTest extends AbstractSinkTest
     /** {@inheritDoc} */
     protected String getTitleBlock( String title )
     {
-        return "<articleinfo><title>" + title + "</title>" + EOL;
+        return "<articleinfo><title>" + title + "</title>";
     }
 
     /** {@inheritDoc} */
     protected String getAuthorBlock( String author )
     {
-        return "<corpauthor>" + author + "</corpauthor>" + EOL;
+        return "<corpauthor>" + author + "</corpauthor>";
     }
 
     /** {@inheritDoc} */
     protected String getDateBlock( String date )
     {
-        return "<date>" + date + "</date>" + EOL;
+        return "<date>" + date + "</date>";
     }
 
     /** {@inheritDoc} */
     protected String getHeadBlock()
     {
-        return "<!DOCTYPE article PUBLIC \"" + DocBookSink.DEFAULT_SGML_PUBLIC_ID + "\""
-            + EOL + "\"" + DocBookSink.DEFAULT_SGML_SYSTEM_ID + "\">" + EOL + "<article>";
+        return "<!DOCTYPE article PUBLIC \"" + DocBookSink.DEFAULT_SGML_PUBLIC_ID + "\" "
+            + "\"" + DocBookSink.DEFAULT_SGML_SYSTEM_ID + "\"><article>";
     }
 
     /** {@inheritDoc} */
     protected String getBodyBlock()
     {
-        return "</article>" + EOL;
+        return "</article>";
     }
 
     /** {@inheritDoc} */
     protected String getSectionTitleBlock( String title )
     {
-        return "<title>" + title + "</title>" + EOL;
+        return "<title>" + title + "</title>";
     }
 
     /** {@inheritDoc} */
     protected String getSection1Block( String title )
     {
-        return "<section><title>" + title + "</title>" + EOL + "</section>" + EOL;
+        return "<section><title>" + title + "</title>" + "</section>";
     }
 
     /** {@inheritDoc} */
     protected String getSection2Block( String title )
     {
-        return "<section><title>" + title + "</title>" + EOL + "</section>" + EOL;
+        return "<section><title>" + title + "</title>" + "</section>";
     }
 
     /** {@inheritDoc} */
     protected String getSection3Block( String title )
     {
-        return "<section><title>" + title + "</title>" + EOL + "</section>" + EOL;
+        return "<section><title>" + title + "</title>" + "</section>";
     }
 
     /** {@inheritDoc} */
     protected String getSection4Block( String title )
     {
-        return "<section><title>" + title + "</title>" + EOL + "</section>" + EOL;
+        return "<section><title>" + title + "</title>" + "</section>";
     }
 
     /** {@inheritDoc} */
     protected String getSection5Block( String title )
     {
-        return "<section><title>" + title + "</title>" + EOL + "</section>" + EOL;
+        return "<section><title>" + title + "</title>" + "</section>";
     }
 
     /** {@inheritDoc} */
     protected String getListBlock( String item )
     {
-        return "<itemizedlist><listitem>" + item  + "</listitem>" + EOL + "</itemizedlist>" + EOL;
+        return "<itemizedlist><listitem>" + item  + "</listitem>" + "</itemizedlist>";
     }
 
     /** {@inheritDoc} */
     protected String getNumberedListBlock( String item )
     {
         return "<orderedlist numeration=\"lowerroman\"><listitem>"
-            + item  + "</listitem>" + EOL + "</orderedlist>" + EOL;
+            + item  + "</listitem>" + "</orderedlist>";
     }
 
     /** {@inheritDoc} */
     protected String getDefinitionListBlock( String definum, String definition )
     {
         return "<variablelist><varlistentry><term>" + definum
-            + "</term>" + EOL + "<listitem>" + definition
-            + "</listitem>" + EOL + "</varlistentry>" + EOL + "</variablelist>" + EOL;
+            + "</term>" + "<listitem>" + definition
+            + "</listitem>" + "</varlistentry>" + "</variablelist>";
     }
 
     /** {@inheritDoc} */
@@ -136,39 +136,39 @@ public class DocBookSinkTest extends AbstractSinkTest
         // TODO: fix source
         return "<figure><title>" + caption
             + "</title><mediaobject><imageobject><imagedata fileref=\"figure.jpg.jpeg\" format=\"JPEG\"></imagedata></imageobject></mediaobject>"
-            + EOL + "</figure>" + EOL;
+            + "</figure>";
     }
 
     /** {@inheritDoc} */
     protected String getTableBlock( String cell, String caption )
     {
         return "<table frame=\"none\" rowsep=\"0\" colsep=\"0\"><title>" + caption
-            + "</title>" + EOL + "<tgroup cols=\"1\"><colspec align=\"center\"></colspec>" + EOL + "<tbody><row><entry>"
-            + cell  + "</entry>" + EOL + "</row>" + EOL + "</tbody></tgroup>" + EOL + "</table>" + EOL;
+            + "</title>" + "<tgroup cols=\"1\"><colspec align=\"center\"></colspec>" + "<tbody><row><entry>"
+            + cell  + "</entry>" + "</row>" + "</tbody></tgroup>" + "</table>";
     }
 
     /** {@inheritDoc} */
     protected String getParagraphBlock( String text )
     {
-        return "<para>" + text + "</para>" + EOL;
+        return "<para>" + text + "</para>";
     }
 
     /** {@inheritDoc} */
     protected String getVerbatimBlock( String text )
     {
-        return "<programlisting>" + text + "</programlisting>" + EOL;
+        return "<programlisting>" + text + "</programlisting>";
     }
 
     /** {@inheritDoc} */
     protected String getHorizontalRuleBlock()
     {
-        return "<!-- HR -->" + EOL;
+        return "<!-- HR -->";
     }
 
     /** {@inheritDoc} */
     protected String getPageBreakBlock()
     {
-        return "<!-- PB -->" + EOL;
+        return "<!-- PB -->";
     }
 
     /** {@inheritDoc} */
@@ -204,7 +204,7 @@ public class DocBookSinkTest extends AbstractSinkTest
     /** {@inheritDoc} */
     protected String getLineBreakBlock()
     {
-        return "<!-- LB -->" + EOL;
+        return "<!-- LB -->";
     }
 
     /** {@inheritDoc} */
