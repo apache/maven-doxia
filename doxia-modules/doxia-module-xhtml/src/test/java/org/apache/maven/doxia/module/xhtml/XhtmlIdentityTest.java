@@ -24,6 +24,7 @@ import java.io.Writer;
 import org.apache.maven.doxia.module.AbstractIdentityTest;
 import org.apache.maven.doxia.parser.Parser;
 import org.apache.maven.doxia.sink.Sink;
+import org.codehaus.plexus.util.StringUtils;
 
 
 /**
@@ -51,4 +52,31 @@ public class XhtmlIdentityTest extends AbstractIdentityTest
         return new XhtmlParser();
     }
 
+    /** {@inheritDoc} */
+    protected String getExpected()
+    {
+        // DOXIA-177
+        String expected = super.getExpected();
+
+        String startCaption = "begin:tableCaption";
+        String endCaption = "end:tableCaption";
+
+        int iStartCaption = expected.indexOf( startCaption );
+        int iEndCaption = expected.indexOf( endCaption ) + endCaption.length();
+
+        String captionTag = expected.substring( iStartCaption, iEndCaption ) + EOL + EOL + EOL;
+        expected = StringUtils.replace( expected, captionTag, "" );
+
+        int iStartTableRows =
+            expected.substring( 0, iStartCaption ).lastIndexOf( "begin:tableRows" ) + "begin:tableRows".length();
+
+        StringBuffer text = new StringBuffer();
+        text.append( expected.substring( 0, iStartTableRows ) );
+        text.append( EOL + EOL + EOL );
+        text.append( captionTag.subSequence( 0, captionTag.indexOf( "end:tableCaption" )
+            + "end:tableCaption".length() ) );
+        text.append( expected.substring( iStartTableRows ) );
+
+        return text.toString();
+    }
 }

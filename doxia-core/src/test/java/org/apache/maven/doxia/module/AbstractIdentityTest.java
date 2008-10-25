@@ -46,6 +46,9 @@ import org.codehaus.plexus.util.IOUtil;
 public abstract class AbstractIdentityTest
     extends AbstractModuleTest
 {
+    /** Expected Identity String */
+    private String expected;
+
     /**
      * Set to true if the identity transformation should actually be asserted,
      * by default only the expected and actual results are written to a file, but not compared.
@@ -93,7 +96,7 @@ public abstract class AbstractIdentityTest
             // generate the expected model
             writer = new StringWriter();
             SinkTestDocument.generate( new TextSink( writer ) );
-            String expected = writer.toString();
+            expected = writer.toString();
 
             // write to file for comparison
             fileWriter = getTestWriter( "expected" );
@@ -121,7 +124,7 @@ public abstract class AbstractIdentityTest
             if ( assertIdentity )
             {
                 // TODO: make this work for at least apt and xdoc modules?
-                assertEquals( "Identity test failed!", expected, actual );
+                assertEquals( "Identity test failed!", getExpected(), actual );
             }
 
         }
@@ -162,5 +165,13 @@ public abstract class AbstractIdentityTest
     protected void assertIdentity( boolean doAssert )
     {
         this.assertIdentity = doAssert;
+    }
+
+    /**
+     * @return the expected identity string
+     */
+    protected String getExpected()
+    {
+        return expected;
     }
 }

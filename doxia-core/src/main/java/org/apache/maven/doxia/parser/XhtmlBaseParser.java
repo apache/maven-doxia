@@ -51,9 +51,6 @@ public class XhtmlBaseParser
     /** Used for nested lists. */
     private int orderedListDepth = 0;
 
-    /** For tables. */
-    private boolean hasCaption;
-
     /** Counts section level. */
     private int sectionLevel;
 
@@ -370,8 +367,6 @@ public class XhtmlBaseParser
         }
         else if ( parser.getName().equals( Tag.CAPTION.toString() ) )
         {
-            sink.tableRows_();
-            this.hasCaption = true;
             sink.tableCaption( attribs );
         }
 
@@ -548,12 +543,7 @@ public class XhtmlBaseParser
 
         else if ( parser.getName().equals( Tag.TABLE.toString() ) )
         {
-            if ( !hasCaption )
-            {
-                sink.tableRows_();
-            }
-
-            this.hasCaption = false;
+            sink.tableRows_();
 
             sink.table_();
         }

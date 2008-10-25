@@ -155,8 +155,8 @@ public class XhtmlSinkTest
     protected String getTableBlock( String cell, String caption )
     {
         return "<table border=\"0\" class=\"bodyTable\" align=\"center\">"
-            + "<tr class=\"a\"><td align=\"center\">cell</td></tr>"
-            + "<caption>Table caption</caption></table>";
+            + "<caption>Table caption</caption><tr class=\"a\"><td align=\"center\">cell</td></tr>"
+            + "</table>";
     }
 
     // Disable testTable until the order of attributes issue is clarified

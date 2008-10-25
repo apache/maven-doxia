@@ -138,8 +138,8 @@ public class XdocSinkTest
     /** {@inheritDoc} */
     protected String getTableBlock( String cell, String caption )
     {
-        return "<table align=\"center\" border=\"0\"><tr valign=\"top\"><td align=\"center\">"
-            + cell + "</td></tr><caption>" + caption + "</caption></table>";
+        return "<table align=\"center\" border=\"0\"><caption>" + caption + "</caption><tr valign=\"top\"><td align=\"center\">"
+            + cell + "</td></tr></table>";
     }
 
     /** {@inheritDoc} */
