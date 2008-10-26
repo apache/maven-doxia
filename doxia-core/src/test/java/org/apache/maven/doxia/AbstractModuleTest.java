@@ -84,6 +84,21 @@ public abstract class AbstractModuleTest
      * in the test target output directory.
      *
      * @param baseName The name of the target file.
+     * @return An XML FileWriter.
+     * @throws IOException If the FileWriter could not be generated.
+     * @see #getXmlTestWriter(String, String)
+     */
+    protected Writer getXmlTestWriter( String baseName )
+        throws IOException
+    {
+        return getXmlTestWriter( baseName, outputExtension() );
+    }
+
+    /**
+     * Returns an XML FileWriter to write to a file with the given name
+     * in the test target output directory.
+     *
+     * @param baseName The name of the target file.
      * @param extension The file extension of the file to write.
      * @return An XML FileWriter.
      * @throws IOException If the FileWriter could not be generated.
@@ -110,6 +125,7 @@ public abstract class AbstractModuleTest
      * @param baseName The name of the target file.
      * @return A FileWriter.
      * @throws IOException If the FileWriter could not be generated.
+     * @see #getTestWriter(String, String)
      */
     protected Writer getTestWriter( String baseName )
         throws IOException
