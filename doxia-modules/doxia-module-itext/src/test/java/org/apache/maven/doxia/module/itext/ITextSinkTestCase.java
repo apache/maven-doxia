@@ -70,7 +70,6 @@ public class ITextSinkTestCase
         return new File( outputDirectory, prefix + "." + suffix );
     }
 
-    /** {@inheritDoc} */
     protected Sink createSink( Writer writer )
     {
         ITextSink sink = new ITextSink( writer );
