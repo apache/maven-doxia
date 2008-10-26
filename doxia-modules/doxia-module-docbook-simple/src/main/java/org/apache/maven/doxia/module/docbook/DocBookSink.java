@@ -39,7 +39,9 @@ import org.apache.maven.doxia.util.HtmlTools;
 import org.codehaus.plexus.util.FileUtils;
 
 /**
- * A doxia Sink which produces a <code>Docbook</code> model.
+ * Docbook Sink implementation.
+ * <br/>
+ * <b>Note</b>: The encoding used is UTF-8.
  *
  * @version $Id$
  * @since 1.0
@@ -65,9 +67,6 @@ public class DocBookSink
 
     /** xmlMode. */
     private boolean xmlMode = false;
-
-    /** encoding. */
-    private String encoding = null;
 
     /** styleSheet. */
     private String styleSheet = null;
@@ -140,9 +139,11 @@ public class DocBookSink
 
     private boolean skip;
 
-
     /**
-     * @param writer the default writer.
+     * Constructor, initialize the Writer.
+     *
+     * @param writer not null writer to write the result. <b>Should</b> be an UTF-8 Writer.
+     * You could use <code>newXmlWriter</code> methods from {@link org.codehaus.plexus.util.WriterFactory}.
      */
     public DocBookSink( Writer writer )
     {
@@ -232,20 +233,22 @@ public class DocBookSink
      * Sets the encoding.
      *
      * @param enc the encoding to set.
+     * @deprecated since 1.0, this method as no more effect. The encoding is always UTF-8.
      */
     public void setEncoding( String enc )
     {
-        this.encoding = enc;
+        // nop
     }
 
     /**
-     * Returns the current encoding.
+     * Returns the UTF-8 encoding.
      *
-     * @return the current encoding.
+     * @return always return UTF-8.
+     * @deprecated since 1.0, this method as no more effect. The encoding is always UTF-8.
      */
     public String getEncoding()
     {
-        return encoding;
+        return "UTF-8";
     }
 
     /**
@@ -532,15 +535,6 @@ public class DocBookSink
     {
         if ( xmlMode )
         {
-            markup( "<?xml version=\"1.0\"" );
-
-            if ( encoding != null )
-            {
-                markup( " encoding=\"" + encoding + "\"" );
-            }
-
-            markup( " ?>" );
-
             if ( styleSheet != null )
             {
                 markup( "<?xml-stylesheet type=\"text/css\" href=\"" + styleSheet + "\" ?>" );

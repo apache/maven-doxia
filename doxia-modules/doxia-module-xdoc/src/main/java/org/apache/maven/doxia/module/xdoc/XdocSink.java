@@ -32,7 +32,9 @@ import org.apache.maven.doxia.sink.XhtmlBaseSink;
 import org.apache.maven.doxia.util.HtmlTools;
 
 /**
- * A doxia Sink which produces an xdoc model.
+ * Xdoc Sink implementation.
+ * <br/>
+ * <b>Note</b>: The encoding used is UTF-8.
  *
  * @author <a href="mailto:james@jamestaylor.org">James Taylor</a>
  * @version $Id$
@@ -56,7 +58,8 @@ public class XdocSink
     /**
      * Constructor, initialize the Writer.
      *
-     * @param writer The writer to write the result.
+     * @param writer not null writer to write the result. <b>Should</b> be an UTF-8 Writer.
+     * You could use <code>newXmlWriter</code> methods from {@link org.codehaus.plexus.util.WriterFactory}.
      */
     public XdocSink( Writer writer )
     {
@@ -86,8 +89,6 @@ public class XdocSink
         resetState();
 
         setHeadFlag( true );
-
-        write( "<?xml version=\"1.0\" ?>" + EOL );
 
         writeStartTag( DOCUMENT_TAG );
 

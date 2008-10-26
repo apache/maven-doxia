@@ -32,7 +32,8 @@ import org.apache.maven.doxia.sink.SinkEventAttributeSet;
 import org.codehaus.plexus.util.StringUtils;
 
 /**
- * Xhtml sink implementation. <br/>
+ * Xhtml sink implementation.
+ * <br/>
  * <b>Note</b>: The encoding used is UTF-8.
  *
  * @author Jason van Zyl
@@ -66,7 +67,10 @@ public class XhtmlSink
     // ----------------------------------------------------------------------
 
     /**
-     * @param writer
+     * Constructor, initialize the Writer.
+     *
+     * @param writer not null writer to write the result. <b>Should</b> be an UTF-8 Writer.
+     * You could use <code>newXmlWriter</code> methods from {@link org.codehaus.plexus.util.WriterFactory}.
      */
     public XhtmlSink( Writer writer )
     {

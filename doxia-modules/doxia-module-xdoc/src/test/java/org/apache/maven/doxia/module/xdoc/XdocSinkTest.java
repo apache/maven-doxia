@@ -72,7 +72,7 @@ public class XdocSinkTest
     /** {@inheritDoc} */
     protected String getHeadBlock()
     {
-        return "<?xml version=\"1.0\" ?>" + EOL + "<document><properties></properties>";
+        return "<document><properties></properties>";
     }
 
     /** {@inheritDoc} */

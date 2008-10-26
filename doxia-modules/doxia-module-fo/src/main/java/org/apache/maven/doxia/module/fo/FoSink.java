@@ -34,7 +34,9 @@ import org.apache.maven.doxia.util.DoxiaUtils;
 import org.apache.maven.doxia.util.HtmlTools;
 
 /**
- * A Doxia Sink that produces a FO model.
+ * FO Sink implementation.
+ * <br/>
+ * <b>Note</b>: The encoding used is UTF-8.
  *
  * @author ltheussl
  * @version $Id$
@@ -78,9 +80,10 @@ public class FoSink
     private boolean verbatim;
 
     /**
-     * Constructor.
+     * Constructor, initialize the Writer.
      *
-     * @param writer The writer for writing the result.
+     * @param writer not null writer to write the result. <b>Should</b> be an UTF-8 Writer.
+     * You could use <code>newXmlWriter</code> methods from {@link org.codehaus.plexus.util.WriterFactory}.
      */
     public FoSink( Writer writer )
     {
@@ -972,8 +975,6 @@ public class FoSink
      */
     public void beginDocument()
     {
-        writeln( "<?xml version=\"1.0\" encoding=\"UTF-8\"?>" );
-
         writeStartTag( ROOT_TAG, "xmlns:" + getNameSpace(), "http://www.w3.org/1999/XSL/Format" );
 
         writeStartTag( LAYOUT_MASTER_SET_TAG, "" );
