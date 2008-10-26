@@ -23,12 +23,14 @@ import java.io.BufferedInputStream;
 import java.io.BufferedReader;
 import java.io.EOFException;
 import java.io.FileInputStream;
-import java.io.FileReader;
 import java.io.IOException;
 import java.io.InputStream;
+import java.io.InputStreamReader;
 import java.io.Reader;
 
 /**
+ * <a href="http://en.wikipedia.org/wiki/Portable_pixmap">PBM</a> images reader.
+ * 
  * @version $Id$
  */
 class PBMReader
@@ -185,7 +187,7 @@ class PBMReader
         {
             String field;
 
-            reader = new BufferedReader( new FileReader( fileName ) );
+            reader = new BufferedReader( new InputStreamReader( new FileInputStream( fileName ), "US-ASCII" ) );
             offset = 0;
 
             field = getField();
