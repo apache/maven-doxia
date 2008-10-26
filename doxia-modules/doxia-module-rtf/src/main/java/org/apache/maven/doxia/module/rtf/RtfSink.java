@@ -243,6 +243,7 @@ public class RtfSink
 
         Writer w;
         stream = new BufferedOutputStream( output );
+        // TODO: encoding should be consistent with codePage
         if ( encoding != null )
         {
             w = new OutputStreamWriter( stream, encoding );
