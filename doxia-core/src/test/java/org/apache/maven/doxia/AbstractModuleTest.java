@@ -42,8 +42,12 @@ public abstract class AbstractModuleTest
     implements Markup
 {
     /**
-     * Set the system property <code>line.separator</code> to <code>\n</code> (Unix) to prevent
-     * failure on windows.
+     * Set the system properties:
+     * <ul>
+     * <li><code>line.separator</code> to <code>\n</code> (Unix) to prevent
+     * failure on windows.</li>
+     * <li><code>file.encoding</code> to <code>UTF-8</code>.</li>
+     * </ul>
      */
     static
     {
@@ -64,6 +68,7 @@ public abstract class AbstractModuleTest
      * @param extension The file extension of the file to write.
      * @return A FileWriter.
      * @throws IOException If the FileWriter could not be generated.
+     * @see WriterFactory#newWriter(File, String)
      */
     protected Writer getTestWriter( String baseName, String extension )
         throws IOException
@@ -102,6 +107,7 @@ public abstract class AbstractModuleTest
      * @param extension The file extension of the file to write.
      * @return An XML FileWriter.
      * @throws IOException If the FileWriter could not be generated.
+     * @see WriterFactory#newXmlWriter(File)
      */
     protected Writer getXmlTestWriter( String baseName, String extension )
         throws IOException
@@ -161,6 +167,7 @@ public abstract class AbstractModuleTest
      *
      * @param baseName The name of the resource file to read.
      * @return An InputStreamReader.
+     * @see #getTestReader(String, String)
      */
     protected Reader getTestReader( String baseName )
     {
@@ -211,5 +218,4 @@ public abstract class AbstractModuleTest
      * @return The test output directory, relative to outputBaseDir().
      */
     protected abstract String getOutputDir();
-
 }
