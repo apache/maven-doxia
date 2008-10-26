@@ -43,6 +43,12 @@ public class DocBookSinkTest extends AbstractSinkTest
     }
 
     /** {@inheritDoc} */
+    protected boolean isXmlSink()
+    {
+        return true;
+    }
+
+    /** {@inheritDoc} */
     protected String getTitleBlock( String title )
     {
         return "<articleinfo><title>" + title + "</title>";

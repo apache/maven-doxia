@@ -43,6 +43,12 @@ public class TWikiSinkTest
     }
 
     /** {@inheritDoc} */
+    protected boolean isXmlSink()
+    {
+        return false;
+    }
+
+    /** {@inheritDoc} */
     protected String getAnchorBlock( String anchor )
     {
         return EOL + "#" + anchor + anchor;

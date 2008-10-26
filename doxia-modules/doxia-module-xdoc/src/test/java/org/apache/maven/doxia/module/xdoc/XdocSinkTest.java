@@ -46,6 +46,12 @@ public class XdocSinkTest
     }
 
     /** {@inheritDoc} */
+    protected boolean isXmlSink()
+    {
+        return true;
+    }
+
+    /** {@inheritDoc} */
     protected String getTitleBlock( String title )
     {
         return "<title>" + title + "</title>";

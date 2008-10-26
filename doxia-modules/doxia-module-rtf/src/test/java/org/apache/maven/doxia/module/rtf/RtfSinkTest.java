@@ -37,16 +37,25 @@ import java.io.InputStreamReader;
 public class RtfSinkTest
     extends AbstractSinkTestCase
 {
+    /** {@inheritDoc} */
     protected String outputExtension()
     {
         return "rtf";
     }
 
+    /** {@inheritDoc} */
     protected Parser createParser()
     {
         return new AptParser();
     }
 
+    /** {@inheritDoc} */
+    protected boolean isXmlSink()
+    {
+        return false;
+    }
+
+    /** {@inheritDoc} */
     protected Sink createSink()
         throws Exception
     {
@@ -55,6 +64,7 @@ public class RtfSinkTest
         return new RtfSink( new FileOutputStream( outputFile ) );
     }
 
+    /** {@inheritDoc} */
     protected Reader getTestReader()
         throws Exception
     {

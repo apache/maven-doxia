@@ -47,6 +47,12 @@ public class ConfluenceSinkTest
         return ConfluenceMarkup.ANCHOR_START_MARKUP + anchor + ConfluenceMarkup.ANCHOR_END_MARKUP + anchor;
     }
 
+    /** {@inheritDoc} */
+    protected boolean isXmlSink()
+    {
+        return false;
+    }
+
     /** Not used.
      * {@inheritDoc} */
     protected String getAuthorBlock( String author )

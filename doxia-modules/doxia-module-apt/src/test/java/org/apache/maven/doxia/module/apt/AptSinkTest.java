@@ -46,6 +46,12 @@ public class AptSinkTest extends AbstractSinkTest
     }
 
     /** {@inheritDoc} */
+    protected boolean isXmlSink()
+    {
+        return false;
+    }
+
+    /** {@inheritDoc} */
     protected String getTitleBlock( String title )
     {
         return title;

@@ -140,6 +140,12 @@ public class FoSinkTest extends AbstractSinkTest
     }
 
     /** {@inheritDoc} */
+    protected boolean isXmlSink()
+    {
+        return true;
+    }
+
+    /** {@inheritDoc} */
     protected String getTitleBlock( String title )
     {
         String attribs = getConfig().getAttributeString( "doc.header.title" );
@@ -381,7 +387,7 @@ public class FoSinkTest extends AbstractSinkTest
     }
 
     // ----------------------------------------------------------------------
-    // Auxiliary methods 
+    // Auxiliary methods
     // ----------------------------------------------------------------------
 
 

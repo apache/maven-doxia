@@ -44,10 +44,16 @@ public class XhtmlSinkTest
         return new XhtmlSink( writer );
     }
 
+    /** {@inheritDoc} */
+    protected boolean isXmlSink()
+    {
+        return true;
+    }
+
     public void testLinks()
         throws Exception
     {
-        Writer writer = getTestWriter( "links" );
+        Writer writer = getXmlTestWriter( "links" );
         XhtmlSink sink = (XhtmlSink) createSink( writer );
         sink.link( "http:/www.xdoc.com" );
         sink.link_();

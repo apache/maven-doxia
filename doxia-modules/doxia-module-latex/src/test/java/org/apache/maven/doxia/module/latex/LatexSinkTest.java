@@ -44,6 +44,12 @@ public class LatexSinkTest
     }
 
     /** {@inheritDoc} */
+    protected boolean isXmlSink()
+    {
+        return false;
+    }
+
+    /** {@inheritDoc} */
     protected String getTitleBlock( String title )
     {
         return "\\title{" + LatexSink.escaped( title ) + "}" + EOL;

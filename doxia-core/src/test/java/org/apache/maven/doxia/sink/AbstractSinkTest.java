@@ -56,13 +56,20 @@ public abstract class AbstractSinkTest
     // ----------------------------------------------------------------------
 
     /**
-     * Tests that the current sink is able to render the common test document.
+     * Tests that the current sink is able to render the common test document. If the sink is an Xml sink defined
+     * by {@link #isXmlSink()}, it uses an Xml Writer defined by {@link #getXmlTestWriter(String)}. If not, it uses
+     * the Writer defined by {@link #getTestWriter(String)}.
+     *
      * @see SinkTestDocument
      * @throws IOException If the target test document could not be generated.
+     * @see #isXmlSink()
+     * @see #getTestWriter(String)
+     * @see #getXmlTestWriter(String)
      */
     public final void testTestDocument() throws IOException
     {
-        Sink testSink = createSink( getTestWriter( "testDocument" ) );
+        Writer writer = ( isXmlSink() ? getXmlTestWriter( "testDocument" ) : getTestWriter( "testDocument" ) );
+        Sink testSink = createSink( writer );
 
         SinkTestDocument.generate( testSink );
 
@@ -687,10 +694,17 @@ public abstract class AbstractSinkTest
         return "sink/";
     }
 
-
     // ----------------------------------------------------------------------
     // Abstract methods the individual SinkTests must provide
     // ----------------------------------------------------------------------
+
+    /**
+     * This method allows to use the correct Writer in {@link #testTestDocument()}.
+     *
+     * @return <code>true</code> if the Sink is an XML one, <code>false</code> otherwise.
+     * @see #testTestDocument()
+     */
+    protected abstract boolean isXmlSink();
 
     /**
      * Return a new instance of the sink that is being tested.
@@ -930,5 +944,4 @@ public abstract class AbstractSinkTest
      * @see #testRawText()
      */
     protected abstract String getRawTextBlock( String text );
-
 }
