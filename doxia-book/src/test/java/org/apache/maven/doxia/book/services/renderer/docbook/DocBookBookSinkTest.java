@@ -13,6 +13,12 @@ import org.apache.maven.doxia.sink.Sink;
 public class DocBookBookSinkTest extends AbstractSinkTest
 {
     /** {@inheritDoc} */
+    protected boolean isXmlSink()
+    {
+        return true;
+    }
+
+    /** {@inheritDoc} */
     protected String outputExtension()
     {
         return "docbook";
