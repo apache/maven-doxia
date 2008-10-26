@@ -46,6 +46,9 @@ import org.apache.maven.doxia.logging.LogEnabled;
  *   reads your input document and produces a proper sequence of Doxia events.
  *   Those can then be fed into an arbitrary Sink to produce any desired final output.
  * </p>
+ * <p>
+ * <b>Note</b>: All implemented sink <b>should</b> use UTF-8 as encoding.
+ * </p>
  *
  * @since 1.0
  * @author <a href="mailto:jason@maven.org">Jason van Zyl</a>
@@ -1245,7 +1248,7 @@ public interface Sink
      * @see #text(String,SinkEventAttributes).
      */
     void text( String text );
-    
+
     /**
      * Adds a text.
      *
