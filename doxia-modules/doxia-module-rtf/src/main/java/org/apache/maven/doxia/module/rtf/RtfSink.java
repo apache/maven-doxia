@@ -38,6 +38,8 @@ import org.apache.maven.doxia.sink.SinkAdapter;
 import org.apache.maven.doxia.sink.SinkEventAttributes;
 
 /**
+ * <a href="http://en.wikipedia.org/wiki/Rich_Text_Format">RTF</a> Sink implementation.
+ * 
  * @version $Id$
  * @since 1.0
  */
