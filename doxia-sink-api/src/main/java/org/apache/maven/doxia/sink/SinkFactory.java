@@ -32,12 +32,12 @@ import java.io.Writer;
  */
 public interface SinkFactory
 {
-    /**
-     * The Plexus SinkFactory Role.
-     */
+    /** The Plexus SinkFactory Role. */
     String ROLE = SinkFactory.class.getName();
 
     /**
+     * Create a <code>Sink</code> into a file using an UTF-8 encoding.
+     *
      * @param outputDir the not-null output dir.
      * @param outputName the not-null output name.
      * @return a <code>Sink</code> instance with a file as output and using UTF-8 as encoding.
@@ -47,17 +47,24 @@ public interface SinkFactory
         throws IOException;
 
     /**
+     * Create a <code>Sink</code> into a file using an UTF-8 encoding.
+     *
      * @param outputDir the not-null output dir.
      * @param outputName the not-null output name.
-     * @param encoding the output encoding.
-     * @return a <code>Sink</code> instance with a file as output.
+     * @param encoding the output encoding (not used anymore).
+     * @return a <code>Sink</code> instance with a file as output and using UTF-8 as encoding.
      * @throws IOException if any
+     * @deprecated since 1.0, the encoding parameter has no effect, always use the UTF-8 encoding.
+     * @see #createSink(File, String)
      */
     Sink createSink( File outputDir, String outputName, String encoding )
         throws IOException;
 
     /**
-     * @param writer a not-null writer.
+     * Create a <code>Sink</code> into a Writer.
+     *
+     * @param writer not null writer to write the result. <b>Should</b> be an UTF-8 Writer.
+     * You could use wrapper methods from {@link org.codehaus.plexus.util.WriterFactory}.
      * @return a <code>Sink</code> instance.
      */
     Sink createSink( Writer writer );
