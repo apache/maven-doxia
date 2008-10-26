@@ -30,7 +30,7 @@ import org.apache.maven.doxia.sink.SinkFactory;
 import org.codehaus.plexus.util.WriterFactory;
 
 /**
- * APT implementation of the Sink factory.
+ * Rtf implementation of the Sink factory.
  *
  * @author <a href="mailto:vincent.siveton@gmail.com">Vincent Siveton</a>
  * @version $Id$
