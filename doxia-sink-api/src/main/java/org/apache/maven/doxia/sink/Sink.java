@@ -59,68 +59,66 @@ import org.apache.maven.doxia.logging.LogEnabled;
 public interface Sink
     extends LogEnabled
 {
-    /**
-     * The Plexus Sink Role.
-     */
+    /** The Plexus Sink Role. */
     String ROLE = Sink.class.getName();
 
     /**
      * A numbering to handle a number list.
-     * @see #numberedList(int,SinkEventAttributes).
+     * @see #numberedList(int,SinkEventAttributes)
      */
     int NUMBERING_DECIMAL = 0;
 
     /**
      * A numbering to handle a lower alpha list.
-     * @see #numberedList(int,SinkEventAttributes).
+     * @see #numberedList(int,SinkEventAttributes)
      */
     int NUMBERING_LOWER_ALPHA = 1;
 
     /**
      * A numbering to handle a upper alpha list.
-     * @see #numberedList(int,SinkEventAttributes).
+     * @see #numberedList(int,SinkEventAttributes)
      */
     int NUMBERING_UPPER_ALPHA = 2;
 
     /**
      * A numbering to handle a lower roman list.
-     * @see #numberedList(int,SinkEventAttributes).
+     * @see #numberedList(int,SinkEventAttributes)
      */
     int NUMBERING_LOWER_ROMAN = 3;
 
     /**
      * A numbering to handle a upper roman list.
-     * @see #numberedList(int,SinkEventAttributes).
+     * @see #numberedList(int,SinkEventAttributes)
      */
     int NUMBERING_UPPER_ROMAN = 4;
 
     /**
      * A level 1 section (section).
-     * @see #section(int,SinkEventAttributes).
+     * @see #section(int,SinkEventAttributes)
      */
     int SECTION_LEVEL_1 = 1;
 
     /**
      * A level 2 section (subsection).
-     * @see #section(int,SinkEventAttributes).
+     * @see #section(int,SinkEventAttributes)
      */
     int SECTION_LEVEL_2 = 2;
 
     /**
      * A level 3 section (sub-subsection).
-     * @see #section(int,SinkEventAttributes).
+     * @see #section(int,SinkEventAttributes)
      */
     int SECTION_LEVEL_3 = 3;
 
     /**
      * A level 4 section (sub-sub-subsection).
-     * @see #section(int,SinkEventAttributes).
+     * @see #section(int,SinkEventAttributes)
      */
     int SECTION_LEVEL_4 = 4;
 
     /**
      * A level 5 section (sub-sub-sub-subsection).
-     * @see #section(int,SinkEventAttributes).
+     * @see #section(int,SinkEventAttributes)
      */
     int SECTION_LEVEL_5 = 5;
 
@@ -145,7 +143,7 @@ public interface Sink
     /**
      * Starts the head element.
      *
-     * @see #head(SinkEventAttributes).
+     * @see #head(SinkEventAttributes)
      */
     void head();
 
@@ -202,7 +200,7 @@ public interface Sink
     /**
      * Starts the title element.
      *
-     * @see #title(SinkEventAttributes).
+     * @see #title(SinkEventAttributes)
      */
     void title();
 
@@ -214,7 +212,7 @@ public interface Sink
      * </p>
      *
      * @param attributes A set of {@link SinkEventAttributes}, may be <code>null</code>.
-     * @see #head(SinkEventAttributes).
+     * @see #head(SinkEventAttributes)
      */
     void title( SinkEventAttributes attributes );
 
@@ -226,7 +224,7 @@ public interface Sink
     /**
      * Starts an author element.
      *
-     * @see #author(SinkEventAttributes).
+     * @see #author(SinkEventAttributes)
      */
     void author();
 
@@ -238,7 +236,7 @@ public interface Sink
      * </p>
      *
      * @param attributes A set of {@link SinkEventAttributes}, may be <code>null</code>.
-     * @see #head(SinkEventAttributes).
+     * @see #head(SinkEventAttributes)
      */
     void author( SinkEventAttributes attributes );
 
@@ -250,7 +248,7 @@ public interface Sink
     /**
      * Starts the date element.
      *
-     * @see #date(SinkEventAttributes).
+     * @see #date(SinkEventAttributes)
      */
     void date();
 
@@ -262,7 +260,7 @@ public interface Sink
      * </p>
      *
      * @param attributes A set of {@link SinkEventAttributes}, may be <code>null</code>.
-     * @see #head(SinkEventAttributes).
+     * @see #head(SinkEventAttributes)
      */
     void date( SinkEventAttributes attributes );
 
@@ -274,7 +272,7 @@ public interface Sink
     /**
      * Starts the body of a document.
      *
-     * @see #body(SinkEventAttributes).
+     * @see #body(SinkEventAttributes)
      */
     void body();
 
@@ -286,7 +284,7 @@ public interface Sink
      * </p>
      *
      * @param attributes A set of {@link SinkEventAttributes}, may be <code>null</code>.
-     * @see #head(SinkEventAttributes).
+     * @see #head(SinkEventAttributes)
      */
     void body( SinkEventAttributes attributes );
 
@@ -308,7 +306,7 @@ public interface Sink
     /**
      * Starts a first heading element which contains the topic of the section.
      *
-     * @see #section(int,SinkEventAttributes).
+     * @see #section(int,SinkEventAttributes)
      */
     void section1();
 
@@ -321,7 +319,7 @@ public interface Sink
      * Starts a first title heading element. This element is optional, but if it exists,
      * it has to be contained, and be the first element, within a {@link #section1()} element.
      *
-     * @see #sectionTitle(int,SinkEventAttributes).
+     * @see #sectionTitle(int,SinkEventAttributes)
      */
     void sectionTitle1();
 
@@ -334,7 +332,7 @@ public interface Sink
      * Starts a second heading element which contains the topic of the section.
      * This has to be contained within a {@link #section1()} element.
      *
-     * @see #section(int,SinkEventAttributes).
+     * @see #section(int,SinkEventAttributes)
      */
     void section2();
 
@@ -347,7 +345,7 @@ public interface Sink
      * Starts a second title heading element. This element is optional, but if it exists,
      * it has to be contained, and be the first element, within a {@link #section2()} element.
      *
-     * @see #sectionTitle(int,SinkEventAttributes).
+     * @see #sectionTitle(int,SinkEventAttributes)
      */
     void sectionTitle2();
 
@@ -360,7 +358,7 @@ public interface Sink
      * Starts a third heading element which contains the topic of the section.
      * This has to be contained within a {@link #section2()} element.
      *
-     * @see #section(int,SinkEventAttributes).
+     * @see #section(int,SinkEventAttributes)
      */
     void section3();
 
@@ -373,7 +371,7 @@ public interface Sink
      * Starts a third title heading element. This element is optional, but if it exists,
      * it has to be contained, and be the first element, within a {@link #section3()} element.
      *
-     * @see #sectionTitle(int,SinkEventAttributes).
+     * @see #sectionTitle(int,SinkEventAttributes)
      */
     void sectionTitle3();
 
@@ -386,7 +384,7 @@ public interface Sink
      * Starts a 4th heading element which contains the topic of the section.
      * This has to be contained within a {@link #section3()} element.
      *
-     * @see #section(int,SinkEventAttributes).
+     * @see #section(int,SinkEventAttributes)
      */
     void section4();
 
@@ -399,7 +397,7 @@ public interface Sink
      * Starts a 4th title heading element. This element is optional, but if it exists,
      * it has to be contained, and be the first element, within a {@link #section4()} element.
      *
-     * @see #sectionTitle(int,SinkEventAttributes).
+     * @see #sectionTitle(int,SinkEventAttributes)
      */
     void sectionTitle4();
 
@@ -412,7 +410,7 @@ public interface Sink
      * Starts a 5th heading element which contains the topic of the section.
      * This has to be contained within a {@link #section4()} element.
      *
-     * @see #section(int,SinkEventAttributes).
+     * @see #section(int,SinkEventAttributes)
      */
     void section5();
 
@@ -425,7 +423,7 @@ public interface Sink
      * Starts a 5th title heading element. This element is optional, but if it exists,
      * it has to be contained, and be the first element, within a {@link #section5()} element.
      *
-     * @see #sectionTitle(int,SinkEventAttributes).
+     * @see #sectionTitle(int,SinkEventAttributes)
      */
     void sectionTitle5();
 
@@ -492,7 +490,7 @@ public interface Sink
     /**
      * Starts an unordered list element.
      *
-     * @see #list(SinkEventAttributes).
+     * @see #list(SinkEventAttributes)
      */
     void list();
 
@@ -515,7 +513,7 @@ public interface Sink
     /**
      * Starts a list item element within an unordered list.
      *
-     * @see #listItem(SinkEventAttributes).
+     * @see #listItem(SinkEventAttributes)
      */
     void listItem();
 
@@ -539,7 +537,7 @@ public interface Sink
      * Starts an ordered list element.
      *
      * @param numbering the numbering style.
-     * @see #numberedList(int,SinkEventAttributes).
+     * @see #numberedList(int,SinkEventAttributes)
      */
     void numberedList( int numbering );
 
@@ -568,7 +566,7 @@ public interface Sink
     /**
      * Starts a list item element within an ordered list.
      *
-     * @see #numberedListItem(SinkEventAttributes).
+     * @see #numberedListItem(SinkEventAttributes)
      */
     void numberedListItem();
 
@@ -591,7 +589,7 @@ public interface Sink
     /**
      * Starts a definition list element.
      *
-     * @see #definitionList(SinkEventAttributes).
+     * @see #definitionList(SinkEventAttributes)
      */
     void definitionList();
 
@@ -614,7 +612,7 @@ public interface Sink
     /**
      * Starts a list item element within a definition list.
      *
-     * @see #definitionListItem(SinkEventAttributes).
+     * @see #definitionListItem(SinkEventAttributes)
      */
     void definitionListItem();
 
@@ -641,7 +639,7 @@ public interface Sink
     /**
      * Starts a definition element within a definition list.
      *
-     * @see #definition(SinkEventAttributes).
+     * @see #definition(SinkEventAttributes)
      */
     void definition();
 
@@ -664,7 +662,7 @@ public interface Sink
     /**
      * Starts a definition term element within a definition list.
      *
-     * @see #definedTerm(SinkEventAttributes).
+     * @see #definedTerm(SinkEventAttributes)
      */
     void definedTerm();
 
@@ -687,7 +685,7 @@ public interface Sink
     /**
      * Starts a basic image embedding element.
      *
-     * @see #figure(SinkEventAttributes).
+     * @see #figure(SinkEventAttributes)
      */
     void figure();
 
@@ -739,7 +737,7 @@ public interface Sink
     /**
      * Starts a caption of an image element.
      *
-     * @see #figureCaption(SinkEventAttributes).
+     * @see #figureCaption(SinkEventAttributes)
      */
     void figureCaption();
 
@@ -751,7 +749,7 @@ public interface Sink
      * </p>
      *
      * @param attributes A set of {@link SinkEventAttributes}, may be <code>null</code>.
-     * @see #figure(SinkEventAttributes).
+     * @see #figure(SinkEventAttributes)
      */
     void figureCaption( SinkEventAttributes attributes );
 
@@ -791,14 +789,14 @@ public interface Sink
      *
      * @param src the image source, a valid URL.
      * @param attributes A set of {@link SinkEventAttributes}, may be <code>null</code>.
-     * @see #figure(SinkEventAttributes).
+     * @see #figure(SinkEventAttributes)
      */
     void figureGraphics( String src, SinkEventAttributes attributes );
 
     /**
      * Starts a table element for marking up tabular information in a document.
      *
-     * @see #table(SinkEventAttributes).
+     * @see #table(SinkEventAttributes)
      */
     void table();
 
@@ -884,7 +882,7 @@ public interface Sink
     /**
      * Starts a row element which acts as a container for a row of table cells.
      *
-     * @see #tableRow(SinkEventAttributes).
+     * @see #tableRow(SinkEventAttributes)
      */
     void tableRow();
 
@@ -911,7 +909,7 @@ public interface Sink
     /**
      * Starts a cell element which defines a cell that contains data.
      *
-     * @see #tableCell(SinkEventAttributes).
+     * @see #tableCell(SinkEventAttributes)
      */
     void tableCell();
 
@@ -950,7 +948,7 @@ public interface Sink
     /**
      * Starts a cell element which defines a cell that contains header information.
      *
-     * @see #tableHeaderCell(SinkEventAttributes).
+     * @see #tableHeaderCell(SinkEventAttributes)
      */
     void tableHeaderCell();
 
@@ -981,7 +979,7 @@ public interface Sink
     /**
      * Starts a caption element of a table.
      *
-     * @see #tableCaption(SinkEventAttributes).
+     * @see #tableCaption(SinkEventAttributes)
      */
     void tableCaption();
 
@@ -1000,7 +998,7 @@ public interface Sink
      * </p>
      *
      * @param attributes A set of {@link SinkEventAttributes}, may be <code>null</code>.
-     * @see #table(SinkEventAttributes).
+     * @see #table(SinkEventAttributes)
      */
     void tableCaption( SinkEventAttributes attributes );
 
@@ -1012,7 +1010,7 @@ public interface Sink
     /**
      * Starts an element which represents a paragraph.
      *
-     * @see #paragraph(SinkEventAttributes).
+     * @see #paragraph(SinkEventAttributes)
      */
     void paragraph();
 
@@ -1064,7 +1062,7 @@ public interface Sink
     /**
      * Adding a separator of sections from a text to each other.
      *
-     * @see #horizontalRule(SinkEventAttributes).
+     * @see #horizontalRule(SinkEventAttributes)
      */
     void horizontalRule();
 
@@ -1092,7 +1090,7 @@ public interface Sink
      * Starts an element which defines an anchor.
      *
      * @param name the name of the anchor.
-     * @see #anchor(String,SinkEventAttributes).
+     * @see #anchor(String,SinkEventAttributes)
      */
     void anchor( String name );
 
@@ -1129,7 +1127,7 @@ public interface Sink
      * Starts an element which defines a link.
      *
      * @param name the name of the link.
-     * @see #link(String,SinkEventAttributes).
+     * @see #link(String,SinkEventAttributes)
      */
     void link( String name );
 
@@ -1217,7 +1215,7 @@ public interface Sink
     /**
      * Adds a line break.
      *
-     * @see #lineBreak(SinkEventAttributes).
+     * @see #lineBreak(SinkEventAttributes)
      */
     void lineBreak();
 
@@ -1245,7 +1243,7 @@ public interface Sink
      * Adding a text.
      *
      * @param text The text to write.
-     * @see #text(String,SinkEventAttributes).
+     * @see #text(String,SinkEventAttributes)
      */
     void text( String text );
 
