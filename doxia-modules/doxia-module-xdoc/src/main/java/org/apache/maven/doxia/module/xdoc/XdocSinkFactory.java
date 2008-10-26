@@ -42,21 +42,21 @@ public class XdocSinkFactory
     public Sink createSink( File outputDir, String outputName )
         throws IOException
     {
-        return createSink( outputDir, outputName, WriterFactory.UTF_8 );
+        if ( !outputDir.isDirectory() )
+        {
+            throw new IllegalArgumentException( "The dir '" + outputDir + "' is not a directory or not exist" );
+        }
+
+        Writer writer = WriterFactory.newXmlWriter( new File( outputDir, outputName ) );
+
+        return new XdocSink( writer );
     }
 
     /** {@inheritDoc} */
     public Sink createSink( File outputDir, String outputName, String encoding )
         throws IOException
     {
-        if ( !outputDir.isDirectory() )
-        {
-            throw new IllegalArgumentException( "The dir '" + outputDir + "' is not a directory or not exist" );
-        }
-
-        Writer writer = WriterFactory.newWriter( new File( outputDir, outputName ), encoding );
-
-        return new XdocSink( writer );
+        return createSink( outputDir, outputName );
     }
 
     /** {@inheritDoc} */
