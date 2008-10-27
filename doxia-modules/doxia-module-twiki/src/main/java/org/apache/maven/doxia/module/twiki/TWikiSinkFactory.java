@@ -52,7 +52,11 @@ public class TWikiSinkFactory
         return new TWikiSink( writer );
     }
 
-    /** {@inheritDoc} */
+    /**
+     * @deprecated since 1.0, the encoding parameter has no effect, always use the UTF-8 encoding.
+     *
+     * {@inheritDoc}
+     */
     public Sink createSink( File outputDir, String outputName, String encoding )
         throws IOException
     {
