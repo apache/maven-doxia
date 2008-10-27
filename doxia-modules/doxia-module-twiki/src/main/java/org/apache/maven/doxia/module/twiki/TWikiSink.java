@@ -38,6 +38,8 @@ import org.codehaus.plexus.util.StringUtils;
 
 /**
  * TWiki Sink implementation.
+ * <br/>
+ * <b>Note</b>: The encoding used is UTF-8.
  *
  * @author <a href="mailto:vincent.siveton@gmail.com">Vincent Siveton</a>
  * @version $Id$
@@ -68,7 +70,10 @@ public class TWikiSink
     private Stack listStyles;
 
     /**
-     * @param writer writer not null
+     * Constructor, initialize the Writer and the variables.
+     *
+     * @param writer not null writer to write the result. <b>Should</b> be an UTF-8 Writer.
+     * You could use <code>newWriter</code> methods from {@link org.codehaus.plexus.util.WriterFactory}.
      */
     public TWikiSink( Writer writer )
     {

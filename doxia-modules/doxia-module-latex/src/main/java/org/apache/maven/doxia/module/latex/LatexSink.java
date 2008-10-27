@@ -34,6 +34,8 @@ import java.io.Writer;
 
 /**
  * Latex Sink implementation.
+ * <br/>
+ * <b>Note</b>: The encoding used is UTF-8.
  *
  * @version $Id$
  * @since 1.0
@@ -83,9 +85,10 @@ public class LatexSink
     // ----------------------------------------------------------------------
 
     /**
-     * Constructor.
+     * Constructor, initialize the Writer and the variables.
      *
-     * @param out The writer to use.
+     * @param out not null writer to write the result. <b>Should</b> be an UTF-8 Writer.
+     * You could use <code>newWriter</code> methods from {@link org.codehaus.plexus.util.WriterFactory}.
      */
     public LatexSink( Writer out )
     {
@@ -95,9 +98,10 @@ public class LatexSink
     }
 
     /**
-     * Constructor.
+     * Constructor, initialize the Writer and the variables.
      *
-     * @param out The writer to use.
+     * @param out not null writer to write the result. <b>Should</b> be an UTF-8 Writer.
+     * You could use <code>newWriter</code> methods from {@link org.codehaus.plexus.util.WriterFactory}.
      * @param sinkCommands A String representation of commands that go before \documentclass.
      * @param preamble A String representation of commands that go between \documentclass and \begin{document}.
      */
@@ -107,13 +111,15 @@ public class LatexSink
     }
 
     /**
-     * Constructor.
+     * Constructor, initialize the Writer and the variables.
      *
-     * @param out The writer to use.
+     * @param out not null writer to write the result. <b>Should</b> be an UTF-8 Writer.
+     * You could use <code>newWriter</code> methods from {@link org.codehaus.plexus.util.WriterFactory}.
      * @param sinkCommands A String representation of commands that go before \documentclass.
      * @param preamble A String representation of commands that go between \documentclass and \begin{document}.
      * @param fragmentDocument If this receives events that that are only part of a document.
-     * Typically, headers are omitted if this is true.     */
+     * Typically, headers are omitted if this is true.
+     */
     public LatexSink( Writer out, String sinkCommands, String preamble, boolean fragmentDocument )
     {
         this.out = new LineBreaker( out );
