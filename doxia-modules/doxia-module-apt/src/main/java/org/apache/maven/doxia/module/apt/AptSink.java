@@ -30,6 +30,8 @@ import org.codehaus.plexus.util.StringUtils;
 
 /**
  * APT Sink implementation.
+ * <br/>
+ * <b>Note</b>: The encoding used is UTF-8.
  *
  * @author eredmond
  * @version $Id$
@@ -102,9 +104,10 @@ public class AptSink
     // ----------------------------------------------------------------------
 
     /**
-     * Constructor, initialize the variables.
+     * Constructor, initialize the Writer and the variables.
      *
-     * @param writer The writer to write the result.
+     * @param writer not null writer to write the result. <b>Should</b> be an UTF-8 Writer.
+     * You could use <code>newWriter</code> methods from {@link org.codehaus.plexus.util.WriterFactory}.
      */
     public AptSink( Writer writer )
     {
@@ -974,24 +977,7 @@ public class AptSink
                     buffer.append( c );
                     break;
                 default:
-                    if ( c > 127 )
-                    {
-                        buffer.append( "\\u" );
-                        String hex = Integer.toHexString( c );
-                        if ( hex.length() == 2 )
-                        {
-                            buffer.append( "00" );
-                        }
-                        else if ( hex.length() == 3 )
-                        {
-                            buffer.append( "0" );
-                        }
-                        buffer.append( hex );
-                    }
-                    else
-                    {
-                        buffer.append( c );
-                    }
+                    buffer.append( c );
             }
         }
 
