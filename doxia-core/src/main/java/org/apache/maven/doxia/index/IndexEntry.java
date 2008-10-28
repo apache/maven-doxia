@@ -211,10 +211,8 @@ public class IndexEntry
         {
             return null;
         }
-        else
-        {
-            return (IndexEntry) entries.get( 0 );
-        }
+
+        return (IndexEntry) entries.get( 0 );
     }
 
     /**
@@ -230,10 +228,8 @@ public class IndexEntry
         {
             return null;
         }
-        else
-        {
-            return (IndexEntry) entries.get( entries.size() - 1 );
-        }
+
+        return (IndexEntry) entries.get( entries.size() - 1 );
     }
 
     /**

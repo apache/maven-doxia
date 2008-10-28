@@ -255,10 +255,8 @@ public class SnippetMacro
         {
             return url.toString();
         }
-        else
-        {
-            return url + " " + id;
-        }
+
+        return url + " " + id;
     }
 
     /**

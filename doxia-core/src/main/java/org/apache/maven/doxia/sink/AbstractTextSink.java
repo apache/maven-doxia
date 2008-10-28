@@ -31,6 +31,6 @@ public abstract class AbstractTextSink
     extends SinkAdapter
     implements TextMarkup
 {
-
+    // nop
 }
 
