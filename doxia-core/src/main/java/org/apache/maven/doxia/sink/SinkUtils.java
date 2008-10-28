@@ -197,7 +197,7 @@ public class SinkUtils
             if ( value instanceof AttributeSet )
             {
                 // Other AttributeSets are ignored
-                if ( SinkEventAttributeSet.STYLE.equals( key.toString() ) )
+                if ( SinkEventAttributes.STYLE.equals( key.toString() ) )
                 {
                     sb.append( Markup.SPACE ).append( key.toString() ).append( Markup.EQUAL )
                         .append( Markup.QUOTE ).append( asCssString( (AttributeSet) value ) )

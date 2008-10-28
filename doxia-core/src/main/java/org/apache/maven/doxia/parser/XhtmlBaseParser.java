@@ -25,6 +25,7 @@ import javax.swing.text.html.HTML.Tag;
 import org.apache.maven.doxia.macro.MacroExecutionException;
 import org.apache.maven.doxia.sink.Sink;
 import org.apache.maven.doxia.sink.SinkEventAttributeSet;
+import org.apache.maven.doxia.sink.SinkEventAttributes;
 import org.apache.maven.doxia.util.DoxiaUtils;
 
 import org.codehaus.plexus.util.StringUtils;
@@ -173,7 +174,7 @@ public class XhtmlBaseParser
             {
                 this.inFigure = true;
                 SinkEventAttributeSet atts = new SinkEventAttributeSet( attribs );
-                atts.removeAttribute( SinkEventAttributeSet.CLASS );
+                atts.removeAttribute( SinkEventAttributes.CLASS );
                 sink.figure( atts );
             }
             else
@@ -195,7 +196,7 @@ public class XhtmlBaseParser
         {
             verbatim();
 
-            attribs.removeAttribute( SinkEventAttributeSet.DECORATION );
+            attribs.removeAttribute( SinkEventAttributes.DECORATION );
 
             sink.verbatim( attribs );
         }
@@ -646,11 +647,11 @@ public class XhtmlBaseParser
             {
                 if ( "underline".equals( decoration ) || "line-through".equals( decoration ) )
                 {
-                    atts.addAttribute( SinkEventAttributeSet.DECORATION, decoration);
+                    atts.addAttribute( SinkEventAttributes.DECORATION, decoration);
                 }
                 else if ( "sub".equals( decoration ) || "sup".equals( decoration ) )
                 {
-                    atts.addAttribute( SinkEventAttributeSet.VALIGN, decoration);
+                    atts.addAttribute( SinkEventAttributes.VALIGN, decoration);
                 }
             }
 
