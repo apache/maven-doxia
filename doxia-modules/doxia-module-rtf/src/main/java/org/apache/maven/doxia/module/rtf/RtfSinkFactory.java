@@ -51,9 +51,21 @@ public class RtfSinkFactory
     public Sink createSink( File outputDir, String outputName, String encoding )
         throws IOException
     {
-        if ( !outputDir.isDirectory() )
+        if ( outputDir == null )
         {
-            throw new IllegalArgumentException( "The dir '" + outputDir + "' is not a directory or not exist" );
+            throw new IllegalArgumentException( "outputDir could not be null." );
+        }
+
+        if ( !outputDir.exists() )
+        {
+            outputDir.mkdirs();
+        }
+        else
+        {
+            if ( !outputDir.isDirectory() )
+            {
+                throw new IllegalArgumentException( "The dir '" + outputDir + "' is not a directory." );
+            }
         }
 
         OutputStream os = new FileOutputStream( new File( outputDir, outputName ) );

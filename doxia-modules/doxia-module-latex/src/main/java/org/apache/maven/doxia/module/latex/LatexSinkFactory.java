@@ -42,9 +42,21 @@ public class LatexSinkFactory
     public Sink createSink( File outputDir, String outputName )
         throws IOException
     {
-        if ( !outputDir.isDirectory() )
+        if ( outputDir == null )
         {
-            throw new IllegalArgumentException( "The dir '" + outputDir + "' is not a directory or not exist" );
+            throw new IllegalArgumentException( "outputDir could not be null." );
+        }
+
+        if ( !outputDir.exists() )
+        {
+            outputDir.mkdirs();
+        }
+        else
+        {
+            if ( !outputDir.isDirectory() )
+            {
+                throw new IllegalArgumentException( "The dir '" + outputDir + "' is not a directory." );
+            }
         }
 
         Writer writer = WriterFactory.newWriter( new File( outputDir, outputName ), WriterFactory.UTF_8 );

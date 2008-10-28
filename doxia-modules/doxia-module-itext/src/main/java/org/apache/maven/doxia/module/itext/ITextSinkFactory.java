@@ -26,6 +26,7 @@ import java.io.Writer;
 import org.apache.maven.doxia.sink.Sink;
 import org.apache.maven.doxia.sink.SinkFactory;
 import org.codehaus.plexus.util.WriterFactory;
+import org.codehaus.plexus.util.xml.PrettyPrintXMLWriter;
 
 /**
  * IText implementation of the Sink factory.
@@ -42,9 +43,21 @@ public class ITextSinkFactory
     public Sink createSink( File outputDir, String outputName )
         throws IOException
     {
-        if ( !outputDir.isDirectory() )
+        if ( outputDir == null )
         {
-            throw new IllegalArgumentException( "The dir '" + outputDir + "' is not a directory or not exist" );
+            throw new IllegalArgumentException( "outputDir could not be null." );
+        }
+
+        if ( !outputDir.exists() )
+        {
+            outputDir.mkdirs();
+        }
+        else
+        {
+            if ( !outputDir.isDirectory() )
+            {
+                throw new IllegalArgumentException( "The dir '" + outputDir + "' is not a directory." );
+            }
         }
 
         Writer writer = WriterFactory.newXmlWriter( new File( outputDir, outputName ) );
@@ -67,5 +80,21 @@ public class ITextSinkFactory
     public Sink createSink( Writer writer )
     {
         return new ITextSink( writer );
+    }
+
+    /**
+     * Create a <code>Sink</code> into a PrettyPrintXMLWriter.
+     *
+     * @param xmlWriter not null XML writer to write the result. <b>Should</b> be an UTF-8 Writer.
+     * @return a <code>Sink</code> instance.
+     */
+    public Sink createSink( PrettyPrintXMLWriter xmlWriter )
+    {
+        if ( xmlWriter == null )
+        {
+            throw new IllegalArgumentException( "xmlWriter could not be null." );
+        }
+
+        return new ITextSink( xmlWriter );
     }
 }
