@@ -41,9 +41,6 @@ import org.apache.maven.doxia.sink.SinkEventAttributeSet;
 public class SnippetMacro
     extends AbstractMacro
 {
-    /** System-dependent EOL. */
-    static final String EOL = System.getProperty( "line.separator" );
-
     /** Holds the cache. */
     private static Map cache = new HashMap();
 

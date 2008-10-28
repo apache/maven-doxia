@@ -37,9 +37,6 @@ import java.util.Iterator;
 public class SwfMacro
     extends AbstractMacro
 {
-    /** System-dependent EOL. */
-    private static final String EOL = System.getProperty( "line.separator" );
-
     /** {@inheritDoc} */
     public void execute( Sink sink, MacroRequest request )
         throws MacroExecutionException

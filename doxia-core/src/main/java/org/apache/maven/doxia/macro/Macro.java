@@ -35,6 +35,9 @@ public interface Macro
     /** The Plexus lookup role. */
     String ROLE = Macro.class.getName();
 
+    /** The vm line separator */
+    String EOL = System.getProperty( "line.separator" );
+
     /**
      * Execute the current macro using the given MacroRequest,
      * and emit events into the given sink.
