@@ -39,7 +39,7 @@ import org.apache.maven.doxia.sink.SinkEventAttributes;
 
 /**
  * <a href="http://en.wikipedia.org/wiki/Rich_Text_Format">RTF</a> Sink implementation.
- * 
+ *
  * @version $Id$
  * @since 1.0
  */
@@ -204,7 +204,7 @@ public class RtfSink
     /**
      * @throws IOException if any
      */
-    public RtfSink()
+    protected RtfSink()
         throws IOException
     {
         this( System.out );
@@ -214,7 +214,7 @@ public class RtfSink
      * @param output not null
      * @throws IOException if any
      */
-    public RtfSink( OutputStream output )
+    protected RtfSink( OutputStream output )
         throws IOException
     {
         this( output, null );
@@ -225,7 +225,7 @@ public class RtfSink
      * @param encoding a valid charset
      * @throws IOException if any
      */
-    public RtfSink( OutputStream output, String encoding )
+    protected RtfSink( OutputStream output, String encoding )
         throws IOException
     {
         fontTable = new Hashtable();

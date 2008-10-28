@@ -38,6 +38,7 @@ import org.apache.maven.doxia.book.model.Chapter;
 import org.apache.maven.doxia.book.model.Section;
 import org.apache.maven.doxia.sink.PipelineSink;
 import org.apache.maven.doxia.module.itext.ITextSink;
+import org.apache.maven.doxia.module.itext.ITextSinkFactory;
 import org.apache.maven.doxia.parser.ParseException;
 import org.apache.maven.doxia.parser.manager.ParserNotFoundException;
 import org.apache.maven.doxia.sink.Sink;
@@ -248,7 +249,7 @@ public abstract class AbstractITextBookRenderer
         //
         // ----------------------------------------------------------------------
 
-        Sink itextSink = new ITextSink( writer );
+        Sink itextSink = new ITextSinkFactory().createSink( writer );
 
         List pipeline = new ArrayList();
         //        pipeline.add( DebugSink.newInstance() );

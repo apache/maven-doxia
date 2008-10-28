@@ -61,7 +61,7 @@ public class XdocSink
      * @param writer not null writer to write the result. <b>Should</b> be an UTF-8 Writer.
      * You could use <code>newXmlWriter</code> methods from {@link org.codehaus.plexus.util.WriterFactory}.
      */
-    public XdocSink( Writer writer )
+    protected XdocSink( Writer writer )
     {
         super( writer );
     }

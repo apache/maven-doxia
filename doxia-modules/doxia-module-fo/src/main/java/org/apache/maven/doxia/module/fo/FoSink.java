@@ -85,7 +85,7 @@ public class FoSink
      * @param writer not null writer to write the result. <b>Should</b> be an UTF-8 Writer.
      * You could use <code>newXmlWriter</code> methods from {@link org.codehaus.plexus.util.WriterFactory}.
      */
-    public FoSink( Writer writer )
+    protected FoSink( Writer writer )
     {
         this.out = writer;
         this.config = new FoConfiguration();

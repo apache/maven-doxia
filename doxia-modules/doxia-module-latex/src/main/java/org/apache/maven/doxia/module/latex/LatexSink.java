@@ -90,7 +90,7 @@ public class LatexSink
      * @param out not null writer to write the result. <b>Should</b> be an UTF-8 Writer.
      * You could use <code>newWriter</code> methods from {@link org.codehaus.plexus.util.WriterFactory}.
      */
-    public LatexSink( Writer out )
+    protected LatexSink( Writer out )
     {
         this.out = new LineBreaker( out );
         this.sinkCommands = defaultSinkCommands();
@@ -105,7 +105,7 @@ public class LatexSink
      * @param sinkCommands A String representation of commands that go before \documentclass.
      * @param preamble A String representation of commands that go between \documentclass and \begin{document}.
      */
-    public LatexSink( Writer out, String sinkCommands, String preamble )
+    protected LatexSink( Writer out, String sinkCommands, String preamble )
     {
         this( out, sinkCommands, preamble, false );
     }
@@ -120,7 +120,7 @@ public class LatexSink
      * @param fragmentDocument If this receives events that that are only part of a document.
      * Typically, headers are omitted if this is true.
      */
-    public LatexSink( Writer out, String sinkCommands, String preamble, boolean fragmentDocument )
+    protected LatexSink( Writer out, String sinkCommands, String preamble, boolean fragmentDocument )
     {
         this.out = new LineBreaker( out );
         this.sinkCommands = sinkCommands;

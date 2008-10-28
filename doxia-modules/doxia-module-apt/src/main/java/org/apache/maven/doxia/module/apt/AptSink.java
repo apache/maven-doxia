@@ -109,7 +109,7 @@ public class AptSink
      * @param writer not null writer to write the result. <b>Should</b> be an UTF-8 Writer.
      * You could use <code>newWriter</code> methods from {@link org.codehaus.plexus.util.WriterFactory}.
      */
-    public AptSink( Writer writer )
+    protected AptSink( Writer writer )
     {
         this.buffer = new StringBuffer();
         this.tableCaptionBuffer = new StringBuffer();

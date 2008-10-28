@@ -72,7 +72,7 @@ public class XhtmlSink
      * @param writer not null writer to write the result. <b>Should</b> be an UTF-8 Writer.
      * You could use <code>newXmlWriter</code> methods from {@link org.codehaus.plexus.util.WriterFactory}.
      */
-    public XhtmlSink( Writer writer )
+    protected XhtmlSink( Writer writer )
     {
         this( writer, null );
     }
@@ -81,7 +81,7 @@ public class XhtmlSink
      * @param writer
      * @param renderingContext
      */
-    public XhtmlSink( Writer writer, RenderingContext renderingContext )
+    protected XhtmlSink( Writer writer, RenderingContext renderingContext )
     {
         super( writer );
 
@@ -94,7 +94,7 @@ public class XhtmlSink
      * @param directives
      * @todo directives Map is not used
      */
-    public XhtmlSink( Writer writer, RenderingContext renderingContext, Map directives )
+    protected XhtmlSink( Writer writer, RenderingContext renderingContext, Map directives )
     {
         this( writer, renderingContext );
     }

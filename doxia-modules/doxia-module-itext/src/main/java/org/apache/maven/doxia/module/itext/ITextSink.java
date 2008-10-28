@@ -107,7 +107,7 @@ public final class ITextSink
     /**
      * @param writer
      */
-    public ITextSink( Writer writer )
+    protected ITextSink( Writer writer )
     {
         this.writer = writer;
 
@@ -122,7 +122,7 @@ public final class ITextSink
     /**
      * @param xmlWriter
      */
-    public ITextSink( PrettyPrintXMLWriter xmlWriter )
+    protected ITextSink( PrettyPrintXMLWriter xmlWriter )
     {
         this.xmlWriter = xmlWriter;
 

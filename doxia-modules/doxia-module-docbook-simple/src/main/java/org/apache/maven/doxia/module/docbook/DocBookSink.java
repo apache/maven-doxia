@@ -145,7 +145,7 @@ public class DocBookSink
      * @param writer not null writer to write the result. <b>Should</b> be an UTF-8 Writer.
      * You could use <code>newXmlWriter</code> methods from {@link org.codehaus.plexus.util.WriterFactory}.
      */
-    public DocBookSink( Writer writer )
+    protected DocBookSink( Writer writer )
     {
         this.out = new PrintWriter( writer );
         setItalicElement( "<emphasis>" );
