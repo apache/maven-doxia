@@ -91,7 +91,7 @@ public class HtmlTools
      *
      * @param text the String to escape, may be null.
      * @return The escaped text or the empty string if text == null.
-     * @see #escapeHTML(String,boolean).
+     * @see #escapeHTML(String,boolean)
      */
     public static String escapeHTML( String text )
     {

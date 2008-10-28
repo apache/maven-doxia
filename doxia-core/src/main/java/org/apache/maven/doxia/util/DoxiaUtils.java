@@ -212,7 +212,7 @@ public class DoxiaUtils
      *
      * @param text The text to be tested.
      * @return <code>true</code> if the text is a valid id, otherwise <code>false</code>.
-     * @see #encodeId(String).
+     * @see #encodeId(String)
      */
     public static boolean isValidId( String text )
     {
