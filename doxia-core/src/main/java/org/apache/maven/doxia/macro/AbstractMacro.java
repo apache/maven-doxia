@@ -21,6 +21,7 @@ package org.apache.maven.doxia.macro;
 
 import org.apache.maven.doxia.logging.Log;
 import org.apache.maven.doxia.logging.SystemStreamLog;
+import org.codehaus.plexus.util.StringUtils;
 
 /**
  * Abstract base class to execute <code>Macro</code>.
@@ -67,7 +68,7 @@ public abstract class AbstractMacro
      */
     protected void required( String paramName, String paramValue )
     {
-        if ( paramValue == null || "".equals( paramValue.trim() ) )
+        if ( StringUtils.isEmpty( paramValue ) )
         {
             throw new IllegalArgumentException( paramName + " is a required parameter!" );
         }
