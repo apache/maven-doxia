@@ -34,9 +34,6 @@ import org.codehaus.plexus.PlexusTestCase;
 public class XhtmlBaseSinkTest
     extends PlexusTestCase
 {
-
-    private String EOL = System.getProperty( "line.separator" );;
-
     /** @throws Exception */
     public void testSpaceAfterClosingTag()
         throws Exception
@@ -65,10 +62,10 @@ public class XhtmlBaseSinkTest
         }
         finally
         {
-            sink.close();
+            if ( sink != null )
+            {
+                sink.close();
+            }
         }
-
     }
-
-
 }
