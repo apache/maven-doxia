@@ -51,7 +51,8 @@ public interface Parser
     /**
      * Parses the given source model and emits Doxia events into the given sink.
      *
-     * @param source A reader that provides the source document.
+     * @param source not null reader that provides the source document.
+     * You could use <code>newReader</code> methods from {@link org.codehaus.plexus.util.ReaderFactory}.
      * @param sink A sink that consumes the Doxia events.
      * @throws ParseException if the model could not be parsed.
      */

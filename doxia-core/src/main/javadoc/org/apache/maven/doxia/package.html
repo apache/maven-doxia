@@ -1,0 +1,60 @@
+<?xml version="1.0" encoding="UTF-8"?>
+
+<!--
+Licensed to the Apache Software Foundation (ASF) under one
+or more contributor license agreements.  See the NOTICE file
+distributed with this work for additional information
+regarding copyright ownership.  The ASF licenses this file
+to you under the Apache License, Version 2.0 (the
+"License"); you may not use this file except in compliance
+with the License.  You may obtain a copy of the License at
+
+    http://www.apache.org/licenses/LICENSE-2.0
+
+Unless required by applicable law or agreed to in writing,
+software distributed under the License is distributed on an
+"AS IS" BASIS, WITHOUT WARRANTIES OR CONDITIONS OF ANY
+KIND, either express or implied.  See the License for the
+specific language governing permissions and limitations
+under the License.
+-->
+
+<body>
+  <h1>Maven Doxia API</h1>
+  <p>The Doxia API is based on <i>Sinks</i> and <i>Parser</i> objects: its goal is to parse a given source model
+     using a given parser, and emits Doxia events into the given sink.</p>
+
+  <h2>Using Maven Doxia API</h2>
+  <p>The following snippet shows how to use the Doxia API:</p>
+
+  <div align="left" class="java">
+    <table border="0" cellpadding="3" cellspacing="0" bgcolor="#ffffff">
+      <tr>
+        <!-- start source code -->
+        <td nowrap="nowrap" valign="top" align="left">
+          <code>
+            <font color="#ffffff">&nbsp;&nbsp;</font><font color="#000000">File&nbsp;userDir&nbsp;=&nbsp;</font><font color="#7f0055"><b>new&nbsp;</b></font><font color="#000000">File</font><font color="#000000">(&nbsp;</font><font color="#000000">System.getProperty&nbsp;</font><font color="#000000">(&nbsp;</font><font color="#2a00ff">&#34;user.dir&#34;&nbsp;</font><font color="#000000">)&nbsp;)</font><font color="#000000">;</font><br />
+            <font color="#ffffff">&nbsp;&nbsp;</font><font color="#000000">File&nbsp;inputFile&nbsp;=&nbsp;</font><font color="#7f0055"><b>new&nbsp;</b></font><font color="#000000">File</font><font color="#000000">(&nbsp;</font><font color="#000000">userDir,&nbsp;</font><font color="#2a00ff">&#34;test.apt&#34;&nbsp;</font><font color="#000000">)</font><font color="#000000">;</font><br />
+            <font color="#ffffff">&nbsp;&nbsp;</font><font color="#000000">File&nbsp;outputFile&nbsp;=&nbsp;</font><font color="#7f0055"><b>new&nbsp;</b></font><font color="#000000">File</font><font color="#000000">(&nbsp;</font><font color="#000000">userDir,&nbsp;</font><font color="#2a00ff">&#34;test.html&#34;&nbsp;</font><font color="#000000">)</font><font color="#000000">;</font><br />
+            <font color="#ffffff"></font><br />
+            <font color="#ffffff">&nbsp;&nbsp;</font><font color="#000000">Reader&nbsp;source&nbsp;=&nbsp;ReaderFactory.newReader</font><font color="#000000">(&nbsp;</font><font color="#000000">inputFile,&nbsp;</font><font color="#2a00ff">&#34;UTF-8&#34;&nbsp;</font><font color="#000000">)</font><font color="#000000">;</font><br />
+            <font color="#ffffff"></font><br />
+            <font color="#ffffff">&nbsp;&nbsp;</font><font color="#000000">SinkFactory&nbsp;sinkFactory&nbsp;=&nbsp;</font><font color="#000000">(</font><font color="#000000">SinkFactory</font><font color="#000000">)&nbsp;</font><font color="#000000">lookup</font><font color="#000000">(&nbsp;</font><font color="#000000">SinkFactory.ROLE,&nbsp;</font><font color="#2a00ff">&#34;html&#34;&nbsp;</font><font color="#000000">)</font><font color="#000000">;&nbsp;</font><font color="#3f7f5f">//&nbsp;Plexus&nbsp;lookup</font><br />
+            <font color="#ffffff">&nbsp;&nbsp;</font><font color="#000000">Sink&nbsp;sink&nbsp;=&nbsp;sinkFactory.createSink</font><font color="#000000">(&nbsp;</font><font color="#000000">outputFile.getParentFile</font><font color="#000000">()</font><font color="#000000">,&nbsp;outputFile.getName</font><font color="#000000">()&nbsp;)&nbsp;)</font><font color="#000000">;</font><br />
+            <font color="#ffffff"></font><br />
+            <font color="#ffffff">&nbsp;&nbsp;</font><font color="#000000">Doxia&nbsp;doxia&nbsp;=&nbsp;</font><font color="#000000">(</font><font color="#000000">Doxia</font><font color="#000000">)&nbsp;</font><font color="#000000">lookup</font><font color="#000000">(&nbsp;</font><font color="#000000">Doxia.ROLE&nbsp;</font><font color="#000000">)</font><font color="#000000">;&nbsp;</font><font color="#3f7f5f">//&nbsp;Plexus&nbsp;lookup</font><br />
+            <font color="#ffffff"></font><br />
+            <font color="#ffffff">&nbsp;&nbsp;</font><font color="#000000">doxia.parse</font><font color="#000000">(&nbsp;</font><font color="#000000">source,&nbsp;</font><font color="#2a00ff">&#34;apt&#34;</font><font color="#000000">,&nbsp;sink&nbsp;</font><font color="#000000">)</font><font color="#000000">;</font>
+          </code>
+        </td>
+        <!-- end source code -->
+      </tr>
+    </table>
+  </div>
+
+  <h2>Resources</h2>
+  <ul>
+    <li><a href="http://maven.apache.org/doxia/">Maven Doxia Website</a></li>
+    <li><a href="http://plexus.codehaus.org/">Plexus</a></li>
+  </ul>
+</body>
