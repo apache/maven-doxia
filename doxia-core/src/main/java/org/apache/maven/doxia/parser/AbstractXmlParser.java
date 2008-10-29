@@ -174,6 +174,14 @@ public abstract class AbstractXmlParser
             {
                 // nop
             }
+            else if ( eventType == XmlPullParser.PROCESSING_INSTRUCTION )
+            {
+                // nop
+            }
+            else if ( eventType == XmlPullParser.DOCDECL )
+            {
+                // nop
+            }
 
             try
             {
