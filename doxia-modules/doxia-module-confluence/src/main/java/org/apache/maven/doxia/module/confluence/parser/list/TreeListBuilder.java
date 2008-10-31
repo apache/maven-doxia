@@ -97,7 +97,7 @@ public class TreeListBuilder
     {
         List list = getListItems( treeComponent );
 
-        int type = ((TreeComponent)treeComponent.getChildren().get(0)).getType();
+        int type = ( (TreeComponent) treeComponent.getChildren().get( 0 ) ).getType();
 
         if ( type == ListBlockParser.BULLETED_LIST )
         {

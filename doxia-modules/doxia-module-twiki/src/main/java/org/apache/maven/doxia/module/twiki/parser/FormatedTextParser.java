@@ -259,16 +259,9 @@ public class FormatedTextParser
         {
             int len = SPECIAL_CHAR[charType].length();
             ret.addAll( parseFormat( line.substring( 0, minIndex ) ) );
-            ret
-               .add( ( (FormatBlockFactory) FACTORY_MAP.get( SPECIAL_CHAR[charType] ) )
-                                                                                       .createBlock( (Block[]) parseFormat(
-                                                                                                                            line
-                                                                                                                                .substring(
-                                                                                                                                            minIndex
-                                                                                                                                                + len,
-                                                                                                                                            rhOffsets[charType] ) )
-                                                                                                                                                                   .toArray(
-                                                                                                                                                                             new Block[] {} ) ) );
+            ret.add( ( (FormatBlockFactory) FACTORY_MAP.get( SPECIAL_CHAR[charType] ) )
+                     .createBlock( (Block[]) parseFormat( line.substring( minIndex + len, rhOffsets[charType] ) )
+                                   .toArray( new Block[] {} ) ) );
             ret.addAll( parseFormat( line.substring( rhOffsets[charType] + len ) ) );
         }
 

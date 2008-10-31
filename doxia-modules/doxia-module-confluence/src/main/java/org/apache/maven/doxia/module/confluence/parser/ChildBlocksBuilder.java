@@ -75,7 +75,7 @@ public class ChildBlocksBuilder
                     if ( insideBold )
                     {
                         insideBold = false;
-                        specialBlocks = getList( new BoldBlock( getChildren(text, specialBlocks) ), specialBlocks );
+                        specialBlocks = getList( new BoldBlock( getChildren( text, specialBlocks ) ), specialBlocks );
                         text = new StringBuffer();
                     }
                     else
@@ -151,7 +151,8 @@ public class ChildBlocksBuilder
                     {
                         i++;
                         insideMonospaced = false;
-                        specialBlocks = getList( new MonospaceBlock( getChildren( text, specialBlocks ) ), specialBlocks );
+                        specialBlocks = getList( new MonospaceBlock( getChildren( text, specialBlocks ) ),
+                                                 specialBlocks );
                         text = new StringBuffer();
                     }
                     else
@@ -244,7 +245,7 @@ public class ChildBlocksBuilder
             return list;
         }
 
-        list.add( new TextBlock(text) );
+        list.add( new TextBlock( text ) );
 
         return list;
     }

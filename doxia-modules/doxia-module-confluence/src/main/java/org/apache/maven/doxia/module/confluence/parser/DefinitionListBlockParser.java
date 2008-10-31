@@ -29,7 +29,7 @@ import org.apache.maven.doxia.util.ByLineSource;
 public class DefinitionListBlockParser
     implements BlockParser
 {
-    static  String LS = System.getProperty( "line.separator" );
+    static final String LS = System.getProperty( "line.separator" );
 
     /** {@inheritDoc} */
     public boolean accept( String line, ByLineSource source )

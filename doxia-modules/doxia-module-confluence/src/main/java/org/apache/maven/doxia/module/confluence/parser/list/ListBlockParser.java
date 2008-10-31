@@ -31,9 +31,9 @@ import org.apache.maven.doxia.parser.ParseException;
 public class ListBlockParser
     implements BlockParser
 {
-    public static int BULLETED_LIST = 0;
+    public static final int BULLETED_LIST = 0;
 
-    public static int NUMBERED_LIST = 1;
+    public static final int NUMBERED_LIST = 1;
 
     /** {@inheritDoc} */
     public boolean accept( String line, ByLineSource source )
@@ -61,7 +61,7 @@ public class ListBlockParser
                 break;
             }
 
-            if (text.length()>0 && isList( line ) )
+            if ( text.length() > 0 && isList( line ) )
             {
                 // We reached a new line with list prefix
                 addItem( treeListBuilder, text );

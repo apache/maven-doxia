@@ -50,7 +50,8 @@ import org.codehaus.plexus.util.xml.XMLWriter;
  * <ul>
  * <li>Roman lists are not supported.</li>
  * <li>Horizontal rule is not supported with 1.3.
- * See <a href="http://www.mail-archive.com/itext-questions@lists.sourceforge.net/msg10323.html">http://www.mail-archive.com/itext-questions@lists.sourceforge.net/msg10323.html</a></li>
+ * See <a href="http://www.mail-archive.com/itext-questions@lists.sourceforge.net/msg10323.html">
+ * http://www.mail-archive.com/itext-questions@lists.sourceforge.net/msg10323.html</a></li>
  * <li>iText has some problems with <code>ElementTags.TABLE</code> and <code>ElementTags.TABLEFITSPAGE</code>.
  * See http://sourceforge.net/tracker/index.php?func=detail&aid=786427&group_id=15255&atid=115255.</li>
  * <li>Images could be on another page and next text on the last one.</li>
@@ -67,7 +68,7 @@ public final class ITextSink
     extends SinkAdapter
 {
     /** This is the place where the iText DTD is located. IMPORTANT: this DTD is not uptodate! */
-    public final static String DTD = "http://itext.sourceforge.net/itext.dtd";
+    public static final String DTD = "http://itext.sourceforge.net/itext.dtd";
 
     /** This is the reference to the DTD. */
     public static final String DOCTYPE = "ITEXT SYSTEM \"" + DTD + "\"";
@@ -1143,7 +1144,8 @@ public final class ITextSink
     public void figureGraphics( String name )
     {
         String urlName = null;
-        if ( ( name.toLowerCase( Locale.ENGLISH ).startsWith( "http://" ) ) || ( name.toLowerCase( Locale.ENGLISH ).startsWith( "https://" ) ) )
+        if ( ( name.toLowerCase( Locale.ENGLISH ).startsWith( "http://" ) )
+                        || ( name.toLowerCase( Locale.ENGLISH ).startsWith( "https://" ) ) )
         {
             urlName = name;
         }
@@ -1167,7 +1169,8 @@ public final class ITextSink
 
         if ( urlName == null )
         {
-            getLog().warn( "No image " + name + " found in the class loader. Try to call setClassLoader(ClassLoader) before." );
+            getLog().warn( "No image " + name + " found in the class loader. Try to call setClassLoader(ClassLoader)"
+                           + " before." );
             return;
         }
 
@@ -1797,7 +1800,8 @@ public final class ITextSink
         return sb.toString().trim();
     }
 
-    private void startChunk( String fontName, int fontSize, String fontStyle, int fontColorBlue, int fontColorGreen, int fontColorRed, String localDestination )
+    private void startChunk( String fontName, int fontSize, String fontStyle, int fontColorBlue, int fontColorGreen,
+                             int fontColorRed, String localDestination )
     {
         writeStartElement( ElementTags.CHUNK );
         writeAddAttribute( ElementTags.FONT, fontName );

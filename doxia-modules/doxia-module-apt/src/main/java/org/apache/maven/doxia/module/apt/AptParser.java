@@ -413,7 +413,7 @@ public class AptParser
                 case LEFT_CURLY_BRACKET: /*}*/
                     if ( !anchor && !link )
                     {
-                        if ( i + 1 < end && text.charAt( i + 1 ) == LEFT_CURLY_BRACKET /*}*/)
+                        if ( i + 1 < end && text.charAt( i + 1 ) == LEFT_CURLY_BRACKET /*}*/ )
                         {
                             ++i;
                             link = true;
@@ -421,7 +421,7 @@ public class AptParser
 
                             String linkAnchor = null;
 
-                            if ( i + 1 < end && text.charAt( i + 1 ) == LEFT_CURLY_BRACKET /*}*/)
+                            if ( i + 1 < end && text.charAt( i + 1 ) == LEFT_CURLY_BRACKET /*}*/ )
                             {
                                 ++i;
                                 StringBuffer buf = new StringBuffer();
@@ -2105,8 +2105,7 @@ public class AptParser
         /**
          * Constructor.
          *
-         * @param indent indent.
-         * @param firstLine the comment line.
+         * @param line the comment line.
          * @throws AptParseException AptParseException
          */
         public Comment( String line )

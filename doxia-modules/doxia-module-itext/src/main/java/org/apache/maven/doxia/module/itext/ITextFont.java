@@ -377,6 +377,6 @@ public class ITextFont
             return getMonoSpacedFont( this.currentStyle, this.currentSize, this.currentColor );
         }
 
-        return getFont(this.currentStyle, this.currentSize, this.currentColor );
+        return getFont( this.currentStyle, this.currentSize, this.currentColor );
     }
 }

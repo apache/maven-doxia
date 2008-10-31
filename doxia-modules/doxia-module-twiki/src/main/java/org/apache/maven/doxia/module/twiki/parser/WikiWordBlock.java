@@ -73,7 +73,7 @@ class WikiWordBlock
      * Creates the WikiWordBlock.
      *
      * @param aWikiword the wiki word
-     * @param aText text to show in the wiki link
+     * @param content content to show in the wiki link
      * @param resolver responsible of resolving the link to the wikiWord
      * @throws IllegalArgumentException if the wikiword is <code>null</code>
      */

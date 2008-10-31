@@ -50,8 +50,9 @@ public class ITextUtil
     public static Rectangle getDefaultPageSize()
     {
         String defaultCountry = Locale.getDefault().getCountry();
-        if ( defaultCountry != null &&
-            ( defaultCountry.equals( Locale.US.getCountry() ) || defaultCountry.equals( Locale.CANADA.getCountry() ) ) )
+        if ( defaultCountry != null
+            && ( defaultCountry.equals( Locale.US.getCountry() )
+                            || defaultCountry.equals( Locale.CANADA.getCountry() ) ) )
         {
             return PageSize.LETTER;
         }
@@ -89,9 +90,9 @@ public class ITextUtil
         for ( int i = 0; i < sizes.length; i++ )
         {
             Field currentField = sizes[i];
-            if ( ( currentField.getName().equalsIgnoreCase( aPageSize ) ) &&
-                ( Modifier.isStatic( currentField.getModifiers() ) ) &&
-                ( currentField.getType().equals( Rectangle.class ) ) )
+            if ( ( currentField.getName().equalsIgnoreCase( aPageSize ) )
+                && ( Modifier.isStatic( currentField.getModifiers() ) )
+                && ( currentField.getType().equals( Rectangle.class ) ) )
             {
                 return true;
             }

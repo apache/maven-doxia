@@ -65,7 +65,7 @@ public class FigureBlockParser
      * @return a StringBuffer appended with lines
      * @throws ParseException
      */
-    private String appendUntilEmptyLine(ByLineSource source )
+    private String appendUntilEmptyLine( ByLineSource source )
         throws ParseException
     {
         StringBuffer text = new StringBuffer();

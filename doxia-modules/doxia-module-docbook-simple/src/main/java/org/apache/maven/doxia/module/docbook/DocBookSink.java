@@ -1340,7 +1340,8 @@ public class DocBookSink
         out.flush();
         if ( tableRowsWriter == null )
         {
-            throw new IllegalArgumentException( "tableRows( int[] justification, boolean grid ) was not called before." );
+            throw new IllegalArgumentException( "tableRows( int[] justification, boolean grid )"
+                                                + " was not called before." );
         }
 
         tableRows = tableRowsWriter.toString();

@@ -29,7 +29,7 @@ import org.apache.maven.doxia.parser.ParseException;
 public class VerbatimBlockParser
     implements BlockParser
 {
-    static  String LS = System.getProperty( "line.separator" );
+    static final String LS = System.getProperty( "line.separator" );
 
     /** {@inheritDoc} */
     public boolean accept( String line, ByLineSource source )

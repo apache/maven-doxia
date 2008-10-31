@@ -29,7 +29,6 @@ import javax.swing.text.html.HTML.Attribute;
 import javax.swing.text.html.HTML.Tag;
 
 import org.apache.maven.doxia.sink.AbstractTextSink;
-import org.apache.maven.doxia.sink.AbstractXmlSink;
 import org.apache.maven.doxia.sink.SinkEventAttributeSet;
 import org.apache.maven.doxia.sink.SinkEventAttributes;
 import org.apache.maven.doxia.sink.SinkUtils;

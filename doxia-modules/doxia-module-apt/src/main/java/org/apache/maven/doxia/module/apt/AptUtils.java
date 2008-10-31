@@ -28,7 +28,8 @@ import org.apache.maven.doxia.util.DoxiaUtils;
  * @since 1.0-beta-1
  * @version $Id$
  */
-public class AptUtils {
+public class AptUtils
+{
 
     /**
      * Replace all characters in a text.
@@ -173,7 +174,8 @@ public class AptUtils {
             {
                 buffer.append( '_' );
             }
-            else if ( ( Character.isLetterOrDigit( c ) ) || ( c == '-' ) || ( c == '_' ) || ( c == ':' ) || ( c == '.' ) )
+            else if ( ( Character.isLetterOrDigit( c ) ) || ( c == '-' ) || ( c == '_' ) || ( c == ':' )
+                            || ( c == '.' ) )
             {
                 buffer.append( c );
             }
@@ -182,7 +184,8 @@ public class AptUtils {
         return buffer.toString();
     }
 
-    private AptUtils() {
+    private AptUtils()
+    {
         // utility class
     }
 }

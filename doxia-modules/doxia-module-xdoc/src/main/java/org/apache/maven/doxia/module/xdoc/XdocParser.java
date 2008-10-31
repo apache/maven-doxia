@@ -181,7 +181,7 @@ public class XdocParser
         {
             verbatim();
 
-            attribs.addAttribute( SinkEventAttributeSet.DECORATION, "boxed");
+            attribs.addAttribute( SinkEventAttributeSet.DECORATION, "boxed" );
 
             sink.verbatim( attribs );
         }

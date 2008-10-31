@@ -22,7 +22,6 @@ package org.apache.maven.doxia.module.twiki;
 import javax.swing.text.html.HTML.Tag;
 
 import org.apache.maven.doxia.markup.TextMarkup;
-import org.codehaus.plexus.util.StringUtils;
 
 /**
  * This interface defines all markups and syntaxes used by the <b>TWiki</b> format.
