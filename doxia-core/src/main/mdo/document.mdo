@@ -88,7 +88,7 @@
       </fields>
     </class>
 
-    <class>
+    <class xsd.compositor="sequence">
       <name>DocumentMeta</name>
       <description><![CDATA[
         <p>
@@ -715,7 +715,7 @@
       </fields>
     </class>
 
-    <class>
+    <class xsd.compositor="sequence">
       <name>DocumentCover</name>
       <description>Contains meta-data information for the document cover page.</description>
       <version>1.0.0</version>
@@ -819,7 +819,7 @@
       </fields>
     </class>
 
-    <class>
+    <class xsd.compositor="sequence">
       <name>DocumentTOC</name>
       <description>A Table Of Content for the document.</description>
       <version>1.0.0</version>
@@ -861,7 +861,7 @@
       </fields>
     </class>
 
-    <class>
+    <class xsd.compositor="sequence">
       <name>DocumentTOCItem</name>
       <description>A menu item.</description>
       <version>1.0.0</version>
