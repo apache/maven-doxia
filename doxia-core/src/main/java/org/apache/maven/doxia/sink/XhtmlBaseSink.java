@@ -940,7 +940,7 @@ public class XhtmlBaseSink
 
         if ( width != null )
         {
-            atts.addAttribute( Attribute.WIDTH.toString(), width);
+            atts.addAttribute( Attribute.WIDTH.toString(), width );
         }
 
         atts.removeAttribute( Attribute.ALIGN.toString() );
@@ -1194,7 +1194,7 @@ public class XhtmlBaseSink
 
     /**
      * @param headerRow true if it is an header row
-     * @param width the cell size
+     * @param attributes the cell attributes
      * @see javax.swing.text.html.HTML.Tag#TH
      * @see javax.swing.text.html.HTML.Tag#TD
      */
@@ -1578,38 +1578,38 @@ public class XhtmlBaseSink
         }
         else
         {
-            if ( attributes.containsAttribute(SinkEventAttributes.DECORATION, "underline") )
+            if ( attributes.containsAttribute( SinkEventAttributes.DECORATION, "underline" ) )
             {
                 writeStartTag( Tag.U );
             }
-            if ( attributes.containsAttribute(SinkEventAttributes.DECORATION, "line-through") )
+            if ( attributes.containsAttribute( SinkEventAttributes.DECORATION, "line-through" ) )
             {
                 writeStartTag( Tag.S );
             }
-            if ( attributes.containsAttribute(SinkEventAttributes.VALIGN, "sub") )
+            if ( attributes.containsAttribute( SinkEventAttributes.VALIGN, "sub" ) )
             {
                 writeStartTag( Tag.SUB );
             }
-            if ( attributes.containsAttribute(SinkEventAttributes.VALIGN, "sup") )
+            if ( attributes.containsAttribute( SinkEventAttributes.VALIGN, "sup" ) )
             {
                 writeStartTag( Tag.SUP );
             }
 
             text( text );
 
-            if ( attributes.containsAttribute(SinkEventAttributes.VALIGN, "sup") )
+            if ( attributes.containsAttribute( SinkEventAttributes.VALIGN, "sup" ) )
             {
                 writeEndTag( Tag.SUP );
             }
-            if ( attributes.containsAttribute(SinkEventAttributes.VALIGN, "sub") )
+            if ( attributes.containsAttribute( SinkEventAttributes.VALIGN, "sub" ) )
             {
                 writeEndTag( Tag.SUB );
             }
-            if ( attributes.containsAttribute(SinkEventAttributes.DECORATION, "line-through") )
+            if ( attributes.containsAttribute( SinkEventAttributes.DECORATION, "line-through" ) )
             {
                 writeEndTag( Tag.S );
             }
-            if ( attributes.containsAttribute(SinkEventAttributes.DECORATION, "underline") )
+            if ( attributes.containsAttribute( SinkEventAttributes.DECORATION, "underline" ) )
             {
                 writeEndTag( Tag.U );
             }

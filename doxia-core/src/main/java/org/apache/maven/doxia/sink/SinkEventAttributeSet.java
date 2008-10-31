@@ -381,7 +381,8 @@ public class SinkEventAttributeSet
     }
 
     /** {@inheritDoc} */
-    public String toString() {
+    public String toString()
+    {
         StringBuffer s = new StringBuffer();
         Enumeration names = getAttributeNames();
 

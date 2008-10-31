@@ -79,7 +79,7 @@ public abstract class AbstractSink
 
         for ( int i = 0; i < length; i++ )
         {
-            if ( text.charAt(i) == '\r' )
+            if ( text.charAt( i ) == '\r' )
             {
                 if ( ( i + 1 ) < length && text.charAt( i + 1 ) == '\n' )
                 {

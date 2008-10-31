@@ -168,7 +168,8 @@ public class DoxiaUtils
             {
                 buffer.append( "_" );
             }
-            else if ( isAciiLetter( c ) || isAciiDigit( c ) || ( c == '-' ) || ( c == '_' ) || ( c == ':' ) || ( c == '.' ) )
+            else if ( isAciiLetter( c ) || isAciiDigit( c ) || ( c == '-' ) || ( c == '_' ) || ( c == ':' )
+                            || ( c == '.' ) )
             {
                 buffer.append( c );
             }
@@ -254,10 +255,11 @@ public class DoxiaUtils
 
     private static boolean isAciiDigit( char c )
     {
-        return ( ( c >= '0' && c <= '9') );
+        return ( ( c >= '0' && c <= '9' ) );
     }
 
-    private DoxiaUtils() {
+    private DoxiaUtils()
+    {
         // utility class
     }
 

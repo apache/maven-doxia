@@ -159,7 +159,7 @@ public class SinkUtils
     {
         String[] temp = new String[a.length + b.length];
         System.arraycopy( a, 0, temp, 0, a.length );
-        System.arraycopy( b, 0, temp, a.length, b.length);
+        System.arraycopy( b, 0, temp, a.length, b.length );
 
         Arrays.sort( temp ); // necessary for binary searches in filterAttributes()
 

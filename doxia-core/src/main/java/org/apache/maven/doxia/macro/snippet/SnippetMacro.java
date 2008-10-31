@@ -127,7 +127,8 @@ public class SnippetMacro
 
             sink.verbatim_();
         }
-        else {
+        else
+        {
             sink.rawText( snippet.toString() );
         }
     }

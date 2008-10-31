@@ -6,7 +6,7 @@ package org.apache.maven.doxia.markup;
  * distributed with this work for additional information
  * regarding copyright ownership.  The ASF licenses this file
  * to you under the Apache License, Version 2.0 (the
- * "License" ); you may not use this file except in compliance
+ * "License"); you may not use this file except in compliance
  * with the License.  You may obtain a copy of the License at
  *
  *   http://www.apache.org/licenses/LICENSE-2.0
@@ -30,7 +30,7 @@ import javax.swing.text.html.HTML.Tag;
  * </p>
  *
  * @author ltheussl
- * @version $Id:$
+ * @version $Id$
  * @since 1.0
  */
 public interface HtmlMarkup

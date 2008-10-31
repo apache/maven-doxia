@@ -647,11 +647,11 @@ public class XhtmlBaseParser
             {
                 if ( "underline".equals( decoration ) || "line-through".equals( decoration ) )
                 {
-                    atts.addAttribute( SinkEventAttributes.DECORATION, decoration);
+                    atts.addAttribute( SinkEventAttributes.DECORATION, decoration );
                 }
                 else if ( "sub".equals( decoration ) || "sup".equals( decoration ) )
                 {
-                    atts.addAttribute( SinkEventAttributes.VALIGN, decoration);
+                    atts.addAttribute( SinkEventAttributes.VALIGN, decoration );
                 }
             }
 
@@ -732,23 +732,23 @@ public class XhtmlBaseParser
     {
         while ( this.sectionLevel >= newLevel )
         {
-            if ( sectionLevel == Sink.SECTION_LEVEL_5)
+            if ( sectionLevel == Sink.SECTION_LEVEL_5 )
             {
                 sink.section5_();
             }
-            else if ( sectionLevel == Sink.SECTION_LEVEL_4)
+            else if ( sectionLevel == Sink.SECTION_LEVEL_4 )
             {
                 sink.section4_();
             }
-            else if ( sectionLevel == Sink.SECTION_LEVEL_3)
+            else if ( sectionLevel == Sink.SECTION_LEVEL_3 )
             {
                 sink.section3_();
             }
-            else if ( sectionLevel == Sink.SECTION_LEVEL_2)
+            else if ( sectionLevel == Sink.SECTION_LEVEL_2 )
             {
                 sink.section2_();
             }
-            else if ( sectionLevel == Sink.SECTION_LEVEL_1)
+            else if ( sectionLevel == Sink.SECTION_LEVEL_1 )
             {
                 sink.section1_();
             }

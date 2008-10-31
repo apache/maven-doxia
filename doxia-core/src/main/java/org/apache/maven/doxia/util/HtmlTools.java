@@ -332,7 +332,8 @@ public class HtmlTools
             {
                 buffer.append( "_" );
             }
-            else if ( ( Character.isLetterOrDigit( c ) ) || ( c == '-' ) || ( c == '_' ) || ( c == ':' ) || ( c == '.' ) )
+            else if ( ( Character.isLetterOrDigit( c ) ) || ( c == '-' ) || ( c == '_' ) || ( c == ':' )
+                            || ( c == '.' ) )
             {
                 buffer.append( c );
             }
@@ -378,7 +379,8 @@ public class HtmlTools
         return true;
     }
 
-    private HtmlTools() {
+    private HtmlTools()
+    {
         // utility class
     }
 }
