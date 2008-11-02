@@ -28,7 +28,7 @@ import java.io.Writer;
  *
  * @author <a href="kenney@apache.org">Kenney Westerhof</a>
  * @version $Id$
- * @since 1.0
+ * @since 1.0-alpha-9
  */
 public interface SinkFactory
 {
@@ -54,8 +54,9 @@ public interface SinkFactory
      * @param encoding the output encoding (not used anymore).
      * @return a <code>Sink</code> instance with a file as output and using UTF-8 as encoding.
      * @throws IOException if any
-     * @deprecated since 1.0, the encoding parameter has no effect, always use the UTF-8 encoding.
+     * @deprecated since 1.0-beta-1, the encoding parameter has no effect, always use the UTF-8 encoding.
      * @see #createSink(File, String)
+     * @since 1.0-beta-1
      */
     Sink createSink( File outputDir, String outputName, String encoding )
         throws IOException;
@@ -66,6 +67,7 @@ public interface SinkFactory
      * @param writer not null writer to write the result. <b>Should</b> be an UTF-8 Writer.
      * You could use wrapper methods from {@link org.codehaus.plexus.util.WriterFactory}.
      * @return a <code>Sink</code> instance.
+     * @since 1.0-beta-1
      */
     Sink createSink( Writer writer );
 }
