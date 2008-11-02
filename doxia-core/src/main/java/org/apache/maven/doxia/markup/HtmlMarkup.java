@@ -29,6 +29,8 @@ import javax.swing.text.html.HTML.Tag;
  *   {@link javax.swing.text.html.HTML.Tag} plus several others.
  * </p>
  *
+ * @see <a href="http://www.w3.org/TR/html401/index/elements.html">http://www.w3.org/TR/html401/index/elements.html</a>
+ *
  * @author ltheussl
  * @version $Id$
  * @since 1.0

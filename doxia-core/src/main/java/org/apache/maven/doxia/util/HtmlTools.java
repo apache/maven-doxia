@@ -78,6 +78,7 @@ public class HtmlTools
      * @param tagName the <code>String</code> name requested.
      * @return a tag constant corresponding to the <code>tagName</code>,
      *    or <code>null</code> if not found.
+     * @see <a href="http://www.w3.org/TR/html401/index/elements.html">http://www.w3.org/TR/html401/index/elements.html</a>
      */
     public static Tag getHtmlTag( String tagName )
     {
