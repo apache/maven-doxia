@@ -37,7 +37,6 @@ import org.apache.maven.doxia.book.model.BookModel;
 import org.apache.maven.doxia.book.model.Chapter;
 import org.apache.maven.doxia.book.model.Section;
 import org.apache.maven.doxia.sink.PipelineSink;
-import org.apache.maven.doxia.module.itext.ITextSink;
 import org.apache.maven.doxia.module.itext.ITextSinkFactory;
 import org.apache.maven.doxia.parser.ParseException;
 import org.apache.maven.doxia.parser.manager.ParserNotFoundException;
