@@ -21,12 +21,15 @@ package org.apache.maven.doxia.parser;
 
 import java.io.IOException;
 import java.io.Reader;
+import java.util.LinkedHashMap;
+import java.util.Map;
+import java.util.regex.Matcher;
+import java.util.regex.Pattern;
 
 import org.apache.maven.doxia.macro.MacroExecutionException;
 import org.apache.maven.doxia.markup.XmlMarkup;
 import org.apache.maven.doxia.sink.Sink;
 import org.apache.maven.doxia.sink.SinkEventAttributeSet;
-
 import org.codehaus.plexus.util.StringUtils;
 import org.codehaus.plexus.util.xml.pull.MXParser;
 import org.codehaus.plexus.util.xml.pull.XmlPullParser;
@@ -43,11 +46,21 @@ public abstract class AbstractXmlParser
     extends AbstractParser
     implements XmlMarkup
 {
+    /** Entity pattern for HTML entity, i.e. &#38;nbsp; */
+    private static final Pattern PATTERN_ENTITY_1 =
+        Pattern.compile( "<!ENTITY(\\s)+([^>|^\\s]+)(\\s)+\"(\\s)*(&[a-zA-Z]{2,6};)(\\s)*\"(\\s)*>" );
+
+    /** Entity pattern for Unicode entity, i.e. &#38;#38; */
+    private static final Pattern PATTERN_ENTITY_2 =
+        Pattern.compile( "<!ENTITY(\\s)+([^>|^\\s]+)(\\s)+\"(\\s)*(&#x?[0-9a-fA-F]{1,4};)(\\s)*\"(\\s)*>" );
+
     private boolean ignorable;
 
     private boolean collapsible;
 
     private boolean trimmable;
+
+    private Map entities;
 
     /** {@inheritDoc} */
     public void parse( Reader source, Sink sink )
@@ -65,8 +78,8 @@ public abstract class AbstractXmlParser
         }
         catch ( XmlPullParserException ex )
         {
-            throw new ParseException( "Error parsing the model: " + ex.getMessage(), ex, ex.getLineNumber(), ex
-                .getColumnNumber() );
+            throw new ParseException( "Error parsing the model: " + ex.getMessage(), ex, ex.getLineNumber(),
+                                      ex.getColumnNumber() );
         }
         catch ( MacroExecutionException ex )
         {
@@ -180,7 +193,44 @@ public abstract class AbstractXmlParser
             }
             else if ( eventType == XmlPullParser.DOCDECL )
             {
-                // nop
+                String text = parser.getText();
+                int entitiesCount = StringUtils.countMatches( text, "<!ENTITY" );
+                // entities defined in a local doctype
+                if ( entitiesCount > 0 )
+                {
+                    int start = text.indexOf( "<" );
+                    int end = text.lastIndexOf( ">" );
+                    if ( start != -1 && end != -1 )
+                    {
+                        text = text.substring( start, end + 1 );
+                        for ( int i = 0; i < entitiesCount; i++ )
+                        {
+                            String tmp = text.substring( text.indexOf( "<" ), text.indexOf( ">" ) + 1 );
+                            Matcher matcher = PATTERN_ENTITY_1.matcher( tmp );
+                            if ( matcher.find() && matcher.groupCount() == 7 )
+                            {
+                                String entityName = matcher.group( 2 );
+                                String entityValue = matcher.group( 5 );
+
+                                parser.defineEntityReplacementText( entityName, entityValue );
+                                getLocalEntities().put( entityName, entityValue );
+                            }
+                            else
+                            {
+                                matcher = PATTERN_ENTITY_2.matcher( text );
+                                if ( matcher.find() && matcher.groupCount() == 7 )
+                                {
+                                    String entityName = matcher.group( 2 );
+                                    String entityValue = matcher.group( 5 );
+
+                                    parser.defineEntityReplacementText( entityName, entityValue );
+                                    getLocalEntities().put( entityName, entityValue );
+                                }
+                            }
+                            text = StringUtils.replace( text, tmp, "" ).trim();
+                        }
+                    }
+                }
             }
 
             try
@@ -354,5 +404,26 @@ public abstract class AbstractXmlParser
         }
 
         return text;
+    }
+
+    /**
+     * Return the defined entities in a local doctype, i.e.:
+     * <pre>
+     * &lt;!DOCTYPE foo [
+     *   &lt;!ENTITY bar "&#38;#x160;"&gt;
+     *   &lt;!ENTITY bar1 "&#38;#x161;"&gt;
+     * ]&gt;
+     * </pre>
+     *
+     * @return a map of the defined entities in a local doctype.
+     */
+    protected Map getLocalEntities()
+    {
+        if ( entities == null )
+        {
+            entities = new LinkedHashMap();
+        }
+
+        return entities;
     }
 }

@@ -698,7 +698,14 @@ public class XhtmlBaseParser
         }
         else
         {
-            sink.text( text );
+            if ( getLocalEntities().containsKey( textChars ) )
+            {
+                sink.rawText( text );
+            }
+            else
+            {
+                sink.text( text );
+            }
         }
     }
 
