@@ -23,6 +23,8 @@ import java.io.File;
 import java.io.IOException;
 import java.util.ArrayList;
 import java.util.List;
+import java.util.regex.Matcher;
+import java.util.regex.Pattern;
 
 import org.apache.maven.doxia.xsd.AbstractXmlValidatorTest;
 import org.codehaus.plexus.util.FileUtils;
@@ -82,16 +84,24 @@ public class XdocValidatorTest
     /** {@inheritDoc} */
     protected String addNamespaces( String content )
     {
-        if ( content.indexOf( XDOC_XSD.getName() ) != -1 )
+        Pattern pattern = Pattern.compile( ".*<([A-Za-z][A-Za-z0-9:_.-]*)([^>]*)>.*" );
+        Matcher matcher = pattern.matcher( content );
+        if ( matcher.find() )
         {
-            return content;
+            String root = matcher.group( 1 );
+            String value = matcher.group( 2 );
+
+            if ( value.indexOf( XDOC_XSD.getName() ) == -1 )
+            {
+                String faqs =
+                    "<" + root + " xmlns=\"http://maven.apache.org/XDOC/2.0\""
+                        + "  xmlns:xsi=\"http://www.w3.org/2001/XMLSchema-instance\""
+                        + "  xsi:schemaLocation=\"http://maven.apache.org/XDOC/2.0 " + XDOC_XSD.toURI() + "\" ";
+
+                return StringUtils.replace( content, "<" + root, faqs );
+            }
         }
 
-        String document =
-            "<document xmlns=\"http://maven.apache.org/XDOC/2.0\" "
-                + "  xmlns:xsi=\"http://www.w3.org/2001/XMLSchema-instance\" "
-                + "  xsi:schemaLocation=\"http://maven.apache.org/XDOC/2.0 " + XDOC_XSD.toURI() + "\">";
-
-        return StringUtils.replace( content, "<document>", document );
+        return content;
     }
 }
