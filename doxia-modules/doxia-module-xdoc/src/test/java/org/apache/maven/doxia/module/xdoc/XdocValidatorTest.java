@@ -23,7 +23,6 @@ import java.io.File;
 import java.io.IOException;
 import java.util.ArrayList;
 import java.util.List;
-import java.util.regex.Pattern;
 
 import org.apache.maven.doxia.xsd.AbstractXmlValidatorTest;
 import org.codehaus.plexus.util.FileUtils;
@@ -83,11 +82,7 @@ public class XdocValidatorTest
     /** {@inheritDoc} */
     protected String addNamespaces( String content )
     {
-        boolean result =
-            Pattern.matches( ".*(<document)(\\s)*(xmlns=\"http://maven.apache.org/XDOC/2.0\")"
-                + "(\\s)*(xmlns:xsi=\"http://www.w3.org/2001/XMLSchema-instance\").*", content );
-
-        if ( result )
+        if ( content.indexOf( XDOC_XSD.getName() ) != -1 )
         {
             return content;
         }

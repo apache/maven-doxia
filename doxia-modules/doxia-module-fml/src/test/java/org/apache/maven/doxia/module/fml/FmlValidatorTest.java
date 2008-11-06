@@ -23,7 +23,6 @@ import java.io.File;
 import java.io.IOException;
 import java.util.ArrayList;
 import java.util.List;
-import java.util.regex.Pattern;
 
 import org.apache.maven.doxia.xsd.AbstractXmlValidatorTest;
 import org.codehaus.plexus.util.FileUtils;
@@ -222,11 +221,7 @@ public class FmlValidatorTest
     /** {@inheritDoc} */
     protected String addNamespaces( String content )
     {
-        boolean result =
-            Pattern.matches( ".*(<faqs)(\\s)*(xmlns=\"http://maven.apache.org/FML/1.0\")"
-                + "(\\s)*(xmlns:xsi=\"http://www.w3.org/2001/XMLSchema-instance\").*", content );
-
-        if ( result )
+        if ( content.indexOf( FML_XSD.getName() ) != -1 )
         {
             return content;
         }
