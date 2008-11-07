@@ -19,6 +19,7 @@ package org.apache.maven.doxia.sink;
  * under the License.
  */
 
+import java.io.UnsupportedEncodingException;
 
 /**
  * Static methods to generate standard Doxia sink events.
@@ -595,7 +596,15 @@ public class SinkTestDocument
         sink.paragraph_();
 
         sink.paragraph();
-        String copyright = String.valueOf( '\u00a9' );
+        String copyright;
+        try
+        {
+            copyright = new String( String.valueOf( '\u00a9' ).getBytes(), "UTF-8" );
+        }
+        catch ( UnsupportedEncodingException e )
+        {
+            copyright = "";
+        }
         sink.text( "Copyright symbol: " + copyright + ", "
             + copyright + ", " + copyright + "." );
         sink.paragraph_();
