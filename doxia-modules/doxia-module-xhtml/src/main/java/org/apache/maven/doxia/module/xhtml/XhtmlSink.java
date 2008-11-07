@@ -61,6 +61,8 @@ public class XhtmlSink
     // TODO: this doesn't belong here
     private RenderingContext renderingContext;
 
+    /** An indication on if we're inside a head title. */
+    private boolean headTitleFlag;
 
     // ----------------------------------------------------------------------
     // Constructors
@@ -115,7 +117,19 @@ public class XhtmlSink
     /** {@inheritDoc} */
     public void head_()
     {
+        if ( !isHeadTitleFlag() )
+        {
+            // The content of element type "head" must match
+            // "((script|style|meta|link|object|isindex)*,
+            //  ((title,(script|style|meta|link|object|isindex)*,
+            //  (base,(script|style|meta|link|object|isindex)*)?)|(base,(script|style|meta|link|object|isindex)*,
+            //  (title,(script|style|meta|link|object|isindex)*))))"
+            writeStartTag( Tag.TITLE );
+            writeEndTag( Tag.TITLE );
+        }
+
         setHeadFlag( false );
+        setHeadTitleFlag( false );
 
         // always UTF-8
         write( "<meta http-equiv=\"Content-Type\" content=\"text/html; charset=UTF-8\"/>" );
@@ -129,6 +143,8 @@ public class XhtmlSink
      */
     public void title()
     {
+        setHeadTitleFlag( true );
+
         writeStartTag( Tag.TITLE );
     }
 
@@ -143,6 +159,7 @@ public class XhtmlSink
         writeEndTag( Tag.TITLE );
 
         resetBuffer();
+
     }
 
     /**
@@ -237,5 +254,21 @@ public class XhtmlSink
     public RenderingContext getRenderingContext()
     {
         return renderingContext;
+    }
+
+    /**
+     * @param headTitleFlag an header title flag.
+     */
+    protected void setHeadTitleFlag( boolean headTitleFlag )
+    {
+        this.headTitleFlag = headTitleFlag;
+    }
+
+    /**
+     * @return the current headTitleFlag.
+     */
+    protected boolean isHeadTitleFlag()
+    {
+        return this.headTitleFlag ;
     }
 }

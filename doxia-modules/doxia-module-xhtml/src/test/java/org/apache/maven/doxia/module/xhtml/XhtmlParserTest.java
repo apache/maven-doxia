@@ -126,8 +126,9 @@ public class XhtmlParserTest
         String text = sb.toString();
         StringWriter w = new StringWriter();
         Sink sink = new XhtmlSink( w );
-        // Should fail when fixing DOXIA-263 I guess.
-        ( (XhtmlParser) createParser() ).parse( text.toString(), sink );
+        XhtmlParser parser = (XhtmlParser) createParser();
+        parser.setValidate( false );
+        parser.parse( text.toString(), sink );
         String result = w.toString();
 
         assertTrue( result.indexOf( "&#x159;" ) != -1 );
