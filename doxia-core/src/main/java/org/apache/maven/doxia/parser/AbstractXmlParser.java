@@ -534,7 +534,7 @@ public abstract class AbstractXmlParser
                 {
                     getLog().debug( "Validating the content..." );
                 }
-                getXmlReader().parse( new InputSource( new ByteArrayInputStream( content.getBytes() ) ) );
+                getXmlReader().parse( new InputSource( new StringReader( content ) ) );
             }
         }
         catch ( IOException e )

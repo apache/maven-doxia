@@ -596,15 +596,7 @@ public class SinkTestDocument
         sink.paragraph_();
 
         sink.paragraph();
-        String copyright;
-        try
-        {
-            copyright = new String( String.valueOf( '\u00a9' ).getBytes(), "UTF-8" );
-        }
-        catch ( UnsupportedEncodingException e )
-        {
-            copyright = "";
-        }
+        String copyright = String.valueOf( '\u00a9' );
         sink.text( "Copyright symbol: " + copyright + ", "
             + copyright + ", " + copyright + "." );
         sink.paragraph_();
