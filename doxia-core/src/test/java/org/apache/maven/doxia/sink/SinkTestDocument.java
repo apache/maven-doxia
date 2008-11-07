@@ -19,8 +19,6 @@ package org.apache.maven.doxia.sink;
  * under the License.
  */
 
-import java.io.UnsupportedEncodingException;
-
 /**
  * Static methods to generate standard Doxia sink events.
  */
