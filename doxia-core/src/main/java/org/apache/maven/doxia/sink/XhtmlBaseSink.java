@@ -60,6 +60,9 @@ public class XhtmlBaseSink
     /** An indication on if we're inside an image caption flag. */
     private boolean figureCaptionFlag;
 
+    /** An indication on if we're inside a paragraph flag. */
+    private boolean paragraphFlag;
+
     /** An indication on if we're in verbatim mode. */
     private boolean verbatimFlag;
 
@@ -484,6 +487,14 @@ public class XhtmlBaseSink
      */
     public void list()
     {
+        if ( paragraphFlag )
+        {
+            // The content of element type "p" must match
+            // "(a|br|span|bdo|object|applet|img|map|iframe|tt|i|b|u|s|strike|big|small|font|basefont|em|strong|
+            // dfn|code|q|samp|kbd|var|cite|abbr|acronym|sub|sup|input|select|textarea|label|button|ins|del|script)".
+            paragraph_();
+        }
+
         writeStartTag( Tag.UL );
     }
 
@@ -557,6 +568,14 @@ public class XhtmlBaseSink
      */
     public void numberedList( int numbering, SinkEventAttributes attributes )
     {
+        if ( paragraphFlag )
+        {
+            // The content of element type "p" must match
+            // "(a|br|span|bdo|object|applet|img|map|iframe|tt|i|b|u|s|strike|big|small|font|basefont|em|strong|
+            // dfn|code|q|samp|kbd|var|cite|abbr|acronym|sub|sup|input|select|textarea|label|button|ins|del|script)".
+            paragraph_();
+        }
+
         String style;
         switch ( numbering )
         {
@@ -635,6 +654,14 @@ public class XhtmlBaseSink
      */
     public void definitionList()
     {
+        if ( paragraphFlag )
+        {
+            // The content of element type "p" must match
+            // "(a|br|span|bdo|object|applet|img|map|iframe|tt|i|b|u|s|strike|big|small|font|basefont|em|strong|
+            // dfn|code|q|samp|kbd|var|cite|abbr|acronym|sub|sup|input|select|textarea|label|button|ins|del|script)".
+            paragraph_();
+        }
+
         writeStartTag( Tag.DL );
     }
 
@@ -644,6 +671,14 @@ public class XhtmlBaseSink
      */
     public void definitionList( SinkEventAttributes attributes )
     {
+        if ( paragraphFlag )
+        {
+            // The content of element type "p" must match
+            // "(a|br|span|bdo|object|applet|img|map|iframe|tt|i|b|u|s|strike|big|small|font|basefont|em|strong|
+            // dfn|code|q|samp|kbd|var|cite|abbr|acronym|sub|sup|input|select|textarea|label|button|ins|del|script)".
+            paragraph_();
+        }
+
         MutableAttributeSet atts = SinkUtils.filterAttributes(
                 attributes, SinkUtils.SINK_BASE_ATTRIBUTES  );
 
@@ -872,6 +907,8 @@ public class XhtmlBaseSink
      */
     public void paragraph()
     {
+        paragraphFlag = true;
+
         writeStartTag( Tag.P );
     }
 
@@ -881,6 +918,8 @@ public class XhtmlBaseSink
      */
     public void paragraph( SinkEventAttributes attributes )
     {
+        paragraphFlag = true;
+
         MutableAttributeSet atts = SinkUtils.filterAttributes(
                 attributes, SinkUtils.SINK_SECTION_ATTRIBUTES  );
 
@@ -893,7 +932,11 @@ public class XhtmlBaseSink
      */
     public void paragraph_()
     {
-        writeEndTag( Tag.P );
+        if ( paragraphFlag )
+        {
+            writeEndTag( Tag.P );
+            paragraphFlag = false;
+        }
     }
 
     /**
@@ -905,6 +948,14 @@ public class XhtmlBaseSink
      */
     public void verbatim( boolean boxed )
     {
+        if ( paragraphFlag )
+        {
+            // The content of element type "p" must match
+            // "(a|br|span|bdo|object|applet|img|map|iframe|tt|i|b|u|s|strike|big|small|font|basefont|em|strong|
+            // dfn|code|q|samp|kbd|var|cite|abbr|acronym|sub|sup|input|select|textarea|label|button|ins|del|script)".
+            paragraph_();
+        }
+
         SinkEventAttributeSet att = new SinkEventAttributeSet();
 
         if ( boxed )
@@ -924,6 +975,14 @@ public class XhtmlBaseSink
      */
     public void verbatim( SinkEventAttributes attributes )
     {
+        if ( paragraphFlag )
+        {
+            // The content of element type "p" must match
+            // "(a|br|span|bdo|object|applet|img|map|iframe|tt|i|b|u|s|strike|big|small|font|basefont|em|strong|
+            // dfn|code|q|samp|kbd|var|cite|abbr|acronym|sub|sup|input|select|textarea|label|button|ins|del|script)".
+            paragraph_();
+        }
+
         verbatimFlag = true;
 
         MutableAttributeSet atts = SinkUtils.filterAttributes(
@@ -1003,6 +1062,14 @@ public class XhtmlBaseSink
     /** {@inheritDoc} */
     public void table()
     {
+        if ( paragraphFlag )
+        {
+            // The content of element type "p" must match
+            // "(a|br|span|bdo|object|applet|img|map|iframe|tt|i|b|u|s|strike|big|small|font|basefont|em|strong|
+            // dfn|code|q|samp|kbd|var|cite|abbr|acronym|sub|sup|input|select|textarea|label|button|ins|del|script)".
+            paragraph_();
+        }
+
         // start table with tableRows
         table( null );
     }
@@ -1010,6 +1077,14 @@ public class XhtmlBaseSink
     /** {@inheritDoc} */
     public void table( SinkEventAttributes attributes )
     {
+        if ( paragraphFlag )
+        {
+            // The content of element type "p" must match
+            // "(a|br|span|bdo|object|applet|img|map|iframe|tt|i|b|u|s|strike|big|small|font|basefont|em|strong|
+            // dfn|code|q|samp|kbd|var|cite|abbr|acronym|sub|sup|input|select|textarea|label|button|ins|del|script)".
+            paragraph_();
+        }
+
         tableWriter = new StringWriter();
 
         // start table with tableRows
@@ -1715,7 +1790,6 @@ public class XhtmlBaseSink
     // ----------------------------------------------------------------------
     //
     // ----------------------------------------------------------------------
-
 
     /**
      * Write HTML escaped text to output.
