@@ -50,7 +50,7 @@ import org.apache.maven.doxia.logging.LogEnabled;
  * <b>Note</b>: All implemented sink <b>should</b> use UTF-8 as encoding.
  * </p>
  *
- * @since 1.0
+ * @since 1.0-alpha-6
  * @author <a href="mailto:jason@maven.org">Jason van Zyl</a>
  * @author <a href="mailto:vincent.siveton@gmail.com">Vincent Siveton</a>
  * @author ltheussl
@@ -189,6 +189,7 @@ public interface Sink
      * </blockquote>
      *
      * @param attributes A set of {@link SinkEventAttributes}, may be <code>null</code>.
+     * @since 1.0-beta-1
      */
     void head( SinkEventAttributes attributes );
 
@@ -212,6 +213,7 @@ public interface Sink
      * </p>
      *
      * @param attributes A set of {@link SinkEventAttributes}, may be <code>null</code>.
+     * @since 1.0-beta-1
      * @see #head(SinkEventAttributes)
      */
     void title( SinkEventAttributes attributes );
@@ -236,6 +238,7 @@ public interface Sink
      * </p>
      *
      * @param attributes A set of {@link SinkEventAttributes}, may be <code>null</code>.
+     * @since 1.0-beta-1
      * @see #head(SinkEventAttributes)
      */
     void author( SinkEventAttributes attributes );
@@ -260,6 +263,7 @@ public interface Sink
      * </p>
      *
      * @param attributes A set of {@link SinkEventAttributes}, may be <code>null</code>.
+     * @since 1.0-beta-1
      * @see #head(SinkEventAttributes)
      */
     void date( SinkEventAttributes attributes );
@@ -284,6 +288,7 @@ public interface Sink
      * </p>
      *
      * @param attributes A set of {@link SinkEventAttributes}, may be <code>null</code>.
+     * @since 1.0-beta-1
      * @see #head(SinkEventAttributes)
      */
     void body( SinkEventAttributes attributes );
@@ -444,6 +449,7 @@ public interface Sink
      *
      * @param level the section level.
      * @param attributes A set of {@link SinkEventAttributes}, may be <code>null</code>.
+     * @since 1.0-beta-1
      */
     void section( int level, SinkEventAttributes attributes );
 
@@ -477,6 +483,7 @@ public interface Sink
      *
      * @param level the section title level.
      * @param attributes A set of {@link SinkEventAttributes}, may be <code>null</code>.
+     * @since 1.0-beta-1
      */
     void sectionTitle( int level, SinkEventAttributes attributes );
 
@@ -502,6 +509,7 @@ public interface Sink
      * </p>
      *
      * @param attributes A set of {@link SinkEventAttributes}, may be <code>null</code>.
+     * @since 1.0-beta-1
      */
     void list( SinkEventAttributes attributes );
 
@@ -525,6 +533,7 @@ public interface Sink
      * </p>
      *
      * @param attributes A set of {@link SinkEventAttributes}, may be <code>null</code>.
+     * @since 1.0-beta-1
      */
     void listItem( SinkEventAttributes attributes );
 
@@ -550,6 +559,7 @@ public interface Sink
      *
      * @param numbering the numbering style.
      * @param attributes A set of {@link SinkEventAttributes}, may be <code>null</code>.
+     * @since 1.0-beta-1
      * @see #NUMBERING_DECIMAL
      * @see #NUMBERING_LOWER_ALPHA
      * @see #NUMBERING_LOWER_ROMAN
@@ -578,6 +588,7 @@ public interface Sink
      * </p>
      *
      * @param attributes A set of {@link SinkEventAttributes}, may be <code>null</code>.
+     * @since 1.0-beta-1
      */
     void numberedListItem( SinkEventAttributes attributes );
 
@@ -601,6 +612,7 @@ public interface Sink
      * </p>
      *
      * @param attributes A set of {@link SinkEventAttributes}, may be <code>null</code>.
+     * @since 1.0-beta-1
      */
     void definitionList( SinkEventAttributes attributes );
 
@@ -628,6 +640,7 @@ public interface Sink
      * </p>
      *
      * @param attributes A set of {@link SinkEventAttributes}, may be <code>null</code>.
+     * @since 1.0-beta-1
      */
     void definitionListItem( SinkEventAttributes attributes );
 
@@ -651,6 +664,7 @@ public interface Sink
      * </p>
      *
      * @param attributes A set of {@link SinkEventAttributes}, may be <code>null</code>.
+     * @since 1.0-beta-1
      */
     void definition( SinkEventAttributes attributes );
 
@@ -674,6 +688,7 @@ public interface Sink
      * </p>
      *
      * @param attributes A set of {@link SinkEventAttributes}, may be <code>null</code>.
+     * @since 1.0-beta-1
      */
     void definedTerm( SinkEventAttributes attributes );
 
@@ -726,6 +741,7 @@ public interface Sink
      * </p>
      *
      * @param attributes A set of {@link SinkEventAttributes}, may be <code>null</code>.
+     * @since 1.0-beta-1
      */
     void figure( SinkEventAttributes attributes );
 
@@ -749,6 +765,7 @@ public interface Sink
      * </p>
      *
      * @param attributes A set of {@link SinkEventAttributes}, may be <code>null</code>.
+     * @since 1.0-beta-1
      * @see #figure(SinkEventAttributes)
      */
     void figureCaption( SinkEventAttributes attributes );
@@ -789,6 +806,7 @@ public interface Sink
      *
      * @param src the image source, a valid URL.
      * @param attributes A set of {@link SinkEventAttributes}, may be <code>null</code>.
+     * @since 1.0-beta-1
      * @see #figure(SinkEventAttributes)
      */
     void figureGraphics( String src, SinkEventAttributes attributes );
@@ -850,6 +868,7 @@ public interface Sink
      * </blockquote>
      *
      * @param attributes A set of {@link SinkEventAttributes}, may be <code>null</code>.
+     * @since 1.0-beta-1
      */
     void table( SinkEventAttributes attributes );
 
@@ -898,6 +917,7 @@ public interface Sink
      * </blockquote>
      *
      * @param attributes A set of {@link SinkEventAttributes}, may be <code>null</code>.
+     * @since 1.0-beta-1
      */
     void tableRow( SinkEventAttributes attributes );
 
@@ -937,6 +957,7 @@ public interface Sink
      * </blockquote>
      *
      * @param attributes A set of {@link SinkEventAttributes}, may be <code>null</code>.
+     * @since 1.0-beta-1
      */
     void tableCell( SinkEventAttributes attributes );
 
@@ -968,6 +989,7 @@ public interface Sink
      * </p>
      *
      * @param attributes A set of {@link SinkEventAttributes}, may be <code>null</code>.
+     * @since 1.0-beta-1
      */
     void tableHeaderCell( SinkEventAttributes attributes );
 
@@ -998,6 +1020,7 @@ public interface Sink
      * </p>
      *
      * @param attributes A set of {@link SinkEventAttributes}, may be <code>null</code>.
+     * @since 1.0-beta-1
      * @see #table(SinkEventAttributes)
      */
     void tableCaption( SinkEventAttributes attributes );
@@ -1023,6 +1046,7 @@ public interface Sink
      * </p>
      *
      * @param attributes A set of {@link SinkEventAttributes}, may be <code>null</code>.
+     * @since 1.0-beta-1
      */
     void paragraph( SinkEventAttributes attributes );
 
@@ -1051,6 +1075,7 @@ public interface Sink
      * </blockquote>
      *
      * @param attributes A set of {@link SinkEventAttributes}, may be <code>null</code>.
+     * @since 1.0-beta-1
      */
     void verbatim( SinkEventAttributes attributes );
 
@@ -1078,6 +1103,7 @@ public interface Sink
      * </blockquote>
      *
      * @param attributes A set of {@link SinkEventAttributes}, may be <code>null</code>.
+     * @since 1.0-beta-1
      */
     void horizontalRule( SinkEventAttributes attributes );
 
@@ -1115,6 +1141,7 @@ public interface Sink
      *
      * @param name the name of the anchor. This has to be a valid SGML NAME token.
      * @param attributes A set of {@link SinkEventAttributes}, may be <code>null</code>.
+     * @since 1.0-beta-1
      */
     void anchor( String name, SinkEventAttributes attributes );
 
@@ -1156,6 +1183,7 @@ public interface Sink
      *
      * @param name the name of the link.
      * @param attributes A set of {@link SinkEventAttributes}, may be <code>null</code>.
+     * @since 1.0-beta-1
      */
     void link( String name, SinkEventAttributes attributes );
 
@@ -1231,6 +1259,7 @@ public interface Sink
      * </blockquote>
      *
      * @param attributes A set of {@link SinkEventAttributes}, may be <code>null</code>.
+     * @since 1.0-beta-1
      */
     void lineBreak( SinkEventAttributes attributes );
 
@@ -1270,6 +1299,7 @@ public interface Sink
      *
      * @param text The text to write.
      * @param attributes A set of {@link SinkEventAttributes}, may be <code>null</code>.
+     * @since 1.0-beta-1
      */
     void text( String text, SinkEventAttributes attributes );
 
@@ -1297,6 +1327,7 @@ public interface Sink
      * @param requiredParams An optional array of required parameters to the event.
      * May be <code>null</code>.
      * @param attributes A set of {@link SinkEventAttributes}, may be <code>null</code>.
+     * @since 1.0-beta-1
      */
     void unknown( String name, Object[] requiredParams, SinkEventAttributes attributes );
 

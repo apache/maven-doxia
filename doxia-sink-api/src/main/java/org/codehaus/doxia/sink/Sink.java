@@ -22,7 +22,7 @@ package org.codehaus.doxia.sink;
 /**
  * Generic document processing interface.
  *
- * @deprecated use {@link org.apache.maven.doxia.sink.Sink} instead.
+ * @deprecated use {@link org.apache.maven.doxia.sink.Sink} instead (since 1.0-alpha-6).
  * @version $Id$
  */
 public interface Sink
