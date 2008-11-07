@@ -57,6 +57,9 @@ public class XhtmlBaseSink
     /** An indication on if we're inside a head. */
     private boolean headFlag;
 
+    /** An indication on if we're inside an image caption flag. */
+    private boolean figureCaptionFlag;
+
     /** An indication on if we're in verbatim mode. */
     private boolean verbatimFlag;
 
@@ -758,6 +761,11 @@ public class XhtmlBaseSink
     {
         if ( legacyFigure )
         {
+            if ( !figureCaptionFlag )
+            {
+                // Attribute "alt" is required and must be specified for element type "img".
+                write( String.valueOf( SPACE ) + Attribute.ALT + EQUAL + QUOTE + QUOTE );
+            }
             write( String.valueOf( SPACE ) + SLASH + GREATER_THAN );
             legacyFigure = false;
         }
@@ -766,6 +774,8 @@ public class XhtmlBaseSink
             writeEndTag( Tag.DIV );
             inFigure = false;
         }
+
+        figureCaptionFlag = false;
     }
 
     /** {@inheritDoc}
@@ -796,6 +806,10 @@ public class XhtmlBaseSink
         atts.addAttribute( Attribute.SRC, src );
         atts.addAttributes( SinkUtils.filterAttributes(
                 attributes, SinkUtils.SINK_IMG_ATTRIBUTES ) );
+        if ( atts.getAttribute( Attribute.ALT ) == null )
+        {
+            atts.addAttribute( Attribute.ALT, "" );
+        }
 
         writeStartTag( Tag.IMG, atts, true );
 
@@ -812,6 +826,7 @@ public class XhtmlBaseSink
      */
     public void figureCaption()
     {
+        figureCaptionFlag = true;
         write( String.valueOf( SPACE ) + Attribute.ALT + EQUAL + QUOTE );
         legacyFigureCaption = true;
     }
@@ -823,6 +838,7 @@ public class XhtmlBaseSink
         {
             write( String.valueOf( SPACE ) + Attribute.ALT + EQUAL + QUOTE );
             legacyFigureCaption = false;
+            figureCaptionFlag = true;
         }
         else
         {
