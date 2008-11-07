@@ -530,7 +530,10 @@ public abstract class AbstractXmlParser
             // 3 validate content if doctype or xsd
             if ( hasDoctype || hasXsd )
             {
-                getLog().info( "Validating the content..." );
+                if ( getLog().isDebugEnabled() )
+                {
+                    getLog().debug( "Validating the content..." );
+                }
                 getXmlReader().parse( new InputSource( new ByteArrayInputStream( content.getBytes() ) ) );
             }
         }
