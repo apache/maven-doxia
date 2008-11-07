@@ -808,6 +808,13 @@ public class DocBookParser
         }
     }
 
+    /** {@inheritDoc} */
+    public boolean isValidate()
+    {
+        // TODO always false due to "Error validating the model: http://www.oasis-open.org/docbook/sgml/4.4/ent/isoamsa.ent"
+        return false;
+    }
+
     // ----------------------------------------------------------------------
     //
     // ----------------------------------------------------------------------
