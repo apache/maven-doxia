@@ -19,21 +19,33 @@ package org.apache.maven.doxia.parser;
  * under the License.
  */
 
+import java.io.BufferedReader;
+import java.io.ByteArrayInputStream;
 import java.io.IOException;
 import java.io.Reader;
+import java.io.StringReader;
 import java.util.LinkedHashMap;
 import java.util.Map;
 import java.util.regex.Matcher;
 import java.util.regex.Pattern;
 
+import javax.xml.XMLConstants;
+
 import org.apache.maven.doxia.macro.MacroExecutionException;
 import org.apache.maven.doxia.markup.XmlMarkup;
 import org.apache.maven.doxia.sink.Sink;
 import org.apache.maven.doxia.sink.SinkEventAttributeSet;
+import org.codehaus.plexus.util.IOUtil;
 import org.codehaus.plexus.util.StringUtils;
 import org.codehaus.plexus.util.xml.pull.MXParser;
 import org.codehaus.plexus.util.xml.pull.XmlPullParser;
 import org.codehaus.plexus.util.xml.pull.XmlPullParserException;
+import org.xml.sax.InputSource;
+import org.xml.sax.SAXException;
+import org.xml.sax.SAXNotRecognizedException;
+import org.xml.sax.SAXNotSupportedException;
+import org.xml.sax.XMLReader;
+import org.xml.sax.helpers.XMLReaderFactory;
 
 /**
  * An abstract class that defines some convenience methods for <code>XML</code> parsers.
@@ -46,13 +58,19 @@ public abstract class AbstractXmlParser
     extends AbstractParser
     implements XmlMarkup
 {
-    /** Entity pattern for HTML entity, i.e. &#38;nbsp; */
+    /** Entity pattern for HTML entity, i.e. &#38;nbsp; see http://www.w3.org/TR/REC-xml/#NT-EntityDecl */
     private static final Pattern PATTERN_ENTITY_1 =
         Pattern.compile( "<!ENTITY(\\s)+([^>|^\\s]+)(\\s)+\"(\\s)*(&[a-zA-Z]{2,6};)(\\s)*\"(\\s)*>" );
 
-    /** Entity pattern for Unicode entity, i.e. &#38;#38; */
+    /** Entity pattern for Unicode entity, i.e. &#38;#38; see http://www.w3.org/TR/REC-xml/#NT-EntityDecl */
     private static final Pattern PATTERN_ENTITY_2 =
         Pattern.compile( "<!ENTITY(\\s)+([^>|^\\s]+)(\\s)+\"(\\s)*(&#x?[0-9a-fA-F]{1,4};)(\\s)*\"(\\s)*>" );
+
+    /** Doctype pattern as defined in http://www.w3.org/TR/REC-xml/#NT-doctypedecl */
+    private static final Pattern PATTERN_DOCTYPE = Pattern.compile( ".*<!DOCTYPE([^>]*)>.*" );
+
+    /** Tag pattern as defined in http://www.w3.org/TR/REC-xml/#NT-Name */
+    private static final Pattern PATTERN_TAG = Pattern.compile( ".*<([A-Za-z][A-Za-z0-9:_.-]*)([^>]*)>.*" );
 
     private boolean ignorable;
 
@@ -62,10 +80,34 @@ public abstract class AbstractXmlParser
 
     private Map entities;
 
+    private boolean validate = true;
+
+    /** lazy xmlReader to validate xml content*/
+    private XMLReader xmlReader;
+
     /** {@inheritDoc} */
     public void parse( Reader source, Sink sink )
         throws ParseException
     {
+        // 1 first parsing if validation is required
+        if ( isValidate() )
+        {
+            String content;
+            try
+            {
+                content = IOUtil.toString( new BufferedReader( source ) );
+            }
+            catch ( IOException e )
+            {
+                throw new ParseException( "Error reading the model: " + e.getMessage(), e );
+            }
+
+            validate( content );
+
+            source = new StringReader( content );
+        }
+
+        // 2 second parsing to process
         try
         {
             XmlPullParser parser = new MXParser();
@@ -425,5 +467,108 @@ public abstract class AbstractXmlParser
         }
 
         return entities;
+    }
+
+    /**
+     * @return <code>true</code> if XML content will be validate, <code>false</code> otherwise.
+     */
+    public boolean isValidate()
+    {
+        return validate;
+    }
+
+    /**
+     * Specify a flag to validate or not the XML content.
+     *
+     * @param validate the validate to set
+     * @see #parse(Reader, Sink)
+     */
+    public void setValidate( boolean validate )
+    {
+        this.validate = validate;
+    }
+
+    // ----------------------------------------------------------------------
+    // Private methods
+    // ----------------------------------------------------------------------
+
+    /**
+     * Validate an XML content with SAX.
+     *
+     * @param content a not null xml content
+     * @throws ParseException if any.
+     */
+    private void validate( String content )
+        throws ParseException
+    {
+        try
+        {
+            // 1 if there's a doctype
+            boolean hasDoctype = false;
+            Matcher matcher = PATTERN_DOCTYPE.matcher( content );
+            if ( matcher.find() )
+            {
+                hasDoctype = true;
+            }
+
+            // 2 if no doctype, check for an xmlns instance
+            boolean hasXsd = false;
+            if ( !hasDoctype )
+            {
+                matcher = PATTERN_TAG.matcher( content );
+                if ( matcher.find() )
+                {
+                    String value = matcher.group( 2 );
+
+                    if ( value.indexOf( XMLConstants.W3C_XML_SCHEMA_INSTANCE_NS_URI ) != -1 )
+                    {
+                        hasXsd = true;
+                    }
+                }
+            }
+
+            // 3 validate content if doctype or xsd
+            if ( hasDoctype || hasXsd )
+            {
+                getLog().info( "Validating the content..." );
+                getXmlReader().parse( new InputSource( new ByteArrayInputStream( content.getBytes() ) ) );
+            }
+        }
+        catch ( IOException e )
+        {
+            throw new ParseException( "Error validating the model: " + e.getMessage(), e );
+        }
+        catch ( SAXNotRecognizedException e )
+        {
+            throw new ParseException( "Error validating the model: " + e.getMessage(), e );
+        }
+        catch ( SAXNotSupportedException e )
+        {
+            throw new ParseException( "Error validating the model: " + e.getMessage(), e );
+        }
+        catch ( SAXException e )
+        {
+            throw new ParseException( "Error validating the model: " + e.getMessage(), e );
+        }
+    }
+
+    /**
+     * @return an xmlReader instance.
+     * @throws SAXException if any
+     */
+    private XMLReader getXmlReader()
+        throws SAXException
+    {
+        if ( xmlReader == null )
+        {
+            MessagesErrorHandler errorHandler = new MessagesErrorHandler( getLog() );
+
+            xmlReader = XMLReaderFactory.createXMLReader( "org.apache.xerces.parsers.SAXParser" );
+            xmlReader.setFeature( "http://xml.org/sax/features/validation", true );
+            xmlReader.setFeature( "http://apache.org/xml/features/validation/schema", true );
+            xmlReader.setErrorHandler( errorHandler );
+        }
+
+        return xmlReader;
     }
 }
