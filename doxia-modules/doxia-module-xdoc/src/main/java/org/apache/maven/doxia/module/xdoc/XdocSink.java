@@ -405,7 +405,7 @@ public class XdocSink
             att.addAttribute( Attribute.TARGET, target );
         }
 
-            att.addAttribute( Attribute.HREF, HtmlTools.escapeHTML( name ) );
+        att.addAttribute( Attribute.HREF, HtmlTools.escapeHTML( name ) );
 
         writeStartTag( Tag.A, att );
     }

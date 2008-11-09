@@ -19,13 +19,10 @@ package org.apache.maven.doxia.module.confluence;
  * under the License.
  */
 
-import java.io.File;
-import java.io.IOException;
 import java.io.Writer;
 
+import org.apache.maven.doxia.sink.AbstractTextSinkFactory;
 import org.apache.maven.doxia.sink.Sink;
-import org.apache.maven.doxia.sink.SinkFactory;
-import org.codehaus.plexus.util.WriterFactory;
 
 /**
  * Confluence implementation of the Sink factory.
@@ -36,48 +33,12 @@ import org.codehaus.plexus.util.WriterFactory;
  * @plexus.component role="org.apache.maven.doxia.sink.SinkFactory" role-hint="confluence"
  */
 public class ConfluenceSinkFactory
-    implements SinkFactory
+    extends AbstractTextSinkFactory
 {
     /** {@inheritDoc} */
-    public Sink createSink( File outputDir, String outputName )
-        throws IOException
+    public Sink createSink( Writer writer, String encoding )
     {
-        if ( outputDir == null )
-        {
-            throw new IllegalArgumentException( "outputDir could not be null." );
-        }
-
-        if ( !outputDir.exists() )
-        {
-            outputDir.mkdirs();
-        }
-        else
-        {
-            if ( !outputDir.isDirectory() )
-            {
-                throw new IllegalArgumentException( "The dir '" + outputDir + "' is not a directory." );
-            }
-        }
-
-        Writer writer = WriterFactory.newWriter( new File( outputDir, outputName ), WriterFactory.UTF_8 );
-
-        return new ConfluenceSink( writer );
-    }
-
-    /**
-     * @deprecated since 1.0, the encoding parameter has no effect, always use the UTF-8 encoding.
-     *
-     * {@inheritDoc}
-     */
-    public Sink createSink( File outputDir, String outputName, String encoding )
-        throws IOException
-    {
-        return createSink( outputDir, outputName );
-    }
-
-    /** {@inheritDoc} */
-    public Sink createSink( Writer writer )
-    {
+        // encoding can safely be ignored since it isn't written into the generated Confluence source
         return new ConfluenceSink( writer );
     }
 }

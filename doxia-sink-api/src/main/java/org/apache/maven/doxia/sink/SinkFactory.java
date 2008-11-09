@@ -21,7 +21,7 @@ package org.apache.maven.doxia.sink;
 
 import java.io.File;
 import java.io.IOException;
-import java.io.Writer;
+import java.io.OutputStream;
 
 /**
  * A factory that creates a <code>Sink</code> object.
@@ -36,25 +36,24 @@ public interface SinkFactory
     String ROLE = SinkFactory.class.getName();
 
     /**
-     * Create a <code>Sink</code> into a file using an UTF-8 encoding.
+     * Create a <code>Sink</code> into a file.
      *
      * @param outputDir the not-null output dir.
      * @param outputName the not-null output name.
-     * @return a <code>Sink</code> instance with a file as output and using UTF-8 as encoding.
+     * @return a <code>Sink</code> instance with a file as output.
      * @throws IOException if any
      */
     Sink createSink( File outputDir, String outputName )
         throws IOException;
 
     /**
-     * Create a <code>Sink</code> into a file using an UTF-8 encoding.
+     * Create a <code>Sink</code> into a file using a specified encoding.
      *
      * @param outputDir the not-null output dir.
      * @param outputName the not-null output name.
-     * @param encoding the output encoding (not used anymore).
-     * @return a <code>Sink</code> instance with a file as output and using UTF-8 as encoding.
+     * @param encoding the output encoding.
+     * @return a <code>Sink</code> instance with a file as output and using specified encoding.
      * @throws IOException if any
-     * @deprecated since 1.0-beta-1, the encoding parameter has no effect, always use the UTF-8 encoding.
      * @see #createSink(File, String)
      * @since 1.0-beta-1
      */
@@ -62,12 +61,23 @@ public interface SinkFactory
         throws IOException;
 
     /**
-     * Create a <code>Sink</code> into a Writer.
+     * Create a <code>Sink</code> into an OutputStream.
      *
-     * @param writer not null writer to write the result. <b>Should</b> be an UTF-8 Writer.
-     * You could use wrapper methods from {@link org.codehaus.plexus.util.WriterFactory}.
+     * @param out not null OutputStream to write the result.
      * @return a <code>Sink</code> instance.
      * @since 1.0-beta-1
      */
-    Sink createSink( Writer writer );
+    Sink createSink( OutputStream out )
+        throws IOException;
+
+    /**
+     * Create a <code>Sink</code> into an OutputStream using a specified encoding.
+     *
+     * @param out not null OutputStream to write the result.
+     * @param encoding the output encoding.
+     * @return a <code>Sink</code> instance using specified encoding.
+     * @since 1.0-beta-1
+     */
+    Sink createSink( OutputStream out, String encoding )
+        throws IOException;
 }

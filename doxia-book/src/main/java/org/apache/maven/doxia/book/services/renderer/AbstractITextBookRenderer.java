@@ -257,6 +257,7 @@ public abstract class AbstractITextBookRenderer
 
         try
         {
+            // TODO: fix encoding while reading the file (platform encoding used actually)
             doxia.parse( new FileReader( bookFile.getFile() ), bookFile.getParserId(), sink );
         }
         catch ( ParserNotFoundException e )

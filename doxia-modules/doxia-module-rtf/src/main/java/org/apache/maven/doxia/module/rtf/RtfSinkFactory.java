@@ -19,15 +19,11 @@ package org.apache.maven.doxia.module.rtf;
  * under the License.
  */
 
-import java.io.File;
-import java.io.FileOutputStream;
 import java.io.IOException;
 import java.io.OutputStream;
-import java.io.Writer;
 
+import org.apache.maven.doxia.sink.AbstractBinarySinkFactory;
 import org.apache.maven.doxia.sink.Sink;
-import org.apache.maven.doxia.sink.SinkFactory;
-import org.codehaus.plexus.util.WriterFactory;
 
 /**
  * Rtf implementation of the Sink factory.
@@ -38,44 +34,12 @@ import org.codehaus.plexus.util.WriterFactory;
  * @plexus.component role="org.apache.maven.doxia.sink.SinkFactory" role-hint="rtf"
  */
 public class RtfSinkFactory
-    implements SinkFactory
+    extends AbstractBinarySinkFactory
 {
     /** {@inheritDoc} */
-    public Sink createSink( File outputDir, String outputName )
+    public Sink createSink( OutputStream out, String encoding )
         throws IOException
     {
-        return createSink( outputDir, outputName, WriterFactory.UTF_8 );
-    }
-
-    /** {@inheritDoc} */
-    public Sink createSink( File outputDir, String outputName, String encoding )
-        throws IOException
-    {
-        if ( outputDir == null )
-        {
-            throw new IllegalArgumentException( "outputDir could not be null." );
-        }
-
-        if ( !outputDir.exists() )
-        {
-            outputDir.mkdirs();
-        }
-        else
-        {
-            if ( !outputDir.isDirectory() )
-            {
-                throw new IllegalArgumentException( "The dir '" + outputDir + "' is not a directory." );
-            }
-        }
-
-        OutputStream os = new FileOutputStream( new File( outputDir, outputName ) );
-
-        return new RtfSink( os );
-    }
-
-    /** {@inheritDoc} */
-    public Sink createSink( Writer writer )
-    {
-        throw new UnsupportedOperationException( "createSink( Writer writer ) is not implemented." );
+        return new RtfSink( out, encoding );
     }
 }
