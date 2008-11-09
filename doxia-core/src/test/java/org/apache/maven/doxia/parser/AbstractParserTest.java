@@ -24,6 +24,7 @@ import org.apache.maven.doxia.sink.WellformednessCheckingSink;
 
 import org.apache.maven.doxia.sink.Sink;
 import org.apache.maven.doxia.sink.TextSink;
+import org.codehaus.plexus.util.IOUtil;
 
 import java.io.IOException;
 import java.io.Reader;
@@ -118,15 +119,8 @@ public abstract class AbstractParserTest
         }
         finally
         {
-            if ( writer  != null )
-            {
-                writer.close();
-            }
-
-            if ( reader != null )
-            {
-                reader.close();
-            }
+            IOUtil.close( reader );
+            IOUtil.close( writer );
         }
     }
 

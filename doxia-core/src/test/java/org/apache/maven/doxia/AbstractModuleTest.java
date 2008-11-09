@@ -46,14 +46,12 @@ public abstract class AbstractModuleTest
      * <ul>
      * <li><code>line.separator</code> to <code>\n</code> (Unix) to prevent
      * failure on windows.</li>
-     * <li><code>file.encoding</code> to <code>UTF-8</code>.</li>
      * </ul>
      */
     static
     {
         // Safety
         System.setProperty( "line.separator", "\n" );
-        System.setProperty( "file.encoding", "UTF-8" );
     }
 
     // ----------------------------------------------------------------------

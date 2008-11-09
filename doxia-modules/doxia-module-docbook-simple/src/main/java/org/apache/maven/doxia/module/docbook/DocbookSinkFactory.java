@@ -36,7 +36,7 @@ public class DocbookSinkFactory
     extends AbstractTextSinkFactory
 {
     /** {@inheritDoc} */
-    public Sink createSink( Writer writer, String encoding )
+    protected Sink createSink( Writer writer, String encoding )
     {
         return new DocBookSink( writer, encoding );
     }

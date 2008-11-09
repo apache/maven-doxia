@@ -36,7 +36,7 @@ public class LatexSinkFactory
     extends AbstractTextSinkFactory
 {
     /** {@inheritDoc} */
-    public Sink createSink( Writer writer, String encoding )
+    protected Sink createSink( Writer writer, String encoding )
     {
         // TODO: can encoding safely be ignored? Shouldn't it be written into the generated Latex source
         // as inputenc package parameter?

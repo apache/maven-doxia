@@ -38,7 +38,7 @@ public class ITextSinkFactory
     extends AbstractTextSinkFactory
 {
     /** {@inheritDoc} */
-    public Sink createSink( Writer writer, String encoding )
+    protected Sink createSink( Writer writer, String encoding )
     {
         return new ITextSink( writer, encoding );
     }

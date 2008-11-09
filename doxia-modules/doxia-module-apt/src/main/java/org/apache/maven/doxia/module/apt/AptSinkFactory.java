@@ -36,7 +36,7 @@ public class AptSinkFactory
     extends AbstractTextSinkFactory
 {
     /** {@inheritDoc} */
-    public Sink createSink( Writer writer, String encoding )
+    protected Sink createSink( Writer writer, String encoding )
     {
         // encoding can safely be ignored since it isn't written into the generated APT source
         return new AptSink( writer );
