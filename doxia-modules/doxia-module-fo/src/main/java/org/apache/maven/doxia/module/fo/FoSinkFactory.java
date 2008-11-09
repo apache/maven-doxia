@@ -29,7 +29,7 @@ import org.apache.maven.doxia.sink.Sink;
  *
  * @author <a href="mailto:vincent.siveton@gmail.com">Vincent Siveton</a>
  * @version $Id$
- * @since 1.0
+ * @since 1.0-beta-1
  * @plexus.component role="org.apache.maven.doxia.sink.SinkFactory" role-hint="fo"
  */
 public class FoSinkFactory
@@ -38,7 +38,6 @@ public class FoSinkFactory
     /** {@inheritDoc} */
     public Sink createSink( Writer writer, String encoding )
     {
-        // TODO: don't ignore encoding parameter
-        return new FoSink( writer );
+        return new FoSink( writer, encoding );
     }
 }

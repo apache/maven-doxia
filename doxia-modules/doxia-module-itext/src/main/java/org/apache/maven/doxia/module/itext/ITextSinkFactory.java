@@ -40,8 +40,7 @@ public class ITextSinkFactory
     /** {@inheritDoc} */
     public Sink createSink( Writer writer, String encoding )
     {
-        // TODO: don't ignore encoding parameter
-        return new ITextSink( writer );
+        return new ITextSink( writer, encoding );
     }
 
     public Sink createSink( Writer writer )
@@ -53,7 +52,7 @@ public class ITextSinkFactory
     /**
      * Create a <code>Sink</code> into a PrettyPrintXMLWriter.
      *
-     * @param xmlWriter not null XML writer to write the result. <b>Should</b> be an UTF-8 Writer.
+     * @param xmlWriter not null XML writer to write the result.
      * @return a <code>Sink</code> instance.
      */
     public Sink createSink( PrettyPrintXMLWriter xmlWriter )

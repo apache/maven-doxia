@@ -31,6 +31,7 @@ import org.apache.maven.doxia.parser.ParseException;
 import org.apache.maven.doxia.sink.Sink;
 import org.apache.maven.doxia.sink.SinkEventElement;
 import org.apache.maven.doxia.sink.SinkEventTestingSink;
+import org.codehaus.plexus.util.IOUtil;
 
 /**
  * @author <a href="mailto:lars@trieloff.net">Lars Trieloff</a>
@@ -72,7 +73,6 @@ public class DocBookParserTest extends AbstractParserTest
         throws IOException, ParseException
     {
         Writer writer = null;
-
         Reader reader = null;
 
         try
@@ -86,15 +86,8 @@ public class DocBookParserTest extends AbstractParserTest
         }
         finally
         {
-            if ( writer  != null )
-            {
-                writer.close();
-            }
-
-            if ( reader != null )
-            {
-                reader.close();
-            }
+            IOUtil.close( reader );
+            IOUtil.close( writer );
         }
     }
 

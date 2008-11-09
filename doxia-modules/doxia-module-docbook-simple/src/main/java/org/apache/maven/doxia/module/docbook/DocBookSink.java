@@ -40,8 +40,6 @@ import org.codehaus.plexus.util.FileUtils;
 
 /**
  * Docbook Sink implementation.
- * <br/>
- * <b>Note</b>: The encoding used is UTF-8.
  *
  * @version $Id$
  * @since 1.0
@@ -139,6 +137,8 @@ public class DocBookSink
 
     private boolean skip;
 
+    private String encoding;
+
     /**
      * Constructor, initialize the Writer.
      *
@@ -147,7 +147,21 @@ public class DocBookSink
      */
     protected DocBookSink( Writer writer )
     {
+        this( writer, null );
+    }
+
+    /**
+     * Constructor, initialize the Writer and tells which encoding is used.
+     *
+     * @param writer not null writer to write the result.
+     * @param encoding the encoding used, that should be written to the generated HTML content
+     * if not <code>null</code>.
+     */
+    protected DocBookSink( Writer writer, String encoding )
+    {
         this.out = new PrintWriter( writer );
+        this.encoding = encoding;
+
         setItalicElement( "<emphasis>" );
         setBoldElement( "<emphasis role=\"bold\">" );
         setMonospacedElement( "<literal>" );
@@ -230,25 +244,24 @@ public class DocBookSink
     }
 
     /**
-     * Sets the encoding.
+     * Sets the encoding. The encoding specified here must be consistent with then encoding
+     * used in the Writer used by this DocBookSink instance.
      *
      * @param enc the encoding to set.
-     * @deprecated since 1.0, this method as no more effect. The encoding is always UTF-8.
      */
     public void setEncoding( String enc )
     {
-        // nop
+        encoding = enc;
     }
 
     /**
-     * Returns the UTF-8 encoding.
+     * Returns the encoding.
      *
-     * @return always return UTF-8.
-     * @deprecated since 1.0, this method as no more effect. The encoding is always UTF-8.
+     * @return the encoding set (can be <code>null</code>).
      */
     public String getEncoding()
     {
-        return "UTF-8";
+        return encoding;
     }
 
     /**
@@ -535,6 +548,13 @@ public class DocBookSink
     {
         if ( xmlMode )
         {
+            markup( "<?xml version='1.0'" );
+            if ( encoding != null )
+            {
+                markup( " encoding='" + encoding + "'" );
+            }
+            markup( "?>" );
+
             if ( styleSheet != null )
             {
                 markup( "<?xml-stylesheet type=\"text/css\" href=\"" + styleSheet + "\" ?>" );

@@ -38,7 +38,6 @@ public class XdocSinkFactory
     /** {@inheritDoc} */
     public Sink createSink( Writer writer, String encoding )
     {
-        // TODO: don't ignore encoding parameter
-        return new XdocSink( writer );
+        return new XdocSink( writer, encoding );
     }
 }

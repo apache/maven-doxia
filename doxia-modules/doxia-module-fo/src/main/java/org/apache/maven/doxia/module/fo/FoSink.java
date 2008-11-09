@@ -35,12 +35,10 @@ import org.apache.maven.doxia.util.HtmlTools;
 
 /**
  * FO Sink implementation.
- * <br/>
- * <b>Note</b>: The encoding used is UTF-8.
  *
  * @author ltheussl
  * @version $Id$
- * @since 1.0
+ * @since 1.0-beta-1
  */
 public class FoSink
     extends AbstractXmlSink
@@ -79,6 +77,8 @@ public class FoSink
     /** Verbatim flag. */
     private boolean verbatim;
 
+    private String encoding;
+
     /**
      * Constructor, initialize the Writer.
      *
@@ -87,7 +87,20 @@ public class FoSink
      */
     protected FoSink( Writer writer )
     {
+        this( writer, "UTF-8" );
+    }
+
+    /**
+     * Constructor, initialize the Writer and tells which encoding is used.
+     *
+     * @param writer not null writer to write the result.
+     * @param encoding the encoding used, that should be written to the generated HTML content
+     * if not <code>null</code>.
+     */
+    protected FoSink( Writer writer, String encoding )
+    {
         this.out = writer;
+        this.encoding = encoding;
         this.config = new FoConfiguration();
 
         setNameSpace( "fo" );
@@ -975,6 +988,13 @@ public class FoSink
      */
     public void beginDocument()
     {
+        write( "<?xml version='1.0'" );
+        if ( encoding != null )
+        {
+            write( " encoding='" + encoding + "'" );
+        }
+        write( "?>" );
+
         writeStartTag( ROOT_TAG, "xmlns:" + getNameSpace(), "http://www.w3.org/1999/XSL/Format" );
 
         writeStartTag( LAYOUT_MASTER_SET_TAG, "" );

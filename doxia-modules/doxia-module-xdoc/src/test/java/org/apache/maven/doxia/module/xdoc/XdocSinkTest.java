@@ -42,7 +42,7 @@ public class XdocSinkTest
     /** {@inheritDoc} */
     protected Sink createSink( Writer writer )
     {
-        return new XdocSink( writer );
+        return new XdocSink( writer, "UTF-8" );
     }
 
     /** {@inheritDoc} */
@@ -72,7 +72,7 @@ public class XdocSinkTest
     /** {@inheritDoc} */
     protected String getHeadBlock()
     {
-        return "<document><properties></properties>";
+        return "<?xml version='1.0' encoding='UTF-8'?><document><properties></properties>";
     }
 
     /** {@inheritDoc} */

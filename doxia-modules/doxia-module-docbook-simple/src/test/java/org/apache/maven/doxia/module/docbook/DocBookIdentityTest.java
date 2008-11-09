@@ -35,7 +35,7 @@ public class DocBookIdentityTest extends AbstractIdentityTest
     /** {@inheritDoc} */
     protected Sink createSink( Writer writer )
     {
-        return new DocBookSink( writer );
+        return new DocBookSink( writer, "UTF-8" );
     }
 
     /** {@inheritDoc} */

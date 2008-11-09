@@ -56,8 +56,6 @@ import org.codehaus.plexus.util.xml.XMLWriter;
  * See http://sourceforge.net/tracker/index.php?func=detail&aid=786427&group_id=15255&atid=115255.</li>
  * <li>Images could be on another page and next text on the last one.</li>
  * </ul>
- * <br/>
- * <b>Note</b>: The encoding used is UTF-8.
  *
  * @see <a href="http://www.lowagie.com/iText/tutorial/ch07.html">http://www.lowagie.com/iText/tutorial/ch07.html</a>
  *
@@ -110,13 +108,18 @@ public final class ITextSink
      */
     protected ITextSink( Writer writer )
     {
+        this( writer, "UTF-8" );
+    }
+
+    /**
+     * @param writer
+     * @param encoding
+     */
+    protected ITextSink( Writer writer, String encoding )
+    {
+        this( new PrettyPrintXMLWriter( writer, encoding, null ) );
+
         this.writer = writer;
-
-        actionContext = new SinkActionContext();
-        font = new ITextFont();
-        header = new ITextHeader();
-
-        xmlWriter = new PrettyPrintXMLWriter( this.writer, "UTF-8", null );
         writeStart = true;
     }
 

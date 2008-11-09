@@ -33,8 +33,6 @@ import org.apache.maven.doxia.util.HtmlTools;
 
 /**
  * Xdoc Sink implementation.
- * <br/>
- * <b>Note</b>: The encoding used is UTF-8.
  *
  * @author <a href="mailto:james@jamestaylor.org">James Taylor</a>
  * @version $Id$
@@ -51,6 +49,8 @@ public class XdocSink
     /** An indication on if we're inside a box (verbatim). */
     private boolean boxedFlag;
 
+    private String encoding;
+
     // ----------------------------------------------------------------------
     // Constructors
     // ----------------------------------------------------------------------
@@ -64,6 +64,19 @@ public class XdocSink
     protected XdocSink( Writer writer )
     {
         super( writer );
+    }
+
+    /**
+     * Constructor, initialize the Writer and tells which encoding is used.
+     *
+     * @param writer not null writer to write the result.
+     * @param encoding the encoding used, that should be written to the generated HTML content
+     * if not <code>null</code>.
+     */
+    protected XdocSink( Writer writer, String encoding )
+    {
+        this( writer );
+        this.encoding = encoding;
     }
 
     // ----------------------------------------------------------------------
@@ -89,6 +102,13 @@ public class XdocSink
         resetState();
 
         setHeadFlag( true );
+
+        write( "<?xml version='1.0'" );
+        if ( encoding != null )
+        {
+            write( " encoding='" + encoding + "'" );
+        }
+        write( "?>" );
 
         writeStartTag( DOCUMENT_TAG );
 

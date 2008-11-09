@@ -230,7 +230,7 @@ public class DocBookBookSinkTest extends AbstractSinkTest
      */
     protected String getBookBlock()
     {
-        return "<!DOCTYPE book PUBLIC \"" + DocBookSink.DEFAULT_XML_PUBLIC_ID
+        return "<?xml version='1.0'?><!DOCTYPE book PUBLIC \"" + DocBookSink.DEFAULT_XML_PUBLIC_ID
             + "\" \"" + DocBookSink.DEFAULT_XML_SYSTEM_ID + "\"><book></book>";
     }
 
