@@ -19,10 +19,10 @@ package org.apache.maven.doxia.xsd;
  * under the License.
  */
 
-import java.io.ByteArrayInputStream;
 import java.io.File;
 import java.io.IOException;
 import java.io.Reader;
+import java.io.StringReader;
 import java.util.ArrayList;
 import java.util.Iterator;
 import java.util.List;
@@ -211,7 +211,7 @@ public abstract class AbstractXmlValidatorTest
 
         MessagesErrorHandler errorHandler = (MessagesErrorHandler) getXMLReader().getErrorHandler();
 
-        getXMLReader().parse( new InputSource( new ByteArrayInputStream( content.getBytes() ) ) );
+        getXMLReader().parse( new InputSource( new StringReader( content ) ) );
 
         return errorHandler.getMessages();
     }
