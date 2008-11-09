@@ -596,9 +596,9 @@ public class SinkTestDocument
         sink.paragraph_();
 
         sink.paragraph();
-        String copyright = String.valueOf( '\u00a9' );
-        sink.text( "Copyright symbol: " + copyright + ", "
-            + copyright + ", " + copyright + "." );
+        sink.text( "Copyright symbol: " + COPYRIGHT + ", " + COPYRIGHT + ", " + COPYRIGHT + "." );
         sink.paragraph_();
     }
+
+    private static final char COPYRIGHT = '\u00a9';
 }
