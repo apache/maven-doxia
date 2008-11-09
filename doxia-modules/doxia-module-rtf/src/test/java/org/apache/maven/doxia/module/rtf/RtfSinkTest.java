@@ -21,11 +21,13 @@ package org.apache.maven.doxia.module.rtf;
 
 import org.apache.maven.doxia.sink.Sink;
 import org.apache.maven.doxia.sink.AbstractSinkTestCase;
+import org.apache.maven.doxia.sink.SinkTestDocument;
 import org.apache.maven.doxia.parser.Parser;
 import org.apache.maven.doxia.module.apt.AptParser;
 
 import java.io.File;
 import java.io.FileOutputStream;
+import java.io.OutputStream;
 import java.io.Reader;
 import java.io.InputStream;
 import java.io.InputStreamReader;
@@ -73,5 +75,18 @@ public class RtfSinkTest
         InputStreamReader reader = new InputStreamReader( is );
 
         return reader;
+    }
+
+    public void testDocument()
+        throws Exception
+    {
+        File outputFile = new File( getBasedirFile(), "target/test-output/sink/testDocument.rtf" );
+        outputFile.getParentFile().mkdirs();
+        OutputStream out = new FileOutputStream( outputFile );
+
+        Sink sink = new RtfSink( out );
+        SinkTestDocument.generate( sink );
+
+        out.close();
     }
 }
