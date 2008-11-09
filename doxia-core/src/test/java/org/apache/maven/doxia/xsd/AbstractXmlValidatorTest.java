@@ -207,6 +207,7 @@ public abstract class AbstractXmlValidatorTest
     {
         Reader reader = ReaderFactory.newXmlReader( f );
         String content = IOUtil.toString( reader );
+        IOUtil.close( reader );
         content = addNamespaces( content );
 
         MessagesErrorHandler errorHandler = (MessagesErrorHandler) getXMLReader().getErrorHandler();
