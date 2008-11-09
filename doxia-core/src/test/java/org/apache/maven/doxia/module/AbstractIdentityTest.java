@@ -101,7 +101,7 @@ public abstract class AbstractIdentityTest
             // write to file for comparison
             fileWriter = getTestWriter( "expected" );
             fileWriter.write( expected );
-            fileWriter.flush();
+            fileWriter.close();
 
             // generate the actual model
             writer = new StringWriter();
@@ -115,7 +115,7 @@ public abstract class AbstractIdentityTest
             // write to file for comparison
             fileWriter = getTestWriter( "actual" );
             fileWriter.write( actual );
-            fileWriter.flush();
+            fileWriter.close();
 
             // Disabled by default, it's unlikely that all our modules
             // will pass this test any time soon, but the generated
