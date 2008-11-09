@@ -41,7 +41,7 @@ public class XhtmlSinkTest
     /** {@inheritDoc} */
     protected Sink createSink( Writer writer )
     {
-        return new XhtmlSink( writer );
+        return new XhtmlSink( writer, "UTF-8" );
     }
 
     /** {@inheritDoc} */

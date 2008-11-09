@@ -33,8 +33,6 @@ import org.codehaus.plexus.util.StringUtils;
 
 /**
  * Xhtml sink implementation.
- * <br/>
- * <b>Note</b>: The encoding used is UTF-8.
  *
  * @author Jason van Zyl
  * @author ltheussl
@@ -61,6 +59,8 @@ public class XhtmlSink
     // TODO: this doesn't belong here
     private RenderingContext renderingContext;
 
+    private String encoding;
+
     /** An indication on if we're inside a head title. */
     private boolean headTitleFlag;
 
@@ -71,12 +71,25 @@ public class XhtmlSink
     /**
      * Constructor, initialize the Writer.
      *
-     * @param writer not null writer to write the result. <b>Should</b> be an UTF-8 Writer.
-     * You could use <code>newXmlWriter</code> methods from {@link org.codehaus.plexus.util.WriterFactory}.
+     * @param writer not null writer to write the result.
      */
     protected XhtmlSink( Writer writer )
     {
-        this( writer, null );
+        this( writer, (RenderingContext) null );
+    }
+
+    /**
+     * Constructor, initialize the Writer and tells which encoding is used.
+     *
+     * @param writer not null writer to write the result.
+     * @param encoding the encoding used, that should be written to the generated HTML content
+     * if not <code>null</code>.
+     */
+    protected XhtmlSink( Writer writer, String encoding )
+    {
+        this( writer, (RenderingContext) null );
+
+        this.encoding = encoding;
     }
 
     /**
@@ -131,8 +144,10 @@ public class XhtmlSink
         setHeadFlag( false );
         setHeadTitleFlag( false );
 
-        // always UTF-8
-        write( "<meta http-equiv=\"Content-Type\" content=\"text/html; charset=UTF-8\"/>" );
+        if ( encoding != null )
+        {
+            write( "<meta http-equiv=\"Content-Type\" content=\"text/html; charset=" + encoding + "\"/>" );
+        }
 
         writeEndTag( Tag.HEAD );
     }

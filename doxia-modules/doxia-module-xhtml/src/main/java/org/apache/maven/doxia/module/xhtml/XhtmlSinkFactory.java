@@ -38,7 +38,6 @@ public class XhtmlSinkFactory
     /** {@inheritDoc} */
     public Sink createSink( Writer writer, String encoding )
     {
-        // TODO: don't ignore encoding parameter
-        return new XhtmlSink( writer );
+        return new XhtmlSink( writer, encoding );
     }
 }
