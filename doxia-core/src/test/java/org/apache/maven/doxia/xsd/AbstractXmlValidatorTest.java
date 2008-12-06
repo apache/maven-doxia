@@ -29,6 +29,7 @@ import java.util.List;
 
 import junit.framework.AssertionFailedError;
 
+import org.apache.maven.doxia.parser.AbstractXmlParser;
 import org.apache.maven.scm.ScmFileSet;
 import org.apache.maven.scm.manager.ScmManager;
 import org.codehaus.plexus.PlexusTestCase;
@@ -184,6 +185,8 @@ public abstract class AbstractXmlValidatorTest
                 xmlReader.setFeature( "http://apache.org/xml/features/validation/schema", true );
                 MessagesErrorHandler errorHandler = new MessagesErrorHandler();
                 xmlReader.setErrorHandler( errorHandler );
+
+                xmlReader.setEntityResolver( new AbstractXmlParser.CachedFileEntityResolver() );
             }
             catch ( SAXNotRecognizedException e )
             {
