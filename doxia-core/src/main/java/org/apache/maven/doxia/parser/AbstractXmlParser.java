@@ -21,9 +21,12 @@ package org.apache.maven.doxia.parser;
 
 import java.io.BufferedReader;
 import java.io.ByteArrayInputStream;
+import java.io.File;
 import java.io.IOException;
 import java.io.Reader;
 import java.io.StringReader;
+import java.net.URL;
+import java.util.Hashtable;
 import java.util.LinkedHashMap;
 import java.util.Map;
 import java.util.regex.Matcher;
@@ -35,11 +38,15 @@ import org.apache.maven.doxia.macro.MacroExecutionException;
 import org.apache.maven.doxia.markup.XmlMarkup;
 import org.apache.maven.doxia.sink.Sink;
 import org.apache.maven.doxia.sink.SinkEventAttributeSet;
+import org.codehaus.plexus.util.FileUtils;
 import org.codehaus.plexus.util.IOUtil;
+import org.codehaus.plexus.util.ReaderFactory;
 import org.codehaus.plexus.util.StringUtils;
+import org.codehaus.plexus.util.WriterFactory;
 import org.codehaus.plexus.util.xml.pull.MXParser;
 import org.codehaus.plexus.util.xml.pull.XmlPullParser;
 import org.codehaus.plexus.util.xml.pull.XmlPullParserException;
+import org.xml.sax.EntityResolver;
 import org.xml.sax.InputSource;
 import org.xml.sax.SAXException;
 import org.xml.sax.SAXNotRecognizedException;
@@ -570,8 +577,50 @@ public abstract class AbstractXmlParser
             xmlReader.setFeature( "http://xml.org/sax/features/validation", true );
             xmlReader.setFeature( "http://apache.org/xml/features/validation/schema", true );
             xmlReader.setErrorHandler( errorHandler );
+            xmlReader.setEntityResolver( new CachedFileEntityResolver() );
         }
 
         return xmlReader;
+    }
+
+    /**
+     * Implementation of the callback mechanism <code>EntityResolver</code>.
+     * Using a mechanism of cached files in temp dir to improve performance when using the <code>XMLReader</code>.
+     */
+    public static class CachedFileEntityResolver
+        implements EntityResolver
+    {
+        private static final Map cache = new Hashtable();
+
+        /** {@inheritDoc} */
+        public InputSource resolveEntity( String publicId, String systemId )
+            throws SAXException, IOException
+        {
+            byte[] res = (byte[]) cache.get( systemId );
+            // already cached?
+            if ( res == null )
+            {
+                File temp =
+                    new File( System.getProperty( "java.io.tmpdir" ), FileUtils.getFile( systemId ).getName() );
+                // maybe already as a temp file?
+                if ( !temp.exists() )
+                {
+                    res = IOUtil.toByteArray( new URL( systemId ).openStream() );
+                    IOUtil.copy( res, WriterFactory.newPlatformWriter( temp ) );
+                }
+                else
+                {
+                    res = IOUtil.toByteArray( ReaderFactory.newPlatformReader( temp ) );
+                }
+
+                cache.put( systemId, res );
+            }
+
+            InputSource is = new InputSource( new ByteArrayInputStream( res ) );
+            is.setPublicId( publicId );
+            is.setSystemId( systemId );
+
+            return is;
+        }
     }
 }
