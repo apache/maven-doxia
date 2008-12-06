@@ -34,6 +34,7 @@ import java.util.regex.Pattern;
 
 import javax.xml.XMLConstants;
 
+import org.apache.maven.doxia.logging.Log;
 import org.apache.maven.doxia.macro.MacroExecutionException;
 import org.apache.maven.doxia.markup.XmlMarkup;
 import org.apache.maven.doxia.sink.Sink;
@@ -51,7 +52,9 @@ import org.xml.sax.InputSource;
 import org.xml.sax.SAXException;
 import org.xml.sax.SAXNotRecognizedException;
 import org.xml.sax.SAXNotSupportedException;
+import org.xml.sax.SAXParseException;
 import org.xml.sax.XMLReader;
+import org.xml.sax.helpers.DefaultHandler;
 import org.xml.sax.helpers.XMLReaderFactory;
 
 /**
@@ -581,6 +584,98 @@ public abstract class AbstractXmlParser
         }
 
         return xmlReader;
+    }
+
+    /**
+     * Convenience class to beautify <code>SAXParseException</code> messages.
+     */
+    static class MessagesErrorHandler
+        extends DefaultHandler
+    {
+        private static final int TYPE_UNKNOWN = 0;
+
+        private static final int TYPE_WARNING = 1;
+
+        private static final int TYPE_ERROR = 2;
+
+        private static final int TYPE_FATAL = 3;
+
+        private final Log log;
+
+        public MessagesErrorHandler( Log log )
+        {
+            this.log = log;
+        }
+
+        /** {@inheritDoc} */
+        public void warning( SAXParseException e )
+            throws SAXException
+        {
+            processException( TYPE_WARNING, e );
+        }
+
+        /** {@inheritDoc} */
+        public void error( SAXParseException e )
+            throws SAXException
+        {
+            processException( TYPE_ERROR, e );
+        }
+
+        /** {@inheritDoc} */
+        public void fatalError( SAXParseException e )
+            throws SAXException
+        {
+            processException( TYPE_FATAL, e );
+        }
+
+        private void processException( int type, SAXParseException e )
+            throws SAXException
+        {
+            StringBuffer message = new StringBuffer();
+
+            switch ( type )
+            {
+                case TYPE_WARNING:
+                    message.append( "Warning:" );
+                    break;
+
+                case TYPE_ERROR:
+                    message.append( "Error:" );
+                    break;
+
+                case TYPE_FATAL:
+                    message.append( "Fatal error:" );
+                    break;
+
+                case TYPE_UNKNOWN:
+                default:
+                    message.append( "Unknown:" );
+                    break;
+            }
+
+            message.append( EOL );
+            message.append( "  Public ID: " + e.getPublicId() ).append( EOL );
+            message.append( "  System ID: " + e.getSystemId() ).append( EOL );
+            message.append( "  Line number: " + e.getLineNumber() ).append( EOL );
+            message.append( "  Column number: " + e.getColumnNumber() ).append( EOL );
+            message.append( "  Message: " + e.getMessage() ).append( EOL );
+
+            switch ( type )
+            {
+                case TYPE_WARNING:
+                    if ( log.isWarnEnabled() )
+                    {
+                        log.warn( message.toString() );
+                    }
+                    break;
+
+                case TYPE_UNKNOWN:
+                case TYPE_ERROR:
+                case TYPE_FATAL:
+                default:
+                    throw new SAXException( message.toString() );
+            }
+        }
     }
 
     /**
