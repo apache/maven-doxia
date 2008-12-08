@@ -841,9 +841,9 @@ public class XhtmlBaseSink
         atts.addAttribute( Attribute.SRC, src );
         atts.addAttributes( SinkUtils.filterAttributes(
                 attributes, SinkUtils.SINK_IMG_ATTRIBUTES ) );
-        if ( atts.getAttribute( Attribute.ALT ) == null )
+        if ( atts.getAttribute( Attribute.ALT.toString() ) == null )
         {
-            atts.addAttribute( Attribute.ALT, "" );
+            atts.addAttribute( Attribute.ALT.toString(), "" );
         }
 
         writeStartTag( Tag.IMG, atts, true );
