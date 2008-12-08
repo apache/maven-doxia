@@ -22,6 +22,8 @@ package org.apache.maven.doxia.parser;
 import java.io.BufferedReader;
 import java.io.ByteArrayInputStream;
 import java.io.File;
+import java.io.FileInputStream;
+import java.io.FileOutputStream;
 import java.io.IOException;
 import java.io.Reader;
 import java.io.StringReader;
@@ -41,9 +43,7 @@ import org.apache.maven.doxia.sink.Sink;
 import org.apache.maven.doxia.sink.SinkEventAttributeSet;
 import org.codehaus.plexus.util.FileUtils;
 import org.codehaus.plexus.util.IOUtil;
-import org.codehaus.plexus.util.ReaderFactory;
 import org.codehaus.plexus.util.StringUtils;
-import org.codehaus.plexus.util.WriterFactory;
 import org.codehaus.plexus.util.xml.pull.MXParser;
 import org.codehaus.plexus.util.xml.pull.XmlPullParser;
 import org.codehaus.plexus.util.xml.pull.XmlPullParserException;
@@ -701,11 +701,11 @@ public abstract class AbstractXmlParser
                 if ( !temp.exists() )
                 {
                     res = IOUtil.toByteArray( new URL( systemId ).openStream() );
-                    IOUtil.copy( res, WriterFactory.newPlatformWriter( temp ) );
+                    IOUtil.copy( res, new FileOutputStream( temp ) );
                 }
                 else
                 {
-                    res = IOUtil.toByteArray( ReaderFactory.newPlatformReader( temp ) );
+                    res = IOUtil.toByteArray( new FileInputStream( temp ) );
                 }
 
                 cache.put( systemId, res );
