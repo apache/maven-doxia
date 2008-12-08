@@ -21,7 +21,7 @@ package org.apache.maven.doxia.util;
 
 /*
  * Originally from org.apache.doxia.module.apt.AptReaderSource. It was modified
- * to get unget support 
+ * to get unget support
  */
 
 import java.io.IOException;
@@ -29,6 +29,7 @@ import java.io.LineNumberReader;
 import java.io.Reader;
 
 import org.apache.maven.doxia.parser.ParseException;
+import org.codehaus.plexus.util.IOUtil;
 
 /**
  * {@link ByLineSource} default implementation
@@ -122,17 +123,7 @@ public class ByLineReaderSource implements ByLineSource
     /** {@inheritDoc} */
     public final void close()
     {
-        if ( reader != null )
-        {
-            try
-            {
-                reader.close();
-            }
-            catch ( IOException ignored )
-            {
-                // ignore
-            }
-        }
+        IOUtil.close( reader );
         reader = null;
     }
 

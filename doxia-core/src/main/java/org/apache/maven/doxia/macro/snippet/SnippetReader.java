@@ -28,6 +28,8 @@ import java.util.Iterator;
 import java.util.List;
 import java.util.Locale;
 
+import org.codehaus.plexus.util.IOUtil;
+
 /** Utility class for reading snippets. */
 public class SnippetReader
 {
@@ -147,7 +149,7 @@ public class SnippetReader
         }
         finally
         {
-            reader.close();
+            IOUtil.close( reader );
         }
         return lines;
     }
