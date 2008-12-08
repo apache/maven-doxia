@@ -30,7 +30,7 @@ import java.io.Reader;
 
 /**
  * <a href="http://en.wikipedia.org/wiki/Portable_pixmap">PBM</a> images reader.
- * 
+ *
  * @version $Id$
  */
 class PBMReader
@@ -40,8 +40,6 @@ class PBMReader
     static final int TYPE_PGM = 2;
 
     static final int TYPE_PPM = 3;
-
-    private static final boolean TRACE = false;
 
     private static final String BAD_FILE_FORMAT = "bad file format";
 
@@ -71,10 +69,6 @@ class PBMReader
         HeaderReader header = new HeaderReader();
 
         int length = header.read( fileName );
-        if ( TRACE )
-        {
-            System.out.println( length );
-        }
 
         if ( type != TYPE_PPM )
         {
@@ -278,11 +272,7 @@ class PBMReader
             }
             catch ( EOFException ignore )
             {
-            }
-
-            if ( TRACE )
-            {
-                System.out.println( "\"" + field + "\"" );
+                // nop
             }
 
             return field.toString();
@@ -312,6 +302,7 @@ class PBMReader
             }
             catch ( EOFException ignore )
             {
+                // nop
             }
         }
     }
