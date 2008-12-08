@@ -1114,11 +1114,6 @@ public class RtfSink
     /** {@inheritDoc} */
     public void figureGraphics( String name )
     {
-        if ( !name.endsWith( ".ppm" ) )
-        {
-            getLog().warn( "Unsupported image type: " + name );
-        }
-
         Paragraph p = new Paragraph();
         p.justification = Sink.JUSTIFY_CENTER;
         beginParagraph( p );
@@ -1138,6 +1133,14 @@ public class RtfSink
     private void writeImage( String source )
         throws Exception
     {
+        if ( !source.toLowerCase().endsWith( ".ppm" ) )
+        {
+            // TODO support more image types!
+            getLog().warn( "Unsupported image type for image file: '" + source + "'.");
+            getLog().warn( "Only PPM image type is currently supported.");
+            return;
+        }
+
         int bytesPerLine;
         PBMReader ppm = new PBMReader( source );
         WMFWriter.Dib dib = new WMFWriter.Dib();
@@ -1172,7 +1175,6 @@ public class RtfSink
                 }
             }
         }
-
         else
         {
             dib.biBitCount = 8;
@@ -1303,7 +1305,6 @@ public class RtfSink
                 wmf.print( writer );
             }
         }
-
         else
         {
             if ( imageDataFormat.equals( IMG_DATA_RAW ) )
