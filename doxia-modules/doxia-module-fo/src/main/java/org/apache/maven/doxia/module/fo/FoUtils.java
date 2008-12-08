@@ -39,6 +39,7 @@ import org.apache.fop.apps.FOUserAgent;
 import org.apache.fop.apps.Fop;
 import org.apache.fop.apps.FopFactory;
 import org.apache.fop.apps.MimeConstants;
+import org.codehaus.plexus.util.IOUtil;
 
 /**
  * <code>FO Sink</code> utilities.
@@ -62,7 +63,6 @@ public class FoUtils
     public static void convertFO2PDF( File fo, File pdf, String resourceDir )
         throws TransformerException
     {
-
         FopFactory fopFactory = FopFactory.newInstance();
 
         FOUserAgent foUserAgent = fopFactory.newFOUserAgent();
@@ -108,14 +108,7 @@ public class FoUtils
         }
         finally
         {
-            try
-            {
-                out.close();
-            }
-            catch ( IOException e )
-            {
-                e.printStackTrace();
-            }
+            IOUtil.close( out );
         }
     }
 
