@@ -1004,7 +1004,7 @@ public class TWikiSink
 
         if ( atts.isDefined( SinkEventAttributes.DECORATION ) )
         {
-            boxed = "boxed".equals( (String) atts.getAttribute( SinkEventAttributes.DECORATION ) );
+            boxed = "boxed".equals( atts.getAttribute( SinkEventAttributes.DECORATION ).toString() );
         }
 
         if ( boxed )
