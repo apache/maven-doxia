@@ -24,6 +24,8 @@ import java.io.StringWriter;
 import java.io.Writer;
 import java.util.Stack;
 
+import javax.swing.text.html.HTML.Attribute;
+
 import org.apache.maven.doxia.sink.AbstractTextSink;
 import org.apache.maven.doxia.sink.SinkEventAttributes;
 import org.apache.maven.doxia.util.HtmlTools;
@@ -316,9 +318,9 @@ public class ConfluenceSink
     public void figureGraphics( String src, SinkEventAttributes attributes )
     {
         figureGraphics( src );
-        if ( attributes != null && attributes.getAttribute( "alt" ) != null )
+        if ( attributes != null && attributes.getAttribute( Attribute.ALT.toString() ) != null )
         {
-            write( attributes.getAttribute( "alt" ).toString() );
+            write( attributes.getAttribute( Attribute.ALT.toString() ).toString() );
             writeEOL( true );
         }
     }
