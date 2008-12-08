@@ -760,7 +760,7 @@ public class TextSink
         if ( attributes != null && attributes.isDefined( SinkEventAttributes.DECORATION ) )
         {
             boxed = "boxed".equals(
-                (String) attributes.getAttribute( SinkEventAttributes.DECORATION ) );
+                attributes.getAttribute( SinkEventAttributes.DECORATION ).toString() );
         }
 
         verbatim( boxed );
