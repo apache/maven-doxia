@@ -20,14 +20,10 @@ package org.apache.maven.doxia.module.xdoc;
  */
 
 import java.io.File;
-import java.io.IOException;
-import java.util.ArrayList;
-import java.util.List;
 import java.util.regex.Matcher;
 import java.util.regex.Pattern;
 
 import org.apache.maven.doxia.xsd.AbstractXmlValidatorTest;
-import org.codehaus.plexus.util.FileUtils;
 import org.codehaus.plexus.util.StringUtils;
 
 /**
@@ -58,27 +54,9 @@ public class XdocValidatorTest
     }
 
     /** {@inheritDoc} */
-    protected List getScmRepositoryWrapper()
+    protected String[] getIncludes()
     {
-        List l = new ArrayList();
-
-        l.add( new ScmRepositoryWrapper( "scm:svn:http://svn.apache.org/repos/asf/maven/site/trunk/src/site/xdoc",
-                                         new File( getBasedir(), "target/svn/maven-site/xdoc" ) ) );
-        l.add( new ScmRepositoryWrapper( "scm:svn:http://svn.apache.org/repos/asf/maven/doxia/site/src/site/xdoc",
-                                         new File( getBasedir(), "target/svn/doxia-site/xdoc" ) ) );
-
-        l.add( new ScmRepositoryWrapper( "scm:svn:http://svn.apache.org/repos/asf/maven/plugins/trunk/maven-site-plugin/src/site/xdoc",
-                                         new File( getBasedir(), "target/svn/maven-site-plugin/xdoc" ) ) );
-
-        return l;
-    }
-
-    /** {@inheritDoc} */
-    protected List getXmlFiles( ScmRepositoryWrapper wrapper )
-        throws IOException
-    {
-        return FileUtils.getFiles( wrapper.getCheckoutDir(), "**/*.xml, **/*.xdoc",
-                                   StringUtils.concatenate( FileUtils.getDefaultExcludes() ) );
+        return new String[] { "**/*.xml", "**/xdoc/*" };
     }
 
     /** {@inheritDoc} */
