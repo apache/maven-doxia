@@ -1,0 +1,180 @@
+<?xml version="1.0" encoding="UTF-8"?>
+
+<!--
+Licensed to the Apache Software Foundation (ASF) under one
+or more contributor license agreements.  See the NOTICE file
+distributed with this work for additional information
+regarding copyright ownership.  The ASF licenses this file
+to you under the Apache License, Version 2.0 (the
+"License"); you may not use this file except in compliance
+with the License.  You may obtain a copy of the License at
+
+  http://www.apache.org/licenses/LICENSE-2.0
+
+Unless required by applicable law or agreed to in writing,
+software distributed under the License is distributed on an
+"AS IS" BASIS, WITHOUT WARRANTIES OR CONDITIONS OF ANY
+KIND, either express or implied.  See the License for the
+specific language governing permissions and limitations
+under the License.
+-->
+
+<faqs id="FAQ" title="Frequently Asked Questions">
+  <part id="General">
+    <faq id="What is the difference between the Changelog plugin and the Changes plugin">
+      <question>What is the difference between the Changelog plugin and the Changes plugin?</question>
+      <answer>
+        <p>
+        The Changelog plugin generates reports based on the changes in the Software Configuration Management or SCM while
+        the Changes plugin generates reports either from a changes.xml file or from the JIRA issue management system.
+        For more information about the changes plugin, see
+        <a href="http://maven.apache.org/plugins/maven-changes-plugin/">http://maven.apache.org/plugins/maven-changes-plugin</a>
+        </p>
+      </answer>
+    </faq>
+    <faq id="What is Software Configuration Management or SCM">
+      <question>What is Software Configuration Management or SCM?</question>
+      <answer>
+        <p>
+        According to Roger Pressman (in his book) Software Engineering: A Practitioner's Approach, SCM is a <em>"set of activities
+        designed to control change by identifying the work products that are likely to change, establishing relationships among
+        them, defining mechanisms for managing different versions of these work products, controlling the changes imposed, and
+        auditing and reporting on the changes made."</em>
+        </p>
+      </answer>
+    </faq>
+    <faq id="Why do the dates look weird in the report when I use the dateFormat parameter">
+      <question>Why do the dates look weird in the report when I use the dateFormat parameter?</question>
+      <answer>
+        <p>
+          The <code>dateFormat</code> parameter is used when parsing the dates
+          from the log entries retrieved from your SCM system. It can
+          <strong>not</strong> be used to format the dates in the report. If
+          you try to do this the parsed dates will be wrong and the dates in
+          the report even more so. They can look like this
+          <code>0020-05-27</code> for a file that was changed on 14 december
+          2005.
+        </p>
+      </answer>
+    </faq>
+    <faq id="How can I debug the SCM command">
+      <question>How can I debug the SCM command?</question>
+      <answer>
+        <p>
+          When you generate the report, you will see output like this on the
+          command line:
+<source>
+[INFO] [changelog:changelog]
+[INFO] Generating changed sets xml to: .../target/changelog.xml
+[INFO] Executing: svn --non-interactive log -v -r "{2007-06-13 22:22:09 +0000}:{2007-07-14 22:22:09 +0000}" http://svn.apache.org/repos/asf/maven/plugins/trunk/maven-site-plugin
+</source>
+          Copy the SCM command (everything after <code>Executing:</code>) and
+          try to run it by itself on the command line. If it doesn't work on
+          the command line there's probably something wrong with the
+          <code>&lt;scm&gt;</code> element in your <code>pom.xml</code>.
+        </p>
+      </answer>
+    </faq>
+    <faq id="My changelog report is blank, but it shouldn't be">
+      <question>My changelog report is blank, but it shouldn't be</question>
+      <answer>
+        <p>
+          The first thing to check is what data the changelog plugin managed to
+          pull out of your SCM system. In the file
+          <code>target/changelog.xml</code> you will find that data. Have a
+          look and see if the data in the file seems correct. If it is not
+          correct, then you are not getting the data you expected from your SCM
+          system. Please check your changelog plugin configuration.
+        </p>
+        <p>
+          If that doesn't help, you can try to run the maven-scm-plugin from
+          the command line. The maven-changelog-plugin uses Maven SCM under the
+          hood and running the maven-scm-plugin is a great way of verifying
+          that the <code>&lt;scm&gt;</code> element in your
+          <code>pom.xml</code> file is correct. Try this on the command line:
+<source>
+mvn scm:changelog
+</source>
+          It should show you the latest changes made in your SCM. It uses the
+          default settings, but you can change these by specifying parameters
+          on the command line. Read more about this in
+          <a href="http://maven.apache.org/scm/plugins/examples/scm-advance-features.html">the scm-plugin documentation</a>.
+        </p>
+      </answer>
+    </faq>
+    <faq id="Where can I find a working configuration for this plugin">
+      <question>Where can I find a working configuration for this plugin?</question>
+      <answer>
+        <p>
+          The plugin itself is configured to generate a changelog report. This
+          is done using the bare minimum of configuration. Have a look at the
+          <code>&lt;scm&gt;</code> and
+          <code>&lt;reporting&gt;/&lt;plugins&gt;</code> elements in the
+          <a href="http://svn.apache.org/repos/asf/maven/plugins/trunk/maven-changelog-plugin/pom.xml">pom.xml</a>
+          of this plugin. The generated report is found
+          <a href="changelog.html">here</a>.
+        </p>
+      </answer>
+    </faq>
+    <faq id="How do I use this plugin with Perforce?">
+      <question>How do I use this plugin with Perforce?</question>
+      <answer>
+        <p>
+          You have to specify your <code>clientspec</code> in the
+          <code>&lt;systemProperties&gt;</code> element of this plugin's
+          &lt;configuration&gt; element.
+<source>
+      <plugin>
+        <groupId>org.apache.maven.plugins</groupId>
+        <artifactId>maven-changelog-plugin</artifactId>
+        <configuration>
+          <systemProperties>
+            <property>
+              <name>maven.scm.perforce.clientspec.name</name>
+              <value>your-client-spec-name</value>
+            </property>
+          </systemProperties>
+        </configuration>
+      </plugin>
+</source>
+        </p>
+      </answer>
+    </faq>
+    <faq id="The Developer Activity report is blank, but the other reports are fine">
+      <question>The Developer Activity report is blank, but the other reports are fine</question>
+      <answer>
+        <p>
+          You need to add
+          <a href="http://maven.apache.org/ref/current/maven-model/maven.html#class_developer"><code>&lt;developer&gt;</code></a>
+          elements in your <code>pom.xml</code> file. Their id:s need to match
+          the userid:s that are used in your SCM system. Only checkins made by
+          a developer found in the pom will be added to the Developer Activity
+          report.
+        </p>
+      </answer>
+    </faq>
+    <faq id="I think I've found a bug in this plugin, what do I do">
+      <question>I think I've found a bug in this plugin, what do I do?</question>
+      <answer>
+        <p>
+          Please follow these steps in the order they come.
+        </p>
+        <ol>
+          <li>
+            Read all the FAQs on this page.
+          </li>
+          <li>
+            Ask a question on the user list. Please supply the necessary
+            information so that the people on the list can help you. This
+            includes the <code>&lt;scm&gt;</code> element from your
+            <code>pom.xml</code>, your plugin configuration plus a rich
+            description of what happens and what you expected to happen.
+          </li>
+          <li>
+            Create an issue in <a href="issue-tracking.html">JIRA</a>.
+          </li>
+        </ol>
+      </answer>
+    </faq>
+  </part>
+</faqs>

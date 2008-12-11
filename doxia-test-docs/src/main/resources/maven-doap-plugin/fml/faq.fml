@@ -1,0 +1,62 @@
+<?xml version="1.0" encoding="UTF-8"?>
+
+<!--
+Licensed to the Apache Software Foundation (ASF) under one
+or more contributor license agreements.  See the NOTICE file
+distributed with this work for additional information
+regarding copyright ownership.  The ASF licenses this file
+to you under the Apache License, Version 2.0 (the
+"License"); you may not use this file except in compliance
+with the License.  You may obtain a copy of the License at
+
+  http://www.apache.org/licenses/LICENSE-2.0
+
+Unless required by applicable law or agreed to in writing,
+software distributed under the License is distributed on an
+"AS IS" BASIS, WITHOUT WARRANTIES OR CONDITIONS OF ANY
+KIND, either express or implied.  See the License for the
+specific language governing permissions and limitations
+under the License.
+-->
+
+<faqs id="FAQ" title="Frequently Asked Questions">
+  <part id="General">
+    <faq id="What is DOAP">
+      <question>What is DOAP?</question>
+      <answer>
+        <p>DOAP stands for "Description of a Project" and you can find out everything there is to
+          know about DOAP in its <a href="http://usefulinc.com/doap">homepage</a> and in this <a
+            href="http://www.ibm.com/developerworks/xml/library/x-osproj3/">article</a>.</p>
+      </answer>
+    </faq>
+    <faq id="What are the benefits of DOAP">
+      <question>What are the benefits of DOAP?</question>
+      <answer>
+        <p>The <a href="http://en.wikipedia.org/wiki/Semantic_web">Semantic Web</a> provides
+          mechanisms to process data provided in a form that is easily processed by machines. Thus,
+          a DOAP is a machine readable document which facilitates projects research: it becomes much
+          easier to seek information in the mass of data of the Web, since the data have a given
+          foreseeable format.</p>
+      </answer>
+    </faq>
+    <faq id="Why would I use DOAP when I have a POM">
+      <question>Why would I use DOAP when I have a POM?</question>
+      <answer>
+        <p>That's a very good question! The answer is that generating a DOAP file should take no
+          effort if you are using Maven DOAP Plugin and it helps disseminate project information
+          which can only be a good thing. Cataloging tools like <a href="http://swik.net/">SWiK</a>
+          or like <a href="http://doapstore.org/">DoapStore</a> can benefit from you generating DOAP
+          files and that can also only be a good thing. Even so, it is still important to spread as
+          much information about projects around as possible so there is no downside to creating
+          DOAP files.</p>
+      </answer>
+    </faq>
+    <faq id="What to do with the generated DOAP file">
+      <question>What to do with the generated DOAP file?</question>
+      <answer>
+        <p>Maven DOAP plugin has generated a DOAP file, what's next? See <a
+            href="./examples/doap-in-use.html">DOAP in Use</a> part.</p>
+      </answer>
+    </faq>
+  </part>
+</faqs>

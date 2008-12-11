@@ -1,0 +1,174 @@
+<?xml version="1.0"?>
+
+<!--
+/*
+ * Licensed to the Apache Software Foundation (ASF) under one or more
+ * contributor license agreements.  See the NOTICE file distributed with
+ * this work for additional information regarding copyright ownership.
+ * The ASF licenses this file to You under the Apache License, Version 2.0
+ * (the "License"); you may not use this file except in compliance with
+ * the License.  You may obtain a copy of the License at
+ *
+ *      http://www.apache.org/licenses/LICENSE-2.0
+ *
+ * Unless required by applicable law or agreed to in writing, software
+ * distributed under the License is distributed on an "AS IS" BASIS,
+ * WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
+ * See the License for the specific language governing permissions and
+ * limitations under the License.
+ */
+ -->
+
+<document>
+
+  <properties>
+    <title>Doxia Markup Languages References</title>
+    <author email="ltheussl_AT_apache_DOT_org">Lukas Theussl</author>
+    <author email="vsiveton_AT_apache_DOT_org">Vincent Siveton</author>
+  </properties>
+
+  <body>
+
+    <section name="Doxia Markup Languages References">
+      <p>
+        The following table gives an overview of the markup languages currently
+        supported by Doxia. If a Parser is available for a given format, it
+        means that you can write your documentation in this language and Doxia
+        can generate output from it. If a Sink is available, it means you can
+        generate output in this format.
+      </p>
+
+      <p>
+        The source directory is the directory under which Maven expects source
+        documents in this format (e.g. <code>src/site/apt/</code> for Apt), the
+        extension is the default file extension, and the parser id is gives the
+        unique identifier that is used by plexus to lookup the corresponding
+        component.
+      </p>
+
+      <p>
+        Please consult the <a href="../modules/index.html">Modules Guide</a>
+        for links to reference documentation of external formats.
+      </p>
+
+      <p>
+
+        <table border="0">
+          <tr>
+            <th>Format</th>
+            <th>Short description</th>
+            <th align="center">Parser</th>
+            <th align="center">Sink</th>
+            <th>Source Directory</th>
+            <th>Extension</th>
+            <th>Parser Id</th>
+          </tr>
+
+          <tr>
+            <td><a href="./apt-format.html">Apt</a></td>
+            <td>Almost Plain Text</td>
+            <td align="center"><img src="../images/icon_success_sml.gif" alt="Yes"/></td>
+            <td align="center"><img src="../images/icon_success_sml.gif" alt="Yes"/></td>
+            <td><code>apt</code></td>
+            <td><code>apt</code></td>
+            <td><code>apt</code></td>
+          </tr>
+
+          <tr>
+            <td>Confluence</td>
+            <td>Confluence Enterprise Wiki</td>
+            <td align="center"><img src="../images/icon_success_sml.gif" alt="Yes"/></td>
+            <td align="center"><img src="../images/icon_success_sml.gif" alt="Yes"/></td>
+            <td><code>confluence</code></td>
+            <td><code>confluence</code></td>
+            <td><code>confluence</code></td>
+          </tr>
+
+          <tr>
+            <td>Simplified DocBook</td>
+            <td>Simplified DocBook XML Standard</td>
+            <td align="center"><img src="../images/icon_success_sml.gif" alt="Yes"/></td>
+            <td align="center"><img src="../images/icon_success_sml.gif" alt="Yes"/></td>
+            <td><code>docbook</code></td>
+            <td><code>xml</code></td>
+            <td><code>doc-book</code></td>
+          </tr>
+
+          <tr>
+            <td><a href="./fml-format.html">FML</a></td>
+            <td>FAQ Markup Language</td>
+            <td align="center"><img src="../images/icon_success_sml.gif" alt="Yes"/></td>
+            <td align="center"><img src="../images/icon_error_sml.gif" alt="Yes"/></td>
+            <td><code>fml</code></td>
+            <td><code>fml</code></td>
+            <td><code>fml</code></td>
+          </tr>
+
+          <tr>
+            <td>iText</td>
+            <td>iText PDF Library</td>
+            <td align="center"><img src="../images/icon_error_sml.gif" alt="Yes"/></td>
+            <td align="center"><img src="../images/icon_success_sml.gif" alt="Yes"/></td>
+            <td></td>
+            <td></td>
+            <td></td>
+          </tr>
+
+          <tr>
+            <td>LaTeX</td>
+            <td>LaTeX typesetting system</td>
+            <td align="center"><img src="../images/icon_error_sml.gif" alt="Yes"/></td>
+            <td align="center"><img src="../images/icon_success_sml.gif" alt="Yes"/></td>
+            <td></td>
+            <td></td>
+            <td></td>
+          </tr>
+
+          <tr>
+            <td>RTF</td>
+            <td>Microsoft Rich Text Format</td>
+            <td align="center"><img src="../images/icon_error_sml.gif" alt="Yes"/></td>
+            <td align="center"><img src="../images/icon_success_sml.gif" alt="Yes"/></td>
+            <td></td>
+            <td></td>
+            <td></td>
+          </tr>
+
+          <tr>
+            <td>TWiki</td>
+            <td>TWiki Structured Wiki</td>
+            <td align="center"><img src="../images/icon_success_sml.gif" alt="Yes"/></td>
+            <td align="center"><img src="../images/icon_success_sml.gif" alt="Yes"/></td>
+            <td><code>twiki</code></td>
+            <td><code>twiki</code></td>
+            <td><code>twiki</code></td>
+          </tr>
+
+          <tr>
+            <td><a href="./xdoc-format.html">Xdoc</a></td>
+            <td>XML Documentation Format</td>
+            <td align="center"><img src="../images/icon_success_sml.gif" alt="Yes"/></td>
+            <td align="center"><img src="../images/icon_success_sml.gif" alt="Yes"/></td>
+            <td><code>xdoc</code></td>
+            <td><code>xml</code></td>
+            <td><code>xdoc</code></td>
+          </tr>
+
+          <tr>
+            <td>XHTML</td>
+            <td>Extensible Hypertext Markup Language</td>
+            <td align="center"><img src="../images/icon_success_sml.gif" alt="Yes"/></td>
+            <td align="center"><img src="../images/icon_success_sml.gif" alt="Yes"/></td>
+            <td><code>xhtml</code></td>
+            <td><code>xhtml</code></td>
+            <td><code>xhtml</code></td>
+          </tr>
+        </table>
+
+      </p>
+
+    </section>
+
+  </body>
+
+</document>
