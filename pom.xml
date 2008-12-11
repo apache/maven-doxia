@@ -94,6 +94,7 @@ under the License.
   <modules>
     <module>doxia-logging-api</module>
     <module>doxia-sink-api</module>
+    <module>doxia-test-docs</module>
     <module>doxia-core</module>
     <module>doxia-modules</module>
     <module>doxia-book</module>
@@ -168,6 +169,11 @@ under the License.
       <dependency>
         <groupId>org.apache.maven.doxia</groupId>
         <artifactId>doxia-logging-api</artifactId>
+        <version>${projectVersion}</version>
+      </dependency>
+      <dependency>
+        <groupId>org.apache.maven.doxia</groupId>
+        <artifactId>doxia-test-docs</artifactId>
         <version>${projectVersion}</version>
       </dependency>
       <dependency>
