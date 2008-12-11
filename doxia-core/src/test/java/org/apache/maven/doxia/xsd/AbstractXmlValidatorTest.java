@@ -326,7 +326,7 @@ public abstract class AbstractXmlValidatorTest
             try
             {
                 in = AbstractXmlValidatorTest.class.getClassLoader().getResource( entry.getName() ).openStream();
-                String content = IOUtil.toString( in );
+                String content = IOUtil.toString( in, "UTF-8" );
                 CACHE_DOXIA_TEST_DOCUMENTS.put( "jar:" + conn.getJarFileURL() + "!/" + entry.getName(), content );
             }
             finally
