@@ -25,6 +25,7 @@ under the License.
     <artifactId>doxia-modules</artifactId>
     <groupId>org.apache.maven.doxia</groupId>
     <version>1.0-SNAPSHOT</version>
+    <relativePath>../pom.xml</relativePath>
   </parent>
   <artifactId>doxia-module-twiki</artifactId>
   <name>Doxia :: TWiki Module</name>
