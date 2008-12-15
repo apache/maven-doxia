@@ -26,6 +26,7 @@ under the License.
     <groupId>org.apache.maven.doxia</groupId>
     <artifactId>doxia</artifactId>
     <version>1.0-beta-1-SNAPSHOT</version>
+    <relativePath>../pom.xml</relativePath>
   </parent>
 
   <artifactId>doxia-maven-plugin</artifactId>
