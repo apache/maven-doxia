@@ -77,13 +77,12 @@ under the License.
 
   <profiles>
     <profile>
-      <id>xsddoc</id>
+      <id>reporting</id>
       <build>
         <plugins>
           <plugin>
             <groupId>org.apache.maven.plugins</groupId>
             <artifactId>maven-antrun-plugin</artifactId>
-            <version>1.2</version>
             <executions>
               <execution>
                 <phase>site</phase>
@@ -94,7 +93,7 @@ under the License.
                     <mkdir dir="${reporting.outputDirectory}/xsddoc"/>
 
                     <xsddoc file="${basedir}/src/main/resources/xdoc-2.0.xsd"
-                      out="${reporting.outputDirectory}/xsddoc"
+                      out="${basedir}/${reporting.outputDirectory}/xsddoc"
                       doctitle="Reference of Schema Xdoc 2.0"
                       verbose="true"/>
                   </tasks>
