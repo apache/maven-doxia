@@ -107,7 +107,7 @@ under the License.
   <distributionManagement>
     <site>
       <id>apache.website</id>
-      <url>scp://people.apache.org/www/maven.apache.org/doxia/doxia</url>
+      <url>scp://people.apache.org/www/maven.apache.org/doxia/doxia-1.0.x</url>
     </site>
   </distributionManagement>
 
