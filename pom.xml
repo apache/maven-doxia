@@ -21,12 +21,14 @@ under the License.
 
 <project xmlns="http://maven.apache.org/POM/4.0.0" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:schemaLocation="http://maven.apache.org/POM/4.0.0 http://maven.apache.org/maven-v4_0_0.xsd">
   <modelVersion>4.0.0</modelVersion>
+
   <parent>
     <groupId>org.apache.maven</groupId>
     <artifactId>maven-parent</artifactId>
     <version>10</version>
     <relativePath>../../pom/maven/pom.xml</relativePath>
   </parent>
+
   <groupId>org.apache.maven.doxia</groupId>
   <artifactId>doxia</artifactId>
   <version>1.0-SNAPSHOT</version>
@@ -35,11 +37,8 @@ under the License.
   <name>Doxia</name>
   <description>Doxia is a content generation framework that provides powerful techniques for generating static and dynamic content, supporting a variety of markup languages.</description>
   <url>http://maven.apache.org/doxia/doxia</url>
-  
-  <properties>
-    <projectVersion>${project.version}</projectVersion>
-  </properties>
-  
+  <inceptionYear>2005</inceptionYear>
+
   <mailingLists>
     <mailingList>
       <name>Doxia Developer List</name>
@@ -88,17 +87,119 @@ under the License.
     </mailingList>
   </mailingLists>
 
-  <issueManagement>
-    <system>jira</system>
-    <url>http://jira.codehaus.org/browse/DOXIA</url>
-  </issueManagement>
+  <modules>
+    <module>doxia-core</module>
+    <module>doxia-sink-api</module>
+    <module>doxia-modules</module>
+    <module>doxia-book</module>
+    <module>doxia-maven-plugin</module>
+  </modules>
 
   <scm>
     <connection>scm:svn:https://svn.apache.org/repos/asf/maven/doxia/doxia/branches/doxia-1.0.x/</connection>
     <developerConnection>scm:svn:https://svn.apache.org/repos/asf/maven/doxia/doxia/branches/doxia-1.0.x/</developerConnection>
     <url>https://svn.apache.org/viewvc/maven/doxia/doxia/branches/doxia-1.0.x/</url>
   </scm>
+  <issueManagement>
+    <system>jira</system>
+    <url>http://jira.codehaus.org/browse/DOXIA</url>
+  </issueManagement>
+  <distributionManagement>
+    <site>
+      <id>apache.website</id>
+      <url>scp://people.apache.org/www/maven.apache.org/doxia/doxia</url>
+    </site>
+  </distributionManagement>
 
+  <properties>
+    <projectVersion>${project.version}</projectVersion>
+  </properties>
+
+  <dependencyManagement>
+    <dependencies>
+      <dependency>
+        <groupId>org.apache.maven.doxia</groupId>
+        <artifactId>doxia-sink-api</artifactId>
+        <version>${projectVersion}</version>
+      </dependency>
+      <dependency>
+        <groupId>org.apache.maven.doxia</groupId>
+        <artifactId>doxia-core</artifactId>
+        <version>${projectVersion}</version>
+      </dependency>
+      <dependency>
+        <groupId>org.apache.maven.doxia</groupId>
+        <artifactId>doxia-core</artifactId>
+        <version>${projectVersion}</version>
+        <classifier>tests</classifier>
+      </dependency>
+      <!-- Plexus -->
+      <dependency>
+        <groupId>org.codehaus.plexus</groupId>
+        <artifactId>plexus-container-default</artifactId>
+        <version>1.0-alpha-30</version>
+      </dependency>
+      <dependency>
+        <groupId>org.codehaus.plexus</groupId>
+        <artifactId>plexus-utils</artifactId>
+        <version>1.4.5</version>
+      </dependency>
+    </dependencies>
+  </dependencyManagement>
+  <dependencies>
+    <dependency>
+      <groupId>junit</groupId>
+      <artifactId>junit</artifactId>
+      <version>3.8.2</version>
+      <scope>test</scope>
+    </dependency>
+  </dependencies>
+
+  <build>
+    <plugins>
+      <plugin>
+        <groupId>org.codehaus.plexus</groupId>
+        <artifactId>plexus-maven-plugin</artifactId>
+        <version>1.3.5</version>
+        <executions>
+          <execution>
+            <goals>
+              <goal>descriptor</goal>
+            </goals>
+          </execution>
+        </executions>
+      </plugin>
+    </plugins>
+    <pluginManagement>
+      <plugins>
+        <plugin>
+          <groupId>org.codehaus.modello</groupId>
+          <artifactId>modello-maven-plugin</artifactId>
+          <version>1.0-alpha-18</version>
+        </plugin>
+        <plugin>
+          <groupId>org.apache.maven.plugins</groupId>
+          <artifactId>maven-javadoc-plugin</artifactId>
+          <version>2.2</version>
+        </plugin>
+        <plugin>
+          <groupId>org.apache.maven.plugins</groupId>
+          <artifactId>maven-release-plugin</artifactId>
+          <version>2.0-beta-4</version>
+          <configuration>
+            <tagBase>https://svn.apache.org/repos/asf/maven/doxia/doxia/tags</tagBase>
+          </configuration>
+        </plugin>
+        <plugin>
+          <artifactId>maven-surefire-plugin</artifactId>
+          <configuration>
+            <forkMode>never</forkMode>
+          </configuration>
+        </plugin>
+      </plugins>
+    </pluginManagement>
+  </build>
+  
   <reporting>
     <plugins>
       <plugin>
@@ -159,105 +260,4 @@ under the License.
       </plugin>
     </plugins>
   </reporting>
-
-  <build>
-    <plugins>
-      <plugin>
-        <groupId>org.codehaus.plexus</groupId>
-        <artifactId>plexus-maven-plugin</artifactId>
-        <version>1.3.5</version>
-        <executions>
-          <execution>
-            <goals>
-              <goal>descriptor</goal>
-            </goals>
-          </execution>
-        </executions>
-      </plugin>
-    </plugins>
-    <pluginManagement>
-      <plugins>
-        <plugin>
-          <groupId>org.codehaus.modello</groupId>
-          <artifactId>modello-maven-plugin</artifactId>
-          <version>1.0-alpha-18</version>
-        </plugin>
-        <plugin>
-          <groupId>org.apache.maven.plugins</groupId>
-          <artifactId>maven-javadoc-plugin</artifactId>
-          <version>2.2</version>
-        </plugin>
-        <plugin>
-          <groupId>org.apache.maven.plugins</groupId>
-          <artifactId>maven-release-plugin</artifactId>
-          <version>2.0-beta-4</version>
-          <configuration>
-            <tagBase>https://svn.apache.org/repos/asf/maven/doxia/doxia/tags</tagBase>
-          </configuration>
-        </plugin>
-        <plugin>
-          <artifactId>maven-surefire-plugin</artifactId>
-          <configuration>
-            <forkMode>never</forkMode>
-          </configuration>
-        </plugin>
-      </plugins>
-    </pluginManagement>
-  </build>
-
-  <dependencyManagement>
-    <dependencies>
-      <dependency>
-        <groupId>org.apache.maven.doxia</groupId>
-        <artifactId>doxia-sink-api</artifactId>
-        <version>${projectVersion}</version>
-      </dependency>
-      <dependency>
-        <groupId>org.apache.maven.doxia</groupId>
-        <artifactId>doxia-core</artifactId>
-        <version>${projectVersion}</version>
-      </dependency>
-      <dependency>
-        <groupId>org.apache.maven.doxia</groupId>
-        <artifactId>doxia-core</artifactId>
-        <version>${projectVersion}</version>
-        <classifier>tests</classifier>
-      </dependency>
-      <!-- Plexus -->
-      <dependency>
-        <groupId>org.codehaus.plexus</groupId>
-        <artifactId>plexus-container-default</artifactId>
-        <version>1.0-alpha-30</version>
-      </dependency>
-      <dependency>
-        <groupId>org.codehaus.plexus</groupId>
-        <artifactId>plexus-utils</artifactId>
-        <version>1.4.5</version>
-      </dependency>
-    </dependencies>
-  </dependencyManagement>
-
-  <dependencies>
-    <dependency>
-      <groupId>junit</groupId>
-      <artifactId>junit</artifactId>
-      <version>3.8.2</version>
-      <scope>test</scope>
-    </dependency>
-  </dependencies>
-
-  <modules>
-    <module>doxia-core</module>
-    <module>doxia-sink-api</module>
-    <module>doxia-modules</module>
-    <module>doxia-book</module>
-    <module>doxia-maven-plugin</module>
-  </modules>
-
-  <distributionManagement>
-    <site>
-      <id>apache.website</id>
-      <url>scp://people.apache.org/www/maven.apache.org/doxia/doxia</url>
-    </site>
-  </distributionManagement>
 </project>
