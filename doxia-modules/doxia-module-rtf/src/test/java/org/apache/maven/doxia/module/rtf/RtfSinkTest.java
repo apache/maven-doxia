@@ -52,12 +52,6 @@ public class RtfSinkTest
     }
 
     /** {@inheritDoc} */
-    protected boolean isXmlSink()
-    {
-        return false;
-    }
-
-    /** {@inheritDoc} */
     protected Sink createSink()
         throws Exception
     {
