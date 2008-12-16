@@ -222,34 +222,13 @@ under the License.
             <link>http://plexus.codehaus.org/plexus-utils/apidocs/</link>
             <link>http://junit.sourceforge.net/javadoc/</link>
           </links>
-<!--
-          <taglets>
-            <taglet>
-              <tagletClass>org.codehaus.plexus.javadoc.PlexusComponentTaglet</tagletClass>
-              <tagletArtifact>
-                <groupId>org.codehaus.plexus</groupId>
-                <artifactId>plexus-javadoc</artifactId>
-                <version>1.0-SNAPSHOT</version>
-              </tagletArtifact>
-            </taglet>
-            <taglet>
-              <tagletClass>org.codehaus.plexus.javadoc.PlexusConfigurationTaglet</tagletClass>
-              <tagletArtifact>
-                <groupId>org.codehaus.plexus</groupId>
-                <artifactId>plexus-javadoc</artifactId>
-                <version>1.0-SNAPSHOT</version>
-              </tagletArtifact>
-            </taglet>
-            <taglet>
-              <tagletClass>org.codehaus.plexus.javadoc.PlexusRequirementTaglet</tagletClass>
-              <tagletArtifact>
-                <groupId>org.codehaus.plexus</groupId>
-                <artifactId>plexus-javadoc</artifactId>
-                <version>1.0-SNAPSHOT</version>
-              </tagletArtifact>
-            </taglet>
-          </taglets>
--->
+          <tagletArtifacts>
+            <tagletArtifact>
+              <groupId>org.codehaus.plexus</groupId>
+              <artifactId>plexus-javadoc</artifactId>
+              <version>1.0</version>
+            </tagletArtifact>
+          </tagletArtifacts>
           <reportSets>
             <reportSet>
               <id>html</id>
