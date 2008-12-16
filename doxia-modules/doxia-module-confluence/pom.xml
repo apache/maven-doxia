@@ -19,12 +19,14 @@ under the License.
 
 <project xmlns="http://maven.apache.org/POM/4.0.0" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:schemaLocation="http://maven.apache.org/POM/4.0.0 http://maven.apache.org/maven-v4_0_0.xsd">
   <modelVersion>4.0.0</modelVersion>
+
   <parent>
     <artifactId>doxia-modules</artifactId>
     <groupId>org.apache.maven.doxia</groupId>
     <version>1.0-SNAPSHOT</version>
     <relativePath>../pom.xml</relativePath>
   </parent>
+
   <artifactId>doxia-module-confluence</artifactId>
   <name>Doxia :: Confluence Module</name>
   <description>A Doxia module for Confluence source documents.</description>
@@ -46,6 +48,14 @@ under the License.
       <timezone>-5</timezone>
     </developer>
   </developers>
+
+  <dependencies>
+    <dependency>
+      <groupId>org.codehaus.plexus</groupId>
+      <artifactId>plexus-utils</artifactId>
+    </dependency>
+  </dependencies>
+
   <build>
     <plugins>
       <plugin>
@@ -58,10 +68,4 @@ under the License.
       </plugin>
     </plugins>  
   </build>
-  <dependencies>
-    <dependency>
-      <groupId>org.codehaus.plexus</groupId>
-      <artifactId>plexus-utils</artifactId>
-    </dependency>
-  </dependencies>
 </project>
