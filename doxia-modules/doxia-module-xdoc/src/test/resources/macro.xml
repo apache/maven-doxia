@@ -29,7 +29,7 @@ under the License.
       </p>
       <macro name="snippet">
         <param name="id" value="superpom"/>
-        <param name="url" value="http://svn.apache.org/repos/asf/maven/components/trunk/maven-project/src/main/resources/org/apache/maven/project/pom-4.0.0.xml"/>
+        <param name="url" value="http://svn.apache.org/repos/asf/maven/components/trunk/maven-project-builder/src/main/resources/org/apache/maven/project/pom-4.0.0.xml"/>
       </macro>
   </body>
 </document>
