@@ -354,7 +354,7 @@ public class TextParser
      * @param m    matcher to test
      * @param line line to test
      * @return <code>true</code> if the match on m represent a word (must be
-     *         a space before the word or must be the begining of the line)
+     *         a space before the word or must be the beginning of the line)
      */
     private boolean isAWord( final Matcher m, final String line )
     {
@@ -364,7 +364,7 @@ public class TextParser
     /**
      * @param m matcher to test
      * @param line line to test
-     * @return true if it is the beggining of a word
+     * @return true if it is the beginning of a word
      */
     private boolean startLikeWord( final Matcher m, final String line )
     {
