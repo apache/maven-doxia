@@ -82,4 +82,10 @@ class AnchorBlock
     {
         return name.hashCode();
     }
+
+    /** {@inheritDoc}*/
+    public String toString()
+    {
+        return name;
+    }
 }
