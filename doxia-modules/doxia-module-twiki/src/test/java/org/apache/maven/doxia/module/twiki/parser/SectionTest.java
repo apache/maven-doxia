@@ -128,7 +128,7 @@ public class SectionTest
         final SectionBlock expected =
             new SectionBlock( "Title3", 3, new Block[] { new ParagraphBlock( new Block[] {
                 new TextBlock( "This is " ), new BoldBlock( new Block[] { new TextBlock( "a" ) } ),
-                new TextBlock( " parragraph of a section. Some text." ), } ) } );
+                new TextBlock( " parragraph of a section. Some text." ) } ) } );
         assertEquals( expected, block );
     }
 
@@ -169,7 +169,7 @@ public class SectionTest
         expected =
             new Block[] { new SectionBlock( "Title", 1, new Block[] {
                 new ParagraphBlock( new Block[] { new TextBlock( "Some text" ) } ), new HorizontalRuleBlock(),
-                new ParagraphBlock( new Block[] { new TextBlock( "More text" ) } ), } ), };
+                new ParagraphBlock( new Block[] { new TextBlock( "More text" ) } ) } ) };
         blocks = (Block[]) twikiParser.parse( source ).toArray( new Block[] {} );
         assertTrue( Arrays.equals( expected, blocks ) );
     }

@@ -65,7 +65,7 @@ public class VerbatimTest
         expected =
             new VerbatimBlock( new Block[] { new TextBlock( " hello, \n" ),
                 new TextBlock( " this is a verbatim text \n" ), new TextBlock( " which i would like to test \n" ),
-                new TextBlock( " Thanks \n" ), } );
+                new TextBlock( " Thanks \n" ) } );
 
         block = getVerbatimParser().visit( source.getNextLine(), source );
         assertEquals( block, expected );
@@ -85,10 +85,10 @@ public class VerbatimTest
         Block[] expected;
         expected =
             new Block[] {
-                new ParagraphBlock( new Block[] { new TextBlock( "hello this is a paragraph" ), } ),
+                new ParagraphBlock( new Block[] { new TextBlock( "hello this is a paragraph" ) } ),
                 new VerbatimBlock( new Block[] { new TextBlock( " hello, \n" ),
                     new TextBlock( " this is a verbatim text \n" ),
-                    new TextBlock( " which i would like to test \n" ), new TextBlock( " Thanks \n" ), } ) };
+                    new TextBlock( " which i would like to test \n" ), new TextBlock( " Thanks \n" ) } ) };
 
         List block = twikiParser.parse( source );
         assertTrue( Arrays.equals( block.toArray(), expected ) );
@@ -108,7 +108,7 @@ public class VerbatimTest
         Block[] expected;
         expected =
             new Block[] { new SectionBlock( "foo", 2, new Block[] { new VerbatimBlock( new Block[] {
-                new TextBlock( " hello, \n" ), new TextBlock( " Thanks \n" ), } ) } ), };
+                new TextBlock( " hello, \n" ), new TextBlock( " Thanks \n" ) } ) } ) };
 
         List block = twikiParser.parse( source );
         assertTrue( Arrays.equals( block.toArray(), expected ) );

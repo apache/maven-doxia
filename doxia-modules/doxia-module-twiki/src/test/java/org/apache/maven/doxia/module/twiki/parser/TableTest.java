@@ -58,9 +58,9 @@ public class TableTest
         expected =
             new TableBlock( new Block[] {
                 new TableRowBlock( new Block[] { new TableCellBlock( new Block[] { new TextBlock( "cell1" ) } ),
-                    new TableCellBlock( new Block[] { new TextBlock( "cell2" ) } ), } ),
+                    new TableCellBlock( new Block[] { new TextBlock( "cell2" ) } ) } ),
                 new TableRowBlock( new Block[] { new TableCellBlock( new Block[] { new TextBlock( "cell3" ) } ),
-                    new TableCellBlock( new Block[] { new TextBlock( "cell4" ) } ), } ), } );
+                    new TableCellBlock( new Block[] { new TextBlock( "cell4" ) } ) } ) } );
 
         block = tableParser.visit( source.getNextLine(), source );
         assertEquals( block, expected );
@@ -80,7 +80,7 @@ public class TableTest
         expected =
             new TableBlock( new Block[] { new TableRowBlock( new Block[] {
                 new TableCellHeaderBlock( new Block[] { new TextBlock( "cell1" ) } ),
-                new TableCellHeaderBlock( new Block[] { new TextBlock( "cell2" ) } ), } ), } );
+                new TableCellHeaderBlock( new Block[] { new TextBlock( "cell2" ) } ) } ) } );
 
         block = tableParser.visit( source.getNextLine(), source );
         assertEquals( block, expected );

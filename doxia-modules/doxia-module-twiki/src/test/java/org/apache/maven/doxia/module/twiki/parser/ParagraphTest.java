@@ -162,7 +162,7 @@ public class ParagraphTest
         source = new ByLineReaderSource( new StringReader( "" + "Some text\n" + "-----------\n" + "More text" ) );
         expected =
             new Block[] { new ParagraphBlock( new Block[] { new TextBlock( "Some text" ) } ),
-                new HorizontalRuleBlock(), new ParagraphBlock( new Block[] { new TextBlock( "More text" ) } ), };
+                new HorizontalRuleBlock(), new ParagraphBlock( new Block[] { new TextBlock( "More text" ) } ) };
         blocks = (Block[]) twikiParser.parse( source ).toArray( new Block[] {} );
         assertTrue( Arrays.equals( expected, blocks ) );
     }

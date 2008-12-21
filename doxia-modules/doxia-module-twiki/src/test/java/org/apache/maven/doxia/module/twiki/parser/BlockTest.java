@@ -103,13 +103,13 @@ public class BlockTest
                                         new ItalicBlock(
                                                          new Block[] { new MonospaceBlock(
                                                                                            new Block[] { new TextBlock(
-                                                                                                                        "has" ) } ) } ), },
+                                                                                                                        "has" ) } ) } ) },
                                     new Block[] {
                                         new TextBlock( "mary " ),
                                         new BoldBlock(
                                                        new Block[] { new MonospaceBlock(
                                                                                          new Block[] { new TextBlock(
-                                                                                                                      "has" ) } ) } ), } ) );
+                                                                                                                      "has" ) } ) } ) } ) );
     }
 
     /**

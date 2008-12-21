@@ -105,7 +105,7 @@ public class TWikiParser
         formatTextParser.setTextParser( textParser );
         tableParser.setTextParser( formatTextParser );
 
-        parsers = new BlockParser[] { sectionParser, hrulerParser, verbatimParser, paraParser, };
+        parsers = new BlockParser[] { sectionParser, hrulerParser, verbatimParser, paraParser };
     }
 
     /**

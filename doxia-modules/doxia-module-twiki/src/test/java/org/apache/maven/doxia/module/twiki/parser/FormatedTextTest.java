@@ -47,18 +47,18 @@ public class FormatedTextTest
         text = "foo *bold* bar";
         blocks = formatTextParser.parse( text );
         assertTrue( Arrays.equals( new Block[] { new TextBlock( "foo " ),
-            new BoldBlock( new Block[] { new TextBlock( "bold" ) } ), new TextBlock( " bar" ), }, blocks ) );
+            new BoldBlock( new Block[] { new TextBlock( "bold" ) } ), new TextBlock( " bar" ) }, blocks ) );
 
         text = "\t*bold* bar";
         blocks = formatTextParser.parse( text );
         assertTrue( Arrays.equals( new Block[] { new TextBlock( "\t" ),
-            new BoldBlock( new Block[] { new TextBlock( "bold" ) } ), new TextBlock( " bar" ), }, blocks ) );
+            new BoldBlock( new Block[] { new TextBlock( "bold" ) } ), new TextBlock( " bar" ) }, blocks ) );
 
         text = "*nice* foo *bold* bar";
         blocks = formatTextParser.parse( text );
         assertTrue( Arrays.equals( new Block[] { new BoldBlock( new Block[] { new TextBlock( "nice" ) } ),
             new TextBlock( " foo " ), new BoldBlock( new Block[] { new TextBlock( "bold" ) } ),
-            new TextBlock( " bar" ), }, blocks ) );
+            new TextBlock( " bar" ) }, blocks ) );
     }
 
     /**
@@ -77,13 +77,13 @@ public class FormatedTextTest
         text = "foo _italic_ bar";
         blocks = formatTextParser.parse( text );
         assertTrue( Arrays.equals( new Block[] { new TextBlock( "foo " ),
-            new ItalicBlock( new Block[] { new TextBlock( "italic" ) } ), new TextBlock( " bar" ), }, blocks ) );
+            new ItalicBlock( new Block[] { new TextBlock( "italic" ) } ), new TextBlock( " bar" ) }, blocks ) );
 
         text = "_nice_ foo _italic_ bar";
         blocks = formatTextParser.parse( text );
         assertTrue( Arrays.equals( new Block[] { new ItalicBlock( new Block[] { new TextBlock( "nice" ) } ),
             new TextBlock( " foo " ), new ItalicBlock( new Block[] { new TextBlock( "italic" ) } ),
-            new TextBlock( " bar" ), }, blocks ) );
+            new TextBlock( " bar" ) }, blocks ) );
     }
 
     /**
@@ -100,7 +100,7 @@ public class FormatedTextTest
             new MonospaceBlock( new Block[] { new TextBlock( "has" ) } ), new TextBlock( " a " ),
             new MonospaceBlock( new Block[] { new TextBlock( "little" ) } ),
             new TextBlock( " lamb He followed her (" ),
-            new MonospaceBlock( new Block[] { new TextBlock( "to school one day" ) } ), new TextBlock( ")" ), },
+            new MonospaceBlock( new Block[] { new TextBlock( "to school one day" ) } ), new TextBlock( ")" ) },
                                    blocks ) );
     }
 
@@ -119,7 +119,7 @@ public class FormatedTextTest
                 new BoldBlock( new Block[] { new MonospaceBlock( new Block[] { new TextBlock( "has" ) } ) } ),
                 new TextBlock( " a " ),
                 new BoldBlock( new Block[] { new MonospaceBlock( new Block[] { new TextBlock( "little" ) } ) } ),
-                new TextBlock( " lamb" ), };
+                new TextBlock( " lamb" ) };
 
         assertTrue( Arrays.equals( expected, blocks ) );
     }
@@ -138,7 +138,7 @@ public class FormatedTextTest
             new BoldBlock( new Block[] { new ItalicBlock( new Block[] { new TextBlock( "has" ) } ) } ),
             new TextBlock( " a " ),
             new BoldBlock( new Block[] { new ItalicBlock( new Block[] { new TextBlock( "little" ) } ) } ),
-            new TextBlock( " lamb" ), }, blocks ) );
+            new TextBlock( " lamb" ) }, blocks ) );
     }
 
     /**
@@ -157,7 +157,7 @@ public class FormatedTextTest
             new Block[] { new TextBlock( "All " ), new BoldBlock( new Block[] { new TextBlock( "work and" ) } ),
                 new TextBlock( " " ), new MonospaceBlock( new Block[] { new TextBlock( "no play" ) } ),
                 new TextBlock( " " ), new ItalicBlock( new Block[] { new TextBlock( "makes" ) } ),
-                new TextBlock( " Juan a dull " ), new BoldBlock( new Block[] { new TextBlock( "boy" ) } ), };
+                new TextBlock( " Juan a dull " ), new BoldBlock( new Block[] { new TextBlock( "boy" ) } ) };
         assertTrue( Arrays.equals( expected, blocks ) );
 
     }
@@ -182,8 +182,8 @@ public class FormatedTextTest
                                    new TextBlock( "work and " ),
                                    new MonospaceBlock( new Block[] { new TextBlock( "no play " ),
                                        new ItalicBlock( new Block[] { new TextBlock( "makes" ) } ),
-                                       new TextBlock( " Juan" ), } ), new TextBlock( " a dull" ), } ),
-                new TextBlock( " boy" ), };
+                                       new TextBlock( " Juan" ) } ), new TextBlock( " a dull" ) } ),
+                new TextBlock( " boy" ) };
         assertTrue( Arrays.equals( expected, blocks ) );
     }
 
