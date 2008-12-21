@@ -21,8 +21,12 @@ package org.apache.maven.doxia.module.docbook;
 
 import java.io.Writer;
 
+import javax.swing.text.MutableAttributeSet;
+import javax.swing.text.SimpleAttributeSet;
+
 import org.apache.maven.doxia.sink.AbstractSinkTest;
 import org.apache.maven.doxia.sink.Sink;
+import org.apache.maven.doxia.sink.SinkUtils;
 
 /**
  * @author <a href="mailto:jason@maven.org">Jason van Zyl</a>
@@ -148,7 +152,13 @@ public class DocBookSinkTest extends AbstractSinkTest
     /** {@inheritDoc} */
     protected String getTableBlock( String cell, String caption )
     {
-        return "<table frame=\"none\" rowsep=\"0\" colsep=\"0\"><title>" + caption
+        // Using the same set ordering than the JVM
+        MutableAttributeSet att = new SimpleAttributeSet();
+        att.addAttribute( "frame", "none" );
+        att.addAttribute( "rowsep", "0" );
+        att.addAttribute( "colsep", "0" );
+
+        return "<table" + SinkUtils.getAttributeString( att ) + "><title>" + caption
             + "</title>" + "<tgroup cols=\"1\"><colspec align=\"center\"></colspec>" + "<tbody><row><entry>"
             + cell  + "</entry>" + "</row>" + "</tbody></tgroup>" + "</table>";
     }

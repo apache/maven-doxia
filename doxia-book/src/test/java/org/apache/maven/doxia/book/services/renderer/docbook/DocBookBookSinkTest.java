@@ -2,9 +2,13 @@ package org.apache.maven.doxia.book.services.renderer.docbook;
 
 import java.io.Writer;
 
+import javax.swing.text.MutableAttributeSet;
+import javax.swing.text.SimpleAttributeSet;
+
 import org.apache.maven.doxia.module.docbook.DocBookSink;
 import org.apache.maven.doxia.sink.AbstractSinkTest;
 import org.apache.maven.doxia.sink.Sink;
+import org.apache.maven.doxia.sink.SinkUtils;
 
 /**
  * Test the book path of the DockBook sink
@@ -361,7 +365,13 @@ public class DocBookBookSinkTest extends AbstractSinkTest
     /** {@inheritDoc} */
     protected String getTableBlock( String cell, String caption )
     {
-        return "<table frame=\"none\" rowsep=\"0\" colsep=\"0\"><title>" + caption
+        // Using the same set ordering than the JVM
+        MutableAttributeSet att = new SimpleAttributeSet();
+        att.addAttribute( "frame", "none" );
+        att.addAttribute( "rowsep", "0" );
+        att.addAttribute( "colsep", "0" );
+
+        return "<table" + SinkUtils.getAttributeString( att ) + "><title>" + caption
             + "</title><tgroup cols=\"1\"><colspec align=\"center\" /><tbody><row><entry>"
             + cell  + "</entry></row></tbody></tgroup></table>";
     }
