@@ -31,6 +31,7 @@ import org.apache.maven.doxia.util.HtmlTools;
 import org.apache.maven.doxia.parser.ParseException;
 import org.apache.maven.doxia.parser.Parser;
 import org.apache.maven.doxia.sink.Sink;
+
 import org.codehaus.plexus.util.StringUtils;
 
 /**
@@ -119,7 +120,7 @@ public class TocMacro
 
             if ( index.getChildEntries().size() > 0 )
             {
-                if ( ( fromDepth < section ) || ( section == 0 ) )
+                if ( ( fromDepth <= section ) || ( section == 0 ) )
                 {
                     sink.list();
                 }
@@ -129,11 +130,11 @@ public class TocMacro
                     IndexEntry sectionIndex = (IndexEntry) it.next();
                     if ( ( i == section ) || ( section == 0 ) )
                     {
-                        writeSubSectionN( sink, sectionIndex, i );
+                        writeSubSectionN( sink, sectionIndex, 1 );
                     }
                     i++;
                 }
-                if ( ( fromDepth < section ) || ( section == 0 ) )
+                if ( ( fromDepth <= section ) || ( section == 0 ) )
                 {
                     sink.list_();
                 }
@@ -152,7 +153,7 @@ public class TocMacro
      */
     private void writeSubSectionN( Sink sink, IndexEntry sectionIndex, int n )
     {
-        if ( fromDepth < n )
+        if ( fromDepth <= n )
         {
             sink.listItem();
             sink.link( "#" + HtmlTools.encodeId( sectionIndex.getId() ) );
@@ -160,18 +161,18 @@ public class TocMacro
             sink.link_();
         }
 
-        if ( toDepth >= n )
+        if ( toDepth > n )
         {
             if ( sectionIndex.getChildEntries().size() > 0 )
             {
-                if ( fromDepth < ( n + 1 ) )
+                if ( fromDepth <= n )
                 {
                     sink.list();
                 }
                 for ( Iterator it = sectionIndex.getChildEntries().iterator(); it.hasNext(); )
                 {
                     IndexEntry subsectionIndex = (IndexEntry) it.next();
-                    if ( n == DEFAULT_DEPTH )
+                    if ( n == toDepth - 1 )
                     {
                         sink.listItem();
                         sink.link( "#" + HtmlTools.encodeId( subsectionIndex.getId() ) );
@@ -184,14 +185,14 @@ public class TocMacro
                         writeSubSectionN( sink, subsectionIndex, n + 1 );
                     }
                 }
-                if ( fromDepth < ( n + 1 ) )
+                if ( fromDepth <= n )
                 {
                     sink.list_();
                 }
             }
         }
 
-        if ( fromDepth < n )
+        if ( fromDepth <= n )
         {
             sink.listItem_();
         }
@@ -215,6 +216,7 @@ public class TocMacro
         }
 
         int i;
+
         try
         {
             i = Integer.parseInt( value );
