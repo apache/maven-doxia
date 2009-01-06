@@ -36,24 +36,25 @@ import org.codehaus.plexus.util.StringUtils;
 
 /**
  * Macro to display a <code>Table Of Content</code> in a given <code>Sink</code>.
- * The input for this macro are:
+ * The input parameters for this macro are:
  * <dl>
  * <dt>section</dt>
- * <dd>Display the specificated section number or all sections if 0
+ * <dd>Display a TOC for the specified section only or all sections if 0
  * (in this case, other parameters are ignored).<br/>
  * Positive int, not mandatory, 0 by default.</dd>
  * <dt>fromDepth</dt>
- * <dd>Display the depth starting for the given section number.<br/>
+ * <dd>Minimal depth of entries to display in the TOC.
+ * Sections are depth 1, sub-sections depth 2, etc.<br/>
  * Positive int, not mandatory, 0 by default.</dd>
  * <dt>toDepth</dt>
- * <dd>Display the depth ending for the given section number.<br/>
+ * <dd>Maximum depth of entries to display in the TOC.<br/>
  * Positive int, not mandatory, 5 by default.</dd>
  * </dl>
  * For instance, in an APT file, you could write:
  * <dl>
- * <dt>%{toc|section=2|fromDepth=2|toDepth=2}</dt>
- * <dd>Display a TOC for the section number 2 in the document, from the
- * subsection depth 1 to the subsection depth 2</dd>
+ * <dt>%{toc|section=2|fromDepth=2|toDepth=3}</dt>
+ * <dd>Display a TOC for the second section in the document, including all
+ * subsections (depth 2) and  sub-subsections (depth 3).</dd>
  * <dt>%{toc}</dt>
  * <dd>display a TOC with all section and subsections
  * (similar to %{toc|section=0} )</dd>
@@ -101,48 +102,53 @@ public class TocMacro
         Parser parser = (Parser) request.getParameter( "parser" );
 
         section = getInt( request, "section", 0 );
-        if ( section != 0 )
-        {
-            fromDepth = getInt( request, "fromDepth", 0 );
-            toDepth = getInt( request, "toDepth", DEFAULT_DEPTH );
-        }
-        else
+
+        if ( section == 0 )
         {
             fromDepth = 0;
             toDepth = DEFAULT_DEPTH;
         }
+        else
+        {
+            fromDepth = getInt( request, "fromDepth", 0 );
+            toDepth = getInt( request, "toDepth", DEFAULT_DEPTH );
+        }
+
         IndexEntry index = new IndexEntry( "index" );
         IndexingSink tocSink = new IndexingSink( index );
 
         try
         {
             parser.parse( new StringReader( source ), tocSink );
-
-            if ( index.getChildEntries().size() > 0 )
-            {
-                if ( ( fromDepth <= section ) || ( section == 0 ) )
-                {
-                    sink.list();
-                }
-                int i = 1;
-                for ( Iterator it = index.getChildEntries().iterator(); it.hasNext(); )
-                {
-                    IndexEntry sectionIndex = (IndexEntry) it.next();
-                    if ( ( i == section ) || ( section == 0 ) )
-                    {
-                        writeSubSectionN( sink, sectionIndex, 1 );
-                    }
-                    i++;
-                }
-                if ( ( fromDepth <= section ) || ( section == 0 ) )
-                {
-                    sink.list_();
-                }
-            }
         }
         catch ( ParseException e )
         {
             throw new MacroExecutionException( "ParseException: " + e.getMessage(), e );
+        }
+
+        if ( index.getChildEntries().size() > 0 )
+        {
+            if ( ( fromDepth <= section ) || ( section == 0 ) )
+            {
+                sink.list();
+            }
+
+            int i = 1;
+
+            for ( Iterator it = index.getChildEntries().iterator(); it.hasNext(); )
+            {
+                IndexEntry sectionIndex = (IndexEntry) it.next();
+                if ( ( i == section ) || ( section == 0 ) )
+                {
+                    writeSubSectionN( sink, sectionIndex, 1 );
+                }
+                i++;
+            }
+
+            if ( ( fromDepth <= section ) || ( section == 0 ) )
+            {
+                sink.list_();
+            }
         }
     }
 
@@ -169,9 +175,11 @@ public class TocMacro
                 {
                     sink.list();
                 }
+
                 for ( Iterator it = sectionIndex.getChildEntries().iterator(); it.hasNext(); )
                 {
                     IndexEntry subsectionIndex = (IndexEntry) it.next();
+
                     if ( n == toDepth - 1 )
                     {
                         sink.listItem();
@@ -185,6 +193,7 @@ public class TocMacro
                         writeSubSectionN( sink, subsectionIndex, n + 1 );
                     }
                 }
+
                 if ( fromDepth <= n )
                 {
                     sink.list_();
