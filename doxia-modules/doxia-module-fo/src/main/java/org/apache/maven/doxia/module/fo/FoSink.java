@@ -666,6 +666,8 @@ public class FoSink
         writeln( "<fo:table-column column-width=\"proportional-column-width(1)\"/>" );
 
         // TODO: calculate width[i]
+        // FIXME: XhtmlBaseParser always calls tableRows with a justification array of length one
+        // that's why the pdf plugin can't handle xdoc tables. How to determine the number of columns?
         if ( cellJustif != null )
         {
             for ( int i = 0;  i < cellJustif.length; i++ )
