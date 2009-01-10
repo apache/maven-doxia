@@ -1610,6 +1610,13 @@ public class AptParser
                         AptParser.this.nextLine();
                         break;
                     }
+                    else if ( ( AptParser.charAt( l, length, i ) == COMMENT
+                            && AptParser.charAt( l, length, i + 1 ) == COMMENT )
+                            || type == COMMENT_BLOCK )
+                    {
+                        // parse comments as separate blocks line by line
+                        break;
+                    }
 
                     buffer.append( EOL );
                     buffer.append( l );
