@@ -40,8 +40,10 @@ public interface SinkFactory
      *
      * @param outputDir the not-null output dir.
      * @param outputName the not-null output name.
+     *
      * @return a <code>Sink</code> instance with a file as output.
-     * @throws IOException if any
+     *
+     * @throws java.io.IOException if any
      */
     Sink createSink( File outputDir, String outputName )
         throws IOException;
@@ -52,10 +54,14 @@ public interface SinkFactory
      * @param outputDir the not-null output dir.
      * @param outputName the not-null output name.
      * @param encoding the output encoding.
+     *
      * @return a <code>Sink</code> instance with a file as output and using specified encoding.
-     * @throws IOException if any
+     *
+     * @throws java.io.IOException if any
+     *
      * @see #createSink(File, String)
-     * @since 1.0-beta-1
+     *
+     * @since 1.1
      */
     Sink createSink( File outputDir, String outputName, String encoding )
         throws IOException;
@@ -64,8 +70,12 @@ public interface SinkFactory
      * Create a <code>Sink</code> into an OutputStream.
      *
      * @param out not null OutputStream to write the result.
+     *
      * @return a <code>Sink</code> instance.
-     * @since 1.0-beta-1
+     *
+     * @throws java.io.IOException if any
+     *
+     * @since 1.1
      */
     Sink createSink( OutputStream out )
         throws IOException;
@@ -75,8 +85,12 @@ public interface SinkFactory
      *
      * @param out not null OutputStream to write the result.
      * @param encoding the output encoding.
+     *
      * @return a <code>Sink</code> instance using specified encoding.
-     * @since 1.0-beta-1
+     *
+     * @throws java.io.IOException if any
+     *
+     * @since 1.1
      */
     Sink createSink( OutputStream out, String encoding )
         throws IOException;

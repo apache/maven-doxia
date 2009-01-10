@@ -39,8 +39,12 @@ public abstract class AbstractTextSinkFactory
     implements SinkFactory
 {
     /**
+     * Create a text Sink for a given encoding.
+     *
      * @param writer The writer for the sink output, never <code>null</code>.
      * @param encoding The character encoding used by the writer.
+     *
+     * @return a Sink for text output in the given encoding.
      */
     protected abstract Sink createSink( Writer writer, String encoding );
 

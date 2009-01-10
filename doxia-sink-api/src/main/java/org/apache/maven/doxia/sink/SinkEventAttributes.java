@@ -319,7 +319,7 @@ public interface SinkEventAttributes
     String HEADERS = "headers";
 
     /**
-     * Whether to disable or enable automatic text wrapping for an element. 
+     * Whether to disable or enable automatic text wrapping for an element.
      */
     String NOWRAP = "nowrap";
 
