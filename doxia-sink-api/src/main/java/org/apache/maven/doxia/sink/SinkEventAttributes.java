@@ -48,7 +48,7 @@ import javax.swing.text.MutableAttributeSet;
  *
  * @author ltheussl
  * @version $Id$
- * @since 1.0-beta-1
+ * @since 1.1
  */
 public interface SinkEventAttributes
     extends MutableAttributeSet

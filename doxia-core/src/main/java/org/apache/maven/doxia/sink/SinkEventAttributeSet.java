@@ -30,7 +30,7 @@ import javax.swing.text.AttributeSet;
  *
  * @author ltheussl
  * @version $Id$
- * @since 1.0-beta-1
+ * @since 1.1
  */
 public class SinkEventAttributeSet
     implements SinkEventAttributes

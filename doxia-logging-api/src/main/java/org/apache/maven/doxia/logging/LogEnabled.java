@@ -27,7 +27,7 @@ package org.apache.maven.doxia.logging;
  *
  * @author ltheussl
  * @version $Id$
- * @since 1.0-beta-1
+ * @since 1.1
  */
 public interface LogEnabled
 {

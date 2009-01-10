@@ -26,7 +26,7 @@ import org.codehaus.plexus.logging.Logger;
  *
  * @author <a href="mailto:vincent.siveton@gmail.com">Vincent Siveton</a>
  * @version $Id$
- * @since 1.0-beta-1
+ * @since 1.1
  * @see org.apache.maven.plugin.logging.Logger
  */
 public class PlexusLoggerWrapper

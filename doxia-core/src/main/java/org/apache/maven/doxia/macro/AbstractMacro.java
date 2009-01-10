@@ -64,7 +64,7 @@ public abstract class AbstractMacro
      *
      * @param paramName The name of the parameter to check.
      * @param paramValue The parameter value.
-     * @since 1.0-beta-1
+     * @since 1.1
      */
     protected void required( String paramName, String paramValue )
     {

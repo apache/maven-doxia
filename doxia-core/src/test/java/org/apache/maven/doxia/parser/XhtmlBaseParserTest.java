@@ -31,7 +31,7 @@ import org.codehaus.plexus.PlexusTestCase;
  *
  * @author ltheussl
  * @version $Id$
- * @since 1.0-beta-1
+ * @since 1.1
  */
 public class XhtmlBaseParserTest
     extends PlexusTestCase

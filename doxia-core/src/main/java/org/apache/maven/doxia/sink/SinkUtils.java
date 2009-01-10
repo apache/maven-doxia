@@ -33,7 +33,7 @@ import org.apache.maven.doxia.markup.Markup;
  *
  * @author ltheussl
  * @version $Id$
- * @since 1.0-beta-1
+ * @since 1.1
  */
 public class SinkUtils
 {

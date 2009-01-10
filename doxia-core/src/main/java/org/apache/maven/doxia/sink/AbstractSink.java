@@ -29,7 +29,7 @@ import org.apache.maven.doxia.markup.Markup;
  * @author ltheussl
  * @author <a href="mailto:vincent.siveton@gmail.com">Vincent Siveton</a>
  * @version $Id$
- * @since 1.0-beta-1
+ * @since 1.1
  */
 public abstract class AbstractSink
     implements Sink, Markup

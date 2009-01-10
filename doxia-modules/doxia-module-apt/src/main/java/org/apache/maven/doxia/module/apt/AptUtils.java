@@ -25,7 +25,7 @@ import org.apache.maven.doxia.util.DoxiaUtils;
  * A collection of utility methods for dealing with APT documents.
  *
  * @author ltheussl
- * @since 1.0-beta-1
+ * @since 1.1
  * @version $Id$
  */
 public class AptUtils

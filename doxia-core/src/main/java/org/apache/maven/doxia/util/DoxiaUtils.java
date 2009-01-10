@@ -27,7 +27,7 @@ import java.util.Locale;
  * any specific Doxia module or document format.
  *
  * @author ltheussl
- * @since 1.0-beta-1
+ * @since 1.1
  * @version $Id$
  */
 public class DoxiaUtils

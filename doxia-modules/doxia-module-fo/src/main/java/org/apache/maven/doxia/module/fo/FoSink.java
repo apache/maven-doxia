@@ -38,7 +38,7 @@ import org.apache.maven.doxia.util.HtmlTools;
  *
  * @author ltheussl
  * @version $Id$
- * @since 1.0-beta-1
+ * @since 1.1
  */
 public class FoSink
     extends AbstractXmlSink
