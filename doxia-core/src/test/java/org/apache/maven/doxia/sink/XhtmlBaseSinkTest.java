@@ -68,4 +68,48 @@ public class XhtmlBaseSinkTest
             }
         }
     }
+
+    /** @throws Exception */
+    public void testNestedTables()
+        throws Exception
+    {
+        // DOXIA-177
+        XhtmlBaseSink sink = null;
+
+        try
+        {
+            Writer writer =  new StringWriter();
+
+            sink = new XhtmlBaseSink( writer );
+
+            sink.table();
+            sink.tableRows( new int[] {0}, false );
+            sink.tableRow();
+            sink.tableCell();
+// FIXME: include nested table
+//            sink.table();
+//            sink.tableRows( new int[] {0}, false );
+//            sink.tableRow();
+//            sink.tableCell();
+//            sink.text( "nestedTableCell" );
+//            sink.tableCell_();
+//            sink.tableRow_();
+//            sink.tableRows_();
+//            sink.table_();
+            sink.tableCell_();
+            sink.tableRow_();
+            sink.tableRows_();
+            sink.table_();
+
+            String actual = writer.toString();
+            //assertTrue( actual.indexOf( "nestedTableCell" ) != 1 );
+        }
+        finally
+        {
+            if ( sink != null )
+            {
+                sink.close();
+            }
+        }
+    }
 }
