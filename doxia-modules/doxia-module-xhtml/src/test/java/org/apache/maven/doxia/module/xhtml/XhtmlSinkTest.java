@@ -19,6 +19,7 @@ package org.apache.maven.doxia.module.xhtml;
  * under the License.
  */
 
+import java.io.StringWriter;
 import org.apache.maven.doxia.sink.AbstractSinkTest;
 import org.apache.maven.doxia.sink.Sink;
 
@@ -50,20 +51,44 @@ public class XhtmlSinkTest
         return true;
     }
 
+    /**
+     * Test link generation.
+     *
+     * @throws java.lang.Exception if any.
+     */
     public void testLinks()
         throws Exception
     {
-        Writer writer = getXmlTestWriter( "links" );
-        XhtmlSink sink = (XhtmlSink) createSink( writer );
-        sink.link( "http:/www.xdoc.com" );
-        sink.link_();
-        sink.link( "./index.html#anchor" );
-        sink.link_();
-        sink.link( "../index.html#anchor" );
-        sink.link_();
-        sink.link( "index.html" );
-        sink.link_();
-        sink.close();
+        XhtmlSink sink = null;
+
+        try
+        {
+            Writer writer =  new StringWriter();
+            sink = (XhtmlSink) createSink( writer );
+            sink.link( "http:/www.xdoc.com" );
+            sink.link_();
+            sink.link( "./index.html#anchor" );
+            sink.link_();
+            sink.link( "../index.html#anchor" );
+            sink.link_();
+            sink.link( "index.html" );
+            sink.link_();
+
+            String actual = writer.toString();
+            assertTrue( actual.indexOf( "<a class=\"externalLink\" href=\"http:/www.xdoc.com\"></a>" ) != -1 );
+            assertTrue( actual.indexOf( "<a href=\"./index.html#anchor\"></a>" ) != -1 );
+            assertTrue( actual.indexOf( "<a href=\"../index.html#anchor\"></a>" ) != -1 );
+            assertTrue( actual.indexOf( "<a href=\"index.html\"></a>" ) != -1 );
+
+            sink.close();
+        }
+        finally
+        {
+            if ( sink != null )
+            {
+                sink.close();
+            }
+        }
     }
 
     /** {@inheritDoc} */
