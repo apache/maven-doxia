@@ -31,6 +31,7 @@ import org.apache.maven.doxia.parser.Parser;
 import org.apache.maven.doxia.sink.Sink;
 import org.apache.maven.doxia.sink.TextSink;
 
+import org.codehaus.plexus.util.IOUtil;
 import org.codehaus.plexus.util.StringUtils;
 
 /**
@@ -64,18 +65,9 @@ public class ConfluenceParserTest
     protected void tearDown()
         throws Exception
     {
-        if ( output != null )
-        {
-            output.close();
-        }
-        if ( reader != null )
-        {
-            reader.close();
-        }
-        if ( writer != null )
-        {
-            writer.close();
-        }
+        IOUtil.close( output );
+        IOUtil.close( reader );
+        IOUtil.close( writer );
 
         super.tearDown();
     }
@@ -304,7 +296,7 @@ public class ConfluenceParserTest
         throws Exception
     {
         String result = locateAndParseTestSourceFile( "nested-format" );
-        
+
         assertContainsLines( result, "begin:bold\nbegin:italic\ntext: bold italic\nend:italic" );
         assertContainsLines( result, "begin:italic\nbegin:bold\ntext: italic bold\nend:bold" );
         assertContainsLines( result, "begin:bold\nbegin:monospaced\ntext: bold monospaced\nend:monospaced" );
@@ -380,7 +372,7 @@ public class ConfluenceParserTest
     /**
      * DOXIA-247
      *
-     * @throws ParseException 
+     * @throws ParseException
      */
     public void testEndBracketInList()
         throws ParseException
@@ -395,8 +387,8 @@ public class ConfluenceParserTest
             + "\n\n* list1"
             + "\n\n* list2"
             + "\n\n* list2{pre}123{/pre}"
-            + "\n123";    
-            
+            + "\n123";
+
         output = new StringWriter();
         Sink sink = new TextSink( output );
 

@@ -24,6 +24,7 @@ import org.apache.maven.doxia.sink.AbstractSinkTestCase;
 import org.apache.maven.doxia.sink.SinkTestDocument;
 import org.apache.maven.doxia.parser.Parser;
 import org.apache.maven.doxia.module.apt.AptParser;
+import org.codehaus.plexus.util.IOUtil;
 
 import java.io.File;
 import java.io.FileOutputStream;
@@ -79,8 +80,14 @@ public class RtfSinkTest
         OutputStream out = new FileOutputStream( outputFile );
 
         Sink sink = new RtfSink( out );
-        SinkTestDocument.generate( sink );
-
-        out.close();
+        try
+        {
+            SinkTestDocument.generate( sink );
+        }
+        finally
+        {
+            sink.close();
+            IOUtil.close( out );
+        }
     }
 }

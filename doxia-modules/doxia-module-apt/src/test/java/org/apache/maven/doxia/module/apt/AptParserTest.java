@@ -29,6 +29,7 @@ import org.apache.maven.doxia.parser.Parser;
 import org.apache.maven.doxia.parser.ParseException;
 
 import org.apache.maven.doxia.sink.Sink;
+import org.codehaus.plexus.util.IOUtil;
 
 /**
  * @author <a href="mailto:vincent.siveton@gmail.com">Vincent Siveton</a>
@@ -61,7 +62,6 @@ public class AptParserTest
     {
         StringWriter output = null;
         Reader reader = null;
-
         try
         {
             output = new StringWriter();
@@ -69,14 +69,14 @@ public class AptParserTest
 
             Sink sink = new AptSink( output );
             createParser().parse( reader, sink );
-
-            assertTrue( output.toString().indexOf( "Line\\" + EOL + "break." ) != -1 );
         }
         finally
         {
-            output.close();
-            reader.close();
+            IOUtil.close( output );
+            IOUtil.close( reader );
         }
+
+        assertTrue( output.toString().indexOf( "Line\\" + EOL + "break." ) != -1 );
     }
 
     /** @throws Exception  */
@@ -85,7 +85,6 @@ public class AptParserTest
     {
         StringWriter output = null;
         Reader reader = null;
-
         try
         {
             output = new StringWriter();
@@ -93,14 +92,14 @@ public class AptParserTest
 
             Sink sink = new AptSink( output );
             createParser().parse( reader, sink );
-
-            assertTrue( output.toString().indexOf( "<modelVersion\\>4.0.0\\</modelVersion\\>" ) != -1 );
         }
         finally
         {
-            output.close();
-            reader.close();
+            IOUtil.close( output );
+            IOUtil.close( reader );
         }
+
+        assertTrue( output.toString().indexOf( "<modelVersion\\>4.0.0\\</modelVersion\\>" ) != -1 );
     }
 
     /** @throws Exception  */
@@ -109,7 +108,6 @@ public class AptParserTest
     {
         StringWriter output = null;
         Reader reader = null;
-
         try
         {
             output = new StringWriter();
@@ -117,23 +115,16 @@ public class AptParserTest
 
             Sink sink = new AptSink( output );
             createParser().parse( reader, sink );
-
-            // No section, only subsection 1 and 2
-            assertTrue( output.toString().indexOf( "* {{{SubSection_1}SubSection 1}}" ) != -1 );
-            assertTrue( output.toString().indexOf( "* {{{SubSection_1211}SubSection 1211}}" ) == -1 );
         }
         finally
         {
-            if ( output != null )
-            {
-                output.close();
-            }
-
-            if ( reader != null )
-            {
-                reader.close();
-            }
+            IOUtil.close( output );
+            IOUtil.close( reader );
         }
+
+        // No section, only subsection 1 and 2
+        assertTrue( output.toString().indexOf( "* {{{SubSection_1}SubSection 1}}" ) != -1 );
+        assertTrue( output.toString().indexOf( "* {{{SubSection_1211}SubSection 1211}}" ) == -1 );
     }
 
     /**
@@ -146,9 +137,7 @@ public class AptParserTest
         throws IOException, ParseException
     {
         Writer writer = null;
-
         Reader reader = null;
-
         try
         {
             writer = getTestWriter( "test" );
@@ -160,15 +149,8 @@ public class AptParserTest
         }
         finally
         {
-            if ( writer  != null )
-            {
-                writer.close();
-            }
-
-            if ( reader != null )
-            {
-                reader.close();
-            }
+            IOUtil.close( writer );
+            IOUtil.close( reader );
         }
     }
 
@@ -177,5 +159,4 @@ public class AptParserTest
     {
         return "apt";
     }
-
 }
