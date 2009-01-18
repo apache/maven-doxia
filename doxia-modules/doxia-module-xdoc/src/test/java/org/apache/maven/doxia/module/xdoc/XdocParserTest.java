@@ -80,6 +80,7 @@ public class XdocParserTest
 
             Sink sink = new XdocSink( output );
             createParser().parse( reader, sink );
+            sink.close();
         }
         finally
         {
@@ -118,6 +119,7 @@ public class XdocParserTest
 
             Sink sink = new XdocSink( output );
             createParser().parse( reader, sink );
+            sink.close();
         }
         finally
         {
@@ -237,7 +239,7 @@ public class XdocParserTest
     {
         return text.replaceAll( EOL, "" );
     }
-    
+
     public void testSectionIdAnchor()
         throws Exception
     {
@@ -250,10 +252,10 @@ public class XdocParserTest
         Iterator it = sink.getEventList().iterator();
 
         SinkEventElement anchorEvt = (SinkEventElement) it.next();
-        
+
         assertEquals( "anchor", anchorEvt.getName() );
         assertEquals( "test-id", anchorEvt.getArgs()[0] );
-        
+
         assertEquals( "anchor_", ( (SinkEventElement) it.next() ).getName() );
         assertEquals( "section1", ( (SinkEventElement) it.next() ).getName() );
         assertEquals( "sectionTitle1", ( (SinkEventElement) it.next() ).getName() );

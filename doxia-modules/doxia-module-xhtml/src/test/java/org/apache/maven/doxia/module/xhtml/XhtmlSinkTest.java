@@ -60,10 +60,9 @@ public class XhtmlSinkTest
         throws Exception
     {
         XhtmlSink sink = null;
-
+        Writer writer =  new StringWriter();
         try
         {
-            Writer writer =  new StringWriter();
             sink = (XhtmlSink) createSink( writer );
             sink.link( "http:/www.xdoc.com" );
             sink.link_();
@@ -73,14 +72,6 @@ public class XhtmlSinkTest
             sink.link_();
             sink.link( "index.html" );
             sink.link_();
-
-            String actual = writer.toString();
-            assertTrue( actual.indexOf( "<a class=\"externalLink\" href=\"http:/www.xdoc.com\"></a>" ) != -1 );
-            assertTrue( actual.indexOf( "<a href=\"./index.html#anchor\"></a>" ) != -1 );
-            assertTrue( actual.indexOf( "<a href=\"../index.html#anchor\"></a>" ) != -1 );
-            assertTrue( actual.indexOf( "<a href=\"index.html\"></a>" ) != -1 );
-
-            sink.close();
         }
         finally
         {
@@ -89,6 +80,12 @@ public class XhtmlSinkTest
                 sink.close();
             }
         }
+
+        String actual = writer.toString();
+        assertTrue( actual.indexOf( "<a class=\"externalLink\" href=\"http:/www.xdoc.com\"></a>" ) != -1 );
+        assertTrue( actual.indexOf( "<a href=\"./index.html#anchor\"></a>" ) != -1 );
+        assertTrue( actual.indexOf( "<a href=\"../index.html#anchor\"></a>" ) != -1 );
+        assertTrue( actual.indexOf( "<a href=\"index.html\"></a>" ) != -1 );
     }
 
     /** {@inheritDoc} */

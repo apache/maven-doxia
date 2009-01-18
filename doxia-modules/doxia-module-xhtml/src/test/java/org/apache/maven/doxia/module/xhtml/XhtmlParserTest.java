@@ -129,6 +129,7 @@ public class XhtmlParserTest
         XhtmlParser parser = (XhtmlParser) createParser();
         parser.setValidate( false );
         parser.parse( text.toString(), sink );
+        sink.close();
         String result = w.toString();
 
         assertTrue( result.indexOf( "&#x159;" ) != -1 );
