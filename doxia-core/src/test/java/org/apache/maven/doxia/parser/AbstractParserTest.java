@@ -70,11 +70,9 @@ public abstract class AbstractParserTest
     public final void testParser()
         throws IOException, ParseException
     {
-
         WellformednessCheckingSink sink = new WellformednessCheckingSink();
 
         Reader reader = null;
-
         try
         {
             reader = getTestReader( "test", outputExtension() );
@@ -86,10 +84,7 @@ public abstract class AbstractParserTest
         }
         finally
         {
-            if ( reader != null )
-            {
-                reader.close();
-            }
+            IOUtil.close( reader );
         }
     }
 
