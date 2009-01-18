@@ -28,6 +28,7 @@ import javax.swing.text.html.HTML.Attribute;
 import javax.swing.text.html.HTML.Tag;
 
 import org.apache.maven.doxia.markup.HtmlMarkup;
+import org.apache.maven.doxia.markup.Markup;
 import org.apache.maven.doxia.util.DoxiaUtils;
 import org.apache.maven.doxia.util.HtmlTools;
 import org.codehaus.plexus.util.StringUtils;
@@ -50,6 +51,10 @@ public class XhtmlBaseSink
 
     /** The PrintWriter to write the result. */
     private PrintWriter writer;
+
+    /** The StringWriter to write the result temporary, so we could play with the output and fix XHTML
+     * like DOXIA-177. Calling the method {@link #close()} is needed to perform the changes in the {@link #writer}. */
+    private StringWriter tempWriter;
 
     /** Used to collect text events. */
     private StringBuffer buffer = new StringBuffer();
@@ -90,9 +95,6 @@ public class XhtmlBaseSink
     /** Indicates that an image is part of a figure. */
     private boolean inFigure;
 
-    /** The StringWriter to write the table content (DOXIA-177). */
-    private StringWriter tableWriter;
-
     // ----------------------------------------------------------------------
     // Constructor
     // ----------------------------------------------------------------------
@@ -105,6 +107,7 @@ public class XhtmlBaseSink
     public XhtmlBaseSink( Writer out )
     {
         this.writer = new PrintWriter( out );
+        this.tempWriter = new StringWriter();
     }
 
     // ----------------------------------------------------------------------
@@ -1085,8 +1088,6 @@ public class XhtmlBaseSink
             paragraph_();
         }
 
-        tableWriter = new StringWriter();
-
         // start table with tableRows
         if ( attributes == null )
         {
@@ -1107,36 +1108,49 @@ public class XhtmlBaseSink
     {
         writeEndTag( Tag.TABLE );
 
-        if ( tableWriter == null )
+        String content = tempWriter.toString();
+
+        String startTable =
+            new StringBuffer().append( Markup.LESS_THAN ).append( Tag.TABLE.toString() ).toString();
+
+        if ( content.lastIndexOf( startTable ) == -1 )
         {
-            throw new IllegalArgumentException( "table( SinkEventAttributes attributes ) was not called before." );
+            if ( getLog().isDebugEnabled() )
+            {
+                getLog().debug( "table() NOT call firstly" );
+            }
+            return;
         }
 
-        String content = tableWriter.toString();
-        tableWriter = null;
+        content = content.substring( content.lastIndexOf( startTable ) );
 
-        String startCaption = "<" + Tag.CAPTION.toString() + ">";
-        String endCaption = "</" + Tag.CAPTION.toString() + ">";
+        String startCaption =
+            new StringBuffer().append( Markup.LESS_THAN ).append( Tag.CAPTION.toString() )
+                              .append( Markup.GREATER_THAN ).toString();
+        String endCaption =
+            new StringBuffer().append( Markup.LESS_THAN ).append( Markup.SLASH ).append( Tag.CAPTION.toString() )
+                              .append( Markup.GREATER_THAN ).toString();
 
-        if ( content.indexOf( startCaption ) == -1 && content.indexOf( endCaption ) == -1 )
-        {
-            write( content );
-        }
-        else
+        if ( content.indexOf( startCaption ) != -1 && content.indexOf( endCaption ) != -1 )
         {
             // DOXIA-177
             int iStartCaption = content.indexOf( startCaption );
             int iEndCaption = content.indexOf( endCaption ) + endCaption.length();
 
             String captionTag = content.substring( iStartCaption, iEndCaption );
-            content = StringUtils.replace( content, captionTag, "" );
+            String contentWithoutCaption = StringUtils.replace( content, captionTag, "" );
+
+            String startTr =
+                new StringBuffer().append( Markup.LESS_THAN ).append( Tag.TR.toString() ).toString();
 
             StringBuffer text = new StringBuffer();
-            text.append( content.substring( 0, content.indexOf( "<" + Tag.TR.toString() ) ) );
+            text.append( contentWithoutCaption.substring( 0, contentWithoutCaption.indexOf( startTr ) ) );
             text.append( captionTag );
-            text.append( content.substring( content.indexOf( "<" + Tag.TR.toString() ) ) );
+            text.append( contentWithoutCaption.substring( contentWithoutCaption.indexOf( startTr ) ) );
 
-            write( text.toString() );
+            String contentWithCaption = tempWriter.toString();
+            tempWriter = new StringWriter();
+            tempWriter.write( StringUtils.replace( contentWithCaption, content, text.toString() ) );
         }
     }
 
@@ -1784,6 +1798,8 @@ public class XhtmlBaseSink
     /** {@inheritDoc} */
     public void close()
     {
+        writer.write( tempWriter.toString() );
+        tempWriter = new StringWriter();
         writer.close();
     }
 
@@ -1838,14 +1854,7 @@ public class XhtmlBaseSink
     /** {@inheritDoc} */
     protected void write( String text )
     {
-        if ( tableWriter == null )
-        {
-            writer.write( unifyEOLs( text ) );
-        }
-        else
-        {
-            tableWriter.write( unifyEOLs( text ) );
-        }
+        tempWriter.write( unifyEOLs( text ) );
     }
 
 }

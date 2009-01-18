@@ -41,10 +41,9 @@ public class XhtmlBaseSinkTest
         // DOXIA-189
         XhtmlBaseSink sink = null;
 
+        Writer writer =  new StringWriter();
         try
         {
-            Writer writer =  new StringWriter();
-
             sink = new XhtmlBaseSink( writer );
 
             sink.paragraph();
@@ -54,11 +53,6 @@ public class XhtmlBaseSinkTest
             sink.italic_();
             sink.text( "." );
             sink.paragraph_();
-
-            String actual = writer.toString();
-            String expected = "<p>There should be no space before the <i>period</i>.</p>";
-
-            assertEquals( expected, actual );
         }
         finally
         {
@@ -67,6 +61,11 @@ public class XhtmlBaseSinkTest
                 sink.close();
             }
         }
+
+        String actual = writer.toString();
+        String expected = "<p>There should be no space before the <i>period</i>.</p>";
+
+        assertEquals( expected, actual );
     }
 
     /** @throws Exception */
@@ -75,41 +74,44 @@ public class XhtmlBaseSinkTest
     {
         // DOXIA-177
         XhtmlBaseSink sink = null;
+        Writer writer =  new StringWriter();
 
         try
         {
-            Writer writer =  new StringWriter();
-
             sink = new XhtmlBaseSink( writer );
 
             sink.table();
             sink.tableRows( new int[] {0}, false );
+            sink.tableCaption();
+            sink.text( "caption1" );
+            sink.tableCaption_();
             sink.tableRow();
             sink.tableCell();
-// FIXME: include nested table
-//            sink.table();
-//            sink.tableRows( new int[] {0}, false );
-//            sink.tableRow();
-//            sink.tableCell();
-//            sink.text( "nestedTableCell" );
-//            sink.tableCell_();
-//            sink.tableRow_();
-//            sink.tableRows_();
-//            sink.table_();
+            sink.table();
+            sink.tableRows( new int[] {0}, false );
+            sink.tableRow();
+            sink.tableCell();
+            sink.text( "nestedTableCell" );
+            sink.tableCell_();
+            sink.tableRow_();
+            sink.tableRows_();
+            sink.tableCaption();
+            sink.text( "caption2" );
+            sink.tableCaption_();
+            sink.table_();
             sink.tableCell_();
             sink.tableRow_();
             sink.tableRows_();
             sink.table_();
-
-            String actual = writer.toString();
-            //assertTrue( actual.indexOf( "nestedTableCell" ) != 1 );
         }
         finally
         {
-            if ( sink != null )
-            {
-                sink.close();
-            }
+            sink.close();
         }
+
+        String actual = writer.toString();
+        assertTrue( actual.indexOf( "nestedTableCell" ) != 1 );
+        assertTrue( actual.indexOf( "class=\"bodyTable\"><caption>caption1</caption><tr" ) != 1 );
+        assertTrue( actual.indexOf( "class=\"bodyTable\"><caption>caption2</caption><tr" ) != 1 );
     }
 }
