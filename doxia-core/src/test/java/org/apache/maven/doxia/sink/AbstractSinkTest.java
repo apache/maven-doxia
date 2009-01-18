@@ -71,9 +71,14 @@ public abstract class AbstractSinkTest
         Writer writer = ( isXmlSink() ? getXmlTestWriter( "testDocument" ) : getTestWriter( "testDocument" ) );
         Sink testSink = createSink( writer );
 
-        SinkTestDocument.generate( testSink );
-
-        testSink.close();
+        try
+        {
+            SinkTestDocument.generate( testSink );
+        }
+        finally
+        {
+            testSink.close();
+        }
     }
 
     /**
@@ -88,6 +93,7 @@ public abstract class AbstractSinkTest
         sink.text( title );
         sink.title_();
         sink.flush();
+        sink.close();
 
         String actual = writer.toString();
         String expected = getTitleBlock( title );
@@ -107,6 +113,7 @@ public abstract class AbstractSinkTest
         sink.text( author );
         sink.author_();
         sink.flush();
+        sink.close();
 
         String actual = writer.toString();
         String expected = getAuthorBlock( author );
@@ -126,6 +133,7 @@ public abstract class AbstractSinkTest
         sink.text( date );
         sink.date_();
         sink.flush();
+        sink.close();
 
         String actual = writer.toString();
         String expected = getDateBlock( date );
@@ -143,6 +151,7 @@ public abstract class AbstractSinkTest
         sink.head();
         sink.head_();
         sink.flush();
+        sink.close();
 
         String actual = writer.toString();
         String expected = getHeadBlock();
@@ -160,6 +169,7 @@ public abstract class AbstractSinkTest
         sink.body();
         sink.body_();
         sink.flush();
+        sink.close();
 
         String actual = writer.toString();
         String expected = getBodyBlock();
@@ -180,6 +190,7 @@ public abstract class AbstractSinkTest
         sink.text( title );
         sink.sectionTitle_();
         sink.flush();
+        sink.close();
 
         String actual = writer.toString();
         String expected = getSectionTitleBlock( title );
@@ -202,6 +213,7 @@ public abstract class AbstractSinkTest
         sink.sectionTitle1_();
         sink.section1_();
         sink.flush();
+        sink.close();
 
         String actual = writer.toString();
         String expected = getSection1Block( title );
@@ -224,6 +236,7 @@ public abstract class AbstractSinkTest
         sink.sectionTitle2_();
         sink.section2_();
         sink.flush();
+        sink.close();
 
         String actual = writer.toString();
         String expected = getSection2Block( title );
@@ -246,6 +259,7 @@ public abstract class AbstractSinkTest
         sink.sectionTitle3_();
         sink.section3_();
         sink.flush();
+        sink.close();
 
         String actual = writer.toString();
         String expected = getSection3Block( title );
@@ -269,6 +283,7 @@ public abstract class AbstractSinkTest
         sink.sectionTitle4_();
         sink.section4_();
         sink.flush();
+        sink.close();
 
         String actual = writer.toString();
         String expected = getSection4Block( title );
@@ -291,6 +306,7 @@ public abstract class AbstractSinkTest
         sink.sectionTitle5_();
         sink.section5_();
         sink.flush();
+        sink.close();
 
         String actual = writer.toString();
         String expected = getSection5Block( title );
@@ -313,6 +329,7 @@ public abstract class AbstractSinkTest
         sink.listItem_();
         sink.list_();
         sink.flush();
+        sink.close();
 
         String actual = writer.toString();
         String expected = getListBlock( item );
@@ -336,6 +353,7 @@ public abstract class AbstractSinkTest
         sink.numberedListItem_();
         sink.numberedList_();
         sink.flush();
+        sink.close();
 
         String actual = writer.toString();
         String expected = getNumberedListBlock( item );
@@ -366,6 +384,7 @@ public abstract class AbstractSinkTest
         sink.definitionListItem_();
         sink.definitionList_();
         sink.flush();
+        sink.close();
 
         String actual = writer.toString();
         String expected = getDefinitionListBlock( definum, definition );
@@ -390,6 +409,7 @@ public abstract class AbstractSinkTest
         sink.figureCaption_();
         sink.figure_();
         sink.flush();
+        sink.close();
 
         String actual = writer.toString();
         String expected = getFigureBlock( source, caption );
@@ -423,6 +443,7 @@ public abstract class AbstractSinkTest
         sink.tableCaption_();
         sink.table_();
         sink.flush();
+        sink.close();
 
         String actual = writer.toString();
         String expected = getTableBlock( cell, caption );
@@ -442,6 +463,7 @@ public abstract class AbstractSinkTest
         sink.text( text );
         sink.paragraph_();
         sink.flush();
+        sink.close();
 
         String actual = writer.toString();
         String expected = getParagraphBlock( text );
@@ -461,6 +483,7 @@ public abstract class AbstractSinkTest
         sink.text( text );
         sink.verbatim_();
         sink.flush();
+        sink.close();
 
         String actual = writer.toString();
         String expected = getVerbatimBlock( text );
@@ -477,6 +500,7 @@ public abstract class AbstractSinkTest
     {
         sink.horizontalRule();
         sink.flush();
+        sink.close();
 
         String actual = writer.toString();
         String expected = getHorizontalRuleBlock();
@@ -493,6 +517,7 @@ public abstract class AbstractSinkTest
     {
         sink.pageBreak();
         sink.flush();
+        sink.close();
 
         String actual = writer.toString();
         String expected = getPageBreakBlock();
@@ -512,6 +537,7 @@ public abstract class AbstractSinkTest
         sink.text( anchor );
         sink.anchor_();
         sink.flush();
+        sink.close();
 
         String actual = writer.toString();
         String expected = getAnchorBlock( anchor );
@@ -532,6 +558,7 @@ public abstract class AbstractSinkTest
         sink.text( text );
         sink.link_();
         sink.flush();
+        sink.close();
 
         String actual = writer.toString();
         String expected = getLinkBlock( link, text );
@@ -551,6 +578,7 @@ public abstract class AbstractSinkTest
         sink.text( text );
         sink.italic_();
         sink.flush();
+        sink.close();
 
         String actual = writer.toString();
         String expected = getItalicBlock( text );
@@ -570,6 +598,7 @@ public abstract class AbstractSinkTest
         sink.text( text );
         sink.bold_();
         sink.flush();
+        sink.close();
 
         String actual = writer.toString();
         String expected = getBoldBlock( text );
@@ -589,6 +618,7 @@ public abstract class AbstractSinkTest
         sink.text( text );
         sink.monospaced_();
         sink.flush();
+        sink.close();
 
         String actual = writer.toString();
         String expected = getMonospacedBlock( text );
@@ -605,6 +635,7 @@ public abstract class AbstractSinkTest
     {
         sink.lineBreak();
         sink.flush();
+        sink.close();
 
         String actual = writer.toString();
         String expected = getLineBreakBlock();
@@ -621,6 +652,7 @@ public abstract class AbstractSinkTest
     {
         sink.nonBreakingSpace();
         sink.flush();
+        sink.close();
 
         String actual = writer.toString();
         String expected = getNonBreakingSpaceBlock();
@@ -638,6 +670,7 @@ public abstract class AbstractSinkTest
         String text = "~,_=,_-,_+,_*,_[,_],_<,_>,_{,_},_\\";
         sink.text( text );
         sink.flush();
+        sink.close();
 
         String actual = writer.toString();
         String expected = getTextBlock( text );
@@ -655,6 +688,7 @@ public abstract class AbstractSinkTest
         String text = "~,_=,_-,_+,_*,_[,_],_<,_>,_{,_},_\\";
         sink.rawText( text );
         sink.flush();
+        sink.close();
 
         String actual = writer.toString();
         String expected = getRawTextBlock( text );

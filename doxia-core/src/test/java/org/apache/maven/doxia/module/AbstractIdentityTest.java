@@ -20,7 +20,6 @@ package org.apache.maven.doxia.module;
  */
 
 import java.io.IOException;
-import java.io.Reader;
 import java.io.StringReader;
 import java.io.StringWriter;
 import java.io.Writer;
@@ -85,56 +84,43 @@ public abstract class AbstractIdentityTest
     public void testIdentity()
         throws IOException, ParseException
     {
-        Writer writer = null;
+        // generate the expected model
+        StringWriter writer = new StringWriter();
+        Sink sink = new TextSink( writer );
+        SinkTestDocument.generate( sink );
+        sink.close();
+        expected = writer.toString();
 
-        Writer fileWriter = null;
+        // write to file for comparison
+        Writer fileWriter = getTestWriter( "expected" );
+        fileWriter.write( expected );
+        IOUtil.close( fileWriter );
 
-        Reader reader = null;
+        // generate the actual model
+        writer = new StringWriter();
+        sink = createSink( writer );
+        SinkTestDocument.generate( sink );
+        sink.close();
+        StringReader reader = new StringReader( writer.toString() );
 
-        try
+        writer = new StringWriter();
+        sink = new TextSink( writer );
+        createParser().parse( reader, sink );
+        String actual = writer.toString();
+
+        // write to file for comparison
+        fileWriter = getTestWriter( "actual" );
+        fileWriter.write( actual );
+        IOUtil.close( fileWriter );
+
+        // Disabled by default, it's unlikely that all our modules
+        // will pass this test any time soon, but the generated
+        // output files can still be compared.
+
+        if ( assertIdentity )
         {
-            // generate the expected model
-            writer = new StringWriter();
-            SinkTestDocument.generate( new TextSink( writer ) );
-            expected = writer.toString();
-
-            // write to file for comparison
-            fileWriter = getTestWriter( "expected" );
-            fileWriter.write( expected );
-            fileWriter.close();
-
-            // generate the actual model
-            writer = new StringWriter();
-            SinkTestDocument.generate( createSink( writer ) );
-            reader = new StringReader( writer.toString() );
-
-            writer = new StringWriter();
-            createParser().parse( reader, new TextSink( writer ) );
-            String actual = writer.toString();
-
-            // write to file for comparison
-            fileWriter = getTestWriter( "actual" );
-            fileWriter.write( actual );
-            fileWriter.close();
-
-            // Disabled by default, it's unlikely that all our modules
-            // will pass this test any time soon, but the generated
-            // output files can still be compared.
-
-            if ( assertIdentity )
-            {
-                // TODO: make this work for at least apt and xdoc modules?
-                assertEquals( "Identity test failed!", getExpected(), actual );
-            }
-
-        }
-        finally
-        {
-            IOUtil.close( writer );
-
-            IOUtil.close( fileWriter );
-
-            IOUtil.close( reader );
+            // TODO: make this work for at least apt and xdoc modules?
+            assertEquals( "Identity test failed!", getExpected(), actual );
         }
     }
 
