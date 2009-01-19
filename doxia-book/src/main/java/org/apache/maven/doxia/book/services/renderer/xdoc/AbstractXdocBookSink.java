@@ -89,6 +89,8 @@ public abstract class AbstractXdocBookSink
 
         flush();
 
+        close();
+
         resetState();
     }
 

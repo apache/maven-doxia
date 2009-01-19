@@ -40,7 +40,7 @@ public interface BookDoxia
      *
      * @param bookDescriptor the book descriptor file.
      * @return BookModel
-     * @throws BookDoxiaException if the model cannot be loaded. 
+     * @throws BookDoxiaException if the model cannot be loaded.
      */
     BookModel loadBook( File bookDescriptor )
         throws BookDoxiaException;
