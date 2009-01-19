@@ -142,11 +142,11 @@ public class XdocSink
      */
     public void title_()
     {
-        content( getBuffer().toString() );
+        content( getTextBuffer().toString() );
 
         writeEndTag( Tag.TITLE );
 
-        resetBuffer();
+        resetTextBuffer();
     }
 
     /**
@@ -155,12 +155,12 @@ public class XdocSink
      */
     public void author_()
     {
-        if ( getBuffer().length() > 0 )
+        if ( getTextBuffer().length() > 0 )
         {
             writeStartTag( AUTHOR_TAG );
-            content( getBuffer().toString() );
+            content( getTextBuffer().toString() );
             writeEndTag( AUTHOR_TAG );
-            resetBuffer();
+            resetTextBuffer();
         }
     }
 
@@ -170,12 +170,12 @@ public class XdocSink
      */
     public void date_()
     {
-        if ( getBuffer().length() > 0 )
+        if ( getTextBuffer().length() > 0 )
         {
             writeStartTag( DATE_TAG );
-            content( getBuffer().toString() );
+            content( getTextBuffer().toString() );
             writeEndTag( DATE_TAG );
-            resetBuffer();
+            resetTextBuffer();
         }
     }
 

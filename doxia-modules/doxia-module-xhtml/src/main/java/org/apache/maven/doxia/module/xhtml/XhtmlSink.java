@@ -169,11 +169,11 @@ public class XhtmlSink
      */
     public void title_()
     {
-        content( getBuffer().toString() );
+        content( getTextBuffer().toString() );
 
         writeEndTag( Tag.TITLE );
 
-        resetBuffer();
+        resetTextBuffer();
 
     }
 
@@ -183,15 +183,15 @@ public class XhtmlSink
      */
     public void author_()
     {
-        if ( getBuffer().length() > 0 )
+        if ( getTextBuffer().length() > 0 )
         {
             MutableAttributeSet att = new SinkEventAttributeSet();
             att.addAttribute( Attribute.NAME, "author" );
-            att.addAttribute( Attribute.CONTENT, getBuffer().toString() );
+            att.addAttribute( Attribute.CONTENT, getTextBuffer().toString() );
 
             writeSimpleTag( Tag.META, att );
 
-            resetBuffer();
+            resetTextBuffer();
         }
     }
 
@@ -201,15 +201,15 @@ public class XhtmlSink
      */
     public void date_()
     {
-        if ( getBuffer().length() > 0 )
+        if ( getTextBuffer().length() > 0 )
         {
             MutableAttributeSet att = new SinkEventAttributeSet();
             att.addAttribute( Attribute.NAME, "date" );
-            att.addAttribute( Attribute.CONTENT, getBuffer().toString() );
+            att.addAttribute( Attribute.CONTENT, getTextBuffer().toString() );
 
             writeSimpleTag( Tag.META, att );
 
-            resetBuffer();
+            resetTextBuffer();
         }
     }
 

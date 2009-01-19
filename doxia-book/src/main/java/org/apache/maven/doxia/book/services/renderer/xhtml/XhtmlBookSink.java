@@ -73,19 +73,19 @@ public class XhtmlBookSink
     /** Does nothing. */
     public void title_()
     {
-        resetBuffer();
+        resetTextBuffer();
     }
 
     /** Does nothing. */
     public void author_()
     {
-        resetBuffer();
+        resetTextBuffer();
     }
 
     /** Does nothing. */
     public void date_()
     {
-        resetBuffer();
+        resetTextBuffer();
     }
 
     /** Does nothing. */

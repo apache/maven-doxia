@@ -56,8 +56,8 @@ public class XhtmlBaseSink
      * like DOXIA-177. Calling the method {@link #close()} is needed to perform the changes in the {@link #writer}. */
     private StringWriter tempWriter;
 
-    /** Used to collect text events. */
-    private StringBuffer buffer = new StringBuffer();
+    /** Used to collect text events mainly for the head events. */
+    private StringBuffer textBuffer = new StringBuffer();
 
     /** An indication on if we're inside a head. */
     private boolean headFlag;
@@ -115,11 +115,13 @@ public class XhtmlBaseSink
     // ----------------------------------------------------------------------
 
     /**
-     * @return the current buffer.
+     * To use mainly when playing with the head events.
+     *
+     * @return the current buffer of text events.
      */
-    protected StringBuffer getBuffer()
+    protected StringBuffer getTextBuffer()
     {
-        return buffer;
+        return this.textBuffer;
     }
 
     /**
@@ -188,27 +190,11 @@ public class XhtmlBaseSink
     }
 
     /**
-     * @param even an evenTableRow flag.
-     */
-    protected void setEvenTableRow( boolean even )
-    {
-        this.evenTableRow = even;
-    }
-
-    /**
-     * @return the current evenTableRow flag.
-     */
-    protected boolean isEvenTableRow()
-    {
-        return this.evenTableRow ;
-    }
-
-    /**
      * Reset all variables.
      */
     protected void resetState()
     {
-        resetBuffer();
+        resetTextBuffer();
         headFlag = false;
         verbatimFlag = false;
         cellJustif = null;
@@ -218,13 +204,12 @@ public class XhtmlBaseSink
     }
 
     /**
-     * Reset the buffer.
+     * Reset the text buffer.
      */
-    protected void resetBuffer()
+    protected void resetTextBuffer()
     {
-        this.buffer = new StringBuffer();
+        this.textBuffer = new StringBuffer();
     }
-
 
     // ----------------------------------------------------------------------
     // Sections
@@ -1612,7 +1597,7 @@ public class XhtmlBaseSink
     {
         if ( headFlag || isVerbatimFlag() )
         {
-            getBuffer().append( EOL );
+            getTextBuffer().append( EOL );
         }
         else
         {
@@ -1628,7 +1613,7 @@ public class XhtmlBaseSink
     {
         if ( headFlag )
         {
-            getBuffer().append( EOL );
+            getTextBuffer().append( EOL );
         }
         else
         {
@@ -1650,7 +1635,7 @@ public class XhtmlBaseSink
     {
         if ( headFlag )
         {
-            getBuffer().append( ' ' );
+            getTextBuffer().append( ' ' );
         }
         else
         {
@@ -1663,7 +1648,7 @@ public class XhtmlBaseSink
     {
         if ( headFlag )
         {
-            getBuffer().append( text );
+            getTextBuffer().append( text );
         }
         else if ( verbatimFlag )
         {
@@ -1675,7 +1660,7 @@ public class XhtmlBaseSink
         }
     }
 
-    public void text ( String text, SinkEventAttributes attributes )
+    public void text( String text, SinkEventAttributes attributes )
     {
         if ( attributes == null )
         {
