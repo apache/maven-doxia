@@ -28,7 +28,7 @@ import java.io.Writer;
 import org.codehaus.plexus.util.WriterFactory;
 
 /**
- * An abstract <code>SinkFactory</code> for text markup syntax. <code>UTF-8</code> is used
+ * An abstract <code>SinkFactory</code> for Text markup syntax. <code>UTF-8</code> is used
  * when no encoding is specified.
  *
  * @author Hervé Boutemy
@@ -43,7 +43,6 @@ public abstract class AbstractTextSinkFactory
      *
      * @param writer The writer for the sink output, never <code>null</code>.
      * @param encoding The character encoding used by the writer.
-     *
      * @return a Sink for text output in the given encoding.
      */
     protected abstract Sink createSink( Writer writer, String encoding );

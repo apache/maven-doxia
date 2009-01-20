@@ -21,7 +21,7 @@ package org.apache.maven.doxia.module.xhtml;
 
 import java.io.Writer;
 
-import org.apache.maven.doxia.sink.AbstractTextSinkFactory;
+import org.apache.maven.doxia.sink.AbstractXmlSinkFactory;
 import org.apache.maven.doxia.sink.Sink;
 
 /**
@@ -33,7 +33,7 @@ import org.apache.maven.doxia.sink.Sink;
  * @plexus.component role="org.apache.maven.doxia.sink.SinkFactory" role-hint="xhtml"
  */
 public class XhtmlSinkFactory
-    extends AbstractTextSinkFactory
+    extends AbstractXmlSinkFactory
 {
     /** {@inheritDoc} */
     protected Sink createSink( Writer writer, String encoding )

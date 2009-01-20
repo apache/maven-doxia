@@ -1,4 +1,4 @@
-package org.apache.maven.doxia.module.fo;
+package org.apache.maven.doxia.sink;
 
 /*
  * Licensed to the Apache Software Foundation (ASF) under one
@@ -19,25 +19,15 @@ package org.apache.maven.doxia.module.fo;
  * under the License.
  */
 
-import java.io.Writer;
-
-import org.apache.maven.doxia.sink.AbstractXmlSinkFactory;
-import org.apache.maven.doxia.sink.Sink;
-
 /**
- * FO implementation of the Sink factory.
+ * An abstract <code>SinkFactory</code> for XML markup syntax. <code>UTF-8</code> is used
+ * when no encoding is specified.
  *
  * @author <a href="mailto:vincent.siveton@gmail.com">Vincent Siveton</a>
  * @version $Id$
- * @since 1.1
- * @plexus.component role="org.apache.maven.doxia.sink.SinkFactory" role-hint="fo"
  */
-public class FoSinkFactory
-    extends AbstractXmlSinkFactory
+public abstract class AbstractXmlSinkFactory
+    extends AbstractTextSinkFactory
 {
-    /** {@inheritDoc} */
-    protected Sink createSink( Writer writer, String encoding )
-    {
-        return new FoSink( writer, encoding );
-    }
+    // nop
 }
