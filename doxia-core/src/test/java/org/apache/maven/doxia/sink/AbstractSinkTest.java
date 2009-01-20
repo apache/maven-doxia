@@ -20,6 +20,7 @@ package org.apache.maven.doxia.sink;
  */
 
 import org.apache.maven.doxia.AbstractModuleTest;
+import org.codehaus.plexus.util.IOUtil;
 
 import java.io.CharArrayWriter;
 import java.io.IOException;
@@ -78,6 +79,7 @@ public abstract class AbstractSinkTest
         finally
         {
             testSink.close();
+            IOUtil.close( writer );
         }
     }
 
