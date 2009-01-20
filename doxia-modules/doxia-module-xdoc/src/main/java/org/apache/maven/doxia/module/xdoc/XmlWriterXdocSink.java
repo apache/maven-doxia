@@ -70,7 +70,7 @@ public class XmlWriterXdocSink
         String xdocContent = xdocWriter.toString();
         if ( getLog().isDebugEnabled() )
         {
-            getLog().error( "Xdoc content: " + xdocContent );
+            getLog().debug( "Xdoc content: " + xdocContent );
         }
         StringWriter formattedContent = new StringWriter();
         try
