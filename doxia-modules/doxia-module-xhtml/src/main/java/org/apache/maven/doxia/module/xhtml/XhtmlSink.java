@@ -20,16 +20,13 @@ package org.apache.maven.doxia.module.xhtml;
  */
 
 import java.io.Writer;
-import java.util.Map;
 
 import javax.swing.text.MutableAttributeSet;
 import javax.swing.text.html.HTML.Attribute;
 import javax.swing.text.html.HTML.Tag;
 
-import org.apache.maven.doxia.module.xhtml.decoration.render.RenderingContext;
 import org.apache.maven.doxia.sink.XhtmlBaseSink;
 import org.apache.maven.doxia.sink.SinkEventAttributeSet;
-import org.codehaus.plexus.util.StringUtils;
 
 /**
  * Xhtml sink implementation.
@@ -56,9 +53,6 @@ public class XhtmlSink
     // Instance fields
     // ----------------------------------------------------------------------
 
-    // TODO: this doesn't belong here
-    private RenderingContext renderingContext;
-
     private String encoding;
 
     /** An indication on if we're inside a head title. */
@@ -75,7 +69,7 @@ public class XhtmlSink
      */
     protected XhtmlSink( Writer writer )
     {
-        this( writer, (RenderingContext) null );
+        super( writer );
     }
 
     /**
@@ -87,31 +81,9 @@ public class XhtmlSink
      */
     protected XhtmlSink( Writer writer, String encoding )
     {
-        this( writer, (RenderingContext) null );
-
-        this.encoding = encoding;
-    }
-
-    /**
-     * @param writer
-     * @param renderingContext
-     */
-    protected XhtmlSink( Writer writer, RenderingContext renderingContext )
-    {
         super( writer );
 
-        this.renderingContext = renderingContext;
-    }
-
-    /**
-     * @param writer
-     * @param renderingContext
-     * @param directives
-     * @todo directives Map is not used
-     */
-    protected XhtmlSink( Writer writer, RenderingContext renderingContext, Map directives )
-    {
-        this( writer, renderingContext );
+        this.encoding = encoding;
     }
 
     /** {@inheritDoc} */
@@ -245,30 +217,7 @@ public class XhtmlSink
     /** {@inheritDoc} */
     protected void write( String text )
     {
-        // TODO: this doesn't belong here
-        if ( renderingContext != null )
-        {
-            String relativePathToBasedir = renderingContext.getRelativePath();
-
-            if ( relativePathToBasedir == null )
-            {
-                text = StringUtils.replace( text, "$relativePath", "." );
-            }
-            else
-            {
-                text = StringUtils.replace( text, "$relativePath", relativePathToBasedir );
-            }
-        }
-
         super.write( text );
-    }
-
-    /**
-     * @return the current rendering context
-     */
-    public RenderingContext getRenderingContext()
-    {
-        return renderingContext;
     }
 
     /**

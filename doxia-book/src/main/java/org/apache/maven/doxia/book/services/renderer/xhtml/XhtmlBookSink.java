@@ -21,6 +21,7 @@ package org.apache.maven.doxia.book.services.renderer.xhtml;
 
 import org.apache.maven.doxia.module.xhtml.XhtmlSink;
 import org.apache.maven.doxia.module.xhtml.decoration.render.RenderingContext;
+import org.codehaus.plexus.util.StringUtils;
 
 import java.io.Writer;
 
@@ -35,6 +36,8 @@ import javax.swing.text.html.HTML.Tag;
 public class XhtmlBookSink
     extends XhtmlSink
 {
+    private RenderingContext renderingContext;
+
     /**
      * Construct a new XhtmlBookSink.
      *
@@ -43,7 +46,8 @@ public class XhtmlBookSink
      */
     public XhtmlBookSink( Writer out, RenderingContext context )
     {
-        super( out, context );
+        super( out );
+        this.renderingContext = context;
     }
 
     // ----------------------------------------------------------------------
@@ -158,5 +162,25 @@ public class XhtmlBookSink
     public void sectionTitle_()
     {
         writeEndTag( Tag.H1 );
+    }
+
+    /** {@inheritDoc} */
+    protected void write( String text )
+    {
+        if ( renderingContext != null )
+        {
+            String relativePathToBasedir = renderingContext.getRelativePath();
+
+            if ( relativePathToBasedir == null )
+            {
+                text = StringUtils.replace( text, "$relativePath", "." );
+            }
+            else
+            {
+                text = StringUtils.replace( text, "$relativePath", relativePathToBasedir );
+            }
+        }
+
+        super.write( text );
     }
 }
