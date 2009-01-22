@@ -18,51 +18,33 @@ specific language governing permissions and limitations
 under the License.
 -->
 
-<document>
+<document xmlns="http://maven.apache.org/XDOC/2.0"
+  xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+  xsi:schemaLocation="http://maven.apache.org/XDOC/2.0 file:../../main/resources/xdoc-2.0.xsd">
   <properties>
     <title>Test DOXIA-40</title>
     <author email="vsiveton@apache.org">Vincent Siveton</author>
   </properties>
   <body>
+    <section name="Section 1">
+      <p>Test DOXIA-40</p>
+      <p> Section 1 </p>
       <p>
-        Test DOXIA-40
+        <macro name="toc">
+          <param name="section" value="1"/>
+          <param name="fromDepth" value="1"/>
+          <param name="toDepth" value="2"/>
+        </macro>
       </p>
-      <section name="Section 1">
-        <p>
-          Section 1
-        </p>
-        <p>
-          <macro name="toc">
-           <param name="section" value="1"/>
-           <param name="fromDepth" value="1"/>
-           <param name="toDepth" value="2"/>
-          </macro>
-        </p>
-        <subsection name="Section 11">
-          <p>
-            Section 11
-          </p>
-        </subsection>
-        <subsection name="Section 12">
-          <p>
-            Section 12
-          </p>
-          <subsection name="Section 121">
-            <p>
-              Section 121
-            </p>
-            <subsection name="Section 1211">
-              <p>
-                Section 1211
-              </p>
-            </subsection>
-          </subsection>
-        </subsection>
-        <subsection name="Section 13">
-          <p>
-            Section 13
-          </p>
-        </subsection>
-      </section>
+      <subsection name="Section 11">
+        <p> Section 11 </p>
+      </subsection>
+      <subsection name="Section 12">
+        <p> Section 12 </p>
+      </subsection>
+      <subsection name="Section 13">
+        <p> Section 13 </p>
+      </subsection>
+    </section>
   </body>
 </document>

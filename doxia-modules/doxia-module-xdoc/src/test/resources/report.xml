@@ -17,20 +17,25 @@ specific language governing permissions and limitations
 under the License.
 -->
 
-<document>
-<properties>
-<author>meeper</author>
-<title>Synchronization report for Codehaus</title>
-</properties>
-<body>
-<section name="Synchronization report for Codehaus">
-<table>
-<tr>
-<th>Artifact</th>
-<th>Size (in bytes)</th>
-<th>Date</th>
-</tr>
-</table>
-<p><a href="codehaus-2004-08-29.txt">Raw report</a></p></section>
-</body>
+<document xmlns="http://maven.apache.org/XDOC/2.0"
+  xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+  xsi:schemaLocation="http://maven.apache.org/XDOC/2.0 file:../../main/resources/xdoc-2.0.xsd">
+  <properties>
+    <title>Synchronization report for Codehaus</title>
+    <author>meeper</author>
+  </properties>
+  <body>
+    <section name="Synchronization report for Codehaus">
+      <table>
+        <tr>
+          <th>Artifact</th>
+          <th>Size (in bytes)</th>
+          <th>Date</th>
+        </tr>
+      </table>
+      <p>
+        <a href="codehaus-2004-08-29.txt">Raw report</a>
+      </p>
+    </section>
+  </body>
 </document>
