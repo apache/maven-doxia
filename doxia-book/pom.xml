@@ -127,9 +127,12 @@ under the License.
             </goals>
           </execution>
           <execution>
+            <id>descriptor</id>
+            <phase>generate-sources</phase>
             <goals>
               <goal>java</goal>
               <goal>xpp3-reader</goal>
+              <goal>xsd</goal>
             </goals>
           </execution>
         </executions>
