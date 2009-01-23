@@ -18,7 +18,8 @@
  */
  -->
 
-<model>
+<model xmlns="http://modello.codehaus.org/MODELLO/1.0.0" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:schemaLocation="http://modello.codehaus.org/MODELLO/1.0.0 http://modello.codehaus.org/xsd/modello-1.0.0.xsd"
+  xsd.namespace="http://maven.apache.org/BOOK/1.0.0" xsd.target-namespace="http://maven.apache.org/BOOK/1.0.0">
   <id>book</id>
   <name>BookModel</name>
   <description>
