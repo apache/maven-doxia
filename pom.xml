@@ -131,7 +131,7 @@ under the License.
         <groupId>org.apache.maven.doxia</groupId>
         <artifactId>doxia-core</artifactId>
         <version>${projectVersion}</version>
-        <classifier>tests</classifier>
+        <type>test-jar</type>
       </dependency>
       <!-- Plexus -->
       <dependency>
