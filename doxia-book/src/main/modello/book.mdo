@@ -19,7 +19,7 @@
  -->
 
 <model xmlns="http://modello.codehaus.org/MODELLO/1.0.0" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:schemaLocation="http://modello.codehaus.org/MODELLO/1.0.0 http://modello.codehaus.org/xsd/modello-1.0.0.xsd"
-  xsd.namespace="http://maven.apache.org/BOOK/1.0.0" xsd.target-namespace="http://maven.apache.org/BOOK/1.0.0">
+  xml.namespace="http://maven.apache.org/BOOK/${version}">
   <id>book</id>
   <name>BookModel</name>
   <description>
@@ -130,11 +130,11 @@
           </association>
           <identifier>true</identifier>
         </field>
-        <field xml.associationTagName="logo">
+        <field>
           <name>poweredBy</name>
           <description>Powered by logos.</description>
           <version>1.0.0</version>
-          <association>
+          <association xml.tagName="logo">
             <type>Logo</type>
             <multiplicity>*</multiplicity>
           </association>
@@ -335,32 +335,32 @@
           <type>DOM</type>
           <identifier>true</identifier>
         </field>
-        <field xml.associationTagName="item">
+        <field>
           <name>links</name>
           <description>A list of links to display in the navigation.</description>
           <version>1.0.0</version>
-          <association>
+          <association xml.tagName="item">
             <type>LinkItem</type>
             <multiplicity>*</multiplicity>
           </association>
           <identifier>true</identifier>
         </field>
-        <field xml.associationTagName="item">
+        <field>
           <name>breadcrumbs</name>
           <description>A list of breadcrumbs to display in the navigation.</description>
           <version>1.0.0</version>
-          <association>
+          <association xml.tagName="item">
             <type>LinkItem</type>
             <multiplicity>*</multiplicity>
             <identifier>true</identifier>
           </association>
           <identifier>true</identifier>
         </field>
-        <field xml.listStyle="flat">
+        <field>
           <name>menus</name>
           <description>Menus to include in the navigation.</description>
           <version>1.0.0</version>
-          <association>
+          <association xml.itemsStyle="flat">
             <type>Menu</type>
             <multiplicity>*</multiplicity>
           </association>
@@ -430,11 +430,11 @@
           <type>String</type>
           <identifier>true</identifier>
         </field>
-        <field xml.listStyle="flat">
+        <field>
           <name>items</name>
           <description>Menu item.</description>
           <version>1.0.0</version>
-          <association>
+          <association xml.itemsStyle="flat">
             <type>MenuItem</type>
             <multiplicity>*</multiplicity>
           </association>
@@ -470,11 +470,11 @@
           <type>String</type>
           <identifier>true</identifier>
         </field>
-        <field xml.listStyle="flat">
+        <field>
           <name>items</name>
           <description>Menu item.</description>
           <version>1.0.0</version>
-          <association>
+          <association xml.itemsStyle="flat">
             <type>MenuItem</type>
             <multiplicity>*</multiplicity>
           </association>

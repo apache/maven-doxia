@@ -60,13 +60,13 @@ under the License.
           <defaultValue>true</defaultValue>
           <identifier>true</identifier>
         </field>
-        <field xml.listStyle="flat">
+        <field>
           <name>parts</name>
           <description><![CDATA[
             List of FAQ part.
           ]]></description>
           <version>1.0.0</version>
-          <association>
+          <association xml.itemsStyle="flat">
             <type>Part</type>
             <multiplicity>*</multiplicity>
           </association>
@@ -99,13 +99,13 @@ under the License.
           <type>String</type>
           <identifier>true</identifier>
         </field>
-        <field xml.listStyle="flat">
+        <field>
           <name>faqs</name>
           <description><![CDATA[
             A list of FAQ.
           ]]></description>
           <version>1.0.0</version>
-          <association>
+          <association xml.itemsStyle="flat">
             <type>Faq</type>
             <multiplicity>*</multiplicity>
           </association>
