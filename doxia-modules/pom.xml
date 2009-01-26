@@ -47,7 +47,7 @@ under the License.
     <dependency>
       <groupId>org.apache.maven.doxia</groupId>
       <artifactId>doxia-core</artifactId>
-      <type>test-jar</type>
+      <classifier>tests</classifier>
       <scope>test</scope>
     </dependency>
   </dependencies>
