@@ -17,7 +17,9 @@ specific language governing permissions and limitations
 under the License.
 -->
 
-<book>
+<book xmlns="http://maven.apache.org/BOOK/1.0.0"
+ xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+ xsi:schemaLocation="http://maven.apache.org/BOOK/1.0.0 ../../../target/generated-site/xsd/book-1.0.0.xsd">
   <id>plexus-user-guide</id>
   <title>Test Book</title>
   <chapters>
