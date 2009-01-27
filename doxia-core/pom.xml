@@ -77,10 +77,13 @@ under the License.
         <artifactId>modello-maven-plugin</artifactId>
         <executions>
           <execution>
+            <id>descriptor</id>
+            <phase>generate-sources</phase>
             <goals>
               <goal>java</goal>
               <goal>xpp3-reader</goal>
               <goal>xpp3-writer</goal>
+              <goal>xsd</goal>
             </goals>
           </execution>
           <execution>

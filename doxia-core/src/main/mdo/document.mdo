@@ -1,4 +1,4 @@
-<?xml version="1.0"?>
+<?xml version="1.0" encoding="UTF-8"?>
 
 <!--
   Licensed to the Apache Software Foundation (ASF) under one
@@ -19,7 +19,8 @@
   under the License.
 -->
 
-<model xml.namespace="http://maven.apache.org/DOCUMENT/${version}">
+<model xmlns="http://modello.codehaus.org/MODELLO/1.0.0" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:schemaLocation="http://modello.codehaus.org/MODELLO/1.0.0 http://modello.codehaus.org/xsd/modello-1.0.0.xsd"
+  xml.namespace="http://maven.apache.org/DOCUMENT/${version}">
   <id>document</id>
   <name>Document</name>
   <description><![CDATA[
@@ -114,14 +115,13 @@
           <identifier>true</identifier>
         </field>
         <field>
-          <!-- TODO: remove -->
           <name>author</name>
           <version>1.0.0</version>
           <description><![CDATA[
-            The author of the document.
+            A shortcut for the unique author of the document, usually as a String of "firstName lastName". For
+            more authors, you could use the <authors/> tag.
           ]]></description>
           <type>String</type>
-          <multiplicity>*</multiplicity>
           <identifier>true</identifier>
         </field>
         <field>
@@ -131,7 +131,7 @@
             The authors of the document. The names of the entities that
             are primarily responsible for the content of the document.
           ]]></description>
-          <association xml.itemsStyle="flat">
+          <association xml.itemsStyle="wrapped" xml.tagName="author">
             <type>DocumentAuthor</type>
             <multiplicity>*</multiplicity>
           </association>
