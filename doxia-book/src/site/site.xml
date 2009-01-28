@@ -21,7 +21,9 @@
  */
  -->
 
-<project>
+<project xmlns="http://maven.apache.org/DECORATION/1.0.0"
+  xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+  xsi:schemaLocation="http://maven.apache.org/DECORATION/1.0.0 file:../../../../doxia-sitetools/doxia-decoration-model/target/generated-site/xsd/decoration-1.0.0.xsd">
 
   <body>
 
@@ -30,8 +32,12 @@
     <menu name="About Doxia :: Book Components">
       <item name="Introduction" href="index.html"/>
       <item name="Usage" href="usage.html"/>
-      <item name="Book descriptor" href="book.html"/>
       <!--<item name="FAQ" href="faq.html"/>-->
+    </menu>
+
+    <menu name="Schema Book 1.0">
+      <item name="Reference of Schema Book" href="book.html"/>
+      <item name="Using Schema Book" href="using-book-xsd.html"/>
     </menu>
 
     <menu ref="reports"/>
