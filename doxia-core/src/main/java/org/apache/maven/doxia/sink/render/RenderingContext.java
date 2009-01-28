@@ -1,4 +1,4 @@
-package org.apache.maven.doxia.module.xhtml.decoration.render;
+package org.apache.maven.doxia.sink.render;
 
 /*
  * Licensed to the Apache Software Foundation (ASF) under one
@@ -44,7 +44,7 @@ public class RenderingContext
     private final String relativePath;
 
     private final String extension;
-    
+
     private Map attributes;
 
     public RenderingContext( File basedir, String document )
@@ -55,9 +55,9 @@ public class RenderingContext
     public RenderingContext( File basedir, String document, String parserId )
     {
         this( basedir, document, null, null );
-        
+
     }
-    
+
     public RenderingContext( File basedir, String document, String parserId, String extension )
     {
         this.basedir = basedir;

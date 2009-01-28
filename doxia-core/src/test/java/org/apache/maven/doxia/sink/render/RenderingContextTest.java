@@ -1,4 +1,4 @@
-package org.apache.maven.doxia.module.xhtml.decoration.render;
+package org.apache.maven.doxia.sink.render;
 
 /*
  * Licensed to the Apache Software Foundation (ASF) under one
@@ -41,9 +41,9 @@ public class RenderingContextTest
         RenderingContext renderingContext = new RenderingContext( baseDir, docName, "", "xml" );
         assertEquals( "file.with.dot.in.name.html", renderingContext.getOutputName() );
         assertEquals( ".", renderingContext.getRelativePath() );
-        
+
         docName = "index.xml.vm";
-        
+
         renderingContext = new RenderingContext( baseDir, docName, "", "xml" );
         assertEquals( "index.html", renderingContext.getOutputName() );
         assertEquals( ".", renderingContext.getRelativePath() );
@@ -54,5 +54,5 @@ public class RenderingContextTest
         assertEquals( "download.html", renderingContext.getOutputName() );
         assertEquals( ".", renderingContext.getRelativePath() );
     }
-    
+
 }

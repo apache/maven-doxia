@@ -26,7 +26,7 @@ import org.apache.maven.doxia.book.model.BookModel;
 import org.apache.maven.doxia.book.model.Chapter;
 import org.apache.maven.doxia.book.model.Section;
 import org.apache.maven.doxia.book.services.renderer.xhtml.XhtmlBookSink;
-import org.apache.maven.doxia.module.xhtml.decoration.render.RenderingContext;
+import org.apache.maven.doxia.sink.render.RenderingContext;
 import org.apache.maven.doxia.parser.manager.ParserNotFoundException;
 import org.apache.maven.doxia.parser.ParseException;
 import org.codehaus.plexus.logging.AbstractLogEnabled;

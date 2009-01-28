@@ -20,7 +20,7 @@ package org.apache.maven.doxia.book.services.renderer.xhtml;
  */
 
 import org.apache.maven.doxia.module.xhtml.XhtmlSink;
-import org.apache.maven.doxia.module.xhtml.decoration.render.RenderingContext;
+import org.apache.maven.doxia.sink.render.RenderingContext;
 import org.codehaus.plexus.util.StringUtils;
 
 import java.io.Writer;
