@@ -523,19 +523,16 @@ public abstract class AbstractXmlParser
                 hasDoctype = true;
             }
 
-            // 2 if no doctype, check for an xmlns instance
+            // 2 check for an xmlns instance
             boolean hasXsd = false;
-            if ( !hasDoctype )
+            matcher = PATTERN_TAG.matcher( content );
+            if ( matcher.find() )
             {
-                matcher = PATTERN_TAG.matcher( content );
-                if ( matcher.find() )
-                {
-                    String value = matcher.group( 2 );
+                String value = matcher.group( 2 );
 
-                    if ( value.indexOf( XMLConstants.W3C_XML_SCHEMA_INSTANCE_NS_URI ) != -1 )
-                    {
-                        hasXsd = true;
-                    }
+                if ( value.indexOf( XMLConstants.W3C_XML_SCHEMA_INSTANCE_NS_URI ) != -1 )
+                {
+                    hasXsd = true;
                 }
             }
 
@@ -546,7 +543,7 @@ public abstract class AbstractXmlParser
                 {
                     getLog().debug( "Validating the content..." );
                 }
-                getXmlReader().parse( new InputSource( new StringReader( content ) ) );
+                getXmlReader( hasXsd && hasDoctype ).parse( new InputSource( new StringReader( content ) ) );
             }
         }
         catch ( IOException e )
@@ -568,10 +565,11 @@ public abstract class AbstractXmlParser
     }
 
     /**
+     * @param hasDtdAndXsd to flag the <code>ErrorHandler</code>.
      * @return an xmlReader instance.
      * @throws SAXException if any
      */
-    private XMLReader getXmlReader()
+    private XMLReader getXmlReader( boolean hasDtdAndXsd )
         throws SAXException
     {
         if ( xmlReader == null )
@@ -584,6 +582,8 @@ public abstract class AbstractXmlParser
             xmlReader.setErrorHandler( errorHandler );
             xmlReader.setEntityResolver( new CachedFileEntityResolver() );
         }
+
+        ( (MessagesErrorHandler) xmlReader.getErrorHandler() ).setHasDtdAndXsd( hasDtdAndXsd );
 
         return xmlReader;
     }
@@ -602,11 +602,25 @@ public abstract class AbstractXmlParser
 
         private static final int TYPE_FATAL = 3;
 
+        /** @see org/apache/xerces/impl/msg/XMLMessages.properties#MSG_ELEMENT_NOT_DECLARED */
+        private static final Pattern ELEMENT_TYPE_PATTERN =
+            Pattern.compile( "Element type \".*\" must be declared.", Pattern.DOTALL );
+
         private final Log log;
+
+        private boolean hasDtdAndXsd;
 
         public MessagesErrorHandler( Log log )
         {
             this.log = log;
+        }
+
+        /**
+         * @param hasDtdAndXsd the hasDtdAndXsd to set
+         */
+        protected void setHasDtdAndXsd( boolean hasDtdAndXsd )
+        {
+            this.hasDtdAndXsd = hasDtdAndXsd;
         }
 
         /** {@inheritDoc} */
@@ -620,7 +634,20 @@ public abstract class AbstractXmlParser
         public void error( SAXParseException e )
             throws SAXException
         {
-            processException( TYPE_ERROR, e );
+            // Workaround for Xerces complaints when an XML with XSD needs also a <!DOCTYPE []> to specify entities
+            // like &nbsp;
+            // See http://xsd.stylusstudio.com/2001Nov/post08021.htm
+            if ( !hasDtdAndXsd )
+            {
+                processException( TYPE_ERROR, e );
+                return;
+            }
+
+            Matcher m = ELEMENT_TYPE_PATTERN.matcher( e.getMessage() );
+            if ( !m.find() )
+            {
+                processException( TYPE_ERROR, e );
+            }
         }
 
         /** {@inheritDoc} */
