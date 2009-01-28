@@ -22,14 +22,16 @@ package org.apache.maven.doxia.parser;
 import java.io.BufferedReader;
 import java.io.ByteArrayInputStream;
 import java.io.File;
-import java.io.FileInputStream;
 import java.io.FileOutputStream;
 import java.io.IOException;
+import java.io.InputStream;
+import java.io.OutputStream;
 import java.io.Reader;
 import java.io.StringReader;
 import java.net.URL;
 import java.util.Hashtable;
 import java.util.LinkedHashMap;
+import java.util.Locale;
 import java.util.Map;
 import java.util.regex.Matcher;
 import java.util.regex.Pattern;
@@ -695,17 +697,38 @@ public abstract class AbstractXmlParser
             // already cached?
             if ( res == null )
             {
-                File temp =
-                    new File( System.getProperty( "java.io.tmpdir" ), FileUtils.getFile( systemId ).getName() );
+                String systemName = FileUtils.getFile( systemId ).getName();
+                File temp = new File( System.getProperty( "java.io.tmpdir" ), systemName );
                 // maybe already as a temp file?
                 if ( !temp.exists() )
                 {
-                    res = IOUtil.toByteArray( new URL( systemId ).openStream() );
-                    IOUtil.copy( res, new FileOutputStream( temp ) );
+                    // is systemId a file or an url?
+                    if ( systemId.toLowerCase( Locale.ENGLISH ).startsWith( "file" ) )
+                    {
+                        // Doxia XSDs are included in the jars, so try to find the resource systemName from
+                        // the classpath...
+                        URL url = getClass().getResource( "/" + systemName );
+                        if ( url != null )
+                        {
+                            res = toByteArray( url );
+                        }
+                        else
+                        {
+                            throw new SAXException( "Could not find the SYSTEM entity: " + systemId );
+                        }
+                    }
+                    else
+                    {
+                        res = toByteArray( new URL( systemId ) );
+                    }
+
+                    // write systemId as temp file
+                    copy( res, temp );
                 }
                 else
                 {
-                    res = IOUtil.toByteArray( new FileInputStream( temp ) );
+                    // TODO How to refresh Doxia XSDs from temp dir?
+                    res = toByteArray( temp.toURL() );
                 }
 
                 cache.put( systemId, res );
@@ -716,6 +739,69 @@ public abstract class AbstractXmlParser
             is.setSystemId( systemId );
 
             return is;
+        }
+
+        /**
+         * Wrap {@link IOUtil#toByteArray(java.io.InputStream)} to throw SAXException.
+         *
+         * @param url not null
+         * @return return an array of byte
+         * @throws SAXException if any
+         * @see {@link IOUtil#toByteArray(java.io.InputStream)}
+         */
+        private static byte[] toByteArray( URL url )
+            throws SAXException
+        {
+            InputStream is = null;
+            try
+            {
+                is = url.openStream();
+                if ( is == null )
+                {
+                    throw new SAXException( "Cannot open stream from the url: " + url.toString() );
+                }
+                return IOUtil.toByteArray( is );
+            }
+            catch ( IOException e )
+            {
+                throw new SAXException( "IOException: " + e.getMessage(), e );
+            }
+            finally
+            {
+                IOUtil.close( is );
+            }
+        }
+
+        /**
+         * Wrap {@link IOUtil#copy(byte[], OutputStream)} to throw SAXException.
+         *
+         * @param res not null array of byte
+         * @param f the file where to write the bytes
+         * @throws SAXException if any
+         * @see {@link IOUtil#copy(byte[], OutputStream)}
+         */
+        private void copy( byte[] res, File f )
+            throws SAXException
+        {
+            if ( f.isDirectory() )
+            {
+                throw new SAXException( "'" + f.getAbsolutePath() + "' is a directory, can not write it." );
+            }
+
+            OutputStream os = null;
+            try
+            {
+                os = new FileOutputStream( f );
+                IOUtil.copy( res, os );
+            }
+            catch ( IOException e )
+            {
+                throw new SAXException( "IOException: " + e.getMessage(), e );
+            }
+            finally
+            {
+                IOUtil.close( os );
+            }
         }
     }
 }
