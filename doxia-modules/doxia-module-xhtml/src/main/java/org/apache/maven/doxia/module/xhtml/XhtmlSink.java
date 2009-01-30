@@ -29,7 +29,10 @@ import org.apache.maven.doxia.sink.XhtmlBaseSink;
 import org.apache.maven.doxia.sink.SinkEventAttributeSet;
 
 /**
- * Xhtml sink implementation.
+ * <a href="http://www.w3.org/TR/xhtml1/">Xhtml 1.0 Transitional</a> sink implementation.
+ * <br/>
+ * It uses the DTD/xhtml1-transitional <a href="http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+ * http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd</a>.
  *
  * @author Jason van Zyl
  * @author ltheussl

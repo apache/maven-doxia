@@ -39,7 +39,10 @@ import org.apache.maven.doxia.util.HtmlTools;
 import org.codehaus.plexus.util.FileUtils;
 
 /**
- * Docbook Sink implementation.
+ * <a href="http://www.oasis-open.org/docbook">Docbook</a> Sink implementation.
+ * <br/>
+ * It uses the Docbook v4.4 DTD <a href="http://www.oasis-open.org/docbook/sgml/4.4/docbookx.dtd">
+ * http://www.oasis-open.org/docbook/sgml/4.4/docbookx.dtd</a>.
  *
  * @version $Id$
  * @since 1.0
