@@ -45,6 +45,9 @@ public class XdocSink
     extends XhtmlBaseSink
     implements XdocMarkup
 {
+    /** XDoc system id: "http://maven.apache.org/xsd/xdoc-2.0.xsd" */
+    public static final String XDOC_SYSTEM_ID = "http://maven.apache.org/xsd/xdoc-2.0.xsd";
+
     // ----------------------------------------------------------------------
     // Instance fields
     // ----------------------------------------------------------------------
@@ -116,7 +119,7 @@ public class XdocSink
         MutableAttributeSet atts = new SinkEventAttributeSet();
         atts.addAttribute( "xmlns", "http://maven.apache.org/XDOC/2.0" );
         atts.addAttribute( "xmlns:xsi", "http://www.w3.org/2001/XMLSchema-instance" );
-        atts.addAttribute( "xsi:schemaLocation", "http://maven.apache.org/XDOC/2.0 http://maven.apache.org/xsd/xdoc-2.0.xsd" );
+        atts.addAttribute( "xsi:schemaLocation", "http://maven.apache.org/XDOC/2.0 " + XDOC_SYSTEM_ID );
 
         writeStartTag( DOCUMENT_TAG, atts );
 
