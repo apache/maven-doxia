@@ -106,10 +106,10 @@ public class XdocSink
 
         setHeadFlag( true );
 
-        write( "<?xml version='1.0'" );
+        write( "<?xml version=\"1.0\"" );
         if ( encoding != null )
         {
-            write( " encoding='" + encoding + "'" );
+            write( " encoding=\"" + encoding + "\"" );
         }
         write( "?>" );
 
