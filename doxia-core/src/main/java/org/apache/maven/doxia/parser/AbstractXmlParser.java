@@ -30,6 +30,7 @@ import java.io.Reader;
 import java.io.StringReader;
 import java.net.URL;
 import java.util.Hashtable;
+import java.util.Iterator;
 import java.util.LinkedHashMap;
 import java.util.Locale;
 import java.util.Map;
@@ -70,16 +71,21 @@ public abstract class AbstractXmlParser
     extends AbstractParser
     implements XmlMarkup
 {
-    /** Entity pattern for HTML entity, i.e. &#38;nbsp; see http://www.w3.org/TR/REC-xml/#NT-EntityDecl */
+    /** Entity pattern for HTML entity, i.e. &#38;nbsp; "<!ENTITY(\\s)+([^>|^\\s]+)(\\s)+\"(\\s)*(&[a-zA-Z]{2,6};)(\\s)*\"(\\s)*>
+     * <br/>
+     * see <a href="http://www.w3.org/TR/REC-xml/#NT-EntityDecl">http://www.w3.org/TR/REC-xml/#NT-EntityDecl</a> */
     private static final Pattern PATTERN_ENTITY_1 =
-        Pattern.compile( "<!ENTITY(\\s)+([^>|^\\s]+)(\\s)+\"(\\s)*(&[a-zA-Z]{2,6};)(\\s)*\"(\\s)*>" );
+        Pattern.compile( ENTITY_START + "(\\s)+([^>|^\\s]+)(\\s)+\"(\\s)*(&[a-zA-Z]{2,6};)(\\s)*\"(\\s)*>" );
 
-    /** Entity pattern for Unicode entity, i.e. &#38;#38; see http://www.w3.org/TR/REC-xml/#NT-EntityDecl */
+    /** Entity pattern for Unicode entity, i.e. &#38;#38; "<!ENTITY(\\s)+([^>|^\\s]+)(\\s)+\"(\\s)*(&(#x?[0-9a-fA-F]{1,4};)*)(\\s)*\"(\\s)*>"
+     * <br/>
+     * see <a href="http://www.w3.org/TR/REC-xml/#NT-EntityDecl">http://www.w3.org/TR/REC-xml/#NT-EntityDecl</a> */
     private static final Pattern PATTERN_ENTITY_2 =
-        Pattern.compile( "<!ENTITY(\\s)+([^>|^\\s]+)(\\s)+\"(\\s)*(&#x?[0-9a-fA-F]{1,4};)(\\s)*\"(\\s)*>" );
+        Pattern.compile( ENTITY_START + "(\\s)+([^>|^\\s]+)(\\s)+\"(\\s)*(&(#x?[0-9a-fA-F]{1,4};)*)(\\s)*\"(\\s)*>" );
 
-    /** Doctype pattern as defined in http://www.w3.org/TR/REC-xml/#NT-doctypedecl */
-    private static final Pattern PATTERN_DOCTYPE = Pattern.compile( ".*<!DOCTYPE([^>]*)>.*" );
+    /** Doctype pattern i.e. ".*<!DOCTYPE([^>]*)>.*"
+     * see <a href="http://www.w3.org/TR/REC-xml/#NT-doctypedecl">http://www.w3.org/TR/REC-xml/#NT-doctypedecl</a> */
+    private static final Pattern PATTERN_DOCTYPE = Pattern.compile( ".*" + DOCTYPE_START + "([^>]*)>.*" );
 
     /** Tag pattern as defined in http://www.w3.org/TR/REC-xml/#NT-Name */
     private static final Pattern PATTERN_TAG = Pattern.compile( ".*<([A-Za-z][A-Za-z0-9:_.-]*)([^>]*)>.*" );
@@ -247,43 +253,13 @@ public abstract class AbstractXmlParser
             }
             else if ( eventType == XmlPullParser.DOCDECL )
             {
-                String text = parser.getText();
-                int entitiesCount = StringUtils.countMatches( text, "<!ENTITY" );
-                // entities defined in a local doctype
-                if ( entitiesCount > 0 )
+                addLocalEntities( parser, parser.getText() );
+
+                for ( Iterator it = CachedFileEntityResolver.ENTITY_CACHE.values().iterator(); it.hasNext(); )
                 {
-                    int start = text.indexOf( "<" );
-                    int end = text.lastIndexOf( ">" );
-                    if ( start != -1 && end != -1 )
-                    {
-                        text = text.substring( start, end + 1 );
-                        for ( int i = 0; i < entitiesCount; i++ )
-                        {
-                            String tmp = text.substring( text.indexOf( "<" ), text.indexOf( ">" ) + 1 );
-                            Matcher matcher = PATTERN_ENTITY_1.matcher( tmp );
-                            if ( matcher.find() && matcher.groupCount() == 7 )
-                            {
-                                String entityName = matcher.group( 2 );
-                                String entityValue = matcher.group( 5 );
+                    byte[] res = (byte[])it.next();
 
-                                parser.defineEntityReplacementText( entityName, entityValue );
-                                getLocalEntities().put( entityName, entityValue );
-                            }
-                            else
-                            {
-                                matcher = PATTERN_ENTITY_2.matcher( text );
-                                if ( matcher.find() && matcher.groupCount() == 7 )
-                                {
-                                    String entityName = matcher.group( 2 );
-                                    String entityValue = matcher.group( 5 );
-
-                                    parser.defineEntityReplacementText( entityName, entityValue );
-                                    getLocalEntities().put( entityName, entityValue );
-                                }
-                            }
-                            text = StringUtils.replace( text, tmp, "" ).trim();
-                        }
-                    }
+                    addDTDEntities( parser, new String( res ) );
                 }
             }
 
@@ -589,6 +565,123 @@ public abstract class AbstractXmlParser
     }
 
     /**
+     * Add an entity given by <code>entityName</code> and <code>entityValue</code> to {@link #entities}.
+     * <br/>
+     * By default, we exclude the default XML entities: &#38;amp;, &#38;lt;, &#38;gt;, &#38;quot; and &#38;apos;.
+     *
+     * @param parser not null
+     * @param entityName not null
+     * @param entityValue not null
+     * @throws XmlPullParserException if any
+     * @see {@link XmlPullParser#defineEntityReplacementText(String, String)}
+     */
+    private void addEntity( XmlPullParser parser, String entityName, String entityValue )
+        throws XmlPullParserException
+    {
+        if ( entityName.endsWith( "amp" ) || entityName.endsWith( "lt" ) || entityName.endsWith( "gt" )
+            || entityName.endsWith( "quot" ) || entityName.endsWith( "apos" ) )
+        {
+            return;
+        }
+
+        parser.defineEntityReplacementText( entityName, entityValue );
+        getLocalEntities().put( entityName, entityValue );
+    }
+
+    /**
+     * Handle entities defined in a local doctype as the following:
+     * <pre>
+     * &lt;!DOCTYPE foo [
+     *   &lt;!ENTITY bar "&#38;#x160;"&gt;
+     *   &lt;!ENTITY bar1 "&#38;#x161;"&gt;
+     * ]&gt;
+     * </pre>
+     *
+     * @param parser not null
+     * @param text not null
+     * @throws XmlPullParserException if any
+     */
+    private void addLocalEntities( XmlPullParser parser, String text )
+        throws XmlPullParserException
+    {
+        int entitiesCount = StringUtils.countMatches( text, ENTITY_START );
+        if ( entitiesCount > 0 )
+        {
+            // text should be foo [...]
+            int start = text.indexOf( "[" );
+            int end = text.lastIndexOf( "]" );
+            if ( start != -1 && end != -1 )
+            {
+                text = text.substring( start + 1, end );
+                addDTDEntities( parser, text );
+            }
+        }
+    }
+
+    /**
+     * Handle entities defined in external doctypes as the following:
+     * <pre>
+     * &lt;!DOCTYPE foo [
+     *   &lt;!-- These are the entity sets for ISO Latin 1 characters for the XHTML --&gt;
+     *   &lt;!ENTITY % HTMLlat1 PUBLIC "-//W3C//ENTITIES Latin 1 for XHTML//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml-lat1.ent"&gt;
+     *   %HTMLlat1;
+     * ]&gt;
+     * </pre>
+     *
+     * @param parser not null
+     * @param text not null
+     * @throws XmlPullParserException if any
+     */
+    private void addDTDEntities( XmlPullParser parser, String text )
+        throws XmlPullParserException
+    {
+        int entitiesCount = StringUtils.countMatches( text, ENTITY_START );
+        if ( entitiesCount > 0 )
+        {
+            BufferedReader reader = new BufferedReader( new StringReader( text ) );
+            String line;
+            String tmpLine = "";
+            try
+            {
+                Matcher matcher;
+                while ( ( line = reader.readLine() ) != null )
+                {
+                    tmpLine += "\n" + line;
+                    matcher = PATTERN_ENTITY_1.matcher( tmpLine );
+                    if ( matcher.find() && matcher.groupCount() == 7 )
+                    {
+                        String entityName = matcher.group( 2 );
+                        String entityValue = matcher.group( 5 );
+
+                        addEntity( parser, entityName, entityValue );
+                        tmpLine = "";
+                    }
+                    else
+                    {
+                        matcher = PATTERN_ENTITY_2.matcher( tmpLine );
+                        if ( matcher.find() && matcher.groupCount() == 8 )
+                        {
+                            String entityName = matcher.group( 2 );
+                            String entityValue = matcher.group( 5 );
+
+                            addEntity( parser, entityName, entityValue );
+                            tmpLine = "";
+                        }
+                    }
+                }
+            }
+            catch ( IOException e )
+            {
+                // nop
+            }
+            finally
+            {
+                IOUtil.close( reader );
+            }
+        }
+    }
+
+    /**
      * Convenience class to beautify <code>SAXParseException</code> messages.
      */
     static class MessagesErrorHandler
@@ -714,13 +807,14 @@ public abstract class AbstractXmlParser
     public static class CachedFileEntityResolver
         implements EntityResolver
     {
-        private static final Map cache = new Hashtable();
+        /** Map with systemId as key and the content of systemId as byte[]. */
+        protected static final Map ENTITY_CACHE = new Hashtable();
 
         /** {@inheritDoc} */
         public InputSource resolveEntity( String publicId, String systemId )
             throws SAXException, IOException
         {
-            byte[] res = (byte[]) cache.get( systemId );
+            byte[] res = (byte[]) ENTITY_CACHE.get( systemId );
             // already cached?
             if ( res == null )
             {
@@ -758,7 +852,7 @@ public abstract class AbstractXmlParser
                     res = toByteArray( temp.toURL() );
                 }
 
-                cache.put( systemId, res );
+                ENTITY_CACHE.put( systemId, res );
             }
 
             InputSource is = new InputSource( new ByteArrayInputStream( res ) );

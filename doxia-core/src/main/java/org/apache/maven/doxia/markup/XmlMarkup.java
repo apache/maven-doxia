@@ -42,4 +42,10 @@ public interface XmlMarkup
 
     /** CDATA string: "CDATA" */
     String CDATA = "CDATA";
+
+    /** DOCTYPE start string: "&lt;!DOCTYPE" */
+    String DOCTYPE_START = "<!DOCTYPE";
+
+    /** ENTITY start string: "&lt;!ENTITY" */
+    String ENTITY_START = "<!ENTITY";
 }
