@@ -113,7 +113,12 @@ public class XdocSink
         }
         write( "?>" );
 
-        writeStartTag( DOCUMENT_TAG );
+        MutableAttributeSet atts = new SinkEventAttributeSet();
+        atts.addAttribute( "xmlns", "http://maven.apache.org/XDOC/2.0" );
+        atts.addAttribute( "xmlns:xsi", "http://www.w3.org/2001/XMLSchema-instance" );
+        atts.addAttribute( "xsi:schemaLocation", "http://maven.apache.org/XDOC/2.0 http://maven.apache.org/xsd/xdoc-2.0.xsd" );
+
+        writeStartTag( DOCUMENT_TAG, atts );
 
         writeStartTag( PROPERTIES_TAG );
     }
