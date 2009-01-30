@@ -214,12 +214,6 @@ public class XhtmlSink
     // Public protected methods
     // ----------------------------------------------------------------------
 
-    /** {@inheritDoc} */
-    protected void write( String text )
-    {
-        super.write( text );
-    }
-
     /**
      * @param headTitleFlag an header title flag.
      */
