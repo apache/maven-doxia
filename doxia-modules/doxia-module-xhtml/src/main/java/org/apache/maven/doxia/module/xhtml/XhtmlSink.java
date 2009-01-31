@@ -49,6 +49,8 @@ public class XhtmlSink
 
     private String encoding;
 
+    private String languageId;
+
     /** An indication on if we're inside a head title. */
     private boolean headTitleFlag;
 
@@ -80,6 +82,23 @@ public class XhtmlSink
         this.encoding = encoding;
     }
 
+    /**
+     * Constructor, initialize the Writer and tells which encoding and languageId are used.
+     *
+     * @param writer not null writer to write the result.
+     * @param encoding the encoding used, that should be written to the generated HTML content
+     * if not <code>null</code>.
+     * @param languageId language identifier for the root element as defined by
+     * <a href="ftp://ftp.isi.edu/in-notes/bcp/bcp47.txt">IETF BCP 47</a>, Tags for the Identification of Languages;
+     * in addition, the empty string may be specified.
+     */
+    protected XhtmlSink( Writer writer, String encoding, String languageId )
+    {
+        this( writer, encoding );
+
+        this.languageId = languageId;
+    }
+
     /** {@inheritDoc} */
     public void head()
     {
@@ -92,6 +111,12 @@ public class XhtmlSink
 
         MutableAttributeSet atts = new SinkEventAttributeSet();
         atts.addAttribute( "xmlns", XHTML_NAMESPACE );
+
+        if ( languageId != null )
+        {
+            atts.addAttribute( Attribute.LANG.toString(), languageId );
+            atts.addAttribute( "xml:lang", languageId );
+        }
 
         writeStartTag( Tag.HTML, atts );
 

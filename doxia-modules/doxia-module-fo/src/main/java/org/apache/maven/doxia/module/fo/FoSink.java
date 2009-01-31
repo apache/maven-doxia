@@ -29,6 +29,7 @@ import javax.swing.text.html.HTML.Tag;
 
 import org.apache.maven.doxia.sink.AbstractXmlSink;
 import org.apache.maven.doxia.sink.Sink;
+import org.apache.maven.doxia.sink.SinkEventAttributeSet;
 import org.apache.maven.doxia.sink.SinkEventAttributes;
 import org.apache.maven.doxia.util.DoxiaUtils;
 import org.apache.maven.doxia.util.HtmlTools;
@@ -79,6 +80,8 @@ public class FoSink
 
     private String encoding;
 
+    private String languageId;
+
     /**
      * Constructor, initialize the Writer.
      *
@@ -104,6 +107,23 @@ public class FoSink
         this.config = new FoConfiguration();
 
         setNameSpace( "fo" );
+    }
+
+    /**
+     * Constructor, initialize the Writer and tells which encoding and languageId are used.
+     *
+     * @param writer not null writer to write the result.
+     * @param encoding the encoding used, that should be written to the generated HTML content
+     * if not <code>null</code>.
+     * @param languageId language identifier for the root element as defined by
+     * <a href="ftp://ftp.isi.edu/in-notes/bcp/bcp47.txt">IETF BCP 47</a>, Tags for the Identification of Languages;
+     * in addition, the empty string may be specified.
+     */
+    protected FoSink( Writer writer, String encoding, String languageId )
+    {
+        this( writer, encoding );
+
+        this.languageId = languageId;
     }
 
     // TODO add FOP compliance mode?
@@ -996,8 +1016,17 @@ public class FoSink
             write( " encoding=\"" + encoding + "\"" );
         }
         write( "?>" );
+        writeEOL();
 
-        writeStartTag( ROOT_TAG, "xmlns:" + getNameSpace(), FO_NAMESPACE );
+        MutableAttributeSet atts = new SinkEventAttributeSet();
+        atts.addAttribute( "xmlns:" + getNameSpace(), FO_NAMESPACE );
+
+        if ( languageId != null )
+        {
+            atts.addAttribute( "language", languageId );
+        }
+
+        writeStartTag( ROOT_TAG, atts );
 
         writeStartTag( LAYOUT_MASTER_SET_TAG, "" );
 

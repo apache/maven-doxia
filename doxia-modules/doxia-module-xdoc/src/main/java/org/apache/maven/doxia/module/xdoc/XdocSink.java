@@ -54,6 +54,8 @@ public class XdocSink
 
     private String encoding;
 
+    private String languageId;
+
     // ----------------------------------------------------------------------
     // Constructors
     // ----------------------------------------------------------------------
@@ -80,6 +82,23 @@ public class XdocSink
     {
         this( writer );
         this.encoding = encoding;
+    }
+
+    /**
+     * Constructor, initialize the Writer and tells which encoding and languageId are used.
+     *
+     * @param writer not null writer to write the result.
+     * @param encoding the encoding used, that should be written to the generated HTML content
+     * if not <code>null</code>.
+     * @param languageId language identifier for the root element as defined by
+     * <a href="ftp://ftp.isi.edu/in-notes/bcp/bcp47.txt">IETF BCP 47</a>, Tags for the Identification of Languages;
+     * in addition, the empty string may be specified.
+     */
+    protected XdocSink( Writer writer, String encoding, String languageId )
+    {
+        this( writer, encoding );
+
+        this.languageId = languageId;
     }
 
     // ----------------------------------------------------------------------
@@ -117,6 +136,12 @@ public class XdocSink
         atts.addAttribute( "xmlns", XDOC_NAMESPACE );
         atts.addAttribute( "xmlns:xsi", XML_NAMESPACE );
         atts.addAttribute( "xsi:schemaLocation", XDOC_NAMESPACE + " " + XDOC_SYSTEM_ID );
+
+        if ( languageId != null )
+        {
+            atts.addAttribute( Attribute.LANG.toString(), languageId );
+            atts.addAttribute( "xml:lang", languageId );
+        }
 
         writeStartTag( DOCUMENT_TAG, atts );
 

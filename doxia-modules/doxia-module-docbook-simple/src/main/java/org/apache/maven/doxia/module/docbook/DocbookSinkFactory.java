@@ -40,4 +40,10 @@ public class DocbookSinkFactory
     {
         return new DocBookSink( writer, encoding );
     }
+
+    /** {@inheritDoc} */
+    protected Sink createSink( Writer writer, String encoding, String languageId )
+    {
+        return new DocBookSink( writer, encoding, languageId );
+    }
 }

@@ -178,6 +178,23 @@ public class DocBookSink
     }
 
     /**
+     * Constructor, initialize the Writer and tells which encoding and languageId are used.
+     *
+     * @param writer not null writer to write the result.
+     * @param encoding the encoding used, that should be written to the generated HTML content
+     * if not <code>null</code>.
+     * @param languageId language identifier for the root element as defined by
+     * <a href="ftp://ftp.isi.edu/in-notes/bcp/bcp47.txt">IETF BCP 47</a>, Tags for the Identification of Languages;
+     * in addition, the empty string may be specified.
+     */
+    protected DocBookSink( Writer writer, String encoding, String languageId )
+    {
+        this( writer, encoding );
+
+        this.lang = languageId;
+    }
+
+    /**
      * @param text The text to escape.
      * @param xmlMode xmlMode.
      * @return The escaped text.
@@ -612,7 +629,7 @@ public class DocBookSink
         MutableAttributeSet att = new SimpleAttributeSet();
         if ( lang != null )
         {
-            att.addAttribute( Attribute.LANG, lang );
+            att.addAttribute( Attribute.LANG.toString(), lang );
         }
         return att;
     }

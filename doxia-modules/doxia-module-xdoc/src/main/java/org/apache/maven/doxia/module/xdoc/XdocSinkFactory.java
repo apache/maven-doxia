@@ -40,4 +40,10 @@ public class XdocSinkFactory
     {
         return new XdocSink( writer, encoding );
     }
+
+    /** {@inheritDoc} */
+    protected Sink createSink( Writer writer, String encoding, String languageId )
+    {
+        return new XdocSink( writer, encoding, languageId );
+    }
 }

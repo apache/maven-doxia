@@ -40,4 +40,10 @@ public class FoSinkFactory
     {
         return new FoSink( writer, encoding );
     }
+
+    /** {@inheritDoc} */
+    protected Sink createSink( Writer writer, String encoding, String languageId )
+    {
+        return new FoSink( writer, encoding, languageId );
+    }
 }

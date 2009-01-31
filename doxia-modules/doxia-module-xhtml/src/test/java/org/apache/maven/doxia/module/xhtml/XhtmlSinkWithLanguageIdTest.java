@@ -20,30 +20,29 @@ package org.apache.maven.doxia.module.xhtml;
  */
 
 import java.io.Writer;
+import java.util.Locale;
 
-import org.apache.maven.doxia.sink.AbstractXmlSinkFactory;
 import org.apache.maven.doxia.sink.Sink;
 
 /**
- * Xhtml implementation of the Sink factory.
- *
  * @author <a href="mailto:vincent.siveton@gmail.com">Vincent Siveton</a>
  * @version $Id$
- * @since 1.0
- * @plexus.component role="org.apache.maven.doxia.sink.SinkFactory" role-hint="xhtml"
  */
-public class XhtmlSinkFactory
-    extends AbstractXmlSinkFactory
+public class XhtmlSinkWithLanguageIdTest
+    extends XhtmlSinkTest
 {
     /** {@inheritDoc} */
-    protected Sink createSink( Writer writer, String encoding )
+    protected Sink createSink( Writer writer )
     {
-        return new XhtmlSink( writer, encoding );
+        return new XhtmlSink( writer, "UTF-8", Locale.US.getLanguage() );
     }
 
     /** {@inheritDoc} */
-    protected Sink createSink( Writer writer, String encoding, String languageId )
+    protected String getHeadBlock()
     {
-        return new XhtmlSink( writer, encoding, languageId );
+        return "<!DOCTYPE html PUBLIC \"-//W3C//DTD XHTML 1.0 Transitional//EN\" \"http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd\">"
+            + "<html xmlns=\"http://www.w3.org/1999/xhtml\" lang=\"en\" xml:lang=\"en\">"
+            + "<head><title></title>"
+            + "<meta http-equiv=\"Content-Type\" content=\"text/html; charset=UTF-8\"/></head>";
     }
 }

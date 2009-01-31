@@ -1,4 +1,4 @@
-package org.apache.maven.doxia.module.xhtml;
+package org.apache.maven.doxia.module.xdoc;
 
 /*
  * Licensed to the Apache Software Foundation (ASF) under one
@@ -20,30 +20,30 @@ package org.apache.maven.doxia.module.xhtml;
  */
 
 import java.io.Writer;
+import java.util.Locale;
 
-import org.apache.maven.doxia.sink.AbstractXmlSinkFactory;
 import org.apache.maven.doxia.sink.Sink;
 
 /**
- * Xhtml implementation of the Sink factory.
- *
  * @author <a href="mailto:vincent.siveton@gmail.com">Vincent Siveton</a>
  * @version $Id$
- * @since 1.0
- * @plexus.component role="org.apache.maven.doxia.sink.SinkFactory" role-hint="xhtml"
  */
-public class XhtmlSinkFactory
-    extends AbstractXmlSinkFactory
+public class XdocSinkWithLanguageIdTest
+    extends XdocSinkTest
 {
     /** {@inheritDoc} */
-    protected Sink createSink( Writer writer, String encoding )
+    protected Sink createSink( Writer writer )
     {
-        return new XhtmlSink( writer, encoding );
+        return new XdocSink( writer, "UTF-8", Locale.US.getLanguage() );
     }
 
     /** {@inheritDoc} */
-    protected Sink createSink( Writer writer, String encoding, String languageId )
+    protected String getHeadBlock()
     {
-        return new XhtmlSink( writer, encoding, languageId );
+        return "<?xml version=\"1.0\" encoding=\"UTF-8\"?>"
+            + "<document xmlns=\"http://maven.apache.org/XDOC/2.0\" "
+            + "xmlns:xsi=\"http://www.w3.org/2001/XMLSchema-instance\" "
+            + "xsi:schemaLocation=\"http://maven.apache.org/XDOC/2.0 http://maven.apache.org/xsd/xdoc-2.0.xsd\" "
+            + "lang=\"en\" xml:lang=\"en\">" + "<properties></properties>";
     }
 }
