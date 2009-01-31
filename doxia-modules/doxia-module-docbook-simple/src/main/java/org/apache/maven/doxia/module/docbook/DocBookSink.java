@@ -551,10 +551,10 @@ public class DocBookSink
     {
         if ( xmlMode )
         {
-            markup( "<?xml version='1.0'" );
+            markup( "<?xml version=\"1.0\"" );
             if ( encoding != null )
             {
-                markup( " encoding='" + encoding + "'" );
+                markup( " encoding=\"" + encoding + "\"" );
             }
             markup( "?>" );
 
