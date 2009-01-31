@@ -29,6 +29,9 @@ package org.apache.maven.doxia.markup;
 public interface XmlMarkup
     extends Markup
 {
+    /** XML namespace: "http://www.w3.org/2001/XMLSchema-instance" */
+    String XML_NAMESPACE = "http://www.w3.org/2001/XMLSchema-instance";
+
     // ----------------------------------------------------------------------
     // Xml separator characters
     // ----------------------------------------------------------------------

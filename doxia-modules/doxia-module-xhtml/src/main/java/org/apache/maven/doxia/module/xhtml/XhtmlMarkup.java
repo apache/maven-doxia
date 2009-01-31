@@ -34,4 +34,12 @@ import org.apache.maven.doxia.markup.HtmlMarkup;
 public interface XhtmlMarkup
     extends HtmlMarkup
 {
+    /** XHTML namespace: "http://www.w3.org/1999/xhtml" */
+    String XHTML_NAMESPACE = "http://www.w3.org/1999/xhtml";
+
+    /** XHTML 1.0 transitional public id: "-//W3C//DTD XHTML 1.0 Transitional//EN" */
+    String XHTML_TRANSITIONAL_PUBLIC_ID = "-//W3C//DTD XHTML 1.0 Transitional//EN";
+
+    /** XHTML 1.0 transitional system id: "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd" */
+    String XHTML_TRANSITIONAL_SYSTEM_ID = "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd";
 }

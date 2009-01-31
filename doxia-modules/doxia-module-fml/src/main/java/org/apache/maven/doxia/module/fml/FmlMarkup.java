@@ -36,6 +36,12 @@ import org.apache.maven.doxia.markup.HtmlMarkup;
 public interface FmlMarkup
     extends HtmlMarkup
 {
+    /** FML namespace: "http://maven.apache.org/FML/1.0" */
+    String FML_NAMESPACE = "http://maven.apache.org/FML/1.0";
+
+    /** FML system id: "http://maven.apache.org/xsd/fml-1.0.xsd" */
+    String FML_SYSTEM_ID = "http://maven.apache.org/xsd/fml-1.0.xsd";
+
     // ----------------------------------------------------------------------
     // Specific Fml tags
     // ----------------------------------------------------------------------

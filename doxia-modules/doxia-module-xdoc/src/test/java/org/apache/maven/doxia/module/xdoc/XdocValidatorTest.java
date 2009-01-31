@@ -23,6 +23,7 @@ import java.io.File;
 import java.util.regex.Matcher;
 import java.util.regex.Pattern;
 
+import org.apache.maven.doxia.markup.XmlMarkup;
 import org.apache.maven.doxia.xsd.AbstractXmlValidatorTest;
 import org.codehaus.plexus.util.StringUtils;
 
@@ -73,7 +74,7 @@ public class XdocValidatorTest
             {
                 String faqs =
                     "<" + root + " xmlns=\"http://maven.apache.org/XDOC/2.0\""
-                        + "  xmlns:xsi=\"http://www.w3.org/2001/XMLSchema-instance\""
+                        + "  xmlns:xsi=\"" + XmlMarkup.XML_NAMESPACE + "\""
                         + "  xsi:schemaLocation=\"http://maven.apache.org/XDOC/2.0 " + XDOC_XSD.toURI() + "\" ";
 
                 return StringUtils.replace( content, "<" + root, faqs );

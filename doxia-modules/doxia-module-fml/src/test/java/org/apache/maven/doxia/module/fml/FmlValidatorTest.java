@@ -23,6 +23,7 @@ import java.io.File;
 import java.util.regex.Matcher;
 import java.util.regex.Pattern;
 
+import org.apache.maven.doxia.markup.XmlMarkup;
 import org.apache.maven.doxia.xsd.AbstractXmlValidatorTest;
 import org.codehaus.plexus.util.StringUtils;
 
@@ -72,9 +73,9 @@ public class FmlValidatorTest
             if ( value.indexOf( FML_XSD.getName() ) == -1 )
             {
                 String faqs =
-                    "<" + root + " xmlns=\"http://maven.apache.org/FML/1.0\""
-                        + "  xmlns:xsi=\"http://www.w3.org/2001/XMLSchema-instance\""
-                        + "  xsi:schemaLocation=\"http://maven.apache.org/FML/1.0 " + FML_XSD.toURI() + "\" ";
+                    "<" + root + " xmlns=\"" + FmlMarkup.FML_NAMESPACE + "\""
+                        + "  xmlns:xsi=\"" + XmlMarkup.XML_NAMESPACE + "\""
+                        + "  xsi:schemaLocation=\"" + FmlMarkup.FML_NAMESPACE + " " + FML_XSD.toURI() + "\" ";
 
                 return StringUtils.replace( content, "<" + root, faqs );
             }

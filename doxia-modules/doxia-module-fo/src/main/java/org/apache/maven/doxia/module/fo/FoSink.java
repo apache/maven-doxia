@@ -997,7 +997,7 @@ public class FoSink
         }
         write( "?>" );
 
-        writeStartTag( ROOT_TAG, "xmlns:" + getNameSpace(), "http://www.w3.org/1999/XSL/Format" );
+        writeStartTag( ROOT_TAG, "xmlns:" + getNameSpace(), FO_NAMESPACE );
 
         writeStartTag( LAYOUT_MASTER_SET_TAG, "" );
 

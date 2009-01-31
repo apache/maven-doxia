@@ -35,6 +35,18 @@ import org.apache.maven.doxia.markup.XmlMarkup;
 public interface DocbookMarkup
     extends XmlMarkup
 {
+    /** DocBook V4.4 SGML public id: "-//OASIS//DTD DocBook V4.4//EN" */
+    String DEFAULT_SGML_PUBLIC_ID = "-//OASIS//DTD DocBook V4.4//EN";
+
+    /** DocBook XML V4.4 XML public id: "-//OASIS//DTD DocBook XML V4.4//EN" */
+    String DEFAULT_XML_PUBLIC_ID = "-//OASIS//DTD DocBook V4.4//EN";
+
+    /** DocBook XML V4.4 XML system id: "http://www.oasis-open.org/docbook/xml/4.4/docbookx.dtd" */
+    String DEFAULT_XML_SYSTEM_ID = "http://www.oasis-open.org/docbook/xml/4.4/docbookx.dtd";
+
+    /** DocBook XML V4.4 SGML system id: "http://www.oasis-open.org/docbook/xml/4.4/docbookx.dtd" */
+    String DEFAULT_SGML_SYSTEM_ID = "http://www.oasis-open.org/docbook/sgml/4.4/docbookx.dtd";
+
     // ----------------------------------------------------------------------
     // Specific DocBook tags
     // ----------------------------------------------------------------------
@@ -58,7 +70,7 @@ public interface DocbookMarkup
             return "article";
         }
     };
-    
+
     /** DocBook tag for <code>articleinfo</code> */
     Tag ARTICLEINFO_TAG = new Tag()
     {

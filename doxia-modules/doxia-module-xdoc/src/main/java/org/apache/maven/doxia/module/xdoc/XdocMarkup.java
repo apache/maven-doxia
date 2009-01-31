@@ -36,6 +36,12 @@ import org.apache.maven.doxia.markup.HtmlMarkup;
 public interface XdocMarkup
     extends HtmlMarkup
 {
+    /** XDOC namespace: "http://maven.apache.org/XDOC/2.0" */
+    String XDOC_NAMESPACE = "http://maven.apache.org/XDOC/2.0";
+
+    /** XDOC system id: "http://maven.apache.org/xsd/xdoc-2.0.xsd" */
+    String XDOC_SYSTEM_ID = "http://maven.apache.org/xsd/xdoc-2.0.xsd";
+
     // ----------------------------------------------------------------------
     // Specific Xdoc tags
     // ----------------------------------------------------------------------

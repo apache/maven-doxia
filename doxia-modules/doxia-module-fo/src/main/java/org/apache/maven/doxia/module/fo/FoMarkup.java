@@ -33,6 +33,9 @@ import org.apache.maven.doxia.markup.XmlMarkup;
 public interface FoMarkup
     extends XmlMarkup
 {
+    /** FO namespace: "http://www.w3.org/1999/XSL/Format" */
+    String FO_NAMESPACE = "http://www.w3.org/1999/XSL/Format";
+
     // ----------------------------------------------------------------------
     // Specific FO tags
     // ----------------------------------------------------------------------
