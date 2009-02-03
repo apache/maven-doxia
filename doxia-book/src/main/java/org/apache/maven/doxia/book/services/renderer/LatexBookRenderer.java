@@ -102,13 +102,13 @@ public class LatexBookRenderer
     // ----------------------------------------------------------------------
 
     /** SectionInfo: id and title. */
-    private static class SectionInfo
+    static class SectionInfo
     {
         /** id. */
-        private String id;
+        String id;
 
         /** title. */
-        private String title;
+        String title;
     }
 
     /**

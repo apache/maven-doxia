@@ -28,6 +28,9 @@ package org.apache.maven.doxia.book;
 public class BookDoxiaException
     extends Exception
 {
+    /** serialVersionUID */
+    private static final long serialVersionUID = 87146681585045106L;
+
     /**
      * Construct a new BookDoxiaException with the specified detail message.
      *
