@@ -20,6 +20,7 @@ package org.apache.maven.doxia.book;
  */
 
 import org.apache.commons.cli.CommandLine;
+import org.apache.commons.cli.HelpFormatter;
 import org.apache.commons.cli.OptionBuilder;
 import org.apache.commons.cli.Options;
 import org.apache.maven.doxia.book.model.BookModel;
@@ -47,7 +48,11 @@ public class BookDoxiaCli
     public static void main( String[] args )
         throws Exception
     {
-        new BookDoxiaCli().execute( args );
+        if ( args == null || args.length == 0 )
+        {
+            args = new String[] { "-h" };
+        }
+        System.exit( new BookDoxiaCli().execute( args ) );
     }
 
     /** {@inheritDoc} */
@@ -60,15 +65,15 @@ public class BookDoxiaCli
     public Options buildCliOptions( Options options )
     {
         options.addOption( OptionBuilder.withLongOpt( "book-xml" ).hasArg().withDescription(
-            "book xml file." )
+            "The full path of the Doxia book descriptor XML file" ).isRequired()
             .create( 'b' ) );
 
         options.addOption( OptionBuilder.withLongOpt( "content" ).hasArg().withDescription(
-            "book content" )
+            "The full path of the Doxia book directory containing APT/XML files" ).isRequired()
             .create( 'c' ) );
 
         options.addOption( OptionBuilder.withLongOpt( "output" ).hasArg().withDescription(
-            "output directory" )
+            "The full path of the wanted output directory" ).isRequired()
             .create( 'o' ) );
 
         return options;
@@ -82,18 +87,47 @@ public class BookDoxiaCli
         BookDoxia doxia = (BookDoxia) plexus.lookup( BookDoxia.ROLE );
 
         String bookXml = cli.getOptionValue( 'b' );
+        File bookXmlFile = new File( bookXml );
+        if ( !bookXmlFile.isFile() )
+        {
+            throw new IllegalArgumentException ( bookXmlFile + " is not a file!" );
+        }
 
         String content = cli.getOptionValue( 'c' );
+        File contentFile = new File( content );
+        if ( !contentFile.isDirectory() )
+        {
+            throw new IllegalArgumentException ( contentFile + " is not a directory!" );
+        }
 
         String output = cli.getOptionValue( 'o' );
+        File outputFile = new File( output );
+        if ( outputFile.exists() && !outputFile.isDirectory() )
+        {
+            throw new IllegalArgumentException ( outputFile + " is not a directory!" );
+        }
 
         File book1 = new File( bookXml );
 
         List files = FileUtils.getFiles( new File( content ), "**/*.apt, **/*.xml", "" );
 
+        if ( files.isEmpty() )
+        {
+            System.out.println( "No files found!" );
+            return;
+        }
         BookModel book = doxia.loadBook( book1 );
 
         doxia.renderBook( book, "xdoc", files, new File( output ) );
     }
 
+    /** {@inheritDoc} */
+    public void displayHelp()
+    {
+        System.out.println();
+
+        HelpFormatter formatter = new HelpFormatter();
+
+        formatter.printHelp( "doxia-book [options] -b <arg> -c <arg> -o <arg>", "\nOptions:", buildDefaultCliOptions(), "\n" );
+    }
 }
