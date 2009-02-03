@@ -22,8 +22,8 @@ package org.apache.maven.doxia.book.services.renderer;
 import java.io.File;
 import java.io.FileNotFoundException;
 import java.io.FileReader;
-import java.io.FileWriter;
 import java.io.IOException;
+import java.io.Reader;
 import java.io.Writer;
 import java.util.Iterator;
 
@@ -38,7 +38,9 @@ import org.apache.maven.doxia.parser.ParseException;
 import org.apache.maven.doxia.parser.manager.ParserNotFoundException;
 import org.apache.maven.doxia.sink.Sink;
 import org.codehaus.plexus.logging.AbstractLogEnabled;
+import org.codehaus.plexus.util.IOUtil;
 import org.codehaus.plexus.util.StringUtils;
+import org.codehaus.plexus.util.WriterFactory;
 
 /**
  * An implementation of <code>BookRenderer</code> for docbook
@@ -77,11 +79,10 @@ public class DocbookBookRenderer
 
         File bookFile = new File( context.getOutputDirectory(), book.getId() + ".xml" );
 
-        FileWriter fileWriter;
-
+        Writer fileWriter;
         try
         {
-            fileWriter = new FileWriter( bookFile );
+            fileWriter = WriterFactory.newXmlWriter( bookFile );
         }
         catch ( IOException e )
         {
@@ -96,60 +97,62 @@ public class DocbookBookRenderer
 
         DocBookBookSink sink = new DocBookBookSink( fileWriter );
 
-        sink.book();
-
-        // TODO: symmetrize bookHead?
-
-        if ( StringUtils.isNotEmpty( book.getTitle() ) )
-        {
-            sink.bookTitle();
-            sink.text( book.getTitle() );
-            sink.bookTitle_();
-        }
-
-        if ( StringUtils.isNotEmpty( book.getDate() ) )
-        {
-            sink.bookDate();
-            sink.text( book.getDate() );
-            sink.bookDate_();
-        }
-
-        if ( StringUtils.isNotEmpty( book.getAuthor() ) )
-        {
-            sink.bookAuthor();
-            sink.text( book.getAuthor() );
-            sink.bookAuthor_();
-        }
-
-        sink.bookHead_();
-
-        for ( Iterator it = book.getChapters().iterator(); it.hasNext(); )
-        {
-            Chapter chapter = (Chapter) it.next();
-
-            sink.chapter();
-
-            if (StringUtils.isNotEmpty( chapter.getTitle()))
-            {
-                sink.chapterTitle();
-                sink.text( chapter.getTitle() );
-                sink.chapterTitle_();
-            }
-
-            renderChapter( fileWriter, chapter, context, sink );
-
-            sink.chapter_();
-        }
-
-        sink.book_();
-
         try
         {
-            fileWriter.close();
+            sink.book();
+
+            // TODO: symmetrize bookHead?
+
+            if ( StringUtils.isNotEmpty( book.getTitle() ) )
+            {
+                sink.bookTitle();
+                sink.text( book.getTitle() );
+                sink.bookTitle_();
+            }
+
+            if ( StringUtils.isNotEmpty( book.getDate() ) )
+            {
+                sink.bookDate();
+                sink.text( book.getDate() );
+                sink.bookDate_();
+            }
+
+            if ( StringUtils.isNotEmpty( book.getAuthor() ) )
+            {
+                sink.bookAuthor();
+                sink.text( book.getAuthor() );
+                sink.bookAuthor_();
+            }
+
+            sink.bookHead_();
+
+            for ( Iterator it = book.getChapters().iterator(); it.hasNext(); )
+            {
+                Chapter chapter = (Chapter) it.next();
+
+                sink.chapter();
+
+                if (StringUtils.isNotEmpty( chapter.getTitle()))
+                {
+                    sink.chapterTitle();
+                    sink.text( chapter.getTitle() );
+                    sink.chapterTitle_();
+                }
+
+                renderChapter( fileWriter, chapter, context, sink );
+
+                sink.chapter_();
+            }
+
+            sink.book_();
         }
-        catch ( IOException e )
+        finally
         {
-            throw new BookDoxiaException( "Error while closing file.", e );
+            sink.flush();
+
+            sink.close();
+
+            IOUtil.close( fileWriter );
         }
     }
 
@@ -192,9 +195,11 @@ public class DocbookBookRenderer
             throw new BookDoxiaException( "No document that matches section with id=" + section.getId() + "." );
         }
 
+        Reader reader = null;
         try
         {
-            doxia.parse( new FileReader( bookFile.getFile() ), bookFile.getParserId(), sink );
+            reader = new FileReader( bookFile.getFile() );
+            doxia.parse( reader, bookFile.getParserId(), sink );
         }
         catch ( ParserNotFoundException e )
         {
@@ -209,6 +214,10 @@ public class DocbookBookRenderer
         catch ( FileNotFoundException e )
         {
             throw new BookDoxiaException( "Could not find document: " + bookFile.getFile().getAbsolutePath() + ".", e );
+        }
+        finally
+        {
+            IOUtil.close( reader );
         }
     }
 }

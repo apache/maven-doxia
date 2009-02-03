@@ -22,8 +22,9 @@ package org.apache.maven.doxia.book.services.renderer;
 import java.io.File;
 import java.io.FileNotFoundException;
 import java.io.FileReader;
-import java.io.FileWriter;
 import java.io.IOException;
+import java.io.Reader;
+import java.io.Writer;
 import java.util.ArrayList;
 import java.util.Iterator;
 import java.util.List;
@@ -47,7 +48,9 @@ import org.apache.maven.doxia.sink.Sink;
 import org.apache.maven.doxia.util.HtmlTools;
 import org.codehaus.plexus.i18n.I18N;
 import org.codehaus.plexus.logging.AbstractLogEnabled;
+import org.codehaus.plexus.util.IOUtil;
 import org.codehaus.plexus.util.StringUtils;
+import org.codehaus.plexus.util.WriterFactory;
 
 /**
  * An implementation of <code>BookRenderer</code> for Xdoc
@@ -169,43 +172,54 @@ public class XdocBookRenderer
     private void writeBookIndex( File index, BookModel book, BookContext context )
         throws IOException
     {
-        FileWriter writer = new FileWriter( index );
+        Writer writer = WriterFactory.newXmlWriter( index );
 
         XdocSink sink = new IndexXdocBookSink( writer, context.getIndex().getFirstEntry(), i18n );
 
-        // -----------------------------------------------------------------------
-        // Head
-        // -----------------------------------------------------------------------
-
-        sink.head();
-
-        sink.title();
-        sink.text( book.getTitle() + " - " + getString( "toc" ) );
-        sink.title_();
-
-        sink.head_();
-
-        // -----------------------------------------------------------------------
-        // Body
-        // -----------------------------------------------------------------------
-
-        sink.body();
-
-        sink.section1();
-        sink.sectionTitle1();
-        sink.text( book.getTitle() + " - " + getString( "toc" ) );
-        sink.sectionTitle1_();
-
-        sink.list();
-        for ( Iterator it = context.getIndex().getChildEntries().iterator(); it.hasNext(); )
+        try
         {
-            writeChapterIndexForBookIndex( sink, (IndexEntry) it.next() );
+            // -----------------------------------------------------------------------
+            // Head
+            // -----------------------------------------------------------------------
+
+            sink.head();
+
+            sink.title();
+            sink.text( book.getTitle() + " - " + getString( "toc" ) );
+            sink.title_();
+
+            sink.head_();
+
+            // -----------------------------------------------------------------------
+            // Body
+            // -----------------------------------------------------------------------
+
+            sink.body();
+
+            sink.section1();
+            sink.sectionTitle1();
+            sink.text( book.getTitle() + " - " + getString( "toc" ) );
+            sink.sectionTitle1_();
+
+            sink.list();
+            for ( Iterator it = context.getIndex().getChildEntries().iterator(); it.hasNext(); )
+            {
+                writeChapterIndexForBookIndex( sink, (IndexEntry) it.next() );
+            }
+            sink.list_();
+
+            sink.section1_();
+
+            sink.body_();
         }
-        sink.list_();
+        finally
+        {
+            sink.flush();
 
-        sink.section1_();
+            sink.close();
 
-        sink.body_();
+            IOUtil.close( writer );
+        }
     }
 
     /**
@@ -328,44 +342,55 @@ public class XdocBookRenderer
     private void writeChapterIndex( File index, Chapter chapter, IndexEntry chapterIndex )
         throws IOException
     {
-        FileWriter writer = new FileWriter( index );
+        Writer writer = WriterFactory.newXmlWriter( index );
 
         ChapterXdocBookSink sink = new ChapterXdocBookSink( writer, chapterIndex, i18n );
 
-        // -----------------------------------------------------------------------
-        // Head
-        // -----------------------------------------------------------------------
-
-        sink.head();
-
-        sink.title();
-        sink.text( chapter.getTitle() );
-        sink.title_();
-
-        sink.head_();
-
-        // -----------------------------------------------------------------------
-        // Body
-        // -----------------------------------------------------------------------
-
-        sink.body();
-
-        sink.section1();
-        sink.sectionTitle1();
-        sink.text( chapter.getTitle() );
-        sink.sectionTitle1_();
-
-        sink.list();
-        for ( Iterator it = chapterIndex.getChildEntries().iterator(); it.hasNext(); )
+        try
         {
-            IndexEntry sectionIndex = (IndexEntry) it.next();
-            writeSectionIndexForBookIndex( sink, sectionIndex );
+            // -----------------------------------------------------------------------
+            // Head
+            // -----------------------------------------------------------------------
+
+            sink.head();
+
+            sink.title();
+            sink.text( chapter.getTitle() );
+            sink.title_();
+
+            sink.head_();
+
+            // -----------------------------------------------------------------------
+            // Body
+            // -----------------------------------------------------------------------
+
+            sink.body();
+
+            sink.section1();
+            sink.sectionTitle1();
+            sink.text( chapter.getTitle() );
+            sink.sectionTitle1_();
+
+            sink.list();
+            for ( Iterator it = chapterIndex.getChildEntries().iterator(); it.hasNext(); )
+            {
+                IndexEntry sectionIndex = (IndexEntry) it.next();
+                writeSectionIndexForBookIndex( sink, sectionIndex );
+            }
+            sink.list_();
+
+            sink.section1_();
+
+            sink.body_();
         }
-        sink.list_();
+        finally
+        {
+            sink.flush();
 
-        sink.section1_();
+            sink.close();
 
-        sink.body_();
+            IOUtil.close( writer );
+        }
     }
 
     /**
@@ -381,7 +406,7 @@ public class XdocBookRenderer
     {
         try
         {
-            FileWriter writer = new FileWriter( context.getOutputDirectory() + "/" + section.getId() + ".xml" );
+            Writer writer = WriterFactory.newXmlWriter( new File( context.getOutputDirectory() + "/" + section.getId() + ".xml" ) );
 
             SectionXdocBookSink sink = new SectionXdocBookSink( writer, sectionIndex, i18n );
 
@@ -397,8 +422,10 @@ public class XdocBookRenderer
             pipeline.add( sink );
             Sink pipelineSink = PipelineSink.newInstance( pipeline );
 
+            Reader reader = null;
             try
             {
+                reader = new FileReader( bookFile.getFile() );
                 doxia.parse( new FileReader( bookFile.getFile() ), bookFile.getParserId(), pipelineSink );
             }
             catch ( ParserNotFoundException e )
@@ -414,6 +441,11 @@ public class XdocBookRenderer
             {
                 throw new BookDoxiaException( "Could not find document: " + bookFile.getFile().getAbsolutePath() + ".",
                                               e );
+            }
+            finally
+            {
+                IOUtil.close( reader );
+                IOUtil.close( writer );
             }
         }
         catch ( IOException e )

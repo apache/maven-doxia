@@ -22,8 +22,8 @@ package org.apache.maven.doxia.book.services.renderer;
 import java.io.File;
 import java.io.FileNotFoundException;
 import java.io.FileReader;
-import java.io.FileWriter;
 import java.io.IOException;
+import java.io.Writer;
 import java.text.DateFormat;
 import java.util.ArrayList;
 import java.util.Date;
@@ -43,6 +43,7 @@ import org.apache.maven.doxia.parser.manager.ParserNotFoundException;
 import org.apache.maven.doxia.sink.Sink;
 import org.codehaus.plexus.logging.AbstractLogEnabled;
 import org.codehaus.plexus.util.StringUtils;
+import org.codehaus.plexus.util.WriterFactory;
 import org.codehaus.plexus.util.xml.PrettyPrintXMLWriter;
 
 /**
@@ -82,11 +83,10 @@ public abstract class AbstractITextBookRenderer
 
         File bookFile = new File( context.getOutputDirectory(), book.getId() + ".xml" );
 
-        FileWriter fileWriter;
-
+        Writer fileWriter;
         try
         {
-            fileWriter = new FileWriter( bookFile );
+            fileWriter = WriterFactory.newXmlWriter( bookFile );
         }
         catch ( IOException e )
         {

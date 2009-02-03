@@ -25,7 +25,6 @@ import org.apache.maven.doxia.book.context.BookContext;
 import org.apache.maven.doxia.book.model.BookModel;
 import org.apache.maven.doxia.book.model.Chapter;
 import org.apache.maven.doxia.book.model.Section;
-import org.apache.maven.doxia.module.latex.LatexSink;
 import org.apache.maven.doxia.parser.manager.ParserNotFoundException;
 import org.apache.maven.doxia.parser.ParseException;
 import org.apache.maven.doxia.Doxia;
@@ -38,6 +37,7 @@ import java.io.IOException;
 import java.io.PrintWriter;
 import java.io.FileReader;
 import java.io.FileNotFoundException;
+import java.io.Reader;
 import java.util.Iterator;
 import java.util.Map;
 import java.util.HashMap;
@@ -213,9 +213,11 @@ public class LatexBookRenderer
                         + section.getId() + "." );
         }
 
+        Reader reader = null;
         try
         {
-            doxia.parse( new FileReader( bookFile.getFile() ), bookFile.getParserId(), sink );
+            reader = new FileReader( bookFile.getFile() );
+            doxia.parse( reader, bookFile.getParserId(), sink );
         }
         catch ( ParserNotFoundException e )
         {
@@ -231,6 +233,11 @@ public class LatexBookRenderer
         {
             throw new BookDoxiaException( "Could not find document: "
                         + bookFile.getFile().getAbsolutePath() + ".", e );
+        }
+        finally
+        {
+            IOUtil.close( reader );
+            IOUtil.close( writer );
         }
 
         SectionInfo info = new SectionInfo();

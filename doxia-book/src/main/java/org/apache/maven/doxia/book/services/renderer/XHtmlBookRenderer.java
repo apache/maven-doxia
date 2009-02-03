@@ -30,12 +30,14 @@ import org.apache.maven.doxia.sink.render.RenderingContext;
 import org.apache.maven.doxia.parser.manager.ParserNotFoundException;
 import org.apache.maven.doxia.parser.ParseException;
 import org.codehaus.plexus.logging.AbstractLogEnabled;
+import org.codehaus.plexus.util.IOUtil;
 
 import java.io.File;
 import java.io.FileNotFoundException;
 import java.io.FileReader;
 import java.io.FileWriter;
 import java.io.IOException;
+import java.io.Reader;
 import java.io.Writer;
 import java.util.Iterator;
 
@@ -89,35 +91,37 @@ public class XHtmlBookRenderer
         XhtmlBookSink sink = new XhtmlBookSink( fileWriter,
               new RenderingContext( context.getOutputDirectory(), bookFile.getAbsolutePath() ) );
 
-        sink.bookHead();
-        // TODO: book author, title?
-        sink.bookHead_();
-        sink.bookBody();
-
-        int chapterNumber = 1;
-
-        for ( Iterator it = book.getChapters().iterator(); it.hasNext(); )
-        {
-            Chapter chapter = (Chapter) it.next();
-
-            sink.sectionTitle();
-            sink.text( Integer.toString( chapterNumber ) + ". " + chapter.getTitle() );
-            sink.sectionTitle_();
-
-            renderChapter( sink, chapter, context );
-
-            chapterNumber++;
-        }
-
-        sink.bookBody_();
-
         try
         {
-            fileWriter.close();
+            sink.bookHead();
+            // TODO: book author, title?
+            sink.bookHead_();
+            sink.bookBody();
+
+            int chapterNumber = 1;
+
+            for ( Iterator it = book.getChapters().iterator(); it.hasNext(); )
+            {
+                Chapter chapter = (Chapter) it.next();
+
+                sink.sectionTitle();
+                sink.text( Integer.toString( chapterNumber ) + ". " + chapter.getTitle() );
+                sink.sectionTitle_();
+
+                renderChapter( sink, chapter, context );
+
+                chapterNumber++;
+            }
+
+            sink.bookBody_();
         }
-        catch ( IOException e )
+        finally
         {
-            throw new BookDoxiaException( "Error while closing file.", e );
+            sink.flush();
+
+            sink.close();
+
+            IOUtil.close( fileWriter );
         }
     }
 
@@ -164,9 +168,11 @@ public class XHtmlBookRenderer
             throw new BookDoxiaException( "No document that matches section with id=" + section.getId() + "." );
         }
 
+        Reader reader = null;
         try
         {
-            doxia.parse( new FileReader( bookFile.getFile() ), bookFile.getParserId(), sink );
+            reader = new FileReader( bookFile.getFile() );
+            doxia.parse( reader, bookFile.getParserId(), sink );
         }
         catch ( ParserNotFoundException e )
         {
@@ -182,6 +188,10 @@ public class XHtmlBookRenderer
         {
             throw new BookDoxiaException( "Could not find document: "
                       + bookFile.getFile().getAbsolutePath() + ".", e );
+        }
+        finally
+        {
+            IOUtil.close( reader );
         }
 
         sink.section2_();
