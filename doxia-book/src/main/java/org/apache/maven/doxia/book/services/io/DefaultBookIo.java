@@ -25,12 +25,15 @@ import org.apache.maven.doxia.book.BookDoxiaException;
 import org.apache.maven.doxia.book.context.BookContext;
 import org.apache.maven.doxia.module.site.SiteModule;
 import org.apache.maven.doxia.module.site.manager.SiteModuleManager;
+import org.codehaus.plexus.util.IOUtil;
+import org.codehaus.plexus.util.ReaderFactory;
 import org.codehaus.plexus.util.xml.pull.XmlPullParserException;
 import org.codehaus.plexus.logging.AbstractLogEnabled;
 
 import java.io.FileReader;
 import java.io.IOException;
 import java.io.File;
+import java.io.Reader;
 import java.util.Collection;
 import java.util.Iterator;
 import java.util.Map;
@@ -60,9 +63,11 @@ public class DefaultBookIo
     public BookModel readBook( File bookDescriptor )
         throws BookDoxiaException
     {
+        Reader reader = null;
         try
         {
-            return new BookModelXpp3Reader().read( new FileReader( bookDescriptor ), true );
+            reader = ReaderFactory.newXmlReader( bookDescriptor );
+            return new BookModelXpp3Reader().read( reader, true );
         }
         catch ( IOException e )
         {
@@ -71,6 +76,10 @@ public class DefaultBookIo
         catch ( XmlPullParserException e )
         {
             throw new BookDoxiaException( "Error while reading book descriptor.", e );
+        }
+        finally
+        {
+            IOUtil.close( reader );
         }
     }
 
