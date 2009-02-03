@@ -26,8 +26,9 @@ import java.util.List;
  *
  * @author <a href="mailto:trygvis@inamo.no">Trygve Laugst&oslash;l</a>
  * @version $Id$
+ * @since 1.0
  */
-public class Book
+class Book
 {
     /** Path to the book descriptor file. */
     private String descriptor;

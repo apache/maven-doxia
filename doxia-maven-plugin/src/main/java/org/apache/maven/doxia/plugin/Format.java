@@ -24,8 +24,9 @@ package org.apache.maven.doxia.plugin;
  *
  * @author <a href="mailto:trygve.laugstol@objectware.no">Trygve Laugst&oslash;l</a>
  * @version $Id$
+ * @since 1.0
  */
-public class Format
+class Format
 {
     /** A unique identifier for the format. */
     private String id;

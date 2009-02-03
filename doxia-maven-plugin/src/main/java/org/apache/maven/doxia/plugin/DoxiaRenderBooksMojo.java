@@ -42,12 +42,27 @@ import java.util.List;
  *
  * @author <a href="mailto:trygvis@inamo.no">Trygve Laugst&oslash;l</a>
  * @version $Id$
+ * @since 1.0
  */
 public class DoxiaRenderBooksMojo
     extends AbstractMojo
 {
+    /** System EOL. */
+    private static final String LINE_SEPARATOR = System.getProperty( "line.separator" );
+
     // ----------------------------------------------------------------------
-    //
+    // Mojo components
+    // ----------------------------------------------------------------------
+
+    /**
+     * BookDoxia component
+     *
+     * @component
+     */
+    private BookDoxia bookDoxia;
+
+    // ----------------------------------------------------------------------
+    // Mojo parameters
     // ----------------------------------------------------------------------
 
     /**
@@ -70,16 +85,6 @@ public class DoxiaRenderBooksMojo
      * @parameter expression="${project.build.directory}/generated-site"
      */
     private File generatedDocs;
-
-    /**
-     * BookDoxia component
-     *
-     * @component
-     */
-    private BookDoxia bookDoxia;
-
-    /** System EOL. */
-    private static final String LINE_SEPARATOR = System.getProperty( "line.separator" );
 
     // ----------------------------------------------------------------------
     //
