@@ -54,34 +54,35 @@ public abstract class AbstractXdocBookSink
         this.i18n = i18n;
     }
 
-    /**
-     * @see org.apache.maven.doxia.module.xdoc.XdocSink#date_()
-     */
+    /** {@inheritDoc} */
     public void date_()
     {
         // nop
     }
 
-    /**
-     * @see org.apache.maven.doxia.module.xdoc.XdocSink#body()
-     */
+    /** {@inheritDoc} */
     public void body()
     {
         writeStartTag( Tag.BODY );
 
-        navigationPanel();
+        markup( "<section name=\"\">" );
 
+        navigationPanel();
         horizontalRule();
+
+        markup( "</section>" );
     }
 
-    /**
-     * @see org.apache.maven.doxia.module.xdoc.XdocSink#body_()
-     */
+    /** {@inheritDoc} */
     public void body_()
     {
+        markup( "<section name=\"\">" );
+
         horizontalRule();
 
         navigationPanel();
+
+        markup( "</section>" );
 
         writeEndTag( Tag.BODY );
 

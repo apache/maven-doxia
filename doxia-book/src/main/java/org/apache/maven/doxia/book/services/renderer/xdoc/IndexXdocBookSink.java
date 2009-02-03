@@ -51,9 +51,7 @@ public class IndexXdocBookSink
         this.firstEntry = firstEntry;
     }
 
-    /**
-     * @see org.apache.maven.doxia.book.services.renderer.xdoc.AbstractXdocBookSink#navigationPanel()
-     */
+    /** {@inheritDoc} */
     protected void navigationPanel()
     {
         markup( "<!--Navigation Panel-->" );

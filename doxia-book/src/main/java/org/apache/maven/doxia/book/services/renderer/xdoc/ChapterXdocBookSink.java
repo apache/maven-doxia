@@ -50,9 +50,7 @@ public class ChapterXdocBookSink
         this.chapterIndex = chapterIndex;
     }
 
-    /**
-     * @see org.apache.maven.doxia.book.services.renderer.xdoc.AbstractXdocBookSink#navigationPanel()
-     */
+    /** {@inheritDoc} */
     protected void navigationPanel()
     {
         markup( "<!--Navigation Panel-->" );
