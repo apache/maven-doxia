@@ -26,7 +26,7 @@ package org.apache.maven.doxia.plugin;
  * @version $Id$
  * @since 1.0
  */
-class Format
+public class Format
 {
     /** A unique identifier for the format. */
     private String id;

@@ -28,7 +28,7 @@ import java.util.List;
  * @version $Id$
  * @since 1.0
  */
-class Book
+public class Book
 {
     /** Path to the book descriptor file. */
     private String descriptor;
