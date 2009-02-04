@@ -51,6 +51,49 @@ under the License.
       <version>${projectVersion}</version>
     </dependency>
     <dependency>
+      <groupId>${project.groupId}</groupId>
+      <artifactId>doxia-core</artifactId>
+      <version>${projectVersion}</version>
+    </dependency>
+    <dependency>
+      <groupId>${project.groupId}</groupId>
+      <artifactId>doxia-logging-api</artifactId>
+      <version>${projectVersion}</version>
+    </dependency>
+
+    <!-- doxia modules ordered -->
+    <dependency>
+      <groupId>org.apache.maven.doxia</groupId>
+      <artifactId>doxia-module-apt</artifactId>
+      <version>${projectVersion}</version>
+    </dependency>
+    <dependency>
+      <groupId>org.apache.maven.doxia</groupId>
+      <artifactId>doxia-module-docbook-simple</artifactId>
+      <version>${projectVersion}</version>
+    </dependency>
+    <dependency>
+      <groupId>org.apache.maven.doxia</groupId>
+      <artifactId>doxia-module-itext</artifactId>
+      <version>${projectVersion}</version>
+    </dependency>
+    <dependency>
+      <groupId>org.apache.maven.doxia</groupId>
+      <artifactId>doxia-module-latex</artifactId>
+      <version>${projectVersion}</version>
+    </dependency>
+    <dependency>
+      <groupId>org.apache.maven.doxia</groupId>
+      <artifactId>doxia-module-xdoc</artifactId>
+      <version>${projectVersion}</version>
+    </dependency>
+    <dependency>
+      <groupId>org.apache.maven.doxia</groupId>
+      <artifactId>doxia-module-xhtml</artifactId>
+      <version>${projectVersion}</version>
+    </dependency>
+
+    <dependency>
       <groupId>org.codehaus.plexus</groupId>
       <artifactId>plexus-utils</artifactId>
     </dependency>
@@ -60,6 +103,42 @@ under the License.
       <version>1.0.1</version>
     </dependency>
   </dependencies>
+
+  <build>
+    <plugins>
+      <!-- Backward compatibility with Maven 2.0.x (MNG-3402) -->
+      <plugin>
+        <artifactId>maven-shade-plugin</artifactId>
+        <version>1.2</version>
+        <executions>
+          <execution>
+            <phase>package</phase>
+            <goals>
+              <goal>shade</goal>
+            </goals>
+            <configuration>
+              <finalName>${project.build.finalName}</finalName>
+              <createDependencyReducedPom>
+                false
+              </createDependencyReducedPom>
+              <keepDependenciesWithProvidedScope>
+                true
+              </keepDependenciesWithProvidedScope>
+              <transformers>
+                <transformer implementation="org.apache.maven.plugins.shade.resource.ComponentsXmlResourceTransformer" />
+              </transformers>
+              <artifactSet>
+                <includes>
+                  <include>org.apache.maven.doxia:doxia-sink-api</include>
+                  <include>org.apache.maven.doxia:doxia-logging-api</include>
+                </includes>
+              </artifactSet>
+            </configuration>
+          </execution>
+        </executions>
+      </plugin>
+    </plugins>
+  </build>
 
   <reporting>
     <plugins>
