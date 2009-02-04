@@ -28,16 +28,18 @@ import org.apache.maven.doxia.book.model.Section;
 import org.apache.maven.doxia.parser.manager.ParserNotFoundException;
 import org.apache.maven.doxia.parser.ParseException;
 import org.apache.maven.doxia.Doxia;
+import org.codehaus.plexus.util.ReaderFactory;
 import org.codehaus.plexus.util.StringUtils;
 import org.codehaus.plexus.util.IOUtil;
+import org.codehaus.plexus.util.WriterFactory;
 
 import java.io.File;
 import java.io.FileWriter;
 import java.io.IOException;
 import java.io.PrintWriter;
-import java.io.FileReader;
 import java.io.FileNotFoundException;
 import java.io.Reader;
+import java.io.Writer;
 import java.util.Iterator;
 import java.util.Map;
 import java.util.HashMap;
@@ -201,7 +203,7 @@ public class LatexBookRenderer
     {
         File file = new File( context.getOutputDirectory(), ( section.getId() + ".tex" ) );
 
-        FileWriter writer = new FileWriter( file );
+        Writer writer = WriterFactory.newWriter( file, context.getOutputEncoding() );
 
         LatexBookSink sink = new LatexBookSink( writer );
 
@@ -216,7 +218,7 @@ public class LatexBookRenderer
         Reader reader = null;
         try
         {
-            reader = new FileReader( bookFile.getFile() );
+            reader = ReaderFactory.newReader( bookFile.getFile(), context.getInputEncoding() );
             doxia.parse( reader, bookFile.getParserId(), sink );
         }
         catch ( ParserNotFoundException e )

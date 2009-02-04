@@ -22,6 +22,7 @@ package org.apache.maven.doxia.book.context;
 import org.apache.maven.doxia.book.model.BookModel;
 
 import java.io.File;
+import java.util.Locale;
 import java.util.Map;
 import java.util.HashMap;
 
@@ -44,6 +45,15 @@ public class BookContext
 
     /** The BookIndex of this context. */
     private BookIndex index;
+
+    /** The Locale used to generate the navigation. */
+    private Locale locale;
+
+    /** The input encoding used to read Doxia file. */
+    private String inputEncoding;
+
+    /** The output encoding used to write the renderer files. */
+    private String outputEncoding;
 
     // ----------------------------------------------------------------------
     //
@@ -178,5 +188,53 @@ public class BookContext
     public void setIndex( BookIndex index )
     {
         this.index = index;
+    }
+
+    /**
+     * @return the locale
+     */
+    public Locale getLocale()
+    {
+        return locale;
+    }
+
+    /**
+     * @param locale the locale to set
+     */
+    public void setLocale( Locale locale )
+    {
+        this.locale = locale;
+    }
+
+    /**
+     * @return the inputEncoding
+     */
+    public String getInputEncoding()
+    {
+        return inputEncoding;
+    }
+
+    /**
+     * @param inputEncoding the inputEncoding to set
+     */
+    public void setInputEncoding( String inputEncoding )
+    {
+        this.inputEncoding = inputEncoding;
+    }
+
+    /**
+     * @return the outputEncoding
+     */
+    public String getOutputEncoding()
+    {
+        return outputEncoding;
+    }
+
+    /**
+     * @param outputEncoding the outputEncoding to set
+     */
+    public void setOutputEncoding( String outputEncoding )
+    {
+        this.outputEncoding = outputEncoding;
     }
 }

@@ -20,6 +20,7 @@ package org.apache.maven.doxia.book.services.renderer.xdoc;
  */
 
 import java.io.Writer;
+import java.util.Locale;
 
 import org.apache.maven.doxia.index.IndexEntry;
 import org.codehaus.plexus.i18n.I18N;
@@ -34,7 +35,7 @@ public class ChapterXdocBookSink
     extends AbstractXdocBookSink
 {
    /** the chapter IndexEntry. */
-    private IndexEntry chapterIndex;
+    private final IndexEntry chapterIndex;
 
     /**
      * Default constructor.
@@ -42,10 +43,11 @@ public class ChapterXdocBookSink
      * @param out the Writer.
      * @param chapterIndex the chapter IndexEntry.
      * @param i18n I18N.
+     * @param locale wanted locale.
      */
-    public ChapterXdocBookSink( Writer out, IndexEntry chapterIndex, I18N i18n )
+    public ChapterXdocBookSink( Writer out, IndexEntry chapterIndex, I18N i18n, Locale locale )
     {
-        super( out, i18n );
+        super( out, i18n, locale );
 
         this.chapterIndex = chapterIndex;
     }

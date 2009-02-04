@@ -39,19 +39,24 @@ public abstract class AbstractXdocBookSink
     extends XdocSink
 {
     /** I18N for localized messages. */
-    private I18N i18n;
+    private final I18N i18n;
+
+    /** The wanted locale */
+    private final Locale locale;
 
     /**
      * Default constructor.
      *
      * @param out a Writer.
      * @param i18n I18N.
+     * @param locale the wanted locale.
      */
-    public AbstractXdocBookSink( Writer out, I18N i18n )
+    public AbstractXdocBookSink( Writer out, I18N i18n, Locale locale )
     {
         super( out );
 
         this.i18n = i18n;
+        this.locale = locale;
     }
 
     /** {@inheritDoc} */
@@ -112,7 +117,7 @@ public abstract class AbstractXdocBookSink
             throw new IllegalArgumentException( "The key cannot be empty" );
         }
 
-        return i18n.getString( "book-renderer", Locale.getDefault(), key ).trim();
+        return i18n.getString( "book-renderer", locale, key ).trim();
     }
 
     /**

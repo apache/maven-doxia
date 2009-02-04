@@ -27,9 +27,12 @@ import org.apache.maven.doxia.book.model.BookModel;
 import org.codehaus.plexus.PlexusContainer;
 import org.codehaus.plexus.tools.cli.AbstractCli;
 import org.codehaus.plexus.util.FileUtils;
+import org.codehaus.plexus.util.ReaderFactory;
+import org.codehaus.plexus.util.WriterFactory;
 
 import java.io.File;
 import java.util.List;
+import java.util.Locale;
 
 /**
  * Invoke BookDoxia from the command line.
@@ -76,6 +79,18 @@ public class BookDoxiaCli
             "The full path of the wanted output directory" ).isRequired()
             .create( 'o' ) );
 
+        options.addOption( OptionBuilder.withLongOpt( "locale" ).hasArg().withDescription(
+            "The wanted locale" )
+            .create( 'l' ) );
+
+        options.addOption( OptionBuilder.withLongOpt( "inputEncoding" ).hasArg().withDescription(
+            "The input encoding" )
+            .create( "inEncoding" ) );
+
+        options.addOption( OptionBuilder.withLongOpt( "outputEncoding" ).hasArg().withDescription(
+            "The output encoding" )
+            .create( "outEncoding" ) );
+
         return options;
     }
 
@@ -118,7 +133,11 @@ public class BookDoxiaCli
         }
         BookModel book = doxia.loadBook( book1 );
 
-        doxia.renderBook( book, "xdoc", files, new File( output ) );
+        String locale = cli.getOptionValue( "locale", Locale.getDefault().toString() );
+        String inEncoding = cli.getOptionValue( "inEncoding", ReaderFactory.UTF_8 );
+        String outEncoding = cli.getOptionValue( "outEncoding", WriterFactory.UTF_8 );
+
+        doxia.renderBook( book, "xdoc", files, new File( output ), new Locale( locale ), inEncoding, outEncoding );
     }
 
     /** {@inheritDoc} */

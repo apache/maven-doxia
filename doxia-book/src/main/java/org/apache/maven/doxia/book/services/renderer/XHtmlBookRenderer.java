@@ -31,10 +31,10 @@ import org.apache.maven.doxia.parser.manager.ParserNotFoundException;
 import org.apache.maven.doxia.parser.ParseException;
 import org.codehaus.plexus.logging.AbstractLogEnabled;
 import org.codehaus.plexus.util.IOUtil;
+import org.codehaus.plexus.util.ReaderFactory;
 
 import java.io.File;
 import java.io.FileNotFoundException;
-import java.io.FileReader;
 import java.io.FileWriter;
 import java.io.IOException;
 import java.io.Reader;
@@ -171,7 +171,7 @@ public class XHtmlBookRenderer
         Reader reader = null;
         try
         {
-            reader = new FileReader( bookFile.getFile() );
+            reader = ReaderFactory.newReader( bookFile.getFile(), context.getInputEncoding() );
             doxia.parse( reader, bookFile.getParserId(), sink );
         }
         catch ( ParserNotFoundException e )
@@ -187,6 +187,11 @@ public class XHtmlBookRenderer
         catch ( FileNotFoundException e )
         {
             throw new BookDoxiaException( "Could not find document: "
+                      + bookFile.getFile().getAbsolutePath() + ".", e );
+        }
+        catch ( IOException e )
+        {
+            throw new BookDoxiaException( "Error while rendering book: "
                       + bookFile.getFile().getAbsolutePath() + ".", e );
         }
         finally

@@ -21,7 +21,6 @@ package org.apache.maven.doxia.book.services.renderer;
 
 import java.io.File;
 import java.io.FileNotFoundException;
-import java.io.FileReader;
 import java.io.IOException;
 import java.io.Reader;
 import java.io.Writer;
@@ -49,6 +48,7 @@ import org.apache.maven.doxia.util.HtmlTools;
 import org.codehaus.plexus.i18n.I18N;
 import org.codehaus.plexus.logging.AbstractLogEnabled;
 import org.codehaus.plexus.util.IOUtil;
+import org.codehaus.plexus.util.ReaderFactory;
 import org.codehaus.plexus.util.StringUtils;
 import org.codehaus.plexus.util.WriterFactory;
 
@@ -103,18 +103,18 @@ public class XdocBookRenderer
     /**
      * Gets a trimmed String for the given key from the resource bundle defined by Plexus.
      *
+     * @param locale the locale used
      * @param key the key for the desired string
-     * @return the string for the given key
+     * @return the string for the given key and the given locale
      */
-    protected String getString( String key )
+    protected String getString( Locale locale, String key )
     {
         if ( StringUtils.isEmpty( key ) )
         {
             throw new IllegalArgumentException( "The key cannot be empty" );
         }
 
-        // TODO Handle locale
-        return i18n.getString( "book-renderer", Locale.getDefault(), key ).trim();
+        return i18n.getString( "book-renderer", locale, key ).trim();
     }
 
     // -----------------------------------------------------------------------
@@ -174,7 +174,7 @@ public class XdocBookRenderer
     {
         Writer writer = WriterFactory.newXmlWriter( index );
 
-        XdocSink sink = new IndexXdocBookSink( writer, context.getIndex().getFirstEntry(), i18n );
+        XdocSink sink = new IndexXdocBookSink( writer, context.getIndex().getFirstEntry(), i18n, context.getLocale() );
 
         try
         {
@@ -185,7 +185,7 @@ public class XdocBookRenderer
             sink.head();
 
             sink.title();
-            sink.text( book.getTitle() + " - " + getString( "toc" ) );
+            sink.text( book.getTitle() + " - " + getString( context.getLocale(), "toc" ) );
             sink.title_();
 
             sink.head_();
@@ -198,7 +198,7 @@ public class XdocBookRenderer
 
             sink.section1();
             sink.sectionTitle1();
-            sink.text( book.getTitle() + " - " + getString( "toc" ) );
+            sink.text( book.getTitle() + " - " + getString( context.getLocale(), "toc" ) );
             sink.sectionTitle1_();
 
             sink.list();
@@ -309,7 +309,7 @@ public class XdocBookRenderer
 
         try
         {
-            writeChapterIndex( index, chapter, chapterIndex );
+            writeChapterIndex( index, chapter, chapterIndex, context );
         }
         catch ( IOException e )
         {
@@ -335,16 +335,17 @@ public class XdocBookRenderer
      * Write a chapter index
      *
      * @param index the File.
+     * @param context the context.
      * @param chapter the Chapter.
      * @param chapterIndex the IndexEntry.
      * @throws IOException if any.
      */
-    private void writeChapterIndex( File index, Chapter chapter, IndexEntry chapterIndex )
+    private void writeChapterIndex( File index, Chapter chapter, IndexEntry chapterIndex, BookContext context )
         throws IOException
     {
         Writer writer = WriterFactory.newXmlWriter( index );
 
-        ChapterXdocBookSink sink = new ChapterXdocBookSink( writer, chapterIndex, i18n );
+        ChapterXdocBookSink sink = new ChapterXdocBookSink( writer, chapterIndex, i18n, context.getLocale() );
 
         try
         {
@@ -408,7 +409,7 @@ public class XdocBookRenderer
         {
             Writer writer = WriterFactory.newXmlWriter( new File( context.getOutputDirectory() + "/" + section.getId() + ".xml" ) );
 
-            SectionXdocBookSink sink = new SectionXdocBookSink( writer, sectionIndex, i18n );
+            SectionXdocBookSink sink = new SectionXdocBookSink( writer, sectionIndex, i18n, context.getLocale() );
 
             BookContext.BookFile bookFile = (BookContext.BookFile) context.getFiles().get( section.getId() );
 
@@ -425,8 +426,8 @@ public class XdocBookRenderer
             Reader reader = null;
             try
             {
-                reader = new FileReader( bookFile.getFile() );
-                doxia.parse( new FileReader( bookFile.getFile() ), bookFile.getParserId(), pipelineSink );
+                reader = ReaderFactory.newReader( bookFile.getFile(), context.getInputEncoding() );
+                doxia.parse( reader, bookFile.getParserId(), pipelineSink );
             }
             catch ( ParserNotFoundException e )
             {

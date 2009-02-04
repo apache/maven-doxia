@@ -20,6 +20,7 @@ package org.apache.maven.doxia.book.services.renderer.xdoc;
  */
 
 import java.io.Writer;
+import java.util.Locale;
 
 import org.apache.maven.doxia.index.IndexEntry;
 import org.codehaus.plexus.i18n.I18N;
@@ -35,7 +36,7 @@ public class IndexXdocBookSink
     extends AbstractXdocBookSink
 {
     /** the first IndexEntry. */
-    private IndexEntry firstEntry;
+    private final IndexEntry firstEntry;
 
     /**
      * Default constructor.
@@ -43,10 +44,11 @@ public class IndexXdocBookSink
      * @param out the Writer.
      * @param firstEntry the first IndexEntry.
      * @param i18n I18N.
+     * @param locale wanted locale.
      */
-    public IndexXdocBookSink( Writer out, IndexEntry firstEntry, I18N i18n )
+    public IndexXdocBookSink( Writer out, IndexEntry firstEntry, I18N i18n, Locale locale )
     {
-        super( out, i18n );
+        super( out, i18n, locale );
 
         this.firstEntry = firstEntry;
     }

@@ -31,6 +31,7 @@ import org.codehaus.plexus.logging.AbstractLogEnabled;
 import java.io.File;
 import java.util.Collections;
 import java.util.List;
+import java.util.Locale;
 import java.util.Map;
 import java.util.Set;
 
@@ -80,6 +81,14 @@ public class DefaultBookDoxia
     public void renderBook( BookModel book, String bookRendererId, List files, File outputDirectory )
         throws BookDoxiaException
     {
+        renderBook( book, bookRendererId, files, outputDirectory, Locale.getDefault(), "UTF-8", "UTF-8" );
+    }
+
+    /** {@inheritDoc} */
+    public void renderBook( BookModel book, String bookRendererId, List files, File outputDirectory, Locale locale,
+                            String inputEncoding, String outputEncoding )
+        throws BookDoxiaException
+    {
         // ----------------------------------------------------------------------
         //
         // ----------------------------------------------------------------------
@@ -100,6 +109,12 @@ public class DefaultBookDoxia
         context.setBook( book );
 
         context.setOutputDirectory( outputDirectory );
+
+        context.setLocale( locale );
+
+        context.setInputEncoding( inputEncoding );
+
+        context.setOutputEncoding( outputEncoding );
 
         // -----------------------------------------------------------------------
         //

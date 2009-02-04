@@ -21,8 +21,8 @@ package org.apache.maven.doxia.book.services.renderer;
 
 import java.io.File;
 import java.io.FileNotFoundException;
-import java.io.FileReader;
 import java.io.IOException;
+import java.io.Reader;
 import java.io.Writer;
 import java.text.DateFormat;
 import java.util.ArrayList;
@@ -42,6 +42,7 @@ import org.apache.maven.doxia.parser.ParseException;
 import org.apache.maven.doxia.parser.manager.ParserNotFoundException;
 import org.apache.maven.doxia.sink.Sink;
 import org.codehaus.plexus.logging.AbstractLogEnabled;
+import org.codehaus.plexus.util.ReaderFactory;
 import org.codehaus.plexus.util.StringUtils;
 import org.codehaus.plexus.util.WriterFactory;
 import org.codehaus.plexus.util.xml.PrettyPrintXMLWriter;
@@ -251,14 +252,14 @@ public abstract class AbstractITextBookRenderer
         Sink itextSink = new ITextSinkFactory().createSink( writer );
 
         List pipeline = new ArrayList();
-        //        pipeline.add( DebugSink.newInstance() );
         pipeline.add( itextSink );
         Sink sink = PipelineSink.newInstance( pipeline );
 
+        Reader reader = null;
         try
         {
-            // TODO: fix encoding while reading the file (platform encoding used actually)
-            doxia.parse( new FileReader( bookFile.getFile() ), bookFile.getParserId(), sink );
+            reader = ReaderFactory.newReader( bookFile.getFile(), context.getInputEncoding() );
+            doxia.parse( reader, bookFile.getParserId(), sink );
         }
         catch ( ParserNotFoundException e )
         {
@@ -274,8 +275,11 @@ public abstract class AbstractITextBookRenderer
         {
             throw new BookDoxiaException( "Could not find document: " + bookFile.getFile().getAbsolutePath() + ".", e );
         }
-
-        //        writer.endElement(); // section
+        catch ( IOException e )
+        {
+            throw new BookDoxiaException( "Error while rendering book: "
+                      + bookFile.getFile().getAbsolutePath() + ".", e );
+        }
     }
 
     /**

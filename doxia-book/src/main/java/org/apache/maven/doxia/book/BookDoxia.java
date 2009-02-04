@@ -23,6 +23,7 @@ import org.apache.maven.doxia.book.model.BookModel;
 
 import java.io.File;
 import java.util.List;
+import java.util.Locale;
 
 /**
  * An interface to create books in different output formats from a book descriptor.
@@ -46,14 +47,32 @@ public interface BookDoxia
         throws BookDoxiaException;
 
     /**
-     * Creates a book from a BookModel.
+     * Creates a book from a BookModel using the {@link Locale#getDefault()} and UTF-8 as default encoding.
      *
      * @param book the BookModel.
      * @param bookRendererId the id of the output format.
      * @param files a list of source files.
      * @param outputDirectory the output directory.
      * @throws BookDoxiaException if the model cannot be loaded.
+     * @see {@link #renderBook(BookModel, String, List, File, String, String, String)}
+     * @see {@link Locale#getDefault()}
      */
     void renderBook( BookModel book, String bookRendererId, List files, File outputDirectory )
+        throws BookDoxiaException;
+
+    /**
+     * Creates a book from a BookModel.
+     *
+     * @param book the BookModel.
+     * @param bookRendererId the id of the output format.
+     * @param files a list of source files.
+     * @param outputDirectory the output directory.
+     * @param locale the wanted locale.
+     * @param inputEncoding the input encoding when processing {@link files}.
+     * @param outputEncoding the output encoding when writing files in {@link ouputDirectory}.
+     * @throws BookDoxiaException if the model cannot be loaded.
+     */
+    void renderBook( BookModel book, String bookRendererId, List files, File outputDirectory, Locale locale,
+                     String inputEncoding, String outputEncoding )
         throws BookDoxiaException;
 }

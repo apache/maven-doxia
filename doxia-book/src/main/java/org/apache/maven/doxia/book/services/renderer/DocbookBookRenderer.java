@@ -21,7 +21,6 @@ package org.apache.maven.doxia.book.services.renderer;
 
 import java.io.File;
 import java.io.FileNotFoundException;
-import java.io.FileReader;
 import java.io.IOException;
 import java.io.Reader;
 import java.io.Writer;
@@ -39,6 +38,7 @@ import org.apache.maven.doxia.parser.manager.ParserNotFoundException;
 import org.apache.maven.doxia.sink.Sink;
 import org.codehaus.plexus.logging.AbstractLogEnabled;
 import org.codehaus.plexus.util.IOUtil;
+import org.codehaus.plexus.util.ReaderFactory;
 import org.codehaus.plexus.util.StringUtils;
 import org.codehaus.plexus.util.WriterFactory;
 
@@ -198,7 +198,7 @@ public class DocbookBookRenderer
         Reader reader = null;
         try
         {
-            reader = new FileReader( bookFile.getFile() );
+            reader = ReaderFactory.newReader( bookFile.getFile(), context.getInputEncoding() );
             doxia.parse( reader, bookFile.getParserId(), sink );
         }
         catch ( ParserNotFoundException e )
@@ -214,6 +214,11 @@ public class DocbookBookRenderer
         catch ( FileNotFoundException e )
         {
             throw new BookDoxiaException( "Could not find document: " + bookFile.getFile().getAbsolutePath() + ".", e );
+        }
+        catch ( IOException e )
+        {
+            throw new BookDoxiaException( "Error while rendering book: "
+                      + bookFile.getFile().getAbsolutePath() + ".", e );
         }
         finally
         {
