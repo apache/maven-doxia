@@ -783,7 +783,8 @@ public class FoSink
             write( "<fo:table-cell column-number=\"" + String.valueOf( cellCount + 2 ) + "\"" );
             if ( tableGrid )
             {
-                write( " border-style=\"solid\" border-width=\"0.2mm\"" );
+                // http://xmlgraphics.apache.org/fop/faq.html#keep-together
+                write( " border-style=\"solid\" border-width=\"0.2mm\" keep-together.within-column=\"always\"" );
             }
             writeln( config.getAttributeString( "table.body.cell" ) + ">" );
          }
