@@ -24,16 +24,19 @@ import org.apache.maven.doxia.book.BookDoxiaException;
 import org.apache.maven.doxia.book.InvalidBookDescriptorException;
 import org.apache.maven.doxia.book.model.BookModel;
 import org.apache.maven.doxia.book.services.validation.ValidationResult;
+import org.apache.maven.doxia.tools.SiteTool;
 import org.apache.maven.plugin.AbstractMojo;
 import org.apache.maven.plugin.MojoExecutionException;
 import org.apache.maven.plugin.MojoFailureException;
 import org.codehaus.plexus.util.FileUtils;
+import org.codehaus.plexus.util.ReaderFactory;
 import org.codehaus.plexus.util.StringUtils;
 
 import java.io.File;
 import java.io.IOException;
 import java.util.Iterator;
 import java.util.List;
+import java.util.Locale;
 
 /**
  * A Mojo to create books in different output formats.
@@ -61,6 +64,13 @@ public class DoxiaRenderBooksMojo
      */
     private BookDoxia bookDoxia;
 
+    /**
+     * SiteTool.
+     *
+     * @component
+     */
+    protected SiteTool siteTool;
+
     // ----------------------------------------------------------------------
     // Mojo parameters
     // ----------------------------------------------------------------------
@@ -69,6 +79,7 @@ public class DoxiaRenderBooksMojo
      * A list of books.
      *
      * @parameter
+     * @required
      */
     private List books;
 
@@ -85,6 +96,28 @@ public class DoxiaRenderBooksMojo
      * @parameter expression="${project.build.directory}/generated-site"
      */
     private File generatedDocs;
+
+    /**
+     * A comma separated list of locales supported by Maven. The first valid token will be the default Locale
+     * for this instance of the Java Virtual Machine.
+     *
+     * @parameter expression="${locales}"
+     */
+    protected String locales;
+
+    /**
+     * Specifies the input encoding.
+     *
+     * @parameter expression="${encoding}" default-value="${project.build.sourceEncoding}"
+     */
+    private String inputEncoding;
+
+    /**
+     * Specifies the output encoding.
+     *
+     * @parameter expression="${outputEncoding}" default-value="${project.reporting.outputEncoding}"
+     */
+    private String outputEncoding;
 
     // ----------------------------------------------------------------------
     //
@@ -207,25 +240,61 @@ public class DoxiaRenderBooksMojo
             // Render the book in all the formats
             // -----------------------------------------------------------------------
 
-            for ( Iterator j = book.getFormats().iterator(); j.hasNext(); )
+            List localesList = siteTool.getAvailableLocales( locales );
+
+            // Default is first in the list
+            Locale defaultLocale = (Locale) localesList.get( 0 );
+            Locale.setDefault( defaultLocale );
+
+            for ( Iterator iterator = localesList.iterator(); iterator.hasNext(); )
             {
-                Format format = (Format) j.next();
+                Locale locale = (Locale) iterator.next();
 
-                File outputDirectory = new File( generatedDocs, format.getId() );
-                File directory = new File( outputDirectory, bookModel.getId() );
+                for ( Iterator j = book.getFormats().iterator(); j.hasNext(); )
+                {
+                    Format format = (Format) j.next();
 
-                try
-                {
-                    bookDoxia.renderBook( bookModel, format.getId(), files, directory );
-                }
-                catch ( BookDoxiaException e )
-                {
-                    throw new MojoExecutionException(
-                                                      "Error while generating book in format '" + format.getId() + "'.",
-                                                      e );
+                    File outputDirectory = new File( generatedDocs, format.getId() );
+                    File directory = new File( outputDirectory + "/" + locale.toString(), bookModel.getId() );
+
+                    if ( locale.equals( defaultLocale ) )
+                    {
+                        directory = new File( outputDirectory, bookModel.getId() );
+                    }
+
+                    try
+                    {
+                        bookDoxia.renderBook( bookModel, format.getId(), files, directory, locale,
+                                              getInputEncoding(), getOutputEncoding() );
+                    }
+                    catch ( BookDoxiaException e )
+                    {
+                        throw new MojoExecutionException( "Error while generating book in format '"
+                            + format.getId() + "'.", e );
+                    }
                 }
             }
         }
+    }
+
+    /**
+     * Gets the input files encoding.
+     *
+     * @return The input files encoding, never <code>null</code>.
+     */
+    protected String getInputEncoding()
+    {
+        return ( inputEncoding == null ) ? ReaderFactory.ISO_8859_1 : inputEncoding;
+    }
+
+    /**
+     * Gets the effective reporting output files encoding.
+     *
+     * @return The effective reporting output file encoding, never <code>null</code>.
+     */
+    protected String getOutputEncoding()
+    {
+        return ( outputEncoding == null ) ? ReaderFactory.UTF_8 : outputEncoding;
     }
 
     /**
