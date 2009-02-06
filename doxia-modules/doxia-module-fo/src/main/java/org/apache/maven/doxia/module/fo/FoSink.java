@@ -84,6 +84,9 @@ public class FoSink
     /** Verbatim flag. */
     private boolean verbatim;
 
+    /** figure flag. */
+    private boolean figure;
+
     private String encoding;
 
     private String languageId;
@@ -571,6 +574,7 @@ public class FoSink
     /** {@inheritDoc} */
     public void figure()
     {
+        this.figure = true;
         writeEOL();
         writeStartTag( BLOCK_TAG, "figure.display" );
         write( "<fo:external-graphic"
@@ -580,6 +584,7 @@ public class FoSink
     /** {@inheritDoc} */
     public void figure_()
     {
+        this.figure = false;
         writeEndTag( BLOCK_TAG );
         writeEOL();
     }
@@ -587,6 +592,12 @@ public class FoSink
     /** {@inheritDoc} */
     public void figureGraphics( String name )
     {
+        if ( !figure )
+        {
+            write( "<fo:external-graphic"
+                   + config.getAttributeString( "figure.graphics" ) );
+        }
+        // TODO name should be relative to site!
         writeln( " src=\"" + name + "\"/>" );
     }
 
