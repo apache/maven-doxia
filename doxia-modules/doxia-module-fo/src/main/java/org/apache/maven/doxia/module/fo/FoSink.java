@@ -20,6 +20,7 @@ package org.apache.maven.doxia.module.fo;
  */
 
 import java.io.IOException;
+import java.io.StringWriter;
 import java.io.Writer;
 import java.util.Stack;
 
@@ -33,6 +34,7 @@ import org.apache.maven.doxia.sink.SinkEventAttributeSet;
 import org.apache.maven.doxia.sink.SinkEventAttributes;
 import org.apache.maven.doxia.util.DoxiaUtils;
 import org.apache.maven.doxia.util.HtmlTools;
+import org.codehaus.plexus.util.StringUtils;
 
 /**
  * FO Sink implementation.
@@ -47,6 +49,10 @@ public class FoSink
 {
     /** For writing the result. */
     private final Writer out;
+
+    /** The StringWriter to write the result temporary, so we could play with the output and fix fo.
+     * Calling the method {@link #close()} is needed to perform the changes in the {@link #out}. */
+    private StringWriter tempWriter;
 
     /** Used to get the current position in numbered lists. */
     private final Stack listStack = new Stack();
@@ -103,6 +109,7 @@ public class FoSink
     protected FoSink( Writer writer, String encoding )
     {
         this.out = writer;
+        this.tempWriter = new StringWriter();
         this.encoding = encoding;
         this.config = new FoConfiguration();
 
@@ -664,6 +671,41 @@ public class FoSink
     /** {@inheritDoc} */
     public void table_()
     {
+        String content = tempWriter.toString();
+        if ( content.lastIndexOf( "<fo:table " ) != -1 || content.lastIndexOf( "<fo:table>" ) != -1 )
+        {
+            StringBuffer sb = new StringBuffer();
+            // FOP hack to center the table, see
+            // http://xmlgraphics.apache.org/fop/fo.html#fo-center-table-horizon
+            sb.append( "<fo:table-column column-width=\"proportional-column-width(1)\"/>" );
+            sb.append( EOL );
+
+            int percent = 100 / cellCount;
+            for ( int i = 0; i < cellCount; i++ )
+            {
+                sb.append( "<fo:table-column column-width=\"" + percent + "%\"/>" );
+                sb.append( EOL );
+            }
+
+            sb.append( "<fo:table-column column-width=\"proportional-column-width(1)\"/>" );
+            sb.append( EOL );
+
+            String subContent;
+            if ( content.lastIndexOf( "<fo:table " ) != -1 )
+            {
+                subContent = content.substring( content.lastIndexOf( "<fo:table " ) );
+            }
+            else
+            {
+                subContent = content.substring( content.lastIndexOf( "<fo:table>" ) );
+            }
+            String table = subContent.substring( 0, subContent.indexOf( ">" ) + 1 );
+            String subContentUpdated = StringUtils.replace( subContent, table, table + EOL + sb.toString() );
+
+            tempWriter = new StringWriter();
+            tempWriter.write( StringUtils.replace( content, subContent, subContentUpdated ) );
+        }
+
         writeEndTag( TABLE_TAG );
         writeEOL();
 
@@ -680,23 +722,6 @@ public class FoSink
         this.tableGrid = grid;
         this.cellJustif = justification;
         this.isCellJustif = true;
-
-        // FOP hack to center the table, see
-        // http://xmlgraphics.apache.org/fop/fo.html#fo-center-table-horizon
-        writeln( "<fo:table-column column-width=\"proportional-column-width(1)\"/>" );
-
-        // TODO: calculate width[i]
-        // FIXME: XhtmlBaseParser always calls tableRows with a justification array of length one
-        // that's why the pdf plugin can't handle xdoc tables. How to determine the number of columns?
-        if ( cellJustif != null )
-        {
-            for ( int i = 0;  i < cellJustif.length; i++ )
-            {
-                writeln( "<fo:table-column column-width=\"1in\"/>" );
-            }
-        }
-
-        writeln( "<fo:table-column column-width=\"proportional-column-width(1)\"/>" );
         writeStartTag( TABLE_BODY_TAG, "" );
     }
 
@@ -985,6 +1010,8 @@ public class FoSink
     {
         try
         {
+            out.write( tempWriter.toString() );
+            tempWriter = new StringWriter();
             out.close();
         }
         catch ( IOException e )
@@ -1169,14 +1196,7 @@ public class FoSink
      */
     protected void write( String text )
     {
-        try
-        {
-            out.write( unifyEOLs( text ) );
-        }
-        catch ( IOException e )
-        {
-            getLog().debug( e );
-        }
+        tempWriter.write( unifyEOLs( text ) );
     }
 
     /**
