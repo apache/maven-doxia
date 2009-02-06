@@ -21,6 +21,7 @@ package org.apache.maven.doxia.module.fo;
 
 import java.io.Writer;
 
+import java.util.Calendar;
 import java.util.Iterator;
 
 import javax.swing.text.html.HTML.Tag;
@@ -516,7 +517,8 @@ public class FoAggregateSink extends FoSink
     protected String getFooterText()
     {
         // TODO: year and company have to come from DocumentMeta
-        return "&#169;2007 The Apache Software Foundation &#8226; ALL RIGHTS RESERVED";
+        int actualYear = Calendar.getInstance().get( Calendar.YEAR );
+        return "&#169;" + actualYear + " The Apache Software Foundation &#8226; ALL RIGHTS RESERVED";
     }
 
     /**
