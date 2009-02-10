@@ -31,7 +31,7 @@ under the License.
 
   <groupId>org.apache.maven.doxia</groupId>
   <artifactId>doxia</artifactId>
-  <version>1.0-SNAPSHOT</version>
+  <version>1.0</version>
   <packaging>pom</packaging>
 
   <name>Doxia</name>
@@ -96,9 +96,9 @@ under the License.
   </modules>
 
   <scm>
-    <connection>scm:svn:https://svn.apache.org/repos/asf/maven/doxia/doxia/branches/doxia-1.0.x/</connection>
-    <developerConnection>scm:svn:https://svn.apache.org/repos/asf/maven/doxia/doxia/branches/doxia-1.0.x/</developerConnection>
-    <url>https://svn.apache.org/viewvc/maven/doxia/doxia/branches/doxia-1.0.x/</url>
+    <connection>scm:svn:https://svn.apache.org/repos/asf/maven/doxia/doxia/tags/doxia-1.0</connection>
+    <developerConnection>scm:svn:https://svn.apache.org/repos/asf/maven/doxia/doxia/tags/doxia-1.0</developerConnection>
+    <url>https://svn.apache.org/viewvc/maven/doxia/doxia/tags/doxia-1.0</url>
   </scm>
   <issueManagement>
     <system>jira</system>
