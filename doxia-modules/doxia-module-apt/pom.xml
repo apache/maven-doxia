@@ -34,6 +34,10 @@ under the License.
   <name>Doxia :: APT Module</name>
   <description>A Doxia module for Almost Plain Text source documents.</description>
 
+<!-- START SNIPPET: test -->
+    <!-- test snippet -->
+<!-- END SNIPPET: test -->
+
   <dependencies>
     <dependency>
       <groupId>org.codehaus.plexus</groupId>

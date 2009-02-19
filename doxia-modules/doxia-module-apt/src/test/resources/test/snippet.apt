@@ -1,0 +1,14 @@
+
+  * list item 1
+
+%{snippet|id=test|file=pom.xml}
+
+    list paragraph text
+
+  * list item 2
+
++--
+Verbatim text
++--
+
+    list paragraph text

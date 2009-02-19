@@ -23,12 +23,16 @@ import java.io.IOException;
 import java.io.Reader;
 import java.io.StringWriter;
 import java.io.Writer;
+import java.util.Iterator;
 
 import org.apache.maven.doxia.parser.AbstractParserTest;
 import org.apache.maven.doxia.parser.Parser;
 import org.apache.maven.doxia.parser.ParseException;
 
 import org.apache.maven.doxia.sink.Sink;
+import org.apache.maven.doxia.sink.SinkEventElement;
+import org.apache.maven.doxia.sink.SinkEventTestingSink;
+
 import org.codehaus.plexus.util.IOUtil;
 
 /**
@@ -100,6 +104,56 @@ public class AptParserTest
         }
 
         assertTrue( output.toString().indexOf( "<modelVersion\\>4.0.0\\</modelVersion\\>" ) != -1 );
+    }
+
+    /** @throws Exception  */
+    public void testSnippet()
+        throws Exception
+    {
+        // DOXIA-259
+
+        Reader reader = null;
+        SinkEventTestingSink sink = new SinkEventTestingSink();
+
+        try
+        {
+            reader = getTestReader( "test/snippet", "apt" );
+
+            createParser().parse( reader, sink );
+        }
+        finally
+        {
+            IOUtil.close( reader );
+        }
+
+        Iterator it = sink.getEventList().iterator();
+
+        assertEquals( "head", ( (SinkEventElement) it.next() ).getName() );
+        assertEquals( "head_", ( (SinkEventElement) it.next() ).getName() );
+        assertEquals( "body", ( (SinkEventElement) it.next() ).getName() );
+        assertEquals( "list", ( (SinkEventElement) it.next() ).getName() );
+        assertEquals( "listItem", ( (SinkEventElement) it.next() ).getName() );
+        assertEquals( "text", ( (SinkEventElement) it.next() ).getName() );
+        assertEquals( "verbatim", ( (SinkEventElement) it.next() ).getName() );
+        assertEquals( "text", ( (SinkEventElement) it.next() ).getName() );
+        assertEquals( "verbatim_", ( (SinkEventElement) it.next() ).getName() );
+        assertEquals( "paragraph", ( (SinkEventElement) it.next() ).getName() );
+        assertEquals( "text", ( (SinkEventElement) it.next() ).getName() );
+        assertEquals( "paragraph_", ( (SinkEventElement) it.next() ).getName() );
+        assertEquals( "listItem_", ( (SinkEventElement) it.next() ).getName() );
+        assertEquals( "listItem", ( (SinkEventElement) it.next() ).getName() );
+        assertEquals( "text", ( (SinkEventElement) it.next() ).getName() );
+        assertEquals( "verbatim", ( (SinkEventElement) it.next() ).getName() );
+        assertEquals( "text", ( (SinkEventElement) it.next() ).getName() );
+        assertEquals( "verbatim_", ( (SinkEventElement) it.next() ).getName() );
+        assertEquals( "paragraph", ( (SinkEventElement) it.next() ).getName() );
+        assertEquals( "text", ( (SinkEventElement) it.next() ).getName() );
+        assertEquals( "paragraph_", ( (SinkEventElement) it.next() ).getName() );
+        assertEquals( "listItem_", ( (SinkEventElement) it.next() ).getName() );
+        assertEquals( "list_", ( (SinkEventElement) it.next() ).getName() );
+        assertEquals( "body_", ( (SinkEventElement) it.next() ).getName() );
+
+        assertFalse( it.hasNext() );
     }
 
     /** @throws Exception  */

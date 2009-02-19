@@ -878,6 +878,7 @@ public class AptParser
                     }
                     /*FALLTHROUGH*/
                 case VERBATIM:
+                case MACRO:
                 case FIGURE:
                 case TABLE:
                 case HORIZONTAL_RULE:
