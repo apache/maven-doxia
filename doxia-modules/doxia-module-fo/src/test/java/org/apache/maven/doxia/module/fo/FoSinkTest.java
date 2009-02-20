@@ -405,7 +405,7 @@ public class FoSinkTest extends AbstractSinkTest
     {
         if ( config == null )
         {
-            config = ((FoSink) getSink()).getFoConfiguration();
+            config = ( (FoSink) getSink() ).getFoConfiguration();
         }
 
         return config;

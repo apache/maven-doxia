@@ -28,7 +28,7 @@ import org.apache.maven.doxia.markup.XmlMarkup;
  *
  * @author ltheussl
  * @version $Id$
- * @since 1.0
+ * @since 1.1
  */
 public interface FoMarkup
     extends XmlMarkup
