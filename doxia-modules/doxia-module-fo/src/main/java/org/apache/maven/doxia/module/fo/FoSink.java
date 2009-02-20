@@ -592,13 +592,22 @@ public class FoSink
     /** {@inheritDoc} */
     public void figureGraphics( String name )
     {
-        if ( !figure )
+        if ( !isFigure() )
         {
-            write( "<fo:external-graphic"
-                   + config.getAttributeString( "figure.graphics" ) );
+            write( "<fo:external-graphic" + config.getAttributeString( "figure.graphics" ) );
         }
-        // TODO name should be relative to site!
+
         writeln( " src=\"" + name + "\"/>" );
+    }
+
+    /**
+     * Flags if we are inside a figure.
+     *
+     * @return True if we are between {@link #figure()} and {@link #figure_()} calls.
+     */
+    protected boolean isFigure()
+    {
+        return this.figure;
     }
 
     /** {@inheritDoc} */

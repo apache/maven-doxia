@@ -223,6 +223,23 @@ public class FoAggregateSink extends FoSink
     //
     // -----------------------------------------------------------------------
 
+    /** {@inheritDoc} */
+    public void figureGraphics( String name )
+    {
+        if ( !isFigure() )
+        {
+            write( "<fo:external-graphic" + getFoConfiguration().getAttributeString( "figure.graphics" ) );
+        }
+
+        String anchor = name;
+
+        if ( name.startsWith( "../" ) && docName != null )
+        {
+            anchor = resolveLinkRelativeToBase( name );
+        }
+
+        writeln( " src=\"" + anchor + "\"/>" );
+    }
 
 
     /** {@inheritDoc} */
@@ -292,30 +309,16 @@ public class FoAggregateSink extends FoSink
         {
             // local link (ie anchor is not in the same source document)
 
-            String anchor = name;
-
             if ( docName == null )
             {
                 // can't resolve link without base, fop will issue a warning
-                writeStartTag( BASIC_LINK_TAG, "internal-destination", HtmlTools.escapeHTML( anchor ) );
+                writeStartTag( BASIC_LINK_TAG, "internal-destination", HtmlTools.escapeHTML( name ) );
                 writeStartTag( INLINE_TAG, "href.internal" );
 
                 return;
             }
 
-            String base = docName.substring( 0, docName.lastIndexOf( "/" ) );
-
-            if ( base.indexOf( "/" ) != -1 )
-            {
-                while ( anchor.startsWith( "../" ) )
-                {
-                    base = base.substring( 0, base.lastIndexOf( "/" ) );
-
-                    anchor = anchor.substring( 3 );
-                }
-            }
-
-            anchor = base + "/" + chopExtension ( anchor );
+            String anchor = resolveLinkRelativeToBase( chopExtension( name ) );
 
             writeStartTag( BASIC_LINK_TAG, "internal-destination", HtmlTools.escapeHTML( anchor ) );
             writeStartTag( INLINE_TAG, "href.internal" );
@@ -341,8 +344,30 @@ public class FoAggregateSink extends FoSink
         }
     }
 
-    private  String chopExtension( String anchor )
+    // only call this if docName != null !!!
+    private String resolveLinkRelativeToBase( String name )
     {
+        String anchor = name;
+
+        String base = docName.substring( 0, docName.lastIndexOf( "/" ) );
+
+        if ( base.indexOf( "/" ) != -1 )
+        {
+            while ( anchor.startsWith( "../" ) )
+            {
+                base = base.substring( 0, base.lastIndexOf( "/" ) );
+
+                anchor = anchor.substring( 3 );
+            }
+        }
+
+        return base + "/" + anchor;
+    }
+
+    private  String chopExtension( String name )
+    {
+        String anchor = name;
+
         int dot = anchor.indexOf( "." );
 
         if ( dot != -1 )
