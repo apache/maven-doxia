@@ -327,15 +327,36 @@ under the License.
       </build>
     </profile>
     <profile>
-      <id>reporting</id>
+      <id>reporting-aggregate</id>
+      <!-- To generate aggregate reports -->
+      <!-- To deploy both aggregate reports for top-level project and standalone reports for modules, call
+           mvn site -Preporting
+           mvn site:deploy
+           mvn site -Preporting-aggregate
+           mvn -N site:deploy
+      -->
       <reporting>
         <plugins>
           <plugin>
             <groupId>org.apache.maven.plugins</groupId>
+            <artifactId>maven-project-info-reports-plugin</artifactId>
+            <version>2.1</version>
+          </plugin>
+          <plugin>
+            <groupId>org.apache.maven.plugins</groupId>
+            <artifactId>maven-jxr-plugin</artifactId>
+            <version>2.1</version>
+            <configuration>
+              <aggregate>true</aggregate>
+              <inputEncoding>${project.build.sourceEncoding}</inputEncoding>
+            </configuration>
+          </plugin>
+          <plugin>
+            <groupId>org.apache.maven.plugins</groupId>
             <artifactId>maven-javadoc-plugin</artifactId>
+            <version>2.5</version>
             <configuration>
               <source>1.4</source>
-              <aggregate>true</aggregate>
               <links>
                 <link>http://java.sun.com/j2se/1.4.2/docs/api/</link>
                 <link>http://plexus.codehaus.org/plexus-utils/apidocs/</link>
@@ -348,12 +369,6 @@ under the License.
                   <version>1.0</version>
                 </tagletArtifact>
               </tagletArtifacts>
-            </configuration>
-          </plugin>
-          <plugin>
-            <groupId>org.apache.maven.plugins</groupId>
-            <artifactId>maven-jxr-plugin</artifactId>
-            <configuration>
               <aggregate>true</aggregate>
             </configuration>
           </plugin>
