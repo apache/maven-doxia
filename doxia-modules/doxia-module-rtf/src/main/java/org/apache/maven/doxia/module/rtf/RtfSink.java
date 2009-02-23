@@ -85,26 +85,37 @@ public class RtfSink
     /** Codepage, 1252 */
     public static final int DEFAULT_CODE_PAGE = 1252;
 
+    /** Constant <code>DEFAULT_CHAR_SET=0</code> */
     public static final int DEFAULT_CHAR_SET = 0;
 
+    /** Constant <code>IMG_FORMAT_BMP="bmp"</code> */
     public static final String IMG_FORMAT_BMP = "bmp";
 
+    /** Constant <code>IMG_FORMAT_WMF="wmf"</code> */
     public static final String IMG_FORMAT_WMF = "wmf";
 
+    /** Constant <code>IMG_TYPE_PALETTE="palette"</code> */
     public static final String IMG_TYPE_PALETTE = "palette";
 
+    /** Constant <code>IMG_TYPE_RGB="rgb"</code> */
     public static final String IMG_TYPE_RGB = "rgb";
 
+    /** Constant <code>IMG_DATA_ASCII="ascii"</code> */
     public static final String IMG_DATA_ASCII = "ascii";
 
+    /** Constant <code>IMG_DATA_RAW="raw"</code> */
     public static final String IMG_DATA_RAW = "raw";
 
+    /** Constant <code>STYLE_ROMAN=0</code> */
     public static final int STYLE_ROMAN = 0;
 
+    /** Constant <code>STYLE_ITALIC=1</code> */
     public static final int STYLE_ITALIC = 1;
 
+    /** Constant <code>STYLE_BOLD=2</code> */
     public static final int STYLE_BOLD = 2;
 
+    /** Constant <code>STYLE_TYPEWRITER=3</code> */
     public static final int STYLE_TYPEWRITER = 3;
 
     private static final int CONTEXT_UNDEFINED = 0;
@@ -202,7 +213,9 @@ public class RtfSink
     // -----------------------------------------------------------------------
 
     /**
-     * @throws IOException if any
+     * <p>Constructor for RtfSink.</p>
+     *
+     * @throws java.io.IOException if any
      */
     protected RtfSink()
         throws IOException
@@ -211,8 +224,10 @@ public class RtfSink
     }
 
     /**
+     * <p>Constructor for RtfSink.</p>
+     *
      * @param output not null
-     * @throws IOException if any
+     * @throws java.io.IOException if any
      */
     protected RtfSink( OutputStream output )
         throws IOException
@@ -221,9 +236,11 @@ public class RtfSink
     }
 
     /**
+     * <p>Constructor for RtfSink.</p>
+     *
      * @param output not null
      * @param encoding a valid charset
-     * @throws IOException if any
+     * @throws java.io.IOException if any
      */
     protected RtfSink( OutputStream output, String encoding )
         throws IOException
@@ -256,6 +273,8 @@ public class RtfSink
     }
 
     /**
+     * <p>setPaperSize</p>
+     *
      * @param width in cm
      * @param height in cm
      */
@@ -266,6 +285,8 @@ public class RtfSink
     }
 
     /**
+     * <p>Setter for the field <code>topMargin</code>.</p>
+     *
      * @param margin
      */
     public void setTopMargin( double margin )
@@ -274,6 +295,8 @@ public class RtfSink
     }
 
     /**
+     * <p>Setter for the field <code>bottomMargin</code>.</p>
+     *
      * @param margin
      */
     public void setBottomMargin( double margin )
@@ -282,6 +305,8 @@ public class RtfSink
     }
 
     /**
+     * <p>Setter for the field <code>leftMargin</code>.</p>
+     *
      * @param margin
      */
     public void setLeftMargin( double margin )
@@ -290,6 +315,8 @@ public class RtfSink
     }
 
     /**
+     * <p>Setter for the field <code>rightMargin</code>.</p>
+     *
      * @param margin
      */
     public void setRightMargin( double margin )
@@ -298,6 +325,8 @@ public class RtfSink
     }
 
     /**
+     * <p>Setter for the field <code>fontSize</code>.</p>
+     *
      * @param size in pts
      */
     public void setFontSize( int size /*pts*/ )
@@ -306,6 +335,8 @@ public class RtfSink
     }
 
     /**
+     * <p>setSpacing</p>
+     *
      * @param spacing in pts
      */
     public void setSpacing( int spacing /*pts*/ )
@@ -314,6 +345,8 @@ public class RtfSink
     }
 
     /**
+     * <p>Setter for the field <code>resolution</code>.</p>
+     *
      * @param resolution in dpi
      */
     public void setResolution( int resolution /*dpi*/ )
@@ -322,6 +355,8 @@ public class RtfSink
     }
 
     /**
+     * <p>Setter for the field <code>imageFormat</code>.</p>
+     *
      * @param format
      */
     public void setImageFormat( String format )
@@ -330,6 +365,8 @@ public class RtfSink
     }
 
     /**
+     * <p>Setter for the field <code>imageType</code>.</p>
+     *
      * @param type
      */
     public void setImageType( String type )
@@ -338,6 +375,8 @@ public class RtfSink
     }
 
     /**
+     * <p>Setter for the field <code>imageDataFormat</code>.</p>
+     *
      * @param format
      */
     public void setImageDataFormat( String format )
@@ -346,6 +385,8 @@ public class RtfSink
     }
 
     /**
+     * <p>Setter for the field <code>imageCompression</code>.</p>
+     *
      * @param compression
      */
     public void setImageCompression( boolean compression )
@@ -354,6 +395,8 @@ public class RtfSink
     }
 
     /**
+     * <p>Setter for the field <code>codePage</code>.</p>
+     *
      * @param cp
      */
     public void setCodePage( int cp )
@@ -362,6 +405,8 @@ public class RtfSink
     }
 
     /**
+     * <p>Setter for the field <code>charSet</code>.</p>
+     *
      * @param cs
      */
     public void setCharSet( int cs )
@@ -416,6 +461,13 @@ public class RtfSink
         }
     }
 
+    /**
+     * <p>toTwips</p>
+     *
+     * @param length a double.
+     * @param unit a int.
+     * @return a int.
+     */
     protected int toTwips( double length, int unit )
     {
         double points;
@@ -1533,11 +1585,9 @@ public class RtfSink
     }
 
     /**
-     * Unkown events just log a warning message but are ignored otherwise.
+     * {@inheritDoc}
      *
-     * @param name The name of the event.
-     * @param requiredParams not used.
-     * @param attributes not used.
+     * Unkown events just log a warning message but are ignored otherwise.
      * @see org.apache.maven.doxia.sink.Sink#unknown(String,Object[],SinkEventAttributes)
      */
     public void unknown( String name, Object[] requiredParams, SinkEventAttributes attributes )
@@ -1598,6 +1648,13 @@ public class RtfSink
         return buffer.toString();
     }
 
+    /**
+     * <p>getFont</p>
+     *
+     * @param style a int.
+     * @param size a int.
+     * @return a {@link org.apache.maven.doxia.module.rtf.Font} object.
+     */
     protected Font getFont( int style, int size )
     {
         Font font = null;
