@@ -106,6 +106,8 @@ public class XdocSink
     // ----------------------------------------------------------------------
 
     /**
+     * {@inheritDoc}
+     *
      * Reset all variables.
      */
     protected void resetState()
@@ -242,9 +244,9 @@ public class XdocSink
     // ----------------------------------------------------------------------
 
     /**
-     * Starts a section.
+     * {@inheritDoc}
      *
-     * @param depth The level of the section.
+     * Starts a section.
      * @see XdocMarkup#SECTION_TAG
      * @see XdocMarkup#SUBSECTION_TAG
      */
@@ -267,9 +269,9 @@ public class XdocSink
     }
 
     /**
-     * Ends a section.
+     * {@inheritDoc}
      *
-     * @param depth The level of the section.
+     * Ends a section.
      * @see XdocMarkup#SECTION_TAG
      * @see XdocMarkup#SUBSECTION_TAG
      */
@@ -286,9 +288,9 @@ public class XdocSink
     }
 
     /**
-     * Starts a section title.
+     * {@inheritDoc}
      *
-     * @param depth The level of the section title.
+     * Starts a section title.
      * @see javax.swing.text.html.HTML.Tag#H4
      * @see javax.swing.text.html.HTML.Tag#H5
      * @see javax.swing.text.html.HTML.Tag#H6
@@ -313,9 +315,9 @@ public class XdocSink
     }
 
     /**
-     * Ends a section title.
+     * {@inheritDoc}
      *
-     * @param depth The level of the section title.
+     * Ends a section title.
      * @see javax.swing.text.html.HTML.Tag#H4
      * @see javax.swing.text.html.HTML.Tag#H5
      * @see javax.swing.text.html.HTML.Tag#H6

@@ -22,6 +22,8 @@ package org.apache.maven.doxia.module.xdoc;
 import org.apache.maven.doxia.module.site.AbstractSiteModule;
 
 /**
+ * <p>XdocSiteModule class.</p>
+ *
  * @author <a href="mailto:jason@maven.org">Jason van Zyl</a>
  * @version $Id$
  * @since 1.0

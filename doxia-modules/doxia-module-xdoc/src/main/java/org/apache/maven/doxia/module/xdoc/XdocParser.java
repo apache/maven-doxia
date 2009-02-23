@@ -414,10 +414,9 @@ public class XdocParser
     }
 
     /**
-     * Close open h4, h5, h6 sections. The current level is set to newLevel afterwards.
+     * {@inheritDoc}
      *
-     * @param newLevel the new section level, all upper levels have to be closed.
-     * @param sink the sink to receive the events.
+     * Close open h4, h5, h6 sections. The current level is set to newLevel afterwards.
      */
     protected void closeOpenSections( int newLevel, Sink sink )
     {

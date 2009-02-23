@@ -53,6 +53,8 @@ public class XmlWriterXdocSink
     }
 
     /**
+     * <p>Constructor for XmlWriterXdocSink.</p>
+     *
      * @param out the wanted XML Writer.
      * @deprecated since 1.1
      */
