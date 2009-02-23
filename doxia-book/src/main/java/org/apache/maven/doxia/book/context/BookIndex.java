@@ -22,13 +22,17 @@ package org.apache.maven.doxia.book.context;
 import org.apache.maven.doxia.index.IndexEntry;
 
 /**
+ * <p>BookIndex class.</p>
+ *
  * @author <a href="mailto:trygve.laugstol@objectware.no">Trygve Laugst&oslash;l</a>
  * @version $Id$
  */
 public class BookIndex
     extends IndexEntry
 {
-    /** Constructs a new BookIndex. */
+    /**
+     * Constructs a new BookIndex.
+     */
     public BookIndex()
     {
         super( "book" );

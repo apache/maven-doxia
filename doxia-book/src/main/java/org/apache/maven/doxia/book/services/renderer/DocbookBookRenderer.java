@@ -46,8 +46,8 @@ import org.codehaus.plexus.util.WriterFactory;
  * An implementation of <code>BookRenderer</code> for docbook
  *
  * @plexus.component role-hint="doc-book"
- *
  * @author Eric Redmond
+ * @version $Id$
  */
 public class DocbookBookRenderer
     extends AbstractLogEnabled

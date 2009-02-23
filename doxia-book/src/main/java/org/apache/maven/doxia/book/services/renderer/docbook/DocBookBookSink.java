@@ -33,6 +33,7 @@ import org.apache.maven.doxia.module.docbook.DocbookMarkup;
  *
  * @author Dave Syer
  * @version $Id$
+ * @since 1.1
  */
 public class DocBookBookSink
     extends DocBookSink
@@ -56,49 +57,81 @@ public class DocBookBookSink
     //
     // ----------------------------------------------------------------------
 
-    /** Does nothing because we don't want the header from each document to crop up in the middle of a book. */
+    /**
+     * {@inheritDoc}
+     *
+     * Does nothing because we don't want the header from each document to crop up in the middle of a book. 
+     */
     public void head()
     {
         // noop
     }
 
-    /** Does nothing because we don't want the header from each document to crop up in the middle of a book. */
+    /**
+     * {@inheritDoc}
+     *
+     * Does nothing because we don't want the header from each document to crop up in the middle of a book. 
+     */
     public void head_()
     {
         // noop
     }
 
-    /** Marks the skip flag to true so that this element's text is not emitted by the base class. */
+    /**
+     * {@inheritDoc}
+     *
+     * Marks the skip flag to true so that this element's text is not emitted by the base class. 
+     */
     public void title()
     {
         setSkip( true );
     }
 
-    /** Marks the skip flag to false so that rendering can resume. */
+    /**
+     * {@inheritDoc}
+     *
+     * Marks the skip flag to false so that rendering can resume. 
+     */
     public void title_()
     {
         setSkip( false );
     }
 
-    /** Marks the skip flag to true so that this element's text is not emitted by the base class. */
+    /**
+     * {@inheritDoc}
+     *
+     * Marks the skip flag to true so that this element's text is not emitted by the base class. 
+     */
     public void author()
     {
         setSkip( true );
     }
 
-    /** Marks the skip flag to false so that rendering can resume. */
+    /**
+     * {@inheritDoc}
+     *
+     * Marks the skip flag to false so that rendering can resume. 
+     */
     public void author_()
     {
         setSkip( false );
     }
 
-    /** Does nothing because we don't want the header from each document to crop up in the middle of a book. */
+    /**
+     * {@inheritDoc}
+     *
+     * Does nothing because we don't want the header from each document to crop up in the middle of a book. 
+     */
     public void body()
     {
         // noop
     }
 
-    /** Does nothing because we don't want the header from each document to crop up in the middle of a book. */
+    /**
+     * {@inheritDoc}
+     *
+     * Does nothing because we don't want the header from each document to crop up in the middle of a book. 
+     */
     public void body_()
     {
         // noop
@@ -140,7 +173,9 @@ public class DocBookBookSink
         }
     }
 
-    /** If some header matter has been encountered emit the book info end tag. */
+    /**
+     * If some header matter has been encountered emit the book info end tag.
+     */
     public void bookHead_()
     {
         if ( hasHead )
@@ -150,64 +185,84 @@ public class DocBookBookSink
         }
     }
 
-    /** Emit the title start tag for the whole book. */
+    /**
+     * Emit the title start tag for the whole book.
+     */
     public void bookTitle()
     {
         bookHead();
         writeStartTag( Tag.TITLE );
     }
 
-    /** Emit the title end tag for the whole book. */
+    /**
+     * Emit the title end tag for the whole book.
+     */
     public void bookTitle_()
     {
         super.title_();
     }
 
-    /** Emit the author start tag for the whole book. */
+    /**
+     * Emit the author start tag for the whole book.
+     */
     public void bookAuthor()
     {
         bookHead();
         super.author();
     }
 
-    /** Emit the author end tag for the whole book. */
+   /**
+    * Emit the author end tag for the whole book.
+    */
    public void bookAuthor_()
     {
         super.author_();
     }
 
-   /** Emit the date start tag for the whole book. */
+   /**
+    * Emit the date start tag for the whole book.
+    */
    public void bookDate()
     {
         bookHead();
         super.date();
     }
 
-   /** Emit the date end tag for the whole book. */
+    /**
+     * Emit the date end tag for the whole book.
+     */
     public void bookDate_()
     {
         super.date_();
     }
 
-    /** Emit the chapter start tag. */
+    /**
+     * Emit the chapter start tag.
+     */
     public void chapter()
     {
         writeStartTag( CHAPTER_TAG );
     }
 
-    /** Emit the chapter end tag. */
+    /**
+     * Emit the chapter end tag.
+     */
     public void chapter_()
     {
         writeEndTag( CHAPTER_TAG );
     }
 
-    /** Emit the chapter title start tag. */
+    /**
+     * Emit the chapter title start tag.
+     */
     public void chapterTitle()
     {
         writeStartTag( Tag.TITLE );
     }
 
-    /** Emit the chapter title end tag. */
+    /**
+     * Emit the chapter title end tag.
+     */
     public void chapterTitle_()
     {
         writeEndTag( Tag.TITLE );

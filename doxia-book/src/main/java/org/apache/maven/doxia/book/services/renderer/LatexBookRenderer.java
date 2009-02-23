@@ -45,8 +45,9 @@ import java.util.Map;
 import java.util.HashMap;
 
 /**
- * @plexus.component role-hint="latex"
+ * <p>LatexBookRenderer class.</p>
  *
+ * @plexus.component role-hint="latex"
  * @author <a href="mailto:trygvis@inamo.no">Trygve Laugst&oslash;l</a>
  * @version $Id$
  */

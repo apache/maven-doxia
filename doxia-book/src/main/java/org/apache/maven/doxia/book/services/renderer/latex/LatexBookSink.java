@@ -24,6 +24,8 @@ import org.apache.maven.doxia.module.latex.LatexSink;
 import java.io.Writer;
 
 /**
+ * <p>LatexBookSink class.</p>
+ *
  * @author <a href="mailto:trygvis@inamo.no">Trygve Laugst&oslash;l</a>
  * @version $Id$
  */

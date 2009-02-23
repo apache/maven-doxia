@@ -42,8 +42,9 @@ import java.io.Writer;
 import java.util.Iterator;
 
 /**
- * @plexus.component role-hint="xhtml"
+ * <p>XHtmlBookRenderer class.</p>
  *
+ * @plexus.component role-hint="xhtml"
  * @author <a href="mailto:trygvis@inamo.no">Trygve Laugst&oslash;l</a>
  * @version $Id$
  */

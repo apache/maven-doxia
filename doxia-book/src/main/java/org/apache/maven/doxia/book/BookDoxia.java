@@ -41,7 +41,7 @@ public interface BookDoxia
      *
      * @param bookDescriptor the book descriptor file.
      * @return BookModel
-     * @throws BookDoxiaException if the model cannot be loaded.
+     * @throws org.apache.maven.doxia.book.BookDoxiaException if the model cannot be loaded.
      */
     BookModel loadBook( File bookDescriptor )
         throws BookDoxiaException;
@@ -53,7 +53,7 @@ public interface BookDoxia
      * @param bookRendererId the id of the output format.
      * @param files a list of source files.
      * @param outputDirectory the output directory.
-     * @throws BookDoxiaException if the model cannot be loaded.
+     * @throws org.apache.maven.doxia.book.BookDoxiaException if the model cannot be loaded.
      * @see {@link #renderBook(BookModel, String, List, File, String, String, String)}
      * @see {@link Locale#getDefault()}
      */
@@ -70,7 +70,7 @@ public interface BookDoxia
      * @param locale the wanted locale.
      * @param inputEncoding the input encoding when processing {@link files}.
      * @param outputEncoding the output encoding when writing files in {@link ouputDirectory}.
-     * @throws BookDoxiaException if the model cannot be loaded.
+     * @throws org.apache.maven.doxia.book.BookDoxiaException if the model cannot be loaded.
      */
     void renderBook( BookModel book, String bookRendererId, List files, File outputDirectory, Locale locale,
                      String inputEncoding, String outputEncoding )

@@ -191,7 +191,10 @@ public class BookContext
     }
 
     /**
+     * <p>Getter for the field <code>locale</code>.</p>
+     *
      * @return the locale
+     * @since 1.1
      */
     public Locale getLocale()
     {
@@ -199,7 +202,10 @@ public class BookContext
     }
 
     /**
+     * <p>Setter for the field <code>locale</code>.</p>
+     *
      * @param locale the locale to set
+     * @since 1.1
      */
     public void setLocale( Locale locale )
     {
@@ -207,7 +213,10 @@ public class BookContext
     }
 
     /**
+     * <p>Getter for the field <code>inputEncoding</code>.</p>
+     *
      * @return the inputEncoding
+     * @since 1.1
      */
     public String getInputEncoding()
     {
@@ -215,7 +224,10 @@ public class BookContext
     }
 
     /**
+     * <p>Setter for the field <code>inputEncoding</code>.</p>
+     *
      * @param inputEncoding the inputEncoding to set
+     * @since 1.1
      */
     public void setInputEncoding( String inputEncoding )
     {
@@ -223,7 +235,10 @@ public class BookContext
     }
 
     /**
+     * <p>Getter for the field <code>outputEncoding</code>.</p>
+     *
      * @return the outputEncoding
+     * @since 1.1
      */
     public String getOutputEncoding()
     {
@@ -231,7 +246,10 @@ public class BookContext
     }
 
     /**
+     * <p>Setter for the field <code>outputEncoding</code>.</p>
+     *
      * @param outputEncoding the outputEncoding to set
+     * @since 1.1
      */
     public void setOutputEncoding( String outputEncoding )
     {

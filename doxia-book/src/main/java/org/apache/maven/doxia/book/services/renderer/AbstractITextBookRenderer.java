@@ -180,7 +180,7 @@ public abstract class AbstractITextBookRenderer
      *
      * @param iTextFile the input file.
      * @param iTextOutput the output file.
-     * @throws IOException if any.
+     * @throws java.io.IOException if any.
      */
     public abstract void renderXML( File iTextFile, File iTextOutput )
         throws IOException;

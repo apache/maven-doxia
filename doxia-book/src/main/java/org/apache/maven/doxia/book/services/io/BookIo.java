@@ -42,7 +42,7 @@ public interface BookIo
      *
      * @param bookDescriptor the book descriptor file.
      * @return BookModel
-     * @throws BookDoxiaException if the model cannot be read.
+     * @throws org.apache.maven.doxia.book.BookDoxiaException if the model cannot be read.
      */
     BookModel readBook( File bookDescriptor )
         throws BookDoxiaException;

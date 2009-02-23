@@ -54,7 +54,11 @@ public class XhtmlBookSink
     //
     // ----------------------------------------------------------------------
 
-    /** Does nothing. */
+    /**
+     * {@inheritDoc}
+     *
+     * Does nothing. 
+     */
     public void head()
     {
         resetState();
@@ -62,91 +66,135 @@ public class XhtmlBookSink
         setHeadFlag( true );
     }
 
-    /** Does nothing. */
+    /**
+     * {@inheritDoc}
+     *
+     * Does nothing. 
+     */
     public void head_()
     {
         setHeadFlag( false );
     }
 
-    /** Does nothing. */
+    /**
+     * {@inheritDoc}
+     *
+     * Does nothing. 
+     */
     public void title()
     {
         // noop
     }
 
-    /** Does nothing. */
+    /**
+     * {@inheritDoc}
+     *
+     * Does nothing. 
+     */
     public void title_()
     {
         resetTextBuffer();
     }
 
-    /** Does nothing. */
+    /**
+     * {@inheritDoc}
+     *
+     * Does nothing. 
+     */
     public void author_()
     {
         resetTextBuffer();
     }
 
-    /** Does nothing. */
+    /**
+     * {@inheritDoc}
+     *
+     * Does nothing. 
+     */
     public void date_()
     {
         resetTextBuffer();
     }
 
-    /** Does nothing. */
+    /**
+     * {@inheritDoc}
+     *
+     * Does nothing. 
+     */
     public void body()
     {
         // noop
     }
 
-    /** Does nothing. */
+    /**
+     * {@inheritDoc}
+     *
+     * Does nothing. 
+     */
     public void body_()
     {
         // noop
     }
 
-    /** Calls super.head(). */
+    /**
+     * Calls super.head().
+     */
     public void bookHead()
     {
         super.head();
     }
 
-    /** Calls super.head_(). */
+    /**
+     * Calls super.head_().
+     */
     public void bookHead_()
     {
         super.head_();
     }
 
-    /** Calls super.title(). */
+    /**
+     * Calls super.title().
+     */
     public void bookTitle()
     {
         super.title();
     }
 
-    /** Calls super.title_(). */
+    /**
+     * Calls super.title_().
+     */
     public void bookTitle_()
     {
         super.title_();
     }
 
-    /** Calls super.head_(). */
+    /**
+     * Calls super.head_().
+     */
     public void bookAuthor_()
     {
         super.author_();
     }
 
-    /** Calls super.head_(). */
+    /**
+     * Calls super.head_().
+     */
     public void bookDate_()
     {
         super.date_();
     }
 
-    /**  Calls super.body(). */
+    /**
+     * Calls super.body().
+     */
     public void bookBody()
     {
         super.body();
     }
 
-    /** Calls super.body_(). */
+    /**
+     * Calls super.body_().
+     */
     public void bookBody_()
     {
         super.body_();

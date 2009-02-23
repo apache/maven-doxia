@@ -37,7 +37,7 @@ public interface BookRenderer
      * Render a book.
      *
      * @param context the BookContext.
-     * @throws BookDoxiaException if the book cannot be rendered.
+     * @throws org.apache.maven.doxia.book.BookDoxiaException if the book cannot be rendered.
      */
     void renderBook( BookContext context )
         throws BookDoxiaException;

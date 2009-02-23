@@ -39,7 +39,7 @@ public interface BookIndexer
      *
      * @param book the book to index.
      * @param bookContext the BookContext.
-     * @throws BookDoxiaException if the book cannot be indexed.
+     * @throws org.apache.maven.doxia.book.BookDoxiaException if the book cannot be indexed.
      */
     void indexBook( BookModel book, BookContext bookContext )
         throws BookDoxiaException;

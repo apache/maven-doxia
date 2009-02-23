@@ -41,8 +41,9 @@ import java.util.TreeMap;
 import java.util.List;
 
 /**
- * @plexus.component
+ * <p>DefaultBookIo class.</p>
  *
+ * @plexus.component
  * @author <a href="mailto:trygve.laugstol@objectware.no">Trygve Laugst&oslash;l</a>
  * @version $Id$
  */
