@@ -63,6 +63,8 @@ public interface Log
     void setLogLevel( int level );
 
     /**
+     * <p>isDebugEnabled</p>
+     *
      * @return true if the <b>debug</b> error level is enabled
      */
     boolean isDebugEnabled();
@@ -94,6 +96,8 @@ public interface Log
     void debug( Throwable error );
 
     /**
+     * <p>isInfoEnabled</p>
+     *
      * @return true if the <b>info</b> error level is enabled
      */
     boolean isInfoEnabled();
@@ -125,6 +129,8 @@ public interface Log
     void info( Throwable error );
 
     /**
+     * <p>isWarnEnabled</p>
+     *
      * @return true if the <b>warn</b> error level is enabled
      */
     boolean isWarnEnabled();
@@ -156,6 +162,8 @@ public interface Log
     void warn( Throwable error );
 
     /**
+     * <p>isErrorEnabled</p>
+     *
      * @return true if the <b>error</b> error level is enabled
      */
     boolean isErrorEnabled();

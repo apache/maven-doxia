@@ -35,6 +35,8 @@ public class PlexusLoggerWrapper
     private final Logger logger;
 
     /**
+     * <p>Constructor for PlexusLoggerWrapper.</p>
+     *
      * @param logger
      */
     public PlexusLoggerWrapper( Logger logger )
