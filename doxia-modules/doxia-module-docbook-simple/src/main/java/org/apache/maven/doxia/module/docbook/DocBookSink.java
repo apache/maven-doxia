@@ -195,6 +195,8 @@ public class DocBookSink
     }
 
     /**
+     * <p>escapeSGML</p>
+     *
      * @param text The text to escape.
      * @param xmlMode xmlMode.
      * @return The escaped text.
@@ -553,7 +555,6 @@ public class DocBookSink
 
     /**
      * {@inheritDoc}
-     *
      * @see DocbookMarkup#DEFAULT_XML_PUBLIC_ID
      * @see DocbookMarkup#DEFAULT_SGML_PUBLIC_ID
      * @see DocbookMarkup#DEFAULT_XML_SYSTEM_ID
@@ -569,12 +570,15 @@ public class DocBookSink
     }
 
     /**
+     * <p>writeXmlHeader</p>
+     *
      * @param root not null
      * @return an attribute set
      * @see DocbookMarkup#DEFAULT_XML_PUBLIC_ID
      * @see DocbookMarkup#DEFAULT_SGML_PUBLIC_ID
      * @see DocbookMarkup#DEFAULT_XML_SYSTEM_ID
      * @see DocbookMarkup#ARTICLE_TAG
+     * @since 1.1
      */
     protected MutableAttributeSet writeXmlHeader( String root )
     {
@@ -636,7 +640,6 @@ public class DocBookSink
 
     /**
      * {@inheritDoc}
-     *
      * @see DocbookMarkup#ARTICLEINFO_TAG
      */
     public void head_()
@@ -650,7 +653,6 @@ public class DocBookSink
 
     /**
      * {@inheritDoc}
-     *
      * @see DocbookMarkup#ARTICLEINFO_TAG
      * @see javax.swing.text.html.HTML.Tag#TITLE
      */
@@ -663,7 +665,6 @@ public class DocBookSink
 
     /**
      * {@inheritDoc}
-     *
      * @see javax.swing.text.html.HTML.Tag#TITLE
      */
     public void title_()
@@ -673,7 +674,6 @@ public class DocBookSink
 
     /**
      * {@inheritDoc}
-     *
      * @see DocbookMarkup#CORPAUTHOR_TAG
      */
     public void author()
@@ -684,7 +684,6 @@ public class DocBookSink
 
     /**
      * {@inheritDoc}
-     *
      * @see DocbookMarkup#CORPAUTHOR_TAG
      */
     public void author_()
@@ -695,7 +694,6 @@ public class DocBookSink
 
     /**
      * {@inheritDoc}
-     *
      * @see DocbookMarkup#DATE_TAG
      */
     public void date()
@@ -706,7 +704,6 @@ public class DocBookSink
 
     /**
      * {@inheritDoc}
-     *
      * @see DocbookMarkup#DATE_TAG
      */
     public void date_()
@@ -717,7 +714,6 @@ public class DocBookSink
 
     /**
      * {@inheritDoc}
-     *
      * @see DocbookMarkup#ARTICLE_TAG
      */
     public void body_()
@@ -729,7 +725,6 @@ public class DocBookSink
 
     /**
      * {@inheritDoc}
-     *
      * @see DocbookMarkup#SECTION_TAG
      */
     public void section1()
@@ -739,7 +734,6 @@ public class DocBookSink
 
     /**
      * {@inheritDoc}
-     *
      * @see DocbookMarkup#SECTION_TAG
      */
     public void section1_()
@@ -749,7 +743,6 @@ public class DocBookSink
 
     /**
      * {@inheritDoc}
-     *
      * @see DocbookMarkup#SECTION_TAG
      */
     public void section2()
@@ -759,7 +752,6 @@ public class DocBookSink
 
     /**
      * {@inheritDoc}
-     *
      * @see DocbookMarkup#SECTION_TAG
      */
     public void section2_()
@@ -769,7 +761,6 @@ public class DocBookSink
 
     /**
      * {@inheritDoc}
-     *
      * @see DocbookMarkup#SECTION_TAG
      */
     public void section3()
@@ -779,7 +770,6 @@ public class DocBookSink
 
     /**
      * {@inheritDoc}
-     *
      * @see DocbookMarkup#SECTION_TAG
      */
     public void section3_()
@@ -789,7 +779,6 @@ public class DocBookSink
 
     /**
      * {@inheritDoc}
-     *
      * @see DocbookMarkup#SECTION_TAG
      */
     public void section4()
@@ -799,7 +788,6 @@ public class DocBookSink
 
     /**
      * {@inheritDoc}
-     *
      * @see DocbookMarkup#SECTION_TAG
      */
     public void section4_()
@@ -809,7 +797,6 @@ public class DocBookSink
 
     /**
      * {@inheritDoc}
-     *
      * @see DocbookMarkup#SECTION_TAG
      */
     public void section5()
@@ -819,7 +806,6 @@ public class DocBookSink
 
     /**
      * {@inheritDoc}
-     *
      * @see DocbookMarkup#SECTION_TAG
      */
     public void section5_()
@@ -829,7 +815,6 @@ public class DocBookSink
 
     /**
      * {@inheritDoc}
-     *
      * @see javax.swing.text.html.HTML.Tag#TITLE
      */
     public void sectionTitle()
@@ -839,7 +824,6 @@ public class DocBookSink
 
     /**
      * {@inheritDoc}
-     *
      * @see javax.swing.text.html.HTML.Tag#TITLE
      */
     public void sectionTitle_()
@@ -849,7 +833,6 @@ public class DocBookSink
 
     /**
      * {@inheritDoc}
-     *
      * @see javax.swing.text.html.HTML.Tag#TITLE
      */
     public void sectionTitle1()
@@ -859,7 +842,6 @@ public class DocBookSink
 
     /**
      * {@inheritDoc}
-     *
      * @see javax.swing.text.html.HTML.Tag#TITLE
      */
     public void sectionTitle1_()
@@ -869,7 +851,6 @@ public class DocBookSink
 
     /**
      * {@inheritDoc}
-     *
      * @see javax.swing.text.html.HTML.Tag#TITLE
      */
     public void sectionTitle2()
@@ -879,7 +860,6 @@ public class DocBookSink
 
     /**
      * {@inheritDoc}
-     *
      * @see javax.swing.text.html.HTML.Tag#TITLE
      */
     public void sectionTitle2_()
@@ -889,7 +869,6 @@ public class DocBookSink
 
     /**
      * {@inheritDoc}
-     *
      * @see javax.swing.text.html.HTML.Tag#TITLE
      */
     public void sectionTitle3()
@@ -899,7 +878,6 @@ public class DocBookSink
 
     /**
      * {@inheritDoc}
-     *
      * @see javax.swing.text.html.HTML.Tag#TITLE
      */
     public void sectionTitle3_()
@@ -909,7 +887,6 @@ public class DocBookSink
 
     /**
      * {@inheritDoc}
-     *
      * @see javax.swing.text.html.HTML.Tag#TITLE
      */
     public void sectionTitle4()
@@ -919,7 +896,6 @@ public class DocBookSink
 
     /**
      * {@inheritDoc}
-     *
      * @see javax.swing.text.html.HTML.Tag#TITLE
      */
     public void sectionTitle4_()
@@ -929,7 +905,6 @@ public class DocBookSink
 
     /**
      * {@inheritDoc}
-     *
      * @see javax.swing.text.html.HTML.Tag#TITLE
      */
     public void sectionTitle5()
@@ -939,7 +914,6 @@ public class DocBookSink
 
     /**
      * {@inheritDoc}
-     *
      * @see javax.swing.text.html.HTML.Tag#TITLE
      */
     public void sectionTitle5_()
@@ -949,7 +923,6 @@ public class DocBookSink
 
     /**
      * {@inheritDoc}
-     *
      * @see DocbookMarkup#ITEMIZEDLIST_TAG
      */
     public void list()
@@ -959,7 +932,6 @@ public class DocBookSink
 
     /**
      * {@inheritDoc}
-     *
      * @see DocbookMarkup#ITEMIZEDLIST_TAG
      */
     public void list_()
@@ -969,7 +941,6 @@ public class DocBookSink
 
     /**
      * {@inheritDoc}
-     *
      * @see DocbookMarkup#LISTITEM_TAG
      */
     public void listItem()
@@ -979,7 +950,6 @@ public class DocBookSink
 
     /**
      * {@inheritDoc}
-     *
      * @see DocbookMarkup#LISTITEM_TAG
      */
     public void listItem_()
@@ -989,7 +959,6 @@ public class DocBookSink
 
     /**
      * {@inheritDoc}
-     *
      * @see DocbookMarkup#ORDEREDLIST_TAG
      * @see DocbookMarkup#NUMERATION_ATTRIBUTE
      */
@@ -1023,7 +992,6 @@ public class DocBookSink
 
     /**
      * {@inheritDoc}
-     *
      * @see DocbookMarkup#ORDEREDLIST_TAG
      */
     public void numberedList_()
@@ -1033,7 +1001,6 @@ public class DocBookSink
 
     /**
      * {@inheritDoc}
-     *
      * @see DocbookMarkup#LISTITEM_TAG
      */
     public void numberedListItem()
@@ -1043,7 +1010,6 @@ public class DocBookSink
 
     /**
      * {@inheritDoc}
-     *
      * @see DocbookMarkup#LISTITEM_TAG
      */
     public void numberedListItem_()
@@ -1053,7 +1019,6 @@ public class DocBookSink
 
     /**
      * {@inheritDoc}
-     *
      * @see DocbookMarkup#VARIABLELIST_TAG
      */
     public void definitionList()
@@ -1063,7 +1028,6 @@ public class DocBookSink
 
     /**
      * {@inheritDoc}
-     *
      * @see DocbookMarkup#VARIABLELIST_TAG
      */
     public void definitionList_()
@@ -1073,7 +1037,6 @@ public class DocBookSink
 
     /**
      * {@inheritDoc}
-     *
      * @see DocbookMarkup#VARLISTENTRY_TAG
      */
     public void definitionListItem()
@@ -1083,7 +1046,6 @@ public class DocBookSink
 
     /**
      * {@inheritDoc}
-     *
      * @see DocbookMarkup#VARLISTENTRY_TAG
      */
     public void definitionListItem_()
@@ -1093,7 +1055,6 @@ public class DocBookSink
 
     /**
      * {@inheritDoc}
-     *
      * @see DocbookMarkup#TERM_TAG
      */
     public void definedTerm()
@@ -1103,7 +1064,6 @@ public class DocBookSink
 
     /**
      * {@inheritDoc}
-     *
      * @see DocbookMarkup#TERM_TAG
      */
     public void definedTerm_()
@@ -1113,7 +1073,6 @@ public class DocBookSink
 
     /**
      * {@inheritDoc}
-     *
      * @see DocbookMarkup#LISTITEM_TAG
      */
     public void definition()
@@ -1123,7 +1082,6 @@ public class DocBookSink
 
     /**
      * {@inheritDoc}
-     *
      * @see DocbookMarkup#LISTITEM_TAG
      */
     public void definition_()
@@ -1133,7 +1091,6 @@ public class DocBookSink
 
     /**
      * {@inheritDoc}
-     *
      * @see DocbookMarkup#PARA_TAG
      */
     public void paragraph()
@@ -1143,7 +1100,6 @@ public class DocBookSink
 
     /**
      * {@inheritDoc}
-     *
      * @see DocbookMarkup#PARA_TAG
      */
     public void paragraph_()
@@ -1153,7 +1109,6 @@ public class DocBookSink
 
     /**
      * {@inheritDoc}
-     *
      * @see DocbookMarkup#PROGRAMLISTING_TAG
      */
     public void verbatim( boolean boxed )
@@ -1164,7 +1119,6 @@ public class DocBookSink
 
     /**
      * {@inheritDoc}
-     *
      * @see DocbookMarkup#PROGRAMLISTING_TAG
      */
     public void verbatim_()
@@ -1192,6 +1146,8 @@ public class DocBookSink
     }
 
     /**
+     * <p>graphicElement</p>
+     *
      * @see DocbookMarkup#MEDIAOBJECT_TAG
      * @see DocbookMarkup#IMAGEOBJECT_TAG
      * @see DocbookMarkup#IMAGEDATA_TAG
@@ -1241,7 +1197,6 @@ public class DocBookSink
 
     /**
      * {@inheritDoc}
-     *
      * @see DocbookMarkup#FIGURE_TAG
      * @see javax.swing.text.html.HTML.Tag#TITLE
      */
@@ -1253,7 +1208,6 @@ public class DocBookSink
 
     /**
      * {@inheritDoc}
-     *
      * @see DocbookMarkup#FIGURE_TAG
      * @see javax.swing.text.html.HTML.Tag#TITLE
      */
@@ -1272,7 +1226,6 @@ public class DocBookSink
 
     /**
      * {@inheritDoc}
-     *
      * @see DocbookMarkup#INFORMALTABLE_TAG
      * @see DocbookMarkup#FRAME_ATTRIBUTE
      * @see DocbookMarkup#ROWSEP_ATTRIBUTE
@@ -1322,7 +1275,6 @@ public class DocBookSink
 
     /**
      * {@inheritDoc}
-     *
      * @see DocbookMarkup#TGROUP_TAG
      * @see DocbookMarkup#COLS_ATTRIBUTE
      * @see DocbookMarkup#COLSPEC_TAG
@@ -1379,7 +1331,6 @@ public class DocBookSink
 
     /**
      * {@inheritDoc}
-     *
      * @see DocbookMarkup#TGROUP_TAG
      * @see DocbookMarkup#TBODY_TAG
      */
@@ -1403,7 +1354,6 @@ public class DocBookSink
 
     /**
      * {@inheritDoc}
-     *
      * @see DocbookMarkup#ROW_TAG
      */
     public void tableRow()
@@ -1413,7 +1363,6 @@ public class DocBookSink
 
     /**
      * {@inheritDoc}
-     *
      * @see DocbookMarkup#ROW_TAG
      */
     public void tableRow_()
@@ -1423,7 +1372,6 @@ public class DocBookSink
 
     /**
      * {@inheritDoc}
-     *
      * @see DocbookMarkup#ENTRY_TAG
      */
     public void tableCell()
@@ -1433,7 +1381,6 @@ public class DocBookSink
 
     /**
      * {@inheritDoc}
-     *
      * @see DocbookMarkup#ENTRY_TAG
      */
     public void tableCell_()
@@ -1496,7 +1443,6 @@ public class DocBookSink
 
     /**
      * {@inheritDoc}
-     *
      * @see javax.swing.text.html.HTML.Tag#TITLE
      */
     public void tableCaption_()
@@ -1506,7 +1452,6 @@ public class DocBookSink
 
     /**
      * {@inheritDoc}
-     *
      * @see DocbookMarkup#ANCHOR_TAG
      */
     public void anchor( String name )
@@ -1546,7 +1491,6 @@ public class DocBookSink
 
     /**
      * {@inheritDoc}
-     *
      * @see DocbookMarkup#ANCHOR_TAG
      */
     public void anchor_()
@@ -1562,7 +1506,6 @@ public class DocBookSink
 
     /**
      * {@inheritDoc}
-     *
      * @see DocbookMarkup#ULINK_TAG
      * @see DocbookMarkup#URL_ATTRIBUTE
      * @see DocbookMarkup#LINK_TAG
@@ -1594,7 +1537,6 @@ public class DocBookSink
 
     /**
      * {@inheritDoc}
-     *
      * @see DocbookMarkup#ULINK_TAG
      * @see DocbookMarkup#LINK_TAG
      */
@@ -1694,11 +1636,9 @@ public class DocBookSink
     }
 
     /**
-     * Unkown events just log a warning message but are ignored otherwise.
+     * {@inheritDoc}
      *
-     * @param name The name of the event.
-     * @param requiredParams not used.
-     * @param attributes not used.
+     * Unkown events just log a warning message but are ignored otherwise.
      * @see org.apache.maven.doxia.sink.Sink#unknown(String,Object[],SinkEventAttributes)
      */
     public void unknown( String name, Object[] requiredParams, SinkEventAttributes attributes )
@@ -1768,7 +1708,10 @@ public class DocBookSink
     }
 
     /**
+     * <p>Setter for the field <code>skip</code>.</p>
+     *
      * @param skip the skip to set.
+     * @since 1.1
      */
     public void setSkip( boolean skip )
     {
