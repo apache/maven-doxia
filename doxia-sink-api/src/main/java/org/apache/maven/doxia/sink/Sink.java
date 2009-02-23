@@ -457,6 +457,7 @@ public interface Sink
      * Ends a section at the given level.
      *
      * @param level the section level.
+     * @since 1.1
      */
     void section_( int level );
 
@@ -491,6 +492,7 @@ public interface Sink
      * Ends a section title at the given level.
      *
      * @param level the section title level.
+     * @since 1.1
      */
     void sectionTitle_( int level );
 
@@ -1314,6 +1316,7 @@ public interface Sink
      * Add a comment.
      *
      * @param comment The comment to write.
+     * @since 1.1
      */
     void comment( String comment );
 
