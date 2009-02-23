@@ -34,25 +34,22 @@ public final class TWikiSiteModule
     implements SiteModule
 {
 
-    /**
-     * @see SiteModule#getSourceDirectory()
-     */
+    /** {@inheritDoc} */
+
     public String getSourceDirectory()
     {
         return "twiki";
     }
 
-    /**
-     * @see SiteModule#getExtension()
-     */
+    /** {@inheritDoc} */
+
     public String getExtension()
     {
         return "twiki";
     }
 
-    /**
-     * @see SiteModule#getParserId()
-     */
+    /** {@inheritDoc} */
+
     public String getParserId()
     {
         return "twiki";

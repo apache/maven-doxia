@@ -47,7 +47,7 @@ public class SectionBlock
      * @param title  the section title.
      * @param level  the section level: 0 < level < 6
      * @param blocks child blocks
-     * @throws IllegalArgumentException if the parameters are not in the domain
+     * @throws java.lang.IllegalArgumentException if the parameters are not in the domain
      */
     public SectionBlock( final String title, final int level, final Block[] blocks )
         throws IllegalArgumentException

@@ -53,16 +53,16 @@ public class SectionBlockParser
     /** {@link VerbatimBlockParser} */
     private VerbatimBlockParser verbatimBlockParser;
 
-    /** {@inheritDoc}
-     * @param s the String.
+    /**
+     * {@inheritDoc}
      */
     public final boolean accept( final String s )
     {
         return HEADER_DA.matcher( s ).lookingAt();
     }
 
-    /** {@inheritDoc}
-     * @throws org.apache.maven.doxia.parser.ParseException
+    /**
+     * {@inheritDoc}
      */
     public final Block visit( final String line, final ByLineSource source )
         throws ParseException
@@ -154,6 +154,7 @@ public class SectionBlockParser
      * Sets the verbatimBlockParser.
      *
      * @param verbatimBlockParser <code>VerbatimBlockParser</code> with the verbatimBlockParser.
+     * @since 1.1
      */
     public final void setVerbatimBlockParser( VerbatimBlockParser verbatimBlockParser )
     {

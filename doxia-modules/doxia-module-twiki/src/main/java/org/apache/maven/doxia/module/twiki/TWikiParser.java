@@ -109,9 +109,11 @@ public class TWikiParser
     }
 
     /**
+     * <p>parse</p>
+     *
      * @param source source to parse
      * @return the blocks that represent source
-     * @throws ParseException on error
+     * @throws org.apache.maven.doxia.parser.ParseException on error
      */
     public final List parse( final ByLineSource source )
         throws ParseException

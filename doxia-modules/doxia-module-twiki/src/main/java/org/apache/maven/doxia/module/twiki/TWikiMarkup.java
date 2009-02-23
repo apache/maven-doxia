@@ -27,7 +27,6 @@ import org.apache.maven.doxia.markup.TextMarkup;
  * This interface defines all markups and syntaxes used by the <b>TWiki</b> format.
  *
  * @see <a href="http://twiki.org/cgi-bin/view/TWiki/TextFormattingRules">http://twiki.org/cgi-bin/view/TWiki/TextFormattingRules</a>
- *
  * @author <a href="mailto:vincent.siveton@gmail.com">Vincent Siveton</a>
  * @version $Id$
  * @since 1.0

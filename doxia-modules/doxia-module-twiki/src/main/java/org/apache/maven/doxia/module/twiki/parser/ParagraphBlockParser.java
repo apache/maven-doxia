@@ -83,8 +83,8 @@ public class ParagraphBlockParser
         return !sectionParser.accept( line ) && !hrulerParser.accept( line ) && !verbatimParser.accept( line );
     }
 
-    /** {@inheritDoc}
-     * @throws org.apache.maven.doxia.parser.ParseException
+    /**
+     * {@inheritDoc}
      */
     public final Block visit( final String line, final ByLineSource source )
         throws ParseException
@@ -236,6 +236,8 @@ public class ParagraphBlockParser
     }
 
     /**
+     * <p>Setter for the field <code>tableBlockParser</code>.</p>
+     *
      * @param aTableBlockParser Table parser to use
      */
     public final void setTableBlockParser( final TableBlockParser aTableBlockParser )
@@ -252,6 +254,7 @@ public class ParagraphBlockParser
      * Sets the verbatimParser.
      *
      * @param aVerbatimParser <code>VerbatimBlockParser</code> with the verbatimParser.
+     * @since 1.1
      */
     public final void setVerbatimParser( final VerbatimBlockParser aVerbatimParser )
     {

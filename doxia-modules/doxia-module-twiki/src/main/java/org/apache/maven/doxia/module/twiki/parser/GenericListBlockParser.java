@@ -74,8 +74,8 @@ public class GenericListBlockParser
         return ret;
     }
 
-    /** {@inheritDoc}
-     * @throws org.apache.maven.doxia.parser.ParseException
+    /**
+     * {@inheritDoc}
      */
     public final Block visit( final String line, final ByLineSource source )
         throws ParseException

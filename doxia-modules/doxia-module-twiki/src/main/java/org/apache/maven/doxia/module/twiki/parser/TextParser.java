@@ -83,6 +83,7 @@ public class TextParser
 
     /**
      * Creates the TextParser.
+     *
      * @param resolver resolver for wikiWord links
      */
     public TextParser( final WikiWordLinkResolver resolver )
@@ -91,6 +92,8 @@ public class TextParser
     }
 
     /**
+     * <p>parse</p>
+     *
      * @param line line to parse
      * @return a list of block that represents the input
      */

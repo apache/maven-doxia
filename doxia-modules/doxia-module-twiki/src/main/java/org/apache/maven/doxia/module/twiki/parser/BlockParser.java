@@ -31,16 +31,20 @@ import org.apache.maven.doxia.parser.ParseException;
 public interface BlockParser
 {
     /**
+     * <p>accept</p>
+     *
      * @param line text line
      * @return <code>true</code> if this class can handle this line
      */
     boolean accept( String line );
 
     /**
+     * <p>visit</p>
+     *
      * @param line   a line of text
      * @param source the source of lines
      * @return a block
-     * @throws ParseException on error
+     * @throws org.apache.maven.doxia.parser.ParseException on error
      */
     Block visit( String line, ByLineSource source )
         throws ParseException;

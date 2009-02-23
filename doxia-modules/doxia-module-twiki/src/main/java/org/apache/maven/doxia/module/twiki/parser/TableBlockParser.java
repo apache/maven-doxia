@@ -52,8 +52,8 @@ public class TableBlockParser
         return TABLE_PATTERN.matcher( line ).lookingAt();
     }
 
-    /** {@inheritDoc}
-     * @throws org.apache.maven.doxia.parser.ParseException
+    /**
+     * {@inheritDoc}
      */
     public final Block visit( final String line, final ByLineSource source )
         throws ParseException
@@ -99,6 +99,8 @@ public class TableBlockParser
     }
 
     /**
+     * <p>Setter for the field <code>textParser</code>.</p>
+     *
      * @param textParser text parser to be set
      */
     public final void setTextParser( final FormatedTextParser textParser )

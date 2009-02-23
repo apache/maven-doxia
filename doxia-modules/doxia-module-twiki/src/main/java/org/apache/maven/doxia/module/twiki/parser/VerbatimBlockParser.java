@@ -32,6 +32,7 @@ import org.apache.maven.doxia.util.ByLineSource;
  *
  * @author Christian Nardi
  * @version $Id$
+ * @since 1.1
  */
 public class VerbatimBlockParser
     implements BlockParser
@@ -49,8 +50,8 @@ public class VerbatimBlockParser
         return VERBATIM_START_PATTERN.matcher( line ).lookingAt();
     }
 
-    /** {@inheritDoc}
-     * @throws org.apache.maven.doxia.parser.ParseException
+    /**
+     * {@inheritDoc}
      */
     public final Block visit( final String line, final ByLineSource source )
         throws ParseException

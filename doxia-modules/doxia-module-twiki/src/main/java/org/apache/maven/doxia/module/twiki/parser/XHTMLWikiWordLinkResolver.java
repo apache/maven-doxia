@@ -24,15 +24,16 @@ package org.apache.maven.doxia.module.twiki.parser;
  *
  * @author Christian Nardi
  * @version $Id$
+ * @since 1.1
  */
 public class XHTMLWikiWordLinkResolver
     implements WikiWordLinkResolver
 {
     /**
+     * {@inheritDoc}
+     *
      * This only works for xhtml output, but there is no way
      * of transforming a wikiWord in another context.
-     * @param wikiWord wikiWord to resolve
-     * @return the link representation of the wikiWord.
      * @see org.apache.maven.doxia.module.twiki.parser.WikiWordLinkResolver#resolveLink(java.lang.String)
      */
     public final String resolveLink( final String wikiWord )
