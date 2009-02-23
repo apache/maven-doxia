@@ -42,7 +42,6 @@ import java.util.Locale;
  * A Mojo to create books in different output formats.
  *
  * @goal render-books
- *
  * @author <a href="mailto:trygvis@inamo.no">Trygve Laugst&oslash;l</a>
  * @version $Id$
  * @since 1.0
@@ -124,10 +123,9 @@ public class DoxiaRenderBooksMojo
     // ----------------------------------------------------------------------
 
     /**
-     * Executes the Mojo.
+     * {@inheritDoc}
      *
-     * @throws MojoExecutionException if an exception occurs during the execution of the plugin.
-     * @throws MojoFailureException if there are configuration errors.
+     * Executes the Mojo.
      */
     public void execute()
         throws MojoExecutionException, MojoFailureException
@@ -281,6 +279,7 @@ public class DoxiaRenderBooksMojo
      * Gets the input files encoding.
      *
      * @return The input files encoding, never <code>null</code>.
+     * @since 1.1
      */
     protected String getInputEncoding()
     {
@@ -291,6 +290,7 @@ public class DoxiaRenderBooksMojo
      * Gets the effective reporting output files encoding.
      *
      * @return The effective reporting output file encoding, never <code>null</code>.
+     * @since 1.1
      */
     protected String getOutputEncoding()
     {
