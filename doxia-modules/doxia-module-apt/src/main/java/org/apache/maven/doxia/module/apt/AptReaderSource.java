@@ -25,7 +25,11 @@ import java.io.Reader;
 
 import org.codehaus.plexus.util.IOUtil;
 
-/** Reader for apt source documents. */
+/**
+ * Reader for apt source documents.
+ *
+ * @version $Id$
+ */
 public class AptReaderSource
     implements AptSource
 {
@@ -92,7 +96,9 @@ public class AptReaderSource
         return lineNumber;
     }
 
-    /** Closes the reader associated with this AptReaderSource. */
+    /**
+     * Closes the reader associated with this AptReaderSource.
+     */
     public void close()
     {
         IOUtil.close( reader );

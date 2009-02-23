@@ -22,6 +22,8 @@ package org.apache.maven.doxia.module.apt;
 import org.apache.maven.doxia.module.site.AbstractSiteModule;
 
 /**
+ * <p>AptSiteModule class.</p>
+ *
  * @author <a href="mailto:jason@maven.org">Jason van Zyl</a>
  * @version $Id$
  * @since 1.0

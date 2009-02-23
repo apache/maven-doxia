@@ -878,11 +878,9 @@ public class AptSink
     }
 
     /**
-     * Unkown events just log a warning message but are ignored otherwise.
+     * {@inheritDoc}
      *
-     * @param name The name of the event.
-     * @param requiredParams not used.
-     * @param attributes not used.
+     * Unkown events just log a warning message but are ignored otherwise.
      * @see org.apache.maven.doxia.sink.Sink#unknown(String,Object[],SinkEventAttributes)
      */
     public void unknown( String name, Object[] requiredParams, SinkEventAttributes attributes )

@@ -247,7 +247,7 @@ public class AptParser
     /**
      * Parse the next line of the Apt source document.
      *
-     * @throws AptParseException if something goes wrong.
+     * @throws org.apache.maven.doxia.module.apt.AptParseException if something goes wrong.
      */
     protected void nextLine()
         throws AptParseException
@@ -262,7 +262,7 @@ public class AptParser
      * @param begin offset.
      * @param end offset.
      * @param sink the sink to receive the events.
-     * @throws AptParseException if something goes wrong.
+     * @throws org.apache.maven.doxia.module.apt.AptParseException if something goes wrong.
      */
     protected void doTraverseText( String text, int begin, int end, Sink sink )
         throws AptParseException
