@@ -43,6 +43,12 @@ public class ITextSinkFactory
         return new ITextSink( writer, encoding );
     }
 
+    /**
+     * <p>createSink</p>
+     *
+     * @param writer a {@link java.io.Writer} object.
+     * @return a {@link org.apache.maven.doxia.sink.Sink} object.
+     */
     public Sink createSink( Writer writer )
     {
         // TODO: should this method be deprecated?
