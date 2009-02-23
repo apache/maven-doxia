@@ -25,6 +25,8 @@ import java.util.List;
 import org.apache.maven.doxia.sink.Sink;
 
 /**
+ * <p>Abstract AbstractFatherBlock class.</p>
+ *
  * @version $Id$
  */
 public abstract class AbstractFatherBlock
@@ -33,16 +35,22 @@ public abstract class AbstractFatherBlock
     private  List blocks;
 
     /**
+     * <p>before</p>
+     *
      * @param sink
      */
     public abstract void before( Sink sink );
 
     /**
+     * <p>after</p>
+     *
      * @param sink
      */
     public abstract void after( Sink sink );
 
     /**
+     * <p>Constructor for AbstractFatherBlock.</p>
+     *
      * @param childBlocks
      */
     public AbstractFatherBlock(  List childBlocks )
@@ -70,6 +78,11 @@ public abstract class AbstractFatherBlock
         after( sink );
     }
 
+    /**
+     * <p>Getter for the field <code>blocks</code>.</p>
+     *
+     * @return a {@link java.util.List} object.
+     */
     public  List getBlocks()
     {
         return blocks;

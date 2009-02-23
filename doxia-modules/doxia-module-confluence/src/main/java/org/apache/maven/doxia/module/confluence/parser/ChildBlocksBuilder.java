@@ -31,6 +31,7 @@ import org.codehaus.plexus.util.StringUtils;
  *
  * @author Dave Syer
  * @version $Id$
+ * @since 1.1
  */
 public class ChildBlocksBuilder
 {
@@ -49,6 +50,8 @@ public class ChildBlocksBuilder
     private boolean insideMonospaced;
 
     /**
+     * <p>Constructor for ChildBlocksBuilder.</p>
+     *
      * @param input
      */
     public ChildBlocksBuilder( String input )

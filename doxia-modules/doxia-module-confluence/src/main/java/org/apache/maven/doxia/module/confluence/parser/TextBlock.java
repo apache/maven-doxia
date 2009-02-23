@@ -22,6 +22,8 @@ package org.apache.maven.doxia.module.confluence.parser;
 import org.apache.maven.doxia.sink.Sink;
 
 /**
+ * <p>TextBlock class.</p>
+ *
  * @author <a href="mailto:jason@maven.org">Jason van Zyl</a>
  * @version $Id$
  */
@@ -31,6 +33,8 @@ public class TextBlock
     private String text;
 
     /**
+     * <p>Constructor for TextBlock.</p>
+     *
      * @param text
      */
     public TextBlock( String text )

@@ -23,6 +23,8 @@ import org.apache.maven.doxia.parser.ParseException;
 import org.apache.maven.doxia.util.ByLineSource;
 
 /**
+ * <p>ParagraphBlockParser class.</p>
+ *
  * @version $Id$
  */
 public class ParagraphBlockParser
@@ -31,6 +33,8 @@ public class ParagraphBlockParser
     private BlockParser[] parsers;
 
     /**
+     * <p>Constructor for ParagraphBlockParser.</p>
+     *
      * @param parsers
      */
     public ParagraphBlockParser( BlockParser[] parsers )

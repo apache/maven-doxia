@@ -24,6 +24,8 @@ import org.apache.maven.doxia.sink.Sink;
 import java.util.List;
 
 /**
+ * <p>NumberedListBlock class.</p>
+ *
  * @version $Id$
  */
 public class NumberedListBlock

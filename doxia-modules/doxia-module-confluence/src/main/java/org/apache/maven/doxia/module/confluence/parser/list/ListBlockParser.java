@@ -25,14 +25,18 @@ import org.apache.maven.doxia.module.confluence.parser.BlockParser;
 import org.apache.maven.doxia.parser.ParseException;
 
 /**
+ * <p>ListBlockParser class.</p>
+ *
  * @author <a href="mailto:jason@maven.org">Jason van Zyl</a>
  * @version $Id$
  */
 public class ListBlockParser
     implements BlockParser
 {
+    /** Constant <code>BULLETED_LIST=0</code> */
     public static final int BULLETED_LIST = 0;
 
+    /** Constant <code>NUMBERED_LIST=1</code> */
     public static final int NUMBERED_LIST = 1;
 
     /** {@inheritDoc} */

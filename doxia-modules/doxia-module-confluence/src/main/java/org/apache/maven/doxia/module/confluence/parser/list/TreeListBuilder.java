@@ -26,6 +26,8 @@ import java.util.List;
 import org.apache.maven.doxia.module.confluence.parser.ChildBlocksBuilder;
 
 /**
+ * <p>TreeListBuilder class.</p>
+ *
  * @version $Id$
  */
 public class TreeListBuilder

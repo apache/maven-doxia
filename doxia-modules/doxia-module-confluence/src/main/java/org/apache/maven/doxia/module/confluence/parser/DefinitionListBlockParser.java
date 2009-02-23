@@ -23,8 +23,11 @@ import org.apache.maven.doxia.parser.ParseException;
 import org.apache.maven.doxia.util.ByLineSource;
 
 /**
+ * <p>DefinitionListBlockParser class.</p>
+ *
  * @author Dave Syer
  * @version $Id$
+ * @since 1.1
  */
 public class DefinitionListBlockParser
     implements BlockParser

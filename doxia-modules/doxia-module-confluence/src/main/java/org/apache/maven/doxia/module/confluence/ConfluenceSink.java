@@ -92,15 +92,19 @@ public class ConfluenceSink
         anchor( name );
     }
 
-    /** Not used.
-     * {@inheritDoc} */
+    /**
+     * Not used.
+     * {@inheritDoc} 
+     */
     public void anchor_()
     {
         // nop
     }
 
-    /** Not used.
-     * {@inheritDoc} */
+    /**
+     * Not used.
+     * {@inheritDoc} 
+     */
     public void author()
     {
         // nop
@@ -112,15 +116,19 @@ public class ConfluenceSink
         author();
     }
 
-    /** Not used.
-     * {@inheritDoc} */
+    /**
+     * Not used.
+     * {@inheritDoc} 
+     */
     public void author_()
     {
         // nop
     }
 
-    /** Not used.
-     * {@inheritDoc} */
+    /**
+     * Not used.
+     * {@inheritDoc} 
+     */
     public void body()
     {
         // nop
@@ -132,8 +140,10 @@ public class ConfluenceSink
         body();
     }
 
-    /** Not used.
-     * {@inheritDoc} */
+    /**
+     * Not used.
+     * {@inheritDoc} 
+     */
     public void body_()
     {
         // nop
@@ -151,8 +161,10 @@ public class ConfluenceSink
         write( BOLD_END_MARKUP );
     }
 
-    /** Not used.
-     * {@inheritDoc} */
+    /**
+     * Not used.
+     * {@inheritDoc} 
+     */
     public void comment( String comment )
     {
         // nop
@@ -165,8 +177,10 @@ public class ConfluenceSink
         out.close();
     }
 
-    /** Not used.
-     * {@inheritDoc} */
+    /**
+     * Not used.
+     * {@inheritDoc} 
+     */
     public void date()
     {
         // nop
@@ -178,8 +192,10 @@ public class ConfluenceSink
         date();
     }
 
-    /** Not used.
-     * {@inheritDoc} */
+    /**
+     * Not used.
+     * {@inheritDoc} 
+     */
     public void date_()
     {
         // nop
@@ -197,78 +213,100 @@ public class ConfluenceSink
         definedTerm();
     }
 
-    /** Not used.
-     * {@inheritDoc} */
+    /**
+     * Not used.
+     * {@inheritDoc} 
+     */
     public void definedTerm_()
     {
         // nop
     }
 
-    /** Not used.
-     * {@inheritDoc} */
+    /**
+     * Not used.
+     * {@inheritDoc} 
+     */
     public void definition()
     {
         // nop
     }
 
-    /** Not used.
-     * {@inheritDoc} */
+    /**
+     * Not used.
+     * {@inheritDoc} 
+     */
     public void definition( SinkEventAttributes attributes )
     {
         // nop
     }
 
-    /** Not used.
-     * {@inheritDoc} */
+    /**
+     * Not used.
+     * {@inheritDoc} 
+     */
     public void definition_()
     {
         // nop
     }
 
-    /** Not used.
-     * {@inheritDoc} */
+    /**
+     * Not used.
+     * {@inheritDoc} 
+     */
     public void definitionList()
     {
         // nop
     }
 
-    /** Not used.
-     * {@inheritDoc} */
+    /**
+     * Not used.
+     * {@inheritDoc} 
+     */
     public void definitionList( SinkEventAttributes attributes )
     {
         // nop
     }
 
-    /** Not used.
-     * {@inheritDoc} */
+    /**
+     * Not used.
+     * {@inheritDoc} 
+     */
     public void definitionList_()
     {
         // nop
     }
 
-    /** Not used.
-     * {@inheritDoc} */
+    /**
+     * Not used.
+     * {@inheritDoc} 
+     */
     public void definitionListItem()
     {
         // nop
     }
 
-    /** Not used.
-     * {@inheritDoc} */
+    /**
+     * Not used.
+     * {@inheritDoc} 
+     */
     public void definitionListItem( SinkEventAttributes attributes )
     {
         // nop
     }
 
-    /** Not used.
-     * {@inheritDoc} */
+    /**
+     * Not used.
+     * {@inheritDoc} 
+     */
     public void definitionListItem_()
     {
         // nop
     }
 
-    /** Not used.
-     * {@inheritDoc} */
+    /**
+     * Not used.
+     * {@inheritDoc} 
+     */
     public void figure()
     {
         // nop
@@ -280,15 +318,19 @@ public class ConfluenceSink
         figure();
     }
 
-    /** Not used.
-     * {@inheritDoc} */
+    /**
+     * Not used.
+     * {@inheritDoc} 
+     */
     public void figure_()
     {
         // nop
     }
 
-    /** Not used.
-     * {@inheritDoc} */
+    /**
+     * Not used.
+     * {@inheritDoc} 
+     */
     public void figureCaption()
     {
         // nop
@@ -300,8 +342,10 @@ public class ConfluenceSink
         figureCaption();
     }
 
-    /** Not used.
-     * {@inheritDoc} */
+    /**
+     * Not used.
+     * {@inheritDoc} 
+     */
     public void figureCaption_()
     {
         // nop;
@@ -350,8 +394,10 @@ public class ConfluenceSink
         headFlag = false;
     }
 
-    /** Not used.
-     * {@inheritDoc} */
+    /**
+     * Not used.
+     * {@inheritDoc} 
+     */
     public void horizontalRule()
     {
         // nop
@@ -460,8 +506,10 @@ public class ConfluenceSink
         write( MONOSPACED_END_MARKUP );
     }
 
-    /** Not used.
-     * {@inheritDoc} */
+    /**
+     * Not used.
+     * {@inheritDoc} 
+     */
     public void nonBreakingSpace()
     {
         // nop
@@ -520,15 +568,19 @@ public class ConfluenceSink
         writeEOL( true );
     }
 
-    /** Not used.
-     * {@inheritDoc} */
+    /**
+     * Not used.
+     * {@inheritDoc} 
+     */
     public void pageBreak()
     {
         // nop
     }
 
-    /** Not used.
-     * {@inheritDoc} */
+    /**
+     * Not used.
+     * {@inheritDoc} 
+     */
     public void paragraph()
     {
         // nop
@@ -547,99 +599,127 @@ public class ConfluenceSink
         writeEOL();
     }
 
-    /** Not used.
-     * {@inheritDoc} */
+    /**
+     * Not used.
+     * {@inheritDoc} 
+     */
     public void rawText( String text )
     {
         // nop
     }
 
-    /** Not used.
-     * {@inheritDoc} */
+    /**
+     * Not used.
+     * {@inheritDoc} 
+     */
     public void section( int level, SinkEventAttributes attributes )
     {
         // nop
     }
 
-    /** Not used.
-     * {@inheritDoc} */
+    /**
+     * Not used.
+     * {@inheritDoc} 
+     */
     public void section1()
     {
         // nop
     }
 
-    /** Not used.
-     * {@inheritDoc} */
+    /**
+     * Not used.
+     * {@inheritDoc} 
+     */
     public void section1_()
     {
         // nop
     }
 
-    /** Not used.
-     * {@inheritDoc} */
+    /**
+     * Not used.
+     * {@inheritDoc} 
+     */
     public void section2()
     {
         // nop
     }
 
-    /** Not used.
-     * {@inheritDoc} */
+    /**
+     * Not used.
+     * {@inheritDoc} 
+     */
     public void section2_()
     {
         // nop
     }
 
-    /** Not used.
-     * {@inheritDoc} */
+    /**
+     * Not used.
+     * {@inheritDoc} 
+     */
     public void section3()
     {
         // nop
     }
 
-    /** Not used.
-     * {@inheritDoc} */
+    /**
+     * Not used.
+     * {@inheritDoc} 
+     */
     public void section3_()
     {
         // nop
     }
 
-    /** Not used.
-     * {@inheritDoc} */
+    /**
+     * Not used.
+     * {@inheritDoc} 
+     */
     public void section4()
     {
         // nop
     }
 
-    /** Not used.
-     * {@inheritDoc} */
+    /**
+     * Not used.
+     * {@inheritDoc} 
+     */
     public void section4_()
     {
         // nop
     }
 
-    /** Not used.
-     * {@inheritDoc} */
+    /**
+     * Not used.
+     * {@inheritDoc} 
+     */
     public void section5()
     {
         // nop
     }
 
-    /** Not used.
-     * {@inheritDoc} */
+    /**
+     * Not used.
+     * {@inheritDoc} 
+     */
     public void section5_()
     {
         // nop
     }
 
-    /** Not used.
-     * {@inheritDoc} */
+    /**
+     * Not used.
+     * {@inheritDoc} 
+     */
     public void section_( int level )
     {
         // nop
     }
 
-    /** Not used.
-     * {@inheritDoc} */
+    /**
+     * Not used.
+     * {@inheritDoc} 
+     */
     public void sectionTitle()
     {
         // nop
@@ -714,8 +794,10 @@ public class ConfluenceSink
         sectionTitle_( 5 );
     }
 
-    /** Not used.
-     * {@inheritDoc} */
+    /**
+     * Not used.
+     * {@inheritDoc} 
+     */
     public void sectionTitle_()
     {
         // nop
@@ -749,8 +831,10 @@ public class ConfluenceSink
         writeEOL();
     }
 
-    /** Not used.
-     * {@inheritDoc} */
+    /**
+     * Not used.
+     * {@inheritDoc} 
+     */
     public void tableCaption()
     {
         // nop
@@ -762,8 +846,10 @@ public class ConfluenceSink
         tableCaption();
     }
 
-    /** Not used.
-     * {@inheritDoc} */
+    /**
+     * Not used.
+     * {@inheritDoc} 
+     */
     public void tableCaption_()
     {
         // nop
@@ -842,15 +928,19 @@ public class ConfluenceSink
         writeEOL( true );
     }
 
-    /** Not used.
-     * {@inheritDoc} */
+    /**
+     * Not used.
+     * {@inheritDoc} 
+     */
     public void tableRows( int[] justification, boolean grid )
     {
         // nop
     }
 
-    /** Not used.
-     * {@inheritDoc} */
+    /**
+     * Not used.
+     * {@inheritDoc} 
+     */
     public void tableRows_()
     {
         // nop
@@ -883,8 +973,10 @@ public class ConfluenceSink
         text( text );
     }
 
-    /** Not used.
-     * {@inheritDoc} */
+    /**
+     * Not used.
+     * {@inheritDoc} 
+     */
     public void title()
     {
         // nop
@@ -896,15 +988,19 @@ public class ConfluenceSink
         title();
     }
 
-    /** Not used.
-     * {@inheritDoc} */
+    /**
+     * Not used.
+     * {@inheritDoc} 
+     */
     public void title_()
     {
         // nop
     }
 
-    /** Not used.
-     * {@inheritDoc} */
+    /**
+     * Not used.
+     * {@inheritDoc} 
+     */
     public void unknown( String name, Object[] requiredParams, SinkEventAttributes attributes )
     {
         // nop

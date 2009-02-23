@@ -24,11 +24,15 @@ import org.apache.maven.doxia.module.confluence.parser.Block;
 import org.apache.maven.doxia.parser.ParseException;
 
 /**
+ * <p>BlockParser interface.</p>
+ *
  * @version $Id$
  */
 public interface BlockParser
 {
     /**
+     * <p>accept</p>
+     *
      * @param line
      * @param source
      * @return boolean
@@ -36,10 +40,12 @@ public interface BlockParser
     boolean accept( String line, ByLineSource source );
 
     /**
+     * <p>visit</p>
+     *
      * @param line
      * @param source
      * @return boolean
-     * @throws ParseException
+     * @throws org.apache.maven.doxia.parser.ParseException if any
      */
     Block visit( String line, ByLineSource source ) throws ParseException;
 }

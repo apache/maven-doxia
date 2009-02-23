@@ -54,6 +54,9 @@ public class ConfluenceParser
 {
     private BlockParser[] parsers;
 
+    /**
+     * <p>Constructor for ConfluenceParser.</p>
+     */
     public ConfluenceParser()
     {
         BlockParser headingParser = new SectionBlockParser();

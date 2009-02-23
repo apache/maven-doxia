@@ -22,9 +22,16 @@ package org.apache.maven.doxia.module.confluence.parser;
 import org.apache.maven.doxia.sink.Sink;
 
 /**
+ * <p>Block interface.</p>
+ *
  * @version $Id$
  */
 public interface Block
 {
+    /**
+     * <p>traverse</p>
+     *
+     * @param sink a {@link org.apache.maven.doxia.sink.Sink} object.
+     */
     void traverse(  Sink sink );
 }

@@ -24,12 +24,16 @@ import org.apache.maven.doxia.sink.Sink;
 import java.util.List;
 
 /**
+ * <p>BoldBlock class.</p>
+ *
  * @version $Id$
  */
 public class BoldBlock
     extends AbstractFatherBlock
 {
     /**
+     * <p>Constructor for BoldBlock.</p>
+     *
      * @param childBlocks
      */
     public BoldBlock( List childBlocks )
