@@ -239,7 +239,10 @@ public class XhtmlSink
     // ----------------------------------------------------------------------
 
     /**
+     * <p>Setter for the field <code>headTitleFlag</code>.</p>
+     *
      * @param headTitleFlag an header title flag.
+     * @since 1.1
      */
     protected void setHeadTitleFlag( boolean headTitleFlag )
     {
@@ -247,7 +250,10 @@ public class XhtmlSink
     }
 
     /**
+     * <p>isHeadTitleFlag</p>
+     *
      * @return the current headTitleFlag.
+     * @since 1.1
      */
     protected boolean isHeadTitleFlag()
     {

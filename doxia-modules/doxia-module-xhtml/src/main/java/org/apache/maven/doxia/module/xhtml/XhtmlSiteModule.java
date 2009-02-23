@@ -22,6 +22,8 @@ package org.apache.maven.doxia.module.xhtml;
 import org.apache.maven.doxia.module.site.AbstractSiteModule;
 
 /**
+ * <p>XhtmlSiteModule class.</p>
+ *
  * @author ltheussl
  * @version $Id$
  * @since 1.0

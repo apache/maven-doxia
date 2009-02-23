@@ -22,6 +22,8 @@ package org.apache.maven.doxia.module.xhtml;
 import org.apache.maven.doxia.sink.SinkAdapter;
 
 /**
+ * <p>Abstract AbstractXhtmlSink class.</p>
+ *
  * @author <a href="mailto:jason@maven.org">Jason van Zyl</a>
  * @version $Id$
  * @since 1.0
