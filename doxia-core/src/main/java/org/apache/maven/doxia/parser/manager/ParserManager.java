@@ -38,7 +38,7 @@ public interface ParserManager
      *
      * @param id The identifier.
      * @return The corresponding parser.
-     * @throws ParserNotFoundException if no parser could be found
+     * @throws org.apache.maven.doxia.parser.manager.ParserNotFoundException if no parser could be found
      * for the given id.
      */
     Parser getParser( String id )

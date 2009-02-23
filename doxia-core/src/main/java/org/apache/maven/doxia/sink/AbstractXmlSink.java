@@ -42,6 +42,7 @@ public abstract class AbstractXmlSink
      * Sets the default namespace that is prepended to all tags written by this sink.
      *
      * @param ns the default namespace.
+     * @since 1.1
      */
     public void setNameSpace( String ns )
     {
@@ -52,6 +53,7 @@ public abstract class AbstractXmlSink
      * Return the default namespace that is prepended to all tags written by this sink.
      *
      * @return the current default namespace.
+     * @since 1.1
      */
     public String getNameSpace()
     {

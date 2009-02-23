@@ -54,7 +54,7 @@ public interface Parser
      * @param source not null reader that provides the source document.
      * You could use <code>newReader</code> methods from {@link org.codehaus.plexus.util.ReaderFactory}.
      * @param sink A sink that consumes the Doxia events.
-     * @throws ParseException if the model could not be parsed.
+     * @throws org.apache.maven.doxia.parser.ParseException if the model could not be parsed.
      */
     void parse( Reader source, Sink sink )
         throws ParseException;

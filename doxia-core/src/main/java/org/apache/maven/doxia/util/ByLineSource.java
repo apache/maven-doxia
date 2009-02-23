@@ -26,26 +26,35 @@ import org.apache.maven.doxia.parser.ParseException;
  *
  * @author Juan F. Codagnone
  * @since Nov 4, 2005
+ * @version $Id$
  */
 public interface ByLineSource
 {
     /**
+     * <p>getNextLine</p>
+     *
      * @return the next line. <code>null</code> if we reached the end.
      * @throws org.apache.maven.doxia.parser.ParseException on I/O error
      */
     String getNextLine() throws ParseException;
 
     /**
+     * <p>getName</p>
+     *
      * @return the name of the input. could be the filename for example
      */
     String getName();
 
     /**
+     * <p>getLineNumber</p>
+     *
      * @return the current line number
      */
     int getLineNumber();
 
     /**
+     * <p>ungetLine</p>
+     *
      * @throws java.lang.IllegalStateException if the ungetLine/unget is called more than
      *                               one time without calling getNextLine()
      */
@@ -53,6 +62,8 @@ public interface ByLineSource
 
 
     /**
+     * <p>unget</p>
+     *
      * @param s some text to push back to the parser
      * @throws java.lang.IllegalStateException if the ungetLine/unget is called more than
      *                               one time without calling getNextLine()

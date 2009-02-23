@@ -58,13 +58,9 @@ public class PipelineSink
     }
 
     /**
-     * Invoke a Method on this PipelineSink.
+     * {@inheritDoc}
      *
-     * @param proxy the proxy instance that the method was invoked on. Unused.
-     * @param method the Method to invoke.
-     * @param args an array of arguments to the Method.
-     * @return always returns null.
-     * @throws java.lang.Throwable the Exception to throw from the Method invocation.
+     * Invoke a Method on this PipelineSink.
      */
     public Object invoke( Object proxy, Method method, Object[] args )
         throws Throwable
@@ -83,7 +79,7 @@ public class PipelineSink
      * Returns an instance of a PipelineSink as a Sink.
      *
      * @param pipeline A List of Sinks.
-     * @return
+     * @return a {@link org.apache.maven.doxia.sink.Sink} object.
      */
     public static Sink newInstance( List pipeline )
     {

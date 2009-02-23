@@ -31,19 +31,22 @@ public interface SiteModule
     /** The Plexus lookup role. */
     String ROLE = SiteModule.class.getName();
 
-    /** Returns the directory that contains source files for a given module.
+    /**
+     * Returns the directory that contains source files for a given module.
      *
      * @return The source directory.
      */
     String getSourceDirectory();
 
-    /** Returns the default file extension for a given module.
+    /**
+     * Returns the default file extension for a given module.
      *
      * @return The default file extension.
      */
     String getExtension();
 
-    /** Returns the parser id for a given module.
+    /**
+     * Returns the parser id for a given module.
      *
      * @return The parser id.
      */

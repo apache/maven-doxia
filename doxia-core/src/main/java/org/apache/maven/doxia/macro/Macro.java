@@ -44,7 +44,7 @@ public interface Macro
      *
      * @param sink The sink to receive the events.
      * @param request The corresponding MacroRequest.
-     * @throws MacroExecutionException if an error occurred during execution.
+     * @throws org.apache.maven.doxia.macro.MacroExecutionException if an error occurred during execution.
      */
     void execute( Sink sink, MacroRequest request )
         throws MacroExecutionException;

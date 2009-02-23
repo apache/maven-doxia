@@ -27,6 +27,8 @@ import java.util.HashMap;
 import java.util.Map;
 
 /**
+ * <p>RenderingContext class.</p>
+ *
  * @author <a href="mailto:jason@maven.org">Jason van Zyl</a>
  * @version $Id$
  * @since 1.0
@@ -47,17 +49,38 @@ public class RenderingContext
 
     private Map attributes;
 
+    /**
+     * <p>Constructor for RenderingContext.</p>
+     *
+     * @param basedir a {@link java.io.File} object.
+     * @param document a {@link java.lang.String} object.
+     */
     public RenderingContext( File basedir, String document )
     {
         this( basedir, document, null );
     }
 
+    /**
+     * <p>Constructor for RenderingContext.</p>
+     *
+     * @param basedir a {@link java.io.File} object.
+     * @param document a {@link java.lang.String} object.
+     * @param parserId a {@link java.lang.String} object.
+     */
     public RenderingContext( File basedir, String document, String parserId )
     {
         this( basedir, document, null, null );
 
     }
 
+    /**
+     * <p>Constructor for RenderingContext.</p>
+     *
+     * @param basedir a {@link java.io.File} object.
+     * @param document a {@link java.lang.String} object.
+     * @param parserId a {@link java.lang.String} object.
+     * @param extension a {@link java.lang.String} object.
+     */
     public RenderingContext( File basedir, String document, String parserId, String extension )
     {
         this.basedir = basedir;
@@ -85,41 +108,83 @@ public class RenderingContext
         this.attributes = new HashMap();
     }
 
+    /**
+     * <p>Getter for the field <code>basedir</code>.</p>
+     *
+     * @return a {@link java.io.File} object.
+     */
     public File getBasedir()
     {
         return basedir;
     }
 
+    /**
+     * <p>Getter for the field <code>inputName</code>.</p>
+     *
+     * @return a {@link java.lang.String} object.
+     */
     public String getInputName()
     {
         return inputName;
     }
 
+    /**
+     * <p>Getter for the field <code>outputName</code>.</p>
+     *
+     * @return a {@link java.lang.String} object.
+     */
     public String getOutputName()
     {
         return outputName;
     }
 
+    /**
+     * <p>Getter for the field <code>parserId</code>.</p>
+     *
+     * @return a {@link java.lang.String} object.
+     */
     public String getParserId()
     {
         return parserId;
     }
 
+    /**
+     * <p>Getter for the field <code>relativePath</code>.</p>
+     *
+     * @return a {@link java.lang.String} object.
+     */
     public String getRelativePath()
     {
         return relativePath;
     }
 
+    /**
+     * <p>setAttribute</p>
+     *
+     * @param key a {@link java.lang.String} object.
+     * @param value a {@link java.lang.String} object.
+     */
     public void setAttribute( String key, String value )
     {
         attributes.put( key, value );
     }
 
+    /**
+     * <p>getAttribute</p>
+     *
+     * @param key a {@link java.lang.String} object.
+     * @return a {@link java.lang.String} object.
+     */
     public String getAttribute( String key )
     {
         return (String) attributes.get( key );
     }
 
+    /**
+     * <p>Getter for the field <code>extension</code>.</p>
+     *
+     * @return a {@link java.lang.String} object.
+     */
     public String getExtension()
     {
         return extension;

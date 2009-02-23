@@ -23,6 +23,8 @@ import java.util.Map;
 import java.io.File;
 
 /**
+ * <p>MacroRequest class.</p>
+ *
  * @author <a href="mailto:jason@maven.org">Jason van Zyl</a>
  * @version $Id$
  * @since 1.0

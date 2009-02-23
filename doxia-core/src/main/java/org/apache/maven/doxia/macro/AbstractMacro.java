@@ -47,6 +47,7 @@ public abstract class AbstractMacro
      * If no logger has been configured, a new SystemStreamLog is returned.
      *
      * @return Log
+     * @since 1.1
      */
     protected Log getLog()
     {

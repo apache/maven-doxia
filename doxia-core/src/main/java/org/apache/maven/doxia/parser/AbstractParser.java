@@ -64,8 +64,8 @@ public abstract class AbstractParser
      * @param macroId An id to lookup the macro.
      * @param request The corresponding MacroRequest.
      * @param sink The sink to receive the events.
-     * @throws MacroExecutionException if an error occurred during execution.
-     * @throws MacroNotFoundException if the macro could not be found.
+     * @throws org.apache.maven.doxia.macro.MacroExecutionException if an error occurred during execution.
+     * @throws org.apache.maven.doxia.macro.manager.MacroNotFoundException if the macro could not be found.
      */
     // Made public right now because of the structure of the APT parser and
     // all its inner classes.
@@ -103,7 +103,7 @@ public abstract class AbstractParser
      *
      * @param string A string that provides the source input.
      * @param sink A sink that consumes the Doxia events.
-     * @throws ParseException if the string could not be parsed.
+     * @throws org.apache.maven.doxia.parser.ParseException if the string could not be parsed.
      */
     public void parse( String string, Sink sink )
         throws ParseException
@@ -125,6 +125,7 @@ public abstract class AbstractParser
      * Indicates if we are currently parsing a second time.
      *
      * @return true if we are currently parsing a second time.
+     * @since 1.1
      */
     protected boolean isSecondParsing()
     {
@@ -142,6 +143,7 @@ public abstract class AbstractParser
      * If no logger has been configured yet, a new SystemStreamLog is returned.
      *
      * @return Log
+     * @since 1.1
      */
     protected Log getLog()
     {
@@ -157,6 +159,7 @@ public abstract class AbstractParser
      * Gets the current {@link MacroManager}.
      *
      * @return The current {@link MacroManager}.
+     * @since 1.1
      */
     protected MacroManager getMacroManager()
     {

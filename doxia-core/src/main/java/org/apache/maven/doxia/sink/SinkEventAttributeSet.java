@@ -256,10 +256,9 @@ public class SinkEventAttributeSet
     }
 
     /**
-     * Adds an attribute with the given name and value.
+     * {@inheritDoc}
      *
-     * @param name the name.
-     * @param value the value.
+     * Adds an attribute with the given name and value.
      */
     public void addAttribute( Object name, Object value )
     {

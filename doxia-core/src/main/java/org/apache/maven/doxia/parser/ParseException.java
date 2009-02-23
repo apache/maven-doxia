@@ -192,6 +192,8 @@ public class ParseException
     }
 
     /**
+     * <p>Getter for the field <code>fileName</code>.</p>
+     *
      * @return the file name that caused the <code>ParseException</code>.
      */
     public String getFileName()
@@ -200,6 +202,8 @@ public class ParseException
     }
 
     /**
+     * <p>Getter for the field <code>lineNumber</code>.</p>
+     *
      * @return the line number where the <code>ParseException</code> occurred.
      */
     public int getLineNumber()
@@ -208,7 +212,10 @@ public class ParseException
     }
 
     /**
+     * <p>Getter for the field <code>columnNumber</code>.</p>
+     *
      * @return the column number where the <code>ParseException</code> occurred.
+     * @since 1.1
      */
     public int getColumnNumber()
     {

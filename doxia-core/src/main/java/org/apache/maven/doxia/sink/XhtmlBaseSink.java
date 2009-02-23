@@ -125,6 +125,8 @@ public class XhtmlBaseSink
     }
 
     /**
+     * <p>Setter for the field <code>headFlag</code>.</p>
+     *
      * @param headFlag an header flag.
      */
     protected void setHeadFlag( boolean headFlag )
@@ -133,6 +135,8 @@ public class XhtmlBaseSink
     }
 
     /**
+     * <p>isHeadFlag</p>
+     *
      * @return the current headFlag.
      */
     protected boolean isHeadFlag()
@@ -141,6 +145,8 @@ public class XhtmlBaseSink
     }
 
     /**
+     * <p>Setter for the field <code>verbatimFlag</code>.</p>
+     *
      * @param verb a verbatim flag.
      */
     protected void setVerbatimFlag( boolean verb )
@@ -149,6 +155,8 @@ public class XhtmlBaseSink
     }
 
     /**
+     * <p>isVerbatimFlag</p>
+     *
      * @return the current verbatim flag.
      */
     protected boolean isVerbatimFlag()
@@ -157,6 +165,8 @@ public class XhtmlBaseSink
     }
 
     /**
+     * <p>Setter for the field <code>cellJustif</code>.</p>
+     *
      * @param justif the new cell justification array.
      */
     protected void setCellJustif( int[] justif )
@@ -166,6 +176,8 @@ public class XhtmlBaseSink
     }
 
     /**
+     * <p>Getter for the field <code>cellJustif</code>.</p>
+     *
      * @return the current cell justification array.
      */
     protected int[] getCellJustif()
@@ -174,6 +186,8 @@ public class XhtmlBaseSink
     }
 
     /**
+     * <p>Setter for the field <code>cellCount</code>.</p>
+     *
      * @param count the new cell count.
      */
     protected void setCellCount( int count )
@@ -182,6 +196,8 @@ public class XhtmlBaseSink
     }
 
     /**
+     * <p>Getter for the field <code>cellCount</code>.</p>
+     *
      * @return the current cell count.
      */
     protected int getCellCount()
@@ -227,11 +243,13 @@ public class XhtmlBaseSink
         onSectionTitle( level, attributes );
     }
 
+    /** {@inheritDoc} */
     public void sectionTitle_( int level )
     {
         onSectionTitle_( level );
     }
 
+    /** {@inheritDoc} */
     public void section_( int level )
     {
         onSection_( level );
@@ -801,7 +819,8 @@ public class XhtmlBaseSink
         figureCaptionFlag = false;
     }
 
-    /** {@inheritDoc}
+    /**
+     * {@inheritDoc}
      * @deprecated Use {@link #figureGraphics(String,SinkEventAttributes)},
      * this method is only kept for backward compatibility. Note that the behavior is
      * different though, as this method does not write the img tag, only the src attribute.
@@ -842,7 +861,8 @@ public class XhtmlBaseSink
         }
     }
 
-    /** {@inheritDoc}
+    /**
+     * {@inheritDoc}
      * @deprecated Use {@link #figureCaption(SinkEventAttributes)},
      * this method is only kept for backward compatibility. Note that the behavior is
      * different though, as this method only writes an alt attribute.
@@ -1660,6 +1680,7 @@ public class XhtmlBaseSink
         }
     }
 
+    /** {@inheritDoc} */
     public void text( String text, SinkEventAttributes attributes )
     {
         if ( attributes == null )
@@ -1727,16 +1748,11 @@ public class XhtmlBaseSink
     }
 
     /**
+     * {@inheritDoc}
+     *
      * Adding an unkown event, <i>ie</i> an event that was not recognized by a parser.
      * If {@link org.apache.maven.doxia.util.HtmlTools#getHtmlTag(String) HtmlTools.getHtmlTag( name )}
      * does not return null, the corresponding tag will be written.
-     *
-     * @param name The name of the event.
-     * @param requiredParams If <code>name</code> is a defined HTML tag, the first element of
-     * this array has to be an Integer wrapping one of the TAG_TYPE constants in
-     * {@link org.apache.maven.doxia.markup.HtmlMarkup HtmlMarkup}, otherwise an
-     * IllegalArgumentException is thrown.
-     * @param attributes A set of optional {@link SinkEventAttributes}, may be <code>null</code>.
      */
     public void unknown( String name, Object[] requiredParams, SinkEventAttributes attributes )
     {

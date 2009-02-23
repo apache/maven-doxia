@@ -25,7 +25,11 @@ import java.io.BufferedWriter;
 import java.io.IOException;
 import java.io.Writer;
 
-/** Allows to specify the line-length of an output writer. */
+/**
+ * Allows to specify the line-length of an output writer.
+ *
+ * @version $Id$
+ */
 public class LineBreaker
 {
     /** The default maximal line length. */
@@ -91,7 +95,7 @@ public class LineBreaker
      * Writes the given text to the writer. White space is not preserved.
      *
      * @param text The text to write.
-     * @throws IOException if there's a problem writing the text.
+     * @throws java.io.IOException if there's a problem writing the text.
      */
     public void write( String text )
         throws IOException
@@ -202,7 +206,9 @@ public class LineBreaker
         }
     }
 
-    /** Close the writer. */
+    /**
+     * Close the writer.
+     */
     public void close()
     {
         IOUtil.close( writer );

@@ -33,6 +33,8 @@ import org.codehaus.plexus.util.IOUtil;
 
 /**
  * {@link ByLineSource} default implementation
+ *
+ * @version $Id$
  */
 public class ByLineReaderSource implements ByLineSource
 {

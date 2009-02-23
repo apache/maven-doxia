@@ -30,7 +30,11 @@ import java.util.Locale;
 
 import org.codehaus.plexus.util.IOUtil;
 
-/** Utility class for reading snippets. */
+/**
+ * Utility class for reading snippets.
+ *
+ * @version $Id$
+ */
 public class SnippetReader
 {
     /** System-dependent EOL. */
@@ -54,7 +58,7 @@ public class SnippetReader
      *
      * @param snippetId The id of the snippet.
      * @return The snippet.
-     * @throws IOException if something goes wrong.
+     * @throws java.io.IOException if something goes wrong.
      */
     public StringBuffer readSnippet( String snippetId )
         throws IOException

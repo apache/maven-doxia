@@ -28,6 +28,7 @@ import org.apache.maven.doxia.sink.SinkEventAttributeSet;
  * A simple macro that prints out the key and value of some supplied parameters.
  *
  * @plexus.component role-hint="echo"
+ * @version $Id$
  */
 public class EchoMacro
     extends AbstractMacro

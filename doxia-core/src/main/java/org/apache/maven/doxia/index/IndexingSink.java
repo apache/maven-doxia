@@ -81,6 +81,8 @@ public class IndexingSink
     }
 
     /**
+     * <p>Getter for the field <code>title</code>.</p>
+     *
      * @return the title
      */
     public String getTitle()
@@ -230,6 +232,8 @@ public class IndexingSink
     }
 
     /**
+     * <p>peek</p>
+     *
      * @return Looks at the IndexEntry at the top of this stack
      */
     public IndexEntry peek()

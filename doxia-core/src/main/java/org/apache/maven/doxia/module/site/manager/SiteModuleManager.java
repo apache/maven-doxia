@@ -47,7 +47,7 @@ public interface SiteModuleManager
      *
      * @param id The identifier.
      * @return The corresponding SiteModule.
-     * @throws SiteModuleNotFoundException if no SiteModule could be found
+     * @throws org.apache.maven.doxia.module.site.manager.SiteModuleNotFoundException if no SiteModule could be found
      * for the given id.
      */
     SiteModule getSiteModule( String id )

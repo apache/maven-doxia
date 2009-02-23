@@ -31,6 +31,7 @@ import org.codehaus.plexus.util.WriterFactory;
  *
  * @author <a href="mailto:hboutemy@apache.org">Hervé Boutemy</a>
  * @version $Id$
+ * @since 1.1
  */
 public abstract class AbstractBinarySinkFactory
     implements SinkFactory

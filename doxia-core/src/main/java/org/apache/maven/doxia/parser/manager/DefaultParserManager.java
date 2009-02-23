@@ -39,7 +39,7 @@ public class DefaultParserManager
      */
     private Map parsers;
 
-   /** {@inheritDoc} */
+    /** {@inheritDoc} */
     public Parser getParser( String id )
         throws ParserNotFoundException
     {

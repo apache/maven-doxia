@@ -27,6 +27,8 @@ import java.util.Iterator;
 import java.util.Collections;
 
 /**
+ * <p>IndexEntry class.</p>
+ *
  * @author <a href="mailto:trygvis@inamo.no">Trygve Laugst&oslash;l</a>
  * @version $Id$
  */
@@ -260,9 +262,9 @@ public class IndexEntry
     // -----------------------------------------------------------------------
 
     /**
-     * Returns a string representation of the object.
+     * {@inheritDoc}
      *
-     * @return A string.
+     * Returns a string representation of the object.
      */
     public String toString()
     {

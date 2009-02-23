@@ -148,12 +148,9 @@ public abstract class AbstractXmlParser
     }
 
     /**
-     * Convenience method to parse an arbitrary string and emit any xml events into the given sink.
+     * {@inheritDoc}
      *
-     * @param string A string that provides the source input. The string has to be completely
-     * enclosed inside one xml root element, otherwise a ParseException is thrown.
-     * @param sink A sink that consumes the Doxia events.
-     * @throws ParseException if the string does not represent a well-formed xml snippet.
+     * Convenience method to parse an arbitrary string and emit any xml events into the given sink.
      */
     public void parse( String string, Sink sink )
         throws ParseException
@@ -172,6 +169,7 @@ public abstract class AbstractXmlParser
      *
      * @param parser A parser, not null.
      * @return a SinkEventAttributeSet or null if the current parser event is not a start tag.
+     * @since 1.1
      */
     protected SinkEventAttributeSet getAttributesFromParser( XmlPullParser parser )
     {
@@ -337,8 +335,11 @@ public abstract class AbstractXmlParser
         throws XmlPullParserException;
 
     /**
+     * <p>isIgnorableWhitespace</p>
+     *
      * @return <code>true</code> if whitespace will be ignored, <code>false</code> otherwise.
      * @see #setIgnorableWhitespace(boolean)
+     * @since 1.1
      */
     protected boolean isIgnorableWhitespace()
     {
@@ -352,6 +353,7 @@ public abstract class AbstractXmlParser
      * <pre>&lt;tr&gt;&lt;td/&gt;&lt;/tr&gt;</pre>
      *
      * @param ignorable <code>true</code> to ignore whitespace, <code>false</code> otherwise.
+     * @since 1.1
      */
     protected void setIgnorableWhitespace( boolean ignorable )
     {
@@ -359,8 +361,11 @@ public abstract class AbstractXmlParser
     }
 
     /**
+     * <p>isCollapsibleWhitespace</p>
+     *
      * @return <code>true</code> if text will collapse, <code>false</code> otherwise.
      * @see #setCollapsibleWhitespace(boolean)
+     * @since 1.1
      */
     protected boolean isCollapsibleWhitespace()
     {
@@ -374,6 +379,7 @@ public abstract class AbstractXmlParser
      * <pre>Text Text</pre>
      *
      * @param collapsible <code>true</code> to allow collapsible text, <code>false</code> otherwise.
+     * @since 1.1
      */
     protected void setCollapsibleWhitespace( boolean collapsible )
     {
@@ -381,8 +387,11 @@ public abstract class AbstractXmlParser
     }
 
     /**
+     * <p>isTrimmableWhitespace</p>
+     *
      * @return <code>true</code> if text will be trim, <code>false</code> otherwise.
      * @see #setTrimmableWhitespace(boolean)
+     * @since 1.1
      */
     protected boolean isTrimmableWhitespace()
     {
@@ -396,6 +405,7 @@ public abstract class AbstractXmlParser
      * <pre>&lt;p&gt;Text&lt;/p&gt;</pre>
      *
      * @param trimmable <code>true</code> to allow trimmable text, <code>false</code> otherwise.
+     * @since 1.1
      */
     protected void setTrimmableWhitespace( boolean trimmable )
     {
@@ -403,11 +413,14 @@ public abstract class AbstractXmlParser
     }
 
     /**
+     * <p>getText</p>
+     *
      * @param parser A parser, not null.
      * @return the {@link XmlPullParser#getText()} taking care of trimmable or collapsible configuration.
      * @see XmlPullParser#getText()
      * @see #isCollapsibleWhitespace()
      * @see #isTrimmableWhitespace()
+     * @since 1.1
      */
     protected String getText( XmlPullParser parser )
     {
@@ -446,6 +459,7 @@ public abstract class AbstractXmlParser
      * </pre>
      *
      * @return a map of the defined entities in a local doctype.
+     * @since 1.1
      */
     protected Map getLocalEntities()
     {
@@ -458,7 +472,10 @@ public abstract class AbstractXmlParser
     }
 
     /**
+     * <p>isValidate</p>
+     *
      * @return <code>true</code> if XML content will be validate, <code>false</code> otherwise.
+     * @since 1.1
      */
     public boolean isValidate()
     {
@@ -470,6 +487,7 @@ public abstract class AbstractXmlParser
      *
      * @param validate the validate to set
      * @see #parse(Reader, Sink)
+     * @since 1.1
      */
     public void setValidate( boolean validate )
     {

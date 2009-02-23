@@ -38,7 +38,7 @@ public interface MacroManager
      *
      * @param id The identifier.
      * @return The corresponding MacroManager.
-     * @throws MacroNotFoundException if no MacroManager could be found
+     * @throws org.apache.maven.doxia.macro.manager.MacroNotFoundException if no MacroManager could be found
      * for the given id.
      */
     Macro getMacro( String id )

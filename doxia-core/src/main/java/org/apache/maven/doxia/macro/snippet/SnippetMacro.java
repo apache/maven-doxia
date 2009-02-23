@@ -37,6 +37,7 @@ import org.apache.maven.doxia.sink.SinkEventAttributeSet;
  * A macro that prints out the content of a file or a URL.
  *
  * @plexus.component role-hint="snippet"
+ * @version $Id$
  */
 public class SnippetMacro
     extends AbstractMacro
