@@ -58,7 +58,7 @@ public class FoUtils
      * @param pdf the target PDF file.
      * @param resourceDir The base directory for relative path resolution.
      * If null, defaults to the parent directory of fo.
-     * @throws TransformerException In case of a conversion problem.
+     * @throws javax.xml.transform.TransformerException In case of a conversion problem.
      */
     public static void convertFO2PDF( File fo, File pdf, String resourceDir )
         throws TransformerException

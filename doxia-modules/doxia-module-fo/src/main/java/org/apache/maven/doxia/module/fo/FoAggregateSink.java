@@ -403,10 +403,9 @@ public class FoAggregateSink extends FoSink
     // ----------------------------------------------------------------------
 
     /**
-     * Writes a start tag, prepending EOL.
+     * {@inheritDoc}
      *
-     * @param tag The tag.
-     * @param attributeId An id identifying the attribute set.
+     * Writes a start tag, prepending EOL.
      */
     protected void writeStartTag( Tag tag, String attributeId )
     {
@@ -417,11 +416,9 @@ public class FoAggregateSink extends FoSink
     }
 
     /**
-     * Writes a start tag, prepending EOL.
+     * {@inheritDoc}
      *
-     * @param tag The tag.
-     * @param id An id to add.
-     * @param name The name (value) of the id.
+     * Writes a start tag, prepending EOL.
      */
     protected void writeStartTag( Tag tag, String id, String name )
     {
@@ -432,9 +429,9 @@ public class FoAggregateSink extends FoSink
     }
 
     /**
-     * Writes an end tag, appending EOL.
+     * {@inheritDoc}
      *
-     * @param tag The tag.
+     * Writes an end tag, appending EOL.
      */
     protected void writeEndTag( Tag tag )
     {
@@ -445,10 +442,9 @@ public class FoAggregateSink extends FoSink
     }
 
     /**
-     * Writes a simple tag, appending EOL.
+     * {@inheritDoc}
      *
-     * @param tag The tag.
-     * @param attributeId An id identifying the attribute set.
+     * Writes a simple tag, appending EOL.
      */
     protected void writeEmptyTag( Tag tag, String attributeId )
     {
@@ -459,9 +455,9 @@ public class FoAggregateSink extends FoSink
     }
 
     /**
-     * Writes a text, swallowing any exceptions.
+     * {@inheritDoc}
      *
-     * @param text The text to write.
+     * Writes a text, swallowing any exceptions.
      */
     protected void write( String text )
     {
@@ -472,9 +468,9 @@ public class FoAggregateSink extends FoSink
     }
 
     /**
-     * Writes a text, appending EOL.
+     * {@inheritDoc}
      *
-     * @param text The text to write.
+     * Writes a text, appending EOL.
      */
     protected void writeln( String text )
     {
@@ -485,9 +481,9 @@ public class FoAggregateSink extends FoSink
     }
 
     /**
-     * Writes content, escaping special characters.
+     * {@inheritDoc}
      *
-     * @param text The text to write.
+     * Writes content, escaping special characters.
      */
     protected void content( String text )
     {
@@ -497,7 +493,9 @@ public class FoAggregateSink extends FoSink
         }
     }
 
-    /** Writes EOL. */
+    /**
+     * Writes EOL.
+     */
     protected void newline()
     {
         if ( !ignoreText )
@@ -547,9 +545,9 @@ public class FoAggregateSink extends FoSink
     }
 
     /**
-     * Returns the current chapter number as a string.
+     * {@inheritDoc}
      *
-     * @return String
+     * Returns the current chapter number as a string.
      */
     protected String getChapterString()
     {
@@ -557,9 +555,9 @@ public class FoAggregateSink extends FoSink
     }
 
     /**
-     * Writes a 'xsl-region-before' block.
+     * {@inheritDoc}
      *
-     * @param headerText The text to write in the header, if null, nothing is written.
+     * Writes a 'xsl-region-before' block.
      */
     protected void regionBefore( String headerText )
     {
@@ -591,9 +589,9 @@ public class FoAggregateSink extends FoSink
     }
 
     /**
-     * Writes a 'xsl-region-after' block.
+     * {@inheritDoc}
      *
-     * @param footerText The text to write in the footer, if null, nothing is written.
+     * Writes a 'xsl-region-after' block.
      */
     protected void regionAfter( String footerText )
     {
@@ -610,10 +608,9 @@ public class FoAggregateSink extends FoSink
     }
 
     /**
-     * Writes a chapter heading.
+     * {@inheritDoc}
      *
-     * @param headerText The text to write in the header, if null, the current document title is written.
-     * @param chapterNumber True if the chapter number should be written in front of the text.
+     * Writes a chapter heading.
      */
     protected void chapterHeading( String headerText, boolean chapterNumber )
     {
@@ -720,6 +717,8 @@ public class FoAggregateSink extends FoSink
     }
 
     /**
+     * {@inheritDoc}
+     *
      * Writes a fo:bookmark-tree. The DocumentModel has to contain a DocumentTOC for this to work.
      */
     protected void pdfBookmarks()

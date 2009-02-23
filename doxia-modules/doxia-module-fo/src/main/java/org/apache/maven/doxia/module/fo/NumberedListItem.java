@@ -114,7 +114,9 @@ public class NumberedListItem
         return format;
     }
 
-    /** Increase the current count by 1. */
+    /**
+     * Increase the current count by 1.
+     */
     public void next()
     {
         count++;
