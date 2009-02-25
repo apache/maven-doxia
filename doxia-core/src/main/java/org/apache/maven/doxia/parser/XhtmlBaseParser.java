@@ -61,9 +61,8 @@ public class XhtmlBaseParser
     /** Used to recognize the case of img inside figure. */
     private boolean inFigure;
 
-    // TODO: replace by AttributeSet
     /** Decoration properties, eg for texts. */
-    private String decoration;
+    private final SinkEventAttributeSet decoration = new SinkEventAttributeSet();;
 
     /**
      * <p>
@@ -143,21 +142,21 @@ public class XhtmlBaseParser
         }
         else if ( parser.getName().equals( Tag.U.toString() ) )
         {
-            this.decoration = "underline";
+            decoration.addAttribute( SinkEventAttributes.DECORATION, "underline" );
         }
         else if ( parser.getName().equals( Tag.S.toString() )
                 || parser.getName().equals( Tag.STRIKE.toString() )
                 || parser.getName().equals( "del" ) )
         {
-            this.decoration = "line-through";
+            decoration.addAttribute( SinkEventAttributes.DECORATION, "line-through" );
         }
         else if ( parser.getName().equals( Tag.SUB.toString() ) )
         {
-            this.decoration = "sub";
+            decoration.addAttribute( SinkEventAttributes.VALIGN, "sub" );
         }
         else if ( parser.getName().equals( Tag.SUP.toString() ) )
         {
-            this.decoration = "sup";
+            decoration.addAttribute( SinkEventAttributes.VALIGN, "sup" );
         }
         else if ( parser.getName().equals( Tag.P.toString() ) )
         {
@@ -446,11 +445,14 @@ public class XhtmlBaseParser
         else if ( parser.getName().equals( Tag.U.toString() )
                 || parser.getName().equals( Tag.S.toString() )
                 || parser.getName().equals( Tag.STRIKE.toString() )
-                || parser.getName().equals( "del" )
-                || parser.getName().equals( Tag.SUB.toString() )
+                || parser.getName().equals( "del" ) )
+        {
+            decoration.removeAttribute( SinkEventAttributes.DECORATION );
+        }
+        else if ( parser.getName().equals( Tag.SUB.toString() )
                 || parser.getName().equals( Tag.SUP.toString() ) )
         {
-            this.decoration = null;
+            decoration.removeAttribute( SinkEventAttributes.VALIGN );
         }
         else if ( parser.getName().equals( Tag.DIV.toString() ) )
         {
@@ -641,21 +643,7 @@ public class XhtmlBaseParser
          */
         if ( StringUtils.isNotEmpty( text ) )
         {
-            SinkEventAttributeSet atts = new SinkEventAttributeSet();
-
-            if ( StringUtils.isNotEmpty( decoration ) )
-            {
-                if ( "underline".equals( decoration ) || "line-through".equals( decoration ) )
-                {
-                    atts.addAttribute( SinkEventAttributes.DECORATION, decoration );
-                }
-                else if ( "sub".equals( decoration ) || "sup".equals( decoration ) )
-                {
-                    atts.addAttribute( SinkEventAttributes.VALIGN, decoration );
-                }
-            }
-
-            sink.text( text, atts );
+            sink.text( text, decoration );
         }
     }
 
