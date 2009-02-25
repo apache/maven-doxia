@@ -77,6 +77,7 @@ public class XdocSink
      * @param writer not null writer to write the result.
      * @param encoding the encoding used, that should be written to the generated HTML content
      * if not <code>null</code>.
+     * @since 1.1
      */
     protected XdocSink( Writer writer, String encoding )
     {
@@ -93,6 +94,7 @@ public class XdocSink
      * @param languageId language identifier for the root element as defined by
      * <a href="ftp://ftp.isi.edu/in-notes/bcp/bcp47.txt">IETF BCP 47</a>, Tags for the Identification of Languages;
      * in addition, the empty string may be specified.
+     * @since 1.1
      */
     protected XdocSink( Writer writer, String encoding, String languageId )
     {

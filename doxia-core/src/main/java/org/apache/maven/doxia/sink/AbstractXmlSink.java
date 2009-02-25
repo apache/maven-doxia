@@ -130,6 +130,8 @@ public abstract class AbstractXmlSink
 
     /**
      * Writes a system EOL.
+     *
+     * @since 1.1
      */
     protected void writeEOL()
     {

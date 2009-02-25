@@ -104,6 +104,7 @@ public abstract class AbstractParser
      * @param string A string that provides the source input.
      * @param sink A sink that consumes the Doxia events.
      * @throws org.apache.maven.doxia.parser.ParseException if the string could not be parsed.
+     * @since 1.1
      */
     public void parse( String string, Sink sink )
         throws ParseException

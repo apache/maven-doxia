@@ -79,6 +79,7 @@ public class ParseException
      * This can later be retrieved by the getLineNumber() method.
      * @param column The column number where the parsing failed.
      * This can later be retrieved by the getColumnNumber() method.
+     * @since 1.1
      */
     public ParseException( String message, int line, int column )
     {
@@ -97,6 +98,7 @@ public class ParseException
      * This can later be retrieved by the getLineNumber() method.
      * @param column The column number where the parsing failed.
      * This can later be retrieved by the getColumnNumber() method.
+     * @since 1.1
      */
     public ParseException( String message, Exception e, int line, int column )
     {
@@ -126,6 +128,7 @@ public class ParseException
      * This can later be retrieved by the getLineNumber() method.
      * @param column The column number where the parsing failed.
      * This can later be retrieved by the getColumnNumber() method.
+     * @since 1.1
      */
     public ParseException( Exception e, int line, int column )
     {
@@ -181,6 +184,7 @@ public class ParseException
      * This can later be retrieved by the getLineNumber() method.
      * @param column The column number where the parsing failed.
      * This can later be retrieved by the getColumnNumber() method.
+     * @since 1.1
      */
     public ParseException( Exception e, String message, String file, int line, int column )
     {

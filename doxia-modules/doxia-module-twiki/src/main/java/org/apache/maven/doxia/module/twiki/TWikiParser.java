@@ -192,6 +192,7 @@ public class TWikiParser
      * @param blocks blocks to parse
      * @param source source to parse
      * @return a title for a page
+     * @since 1.1
      */
     public final String getTitle( final List blocks, final ByLineSource source )
     {

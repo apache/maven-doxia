@@ -110,6 +110,8 @@ public class LatexBookSink
 
     /**
      * Writes the default LaTeX commands and preamble in the main book file.
+     *
+     * @since 1.1
      */
     public void defaultBookPreamble()
     {

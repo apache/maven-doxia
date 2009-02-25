@@ -104,6 +104,8 @@ public final class ITextSink
     private String tableCaption = null;
 
     /**
+     * <p>Constructor for ITextSink.</p>
+     *
      * @param writer
      */
     protected ITextSink( Writer writer )
@@ -112,8 +114,11 @@ public final class ITextSink
     }
 
     /**
+     * <p>Constructor for ITextSink.</p>
+     *
      * @param writer
      * @param encoding
+     * @since 1.1
      */
     protected ITextSink( Writer writer, String encoding )
     {
@@ -124,6 +129,8 @@ public final class ITextSink
     }
 
     /**
+     * <p>Constructor for ITextSink.</p>
+     *
      * @param xmlWriter
      */
     protected ITextSink( PrettyPrintXMLWriter xmlWriter )
@@ -1658,11 +1665,9 @@ public final class ITextSink
     }
 
     /**
-     * Unkown events just log a warning message but are ignored otherwise.
+     * {@inheritDoc}
      *
-     * @param name The name of the event.
-     * @param requiredParams not used.
-     * @param attributes not used.
+     * Unkown events just log a warning message but are ignored otherwise.
      * @see org.apache.maven.doxia.sink.Sink#unknown(String,Object[],SinkEventAttributes)
      */
     public void unknown( String name, Object[] requiredParams, SinkEventAttributes attributes )

@@ -186,6 +186,7 @@ public class DocBookSink
      * @param languageId language identifier for the root element as defined by
      * <a href="ftp://ftp.isi.edu/in-notes/bcp/bcp47.txt">IETF BCP 47</a>, Tags for the Identification of Languages;
      * in addition, the empty string may be specified.
+     * @since 1.1
      */
     protected DocBookSink( Writer writer, String encoding, String languageId )
     {

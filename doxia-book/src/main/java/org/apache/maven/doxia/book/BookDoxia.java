@@ -71,6 +71,7 @@ public interface BookDoxia
      * @param inputEncoding the input encoding when processing {@link files}.
      * @param outputEncoding the output encoding when writing files in {@link ouputDirectory}.
      * @throws org.apache.maven.doxia.book.BookDoxiaException if the model cannot be loaded.
+     * @since 1.1
      */
     void renderBook( BookModel book, String bookRendererId, List files, File outputDirectory, Locale locale,
                      String inputEncoding, String outputEncoding )

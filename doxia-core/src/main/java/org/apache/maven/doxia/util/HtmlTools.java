@@ -116,6 +116,7 @@ public class HtmlTools
      * @param text The String to escape, may be null.
      * @param xmlMode set to <code>false</code> to replace non-ascii characters.
      * @return The escaped text or the empty string if text == null.
+     * @since 1.1
      */
     public static final String escapeHTML( String text, boolean xmlMode )
     {
