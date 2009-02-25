@@ -1197,7 +1197,7 @@ public interface Sink
     /**
      * Starts an italic element.
      *
-     * @deprecated Use {@link #text(String,SinkEventAttributes)} with
+     * Alternatively one may use {@link #text(String,SinkEventAttributes)} with
      *              {@link SinkEventAttributes#STYLE STYLE} instead.
      */
     void italic();
@@ -1205,7 +1205,7 @@ public interface Sink
     /**
      * Ends an italic element.
      *
-     * @deprecated Use {@link #text(String,SinkEventAttributes)} with
+     * Alternatively one may use {@link #text(String,SinkEventAttributes)} with
      *              {@link SinkEventAttributes#STYLE STYLE} instead.
      */
     void italic_();
@@ -1213,7 +1213,7 @@ public interface Sink
     /**
      * Starts a bold element.
      *
-     * @deprecated Use {@link #text(String,SinkEventAttributes)} with
+     * Alternatively one may use {@link #text(String,SinkEventAttributes)} with
      *              {@link SinkEventAttributes#STYLE STYLE} instead.
      */
     void bold();
@@ -1221,7 +1221,7 @@ public interface Sink
     /**
      * Ends a bold element.
      *
-     * @deprecated Use {@link #text(String,SinkEventAttributes)} with
+     * Alternatively one may use {@link #text(String,SinkEventAttributes)} with
      *              {@link SinkEventAttributes#STYLE STYLE} instead.
      */
     void bold_();
@@ -1229,7 +1229,7 @@ public interface Sink
     /**
      * Starts a monospaced element.
      *
-     * @deprecated Use {@link #text(String,SinkEventAttributes)} with
+     * Alternatively one may use {@link #text(String,SinkEventAttributes)} with
      *              {@link SinkEventAttributes#STYLE STYLE} instead.
      */
     void monospaced();
@@ -1237,7 +1237,7 @@ public interface Sink
     /**
      * Ends a monospaced element.
      *
-     * @deprecated Use {@link #text(String,SinkEventAttributes)} with
+     * Alternatively one may use {@link #text(String,SinkEventAttributes)} with
      *              {@link SinkEventAttributes#STYLE STYLE} instead.
      */
     void monospaced_();
