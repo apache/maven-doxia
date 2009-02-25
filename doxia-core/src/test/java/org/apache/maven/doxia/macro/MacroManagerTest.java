@@ -26,6 +26,11 @@ import org.apache.maven.doxia.macro.manager.MacroManager;
 public class MacroManagerTest
     extends PlexusTestCase
 {
+    /**
+     * Test MacroManager.
+     *
+     * @throws java.lang.Exception if any.
+     */
     public void testMacroManager()
         throws Exception
     {

@@ -39,14 +39,18 @@ public class XhtmlBaseParserTest
     private XhtmlBaseParser parser;
     private final SinkEventTestingSink sink = new SinkEventTestingSink();
 
-    protected void setUp() throws Exception {
+    /** {@inheritDoc} */
+    protected void setUp() throws Exception
+    {
         super.setUp();
 
         parser = new XhtmlBaseParser();
         sink.reset();
     }
 
-    protected void tearDown() throws Exception {
+    /** {@inheritDoc} */
+    protected void tearDown() throws Exception
+    {
         super.tearDown();
     }
 
@@ -160,8 +164,8 @@ public class XhtmlBaseParserTest
 
 
         // same test with EOL
-        String EOL = System.getProperty( "line.separator" );
-        text = "<p><b>word</b>" + EOL + "<i>word</i></p>";
+        String eol = System.getProperty( "line.separator" );
+        text = "<p><b>word</b>" + eol + "<i>word</i></p>";
 
         sink.reset();
         parser.parse( text, sink );

@@ -76,7 +76,7 @@ public class AptSink
     private boolean verbatimFlag;
 
     /**  boxed verbatim. */
-    private boolean boxed;
+    private boolean isBoxed;
 
     /**  gridFlag for tables. */
     private boolean gridFlag;
@@ -504,7 +504,7 @@ public class AptSink
     public void verbatim( boolean boxed )
     {
         verbatimFlag = true;
-        this.boxed = boxed;
+        this.isBoxed = boxed;
         write( EOL );
         if ( boxed )
         {
@@ -519,7 +519,7 @@ public class AptSink
     /** {@inheritDoc} */
     public void verbatim_()
     {
-        if ( boxed )
+        if ( isBoxed )
         {
             write( EOL + BOXED_VERBATIM_END_MARKUP + EOL );
         }
@@ -527,7 +527,7 @@ public class AptSink
         {
             write( EOL + NON_BOXED_VERBATIM_END_MARKUP + EOL );
         }
-        boxed = false;
+        isBoxed = false;
         verbatimFlag = false;
     }
 

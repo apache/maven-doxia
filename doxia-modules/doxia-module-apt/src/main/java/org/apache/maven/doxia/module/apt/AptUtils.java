@@ -42,6 +42,9 @@ public class AptUtils
      *
      * @param text the String to check, may be null.
      * @return the text with only letter and digit, null if null String input.
+     * @deprecated This method was used for the original apt format, which
+     * removed all non alphanumeric characters from anchors.
+     * Use {@link #encodeAnchor(String)} instead.
      */
     public static String encodeFragment( String text )
     {

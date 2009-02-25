@@ -240,6 +240,11 @@ public class XdocParserTest
         return text.replaceAll( EOL, "" );
     }
 
+    /**
+     * Test section with ids.
+     *
+     * @throws java.lang.Exception if any.
+     */
     public void testSectionIdAnchor()
         throws Exception
     {

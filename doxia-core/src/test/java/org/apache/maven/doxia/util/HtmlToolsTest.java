@@ -86,7 +86,7 @@ public class HtmlToolsTest
      */
     public void testIsId()
     {
-        assertFalse( HtmlTools.isId( null ));
+        assertFalse( HtmlTools.isId( null ) );
         assertFalse( HtmlTools.isId( "" ) );
         assertFalse( HtmlTools.isId( " " ) );
         assertFalse( HtmlTools.isId( " _ " ) );

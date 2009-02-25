@@ -270,7 +270,7 @@ public abstract class AbstractXmlValidatorTest
         {
             String key = it.next().toString();
 
-            for (int i = 0; i < getIncludes().length; i++)
+            for ( int i = 0; i < getIncludes().length; i++ )
             {
                 if ( !SelectorUtils.matchPath( getIncludes()[i], key.toLowerCase( Locale.ENGLISH ) ) )
                 {
@@ -287,7 +287,8 @@ public abstract class AbstractXmlValidatorTest
      *
      * @return a map of test resources defined as follow:
      * <ul>
-     *   <li>key, the full url of test documents, i.e. <code>jar:file:/.../doxia-test-docs-XXX.jar!/path/to/resource</code></li>
+     *   <li>key, the full url of test documents,
+     *      i.e. <code>jar:file:/.../doxia-test-docs-XXX.jar!/path/to/resource</code></li>
      *   <li>value, the content for the resource defined by the key</li>
      * </ul>
      * @throws IOException if any
@@ -304,7 +305,7 @@ public abstract class AbstractXmlValidatorTest
         if ( testJar == null )
         {
             throw new RuntimeException(
-                                        "Could not find the Doxia test documents artefact i.e. doxia-test-docs-XXX.jar" );
+                    "Could not find the Doxia test documents artefact i.e. doxia-test-docs-XXX.jar" );
         }
 
         JarURLConnection conn = (JarURLConnection) testJar.openConnection();

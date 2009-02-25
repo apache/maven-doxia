@@ -65,7 +65,7 @@ public abstract class AbstractParserTestCase
      * Parse the model in the path specified by {@link #getDocument()},
      * with parser from {@link #getParser()}, and output to sink from {@link #getSink()}
      *
-     * @throws Exception
+     * @throws Exception if any.
      */
     public void testParser()
         throws Exception

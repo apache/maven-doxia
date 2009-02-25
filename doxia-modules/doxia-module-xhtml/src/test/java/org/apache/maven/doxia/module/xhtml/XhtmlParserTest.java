@@ -36,11 +36,13 @@ import org.apache.maven.doxia.sink.SinkEventTestingSink;
 public class XhtmlParserTest
     extends AbstractParserTest
 {
+    /** {@inheritDoc} */
     protected Parser createParser()
     {
         return new XhtmlParser();
     }
 
+    /** {@inheritDoc} */
     protected String outputExtension()
     {
         return "xhtml";
@@ -67,7 +69,8 @@ public class XhtmlParserTest
     public void testHeadEventsList()
         throws Exception
     {
-        String text = "<head><title>Title</title><meta name=\"author\" content=\"Author\" /><meta name=\"date\" content=\"Date\" /></head>";
+        String text = "<head><title>Title</title><meta name=\"author\" content=\"Author\" />"
+                + "<meta name=\"date\" content=\"Date\" /></head>";
 
         SinkEventTestingSink sink = new SinkEventTestingSink();
 

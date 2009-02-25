@@ -45,8 +45,10 @@ public class SnippetMacro
     /** Holds the cache. */
     private static Map cache = new HashMap();
 
+    private static final int HOUR = 60;
+
     /** One hour default cache. */
-    private long timeout = 60 * 60 * 1000;
+    private long timeout = HOUR * HOUR * 1000;
 
     /** Holds the time cache. */
     private static Map timeCached = new HashMap();

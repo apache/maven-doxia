@@ -20,6 +20,7 @@ package org.apache.maven.doxia.macro.toc;
  */
 
 import java.io.StringReader;
+
 import java.util.Iterator;
 
 import org.apache.maven.doxia.index.IndexEntry;

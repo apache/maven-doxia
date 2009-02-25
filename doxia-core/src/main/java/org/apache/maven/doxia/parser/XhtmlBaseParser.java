@@ -93,59 +93,33 @@ public class XhtmlBaseParser
 
         if ( isVerbatim() )
         {
-            if ( parser.getName().equals( Tag.PRE.toString() ) )
-            {
-                verbatim();
-            }
-
-            sink.text( getText( parser ) );
+            handleVerbatim( parser, sink );
         }
         else if ( parser.getName().equals( Tag.H2.toString() ) )
         {
-            closeOpenSections( Sink.SECTION_LEVEL_1, sink );
-
-            sink.section( Sink.SECTION_LEVEL_1, attribs );
-
-            sink.sectionTitle( Sink.SECTION_LEVEL_1, attribs );
+            handleSectionStart( sink, Sink.SECTION_LEVEL_1, attribs );
         }
         else if ( parser.getName().equals( Tag.H3.toString() ) )
         {
-            closeOpenSections( Sink.SECTION_LEVEL_2, sink );
-
-            sink.section( Sink.SECTION_LEVEL_2, attribs );
-
-            sink.sectionTitle( Sink.SECTION_LEVEL_2, attribs );
+            handleSectionStart( sink, Sink.SECTION_LEVEL_2, attribs );
         }
         else if ( parser.getName().equals( Tag.H4.toString() ) )
         {
-            closeOpenSections( Sink.SECTION_LEVEL_3, sink );
-
-            sink.section( Sink.SECTION_LEVEL_3, attribs );
-
-            sink.sectionTitle( Sink.SECTION_LEVEL_3, attribs );
+            handleSectionStart( sink, Sink.SECTION_LEVEL_3, attribs );
         }
         else if ( parser.getName().equals( Tag.H5.toString() ) )
         {
-            closeOpenSections( Sink.SECTION_LEVEL_4, sink );
-
-            sink.section( Sink.SECTION_LEVEL_4, attribs );
-
-            sink.sectionTitle( Sink.SECTION_LEVEL_4, attribs );
+            handleSectionStart( sink, Sink.SECTION_LEVEL_4, attribs );
         }
         else if ( parser.getName().equals( Tag.H6.toString() ) )
         {
-            closeOpenSections( Sink.SECTION_LEVEL_5, sink );
-
-            sink.section( Sink.SECTION_LEVEL_5, attribs );
-
-            sink.sectionTitle( Sink.SECTION_LEVEL_5, attribs );
+            handleSectionStart( sink, Sink.SECTION_LEVEL_5, attribs );
         }
         else if ( parser.getName().equals( Tag.U.toString() ) )
         {
             decoration.addAttribute( SinkEventAttributes.DECORATION, "underline" );
         }
-        else if ( parser.getName().equals( Tag.S.toString() )
-                || parser.getName().equals( Tag.STRIKE.toString() )
+        else if ( parser.getName().equals( Tag.S.toString() ) || parser.getName().equals( Tag.STRIKE.toString() )
                 || parser.getName().equals( "del" ) )
         {
             decoration.addAttribute( SinkEventAttributes.DECORATION, "line-through" );
@@ -160,44 +134,15 @@ public class XhtmlBaseParser
         }
         else if ( parser.getName().equals( Tag.P.toString() ) )
         {
-            if ( !inFigure )
-            {
-                sink.paragraph( attribs );
-            }
+            handlePStart( sink, attribs );
         }
         else if ( parser.getName().equals( Tag.DIV.toString() ) )
         {
-            String divclass = parser.getAttributeValue( null, Attribute.CLASS.toString() );
-
-            if ( "figure".equals( divclass ) )
-            {
-                this.inFigure = true;
-                SinkEventAttributeSet atts = new SinkEventAttributeSet( attribs );
-                atts.removeAttribute( SinkEventAttributes.CLASS );
-                sink.figure( atts );
-            }
-            else
-            {
-                visited = false;
-            }
+            visited = handleDivStart( parser, attribs, sink );
         }
-        /*
-         * The PRE element tells visual user agents that the enclosed text is
-         * "preformatted". When handling preformatted text, visual user agents:
-         * - May leave white space intact.
-         * - May render text with a fixed-pitch font.
-         * - May disable automatic word wrap.
-         * - Must not disable bidirectional processing.
-         * Non-visual user agents are not required to respect extra white space
-         * in the content of a PRE element.
-         */
         else if ( parser.getName().equals( Tag.PRE.toString() ) )
         {
-            verbatim();
-
-            attribs.removeAttribute( SinkEventAttributes.DECORATION );
-
-            sink.verbatim( attribs );
+            handlePreStart( attribs, sink );
         }
         else if ( parser.getName().equals( Tag.UL.toString() ) )
         {
@@ -205,48 +150,11 @@ public class XhtmlBaseParser
         }
         else if ( parser.getName().equals( Tag.OL.toString() ) )
         {
-            int numbering = Sink.NUMBERING_DECIMAL;
-
-            // this will have to be generalized if we handle styles
-            String style = parser.getAttributeValue( null, Attribute.STYLE.toString() );
-
-            if ( style != null )
-            {
-                if ( "list-style-type: upper-alpha".equals( style ) )
-                {
-                    numbering = Sink.NUMBERING_UPPER_ALPHA;
-                }
-                else if ( "list-style-type: lower-alpha".equals( style ) )
-                {
-                    numbering = Sink.NUMBERING_LOWER_ALPHA;
-                }
-                else if ( "list-style-type: upper-roman".equals( style ) )
-                {
-                    numbering = Sink.NUMBERING_UPPER_ROMAN;
-                }
-                else if ( "list-style-type: lower-roman".equals( style ) )
-                {
-                    numbering = Sink.NUMBERING_LOWER_ROMAN;
-                }
-                else if ( "list-style-type: decimal".equals( style ) )
-                {
-                    numbering = Sink.NUMBERING_DECIMAL;
-                }
-            }
-
-            sink.numberedList( numbering, attribs );
-            orderedListDepth++;
+            handleOLStart( parser, sink, attribs );
         }
         else if ( parser.getName().equals( Tag.LI.toString() ) )
         {
-            if ( orderedListDepth == 0 )
-            {
-                sink.listItem( attribs );
-            }
-            else
-            {
-                sink.numberedListItem( attribs );
-            }
+            handleLIStart( sink, attribs );
         }
         else if ( parser.getName().equals( Tag.DL.toString() ) )
         {
@@ -264,94 +172,26 @@ public class XhtmlBaseParser
         else if ( ( parser.getName().equals( Tag.B.toString() ) )
                 || ( parser.getName().equals( Tag.STRONG.toString() ) ) )
         {
-            // TODO: use SinkEventAttributes
             sink.bold();
         }
         else if ( ( parser.getName().equals( Tag.I.toString() ) )
                 || ( parser.getName().equals( Tag.EM.toString() ) ) )
         {
-            if ( inFigure )
-            {
-                sink.figureCaption( attribs );
-            }
-            else
-            {
-                // TODO: use SinkEventAttributes
-                sink.italic();
-            }
+            handleFigureCaptionStart( sink, attribs );
         }
         else if ( ( parser.getName().equals( Tag.CODE.toString() ) )
                 || ( parser.getName().equals( Tag.SAMP.toString() ) )
                 || ( parser.getName().equals( Tag.TT.toString() ) ) )
         {
-            // TODO: use SinkEventAttributes
             sink.monospaced();
         }
         else if ( parser.getName().equals( Tag.A.toString() ) )
         {
-            String href = parser.getAttributeValue( null, Attribute.HREF.toString() );
-
-            if ( href != null )
-            {
-                sink.link( href, attribs );
-
-                isLink = true;
-            }
-            else
-            {
-                String name = parser.getAttributeValue( null, Attribute.NAME.toString() );
-
-                if ( name != null )
-                {
-                    sink.anchor( validAnchor( name ), attribs );
-
-                    isAnchor = true;
-                }
-                else
-                {
-                    String id = parser.getAttributeValue( null, Attribute.ID.toString() );
-
-                    if ( id != null )
-                    {
-                        sink.anchor( validAnchor( id ), attribs );
-
-                        isAnchor = true;
-                    }
-                }
-            }
+            handleAStart( parser, sink, attribs );
         }
-
-        // ----------------------------------------------------------------------
-        // Tables
-        // ----------------------------------------------------------------------
-
         else if ( parser.getName().equals( Tag.TABLE.toString() ) )
         {
-            sink.table( attribs );
-
-            String border = parser.getAttributeValue( null, Attribute.BORDER.toString() );
-
-            boolean grid = true;
-
-            if ( "0".equals( border ) )
-            {
-                grid = false;
-            }
-
-            String align = parser.getAttributeValue( null, Attribute.ALIGN.toString() );
-
-            int[] justif = { Sink.JUSTIFY_LEFT };
-
-            if ( "center".equals( align ) )
-            {
-                justif[0] = Sink.JUSTIFY_CENTER;
-            }
-            else if ( "right".equals( align ) )
-            {
-                justif[0] = Sink.JUSTIFY_RIGHT;
-            }
-
-            sink.tableRows( justif, grid );
+            handleTableStart( sink, attribs, parser );
         }
         else if ( parser.getName().equals( Tag.TR.toString() ) )
         {
@@ -369,11 +209,6 @@ public class XhtmlBaseParser
         {
             sink.tableCaption( attribs );
         }
-
-        // ----------------------------------------------------------------------
-        // Empty elements: <br/>, <hr/> and <img />
-        // ----------------------------------------------------------------------
-
         else if ( parser.getName().equals( Tag.BR.toString() ) )
         {
             sink.lineBreak( attribs );
@@ -384,12 +219,7 @@ public class XhtmlBaseParser
         }
         else if ( parser.getName().equals( Tag.IMG.toString() ) )
         {
-            String src = parser.getAttributeValue( null, Attribute.SRC.toString() );
-
-            if ( src != null )
-            {
-                sink.figureGraphics( src, attribs );
-            }
+            handleImgStart( parser, sink, attribs );
         }
         else
         {
@@ -417,23 +247,7 @@ public class XhtmlBaseParser
 
         if ( isVerbatim() )
         {
-            if ( parser.getName().equals( Tag.PRE.toString() ) )
-            {
-                verbatim_();
-
-                if ( isVerbatim() )
-                {
-                    sink.text( getText( parser ) );
-                }
-                else
-                {
-                    sink.verbatim_();
-                }
-            }
-            else
-            {
-                sink.text( getText( parser ) );
-            }
+            handleVerbatimEnd( parser, sink );
         }
         else if ( parser.getName().equals( Tag.P.toString() ) )
         {
@@ -479,14 +293,7 @@ public class XhtmlBaseParser
         }
         else if ( parser.getName().equals( Tag.LI.toString() ) )
         {
-            if ( orderedListDepth == 0 )
-            {
-                sink.listItem_();
-            }
-            else
-            {
-                sink.numberedListItem_();
-            }
+            handleListItemEnd( sink );
         }
         else if ( parser.getName().equals( Tag.DL.toString() ) )
         {
@@ -509,14 +316,7 @@ public class XhtmlBaseParser
         else if ( ( parser.getName().equals( Tag.I.toString() ) )
                 || ( parser.getName().equals( Tag.EM.toString() ) ) )
         {
-            if ( inFigure )
-            {
-                sink.figureCaption_();
-            }
-            else
-            {
-                sink.italic_();
-            }
+            handleFigureCaptionEnd( sink );
         }
         else if ( ( parser.getName().equals( Tag.CODE.toString() ) )
                 || ( parser.getName().equals( Tag.SAMP.toString() ) )
@@ -526,18 +326,7 @@ public class XhtmlBaseParser
         }
         else if ( parser.getName().equals( Tag.A.toString() ) )
         {
-            if ( isLink )
-            {
-                sink.link_();
-
-                isLink = false;
-            }
-            else if ( isAnchor )
-            {
-                sink.anchor_();
-
-                isAnchor = false;
-            }
+            handleAEnd( sink );
         }
 
         // ----------------------------------------------------------------------
@@ -818,5 +607,250 @@ public class XhtmlBaseParser
         }
 
         return id;
+    }
+
+    private void handleAEnd( Sink sink )
+    {
+        if ( isLink )
+        {
+            sink.link_();
+            isLink = false;
+        }
+        else if ( isAnchor )
+        {
+            sink.anchor_();
+            isAnchor = false;
+        }
+    }
+
+    private void handleAStart( XmlPullParser parser, Sink sink, SinkEventAttributeSet attribs )
+    {
+        String href = parser.getAttributeValue( null, Attribute.HREF.toString() );
+
+        if ( href != null )
+        {
+            sink.link( href, attribs );
+            isLink = true;
+        }
+        else
+        {
+            String name = parser.getAttributeValue( null, Attribute.NAME.toString() );
+
+            if ( name != null )
+            {
+                sink.anchor( validAnchor( name ), attribs );
+                isAnchor = true;
+            }
+            else
+            {
+                String id = parser.getAttributeValue( null, Attribute.ID.toString() );
+                if ( id != null )
+                {
+                    sink.anchor( validAnchor( id ), attribs );
+                    isAnchor = true;
+                }
+            }
+        }
+    }
+
+    private boolean handleDivStart( XmlPullParser parser, SinkEventAttributeSet attribs, Sink sink )
+    {
+        boolean visited = true;
+
+        String divclass = parser.getAttributeValue( null, Attribute.CLASS.toString() );
+
+        if ( "figure".equals( divclass ) )
+        {
+            this.inFigure = true;
+            SinkEventAttributeSet atts = new SinkEventAttributeSet( attribs );
+            atts.removeAttribute( SinkEventAttributes.CLASS );
+            sink.figure( atts );
+        }
+        else
+        {
+            visited = false;
+        }
+
+        return visited;
+    }
+
+    private void handleFigureCaptionEnd( Sink sink )
+    {
+        if ( inFigure )
+        {
+            sink.figureCaption_();
+        }
+        else
+        {
+            sink.italic_();
+        }
+    }
+
+    private void handleFigureCaptionStart( Sink sink, SinkEventAttributeSet attribs )
+    {
+        if ( inFigure )
+        {
+            sink.figureCaption( attribs );
+        }
+        else
+        {
+            sink.italic();
+        }
+    }
+
+    private void handleImgStart( XmlPullParser parser, Sink sink, SinkEventAttributeSet attribs )
+    {
+        String src = parser.getAttributeValue( null, Attribute.SRC.toString() );
+
+        if ( src != null )
+        {
+            sink.figureGraphics( src, attribs );
+        }
+    }
+
+    private void handleLIStart( Sink sink, SinkEventAttributeSet attribs )
+    {
+        if ( orderedListDepth == 0 )
+        {
+            sink.listItem( attribs );
+        }
+        else
+        {
+            sink.numberedListItem( attribs );
+        }
+    }
+
+    private void handleListItemEnd( Sink sink )
+    {
+        if ( orderedListDepth == 0 )
+        {
+            sink.listItem_();
+        }
+        else
+        {
+            sink.numberedListItem_();
+        }
+    }
+
+    private void handleOLStart( XmlPullParser parser, Sink sink, SinkEventAttributeSet attribs )
+    {
+        int numbering = Sink.NUMBERING_DECIMAL;
+        // this will have to be generalized if we handle styles
+        String style = parser.getAttributeValue( null, Attribute.STYLE.toString() );
+
+        if ( style != null )
+        {
+            if ( "list-style-type: upper-alpha".equals( style ) )
+            {
+                numbering = Sink.NUMBERING_UPPER_ALPHA;
+            }
+            else if ( "list-style-type: lower-alpha".equals( style ) )
+            {
+                numbering = Sink.NUMBERING_LOWER_ALPHA;
+            }
+            else if ( "list-style-type: upper-roman".equals( style ) )
+            {
+                numbering = Sink.NUMBERING_UPPER_ROMAN;
+            }
+            else if ( "list-style-type: lower-roman".equals( style ) )
+            {
+                numbering = Sink.NUMBERING_LOWER_ROMAN;
+            }
+            else if ( "list-style-type: decimal".equals( style ) )
+            {
+                numbering = Sink.NUMBERING_DECIMAL;
+            }
+        }
+
+        sink.numberedList( numbering, attribs );
+        orderedListDepth++;
+    }
+
+    private void handlePStart( Sink sink, SinkEventAttributeSet attribs )
+    {
+        if ( !inFigure )
+        {
+            sink.paragraph( attribs );
+        }
+    }
+
+    /*
+     * The PRE element tells visual user agents that the enclosed text is
+     * "preformatted". When handling preformatted text, visual user agents:
+     * - May leave white space intact.
+     * - May render text with a fixed-pitch font.
+     * - May disable automatic word wrap.
+     * - Must not disable bidirectional processing.
+     * Non-visual user agents are not required to respect extra white space
+     * in the content of a PRE element.
+     */
+    private void handlePreStart( SinkEventAttributeSet attribs, Sink sink )
+    {
+        verbatim();
+        attribs.removeAttribute( SinkEventAttributes.DECORATION );
+        sink.verbatim( attribs );
+    }
+
+    private void handleSectionStart( Sink sink, int sectionLevel, SinkEventAttributeSet attribs )
+    {
+        closeOpenSections( sectionLevel, sink );
+        sink.section( sectionLevel, attribs );
+        sink.sectionTitle( sectionLevel, attribs );
+    }
+
+    private void handleTableStart( Sink sink, SinkEventAttributeSet attribs, XmlPullParser parser )
+    {
+        sink.table( attribs );
+        String border = parser.getAttributeValue( null, Attribute.BORDER.toString() );
+        boolean grid = true;
+
+        if ( "0".equals( border ) )
+        {
+            grid = false;
+        }
+
+        String align = parser.getAttributeValue( null, Attribute.ALIGN.toString() );
+        int[] justif = {Sink.JUSTIFY_LEFT};
+
+        if ( "center".equals( align ) )
+        {
+            justif[0] = Sink.JUSTIFY_CENTER;
+        }
+        else if ( "right".equals( align ) )
+        {
+            justif[0] = Sink.JUSTIFY_RIGHT;
+        }
+
+        sink.tableRows( justif, grid );
+    }
+
+    private void handleVerbatim( XmlPullParser parser, Sink sink )
+    {
+        if ( parser.getName().equals( Tag.PRE.toString() ) )
+        {
+            verbatim();
+        }
+
+        sink.text( getText( parser ) );
+    }
+
+    private void handleVerbatimEnd( XmlPullParser parser, Sink sink )
+    {
+        if ( parser.getName().equals( Tag.PRE.toString() ) )
+        {
+            verbatim_();
+            if ( isVerbatim() )
+            {
+                sink.text( getText( parser ) );
+            }
+            else
+            {
+                sink.verbatim_();
+            }
+        }
+        else
+        {
+            sink.text( getText( parser ) );
+        }
     }
 }

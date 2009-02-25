@@ -37,7 +37,7 @@ import org.apache.maven.doxia.markup.HtmlMarkup;
  */
 public class HtmlTools
 {
-    private static final Tag[] allTags  =
+    private static final Tag[] ALL_TAGS  =
     {
         HtmlMarkup.A, HtmlMarkup.ABBR, HtmlMarkup.ACRONYM, HtmlMarkup.ADDRESS, HtmlMarkup.APPLET,
         HtmlMarkup.AREA, HtmlMarkup.B, HtmlMarkup.BASE, HtmlMarkup.BASEFONT, HtmlMarkup.BDO,
@@ -59,13 +59,13 @@ public class HtmlTools
         HtmlMarkup.TR, HtmlMarkup.TT, HtmlMarkup.U, HtmlMarkup.UL, HtmlMarkup.VAR
     };
 
-    private static final Hashtable tagHashtable = new Hashtable( allTags.length );
+    private static final Hashtable TAG_HASHTABLE = new Hashtable( ALL_TAGS.length );
 
     static
     {
-        for ( int i = 0; i < allTags.length; i++ )
+        for ( int i = 0; i < ALL_TAGS.length; i++ )
         {
-            tagHashtable.put( allTags[i].toString(), allTags[i] );
+            TAG_HASHTABLE.put( ALL_TAGS[i].toString(), ALL_TAGS[i] );
         }
     }
 
@@ -83,7 +83,7 @@ public class HtmlTools
      */
     public static Tag getHtmlTag( String tagName )
     {
-        Object t =  tagHashtable.get( tagName );
+        Object t =  TAG_HASHTABLE.get( tagName );
 
         return ( t == null ? null : (Tag) t );
     }

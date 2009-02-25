@@ -34,12 +34,12 @@ public abstract class AbstractMacro
     implements Macro
 {
     /** Log instance. */
-    private Log log;
+    private Log logger;
 
     /** {@inheritDoc} */
     public void enableLogging( Log log )
     {
-        this.log = log;
+        this.logger = log;
     }
 
     /**
@@ -51,12 +51,12 @@ public abstract class AbstractMacro
      */
     protected Log getLog()
     {
-        if ( log == null )
+        if ( logger == null )
         {
-            log = new SystemStreamLog();
+            logger = new SystemStreamLog();
         }
 
-        return log;
+        return logger;
     }
 
     /**

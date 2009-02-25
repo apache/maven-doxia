@@ -71,20 +71,28 @@ public abstract class AbstractXmlParser
     extends AbstractParser
     implements XmlMarkup
 {
-    /** Entity pattern for HTML entity, i.e. &#38;nbsp; "<!ENTITY(\\s)+([^>|^\\s]+)(\\s)+\"(\\s)*(&[a-zA-Z]{2,6};)(\\s)*\"(\\s)*>
+    /**
+     * Entity pattern for HTML entity, i.e. &#38;nbsp;
+     * "<!ENTITY(\\s)+([^>|^\\s]+)(\\s)+\"(\\s)*(&[a-zA-Z]{2,6};)(\\s)*\"(\\s)*>
      * <br/>
-     * see <a href="http://www.w3.org/TR/REC-xml/#NT-EntityDecl">http://www.w3.org/TR/REC-xml/#NT-EntityDecl</a> */
+     * see <a href="http://www.w3.org/TR/REC-xml/#NT-EntityDecl">http://www.w3.org/TR/REC-xml/#NT-EntityDecl</a>.
+     */
     private static final Pattern PATTERN_ENTITY_1 =
         Pattern.compile( ENTITY_START + "(\\s)+([^>|^\\s]+)(\\s)+\"(\\s)*(&[a-zA-Z]{2,6};)(\\s)*\"(\\s)*>" );
 
-    /** Entity pattern for Unicode entity, i.e. &#38;#38; "<!ENTITY(\\s)+([^>|^\\s]+)(\\s)+\"(\\s)*(&(#x?[0-9a-fA-F]{1,4};)*)(\\s)*\"(\\s)*>"
+    /**
+     * Entity pattern for Unicode entity, i.e. &#38;#38;
+     * "<!ENTITY(\\s)+([^>|^\\s]+)(\\s)+\"(\\s)*(&(#x?[0-9a-fA-F]{1,4};)*)(\\s)*\"(\\s)*>"
      * <br/>
-     * see <a href="http://www.w3.org/TR/REC-xml/#NT-EntityDecl">http://www.w3.org/TR/REC-xml/#NT-EntityDecl</a> */
+     * see <a href="http://www.w3.org/TR/REC-xml/#NT-EntityDecl">http://www.w3.org/TR/REC-xml/#NT-EntityDecl</a>.
+     */
     private static final Pattern PATTERN_ENTITY_2 =
         Pattern.compile( ENTITY_START + "(\\s)+([^>|^\\s]+)(\\s)+\"(\\s)*(&(#x?[0-9a-fA-F]{1,4};)*)(\\s)*\"(\\s)*>" );
 
-    /** Doctype pattern i.e. ".*<!DOCTYPE([^>]*)>.*"
-     * see <a href="http://www.w3.org/TR/REC-xml/#NT-doctypedecl">http://www.w3.org/TR/REC-xml/#NT-doctypedecl</a> */
+    /**
+     * Doctype pattern i.e. ".*<!DOCTYPE([^>]*)>.*"
+     * see <a href="http://www.w3.org/TR/REC-xml/#NT-doctypedecl">http://www.w3.org/TR/REC-xml/#NT-doctypedecl</a>.
+     */
     private static final Pattern PATTERN_DOCTYPE = Pattern.compile( ".*" + DOCTYPE_START + "([^>]*)>.*" );
 
     /** Tag pattern as defined in http://www.w3.org/TR/REC-xml/#NT-Name */
@@ -641,7 +649,8 @@ public abstract class AbstractXmlParser
      * <pre>
      * &lt;!DOCTYPE foo [
      *   &lt;!-- These are the entity sets for ISO Latin 1 characters for the XHTML --&gt;
-     *   &lt;!ENTITY % HTMLlat1 PUBLIC "-//W3C//ENTITIES Latin 1 for XHTML//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml-lat1.ent"&gt;
+     *   &lt;!ENTITY % HTMLlat1 PUBLIC "-//W3C//ENTITIES Latin 1 for XHTML//EN"
+     *          "http://www.w3.org/TR/xhtml1/DTD/xhtml-lat1.ent"&gt;
      *   %HTMLlat1;
      * ]&gt;
      * </pre>
@@ -867,7 +876,7 @@ public abstract class AbstractXmlParser
                 else
                 {
                     // TODO How to refresh Doxia XSDs from temp dir?
-                    res = toByteArray( temp.toURL() );
+                    res = toByteArray( temp.toURI().toURL() );
                 }
 
                 ENTITY_CACHE.put( systemId, res );

@@ -45,7 +45,7 @@ public class AptParserTest
 
     private AptParser parser;
 
-    /** @see junit.framework.TestCase#setUp() */
+    /** {@inheritDoc} */
     protected void setUp()
         throws Exception
     {
@@ -54,7 +54,7 @@ public class AptParserTest
         parser = (AptParser) lookup( Parser.ROLE, "apt" );
     }
 
-    /** @see org.apache.maven.doxia.parser.AbstractParserTest#createParser() */
+    /** {@inheritDoc} */
     protected Parser createParser()
     {
         return parser;
@@ -184,8 +184,9 @@ public class AptParserTest
     /**
      * Parses the test document test.apt and re-emits
      * it into parser/test.apt.
-     * @throws java.io.IOException
-     * @throws org.apache.maven.doxia.parser.ParseException
+     *
+     * @throws java.io.IOException if the test file cannot be read.
+     * @throws org.apache.maven.doxia.parser.ParseException if the test file cannot be parsed.
      */
     public void testTestDocument()
         throws IOException, ParseException

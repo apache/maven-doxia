@@ -32,6 +32,11 @@ public class RenderingContextTest
     extends PlexusTestCase
 {
 
+    /**
+     * Test getRelativePath() with various file names.
+     *
+     * @throws java.lang.Exception if any.
+     */
     public void testFileNameWithDot()
         throws Exception
     {

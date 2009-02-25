@@ -37,7 +37,7 @@ public class PlexusLoggerWrapper
     /**
      * <p>Constructor for PlexusLoggerWrapper.</p>
      *
-     * @param logger
+     * @param logger the Plexus logger to wrap.
      */
     public PlexusLoggerWrapper( Logger logger )
     {

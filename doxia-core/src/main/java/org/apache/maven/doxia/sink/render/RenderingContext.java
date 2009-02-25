@@ -19,12 +19,12 @@ package org.apache.maven.doxia.sink.render;
  * under the License.
  */
 
-import org.codehaus.plexus.util.PathTool;
-import org.codehaus.plexus.util.StringUtils;
-
 import java.io.File;
 import java.util.HashMap;
 import java.util.Map;
+
+import org.codehaus.plexus.util.PathTool;
+import org.codehaus.plexus.util.StringUtils;
 
 /**
  * <p>RenderingContext class.</p>

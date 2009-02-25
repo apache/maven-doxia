@@ -72,7 +72,7 @@ public interface Log
     /**
      * Send a message to the user in the <b>debug</b> error level.
      *
-     * @param content
+     * @param content the message to log.
      */
     void debug( CharSequence content );
 
@@ -81,8 +81,8 @@ public interface Log
      * <br/>
      * The error's stacktrace will be output when this error level is enabled.
      *
-     * @param content
-     * @param error
+     * @param content the message to log.
+     * @param error the error to log.
      */
     void debug( CharSequence content, Throwable error );
 
@@ -91,7 +91,7 @@ public interface Log
      * <br/>
      * The stack trace for this exception will be output when this error level is enabled.
      *
-     * @param error
+     * @param error the error to log.
      */
     void debug( Throwable error );
 
@@ -105,7 +105,7 @@ public interface Log
     /**
      * Send a message to the user in the <b>info</b> error level.
      *
-     * @param content
+     * @param content the message to log.
      */
     void info( CharSequence content );
 
@@ -114,8 +114,8 @@ public interface Log
      * <br/>
      * The error's stacktrace will be output when this error level is enabled.
      *
-     * @param content
-     * @param error
+     * @param content the message to log.
+     * @param error the error to log.
      */
     void info( CharSequence content, Throwable error );
 
@@ -124,7 +124,7 @@ public interface Log
      * <br/>
      * The stack trace for this exception will be output when this error level is enabled.
      *
-     * @param error
+     * @param error the error to log.
      */
     void info( Throwable error );
 
@@ -138,7 +138,7 @@ public interface Log
     /**
      * Send a message to the user in the <b>warn</b> error level.
      *
-     * @param content
+     * @param content the message to log.
      */
     void warn( CharSequence content );
 
@@ -147,8 +147,8 @@ public interface Log
      * <br/>
      * The error's stacktrace will be output when this error level is enabled.
      *
-     * @param content
-     * @param error
+     * @param content the message to log.
+     * @param error the error to log.
      */
     void warn( CharSequence content, Throwable error );
 
@@ -157,7 +157,7 @@ public interface Log
      * <br/>
      * The stack trace for this exception will be output when this error level is enabled.
      *
-     * @param error
+     * @param error the error to log.
      */
     void warn( Throwable error );
 
@@ -171,7 +171,7 @@ public interface Log
     /**
      * Send a message to the user in the <b>error</b> error level.
      *
-     * @param content
+     * @param content the message to log.
      */
     void error( CharSequence content );
 
@@ -180,8 +180,8 @@ public interface Log
      * <br/>
      * The error's stacktrace will be output when this error level is enabled.
      *
-     * @param content
-     * @param error
+     * @param content the message to log.
+     * @param error the error to log.
      */
     void error( CharSequence content, Throwable error );
 
@@ -190,7 +190,7 @@ public interface Log
      * <br/>
      * The stack trace for this exception will be output when this error level is enabled.
      *
-     * @param error
+     * @param error the error to log.
      */
     void error( Throwable error );
 }

@@ -28,6 +28,9 @@ import junit.framework.TestCase;
 public class IndexEntryTest
     extends TestCase
 {
+    /**
+     * Test IndexEntry.
+     */
     public void testIndexEntry()
     {
         IndexEntry root = new IndexEntry( null );
@@ -56,7 +59,8 @@ public class IndexEntryTest
         assertIndexEntry( chapter2, root, 0, chapter1, null );
     }
 
-    private void assertIndexEntry( IndexEntry entry, IndexEntry parent, int childCount, IndexEntry prevEntry, IndexEntry nextEntry )
+    private void assertIndexEntry( IndexEntry entry, IndexEntry parent, int childCount,
+            IndexEntry prevEntry, IndexEntry nextEntry )
     {
         assertEquals( parent, entry.getParent() );
 

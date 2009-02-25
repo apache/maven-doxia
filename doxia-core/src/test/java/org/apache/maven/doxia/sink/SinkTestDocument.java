@@ -247,7 +247,7 @@ public class SinkTestDocument
      */
     public static void generateDefinitionList( Sink sink )
     {
-        String EOL = System.getProperty( "line.separator" );
+        String eol = System.getProperty( "line.separator" );
 
         sink.definitionList();
 
@@ -267,7 +267,7 @@ public class SinkTestDocument
         sink.definition();
         sink.text( "of definition list." );
         sink.verbatim( true );
-        sink.text( "Verbatim text" + EOL + "                        in a box        " );
+        sink.text( "Verbatim text" + eol + "                        in a box        " );
         sink.verbatim_();
         sink.definition_();
         sink.definitionListItem_();

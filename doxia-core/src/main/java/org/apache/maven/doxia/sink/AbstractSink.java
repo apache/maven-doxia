@@ -34,12 +34,12 @@ import org.apache.maven.doxia.markup.Markup;
 public abstract class AbstractSink
     implements Sink, Markup
 {
-    private Log log;
+    private Log logger;
 
     /** {@inheritDoc} */
     public void enableLogging( Log log )
     {
-        this.log = log;
+        this.logger = log;
     }
 
     /**
@@ -51,12 +51,12 @@ public abstract class AbstractSink
      */
     protected Log getLog()
     {
-        if ( log == null )
+        if ( logger == null )
         {
-            log = new SystemStreamLog();
+            logger = new SystemStreamLog();
         }
 
-        return log;
+        return logger;
     }
 
     /**

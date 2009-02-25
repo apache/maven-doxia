@@ -23,6 +23,7 @@ import org.apache.maven.doxia.macro.MacroExecutionException;
 import org.apache.maven.doxia.macro.MacroRequest;
 import org.apache.maven.doxia.macro.manager.MacroNotFoundException;
 import org.apache.maven.doxia.parser.AbstractTextParser;
+import org.apache.maven.doxia.parser.ParseException;
 import org.apache.maven.doxia.sink.Sink;
 import org.apache.maven.doxia.sink.SinkAdapter;
 import org.apache.maven.doxia.sink.SinkEventAttributeSet;
@@ -158,10 +159,13 @@ public class AptParser
     /** a line of AptSource. */
     protected String line;
 
+    private static final int NUMBER_OF_SPACES = 85;
+
     static
     {
-        SPACES = new char[85];
-        for ( int i = 0; i < 85; i++ )
+        SPACES = new char[NUMBER_OF_SPACES];
+
+        for ( int i = 0; i < NUMBER_OF_SPACES; i++ )
         {
             SPACES[i] = ' ';
         }
@@ -173,7 +177,7 @@ public class AptParser
 
     /** {@inheritDoc} */
     public void parse( Reader source, Sink sink )
-        throws AptParseException
+        throws ParseException
     {
         try
         {

@@ -242,8 +242,8 @@ public class FoSinkTest extends AbstractSinkTest
         String attribs = getConfig().getAttributeString( "list" );
         String itemAttribs = getConfig().getAttributeString( "list.item" );
         return EOL + EOL + "<fo:list-block" + attribs + ">" + EOL + "<fo:list-item" + itemAttribs
-            + "><fo:list-item-label><fo:block>&#8226;</fo:block></fo:list-item-label>" + EOL + EOL + "<fo:list-item-body"
-            + itemAttribs + ">" + EOL + "<fo:block>" + item
+            + "><fo:list-item-label><fo:block>&#8226;</fo:block></fo:list-item-label>"
+            + EOL + EOL + "<fo:list-item-body" + itemAttribs + ">" + EOL + "<fo:block>" + item
             + "</fo:block>" + EOL + "</fo:list-item-body>" + EOL + "</fo:list-item>" + EOL + "</fo:list-block>" + EOL;
     }
 
@@ -253,8 +253,8 @@ public class FoSinkTest extends AbstractSinkTest
         String attribs = getConfig().getAttributeString( "list" );
         String itemAttribs = getConfig().getAttributeString( "list.item" );
         return EOL + EOL + "<fo:list-block" + attribs + ">" + EOL + "<fo:list-item" + itemAttribs
-            + ">" + EOL + "<fo:list-item-label>" + EOL + "<fo:block>i</fo:block>" + EOL + "</fo:list-item-label>" + EOL + EOL
-            + "<fo:list-item-body" + itemAttribs
+            + ">" + EOL + "<fo:list-item-label>" + EOL + "<fo:block>i</fo:block>" + EOL
+            + "</fo:list-item-label>" + EOL + EOL + "<fo:list-item-body" + itemAttribs
             + ">" + EOL + "<fo:block>" + item + "</fo:block>" + EOL + "</fo:list-item-body>" + EOL
             + "</fo:list-item>" + EOL + "</fo:list-block>" + EOL;
     }
@@ -296,7 +296,7 @@ public class FoSinkTest extends AbstractSinkTest
             + "><fo:table-cell column-number=\"2\"" + deAtts
             + ">" + EOL + "<fo:block text-align=\"center\">" + EOL + cell
             + "</fo:block>" + EOL + "</fo:table-cell>" + EOL + "</fo:table-row>" + EOL + "</fo:table-body>"
-            + EOL + caption + "</fo:table>" + EOL + "</fo:block>"+ EOL;
+            + EOL + caption + "</fo:table>" + EOL + "</fo:block>" + EOL;
     }
 
     /** {@inheritDoc} */
