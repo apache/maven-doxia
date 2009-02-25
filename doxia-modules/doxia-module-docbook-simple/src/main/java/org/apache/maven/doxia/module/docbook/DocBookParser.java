@@ -19,14 +19,6 @@ package org.apache.maven.doxia.module.docbook;
  * under the License.
  */
 
-import org.apache.maven.doxia.macro.MacroExecutionException;
-import org.apache.maven.doxia.parser.AbstractXmlParser;
-import org.apache.maven.doxia.sink.Sink;
-
-import org.codehaus.plexus.util.StringUtils;
-import org.codehaus.plexus.util.xml.pull.XmlPullParser;
-import org.codehaus.plexus.util.xml.pull.XmlPullParserException;
-
 import java.io.IOException;
 import java.util.Collection;
 import java.util.HashSet;
@@ -34,6 +26,15 @@ import java.util.Stack;
 
 import javax.swing.text.html.HTML.Attribute;
 import javax.swing.text.html.HTML.Tag;
+
+import org.apache.maven.doxia.macro.MacroExecutionException;
+import org.apache.maven.doxia.parser.AbstractXmlParser;
+import org.apache.maven.doxia.sink.Sink;
+import org.apache.maven.doxia.sink.SinkEventAttributeSet;
+
+import org.codehaus.plexus.util.StringUtils;
+import org.codehaus.plexus.util.xml.pull.XmlPullParser;
+import org.codehaus.plexus.util.xml.pull.XmlPullParserException;
 
 /**
  * Parse a <a href="http://www.docbook.org/schemas/simplified"><code>Simplified DocBook</code></a> document
@@ -367,7 +368,7 @@ public class DocBookParser
         }
         else if ( DocBookParser.VERBATIM_ELEMENTS.contains( parser.getName() ) )
         {
-            sink.verbatim( true );
+            sink.verbatim( SinkEventAttributeSet.BOXED );
         }
 
         else if ( DocBookParser.BOLD_ELEMENTS.contains( parser.getName() )

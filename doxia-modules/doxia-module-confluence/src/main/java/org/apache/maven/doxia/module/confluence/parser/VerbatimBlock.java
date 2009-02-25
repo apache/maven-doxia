@@ -20,6 +20,7 @@ package org.apache.maven.doxia.module.confluence.parser;
  */
 
 import org.apache.maven.doxia.sink.Sink;
+import org.apache.maven.doxia.sink.SinkEventAttributeSet;
 
 /**
  * @author <a href="mailto:jason@maven.org">Jason van Zyl</a>
@@ -38,7 +39,7 @@ class VerbatimBlock
     /** {@inheritDoc} */
     public void traverse( Sink sink )
     {
-        sink.verbatim( true );
+        sink.verbatim( SinkEventAttributeSet.BOXED );
 
         sink.text( text );
 

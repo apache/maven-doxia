@@ -22,6 +22,7 @@ package org.apache.maven.doxia.module.fml;
 import org.apache.maven.doxia.macro.MacroExecutionException;
 import org.apache.maven.doxia.parser.XhtmlBaseParser;
 import org.apache.maven.doxia.sink.Sink;
+import org.apache.maven.doxia.sink.SinkEventAttributeSet;
 
 import org.codehaus.plexus.util.xml.pull.XmlPullParser;
 import org.codehaus.plexus.util.xml.pull.XmlPullParserException;
@@ -65,7 +66,7 @@ public class FmlContentParser
         {
             verbatim();
 
-            sink.verbatim( true );
+            sink.verbatim( SinkEventAttributeSet.BOXED );
         }
         else if ( !baseStartTag( parser, sink ) )
         {

@@ -476,14 +476,14 @@ public abstract class AbstractSinkTest
     }
 
     /**
-     * Checks that the sequence <code>[verbatim( true ), text( text ),
+     * Checks that the sequence <code>[verbatim( SinkEventAttributeSet.BOXED ), text( text ),
      * verbatim_()]</code>, invoked on the current sink, produces the
      * same result as {@link #getVerbatimBlock getVerbatimBlock}( text ).
      */
     public void testVerbatim()
     {
         String text = "Text";
-        sink.verbatim( true );
+        sink.verbatim( SinkEventAttributeSet.BOXED );
         sink.text( text );
         sink.verbatim_();
         sink.flush();

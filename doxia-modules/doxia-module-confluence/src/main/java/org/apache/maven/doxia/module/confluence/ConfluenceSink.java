@@ -1026,12 +1026,6 @@ public class ConfluenceSink
     }
 
     /** {@inheritDoc} */
-    public void verbatim( SinkEventAttributes attributes )
-    {
-        verbatim( false );
-    }
-
-    /** {@inheritDoc} */
     public void verbatim_()
     {
         if ( verbatimBoxedFlag )

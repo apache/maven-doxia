@@ -20,6 +20,7 @@ package org.apache.maven.doxia.module.twiki.parser;
  */
 
 import org.apache.maven.doxia.sink.Sink;
+import org.apache.maven.doxia.sink.SinkEventAttributeSet;
 
 /**
  * Represents a verbatim block
@@ -43,7 +44,7 @@ class VerbatimBlock
     /** {@inheritDoc} */
     final void before( final Sink sink )
     {
-        sink.verbatim( true );
+        sink.verbatim( SinkEventAttributeSet.BOXED );
     }
 
     /** {@inheritDoc} */

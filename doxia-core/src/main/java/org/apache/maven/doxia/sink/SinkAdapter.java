@@ -19,6 +19,8 @@ package org.apache.maven.doxia.sink;
  * under the License.
  */
 
+import javax.swing.text.MutableAttributeSet;
+
 /**
  * Empty implementation of the <code>Sink</code> interface. Useful for testing purposes.
  *
@@ -804,12 +806,13 @@ public class SinkAdapter
     /** {@inheritDoc} */
     public void verbatim( SinkEventAttributes attributes )
     {
+        MutableAttributeSet atts = SinkUtils.filterAttributes( attributes, SinkUtils.SINK_VERBATIM_ATTRIBUTES );
+
         boolean boxed = false;
 
-        if ( attributes != null && attributes.isDefined( "boxed" ) )
+        if ( atts != null && atts.isDefined( SinkEventAttributes.DECORATION ) )
         {
-            boxed = Boolean.valueOf(
-                (String) attributes.getAttribute( "boxed" ) ).booleanValue();
+            boxed = "boxed".equals( atts.getAttribute( SinkEventAttributes.DECORATION ).toString() );
         }
 
         verbatim( boxed );
