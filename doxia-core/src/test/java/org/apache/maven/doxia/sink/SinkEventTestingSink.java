@@ -599,37 +599,37 @@ public class SinkEventTestingSink
     /** {@inheritDoc} */
     public void head( SinkEventAttributes attributes )
     {
-        head();
+        addEvent( "head", new Object[] {attributes} );
     }
 
     /** {@inheritDoc} */
     public void title( SinkEventAttributes attributes )
     {
-        title();
+        addEvent( "title", new Object[] {attributes} );
     }
 
     /** {@inheritDoc} */
     public void author( SinkEventAttributes attributes )
     {
-        author();
+        addEvent( "author", new Object[] {attributes} );
     }
 
     /** {@inheritDoc} */
     public void date( SinkEventAttributes attributes )
     {
-        date();
+        addEvent( "date", new Object[] {attributes} );
     }
 
     /** {@inheritDoc} */
     public void body( SinkEventAttributes attributes )
     {
-        body();
+        addEvent( "body", new Object[] {attributes} );
     }
 
     /** {@inheritDoc} */
     public void section( int level, SinkEventAttributes attributes )
     {
-        addEvent( "section" + level );
+        addEvent( "section" + level, new Object[] {attributes} );
     }
 
     /** {@inheritDoc} */
@@ -641,7 +641,7 @@ public class SinkEventTestingSink
     /** {@inheritDoc} */
     public void sectionTitle( int level, SinkEventAttributes attributes )
     {
-        addEvent( "sectionTitle" + level );
+        addEvent( "sectionTitle" + level, new Object[] {attributes} );
     }
 
     /** {@inheritDoc} */
@@ -654,49 +654,49 @@ public class SinkEventTestingSink
     /** {@inheritDoc} */
     public void list( SinkEventAttributes attributes )
     {
-        list();
+        addEvent( "list", new Object[] {attributes} );
     }
 
     /** {@inheritDoc} */
     public void listItem( SinkEventAttributes attributes )
     {
-        listItem();
+        addEvent( "listItem", new Object[] {attributes} );
     }
 
     /** {@inheritDoc} */
     public void numberedList( int numbering, SinkEventAttributes attributes )
     {
-        numberedList( numbering );
+        addEvent( "numberedList", new Object[] {new Integer( numbering ), attributes} );
     }
 
     /** {@inheritDoc} */
     public void numberedListItem( SinkEventAttributes attributes )
     {
-        numberedListItem();
+        addEvent( "numberedListItem", new Object[] {attributes} );
     }
 
     /** {@inheritDoc} */
     public void definitionList( SinkEventAttributes attributes )
     {
-        definitionList();
+        addEvent( "definitionList", new Object[] {attributes} );
     }
 
     /** {@inheritDoc} */
     public void definitionListItem( SinkEventAttributes attributes )
     {
-        definitionListItem();
+        addEvent( "definitionListItem", new Object[] {attributes} );
     }
 
     /** {@inheritDoc} */
     public void definition( SinkEventAttributes attributes )
     {
-        definition();
+        addEvent( "definition", new Object[] {attributes} );
     }
 
     /** {@inheritDoc} */
     public void definedTerm( SinkEventAttributes attributes )
     {
-        definedTerm();
+        addEvent( "definedTerm", new Object[] {attributes} );
     }
 
     /** {@inheritDoc} */
@@ -708,91 +708,91 @@ public class SinkEventTestingSink
     /** {@inheritDoc} */
     public void figureCaption( SinkEventAttributes attributes )
     {
-        figureCaption();
+        addEvent( "figureCaption", new Object[] {attributes} );
     }
 
     /** {@inheritDoc} */
     public void figureGraphics( String src, SinkEventAttributes attributes )
     {
-        figureGraphics( src );
+        addEvent( "figureGraphics", new Object[] {src, attributes} );
     }
 
     /** {@inheritDoc} */
     public void table( SinkEventAttributes attributes )
     {
-        table();
+        addEvent( "table", new Object[] {attributes} );
     }
 
     /** {@inheritDoc} */
     public void tableRow( SinkEventAttributes attributes )
     {
-        tableRow();
+        addEvent( "tableRow", new Object[] {attributes} );
     }
 
     /** {@inheritDoc} */
     public void tableCell( SinkEventAttributes attributes )
     {
-        tableCell();
+        addEvent( "tableCell", new Object[] {attributes} );
     }
 
     /** {@inheritDoc} */
     public void tableHeaderCell( SinkEventAttributes attributes )
     {
-        tableHeaderCell();
+        addEvent( "tableHeaderCell", new Object[] {attributes} );
     }
 
     /** {@inheritDoc} */
     public void tableCaption( SinkEventAttributes attributes )
     {
-        tableCaption();
+        addEvent( "tableCaption", new Object[] {attributes} );
     }
 
     /** {@inheritDoc} */
     public void paragraph( SinkEventAttributes attributes )
     {
-        paragraph();
+        addEvent( "paragraph", new Object[] {attributes} );
     }
 
     /** {@inheritDoc} */
     public void verbatim( SinkEventAttributes attributes )
     {
-        verbatim( false );
+        addEvent( "verbatim", new Object[] {attributes} );
     }
 
     /** {@inheritDoc} */
     public void horizontalRule( SinkEventAttributes attributes )
     {
-        horizontalRule();
+        addEvent( "horizontalRule", new Object[] {attributes} );
     }
 
     /** {@inheritDoc} */
     public void anchor( String name, SinkEventAttributes attributes )
     {
-        anchor( name );
+        addEvent( "anchor", new Object[] {name, attributes} );
     }
 
     /** {@inheritDoc} */
     public void link( String name, SinkEventAttributes attributes )
     {
-        link( name );
+        addEvent( "link", new Object[] {name, attributes} );
     }
 
     /** {@inheritDoc} */
     public void lineBreak( SinkEventAttributes attributes )
     {
-        lineBreak();
+        addEvent( "lineBreak", new Object[] {attributes} );
     }
 
     /** {@inheritDoc} */
     public void text( String text, SinkEventAttributes attributes )
     {
-        text( text );
+        addEvent( "text", new Object[] {text, attributes} );
     }
 
     /** {@inheritDoc} */
     public void unknown( String name, Object[] requiredParams, SinkEventAttributes attributes )
     {
-        addEvent( name, requiredParams );
+        addEvent( name, new Object[] {requiredParams, attributes} );
     }
 
       //
