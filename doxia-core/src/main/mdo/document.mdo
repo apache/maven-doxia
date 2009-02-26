@@ -119,7 +119,7 @@
           <version>1.0.0</version>
           <description><![CDATA[
             A shortcut for the unique author of the document, usually as a String of "firstName lastName". For
-            more authors, you could use the <authors/> tag.
+            more authors, you could use the &lt;authors/&gt; tag.
           ]]></description>
           <type>String</type>
           <identifier>true</identifier>

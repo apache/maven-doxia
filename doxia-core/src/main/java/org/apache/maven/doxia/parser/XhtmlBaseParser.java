@@ -494,7 +494,7 @@ public class XhtmlBaseParser
      * @param type the tag event type. This should be one of HtmlMarkup.TAG_TYPE_SIMPLE,
      * HtmlMarkup.TAG_TYPE_START or HtmlMarkup.TAG_TYPE_END. It will be passed as the first
      * argument of the required parameters to the Sink
-     * {@link org.apache.maven.doxia.sink.Sink#unkown(String,Object[],SinkEventAttributes) unkown}
+     * {@link org.apache.maven.doxia.sink.Sink#unknown(String, Object[], SinkEventAttributes)}
      * method.
      */
     protected void handleUnknown( XmlPullParser parser, Sink sink, int type )
