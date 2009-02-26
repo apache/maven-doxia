@@ -62,7 +62,7 @@ public class XhtmlBaseParser
     private boolean inFigure;
 
     /** Decoration properties, eg for texts. */
-    private final SinkEventAttributeSet decoration = new SinkEventAttributeSet();;
+    private final SinkEventAttributeSet decoration = new SinkEventAttributeSet();
 
     /**
      * <p>
