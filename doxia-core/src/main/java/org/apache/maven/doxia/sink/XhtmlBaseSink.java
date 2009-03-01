@@ -95,6 +95,21 @@ public class XhtmlBaseSink
     /** Indicates that an image is part of a figure. */
     private boolean inFigure;
 
+    /** Flag to know if {@link #tableRows(int[], boolean)} is called or not. It is mainly to be backward compatible
+     * with some plugins (like checkstyle) which uses:
+     * <pre>
+     * sink.table();
+     * sink.tableRow();
+     * </pre>
+     * instead of
+     * <pre>
+     * sink.table();
+     * sink.tableRows( justify, true );
+     * sink.tableRow();
+     * </pre>
+     * */
+    boolean tableRows = false;
+
     // ----------------------------------------------------------------------
     // Constructor
     // ----------------------------------------------------------------------
@@ -1085,6 +1100,8 @@ public class XhtmlBaseSink
     /** {@inheritDoc} */
     public void table( SinkEventAttributes attributes )
     {
+        this.tableRows = false;
+
         if ( paragraphFlag )
         {
             // The content of element type "p" must match
@@ -1111,6 +1128,8 @@ public class XhtmlBaseSink
      */
     public void table_()
     {
+        this.tableRows = false;
+
         writeEndTag( Tag.TABLE );
 
         String content = tempWriter.toString();
@@ -1168,6 +1187,8 @@ public class XhtmlBaseSink
      */
     public void tableRows( int[] justification, boolean grid )
     {
+        this.tableRows = true;
+
         this.cellJustif = justification;
         this.isCellJustif = true;
 
@@ -1203,6 +1224,7 @@ public class XhtmlBaseSink
     /** {@inheritDoc} */
     public void tableRows_()
     {
+        this.tableRows = false;
         this.cellJustif = null;
         this.isCellJustif = false;
 
@@ -1217,6 +1239,11 @@ public class XhtmlBaseSink
      */
     public void tableRow()
     {
+        // To be backward compatible
+        if ( !this.tableRows )
+        {
+            tableRows( null, false );
+        }
         tableRow( null );
     }
 
