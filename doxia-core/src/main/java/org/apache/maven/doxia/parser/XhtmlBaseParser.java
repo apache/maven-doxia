@@ -510,21 +510,21 @@ public class XhtmlBaseParser
      * Make sure sections are nested consecutively.
      *
      * <p>
-     * HTML doesn't have any sections, only sectionTitles (&lt;h2&gt, etc), that means we have to
+     * HTML doesn't have any sections, only sectionTitles (&lt;h2&gt; etc), that means we have to
      * open close any sections that are missing in between.
      * </p>
      *
      * <p>
      * For instance, if the following sequence is parsed:
      * <pre>
-     * <h3></h3>
-     * <h6></h6>
+     * &lt;h3&gt;&lt;/h3&gt;
+     * &lt;h6&gt;&lt;/h6&gt;
      * </pre>
      * we have to insert two section starts before we open the <code>&lt;h6&gt;</code>.
      * In the following sequence
      * <pre>
-     * <h6></h6>
-     * <h3></h3>
+     * &lt;h6&gt;&lt;/h6&gt;
+     * &lt;h3&gt;&lt;/h3&gt;
      * </pre>
      * we have to close two sections before we open the <code>&lt;h3&gt;</code>.
      * </p>
