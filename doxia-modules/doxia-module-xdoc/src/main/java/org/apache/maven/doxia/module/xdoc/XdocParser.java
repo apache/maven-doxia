@@ -141,7 +141,7 @@ public class XdocParser
         }
         else if ( parser.getName().equals( SECTION_TAG.toString() ) )
         {
-            closeOpenSections( Sink.SECTION_LEVEL_1, sink );
+            consecutiveSections( Sink.SECTION_LEVEL_1, sink );
 
             Object id = attribs.getAttribute( Attribute.ID.toString() );
             if ( id != null )
@@ -160,7 +160,7 @@ public class XdocParser
         }
         else if ( parser.getName().equals( SUBSECTION_TAG.toString() ) )
         {
-            closeOpenSections( Sink.SECTION_LEVEL_2, sink );
+            consecutiveSections( Sink.SECTION_LEVEL_2, sink );
 
             Object id = attribs.getAttribute( Attribute.ID.toString() );
             if ( id != null )
@@ -300,7 +300,7 @@ public class XdocParser
         }
         else if ( parser.getName().equals( Tag.BODY.toString() ) )
         {
-            closeOpenSections( 0, sink );
+            consecutiveSections( 0, sink );
 
             sink.body_();
         }
@@ -370,15 +370,13 @@ public class XdocParser
         }
         else if ( parser.getName().equals( SECTION_TAG.toString() ) )
         {
-            closeOpenSections( 0, sink );
+            consecutiveSections( 0, sink );
 
             sink.section1_();
         }
         else if ( parser.getName().equals( SUBSECTION_TAG.toString() ) )
         {
-            closeOpenSections( Sink.SECTION_LEVEL_1, sink );
-
-            sink.section2_();
+            consecutiveSections( Sink.SECTION_LEVEL_1, sink );
         }
         else if ( parser.getName().equals( Tag.SCRIPT.toString() ) )
         {
@@ -413,12 +411,19 @@ public class XdocParser
         }
     }
 
+    /** {@inheritDoc} */
+    protected void consecutiveSections( int newLevel, Sink sink )
+    {
+        closeOpenSections( newLevel, sink );
+        openMissingSections( newLevel, sink );
+
+        setSectionLevel( newLevel );
+    }
+
     /**
-     * {@inheritDoc}
-     *
-     * Close open h4, h5, h6 sections. The current level is set to newLevel afterwards.
+     * Close open h4, h5, h6 sections.
      */
-    protected void closeOpenSections( int newLevel, Sink sink )
+    private void closeOpenSections( int newLevel, Sink sink )
     {
         while ( getSectionLevel() >= newLevel )
         {
@@ -434,10 +439,40 @@ public class XdocParser
             {
                 sink.section3_();
             }
+            else if ( getSectionLevel() == Sink.SECTION_LEVEL_2 )
+            {
+                sink.section2_();
+            }
 
             setSectionLevel( getSectionLevel() - 1 );
         }
+    }
 
-        setSectionLevel( newLevel );
+    /**
+     * Open missing h4, h5, h6 sections.
+     */
+    private void openMissingSections( int newLevel, Sink sink )
+    {
+        while ( getSectionLevel() < newLevel - 1 )
+        {
+            setSectionLevel( getSectionLevel() + 1 );
+
+            if ( getSectionLevel() == Sink.SECTION_LEVEL_5 )
+            {
+                sink.section5();
+            }
+            else if ( getSectionLevel() == Sink.SECTION_LEVEL_4 )
+            {
+                sink.section4();
+            }
+            else if ( getSectionLevel() == Sink.SECTION_LEVEL_3 )
+            {
+                sink.section3();
+            }
+            else if ( getSectionLevel() == Sink.SECTION_LEVEL_2 )
+            {
+                sink.section2();
+            }
+        }
     }
 }

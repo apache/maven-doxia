@@ -210,7 +210,7 @@ public class XhtmlParser
         }
         else if ( parser.getName().equals( Tag.BODY.toString() ) )
         {
-            closeOpenSections( 0, sink );
+            consecutiveSections( 0, sink );
 
             sink.body_();
         }

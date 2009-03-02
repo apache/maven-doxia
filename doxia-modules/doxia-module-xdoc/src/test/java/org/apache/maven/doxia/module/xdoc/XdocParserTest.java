@@ -213,6 +213,44 @@ public class XdocParserTest
     }
 
     /** @throws Exception  */
+    public void testNestedSectionsEventsList()
+        throws Exception
+    {
+        // DOXIA-241
+        String text = "<section name=\"section\"><h6>h6</h6><subsection name=\"subsection\"></subsection></section>";
+
+        SinkEventTestingSink sink = new SinkEventTestingSink();
+
+        parser.parse( text, sink );
+
+        Iterator it = sink.getEventList().iterator();
+
+        assertEquals( "section1", ( (SinkEventElement) it.next() ).getName() );
+        assertEquals( "sectionTitle1", ( (SinkEventElement) it.next() ).getName() );
+        assertEquals( "text", ( (SinkEventElement) it.next() ).getName() );
+        assertEquals( "sectionTitle1_", ( (SinkEventElement) it.next() ).getName() );
+        assertEquals( "section2", ( (SinkEventElement) it.next() ).getName() );
+        assertEquals( "section3", ( (SinkEventElement) it.next() ).getName() );
+        assertEquals( "section4", ( (SinkEventElement) it.next() ).getName() );
+        assertEquals( "section5", ( (SinkEventElement) it.next() ).getName() );
+        assertEquals( "sectionTitle5", ( (SinkEventElement) it.next() ).getName() );
+        assertEquals( "text", ( (SinkEventElement) it.next() ).getName() );
+        assertEquals( "sectionTitle5_", ( (SinkEventElement) it.next() ).getName() );
+        assertEquals( "section5_", ( (SinkEventElement) it.next() ).getName() );
+        assertEquals( "section4_", ( (SinkEventElement) it.next() ).getName() );
+        assertEquals( "section3_", ( (SinkEventElement) it.next() ).getName() );
+        assertEquals( "section2_", ( (SinkEventElement) it.next() ).getName() );
+
+        assertEquals( "section2", ( (SinkEventElement) it.next() ).getName() );
+        assertEquals( "sectionTitle2", ( (SinkEventElement) it.next() ).getName() );
+        assertEquals( "text", ( (SinkEventElement) it.next() ).getName() );
+        assertEquals( "sectionTitle2_", ( (SinkEventElement) it.next() ).getName() );
+        assertEquals( "section2_", ( (SinkEventElement) it.next() ).getName() );
+        assertEquals( "section1_", ( (SinkEventElement) it.next() ).getName() );
+        assertFalse( it.hasNext() );
+    }
+
+    /** @throws Exception  */
     public void testSourceEventsList()
         throws Exception
     {

@@ -507,12 +507,48 @@ public class XhtmlBaseParser
     }
 
     /**
-     * Close open sections. The current level is set to newLevel afterwards.
+     * Make sure sections are nested consecutively.
+     *
+     * <p>
+     * HTML doesn't have any sections, only sectionTitles (&lt;h2&gt, etc), that means we have to
+     * open close any sections that are missing in between.
+     * </p>
+     *
+     * <p>
+     * For instance, if the following sequence is parsed:
+     * <pre>
+     * <h3></h3>
+     * <h6></h6>
+     * </pre>
+     * we have to insert two section starts before we open the <code>&lt;h6&gt;</code>.
+     * In the following sequence
+     * <pre>
+     * <h6></h6>
+     * <h3></h3>
+     * </pre>
+     * we have to close two sections before we open the <code>&lt;h3&gt;</code>.
+     * </p>
+     *
+     * <p>The current level is set to newLevel afterwards.</p>
      *
      * @param newLevel the new section level, all upper levels have to be closed.
      * @param sink the sink to receive the events.
      */
-    protected void closeOpenSections( int newLevel, Sink sink )
+    protected void consecutiveSections( int newLevel, Sink sink )
+    {
+        closeOpenSections( newLevel, sink );
+        openMissingSections( newLevel, sink );
+
+        this.sectionLevel = newLevel;
+    }
+
+    /**
+     * Close open sections.
+     *
+     * @param newLevel the new section level, all upper levels have to be closed.
+     * @param sink the sink to receive the events.
+     */
+    private void closeOpenSections( int newLevel, Sink sink )
     {
         while ( this.sectionLevel >= newLevel )
         {
@@ -539,8 +575,41 @@ public class XhtmlBaseParser
 
             this.sectionLevel--;
         }
+    }
 
-        this.sectionLevel = newLevel;
+    /**
+     * Open missing sections.
+     *
+     * @param newLevel the new section level, all lower levels have to be opened.
+     * @param sink the sink to receive the events.
+     */
+    private void openMissingSections( int newLevel, Sink sink )
+    {
+        while ( this.sectionLevel < newLevel - 1 )
+        {
+            this.sectionLevel++;
+
+            if ( sectionLevel == Sink.SECTION_LEVEL_5 )
+            {
+                sink.section5();
+            }
+            else if ( sectionLevel == Sink.SECTION_LEVEL_4 )
+            {
+                sink.section4();
+            }
+            else if ( sectionLevel == Sink.SECTION_LEVEL_3 )
+            {
+                sink.section3();
+            }
+            else if ( sectionLevel == Sink.SECTION_LEVEL_2 )
+            {
+                sink.section2();
+            }
+            else if ( sectionLevel == Sink.SECTION_LEVEL_1 )
+            {
+                sink.section1();
+            }
+        }
     }
 
     /**
@@ -793,7 +862,7 @@ public class XhtmlBaseParser
 
     private void handleSectionStart( Sink sink, int sectionLevel, SinkEventAttributeSet attribs )
     {
-        closeOpenSections( sectionLevel, sink );
+        consecutiveSections( sectionLevel, sink );
         sink.section( sectionLevel, attribs );
         sink.sectionTitle( sectionLevel, attribs );
     }

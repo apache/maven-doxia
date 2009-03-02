@@ -88,6 +88,49 @@ public class XhtmlBaseParserTest
         assertEquals( "section1", ( (SinkEventElement) it.next() ).getName() );
         assertEquals( "sectionTitle1", ( (SinkEventElement) it.next() ).getName() );
         assertEquals( "sectionTitle1_", ( (SinkEventElement) it.next() ).getName() );
+        // this one is missing because we enclose everything in <p> which is not valid xhtml,
+        // needs to be tested in overriding parser, eg XhtmlParser, XdocParser.
+        //assertEquals( "section1_", ( (SinkEventElement) it.next() ).getName() );
+        assertEquals( "paragraph_", ( (SinkEventElement) it.next() ).getName() );
+        assertFalse( it.hasNext() );
+    }
+
+    /** @throws Exception  */
+    public void testNestedHeadingEventsList()
+        throws Exception
+    {
+        // DOXIA-241
+        String text = "<p><h2></h2><h6></h6><h3></h3></p>";
+
+        parser.parse( text, sink );
+
+        Iterator it = sink.getEventList().iterator();
+
+        assertEquals( "paragraph", ( (SinkEventElement) it.next() ).getName() );
+        assertEquals( "section1", ( (SinkEventElement) it.next() ).getName() );
+        assertEquals( "sectionTitle1", ( (SinkEventElement) it.next() ).getName() );
+        assertEquals( "sectionTitle1_", ( (SinkEventElement) it.next() ).getName() );
+
+        assertEquals( "section2", ( (SinkEventElement) it.next() ).getName() );
+        assertEquals( "section3", ( (SinkEventElement) it.next() ).getName() );
+        assertEquals( "section4", ( (SinkEventElement) it.next() ).getName() );
+
+        assertEquals( "section5", ( (SinkEventElement) it.next() ).getName() );
+        assertEquals( "sectionTitle5", ( (SinkEventElement) it.next() ).getName() );
+        assertEquals( "sectionTitle5_", ( (SinkEventElement) it.next() ).getName() );
+        assertEquals( "section5_", ( (SinkEventElement) it.next() ).getName() );
+
+        assertEquals( "section4_", ( (SinkEventElement) it.next() ).getName() );
+        assertEquals( "section3_", ( (SinkEventElement) it.next() ).getName() );
+        assertEquals( "section2_", ( (SinkEventElement) it.next() ).getName() );
+
+        assertEquals( "section2", ( (SinkEventElement) it.next() ).getName() );
+        assertEquals( "sectionTitle2", ( (SinkEventElement) it.next() ).getName() );
+        assertEquals( "sectionTitle2_", ( (SinkEventElement) it.next() ).getName() );
+        // these two are missing because we enclose everything in <p> which is not valid xhtml,
+        // needs to be tested in overriding parser, eg XhtmlParser, XdocParser.
+        //assertEquals( "section2_", ( (SinkEventElement) it.next() ).getName() );
+        //assertEquals( "section1_", ( (SinkEventElement) it.next() ).getName() );
         assertEquals( "paragraph_", ( (SinkEventElement) it.next() ).getName() );
         assertFalse( it.hasNext() );
     }
