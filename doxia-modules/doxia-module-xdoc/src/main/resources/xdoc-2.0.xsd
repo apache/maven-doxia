@@ -2844,7 +2844,8 @@
     <xs:annotation>
       <xs:documentation source="version">2.0.0</xs:documentation>
       <xs:documentation source="description">
-        An date element.
+        An date element. The date is recommended (but it is not a requirement) to be align to
+        the ISO-8601 standard, i.e.: YYYY-MM-DD.
       </xs:documentation>
     </xs:annotation>
     <xs:complexType mixed="true"/>

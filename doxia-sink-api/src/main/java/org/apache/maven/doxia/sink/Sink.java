@@ -250,6 +250,18 @@ public interface Sink
 
     /**
      * Starts the date element.
+     * <br/>
+     * The date is recommended (but it is not a requirement) to be align to the
+     * <a href="http://www.iso.org/iso/iso_catalogue/catalogue_tc/catalogue_detail.htm?csnumber=26780">ISO-8601</a> standard, i.e.:
+     * <pre>
+     * YYYY-MM-DD
+     * </pre>
+     * where
+     * <ul>
+     * <li>YYYY is the year in the Gregorian calendar</li>
+     * <li>MM is the month of the year between 01 (January) and 12 (December)</li>
+     * <li>and DD is the day of the month between 01 and 31</li>
+     * </ul>
      *
      * @see #date(SinkEventAttributes)
      */
