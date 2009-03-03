@@ -387,6 +387,7 @@ under the License.
             <groupId>org.apache.maven.plugins</groupId>
             <artifactId>maven-javadoc-plugin</artifactId>
             <configuration>
+              <aggregate>true</aggregate>
               <source>1.4</source>
               <links>
                 <link>http://java.sun.com/j2se/1.4.2/docs/api/</link>
