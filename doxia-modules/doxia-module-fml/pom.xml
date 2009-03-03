@@ -25,7 +25,7 @@ under the License.
   <parent>
     <artifactId>doxia-modules</artifactId>
     <groupId>org.apache.maven.doxia</groupId>
-    <version>1.1-SNAPSHOT</version>
+    <version>1.1</version>
     <relativePath>../pom.xml</relativePath>
   </parent>
 
@@ -91,14 +91,11 @@ under the License.
                 <phase>site</phase>
                 <configuration>
                   <tasks>
-                    <taskdef name="xsddoc" classname="net.sf.xframe.xsddoc.Task"/>
+                    <taskdef name="xsddoc" classname="net.sf.xframe.xsddoc.Task" />
 
-                    <mkdir dir="${reporting.outputDirectory}/xsddoc"/>
+                    <mkdir dir="${reporting.outputDirectory}/xsddoc" />
 
-                    <xsddoc file="${basedir}/src/main/resources/fml-1.0.xsd"
-                      out="${basedir}/${reporting.outputDirectory}/xsddoc"
-                      doctitle="Reference of Schema FML 1.0"
-                      verbose="true"/>
+                    <xsddoc file="${basedir}/src/main/resources/fml-1.0.xsd" out="${basedir}/${reporting.outputDirectory}/xsddoc" doctitle="Reference of Schema FML 1.0" verbose="true" />
                   </tasks>
                 </configuration>
                 <goals>

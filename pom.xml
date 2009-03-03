@@ -31,7 +31,7 @@ under the License.
 
   <groupId>org.apache.maven.doxia</groupId>
   <artifactId>doxia</artifactId>
-  <version>1.1-SNAPSHOT</version>
+  <version>1.1</version>
   <packaging>pom</packaging>
 
   <name>Doxia</name>
@@ -102,9 +102,9 @@ under the License.
   </modules>
 
   <scm>
-    <connection>scm:svn:http://svn.apache.org/repos/asf/maven/doxia/doxia/trunk</connection>
-    <developerConnection>scm:svn:https://svn.apache.org/repos/asf/maven/doxia/doxia/trunk</developerConnection>
-    <url>http://svn.apache.org/viewcvs.cgi/maven/doxia/doxia/trunk</url>
+    <connection>scm:svn:http://svn.apache.org/repos/asf/maven/doxia/doxia/tags/doxia-1.1</connection>
+    <developerConnection>scm:svn:https://svn.apache.org/repos/asf/maven/doxia/doxia/tags/doxia-1.1</developerConnection>
+    <url>http://svn.apache.org/viewcvs.cgi/maven/doxia/doxia/tags/doxia-1.1</url>
   </scm>
   <issueManagement>
     <system>jira</system>
@@ -325,8 +325,7 @@ under the License.
                 <configuration>
                   <tasks>
                     <delete>
-                      <fileset dir="${java.io.tmpdir}"
-                        includes="**/*.dtd, **/*.ent, **/*.xsd"/>
+                      <fileset dir="${java.io.tmpdir}" includes="**/*.dtd, **/*.ent, **/*.xsd" />
                     </delete>
                   </tasks>
                 </configuration>
