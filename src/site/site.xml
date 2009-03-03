@@ -29,11 +29,6 @@
   <bannerRight>
     <src>images/maven-logo-2.gif</src>
   </bannerRight>
-  <skin>
-    <groupId>org.apache.maven.skins</groupId>
-    <artifactId>maven-stylus-skin</artifactId>
-    <version>1.0.1</version>
-  </skin>
 
   <body>
     <links>
