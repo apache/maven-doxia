@@ -91,9 +91,18 @@ under the License.
                   <tasks>
                     <taskdef name="xsddoc" classname="net.sf.xframe.xsddoc.Task" />
 
-                    <mkdir dir="${reporting.outputDirectory}/xsddoc" />
+                    <condition property="dir" value="${project.reporting.outputDirectory}/xsddoc">
+                      <matches string="${project.reporting.outputDirectory}" pattern="^${basedir}" />
+                    </condition>
+                    <condition property="dir" value="${basedir}/${project.reporting.outputDirectory}/xsddoc">
+                      <not>
+                        <isset property="dir" />
+                      </not>
+                    </condition>
 
-                    <xsddoc file="${basedir}/src/main/resources/xdoc-2.0.xsd" out="${basedir}/${reporting.outputDirectory}/xsddoc" doctitle="Reference of Schema Xdoc 2.0" verbose="true" />
+                    <mkdir dir="${dir}"/>
+
+                    <xsddoc file="${basedir}/src/main/resources/xdoc-2.0.xsd" out="${dir}" doctitle="Reference of Schema Xdoc 2.0" verbose="true"/>
                   </tasks>
                 </configuration>
                 <goals>
@@ -106,6 +115,17 @@ under the License.
                 <groupId>xsddoc</groupId>
                 <artifactId>xsddoc</artifactId>
                 <version>1.0</version>
+                <exclusions>
+                  <exclusion>
+                    <groupId>ant</groupId>
+                    <artifactId>ant</artifactId>
+                  </exclusion>
+                </exclusions>
+              </dependency>
+              <dependency>
+                <groupId>org.apache.ant</groupId>
+                <artifactId>ant-apache-regexp</artifactId>
+                <version>1.7.1</version>
               </dependency>
               <dependency>
                 <groupId>xalan</groupId>
