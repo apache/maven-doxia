@@ -30,6 +30,7 @@ import org.apache.maven.doxia.parser.Parser;
 import org.apache.maven.doxia.parser.ParseException;
 
 import org.apache.maven.doxia.sink.Sink;
+import org.apache.maven.doxia.sink.SinkEventAttributeSet;
 import org.apache.maven.doxia.sink.SinkEventElement;
 import org.apache.maven.doxia.sink.SinkEventTestingSink;
 
@@ -207,6 +208,43 @@ public class AptParserTest
             IOUtil.close( writer );
             IOUtil.close( reader );
         }
+    }
+
+    /** @throws Exception  */
+    public void testBoxedVerbatim()
+        throws Exception
+    {
+        String text = "+--" + EOL + "boxed verbatim" + EOL + "+--" + EOL
+                + "---" + EOL + "un-boxed verbatim" + EOL + "---" + EOL;
+
+        SinkEventTestingSink sink = new SinkEventTestingSink();
+
+        parser.parse( text, sink );
+
+        Iterator it = sink.getEventList().iterator();
+
+        assertEquals( "head", ( (SinkEventElement) it.next() ).getName() );
+        assertEquals( "head_", ( (SinkEventElement) it.next() ).getName() );
+        assertEquals( "body", ( (SinkEventElement) it.next() ).getName() );
+
+        SinkEventElement element = (SinkEventElement) it.next();
+        assertEquals( "verbatim", element.getName() );
+        Object[] args = element.getArgs();
+        assertEquals( SinkEventAttributeSet.BOXED, args[0] );
+
+        assertEquals( "text", ( (SinkEventElement) it.next() ).getName() );
+        assertEquals( "verbatim_", ( (SinkEventElement) it.next() ).getName() );
+
+        element = (SinkEventElement) it.next();
+        assertEquals( "verbatim", element.getName() );
+        args = element.getArgs();
+        assertNull( args[0] );
+
+        assertEquals( "text", ( (SinkEventElement) it.next() ).getName() );
+        assertEquals( "verbatim_", ( (SinkEventElement) it.next() ).getName() );
+        assertEquals( "body_", ( (SinkEventElement) it.next() ).getName() );
+
+        assertFalse( it.hasNext() );
     }
 
     /** {@inheritDoc} */

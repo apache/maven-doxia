@@ -2219,8 +2219,7 @@ public class AptParser
         public void traverse()
             throws AptParseException
         {
-            AptParser.this.sink.verbatim( SinkEventAttributeSet.BOXED );
-            // TODO: filter out lineBreak
+            AptParser.this.sink.verbatim( boxed ? SinkEventAttributeSet.BOXED : null );
             AptParser.this.sink.text( text );
             AptParser.this.sink.verbatim_();
         }
