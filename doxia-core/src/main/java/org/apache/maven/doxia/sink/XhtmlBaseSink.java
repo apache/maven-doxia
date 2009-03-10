@@ -39,7 +39,7 @@ import org.codehaus.plexus.util.StringUtils;
  * @author Jason van Zyl
  * @author ltheussl
  * @version $Id$
- * @since 1.0
+ * @since 1.1
  */
 public class XhtmlBaseSink
     extends AbstractXmlSink

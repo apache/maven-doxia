@@ -31,7 +31,7 @@ import org.codehaus.plexus.util.StringUtils;
  *
  * @author <a href="mailto:jason@maven.org">Jason van Zyl</a>
  * @version $Id$
- * @since 1.0
+ * @since 1.1
  */
 public class RenderingContext
 {

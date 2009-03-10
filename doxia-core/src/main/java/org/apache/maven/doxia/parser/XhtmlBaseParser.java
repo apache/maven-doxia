@@ -38,7 +38,7 @@ import org.codehaus.plexus.util.xml.pull.XmlPullParserException;
  * @author <a href="mailto:jason@maven.org">Jason van Zyl</a>
  * @author ltheussl
  * @version $Id$
- * @since 1.0
+ * @since 1.1
  */
 public class XhtmlBaseParser
     extends AbstractXmlParser
