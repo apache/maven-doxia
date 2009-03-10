@@ -55,8 +55,8 @@ public class XhtmlBaseParser
     /** Counts section level. */
     private int sectionLevel;
 
-    /** Verbatim level, increased whenever a &lt;pre&gt; tag is encountered. */
-    private int verbatimLevel;
+    /** Verbatim flag, true whenever we are inside a &lt;pre&gt; tag. */
+    private boolean inVerbatim;
 
     /** Used to recognize the case of img inside figure. */
     private boolean inFigure;
@@ -91,11 +91,7 @@ public class XhtmlBaseParser
 
         SinkEventAttributeSet attribs = getAttributesFromParser( parser );
 
-        if ( isVerbatim() )
-        {
-            handleVerbatim( parser, sink );
-        }
-        else if ( parser.getName().equals( Tag.H2.toString() ) )
+        if ( parser.getName().equals( Tag.H2.toString() ) )
         {
             handleSectionStart( sink, Sink.SECTION_LEVEL_1, attribs );
         }
@@ -245,11 +241,7 @@ public class XhtmlBaseParser
     {
         boolean visited = true;
 
-        if ( isVerbatim() )
-        {
-            handleVerbatimEnd( parser, sink );
-        }
-        else if ( parser.getName().equals( Tag.P.toString() ) )
+        if ( parser.getName().equals( Tag.P.toString() ) )
         {
             if ( !inFigure )
             {
@@ -633,30 +625,29 @@ public class XhtmlBaseParser
     }
 
     /**
-     * Decrease the current verbatim level.
+     * Stop verbatim mode.
      */
     protected void verbatim_()
     {
-        verbatimLevel--;
+        this.inVerbatim = false;
     }
 
     /**
-     * Increases the current verbatim level.
-     * A value of 0 means that we are not in verbatim mode, every nested &lt;pre&gt; tag increases the level.
+     * Start verbatim mode.
      */
     protected void verbatim()
     {
-        verbatimLevel++;
+        this.inVerbatim = true;
     }
 
     /**
-     * Checks if we are currently insid a &lt;pre&gt; tag.
+     * Checks if we are currently inside a &lt;pre&gt; tag.
      *
      * @return true if we are currently in verbatim mode.
      */
     protected boolean isVerbatim()
     {
-        return ( this.verbatimLevel != 0 );
+        return this.inVerbatim;
     }
 
     /**
@@ -891,35 +882,5 @@ public class XhtmlBaseParser
         }
 
         sink.tableRows( justif, grid );
-    }
-
-    private void handleVerbatim( XmlPullParser parser, Sink sink )
-    {
-        if ( parser.getName().equals( Tag.PRE.toString() ) )
-        {
-            verbatim();
-        }
-
-        sink.text( getText( parser ) );
-    }
-
-    private void handleVerbatimEnd( XmlPullParser parser, Sink sink )
-    {
-        if ( parser.getName().equals( Tag.PRE.toString() ) )
-        {
-            verbatim_();
-            if ( isVerbatim() )
-            {
-                sink.text( getText( parser ) );
-            }
-            else
-            {
-                sink.verbatim_();
-            }
-        }
-        else
-        {
-            sink.text( getText( parser ) );
-        }
     }
 }

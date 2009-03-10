@@ -1081,6 +1081,17 @@ public interface Sink
      * Starts a verbatim block, ie a block where whitespace has semantic relevance.
      *
      * <p>
+     *   Text in a verbatim block must only be wrapped at the linebreaks in the source,
+     *   and spaces should not be collapsed. It should be displayed in a fixed-width font to
+     *   retain the formatting but the overall size may be chosen by the implementation.
+     * </p>
+     *
+     * <p>
+     *   Most Sink events may be emitted within a verbatim block, the only elements explicitly
+     *   forbidden are font-changing events and figures. Also, verbatim blocks may not be nested.
+     * </p>
+     *
+     * <p>
      *   Supported attributes are the {@link SinkEventAttributes base attributes} plus:
      * </p>
      * <blockquote>

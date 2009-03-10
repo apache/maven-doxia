@@ -47,16 +47,7 @@ public class FmlContentParser
     {
         isEmptyElement = parser.isEmptyElementTag();
 
-        if ( isVerbatim() )
-        {
-            if ( parser.getName().equals( SOURCE_TAG.toString() ) )
-            {
-                verbatim();
-            }
-
-            sink.text( parser.getText() );
-        }
-        else if ( parser.getName().equals( QUESTION_TAG.toString() )
+        if ( parser.getName().equals( QUESTION_TAG.toString() )
             || parser.getName().equals( ANSWER_TAG.toString() ) )
         {
             // ignore
@@ -79,7 +70,7 @@ public class FmlContentParser
                 handleUnknown( parser, sink, TAG_TYPE_START );
             }
 
-            if ( !isVerbatim() && getLog().isDebugEnabled() )
+            if ( getLog().isDebugEnabled() )
             {
                 String position = "[" + parser.getLineNumber() + ":"
                     + parser.getColumnNumber() + "]";
@@ -94,27 +85,7 @@ public class FmlContentParser
     protected void handleEndTag( XmlPullParser parser, Sink sink )
         throws XmlPullParserException, MacroExecutionException
     {
-        if ( isVerbatim() )
-        {
-            if ( parser.getName().equals( SOURCE_TAG.toString() ) )
-            {
-                verbatim_();
-
-                if ( isVerbatim() )
-                {
-                    sink.text( parser.getText() );
-                }
-                else
-                {
-                    sink.verbatim_();
-                }
-            }
-            else
-            {
-                sink.text( parser.getText() );
-            }
-        }
-        else if ( parser.getName().equals( QUESTION_TAG.toString() )
+        if ( parser.getName().equals( QUESTION_TAG.toString() )
             || parser.getName().equals( ANSWER_TAG.toString() ) )
         {
             // ignore

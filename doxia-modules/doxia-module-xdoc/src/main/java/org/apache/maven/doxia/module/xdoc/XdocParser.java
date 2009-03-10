@@ -35,8 +35,8 @@ import org.apache.maven.doxia.macro.MacroRequest;
 import org.apache.maven.doxia.parser.ParseException;
 import org.apache.maven.doxia.parser.XhtmlBaseParser;
 import org.apache.maven.doxia.sink.Sink;
-
 import org.apache.maven.doxia.sink.SinkEventAttributeSet;
+
 import org.codehaus.plexus.util.IOUtil;
 import org.codehaus.plexus.util.StringUtils;
 import org.codehaus.plexus.util.xml.pull.XmlPullParser;
@@ -104,17 +104,7 @@ public class XdocParser
 
         SinkEventAttributeSet attribs = getAttributesFromParser( parser );
 
-        if ( isVerbatim() )
-        {
-            if ( parser.getName().equals( SOURCE_TAG.toString() )
-                || parser.getName().equals( Tag.PRE.toString() ) )
-            {
-                verbatim();
-            }
-
-            sink.text( getText( parser ) );
-        }
-        else if ( parser.getName().equals( DOCUMENT_TAG.toString() ) )
+        if ( parser.getName().equals( DOCUMENT_TAG.toString() ) )
         {
             //Do nothing
             return;
@@ -181,7 +171,7 @@ public class XdocParser
         {
             verbatim();
 
-            attribs.addAttribute( SinkEventAttributeSet.DECORATION, "boxed" );
+            attribs.addAttributes( SinkEventAttributeSet.BOXED );
 
             sink.verbatim( attribs );
         }
@@ -253,7 +243,7 @@ public class XdocParser
                 handleUnknown( parser, sink, TAG_TYPE_START );
             }
 
-            if ( !isVerbatim() && getLog().isDebugEnabled() )
+            if ( getLog().isDebugEnabled() )
             {
                 String position = "[" + parser.getLineNumber() + ":"
                     + parser.getColumnNumber() + "]";
@@ -268,28 +258,7 @@ public class XdocParser
     protected void handleEndTag( XmlPullParser parser, Sink sink )
         throws XmlPullParserException, MacroExecutionException
     {
-        if ( isVerbatim() )
-        {
-            if ( parser.getName().equals( SOURCE_TAG.toString() )
-                || parser.getName().equals( Tag.PRE.toString() ) )
-            {
-                verbatim_();
-
-                if ( isVerbatim() )
-                {
-                    sink.text( getText( parser ) );
-                }
-                else
-                {
-                    sink.verbatim_();
-                }
-            }
-            else
-            {
-                sink.text( getText( parser ) );
-            }
-        }
-        else if ( parser.getName().equals( DOCUMENT_TAG.toString() ) )
+        if ( parser.getName().equals( DOCUMENT_TAG.toString() ) )
         {
             //Do nothing
             return;

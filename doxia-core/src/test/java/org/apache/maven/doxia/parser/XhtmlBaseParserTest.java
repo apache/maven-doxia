@@ -251,4 +251,42 @@ public class XhtmlBaseParserTest
         assertEquals( "paragraph_", ( (SinkEventElement) it.next() ).getName() );
         assertFalse( it.hasNext() );
     }
+
+    /** @throws Exception  */
+    public void testPreFormattedText()
+        throws Exception
+    {
+        String text = "<pre><a href=\"what.html\">what</a></pre>";
+
+        parser.parse( text, sink );
+
+        Iterator it = sink.getEventList().iterator();
+        assertEquals( "verbatim", ( (SinkEventElement) it.next() ).getName() );
+        assertEquals( "link", ( (SinkEventElement) it.next() ).getName() );
+        assertEquals( "text", ( (SinkEventElement) it.next() ).getName() );
+        assertEquals( "link_", ( (SinkEventElement) it.next() ).getName() );
+        assertEquals( "verbatim_", ( (SinkEventElement) it.next() ).getName() );
+        assertFalse( it.hasNext() );
+
+        text = "<pre><![CDATA[<a href=\"what.html\">what</a>]]></pre>";
+        sink.reset();
+        parser.parse( text, sink );
+
+        it = sink.getEventList().iterator();
+        assertEquals( "verbatim", ( (SinkEventElement) it.next() ).getName() );
+        assertEquals( "text", ( (SinkEventElement) it.next() ).getName() );
+        assertEquals( "verbatim_", ( (SinkEventElement) it.next() ).getName() );
+        assertFalse( it.hasNext() );
+
+        text = "<pre><![CDATA[<pre>what</pre>]]></pre>";
+        sink.reset();
+        parser.parse( text, sink );
+
+        it = sink.getEventList().iterator();
+        assertEquals( "verbatim", ( (SinkEventElement) it.next() ).getName() );
+        assertEquals( "text", ( (SinkEventElement) it.next() ).getName() );
+        assertEquals( "verbatim_", ( (SinkEventElement) it.next() ).getName() );
+        assertFalse( it.hasNext() );
+    }
+
 }

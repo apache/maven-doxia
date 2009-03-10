@@ -254,15 +254,37 @@ public class XdocParserTest
     public void testSourceEventsList()
         throws Exception
     {
-        String text = "<source></source>";
+        String text = "<source><a href=\"what.html\">what</a></source>";
 
         SinkEventTestingSink sink = new SinkEventTestingSink();
 
         parser.parse( text, sink );
 
         Iterator it = sink.getEventList().iterator();
-
         assertEquals( "verbatim", ( (SinkEventElement) it.next() ).getName() );
+        assertEquals( "link", ( (SinkEventElement) it.next() ).getName() );
+        assertEquals( "text", ( (SinkEventElement) it.next() ).getName() );
+        assertEquals( "link_", ( (SinkEventElement) it.next() ).getName() );
+        assertEquals( "verbatim_", ( (SinkEventElement) it.next() ).getName() );
+        assertFalse( it.hasNext() );
+
+        text = "<source><![CDATA[<a href=\"what.html\">what</a>]]></source>";
+        sink.reset();
+        parser.parse( text, sink );
+
+        it = sink.getEventList().iterator();
+        assertEquals( "verbatim", ( (SinkEventElement) it.next() ).getName() );
+        assertEquals( "text", ( (SinkEventElement) it.next() ).getName() );
+        assertEquals( "verbatim_", ( (SinkEventElement) it.next() ).getName() );
+        assertFalse( it.hasNext() );
+
+        text = "<source><![CDATA[<source>what</source>]]></source>";
+        sink.reset();
+        parser.parse( text, sink );
+
+        it = sink.getEventList().iterator();
+        assertEquals( "verbatim", ( (SinkEventElement) it.next() ).getName() );
+        assertEquals( "text", ( (SinkEventElement) it.next() ).getName() );
         assertEquals( "verbatim_", ( (SinkEventElement) it.next() ).getName() );
         assertFalse( it.hasNext() );
     }

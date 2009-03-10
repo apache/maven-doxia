@@ -979,10 +979,11 @@ public class XhtmlBaseSink
             paragraph_();
         }
 
-        SinkEventAttributeSet att = new SinkEventAttributeSet();
+        SinkEventAttributeSet att = null;
 
         if ( boxed )
         {
+            att = new SinkEventAttributeSet();
             att.addAttribute( SinkEventAttributes.DECORATION, "boxed" );
         }
 
