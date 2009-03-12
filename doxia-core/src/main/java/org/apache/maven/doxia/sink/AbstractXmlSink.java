@@ -80,9 +80,9 @@ public abstract class AbstractXmlSink
      * &lt;tag attName="attValue"&gt;
      * </pre>
      *
-     * @param t a non null tag
-     * @param att a set of attributes
-     * @see #writeStartTag(javax.swing.text.html.HTML.Tag, javax.swing.text.MutableAttributeSet, boolean)
+     * @param t a non null tag.
+     * @param att a set of attributes. May be null.
+     * @see #writeStartTag(javax.swing.text.html.HTML.Tag, javax.swing.text.MutableAttributeSet, boolean).
      */
     protected void writeStartTag( Tag t, MutableAttributeSet att )
     {
@@ -95,9 +95,9 @@ public abstract class AbstractXmlSink
      * &lt;tag attName="attValue"&gt;
      * </pre>
      *
-     * @param t a non null tag
-     * @param att a set of attributes
-     * @param isSimpleTag boolean to write as a simple tag
+     * @param t a non null tag.
+     * @param att a set of attributes. May be null.
+     * @param isSimpleTag boolean to write as a simple tag.
      */
     protected void writeStartTag( Tag t, MutableAttributeSet att, boolean isSimpleTag )
     {
@@ -180,9 +180,9 @@ public abstract class AbstractXmlSink
      * &lt;tag attName="attValue" /&gt;
      * </pre>
      *
-     * @param t a non null tag
-     * @param att a set of attributes
-     * @see #writeStartTag(javax.swing.text.html.HTML.Tag, javax.swing.text.MutableAttributeSet, boolean)
+     * @param t a non null tag.
+     * @param att a set of attributes. May be null.
+     * @see #writeStartTag(javax.swing.text.html.HTML.Tag, javax.swing.text.MutableAttributeSet, boolean).
      */
     protected void writeSimpleTag( Tag t, MutableAttributeSet att )
     {

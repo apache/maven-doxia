@@ -394,7 +394,7 @@ public class XhtmlBaseSink
      * Starts a section. The default class style is <code>section</code>.
      *
      * @param depth The level of the section.
-     * @param attributes some attributes.
+     * @param attributes some attributes. May be null.
      * @see javax.swing.text.html.HTML.Tag#DIV
      */
     protected void onSection( int depth, SinkEventAttributes attributes )
@@ -430,7 +430,7 @@ public class XhtmlBaseSink
      * Starts a section title.
      *
      * @param depth The level of the section title.
-     * @param attributes some attributes.
+     * @param attributes some attributes. May be null.
      * @see javax.swing.text.html.HTML.Tag#H2
      * @see javax.swing.text.html.HTML.Tag#H3
      * @see javax.swing.text.html.HTML.Tag#H4
@@ -1500,11 +1500,18 @@ public class XhtmlBaseSink
     /** {@inheritDoc} */
     public void link( String name, SinkEventAttributes attributes )
     {
-        String target = (String) attributes.getAttribute( Attribute.TARGET.toString() );
-        MutableAttributeSet atts = SinkUtils.filterAttributes(
-                attributes, SinkUtils.SINK_LINK_ATTRIBUTES  );
+        if ( attributes == null )
+        {
+            link( name, null, null );
+        }
+        else
+        {
+            String target = (String) attributes.getAttribute( Attribute.TARGET.toString() );
+            MutableAttributeSet atts = SinkUtils.filterAttributes(
+                    attributes, SinkUtils.SINK_LINK_ATTRIBUTES  );
 
-        link( name, target, atts );
+            link( name, target, atts );
+        }
     }
 
     /**
