@@ -91,7 +91,8 @@ public class XdocParser
 
         Reader tmp = new StringReader( sourceContent );
 
-        setIgnorableWhitespace( true );
+        // leave this at default (false) until everything is properly implemented, see DOXIA-226
+        //setIgnorableWhitespace( true );
 
         super.parse( tmp, sink );
     }

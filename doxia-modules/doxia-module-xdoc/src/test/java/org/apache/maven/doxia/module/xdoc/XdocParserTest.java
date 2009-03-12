@@ -289,6 +289,31 @@ public class XdocParserTest
         assertFalse( it.hasNext() );
     }
 
+    /** @throws Exception  */
+    public void testPreEOL()
+        throws Exception
+    {
+        // test EOLs within <source>: the sink MUST receive a text event for the EOL
+        String text = "<source><a href=\"what.html\">what</a>" + EOL
+                + "<a href=\"what.html\">what</a></source>";
+
+        SinkEventTestingSink sink = new SinkEventTestingSink();
+
+        parser.parse( text, sink );
+
+        Iterator it = sink.getEventList().iterator();
+
+        assertEquals( "verbatim", ( (SinkEventElement) it.next() ).getName() );
+        assertEquals( "link", ( (SinkEventElement) it.next() ).getName() );
+        assertEquals( "text", ( (SinkEventElement) it.next() ).getName() );
+        assertEquals( "link_", ( (SinkEventElement) it.next() ).getName() );
+        assertEquals( "text", ( (SinkEventElement) it.next() ).getName() );
+        assertEquals( "link", ( (SinkEventElement) it.next() ).getName() );
+        assertEquals( "text", ( (SinkEventElement) it.next() ).getName() );
+        assertEquals( "link_", ( (SinkEventElement) it.next() ).getName() );
+        assertEquals( "verbatim_", ( (SinkEventElement) it.next() ).getName() );
+    }
+
     /**
      * TODO move me!
      *
