@@ -108,35 +108,4 @@ public class XhtmlParserTest
         assertEquals( "verbatim_", ( (SinkEventElement) it.next() ).getName() );
         assertFalse( it.hasNext() );
     }
-
-    /**
-     * @throws Exception if any
-     */
-    public void testDoxia250()
-        throws Exception
-    {
-        StringBuffer sb = new StringBuffer();
-        sb.append( "<!DOCTYPE test [" ).append( EOL );
-        sb.append( "<!ENTITY   " ).append( EOL ).append( "   foo   " ).append( EOL ).append( "   \"   " )
-          .append( EOL ).append( "   &#x159;   " ).append( EOL ).append( "   \">" ).append( EOL );
-        sb.append( "<!ENTITY   " ).append( EOL ).append( "   foo1   " ).append( EOL ).append( "   \"   " )
-          .append( EOL ).append( "   &nbsp;   " ).append( EOL ).append( "   \">" ).append( EOL );
-        sb.append( "<!ENTITY   " ).append( EOL ).append( "   foo2   " ).append( EOL ).append( "  \"   " )
-          .append( EOL ).append( "   &#x161;   " ).append( EOL ).append( "   \">" ).append( EOL );
-        sb.append( "]>" ).append( EOL );
-        sb.append( "<html><body>&foo;&foo1;&foo2;</body></html>" );
-
-        String text = sb.toString();
-        StringWriter w = new StringWriter();
-        Sink sink = new XhtmlSink( w );
-        XhtmlParser parser = (XhtmlParser) createParser();
-        parser.setValidate( false );
-        parser.parse( text.toString(), sink );
-        sink.close();
-        String result = w.toString();
-
-        assertTrue( result.indexOf( "&#x159;" ) != -1 );
-        assertTrue( result.indexOf( "&nbsp;" ) != -1 );
-        assertTrue( result.indexOf( "&#x161;" ) != -1 );
-    }
 }

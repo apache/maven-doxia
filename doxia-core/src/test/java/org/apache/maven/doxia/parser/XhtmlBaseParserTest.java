@@ -296,7 +296,7 @@ public class XhtmlBaseParserTest
         // test EOLs within <pre>: the sink MUST receive a text event for the EOL
         String text = "<pre><a href=\"what.html\">what</a>" + XhtmlBaseParser.EOL
                 + "<a href=\"what.html\">what</a></pre>";
-        sink.reset();
+
         parser.parse( text, sink );
 
         Iterator it = sink.getEventList().iterator();
@@ -310,5 +310,41 @@ public class XhtmlBaseParserTest
         assertEquals( "text", ( (SinkEventElement) it.next() ).getName() );
         assertEquals( "link_", ( (SinkEventElement) it.next() ).getName() );
         assertEquals( "verbatim_", ( (SinkEventElement) it.next() ).getName() );
+    }
+
+    /** @throws Exception  */
+    public void testDoxia250()
+        throws Exception
+    {
+        StringBuffer sb = new StringBuffer();
+        sb.append( "<!DOCTYPE test [" ).append( XhtmlBaseParser.EOL );
+        sb.append( "<!ENTITY foo \"&#x159;\">" ).append( XhtmlBaseParser.EOL );
+        sb.append( "<!ENTITY foo1 \"&nbsp;\">" ).append( XhtmlBaseParser.EOL );
+        sb.append( "<!ENTITY foo2 \"&#x161;\">" ).append( XhtmlBaseParser.EOL );
+        sb.append( "]>" ).append( XhtmlBaseParser.EOL );
+        sb.append( "<b>&foo;&foo1;&foo2;</b>" );
+
+        parser.setValidate( false );
+        parser.parse( sb.toString(), sink );
+
+        Iterator it = sink.getEventList().iterator();
+
+        SinkEventElement event = (SinkEventElement) it.next();
+        assertEquals( "bold", event.getName() );
+
+        event = (SinkEventElement) it.next();
+        assertEquals( "rawText", event.getName() );
+        assertEquals( "&#x159;",  (String) event.getArgs()[0] );
+
+        event = (SinkEventElement) it.next();
+        assertEquals( "rawText", event.getName() );
+        assertEquals( "&nbsp;",  (String) event.getArgs()[0] );
+
+        event = (SinkEventElement) it.next();
+        assertEquals( "rawText", event.getName() );
+        assertEquals( "&#x161;",  (String) event.getArgs()[0] );
+
+        event = (SinkEventElement) it.next();
+        assertEquals( "bold_", event.getName() );
     }
 }
