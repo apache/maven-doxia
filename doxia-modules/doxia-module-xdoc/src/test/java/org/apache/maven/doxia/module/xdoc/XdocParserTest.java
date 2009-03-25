@@ -142,8 +142,8 @@ public class XdocParserTest
         }
 
         // No section, only subsection 1 and 2
-        assertTrue( noNewLine( content ).indexOf( "<a href=\"#Section_11\">Section 11</a>" ) != -1 );
-        assertTrue( noNewLine( content ).indexOf( "<a href=\"#Section_1211\">Section 1211</a>" ) == -1 );
+        assertTrue( content.indexOf( "<a href=\"#Section_11\">Section 11</a>" ) != -1 );
+        assertTrue( content.indexOf( "<a href=\"#Section_1211\">Section 1211</a>" ) == -1 );
     }
 
     /** @throws Exception  */
@@ -312,17 +312,6 @@ public class XdocParserTest
         assertEquals( "text", ( (SinkEventElement) it.next() ).getName() );
         assertEquals( "link_", ( (SinkEventElement) it.next() ).getName() );
         assertEquals( "verbatim_", ( (SinkEventElement) it.next() ).getName() );
-    }
-
-    /**
-     * TODO move me!
-     *
-     * @param text
-     * @return
-     */
-    private String noNewLine( String text )
-    {
-        return text.replaceAll( EOL, "" );
     }
 
     /**
