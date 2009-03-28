@@ -22,6 +22,7 @@ package org.apache.maven.doxia.sink;
 import java.util.Collections;
 import java.util.Enumeration;
 import java.util.LinkedHashMap;
+import java.util.Map;
 
 import javax.swing.text.AttributeSet;
 
@@ -33,82 +34,82 @@ import javax.swing.text.AttributeSet;
  * @since 1.1
  */
 public class SinkEventAttributeSet
-    implements SinkEventAttributes
+    implements SinkEventAttributes, Cloneable
 {
     /**
-     * An attribute set containing only an underline attribute.
+     * An unmodifiable attribute set containing only an underline attribute.
      */
     public static final SinkEventAttributes UNDERLINE;
 
     /**
-     * An attribute set containing only an overline attribute.
+     * An unmodifiable attribute set containing only an overline attribute.
      */
     public static final SinkEventAttributes OVERLINE;
 
     /**
-     * An attribute set containing only a linethrough attribute.
+     * An unmodifiable attribute set containing only a linethrough attribute.
      */
     public static final SinkEventAttributes LINETHROUGH;
 
     /**
-     * An attribute set containing only a boxed attribute.
+     * An unmodifiable attribute set containing only a boxed attribute.
      */
     public static final SinkEventAttributes BOXED;
 
     /**
-     * An attribute set containing only a bold attribute.
+     * An unmodifiable attribute set containing only a bold attribute.
      */
     public static final SinkEventAttributes BOLD;
 
     /**
-     * An attribute set containing only an italic attribute.
+     * An unmodifiable attribute set containing only an italic attribute.
      */
     public static final SinkEventAttributes ITALIC;
 
     /**
-     * An attribute set containing only a monospaced attribute.
+     * An unmodifiable attribute set containing only a monospaced attribute.
      */
     public static final SinkEventAttributes MONOSPACED;
 
     /**
-     * An attribute set containing only a left attribute.
+     * An unmodifiable attribute set containing only a left attribute.
      */
     public static final SinkEventAttributes LEFT;
 
     /**
-     * An attribute set containing only a right attribute.
+     * An unmodifiable attribute set containing only a right attribute.
      */
     public static final SinkEventAttributes RIGHT;
 
     /**
-     * An attribute set containing only a center attribute.
+     * An unmodifiable attribute set containing only a center attribute.
      */
     public static final SinkEventAttributes CENTER;
 
     /**
-     * An attribute set containing only a justify attribute.
+     * An unmodifiable attribute set containing only a justify attribute.
      */
     public static final SinkEventAttributes JUSTIFY;
 
 
     static
     {
-        UNDERLINE = new SinkEventAttributeSet( new String[] {DECORATION, "underline"} );
-        OVERLINE = new SinkEventAttributeSet( new String[] {DECORATION, "overline"} );
-        LINETHROUGH = new SinkEventAttributeSet( new String[] {DECORATION, "line-through"} );
-        BOXED = new SinkEventAttributeSet( new String[] {DECORATION, "boxed"} );
+        UNDERLINE = new SinkEventAttributeSet( new String[] {DECORATION, "underline"} ).unmodifiable();
+        OVERLINE = new SinkEventAttributeSet( new String[] {DECORATION, "overline"} ).unmodifiable();
+        LINETHROUGH = new SinkEventAttributeSet( new String[] {DECORATION, "line-through"} ).unmodifiable();
+        BOXED = new SinkEventAttributeSet( new String[] {DECORATION, "boxed"} ).unmodifiable();
 
-        BOLD = new SinkEventAttributeSet( new String[] {STYLE, "bold"} );
-        ITALIC = new SinkEventAttributeSet( new String[] {STYLE, "italic"} );
-        MONOSPACED = new SinkEventAttributeSet( new String[] {STYLE, "monospaced"} );
+        BOLD = new SinkEventAttributeSet( new String[] {STYLE, "bold"} ).unmodifiable();
+        ITALIC = new SinkEventAttributeSet( new String[] {STYLE, "italic"} ).unmodifiable();
+        MONOSPACED = new SinkEventAttributeSet( new String[] {STYLE, "monospaced"} ).unmodifiable();
 
-        LEFT = new SinkEventAttributeSet( new String[] {ALIGN, "left"} );
-        RIGHT = new SinkEventAttributeSet( new String[] {ALIGN, "right"} );
-        CENTER = new SinkEventAttributeSet( new String[] {ALIGN, "center"} );
-        JUSTIFY = new SinkEventAttributeSet( new String[] {ALIGN, "justify"} );
+        LEFT = new SinkEventAttributeSet( new String[] {ALIGN, "left"} ).unmodifiable();
+        RIGHT = new SinkEventAttributeSet( new String[] {ALIGN, "right"} ).unmodifiable();
+        CENTER = new SinkEventAttributeSet( new String[] {ALIGN, "center"} ).unmodifiable();
+        JUSTIFY = new SinkEventAttributeSet( new String[] {ALIGN, "justify"} ).unmodifiable();
     }
 
-    private LinkedHashMap attribs;
+    private Map attribs;
 
     private AttributeSet resolveParent;
 
@@ -172,6 +173,20 @@ public class SinkEventAttributeSet
 
             attribs.put( name, attributes.getAttribute( name ) );
         }
+    }
+
+    /**
+     * Replace this AttributeSet by an unmodifiable view of itself.
+     * Any subsequent attempt to add, remove or modify the underlying mapping
+     * will result in an UnsupportedOperationException.
+     *
+     * @return an unmodifiable view of this AttributeSet.
+     */
+    public SinkEventAttributeSet unmodifiable()
+    {
+        this.attribs = Collections.unmodifiableMap( attribs );
+
+        return this;
     }
 
     /**
@@ -262,7 +277,7 @@ public class SinkEventAttributeSet
      */
     public void addAttribute( Object name, Object value )
     {
-        attribs.put( name.toString(), value.toString() );
+        attribs.put( name.toString(), value );
     }
 
     /** {@inheritDoc} */
@@ -341,17 +356,12 @@ public class SinkEventAttributeSet
     /** {@inheritDoc} */
     public Object clone()
     {
-        SinkEventAttributeSet attr;
+        SinkEventAttributeSet attr = new SinkEventAttributeSet( attribs.size() );
+        attr.attribs = new LinkedHashMap( attribs );
 
-        try
+        if ( resolveParent != null )
         {
-            attr = (SinkEventAttributeSet) super.clone();
-            attr.attribs = (LinkedHashMap) attribs.clone();
             attr.resolveParent = resolveParent.copyAttributes();
-        }
-        catch ( CloneNotSupportedException e )
-        {
-            attr = null;
         }
 
         return attr;
@@ -360,7 +370,9 @@ public class SinkEventAttributeSet
     /** {@inheritDoc} */
     public int hashCode()
     {
-        return attribs.hashCode() + resolveParent.hashCode();
+        final int parentHash = ( resolveParent == null ? 0 : resolveParent.hashCode() );
+
+        return attribs.hashCode() + parentHash;
     }
 
     /** {@inheritDoc} */
