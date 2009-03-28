@@ -433,11 +433,11 @@ public class FoAggregateSink extends FoSink
      *
      * Writes an end tag, appending EOL.
      */
-    protected void writeEndTag( Tag tag )
+    protected void writeEndTag( Tag t )
     {
         if ( !ignoreText )
         {
-            super.writeEndTag( tag );
+            super.writeEndTag( t );
         }
     }
 

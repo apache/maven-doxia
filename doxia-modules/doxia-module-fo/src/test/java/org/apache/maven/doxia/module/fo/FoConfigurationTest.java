@@ -54,11 +54,11 @@ public class FoConfigurationTest extends TestCase
 
         assertNull(
             "Null attribute ID should return null AttributeSet!",
-            config.getAttributeSet( null ));
+            config.getAttributeSet( null ) );
 
         assertNull(
             "Empty attribute ID should return null AttributeSet!",
-            config.getAttributeSet( "" ));
+            config.getAttributeSet( "" ) );
 
         assertNull(
             "Non existent attribute ID should return null AttributeSet!",
