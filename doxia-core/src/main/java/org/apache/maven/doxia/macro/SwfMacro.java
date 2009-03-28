@@ -19,10 +19,10 @@ package org.apache.maven.doxia.macro;
  * under the License.
  */
 
+import java.util.Iterator;
+
 import org.apache.maven.doxia.sink.Sink;
 import org.codehaus.plexus.util.StringUtils;
-
-import java.util.Iterator;
 
 /**
  * Macro for embedding Flash (SWF) within Maven documentation.
@@ -76,7 +76,7 @@ public class SwfMacro
             }
             if ( key.equals( "width" ) )
             {
-                width = (String) request.getParameter( key );
+                str = (String) request.getParameter( key );
                 if ( StringUtils.isNotEmpty( str ) )
                 {
                     width = str;
