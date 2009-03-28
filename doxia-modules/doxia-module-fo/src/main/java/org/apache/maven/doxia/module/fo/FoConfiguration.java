@@ -19,6 +19,9 @@ package org.apache.maven.doxia.module.fo;
  * under the License.
  */
 
+import java.io.File;
+import java.io.FileReader;
+import java.io.IOException;
 import java.util.List;
 
 import javax.swing.text.MutableAttributeSet;
@@ -45,9 +48,7 @@ public class FoConfiguration
     private final XMLConfiguration config;
 
     /** The list of attribute sets. */
-    private final List sets;
-
-    // TODO: add constructor to override default configuration
+    private List sets;
 
     /**
      * Constructor.
@@ -67,6 +68,33 @@ public class FoConfiguration
         {
             // this should not happen
             throw new RuntimeException( cex );
+        }
+
+        this.sets = config.getList( "xsl:attribute-set[@name]" );
+        reset();
+    }
+
+    /**
+     * Load configuration parameters from a File.
+     *
+     * @param configFile the configuration file.
+     *
+     * @throws java.io.IOException if the File cannot be read
+     *  or some error occurs when initializing the configuration parameters.
+     *
+     * @since 1.1.1
+     */
+    public void load( File configFile )
+            throws IOException
+    {
+        // this overloads default values with custom config
+        try
+        {
+            config.load( new FileReader( configFile ) );
+        }
+        catch ( ConfigurationException cex )
+        {
+            throw new IOException( cex );
         }
 
         this.sets = config.getList( "xsl:attribute-set[@name]" );
