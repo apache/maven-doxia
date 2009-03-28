@@ -792,7 +792,7 @@ public class SinkEventTestingSink
     /** {@inheritDoc} */
     public void unknown( String name, Object[] requiredParams, SinkEventAttributes attributes )
     {
-        addEvent( name, new Object[] {requiredParams, attributes} );
+        addEvent( "unknown", new Object[] {name, requiredParams, attributes} );
     }
 
       //
