@@ -1,0 +1,14 @@
+
+preamble
+
+SNIPPET START firstId
+first snippet
+SNIPPET END   firstId
+
+interlude
+
+another snippet to start: secondId
+second snippet
+another snippet to end:   secondId
+
+conclusion

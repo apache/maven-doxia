@@ -77,6 +77,10 @@ public class DoxiaUtilsTest
         assertTrue( "Should be an external link: " + link,
             DoxiaUtils.isExternalLink( link ) );
 
+        link = "resource_type://domain:port/filepathname?query_string#anchor";
+        assertTrue( "Should be an external link: " + link,
+            DoxiaUtils.isExternalLink( link ) );
+
         link = "index.html";
         assertFalse( "Should NOT be an external link: " + link,
             DoxiaUtils.isExternalLink( link ) );
@@ -129,6 +133,50 @@ public class DoxiaUtilsTest
         assertFalse( "Should NOT be a local link: " + link,
             DoxiaUtils.isLocalLink( link ) );
 
+        link = "http://maven.apache.org/";
+        assertFalse( "Should NOT be a local link: " + link,
+            DoxiaUtils.isLocalLink( link ) );
+
     }
 
+    /**
+     * Verify the expected results.
+     */
+    public void testEncodeId()
+    {
+        assertEquals( DoxiaUtils.encodeId( null ), null );
+        assertEquals( DoxiaUtils.encodeId( "" ), "" );
+        assertEquals( DoxiaUtils.encodeId( " " ), "" );
+        assertEquals( DoxiaUtils.encodeId( " _ " ), "a_" );
+        assertEquals( DoxiaUtils.encodeId( "1" ), "a1" );
+        assertEquals( DoxiaUtils.encodeId( "1anchor" ), "a1anchor" );
+        assertEquals( DoxiaUtils.encodeId( "_anchor" ), "a_anchor" );
+        assertEquals( DoxiaUtils.encodeId( "a b-c123 " ), "a_b-c123" );
+        assertEquals( DoxiaUtils.encodeId( "   anchor" ), "anchor" );
+        assertEquals( DoxiaUtils.encodeId( "myAnchor" ), "myAnchor" );
+        assertEquals( DoxiaUtils.encodeId( "my&Anchor" ), "my%26Anchor" );
+    }
+
+    /**
+     * Verify the expected results.
+     */
+    public void testIsValidId()
+    {
+        assertFalse( DoxiaUtils.isValidId( null ) );
+        assertFalse( DoxiaUtils.isValidId( "" ) );
+        assertFalse( DoxiaUtils.isValidId( " " ) );
+        assertFalse( DoxiaUtils.isValidId( " _ " ) );
+        assertFalse( DoxiaUtils.isValidId( "1" ) );
+        assertFalse( DoxiaUtils.isValidId( "1anchor" ) );
+        assertFalse( DoxiaUtils.isValidId( "_anchor" ) );
+        assertFalse( DoxiaUtils.isValidId( "a b-c123 " ) );
+        assertFalse( DoxiaUtils.isValidId( "   anchor" ) );
+        assertFalse( DoxiaUtils.isValidId( "my&Anchor" ) );
+        assertTrue( DoxiaUtils.isValidId( "myAnchor" ) );
+        assertTrue( DoxiaUtils.isValidId( "a_" ) );
+        assertTrue( DoxiaUtils.isValidId( "a-" ) );
+        assertTrue( DoxiaUtils.isValidId( "a:" ) );
+        assertTrue( DoxiaUtils.isValidId( "a." ) );
+        assertTrue( DoxiaUtils.isValidId( "index.html" ) );
+    }
 }
