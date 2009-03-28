@@ -181,6 +181,8 @@ public class SinkEventAttributeSet
      * will result in an UnsupportedOperationException.
      *
      * @return an unmodifiable view of this AttributeSet.
+     *
+     * @since 1.1.1
      */
     public SinkEventAttributeSet unmodifiable()
     {
