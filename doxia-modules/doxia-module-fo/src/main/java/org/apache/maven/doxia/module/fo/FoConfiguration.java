@@ -94,7 +94,9 @@ public class FoConfiguration
         }
         catch ( ConfigurationException cex )
         {
-            throw new IOException( cex );
+            IOException ioe = new IOException();
+            ioe.initCause( cex );
+            throw  ioe;
         }
 
         this.sets = config.getList( "xsl:attribute-set[@name]" );
