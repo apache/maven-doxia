@@ -30,6 +30,7 @@ import org.apache.maven.doxia.document.DocumentMeta;
 import org.apache.maven.doxia.document.DocumentModel;
 import org.apache.maven.doxia.document.DocumentTOC;
 import org.apache.maven.doxia.document.DocumentTOCItem;
+import org.apache.maven.doxia.sink.SinkEventAttributes;
 import org.apache.maven.doxia.util.DoxiaUtils;
 import org.apache.maven.doxia.util.HtmlTools;
 
@@ -226,20 +227,22 @@ public class FoAggregateSink extends FoSink
     /** {@inheritDoc} */
     public void figureGraphics( String name )
     {
-        if ( !isFigure() )
-        {
-            write( "<fo:external-graphic" + getFoConfiguration().getAttributeString( "figure.graphics" ) );
-        }
-
-        String anchor = name;
-
-        if ( name.startsWith( "../" ) && docName != null )
-        {
-            anchor = resolveLinkRelativeToBase( name );
-        }
-
-        writeln( " src=\"" + anchor + "\"/>" );
+        figureGraphics( name, null );
     }
+
+    /** {@inheritDoc} */
+    public void figureGraphics( String src, SinkEventAttributes attributes )
+    {
+        String anchor = src;
+
+        if ( src.startsWith( "../" ) && docName != null )
+        {
+            anchor = resolveLinkRelativeToBase( src );
+        }
+
+        super.figureGraphics( anchor, attributes );
+    }
+
 
 
     /** {@inheritDoc} */

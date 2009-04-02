@@ -26,12 +26,14 @@ import java.util.Stack;
 
 import javax.swing.text.MutableAttributeSet;
 import javax.swing.text.SimpleAttributeSet;
+import javax.swing.text.html.HTML.Attribute;
 import javax.swing.text.html.HTML.Tag;
 
 import org.apache.maven.doxia.sink.AbstractXmlSink;
 import org.apache.maven.doxia.sink.Sink;
 import org.apache.maven.doxia.sink.SinkEventAttributeSet;
 import org.apache.maven.doxia.sink.SinkEventAttributes;
+import org.apache.maven.doxia.sink.SinkUtils;
 import org.apache.maven.doxia.util.DoxiaUtils;
 import org.apache.maven.doxia.util.HtmlTools;
 import org.codehaus.plexus.util.StringUtils;
@@ -85,7 +87,7 @@ public class FoSink
     private boolean verbatim;
 
     /** figure flag. */
-    private boolean figure;
+    private boolean inFigure;
 
     private String encoding;
 
@@ -574,17 +576,15 @@ public class FoSink
     /** {@inheritDoc} */
     public void figure()
     {
-        this.figure = true;
+        this.inFigure = true;
         writeEOL();
         writeStartTag( BLOCK_TAG, "figure.display" );
-        write( "<fo:external-graphic"
-            + config.getAttributeString( "figure.graphics" ) );
     }
 
     /** {@inheritDoc} */
     public void figure_()
     {
-        this.figure = false;
+        this.inFigure = false;
         writeEndTag( BLOCK_TAG );
         writeEOL();
     }
@@ -592,12 +592,27 @@ public class FoSink
     /** {@inheritDoc} */
     public void figureGraphics( String name )
     {
-        if ( !isFigure() )
+        figureGraphics( name, null );
+    }
+
+    /** {@inheritDoc} */
+    public void figureGraphics( String src, SinkEventAttributes attributes )
+    {
+        MutableAttributeSet atts = config.getAttributeSet( "figure.graphics" );
+        atts.addAttribute( Attribute.SRC.toString(), src );
+
+        if ( attributes != null && attributes.isDefined( SinkEventAttributes.WIDTH ) )
         {
-            write( "<fo:external-graphic" + config.getAttributeString( "figure.graphics" ) );
+            atts.addAttribute( "content-width", attributes.getAttribute( SinkEventAttributes.WIDTH ) );
         }
 
-        writeln( " src=\"" + name + "\"/>" );
+        if ( attributes != null && attributes.isDefined( SinkEventAttributes.HEIGHT ) )
+        {
+            atts.addAttribute( "content-height", attributes.getAttribute( SinkEventAttributes.HEIGHT ) );
+        }
+
+        writeln( "<fo:external-graphic" + SinkUtils.getAttributeString( atts ) + "/>" );
+
     }
 
     /**
@@ -607,7 +622,7 @@ public class FoSink
      */
     protected boolean isFigure()
     {
-        return this.figure;
+        return this.inFigure;
     }
 
     /** {@inheritDoc} */
@@ -626,7 +641,21 @@ public class FoSink
     /** {@inheritDoc} */
     public void paragraph()
     {
-        writeStartTag( BLOCK_TAG, "normal.paragraph" );
+        paragraph( null );
+    }
+
+    /** {@inheritDoc} */
+    public void paragraph( SinkEventAttributes attributes )
+    {
+        MutableAttributeSet atts = config.getAttributeSet( "normal.paragraph" );
+
+        if ( attributes != null && attributes.isDefined( SinkEventAttributes.ALIGN ) )
+        {
+            atts.addAttribute( "text-align", attributes.getAttribute( SinkEventAttributes.ALIGN ) );
+        }
+
+        writeEOL();
+        writeStartTag( BLOCK_TAG, atts );
     }
 
     /** {@inheritDoc} */
