@@ -24,6 +24,7 @@ import java.io.Writer;
 import java.util.Calendar;
 import java.util.Iterator;
 
+import javax.swing.text.MutableAttributeSet;
 import javax.swing.text.html.HTML.Tag;
 
 import org.apache.maven.doxia.document.DocumentMeta;
@@ -690,15 +691,16 @@ public class FoAggregateSink extends FoSink
 
             String ref = getIdName( tocItem.getRef() );
 
-            writeStartTag( TABLE_ROW_TAG, "keep-with-next", "always" );
+            writeStartTag( TABLE_ROW_TAG, "keep-with-next", "auto" );
             writeStartTag( TABLE_CELL_TAG, "toc.cell" );
             writeStartTag( BLOCK_TAG, "toc.number.style" );
             write( Integer.toString( count ) );
             writeEndTag( BLOCK_TAG );
             writeEndTag( TABLE_CELL_TAG );
             writeStartTag( TABLE_CELL_TAG, "number-columns-spanned", "3", "toc.cell" );
-            // TODO: writeStartTag( BLOCK_TAG, "text-align-last", "justify", "toc.h1.style" );
-            writeStartTag( BLOCK_TAG, "toc.h1.style" );
+            MutableAttributeSet atts = getFoConfiguration().getAttributeSet( "toc.h1.style" );
+            atts.addAttribute( "text-align-last", "justify" );
+            writeStartTag( BLOCK_TAG, atts );
             writeStartTag( BASIC_LINK_TAG, "internal-destination", ref );
             write( tocItem.getName() );
             writeEndTag( BASIC_LINK_TAG );
