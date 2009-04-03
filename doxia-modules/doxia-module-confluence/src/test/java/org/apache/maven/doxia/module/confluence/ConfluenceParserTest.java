@@ -227,6 +227,9 @@ public class ConfluenceParserTest
         // ignore formtting in caption...
         assertContainsLines( result, "figureGraphics, name: images/bold.jpg\n"
             + "begin:figureCaption\ntext: With *bold* caption underneath\nend:figureCaption" );
+        // DOXIA-303: image attributes are ignored
+        assertContainsLines( result, "begin:figure\nfigureGraphics, name: image.gif\nend:figure\n" );
+
         // 2 paragraphs in the input... (the figures do not go in a paragraph by analogy with AptParser)
         assertEquals( 3, result.split( "end:paragraph\n" ).length );
     }

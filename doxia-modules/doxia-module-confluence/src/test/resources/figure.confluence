@@ -14,3 +14,5 @@ With caption underneath and no linebreak
 
 !images/bold.jpg!
 With *bold* caption underneath
+
+!image.gif|align=right, vspace=4!
