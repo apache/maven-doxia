@@ -202,10 +202,10 @@ public class ConfluenceParserTest
         String result = locateAndParseTestSourceFile( "code" );
 
         assertContainsLines( result, "begin:verbatim, boxed: true\ntext: public class Cat {" );
-        // 3 paragraphs in the input...
-        assertEquals( 4, result.split( "end:paragraph\n" ).length );
-        // 1 verbatim in the input...
-        assertEquals( 2, result.split( "end:verbatim\n" ).length );
+        // 5 paragraphs in the input...
+        assertEquals( 5, result.split( "end:paragraph\n" ).length );
+        // 3 verbatim in the input...
+        assertEquals( 3, result.split( "end:verbatim\n" ).length );
     }
 
     /** @throws Exception */

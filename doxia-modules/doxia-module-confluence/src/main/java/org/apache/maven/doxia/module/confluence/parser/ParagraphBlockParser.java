@@ -35,7 +35,7 @@ public class ParagraphBlockParser
     /**
      * <p>Constructor for ParagraphBlockParser.</p>
      *
-     * @param parsers
+     * @param parsers the parsers.
      */
     public ParagraphBlockParser( BlockParser[] parsers )
     {
@@ -47,6 +47,30 @@ public class ParagraphBlockParser
     public boolean accept( String line, ByLineSource source )
     {
         return true;
+    }
+
+    /**
+     * Visit the Block.
+     *
+     * @param line the line to visit.
+     * @param source the source.
+     * @param generateParagraphTags whether to generate a paragraph.
+     * @return the visited Block.
+     *
+     * @throws org.apache.maven.doxia.parser.ParseException if any
+     */
+    public Block visit(String line, ByLineSource source, boolean generateParagraphTags)
+            throws ParseException
+    {
+        if ( generateParagraphTags )
+        {
+            return this.visit( line, source );
+        }
+        else
+        {
+            ChildBlocksBuilder builder = new ChildBlocksBuilder( appendUntilEmptyLine( line, source ) );
+            return new ParagraphBlock( builder.getBlocks(), generateParagraphTags );
+        }
     }
 
     /** {@inheritDoc} */

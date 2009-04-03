@@ -67,7 +67,8 @@ public class ConfluenceParser
         BlockParser listParser = new ListBlockParser();
         BlockParser tableParser = new TableBlockParser();
 
-        BlockParser[] subparsers = new BlockParser[] { headingParser, figureParser, listParser, tableParser };
+        BlockParser[] subparsers =
+                new BlockParser[] { headingParser, figureParser, listParser, tableParser, verbatimParser };
         BlockParser paragraphParser = new ParagraphBlockParser( subparsers );
 
         parsers =

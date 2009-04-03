@@ -30,21 +30,35 @@ import java.util.List;
 class ParagraphBlock
     extends AbstractFatherBlock
 {
+
+    private boolean generateParagraphTags = true;
+
     ParagraphBlock( List blocks )
-        throws IllegalArgumentException
     {
         super( blocks );
+    }
+
+    ParagraphBlock( List blocks, boolean generateParagraphTags )
+    {
+        super( blocks );
+        this.generateParagraphTags = generateParagraphTags;
     }
 
     /** {@inheritDoc} */
     public  void before(  Sink sink )
     {
-        sink.paragraph();
+        if ( this.generateParagraphTags )
+        {
+            sink.paragraph();
+        }
     }
 
     /** {@inheritDoc} */
     public  void after(  Sink sink )
     {
-        sink.paragraph_();
+        if ( this.generateParagraphTags )
+        {
+            sink.paragraph_();
+        }
     }
 }

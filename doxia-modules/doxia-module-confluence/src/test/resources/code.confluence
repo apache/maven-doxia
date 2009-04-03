@@ -18,4 +18,4 @@ public class Cat {
 	}
 }
 {code}
-in the same paragraph (this didn't work until DOXIA-181).
+in the same paragraph (this didn't work until DOXIA-181). See also DOXIA-302.
