@@ -130,6 +130,20 @@ public class ListBlockParser
     {
         line = line.trim();
 
-        return ( line.startsWith( "*" ) || line.startsWith( "-" ) || line.startsWith( "#" ) );
+        if ( line.startsWith( "*" ) || line.startsWith( "-" ) || line.startsWith( "#" ) )
+        {
+            String temp = line.substring( 1 );
+            while ( temp.charAt( 0 ) == '*' || temp.charAt( 0 ) == '-' || temp.charAt( 0 ) == '#')
+            {
+                temp = temp.substring( 1 );
+            }
+
+            if (temp.charAt( 0 ) == ' ')
+            {
+                return true;
+            }
+        }
+
+        return false;
     }
 }
