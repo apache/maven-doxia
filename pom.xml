@@ -263,12 +263,6 @@ under the License.
             <tagBase>https://svn.apache.org/repos/asf/maven/doxia/doxia/tags</tagBase>
           </configuration>
         </plugin>
-        <plugin>
-          <artifactId>maven-surefire-plugin</artifactId>
-          <configuration>
-            <forkMode>never</forkMode>
-          </configuration>
-        </plugin>
         <!-- TODO need to upgrade to last version or Maven parent version -->
         <plugin>
           <groupId>org.codehaus.plexus</groupId>
