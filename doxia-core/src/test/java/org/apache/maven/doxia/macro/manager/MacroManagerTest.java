@@ -1,4 +1,4 @@
-package org.apache.maven.doxia.macro;
+package org.apache.maven.doxia.macro.manager;
 
 /*
  * Licensed to the Apache Software Foundation (ASF) under one
@@ -19,8 +19,9 @@ package org.apache.maven.doxia.macro;
  * under the License.
  */
 
+import org.apache.maven.doxia.macro.Macro;
+
 import org.codehaus.plexus.PlexusTestCase;
-import org.apache.maven.doxia.macro.manager.MacroManager;
 
 /** @author Jason van Zyl */
 public class MacroManagerTest
@@ -37,5 +38,18 @@ public class MacroManagerTest
         MacroManager mm = (MacroManager) lookup( MacroManager.ROLE );
 
         assertNotNull( mm );
+
+        Macro macro = mm.getMacro( "snippet" );
+        assertNotNull( macro );
+
+        try
+        {
+            macro = mm.getMacro( "weirdId" );
+            fail( "should not exist!" );
+        }
+        catch ( MacroNotFoundException macroNotFoundException )
+        {
+            assertNotNull( macroNotFoundException );
+        }
     }
 }
