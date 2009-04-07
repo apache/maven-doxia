@@ -27,6 +27,7 @@ import java.io.Writer;
 import java.util.Iterator;
 
 import org.apache.maven.doxia.parser.AbstractParserTest;
+import org.apache.maven.doxia.parser.ParseException;
 import org.apache.maven.doxia.parser.Parser;
 import org.apache.maven.doxia.sink.Sink;
 import org.apache.maven.doxia.sink.SinkEventElement;
@@ -166,6 +167,16 @@ public class XdocParserTest
         assertEquals( "author", ( (SinkEventElement) it.next() ).getName() );
         assertEquals( "text", ( (SinkEventElement) it.next() ).getName() );
         assertEquals( "author_", ( (SinkEventElement) it.next() ).getName() );
+        assertEquals( "head_", ( (SinkEventElement) it.next() ).getName() );
+        assertFalse( it.hasNext() );
+
+        text = "<head><meta name=\"security\" content=\"low\"/></head>";
+        sink.reset();
+        parser.parse( text, sink );
+        it = sink.getEventList().iterator();
+
+        assertEquals( "head", ( (SinkEventElement) it.next() ).getName() );
+        assertEquals( "unknown", ( (SinkEventElement) it.next() ).getName() );
         assertEquals( "head_", ( (SinkEventElement) it.next() ).getName() );
         assertFalse( it.hasNext() );
     }
@@ -322,7 +333,8 @@ public class XdocParserTest
     public void testSectionIdAnchor()
         throws Exception
     {
-        String text = "<section name=\"test\" id=\"test-id\">This is a test.</section>";
+        String text = "<section name=\"test\" id=\"test-id\">This is a test."
+                + "<subsection name=\"sub-test\" id=\"sub-id\">Sub-section</subsection></section>";
 
         SinkEventTestingSink sink = new SinkEventTestingSink();
 
@@ -334,15 +346,98 @@ public class XdocParserTest
 
         assertEquals( "anchor", anchorEvt.getName() );
         assertEquals( "test-id", anchorEvt.getArgs()[0] );
-
         assertEquals( "anchor_", ( (SinkEventElement) it.next() ).getName() );
         assertEquals( "section1", ( (SinkEventElement) it.next() ).getName() );
         assertEquals( "sectionTitle1", ( (SinkEventElement) it.next() ).getName() );
         assertEquals( "text", ( (SinkEventElement) it.next() ).getName() );
         assertEquals( "sectionTitle1_", ( (SinkEventElement) it.next() ).getName() );
         assertEquals( "text", ( (SinkEventElement) it.next() ).getName() );
+
+        anchorEvt = (SinkEventElement) it.next();
+        assertEquals( "anchor", anchorEvt.getName() );
+        assertEquals( "sub-id", anchorEvt.getArgs()[0] );
+        assertEquals( "anchor_", ( (SinkEventElement) it.next() ).getName() );
+        assertEquals( "section2", ( (SinkEventElement) it.next() ).getName() );
+        assertEquals( "sectionTitle2", ( (SinkEventElement) it.next() ).getName() );
+        assertEquals( "text", ( (SinkEventElement) it.next() ).getName() );
+        assertEquals( "sectionTitle2_", ( (SinkEventElement) it.next() ).getName() );
+        assertEquals( "text", ( (SinkEventElement) it.next() ).getName() );
+        assertEquals( "section2_", ( (SinkEventElement) it.next() ).getName() );
+
         assertEquals( "section1_", ( (SinkEventElement) it.next() ).getName() );
         assertFalse( it.hasNext() );
     }
 
+    /**
+     * Test script block.
+     *
+     * @throws java.lang.Exception if any.
+     */
+    public void testJavaScript()
+        throws Exception
+    {
+        String text = "<script type=\"text/javascript\"><![CDATA[alert(\"Hello!\");]]></script>";
+
+        SinkEventTestingSink sink = new SinkEventTestingSink();
+
+        parser.parse( text, sink );
+
+        Iterator it = sink.getEventList().iterator();
+        assertEquals( "unknown", ( (SinkEventElement) it.next() ).getName() );
+        assertEquals( "rawText", ( (SinkEventElement) it.next() ).getName() );
+        assertEquals( "unknown", ( (SinkEventElement) it.next() ).getName() );
+        assertFalse( it.hasNext() );
+    }
+
+    /**
+     * Test unknown tags.
+     *
+     * @throws java.lang.Exception if any.
+     */
+    public void testUnknown()
+        throws Exception
+    {
+        String text = "<applet><param name=\"name\" value=\"value\"/><unknown/></applet>";
+
+        SinkEventTestingSink sink = new SinkEventTestingSink();
+
+        parser.parse( text, sink );
+
+        Iterator it = sink.getEventList().iterator();
+        assertEquals( "unknown", ( (SinkEventElement) it.next() ).getName() );
+        assertEquals( "unknown", ( (SinkEventElement) it.next() ).getName() );
+        assertEquals( "unknown", ( (SinkEventElement) it.next() ).getName() );
+        assertEquals( "unknown", ( (SinkEventElement) it.next() ).getName() );
+        assertEquals( "unknown", ( (SinkEventElement) it.next() ).getName() );
+        assertFalse( it.hasNext() );
+    }
+
+    /**
+     * Test invalid macro tags.
+     */
+    public void testMacroExceptions()
+    {
+        SinkEventTestingSink sink = new SinkEventTestingSink();
+        assertParseException( sink, "<macro/>" );
+        assertParseException( sink, "<macro name=\"\"/>" );
+        assertParseException( sink, "<macro name=\"name\"><param name=\"\" value=\"value\"/></macro>" );
+        assertParseException( sink, "<macro name=\"name\"><param name=\"name\" value=\"\"/></macro>" );
+        assertParseException( sink, "<macro name=\"name\"><param value=\"value\"/></macro>" );
+        assertParseException( sink, "<macro name=\"name\"><param name=\"name\"/></macro>" );
+        assertParseException( sink, "<macro name=\"unknown\"></macro>" );
+    }
+
+    private void assertParseException( Sink sink, String text )
+    {
+        try
+        {
+            parser.parse( text, sink );
+
+            fail( "Should not be parseable: '" + text + "'" );
+        }
+        catch ( ParseException ex )
+        {
+            assertNotNull( ex );
+        }
+    }
 }

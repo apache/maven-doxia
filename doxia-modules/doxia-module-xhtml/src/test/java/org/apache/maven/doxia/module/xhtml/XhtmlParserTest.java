@@ -19,12 +19,10 @@ package org.apache.maven.doxia.module.xhtml;
  * under the License.
  */
 
-import java.io.StringWriter;
 import java.util.Iterator;
 
 import org.apache.maven.doxia.parser.AbstractParserTest;
 import org.apache.maven.doxia.parser.Parser;
-import org.apache.maven.doxia.sink.Sink;
 import org.apache.maven.doxia.sink.SinkEventElement;
 import org.apache.maven.doxia.sink.SinkEventTestingSink;
 
@@ -70,7 +68,7 @@ public class XhtmlParserTest
         throws Exception
     {
         String text = "<head><title>Title</title><meta name=\"author\" content=\"Author\" />"
-                + "<meta name=\"date\" content=\"Date\" /></head>";
+                + "<meta name=\"date\" content=\"Date\" /><meta name=\"security\" content=\"low\"/></head>";
 
         SinkEventTestingSink sink = new SinkEventTestingSink();
 
@@ -88,6 +86,7 @@ public class XhtmlParserTest
         assertEquals( "date", ( (SinkEventElement) it.next() ).getName() );
         assertEquals( "text", ( (SinkEventElement) it.next() ).getName() );
         assertEquals( "date_", ( (SinkEventElement) it.next() ).getName() );
+        assertEquals( "unknown", ( (SinkEventElement) it.next() ).getName() );
         assertEquals( "head_", ( (SinkEventElement) it.next() ).getName() );
         assertFalse( it.hasNext() );
     }
@@ -106,6 +105,28 @@ public class XhtmlParserTest
 
         assertEquals( "verbatim", ( (SinkEventElement) it.next() ).getName() );
         assertEquals( "verbatim_", ( (SinkEventElement) it.next() ).getName() );
+        assertFalse( it.hasNext() );
+    }
+
+    /**
+     * Test unknown tags.
+     *
+     * @throws java.lang.Exception if any.
+     */
+    public void testUnknown()
+        throws Exception
+    {
+        String text = "<applet><param name=\"name\" value=\"value\"/><unknown/></applet>";
+
+        SinkEventTestingSink sink = new SinkEventTestingSink();
+
+        ( (XhtmlParser) createParser() ).parse( text, sink );
+
+        Iterator it = sink.getEventList().iterator();
+        assertEquals( "unknown", ( (SinkEventElement) it.next() ).getName() );
+        assertEquals( "unknown", ( (SinkEventElement) it.next() ).getName() );
+        assertEquals( "unknown", ( (SinkEventElement) it.next() ).getName() );
+        assertEquals( "unknown", ( (SinkEventElement) it.next() ).getName() );
         assertFalse( it.hasNext() );
     }
 }

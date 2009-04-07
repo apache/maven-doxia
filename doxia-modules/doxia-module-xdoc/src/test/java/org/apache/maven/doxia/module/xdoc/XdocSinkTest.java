@@ -23,7 +23,9 @@ import org.apache.maven.doxia.sink.Sink;
 import org.apache.maven.doxia.sink.AbstractSinkTest;
 import org.apache.maven.doxia.util.HtmlTools;
 
+import java.io.StringWriter;
 import java.io.Writer;
+import org.apache.maven.doxia.sink.SinkEventAttributeSet;
 
 /**
  * @author <a href="mailto:jason@maven.org">Jason van Zyl</a>
@@ -231,5 +233,55 @@ public class XdocSinkTest
         return "~,_=,_-,_+,_*,_[,_],_<,_>,_{,_},_\\";
     }
 
+    /**
+     * Test verbatim.
+     */
+    public void testBoxedVerbatim()
+    {
+        Writer writer =  new StringWriter();
+        XdocSink sink = null;
 
+        try
+        {
+            sink = new XdocSink( writer );
+
+            sink.verbatim( null );
+            sink.verbatim_();
+            sink.verbatim( SinkEventAttributeSet.BOXED );
+            sink.verbatim_();
+            sink.verbatim( new SinkEventAttributeSet( new String[] {SinkEventAttributeSet.WIDTH, "20%"} ) );
+            sink.verbatim_();
+        }
+        finally
+        {
+            sink.close();
+        }
+
+        assertEquals( "<pre></pre><source></source><pre width=\"20%\"></pre>", writer.toString() );
+    }
+
+    /**
+     * Test link.
+     */
+    public void testLinkWithTarget()
+    {
+        Writer writer =  new StringWriter();
+        XdocSink sink = null;
+
+        try
+        {
+            sink = new XdocSink( writer );
+
+            sink.link( "name", (String) null );
+            sink.link_();
+            sink.link( "name", "nirvana" );
+            sink.link_();
+        }
+        finally
+        {
+            sink.close();
+        }
+
+        assertEquals( "<a href=\"name\"></a><a href=\"name\" target=\"nirvana\"></a>", writer.toString() );
+    }
 }

@@ -457,12 +457,12 @@ public class XdocSink
 
         MutableAttributeSet att = new SinkEventAttributeSet();
 
+        att.addAttribute( Attribute.HREF, HtmlTools.escapeHTML( name ) );
+
         if ( target != null )
         {
             att.addAttribute( Attribute.TARGET, target );
         }
-
-        att.addAttribute( Attribute.HREF, HtmlTools.escapeHTML( name ) );
 
         writeStartTag( Tag.A, att );
     }

@@ -94,6 +94,10 @@ public class XhtmlParser
 
                 sink.date_();
             }
+            else
+            {
+                sink.unknown( "meta", new String[] {name, content}, attribs );
+            }
         }
         /*
          * The ADDRESS element may be used by authors to supply contact information

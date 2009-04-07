@@ -667,21 +667,19 @@ public class AptSink
     /** {@inheritDoc} */
     public void tableCell_()
     {
-        tableCell_( false );
+        endTableCell();
     }
 
     /** {@inheritDoc} */
     public void tableHeaderCell_()
     {
-        tableCell_( true );
+        endTableCell();
     }
 
     /**
      * Ends a table cell.
-     *
-     * @param headerRow If this cell is part of a header row.
      */
-    private void tableCell_( boolean headerRow )
+    private void endTableCell()
     {
         buffer.append( TABLE_CELL_SEPARATOR_MARKUP );
         cellCount++;

@@ -1759,7 +1759,7 @@ public class AptParser
         public ListBreak( int indent, String firstLine )
             throws AptParseException
         {
-            super( AptParser.LIST_BREAK, indent );
+            super( AptParser.LIST_BREAK, indent, firstLine );
         }
 
         /** {@inheritDoc} */
@@ -2674,7 +2674,7 @@ public class AptParser
         public HorizontalRule( int indent, String firstLine )
             throws AptParseException
         {
-            super( HORIZONTAL_RULE, indent );
+            super( HORIZONTAL_RULE, indent, firstLine );
         }
 
         /** {@inheritDoc} */
@@ -2699,7 +2699,7 @@ public class AptParser
         public PageBreak( int indent, String firstLine )
             throws AptParseException
         {
-            super( PG_BREAK, indent );
+            super( PG_BREAK, indent, firstLine );
         }
 
         /** {@inheritDoc} */
