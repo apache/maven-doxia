@@ -145,6 +145,11 @@ public abstract class AbstractXmlSink
      */
     protected void writeEndTag( Tag t )
     {
+        if ( t == null )
+        {
+            throw new IllegalArgumentException( "A tag is required" );
+        }
+
         StringBuffer sb = new StringBuffer();
         sb.append( LESS_THAN );
         sb.append( SLASH );

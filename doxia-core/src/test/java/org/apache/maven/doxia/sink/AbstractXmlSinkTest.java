@@ -54,6 +54,28 @@ public class AbstractXmlSinkTest
 
         instance.writeSimpleTag( t );
         assertEquals( "<ns:a />", instance.getText() );
+
+        assertEquals( ns, instance.getNameSpace() );
+
+        try
+        {
+            instance.writeStartTag( null );
+            fail( "null tag should fail!" );
+        }
+        catch ( IllegalArgumentException e )
+        {
+            assertNotNull( e );
+        }
+
+        try
+        {
+            instance.writeEndTag( null );
+            fail( "null tag should fail!" );
+        }
+        catch ( IllegalArgumentException e )
+        {
+            assertNotNull( e );
+        }
     }
 
     /**
@@ -128,6 +150,5 @@ public class AbstractXmlSinkTest
         {
             buffer.append( text );
         }
-
     }
 }
