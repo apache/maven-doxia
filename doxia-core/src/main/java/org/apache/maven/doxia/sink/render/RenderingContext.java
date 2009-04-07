@@ -69,7 +69,7 @@ public class RenderingContext
      */
     public RenderingContext( File basedir, String document, String parserId )
     {
-        this( basedir, document, null, null );
+        this( basedir, document, parserId, null );
 
     }
 
