@@ -57,6 +57,9 @@ public class IndexEntryTest
 
         assertIndexEntry( chapter1, root, 0, null, chapter2 );
         assertIndexEntry( chapter2, root, 0, chapter1, null );
+
+        chapter2.setTitle( "Title 2" );
+        assertTrue( chapter2.toString().indexOf( "Title 2" ) != -1 );
     }
 
     private void assertIndexEntry( IndexEntry entry, IndexEntry parent, int childCount,

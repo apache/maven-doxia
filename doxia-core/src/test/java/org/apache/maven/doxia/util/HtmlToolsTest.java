@@ -35,6 +35,7 @@ public class HtmlToolsTest
      */
     public void testEscapeHTML()
     {
+        assertEquals( HtmlTools.escapeHTML( null ), "" );
         assertEquals( HtmlTools.escapeHTML( "" ), "" );
         assertEquals( HtmlTools.escapeHTML( "<" ), "&lt;" );
         assertEquals( HtmlTools.escapeHTML( ">" ), "&gt;" );
@@ -100,5 +101,15 @@ public class HtmlToolsTest
         assertTrue( HtmlTools.isId( "a-" ) );
         assertTrue( HtmlTools.isId( "a:" ) );
         assertTrue( HtmlTools.isId( "a." ) );
+    }
+
+    /**
+     * Verify the expected results.
+     */
+    public void testGetHtmlTag()
+    {
+        assertNull( HtmlTools.getHtmlTag( "" ) );
+        assertNull( HtmlTools.getHtmlTag( "weirdHtmlTag" ) );
+        assertNotNull( HtmlTools.getHtmlTag( "strong" ) );
     }
 }
