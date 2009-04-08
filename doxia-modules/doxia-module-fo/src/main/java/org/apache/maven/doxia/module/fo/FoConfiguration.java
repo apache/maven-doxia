@@ -20,7 +20,6 @@ package org.apache.maven.doxia.module.fo;
  */
 
 import java.io.File;
-import java.io.FileReader;
 import java.io.IOException;
 import java.util.List;
 
@@ -60,18 +59,7 @@ public class FoConfiguration
         // necessary because some attributes contain commas:
         config.setDelimiterParsingDisabled( true );
 
-        try
-        {
-            config.load( getClass().getResourceAsStream( "/fo-styles.xslt" ) );
-        }
-        catch ( ConfigurationException cex )
-        {
-            // this should not happen
-            throw new RuntimeException( cex );
-        }
-
-        this.sets = config.getList( "xsl:attribute-set[@name]" );
-        reset();
+        loadDefaultConfig();
     }
 
     /**
@@ -87,20 +75,20 @@ public class FoConfiguration
     public void load( File configFile )
             throws IOException
     {
-        // this overloads default values with custom config
+        config.clear();
+
         try
         {
-            config.load( new FileReader( configFile ) );
+            config.load( configFile );
         }
         catch ( ConfigurationException cex )
         {
             IOException ioe = new IOException();
             ioe.initCause( cex );
-            throw  ioe;
+            throw ioe;
         }
 
-        this.sets = config.getList( "xsl:attribute-set[@name]" );
-        reset();
+        loadDefaultConfig(); // this adds default values that are missing from above
     }
 
     /**
@@ -168,10 +156,12 @@ public class FoConfiguration
         String keybase = "xsl:attribute-set(" + String.valueOf( index ) + ")";
 
         Object prop = config.getProperty( keybase + ".xsl:attribute" );
+
         if ( prop instanceof List )
         {
             List values = (List) prop;
             List keys = config.getList( keybase + ".xsl:attribute[@name]" );
+
             for ( int i = 0; i < values.size(); i++ )
             {
                 attributeSet.addAttribute( keys.get( i ), values.get( i ) );
@@ -185,10 +175,28 @@ public class FoConfiguration
         }
 
         String extend = config.getString( keybase + "[@use-attribute-sets]" );
+
         if ( extend != null )
         {
             addAttributes( extend );
         }
+    }
+
+    /** Load the default fo configuration file. */
+    private void loadDefaultConfig()
+    {
+        try
+        {
+            config.load( getClass().getResourceAsStream( "/fo-styles.xslt" ) );
+        }
+        catch ( ConfigurationException cex )
+        {
+            // this should not happen
+            throw new RuntimeException( cex );
+        }
+
+        this.sets = config.getList( "xsl:attribute-set[@name]" );
+        reset();
     }
 
     /**

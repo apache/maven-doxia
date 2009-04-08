@@ -19,6 +19,7 @@ package org.apache.maven.doxia.module.fo;
  * under the License.
  */
 
+import java.io.File;
 import java.io.IOException;
 import java.io.StringWriter;
 import java.io.Writer;
@@ -139,6 +140,22 @@ public class FoSink
     }
 
     // TODO add FOP compliance mode?
+
+    /**
+     * Load configuration parameters from a File.
+     *
+     * @param configFile the configuration file.
+     *
+     * @throws java.io.IOException if the File cannot be read
+     *  or some error occurs when initializing the configuration parameters.
+     *
+     * @since 1.1.1
+     */
+    public void load( File configFile )
+            throws IOException
+    {
+        config.load( configFile );
+    }
 
     /** {@inheritDoc} */
     public void head()
