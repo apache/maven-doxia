@@ -69,6 +69,8 @@ public class XdocParser
     /** The macro parameters. */
     private Map macroParameters = new HashMap();
 
+    /** Indicates that we're inside &lt;properties&gt; or &lt;head&gt;.*/
+    private boolean inHead;
 
     /** {@inheritDoc} */
     public void parse( Reader source, Sink sink )
@@ -112,7 +114,12 @@ public class XdocParser
         }
         else if ( parser.getName().equals( Tag.HEAD.toString() ) )
         {
-            sink.head( attribs );
+            if ( !inHead ) // we might be in head from a <properties> already
+            {
+                this.inHead = true;
+
+                sink.head( attribs );
+            }
         }
         else if ( parser.getName().equals( Tag.TITLE.toString() ) )
         {
@@ -126,8 +133,40 @@ public class XdocParser
         {
             sink.date( attribs );
         }
+        else if ( parser.getName().equals( Tag.META.toString() ) )
+        {
+            String name = parser.getAttributeValue( null, Attribute.NAME.toString() );
+            String content = parser.getAttributeValue( null, Attribute.CONTENT.toString() );
+
+            if ( "author".equals( name ) )
+            {
+                sink.author( null );
+
+                sink.text( content );
+
+                sink.author_();
+            }
+            else if ( "date".equals( name ) )
+            {
+                sink.date( null );
+
+                sink.text( content );
+
+                sink.date_();
+            }
+            else
+            {
+                sink.unknown( "meta", new Object[] {new Integer( TAG_TYPE_SIMPLE )}, attribs );
+            }
+        }
         else if ( parser.getName().equals( Tag.BODY.toString() ) )
         {
+            if ( inHead )
+            {
+                sink.head_();
+                this.inHead = false;
+            }
+
             sink.body( attribs );
         }
         else if ( parser.getName().equals( SECTION_TAG.toString() ) )
@@ -178,7 +217,12 @@ public class XdocParser
         }
         else if ( parser.getName().equals( PROPERTIES_TAG.toString() ) )
         {
-            sink.head();
+            if ( !inHead ) // we might be in head from a <head> already
+            {
+                this.inHead = true;
+
+                sink.head( attribs );
+            }
         }
 
         // ----------------------------------------------------------------------
@@ -266,7 +310,7 @@ public class XdocParser
         }
         else if ( parser.getName().equals( Tag.HEAD.toString() ) )
         {
-            sink.head_();
+            //Do nothing, head is closed with BODY start.
         }
         else if ( parser.getName().equals( Tag.BODY.toString() ) )
         {
@@ -294,7 +338,7 @@ public class XdocParser
         }
         else if ( parser.getName().equals( PROPERTIES_TAG.toString() ) )
         {
-            sink.head_();
+            //Do nothing, head is closed with BODY start.
         }
 
         // ----------------------------------------------------------------------

@@ -25,8 +25,8 @@ import javax.swing.text.html.HTML.Tag;
 import org.apache.maven.doxia.macro.MacroExecutionException;
 import org.apache.maven.doxia.parser.XhtmlBaseParser;
 import org.apache.maven.doxia.sink.Sink;
-
 import org.apache.maven.doxia.sink.SinkEventAttributeSet;
+
 import org.codehaus.plexus.util.xml.pull.XmlPullParser;
 import org.codehaus.plexus.util.xml.pull.XmlPullParserException;
 
@@ -72,15 +72,11 @@ public class XhtmlParser
         else if ( parser.getName().equals( Tag.META.toString() ) )
         {
             String name = parser.getAttributeValue( null, Attribute.NAME.toString() );
-
             String content = parser.getAttributeValue( null, Attribute.CONTENT.toString() );
-
-            attribs.removeAttribute( Attribute.NAME.toString() );
-            attribs.removeAttribute( Attribute.CONTENT.toString() );
 
             if ( "author".equals( name ) )
             {
-                sink.author( attribs );
+                sink.author( null );
 
                 sink.text( content );
 
@@ -88,7 +84,7 @@ public class XhtmlParser
             }
             else if ( "date".equals( name ) )
             {
-                sink.date( attribs );
+                sink.date( null );
 
                 sink.text( content );
 
@@ -96,7 +92,7 @@ public class XhtmlParser
             }
             else
             {
-                sink.unknown( "meta", new String[] {name, content}, attribs );
+                sink.unknown( "meta", new Object[] {new Integer( TAG_TYPE_SIMPLE )}, attribs );
             }
         }
         /*

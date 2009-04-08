@@ -151,8 +151,9 @@ public class XdocParserTest
     public void testHeadEventsList()
         throws Exception
     {
-        // TODO: separate <head> from <properties>, see DOXIA-129
-        String text = "<properties><title>title</title><author email=\"a@b.c\">John Doe</author></properties>";
+        String text = "<document>"
+                + "<properties><title>title</title><author email=\"a@b.c\">John Doe</author></properties>"
+                + "<head><meta name=\"security\" content=\"low\"/></head><body></body></document>";
 
         SinkEventTestingSink sink = new SinkEventTestingSink();
 
@@ -167,17 +168,10 @@ public class XdocParserTest
         assertEquals( "author", ( (SinkEventElement) it.next() ).getName() );
         assertEquals( "text", ( (SinkEventElement) it.next() ).getName() );
         assertEquals( "author_", ( (SinkEventElement) it.next() ).getName() );
-        assertEquals( "head_", ( (SinkEventElement) it.next() ).getName() );
-        assertFalse( it.hasNext() );
-
-        text = "<head><meta name=\"security\" content=\"low\"/></head>";
-        sink.reset();
-        parser.parse( text, sink );
-        it = sink.getEventList().iterator();
-
-        assertEquals( "head", ( (SinkEventElement) it.next() ).getName() );
         assertEquals( "unknown", ( (SinkEventElement) it.next() ).getName() );
         assertEquals( "head_", ( (SinkEventElement) it.next() ).getName() );
+        assertEquals( "body", ( (SinkEventElement) it.next() ).getName() );
+        assertEquals( "body_", ( (SinkEventElement) it.next() ).getName() );
         assertFalse( it.hasNext() );
     }
 
