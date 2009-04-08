@@ -267,12 +267,13 @@ under the License.
         <plugin>
           <groupId>org.codehaus.plexus</groupId>
           <artifactId>plexus-maven-plugin</artifactId>
+          <!-- Version 1.3.8 makes the descriptor merges fail, probably due to PLX-409 -->
           <version>1.3.5</version>
         </plugin>
         <plugin>
           <groupId>org.codehaus.modello</groupId>
           <artifactId>modello-maven-plugin</artifactId>
-          <version>1.0</version>
+          <version>1.0.1</version>
         </plugin>
         <plugin>
           <artifactId>maven-project-info-reports-plugin</artifactId>
