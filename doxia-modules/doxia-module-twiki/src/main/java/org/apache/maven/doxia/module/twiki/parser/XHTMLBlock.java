@@ -39,7 +39,6 @@ class XHTMLBlock
      * @throws IllegalArgumentException if the arguments are <code>null</code>
      */
     XHTMLBlock( final String tag )
-        throws IllegalArgumentException
     {
         if ( tag == null )
         {

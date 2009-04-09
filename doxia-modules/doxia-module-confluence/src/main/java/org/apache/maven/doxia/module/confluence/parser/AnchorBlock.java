@@ -29,7 +29,7 @@ class AnchorBlock
 {
     private  String name;
 
-    AnchorBlock(  String name ) throws IllegalArgumentException
+    AnchorBlock(  String name )
     {
         if ( name == null )
         {

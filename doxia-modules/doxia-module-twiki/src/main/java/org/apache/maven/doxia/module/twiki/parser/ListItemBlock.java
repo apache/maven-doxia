@@ -36,7 +36,6 @@ class ListItemBlock
      * @see #ListItemBlock(Block[], ListBlock)
      */
     ListItemBlock( final Block[] blocks )
-        throws IllegalArgumentException
     {
         this( blocks, null );
     }
@@ -44,12 +43,10 @@ class ListItemBlock
     /**
      * Creates the ListItemBlock.
      *
-     * @param blocks    text
+     * @param blocks    text block, not null.
      * @param innerList child list
-     * @throws IllegalArgumentException if textBlocks is null
      */
     ListItemBlock( final Block[] blocks, final ListBlock innerList )
-        throws IllegalArgumentException
     {
         super( blocks );
         this.innerList = innerList;

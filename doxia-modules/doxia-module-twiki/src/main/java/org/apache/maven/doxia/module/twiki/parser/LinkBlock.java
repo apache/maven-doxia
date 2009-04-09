@@ -55,12 +55,10 @@ class LinkBlock
     /**
      * Creates the LinkBlock.
      *
-     * @param reference reference anchor
-     * @param content block with the displayed content
-     * @throws IllegalArgumentException if any argument is <code>null</code>
+     * @param reference reference anchor, not null.
+     * @param content block with the displayed content, not null.
      */
     LinkBlock( final String reference, final Block content )
-        throws IllegalArgumentException
     {
         if ( reference == null || content == null )
         {

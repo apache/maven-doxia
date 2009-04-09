@@ -34,7 +34,7 @@ public class BoldBlock
     /**
      * <p>Constructor for BoldBlock.</p>
      *
-     * @param childBlocks
+     * @param childBlocks the child blocks.
      */
     public BoldBlock( List childBlocks )
     {

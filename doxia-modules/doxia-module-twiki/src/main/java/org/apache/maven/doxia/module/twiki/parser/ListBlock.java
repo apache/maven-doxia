@@ -36,11 +36,9 @@ abstract class ListBlock
     /**
      * Creates the ListBlock.
      *
-     * @param blocks list of list items
-     * @throws IllegalArgumentException if listItemBlocks is <code>null</code>
+     * @param blocks list of list items, not null.
      */
     ListBlock( final ListItemBlock[] blocks )
-        throws IllegalArgumentException
     {
         super( blocks );
     }

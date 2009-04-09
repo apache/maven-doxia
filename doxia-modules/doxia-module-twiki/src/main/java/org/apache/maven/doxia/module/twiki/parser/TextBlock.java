@@ -42,7 +42,6 @@ class TextBlock
      * @throws IllegalArgumentException if parameters are not in the domain
      */
     TextBlock( final String text )
-        throws IllegalArgumentException
     {
         if ( text == null )
         {

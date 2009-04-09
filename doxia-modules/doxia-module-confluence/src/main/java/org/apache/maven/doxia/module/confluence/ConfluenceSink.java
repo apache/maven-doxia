@@ -94,7 +94,7 @@ public class ConfluenceSink
 
     /**
      * Not used.
-     * {@inheritDoc} 
+     * {@inheritDoc}
      */
     public void anchor_()
     {
@@ -103,7 +103,7 @@ public class ConfluenceSink
 
     /**
      * Not used.
-     * {@inheritDoc} 
+     * {@inheritDoc}
      */
     public void author()
     {
@@ -118,7 +118,7 @@ public class ConfluenceSink
 
     /**
      * Not used.
-     * {@inheritDoc} 
+     * {@inheritDoc}
      */
     public void author_()
     {
@@ -127,7 +127,7 @@ public class ConfluenceSink
 
     /**
      * Not used.
-     * {@inheritDoc} 
+     * {@inheritDoc}
      */
     public void body()
     {
@@ -142,7 +142,7 @@ public class ConfluenceSink
 
     /**
      * Not used.
-     * {@inheritDoc} 
+     * {@inheritDoc}
      */
     public void body_()
     {
@@ -163,7 +163,7 @@ public class ConfluenceSink
 
     /**
      * Not used.
-     * {@inheritDoc} 
+     * {@inheritDoc}
      */
     public void comment( String comment )
     {
@@ -179,7 +179,7 @@ public class ConfluenceSink
 
     /**
      * Not used.
-     * {@inheritDoc} 
+     * {@inheritDoc}
      */
     public void date()
     {
@@ -194,7 +194,7 @@ public class ConfluenceSink
 
     /**
      * Not used.
-     * {@inheritDoc} 
+     * {@inheritDoc}
      */
     public void date_()
     {
@@ -215,7 +215,7 @@ public class ConfluenceSink
 
     /**
      * Not used.
-     * {@inheritDoc} 
+     * {@inheritDoc}
      */
     public void definedTerm_()
     {
@@ -224,7 +224,7 @@ public class ConfluenceSink
 
     /**
      * Not used.
-     * {@inheritDoc} 
+     * {@inheritDoc}
      */
     public void definition()
     {
@@ -233,7 +233,7 @@ public class ConfluenceSink
 
     /**
      * Not used.
-     * {@inheritDoc} 
+     * {@inheritDoc}
      */
     public void definition( SinkEventAttributes attributes )
     {
@@ -242,7 +242,7 @@ public class ConfluenceSink
 
     /**
      * Not used.
-     * {@inheritDoc} 
+     * {@inheritDoc}
      */
     public void definition_()
     {
@@ -251,7 +251,7 @@ public class ConfluenceSink
 
     /**
      * Not used.
-     * {@inheritDoc} 
+     * {@inheritDoc}
      */
     public void definitionList()
     {
@@ -260,7 +260,7 @@ public class ConfluenceSink
 
     /**
      * Not used.
-     * {@inheritDoc} 
+     * {@inheritDoc}
      */
     public void definitionList( SinkEventAttributes attributes )
     {
@@ -269,7 +269,7 @@ public class ConfluenceSink
 
     /**
      * Not used.
-     * {@inheritDoc} 
+     * {@inheritDoc}
      */
     public void definitionList_()
     {
@@ -278,7 +278,7 @@ public class ConfluenceSink
 
     /**
      * Not used.
-     * {@inheritDoc} 
+     * {@inheritDoc}
      */
     public void definitionListItem()
     {
@@ -287,7 +287,7 @@ public class ConfluenceSink
 
     /**
      * Not used.
-     * {@inheritDoc} 
+     * {@inheritDoc}
      */
     public void definitionListItem( SinkEventAttributes attributes )
     {
@@ -296,7 +296,7 @@ public class ConfluenceSink
 
     /**
      * Not used.
-     * {@inheritDoc} 
+     * {@inheritDoc}
      */
     public void definitionListItem_()
     {
@@ -305,7 +305,7 @@ public class ConfluenceSink
 
     /**
      * Not used.
-     * {@inheritDoc} 
+     * {@inheritDoc}
      */
     public void figure()
     {
@@ -320,7 +320,7 @@ public class ConfluenceSink
 
     /**
      * Not used.
-     * {@inheritDoc} 
+     * {@inheritDoc}
      */
     public void figure_()
     {
@@ -329,7 +329,7 @@ public class ConfluenceSink
 
     /**
      * Not used.
-     * {@inheritDoc} 
+     * {@inheritDoc}
      */
     public void figureCaption()
     {
@@ -344,7 +344,7 @@ public class ConfluenceSink
 
     /**
      * Not used.
-     * {@inheritDoc} 
+     * {@inheritDoc}
      */
     public void figureCaption_()
     {
@@ -396,7 +396,7 @@ public class ConfluenceSink
 
     /**
      * Not used.
-     * {@inheritDoc} 
+     * {@inheritDoc}
      */
     public void horizontalRule()
     {
@@ -508,7 +508,7 @@ public class ConfluenceSink
 
     /**
      * Not used.
-     * {@inheritDoc} 
+     * {@inheritDoc}
      */
     public void nonBreakingSpace()
     {
@@ -570,7 +570,7 @@ public class ConfluenceSink
 
     /**
      * Not used.
-     * {@inheritDoc} 
+     * {@inheritDoc}
      */
     public void pageBreak()
     {
@@ -579,7 +579,7 @@ public class ConfluenceSink
 
     /**
      * Not used.
-     * {@inheritDoc} 
+     * {@inheritDoc}
      */
     public void paragraph()
     {
@@ -601,7 +601,7 @@ public class ConfluenceSink
 
     /**
      * Not used.
-     * {@inheritDoc} 
+     * {@inheritDoc}
      */
     public void rawText( String text )
     {
@@ -610,7 +610,7 @@ public class ConfluenceSink
 
     /**
      * Not used.
-     * {@inheritDoc} 
+     * {@inheritDoc}
      */
     public void section( int level, SinkEventAttributes attributes )
     {
@@ -619,7 +619,7 @@ public class ConfluenceSink
 
     /**
      * Not used.
-     * {@inheritDoc} 
+     * {@inheritDoc}
      */
     public void section1()
     {
@@ -628,7 +628,7 @@ public class ConfluenceSink
 
     /**
      * Not used.
-     * {@inheritDoc} 
+     * {@inheritDoc}
      */
     public void section1_()
     {
@@ -637,7 +637,7 @@ public class ConfluenceSink
 
     /**
      * Not used.
-     * {@inheritDoc} 
+     * {@inheritDoc}
      */
     public void section2()
     {
@@ -646,7 +646,7 @@ public class ConfluenceSink
 
     /**
      * Not used.
-     * {@inheritDoc} 
+     * {@inheritDoc}
      */
     public void section2_()
     {
@@ -655,7 +655,7 @@ public class ConfluenceSink
 
     /**
      * Not used.
-     * {@inheritDoc} 
+     * {@inheritDoc}
      */
     public void section3()
     {
@@ -664,7 +664,7 @@ public class ConfluenceSink
 
     /**
      * Not used.
-     * {@inheritDoc} 
+     * {@inheritDoc}
      */
     public void section3_()
     {
@@ -673,7 +673,7 @@ public class ConfluenceSink
 
     /**
      * Not used.
-     * {@inheritDoc} 
+     * {@inheritDoc}
      */
     public void section4()
     {
@@ -682,7 +682,7 @@ public class ConfluenceSink
 
     /**
      * Not used.
-     * {@inheritDoc} 
+     * {@inheritDoc}
      */
     public void section4_()
     {
@@ -691,7 +691,7 @@ public class ConfluenceSink
 
     /**
      * Not used.
-     * {@inheritDoc} 
+     * {@inheritDoc}
      */
     public void section5()
     {
@@ -700,7 +700,7 @@ public class ConfluenceSink
 
     /**
      * Not used.
-     * {@inheritDoc} 
+     * {@inheritDoc}
      */
     public void section5_()
     {
@@ -709,7 +709,7 @@ public class ConfluenceSink
 
     /**
      * Not used.
-     * {@inheritDoc} 
+     * {@inheritDoc}
      */
     public void section_( int level )
     {
@@ -718,7 +718,7 @@ public class ConfluenceSink
 
     /**
      * Not used.
-     * {@inheritDoc} 
+     * {@inheritDoc}
      */
     public void sectionTitle()
     {
@@ -796,7 +796,7 @@ public class ConfluenceSink
 
     /**
      * Not used.
-     * {@inheritDoc} 
+     * {@inheritDoc}
      */
     public void sectionTitle_()
     {
@@ -833,7 +833,7 @@ public class ConfluenceSink
 
     /**
      * Not used.
-     * {@inheritDoc} 
+     * {@inheritDoc}
      */
     public void tableCaption()
     {
@@ -848,7 +848,7 @@ public class ConfluenceSink
 
     /**
      * Not used.
-     * {@inheritDoc} 
+     * {@inheritDoc}
      */
     public void tableCaption_()
     {
@@ -930,7 +930,7 @@ public class ConfluenceSink
 
     /**
      * Not used.
-     * {@inheritDoc} 
+     * {@inheritDoc}
      */
     public void tableRows( int[] justification, boolean grid )
     {
@@ -939,7 +939,7 @@ public class ConfluenceSink
 
     /**
      * Not used.
-     * {@inheritDoc} 
+     * {@inheritDoc}
      */
     public void tableRows_()
     {
@@ -975,7 +975,7 @@ public class ConfluenceSink
 
     /**
      * Not used.
-     * {@inheritDoc} 
+     * {@inheritDoc}
      */
     public void title()
     {
@@ -990,7 +990,7 @@ public class ConfluenceSink
 
     /**
      * Not used.
-     * {@inheritDoc} 
+     * {@inheritDoc}
      */
     public void title_()
     {
@@ -999,7 +999,7 @@ public class ConfluenceSink
 
     /**
      * Not used.
-     * {@inheritDoc} 
+     * {@inheritDoc}
      */
     public void unknown( String name, Object[] requiredParams, SinkEventAttributes attributes )
     {

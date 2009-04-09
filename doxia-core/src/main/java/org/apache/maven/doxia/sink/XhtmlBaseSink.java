@@ -108,7 +108,7 @@ public class XhtmlBaseSink
      * sink.tableRow();
      * </pre>
      * */
-    boolean tableRows = false;
+    private boolean tableRows = false;
 
     // ----------------------------------------------------------------------
     // Constructor

@@ -677,6 +677,8 @@ public class LatexSink
                 case Sink.JUSTIFY_RIGHT:
                     justif.append( 'r' );
                     break;
+                default:
+                    break;
             }
         }
         if ( grid )

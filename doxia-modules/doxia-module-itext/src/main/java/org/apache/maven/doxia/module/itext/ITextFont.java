@@ -67,6 +67,13 @@ public class ITextFont
     /** A default Black color definition */
     public static final int DEFAULT_FONT_COLOR_BLUE = Color.BLACK.getBlue();
 
+    private static final int SECTION_FONT_SIZE_0 = 24;
+    private static final int SECTION_FONT_SIZE_1 = 22;
+    private static final int SECTION_FONT_SIZE_2 = 20;
+    private static final int SECTION_FONT_SIZE_3 = 18;
+    private static final int SECTION_FONT_SIZE_4 = 16;
+    private static final int SECTION_FONT_SIZE_DEFAULT = 14;
+
     private boolean monoSpaced = false;
 
     private float currentSize = 12;
@@ -283,7 +290,7 @@ public class ITextFont
     }
 
     /**
-     * Get a section font depending the section number.
+     * Get a section font size depending the section number.
      * <dl>
      * <dt>0</dt>
      * <dd>Chapter: font size = 24</dd>
@@ -300,40 +307,40 @@ public class ITextFont
      * </dl>
      *
      * @param sectionNumber a section number
-     * @return a font
+     * @return a font size.
      */
     public static int getSectionFontSize( int sectionNumber )
     {
         switch ( sectionNumber )
         {
             case 0:
-                return 24;
+                return SECTION_FONT_SIZE_0;
 
             case 1:
-                return 22;
+                return SECTION_FONT_SIZE_1;
 
             case 2:
-                return 20;
+                return SECTION_FONT_SIZE_2;
 
             case 3:
-                return 18;
+                return SECTION_FONT_SIZE_3;
 
             case 4:
-                return 16;
+                return SECTION_FONT_SIZE_4;
 
             case 5:
             default:
-                return 14;
+                return SECTION_FONT_SIZE_DEFAULT;
         }
     }
 
     /**
      * Convenience method to get a defined MonoSpaced font depending the wanted style and size.
      *
-     * @param style
-     * @param size
-     * @param color
-     * @return a font
+     * @param style the font style.
+     * @param size the font size.
+     * @param color the font color.
+     * @return a font the font.
      */
     public static Font getMonoSpacedFont( int style, float size, Color color )
     {
@@ -350,10 +357,10 @@ public class ITextFont
     /**
      * Convenience method to get a defined font depending the wanted style and size.
      *
-     * @param style
-     * @param size
-     * @param color
-     * @return a font
+     * @param style the font style.
+     * @param size the font size.
+     * @param color the font color.
+     * @return a font the font.
      */
     public static Font getFont( int style, float size, Color color )
     {

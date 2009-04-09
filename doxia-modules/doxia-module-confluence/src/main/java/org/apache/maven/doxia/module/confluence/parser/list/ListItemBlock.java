@@ -33,13 +33,11 @@ class ListItemBlock
     private  ListBlock innerList;
 
     ListItemBlock(  List blocks )
-        throws IllegalArgumentException
     {
         this( blocks, null );
     }
 
     ListItemBlock(  List blocks,  ListBlock innerList )
-        throws IllegalArgumentException
     {
         super( blocks );
 

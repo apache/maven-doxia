@@ -208,6 +208,8 @@ public class IndexingSink
             case TYPE_DEFINED_TERM:
             case TYPE_FIGURE:
             case TYPE_TABLE:
+            default:
+                break;
         }
 
         type = 0;

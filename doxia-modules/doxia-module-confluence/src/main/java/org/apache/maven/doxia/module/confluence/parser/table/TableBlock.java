@@ -49,7 +49,7 @@ class TableBlock
         sink.table_();
     }
 
-    private final int[] getJustification()
+    private int[] getJustification()
     {
         final AbstractFatherBlock b = ( (AbstractFatherBlock) getBlocks().get( 0 ) );
         int[] justification = new int[b.getBlocks().size()];

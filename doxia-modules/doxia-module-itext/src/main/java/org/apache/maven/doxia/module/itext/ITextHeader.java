@@ -19,6 +19,9 @@ package org.apache.maven.doxia.module.itext;
  * under the License.
  */
 
+import java.text.ParseException;
+import java.text.SimpleDateFormat;
+
 import java.util.Date;
 
 /**
@@ -46,7 +49,7 @@ public class ITextHeader
     /**
      * Add a title to the Document
      *
-     * @param title1
+     * @param title1 the title.
      */
     public final void setTitle( String title1 )
     {
@@ -71,7 +74,7 @@ public class ITextHeader
     /**
      * Add a new author
      *
-     * @param author
+     * @param author the author.
      */
     public void addAuthor( String author )
     {
@@ -111,9 +114,9 @@ public class ITextHeader
     {
         try
         {
-            this.date = new Date( date1 );
+            this.date = new SimpleDateFormat().parse( date1 );
         }
-        catch ( IllegalArgumentException e )
+        catch ( ParseException e )
         {
             this.date = new Date();
         }

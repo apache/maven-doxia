@@ -52,7 +52,7 @@ public class ChildBlocksBuilder
     /**
      * <p>Constructor for ChildBlocksBuilder.</p>
      *
-     * @param input
+     * @param input the input.
      */
     public ChildBlocksBuilder( String input )
     {
@@ -229,9 +229,9 @@ public class ChildBlocksBuilder
 
     private List getChildren( StringBuffer buffer, List currentBlocks )
     {
-        String text = buffer.toString().trim();
+        String txt = buffer.toString().trim();
 
-        if ( currentBlocks.isEmpty() && StringUtils.isEmpty( text ) )
+        if ( currentBlocks.isEmpty() && StringUtils.isEmpty( txt ) )
         {
             return new ArrayList();
         }
@@ -243,12 +243,12 @@ public class ChildBlocksBuilder
             list.addAll( currentBlocks );
         }
 
-        if ( StringUtils.isEmpty( text ) )
+        if ( StringUtils.isEmpty( txt ) )
         {
             return list;
         }
 
-        list.add( new TextBlock( text ) );
+        list.add( new TextBlock( txt ) );
 
         return list;
     }
@@ -258,18 +258,18 @@ public class ChildBlocksBuilder
         return input.length() > i + 1 ? input.charAt( i + 1 ) : '\0';
     }
 
-    private StringBuffer addTextBlockIfNecessary( List blocks, List specialBlocks, StringBuffer text )
+    private StringBuffer addTextBlockIfNecessary( List blcks, List specialBlocks, StringBuffer txt )
     {
-        if ( text.length() == 0 )
+        if ( txt.length() == 0 )
         {
-            return text;
+            return txt;
         }
 
-        TextBlock textBlock = new TextBlock( text.toString() );
+        TextBlock textBlock = new TextBlock( txt.toString() );
 
         if ( !insideBold && !insideItalic && !insideMonospaced )
         {
-            blocks.add( textBlock );
+            blcks.add( textBlock );
         }
         else
         {

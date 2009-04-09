@@ -37,21 +37,21 @@ public abstract class AbstractFatherBlock
     /**
      * <p>before</p>
      *
-     * @param sink
+     * @param sink the Sink to receive events.
      */
     public abstract void before( Sink sink );
 
     /**
      * <p>after</p>
      *
-     * @param sink
+     * @param sink the Sink to receive events.
      */
     public abstract void after( Sink sink );
 
     /**
      * <p>Constructor for AbstractFatherBlock.</p>
      *
-     * @param childBlocks
+     * @param childBlocks the child blocks.
      */
     public AbstractFatherBlock(  List childBlocks )
     {

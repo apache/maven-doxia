@@ -20,6 +20,7 @@ package org.apache.maven.doxia.sink;
  */
 
 import java.lang.reflect.InvocationHandler;
+import java.lang.reflect.InvocationTargetException;
 import java.lang.reflect.Method;
 import java.lang.reflect.Proxy;
 
@@ -61,9 +62,12 @@ public class PipelineSink
      * {@inheritDoc}
      *
      * Invoke a Method on this PipelineSink.
+     *
+     * @throws IllegalAccessException if any.
+     * @throws InvocationTargetException if any.
      */
     public Object invoke( Object proxy, Method method, Object[] args )
-        throws Throwable
+            throws IllegalAccessException, InvocationTargetException
     {
         for ( Iterator it = pipeline.iterator(); it.hasNext(); )
         {

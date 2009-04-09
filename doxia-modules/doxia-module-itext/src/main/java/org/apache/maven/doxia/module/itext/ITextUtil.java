@@ -107,7 +107,6 @@ public class ITextUtil
      *
      * @param is the <CODE>InputStream</CODE> from which the XML is read.
      * @param os the <CODE>OutputStream</CODE> to which the result as Pdf is written.
-     * @throws RuntimeException if any
      * @see com.lowagie.text.xml.XmlToPdf
      */
     public static void writePdf( InputStream is, OutputStream os )
@@ -130,7 +129,6 @@ public class ITextUtil
      *
      * @param is the <CODE>InputStream</CODE> from which the XML is read.
      * @param os the <CODE>OutputStream</CODE> to which the result as RTF is written.
-     * @throws RuntimeException if any
      * @see com.lowagie.text.xml.XmlToRtf
      */
     public static void writeRtf( InputStream is, OutputStream os )
@@ -152,7 +150,6 @@ public class ITextUtil
      *
      * @param is the <CODE>InputStream</CODE> from which the XML is read.
      * @param os the <CODE>OutputStream</CODE> to which the result as Html is written.
-     * @throws RuntimeException if any
      * @see com.lowagie.text.xml.XmlToHtml
      */
     public static void writeHtml( InputStream is, OutputStream os )
@@ -166,5 +163,10 @@ public class ITextUtil
         {
             throw new RuntimeException( "DocumentException : " + e.getMessage() );
         }
+    }
+
+    private ITextUtil()
+    {
+        // private
     }
 }

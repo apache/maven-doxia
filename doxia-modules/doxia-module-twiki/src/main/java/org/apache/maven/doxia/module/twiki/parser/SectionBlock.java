@@ -47,10 +47,8 @@ public class SectionBlock
      * @param title  the section title.
      * @param level  the section level: 0 < level < 6
      * @param blocks child blocks
-     * @throws java.lang.IllegalArgumentException if the parameters are not in the domain
      */
     public SectionBlock( final String title, final int level, final Block[] blocks )
-        throws IllegalArgumentException
     {
         super( blocks );
         final int maxLevel = 5;
@@ -109,10 +107,8 @@ public class SectionBlock
      *
      * @param sink the Sink
      * @param name the name of the method to call
-     * @throws IllegalArgumentException on error
      */
     private void invokeVoidVoid( final Sink sink, final String name )
-        throws IllegalArgumentException
     {
         try
         {

@@ -32,7 +32,6 @@ class LinkBlock
     private  String text;
 
     LinkBlock(  String reference,  String text )
-        throws IllegalArgumentException
     {
         if ( reference == null || text == null )
         {

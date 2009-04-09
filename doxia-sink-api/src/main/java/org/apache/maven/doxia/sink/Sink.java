@@ -252,7 +252,8 @@ public interface Sink
      * Starts the date element.
      * <br/>
      * The date is recommended (but it is not a requirement) to be align to the
-     * <a href="http://www.iso.org/iso/iso_catalogue/catalogue_tc/catalogue_detail.htm?csnumber=26780">ISO-8601</a> standard, i.e.:
+     * <a href="http://www.iso.org/iso/iso_catalogue/catalogue_tc/catalogue_detail.htm?csnumber=26780">ISO-8601</a>
+     * standard, i.e.:
      * <pre>
      * YYYY-MM-DD
      * </pre>

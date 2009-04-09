@@ -37,7 +37,6 @@ public class TreeListBuilder
     private TreeComponent current;
 
     TreeListBuilder()
-        throws IllegalArgumentException
     {
         root = new TreeComponent( null, "root", 0 );
 

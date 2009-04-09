@@ -44,11 +44,9 @@ class NumeratedListBlock
      * Creates the UnorderedListBlock.
      *
      * @param type   order item type. one of Sink#NUMBERING_....
-     * @param blocks list of list items
-     * @throws IllegalArgumentException if listItemBlocks is <code>null</code>
+     * @param blocks list of list items, not null.
      */
     NumeratedListBlock( final int type, final ListItemBlock[] blocks )
-        throws IllegalArgumentException
     {
         super( blocks );
         this.type = type;

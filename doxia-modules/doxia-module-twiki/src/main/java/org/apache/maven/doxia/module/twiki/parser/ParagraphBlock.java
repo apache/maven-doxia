@@ -29,7 +29,6 @@ class ParagraphBlock
     extends AbstractFatherBlock
 {
     ParagraphBlock( final Block[] blocks )
-        throws IllegalArgumentException
     {
         super( blocks );
     }

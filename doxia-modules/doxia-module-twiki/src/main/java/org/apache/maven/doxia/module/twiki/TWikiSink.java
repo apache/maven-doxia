@@ -96,7 +96,7 @@ public class TWikiSink
 
     /**
      * Not used.
-     * {@inheritDoc} 
+     * {@inheritDoc}
      */
     public void anchor_()
     {
@@ -105,7 +105,7 @@ public class TWikiSink
 
     /**
      * Not used.
-     * {@inheritDoc} 
+     * {@inheritDoc}
      */
     public void author()
     {
@@ -120,7 +120,7 @@ public class TWikiSink
 
     /**
      * Not used.
-     * {@inheritDoc} 
+     * {@inheritDoc}
      */
     public void author_()
     {
@@ -129,7 +129,7 @@ public class TWikiSink
 
     /**
      * Not used.
-     * {@inheritDoc} 
+     * {@inheritDoc}
      */
     public void body()
     {
@@ -144,7 +144,7 @@ public class TWikiSink
 
     /**
      * Not used.
-     * {@inheritDoc} 
+     * {@inheritDoc}
      */
     public void body_()
     {
@@ -171,7 +171,7 @@ public class TWikiSink
 
     /**
      * Not used.
-     * {@inheritDoc} 
+     * {@inheritDoc}
      */
     public void comment( String comment )
     {
@@ -187,7 +187,7 @@ public class TWikiSink
 
     /**
      * Not used.
-     * {@inheritDoc} 
+     * {@inheritDoc}
      */
     public void date()
     {
@@ -202,7 +202,7 @@ public class TWikiSink
 
     /**
      * Not used.
-     * {@inheritDoc} 
+     * {@inheritDoc}
      */
     public void date_()
     {
@@ -211,7 +211,7 @@ public class TWikiSink
 
     /**
      * Not used.
-     * {@inheritDoc} 
+     * {@inheritDoc}
      */
     public void definedTerm()
     {
@@ -226,7 +226,7 @@ public class TWikiSink
 
     /**
      * Not used.
-     * {@inheritDoc} 
+     * {@inheritDoc}
      */
     public void definedTerm_()
     {
@@ -253,7 +253,7 @@ public class TWikiSink
 
     /**
      * Not used.
-     * {@inheritDoc} 
+     * {@inheritDoc}
      */
     public void definitionList()
     {
@@ -268,7 +268,7 @@ public class TWikiSink
 
     /**
      * Not used.
-     * {@inheritDoc} 
+     * {@inheritDoc}
      */
     public void definitionList_()
     {
@@ -289,7 +289,7 @@ public class TWikiSink
 
     /**
      * Not used.
-     * {@inheritDoc} 
+     * {@inheritDoc}
      */
     public void definitionListItem_()
     {
@@ -310,7 +310,7 @@ public class TWikiSink
 
     /**
      * Not used.
-     * {@inheritDoc} 
+     * {@inheritDoc}
      */
     public void figure_()
     {
@@ -319,7 +319,7 @@ public class TWikiSink
 
     /**
      * Not used.
-     * {@inheritDoc} 
+     * {@inheritDoc}
      */
     public void figureCaption()
     {
@@ -334,7 +334,7 @@ public class TWikiSink
 
     /**
      * Not used.
-     * {@inheritDoc} 
+     * {@inheritDoc}
      */
     public void figureCaption_()
     {
@@ -425,7 +425,7 @@ public class TWikiSink
 
     /**
      * Not used.
-     * {@inheritDoc} 
+     * {@inheritDoc}
      */
     public void lineBreak()
     {
@@ -531,7 +531,7 @@ public class TWikiSink
 
     /**
      * Not used.
-     * {@inheritDoc} 
+     * {@inheritDoc}
      */
     public void nonBreakingSpace()
     {
@@ -602,7 +602,7 @@ public class TWikiSink
 
     /**
      * Not used.
-     * {@inheritDoc} 
+     * {@inheritDoc}
      */
     public void pageBreak()
     {
@@ -611,7 +611,7 @@ public class TWikiSink
 
     /**
      * Not used.
-     * {@inheritDoc} 
+     * {@inheritDoc}
      */
     public void paragraph()
     {
@@ -633,7 +633,7 @@ public class TWikiSink
 
     /**
      * Not used.
-     * {@inheritDoc} 
+     * {@inheritDoc}
      */
     public void rawText( String text )
     {
@@ -642,7 +642,7 @@ public class TWikiSink
 
     /**
      * Not used.
-     * {@inheritDoc} 
+     * {@inheritDoc}
      */
     public void section( int level, SinkEventAttributes attributes )
     {
@@ -651,7 +651,7 @@ public class TWikiSink
 
     /**
      * Not used.
-     * {@inheritDoc} 
+     * {@inheritDoc}
      */
     public void section1()
     {
@@ -660,7 +660,7 @@ public class TWikiSink
 
     /**
      * Not used.
-     * {@inheritDoc} 
+     * {@inheritDoc}
      */
     public void section1_()
     {
@@ -669,7 +669,7 @@ public class TWikiSink
 
     /**
      * Not used.
-     * {@inheritDoc} 
+     * {@inheritDoc}
      */
     public void section2()
     {
@@ -678,7 +678,7 @@ public class TWikiSink
 
     /**
      * Not used.
-     * {@inheritDoc} 
+     * {@inheritDoc}
      */
     public void section2_()
     {
@@ -687,7 +687,7 @@ public class TWikiSink
 
     /**
      * Not used.
-     * {@inheritDoc} 
+     * {@inheritDoc}
      */
     public void section3()
     {
@@ -696,7 +696,7 @@ public class TWikiSink
 
     /**
      * Not used.
-     * {@inheritDoc} 
+     * {@inheritDoc}
      */
     public void section3_()
     {
@@ -705,7 +705,7 @@ public class TWikiSink
 
     /**
      * Not used.
-     * {@inheritDoc} 
+     * {@inheritDoc}
      */
     public void section4()
     {
@@ -714,7 +714,7 @@ public class TWikiSink
 
     /**
      * Not used.
-     * {@inheritDoc} 
+     * {@inheritDoc}
      */
     public void section4_()
     {
@@ -723,7 +723,7 @@ public class TWikiSink
 
     /**
      * Not used.
-     * {@inheritDoc} 
+     * {@inheritDoc}
      */
     public void section5()
     {
@@ -732,7 +732,7 @@ public class TWikiSink
 
     /**
      * Not used.
-     * {@inheritDoc} 
+     * {@inheritDoc}
      */
     public void section5_()
     {
@@ -741,7 +741,7 @@ public class TWikiSink
 
     /**
      * Not used.
-     * {@inheritDoc} 
+     * {@inheritDoc}
      */
     public void section_( int level )
     {
@@ -750,7 +750,7 @@ public class TWikiSink
 
     /**
      * Not used.
-     * {@inheritDoc} 
+     * {@inheritDoc}
      */
     public void sectionTitle()
     {
@@ -828,7 +828,7 @@ public class TWikiSink
 
     /**
      * Not used.
-     * {@inheritDoc} 
+     * {@inheritDoc}
      */
     public void sectionTitle_()
     {
@@ -844,7 +844,7 @@ public class TWikiSink
 
     /**
      * Not used.
-     * {@inheritDoc} 
+     * {@inheritDoc}
      */
     public void table()
     {
@@ -859,7 +859,7 @@ public class TWikiSink
 
     /**
      * Not used.
-     * {@inheritDoc} 
+     * {@inheritDoc}
      */
     public void table_()
     {
@@ -868,7 +868,7 @@ public class TWikiSink
 
     /**
      * Not used.
-     * {@inheritDoc} 
+     * {@inheritDoc}
      */
     public void tableCaption()
     {
@@ -883,7 +883,7 @@ public class TWikiSink
 
     /**
      * Not used.
-     * {@inheritDoc} 
+     * {@inheritDoc}
      */
     public void tableCaption_()
     {
@@ -958,7 +958,7 @@ public class TWikiSink
 
     /**
      * Not used.
-     * {@inheritDoc} 
+     * {@inheritDoc}
      */
     public void tableRows( int[] justification, boolean grid )
     {
@@ -967,7 +967,7 @@ public class TWikiSink
 
     /**
      * Not used.
-     * {@inheritDoc} 
+     * {@inheritDoc}
      */
     public void tableRows_()
     {
@@ -1034,7 +1034,7 @@ public class TWikiSink
 
     /**
      * Not used.
-     * {@inheritDoc} 
+     * {@inheritDoc}
      */
     public void title()
     {
@@ -1049,7 +1049,7 @@ public class TWikiSink
 
     /**
      * Not used.
-     * {@inheritDoc} 
+     * {@inheritDoc}
      */
     public void title_()
     {
@@ -1058,7 +1058,7 @@ public class TWikiSink
 
     /**
      * Not used.
-     * {@inheritDoc} 
+     * {@inheritDoc}
      */
     public void unknown( String name, Object[] requiredParams, SinkEventAttributes attributes )
     {
@@ -1159,7 +1159,8 @@ public class TWikiSink
      * &lt;tag attName="attValue"&gt;
      * </pre>
      * <br/>
-     * <b>Note</b>: Copy from {@link AbstractXmlSink#writeStartTag(javax.swing.text.html.HTML.Tag, javax.swing.text.MutableAttributeSet)}
+     * <b>Note</b>: Copy from {@link AbstractXmlSink#writeStartTag(javax.swing.text.html.HTML.Tag,
+     *      javax.swing.text.MutableAttributeSet)}
      *
      * @param t a non null tag
      * @param att a set of attributes
@@ -1176,7 +1177,8 @@ public class TWikiSink
      * &lt;tag attName="attValue"&gt;
      * </pre>
      * <br/>
-     * <b>Note</b>: Copy from {@link AbstractXmlSink#writeStartTag(javax.swing.text.html.HTML.Tag, javax.swing.text.MutableAttributeSet, boolean)}
+     * <b>Note</b>: Copy from {@link AbstractXmlSink#writeStartTag(javax.swing.text.html.HTML.Tag,
+     *      javax.swing.text.MutableAttributeSet, boolean)}
      *
      * @param t a non null tag
      * @param att a set of attributes

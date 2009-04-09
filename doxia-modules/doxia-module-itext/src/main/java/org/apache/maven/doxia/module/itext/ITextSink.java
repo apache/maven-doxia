@@ -106,7 +106,7 @@ public final class ITextSink
     /**
      * <p>Constructor for ITextSink.</p>
      *
-     * @param writer
+     * @param writer the writer.
      */
     protected ITextSink( Writer writer )
     {
@@ -116,8 +116,8 @@ public final class ITextSink
     /**
      * <p>Constructor for ITextSink.</p>
      *
-     * @param writer
-     * @param encoding
+     * @param writer the writer.
+     * @param encoding the encoding.
      * @since 1.1
      */
     protected ITextSink( Writer writer, String encoding )
@@ -131,7 +131,7 @@ public final class ITextSink
     /**
      * <p>Constructor for ITextSink.</p>
      *
-     * @param xmlWriter
+     * @param xmlWriter a pretty-printing xml writer.
      */
     protected ITextSink( PrettyPrintXMLWriter xmlWriter )
     {
@@ -157,7 +157,7 @@ public final class ITextSink
     /**
      * Set a new class loader
      *
-     * @param cl
+     * @param cl the class loader.
      */
     public void setClassLoader( ClassLoader cl )
     {
@@ -278,7 +278,9 @@ public final class ITextSink
             writeAddAttribute( ElementTags.RED, ITextFont.DEFAULT_FONT_COLOR_RED );
             writeAddAttribute( ElementTags.ALIGN, ElementTags.ALIGN_CENTER );
 
-//            startChunk( ITextFont.DEFAULT_FONT_NAME, ITextFont.getSectionFontSize( 0 ), ITextFont.BOLD, ITextFont.DEFAULT_FONT_COLOR_BLUE, ITextFont.DEFAULT_FONT_COLOR_GREEN, ITextFont.DEFAULT_FONT_COLOR_RED, "top" );
+//            startChunk( ITextFont.DEFAULT_FONT_NAME, ITextFont.getSectionFontSize( 0 ),
+//                    ITextFont.BOLD, ITextFont.DEFAULT_FONT_COLOR_BLUE, ITextFont.DEFAULT_FONT_COLOR_GREEN,
+//                    ITextFont.DEFAULT_FONT_COLOR_RED, "top" );
 
             writeStartElement( ElementTags.CHUNK );
             writeAddAttribute( ElementTags.FONT, ITextFont.DEFAULT_FONT_NAME );

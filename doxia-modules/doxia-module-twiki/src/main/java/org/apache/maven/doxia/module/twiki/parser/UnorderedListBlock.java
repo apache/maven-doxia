@@ -42,7 +42,6 @@ class UnorderedListBlock
      * @throws IllegalArgumentException if listItemBlocks is <code>null</code>
      */
     UnorderedListBlock( final ListItemBlock[] blocks )
-        throws IllegalArgumentException
     {
         super( blocks );
     }

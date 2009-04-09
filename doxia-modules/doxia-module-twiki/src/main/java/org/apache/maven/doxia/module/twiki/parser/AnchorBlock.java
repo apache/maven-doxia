@@ -38,11 +38,9 @@ class AnchorBlock
     /**
      * Creates the AnchorBlock.
      *
-     * @param name name of the anchor
-     * @throws IllegalArgumentException if the arguments are <code>null</code>
+     * @param name name of the anchor, not null.
      */
     AnchorBlock( final String name )
-        throws IllegalArgumentException
     {
         if ( name == null )
         {

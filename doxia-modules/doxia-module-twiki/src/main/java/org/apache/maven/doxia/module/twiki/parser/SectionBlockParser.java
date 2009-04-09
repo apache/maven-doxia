@@ -56,9 +56,9 @@ public class SectionBlockParser
     /**
      * {@inheritDoc}
      */
-    public final boolean accept( final String s )
+    public final boolean accept( final String line )
     {
-        return HEADER_DA.matcher( s ).lookingAt();
+        return HEADER_DA.matcher( line ).lookingAt();
     }
 
     /**

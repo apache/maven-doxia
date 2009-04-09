@@ -35,7 +35,7 @@ public class TextBlock
     /**
      * <p>Constructor for TextBlock.</p>
      *
-     * @param text
+     * @param text the text.
      */
     public TextBlock( String text )
     {
