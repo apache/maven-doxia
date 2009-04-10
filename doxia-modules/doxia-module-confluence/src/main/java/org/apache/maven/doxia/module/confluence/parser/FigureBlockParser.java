@@ -42,7 +42,7 @@ public class FigureBlockParser
         throws ParseException
     {
         String image = line.substring( 1, line.lastIndexOf( "!" ) );
-        if ( image.contains( "|" ) )
+        if ( image.indexOf( "|" ) >= 0 )
         {
             // DOXIA-303: handle figure attributes
             image = image.substring( 0, image.indexOf( "|" ) );
