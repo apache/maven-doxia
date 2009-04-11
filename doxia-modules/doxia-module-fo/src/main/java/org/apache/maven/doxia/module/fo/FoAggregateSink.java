@@ -205,7 +205,7 @@ public class FoAggregateSink extends FoSink
             return "";
         }
 
-        String idName = name;
+        String idName = name.replace( '\\', '/' );
 
         // prepend "./" and strip extension
         if ( !idName.startsWith( "./" ) )
@@ -236,9 +236,14 @@ public class FoAggregateSink extends FoSink
     {
         String anchor = src;
 
-        if ( src.startsWith( "../" ) && docName != null )
+        while ( anchor.startsWith( "./" ) )
         {
-            anchor = resolveLinkRelativeToBase( src );
+            anchor = anchor.substring( 2 );
+        }
+
+        if ( anchor.startsWith( "../" ) && docName != null )
+        {
+            anchor = resolveLinkRelativeToBase( anchor );
         }
 
         super.figureGraphics( anchor, attributes );
@@ -335,7 +340,8 @@ public class FoAggregateSink extends FoSink
 
             if ( anchor.startsWith( "./" ) )
             {
-                anchor = anchor.substring( 2 );
+                this.link( anchor.substring( 2 ) );
+                return;
             }
 
             anchor = chopExtension ( anchor );
@@ -372,9 +378,9 @@ public class FoAggregateSink extends FoSink
     {
         String anchor = name;
 
-        int dot = anchor.indexOf( "." );
+        int dot = anchor.lastIndexOf( "." );
 
-        if ( dot != -1 )
+        if ( dot != -1 && dot != anchor.length() && anchor.charAt( dot + 1 ) != '/' )
         {
             int hash = anchor.indexOf( "#", dot );
 
