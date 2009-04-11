@@ -114,6 +114,11 @@ public class FoSink
      */
     protected FoSink( Writer writer, String encoding )
     {
+        if ( writer == null )
+        {
+            throw new NullPointerException( "Null writer in FO Sink!" );
+        }
+
         this.out = writer;
         this.tempWriter = new StringWriter();
         this.encoding = encoding;
