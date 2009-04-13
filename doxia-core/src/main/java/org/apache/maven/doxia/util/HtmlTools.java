@@ -257,92 +257,19 @@ public class HtmlTools
 
     /**
      * Construct a valid id.
-     * <p>
-     * According to the <a href="http://www.w3.org/TR/html4/types.html#type-name">
-     * HTML 4.01 specification section 6.2 SGML basic types</a>:
-     * </p>
-     * <p>
-     * <i>ID and NAME tokens must begin with a letter ([A-Za-z]) and may be
-     * followed by any number of letters, digits ([0-9]), hyphens ("-"),
-     * underscores ("_"), colons (":"), and periods (".").</i>
-     * </p>
      *
      * <p>
-     * According to <a href="http://www.w3.org/TR/xhtml1/#C_8">XHTML 1.0
-     * section C.8. Fragment Identifiers</a>:
+     *   <b>Note</b>: this method is identical to {@link DoxiaUtils#encodeId(String)},
+     *   the rules to encode an id are laid out there.
      * </p>
-     * <p>
-     * <i>When defining fragment identifiers to be backward-compatible, only
-     * strings matching the pattern [A-Za-z][A-Za-z0-9:_.-]* should be used.</i>
-     * </p>
-     *
-     * <p>
-     * To achieve this we need to convert the <i>id</i> String. Two conversions
-     * are necessary and one is done to get prettier ids:
-     * </p>
-     * <ol>
-     * <li>If the first character is not a letter, prepend the id with the
-     * letter 'a'</li>
-     * <li>A space is replaced with an underscore '_'</li>
-     * <li>Remove whitespace at the start and end before starting to process</li>
-     * </ol>
-     *
-     * <p>
-     * For letters, the case is preserved in the conversion.
-     * </p>
-     *
-     * <p>
-     * Here are some examples:
-     * </p>
-     * <pre>
-     * HtmlTools.encodeId( null )        = null
-     * HtmlTools.encodeId( "" )          = ""
-     * HtmlTools.encodeId( " _ " )       = "a_"
-     * HtmlTools.encodeId( "1" )         = "a1"
-     * HtmlTools.encodeId( "1anchor" )   = "a1anchor"
-     * HtmlTools.encodeId( "_anchor" )   = "a_anchor"
-     * HtmlTools.encodeId( "a b-c123 " ) = "a_b-c123"
-     * HtmlTools.encodeId( "   anchor" ) = "anchor"
-     * HtmlTools.encodeId( "myAnchor" )  = "myAnchor"
-     * </pre>
-     *
-     * <b>Note</b>: this method is intentionally similar to {@link DoxiaUtils#encodeId(String)}.
      *
      * @param id The id to be encoded.
      * @return The trimmed and encoded id, or null if id is null.
+     * @see {@link DoxiaUtils#encodeId(java.lang.String)}.
      */
     public static String encodeId( String id )
     {
-        if ( id == null )
-        {
-            return null;
-        }
-
-        id = id.trim();
-        int length = id.length();
-        StringBuffer buffer = new StringBuffer( length );
-
-        for ( int i = 0; i < length; ++i )
-        {
-            char c = id.charAt( i );
-
-            if ( ( i == 0 ) && ( !Character.isLetter( c ) ) )
-            {
-                buffer.append( "a" );
-            }
-
-            if ( c == ' ' )
-            {
-                buffer.append( "_" );
-            }
-            else if ( ( Character.isLetterOrDigit( c ) ) || ( c == '-' ) || ( c == '_' ) || ( c == ':' )
-                            || ( c == '.' ) )
-            {
-                buffer.append( c );
-            }
-        }
-
-        return buffer.toString();
+        return DoxiaUtils.encodeId( id );
     }
 
     /**
@@ -355,31 +282,7 @@ public class HtmlTools
      */
     public static boolean isId( String text )
     {
-        if ( text == null || text.length() == 0 )
-        {
-            return false;
-        }
-
-        for ( int i = 0; i < text.length(); ++i )
-        {
-            char c = text.charAt( i );
-
-            if ( i == 0 && !Character.isLetter( c ) )
-            {
-                return false;
-            }
-
-            if ( c == ' ' )
-            {
-                return false;
-            }
-            else if ( !Character.isLetterOrDigit( c ) && c != '-' && c != '_' && c != ':' && c != '.' )
-            {
-                return false;
-            }
-        }
-
-        return true;
+        return DoxiaUtils.isValidId( text );
     }
 
     private HtmlTools()

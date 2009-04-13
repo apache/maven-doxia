@@ -155,6 +155,8 @@ public class DoxiaUtilsTest
         assertEquals( DoxiaUtils.encodeId( "   anchor" ), "anchor" );
         assertEquals( DoxiaUtils.encodeId( "myAnchor" ), "myAnchor" );
         assertEquals( DoxiaUtils.encodeId( "my&Anchor" ), "my%26Anchor" );
+        assertEquals( DoxiaUtils.encodeId( "Håkon" ), "H%c3%a5kon" );
+        assertEquals( DoxiaUtils.encodeId( "Theußl" ), "Theu%c3%9fl" );
     }
 
     /**
@@ -178,5 +180,6 @@ public class DoxiaUtilsTest
         assertTrue( DoxiaUtils.isValidId( "a:" ) );
         assertTrue( DoxiaUtils.isValidId( "a." ) );
         assertTrue( DoxiaUtils.isValidId( "index.html" ) );
+        assertFalse( DoxiaUtils.isValidId( "Theußl" ) );
     }
 }

@@ -63,6 +63,8 @@ public class HtmlToolsTest
         assertEquals( HtmlTools.encodeId( "a b-c123 " ), "a_b-c123" );
         assertEquals( HtmlTools.encodeId( "   anchor" ), "anchor" );
         assertEquals( HtmlTools.encodeId( "myAnchor" ), "myAnchor" );
+        assertEquals( HtmlTools.encodeId( "Håkon" ), "H%c3%a5kon" );
+        assertEquals( HtmlTools.encodeId( "Theußl" ), "Theu%c3%9fl" );
     }
 
     /**
@@ -76,10 +78,9 @@ public class HtmlToolsTest
             "http://www.example.com/?This is a simple test." ),
             "http://www.example.com/?This%20is%20a%20simple%20test." );
 
-        // TODO: the & is not encoded?
-        //assertEquals( HtmlTools.encodeURL(
-        //    "http://www.example.com/?This is a simple & short test." ),
-        //    "http://www.example.com/?This%20is%20a%20simple%20%26%20short%20test." );
+        assertEquals( HtmlTools.encodeURL(
+            "http://www.example.com/?This is a simple & short test." ),
+            "http://www.example.com/?This%20is%20a%20simple%20&%20short%20test." );
     }
 
     /**
@@ -101,6 +102,7 @@ public class HtmlToolsTest
         assertTrue( HtmlTools.isId( "a-" ) );
         assertTrue( HtmlTools.isId( "a:" ) );
         assertTrue( HtmlTools.isId( "a." ) );
+        assertFalse( HtmlTools.isId( "Theußl" ) );
     }
 
     /**
