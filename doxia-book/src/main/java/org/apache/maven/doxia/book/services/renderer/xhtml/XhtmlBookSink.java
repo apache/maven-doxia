@@ -57,7 +57,7 @@ public class XhtmlBookSink
     /**
      * {@inheritDoc}
      *
-     * Does nothing. 
+     * Does nothing.
      */
     public void head()
     {
@@ -69,7 +69,7 @@ public class XhtmlBookSink
     /**
      * {@inheritDoc}
      *
-     * Does nothing. 
+     * Does nothing.
      */
     public void head_()
     {
@@ -79,7 +79,7 @@ public class XhtmlBookSink
     /**
      * {@inheritDoc}
      *
-     * Does nothing. 
+     * Does nothing.
      */
     public void title()
     {
@@ -89,7 +89,7 @@ public class XhtmlBookSink
     /**
      * {@inheritDoc}
      *
-     * Does nothing. 
+     * Does nothing.
      */
     public void title_()
     {
@@ -99,7 +99,7 @@ public class XhtmlBookSink
     /**
      * {@inheritDoc}
      *
-     * Does nothing. 
+     * Does nothing.
      */
     public void author_()
     {
@@ -109,7 +109,7 @@ public class XhtmlBookSink
     /**
      * {@inheritDoc}
      *
-     * Does nothing. 
+     * Does nothing.
      */
     public void date_()
     {
@@ -119,7 +119,7 @@ public class XhtmlBookSink
     /**
      * {@inheritDoc}
      *
-     * Does nothing. 
+     * Does nothing.
      */
     public void body()
     {
@@ -129,7 +129,7 @@ public class XhtmlBookSink
     /**
      * {@inheritDoc}
      *
-     * Does nothing. 
+     * Does nothing.
      */
     public void body_()
     {

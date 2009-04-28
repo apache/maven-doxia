@@ -56,10 +56,10 @@ public class IndexXdocBookSink
     /** {@inheritDoc} */
     protected void navigationPanel()
     {
-        markup( "<!--Navigation Panel-->" );
+        write( "<!--Navigation Panel-->" );
 
-        markup( "<table width=\"100%\" align=\"center\">" );
-        markup( "<tr>" );
+        write( "<table width=\"100%\" align=\"center\">" );
+        write( "<tr>" );
 
         // -----------------------------------------------------------------------
         // Next
@@ -67,18 +67,18 @@ public class IndexXdocBookSink
 
         if ( firstEntry != null )
         {
-            markup( "<td><div align='right'>" );
+            write( "<td><div align='right'>" );
 
-            markup( getString( "next" ) + ": <a href='" + firstEntry.getId() + ".html'>" );
+            write( getString( "next" ) + ": <a href='" + firstEntry.getId() + ".html'>" );
             content( firstEntry.getTitle() );
-            markup( "</a>" );
+            write( "</a>" );
 
-            markup( "</div></td>" );
+            write( "</div></td>" );
         }
 
-        markup( "</tr>" );
-        markup( "</table>" );
+        write( "</tr>" );
+        write( "</table>" );
 
-        markup( "<!--End of Navigation Panel-->" );
+        write( "<!--End of Navigation Panel-->" );
     }
 }

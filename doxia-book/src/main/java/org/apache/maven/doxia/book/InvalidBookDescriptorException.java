@@ -30,6 +30,10 @@ import org.apache.maven.doxia.book.services.validation.ValidationResult;
 public class InvalidBookDescriptorException
     extends BookDoxiaException
 {
+
+    /** serialVersionUID */
+    private static final long serialVersionUID = -5706648416915909753L;
+
     /** ValidationResult. */
     private ValidationResult validationResult;
 

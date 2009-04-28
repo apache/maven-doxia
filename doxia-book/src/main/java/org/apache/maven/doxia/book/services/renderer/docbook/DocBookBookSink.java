@@ -25,7 +25,6 @@ import javax.swing.text.MutableAttributeSet;
 import javax.swing.text.html.HTML.Tag;
 
 import org.apache.maven.doxia.module.docbook.DocBookSink;
-import org.apache.maven.doxia.module.docbook.DocbookMarkup;
 
 /**
  * An Docbook Sink that doesn't write out head or body elements for every section of a book, and has some convenience
@@ -60,7 +59,7 @@ public class DocBookBookSink
     /**
      * {@inheritDoc}
      *
-     * Does nothing because we don't want the header from each document to crop up in the middle of a book. 
+     * Does nothing because we don't want the header from each document to crop up in the middle of a book.
      */
     public void head()
     {
@@ -70,7 +69,7 @@ public class DocBookBookSink
     /**
      * {@inheritDoc}
      *
-     * Does nothing because we don't want the header from each document to crop up in the middle of a book. 
+     * Does nothing because we don't want the header from each document to crop up in the middle of a book.
      */
     public void head_()
     {
@@ -80,7 +79,7 @@ public class DocBookBookSink
     /**
      * {@inheritDoc}
      *
-     * Marks the skip flag to true so that this element's text is not emitted by the base class. 
+     * Marks the skip flag to true so that this element's text is not emitted by the base class.
      */
     public void title()
     {
@@ -90,7 +89,7 @@ public class DocBookBookSink
     /**
      * {@inheritDoc}
      *
-     * Marks the skip flag to false so that rendering can resume. 
+     * Marks the skip flag to false so that rendering can resume.
      */
     public void title_()
     {
@@ -100,7 +99,7 @@ public class DocBookBookSink
     /**
      * {@inheritDoc}
      *
-     * Marks the skip flag to true so that this element's text is not emitted by the base class. 
+     * Marks the skip flag to true so that this element's text is not emitted by the base class.
      */
     public void author()
     {
@@ -110,7 +109,7 @@ public class DocBookBookSink
     /**
      * {@inheritDoc}
      *
-     * Marks the skip flag to false so that rendering can resume. 
+     * Marks the skip flag to false so that rendering can resume.
      */
     public void author_()
     {
@@ -120,7 +119,7 @@ public class DocBookBookSink
     /**
      * {@inheritDoc}
      *
-     * Does nothing because we don't want the header from each document to crop up in the middle of a book. 
+     * Does nothing because we don't want the header from each document to crop up in the middle of a book.
      */
     public void body()
     {
@@ -130,7 +129,7 @@ public class DocBookBookSink
     /**
      * {@inheritDoc}
      *
-     * Does nothing because we don't want the header from each document to crop up in the middle of a book. 
+     * Does nothing because we don't want the header from each document to crop up in the middle of a book.
      */
     public void body_()
     {

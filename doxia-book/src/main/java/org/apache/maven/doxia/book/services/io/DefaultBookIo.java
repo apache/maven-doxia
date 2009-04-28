@@ -30,7 +30,6 @@ import org.codehaus.plexus.util.ReaderFactory;
 import org.codehaus.plexus.util.xml.pull.XmlPullParserException;
 import org.codehaus.plexus.logging.AbstractLogEnabled;
 
-import java.io.FileReader;
 import java.io.IOException;
 import java.io.File;
 import java.io.Reader;

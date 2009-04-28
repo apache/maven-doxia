@@ -55,10 +55,10 @@ public class ChapterXdocBookSink
     /** {@inheritDoc} */
     protected void navigationPanel()
     {
-        markup( "<!--Navigation Panel-->" );
+        write( "<!--Navigation Panel-->" );
 
-        markup( "<table width=\"100%\" align=\"center\">" );
-        markup( "<tr>" );
+        write( "<table width=\"100%\" align=\"center\">" );
+        write( "<tr>" );
 
         // -----------------------------------------------------------------------
         // Prev
@@ -66,34 +66,34 @@ public class ChapterXdocBookSink
 
         IndexEntry prevChapter = chapterIndex.getPrevEntry();
 
-        markup( "<td><div align='left'>" );
+        write( "<td><div align='left'>" );
 
         previous( prevChapter );
 
-        markup( "</div></td>" );
+        write( "</div></td>" );
 
         // -----------------------------------------------------------------------
         // Parent
         // -----------------------------------------------------------------------
 
-        markup( "<td><div align='center'>" );
+        write( "<td><div align='center'>" );
         up();
-        markup( "</div></td>" );
+        write( "</div></td>" );
 
         // -----------------------------------------------------------------------
         // Next
         // -----------------------------------------------------------------------
 
-        markup( "<td><div align='right'>" );
+        write( "<td><div align='right'>" );
 
         next();
 
-        markup( "</div></td>" );
+        write( "</div></td>" );
 
-        markup( "</tr>" );
-        markup( "</table>" );
+        write( "</tr>" );
+        write( "</table>" );
 
-        markup( "<!--End of Navigation Panel-->" );
+        write( "<!--End of Navigation Panel-->" );
     }
 
     /**
@@ -108,18 +108,18 @@ public class ChapterXdocBookSink
             IndexEntry lastEntry = prevChapter.getLastEntry();
             if ( lastEntry == null )
             {
-                markup( "<i>Start of book</i>" );
+                write( "<i>Start of book</i>" );
             }
             else
             {
-                markup( getString( "previous" ) + ": <a href='" + lastEntry.getId() + ".html'>" );
+                write( getString( "previous" ) + ": <a href='" + lastEntry.getId() + ".html'>" );
                 content( lastEntry.getTitle() );
-                markup( "</a>" );
+                write( "</a>" );
             }
         }
         else
         {
-            markup( getString( "previous" ) + ":<a href='index.html'>" + getString( "toc" ) + "</a>" );
+            write( getString( "previous" ) + ":<a href='index.html'>" + getString( "toc" ) + "</a>" );
         }
     }
 
@@ -128,7 +128,7 @@ public class ChapterXdocBookSink
      */
     protected void up()
     {
-        markup( getString( "up" ) + ": <a href='index.html'>" + getString( "toc" ) + "</a>" );
+        write( getString( "up" ) + ": <a href='index.html'>" + getString( "toc" ) + "</a>" );
     }
 
     /**
@@ -139,13 +139,13 @@ public class ChapterXdocBookSink
         IndexEntry firstEntry = chapterIndex.getFirstEntry();
         if ( firstEntry == null )
         {
-            markup( "<i>End of book</i>" );
+            write( "<i>End of book</i>" );
         }
         else
         {
-            markup( getString( "next" ) + ": <a href='" + firstEntry.getId() + ".html'>" );
+            write( getString( "next" ) + ": <a href='" + firstEntry.getId() + ".html'>" );
             content( firstEntry.getTitle() );
-            markup( "</a>" );
+            write( "</a>" );
         }
     }
 }

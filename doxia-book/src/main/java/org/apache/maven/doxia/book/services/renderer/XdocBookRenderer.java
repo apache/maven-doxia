@@ -407,7 +407,8 @@ public class XdocBookRenderer
     {
         try
         {
-            Writer writer = WriterFactory.newXmlWriter( new File( context.getOutputDirectory() + "/" + section.getId() + ".xml" ) );
+            Writer writer = WriterFactory.newXmlWriter( new File( context.getOutputDirectory()
+                    + "/" + section.getId() + ".xml" ) );
 
             SectionXdocBookSink sink = new SectionXdocBookSink( writer, sectionIndex, i18n, context.getLocale() );
 

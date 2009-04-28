@@ -33,7 +33,7 @@ public class LatexBookSink
     extends LatexSink
 {
     /** text. */
-    private String text;
+    private String txt;
 
     /** title. */
     private String title;
@@ -75,9 +75,9 @@ public class LatexBookSink
     // ----------------------------------------------------------------------
 
     /** {@inheritDoc} */
-    public void text( String newText )
+    public void text( String text )
     {
-        this.text = newText;
+        this.txt = text;
 
         super.text( text );
     }
@@ -87,7 +87,7 @@ public class LatexBookSink
     {
         super.title_();
 
-        this.title = text;
+        this.title = txt;
     }
 
     // ----------------------------------------------------------------------

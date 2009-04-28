@@ -70,24 +70,24 @@ public abstract class AbstractXdocBookSink
     {
         writeStartTag( Tag.BODY );
 
-        markup( "<section name=\"\">" );
+        write( "<section name=\"\">" );
 
         navigationPanel();
         horizontalRule();
 
-        markup( "</section>" );
+        write( "</section>" );
     }
 
     /** {@inheritDoc} */
     public void body_()
     {
-        markup( "<section name=\"\">" );
+        write( "<section name=\"\">" );
 
         horizontalRule();
 
         navigationPanel();
 
-        markup( "</section>" );
+        write( "</section>" );
 
         writeEndTag( Tag.BODY );
 
