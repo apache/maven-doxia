@@ -25,7 +25,7 @@ under the License.
   <parent>
     <artifactId>doxia-modules</artifactId>
     <groupId>org.apache.maven.doxia</groupId>
-    <version>1.1.1</version>
+    <version>1.1.1-SNAPSHOT</version>
     <relativePath>../pom.xml</relativePath>
   </parent>
 
@@ -100,9 +100,9 @@ under the License.
                       </not>
                     </condition>
 
-                    <mkdir dir="${dir}" />
+                    <mkdir dir="${dir}"/>
 
-                    <xsddoc file="${basedir}/src/main/resources/xdoc-2.0.xsd" out="${dir}" doctitle="Reference of Schema Xdoc 2.0" verbose="true" />
+                    <xsddoc file="${basedir}/src/main/resources/xdoc-2.0.xsd" out="${dir}" doctitle="Reference of Schema Xdoc 2.0" verbose="true"/>
                   </tasks>
                 </configuration>
                 <goals>
