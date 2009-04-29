@@ -145,8 +145,8 @@ public class DoxiaUtilsTest
     public void testEncodeId()
     {
         assertEquals( DoxiaUtils.encodeId( null ), null );
-        assertEquals( DoxiaUtils.encodeId( "" ), "" );
-        assertEquals( DoxiaUtils.encodeId( " " ), "" );
+        assertEquals( DoxiaUtils.encodeId( "" ), "a" );
+        assertEquals( DoxiaUtils.encodeId( " " ), "a" );
         assertEquals( DoxiaUtils.encodeId( " _ " ), "a_" );
         assertEquals( DoxiaUtils.encodeId( "1" ), "a1" );
         assertEquals( DoxiaUtils.encodeId( "1anchor" ), "a1anchor" );

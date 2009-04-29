@@ -149,7 +149,8 @@ public class DoxiaUtils
      * </p>
      * <pre>
      * DoxiaUtils.encodeId( null )        = null
-     * DoxiaUtils.encodeId( "" )          = ""
+     * DoxiaUtils.encodeId( "" )          = "a"
+     * DoxiaUtils.encodeId( "  " )        = "a"
      * DoxiaUtils.encodeId( " _ " )       = "a_"
      * DoxiaUtils.encodeId( "1" )         = "a1"
      * DoxiaUtils.encodeId( "1anchor" )   = "a1anchor"
@@ -163,6 +164,7 @@ public class DoxiaUtils
      * @param chop true if non-ASCII characters should be ignored.
      * If false, any non-ASCII characters will be replaced as specified above.
      * @return The trimmed and encoded id, or null if id is null.
+     * If id is not null, the return value is guaranteed to be a valid Doxia id.
      *
      * @since 1.1.1
      */
@@ -175,6 +177,12 @@ public class DoxiaUtils
 
         id = id.trim();
         int length = id.length();
+
+        if ( length == 0 )
+        {
+            return "a";
+        }
+
         StringBuffer buffer = new StringBuffer( length );
 
         for ( int i = 0; i < length; ++i )
