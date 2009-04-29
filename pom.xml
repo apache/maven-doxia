@@ -356,6 +356,12 @@ under the License.
               </tagletArtifacts>
             </configuration>
           </plugin>
+          <plugin>
+            <artifactId>maven-checkstyle-plugin</artifactId>
+            <configuration>
+              <configLocation>http://svn.apache.org/repos/asf/maven/doxia/doxia/trunk/src/main/resources/config/doxia_checkstyle.xml</configLocation>
+            </configuration>
+          </plugin>
         </plugins>
       </reporting>
     </profile>
