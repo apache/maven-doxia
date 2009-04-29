@@ -54,8 +54,8 @@ public class HtmlToolsTest
     public void testEncodeId()
     {
         assertEquals( HtmlTools.encodeId( null ), null );
-        assertEquals( HtmlTools.encodeId( "" ), "" );
-        assertEquals( HtmlTools.encodeId( " " ), "" );
+        assertEquals( HtmlTools.encodeId( "" ), "a" );
+        assertEquals( HtmlTools.encodeId( " " ), "a" );
         assertEquals( HtmlTools.encodeId( " _ " ), "a_" );
         assertEquals( HtmlTools.encodeId( "1" ), "a1" );
         assertEquals( HtmlTools.encodeId( "1anchor" ), "a1anchor" );
