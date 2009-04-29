@@ -263,7 +263,7 @@ public class FoAggregateSink extends FoSink
 
         if ( !DoxiaUtils.isValidId( anchor ) )
         {
-            anchor = DoxiaUtils.encodeId( name );
+            anchor = DoxiaUtils.encodeId( name, true );
 
             getLog().warn( "[FO Sink] Modified invalid anchor name: " + name );
         }
@@ -301,7 +301,7 @@ public class FoAggregateSink extends FoSink
 
             if ( !DoxiaUtils.isValidId( anchor ) )
             {
-                anchor = DoxiaUtils.encodeId( anchor );
+                anchor = DoxiaUtils.encodeId( anchor, true );
 
                 getLog().warn( "[FO Sink] Modified invalid link name: " + name );
             }

@@ -454,7 +454,7 @@ public class AptParser
                                     getLog().warn( "Modified invalid link: " + hash );
 
                                     linkAnchor = linkAnchor.substring( 0, hashIndex ) + "#"
-                                        + DoxiaUtils.encodeId( hash );
+                                        + DoxiaUtils.encodeId( hash, true );
                                 }
                             }
 

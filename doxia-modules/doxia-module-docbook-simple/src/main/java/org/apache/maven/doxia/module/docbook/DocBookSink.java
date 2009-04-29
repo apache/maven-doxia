@@ -1455,7 +1455,7 @@ public class DocBookSink
 
         if ( !DoxiaUtils.isValidId( id ) )
         {
-            id = DoxiaUtils.encodeId( name );
+            id = DoxiaUtils.encodeId( name, true );
 
             getLog().warn( "Modified invalid anchor name: " + name );
         }

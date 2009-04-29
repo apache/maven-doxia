@@ -63,8 +63,8 @@ public class HtmlToolsTest
         assertEquals( HtmlTools.encodeId( "a b-c123 " ), "a_b-c123" );
         assertEquals( HtmlTools.encodeId( "   anchor" ), "anchor" );
         assertEquals( HtmlTools.encodeId( "myAnchor" ), "myAnchor" );
-        assertEquals( HtmlTools.encodeId( "Håkon" ), "H%c3%a5kon" );
-        assertEquals( HtmlTools.encodeId( "Theußl" ), "Theu%c3%9fl" );
+        assertEquals( HtmlTools.encodeId( "Håkon" ), "Hkon" );
+        assertEquals( HtmlTools.encodeId( "Theußl" ), "Theul" );
     }
 
     /**

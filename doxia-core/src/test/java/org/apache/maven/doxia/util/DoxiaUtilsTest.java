@@ -156,7 +156,9 @@ public class DoxiaUtilsTest
         assertEquals( DoxiaUtils.encodeId( "myAnchor" ), "myAnchor" );
         assertEquals( DoxiaUtils.encodeId( "my&Anchor" ), "my%26Anchor" );
         assertEquals( DoxiaUtils.encodeId( "Håkon" ), "H%c3%a5kon" );
+        assertEquals( DoxiaUtils.encodeId( "Håkon", true ), "Hkon" );
         assertEquals( DoxiaUtils.encodeId( "Theußl" ), "Theu%c3%9fl" );
+        assertEquals( DoxiaUtils.encodeId( "Theußl", true ), "Theul" );
     }
 
     /**

@@ -124,7 +124,7 @@ public class FmlParser
             {
                 getLog().warn( "Modified invalid id: " + currentPart.getId() );
 
-                currentPart.setId( DoxiaUtils.encodeId( currentPart.getId() ) );
+                currentPart.setId( DoxiaUtils.encodeId( currentPart.getId(), true ) );
             }
         }
         else if ( parser.getName().equals( Tag.TITLE.toString() ) )
@@ -159,7 +159,7 @@ public class FmlParser
             {
                 getLog().warn( "Modified invalid id: " + currentFaq.getId() );
 
-                currentFaq.setId( DoxiaUtils.encodeId( currentFaq.getId() ) );
+                currentFaq.setId( DoxiaUtils.encodeId( currentFaq.getId(), true ) );
             }
         }
         if ( parser.getName().equals( QUESTION_TAG.toString() ) )

@@ -33,6 +33,8 @@ import java.util.Locale;
 public class DoxiaUtils
 {
 
+    private static final int MINUS_ONE = 0xFF;
+
     /**
      * Checks if the given string corresponds to an internal link,
      * ie it is a link to an anchor within the same document.
@@ -91,6 +93,22 @@ public class DoxiaUtils
      * Construct a valid Doxia id.
      *
      * <p>
+     *   This method is equivalent to {@link #encodeId(java.lang.String, boolean) encodeId( id, false )}.
+     * </p>
+     *
+     * @param id The id to be encoded.
+     * @return The trimmed and encoded id, or null if id is null.
+     * @see #encodeId(java.lang.String, boolean)
+     */
+    public static String encodeId( String id )
+    {
+        return encodeId( id, false );
+    }
+
+    /**
+     * Construct a valid Doxia id.
+     *
+     * <p>
      *   A valid Doxia id obeys the same constraints as an HTML ID or NAME token.
      *   According to the <a href="http://www.w3.org/TR/html4/types.html#type-name">
      *   HTML 4.01 specification section 6.2 SGML basic types</a>:
@@ -117,8 +135,8 @@ public class DoxiaUtils
      *   <li>If the first character is not a letter, prepend the id with the letter 'a'</li>
      *   <li>Any spaces are replaced with an underscore '_'</li>
      *   <li>
-     *     Any characters not matching the above pattern are replaced according to the rules
-     *     specified in the
+     *     Any characters not matching the above pattern are either dropped,
+     *     or replaced according to the rules specified in the
      *     <a href="http://www.w3.org/TR/html4/appendix/notes.html#non-ascii-chars">HTML specs</a>.
      *   </li>
      * </ol>
@@ -142,9 +160,13 @@ public class DoxiaUtils
      * </pre>
      *
      * @param id The id to be encoded.
+     * @param chop true if non-ASCII characters should be ignored.
+     * If false, any non-ASCII characters will be replaced as specified above.
      * @return The trimmed and encoded id, or null if id is null.
+     *
+     * @since 1.1.1
      */
-    public static String encodeId( String id )
+    public static String encodeId( String id, boolean chop )
     {
         if ( id == null )
         {
@@ -173,7 +195,7 @@ public class DoxiaUtils
             {
                 buffer.append( c );
             }
-            else
+            else if ( !chop )
             {
                 char[] unicode = new char[1];
                 byte[] bytes;
@@ -190,7 +212,7 @@ public class DoxiaUtils
 
                 for ( int j = 0; j < bytes.length; ++j )
                 {
-                    String hex = Integer.toHexString( bytes[j] & 0xFF );
+                    String hex = byteToHex( bytes[j] );
 
                     buffer.append( '%' );
 
@@ -205,6 +227,19 @@ public class DoxiaUtils
         }
 
         return buffer.toString();
+    }
+
+    /**
+     * Convert a byte to it's hexadecimal equivalent.
+     *
+     * @param b the byte value.
+     * @return the result of Integer.toHexString( b & 0xFF ).
+     *
+     * @since 1.1.1
+     */
+    public static String byteToHex( byte b )
+    {
+        return Integer.toHexString( b & MINUS_ONE );
     }
 
     /**

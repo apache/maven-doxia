@@ -663,7 +663,7 @@ public class XhtmlBaseParser
         {
             getLog().warn( "Modified invalid anchor name: " + id );
 
-            return DoxiaUtils.encodeId( id );
+            return DoxiaUtils.encodeId( id, true );
         }
 
         return id;

@@ -61,6 +61,8 @@ public class HtmlTools
 
     private static final Hashtable TAG_HASHTABLE = new Hashtable( ALL_TAGS.length );
 
+    private static final int ASCII = 0x7E;
+
     static
     {
         for ( int i = 0; i < ALL_TAGS.length; i++ )
@@ -152,7 +154,7 @@ public class HtmlTools
                     }
                     else
                     {
-                        if ( c <= 0x7E )
+                        if ( c <= ASCII )
                         {
                             // ASCII.
                             buffer.append( c );
@@ -239,7 +241,7 @@ public class HtmlTools
 
                         for ( int j = 0; j < bytes.length; ++j )
                         {
-                            String hex = Integer.toHexString( bytes[j] & 0xFF );
+                            String hex = DoxiaUtils.byteToHex( bytes[j] );
 
                             encoded.append( '%' );
                             if ( hex.length() == 1 )
@@ -259,17 +261,18 @@ public class HtmlTools
      * Construct a valid id.
      *
      * <p>
-     *   <b>Note</b>: this method is identical to {@link DoxiaUtils#encodeId(String)},
+     *   <b>Note</b>: this method is identical to
+     *   {@link DoxiaUtils#encodeId(String,boolean) DoxiaUtils.encodeId( id, true)},
      *   the rules to encode an id are laid out there.
      * </p>
      *
      * @param id The id to be encoded.
      * @return The trimmed and encoded id, or null if id is null.
-     * @see {@link DoxiaUtils#encodeId(java.lang.String)}.
+     * @see {@link DoxiaUtils#encodeId(java.lang.String,boolean)}.
      */
     public static String encodeId( String id )
     {
-        return DoxiaUtils.encodeId( id );
+        return DoxiaUtils.encodeId( id, true );
     }
 
     /**
