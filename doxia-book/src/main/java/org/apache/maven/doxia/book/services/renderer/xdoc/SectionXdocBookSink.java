@@ -57,7 +57,7 @@ public class SectionXdocBookSink
     {
         write( "<!--Navigation Panel-->" );
 
-        write( "<table width=\"100%\" align=\"center\">" );
+        write( "<table width=\"100%\" align=\"center\" border=\"0\">" );
         write( "<tr>" );
 
         IndexEntry parent = indexEntry.getParent();
@@ -68,19 +68,19 @@ public class SectionXdocBookSink
 
         IndexEntry prevEntry = indexEntry.getPrevEntry();
 
-        write( "<td><div align='left'>" );
+        write( "<td align=\"left\">" );
 
         previous( parent, prevEntry );
 
-        write( "</div></td>" );
+        write( "</td>" );
 
         // -----------------------------------------------------------------------
         // Parent
         // -----------------------------------------------------------------------
 
-        write( "<td><div align='center'>" );
+        write( "<td align=\"center\">" );
         up( parent );
-        write( "</div></td>" );
+        write( "</td>" );
 
         // -----------------------------------------------------------------------
         // Next
@@ -88,11 +88,11 @@ public class SectionXdocBookSink
 
         IndexEntry nextEntry = indexEntry.getNextEntry();
 
-        write( "<td><div align='right'>" );
+        write( "<td align=\"right\">" );
 
         next( parent, nextEntry );
 
-        write( "</div></td>" );
+        write( "</td>" );
 
         write( "</tr>" );
         write( "</table>" );
