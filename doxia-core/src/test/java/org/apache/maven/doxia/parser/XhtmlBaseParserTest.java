@@ -323,8 +323,9 @@ public class XhtmlBaseParserTest
         sb.append( "<!ENTITY foo \"&#x159;\">" ).append( XhtmlBaseParser.EOL );
         sb.append( "<!ENTITY foo1 \"&nbsp;\">" ).append( XhtmlBaseParser.EOL );
         sb.append( "<!ENTITY foo2 \"&#x161;\">" ).append( XhtmlBaseParser.EOL );
+        sb.append( "<!ENTITY tritPos \"&#x1d7ed;\">" ).append( XhtmlBaseParser.EOL );
         sb.append( "]>" ).append( XhtmlBaseParser.EOL );
-        sb.append( "<b>&foo;&foo1;&foo2;</b>" );
+        sb.append( "<b>&foo;&foo1;&foo2;&tritPos;</b>" );
 
         parser.setValidate( false );
         parser.parse( sb.toString(), sink );
@@ -345,6 +346,11 @@ public class XhtmlBaseParserTest
         event = (SinkEventElement) it.next();
         assertEquals( "rawText", event.getName() );
         assertEquals( "&#x161;",  (String) event.getArgs()[0] );
+
+        event = (SinkEventElement) it.next();
+        // FIXME: DOXIA-310
+        //assertEquals( "rawText", event.getName() );
+        //assertEquals( "&#x1d7ed;",  (String) event.getArgs()[0] );
 
         event = (SinkEventElement) it.next();
         assertEquals( "bold_", event.getName() );
