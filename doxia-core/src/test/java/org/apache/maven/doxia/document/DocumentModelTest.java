@@ -328,7 +328,7 @@ public class DocumentModelTest
 
         try
         {
-            w = WriterFactory.newPlatformWriter( testFile );
+            w = WriterFactory.newXmlWriter( testFile );
             new DocumentXpp3Writer().write( w, model );
         }
         finally
