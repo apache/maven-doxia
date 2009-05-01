@@ -434,4 +434,35 @@ public class XdocParserTest
             assertNotNull( ex );
         }
     }
+
+        /** @throws Exception  */
+    public void testEntities()
+        throws Exception
+    {
+        final String text = "<section name=\"&amp;\" title=\"&amp;\"><p>&amp;</p></section>";
+
+        SinkEventTestingSink sink = new SinkEventTestingSink();
+
+        parser.parse( text, sink );
+
+        Iterator it = sink.getEventList().iterator();
+
+        assertEquals( "section1", ( (SinkEventElement) it.next() ).getName() );
+        assertEquals( "sectionTitle1", ( (SinkEventElement) it.next() ).getName() );
+
+        SinkEventElement textEvt = (SinkEventElement) it.next();
+        assertEquals( "text", textEvt.getName() );
+        assertEquals( "&", textEvt.getArgs()[0] );
+
+        assertEquals( "sectionTitle1_", ( (SinkEventElement) it.next() ).getName() );
+        assertEquals( "paragraph", ( (SinkEventElement) it.next() ).getName() );
+
+        textEvt = (SinkEventElement) it.next();
+        assertEquals( "text", textEvt.getName() );
+        assertEquals( "&", textEvt.getArgs()[0] );
+
+        assertEquals( "paragraph_", ( (SinkEventElement) it.next() ).getName() );
+        assertEquals( "section1_", ( (SinkEventElement) it.next() ).getName() );
+        assertFalse( it.hasNext() );
+    }
 }

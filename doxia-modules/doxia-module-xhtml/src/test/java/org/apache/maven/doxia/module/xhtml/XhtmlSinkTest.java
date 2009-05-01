@@ -20,10 +20,10 @@ package org.apache.maven.doxia.module.xhtml;
  */
 
 import java.io.StringWriter;
+import java.io.Writer;
+
 import org.apache.maven.doxia.sink.AbstractSinkTest;
 import org.apache.maven.doxia.sink.Sink;
-
-import java.io.Writer;
 
 /**
  * @author Jason van Zyl
@@ -272,6 +272,34 @@ public class XhtmlSinkTest
     protected String getRawTextBlock( String text )
     {
         return text;
+    }
+
+    /**
+     * Test entities is section titles and paragraphs.
+     */
+    public void testEntities()
+    {
+        XhtmlSink sink = null;
+        Writer writer =  new StringWriter();
+
+        try
+        {
+            sink = new XhtmlSink( writer );
+            sink.section( Sink.SECTION_LEVEL_1, null );
+            sink.sectionTitle( Sink.SECTION_LEVEL_1, null );
+            sink.text( "&", null );
+            sink.sectionTitle_( Sink.SECTION_LEVEL_1 );
+            sink.paragraph( null );
+            sink.text( "&", null );
+            sink.paragraph_();
+            sink.section_( Sink.SECTION_LEVEL_1 );
+        }
+        finally
+        {
+            sink.close();
+        }
+
+        assertEquals( "<div class=\"section\"><h2>&amp;</h2><p>&amp;</p></div>", writer.toString() );
     }
 
 }
