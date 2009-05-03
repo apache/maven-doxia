@@ -189,7 +189,7 @@ public class DoxiaUtils
         {
             char c = id.charAt( i );
 
-            if ( ( i == 0 ) && ( !isAciiLetter( c ) ) )
+            if ( ( i == 0 ) && ( !isAsciiLetter( c ) ) )
             {
                 buffer.append( 'a' );
             }
@@ -198,7 +198,7 @@ public class DoxiaUtils
             {
                 buffer.append( '_' );
             }
-            else if ( isAciiLetter( c ) || isAciiDigit( c ) || ( c == '-' ) || ( c == '_' ) || ( c == ':' )
+            else if ( isAsciiLetter( c ) || isAsciiDigit( c ) || ( c == '-' ) || ( c == '_' ) || ( c == ':' )
                             || ( c == '.' ) )
             {
                 buffer.append( c );
@@ -267,12 +267,12 @@ public class DoxiaUtils
         {
             char c = text.charAt( i );
 
-            if ( isAciiLetter( c ) )
+            if ( isAsciiLetter( c ) )
             {
                 continue;
             }
 
-            if ( ( i == 0 ) || ( c == ' ' ) || ( !isAciiDigit( c ) && c != '-' && c != '_' && c != ':' && c != '.' ) )
+            if ( ( i == 0 ) || ( c == ' ' ) || ( !isAsciiDigit( c ) && c != '-' && c != '_' && c != ':' && c != '.' ) )
             {
                 return false;
             }
@@ -285,12 +285,12 @@ public class DoxiaUtils
      // private
     //
 
-    private static boolean isAciiLetter( char c )
+    private static boolean isAsciiLetter( char c )
     {
         return ( ( c >= 'a' && c <= 'z' ) || ( c >= 'A' && c <= 'Z' ) );
     }
 
-    private static boolean isAciiDigit( char c )
+    private static boolean isAsciiDigit( char c )
     {
         return ( c >= '0' && c <= '9' );
     }
