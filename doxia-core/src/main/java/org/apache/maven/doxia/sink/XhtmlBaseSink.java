@@ -1765,7 +1765,13 @@ public class XhtmlBaseSink
     /** {@inheritDoc} */
     public void rawText( String text )
     {
-        write( text );
+        if ( headFlag )
+        {
+            getTextBuffer().append( text );
+        }
+        else {
+            write( text );
+        }
     }
 
     /** {@inheritDoc} */
