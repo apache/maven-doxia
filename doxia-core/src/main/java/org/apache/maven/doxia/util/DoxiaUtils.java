@@ -68,9 +68,9 @@ public class DoxiaUtils
     {
         String text = link.toLowerCase( Locale.ENGLISH );
 
-        return ( text.indexOf( "http:/" ) == 0 || text.indexOf( "https:/" ) == 0
-            || text.indexOf( "ftp:/" ) == 0 || text.indexOf( "mailto:" ) == 0
-            || text.indexOf( "file:/" ) == 0 || text.indexOf( "://" ) != -1 );
+        return ( text.startsWith( "http:/" ) || text.startsWith( "https:/" )
+            || text.startsWith( "ftp:/" ) || text.startsWith( "mailto:" )
+            || text.startsWith( "file:/" ) || text.indexOf( "://" ) != -1 );
     }
 
     /**
@@ -191,12 +191,12 @@ public class DoxiaUtils
 
             if ( ( i == 0 ) && ( !isAciiLetter( c ) ) )
             {
-                buffer.append( "a" );
+                buffer.append( 'a' );
             }
 
             if ( c == ' ' )
             {
-                buffer.append( "_" );
+                buffer.append( '_' );
             }
             else if ( isAciiLetter( c ) || isAciiDigit( c ) || ( c == '-' ) || ( c == '_' ) || ( c == ':' )
                             || ( c == '.' ) )
@@ -205,13 +205,11 @@ public class DoxiaUtils
             }
             else if ( !chop )
             {
-                char[] unicode = new char[1];
                 byte[] bytes;
 
                 try
                 {
-                    unicode[0] = c;
-                    bytes = ( new String( unicode, 0, 1 ) ).getBytes( "UTF8" );
+                    bytes = String.valueOf( c ).getBytes( "UTF8" );
                 }
                 catch ( UnsupportedEncodingException cannotHappen )
                 {
@@ -269,16 +267,12 @@ public class DoxiaUtils
         {
             char c = text.charAt( i );
 
-            if ( i == 0 && !isAciiLetter( c ) )
+            if ( isAciiLetter( c ) )
             {
-                return false;
+                continue;
             }
 
-            if ( c == ' ' )
-            {
-                return false;
-            }
-            else if ( !isAciiLetter( c ) && !isAciiDigit( c ) && c != '-' && c != '_' && c != ':' && c != '.' )
+            if ( ( i == 0 ) || ( c == ' ' ) || ( !isAciiDigit( c ) && c != '-' && c != '_' && c != ':' && c != '.' ) )
             {
                 return false;
             }
@@ -298,7 +292,7 @@ public class DoxiaUtils
 
     private static boolean isAciiDigit( char c )
     {
-        return ( ( c >= '0' && c <= '9' ) );
+        return ( c >= '0' && c <= '9' );
     }
 
     private DoxiaUtils()
