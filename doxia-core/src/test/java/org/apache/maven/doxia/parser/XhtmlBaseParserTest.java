@@ -360,7 +360,7 @@ public class XhtmlBaseParserTest
     public void testEntities()
         throws Exception
     {
-        final String text = "<!DOCTYPE test [<!ENTITY foo \"&#x159;\">\n<!ENTITY tritPos \"&#x1d7ed;\">]>"
+        final String text = "<!DOCTYPE test [<!ENTITY foo \"&#x159;\"><!ENTITY tritPos \"&#x1d7ed;\">]>"
                 + "<body><h2>&amp;&foo;</h2><p>&amp;&foo;</p><p>&tritPos;</p></body>";
 
         parser.setValidate( false );

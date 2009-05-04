@@ -665,6 +665,7 @@ public abstract class AbstractXmlParser
         int entitiesCount = StringUtils.countMatches( text, ENTITY_START );
         if ( entitiesCount > 0 )
         {
+            text = StringUtils.replace( text, ENTITY_START, "\n" + ENTITY_START );
             BufferedReader reader = new BufferedReader( new StringReader( text ) );
             String line;
             String tmpLine = "";
