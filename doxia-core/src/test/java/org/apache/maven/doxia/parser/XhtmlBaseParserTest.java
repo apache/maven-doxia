@@ -396,7 +396,6 @@ public class XhtmlBaseParserTest
         assertEquals( "paragraph", ( (SinkEventElement) it.next() ).getName() );
         textEvt = (SinkEventElement) it.next();
         assertEquals( "rawText", textEvt.getName() );
-        System.out.println( textEvt.getName() + " " + textEvt.getArgs()[0] );
         assertEquals( "&#x1d7ed;", textEvt.getArgs()[0] );
         assertEquals( "paragraph_", ( (SinkEventElement) it.next() ).getName() );
 
