@@ -82,12 +82,12 @@ public abstract class AbstractXmlParser
 
     /**
      * Entity pattern for Unicode entity, i.e. &#38;#38;
-     * "<!ENTITY(\\s)+([^>|^\\s]+)(\\s)+\"(\\s)*(&(#x?[0-9a-fA-F]{1,4};)*)(\\s)*\"(\\s)*>"
+     * "<!ENTITY(\\s)+([^>|^\\s]+)(\\s)+\"(\\s)*(&(#x?[0-9a-fA-F]{1,5};)*)(\\s)*\"(\\s)*>"
      * <br/>
      * see <a href="http://www.w3.org/TR/REC-xml/#NT-EntityDecl">http://www.w3.org/TR/REC-xml/#NT-EntityDecl</a>.
      */
     private static final Pattern PATTERN_ENTITY_2 =
-        Pattern.compile( ENTITY_START + "(\\s)+([^>|^\\s]+)(\\s)+\"(\\s)*(&(#x?[0-9a-fA-F]{1,4};)*)(\\s)*\"(\\s)*>" );
+        Pattern.compile( ENTITY_START + "(\\s)+([^>|^\\s]+)(\\s)+\"(\\s)*(&(#x?[0-9a-fA-F]{1,5};)*)(\\s)*\"(\\s)*>" );
 
     /**
      * Doctype pattern i.e. ".*<!DOCTYPE([^>]*)>.*"

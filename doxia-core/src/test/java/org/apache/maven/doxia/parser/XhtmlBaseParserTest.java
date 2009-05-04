@@ -360,9 +360,8 @@ public class XhtmlBaseParserTest
     public void testEntities()
         throws Exception
     {
-        final String text = "<!DOCTYPE test [<!ENTITY foo \"&#x159;\">]>"
-                + "<body><h2>&amp;&foo;</h2><p>&amp;&foo;</p></body>";
-
+        final String text = "<!DOCTYPE test [<!ENTITY foo \"&#x159;\">\n<!ENTITY tritPos \"&#x1d7ed;\">]>"
+                + "<body><h2>&amp;&foo;</h2><p>&amp;&foo;</p><p>&tritPos;</p></body>";
 
         parser.setValidate( false );
         parser.parse( text, sink );
@@ -393,6 +392,14 @@ public class XhtmlBaseParserTest
 
         assertEquals( "paragraph_", ( (SinkEventElement) it.next() ).getName() );
         //assertEquals( "section1_", ( (SinkEventElement) it.next() ).getName() );
+
+        assertEquals( "paragraph", ( (SinkEventElement) it.next() ).getName() );
+        textEvt = (SinkEventElement) it.next();
+        assertEquals( "rawText", textEvt.getName() );
+        System.out.println( textEvt.getName() + " " + textEvt.getArgs()[0] );
+        assertEquals( "&#x1d7ed;", textEvt.getArgs()[0] );
+        assertEquals( "paragraph_", ( (SinkEventElement) it.next() ).getName() );
+
         assertFalse( it.hasNext() );
     }
 
