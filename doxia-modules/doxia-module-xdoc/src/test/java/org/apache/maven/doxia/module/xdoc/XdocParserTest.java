@@ -435,14 +435,16 @@ public class XdocParserTest
         }
     }
 
-        /** @throws Exception  */
+    /** @throws Exception  */
     public void testEntities()
         throws Exception
     {
-        final String text = "<section name=\"&amp;\" title=\"&amp;\"><p>&amp;</p></section>";
+        final String text = "<!DOCTYPE test [<!ENTITY foo \"&#x159;\">]>"
+                + "<section name=\"&amp;&foo;\" title=\"&amp;&foo;\"><p>&amp;&foo;</p></section>";
 
         SinkEventTestingSink sink = new SinkEventTestingSink();
 
+        parser.setValidate( false );
         parser.parse( text, sink );
 
         Iterator it = sink.getEventList().iterator();
@@ -452,7 +454,8 @@ public class XdocParserTest
 
         SinkEventElement textEvt = (SinkEventElement) it.next();
         assertEquals( "text", textEvt.getName() );
-        assertEquals( "&", textEvt.getArgs()[0] );
+        // FIXME: DOXIA-311
+        assertEquals( "&&#x159;", textEvt.getArgs()[0] );
 
         assertEquals( "sectionTitle1_", ( (SinkEventElement) it.next() ).getName() );
         assertEquals( "paragraph", ( (SinkEventElement) it.next() ).getName() );
@@ -460,6 +463,10 @@ public class XdocParserTest
         textEvt = (SinkEventElement) it.next();
         assertEquals( "text", textEvt.getName() );
         assertEquals( "&", textEvt.getArgs()[0] );
+
+        textEvt = (SinkEventElement) it.next();
+        assertEquals( "rawText", textEvt.getName() );
+        assertEquals( "&#x159;", textEvt.getArgs()[0] );
 
         assertEquals( "paragraph_", ( (SinkEventElement) it.next() ).getName() );
         assertEquals( "section1_", ( (SinkEventElement) it.next() ).getName() );
