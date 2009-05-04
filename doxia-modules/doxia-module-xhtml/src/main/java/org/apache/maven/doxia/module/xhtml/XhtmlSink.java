@@ -27,6 +27,8 @@ import javax.swing.text.html.HTML.Tag;
 
 import org.apache.maven.doxia.sink.XhtmlBaseSink;
 import org.apache.maven.doxia.sink.SinkEventAttributeSet;
+import org.apache.maven.doxia.util.HtmlTools;
+import org.codehaus.plexus.util.StringUtils;
 
 /**
  * <a href="http://www.w3.org/TR/xhtml1/">Xhtml 1.0 Transitional</a> sink implementation.
@@ -183,7 +185,9 @@ public class XhtmlSink
         {
             MutableAttributeSet att = new SinkEventAttributeSet();
             att.addAttribute( Attribute.NAME, "author" );
-            att.addAttribute( Attribute.CONTENT, getTextBuffer().toString() );
+            String text = HtmlTools.escapeHTML( getTextBuffer().toString() );
+            text = StringUtils.replace( text, "&amp;#", "&#" );
+            att.addAttribute( Attribute.CONTENT, text );
 
             writeSimpleTag( Tag.META, att );
 

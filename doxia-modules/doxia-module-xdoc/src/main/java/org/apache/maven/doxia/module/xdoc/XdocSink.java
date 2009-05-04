@@ -30,6 +30,7 @@ import org.apache.maven.doxia.sink.SinkEventAttributes;
 import org.apache.maven.doxia.sink.SinkUtils;
 import org.apache.maven.doxia.sink.XhtmlBaseSink;
 import org.apache.maven.doxia.util.HtmlTools;
+import org.codehaus.plexus.util.StringUtils;
 
 /**
  * <a href="http://maven.apache.org/doxia/references/xdoc-format.html">Xdoc</a> Sink implementation.
@@ -195,7 +196,9 @@ public class XdocSink
         if ( getTextBuffer().length() > 0 )
         {
             writeStartTag( AUTHOR_TAG );
-            content( getTextBuffer().toString() );
+            String text = HtmlTools.escapeHTML( getTextBuffer().toString() );
+            text = StringUtils.replace( text, "&amp;#", "&#" );
+            write( text );
             writeEndTag( AUTHOR_TAG );
             resetTextBuffer();
         }
