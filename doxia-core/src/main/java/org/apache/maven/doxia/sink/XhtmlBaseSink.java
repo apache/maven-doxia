@@ -1786,7 +1786,7 @@ public class XhtmlBaseSink
 
         buf.append( "" + SPACE + MINUS + MINUS + GREATER_THAN );
 
-        rawText( buf.toString() );
+        write( buf.toString() );
     }
 
     /**

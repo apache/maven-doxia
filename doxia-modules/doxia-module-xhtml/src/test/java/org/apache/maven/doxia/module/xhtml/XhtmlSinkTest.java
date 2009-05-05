@@ -302,4 +302,33 @@ public class XhtmlSinkTest
         assertEquals( "<div class=\"section\"><h2>&amp;</h2><p>&amp;</p></div>", writer.toString() );
     }
 
+    /**
+     * Test head events.
+     */
+    public void testHead()
+    {
+        XhtmlSink sink = null;
+        Writer writer =  new StringWriter();
+
+        try
+        {
+            sink = new XhtmlSink( writer );
+            sink.head();
+            sink.title();
+            sink.text( "Title" );
+            sink.title_();
+            sink.comment( "A comment" );
+            sink.author();
+            sink.text( "Author" );
+            sink.author_();
+            sink.head_();
+        }
+        finally
+        {
+            sink.close();
+        }
+
+        String exp = "<head><title>Title</title><!-- A comment --><meta name=\"author\" content=\"Author\" /></head>";
+        assertTrue( writer.toString().indexOf( exp ) != -1 );
+    }
 }

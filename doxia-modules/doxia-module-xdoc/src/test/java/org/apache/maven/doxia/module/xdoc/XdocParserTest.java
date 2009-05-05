@@ -152,7 +152,9 @@ public class XdocParserTest
         throws Exception
     {
         String text = "<document>"
-                + "<properties><title>title</title><author email=\"a@b.c\">John Doe</author></properties>"
+                + "<properties><title>title</title>"
+                + "<!-- Test comment: DOXIA-312 -->"
+                + "<author email=\"a@b.c\">John Doe</author></properties>"
                 + "<head><meta name=\"security\" content=\"low\"/></head><body></body></document>";
 
         SinkEventTestingSink sink = new SinkEventTestingSink();
@@ -165,6 +167,7 @@ public class XdocParserTest
         assertEquals( "title", ( (SinkEventElement) it.next() ).getName() );
         assertEquals( "text", ( (SinkEventElement) it.next() ).getName() );
         assertEquals( "title_", ( (SinkEventElement) it.next() ).getName() );
+        assertEquals( "comment", ( (SinkEventElement) it.next() ).getName() );
         assertEquals( "author", ( (SinkEventElement) it.next() ).getName() );
         assertEquals( "text", ( (SinkEventElement) it.next() ).getName() );
         assertEquals( "author_", ( (SinkEventElement) it.next() ).getName() );
