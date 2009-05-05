@@ -442,8 +442,8 @@ public class XdocParserTest
     public void testEntities()
         throws Exception
     {
-        final String text = "<!DOCTYPE test [<!ENTITY foo \"&#x159;\">]>"
-                + "<section name=\"&amp;&foo;\" title=\"&amp;&foo;\"><p>&amp;&foo;</p></section>";
+        final String text = "<!DOCTYPE test [<!ENTITY foo \"&#x159;\"><!ENTITY tritPos  \"&#x1d7ed;\">]>"
+                + "<section name=\"&amp;&foo;&tritPos;\"><p>&amp;&foo;&tritPos;</p></section>";
 
         SinkEventTestingSink sink = new SinkEventTestingSink();
 
@@ -457,7 +457,7 @@ public class XdocParserTest
 
         SinkEventElement textEvt = (SinkEventElement) it.next();
         assertEquals( "text", textEvt.getName() );
-        assertEquals( "&\u0159", textEvt.getArgs()[0] );
+        assertEquals( "&\u0159&#x1d7ed;", textEvt.getArgs()[0] );
 
         assertEquals( "sectionTitle1_", ( (SinkEventElement) it.next() ).getName() );
         assertEquals( "paragraph", ( (SinkEventElement) it.next() ).getName() );
@@ -469,6 +469,10 @@ public class XdocParserTest
         textEvt = (SinkEventElement) it.next();
         assertEquals( "text", textEvt.getName() );
         assertEquals( "\u0159", textEvt.getArgs()[0] );
+
+        textEvt = (SinkEventElement) it.next();
+        assertEquals( "unknown", textEvt.getName() );
+        assertEquals( "&#x1d7ed;", textEvt.getArgs()[0] );
 
         assertEquals( "paragraph_", ( (SinkEventElement) it.next() ).getName() );
         assertEquals( "section1_", ( (SinkEventElement) it.next() ).getName() );
