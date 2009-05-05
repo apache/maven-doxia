@@ -831,4 +831,25 @@ public class XhtmlBaseSinkTest
 
         assertEquals( "", writer.toString() );
     }
+
+    /**
+     * Test of entity.
+     */
+    public void testEntity()
+    {
+        // DOXIA-314
+        String text = "a text '&#x1d7ed;'";
+
+        try
+        {
+            sink = new XhtmlBaseSink( writer );
+            sink.text( text );
+        }
+        finally
+        {
+            sink.close();
+        }
+
+        assertEquals( "a text '&#x1d7ed;'", writer.toString() );
+    }
 }

@@ -1866,7 +1866,10 @@ public class XhtmlBaseSink
      */
     protected void content( String text )
     {
-        write( escapeHTML( text ) );
+        // small hack due to DOXIA-314
+        text = escapeHTML( text );
+        text = StringUtils.replace( text, "&amp;#", "&#" );
+        write( text );
     }
 
     /**
