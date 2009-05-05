@@ -28,6 +28,7 @@ import javax.swing.text.html.HTML.Tag;
 import org.apache.maven.doxia.sink.XhtmlBaseSink;
 import org.apache.maven.doxia.sink.SinkEventAttributeSet;
 import org.apache.maven.doxia.util.HtmlTools;
+
 import org.codehaus.plexus.util.StringUtils;
 
 /**
@@ -186,6 +187,8 @@ public class XhtmlSink
             MutableAttributeSet att = new SinkEventAttributeSet();
             att.addAttribute( Attribute.NAME, "author" );
             String text = HtmlTools.escapeHTML( getTextBuffer().toString() );
+            // hack: un-escape numerical entities that have been escaped above
+            // note that numerical entities should really be added as one unicode character in the first place
             text = StringUtils.replace( text, "&amp;#", "&#" );
             att.addAttribute( Attribute.CONTENT, text );
 

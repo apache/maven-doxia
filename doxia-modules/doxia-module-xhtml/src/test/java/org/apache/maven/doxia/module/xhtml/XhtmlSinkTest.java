@@ -319,7 +319,8 @@ public class XhtmlSinkTest
             sink.title_();
             sink.comment( "A comment" );
             sink.author();
-            sink.text( "Author" );
+            // note: this is really illegal, there should be no un-resolved entities emitted into text()
+            sink.text( "&#x123;&" );
             sink.author_();
             sink.head_();
         }
@@ -328,7 +329,8 @@ public class XhtmlSinkTest
             sink.close();
         }
 
-        String exp = "<head><title>Title</title><!-- A comment --><meta name=\"author\" content=\"Author\" /></head>";
+        String exp =
+                "<head><title>Title</title><!-- A comment --><meta name=\"author\" content=\"&#x123;&amp;\" /></head>";
         assertTrue( writer.toString().indexOf( exp ) != -1 );
     }
 }
