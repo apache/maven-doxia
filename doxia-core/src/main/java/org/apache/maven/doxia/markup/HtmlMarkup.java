@@ -48,6 +48,13 @@ public interface HtmlMarkup
     /** An end HTML tag. Eg <code>&lt;/p&gt;</code>. */
     int TAG_TYPE_END = 3;
 
+    /**
+     * An HTML entity. Eg <code>&amp;lt;</code>.
+     *
+     * @since 1.1.1.
+     */
+    int ENTITY_TYPE = 4;
+
     // ----------------------------------------------------------------------
     // All XHTML 1.0 tags
     // ----------------------------------------------------------------------

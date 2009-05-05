@@ -454,8 +454,7 @@ public class XdocParserTest
 
         SinkEventElement textEvt = (SinkEventElement) it.next();
         assertEquals( "text", textEvt.getName() );
-        // FIXME: DOXIA-311
-        assertEquals( "&&#x159;", textEvt.getArgs()[0] );
+        assertEquals( "&\u0159", textEvt.getArgs()[0] );
 
         assertEquals( "sectionTitle1_", ( (SinkEventElement) it.next() ).getName() );
         assertEquals( "paragraph", ( (SinkEventElement) it.next() ).getName() );
@@ -465,8 +464,8 @@ public class XdocParserTest
         assertEquals( "&", textEvt.getArgs()[0] );
 
         textEvt = (SinkEventElement) it.next();
-        assertEquals( "rawText", textEvt.getName() );
-        assertEquals( "&#x159;", textEvt.getArgs()[0] );
+        assertEquals( "text", textEvt.getName() );
+        assertEquals( "\u0159", textEvt.getArgs()[0] );
 
         assertEquals( "paragraph_", ( (SinkEventElement) it.next() ).getName() );
         assertEquals( "section1_", ( (SinkEventElement) it.next() ).getName() );

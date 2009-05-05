@@ -1769,7 +1769,8 @@ public class XhtmlBaseSink
         {
             getTextBuffer().append( text );
         }
-        else {
+        else
+        {
             write( text );
         }
     }
@@ -1797,6 +1798,22 @@ public class XhtmlBaseSink
      */
     public void unknown( String name, Object[] requiredParams, SinkEventAttributes attributes )
     {
+        if ( requiredParams == null || !( requiredParams[0] instanceof Integer ) )
+        {
+            getLog().warn( "Missing type information for unknown event: " + name + ", ignoring!" );
+
+            return;
+        }
+
+        int tagType = ( (Integer) requiredParams[0] ).intValue();
+
+        if ( tagType == ENTITY_TYPE )
+        {
+            rawText( name );
+
+            return;
+        }
+
         Tag tag = HtmlTools.getHtmlTag( name );
 
         if ( tag == null )
@@ -1805,13 +1822,6 @@ public class XhtmlBaseSink
         }
         else
         {
-            if ( requiredParams == null || !( requiredParams[0] instanceof Integer ) )
-            {
-                throw new IllegalArgumentException( "Missing required parameter: TAG_TYPE" );
-            }
-
-            int tagType = ( (Integer) requiredParams[0] ).intValue();
-
             if ( tagType == TAG_TYPE_SIMPLE )
             {
                 writeSimpleTag( tag, attributes );
@@ -1878,7 +1888,7 @@ public class XhtmlBaseSink
      */
     protected static String escapeHTML( String text )
     {
-        return HtmlTools.escapeHTML( text );
+        return HtmlTools.escapeHTML( text, false );
     }
 
     /**

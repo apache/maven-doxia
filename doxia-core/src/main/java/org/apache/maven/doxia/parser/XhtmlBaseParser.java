@@ -23,10 +23,12 @@ import javax.swing.text.html.HTML.Attribute;
 import javax.swing.text.html.HTML.Tag;
 
 import org.apache.maven.doxia.macro.MacroExecutionException;
+import org.apache.maven.doxia.markup.HtmlMarkup;
 import org.apache.maven.doxia.sink.Sink;
 import org.apache.maven.doxia.sink.SinkEventAttributeSet;
 import org.apache.maven.doxia.sink.SinkEventAttributes;
 import org.apache.maven.doxia.util.DoxiaUtils;
+import org.apache.maven.doxia.util.HtmlTools;
 
 import org.codehaus.plexus.util.StringUtils;
 import org.codehaus.plexus.util.xml.pull.XmlPullParser;
@@ -467,13 +469,20 @@ public class XhtmlBaseParser
         }
         else
         {
-            if ( getLocalEntities().containsKey( textChars ) )
+            String unescaped = HtmlTools.unescapeHtml( text );
+
+            // TODO: StringEscapeUtils.unescapeHtml returns unknown entities as is,
+            // they should be handled as one character as well
+            if ( text.equals( unescaped ) && text.length() > 1 )
             {
-                sink.rawText( text );
+                // this means the entity is unrecognized: emit as unknown
+                Object[] required = new Object[] { new Integer( HtmlMarkup.ENTITY_TYPE ) };
+
+                sink.unknown( text, required, null );
             }
             else
             {
-                sink.text( text );
+                sink.text( unescaped );
             }
         }
     }

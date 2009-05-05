@@ -36,6 +36,7 @@ import org.apache.maven.doxia.parser.ParseException;
 import org.apache.maven.doxia.parser.XhtmlBaseParser;
 import org.apache.maven.doxia.sink.Sink;
 import org.apache.maven.doxia.sink.SinkEventAttributeSet;
+import org.apache.maven.doxia.util.HtmlTools;
 
 import org.codehaus.plexus.util.IOUtil;
 import org.codehaus.plexus.util.StringUtils;
@@ -184,7 +185,7 @@ public class XdocParser
 
             sink.sectionTitle( Sink.SECTION_LEVEL_1, attribs );
 
-            sink.text( parser.getAttributeValue( null, Attribute.NAME.toString() ) );
+            sink.text( HtmlTools.unescapeHtml( parser.getAttributeValue( null, Attribute.NAME.toString() ) ) );
 
             sink.sectionTitle1_();
         }
@@ -203,7 +204,7 @@ public class XdocParser
 
             sink.sectionTitle( Sink.SECTION_LEVEL_2, attribs );
 
-            sink.text( parser.getAttributeValue( null, Attribute.NAME.toString() ) );
+            sink.text( HtmlTools.unescapeHtml( parser.getAttributeValue( null, Attribute.NAME.toString() ) ) );
 
             sink.sectionTitle2_();
         }

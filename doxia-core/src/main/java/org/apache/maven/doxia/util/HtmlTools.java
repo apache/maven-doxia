@@ -25,6 +25,8 @@ import java.util.Hashtable;
 
 import javax.swing.text.html.HTML.Tag;
 
+import org.apache.commons.lang.StringEscapeUtils;
+
 import org.apache.maven.doxia.markup.HtmlMarkup;
 
 
@@ -170,6 +172,27 @@ public class HtmlTools
         }
 
         return buffer.toString();
+    }
+
+    /**
+     * Unescapes HTML entities in a string.
+     *
+     * <p> Unescapes a string containing entity escapes to a string
+     * containing the actual Unicode characters corresponding to the
+     * escapes. Supports HTML 4.0 entities.</p>
+     *
+     * <p>For example, the string "&amp;lt;Fran&amp;ccedil;ais&amp;gt;"
+     * will become "&lt;Fran&ccedil;ais&gt;".</p>
+     *
+     * @param text the <code>String</code> to unescape, may be null.
+     *
+     * @return a new unescaped <code>String</code>, <code>null</code> if null string input.
+     *
+     * @since 1.1.1.
+     */
+    public static String unescapeHtml( String text )
+    {
+        return StringEscapeUtils.unescapeHtml( text );
     }
 
     /**

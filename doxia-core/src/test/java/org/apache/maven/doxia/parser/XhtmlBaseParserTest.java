@@ -336,21 +336,20 @@ public class XhtmlBaseParserTest
         assertEquals( "bold", event.getName() );
 
         event = (SinkEventElement) it.next();
-        assertEquals( "rawText", event.getName() );
-        assertEquals( "&#x159;",  (String) event.getArgs()[0] );
+        assertEquals( "text", event.getName() );
+        assertEquals( "\u0159",  (String) event.getArgs()[0] );
 
         event = (SinkEventElement) it.next();
-        assertEquals( "rawText", event.getName() );
-        assertEquals( "&nbsp;",  (String) event.getArgs()[0] );
+        assertEquals( "text", event.getName() );
+        assertEquals( "\u00A0",  (String) event.getArgs()[0] );
 
         event = (SinkEventElement) it.next();
-        assertEquals( "rawText", event.getName() );
-        assertEquals( "&#x161;",  (String) event.getArgs()[0] );
+        assertEquals( "text", event.getName() );
+        assertEquals( "\u0161",  (String) event.getArgs()[0] );
 
         event = (SinkEventElement) it.next();
-        // FIXME: DOXIA-310
-        //assertEquals( "rawText", event.getName() );
-        //assertEquals( "&#x1d7ed;",  (String) event.getArgs()[0] );
+        assertEquals( "unknown", event.getName() );
+        assertEquals( "&#x1d7ed;",  (String) event.getArgs()[0] );
 
         event = (SinkEventElement) it.next();
         assertEquals( "bold_", event.getName() );
@@ -361,7 +360,7 @@ public class XhtmlBaseParserTest
         throws Exception
     {
         final String text = "<!DOCTYPE test [<!ENTITY foo \"&#x159;\"><!ENTITY tritPos \"&#x1d7ed;\">]>"
-                + "<body><h2>&amp;&foo;</h2><p>&amp;&foo;</p><p>&tritPos;</p></body>";
+                + "<body><h2>&amp;&foo;&tritPos;</h2><p>&amp;&foo;&tritPos;</p></body>";
 
         parser.setValidate( false );
         parser.parse( text, sink );
@@ -376,8 +375,12 @@ public class XhtmlBaseParserTest
         assertEquals( "&", textEvt.getArgs()[0] );
 
         textEvt = (SinkEventElement) it.next();
-        assertEquals( "rawText", textEvt.getName() );
-        assertEquals( "&#x159;", textEvt.getArgs()[0] );
+        assertEquals( "text", textEvt.getName() );
+        assertEquals( "\u0159", textEvt.getArgs()[0] );
+
+        textEvt = (SinkEventElement) it.next();
+        assertEquals( "unknown", textEvt.getName() );
+        assertEquals( "&#x1d7ed;", textEvt.getArgs()[0] );
 
         assertEquals( "sectionTitle1_", ( (SinkEventElement) it.next() ).getName() );
         assertEquals( "paragraph", ( (SinkEventElement) it.next() ).getName() );
@@ -387,15 +390,11 @@ public class XhtmlBaseParserTest
         assertEquals( "&", textEvt.getArgs()[0] );
 
         textEvt = (SinkEventElement) it.next();
-        assertEquals( "rawText", textEvt.getName() );
-        assertEquals( "&#x159;", textEvt.getArgs()[0] );
+        assertEquals( "text", textEvt.getName() );
+        assertEquals( "\u0159", textEvt.getArgs()[0] );
 
-        assertEquals( "paragraph_", ( (SinkEventElement) it.next() ).getName() );
-        //assertEquals( "section1_", ( (SinkEventElement) it.next() ).getName() );
-
-        assertEquals( "paragraph", ( (SinkEventElement) it.next() ).getName() );
         textEvt = (SinkEventElement) it.next();
-        assertEquals( "rawText", textEvt.getName() );
+        assertEquals( "unknown", textEvt.getName() );
         assertEquals( "&#x1d7ed;", textEvt.getArgs()[0] );
         assertEquals( "paragraph_", ( (SinkEventElement) it.next() ).getName() );
 

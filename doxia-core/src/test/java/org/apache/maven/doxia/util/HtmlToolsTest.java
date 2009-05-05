@@ -51,6 +51,22 @@ public class HtmlToolsTest
     /**
      * Verify the expected results.
      */
+    public void testUnescapeHTML()
+    {
+        assertNull( HtmlTools.unescapeHtml( null ) );
+        assertEquals( "", HtmlTools.unescapeHtml( "" ) );
+        assertEquals( "<", HtmlTools.unescapeHtml( "&lt;" ) );
+        assertEquals( ">", HtmlTools.unescapeHtml( "&gt;" ) );
+        assertEquals( "&", HtmlTools.unescapeHtml( "&amp;" ) );
+        assertEquals( "\"", HtmlTools.unescapeHtml( "&quot;" ) );
+        assertEquals( "&amp;", HtmlTools.unescapeHtml( "&amp;amp;" ) );
+        assertEquals( "&lt;Fran&ccedil;ais&gt;", HtmlTools.unescapeHtml( "&amp;lt;Fran&amp;ccedil;ais&amp;gt;" ) );
+        assertEquals( "&#x12345;", HtmlTools.unescapeHtml( "&#x12345;" ) );
+    }
+
+    /**
+     * Verify the expected results.
+     */
     public void testEncodeId()
     {
         assertEquals( HtmlTools.encodeId( null ), null );
