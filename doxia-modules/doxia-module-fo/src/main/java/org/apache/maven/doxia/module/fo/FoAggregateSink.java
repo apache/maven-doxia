@@ -830,43 +830,19 @@ public class FoAggregateSink extends FoSink
         writeEmptyTag( TABLE_COLUMN_TAG, "column-width", "3.125in" );
         writeStartTag( TABLE_BODY_TAG, "" );
 
-        writeStartTag( TABLE_ROW_TAG, "height", "1.5in" );
-        writeStartTag( TABLE_CELL_TAG, "" );
+        writeCoverHead( compLogo, projLogo );
+        writeCoverBody( title, version, subtitle, type );
+        writeCoverFooter( compName, date );
 
-        if ( compLogo != null )
-        {
-            SinkEventAttributeSet atts = new SinkEventAttributeSet();
-            atts.addAttribute( "text-align", "left" );
-            atts.addAttribute( "vertical-align", "top" );
-            writeStartTag( BLOCK_TAG, atts );
+        writeEndTag( TABLE_BODY_TAG );
+        writeEndTag( TABLE_TAG );
+        writeEndTag( BLOCK_TAG );
+        writeEndTag( FLOW_TAG );
+        writeEndTag( PAGE_SEQUENCE_TAG );
+    }
 
-            atts = new SinkEventAttributeSet();
-            atts.addAttribute( SinkEventAttributes.HEIGHT, "1.5in" );
-            figureGraphics( compLogo, atts );
-            writeEndTag( BLOCK_TAG );
-        }
-
-        writeEmptyTag( BLOCK_TAG, "" );
-        writeEndTag( TABLE_CELL_TAG );
-        writeStartTag( TABLE_CELL_TAG, "" );
-
-        if ( projLogo != null )
-        {
-            SinkEventAttributeSet atts = new SinkEventAttributeSet();
-            atts.addAttribute( "text-align", "right" );
-            atts.addAttribute( "vertical-align", "top" );
-            writeStartTag( BLOCK_TAG, atts );
-
-            atts = new SinkEventAttributeSet();
-            atts.addAttribute( SinkEventAttributes.HEIGHT, "1.5in" );
-            figureGraphics( projLogo, atts );
-            writeEndTag( BLOCK_TAG );
-        }
-
-        writeEmptyTag( BLOCK_TAG, "" );
-        writeEndTag( TABLE_CELL_TAG );
-        writeEndTag( TABLE_ROW_TAG );
-
+    private void writeCoverBody( String title, String version, String subtitle, String type )
+    {
         writeln( "<fo:table-row keep-with-previous=\"always\" height=\"0.014in\">" );
         writeStartTag( TABLE_CELL_TAG, "number-columns-spanned", "2" );
         writeStartTag( BLOCK_TAG, "line-height", "0.014in" );
@@ -940,8 +916,12 @@ public class FoAggregateSink extends FoSink
         writeEmptyTag( BLOCK_TAG, "space-before", "0.2in" );
         writeEndTag( TABLE_CELL_TAG );
         writeEndTag( TABLE_ROW_TAG );
+    }
 
+    private void writeCoverFooter( String compName, String date )
+    {
         writeStartTag( TABLE_ROW_TAG, "height", "0.3in" );
+
         writeStartTag( TABLE_CELL_TAG, "" );
         MutableAttributeSet att = getFoConfiguration().getAttributeSet( "cover.subtitle" );
         att.addAttribute( "height", "0.3in" );
@@ -961,11 +941,44 @@ public class FoAggregateSink extends FoSink
         writeEndTag( TABLE_CELL_TAG );
 
         writeEndTag( TABLE_ROW_TAG );
-        writeEndTag( TABLE_BODY_TAG );
-        writeEndTag( TABLE_TAG );
-        writeEndTag( BLOCK_TAG );
-        writeEndTag( FLOW_TAG );
-        writeEndTag( PAGE_SEQUENCE_TAG );
+    }
+
+    private void writeCoverHead( String compLogo, String projLogo )
+    {
+        writeStartTag( TABLE_ROW_TAG, "height", "1.5in" );
+        writeStartTag( TABLE_CELL_TAG, "" );
+
+        if ( compLogo != null )
+        {
+            SinkEventAttributeSet atts = new SinkEventAttributeSet();
+            atts.addAttribute( "text-align", "left" );
+            atts.addAttribute( "vertical-align", "top" );
+            writeStartTag( BLOCK_TAG, atts );
+            atts = new SinkEventAttributeSet();
+            atts.addAttribute( SinkEventAttributes.HEIGHT, "1.5in" );
+            figureGraphics( compLogo, atts );
+            writeEndTag( BLOCK_TAG );
+        }
+
+        writeEmptyTag( BLOCK_TAG, "" );
+        writeEndTag( TABLE_CELL_TAG );
+        writeStartTag( TABLE_CELL_TAG, "" );
+
+        if ( projLogo != null )
+        {
+            SinkEventAttributeSet atts = new SinkEventAttributeSet();
+            atts.addAttribute( "text-align", "right" );
+            atts.addAttribute( "vertical-align", "top" );
+            writeStartTag( BLOCK_TAG, atts );
+            atts = new SinkEventAttributeSet();
+            atts.addAttribute( SinkEventAttributes.HEIGHT, "1.5in" );
+            figureGraphics( projLogo, atts );
+            writeEndTag( BLOCK_TAG );
+        }
+
+        writeEmptyTag( BLOCK_TAG, "" );
+        writeEndTag( TABLE_CELL_TAG );
+        writeEndTag( TABLE_ROW_TAG );
     }
 
 }
