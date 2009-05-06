@@ -449,9 +449,15 @@ public class AptParser
                             {
                                 String hash = linkAnchor.substring( hashIndex + 1 );
 
+                                if ( hash.endsWith( ".html" ) && !hash.startsWith( "./" ) )
+                                {
+                                    getLog().warn( "[Apt Parser] Ambiguous link: '" + hash
+                                            + "'. If this is a local link, prepend \"./\"!" );
+                                }
+
                                 if ( !DoxiaUtils.isValidId( hash ) )
                                 {
-                                    getLog().warn( "Modified invalid link: " + hash );
+                                    getLog().warn( "[Apt Parser] Modified invalid link: " + hash );
 
                                     linkAnchor = linkAnchor.substring( 0, hashIndex ) + "#"
                                         + DoxiaUtils.encodeId( hash, true );
