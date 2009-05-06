@@ -762,6 +762,7 @@
           <name>coverDate</name>
           <description><![CDATA[
             The date to appear on the cover.
+            @since 1.1.1.
           ]]></description>
           <version>1.0.0</version>
           <type>String</type>
@@ -771,6 +772,7 @@
           <name>author</name>
           <description><![CDATA[
             The author that appears on the cover page.
+            @since 1.1.1.
           ]]></description>
           <version>1.0.0</version>
           <type>String</type>
