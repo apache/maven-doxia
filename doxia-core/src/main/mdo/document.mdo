@@ -27,7 +27,7 @@
     <p>This is a reference for the Document model used in Doxia.</p>
     <p>An XSD is available at:</p>
     <ul>
-      <li><a href="http://maven.apache.org/doxia/xsd/document-1.0.0.xsd">http://maven.apache.org/doxia/xsd/document-1.0.0.xsd</a>.</li>
+      <li><a href="http://maven.apache.org/doxia/xsd/document-1.0.1.xsd">http://maven.apache.org/doxia/xsd/document-1.0.1.xsd</a>.</li>
     </ul>
   ]]></description>
   <defaults>
@@ -354,7 +354,7 @@
 
     <class>
       <name>DocumentAuthor</name>
-      <description>An author the document.</description>
+      <description>An author of the document.</description>
       <version>1.0.0</version>
       <fields>
         <field>
@@ -764,19 +764,16 @@
             The date to appear on the cover.
           ]]></description>
           <version>1.0.0</version>
-          <type>Date</type>
+          <type>String</type>
           <identifier>true</identifier>
         </field>
         <field>
-          <name>authors</name>
-          <version>1.0.0</version>
+          <name>author</name>
           <description><![CDATA[
-            The authors that appear on the cover page.
+            The author that appears on the cover page.
           ]]></description>
-          <association xml.itemsStyle="flat">
-            <type>DocumentAuthor</type>
-            <multiplicity>*</multiplicity>
-          </association>
+          <version>1.0.0</version>
+          <type>String</type>
           <identifier>true</identifier>
         </field>
         <field>
