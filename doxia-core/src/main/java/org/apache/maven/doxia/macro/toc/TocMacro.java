@@ -129,7 +129,7 @@ public class TocMacro
 
         if ( index.getChildEntries().size() > 0 )
         {
-            if ( ( fromDepth <= section ) || ( section == 0 ) )
+            if ( ( fromDepth < section ) || ( section == 0 ) )
             {
                 sink.list();
             }
@@ -141,12 +141,12 @@ public class TocMacro
                 IndexEntry sectionIndex = (IndexEntry) it.next();
                 if ( ( i == section ) || ( section == 0 ) )
                 {
-                    writeSubSectionN( sink, sectionIndex, 1 );
+                    writeSubSectionN( sink, sectionIndex, 0 );
                 }
                 i++;
             }
 
-            if ( ( fromDepth <= section ) || ( section == 0 ) )
+            if ( ( fromDepth < section ) || ( section == 0 ) )
             {
                 sink.list_();
             }

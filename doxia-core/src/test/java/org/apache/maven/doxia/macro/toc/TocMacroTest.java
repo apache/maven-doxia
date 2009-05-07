@@ -107,8 +107,8 @@ public class TocMacroTest
         parser.setSecondParsing( true );
         macroParameters.put( "parser", parser );
         macroParameters.put( "section", "2" );
-        macroParameters.put( "fromDepth", "1" );
-        macroParameters.put( "toDepth", "2" );
+        macroParameters.put( "fromDepth", "0" );
+        macroParameters.put( "toDepth", "1" );
 
         sink.reset();
         request = new MacroRequest( macroParameters, basedir );
