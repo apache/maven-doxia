@@ -145,7 +145,7 @@ public class ChildBlocksBuilder
                         {
                             String value = link;
 
-                            if ( link.startsWith( "#"              ) )
+                            if ( link.startsWith( "#" ) )
                             {
                                 value = link.substring( 1 );
                             }

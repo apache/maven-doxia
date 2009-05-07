@@ -68,7 +68,7 @@ public class ParagraphBlockParser
         }
         else
         {
-            ChildBlocksBuilder builder = new ChildBlocksBuilder(line );
+            ChildBlocksBuilder builder = new ChildBlocksBuilder( line );
             return new ParagraphBlock( builder.getBlocks(), generateParagraphTags );
         }
     }
