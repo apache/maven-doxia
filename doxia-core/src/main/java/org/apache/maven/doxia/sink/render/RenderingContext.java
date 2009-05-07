@@ -21,6 +21,7 @@ package org.apache.maven.doxia.sink.render;
 
 import java.io.File;
 import java.util.HashMap;
+import java.util.Locale;
 import java.util.Map;
 
 import org.codehaus.plexus.util.PathTool;
@@ -91,7 +92,8 @@ public class RenderingContext
             // index.xml -> index.html
             // index.xml.vm -> index.html
             // download.apt.vm --> download.html
-            int startIndexOfExtension = document.indexOf( "." + extension );
+            int startIndexOfExtension =
+                document.toLowerCase( Locale.ENGLISH ).indexOf( "." + extension.toLowerCase( Locale.ENGLISH ) );
             String fileNameWithoutExt = document.substring( 0, startIndexOfExtension );
             this.outputName = fileNameWithoutExt + ".html";
         }
