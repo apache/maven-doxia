@@ -66,6 +66,10 @@ public class SectionBlockParser
 
         String title = line.substring( 3 ).trim();
 
-        return new SectionBlock( title, level );
+        BlockParser headingParser = new SectionBlockParser();
+        BlockParser figureParser = new FigureBlockParser();
+        BlockParser[] subparsers = new BlockParser[] { headingParser, figureParser };
+
+        return new SectionBlock( new ParagraphBlockParser( subparsers ).visit( title, source, false ), level );
     }
 }

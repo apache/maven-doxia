@@ -28,13 +28,13 @@ import org.apache.maven.doxia.sink.Sink;
 class SectionBlock
     implements Block
 {
-    private String title;
+    private Block text;
 
     private int level;
 
-    SectionBlock( String title, int level )
+    SectionBlock( Block text, int level )
     {
-        this.title = title;
+        this.text = text;
         this.level = level;
     }
 
@@ -67,7 +67,7 @@ class SectionBlock
             sink.sectionTitle5();
         }
 
-        sink.text( title );
+        this.text.traverse( sink );
 
         if ( level == Sink.SECTION_LEVEL_1 )
         {
