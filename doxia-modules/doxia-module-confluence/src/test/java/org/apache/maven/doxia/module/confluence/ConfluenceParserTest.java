@@ -133,8 +133,8 @@ public class ConfluenceParserTest
 
         for ( int i = 1; i <= 5; i++ )
         {
-            assertContainsLines( "Could not locate section " + i + " title", result, "sectionTitle" + i +
-                "\ntext: Section" + i );
+            assertContainsLines( "Could not locate section " + i + " title", result,
+                    "sectionTitle" + i + "\ntext: Section" + i );
         }
 
         assertContainsLines( "Section title has leading space", result, "sectionTitle1\ntext: TitleWithLeadingSpace" );
@@ -146,7 +146,8 @@ public class ConfluenceParserTest
     {
         String result = locateAndParseTestSourceFile( "nested-list" );
 
-        assertContainsLines( "Nested list not found", result, "begin:listItem\ntext: A top level list item\nbegin:list" );
+        assertContainsLines( "Nested list not found", result,
+                "begin:listItem\ntext: A top level list item\nbegin:list" );
         // two lists in the input...
         assertEquals( 3, result.split( "end:list\n" ).length );
         // ...and 4 list items
@@ -340,7 +341,7 @@ public class ConfluenceParserTest
     /**
      * DOXIA-247
      *
-     * @throws ParseException
+     * @throws ParseException if something goes wrong.
      */
     public void testEndBracket()
         throws ParseException

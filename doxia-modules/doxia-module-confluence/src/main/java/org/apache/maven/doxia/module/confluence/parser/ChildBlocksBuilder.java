@@ -109,22 +109,31 @@ public class ChildBlocksBuilder
                 case ']':
                     if ( insideLink )
                     {
-                    	boolean addHTMLSuffix = false;
+                        boolean addHTMLSuffix = false;
                         String link = text.toString();
 
-                        if (!link.endsWith(".html"))
-                        	if (!link.contains("http"))
-                        			addHTMLSuffix = true;
+                        if ( !link.endsWith( ".html" ) )
+                        {
+                            if ( !link.contains( "http" ) )
+                            {
+                                addHTMLSuffix = true;
+                            }
+                        }
                         if ( link.indexOf( "|" ) > 0 )
                         {
                             String[] pieces = StringUtils.split( text.toString(), "|" );
-                            if (addHTMLSuffix) {
-                                if (!pieces[1].contains("#"))
-                                    pieces[1] = pieces[1].concat(".html");
-                                else {
-                                    if (!pieces[1].startsWith("#"))
+
+                            if ( addHTMLSuffix )
+                            {
+                                if ( !pieces[1].contains( "#" ) )
+                                {
+                                    pieces[1] = pieces[1].concat( ".html" );
+                                }
+                                else
+                                {
+                                    if ( !pieces[1].startsWith( "#" ) )
                                     {
-                                        String[] temp = pieces[1].split("#");
+                                        String[] temp = pieces[1].split( "#" );
                                         pieces[1] = temp[0] + ".html#" + temp[1];
                                     }
                                 }
@@ -136,22 +145,27 @@ public class ChildBlocksBuilder
                         {
                             String value = link;
 
-                            if ( link.startsWith( "#" ) )
+                            if ( link.startsWith( "#"              ) )
                             {
                                 value = link.substring( 1 );
                             }
 
-                            if (addHTMLSuffix) {
-                                if (!link.contains("#"))
-                                    link = link.concat(".html");
-                                else {
-                                    if (!link.startsWith("#"))
+                            if ( addHTMLSuffix )
+                            {
+                                if ( !link.contains( "#" ) )
+                                {
+                                    link = link.concat( ".html" );
+                                }
+                                else
+                                {
+                                    if ( !link.startsWith( "#" ) )
                                     {
-                                        String[] temp = link.split("#");
+                                        String[] temp = link.split( "#" );
                                         link = temp[0] + ".html#" + temp[1];
                                     }
                                 }
                             }
+
                             blocks.add( new LinkBlock( link, value ) );
                         }
 
