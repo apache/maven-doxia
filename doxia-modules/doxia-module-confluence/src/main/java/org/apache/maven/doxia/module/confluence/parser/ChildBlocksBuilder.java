@@ -109,11 +109,26 @@ public class ChildBlocksBuilder
                 case ']':
                     if ( insideLink )
                     {
+                    	boolean addHTMLSuffix = false;
                         String link = text.toString();
 
+                        if (!link.endsWith(".html"))
+                        	if (!link.contains("http"))
+                        			addHTMLSuffix = true;
                         if ( link.indexOf( "|" ) > 0 )
                         {
                             String[] pieces = StringUtils.split( text.toString(), "|" );
+                            if (addHTMLSuffix) {
+                                if (!pieces[1].contains("#"))
+                                    pieces[1] = pieces[1].concat(".html");
+                                else {
+                                    if (!pieces[1].startsWith("#"))
+                                    {
+                                        String[] temp = pieces[1].split("#");
+                                        pieces[1] = temp[0] + ".html#" + temp[1];
+                                    }
+                                }
+                            }
 
                             blocks.add( new LinkBlock( pieces[1], pieces[0] ) );
                         }
@@ -126,6 +141,17 @@ public class ChildBlocksBuilder
                                 value = link.substring( 1 );
                             }
 
+                            if (addHTMLSuffix) {
+                                if (!link.contains("#"))
+                                    link = link.concat(".html");
+                                else {
+                                    if (!link.startsWith("#"))
+                                    {
+                                        String[] temp = link.split("#");
+                                        link = temp[0] + ".html#" + temp[1];
+                                    }
+                                }
+                            }
                             blocks.add( new LinkBlock( link, value ) );
                         }
 

@@ -240,10 +240,10 @@ public class ConfluenceParserTest
     {
         String result = locateAndParseTestSourceFile( "link" );
 
-        assertContainsLines( result, "begin:link, name: middle\ntext: middle\nend:link" );
-        assertContainsLines( result, "begin:link, name: end\ntext: end\nend:link" );
-        assertContainsLines( result, "begin:link, name: link\ntext: alias\nend:link" );
-        assertContainsLines( result, "begin:link, name: link#anchor\ntext: link#anchor\nend:link" );
+        assertContainsLines( result, "begin:link, name: middle.html\ntext: middle\nend:link" );
+        assertContainsLines( result, "begin:link, name: end.html\ntext: end\nend:link" );
+        assertContainsLines( result, "begin:link, name: link.html\ntext: alias\nend:link" );
+        assertContainsLines( result, "begin:link, name: link.html#anchor\ntext: link#anchor\nend:link" );
         assertContainsLines( result, "begin:link, name: #simple\ntext: simple\nend:link" );
         // 3 paragraphs in the input...
         assertEquals( 4, result.split( "end:paragraph\n" ).length );
