@@ -253,6 +253,19 @@ public class ConfluenceParserTest
     }
 
     /** @throws Exception */
+    public void testTableWithLinks()
+        throws Exception
+    {
+        String result = locateAndParseTestSourceFile( "table-link" );
+
+        assertContainsLines( result, "begin:tableCell\nbegin:link, name: http://example.com/release.0.1.3/ex-win32-win32.x86.zip\ntext: Download\nend:link\n\n\nend:tableCell\n" );
+        assertContainsLines( result, "begin:tableCell\nbegin:link, name: http://example.com/release.0.1.2/ex-win32-win32.x86.zip\ntext: http://example.com/release.0.1.2/ex-win32-win32.x86.zip\nend:link\n\n\nend:tableCell\n" );
+
+        // 3 links in the input
+        assertEquals( 4, result.split( "end:link\n" ).length );
+    }
+
+    /** @throws Exception */
     public void testParagraphWithList()
         throws Exception
     {

@@ -19,14 +19,20 @@ package org.apache.maven.doxia.module.confluence.parser.table;
  * under the License.
  */
 
+import java.io.StringReader;
 import java.util.ArrayList;
+import java.util.LinkedList;
 import java.util.List;
 
+import org.apache.maven.doxia.util.ByLineReaderSource;
+import org.apache.maven.doxia.module.confluence.ConfluenceMarkup;
+import org.apache.maven.doxia.module.confluence.parser.FigureBlockParser;
+import org.apache.maven.doxia.module.confluence.parser.ParagraphBlockParser;
+import org.apache.maven.doxia.module.confluence.parser.SectionBlockParser;
 import org.apache.maven.doxia.util.ByLineSource;
 import org.apache.maven.doxia.module.confluence.parser.BlockParser;
 import org.apache.maven.doxia.module.confluence.parser.Block;
 import org.apache.maven.doxia.module.confluence.parser.BoldBlock;
-import org.apache.maven.doxia.module.confluence.parser.TextBlock;
 import org.apache.maven.doxia.parser.ParseException;
 import org.codehaus.plexus.util.StringUtils;
 
@@ -40,6 +46,10 @@ import org.codehaus.plexus.util.StringUtils;
 public class TableBlockParser
     implements BlockParser
 {
+    private static final String EMPTY_STRING = "";
+    private static final String ANY_CHARACTER = ".*";
+    private static final String ESCAPE_CHARACTER = "\\";
+
     /** {@inheritDoc} */
     public  boolean accept( String line, ByLineSource source )
     {
@@ -65,6 +75,11 @@ public class TableBlockParser
 
             List cells = new ArrayList();
 
+            BlockParser headingParser = new SectionBlockParser();
+            BlockParser figureParser = new FigureBlockParser();
+            BlockParser[] subparsers = new BlockParser[] { headingParser, figureParser };
+            BlockParser paragraphParser = new ParagraphBlockParser( subparsers );
+
             if ( l.startsWith( "||" ) )
             {
                 String[] text = StringUtils.split( l, "||" );
@@ -74,7 +89,8 @@ public class TableBlockParser
                 {
                     List textBlocks = new ArrayList();
 
-                    textBlocks.add( new TextBlock( text[i] ) );
+                    textBlocks.add( ( (ParagraphBlockParser) paragraphParser )
+                            .visit(text[i], new ByLineReaderSource( new StringReader( EMPTY_STRING ) ), false ) );
 
                     List blocks = new ArrayList();
 
@@ -85,14 +101,33 @@ public class TableBlockParser
             }
             else
             {
+                int it = 0;
                 String[] text = StringUtils.split( l, "|" );
+                List texts = new LinkedList();
 
 
-                for ( int i = 0; i < text.length; i++ )
+                while ( it < text.length )
+                {
+                    if ( text[it].matches( ANY_CHARACTER + ESCAPE_CHARACTER
+                                + ConfluenceMarkup.LINK_START_MARKUP + ANY_CHARACTER )
+                            && !text[it].matches( ANY_CHARACTER + ESCAPE_CHARACTER
+                                + ConfluenceMarkup.LINK_END_MARKUP + ANY_CHARACTER ) )
+                    {
+                        texts.add( text[it] + ConfluenceMarkup.TABLE_CELL_MARKUP + text[it + 1] );
+                        it += 2;
+                        continue;
+                     }
+                    texts.add(text[it]);
+                    it++;
+                }
+
+                Object[] pText = texts.toArray();
+                for ( int i = 0; i < pText.length; i++ )
                 {
                     List blocks = new ArrayList();
 
-                    blocks.add( new TextBlock( text[i] ) );
+                    blocks.add( ( (ParagraphBlockParser) paragraphParser ).visit( (String) pText[i],
+                            new ByLineReaderSource( new StringReader( EMPTY_STRING ) ), false ) );
 
                     cells.add( new TableCellBlock( blocks ) );
                 }
