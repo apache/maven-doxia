@@ -114,7 +114,7 @@ public class ChildBlocksBuilder
 
                         if ( !link.endsWith( ".html" ) )
                         {
-                            if ( !link.contains( "http" ) )
+                            if ( link.indexOf( "http" ) < 0 )
                             {
                                 addHTMLSuffix = true;
                             }
@@ -125,7 +125,7 @@ public class ChildBlocksBuilder
 
                             if ( addHTMLSuffix )
                             {
-                                if ( !pieces[1].contains( "#" ) )
+                                if ( pieces[1].indexOf( "#" ) < 0 )
                                 {
                                     pieces[1] = pieces[1].concat( ".html" );
                                 }
@@ -152,7 +152,7 @@ public class ChildBlocksBuilder
 
                             if ( addHTMLSuffix )
                             {
-                                if ( !link.contains( "#" ) )
+                                if ( link.indexOf( "#" ) < 0 )
                                 {
                                     link = link.concat( ".html" );
                                 }
