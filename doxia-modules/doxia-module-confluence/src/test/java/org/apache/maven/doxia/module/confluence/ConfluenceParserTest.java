@@ -155,6 +155,23 @@ public class ConfluenceParserTest
     }
 
     /** @throws Exception */
+    public void testNestedHeterogenousList()
+        throws Exception
+    {
+    	String result = locateAndParseTestSourceFile( "nested-list-heterogenous" );
+
+        // test heterogenous list
+        assertContainsLines( "Nested list not found", result, "begin:listItem\ntext: A top level list item\nbegin:numberedList" );
+
+        // exactly one list and one numberedList
+        assertEquals( 2, result.split( "begin:list\n" ).length );
+        assertEquals( 2, result.split( "begin:numberedList" ).length );
+
+        // ...and 4 list items
+        assertEquals( 5, result.split( "end:listItem\n" ).length );
+    }
+
+    /** @throws Exception */
     public void testListWithSimpleFormatting()
         throws Exception
     {

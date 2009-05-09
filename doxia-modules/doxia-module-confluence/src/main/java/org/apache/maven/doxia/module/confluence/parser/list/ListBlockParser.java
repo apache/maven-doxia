@@ -94,26 +94,24 @@ public class ListBlockParser
     private void addItem( TreeListBuilder treeListBuilder, StringBuffer text )
     {
         String item = text.toString();
-        if ( isBulletedList( item ) )
-        {
-            int level = getLevel( item, '*' );
+        int level = getLevel( item );
 
+        if ( isBulletedList( item, level - 1 ) )
+        {
             treeListBuilder.feedEntry( BULLETED_LIST, level, item.substring( level ) );
         }
         else
         {
-            int level = getLevel( item, '#' );
-
             treeListBuilder.feedEntry( NUMBERED_LIST, level, item.substring( level ) );
         }
         text.setLength( 0 );
     }
 
-    private int getLevel( String line, char c )
+    private int getLevel( String line )
     {
         int level = 0;
 
-        while ( line.charAt( level ) == c )
+        while ( line.charAt( level ) == '*' || line.charAt( level ) == '-' || line.charAt( level ) == '#' )
         {
             level++;
         }
@@ -121,9 +119,9 @@ public class ListBlockParser
         return level;
     }
 
-    private boolean isBulletedList( String line )
+    private boolean isBulletedList( String line, int deph )
     {
-        return ( line.startsWith( "*" ) || line.startsWith( "-" ) );
+        return ( line.charAt( deph ) == '*' || line.charAt( deph ) == '-' );
     }
 
     private boolean isList( String line )
