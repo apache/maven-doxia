@@ -530,7 +530,7 @@
         <field xml.attribute="true">
           <name>targetFrame</name>
           <description><![CDATA[
-            the name of the default target frame.
+            The name of the default target frame.
             <p>
               Specifies the name of the default target frame in which to display
               a document referenced by a hyperlink.
@@ -835,7 +835,7 @@
         <field xml.attribute="true">
           <name>depth</name>
           <description><![CDATA[
-            the level up to which toc items are included by default.
+            The level up to which toc items are included by default.
             Defaults to 0 which means only top-level element entries are included.
             A depth of 1 includes one level of sub-items (sub-sections), etc.
             This may be overridden for individual entries by using the collapse
@@ -844,6 +844,7 @@
           <version>1.0.0</version>
           <type>int</type>
           <identifier>true</identifier>
+          <defaultValue>0</defaultValue>
         </field>
         <field>
           <name>items</name>
