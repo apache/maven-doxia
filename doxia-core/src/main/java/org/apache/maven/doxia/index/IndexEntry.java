@@ -19,12 +19,12 @@ package org.apache.maven.doxia.index;
  * under the License.
  */
 
-import org.codehaus.plexus.util.StringUtils;
-
 import java.util.List;
 import java.util.ArrayList;
 import java.util.Iterator;
 import java.util.Collections;
+
+import org.codehaus.plexus.util.StringUtils;
 
 /**
  * <p>IndexEntry class.</p>
@@ -35,10 +35,10 @@ import java.util.Collections;
 public class IndexEntry
 {
     /** The parent entry. */
-    private IndexEntry parent;
+    private final IndexEntry parent;
 
     /** The id of the entry. */
-    private String id;
+    private final String id;
 
     /** The entry title. */
     private String title;
@@ -52,35 +52,28 @@ public class IndexEntry
     /**
      * Constructor.
      *
-     * @param newId The id.
+     * @param newId The id. May be null.
      */
     public IndexEntry( String newId )
     {
-        this.id = newId;
+        this( null, newId );
     }
 
     /**
      * Constructor.
      *
-     * @param newParent The parent. Cannot be null.
-     * @param newId The id. Cannot be null.
+     * @param newParent The parent. May be null.
+     * @param newId The id. May be null.
      */
     public IndexEntry( IndexEntry newParent, String newId )
     {
-        if ( newParent == null )
-        {
-            throw new NullPointerException( "parent cannot be null." );
-        }
-
-        if ( newId == null )
-        {
-            throw new NullPointerException( "id cannot be null." );
-        }
-
         this.parent = newParent;
         this.id = newId;
 
-        parent.childEntries.add( this );
+        if ( parent != null )
+        {
+            parent.childEntries.add( this );
+        }
     }
 
     /**
@@ -134,7 +127,7 @@ public class IndexEntry
     }
 
     /**
-     * Sets the child entriesor creates a new ArrayList if entries == null.
+     * Sets the child entries or creates a new ArrayList if entries == null.
      *
      * @param entries the entries.
      */
