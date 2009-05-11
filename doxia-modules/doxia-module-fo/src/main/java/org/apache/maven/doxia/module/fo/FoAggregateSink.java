@@ -666,17 +666,12 @@ public class FoAggregateSink extends FoSink
      */
     public void toc()
     {
-        if ( this.docModel == null )
+        if ( docModel == null || docModel.getToc() == null || docModel.getToc().getItems() == null )
         {
             return;
         }
 
         DocumentTOC toc = docModel.getToc();
-
-        if ( toc == null )
-        {
-            return;
-        }
 
         writeln( "<fo:page-sequence master-reference=\"toc\" initial-page-number=\"1\" format=\"i\">" );
         regionBefore( toc.getName() );
