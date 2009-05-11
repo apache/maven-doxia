@@ -835,9 +835,9 @@
         <field xml.attribute="true">
           <name>depth</name>
           <description><![CDATA[
-            Specifies up to which level toc items are included by default.
-            Defaults to 0 which means all entries are included. A depth of 1
-            means only top-level elements, 2 includes one level of sub-items, etc.
+            the level up to which toc items are included by default.
+            Defaults to 0 which means only top-level element entries are included.
+            A depth of 1 includes one level of sub-items (sub-sections), etc.
             This may be overridden for individual entries by using the collapse
             attribute of the corresponding toc item.
           ]]></description>
