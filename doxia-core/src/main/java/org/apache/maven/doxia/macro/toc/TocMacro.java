@@ -127,29 +127,26 @@ public class TocMacro
             throw new MacroExecutionException( "ParseException: " + e.getMessage(), e );
         }
 
-        if ( index.getChildEntries().size() > 0 )
+        if ( index.getChildEntries().size() > 0
+                && ( ( fromDepth <= toDepth ) || ( section == 0 ) ) )
         {
-            if ( ( fromDepth <= toDepth ) || ( section == 0 ) )
-            {
-                sink.list();
-            }
+            sink.list( getAttributesFromMap( request.getParameters() ) );
 
             int i = 1;
 
             for ( Iterator it = index.getChildEntries().iterator(); it.hasNext(); )
             {
                 IndexEntry sectionIndex = (IndexEntry) it.next();
+
                 if ( ( i == section ) || ( section == 0 ) )
                 {
                     writeSubSectionN( sink, sectionIndex, 1 );
                 }
+
                 i++;
             }
 
-            if ( ( fromDepth <= toDepth ) || ( section == 0 ) )
-            {
-                sink.list_();
-            }
+            sink.list_();
         }
     }
 

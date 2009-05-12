@@ -19,8 +19,14 @@ package org.apache.maven.doxia.macro;
  * under the License.
  */
 
+import java.util.Iterator;
+import java.util.Map;
+
 import org.apache.maven.doxia.logging.Log;
 import org.apache.maven.doxia.logging.SystemStreamLog;
+import org.apache.maven.doxia.sink.SinkEventAttributeSet;
+import org.apache.maven.doxia.sink.SinkEventAttributes;
+
 import org.codehaus.plexus.util.StringUtils;
 
 /**
@@ -73,5 +79,40 @@ public abstract class AbstractMacro
         {
             throw new IllegalArgumentException( paramName + " is a required parameter!" );
         }
+    }
+
+    /**
+     * Convert the Map of macro parameters to an AttributeSet.
+     * No check of validity is done, all parameters are added.
+     *
+     * @param parameters the macro parameters.
+     * @return a SinkEventAttributeSet containing the same parameters,
+     *  or null if parameters is null.
+     *
+     * @since 1.1.1.
+     */
+    protected static SinkEventAttributes getAttributesFromMap( Map parameters )
+    {
+        if ( parameters == null )
+        {
+            return null;
+        }
+
+        final int count = parameters.size();
+
+        if ( count <= 0 )
+        {
+            return null;
+        }
+
+        final SinkEventAttributeSet atts = new SinkEventAttributeSet( count );
+
+        for ( Iterator it = parameters.keySet().iterator(); it.hasNext(); )
+        {
+            final Object key = it.next();
+            atts.addAttribute( key, parameters.get( key ) );
+        }
+
+        return atts;
     }
 }

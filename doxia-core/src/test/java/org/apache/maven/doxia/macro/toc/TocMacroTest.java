@@ -30,6 +30,7 @@ import junit.framework.TestCase;
 import org.apache.maven.doxia.macro.MacroExecutionException;
 import org.apache.maven.doxia.macro.MacroRequest;
 import org.apache.maven.doxia.parser.XhtmlBaseParser;
+import org.apache.maven.doxia.sink.SinkEventAttributeSet;
 import org.apache.maven.doxia.sink.SinkEventElement;
 import org.apache.maven.doxia.sink.SinkEventTestingSink;
 
@@ -109,16 +110,22 @@ public class TocMacroTest
         macroParameters.put( "section", "2" );
         macroParameters.put( "fromDepth", "1" );
         macroParameters.put( "toDepth", "2" );
+        macroParameters.put( "class", "myClass" );
+        macroParameters.put( "id", "myId" );
 
         sink.reset();
         request = new MacroRequest( macroParameters, basedir );
         macro.execute( sink, request );
 
         it = sink.getEventList().iterator();
-        assertEquals( "list", ( (SinkEventElement) it.next() ).getName() );
+        SinkEventElement event = (SinkEventElement) it.next();
+        assertEquals( "list", event.getName() );
+        SinkEventAttributeSet atts = (SinkEventAttributeSet) event.getArgs()[0];
+        assertEquals( "myId", atts.getAttribute( "id" ) );
+        assertEquals( "myClass", atts.getAttribute( "class" ) );
         assertEquals( "listItem", ( (SinkEventElement) it.next() ).getName() );
         assertEquals( "link", ( (SinkEventElement) it.next() ).getName() );
-        SinkEventElement event = (SinkEventElement) it.next();
+        event = (SinkEventElement) it.next();
         assertEquals( "text", event.getName() );
         assertEquals( "h22",  (String) event.getArgs()[0] );
         assertEquals( "link_", ( (SinkEventElement) it.next() ).getName() );
