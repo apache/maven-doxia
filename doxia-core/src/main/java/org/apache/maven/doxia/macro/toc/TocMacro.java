@@ -40,8 +40,7 @@ import org.codehaus.plexus.util.StringUtils;
  * The input parameters for this macro are:
  * <dl>
  * <dt>section</dt>
- * <dd>Display a TOC for the specified section only or all sections if 0
- * (in this case, other parameters are ignored).<br/>
+ * <dd>Display a TOC for the specified section only, or all sections if 0.<br/>
  * Positive int, not mandatory, 0 by default.</dd>
  * <dt>fromDepth</dt>
  * <dd>Minimal depth of entries to display in the TOC.
@@ -103,16 +102,12 @@ public class TocMacro
         Parser parser = (Parser) request.getParameter( "parser" );
 
         section = getInt( request, "section", 0 );
+        fromDepth = getInt( request, "fromDepth", 0 );
+        toDepth = getInt( request, "toDepth", DEFAULT_DEPTH );
 
-        if ( section == 0 )
+        if ( fromDepth > toDepth )
         {
-            fromDepth = 0;
-            toDepth = DEFAULT_DEPTH;
-        }
-        else
-        {
-            fromDepth = getInt( request, "fromDepth", 0 );
-            toDepth = getInt( request, "toDepth", DEFAULT_DEPTH );
+            return;
         }
 
         IndexEntry index = new IndexEntry( "index" );
@@ -127,8 +122,7 @@ public class TocMacro
             throw new MacroExecutionException( "ParseException: " + e.getMessage(), e );
         }
 
-        if ( index.getChildEntries().size() > 0
-                && ( ( fromDepth <= toDepth ) || ( section == 0 ) ) )
+        if ( index.getChildEntries().size() > 0 )
         {
             sink.list( getAttributesFromMap( request.getParameters() ) );
 
