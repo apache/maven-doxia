@@ -160,7 +160,7 @@ public class LatexBookRenderer
 
         if ( StringUtils.isNotEmpty( book.getDate() ) )
         {
-            writer.println( "\\author{" + book.getDate() + "}" );
+            writer.println( "\\date{" + book.getDate() + "}" );
         }
 
         LatexBookSink sink = new LatexBookSink( writer );
