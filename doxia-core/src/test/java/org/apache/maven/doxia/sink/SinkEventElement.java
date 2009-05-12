@@ -19,6 +19,7 @@ package org.apache.maven.doxia.sink;
  * under the License.
  */
 
+import org.apache.commons.lang.builder.ToStringBuilder;
 
 /**
  * A single sink event, used for testing purposes in order to check
@@ -74,4 +75,12 @@ public class SinkEventElement
         return this.args;
     }
 
+    /**
+     * {@inheritDoc}
+     * @since 1.1.1
+     */
+    public String toString()
+    {
+        return ToStringBuilder.reflectionToString( this );
+    }
 }
