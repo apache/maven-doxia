@@ -508,15 +508,7 @@ public class XhtmlBaseSink
      */
     public void list()
     {
-        if ( paragraphFlag )
-        {
-            // The content of element type "p" must match
-            // "(a|br|span|bdo|object|applet|img|map|iframe|tt|i|b|u|s|strike|big|small|font|basefont|em|strong|
-            // dfn|code|q|samp|kbd|var|cite|abbr|acronym|sub|sup|input|select|textarea|label|button|ins|del|script)".
-            paragraph_();
-        }
-
-        writeStartTag( Tag.UL );
+        list( null );
     }
 
     /**
@@ -525,6 +517,14 @@ public class XhtmlBaseSink
      */
     public void list( SinkEventAttributes attributes )
     {
+        if ( paragraphFlag )
+        {
+            // The content of element type "p" must match
+            // "(a|br|span|bdo|object|applet|img|map|iframe|tt|i|b|u|s|strike|big|small|font|basefont|em|strong|
+            // dfn|code|q|samp|kbd|var|cite|abbr|acronym|sub|sup|input|select|textarea|label|button|ins|del|script)".
+            paragraph_();
+        }
+
         MutableAttributeSet atts = SinkUtils.filterAttributes(
                 attributes, SinkUtils.SINK_BASE_ATTRIBUTES  );
 
@@ -546,7 +546,7 @@ public class XhtmlBaseSink
      */
     public void listItem()
     {
-        writeStartTag( Tag.LI );
+        listItem( null );
     }
 
     /**
@@ -645,7 +645,7 @@ public class XhtmlBaseSink
      */
     public void numberedListItem()
     {
-        writeStartTag( Tag.LI );
+        numberedListItem( null );
     }
 
     /**
@@ -675,15 +675,7 @@ public class XhtmlBaseSink
      */
     public void definitionList()
     {
-        if ( paragraphFlag )
-        {
-            // The content of element type "p" must match
-            // "(a|br|span|bdo|object|applet|img|map|iframe|tt|i|b|u|s|strike|big|small|font|basefont|em|strong|
-            // dfn|code|q|samp|kbd|var|cite|abbr|acronym|sub|sup|input|select|textarea|label|button|ins|del|script)".
-            paragraph_();
-        }
-
-        writeStartTag( Tag.DL );
+        definitionList( null );
     }
 
     /**
@@ -733,7 +725,7 @@ public class XhtmlBaseSink
      */
     public void definedTerm()
     {
-        writeStartTag( Tag.DT );
+        definedTerm( null );
     }
 
     /**
@@ -751,7 +743,7 @@ public class XhtmlBaseSink
      */
     public void definition()
     {
-        writeStartTag( Tag.DD );
+        definition( null );
     }
 
     /**
@@ -930,9 +922,7 @@ public class XhtmlBaseSink
      */
     public void paragraph()
     {
-        paragraphFlag = true;
-
-        writeStartTag( Tag.P );
+        paragraph( null );
     }
 
     /**
@@ -971,23 +961,14 @@ public class XhtmlBaseSink
      */
     public void verbatim( boolean boxed )
     {
-        if ( paragraphFlag )
-        {
-            // The content of element type "p" must match
-            // "(a|br|span|bdo|object|applet|img|map|iframe|tt|i|b|u|s|strike|big|small|font|basefont|em|strong|
-            // dfn|code|q|samp|kbd|var|cite|abbr|acronym|sub|sup|input|select|textarea|label|button|ins|del|script)".
-            paragraph_();
-        }
-
-        SinkEventAttributeSet att = null;
-
         if ( boxed )
         {
-            att = new SinkEventAttributeSet();
-            att.addAttribute( SinkEventAttributes.DECORATION, "boxed" );
+            verbatim( SinkEventAttributeSet.BOXED );
         }
-
-        verbatim( att );
+        else
+        {
+            verbatim( null );
+        }
     }
 
     /**
@@ -1068,7 +1049,7 @@ public class XhtmlBaseSink
      */
     public void horizontalRule()
     {
-        writeSimpleTag( Tag.HR );
+        horizontalRule( null );
     }
 
     /**
@@ -1086,14 +1067,6 @@ public class XhtmlBaseSink
     /** {@inheritDoc} */
     public void table()
     {
-        if ( paragraphFlag )
-        {
-            // The content of element type "p" must match
-            // "(a|br|span|bdo|object|applet|img|map|iframe|tt|i|b|u|s|strike|big|small|font|basefont|em|strong|
-            // dfn|code|q|samp|kbd|var|cite|abbr|acronym|sub|sup|input|select|textarea|label|button|ins|del|script)".
-            paragraph_();
-        }
-
         // start table with tableRows
         table( null );
     }
@@ -1291,13 +1264,13 @@ public class XhtmlBaseSink
     /** {@inheritDoc} */
     public void tableCell()
     {
-        tableCell( false, null );
+        tableCell( (SinkEventAttributeSet) null );
     }
 
     /** {@inheritDoc} */
     public void tableHeaderCell()
     {
-        tableCell( true, null );
+        tableHeaderCell( (SinkEventAttributeSet) null );
     }
 
     /** {@inheritDoc} */
@@ -1494,7 +1467,7 @@ public class XhtmlBaseSink
     /** {@inheritDoc} */
     public void link( String name )
     {
-        link( name, null, null );
+        link( name, null );
     }
 
     /** {@inheritDoc} */
@@ -1650,14 +1623,7 @@ public class XhtmlBaseSink
      */
     public void lineBreak()
     {
-        if ( headFlag || isVerbatimFlag() )
-        {
-            getTextBuffer().append( EOL );
-        }
-        else
-        {
-            writeSimpleTag( Tag.BR );
-        }
+        lineBreak( null );
     }
 
     /**
@@ -1666,7 +1632,7 @@ public class XhtmlBaseSink
      */
     public void lineBreak( SinkEventAttributes attributes )
     {
-        if ( headFlag )
+        if ( headFlag || isVerbatimFlag() )
         {
             getTextBuffer().append( EOL );
         }
