@@ -23,6 +23,8 @@ import java.io.Writer;
 
 import java.util.Calendar;
 import java.util.Iterator;
+import java.util.List;
+import java.util.Stack;
 
 import javax.swing.text.MutableAttributeSet;
 import javax.swing.text.html.HTML.Tag;
@@ -62,6 +64,9 @@ public class FoAggregateSink extends FoSink
 
     /** Content in head is ignored in aggregated documents. */
     private boolean ignoreText;
+
+    /** Used to get the current position in the TOC. */
+    private final Stack tocStack = new Stack();
 
     /**
      * Constructor.
@@ -685,23 +690,62 @@ public class FoAggregateSink extends FoSink
         writeEmptyTag( TABLE_COLUMN_TAG, "column-width", "5in" ); // TODO
         writeStartTag( TABLE_BODY_TAG, "" );
 
-        int count = 0;
+        writeTocItems( toc.getItems(), 1 );
 
-        for ( Iterator k = toc.getItems().iterator(); k.hasNext(); )
+        writeEndTag( TABLE_BODY_TAG );
+        writeEndTag( TABLE_TAG );
+        writeEndTag( FLOW_TAG );
+        writeEndTag( PAGE_SEQUENCE_TAG );
+    }
+
+    private void writeTocItems( List tocItems, int level )
+    {
+        final int maxTocLevel = 4;
+
+        if ( level < 1 || level > maxTocLevel )
+        {
+            return;
+        }
+
+        tocStack.push( new NumberedListItem( NUMBERING_DECIMAL ) );
+
+        for ( Iterator k = tocItems.iterator(); k.hasNext(); )
         {
             DocumentTOCItem tocItem = (DocumentTOCItem) k.next();
-            count++;
 
             String ref = getIdName( tocItem.getRef() );
 
             writeStartTag( TABLE_ROW_TAG, "keep-with-next", "auto" );
+
+            if ( level > 2 )
+            {
+                for ( int i = 0; i < level - 2; i++ )
+                {
+                    writeStartTag( TABLE_CELL_TAG );
+                    writeEmptyTag( BLOCK_TAG, "" );
+                    writeEndTag( TABLE_CELL_TAG );
+                }
+            }
+
             writeStartTag( TABLE_CELL_TAG, "toc.cell" );
             writeStartTag( BLOCK_TAG, "toc.number.style" );
-            write( Integer.toString( count ) );
+
+            NumberedListItem current = (NumberedListItem) tocStack.peek();
+            current.next();
+            write( currentTocNumber() );
+
             writeEndTag( BLOCK_TAG );
             writeEndTag( TABLE_CELL_TAG );
-            writeStartTag( TABLE_CELL_TAG, "number-columns-spanned", "3", "toc.cell" );
-            MutableAttributeSet atts = getFoConfiguration().getAttributeSet( "toc.h1.style" );
+
+            String span = "3";
+
+            if ( level > 2 )
+            {
+                span = Integer.toString( 5 - level );
+            }
+
+            writeStartTag( TABLE_CELL_TAG, "number-columns-spanned", span, "toc.cell" );
+            MutableAttributeSet atts = getFoConfiguration().getAttributeSet( "toc.h" + level + ".style" );
             atts.addAttribute( "text-align-last", "justify" );
             writeStartTag( BLOCK_TAG, atts );
             writeStartTag( BASIC_LINK_TAG, "internal-destination", ref );
@@ -714,14 +758,26 @@ public class FoAggregateSink extends FoSink
             writeEndTag( BLOCK_TAG );
             writeEndTag( TABLE_CELL_TAG );
             writeEndTag( TABLE_ROW_TAG );
+
+            if ( tocItem.getItems() != null )
+            {
+                writeTocItems( tocItem.getItems(), level + 1 );
+            }
         }
 
-        writeEndTag( TABLE_BODY_TAG );
-        writeEndTag( TABLE_TAG );
-        writeEndTag( FLOW_TAG );
-        writeEndTag( PAGE_SEQUENCE_TAG );
+        tocStack.pop();
+    }
 
+    private String currentTocNumber()
+    {
+        String ch = ( (NumberedListItem) tocStack.get( 0 ) ).getListItemSymbol();
 
+        for ( int i = 1; i < tocStack.size(); i++ )
+        {
+            ch = ch + "." + ( (NumberedListItem) tocStack.get( i ) ).getListItemSymbol();
+        }
+
+        return ch;
     }
 
     /**
@@ -731,38 +787,38 @@ public class FoAggregateSink extends FoSink
      */
     protected void pdfBookmarks()
     {
-        if ( this.docModel == null )
-        {
-            return;
-        }
-
-        DocumentTOC toc = docModel.getToc();
-
-        if ( toc == null )
+        if ( docModel == null || docModel.getToc() == null )
         {
             return;
         }
 
         writeStartTag( BOOKMARK_TREE_TAG, "" );
 
-        for ( Iterator k = toc.getItems().iterator(); k.hasNext(); )
+        renderBookmarkItems( docModel.getToc().getItems() );
+
+        writeEndTag( BOOKMARK_TREE_TAG );
+    }
+
+    private void renderBookmarkItems( List items )
+    {
+        for ( Iterator k = items.iterator(); k.hasNext(); )
         {
             DocumentTOCItem tocItem = (DocumentTOCItem) k.next();
 
             String ref = getIdName( tocItem.getRef() );
 
             writeStartTag( BOOKMARK_TAG, "internal-destination", ref );
-
             writeStartTag( BOOKMARK_TITLE_TAG, "" );
-
             write( tocItem.getName() );
-
             writeEndTag( BOOKMARK_TITLE_TAG );
+
+            if ( tocItem.getItems() != null )
+            {
+                renderBookmarkItems( tocItem.getItems() );
+            }
 
             writeEndTag( BOOKMARK_TAG );
         }
-
-        writeEndTag( BOOKMARK_TREE_TAG );
     }
 
     /**

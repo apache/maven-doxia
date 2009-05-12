@@ -482,12 +482,12 @@
         <xsl:attribute name="space-before">18pt</xsl:attribute>
     </xsl:attribute-set>
     <xsl:attribute-set name="toc.h2.style" use-attribute-sets="toc.base.style">
-        <xsl:attribute name="font-size">9.5pt</xsl:attribute>
+        <xsl:attribute name="font-size">11pt</xsl:attribute>
         <xsl:attribute name="space-before">15pt</xsl:attribute>
         <xsl:attribute name="space-before">3pt</xsl:attribute>
     </xsl:attribute-set>
     <xsl:attribute-set name="toc.h3.style" use-attribute-sets="toc.base.style">
-        <xsl:attribute name="font-size">9.5pt</xsl:attribute>
+        <xsl:attribute name="font-size">10pt</xsl:attribute>
         <xsl:attribute name="space-before">4pt</xsl:attribute>
     </xsl:attribute-set>
     <xsl:attribute-set name="toc.h4.style" use-attribute-sets="toc.base.style">
