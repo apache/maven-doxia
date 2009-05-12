@@ -2380,18 +2380,26 @@ public class AptParser
                             continue;
                         }
                         processedGrid = false;
-                        cellLine = replaceAll( cellLine, "\\ ", "\\240" );
+                        cellLine = replaceAll( cellLine, "\\", "\\240" );
                         cellLine = cellLine.trim();
 
                         StringBuffer cell = cells[i];
-
                         if ( cellLine.length() > 0 )
                         {
-                            if ( cell.length() > 0 )
-                            // Implicit lineBreak if multi-line cell.
+                            // line break in table cells
+                            if ( cell.toString().trim().endsWith( "\\240" ) )
                             {
                                 cell.append( "\\\n" );
                             }
+                            else
+                            {
+                                if ( cell.length() != 0 )
+                                {
+                                    // Always add a space for multi line tables cells
+                                    cell.append( " " );
+                                }
+                            }
+
                             cell.append( cellLine );
                         }
 
