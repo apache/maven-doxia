@@ -483,55 +483,62 @@ public class AptParserTest
         assertEquals( "tableRows", ( (SinkEventElement) it.next() ).getName() );
 
         assertEquals( "tableRow", ( (SinkEventElement) it.next() ).getName() );
-
         SinkEventElement event = (SinkEventElement) it.next();
         assertEquals( "tableCell", event.getName() );
-        // DOXIA-38
-        //SinkEventAttributeSet atts = (SinkEventAttributeSet) event.getArgs()[0];
-        //assertEquals( "center", atts.getAttribute( SinkEventAttributeSet.ALIGN ) );
-        assertEquals( "text", ( (SinkEventElement) it.next() ).getName() );
+        SinkEventAttributeSet atts = (SinkEventAttributeSet) event.getArgs()[0];
+        assertEquals( "center", atts.getAttribute( SinkEventAttributeSet.ALIGN ) );
+        SinkEventElement element = (SinkEventElement) it.next();
+        assertEquals( "text", element.getName() );
+        assertNotNull( element.getArgs()[0] );
+        assertEquals( "Centered", element.getArgs()[0] );
         assertEquals( "tableCell_", ( (SinkEventElement) it.next() ).getName() );
-
         event = (SinkEventElement) it.next();
         assertEquals( "tableCell", event.getName() );
-        // DOXIA-38
-        //SinkEventAttributeSet atts = (SinkEventAttributeSet) event.getArgs()[0];
-        //assertEquals( "center", atts.getAttribute( SinkEventAttributeSet.ALIGN ) );
-        assertEquals( "text", ( (SinkEventElement) it.next() ).getName() );
+        atts = (SinkEventAttributeSet) event.getArgs()[0];
+        assertEquals( "center", atts.getAttribute( SinkEventAttributeSet.ALIGN ) );
+        element = (SinkEventElement) it.next();
+        assertEquals( "text", element.getName() );
+        assertNotNull( element.getArgs()[0] );
+        assertEquals( "Centered", element.getArgs()[0] );
         assertEquals( "tableCell_", ( (SinkEventElement) it.next() ).getName() );
-
         event = (SinkEventElement) it.next();
         assertEquals( "tableCell", event.getName() );
-        // DOXIA-38
-        //SinkEventAttributeSet atts = (SinkEventAttributeSet) event.getArgs()[0];
-        //assertEquals( "center", atts.getAttribute( SinkEventAttributeSet.ALIGN ) );
-        assertEquals( "text", ( (SinkEventElement) it.next() ).getName() );
+        atts = (SinkEventAttributeSet) event.getArgs()[0];
+        assertEquals( "center", atts.getAttribute( SinkEventAttributeSet.ALIGN ) );
+        element = (SinkEventElement) it.next();
+        assertEquals( "text", element.getName() );
+        assertNotNull( element.getArgs()[0] );
+        assertEquals( "Centered", element.getArgs()[0] );
         assertEquals( "tableCell_", ( (SinkEventElement) it.next() ).getName() );
         assertEquals( "tableRow_", ( (SinkEventElement) it.next() ).getName() );
 
         assertEquals( "tableRow", ( (SinkEventElement) it.next() ).getName() );
         event = (SinkEventElement) it.next();
         assertEquals( "tableCell", event.getName() );
-        // DOXIA-38
-        //SinkEventAttributeSet atts = (SinkEventAttributeSet) event.getArgs()[0];
-        //assertEquals( "center", atts.getAttribute( SinkEventAttributeSet.ALIGN ) );
-        assertEquals( "text", ( (SinkEventElement) it.next() ).getName() );
+        atts = (SinkEventAttributeSet) event.getArgs()[0];
+        assertEquals( "center", atts.getAttribute( SinkEventAttributeSet.ALIGN ) );
+        element = (SinkEventElement) it.next();
+        assertEquals( "text", element.getName() );
+        assertNotNull( element.getArgs()[0] );
+        assertEquals( "Centered", element.getArgs()[0] );
         assertEquals( "tableCell_", ( (SinkEventElement) it.next() ).getName() );
-
         event = (SinkEventElement) it.next();
         assertEquals( "tableCell", event.getName() );
-        // DOXIA-38
-        //SinkEventAttributeSet atts = (SinkEventAttributeSet) event.getArgs()[0];
-        //assertEquals( "left", atts.getAttribute( SinkEventAttributeSet.ALIGN ) );
-        assertEquals( "text", ( (SinkEventElement) it.next() ).getName() );
+        atts = (SinkEventAttributeSet) event.getArgs()[0];
+        assertEquals( "left", atts.getAttribute( SinkEventAttributeSet.ALIGN ) );
+        element = (SinkEventElement) it.next();
+        assertEquals( "text", element.getName() );
+        assertNotNull( element.getArgs()[0] );
+        assertEquals( "Left-aligned", element.getArgs()[0] );
         assertEquals( "tableCell_", ( (SinkEventElement) it.next() ).getName() );
-
         event = (SinkEventElement) it.next();
         assertEquals( "tableCell", event.getName() );
-        // DOXIA-38
-        //SinkEventAttributeSet atts = (SinkEventAttributeSet) event.getArgs()[0];
-        //assertEquals( "right", atts.getAttribute( SinkEventAttributeSet.ALIGN ) );
-        assertEquals( "text", ( (SinkEventElement) it.next() ).getName() );
+        atts = (SinkEventAttributeSet) event.getArgs()[0];
+        assertEquals( "right", atts.getAttribute( SinkEventAttributeSet.ALIGN ) );
+        element = (SinkEventElement) it.next();
+        assertEquals( "text", element.getName() );
+        assertNotNull( element.getArgs()[0] );
+        assertEquals( "Right-aligned", element.getArgs()[0] );
         assertEquals( "tableCell_", ( (SinkEventElement) it.next() ).getName() );
         assertEquals( "tableRow_", ( (SinkEventElement) it.next() ).getName() );
 

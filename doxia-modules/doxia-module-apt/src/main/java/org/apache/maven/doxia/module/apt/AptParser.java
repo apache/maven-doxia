@@ -27,6 +27,7 @@ import org.apache.maven.doxia.parser.ParseException;
 import org.apache.maven.doxia.sink.Sink;
 import org.apache.maven.doxia.sink.SinkAdapter;
 import org.apache.maven.doxia.sink.SinkEventAttributeSet;
+import org.apache.maven.doxia.sink.SinkEventAttributes;
 import org.apache.maven.doxia.util.DoxiaUtils;
 
 import org.codehaus.plexus.util.IOUtil;
@@ -2342,10 +2343,11 @@ public class AptParser
                     }
                     else
                     {
-                        if ( traverseRow( cells, headers ) )
+                        if ( traverseRow( cells, headers, justification ) )
                         {
                             ++rows;
                         }
+                        justification = parseJustification( line, lineLength );
                     }
                 }
                 else
@@ -2487,10 +2489,11 @@ public class AptParser
          *
          * @param cells The table cells.
          * @param headers true for header cells.
+         * @param justification the justification for each cell.
          * @return boolean
          * @throws AptParseException if something goes wrong.
          */
-        private boolean traverseRow( StringBuffer[] cells, boolean[] headers )
+        private boolean traverseRow( StringBuffer[] cells, boolean[] headers, int[] justification )
             throws AptParseException
         {
             // Skip empty row (a decorative line).
@@ -2510,13 +2513,33 @@ public class AptParser
                 for ( int i = 0; i < cells.length; ++i )
                 {
                     StringBuffer cell = cells[i];
+
+                    SinkEventAttributes justif;
+                    switch ( justification[i] )
+                    {
+                        case Sink.JUSTIFY_CENTER:
+                            justif = SinkEventAttributeSet.CENTER;
+                            break;
+                        case Sink.JUSTIFY_LEFT:
+                            justif = SinkEventAttributeSet.LEFT;
+                            break;
+                        case Sink.JUSTIFY_RIGHT:
+                            justif = SinkEventAttributeSet.RIGHT;
+                            break;
+                        default:
+                            justif = SinkEventAttributeSet.LEFT;
+                            break;
+                    }
+                    SinkEventAttributeSet event = new SinkEventAttributeSet();
+                    event.addAttributes( justif );
+
                     if ( headers[i] )
                     {
-                        AptParser.this.sink.tableHeaderCell();
+                        AptParser.this.sink.tableHeaderCell( event );
                     }
                     else
                     {
-                        AptParser.this.sink.tableCell();
+                        AptParser.this.sink.tableCell( event );
                     }
                     if ( cell.length() > 0 )
                     {
