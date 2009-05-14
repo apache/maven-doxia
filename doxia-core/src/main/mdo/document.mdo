@@ -27,7 +27,7 @@
     <p>This is a reference for the Document model used in Doxia.</p>
     <p>An XSD is available at:</p>
     <ul>
-      <li><a href="http://maven.apache.org/xsd/document-1.0.0.xsd">http://maven.apache.org/xsd/document-1.0.0.xsd</a>.</li>
+      <li><a href="http://maven.apache.org/xsd/document-1.0.1.xsd">http://maven.apache.org/xsd/document-1.0.1.xsd</a>.</li>
     </ul>
   ]]></description>
   <defaults>
