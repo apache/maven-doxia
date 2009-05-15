@@ -1010,7 +1010,7 @@ public class FoAggregateSink extends FoSink
         att.addAttribute( "height", "0.3in" );
         att.addAttribute( "text-align", "right" );
         writeStartTag( BLOCK_TAG, att );
-        write( date == null ? "" : date );
+        write( date == null ? Calendar.getInstance().get( Calendar.YEAR ) + "" : date );
         writeEndTag( BLOCK_TAG );
         writeEndTag( TABLE_CELL_TAG );
 
