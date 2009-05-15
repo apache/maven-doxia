@@ -27,7 +27,7 @@
     <p>This is a reference for the Document model used in Doxia.</p>
     <p>An XSD is available at:</p>
     <ul>
-      <li><a href="http://maven.apache.org/xsd/document-1.0.0.xsd">http://maven.apache.org/xsd/document-1.0.0.xsd</a>.</li>
+      <li><a href="http://maven.apache.org/xsd/document-1.0.1.xsd">http://maven.apache.org/xsd/document-1.0.1.xsd</a>.</li>
     </ul>
   ]]></description>
   <defaults>
@@ -38,18 +38,17 @@
   </defaults>
 
   <classes>
-
     <class rootElement="true" xml.tagName="document">
       <name>DocumentModel</name>
       <description>Describes the overall document model.</description>
-      <version>1.0.0</version>
+      <version>1.0.0+</version>
       <fields>
         <field xml.attribute="true">
           <name>outputName</name>
           <description><![CDATA[
             The name of the generated document, without extension.
           ]]></description>
-          <version>1.0.0</version>
+          <version>1.0.0+</version>
           <type>String</type>
           <identifier>true</identifier>
         </field>
@@ -58,7 +57,7 @@
           <description><![CDATA[
             The Meta information properties.
           ]]></description>
-          <version>1.0.0</version>
+          <version>1.0.0+</version>
           <association>
             <type>DocumentMeta</type>
           </association>
@@ -69,7 +68,7 @@
           <description><![CDATA[
             The TOC (Table of Contents) information properties.
           ]]></description>
-          <version>1.0.0</version>
+          <version>1.0.0+</version>
           <association>
             <type>DocumentTOC</type>
           </association>
@@ -80,7 +79,7 @@
           <description><![CDATA[
             The meta data to construct a cover page for the document.
           ]]></description>
-          <version>1.0.0</version>
+          <version>1.0.0+</version>
           <association>
             <type>DocumentCover</type>
           </association>
@@ -103,11 +102,11 @@
           <a href="http://www.dublincore.org">Dublin Core Metadata Initiative</a>.
         </p>
       ]]></description>
-      <version>1.0.0</version>
+      <version>1.0.0+</version>
       <fields>
         <field>
           <name>title</name>
-          <version>1.0.0</version>
+          <version>1.0.0+</version>
           <description><![CDATA[
             The title of the document.
           ]]></description>
@@ -116,7 +115,7 @@
         </field>
         <field>
           <name>author</name>
-          <version>1.0.0</version>
+          <version>1.0.0+</version>
           <description><![CDATA[
             A shortcut for the unique author of the document, usually as a String of "firstName lastName". For
             more authors, you could use the &lt;authors/&gt; tag.
@@ -126,7 +125,7 @@
         </field>
         <field>
           <name>authors</name>
-          <version>1.0.0</version>
+          <version>1.0.0+</version>
           <description><![CDATA[
             The authors of the document. The names of the entities that
             are primarily responsible for the content of the document.
@@ -139,7 +138,7 @@
         </field>
         <field>
           <name>subject</name>
-          <version>1.0.0</version>
+          <version>1.0.0+</version>
           <description><![CDATA[
             The subject of the document.
           ]]></description>
@@ -149,7 +148,7 @@
         <field>
           <!-- TODO: remove -->
           <name>keywords</name>
-          <version>1.0.0</version>
+          <version>1.0.0+</version>
           <description><![CDATA[
             Keywords for the document.
           ]]></description>
@@ -158,7 +157,7 @@
         </field>
         <field>
           <name>keyWords</name>
-          <version>1.0.0</version>
+          <version>1.0.0+</version>
           <description><![CDATA[
             A keyword pertaining to the document. The metadata can contain any
             number of keyword elements, each element specifying one keyword.
@@ -171,7 +170,7 @@
         </field>
         <field>
           <name>pageSize</name>
-          <version>1.0.0</version>
+          <version>1.0.0+</version>
           <description><![CDATA[
             The pagesize of the document.
             At least "US", "USLetter" and "A4" should be supported.
@@ -181,7 +180,7 @@
         </field>
         <field>
           <name>generator</name>
-          <version>1.0.0</version>
+          <version>1.0.0+</version>
           <description><![CDATA[
              A string that identifies the application or tool that was
              used to create or last modify the document.
@@ -191,7 +190,7 @@
         </field>
         <field>
           <name>description</name>
-          <version>1.0.0</version>
+          <version>1.0.0+</version>
           <description><![CDATA[
              A brief description of the document.
           ]]></description>
@@ -200,7 +199,7 @@
         </field>
         <field>
           <name>initialCreator</name>
-          <version>1.0.0</version>
+          <version>1.0.0+</version>
           <description><![CDATA[
             The name of the person who created the document initially.
           ]]></description>
@@ -209,7 +208,7 @@
         </field>
         <field>
           <name>creator</name>
-          <version>1.0.0</version>
+          <version>1.0.0+</version>
           <description><![CDATA[
             The name of the person who last modified the document.
           ]]></description>
@@ -218,7 +217,7 @@
         </field>
         <field>
           <name>printedBy</name>
-          <version>1.0.0</version>
+          <version>1.0.0+</version>
           <description><![CDATA[
             The name of the person who last printed the document.
           ]]></description>
@@ -227,7 +226,7 @@
         </field>
         <field>
           <name>creationDate</name>
-          <version>1.0.0</version>
+          <version>1.0.0+</version>
           <description><![CDATA[
             The date and time when the document was created initially.
           ]]></description>
@@ -236,7 +235,7 @@
         </field>
         <field>
           <name>date</name>
-          <version>1.0.0</version>
+          <version>1.0.0+</version>
           <description><![CDATA[
             The date and time when the document was last modified.
           ]]></description>
@@ -245,7 +244,7 @@
         </field>
         <field>
           <name>printDate</name>
-          <version>1.0.0</version>
+          <version>1.0.0+</version>
           <description><![CDATA[
             The date and time when the document was last printed.
           ]]></description>
@@ -254,7 +253,7 @@
         </field>
         <field>
           <name>template</name>
-          <version>1.0.0</version>
+          <version>1.0.0+</version>
           <description><![CDATA[
             A template that was used to create the document.
           ]]></description>
@@ -266,7 +265,7 @@
         <!--
         <field>
           <name>autoReload</name>
-          <version>1.0.0</version>
+          <version>1.0.0+</version>
           <description><![CDATA[
             The auto-reload element specifies whether a document is reloaded
             or replaced by another document after a certain period of time
@@ -278,7 +277,7 @@
         -->
         <field>
           <name>hyperlinkBehaviour</name>
-          <version>1.0.0</version>
+          <version>1.0.0+</version>
           <description><![CDATA[
             The hyperlink-behaviour element specifies the default behavior
             for hyperlinks in the document.
@@ -290,7 +289,7 @@
         </field>
         <field>
           <name>language</name>
-          <version>1.0.0</version>
+          <version>1.0.0+</version>
           <description><![CDATA[
             The default language of the document. The language is represented by
             a two or three letter Language Code taken from the ISO 639 standard,
@@ -303,7 +302,7 @@
         </field>
         <field>
           <name>editingCycles</name>
-          <version>1.0.0</version>
+          <version>1.0.0+</version>
           <description><![CDATA[
             The number of editing cycles the document has been through.
           ]]></description>
@@ -312,7 +311,7 @@
         </field>
         <field>
           <name>editingDuration</name>
-          <version>1.0.0</version>
+          <version>1.0.0+</version>
           <description><![CDATA[
             The total time spent editing the document.
           ]]></description>
@@ -321,7 +320,7 @@
         </field>
         <field>
           <name>documentStatistic</name>
-          <version>1.0.0</version>
+          <version>1.0.0+</version>
           <description><![CDATA[
             The statistics of the document, for example, the page count,
             word count, etc.
@@ -333,7 +332,7 @@
         </field>
         <field>
           <name>confidential</name>
-          <version>1.0.0</version>
+          <version>1.0.0+</version>
           <description><![CDATA[
             whether the content of the document is in some sense confidential.
           ]]></description>
@@ -342,7 +341,7 @@
         </field>
         <field>
           <name>draft</name>
-          <version>1.0.0</version>
+          <version>1.0.0+</version>
           <description><![CDATA[
             whether the content of the document is in some sense preliminary.
           ]]></description>
@@ -355,14 +354,14 @@
     <class>
       <name>DocumentAuthor</name>
       <description>An author of the document.</description>
-      <version>1.0.0</version>
+      <version>1.0.0+</version>
       <fields>
         <field>
           <name>firstName</name>
           <description><![CDATA[
              The first name of the author.
           ]]></description>
-          <version>1.0.0</version>
+          <version>1.0.0+</version>
           <type>String</type>
           <identifier>true</identifier>
         </field>
@@ -371,7 +370,7 @@
           <description><![CDATA[
             The last name of the author.
           ]]></description>
-          <version>1.0.0</version>
+          <version>1.0.0+</version>
           <type>String</type>
           <identifier>true</identifier>
         </field>
@@ -380,7 +379,7 @@
           <description><![CDATA[
              The initials of the author.
           ]]></description>
-          <version>1.0.0</version>
+          <version>1.0.0+</version>
           <type>String</type>
           <identifier>true</identifier>
         </field>
@@ -389,7 +388,7 @@
           <description><![CDATA[
              The title of the author.
           ]]></description>
-          <version>1.0.0</version>
+          <version>1.0.0+</version>
           <type>String</type>
           <identifier>true</identifier>
         </field>
@@ -398,7 +397,7 @@
           <description><![CDATA[
              The position of the author.
           ]]></description>
-          <version>1.0.0</version>
+          <version>1.0.0+</version>
           <type>String</type>
           <identifier>true</identifier>
         </field>
@@ -407,7 +406,7 @@
           <description><![CDATA[
             The email address of the author.
           ]]></description>
-          <version>1.0.0</version>
+          <version>1.0.0+</version>
           <type>String</type>
           <identifier>true</identifier>
         </field>
@@ -416,7 +415,7 @@
           <description><![CDATA[
             The telephone number of the author.
           ]]></description>
-          <version>1.0.0</version>
+          <version>1.0.0+</version>
           <type>String</type>
           <identifier>true</identifier>
         </field>
@@ -425,7 +424,7 @@
           <description><![CDATA[
             The fax number of the author.
           ]]></description>
-          <version>1.0.0</version>
+          <version>1.0.0+</version>
           <type>String</type>
           <identifier>true</identifier>
         </field>
@@ -434,7 +433,7 @@
           <description><![CDATA[
             The name of the company that employs the author.
           ]]></description>
-          <version>1.0.0</version>
+          <version>1.0.0+</version>
           <type>String</type>
           <identifier>true</identifier>
         </field>
@@ -443,7 +442,7 @@
           <description><![CDATA[
              The street name of the address of the author.
           ]]></description>
-          <version>1.0.0</version>
+          <version>1.0.0+</version>
           <type>String</type>
           <identifier>true</identifier>
         </field>
@@ -452,7 +451,7 @@
           <description><![CDATA[
             The city name of the address of the author.
           ]]></description>
-          <version>1.0.0</version>
+          <version>1.0.0+</version>
           <type>String</type>
           <identifier>true</identifier>
         </field>
@@ -461,7 +460,7 @@
           <description><![CDATA[
             The postal code of the address of the author.
           ]]></description>
-          <version>1.0.0</version>
+          <version>1.0.0+</version>
           <type>String</type>
           <identifier>true</identifier>
         </field>
@@ -470,7 +469,7 @@
           <description><![CDATA[
             The country of the address of the author.
           ]]></description>
-          <version>1.0.0</version>
+          <version>1.0.0+</version>
           <type>String</type>
           <identifier>true</identifier>
         </field>
@@ -479,7 +478,7 @@
           <description><![CDATA[
             The state or province of the address of the author, if applicable.
           ]]></description>
-          <version>1.0.0</version>
+          <version>1.0.0+</version>
           <type>String</type>
           <identifier>true</identifier>
         </field>
@@ -489,14 +488,14 @@
     <class>
       <name>DocumentTemplate</name>
       <description>A template that was used to create the document.</description>
-      <version>1.0.0</version>
+      <version>1.0.0+</version>
       <fields>
         <field xml.attribute="true">
           <name>href</name>
           <description><![CDATA[
             The location of the document template.
           ]]></description>
-          <version>1.0.0</version>
+          <version>1.0.0+</version>
           <type>String</type>
           <identifier>true</identifier>
         </field>
@@ -505,7 +504,7 @@
           <description><![CDATA[
             The name of the document template.
           ]]></description>
-          <version>1.0.0</version>
+          <version>1.0.0+</version>
           <type>String</type>
           <identifier>true</identifier>
         </field>
@@ -515,7 +514,7 @@
             The date and time when the template was last modified, prior
             to being used to create the current document.
           ]]></description>
-          <version>1.0.0</version>
+          <version>1.0.0+</version>
           <type>Date</type>
           <identifier>true</identifier>
         </field>
@@ -525,7 +524,7 @@
     <class>
       <name>DocumentHyperlinkBehaviour</name>
       <description>Specifies the default behavior for hyperlinks in the document.</description>
-      <version>1.0.0</version>
+      <version>1.0.0+</version>
       <fields>
         <field xml.attribute="true">
           <name>targetFrame</name>
@@ -573,7 +572,7 @@
               </dt>
             </dl>
           ]]></description>
-          <version>1.0.0</version>
+          <version>1.0.0+</version>
           <type>String</type>
           <defaultValue>_self</defaultValue>
           <identifier>true</identifier>
@@ -584,14 +583,14 @@
     <class>
       <name>DocumentStatistic</name>
       <description>Statistical attributes of the document.</description>
-      <version>1.0.0</version>
+      <version>1.0.0+</version>
       <fields>
         <field xml.attribute="true">
           <name>pageCount</name>
           <description><![CDATA[
             The number of pages in the document.
           ]]></description>
-          <version>1.0.0</version>
+          <version>1.0.0+</version>
           <type>long</type>
           <identifier>true</identifier>
         </field>
@@ -600,7 +599,7 @@
           <description><![CDATA[
             The number of tabels in the document.
           ]]></description>
-          <version>1.0.0</version>
+          <version>1.0.0+</version>
           <type>long</type>
           <identifier>true</identifier>
         </field>
@@ -609,7 +608,7 @@
           <description><![CDATA[
             The number of drawings in the document.
           ]]></description>
-          <version>1.0.0</version>
+          <version>1.0.0+</version>
           <type>long</type>
           <identifier>true</identifier>
         </field>
@@ -618,7 +617,7 @@
           <description><![CDATA[
             The number of images in the document.
           ]]></description>
-          <version>1.0.0</version>
+          <version>1.0.0+</version>
           <type>long</type>
           <identifier>true</identifier>
         </field>
@@ -627,7 +626,7 @@
           <description><![CDATA[
             The number of objects in the document.
           ]]></description>
-          <version>1.0.0</version>
+          <version>1.0.0+</version>
           <type>long</type>
           <identifier>true</identifier>
         </field>
@@ -636,7 +635,7 @@
           <description><![CDATA[
             The number of ole-objects in the document.
           ]]></description>
-          <version>1.0.0</version>
+          <version>1.0.0+</version>
           <type>long</type>
           <identifier>true</identifier>
         </field>
@@ -645,7 +644,7 @@
           <description><![CDATA[
             The number of paragraphs in the document.
           ]]></description>
-          <version>1.0.0</version>
+          <version>1.0.0+</version>
           <type>long</type>
           <identifier>true</identifier>
         </field>
@@ -654,7 +653,7 @@
           <description><![CDATA[
             The number of words in the document.
           ]]></description>
-          <version>1.0.0</version>
+          <version>1.0.0+</version>
           <type>long</type>
           <identifier>true</identifier>
         </field>
@@ -663,7 +662,7 @@
           <description><![CDATA[
             The number of characters in the document.
           ]]></description>
-          <version>1.0.0</version>
+          <version>1.0.0+</version>
           <type>long</type>
           <identifier>true</identifier>
         </field>
@@ -672,7 +671,7 @@
           <description><![CDATA[
             The number of rows in the document.
           ]]></description>
-          <version>1.0.0</version>
+          <version>1.0.0+</version>
           <type>long</type>
           <identifier>true</identifier>
         </field>
@@ -681,7 +680,7 @@
           <description><![CDATA[
             The number of frames in the document.
           ]]></description>
-          <version>1.0.0</version>
+          <version>1.0.0+</version>
           <type>long</type>
           <identifier>true</identifier>
         </field>
@@ -690,7 +689,7 @@
           <description><![CDATA[
             The number of sentences in the document.
           ]]></description>
-          <version>1.0.0</version>
+          <version>1.0.0+</version>
           <type>long</type>
           <identifier>true</identifier>
         </field>
@@ -699,7 +698,7 @@
           <description><![CDATA[
             The number of syllables in the document.
           ]]></description>
-          <version>1.0.0</version>
+          <version>1.0.0+</version>
           <type>long</type>
           <identifier>true</identifier>
         </field>
@@ -708,7 +707,7 @@
           <description><![CDATA[
             The number of non-whitespace-characters in the document.
           ]]></description>
-          <version>1.0.0</version>
+          <version>1.0.0+</version>
           <type>long</type>
           <identifier>true</identifier>
         </field>
@@ -718,14 +717,14 @@
     <class xsd.compositor="sequence">
       <name>DocumentCover</name>
       <description>Contains meta-data information for the document cover page.</description>
-      <version>1.0.0</version>
+      <version>1.0.0+</version>
       <fields>
         <field>
           <name>coverTitle</name>
           <description><![CDATA[
             The title to appear on the cover.
           ]]></description>
-          <version>1.0.0</version>
+          <version>1.0.0+</version>
           <type>String</type>
           <identifier>true</identifier>
         </field>
@@ -734,7 +733,7 @@
           <description><![CDATA[
             a sub-title to appear on the cover.
           ]]></description>
-          <version>1.0.0</version>
+          <version>1.0.0+</version>
           <type>String</type>
           <identifier>true</identifier>
         </field>
@@ -743,7 +742,7 @@
           <description><![CDATA[
             The version of the project that appears on the cover page.
           ]]></description>
-          <version>1.0.0</version>
+          <version>1.0.0+</version>
           <type>String</type>
           <identifier>true</identifier>
         </field>
@@ -754,7 +753,7 @@
             specify the type of information contained in the document
             (eg 'User Guide', 'Manual', etc.).
           ]]></description>
-          <version>1.0.0</version>
+          <version>1.0.0+</version>
           <type>String</type>
           <identifier>true</identifier>
         </field>
@@ -764,7 +763,7 @@
             The date to appear on the cover.
             @since 1.1.1.
           ]]></description>
-          <version>1.0.0</version>
+          <version>1.0.0+</version>
           <type>String</type>
           <identifier>true</identifier>
         </field>
@@ -774,7 +773,7 @@
             The author that appears on the cover page.
             @since 1.1.1.
           ]]></description>
-          <version>1.0.0</version>
+          <version>1.0.0+</version>
           <type>String</type>
           <identifier>true</identifier>
         </field>
@@ -783,7 +782,7 @@
           <description><![CDATA[
             The name of the project.
           ]]></description>
-          <version>1.0.0</version>
+          <version>1.0.0+</version>
           <type>String</type>
           <identifier>true</identifier>
         </field>
@@ -792,7 +791,7 @@
           <description><![CDATA[
             The location of an image file that represents the project logo.
           ]]></description>
-          <version>1.0.0</version>
+          <version>1.0.0+</version>
           <type>String</type>
           <identifier>true</identifier>
         </field>
@@ -802,7 +801,7 @@
             The name of the entity that is responsible for the content of the
             document, or a copyright holder.
           ]]></description>
-          <version>1.0.0</version>
+          <version>1.0.0+</version>
           <type>String</type>
           <identifier>true</identifier>
         </field>
@@ -811,7 +810,7 @@
           <description><![CDATA[
             The location of an image file that represents the company logo.
           ]]></description>
-          <version>1.0.0</version>
+          <version>1.0.0+</version>
           <type>String</type>
           <identifier>true</identifier>
         </field>
@@ -821,14 +820,14 @@
     <class xsd.compositor="sequence">
       <name>DocumentTOC</name>
       <description>A Table Of Content for the document.</description>
-      <version>1.0.0</version>
+      <version>1.0.0+</version>
       <fields>
         <field xml.attribute="true">
           <name>name</name>
           <description><![CDATA[
             The name to use for the Table of Contents.
           ]]></description>
-          <version>1.0.0</version>
+          <version>1.0.0+</version>
           <type>String</type>
           <identifier>true</identifier>
         </field>
@@ -841,7 +840,7 @@
             This may be overridden for individual entries by using the collapse
             attribute of the corresponding toc item.
           ]]></description>
-          <version>1.0.0</version>
+          <version>1.0.0+</version>
           <type>int</type>
           <identifier>true</identifier>
           <defaultValue>0</defaultValue>
@@ -851,7 +850,7 @@
           <description><![CDATA[
             TOC item.
           ]]></description>
-          <version>1.0.0</version>
+          <version>1.0.0+</version>
           <association xml.itemsStyle="flat">
             <type>DocumentTOCItem</type>
             <multiplicity>*</multiplicity>
@@ -864,14 +863,14 @@
     <class xsd.compositor="sequence">
       <name>DocumentTOCItem</name>
       <description>A menu item.</description>
-      <version>1.0.0</version>
+      <version>1.0.0+</version>
       <fields>
         <field xml.attribute="true">
           <name>name</name>
           <description><![CDATA[
             The name to use for the toc.
           ]]></description>
-          <version>1.0.0</version>
+          <version>1.0.0+</version>
           <type>String</type>
           <identifier>true</identifier>
         </field>
@@ -880,7 +879,7 @@
           <description><![CDATA[
             The ref to use for the item.
           ]]></description>
-          <version>1.0.0</version>
+          <version>1.0.0+</version>
           <type>String</type>
           <identifier>true</identifier>
         </field>
@@ -891,7 +890,7 @@
            the depth given in DocumentTOC. By default, all children
            are expanded up to the depth given in DocumentTOC.
           ]]></description>
-          <version>1.0.0</version>
+          <version>1.0.0+</version>
           <type>boolean</type>
           <identifier>true</identifier>
         </field>
@@ -900,7 +899,7 @@
           <description><![CDATA[
            A table of content item containing sub-items.
           ]]></description>
-          <version>1.0.0</version>
+          <version>1.0.0+</version>
           <association xml.itemsStyle="flat">
             <type>DocumentTOCItem</type>
             <multiplicity>*</multiplicity>
@@ -909,8 +908,5 @@
         </field>
       </fields>
     </class>
-
   </classes>
-
 </model>
-
