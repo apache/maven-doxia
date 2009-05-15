@@ -82,8 +82,7 @@ public class Apt2FO
             e.printStackTrace();
         }
     }
-}
-      </source>
+}</source>
 
     </subsection>
 
@@ -102,13 +101,14 @@ public class Apt2FO
     FoAggregateSink fosink = new FoAggregateSink(
         new FileWriter( new File( "out", "aggregate.fo" ) ) );
 
+    // getDocumentModel() should return a DocumentModel object
+    fosink.setDocumentModel( getDocumentModel()  );
+
     fosink.beginDocument();
 
-    // getMeta() should return a DocumentMeta object
-    fosink.coverPage( getMeta() );
+    fosink.coverPage();
 
-    // getToc() should return a DocumentTOC object
-    fosink.toc( getToc() );
+    fosink.toc();
 
     // first document
     FileReader source1 =
@@ -124,8 +124,7 @@ public class Apt2FO
     fosink.setDocumentTitle( "Document 2" );
     parser.parse( source2, fosink );
 
-    fosink.endDocument();
-      </source>
+    fosink.endDocument();</source>
 
     </subsection>
 
