@@ -556,9 +556,32 @@ public class FoAggregateSink extends FoSink
      */
     protected String getFooterText()
     {
-        // TODO: year and company have to come from DocumentMeta
-        int actualYear = Calendar.getInstance().get( Calendar.YEAR );
-        return "&#169;" + actualYear + " The Apache Software Foundation &#8226; ALL RIGHTS RESERVED";
+        int actualYear;
+        String add = " &#8226; ALL RIGHTS RESERVED.";
+        String companyName = "";
+
+        if ( docModel != null && docModel.getMeta() != null && docModel.getMeta().isConfidential() )
+        {
+            add = add + " &#8226; PROPRIETARY AND CONFIDENTIAL";
+        }
+
+        if ( docModel != null && docModel.getCover() != null && docModel.getCover().getCompanyName() != null )
+        {
+            companyName = docModel.getCover().getCompanyName();
+        }
+
+        if ( docModel != null && docModel.getMeta() != null && docModel.getMeta().getDate() != null )
+        {
+            Calendar date = Calendar.getInstance();
+            date.setTime( docModel.getMeta().getDate() );
+            actualYear = date.get( Calendar.YEAR );
+        }
+        else
+        {
+            actualYear = Calendar.getInstance().get( Calendar.YEAR );
+        }
+
+        return "&#169;" + actualYear + ", " + companyName + add;
     }
 
     /**
@@ -687,7 +710,7 @@ public class FoAggregateSink extends FoSink
         writeEmptyTag( TABLE_COLUMN_TAG, "column-width", "0.45in" );
         writeEmptyTag( TABLE_COLUMN_TAG, "column-width", "0.4in" );
         writeEmptyTag( TABLE_COLUMN_TAG, "column-width", "0.4in" );
-        writeEmptyTag( TABLE_COLUMN_TAG, "column-width", "5in" ); // TODO
+        writeEmptyTag( TABLE_COLUMN_TAG, "column-width", "5in" ); // TODO {$maxBodyWidth - 1.25}in
         writeStartTag( TABLE_BODY_TAG, "" );
 
         writeTocItems( toc.getItems(), 1 );
