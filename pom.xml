@@ -279,6 +279,11 @@ under the License.
           <artifactId>maven-project-info-reports-plugin</artifactId>
           <version>2.1.1</version>
         </plugin>
+        <plugin>
+          <groupId>org.codehaus.mojo</groupId>
+          <artifactId>clirr-maven-plugin</artifactId>
+          <version>2.2.2</version>
+        </plugin>
       </plugins>
     </pluginManagement>
     <plugins>
@@ -365,7 +370,6 @@ under the License.
           <plugin>
             <groupId>org.codehaus.mojo</groupId>
             <artifactId>clirr-maven-plugin</artifactId>
-            <version>2.2.2</version>
             <configuration>
               <comparisonVersion>1.1</comparisonVersion>
             </configuration>
