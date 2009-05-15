@@ -129,10 +129,12 @@ public class DocumentModelTest
     private DocumentCover getDocumentCover()
     {
         DocumentCover cover = new DocumentCover();
+        cover.addAuthor( getAuthor( 1 ) );
         cover.setAuthor( "Author" );
         cover.setCompanyLogo( "companyLogo" );
         cover.setCompanyName( "companyName" );
-        cover.setCoverDate( "coverDate" );
+        cover.setCoverDate( new Date( 0L ) );
+        cover.setDate( "coverDate" );
         cover.setCoverSubTitle( "coverSubTitle" );
         cover.setCoverTitle( "coverTitle" );
         cover.setCoverType( "coverType" );
@@ -145,10 +147,15 @@ public class DocumentModelTest
 
     private void verifyDocumentCover( DocumentCover cover )
     {
+        List authors = cover.getAuthors();
+        assertEquals( 1, authors.size() );
+        verifyAuthor( (DocumentAuthor) authors.get( 0 ), 1 );
+
         assertEquals( "Author", cover.getAuthor() );
         assertEquals( "companyLogo", cover.getCompanyLogo() );
         assertEquals( "companyName", cover.getCompanyName() );
-        assertEquals( "coverDate", cover.getCoverDate() );
+        assertEquals( 0L, cover.getCoverDate().getTime() );
+        assertEquals( "coverDate", cover.getDate() );
         assertEquals( "coverSubTitle", cover.getCoverSubTitle() );
         assertEquals( "coverTitle", cover.getCoverTitle() );
         assertEquals( "coverType", cover.getCoverType() );

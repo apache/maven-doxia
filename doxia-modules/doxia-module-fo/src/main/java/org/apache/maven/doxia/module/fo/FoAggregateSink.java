@@ -886,7 +886,7 @@ public class FoAggregateSink extends FoSink
             subtitle = cover.getCoverSubTitle();
             version = cover.getCoverVersion();
             type = cover.getCoverType();
-            date = cover.getCoverDate();
+            date = cover.getDate();
             //author = cover.getAuthor();
             //projName = cover.getProjectName();
             projLogo = cover.getProjectLogo();

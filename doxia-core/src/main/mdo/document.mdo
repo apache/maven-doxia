@@ -761,19 +761,43 @@
           <name>coverDate</name>
           <description><![CDATA[
             The date to appear on the cover.
-            @since 1.1.1.
+            Only used if date is not given.
           ]]></description>
           <version>1.0.0+</version>
+          <type>Date</type>
+          <identifier>true</identifier>
+        </field>
+        <field>
+          <name>date</name>
+          <description><![CDATA[
+            The date to appear on the cover.
+            @since 1.1.1.
+          ]]></description>
+          <version>1.0.1+</version>
           <type>String</type>
+          <identifier>true</identifier>
+        </field>
+        <field>
+          <name>authors</name>
+          <description><![CDATA[
+            The authors that appear on the cover page.
+            Only used if author is not given.
+          ]]></description>
+          <version>1.0.0+</version>
+          <association xml.itemsStyle="wrapped" xml.tagName="author">
+            <type>DocumentAuthor</type>
+            <multiplicity>*</multiplicity>
+          </association>
           <identifier>true</identifier>
         </field>
         <field>
           <name>author</name>
           <description><![CDATA[
-            The author that appears on the cover page.
+            A shortcut for the unique author that appears on the cover page.
+            For more authors, you could use the &lt;authors/&gt; tag.
             @since 1.1.1.
           ]]></description>
-          <version>1.0.0+</version>
+          <version>1.0.1+</version>
           <type>String</type>
           <identifier>true</identifier>
         </field>
