@@ -130,7 +130,7 @@ public class ByLineReaderSource implements ByLineSource
     }
 
     /** {@inheritDoc} */
-    public final void ungetLine() throws IllegalStateException
+    public final void ungetLine()
     {
         if ( ungetted )
         {
@@ -140,7 +140,7 @@ public class ByLineReaderSource implements ByLineSource
     }
 
     /** {@inheritDoc} */
-    public final void unget( final String s ) throws IllegalStateException
+    public final void unget( final String s )
     {
         if ( s == null )
         {

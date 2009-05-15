@@ -860,11 +860,11 @@ public class XhtmlBaseParser
         sink.verbatim( attribs );
     }
 
-    private void handleSectionStart( Sink sink, int sectionLevel, SinkEventAttributeSet attribs )
+    private void handleSectionStart( Sink sink, int level, SinkEventAttributeSet attribs )
     {
-        consecutiveSections( sectionLevel, sink );
-        sink.section( sectionLevel, attribs );
-        sink.sectionTitle( sectionLevel, attribs );
+        consecutiveSections( level, sink );
+        sink.section( level, attribs );
+        sink.sectionTitle( level, attribs );
     }
 
     private void handleTableStart( Sink sink, SinkEventAttributeSet attribs, XmlPullParser parser )

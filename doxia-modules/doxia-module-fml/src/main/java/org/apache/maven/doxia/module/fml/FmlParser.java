@@ -79,7 +79,7 @@ public class FmlParser
         // this populates faqs
         super.parse( source, sink );
 
-        writeFaqs( faqs, sink );
+        writeFaqs( sink );
     }
 
     /** {@inheritDoc} */
@@ -209,6 +209,7 @@ public class FmlParser
         if ( parser.getName().equals( FAQS_TAG.toString() ) )
         {
             // Do nothing
+            return;
         }
         else if ( parser.getName().equals( PART_TAG.toString() ) )
         {
@@ -318,7 +319,7 @@ public class FmlParser
      * @param sink The sink to consume the event.
      * @throws ParseException if something goes wrong.
      */
-    private void writeFaqs( Faqs faqs, Sink sink )
+    private void writeFaqs( Sink sink )
         throws ParseException
     {
         FmlContentParser xdocParser = new FmlContentParser();

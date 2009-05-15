@@ -89,7 +89,7 @@ public class TableBlockParser
                 {
                     List textBlocks = new ArrayList();
 
-                    textBlocks.add( ( (ParagraphBlockParser) paragraphParser )
+                    textBlocks.add( ( ( ParagraphBlockParser) paragraphParser )
                             .visit(text[i], new ByLineReaderSource( new StringReader( EMPTY_STRING ) ), false ) );
 
                     List blocks = new ArrayList();
@@ -117,7 +117,7 @@ public class TableBlockParser
                         it += 2;
                         continue;
                      }
-                    texts.add(text[it]);
+                    texts.add( text[it] );
                     it++;
                 }
 

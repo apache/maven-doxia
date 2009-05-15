@@ -98,11 +98,11 @@ public abstract class AbstractXmlParser
     /** Tag pattern as defined in http://www.w3.org/TR/REC-xml/#NT-Name */
     private static final Pattern PATTERN_TAG = Pattern.compile( ".*<([A-Za-z][A-Za-z0-9:_.-]*)([^>]*)>.*" );
 
-    private boolean ignorable;
+    private boolean ignorableWhitespace;
 
-    private boolean collapsible;
+    private boolean collapsibleWhitespace;
 
-    private boolean trimmable;
+    private boolean trimmableWhitespace;
 
     private Map entities;
 
@@ -263,7 +263,7 @@ public abstract class AbstractXmlParser
 
                 for ( Iterator it = CachedFileEntityResolver.ENTITY_CACHE.values().iterator(); it.hasNext(); )
                 {
-                    byte[] res = (byte[])it.next();
+                    byte[] res = (byte[]) it.next();
 
                     addDTDEntities( parser, new String( res ) );
                 }
@@ -351,7 +351,7 @@ public abstract class AbstractXmlParser
      */
     protected boolean isIgnorableWhitespace()
     {
-        return ignorable;
+        return ignorableWhitespace;
     }
 
     /**
@@ -365,7 +365,7 @@ public abstract class AbstractXmlParser
      */
     protected void setIgnorableWhitespace( boolean ignorable )
     {
-        this.ignorable = ignorable;
+        this.ignorableWhitespace = ignorable;
     }
 
     /**
@@ -377,7 +377,7 @@ public abstract class AbstractXmlParser
      */
     protected boolean isCollapsibleWhitespace()
     {
-        return collapsible;
+        return collapsibleWhitespace;
     }
 
     /**
@@ -391,7 +391,7 @@ public abstract class AbstractXmlParser
      */
     protected void setCollapsibleWhitespace( boolean collapsible )
     {
-        this.collapsible = collapsible;
+        this.collapsibleWhitespace = collapsible;
     }
 
     /**
@@ -403,7 +403,7 @@ public abstract class AbstractXmlParser
      */
     protected boolean isTrimmableWhitespace()
     {
-        return trimmable;
+        return trimmableWhitespace;
     }
 
     /**
@@ -417,7 +417,7 @@ public abstract class AbstractXmlParser
      */
     protected void setTrimmableWhitespace( boolean trimmable )
     {
-        this.trimmable = trimmable;
+        this.trimmableWhitespace = trimmable;
     }
 
     /**

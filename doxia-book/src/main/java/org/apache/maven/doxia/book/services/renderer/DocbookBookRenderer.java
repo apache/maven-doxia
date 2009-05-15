@@ -72,8 +72,8 @@ public class DocbookBookRenderer
         {
             if ( !context.getOutputDirectory().mkdirs() )
             {
-                throw new BookDoxiaException( "Could not make directory: " +
-                    context.getOutputDirectory().getAbsolutePath() + "." );
+                throw new BookDoxiaException( "Could not make directory: "
+                        + context.getOutputDirectory().getAbsolutePath() + "." );
             }
         }
 
@@ -132,7 +132,7 @@ public class DocbookBookRenderer
 
                 sink.chapter();
 
-                if (StringUtils.isNotEmpty( chapter.getTitle()))
+                if ( StringUtils.isNotEmpty( chapter.getTitle() ) )
                 {
                     sink.chapterTitle();
                     sink.text( chapter.getTitle() );
