@@ -56,7 +56,7 @@ import org.codehaus.plexus.util.StringUtils;
  *
  * <b>Note</b>: the documentModel object contains several
  * <a href="http://maven.apache.org/doxia/doxia/doxia-core/document.html">document metadata</a>, but only a few
- * of them are used in this sink (i.e. author and title), the others are ignored.
+ * of them are used in this sink (i.e. author, confidential, date and title), the others are ignored.
  *
  * @author ltheussl
  * @version $Id$
