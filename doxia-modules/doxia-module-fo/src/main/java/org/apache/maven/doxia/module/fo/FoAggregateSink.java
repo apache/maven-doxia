@@ -42,7 +42,21 @@ import org.apache.maven.doxia.util.HtmlTools;
 import org.codehaus.plexus.util.StringUtils;
 
 /**
- * A Doxia Sink that produces an aggregated FO model.
+ * A Doxia Sink that produces an aggregated FO model. The usage is similar to the following:
+ *
+ * <pre>
+ * FoAggregateSink sink = new FoAggregateSink( writer );
+ * sink.setDocumentModel( documentModel );
+ * sink.beginDocument();
+ * sink.coverPage();
+ * sink.toc();
+ * ...
+ * sink.endDocument();
+ * </pre>
+ *
+ * <b>Note</b>: the documentModel object contains several
+ * <a href="http://maven.apache.org/doxia/doxia/doxia-core/document.html">document metadata</a>, but only a few
+ * of them are used in this sink (i.e. author and title), the others are ignored.
  *
  * @author ltheussl
  * @version $Id$
