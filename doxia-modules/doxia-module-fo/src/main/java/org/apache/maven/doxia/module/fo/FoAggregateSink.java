@@ -21,9 +21,12 @@ package org.apache.maven.doxia.module.fo;
 
 import java.io.Writer;
 
+import java.text.DateFormat;
+import java.text.SimpleDateFormat;
 import java.util.Calendar;
 import java.util.Iterator;
 import java.util.List;
+import java.util.Locale;
 import java.util.Stack;
 
 import javax.swing.text.MutableAttributeSet;
@@ -64,6 +67,9 @@ import org.codehaus.plexus.util.StringUtils;
  */
 public class FoAggregateSink extends FoSink
 {
+    /** ISO 8601 date format, i.e. <code>yyyy-MM-dd</code> **/
+    private static final DateFormat ISO_8601_FORMAT = new SimpleDateFormat( "yyyy-MM-dd", Locale.US );
+
     /** The document model to be used by this sink. */
     private DocumentModel docModel;
 
@@ -901,6 +907,10 @@ public class FoAggregateSink extends FoSink
             version = cover.getCoverVersion();
             type = cover.getCoverType();
             date = cover.getDate();
+            if ( date == null && cover.getCoverDate() != null )
+            {
+                date = ISO_8601_FORMAT.format( cover.getCoverDate() );
+            }
             //author = cover.getAuthor();
             //projName = cover.getProjectName();
             projLogo = cover.getProjectLogo();
@@ -1024,7 +1034,7 @@ public class FoAggregateSink extends FoSink
         att.addAttribute( "height", "0.3in" );
         att.addAttribute( "text-align", "right" );
         writeStartTag( BLOCK_TAG, att );
-        write( date == null ? Calendar.getInstance().get( Calendar.YEAR ) + "" : date );
+        write( date == null ? ISO_8601_FORMAT.format( Calendar.getInstance().getTime() ) : date );
         writeEndTag( BLOCK_TAG );
         writeEndTag( TABLE_CELL_TAG );
 
