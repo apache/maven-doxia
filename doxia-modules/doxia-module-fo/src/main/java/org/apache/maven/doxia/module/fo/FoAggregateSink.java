@@ -27,6 +27,7 @@ import java.util.Calendar;
 import java.util.Iterator;
 import java.util.List;
 import java.util.Locale;
+import java.util.ResourceBundle;
 import java.util.Stack;
 
 import javax.swing.text.MutableAttributeSet;
@@ -577,12 +578,12 @@ public class FoAggregateSink extends FoSink
     protected String getFooterText()
     {
         int actualYear;
-        String add = " &#8226; ALL RIGHTS RESERVED.";
+        String add = " &#8226; " + getBundle( Locale.US ).getString( "footer.rights" );
         String companyName = "";
 
         if ( docModel != null && docModel.getMeta() != null && docModel.getMeta().isConfidential() )
         {
-            add = add + " &#8226; PROPRIETARY AND CONFIDENTIAL";
+            add = add + " &#8226; " + getBundle( Locale.US ).getString( "footer.confidential" );
         }
 
         if ( docModel != null && docModel.getCover() != null && docModel.getCover().getCompanyName() != null )
@@ -1079,4 +1080,8 @@ public class FoAggregateSink extends FoSink
         writeEndTag( TABLE_ROW_TAG );
     }
 
+    private ResourceBundle getBundle( Locale locale )
+    {
+        return ResourceBundle.getBundle( "doxia-fo", locale, this.getClass().getClassLoader() );
+    }
 }
