@@ -359,8 +359,8 @@ public class XhtmlBaseParserTest
     public void testEntities()
         throws Exception
     {
-        final String text = "<!DOCTYPE test [<!ENTITY foo \"&#x159;\"><!ENTITY tritPos \"&#x1d7ed;\">]>"
-                + "<body><h2>&amp;&foo;&tritPos;</h2><p>&amp;&foo;&tritPos;</p></body>";
+        final String text = "<!DOCTYPE test [<!ENTITY flo \"&#x159;\"><!ENTITY tritPos \"&#x1d7ed;\">]>"
+                + "<body><h2>&amp;&flo;&#x159;&tritPos;&#x1d7ed;</h2><p>&amp;&flo;&#x159;&tritPos;&#x1d7ed;</p></body>";
 
         parser.setValidate( false );
         parser.parse( text, sink );
@@ -379,8 +379,17 @@ public class XhtmlBaseParserTest
         assertEquals( "\u0159", textEvt.getArgs()[0] );
 
         textEvt = (SinkEventElement) it.next();
+        assertEquals( "text", textEvt.getName() );
+        assertEquals( "\u0159", textEvt.getArgs()[0] );
+
+        // TODO this should be emitted as the same text event as well
+        textEvt = (SinkEventElement) it.next();
         assertEquals( "unknown", textEvt.getName() );
         assertEquals( "&#x1d7ed;", textEvt.getArgs()[0] );
+
+        textEvt = (SinkEventElement) it.next();
+        assertEquals( "text", textEvt.getName() );
+        assertEquals( "\ud7ed", textEvt.getArgs()[0] );
 
         assertEquals( "sectionTitle1_", ( (SinkEventElement) it.next() ).getName() );
         assertEquals( "paragraph", ( (SinkEventElement) it.next() ).getName() );
@@ -394,8 +403,18 @@ public class XhtmlBaseParserTest
         assertEquals( "\u0159", textEvt.getArgs()[0] );
 
         textEvt = (SinkEventElement) it.next();
+        assertEquals( "text", textEvt.getName() );
+        assertEquals( "\u0159", textEvt.getArgs()[0] );
+
+        // TODO this should be emitted as the same text event as well
+        textEvt = (SinkEventElement) it.next();
         assertEquals( "unknown", textEvt.getName() );
         assertEquals( "&#x1d7ed;", textEvt.getArgs()[0] );
+
+        textEvt = (SinkEventElement) it.next();
+        assertEquals( "text", textEvt.getName() );
+        assertEquals( "\ud7ed", textEvt.getArgs()[0] );
+
         assertEquals( "paragraph_", ( (SinkEventElement) it.next() ).getName() );
 
         assertFalse( it.hasNext() );
