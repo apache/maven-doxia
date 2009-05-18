@@ -32,7 +32,6 @@ import org.apache.maven.doxia.parser.AbstractXmlParser;
 import org.apache.maven.doxia.sink.Sink;
 import org.apache.maven.doxia.sink.SinkEventAttributeSet;
 
-import org.codehaus.plexus.util.StringUtils;
 import org.codehaus.plexus.util.xml.pull.XmlPullParser;
 import org.codehaus.plexus.util.xml.pull.XmlPullParserException;
 
@@ -727,45 +726,6 @@ public class DocBookParser
     }
 
     /** {@inheritDoc} */
-    protected void handleText( XmlPullParser parser, Sink sink )
-        throws XmlPullParserException
-    {
-        String text = parser.getText();
-
-        /*
-         * NOTE: Don't do any whitespace trimming here. Whitespace normalization has already been performed by the
-         * parser so any whitespace that makes it here is significant.
-         */
-        if ( StringUtils.isNotEmpty( text ) )
-        {
-            // Emit separate text events for different lines, e.g. the input
-            // "\nLine1\n\nLine2\n\n" should deliver the event sequence "\n", "Line1\n", "\n", "Line2\n", "\n".
-            // In other words, the concatenation of the text events must deliver the input sequence.
-            // (according to section 2.11 of the XML spec, parsers must normalize line breaks to "\n")
-            String[] lines = text.split( "\n", -1 );
-
-            for ( int i = 0; i < lines.length - 1; i++ )
-            {
-                sink.text( lines[i] + EOL );
-            }
-
-            if ( lines[lines.length - 1].length() > 0 )
-            {
-                sink.text( lines[lines.length - 1] );
-            }
-        }
-    }
-
-    /** {@inheritDoc} */
-    protected void handleCdsect( XmlPullParser parser, Sink sink )
-        throws XmlPullParserException
-    {
-        String text = parser.getText();
-
-        sink.rawText( text );
-    }
-
-    /** {@inheritDoc} */
     protected void handleComment( XmlPullParser parser, Sink sink )
         throws XmlPullParserException
     {
@@ -786,26 +746,6 @@ public class DocBookParser
         else
         {
             sink.comment( text.trim() );
-        }
-    }
-
-    /** {@inheritDoc} */
-    protected void handleEntity( XmlPullParser parser, Sink sink )
-        throws XmlPullParserException
-    {
-        String text = parser.getText();
-
-        int[] holder = new int[] {0, 0};
-        char[] chars = parser.getTextCharacters( holder );
-        String textChars = String.valueOf( chars, holder[0], holder[1] );
-
-        if ( "#x00A0".equals( textChars ) )
-        {
-            sink.nonBreakingSpace();
-        }
-        else
-        {
-            sink.text( text );
         }
     }
 
