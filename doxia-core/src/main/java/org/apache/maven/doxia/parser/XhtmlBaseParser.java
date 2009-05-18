@@ -23,12 +23,10 @@ import javax.swing.text.html.HTML.Attribute;
 import javax.swing.text.html.HTML.Tag;
 
 import org.apache.maven.doxia.macro.MacroExecutionException;
-import org.apache.maven.doxia.markup.HtmlMarkup;
 import org.apache.maven.doxia.sink.Sink;
 import org.apache.maven.doxia.sink.SinkEventAttributeSet;
 import org.apache.maven.doxia.sink.SinkEventAttributes;
 import org.apache.maven.doxia.util.DoxiaUtils;
-import org.apache.maven.doxia.util.HtmlTools;
 
 import org.codehaus.plexus.util.StringUtils;
 import org.codehaus.plexus.util.xml.pull.XmlPullParser;
@@ -431,13 +429,6 @@ public class XhtmlBaseParser
     }
 
     /** {@inheritDoc} */
-    protected void handleCdsect( XmlPullParser parser, Sink sink )
-        throws XmlPullParserException
-    {
-        sink.text( getText( parser ) );
-    }
-
-    /** {@inheritDoc} */
     protected void handleComment( XmlPullParser parser, Sink sink )
         throws XmlPullParserException
     {
@@ -451,60 +442,6 @@ public class XhtmlBaseParser
         {
             sink.comment( text.trim() );
         }
-    }
-
-    /** {@inheritDoc} */
-    protected void handleEntity( XmlPullParser parser, Sink sink )
-        throws XmlPullParserException
-    {
-        String text = getText( parser );
-
-        int[] holder = new int[] {0, 0};
-        char[] chars = parser.getTextCharacters( holder );
-        String textChars = String.valueOf( chars, holder[0], holder[1] );
-
-        if ( "#160".equals( textChars ) || "nbsp".equals( textChars ) )
-        {
-            sink.nonBreakingSpace();
-        }
-        else
-        {
-            String unescaped = HtmlTools.unescapeHtml( text );
-
-            // TODO: StringEscapeUtils.unescapeHtml returns unknown entities as is,
-            // they should be handled as one character as well
-            if ( text.equals( unescaped ) && text.length() > 1 )
-            {
-                // this means the entity is unrecognized: emit as unknown
-                Object[] required = new Object[] { new Integer( HtmlMarkup.ENTITY_TYPE ) };
-
-                sink.unknown( text, required, null );
-            }
-            else
-            {
-                sink.text( unescaped );
-            }
-        }
-    }
-
-    /**
-     * Handles an unkown event.
-     *
-     * @param parser the parser to get the event from.
-     * @param sink the sink to receive the event.
-     * @param type the tag event type. This should be one of HtmlMarkup.TAG_TYPE_SIMPLE,
-     * HtmlMarkup.TAG_TYPE_START or HtmlMarkup.TAG_TYPE_END. It will be passed as the first
-     * argument of the required parameters to the Sink
-     * {@link org.apache.maven.doxia.sink.Sink#unknown(String, Object[], SinkEventAttributes)}
-     * method.
-     */
-    protected void handleUnknown( XmlPullParser parser, Sink sink, int type )
-    {
-        Object[] required = new Object[] { new Integer( type ) };
-
-        SinkEventAttributeSet attribs = getAttributesFromParser( parser );
-
-        sink.unknown( parser.getName(), required, attribs );
     }
 
     /**

@@ -41,15 +41,19 @@ import javax.xml.XMLConstants;
 
 import org.apache.maven.doxia.logging.Log;
 import org.apache.maven.doxia.macro.MacroExecutionException;
+import org.apache.maven.doxia.markup.HtmlMarkup;
 import org.apache.maven.doxia.markup.XmlMarkup;
 import org.apache.maven.doxia.sink.Sink;
 import org.apache.maven.doxia.sink.SinkEventAttributeSet;
+import org.apache.maven.doxia.util.HtmlTools;
+
 import org.codehaus.plexus.util.FileUtils;
 import org.codehaus.plexus.util.IOUtil;
 import org.codehaus.plexus.util.StringUtils;
 import org.codehaus.plexus.util.xml.pull.MXParser;
 import org.codehaus.plexus.util.xml.pull.XmlPullParser;
 import org.codehaus.plexus.util.xml.pull.XmlPullParserException;
+
 import org.xml.sax.EntityResolver;
 import org.xml.sax.InputSource;
 import org.xml.sax.SAXException;
@@ -305,42 +309,129 @@ public abstract class AbstractXmlParser
     /**
      * Handles text events.
      *
+     * <p>This is a default implementation, if the parser points to a non-empty text element,
+     * it is emitted as a text event into the specified sink.</p>
+     *
      * @param parser A parser, not null.
-     * @param sink the sink to receive the events.
+     * @param sink the sink to receive the events. Not null.
      * @throws org.codehaus.plexus.util.xml.pull.XmlPullParserException if there's a problem parsing the model
      */
-    protected abstract void handleText( XmlPullParser parser, Sink sink )
-        throws XmlPullParserException;
+    protected void handleText( XmlPullParser parser, Sink sink )
+        throws XmlPullParserException
+    {
+        String text = getText( parser );
+
+        /*
+         * NOTE: Don't do any whitespace trimming here. Whitespace normalization has already been performed by the
+         * parser so any whitespace that makes it here is significant.
+         */
+        if ( StringUtils.isNotEmpty( text ) )
+        {
+            sink.text( text );
+        }
+    }
 
     /**
      * Handles CDATA sections.
      *
+     * <p>This is a default implementation, all data are emitted as text
+     * events into the specified sink.</p>
+     *
      * @param parser A parser, not null.
-     * @param sink the sink to receive the events.
+     * @param sink the sink to receive the events. Not null.
      * @throws org.codehaus.plexus.util.xml.pull.XmlPullParserException if there's a problem parsing the model
      */
-    protected abstract void handleCdsect( XmlPullParser parser, Sink sink )
-        throws XmlPullParserException;
+    protected void handleCdsect( XmlPullParser parser, Sink sink )
+        throws XmlPullParserException
+    {
+        sink.text( getText( parser ) );
+    }
 
     /**
      * Handles comments.
      *
+     * <p>This is a default implementation, all data are emitted as comment
+     * events into the specified sink.</p>
+     *
      * @param parser A parser, not null.
-     * @param sink the sink to receive the events.
+     * @param sink the sink to receive the events. Not null.
      * @throws org.codehaus.plexus.util.xml.pull.XmlPullParserException if there's a problem parsing the model
      */
-    protected abstract void handleComment( XmlPullParser parser, Sink sink )
-        throws XmlPullParserException;
+    protected void handleComment( XmlPullParser parser, Sink sink )
+        throws XmlPullParserException
+    {
+        sink.comment( getText( parser ).trim() );
+    }
 
     /**
      * Handles entities.
      *
+     * <p>This is a default implementation, all entities are resolved and emitted as text
+     * events into the specified sink, except:</p>
+     * <ul>
+     * <li>the entities with names <code>#160</code>, <code>nbsp</code> and <code>#x00A0</code>
+     * are emitted as <code>nonBreakingSpace()</code> events.</li>
+     * <li>if an entity cannot be resolved, it is emitted as an <code>unknown()</code> event,
+     * with a required parameter that contains {@link HtmlMarkup#ENTITY_TYPE} as first argument.</li>
+     * </ul>
+     *
      * @param parser A parser, not null.
-     * @param sink the sink to receive the events.
+     * @param sink the sink to receive the events. Not null.
      * @throws org.codehaus.plexus.util.xml.pull.XmlPullParserException if there's a problem parsing the model
      */
-    protected abstract void handleEntity( XmlPullParser parser, Sink sink )
-        throws XmlPullParserException;
+    protected void handleEntity( XmlPullParser parser, Sink sink )
+        throws XmlPullParserException
+    {
+        String text = getText( parser );
+
+        String name = parser.getName();
+
+        if ( "#160".equals( name ) || "nbsp".equals( name ) || "#x00A0".equals( name ) )
+        {
+            sink.nonBreakingSpace();
+        }
+        else
+        {
+            String unescaped = HtmlTools.unescapeHtml( text );
+
+            // TODO: StringEscapeUtils.unescapeHtml returns unknown entities as is,
+            // they should be handled as one character as well
+            if ( text.equals( unescaped ) && text.length() > 1 )
+            {
+                // this means the entity is unrecognized: emit as unknown
+                Object[] required = new Object[] { new Integer( HtmlMarkup.ENTITY_TYPE ) };
+
+                sink.unknown( text, required, null );
+            }
+            else
+            {
+                sink.text( unescaped );
+            }
+        }
+    }
+
+    /**
+     * Handles an unkown event.
+     *
+     * <p>This is a default implementation, all events are emitted as unknown
+     * events into the specified sink.</p>
+     *
+     * @param parser the parser to get the event from.
+     * @param sink the sink to receive the event.
+     * @param type the tag event type. This should be one of HtmlMarkup.TAG_TYPE_SIMPLE,
+     * HtmlMarkup.TAG_TYPE_START, HtmlMarkup.TAG_TYPE_END or HtmlMarkup.ENTITY_TYPE.
+     * It will be passed as the first argument of the required parameters to the Sink
+     * {@link org.apache.maven.doxia.sink.Sink#unknown(String, Object[], SinkEventAttributes)}
+     * method.
+     */
+    protected void handleUnknown( XmlPullParser parser, Sink sink, int type )
+    {
+        Object[] required = new Object[] { new Integer( type ) };
+
+        SinkEventAttributeSet attribs = getAttributesFromParser( parser );
+
+        sink.unknown( parser.getName(), required, attribs );
+    }
 
     /**
      * <p>isIgnorableWhitespace</p>
