@@ -33,6 +33,7 @@ import org.apache.maven.doxia.module.fml.model.Part;
 import org.apache.maven.doxia.parser.AbstractXmlParser;
 import org.apache.maven.doxia.parser.ParseException;
 import org.apache.maven.doxia.sink.Sink;
+import org.apache.maven.doxia.sink.SinkEventAttributeSet;
 import org.apache.maven.doxia.util.DoxiaUtils;
 import org.apache.maven.doxia.util.HtmlTools;
 
@@ -462,23 +463,13 @@ public class FmlParser
      */
     private void writeTopLink( Sink sink )
     {
-        int[] justify = { Sink.JUSTIFY_RIGHT };
-
-        sink.table();
-
-        sink.tableRows( justify, false );
-
-        sink.tableRow();
-        sink.tableCell();
+        SinkEventAttributeSet atts = new SinkEventAttributeSet();
+        atts.addAttribute( SinkEventAttributeSet.STYLE, "float:right;" );
+        sink.paragraph( atts );
         sink.link( "#top" );
         sink.text( "[top]" );
         sink.link_();
-        sink.tableCell_();
-        sink.tableRow_();
-
-        sink.tableRows_();
-
-        sink.table_();
+        sink.paragraph_();
     }
 
 }
