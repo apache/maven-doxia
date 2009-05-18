@@ -19,11 +19,12 @@ under the License.
 -->
 
 <!DOCTYPE article PUBLIC "-//OASIS//DTD Simplified DocBook XML V1.0CR2//EN"
-  "http://www.oasis-open.org/docbook/xml/simple/1.0CR2/sdocbook.dtd">
-
+  "http://www.oasis-open.org/docbook/xml/simple/1.0CR2/sdocbook.dtd" [
+  <!ENTITY flo "&#x159;">
+  ]>
 <article id="index">
   <articleinfo>
-    <title>Geotools2 Developer Guide</title>
+    <title>Geotools2 Developer Guide&flo;</title>
 
     <author>
       <firstname>Cameron</firstname>
