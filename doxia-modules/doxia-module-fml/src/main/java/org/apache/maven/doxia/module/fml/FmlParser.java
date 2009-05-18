@@ -364,11 +364,11 @@ public class FmlParser
         sink.head_();
 
         sink.body();
-        sink.anchor( "top" );
-        sink.anchor_();
         sink.section1();
         sink.sectionTitle1();
+        sink.anchor( "top" );
         sink.text( faqs.getTitle() );
+        sink.anchor_();
         sink.sectionTitle1_();
 
         // ----------------------------------------------------------------------

@@ -77,11 +77,11 @@ public class FmlParserTest
         assertEquals( "title_", ( (SinkEventElement) it.next() ).getName() );
         assertEquals( "head_", ( (SinkEventElement) it.next() ).getName() );
         assertEquals( "body", ( (SinkEventElement) it.next() ).getName() );
-        assertEquals( "anchor", ( (SinkEventElement) it.next() ).getName() );
-        assertEquals( "anchor_", ( (SinkEventElement) it.next() ).getName() );
         assertEquals( "section1", ( (SinkEventElement) it.next() ).getName() );
         assertEquals( "sectionTitle1", ( (SinkEventElement) it.next() ).getName() );
+        assertEquals( "anchor", ( (SinkEventElement) it.next() ).getName() );
         assertEquals( "text", ( (SinkEventElement) it.next() ).getName() );
+        assertEquals( "anchor_", ( (SinkEventElement) it.next() ).getName() );
         assertEquals( "sectionTitle1_", ( (SinkEventElement) it.next() ).getName() );
         assertEquals( "paragraph", ( (SinkEventElement) it.next() ).getName() );
         assertEquals( "bold", ( (SinkEventElement) it.next() ).getName() );
@@ -149,14 +149,14 @@ public class FmlParserTest
         assertEquals( "title_", ( (SinkEventElement) it.next() ).getName() );
         assertEquals( "head_", ( (SinkEventElement) it.next() ).getName() );
         assertEquals( "body", ( (SinkEventElement) it.next() ).getName() );
-        assertEquals( "anchor", ( (SinkEventElement) it.next() ).getName() );
-        assertEquals( "anchor_", ( (SinkEventElement) it.next() ).getName() );
         assertEquals( "section1", ( (SinkEventElement) it.next() ).getName() );
         assertEquals( "sectionTitle1", ( (SinkEventElement) it.next() ).getName() );
+        assertEquals( "anchor", ( (SinkEventElement) it.next() ).getName() );
 
         // faq title TODO: should be two events
         assertTextEvent( (SinkEventElement) it.next(), "&&#913;" );
 
+        assertEquals( "anchor_", ( (SinkEventElement) it.next() ).getName() );
         assertEquals( "sectionTitle1_", ( (SinkEventElement) it.next() ).getName() );
         assertEquals( "paragraph", ( (SinkEventElement) it.next() ).getName() );
         assertEquals( "bold", ( (SinkEventElement) it.next() ).getName() );
