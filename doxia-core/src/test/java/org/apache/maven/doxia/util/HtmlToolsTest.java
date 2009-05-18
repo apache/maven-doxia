@@ -45,7 +45,8 @@ public class HtmlToolsTest
 
         // xml mode
         assertEquals( HtmlTools.escapeHTML( "\u00e4", true ), "\u00e4" );
-        assertEquals( HtmlTools.escapeHTML( "\u00e4", false ), "&#228;" );
+        assertEquals( HtmlTools.escapeHTML( "\u00e4", false ), "&#xe4;" );
+        assertEquals( HtmlTools.escapeHTML( "\uD835\uDFED", false ), "&#x1d7ed;" );
     }
 
     /**

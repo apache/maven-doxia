@@ -28,7 +28,7 @@ import javax.swing.text.html.HTML.Tag;
 import org.apache.commons.lang.StringEscapeUtils;
 
 import org.apache.maven.doxia.markup.HtmlMarkup;
-
+import org.apache.xerces.util.XMLChar;
 
 /**
  * The <code>HtmlTools</code> class defines methods to HTML handling.
@@ -134,7 +134,7 @@ public class HtmlTools
 
         for ( int i = 0; i < length; ++i )
         {
-            char c = text.charAt( i );
+            char c = text.charAt(i);
             switch ( c )
             {
                 case '<':
@@ -163,8 +163,31 @@ public class HtmlTools
                         }
                         else
                         {
-                            buffer.append( "&#" );
-                            buffer.append( (int) c );
+                            buffer.append( "&#x" );
+                            if ( XMLChar.isHighSurrogate( c ) )
+                            {
+                                int c2 = text.charAt( ++i );
+                                if ( XMLChar.isLowSurrogate( c2 ) )
+                                {
+                                    int sup = XMLChar.supplemental( c, (char) c2 );
+                                    if ( !XMLChar.isValid( sup ) )
+                                    {
+                                        throw new IllegalArgumentException( "Invalid XML character "
+                                            + Integer.toString( sup, 16 ) + " in " + text );
+                                    }
+
+                                    buffer.append( Integer.toHexString( sup ) );
+                                }
+                                else
+                                {
+                                    throw new IllegalArgumentException( "Invalid XML character "
+                                        + Integer.toString( c2, 16 ) + " in " + text );
+                                }
+                            }
+                            else
+                            {
+                                buffer.append( Integer.toHexString( c ) );
+                            }
                             buffer.append( ';' );
                         }
                     }
