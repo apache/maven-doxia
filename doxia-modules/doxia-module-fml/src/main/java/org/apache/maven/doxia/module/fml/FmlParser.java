@@ -364,11 +364,11 @@ public class FmlParser
         sink.head_();
 
         sink.body();
+        sink.anchor( "top" );
+        sink.anchor_();
         sink.section1();
         sink.sectionTitle1();
-        sink.anchor( "top" );
         sink.text( faqs.getTitle() );
-        sink.anchor_();
         sink.sectionTitle1_();
 
         // ----------------------------------------------------------------------
@@ -495,7 +495,7 @@ public class FmlParser
     private void writeTopLink( Sink sink )
     {
         SinkEventAttributeSet atts = new SinkEventAttributeSet();
-        atts.addAttribute( SinkEventAttributeSet.STYLE, "float:right;" );
+        atts.addAttribute( SinkEventAttributeSet.ALIGN, "right" );
         sink.paragraph( atts );
         sink.link( "#top" );
         sink.text( "[top]" );
