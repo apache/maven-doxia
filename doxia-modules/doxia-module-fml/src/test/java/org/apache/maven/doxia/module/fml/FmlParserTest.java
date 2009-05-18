@@ -114,7 +114,7 @@ public class FmlParserTest
         assertEquals( "link", ( (SinkEventElement) it.next() ).getName() );
         assertEquals( "text", ( (SinkEventElement) it.next() ).getName() );
         assertEquals( "link_", ( (SinkEventElement) it.next() ).getName() );
-        assertEquals( "paragraph_", ( (SinkEventElement) it.next() ).getName() );        
+        assertEquals( "paragraph_", ( (SinkEventElement) it.next() ).getName() );
         assertEquals( "definition_", ( (SinkEventElement) it.next() ).getName() );
         assertEquals( "definitionList_", ( (SinkEventElement) it.next() ).getName() );
         assertEquals( "section1_", ( (SinkEventElement) it.next() ).getName() );
@@ -122,4 +122,108 @@ public class FmlParserTest
         assertFalse( it.hasNext() );
     }
 
+    /** @throws Exception  */
+    public void testEntities()
+        throws Exception
+    {
+        final String text = "<!DOCTYPE test [<!ENTITY Alpha \"&#913;\">]>"
+                + "<faqs title=\"&amp;&Alpha;\"><part id=\"General\"><title>&lt;&Alpha;</title>"
+                + "<faq id=\"id\"><question>&gt;&Alpha;</question>"
+                + "<answer><p><code>&lt;img&gt;</code>&quot;&Alpha;</p></answer>"
+                + "</faq></part></faqs>";
+
+        SinkEventTestingSink sink = new SinkEventTestingSink();
+        FmlParser parser = (FmlParser) createParser();
+
+        parser.setValidate( false );
+        parser.parse( text, sink );
+
+        Iterator it = sink.getEventList().iterator();
+
+        assertEquals( "head", ( (SinkEventElement) it.next() ).getName() );
+        assertEquals( "title", ( (SinkEventElement) it.next() ).getName() );
+
+        // head title TODO: should be two events
+        assertTextEvent( (SinkEventElement) it.next(), "&&#913;" );
+
+        assertEquals( "title_", ( (SinkEventElement) it.next() ).getName() );
+        assertEquals( "head_", ( (SinkEventElement) it.next() ).getName() );
+        assertEquals( "body", ( (SinkEventElement) it.next() ).getName() );
+        assertEquals( "section1", ( (SinkEventElement) it.next() ).getName() );
+        assertEquals( "sectionTitle1", ( (SinkEventElement) it.next() ).getName() );
+        assertEquals( "anchor", ( (SinkEventElement) it.next() ).getName() );
+
+        // faq title TODO: should be two events
+        assertTextEvent( (SinkEventElement) it.next(), "&&#913;" );
+
+        assertEquals( "anchor_", ( (SinkEventElement) it.next() ).getName() );
+        assertEquals( "sectionTitle1_", ( (SinkEventElement) it.next() ).getName() );
+        assertEquals( "paragraph", ( (SinkEventElement) it.next() ).getName() );
+        assertEquals( "bold", ( (SinkEventElement) it.next() ).getName() );
+
+        // part title in TOC TODO: should be two events
+        assertTextEvent( (SinkEventElement) it.next(), "<&#913;" );
+
+        assertEquals( "bold_", ( (SinkEventElement) it.next() ).getName() );
+        assertEquals( "paragraph_", ( (SinkEventElement) it.next() ).getName() );
+        assertEquals( "numberedList", ( (SinkEventElement) it.next() ).getName() );
+        assertEquals( "numberedListItem", ( (SinkEventElement) it.next() ).getName() );
+        assertEquals( "link", ( (SinkEventElement) it.next() ).getName() );
+
+        // question in TOC
+        assertTextEvent( (SinkEventElement) it.next(), ">" );
+        assertTextEvent( (SinkEventElement) it.next(), "\u0391" );
+
+        assertEquals( "link_", ( (SinkEventElement) it.next() ).getName() );
+        assertEquals( "numberedListItem_", ( (SinkEventElement) it.next() ).getName() );
+        assertEquals( "numberedList_", ( (SinkEventElement) it.next() ).getName() );
+        assertEquals( "section1_", ( (SinkEventElement) it.next() ).getName() );
+        assertEquals( "section1", ( (SinkEventElement) it.next() ).getName() );
+        assertEquals( "sectionTitle1", ( (SinkEventElement) it.next() ).getName() );
+
+        // part title TODO: should be two events
+        assertTextEvent( (SinkEventElement) it.next(), "<&#913;" );
+
+        assertEquals( "sectionTitle1_", ( (SinkEventElement) it.next() ).getName() );
+        assertEquals( "definitionList", ( (SinkEventElement) it.next() ).getName() );
+        assertEquals( "definedTerm", ( (SinkEventElement) it.next() ).getName() );
+        assertEquals( "anchor", ( (SinkEventElement) it.next() ).getName() );
+
+        // question
+        assertTextEvent( (SinkEventElement) it.next(), ">" );
+        assertTextEvent( (SinkEventElement) it.next(), "\u0391" );
+
+        assertEquals( "anchor_", ( (SinkEventElement) it.next() ).getName() );
+        assertEquals( "definedTerm_", ( (SinkEventElement) it.next() ).getName() );
+        assertEquals( "definition", ( (SinkEventElement) it.next() ).getName() );
+        assertEquals( "paragraph", ( (SinkEventElement) it.next() ).getName() );
+
+        // answer
+        assertEquals( "monospaced", ( (SinkEventElement) it.next() ).getName() );
+        assertTextEvent( (SinkEventElement) it.next(), "<" );
+        assertTextEvent( (SinkEventElement) it.next(), "img" );
+        assertTextEvent( (SinkEventElement) it.next(), ">" );
+        assertEquals( "monospaced_", ( (SinkEventElement) it.next() ).getName() );
+        assertTextEvent( (SinkEventElement) it.next(), "\"" );
+        assertTextEvent( (SinkEventElement) it.next(), "\u0391" );
+
+        assertEquals( "paragraph_", ( (SinkEventElement) it.next() ).getName() );
+        assertEquals( "paragraph", ( (SinkEventElement) it.next() ).getName() );
+        assertEquals( "link", ( (SinkEventElement) it.next() ).getName() );
+        assertEquals( "text", ( (SinkEventElement) it.next() ).getName() );
+        assertEquals( "link_", ( (SinkEventElement) it.next() ).getName() );
+        assertEquals( "paragraph_", ( (SinkEventElement) it.next() ).getName() );
+        assertEquals( "definition_", ( (SinkEventElement) it.next() ).getName() );
+        assertEquals( "definitionList_", ( (SinkEventElement) it.next() ).getName() );
+        assertEquals( "section1_", ( (SinkEventElement) it.next() ).getName() );
+        assertEquals( "body_", ( (SinkEventElement) it.next() ).getName() );
+
+        assertFalse( it.hasNext() );
+    }
+
+    private void assertTextEvent( SinkEventElement textEvt, String string )
+    {
+        assertEquals( "text", textEvt.getName() );
+        assertEquals( string, textEvt.getArgs()[0] );
+    }
 }

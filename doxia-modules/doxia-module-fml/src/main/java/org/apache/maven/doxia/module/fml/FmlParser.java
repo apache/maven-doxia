@@ -275,23 +275,29 @@ public class FmlParser
     protected void handleText( XmlPullParser parser, Sink sink )
         throws XmlPullParserException
     {
-        if ( buffer != null && parser.getText() != null )
+        if ( inQuestion || inAnswer )
         {
             buffer.append( parser.getText() );
         }
+        // only text contents in fml files are within <question> or <answer>,
+        // except <title> which is registered via nextText().
     }
 
     /** {@inheritDoc} */
     protected void handleCdsect( XmlPullParser parser, Sink sink )
         throws XmlPullParserException
     {
-        if ( buffer != null && parser.getText() != null )
+        String cdSection = parser.getText();
+
+        if ( inQuestion || inAnswer )
         {
-            buffer.append( String.valueOf( LESS_THAN ) ).append( String.valueOf( BANG ) )
-                .append( String.valueOf( LEFT_SQUARE_BRACKET ) ).append( String.valueOf( CDATA ) )
-                .append( String.valueOf( LEFT_SQUARE_BRACKET ) ).append( parser.getText() )
-                .append( String.valueOf( RIGHT_SQUARE_BRACKET ) )
-                .append( String.valueOf( RIGHT_SQUARE_BRACKET ) ).append( String.valueOf( GREATER_THAN ) );
+            buffer.append( LESS_THAN ).append( BANG ).append( LEFT_SQUARE_BRACKET ).append( CDATA )
+                    .append( LEFT_SQUARE_BRACKET ).append( cdSection ).append( RIGHT_SQUARE_BRACKET )
+                    .append( RIGHT_SQUARE_BRACKET ).append( GREATER_THAN );
+        }
+        else
+        {
+            sink.text( cdSection );
         }
     }
 
@@ -299,17 +305,42 @@ public class FmlParser
     protected void handleComment( XmlPullParser parser, Sink sink )
         throws XmlPullParserException
     {
-        sink.comment( parser.getText().trim() );
+        String comment = parser.getText();
+
+        if ( inQuestion || inAnswer )
+        {
+            buffer.append( LESS_THAN ).append( BANG ).append( MINUS ).append( MINUS )
+                    .append( comment ).append( MINUS ).append( MINUS ).append( GREATER_THAN );
+        }
+        else
+        {
+            sink.comment( comment.trim() );
+        }
     }
 
     /** {@inheritDoc} */
     protected void handleEntity( XmlPullParser parser, Sink sink )
         throws XmlPullParserException
     {
-        if ( buffer != null && parser.getText() != null )
+        if ( inQuestion || inAnswer )
         {
-            // TODO: why are entities HTML-escaped?
-            buffer.append( HtmlTools.escapeHTML( parser.getText() ) );
+            if ( buffer != null && parser.getText() != null )
+            {
+                String text = parser.getText();
+
+                // parser.getText() returns the entity replacement text
+                // (&lt; -> <), need to re-escape them
+                if ( text.length() == 1 )
+                {
+                    text = HtmlTools.escapeHTML( text );
+                }
+
+                buffer.append( text );
+            }
+        }
+        else
+        {
+            super.handleEntity( parser, sink );
         }
     }
 
