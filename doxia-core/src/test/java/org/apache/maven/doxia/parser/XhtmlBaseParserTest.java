@@ -388,6 +388,8 @@ public class XhtmlBaseParserTest
 
         textEvt = (SinkEventElement) it.next();
         assertEquals( "text", textEvt.getName() );
+        // TODO: MXParser issue: "&#x1d7ef;" is handle as "\ud7ef"
+        // see MXparser#parseEntityRef()
         assertEquals( "\ud7ed", textEvt.getArgs()[0] );
 
         assertEquals( "sectionTitle1_", ( (SinkEventElement) it.next() ).getName() );
@@ -411,6 +413,8 @@ public class XhtmlBaseParserTest
 
         textEvt = (SinkEventElement) it.next();
         assertEquals( "text", textEvt.getName() );
+        // TODO: MXParser issue: "&#x1d7ef;" is handle as "\ud7ef"
+        // see MXparser#parseEntityRef()
         assertEquals( "\ud7ed", textEvt.getArgs()[0] );
 
         assertEquals( "paragraph_", ( (SinkEventElement) it.next() ).getName() );
