@@ -50,6 +50,10 @@
       </script>
     </head>
 
+    <menu name="Downloads" inherit="bottom">
+      <item name="Download ${project.name}" href="http://maven.apache.org/doxia/downloads.html"/>
+    </menu>
+
     <menu ref="modules"/>
 
     <menu ref="reports"/>
