@@ -185,7 +185,7 @@ public class XdocParser
 
             sink.sectionTitle( Sink.SECTION_LEVEL_1, attribs );
 
-            sink.text( HtmlTools.unescapeHtml( parser.getAttributeValue( null, Attribute.NAME.toString() ) ) );
+            sink.text( HtmlTools.unescapeHTML( parser.getAttributeValue( null, Attribute.NAME.toString() ) ) );
 
             sink.sectionTitle1_();
         }
@@ -204,7 +204,7 @@ public class XdocParser
 
             sink.sectionTitle( Sink.SECTION_LEVEL_2, attribs );
 
-            sink.text( HtmlTools.unescapeHtml( parser.getAttributeValue( null, Attribute.NAME.toString() ) ) );
+            sink.text( HtmlTools.unescapeHTML( parser.getAttributeValue( null, Attribute.NAME.toString() ) ) );
 
             sink.sectionTitle2_();
         }

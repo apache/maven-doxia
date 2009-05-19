@@ -207,7 +207,7 @@ public class HtmlTools
      * @return a new unescaped <code>String</code>, <code>null</code> if null string input.
      * @since 1.1.1.
      */
-    public static String unescapeHtml( String text )
+    public static String unescapeHTML( String text )
     {
         if ( text == null )
         {

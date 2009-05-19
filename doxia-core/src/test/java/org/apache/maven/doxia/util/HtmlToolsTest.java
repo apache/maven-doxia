@@ -56,22 +56,22 @@ public class HtmlToolsTest
      */
     public void testUnescapeHTML()
     {
-        assertNull( HtmlTools.unescapeHtml( null ) );
-        assertEquals( "", HtmlTools.unescapeHtml( "" ) );
-        assertEquals( "<", HtmlTools.unescapeHtml( "&lt;" ) );
-        assertEquals( ">", HtmlTools.unescapeHtml( "&gt;" ) );
-        assertEquals( "&", HtmlTools.unescapeHtml( "&amp;" ) );
-        assertEquals( "\"", HtmlTools.unescapeHtml( "&quot;" ) );
-        assertEquals( "&amp;", HtmlTools.unescapeHtml( "&amp;amp;" ) );
-        assertEquals( "&lt;Fran&ccedil;ais&gt;", HtmlTools.unescapeHtml( "&amp;lt;Fran&amp;ccedil;ais&amp;gt;" ) );
-        assertEquals( "\u0159", HtmlTools.unescapeHtml( "&#x159;" ) );
-        assertEquals( "\uD808\uDF45", HtmlTools.unescapeHtml( "&#x12345;" ) );
-        assertEquals( "\uD835\uDFED", HtmlTools.unescapeHtml( "&#x1d7ed;" ) );
-        assertEquals( "\uD808\uDF45\uD835\uDFED", HtmlTools.unescapeHtml( "&#x12345;&#x1d7ed;" ) );
+        assertNull( HtmlTools.unescapeHTML( null ) );
+        assertEquals( "", HtmlTools.unescapeHTML( "" ) );
+        assertEquals( "<", HtmlTools.unescapeHTML( "&lt;" ) );
+        assertEquals( ">", HtmlTools.unescapeHTML( "&gt;" ) );
+        assertEquals( "&", HtmlTools.unescapeHTML( "&amp;" ) );
+        assertEquals( "\"", HtmlTools.unescapeHTML( "&quot;" ) );
+        assertEquals( "&amp;", HtmlTools.unescapeHTML( "&amp;amp;" ) );
+        assertEquals( "&lt;Fran&ccedil;ais&gt;", HtmlTools.unescapeHTML( "&amp;lt;Fran&amp;ccedil;ais&amp;gt;" ) );
+        assertEquals( "\u0159", HtmlTools.unescapeHTML( "&#x159;" ) );
+        assertEquals( "\uD808\uDF45", HtmlTools.unescapeHTML( "&#x12345;" ) );
+        assertEquals( "\uD835\uDFED", HtmlTools.unescapeHTML( "&#x1d7ed;" ) );
+        assertEquals( "\uD808\uDF45\uD835\uDFED", HtmlTools.unescapeHTML( "&#x12345;&#x1d7ed;" ) );
 
         try
         {
-            HtmlTools.unescapeHtml( "test &#x1d7ed test" );
+            HtmlTools.unescapeHTML( "test &#x1d7ed test" );
             assertTrue( false );
         }
         catch ( IllegalArgumentException e )
