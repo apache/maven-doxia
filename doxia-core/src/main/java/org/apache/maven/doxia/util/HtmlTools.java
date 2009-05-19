@@ -140,7 +140,7 @@ public class HtmlTools
 
         for ( int i = 0; i < length; ++i )
         {
-            char c = text.charAt(i);
+            char c = text.charAt( i );
             switch ( c )
             {
                 case '<':
@@ -214,9 +214,10 @@ public class HtmlTools
             return null;
         }
 
+        // StringEscapeUtils.unescapeHtml returns entities it doesn't recognize unchanged
         String unescaped = StringEscapeUtils.unescapeHtml( text );
 
-        if ( !text.equals( unescaped ))
+        if ( !text.equals( unescaped ) )
         {
             return unescaped;
         }
@@ -381,10 +382,10 @@ public class HtmlTools
         // utility class
     }
 
-    //
-    // Imported code from ASF Harmony project
-    // http://svn.apache.org/repos/asf/harmony/enhanced/classlib/trunk/modules/luni/src/main/java/java/lang/Character.java
-    //
+//
+// Imported code from ASF Harmony project
+// http://svn.apache.org/repos/asf/harmony/enhanced/classlib/trunk/modules/luni/src/main/java/java/lang/Character.java
+//
 
     private static int toCodePoint( char high, char low )
     {

@@ -393,12 +393,10 @@ public abstract class AbstractXmlParser
         else
         {
             // TODO: the MXParser doesn't actually handle correctly surrogate char, ie
-            // if orignalText = "&#x1d7ef;", text = "\ud7ef"
+            // if originalText = "&#x1d7ef;", text = "\ud7ef"
 
             String unescaped = HtmlTools.unescapeHTML( text );
 
-            // TODO: StringEscapeUtils.unescapeHtml returns unknown entities as is,
-            // they should be handled as one character as well
             if ( text.equals( unescaped ) && text.length() > 1 )
             {
                 // this means the entity is unrecognized: emit as unknown
