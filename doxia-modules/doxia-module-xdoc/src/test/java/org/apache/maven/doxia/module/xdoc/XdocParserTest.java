@@ -471,8 +471,8 @@ public class XdocParserTest
         assertEquals( "\u0159", textEvt.getArgs()[0] );
 
         textEvt = (SinkEventElement) it.next();
-        assertEquals( "unknown", textEvt.getName() );
-        assertEquals( "&#x1d7ed;", textEvt.getArgs()[0] );
+        assertEquals( "text", textEvt.getName() );
+        assertEquals( "\uD835\uDFED", textEvt.getArgs()[0] );
 
         assertEquals( "paragraph_", ( (SinkEventElement) it.next() ).getName() );
         assertEquals( "section1_", ( (SinkEventElement) it.next() ).getName() );
