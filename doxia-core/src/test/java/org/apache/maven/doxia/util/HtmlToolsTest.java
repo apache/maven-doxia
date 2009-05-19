@@ -19,6 +19,7 @@ package org.apache.maven.doxia.util;
  * under the License.
  */
 
+import org.apache.commons.lang.StringEscapeUtils;
 import org.codehaus.plexus.PlexusTestCase;
 
 /**
@@ -46,6 +47,7 @@ public class HtmlToolsTest
         // xml mode
         assertEquals( HtmlTools.escapeHTML( "\u00e4", true ), "\u00e4" );
         assertEquals( HtmlTools.escapeHTML( "\u00e4", false ), "&#xe4;" );
+        assertEquals( HtmlTools.escapeHTML( "\u0159", false ), "&#x159;" );
         assertEquals( HtmlTools.escapeHTML( "\uD835\uDFED", false ), "&#x1d7ed;" );
     }
 
@@ -62,7 +64,20 @@ public class HtmlToolsTest
         assertEquals( "\"", HtmlTools.unescapeHtml( "&quot;" ) );
         assertEquals( "&amp;", HtmlTools.unescapeHtml( "&amp;amp;" ) );
         assertEquals( "&lt;Fran&ccedil;ais&gt;", HtmlTools.unescapeHtml( "&amp;lt;Fran&amp;ccedil;ais&amp;gt;" ) );
-        assertEquals( "&#x12345;", HtmlTools.unescapeHtml( "&#x12345;" ) );
+        assertEquals( "\u0159", HtmlTools.unescapeHtml( "&#x159;" ) );
+        assertEquals( "\uD808\uDF45", HtmlTools.unescapeHtml( "&#x12345;" ) );
+        assertEquals( "\uD835\uDFED", HtmlTools.unescapeHtml( "&#x1d7ed;" ) );
+        assertEquals( "\uD808\uDF45\uD835\uDFED", HtmlTools.unescapeHtml( "&#x12345;&#x1d7ed;" ) );
+
+        try
+        {
+            HtmlTools.unescapeHtml( "test &#x1d7ed test" );
+            assertTrue( false );
+        }
+        catch ( IllegalArgumentException e )
+        {
+            assertTrue( true );
+        }
     }
 
     /**

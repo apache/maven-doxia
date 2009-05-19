@@ -20,15 +20,15 @@ package org.apache.maven.doxia.util;
  */
 
 import java.io.UnsupportedEncodingException;
-
+import java.util.ArrayList;
 import java.util.Hashtable;
+import java.util.List;
 
 import javax.swing.text.html.HTML.Tag;
 
 import org.apache.commons.lang.StringEscapeUtils;
-
 import org.apache.maven.doxia.markup.HtmlMarkup;
-import org.apache.xerces.util.XMLChar;
+import org.codehaus.plexus.util.StringUtils;
 
 /**
  * The <code>HtmlTools</code> class defines methods to HTML handling.
@@ -117,6 +117,12 @@ public class HtmlTools
      * If <code>xmlMode</code> is true, every other character than the above remains unchanged,
      * if <code>xmlMode</code> is false, non-ascii characters get replaced by their hex code.
      *
+     * <b>Note</b>: all characters are encoded, i.e.:
+     * <pre>
+     * \u0159       = &#38;#x159;
+     * \uD835\uDFED = &#38;#x1d7ed;
+     * </pre>
+     *
      * @param text The String to escape, may be null.
      * @param xmlMode set to <code>false</code> to replace non-ascii characters.
      * @return The escaped text or the empty string if text == null.
@@ -164,25 +170,9 @@ public class HtmlTools
                         else
                         {
                             buffer.append( "&#x" );
-                            if ( XMLChar.isHighSurrogate( c ) )
+                            if ( isHighSurrogate( c ) )
                             {
-                                int c2 = text.charAt( ++i );
-                                if ( XMLChar.isLowSurrogate( c2 ) )
-                                {
-                                    int sup = XMLChar.supplemental( c, (char) c2 );
-                                    if ( !XMLChar.isValid( sup ) )
-                                    {
-                                        throw new IllegalArgumentException( "Invalid XML character "
-                                            + Integer.toString( sup, 16 ) + " in " + text );
-                                    }
-
-                                    buffer.append( Integer.toHexString( sup ) );
-                                }
-                                else
-                                {
-                                    throw new IllegalArgumentException( "Invalid XML character "
-                                        + Integer.toString( c2, 16 ) + " in " + text );
-                                }
+                                buffer.append( Integer.toHexString( toCodePoint( c, text.charAt( ++i ) ) ) );
                             }
                             else
                             {
@@ -207,15 +197,67 @@ public class HtmlTools
      * <p>For example, the string "&amp;lt;Fran&amp;ccedil;ais&amp;gt;"
      * will become "&lt;Fran&ccedil;ais&gt;".</p>
      *
+     * <b>Note</b>: all unicode entities are decoded, i.e.:
+     * <pre>
+     * &#38;#x159;   = \u0159
+     * &#38;#x1d7ed; = \uD835\uDFED
+     * </pre>
+     *
      * @param text the <code>String</code> to unescape, may be null.
-     *
      * @return a new unescaped <code>String</code>, <code>null</code> if null string input.
-     *
      * @since 1.1.1.
      */
     public static String unescapeHtml( String text )
     {
-        return StringEscapeUtils.unescapeHtml( text );
+        if ( text == null )
+        {
+            return null;
+        }
+
+        String unescaped = StringEscapeUtils.unescapeHtml( text );
+
+        if ( !text.equals( unescaped ))
+        {
+            return unescaped;
+        }
+
+        String tmp = text;
+        List entities = new ArrayList();
+        while ( true )
+        {
+            int i = tmp.indexOf( "&#x" );
+            if ( i == -1 )
+            {
+                break;
+            }
+
+            tmp = tmp.substring( i + 3 );
+            if ( tmp.indexOf( ';' ) == -1 )
+            {
+                throw new IllegalArgumentException( "Wrong HTML near '..." + tmp + "'" );
+            }
+
+            String entity = tmp.substring( 0, tmp.indexOf( ';' ) );
+            try
+            {
+                Integer.parseInt( entity, 16 );
+            }
+            catch ( Exception e )
+            {
+                throw new IllegalArgumentException( "Wrong HTML near '..." + tmp + "'" );
+            }
+            entities.add( entity );
+        }
+
+        for ( int i = 0; i < entities.size(); i++ )
+        {
+            String entity = (String) entities.get( i );
+
+            int codePoint = Integer.parseInt( entity, 16 );
+            text = StringUtils.replace( text, "&#x" + entity + ";", new String( toChars( codePoint ) ) );
+        }
+
+        return text;
     }
 
     /**
@@ -337,5 +379,58 @@ public class HtmlTools
     private HtmlTools()
     {
         // utility class
+    }
+
+    //
+    // Imported code from ASF Harmony project
+    // http://svn.apache.org/repos/asf/harmony/enhanced/classlib/trunk/modules/luni/src/main/java/java/lang/Character.java
+    //
+
+    private static int toCodePoint( char high, char low )
+    {
+        // See RFC 2781, Section 2.2
+        // http://www.faqs.org/rfcs/rfc2781.html
+        int h = ( high & 0x3FF ) << 10;
+        int l = low & 0x3FF;
+        return ( h | l ) + 0x10000;
+    }
+
+    private static final char MIN_HIGH_SURROGATE = '\uD800';
+    private static final char MAX_HIGH_SURROGATE = '\uDBFF';
+
+    private static boolean isHighSurrogate( char ch )
+    {
+        return ( MIN_HIGH_SURROGATE <= ch && MAX_HIGH_SURROGATE >= ch );
+    }
+
+    private static final int MIN_CODE_POINT = 0x000000;
+    private static final int MAX_CODE_POINT = 0x10FFFF;
+    private static final int MIN_SUPPLEMENTARY_CODE_POINT = 0x10000;
+
+    private static boolean isValidCodePoint( int codePoint )
+    {
+        return ( MIN_CODE_POINT <= codePoint && MAX_CODE_POINT >= codePoint );
+    }
+
+    private static boolean isSupplementaryCodePoint( int codePoint )
+    {
+        return ( MIN_SUPPLEMENTARY_CODE_POINT <= codePoint && MAX_CODE_POINT >= codePoint );
+    }
+
+    private static char[] toChars( int codePoint )
+    {
+        if ( !isValidCodePoint( codePoint ) )
+        {
+            throw new IllegalArgumentException();
+        }
+
+        if ( isSupplementaryCodePoint( codePoint ) )
+        {
+            int cpPrime = codePoint - 0x10000;
+            int high = 0xD800 | ( ( cpPrime >> 10 ) & 0x3FF );
+            int low = 0xDC00 | ( cpPrime & 0x3FF );
+            return new char[] { (char) high, (char) low };
+        }
+        return new char[] { (char) codePoint };
     }
 }

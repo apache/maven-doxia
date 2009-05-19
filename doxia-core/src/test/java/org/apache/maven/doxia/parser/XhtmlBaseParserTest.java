@@ -348,8 +348,8 @@ public class XhtmlBaseParserTest
         assertEquals( "\u0161",  (String) event.getArgs()[0] );
 
         event = (SinkEventElement) it.next();
-        assertEquals( "unknown", event.getName() );
-        assertEquals( "&#x1d7ed;",  (String) event.getArgs()[0] );
+        assertEquals( "text", event.getName() );
+        assertEquals( "\uD835\uDFED",  (String) event.getArgs()[0] );
 
         event = (SinkEventElement) it.next();
         assertEquals( "bold_", event.getName() );
@@ -382,10 +382,9 @@ public class XhtmlBaseParserTest
         assertEquals( "text", textEvt.getName() );
         assertEquals( "\u0159", textEvt.getArgs()[0] );
 
-        // TODO this should be emitted as the same text event as well
         textEvt = (SinkEventElement) it.next();
-        assertEquals( "unknown", textEvt.getName() );
-        assertEquals( "&#x1d7ed;", textEvt.getArgs()[0] );
+        assertEquals( "text", textEvt.getName() );
+        assertEquals( "\uD835\uDFED",  (String) textEvt.getArgs()[0] );
 
         textEvt = (SinkEventElement) it.next();
         assertEquals( "text", textEvt.getName() );
@@ -406,10 +405,9 @@ public class XhtmlBaseParserTest
         assertEquals( "text", textEvt.getName() );
         assertEquals( "\u0159", textEvt.getArgs()[0] );
 
-        // TODO this should be emitted as the same text event as well
         textEvt = (SinkEventElement) it.next();
-        assertEquals( "unknown", textEvt.getName() );
-        assertEquals( "&#x1d7ed;", textEvt.getArgs()[0] );
+        assertEquals( "text", textEvt.getName() );
+        assertEquals( "\uD835\uDFED",  (String) textEvt.getArgs()[0] );
 
         textEvt = (SinkEventElement) it.next();
         assertEquals( "text", textEvt.getName() );
