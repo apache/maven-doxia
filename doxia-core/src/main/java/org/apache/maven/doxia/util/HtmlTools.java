@@ -95,6 +95,8 @@ public class HtmlTools
     /**
      * Escape special HTML characters in a String in <code>xml</code> mode.
      *
+     * <b>Note</b>: this method doesn't escape non-ascii characters by numeric characters references.
+     *
      * @param text the String to escape, may be null.
      * @return The escaped text or the empty string if text == null.
      * @see #escapeHTML(String,boolean)
@@ -108,10 +110,11 @@ public class HtmlTools
      * Escape special HTML characters in a String.
      *
      * <pre>
-     * < becomes <code>&lt;</code>
-     * > becomes <code>&gt;</code>
-     * & becomes <code>&amp;</code>
-     * " becomes <code>&quot;</code>
+     * < becomes <code>&#38;lt;</code>
+     * > becomes <code>&#38;gt;</code>
+     * & becomes <code>&#38;amp;</code>
+     * " becomes <code>&#38;quot;</code>
+     * ' becomes <code>&#38;apos;</code> if xmlMode = true
      * </pre>
      *
      * If <code>xmlMode</code> is true, every other character than the above remains unchanged,
@@ -124,9 +127,12 @@ public class HtmlTools
      * </pre>
      *
      * @param text The String to escape, may be null.
-     * @param xmlMode set to <code>false</code> to replace non-ascii characters.
+     * @param xmlMode <code>true</code> to replace also ' to &#38;apos, <code>false</code> to replace non-ascii
+     * characters by numeric characters references.
      * @return The escaped text or the empty string if text == null.
      * @since 1.1
+     * @see <a href="http://www.w3.org/TR/2000/REC-xml-20001006#sec-predefined-ent">http://www.w3.org/TR/2000/REC-xml-20001006#sec-predefined-ent</a>
+     * @see <a href="http://www.w3.org/TR/html401/charset.html#h-5.3">http://www.w3.org/TR/html401/charset.html#h-5.3</a>
      */
     public static final String escapeHTML( String text, boolean xmlMode )
     {
@@ -158,7 +164,14 @@ public class HtmlTools
                 default:
                     if ( xmlMode )
                     {
-                        buffer.append( c );
+                        if ( c == '\'' )
+                        {
+                            buffer.append( "&apos;" );
+                        }
+                        else
+                        {
+                            buffer.append( c );
+                        }
                     }
                     else
                     {
@@ -188,6 +201,19 @@ public class HtmlTools
     }
 
     /**
+     * Unescapes HTML entities in a string in non xml mode.
+     *
+     * @param text the <code>String</code> to unescape, may be null.
+     * @return a new unescaped <code>String</code>, <code>null</code> if null string input.
+     * @since 1.1.1.
+     * @see #unescapeHTML(String, boolean)
+     */
+    public static String unescapeHTML( String text )
+    {
+        return unescapeHTML( text, false );
+    }
+
+    /**
      * Unescapes HTML entities in a string.
      *
      * <p> Unescapes a string containing entity escapes to a string
@@ -204,18 +230,27 @@ public class HtmlTools
      * </pre>
      *
      * @param text the <code>String</code> to unescape, may be null.
+     * @param xmlMode set to <code>true</code> to replace &#38;apos by '.
      * @return a new unescaped <code>String</code>, <code>null</code> if null string input.
      * @since 1.1.1.
      */
-    public static String unescapeHTML( String text )
+    public static String unescapeHTML( String text, boolean xmlMode )
     {
         if ( text == null )
         {
             return null;
         }
 
-        // StringEscapeUtils.unescapeHtml returns entities it doesn't recognize unchanged
-        String unescaped = StringEscapeUtils.unescapeHtml( text );
+        String unescaped;
+        if ( xmlMode )
+        {
+            unescaped = StringEscapeUtils.unescapeXml( text );
+        }
+        else
+        {
+            // StringEscapeUtils.unescapeHtml returns entities it doesn't recognize unchanged
+            unescaped = StringEscapeUtils.unescapeHtml( text );
+        }
 
         if ( !text.equals( unescaped ) )
         {
@@ -233,21 +268,19 @@ public class HtmlTools
             }
 
             tmp = tmp.substring( i + 3 );
-            if ( tmp.indexOf( ';' ) == -1 )
+            if ( tmp.indexOf( ';' ) != -1 )
             {
-                throw new IllegalArgumentException( "Wrong HTML near '..." + tmp + "'" );
+                String entity = tmp.substring( 0, tmp.indexOf( ';' ) );
+                try
+                {
+                    Integer.parseInt( entity, 16 );
+                    entities.add( entity );
+                }
+                catch ( NumberFormatException e )
+                {
+                    // nop
+                }
             }
-
-            String entity = tmp.substring( 0, tmp.indexOf( ';' ) );
-            try
-            {
-                Integer.parseInt( entity, 16 );
-            }
-            catch ( Exception e )
-            {
-                throw new IllegalArgumentException( "Wrong HTML near '..." + tmp + "'" );
-            }
-            entities.add( entity );
         }
 
         for ( int i = 0; i < entities.size(); i++ )
@@ -383,7 +416,7 @@ public class HtmlTools
     }
 
 //
-// Imported code from ASF Harmony project
+// Imported code from ASF Harmony project rev 770909
 // http://svn.apache.org/repos/asf/harmony/enhanced/classlib/trunk/modules/luni/src/main/java/java/lang/Character.java
 //
 

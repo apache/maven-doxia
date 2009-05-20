@@ -19,7 +19,6 @@ package org.apache.maven.doxia.util;
  * under the License.
  */
 
-import org.apache.commons.lang.StringEscapeUtils;
 import org.codehaus.plexus.PlexusTestCase;
 
 /**
@@ -38,13 +37,19 @@ public class HtmlToolsTest
     {
         assertEquals( HtmlTools.escapeHTML( null ), "" );
         assertEquals( HtmlTools.escapeHTML( "" ), "" );
+        assertEquals( HtmlTools.escapeHTML( "\u0009" ), "\u0009" );
+        assertEquals( HtmlTools.escapeHTML( "\u0001" ), "\u0001" );
+
+        // Predefined entities
         assertEquals( HtmlTools.escapeHTML( "<" ), "&lt;" );
         assertEquals( HtmlTools.escapeHTML( ">" ), "&gt;" );
         assertEquals( HtmlTools.escapeHTML( "&" ), "&amp;" );
         assertEquals( HtmlTools.escapeHTML( "\"" ), "&quot;" );
-        assertEquals( HtmlTools.escapeHTML( "&amp;" ), "&amp;amp;" );
+        assertEquals( HtmlTools.escapeHTML( "\'" ), "&apos;" );
+        assertEquals( HtmlTools.escapeHTML( "\'", false ), "\'" );
 
         // xml mode
+        assertEquals( HtmlTools.escapeHTML( "&amp;" ), "&amp;amp;" );
         assertEquals( HtmlTools.escapeHTML( "\u00e4", true ), "\u00e4" );
         assertEquals( HtmlTools.escapeHTML( "\u00e4", false ), "&#xe4;" );
         assertEquals( HtmlTools.escapeHTML( "\u0159", false ), "&#x159;" );
@@ -58,26 +63,23 @@ public class HtmlToolsTest
     {
         assertNull( HtmlTools.unescapeHTML( null ) );
         assertEquals( "", HtmlTools.unescapeHTML( "" ) );
+        assertEquals( "\u0009", HtmlTools.unescapeHTML( "\u0009" ) );
+        assertEquals( "\u0001", HtmlTools.unescapeHTML( "\u0001" ) );
         assertEquals( "<", HtmlTools.unescapeHTML( "&lt;" ) );
         assertEquals( ">", HtmlTools.unescapeHTML( "&gt;" ) );
         assertEquals( "&", HtmlTools.unescapeHTML( "&amp;" ) );
         assertEquals( "\"", HtmlTools.unescapeHTML( "&quot;" ) );
+        assertEquals( "&apos;", HtmlTools.unescapeHTML( "&apos;" ) );
+        assertEquals( "\'", HtmlTools.unescapeHTML( "&apos;", true ) );
         assertEquals( "&amp;", HtmlTools.unescapeHTML( "&amp;amp;" ) );
         assertEquals( "&lt;Fran&ccedil;ais&gt;", HtmlTools.unescapeHTML( "&amp;lt;Fran&amp;ccedil;ais&amp;gt;" ) );
         assertEquals( "\u0159", HtmlTools.unescapeHTML( "&#x159;" ) );
         assertEquals( "\uD808\uDF45", HtmlTools.unescapeHTML( "&#x12345;" ) );
         assertEquals( "\uD835\uDFED", HtmlTools.unescapeHTML( "&#x1d7ed;" ) );
         assertEquals( "\uD808\uDF45\uD835\uDFED", HtmlTools.unescapeHTML( "&#x12345;&#x1d7ed;" ) );
-
-        try
-        {
-            HtmlTools.unescapeHTML( "test &#x1d7ed test" );
-            assertTrue( false );
-        }
-        catch ( IllegalArgumentException e )
-        {
-            assertTrue( true );
-        }
+        assertEquals( "&#x1d7ed &#x1d7ed", HtmlTools.unescapeHTML( "&#x1d7ed &#x1d7ed" ) );
+        assertEquals( "&#x1d7ed \uD835\uDFED", HtmlTools.unescapeHTML( "&#x1d7ed &#x1d7ed;" ) );
+        assertEquals( "&#xQWER;", HtmlTools.unescapeHTML( "&#xQWER;" ) );
     }
 
     /**
