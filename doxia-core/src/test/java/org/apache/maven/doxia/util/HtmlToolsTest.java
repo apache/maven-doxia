@@ -97,8 +97,8 @@ public class HtmlToolsTest
         assertEquals( HtmlTools.encodeId( "a b-c123 " ), "a_b-c123" );
         assertEquals( HtmlTools.encodeId( "   anchor" ), "anchor" );
         assertEquals( HtmlTools.encodeId( "myAnchor" ), "myAnchor" );
-        assertEquals( HtmlTools.encodeId( "Håkon" ), "Hkon" );
-        assertEquals( HtmlTools.encodeId( "Theußl" ), "Theul" );
+        assertEquals( HtmlTools.encodeId( "H\u00E5kon" ), "Hkon" );
+        assertEquals( HtmlTools.encodeId( "Theu\u00DFl" ), "Theul" );
     }
 
     /**
@@ -136,7 +136,7 @@ public class HtmlToolsTest
         assertTrue( HtmlTools.isId( "a-" ) );
         assertTrue( HtmlTools.isId( "a:" ) );
         assertTrue( HtmlTools.isId( "a." ) );
-        assertFalse( HtmlTools.isId( "Theußl" ) );
+        assertFalse( HtmlTools.isId( "Theu\u00DFl" ) );
     }
 
     /**
