@@ -625,12 +625,12 @@ public class FoSink
 
         if ( attributes != null && attributes.isDefined( SinkEventAttributes.WIDTH ) )
         {
-            atts.addAttribute( "content-width", attributes.getAttribute( SinkEventAttributes.WIDTH ) );
+            atts.addAttribute( "width", attributes.getAttribute( SinkEventAttributes.WIDTH ) );
         }
 
         if ( attributes != null && attributes.isDefined( SinkEventAttributes.HEIGHT ) )
         {
-            atts.addAttribute( "content-height", attributes.getAttribute( SinkEventAttributes.HEIGHT ) );
+            atts.addAttribute( "height", attributes.getAttribute( SinkEventAttributes.HEIGHT ) );
         }
 
         writeln( "<fo:external-graphic" + SinkUtils.getAttributeString( atts ) + "/>" );
