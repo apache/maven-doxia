@@ -359,8 +359,8 @@ public class XhtmlBaseParserTest
     public void testEntities()
         throws Exception
     {
-        final String text = "<!DOCTYPE test [<!ENTITY flo \"&#x159;\"><!ENTITY tritPos \"&#x1d7ed;\">]>"
-                + "<body><h2>&amp;&flo;&#x159;&tritPos;&#x1d7ed;</h2><p>&amp;&flo;&#x159;&tritPos;&#x1d7ed;</p></body>";
+        final String text = "<!DOCTYPE test [<!ENTITY flo \"&#x159;\"><!ENTITY tritPos \"&#x1d7ed;\"><!ENTITY fo \"&#65;\"><!ENTITY myCustom \"&fo;\">]>"
+                + "<body><h2>&amp;&flo;&#x159;&tritPos;&#x1d7ed;</h2><p>&amp;&flo;&#x159;&tritPos;&#x1d7ed;&myCustom;</p></body>";
 
         parser.setValidate( false );
         parser.parse( text, sink );
@@ -388,9 +388,7 @@ public class XhtmlBaseParserTest
 
         textEvt = (SinkEventElement) it.next();
         assertEquals( "text", textEvt.getName() );
-        // TODO: MXParser issue: "&#x1d7ef;" is handle as "\ud7ef"
-        // see MXparser#parseEntityRef()
-        assertEquals( "\ud7ed", textEvt.getArgs()[0] );
+        assertEquals( "\uD835\uDFED", textEvt.getArgs()[0] );
 
         assertEquals( "sectionTitle1_", ( (SinkEventElement) it.next() ).getName() );
         assertEquals( "paragraph", ( (SinkEventElement) it.next() ).getName() );
@@ -413,9 +411,11 @@ public class XhtmlBaseParserTest
 
         textEvt = (SinkEventElement) it.next();
         assertEquals( "text", textEvt.getName() );
-        // TODO: MXParser issue: "&#x1d7ef;" is handle as "\ud7ef"
-        // see MXparser#parseEntityRef()
-        assertEquals( "\ud7ed", textEvt.getArgs()[0] );
+        assertEquals( "\uD835\uDFED", textEvt.getArgs()[0] );
+
+        textEvt = (SinkEventElement) it.next();
+        assertEquals( "text", textEvt.getName() );
+        assertEquals( "A", textEvt.getArgs()[0] );
 
         assertEquals( "paragraph_", ( (SinkEventElement) it.next() ).getName() );
 

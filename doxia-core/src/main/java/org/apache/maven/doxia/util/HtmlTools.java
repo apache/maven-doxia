@@ -458,7 +458,13 @@ public class HtmlTools
         return ( MIN_SUPPLEMENTARY_CODE_POINT <= codePoint && MAX_CODE_POINT >= codePoint );
     }
 
-    private static char[] toChars( int codePoint )
+    /**
+     * TODO add javadoc
+     *
+     * @param codePoint
+     * @return
+     */
+    public static char[] toChars( int codePoint )
     {
         if ( !isValidCodePoint( codePoint ) )
         {

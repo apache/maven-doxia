@@ -140,7 +140,7 @@ public abstract class AbstractXmlParser
         // 2 second parsing to process
         try
         {
-            XmlPullParser parser = new MXParser();
+            XmlPullParser parser = new DoxiaMXParser();
 
             parser.setInput( source );
 
@@ -392,22 +392,9 @@ public abstract class AbstractXmlParser
         }
         else
         {
-            // TODO: the MXParser doesn't actually handle correctly surrogate char, ie
-            // if originalText = "&#x1d7ef;", text = "\ud7ef"
-
             String unescaped = HtmlTools.unescapeHTML( text );
 
-            if ( text.equals( unescaped ) && text.length() > 1 )
-            {
-                // this means the entity is unrecognized: emit as unknown
-                Object[] required = new Object[] { new Integer( HtmlMarkup.ENTITY_TYPE ) };
-
-                sink.unknown( text, required, null );
-            }
-            else
-            {
-                sink.text( unescaped );
-            }
+            sink.text( unescaped );
         }
     }
 
@@ -1043,6 +1030,232 @@ public abstract class AbstractXmlParser
             {
                 IOUtil.close( os );
             }
+        }
+    }
+
+    /**
+     * Custom MXParser to fix PLXUTILS-109 and PLXUTILS-110
+     */
+    private static class DoxiaMXParser
+        extends MXParser
+    {
+        /** {@inheritDoc} */
+        // Fix PLXUTILS-109
+        protected char[] parseEntityRef()
+            throws XmlPullParserException, IOException
+        {
+            // entity reference http://www.w3.org/TR/2000/REC-xml-20001006#NT-Reference
+            // [67] Reference ::= EntityRef | CharRef
+
+            // ASSUMPTION just after &
+            entityRefName = null;
+            posStart = pos;
+            char ch = more();
+            if ( ch == '#' )
+            {
+                // parse character reference
+                char charRef = 0;
+                ch = more();
+                StringBuffer sb = new StringBuffer();
+                if ( ch == 'x' )
+                {
+                    // encoded in hex
+                    while ( true )
+                    {
+                        ch = more();
+                        if ( ch >= '0' && ch <= '9' )
+                        {
+                            sb.append( ch );
+                            charRef = (char) ( charRef * 16 + ( ch - '0' ) );
+                        }
+                        else if ( ch >= 'a' && ch <= 'f' )
+                        {
+                            sb.append( ch );
+                            charRef = (char) ( charRef * 16 + ( ch - ( 'a' - 10 ) ) );
+                        }
+                        else if ( ch >= 'A' && ch <= 'F' )
+                        {
+                            sb.append( ch );
+                            charRef = (char) ( charRef * 16 + ( ch - ( 'A' - 10 ) ) );
+                        }
+                        else if ( ch == ';' )
+                        {
+                            break;
+                        }
+                        else
+                        {
+                            throw new XmlPullParserException(
+                                                              "character reference (with hex value) may not contain " +
+                                                               printable( ch ), this, null );
+                        }
+                    }
+                }
+                else
+                {
+                    // encoded in decimal
+                    while ( true )
+                    {
+                        if ( ch >= '0' && ch <= '9' )
+                        {
+                            charRef = (char) ( charRef * 10 + ( ch - '0' ) );
+                        }
+                        else if ( ch == ';' )
+                        {
+                            break;
+                        }
+                        else
+                        {
+                            throw new XmlPullParserException(
+                                                              "character reference (with decimal value) may not contain " +
+                                                               printable( ch ), this, null );
+                        }
+                        ch = more();
+                    }
+                }
+                posEnd = pos - 1;
+                if ( sb.length() > 0 )
+                {
+                    char[] tmp = HtmlTools.toChars( Integer.parseInt( sb.toString(), 16 ) );
+                    charRefOneCharBuf = tmp;
+                    if ( tokenize )
+                    {
+                        text = newString( charRefOneCharBuf, 0, charRefOneCharBuf.length );
+                    }
+                    return charRefOneCharBuf;
+                }
+                charRefOneCharBuf[0] = charRef;
+                if ( tokenize )
+                {
+                    text = newString( charRefOneCharBuf, 0, 1 );
+                }
+                return charRefOneCharBuf;
+            }
+            else
+            {
+                // [68] EntityRef ::= '&' Name ';'
+                // scan anem until ;
+                if ( !isNameStartChar( ch ) )
+                {
+                    throw new XmlPullParserException( "entity reference names can not start with character '" +
+                     printable( ch ) + "'", this, null );
+                }
+                while ( true )
+                {
+                    ch = more();
+                    if ( ch == ';' )
+                    {
+                        break;
+                    }
+                    if ( !isNameChar( ch ) )
+                    {
+                        throw new XmlPullParserException( "entity reference name can not contain character " +
+                         printable( ch ) + "'", this, null );
+                    }
+                }
+                posEnd = pos - 1;
+                // determine what name maps to
+                final int len = posEnd - posStart;
+                if ( len == 2 && buf[posStart] == 'l' && buf[posStart + 1] == 't' )
+                {
+                    if ( tokenize )
+                    {
+                        text = "<";
+                    }
+                    charRefOneCharBuf[0] = '<';
+                    return charRefOneCharBuf;
+                    // if(paramPC || isParserTokenizing) {
+                    // if(pcEnd >= pc.length) ensurePC();
+                    // pc[pcEnd++] = '<';
+                    // }
+                }
+                else if ( len == 3 && buf[posStart] == 'a' && buf[posStart + 1] == 'm' && buf[posStart + 2] == 'p' )
+                {
+                    if ( tokenize )
+                    {
+                        text = "&";
+                    }
+                    charRefOneCharBuf[0] = '&';
+                    return charRefOneCharBuf;
+                }
+                else if ( len == 2 && buf[posStart] == 'g' && buf[posStart + 1] == 't' )
+                {
+                    if ( tokenize )
+                    {
+                        text = ">";
+                    }
+                    charRefOneCharBuf[0] = '>';
+                    return charRefOneCharBuf;
+                }
+                else if ( len == 4 && buf[posStart] == 'a' && buf[posStart + 1] == 'p' && buf[posStart + 2] == 'o'
+                    && buf[posStart + 3] == 's' )
+                {
+                    if ( tokenize )
+                    {
+                        text = "'";
+                    }
+                    charRefOneCharBuf[0] = '\'';
+                    return charRefOneCharBuf;
+                }
+                else if ( len == 4 && buf[posStart] == 'q' && buf[posStart + 1] == 'u' && buf[posStart + 2] == 'o'
+                    && buf[posStart + 3] == 't' )
+                {
+                    if ( tokenize )
+                    {
+                        text = "\"";
+                    }
+                    charRefOneCharBuf[0] = '"';
+                    return charRefOneCharBuf;
+                }
+                else
+                {
+                    final char[] result = lookuEntityReplacement( len );
+                    if ( result != null )
+                    {
+                        return result;
+                    }
+                }
+                if ( tokenize )
+                    text = null;
+                return null;
+            }
+        }
+
+        /** {@inheritDoc} */
+        // Fix PLXUTILS-110
+        public void defineEntityReplacementText(String entityName,
+                                                String replacementText)
+            throws XmlPullParserException
+        {
+            //      throw new XmlPullParserException("not allowed");
+
+            if ( !replacementText.startsWith( "&#" ) )
+            {
+                String tmp = new String( replacementText ).substring( 1, replacementText.length() - 1 );
+                for ( int i = 0; i < this.entityName.length; i++ )
+                {
+                    if ( this.entityName[i] != null && this.entityName[i].equals( tmp ) )
+                    {
+                        replacementText = this.entityReplacement[i];
+                    }
+                }
+            }
+
+            //protected char[] entityReplacement[];
+            ensureEntityCapacity();
+
+            // this is to make sure that if interning works we will take advantage of it ...
+            this.entityName[entityEnd] = newString(entityName.toCharArray(), 0, entityName.length());
+            entityNameBuf[entityEnd] = entityName.toCharArray();
+
+            entityReplacement[entityEnd] = replacementText;
+            entityReplacementBuf[entityEnd] = replacementText.toCharArray();
+            if(!allStringsInterned) {
+                entityNameHash[ entityEnd ] =
+                    fastHash(entityNameBuf[entityEnd], 0, entityNameBuf[entityEnd].length);
+            }
+            ++entityEnd;
+            //TODO disallow < or & in entity replacement text (or ]]>???)
+            // TOOD keepEntityNormalizedForAttributeValue cached as well ...
         }
     }
 }
