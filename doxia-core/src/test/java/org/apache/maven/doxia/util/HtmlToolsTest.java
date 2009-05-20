@@ -19,6 +19,9 @@ package org.apache.maven.doxia.util;
  * under the License.
  */
 
+import java.net.URLEncoder;
+import java.util.Locale;
+
 import org.codehaus.plexus.PlexusTestCase;
 
 /**
@@ -105,16 +108,18 @@ public class HtmlToolsTest
      * Verify the expected results.
      */
     public void testEncodeURL()
+        throws Exception
     {
         assertNull( HtmlTools.encodeURL( null ) );
         assertEquals( HtmlTools.encodeURL( "" ), "" );
-        assertEquals( HtmlTools.encodeURL(
-            "http://www.example.com/?This is a simple test." ),
-            "http://www.example.com/?This%20is%20a%20simple%20test." );
+        assertEquals( HtmlTools.encodeURL( "http://www.example.com/?This is a simple test." ),
+                      "http://www.example.com/?This%20is%20a%20simple%20test." );
 
-        assertEquals( HtmlTools.encodeURL(
-            "http://www.example.com/?This is a simple & short test." ),
-            "http://www.example.com/?This%20is%20a%20simple%20&%20short%20test." );
+        assertEquals( HtmlTools.encodeURL( "http://www.example.com/?This is a simple & short test." ),
+                      "http://www.example.com/?This%20is%20a%20simple%20&%20short%20test." );
+
+        String url = "\uD808\uDF45";
+        assertEquals( HtmlTools.encodeURL( url ), URLEncoder.encode( url, "UTF-8" ).toLowerCase( Locale.ENGLISH ) );
     }
 
     /**

@@ -310,7 +310,7 @@ public class HtmlTools
         StringBuffer encoded = new StringBuffer();
         int length = url.length();
 
-        char[] unicode = new char[1];
+        int[] unicode = new int[1];
 
         for ( int i = 0; i < length; ++i )
         {
@@ -353,7 +353,14 @@ public class HtmlTools
 
                         try
                         {
-                            unicode[0] = c;
+                            if ( isHighSurrogate( c ) )
+                            {
+                                unicode[0] = toCodePoint( c, url.charAt( ++i ) );
+                            }
+                            else
+                            {
+                                unicode[0] = c;
+                            }
                             bytes = ( new String( unicode, 0, 1 ) ).getBytes( "UTF8" );
                         }
                         catch ( UnsupportedEncodingException cannotHappen )
