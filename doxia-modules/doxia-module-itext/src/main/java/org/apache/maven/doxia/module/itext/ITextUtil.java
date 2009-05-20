@@ -164,9 +164,4 @@ public class ITextUtil
             throw new RuntimeException( "DocumentException : " + e.getMessage() );
         }
     }
-
-    private ITextUtil()
-    {
-        // private
-    }
 }

@@ -51,6 +51,22 @@ public class DocBookSink
     extends AbstractXmlSink
     implements DocbookMarkup
 {
+    /** DocBook V4.4 SGML public id: "-//OASIS//DTD DocBook V4.4//EN"
+     * @deprecated since 1.1, use {@link DocbookMarkup#DEFAULT_SGML_PUBLIC_ID} instead of. */
+    public static final String DEFAULT_SGML_PUBLIC_ID = DocbookMarkup.DEFAULT_SGML_PUBLIC_ID;
+
+    /** DocBook XML V4.4 XML public id: "-//OASIS//DTD DocBook XML V4.4//EN"
+     * @deprecated since 1.1, use {@link DocbookMarkup#DEFAULT_XML_PUBLIC_ID} instead of. */
+    public static final String DEFAULT_XML_PUBLIC_ID = DocbookMarkup.DEFAULT_XML_PUBLIC_ID;
+
+    /** DocBook XML V4.4 XML system id: "http://www.oasis-open.org/docbook/xml/4.4/docbookx.dtd"
+     * @deprecated since 1.1, use {@link DocbookMarkup#DEFAULT_XML_SYSTEM_ID} instead of. */
+    public static final String DEFAULT_XML_SYSTEM_ID = DocbookMarkup.DEFAULT_XML_SYSTEM_ID;
+
+    /** DocBook XML V4.4 SGML system id: "http://www.oasis-open.org/docbook/xml/4.4/docbookx.dtd"
+     * @deprecated since 1.1, use {@link DocbookMarkup#DEFAULT_SGML_SYSTEM_ID} instead of. */
+    public static final String DEFAULT_SGML_SYSTEM_ID = DocbookMarkup.DEFAULT_SGML_SYSTEM_ID;
+
     /** The output writer. */
     private PrintWriter out;
 
