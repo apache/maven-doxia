@@ -114,6 +114,7 @@
     </xsl:attribute-set>
     <xsl:attribute-set name="body.source" use-attribute-sets="body.pre">
         <xsl:attribute name="wrap-option">no-wrap</xsl:attribute>
+        <xsl:attribute name="keep-together">always</xsl:attribute>
         <xsl:attribute name="white-space-collapse">false</xsl:attribute>
         <xsl:attribute name="color">black</xsl:attribute>
         <xsl:attribute name="border-style">solid</xsl:attribute>
@@ -355,6 +356,8 @@
     <xsl:attribute-set name="base.cell">
         <xsl:attribute name="padding-start">2.5pt</xsl:attribute>
         <xsl:attribute name="padding-end">5pt</xsl:attribute>
+        <!-- http://xmlgraphics.apache.org/fop/faq.html#keep-together -->
+        <xsl:attribute name="keep-together.within-column">always</xsl:attribute>
     </xsl:attribute-set>
     <xsl:attribute-set name="base.block">
         <xsl:attribute name="font-family">Helvetica,sans-serif</xsl:attribute>
@@ -374,22 +377,24 @@
         <xsl:attribute name="border-after-color">black</xsl:attribute>
     </xsl:attribute-set>
     <xsl:attribute-set name="table.title.block" use-attribute-sets="base.block">
-        <xsl:attribute name="font-size">9.5pt</xsl:attribute>
+        <xsl:attribute name="font-size">11pt</xsl:attribute>
         <xsl:attribute name="font-weight">bold</xsl:attribute>
     </xsl:attribute-set>
     <xsl:attribute-set name="table.footer.cell" use-attribute-sets="base.cell">
         <xsl:attribute name="padding-before">5pt</xsl:attribute>
     </xsl:attribute-set>
     <xsl:attribute-set name="table.footer.block" use-attribute-sets="base.block">
-        <xsl:attribute name="font-size">7pt</xsl:attribute>
+        <xsl:attribute name="font-size">9pt</xsl:attribute>
         <xsl:attribute name="font-style">italic</xsl:attribute>
     </xsl:attribute-set>
     <xsl:attribute-set name="table.heading.cell" use-attribute-sets="base.cell">
         <xsl:attribute name="padding-before">7pt</xsl:attribute>
         <xsl:attribute name="display-align">after</xsl:attribute>
+        <xsl:attribute name="background-color">#bbbbbb</xsl:attribute>
+        <xsl:attribute name="color">white</xsl:attribute>
     </xsl:attribute-set>
     <xsl:attribute-set name="table.heading.block" use-attribute-sets="base.block">
-        <xsl:attribute name="font-size">8pt</xsl:attribute>
+        <xsl:attribute name="font-size">10pt</xsl:attribute>
         <xsl:attribute name="font-weight">bold</xsl:attribute>
     </xsl:attribute-set>
     <xsl:attribute-set name="table.heading.rule">
@@ -402,7 +407,7 @@
         <xsl:attribute name="padding-before">6pt</xsl:attribute>
     </xsl:attribute-set>
     <xsl:attribute-set name="table.number.block" use-attribute-sets="base.block">
-        <xsl:attribute name="font-size">7pt</xsl:attribute>
+        <xsl:attribute name="font-size">9pt</xsl:attribute>
         <xsl:attribute name="font-style">italic</xsl:attribute>
     </xsl:attribute-set>
     <xsl:attribute-set name="table.subheading.row">
@@ -418,13 +423,13 @@
         <xsl:attribute name="display-align">after</xsl:attribute>
     </xsl:attribute-set>
     <xsl:attribute-set name="table.subheading.block" use-attribute-sets="base.block">
-        <xsl:attribute name="font-size">7pt</xsl:attribute>
+        <xsl:attribute name="font-size">9pt</xsl:attribute>
         <xsl:attribute name="font-weight">bold</xsl:attribute>
         <xsl:attribute name="vertical-align">bottom</xsl:attribute>
     </xsl:attribute-set>
     <xsl:attribute-set name="table.body.row">
-        <xsl:attribute name="keep-together">always</xsl:attribute>
-        <xsl:attribute name="keep-with-next">always</xsl:attribute>
+        <xsl:attribute name="keep-together">auto</xsl:attribute>
+        <xsl:attribute name="keep-with-next">auto</xsl:attribute>
     </xsl:attribute-set>
     <xsl:attribute-set name="table.body.norule">
         <xsl:attribute name="leader-length.optimum">100%</xsl:attribute>
@@ -444,15 +449,20 @@
         <xsl:attribute name="rule-thickness">0.5pt</xsl:attribute>
         <xsl:attribute name="color">black</xsl:attribute>
     </xsl:attribute-set>
+    <xsl:attribute-set name="table.body.cell.grid">
+        <xsl:attribute name="border-style">solid</xsl:attribute>
+        <xsl:attribute name="border-width">0.2mm</xsl:attribute>
+    </xsl:attribute-set>
     <xsl:attribute-set name="table.body.cell" use-attribute-sets="base.cell">
         <xsl:attribute name="padding-before">4pt</xsl:attribute>
         <xsl:attribute name="padding-after">1.5pt</xsl:attribute>
+        <xsl:attribute name="background-color">#eeeeee</xsl:attribute>
     </xsl:attribute-set>
     <xsl:attribute-set name="table.body.block" use-attribute-sets="base.block">
-        <xsl:attribute name="font-size">7pt</xsl:attribute>
+        <xsl:attribute name="font-size">9pt</xsl:attribute>
     </xsl:attribute-set>
     <xsl:attribute-set name="table.pre" use-attribute-sets="base.pre.style">
-        <xsl:attribute name="font-size">7pt</xsl:attribute>
+        <xsl:attribute name="font-size">9pt</xsl:attribute>
     </xsl:attribute-set>
 
     <!-- Table of content styles -->

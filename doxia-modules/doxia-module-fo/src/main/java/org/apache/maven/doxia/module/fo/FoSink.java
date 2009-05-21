@@ -26,7 +26,6 @@ import java.io.Writer;
 import java.util.Stack;
 
 import javax.swing.text.MutableAttributeSet;
-import javax.swing.text.SimpleAttributeSet;
 import javax.swing.text.html.HTML.Attribute;
 import javax.swing.text.html.HTML.Tag;
 
@@ -478,10 +477,15 @@ public class FoSink
     public void listItem()
     {
         writeStartTag( LIST_ITEM_TAG, "list.item" );
-        // TODO customize?
-        writeln( "<fo:list-item-label><fo:block>&#8226;</fo:block></fo:list-item-label>" );
+        writeStartTag( LIST_ITEM_LABEL_TAG );
+        writeStartTag( BLOCK_TAG );
+        write( "&#8226;" ); // TODO customize?
+        writeEndTag( BLOCK_TAG );
+        writeEndTag( LIST_ITEM_LABEL_TAG );
+        writeEOL();
         writeStartTag( LIST_ITEM_BODY_TAG, "list.item" );
-        writeStartTag( BLOCK_TAG, "" );
+        writeEOL();
+        writeStartTag( BLOCK_TAG );
     }
 
     /** {@inheritDoc} */
@@ -713,7 +717,8 @@ public class FoSink
     public void horizontalRule()
     {
         writeEOL();
-        writeStartTag( BLOCK_TAG, "" );
+        writeEOL();
+        writeStartTag( BLOCK_TAG );
         writeEmptyTag( LEADER_TAG, "body.rule" );
         writeEndTag( BLOCK_TAG );
         writeEOL();
@@ -722,7 +727,6 @@ public class FoSink
     /** {@inheritDoc} */
     public void pageBreak()
     {
-        //writeln( "<fo:block break-before=\"page\"/>" );
         writeEmptyTag( BLOCK_TAG, "break-before", "page" );
         writeEOL();
     }
@@ -733,8 +737,8 @@ public class FoSink
         writeEOL();
         writeStartTag( BLOCK_TAG, "table.padding" );
 
-        // <fo:table-and-caption> is XSL-FO 1.0 standard but not implemented in FOP 0.93
-        //writeStartTag( TABLE_AND_CAPTION_TAG, "" );
+        // <fo:table-and-caption> is XSL-FO 1.0 standard but still not implemented in FOP 0.95
+        //writeStartTag( TABLE_AND_CAPTION_TAG );
 
         writeStartTag( TABLE_TAG, "table.layout" );
     }
@@ -780,7 +784,7 @@ public class FoSink
         writeEndTag( TABLE_TAG );
         writeEOL();
 
-        // <fo:table-and-caption> is XSL-FO 1.0 standard but not implemented in FOP 0.93
+        // <fo:table-and-caption> is XSL-FO 1.0 standard but still not implemented in FOP 0.95
         //writeEndTag( TABLE_AND_CAPTION_TAG );
 
         writeEndTag( BLOCK_TAG );
@@ -836,7 +840,6 @@ public class FoSink
     /** {@inheritDoc} */
     public void tableHeaderCell()
     {
-        // TODO: how to implement?
         tableCell( true );
     }
 
@@ -850,7 +853,7 @@ public class FoSink
     /**
      * Writes a table cell.
      *
-     * @param headerRow Currently not used.
+     * @param headerRow true if this is a header cell.
      */
     private void tableCell( boolean headerRow )
     {
@@ -873,22 +876,31 @@ public class FoSink
              }
          }
 
-         if ( justif != null )
-         {
-            // the column-number is needed for the hack to center the table, see tableRows.
-            write( "<fo:table-cell column-number=\"" + String.valueOf( cellCount + 2 ) + "\"" );
-            if ( tableGrid )
-            {
-                // http://xmlgraphics.apache.org/fop/faq.html#keep-together
-                write( " border-style=\"solid\" border-width=\"0.2mm\" keep-together.within-column=\"always\"" );
-            }
-            writeln( config.getAttributeString( "table.body.cell" ) + ">" );
-         }
-         else
-         {
-             writeStartTag( TABLE_CELL_TAG, "table.body.cell" );
-         }
-        writeln( "<fo:block text-align=\"" + justif + "\">" );
+        MutableAttributeSet cellAtts = headerRow
+                 ? config.getAttributeSet( "table.heading.cell" )
+                 : config.getAttributeSet( "table.body.cell" );
+
+        // the column-number is needed for the hack to center the table, see tableRows.
+        cellAtts.addAttribute( "column-number", String.valueOf( cellCount + 2 ) );
+
+        if ( tableGrid )
+        {
+            cellAtts.addAttributes( config.getAttributeSet( "table.body.cell.grid" ) );
+        }
+
+        MutableAttributeSet blockAtts = headerRow
+                 ? config.getAttributeSet( "table.heading.block" )
+                 : config.getAttributeSet( "table.body.block" );
+
+        if ( justif != null )
+        {
+           blockAtts.addAttribute( "text-align", justif );
+        }
+
+        writeStartTag( TABLE_CELL_TAG, cellAtts );
+        writeEOL();
+        writeStartTag( BLOCK_TAG, blockAtts );
+        writeEOL();
     }
 
     /** {@inheritDoc} */
@@ -914,8 +926,8 @@ public class FoSink
     /** {@inheritDoc} */
     public void tableCaption()
     {
-        // <fo:table-caption> is XSL-FO 1.0 standard but not implemented in FOP 0.93
-        //writeStartTag( TABLE_CAPTION_TAG, "" );
+        // <fo:table-caption> is XSL-FO 1.0 standard but not implemented in FOP 0.95
+        //writeStartTag( TABLE_CAPTION_TAG );
 
         // TODO: how to implement this otherwise?
         // table-footer doesn't work because it has to be declared before table-body.
@@ -924,7 +936,7 @@ public class FoSink
     /** {@inheritDoc} */
     public void tableCaption_()
     {
-        // <fo:table-caption> is XSL-FO 1.0 standard but not implemented in FOP 0.93
+        // <fo:table-caption> is XSL-FO 1.0 standard but not implemented in FOP 0.95
         //writeEndTag( TABLE_CAPTION_TAG );
     }
 
@@ -1042,7 +1054,8 @@ public class FoSink
     public void lineBreak()
     {
         writeEOL();
-        writeEmptyTag( BLOCK_TAG, "" );
+        writeEOL();
+        writeSimpleTag( BLOCK_TAG );
     }
 
     /** {@inheritDoc} */
@@ -1125,7 +1138,7 @@ public class FoSink
 
         writeStartTag( ROOT_TAG, atts );
 
-        writeStartTag( LAYOUT_MASTER_SET_TAG, "" );
+        writeStartTag( LAYOUT_MASTER_SET_TAG );
 
         writeStartTag( SIMPLE_PAGE_MASTER_TAG, "layout.master.set.cover-page" );
         writeEmptyTag( REGION_BODY_TAG, "layout.master.set.cover-page.region-body" );
@@ -1200,8 +1213,7 @@ public class FoSink
     protected void writeStartTag( Tag tag, String id, String name )
     {
         writeEOL();
-        MutableAttributeSet att = new SimpleAttributeSet();
-        att.addAttribute( id, name );
+        MutableAttributeSet att = new SinkEventAttributeSet( new String[] {id, name} );
 
         writeStartTag( tag, att );
     }
@@ -1239,8 +1251,7 @@ public class FoSink
      */
     protected void writeEmptyTag( Tag tag, String id, String name )
     {
-        MutableAttributeSet att = new SimpleAttributeSet();
-        att.addAttribute( id, name );
+        MutableAttributeSet att = new SinkEventAttributeSet( new String[] {id, name} );
 
         writeEOL();
         writeSimpleTag( tag, att );
