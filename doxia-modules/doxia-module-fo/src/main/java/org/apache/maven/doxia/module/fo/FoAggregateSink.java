@@ -102,6 +102,12 @@ public class FoAggregateSink extends FoSink
     /** {@inheritDoc} */
     public void head()
     {
+        head( null );
+    }
+
+    /** {@inheritDoc} */
+    public void head( SinkEventAttributes attributes )
+    {
         ignoreText = true;
     }
 
@@ -115,6 +121,12 @@ public class FoAggregateSink extends FoSink
     /** {@inheritDoc} */
     public void title()
     {
+        title( null );
+    }
+
+    /** {@inheritDoc} */
+    public void title( SinkEventAttributes attributes )
+    {
         // ignored
     }
 
@@ -126,6 +138,12 @@ public class FoAggregateSink extends FoSink
 
     /** {@inheritDoc} */
     public void author()
+    {
+        author( null );
+    }
+
+    /** {@inheritDoc} */
+    public void author( SinkEventAttributes attributes )
     {
         // ignored
     }
@@ -139,6 +157,12 @@ public class FoAggregateSink extends FoSink
     /** {@inheritDoc} */
     public void date()
     {
+        date( null );
+    }
+
+    /** {@inheritDoc} */
+    public void date( SinkEventAttributes attributes )
+    {
         // ignored
     }
 
@@ -150,6 +174,12 @@ public class FoAggregateSink extends FoSink
 
     /** {@inheritDoc} */
     public void body()
+    {
+        body( null );
+    }
+
+    /** {@inheritDoc} */
+    public void body( SinkEventAttributes attributes )
     {
         chapter++;
 
@@ -277,10 +307,14 @@ public class FoAggregateSink extends FoSink
         super.figureGraphics( anchor, attributes );
     }
 
-
-
     /** {@inheritDoc} */
     public void anchor( String name )
+    {
+        anchor( name, null );
+    }
+
+    /** {@inheritDoc} */
+    public void anchor( String name, SinkEventAttributes attributes  )
     {
         if ( name == null )
         {
@@ -306,9 +340,14 @@ public class FoAggregateSink extends FoSink
         writeStartTag( INLINE_TAG, "id", anchor );
     }
 
+    /** {@inheritDoc} */
+    public void link( String name  )
+    {
+        link( name, null );
+    }
 
     /** {@inheritDoc} */
-    public void link( String name )
+    public void link( String name, SinkEventAttributes attributes  )
     {
         if ( name == null )
         {
@@ -732,7 +771,7 @@ public class FoAggregateSink extends FoSink
         writeEmptyTag( TABLE_COLUMN_TAG, "column-width", "0.4in" );
         writeEmptyTag( TABLE_COLUMN_TAG, "column-width", "0.4in" );
         writeEmptyTag( TABLE_COLUMN_TAG, "column-width", "5in" ); // TODO {$maxBodyWidth - 1.25}in
-        writeStartTag( TABLE_BODY_TAG, "" );
+        writeStartTag( TABLE_BODY_TAG );
 
         writeTocItems( toc.getItems(), 1 );
 
@@ -766,7 +805,7 @@ public class FoAggregateSink extends FoSink
                 for ( int i = 0; i < level - 2; i++ )
                 {
                     writeStartTag( TABLE_CELL_TAG );
-                    writeEmptyTag( BLOCK_TAG, "" );
+                    writeSimpleTag( BLOCK_TAG );
                     writeEndTag( TABLE_CELL_TAG );
                 }
             }
@@ -836,7 +875,7 @@ public class FoAggregateSink extends FoSink
             return;
         }
 
-        writeStartTag( BOOKMARK_TREE_TAG, "" );
+        writeStartTag( BOOKMARK_TREE_TAG );
 
         renderBookmarkItems( docModel.getToc().getItems() );
 
@@ -852,7 +891,7 @@ public class FoAggregateSink extends FoSink
             String ref = getIdName( tocItem.getRef() );
 
             writeStartTag( BOOKMARK_TAG, "internal-destination", ref );
-            writeStartTag( BOOKMARK_TITLE_TAG, "" );
+            writeStartTag( BOOKMARK_TITLE_TAG );
             write( tocItem.getName() );
             writeEndTag( BOOKMARK_TITLE_TAG );
 
@@ -927,7 +966,7 @@ public class FoAggregateSink extends FoSink
         writeln( "<fo:table table-layout=\"fixed\" width=\"100%\" >" );
         writeEmptyTag( TABLE_COLUMN_TAG, "column-width", "3.125in" );
         writeEmptyTag( TABLE_COLUMN_TAG, "column-width", "3.125in" );
-        writeStartTag( TABLE_BODY_TAG, "" );
+        writeStartTag( TABLE_BODY_TAG );
 
         writeCoverHead( compLogo, projLogo );
         writeCoverBody( title, version, subtitle, type );
@@ -957,17 +996,17 @@ public class FoAggregateSink extends FoSink
         writeEmptyTag( TABLE_COLUMN_TAG, "column-width", "2.083in" );
         writeEmptyTag( TABLE_COLUMN_TAG, "column-width", "2.083in" );
 
-        writeStartTag( TABLE_BODY_TAG, "" );
+        writeStartTag( TABLE_BODY_TAG );
 
-        writeStartTag( TABLE_ROW_TAG, "" );
+        writeStartTag( TABLE_ROW_TAG );
         writeStartTag( TABLE_CELL_TAG, "number-columns-spanned", "3" );
-        writeEmptyTag( BLOCK_TAG, "" );
+        writeSimpleTag( BLOCK_TAG );
         writeEmptyTag( BLOCK_TAG, "space-before", "3.2235in" );
         writeEndTag( TABLE_CELL_TAG );
         writeEndTag( TABLE_ROW_TAG );
 
-        writeStartTag( TABLE_ROW_TAG, "" );
-        writeStartTag( TABLE_CELL_TAG, "" );
+        writeStartTag( TABLE_ROW_TAG );
+        writeStartTag( TABLE_CELL_TAG );
         writeEmptyTag( BLOCK_TAG, "space-after", "0.5in" );
         writeEndTag( TABLE_CELL_TAG );
 
@@ -979,9 +1018,9 @@ public class FoAggregateSink extends FoSink
         writeEndTag( TABLE_CELL_TAG );
         writeEndTag( TABLE_ROW_TAG );
 
-        writeStartTag( TABLE_ROW_TAG, "" );
-        writeStartTag( TABLE_CELL_TAG, "" );
-        writeEmptyTag( BLOCK_TAG, "" );
+        writeStartTag( TABLE_ROW_TAG );
+        writeStartTag( TABLE_CELL_TAG );
+        writeSimpleTag( BLOCK_TAG );
         writeEndTag( TABLE_CELL_TAG );
 
 
@@ -1009,9 +1048,9 @@ public class FoAggregateSink extends FoSink
         writeEndTag( TABLE_CELL_TAG );
         writeEndTag( TABLE_ROW_TAG );
 
-        writeStartTag( TABLE_ROW_TAG, "" );
+        writeStartTag( TABLE_ROW_TAG );
         writeStartTag( TABLE_CELL_TAG, "number-columns-spanned", "2" );
-        writeEmptyTag( BLOCK_TAG, "" );
+        writeSimpleTag( BLOCK_TAG );
         writeEmptyTag( BLOCK_TAG, "space-before", "0.2in" );
         writeEndTag( TABLE_CELL_TAG );
         writeEndTag( TABLE_ROW_TAG );
@@ -1021,7 +1060,7 @@ public class FoAggregateSink extends FoSink
     {
         writeStartTag( TABLE_ROW_TAG, "height", "0.3in" );
 
-        writeStartTag( TABLE_CELL_TAG, "" );
+        writeStartTag( TABLE_CELL_TAG );
         MutableAttributeSet att = getFoConfiguration().getAttributeSet( "cover.subtitle" );
         att.addAttribute( "height", "0.3in" );
         att.addAttribute( "text-align", "left" );
@@ -1030,7 +1069,7 @@ public class FoAggregateSink extends FoSink
         writeEndTag( BLOCK_TAG );
         writeEndTag( TABLE_CELL_TAG );
 
-        writeStartTag( TABLE_CELL_TAG, "" );
+        writeStartTag( TABLE_CELL_TAG );
         att = getFoConfiguration().getAttributeSet( "cover.subtitle" );
         att.addAttribute( "height", "0.3in" );
         att.addAttribute( "text-align", "right" );
@@ -1045,7 +1084,7 @@ public class FoAggregateSink extends FoSink
     private void writeCoverHead( String compLogo, String projLogo )
     {
         writeStartTag( TABLE_ROW_TAG, "height", "1.5in" );
-        writeStartTag( TABLE_CELL_TAG, "" );
+        writeStartTag( TABLE_CELL_TAG );
 
         if ( compLogo != null )
         {
@@ -1059,9 +1098,9 @@ public class FoAggregateSink extends FoSink
             writeEndTag( BLOCK_TAG );
         }
 
-        writeEmptyTag( BLOCK_TAG, "" );
+        writeSimpleTag( BLOCK_TAG );
         writeEndTag( TABLE_CELL_TAG );
-        writeStartTag( TABLE_CELL_TAG, "" );
+        writeStartTag( TABLE_CELL_TAG );
 
         if ( projLogo != null )
         {
@@ -1075,7 +1114,7 @@ public class FoAggregateSink extends FoSink
             writeEndTag( BLOCK_TAG );
         }
 
-        writeEmptyTag( BLOCK_TAG, "" );
+        writeSimpleTag( BLOCK_TAG );
         writeEndTag( TABLE_CELL_TAG );
         writeEndTag( TABLE_ROW_TAG );
     }

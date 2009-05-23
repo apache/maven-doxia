@@ -30,12 +30,12 @@ import javax.swing.text.html.HTML.Attribute;
 import javax.swing.text.html.HTML.Tag;
 
 import org.apache.maven.doxia.sink.AbstractXmlSink;
-import org.apache.maven.doxia.sink.Sink;
 import org.apache.maven.doxia.sink.SinkEventAttributeSet;
 import org.apache.maven.doxia.sink.SinkEventAttributes;
 import org.apache.maven.doxia.sink.SinkUtils;
 import org.apache.maven.doxia.util.DoxiaUtils;
 import org.apache.maven.doxia.util.HtmlTools;
+
 import org.codehaus.plexus.util.StringUtils;
 
 /**
@@ -162,10 +162,16 @@ public class FoSink
     }
 
     /** {@inheritDoc} */
-    public void head()
+    public void head( SinkEventAttributes attributes )
     {
         beginDocument();
         startPageSequence( "0", null, null );
+    }
+
+    /** {@inheritDoc} */
+    public void head()
+    {
+        head( null );
     }
 
     /** {@inheritDoc} */
@@ -175,9 +181,15 @@ public class FoSink
     }
 
     /** {@inheritDoc} */
-    public void title()
+    public void title( SinkEventAttributes attributes )
     {
         writeStartTag( BLOCK_TAG, "doc.header.title" );
+    }
+
+    /** {@inheritDoc} */
+    public void title()
+    {
+        title( null );
     }
 
     /** {@inheritDoc} */
@@ -188,9 +200,15 @@ public class FoSink
     }
 
     /** {@inheritDoc} */
-    public void author()
+    public void author( SinkEventAttributes attributes )
     {
         writeStartTag( BLOCK_TAG, "doc.header.author" );
+    }
+
+    /** {@inheritDoc} */
+    public void author()
+    {
+        author( null );
     }
 
     /** {@inheritDoc} */
@@ -201,9 +219,15 @@ public class FoSink
     }
 
     /** {@inheritDoc} */
-    public void date()
+    public void date( SinkEventAttributes attributes )
     {
         writeStartTag( BLOCK_TAG, "doc.header.date" );
+    }
+
+    /** {@inheritDoc} */
+    public void date()
+    {
+        date( null );
     }
 
     /** {@inheritDoc} */
@@ -214,9 +238,15 @@ public class FoSink
     }
 
     /** {@inheritDoc} */
-    public void body()
+    public void body( SinkEventAttributes attributes )
     {
         // noop
+    }
+
+    /** {@inheritDoc} */
+    public void body()
+    {
+        body( null );
     }
 
     /** {@inheritDoc} */
@@ -247,129 +277,163 @@ public class FoSink
     }
 
     /** {@inheritDoc} */
+    public void section( int level, SinkEventAttributes attributes )
+    {
+        if ( level == SECTION_LEVEL_1 )
+        {
+            section++;
+            subsection = 0;
+            subsubsection = 0;
+        }
+        else if ( level == SECTION_LEVEL_2 )
+        {
+            subsection++;
+            subsubsection = 0;
+        }
+        else if ( level == SECTION_LEVEL_3 )
+        {
+            subsubsection++;
+        }
+
+        onSection();
+    }
+
+    /** {@inheritDoc} */
+    public void section_( int level )
+    {
+        onSection_();
+    }
+
+    /** {@inheritDoc} */
+    public void sectionTitle( int level, SinkEventAttributes attributes )
+    {
+        onSectionTitle( level );
+    }
+
+    /** {@inheritDoc} */
+    public void sectionTitle_( int level )
+    {
+        onSectionTitle_();
+    }
+
+    /** {@inheritDoc} */
     public void section1()
     {
-        section++;
-        subsection = 0;
-        subsubsection = 0;
-        onSection();
+        section( SECTION_LEVEL_1, null );
     }
 
     /** {@inheritDoc} */
     public void sectionTitle1()
     {
-        onSectionTitle( Sink.SECTION_LEVEL_1 );
+        sectionTitle( SECTION_LEVEL_1, null );
     }
 
     /** {@inheritDoc} */
     public void sectionTitle1_()
     {
-        onSectionTitle_();
+        sectionTitle_( SECTION_LEVEL_1 );
     }
 
     /** {@inheritDoc} */
     public void section1_()
     {
-        onSection_();
+        section_( SECTION_LEVEL_1 );
     }
 
     /** {@inheritDoc} */
     public void section2()
     {
-        subsection++;
-        subsubsection = 0;
-        onSection();
+        section( SECTION_LEVEL_2, null );
     }
 
     /** {@inheritDoc} */
     public void sectionTitle2()
     {
-        onSectionTitle( Sink.SECTION_LEVEL_2 );
+        sectionTitle( SECTION_LEVEL_2, null );
     }
 
     /** {@inheritDoc} */
     public void sectionTitle2_()
     {
-        onSectionTitle_();
+        sectionTitle_( SECTION_LEVEL_2 );
     }
 
     /** {@inheritDoc} */
     public void section2_()
     {
-        onSection_();
+        section_( SECTION_LEVEL_2 );
     }
 
     /** {@inheritDoc} */
     public void section3()
     {
-        subsubsection++;
-        onSection();
+        section( SECTION_LEVEL_3, null );
     }
 
     /** {@inheritDoc} */
     public void sectionTitle3()
     {
-        onSectionTitle( Sink.SECTION_LEVEL_3 );
+        sectionTitle( SECTION_LEVEL_3, null );
     }
 
     /** {@inheritDoc} */
     public void sectionTitle3_()
     {
-        onSectionTitle_();
+        sectionTitle_( SECTION_LEVEL_3 );
     }
 
     /** {@inheritDoc} */
     public void section3_()
     {
-        onSection_();
+        section_( SECTION_LEVEL_3 );
     }
 
     /** {@inheritDoc} */
     public void section4()
     {
-        onSection();
+        section( SECTION_LEVEL_4, null );
     }
 
     /** {@inheritDoc} */
     public void sectionTitle4()
     {
-        onSectionTitle( Sink.SECTION_LEVEL_4 );
+        sectionTitle( SECTION_LEVEL_4, null );
     }
 
     /** {@inheritDoc} */
     public void sectionTitle4_()
     {
-        onSectionTitle_();
+        sectionTitle_( SECTION_LEVEL_4 );
     }
 
     /** {@inheritDoc} */
     public void section4_()
     {
-        onSection_();
+        section_( SECTION_LEVEL_4 );
     }
 
     /** {@inheritDoc} */
     public void section5()
     {
-        onSection();
+        section( SECTION_LEVEL_5, null );
     }
 
     /** {@inheritDoc} */
     public void sectionTitle5()
     {
-        onSectionTitle( Sink.SECTION_LEVEL_5 );
+        sectionTitle( SECTION_LEVEL_5, null );
     }
 
     /** {@inheritDoc} */
     public void sectionTitle5_()
     {
-        onSectionTitle_();
+        sectionTitle_( SECTION_LEVEL_5 );
     }
 
     /** {@inheritDoc} */
     public void section5_()
     {
-        onSection_();
+        section_( SECTION_LEVEL_5 );
     }
 
     /** Starts a section/subsection. */
@@ -391,25 +455,25 @@ public class FoSink
         title.append( getChapterString() );
 
         writeEOL();
-        if ( depth == Sink.SECTION_LEVEL_1 )
+        if ( depth == SECTION_LEVEL_1 )
         {
             writeStartTag( BLOCK_TAG, "body.h1" );
             title.append( section ).append( "   " );
         }
-        else if ( depth == Sink.SECTION_LEVEL_2 )
+        else if ( depth == SECTION_LEVEL_2 )
         {
             writeStartTag( BLOCK_TAG, "body.h2" );
             title.append( section ).append( "." );
             title.append( subsection ).append( "   " );
         }
-        else if ( depth == Sink.SECTION_LEVEL_3 )
+        else if ( depth == SECTION_LEVEL_3 )
         {
             writeStartTag( BLOCK_TAG, "body.h3" );
             title.append( section ).append( "." );
             title.append( subsection ).append( "." );
             title.append( subsubsection ).append( "   " );
         }
-        else if ( depth == Sink.SECTION_LEVEL_4 )
+        else if ( depth == SECTION_LEVEL_4 )
         {
             writeStartTag( BLOCK_TAG, "body.h4" );
         }
@@ -460,10 +524,16 @@ public class FoSink
     // -----------------------------------------------------------------------
 
     /** {@inheritDoc} */
-    public void list()
+    public void list( SinkEventAttributes attributes )
     {
         writeEOL();
         writeStartTag( LIST_BLOCK_TAG, "list" );
+    }
+
+    /** {@inheritDoc} */
+    public void list()
+    {
+        list( null );
     }
 
     /** {@inheritDoc} */
@@ -474,7 +544,7 @@ public class FoSink
     }
 
     /** {@inheritDoc} */
-    public void listItem()
+    public void listItem( SinkEventAttributes attributes )
     {
         writeStartTag( LIST_ITEM_TAG, "list.item" );
         writeStartTag( LIST_ITEM_LABEL_TAG );
@@ -489,6 +559,12 @@ public class FoSink
     }
 
     /** {@inheritDoc} */
+    public void listItem()
+    {
+        listItem( null );
+    }
+
+    /** {@inheritDoc} */
     public void listItem_()
     {
         writeEndTag( BLOCK_TAG );
@@ -500,11 +576,17 @@ public class FoSink
     }
 
     /** {@inheritDoc} */
-    public void numberedList( int numbering )
+    public void numberedList( int numbering, SinkEventAttributes attributes )
     {
         listStack.push( new NumberedListItem( numbering ) );
         writeEOL();
         writeStartTag( LIST_BLOCK_TAG, "list" );
+    }
+
+    /** {@inheritDoc} */
+    public void numberedList( int numbering )
+    {
+        numberedList( numbering, null );
     }
 
     /** {@inheritDoc} */
@@ -516,15 +598,17 @@ public class FoSink
     }
 
     /** {@inheritDoc} */
-    public void numberedListItem()
+    public void numberedListItem( SinkEventAttributes attributes )
     {
         NumberedListItem current = (NumberedListItem) listStack.peek();
         current.next();
 
         writeStartTag( LIST_ITEM_TAG, "list.item" );
 
-        writeStartTag( LIST_ITEM_LABEL_TAG, "" );
-        writeStartTag( BLOCK_TAG, "" );
+        writeEOL();
+        writeStartTag( LIST_ITEM_LABEL_TAG );
+        writeEOL();
+        writeStartTag( BLOCK_TAG );
         write( current.getListItemSymbol() );
         writeEndTag( BLOCK_TAG );
         writeEOL();
@@ -532,7 +616,14 @@ public class FoSink
         writeEOL();
 
         writeStartTag( LIST_ITEM_BODY_TAG, "list.item" );
-        writeStartTag( BLOCK_TAG, "" );
+        writeEOL();
+        writeStartTag( BLOCK_TAG );
+    }
+
+    /** {@inheritDoc} */
+    public void numberedListItem()
+    {
+        numberedListItem( null );
     }
 
     /** {@inheritDoc} */
@@ -547,10 +638,16 @@ public class FoSink
     }
 
     /** {@inheritDoc} */
-    public void definitionList()
+    public void definitionList( SinkEventAttributes attributes )
     {
         writeEOL();
         writeStartTag( BLOCK_TAG, "dl" );
+    }
+
+    /** {@inheritDoc} */
+    public void definitionList()
+    {
+        definitionList( null );
     }
 
     /** {@inheritDoc} */
@@ -561,9 +658,15 @@ public class FoSink
     }
 
     /** {@inheritDoc} */
-    public void definitionListItem()
+    public void definitionListItem( SinkEventAttributes attributes )
     {
         // nop
+    }
+
+    /** {@inheritDoc} */
+    public void definitionListItem()
+    {
+        definitionListItem( null );
     }
 
     /** {@inheritDoc} */
@@ -573,9 +676,15 @@ public class FoSink
     }
 
     /** {@inheritDoc} */
-    public void definedTerm()
+    public void definedTerm( SinkEventAttributes attributes )
     {
         writeStartTag( BLOCK_TAG, "dt" );
+    }
+
+    /** {@inheritDoc} */
+    public void definedTerm()
+    {
+        definedTerm( null );
     }
 
     /** {@inheritDoc} */
@@ -586,10 +695,16 @@ public class FoSink
     }
 
     /** {@inheritDoc} */
-    public void definition()
+    public void definition( SinkEventAttributes attributes )
     {
         writeEOL();
         writeStartTag( BLOCK_TAG, "dd" );
+    }
+
+    /** {@inheritDoc} */
+    public void definition()
+    {
+        definition( null );
     }
 
     /** {@inheritDoc} */
@@ -600,11 +715,17 @@ public class FoSink
     }
 
     /** {@inheritDoc} */
-    public void figure()
+    public void figure( SinkEventAttributes attributes )
     {
         this.inFigure = true;
         writeEOL();
         writeStartTag( BLOCK_TAG, "figure.display" );
+    }
+
+    /** {@inheritDoc} */
+    public void figure()
+    {
+        figure( null );
     }
 
     /** {@inheritDoc} */
@@ -652,9 +773,15 @@ public class FoSink
     }
 
     /** {@inheritDoc} */
-    public void figureCaption()
+    public void figureCaption( SinkEventAttributes attributes )
     {
         writeStartTag( BLOCK_TAG, "figure.caption" );
+    }
+
+    /** {@inheritDoc} */
+    public void figureCaption()
+    {
+        figureCaption( null );
     }
 
     /** {@inheritDoc} */
@@ -692,9 +819,18 @@ public class FoSink
     }
 
     /** {@inheritDoc} */
-    public void verbatim( boolean boxed )
+    public void verbatim( SinkEventAttributes attributes )
     {
         this.verbatim = true;
+
+        boolean boxed = false;
+
+        if ( attributes != null && attributes.isDefined( SinkEventAttributes.DECORATION ) )
+        {
+            boxed =
+                "boxed".equals( attributes.getAttribute( SinkEventAttributes.DECORATION ).toString() );
+        }
+
         if ( boxed )
         {
             writeStartTag( BLOCK_TAG, "body.source" );
@@ -706,6 +842,12 @@ public class FoSink
     }
 
     /** {@inheritDoc} */
+    public void verbatim( boolean boxed )
+    {
+        verbatim( boxed ? SinkEventAttributeSet.BOXED : null );
+    }
+
+    /** {@inheritDoc} */
     public void verbatim_()
     {
         this.verbatim = false;
@@ -714,7 +856,7 @@ public class FoSink
     }
 
     /** {@inheritDoc} */
-    public void horizontalRule()
+    public void horizontalRule( SinkEventAttributes attributes )
     {
         writeEOL();
         writeEOL();
@@ -725,6 +867,12 @@ public class FoSink
     }
 
     /** {@inheritDoc} */
+    public void horizontalRule()
+    {
+        horizontalRule( null );
+    }
+
+    /** {@inheritDoc} */
     public void pageBreak()
     {
         writeEmptyTag( BLOCK_TAG, "break-before", "page" );
@@ -732,7 +880,7 @@ public class FoSink
     }
 
     /** {@inheritDoc} */
-    public void table()
+    public void table( SinkEventAttributes attributes )
     {
         writeEOL();
         writeStartTag( BLOCK_TAG, "table.padding" );
@@ -741,6 +889,12 @@ public class FoSink
         //writeStartTag( TABLE_AND_CAPTION_TAG );
 
         writeStartTag( TABLE_TAG, "table.layout" );
+    }
+
+    /** {@inheritDoc} */
+    public void table()
+    {
+        table( null );
     }
 
     /** {@inheritDoc} */
@@ -797,7 +951,8 @@ public class FoSink
         this.tableGrid = grid;
         this.cellJustif = justification;
         this.isCellJustif = true;
-        writeStartTag( TABLE_BODY_TAG, "" );
+        writeEOL();
+        writeStartTag( TABLE_BODY_TAG );
     }
 
     /** {@inheritDoc} */
@@ -810,11 +965,17 @@ public class FoSink
     }
 
     /** {@inheritDoc} */
-    public void tableRow()
+    public void tableRow( SinkEventAttributes attributes )
     {
         // TODO spacer rows
         writeStartTag( TABLE_ROW_TAG, "table.body.row" );
         this.cellCount = 0;
+    }
+
+    /** {@inheritDoc} */
+    public void tableRow()
+    {
+        tableRow( null );
     }
 
     /** {@inheritDoc} */
@@ -825,9 +986,15 @@ public class FoSink
     }
 
     /** {@inheritDoc} */
-    public void tableCell()
+    public void tableCell( SinkEventAttributes attributes )
     {
         tableCell( false );
+    }
+
+    /** {@inheritDoc} */
+    public void tableCell()
+    {
+        tableCell( (SinkEventAttributes) null );
     }
 
     /** {@inheritDoc} */
@@ -838,9 +1005,15 @@ public class FoSink
     }
 
     /** {@inheritDoc} */
-    public void tableHeaderCell()
+    public void tableHeaderCell( SinkEventAttributes attributes )
     {
         tableCell( true );
+    }
+
+    /** {@inheritDoc} */
+    public void tableHeaderCell()
+    {
+        tableHeaderCell( (SinkEventAttributes) null );
     }
 
     /** {@inheritDoc} */
@@ -863,13 +1036,13 @@ public class FoSink
          {
              switch ( cellJustif[Math.min( cellCount, cellJustif.length - 1 )] )
              {
-                 case Sink.JUSTIFY_LEFT:
+                 case JUSTIFY_LEFT:
                      justif = "left";
                      break;
-                 case Sink.JUSTIFY_RIGHT:
+                 case JUSTIFY_RIGHT:
                      justif = "right";
                      break;
-                 case Sink.JUSTIFY_CENTER:
+                 case JUSTIFY_CENTER:
                  default:
                      justif = "center";
                      break;
@@ -924,13 +1097,19 @@ public class FoSink
     }
 
     /** {@inheritDoc} */
-    public void tableCaption()
+    public void tableCaption( SinkEventAttributes attributes )
     {
         // <fo:table-caption> is XSL-FO 1.0 standard but not implemented in FOP 0.95
         //writeStartTag( TABLE_CAPTION_TAG );
 
         // TODO: how to implement this otherwise?
         // table-footer doesn't work because it has to be declared before table-body.
+    }
+
+    /** {@inheritDoc} */
+    public void tableCaption()
+    {
+        tableCaption( null );
     }
 
     /** {@inheritDoc} */
@@ -941,7 +1120,7 @@ public class FoSink
     }
 
     /** {@inheritDoc} */
-    public void anchor( String name )
+    public void anchor( String name, SinkEventAttributes attributes )
     {
         if ( name == null )
         {
@@ -963,13 +1142,19 @@ public class FoSink
     }
 
     /** {@inheritDoc} */
+    public void anchor( String name )
+    {
+        anchor( name, null );
+    }
+
+    /** {@inheritDoc} */
     public void anchor_()
     {
         writeEndTag( INLINE_TAG );
     }
 
     /** {@inheritDoc} */
-    public void link( String name )
+    public void link( String name, SinkEventAttributes attributes )
     {
         if ( name == null )
         {
@@ -1005,6 +1190,12 @@ public class FoSink
             writeStartTag( BASIC_LINK_TAG, "internal-destination", HtmlTools.escapeHTML( anchor ) );
             writeStartTag( INLINE_TAG, "href.internal" );
         }
+    }
+
+    /** {@inheritDoc} */
+    public void link( String name )
+    {
+        link( name, null );
     }
 
     /** {@inheritDoc} */
@@ -1051,11 +1242,17 @@ public class FoSink
     }
 
     /** {@inheritDoc} */
-    public void lineBreak()
+    public void lineBreak( SinkEventAttributes attributes )
     {
         writeEOL();
         writeEOL();
         writeSimpleTag( BLOCK_TAG );
+    }
+
+    /** {@inheritDoc} */
+    public void lineBreak()
+    {
+        lineBreak( null );
     }
 
     /** {@inheritDoc} */
@@ -1065,9 +1262,15 @@ public class FoSink
     }
 
     /** {@inheritDoc} */
-    public void text( String text )
+    public void text( String text, SinkEventAttributes attributes )
     {
         content( text );
+    }
+
+    /** {@inheritDoc} */
+    public void text( String text )
+    {
+        text( text, null );
     }
 
     /** {@inheritDoc} */
@@ -1113,6 +1316,18 @@ public class FoSink
     public void unknown( String name, Object[] requiredParams, SinkEventAttributes attributes )
     {
         getLog().warn( "Unknown Sink event in FoSink: " + name + ", ignoring!" );
+    }
+
+    /** {@inheritDoc} */
+    public void comment( String comment )
+    {
+        StringBuffer buf = new StringBuffer( comment.length() + 9 );
+
+        buf.append( LESS_THAN ).append( BANG ).append( MINUS ).append( MINUS ).append( SPACE );
+        buf.append( comment );
+        buf.append( SPACE ).append( MINUS ).append( MINUS ).append( GREATER_THAN );
+
+        write( buf.toString() );
     }
 
     /**
