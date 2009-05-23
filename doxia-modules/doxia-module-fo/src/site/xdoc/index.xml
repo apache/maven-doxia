@@ -33,20 +33,20 @@ under the License.
       </p>
       <p>
         Currently only a sink is available, ie you can generate FO files
-        from other formats supported by Doxia, but you cannot parse them.
+        either programmatically or by converting from any other
+        <a href="http://maven.apache.org/doxia/references/index.html">input format</a>
+        supported by Doxia, but you cannot parse them.
       </p>
       <p>
         The generated FO files can then be converted into other formats,
         eg pdf, using <a href="http://xmlgraphics.apache.org/fop/">Apache Fop</a>.
+        Check out the <a href="usage.html"></a> examples.
       </p>
 
       <subsection name="Current limitations">
         <ul>
-          <li>Not configurable</li>
           <li>Table captions not implemented</li>
-          <li>Table header cells not implemented</li>
-          <li>Table width is fixed</li>
-          <li>Only supported graphics format is png.</li>
+          <li>Table width is fixed and column widths are uniformly distributed</li>
         </ul>
       </subsection>
 
