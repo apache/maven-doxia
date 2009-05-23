@@ -40,7 +40,7 @@ under the License.
       <p>
         The generated FO files can then be converted into other formats,
         eg pdf, using <a href="http://xmlgraphics.apache.org/fop/">Apache Fop</a>.
-        Check out the <a href="usage.html"></a> examples.
+        Check out the <a href="usage.html">usage</a> examples.
       </p>
 
       <subsection name="Current limitations">
