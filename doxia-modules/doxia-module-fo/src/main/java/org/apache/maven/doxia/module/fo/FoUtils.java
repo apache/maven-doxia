@@ -26,7 +26,6 @@ import java.io.IOException;
 import java.io.OutputStream;
 
 import javax.xml.transform.Result;
-import javax.xml.transform.Source;
 import javax.xml.transform.Transformer;
 import javax.xml.transform.TransformerConfigurationException;
 import javax.xml.transform.TransformerException;
@@ -82,11 +81,17 @@ public class FoUtils
                 throw new TransformerException( e );
             }
 
-            Fop fop = fopFactory.newFop( MimeConstants.MIME_PDF, foUserAgent, out );
+            Result res = null;
 
-            Source src = new StreamSource( fo );
-
-            Result res = new SAXResult( fop.getDefaultHandler() );
+            try
+            {
+                Fop fop = fopFactory.newFop( MimeConstants.MIME_PDF, foUserAgent, out );
+                res = new SAXResult( fop.getDefaultHandler() );
+            }
+            catch ( FOPException e )
+            {
+                throw new TransformerException( e );
+            }
 
             Transformer transformer = null;
 
@@ -100,11 +105,7 @@ public class FoUtils
                 throw new TransformerException( e );
             }
 
-                transformer.transform( src, res );
-        }
-        catch ( FOPException e )
-        {
-            throw new TransformerException( e );
+            transformer.transform( new StreamSource( fo ), res );
         }
         finally
         {
