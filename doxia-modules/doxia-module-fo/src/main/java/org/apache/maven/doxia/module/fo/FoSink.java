@@ -1551,9 +1551,6 @@ public class FoSink
                 case '&':
                     buffer.append( "&amp;" );
                     break;
-                case '\u00a9': // copyright
-                    buffer.append( "&#169;" );
-                    break;
                 case '\n':
                     buffer.append( EOL );
                     if ( verb )
@@ -1562,11 +1559,36 @@ public class FoSink
                     }
                     break;
                 default:
-                    buffer.append( c );
+                    if ( needsSymbolFont( c ) )
+                    {
+                        // TODO: make font configurable?
+                        buffer.append( "<fo:inline font-family=\"Symbol\">" ).append( c ).append( "</fo:inline>" );
+                    }
+                    else
+                    {
+                        buffer.append( c );
+                    }
             }
         }
 
         return buffer.toString();
+    }
+
+    private static final char UPPER_ALPHA = 0x391;
+    private static final char PIV = 0x3d6;
+    private static final char OLINE = 0x203e;
+    private static final char DIAMS = 0x2666;
+    private static final char EURO = 0x20ac;
+    private static final char TRADE = 0x2122;
+
+    private static boolean needsSymbolFont( char c )
+    {
+        // greek characters and mathematical symbols, except the euro and trade symbols
+        // symbols I couldn't get to display in any font:
+        // zwnj (0x200C), zwj (0x200D), lrm (0x200E), rlm (0x200F), oline (0x203E), prime (0x2032),
+        // Prime (0x2033), lceil (0x2038), rceil (0x2039), lfloor (0x203A), rfloor (0x203B)
+        return ( c >= UPPER_ALPHA && c <= PIV )
+                || ( c >= OLINE && c <= DIAMS && c != EURO && c != TRADE );
     }
 
     /**
