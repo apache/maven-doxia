@@ -549,6 +549,51 @@ public class AptParserTest
         assertFalse( it.hasNext() );
     }
 
+    /** @throws Exception  */
+    public void testSpecialCharactersInTables()
+        throws Exception
+    {
+        // DOXIA-323
+        String text =
+                "  \\~ \\= \\- \\+ \\* \\[ \\] \\< \\> \\{ \\} \\\\" + EOL
+                + EOL
+                + "*--------------------------------------------------+---------------+" + EOL
+                + "| \\~ \\= \\- \\+ \\* \\[ \\] \\< \\> \\{ \\} \\\\ | special chars |" + EOL
+                + "*--------------------------------------------------+---------------+";
+
+        SinkEventTestingSink sink = new SinkEventTestingSink();
+        parser.parse( text, sink );
+
+        Iterator it = sink.getEventList().iterator();
+
+        assertEquals( "head", ( (SinkEventElement) it.next() ).getName() );
+        assertEquals( "head_", ( (SinkEventElement) it.next() ).getName() );
+        assertEquals( "body", ( (SinkEventElement) it.next() ).getName() );
+
+        assertEquals( "paragraph", ( (SinkEventElement) it.next() ).getName() );
+        SinkEventElement event = (SinkEventElement) it.next();
+        assertEquals( "text", event.getName() );
+        assertEquals( "~ = - + * [ ] < > { } \\", event.getArgs()[0] );
+        assertEquals( "paragraph_", ( (SinkEventElement) it.next() ).getName() );
+
+        assertEquals( "table", ( (SinkEventElement) it.next() ).getName() );
+        assertEquals( "tableRows", ( (SinkEventElement) it.next() ).getName() );
+        assertEquals( "tableRow", ( (SinkEventElement) it.next() ).getName() );
+        assertEquals( "tableCell", ( (SinkEventElement) it.next() ).getName() );
+
+        event = (SinkEventElement) it.next();
+        assertEquals( "text", event.getName() );
+
+        // FIXME!
+        /*
+        assertEquals( "~ = - + * [ ] < > { } \\", event.getArgs()[0] );
+        assertEquals( "tableCell_", ( (SinkEventElement) it.next() ).getName() );
+        assertEquals( "tableCell", ( (SinkEventElement) it.next() ).getName() );
+        assertEquals( "text", ( (SinkEventElement) it.next() ).getName() );
+        assertEquals( "tableCell_", ( (SinkEventElement) it.next() ).getName() );
+        */
+    }
+
     /** {@inheritDoc} */
     protected String outputExtension()
     {
