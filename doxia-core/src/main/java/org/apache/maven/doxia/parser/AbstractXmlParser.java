@@ -1106,8 +1106,8 @@ public abstract class AbstractXmlParser
                         else
                         {
                             throw new XmlPullParserException(
-                                                              "character reference (with decimal value) may not contain " +
-                                                               printable( ch ), this, null );
+                                    "character reference (with decimal value) may not contain " +
+                                    printable( ch ), this, null );
                         }
                         ch = more();
                     }
@@ -1215,7 +1215,9 @@ public abstract class AbstractXmlParser
                     }
                 }
                 if ( tokenize )
+                {
                     text = null;
+                }
                 return null;
             }
         }
