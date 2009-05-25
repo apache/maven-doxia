@@ -73,8 +73,9 @@ public class DocBookSinkTest extends AbstractSinkTest
     /** {@inheritDoc} */
     protected String getHeadBlock()
     {
-        return "<!DOCTYPE article PUBLIC \"" + DocBookSink.DEFAULT_SGML_PUBLIC_ID + "\" "
-            + "\"" + DocBookSink.DEFAULT_SGML_SYSTEM_ID + "\"><article>";
+        return "<?xml version=\"1.0\" encoding=\"UTF-8\"?><!DOCTYPE article PUBLIC \""
+                + SimplifiedDocbookMarkup.DEFAULT_XML_PUBLIC_ID + "\" "
+                + "\"" + SimplifiedDocbookMarkup.DEFAULT_XML_SYSTEM_ID + "\"><article>";
     }
 
     /** {@inheritDoc} */
@@ -145,7 +146,7 @@ public class DocBookSinkTest extends AbstractSinkTest
     {
         // TODO: fix source
         return "<figure><title>" + caption
-            + "</title><mediaobject><imageobject><imagedata fileref=\"figure.jpg.jpeg\" format=\"JPEG\"></imagedata></imageobject></mediaobject>"
+            + "</title><mediaobject><imageobject><imagedata fileref=\"figure.jpg.jpeg\" format=\"JPEG\" /></imageobject></mediaobject>"
             + "</figure>";
     }
 
@@ -159,7 +160,7 @@ public class DocBookSinkTest extends AbstractSinkTest
         att.addAttribute( "colsep", "0" );
 
         return "<table" + SinkUtils.getAttributeString( att ) + "><title>" + caption
-            + "</title>" + "<tgroup cols=\"1\"><colspec align=\"center\"></colspec>" + "<tbody><row><entry>"
+            + "</title>" + "<tgroup cols=\"1\"><colspec align=\"center\" />" + "<tbody><row><entry>"
             + cell  + "</entry>" + "</row>" + "</tbody></tgroup>" + "</table>";
     }
 
@@ -190,7 +191,7 @@ public class DocBookSinkTest extends AbstractSinkTest
     /** {@inheritDoc} */
     protected String getAnchorBlock( String anchor )
     {
-        return "<anchor id=\"" + anchor + "\">" + anchor + "</anchor>";
+        return "<anchor id=\"" + anchor + "\" />" + anchor;
     }
 
     /** {@inheritDoc} */

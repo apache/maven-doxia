@@ -24,10 +24,8 @@ import java.util.Collection;
 import java.util.HashSet;
 import java.util.Stack;
 
-import javax.swing.text.html.HTML.Attribute;
-import javax.swing.text.html.HTML.Tag;
-
 import org.apache.maven.doxia.macro.MacroExecutionException;
+import org.apache.maven.doxia.markup.HtmlMarkup;
 import org.apache.maven.doxia.parser.AbstractXmlParser;
 import org.apache.maven.doxia.sink.Sink;
 import org.apache.maven.doxia.sink.SinkEventAttributeSet;
@@ -46,7 +44,7 @@ import org.codehaus.plexus.util.xml.pull.XmlPullParserException;
  */
 public class DocBookParser
     extends AbstractXmlParser
-    implements DocbookMarkup
+    implements DocbookMarkup, SimplifiedDocbookMarkup
 {
     /**
      * Level counter for calculating the section level.
@@ -64,13 +62,7 @@ public class DocBookParser
     private Stack parent = new Stack();
 
     /**
-     * The list of elements the parse has been unable to handle
-     */
-    private Collection failedElements = new HashSet();
-
-    /**
-     * The list of DocBook elements that introduce a new level of
-     * hierarchy.
+     * The list of DocBook elements that introduce a new level of hierarchy.
      */
     private static final Collection HIER_ELEMENTS = new HashSet();
 
@@ -96,103 +88,41 @@ public class DocBookParser
 
     static
     {
-        DocBookParser.HIER_ELEMENTS.add( "set" );
-        DocBookParser.HIER_ELEMENTS.add( "book" );
-        DocBookParser.HIER_ELEMENTS.add( "part" );
-        DocBookParser.HIER_ELEMENTS.add( "chapter" );
-        DocBookParser.HIER_ELEMENTS.add( "section" );
-        DocBookParser.HIER_ELEMENTS.add( "sect1" );
-        DocBookParser.HIER_ELEMENTS.add( "sect2" );
-        DocBookParser.HIER_ELEMENTS.add( "sect3" );
-        DocBookParser.HIER_ELEMENTS.add( "sect4" );
-        DocBookParser.HIER_ELEMENTS.add( "sect5" );
-        DocBookParser.HIER_ELEMENTS.add( "article" );
-        DocBookParser.HIER_ELEMENTS.add( "preface" );
-        DocBookParser.HIER_ELEMENTS.add( "partintro" );
-        DocBookParser.HIER_ELEMENTS.add( "appendix" );
-        DocBookParser.HIER_ELEMENTS.add( "bibliography" );
-        DocBookParser.HIER_ELEMENTS.add( "reference" );
-        DocBookParser.HIER_ELEMENTS.add( "bibliography" );
-        DocBookParser.HIER_ELEMENTS.add( "bibliodiv" );
-        DocBookParser.HIER_ELEMENTS.add( "glossary" );
-        DocBookParser.HIER_ELEMENTS.add( "refentry" );
-        DocBookParser.HIER_ELEMENTS.add( "refnamediv" );
-        DocBookParser.HIER_ELEMENTS.add( "refsection" );
-        DocBookParser.HIER_ELEMENTS.add( "refsect1" );
-        DocBookParser.HIER_ELEMENTS.add( "refsect2" );
-        DocBookParser.HIER_ELEMENTS.add( "refsect3" );
+        HIER_ELEMENTS.add( SimplifiedDocbookMarkup.SECTION_TAG.toString() );
+        HIER_ELEMENTS.add( SimplifiedDocbookMarkup.ARTICLE_TAG.toString() );
+        HIER_ELEMENTS.add( SimplifiedDocbookMarkup.APPENDIX_TAG.toString() );
+        HIER_ELEMENTS.add( SimplifiedDocbookMarkup.BIBLIOGRAPHY_TAG.toString() );
+        HIER_ELEMENTS.add( SimplifiedDocbookMarkup.BIBLIODIV_TAG.toString() );
 
-        DocBookParser.VERBATIM_ELEMENTS.add( "programlisting" );
-        DocBookParser.VERBATIM_ELEMENTS.add( "screen" );
-        DocBookParser.VERBATIM_ELEMENTS.add( "literallayout" );
-        DocBookParser.VERBATIM_ELEMENTS.add( "synopsis" );
+        VERBATIM_ELEMENTS.add( SimplifiedDocbookMarkup.PROGRAMLISTING_TAG.toString() );
+        VERBATIM_ELEMENTS.add( SimplifiedDocbookMarkup.LITERALLAYOUT_TAG.toString() );
 
-        DocBookParser.BOLD_ELEMENTS.add( "command" );
-        DocBookParser.BOLD_ELEMENTS.add( "keycap" );
-        DocBookParser.BOLD_ELEMENTS.add( "shortcut" );
-        DocBookParser.BOLD_ELEMENTS.add( "userinput" );
+        BOLD_ELEMENTS.add( SimplifiedDocbookMarkup.COMMAND_TAG.toString() );
+        BOLD_ELEMENTS.add( SimplifiedDocbookMarkup.USERINPUT_TAG.toString() );
 
-        DocBookParser.ITALIC_ELEMENTS.add( "parameter" );
-        DocBookParser.ITALIC_ELEMENTS.add( "replaceable" );
-        DocBookParser.ITALIC_ELEMENTS.add( "medialabel" );
-        DocBookParser.ITALIC_ELEMENTS.add( "structfield" );
-        DocBookParser.ITALIC_ELEMENTS.add( "systemitem" );
-        DocBookParser.ITALIC_ELEMENTS.add( "citetitle" );
-        DocBookParser.ITALIC_ELEMENTS.add( "emphasis" );
-        DocBookParser.ITALIC_ELEMENTS.add( "foreignphrase" );
-        DocBookParser.ITALIC_ELEMENTS.add( "wordasword" );
+        ITALIC_ELEMENTS.add( SimplifiedDocbookMarkup.REPLACEABLE_TAG.toString() );
+        ITALIC_ELEMENTS.add( SimplifiedDocbookMarkup.SYSTEMITEM_TAG.toString() );
+        ITALIC_ELEMENTS.add( SimplifiedDocbookMarkup.CITETITLE_TAG.toString() );
+        ITALIC_ELEMENTS.add( SimplifiedDocbookMarkup.EMPHASIS_TAG.toString() );
 
-        DocBookParser.MONOSPACE_ELEMENTS.add( "classname" );
-        DocBookParser.MONOSPACE_ELEMENTS.add( "exceptionname" );
-        DocBookParser.MONOSPACE_ELEMENTS.add( "interfacename" );
-        DocBookParser.MONOSPACE_ELEMENTS.add( "methodname" );
-        DocBookParser.MONOSPACE_ELEMENTS.add( "computeroutput" );
-        DocBookParser.MONOSPACE_ELEMENTS.add( "constant" );
-        DocBookParser.MONOSPACE_ELEMENTS.add( "envar" );
-        DocBookParser.MONOSPACE_ELEMENTS.add( "function" );
-        DocBookParser.MONOSPACE_ELEMENTS.add( "parameter" );
-        DocBookParser.MONOSPACE_ELEMENTS.add( "replaceable" );
-        DocBookParser.MONOSPACE_ELEMENTS.add( "literal" );
-        DocBookParser.MONOSPACE_ELEMENTS.add( "code" );
-        DocBookParser.MONOSPACE_ELEMENTS.add( "option" );
-        DocBookParser.MONOSPACE_ELEMENTS.add( "prompt" );
-        DocBookParser.MONOSPACE_ELEMENTS.add( "structfield" );
-        DocBookParser.MONOSPACE_ELEMENTS.add( "systemitem" );
-        DocBookParser.MONOSPACE_ELEMENTS.add( "structfield" );
-        DocBookParser.MONOSPACE_ELEMENTS.add( "userinput" );
-        DocBookParser.MONOSPACE_ELEMENTS.add( "varname" );
-        DocBookParser.MONOSPACE_ELEMENTS.add( "sgmltag" );
-        DocBookParser.MONOSPACE_ELEMENTS.add( "tag" ); //DocBook 5
-        DocBookParser.MONOSPACE_ELEMENTS.add( "uri" );
-        DocBookParser.MONOSPACE_ELEMENTS.add( "filename" );
+        MONOSPACE_ELEMENTS.add( SimplifiedDocbookMarkup.COMPUTEROUTPUT_TAG.toString() );
+        MONOSPACE_ELEMENTS.add( SimplifiedDocbookMarkup.REPLACEABLE_TAG.toString() );
+        MONOSPACE_ELEMENTS.add( SimplifiedDocbookMarkup.LITERAL_TAG.toString() );
+        MONOSPACE_ELEMENTS.add( SimplifiedDocbookMarkup.OPTION_TAG.toString() );
+        MONOSPACE_ELEMENTS.add( SimplifiedDocbookMarkup.SYSTEMITEM_TAG.toString() );
+        MONOSPACE_ELEMENTS.add( SimplifiedDocbookMarkup.USERINPUT_TAG.toString() );
+        MONOSPACE_ELEMENTS.add( SimplifiedDocbookMarkup.FILENAME_TAG.toString() );
     }
 
     // ----------------------------------------------------------------------
     //
     // ----------------------------------------------------------------------
 
-//    public void parseDocBook( XmlPullParser parser, Sink sink )
-//        throws XmlPullParserException, IOException
-//    {
-//
-//        // TODO: This should go through some monitor
-//        if ( !failedElements.isEmpty() )
-//        {
-//            System.out.println( "Doxia was unable to handle following elements" );
-//            for ( Iterator i = failedElements.iterator(); i.hasNext(); )
-//            {
-//                System.out.print( i.next().toString() + " " );
-//            }
-//
-//            System.out.println();
-//        }
-//    }
-
     /** {@inheritDoc} */
     protected void handleStartTag( XmlPullParser parser, Sink sink )
         throws XmlPullParserException, MacroExecutionException
     {
-        String id = getAttributeValue( parser, Attribute.ID.toString() );
+        String id = getAttributeValue( parser, ID_ATTRIBUTE );
         //catch link targets
         if ( id != null )
         {
@@ -210,75 +140,53 @@ public class DocBookParser
             {
                 sink.body();
             }
-            else if ( level == Sink.SECTION_LEVEL_1 )
+            else
             {
-                sink.section1();
+                sink.section( level, null );
             }
-            else if ( level == Sink.SECTION_LEVEL_2 )
-            {
-                sink.section2();
-            }
-            else if ( level == Sink.SECTION_LEVEL_3 )
-            {
-                sink.section3();
-            }
-            else if ( level == Sink.SECTION_LEVEL_4 )
-            {
-                sink.section4();
-            }
-            else if ( level == Sink.SECTION_LEVEL_5 )
-            {
-                sink.section5();
-            }
-        }
-        //Match all *info-Elements for metainformation, but only consider the root element
-        else if ( ( parser.getName().endsWith( INFO_TAG.toString() ) ) && ( level == 0 ) )
-        {
-            sink.head();
-            parent.push( parser.getName() );
         }
         //handle lists
-        else if ( parser.getName().equals( ITEMIZEDLIST_TAG.toString() ) )
+        else if ( parser.getName().equals( SimplifiedDocbookMarkup.ITEMIZEDLIST_TAG.toString() ) )
         {
             sink.list();
             //for itemizedlists in variablelists
             parent.push( parser.getName() );
         }
-        else if ( parser.getName().equals( ORDEREDLIST_TAG.toString() ) )
+        else if ( parser.getName().equals( SimplifiedDocbookMarkup.ORDEREDLIST_TAG.toString() ) )
         {
             //default enumeration style is decimal
             int numeration = Sink.NUMBERING_DECIMAL;
-            String style = getAttributeValue( parser, NUMERATION_ATTRIBUTE );
-            if ( style.equals( ARABIC_STYLE ) )
+            String style = getAttributeValue( parser, SimplifiedDocbookMarkup.NUMERATION_ATTRIBUTE );
+            if ( style.equals( SimplifiedDocbookMarkup.ARABIC_STYLE ) )
             {
                 numeration = Sink.NUMBERING_DECIMAL;
             }
-            else if ( style.equals( LOWERALPHA_STYLE ) )
+            else if ( style.equals( SimplifiedDocbookMarkup.LOWERALPHA_STYLE ) )
             {
                 numeration = Sink.NUMBERING_LOWER_ALPHA;
             }
-            else if ( style.equals( LOWERROMAN_STYLE ) )
+            else if ( style.equals( SimplifiedDocbookMarkup.LOWERROMAN_STYLE ) )
             {
                 numeration = Sink.NUMBERING_LOWER_ROMAN;
             }
-            else if ( style.equals( UPPERALPHA_STYLE ) )
+            else if ( style.equals( SimplifiedDocbookMarkup.UPPERALPHA_STYLE ) )
             {
                 numeration = Sink.NUMBERING_UPPER_ALPHA;
             }
-            else if ( style.equals( UPPERROMAN_STYLE ) )
+            else if ( style.equals( SimplifiedDocbookMarkup.UPPERROMAN_STYLE ) )
             {
                 numeration = Sink.NUMBERING_UPPER_ROMAN;
             }
             sink.numberedList( numeration );
             parent.push( parser.getName() );
         }
-        else if ( parser.getName().equals( LISTITEM_TAG.toString() ) )
+        else if ( parser.getName().equals( SimplifiedDocbookMarkup.LISTITEM_TAG.toString() ) )
         {
-            if ( isParent( VARIABLELIST_TAG.toString() ) )
+            if ( isParent( SimplifiedDocbookMarkup.VARIABLELIST_TAG.toString() ) )
             {
                 sink.definition();
             }
-            else if ( isParent( ORDEREDLIST_TAG.toString() ) )
+            else if ( isParent( SimplifiedDocbookMarkup.ORDEREDLIST_TAG.toString() ) )
             {
                 sink.numberedListItem();
             }
@@ -287,130 +195,125 @@ public class DocBookParser
                 sink.listItem();
             }
         }
-        else if ( parser.getName().equals( VARIABLELIST_TAG.toString() ) )
+        else if ( parser.getName().equals( SimplifiedDocbookMarkup.VARIABLELIST_TAG.toString() ) )
         {
             sink.definitionList();
             parent.push( parser.getName() );
         }
-        else if ( parser.getName().equals( VARLISTENTRY_TAG.toString() ) )
+        else if ( parser.getName().equals( SimplifiedDocbookMarkup.VARLISTENTRY_TAG.toString() ) )
         {
             sink.definitionListItem();
         }
-        else if ( parser.getName().equals( TERM_TAG.toString() ) )
+        else if ( parser.getName().equals( SimplifiedDocbookMarkup.TERM_TAG.toString() ) )
         {
             sink.definedTerm();
         }
         //handle figures
-        else if ( parser.getName().equals( FIGURE_TAG.toString() )
-            || parser.getName().equals( INFORMALFIGURE_TAG.toString() ) )
+        else if ( parser.getName().equals( SimplifiedDocbookMarkup.FIGURE_TAG.toString() ) )
         {
             sink.figure();
             parent.push( parser.getName() );
         }
-        else if ( parser.getName().equals( IMAGEOBJECT_TAG.toString() ) )
+        else if ( parser.getName().equals( SimplifiedDocbookMarkup.IMAGEOBJECT_TAG.toString() ) )
         {
-            String fileref = getAttributeValue( parser, FILEREF_ATTRIBUTE );
+            String fileref = getAttributeValue( parser, "fileref" );
             if ( fileref != null )
             {
                 sink.figureGraphics( fileref );
                 parent.push( parser.getName() );
             }
         }
-        else if ( parser.getName().equals( Tag.CAPTION.toString() ) && isParent( FIGURE_TAG.toString() ) )
+        else if ( parser.getName().equals( SimplifiedDocbookMarkup.CAPTION_TAG.toString() )
+                && isParent( SimplifiedDocbookMarkup.FIGURE_TAG.toString() ) )
         {
             sink.figureCaption();
         }
-        else if ( parser.getName().equals( Tag.TABLE.toString() )
-            || parser.getName().equals( INFORMALTABLE_TAG.toString() ) )
+        else if ( parser.getName().equals( SimplifiedDocbookMarkup.TABLE_TAG.toString() )
+            || parser.getName().equals( SimplifiedDocbookMarkup.INFORMALTABLE_TAG.toString() ) )
         {
             sink.table();
             //TODO handle tgroups
             parent.push( parser.getName() );
         }
-        else if ( parser.getName().equals( THEAD_TAG.toString() ) )
+        else if ( parser.getName().equals( SimplifiedDocbookMarkup.THEAD_TAG.toString() ) )
         {
             parent.push( parser.getName() );
         }
-        else if ( parser.getName().equals( Tag.TR.toString() ) || parser.getName().equals( ROW_TAG.toString() ) )
+        else if ( parser.getName().equals( SimplifiedDocbookMarkup.TR_TAG.toString() )
+                || parser.getName().equals( SimplifiedDocbookMarkup.ROW_TAG.toString() ) )
         {
             sink.tableRow();
         }
-        else if ( parser.getName().equals( ENTRY_TAG.toString() ) && isParent( THEAD_TAG.toString() )
-            || parser.getName().equals( Tag.TH.toString() ) )
+        else if ( parser.getName().equals( SimplifiedDocbookMarkup.ENTRY_TAG.toString() )
+                && isParent( SimplifiedDocbookMarkup.THEAD_TAG.toString() )
+                || parser.getName().equals( SimplifiedDocbookMarkup.TH_TAG.toString() ) )
         {
             sink.tableHeaderCell();
         }
-        else if ( parser.getName().equals( ENTRY_TAG.toString() ) )
+        else if ( parser.getName().equals( SimplifiedDocbookMarkup.ENTRY_TAG.toString() ) )
         {
             sink.tableCell();
         }
         else
-        if ( parser.getName().equals( Tag.CAPTION.toString() )
-            && ( isParent( INFORMALTABLE_TAG.toString() ) || isParent( Tag.TABLE.toString() ) ) )
+        if ( parser.getName().equals( CAPTION_TAG.toString() )
+            && ( isParent( SimplifiedDocbookMarkup.INFORMALTABLE_TAG.toString() )
+            || isParent( SimplifiedDocbookMarkup.TABLE_TAG.toString() ) ) )
         {
             sink.tableCaption();
         }
-        else if ( ( parser.getName().equals( PARA_TAG.toString() )
-            || parser.getName().equals( SIMPARA_TAG.toString() ) )
-            && !isParent( FORMALPARA_TAG.toString() ) )
+        else if ( parser.getName().equals( SimplifiedDocbookMarkup.PARA_TAG.toString() ) )
         {
             sink.paragraph();
         }
-        else if ( parser.getName().equals( FORMALPARA_TAG.toString() ) )
-        {
-            parent.push( parser.getName() );
-            sink.paragraph();
-        }
-        else if ( parser.getName().equals( Tag.TITLE.toString() ) && isParent( FORMALPARA_TAG.toString() ) )
+        else if ( parser.getName().equals( SimplifiedDocbookMarkup.TITLE_TAG.toString() ) )
         {
             sink.bold();
         }
-        else if ( DocBookParser.VERBATIM_ELEMENTS.contains( parser.getName() ) )
+        else if ( VERBATIM_ELEMENTS.contains( parser.getName() ) )
         {
             sink.verbatim( SinkEventAttributeSet.BOXED );
         }
 
-        else if ( DocBookParser.BOLD_ELEMENTS.contains( parser.getName() )
-            && DocBookParser.MONOSPACE_ELEMENTS.contains( parser.getName() ) )
+        else if ( BOLD_ELEMENTS.contains( parser.getName() )
+            && MONOSPACE_ELEMENTS.contains( parser.getName() ) )
         {
             sink.bold();
             sink.monospaced();
         }
-        else if ( DocBookParser.ITALIC_ELEMENTS.contains( parser.getName() )
-            && DocBookParser.MONOSPACE_ELEMENTS.contains( parser.getName() ) )
+        else if ( ITALIC_ELEMENTS.contains( parser.getName() )
+            && MONOSPACE_ELEMENTS.contains( parser.getName() ) )
         {
             sink.italic();
             sink.monospaced();
         }
-        else if ( DocBookParser.BOLD_ELEMENTS.contains( parser.getName() ) )
+        else if ( BOLD_ELEMENTS.contains( parser.getName() ) )
         {
             sink.bold();
         }
-        else if ( DocBookParser.ITALIC_ELEMENTS.contains( parser.getName() )
+        else if ( ITALIC_ELEMENTS.contains( parser.getName() )
             && "bold".equals( parser.getAttributeValue( null, "role" ) ) )
         {
             sink.bold();
 
             isBold = true;
         }
-        else if ( DocBookParser.ITALIC_ELEMENTS.contains( parser.getName() ) )
+        else if ( ITALIC_ELEMENTS.contains( parser.getName() ) )
         {
             sink.italic();
         }
-        else if ( DocBookParser.MONOSPACE_ELEMENTS.contains( parser.getName() ) )
+        else if ( MONOSPACE_ELEMENTS.contains( parser.getName() ) )
         {
             sink.monospaced();
         }
 
-        else if ( parser.getName().equals( Tag.TITLE.toString() ) )
+        else if ( parser.getName().equals( SimplifiedDocbookMarkup.TITLE_TAG.toString() ) )
         {
-            if ( parser.getName().equals( FIGURE_TAG.toString() )
-                || parser.getName().equals( INFORMALFIGURE_TAG.toString() ) )
+            if ( parser.getName().equals( SimplifiedDocbookMarkup.FIGURE_TAG.toString() ) )
             {
                 sink.figureCaption();
             }
-            else if ( parser.getName().equals( Tag.TABLE.toString() )
-                || parser.getName().equals( INFORMALTABLE_TAG.toString() ) )
+            else if ( parser.getName().equals( SimplifiedDocbookMarkup.TABLE_TAG.toString() )
+                || parser.getName().equals( SimplifiedDocbookMarkup.INFORMALTABLE_TAG.toString() ) )
             {
                 sink.tableCaption();
             }
@@ -418,45 +321,29 @@ public class DocBookParser
             {
                 sink.title();
             }
-            else if ( level == Sink.SECTION_LEVEL_1 )
+            else
             {
-                sink.sectionTitle1();
-            }
-            else if ( level == Sink.SECTION_LEVEL_2 )
-            {
-                sink.sectionTitle2();
-            }
-            else if ( level == Sink.SECTION_LEVEL_3 )
-            {
-                sink.sectionTitle3();
-            }
-            else if ( level == Sink.SECTION_LEVEL_4 )
-            {
-                sink.sectionTitle4();
-            }
-            else if ( level == Sink.SECTION_LEVEL_5 )
-            {
-                sink.sectionTitle5();
+                sink.sectionTitle( level, null );
             }
         }
-        else if ( parser.getName().equals( CORPAUTHOR_TAG.toString() ) )
+        else if ( parser.getName().equals( SimplifiedDocbookMarkup.CORPAUTHOR_TAG.toString() ) )
         {
             sink.author();
         }
-        else if ( parser.getName().equals( DATE_TAG.toString() ) )
+        else if ( parser.getName().equals( SimplifiedDocbookMarkup.DATE_TAG.toString() ) )
         {
             sink.date();
         }
-        else if ( parser.getName().equals( ULINK_TAG.toString() ) )
+        else if ( parser.getName().equals( SimplifiedDocbookMarkup.ULINK_TAG.toString() ) )
         {
-            String url = getAttributeValue( parser, URL_TAG.toString() );
+            String url = getAttributeValue( parser, SimplifiedDocbookMarkup.URL_ATTRIBUTE );
             if ( url != null )
             {
                 parent.push( parser.getName() );
                 sink.link( url );
             }
         }
-        else if ( parser.getName().equals( EMAIL_TAG.toString() ) )
+        else if ( parser.getName().equals( SimplifiedDocbookMarkup.EMAIL_TAG.toString() ) )
         {
             String mailto;
             try
@@ -470,18 +357,18 @@ public class DocBookParser
             sink.link( "mailto:" + mailto );
             sink.link_();
         }
-        else if ( parser.getName().equals( LINK_TAG.toString() ) )
+        else if ( parser.getName().equals( SimplifiedDocbookMarkup.LINK_TAG.toString() ) )
         {
-            String linkend = getAttributeValue( parser, LINKEND_ATTRIBUTE );
+            String linkend = getAttributeValue( parser, SimplifiedDocbookMarkup.LINKEND_ATTRIBUTE );
             if ( linkend != null )
             {
                 parent.push( parser.getName() );
                 sink.link( "#" + linkend );
             }
         }
-        else if ( parser.getName().equals( XREF_TAG.toString() ) )
+        else if ( parser.getName().equals( SimplifiedDocbookMarkup.XREF_TAG.toString() ) )
         {
-            String linkend = getAttributeValue( parser, LINKEND_ATTRIBUTE );
+            String linkend = getAttributeValue( parser, SimplifiedDocbookMarkup.LINKEND_ATTRIBUTE );
             if ( linkend != null )
             {
                 sink.link( "#" + linkend );
@@ -491,7 +378,7 @@ public class DocBookParser
         }
         else
         {
-            failedElements.add( parser.getName() );
+            handleUnknown( parser, sink, HtmlMarkup.TAG_TYPE_START );
         }
     }
 
@@ -508,53 +395,31 @@ public class DocBookParser
             {
                 sink.body_();
             }
-            else if ( level == Sink.SECTION_LEVEL_1 )
+            else
             {
-                sink.section1_();
-            }
-            else if ( level == Sink.SECTION_LEVEL_2 )
-            {
-                sink.section2_();
-            }
-            else if ( level == Sink.SECTION_LEVEL_3 )
-            {
-                sink.section3_();
-            }
-            else if ( level == Sink.SECTION_LEVEL_4 )
-            {
-                sink.section4_();
-            }
-            else if ( level == Sink.SECTION_LEVEL_5 )
-            {
-                sink.section5_();
+                sink.section_( level );
             }
             //decrease the nesting level
             level--;
         }
-        //Match all *info-Elements for metainformation, but only consider the root element
-        else if ( parser.getName().endsWith( INFO_TAG.toString() ) && level == 0 )
-        {
-            sink.head_();
-            parent.pop();
-        }
         //handle lists
-        else if ( parser.getName().equals( ITEMIZEDLIST_TAG.toString() ) )
+        else if ( parser.getName().equals( SimplifiedDocbookMarkup.ITEMIZEDLIST_TAG.toString() ) )
         {
             sink.list_();
             parent.pop();
         }
-        else if ( parser.getName().equals( ORDEREDLIST_TAG.toString() ) )
+        else if ( parser.getName().equals( SimplifiedDocbookMarkup.ORDEREDLIST_TAG.toString() ) )
         {
             sink.numberedList_();
             parent.pop();
         }
-        else if ( parser.getName().equals( LISTITEM_TAG.toString() ) )
+        else if ( parser.getName().equals( SimplifiedDocbookMarkup.LISTITEM_TAG.toString() ) )
         {
-            if ( isParent( VARIABLELIST_TAG.toString() ) )
+            if ( isParent( SimplifiedDocbookMarkup.VARIABLELIST_TAG.toString() ) )
             {
                 sink.definition_();
             }
-            else if ( isParent( ORDEREDLIST_TAG.toString() ) )
+            else if ( isParent( SimplifiedDocbookMarkup.ORDEREDLIST_TAG.toString() ) )
             {
                 sink.numberedListItem_();
             }
@@ -563,96 +428,92 @@ public class DocBookParser
                 sink.listItem_();
             }
         }
-        else if ( parser.getName().equals( VARIABLELIST_TAG.toString() ) )
+        else if ( parser.getName().equals( SimplifiedDocbookMarkup.VARIABLELIST_TAG.toString() ) )
         {
             sink.definitionList_();
         }
-        else if ( parser.getName().equals( VARLISTENTRY_TAG.toString() ) )
+        else if ( parser.getName().equals( SimplifiedDocbookMarkup.VARLISTENTRY_TAG.toString() ) )
         {
             sink.definitionListItem_();
         }
-        else if ( parser.getName().equals( TERM_TAG.toString() ) )
+        else if ( parser.getName().equals( SimplifiedDocbookMarkup.TERM_TAG.toString() ) )
         {
             sink.definedTerm_();
         }
         //handle figures
-        else if ( parser.getName().equals( FIGURE_TAG.toString() )
-            || parser.getName().equals( INFORMALFIGURE_TAG.toString() ) )
+        else if ( parser.getName().equals( SimplifiedDocbookMarkup.FIGURE_TAG.toString() ) )
         {
             sink.figure_();
             parent.pop();
         }
-        else if ( parser.getName().equals( Tag.CAPTION.toString() ) && isParent( FIGURE_TAG.toString() ) )
+        else if ( parser.getName().equals( SimplifiedDocbookMarkup.CAPTION_TAG.toString() )
+                && isParent( SimplifiedDocbookMarkup.FIGURE_TAG.toString() ) )
         {
             sink.figureCaption_();
         }
-        else if ( parser.getName().equals( Tag.TABLE.toString() )
-            || parser.getName().equals( INFORMALTABLE_TAG.toString() ) )
+        else if ( parser.getName().equals( SimplifiedDocbookMarkup.TABLE_TAG.toString() )
+            || parser.getName().equals( SimplifiedDocbookMarkup.INFORMALTABLE_TAG.toString() ) )
         {
             sink.table_();
             //TODO handle tgroups
             parent.pop();
         }
-        else if ( parser.getName().equals( THEAD_TAG.toString() ) )
+        else if ( parser.getName().equals( SimplifiedDocbookMarkup.THEAD_TAG.toString() ) )
         {
             parent.pop();
         }
-        else if ( parser.getName().equals( Tag.TR.toString() ) || parser.getName().equals( ROW_TAG.toString() ) )
+        else if ( parser.getName().equals( SimplifiedDocbookMarkup.TR_TAG.toString() )
+                || parser.getName().equals( SimplifiedDocbookMarkup.ROW_TAG.toString() ) )
         {
             sink.tableRow_();
         }
-        else if ( parser.getName().equals( ENTRY_TAG.toString() ) && isParent( THEAD_TAG.toString() )
-            || parser.getName().equals( Tag.TH.toString() ) )
+        else if ( parser.getName().equals( SimplifiedDocbookMarkup.ENTRY_TAG.toString() )
+                && isParent( SimplifiedDocbookMarkup.THEAD_TAG.toString() )
+            || parser.getName().equals( TH_TAG.toString() ) )
         {
             sink.tableHeaderCell_();
         }
-        else if ( parser.getName().equals( ENTRY_TAG.toString() ) )
+        else if ( parser.getName().equals( SimplifiedDocbookMarkup.ENTRY_TAG.toString() ) )
         {
             sink.tableCell_();
         }
         else
-        if ( parser.getName().equals( Tag.CAPTION.toString() )
-            && ( isParent( INFORMALTABLE_TAG.toString() ) || isParent( Tag.TABLE.toString() ) ) )
+        if ( parser.getName().equals( SimplifiedDocbookMarkup.CAPTION_TAG.toString() )
+            && ( isParent( SimplifiedDocbookMarkup.INFORMALTABLE_TAG.toString() )
+            || isParent( SimplifiedDocbookMarkup.TABLE_TAG.toString() ) ) )
         {
             sink.tableCaption_();
         }
-        else if ( ( parser.getName().equals( PARA_TAG.toString() )
-            || parser.getName().equals( SIMPARA_TAG.toString() ) )
-            && !isParent( FORMALPARA_TAG.toString() ) )
+        else if ( parser.getName().equals( SimplifiedDocbookMarkup.PARA_TAG.toString() ) )
         {
             sink.paragraph_();
         }
-        else if ( parser.getName().equals( FORMALPARA_TAG.toString() ) )
-        {
-            parent.pop();
-            sink.paragraph_();
-        }
-        else if ( parser.getName().equals( Tag.TITLE.toString() ) && isParent( FORMALPARA_TAG.toString() ) )
+        else if ( parser.getName().equals( SimplifiedDocbookMarkup.TITLE_TAG.toString() ) )
         {
             sink.text( ". " ); //Inline Running head
             sink.bold_();
         }
-        else if ( DocBookParser.VERBATIM_ELEMENTS.contains( parser.getName() ) )
+        else if ( VERBATIM_ELEMENTS.contains( parser.getName() ) )
         {
             sink.verbatim_();
         }
-        else if ( DocBookParser.BOLD_ELEMENTS.contains( parser.getName() )
-            && DocBookParser.MONOSPACE_ELEMENTS.contains( parser.getName() ) )
+        else if ( BOLD_ELEMENTS.contains( parser.getName() )
+            && MONOSPACE_ELEMENTS.contains( parser.getName() ) )
         {
             sink.bold_();
             sink.monospaced_();
         }
-        else if ( DocBookParser.ITALIC_ELEMENTS.contains( parser.getName() )
-            && DocBookParser.MONOSPACE_ELEMENTS.contains( parser.getName() ) )
+        else if ( ITALIC_ELEMENTS.contains( parser.getName() )
+            && MONOSPACE_ELEMENTS.contains( parser.getName() ) )
         {
             sink.italic_();
             sink.monospaced_();
         }
-        else if ( DocBookParser.BOLD_ELEMENTS.contains( parser.getName() ) )
+        else if ( BOLD_ELEMENTS.contains( parser.getName() ) )
         {
             sink.bold_();
         }
-        else if ( DocBookParser.ITALIC_ELEMENTS.contains( parser.getName() ) )
+        else if ( ITALIC_ELEMENTS.contains( parser.getName() ) )
         {
             if ( isBold )
             {
@@ -665,20 +526,19 @@ public class DocBookParser
                 sink.italic_();
             }
         }
-        else if ( DocBookParser.MONOSPACE_ELEMENTS.contains( parser.getName() ) )
+        else if ( MONOSPACE_ELEMENTS.contains( parser.getName() ) )
         {
             sink.monospaced_();
         }
 
-        else if ( parser.getName().equals( Tag.TITLE.toString() ) )
+        else if ( parser.getName().equals( SimplifiedDocbookMarkup.TITLE_TAG.toString() ) )
         {
-            if ( parser.getName().equals( FIGURE_TAG.toString() )
-                || parser.getName().equals( INFORMALFIGURE_TAG.toString() ) )
+            if ( parser.getName().equals( SimplifiedDocbookMarkup.FIGURE_TAG.toString() ) )
             {
                 sink.figureCaption_();
             }
-            else if ( parser.getName().equals( Tag.TABLE.toString() )
-                || parser.getName().equals( INFORMALTABLE_TAG.toString() ) )
+            else if ( parser.getName().equals( SimplifiedDocbookMarkup.TABLE_TAG.toString() )
+                || parser.getName().equals( SimplifiedDocbookMarkup.INFORMALTABLE_TAG.toString() ) )
             {
                 sink.tableCaption_();
             }
@@ -686,36 +546,21 @@ public class DocBookParser
             {
                 sink.title_();
             }
-            else if ( level == Sink.SECTION_LEVEL_1 )
+            else
             {
-                sink.sectionTitle1_();
-            }
-            else if ( level == Sink.SECTION_LEVEL_2 )
-            {
-                sink.sectionTitle2_();
-            }
-            else if ( level == Sink.SECTION_LEVEL_3 )
-            {
-                sink.sectionTitle3_();
-            }
-            else if ( level == Sink.SECTION_LEVEL_4 )
-            {
-                sink.sectionTitle4_();
-            }
-            else if ( level == Sink.SECTION_LEVEL_5 )
-            {
-                sink.sectionTitle5_();
+                sink.sectionTitle_( level );
             }
         }
-        else if ( parser.getName().equals( CORPAUTHOR_TAG.toString() ) )
+        else if ( parser.getName().equals( SimplifiedDocbookMarkup.CORPAUTHOR_TAG.toString() ) )
         {
             sink.author_();
         }
-        else if ( parser.getName().equals( DATE_TAG.toString() ) )
+        else if ( parser.getName().equals( SimplifiedDocbookMarkup.DATE_TAG.toString() ) )
         {
             sink.date_();
         }
-        else if ( parser.getName().equals( ULINK_TAG.toString() ) || parser.getName().equals( LINK_TAG.toString() ) )
+        else if ( parser.getName().equals( SimplifiedDocbookMarkup.ULINK_TAG.toString() )
+                || parser.getName().equals( SimplifiedDocbookMarkup.LINK_TAG.toString() ) )
         {
             if ( isParent( parser.getName() ) )
             {

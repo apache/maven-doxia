@@ -27,8 +27,6 @@ import java.util.StringTokenizer;
 
 import javax.swing.text.MutableAttributeSet;
 import javax.swing.text.SimpleAttributeSet;
-import javax.swing.text.html.HTML.Attribute;
-import javax.swing.text.html.HTML.Tag;
 
 import org.apache.maven.doxia.sink.AbstractXmlSink;
 import org.apache.maven.doxia.sink.SinkEventAttributes;
@@ -49,7 +47,7 @@ import org.codehaus.plexus.util.FileUtils;
  */
 public class DocBookSink
     extends AbstractXmlSink
-    implements DocbookMarkup
+    implements DocbookMarkup, SimplifiedDocbookMarkup
 {
     /** DocBook V4.4 SGML public id: "-//OASIS//DTD DocBook V4.4//EN"
      * @deprecated since 1.1, use {@link DocbookMarkup#DEFAULT_SGML_PUBLIC_ID} instead of. */
@@ -254,6 +252,7 @@ public class DocBookSink
      * Sets the xml mode.
      *
      * @param mode the mode to set.
+     * @deprecated xml mode is not used.
      */
     public void setXMLMode( boolean mode )
     {
@@ -264,6 +263,7 @@ public class DocBookSink
      * Returns the current xmlMode.
      *
      * @return the current xmlMode.
+     * @deprecated xml mode is not used.
      */
     public boolean isXMLMode()
     {
@@ -567,7 +567,7 @@ public class DocBookSink
 
         MutableAttributeSet att = writeXmlHeader( "article" );
 
-        writeStartTag( ARTICLE_TAG, att );
+        writeStartTag( SimplifiedDocbookMarkup.ARTICLE_TAG, att );
     }
 
     /**
@@ -583,19 +583,16 @@ public class DocBookSink
      */
     protected MutableAttributeSet writeXmlHeader( String root )
     {
-        if ( xmlMode )
+        markup( "<?xml version=\"1.0\"" );
+        if ( encoding != null )
         {
-            markup( "<?xml version=\"1.0\"" );
-            if ( encoding != null )
-            {
-                markup( " encoding=\"" + encoding + "\"" );
-            }
-            markup( "?>" );
+            markup( " encoding=\"" + encoding + "\"" );
+        }
+        markup( "?>" );
 
-            if ( styleSheet != null )
-            {
-                markup( "<?xml-stylesheet type=\"text/css\" href=\"" + styleSheet + "\" ?>" );
-            }
+        if ( styleSheet != null )
+        {
+            markup( "<?xml-stylesheet type=\"text/css\" href=\"" + styleSheet + "\" ?>" );
         }
 
         String pubId;
@@ -603,14 +600,7 @@ public class DocBookSink
 
         if ( publicId == null )
         {
-            if ( xmlMode )
-            {
-                pubId = DocbookMarkup.DEFAULT_XML_PUBLIC_ID;
-            }
-            else
-            {
-                pubId = DocbookMarkup.DEFAULT_SGML_PUBLIC_ID;
-            }
+            pubId = SimplifiedDocbookMarkup.DEFAULT_XML_PUBLIC_ID;
         }
         else
         {
@@ -620,21 +610,14 @@ public class DocBookSink
         String sysId = systemId;
         if ( sysId == null )
         {
-            if ( xmlMode )
-            {
-                sysId = DocbookMarkup.DEFAULT_XML_SYSTEM_ID;
-            }
-            else
-            {
-                sysId = DocbookMarkup.DEFAULT_SGML_SYSTEM_ID;
-            }
+                sysId = SimplifiedDocbookMarkup.DEFAULT_XML_SYSTEM_ID;
         }
         markup( " \"" + sysId + "\">" );
 
         MutableAttributeSet att = new SimpleAttributeSet();
         if ( lang != null )
         {
-            att.addAttribute( Attribute.LANG.toString(), lang );
+            att.addAttribute( LANG_ATTRIBUTE, lang );
         }
         return att;
     }
@@ -647,7 +630,7 @@ public class DocBookSink
     {
         if ( hasTitle )
         {
-            writeEndTag( ARTICLEINFO_TAG );
+            writeEndTag( SimplifiedDocbookMarkup.ARTICLEINFO_TAG );
             hasTitle = false;
         }
     }
@@ -659,8 +642,8 @@ public class DocBookSink
      */
     public void title()
     {
-        writeStartTag( ARTICLEINFO_TAG );
-        writeStartTag( Tag.TITLE );
+        writeStartTag( SimplifiedDocbookMarkup.ARTICLEINFO_TAG );
+        writeStartTag( SimplifiedDocbookMarkup.TITLE_TAG );
         hasTitle = true;
     }
 
@@ -670,7 +653,7 @@ public class DocBookSink
      */
     public void title_()
     {
-        writeEndTag( Tag.TITLE );
+        writeEndTag( SimplifiedDocbookMarkup.TITLE_TAG );
     }
 
     /**
@@ -680,7 +663,7 @@ public class DocBookSink
     public void author()
     {
         authorDateFlag = true;
-        writeStartTag( CORPAUTHOR_TAG );
+        writeStartTag( SimplifiedDocbookMarkup.CORPAUTHOR_TAG );
     }
 
     /**
@@ -689,7 +672,7 @@ public class DocBookSink
      */
     public void author_()
     {
-        writeEndTag( CORPAUTHOR_TAG );
+        writeEndTag( SimplifiedDocbookMarkup.CORPAUTHOR_TAG );
         authorDateFlag = false;
     }
 
@@ -700,7 +683,7 @@ public class DocBookSink
     public void date()
     {
         authorDateFlag = true;
-        writeStartTag( DATE_TAG );
+        writeStartTag( SimplifiedDocbookMarkup.DATE_TAG );
     }
 
     /**
@@ -709,7 +692,7 @@ public class DocBookSink
      */
     public void date_()
     {
-        writeEndTag( DATE_TAG );
+        writeEndTag( SimplifiedDocbookMarkup.DATE_TAG );
         authorDateFlag = false;
     }
 
@@ -719,7 +702,7 @@ public class DocBookSink
      */
     public void body_()
     {
-        writeEndTag( ARTICLE_TAG );
+        writeEndTag( SimplifiedDocbookMarkup.ARTICLE_TAG );
         out.flush();
         resetState();
     }
@@ -730,7 +713,7 @@ public class DocBookSink
      */
     public void section1()
     {
-        writeStartTag( SECTION_TAG );
+        writeStartTag( SimplifiedDocbookMarkup.SECTION_TAG );
     }
 
     /**
@@ -739,7 +722,7 @@ public class DocBookSink
      */
     public void section1_()
     {
-        writeEndTag( SECTION_TAG );
+        writeEndTag( SimplifiedDocbookMarkup.SECTION_TAG );
     }
 
     /**
@@ -748,7 +731,7 @@ public class DocBookSink
      */
     public void section2()
     {
-        writeStartTag( SECTION_TAG );
+        writeStartTag( SimplifiedDocbookMarkup.SECTION_TAG );
     }
 
     /**
@@ -757,7 +740,7 @@ public class DocBookSink
      */
     public void section2_()
     {
-        writeEndTag( SECTION_TAG );
+        writeEndTag( SimplifiedDocbookMarkup.SECTION_TAG );
     }
 
     /**
@@ -766,7 +749,7 @@ public class DocBookSink
      */
     public void section3()
     {
-        writeStartTag( SECTION_TAG );
+        writeStartTag( SimplifiedDocbookMarkup.SECTION_TAG );
     }
 
     /**
@@ -775,7 +758,7 @@ public class DocBookSink
      */
     public void section3_()
     {
-        writeEndTag( SECTION_TAG );
+        writeEndTag( SimplifiedDocbookMarkup.SECTION_TAG );
     }
 
     /**
@@ -784,7 +767,7 @@ public class DocBookSink
      */
     public void section4()
     {
-        writeStartTag( SECTION_TAG );
+        writeStartTag( SimplifiedDocbookMarkup.SECTION_TAG );
     }
 
     /**
@@ -793,7 +776,7 @@ public class DocBookSink
      */
     public void section4_()
     {
-        writeEndTag( SECTION_TAG );
+        writeEndTag( SimplifiedDocbookMarkup.SECTION_TAG );
     }
 
     /**
@@ -802,7 +785,7 @@ public class DocBookSink
      */
     public void section5()
     {
-        writeStartTag( SECTION_TAG );
+        writeStartTag( SimplifiedDocbookMarkup.SECTION_TAG );
     }
 
     /**
@@ -811,7 +794,7 @@ public class DocBookSink
      */
     public void section5_()
     {
-        writeEndTag( SECTION_TAG );
+        writeEndTag( SimplifiedDocbookMarkup.SECTION_TAG );
     }
 
     /**
@@ -820,7 +803,7 @@ public class DocBookSink
      */
     public void sectionTitle()
     {
-        writeStartTag( Tag.TITLE );
+        writeStartTag( SimplifiedDocbookMarkup.TITLE_TAG );
     }
 
     /**
@@ -829,7 +812,7 @@ public class DocBookSink
      */
     public void sectionTitle_()
     {
-        writeEndTag( Tag.TITLE );
+        writeEndTag( SimplifiedDocbookMarkup.TITLE_TAG );
     }
 
     /**
@@ -838,7 +821,7 @@ public class DocBookSink
      */
     public void sectionTitle1()
     {
-        writeStartTag( Tag.TITLE );
+        writeStartTag( SimplifiedDocbookMarkup.TITLE_TAG );
     }
 
     /**
@@ -847,7 +830,7 @@ public class DocBookSink
      */
     public void sectionTitle1_()
     {
-        writeEndTag( Tag.TITLE );
+        writeEndTag( SimplifiedDocbookMarkup.TITLE_TAG );
     }
 
     /**
@@ -856,7 +839,7 @@ public class DocBookSink
      */
     public void sectionTitle2()
     {
-        writeStartTag( Tag.TITLE );
+        writeStartTag( SimplifiedDocbookMarkup.TITLE_TAG );
     }
 
     /**
@@ -865,7 +848,7 @@ public class DocBookSink
      */
     public void sectionTitle2_()
     {
-        writeEndTag( Tag.TITLE );
+        writeEndTag( SimplifiedDocbookMarkup.TITLE_TAG );
     }
 
     /**
@@ -874,7 +857,7 @@ public class DocBookSink
      */
     public void sectionTitle3()
     {
-        writeStartTag( Tag.TITLE );
+        writeStartTag( SimplifiedDocbookMarkup.TITLE_TAG );
     }
 
     /**
@@ -883,7 +866,7 @@ public class DocBookSink
      */
     public void sectionTitle3_()
     {
-        writeEndTag( Tag.TITLE );
+        writeEndTag( SimplifiedDocbookMarkup.TITLE_TAG );
     }
 
     /**
@@ -892,7 +875,7 @@ public class DocBookSink
      */
     public void sectionTitle4()
     {
-        writeStartTag( Tag.TITLE );
+        writeStartTag( SimplifiedDocbookMarkup.TITLE_TAG );
     }
 
     /**
@@ -901,7 +884,7 @@ public class DocBookSink
      */
     public void sectionTitle4_()
     {
-        writeEndTag( Tag.TITLE );
+        writeEndTag( SimplifiedDocbookMarkup.TITLE_TAG );
     }
 
     /**
@@ -910,7 +893,7 @@ public class DocBookSink
      */
     public void sectionTitle5()
     {
-        writeStartTag( Tag.TITLE );
+        writeStartTag( SimplifiedDocbookMarkup.TITLE_TAG );
     }
 
     /**
@@ -919,7 +902,7 @@ public class DocBookSink
      */
     public void sectionTitle5_()
     {
-        writeEndTag( Tag.TITLE );
+        writeEndTag( SimplifiedDocbookMarkup.TITLE_TAG );
     }
 
     /**
@@ -928,7 +911,7 @@ public class DocBookSink
      */
     public void list()
     {
-        writeStartTag( ITEMIZEDLIST_TAG );
+        writeStartTag( SimplifiedDocbookMarkup.ITEMIZEDLIST_TAG );
     }
 
     /**
@@ -937,7 +920,7 @@ public class DocBookSink
      */
     public void list_()
     {
-        writeEndTag( ITEMIZEDLIST_TAG );
+        writeEndTag( SimplifiedDocbookMarkup.ITEMIZEDLIST_TAG );
     }
 
     /**
@@ -946,7 +929,7 @@ public class DocBookSink
      */
     public void listItem()
     {
-        writeStartTag( LISTITEM_TAG );
+        writeStartTag( SimplifiedDocbookMarkup.LISTITEM_TAG );
     }
 
     /**
@@ -955,7 +938,7 @@ public class DocBookSink
      */
     public void listItem_()
     {
-        writeEndTag( LISTITEM_TAG );
+        writeEndTag( SimplifiedDocbookMarkup.LISTITEM_TAG );
     }
 
     /**
@@ -969,26 +952,26 @@ public class DocBookSink
         switch ( numbering )
         {
             case NUMBERING_UPPER_ALPHA:
-                numeration = UPPERALPHA_STYLE;
+                numeration = SimplifiedDocbookMarkup.UPPERALPHA_STYLE;
                 break;
             case NUMBERING_LOWER_ALPHA:
-                numeration = LOWERALPHA_STYLE;
+                numeration = SimplifiedDocbookMarkup.LOWERALPHA_STYLE;
                 break;
             case NUMBERING_UPPER_ROMAN:
-                numeration = UPPERROMAN_STYLE;
+                numeration = SimplifiedDocbookMarkup.UPPERROMAN_STYLE;
                 break;
             case NUMBERING_LOWER_ROMAN:
-                numeration = LOWERROMAN_STYLE;
+                numeration = SimplifiedDocbookMarkup.LOWERROMAN_STYLE;
                 break;
             case NUMBERING_DECIMAL:
             default:
-                numeration = ARABIC_STYLE;
+                numeration = SimplifiedDocbookMarkup.ARABIC_STYLE;
         }
 
         MutableAttributeSet att = new SimpleAttributeSet();
-        att.addAttribute( NUMERATION_ATTRIBUTE, numeration );
+        att.addAttribute( SimplifiedDocbookMarkup.NUMERATION_ATTRIBUTE, numeration );
 
-        writeStartTag( ORDEREDLIST_TAG, att );
+        writeStartTag( SimplifiedDocbookMarkup.ORDEREDLIST_TAG, att );
     }
 
     /**
@@ -997,7 +980,7 @@ public class DocBookSink
      */
     public void numberedList_()
     {
-        writeEndTag( ORDEREDLIST_TAG );
+        writeEndTag( SimplifiedDocbookMarkup.ORDEREDLIST_TAG );
     }
 
     /**
@@ -1006,7 +989,7 @@ public class DocBookSink
      */
     public void numberedListItem()
     {
-        writeStartTag( LISTITEM_TAG );
+        writeStartTag( SimplifiedDocbookMarkup.LISTITEM_TAG );
     }
 
     /**
@@ -1015,7 +998,7 @@ public class DocBookSink
      */
     public void numberedListItem_()
     {
-        writeEndTag( LISTITEM_TAG );
+        writeEndTag( SimplifiedDocbookMarkup.LISTITEM_TAG );
     }
 
     /**
@@ -1024,7 +1007,7 @@ public class DocBookSink
      */
     public void definitionList()
     {
-        writeStartTag( VARIABLELIST_TAG );
+        writeStartTag( SimplifiedDocbookMarkup.VARIABLELIST_TAG );
     }
 
     /**
@@ -1033,7 +1016,7 @@ public class DocBookSink
      */
     public void definitionList_()
     {
-        writeEndTag( VARIABLELIST_TAG );
+        writeEndTag( SimplifiedDocbookMarkup.VARIABLELIST_TAG );
     }
 
     /**
@@ -1042,7 +1025,7 @@ public class DocBookSink
      */
     public void definitionListItem()
     {
-        writeStartTag( VARLISTENTRY_TAG );
+        writeStartTag( SimplifiedDocbookMarkup.VARLISTENTRY_TAG );
     }
 
     /**
@@ -1051,7 +1034,7 @@ public class DocBookSink
      */
     public void definitionListItem_()
     {
-        writeEndTag( VARLISTENTRY_TAG );
+        writeEndTag( SimplifiedDocbookMarkup.VARLISTENTRY_TAG );
     }
 
     /**
@@ -1060,7 +1043,7 @@ public class DocBookSink
      */
     public void definedTerm()
     {
-        writeStartTag( TERM_TAG );
+        writeStartTag( SimplifiedDocbookMarkup.TERM_TAG );
     }
 
     /**
@@ -1069,7 +1052,7 @@ public class DocBookSink
      */
     public void definedTerm_()
     {
-        writeEndTag( TERM_TAG );
+        writeEndTag( SimplifiedDocbookMarkup.TERM_TAG );
     }
 
     /**
@@ -1078,7 +1061,7 @@ public class DocBookSink
      */
     public void definition()
     {
-        writeStartTag( LISTITEM_TAG );
+        writeStartTag( SimplifiedDocbookMarkup.LISTITEM_TAG );
     }
 
     /**
@@ -1087,7 +1070,7 @@ public class DocBookSink
      */
     public void definition_()
     {
-        writeEndTag( LISTITEM_TAG );
+        writeEndTag( SimplifiedDocbookMarkup.LISTITEM_TAG );
     }
 
     /**
@@ -1096,7 +1079,7 @@ public class DocBookSink
      */
     public void paragraph()
     {
-        writeStartTag( PARA_TAG );
+        writeStartTag( SimplifiedDocbookMarkup.PARA_TAG );
     }
 
     /**
@@ -1105,7 +1088,7 @@ public class DocBookSink
      */
     public void paragraph_()
     {
-        writeEndTag( PARA_TAG );
+        writeEndTag( SimplifiedDocbookMarkup.PARA_TAG );
     }
 
     /**
@@ -1115,7 +1098,7 @@ public class DocBookSink
     public void verbatim( boolean boxed )
     {
         verbatimFlag = true;
-        writeStartTag( PROGRAMLISTING_TAG );
+        writeStartTag( SimplifiedDocbookMarkup.PROGRAMLISTING_TAG );
     }
 
     /**
@@ -1124,7 +1107,7 @@ public class DocBookSink
      */
     public void verbatim_()
     {
-        writeEndTag( PROGRAMLISTING_TAG );
+        writeEndTag( SimplifiedDocbookMarkup.PROGRAMLISTING_TAG );
         verbatimFlag = false;
     }
 
@@ -1165,26 +1148,17 @@ public class DocBookSink
                 format = "JPEG";
             }
 
-            writeStartTag( MEDIAOBJECT_TAG );
-            writeStartTag( IMAGEOBJECT_TAG );
+            writeStartTag( SimplifiedDocbookMarkup.MEDIAOBJECT_TAG );
+            writeStartTag( SimplifiedDocbookMarkup.IMAGEOBJECT_TAG );
 
             MutableAttributeSet att = new SimpleAttributeSet();
-            att.addAttribute( FORMAT_ATTRIBUTE, format );
-            att.addAttribute( FILEREF_ATTRIBUTE, escapeSGML( graphicsFileName, xmlMode ) );
+            att.addAttribute( SimplifiedDocbookMarkup.FORMAT_ATTRIBUTE, format );
+            att.addAttribute( SimplifiedDocbookMarkup.FILEREF_ATTRIBUTE, escapeSGML( graphicsFileName, true ) );
 
-            // TODO: why?
-            if ( xmlMode )
-            {
-                writeSimpleTag( IMAGEDATA_TAG, att );
-            }
-            else
-            {
-                writeStartTag( IMAGEDATA_TAG, att );
-                writeEndTag( IMAGEDATA_TAG );
-            }
+            writeSimpleTag( SimplifiedDocbookMarkup.IMAGEDATA_TAG, att );
 
-            writeEndTag( IMAGEOBJECT_TAG );
-            writeEndTag( MEDIAOBJECT_TAG );
+            writeEndTag( SimplifiedDocbookMarkup.IMAGEOBJECT_TAG );
+            writeEndTag( SimplifiedDocbookMarkup.MEDIAOBJECT_TAG );
             graphicsFileName = null;
         }
     }
@@ -1203,8 +1177,8 @@ public class DocBookSink
      */
     public void figureCaption()
     {
-        writeStartTag( FIGURE_TAG );
-        writeStartTag( Tag.TITLE );
+        writeStartTag( SimplifiedDocbookMarkup.FIGURE_TAG );
+        writeStartTag( SimplifiedDocbookMarkup.TITLE_TAG );
     }
 
     /**
@@ -1214,9 +1188,9 @@ public class DocBookSink
      */
     public void figureCaption_()
     {
-        writeEndTag( Tag.TITLE );
+        writeEndTag( SimplifiedDocbookMarkup.TITLE_TAG );
         graphicElement();
-        writeEndTag( FIGURE_TAG );
+        writeEndTag( SimplifiedDocbookMarkup.FIGURE_TAG );
     }
 
     /** {@inheritDoc} */
@@ -1241,7 +1215,7 @@ public class DocBookSink
             // Formal table+title already written to original destination ---
 
             out.write( tableRows  );
-            writeEndTag( Tag.TABLE );
+            writeEndTag( TABLE_TAG );
         }
         else
         {
@@ -1259,15 +1233,15 @@ public class DocBookSink
             }
 
             MutableAttributeSet att = new SimpleAttributeSet();
-            att.addAttribute( FRAME_ATTRIBUTE, frame );
-            att.addAttribute( ROWSEP_ATTRIBUTE, String.valueOf( sep ) );
-            att.addAttribute( COLSEP_ATTRIBUTE, String.valueOf( sep ) );
+            att.addAttribute( SimplifiedDocbookMarkup.FRAME_ATTRIBUTE, frame );
+            att.addAttribute( SimplifiedDocbookMarkup.ROWSEP_ATTRIBUTE, String.valueOf( sep ) );
+            att.addAttribute( SimplifiedDocbookMarkup.COLSEP_ATTRIBUTE, String.valueOf( sep ) );
 
-            writeStartTag( INFORMALTABLE_TAG, att );
+            writeStartTag( SimplifiedDocbookMarkup.INFORMALTABLE_TAG, att );
 
             out.write( tableRows  );
 
-            writeEndTag( INFORMALTABLE_TAG );
+            writeEndTag( SimplifiedDocbookMarkup.INFORMALTABLE_TAG );
         }
 
         tableRows = null;
@@ -1291,9 +1265,9 @@ public class DocBookSink
         out = new PrintWriter( tableRowsWriter );
 
         MutableAttributeSet att = new SimpleAttributeSet();
-        att.addAttribute( COLS_ATTRIBUTE, String.valueOf( justification.length ) );
+        att.addAttribute( SimplifiedDocbookMarkup.COLS_ATTRIBUTE, String.valueOf( justification.length ) );
 
-        writeStartTag( TGROUP_TAG, att );
+        writeStartTag( SimplifiedDocbookMarkup.TGROUP_TAG, att );
 
         for ( int i = 0; i < justification.length; ++i )
         {
@@ -1313,21 +1287,12 @@ public class DocBookSink
             }
 
             att = new SimpleAttributeSet();
-            att.addAttribute( Attribute.ALIGN.toString(), justif );
+            att.addAttribute( "align", justif );
 
-            // TODO: why?
-            if ( xmlMode )
-            {
-                writeSimpleTag( COLSPEC_TAG, att );
-            }
-            else
-            {
-                writeStartTag( COLSPEC_TAG, att );
-                writeEndTag( COLSPEC_TAG );
-            }
+            writeSimpleTag( SimplifiedDocbookMarkup.COLSPEC_TAG, att );
         }
 
-        writeStartTag( TBODY_TAG );
+        writeStartTag( SimplifiedDocbookMarkup.TBODY_TAG );
     }
 
     /**
@@ -1337,8 +1302,8 @@ public class DocBookSink
      */
     public void tableRows_()
     {
-        writeEndTag( TBODY_TAG );
-        writeEndTag( TGROUP_TAG );
+        writeEndTag( SimplifiedDocbookMarkup.TBODY_TAG );
+        writeEndTag( SimplifiedDocbookMarkup.TGROUP_TAG );
 
         // Remember diverted output and restore original destination ---
         out.flush();
@@ -1359,7 +1324,7 @@ public class DocBookSink
      */
     public void tableRow()
     {
-        writeStartTag( ROW_TAG );
+        writeStartTag( SimplifiedDocbookMarkup.ROW_TAG );
     }
 
     /**
@@ -1368,7 +1333,7 @@ public class DocBookSink
      */
     public void tableRow_()
     {
-        writeEndTag( ROW_TAG );
+        writeEndTag( SimplifiedDocbookMarkup.ROW_TAG );
     }
 
     /**
@@ -1377,7 +1342,7 @@ public class DocBookSink
      */
     public void tableCell()
     {
-        writeStartTag( ENTRY_TAG );
+        writeStartTag( SimplifiedDocbookMarkup.ENTRY_TAG );
     }
 
     /**
@@ -1386,7 +1351,7 @@ public class DocBookSink
      */
     public void tableCell_()
     {
-        writeEndTag( ENTRY_TAG );
+        writeEndTag( SimplifiedDocbookMarkup.ENTRY_TAG );
     }
 
     /**
@@ -1395,7 +1360,7 @@ public class DocBookSink
      */
     public void tableHeaderCell()
     {
-        writeStartTag( ENTRY_TAG );
+        writeStartTag( SimplifiedDocbookMarkup.ENTRY_TAG );
     }
 
     /**
@@ -1404,7 +1369,7 @@ public class DocBookSink
      */
     public void tableHeaderCell_()
     {
-        writeEndTag( ENTRY_TAG );
+        writeEndTag( SimplifiedDocbookMarkup.ENTRY_TAG );
     }
 
     /**
@@ -1433,13 +1398,13 @@ public class DocBookSink
         }
 
         MutableAttributeSet att = new SimpleAttributeSet();
-        att.addAttribute( FRAME_ATTRIBUTE, frame );
-        att.addAttribute( ROWSEP_ATTRIBUTE, String.valueOf( sep ) );
-        att.addAttribute( COLSEP_ATTRIBUTE, String.valueOf( sep ) );
+        att.addAttribute( SimplifiedDocbookMarkup.FRAME_ATTRIBUTE, frame );
+        att.addAttribute( SimplifiedDocbookMarkup.ROWSEP_ATTRIBUTE, String.valueOf( sep ) );
+        att.addAttribute( SimplifiedDocbookMarkup.COLSEP_ATTRIBUTE, String.valueOf( sep ) );
 
-        writeStartTag( Tag.TABLE, att );
+        writeStartTag( TABLE_TAG, att );
 
-        writeStartTag( Tag.TITLE );
+        writeStartTag( SimplifiedDocbookMarkup.TITLE_TAG );
     }
 
     /**
@@ -1448,7 +1413,7 @@ public class DocBookSink
      */
     public void tableCaption_()
     {
-        writeEndTag( Tag.TITLE );
+        writeEndTag( SimplifiedDocbookMarkup.TITLE_TAG );
     }
 
     /**
@@ -1477,17 +1442,9 @@ public class DocBookSink
         }
 
         MutableAttributeSet att = new SimpleAttributeSet();
-        att.addAttribute( Attribute.ID, id );
+        att.addAttribute( ID_ATTRIBUTE, id );
 
-        // TODO: why?
-        if ( xmlMode )
-        {
-            writeSimpleTag( ANCHOR_TAG, att );
-        }
-        else
-        {
-            writeStartTag( ANCHOR_TAG, att );
-        }
+        writeSimpleTag( SimplifiedDocbookMarkup.ANCHOR_TAG, att );
     }
 
     /**
@@ -1496,13 +1453,7 @@ public class DocBookSink
      */
     public void anchor_()
     {
-        if ( !authorDateFlag )
-        {
-            if ( !xmlMode )
-            {
-                writeEndTag( ANCHOR_TAG );
-            }
-        }
+        // nop
     }
 
     /**
@@ -1523,16 +1474,16 @@ public class DocBookSink
         {
             externalLinkFlag = true;
             MutableAttributeSet att = new SimpleAttributeSet();
-            att.addAttribute( URL_ATTRIBUTE, HtmlTools.escapeHTML( name, xmlMode ) );
+            att.addAttribute( SimplifiedDocbookMarkup.URL_ATTRIBUTE, HtmlTools.escapeHTML( name, true ) );
 
-            writeStartTag( ULINK_TAG, att );
+            writeStartTag( SimplifiedDocbookMarkup.ULINK_TAG, att );
         }
         else
         {
             MutableAttributeSet att = new SimpleAttributeSet();
-            att.addAttribute( LINKEND_ATTRIBUTE, HtmlTools.escapeHTML( name ) );
+            att.addAttribute( SimplifiedDocbookMarkup.LINKEND_ATTRIBUTE, HtmlTools.escapeHTML( name ) );
 
-            writeStartTag( LINK_TAG, att );
+            writeStartTag( SimplifiedDocbookMarkup.LINK_TAG, att );
         }
     }
 
@@ -1545,12 +1496,12 @@ public class DocBookSink
     {
         if ( externalLinkFlag )
         {
-            writeEndTag( ULINK_TAG );
+            writeEndTag( SimplifiedDocbookMarkup.ULINK_TAG );
             externalLinkFlag = false;
         }
         else
         {
-            writeEndTag( LINK_TAG );
+            writeEndTag( SimplifiedDocbookMarkup.LINK_TAG );
         }
     }
 
@@ -1671,7 +1622,7 @@ public class DocBookSink
     {
         if ( !skip )
         {
-            out.write( escapeSGML( text, xmlMode ) );
+            out.write( escapeSGML( text, true ) );
         }
     }
 
@@ -1684,7 +1635,7 @@ public class DocBookSink
     {
         if ( !skip )
         {
-            out.write( escapeSGML( text, xmlMode ) );
+            out.write( escapeSGML( text, true ) );
         }
     }
 

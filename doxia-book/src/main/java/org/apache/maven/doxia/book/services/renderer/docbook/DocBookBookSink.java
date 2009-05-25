@@ -49,7 +49,8 @@ public class DocBookBookSink
     {
         super( out );
 
-        setXMLMode( true );
+        setSystemId( "http://www.oasis-open.org/docbook/xml/4.4/docbookx.dtd" );
+        setPublicId( "-//OASIS//DTD DocBook V4.4//EN" );
     }
 
     // ----------------------------------------------------------------------
