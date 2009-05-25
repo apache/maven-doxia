@@ -203,49 +203,7 @@ public class DocBookSink
      */
     public static final String escapeSGML( String text, boolean xmlMode )
     {
-        int length = text.length();
-        StringBuffer buffer = new StringBuffer( length );
-
-        for ( int i = 0; i < length; ++i )
-        {
-            char c = text.charAt( i );
-            switch ( c )
-            {
-                case '<':
-                    buffer.append( "&lt;" );
-                    break;
-                case '>':
-                    buffer.append( "&gt;" );
-                    break;
-                case '&':
-                    buffer.append( "&amp;" );
-                    break;
-                case '"':
-                    buffer.append( "&quot;" );
-                    break;
-                default:
-                    if ( xmlMode )
-                    {
-                        buffer.append( c );
-                    }
-                    else
-                    {
-                        if ( c <= 0x7E )
-                        {
-                            // ASCII.
-                            buffer.append( c );
-                        }
-                        else
-                        {
-                            buffer.append( "&#" );
-                            buffer.append( (int) c );
-                            buffer.append( ';' );
-                        }
-                    }
-            }
-        }
-
-        return buffer.toString();
+        return HtmlTools.escapeHTML( text, xmlMode );
     }
 
     /**
@@ -1153,7 +1111,8 @@ public class DocBookSink
 
             MutableAttributeSet att = new SimpleAttributeSet();
             att.addAttribute( SimplifiedDocbookMarkup.FORMAT_ATTRIBUTE, format );
-            att.addAttribute( SimplifiedDocbookMarkup.FILEREF_ATTRIBUTE, escapeSGML( graphicsFileName, true ) );
+            att.addAttribute( SimplifiedDocbookMarkup.FILEREF_ATTRIBUTE,
+                    HtmlTools.escapeHTML( graphicsFileName, true ) );
 
             writeSimpleTag( SimplifiedDocbookMarkup.IMAGEDATA_TAG, att );
 
@@ -1622,7 +1581,7 @@ public class DocBookSink
     {
         if ( !skip )
         {
-            out.write( escapeSGML( text, true ) );
+            out.write( HtmlTools.escapeHTML( text, true ) );
         }
     }
 
@@ -1635,7 +1594,7 @@ public class DocBookSink
     {
         if ( !skip )
         {
-            out.write( escapeSGML( text, true ) );
+            out.write( HtmlTools.escapeHTML( text, true ) );
         }
     }
 
