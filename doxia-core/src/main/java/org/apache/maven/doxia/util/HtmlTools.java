@@ -252,12 +252,7 @@ public class HtmlTools
             unescaped = StringEscapeUtils.unescapeHtml( text );
         }
 
-        if ( !text.equals( unescaped ) )
-        {
-            return unescaped;
-        }
-
-        String tmp = text;
+        String tmp = unescaped;
         List entities = new ArrayList();
         while ( true )
         {
@@ -288,10 +283,10 @@ public class HtmlTools
             String entity = (String) entities.get( i );
 
             int codePoint = Integer.parseInt( entity, 16 );
-            text = StringUtils.replace( text, "&#x" + entity + ";", new String( toChars( codePoint ) ) );
+            unescaped = StringUtils.replace( unescaped, "&#x" + entity + ";", new String( toChars( codePoint ) ) );
         }
 
-        return text;
+        return unescaped;
     }
 
     /**

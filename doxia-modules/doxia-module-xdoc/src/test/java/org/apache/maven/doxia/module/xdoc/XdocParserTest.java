@@ -457,7 +457,7 @@ public class XdocParserTest
 
         SinkEventElement textEvt = (SinkEventElement) it.next();
         assertEquals( "text", textEvt.getName() );
-        assertEquals( "&\u0159&#x1d7ed;", textEvt.getArgs()[0] );
+        assertEquals( "&\u0159\uD835\uDFED", textEvt.getArgs()[0] );
 
         assertEquals( "sectionTitle1_", ( (SinkEventElement) it.next() ).getName() );
         assertEquals( "paragraph", ( (SinkEventElement) it.next() ).getName() );

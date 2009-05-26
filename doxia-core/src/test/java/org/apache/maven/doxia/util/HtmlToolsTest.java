@@ -83,6 +83,9 @@ public class HtmlToolsTest
         assertEquals( "&#x1d7ed &#x1d7ed", HtmlTools.unescapeHTML( "&#x1d7ed &#x1d7ed" ) );
         assertEquals( "&#x1d7ed \uD835\uDFED", HtmlTools.unescapeHTML( "&#x1d7ed &#x1d7ed;" ) );
         assertEquals( "&#xQWER;", HtmlTools.unescapeHTML( "&#xQWER;" ) );
+        assertEquals( "\u00E5", HtmlTools.unescapeHTML( "&#229;" ) );
+        assertEquals( "<>&\"\u00E5\u0159\uD835\uDFED",
+                      HtmlTools.unescapeHTML( "&lt;&gt;&amp;&quot;&#229;&#x159;&#x1d7ed;" ) );
     }
 
     /**
