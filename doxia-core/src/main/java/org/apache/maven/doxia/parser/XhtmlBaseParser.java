@@ -464,15 +464,15 @@ public class XhtmlBaseParser
     protected void handleComment( XmlPullParser parser, Sink sink )
         throws XmlPullParserException
     {
-        String text = getText( parser );
+        String text = getText( parser ).trim();
 
-        if ( "PB".equals( text.trim() ) )
+        if ( "PB".equals( text ) )
         {
             sink.pageBreak();
         }
         else
         {
-            sink.comment( text.trim() );
+            sink.comment( text );
         }
     }
 
