@@ -267,6 +267,10 @@ public class XhtmlBaseParser
                 sink.figure_();
                 this.inFigure = false;
             }
+            else
+            {
+                visited = false;
+            }
         }
         else if ( parser.getName().equals( Tag.PRE.toString() ) )
         {
