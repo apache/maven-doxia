@@ -584,15 +584,44 @@ public class XhtmlBaseParserTest
     public void testAnchorLink()
         throws Exception
     {
-        String text = "<div><a href=\"\"></a><a name=\"valid\"></a><a id=\"1invalid\"></a></div>";
+        String text = "<div><a href=\"\"></a>" +
+                "<a href=\"valid\"></a>" +
+                "<a href=\"#1invalid\"></a>" +
+                "<a name=\"valid\"></a>" +
+                "<a name=\"1invalid\"></a>" +
+                "<a id=\"1invalid\"></a></div>";
+
         parser.parse( text, sink );
         Iterator it = sink.getEventList().iterator();
 
-        assertEquals( "link", ( (SinkEventElement) it.next() ).getName() );
+        SinkEventElement element = (SinkEventElement) it.next();
+        assertEquals( "link", element.getName() );
+        assertEquals( "", element.getArgs()[0] );
         assertEquals( "link_", ( (SinkEventElement) it.next() ).getName() );
-        assertEquals( "anchor", ( (SinkEventElement) it.next() ).getName() );
+
+        element = (SinkEventElement) it.next();
+        assertEquals( "link", element.getName() );
+        assertEquals( "valid", element.getArgs()[0] );
+        assertEquals( "link_", ( (SinkEventElement) it.next() ).getName() );
+
+        element = (SinkEventElement) it.next();
+        assertEquals( "link", element.getName() );
+        assertEquals( "#a1invalid", element.getArgs()[0] );
+        assertEquals( "link_", ( (SinkEventElement) it.next() ).getName() );
+
+        element = (SinkEventElement) it.next();
+        assertEquals( "anchor", element.getName() );
+        assertEquals( "valid", element.getArgs()[0] );
         assertEquals( "anchor_", ( (SinkEventElement) it.next() ).getName() );
-        assertEquals( "anchor", ( (SinkEventElement) it.next() ).getName() );
+
+        element = (SinkEventElement) it.next();
+        assertEquals( "anchor", element.getName() );
+        assertEquals( "a1invalid", element.getArgs()[0] );
+        assertEquals( "anchor_", ( (SinkEventElement) it.next() ).getName() );
+
+        element = (SinkEventElement) it.next();
+        assertEquals( "anchor", element.getName() );
+        assertEquals( "a1invalid", element.getArgs()[0] );
         assertEquals( "anchor_", ( (SinkEventElement) it.next() ).getName() );
     }
 }

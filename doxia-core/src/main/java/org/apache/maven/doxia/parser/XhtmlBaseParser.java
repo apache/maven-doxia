@@ -19,6 +19,11 @@ package org.apache.maven.doxia.parser;
  * under the License.
  */
 
+import java.io.Reader;
+import java.util.Iterator;
+import java.util.Set;
+import java.util.TreeSet;
+
 import javax.swing.text.html.HTML.Attribute;
 import javax.swing.text.html.HTML.Tag;
 
@@ -63,6 +68,29 @@ public class XhtmlBaseParser
 
     /** Decoration properties, eg for texts. */
     private final SinkEventAttributeSet decoration = new SinkEventAttributeSet();
+
+    /** Used to add warn message when links are modified. */
+    private Set modifiedLinks;
+
+    /** {@inheritDoc} */
+    public void parse( Reader source, Sink sink )
+        throws ParseException
+    {
+        super.parse( source, sink );
+
+        if ( getLog().isWarnEnabled() )
+        {
+            if ( this.modifiedLinks != null )
+            {
+                for ( Iterator it = this.modifiedLinks.iterator(); it.hasNext(); )
+                {
+                    getLog().warn( it.next().toString() );
+                }
+
+                this.modifiedLinks = null;
+            }
+        }
+    }
 
     /**
      * <p>
@@ -611,9 +639,10 @@ public class XhtmlBaseParser
     {
         if ( !DoxiaUtils.isValidId( id ) )
         {
-            getLog().warn( "Modified invalid anchor name: " + id );
+            String linkAnchor = DoxiaUtils.encodeId( id, true );
+            addModifiedLinkMessage( id, linkAnchor );
 
-            return DoxiaUtils.encodeId( id, true );
+            return linkAnchor;
         }
 
         return id;
@@ -639,6 +668,18 @@ public class XhtmlBaseParser
 
         if ( href != null )
         {
+            int hashIndex = href.indexOf( "#" );
+            if ( hashIndex != -1 && !DoxiaUtils.isExternalLink( href ) )
+            {
+                String hash = href.substring( hashIndex + 1 );
+
+                if ( !DoxiaUtils.isValidId( hash ) )
+                {
+                    href = href.substring( 0, hashIndex ) + "#" + DoxiaUtils.encodeId( hash, true );
+
+                    addModifiedLinkMessage( hash, href );
+                }
+            }
             sink.link( href, attribs );
             isLink = true;
         }
@@ -832,5 +873,16 @@ public class XhtmlBaseParser
         }
 
         sink.tableRows( justif, grid );
+    }
+
+    private void addModifiedLinkMessage( String hash, String linkAnchor )
+    {
+        if ( modifiedLinks == null )
+        {
+            modifiedLinks = new TreeSet();
+        }
+
+        String msg = "[Xhtml Parser] Modified invalid link: '" + hash + "' to '" + linkAnchor + "'";
+        modifiedLinks.add( msg );
     }
 }
