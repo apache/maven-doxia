@@ -587,6 +587,7 @@ public class XhtmlBaseParserTest
         String text = "<div><a href=\"\"></a>" +
                 "<a href=\"valid\"></a>" +
                 "<a href=\"#1invalid\"></a>" +
+                "<a href=\"http://www.fo.com/index.html#1invalid\"></a>" +
                 "<a name=\"valid\"></a>" +
                 "<a name=\"1invalid\"></a>" +
                 "<a id=\"1invalid\"></a></div>";
@@ -607,6 +608,11 @@ public class XhtmlBaseParserTest
         element = (SinkEventElement) it.next();
         assertEquals( "link", element.getName() );
         assertEquals( "#a1invalid", element.getArgs()[0] );
+        assertEquals( "link_", ( (SinkEventElement) it.next() ).getName() );
+
+        element = (SinkEventElement) it.next();
+        assertEquals( "link", element.getName() );
+        assertEquals( "http://www.fo.com/index.html#1invalid", element.getArgs()[0] );
         assertEquals( "link_", ( (SinkEventElement) it.next() ).getName() );
 
         element = (SinkEventElement) it.next();
