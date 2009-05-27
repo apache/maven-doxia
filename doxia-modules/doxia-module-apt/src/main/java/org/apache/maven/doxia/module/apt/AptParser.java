@@ -38,8 +38,11 @@ import java.io.Reader;
 import java.io.StringReader;
 import java.io.StringWriter;
 import java.util.HashMap;
+import java.util.Iterator;
 import java.util.Map;
+import java.util.Set;
 import java.util.StringTokenizer;
+import java.util.TreeSet;
 
 /**
  * The APT parser.
@@ -160,6 +163,12 @@ public class AptParser
     /** a line of AptSource. */
     protected String line;
 
+    /** Used to add warn message when links are ambiguous. */
+    private Set ambiguousLinks;
+
+    /** Used to add warn message when links are modified. */
+    private Set modifiedLinks;
+
     private static final int NUMBER_OF_SPACES = 85;
 
     static
@@ -220,6 +229,28 @@ public class AptParser
         {
             // TODO handle column number
             throw new AptParseException( ape.getMessage(), ape, getSourceName(), getSourceLineNumber(), -1 );
+        }
+
+        if ( getLog().isWarnEnabled() )
+        {
+            if ( this.ambiguousLinks != null )
+            {
+                for ( Iterator it = this.ambiguousLinks.iterator(); it.hasNext(); )
+                {
+                    getLog().warn( it.next().toString() );
+                }
+
+                this.ambiguousLinks = null;
+            }
+            if ( this.modifiedLinks != null )
+            {
+                for ( Iterator it = this.modifiedLinks.iterator(); it.hasNext(); )
+                {
+                    getLog().warn( it.next().toString() );
+                }
+
+                this.modifiedLinks = null;
+            }
         }
     }
 
@@ -452,16 +483,16 @@ public class AptParser
 
                                 if ( hash.endsWith( ".html" ) && !hash.startsWith( "./" ) )
                                 {
-                                    getLog().warn( "[Apt Parser] Ambiguous link: '" + hash
-                                            + "'. If this is a local link, prepend \"./\"!" );
+                                    addAmbiguousLinkMessage( hash );
                                 }
 
                                 if ( !DoxiaUtils.isValidId( hash ) )
                                 {
-                                    getLog().warn( "[Apt Parser] Modified invalid link: " + hash );
+                                    linkAnchor =
+                                        linkAnchor.substring( 0, hashIndex ) + "#"
+                                            + DoxiaUtils.encodeId( hash, true );
 
-                                    linkAnchor = linkAnchor.substring( 0, hashIndex ) + "#"
-                                        + DoxiaUtils.encodeId( hash, true );
+                                    addModifiedLinkMessage( hash, linkAnchor );
                                 }
                             }
 
@@ -1550,6 +1581,35 @@ public class AptParser
         doTraverseText( text, begin, end, linkSink );
 
         return buffer.toString().trim();
+    }
+
+    /**
+     * @param hash not null
+     */
+    private void addAmbiguousLinkMessage( String hash )
+    {
+        if ( ambiguousLinks == null )
+        {
+            ambiguousLinks = new TreeSet();
+        }
+
+        String msg = "[Apt Parser] Ambiguous link: '" + hash + "'. If this is a local link, prepend \"./\"!";
+        ambiguousLinks.add( msg );
+    }
+
+    /**
+     * @param hash not null
+     * @param linkAnchor not null
+     */
+    private void addModifiedLinkMessage( String hash, String linkAnchor )
+    {
+        if ( modifiedLinks == null )
+        {
+            modifiedLinks = new TreeSet();
+        }
+
+        String msg = "[Apt Parser] Modified invalid link: '" + hash + "' to '" + linkAnchor + "'";
+        modifiedLinks.add( msg );
     }
 
     // -----------------------------------------------------------------------
