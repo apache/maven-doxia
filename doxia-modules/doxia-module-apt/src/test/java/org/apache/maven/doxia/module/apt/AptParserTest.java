@@ -583,15 +583,11 @@ public class AptParserTest
 
         event = (SinkEventElement) it.next();
         assertEquals( "text", event.getName() );
-
-        // FIXME!
-        /*
         assertEquals( "~ = - + * [ ] < > { } \\", event.getArgs()[0] );
         assertEquals( "tableCell_", ( (SinkEventElement) it.next() ).getName() );
         assertEquals( "tableCell", ( (SinkEventElement) it.next() ).getName() );
         assertEquals( "text", ( (SinkEventElement) it.next() ).getName() );
         assertEquals( "tableCell_", ( (SinkEventElement) it.next() ).getName() );
-        */
     }
 
     /** {@inheritDoc} */

@@ -2359,7 +2359,7 @@ public class AptParser
                         AptParser.this.sink.tableRows( justification, grid );
                     }
 
-                    line = replaceAll( line, "\\|", "\\174" );
+                    line = replaceAll( line, "\\|", "\\u007C" );
 
                     StringTokenizer cellLines = new StringTokenizer( line, "|", true );
 
@@ -2382,14 +2382,27 @@ public class AptParser
                             continue;
                         }
                         processedGrid = false;
-                        cellLine = replaceAll( cellLine, "\\", "\\240" );
+                        cellLine = replaceAll( cellLine, "\\", "\\u00A0" ); // linebreak
+                        // Escaped special characters: \~, \=, \-, \+, \*, \[, \], \<, \>, \{, \}, \\.
+                        cellLine = replaceAll( cellLine, "\\u00A0~", "\\~" );
+                        cellLine = replaceAll( cellLine, "\\u00A0=", "\\=" );
+                        cellLine = replaceAll( cellLine, "\\u00A0-", "\\-" );
+                        cellLine = replaceAll( cellLine, "\\u00A0+", "\\+" );
+                        cellLine = replaceAll( cellLine, "\\u00A0*", "\\*" );
+                        cellLine = replaceAll( cellLine, "\\u00A0[", "\\[" );
+                        cellLine = replaceAll( cellLine, "\\u00A0]", "\\]" );
+                        cellLine = replaceAll( cellLine, "\\u00A0<", "\\<" );
+                        cellLine = replaceAll( cellLine, "\\u00A0>", "\\>" );
+                        cellLine = replaceAll( cellLine, "\\u00A0{", "\\{" );
+                        cellLine = replaceAll( cellLine, "\\u00A0}", "\\}" );
+                        cellLine = replaceAll( cellLine, "\\u00A0\\u00A0", "\\\\" );
                         cellLine = cellLine.trim();
 
                         StringBuffer cell = cells[i];
                         if ( cellLine.length() > 0 )
                         {
                             // line break in table cells
-                            if ( cell.toString().trim().endsWith( "\\240" ) )
+                            if ( cell.toString().trim().endsWith( "\\u00A0" ) )
                             {
                                 cell.append( "\\\n" );
                             }
