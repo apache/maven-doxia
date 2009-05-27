@@ -64,13 +64,7 @@ under the License.
     <dependency>
       <groupId>commons-configuration</groupId>
       <artifactId>commons-configuration</artifactId>
-      <version>1.4</version>
-      <exclusions>
-        <exclusion>
-          <groupId>xerces</groupId>
-          <artifactId>xerces</artifactId>
-        </exclusion>
-      </exclusions>
+      <version>1.6</version>
     </dependency>
     <dependency>
       <groupId>org.apache.xmlgraphics</groupId>
@@ -93,11 +87,6 @@ under the License.
       <groupId>xml-apis</groupId>
       <artifactId>xmlParserAPIs</artifactId>
       <version>2.0.2</version>
-    </dependency>
-    <dependency>
-      <groupId>xerces</groupId>
-      <artifactId>xerces</artifactId>
-      <version>2.4.0</version>
     </dependency>
   </dependencies>
 
