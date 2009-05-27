@@ -1389,14 +1389,13 @@ public final class ITextSink
     /** {@inheritDoc} */
     public void text( String text )
     {
+        if ( StringUtils.isEmpty( text ) )
+        {
+            return;
+        }
+
         switch ( actionContext.getCurrentAction() )
         {
-            case SinkActionContext.UNDEFINED:
-                break;
-
-            case SinkActionContext.HEAD:
-                break;
-
             case SinkActionContext.AUTHOR:
                 header.addAuthor( text );
                 break;
@@ -1407,166 +1406,6 @@ public final class ITextSink
 
             case SinkActionContext.TITLE:
                 header.setTitle( text );
-                break;
-
-            case SinkActionContext.SECTION_TITLE_1:
-                writeStartElement( ElementTags.CHUNK );
-                writeAddAttribute( ElementTags.FONT, font.getFontName() );
-                writeAddAttribute( ElementTags.SIZE, font.getFontSize() );
-                writeAddAttribute( ElementTags.STYLE, font.getFontStyle() );
-                writeAddAttribute( ElementTags.BLUE, font.getFontColorBlue() );
-                writeAddAttribute( ElementTags.GREEN, font.getFontColorGreen() );
-                writeAddAttribute( ElementTags.RED, font.getFontColorRed() );
-
-                write( text );
-
-                writeEndElement(); // ElementTags.CHUNK
-                break;
-
-            case SinkActionContext.SECTION_TITLE_2:
-                writeStartElement( ElementTags.CHUNK );
-                writeAddAttribute( ElementTags.FONT, font.getFontName() );
-                writeAddAttribute( ElementTags.SIZE, font.getFontSize() );
-                writeAddAttribute( ElementTags.STYLE, font.getFontStyle() );
-                writeAddAttribute( ElementTags.BLUE, font.getFontColorBlue() );
-                writeAddAttribute( ElementTags.GREEN, font.getFontColorGreen() );
-                writeAddAttribute( ElementTags.RED, font.getFontColorRed() );
-
-                write( text );
-
-                writeEndElement(); // ElementTags.CHUNK
-                break;
-
-            case SinkActionContext.SECTION_TITLE_3:
-                writeStartElement( ElementTags.CHUNK );
-                writeAddAttribute( ElementTags.FONT, font.getFontName() );
-                writeAddAttribute( ElementTags.SIZE, font.getFontSize() );
-                writeAddAttribute( ElementTags.STYLE, font.getFontStyle() );
-                writeAddAttribute( ElementTags.BLUE, font.getFontColorBlue() );
-                writeAddAttribute( ElementTags.GREEN, font.getFontColorGreen() );
-                writeAddAttribute( ElementTags.RED, font.getFontColorRed() );
-
-                write( text );
-
-                writeEndElement(); // ElementTags.CHUNK
-                break;
-
-            case SinkActionContext.SECTION_TITLE_4:
-                writeStartElement( ElementTags.CHUNK );
-                writeAddAttribute( ElementTags.FONT, font.getFontName() );
-                writeAddAttribute( ElementTags.SIZE, font.getFontSize() );
-                writeAddAttribute( ElementTags.STYLE, font.getFontStyle() );
-                writeAddAttribute( ElementTags.BLUE, font.getFontColorBlue() );
-                writeAddAttribute( ElementTags.GREEN, font.getFontColorGreen() );
-                writeAddAttribute( ElementTags.RED, font.getFontColorRed() );
-
-                write( text );
-
-                writeEndElement(); // ElementTags.CHUNK
-                break;
-
-            case SinkActionContext.SECTION_TITLE_5:
-                writeStartElement( ElementTags.CHUNK );
-                writeAddAttribute( ElementTags.FONT, font.getFontName() );
-                writeAddAttribute( ElementTags.SIZE, font.getFontSize() );
-                writeAddAttribute( ElementTags.STYLE, font.getFontStyle() );
-                writeAddAttribute( ElementTags.BLUE, font.getFontColorBlue() );
-                writeAddAttribute( ElementTags.GREEN, font.getFontColorGreen() );
-                writeAddAttribute( ElementTags.RED, font.getFontColorRed() );
-
-                write( text );
-
-                writeEndElement(); // ElementTags.CHUNK
-                break;
-
-            case SinkActionContext.LIST_ITEM:
-                writeStartElement( ElementTags.CHUNK );
-                writeAddAttribute( ElementTags.FONT, font.getFontName() );
-                writeAddAttribute( ElementTags.SIZE, font.getFontSize() );
-                writeAddAttribute( ElementTags.STYLE, font.getFontStyle() );
-                writeAddAttribute( ElementTags.BLUE, font.getFontColorBlue() );
-                writeAddAttribute( ElementTags.GREEN, font.getFontColorGreen() );
-                writeAddAttribute( ElementTags.RED, font.getFontColorRed() );
-
-                write( text );
-
-                writeEndElement(); // ElementTags.CHUNK
-                break;
-
-            case SinkActionContext.NUMBERED_LIST_ITEM:
-                writeStartElement( ElementTags.CHUNK );
-                writeAddAttribute( ElementTags.FONT, font.getFontName() );
-                writeAddAttribute( ElementTags.SIZE, font.getFontSize() );
-                writeAddAttribute( ElementTags.STYLE, font.getFontStyle() );
-                writeAddAttribute( ElementTags.BLUE, font.getFontColorBlue() );
-                writeAddAttribute( ElementTags.GREEN, font.getFontColorGreen() );
-                writeAddAttribute( ElementTags.RED, font.getFontColorRed() );
-
-                write( text );
-
-                writeEndElement(); // ElementTags.CHUNK
-                break;
-
-            case SinkActionContext.DEFINED_TERM:
-                writeStartElement( ElementTags.CHUNK );
-                writeAddAttribute( ElementTags.FONT, font.getFontName() );
-                writeAddAttribute( ElementTags.SIZE, font.getFontSize() );
-                writeAddAttribute( ElementTags.STYLE, font.getFontStyle() );
-                writeAddAttribute( ElementTags.BLUE, font.getFontColorBlue() );
-                writeAddAttribute( ElementTags.GREEN, font.getFontColorGreen() );
-                writeAddAttribute( ElementTags.RED, font.getFontColorRed() );
-
-                write( text );
-
-                writeEndElement(); // ElementTags.CHUNK
-                break;
-
-            case SinkActionContext.DEFINITION:
-                writeStartElement( ElementTags.CHUNK );
-                writeAddAttribute( ElementTags.FONT, font.getFontName() );
-                writeAddAttribute( ElementTags.SIZE, font.getFontSize() );
-                writeAddAttribute( ElementTags.STYLE, font.getFontStyle() );
-                writeAddAttribute( ElementTags.BLUE, font.getFontColorBlue() );
-                writeAddAttribute( ElementTags.GREEN, font.getFontColorGreen() );
-                writeAddAttribute( ElementTags.RED, font.getFontColorRed() );
-
-                write( text );
-
-                writeEndElement(); // ElementTags.CHUNK
-                break;
-
-            case SinkActionContext.TABLE:
-                break;
-
-            case SinkActionContext.TABLE_ROW:
-                break;
-
-            case SinkActionContext.TABLE_HEADER_CELL:
-                writeStartElement( ElementTags.CHUNK );
-                writeAddAttribute( ElementTags.FONT, font.getFontName() );
-                writeAddAttribute( ElementTags.SIZE, font.getFontSize() );
-                writeAddAttribute( ElementTags.STYLE, font.getFontStyle() );
-                writeAddAttribute( ElementTags.BLUE, font.getFontColorBlue() );
-                writeAddAttribute( ElementTags.GREEN, font.getFontColorGreen() );
-                writeAddAttribute( ElementTags.RED, font.getFontColorRed() );
-
-                write( text );
-
-                writeEndElement(); // ElementTags.CHUNK
-                break;
-
-            case SinkActionContext.TABLE_CELL:
-                writeStartElement( ElementTags.CHUNK );
-                writeAddAttribute( ElementTags.FONT, font.getFontName() );
-                writeAddAttribute( ElementTags.SIZE, font.getFontSize() );
-                writeAddAttribute( ElementTags.STYLE, font.getFontStyle() );
-                writeAddAttribute( ElementTags.BLUE, font.getFontColorBlue() );
-                writeAddAttribute( ElementTags.GREEN, font.getFontColorGreen() );
-                writeAddAttribute( ElementTags.RED, font.getFontColorRed() );
-
-                write( text );
-
-                writeEndElement(); // ElementTags.CHUNK
                 break;
 
             case SinkActionContext.TABLE_CAPTION:
@@ -1606,40 +1445,8 @@ public final class ITextSink
                 }
                 break;
 
-            case SinkActionContext.FIGURE:
-            case SinkActionContext.FIGURE_GRAPHICS:
-                break;
-
             case SinkActionContext.FIGURE_CAPTION:
                 writeAddAttribute( ElementTags.ALT, text );
-                break;
-
-            case SinkActionContext.LINK:
-                writeStartElement( ElementTags.CHUNK );
-                writeAddAttribute( ElementTags.FONT, font.getFontName() );
-                writeAddAttribute( ElementTags.SIZE, font.getFontSize() );
-                writeAddAttribute( ElementTags.STYLE, font.getFontStyle() );
-                writeAddAttribute( ElementTags.BLUE, font.getFontColorBlue() );
-                writeAddAttribute( ElementTags.GREEN, font.getFontColorGreen() );
-                writeAddAttribute( ElementTags.RED, font.getFontColorRed() );
-
-                write( text );
-
-                writeEndElement(); // ElementTags.CHUNK
-                break;
-
-            case SinkActionContext.ANCHOR:
-                writeStartElement( ElementTags.CHUNK );
-                writeAddAttribute( ElementTags.FONT, font.getFontName() );
-                writeAddAttribute( ElementTags.SIZE, font.getFontSize() );
-                writeAddAttribute( ElementTags.STYLE, font.getFontStyle() );
-                writeAddAttribute( ElementTags.BLUE, font.getFontColorBlue() );
-                writeAddAttribute( ElementTags.GREEN, font.getFontColorGreen() );
-                writeAddAttribute( ElementTags.RED, font.getFontColorRed() );
-
-                write( text );
-
-                writeEndElement(); // ElementTags.CHUNK
                 break;
 
             case SinkActionContext.SECTION_TITLE:
@@ -1648,9 +1455,28 @@ public final class ITextSink
             case SinkActionContext.SECTION_3:
             case SinkActionContext.SECTION_4:
             case SinkActionContext.SECTION_5:
+            case SinkActionContext.FIGURE:
+            case SinkActionContext.FIGURE_GRAPHICS:
+            case SinkActionContext.TABLE_ROW:
+            case SinkActionContext.TABLE:
+            case SinkActionContext.HEAD:
+            case SinkActionContext.UNDEFINED:
                 break;
 
             case SinkActionContext.PARAGRAPH:
+            case SinkActionContext.ANCHOR:
+            case SinkActionContext.LINK:
+            case SinkActionContext.TABLE_CELL:
+            case SinkActionContext.TABLE_HEADER_CELL:
+            case SinkActionContext.DEFINITION:
+            case SinkActionContext.DEFINED_TERM:
+            case SinkActionContext.NUMBERED_LIST_ITEM:
+            case SinkActionContext.LIST_ITEM:
+            case SinkActionContext.SECTION_TITLE_5:
+            case SinkActionContext.SECTION_TITLE_4:
+            case SinkActionContext.SECTION_TITLE_3:
+            case SinkActionContext.SECTION_TITLE_2:
+            case SinkActionContext.SECTION_TITLE_1:
             default:
                 writeStartElement( ElementTags.CHUNK );
                 writeAddAttribute( ElementTags.FONT, font.getFontName() );
