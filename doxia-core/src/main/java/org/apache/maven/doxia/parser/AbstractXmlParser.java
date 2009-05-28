@@ -1230,9 +1230,9 @@ public abstract class AbstractXmlParser
         {
             //      throw new XmlPullParserException("not allowed");
 
-            if ( !replacementText.startsWith( "&#" ) )
+            if ( !replacementText.startsWith( "&#" ) && this.entityName != null && replacementText.length() > 1 )
             {
-                String tmp = new String( replacementText ).substring( 1, replacementText.length() - 1 );
+                String tmp = replacementText.substring( 1, replacementText.length() - 1 );
                 for ( int i = 0; i < this.entityName.length; i++ )
                 {
                     if ( this.entityName[i] != null && this.entityName[i].equals( tmp ) )
