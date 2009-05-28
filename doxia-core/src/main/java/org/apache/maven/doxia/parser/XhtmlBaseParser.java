@@ -469,8 +469,10 @@ public class XhtmlBaseParser
         /*
          * NOTE: Don't do any whitespace trimming here. Whitespace normalization has already been performed by the
          * parser so any whitespace that makes it here is significant.
+         *
+         * NOTE: text within script tags is ignored, scripting code should be embedded in CDATA.
          */
-        if ( StringUtils.isNotEmpty( text ) )
+        if ( StringUtils.isNotEmpty( text ) && !isScriptBlock() )
         {
             sink.text( text, decoration );
         }
@@ -500,7 +502,7 @@ public class XhtmlBaseParser
 
         if ( isScriptBlock() )
         {
-            sink.rawText( text );
+            sink.unknown( CDATA, new Object[] {new Integer( CDATA_TYPE ), text}, null );
         }
         else
         {

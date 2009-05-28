@@ -1792,6 +1792,13 @@ public class XhtmlBaseSink
             return;
         }
 
+        if ( tagType == CDATA_TYPE )
+        {
+            rawText( EOL + "//<![CDATA[" + requiredParams[1] + "]]>" + EOL );
+
+            return;
+        }
+
         Tag tag = HtmlTools.getHtmlTag( name );
 
         if ( tag == null )
@@ -1814,7 +1821,7 @@ public class XhtmlBaseSink
             }
             else
             {
-                throw new IllegalArgumentException( "Not a valid TAG_TYPE: " + tagType );
+                getLog().warn( "No type information for unknown Sink event: " + name + ", ignoring!" );
             }
         }
     }

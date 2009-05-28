@@ -381,7 +381,7 @@ public class XdocParserTest
 
         Iterator it = sink.getEventList().iterator();
         assertEquals( "unknown", ( (SinkEventElement) it.next() ).getName() );
-        assertEquals( "rawText", ( (SinkEventElement) it.next() ).getName() );
+        assertEquals( "unknown", ( (SinkEventElement) it.next() ).getName() );
         assertEquals( "unknown", ( (SinkEventElement) it.next() ).getName() );
         assertFalse( it.hasNext() );
     }
