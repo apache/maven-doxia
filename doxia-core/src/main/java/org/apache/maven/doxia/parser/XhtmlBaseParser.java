@@ -28,6 +28,7 @@ import javax.swing.text.html.HTML.Attribute;
 import javax.swing.text.html.HTML.Tag;
 
 import org.apache.maven.doxia.macro.MacroExecutionException;
+import org.apache.maven.doxia.markup.HtmlMarkup;
 import org.apache.maven.doxia.sink.Sink;
 import org.apache.maven.doxia.sink.SinkEventAttributeSet;
 import org.apache.maven.doxia.sink.SinkEventAttributes;
@@ -47,7 +48,11 @@ import org.codehaus.plexus.util.xml.pull.XmlPullParserException;
  */
 public class XhtmlBaseParser
     extends AbstractXmlParser
+        implements HtmlMarkup
 {
+    /** True if a &lt;script&gt;&lt;/script&gt; block is read. CDATA sections within are handled as rawText. */
+    private boolean scriptBlock;
+
     /** Used to distinguish &lt;a href=""&gt; from &lt;a name=""&gt;. */
     private boolean isLink;
 
@@ -245,6 +250,11 @@ public class XhtmlBaseParser
         {
             handleImgStart( parser, sink, attribs );
         }
+        else if ( parser.getName().equals( Tag.SCRIPT.toString() ) )
+        {
+            handleUnknown( parser, sink, TAG_TYPE_START );
+            scriptBlock = true;
+        }
         else
         {
             visited = false;
@@ -399,6 +409,12 @@ public class XhtmlBaseParser
         {
             sink.sectionTitle5_();
         }
+        else if ( parser.getName().equals( Tag.SCRIPT.toString() ) )
+        {
+            handleUnknown( parser, sink, TAG_TYPE_END );
+
+            scriptBlock = false;
+        }
         else
         {
             visited = false;
@@ -473,6 +489,22 @@ public class XhtmlBaseParser
         else
         {
             sink.comment( text );
+        }
+    }
+
+    /** {@inheritDoc} */
+    protected void handleCdsect( XmlPullParser parser, Sink sink )
+        throws XmlPullParserException
+    {
+        String text = getText( parser );
+
+        if ( isScriptBlock() )
+        {
+            sink.rawText( text );
+        }
+        else
+        {
+            sink.text( text );
         }
     }
 
@@ -626,6 +658,18 @@ public class XhtmlBaseParser
     protected boolean isVerbatim()
     {
         return this.inVerbatim;
+    }
+
+    /**
+     * Checks if we are currently inside a &lt;script&gt; tag.
+     *
+     * @return true if we are currently inside <code>&lt;script&gt;</code> tags.
+     *
+     * @since 1.1.1.
+     */
+    protected boolean isScriptBlock()
+    {
+        return this.scriptBlock;
     }
 
     /**

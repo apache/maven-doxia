@@ -58,9 +58,6 @@ public class XdocParser
     /** The source content of the input reader. Used to pass into macros. */
     private String sourceContent;
 
-    /** True if a &lt;script&gt;&lt;/script&gt; block is read. CDATA sections within are handled as rawText. */
-    private boolean scriptBlock;
-
     /** Empty elements don't write a closing tag. */
     private boolean isEmptyElement;
 
@@ -273,11 +270,6 @@ public class XdocParser
                 }
             }
         }
-        else if ( parser.getName().equals( Tag.SCRIPT.toString() ) )
-        {
-            handleUnknown( parser, sink, TAG_TYPE_START );
-            scriptBlock = true;
-        }
         else if ( !baseStartTag( parser, sink ) )
         {
             if ( isEmptyElement )
@@ -393,12 +385,6 @@ public class XdocParser
         {
             consecutiveSections( Sink.SECTION_LEVEL_1, sink );
         }
-        else if ( parser.getName().equals( Tag.SCRIPT.toString() ) )
-        {
-            handleUnknown( parser, sink, TAG_TYPE_END );
-
-            scriptBlock = false;
-        }
         else if ( !baseEndTag( parser, sink ) )
         {
             if ( !isEmptyElement )
@@ -408,22 +394,6 @@ public class XdocParser
         }
 
         isEmptyElement = false;
-    }
-
-    /** {@inheritDoc} */
-    protected void handleCdsect( XmlPullParser parser, Sink sink )
-        throws XmlPullParserException
-    {
-        String text = getText( parser );
-
-        if ( scriptBlock )
-        {
-            sink.rawText( text );
-        }
-        else
-        {
-            sink.text( text );
-        }
     }
 
     /** {@inheritDoc} */
