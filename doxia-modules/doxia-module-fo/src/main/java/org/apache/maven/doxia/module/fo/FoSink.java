@@ -1321,6 +1321,15 @@ public class FoSink
     /** {@inheritDoc} */
     public void comment( String comment )
     {
+        if ( StringUtils.isNotEmpty( comment ) )
+        {
+            // http://www.w3.org/TR/2000/REC-xml-20001006#sec-comments
+            while ( comment.indexOf( "--" ) != -1 )
+            {
+                comment = StringUtils.replace( comment, "--", "- -" );
+            }
+        }
+
         StringBuffer buf = new StringBuffer( comment.length() + 9 );
 
         buf.append( LESS_THAN ).append( BANG ).append( MINUS ).append( MINUS ).append( SPACE );

@@ -232,4 +232,10 @@ public class LatexSinkTest
         // TODO: not implemented
         return "";
     }
+
+    /** {@inheritDoc} */
+    protected String getCommentBlock( String text )
+    {
+        return "";
+    }
 }

@@ -265,4 +265,10 @@ public class AptSinkTest extends AbstractSinkTest
     {
         return AptMarkup.BACKSLASH + "" + c;
     }
+
+    /** {@inheritDoc} */
+    protected String getCommentBlock( String text )
+    {
+        return EOL + "~~ Simple comment with ----";
+    }
 }

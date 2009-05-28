@@ -1745,13 +1745,20 @@ public class XhtmlBaseSink
     /** {@inheritDoc} */
     public void comment( String comment )
     {
+        if ( StringUtils.isNotEmpty( comment ) )
+        {
+            // http://www.w3.org/TR/2000/REC-xml-20001006#sec-comments
+            while ( comment.indexOf( "--" ) != -1 )
+            {
+                comment = StringUtils.replace( comment, "--", "- -" );
+            }
+        }
+
         StringBuffer buf = new StringBuffer( comment.length() + 9 );
 
-        buf.append( "" + LESS_THAN + BANG + MINUS + MINUS + SPACE );
-
+        buf.append( LESS_THAN ).append( BANG ).append( MINUS ).append( MINUS ).append( SPACE );
         buf.append( comment );
-
-        buf.append( "" + SPACE + MINUS + MINUS + GREATER_THAN );
+        buf.append( SPACE ).append( MINUS ).append( MINUS ).append( GREATER_THAN );
 
         write( buf.toString() );
     }

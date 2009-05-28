@@ -240,16 +240,6 @@ public class XhtmlSink
         resetState();
     }
 
-    /** {@inheritDoc} */
-    public void comment( String comment )
-    {
-        if ( StringUtils.isNotEmpty( comment ) )
-        {
-            comment = StringUtils.replace( comment, "-", " -" );
-        }
-        super.comment( comment );
-    }
-
     // ----------------------------------------------------------------------
     // Public protected methods
     // ----------------------------------------------------------------------

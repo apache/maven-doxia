@@ -35,6 +35,7 @@ import org.apache.maven.doxia.util.DoxiaUtils;
 import org.apache.maven.doxia.util.HtmlTools;
 
 import org.codehaus.plexus.util.FileUtils;
+import org.codehaus.plexus.util.StringUtils;
 
 /**
  * <a href="http://www.oasis-open.org/docbook">Docbook</a> Sink implementation.
@@ -1534,12 +1535,19 @@ public class DocBookSink
     /** {@inheritDoc} */
     public void comment( String comment )
     {
+        if ( StringUtils.isNotEmpty( comment ) )
+        {
+            // http://www.w3.org/TR/2000/REC-xml-20001006#sec-comments
+            while ( comment.indexOf( "--" ) != -1 )
+            {
+                comment = StringUtils.replace( comment, "--", "- -" );
+            }
+        }
+
         StringBuffer buffer = new StringBuffer( comment.length() + 9 );
 
         buffer.append( LESS_THAN ).append( BANG ).append( MINUS ).append( MINUS ).append( SPACE );
-
         buffer.append( comment );
-
         buffer.append( SPACE ).append( MINUS ).append( MINUS ).append( GREATER_THAN );
 
         markup( buffer.toString() );

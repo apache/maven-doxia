@@ -474,4 +474,10 @@ public class DocBookBookSinkTest extends AbstractSinkTest
         // TODO
         return "";
     }
+
+    /** {@inheritDoc} */
+    protected String getCommentBlock( String text )
+    {
+        return "<!-- Simple comment with - - - - -->";
+    }
 }

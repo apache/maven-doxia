@@ -414,4 +414,9 @@ public class FoSinkTest extends AbstractSinkTest
         return config;
     }
 
+    /** {@inheritDoc} */
+    protected String getCommentBlock( String text )
+    {
+        return "<!-- Simple comment with - - - - -->";
+    }
 }

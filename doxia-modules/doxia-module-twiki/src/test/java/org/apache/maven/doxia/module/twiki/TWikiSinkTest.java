@@ -273,4 +273,10 @@ public class TWikiSinkTest
     {
         // nop
     }
+
+    /** {@inheritDoc} */
+    protected String getCommentBlock( String text )
+    {
+        return "";
+    }
 }

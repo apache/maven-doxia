@@ -333,4 +333,10 @@ public class XhtmlSinkTest
                 "<head><title>Title</title><!-- A comment --><meta name=\"author\" content=\"&#x123;&amp;\" /></head>";
         assertTrue( writer.toString().indexOf( exp ) != -1 );
     }
+
+    /** {@inheritDoc} */
+    protected String getCommentBlock( String text )
+    {
+        return "<!-- Simple comment with - - - - -->";
+    }
 }
