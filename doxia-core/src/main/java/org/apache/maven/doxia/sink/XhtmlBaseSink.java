@@ -1443,7 +1443,7 @@ public class XhtmlBaseSink
         {
             id = DoxiaUtils.encodeId( name, true );
 
-            getLog().warn( "Modified invalid anchor name: " + name );
+            getLog().warn( "[Xhtml Sink] Modified invalid anchor name: '" + name + "' to '" + id + "'" );
         }
 
         MutableAttributeSet att = new SinkEventAttributeSet();
@@ -1745,13 +1745,17 @@ public class XhtmlBaseSink
     /** {@inheritDoc} */
     public void comment( String comment )
     {
-        if ( StringUtils.isNotEmpty( comment ) )
+        if ( StringUtils.isNotEmpty( comment ) && comment.indexOf( "--" ) != -1 )
         {
+            String originalComment = comment;
             // http://www.w3.org/TR/2000/REC-xml-20001006#sec-comments
             while ( comment.indexOf( "--" ) != -1 )
             {
                 comment = StringUtils.replace( comment, "--", "- -" );
             }
+
+            getLog()
+                    .warn( "[Xhtml Sink] Modified invalid comment: '" + originalComment + "' to '" + comment + "'" );
         }
 
         StringBuffer buf = new StringBuffer( comment.length() + 9 );
