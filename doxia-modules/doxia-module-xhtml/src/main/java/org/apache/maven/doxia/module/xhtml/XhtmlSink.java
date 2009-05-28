@@ -23,7 +23,6 @@ import java.io.Writer;
 
 import javax.swing.text.MutableAttributeSet;
 import javax.swing.text.html.HTML.Attribute;
-import javax.swing.text.html.HTML.Tag;
 
 import org.apache.maven.doxia.sink.XhtmlBaseSink;
 import org.apache.maven.doxia.sink.SinkEventAttributeSet;
@@ -121,9 +120,9 @@ public class XhtmlSink
             atts.addAttribute( "xml:lang", languageId );
         }
 
-        writeStartTag( Tag.HTML, atts );
+        writeStartTag( HTML, atts );
 
-        writeStartTag( Tag.HEAD );
+        writeStartTag( HEAD );
     }
 
     /** {@inheritDoc} */
@@ -136,8 +135,8 @@ public class XhtmlSink
             //  ((title,(script|style|meta|link|object|isindex)*,
             //  (base,(script|style|meta|link|object|isindex)*)?)|(base,(script|style|meta|link|object|isindex)*,
             //  (title,(script|style|meta|link|object|isindex)*))))"
-            writeStartTag( Tag.TITLE );
-            writeEndTag( Tag.TITLE );
+            writeStartTag( TITLE );
+            writeEndTag( TITLE );
         }
 
         setHeadFlag( false );
@@ -148,7 +147,7 @@ public class XhtmlSink
             write( "<meta http-equiv=\"Content-Type\" content=\"text/html; charset=" + encoding + "\"/>" );
         }
 
-        writeEndTag( Tag.HEAD );
+        writeEndTag( HEAD );
     }
 
     /**
@@ -159,7 +158,7 @@ public class XhtmlSink
     {
         setHeadTitleFlag( true );
 
-        writeStartTag( Tag.TITLE );
+        writeStartTag( TITLE );
     }
 
     /**
@@ -170,7 +169,7 @@ public class XhtmlSink
     {
         content( getTextBuffer().toString() );
 
-        writeEndTag( Tag.TITLE );
+        writeEndTag( TITLE );
 
         resetTextBuffer();
 
@@ -192,7 +191,7 @@ public class XhtmlSink
             text = StringUtils.replace( text, "&amp;#", "&#" );
             att.addAttribute( Attribute.CONTENT, text );
 
-            writeSimpleTag( Tag.META, att );
+            writeSimpleTag( META, att );
 
             resetTextBuffer();
         }
@@ -210,7 +209,7 @@ public class XhtmlSink
             att.addAttribute( Attribute.NAME, "date" );
             att.addAttribute( Attribute.CONTENT, getTextBuffer().toString() );
 
-            writeSimpleTag( Tag.META, att );
+            writeSimpleTag( META, att );
 
             resetTextBuffer();
         }
@@ -222,7 +221,7 @@ public class XhtmlSink
      */
     public void body()
     {
-        writeStartTag( Tag.BODY );
+        writeStartTag( BODY );
     }
 
     /**
@@ -232,9 +231,9 @@ public class XhtmlSink
      */
     public void body_()
     {
-        writeEndTag( Tag.BODY );
+        writeEndTag( BODY );
 
-        writeEndTag( Tag.HTML );
+        writeEndTag( HTML );
 
         flush();
 

@@ -31,6 +31,7 @@ import org.apache.maven.doxia.markup.HtmlMarkup;
 import org.apache.maven.doxia.markup.Markup;
 import org.apache.maven.doxia.util.DoxiaUtils;
 import org.apache.maven.doxia.util.HtmlTools;
+
 import org.codehaus.plexus.util.StringUtils;
 
 /**
@@ -408,7 +409,7 @@ public class XhtmlBaseSink
                     attributes, SinkUtils.SINK_BASE_ATTRIBUTES  ) );
 
             att.removeAttribute( Attribute.ID.toString() );
-            writeStartTag( Tag.DIV, att );
+            writeStartTag( HtmlMarkup.DIV, att );
         }
     }
 
@@ -422,7 +423,7 @@ public class XhtmlBaseSink
     {
         if ( depth >= SECTION_LEVEL_1 && depth <= SECTION_LEVEL_5 )
         {
-            writeEndTag( Tag.DIV );
+            writeEndTag( HtmlMarkup.DIV );
         }
     }
 
@@ -444,23 +445,23 @@ public class XhtmlBaseSink
 
         if ( depth == SECTION_LEVEL_1 )
         {
-            writeStartTag( Tag.H2, atts );
+            writeStartTag( HtmlMarkup.H2, atts );
         }
         else if ( depth == SECTION_LEVEL_2 )
         {
-            writeStartTag( Tag.H3, atts );
+            writeStartTag( HtmlMarkup.H3, atts );
         }
         else if ( depth == SECTION_LEVEL_3 )
         {
-            writeStartTag( Tag.H4, atts );
+            writeStartTag( HtmlMarkup.H4, atts );
         }
         else if ( depth == SECTION_LEVEL_4 )
         {
-            writeStartTag( Tag.H5, atts );
+            writeStartTag( HtmlMarkup.H5, atts );
         }
         else if ( depth == SECTION_LEVEL_5 )
         {
-            writeStartTag( Tag.H6, atts );
+            writeStartTag( HtmlMarkup.H6, atts );
         }
     }
 
@@ -478,23 +479,23 @@ public class XhtmlBaseSink
     {
         if ( depth == SECTION_LEVEL_1 )
         {
-            writeEndTag( Tag.H2 );
+            writeEndTag( HtmlMarkup.H2 );
         }
         else if ( depth == SECTION_LEVEL_2 )
         {
-            writeEndTag( Tag.H3 );
+            writeEndTag( HtmlMarkup.H3 );
         }
         else if ( depth == SECTION_LEVEL_3 )
         {
-            writeEndTag( Tag.H4 );
+            writeEndTag( HtmlMarkup.H4 );
         }
         else if ( depth == SECTION_LEVEL_4 )
         {
-            writeEndTag( Tag.H5 );
+            writeEndTag( HtmlMarkup.H5 );
         }
         else if ( depth == SECTION_LEVEL_5 )
         {
-            writeEndTag( Tag.H6 );
+            writeEndTag( HtmlMarkup.H6 );
         }
     }
 
@@ -528,7 +529,7 @@ public class XhtmlBaseSink
         MutableAttributeSet atts = SinkUtils.filterAttributes(
                 attributes, SinkUtils.SINK_BASE_ATTRIBUTES  );
 
-        writeStartTag( Tag.UL, atts );
+        writeStartTag( HtmlMarkup.UL, atts );
     }
 
     /**
@@ -537,7 +538,7 @@ public class XhtmlBaseSink
      */
     public void list_()
     {
-        writeEndTag( Tag.UL );
+        writeEndTag( HtmlMarkup.UL );
     }
 
     /**
@@ -558,7 +559,7 @@ public class XhtmlBaseSink
         MutableAttributeSet atts = SinkUtils.filterAttributes(
                 attributes, SinkUtils.SINK_BASE_ATTRIBUTES  );
 
-        writeStartTag( Tag.LI, atts );
+        writeStartTag( HtmlMarkup.LI, atts );
     }
 
     /**
@@ -567,7 +568,7 @@ public class XhtmlBaseSink
      */
     public void listItem_()
     {
-        writeEndTag( Tag.LI );
+        writeEndTag( HtmlMarkup.LI );
     }
 
     /**
@@ -627,7 +628,7 @@ public class XhtmlBaseSink
 
         atts.addAttribute( Attribute.STYLE, "list-style-type: " + style );
 
-        writeStartTag( Tag.OL, atts );
+        writeStartTag( HtmlMarkup.OL, atts );
     }
 
     /**
@@ -636,7 +637,7 @@ public class XhtmlBaseSink
      */
     public void numberedList_()
     {
-        writeEndTag( Tag.OL );
+        writeEndTag( HtmlMarkup.OL );
     }
 
     /**
@@ -657,7 +658,7 @@ public class XhtmlBaseSink
         MutableAttributeSet atts = SinkUtils.filterAttributes(
                 attributes, SinkUtils.SINK_BASE_ATTRIBUTES  );
 
-        writeStartTag( Tag.LI, atts );
+        writeStartTag( HtmlMarkup.LI, atts );
     }
 
     /**
@@ -666,7 +667,7 @@ public class XhtmlBaseSink
      */
     public void numberedListItem_()
     {
-        writeEndTag( Tag.LI );
+        writeEndTag( HtmlMarkup.LI );
     }
 
     /**
@@ -695,7 +696,7 @@ public class XhtmlBaseSink
         MutableAttributeSet atts = SinkUtils.filterAttributes(
                 attributes, SinkUtils.SINK_BASE_ATTRIBUTES  );
 
-        writeStartTag( Tag.DL, atts );
+        writeStartTag( HtmlMarkup.DL, atts );
     }
 
     /**
@@ -704,7 +705,7 @@ public class XhtmlBaseSink
      */
     public void definitionList_()
     {
-        writeEndTag( Tag.DL );
+        writeEndTag( HtmlMarkup.DL );
     }
 
     /**
@@ -716,7 +717,7 @@ public class XhtmlBaseSink
         MutableAttributeSet atts = SinkUtils.filterAttributes(
                 attributes, SinkUtils.SINK_BASE_ATTRIBUTES  );
 
-        writeStartTag( Tag.DT, atts );
+        writeStartTag( HtmlMarkup.DT, atts );
     }
 
     /**
@@ -734,7 +735,7 @@ public class XhtmlBaseSink
      */
     public void definedTerm_()
     {
-        writeEndTag( Tag.DT );
+        writeEndTag( HtmlMarkup.DT );
     }
 
     /**
@@ -755,7 +756,7 @@ public class XhtmlBaseSink
         MutableAttributeSet atts = SinkUtils.filterAttributes(
                 attributes, SinkUtils.SINK_BASE_ATTRIBUTES  );
 
-        writeStartTag( Tag.DD, atts );
+        writeStartTag( HtmlMarkup.DD, atts );
     }
 
     /**
@@ -764,7 +765,7 @@ public class XhtmlBaseSink
      */
     public void definition_()
     {
-        writeEndTag( Tag.DD );
+        writeEndTag( HtmlMarkup.DD );
     }
 
     /**
@@ -776,7 +777,7 @@ public class XhtmlBaseSink
      */
     public void figure()
     {
-        write( String.valueOf( LESS_THAN ) + Tag.IMG );
+        write( String.valueOf( LESS_THAN ) + HtmlMarkup.IMG );
         legacyFigure = true;
     }
 
@@ -801,7 +802,7 @@ public class XhtmlBaseSink
             atts.addAttribute( SinkEventAttributes.CLASS, "figure" );
         }
 
-        writeStartTag( Tag.DIV, atts );
+        writeStartTag( HtmlMarkup.DIV, atts );
     }
 
     /** {@inheritDoc} */
@@ -819,7 +820,7 @@ public class XhtmlBaseSink
         }
         else
         {
-            writeEndTag( Tag.DIV );
+            writeEndTag( HtmlMarkup.DIV );
             inFigure = false;
         }
 
@@ -845,7 +846,7 @@ public class XhtmlBaseSink
             MutableAttributeSet atts = new SinkEventAttributeSet( 1 );
             atts.addAttribute( SinkEventAttributes.ALIGN, "center" );
 
-            writeStartTag( Tag.P, atts );
+            writeStartTag( HtmlMarkup.P, atts );
         }
 
         int count = ( attributes == null ? 1 : attributes.getAttributeCount() + 1 );
@@ -860,11 +861,11 @@ public class XhtmlBaseSink
             atts.addAttribute( Attribute.ALT.toString(), "" );
         }
 
-        writeStartTag( Tag.IMG, atts, true );
+        writeStartTag( HtmlMarkup.IMG, atts, true );
 
         if ( inFigure )
         {
-            writeEndTag( Tag.P );
+            writeEndTag( HtmlMarkup.P );
         }
     }
 
@@ -936,7 +937,7 @@ public class XhtmlBaseSink
         MutableAttributeSet atts = SinkUtils.filterAttributes(
                 attributes, SinkUtils.SINK_SECTION_ATTRIBUTES  );
 
-        writeStartTag( Tag.P, atts );
+        writeStartTag( HtmlMarkup.P, atts );
     }
 
     /**
@@ -947,7 +948,7 @@ public class XhtmlBaseSink
     {
         if ( paragraphFlag )
         {
-            writeEndTag( Tag.P );
+            writeEndTag( HtmlMarkup.P );
             paragraphFlag = false;
         }
     }
@@ -1016,7 +1017,7 @@ public class XhtmlBaseSink
         String width = (String) atts.getAttribute( Attribute.WIDTH.toString() );
         atts.removeAttribute( Attribute.WIDTH.toString() );
 
-        writeStartTag( Tag.DIV, atts );
+        writeStartTag( HtmlMarkup.DIV, atts );
 
         if ( width != null )
         {
@@ -1026,7 +1027,7 @@ public class XhtmlBaseSink
         atts.removeAttribute( Attribute.ALIGN.toString() );
         atts.removeAttribute( Attribute.CLASS.toString() );
 
-        writeStartTag( Tag.PRE, atts );
+        writeStartTag( HtmlMarkup.PRE, atts );
     }
 
     /**
@@ -1036,8 +1037,8 @@ public class XhtmlBaseSink
      */
     public void verbatim_()
     {
-        writeEndTag( Tag.PRE );
-        writeEndTag( Tag.DIV );
+        writeEndTag( HtmlMarkup.PRE );
+        writeEndTag( HtmlMarkup.DIV );
 
         verbatimFlag = false;
 
@@ -1061,7 +1062,7 @@ public class XhtmlBaseSink
         MutableAttributeSet atts = SinkUtils.filterAttributes(
                 attributes, SinkUtils.SINK_HR_ATTRIBUTES  );
 
-        writeSimpleTag( Tag.HR, atts );
+        writeSimpleTag( HtmlMarkup.HR, atts );
     }
 
     /** {@inheritDoc} */
@@ -1104,12 +1105,12 @@ public class XhtmlBaseSink
     {
         this.tableRows = false;
 
-        writeEndTag( Tag.TABLE );
+        writeEndTag( HtmlMarkup.TABLE );
 
         String content = tempWriter.toString();
 
         String startTable =
-            new StringBuffer().append( Markup.LESS_THAN ).append( Tag.TABLE.toString() ).toString();
+            new StringBuffer().append( Markup.LESS_THAN ).append( HtmlMarkup.TABLE.toString() ).toString();
 
         if ( content.lastIndexOf( startTable ) == -1 )
         {
@@ -1123,10 +1124,10 @@ public class XhtmlBaseSink
         content = content.substring( content.lastIndexOf( startTable ) );
 
         String startCaption =
-            new StringBuffer().append( Markup.LESS_THAN ).append( Tag.CAPTION.toString() )
+            new StringBuffer().append( Markup.LESS_THAN ).append( HtmlMarkup.CAPTION.toString() )
                               .append( Markup.GREATER_THAN ).toString();
         String endCaption =
-            new StringBuffer().append( Markup.LESS_THAN ).append( Markup.SLASH ).append( Tag.CAPTION.toString() )
+            new StringBuffer().append( Markup.LESS_THAN ).append( Markup.SLASH ).append( HtmlMarkup.CAPTION.toString() )
                               .append( Markup.GREATER_THAN ).toString();
 
         if ( content.indexOf( startCaption ) != -1 && content.indexOf( endCaption ) != -1 )
@@ -1139,7 +1140,7 @@ public class XhtmlBaseSink
             String contentWithoutCaption = StringUtils.replace( content, captionTag, "" );
 
             String startTr =
-                new StringBuffer().append( Markup.LESS_THAN ).append( Tag.TR.toString() ).toString();
+                new StringBuffer().append( Markup.LESS_THAN ).append( HtmlMarkup.TR.toString() ).toString();
 
             StringBuffer text = new StringBuffer();
             text.append( contentWithoutCaption.substring( 0, contentWithoutCaption.indexOf( startTr ) ) );
@@ -1192,7 +1193,7 @@ public class XhtmlBaseSink
 
         tableAttributes.removeAttributes( tableAttributes );
 
-        writeStartTag( Tag.TABLE, att );
+        writeStartTag( HtmlMarkup.TABLE, att );
     }
 
     /** {@inheritDoc} */
@@ -1243,7 +1244,7 @@ public class XhtmlBaseSink
         att.addAttributes( SinkUtils.filterAttributes(
                 attributes, SinkUtils.SINK_TR_ATTRIBUTES  ) );
 
-        writeStartTag( Tag.TR, att );
+        writeStartTag( HtmlMarkup.TR, att );
 
         evenTableRow = !evenTableRow;
 
@@ -1256,7 +1257,7 @@ public class XhtmlBaseSink
      */
     public void tableRow_()
     {
-        writeEndTag( Tag.TR );
+        writeEndTag( HtmlMarkup.TR );
 
         cellCount = 0;
     }
@@ -1331,7 +1332,7 @@ public class XhtmlBaseSink
         }
 
 
-        Tag t = ( headerRow ? Tag.TH : Tag.TD );
+        Tag t = ( headerRow ? HtmlMarkup.TH : HtmlMarkup.TD );
 
         MutableAttributeSet att = new SinkEventAttributeSet();
 
@@ -1367,7 +1368,7 @@ public class XhtmlBaseSink
      */
     private void tableCell_( boolean headerRow )
     {
-        Tag t = ( headerRow ? Tag.TH : Tag.TD );
+        Tag t = ( headerRow ? HtmlMarkup.TH : HtmlMarkup.TD );
 
         writeEndTag( t );
 
@@ -1396,7 +1397,7 @@ public class XhtmlBaseSink
         MutableAttributeSet atts = SinkUtils.filterAttributes(
                 attributes, SinkUtils.SINK_SECTION_ATTRIBUTES  );
 
-        writeStartTag( Tag.CAPTION, atts );
+        writeStartTag( HtmlMarkup.CAPTION, atts );
     }
 
     /**
@@ -1405,7 +1406,7 @@ public class XhtmlBaseSink
      */
     public void tableCaption_()
     {
-        writeEndTag( Tag.CAPTION );
+        writeEndTag( HtmlMarkup.CAPTION );
     }
 
     /**
@@ -1449,7 +1450,7 @@ public class XhtmlBaseSink
         att.addAttribute( Attribute.NAME, id );
         att.addAttributes( atts );
 
-        writeStartTag( Tag.A, att );
+        writeStartTag( HtmlMarkup.A, att );
     }
 
     /**
@@ -1460,7 +1461,7 @@ public class XhtmlBaseSink
     {
         if ( !headFlag )
         {
-            writeEndTag( Tag.A );
+            writeEndTag( HtmlMarkup.A );
         }
     }
 
@@ -1530,7 +1531,7 @@ public class XhtmlBaseSink
             att.addAttributes( attributes );
         }
 
-        writeStartTag( Tag.A, att );
+        writeStartTag( HtmlMarkup.A, att );
     }
 
     /**
@@ -1541,7 +1542,7 @@ public class XhtmlBaseSink
     {
         if ( !headFlag )
         {
-            writeEndTag( Tag.A );
+            writeEndTag( HtmlMarkup.A );
         }
     }
 
@@ -1553,7 +1554,7 @@ public class XhtmlBaseSink
     {
         if ( !headFlag )
         {
-            writeStartTag( Tag.I );
+            writeStartTag( HtmlMarkup.I );
         }
     }
 
@@ -1565,7 +1566,7 @@ public class XhtmlBaseSink
     {
         if ( !headFlag )
         {
-            writeEndTag( Tag.I );
+            writeEndTag( HtmlMarkup.I );
         }
     }
 
@@ -1577,7 +1578,7 @@ public class XhtmlBaseSink
     {
         if ( !headFlag )
         {
-            writeStartTag( Tag.B );
+            writeStartTag( HtmlMarkup.B );
         }
     }
 
@@ -1589,7 +1590,7 @@ public class XhtmlBaseSink
     {
         if ( !headFlag )
         {
-            writeEndTag( Tag.B );
+            writeEndTag( HtmlMarkup.B );
         }
     }
 
@@ -1601,7 +1602,7 @@ public class XhtmlBaseSink
     {
         if ( !headFlag )
         {
-            writeStartTag( Tag.TT );
+            writeStartTag( HtmlMarkup.TT );
         }
     }
 
@@ -1613,7 +1614,7 @@ public class XhtmlBaseSink
     {
         if ( !headFlag )
         {
-            writeEndTag( Tag.TT );
+            writeEndTag( HtmlMarkup.TT );
         }
     }
 
@@ -1641,7 +1642,7 @@ public class XhtmlBaseSink
             MutableAttributeSet atts = SinkUtils.filterAttributes(
                 attributes, SinkUtils.SINK_BR_ATTRIBUTES  );
 
-            writeSimpleTag( Tag.BR, atts );
+            writeSimpleTag( HtmlMarkup.BR, atts );
         }
     }
 
@@ -1692,38 +1693,38 @@ public class XhtmlBaseSink
         {
             if ( attributes.containsAttribute( SinkEventAttributes.DECORATION, "underline" ) )
             {
-                writeStartTag( Tag.U );
+                writeStartTag( HtmlMarkup.U );
             }
             if ( attributes.containsAttribute( SinkEventAttributes.DECORATION, "line-through" ) )
             {
-                writeStartTag( Tag.S );
+                writeStartTag( HtmlMarkup.S );
             }
             if ( attributes.containsAttribute( SinkEventAttributes.VALIGN, "sub" ) )
             {
-                writeStartTag( Tag.SUB );
+                writeStartTag( HtmlMarkup.SUB );
             }
             if ( attributes.containsAttribute( SinkEventAttributes.VALIGN, "sup" ) )
             {
-                writeStartTag( Tag.SUP );
+                writeStartTag( HtmlMarkup.SUP );
             }
 
             text( text );
 
             if ( attributes.containsAttribute( SinkEventAttributes.VALIGN, "sup" ) )
             {
-                writeEndTag( Tag.SUP );
+                writeEndTag( HtmlMarkup.SUP );
             }
             if ( attributes.containsAttribute( SinkEventAttributes.VALIGN, "sub" ) )
             {
-                writeEndTag( Tag.SUB );
+                writeEndTag( HtmlMarkup.SUB );
             }
             if ( attributes.containsAttribute( SinkEventAttributes.DECORATION, "line-through" ) )
             {
-                writeEndTag( Tag.S );
+                writeEndTag( HtmlMarkup.S );
             }
             if ( attributes.containsAttribute( SinkEventAttributes.DECORATION, "underline" ) )
             {
-                writeEndTag( Tag.U );
+                writeEndTag( HtmlMarkup.U );
             }
         }
     }

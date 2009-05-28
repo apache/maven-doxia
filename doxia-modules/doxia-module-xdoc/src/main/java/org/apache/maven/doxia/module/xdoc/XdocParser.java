@@ -27,7 +27,6 @@ import java.util.HashMap;
 import java.util.Map;
 
 import javax.swing.text.html.HTML.Attribute;
-import javax.swing.text.html.HTML.Tag;
 
 import org.apache.maven.doxia.macro.MacroExecutionException;
 import org.apache.maven.doxia.macro.manager.MacroNotFoundException;
@@ -110,7 +109,7 @@ public class XdocParser
             //Do nothing
             return;
         }
-        else if ( parser.getName().equals( Tag.HEAD.toString() ) )
+        else if ( parser.getName().equals( HEAD.toString() ) )
         {
             if ( !inHead ) // we might be in head from a <properties> already
             {
@@ -119,7 +118,7 @@ public class XdocParser
                 sink.head( attribs );
             }
         }
-        else if ( parser.getName().equals( Tag.TITLE.toString() ) )
+        else if ( parser.getName().equals( TITLE.toString() ) )
         {
             sink.title( attribs );
         }
@@ -131,7 +130,7 @@ public class XdocParser
         {
             sink.date( attribs );
         }
-        else if ( parser.getName().equals( Tag.META.toString() ) )
+        else if ( parser.getName().equals( META.toString() ) )
         {
             String name = parser.getAttributeValue( null, Attribute.NAME.toString() );
             String content = parser.getAttributeValue( null, Attribute.CONTENT.toString() );
@@ -157,7 +156,7 @@ public class XdocParser
                 sink.unknown( "meta", new Object[] {new Integer( TAG_TYPE_SIMPLE )}, attribs );
             }
         }
-        else if ( parser.getName().equals( Tag.BODY.toString() ) )
+        else if ( parser.getName().equals( BODY.toString() ) )
         {
             if ( inHead )
             {
@@ -245,7 +244,7 @@ public class XdocParser
                 }
             }
         }
-        else if ( parser.getName().equals( Tag.PARAM.toString() ) )
+        else if ( parser.getName().equals( PARAM.toString() ) )
         {
             if ( !isSecondParsing() )
             {
@@ -257,7 +256,7 @@ public class XdocParser
                     if ( StringUtils.isEmpty( paramName ) || StringUtils.isEmpty( paramValue ) )
                     {
                         throw new MacroExecutionException( "'" + Attribute.NAME.toString() + "' and '"
-                            + Attribute.VALUE.toString() + "' attributes for the '" + Tag.PARAM.toString()
+                            + Attribute.VALUE.toString() + "' attributes for the '" + PARAM.toString()
                             + "' tag are required inside the '" + MACRO_TAG.toString() + "' tag." );
                     }
 
@@ -301,17 +300,17 @@ public class XdocParser
             //Do nothing
             return;
         }
-        else if ( parser.getName().equals( Tag.HEAD.toString() ) )
+        else if ( parser.getName().equals( HEAD.toString() ) )
         {
             //Do nothing, head is closed with BODY start.
         }
-        else if ( parser.getName().equals( Tag.BODY.toString() ) )
+        else if ( parser.getName().equals( BODY.toString() ) )
         {
             consecutiveSections( 0, sink );
 
             sink.body_();
         }
-        else if ( parser.getName().equals( Tag.TITLE.toString() ) )
+        else if ( parser.getName().equals( TITLE.toString() ) )
         {
             sink.title_();
         }
@@ -368,7 +367,7 @@ public class XdocParser
             macroName = null;
             macroParameters = null;
         }
-        else if ( parser.getName().equals( Tag.PARAM.toString() ) )
+        else if ( parser.getName().equals( PARAM.toString() ) )
         {
             if ( !StringUtils.isNotEmpty( macroName ) )
             {

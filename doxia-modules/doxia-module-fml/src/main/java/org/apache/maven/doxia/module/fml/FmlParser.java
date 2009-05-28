@@ -24,7 +24,6 @@ import java.io.Reader;
 import java.util.Iterator;
 
 import javax.swing.text.html.HTML.Attribute;
-import javax.swing.text.html.HTML.Tag;
 
 import org.apache.maven.doxia.macro.MacroExecutionException;
 import org.apache.maven.doxia.module.fml.model.Faq;
@@ -128,7 +127,7 @@ public class FmlParser
                 currentPart.setId( DoxiaUtils.encodeId( currentPart.getId(), true ) );
             }
         }
-        else if ( parser.getName().equals( Tag.TITLE.toString() ) )
+        else if ( parser.getName().equals( TITLE.toString() ) )
         {
             if ( currentPart == null )
             {

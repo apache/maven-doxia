@@ -25,8 +25,6 @@ import org.codehaus.plexus.util.StringUtils;
 
 import java.io.Writer;
 
-import javax.swing.text.html.HTML.Tag;
-
 /**
  * An Xhtml Sink that doesn't write out head or body elements.
  *
@@ -203,13 +201,13 @@ public class XhtmlBookSink
     /** {@inheritDoc} */
     public void sectionTitle()
     {
-        writeStartTag( Tag.H1 );
+        writeStartTag( H1 );
     }
 
     /** {@inheritDoc} */
     public void sectionTitle_()
     {
-        writeEndTag( Tag.H1 );
+        writeEndTag( H1 );
     }
 
     /** {@inheritDoc} */
