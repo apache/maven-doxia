@@ -20,6 +20,7 @@ package org.apache.maven.doxia.sink;
  */
 
 import org.apache.maven.doxia.AbstractModuleTest;
+import org.apache.maven.doxia.logging.PlexusLoggerWrapper;
 import org.codehaus.plexus.util.IOUtil;
 
 import java.io.CharArrayWriter;
@@ -52,6 +53,7 @@ public abstract class AbstractSinkTest
 
         testWriter.reset();
         sink = createSink( testWriter );
+        sink.enableLogging( new PlexusLoggerWrapper( getContainer().getLogger() ) );
     }
 
     // ---------------------------------------------------------------------
