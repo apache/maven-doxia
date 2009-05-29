@@ -19,10 +19,13 @@ package org.apache.maven.doxia.xsd;
  * under the License.
  */
 
+import java.io.File;
 import java.io.IOException;
 import java.io.InputStream;
+import java.io.Reader;
 import java.io.StringReader;
 import java.net.JarURLConnection;
+import java.net.URISyntaxException;
 import java.net.URL;
 import java.util.ArrayList;
 import java.util.Collections;
@@ -39,8 +42,11 @@ import junit.framework.AssertionFailedError;
 
 import org.apache.maven.doxia.parser.AbstractXmlParser;
 import org.codehaus.plexus.PlexusTestCase;
+import org.codehaus.plexus.util.FileUtils;
 import org.codehaus.plexus.util.IOUtil;
+import org.codehaus.plexus.util.ReaderFactory;
 import org.codehaus.plexus.util.SelectorUtils;
+import org.codehaus.plexus.util.xml.XmlUtil;
 import org.xml.sax.InputSource;
 import org.xml.sax.SAXException;
 import org.xml.sax.SAXNotRecognizedException;
@@ -51,7 +57,7 @@ import org.xml.sax.helpers.DefaultHandler;
 import org.xml.sax.helpers.XMLReaderFactory;
 
 /**
- * Abstract class to validate XML files with Doxia namespaces.
+ * Abstract class to validate XML files with DTD or XSD mainly for Doxia namespaces.
  *
  * @author <a href="mailto:vincent.siveton@gmail.com">Vincent Siveton</a>
  * @version $Id$
@@ -89,23 +95,13 @@ public abstract class AbstractXmlValidatorTest
     }
 
     /**
-     * @return a non null patterns to includes specific test files.
-     * @see AbstractXmlValidatorTest#getTestDocuments()
-     */
-    protected abstract String[] getIncludes();
-
-    /**
-     * @param content xml content not null
-     * @return xml content with the wanted Doxia namespace
-     */
-    protected abstract String addNamespaces( String content );
-
-    /**
-     * Test xml files with namespace.
+     * Validate tests documents with DTD or XSD using xerces.
      *
      * @throws Exception if any
+     * @see #addNamespaces(String)
+     * @see #getTestDocuments()
      */
-    public void testXmlFilesWithDoxiaNamespaces()
+    public void testValidateFiles()
         throws Exception
     {
         for ( Iterator it = getTestDocuments().entrySet().iterator(); it.hasNext(); )
@@ -121,30 +117,17 @@ public abstract class AbstractXmlValidatorTest
 
             for ( Iterator it2 = errors.iterator(); it2.hasNext(); )
             {
-                String message = (String) it2.next();
+                ErrorMessage error = (ErrorMessage) it2.next();
 
-                if ( message.length() != 0 )
+                if ( isFailErrorMessage( error.getMessage() ) )
                 {
-                    // Exclude some xhtml errors
-                    if ( message
-                                .indexOf( "schema_reference.4: Failed to read schema document 'http://www.w3.org/2001/xml.xsd'" ) == -1
-                        && message
-                                  .indexOf( "Message: cvc-complex-type.4: Attribute 'alt' must appear on element 'img'." ) == -1
-                        && message
-                                  .indexOf( "Message: cvc-complex-type.2.4.a: Invalid content starting with element" ) == -1
-                        && message
-                                  .indexOf( "Message: cvc-complex-type.2.4.a: Invalid content was found starting with element" ) == -1
-                        && message.indexOf( "Message: cvc-datatype-valid.1.2.1:" ) == -1 // Doxia allow space
-                        && message.indexOf( "Message: cvc-attribute.3:" ) == -1 ) // Doxia allow space
+                    fail( entry.getKey() + EOL + error.toString() );
+                }
+                else
+                {
+                    if ( getContainer().getLogger().isDebugEnabled() )
                     {
-                        fail( entry.getKey() + EOL + message );
-                    }
-                    else
-                    {
-                        if ( getContainer().getLogger().isDebugEnabled() )
-                        {
-                            getContainer().getLogger().debug( entry.getKey() + EOL + message );
-                        }
+                        getContainer().getLogger().debug( entry.getKey() + EOL + error.toString() );
                     }
                 }
             }
@@ -152,102 +135,20 @@ public abstract class AbstractXmlValidatorTest
     }
 
     // ----------------------------------------------------------------------
-    // Private method
+    // Protected methods
     // ----------------------------------------------------------------------
 
-    private XMLReader getXMLReader()
-    {
-        if ( xmlReader == null )
-        {
-            try
-            {
-                xmlReader = XMLReaderFactory.createXMLReader( "org.apache.xerces.parsers.SAXParser" );
-                xmlReader.setFeature( "http://xml.org/sax/features/validation", true );
-                xmlReader.setFeature( "http://apache.org/xml/features/validation/schema", true );
-                MessagesErrorHandler errorHandler = new MessagesErrorHandler();
-                xmlReader.setErrorHandler( errorHandler );
+    /**
+     * @return a non null patterns to includes specific test files.
+     * @see AbstractXmlValidatorTest#getTestDocuments()
+     */
+    protected abstract String[] getIncludes();
 
-                xmlReader.setEntityResolver( new AbstractXmlParser.CachedFileEntityResolver() );
-            }
-            catch ( SAXNotRecognizedException e )
-            {
-                throw new AssertionFailedError( "SAXNotRecognizedException: " + e.getMessage() );
-            }
-            catch ( SAXNotSupportedException e )
-            {
-                throw new AssertionFailedError( "SAXNotSupportedException: " + e.getMessage() );
-            }
-            catch ( SAXException e )
-            {
-                throw new AssertionFailedError( "SAXException: " + e.getMessage() );
-            }
-        }
-
-        return xmlReader;
-    }
-
-    private List parseXML( String xmlContent )
-        throws IOException, SAXException
-    {
-        xmlContent = addNamespaces( xmlContent );
-
-        MessagesErrorHandler errorHandler = (MessagesErrorHandler) getXMLReader().getErrorHandler();
-
-        getXMLReader().parse( new InputSource( new StringReader( xmlContent ) ) );
-
-        return errorHandler.getMessages();
-    }
-
-    private static class MessagesErrorHandler
-        extends DefaultHandler
-    {
-        private final List messages;
-
-        public MessagesErrorHandler()
-        {
-            messages = new ArrayList();
-        }
-
-        /** {@inheritDoc} */
-        public void warning( SAXParseException e )
-            throws SAXException
-        {
-            addMessage( "Warning:", e );
-        }
-
-        /** {@inheritDoc} */
-        public void error( SAXParseException e )
-            throws SAXException
-        {
-            addMessage( "Error:", e );
-        }
-
-        /** {@inheritDoc} */
-        public void fatalError( SAXParseException e )
-            throws SAXException
-        {
-            addMessage( "Fatal error:", e );
-        }
-
-        private void addMessage( String pre, SAXParseException e )
-        {
-            StringBuffer message = new StringBuffer();
-
-            message.append( pre ).append( EOL );
-            message.append( "  Public ID: " + e.getPublicId() ).append( EOL );
-            message.append( "  System ID: " + e.getSystemId() ).append( EOL );
-            message.append( "  Line number: " + e.getLineNumber() ).append( EOL );
-            message.append( "  Column number: " + e.getColumnNumber() ).append( EOL );
-            message.append( "  Message: " + e.getMessage() ).append( EOL );
-
-            messages.add( message.toString() );
-        }
-
-        protected List getMessages()
-        {
-            return messages;
-        }
-    }
+    /**
+     * @param content xml content not null
+     * @return xml content with the wanted Doxia namespace
+     */
+    protected abstract String addNamespaces( String content );
 
     /**
      * @return a map of test resources filtered by patterns from {@link #getIncludes()}.
@@ -283,7 +184,7 @@ public abstract class AbstractXmlValidatorTest
     }
 
     /**
-     * Find test resources in the <code>doxia-test-docs-XXX.jar</code>
+     * Find test resources in the <code>doxia-test-docs-XXX.jar</code> or in an IDE project.
      *
      * @return a map of test resources defined as follow:
      * <ul>
@@ -304,38 +205,352 @@ public abstract class AbstractXmlValidatorTest
         URL testJar = AbstractXmlValidatorTest.class.getClassLoader().getResource( MAVEN_RESOURCE_PATH );
         if ( testJar == null )
         {
-            throw new RuntimeException(
-                    "Could not find the Doxia test documents artefact i.e. doxia-test-docs-XXX.jar" );
+            // maybe in an IDE project
+            testJar = AbstractXmlValidatorTest.class.getClassLoader().getResource( "doxia-site" );
+
+            if ( testJar == null )
+            {
+                throw new RuntimeException(
+                        "Could not find the Doxia test documents artefact i.e. doxia-test-docs-XXX.jar" );
+            }
         }
 
-        JarURLConnection conn = (JarURLConnection) testJar.openConnection();
-        JarFile jarFile = conn.getJarFile();
-        for ( Enumeration e = jarFile.entries(); e.hasMoreElements(); )
+        if ( testJar.toString().startsWith( "jar" ))
+            {
+            JarURLConnection conn = (JarURLConnection) testJar.openConnection();
+            JarFile jarFile = conn.getJarFile();
+            for ( Enumeration e = jarFile.entries(); e.hasMoreElements(); )
+            {
+                JarEntry entry = (JarEntry) e.nextElement();
+
+                if ( entry.getName().startsWith( "META-INF" ) )
+                {
+                    continue;
+                }
+                if ( entry.isDirectory() )
+                {
+                    continue;
+                }
+
+                InputStream in = null;
+                try
+                {
+                    in = AbstractXmlValidatorTest.class.getClassLoader().getResource( entry.getName() ).openStream();
+                    String content = IOUtil.toString( in, "UTF-8" );
+                    CACHE_DOXIA_TEST_DOCUMENTS.put( "jar:" + conn.getJarFileURL() + "!/" + entry.getName(), content );
+                }
+                finally
+                {
+                    IOUtil.close( in );
+                }
+            }
+        }
+        else
         {
-            JarEntry entry = (JarEntry) e.nextElement();
-
-            if ( entry.getName().startsWith( "META-INF" ) )
-            {
-                continue;
-            }
-            if ( entry.isDirectory() )
-            {
-                continue;
-            }
-
-            InputStream in = null;
+            // IDE projects
+            File testDocsDir;
             try
             {
-                in = AbstractXmlValidatorTest.class.getClassLoader().getResource( entry.getName() ).openStream();
-                String content = IOUtil.toString( in, "UTF-8" );
-                CACHE_DOXIA_TEST_DOCUMENTS.put( "jar:" + conn.getJarFileURL() + "!/" + entry.getName(), content );
+                testDocsDir = new File( testJar.toURI() ).getParentFile();
             }
-            finally
+            catch ( URISyntaxException e )
             {
-                IOUtil.close( in );
+                throw new IOException( "URISyntaxException: " + e.getMessage() );
+            }
+
+            List files = FileUtils.getFiles( testDocsDir, "**/*.*", FileUtils.getDefaultExcludesAsString(), true );
+            for ( Iterator it = files.iterator(); it.hasNext();)
+            {
+                File file = new File( it.next().toString() );
+
+                if ( file.getAbsolutePath().indexOf( "META-INF" ) != -1 )
+                {
+                    continue;
+                }
+
+                Reader reader = null;
+                if ( XmlUtil.isXml( file ))
+                {
+                    reader = ReaderFactory.newXmlReader( file );
+                }
+                else
+                {
+                    reader = ReaderFactory.newReader( file, "UTF-8" );
+                }
+
+                String content = IOUtil.toString( reader );
+                CACHE_DOXIA_TEST_DOCUMENTS.put( file.toURI().toString(), content );
             }
         }
 
         return CACHE_DOXIA_TEST_DOCUMENTS;
+    }
+
+    /**
+     * Filter fail message.
+     *
+     * @param message not null
+     * @return <code>true</code> if the given message will fail the test.
+     * @since 1.1.1
+     */
+    protected boolean isFailErrorMessage( String message )
+    {
+        if ( message
+                    .indexOf( "schema_reference.4: Failed to read schema document 'http://www.w3.org/2001/xml.xsd'" ) == -1
+            && message.indexOf( "cvc-complex-type.4: Attribute 'alt' must appear on element 'img'." ) == -1
+            && message.indexOf( "cvc-complex-type.2.4.a: Invalid content starting with element" ) == -1
+            && message.indexOf( "cvc-complex-type.2.4.a: Invalid content was found starting with element" ) == -1
+            && message.indexOf( "cvc-datatype-valid.1.2.1:" ) == -1 // Doxia allow space
+            && message.indexOf( "cvc-attribute.3:" ) == -1 ) // Doxia allow space
+        {
+            return true;
+        }
+
+        return false;
+    }
+
+    // ----------------------------------------------------------------------
+    // Private methods
+    // ----------------------------------------------------------------------
+
+    private XMLReader getXMLReader()
+    {
+        if ( xmlReader == null )
+        {
+            try
+            {
+                xmlReader = XMLReaderFactory.createXMLReader( "org.apache.xerces.parsers.SAXParser" );
+                xmlReader.setFeature( "http://xml.org/sax/features/validation", true );
+                xmlReader.setFeature( "http://apache.org/xml/features/validation/schema", true );
+                xmlReader.setErrorHandler( new MessagesErrorHandler() );
+                xmlReader.setEntityResolver( new AbstractXmlParser.CachedFileEntityResolver() );
+            }
+            catch ( SAXNotRecognizedException e )
+            {
+                throw new AssertionFailedError( "SAXNotRecognizedException: " + e.getMessage() );
+            }
+            catch ( SAXNotSupportedException e )
+            {
+                throw new AssertionFailedError( "SAXNotSupportedException: " + e.getMessage() );
+            }
+            catch ( SAXException e )
+            {
+                throw new AssertionFailedError( "SAXException: " + e.getMessage() );
+            }
+        }
+
+        ( (MessagesErrorHandler) xmlReader.getErrorHandler() ).clearMessages();
+
+        return xmlReader;
+    }
+
+    /**
+     * @param xmlContent
+     * @return a list of ErrorMessage
+     * @throws IOException is any
+     * @throws SAXException if any
+     */
+    private List parseXML( String xmlContent )
+        throws IOException, SAXException
+    {
+        xmlContent = addNamespaces( xmlContent );
+
+        MessagesErrorHandler errorHandler = (MessagesErrorHandler) getXMLReader().getErrorHandler();
+
+        getXMLReader().parse( new InputSource( new StringReader( xmlContent ) ) );
+
+        return errorHandler.getMessages();
+    }
+
+    private static class ErrorMessage
+        extends DefaultHandler
+    {
+        private final String level;
+        private final String publicID;
+        private final String systemID;
+        private final int lineNumber;
+        private final int columnNumber;
+        private final String message;
+
+        public ErrorMessage( String level, String publicID, String systemID, int lineNumber, int columnNumber,
+                             String message )
+        {
+            super();
+            this.level = level;
+            this.publicID = publicID;
+            this.systemID = systemID;
+            this.lineNumber = lineNumber;
+            this.columnNumber = columnNumber;
+            this.message = message;
+        }
+
+        /**
+         * @return the level
+         */
+        protected String getLevel()
+        {
+            return level;
+        }
+
+        /**
+         * @return the publicID
+         */
+        protected String getPublicID()
+        {
+            return publicID;
+        }
+        /**
+         * @return the systemID
+         */
+        protected String getSystemID()
+        {
+            return systemID;
+        }
+        /**
+         * @return the lineNumber
+         */
+        protected int getLineNumber()
+        {
+            return lineNumber;
+        }
+        /**
+         * @return the columnNumber
+         */
+        protected int getColumnNumber()
+        {
+            return columnNumber;
+        }
+        /**
+         * @return the message
+         */
+        protected String getMessage()
+        {
+            return message;
+        }
+
+        /** {@inheritDoc} */
+        public String toString()
+        {
+            StringBuffer sb = new StringBuffer();
+
+            sb.append( level ).append( EOL );
+            sb.append( "  Public ID: " ).append( publicID ).append( EOL );
+            sb.append( "  System ID: " ).append( systemID ).append( EOL );
+            sb.append( "  Line number: " ).append( lineNumber ).append( EOL );
+            sb.append( "  Column number: " ).append( columnNumber ).append( EOL );
+            sb.append( "  Message: " ).append( message ).append( EOL );
+
+            return sb.toString();
+        }
+
+        /** {@inheritDoc} */
+        public int hashCode()
+        {
+            final int prime = 31;
+            int result = 1;
+            result = prime * result + columnNumber;
+            result = prime * result + ( ( level == null ) ? 0 : level.hashCode() );
+            result = prime * result + lineNumber;
+            result = prime * result + ( ( message == null ) ? 0 : message.hashCode() );
+            result = prime * result + ( ( publicID == null ) ? 0 : publicID.hashCode() );
+            result = prime * result + ( ( systemID == null ) ? 0 : systemID.hashCode() );
+            return result;
+        }
+
+        /** {@inheritDoc} */
+        public boolean equals( Object obj )
+        {
+            if ( this == obj )
+                return true;
+            if ( obj == null )
+                return false;
+            if ( getClass() != obj.getClass() )
+                return false;
+            ErrorMessage other = (ErrorMessage) obj;
+            if ( columnNumber != other.columnNumber )
+                return false;
+            if ( level == null )
+            {
+                if ( other.level != null )
+                    return false;
+            }
+            else if ( !level.equals( other.level ) )
+                return false;
+            if ( lineNumber != other.lineNumber )
+                return false;
+            if ( message == null )
+            {
+                if ( other.message != null )
+                    return false;
+            }
+            else if ( !message.equals( other.message ) )
+                return false;
+            if ( publicID == null )
+            {
+                if ( other.publicID != null )
+                    return false;
+            }
+            else if ( !publicID.equals( other.publicID ) )
+                return false;
+            if ( systemID == null )
+            {
+                if ( other.systemID != null )
+                    return false;
+            }
+            else if ( !systemID.equals( other.systemID ) )
+                return false;
+            return true;
+        }
+    }
+
+    private static class MessagesErrorHandler
+        extends DefaultHandler
+    {
+        private final List messages;
+
+        public MessagesErrorHandler()
+        {
+            messages = new ArrayList();
+        }
+
+        /** {@inheritDoc} */
+        public void warning( SAXParseException e )
+            throws SAXException
+        {
+            addMessage( "Warning", e );
+        }
+
+        /** {@inheritDoc} */
+        public void error( SAXParseException e )
+            throws SAXException
+        {
+            addMessage( "Error", e );
+        }
+
+        /** {@inheritDoc} */
+        public void fatalError( SAXParseException e )
+            throws SAXException
+        {
+            addMessage( "Fatal error", e );
+        }
+
+        private void addMessage( String pre, SAXParseException e )
+        {
+            ErrorMessage error =
+                new ErrorMessage( pre, e.getPublicId(), e.getSystemId(), e.getLineNumber(), e.getColumnNumber(),
+                                  e.getMessage() );
+
+            messages.add( error );
+        }
+
+        protected List getMessages()
+        {
+            return messages;
+        }
+
+        protected void clearMessages()
+        {
+            messages.clear();
+        }
     }
 }
