@@ -41,7 +41,6 @@ import javax.xml.XMLConstants;
 
 import org.apache.maven.doxia.logging.Log;
 import org.apache.maven.doxia.macro.MacroExecutionException;
-import org.apache.maven.doxia.markup.HtmlMarkup;
 import org.apache.maven.doxia.markup.XmlMarkup;
 import org.apache.maven.doxia.sink.Sink;
 import org.apache.maven.doxia.sink.SinkEventAttributeSet;
@@ -371,8 +370,6 @@ public abstract class AbstractXmlParser
      * <ul>
      * <li>the entities with names <code>#160</code>, <code>nbsp</code> and <code>#x00A0</code>
      * are emitted as <code>nonBreakingSpace()</code> events.</li>
-     * <li>if an entity cannot be resolved, it is emitted as an <code>unknown()</code> event,
-     * with a required parameter that contains {@link HtmlMarkup#ENTITY_TYPE} as first argument.</li>
      * </ul>
      *
      * @param parser A parser, not null.
@@ -1053,179 +1050,18 @@ public abstract class AbstractXmlParser
             char ch = more();
             if ( ch == '#' )
             {
-                // parse character reference
-                char charRef = 0;
-                ch = more();
-                StringBuffer sb = new StringBuffer();
-                if ( ch == 'x' )
-                {
-                    // encoded in hex
-                    while ( true )
-                    {
-                        ch = more();
-                        if ( ch >= '0' && ch <= '9' )
-                        {
-                            sb.append( ch );
-                            charRef = (char) ( charRef * 16 + ( ch - '0' ) );
-                        }
-                        else if ( ch >= 'a' && ch <= 'f' )
-                        {
-                            sb.append( ch );
-                            charRef = (char) ( charRef * 16 + ( ch - ( 'a' - 10 ) ) );
-                        }
-                        else if ( ch >= 'A' && ch <= 'F' )
-                        {
-                            sb.append( ch );
-                            charRef = (char) ( charRef * 16 + ( ch - ( 'A' - 10 ) ) );
-                        }
-                        else if ( ch == ';' )
-                        {
-                            break;
-                        }
-                        else
-                        {
-                            throw new XmlPullParserException(
-                                                              "character reference (with hex value) may not contain " +
-                                                               printable( ch ), this, null );
-                        }
-                    }
-                }
-                else
-                {
-                    // encoded in decimal
-                    while ( true )
-                    {
-                        if ( ch >= '0' && ch <= '9' )
-                        {
-                            charRef = (char) ( charRef * 10 + ( ch - '0' ) );
-                        }
-                        else if ( ch == ';' )
-                        {
-                            break;
-                        }
-                        else
-                        {
-                            throw new XmlPullParserException(
-                                    "character reference (with decimal value) may not contain " +
-                                    printable( ch ), this, null );
-                        }
-                        ch = more();
-                    }
-                }
-                posEnd = pos - 1;
-                if ( sb.length() > 0 )
-                {
-                    char[] tmp = HtmlTools.toChars( Integer.parseInt( sb.toString(), 16 ) );
-                    charRefOneCharBuf = tmp;
-                    if ( tokenize )
-                    {
-                        text = newString( charRefOneCharBuf, 0, charRefOneCharBuf.length );
-                    }
-                    return charRefOneCharBuf;
-                }
-                charRefOneCharBuf[0] = charRef;
-                if ( tokenize )
-                {
-                    text = newString( charRefOneCharBuf, 0, 1 );
-                }
-                return charRefOneCharBuf;
+                return numericEntity( ch );
             }
             else
             {
-                // [68] EntityRef ::= '&' Name ';'
-                // scan anem until ;
-                if ( !isNameStartChar( ch ) )
-                {
-                    throw new XmlPullParserException( "entity reference names can not start with character '" +
-                     printable( ch ) + "'", this, null );
-                }
-                while ( true )
-                {
-                    ch = more();
-                    if ( ch == ';' )
-                    {
-                        break;
-                    }
-                    if ( !isNameChar( ch ) )
-                    {
-                        throw new XmlPullParserException( "entity reference name can not contain character " +
-                         printable( ch ) + "'", this, null );
-                    }
-                }
-                posEnd = pos - 1;
-                // determine what name maps to
-                final int len = posEnd - posStart;
-                if ( len == 2 && buf[posStart] == 'l' && buf[posStart + 1] == 't' )
-                {
-                    if ( tokenize )
-                    {
-                        text = "<";
-                    }
-                    charRefOneCharBuf[0] = '<';
-                    return charRefOneCharBuf;
-                    // if(paramPC || isParserTokenizing) {
-                    // if(pcEnd >= pc.length) ensurePC();
-                    // pc[pcEnd++] = '<';
-                    // }
-                }
-                else if ( len == 3 && buf[posStart] == 'a' && buf[posStart + 1] == 'm' && buf[posStart + 2] == 'p' )
-                {
-                    if ( tokenize )
-                    {
-                        text = "&";
-                    }
-                    charRefOneCharBuf[0] = '&';
-                    return charRefOneCharBuf;
-                }
-                else if ( len == 2 && buf[posStart] == 'g' && buf[posStart + 1] == 't' )
-                {
-                    if ( tokenize )
-                    {
-                        text = ">";
-                    }
-                    charRefOneCharBuf[0] = '>';
-                    return charRefOneCharBuf;
-                }
-                else if ( len == 4 && buf[posStart] == 'a' && buf[posStart + 1] == 'p' && buf[posStart + 2] == 'o'
-                    && buf[posStart + 3] == 's' )
-                {
-                    if ( tokenize )
-                    {
-                        text = "'";
-                    }
-                    charRefOneCharBuf[0] = '\'';
-                    return charRefOneCharBuf;
-                }
-                else if ( len == 4 && buf[posStart] == 'q' && buf[posStart + 1] == 'u' && buf[posStart + 2] == 'o'
-                    && buf[posStart + 3] == 't' )
-                {
-                    if ( tokenize )
-                    {
-                        text = "\"";
-                    }
-                    charRefOneCharBuf[0] = '"';
-                    return charRefOneCharBuf;
-                }
-                else
-                {
-                    final char[] result = lookuEntityReplacement( len );
-                    if ( result != null )
-                    {
-                        return result;
-                    }
-                }
-                if ( tokenize )
-                {
-                    text = null;
-                }
-                return null;
+                return namedEntity( ch );
             }
         }
 
         /** {@inheritDoc} */
         // Fix PLXUTILS-110
-        public void defineEntityReplacementText(String entityName,
-                                                String replacementText)
+        public void defineEntityReplacementText( String entityName,
+                                                String replacementText )
             throws XmlPullParserException
         {
             //      throw new XmlPullParserException("not allowed");
@@ -1246,18 +1082,190 @@ public abstract class AbstractXmlParser
             ensureEntityCapacity();
 
             // this is to make sure that if interning works we will take advantage of it ...
-            this.entityName[entityEnd] = newString(entityName.toCharArray(), 0, entityName.length());
+            this.entityName[entityEnd] = newString( entityName.toCharArray(), 0, entityName.length() );
             entityNameBuf[entityEnd] = entityName.toCharArray();
 
             entityReplacement[entityEnd] = replacementText;
             entityReplacementBuf[entityEnd] = replacementText.toCharArray();
-            if(!allStringsInterned) {
+            if ( !allStringsInterned )
+            {
                 entityNameHash[ entityEnd ] =
-                    fastHash(entityNameBuf[entityEnd], 0, entityNameBuf[entityEnd].length);
+                    fastHash( entityNameBuf[entityEnd], 0, entityNameBuf[entityEnd].length );
             }
             ++entityEnd;
             //TODO disallow < or & in entity replacement text (or ]]>???)
             // TOOD keepEntityNormalizedForAttributeValue cached as well ...
+        }
+
+        private char[] namedEntity( char ch )
+                throws IOException, XmlPullParserException
+        {
+            // [68] EntityRef ::= '&' Name ';'
+            // scan anem until ;
+            if ( !isNameStartChar( ch ) )
+            {
+                throw new XmlPullParserException( "entity reference names can not start with character '"
+                        + printable( ch ) + "'", this, null );
+            }
+            while ( true )
+            {
+                ch = more();
+                if ( ch == ';' )
+                {
+                    break;
+                }
+                if ( !isNameChar( ch ) )
+                {
+                    throw new XmlPullParserException( "entity reference name can not contain character "
+                            + printable( ch ) + "'", this, null );
+                }
+            }
+            posEnd = pos - 1;
+            // determine what name maps to
+            final int len = posEnd - posStart;
+            if ( len == 2 && buf[posStart] == 'l' && buf[posStart + 1] == 't' )
+            {
+                if ( tokenize )
+                {
+                    text = "<";
+                }
+                charRefOneCharBuf[0] = '<';
+                return charRefOneCharBuf;
+                // if(paramPC || isParserTokenizing) {
+                // if(pcEnd >= pc.length) ensurePC();
+                // pc[pcEnd++] = '<';
+                // }
+            }
+            else if ( len == 3 && buf[posStart] == 'a' && buf[posStart + 1] == 'm' && buf[posStart + 2] == 'p' )
+            {
+                if ( tokenize )
+                {
+                    text = "&";
+                }
+                charRefOneCharBuf[0] = '&';
+                return charRefOneCharBuf;
+            }
+            else if ( len == 2 && buf[posStart] == 'g' && buf[posStart + 1] == 't' )
+            {
+                if ( tokenize )
+                {
+                    text = ">";
+                }
+                charRefOneCharBuf[0] = '>';
+                return charRefOneCharBuf;
+            }
+            else if ( len == 4 && buf[posStart] == 'a' && buf[posStart + 1] == 'p'
+                    && buf[posStart + 2] == 'o' && buf[posStart + 3] == 's' )
+            {
+                if ( tokenize )
+                {
+                    text = "'";
+                }
+                charRefOneCharBuf[0] = '\'';
+                return charRefOneCharBuf;
+            }
+            else if ( len == 4 && buf[posStart] == 'q' && buf[posStart + 1] == 'u'
+                    && buf[posStart + 2] == 'o' && buf[posStart + 3] == 't' )
+            {
+                if ( tokenize )
+                {
+                    text = "\"";
+                }
+                charRefOneCharBuf[0] = '"';
+                return charRefOneCharBuf;
+            }
+            else
+            {
+                final char[] result = lookuEntityReplacement( len );
+                if ( result != null )
+                {
+                    return result;
+                }
+            }
+            if ( tokenize )
+            {
+                text = null;
+            }
+            return null;
+        }
+
+        private char[] numericEntity( char ch )
+                throws IOException, XmlPullParserException
+        {
+            // parse character reference
+            char charRef = 0;
+            ch = more();
+            StringBuffer sb = new StringBuffer();
+            if ( ch == 'x' )
+            {
+                // encoded in hex
+                while ( true )
+                {
+                    ch = more();
+                    if ( ch >= '0' && ch <= '9' )
+                    {
+                        sb.append( ch );
+                        charRef = (char) ( charRef * 16 + ( ch - '0' ) );
+                    }
+                    else if ( ch >= 'a' && ch <= 'f' )
+                    {
+                        sb.append( ch );
+                        charRef = (char) ( charRef * 16 + ( ch - ( 'a' - 10 ) ) );
+                    }
+                    else if ( ch >= 'A' && ch <= 'F' )
+                    {
+                        sb.append( ch );
+                        charRef = (char) ( charRef * 16 + ( ch - ( 'A' - 10 ) ) );
+                    }
+                    else if ( ch == ';' )
+                    {
+                        break;
+                    }
+                    else
+                    {
+                        throw new XmlPullParserException( "character reference (with hex value) may not contain "
+                                + printable( ch ), this, null );
+                    }
+                }
+            }
+            else
+            {
+                // encoded in decimal
+                while ( true )
+                {
+                    if ( ch >= '0' && ch <= '9' )
+                    {
+                        charRef = (char) ( charRef * 10 + ( ch - '0' ) );
+                    }
+                    else if ( ch == ';' )
+                    {
+                        break;
+                    }
+                    else
+                    {
+                        throw new XmlPullParserException( "character reference (with decimal value) may not contain "
+                                + printable( ch ), this, null );
+                    }
+                    ch = more();
+                }
+            }
+            posEnd = pos - 1;
+            if ( sb.length() > 0 )
+            {
+                char[] tmp = HtmlTools.toChars( Integer.parseInt( sb.toString(), 16 ) );
+                charRefOneCharBuf = tmp;
+                if ( tokenize )
+                {
+                    text = newString( charRefOneCharBuf, 0, charRefOneCharBuf.length );
+                }
+                return charRefOneCharBuf;
+            }
+            charRefOneCharBuf[0] = charRef;
+            if ( tokenize )
+            {
+                text = newString( charRefOneCharBuf, 0, 1 );
+            }
+            return charRefOneCharBuf;
         }
     }
 }

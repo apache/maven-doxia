@@ -55,7 +55,7 @@ public interface ByLineSource
     /**
      * <p>ungetLine</p>
      *
-     * @throws java.lang.IllegalStateException if the ungetLine/unget is called more than
+     * This should throw a java.lang.IllegalStateException if called more than
      *                               one time without calling getNextLine()
      */
     void ungetLine();
@@ -65,7 +65,7 @@ public interface ByLineSource
      * <p>unget</p>
      *
      * @param s some text to push back to the parser
-     * @throws java.lang.IllegalStateException if the ungetLine/unget is called more than
+     * This should throw a java.lang.IllegalStateException if called more than
      *                               one time without calling getNextLine()
      */
     void unget( String s );

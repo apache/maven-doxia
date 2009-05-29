@@ -132,29 +132,7 @@ public class XdocParser
         }
         else if ( parser.getName().equals( META.toString() ) )
         {
-            String name = parser.getAttributeValue( null, Attribute.NAME.toString() );
-            String content = parser.getAttributeValue( null, Attribute.CONTENT.toString() );
-
-            if ( "author".equals( name ) )
-            {
-                sink.author( null );
-
-                sink.text( content );
-
-                sink.author_();
-            }
-            else if ( "date".equals( name ) )
-            {
-                sink.date( null );
-
-                sink.text( content );
-
-                sink.date_();
-            }
-            else
-            {
-                sink.unknown( "meta", new Object[] {new Integer( TAG_TYPE_SIMPLE )}, attribs );
-            }
+            handleMetaStart( parser, sink, attribs );
         }
         else if ( parser.getName().equals( BODY.toString() ) )
         {
@@ -168,41 +146,11 @@ public class XdocParser
         }
         else if ( parser.getName().equals( SECTION_TAG.toString() ) )
         {
-            consecutiveSections( Sink.SECTION_LEVEL_1, sink );
-
-            Object id = attribs.getAttribute( Attribute.ID.toString() );
-            if ( id != null )
-            {
-                sink.anchor( id.toString() );
-                sink.anchor_();
-            }
-
-            sink.section( Sink.SECTION_LEVEL_1, attribs );
-
-            sink.sectionTitle( Sink.SECTION_LEVEL_1, attribs );
-
-            sink.text( HtmlTools.unescapeHTML( parser.getAttributeValue( null, Attribute.NAME.toString() ) ) );
-
-            sink.sectionTitle1_();
+            handleSectionStart( Sink.SECTION_LEVEL_1, sink, attribs, parser );
         }
         else if ( parser.getName().equals( SUBSECTION_TAG.toString() ) )
         {
-            consecutiveSections( Sink.SECTION_LEVEL_2, sink );
-
-            Object id = attribs.getAttribute( Attribute.ID.toString() );
-            if ( id != null )
-            {
-                sink.anchor( id.toString() );
-                sink.anchor_();
-            }
-
-            sink.section( Sink.SECTION_LEVEL_2, attribs );
-
-            sink.sectionTitle( Sink.SECTION_LEVEL_2, attribs );
-
-            sink.text( HtmlTools.unescapeHTML( parser.getAttributeValue( null, Attribute.NAME.toString() ) ) );
-
-            sink.sectionTitle2_();
+            handleSectionStart( Sink.SECTION_LEVEL_2, sink, attribs, parser );
         }
         else if ( parser.getName().equals( SOURCE_TAG.toString() ) )
         {
@@ -228,46 +176,11 @@ public class XdocParser
 
         else if ( parser.getName().equals( MACRO_TAG.toString() ) )
         {
-            if ( !isSecondParsing() )
-            {
-                macroName = parser.getAttributeValue( null, Attribute.NAME.toString() );
-
-                if ( macroParameters == null )
-                {
-                    macroParameters = new HashMap();
-                }
-
-                if ( StringUtils.isEmpty( macroName ) )
-                {
-                    throw new MacroExecutionException( "The '" + Attribute.NAME.toString() + "' attribute for the '"
-                        + MACRO_TAG.toString() + "' tag is required." );
-                }
-            }
+            handleMacroStart( parser );
         }
         else if ( parser.getName().equals( PARAM.toString() ) )
         {
-            if ( !isSecondParsing() )
-            {
-                if ( StringUtils.isNotEmpty( macroName ) )
-                {
-                    String paramName = parser.getAttributeValue( null, Attribute.NAME.toString() );
-                    String paramValue = parser.getAttributeValue( null, Attribute.VALUE.toString() );
-
-                    if ( StringUtils.isEmpty( paramName ) || StringUtils.isEmpty( paramValue ) )
-                    {
-                        throw new MacroExecutionException( "'" + Attribute.NAME.toString() + "' and '"
-                            + Attribute.VALUE.toString() + "' attributes for the '" + PARAM.toString()
-                            + "' tag are required inside the '" + MACRO_TAG.toString() + "' tag." );
-                    }
-
-                    macroParameters.put( paramName, paramValue );
-                }
-                else
-                {
-                    // param tag from non-macro object, see MSITE-288
-                    handleUnknown( parser, sink, TAG_TYPE_START );
-                }
-            }
+            handleParamStart( parser, sink );
         }
         else if ( !baseStartTag( parser, sink ) )
         {
@@ -332,40 +245,9 @@ public class XdocParser
         {
             //Do nothing, head is closed with BODY start.
         }
-
-        // ----------------------------------------------------------------------
-        // Macro
-        // ----------------------------------------------------------------------
-
         else if ( parser.getName().equals( MACRO_TAG.toString() ) )
         {
-            if ( !isSecondParsing() )
-            {
-                if ( StringUtils.isNotEmpty( macroName ) )
-                {
-                    // TODO handles specific macro attributes
-                    macroParameters.put( "sourceContent", sourceContent );
-
-                    XdocParser xdocParser = new XdocParser();
-                    xdocParser.setSecondParsing( true );
-                    macroParameters.put( "parser", xdocParser );
-
-                    MacroRequest request = new MacroRequest( macroParameters, getBasedir() );
-
-                    try
-                    {
-                        executeMacro( macroName, request, sink );
-                    }
-                    catch ( MacroNotFoundException me )
-                    {
-                        throw new MacroExecutionException( "Macro not found: " + macroName, me );
-                    }
-                }
-            }
-
-            // Reinit macro
-            macroName = null;
-            macroParameters = null;
+            handleMacroEnd( sink );
         }
         else if ( parser.getName().equals( PARAM.toString() ) )
         {
@@ -430,6 +312,125 @@ public class XdocParser
 
             setSectionLevel( getSectionLevel() - 1 );
         }
+    }
+
+    private void handleMacroEnd( Sink sink )
+            throws MacroExecutionException
+    {
+        if ( !isSecondParsing() )
+        {
+            if ( StringUtils.isNotEmpty( macroName ) )
+            {
+                // TODO handles specific macro attributes
+                macroParameters.put( "sourceContent", sourceContent );
+                XdocParser xdocParser = new XdocParser();
+                xdocParser.setSecondParsing( true );
+                macroParameters.put( "parser", xdocParser );
+
+                MacroRequest request = new MacroRequest( macroParameters, getBasedir() );
+
+                try
+                {
+                    executeMacro( macroName, request, sink );
+                } catch ( MacroNotFoundException me )
+                {
+                    throw new MacroExecutionException( "Macro not found: " + macroName, me );
+                }
+            }
+        }
+
+        // Reinit macro
+        macroName = null;
+        macroParameters = null;
+    }
+
+    private void handleMacroStart( XmlPullParser parser )
+            throws MacroExecutionException
+    {
+        if ( !isSecondParsing() )
+        {
+            macroName = parser.getAttributeValue( null, Attribute.NAME.toString() );
+
+            if ( macroParameters == null )
+            {
+                macroParameters = new HashMap();
+            }
+
+            if ( StringUtils.isEmpty( macroName ) )
+            {
+                throw new MacroExecutionException( "The '" + Attribute.NAME.toString()
+                        + "' attribute for the '" + MACRO_TAG.toString() + "' tag is required." );
+            }
+        }
+    }
+
+    private void handleMetaStart( XmlPullParser parser, Sink sink, SinkEventAttributeSet attribs )
+    {
+        String name = parser.getAttributeValue( null, Attribute.NAME.toString() );
+        String content = parser.getAttributeValue( null, Attribute.CONTENT.toString() );
+
+        if ( "author".equals( name ) )
+        {
+            sink.author( null );
+            sink.text( content );
+            sink.author_();
+        }
+        else if ( "date".equals( name ) )
+        {
+            sink.date( null );
+            sink.text( content );
+            sink.date_();
+        }
+        else
+        {
+            sink.unknown( "meta", new Object[] {new Integer( TAG_TYPE_SIMPLE )}, attribs );
+        }
+    }
+
+    private void handleParamStart( XmlPullParser parser, Sink sink )
+            throws MacroExecutionException
+    {
+        if ( !isSecondParsing() )
+        {
+            if ( StringUtils.isNotEmpty( macroName ) )
+            {
+                String paramName = parser.getAttributeValue( null, Attribute.NAME.toString() );
+                String paramValue = parser.getAttributeValue( null,
+                        Attribute.VALUE.toString() );
+
+                if ( StringUtils.isEmpty( paramName ) || StringUtils.isEmpty( paramValue ) )
+                {
+                    throw new MacroExecutionException( "'" + Attribute.NAME.toString()
+                            + "' and '" + Attribute.VALUE.toString() + "' attributes for the '" + PARAM.toString()
+                            + "' tag are required inside the '" + MACRO_TAG.toString() + "' tag." );
+                }
+
+                macroParameters.put( paramName, paramValue );
+            }
+            else
+            {
+                // param tag from non-macro object, see MSITE-288
+                handleUnknown( parser, sink, TAG_TYPE_START );
+            }
+        }
+    }
+
+    private void handleSectionStart( int level, Sink sink, SinkEventAttributeSet attribs, XmlPullParser parser )
+    {
+        consecutiveSections( level, sink );
+
+        Object id = attribs.getAttribute( Attribute.ID.toString() );
+
+        if ( id != null )
+        {
+            sink.anchor( id.toString() );
+            sink.anchor_();
+        }
+
+        sink.section( level, attribs );
+        sink.sectionTitle( level, attribs );
+        sink.text( HtmlTools.unescapeHTML( parser.getAttributeValue( null, Attribute.NAME.toString() ) ) );
+        sink.sectionTitle_( level );
     }
 
     /**

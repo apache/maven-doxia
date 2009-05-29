@@ -392,7 +392,7 @@ public class HtmlTools
      *
      * @param id The id to be encoded.
      * @return The trimmed and encoded id, or null if id is null.
-     * @see {@link DoxiaUtils#encodeId(java.lang.String,boolean)}.
+     * @see DoxiaUtils#encodeId(java.lang.String,boolean)
      */
     public static String encodeId( String id )
     {
@@ -422,13 +422,17 @@ public class HtmlTools
 // http://svn.apache.org/repos/asf/harmony/enhanced/classlib/trunk/modules/luni/src/main/java/java/lang/Character.java
 //
 
+    private static final char LUNATE_SIGMA = 0x3FF;
+    private static final char NON_PRIVATE_USE_HIGH_SURROGATE = 0xD800;
+    private static final char LOW_SURROGATE = 0xDC00;
+
     private static int toCodePoint( char high, char low )
     {
         // See RFC 2781, Section 2.2
         // http://www.faqs.org/rfcs/rfc2781.html
-        int h = ( high & 0x3FF ) << 10;
-        int l = low & 0x3FF;
-        return ( h | l ) + 0x10000;
+        int h = ( high & LUNATE_SIGMA ) << 10;
+        int l = low & LUNATE_SIGMA;
+        return ( h | l ) + MIN_SUPPLEMENTARY_CODE_POINT;
     }
 
     private static final char MIN_HIGH_SURROGATE = '\uD800';
@@ -454,10 +458,11 @@ public class HtmlTools
     }
 
     /**
-     * TODO add javadoc
+     * Converts the given code point to an equivalent character array.
      *
-     * @param codePoint
-     * @return
+     * @param codePoint the code point to convert.
+     * @return If codePoint is a supplementary code point, returns a character array of length 2,
+     * otherwise a character array of length 1 containing only the original int as a char.
      */
     public static char[] toChars( int codePoint )
     {
@@ -468,9 +473,9 @@ public class HtmlTools
 
         if ( isSupplementaryCodePoint( codePoint ) )
         {
-            int cpPrime = codePoint - 0x10000;
-            int high = 0xD800 | ( ( cpPrime >> 10 ) & 0x3FF );
-            int low = 0xDC00 | ( cpPrime & 0x3FF );
+            int cpPrime = codePoint - MIN_SUPPLEMENTARY_CODE_POINT;
+            int high = NON_PRIVATE_USE_HIGH_SURROGATE | ( ( cpPrime >> 10 ) & LUNATE_SIGMA );
+            int low = LOW_SURROGATE | ( cpPrime & LUNATE_SIGMA );
             return new char[] { (char) high, (char) low };
         }
         return new char[] { (char) codePoint };
