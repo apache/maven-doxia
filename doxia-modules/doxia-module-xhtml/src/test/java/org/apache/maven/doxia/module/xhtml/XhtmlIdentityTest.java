@@ -26,17 +26,18 @@ import org.apache.maven.doxia.parser.Parser;
 import org.apache.maven.doxia.sink.Sink;
 import org.codehaus.plexus.util.StringUtils;
 
-
 /**
  * Check that piping a full model through an XhtmlParser and an XhtmlSink
  * leaves the model unchanged.
  */
-public class XhtmlIdentityTest extends AbstractIdentityTest
+public class XhtmlIdentityTest
+    extends AbstractIdentityTest
 {
     /** {@inheritDoc} */
     protected void setUp()
         throws Exception
     {
+        super.setUp();
         assertIdentity( true );
     }
 
