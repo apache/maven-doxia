@@ -2874,6 +2874,7 @@ public class AptParser
 
             AptParser aptParser = new AptParser();
             aptParser.setSecondParsing( true );
+            aptParser.enableLogging( getLog() );
             parameters.put( "parser", aptParser );
 
             MacroRequest request = new MacroRequest( parameters, getBasedir() );
