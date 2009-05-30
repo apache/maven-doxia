@@ -725,7 +725,9 @@ public class FoAggregateSink extends FoSink
 
         if ( chapterNumber )
         {
+            writeStartTag( BLOCK_TAG, "chapter.title" );
             write( Integer.toString( chapter ) );
+            writeEndTag( BLOCK_TAG );
         }
 
         writeEndTag( BLOCK_TAG );
