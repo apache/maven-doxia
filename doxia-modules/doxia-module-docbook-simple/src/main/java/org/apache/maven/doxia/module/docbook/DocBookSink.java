@@ -22,8 +22,13 @@ package org.apache.maven.doxia.module.docbook;
 import java.io.PrintWriter;
 import java.io.StringWriter;
 import java.io.Writer;
+import java.util.HashMap;
+import java.util.Iterator;
 import java.util.Locale;
+import java.util.Map;
+import java.util.Set;
 import java.util.StringTokenizer;
+import java.util.TreeSet;
 
 import javax.swing.text.MutableAttributeSet;
 import javax.swing.text.SimpleAttributeSet;
@@ -144,6 +149,10 @@ public class DocBookSink
     private boolean skip;
 
     private String encoding;
+
+    /** Map of warn messages with a String as key to describe the error type and a Set as value.
+     * Using to reduce warn messages. */
+    private Map warnMessages;
 
     /**
      * Constructor, initialize the Writer.
@@ -1397,7 +1406,8 @@ public class DocBookSink
         {
             id = DoxiaUtils.encodeId( name, true );
 
-            getLog().warn( "[Docbook Sink] Modified invalid anchor name: '" + name + "' to '" + id + "'" );
+            String msg = "Modified invalid anchor name: '" + name + "' to '" + id + "'";
+            logMessage( "modifiedLink", msg );
         }
 
         MutableAttributeSet att = new SimpleAttributeSet();
@@ -1544,9 +1554,8 @@ public class DocBookSink
                 comment = StringUtils.replace( comment, "--", "- -" );
             }
 
-            getLog().warn(
-                           "[Docbook Sink] Modified invalid comment: '" + originalComment + "' to '" + comment
-                               + "'" );
+            String msg = "Modified invalid comment: '" + originalComment + "' to '" + comment + "'";
+            logMessage( "modifiedComment", msg );
         }
 
         StringBuffer buffer = new StringBuffer( comment.length() + 9 );
@@ -1566,7 +1575,8 @@ public class DocBookSink
      */
     public void unknown( String name, Object[] requiredParams, SinkEventAttributes attributes )
     {
-        getLog().warn( "Unknown Sink event in DocBookSink: " + name + ", ignoring!" );
+        String msg = "Unknown Sink event: '" + name + "', ignoring!";
+        logMessage( "unknownEvent", msg );
     }
 
     // -----------------------------------------------------------------------
@@ -1622,6 +1632,25 @@ public class DocBookSink
     public void close()
     {
         out.close();
+
+        if ( getLog().isWarnEnabled() && this.warnMessages != null )
+        {
+            for ( Iterator it = this.warnMessages.entrySet().iterator(); it.hasNext(); )
+            {
+                Map.Entry entry = (Map.Entry) it.next();
+
+                Set set = (Set) entry.getValue();
+
+                for ( Iterator it2 = set.iterator(); it2.hasNext(); )
+                {
+                    String msg = (String) it2.next();
+
+                    getLog().warn( msg );
+                }
+            }
+
+            this.warnMessages = null;
+        }
     }
 
     /** {@inheritDoc} */
@@ -1639,5 +1668,37 @@ public class DocBookSink
     public void setSkip( boolean skip )
     {
         this.skip = skip;
+    }
+
+    /**
+     * If debug mode is enabled, log the <code>msg</code> as is, otherwise add unique msg in <code>warnMessages</code>.
+     *
+     * @param key not null
+     * @param msg not null
+     * @see #close()
+     * @since 1.1.1
+     */
+    private void logMessage( String key, String msg )
+    {
+        msg = "[Docbook Sink] " + msg;
+        if ( getLog().isDebugEnabled() )
+        {
+            getLog().debug( msg );
+
+            return;
+        }
+
+        if ( warnMessages == null )
+        {
+            warnMessages = new HashMap();
+        }
+
+        Set set = (Set) warnMessages.get( key );
+        if ( set == null )
+        {
+            set = new TreeSet();
+        }
+        set.add( msg );
+        warnMessages.put( key, set );
     }
 }

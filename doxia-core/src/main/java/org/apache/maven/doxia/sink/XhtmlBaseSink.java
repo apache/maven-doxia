@@ -22,6 +22,11 @@ package org.apache.maven.doxia.sink;
 import java.io.PrintWriter;
 import java.io.StringWriter;
 import java.io.Writer;
+import java.util.HashMap;
+import java.util.Iterator;
+import java.util.Map;
+import java.util.Set;
+import java.util.TreeSet;
 
 import javax.swing.text.MutableAttributeSet;
 import javax.swing.text.html.HTML.Attribute;
@@ -110,6 +115,10 @@ public class XhtmlBaseSink
      * </pre>
      * */
     private boolean tableRows = false;
+
+    /** Map of warn messages with a String as key to describe the error type and a Set as value.
+     * Using to reduce warn messages. */
+    private Map warnMessages;
 
     // ----------------------------------------------------------------------
     // Constructor
@@ -1443,7 +1452,8 @@ public class XhtmlBaseSink
         {
             id = DoxiaUtils.encodeId( name, true );
 
-            getLog().warn( "[Xhtml Sink] Modified invalid anchor name: '" + name + "' to '" + id + "'" );
+            String msg = "Modified invalid anchor name: '" + name + "' to '" + id + "'";
+            logMessage( "modifiedLink", msg );
         }
 
         MutableAttributeSet att = new SinkEventAttributeSet();
@@ -1778,7 +1788,8 @@ public class XhtmlBaseSink
     {
         if ( requiredParams == null || !( requiredParams[0] instanceof Integer ) )
         {
-            getLog().warn( "Missing type information for unknown event: " + name + ", ignoring!" );
+            String msg = "No type information for unknown event: '" + name + "', ignoring!";
+            logMessage( "noTypeInfo", msg );
 
             return;
         }
@@ -1803,7 +1814,8 @@ public class XhtmlBaseSink
 
         if ( tag == null )
         {
-            getLog().warn( "No HTML tag found for unknown Sink event: " + name + ", ignoring!" );
+            String msg = "No HTML tag found for unknown event: '" + name + "', ignoring!";
+            logMessage( "noHtmlTag", msg );
         }
         else
         {
@@ -1821,7 +1833,8 @@ public class XhtmlBaseSink
             }
             else
             {
-                getLog().warn( "No type information for unknown Sink event: " + name + ", ignoring!" );
+                String msg = "No type information for unknown event: '" + name + "', ignoring!";
+                logMessage( "noTypeInfo", msg );
             }
         }
     }
@@ -1838,6 +1851,25 @@ public class XhtmlBaseSink
         writer.write( tempWriter.toString() );
         tempWriter = new StringWriter();
         writer.close();
+
+        if ( getLog().isWarnEnabled() && this.warnMessages != null )
+        {
+            for ( Iterator it = this.warnMessages.entrySet().iterator(); it.hasNext(); )
+            {
+                Map.Entry entry = (Map.Entry) it.next();
+
+                Set set = (Set) entry.getValue();
+
+                for ( Iterator it2 = set.iterator(); it2.hasNext(); )
+                {
+                    String msg = (String) it2.next();
+
+                    getLog().warn( msg );
+                }
+            }
+
+            this.warnMessages = null;
+        }
     }
 
     // ----------------------------------------------------------------------
@@ -1897,4 +1929,35 @@ public class XhtmlBaseSink
         tempWriter.write( unifyEOLs( text ) );
     }
 
+    /**
+     * If debug mode is enabled, log the <code>msg</code> as is, otherwise add unique msg in <code>warnMessages</code>.
+     *
+     * @param key not null
+     * @param msg not null
+     * @see #close()
+     * @since 1.1.1
+     */
+    private void logMessage( String key, String msg )
+    {
+        msg = "[XHTML Sink] " + msg;
+        if ( getLog().isDebugEnabled() )
+        {
+            getLog().debug( msg );
+
+            return;
+        }
+
+        if ( warnMessages == null )
+        {
+            warnMessages = new HashMap();
+        }
+
+        Set set = (Set) warnMessages.get( key );
+        if ( set == null )
+        {
+            set = new TreeSet();
+        }
+        set.add( msg );
+        warnMessages.put( key, set );
+    }
 }

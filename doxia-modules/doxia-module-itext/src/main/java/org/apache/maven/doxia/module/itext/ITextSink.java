@@ -30,7 +30,12 @@ import java.io.StringReader;
 import java.io.Writer;
 import java.net.MalformedURLException;
 import java.net.URL;
+import java.util.HashMap;
+import java.util.Iterator;
 import java.util.Locale;
+import java.util.Map;
+import java.util.Set;
+import java.util.TreeSet;
 
 import org.apache.maven.doxia.sink.Sink;
 import org.apache.maven.doxia.sink.SinkAdapter;
@@ -103,6 +108,10 @@ public final class ITextSink
 
     private String tableCaption = null;
 
+    /** Map of warn messages with a String as key to describe the error type and a Set as value.
+     * Using to reduce warn messages. */
+    private Map warnMessages;
+
     /**
      * <p>Constructor for ITextSink.</p>
      *
@@ -172,6 +181,25 @@ public final class ITextSink
     public void close()
     {
         IOUtil.close( writer );
+
+        if ( getLog().isWarnEnabled() && this.warnMessages != null )
+        {
+            for ( Iterator it = this.warnMessages.entrySet().iterator(); it.hasNext(); )
+            {
+                Map.Entry entry = (Map.Entry) it.next();
+
+                Set set = (Set) entry.getValue();
+
+                for ( Iterator it2 = set.iterator(); it2.hasNext(); )
+                {
+                    String msg = (String) it2.next();
+
+                    getLog().warn( msg );
+                }
+            }
+
+            this.warnMessages = null;
+        }
     }
 
     /** {@inheritDoc} */
@@ -1181,8 +1209,11 @@ public final class ITextSink
 
         if ( urlName == null )
         {
-            getLog().warn( "No image " + name + " found in the class loader. Try to call setClassLoader(ClassLoader)"
-                           + " before." );
+            String msg =
+                "No image '" + name
+                    + "' found in the class loader. Try to call setClassLoader(ClassLoader) before.";
+            logMessage( "imageNotFound", msg );
+
             return;
         }
 
@@ -1316,7 +1347,8 @@ public final class ITextSink
         {
             id = DoxiaUtils.encodeId( name, true );
 
-            getLog().warn( "Modified invalid anchor name: " + name );
+            String msg = "Modified invalid link: '" + name + "' to '" + id + "'";
+            logMessage( "modifiedLink", msg );
         }
 
         writeStartElement( ElementTags.ANCHOR );
@@ -1500,7 +1532,8 @@ public final class ITextSink
      */
     public void unknown( String name, Object[] requiredParams, SinkEventAttributes attributes )
     {
-        getLog().warn( "Unknown Sink event in ITextSink: " + name + ", ignoring!" );
+        String msg = "Unknown Sink event: '" + name + "', ignoring!";
+        logMessage( "unknownEvent", msg );
     }
 
     /**
@@ -1647,5 +1680,37 @@ public final class ITextSink
         writeAddAttribute( ElementTags.GREEN, fontColorGreen );
         writeAddAttribute( ElementTags.RED, fontColorRed );
 //        writeAddAttribute( ElementTags.LOCALDESTINATION, localDestination );
+    }
+
+    /**
+     * If debug mode is enabled, log the <code>msg</code> as is, otherwise add unique msg in <code>warnMessages</code>.
+     *
+     * @param key not null
+     * @param msg not null
+     * @see #close()
+     * @since 1.1.1
+     */
+    private void logMessage( String key, String msg )
+    {
+        msg = "[iText Sink] " + msg;
+        if ( getLog().isDebugEnabled() )
+        {
+            getLog().debug( msg );
+
+            return;
+        }
+
+        if ( warnMessages == null )
+        {
+            warnMessages = new HashMap();
+        }
+
+        Set set = (Set) warnMessages.get( key );
+        if ( set == null )
+        {
+            set = new TreeSet();
+        }
+        set.add( msg );
+        warnMessages.put( key, set );
     }
 }

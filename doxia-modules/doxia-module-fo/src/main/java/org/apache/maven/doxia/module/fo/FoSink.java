@@ -23,7 +23,12 @@ import java.io.File;
 import java.io.IOException;
 import java.io.StringWriter;
 import java.io.Writer;
+import java.util.HashMap;
+import java.util.Iterator;
+import java.util.Map;
+import java.util.Set;
 import java.util.Stack;
+import java.util.TreeSet;
 
 import javax.swing.text.MutableAttributeSet;
 import javax.swing.text.html.HTML.Attribute;
@@ -92,6 +97,10 @@ public class FoSink
     private String encoding;
 
     private String languageId;
+
+    /** Map of warn messages with a String as key to describe the error type and a Set as value.
+     * Using to reduce warn messages. */
+    protected Map warnMessages;
 
     /**
      * Constructor, initialize the Writer.
@@ -1133,7 +1142,8 @@ public class FoSink
         {
             anchor = DoxiaUtils.encodeId( name, true );
 
-            getLog().warn( "[FO Sink] Modified invalid anchor name: '" + name + "' to '" + anchor + "'" );
+            String msg = "Modified invalid anchor name: '" + name + "' to '" + anchor + "'";
+            logMessage( "modifiedLink", msg );
         }
 
         anchor = "#" + name;
@@ -1174,7 +1184,8 @@ public class FoSink
             {
                 anchor = DoxiaUtils.encodeId( anchor, true );
 
-                getLog().warn( "[FO Sink] Modified invalid anchor name: '" + name + "' to '" + anchor + "'" );
+                String msg = "Modified invalid anchor name: '" + name + "' to '" + anchor + "'";
+                logMessage( "modifiedLink", msg );
             }
 
             anchor = "#" + anchor;
@@ -1305,6 +1316,25 @@ public class FoSink
         {
             getLog().debug( e );
         }
+
+        if ( getLog().isWarnEnabled() && this.warnMessages != null )
+        {
+            for ( Iterator it = this.warnMessages.entrySet().iterator(); it.hasNext(); )
+            {
+                Map.Entry entry = (Map.Entry) it.next();
+
+                Set set = (Set) entry.getValue();
+
+                for ( Iterator it2 = set.iterator(); it2.hasNext(); )
+                {
+                    String msg = (String) it2.next();
+
+                    getLog().warn( msg );
+                }
+            }
+
+            this.warnMessages = null;
+        }
     }
 
     /**
@@ -1315,7 +1345,8 @@ public class FoSink
      */
     public void unknown( String name, Object[] requiredParams, SinkEventAttributes attributes )
     {
-        getLog().warn( "Unknown Sink event in FoSink: " + name + ", ignoring!" );
+        String msg = "Unknown Sink event: '" + name + "', ignoring!";
+        logMessage( "unknownEvent", msg );
     }
 
     /** {@inheritDoc} */
@@ -1331,7 +1362,8 @@ public class FoSink
                 comment = StringUtils.replace( comment, "--", "- -" );
             }
 
-            getLog().warn( "[FO Sink] Modified invalid comment: '" + originalComment + "' to '" + comment + "'" );
+            String msg = "Modified invalid comment: '" + originalComment + "' to '" + comment + "'";
+            logMessage( "modifyComment", msg );
         }
 
         StringBuffer buf = new StringBuffer( comment.length() + 9 );
@@ -1657,5 +1689,37 @@ public class FoSink
     protected void pdfBookmarks()
     {
         // do nothing, overridden by AggregateSink
+    }
+
+    /**
+     * If debug mode is enabled, log the <code>msg</code> as is, otherwise add unique msg in <code>warnMessages</code>.
+     *
+     * @param key not null
+     * @param msg not null
+     * @see #close()
+     * @since 1.1.1
+     */
+    protected void logMessage( String key, String msg )
+    {
+        msg = "[FO Sink] " + msg;
+        if ( getLog().isDebugEnabled() )
+        {
+            getLog().debug( msg );
+
+            return;
+        }
+
+        if ( warnMessages == null )
+        {
+            warnMessages = new HashMap();
+        }
+
+        Set set = (Set) warnMessages.get( key );
+        if ( set == null )
+        {
+            set = new TreeSet();
+        }
+        set.add( msg );
+        warnMessages.put( key, set );
     }
 }

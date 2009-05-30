@@ -20,7 +20,9 @@ package org.apache.maven.doxia.parser;
  */
 
 import java.io.Reader;
+import java.util.HashMap;
 import java.util.Iterator;
+import java.util.Map;
 import java.util.Set;
 import java.util.TreeSet;
 
@@ -73,8 +75,9 @@ public class XhtmlBaseParser
     /** Decoration properties, eg for texts. */
     private final SinkEventAttributeSet decoration = new SinkEventAttributeSet();
 
-    /** Used to add warn message when links are modified. */
-    private Set modifiedLinks;
+    /** Map of warn messages with a String as key to describe the error type and a Set as value.
+     * Using to reduce warn messages. */
+    private Map warnMessages;
 
     /** {@inheritDoc} */
     public void parse( Reader source, Sink sink )
@@ -82,17 +85,23 @@ public class XhtmlBaseParser
     {
         super.parse( source, sink );
 
-        if ( getLog().isWarnEnabled() )
+        if ( getLog().isWarnEnabled() && this.warnMessages != null && !isSecondParsing() )
         {
-            if ( this.modifiedLinks != null )
+            for ( Iterator it = this.warnMessages.entrySet().iterator(); it.hasNext(); )
             {
-                for ( Iterator it = this.modifiedLinks.iterator(); it.hasNext(); )
-                {
-                    getLog().warn( it.next().toString() );
-                }
+                Map.Entry entry = (Map.Entry) it.next();
 
-                this.modifiedLinks = null;
+                Set set = (Set) entry.getValue();
+
+                for ( Iterator it2 = set.iterator(); it2.hasNext(); )
+                {
+                    String msg = (String) it2.next();
+
+                    getLog().warn( msg );
+                }
             }
+
+            this.warnMessages = null;
         }
     }
 
@@ -686,7 +695,9 @@ public class XhtmlBaseParser
         if ( !DoxiaUtils.isValidId( id ) )
         {
             String linkAnchor = DoxiaUtils.encodeId( id, true );
-            addModifiedLinkMessage( id, linkAnchor );
+
+            String msg = "Modified invalid link: '" + id + "' to '" + linkAnchor + "'";
+            logMessage( "modifiedLink", msg );
 
             return linkAnchor;
         }
@@ -723,7 +734,8 @@ public class XhtmlBaseParser
                 {
                     href = href.substring( 0, hashIndex ) + "#" + DoxiaUtils.encodeId( hash, true );
 
-                    addModifiedLinkMessage( hash, href );
+                    String msg = "Modified invalid link: '" + hash + "' to '" + href + "'";
+                    logMessage( "modifiedLink", msg );
                 }
             }
             sink.link( href, attribs );
@@ -921,14 +933,35 @@ public class XhtmlBaseParser
         sink.tableRows( justif, grid );
     }
 
-    private void addModifiedLinkMessage( String hash, String linkAnchor )
+    /**
+     * If debug mode is enabled, log the <code>msg</code> as is, otherwise add unique msg in <code>warnMessages</code>.
+     *
+     * @param key not null
+     * @param msg not null
+     * @see #parse(Reader, Sink)
+     * @since 1.1.1
+     */
+    private void logMessage( String key, String msg )
     {
-        if ( modifiedLinks == null )
+        msg = "[XHTML Parser] " + msg;
+        if ( getLog().isDebugEnabled() )
         {
-            modifiedLinks = new TreeSet();
+            getLog().debug( msg );
+
+            return;
         }
 
-        String msg = "[Xhtml Parser] Modified invalid link: '" + hash + "' to '" + linkAnchor + "'";
-        modifiedLinks.add( msg );
+        if ( warnMessages == null )
+        {
+            warnMessages = new HashMap();
+        }
+
+        Set set = (Set) warnMessages.get( key );
+        if ( set == null )
+        {
+            set = new TreeSet();
+        }
+        set.add( msg );
+        warnMessages.put( key, set );
     }
 }

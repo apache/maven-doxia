@@ -327,7 +327,8 @@ public class FoAggregateSink extends FoSink
         {
             anchor = DoxiaUtils.encodeId( name, true );
 
-            getLog().warn( "[FO Sink] Modified invalid anchor name: " + name );
+            String msg = "Modified invalid anchor name: '" + name + "' to '" + anchor + "'";
+            logMessage( "modifiedLink", msg );
         }
 
         anchor = "#" + anchor;
@@ -368,9 +369,11 @@ public class FoAggregateSink extends FoSink
 
             if ( !DoxiaUtils.isValidId( anchor ) )
             {
+                String tmp = anchor;
                 anchor = DoxiaUtils.encodeId( anchor, true );
 
-                getLog().warn( "[FO Sink] Modified invalid link name: " + name );
+                String msg = "Modified invalid anchor name: '" + tmp + "' to '" + anchor + "'";
+                logMessage( "modifiedLink", msg );
             }
 
             if ( docName != null )

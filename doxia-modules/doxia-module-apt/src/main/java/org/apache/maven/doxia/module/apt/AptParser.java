@@ -163,11 +163,9 @@ public class AptParser
     /** a line of AptSource. */
     protected String line;
 
-    /** Used to add warn message when links are ambiguous. */
-    private Set ambiguousLinks;
-
-    /** Used to add warn message when links are modified. */
-    private Set modifiedLinks;
+    /** Map of warn messages with a String as key to describe the error type and a Set as value.
+     * Using to reduce warn messages. */
+    protected Map warnMessages;
 
     private static final int NUMBER_OF_SPACES = 85;
 
@@ -231,26 +229,23 @@ public class AptParser
             throw new AptParseException( ape.getMessage(), ape, getSourceName(), getSourceLineNumber(), -1 );
         }
 
-        if ( getLog().isWarnEnabled() )
+        if ( getLog().isWarnEnabled() && this.warnMessages != null && !isSecondParsing() )
         {
-            if ( this.ambiguousLinks != null )
+            for ( Iterator it = this.warnMessages.entrySet().iterator(); it.hasNext(); )
             {
-                for ( Iterator it = this.ambiguousLinks.iterator(); it.hasNext(); )
-                {
-                    getLog().warn( it.next().toString() );
-                }
+                Map.Entry entry = (Map.Entry) it.next();
 
-                this.ambiguousLinks = null;
-            }
-            if ( this.modifiedLinks != null )
-            {
-                for ( Iterator it = this.modifiedLinks.iterator(); it.hasNext(); )
-                {
-                    getLog().warn( it.next().toString() );
-                }
+                Set set = (Set) entry.getValue();
 
-                this.modifiedLinks = null;
+                for ( Iterator it2 = set.iterator(); it2.hasNext(); )
+                {
+                    String msg = (String) it2.next();
+
+                    getLog().warn( msg );
+                }
             }
+
+            this.warnMessages = null;
         }
     }
 
@@ -483,7 +478,8 @@ public class AptParser
 
                                 if ( hash.endsWith( ".html" ) && !hash.startsWith( "./" ) )
                                 {
-                                    addAmbiguousLinkMessage( hash );
+                                    String msg = "Ambiguous link: '" + hash + "'. If this is a local link, prepend \"./\"!";
+                                    logMessage( "ambiguousLink", msg );
                                 }
 
                                 if ( !DoxiaUtils.isValidId( hash ) )
@@ -492,7 +488,8 @@ public class AptParser
                                         linkAnchor.substring( 0, hashIndex ) + "#"
                                             + DoxiaUtils.encodeId( hash, true );
 
-                                    addModifiedLinkMessage( hash, linkAnchor );
+                                    String msg = "Modified invalid link: '" + hash + "' to '" + linkAnchor + "'";
+                                    logMessage( "modifiedLink", msg );
                                 }
                             }
 
@@ -1584,32 +1581,35 @@ public class AptParser
     }
 
     /**
-     * @param hash not null
+     * If debug mode is enabled, log the <code>msg</code> as is, otherwise add unique msg in <code>warnMessages</code>.
+     *
+     * @param key not null
+     * @param msg not null
+     * @see #parse(Reader, Sink)
+     * @since 1.1.1
      */
-    private void addAmbiguousLinkMessage( String hash )
+    private void logMessage( String key, String msg )
     {
-        if ( ambiguousLinks == null )
+        msg = "[APT Parser] " + msg;
+        if ( getLog().isDebugEnabled() )
         {
-            ambiguousLinks = new TreeSet();
+            getLog().debug( msg );
+
+            return;
         }
 
-        String msg = "[Apt Parser] Ambiguous link: '" + hash + "'. If this is a local link, prepend \"./\"!";
-        ambiguousLinks.add( msg );
-    }
-
-    /**
-     * @param hash not null
-     * @param linkAnchor not null
-     */
-    private void addModifiedLinkMessage( String hash, String linkAnchor )
-    {
-        if ( modifiedLinks == null )
+        if ( warnMessages == null )
         {
-            modifiedLinks = new TreeSet();
+            warnMessages = new HashMap();
         }
 
-        String msg = "[Apt Parser] Modified invalid link: '" + hash + "' to '" + linkAnchor + "'";
-        modifiedLinks.add( msg );
+        Set set = (Set) warnMessages.get( key );
+        if ( set == null )
+        {
+            set = new TreeSet();
+        }
+        set.add( msg );
+        warnMessages.put( key, set );
     }
 
     // -----------------------------------------------------------------------

@@ -21,7 +21,11 @@ package org.apache.maven.doxia.module.fml;
 
 import java.io.IOException;
 import java.io.Reader;
+import java.util.HashMap;
 import java.util.Iterator;
+import java.util.Map;
+import java.util.Set;
+import java.util.TreeSet;
 
 import javax.swing.text.html.HTML.Attribute;
 
@@ -71,6 +75,9 @@ public class FmlParser
     /** Used to collect text events. */
     private StringBuffer buffer;
 
+    /** Map of warn messages with a String as key to describe the error type and a Set as value.
+     * Using to reduce warn messages. */
+    private Map warnMessages;
 
     /** {@inheritDoc} */
     public void parse( Reader source, Sink sink )
@@ -80,6 +87,25 @@ public class FmlParser
         super.parse( source, sink );
 
         writeFaqs( sink );
+
+        if ( getLog().isWarnEnabled() && this.warnMessages != null && !isSecondParsing() )
+        {
+            for ( Iterator it = this.warnMessages.entrySet().iterator(); it.hasNext(); )
+            {
+                Map.Entry entry = (Map.Entry) it.next();
+
+                Set set = (Set) entry.getValue();
+
+                for ( Iterator it2 = set.iterator(); it2.hasNext(); )
+                {
+                    String msg = (String) it2.next();
+
+                    getLog().warn( msg );
+                }
+            }
+
+            this.warnMessages = null;
+        }
     }
 
     /** {@inheritDoc} */
@@ -122,9 +148,12 @@ public class FmlParser
             }
             else if ( !DoxiaUtils.isValidId( currentPart.getId() ) )
             {
-                getLog().warn( "Modified invalid id: " + currentPart.getId() );
+                String linkAnchor = DoxiaUtils.encodeId( currentPart.getId(), true );
 
-                currentPart.setId( DoxiaUtils.encodeId( currentPart.getId(), true ) );
+                String msg = "Modified invalid link: '" + currentPart.getId() + "' to '" + linkAnchor + "'";
+                logMessage( "modifiedLink", msg );
+
+                currentPart.setId( linkAnchor );
             }
         }
         else if ( parser.getName().equals( TITLE.toString() ) )
@@ -157,9 +186,12 @@ public class FmlParser
             }
             else if ( !DoxiaUtils.isValidId( currentFaq.getId() ) )
             {
-                getLog().warn( "Modified invalid id: " + currentFaq.getId() );
+                String linkAnchor = DoxiaUtils.encodeId( currentPart.getId(), true );
 
-                currentFaq.setId( DoxiaUtils.encodeId( currentFaq.getId(), true ) );
+                String msg = "Modified invalid link: '" + currentPart.getId() + "' to '" + linkAnchor + "'";
+                logMessage( "modifiedLink", msg );
+
+                currentFaq.setId( linkAnchor );
             }
         }
         if ( parser.getName().equals( QUESTION_TAG.toString() ) )
@@ -502,4 +534,35 @@ public class FmlParser
         sink.paragraph_();
     }
 
+    /**
+     * If debug mode is enabled, log the <code>msg</code> as is, otherwise add unique msg in <code>warnMessages</code>.
+     *
+     * @param key not null
+     * @param msg not null
+     * @see #parse(Reader, Sink)
+     * @since 1.1.1
+     */
+    private void logMessage( String key, String msg )
+    {
+        msg = "[FML Parser] " + msg;
+        if ( getLog().isDebugEnabled() )
+        {
+            getLog().debug( msg );
+
+            return;
+        }
+
+        if ( warnMessages == null )
+        {
+            warnMessages = new HashMap();
+        }
+
+        Set set = (Set) warnMessages.get( key );
+        if ( set == null )
+        {
+            set = new TreeSet();
+        }
+        set.add( msg );
+        warnMessages.put( key, set );
+    }
 }
