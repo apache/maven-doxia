@@ -248,15 +248,7 @@ public abstract class AbstractXmlValidatorTest
         else
         {
             // IDE projects
-            File testDocsDir;
-            try
-            {
-                testDocsDir = new File( testJar.toURI() ).getParentFile();
-            }
-            catch ( URISyntaxException e )
-            {
-                throw new IOException( "URISyntaxException: " + e.getMessage() );
-            }
+            File testDocsDir = new File( testJar.getFile() ).getParentFile();
 
             List files = FileUtils.getFiles( testDocsDir, "**/*.*", FileUtils.getDefaultExcludesAsString(), true );
             for ( Iterator it = files.iterator(); it.hasNext();)
