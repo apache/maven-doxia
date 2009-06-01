@@ -162,7 +162,7 @@
             A keyword pertaining to the document. The metadata can contain any
             number of keyword elements, each element specifying one keyword.
           ]]></description>
-          <association xml.itemsStyle="flat">
+          <association xml.itemsStyle="wrapped" xml.tagName="keyWord">
             <type>String</type>
             <multiplicity>*</multiplicity>
           </association>
