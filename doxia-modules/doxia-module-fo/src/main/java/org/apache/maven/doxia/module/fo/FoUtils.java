@@ -49,6 +49,8 @@ import org.codehaus.plexus.util.IOUtil;
  */
 public class FoUtils
 {
+    /** To reuse the FopFactory **/
+    private static final FopFactory FOP_FACTORY = FopFactory.newInstance();
 
     /**
      * Converts an FO file to a PDF file using FOP.
@@ -62,9 +64,7 @@ public class FoUtils
     public static void convertFO2PDF( File fo, File pdf, String resourceDir )
         throws TransformerException
     {
-        FopFactory fopFactory = FopFactory.newInstance();
-
-        FOUserAgent foUserAgent = fopFactory.newFOUserAgent();
+        FOUserAgent foUserAgent = FOP_FACTORY.newFOUserAgent();
 
         foUserAgent.setBaseURL( getBaseURL( fo, resourceDir ) );
 
@@ -85,7 +85,7 @@ public class FoUtils
 
             try
             {
-                Fop fop = fopFactory.newFop( MimeConstants.MIME_PDF, foUserAgent, out );
+                Fop fop = FOP_FACTORY.newFop( MimeConstants.MIME_PDF, foUserAgent, out );
                 res = new SAXResult( fop.getDefaultHandler() );
             }
             catch ( FOPException e )
@@ -140,5 +140,4 @@ public class FoUtils
     {
         // Utility class
     }
-
 }
