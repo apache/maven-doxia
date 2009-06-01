@@ -363,20 +363,22 @@
     {
         StringBuffer sb = new StringBuffer();
         boolean hasKeywords = false;
-        if ( getKeywords() != null && getKeywords().length() > 0 )
+        if ( getKeywords() != null && getKeywords().trim().length() > 0 )
         {
-            java.util.StringTokenizer st = new java.util.StringTokenizer( getKeywords(), "," );
+            java.util.StringTokenizer st = new java.util.StringTokenizer( getKeywords().trim(), "," );
             while ( st.hasMoreTokens() )
             {
                 String s = st.nextToken();
 
                 sb.append( s.trim() );
+
                 if ( st.hasMoreTokens() )
                 {
                     sb.append( ", " );
                 }
+
+                hasKeywords = true;
             }
-            hasKeywords = true;
         }
         if ( getKeyWords() != null )
         {
@@ -389,15 +391,26 @@
                     sb.append( ", " );
                     hasKeywords = false;
                 }
-                sb.append( keyword.trim() );
-                if ( it.hasNext() )
+
+                if ( keyword.trim().length() > 0 )
                 {
-                    sb.append( ", " );
+                    sb.append( keyword.trim() );
+
+                    if ( it.hasNext() )
+                    {
+                        sb.append( ", " );
+                    }
                 }
             }
         }
 
-        return sb.toString();
+        String ret = sb.toString().trim();
+        if ( ret.endsWith( "," ) )
+        {
+            return ret.substring( 0, ret.length() - 1 );
+        }
+
+        return ret;
     }
             ]]>
           </code>
