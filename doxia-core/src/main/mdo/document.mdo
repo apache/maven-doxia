@@ -117,7 +117,7 @@
           <name>author</name>
           <version>1.0.0+</version>
           <description><![CDATA[
-            A shortcut for the unique author of the document, usually as a String of "firstName lastName". For
+            The unique author of the document, usually as a String of "firstName lastName". For
             more authors, you could use the &lt;authors/&gt; tag.
           ]]></description>
           <type>String</type>
@@ -146,11 +146,11 @@
           <identifier>true</identifier>
         </field>
         <field>
-          <!-- TODO: remove -->
           <name>keywords</name>
           <version>1.0.0+</version>
           <description><![CDATA[
-            Keywords for the document.
+            The keywords for the document, usually as a String of comma separated keywords.
+            @deprecated use the &lt;keyWords/&gt; tag instead of.
           ]]></description>
           <type>String</type>
           <identifier>true</identifier>
@@ -349,6 +349,60 @@
           <identifier>true</identifier>
         </field>
       </fields>
+      <codeSegments>
+        <codeSegment>
+          <code>
+            <![CDATA[
+    /**
+     * @return a comma separated String of all defined keyWords.
+     * @see #getKeywords()
+     * @see #getKeyWords()
+     * @since 1.1.1
+     */
+    public String getAllKeyWords()
+    {
+        StringBuffer sb = new StringBuffer();
+        boolean hasKeywords = false;
+        if ( getKeywords() != null && getKeywords().length() > 0 )
+        {
+            java.util.StringTokenizer st = new java.util.StringTokenizer( getKeywords(), "," );
+            while ( st.hasMoreTokens() )
+            {
+                String s = st.nextToken();
+
+                sb.append( s.trim() );
+                if ( st.hasMoreTokens() )
+                {
+                    sb.append( ", " );
+                }
+            }
+            hasKeywords = true;
+        }
+        if ( getKeyWords() != null )
+        {
+            for ( java.util.Iterator it = getKeyWords().iterator(); it.hasNext(); )
+            {
+                String keyword = (String) it.next();
+
+                if ( hasKeywords )
+                {
+                    sb.append( ", " );
+                    hasKeywords = false;
+                }
+                sb.append( keyword.trim() );
+                if ( it.hasNext() )
+                {
+                    sb.append( ", " );
+                }
+            }
+        }
+
+        return sb.toString();
+    }
+            ]]>
+          </code>
+        </codeSegment>
+      </codeSegments>
     </class>
 
     <class>
