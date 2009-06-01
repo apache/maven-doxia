@@ -24,6 +24,7 @@ import java.io.File;
 import java.io.FileOutputStream;
 import java.io.IOException;
 import java.io.OutputStream;
+import java.util.Date;
 
 import javax.xml.transform.Result;
 import javax.xml.transform.Transformer;
@@ -70,9 +71,8 @@ public class FoUtils
     {
         FOUserAgent foUserAgent = FOP_FACTORY.newFOUserAgent();
         foUserAgent.setBaseURL( getBaseURL( fo, resourceDir ) );
-        foUserAgent.setCreator( System.getProperty( "user.name" ) );
 
-        if ( documentModel != null )
+        if ( documentModel != null && documentModel.getMeta() != null )
         {
             // http://xmlgraphics.apache.org/fop/embedding.html#user-agent
             String authors = documentModel.getMeta().getAllAuthorNames();
@@ -90,6 +90,23 @@ public class FoUtils
             {
                 foUserAgent.setKeywords( keywords );
             }
+            if ( StringUtils.isNotEmpty( documentModel.getMeta().getCreator() ) )
+            {
+                foUserAgent.setCreator( documentModel.getMeta().getCreator() );
+            }
+            if ( documentModel.getMeta().getCreationDate() != null )
+            {
+                foUserAgent.setCreationDate( documentModel.getMeta().getCreationDate() );
+            }
+        }
+
+        if ( foUserAgent.getCreator() == null )
+        {
+            foUserAgent.setCreator( System.getProperty( "user.name" ) );
+        }
+        if ( foUserAgent.getCreationDate() == null )
+        {
+            foUserAgent.setCreationDate( new Date() );
         }
 
         OutputStream out = null;
