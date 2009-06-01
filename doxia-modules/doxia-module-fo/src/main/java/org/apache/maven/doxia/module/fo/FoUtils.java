@@ -38,7 +38,9 @@ import org.apache.fop.apps.FOUserAgent;
 import org.apache.fop.apps.Fop;
 import org.apache.fop.apps.FopFactory;
 import org.apache.fop.apps.MimeConstants;
+import org.apache.maven.doxia.document.DocumentModel;
 import org.codehaus.plexus.util.IOUtil;
+import org.codehaus.plexus.util.StringUtils;
 
 /**
  * <code>FO Sink</code> utilities.
@@ -55,21 +57,42 @@ public class FoUtils
     /**
      * Converts an FO file to a PDF file using FOP.
      *
-     * @param fo the FO file.
-     * @param pdf the target PDF file.
-     * @param resourceDir The base directory for relative path resolution.
+     * @param fo the FO file, not null.
+     * @param pdf the target PDF file, not null.
+     * @param resourceDir The base directory for relative path resolution, could be null.
      * If null, defaults to the parent directory of fo.
+     * @param documentModel the document model to add PDF metadatas like author, title and keywords, could be null.
      * @throws javax.xml.transform.TransformerException In case of a conversion problem.
+     * @see 1.1.1
      */
-    public static void convertFO2PDF( File fo, File pdf, String resourceDir )
+    public static void convertFO2PDF( File fo, File pdf, String resourceDir, DocumentModel documentModel )
         throws TransformerException
     {
         FOUserAgent foUserAgent = FOP_FACTORY.newFOUserAgent();
-
         foUserAgent.setBaseURL( getBaseURL( fo, resourceDir ) );
+        foUserAgent.setCreator( System.getProperty( "user.name" ) );
+
+        if ( documentModel != null )
+        {
+            // http://xmlgraphics.apache.org/fop/embedding.html#user-agent
+            String authors = documentModel.getMeta().getAllAuthorNames();
+            if ( StringUtils.isNotEmpty( authors ) )
+            {
+                foUserAgent.setAuthor( authors );
+            }
+            String title = documentModel.getMeta().getTitle();
+            if ( StringUtils.isNotEmpty( title ) )
+            {
+                foUserAgent.setTitle( title );
+            }
+            String keywords = documentModel.getMeta().getAllKeyWords();
+            if ( StringUtils.isNotEmpty( keywords ) )
+            {
+                foUserAgent.setKeywords( keywords );
+            }
+        }
 
         OutputStream out = null;
-
         try
         {
             try
@@ -82,7 +105,6 @@ public class FoUtils
             }
 
             Result res = null;
-
             try
             {
                 Fop fop = FOP_FACTORY.newFop( MimeConstants.MIME_PDF, foUserAgent, out );
@@ -94,7 +116,6 @@ public class FoUtils
             }
 
             Transformer transformer = null;
-
             try
             {
                 // identity transformer
@@ -111,6 +132,22 @@ public class FoUtils
         {
             IOUtil.close( out );
         }
+    }
+
+    /**
+     * Converts an FO file to a PDF file using FOP.
+     *
+     * @param fo the FO file, not null.
+     * @param pdf the target PDF file, not null.
+     * @param resourceDir The base directory for relative path resolution, could be null.
+     * If null, defaults to the parent directory of fo.
+     * @throws javax.xml.transform.TransformerException In case of a conversion problem.
+     * @see #convertFO2PDF(File, File, String, DocumentModel)
+     */
+    public static void convertFO2PDF( File fo, File pdf, String resourceDir )
+        throws TransformerException
+    {
+        convertFO2PDF( fo, pdf, resourceDir, null );
     }
 
     /**
