@@ -412,6 +412,39 @@
 
         return ret;
     }
+
+    /**
+     * @return {@link #getAuthor()} if the unique author name is defined. Otherwise, return all authors full names
+     * comma separated.
+     * @see #getAuthor()
+     * @see #getAuthors()
+     * @since 1.1.1
+     */
+    public String getAllAuthorNames()
+    {
+        StringBuffer sb = new StringBuffer();
+        if ( getAuthor() != null && getAuthor().trim().length() > 0 )
+        {
+            return getAuthor().trim();
+        }
+
+        if ( getAuthors() != null )
+        {
+            for ( java.util.Iterator it = getAuthors().iterator(); it.hasNext(); )
+            {
+                DocumentAuthor author = (DocumentAuthor) it.next();
+
+                sb.append( author.getFullName().trim() );
+
+                if ( it.hasNext() )
+                {
+                    sb.append( ", " );
+                }
+            }
+        }
+
+        return sb.toString();
+    }
             ]]>
           </code>
         </codeSegment>
@@ -438,6 +471,16 @@
             The last name of the author.
           ]]></description>
           <version>1.0.0+</version>
+          <type>String</type>
+          <identifier>true</identifier>
+        </field>
+        <field>
+          <name>name</name>
+          <description><![CDATA[
+            The full name of the author, usually as a String of "firstName lastName".
+            @since 1.1.1
+          ]]></description>
+          <version>1.0.1+</version>
           <type>String</type>
           <identifier>true</identifier>
         </field>
@@ -550,6 +593,33 @@
           <identifier>true</identifier>
         </field>
       </fields>
+      <codeSegments>
+        <codeSegment>
+          <code>
+            <![CDATA[
+    /**
+     * Get the full name of the author.
+     *
+     * @return <code>name</code> if defined, <code>firsName lastName</code> otherwise.
+     * @see #getName()
+     * @see #getFirstName()
+     * @see #getLastName()
+     * @since 1.1.1
+     */
+    public String getFullName()
+    {
+        if ( getName() != null && getName().trim().length() > 0 )
+        {
+            return getName().trim();
+        }
+
+        return ( getFirstName() != null ? getFirstName().trim() : "null" ) + " "
+            + ( getLastName() != null ? getLastName().trim() : "null" );
+    }
+            ]]>
+          </code>
+        </codeSegment>
+      </codeSegments>
     </class>
 
     <class>
