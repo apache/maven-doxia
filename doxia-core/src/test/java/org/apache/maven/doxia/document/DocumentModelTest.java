@@ -95,6 +95,7 @@ public class DocumentModelTest
         author.setCountry( "country" + i );
         author.setEmail( "email" + i );
         author.setFaxNumber( "faxNumber" + i );
+        author.setName( "name" + i );
         author.setFirstName( "firstName" + i );
         author.setInitials( "initials" + i );
         author.setLastName( "lastName" + i );
@@ -115,6 +116,7 @@ public class DocumentModelTest
         assertEquals( "country" + i, documentAuthor.getCountry() );
         assertEquals( "email" + i, documentAuthor.getEmail() );
         assertEquals( "faxNumber" + i, documentAuthor.getFaxNumber() );
+        assertEquals( "name" + i, documentAuthor.getName() );
         assertEquals( "firstName" + i, documentAuthor.getFirstName() );
         assertEquals( "initials" + i, documentAuthor.getInitials() );
         assertEquals( "lastName" + i, documentAuthor.getLastName() );
@@ -236,7 +238,8 @@ public class DocumentModelTest
         meta.setGenerator( "generator" );
         meta.setHyperlinkBehaviour( getDocumentHyperlinkBehaviour() );
         meta.setInitialCreator( "initialCreator" );
-        meta.setKeywords( "keywords" );
+        meta.addKeyWord( "keyword1" );
+        meta.addKeyWord( "keyword2" );
         meta.setLanguage( "language" );
         meta.setPageSize( "pageSize" );
         meta.setPrintDate( new Date( 4L ) );
@@ -267,7 +270,7 @@ public class DocumentModelTest
         assertEquals( "generator", meta.getGenerator() );
         verifyDocumentHyperlinkBehaviour( meta.getHyperlinkBehaviour() );
         assertEquals( "initialCreator", meta.getInitialCreator() );
-        assertEquals( "keywords", meta.getKeywords() );
+        assertEquals( "keyword1, keyword2", meta.getAllKeyWords() );
         assertEquals( "language", meta.getLanguage() );
         assertEquals( "pageSize", meta.getPageSize() );
         assertEquals( 4L, meta.getPrintDate().getTime() );
