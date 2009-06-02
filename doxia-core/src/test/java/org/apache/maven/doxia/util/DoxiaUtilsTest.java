@@ -19,6 +19,11 @@ package org.apache.maven.doxia.util;
  * under the License.
  */
 
+import java.text.ParseException;
+
+import java.util.Date;
+import java.util.GregorianCalendar;
+
 import org.codehaus.plexus.PlexusTestCase;
 
 /**
@@ -183,5 +188,55 @@ public class DoxiaUtilsTest
         assertTrue( DoxiaUtils.isValidId( "a." ) );
         assertTrue( DoxiaUtils.isValidId( "index.html" ) );
         assertFalse( DoxiaUtils.isValidId( "Theußl" ) );
+    }
+
+    /**
+     * Verify the expected results.
+     */
+    public void testParseDate()
+    {
+        final int year = 1973;
+        final int month = 1;
+        final int day = 27;
+
+        try
+        {
+            final Date feb27 = new GregorianCalendar( year, month, day ).getTime();
+            assertEquals( feb27, DoxiaUtils.parseDate( "27.02.1973" ) );
+            assertEquals( feb27, DoxiaUtils.parseDate( "27. 02. 1973" ) );
+            assertEquals( feb27, DoxiaUtils.parseDate( "1973-02-27" ) );
+            assertEquals( feb27, DoxiaUtils.parseDate( "1973/02/27" ) );
+            assertEquals( feb27, DoxiaUtils.parseDate( "27 Feb 1973" ) );
+            assertEquals( feb27, DoxiaUtils.parseDate( "27 Feb. 1973" ) );
+            assertEquals( feb27, DoxiaUtils.parseDate( "Feb. 27, 1973" ) );
+            assertEquals( feb27, DoxiaUtils.parseDate( "Feb 27, '73" ) );
+            assertEquals( feb27, DoxiaUtils.parseDate( "February 27, 1973" ) );
+            assertEquals( feb27, DoxiaUtils.parseDate( "19730227" ) );
+
+            assertEquals( new GregorianCalendar( year, 0, 1 ).getTime(), DoxiaUtils.parseDate( "1973" ) );
+
+            final Date feb1 = new GregorianCalendar( year, 1, 1 ).getTime();
+            assertEquals( feb1, DoxiaUtils.parseDate( "February 1973" ) );
+            assertEquals( feb1, DoxiaUtils.parseDate( "Feb. 1973" ) );
+            assertEquals( feb1, DoxiaUtils.parseDate( "February '73" ) );
+            assertEquals( feb1, DoxiaUtils.parseDate( "Feb. '73" ) );
+
+            assertNotNull( DoxiaUtils.parseDate( "Today" ) );
+            assertNotNull( DoxiaUtils.parseDate( "NOW" ) );
+        }
+        catch ( ParseException ex )
+        {
+            fail( ex.getMessage() );
+        }
+
+        try
+        {
+            DoxiaUtils.parseDate( "yesterday" ).getTime();
+            fail();
+        }
+        catch ( ParseException ex )
+        {
+            assertNotNull( ex );
+        }
     }
 }

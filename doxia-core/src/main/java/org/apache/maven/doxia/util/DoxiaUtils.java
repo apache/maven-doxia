@@ -20,6 +20,12 @@ package org.apache.maven.doxia.util;
  */
 
 import java.io.UnsupportedEncodingException;
+
+import java.text.ParseException;
+import java.text.ParsePosition;
+import java.text.SimpleDateFormat;
+
+import java.util.Date;
 import java.util.Locale;
 
 /**
@@ -279,6 +285,61 @@ public class DoxiaUtils
         }
 
         return true;
+    }
+
+    private static final SimpleDateFormat DATE_PARSER = new SimpleDateFormat();
+    private static final ParsePosition DATE_PARSE_POSITION = new ParsePosition( 0 );
+    private static final String[] DATE_PATTERNS = new String[]
+    {
+        "yyyy-MM-dd", "yyyy/MM/dd", "yyyyMMdd", "yyyy", "dd.MM.yyyy", "dd MMM yyyy",
+        "dd MMM. yyyy", "MMMM yyyy", "MMM. dd, yyyy", "MMM. yyyy", "MMMM dd, yyyy",
+        "MMM d, ''yy", "MMM. ''yy", "MMMM ''yy"
+    };
+
+    /**
+     * <p>Parses a string representing a date by trying different date patterns.</p>
+     *
+     * <p>The following date patterns are tried (in the given order):</p>
+     *
+     * <pre>"yyyy-MM-dd", "yyyy/MM/dd", "yyyyMMdd", "yyyy", "dd.MM.yyyy", "dd MMM yyyy",
+     *  "dd MMM. yyyy", "MMMM yyyy", "MMM. dd, yyyy", "MMM. yyyy", "MMMM dd, yyyy",
+     *  "MMM d, ''yy", "MMM. ''yy", "MMMM ''yy"</pre>
+     *
+     * <p>A parse is only sucessful if it parses the whole of the input string.
+     * If no parse patterns match, a ParseException is thrown.</p>
+     *
+     * <p>As a special case, the strings <code>"today"</code> and <code>"now"</code>
+     * (ignoring case) return the current date.</p>
+     *
+     * @param str the date to parse, not null.
+     * @return the parsed date, or the current date if the input String (ignoring case) was
+     *      <code>"today"</code> or <code>"now"</code>.
+     * @throws ParseException if no pattern matches.
+     *
+     * @since 1.1.1.
+     */
+    public static Date parseDate( String str )
+            throws ParseException
+    {
+        if ( "today".equals( str.toLowerCase( Locale.ENGLISH ) )
+                || "now".equals( str.toLowerCase( Locale.ENGLISH ) ) )
+        {
+            return new Date();
+        }
+
+        for ( int i = 0; i < DATE_PATTERNS.length; i++ )
+        {
+            DATE_PARSER.applyPattern( DATE_PATTERNS[i] );
+            DATE_PARSE_POSITION.setIndex( 0 );
+            final Date date = DATE_PARSER.parse( str, DATE_PARSE_POSITION );
+
+            if ( date != null && DATE_PARSE_POSITION.getIndex() == str.length() )
+            {
+                return date;
+            }
+        }
+
+        throw new ParseException( "Unable to parse date: " + str, -1 );
     }
 
       //
