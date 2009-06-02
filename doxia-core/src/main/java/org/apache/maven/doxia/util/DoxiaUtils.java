@@ -287,7 +287,7 @@ public class DoxiaUtils
         return true;
     }
 
-    private static final SimpleDateFormat DATE_PARSER = new SimpleDateFormat();
+    private static final SimpleDateFormat DATE_PARSER = new SimpleDateFormat( "", Locale.ENGLISH );
     private static final ParsePosition DATE_PARSE_POSITION = new ParsePosition( 0 );
     private static final String[] DATE_PATTERNS = new String[]
     {
