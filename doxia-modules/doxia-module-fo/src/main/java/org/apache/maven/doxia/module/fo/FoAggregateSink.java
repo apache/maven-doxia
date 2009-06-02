@@ -951,10 +951,10 @@ public class FoAggregateSink extends FoSink
             subtitle = cover.getCoverSubTitle();
             version = cover.getCoverVersion();
             type = cover.getCoverType();
-            date = cover.getDate();
+            date = cover.getCoverdate();
             if ( date == null && cover.getCoverDate() != null )
             {
-                date = ISO_8601_FORMAT.format( cover.getCoverDate() );
+                date = ISO_8601_FORMAT.format( cover.getCoverdate() );
             }
             //author = cover.getAuthor();
             //projName = cover.getProjectName();

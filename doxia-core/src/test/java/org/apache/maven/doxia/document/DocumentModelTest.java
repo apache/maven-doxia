@@ -136,7 +136,7 @@ public class DocumentModelTest
         cover.setCompanyLogo( "companyLogo" );
         cover.setCompanyName( "companyName" );
         cover.setCoverDate( new Date( 0L ) );
-        cover.setDate( "coverDate" );
+        cover.setCoverdate( "coverDate" );
         cover.setCoverSubTitle( "coverSubTitle" );
         cover.setCoverTitle( "coverTitle" );
         cover.setCoverType( "coverType" );
@@ -157,7 +157,7 @@ public class DocumentModelTest
         assertEquals( "companyLogo", cover.getCompanyLogo() );
         assertEquals( "companyName", cover.getCompanyName() );
         assertEquals( 0L, cover.getCoverDate().getTime() );
-        assertEquals( "coverDate", cover.getDate() );
+        assertEquals( "coverDate", cover.getCoverdate() );
         assertEquals( "coverSubTitle", cover.getCoverSubTitle() );
         assertEquals( "coverTitle", cover.getCoverTitle() );
         assertEquals( "coverType", cover.getCoverType() );

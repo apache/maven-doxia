@@ -234,6 +234,16 @@
           <identifier>true</identifier>
         </field>
         <field>
+          <name>creationdate</name>
+          <version>1.0.1+</version>
+          <description><![CDATA[
+            The date as String when the document was created initially.
+            @since 1.1.1
+          ]]></description>
+          <type>String</type>
+          <identifier>true</identifier>
+        </field>
+        <field>
           <name>date</name>
           <version>1.0.0+</version>
           <description><![CDATA[
@@ -243,12 +253,32 @@
           <identifier>true</identifier>
         </field>
         <field>
+          <name>modifydate</name>
+          <version>1.0.1+</version>
+          <description><![CDATA[
+            The date as String when the document was last modified.
+            @since 1.1.1
+          ]]></description>
+          <type>String</type>
+          <identifier>true</identifier>
+        </field>
+        <field>
           <name>printDate</name>
           <version>1.0.0+</version>
           <description><![CDATA[
             The date and time when the document was last printed.
           ]]></description>
           <type>Date</type>
+          <identifier>true</identifier>
+        </field>
+        <field>
+          <name>printdate</name>
+          <version>1.0.1+</version>
+          <description><![CDATA[
+            The date as String when the document was last printed.
+            @since 1.1.1
+          ]]></description>
+          <type>String</type>
           <identifier>true</identifier>
         </field>
         <field>
@@ -655,6 +685,16 @@
           <type>Date</type>
           <identifier>true</identifier>
         </field>
+        <field xml.attribute="true">
+          <name>modifydate</name>
+          <version>1.0.1+</version>
+          <description><![CDATA[
+            The date as String when the template was last modified.
+            @since 1.1.1
+          ]]></description>
+          <type>String</type>
+          <identifier>true</identifier>
+        </field>
       </fields>
     </class>
 
@@ -905,10 +945,10 @@
           <identifier>true</identifier>
         </field>
         <field>
-          <name>date</name>
+          <name>coverdate</name>
           <description><![CDATA[
             The date to appear on the cover.
-            @since 1.1.1.
+            @since 1.1.1
           ]]></description>
           <version>1.0.1+</version>
           <type>String</type>
@@ -932,7 +972,7 @@
           <description><![CDATA[
             A shortcut for the unique author that appears on the cover page.
             For more authors, you could use the &lt;authors/&gt; tag.
-            @since 1.1.1.
+            @since 1.1.1
           ]]></description>
           <version>1.0.1+</version>
           <type>String</type>
