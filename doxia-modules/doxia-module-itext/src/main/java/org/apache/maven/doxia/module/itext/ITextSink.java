@@ -24,6 +24,7 @@ import com.lowagie.text.ElementTags;
 import com.lowagie.text.Image;
 
 import java.awt.Color;
+import java.io.File;
 import java.io.IOException;
 import java.io.LineNumberReader;
 import java.io.StringReader;
@@ -1128,29 +1129,48 @@ public final class ITextSink
         actionContext.setAction( SinkActionContext.FIGURE_CAPTION );
     }
 
-    /** {@inheritDoc} */
+    /**
+     * If the <code>name</code> is a relative link, the internal link will used a System property <code>itext.basedir</code>,
+     * or the class loader.
+     * {@inheritDoc} */
     public void figureGraphics( String name )
     {
         String urlName = null;
+        File nameFile = null;
         if ( ( name.toLowerCase( Locale.ENGLISH ).startsWith( "http://" ) )
-                        || ( name.toLowerCase( Locale.ENGLISH ).startsWith( "https://" ) ) )
+            || ( name.toLowerCase( Locale.ENGLISH ).startsWith( "https://" ) ) )
         {
             urlName = name;
         }
         else
         {
-            if ( getClassLoader() != null )
+            if ( System.getProperty( "itext.basedir" ) != null )
             {
-                if ( getClassLoader().getResource( name ) != null )
+                try
                 {
-                    urlName = getClassLoader().getResource( name ).toString();
+                    nameFile = new File( System.getProperty( "itext.basedir" ), name );
+                    urlName = nameFile.toURL().toString();
+                }
+                catch ( MalformedURLException e )
+                {
+                    getLog().error( "MalformedURLException: " + e.getMessage(), e );
                 }
             }
             else
             {
-                if ( ITextSink.class.getClassLoader().getResource( name ) != null )
+                if ( getClassLoader() != null )
                 {
-                    urlName = ITextSink.class.getClassLoader().getResource( name ).toString();
+                    if ( getClassLoader().getResource( name ) != null )
+                    {
+                        urlName = getClassLoader().getResource( name ).toString();
+                    }
+                }
+                else
+                {
+                    if ( ITextSink.class.getClassLoader().getResource( name ) != null )
+                    {
+                        urlName = ITextSink.class.getClassLoader().getResource( name ).toString();
+                    }
                 }
             }
         }
@@ -1165,6 +1185,16 @@ public final class ITextSink
             return;
         }
 
+        if ( nameFile != null && !nameFile.exists() )
+        {
+            String msg = "No image '" + nameFile + "' found in your system, check the path.";
+            logMessage( "imageNotFound", msg );
+
+            return;
+        }
+
+        figure();
+
         float width = 0;
         float height = 0;
         try
@@ -1176,15 +1206,15 @@ public final class ITextSink
         }
         catch ( BadElementException e )
         {
-            // nop
+            getLog().error( "BadElementException: " + e.getMessage(), e );
         }
         catch ( MalformedURLException e )
         {
-            // nop
+            getLog().error( "MalformedURLException: " + e.getMessage(), e );
         }
         catch ( IOException e )
         {
-            // nop
+            getLog().error( "IOException: " + e.getMessage(), e );
         }
 
         writeAddAttribute( ElementTags.URL, urlName );
@@ -1193,6 +1223,8 @@ public final class ITextSink
         writeAddAttribute( ElementTags.PLAINHEIGHT, String.valueOf( height ) );
 
         actionContext.setAction( SinkActionContext.FIGURE_GRAPHICS );
+
+        figure_();
     }
 
     // ----------------------------------------------------------------------
