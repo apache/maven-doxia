@@ -19,8 +19,8 @@ package org.apache.maven.doxia.module.fml;
  * under the License.
  */
 
-import java.io.IOException;
 import java.io.Reader;
+
 import java.util.HashMap;
 import java.util.Iterator;
 import java.util.Map;
@@ -82,24 +82,7 @@ public class FmlParser
 
         writeFaqs( sink );
 
-        if ( getLog().isWarnEnabled() && this.warnMessages != null && !isSecondParsing() )
-        {
-            for ( Iterator it = this.warnMessages.entrySet().iterator(); it.hasNext(); )
-            {
-                Map.Entry entry = (Map.Entry) it.next();
-
-                Set set = (Set) entry.getValue();
-
-                for ( Iterator it2 = set.iterator(); it2.hasNext(); )
-                {
-                    String msg = (String) it2.next();
-
-                    getLog().warn( msg );
-                }
-            }
-
-            this.warnMessages = null;
-        }
+        logWarnings();
     }
 
     /** {@inheritDoc} */
@@ -152,20 +135,10 @@ public class FmlParser
         }
         else if ( parser.getName().equals( TITLE.toString() ) )
         {
-            if ( currentPart == null )
-            {
-                throw new XmlPullParserException( "Missing <part> at: ("
-                    + parser.getLineNumber() + ":" + parser.getColumnNumber() + ")" );
-            }
+            buffer = new StringBuffer();
 
-            try
-            {
-                currentPart.setTitle( parser.nextText().trim() );
-            }
-            catch ( IOException e )
-            {
-                throw new XmlPullParserException( "Error reading title: " + e.getMessage(), parser, e );
-            }
+            buffer.append( String.valueOf( LESS_THAN ) ).append( parser.getName() )
+                .append( String.valueOf( GREATER_THAN ) );
         }
         else if ( parser.getName().equals( FAQ_TAG.toString() ) )
         {
@@ -188,7 +161,7 @@ public class FmlParser
                 currentFaq.setId( linkAnchor );
             }
         }
-        if ( parser.getName().equals( QUESTION_TAG.toString() ) )
+        else if ( parser.getName().equals( QUESTION_TAG.toString() ) )
         {
             buffer = new StringBuffer();
 
@@ -282,9 +255,24 @@ public class FmlParser
 
             buffer = null;
         }
+        else if ( parser.getName().equals( TITLE.toString() ) )
+        {
+            if ( currentPart == null )
+            {
+                throw new XmlPullParserException( "Missing <part> at: ("
+                    + parser.getLineNumber() + ":" + parser.getColumnNumber() + ")" );
+            }
+
+            buffer.append( String.valueOf( LESS_THAN ) ).append( String.valueOf( SLASH ) )
+                .append( parser.getName() ).append( String.valueOf( GREATER_THAN ) );
+
+            currentPart.setTitle( buffer.toString() );
+
+            buffer = null;
+        }
         else if ( buffer != null )
         {
-            if ( buffer.charAt( buffer.length() - 1 ) == SPACE )
+            if ( buffer.length() > 0 && buffer.charAt( buffer.length() - 1 ) == SPACE )
             {
                 buffer.deleteCharAt( buffer.length() - 1 );
             }
@@ -302,8 +290,7 @@ public class FmlParser
         {
             buffer.append( parser.getText() );
         }
-        // only text contents in fml files are within <question> or <answer>,
-        // except <title> which is registered via nextText().
+        // only significant text content in fml files is in <question>, <answer> or <title>
     }
 
     /** {@inheritDoc} */
@@ -406,7 +393,7 @@ public class FmlParser
             {
                 sink.paragraph();
                 sink.bold();
-                sink.text( part.getTitle() );
+                xdocParser.parse( part.getTitle(), sink );
                 sink.bold_();
                 sink.paragraph_();
             }
@@ -450,7 +437,7 @@ public class FmlParser
                 sink.section1();
 
                 sink.sectionTitle1();
-                sink.text( part.getTitle() );
+                xdocParser.parse( part.getTitle(), sink );
                 sink.sectionTitle1_();
             }
 
@@ -556,5 +543,23 @@ public class FmlParser
         }
         set.add( msg );
         warnMessages.put( key, set );
+    }
+
+    private void logWarnings()
+    {
+        if ( getLog().isWarnEnabled() && this.warnMessages != null && !isSecondParsing() )
+        {
+            for ( Iterator it = this.warnMessages.entrySet().iterator(); it.hasNext(); )
+            {
+                Map.Entry entry = (Map.Entry) it.next();
+                Set set = (Set) entry.getValue();
+                for ( Iterator it2 = set.iterator(); it2.hasNext(); )
+                {
+                    String msg = (String) it2.next();
+                    getLog().warn( msg );
+                }
+            }
+            this.warnMessages = null;
+        }
     }
 }

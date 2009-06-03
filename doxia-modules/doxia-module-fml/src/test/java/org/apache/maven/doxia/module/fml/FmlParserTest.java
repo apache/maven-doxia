@@ -161,8 +161,9 @@ public class FmlParserTest
         assertEquals( "paragraph", ( (SinkEventElement) it.next() ).getName() );
         assertEquals( "bold", ( (SinkEventElement) it.next() ).getName() );
 
-        // part title in TOC TODO: should be two events
-        assertTextEvent( (SinkEventElement) it.next(), "<&#913;" );
+        // part title in TOC
+        assertTextEvent( (SinkEventElement) it.next(), "<" );
+        assertTextEvent( (SinkEventElement) it.next(), "\u0391" );
 
         assertEquals( "bold_", ( (SinkEventElement) it.next() ).getName() );
         assertEquals( "paragraph_", ( (SinkEventElement) it.next() ).getName() );
@@ -181,8 +182,9 @@ public class FmlParserTest
         assertEquals( "section1", ( (SinkEventElement) it.next() ).getName() );
         assertEquals( "sectionTitle1", ( (SinkEventElement) it.next() ).getName() );
 
-        // part title TODO: should be two events
-        assertTextEvent( (SinkEventElement) it.next(), "<&#913;" );
+        // part title
+        assertTextEvent( (SinkEventElement) it.next(), "<" );
+        assertTextEvent( (SinkEventElement) it.next(), "\u0391" );
 
         assertEquals( "sectionTitle1_", ( (SinkEventElement) it.next() ).getName() );
         assertEquals( "definitionList", ( (SinkEventElement) it.next() ).getName() );

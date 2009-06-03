@@ -48,6 +48,7 @@ public class FmlContentParser
         isEmptyElement = parser.isEmptyElementTag();
 
         if ( parser.getName().equals( QUESTION_TAG.toString() )
+                || parser.getName().equals( TITLE.toString() )
             || parser.getName().equals( ANSWER_TAG.toString() ) )
         {
             // ignore
@@ -86,6 +87,7 @@ public class FmlContentParser
         throws XmlPullParserException, MacroExecutionException
     {
         if ( parser.getName().equals( QUESTION_TAG.toString() )
+                || parser.getName().equals( TITLE.toString() )
             || parser.getName().equals( ANSWER_TAG.toString() ) )
         {
             // ignore
