@@ -808,26 +808,30 @@ public final class ITextSink
     /** {@inheritDoc} */
     public void definitionList()
     {
+        lineBreak();
+
         actionContext.setAction( SinkActionContext.DEFINITION_LIST );
     }
 
     /** {@inheritDoc} */
     public void definedTerm_()
     {
-        writeEndElement(); // ElementTags.CELL
-
-        writeEndElement(); // ElementTags.ROW
-
-        writeEndElement(); // ElementTags.TABLE
+        font.setSize( ITextFont.DEFAULT_FONT_SIZE );
+        bold_();
 
         writeEndElement(); // ElementTags.CHUNK
 
         actionContext.release();
+
+        lineBreak();
     }
 
     /** {@inheritDoc} */
     public void definedTerm()
     {
+        font.setSize( ITextFont.DEFAULT_FONT_SIZE + 2 );
+        bold();
+
         writeStartElement( ElementTags.CHUNK );
         writeAddAttribute( ElementTags.FONT, font.getFontName() );
         writeAddAttribute( ElementTags.SIZE, font.getFontSize() );
@@ -836,38 +840,12 @@ public final class ITextSink
         writeAddAttribute( ElementTags.GREEN, font.getFontColorGreen() );
         writeAddAttribute( ElementTags.RED, font.getFontColorRed() );
 
-        writeStartElement( ElementTags.TABLE );
-        writeAddAttribute( ElementTags.COLUMNS, "1" );
-        writeAddAttribute( ElementTags.LEFT, Boolean.FALSE.toString() );
-        writeAddAttribute( ElementTags.RIGHT, Boolean.FALSE.toString() );
-        writeAddAttribute( ElementTags.TOP, Boolean.FALSE.toString() );
-        writeAddAttribute( ElementTags.BOTTOM, Boolean.FALSE.toString() );
-        writeAddAttribute( ElementTags.ALIGN, ElementTags.ALIGN_CENTER );
-        writeAddAttribute( ElementTags.WIDTH, "100%" );
-        //        writeAddAttribute( ElementTags.TABLEFITSPAGE, Boolean.TRUE.toString() );
-        //        writeAddAttribute( ElementTags.CELLSFITPAGE, Boolean.TRUE.toString() );
-        writeAddAttribute( ElementTags.CELLPADDING, "0" );
-
-        writeStartElement( ElementTags.ROW );
-
-        writeStartElement( ElementTags.CELL );
-        writeAddAttribute( ElementTags.LEFT, Boolean.FALSE.toString() );
-        writeAddAttribute( ElementTags.RIGHT, Boolean.FALSE.toString() );
-        writeAddAttribute( ElementTags.TOP, Boolean.FALSE.toString() );
-        writeAddAttribute( ElementTags.BOTTOM, Boolean.FALSE.toString() );
-
         actionContext.setAction( SinkActionContext.DEFINED_TERM );
     }
 
     /** {@inheritDoc} */
     public void definition_()
     {
-        writeEndElement(); // ElementTags.CELL
-
-        writeEndElement(); // ElementTags.ROW
-
-        writeEndElement(); // ElementTags.TABLE
-
         writeEndElement(); // ElementTags.CHUNK
 
         actionContext.release();
@@ -884,52 +862,18 @@ public final class ITextSink
         writeAddAttribute( ElementTags.GREEN, font.getFontColorGreen() );
         writeAddAttribute( ElementTags.RED, font.getFontColorRed() );
 
-        writeStartElement( ElementTags.TABLE );
-        writeAddAttribute( ElementTags.COLUMNS, "2" );
-        writeAddAttribute( ElementTags.LEFT, Boolean.FALSE.toString() );
-        writeAddAttribute( ElementTags.RIGHT, Boolean.FALSE.toString() );
-        writeAddAttribute( ElementTags.TOP, Boolean.FALSE.toString() );
-        writeAddAttribute( ElementTags.BOTTOM, Boolean.FALSE.toString() );
-        writeAddAttribute( ElementTags.ALIGN, ElementTags.ALIGN_CENTER );
-        writeAddAttribute( ElementTags.WIDTH, "100%" );
-        writeAddAttribute( ElementTags.WIDTHS, "20.0;80.0" );
-        //        writeAddAttribute( ElementTags.TABLEFITSPAGE, Boolean.TRUE.toString() );
-        writeAddAttribute( ElementTags.CELLSFITPAGE, Boolean.TRUE.toString() );
-        writeAddAttribute( ElementTags.CELLPADDING, "5" );
-
-        writeStartElement( ElementTags.ROW );
-
-        writeStartElement( ElementTags.CELL );
-        writeAddAttribute( ElementTags.LEFT, Boolean.FALSE.toString() );
-        writeAddAttribute( ElementTags.RIGHT, Boolean.FALSE.toString() );
-        writeAddAttribute( ElementTags.TOP, Boolean.FALSE.toString() );
-        writeAddAttribute( ElementTags.BOTTOM, Boolean.FALSE.toString() );
-
-        write( "" );
-
-        writeEndElement(); // ElementTags.CELL
-
-        writeStartElement( ElementTags.CELL );
-        writeAddAttribute( ElementTags.LEFT, Boolean.FALSE.toString() );
-        writeAddAttribute( ElementTags.RIGHT, Boolean.FALSE.toString() );
-        writeAddAttribute( ElementTags.TOP, Boolean.FALSE.toString() );
-        writeAddAttribute( ElementTags.BOTTOM, Boolean.FALSE.toString() );
-
         actionContext.setAction( SinkActionContext.DEFINITION );
     }
 
     /** {@inheritDoc} */
     public void definitionListItem_()
     {
-        // nop
         actionContext.release();
     }
 
     /** {@inheritDoc} */
     public void definitionListItem()
     {
-        // nop
-
         actionContext.setAction( SinkActionContext.DEFINITION_LIST_ITEM );
     }
 
@@ -1369,6 +1313,9 @@ public final class ITextSink
 
         writeStartElement( ElementTags.ANCHOR );
         writeAddAttribute( ElementTags.NAME, id );
+        writeAddAttribute( ElementTags.FONT, font.getFontName() );
+        writeAddAttribute( ElementTags.SIZE, font.getFontSize() );
+        writeAddAttribute( ElementTags.STYLE, font.getFontStyle() );
 
         actionContext.setAction( SinkActionContext.ANCHOR );
     }
