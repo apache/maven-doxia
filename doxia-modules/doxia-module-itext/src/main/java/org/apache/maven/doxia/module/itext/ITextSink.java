@@ -1409,6 +1409,13 @@ public final class ITextSink
     public void horizontalRule()
     {
         writeStartElement( ElementTags.PARAGRAPH );
+        writeAddAttribute( ElementTags.BLUE, "255" );
+        writeAddAttribute( ElementTags.GREEN, "255" );
+        writeAddAttribute( ElementTags.RED, "255" );
+        write( "_" );
+        writeEndElement();
+
+        writeStartElement( ElementTags.PARAGRAPH );
         writeStartElement( ElementTags.HORIZONTALRULE );
         writeEndElement();
         writeEndElement();
