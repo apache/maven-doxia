@@ -66,12 +66,6 @@ public class FmlParser
     /** Collect a single faq. */
     private Faq currentFaq;
 
-    /** An indication on if we're inside a question. */
-    private boolean inQuestion;
-
-    /** An indication on if we're inside an answer. */
-    private boolean inAnswer;
-
     /** Used to collect text events. */
     private StringBuffer buffer;
 
@@ -200,8 +194,6 @@ public class FmlParser
 
             buffer.append( String.valueOf( LESS_THAN ) ).append( parser.getName() )
                 .append( String.valueOf( GREATER_THAN ) );
-
-            inQuestion = true;
         }
         else if ( parser.getName().equals( ANSWER_TAG.toString() ) )
         {
@@ -210,9 +202,8 @@ public class FmlParser
             buffer.append( String.valueOf( LESS_THAN ) ).append( parser.getName() )
                 .append( String.valueOf( GREATER_THAN ) );
 
-            inAnswer = true;
         }
-        else if ( inQuestion || inAnswer )
+        else if ( buffer != null )
         {
             buffer.append( String.valueOf( LESS_THAN ) ).append( parser.getName() );
 
@@ -274,7 +265,7 @@ public class FmlParser
 
             currentFaq.setQuestion( buffer.toString() );
 
-            inQuestion = false;
+            buffer = null;
         }
         else if ( parser.getName().equals( ANSWER_TAG.toString() ) )
         {
@@ -283,14 +274,15 @@ public class FmlParser
                 throw new XmlPullParserException( "Missing <faq> at: ("
                     + parser.getLineNumber() + ":" + parser.getColumnNumber() + ")" );
             }
+
             buffer.append( String.valueOf( LESS_THAN ) ).append( String.valueOf( SLASH ) )
                 .append( parser.getName() ).append( String.valueOf( GREATER_THAN ) );
 
             currentFaq.setAnswer( buffer.toString() );
 
-            inAnswer = false;
+            buffer = null;
         }
-        else if ( inQuestion || inAnswer )
+        else if ( buffer != null )
         {
             if ( buffer.charAt( buffer.length() - 1 ) == SPACE )
             {
@@ -306,7 +298,7 @@ public class FmlParser
     protected void handleText( XmlPullParser parser, Sink sink )
         throws XmlPullParserException
     {
-        if ( inQuestion || inAnswer )
+        if ( buffer != null )
         {
             buffer.append( parser.getText() );
         }
@@ -320,7 +312,7 @@ public class FmlParser
     {
         String cdSection = parser.getText();
 
-        if ( inQuestion || inAnswer )
+        if ( buffer != null )
         {
             buffer.append( LESS_THAN ).append( BANG ).append( LEFT_SQUARE_BRACKET ).append( CDATA )
                     .append( LEFT_SQUARE_BRACKET ).append( cdSection ).append( RIGHT_SQUARE_BRACKET )
@@ -338,7 +330,7 @@ public class FmlParser
     {
         String comment = parser.getText();
 
-        if ( inQuestion || inAnswer )
+        if ( buffer != null )
         {
             buffer.append( LESS_THAN ).append( BANG ).append( MINUS ).append( MINUS )
                     .append( comment ).append( MINUS ).append( MINUS ).append( GREATER_THAN );
@@ -353,9 +345,9 @@ public class FmlParser
     protected void handleEntity( XmlPullParser parser, Sink sink )
         throws XmlPullParserException
     {
-        if ( inQuestion || inAnswer )
+        if ( buffer != null )
         {
-            if ( buffer != null && parser.getText() != null )
+            if ( parser.getText() != null )
             {
                 String text = parser.getText();
 
