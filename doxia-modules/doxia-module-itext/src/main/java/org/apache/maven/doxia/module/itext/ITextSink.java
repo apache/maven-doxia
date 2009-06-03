@@ -108,6 +108,10 @@ public final class ITextSink
 
     private String tableCaption = null;
 
+    /** Flag to know if an anchor is defined or not. Used as workaround for iText which needs a defined local
+     * destination. */
+    private boolean anchorDefined = false;
+
     /** Map of warn messages with a String as key to describe the error type and a Set as value.
      * Using to reduce warn messages. */
     private Map warnMessages;
@@ -1328,6 +1332,18 @@ public final class ITextSink
     /** {@inheritDoc} */
     public void anchor_()
     {
+        if ( !anchorDefined )
+        {
+            // itext needs a defined local destination, we put an invisible text
+            writeAddAttribute( ElementTags.BLUE, "255" );
+            writeAddAttribute( ElementTags.GREEN, "255" );
+            writeAddAttribute( ElementTags.RED, "255" );
+
+            write( "_" );
+        }
+
+        anchorDefined = false;
+
         writeEndElement(); // ElementTags.ANCHOR
 
         actionContext.release();
@@ -1495,8 +1511,9 @@ public final class ITextSink
             case SinkActionContext.UNDEFINED:
                 break;
 
-            case SinkActionContext.PARAGRAPH:
             case SinkActionContext.ANCHOR:
+                anchorDefined = true;
+            case SinkActionContext.PARAGRAPH:
             case SinkActionContext.LINK:
             case SinkActionContext.TABLE_CELL:
             case SinkActionContext.TABLE_HEADER_CELL:

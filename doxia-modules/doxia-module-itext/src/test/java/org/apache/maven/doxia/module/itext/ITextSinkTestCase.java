@@ -113,4 +113,43 @@ public class ITextSinkTestCase
         ITextUtil.writeRtf( new FileInputStream( getGeneratedFile( "test_model", "xml" ) ),
                             new FileOutputStream( getGeneratedFile( "test_model", "rtf" ) ) );
     }
+
+    /**
+     * Test empty anchor DOXIA-329
+     * @throws Exception if any
+     */
+    public void testEmptyAnchor()
+        throws Exception
+    {
+        Sink sink = createSink( getXmlTestWriter( "empty_anchor", "xml" ) );
+
+        SinkTestDocument.generateHead( sink );
+
+        sink.body();
+
+        sink.anchor( "empty_local_anchor" );
+        sink.anchor_();
+        sink.lineBreak();
+        sink.link( "#empty_local_anchor" );
+        sink.text( "link to empty local anchor" );
+        sink.link_();
+
+        sink.lineBreak();
+
+        sink.anchor( "defined_local_anchor" );
+        sink.text( "defined local anchor" );
+        sink.anchor_();
+        sink.lineBreak();
+        sink.link( "#defined_local_anchor" );
+        sink.text( "link to defined local anchor" );
+        sink.link_();
+
+        sink.body_();
+
+        sink.flush();
+        sink.close();
+
+        ITextUtil.writePdf( new FileInputStream( getGeneratedFile( "empty_anchor", "xml" ) ),
+                            new FileOutputStream( getGeneratedFile( "empty_anchor", "pdf" ) ) );
+    }
 }
