@@ -56,6 +56,8 @@ public class DocBookParser
      */
     private boolean isBold;
 
+    private boolean inHead;
+
     /**
      * A selective stack of parent elements
      */
@@ -65,6 +67,12 @@ public class DocBookParser
      * The list of DocBook elements that introduce a new level of hierarchy.
      */
     private static final Collection HIER_ELEMENTS = new HashSet();
+
+    /**
+     * Simplified DocBook elements that are direct children of &lt;article&gt;
+     * and that should be emitted into the Sink's head.
+     */
+    private static final Collection META_ELEMENTS = new HashSet();
 
     /**
      * The list of DocBook elements that will be rendered verbatim
@@ -88,6 +96,12 @@ public class DocBookParser
 
     static
     {
+        META_ELEMENTS.add( SimplifiedDocbookMarkup.ARTICLEINFO_TAG.toString() );
+        META_ELEMENTS.add( SimplifiedDocbookMarkup.AUTHORBLURB_TAG.toString() );
+        META_ELEMENTS.add( SimplifiedDocbookMarkup.SUBTITLE_TAG.toString() );
+        META_ELEMENTS.add( SimplifiedDocbookMarkup.TITLE_TAG.toString() );
+        META_ELEMENTS.add( SimplifiedDocbookMarkup.TITLEABBREV_TAG.toString() );
+
         HIER_ELEMENTS.add( SimplifiedDocbookMarkup.SECTION_TAG.toString() );
         HIER_ELEMENTS.add( SimplifiedDocbookMarkup.ARTICLE_TAG.toString() );
         HIER_ELEMENTS.add( SimplifiedDocbookMarkup.APPENDIX_TAG.toString() );
@@ -122,6 +136,16 @@ public class DocBookParser
     protected void handleStartTag( XmlPullParser parser, Sink sink )
         throws XmlPullParserException, MacroExecutionException
     {
+        if ( inHead && !META_ELEMENTS.contains( parser.getName() )
+                && isParent( SimplifiedDocbookMarkup.ARTICLE_TAG.toString() ) )
+        {
+            sink.head_();
+            inHead = false;
+
+            // assume any element that is not meta starts the body
+            sink.body();
+        }
+
         handleIdAnchor( getAttributeValue( parser, ID_ATTRIBUTE ), sink );
 
         if ( HIER_ELEMENTS.contains( parser.getName() ) )
@@ -278,10 +302,10 @@ public class DocBookParser
             else
             {
                 sink.section_( level );
-                parent.pop();
             }
             //decrease the nesting level
             level--;
+            parent.pop();
         }
         else if ( parser.getName().equals( SimplifiedDocbookMarkup.ITEMIZEDLIST_TAG.toString() ) )
         {
@@ -531,16 +555,18 @@ public class DocBookParser
         //increase the nesting level
         level++;
 
-        //if this is the root element, handle it as body
-        if ( level == 0 )
+        //if this is the root element, start head
+        if ( parser.getName().equals( SimplifiedDocbookMarkup.ARTICLE_TAG.toString() ) )
         {
-            sink.body();
+            sink.head();
+            inHead = true;
         }
         else
         {
             sink.section( level, null );
-            parent.push( parser.getName() );
         }
+
+        parent.push( parser.getName() );
     }
 
     private void handleIdAnchor( String id, Sink sink )
