@@ -176,26 +176,29 @@ public class DocBookParser
         {
             sink.definedTerm();
         }
-        else if ( parser.getName().equals( SimplifiedDocbookMarkup.FIGURE_TAG.toString() ) )
+        else if ( parser.getName().equals( SimplifiedDocbookMarkup.MEDIAOBJECT_TAG.toString() ) )
         {
             handleFigureStart( sink, parser);
         }
-        else if ( parser.getName().equals( SimplifiedDocbookMarkup.IMAGEOBJECT_TAG.toString() ) )
+        else if ( parser.getName().equals( SimplifiedDocbookMarkup.IMAGEOBJECT_TAG.toString() )
+                || parser.getName().equals( SimplifiedDocbookMarkup.FIGURE_TAG.toString() )
+                || parser.getName().equals( SimplifiedDocbookMarkup.THEAD_TAG.toString() )
+                || parser.getName().equals( SimplifiedDocbookMarkup.ARTICLEINFO_TAG.toString() ) )
         {
-            handleImageObjectStart( parser, sink );
+            parent.push( parser.getName() );
+        }
+        else if ( parser.getName().equals( SimplifiedDocbookMarkup.IMAGEDATA_TAG.toString() ) )
+        {
+            handleImageDataStart( parser, sink );
         }
         else if ( parser.getName().equals( SimplifiedDocbookMarkup.CAPTION_TAG.toString() ) )
         {
-            handleCaptionStart(sink);
+            handleCaptionStart( parser, sink );
         }
         else if ( parser.getName().equals( SimplifiedDocbookMarkup.TABLE_TAG.toString() )
             || parser.getName().equals( SimplifiedDocbookMarkup.INFORMALTABLE_TAG.toString() ) )
         {
             handleTableStart( sink, parser);
-        }
-        else if ( parser.getName().equals( SimplifiedDocbookMarkup.THEAD_TAG.toString() ) )
-        {
-            parent.push( parser.getName() );
         }
         else if ( parser.getName().equals( SimplifiedDocbookMarkup.TR_TAG.toString() )
                 || parser.getName().equals( SimplifiedDocbookMarkup.ROW_TAG.toString() ) )
@@ -214,7 +217,7 @@ public class DocBookParser
         }
         else if ( parser.getName().equals( SimplifiedDocbookMarkup.PARA_TAG.toString() ) )
         {
-            sink.paragraph();
+            handleParaStart( sink );
         }
         else if ( VERBATIM_ELEMENTS.contains( parser.getName() ) )
         {
@@ -275,10 +278,6 @@ public class DocBookParser
         else if ( parser.getName().equals( SimplifiedDocbookMarkup.XREF_TAG.toString() ) )
         {
             handleXrefStart( parser, sink );
-        }
-        else if ( parser.getName().equals( SimplifiedDocbookMarkup.ARTICLEINFO_TAG.toString() ) )
-        {
-            parent.push( parser.getName() );
         }
         else
         {
@@ -347,9 +346,16 @@ public class DocBookParser
         {
             sink.definedTerm_();
         }
-        else if ( parser.getName().equals( SimplifiedDocbookMarkup.FIGURE_TAG.toString() ) )
+        else if ( parser.getName().equals( SimplifiedDocbookMarkup.MEDIAOBJECT_TAG.toString() ) )
         {
             sink.figure_();
+            parent.pop();
+        }
+        else if ( parser.getName().equals( SimplifiedDocbookMarkup.IMAGEOBJECT_TAG.toString() )
+                || parser.getName().equals( SimplifiedDocbookMarkup.FIGURE_TAG.toString() )
+                || parser.getName().equals( SimplifiedDocbookMarkup.THEAD_TAG.toString() )
+                || parser.getName().equals( SimplifiedDocbookMarkup.ARTICLEINFO_TAG.toString() ) )
+        {
             parent.pop();
         }
         else if ( parser.getName().equals( SimplifiedDocbookMarkup.CAPTION_TAG.toString() ) )
@@ -361,10 +367,6 @@ public class DocBookParser
         {
             sink.table_();
             //TODO handle tgroups
-            parent.pop();
-        }
-        else if ( parser.getName().equals( SimplifiedDocbookMarkup.THEAD_TAG.toString() ) )
-        {
             parent.pop();
         }
         else if ( parser.getName().equals( SimplifiedDocbookMarkup.TR_TAG.toString() )
@@ -384,7 +386,7 @@ public class DocBookParser
         }
         else if ( parser.getName().equals( SimplifiedDocbookMarkup.PARA_TAG.toString() ) )
         {
-            sink.paragraph_();
+            handleParaEnd( sink );
         }
         else if ( VERBATIM_ELEMENTS.contains( parser.getName() ) )
         {
@@ -443,10 +445,6 @@ public class DocBookParser
                 parent.pop();
                 sink.link_();
             }
-        }
-        else if ( parser.getName().equals( SimplifiedDocbookMarkup.ARTICLEINFO_TAG.toString() ) )
-        {
-            parent.pop();
         }
     }
 
@@ -509,22 +507,26 @@ public class DocBookParser
         return null;
     }
 
-    private void handleCaptionStart( Sink sink )
+    private void handleCaptionStart( XmlPullParser parser, Sink sink )
     {
-        if ( isParent( SimplifiedDocbookMarkup.FIGURE_TAG.toString() ) )
+        if ( isParent( SimplifiedDocbookMarkup.MEDIAOBJECT_TAG.toString() ) )
         {
-            sink.figureCaption();
+            sink.figureCaption( null );
         }
         else if ( isParent( SimplifiedDocbookMarkup.INFORMALTABLE_TAG.toString() )
             || isParent( SimplifiedDocbookMarkup.TABLE_TAG.toString() ) )
         {
             sink.tableCaption();
         }
+
+        parent.push( parser.getName() );
     }
 
     private void handleCaptionEnd( Sink sink )
     {
-        if ( isParent( SimplifiedDocbookMarkup.FIGURE_TAG.toString() ) )
+        parent.pop();
+
+        if ( isParent( SimplifiedDocbookMarkup.MEDIAOBJECT_TAG.toString() ) )
         {
             sink.figureCaption_();
         }
@@ -552,7 +554,7 @@ public class DocBookParser
 
     private void handleFigureStart( Sink sink, XmlPullParser parser )
     {
-        sink.figure();
+        sink.figure( null );
         parent.push( parser.getName() );
     }
 
@@ -591,15 +593,10 @@ public class DocBookParser
         }
     }
 
-    private void handleImageObjectStart( XmlPullParser parser, Sink sink )
+    private void handleImageDataStart( XmlPullParser parser, Sink sink )
     {
         String fileref = getAttributeValue( parser, "fileref" );
-
-        if ( fileref != null )
-        {
-            sink.figureGraphics( fileref );
-            parent.push( parser.getName() );
-        }
+        sink.figureGraphics( fileref, null );
     }
 
     private void handleItemizedListStart( Sink sink, XmlPullParser parser )
@@ -668,6 +665,22 @@ public class DocBookParser
         parent.push( parser.getName() );
     }
 
+    private void handleParaEnd( Sink sink )
+    {
+        if ( !isParent( SimplifiedDocbookMarkup.CAPTION_TAG.toString() ) )
+        {
+            sink.paragraph_();
+        }
+    }
+
+    private void handleParaStart( Sink sink )
+    {
+        if ( !isParent( SimplifiedDocbookMarkup.CAPTION_TAG.toString() ) )
+        {
+            sink.paragraph();
+        }
+    }
+
     private void handleTableStart( Sink sink, XmlPullParser parser )
     {
         sink.table();
@@ -677,12 +690,7 @@ public class DocBookParser
 
     private void handleTitleStart( Sink sink )
     {
-        // TODO: title in abstract, authorblurb, bibliography, bibliodiv, bibliomset, appendix
-        if ( isParent( SimplifiedDocbookMarkup.FIGURE_TAG.toString() ) )
-        {
-            sink.figureCaption();
-        }
-        else if ( isParent( SimplifiedDocbookMarkup.TABLE_TAG.toString() )
+        if ( isParent( SimplifiedDocbookMarkup.TABLE_TAG.toString() )
                 || isParent( SimplifiedDocbookMarkup.INFORMALTABLE_TAG.toString() ) )
         {
             sink.tableCaption();
@@ -696,16 +704,15 @@ public class DocBookParser
         {
             sink.sectionTitle( level, null );
         }
-        // else ignore
+        else
+        {
+            sink.bold();
+        }
     }
 
     private void handleTitleEnd( Sink sink )
     {
-        if ( isParent( SimplifiedDocbookMarkup.FIGURE_TAG.toString() ) )
-        {
-            sink.figureCaption_();
-        }
-        else if ( isParent( SimplifiedDocbookMarkup.TABLE_TAG.toString() )
+        if ( isParent( SimplifiedDocbookMarkup.TABLE_TAG.toString() )
                 || isParent( SimplifiedDocbookMarkup.INFORMALTABLE_TAG.toString() ) )
         {
             sink.tableCaption_();
@@ -719,7 +726,10 @@ public class DocBookParser
         {
             sink.title_();
         }
-        // else ignore
+        else
+        {
+            sink.bold_();
+        }
     }
 
     private void handleUlinkStart( XmlPullParser parser, Sink sink )
@@ -753,7 +763,10 @@ public class DocBookParser
 
     private boolean ignorable( String name )
     {
-        return name.equals( SimplifiedDocbookMarkup.ANCHOR_TAG.toString() );
+        return name.equals( SimplifiedDocbookMarkup.ANCHOR_TAG.toString() )
+                || name.equals( SimplifiedDocbookMarkup.IMAGEOBJECT_TAG.toString() )
+                || name.equals( SimplifiedDocbookMarkup.PHRASE_TAG.toString() )
+                || name.equals( SimplifiedDocbookMarkup.TEXTOBJECT_TAG.toString() );
     }
 
     /**

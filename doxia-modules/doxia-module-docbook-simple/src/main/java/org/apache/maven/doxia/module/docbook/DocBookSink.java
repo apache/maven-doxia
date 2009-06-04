@@ -1091,9 +1091,15 @@ public class DocBookSink
     }
 
     /** {@inheritDoc} */
+    public void figure()
+    {
+        writeStartTag( SimplifiedDocbookMarkup.MEDIAOBJECT_TAG );
+    }
+
+    /** {@inheritDoc} */
     public void figure_()
     {
-        graphicElement();
+        writeEndTag( SimplifiedDocbookMarkup.MEDIAOBJECT_TAG );
     }
 
     /**
@@ -1104,6 +1110,7 @@ public class DocBookSink
      * @see SimplifiedDocbookMarkup#IMAGEDATA_TAG
      * @see SimplifiedDocbookMarkup#FORMAT_ATTRIBUTE
      * @see SimplifiedDocbookMarkup#FILEREF_ATTRIBUTE
+     * @deprecated do not use!
      */
     protected void graphicElement()
     {
@@ -1134,8 +1141,17 @@ public class DocBookSink
     /** {@inheritDoc} */
     public void figureGraphics( String name )
     {
-        // TODO: extension?
-        graphicsFileName = name + ".jpeg";
+        String format = FileUtils.extension( name ).toUpperCase( Locale.ENGLISH );
+
+        writeStartTag( SimplifiedDocbookMarkup.IMAGEOBJECT_TAG );
+
+        MutableAttributeSet att = new SimpleAttributeSet();
+        att.addAttribute( SimplifiedDocbookMarkup.FORMAT_ATTRIBUTE, format );
+        att.addAttribute( SimplifiedDocbookMarkup.FILEREF_ATTRIBUTE, HtmlTools.escapeHTML( name, true ) );
+
+        writeSimpleTag( SimplifiedDocbookMarkup.IMAGEDATA_TAG, att );
+
+        writeEndTag( SimplifiedDocbookMarkup.IMAGEOBJECT_TAG );
     }
 
     /**
@@ -1145,8 +1161,8 @@ public class DocBookSink
      */
     public void figureCaption()
     {
-        writeStartTag( SimplifiedDocbookMarkup.FIGURE_TAG );
-        writeStartTag( SimplifiedDocbookMarkup.TITLE_TAG );
+        writeStartTag( SimplifiedDocbookMarkup.CAPTION_TAG );
+        writeStartTag( SimplifiedDocbookMarkup.PARA_TAG );
     }
 
     /**
@@ -1156,9 +1172,8 @@ public class DocBookSink
      */
     public void figureCaption_()
     {
-        writeEndTag( SimplifiedDocbookMarkup.TITLE_TAG );
-        graphicElement();
-        writeEndTag( SimplifiedDocbookMarkup.FIGURE_TAG );
+        writeEndTag( SimplifiedDocbookMarkup.PARA_TAG );
+        writeEndTag( SimplifiedDocbookMarkup.CAPTION_TAG );
     }
 
     /** {@inheritDoc} */

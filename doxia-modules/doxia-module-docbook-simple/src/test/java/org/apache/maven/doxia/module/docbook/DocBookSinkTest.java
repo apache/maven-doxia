@@ -21,6 +21,8 @@ package org.apache.maven.doxia.module.docbook;
 
 import java.io.Writer;
 
+import java.util.Locale;
+
 import javax.swing.text.MutableAttributeSet;
 import javax.swing.text.SimpleAttributeSet;
 
@@ -28,6 +30,8 @@ import org.apache.maven.doxia.sink.AbstractSinkTest;
 import org.apache.maven.doxia.sink.Sink;
 import org.apache.maven.doxia.sink.SinkUtils;
 import org.apache.maven.doxia.util.DoxiaUtils;
+
+import org.codehaus.plexus.util.FileUtils;
 
 /**
  * @author <a href="mailto:jason@maven.org">Jason van Zyl</a>
@@ -145,10 +149,11 @@ public class DocBookSinkTest extends AbstractSinkTest
     /** {@inheritDoc} */
     protected String getFigureBlock( String source, String caption )
     {
-        // TODO: fix source
-        return "<figure><title>" + caption
-            + "</title><mediaobject><imageobject><imagedata fileref=\"figure.jpg.jpeg\" format=\"JPEG\" /></imageobject></mediaobject>"
-            + "</figure>";
+        String format = FileUtils.extension( source ).toUpperCase( Locale.ENGLISH );
+
+        return "<mediaobject><imageobject>"
+                + "<imagedata fileref=\"" + source + "\" format=\"" + format + "\" />"
+                + "</imageobject><caption><para>" + caption + "</para></caption></mediaobject>";
     }
 
     /** {@inheritDoc} */

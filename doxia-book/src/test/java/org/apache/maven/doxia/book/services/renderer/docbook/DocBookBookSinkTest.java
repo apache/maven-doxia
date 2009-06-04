@@ -21,6 +21,8 @@ package org.apache.maven.doxia.book.services.renderer.docbook;
 
 import java.io.Writer;
 
+import java.util.Locale;
+
 import javax.swing.text.MutableAttributeSet;
 import javax.swing.text.SimpleAttributeSet;
 
@@ -28,6 +30,9 @@ import org.apache.maven.doxia.module.docbook.DocBookSink;
 import org.apache.maven.doxia.sink.AbstractSinkTest;
 import org.apache.maven.doxia.sink.Sink;
 import org.apache.maven.doxia.sink.SinkUtils;
+
+import org.apache.maven.doxia.util.DoxiaUtils;
+import org.codehaus.plexus.util.FileUtils;
 
 /**
  * Test the book path of the DockBook sink
@@ -375,10 +380,11 @@ public class DocBookBookSinkTest extends AbstractSinkTest
     /** {@inheritDoc} */
     protected String getFigureBlock( String source, String caption )
     {
-        // TODO: fix source
-        return "<figure><title>" + caption
-            + "</title><mediaobject><imageobject><imagedata fileref=\"figure.jpg.jpeg\" format=\"JPEG\" /></imageobject></mediaobject>"
-            + "</figure>";
+        String format = FileUtils.extension( source ).toUpperCase( Locale.ENGLISH );
+
+        return "<mediaobject><imageobject>"
+                + "<imagedata fileref=\"" + source + "\" format=\"" + format + "\" />"
+                + "</imageobject><caption><para>" + caption + "</para></caption></mediaobject>";
     }
 
     /** {@inheritDoc} */
@@ -422,13 +428,14 @@ public class DocBookBookSinkTest extends AbstractSinkTest
     /** {@inheritDoc} */
     protected String getAnchorBlock( String anchor )
     {
-        return "<anchor id=\"" + anchor + "\" />" + anchor;
+        return "<anchor id=\"" + anchor + "\" />" + anchor + "<!-- anchor_end -->";
     }
 
     /** {@inheritDoc} */
     protected String getLinkBlock( String link, String text )
     {
-        return "<link linkend=\"" + link + "\">" + text + "</link>";
+        String linkend = DoxiaUtils.isInternalLink( link ) ? link.substring( 1 ) : link;
+        return "<link linkend=\"" + linkend + "\">" + text + "</link>";
     }
 
     /** {@inheritDoc} */
