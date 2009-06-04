@@ -126,7 +126,7 @@ public class DocBookParser
 
         if ( HIER_ELEMENTS.contains( parser.getName() ) )
         {
-            handleHierarchyElements( sink );
+            handleHierarchyElements( sink, parser );
         }
         else if ( parser.getName().equals( SimplifiedDocbookMarkup.ITEMIZEDLIST_TAG.toString() ) )
         {
@@ -192,10 +192,6 @@ public class DocBookParser
         {
             sink.paragraph();
         }
-        else if ( parser.getName().equals( SimplifiedDocbookMarkup.TITLE_TAG.toString() ) )
-        {
-            sink.bold();
-        }
         else if ( VERBATIM_ELEMENTS.contains( parser.getName() ) )
         {
             sink.verbatim( SinkEventAttributeSet.BOXED );
@@ -230,7 +226,7 @@ public class DocBookParser
         }
         else if ( parser.getName().equals( SimplifiedDocbookMarkup.TITLE_TAG.toString() ) )
         {
-            handleTitleStart( parser, sink );
+            handleTitleStart( sink );
         }
         else if ( parser.getName().equals( SimplifiedDocbookMarkup.CORPAUTHOR_TAG.toString() ) )
         {
@@ -256,6 +252,10 @@ public class DocBookParser
         {
             handleXrefStart( parser, sink );
         }
+        else if ( parser.getName().equals( SimplifiedDocbookMarkup.ARTICLEINFO_TAG.toString() ) )
+        {
+            parent.push( parser.getName() );
+        }
         else
         {
             handleUnknown( parser, sink, HtmlMarkup.TAG_TYPE_START );
@@ -278,6 +278,7 @@ public class DocBookParser
             else
             {
                 sink.section_( level );
+                parent.pop();
             }
             //decrease the nesting level
             level--;
@@ -358,11 +359,6 @@ public class DocBookParser
         {
             sink.paragraph_();
         }
-        else if ( parser.getName().equals( SimplifiedDocbookMarkup.TITLE_TAG.toString() ) )
-        {
-            sink.text( ". " ); //Inline Running head
-            sink.bold_();
-        }
         else if ( VERBATIM_ELEMENTS.contains( parser.getName() ) )
         {
             sink.verbatim_();
@@ -402,23 +398,7 @@ public class DocBookParser
         }
         else if ( parser.getName().equals( SimplifiedDocbookMarkup.TITLE_TAG.toString() ) )
         {
-            if ( parser.getName().equals( SimplifiedDocbookMarkup.FIGURE_TAG.toString() ) )
-            {
-                sink.figureCaption_();
-            }
-            else if ( parser.getName().equals( SimplifiedDocbookMarkup.TABLE_TAG.toString() )
-                || parser.getName().equals( SimplifiedDocbookMarkup.INFORMALTABLE_TAG.toString() ) )
-            {
-                sink.tableCaption_();
-            }
-            else if ( level == 0 )
-            {
-                sink.title_();
-            }
-            else
-            {
-                sink.sectionTitle_( level );
-            }
+            handleTitleEnd( sink );
         }
         else if ( parser.getName().equals( SimplifiedDocbookMarkup.CORPAUTHOR_TAG.toString() ) )
         {
@@ -436,6 +416,10 @@ public class DocBookParser
                 parent.pop();
                 sink.link_();
             }
+        }
+        else if ( parser.getName().equals( SimplifiedDocbookMarkup.ARTICLEINFO_TAG.toString() ) )
+        {
+            parent.pop();
         }
     }
 
@@ -542,7 +526,7 @@ public class DocBookParser
     }
 
     //If the element introduces a new level of hierarchy, raise the stack
-    private void handleHierarchyElements( Sink sink )
+    private void handleHierarchyElements( Sink sink, XmlPullParser parser )
     {
         //increase the nesting level
         level++;
@@ -555,6 +539,7 @@ public class DocBookParser
         else
         {
             sink.section( level, null );
+            parent.push( parser.getName() );
         }
     }
 
@@ -652,25 +637,51 @@ public class DocBookParser
         parent.push( parser.getName() );
     }
 
-    private void handleTitleStart( XmlPullParser parser, Sink sink )
+    private void handleTitleStart( Sink sink )
     {
-        if ( parser.getName().equals( SimplifiedDocbookMarkup.FIGURE_TAG.toString() ) )
+        // TODO: title in abstract, authorblurb, bibliography, bibliodiv, bibliomset, appendix
+        if ( isParent( SimplifiedDocbookMarkup.FIGURE_TAG.toString() ) )
         {
             sink.figureCaption();
         }
-        else if ( parser.getName().equals( SimplifiedDocbookMarkup.TABLE_TAG.toString() )
-                || parser.getName().equals( SimplifiedDocbookMarkup.INFORMALTABLE_TAG.toString() ) )
+        else if ( isParent( SimplifiedDocbookMarkup.TABLE_TAG.toString() )
+                || isParent( SimplifiedDocbookMarkup.INFORMALTABLE_TAG.toString() ) )
         {
             sink.tableCaption();
         }
-        else if ( level == 0 )
+        else if ( isParent( SimplifiedDocbookMarkup.ARTICLE_TAG.toString() )
+                || isParent( SimplifiedDocbookMarkup.ARTICLEINFO_TAG.toString() ) )
         {
             sink.title();
         }
-        else
+        else if ( isParent( SimplifiedDocbookMarkup.SECTION_TAG.toString() ) )
         {
             sink.sectionTitle( level, null );
         }
+        // else ignore
+    }
+
+    private void handleTitleEnd( Sink sink )
+    {
+        if ( isParent( SimplifiedDocbookMarkup.FIGURE_TAG.toString() ) )
+        {
+            sink.figureCaption_();
+        }
+        else if ( isParent( SimplifiedDocbookMarkup.TABLE_TAG.toString() )
+                || isParent( SimplifiedDocbookMarkup.INFORMALTABLE_TAG.toString() ) )
+        {
+            sink.tableCaption_();
+        }
+        else if ( isParent( SimplifiedDocbookMarkup.SECTION_TAG.toString() ) )
+        {
+            sink.sectionTitle_( level );
+        }
+        else if ( isParent( SimplifiedDocbookMarkup.ARTICLE_TAG.toString() )
+                || isParent( SimplifiedDocbookMarkup.ARTICLEINFO_TAG.toString() ) )
+        {
+            sink.title_();
+        }
+        // else ignore
     }
 
     private void handleUlinkStart( XmlPullParser parser, Sink sink )
