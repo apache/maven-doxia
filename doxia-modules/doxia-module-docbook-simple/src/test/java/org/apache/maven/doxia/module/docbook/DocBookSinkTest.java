@@ -27,6 +27,7 @@ import javax.swing.text.SimpleAttributeSet;
 import org.apache.maven.doxia.sink.AbstractSinkTest;
 import org.apache.maven.doxia.sink.Sink;
 import org.apache.maven.doxia.sink.SinkUtils;
+import org.apache.maven.doxia.util.DoxiaUtils;
 
 /**
  * @author <a href="mailto:jason@maven.org">Jason van Zyl</a>
@@ -191,13 +192,14 @@ public class DocBookSinkTest extends AbstractSinkTest
     /** {@inheritDoc} */
     protected String getAnchorBlock( String anchor )
     {
-        return "<anchor id=\"" + anchor + "\" />" + anchor;
+        return "<anchor id=\"" + anchor + "\" />" + anchor + "<!-- anchor_end -->";
     }
 
     /** {@inheritDoc} */
     protected String getLinkBlock( String link, String text )
     {
-        return "<link linkend=\"" + link + "\">" + text + "</link>";
+        String linkend = DoxiaUtils.isInternalLink( link ) ? link.substring( 1 ) : link;
+        return "<link linkend=\"" + linkend + "\">" + text + "</link>";
     }
 
     /** {@inheritDoc} */

@@ -146,7 +146,7 @@ public class DocBookParser
             sink.body();
         }
 
-        handleIdAnchor( getAttributeValue( parser, ID_ATTRIBUTE ), sink );
+        handleIdAnchor( parser, sink );
 
         if ( HIER_ELEMENTS.contains( parser.getName() ) )
         {
@@ -282,7 +282,10 @@ public class DocBookParser
         }
         else
         {
-            handleUnknown( parser, sink, HtmlMarkup.TAG_TYPE_START );
+            if ( !ignorable( parser.getName() ) )
+            {
+                handleUnknown( parser, sink, HtmlMarkup.TAG_TYPE_START );
+            }
         }
     }
 
@@ -465,6 +468,10 @@ public class DocBookParser
         {
             sink.lineBreak();
         }
+        else if ( "anchor_end".equals( text.trim() ) )
+        {
+            sink.anchor_();
+        }
         else
         {
             sink.comment( text.trim() );
@@ -569,13 +576,18 @@ public class DocBookParser
         parent.push( parser.getName() );
     }
 
-    private void handleIdAnchor( String id, Sink sink )
+    private void handleIdAnchor( XmlPullParser parser, Sink sink )
     {
+        String id = getAttributeValue( parser, ID_ATTRIBUTE );
         //catch link targets
         if ( id != null )
         {
             sink.anchor( id );
-            sink.anchor_();
+
+            if ( !parser.getName().equals( SimplifiedDocbookMarkup.ANCHOR_TAG.toString() ) )
+            {
+                sink.anchor_();
+            }
         }
     }
 
@@ -599,8 +611,8 @@ public class DocBookParser
 
     private void handleLinkStart( XmlPullParser parser, Sink sink )
     {
-        String linkend = getAttributeValue( parser,
-                SimplifiedDocbookMarkup.LINKEND_ATTRIBUTE );
+        String linkend = getAttributeValue( parser, SimplifiedDocbookMarkup.LINKEND_ATTRIBUTE );
+
         if ( linkend != null )
         {
             parent.push( parser.getName() );
@@ -729,14 +741,19 @@ public class DocBookParser
 
     private void handleXrefStart( XmlPullParser parser, Sink sink )
     {
-        String linkend = getAttributeValue( parser,
-                SimplifiedDocbookMarkup.LINKEND_ATTRIBUTE );
+        String linkend = getAttributeValue( parser, SimplifiedDocbookMarkup.LINKEND_ATTRIBUTE );
+
         if ( linkend != null )
         {
             sink.link( "#" + linkend );
             sink.text( "Link" ); //TODO: determine text of link target
             sink.link_();
         }
+    }
+
+    private boolean ignorable( String name )
+    {
+        return name.equals( SimplifiedDocbookMarkup.ANCHOR_TAG.toString() );
     }
 
     /**

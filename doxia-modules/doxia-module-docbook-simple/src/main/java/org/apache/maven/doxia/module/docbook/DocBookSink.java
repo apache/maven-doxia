@@ -1422,7 +1422,7 @@ public class DocBookSink
      */
     public void anchor_()
     {
-        // nop
+        comment( "anchor_end" );
     }
 
     /**
@@ -1439,20 +1439,21 @@ public class DocBookSink
             throw new NullPointerException( "Link name cannot be null!" );
         }
 
-        if ( DoxiaUtils.isExternalLink( name ) )
+        if ( DoxiaUtils.isInternalLink( name ) )
+        {
+            String linkend = name.substring( 1 );
+            MutableAttributeSet att = new SimpleAttributeSet();
+            att.addAttribute( SimplifiedDocbookMarkup.LINKEND_ATTRIBUTE, HtmlTools.escapeHTML( linkend ) );
+
+            writeStartTag( SimplifiedDocbookMarkup.LINK_TAG, att );
+        }
+        else
         {
             externalLinkFlag = true;
             MutableAttributeSet att = new SimpleAttributeSet();
             att.addAttribute( SimplifiedDocbookMarkup.URL_ATTRIBUTE, HtmlTools.escapeHTML( name, true ) );
 
             writeStartTag( SimplifiedDocbookMarkup.ULINK_TAG, att );
-        }
-        else
-        {
-            MutableAttributeSet att = new SimpleAttributeSet();
-            att.addAttribute( SimplifiedDocbookMarkup.LINKEND_ATTRIBUTE, HtmlTools.escapeHTML( name ) );
-
-            writeStartTag( SimplifiedDocbookMarkup.LINK_TAG, att );
         }
     }
 
