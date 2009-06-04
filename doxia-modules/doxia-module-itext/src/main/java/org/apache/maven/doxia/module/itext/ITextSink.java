@@ -113,6 +113,9 @@ public final class ITextSink
      * destination. */
     private boolean anchorDefined = false;
 
+    /** Flag to know if an figure event is called. */
+    private boolean figureDefined = false;
+
     /** Map of warn messages with a String as key to describe the error type and a Set as value.
      * Using to reduce warn messages. */
     private Map warnMessages;
@@ -1099,11 +1102,15 @@ public final class ITextSink
         writeEndElement(); // ElementTags.CHUNK
 
         actionContext.release();
+
+        figureDefined = false;
     }
 
     /** {@inheritDoc} */
     public void figure()
     {
+        figureDefined = true;
+
         writeStartElement( ElementTags.CHUNK );
         writeAddAttribute( ElementTags.FONT, font.getFontName() );
         writeAddAttribute( ElementTags.SIZE, font.getFontSize() );
@@ -1193,7 +1200,11 @@ public final class ITextSink
             return;
         }
 
-        figure();
+        boolean figureCalled = figureDefined;
+        if ( !figureCalled )
+        {
+            figure();
+        }
 
         float width = 0;
         float height = 0;
@@ -1224,7 +1235,10 @@ public final class ITextSink
 
         actionContext.setAction( SinkActionContext.FIGURE_GRAPHICS );
 
-        figure_();
+        if ( !figureCalled )
+        {
+            figure_();
+        }
     }
 
     // ----------------------------------------------------------------------
