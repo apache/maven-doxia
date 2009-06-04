@@ -122,83 +122,27 @@ public class DocBookParser
     protected void handleStartTag( XmlPullParser parser, Sink sink )
         throws XmlPullParserException, MacroExecutionException
     {
-        String id = getAttributeValue( parser, ID_ATTRIBUTE );
-        //catch link targets
-        if ( id != null )
-        {
-            sink.anchor( id );
-            sink.anchor_();
-        }
+        handleIdAnchor( getAttributeValue( parser, ID_ATTRIBUTE ), sink );
 
-        //If the element introduces a new level of hierarchy, raise the stack
         if ( HIER_ELEMENTS.contains( parser.getName() ) )
         {
-            //increase the nesting level
-            level++;
-            //if this is the root element, handle it as body
-            if ( level == 0 )
-            {
-                sink.body();
-            }
-            else
-            {
-                sink.section( level, null );
-            }
+            handleHierarchyElements( sink );
         }
-        //handle lists
         else if ( parser.getName().equals( SimplifiedDocbookMarkup.ITEMIZEDLIST_TAG.toString() ) )
         {
-            sink.list();
-            //for itemizedlists in variablelists
-            parent.push( parser.getName() );
+            handleItemizedListStart( sink, parser);
         }
         else if ( parser.getName().equals( SimplifiedDocbookMarkup.ORDEREDLIST_TAG.toString() ) )
         {
-            //default enumeration style is decimal
-            int numeration = Sink.NUMBERING_DECIMAL;
-            String style = getAttributeValue( parser, SimplifiedDocbookMarkup.NUMERATION_ATTRIBUTE );
-            if ( style.equals( SimplifiedDocbookMarkup.ARABIC_STYLE ) )
-            {
-                numeration = Sink.NUMBERING_DECIMAL;
-            }
-            else if ( style.equals( SimplifiedDocbookMarkup.LOWERALPHA_STYLE ) )
-            {
-                numeration = Sink.NUMBERING_LOWER_ALPHA;
-            }
-            else if ( style.equals( SimplifiedDocbookMarkup.LOWERROMAN_STYLE ) )
-            {
-                numeration = Sink.NUMBERING_LOWER_ROMAN;
-            }
-            else if ( style.equals( SimplifiedDocbookMarkup.UPPERALPHA_STYLE ) )
-            {
-                numeration = Sink.NUMBERING_UPPER_ALPHA;
-            }
-            else if ( style.equals( SimplifiedDocbookMarkup.UPPERROMAN_STYLE ) )
-            {
-                numeration = Sink.NUMBERING_UPPER_ROMAN;
-            }
-            sink.numberedList( numeration );
-            parent.push( parser.getName() );
+            handleOrderedListStart( parser, sink );
         }
         else if ( parser.getName().equals( SimplifiedDocbookMarkup.LISTITEM_TAG.toString() ) )
         {
-            if ( isParent( SimplifiedDocbookMarkup.VARIABLELIST_TAG.toString() ) )
-            {
-                sink.definition();
-            }
-            else if ( isParent( SimplifiedDocbookMarkup.ORDEREDLIST_TAG.toString() ) )
-            {
-                sink.numberedListItem();
-            }
-            else
-            {
-                sink.listItem();
-            }
+            handleListItemStart( sink );
         }
         else if ( parser.getName().equals( SimplifiedDocbookMarkup.VARIABLELIST_TAG.toString() ) )
         {
-            sink.definitionList();
-            parent.push( parser.getName() );
+            handleVariableListStart( sink, parser);
         }
         else if ( parser.getName().equals( SimplifiedDocbookMarkup.VARLISTENTRY_TAG.toString() ) )
         {
@@ -208,32 +152,22 @@ public class DocBookParser
         {
             sink.definedTerm();
         }
-        //handle figures
         else if ( parser.getName().equals( SimplifiedDocbookMarkup.FIGURE_TAG.toString() ) )
         {
-            sink.figure();
-            parent.push( parser.getName() );
+            handleFigureStart( sink, parser);
         }
         else if ( parser.getName().equals( SimplifiedDocbookMarkup.IMAGEOBJECT_TAG.toString() ) )
         {
-            String fileref = getAttributeValue( parser, "fileref" );
-            if ( fileref != null )
-            {
-                sink.figureGraphics( fileref );
-                parent.push( parser.getName() );
-            }
+            handleImageObjectStart( parser, sink );
         }
-        else if ( parser.getName().equals( SimplifiedDocbookMarkup.CAPTION_TAG.toString() )
-                && isParent( SimplifiedDocbookMarkup.FIGURE_TAG.toString() ) )
+        else if ( parser.getName().equals( SimplifiedDocbookMarkup.CAPTION_TAG.toString() ) )
         {
-            sink.figureCaption();
+            handleCaptionStart(sink);
         }
         else if ( parser.getName().equals( SimplifiedDocbookMarkup.TABLE_TAG.toString() )
             || parser.getName().equals( SimplifiedDocbookMarkup.INFORMALTABLE_TAG.toString() ) )
         {
-            sink.table();
-            //TODO handle tgroups
-            parent.push( parser.getName() );
+            handleTableStart( sink, parser);
         }
         else if ( parser.getName().equals( SimplifiedDocbookMarkup.THEAD_TAG.toString() ) )
         {
@@ -254,13 +188,6 @@ public class DocBookParser
         {
             sink.tableCell();
         }
-        else
-        if ( parser.getName().equals( CAPTION_TAG.toString() )
-            && ( isParent( SimplifiedDocbookMarkup.INFORMALTABLE_TAG.toString() )
-            || isParent( SimplifiedDocbookMarkup.TABLE_TAG.toString() ) ) )
-        {
-            sink.tableCaption();
-        }
         else if ( parser.getName().equals( SimplifiedDocbookMarkup.PARA_TAG.toString() ) )
         {
             sink.paragraph();
@@ -273,15 +200,12 @@ public class DocBookParser
         {
             sink.verbatim( SinkEventAttributeSet.BOXED );
         }
-
-        else if ( BOLD_ELEMENTS.contains( parser.getName() )
-            && MONOSPACE_ELEMENTS.contains( parser.getName() ) )
+        else if ( BOLD_ELEMENTS.contains( parser.getName() ) && MONOSPACE_ELEMENTS.contains( parser.getName() ) )
         {
             sink.bold();
             sink.monospaced();
         }
-        else if ( ITALIC_ELEMENTS.contains( parser.getName() )
-            && MONOSPACE_ELEMENTS.contains( parser.getName() ) )
+        else if ( ITALIC_ELEMENTS.contains( parser.getName() ) && MONOSPACE_ELEMENTS.contains( parser.getName() ) )
         {
             sink.italic();
             sink.monospaced();
@@ -294,7 +218,6 @@ public class DocBookParser
             && "bold".equals( parser.getAttributeValue( null, "role" ) ) )
         {
             sink.bold();
-
             isBold = true;
         }
         else if ( ITALIC_ELEMENTS.contains( parser.getName() ) )
@@ -305,26 +228,9 @@ public class DocBookParser
         {
             sink.monospaced();
         }
-
         else if ( parser.getName().equals( SimplifiedDocbookMarkup.TITLE_TAG.toString() ) )
         {
-            if ( parser.getName().equals( SimplifiedDocbookMarkup.FIGURE_TAG.toString() ) )
-            {
-                sink.figureCaption();
-            }
-            else if ( parser.getName().equals( SimplifiedDocbookMarkup.TABLE_TAG.toString() )
-                || parser.getName().equals( SimplifiedDocbookMarkup.INFORMALTABLE_TAG.toString() ) )
-            {
-                sink.tableCaption();
-            }
-            else if ( level == 0 )
-            {
-                sink.title();
-            }
-            else
-            {
-                sink.sectionTitle( level, null );
-            }
+            handleTitleStart( parser, sink );
         }
         else if ( parser.getName().equals( SimplifiedDocbookMarkup.CORPAUTHOR_TAG.toString() ) )
         {
@@ -336,45 +242,19 @@ public class DocBookParser
         }
         else if ( parser.getName().equals( SimplifiedDocbookMarkup.ULINK_TAG.toString() ) )
         {
-            String url = getAttributeValue( parser, SimplifiedDocbookMarkup.URL_ATTRIBUTE );
-            if ( url != null )
-            {
-                parent.push( parser.getName() );
-                sink.link( url );
-            }
+            handleUlinkStart( parser, sink );
         }
         else if ( parser.getName().equals( SimplifiedDocbookMarkup.EMAIL_TAG.toString() ) )
         {
-            String mailto;
-            try
-            {
-                mailto = parser.nextText();
-            }
-            catch ( IOException e )
-            {
-                throw new XmlPullParserException( "IOException: " + e.getMessage(), parser, e );
-            }
-            sink.link( "mailto:" + mailto );
-            sink.link_();
+            handleEmailStart(parser, sink);
         }
         else if ( parser.getName().equals( SimplifiedDocbookMarkup.LINK_TAG.toString() ) )
         {
-            String linkend = getAttributeValue( parser, SimplifiedDocbookMarkup.LINKEND_ATTRIBUTE );
-            if ( linkend != null )
-            {
-                parent.push( parser.getName() );
-                sink.link( "#" + linkend );
-            }
+            handleLinkStart( parser, sink );
         }
         else if ( parser.getName().equals( SimplifiedDocbookMarkup.XREF_TAG.toString() ) )
         {
-            String linkend = getAttributeValue( parser, SimplifiedDocbookMarkup.LINKEND_ATTRIBUTE );
-            if ( linkend != null )
-            {
-                sink.link( "#" + linkend );
-                sink.text( "Link" ); //TODO: determine text of link target
-                sink.link_();
-            }
+            handleXrefStart( parser, sink );
         }
         else
         {
@@ -402,7 +282,6 @@ public class DocBookParser
             //decrease the nesting level
             level--;
         }
-        //handle lists
         else if ( parser.getName().equals( SimplifiedDocbookMarkup.ITEMIZEDLIST_TAG.toString() ) )
         {
             sink.list_();
@@ -440,16 +319,14 @@ public class DocBookParser
         {
             sink.definedTerm_();
         }
-        //handle figures
         else if ( parser.getName().equals( SimplifiedDocbookMarkup.FIGURE_TAG.toString() ) )
         {
             sink.figure_();
             parent.pop();
         }
-        else if ( parser.getName().equals( SimplifiedDocbookMarkup.CAPTION_TAG.toString() )
-                && isParent( SimplifiedDocbookMarkup.FIGURE_TAG.toString() ) )
+        else if ( parser.getName().equals( SimplifiedDocbookMarkup.CAPTION_TAG.toString() ) )
         {
-            sink.figureCaption_();
+            handleCaptionEnd(sink);
         }
         else if ( parser.getName().equals( SimplifiedDocbookMarkup.TABLE_TAG.toString() )
             || parser.getName().equals( SimplifiedDocbookMarkup.INFORMALTABLE_TAG.toString() ) )
@@ -476,13 +353,6 @@ public class DocBookParser
         else if ( parser.getName().equals( SimplifiedDocbookMarkup.ENTRY_TAG.toString() ) )
         {
             sink.tableCell_();
-        }
-        else
-        if ( parser.getName().equals( SimplifiedDocbookMarkup.CAPTION_TAG.toString() )
-            && ( isParent( SimplifiedDocbookMarkup.INFORMALTABLE_TAG.toString() )
-            || isParent( SimplifiedDocbookMarkup.TABLE_TAG.toString() ) ) )
-        {
-            sink.tableCaption_();
         }
         else if ( parser.getName().equals( SimplifiedDocbookMarkup.PARA_TAG.toString() ) )
         {
@@ -530,7 +400,6 @@ public class DocBookParser
         {
             sink.monospaced_();
         }
-
         else if ( parser.getName().equals( SimplifiedDocbookMarkup.TITLE_TAG.toString() ) )
         {
             if ( parser.getName().equals( SimplifiedDocbookMarkup.FIGURE_TAG.toString() ) )
@@ -623,6 +492,214 @@ public class DocBookParser
         }
 
         return null;
+    }
+
+    private void handleCaptionStart( Sink sink )
+    {
+        if ( isParent( SimplifiedDocbookMarkup.FIGURE_TAG.toString() ) )
+        {
+            sink.figureCaption();
+        }
+        else if ( isParent( SimplifiedDocbookMarkup.INFORMALTABLE_TAG.toString() )
+            || isParent( SimplifiedDocbookMarkup.TABLE_TAG.toString() ) )
+        {
+            sink.tableCaption();
+        }
+    }
+
+    private void handleCaptionEnd( Sink sink )
+    {
+        if ( isParent( SimplifiedDocbookMarkup.FIGURE_TAG.toString() ) )
+        {
+            sink.figureCaption_();
+        }
+        else if ( isParent( SimplifiedDocbookMarkup.INFORMALTABLE_TAG.toString() )
+            || isParent( SimplifiedDocbookMarkup.TABLE_TAG.toString() ) )
+        {
+            sink.tableCaption_();
+        }
+    }
+
+    private void handleEmailStart( XmlPullParser parser, Sink sink )
+            throws XmlPullParserException
+    {
+        String mailto;
+        try
+        {
+            mailto = parser.nextText();
+        } catch ( IOException e )
+        {
+            throw new XmlPullParserException( "IOException: " + e.getMessage(), parser, e );
+        }
+        sink.link( "mailto:" + mailto );
+        sink.link_();
+    }
+
+    private void handleFigureStart( Sink sink, XmlPullParser parser )
+    {
+        sink.figure();
+        parent.push( parser.getName() );
+    }
+
+    //If the element introduces a new level of hierarchy, raise the stack
+    private void handleHierarchyElements( Sink sink )
+    {
+        //increase the nesting level
+        level++;
+
+        //if this is the root element, handle it as body
+        if ( level == 0 )
+        {
+            sink.body();
+        }
+        else
+        {
+            sink.section( level, null );
+        }
+    }
+
+    private void handleIdAnchor( String id, Sink sink )
+    {
+        //catch link targets
+        if ( id != null )
+        {
+            sink.anchor( id );
+            sink.anchor_();
+        }
+    }
+
+    private void handleImageObjectStart( XmlPullParser parser, Sink sink )
+    {
+        String fileref = getAttributeValue( parser, "fileref" );
+
+        if ( fileref != null )
+        {
+            sink.figureGraphics( fileref );
+            parent.push( parser.getName() );
+        }
+    }
+
+    private void handleItemizedListStart( Sink sink, XmlPullParser parser )
+    {
+        sink.list();
+        //for itemizedlists in variablelists
+        parent.push( parser.getName() );
+    }
+
+    private void handleLinkStart( XmlPullParser parser, Sink sink )
+    {
+        String linkend = getAttributeValue( parser,
+                SimplifiedDocbookMarkup.LINKEND_ATTRIBUTE );
+        if ( linkend != null )
+        {
+            parent.push( parser.getName() );
+            sink.link( "#" + linkend );
+        }
+    }
+
+    private void handleListItemStart( Sink sink )
+    {
+        if ( isParent( SimplifiedDocbookMarkup.VARIABLELIST_TAG.toString() ) )
+        {
+            sink.definition();
+        }
+        else if ( isParent( SimplifiedDocbookMarkup.ORDEREDLIST_TAG.toString() ) )
+        {
+            sink.numberedListItem();
+        }
+        else
+        {
+            sink.listItem();
+        }
+    }
+
+    private void handleOrderedListStart( XmlPullParser parser, Sink sink )
+    {
+        //default enumeration style is decimal
+        int numeration = Sink.NUMBERING_DECIMAL;
+
+        String style = getAttributeValue( parser, SimplifiedDocbookMarkup.NUMERATION_ATTRIBUTE );
+
+        if ( style.equals( SimplifiedDocbookMarkup.ARABIC_STYLE ) )
+        {
+            numeration = Sink.NUMBERING_DECIMAL;
+        }
+        else if ( style.equals( SimplifiedDocbookMarkup.LOWERALPHA_STYLE ) )
+        {
+            numeration = Sink.NUMBERING_LOWER_ALPHA;
+        }
+        else if ( style.equals( SimplifiedDocbookMarkup.LOWERROMAN_STYLE ) )
+        {
+            numeration = Sink.NUMBERING_LOWER_ROMAN;
+        }
+        else if ( style.equals( SimplifiedDocbookMarkup.UPPERALPHA_STYLE ) )
+        {
+            numeration = Sink.NUMBERING_UPPER_ALPHA;
+        }
+        else if ( style.equals( SimplifiedDocbookMarkup.UPPERROMAN_STYLE ) )
+        {
+            numeration = Sink.NUMBERING_UPPER_ROMAN;
+        }
+
+        sink.numberedList( numeration );
+        parent.push( parser.getName() );
+    }
+
+    private void handleTableStart( Sink sink, XmlPullParser parser )
+    {
+        sink.table();
+        //TODO handle tgroups
+        parent.push( parser.getName() );
+    }
+
+    private void handleTitleStart( XmlPullParser parser, Sink sink )
+    {
+        if ( parser.getName().equals( SimplifiedDocbookMarkup.FIGURE_TAG.toString() ) )
+        {
+            sink.figureCaption();
+        }
+        else if ( parser.getName().equals( SimplifiedDocbookMarkup.TABLE_TAG.toString() )
+                || parser.getName().equals( SimplifiedDocbookMarkup.INFORMALTABLE_TAG.toString() ) )
+        {
+            sink.tableCaption();
+        }
+        else if ( level == 0 )
+        {
+            sink.title();
+        }
+        else
+        {
+            sink.sectionTitle( level, null );
+        }
+    }
+
+    private void handleUlinkStart( XmlPullParser parser, Sink sink )
+    {
+        String url = getAttributeValue( parser,
+                SimplifiedDocbookMarkup.URL_ATTRIBUTE );
+        if ( url != null )
+        {
+            parent.push( parser.getName() );
+            sink.link( url );
+        }
+    }
+
+    private void handleVariableListStart( Sink sink, XmlPullParser parser )
+    {
+        sink.definitionList();
+        parent.push( parser.getName() );
+    }
+
+    private void handleXrefStart( XmlPullParser parser, Sink sink )
+    {
+        String linkend = getAttributeValue( parser,
+                SimplifiedDocbookMarkup.LINKEND_ATTRIBUTE );
+        if ( linkend != null )
+        {
+            sink.link( "#" + linkend );
+            sink.text( "Link" ); //TODO: determine text of link target
+            sink.link_();
+        }
     }
 
     /**
