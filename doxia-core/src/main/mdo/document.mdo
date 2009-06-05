@@ -229,6 +229,7 @@
           <version>1.0.0+</version>
           <description><![CDATA[
             The date and time when the document was created initially.
+            Use the ISO 8601 format "yyyy-MM-dd'T'HH:mm:ss.SSS" in xml.
           ]]></description>
           <type>Date</type>
           <identifier>true</identifier>
@@ -237,7 +238,8 @@
           <name>creationdate</name>
           <version>1.0.1+</version>
           <description><![CDATA[
-            The date as String when the document was created initially.
+            The date as String (recommended format is ISO 8601) when the document was created initially.
+            Only used if <code>creationDate</code> is not set.
             @since 1.1.1
           ]]></description>
           <type>String</type>
@@ -248,6 +250,7 @@
           <version>1.0.0+</version>
           <description><![CDATA[
             The date and time when the document was last modified.
+            Use the ISO 8601 format "yyyy-MM-dd'T'HH:mm:ss.SSS" in xml.
           ]]></description>
           <type>Date</type>
           <identifier>true</identifier>
@@ -256,7 +259,8 @@
           <name>modifydate</name>
           <version>1.0.1+</version>
           <description><![CDATA[
-            The date as String when the document was last modified.
+            The date as String (recommended format is ISO 8601) when the document was last modified.
+            Only used if <code>date</code> is not set.
             @since 1.1.1
           ]]></description>
           <type>String</type>
@@ -267,6 +271,7 @@
           <version>1.0.0+</version>
           <description><![CDATA[
             The date and time when the document was last printed.
+            Use the ISO 8601 format "yyyy-MM-dd'T'HH:mm:ss.SSS" in xml.
           ]]></description>
           <type>Date</type>
           <identifier>true</identifier>
@@ -275,7 +280,8 @@
           <name>printdate</name>
           <version>1.0.1+</version>
           <description><![CDATA[
-            The date as String when the document was last printed.
+            The date as String (recommended format is ISO 8601) when the document was last printed.
+            Only used if <code>printDate</code> is not set.
             @since 1.1.1
           ]]></description>
           <type>String</type>
@@ -474,6 +480,66 @@
         }
 
         return sb.toString();
+    }
+
+    /** ISO 8601 date format, i.e. <code>yyyy-MM-dd</code> **/
+    private static final java.text.DateFormat ISO_8601_FORMAT = new java.text.SimpleDateFormat( "yyyy-MM-dd", java.util.Locale.ENGLISH );
+
+    /**
+     * Get the date and time when the document was created initially.
+     *
+     * @return the <code>getCreationDate()</code> if setted, formatted using ISO-8601 English format, otherwise return
+     * the <code>getCreationdate()</code>.
+     * @since 1.1.1
+     * @see #getCreationDate()
+     * @see #getCreationdate()
+     */
+    public String getCreationDate_()
+    {
+        if ( getCreationDate() != null )
+        {
+            return ISO_8601_FORMAT.format( getCreationDate() );
+        }
+
+        return getCreationdate();
+    }
+
+    /**
+     * Get the date and time when the document was last modified.
+     *
+     * @return the <code>getDate()</code> if setted, formatted using ISO-8601 English format, otherwise return
+     * the <code>getModifydate()</code>.
+     * @since 1.1.1
+     * @see #getDate()
+     * @see #getModifydate()
+     */
+    public String getModifyDate_()
+    {
+        if ( getDate() != null )
+        {
+            return ISO_8601_FORMAT.format( getDate() );
+        }
+
+        return getModifydate();
+    }
+
+    /**
+     * Get the date and time when the document was last printed.
+     *
+     * @return the <code>getPrintDate()</code> if setted, formatted using ISO-8601 English format, otherwise return
+     * the <code>getPrintdate()</code>.
+     * @since 1.1.1
+     * @see #getPrintDate()
+     * @see #getPrintdate()
+     */
+    public String getPrintDate_()
+    {
+        if ( getPrintDate() != null )
+        {
+            return ISO_8601_FORMAT.format( getPrintDate() );
+        }
+
+        return getPrintdate();
     }
             ]]>
           </code>
@@ -680,6 +746,7 @@
           <description><![CDATA[
             The date and time when the template was last modified, prior
             to being used to create the current document.
+            Use the ISO 8601 format "yyyy-MM-dd'T'HH:mm:ss.SSS" in xml.
           ]]></description>
           <version>1.0.0+</version>
           <type>Date</type>
@@ -689,13 +756,43 @@
           <name>modifydate</name>
           <version>1.0.1+</version>
           <description><![CDATA[
-            The date as String when the template was last modified.
+            The date as String (recommended format is ISO 8601) when the template was last modified.
+            Only used if <code>date</code> is not set.
             @since 1.1.1
           ]]></description>
           <type>String</type>
           <identifier>true</identifier>
         </field>
       </fields>
+      <codeSegments>
+        <codeSegment>
+          <code>
+            <![CDATA[
+    /** ISO 8601 date format, i.e. <code>yyyy-MM-dd</code> **/
+    private static final java.text.DateFormat ISO_8601_FORMAT = new java.text.SimpleDateFormat( "yyyy-MM-dd", java.util.Locale.ENGLISH );
+
+    /**
+     * Get the date and time when the template was last modified.
+     *
+     * @return the <code>getDate()</code> if setted, formatted using ISO-8601 English format, otherwise return
+     * the <code>getModifydate()</code>.
+     * @since 1.1.1
+     * @see #getDate()
+     * @see #getModifydate()
+     */
+    public String getModifyDate_()
+    {
+        if ( getDate() != null )
+        {
+            return ISO_8601_FORMAT.format( getDate() );
+        }
+
+        return getModifydate();
+    }
+            ]]>
+          </code>
+        </codeSegment>
+      </codeSegments>
     </class>
 
     <class>
@@ -938,7 +1035,7 @@
           <name>coverDate</name>
           <description><![CDATA[
             The date to appear on the cover.
-            Only used if date is not given.
+            Use the ISO 8601 format "yyyy-MM-dd'T'HH:mm:ss.SSS" in xml.
           ]]></description>
           <version>1.0.0+</version>
           <type>Date</type>
@@ -947,7 +1044,8 @@
         <field>
           <name>coverdate</name>
           <description><![CDATA[
-            The date to appear on the cover.
+            The date as String (recommended format is ISO 8601) to appear on the cover.
+            Only used if <code>coverDate</code> is not set.
             @since 1.1.1
           ]]></description>
           <version>1.0.1+</version>
@@ -1016,6 +1114,68 @@
           <identifier>true</identifier>
         </field>
       </fields>
+      <codeSegments>
+        <codeSegment>
+          <code>
+            <![CDATA[
+    /**
+     * @return {@link #getAuthor()} if the unique author name is defined. Otherwise, return all authors full names
+     * comma separated.
+     * @see #getAuthor()
+     * @see #getAuthors()
+     * @since 1.1.1
+     */
+    public String getAllAuthorNames()
+    {
+        StringBuffer sb = new StringBuffer();
+        if ( getAuthor() != null && getAuthor().trim().length() > 0 )
+        {
+            return getAuthor().trim();
+        }
+
+        if ( getAuthors() != null )
+        {
+            for ( java.util.Iterator it = getAuthors().iterator(); it.hasNext(); )
+            {
+                DocumentAuthor author = (DocumentAuthor) it.next();
+
+                sb.append( author.getFullName().trim() );
+
+                if ( it.hasNext() )
+                {
+                    sb.append( ", " );
+                }
+            }
+        }
+
+        return sb.toString();
+    }
+
+    /** ISO 8601 date format, i.e. <code>yyyy-MM-dd</code> **/
+    private static final java.text.DateFormat ISO_8601_FORMAT = new java.text.SimpleDateFormat( "yyyy-MM-dd", java.util.Locale.ENGLISH );
+
+    /**
+     * Get the date to appear on the cover.
+     *
+     * @return the <code>getCoverDate()</code> if setted, formatted using ISO-8601 English format, otherwise return
+     * the <code>getCoverdate()</code>.
+     * @since 1.1.1
+     * @see #getCoverDate()
+     * @see #getCoverdate()
+     */
+    public String getCoverDate_()
+    {
+        if ( getCoverDate() != null )
+        {
+            return ISO_8601_FORMAT.format( getCoverDate() );
+        }
+
+        return getCoverdate();
+    }
+            ]]>
+          </code>
+        </codeSegment>
+      </codeSegments>
     </class>
 
     <class xsd.compositor="sequence">
