@@ -42,6 +42,7 @@ import org.apache.maven.doxia.parser.ParseException;
 import org.apache.maven.doxia.parser.manager.ParserNotFoundException;
 import org.apache.maven.doxia.sink.Sink;
 import org.codehaus.plexus.logging.AbstractLogEnabled;
+import org.codehaus.plexus.util.IOUtil;
 import org.codehaus.plexus.util.ReaderFactory;
 import org.codehaus.plexus.util.StringUtils;
 import org.codehaus.plexus.util.WriterFactory;
@@ -136,22 +137,23 @@ public abstract class AbstractITextBookRenderer
 
         // TODO: Write out TOC
 
-        for ( Iterator it = book.getChapters().iterator(); it.hasNext(); )
-        {
-            Chapter chapter = (Chapter) it.next();
-
-            renderChapter( writer, chapter, context );
-        }
-
-        writer.endElement(); // itext
+        System.setProperty( "itext.basedir", bookFile.getParentFile().getAbsolutePath() );
 
         try
         {
-            fileWriter.close();
+            for ( Iterator it = book.getChapters().iterator(); it.hasNext(); )
+            {
+                Chapter chapter = (Chapter) it.next();
+
+                renderChapter( writer, chapter, context );
+            }
+
+            writer.endElement(); // itext
         }
-        catch ( IOException e )
+        finally
         {
-            throw new BookDoxiaException( "Error while closing file.", e );
+            IOUtil.close( fileWriter );
+            System.getProperties().remove( "itext.basedir" );
         }
 
         // ----------------------------------------------------------------------
