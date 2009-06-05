@@ -28,6 +28,7 @@ import java.io.File;
 import java.io.IOException;
 import java.io.LineNumberReader;
 import java.io.StringReader;
+import java.io.StringWriter;
 import java.io.Writer;
 import java.net.MalformedURLException;
 import java.net.URL;
@@ -107,7 +108,9 @@ public final class ITextSink
 
     private int depth = 0;
 
-    private String tableCaption = null;
+    private StringWriter tableCaption = null;
+
+    private XMLWriter tableCaptionWriter = null;
 
     /** Flag to know if an anchor is defined or not. Used as workaround for iText which needs a defined local
      * destination. */
@@ -888,24 +891,30 @@ public final class ITextSink
     /** {@inheritDoc} */
     public void table_()
     {
-        writeEndElement(); // ElementTags.TABLE
-
-        writeEndElement(); // ElementTags.CHUNK
-
-        actionContext.release();
-
-        if ( tableCaption != null )
+        if ( tableCaptionWriter != null )
         {
-                writeStartElement( ElementTags.PARAGRAPH );
-                writeAddAttribute( ElementTags.ALIGN, ElementTags.ALIGN_CENTER );
+            tableCaptionWriter = null;
 
-                write( tableCaption );
+            writeEndElement(); // ElementTags.TABLE
 
-                writeEndElement(); // ElementTags.PARAGRAPH
+            writeEndElement(); // ElementTags.CHUNK
 
-                tableCaption = null;
+            writeStartElement( ElementTags.PARAGRAPH );
+            writeAddAttribute( ElementTags.ALIGN, ElementTags.ALIGN_CENTER );
+
+            write( tableCaption.toString(), true );
+
+            writeEndElement(); // ElementTags.PARAGRAPH
+
+            tableCaption = null;
         }
+        else
+        {
+            writeEndElement(); // ElementTags.TABLE
 
+            writeEndElement(); // ElementTags.CHUNK
+        }
+        actionContext.release();
     }
 
     /** {@inheritDoc} */
@@ -943,6 +952,8 @@ public final class ITextSink
     /** {@inheritDoc} */
     public void tableCaption()
     {
+        tableCaption = new StringWriter();
+        tableCaptionWriter = new PrettyPrintXMLWriter( tableCaption );
         actionContext.setAction( SinkActionContext.TABLE_CAPTION );
     }
 
@@ -1457,7 +1468,7 @@ public final class ITextSink
                 break;
 
             case SinkActionContext.TABLE_CAPTION:
-                this.tableCaption = text;
+                this.tableCaptionWriter.writeText( text );
                 break;
 
             case SinkActionContext.VERBATIM:
@@ -1560,7 +1571,14 @@ public final class ITextSink
      */
     private void writeStartElement( String tag )
     {
-        xmlWriter.startElement( tag );
+        if ( tableCaptionWriter == null )
+        {
+            xmlWriter.startElement( tag );
+        }
+        else
+        {
+            tableCaptionWriter.startElement( tag );
+        }
     }
 
     /**
@@ -1571,7 +1589,14 @@ public final class ITextSink
      */
     private void writeAddAttribute( String key, String value )
     {
-        xmlWriter.addAttribute( key, value );
+        if ( tableCaptionWriter == null )
+        {
+            xmlWriter.addAttribute( key, value );
+        }
+        else
+        {
+            tableCaptionWriter.addAttribute( key, value );
+        }
     }
 
     /**
@@ -1582,7 +1607,14 @@ public final class ITextSink
      */
     private void writeAddAttribute( String key, int value )
     {
-        xmlWriter.addAttribute( key, String.valueOf( value ) );
+        if ( tableCaptionWriter == null )
+        {
+            xmlWriter.addAttribute( key, String.valueOf( value ) );
+        }
+        else
+        {
+            tableCaptionWriter.addAttribute( key, String.valueOf( value ) );
+        }
     }
 
     /**
@@ -1590,7 +1622,14 @@ public final class ITextSink
      */
     private void writeEndElement()
     {
-        xmlWriter.endElement();
+        if ( tableCaptionWriter == null )
+        {
+            xmlWriter.endElement();
+        }
+        else
+        {
+            tableCaptionWriter.endElement();
+        }
     }
 
     /**
@@ -1656,11 +1695,25 @@ public final class ITextSink
         }
         if ( escapeHtml )
         {
-            xmlWriter.writeMarkup( aString );
+            if ( tableCaptionWriter == null )
+            {
+                xmlWriter.writeMarkup( aString );
+            }
+            else
+            {
+                tableCaptionWriter.writeMarkup( aString );
+            }
         }
         else
         {
-            xmlWriter.writeText( aString );
+            if ( tableCaptionWriter == null )
+            {
+                xmlWriter.writeText( aString );
+            }
+            else
+            {
+                tableCaptionWriter.writeText( aString );
+            }
         }
     }
 
