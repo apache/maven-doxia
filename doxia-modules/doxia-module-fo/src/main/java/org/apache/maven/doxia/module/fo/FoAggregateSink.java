@@ -935,7 +935,7 @@ public class FoAggregateSink extends FoSink
 
         writeCoverHead( cover );
         writeCoverBody( cover, meta );
-        writeCoverFooter( cover );
+        writeCoverFooter( cover, meta );
 
         writeEndTag( TABLE_BODY_TAG );
         writeEndTag( TABLE_TAG );
@@ -1004,7 +1004,7 @@ public class FoAggregateSink extends FoSink
         if ( cover == null )
         {
             // aleady checked that meta != null
-            getLog().debug( "The DocumentCover is not defined, using the DocumentMeta title." );
+            getLog().debug( "The DocumentCover is not defined, using the DocumentMeta title as cover title." );
             title = meta.getTitle();
         }
         else
@@ -1090,24 +1090,35 @@ public class FoAggregateSink extends FoSink
         writeEndTag( TABLE_ROW_TAG );
     }
 
-    private void writeCoverFooter( DocumentCover cover )
+    private void writeCoverFooter( DocumentCover cover, DocumentMeta meta  )
     {
-        if ( cover == null )
+        if ( cover == null && meta == null )
         {
             return;
         }
 
         String date = null;
-        String compName = cover.getCompanyName();
-        if ( cover.getCoverDate_() == null )
+        String compName = null;
+        if ( cover == null )
         {
-            cover.setCoverDate( new Date() );
-            date = cover.getCoverDate_();
-            cover.setCoverDate( null );
+            // aleady checked that meta != null
+            getLog().debug( "The DocumentCover is not defined, using the DocumentMeta author as company name." );
+            compName = meta.getAuthor();
         }
         else
         {
-            date = cover.getCoverDate_();
+            compName = cover.getCompanyName();
+
+            if ( cover.getCoverDate_() == null )
+            {
+                cover.setCoverDate( new Date() );
+                date = cover.getCoverDate_();
+                cover.setCoverDate( null );
+            }
+            else
+            {
+                date = cover.getCoverDate_();
+            }
         }
 
         writeStartTag( TABLE_ROW_TAG, "height", "0.3in" );
@@ -1117,7 +1128,7 @@ public class FoAggregateSink extends FoSink
         att.addAttribute( "height", "0.3in" );
         att.addAttribute( "text-align", "left" );
         writeStartTag( BLOCK_TAG, att );
-        write( compName == null ? "" : compName );
+        write( compName == null ? ( cover.getAuthor() == null ? "" : cover.getAuthor() ) : compName );
         writeEndTag( BLOCK_TAG );
         writeEndTag( TABLE_CELL_TAG );
 
