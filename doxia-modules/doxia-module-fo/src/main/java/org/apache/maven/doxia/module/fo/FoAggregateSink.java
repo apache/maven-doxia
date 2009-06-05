@@ -21,9 +21,8 @@ package org.apache.maven.doxia.module.fo;
 
 import java.io.Writer;
 
-import java.text.DateFormat;
-import java.text.SimpleDateFormat;
 import java.util.Calendar;
+import java.util.Date;
 import java.util.Iterator;
 import java.util.List;
 import java.util.Locale;
@@ -68,9 +67,6 @@ import org.codehaus.plexus.util.StringUtils;
  */
 public class FoAggregateSink extends FoSink
 {
-    /** ISO 8601 date format, i.e. <code>yyyy-MM-dd</code> **/
-    private static final DateFormat ISO_8601_FORMAT = new SimpleDateFormat( "yyyy-MM-dd", Locale.US );
-
     /** The document model to be used by this sink. */
     private DocumentModel docModel;
 
@@ -927,42 +923,6 @@ public class FoAggregateSink extends FoSink
             return; // no information for cover page: ignore
         }
 
-        String title = null;
-        String subtitle = null;
-        String version = null;
-        String type = null;
-        String date = null;
-        // TODO: implement
-        //String author = null;
-        //String projName = null;
-        String projLogo = null;
-        String compName = null;
-        String compLogo = null;
-
-        if ( cover == null )
-        {
-            // aleady checked that meta != null
-            title = meta.getTitle();
-            compName = meta.getAuthor();
-        }
-        else
-        {
-            title = cover.getCoverTitle();
-            subtitle = cover.getCoverSubTitle();
-            version = cover.getCoverVersion();
-            type = cover.getCoverType();
-            date = cover.getCoverdate();
-            if ( date == null && cover.getCoverDate() != null )
-            {
-                date = ISO_8601_FORMAT.format( cover.getCoverdate() );
-            }
-            //author = cover.getAuthor();
-            //projName = cover.getProjectName();
-            projLogo = cover.getProjectLogo();
-            compName = cover.getCompanyName();
-            compLogo = cover.getCompanyLogo();
-        }
-
         // TODO: remove hard-coded settings
 
         writeStartTag( PAGE_SEQUENCE_TAG, "master-reference", "cover-page" );
@@ -973,9 +933,9 @@ public class FoAggregateSink extends FoSink
         writeEmptyTag( TABLE_COLUMN_TAG, "column-width", "3.125in" );
         writeStartTag( TABLE_BODY_TAG );
 
-        writeCoverHead( compLogo, projLogo );
-        writeCoverBody( title, version, subtitle, type );
-        writeCoverFooter( compName, date );
+        writeCoverHead( cover );
+        writeCoverBody( cover, meta );
+        writeCoverFooter( cover );
 
         writeEndTag( TABLE_BODY_TAG );
         writeEndTag( TABLE_TAG );
@@ -984,8 +944,77 @@ public class FoAggregateSink extends FoSink
         writeEndTag( PAGE_SEQUENCE_TAG );
     }
 
-    private void writeCoverBody( String title, String version, String subtitle, String type )
+    private void writeCoverHead( DocumentCover cover )
     {
+        if ( cover == null )
+        {
+            return;
+        }
+
+        String compLogo = cover.getCompanyLogo();
+        String projLogo = cover.getProjectLogo();
+
+        writeStartTag( TABLE_ROW_TAG, "height", "1.5in" );
+        writeStartTag( TABLE_CELL_TAG );
+
+        if ( StringUtils.isNotEmpty( compLogo ) )
+        {
+            SinkEventAttributeSet atts = new SinkEventAttributeSet();
+            atts.addAttribute( "text-align", "left" );
+            atts.addAttribute( "vertical-align", "top" );
+            writeStartTag( BLOCK_TAG, atts );
+            atts = new SinkEventAttributeSet();
+            atts.addAttribute( SinkEventAttributes.HEIGHT, "1.5in" );
+            figureGraphics( compLogo, atts );
+            writeEndTag( BLOCK_TAG );
+        }
+
+        writeSimpleTag( BLOCK_TAG );
+        writeEndTag( TABLE_CELL_TAG );
+        writeStartTag( TABLE_CELL_TAG );
+
+        if ( StringUtils.isNotEmpty( projLogo ) )
+        {
+            SinkEventAttributeSet atts = new SinkEventAttributeSet();
+            atts.addAttribute( "text-align", "right" );
+            atts.addAttribute( "vertical-align", "top" );
+            writeStartTag( BLOCK_TAG, atts );
+            atts = new SinkEventAttributeSet();
+            atts.addAttribute( SinkEventAttributes.HEIGHT, "1.5in" );
+            figureGraphics( projLogo, atts );
+            writeEndTag( BLOCK_TAG );
+        }
+
+        writeSimpleTag( BLOCK_TAG );
+        writeEndTag( TABLE_CELL_TAG );
+        writeEndTag( TABLE_ROW_TAG );
+    }
+
+    private void writeCoverBody( DocumentCover cover, DocumentMeta meta )
+    {
+        if ( cover == null && meta == null )
+        {
+            return;
+        }
+
+        String subtitle = null;
+        String title = null;
+        String type = null;
+        String version = null;
+        if ( cover == null )
+        {
+            // aleady checked that meta != null
+            getLog().debug( "The DocumentCover is not defined, using the DocumentMeta title." );
+            title = meta.getTitle();
+        }
+        else
+        {
+            subtitle = cover.getCoverSubTitle();
+            title = cover.getCoverTitle();
+            type = cover.getCoverType();
+            version = cover.getCoverVersion();
+        }
+
         writeln( "<fo:table-row keep-with-previous=\"always\" height=\"0.014in\">" );
         writeStartTag( TABLE_CELL_TAG, "number-columns-spanned", "2" );
         writeStartTag( BLOCK_TAG, "line-height", "0.014in" );
@@ -1018,7 +1047,6 @@ public class FoAggregateSink extends FoSink
         writeStartTag( TABLE_CELL_TAG, "number-columns-spanned", "2", "cover.border.left" );
         writeStartTag( BLOCK_TAG, "cover.title" );
         write( title == null ? "" : title );
-        write( version == null ? "" : " v. " + version );
         writeEndTag( BLOCK_TAG );
         writeEndTag( TABLE_CELL_TAG );
         writeEndTag( TABLE_ROW_TAG );
@@ -1031,7 +1059,8 @@ public class FoAggregateSink extends FoSink
 
         writeStartTag( TABLE_CELL_TAG, "number-columns-spanned", "2", "cover.border.left.bottom" );
         writeStartTag( BLOCK_TAG, "cover.subtitle" );
-        write( subtitle == null ? "" : subtitle );
+        write( subtitle == null ? " v. " + ( version == null ? "" : version )
+                        : subtitle );
         writeEndTag( BLOCK_TAG );
         writeStartTag( BLOCK_TAG, "cover.subtitle" );
         write( type == null ? "" : type );
@@ -1061,8 +1090,26 @@ public class FoAggregateSink extends FoSink
         writeEndTag( TABLE_ROW_TAG );
     }
 
-    private void writeCoverFooter( String compName, String date )
+    private void writeCoverFooter( DocumentCover cover )
     {
+        if ( cover == null )
+        {
+            return;
+        }
+
+        String date = null;
+        String compName = cover.getCompanyName();
+        if ( cover.getCoverDate_() == null )
+        {
+            cover.setCoverDate( new Date() );
+            date = cover.getCoverDate_();
+            cover.setCoverDate( null );
+        }
+        else
+        {
+            date = cover.getCoverDate_();
+        }
+
         writeStartTag( TABLE_ROW_TAG, "height", "0.3in" );
 
         writeStartTag( TABLE_CELL_TAG );
@@ -1079,48 +1126,10 @@ public class FoAggregateSink extends FoSink
         att.addAttribute( "height", "0.3in" );
         att.addAttribute( "text-align", "right" );
         writeStartTag( BLOCK_TAG, att );
-        write( date == null ? ISO_8601_FORMAT.format( Calendar.getInstance().getTime() ) : date );
+        write( date == null ? "" : date );
         writeEndTag( BLOCK_TAG );
         writeEndTag( TABLE_CELL_TAG );
 
-        writeEndTag( TABLE_ROW_TAG );
-    }
-
-    private void writeCoverHead( String compLogo, String projLogo )
-    {
-        writeStartTag( TABLE_ROW_TAG, "height", "1.5in" );
-        writeStartTag( TABLE_CELL_TAG );
-
-        if ( compLogo != null )
-        {
-            SinkEventAttributeSet atts = new SinkEventAttributeSet();
-            atts.addAttribute( "text-align", "left" );
-            atts.addAttribute( "vertical-align", "top" );
-            writeStartTag( BLOCK_TAG, atts );
-            atts = new SinkEventAttributeSet();
-            atts.addAttribute( SinkEventAttributes.HEIGHT, "1.5in" );
-            figureGraphics( compLogo, atts );
-            writeEndTag( BLOCK_TAG );
-        }
-
-        writeSimpleTag( BLOCK_TAG );
-        writeEndTag( TABLE_CELL_TAG );
-        writeStartTag( TABLE_CELL_TAG );
-
-        if ( projLogo != null )
-        {
-            SinkEventAttributeSet atts = new SinkEventAttributeSet();
-            atts.addAttribute( "text-align", "right" );
-            atts.addAttribute( "vertical-align", "top" );
-            writeStartTag( BLOCK_TAG, atts );
-            atts = new SinkEventAttributeSet();
-            atts.addAttribute( SinkEventAttributes.HEIGHT, "1.5in" );
-            figureGraphics( projLogo, atts );
-            writeEndTag( BLOCK_TAG );
-        }
-
-        writeSimpleTag( BLOCK_TAG );
-        writeEndTag( TABLE_CELL_TAG );
         writeEndTag( TABLE_ROW_TAG );
     }
 
