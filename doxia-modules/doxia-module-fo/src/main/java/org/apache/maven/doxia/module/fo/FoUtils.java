@@ -93,6 +93,10 @@ public class FoUtils
             {
                 foUserAgent.setCreator( documentModel.getMeta().getCreator() );
             }
+            if ( StringUtils.isNotEmpty( documentModel.getMeta().getGenerator() ) )
+            {
+                foUserAgent.setProducer( documentModel.getMeta().getGenerator() );
+            }
             if ( documentModel.getMeta().getCreationDate() != null )
             {
                 foUserAgent.setCreationDate( documentModel.getMeta().getCreationDate() );
