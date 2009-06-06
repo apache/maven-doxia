@@ -24,8 +24,8 @@
 
     <!-- Layout master sets -->
     <xsl:attribute-set name="layout.master.set.base">
-        <xsl:attribute name="page-width">8.25in</xsl:attribute>
-        <xsl:attribute name="page-height">11.70in</xsl:attribute>
+        <xsl:attribute name="page-width">210mm</xsl:attribute>
+        <xsl:attribute name="page-height">297mm</xsl:attribute>
         <xsl:attribute name="margin-top">0.625in</xsl:attribute>
         <xsl:attribute name="margin-bottom">0.6in</xsl:attribute>
         <xsl:attribute name="margin-left">1in</xsl:attribute>
