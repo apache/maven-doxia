@@ -108,9 +108,9 @@ public final class ITextSink
 
     private int depth = 0;
 
-    private StringWriter tableCaption = null;
+    private StringWriter tableCaptionWriter = null;
 
-    private XMLWriter tableCaptionWriter = null;
+    private XMLWriter tableCaptionXMLWriter = null;
 
     /** Flag to know if an anchor is defined or not. Used as workaround for iText which needs a defined local
      * destination. */
@@ -891,9 +891,9 @@ public final class ITextSink
     /** {@inheritDoc} */
     public void table_()
     {
-        if ( tableCaptionWriter != null )
+        if ( tableCaptionXMLWriter != null )
         {
-            tableCaptionWriter = null;
+            tableCaptionXMLWriter = null;
 
             writeEndElement(); // ElementTags.TABLE
 
@@ -902,11 +902,11 @@ public final class ITextSink
             writeStartElement( ElementTags.PARAGRAPH );
             writeAddAttribute( ElementTags.ALIGN, ElementTags.ALIGN_CENTER );
 
-            write( tableCaption.toString(), true );
+            write( tableCaptionWriter.toString(), true );
 
             writeEndElement(); // ElementTags.PARAGRAPH
 
-            tableCaption = null;
+            tableCaptionWriter = null;
         }
         else
         {
@@ -952,8 +952,8 @@ public final class ITextSink
     /** {@inheritDoc} */
     public void tableCaption()
     {
-        tableCaption = new StringWriter();
-        tableCaptionWriter = new PrettyPrintXMLWriter( tableCaption );
+        tableCaptionWriter = new StringWriter();
+        tableCaptionXMLWriter = new PrettyPrintXMLWriter( tableCaptionWriter );
         actionContext.setAction( SinkActionContext.TABLE_CAPTION );
     }
 
@@ -1468,7 +1468,7 @@ public final class ITextSink
                 break;
 
             case SinkActionContext.TABLE_CAPTION:
-                this.tableCaptionWriter.writeText( text );
+                this.tableCaptionXMLWriter.writeText( text );
                 break;
 
             case SinkActionContext.VERBATIM:
@@ -1571,13 +1571,13 @@ public final class ITextSink
      */
     private void writeStartElement( String tag )
     {
-        if ( tableCaptionWriter == null )
+        if ( tableCaptionXMLWriter == null )
         {
             xmlWriter.startElement( tag );
         }
         else
         {
-            tableCaptionWriter.startElement( tag );
+            tableCaptionXMLWriter.startElement( tag );
         }
     }
 
@@ -1589,13 +1589,13 @@ public final class ITextSink
      */
     private void writeAddAttribute( String key, String value )
     {
-        if ( tableCaptionWriter == null )
+        if ( tableCaptionXMLWriter == null )
         {
             xmlWriter.addAttribute( key, value );
         }
         else
         {
-            tableCaptionWriter.addAttribute( key, value );
+            tableCaptionXMLWriter.addAttribute( key, value );
         }
     }
 
@@ -1607,13 +1607,13 @@ public final class ITextSink
      */
     private void writeAddAttribute( String key, int value )
     {
-        if ( tableCaptionWriter == null )
+        if ( tableCaptionXMLWriter == null )
         {
             xmlWriter.addAttribute( key, String.valueOf( value ) );
         }
         else
         {
-            tableCaptionWriter.addAttribute( key, String.valueOf( value ) );
+            tableCaptionXMLWriter.addAttribute( key, String.valueOf( value ) );
         }
     }
 
@@ -1622,13 +1622,13 @@ public final class ITextSink
      */
     private void writeEndElement()
     {
-        if ( tableCaptionWriter == null )
+        if ( tableCaptionXMLWriter == null )
         {
             xmlWriter.endElement();
         }
         else
         {
-            tableCaptionWriter.endElement();
+            tableCaptionXMLWriter.endElement();
         }
     }
 
@@ -1695,24 +1695,24 @@ public final class ITextSink
         }
         if ( escapeHtml )
         {
-            if ( tableCaptionWriter == null )
+            if ( tableCaptionXMLWriter == null )
             {
                 xmlWriter.writeMarkup( aString );
             }
             else
             {
-                tableCaptionWriter.writeMarkup( aString );
+                tableCaptionXMLWriter.writeMarkup( aString );
             }
         }
         else
         {
-            if ( tableCaptionWriter == null )
+            if ( tableCaptionXMLWriter == null )
             {
                 xmlWriter.writeText( aString );
             }
             else
             {
-                tableCaptionWriter.writeText( aString );
+                tableCaptionXMLWriter.writeText( aString );
             }
         }
     }
