@@ -261,17 +261,17 @@ public class XdocSink
     {
         if ( depth == SECTION_LEVEL_1 )
         {
-            write( String.valueOf( LESS_THAN ) + SECTION_TAG.toString() + String.valueOf( SPACE ) + Attribute.NAME
-                + String.valueOf( EQUAL ) + String.valueOf( QUOTE )
-                + SinkUtils.getAttributeString( SinkUtils.filterAttributes(
-                    attributes, SinkUtils.SINK_BASE_ATTRIBUTES  ) ) );
+            write( String.valueOf( LESS_THAN ) + SECTION_TAG.toString()
+                    + SinkUtils.getAttributeString(
+                        SinkUtils.filterAttributes( attributes, SinkUtils.SINK_BASE_ATTRIBUTES ) )
+                    + String.valueOf( SPACE ) + Attribute.NAME + String.valueOf( EQUAL ) + String.valueOf( QUOTE ) );
         }
         else if ( depth == SECTION_LEVEL_2 )
         {
-            write( String.valueOf( LESS_THAN ) + SUBSECTION_TAG.toString() + String.valueOf( SPACE ) + Attribute.NAME
-                + String.valueOf( EQUAL ) + String.valueOf( QUOTE )
-                + SinkUtils.getAttributeString( SinkUtils.filterAttributes(
-                    attributes, SinkUtils.SINK_BASE_ATTRIBUTES  ) ) );
+            write( String.valueOf( LESS_THAN ) + SUBSECTION_TAG.toString()
+                    + SinkUtils.getAttributeString(
+                        SinkUtils.filterAttributes( attributes, SinkUtils.SINK_BASE_ATTRIBUTES  ) )
+                    + String.valueOf( SPACE ) + Attribute.NAME + String.valueOf( EQUAL ) + String.valueOf( QUOTE ) );
         }
     }
 
