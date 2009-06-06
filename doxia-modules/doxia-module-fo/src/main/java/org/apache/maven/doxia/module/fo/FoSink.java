@@ -23,6 +23,7 @@ import java.io.File;
 import java.io.IOException;
 import java.io.StringWriter;
 import java.io.Writer;
+import java.util.Enumeration;
 import java.util.HashMap;
 import java.util.Iterator;
 import java.util.Map;
@@ -42,6 +43,8 @@ import org.apache.maven.doxia.util.DoxiaUtils;
 import org.apache.maven.doxia.util.HtmlTools;
 
 import org.codehaus.plexus.util.StringUtils;
+import org.codehaus.plexus.util.xml.PrettyPrintXMLWriter;
+import org.codehaus.plexus.util.xml.XMLWriter;
 
 /**
  * FO Sink implementation.
@@ -97,6 +100,10 @@ public class FoSink
     private String encoding;
 
     private String languageId;
+
+    private StringWriter tableCaptionWriter = null;
+
+    private XMLWriter tableCaptionXMLWriter = null;
 
     /** Map of warn messages with a String as key to describe the error type and a Set as value.
      * Using to reduce warn messages. */
@@ -909,6 +916,14 @@ public class FoSink
     /** {@inheritDoc} */
     public void table_()
     {
+        String tableCaption = null;
+        if ( tableCaptionXMLWriter != null )
+        {
+            tableCaption = tableCaptionWriter.toString();
+            tableCaptionXMLWriter = null;
+            tableCaptionWriter = null;
+        }
+
         String content = tempWriter.toString();
         if ( content.lastIndexOf( "<fo:table " ) != -1 || content.lastIndexOf( "<fo:table>" ) != -1 )
         {
@@ -952,6 +967,16 @@ public class FoSink
 
         writeEndTag( BLOCK_TAG );
         writeEOL();
+
+        if ( tableCaption != null )
+        {
+            SinkEventAttributeSet atts = new SinkEventAttributeSet();
+            atts.addAttribute( SinkEventAttributes.ALIGN, "center" );
+
+            paragraph( atts );
+            write( tableCaption );
+            paragraph_();
+        }
     }
 
     /** {@inheritDoc} */
@@ -1108,6 +1133,9 @@ public class FoSink
     /** {@inheritDoc} */
     public void tableCaption( SinkEventAttributes attributes )
     {
+        tableCaptionWriter = new StringWriter();
+        tableCaptionXMLWriter = new PrettyPrintXMLWriter( tableCaptionWriter );
+
         // <fo:table-caption> is XSL-FO 1.0 standard but not implemented in FOP 0.95
         //writeStartTag( TABLE_CAPTION_TAG );
 
@@ -1536,7 +1564,14 @@ public class FoSink
      */
     protected void write( String text )
     {
-        tempWriter.write( unifyEOLs( text ) );
+        if ( tableCaptionXMLWriter == null )
+        {
+            tempWriter.write( unifyEOLs( text ) );
+        }
+        else
+        {
+            tableCaptionXMLWriter.writeText( unifyEOLs( text ) );
+        }
     }
 
     /**
@@ -1617,6 +1652,50 @@ public class FoSink
         }
 
         return buffer.toString();
+    }
+
+    /** {@inheritDoc} */
+    protected void writeStartTag( Tag t, MutableAttributeSet att, boolean isSimpleTag )
+    {
+        if ( tableCaptionXMLWriter == null )
+        {
+            super.writeStartTag ( t, att, isSimpleTag );
+        }
+        else
+        {
+            String tag = ( getNameSpace() != null ? getNameSpace() + ":" : "" ) + t.toString();
+            tableCaptionXMLWriter.startElement( tag );
+
+            if ( att != null )
+            {
+                Enumeration names = att.getAttributeNames();
+                while ( names.hasMoreElements() )
+                {
+                    Object key = names.nextElement();
+                    Object value = att.getAttribute( key );
+
+                    tableCaptionXMLWriter.addAttribute( key.toString(), value.toString() );
+                }
+            }
+
+            if ( isSimpleTag )
+            {
+                tableCaptionXMLWriter.endElement();
+            }
+        }
+    }
+
+    /** {@inheritDoc} */
+    protected void writeEndTag( Tag t )
+    {
+        if ( tableCaptionXMLWriter == null )
+        {
+            super.writeEndTag( t );
+        }
+        else
+        {
+            tableCaptionXMLWriter.endElement();
+        }
     }
 
     private static final char UPPER_ALPHA = 0x391;
