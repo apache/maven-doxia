@@ -55,6 +55,9 @@ public class FoUtils
     /** To reuse the FopFactory **/
     private static final FopFactory FOP_FACTORY = FopFactory.newInstance();
 
+    /** To reuse the TransformerFactory **/
+    private static final TransformerFactory TRANSFORMER_FACTORY = TransformerFactory.newInstance();
+
     /**
      * Converts an FO file to a PDF file using FOP.
      *
@@ -79,10 +82,9 @@ public class FoUtils
             {
                 foUserAgent.setAuthor( authors );
             }
-            String title = documentModel.getMeta().getTitle();
-            if ( StringUtils.isNotEmpty( title ) )
+            if ( StringUtils.isNotEmpty( documentModel.getMeta().getTitle() ) )
             {
-                foUserAgent.setTitle( title );
+                foUserAgent.setTitle( documentModel.getMeta().getTitle() );
             }
             String keywords = documentModel.getMeta().getAllKeyWords();
             if ( StringUtils.isNotEmpty( keywords ) )
@@ -159,7 +161,7 @@ public class FoUtils
             try
             {
                 // identity transformer
-                transformer = TransformerFactory.newInstance().newTransformer();
+                transformer = TRANSFORMER_FACTORY.newTransformer();
             }
             catch ( TransformerConfigurationException e )
             {
