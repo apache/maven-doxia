@@ -67,9 +67,9 @@ public class IndexXdocBookSink
 
         if ( firstEntry != null )
         {
-            write( "<td><div align='right'>" );
+            write( "<td><div align=\"right\">" );
 
-            write( getString( "next" ) + ": <a href='" + firstEntry.getId() + ".html'>" );
+            write( getString( "next" ) + ": <a href=\"" + firstEntry.getId() + ".html\">" );
             content( firstEntry.getTitle() );
             write( "</a>" );
 

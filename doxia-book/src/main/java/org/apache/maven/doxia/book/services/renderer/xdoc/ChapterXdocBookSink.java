@@ -66,7 +66,7 @@ public class ChapterXdocBookSink
 
         IndexEntry prevChapter = chapterIndex.getPrevEntry();
 
-        write( "<td><div align='left'>" );
+        write( "<td><div align=\"left\">" );
 
         previous( prevChapter );
 
@@ -76,7 +76,7 @@ public class ChapterXdocBookSink
         // Parent
         // -----------------------------------------------------------------------
 
-        write( "<td><div align='center'>" );
+        write( "<td><div align=\"center\">" );
         up();
         write( "</div></td>" );
 
@@ -84,7 +84,7 @@ public class ChapterXdocBookSink
         // Next
         // -----------------------------------------------------------------------
 
-        write( "<td><div align='right'>" );
+        write( "<td><div align=\"right\">" );
 
         next();
 
@@ -112,14 +112,14 @@ public class ChapterXdocBookSink
             }
             else
             {
-                write( getString( "previous" ) + ": <a href='" + lastEntry.getId() + ".html'>" );
+                write( getString( "previous" ) + ": <a href=\"" + lastEntry.getId() + ".html\">" );
                 content( lastEntry.getTitle() );
                 write( "</a>" );
             }
         }
         else
         {
-            write( getString( "previous" ) + ":<a href='index.html'>" + getString( "toc" ) + "</a>" );
+            write( getString( "previous" ) + ":<a href=\"index.html\">" + getString( "toc" ) + "</a>" );
         }
     }
 
@@ -128,7 +128,7 @@ public class ChapterXdocBookSink
      */
     protected void up()
     {
-        write( getString( "up" ) + ": <a href='index.html'>" + getString( "toc" ) + "</a>" );
+        write( getString( "up" ) + ": <a href=\"index.html\">" + getString( "toc" ) + "</a>" );
     }
 
     /**
@@ -143,7 +143,7 @@ public class ChapterXdocBookSink
         }
         else
         {
-            write( getString( "next" ) + ": <a href='" + firstEntry.getId() + ".html'>" );
+            write( getString( "next" ) + ": <a href=\"" + firstEntry.getId() + ".html\">" );
             content( firstEntry.getTitle() );
             write( "</a>" );
         }

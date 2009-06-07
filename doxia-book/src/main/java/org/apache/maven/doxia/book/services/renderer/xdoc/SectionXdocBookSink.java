@@ -110,13 +110,13 @@ public class SectionXdocBookSink
     {
         if ( prevEntry != null )
         {
-            write( getString( "previous" ) + ": <a href='" + prevEntry.getId() + ".html'>" );
+            write( getString( "previous" ) + ": <a href=\"" + prevEntry.getId() + ".html\">" );
             content( prevEntry.getTitle() );
             write( "</a>" );
         }
         else
         {
-            write( getString( "previous" ) + ": <a href='" + parent.getId() + ".html'>" );
+            write( getString( "previous" ) + ": <a href=\"" + parent.getId() + ".html\">" );
             content( parent.getTitle() );
             write( "</a>" );
         }
@@ -130,7 +130,7 @@ public class SectionXdocBookSink
      */
     protected void up( IndexEntry parent )
     {
-        write( getString( "up" ) + ": <a href='" + parent.getId() + ".html'>" + parent.getTitle() + "</a>" );
+        write( getString( "up" ) + ": <a href=\"" + parent.getId() + ".html\">" + parent.getTitle() + "</a>" );
     }
 
     /**
@@ -143,7 +143,7 @@ public class SectionXdocBookSink
     {
         if ( nextEntry != null )
         {
-            write( getString( "next" ) + ": <a href='" + nextEntry.getId() + ".html'>" );
+            write( getString( "next" ) + ": <a href=\"" + nextEntry.getId() + ".html\">" );
             content( nextEntry.getTitle() );
             write( "</a>" );
         }
@@ -157,7 +157,7 @@ public class SectionXdocBookSink
             }
             else
             {
-                write( getString( "next" ) + ": <a href='" + nextChapter.getId() + ".html'>" );
+                write( getString( "next" ) + ": <a href=\"" + nextChapter.getId() + ".html\">" );
                 content( nextChapter.getTitle() );
                 write( "</a>" );
             }
