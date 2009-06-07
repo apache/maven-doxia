@@ -25,16 +25,32 @@ package org.apache.maven.doxia.module.site;
  * @author <a href="mailto:jason@maven.org">Jason van Zyl</a>
  * @version $Id$
  * @since 1.0
- * @plexus.component
  */
 public abstract class AbstractSiteModule
     implements SiteModule
 {
     /** The source directory. */
-    private String sourceDirectory;
+    private final String sourceDirectory;
 
     /** The default file extension. */
-    private String extension;
+    private final String extension;
+
+    /** The default file extension. */
+    private final String parserId;
+
+    /**
+     * @param sourceDirectory not null
+     * @param extension not null
+     * @param parserId not null
+     * @since 1.1.1
+     */
+    protected AbstractSiteModule( String sourceDirectory, String extension, String parserId )
+    {
+        super();
+        this.sourceDirectory = sourceDirectory;
+        this.extension = extension;
+        this.parserId = parserId;
+    }
 
     /** {@inheritDoc} */
     public String getSourceDirectory()
@@ -46,5 +62,11 @@ public abstract class AbstractSiteModule
     public String getExtension()
     {
         return extension;
+    }
+
+    /** {@inheritDoc} */
+    public String getParserId()
+    {
+        return parserId;
     }
 }

@@ -32,21 +32,11 @@ import org.apache.maven.doxia.module.site.AbstractSiteModule;
 public class ConfluenceSiteModule
     extends AbstractSiteModule
 {
-    /** {@inheritDoc} */
-    public String getSourceDirectory()
+    /**
+     * Default constructor.
+     */
+    public ConfluenceSiteModule()
     {
-        return "confluence";
-    }
-
-    /** {@inheritDoc} */
-    public String getExtension()
-    {
-        return "confluence";
-    }
-
-    /** {@inheritDoc} */
-    public String getParserId()
-    {
-        return "confluence";
+        super( "confluence", "confluence", "confluence" );
     }
 }

@@ -19,40 +19,24 @@ package org.apache.maven.doxia.module.twiki;
  * under the License.
  */
 
-import org.apache.maven.doxia.module.site.SiteModule;
+import org.apache.maven.doxia.module.site.AbstractSiteModule;
 
 /**
- * {@link org.apache.maven.doxia.module.site.SiteModule} implementation for
- * the twiki file format.
+ * <p>TWikiSiteModule class.</p>
  *
  * @author Juan F. Codagnone
  * @version $Id$
  * @since 1.0
  * @plexus.component role="org.apache.maven.doxia.module.site.SiteModule" role-hint="twiki"
  */
-public final class TWikiSiteModule
-    implements SiteModule
+public class TWikiSiteModule
+    extends AbstractSiteModule
 {
-
-    /** {@inheritDoc} */
-
-    public String getSourceDirectory()
+    /**
+     * Default constructor.
+     */
+    public TWikiSiteModule()
     {
-        return "twiki";
+        super( "twiki", "twiki", "twiki" );
     }
-
-    /** {@inheritDoc} */
-
-    public String getExtension()
-    {
-        return "twiki";
-    }
-
-    /** {@inheritDoc} */
-
-    public String getParserId()
-    {
-        return "twiki";
-    }
-
 }
