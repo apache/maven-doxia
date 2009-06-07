@@ -1202,23 +1202,18 @@ public class DocBookSink
         }
         else
         {
-            String frame;
-            int sep;
+            String frame = "none";
+            String sep = "0";
             if ( tableHasGrid )
             {
                 frame = "all";
-                sep = 1;
-            }
-            else
-            {
-                frame = "none";
-                sep = 0;
+                sep = "1";
             }
 
             MutableAttributeSet att = new SimpleAttributeSet();
             att.addAttribute( SimplifiedDocbookMarkup.FRAME_ATTRIBUTE, frame );
-            att.addAttribute( SimplifiedDocbookMarkup.ROWSEP_ATTRIBUTE, String.valueOf( sep ) );
-            att.addAttribute( SimplifiedDocbookMarkup.COLSEP_ATTRIBUTE, String.valueOf( sep ) );
+            att.addAttribute( SimplifiedDocbookMarkup.ROWSEP_ATTRIBUTE, sep );
+            att.addAttribute( SimplifiedDocbookMarkup.COLSEP_ATTRIBUTE, sep );
 
             writeStartTag( SimplifiedDocbookMarkup.INFORMALTABLE_TAG, att );
 
