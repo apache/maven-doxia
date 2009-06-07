@@ -47,7 +47,14 @@ import org.codehaus.plexus.util.xml.PrettyPrintXMLWriter;
 import org.codehaus.plexus.util.xml.XMLWriter;
 
 /**
- * FO Sink implementation.
+ * A Doxia Sink that produces a FO model. The usage is similar to the following:
+ *
+ * <pre>
+ * FoSink sink = new FoSink( writer );
+ * sink.beginDocument();
+ * ...
+ * sink.endDocument();
+ * </pre>
  *
  * @author ltheussl
  * @version $Id$
@@ -180,7 +187,6 @@ public class FoSink
     /** {@inheritDoc} */
     public void head( SinkEventAttributes attributes )
     {
-        beginDocument();
         startPageSequence( "0", null, null );
     }
 

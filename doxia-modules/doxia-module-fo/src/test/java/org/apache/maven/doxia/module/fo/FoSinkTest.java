@@ -51,7 +51,9 @@ public class FoSinkTest extends AbstractSinkTest
         String fileName = "test";
         // first create fo
         FoSink fosink = new FoSink( getTestWriter( fileName ) );
+        fosink.beginDocument();
         SinkTestDocument.generate( fosink );
+        fosink.endDocument();
         fosink.close();
 
         // then generate PDF
