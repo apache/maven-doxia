@@ -160,26 +160,34 @@ public class DocBookParserTest extends AbstractParserTest
         assertEquals( "anchor", ( (SinkEventElement) it.next() ).getName() );
         assertEquals( "anchor_", ( (SinkEventElement) it.next() ).getName() );
 
-        assertEquals( "head", ( (SinkEventElement) it.next() ).getName() );
+        SinkEventElement event = (SinkEventElement) it.next();
+        assertEquals( "head", event.getName() );
+        assertEquals( " id=article", event.getArgs()[0].toString() );
         assertEquals( "head_", ( (SinkEventElement) it.next() ).getName() );
         assertEquals( "body", ( (SinkEventElement) it.next() ).getName() );
 
         assertEquals( "anchor", ( (SinkEventElement) it.next() ).getName() );
         assertEquals( "anchor_", ( (SinkEventElement) it.next() ).getName() );
 
-        assertEquals( "section1", ( (SinkEventElement) it.next() ).getName() );
+        event = (SinkEventElement) it.next();
+        assertEquals( "section1", event.getName() );
+        assertEquals( " id=section", event.getArgs()[0].toString() );
 
         assertEquals( "anchor", ( (SinkEventElement) it.next() ).getName() );
         assertEquals( "anchor_", ( (SinkEventElement) it.next() ).getName() );
 
-        assertEquals( "sectionTitle1", ( (SinkEventElement) it.next() ).getName() );
+        event = (SinkEventElement) it.next();
+        assertEquals( "sectionTitle1", event.getName() );
+        assertEquals( " id=title", event.getArgs()[0].toString() );
         assertEquals( "text", ( (SinkEventElement) it.next() ).getName() );
         assertEquals( "sectionTitle1_", ( (SinkEventElement) it.next() ).getName() );
 
         assertEquals( "anchor", ( (SinkEventElement) it.next() ).getName() );
         assertEquals( "anchor_", ( (SinkEventElement) it.next() ).getName() );
 
-        assertEquals( "paragraph", ( (SinkEventElement) it.next() ).getName() );
+        event = (SinkEventElement) it.next();
+        assertEquals( "paragraph", event.getName() );
+        assertEquals( " id=para", event.getArgs()[0].toString() );
         assertEquals( "text", ( (SinkEventElement) it.next() ).getName() );
         assertEquals( "paragraph_", ( (SinkEventElement) it.next() ).getName() );
         assertEquals( "section1_", ( (SinkEventElement) it.next() ).getName() );
@@ -242,11 +250,18 @@ public class DocBookParserTest extends AbstractParserTest
         assertEquals( "text", ( (SinkEventElement) it.next() ).getName() );
         assertEquals( "anchor_", ( (SinkEventElement) it.next() ).getName() );
         assertEquals( "text", ( (SinkEventElement) it.next() ).getName() );
-        assertEquals( "link", ( (SinkEventElement) it.next() ).getName() );
+
+        SinkEventElement event = (SinkEventElement) it.next();
+        assertEquals( "link", event.getName() );
+        assertEquals( "#Anchor", event.getArgs()[0].toString() );
+
         assertEquals( "text", ( (SinkEventElement) it.next() ).getName() );
         assertEquals( "link_", ( (SinkEventElement) it.next() ).getName() );
         assertEquals( "text", ( (SinkEventElement) it.next() ).getName() );
-        assertEquals( "link", ( (SinkEventElement) it.next() ).getName() );
+
+        event = (SinkEventElement) it.next();
+        assertEquals( "link", event.getName() );
+        assertEquals( "url.com", event.getArgs()[0].toString() );
         assertEquals( "text", ( (SinkEventElement) it.next() ).getName() );
         assertEquals( "link_", ( (SinkEventElement) it.next() ).getName() );
         assertEquals( "text", ( (SinkEventElement) it.next() ).getName() );
@@ -303,7 +318,9 @@ public class DocBookParserTest extends AbstractParserTest
         parser.parse( text, sink );
         it = sink.getEventList().iterator();
 
-        assertEquals( "numberedList", ( (SinkEventElement) it.next() ).getName() );
+        SinkEventElement event = (SinkEventElement) it.next();
+        assertEquals( "numberedList", event.getName() );
+        assertEquals( Sink.NUMBERING_UPPER_ALPHA, ( (Integer) event.getArgs()[0] ).intValue() );
         assertEquals( "numberedListItem", ( (SinkEventElement) it.next() ).getName() );
         assertEquals( "paragraph", ( (SinkEventElement) it.next() ).getName() );
         assertEquals( "text", ( (SinkEventElement) it.next() ).getName() );
