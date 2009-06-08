@@ -142,6 +142,7 @@ public final class ITextSink
      */
     protected ITextSink( Writer writer, String encoding )
     {
+        // No doctype since itext doctype is not up to date!
         this( new PrettyPrintXMLWriter( writer, encoding, null ) );
 
         this.writer = writer;
