@@ -19,7 +19,10 @@ package org.apache.maven.doxia.module.fo;
  * under the License.
  */
 
+import java.awt.image.BufferedImage;
+import java.io.File;
 import java.io.Writer;
+import java.net.URL;
 
 import java.util.Calendar;
 import java.util.Date;
@@ -29,6 +32,7 @@ import java.util.Locale;
 import java.util.ResourceBundle;
 import java.util.Stack;
 
+import javax.imageio.ImageIO;
 import javax.swing.text.MutableAttributeSet;
 import javax.swing.text.html.HTML.Tag;
 
@@ -963,9 +967,7 @@ public class FoAggregateSink extends FoSink
             atts.addAttribute( "text-align", "left" );
             atts.addAttribute( "vertical-align", "top" );
             writeStartTag( BLOCK_TAG, atts );
-            atts = new SinkEventAttributeSet();
-            atts.addAttribute( SinkEventAttributes.HEIGHT, "1.5in" );
-            figureGraphics( compLogo, atts );
+            figureGraphics( compLogo, getGraphicsAttributes( compLogo ) );
             writeEndTag( BLOCK_TAG );
         }
 
@@ -979,9 +981,7 @@ public class FoAggregateSink extends FoSink
             atts.addAttribute( "text-align", "right" );
             atts.addAttribute( "vertical-align", "top" );
             writeStartTag( BLOCK_TAG, atts );
-            atts = new SinkEventAttributeSet();
-            atts.addAttribute( SinkEventAttributes.HEIGHT, "1.5in" );
-            figureGraphics( projLogo, atts );
+            figureGraphics( projLogo, getGraphicsAttributes( projLogo ) );
             writeEndTag( BLOCK_TAG );
         }
 
@@ -1147,5 +1147,51 @@ public class FoAggregateSink extends FoSink
     private ResourceBundle getBundle( Locale locale )
     {
         return ResourceBundle.getBundle( "doxia-fo", locale, this.getClass().getClassLoader() );
+    }
+
+    private SinkEventAttributeSet getGraphicsAttributes( String logo )
+    {
+        SinkEventAttributeSet atts = new SinkEventAttributeSet();
+
+        BufferedImage img = null;
+        if ( ( logo.toLowerCase( Locale.ENGLISH ).startsWith( "http://" ) )
+            || ( logo.toLowerCase( Locale.ENGLISH ).startsWith( "https://" ) ) )
+        {
+            try
+            {
+                img = ImageIO.read( new URL( logo ) );
+            }
+            catch ( Exception e )
+            {
+                getLog().debug( e );
+            }
+        }
+        else
+        {
+            try
+            {
+                img = ImageIO.read( new File( logo ) );
+            }
+            catch ( Exception e )
+            {
+                getLog().debug( e );
+            }
+        }
+
+        if ( img == null )
+        {
+            atts.addAttribute( SinkEventAttributes.HEIGHT, "1.5in" );
+            return atts;
+        }
+
+        // FOP dpi: 72
+        // Max width : 3.125 inch, table cell size, see #coverPage()
+        double maxWidth = 3.125 * 72;
+        if ( img.getWidth() > maxWidth )
+        {
+            atts.addAttribute( "content-width", "3.125in" );
+        }
+
+        return atts;
     }
 }

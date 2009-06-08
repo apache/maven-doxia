@@ -770,18 +770,28 @@ public class FoSink
         MutableAttributeSet atts = config.getAttributeSet( "figure.graphics" );
         atts.addAttribute( Attribute.SRC.toString(), src );
 
+        // http://xmlgraphics.apache.org/fop/graphics.html#resolution
         if ( attributes != null && attributes.isDefined( SinkEventAttributes.WIDTH ) )
         {
             atts.addAttribute( "width", attributes.getAttribute( SinkEventAttributes.WIDTH ) );
+        }
+        if ( attributes != null && attributes.isDefined( "content-width" ) )
+        {
+            atts.removeAttribute( "content-width" );
+            atts.addAttribute( "content-width", attributes.getAttribute( "content-width" ) );
         }
 
         if ( attributes != null && attributes.isDefined( SinkEventAttributes.HEIGHT ) )
         {
             atts.addAttribute( "height", attributes.getAttribute( SinkEventAttributes.HEIGHT ) );
         }
+        if ( attributes != null && attributes.isDefined( "content-height" ) )
+        {
+            atts.removeAttribute( "content-height" );
+            atts.addAttribute( "content-height", attributes.getAttribute( "content-height" ) );
+        }
 
         writeln( "<fo:external-graphic" + SinkUtils.getAttributeString( atts ) + "/>" );
-
     }
 
     /**
