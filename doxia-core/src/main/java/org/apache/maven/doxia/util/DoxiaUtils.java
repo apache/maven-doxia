@@ -19,7 +19,13 @@ package org.apache.maven.doxia.util;
  * under the License.
  */
 
+import java.awt.image.BufferedImage;
+
+import java.io.File;
+import java.io.IOException;
 import java.io.UnsupportedEncodingException;
+
+import java.net.URL;
 
 import java.text.ParseException;
 import java.text.ParsePosition;
@@ -27,6 +33,12 @@ import java.text.SimpleDateFormat;
 
 import java.util.Date;
 import java.util.Locale;
+
+import javax.imageio.ImageIO;
+
+import javax.swing.text.MutableAttributeSet;
+
+import org.apache.maven.doxia.sink.SinkEventAttributeSet;
 
 /**
  * General Doxia utility methods. The methods in this class should not assume
@@ -356,9 +368,44 @@ public class DoxiaUtils
         return ( c >= '0' && c <= '9' );
     }
 
+    /**
+     * Determine width and height of an image. If successful, the returned SinkEventAttributes
+     * contain width and height attribute keys whose values are the width and height of the image (as a String).
+     *
+     * @param logo a String containing either a URL or a path to an image file.
+     * @return a set of SinkEventAttributes, or null if no ImageReader was found to read the image.
+     * @throws java.io.IOException if an error occurs during reading.
+     * @since 1.1.1
+     */
+    public static MutableAttributeSet getImageAttributes( String logo )
+            throws IOException
+    {
+        BufferedImage img = null;
+
+        if ( isExternalLink( logo ) )
+        {
+            img = ImageIO.read( new URL( logo ) );
+        }
+        else
+        {
+            img = ImageIO.read( new File( logo ) );
+        }
+
+        if ( img == null )
+        {
+            return null;
+        }
+
+        MutableAttributeSet atts = new SinkEventAttributeSet();
+        atts.addAttribute( SinkEventAttributeSet.WIDTH, Integer.toString( img.getWidth() ) );
+        atts.addAttribute( SinkEventAttributeSet.HEIGHT, Integer.toString( img.getHeight() ) );
+        // add other attributes?
+
+        return atts;
+    }
+
     private DoxiaUtils()
     {
         // utility class
     }
-
 }

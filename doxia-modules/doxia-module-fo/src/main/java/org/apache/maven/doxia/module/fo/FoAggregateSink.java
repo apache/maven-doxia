@@ -19,10 +19,8 @@ package org.apache.maven.doxia.module.fo;
  * under the License.
  */
 
-import java.awt.image.BufferedImage;
-import java.io.File;
+import java.io.IOException;
 import java.io.Writer;
-import java.net.URL;
 
 import java.util.Calendar;
 import java.util.Date;
@@ -32,7 +30,6 @@ import java.util.Locale;
 import java.util.ResourceBundle;
 import java.util.Stack;
 
-import javax.imageio.ImageIO;
 import javax.swing.text.MutableAttributeSet;
 import javax.swing.text.html.HTML.Tag;
 
@@ -88,6 +85,9 @@ public class FoAggregateSink extends FoSink
 
     /** Used to get the current position in the TOC. */
     private final Stack tocStack = new Stack();
+
+    // TODO: make configurable
+    private static final String COVER_HEADER_HEIGHT = "1.5in";
 
     /**
      * Constructor.
@@ -958,7 +958,7 @@ public class FoAggregateSink extends FoSink
         String compLogo = cover.getCompanyLogo();
         String projLogo = cover.getProjectLogo();
 
-        writeStartTag( TABLE_ROW_TAG, "height", "1.5in" );
+        writeStartTag( TABLE_ROW_TAG, "height", COVER_HEADER_HEIGHT );
         writeStartTag( TABLE_CELL_TAG );
 
         if ( StringUtils.isNotEmpty( compLogo ) )
@@ -1151,47 +1151,31 @@ public class FoAggregateSink extends FoSink
 
     private SinkEventAttributeSet getGraphicsAttributes( String logo )
     {
-        SinkEventAttributeSet atts = new SinkEventAttributeSet();
+        MutableAttributeSet atts = null;
 
-        BufferedImage img = null;
-        if ( ( logo.toLowerCase( Locale.ENGLISH ).startsWith( "http://" ) )
-            || ( logo.toLowerCase( Locale.ENGLISH ).startsWith( "https://" ) ) )
+        try
         {
-            try
-            {
-                img = ImageIO.read( new URL( logo ) );
-            }
-            catch ( Exception e )
-            {
-                getLog().debug( e );
-            }
+            atts = DoxiaUtils.getImageAttributes( logo );
         }
-        else
+        catch ( IOException e )
         {
-            try
-            {
-                img = ImageIO.read( new File( logo ) );
-            }
-            catch ( Exception e )
-            {
-                getLog().debug( e );
-            }
+            getLog().debug( e );
         }
 
-        if ( img == null )
+        if ( atts == null )
         {
-            atts.addAttribute( SinkEventAttributes.HEIGHT, "1.5in" );
-            return atts;
+            return new SinkEventAttributeSet( new String[] {SinkEventAttributes.HEIGHT, COVER_HEADER_HEIGHT} );
         }
 
         // FOP dpi: 72
         // Max width : 3.125 inch, table cell size, see #coverPage()
-        double maxWidth = 3.125 * 72;
-        if ( img.getWidth() > maxWidth )
+        final int maxWidth = 225; // 3.125 * 72
+
+        if ( Integer.parseInt( atts.getAttribute( SinkEventAttributes.WIDTH ).toString() ) > maxWidth )
         {
             atts.addAttribute( "content-width", "3.125in" );
         }
 
-        return atts;
+        return new SinkEventAttributeSet( atts );
     }
 }
