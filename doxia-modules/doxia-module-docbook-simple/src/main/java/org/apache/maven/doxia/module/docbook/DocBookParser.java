@@ -562,7 +562,7 @@ public class DocBookParser
     {
         Object id = attribs.getAttribute( SimplifiedDocbookMarkup.ID_ATTRIBUTE );
         //catch link targets
-        if ( id != null )
+        if ( id != null && !parser.getName().equals( SimplifiedDocbookMarkup.ARTICLE_TAG.toString() ) )
         {
             sink.anchor( id.toString() );
 

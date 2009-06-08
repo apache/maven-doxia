@@ -157,9 +157,6 @@ public class DocBookParserTest extends AbstractParserTest
 
         // FIXME: anchors should be removed
 
-        assertEquals( "anchor", ( (SinkEventElement) it.next() ).getName() );
-        assertEquals( "anchor_", ( (SinkEventElement) it.next() ).getName() );
-
         SinkEventElement event = (SinkEventElement) it.next();
         assertEquals( "head", event.getName() );
         assertEquals( " id=article", event.getArgs()[0].toString() );
