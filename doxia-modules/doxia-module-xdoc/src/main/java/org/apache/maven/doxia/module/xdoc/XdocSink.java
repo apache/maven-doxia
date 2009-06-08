@@ -121,10 +121,19 @@ public class XdocSink
 
     /**
      * {@inheritDoc}
+     * @see #head(org.apache.maven.doxia.sink.SinkEventAttributes)
+     */
+    public void head()
+    {
+        head( null );
+    }
+
+    /**
+     * {@inheritDoc}
      * @see XdocMarkup#DOCUMENT_TAG
      * @see XdocMarkup#PROPERTIES_TAG
      */
-    public void head()
+    public void head( SinkEventAttributes attributes )
     {
         resetState();
 
@@ -146,6 +155,11 @@ public class XdocSink
         {
             atts.addAttribute( Attribute.LANG.toString(), languageId );
             atts.addAttribute( "xml:lang", languageId );
+        }
+
+        if ( attributes != null )
+        {
+            atts.addAttributes( attributes );
         }
 
         writeStartTag( DOCUMENT_TAG, atts );
@@ -223,11 +237,20 @@ public class XdocSink
 
     /**
      * {@inheritDoc}
-     * @see javax.swing.text.html.HTML.Tag#BODY
+     * @see #body(org.apache.maven.doxia.sink.SinkEventAttributes)
      */
     public void body()
     {
-        writeStartTag( BODY );
+       body( null );
+    }
+
+    /**
+     * {@inheritDoc}
+     * @see javax.swing.text.html.HTML.Tag#BODY
+     */
+    public void body( SinkEventAttributes attributes )
+    {
+        writeStartTag( BODY, attributes );
     }
 
     /**
