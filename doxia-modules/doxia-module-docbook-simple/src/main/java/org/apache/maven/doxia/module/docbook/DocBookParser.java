@@ -147,9 +147,6 @@ public class DocBookParser
 
         SinkEventAttributeSet attribs = getAttributesFromParser( parser );
 
-        // TODO: remove
-        handleIdAnchor( parser, sink, attribs );
-
         if ( parser.getName().equals( SimplifiedDocbookMarkup.ARTICLE_TAG.toString() ) )
         {
             handleArticleStart( sink, attribs );
@@ -284,6 +281,10 @@ public class DocBookParser
         else if ( parser.getName().equals( SimplifiedDocbookMarkup.XREF_TAG.toString() ) )
         {
             handleXrefStart( sink, attribs );
+        }
+        else if ( parser.getName().equals( SimplifiedDocbookMarkup.ANCHOR_TAG.toString() ) )
+        {
+            handleAnchorStart( sink, attribs );
         }
         else
         {
@@ -558,18 +559,13 @@ public class DocBookParser
         parent.push( name );
     }
 
-    private void handleIdAnchor( XmlPullParser parser, Sink sink, SinkEventAttributeSet attribs  )
+    private void handleAnchorStart( Sink sink, SinkEventAttributeSet attribs  )
     {
         Object id = attribs.getAttribute( SimplifiedDocbookMarkup.ID_ATTRIBUTE );
-        //catch link targets
-        if ( id != null && !parser.getName().equals( SimplifiedDocbookMarkup.ARTICLE_TAG.toString() ) )
-        {
-            sink.anchor( id.toString() );
 
-            if ( !parser.getName().equals( SimplifiedDocbookMarkup.ANCHOR_TAG.toString() ) )
-            {
-                sink.anchor_();
-            }
+        if ( id != null )
+        {
+            sink.anchor( id.toString(), attribs );
         }
     }
 

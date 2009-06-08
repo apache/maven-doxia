@@ -155,32 +155,21 @@ public class DocBookParserTest extends AbstractParserTest
         parser.parse( text, sink );
         Iterator it = sink.getEventList().iterator();
 
-        // FIXME: anchors should be removed
-
         SinkEventElement event = (SinkEventElement) it.next();
         assertEquals( "head", event.getName() );
         assertEquals( " id=article", event.getArgs()[0].toString() );
         assertEquals( "head_", ( (SinkEventElement) it.next() ).getName() );
         assertEquals( "body", ( (SinkEventElement) it.next() ).getName() );
 
-        assertEquals( "anchor", ( (SinkEventElement) it.next() ).getName() );
-        assertEquals( "anchor_", ( (SinkEventElement) it.next() ).getName() );
-
         event = (SinkEventElement) it.next();
         assertEquals( "section1", event.getName() );
         assertEquals( " id=section", event.getArgs()[0].toString() );
-
-        assertEquals( "anchor", ( (SinkEventElement) it.next() ).getName() );
-        assertEquals( "anchor_", ( (SinkEventElement) it.next() ).getName() );
 
         event = (SinkEventElement) it.next();
         assertEquals( "sectionTitle1", event.getName() );
         assertEquals( " id=title", event.getArgs()[0].toString() );
         assertEquals( "text", ( (SinkEventElement) it.next() ).getName() );
         assertEquals( "sectionTitle1_", ( (SinkEventElement) it.next() ).getName() );
-
-        assertEquals( "anchor", ( (SinkEventElement) it.next() ).getName() );
-        assertEquals( "anchor_", ( (SinkEventElement) it.next() ).getName() );
 
         event = (SinkEventElement) it.next();
         assertEquals( "paragraph", event.getName() );
