@@ -757,8 +757,7 @@ public class DocBookParser
 
     private boolean ignorable( String name )
     {
-        return name.equals( SimplifiedDocbookMarkup.ANCHOR_TAG.toString() )
-                || name.equals( SimplifiedDocbookMarkup.IMAGEOBJECT_TAG.toString() )
+        return name.equals( SimplifiedDocbookMarkup.IMAGEOBJECT_TAG.toString() )
                 || name.equals( SimplifiedDocbookMarkup.PHRASE_TAG.toString() )
                 || name.equals( SimplifiedDocbookMarkup.TEXTOBJECT_TAG.toString() );
     }
