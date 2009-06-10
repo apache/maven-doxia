@@ -39,6 +39,14 @@ public abstract class AbstractSiteModule
     private final String parserId;
 
     /**
+     * Constructor with null.
+     */
+    public AbstractSiteModule()
+    {
+        this( null, null, null );
+    }
+
+    /**
      * @param sourceDirectory not null
      * @param extension not null
      * @param parserId not null
