@@ -293,6 +293,9 @@ under the License.
           <groupId>org.codehaus.mojo</groupId>
           <artifactId>clirr-maven-plugin</artifactId>
           <version>2.2.2</version>
+          <configuration>
+            <comparisonVersion>1.1</comparisonVersion>
+          </configuration>
         </plugin>
       </plugins>
     </pluginManagement>
@@ -304,6 +307,18 @@ under the License.
           <execution>
             <goals>
               <goal>descriptor</goal>
+            </goals>
+          </execution>
+        </executions>
+      </plugin>
+      <plugin>
+        <groupId>org.codehaus.mojo</groupId>
+        <artifactId>clirr-maven-plugin</artifactId>
+        <executions>
+          <execution>
+            <phase>test</phase>
+            <goals>
+              <goal>check</goal>
             </goals>
           </execution>
         </executions>
@@ -405,9 +420,6 @@ under the License.
           <plugin>
             <groupId>org.codehaus.mojo</groupId>
             <artifactId>clirr-maven-plugin</artifactId>
-            <configuration>
-              <comparisonVersion>1.1</comparisonVersion>
-            </configuration>
           </plugin>
         </plugins>
       </reporting>
