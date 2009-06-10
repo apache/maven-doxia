@@ -58,7 +58,7 @@ public class FmlParser
     implements FmlMarkup
 {
     /** Collect a faqs model. */
-    private final Faqs faqs = new Faqs();
+    private Faqs faqs;
 
     /** Collect a part. */
     private Part currentPart;
@@ -77,6 +77,8 @@ public class FmlParser
     public void parse( Reader source, Sink sink )
         throws ParseException
     {
+        this.faqs = new Faqs();
+
         // this populates faqs
         super.parse( source, sink );
 
