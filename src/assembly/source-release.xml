@@ -32,19 +32,26 @@
       <outputDirectory>/</outputDirectory>
       <useDefaultExcludes>true</useDefaultExcludes>
       <excludes>
-        <exclude>**/target/**</exclude>
-        <exclude>**/.classpath</exclude>
-        <exclude>**/.project</exclude>
-        <exclude>**/.settings/**</exclude>
-        <exclude>**/*.iml</exclude>
-        <exclude>**/*.ipr</exclude>
+        <!-- IDE -->
         <exclude>**/*.iws</exclude>
-        <exclude>**/*.bak</exclude>
-        <exclude>**/*.diff</exclude>
-        <exclude>**/*.patch</exclude>
-        <exclude>**/*.log</exclude>
+        <exclude>**/*.ipr</exclude>
+        <exclude>**/*.iml</exclude>
+        <exclude>**/.project</exclude>
+        <exclude>**/.classpath</exclude>
+        <exclude>**/.settings</exclude>
+        <exclude>**/.externalToolBuilders/**</exclude>
+        <exclude>**/maven-eclipse.xml</exclude>
+        <exclude>**/.deployables/**</exclude>
+        <exclude>**/.wtpmodules/**</exclude>
+        <!-- maven -->
+        <exclude>**/target/**</exclude>
         <exclude>**/pom.xml.releaseBackup</exclude>
         <exclude>**/release.properties</exclude>
+        <!-- misc -->
+        <exclude>**/*.patch</exclude>
+        <exclude>**/*.diff</exclude>
+        <exclude>**/*.bak</exclude>
+        <exclude>**/*.log</exclude>
       </excludes>
     </fileSet>
     <fileSet>
