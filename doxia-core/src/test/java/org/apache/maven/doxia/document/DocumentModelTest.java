@@ -43,6 +43,10 @@ import org.codehaus.plexus.util.xml.pull.XmlPullParserException;
 public class DocumentModelTest
     extends PlexusTestCase
 {
+    /** ISO 8601 date format, i.e. <code>yyyy-MM-dd</code> **/
+    private static final java.text.DateFormat ISO_8601_FORMAT =
+            new java.text.SimpleDateFormat( "yyyy-MM-dd", java.util.Locale.ENGLISH );
+
     /**
      * Test DocumentModel.
      *
@@ -156,7 +160,8 @@ public class DocumentModelTest
         assertEquals( "companyLogo", cover.getCompanyLogo() );
         assertEquals( "companyName", cover.getCompanyName() );
         assertEquals( 0L, cover.getCoverDate().getTime() );
-        assertEquals( "1969-12-31", cover.getCoverdate() );
+        // the actual String depends on the timezone you're in
+        assertEquals( ISO_8601_FORMAT.format( new Date( 0L ) ), cover.getCoverdate() );
         assertEquals( "coverSubTitle", cover.getCoverSubTitle() );
         assertEquals( "coverTitle", cover.getCoverTitle() );
         assertEquals( "coverType", cover.getCoverType() );
