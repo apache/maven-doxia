@@ -155,9 +155,9 @@ public class FmlParser
             }
             else if ( !DoxiaUtils.isValidId( currentFaq.getId() ) )
             {
-                String linkAnchor = DoxiaUtils.encodeId( currentPart.getId(), true );
+                String linkAnchor = DoxiaUtils.encodeId( currentFaq.getId(), true );
 
-                String msg = "Modified invalid link: '" + currentPart.getId() + "' to '" + linkAnchor + "'";
+                String msg = "Modified invalid link: '" + currentFaq.getId() + "' to '" + linkAnchor + "'";
                 logMessage( "modifiedLink", msg );
 
                 currentFaq.setId( linkAnchor );
