@@ -80,7 +80,7 @@ public class DocumentModelTest
         assertTrue( model.toString().length() > 0 );
 
         assertEquals( "outputName", model.getOutputName() );
-        //assertEquals( "ISO-8859-1", model.getModelEncoding() ); // MODELLO-189
+        assertEquals( "ISO-8859-1", model.getModelEncoding() );
         verifyDocumentCover( model.getCover() );
         verifyDocumentTOC( model.getToc() );
         verifyDocumentMeta( model.getMeta() );
@@ -136,7 +136,6 @@ public class DocumentModelTest
         cover.setCompanyLogo( "companyLogo" );
         cover.setCompanyName( "companyName" );
         cover.setCoverDate( new Date( 0L ) );
-        cover.setCoverdate( "coverDate" );
         cover.setCoverSubTitle( "coverSubTitle" );
         cover.setCoverTitle( "coverTitle" );
         cover.setCoverType( "coverType" );
@@ -157,7 +156,7 @@ public class DocumentModelTest
         assertEquals( "companyLogo", cover.getCompanyLogo() );
         assertEquals( "companyName", cover.getCompanyName() );
         assertEquals( 0L, cover.getCoverDate().getTime() );
-        assertEquals( "coverDate", cover.getCoverdate() );
+        assertEquals( "1969-12-31", cover.getCoverdate() );
         assertEquals( "coverSubTitle", cover.getCoverSubTitle() );
         assertEquals( "coverTitle", cover.getCoverTitle() );
         assertEquals( "coverType", cover.getCoverType() );

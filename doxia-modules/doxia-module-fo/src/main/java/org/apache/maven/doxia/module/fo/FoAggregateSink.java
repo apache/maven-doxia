@@ -1109,15 +1109,15 @@ public class FoAggregateSink extends FoSink
         {
             compName = cover.getCompanyName();
 
-            if ( cover.getCoverDate_() == null )
+            if ( cover.getCoverdate() == null )
             {
                 cover.setCoverDate( new Date() );
-                date = cover.getCoverDate_();
+                date = cover.getCoverdate();
                 cover.setCoverDate( null );
             }
             else
             {
-                date = cover.getCoverDate_();
+                date = cover.getCoverdate();
             }
         }
 

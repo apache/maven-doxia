@@ -234,7 +234,7 @@
           <type>Date</type>
           <identifier>true</identifier>
         </field>
-        <field>
+        <field java.getter="false">
           <name>creationdate</name>
           <version>1.0.1+</version>
           <description><![CDATA[
@@ -255,7 +255,7 @@
           <type>Date</type>
           <identifier>true</identifier>
         </field>
-        <field>
+        <field java.getter="false">
           <name>modifydate</name>
           <version>1.0.1+</version>
           <description><![CDATA[
@@ -276,7 +276,7 @@
           <type>Date</type>
           <identifier>true</identifier>
         </field>
-        <field>
+        <field java.getter="false">
           <name>printdate</name>
           <version>1.0.1+</version>
           <description><![CDATA[
@@ -489,57 +489,54 @@
      * Get the date and time when the document was created initially.
      *
      * @return the <code>getCreationDate()</code> if setted, formatted using ISO-8601 English format, otherwise return
-     * the <code>getCreationdate()</code>.
+     * the <code>creationdate</code>.
      * @since 1.1.1
      * @see #getCreationDate()
-     * @see #getCreationdate()
      */
-    public String getCreationDate_()
+    public String getCreationdate()
     {
         if ( getCreationDate() != null )
         {
             return ISO_8601_FORMAT.format( getCreationDate() );
         }
 
-        return getCreationdate();
+        return this.creationdate;
     }
 
     /**
      * Get the date and time when the document was last modified.
      *
      * @return the <code>getDate()</code> if setted, formatted using ISO-8601 English format, otherwise return
-     * the <code>getModifydate()</code>.
+     * the <code>modifydate</code>.
      * @since 1.1.1
      * @see #getDate()
-     * @see #getModifydate()
      */
-    public String getModifyDate_()
+    public String getModifydate()
     {
         if ( getDate() != null )
         {
             return ISO_8601_FORMAT.format( getDate() );
         }
 
-        return getModifydate();
+        return this.modifydate;
     }
 
     /**
      * Get the date and time when the document was last printed.
      *
      * @return the <code>getPrintDate()</code> if setted, formatted using ISO-8601 English format, otherwise return
-     * the <code>getPrintdate()</code>.
+     * the <code>printdate</code>.
      * @since 1.1.1
      * @see #getPrintDate()
-     * @see #getPrintdate()
      */
-    public String getPrintDate_()
+    public String getPrintdate()
     {
         if ( getPrintDate() != null )
         {
             return ISO_8601_FORMAT.format( getPrintDate() );
         }
 
-        return getPrintdate();
+        return this.printdate;
     }
             ]]>
           </code>
@@ -752,7 +749,7 @@
           <type>Date</type>
           <identifier>true</identifier>
         </field>
-        <field xml.attribute="true">
+        <field java.getter="false" xml.attribute="true">
           <name>modifydate</name>
           <version>1.0.1+</version>
           <description><![CDATA[
@@ -775,19 +772,18 @@
      * Get the date and time when the template was last modified.
      *
      * @return the <code>getDate()</code> if setted, formatted using ISO-8601 English format, otherwise return
-     * the <code>getModifydate()</code>.
+     * the <code>modifydate</code>.
      * @since 1.1.1
      * @see #getDate()
-     * @see #getModifydate()
      */
-    public String getModifyDate_()
+    public String getModifydate()
     {
         if ( getDate() != null )
         {
             return ISO_8601_FORMAT.format( getDate() );
         }
 
-        return getModifydate();
+        return this.modifydate;
     }
             ]]>
           </code>
@@ -1041,7 +1037,7 @@
           <type>Date</type>
           <identifier>true</identifier>
         </field>
-        <field>
+        <field java.getter="false">
           <name>coverdate</name>
           <description><![CDATA[
             The date as String (recommended format is ISO 8601) to appear on the cover.
@@ -1158,19 +1154,18 @@
      * Get the date to appear on the cover.
      *
      * @return the <code>getCoverDate()</code> if setted, formatted using ISO-8601 English format, otherwise return
-     * the <code>getCoverdate()</code>.
+     * the <code>coverdate</code>.
      * @since 1.1.1
      * @see #getCoverDate()
-     * @see #getCoverdate()
      */
-    public String getCoverDate_()
+    public String getCoverdate()
     {
         if ( getCoverDate() != null )
         {
             return ISO_8601_FORMAT.format( getCoverDate() );
         }
 
-        return getCoverdate();
+        return this.coverdate;
     }
             ]]>
           </code>
