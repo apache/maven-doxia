@@ -349,11 +349,7 @@ public class DocBookParserTest extends AbstractParserTest
         Iterator it = sink.getEventList().iterator();
 
         assertEquals( "table", ( (SinkEventElement) it.next() ).getName() );
-        // FIXME: handle tgroup, colspec, tbody
-        assertEquals( "unknown", ( (SinkEventElement) it.next() ).getName() );
-        assertEquals( "unknown", ( (SinkEventElement) it.next() ).getName() );
-        assertEquals( "unknown", ( (SinkEventElement) it.next() ).getName() );
-        assertEquals( "unknown", ( (SinkEventElement) it.next() ).getName() );
+        assertEquals( "tableRows", ( (SinkEventElement) it.next() ).getName() );
         assertEquals( "tableRow", ( (SinkEventElement) it.next() ).getName() );
         assertEquals( "tableCell", ( (SinkEventElement) it.next() ).getName() );
         assertEquals( "text", ( (SinkEventElement) it.next() ).getName() );
@@ -362,6 +358,7 @@ public class DocBookParserTest extends AbstractParserTest
         assertEquals( "text", ( (SinkEventElement) it.next() ).getName() );
         assertEquals( "tableCell_", ( (SinkEventElement) it.next() ).getName() );
         assertEquals( "tableRow_", ( (SinkEventElement) it.next() ).getName() );
+        assertEquals( "tableRows_", ( (SinkEventElement) it.next() ).getName() );
         assertEquals( "table_", ( (SinkEventElement) it.next() ).getName() );
         assertFalse( it.hasNext() );
     }
