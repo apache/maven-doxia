@@ -145,11 +145,20 @@ public class DocBookParser
             sink.body();
         }
 
+        if ( isParent( SimplifiedDocbookMarkup.ARTICLEINFO_TAG.toString() ) )
+        {
+            return; // TODO: meta data are ignored, implement!
+        }
+
         SinkEventAttributeSet attribs = getAttributesFromParser( parser );
 
         if ( parser.getName().equals( SimplifiedDocbookMarkup.ARTICLE_TAG.toString() ) )
         {
             handleArticleStart( sink, attribs );
+        }
+        else if ( parser.getName().equals( SimplifiedDocbookMarkup.ARTICLEINFO_TAG.toString() ) )
+        {
+            parent.push( SimplifiedDocbookMarkup.ARTICLEINFO_TAG.toString() );
         }
         else if ( HIER_ELEMENTS.contains( parser.getName() ) )
         {
@@ -212,6 +221,14 @@ public class DocBookParser
         {
             sink.body_();
         }
+        else if ( parser.getName().equals( SimplifiedDocbookMarkup.ARTICLEINFO_TAG.toString() ) )
+        {
+            parent.pop();
+        }
+        else if ( isParent( SimplifiedDocbookMarkup.ARTICLEINFO_TAG.toString() ) )
+        {
+            return; // TODO: meta data are ignored, implement!
+        }
         else if ( HIER_ELEMENTS.contains( parser.getName() ) )
         {
             sink.section_( level );
@@ -265,8 +282,7 @@ public class DocBookParser
         else if ( parser.getName().equals( SimplifiedDocbookMarkup.IMAGEOBJECT_TAG.toString() )
                 || parser.getName().equals( SimplifiedDocbookMarkup.FIGURE_TAG.toString() )
                 || parser.getName().equals( SimplifiedDocbookMarkup.THEAD_TAG.toString() )
-                || parser.getName().equals( SimplifiedDocbookMarkup.TBODY_TAG.toString() )
-                || parser.getName().equals( SimplifiedDocbookMarkup.ARTICLEINFO_TAG.toString() ) )
+                || parser.getName().equals( SimplifiedDocbookMarkup.TBODY_TAG.toString() ) )
         {
             parent.pop();
         }
@@ -397,6 +413,36 @@ public class DocBookParser
     {
         // TODO always false due to "Error validating the model: http://www.oasis-open.org/docbook/sgml/4.4/ent/isoamsa.ent"
         return false;
+    }
+
+    /** {@inheritDoc} */
+    protected void handleCdsect( XmlPullParser parser, Sink sink )
+            throws XmlPullParserException
+    {
+        if ( !isParent( SimplifiedDocbookMarkup.ARTICLEINFO_TAG.toString() ) )
+        {
+            super.handleCdsect( parser, sink );
+        }
+    }
+
+    /** {@inheritDoc} */
+    protected void handleEntity( XmlPullParser parser, Sink sink )
+            throws XmlPullParserException
+    {
+        if ( !isParent( SimplifiedDocbookMarkup.ARTICLEINFO_TAG.toString() ) )
+        {
+            super.handleEntity( parser, sink );
+        }
+    }
+
+    /** {@inheritDoc} */
+    protected void handleText( XmlPullParser parser, Sink sink )
+            throws XmlPullParserException
+    {
+        if ( !isParent( SimplifiedDocbookMarkup.ARTICLEINFO_TAG.toString() ) )
+        {
+            super.handleText( parser, sink );
+        }
     }
 
     // ----------------------------------------------------------------------
@@ -597,8 +643,7 @@ public class DocBookParser
         {
             sink.tableCaption( attribs );
         }
-        else if ( isParent( SimplifiedDocbookMarkup.ARTICLE_TAG.toString() )
-                || isParent( SimplifiedDocbookMarkup.ARTICLEINFO_TAG.toString() ) )
+        else if ( isParent( SimplifiedDocbookMarkup.ARTICLE_TAG.toString() ) )
         {
             sink.title( attribs );
         }
@@ -623,8 +668,7 @@ public class DocBookParser
         {
             sink.sectionTitle_( level );
         }
-        else if ( isParent( SimplifiedDocbookMarkup.ARTICLE_TAG.toString() )
-                || isParent( SimplifiedDocbookMarkup.ARTICLEINFO_TAG.toString() ) )
+        else if ( isParent( SimplifiedDocbookMarkup.ARTICLE_TAG.toString() ) )
         {
             sink.title_();
         }
@@ -762,8 +806,7 @@ public class DocBookParser
             handleFigureStart( sink, attribs );
         }
         else if ( name.equals( SimplifiedDocbookMarkup.IMAGEOBJECT_TAG.toString() )
-                || name.equals( SimplifiedDocbookMarkup.FIGURE_TAG.toString() )
-                || name.equals( SimplifiedDocbookMarkup.ARTICLEINFO_TAG.toString() ) )
+                || name.equals( SimplifiedDocbookMarkup.FIGURE_TAG.toString() ) )
         {
             parent.push( name );
         }
