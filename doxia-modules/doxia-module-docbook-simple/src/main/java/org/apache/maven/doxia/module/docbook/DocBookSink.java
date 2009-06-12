@@ -148,6 +148,8 @@ public class DocBookSink
 
     private boolean skip;
 
+    private boolean paragraph;
+
     private String encoding;
 
     /** Map of warn messages with a String as key to describe the error type and a Set as value.
@@ -878,6 +880,7 @@ public class DocBookSink
      */
     public void list()
     {
+        paragraph_();
         writeStartTag( SimplifiedDocbookMarkup.ITEMIZEDLIST_TAG );
     }
 
@@ -897,6 +900,7 @@ public class DocBookSink
     public void listItem()
     {
         writeStartTag( SimplifiedDocbookMarkup.LISTITEM_TAG );
+        paragraph();
     }
 
     /**
@@ -905,6 +909,7 @@ public class DocBookSink
      */
     public void listItem_()
     {
+        paragraph_();
         writeEndTag( SimplifiedDocbookMarkup.LISTITEM_TAG );
     }
 
@@ -935,6 +940,8 @@ public class DocBookSink
                 numeration = SimplifiedDocbookMarkup.ARABIC_STYLE;
         }
 
+        paragraph_();
+
         MutableAttributeSet att = new SimpleAttributeSet();
         att.addAttribute( SimplifiedDocbookMarkup.NUMERATION_ATTRIBUTE, numeration );
 
@@ -957,6 +964,7 @@ public class DocBookSink
     public void numberedListItem()
     {
         writeStartTag( SimplifiedDocbookMarkup.LISTITEM_TAG );
+        paragraph();
     }
 
     /**
@@ -965,6 +973,7 @@ public class DocBookSink
      */
     public void numberedListItem_()
     {
+        paragraph_();
         writeEndTag( SimplifiedDocbookMarkup.LISTITEM_TAG );
     }
 
@@ -974,6 +983,7 @@ public class DocBookSink
      */
     public void definitionList()
     {
+        paragraph_();
         writeStartTag( SimplifiedDocbookMarkup.VARIABLELIST_TAG );
     }
 
@@ -1029,6 +1039,7 @@ public class DocBookSink
     public void definition()
     {
         writeStartTag( SimplifiedDocbookMarkup.LISTITEM_TAG );
+        paragraph();
     }
 
     /**
@@ -1037,6 +1048,7 @@ public class DocBookSink
      */
     public void definition_()
     {
+        paragraph_();
         writeEndTag( SimplifiedDocbookMarkup.LISTITEM_TAG );
     }
 
@@ -1046,7 +1058,11 @@ public class DocBookSink
      */
     public void paragraph()
     {
-        writeStartTag( SimplifiedDocbookMarkup.PARA_TAG );
+        if ( !paragraph )
+        {
+            writeStartTag( SimplifiedDocbookMarkup.PARA_TAG );
+            paragraph = true;
+        }
     }
 
     /**
@@ -1055,7 +1071,11 @@ public class DocBookSink
      */
     public void paragraph_()
     {
-        writeEndTag( SimplifiedDocbookMarkup.PARA_TAG );
+        if ( paragraph )
+        {
+            writeEndTag( SimplifiedDocbookMarkup.PARA_TAG );
+            paragraph = false;
+        }
     }
 
     /**
@@ -1065,6 +1085,7 @@ public class DocBookSink
     public void verbatim( boolean boxed )
     {
         verbatimFlag = true;
+        paragraph_();
         writeStartTag( SimplifiedDocbookMarkup.PROGRAMLISTING_TAG );
     }
 

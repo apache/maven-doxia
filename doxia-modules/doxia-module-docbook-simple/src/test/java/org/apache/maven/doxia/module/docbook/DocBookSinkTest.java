@@ -128,22 +128,22 @@ public class DocBookSinkTest extends AbstractSinkTest
     /** {@inheritDoc} */
     protected String getListBlock( String item )
     {
-        return "<itemizedlist><listitem>" + item  + "</listitem>" + "</itemizedlist>";
+        return "<itemizedlist><listitem><para>" + item  + "</para></listitem>" + "</itemizedlist>";
     }
 
     /** {@inheritDoc} */
     protected String getNumberedListBlock( String item )
     {
-        return "<orderedlist numeration=\"lowerroman\"><listitem>"
-            + item  + "</listitem>" + "</orderedlist>";
+        return "<orderedlist numeration=\"lowerroman\"><listitem><para>"
+            + item  + "</para></listitem>" + "</orderedlist>";
     }
 
     /** {@inheritDoc} */
     protected String getDefinitionListBlock( String definum, String definition )
     {
         return "<variablelist><varlistentry><term>" + definum
-            + "</term>" + "<listitem>" + definition
-            + "</listitem>" + "</varlistentry>" + "</variablelist>";
+            + "</term>" + "<listitem><para>" + definition
+            + "</para></listitem>" + "</varlistentry>" + "</variablelist>";
     }
 
     /** {@inheritDoc} */
