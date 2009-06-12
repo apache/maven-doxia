@@ -58,6 +58,8 @@ public class DocBookParser
 
     private boolean inHead;
 
+    private boolean ignore;
+
     /**
      * A selective stack of parent elements
      */
@@ -73,6 +75,12 @@ public class DocBookParser
      * and that should be emitted into the Sink's head.
      */
     private static final Collection META_ELEMENTS = new HashSet();
+
+    /**
+     * Simplified DocBook elements that occur within &lt;articleinfo&gt;
+     * and that are currently recognized by the parser.
+     */
+    private static final Collection ARTICLEINFO_ELEMENTS = new HashSet();
 
     /**
      * The list of DocBook elements that will be rendered verbatim
@@ -101,6 +109,10 @@ public class DocBookParser
         META_ELEMENTS.add( SimplifiedDocbookMarkup.SUBTITLE_TAG.toString() );
         META_ELEMENTS.add( SimplifiedDocbookMarkup.TITLE_TAG.toString() );
         META_ELEMENTS.add( SimplifiedDocbookMarkup.TITLEABBREV_TAG.toString() );
+
+        ARTICLEINFO_ELEMENTS.add( SimplifiedDocbookMarkup.TITLE_TAG.toString() );
+        ARTICLEINFO_ELEMENTS.add( SimplifiedDocbookMarkup.CORPAUTHOR_TAG.toString() );
+        ARTICLEINFO_ELEMENTS.add( SimplifiedDocbookMarkup.DATE_TAG.toString() );
 
         HIER_ELEMENTS.add( SimplifiedDocbookMarkup.SECTION_TAG.toString() );
         HIER_ELEMENTS.add( SimplifiedDocbookMarkup.APPENDIX_TAG.toString() );
@@ -145,16 +157,15 @@ public class DocBookParser
             sink.body();
         }
 
-        if ( isParent( SimplifiedDocbookMarkup.ARTICLEINFO_TAG.toString() ) )
-        {
-            return; // TODO: meta data are ignored, implement!
-        }
-
         SinkEventAttributeSet attribs = getAttributesFromParser( parser );
 
         if ( parser.getName().equals( SimplifiedDocbookMarkup.ARTICLE_TAG.toString() ) )
         {
             handleArticleStart( sink, attribs );
+        }
+        else if ( isParent( SimplifiedDocbookMarkup.ARTICLEINFO_TAG.toString() ) )
+        {
+            handleArticleInfoStartTags( parser.getName(), sink, attribs );
         }
         else if ( parser.getName().equals( SimplifiedDocbookMarkup.ARTICLEINFO_TAG.toString() ) )
         {
@@ -188,14 +199,6 @@ public class DocBookParser
         {
             handleTitleStart( sink, attribs );
         }
-        else if ( parser.getName().equals( SimplifiedDocbookMarkup.CORPAUTHOR_TAG.toString() ) )
-        {
-            sink.author( attribs );
-        }
-        else if ( parser.getName().equals( SimplifiedDocbookMarkup.DATE_TAG.toString() ) )
-        {
-            sink.date( attribs );
-        }
         else if ( parser.getName().equals( SimplifiedDocbookMarkup.EMAIL_TAG.toString() ) )
         {
             handleEmailStart( parser, sink, attribs );
@@ -227,7 +230,7 @@ public class DocBookParser
         }
         else if ( isParent( SimplifiedDocbookMarkup.ARTICLEINFO_TAG.toString() ) )
         {
-            return; // TODO: meta data are ignored, implement!
+             handleArticleInfoEndTags( parser.getName(), sink );
         }
         else if ( HIER_ELEMENTS.contains( parser.getName() ) )
         {
@@ -361,14 +364,6 @@ public class DocBookParser
         {
             handleTitleEnd( sink );
         }
-        else if ( parser.getName().equals( SimplifiedDocbookMarkup.CORPAUTHOR_TAG.toString() ) )
-        {
-            sink.author_();
-        }
-        else if ( parser.getName().equals( SimplifiedDocbookMarkup.DATE_TAG.toString() ) )
-        {
-            sink.date_();
-        }
         else if ( parser.getName().equals( SimplifiedDocbookMarkup.ULINK_TAG.toString() )
                 || parser.getName().equals( SimplifiedDocbookMarkup.LINK_TAG.toString() ) )
         {
@@ -419,7 +414,7 @@ public class DocBookParser
     protected void handleCdsect( XmlPullParser parser, Sink sink )
             throws XmlPullParserException
     {
-        if ( !isParent( SimplifiedDocbookMarkup.ARTICLEINFO_TAG.toString() ) )
+        if ( !ignore )
         {
             super.handleCdsect( parser, sink );
         }
@@ -429,7 +424,7 @@ public class DocBookParser
     protected void handleEntity( XmlPullParser parser, Sink sink )
             throws XmlPullParserException
     {
-        if ( !isParent( SimplifiedDocbookMarkup.ARTICLEINFO_TAG.toString() ) )
+        if ( !ignore )
         {
             super.handleEntity( parser, sink );
         }
@@ -439,7 +434,7 @@ public class DocBookParser
     protected void handleText( XmlPullParser parser, Sink sink )
             throws XmlPullParserException
     {
-        if ( !isParent( SimplifiedDocbookMarkup.ARTICLEINFO_TAG.toString() ) )
+        if ( !ignore )
         {
             super.handleText( parser, sink );
         }
@@ -448,6 +443,50 @@ public class DocBookParser
     // ----------------------------------------------------------------------
     //
     // ----------------------------------------------------------------------
+
+    private void handleArticleInfoStartTags( String name, Sink sink, SinkEventAttributeSet attribs )
+    {
+        if ( !ARTICLEINFO_ELEMENTS.contains( name ) )
+        {
+            ignore = true;
+            return; // TODO: other meta data are ignored, implement!
+        }
+
+        if ( name.equals( SimplifiedDocbookMarkup.TITLE_TAG.toString() ) )
+        {
+            sink.title( attribs );
+        }
+        else if ( name.equals( SimplifiedDocbookMarkup.CORPAUTHOR_TAG.toString() ) )
+        {
+            sink.author( attribs );
+        }
+        else if ( name.equals( SimplifiedDocbookMarkup.DATE_TAG.toString() ) )
+        {
+            sink.date( attribs );
+        }
+    }
+
+    private void handleArticleInfoEndTags( String name, Sink sink )
+    {
+        if ( !ARTICLEINFO_ELEMENTS.contains( name ) )
+        {
+            ignore = false;
+            return; // TODO: other meta data are ignored, implement!
+        }
+
+        if ( name.equals( SimplifiedDocbookMarkup.TITLE_TAG.toString() ) )
+        {
+            sink.title_();
+        }
+        else if ( name.equals( SimplifiedDocbookMarkup.CORPAUTHOR_TAG.toString() ) )
+        {
+            sink.author_();
+        }
+        else if ( name.equals( SimplifiedDocbookMarkup.DATE_TAG.toString() ) )
+        {
+            sink.date_();
+        }
+    }
 
     private void handleCaptionStart( Sink sink, SinkEventAttributeSet attribs )
     {

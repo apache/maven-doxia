@@ -371,4 +371,36 @@ public class DocBookParserTest extends AbstractParserTest
         assertEquals( "table_", ( (SinkEventElement) it.next() ).getName() );
         assertFalse( it.hasNext() );
     }
+
+    /** @throws Exception  */
+    public void testHead()
+        throws Exception
+    {
+        String text = "<article><articleinfo><title>Title</title>"
+                + "<corpauthor>CorpAuthor</corpauthor><date>Date</date></articleinfo>"
+                + "<para>Paragraph</para></article>";
+
+        final SinkEventTestingSink sink = new SinkEventTestingSink();
+        parser.parse( text, sink );
+
+        Iterator it = sink.getEventList().iterator();
+
+        assertEquals( "head", ( (SinkEventElement) it.next() ).getName() );
+        assertEquals( "title", ( (SinkEventElement) it.next() ).getName() );
+        assertEquals( "text", ( (SinkEventElement) it.next() ).getName() );
+        assertEquals( "title_", ( (SinkEventElement) it.next() ).getName() );
+        assertEquals( "author", ( (SinkEventElement) it.next() ).getName() );
+        assertEquals( "text", ( (SinkEventElement) it.next() ).getName() );
+        assertEquals( "author_", ( (SinkEventElement) it.next() ).getName() );
+        assertEquals( "date", ( (SinkEventElement) it.next() ).getName() );
+        assertEquals( "text", ( (SinkEventElement) it.next() ).getName() );
+        assertEquals( "date_", ( (SinkEventElement) it.next() ).getName() );
+        assertEquals( "head_", ( (SinkEventElement) it.next() ).getName() );
+        assertEquals( "body", ( (SinkEventElement) it.next() ).getName() );
+        assertEquals( "paragraph", ( (SinkEventElement) it.next() ).getName() );
+        assertEquals( "text", ( (SinkEventElement) it.next() ).getName() );
+        assertEquals( "paragraph_", ( (SinkEventElement) it.next() ).getName() );
+        assertEquals( "body_", ( (SinkEventElement) it.next() ).getName() );
+        assertFalse( it.hasNext() );
+    }
 }
