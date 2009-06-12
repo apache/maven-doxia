@@ -297,7 +297,7 @@ public class DocBookParser
             || parser.getName().equals( SimplifiedDocbookMarkup.INFORMALTABLE_TAG.toString() ) )
         {
             sink.table_();
-            //TODO handle tgroups
+
             parent.pop();
         }
         else if ( parser.getName().equals( SimplifiedDocbookMarkup.TR_TAG.toString() )
@@ -671,7 +671,7 @@ public class DocBookParser
     private void handleTableStart( Sink sink, SinkEventAttributeSet attribs )
     {
         sink.table( attribs );
-        //TODO handle tgroups
+
         parent.push( SimplifiedDocbookMarkup.TABLE_TAG.toString() );
     }
 
