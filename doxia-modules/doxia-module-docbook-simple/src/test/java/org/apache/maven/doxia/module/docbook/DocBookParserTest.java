@@ -342,6 +342,7 @@ public class DocBookParserTest extends AbstractParserTest
     {
         String text = "<informaltable frame=\"none\"><tgroup cols=\"2\">"
                 + "<colspec colwidth=\"0.5in\"/><colspec colwidth=\"0.5in\"/>"
+                + "<thead><row><entry>head 1</entry><entry>head 2</entry></row></thead>"
                 + "<tbody><row><entry>1</entry><entry>2</entry></row></tbody></tgroup></informaltable>";
 
         final SinkEventTestingSink sink = new SinkEventTestingSink();
@@ -350,6 +351,14 @@ public class DocBookParserTest extends AbstractParserTest
 
         assertEquals( "table", ( (SinkEventElement) it.next() ).getName() );
         assertEquals( "tableRows", ( (SinkEventElement) it.next() ).getName() );
+        assertEquals( "tableRow", ( (SinkEventElement) it.next() ).getName() );
+        assertEquals( "tableHeaderCell", ( (SinkEventElement) it.next() ).getName() );
+        assertEquals( "text", ( (SinkEventElement) it.next() ).getName() );
+        assertEquals( "tableHeaderCell_", ( (SinkEventElement) it.next() ).getName() );
+        assertEquals( "tableHeaderCell", ( (SinkEventElement) it.next() ).getName() );
+        assertEquals( "text", ( (SinkEventElement) it.next() ).getName() );
+        assertEquals( "tableHeaderCell_", ( (SinkEventElement) it.next() ).getName() );
+        assertEquals( "tableRow_", ( (SinkEventElement) it.next() ).getName() );
         assertEquals( "tableRow", ( (SinkEventElement) it.next() ).getName() );
         assertEquals( "tableCell", ( (SinkEventElement) it.next() ).getName() );
         assertEquals( "text", ( (SinkEventElement) it.next() ).getName() );
