@@ -252,6 +252,8 @@ public class DocBookParser
         }
         else if ( parser.getName().equals( SimplifiedDocbookMarkup.LISTITEM_TAG.toString() ) )
         {
+            parent.pop();
+
             if ( isParent( SimplifiedDocbookMarkup.VARIABLELIST_TAG.toString() ) )
             {
                 sink.definition_();
@@ -609,6 +611,8 @@ public class DocBookParser
         {
             sink.listItem( attribs );
         }
+
+        parent.push( SimplifiedDocbookMarkup.LISTITEM_TAG.toString() );
     }
 
     private void handleOrderedListStart( Sink sink, SinkEventAttributeSet attribs )
@@ -647,7 +651,8 @@ public class DocBookParser
 
     private void handleParaEnd( Sink sink )
     {
-        if ( !isParent( SimplifiedDocbookMarkup.CAPTION_TAG.toString() ) )
+        if ( !isParent( SimplifiedDocbookMarkup.CAPTION_TAG.toString() )
+                && ! isParent( SimplifiedDocbookMarkup.LISTITEM_TAG.toString() ) )
         {
             sink.paragraph_();
         }
@@ -655,7 +660,8 @@ public class DocBookParser
 
     private void handleParaStart( Sink sink, SinkEventAttributeSet attribs )
     {
-        if ( !isParent( SimplifiedDocbookMarkup.CAPTION_TAG.toString() ) )
+        if ( !isParent( SimplifiedDocbookMarkup.CAPTION_TAG.toString() )
+                && ! isParent( SimplifiedDocbookMarkup.LISTITEM_TAG.toString() ) )
         {
             sink.paragraph( attribs );
         }

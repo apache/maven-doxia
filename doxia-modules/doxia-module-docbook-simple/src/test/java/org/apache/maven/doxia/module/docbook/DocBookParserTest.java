@@ -292,9 +292,7 @@ public class DocBookParserTest extends AbstractParserTest
 
         assertEquals( "list", ( (SinkEventElement) it.next() ).getName() );
         assertEquals( "listItem", ( (SinkEventElement) it.next() ).getName() );
-        assertEquals( "paragraph", ( (SinkEventElement) it.next() ).getName() );
         assertEquals( "text", ( (SinkEventElement) it.next() ).getName() );
-        assertEquals( "paragraph_", ( (SinkEventElement) it.next() ).getName() );
         assertEquals( "listItem_", ( (SinkEventElement) it.next() ).getName() );
         assertEquals( "list_", ( (SinkEventElement) it.next() ).getName() );
         assertFalse( it.hasNext() );
@@ -308,9 +306,7 @@ public class DocBookParserTest extends AbstractParserTest
         assertEquals( "numberedList", event.getName() );
         assertEquals( Sink.NUMBERING_UPPER_ALPHA, ( (Integer) event.getArgs()[0] ).intValue() );
         assertEquals( "numberedListItem", ( (SinkEventElement) it.next() ).getName() );
-        assertEquals( "paragraph", ( (SinkEventElement) it.next() ).getName() );
         assertEquals( "text", ( (SinkEventElement) it.next() ).getName() );
-        assertEquals( "paragraph_", ( (SinkEventElement) it.next() ).getName() );
         assertEquals( "numberedListItem_", ( (SinkEventElement) it.next() ).getName() );
         assertEquals( "numberedList_", ( (SinkEventElement) it.next() ).getName() );
         assertFalse( it.hasNext() );
@@ -327,9 +323,7 @@ public class DocBookParserTest extends AbstractParserTest
         assertEquals( "text", ( (SinkEventElement) it.next() ).getName() );
         assertEquals( "definedTerm_", ( (SinkEventElement) it.next() ).getName() );
         assertEquals( "definition", ( (SinkEventElement) it.next() ).getName() );
-        assertEquals( "paragraph", ( (SinkEventElement) it.next() ).getName() );
         assertEquals( "text", ( (SinkEventElement) it.next() ).getName() );
-        assertEquals( "paragraph_", ( (SinkEventElement) it.next() ).getName() );
         assertEquals( "definition_", ( (SinkEventElement) it.next() ).getName() );
         assertEquals( "definitionListItem_", ( (SinkEventElement) it.next() ).getName() );
         assertEquals( "definitionList_", ( (SinkEventElement) it.next() ).getName() );
