@@ -60,6 +60,8 @@ public class DocBookParser
 
     private boolean ignore;
 
+    private boolean simpleTag;
+
     /**
      * A selective stack of parent elements
      */
@@ -158,6 +160,7 @@ public class DocBookParser
         }
 
         SinkEventAttributeSet attribs = getAttributesFromParser( parser );
+        simpleTag = parser.isEmptyElementTag();
 
         if ( parser.getName().equals( SimplifiedDocbookMarkup.ARTICLE_TAG.toString() ) )
         {
@@ -211,7 +214,14 @@ public class DocBookParser
         {
             if ( !ignorable( parser.getName() ) )
             {
-                handleUnknown( parser, sink, HtmlMarkup.TAG_TYPE_START );
+                if ( simpleTag )
+                {
+                    handleUnknown( parser, sink, HtmlMarkup.TAG_TYPE_SIMPLE );
+                }
+                else
+                {
+                    handleUnknown( parser, sink, HtmlMarkup.TAG_TYPE_START );
+                }
             }
         }
     }
@@ -287,6 +297,7 @@ public class DocBookParser
         else if ( parser.getName().equals( SimplifiedDocbookMarkup.IMAGEOBJECT_TAG.toString() )
                 || parser.getName().equals( SimplifiedDocbookMarkup.FIGURE_TAG.toString() )
                 || parser.getName().equals( SimplifiedDocbookMarkup.THEAD_TAG.toString() )
+                || parser.getName().equals( SimplifiedDocbookMarkup.TFOOT_TAG.toString() )
                 || parser.getName().equals( SimplifiedDocbookMarkup.TBODY_TAG.toString() ) )
         {
             parent.pop();
@@ -332,14 +343,14 @@ public class DocBookParser
         else if ( BOLD_ELEMENTS.contains( parser.getName() )
             && MONOSPACE_ELEMENTS.contains( parser.getName() ) )
         {
-            sink.bold_();
             sink.monospaced_();
+            sink.bold_();
         }
         else if ( ITALIC_ELEMENTS.contains( parser.getName() )
             && MONOSPACE_ELEMENTS.contains( parser.getName() ) )
         {
-            sink.italic_();
             sink.monospaced_();
+            sink.italic_();
         }
         else if ( BOLD_ELEMENTS.contains( parser.getName() ) )
         {
@@ -374,6 +385,10 @@ public class DocBookParser
                 parent.pop();
                 sink.link_();
             }
+        }
+        else if ( !simpleTag && !ignorable( parser.getName() ) )
+        {
+            handleUnknown( parser, sink, HtmlMarkup.TAG_TYPE_END );
         }
     }
 
@@ -669,6 +684,38 @@ public class DocBookParser
 
     private void handleTableStart( Sink sink, SinkEventAttributeSet attribs )
     {
+        Object frame = attribs.getAttribute( SimplifiedDocbookMarkup.FRAME_ATTRIBUTE );
+        if ( frame != null )
+        {
+            String fr = frame.toString();
+            if ( fr.equals( "all" ) )
+            {
+                fr = "box";
+            }
+            else if ( fr.equals( "bottom" ) )
+            {
+                fr = "below";
+            }
+            else if ( fr.equals( "none" ) )
+            {
+                fr = "void";
+            }
+            else if ( fr.equals( "sides" ) )
+            {
+                fr = "vsides";
+            }
+            else if ( fr.equals( "top" ) )
+            {
+                fr = "above";
+            }
+            else if ( fr.equals( "topbot" ) )
+            {
+                fr = "hsides";
+            }
+
+            attribs.addAttribute( SimplifiedDocbookMarkup.FRAME_ATTRIBUTE, fr );
+        }
+
         sink.table( attribs );
 
         parent.push( SimplifiedDocbookMarkup.TABLE_TAG.toString() );
@@ -913,6 +960,7 @@ public class DocBookParser
             handleTableStart( sink, attribs );
         }
         else if ( name.equals( SimplifiedDocbookMarkup.THEAD_TAG.toString() )
+                || name.equals( SimplifiedDocbookMarkup.TFOOT_TAG.toString() )
                 || name.equals( SimplifiedDocbookMarkup.TBODY_TAG.toString() ) )
         {
             parent.push( name );
