@@ -25,7 +25,6 @@ import java.io.InputStream;
 import java.io.Reader;
 import java.io.StringReader;
 import java.net.JarURLConnection;
-import java.net.URISyntaxException;
 import java.net.URL;
 import java.util.ArrayList;
 import java.util.Collections;
