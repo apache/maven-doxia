@@ -634,30 +634,12 @@ public class DocBookParser
     {
         //default enumeration style is decimal
         int numeration = Sink.NUMBERING_DECIMAL;
-        String style = SimplifiedDocbookMarkup.ARABIC_STYLE;
 
         Object num = attribs.getAttribute( SimplifiedDocbookMarkup.NUMERATION_ATTRIBUTE );
 
         if ( num != null )
         {
-            style = num.toString();
-        }
-
-        if ( SimplifiedDocbookMarkup.LOWERALPHA_STYLE.equals( style ) )
-        {
-            numeration = Sink.NUMBERING_LOWER_ALPHA;
-        }
-        else if ( SimplifiedDocbookMarkup.LOWERROMAN_STYLE.equals( style ) )
-        {
-            numeration = Sink.NUMBERING_LOWER_ROMAN;
-        }
-        else if ( SimplifiedDocbookMarkup.UPPERALPHA_STYLE.equals( style ) )
-        {
-            numeration = Sink.NUMBERING_UPPER_ALPHA;
-        }
-        else if ( SimplifiedDocbookMarkup.UPPERROMAN_STYLE.equals( style ) )
-        {
-            numeration = Sink.NUMBERING_UPPER_ROMAN;
+            numeration = DocbookUtils.doxiaListNumbering( num.toString() );
         }
 
         sink.numberedList( numeration, attribs );
@@ -687,33 +669,8 @@ public class DocBookParser
         Object frame = attribs.getAttribute( SimplifiedDocbookMarkup.FRAME_ATTRIBUTE );
         if ( frame != null )
         {
-            String fr = frame.toString();
-            if ( fr.equals( "all" ) )
-            {
-                fr = "box";
-            }
-            else if ( fr.equals( "bottom" ) )
-            {
-                fr = "below";
-            }
-            else if ( fr.equals( "none" ) )
-            {
-                fr = "void";
-            }
-            else if ( fr.equals( "sides" ) )
-            {
-                fr = "vsides";
-            }
-            else if ( fr.equals( "top" ) )
-            {
-                fr = "above";
-            }
-            else if ( fr.equals( "topbot" ) )
-            {
-                fr = "hsides";
-            }
-
-            attribs.addAttribute( SimplifiedDocbookMarkup.FRAME_ATTRIBUTE, fr );
+            attribs.addAttribute( SimplifiedDocbookMarkup.FRAME_ATTRIBUTE,
+                    DocbookUtils.doxiaTableFrameAttribute( frame.toString() ) );
         }
 
         sink.table( attribs );

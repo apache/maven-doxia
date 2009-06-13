@@ -920,25 +920,7 @@ public class DocBookSink
      */
     public void numberedList( int numbering )
     {
-        String numeration;
-        switch ( numbering )
-        {
-            case NUMBERING_UPPER_ALPHA:
-                numeration = SimplifiedDocbookMarkup.UPPERALPHA_STYLE;
-                break;
-            case NUMBERING_LOWER_ALPHA:
-                numeration = SimplifiedDocbookMarkup.LOWERALPHA_STYLE;
-                break;
-            case NUMBERING_UPPER_ROMAN:
-                numeration = SimplifiedDocbookMarkup.UPPERROMAN_STYLE;
-                break;
-            case NUMBERING_LOWER_ROMAN:
-                numeration = SimplifiedDocbookMarkup.LOWERROMAN_STYLE;
-                break;
-            case NUMBERING_DECIMAL:
-            default:
-                numeration = SimplifiedDocbookMarkup.ARABIC_STYLE;
-        }
+        String numeration = DocbookUtils.docbookListNumbering( numbering );
 
         paragraph_();
 
