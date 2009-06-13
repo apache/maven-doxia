@@ -39,6 +39,12 @@ import java.util.regex.Pattern;
 
 import javax.xml.XMLConstants;
 
+import org.apache.commons.httpclient.DefaultHttpMethodRetryHandler;
+import org.apache.commons.httpclient.HttpClient;
+import org.apache.commons.httpclient.HttpException;
+import org.apache.commons.httpclient.HttpStatus;
+import org.apache.commons.httpclient.methods.GetMethod;
+import org.apache.commons.httpclient.params.HttpMethodParams;
 import org.apache.maven.doxia.logging.Log;
 import org.apache.maven.doxia.macro.MacroExecutionException;
 import org.apache.maven.doxia.markup.XmlMarkup;
@@ -967,33 +973,68 @@ public abstract class AbstractXmlParser
         }
 
         /**
-         * Wrap {@link IOUtil#toByteArray(java.io.InputStream)} to throw SAXException.
+         * If url is not an http/https urls, call {@link IOUtil#toByteArray(java.io.InputStream)} to get the url
+         * content.
+         * Otherwise, call {@link GetMethod#getResponseBody()} from HttpClient to get the http content.
+         * Wrap all internal exceptions to throw SAXException.
          *
          * @param url not null
          * @return return an array of byte
          * @throws SAXException if any
-         * @see {@link IOUtil#toByteArray(java.io.InputStream)}
          */
         private static byte[] toByteArray( URL url )
             throws SAXException
         {
-            InputStream is = null;
+            if ( !( url.getProtocol().equalsIgnoreCase( "http" ) || url.getProtocol().equalsIgnoreCase( "https" ) ) )
+            {
+                InputStream is = null;
+                try
+                {
+                    is = url.openStream();
+                    if ( is == null )
+                    {
+                        throw new SAXException( "Cannot open stream from the url: " + url.toString() );
+                    }
+                    return IOUtil.toByteArray( is );
+                }
+                catch ( IOException e )
+                {
+                    throw new SAXException( "IOException: " + e.getMessage(), e );
+                }
+                finally
+                {
+                    IOUtil.close( is );
+                }
+            }
+
+            // it is an HTTP url, using HttpClient...
+            HttpClient client = new HttpClient();
+            GetMethod method = new GetMethod( url.toString() );
+
+            method.getParams().setParameter( HttpMethodParams.RETRY_HANDLER,
+                                             new DefaultHttpMethodRetryHandler( 3, false ) );
+
             try
             {
-                is = url.openStream();
-                if ( is == null )
+                int statusCode = client.executeMethod( method );
+                if ( statusCode != HttpStatus.SC_OK )
                 {
-                    throw new SAXException( "Cannot open stream from the url: " + url.toString() );
+                    throw new IOException( "Method failed: " + method.getStatusLine() );
                 }
-                return IOUtil.toByteArray( is );
+
+                return method.getResponseBody();
+            }
+            catch ( HttpException e )
+            {
+                throw new SAXException( "HttpException: Fatal protocol violation: " + e.getMessage(), e );
             }
             catch ( IOException e )
             {
-                throw new SAXException( "IOException: " + e.getMessage(), e );
+                throw new SAXException( "IOException: Fatal transport error: " + e.getMessage(), e );
             }
             finally
             {
-                IOUtil.close( is );
+                method.releaseConnection();
             }
         }
 
