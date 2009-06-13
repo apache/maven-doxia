@@ -19,14 +19,17 @@ package org.apache.maven.doxia.module.fml;
  * under the License.
  */
 
+import java.io.File;
 import java.io.Reader;
 
 import java.util.Iterator;
+import java.util.List;
 
 import org.apache.maven.doxia.parser.AbstractParserTest;
 import org.apache.maven.doxia.parser.Parser;
 import org.apache.maven.doxia.sink.SinkEventElement;
 import org.apache.maven.doxia.sink.SinkEventTestingSink;
+import org.codehaus.plexus.util.FileUtils;
 import org.codehaus.plexus.util.IOUtil;
 
 /**
@@ -36,6 +39,24 @@ import org.codehaus.plexus.util.IOUtil;
 public class FmlParserTest
     extends AbstractParserTest
 {
+    /** {@inheritDoc} */
+    protected void setUp()
+        throws Exception
+    {
+        super.setUp();
+
+        // AbstractXmlParser.CachedFileEntityResolver downloads DTD/XSD files in ${java.io.tmpdir}
+        // Be sure to delete them
+        String tmpDir = System.getProperty( "java.io.tmpdir" );
+        String excludes = "fml-*.xsd, xml.xsd";
+        List tmpFiles = FileUtils.getFileNames( new File( tmpDir ), excludes, null, true );
+        for ( Iterator it = tmpFiles.iterator(); it.hasNext(); )
+        {
+            File tmpFile = new File( it.next().toString() );
+            tmpFile.delete();
+        }
+    }
+
     /** {@inheritDoc} */
     protected Parser createParser()
     {

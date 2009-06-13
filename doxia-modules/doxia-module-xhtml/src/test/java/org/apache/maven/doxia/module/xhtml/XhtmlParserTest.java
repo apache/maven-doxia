@@ -19,12 +19,15 @@ package org.apache.maven.doxia.module.xhtml;
  * under the License.
  */
 
+import java.io.File;
 import java.util.Iterator;
+import java.util.List;
 
 import org.apache.maven.doxia.parser.AbstractParserTest;
 import org.apache.maven.doxia.parser.Parser;
 import org.apache.maven.doxia.sink.SinkEventElement;
 import org.apache.maven.doxia.sink.SinkEventTestingSink;
+import org.codehaus.plexus.util.FileUtils;
 
 
 /**
@@ -34,6 +37,24 @@ import org.apache.maven.doxia.sink.SinkEventTestingSink;
 public class XhtmlParserTest
     extends AbstractParserTest
 {
+    /** {@inheritDoc} */
+    protected void setUp()
+        throws Exception
+    {
+        super.setUp();
+
+        // AbstractXmlParser.CachedFileEntityResolver downloads DTD/XSD files in ${java.io.tmpdir}
+        // Be sure to delete them
+        String tmpDir = System.getProperty( "java.io.tmpdir" );
+        String excludes = "xhtml-lat1.ent, xhtml1-transitional.dtd, xhtml-special.ent, xhtml-symbol.ent";
+        List tmpFiles = FileUtils.getFileNames( new File( tmpDir ), excludes, null, true );
+        for ( Iterator it = tmpFiles.iterator(); it.hasNext(); )
+        {
+            File tmpFile = new File( it.next().toString() );
+            tmpFile.delete();
+        }
+    }
+
     /** {@inheritDoc} */
     protected Parser createParser()
     {

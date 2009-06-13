@@ -25,6 +25,7 @@ import java.io.Reader;
 import java.io.Writer;
 
 import java.util.Iterator;
+import java.util.List;
 
 import org.apache.maven.doxia.parser.AbstractParserTest;
 import org.apache.maven.doxia.parser.ParseException;
@@ -33,6 +34,7 @@ import org.apache.maven.doxia.sink.Sink;
 import org.apache.maven.doxia.sink.SinkEventElement;
 import org.apache.maven.doxia.sink.SinkEventTestingSink;
 
+import org.codehaus.plexus.util.FileUtils;
 import org.codehaus.plexus.util.IOUtil;
 
 /**
@@ -53,6 +55,17 @@ public class XdocParserTest
         super.setUp();
 
         parser = (XdocParser) lookup( Parser.ROLE, "xdoc" );
+
+        // AbstractXmlParser.CachedFileEntityResolver downloads DTD/XSD files in ${java.io.tmpdir}
+        // Be sure to delete them
+        String tmpDir = System.getProperty( "java.io.tmpdir" );
+        String excludes = "xdoc-*.xsd, xml.xsd";
+        List tmpFiles = FileUtils.getFileNames( new File( tmpDir ), excludes, null, true );
+        for ( Iterator it = tmpFiles.iterator(); it.hasNext(); )
+        {
+            File tmpFile = new File( it.next().toString() );
+            tmpFile.delete();
+        }
     }
 
     /** {@inheritDoc} */
