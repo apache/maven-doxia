@@ -167,7 +167,15 @@ public class XhtmlBookSink
     }
 
     /**
-     * Calls super.head_().
+     * Calls super.author().
+     */
+    public void bookAuthor()
+    {
+        super.author();
+    }
+
+    /**
+     * Calls super.author_().
      */
     public void bookAuthor_()
     {
@@ -175,7 +183,15 @@ public class XhtmlBookSink
     }
 
     /**
-     * Calls super.head_().
+     * Calls super.date().
+     */
+    public void bookDate()
+    {
+        super.date();
+    }
+
+    /**
+     * Calls super.date_().
      */
     public void bookDate_()
     {
