@@ -31,6 +31,7 @@ import org.codehaus.plexus.util.StringUtils;
 import java.io.IOException;
 import java.io.InputStream;
 import java.io.Writer;
+import java.util.Locale;
 
 /**
  * Latex Sink implementation.
@@ -603,15 +604,13 @@ public class LatexSink
      */
     public void figureGraphics( String name )
     {
-        String src = name;
-
-        if ( !src.endsWith( ".eps" ) )
+        if ( !name.toLowerCase( Locale.ENGLISH ).endsWith( ".eps" ) )
         {
-            getLog().warn( "[latex-sink] Found non-eps figure graphics!" );
+            getLog().warn( "[Latex Sink] Found non-eps figure graphics!" );
         }
 
         markup( "\\begin{center}" + EOL );
-        markup( "\\includegraphics{" + src + "}" + EOL );
+        markup( "\\includegraphics{" + name + "}" + EOL );
         markup( "\\end{center}" + EOL );
     }
 
@@ -1021,7 +1020,7 @@ public class LatexSink
      */
     public void unknown( String name, Object[] requiredParams, SinkEventAttributes attributes )
     {
-        getLog().warn( "Unknown Sink event in LatexSink: " + name + ", ignoring!" );
+        getLog().warn( "[Latex Sink] Unknown Sink event: '" + name + "', ignoring!" );
     }
 
     // -----------------------------------------------------------------------
@@ -1178,11 +1177,9 @@ public class LatexSink
      */
     protected String defaultSinkCommands()
     {
-        String commands = "";
-
         try
         {
-            commands = IOUtil.toString( getDefaultSinkCommands() );
+            return IOUtil.toString( getDefaultSinkCommands() );
         }
         catch ( IOException ioe )
         {
@@ -1192,8 +1189,6 @@ public class LatexSink
 
             return "";
         }
-
-        return commands;
     }
 
     /**
