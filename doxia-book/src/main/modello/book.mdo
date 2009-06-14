@@ -25,13 +25,16 @@
   <description>
     <![CDATA[
     <p>
-      This descriptor specifies the metadatas and the content for
-      a book.
+      This descriptor specifies the metadatas and the content for a book.
     </p>
     <p>
       A book is defined by a collection of chapters, a chapter by a
       collection of sections, a section by a file.
     </p>
+    <p>An XSD is available at:</p>
+    <ul>
+      <li><a href="http://maven.apache.org/xsd/book-1.0.0.xsd">http://maven.apache.org/xsd/book-1.0.0.xsd</a>.</li>
+    </ul>
     ]]>
   </description>
   <defaults>
