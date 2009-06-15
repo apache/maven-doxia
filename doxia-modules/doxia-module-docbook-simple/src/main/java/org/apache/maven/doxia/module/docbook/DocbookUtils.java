@@ -28,7 +28,7 @@ import org.apache.maven.doxia.sink.Sink;
  * @version $Id$
  * @since 1.1.1
  */
-public class DocbookUtils
+public final class DocbookUtils
 {
     /**
      * Translate a given Docbook table frame attribute value to a valid
@@ -45,31 +45,31 @@ public class DocbookUtils
      * otherwise an IllegalArgumentException is thrown.
      * @return a valid Doxia table frame attribute as specified above.
      */
-    public static final String doxiaTableFrameAttribute( String frame )
+    public static String doxiaTableFrameAttribute( final String frame )
     {
         String fr = frame;
 
-        if ( fr.equals( "all" ) )
+        if ( "all".equals( fr ) )
         {
             fr = "box";
         }
-        else if ( frame.equals( "bottom" ) )
+        else if ( "bottom".equals( fr ) )
         {
             fr = "below";
         }
-        else if ( fr.equals( "none" ) )
+        else if ( "none".equals( fr ) )
         {
             fr = "void";
         }
-        else if ( fr.equals( "sides" ) )
+        else if ( "sides".equals( fr ) )
         {
             fr = "vsides";
         }
-        else if ( fr.equals( "top" ) )
+        else if ( "top".equals( fr ) )
         {
             fr = "above";
         }
-        else if ( fr.equals( "topbot" ) )
+        else if ( "topbot".equals( fr ) )
         {
             fr = "hsides";
         }
@@ -91,7 +91,7 @@ public class DocbookUtils
      * @param style a docbook ordered-list numbering style.
      * @return a doxia numbering style.
      */
-    public static final int doxiaListNumbering( String style )
+    public static int doxiaListNumbering( final String style )
     {
         if ( SimplifiedDocbookMarkup.LOWERALPHA_STYLE.equals( style ) )
         {
@@ -129,7 +129,7 @@ public class DocbookUtils
      * @param numbering a doxia numbering style.
      * @return a docbook ordered-list numbering style.
      */
-    public static final String docbookListNumbering( int numbering )
+    public static String docbookListNumbering( final int numbering )
     {
         switch ( numbering )
         {
@@ -160,7 +160,7 @@ public class DocbookUtils
      * @param trade a valid class atribute for the docbook <code>&lt;trademark&gt;</code> tag.
      * @return the corresponding unicode character.
      */
-    public static final char trademarkFromClass( String trade )
+    public static char trademarkFromClass( final String trade )
     {
         if ( "registered".equals( trade ) )
         {
@@ -182,5 +182,10 @@ public class DocbookUtils
         {
             throw new IllegalArgumentException( "Not a trademark class: " + trade );
         }
+    }
+
+    private DocbookUtils()
+    {
+        // utility class
     }
 }

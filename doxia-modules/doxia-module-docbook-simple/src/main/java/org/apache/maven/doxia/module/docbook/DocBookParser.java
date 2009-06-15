@@ -66,7 +66,7 @@ public class DocBookParser
     /**
      * A selective stack of parent elements
      */
-    private Stack parent = new Stack();
+    private final Stack parent = new Stack();
 
     /**
      * The list of DocBook elements that introduce a new level of hierarchy.
@@ -185,7 +185,7 @@ public class DocBookParser
             sink.body();
         }
 
-        SinkEventAttributeSet attribs = getAttributesFromParser( parser );
+        final SinkEventAttributeSet attribs = getAttributesFromParser( parser );
         simpleTag = parser.isEmptyElementTag();
 
         if ( parser.getName().equals( SimplifiedDocbookMarkup.ARTICLE_TAG.toString() ) )
@@ -259,7 +259,7 @@ public class DocBookParser
         else if ( parser.getName().equals( SimplifiedDocbookMarkup.TRADEMARK_TAG.toString() ) )
         {
             trademark = '\u2122';
-            Object trade = attribs.getAttribute( "class" );
+            final Object trade = attribs.getAttribute( "class" );
 
             if ( trade != null )
             {
@@ -477,7 +477,7 @@ public class DocBookParser
     protected void handleComment( XmlPullParser parser, Sink sink )
         throws XmlPullParserException
     {
-        String text = parser.getText();
+        final String text = parser.getText();
 
         if ( "PB".equals( text.trim() ) )
         {
@@ -614,7 +614,7 @@ public class DocBookParser
     {
         try
         {
-            String mailto = parser.nextText();
+            final String mailto = parser.nextText();
             sink.link( "mailto:" + mailto, attribs );
             sink.monospaced();
             sink.text( mailto, null );
@@ -654,7 +654,7 @@ public class DocBookParser
 
     private void handleAnchorStart( Sink sink, SinkEventAttributeSet attribs  )
     {
-        Object id = attribs.getAttribute( SimplifiedDocbookMarkup.ID_ATTRIBUTE );
+        final Object id = attribs.getAttribute( SimplifiedDocbookMarkup.ID_ATTRIBUTE );
 
         if ( id != null )
         {
@@ -665,7 +665,7 @@ public class DocBookParser
     private void handleImageDataStart( Sink sink, SinkEventAttributeSet attribs )
             throws XmlPullParserException
     {
-        Object fileref = attribs.getAttribute( SimplifiedDocbookMarkup.FILEREF_ATTRIBUTE );
+        final Object fileref = attribs.getAttribute( SimplifiedDocbookMarkup.FILEREF_ATTRIBUTE );
 
         if ( fileref == null )
         {
@@ -685,7 +685,7 @@ public class DocBookParser
     private void handleLinkStart( Sink sink, SinkEventAttributeSet attribs )
             throws XmlPullParserException
     {
-        Object linkend = attribs.getAttribute( SimplifiedDocbookMarkup.LINKEND_ATTRIBUTE );
+        final Object linkend = attribs.getAttribute( SimplifiedDocbookMarkup.LINKEND_ATTRIBUTE );
 
         if ( linkend == null )
         {
@@ -719,7 +719,7 @@ public class DocBookParser
         //default enumeration style is decimal
         int numeration = Sink.NUMBERING_DECIMAL;
 
-        Object num = attribs.getAttribute( SimplifiedDocbookMarkup.NUMERATION_ATTRIBUTE );
+        final Object num = attribs.getAttribute( SimplifiedDocbookMarkup.NUMERATION_ATTRIBUTE );
 
         if ( num != null )
         {
@@ -750,7 +750,7 @@ public class DocBookParser
 
     private void handleTableStart( Sink sink, SinkEventAttributeSet attribs )
     {
-        Object frame = attribs.getAttribute( SimplifiedDocbookMarkup.FRAME_ATTRIBUTE );
+        final Object frame = attribs.getAttribute( SimplifiedDocbookMarkup.FRAME_ATTRIBUTE );
         if ( frame != null )
         {
             attribs.addAttribute( SimplifiedDocbookMarkup.FRAME_ATTRIBUTE,
@@ -807,7 +807,7 @@ public class DocBookParser
     private void handleUlinkStart( Sink sink, SinkEventAttributeSet attribs )
             throws XmlPullParserException
     {
-        Object url = attribs.getAttribute( SimplifiedDocbookMarkup.URL_ATTRIBUTE );
+        final Object url = attribs.getAttribute( SimplifiedDocbookMarkup.URL_ATTRIBUTE );
 
         if ( url == null )
         {
@@ -827,7 +827,7 @@ public class DocBookParser
     private void handleXrefStart( Sink sink, SinkEventAttributeSet attribs )
             throws XmlPullParserException
     {
-        Object linkend = attribs.getAttribute( SimplifiedDocbookMarkup.LINKEND_ATTRIBUTE );
+        final Object linkend = attribs.getAttribute( SimplifiedDocbookMarkup.LINKEND_ATTRIBUTE );
 
         if ( linkend == null )
         {
@@ -1014,21 +1014,21 @@ public class DocBookParser
         else if ( name.equals( SimplifiedDocbookMarkup.TGROUP_TAG.toString() ) )
         {
             // this is required by the DTD
-            int cols = Integer.parseInt( (String) attribs.getAttribute( "cols" ) );
+            final int cols = Integer.parseInt( (String) attribs.getAttribute( "cols" ) );
             int[] justification = new int[cols];
             int justif = Sink.JUSTIFY_LEFT;
 
-            Object align = attribs.getAttribute( SinkEventAttributeSet.ALIGN );
+            final Object align = attribs.getAttribute( SinkEventAttributeSet.ALIGN );
 
             if ( align != null )
             {
-                String al = align.toString();
+                final String al = align.toString();
 
-                if ( al.equals( "right" ) )
+                if ( "right".equals( al ) )
                 {
                     justif = Sink.JUSTIFY_RIGHT;
                 }
-                else if ( al.equals( "center" ) )
+                else if ( "center".equals( al ) )
                 {
                     justif = Sink.JUSTIFY_CENTER;
                 }
@@ -1040,24 +1040,18 @@ public class DocBookParser
             }
 
             boolean grid = false;
-            Object rowsep = attribs.getAttribute( "rowsep" );
+            final Object rowsep = attribs.getAttribute( "rowsep" );
 
-            if ( rowsep != null )
+            if ( rowsep != null && Integer.parseInt( (String) rowsep ) == 1 )
             {
-                if ( Integer.parseInt( (String) rowsep ) == 1 )
-                {
-                    grid = true;
-                }
+                grid = true;
             }
 
-            Object colsep = attribs.getAttribute( "colsep" );
+            final Object colsep = attribs.getAttribute( "colsep" );
 
-            if ( colsep != null )
+            if ( colsep != null && Integer.parseInt( (String) colsep ) == 1 )
             {
-                if ( Integer.parseInt( (String) colsep ) == 1 )
-                {
-                    grid = true;
-                }
+                grid = true;
             }
 
             sink.tableRows( justification, grid );
