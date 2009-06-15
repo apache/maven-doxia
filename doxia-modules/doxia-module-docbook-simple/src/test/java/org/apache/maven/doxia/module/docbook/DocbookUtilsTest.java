@@ -108,4 +108,24 @@ public class DocbookUtilsTest
             assertNotNull( e );
         }
     }
+        /**
+     * Test of trademarkFromClass method, of class DocbookUtils.
+     */
+    public void testTrademarkFromClass()
+    {
+        assertEquals( '\u00AE', DocbookUtils.trademarkFromClass( "registered" ) );
+        assertEquals( '\u00A9', DocbookUtils.trademarkFromClass( "copyright" ) );
+        assertEquals( '\u2120', DocbookUtils.trademarkFromClass( "service" ) );
+        assertEquals( '\u2122', DocbookUtils.trademarkFromClass( "trade" ) );
+
+        try
+        {
+            DocbookUtils.trademarkFromClass( "" );
+            fail();
+        }
+        catch ( IllegalArgumentException e )
+        {
+            assertNotNull( e );
+        }
+    }
 }

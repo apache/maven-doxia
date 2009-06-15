@@ -147,4 +147,40 @@ public class DocbookUtils
                 throw new IllegalArgumentException( "Not a valid numbering: " + numbering );
         }
     }
+
+    /**
+     * Get a trademark character from a class attribute.
+     *
+     * <p>The input String has to be one of <code>"registered"</code>, <code>"copyright"</code>,
+     * <code>"service"</code> or <code>"trade"</code> otherwise an IllegalArgumentException is thrown.</p>
+     *
+     * <p>The corresponding output is <code>'\u00AE'</code>, <code>'\u00A9'</code>,
+     * <code>'\u2120'</code> or <code>'\u2122'</code>.</p>
+     *
+     * @param trade a valid class atribute for the docbook <code>&lt;trademark&gt;</code> tag.
+     * @return the corresponding unicode character.
+     */
+    public static final char trademarkFromClass( String trade )
+    {
+        if ( "registered".equals( trade ) )
+        {
+            return '\u00AE';
+        }
+        else if ( "copyright".equals( trade ) )
+        {
+            return '\u00A9';
+        }
+        else if ( "service".equals( trade ) )
+        {
+            return '\u2120';
+        }
+        else if ( "trade".equals( trade ) )
+        {
+            return '\u2122';
+        }
+        else
+        {
+            throw new IllegalArgumentException( "Not a trademark class: " + trade );
+        }
+    }
 }

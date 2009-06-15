@@ -62,6 +62,7 @@ public class DocBookParser
 
     private boolean simpleTag;
 
+    private char trademark = '\u2122';
     /**
      * A selective stack of parent elements
      */
@@ -104,6 +105,11 @@ public class DocBookParser
      */
     private static final Collection MONOSPACE_ELEMENTS = new HashSet();
 
+    /**
+     * The list of DocBook elements that may be ignored, either because they don't
+     * require any special processing or because they are not yet implemented.
+     */
+    private static final Collection IGNORABLE_ELEMENTS = new HashSet();
     static
     {
         META_ELEMENTS.add( SimplifiedDocbookMarkup.ARTICLEINFO_TAG.toString() );
@@ -131,6 +137,8 @@ public class DocBookParser
         ITALIC_ELEMENTS.add( SimplifiedDocbookMarkup.SYSTEMITEM_TAG.toString() );
         ITALIC_ELEMENTS.add( SimplifiedDocbookMarkup.CITETITLE_TAG.toString() );
         ITALIC_ELEMENTS.add( SimplifiedDocbookMarkup.EMPHASIS_TAG.toString() );
+        ITALIC_ELEMENTS.add( SimplifiedDocbookMarkup.ATTRIBUTION_TAG.toString() );
+        ITALIC_ELEMENTS.add( SimplifiedDocbookMarkup.LINEANNOTATION_TAG.toString() );
 
         MONOSPACE_ELEMENTS.add( SimplifiedDocbookMarkup.COMPUTEROUTPUT_TAG.toString() );
         MONOSPACE_ELEMENTS.add( SimplifiedDocbookMarkup.REPLACEABLE_TAG.toString() );
@@ -139,6 +147,24 @@ public class DocBookParser
         MONOSPACE_ELEMENTS.add( SimplifiedDocbookMarkup.SYSTEMITEM_TAG.toString() );
         MONOSPACE_ELEMENTS.add( SimplifiedDocbookMarkup.USERINPUT_TAG.toString() );
         MONOSPACE_ELEMENTS.add( SimplifiedDocbookMarkup.FILENAME_TAG.toString() );
+
+        IGNORABLE_ELEMENTS.add( SimplifiedDocbookMarkup.ABBREV_TAG.toString() );
+        IGNORABLE_ELEMENTS.add( SimplifiedDocbookMarkup.ABSTRACT_TAG.toString() );
+        IGNORABLE_ELEMENTS.add( SimplifiedDocbookMarkup.BIBLIOMIXED_TAG.toString() );
+        IGNORABLE_ELEMENTS.add( SimplifiedDocbookMarkup.BIBLIOMSET_TAG.toString() );
+        IGNORABLE_ELEMENTS.add( SimplifiedDocbookMarkup.COLSPEC_TAG.toString() );
+        IGNORABLE_ELEMENTS.add( SimplifiedDocbookMarkup.EPIGRAPH_TAG.toString() );
+        IGNORABLE_ELEMENTS.add( SimplifiedDocbookMarkup.EXAMPLE_TAG.toString() );
+        IGNORABLE_ELEMENTS.add( SimplifiedDocbookMarkup.FOOTNOTEREF_TAG.toString() );
+        IGNORABLE_ELEMENTS.add( SimplifiedDocbookMarkup.IMAGEOBJECT_TAG.toString() );
+        IGNORABLE_ELEMENTS.add( SimplifiedDocbookMarkup.INLINEMEDIAOBJECT_TAG.toString() );
+        IGNORABLE_ELEMENTS.add( SimplifiedDocbookMarkup.ISSUENUM_TAG.toString() );
+        IGNORABLE_ELEMENTS.add( SimplifiedDocbookMarkup.PHRASE_TAG.toString() );
+        IGNORABLE_ELEMENTS.add( SimplifiedDocbookMarkup.PUBDATE_TAG.toString() );
+        IGNORABLE_ELEMENTS.add( SimplifiedDocbookMarkup.PUBLISHERNAME_TAG.toString() );
+        IGNORABLE_ELEMENTS.add( SimplifiedDocbookMarkup.SPANSPEC_TAG.toString() );
+        IGNORABLE_ELEMENTS.add( SimplifiedDocbookMarkup.TEXTOBJECT_TAG.toString() );
+        IGNORABLE_ELEMENTS.add( SimplifiedDocbookMarkup.VOLUMENUM_TAG.toString() );
     }
 
     // ----------------------------------------------------------------------
@@ -173,6 +199,22 @@ public class DocBookParser
         else if ( parser.getName().equals( SimplifiedDocbookMarkup.ARTICLEINFO_TAG.toString() ) )
         {
             parent.push( SimplifiedDocbookMarkup.ARTICLEINFO_TAG.toString() );
+        }
+        else if ( parser.getName().equals( SimplifiedDocbookMarkup.FOOTNOTE_TAG.toString() )
+                || parser.getName().equals( SimplifiedDocbookMarkup.SECTIONINFO_TAG.toString() )
+                || parser.getName().equals( SimplifiedDocbookMarkup.VIDEOOBJECT_TAG.toString() )
+                || parser.getName().equals( SimplifiedDocbookMarkup.AUDIOOBJECT_TAG.toString() ) )
+        {
+            parent.push( parser.getName() );
+            ignore = true;
+        }
+        else if ( isParent( ( SimplifiedDocbookMarkup.FOOTNOTE_TAG.toString() ) )
+                || isParent( SimplifiedDocbookMarkup.AUDIOOBJECT_TAG.toString() )
+                || isParent( SimplifiedDocbookMarkup.VIDEOOBJECT_TAG.toString() )
+                || isParent( SimplifiedDocbookMarkup.SECTIONINFO_TAG.toString() )
+                || isParent( SimplifiedDocbookMarkup.ENTRYTBL_TAG.toString() ) )
+        {
+            return; // TODO: implement footnotes, entrytbl
         }
         else if ( HIER_ELEMENTS.contains( parser.getName() ) )
         {
@@ -209,6 +251,20 @@ public class DocBookParser
         else if ( linkStartTag( parser.getName(), sink, attribs ) )
         {
             return;
+        }
+        else if ( parser.getName().equals( SimplifiedDocbookMarkup.QUOTE_TAG.toString() ) )
+        {
+            sink.text( "\"", null );
+        }
+        else if ( parser.getName().equals( SimplifiedDocbookMarkup.TRADEMARK_TAG.toString() ) )
+        {
+            trademark = '\u2122';
+            Object trade = attribs.getAttribute( "class" );
+
+            if ( trade != null )
+            {
+                trademark = DocbookUtils.trademarkFromClass( trade.toString() );
+            }
         }
         else
         {
@@ -249,6 +305,23 @@ public class DocBookParser
             //decrease the nesting level
             level--;
             parent.pop();
+        }
+        else if ( parser.getName().equals( SimplifiedDocbookMarkup.FOOTNOTE_TAG.toString() )
+                || parser.getName().equals( SimplifiedDocbookMarkup.AUDIOOBJECT_TAG.toString() )
+                || parser.getName().equals( SimplifiedDocbookMarkup.VIDEOOBJECT_TAG.toString() )
+                || parser.getName().equals( SimplifiedDocbookMarkup.SECTIONINFO_TAG.toString() )
+                || parser.getName().equals( SimplifiedDocbookMarkup.ENTRYTBL_TAG.toString() ) )
+        {
+            parent.pop();
+            ignore = false;
+        }
+        else if ( isParent( ( SimplifiedDocbookMarkup.FOOTNOTE_TAG.toString() ) )
+                || isParent( SimplifiedDocbookMarkup.AUDIOOBJECT_TAG.toString() )
+                || isParent( SimplifiedDocbookMarkup.VIDEOOBJECT_TAG.toString() )
+                || isParent( SimplifiedDocbookMarkup.SECTIONINFO_TAG.toString() )
+                || isParent( SimplifiedDocbookMarkup.ENTRYTBL_TAG.toString() ) )
+        {
+            return;
         }
         else if ( parser.getName().equals( SimplifiedDocbookMarkup.ITEMIZEDLIST_TAG.toString() ) )
         {
@@ -385,6 +458,14 @@ public class DocBookParser
                 parent.pop();
                 sink.link_();
             }
+        }
+        else if ( parser.getName().equals( SimplifiedDocbookMarkup.QUOTE_TAG.toString() ) )
+        {
+            sink.text( "\"", null );
+        }
+        else if ( parser.getName().equals( SimplifiedDocbookMarkup.TRADEMARK_TAG.toString() ) )
+        {
+            sink.text( Character.toString( trademark ), null );
         }
         else if ( !simpleTag && !ignorable( parser.getName() ) )
         {
@@ -535,6 +616,9 @@ public class DocBookParser
         {
             String mailto = parser.nextText();
             sink.link( "mailto:" + mailto, attribs );
+            sink.monospaced();
+            sink.text( mailto, null );
+            sink.monospaced_();
             sink.link_();
         }
         catch ( IOException e )
@@ -757,10 +841,7 @@ public class DocBookParser
 
     private boolean ignorable( String name )
     {
-        return name.equals( SimplifiedDocbookMarkup.IMAGEOBJECT_TAG.toString() )
-                || name.equals( SimplifiedDocbookMarkup.PHRASE_TAG.toString() )
-                || name.equals( SimplifiedDocbookMarkup.COLSPEC_TAG.toString() )
-                || name.equals( SimplifiedDocbookMarkup.TEXTOBJECT_TAG.toString() );
+        return IGNORABLE_ELEMENTS.contains( name );
     }
 
     /**
@@ -911,7 +992,15 @@ public class DocBookParser
 
     private boolean tableStartTags( String name, Sink sink, SinkEventAttributeSet attribs )
     {
-        if ( name.equals( SimplifiedDocbookMarkup.TABLE_TAG.toString() )
+        if ( name.equals( SimplifiedDocbookMarkup.ENTRYTBL_TAG.toString() ) )
+        {
+            parent.push( name );
+            ignore = true;
+            // insert empty table cell instead
+            sink.tableCell( (SinkEventAttributeSet) null );
+            sink.tableCell_();
+        }
+        else if ( name.equals( SimplifiedDocbookMarkup.TABLE_TAG.toString() )
             || name.equals( SimplifiedDocbookMarkup.INFORMALTABLE_TAG.toString() ) )
         {
             handleTableStart( sink, attribs );
