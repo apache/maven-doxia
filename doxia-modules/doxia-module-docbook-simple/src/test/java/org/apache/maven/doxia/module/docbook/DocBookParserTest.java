@@ -84,6 +84,13 @@ public class DocBookParserTest extends AbstractParserTest
             Sink sink = new DocBookSink( writer );
 
             createParser().parse( reader, sink );
+
+            writer = getTestWriter( "sdocbook_full", "docbook" );
+            reader = getTestReader( "sdocbook_full" );
+
+            sink = new DocBookSink( writer );
+
+            createParser().parse( reader, sink );
         }
         finally
         {
