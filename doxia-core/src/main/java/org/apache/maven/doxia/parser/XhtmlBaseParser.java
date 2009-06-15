@@ -83,25 +83,13 @@ public class XhtmlBaseParser
     public void parse( Reader source, Sink sink )
         throws ParseException
     {
-        super.parse( source, sink );
-
-        if ( getLog().isWarnEnabled() && this.warnMessages != null && !isSecondParsing() )
+        try
         {
-            for ( Iterator it = this.warnMessages.entrySet().iterator(); it.hasNext(); )
-            {
-                Map.Entry entry = (Map.Entry) it.next();
-
-                Set set = (Set) entry.getValue();
-
-                for ( Iterator it2 = set.iterator(); it2.hasNext(); )
-                {
-                    String msg = (String) it2.next();
-
-                    getLog().warn( msg );
-                }
-            }
-
-            this.warnMessages = null;
+            super.parse( source, sink );
+        }
+        finally
+        {
+            logWarnings();
         }
     }
 
@@ -963,5 +951,29 @@ public class XhtmlBaseParser
         }
         set.add( msg );
         warnMessages.put( key, set );
+    }
+
+    /**
+     * @since 1.1.1
+     */
+    private void logWarnings()
+    {
+        if ( getLog().isWarnEnabled() && this.warnMessages != null && !isSecondParsing() )
+        {
+            for ( Iterator it = this.warnMessages.entrySet().iterator(); it.hasNext(); )
+            {
+                Map.Entry entry = (Map.Entry) it.next();
+
+                Set set = (Set) entry.getValue();
+                for ( Iterator it2 = set.iterator(); it2.hasNext(); )
+                {
+                    String msg = (String) it2.next();
+
+                    getLog().warn( msg );
+                }
+            }
+
+            this.warnMessages = null;
+        }
     }
 }

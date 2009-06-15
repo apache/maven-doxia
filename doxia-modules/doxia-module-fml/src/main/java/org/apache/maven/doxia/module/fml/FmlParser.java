@@ -108,16 +108,22 @@ public class FmlParser
             IOUtil.close( source );
         }
 
-        Reader tmp = new StringReader( sourceContent );
+        try
+        {
+            Reader tmp = new StringReader( sourceContent );
 
-        this.faqs = new Faqs();
+            this.faqs = new Faqs();
 
-        // this populates faqs
-        super.parse( tmp, sink );
+            // this populates faqs
+            super.parse( tmp, sink );
 
-        writeFaqs( sink );
+            writeFaqs( sink );
+        }
+        finally
+        {
 
-        logWarnings();
+            logWarnings();
+        }
     }
 
     /** {@inheritDoc} */
@@ -710,6 +716,9 @@ public class FmlParser
         warnMessages.put( key, set );
     }
 
+    /**
+     * @since 1.1.1
+     */
     private void logWarnings()
     {
         if ( getLog().isWarnEnabled() && this.warnMessages != null && !isSecondParsing() )
@@ -717,13 +726,16 @@ public class FmlParser
             for ( Iterator it = this.warnMessages.entrySet().iterator(); it.hasNext(); )
             {
                 Map.Entry entry = (Map.Entry) it.next();
+
                 Set set = (Set) entry.getValue();
                 for ( Iterator it2 = set.iterator(); it2.hasNext(); )
                 {
                     String msg = (String) it2.next();
+
                     getLog().warn( msg );
                 }
             }
+
             this.warnMessages = null;
         }
     }
