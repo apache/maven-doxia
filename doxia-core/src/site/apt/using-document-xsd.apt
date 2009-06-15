@@ -1,5 +1,5 @@
  -----
- Using Schema Document 1.0
+ Using Schema Document 1.0.1
  -----
  Vincent Siveton
  ------
@@ -26,16 +26,16 @@
 ~~ NOTE: For help with the syntax of this file, see:
 ~~ http://maven.apache.org/doxia/references/apt-format.html
 
-Using Schema Document 1.0
+Using Schema Document 1.0.1
 
-  The Decoration XSD is located {{{http://maven.apache.org/xsd/document-1.0.0.xsd}here}}.
+  The Decoration XSD is located {{{http://maven.apache.org/xsd/document-1.0.1.xsd}here}}.
 
   Your favorite IDE probably supports XSD schema's for .xml files. You need to specify the following:
 
 +-----+
-<document xmlns="http://maven.apache.org/DOCUMENT/1.0.0"
+<document xmlns="http://maven.apache.org/DOCUMENT/1.0.1"
   xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
-  xsi:schemaLocation="http://maven.apache.org/DOCUMENT/1.0.0 http://maven.apache.org/xsd/document-1.0.0.xsd"
+  xsi:schemaLocation="http://maven.apache.org/DOCUMENT/1.0.1 http://maven.apache.org/xsd/document-1.0.1.xsd"
   outputName="...">
 ...
 </document>
