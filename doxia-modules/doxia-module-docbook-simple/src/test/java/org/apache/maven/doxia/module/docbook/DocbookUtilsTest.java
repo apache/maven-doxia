@@ -108,7 +108,8 @@ public class DocbookUtilsTest
             assertNotNull( e );
         }
     }
-        /**
+
+    /**
      * Test of trademarkFromClass method, of class DocbookUtils.
      */
     public void testTrademarkFromClass()
