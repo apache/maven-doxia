@@ -37,11 +37,15 @@ import org.codehaus.plexus.util.FileUtils;
 public class XhtmlParserTest
     extends AbstractParserTest
 {
+    private XhtmlParser parser;
+
     /** {@inheritDoc} */
     protected void setUp()
         throws Exception
     {
         super.setUp();
+
+        parser = (XhtmlParser) lookup( Parser.ROLE, "xhtml" );
 
         // AbstractXmlParser.CachedFileEntityResolver downloads DTD/XSD files in ${java.io.tmpdir}
         // Be sure to delete them
@@ -58,7 +62,7 @@ public class XhtmlParserTest
     /** {@inheritDoc} */
     protected Parser createParser()
     {
-        return new XhtmlParser();
+        return parser;
     }
 
     /** {@inheritDoc} */
