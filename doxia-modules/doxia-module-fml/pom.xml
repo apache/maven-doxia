@@ -121,7 +121,7 @@ under the License.
 
                     <mkdir dir="${dir}"/>
 
-                    <xsddoc file="${basedir}/src/main/resources/fml-1.0.xsd" out="${dir}" doctitle="Reference of Schema FML 1.0" verbose="true"/>
+                    <xsddoc file="${basedir}/src/main/resources/fml-1.0.1.xsd" out="${dir}" doctitle="Reference of Schema FML 1.0.1" verbose="true"/>
                   </tasks>
                 </configuration>
                 <goals>

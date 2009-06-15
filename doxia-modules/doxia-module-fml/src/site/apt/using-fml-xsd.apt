@@ -28,15 +28,15 @@
 
 Using Schema FML 1.0
 
-  The FML XSD is located {{{http://maven.apache.org/xsd/fml-1.0.xsd}here}}.
+  The FML XSD is located {{{http://maven.apache.org/xsd/fml-1.0.1.xsd}here}}.
 
   Your favorite IDE probably supports XSD schema's for .fml files. You need to specify the following:
 
 +-----+
 
-<faqs xmlns="http://maven.apache.org/FML/1.0"
+<faqs xmlns="http://maven.apache.org/FML/1.0.1"
   xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
-  xsi:schemaLocation="http://maven.apache.org/FML/1.0 http://maven.apache.org/xsd/fml-1.0.xsd"
+  xsi:schemaLocation="http://maven.apache.org/FML/1.0.1 http://maven.apache.org/xsd/fml-1.0.1.xsd"
   title="...">
 ...
 </faqs>
