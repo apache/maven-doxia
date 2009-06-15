@@ -160,7 +160,6 @@ public class FmlParserTest
                 + "</faq></part></faqs>";
 
         SinkEventTestingSink sink = new SinkEventTestingSink();
-        FmlParser parser = (FmlParser) createParser();
 
         parser.setValidate( false );
         parser.parse( text, sink );
