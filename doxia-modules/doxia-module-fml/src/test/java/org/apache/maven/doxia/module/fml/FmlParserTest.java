@@ -20,15 +20,19 @@ package org.apache.maven.doxia.module.fml;
  */
 
 import java.io.File;
+import java.io.FileReader;
 import java.io.Reader;
+import java.io.Writer;
 
 import java.util.Iterator;
 import java.util.List;
 
 import org.apache.maven.doxia.parser.AbstractParserTest;
 import org.apache.maven.doxia.parser.Parser;
+import org.apache.maven.doxia.sink.Sink;
 import org.apache.maven.doxia.sink.SinkEventElement;
 import org.apache.maven.doxia.sink.SinkEventTestingSink;
+import org.apache.maven.doxia.sink.XhtmlBaseSink;
 import org.codehaus.plexus.util.FileUtils;
 import org.codehaus.plexus.util.IOUtil;
 
@@ -39,11 +43,15 @@ import org.codehaus.plexus.util.IOUtil;
 public class FmlParserTest
     extends AbstractParserTest
 {
+    private FmlParser parser;
+
     /** {@inheritDoc} */
     protected void setUp()
         throws Exception
     {
         super.setUp();
+
+        parser = (FmlParser) lookup( Parser.ROLE, "fml" );
 
         // AbstractXmlParser.CachedFileEntityResolver downloads DTD/XSD files in ${java.io.tmpdir}
         // Be sure to delete them
@@ -60,7 +68,7 @@ public class FmlParserTest
     /** {@inheritDoc} */
     protected Parser createParser()
     {
-        return new FmlParser();
+        return parser;
     }
 
     /** {@inheritDoc} */
@@ -69,15 +77,13 @@ public class FmlParserTest
         return "fml";
     }
 
-    /** @throws Exception  */
+    /** @throws Exception */
     public void testFaqEventsList()
         throws Exception
     {
-
         SinkEventTestingSink sink = new SinkEventTestingSink();
 
         Reader reader = null;
-
         try
         {
             reader = getTestReader( "simpleFaq" );
@@ -143,7 +149,7 @@ public class FmlParserTest
         assertFalse( it.hasNext() );
     }
 
-    /** @throws Exception  */
+    /** @throws Exception */
     public void testEntities()
         throws Exception
     {
@@ -242,6 +248,47 @@ public class FmlParserTest
         assertEquals( "body_", ( (SinkEventElement) it.next() ).getName() );
 
         assertFalse( it.hasNext() );
+    }
+
+    /**
+     * @throws Exception if any
+     * @since 1.1.1
+     */
+    public void testFaqMacro()
+        throws Exception
+    {
+        Writer output = null;
+        Reader reader = null;
+        try
+        {
+            output = getTestWriter( "macro" );
+            reader = getTestReader( "macro" );
+
+            Sink sink = new XhtmlBaseSink( output );
+            createParser().parse( reader, sink );
+            sink.close();
+        }
+        finally
+        {
+            IOUtil.close( output );
+            IOUtil.close( reader );
+        }
+
+        File f = getTestFile( getBasedir(), outputBaseDir() + getOutputDir() + "macro.fml" );
+        assertTrue( "The file " + f.getAbsolutePath() + " was not created", f.exists() );
+
+        String content;
+        try
+        {
+            reader = new FileReader( f );
+            content = IOUtil.toString( reader );
+        }
+        finally
+        {
+            IOUtil.close( reader );
+        }
+
+        assertTrue( content.indexOf( "<a name=\"macro-definition\">Macro Question</a>" ) != -1 );
     }
 
     private void assertTextEvent( SinkEventElement textEvt, String string )

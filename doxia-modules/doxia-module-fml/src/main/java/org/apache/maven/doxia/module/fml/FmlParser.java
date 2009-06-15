@@ -19,7 +19,10 @@ package org.apache.maven.doxia.module.fml;
  * under the License.
  */
 
+import java.io.IOException;
 import java.io.Reader;
+import java.io.StringReader;
+import java.io.StringWriter;
 
 import java.util.HashMap;
 import java.util.Iterator;
@@ -30,6 +33,8 @@ import java.util.TreeSet;
 import javax.swing.text.html.HTML.Attribute;
 
 import org.apache.maven.doxia.macro.MacroExecutionException;
+import org.apache.maven.doxia.macro.MacroRequest;
+import org.apache.maven.doxia.macro.manager.MacroNotFoundException;
 import org.apache.maven.doxia.module.fml.model.Faq;
 import org.apache.maven.doxia.module.fml.model.Faqs;
 import org.apache.maven.doxia.module.fml.model.Part;
@@ -37,9 +42,11 @@ import org.apache.maven.doxia.parser.AbstractXmlParser;
 import org.apache.maven.doxia.parser.ParseException;
 import org.apache.maven.doxia.sink.Sink;
 import org.apache.maven.doxia.sink.SinkEventAttributeSet;
+import org.apache.maven.doxia.sink.XhtmlBaseSink;
 import org.apache.maven.doxia.util.DoxiaUtils;
 import org.apache.maven.doxia.util.HtmlTools;
 
+import org.codehaus.plexus.util.IOUtil;
 import org.codehaus.plexus.util.StringUtils;
 import org.codehaus.plexus.util.xml.pull.XmlPullParser;
 import org.codehaus.plexus.util.xml.pull.XmlPullParserException;
@@ -73,14 +80,40 @@ public class FmlParser
      * Using to reduce warn messages. */
     private Map warnMessages;
 
+    /** The source content of the input reader. Used to pass into macros. */
+    private String sourceContent;
+
+    /** A macro name. */
+    private String macroName;
+
+    /** The macro parameters. */
+    private Map macroParameters = new HashMap();
+
     /** {@inheritDoc} */
     public void parse( Reader source, Sink sink )
         throws ParseException
     {
+        try
+        {
+            StringWriter contentWriter = new StringWriter();
+            IOUtil.copy( source, contentWriter );
+            sourceContent = contentWriter.toString();
+        }
+        catch ( IOException ex )
+        {
+            throw new ParseException( "Error reading the input source: " + ex.getMessage(), ex );
+        }
+        finally
+        {
+            IOUtil.close( source );
+        }
+
+        Reader tmp = new StringReader( sourceContent );
+
         this.faqs = new Faqs();
 
         // this populates faqs
-        super.parse( source, sink );
+        super.parse( tmp, sink );
 
         writeFaqs( sink );
 
@@ -178,6 +211,19 @@ public class FmlParser
                 .append( String.valueOf( GREATER_THAN ) );
 
         }
+
+        // ----------------------------------------------------------------------
+        // Macro
+        // ----------------------------------------------------------------------
+
+        else if ( parser.getName().equals( MACRO_TAG.toString() ) )
+        {
+            handleMacroStart( parser );
+        }
+        else if ( parser.getName().equals( PARAM.toString() ) )
+        {
+            handleParamStart( parser, sink );
+        }
         else if ( buffer != null )
         {
             buffer.append( String.valueOf( LESS_THAN ) ).append( parser.getName() );
@@ -272,6 +318,22 @@ public class FmlParser
 
             buffer = null;
         }
+
+        // ----------------------------------------------------------------------
+        // Macro
+        // ----------------------------------------------------------------------
+
+        else if ( parser.getName().equals( MACRO_TAG.toString() ) )
+        {
+            handleMacroEnd( buffer );
+        }
+        else if ( parser.getName().equals( PARAM.toString() ) )
+        {
+            if ( !StringUtils.isNotEmpty( macroName ) )
+            {
+                handleUnknown( parser, sink, TAG_TYPE_END );
+            }
+        }
         else if ( buffer != null )
         {
             if ( buffer.length() > 0 && buffer.charAt( buffer.length() - 1 ) == SPACE )
@@ -353,6 +415,107 @@ public class FmlParser
         else
         {
             super.handleEntity( parser, sink );
+        }
+    }
+
+    /**
+     * TODO import from XdocParser, probably need to be generic.
+     *
+     * @param parser not null
+     * @throws MacroExecutionException if any
+     */
+    private void handleMacroStart( XmlPullParser parser )
+            throws MacroExecutionException
+    {
+        if ( !isSecondParsing() )
+        {
+            macroName = parser.getAttributeValue( null, Attribute.NAME.toString() );
+
+            if ( macroParameters == null )
+            {
+                macroParameters = new HashMap();
+            }
+
+            if ( StringUtils.isEmpty( macroName ) )
+            {
+                throw new MacroExecutionException( "The '" + Attribute.NAME.toString()
+                        + "' attribute for the '" + MACRO_TAG.toString() + "' tag is required." );
+            }
+        }
+    }
+
+    /**
+     * TODO import from XdocParser, probably need to be generic.
+     *
+     * @param buffer not null
+     * @throws MacroExecutionException if any
+     */
+    private void handleMacroEnd( StringBuffer buffer )
+            throws MacroExecutionException
+    {
+        if ( !isSecondParsing() )
+        {
+            if ( StringUtils.isNotEmpty( macroName ) )
+            {
+                // TODO handles specific macro attributes
+                macroParameters.put( "sourceContent", sourceContent );
+                FmlParser fmlParser = new FmlParser();
+                fmlParser.setSecondParsing( true );
+                macroParameters.put( "parser", fmlParser );
+
+                MacroRequest request = new MacroRequest( macroParameters, getBasedir() );
+
+                try
+                {
+                    StringWriter sw = new StringWriter();
+                    XhtmlBaseSink sink = new XhtmlBaseSink(sw);
+                    executeMacro( macroName, request, sink );
+                    sink.close();
+                    buffer.append( sw.toString() );
+                } catch ( MacroNotFoundException me )
+                {
+                    throw new MacroExecutionException( "Macro not found: " + macroName, me );
+                }
+            }
+        }
+
+        // Reinit macro
+        macroName = null;
+        macroParameters = null;
+    }
+
+    /**
+     * TODO import from XdocParser, probably need to be generic.
+     *
+     * @param parser not null
+     * @param sink not null
+     * @throws MacroExecutionException if any
+     */
+    private void handleParamStart( XmlPullParser parser, Sink sink )
+            throws MacroExecutionException
+    {
+        if ( !isSecondParsing() )
+        {
+            if ( StringUtils.isNotEmpty( macroName ) )
+            {
+                String paramName = parser.getAttributeValue( null, Attribute.NAME.toString() );
+                String paramValue = parser.getAttributeValue( null,
+                        Attribute.VALUE.toString() );
+
+                if ( StringUtils.isEmpty( paramName ) || StringUtils.isEmpty( paramValue ) )
+                {
+                    throw new MacroExecutionException( "'" + Attribute.NAME.toString()
+                            + "' and '" + Attribute.VALUE.toString() + "' attributes for the '" + PARAM.toString()
+                            + "' tag are required inside the '" + MACRO_TAG.toString() + "' tag." );
+                }
+
+                macroParameters.put( paramName, paramValue );
+            }
+            else
+            {
+                // param tag from non-macro object, see MSITE-288
+                handleUnknown( parser, sink, TAG_TYPE_START );
+            }
         }
     }
 
