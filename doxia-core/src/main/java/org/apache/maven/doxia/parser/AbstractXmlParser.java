@@ -124,6 +124,8 @@ public abstract class AbstractXmlParser
     public void parse( Reader source, Sink sink )
         throws ParseException
     {
+        init();
+
         // 1 first parsing if validation is required
         if ( isValidate() )
         {
@@ -205,6 +207,18 @@ public abstract class AbstractXmlParser
         }
 
         return atts;
+    }
+
+    /**
+     * Initialize the parser. This is called first by
+     * {@link #parse(java.io.Reader, org.apache.maven.doxia.sink.Sink)} and can be used
+     * to set the parser into a clear state so it can be re-used.
+     *
+     * @since 1.1.1
+     */
+    protected void init()
+    {
+        // default: empty
     }
 
     /**

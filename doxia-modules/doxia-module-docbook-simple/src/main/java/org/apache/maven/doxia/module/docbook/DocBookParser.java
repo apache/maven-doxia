@@ -62,7 +62,8 @@ public class DocBookParser
 
     private boolean simpleTag;
 
-    private char trademark = '\u2122';
+    private char trademark;
+
     /**
      * A selective stack of parent elements
      */
@@ -165,6 +166,18 @@ public class DocBookParser
         IGNORABLE_ELEMENTS.add( SimplifiedDocbookMarkup.SPANSPEC_TAG.toString() );
         IGNORABLE_ELEMENTS.add( SimplifiedDocbookMarkup.TEXTOBJECT_TAG.toString() );
         IGNORABLE_ELEMENTS.add( SimplifiedDocbookMarkup.VOLUMENUM_TAG.toString() );
+    }
+
+    /** {@inheritDoc} */
+    protected void init()
+    {
+        parent.clear();
+        trademark = 0;
+        level = 0;
+        isBold = false;
+        inHead = false;
+        ignore = false;
+        simpleTag = false;
     }
 
     // ----------------------------------------------------------------------
