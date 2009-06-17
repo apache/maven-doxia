@@ -356,7 +356,7 @@ under the License.
 
   <profiles>
     <profile>
-      <id>release</id>
+      <id>apache-release</id>
       <build>
         <plugins>
           <plugin>
