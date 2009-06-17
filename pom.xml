@@ -323,6 +323,25 @@ under the License.
           </execution>
         </executions>
       </plugin>
+      <plugin>
+        <groupId>org.apache.maven.plugins</groupId>
+        <artifactId>maven-javadoc-plugin</artifactId>
+        <configuration>
+          <source>1.4</source>
+          <links>
+            <link>http://java.sun.com/j2se/1.4.2/docs/api/</link>
+            <link>http://plexus.codehaus.org/plexus-utils/apidocs/</link>
+            <link>http://junit.sourceforge.net/javadoc/</link>
+          </links>
+          <tagletArtifacts>
+            <tagletArtifact>
+              <groupId>org.codehaus.plexus</groupId>
+              <artifactId>plexus-javadoc</artifactId>
+              <version>1.0</version>
+            </tagletArtifact>
+          </tagletArtifacts>
+        </configuration>
+      </plugin>
     </plugins>
   </build>
 
@@ -395,21 +414,6 @@ under the License.
           <plugin>
             <groupId>org.apache.maven.plugins</groupId>
             <artifactId>maven-javadoc-plugin</artifactId>
-            <configuration>
-              <source>1.4</source>
-              <links>
-                <link>http://java.sun.com/j2se/1.4.2/docs/api/</link>
-                <link>http://plexus.codehaus.org/plexus-utils/apidocs/</link>
-                <link>http://junit.sourceforge.net/javadoc/</link>
-              </links>
-              <tagletArtifacts>
-                <tagletArtifact>
-                  <groupId>org.codehaus.plexus</groupId>
-                  <artifactId>plexus-javadoc</artifactId>
-                  <version>1.0</version>
-                </tagletArtifact>
-              </tagletArtifacts>
-            </configuration>
           </plugin>
           <plugin>
             <artifactId>maven-checkstyle-plugin</artifactId>
@@ -447,19 +451,6 @@ under the License.
             <artifactId>maven-javadoc-plugin</artifactId>
             <configuration>
               <aggregate>true</aggregate>
-              <source>1.4</source>
-              <links>
-                <link>http://java.sun.com/j2se/1.4.2/docs/api/</link>
-                <link>http://plexus.codehaus.org/plexus-utils/apidocs/</link>
-                <link>http://junit.sourceforge.net/javadoc/</link>
-              </links>
-              <tagletArtifacts>
-                <tagletArtifact>
-                  <groupId>org.codehaus.plexus</groupId>
-                  <artifactId>plexus-javadoc</artifactId>
-                  <version>1.0</version>
-                </tagletArtifact>
-              </tagletArtifacts>
             </configuration>
             <reportSets>
               <reportSet>
