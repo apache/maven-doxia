@@ -60,6 +60,11 @@ under the License.
       <artifactId>commons-lang</artifactId>
       <version>2.4</version>
     </dependency>
+    <dependency>
+      <groupId>commons-httpclient</groupId>
+      <artifactId>commons-httpclient</artifactId>
+      <version>3.1</version>
+    </dependency>
 
     <!-- test -->
   </dependencies>
@@ -101,7 +106,7 @@ under the License.
           </execution>
         </executions>
         <configuration>
-          <version>1.0.0</version>
+          <version>1.0.1</version>
           <models>
             <model>src/main/mdo/document.mdo</model>
           </models>

@@ -22,14 +22,14 @@
 <xs:schema version="1.0"
   xml:lang="en"
   xmlns:xs="http://www.w3.org/2001/XMLSchema"
-  targetNamespace="http://maven.apache.org/FML/1.0"
-  xmlns="http://maven.apache.org/FML/1.0"
+  targetNamespace="http://maven.apache.org/FML/1.0.1"
+  xmlns="http://maven.apache.org/FML/1.0.1"
   xmlns:xml="http://www.w3.org/XML/1998/namespace"
   elementFormDefault="qualified">
 
   <xs:annotation>
     <xs:documentation source="description">
-      Doxia FML (FAQ Markup Language) 1.0 XML Schema.
+      Doxia FML (FAQ Markup Language) 1.0.1 XML Schema.
 
       This is based on: Extensible HTML version 1.0 Transitional XML Schema
       http://www.w3.org/2002/08/xhtml/xhtml1-transitional.xsd
@@ -449,6 +449,7 @@
       <xs:element ref="map"/>
       <xs:element ref="iframe"/>
       <xs:element ref="source"/> <!-- FML specific -->
+      <xs:element ref="macro"/> <!-- FML specific -->
     </xs:choice>
   </xs:group>
 
@@ -2907,6 +2908,21 @@
       <xs:sequence>
         <xs:any minOccurs="0" maxOccurs="unbounded" processContents="skip"/>
       </xs:sequence>
+    </xs:complexType>
+  </xs:element>
+
+  <xs:element name="macro">
+    <xs:annotation>
+      <xs:documentation source="version">1.0.1</xs:documentation>
+      <xs:documentation source="description">
+        A macro element.
+      </xs:documentation>
+    </xs:annotation>
+    <xs:complexType>
+      <xs:choice minOccurs="0" maxOccurs="unbounded">
+        <xs:element ref="param"/>
+      </xs:choice>
+      <xs:attribute name="name" use="required" type="Text"/>
     </xs:complexType>
   </xs:element>
 </xs:schema>

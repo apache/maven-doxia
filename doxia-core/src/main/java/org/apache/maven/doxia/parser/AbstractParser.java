@@ -50,7 +50,7 @@ public abstract class AbstractParser
     private MacroManager macroManager;
 
     /** Log instance. */
-    private Log log;
+    private Log logger;
 
     /** {@inheritDoc} */
     public int getType()
@@ -136,7 +136,7 @@ public abstract class AbstractParser
     /** {@inheritDoc} */
     public void enableLogging( Log log )
     {
-        this.log = log;
+        this.logger = log;
     }
 
     /**
@@ -148,12 +148,12 @@ public abstract class AbstractParser
      */
     protected Log getLog()
     {
-        if ( log == null )
+        if ( logger == null )
         {
-            log = new SystemStreamLog();
+            logger = new SystemStreamLog();
         }
 
-        return log;
+        return logger;
     }
 
     /**

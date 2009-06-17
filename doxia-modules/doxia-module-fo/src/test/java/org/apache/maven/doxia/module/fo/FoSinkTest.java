@@ -51,7 +51,9 @@ public class FoSinkTest extends AbstractSinkTest
         String fileName = "test";
         // first create fo
         FoSink fosink = new FoSink( getTestWriter( fileName ) );
+        fosink.beginDocument();
         SinkTestDocument.generate( fosink );
+        fosink.endDocument();
         fosink.close();
 
         // then generate PDF
@@ -287,16 +289,24 @@ public class FoSinkTest extends AbstractSinkTest
         String dlAtts = getConfig().getAttributeString( "table.padding" );
         String dtAtts = getConfig().getAttributeString( "table.layout" );
         String ddAtts = getConfig().getAttributeString( "table.body.row" );
-        String deAtts = getConfig().getAttributeString( "table.body.cell" );
+        //String deAtts = getConfig().getAttributeString( "table.body.cell" );
+
         return EOL + EOL + "<fo:block" + dlAtts + ">" + EOL + "<fo:table" + dtAtts + ">" + EOL
             + "<fo:table-column column-width=\"proportional-column-width(1)\"/>"
             + EOL + "<fo:table-column column-width=\"100%\"/>"
             + EOL + "<fo:table-column column-width=\"proportional-column-width(1)\"/>"
             + EOL + EOL + "<fo:table-body>" + EOL + "<fo:table-row" + ddAtts
-            + "><fo:table-cell column-number=\"2\"" + deAtts
-            + ">" + EOL + "<fo:block text-align=\"center\">" + EOL + cell
-            + "</fo:block>" + EOL + "</fo:table-cell>" + EOL + "</fo:table-row>" + EOL + "</fo:table-body>"
-            + EOL + caption + "</fo:table>" + EOL + "</fo:block>" + EOL;
+            + "><fo:table-cell column-number=\"2\" padding-after=\"1.5pt\" padding-end=\"5pt\" "
+            + "keep-together.within-column=\"always\" padding-start=\"2.5pt\" "
+            + "background-color=\"#eeeeee\" padding-before=\"4pt\">" + EOL + "<fo:block line-height=\"1.2em\" "
+            + "text-align=\"center\" font-family=\"Helvetica,sans-serif\" font-size=\"9pt\">" + EOL + cell
+            + "</fo:block>" + EOL + "</fo:table-cell>" + EOL + "</fo:table-row>" + EOL + "</fo:table-body>" + EOL
+            + "</fo:table>"+ EOL
+            + "</fo:block>"+ EOL
+            + EOL
+            + "<fo:block white-space-collapse=\"true\" space-after=\"6pt\" space-before=\"3pt\" "
+            + "font-family=\"Garamond,serif\" line-height=\"12pt\" text-align=\"center\" font-size=\"11pt\">"
+            + "Table_caption</fo:block>" + EOL;
     }
 
     /** {@inheritDoc} */
@@ -411,4 +421,9 @@ public class FoSinkTest extends AbstractSinkTest
         return config;
     }
 
+    /** {@inheritDoc} */
+    protected String getCommentBlock( String text )
+    {
+        return "<!-- Simple comment with - - - - -->";
+    }
 }

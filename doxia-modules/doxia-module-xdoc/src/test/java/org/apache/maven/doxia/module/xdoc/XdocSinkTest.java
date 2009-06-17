@@ -284,4 +284,10 @@ public class XdocSinkTest
 
         assertEquals( "<a href=\"name\"></a><a href=\"name\" target=\"nirvana\"></a>", writer.toString() );
     }
+
+    /** {@inheritDoc} */
+    protected String getCommentBlock( String text )
+    {
+        return "<!-- Simple comment with - - - - -->";
+    }
 }

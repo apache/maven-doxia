@@ -39,22 +39,4 @@ under the License.
         <artifactId>doxia-logging-api</artifactId>
       </dependency>
   </dependencies>
-
-  <profiles>
-    <profile>
-      <id>reporting</id>
-      <reporting>
-        <plugins>
-          <plugin>
-            <groupId>org.codehaus.mojo</groupId>
-            <artifactId>clirr-maven-plugin</artifactId>
-            <version>2.2.2</version>
-            <configuration>
-              <comparisonVersion>1.0</comparisonVersion>
-            </configuration>
-          </plugin>
-        </plugins>
-      </reporting>
-    </profile>
-  </profiles>
 </project>

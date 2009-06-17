@@ -32,21 +32,11 @@ import org.apache.maven.doxia.module.site.AbstractSiteModule;
 public class XhtmlSiteModule
     extends AbstractSiteModule
 {
-    /** {@inheritDoc} */
-    public String getSourceDirectory()
+    /**
+     * Default constructor.
+     */
+    public XhtmlSiteModule()
     {
-        return "xhtml";
-    }
-
-    /** {@inheritDoc} */
-    public String getExtension()
-    {
-        return "xhtml";
-    }
-
-    /** {@inheritDoc} */
-    public String getParserId()
-    {
-        return "xhtml";
+        super( "xhtml", "xhtml", "xhtml" );
     }
 }

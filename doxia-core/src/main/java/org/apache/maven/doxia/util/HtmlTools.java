@@ -20,15 +20,15 @@ package org.apache.maven.doxia.util;
  */
 
 import java.io.UnsupportedEncodingException;
-
+import java.util.ArrayList;
 import java.util.Hashtable;
+import java.util.List;
 
 import javax.swing.text.html.HTML.Tag;
 
 import org.apache.commons.lang.StringEscapeUtils;
-
 import org.apache.maven.doxia.markup.HtmlMarkup;
-
+import org.codehaus.plexus.util.StringUtils;
 
 /**
  * The <code>HtmlTools</code> class defines methods to HTML handling.
@@ -74,7 +74,7 @@ public class HtmlTools
     }
 
     /**
-     * Returns a tag for a defined HTML tag name (i.e. one of
+     * Returns a tag for a defined HTML tag name. This is one of
      * the tags defined in {@link org.apache.maven.doxia.markup.HtmlMarkup}.
      * If the given name does not represent one of the defined tags, then
      * <code>null</code> will be returned.
@@ -95,6 +95,8 @@ public class HtmlTools
     /**
      * Escape special HTML characters in a String in <code>xml</code> mode.
      *
+     * <b>Note</b>: this method doesn't escape non-ascii characters by numeric characters references.
+     *
      * @param text the String to escape, may be null.
      * @return The escaped text or the empty string if text == null.
      * @see #escapeHTML(String,boolean)
@@ -108,19 +110,29 @@ public class HtmlTools
      * Escape special HTML characters in a String.
      *
      * <pre>
-     * < becomes <code>&lt;</code>
-     * > becomes <code>&gt;</code>
-     * & becomes <code>&amp;</code>
-     * " becomes <code>&quot;</code>
+     * < becomes <code>&#38;lt;</code>
+     * > becomes <code>&#38;gt;</code>
+     * & becomes <code>&#38;amp;</code>
+     * " becomes <code>&#38;quot;</code>
+     * ' becomes <code>&#38;apos;</code> if xmlMode = true
      * </pre>
      *
      * If <code>xmlMode</code> is true, every other character than the above remains unchanged,
      * if <code>xmlMode</code> is false, non-ascii characters get replaced by their hex code.
      *
+     * <b>Note</b>: all characters are encoded, i.e.:
+     * <pre>
+     * \u0159       = &#38;#x159;
+     * \uD835\uDFED = &#38;#x1d7ed;
+     * </pre>
+     *
      * @param text The String to escape, may be null.
-     * @param xmlMode set to <code>false</code> to replace non-ascii characters.
+     * @param xmlMode <code>true</code> to replace also ' to &#38;apos, <code>false</code> to replace non-ascii
+     * characters by numeric characters references.
      * @return The escaped text or the empty string if text == null.
      * @since 1.1
+     * @see <a href="http://www.w3.org/TR/2000/REC-xml-20001006#sec-predefined-ent">http://www.w3.org/TR/2000/REC-xml-20001006#sec-predefined-ent</a>
+     * @see <a href="http://www.w3.org/TR/html401/charset.html#h-5.3">http://www.w3.org/TR/html401/charset.html#h-5.3</a>
      */
     public static final String escapeHTML( String text, boolean xmlMode )
     {
@@ -152,7 +164,14 @@ public class HtmlTools
                 default:
                     if ( xmlMode )
                     {
-                        buffer.append( c );
+                        if ( c == '\'' )
+                        {
+                            buffer.append( "&apos;" );
+                        }
+                        else
+                        {
+                            buffer.append( c );
+                        }
                     }
                     else
                     {
@@ -163,8 +182,15 @@ public class HtmlTools
                         }
                         else
                         {
-                            buffer.append( "&#" );
-                            buffer.append( (int) c );
+                            buffer.append( "&#x" );
+                            if ( isHighSurrogate( c ) )
+                            {
+                                buffer.append( Integer.toHexString( toCodePoint( c, text.charAt( ++i ) ) ) );
+                            }
+                            else
+                            {
+                                buffer.append( Integer.toHexString( c ) );
+                            }
                             buffer.append( ';' );
                         }
                     }
@@ -172,6 +198,19 @@ public class HtmlTools
         }
 
         return buffer.toString();
+    }
+
+    /**
+     * Unescapes HTML entities in a string in non xml mode.
+     *
+     * @param text the <code>String</code> to unescape, may be null.
+     * @return a new unescaped <code>String</code>, <code>null</code> if null string input.
+     * @since 1.1.1.
+     * @see #unescapeHTML(String, boolean)
+     */
+    public static String unescapeHTML( String text )
+    {
+        return unescapeHTML( text, false );
     }
 
     /**
@@ -184,15 +223,70 @@ public class HtmlTools
      * <p>For example, the string "&amp;lt;Fran&amp;ccedil;ais&amp;gt;"
      * will become "&lt;Fran&ccedil;ais&gt;".</p>
      *
+     * <b>Note</b>: all unicode entities are decoded, i.e.:
+     * <pre>
+     * &#38;#x159;   = \u0159
+     * &#38;#x1d7ed; = \uD835\uDFED
+     * </pre>
+     *
      * @param text the <code>String</code> to unescape, may be null.
-     *
+     * @param xmlMode set to <code>true</code> to replace &#38;apos by '.
      * @return a new unescaped <code>String</code>, <code>null</code> if null string input.
-     *
      * @since 1.1.1.
      */
-    public static String unescapeHtml( String text )
+    public static String unescapeHTML( String text, boolean xmlMode )
     {
-        return StringEscapeUtils.unescapeHtml( text );
+        if ( text == null )
+        {
+            return null;
+        }
+
+        String unescaped;
+        if ( xmlMode )
+        {
+            unescaped = StringEscapeUtils.unescapeXml( text );
+        }
+        else
+        {
+            // StringEscapeUtils.unescapeHtml returns entities it doesn't recognize unchanged
+            unescaped = StringEscapeUtils.unescapeHtml( text );
+        }
+
+        String tmp = unescaped;
+        List entities = new ArrayList();
+        while ( true )
+        {
+            int i = tmp.indexOf( "&#x" );
+            if ( i == -1 )
+            {
+                break;
+            }
+
+            tmp = tmp.substring( i + 3 );
+            if ( tmp.indexOf( ';' ) != -1 )
+            {
+                String entity = tmp.substring( 0, tmp.indexOf( ';' ) );
+                try
+                {
+                    Integer.parseInt( entity, 16 );
+                    entities.add( entity );
+                }
+                catch ( NumberFormatException e )
+                {
+                    // nop
+                }
+            }
+        }
+
+        for ( int i = 0; i < entities.size(); i++ )
+        {
+            String entity = (String) entities.get( i );
+
+            int codePoint = Integer.parseInt( entity, 16 );
+            unescaped = StringUtils.replace( unescaped, "&#x" + entity + ";", new String( toChars( codePoint ) ) );
+        }
+
+        return unescaped;
     }
 
     /**
@@ -254,8 +348,17 @@ public class HtmlTools
 
                         try
                         {
-                            unicode[0] = c;
-                            bytes = ( new String( unicode, 0, 1 ) ).getBytes( "UTF8" );
+                            if ( isHighSurrogate( c ) )
+                            {
+                                int codePoint = toCodePoint( c, url.charAt( ++i ) );
+                                unicode = toChars( codePoint );
+                                bytes = ( new String( unicode, 0, unicode.length ) ).getBytes( "UTF8" );
+                            }
+                            else
+                            {
+                                unicode[0] = c;
+                                bytes = ( new String( unicode, 0, 1 ) ).getBytes( "UTF8" );
+                            }
                         }
                         catch ( UnsupportedEncodingException cannotHappen )
                         {
@@ -291,7 +394,7 @@ public class HtmlTools
      *
      * @param id The id to be encoded.
      * @return The trimmed and encoded id, or null if id is null.
-     * @see {@link DoxiaUtils#encodeId(java.lang.String,boolean)}.
+     * @see DoxiaUtils#encodeId(java.lang.String,boolean)
      */
     public static String encodeId( String id )
     {
@@ -314,5 +417,69 @@ public class HtmlTools
     private HtmlTools()
     {
         // utility class
+    }
+
+//
+// Imported code from ASF Harmony project rev 770909
+// http://svn.apache.org/repos/asf/harmony/enhanced/classlib/trunk/modules/luni/src/main/java/java/lang/Character.java
+//
+
+    private static final char LUNATE_SIGMA = 0x3FF;
+    private static final char NON_PRIVATE_USE_HIGH_SURROGATE = 0xD800;
+    private static final char LOW_SURROGATE = 0xDC00;
+
+    private static int toCodePoint( char high, char low )
+    {
+        // See RFC 2781, Section 2.2
+        // http://www.faqs.org/rfcs/rfc2781.html
+        int h = ( high & LUNATE_SIGMA ) << 10;
+        int l = low & LUNATE_SIGMA;
+        return ( h | l ) + MIN_SUPPLEMENTARY_CODE_POINT;
+    }
+
+    private static final char MIN_HIGH_SURROGATE = '\uD800';
+    private static final char MAX_HIGH_SURROGATE = '\uDBFF';
+
+    private static boolean isHighSurrogate( char ch )
+    {
+        return ( MIN_HIGH_SURROGATE <= ch && MAX_HIGH_SURROGATE >= ch );
+    }
+
+    private static final int MIN_CODE_POINT = 0x000000;
+    private static final int MAX_CODE_POINT = 0x10FFFF;
+    private static final int MIN_SUPPLEMENTARY_CODE_POINT = 0x10000;
+
+    private static boolean isValidCodePoint( int codePoint )
+    {
+        return ( MIN_CODE_POINT <= codePoint && MAX_CODE_POINT >= codePoint );
+    }
+
+    private static boolean isSupplementaryCodePoint( int codePoint )
+    {
+        return ( MIN_SUPPLEMENTARY_CODE_POINT <= codePoint && MAX_CODE_POINT >= codePoint );
+    }
+
+    /**
+     * Converts the given code point to an equivalent character array.
+     *
+     * @param codePoint the code point to convert.
+     * @return If codePoint is a supplementary code point, returns a character array of length 2,
+     * otherwise a character array of length 1 containing only the original int as a char.
+     */
+    public static char[] toChars( int codePoint )
+    {
+        if ( !isValidCodePoint( codePoint ) )
+        {
+            throw new IllegalArgumentException();
+        }
+
+        if ( isSupplementaryCodePoint( codePoint ) )
+        {
+            int cpPrime = codePoint - MIN_SUPPLEMENTARY_CODE_POINT;
+            int high = NON_PRIVATE_USE_HIGH_SURROGATE | ( ( cpPrime >> 10 ) & LUNATE_SIGMA );
+            int low = LOW_SURROGATE | ( cpPrime & LUNATE_SIGMA );
+            return new char[] { (char) high, (char) low };
+        }
+        return new char[] { (char) codePoint };
     }
 }

@@ -19,6 +19,9 @@ package org.apache.maven.doxia.util;
  * under the License.
  */
 
+import java.net.URLEncoder;
+import java.util.Locale;
+
 import org.codehaus.plexus.PlexusTestCase;
 
 /**
@@ -37,15 +40,23 @@ public class HtmlToolsTest
     {
         assertEquals( HtmlTools.escapeHTML( null ), "" );
         assertEquals( HtmlTools.escapeHTML( "" ), "" );
+        assertEquals( HtmlTools.escapeHTML( "\u0009" ), "\u0009" );
+        assertEquals( HtmlTools.escapeHTML( "\u0001" ), "\u0001" );
+
+        // Predefined entities
         assertEquals( HtmlTools.escapeHTML( "<" ), "&lt;" );
         assertEquals( HtmlTools.escapeHTML( ">" ), "&gt;" );
         assertEquals( HtmlTools.escapeHTML( "&" ), "&amp;" );
         assertEquals( HtmlTools.escapeHTML( "\"" ), "&quot;" );
-        assertEquals( HtmlTools.escapeHTML( "&amp;" ), "&amp;amp;" );
+        assertEquals( HtmlTools.escapeHTML( "\'" ), "&apos;" );
+        assertEquals( HtmlTools.escapeHTML( "\'", false ), "\'" );
 
         // xml mode
+        assertEquals( HtmlTools.escapeHTML( "&amp;" ), "&amp;amp;" );
         assertEquals( HtmlTools.escapeHTML( "\u00e4", true ), "\u00e4" );
-        assertEquals( HtmlTools.escapeHTML( "\u00e4", false ), "&#228;" );
+        assertEquals( HtmlTools.escapeHTML( "\u00e4", false ), "&#xe4;" );
+        assertEquals( HtmlTools.escapeHTML( "\u0159", false ), "&#x159;" );
+        assertEquals( HtmlTools.escapeHTML( "\uD835\uDFED", false ), "&#x1d7ed;" );
     }
 
     /**
@@ -53,15 +64,28 @@ public class HtmlToolsTest
      */
     public void testUnescapeHTML()
     {
-        assertNull( HtmlTools.unescapeHtml( null ) );
-        assertEquals( "", HtmlTools.unescapeHtml( "" ) );
-        assertEquals( "<", HtmlTools.unescapeHtml( "&lt;" ) );
-        assertEquals( ">", HtmlTools.unescapeHtml( "&gt;" ) );
-        assertEquals( "&", HtmlTools.unescapeHtml( "&amp;" ) );
-        assertEquals( "\"", HtmlTools.unescapeHtml( "&quot;" ) );
-        assertEquals( "&amp;", HtmlTools.unescapeHtml( "&amp;amp;" ) );
-        assertEquals( "&lt;Fran&ccedil;ais&gt;", HtmlTools.unescapeHtml( "&amp;lt;Fran&amp;ccedil;ais&amp;gt;" ) );
-        assertEquals( "&#x12345;", HtmlTools.unescapeHtml( "&#x12345;" ) );
+        assertNull( HtmlTools.unescapeHTML( null ) );
+        assertEquals( "", HtmlTools.unescapeHTML( "" ) );
+        assertEquals( "\u0009", HtmlTools.unescapeHTML( "\u0009" ) );
+        assertEquals( "\u0001", HtmlTools.unescapeHTML( "\u0001" ) );
+        assertEquals( "<", HtmlTools.unescapeHTML( "&lt;" ) );
+        assertEquals( ">", HtmlTools.unescapeHTML( "&gt;" ) );
+        assertEquals( "&", HtmlTools.unescapeHTML( "&amp;" ) );
+        assertEquals( "\"", HtmlTools.unescapeHTML( "&quot;" ) );
+        assertEquals( "&apos;", HtmlTools.unescapeHTML( "&apos;" ) );
+        assertEquals( "\'", HtmlTools.unescapeHTML( "&apos;", true ) );
+        assertEquals( "&amp;", HtmlTools.unescapeHTML( "&amp;amp;" ) );
+        assertEquals( "&lt;Fran&ccedil;ais&gt;", HtmlTools.unescapeHTML( "&amp;lt;Fran&amp;ccedil;ais&amp;gt;" ) );
+        assertEquals( "\u0159", HtmlTools.unescapeHTML( "&#x159;" ) );
+        assertEquals( "\uD808\uDF45", HtmlTools.unescapeHTML( "&#x12345;" ) );
+        assertEquals( "\uD835\uDFED", HtmlTools.unescapeHTML( "&#x1d7ed;" ) );
+        assertEquals( "\uD808\uDF45\uD835\uDFED", HtmlTools.unescapeHTML( "&#x12345;&#x1d7ed;" ) );
+        assertEquals( "&#x1d7ed &#x1d7ed", HtmlTools.unescapeHTML( "&#x1d7ed &#x1d7ed" ) );
+        assertEquals( "&#x1d7ed \uD835\uDFED", HtmlTools.unescapeHTML( "&#x1d7ed &#x1d7ed;" ) );
+        assertEquals( "&#xQWER;", HtmlTools.unescapeHTML( "&#xQWER;" ) );
+        assertEquals( "\u00E5", HtmlTools.unescapeHTML( "&#229;" ) );
+        assertEquals( "<>&\"\u00E5\u0159\uD835\uDFED",
+                      HtmlTools.unescapeHTML( "&lt;&gt;&amp;&quot;&#229;&#x159;&#x1d7ed;" ) );
     }
 
     /**
@@ -79,24 +103,26 @@ public class HtmlToolsTest
         assertEquals( HtmlTools.encodeId( "a b-c123 " ), "a_b-c123" );
         assertEquals( HtmlTools.encodeId( "   anchor" ), "anchor" );
         assertEquals( HtmlTools.encodeId( "myAnchor" ), "myAnchor" );
-        assertEquals( HtmlTools.encodeId( "Håkon" ), "Hkon" );
-        assertEquals( HtmlTools.encodeId( "Theußl" ), "Theul" );
+        assertEquals( HtmlTools.encodeId( "H\u00E5kon" ), "Hkon" );
+        assertEquals( HtmlTools.encodeId( "Theu\u00DFl" ), "Theul" );
     }
 
     /**
      * Verify the expected results.
      */
     public void testEncodeURL()
+        throws Exception
     {
         assertNull( HtmlTools.encodeURL( null ) );
         assertEquals( HtmlTools.encodeURL( "" ), "" );
-        assertEquals( HtmlTools.encodeURL(
-            "http://www.example.com/?This is a simple test." ),
-            "http://www.example.com/?This%20is%20a%20simple%20test." );
+        assertEquals( HtmlTools.encodeURL( "http://www.example.com/?This is a simple test." ),
+                      "http://www.example.com/?This%20is%20a%20simple%20test." );
 
-        assertEquals( HtmlTools.encodeURL(
-            "http://www.example.com/?This is a simple & short test." ),
-            "http://www.example.com/?This%20is%20a%20simple%20&%20short%20test." );
+        assertEquals( HtmlTools.encodeURL( "http://www.example.com/?This is a simple & short test." ),
+                      "http://www.example.com/?This%20is%20a%20simple%20&%20short%20test." );
+
+        String url = "\uD808\uDF45";
+        assertEquals( HtmlTools.encodeURL( url ), URLEncoder.encode( url, "UTF-8" ).toLowerCase( Locale.ENGLISH ) );
     }
 
     /**
@@ -118,7 +144,7 @@ public class HtmlToolsTest
         assertTrue( HtmlTools.isId( "a-" ) );
         assertTrue( HtmlTools.isId( "a:" ) );
         assertTrue( HtmlTools.isId( "a." ) );
-        assertFalse( HtmlTools.isId( "Theußl" ) );
+        assertFalse( HtmlTools.isId( "Theu\u00DFl" ) );
     }
 
     /**

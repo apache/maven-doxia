@@ -38,8 +38,11 @@ import java.io.Reader;
 import java.io.StringReader;
 import java.io.StringWriter;
 import java.util.HashMap;
+import java.util.Iterator;
 import java.util.Map;
+import java.util.Set;
 import java.util.StringTokenizer;
+import java.util.TreeSet;
 
 /**
  * The APT parser.
@@ -160,6 +163,10 @@ public class AptParser
     /** a line of AptSource. */
     protected String line;
 
+    /** Map of warn messages with a String as key to describe the error type and a Set as value.
+     * Using to reduce warn messages. */
+    protected Map warnMessages;
+
     private static final int NUMBER_OF_SPACES = 85;
 
     static
@@ -220,6 +227,25 @@ public class AptParser
         {
             // TODO handle column number
             throw new AptParseException( ape.getMessage(), ape, getSourceName(), getSourceLineNumber(), -1 );
+        }
+
+        if ( getLog().isWarnEnabled() && this.warnMessages != null && !isSecondParsing() )
+        {
+            for ( Iterator it = this.warnMessages.entrySet().iterator(); it.hasNext(); )
+            {
+                Map.Entry entry = (Map.Entry) it.next();
+
+                Set set = (Set) entry.getValue();
+
+                for ( Iterator it2 = set.iterator(); it2.hasNext(); )
+                {
+                    String msg = (String) it2.next();
+
+                    getLog().warn( msg );
+                }
+            }
+
+            this.warnMessages = null;
         }
     }
 
@@ -452,16 +478,18 @@ public class AptParser
 
                                 if ( hash.endsWith( ".html" ) && !hash.startsWith( "./" ) )
                                 {
-                                    getLog().warn( "[Apt Parser] Ambiguous link: '" + hash
-                                            + "'. If this is a local link, prepend \"./\"!" );
+                                    String msg = "Ambiguous link: '" + hash + "'. If this is a local link, prepend \"./\"!";
+                                    logMessage( "ambiguousLink", msg );
                                 }
 
                                 if ( !DoxiaUtils.isValidId( hash ) )
                                 {
-                                    getLog().warn( "[Apt Parser] Modified invalid link: " + hash );
+                                    linkAnchor =
+                                        linkAnchor.substring( 0, hashIndex ) + "#"
+                                            + DoxiaUtils.encodeId( hash, true );
 
-                                    linkAnchor = linkAnchor.substring( 0, hashIndex ) + "#"
-                                        + DoxiaUtils.encodeId( hash, true );
+                                    String msg = "Modified invalid link: '" + hash + "' to '" + linkAnchor + "'";
+                                    logMessage( "modifiedLink", msg );
                                 }
                             }
 
@@ -1552,6 +1580,38 @@ public class AptParser
         return buffer.toString().trim();
     }
 
+    /**
+     * If debug mode is enabled, log the <code>msg</code> as is, otherwise add unique msg in <code>warnMessages</code>.
+     *
+     * @param key not null
+     * @param msg not null
+     * @see #parse(Reader, Sink)
+     * @since 1.1.1
+     */
+    private void logMessage( String key, String msg )
+    {
+        msg = "[APT Parser] " + msg;
+        if ( getLog().isDebugEnabled() )
+        {
+            getLog().debug( msg );
+
+            return;
+        }
+
+        if ( warnMessages == null )
+        {
+            warnMessages = new HashMap();
+        }
+
+        Set set = (Set) warnMessages.get( key );
+        if ( set == null )
+        {
+            set = new TreeSet();
+        }
+        set.add( msg );
+        warnMessages.put( key, set );
+    }
+
     // -----------------------------------------------------------------------
 
     /** A block of an apt source document. */
@@ -2359,7 +2419,7 @@ public class AptParser
                         AptParser.this.sink.tableRows( justification, grid );
                     }
 
-                    line = replaceAll( line, "\\|", "\\174" );
+                    line = replaceAll( line, "\\|", "\\u007C" );
 
                     StringTokenizer cellLines = new StringTokenizer( line, "|", true );
 
@@ -2382,14 +2442,27 @@ public class AptParser
                             continue;
                         }
                         processedGrid = false;
-                        cellLine = replaceAll( cellLine, "\\", "\\240" );
+                        cellLine = replaceAll( cellLine, "\\", "\\u00A0" ); // linebreak
+                        // Escaped special characters: \~, \=, \-, \+, \*, \[, \], \<, \>, \{, \}, \\.
+                        cellLine = replaceAll( cellLine, "\\u00A0~", "\\~" );
+                        cellLine = replaceAll( cellLine, "\\u00A0=", "\\=" );
+                        cellLine = replaceAll( cellLine, "\\u00A0-", "\\-" );
+                        cellLine = replaceAll( cellLine, "\\u00A0+", "\\+" );
+                        cellLine = replaceAll( cellLine, "\\u00A0*", "\\*" );
+                        cellLine = replaceAll( cellLine, "\\u00A0[", "\\[" );
+                        cellLine = replaceAll( cellLine, "\\u00A0]", "\\]" );
+                        cellLine = replaceAll( cellLine, "\\u00A0<", "\\<" );
+                        cellLine = replaceAll( cellLine, "\\u00A0>", "\\>" );
+                        cellLine = replaceAll( cellLine, "\\u00A0{", "\\{" );
+                        cellLine = replaceAll( cellLine, "\\u00A0}", "\\}" );
+                        cellLine = replaceAll( cellLine, "\\u00A0\\u00A0", "\\\\" );
                         cellLine = cellLine.trim();
 
                         StringBuffer cell = cells[i];
                         if ( cellLine.length() > 0 )
                         {
                             // line break in table cells
-                            if ( cell.toString().trim().endsWith( "\\240" ) )
+                            if ( cell.toString().trim().endsWith( "\\u00A0" ) )
                             {
                                 cell.append( "\\\n" );
                             }
@@ -2801,6 +2874,7 @@ public class AptParser
 
             AptParser aptParser = new AptParser();
             aptParser.setSecondParsing( true );
+            aptParser.enableLogging( getLog() );
             parameters.put( "parser", aptParser );
 
             MacroRequest request = new MacroRequest( parameters, getBasedir() );

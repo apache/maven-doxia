@@ -92,7 +92,7 @@ public class TextParser
     }
 
     /**
-     * <p>parse</p>
+     * <p>parse.</p>
      *
      * @param line line to parse
      * @return a list of block that represents the input

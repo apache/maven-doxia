@@ -44,7 +44,7 @@ public class ITextSinkFactory
     }
 
     /**
-     * <p>createSink</p>
+     * createSink.
      *
      * @param writer a {@link java.io.Writer} object.
      * @return a {@link org.apache.maven.doxia.sink.Sink} object.

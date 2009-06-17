@@ -49,7 +49,8 @@ public class DocBookBookSink
     {
         super( out );
 
-        setXMLMode( true );
+        setSystemId( "http://www.oasis-open.org/docbook/xml/4.4/docbookx.dtd" );
+        setPublicId( "-//OASIS//DTD DocBook V4.4//EN" );
     }
 
     // ----------------------------------------------------------------------
@@ -139,7 +140,7 @@ public class DocBookBookSink
     /**
      * Emit the start tag for the book.
      *
-     * @see DocbookMarkup#BOOK_TAG
+     * @see org.apache.maven.doxia.module.docbook.DocbookMarkup#BOOK_TAG
      */
     public void book()
     {
@@ -154,7 +155,7 @@ public class DocBookBookSink
     /**
      * Emit the end tag for the book.
      *
-     * @see DocbookMarkup#BOOK_TAG
+     * @see org.apache.maven.doxia.module.docbook.DocbookMarkup#BOOK_TAG
      */
     public void book_()
     {

@@ -279,4 +279,10 @@ public class ConfluenceSinkTest
     {
         // nop
     }
+
+    /** {@inheritDoc} */
+    protected String getCommentBlock( String text )
+    {
+        return "";
+    }
 }

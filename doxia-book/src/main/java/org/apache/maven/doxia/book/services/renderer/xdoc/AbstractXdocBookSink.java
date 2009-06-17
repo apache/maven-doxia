@@ -22,9 +22,8 @@ package org.apache.maven.doxia.book.services.renderer.xdoc;
 import java.io.Writer;
 import java.util.Locale;
 
-import javax.swing.text.html.HTML.Tag;
-
 import org.apache.maven.doxia.module.xdoc.XdocSink;
+
 import org.codehaus.plexus.i18n.I18N;
 import org.codehaus.plexus.util.StringUtils;
 
@@ -68,7 +67,7 @@ public abstract class AbstractXdocBookSink
     /** {@inheritDoc} */
     public void body()
     {
-        writeStartTag( Tag.BODY );
+        writeStartTag( BODY );
 
         write( "<section name=\"\">" );
 
@@ -89,7 +88,7 @@ public abstract class AbstractXdocBookSink
 
         write( "</section>" );
 
-        writeEndTag( Tag.BODY );
+        writeEndTag( BODY );
 
         writeEndTag( DOCUMENT_TAG );
 

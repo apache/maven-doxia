@@ -38,7 +38,7 @@ public class FmlValidatorTest
     extends AbstractXmlValidatorTest
 {
     /** The xsd to use */
-    private static final File FML_XSD = new File( getBasedir(), "/src/main/resources/fml-1.0.xsd" );
+    private static final File FML_XSD = new File( getBasedir(), "/src/main/resources/fml-1.0.1.xsd" );
 
     /** {@inheritDoc} */
     protected void setUp()

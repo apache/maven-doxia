@@ -25,6 +25,7 @@ import java.io.Reader;
 import java.io.Writer;
 
 import java.util.Iterator;
+import java.util.List;
 
 import org.apache.maven.doxia.parser.AbstractParserTest;
 import org.apache.maven.doxia.parser.ParseException;
@@ -33,6 +34,7 @@ import org.apache.maven.doxia.sink.Sink;
 import org.apache.maven.doxia.sink.SinkEventElement;
 import org.apache.maven.doxia.sink.SinkEventTestingSink;
 
+import org.codehaus.plexus.util.FileUtils;
 import org.codehaus.plexus.util.IOUtil;
 
 /**
@@ -53,6 +55,17 @@ public class XdocParserTest
         super.setUp();
 
         parser = (XdocParser) lookup( Parser.ROLE, "xdoc" );
+
+        // AbstractXmlParser.CachedFileEntityResolver downloads DTD/XSD files in ${java.io.tmpdir}
+        // Be sure to delete them
+        String tmpDir = System.getProperty( "java.io.tmpdir" );
+        String excludes = "xdoc-*.xsd, xml.xsd";
+        List tmpFiles = FileUtils.getFileNames( new File( tmpDir ), excludes, null, true );
+        for ( Iterator it = tmpFiles.iterator(); it.hasNext(); )
+        {
+            File tmpFile = new File( it.next().toString() );
+            tmpFile.delete();
+        }
     }
 
     /** {@inheritDoc} */
@@ -381,7 +394,7 @@ public class XdocParserTest
 
         Iterator it = sink.getEventList().iterator();
         assertEquals( "unknown", ( (SinkEventElement) it.next() ).getName() );
-        assertEquals( "rawText", ( (SinkEventElement) it.next() ).getName() );
+        assertEquals( "unknown", ( (SinkEventElement) it.next() ).getName() );
         assertEquals( "unknown", ( (SinkEventElement) it.next() ).getName() );
         assertFalse( it.hasNext() );
     }
@@ -457,7 +470,7 @@ public class XdocParserTest
 
         SinkEventElement textEvt = (SinkEventElement) it.next();
         assertEquals( "text", textEvt.getName() );
-        assertEquals( "&\u0159&#x1d7ed;", textEvt.getArgs()[0] );
+        assertEquals( "&\u0159\uD835\uDFED", textEvt.getArgs()[0] );
 
         assertEquals( "sectionTitle1_", ( (SinkEventElement) it.next() ).getName() );
         assertEquals( "paragraph", ( (SinkEventElement) it.next() ).getName() );
@@ -471,8 +484,8 @@ public class XdocParserTest
         assertEquals( "\u0159", textEvt.getArgs()[0] );
 
         textEvt = (SinkEventElement) it.next();
-        assertEquals( "unknown", textEvt.getName() );
-        assertEquals( "&#x1d7ed;", textEvt.getArgs()[0] );
+        assertEquals( "text", textEvt.getName() );
+        assertEquals( "\uD835\uDFED", textEvt.getArgs()[0] );
 
         assertEquals( "paragraph_", ( (SinkEventElement) it.next() ).getName() );
         assertEquals( "section1_", ( (SinkEventElement) it.next() ).getName() );

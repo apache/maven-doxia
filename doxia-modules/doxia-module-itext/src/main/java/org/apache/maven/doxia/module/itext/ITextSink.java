@@ -24,13 +24,20 @@ import com.lowagie.text.ElementTags;
 import com.lowagie.text.Image;
 
 import java.awt.Color;
+import java.io.File;
 import java.io.IOException;
 import java.io.LineNumberReader;
 import java.io.StringReader;
+import java.io.StringWriter;
 import java.io.Writer;
 import java.net.MalformedURLException;
 import java.net.URL;
+import java.util.HashMap;
+import java.util.Iterator;
 import java.util.Locale;
+import java.util.Map;
+import java.util.Set;
+import java.util.TreeSet;
 
 import org.apache.maven.doxia.sink.Sink;
 import org.apache.maven.doxia.sink.SinkAdapter;
@@ -101,7 +108,20 @@ public final class ITextSink
 
     private int depth = 0;
 
-    private String tableCaption = null;
+    private StringWriter tableCaptionWriter = null;
+
+    private XMLWriter tableCaptionXMLWriter = null;
+
+    /** Flag to know if an anchor is defined or not. Used as workaround for iText which needs a defined local
+     * destination. */
+    private boolean anchorDefined = false;
+
+    /** Flag to know if an figure event is called. */
+    private boolean figureDefined = false;
+
+    /** Map of warn messages with a String as key to describe the error type and a Set as value.
+     * Using to reduce warn messages. */
+    private Map warnMessages;
 
     /**
      * <p>Constructor for ITextSink.</p>
@@ -122,6 +142,7 @@ public final class ITextSink
      */
     protected ITextSink( Writer writer, String encoding )
     {
+        // No doctype since itext doctype is not up to date!
         this( new PrettyPrintXMLWriter( writer, encoding, null ) );
 
         this.writer = writer;
@@ -172,6 +193,25 @@ public final class ITextSink
     public void close()
     {
         IOUtil.close( writer );
+
+        if ( getLog().isWarnEnabled() && this.warnMessages != null )
+        {
+            for ( Iterator it = this.warnMessages.entrySet().iterator(); it.hasNext(); )
+            {
+                Map.Entry entry = (Map.Entry) it.next();
+
+                Set set = (Set) entry.getValue();
+
+                for ( Iterator it2 = set.iterator(); it2.hasNext(); )
+                {
+                    String msg = (String) it2.next();
+
+                    getLog().warn( msg );
+                }
+            }
+
+            this.warnMessages = null;
+        }
     }
 
     /** {@inheritDoc} */
@@ -776,26 +816,30 @@ public final class ITextSink
     /** {@inheritDoc} */
     public void definitionList()
     {
+        lineBreak();
+
         actionContext.setAction( SinkActionContext.DEFINITION_LIST );
     }
 
     /** {@inheritDoc} */
     public void definedTerm_()
     {
-        writeEndElement(); // ElementTags.CELL
-
-        writeEndElement(); // ElementTags.ROW
-
-        writeEndElement(); // ElementTags.TABLE
+        font.setSize( ITextFont.DEFAULT_FONT_SIZE );
+        bold_();
 
         writeEndElement(); // ElementTags.CHUNK
 
         actionContext.release();
+
+        lineBreak();
     }
 
     /** {@inheritDoc} */
     public void definedTerm()
     {
+        font.setSize( ITextFont.DEFAULT_FONT_SIZE + 2 );
+        bold();
+
         writeStartElement( ElementTags.CHUNK );
         writeAddAttribute( ElementTags.FONT, font.getFontName() );
         writeAddAttribute( ElementTags.SIZE, font.getFontSize() );
@@ -804,38 +848,12 @@ public final class ITextSink
         writeAddAttribute( ElementTags.GREEN, font.getFontColorGreen() );
         writeAddAttribute( ElementTags.RED, font.getFontColorRed() );
 
-        writeStartElement( ElementTags.TABLE );
-        writeAddAttribute( ElementTags.COLUMNS, "1" );
-        writeAddAttribute( ElementTags.LEFT, Boolean.FALSE.toString() );
-        writeAddAttribute( ElementTags.RIGHT, Boolean.FALSE.toString() );
-        writeAddAttribute( ElementTags.TOP, Boolean.FALSE.toString() );
-        writeAddAttribute( ElementTags.BOTTOM, Boolean.FALSE.toString() );
-        writeAddAttribute( ElementTags.ALIGN, ElementTags.ALIGN_CENTER );
-        writeAddAttribute( ElementTags.WIDTH, "100%" );
-        //        writeAddAttribute( ElementTags.TABLEFITSPAGE, Boolean.TRUE.toString() );
-        //        writeAddAttribute( ElementTags.CELLSFITPAGE, Boolean.TRUE.toString() );
-        writeAddAttribute( ElementTags.CELLPADDING, "0" );
-
-        writeStartElement( ElementTags.ROW );
-
-        writeStartElement( ElementTags.CELL );
-        writeAddAttribute( ElementTags.LEFT, Boolean.FALSE.toString() );
-        writeAddAttribute( ElementTags.RIGHT, Boolean.FALSE.toString() );
-        writeAddAttribute( ElementTags.TOP, Boolean.FALSE.toString() );
-        writeAddAttribute( ElementTags.BOTTOM, Boolean.FALSE.toString() );
-
         actionContext.setAction( SinkActionContext.DEFINED_TERM );
     }
 
     /** {@inheritDoc} */
     public void definition_()
     {
-        writeEndElement(); // ElementTags.CELL
-
-        writeEndElement(); // ElementTags.ROW
-
-        writeEndElement(); // ElementTags.TABLE
-
         writeEndElement(); // ElementTags.CHUNK
 
         actionContext.release();
@@ -852,52 +870,18 @@ public final class ITextSink
         writeAddAttribute( ElementTags.GREEN, font.getFontColorGreen() );
         writeAddAttribute( ElementTags.RED, font.getFontColorRed() );
 
-        writeStartElement( ElementTags.TABLE );
-        writeAddAttribute( ElementTags.COLUMNS, "2" );
-        writeAddAttribute( ElementTags.LEFT, Boolean.FALSE.toString() );
-        writeAddAttribute( ElementTags.RIGHT, Boolean.FALSE.toString() );
-        writeAddAttribute( ElementTags.TOP, Boolean.FALSE.toString() );
-        writeAddAttribute( ElementTags.BOTTOM, Boolean.FALSE.toString() );
-        writeAddAttribute( ElementTags.ALIGN, ElementTags.ALIGN_CENTER );
-        writeAddAttribute( ElementTags.WIDTH, "100%" );
-        writeAddAttribute( ElementTags.WIDTHS, "20.0;80.0" );
-        //        writeAddAttribute( ElementTags.TABLEFITSPAGE, Boolean.TRUE.toString() );
-        writeAddAttribute( ElementTags.CELLSFITPAGE, Boolean.TRUE.toString() );
-        writeAddAttribute( ElementTags.CELLPADDING, "5" );
-
-        writeStartElement( ElementTags.ROW );
-
-        writeStartElement( ElementTags.CELL );
-        writeAddAttribute( ElementTags.LEFT, Boolean.FALSE.toString() );
-        writeAddAttribute( ElementTags.RIGHT, Boolean.FALSE.toString() );
-        writeAddAttribute( ElementTags.TOP, Boolean.FALSE.toString() );
-        writeAddAttribute( ElementTags.BOTTOM, Boolean.FALSE.toString() );
-
-        write( "" );
-
-        writeEndElement(); // ElementTags.CELL
-
-        writeStartElement( ElementTags.CELL );
-        writeAddAttribute( ElementTags.LEFT, Boolean.FALSE.toString() );
-        writeAddAttribute( ElementTags.RIGHT, Boolean.FALSE.toString() );
-        writeAddAttribute( ElementTags.TOP, Boolean.FALSE.toString() );
-        writeAddAttribute( ElementTags.BOTTOM, Boolean.FALSE.toString() );
-
         actionContext.setAction( SinkActionContext.DEFINITION );
     }
 
     /** {@inheritDoc} */
     public void definitionListItem_()
     {
-        // nop
         actionContext.release();
     }
 
     /** {@inheritDoc} */
     public void definitionListItem()
     {
-        // nop
-
         actionContext.setAction( SinkActionContext.DEFINITION_LIST_ITEM );
     }
 
@@ -908,24 +892,30 @@ public final class ITextSink
     /** {@inheritDoc} */
     public void table_()
     {
-        writeEndElement(); // ElementTags.TABLE
-
-        writeEndElement(); // ElementTags.CHUNK
-
-        actionContext.release();
-
-        if ( tableCaption != null )
+        if ( tableCaptionXMLWriter != null )
         {
-                writeStartElement( ElementTags.PARAGRAPH );
-                writeAddAttribute( ElementTags.ALIGN, ElementTags.ALIGN_CENTER );
+            tableCaptionXMLWriter = null;
 
-                write( tableCaption );
+            writeEndElement(); // ElementTags.TABLE
 
-                writeEndElement(); // ElementTags.PARAGRAPH
+            writeEndElement(); // ElementTags.CHUNK
 
-                tableCaption = null;
+            writeStartElement( ElementTags.PARAGRAPH );
+            writeAddAttribute( ElementTags.ALIGN, ElementTags.ALIGN_CENTER );
+
+            write( tableCaptionWriter.toString(), true );
+
+            writeEndElement(); // ElementTags.PARAGRAPH
+
+            tableCaptionWriter = null;
         }
+        else
+        {
+            writeEndElement(); // ElementTags.TABLE
 
+            writeEndElement(); // ElementTags.CHUNK
+        }
+        actionContext.release();
     }
 
     /** {@inheritDoc} */
@@ -963,6 +953,8 @@ public final class ITextSink
     /** {@inheritDoc} */
     public void tableCaption()
     {
+        tableCaptionWriter = new StringWriter();
+        tableCaptionXMLWriter = new PrettyPrintXMLWriter( tableCaptionWriter );
         actionContext.setAction( SinkActionContext.TABLE_CAPTION );
     }
 
@@ -1122,11 +1114,15 @@ public final class ITextSink
         writeEndElement(); // ElementTags.CHUNK
 
         actionContext.release();
+
+        figureDefined = false;
     }
 
     /** {@inheritDoc} */
     public void figure()
     {
+        figureDefined = true;
+
         writeStartElement( ElementTags.CHUNK );
         writeAddAttribute( ElementTags.FONT, font.getFontName() );
         writeAddAttribute( ElementTags.SIZE, font.getFontSize() );
@@ -1152,38 +1148,74 @@ public final class ITextSink
         actionContext.setAction( SinkActionContext.FIGURE_CAPTION );
     }
 
-    /** {@inheritDoc} */
+    /**
+     * If the <code>name</code> is a relative link, the internal link will used a System property <code>itext.basedir</code>,
+     * or the class loader.
+     * {@inheritDoc} */
     public void figureGraphics( String name )
     {
         String urlName = null;
+        File nameFile = null;
         if ( ( name.toLowerCase( Locale.ENGLISH ).startsWith( "http://" ) )
-                        || ( name.toLowerCase( Locale.ENGLISH ).startsWith( "https://" ) ) )
+            || ( name.toLowerCase( Locale.ENGLISH ).startsWith( "https://" ) ) )
         {
             urlName = name;
         }
         else
         {
-            if ( getClassLoader() != null )
+            if ( System.getProperty( "itext.basedir" ) != null )
             {
-                if ( getClassLoader().getResource( name ) != null )
+                try
                 {
-                    urlName = getClassLoader().getResource( name ).toString();
+                    nameFile = new File( System.getProperty( "itext.basedir" ), name );
+                    urlName = nameFile.toURL().toString();
+                }
+                catch ( MalformedURLException e )
+                {
+                    getLog().error( "MalformedURLException: " + e.getMessage(), e );
                 }
             }
             else
             {
-                if ( ITextSink.class.getClassLoader().getResource( name ) != null )
+                if ( getClassLoader() != null )
                 {
-                    urlName = ITextSink.class.getClassLoader().getResource( name ).toString();
+                    if ( getClassLoader().getResource( name ) != null )
+                    {
+                        urlName = getClassLoader().getResource( name ).toString();
+                    }
+                }
+                else
+                {
+                    if ( ITextSink.class.getClassLoader().getResource( name ) != null )
+                    {
+                        urlName = ITextSink.class.getClassLoader().getResource( name ).toString();
+                    }
                 }
             }
         }
 
         if ( urlName == null )
         {
-            getLog().warn( "No image " + name + " found in the class loader. Try to call setClassLoader(ClassLoader)"
-                           + " before." );
+            String msg =
+                "No image '" + name
+                    + "' found in the class loader. Try to call setClassLoader(ClassLoader) before.";
+            logMessage( "imageNotFound", msg );
+
             return;
+        }
+
+        if ( nameFile != null && !nameFile.exists() )
+        {
+            String msg = "No image '" + nameFile + "' found in your system, check the path.";
+            logMessage( "imageNotFound", msg );
+
+            return;
+        }
+
+        boolean figureCalled = figureDefined;
+        if ( !figureCalled )
+        {
+            figure();
         }
 
         float width = 0;
@@ -1197,15 +1229,15 @@ public final class ITextSink
         }
         catch ( BadElementException e )
         {
-            // nop
+            getLog().error( "BadElementException: " + e.getMessage(), e );
         }
         catch ( MalformedURLException e )
         {
-            // nop
+            getLog().error( "MalformedURLException: " + e.getMessage(), e );
         }
         catch ( IOException e )
         {
-            // nop
+            getLog().error( "IOException: " + e.getMessage(), e );
         }
 
         writeAddAttribute( ElementTags.URL, urlName );
@@ -1214,6 +1246,11 @@ public final class ITextSink
         writeAddAttribute( ElementTags.PLAINHEIGHT, String.valueOf( height ) );
 
         actionContext.setAction( SinkActionContext.FIGURE_GRAPHICS );
+
+        if ( !figureCalled )
+        {
+            figure_();
+        }
     }
 
     // ----------------------------------------------------------------------
@@ -1297,6 +1334,18 @@ public final class ITextSink
     /** {@inheritDoc} */
     public void anchor_()
     {
+        if ( !anchorDefined )
+        {
+            // itext needs a defined local destination, we put an invisible text
+            writeAddAttribute( ElementTags.BLUE, "255" );
+            writeAddAttribute( ElementTags.GREEN, "255" );
+            writeAddAttribute( ElementTags.RED, "255" );
+
+            write( "_" );
+        }
+
+        anchorDefined = false;
+
         writeEndElement(); // ElementTags.ANCHOR
 
         actionContext.release();
@@ -1316,11 +1365,15 @@ public final class ITextSink
         {
             id = DoxiaUtils.encodeId( name, true );
 
-            getLog().warn( "Modified invalid anchor name: " + name );
+            String msg = "Modified invalid link: '" + name + "' to '" + id + "'";
+            logMessage( "modifiedLink", msg );
         }
 
         writeStartElement( ElementTags.ANCHOR );
         writeAddAttribute( ElementTags.NAME, id );
+        writeAddAttribute( ElementTags.FONT, font.getFontName() );
+        writeAddAttribute( ElementTags.SIZE, font.getFontSize() );
+        writeAddAttribute( ElementTags.STYLE, font.getFontStyle() );
 
         actionContext.setAction( SinkActionContext.ANCHOR );
     }
@@ -1361,6 +1414,13 @@ public final class ITextSink
     public void horizontalRule()
     {
         writeStartElement( ElementTags.PARAGRAPH );
+        writeAddAttribute( ElementTags.BLUE, "255" );
+        writeAddAttribute( ElementTags.GREEN, "255" );
+        writeAddAttribute( ElementTags.RED, "255" );
+        write( "_" );
+        writeEndElement();
+
+        writeStartElement( ElementTags.PARAGRAPH );
         writeStartElement( ElementTags.HORIZONTALRULE );
         writeEndElement();
         writeEndElement();
@@ -1389,14 +1449,13 @@ public final class ITextSink
     /** {@inheritDoc} */
     public void text( String text )
     {
+        if ( StringUtils.isEmpty( text ) )
+        {
+            return;
+        }
+
         switch ( actionContext.getCurrentAction() )
         {
-            case SinkActionContext.UNDEFINED:
-                break;
-
-            case SinkActionContext.HEAD:
-                break;
-
             case SinkActionContext.AUTHOR:
                 header.addAuthor( text );
                 break;
@@ -1409,168 +1468,8 @@ public final class ITextSink
                 header.setTitle( text );
                 break;
 
-            case SinkActionContext.SECTION_TITLE_1:
-                writeStartElement( ElementTags.CHUNK );
-                writeAddAttribute( ElementTags.FONT, font.getFontName() );
-                writeAddAttribute( ElementTags.SIZE, font.getFontSize() );
-                writeAddAttribute( ElementTags.STYLE, font.getFontStyle() );
-                writeAddAttribute( ElementTags.BLUE, font.getFontColorBlue() );
-                writeAddAttribute( ElementTags.GREEN, font.getFontColorGreen() );
-                writeAddAttribute( ElementTags.RED, font.getFontColorRed() );
-
-                write( text );
-
-                writeEndElement(); // ElementTags.CHUNK
-                break;
-
-            case SinkActionContext.SECTION_TITLE_2:
-                writeStartElement( ElementTags.CHUNK );
-                writeAddAttribute( ElementTags.FONT, font.getFontName() );
-                writeAddAttribute( ElementTags.SIZE, font.getFontSize() );
-                writeAddAttribute( ElementTags.STYLE, font.getFontStyle() );
-                writeAddAttribute( ElementTags.BLUE, font.getFontColorBlue() );
-                writeAddAttribute( ElementTags.GREEN, font.getFontColorGreen() );
-                writeAddAttribute( ElementTags.RED, font.getFontColorRed() );
-
-                write( text );
-
-                writeEndElement(); // ElementTags.CHUNK
-                break;
-
-            case SinkActionContext.SECTION_TITLE_3:
-                writeStartElement( ElementTags.CHUNK );
-                writeAddAttribute( ElementTags.FONT, font.getFontName() );
-                writeAddAttribute( ElementTags.SIZE, font.getFontSize() );
-                writeAddAttribute( ElementTags.STYLE, font.getFontStyle() );
-                writeAddAttribute( ElementTags.BLUE, font.getFontColorBlue() );
-                writeAddAttribute( ElementTags.GREEN, font.getFontColorGreen() );
-                writeAddAttribute( ElementTags.RED, font.getFontColorRed() );
-
-                write( text );
-
-                writeEndElement(); // ElementTags.CHUNK
-                break;
-
-            case SinkActionContext.SECTION_TITLE_4:
-                writeStartElement( ElementTags.CHUNK );
-                writeAddAttribute( ElementTags.FONT, font.getFontName() );
-                writeAddAttribute( ElementTags.SIZE, font.getFontSize() );
-                writeAddAttribute( ElementTags.STYLE, font.getFontStyle() );
-                writeAddAttribute( ElementTags.BLUE, font.getFontColorBlue() );
-                writeAddAttribute( ElementTags.GREEN, font.getFontColorGreen() );
-                writeAddAttribute( ElementTags.RED, font.getFontColorRed() );
-
-                write( text );
-
-                writeEndElement(); // ElementTags.CHUNK
-                break;
-
-            case SinkActionContext.SECTION_TITLE_5:
-                writeStartElement( ElementTags.CHUNK );
-                writeAddAttribute( ElementTags.FONT, font.getFontName() );
-                writeAddAttribute( ElementTags.SIZE, font.getFontSize() );
-                writeAddAttribute( ElementTags.STYLE, font.getFontStyle() );
-                writeAddAttribute( ElementTags.BLUE, font.getFontColorBlue() );
-                writeAddAttribute( ElementTags.GREEN, font.getFontColorGreen() );
-                writeAddAttribute( ElementTags.RED, font.getFontColorRed() );
-
-                write( text );
-
-                writeEndElement(); // ElementTags.CHUNK
-                break;
-
-            case SinkActionContext.LIST_ITEM:
-                writeStartElement( ElementTags.CHUNK );
-                writeAddAttribute( ElementTags.FONT, font.getFontName() );
-                writeAddAttribute( ElementTags.SIZE, font.getFontSize() );
-                writeAddAttribute( ElementTags.STYLE, font.getFontStyle() );
-                writeAddAttribute( ElementTags.BLUE, font.getFontColorBlue() );
-                writeAddAttribute( ElementTags.GREEN, font.getFontColorGreen() );
-                writeAddAttribute( ElementTags.RED, font.getFontColorRed() );
-
-                write( text );
-
-                writeEndElement(); // ElementTags.CHUNK
-                break;
-
-            case SinkActionContext.NUMBERED_LIST_ITEM:
-                writeStartElement( ElementTags.CHUNK );
-                writeAddAttribute( ElementTags.FONT, font.getFontName() );
-                writeAddAttribute( ElementTags.SIZE, font.getFontSize() );
-                writeAddAttribute( ElementTags.STYLE, font.getFontStyle() );
-                writeAddAttribute( ElementTags.BLUE, font.getFontColorBlue() );
-                writeAddAttribute( ElementTags.GREEN, font.getFontColorGreen() );
-                writeAddAttribute( ElementTags.RED, font.getFontColorRed() );
-
-                write( text );
-
-                writeEndElement(); // ElementTags.CHUNK
-                break;
-
-            case SinkActionContext.DEFINED_TERM:
-                writeStartElement( ElementTags.CHUNK );
-                writeAddAttribute( ElementTags.FONT, font.getFontName() );
-                writeAddAttribute( ElementTags.SIZE, font.getFontSize() );
-                writeAddAttribute( ElementTags.STYLE, font.getFontStyle() );
-                writeAddAttribute( ElementTags.BLUE, font.getFontColorBlue() );
-                writeAddAttribute( ElementTags.GREEN, font.getFontColorGreen() );
-                writeAddAttribute( ElementTags.RED, font.getFontColorRed() );
-
-                write( text );
-
-                writeEndElement(); // ElementTags.CHUNK
-                break;
-
-            case SinkActionContext.DEFINITION:
-                writeStartElement( ElementTags.CHUNK );
-                writeAddAttribute( ElementTags.FONT, font.getFontName() );
-                writeAddAttribute( ElementTags.SIZE, font.getFontSize() );
-                writeAddAttribute( ElementTags.STYLE, font.getFontStyle() );
-                writeAddAttribute( ElementTags.BLUE, font.getFontColorBlue() );
-                writeAddAttribute( ElementTags.GREEN, font.getFontColorGreen() );
-                writeAddAttribute( ElementTags.RED, font.getFontColorRed() );
-
-                write( text );
-
-                writeEndElement(); // ElementTags.CHUNK
-                break;
-
-            case SinkActionContext.TABLE:
-                break;
-
-            case SinkActionContext.TABLE_ROW:
-                break;
-
-            case SinkActionContext.TABLE_HEADER_CELL:
-                writeStartElement( ElementTags.CHUNK );
-                writeAddAttribute( ElementTags.FONT, font.getFontName() );
-                writeAddAttribute( ElementTags.SIZE, font.getFontSize() );
-                writeAddAttribute( ElementTags.STYLE, font.getFontStyle() );
-                writeAddAttribute( ElementTags.BLUE, font.getFontColorBlue() );
-                writeAddAttribute( ElementTags.GREEN, font.getFontColorGreen() );
-                writeAddAttribute( ElementTags.RED, font.getFontColorRed() );
-
-                write( text );
-
-                writeEndElement(); // ElementTags.CHUNK
-                break;
-
-            case SinkActionContext.TABLE_CELL:
-                writeStartElement( ElementTags.CHUNK );
-                writeAddAttribute( ElementTags.FONT, font.getFontName() );
-                writeAddAttribute( ElementTags.SIZE, font.getFontSize() );
-                writeAddAttribute( ElementTags.STYLE, font.getFontStyle() );
-                writeAddAttribute( ElementTags.BLUE, font.getFontColorBlue() );
-                writeAddAttribute( ElementTags.GREEN, font.getFontColorGreen() );
-                writeAddAttribute( ElementTags.RED, font.getFontColorRed() );
-
-                write( text );
-
-                writeEndElement(); // ElementTags.CHUNK
-                break;
-
             case SinkActionContext.TABLE_CAPTION:
-                this.tableCaption = text;
+                this.tableCaptionXMLWriter.writeText( text );
                 break;
 
             case SinkActionContext.VERBATIM:
@@ -1606,40 +1505,8 @@ public final class ITextSink
                 }
                 break;
 
-            case SinkActionContext.FIGURE:
-            case SinkActionContext.FIGURE_GRAPHICS:
-                break;
-
             case SinkActionContext.FIGURE_CAPTION:
                 writeAddAttribute( ElementTags.ALT, text );
-                break;
-
-            case SinkActionContext.LINK:
-                writeStartElement( ElementTags.CHUNK );
-                writeAddAttribute( ElementTags.FONT, font.getFontName() );
-                writeAddAttribute( ElementTags.SIZE, font.getFontSize() );
-                writeAddAttribute( ElementTags.STYLE, font.getFontStyle() );
-                writeAddAttribute( ElementTags.BLUE, font.getFontColorBlue() );
-                writeAddAttribute( ElementTags.GREEN, font.getFontColorGreen() );
-                writeAddAttribute( ElementTags.RED, font.getFontColorRed() );
-
-                write( text );
-
-                writeEndElement(); // ElementTags.CHUNK
-                break;
-
-            case SinkActionContext.ANCHOR:
-                writeStartElement( ElementTags.CHUNK );
-                writeAddAttribute( ElementTags.FONT, font.getFontName() );
-                writeAddAttribute( ElementTags.SIZE, font.getFontSize() );
-                writeAddAttribute( ElementTags.STYLE, font.getFontStyle() );
-                writeAddAttribute( ElementTags.BLUE, font.getFontColorBlue() );
-                writeAddAttribute( ElementTags.GREEN, font.getFontColorGreen() );
-                writeAddAttribute( ElementTags.RED, font.getFontColorRed() );
-
-                write( text );
-
-                writeEndElement(); // ElementTags.CHUNK
                 break;
 
             case SinkActionContext.SECTION_TITLE:
@@ -1648,9 +1515,29 @@ public final class ITextSink
             case SinkActionContext.SECTION_3:
             case SinkActionContext.SECTION_4:
             case SinkActionContext.SECTION_5:
+            case SinkActionContext.FIGURE:
+            case SinkActionContext.FIGURE_GRAPHICS:
+            case SinkActionContext.TABLE_ROW:
+            case SinkActionContext.TABLE:
+            case SinkActionContext.HEAD:
+            case SinkActionContext.UNDEFINED:
                 break;
 
+            case SinkActionContext.ANCHOR:
+                anchorDefined = true;
             case SinkActionContext.PARAGRAPH:
+            case SinkActionContext.LINK:
+            case SinkActionContext.TABLE_CELL:
+            case SinkActionContext.TABLE_HEADER_CELL:
+            case SinkActionContext.DEFINITION:
+            case SinkActionContext.DEFINED_TERM:
+            case SinkActionContext.NUMBERED_LIST_ITEM:
+            case SinkActionContext.LIST_ITEM:
+            case SinkActionContext.SECTION_TITLE_5:
+            case SinkActionContext.SECTION_TITLE_4:
+            case SinkActionContext.SECTION_TITLE_3:
+            case SinkActionContext.SECTION_TITLE_2:
+            case SinkActionContext.SECTION_TITLE_1:
             default:
                 writeStartElement( ElementTags.CHUNK );
                 writeAddAttribute( ElementTags.FONT, font.getFontName() );
@@ -1674,7 +1561,8 @@ public final class ITextSink
      */
     public void unknown( String name, Object[] requiredParams, SinkEventAttributes attributes )
     {
-        getLog().warn( "Unknown Sink event in ITextSink: " + name + ", ignoring!" );
+        String msg = "Unknown Sink event: '" + name + "', ignoring!";
+        logMessage( "unknownEvent", msg );
     }
 
     /**
@@ -1684,7 +1572,14 @@ public final class ITextSink
      */
     private void writeStartElement( String tag )
     {
-        xmlWriter.startElement( tag );
+        if ( tableCaptionXMLWriter == null )
+        {
+            xmlWriter.startElement( tag );
+        }
+        else
+        {
+            tableCaptionXMLWriter.startElement( tag );
+        }
     }
 
     /**
@@ -1695,7 +1590,14 @@ public final class ITextSink
      */
     private void writeAddAttribute( String key, String value )
     {
-        xmlWriter.addAttribute( key, value );
+        if ( tableCaptionXMLWriter == null )
+        {
+            xmlWriter.addAttribute( key, value );
+        }
+        else
+        {
+            tableCaptionXMLWriter.addAttribute( key, value );
+        }
     }
 
     /**
@@ -1706,7 +1608,14 @@ public final class ITextSink
      */
     private void writeAddAttribute( String key, int value )
     {
-        xmlWriter.addAttribute( key, String.valueOf( value ) );
+        if ( tableCaptionXMLWriter == null )
+        {
+            xmlWriter.addAttribute( key, String.valueOf( value ) );
+        }
+        else
+        {
+            tableCaptionXMLWriter.addAttribute( key, String.valueOf( value ) );
+        }
     }
 
     /**
@@ -1714,7 +1623,14 @@ public final class ITextSink
      */
     private void writeEndElement()
     {
-        xmlWriter.endElement();
+        if ( tableCaptionXMLWriter == null )
+        {
+            xmlWriter.endElement();
+        }
+        else
+        {
+            tableCaptionXMLWriter.endElement();
+        }
     }
 
     /**
@@ -1780,11 +1696,25 @@ public final class ITextSink
         }
         if ( escapeHtml )
         {
-            xmlWriter.writeMarkup( aString );
+            if ( tableCaptionXMLWriter == null )
+            {
+                xmlWriter.writeMarkup( aString );
+            }
+            else
+            {
+                tableCaptionXMLWriter.writeMarkup( aString );
+            }
         }
         else
         {
-            xmlWriter.writeText( aString );
+            if ( tableCaptionXMLWriter == null )
+            {
+                xmlWriter.writeText( aString );
+            }
+            else
+            {
+                tableCaptionXMLWriter.writeText( aString );
+            }
         }
     }
 
@@ -1821,5 +1751,37 @@ public final class ITextSink
         writeAddAttribute( ElementTags.GREEN, fontColorGreen );
         writeAddAttribute( ElementTags.RED, fontColorRed );
 //        writeAddAttribute( ElementTags.LOCALDESTINATION, localDestination );
+    }
+
+    /**
+     * If debug mode is enabled, log the <code>msg</code> as is, otherwise add unique msg in <code>warnMessages</code>.
+     *
+     * @param key not null
+     * @param msg not null
+     * @see #close()
+     * @since 1.1.1
+     */
+    private void logMessage( String key, String msg )
+    {
+        msg = "[iText Sink] " + msg;
+        if ( getLog().isDebugEnabled() )
+        {
+            getLog().debug( msg );
+
+            return;
+        }
+
+        if ( warnMessages == null )
+        {
+            warnMessages = new HashMap();
+        }
+
+        Set set = (Set) warnMessages.get( key );
+        if ( set == null )
+        {
+            set = new TreeSet();
+        }
+        set.add( msg );
+        warnMessages.put( key, set );
     }
 }

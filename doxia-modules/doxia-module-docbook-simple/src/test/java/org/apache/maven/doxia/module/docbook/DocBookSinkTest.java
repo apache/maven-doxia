@@ -21,12 +21,17 @@ package org.apache.maven.doxia.module.docbook;
 
 import java.io.Writer;
 
+import java.util.Locale;
+
 import javax.swing.text.MutableAttributeSet;
 import javax.swing.text.SimpleAttributeSet;
 
 import org.apache.maven.doxia.sink.AbstractSinkTest;
 import org.apache.maven.doxia.sink.Sink;
 import org.apache.maven.doxia.sink.SinkUtils;
+import org.apache.maven.doxia.util.DoxiaUtils;
+
+import org.codehaus.plexus.util.FileUtils;
 
 /**
  * @author <a href="mailto:jason@maven.org">Jason van Zyl</a>
@@ -73,8 +78,9 @@ public class DocBookSinkTest extends AbstractSinkTest
     /** {@inheritDoc} */
     protected String getHeadBlock()
     {
-        return "<!DOCTYPE article PUBLIC \"" + DocBookSink.DEFAULT_SGML_PUBLIC_ID + "\" "
-            + "\"" + DocBookSink.DEFAULT_SGML_SYSTEM_ID + "\"><article>";
+        return "<?xml version=\"1.0\" encoding=\"UTF-8\"?><!DOCTYPE article PUBLIC \""
+                + SimplifiedDocbookMarkup.DEFAULT_XML_PUBLIC_ID + "\" "
+                + "\"" + SimplifiedDocbookMarkup.DEFAULT_XML_SYSTEM_ID + "\"><article>";
     }
 
     /** {@inheritDoc} */
@@ -122,31 +128,32 @@ public class DocBookSinkTest extends AbstractSinkTest
     /** {@inheritDoc} */
     protected String getListBlock( String item )
     {
-        return "<itemizedlist><listitem>" + item  + "</listitem>" + "</itemizedlist>";
+        return "<itemizedlist><listitem><para>" + item  + "</para></listitem>" + "</itemizedlist>";
     }
 
     /** {@inheritDoc} */
     protected String getNumberedListBlock( String item )
     {
-        return "<orderedlist numeration=\"lowerroman\"><listitem>"
-            + item  + "</listitem>" + "</orderedlist>";
+        return "<orderedlist numeration=\"lowerroman\"><listitem><para>"
+            + item  + "</para></listitem>" + "</orderedlist>";
     }
 
     /** {@inheritDoc} */
     protected String getDefinitionListBlock( String definum, String definition )
     {
         return "<variablelist><varlistentry><term>" + definum
-            + "</term>" + "<listitem>" + definition
-            + "</listitem>" + "</varlistentry>" + "</variablelist>";
+            + "</term>" + "<listitem><para>" + definition
+            + "</para></listitem>" + "</varlistentry>" + "</variablelist>";
     }
 
     /** {@inheritDoc} */
     protected String getFigureBlock( String source, String caption )
     {
-        // TODO: fix source
-        return "<figure><title>" + caption
-            + "</title><mediaobject><imageobject><imagedata fileref=\"figure.jpg.jpeg\" format=\"JPEG\"></imagedata></imageobject></mediaobject>"
-            + "</figure>";
+        String format = FileUtils.extension( source ).toUpperCase( Locale.ENGLISH );
+
+        return "<mediaobject><imageobject>"
+                + "<imagedata fileref=\"" + source + "\" format=\"" + format + "\" />"
+                + "</imageobject><caption><para>" + caption + "</para></caption></mediaobject>";
     }
 
     /** {@inheritDoc} */
@@ -159,7 +166,7 @@ public class DocBookSinkTest extends AbstractSinkTest
         att.addAttribute( "colsep", "0" );
 
         return "<table" + SinkUtils.getAttributeString( att ) + "><title>" + caption
-            + "</title>" + "<tgroup cols=\"1\"><colspec align=\"center\"></colspec>" + "<tbody><row><entry>"
+            + "</title>" + "<tgroup cols=\"1\"><colspec align=\"center\" />" + "<tbody><row><entry>"
             + cell  + "</entry>" + "</row>" + "</tbody></tgroup>" + "</table>";
     }
 
@@ -190,13 +197,14 @@ public class DocBookSinkTest extends AbstractSinkTest
     /** {@inheritDoc} */
     protected String getAnchorBlock( String anchor )
     {
-        return "<anchor id=\"" + anchor + "\">" + anchor + "</anchor>";
+        return "<anchor id=\"" + anchor + "\" />" + anchor + "<!-- anchor_end -->";
     }
 
     /** {@inheritDoc} */
     protected String getLinkBlock( String link, String text )
     {
-        return "<link linkend=\"" + link + "\">" + text + "</link>";
+        String linkend = DoxiaUtils.isInternalLink( link ) ? link.substring( 1 ) : link;
+        return "<link linkend=\"" + linkend + "\">" + text + "</link>";
     }
 
     /** {@inheritDoc} */
@@ -243,5 +251,9 @@ public class DocBookSinkTest extends AbstractSinkTest
         return "";
     }
 
-
+    /** {@inheritDoc} */
+    protected String getCommentBlock( String text )
+    {
+        return "<!-- Simple comment with - - - - -->";
+    }
 }

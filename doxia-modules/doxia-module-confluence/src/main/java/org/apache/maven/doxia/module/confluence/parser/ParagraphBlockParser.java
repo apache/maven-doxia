@@ -59,7 +59,7 @@ public class ParagraphBlockParser
      *
      * @throws org.apache.maven.doxia.parser.ParseException if any
      */
-    public Block visit(String line, ByLineSource source, boolean generateParagraphTags)
+    public Block visit( String line, ByLineSource source, boolean generateParagraphTags )
             throws ParseException
     {
         if ( generateParagraphTags )

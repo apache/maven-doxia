@@ -597,6 +597,7 @@ public class SinkTestDocument
 
         sink.paragraph();
         sink.text( "Copyright symbol:" );
+        sink.lineBreak();
         sink.text( "\u00a9" );
         sink.paragraph_();
     }

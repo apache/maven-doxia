@@ -756,7 +756,7 @@ public class XhtmlBaseSinkTest
             sink.close();
         }
 
-        assertEquals( "a text &amp; &#198;", writer.toString() );
+        assertEquals( "a text &amp; &#xc6;", writer.toString() );
 
         writer =  new StringWriter();
 
@@ -770,7 +770,7 @@ public class XhtmlBaseSinkTest
             sink.close();
         }
 
-        assertEquals( "a text &amp; &#198;", writer.toString() );
+        assertEquals( "a text &amp; &#xc6;", writer.toString() );
     }
 
     /**

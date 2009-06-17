@@ -95,7 +95,15 @@ public class XHtmlBookRenderer
         try
         {
             sink.bookHead();
-            // TODO: book author, title?
+            sink.bookTitle();
+            sink.text( context.getBook().getTitle() );
+            sink.bookTitle_();
+            sink.bookAuthor();
+            sink.text( context.getBook().getAuthor() );
+            sink.bookAuthor_();
+            sink.bookDate();
+            sink.text( context.getBook().getDate() );
+            sink.bookDate_();
             sink.bookHead_();
             sink.bookBody();
 

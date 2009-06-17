@@ -23,7 +23,6 @@ import java.io.Writer;
 
 import javax.swing.text.MutableAttributeSet;
 import javax.swing.text.html.HTML.Attribute;
-import javax.swing.text.html.HTML.Tag;
 
 import org.apache.maven.doxia.sink.SinkEventAttributeSet;
 import org.apache.maven.doxia.sink.SinkEventAttributes;
@@ -122,10 +121,19 @@ public class XdocSink
 
     /**
      * {@inheritDoc}
+     * @see #head(org.apache.maven.doxia.sink.SinkEventAttributes)
+     */
+    public void head()
+    {
+        head( null );
+    }
+
+    /**
+     * {@inheritDoc}
      * @see XdocMarkup#DOCUMENT_TAG
      * @see XdocMarkup#PROPERTIES_TAG
      */
-    public void head()
+    public void head( SinkEventAttributes attributes )
     {
         resetState();
 
@@ -147,6 +155,11 @@ public class XdocSink
         {
             atts.addAttribute( Attribute.LANG.toString(), languageId );
             atts.addAttribute( "xml:lang", languageId );
+        }
+
+        if ( attributes != null )
+        {
+            atts.addAttributes( attributes );
         }
 
         writeStartTag( DOCUMENT_TAG, atts );
@@ -172,7 +185,7 @@ public class XdocSink
      */
     public void title()
     {
-        writeStartTag( Tag.TITLE );
+        writeStartTag( TITLE );
     }
 
     /**
@@ -183,7 +196,7 @@ public class XdocSink
     {
         content( getTextBuffer().toString() );
 
-        writeEndTag( Tag.TITLE );
+        writeEndTag( TITLE );
 
         resetTextBuffer();
     }
@@ -224,11 +237,20 @@ public class XdocSink
 
     /**
      * {@inheritDoc}
-     * @see javax.swing.text.html.HTML.Tag#BODY
+     * @see #body(org.apache.maven.doxia.sink.SinkEventAttributes)
      */
     public void body()
     {
-        writeStartTag( Tag.BODY );
+       body( null );
+    }
+
+    /**
+     * {@inheritDoc}
+     * @see javax.swing.text.html.HTML.Tag#BODY
+     */
+    public void body( SinkEventAttributes attributes )
+    {
+        writeStartTag( BODY, attributes );
     }
 
     /**
@@ -238,7 +260,7 @@ public class XdocSink
      */
     public void body_()
     {
-        writeEndTag( Tag.BODY );
+        writeEndTag( BODY );
 
         writeEndTag( DOCUMENT_TAG );
 
@@ -262,17 +284,17 @@ public class XdocSink
     {
         if ( depth == SECTION_LEVEL_1 )
         {
-            write( String.valueOf( LESS_THAN ) + SECTION_TAG.toString() + String.valueOf( SPACE ) + Attribute.NAME
-                + String.valueOf( EQUAL ) + String.valueOf( QUOTE )
-                + SinkUtils.getAttributeString( SinkUtils.filterAttributes(
-                    attributes, SinkUtils.SINK_BASE_ATTRIBUTES  ) ) );
+            write( String.valueOf( LESS_THAN ) + SECTION_TAG.toString()
+                    + SinkUtils.getAttributeString(
+                        SinkUtils.filterAttributes( attributes, SinkUtils.SINK_BASE_ATTRIBUTES ) )
+                    + String.valueOf( SPACE ) + Attribute.NAME + String.valueOf( EQUAL ) + String.valueOf( QUOTE ) );
         }
         else if ( depth == SECTION_LEVEL_2 )
         {
-            write( String.valueOf( LESS_THAN ) + SUBSECTION_TAG.toString() + String.valueOf( SPACE ) + Attribute.NAME
-                + String.valueOf( EQUAL ) + String.valueOf( QUOTE )
-                + SinkUtils.getAttributeString( SinkUtils.filterAttributes(
-                    attributes, SinkUtils.SINK_BASE_ATTRIBUTES  ) ) );
+            write( String.valueOf( LESS_THAN ) + SUBSECTION_TAG.toString()
+                    + SinkUtils.getAttributeString(
+                        SinkUtils.filterAttributes( attributes, SinkUtils.SINK_BASE_ATTRIBUTES  ) )
+                    + String.valueOf( SPACE ) + Attribute.NAME + String.valueOf( EQUAL ) + String.valueOf( QUOTE ) );
         }
     }
 
@@ -310,15 +332,15 @@ public class XdocSink
 
         if ( depth == SECTION_LEVEL_3 )
         {
-            writeStartTag( Tag.H4, atts );
+            writeStartTag( H4, atts );
         }
         else if ( depth == SECTION_LEVEL_4 )
         {
-            writeStartTag( Tag.H5, atts );
+            writeStartTag( H5, atts );
         }
         else if ( depth == SECTION_LEVEL_5 )
         {
-            writeStartTag( Tag.H6, atts );
+            writeStartTag( H6, atts );
         }
     }
 
@@ -338,15 +360,15 @@ public class XdocSink
         }
         else if ( depth == SECTION_LEVEL_3 )
         {
-            writeEndTag( Tag.H4 );
+            writeEndTag( H4 );
         }
         else if ( depth == SECTION_LEVEL_4 )
         {
-            writeEndTag( Tag.H5 );
+            writeEndTag( H5 );
         }
         else if ( depth == SECTION_LEVEL_5 )
         {
-            writeEndTag( Tag.H6 );
+            writeEndTag( H6 );
         }
     }
 
@@ -390,7 +412,7 @@ public class XdocSink
         else
         {
             atts.removeAttribute( Attribute.ALIGN.toString() );
-            writeStartTag( Tag.PRE, atts );
+            writeStartTag( PRE, atts );
         }
     }
 
@@ -407,7 +429,7 @@ public class XdocSink
         }
         else
         {
-            writeEndTag( Tag.PRE );
+            writeEndTag( PRE );
         }
 
         setVerbatimFlag( false );
@@ -429,7 +451,7 @@ public class XdocSink
         att.addAttribute( Attribute.ALIGN, "center" );
         att.addAttribute( Attribute.BORDER, ( grid ? "1" : "0" ) );
 
-        writeStartTag( Tag.TABLE, att );
+        writeStartTag( TABLE, att );
     }
 
     /**
@@ -443,7 +465,7 @@ public class XdocSink
         MutableAttributeSet att = new SinkEventAttributeSet();
         att.addAttribute( Attribute.VALIGN, "top" );
 
-        writeStartTag( Tag.TR, att );
+        writeStartTag( TR, att );
 
         setCellCount( 0 );
     }
@@ -470,7 +492,7 @@ public class XdocSink
             att.addAttribute( Attribute.TARGET, target );
         }
 
-        writeStartTag( Tag.A, att );
+        writeStartTag( A, att );
     }
 
     // ----------------------------------------------------------------------

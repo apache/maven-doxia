@@ -161,7 +161,7 @@ public class RenderingContext
     }
 
     /**
-     * <p>setAttribute</p>
+     * <p>setAttribute.</p>
      *
      * @param key a {@link java.lang.String} object.
      * @param value a {@link java.lang.String} object.
@@ -172,7 +172,7 @@ public class RenderingContext
     }
 
     /**
-     * <p>getAttribute</p>
+     * <p>getAttribute.</p>
      *
      * @param key a {@link java.lang.String} object.
      * @return a {@link java.lang.String} object.

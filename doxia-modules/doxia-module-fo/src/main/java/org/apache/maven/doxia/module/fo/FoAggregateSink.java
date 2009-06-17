@@ -19,11 +19,15 @@ package org.apache.maven.doxia.module.fo;
  * under the License.
  */
 
+import java.io.IOException;
 import java.io.Writer;
 
 import java.util.Calendar;
+import java.util.Date;
 import java.util.Iterator;
 import java.util.List;
+import java.util.Locale;
+import java.util.ResourceBundle;
 import java.util.Stack;
 
 import javax.swing.text.MutableAttributeSet;
@@ -42,7 +46,21 @@ import org.apache.maven.doxia.util.HtmlTools;
 import org.codehaus.plexus.util.StringUtils;
 
 /**
- * A Doxia Sink that produces an aggregated FO model.
+ * A Doxia Sink that produces an aggregated FO model. The usage is similar to the following:
+ *
+ * <pre>
+ * FoAggregateSink sink = new FoAggregateSink( writer );
+ * sink.setDocumentModel( documentModel );
+ * sink.beginDocument();
+ * sink.coverPage();
+ * sink.toc();
+ * ...
+ * sink.endDocument();
+ * </pre>
+ *
+ * <b>Note</b>: the documentModel object contains several
+ * <a href="http://maven.apache.org/doxia/doxia/doxia-core/document.html">document metadata</a>, but only a few
+ * of them are used in this sink (i.e. author, confidential, date and title), the others are ignored.
  *
  * @author ltheussl
  * @version $Id$
@@ -68,6 +86,9 @@ public class FoAggregateSink extends FoSink
     /** Used to get the current position in the TOC. */
     private final Stack tocStack = new Stack();
 
+    // TODO: make configurable
+    private static final String COVER_HEADER_HEIGHT = "1.5in";
+
     /**
      * Constructor.
      *
@@ -80,6 +101,12 @@ public class FoAggregateSink extends FoSink
 
     /** {@inheritDoc} */
     public void head()
+    {
+        head( null );
+    }
+
+    /** {@inheritDoc} */
+    public void head( SinkEventAttributes attributes )
     {
         ignoreText = true;
     }
@@ -94,6 +121,12 @@ public class FoAggregateSink extends FoSink
     /** {@inheritDoc} */
     public void title()
     {
+        title( null );
+    }
+
+    /** {@inheritDoc} */
+    public void title( SinkEventAttributes attributes )
+    {
         // ignored
     }
 
@@ -105,6 +138,12 @@ public class FoAggregateSink extends FoSink
 
     /** {@inheritDoc} */
     public void author()
+    {
+        author( null );
+    }
+
+    /** {@inheritDoc} */
+    public void author( SinkEventAttributes attributes )
     {
         // ignored
     }
@@ -118,6 +157,12 @@ public class FoAggregateSink extends FoSink
     /** {@inheritDoc} */
     public void date()
     {
+        date( null );
+    }
+
+    /** {@inheritDoc} */
+    public void date( SinkEventAttributes attributes )
+    {
         // ignored
     }
 
@@ -129,6 +174,12 @@ public class FoAggregateSink extends FoSink
 
     /** {@inheritDoc} */
     public void body()
+    {
+        body( null );
+    }
+
+    /** {@inheritDoc} */
+    public void body( SinkEventAttributes attributes )
     {
         chapter++;
 
@@ -256,10 +307,14 @@ public class FoAggregateSink extends FoSink
         super.figureGraphics( anchor, attributes );
     }
 
-
-
     /** {@inheritDoc} */
     public void anchor( String name )
+    {
+        anchor( name, null );
+    }
+
+    /** {@inheritDoc} */
+    public void anchor( String name, SinkEventAttributes attributes  )
     {
         if ( name == null )
         {
@@ -272,7 +327,8 @@ public class FoAggregateSink extends FoSink
         {
             anchor = DoxiaUtils.encodeId( name, true );
 
-            getLog().warn( "[FO Sink] Modified invalid anchor name: " + name );
+            String msg = "Modified invalid anchor name: '" + name + "' to '" + anchor + "'";
+            logMessage( "modifiedLink", msg );
         }
 
         anchor = "#" + anchor;
@@ -285,9 +341,14 @@ public class FoAggregateSink extends FoSink
         writeStartTag( INLINE_TAG, "id", anchor );
     }
 
+    /** {@inheritDoc} */
+    public void link( String name  )
+    {
+        link( name, null );
+    }
 
     /** {@inheritDoc} */
-    public void link( String name )
+    public void link( String name, SinkEventAttributes attributes  )
     {
         if ( name == null )
         {
@@ -308,9 +369,11 @@ public class FoAggregateSink extends FoSink
 
             if ( !DoxiaUtils.isValidId( anchor ) )
             {
+                String tmp = anchor;
                 anchor = DoxiaUtils.encodeId( anchor, true );
 
-                getLog().warn( "[FO Sink] Modified invalid link name: " + name );
+                String msg = "Modified invalid anchor name: '" + tmp + "' to '" + anchor + "'";
+                logMessage( "modifiedLink", msg );
             }
 
             if ( docName != null )
@@ -556,9 +619,32 @@ public class FoAggregateSink extends FoSink
      */
     protected String getFooterText()
     {
-        // TODO: year and company have to come from DocumentMeta
-        int actualYear = Calendar.getInstance().get( Calendar.YEAR );
-        return "&#169;" + actualYear + " The Apache Software Foundation &#8226; ALL RIGHTS RESERVED";
+        int actualYear;
+        String add = " &#8226; " + getBundle( Locale.US ).getString( "footer.rights" );
+        String companyName = "";
+
+        if ( docModel != null && docModel.getMeta() != null && docModel.getMeta().isConfidential() )
+        {
+            add = add + " &#8226; " + getBundle( Locale.US ).getString( "footer.confidential" );
+        }
+
+        if ( docModel != null && docModel.getCover() != null && docModel.getCover().getCompanyName() != null )
+        {
+            companyName = docModel.getCover().getCompanyName();
+        }
+
+        if ( docModel != null && docModel.getMeta() != null && docModel.getMeta().getDate() != null )
+        {
+            Calendar date = Calendar.getInstance();
+            date.setTime( docModel.getMeta().getDate() );
+            actualYear = date.get( Calendar.YEAR );
+        }
+        else
+        {
+            actualYear = Calendar.getInstance().get( Calendar.YEAR );
+        }
+
+        return "&#169;" + actualYear + ", " + companyName + add;
     }
 
     /**
@@ -639,7 +725,9 @@ public class FoAggregateSink extends FoSink
 
         if ( chapterNumber )
         {
+            writeStartTag( BLOCK_TAG, "chapter.title" );
             write( Integer.toString( chapter ) );
+            writeEndTag( BLOCK_TAG );
         }
 
         writeEndTag( BLOCK_TAG );
@@ -687,8 +775,8 @@ public class FoAggregateSink extends FoSink
         writeEmptyTag( TABLE_COLUMN_TAG, "column-width", "0.45in" );
         writeEmptyTag( TABLE_COLUMN_TAG, "column-width", "0.4in" );
         writeEmptyTag( TABLE_COLUMN_TAG, "column-width", "0.4in" );
-        writeEmptyTag( TABLE_COLUMN_TAG, "column-width", "5in" ); // TODO
-        writeStartTag( TABLE_BODY_TAG, "" );
+        writeEmptyTag( TABLE_COLUMN_TAG, "column-width", "5in" ); // TODO {$maxBodyWidth - 1.25}in
+        writeStartTag( TABLE_BODY_TAG );
 
         writeTocItems( toc.getItems(), 1 );
 
@@ -722,7 +810,7 @@ public class FoAggregateSink extends FoSink
                 for ( int i = 0; i < level - 2; i++ )
                 {
                     writeStartTag( TABLE_CELL_TAG );
-                    writeEmptyTag( BLOCK_TAG, "" );
+                    writeSimpleTag( BLOCK_TAG );
                     writeEndTag( TABLE_CELL_TAG );
                 }
             }
@@ -792,7 +880,7 @@ public class FoAggregateSink extends FoSink
             return;
         }
 
-        writeStartTag( BOOKMARK_TREE_TAG, "" );
+        writeStartTag( BOOKMARK_TREE_TAG );
 
         renderBookmarkItems( docModel.getToc().getItems() );
 
@@ -808,7 +896,7 @@ public class FoAggregateSink extends FoSink
             String ref = getIdName( tocItem.getRef() );
 
             writeStartTag( BOOKMARK_TAG, "internal-destination", ref );
-            writeStartTag( BOOKMARK_TITLE_TAG, "" );
+            writeStartTag( BOOKMARK_TITLE_TAG );
             write( tocItem.getName() );
             writeEndTag( BOOKMARK_TITLE_TAG );
 
@@ -839,38 +927,6 @@ public class FoAggregateSink extends FoSink
             return; // no information for cover page: ignore
         }
 
-        String title = null;
-        String subtitle = null;
-        String version = null;
-        String type = null;
-        String date = null;
-        // TODO: implement
-        //String author = null;
-        //String projName = null;
-        String projLogo = null;
-        String compName = null;
-        String compLogo = null;
-
-        if ( cover == null )
-        {
-            // aleady checked that meta != null
-            title = meta.getTitle();
-            compName = meta.getAuthor();
-        }
-        else
-        {
-            title = cover.getCoverTitle();
-            subtitle = cover.getCoverSubTitle();
-            version = cover.getCoverVersion();
-            type = cover.getCoverType();
-            date = cover.getCoverDate();
-            //author = cover.getAuthor();
-            //projName = cover.getProjectName();
-            projLogo = cover.getProjectLogo();
-            compName = cover.getCompanyName();
-            compLogo = cover.getCompanyLogo();
-        }
-
         // TODO: remove hard-coded settings
 
         writeStartTag( PAGE_SEQUENCE_TAG, "master-reference", "cover-page" );
@@ -879,11 +935,11 @@ public class FoAggregateSink extends FoSink
         writeln( "<fo:table table-layout=\"fixed\" width=\"100%\" >" );
         writeEmptyTag( TABLE_COLUMN_TAG, "column-width", "3.125in" );
         writeEmptyTag( TABLE_COLUMN_TAG, "column-width", "3.125in" );
-        writeStartTag( TABLE_BODY_TAG, "" );
+        writeStartTag( TABLE_BODY_TAG );
 
-        writeCoverHead( compLogo, projLogo );
-        writeCoverBody( title, version, subtitle, type );
-        writeCoverFooter( compName, date );
+        writeCoverHead( cover );
+        writeCoverBody( cover, meta );
+        writeCoverFooter( cover, meta );
 
         writeEndTag( TABLE_BODY_TAG );
         writeEndTag( TABLE_TAG );
@@ -892,8 +948,73 @@ public class FoAggregateSink extends FoSink
         writeEndTag( PAGE_SEQUENCE_TAG );
     }
 
-    private void writeCoverBody( String title, String version, String subtitle, String type )
+    private void writeCoverHead( DocumentCover cover )
     {
+        if ( cover == null )
+        {
+            return;
+        }
+
+        String compLogo = cover.getCompanyLogo();
+        String projLogo = cover.getProjectLogo();
+
+        writeStartTag( TABLE_ROW_TAG, "height", COVER_HEADER_HEIGHT );
+        writeStartTag( TABLE_CELL_TAG );
+
+        if ( StringUtils.isNotEmpty( compLogo ) )
+        {
+            SinkEventAttributeSet atts = new SinkEventAttributeSet();
+            atts.addAttribute( "text-align", "left" );
+            atts.addAttribute( "vertical-align", "top" );
+            writeStartTag( BLOCK_TAG, atts );
+            figureGraphics( compLogo, getGraphicsAttributes( compLogo ) );
+            writeEndTag( BLOCK_TAG );
+        }
+
+        writeSimpleTag( BLOCK_TAG );
+        writeEndTag( TABLE_CELL_TAG );
+        writeStartTag( TABLE_CELL_TAG );
+
+        if ( StringUtils.isNotEmpty( projLogo ) )
+        {
+            SinkEventAttributeSet atts = new SinkEventAttributeSet();
+            atts.addAttribute( "text-align", "right" );
+            atts.addAttribute( "vertical-align", "top" );
+            writeStartTag( BLOCK_TAG, atts );
+            figureGraphics( projLogo, getGraphicsAttributes( projLogo ) );
+            writeEndTag( BLOCK_TAG );
+        }
+
+        writeSimpleTag( BLOCK_TAG );
+        writeEndTag( TABLE_CELL_TAG );
+        writeEndTag( TABLE_ROW_TAG );
+    }
+
+    private void writeCoverBody( DocumentCover cover, DocumentMeta meta )
+    {
+        if ( cover == null && meta == null )
+        {
+            return;
+        }
+
+        String subtitle = null;
+        String title = null;
+        String type = null;
+        String version = null;
+        if ( cover == null )
+        {
+            // aleady checked that meta != null
+            getLog().debug( "The DocumentCover is not defined, using the DocumentMeta title as cover title." );
+            title = meta.getTitle();
+        }
+        else
+        {
+            subtitle = cover.getCoverSubTitle();
+            title = cover.getCoverTitle();
+            type = cover.getCoverType();
+            version = cover.getCoverVersion();
+        }
+
         writeln( "<fo:table-row keep-with-previous=\"always\" height=\"0.014in\">" );
         writeStartTag( TABLE_CELL_TAG, "number-columns-spanned", "2" );
         writeStartTag( BLOCK_TAG, "line-height", "0.014in" );
@@ -909,37 +1030,37 @@ public class FoAggregateSink extends FoSink
         writeEmptyTag( TABLE_COLUMN_TAG, "column-width", "2.083in" );
         writeEmptyTag( TABLE_COLUMN_TAG, "column-width", "2.083in" );
 
-        writeStartTag( TABLE_BODY_TAG, "" );
+        writeStartTag( TABLE_BODY_TAG );
 
-        writeStartTag( TABLE_ROW_TAG, "" );
+        writeStartTag( TABLE_ROW_TAG );
         writeStartTag( TABLE_CELL_TAG, "number-columns-spanned", "3" );
-        writeEmptyTag( BLOCK_TAG, "" );
+        writeSimpleTag( BLOCK_TAG );
         writeEmptyTag( BLOCK_TAG, "space-before", "3.2235in" );
         writeEndTag( TABLE_CELL_TAG );
         writeEndTag( TABLE_ROW_TAG );
 
-        writeStartTag( TABLE_ROW_TAG, "" );
-        writeStartTag( TABLE_CELL_TAG, "" );
+        writeStartTag( TABLE_ROW_TAG );
+        writeStartTag( TABLE_CELL_TAG );
         writeEmptyTag( BLOCK_TAG, "space-after", "0.5in" );
         writeEndTag( TABLE_CELL_TAG );
 
         writeStartTag( TABLE_CELL_TAG, "number-columns-spanned", "2", "cover.border.left" );
         writeStartTag( BLOCK_TAG, "cover.title" );
         write( title == null ? "" : title );
-        write( version == null ? "" : " v. " + version );
         writeEndTag( BLOCK_TAG );
         writeEndTag( TABLE_CELL_TAG );
         writeEndTag( TABLE_ROW_TAG );
 
-        writeStartTag( TABLE_ROW_TAG, "" );
-        writeStartTag( TABLE_CELL_TAG, "" );
-        writeEmptyTag( BLOCK_TAG, "" );
+        writeStartTag( TABLE_ROW_TAG );
+        writeStartTag( TABLE_CELL_TAG );
+        writeSimpleTag( BLOCK_TAG );
         writeEndTag( TABLE_CELL_TAG );
 
 
         writeStartTag( TABLE_CELL_TAG, "number-columns-spanned", "2", "cover.border.left.bottom" );
         writeStartTag( BLOCK_TAG, "cover.subtitle" );
-        write( subtitle == null ? "" : subtitle );
+        write( subtitle == null ? " v. " + ( version == null ? "" : version )
+                        : subtitle );
         writeEndTag( BLOCK_TAG );
         writeStartTag( BLOCK_TAG, "cover.subtitle" );
         write( type == null ? "" : type );
@@ -961,28 +1082,57 @@ public class FoAggregateSink extends FoSink
         writeEndTag( TABLE_CELL_TAG );
         writeEndTag( TABLE_ROW_TAG );
 
-        writeStartTag( TABLE_ROW_TAG, "" );
+        writeStartTag( TABLE_ROW_TAG );
         writeStartTag( TABLE_CELL_TAG, "number-columns-spanned", "2" );
-        writeEmptyTag( BLOCK_TAG, "" );
+        writeSimpleTag( BLOCK_TAG );
         writeEmptyTag( BLOCK_TAG, "space-before", "0.2in" );
         writeEndTag( TABLE_CELL_TAG );
         writeEndTag( TABLE_ROW_TAG );
     }
 
-    private void writeCoverFooter( String compName, String date )
+    private void writeCoverFooter( DocumentCover cover, DocumentMeta meta  )
     {
+        if ( cover == null && meta == null )
+        {
+            return;
+        }
+
+        String date = null;
+        String compName = null;
+        if ( cover == null )
+        {
+            // aleady checked that meta != null
+            getLog().debug( "The DocumentCover is not defined, using the DocumentMeta author as company name." );
+            compName = meta.getAuthor();
+        }
+        else
+        {
+            compName = cover.getCompanyName();
+
+            if ( cover.getCoverdate() == null )
+            {
+                cover.setCoverDate( new Date() );
+                date = cover.getCoverdate();
+                cover.setCoverDate( null );
+            }
+            else
+            {
+                date = cover.getCoverdate();
+            }
+        }
+
         writeStartTag( TABLE_ROW_TAG, "height", "0.3in" );
 
-        writeStartTag( TABLE_CELL_TAG, "" );
+        writeStartTag( TABLE_CELL_TAG );
         MutableAttributeSet att = getFoConfiguration().getAttributeSet( "cover.subtitle" );
         att.addAttribute( "height", "0.3in" );
         att.addAttribute( "text-align", "left" );
         writeStartTag( BLOCK_TAG, att );
-        write( compName == null ? "" : compName );
+        write( compName == null ? ( cover.getAuthor() == null ? "" : cover.getAuthor() ) : compName );
         writeEndTag( BLOCK_TAG );
         writeEndTag( TABLE_CELL_TAG );
 
-        writeStartTag( TABLE_CELL_TAG, "" );
+        writeStartTag( TABLE_CELL_TAG );
         att = getFoConfiguration().getAttributeSet( "cover.subtitle" );
         att.addAttribute( "height", "0.3in" );
         att.addAttribute( "text-align", "right" );
@@ -994,42 +1144,38 @@ public class FoAggregateSink extends FoSink
         writeEndTag( TABLE_ROW_TAG );
     }
 
-    private void writeCoverHead( String compLogo, String projLogo )
+    private ResourceBundle getBundle( Locale locale )
     {
-        writeStartTag( TABLE_ROW_TAG, "height", "1.5in" );
-        writeStartTag( TABLE_CELL_TAG, "" );
-
-        if ( compLogo != null )
-        {
-            SinkEventAttributeSet atts = new SinkEventAttributeSet();
-            atts.addAttribute( "text-align", "left" );
-            atts.addAttribute( "vertical-align", "top" );
-            writeStartTag( BLOCK_TAG, atts );
-            atts = new SinkEventAttributeSet();
-            atts.addAttribute( SinkEventAttributes.HEIGHT, "1.5in" );
-            figureGraphics( compLogo, atts );
-            writeEndTag( BLOCK_TAG );
-        }
-
-        writeEmptyTag( BLOCK_TAG, "" );
-        writeEndTag( TABLE_CELL_TAG );
-        writeStartTag( TABLE_CELL_TAG, "" );
-
-        if ( projLogo != null )
-        {
-            SinkEventAttributeSet atts = new SinkEventAttributeSet();
-            atts.addAttribute( "text-align", "right" );
-            atts.addAttribute( "vertical-align", "top" );
-            writeStartTag( BLOCK_TAG, atts );
-            atts = new SinkEventAttributeSet();
-            atts.addAttribute( SinkEventAttributes.HEIGHT, "1.5in" );
-            figureGraphics( projLogo, atts );
-            writeEndTag( BLOCK_TAG );
-        }
-
-        writeEmptyTag( BLOCK_TAG, "" );
-        writeEndTag( TABLE_CELL_TAG );
-        writeEndTag( TABLE_ROW_TAG );
+        return ResourceBundle.getBundle( "doxia-fo", locale, this.getClass().getClassLoader() );
     }
 
+    private SinkEventAttributeSet getGraphicsAttributes( String logo )
+    {
+        MutableAttributeSet atts = null;
+
+        try
+        {
+            atts = DoxiaUtils.getImageAttributes( logo );
+        }
+        catch ( IOException e )
+        {
+            getLog().debug( e );
+        }
+
+        if ( atts == null )
+        {
+            return new SinkEventAttributeSet( new String[] {SinkEventAttributes.HEIGHT, COVER_HEADER_HEIGHT} );
+        }
+
+        // FOP dpi: 72
+        // Max width : 3.125 inch, table cell size, see #coverPage()
+        final int maxWidth = 225; // 3.125 * 72
+
+        if ( Integer.parseInt( atts.getAttribute( SinkEventAttributes.WIDTH ).toString() ) > maxWidth )
+        {
+            atts.addAttribute( "content-width", "3.125in" );
+        }
+
+        return new SinkEventAttributeSet( atts );
+    }
 }

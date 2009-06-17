@@ -137,7 +137,7 @@ public class SinkActionContext
     }
 
     /**
-     * <p>release</p>
+     * release.
      */
     public void release()
     {
@@ -146,7 +146,7 @@ public class SinkActionContext
     }
 
     /**
-     * <p>setAction</p>
+     * setAction.
      *
      * @param action a int.
      */

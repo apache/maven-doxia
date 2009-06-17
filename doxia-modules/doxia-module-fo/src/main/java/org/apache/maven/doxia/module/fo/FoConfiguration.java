@@ -30,6 +30,7 @@ import org.apache.commons.configuration.ConfigurationException;
 import org.apache.commons.configuration.XMLConfiguration;
 
 import org.apache.maven.doxia.sink.SinkUtils;
+import org.codehaus.plexus.util.ReaderFactory;
 
 /**
  * A utility class to construct FO configuration parameters.
@@ -187,12 +188,17 @@ public class FoConfiguration
     {
         try
         {
-            config.load( getClass().getResourceAsStream( "/fo-styles.xslt" ) );
+            config.load( ReaderFactory.newXmlReader( getClass().getResourceAsStream( "/fo-styles.xslt" ) ) );
         }
         catch ( ConfigurationException cex )
         {
             // this should not happen
             throw new RuntimeException( cex );
+        }
+        catch ( IOException e )
+        {
+            // this should not happen
+            throw new RuntimeException( e );
         }
 
         this.sets = config.getList( "xsl:attribute-set[@name]" );

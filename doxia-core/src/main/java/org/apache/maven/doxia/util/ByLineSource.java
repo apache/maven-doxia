@@ -31,7 +31,7 @@ import org.apache.maven.doxia.parser.ParseException;
 public interface ByLineSource
 {
     /**
-     * <p>getNextLine</p>
+     * <p>getNextLine.</p>
      *
      * @return the next line. <code>null</code> if we reached the end.
      * @throws org.apache.maven.doxia.parser.ParseException on I/O error
@@ -39,40 +39,40 @@ public interface ByLineSource
     String getNextLine() throws ParseException;
 
     /**
-     * <p>getName</p>
+     * <p>getName.</p>
      *
-     * @return the name of the input. could be the filename for example
+     * @return the name of the input. could be the filename for example.
      */
     String getName();
 
     /**
-     * <p>getLineNumber</p>
+     * <p>getLineNumber.</p>
      *
-     * @return the current line number
+     * @return the current line number.
      */
     int getLineNumber();
 
     /**
-     * <p>ungetLine</p>
+     * <p>ungetLine.</p>
      *
-     * @throws java.lang.IllegalStateException if the ungetLine/unget is called more than
-     *                               one time without calling getNextLine()
+     * This should throw a java.lang.IllegalStateException if called more than
+     *                               one time without calling getNextLine().
      */
-    void ungetLine() throws IllegalStateException;
+    void ungetLine();
 
 
     /**
-     * <p>unget</p>
+     * <p>unget.</p>
      *
-     * @param s some text to push back to the parser
-     * @throws java.lang.IllegalStateException if the ungetLine/unget is called more than
-     *                               one time without calling getNextLine()
+     * @param s some text to push back to the parser.
+     * This should throw a java.lang.IllegalStateException if called more than
+     *                               one time without calling getNextLine().
      */
-    void unget( String s ) throws IllegalStateException;
+    void unget( String s );
 
 
     /**
-     * close the source ...
+     * close the source.
      */
     void close();
 }

@@ -348,8 +348,8 @@ public class XhtmlBaseParserTest
         assertEquals( "\u0161",  (String) event.getArgs()[0] );
 
         event = (SinkEventElement) it.next();
-        assertEquals( "unknown", event.getName() );
-        assertEquals( "&#x1d7ed;",  (String) event.getArgs()[0] );
+        assertEquals( "text", event.getName() );
+        assertEquals( "\uD835\uDFED",  (String) event.getArgs()[0] );
 
         event = (SinkEventElement) it.next();
         assertEquals( "bold_", event.getName() );
@@ -359,8 +359,8 @@ public class XhtmlBaseParserTest
     public void testEntities()
         throws Exception
     {
-        final String text = "<!DOCTYPE test [<!ENTITY foo \"&#x159;\"><!ENTITY tritPos \"&#x1d7ed;\">]>"
-                + "<body><h2>&amp;&foo;&tritPos;</h2><p>&amp;&foo;&tritPos;</p></body>";
+        final String text = "<!DOCTYPE test [<!ENTITY flo \"&#x159;\"><!ENTITY tritPos \"&#x1d7ed;\"><!ENTITY fo \"&#65;\"><!ENTITY myCustom \"&fo;\">]>"
+                + "<body><h2>&amp;&flo;&#x159;&tritPos;&#x1d7ed;</h2><p>&amp;&flo;&#x159;&tritPos;&#x1d7ed;&myCustom;</p></body>";
 
         parser.setValidate( false );
         parser.parse( text, sink );
@@ -379,8 +379,16 @@ public class XhtmlBaseParserTest
         assertEquals( "\u0159", textEvt.getArgs()[0] );
 
         textEvt = (SinkEventElement) it.next();
-        assertEquals( "unknown", textEvt.getName() );
-        assertEquals( "&#x1d7ed;", textEvt.getArgs()[0] );
+        assertEquals( "text", textEvt.getName() );
+        assertEquals( "\u0159", textEvt.getArgs()[0] );
+
+        textEvt = (SinkEventElement) it.next();
+        assertEquals( "text", textEvt.getName() );
+        assertEquals( "\uD835\uDFED",  (String) textEvt.getArgs()[0] );
+
+        textEvt = (SinkEventElement) it.next();
+        assertEquals( "text", textEvt.getName() );
+        assertEquals( "\uD835\uDFED", textEvt.getArgs()[0] );
 
         assertEquals( "sectionTitle1_", ( (SinkEventElement) it.next() ).getName() );
         assertEquals( "paragraph", ( (SinkEventElement) it.next() ).getName() );
@@ -394,8 +402,21 @@ public class XhtmlBaseParserTest
         assertEquals( "\u0159", textEvt.getArgs()[0] );
 
         textEvt = (SinkEventElement) it.next();
-        assertEquals( "unknown", textEvt.getName() );
-        assertEquals( "&#x1d7ed;", textEvt.getArgs()[0] );
+        assertEquals( "text", textEvt.getName() );
+        assertEquals( "\u0159", textEvt.getArgs()[0] );
+
+        textEvt = (SinkEventElement) it.next();
+        assertEquals( "text", textEvt.getName() );
+        assertEquals( "\uD835\uDFED",  (String) textEvt.getArgs()[0] );
+
+        textEvt = (SinkEventElement) it.next();
+        assertEquals( "text", textEvt.getName() );
+        assertEquals( "\uD835\uDFED", textEvt.getArgs()[0] );
+
+        textEvt = (SinkEventElement) it.next();
+        assertEquals( "text", textEvt.getName() );
+        assertEquals( "A", textEvt.getArgs()[0] );
+
         assertEquals( "paragraph_", ( (SinkEventElement) it.next() ).getName() );
 
         assertFalse( it.hasNext() );
@@ -563,15 +584,50 @@ public class XhtmlBaseParserTest
     public void testAnchorLink()
         throws Exception
     {
-        String text = "<div><a href=\"\"></a><a name=\"valid\"></a><a id=\"1invalid\"></a></div>";
+        String text = "<div><a href=\"\"></a>" +
+                "<a href=\"valid\"></a>" +
+                "<a href=\"#1invalid\"></a>" +
+                "<a href=\"http://www.fo.com/index.html#1invalid\"></a>" +
+                "<a name=\"valid\"></a>" +
+                "<a name=\"1invalid\"></a>" +
+                "<a id=\"1invalid\"></a></div>";
+
         parser.parse( text, sink );
         Iterator it = sink.getEventList().iterator();
 
-        assertEquals( "link", ( (SinkEventElement) it.next() ).getName() );
+        SinkEventElement element = (SinkEventElement) it.next();
+        assertEquals( "link", element.getName() );
+        assertEquals( "", element.getArgs()[0] );
         assertEquals( "link_", ( (SinkEventElement) it.next() ).getName() );
-        assertEquals( "anchor", ( (SinkEventElement) it.next() ).getName() );
+
+        element = (SinkEventElement) it.next();
+        assertEquals( "link", element.getName() );
+        assertEquals( "valid", element.getArgs()[0] );
+        assertEquals( "link_", ( (SinkEventElement) it.next() ).getName() );
+
+        element = (SinkEventElement) it.next();
+        assertEquals( "link", element.getName() );
+        assertEquals( "#a1invalid", element.getArgs()[0] );
+        assertEquals( "link_", ( (SinkEventElement) it.next() ).getName() );
+
+        element = (SinkEventElement) it.next();
+        assertEquals( "link", element.getName() );
+        assertEquals( "http://www.fo.com/index.html#1invalid", element.getArgs()[0] );
+        assertEquals( "link_", ( (SinkEventElement) it.next() ).getName() );
+
+        element = (SinkEventElement) it.next();
+        assertEquals( "anchor", element.getName() );
+        assertEquals( "valid", element.getArgs()[0] );
         assertEquals( "anchor_", ( (SinkEventElement) it.next() ).getName() );
-        assertEquals( "anchor", ( (SinkEventElement) it.next() ).getName() );
+
+        element = (SinkEventElement) it.next();
+        assertEquals( "anchor", element.getName() );
+        assertEquals( "a1invalid", element.getArgs()[0] );
+        assertEquals( "anchor_", ( (SinkEventElement) it.next() ).getName() );
+
+        element = (SinkEventElement) it.next();
+        assertEquals( "anchor", element.getName() );
+        assertEquals( "a1invalid", element.getArgs()[0] );
         assertEquals( "anchor_", ( (SinkEventElement) it.next() ).getName() );
     }
 }

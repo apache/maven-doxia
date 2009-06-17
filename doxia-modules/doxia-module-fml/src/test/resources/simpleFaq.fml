@@ -18,9 +18,9 @@ specific language governing permissions and limitations
 under the License.
 -->
 
-<faqs xmlns="http://maven.apache.org/FML/1.0"
+<faqs xmlns="http://maven.apache.org/FML/1.0.1"
   xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
-  xsi:schemaLocation="http://maven.apache.org/FML/1.0 file:../../main/resources/fml-1.0.xsd"
+  xsi:schemaLocation="http://maven.apache.org/FML/1.0.1 file:../../main/resources/fml-1.0.1.xsd"
   title="Frequently Asked Questions">
 
   <part id="general">

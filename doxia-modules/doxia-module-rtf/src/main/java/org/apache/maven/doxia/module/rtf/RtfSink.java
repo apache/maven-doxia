@@ -29,8 +29,13 @@ import java.io.OutputStreamWriter;
 import java.io.PrintWriter;
 import java.io.Writer;
 
+import java.util.HashMap;
 import java.util.Hashtable;
+import java.util.Iterator;
+import java.util.Map;
+import java.util.Set;
 import java.util.StringTokenizer;
+import java.util.TreeSet;
 import java.util.Vector;
 
 import org.apache.maven.doxia.sink.Sink;
@@ -210,6 +215,10 @@ public class RtfSink
 
     protected OutputStream stream; // for raw image data
 
+    /** Map of warn messages with a String as key to describe the error type and a Set as value.
+     * Using to reduce warn messages. */
+    private Map warnMessages;
+
     // -----------------------------------------------------------------------
 
     /**
@@ -273,10 +282,10 @@ public class RtfSink
     }
 
     /**
-     * <p>setPaperSize</p>
+     * setPaperSize.
      *
-     * @param width in cm
-     * @param height in cm
+     * @param width in cm.
+     * @param height in cm.
      */
     public void setPaperSize( double width /*cm*/, double height /*cm*/ )
     {
@@ -287,7 +296,7 @@ public class RtfSink
     /**
      * <p>Setter for the field <code>topMargin</code>.</p>
      *
-     * @param margin
+     * @param margin margin.
      */
     public void setTopMargin( double margin )
     {
@@ -297,7 +306,7 @@ public class RtfSink
     /**
      * <p>Setter for the field <code>bottomMargin</code>.</p>
      *
-     * @param margin
+     * @param margin margin.
      */
     public void setBottomMargin( double margin )
     {
@@ -307,7 +316,7 @@ public class RtfSink
     /**
      * <p>Setter for the field <code>leftMargin</code>.</p>
      *
-     * @param margin
+     * @param margin margin
      */
     public void setLeftMargin( double margin )
     {
@@ -317,7 +326,7 @@ public class RtfSink
     /**
      * <p>Setter for the field <code>rightMargin</code>.</p>
      *
-     * @param margin
+     * @param margin margin
      */
     public void setRightMargin( double margin )
     {
@@ -335,9 +344,9 @@ public class RtfSink
     }
 
     /**
-     * <p>setSpacing</p>
+     * <p>setSpacing.</p>
      *
-     * @param spacing in pts
+     * @param spacing in pts.
      */
     public void setSpacing( int spacing /*pts*/ )
     {
@@ -462,7 +471,7 @@ public class RtfSink
     }
 
     /**
-     * <p>toTwips</p>
+     * <p>toTwips.</p>
      *
      * @param length a double.
      * @param unit a int.
@@ -1188,8 +1197,11 @@ public class RtfSink
         if ( !source.toLowerCase().endsWith( ".ppm" ) )
         {
             // TODO support more image types!
-            getLog().warn( "Unsupported image type for image file: '" + source + "'.");
-            getLog().warn( "Only PPM image type is currently supported.");
+            String msg =
+                "Unsupported image type for image file: '" + source + "'. Only PPM image type is "
+                    + "currently supported.";
+            logMessage( "unsupportedImage", msg );
+
             return;
         }
 
@@ -1592,7 +1604,8 @@ public class RtfSink
      */
     public void unknown( String name, Object[] requiredParams, SinkEventAttributes attributes )
     {
-        getLog().warn( "Unknown Sink event in RtfSink: " + name + ", ignoring!" );
+        String msg = "Unknown Sink event: '" + name + "', ignoring!";
+        logMessage( "unknownEvent", msg );
     }
 
     private static String normalize( String s )
@@ -1649,7 +1662,7 @@ public class RtfSink
     }
 
     /**
-     * <p>getFont</p>
+     * <p>getFont.</p>
      *
      * @param style a int.
      * @param size a int.
@@ -1716,6 +1729,57 @@ public class RtfSink
     public void close()
     {
         writer.close();
+
+        if ( getLog().isWarnEnabled() && this.warnMessages != null )
+        {
+            for ( Iterator it = this.warnMessages.entrySet().iterator(); it.hasNext(); )
+            {
+                Map.Entry entry = (Map.Entry) it.next();
+
+                Set set = (Set) entry.getValue();
+
+                for ( Iterator it2 = set.iterator(); it2.hasNext(); )
+                {
+                    String msg = (String) it2.next();
+
+                    getLog().warn( msg );
+                }
+            }
+
+            this.warnMessages = null;
+        }
+    }
+
+    /**
+     * If debug mode is enabled, log the <code>msg</code> as is, otherwise add unique msg in <code>warnMessages</code>.
+     *
+     * @param key not null
+     * @param msg not null
+     * @see #close()
+     * @since 1.1.1
+     */
+    private void logMessage( String key, String msg )
+    {
+        msg = "[RTF Sink] " + msg;
+        if ( getLog().isDebugEnabled() )
+        {
+            getLog().debug( msg );
+
+            return;
+        }
+
+        if ( warnMessages == null )
+        {
+            warnMessages = new HashMap();
+        }
+
+        Set set = (Set) warnMessages.get( key );
+        if ( set == null )
+        {
+            set = new TreeSet();
+        }
+        set.add( msg );
+        warnMessages.put( key, set );
     }
 
     // -----------------------------------------------------------------------

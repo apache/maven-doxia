@@ -39,17 +39,26 @@ import java.util.regex.Pattern;
 
 import javax.xml.XMLConstants;
 
+import org.apache.commons.httpclient.DefaultHttpMethodRetryHandler;
+import org.apache.commons.httpclient.HttpClient;
+import org.apache.commons.httpclient.HttpException;
+import org.apache.commons.httpclient.HttpStatus;
+import org.apache.commons.httpclient.methods.GetMethod;
+import org.apache.commons.httpclient.params.HttpMethodParams;
 import org.apache.maven.doxia.logging.Log;
 import org.apache.maven.doxia.macro.MacroExecutionException;
 import org.apache.maven.doxia.markup.XmlMarkup;
 import org.apache.maven.doxia.sink.Sink;
 import org.apache.maven.doxia.sink.SinkEventAttributeSet;
+import org.apache.maven.doxia.util.HtmlTools;
+
 import org.codehaus.plexus.util.FileUtils;
 import org.codehaus.plexus.util.IOUtil;
 import org.codehaus.plexus.util.StringUtils;
 import org.codehaus.plexus.util.xml.pull.MXParser;
 import org.codehaus.plexus.util.xml.pull.XmlPullParser;
 import org.codehaus.plexus.util.xml.pull.XmlPullParserException;
+
 import org.xml.sax.EntityResolver;
 import org.xml.sax.InputSource;
 import org.xml.sax.SAXException;
@@ -98,11 +107,11 @@ public abstract class AbstractXmlParser
     /** Tag pattern as defined in http://www.w3.org/TR/REC-xml/#NT-Name */
     private static final Pattern PATTERN_TAG = Pattern.compile( ".*<([A-Za-z][A-Za-z0-9:_.-]*)([^>]*)>.*" );
 
-    private boolean ignorable;
+    private boolean ignorableWhitespace;
 
-    private boolean collapsible;
+    private boolean collapsibleWhitespace;
 
-    private boolean trimmable;
+    private boolean trimmableWhitespace;
 
     private Map entities;
 
@@ -115,6 +124,8 @@ public abstract class AbstractXmlParser
     public void parse( Reader source, Sink sink )
         throws ParseException
     {
+        init();
+
         // 1 first parsing if validation is required
         if ( isValidate() )
         {
@@ -199,6 +210,18 @@ public abstract class AbstractXmlParser
     }
 
     /**
+     * Initialize the parser. This is called first by
+     * {@link #parse(java.io.Reader, org.apache.maven.doxia.sink.Sink)} and can be used
+     * to set the parser into a clear state so it can be re-used.
+     *
+     * @since 1.1.1
+     */
+    protected void init()
+    {
+        // default: empty
+    }
+
+    /**
      * Parse the model from the XmlPullParser into the given sink.
      *
      * @param parser A parser, not null.
@@ -263,7 +286,7 @@ public abstract class AbstractXmlParser
 
                 for ( Iterator it = CachedFileEntityResolver.ENTITY_CACHE.values().iterator(); it.hasNext(); )
                 {
-                    byte[] res = (byte[])it.next();
+                    byte[] res = (byte[]) it.next();
 
                     addDTDEntities( parser, new String( res ) );
                 }
@@ -305,45 +328,118 @@ public abstract class AbstractXmlParser
     /**
      * Handles text events.
      *
+     * <p>This is a default implementation, if the parser points to a non-empty text element,
+     * it is emitted as a text event into the specified sink.</p>
+     *
      * @param parser A parser, not null.
-     * @param sink the sink to receive the events.
+     * @param sink the sink to receive the events. Not null.
      * @throws org.codehaus.plexus.util.xml.pull.XmlPullParserException if there's a problem parsing the model
      */
-    protected abstract void handleText( XmlPullParser parser, Sink sink )
-        throws XmlPullParserException;
+    protected void handleText( XmlPullParser parser, Sink sink )
+        throws XmlPullParserException
+    {
+        String text = getText( parser );
+
+        /*
+         * NOTE: Don't do any whitespace trimming here. Whitespace normalization has already been performed by the
+         * parser so any whitespace that makes it here is significant.
+         */
+        if ( StringUtils.isNotEmpty( text ) )
+        {
+            sink.text( text );
+        }
+    }
 
     /**
      * Handles CDATA sections.
      *
+     * <p>This is a default implementation, all data are emitted as text
+     * events into the specified sink.</p>
+     *
      * @param parser A parser, not null.
-     * @param sink the sink to receive the events.
+     * @param sink the sink to receive the events. Not null.
      * @throws org.codehaus.plexus.util.xml.pull.XmlPullParserException if there's a problem parsing the model
      */
-    protected abstract void handleCdsect( XmlPullParser parser, Sink sink )
-        throws XmlPullParserException;
+    protected void handleCdsect( XmlPullParser parser, Sink sink )
+        throws XmlPullParserException
+    {
+        sink.text( getText( parser ) );
+    }
 
     /**
      * Handles comments.
      *
+     * <p>This is a default implementation, all data are emitted as comment
+     * events into the specified sink.</p>
+     *
      * @param parser A parser, not null.
-     * @param sink the sink to receive the events.
+     * @param sink the sink to receive the events. Not null.
      * @throws org.codehaus.plexus.util.xml.pull.XmlPullParserException if there's a problem parsing the model
      */
-    protected abstract void handleComment( XmlPullParser parser, Sink sink )
-        throws XmlPullParserException;
+    protected void handleComment( XmlPullParser parser, Sink sink )
+        throws XmlPullParserException
+    {
+        sink.comment( getText( parser ).trim() );
+    }
 
     /**
      * Handles entities.
      *
+     * <p>This is a default implementation, all entities are resolved and emitted as text
+     * events into the specified sink, except:</p>
+     * <ul>
+     * <li>the entities with names <code>#160</code>, <code>nbsp</code> and <code>#x00A0</code>
+     * are emitted as <code>nonBreakingSpace()</code> events.</li>
+     * </ul>
+     *
      * @param parser A parser, not null.
-     * @param sink the sink to receive the events.
+     * @param sink the sink to receive the events. Not null.
      * @throws org.codehaus.plexus.util.xml.pull.XmlPullParserException if there's a problem parsing the model
      */
-    protected abstract void handleEntity( XmlPullParser parser, Sink sink )
-        throws XmlPullParserException;
+    protected void handleEntity( XmlPullParser parser, Sink sink )
+        throws XmlPullParserException
+    {
+        String text = getText( parser );
+
+        String name = parser.getName();
+
+        if ( "#160".equals( name ) || "nbsp".equals( name ) || "#x00A0".equals( name ) )
+        {
+            sink.nonBreakingSpace();
+        }
+        else
+        {
+            String unescaped = HtmlTools.unescapeHTML( text );
+
+            sink.text( unescaped );
+        }
+    }
 
     /**
-     * <p>isIgnorableWhitespace</p>
+     * Handles an unkown event.
+     *
+     * <p>This is a default implementation, all events are emitted as unknown
+     * events into the specified sink.</p>
+     *
+     * @param parser the parser to get the event from.
+     * @param sink the sink to receive the event.
+     * @param type the tag event type. This should be one of HtmlMarkup.TAG_TYPE_SIMPLE,
+     * HtmlMarkup.TAG_TYPE_START, HtmlMarkup.TAG_TYPE_END or HtmlMarkup.ENTITY_TYPE.
+     * It will be passed as the first argument of the required parameters to the Sink
+     * {@link org.apache.maven.doxia.sink.Sink#unknown(String, Object[], SinkEventAttributes)}
+     * method.
+     */
+    protected void handleUnknown( XmlPullParser parser, Sink sink, int type )
+    {
+        Object[] required = new Object[] { new Integer( type ) };
+
+        SinkEventAttributeSet attribs = getAttributesFromParser( parser );
+
+        sink.unknown( parser.getName(), required, attribs );
+    }
+
+    /**
+     * <p>isIgnorableWhitespace.</p>
      *
      * @return <code>true</code> if whitespace will be ignored, <code>false</code> otherwise.
      * @see #setIgnorableWhitespace(boolean)
@@ -351,11 +447,11 @@ public abstract class AbstractXmlParser
      */
     protected boolean isIgnorableWhitespace()
     {
-        return ignorable;
+        return ignorableWhitespace;
     }
 
     /**
-     * Specify that whitespace will be ignore i.e.:
+     * Specify that whitespace will be ignored. I.e.:
      * <pre>&lt;tr&gt; &lt;td/&gt; &lt;/tr&gt;</pre>
      * is equivalent to
      * <pre>&lt;tr&gt;&lt;td/&gt;&lt;/tr&gt;</pre>
@@ -365,11 +461,11 @@ public abstract class AbstractXmlParser
      */
     protected void setIgnorableWhitespace( boolean ignorable )
     {
-        this.ignorable = ignorable;
+        this.ignorableWhitespace = ignorable;
     }
 
     /**
-     * <p>isCollapsibleWhitespace</p>
+     * <p>isCollapsibleWhitespace.</p>
      *
      * @return <code>true</code> if text will collapse, <code>false</code> otherwise.
      * @see #setCollapsibleWhitespace(boolean)
@@ -377,11 +473,11 @@ public abstract class AbstractXmlParser
      */
     protected boolean isCollapsibleWhitespace()
     {
-        return collapsible;
+        return collapsibleWhitespace;
     }
 
     /**
-     * Specify that text will be collapse i.e.:
+     * Specify that text will be collapsed. I.e.:
      * <pre>Text   Text</pre>
      * is equivalent to
      * <pre>Text Text</pre>
@@ -391,11 +487,11 @@ public abstract class AbstractXmlParser
      */
     protected void setCollapsibleWhitespace( boolean collapsible )
     {
-        this.collapsible = collapsible;
+        this.collapsibleWhitespace = collapsible;
     }
 
     /**
-     * <p>isTrimmableWhitespace</p>
+     * <p>isTrimmableWhitespace.</p>
      *
      * @return <code>true</code> if text will be trim, <code>false</code> otherwise.
      * @see #setTrimmableWhitespace(boolean)
@@ -403,11 +499,11 @@ public abstract class AbstractXmlParser
      */
     protected boolean isTrimmableWhitespace()
     {
-        return trimmable;
+        return trimmableWhitespace;
     }
 
     /**
-     * Specify that text will be collapse i.e.:
+     * Specify that text will be collapsed. I.e.:
      * <pre>&lt;p&gt; Text &lt;/p&gt;</pre>
      * is equivalent to
      * <pre>&lt;p&gt;Text&lt;/p&gt;</pre>
@@ -417,11 +513,11 @@ public abstract class AbstractXmlParser
      */
     protected void setTrimmableWhitespace( boolean trimmable )
     {
-        this.trimmable = trimmable;
+        this.trimmableWhitespace = trimmable;
     }
 
     /**
-     * <p>getText</p>
+     * <p>getText.</p>
      *
      * @param parser A parser, not null.
      * @return the {@link XmlPullParser#getText()} taking care of trimmable or collapsible configuration.
@@ -458,7 +554,7 @@ public abstract class AbstractXmlParser
     }
 
     /**
-     * Return the defined entities in a local doctype, i.e.:
+     * Return the defined entities in a local doctype. I.e.:
      * <pre>
      * &lt;!DOCTYPE foo [
      *   &lt;!ENTITY bar "&#38;#x160;"&gt;
@@ -480,7 +576,7 @@ public abstract class AbstractXmlParser
     }
 
     /**
-     * <p>isValidate</p>
+     * <p>isValidate.</p>
      *
      * @return <code>true</code> if XML content will be validate, <code>false</code> otherwise.
      * @since 1.1
@@ -891,33 +987,68 @@ public abstract class AbstractXmlParser
         }
 
         /**
-         * Wrap {@link IOUtil#toByteArray(java.io.InputStream)} to throw SAXException.
+         * If url is not an http/https urls, call {@link IOUtil#toByteArray(java.io.InputStream)} to get the url
+         * content.
+         * Otherwise, call {@link GetMethod#getResponseBody()} from HttpClient to get the http content.
+         * Wrap all internal exceptions to throw SAXException.
          *
          * @param url not null
          * @return return an array of byte
          * @throws SAXException if any
-         * @see {@link IOUtil#toByteArray(java.io.InputStream)}
          */
         private static byte[] toByteArray( URL url )
             throws SAXException
         {
-            InputStream is = null;
+            if ( !( url.getProtocol().equalsIgnoreCase( "http" ) || url.getProtocol().equalsIgnoreCase( "https" ) ) )
+            {
+                InputStream is = null;
+                try
+                {
+                    is = url.openStream();
+                    if ( is == null )
+                    {
+                        throw new SAXException( "Cannot open stream from the url: " + url.toString() );
+                    }
+                    return IOUtil.toByteArray( is );
+                }
+                catch ( IOException e )
+                {
+                    throw new SAXException( "IOException: " + e.getMessage(), e );
+                }
+                finally
+                {
+                    IOUtil.close( is );
+                }
+            }
+
+            // it is an HTTP url, using HttpClient...
+            HttpClient client = new HttpClient();
+            GetMethod method = new GetMethod( url.toString() );
+
+            method.getParams().setParameter( HttpMethodParams.RETRY_HANDLER,
+                                             new DefaultHttpMethodRetryHandler( 3, false ) );
+
             try
             {
-                is = url.openStream();
-                if ( is == null )
+                int statusCode = client.executeMethod( method );
+                if ( statusCode != HttpStatus.SC_OK )
                 {
-                    throw new SAXException( "Cannot open stream from the url: " + url.toString() );
+                    throw new IOException( "Method failed: " + method.getStatusLine() );
                 }
-                return IOUtil.toByteArray( is );
+
+                return method.getResponseBody();
+            }
+            catch ( HttpException e )
+            {
+                throw new SAXException( "HttpException: Fatal protocol violation: " + e.getMessage(), e );
             }
             catch ( IOException e )
             {
-                throw new SAXException( "IOException: " + e.getMessage(), e );
+                throw new SAXException( "IOException: Fatal transport error: " + e.getMessage(), e );
             }
             finally
             {
-                IOUtil.close( is );
+                method.releaseConnection();
             }
         }
 

@@ -29,7 +29,7 @@
 
     <menu ref="parent"/>
 
-    <menu name="Schema FML 1.0">
+    <menu name="Schema FML 1.0.1">
       <item name="Reference of Schema FML" href="xsddoc/index.html"/>
       <item name="Using Schema FML" href="using-fml-xsd.html"/>
     </menu>

@@ -883,7 +883,7 @@ public class AptSink
      */
     public void unknown( String name, Object[] requiredParams, SinkEventAttributes attributes )
     {
-        getLog().warn( "Unknown Sink event in AptSink: " + name + ", ignoring!" );
+        getLog().warn( "[Apt Sink] Unknown Sink event: '" + name + "', ignoring!" );
     }
 
     /**

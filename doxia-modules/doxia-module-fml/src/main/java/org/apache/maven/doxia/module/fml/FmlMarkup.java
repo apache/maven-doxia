@@ -36,11 +36,11 @@ import org.apache.maven.doxia.markup.HtmlMarkup;
 public interface FmlMarkup
     extends HtmlMarkup
 {
-    /** FML namespace: "http://maven.apache.org/FML/1.0" */
-    String FML_NAMESPACE = "http://maven.apache.org/FML/1.0";
+    /** FML namespace: "http://maven.apache.org/FML/1.0.1" */
+    String FML_NAMESPACE = "http://maven.apache.org/FML/1.0.1";
 
-    /** FML system id: "http://maven.apache.org/xsd/fml-1.0.xsd" */
-    String FML_SYSTEM_ID = "http://maven.apache.org/xsd/fml-1.0.xsd";
+    /** FML system id: "http://maven.apache.org/xsd/fml-1.0.1.xsd" */
+    String FML_SYSTEM_ID = "http://maven.apache.org/xsd/fml-1.0.1.xsd";
 
     // ----------------------------------------------------------------------
     // Specific Fml tags
@@ -103,6 +103,19 @@ public interface FmlMarkup
         public String toString()
         {
             return "source";
+        }
+    };
+
+    /**
+     * Fml tag for <code>macro</code>
+     * @since 1.1.1
+     */
+    Tag MACRO_TAG = new Tag()
+    {
+        /** {@inheritDoc} */
+        public String toString()
+        {
+            return "macro";
         }
     };
 }

@@ -1,6 +1,27 @@
 package org.apache.maven.doxia.book.services.renderer.docbook;
 
+/*
+ * Licensed to the Apache Software Foundation (ASF) under one
+ * or more contributor license agreements.  See the NOTICE file
+ * distributed with this work for additional information
+ * regarding copyright ownership.  The ASF licenses this file
+ * to you under the Apache License, Version 2.0 (the
+ * "License"); you may not use this file except in compliance
+ * with the License.  You may obtain a copy of the License at
+ *
+ *   http://www.apache.org/licenses/LICENSE-2.0
+ *
+ * Unless required by applicable law or agreed to in writing,
+ * software distributed under the License is distributed on an
+ * "AS IS" BASIS, WITHOUT WARRANTIES OR CONDITIONS OF ANY
+ * KIND, either express or implied.  See the License for the
+ * specific language governing permissions and limitations
+ * under the License.
+ */
+
 import java.io.Writer;
+
+import java.util.Locale;
 
 import javax.swing.text.MutableAttributeSet;
 import javax.swing.text.SimpleAttributeSet;
@@ -9,6 +30,9 @@ import org.apache.maven.doxia.module.docbook.DocBookSink;
 import org.apache.maven.doxia.sink.AbstractSinkTest;
 import org.apache.maven.doxia.sink.Sink;
 import org.apache.maven.doxia.sink.SinkUtils;
+
+import org.apache.maven.doxia.util.DoxiaUtils;
+import org.codehaus.plexus.util.FileUtils;
 
 /**
  * Test the book path of the DockBook sink
@@ -335,31 +359,32 @@ public class DocBookBookSinkTest extends AbstractSinkTest
     /** {@inheritDoc} */
     protected String getListBlock( String item )
     {
-        return "<itemizedlist><listitem>" + item  + "</listitem></itemizedlist>";
+        return "<itemizedlist><listitem><para>" + item  + "</para></listitem></itemizedlist>";
     }
 
     /** {@inheritDoc} */
     protected String getNumberedListBlock( String item )
     {
-        return "<orderedlist numeration=\"lowerroman\"><listitem>"
-            + item  + "</listitem></orderedlist>";
+        return "<orderedlist numeration=\"lowerroman\"><listitem><para>"
+            + item  + "</para></listitem></orderedlist>";
     }
 
     /** {@inheritDoc} */
     protected String getDefinitionListBlock( String definum, String definition )
     {
         return "<variablelist><varlistentry><term>" + definum
-            + "</term><listitem>" + definition
-            + "</listitem></varlistentry></variablelist>";
+            + "</term><listitem><para>" + definition
+            + "</para></listitem></varlistentry></variablelist>";
     }
 
     /** {@inheritDoc} */
     protected String getFigureBlock( String source, String caption )
     {
-        // TODO: fix source
-        return "<figure><title>" + caption
-            + "</title><mediaobject><imageobject><imagedata fileref=\"figure.jpg.jpeg\" format=\"JPEG\" /></imageobject></mediaobject>"
-            + "</figure>";
+        String format = FileUtils.extension( source ).toUpperCase( Locale.ENGLISH );
+
+        return "<mediaobject><imageobject>"
+                + "<imagedata fileref=\"" + source + "\" format=\"" + format + "\" />"
+                + "</imageobject><caption><para>" + caption + "</para></caption></mediaobject>";
     }
 
     /** {@inheritDoc} */
@@ -403,13 +428,14 @@ public class DocBookBookSinkTest extends AbstractSinkTest
     /** {@inheritDoc} */
     protected String getAnchorBlock( String anchor )
     {
-        return "<anchor id=\"" + anchor + "\" />" + anchor;
+        return "<anchor id=\"" + anchor + "\" />" + anchor + "<!-- anchor_end -->";
     }
 
     /** {@inheritDoc} */
     protected String getLinkBlock( String link, String text )
     {
-        return "<link linkend=\"" + link + "\">" + text + "</link>";
+        String linkend = DoxiaUtils.isInternalLink( link ) ? link.substring( 1 ) : link;
+        return "<link linkend=\"" + linkend + "\">" + text + "</link>";
     }
 
     /** {@inheritDoc} */
@@ -454,5 +480,11 @@ public class DocBookBookSinkTest extends AbstractSinkTest
     {
         // TODO
         return "";
+    }
+
+    /** {@inheritDoc} */
+    protected String getCommentBlock( String text )
+    {
+        return "<!-- Simple comment with - - - - -->";
     }
 }

@@ -1,29 +1,31 @@
 <?xml version="1.0" encoding="UTF-8"?>
-<!-- 
-/*
- * Licensed to the Apache Software Foundation (ASF) under one or more
- * contributor license agreements.  See the NOTICE file distributed with
- * this work for additional information regarding copyright ownership.
- * The ASF licenses this file to You under the Apache License, Version 2.0
- * (the "License"); you may not use this file except in compliance with
- * the License.  You may obtain a copy of the License at
- * 
- *      http://www.apache.org/licenses/LICENSE-2.0
- * 
- * Unless required by applicable law or agreed to in writing, software
- * distributed under the License is distributed on an "AS IS" BASIS,
- * WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
- * See the License for the specific language governing permissions and
- * limitations under the License.
- */
- -->
+<!--
+  Licensed to the Apache Software Foundation (ASF) under one
+  or more contributor license agreements.  See the NOTICE file
+  distributed with this work for additional information
+  regarding copyright ownership.  The ASF licenses this file
+  to you under the Apache License, Version 2.0 (the
+  "License"); you may not use this file except in compliance
+  with the License.  You may obtain a copy of the License at
+
+  http://www.apache.org/licenses/LICENSE-2.0
+
+  Unless required by applicable law or agreed to in writing,
+  software distributed under the License is distributed on an
+  "AS IS" BASIS, WITHOUT WARRANTIES OR CONDITIONS OF ANY
+  KIND, either express or implied.  See the License for the
+  specific language governing permissions and limitations
+  under the License.
+-->
+
+<!-- These values are optimized for an A4 paper size. -->
 
 <xsl:stylesheet xmlns:xsl="http://www.w3.org/1999/XSL/Transform" xmlns:fo="http://www.w3.org/1999/XSL/Format" version="1.0">
 
     <!-- Layout master sets -->
     <xsl:attribute-set name="layout.master.set.base">
-        <xsl:attribute name="page-width">8.25in</xsl:attribute>
-        <xsl:attribute name="page-height">11.70in</xsl:attribute>
+      <xsl:attribute name="page-width">8.27in</xsl:attribute>
+      <xsl:attribute name="page-height">11.70in</xsl:attribute>
         <xsl:attribute name="margin-top">0.625in</xsl:attribute>
         <xsl:attribute name="margin-bottom">0.6in</xsl:attribute>
         <xsl:attribute name="margin-left">1in</xsl:attribute>
@@ -112,6 +114,7 @@
     </xsl:attribute-set>
     <xsl:attribute-set name="body.source" use-attribute-sets="body.pre">
         <xsl:attribute name="wrap-option">no-wrap</xsl:attribute>
+        <xsl:attribute name="keep-together">always</xsl:attribute>
         <xsl:attribute name="white-space-collapse">false</xsl:attribute>
         <xsl:attribute name="color">black</xsl:attribute>
         <xsl:attribute name="border-style">solid</xsl:attribute>
@@ -291,7 +294,7 @@
         <xsl:attribute name="border-left-color">#000000</xsl:attribute>
     </xsl:attribute-set>
     <xsl:attribute-set name="cover.border.left.bottom" use-attribute-sets="cover.border.left">
-        <xsl:attribute name="padding-after">0.2in</xsl:attribute>        
+        <xsl:attribute name="padding-after">0.2in</xsl:attribute>
         <xsl:attribute name="border-bottom-style">dotted</xsl:attribute>
         <xsl:attribute name="border-bottom-width">0.1pt</xsl:attribute>
         <xsl:attribute name="border-bottom-color">#000000</xsl:attribute>
@@ -353,6 +356,8 @@
     <xsl:attribute-set name="base.cell">
         <xsl:attribute name="padding-start">2.5pt</xsl:attribute>
         <xsl:attribute name="padding-end">5pt</xsl:attribute>
+        <!-- http://xmlgraphics.apache.org/fop/faq.html#keep-together -->
+        <xsl:attribute name="keep-together.within-column">always</xsl:attribute>
     </xsl:attribute-set>
     <xsl:attribute-set name="base.block">
         <xsl:attribute name="font-family">Helvetica,sans-serif</xsl:attribute>
@@ -372,22 +377,24 @@
         <xsl:attribute name="border-after-color">black</xsl:attribute>
     </xsl:attribute-set>
     <xsl:attribute-set name="table.title.block" use-attribute-sets="base.block">
-        <xsl:attribute name="font-size">9.5pt</xsl:attribute>
+        <xsl:attribute name="font-size">11pt</xsl:attribute>
         <xsl:attribute name="font-weight">bold</xsl:attribute>
     </xsl:attribute-set>
     <xsl:attribute-set name="table.footer.cell" use-attribute-sets="base.cell">
         <xsl:attribute name="padding-before">5pt</xsl:attribute>
     </xsl:attribute-set>
     <xsl:attribute-set name="table.footer.block" use-attribute-sets="base.block">
-        <xsl:attribute name="font-size">7pt</xsl:attribute>
+        <xsl:attribute name="font-size">9pt</xsl:attribute>
         <xsl:attribute name="font-style">italic</xsl:attribute>
     </xsl:attribute-set>
     <xsl:attribute-set name="table.heading.cell" use-attribute-sets="base.cell">
         <xsl:attribute name="padding-before">7pt</xsl:attribute>
         <xsl:attribute name="display-align">after</xsl:attribute>
+        <xsl:attribute name="background-color">#bbbbbb</xsl:attribute>
+        <xsl:attribute name="color">white</xsl:attribute>
     </xsl:attribute-set>
     <xsl:attribute-set name="table.heading.block" use-attribute-sets="base.block">
-        <xsl:attribute name="font-size">8pt</xsl:attribute>
+        <xsl:attribute name="font-size">10pt</xsl:attribute>
         <xsl:attribute name="font-weight">bold</xsl:attribute>
     </xsl:attribute-set>
     <xsl:attribute-set name="table.heading.rule">
@@ -400,7 +407,7 @@
         <xsl:attribute name="padding-before">6pt</xsl:attribute>
     </xsl:attribute-set>
     <xsl:attribute-set name="table.number.block" use-attribute-sets="base.block">
-        <xsl:attribute name="font-size">7pt</xsl:attribute>
+        <xsl:attribute name="font-size">9pt</xsl:attribute>
         <xsl:attribute name="font-style">italic</xsl:attribute>
     </xsl:attribute-set>
     <xsl:attribute-set name="table.subheading.row">
@@ -416,13 +423,13 @@
         <xsl:attribute name="display-align">after</xsl:attribute>
     </xsl:attribute-set>
     <xsl:attribute-set name="table.subheading.block" use-attribute-sets="base.block">
-        <xsl:attribute name="font-size">7pt</xsl:attribute>
+        <xsl:attribute name="font-size">9pt</xsl:attribute>
         <xsl:attribute name="font-weight">bold</xsl:attribute>
         <xsl:attribute name="vertical-align">bottom</xsl:attribute>
     </xsl:attribute-set>
     <xsl:attribute-set name="table.body.row">
-        <xsl:attribute name="keep-together">always</xsl:attribute>
-        <xsl:attribute name="keep-with-next">always</xsl:attribute>
+        <xsl:attribute name="keep-together">auto</xsl:attribute>
+        <xsl:attribute name="keep-with-next">auto</xsl:attribute>
     </xsl:attribute-set>
     <xsl:attribute-set name="table.body.norule">
         <xsl:attribute name="leader-length.optimum">100%</xsl:attribute>
@@ -442,15 +449,20 @@
         <xsl:attribute name="rule-thickness">0.5pt</xsl:attribute>
         <xsl:attribute name="color">black</xsl:attribute>
     </xsl:attribute-set>
+    <xsl:attribute-set name="table.body.cell.grid">
+        <xsl:attribute name="border-style">solid</xsl:attribute>
+        <xsl:attribute name="border-width">0.2mm</xsl:attribute>
+    </xsl:attribute-set>
     <xsl:attribute-set name="table.body.cell" use-attribute-sets="base.cell">
         <xsl:attribute name="padding-before">4pt</xsl:attribute>
         <xsl:attribute name="padding-after">1.5pt</xsl:attribute>
+        <xsl:attribute name="background-color">#eeeeee</xsl:attribute>
     </xsl:attribute-set>
     <xsl:attribute-set name="table.body.block" use-attribute-sets="base.block">
-        <xsl:attribute name="font-size">7pt</xsl:attribute>
+        <xsl:attribute name="font-size">9pt</xsl:attribute>
     </xsl:attribute-set>
     <xsl:attribute-set name="table.pre" use-attribute-sets="base.pre.style">
-        <xsl:attribute name="font-size">7pt</xsl:attribute>
+        <xsl:attribute name="font-size">9pt</xsl:attribute>
     </xsl:attribute-set>
 
     <!-- Table of content styles -->

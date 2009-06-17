@@ -43,6 +43,10 @@ import org.codehaus.plexus.util.xml.pull.XmlPullParserException;
 public class DocumentModelTest
     extends PlexusTestCase
 {
+    /** ISO 8601 date format, i.e. <code>yyyy-MM-dd</code> **/
+    private static final java.text.DateFormat ISO_8601_FORMAT =
+            new java.text.SimpleDateFormat( "yyyy-MM-dd", java.util.Locale.ENGLISH );
+
     /**
      * Test DocumentModel.
      *
@@ -80,7 +84,7 @@ public class DocumentModelTest
         assertTrue( model.toString().length() > 0 );
 
         assertEquals( "outputName", model.getOutputName() );
-        //assertEquals( "ISO-8859-1", model.getModelEncoding() ); // MODELLO-189
+        assertEquals( "ISO-8859-1", model.getModelEncoding() );
         verifyDocumentCover( model.getCover() );
         verifyDocumentTOC( model.getToc() );
         verifyDocumentMeta( model.getMeta() );
@@ -95,6 +99,7 @@ public class DocumentModelTest
         author.setCountry( "country" + i );
         author.setEmail( "email" + i );
         author.setFaxNumber( "faxNumber" + i );
+        author.setName( "name" + i );
         author.setFirstName( "firstName" + i );
         author.setInitials( "initials" + i );
         author.setLastName( "lastName" + i );
@@ -115,6 +120,7 @@ public class DocumentModelTest
         assertEquals( "country" + i, documentAuthor.getCountry() );
         assertEquals( "email" + i, documentAuthor.getEmail() );
         assertEquals( "faxNumber" + i, documentAuthor.getFaxNumber() );
+        assertEquals( "name" + i, documentAuthor.getName() );
         assertEquals( "firstName" + i, documentAuthor.getFirstName() );
         assertEquals( "initials" + i, documentAuthor.getInitials() );
         assertEquals( "lastName" + i, documentAuthor.getLastName() );
@@ -129,10 +135,11 @@ public class DocumentModelTest
     private DocumentCover getDocumentCover()
     {
         DocumentCover cover = new DocumentCover();
+        cover.addAuthor( getAuthor( 1 ) );
         cover.setAuthor( "Author" );
         cover.setCompanyLogo( "companyLogo" );
         cover.setCompanyName( "companyName" );
-        cover.setCoverDate( "coverDate" );
+        cover.setCoverDate( new Date( 0L ) );
         cover.setCoverSubTitle( "coverSubTitle" );
         cover.setCoverTitle( "coverTitle" );
         cover.setCoverType( "coverType" );
@@ -145,10 +152,16 @@ public class DocumentModelTest
 
     private void verifyDocumentCover( DocumentCover cover )
     {
+        List authors = cover.getAuthors();
+        assertEquals( 1, authors.size() );
+        verifyAuthor( (DocumentAuthor) authors.get( 0 ), 1 );
+
         assertEquals( "Author", cover.getAuthor() );
         assertEquals( "companyLogo", cover.getCompanyLogo() );
         assertEquals( "companyName", cover.getCompanyName() );
-        assertEquals( "coverDate", cover.getCoverDate() );
+        assertEquals( 0L, cover.getCoverDate().getTime() );
+        // the actual String depends on the timezone you're in
+        assertEquals( ISO_8601_FORMAT.format( new Date( 0L ) ), cover.getCoverdate() );
         assertEquals( "coverSubTitle", cover.getCoverSubTitle() );
         assertEquals( "coverTitle", cover.getCoverTitle() );
         assertEquals( "coverType", cover.getCoverType() );
@@ -229,7 +242,8 @@ public class DocumentModelTest
         meta.setGenerator( "generator" );
         meta.setHyperlinkBehaviour( getDocumentHyperlinkBehaviour() );
         meta.setInitialCreator( "initialCreator" );
-        meta.setKeywords( "keywords" );
+        meta.addKeyWord( "keyword1" );
+        meta.addKeyWord( "keyword2" );
         meta.setLanguage( "language" );
         meta.setPageSize( "pageSize" );
         meta.setPrintDate( new Date( 4L ) );
@@ -260,7 +274,7 @@ public class DocumentModelTest
         assertEquals( "generator", meta.getGenerator() );
         verifyDocumentHyperlinkBehaviour( meta.getHyperlinkBehaviour() );
         assertEquals( "initialCreator", meta.getInitialCreator() );
-        assertEquals( "keywords", meta.getKeywords() );
+        assertEquals( "keyword1, keyword2", meta.getAllKeyWords() );
         assertEquals( "language", meta.getLanguage() );
         assertEquals( "pageSize", meta.getPageSize() );
         assertEquals( 4L, meta.getPrintDate().getTime() );

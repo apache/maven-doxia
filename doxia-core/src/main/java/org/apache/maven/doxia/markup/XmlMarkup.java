@@ -43,12 +43,12 @@ public interface XmlMarkup
     // Xml constants
     // ----------------------------------------------------------------------
 
-    /** CDATA string: "CDATA" */
+    /** CDATA. String: "CDATA". */
     String CDATA = "CDATA";
 
-    /** DOCTYPE start string: "&lt;!DOCTYPE" */
+    /** DOCTYPE start. String: "&lt;!DOCTYPE". */
     String DOCTYPE_START = "<!DOCTYPE";
 
-    /** ENTITY start string: "&lt;!ENTITY" */
+    /** ENTITY start. String: "&lt;!ENTITY". */
     String ENTITY_START = "<!ENTITY";
 }

@@ -23,24 +23,38 @@ import java.io.File;
 import java.io.IOException;
 import java.io.StringWriter;
 import java.io.Writer;
+import java.util.Enumeration;
+import java.util.HashMap;
+import java.util.Iterator;
+import java.util.Map;
+import java.util.Set;
 import java.util.Stack;
+import java.util.TreeSet;
 
 import javax.swing.text.MutableAttributeSet;
-import javax.swing.text.SimpleAttributeSet;
 import javax.swing.text.html.HTML.Attribute;
 import javax.swing.text.html.HTML.Tag;
 
 import org.apache.maven.doxia.sink.AbstractXmlSink;
-import org.apache.maven.doxia.sink.Sink;
 import org.apache.maven.doxia.sink.SinkEventAttributeSet;
 import org.apache.maven.doxia.sink.SinkEventAttributes;
 import org.apache.maven.doxia.sink.SinkUtils;
 import org.apache.maven.doxia.util.DoxiaUtils;
 import org.apache.maven.doxia.util.HtmlTools;
+
 import org.codehaus.plexus.util.StringUtils;
+import org.codehaus.plexus.util.xml.PrettyPrintXMLWriter;
+import org.codehaus.plexus.util.xml.XMLWriter;
 
 /**
- * FO Sink implementation.
+ * A Doxia Sink that produces a FO model. The usage is similar to the following:
+ *
+ * <pre>
+ * FoSink sink = new FoSink( writer );
+ * sink.beginDocument();
+ * ...
+ * sink.endDocument();
+ * </pre>
  *
  * @author ltheussl
  * @version $Id$
@@ -93,6 +107,14 @@ public class FoSink
     private String encoding;
 
     private String languageId;
+
+    private StringWriter tableCaptionWriter = null;
+
+    private XMLWriter tableCaptionXMLWriter = null;
+
+    /** Map of warn messages with a String as key to describe the error type and a Set as value.
+     * Using to reduce warn messages. */
+    protected Map warnMessages;
 
     /**
      * Constructor, initialize the Writer.
@@ -163,10 +185,15 @@ public class FoSink
     }
 
     /** {@inheritDoc} */
+    public void head( SinkEventAttributes attributes )
+    {
+        startPageSequence( "0", null, null );
+    }
+
+    /** {@inheritDoc} */
     public void head()
     {
-        beginDocument();
-        startPageSequence( "0", null, null );
+        head( null );
     }
 
     /** {@inheritDoc} */
@@ -176,9 +203,15 @@ public class FoSink
     }
 
     /** {@inheritDoc} */
-    public void title()
+    public void title( SinkEventAttributes attributes )
     {
         writeStartTag( BLOCK_TAG, "doc.header.title" );
+    }
+
+    /** {@inheritDoc} */
+    public void title()
+    {
+        title( null );
     }
 
     /** {@inheritDoc} */
@@ -189,9 +222,15 @@ public class FoSink
     }
 
     /** {@inheritDoc} */
-    public void author()
+    public void author( SinkEventAttributes attributes )
     {
         writeStartTag( BLOCK_TAG, "doc.header.author" );
+    }
+
+    /** {@inheritDoc} */
+    public void author()
+    {
+        author( null );
     }
 
     /** {@inheritDoc} */
@@ -202,9 +241,15 @@ public class FoSink
     }
 
     /** {@inheritDoc} */
-    public void date()
+    public void date( SinkEventAttributes attributes )
     {
         writeStartTag( BLOCK_TAG, "doc.header.date" );
+    }
+
+    /** {@inheritDoc} */
+    public void date()
+    {
+        date( null );
     }
 
     /** {@inheritDoc} */
@@ -215,9 +260,15 @@ public class FoSink
     }
 
     /** {@inheritDoc} */
-    public void body()
+    public void body( SinkEventAttributes attributes )
     {
         // noop
+    }
+
+    /** {@inheritDoc} */
+    public void body()
+    {
+        body( null );
     }
 
     /** {@inheritDoc} */
@@ -248,129 +299,163 @@ public class FoSink
     }
 
     /** {@inheritDoc} */
+    public void section( int level, SinkEventAttributes attributes )
+    {
+        if ( level == SECTION_LEVEL_1 )
+        {
+            section++;
+            subsection = 0;
+            subsubsection = 0;
+        }
+        else if ( level == SECTION_LEVEL_2 )
+        {
+            subsection++;
+            subsubsection = 0;
+        }
+        else if ( level == SECTION_LEVEL_3 )
+        {
+            subsubsection++;
+        }
+
+        onSection();
+    }
+
+    /** {@inheritDoc} */
+    public void section_( int level )
+    {
+        onSection_();
+    }
+
+    /** {@inheritDoc} */
+    public void sectionTitle( int level, SinkEventAttributes attributes )
+    {
+        onSectionTitle( level );
+    }
+
+    /** {@inheritDoc} */
+    public void sectionTitle_( int level )
+    {
+        onSectionTitle_();
+    }
+
+    /** {@inheritDoc} */
     public void section1()
     {
-        section++;
-        subsection = 0;
-        subsubsection = 0;
-        onSection();
+        section( SECTION_LEVEL_1, null );
     }
 
     /** {@inheritDoc} */
     public void sectionTitle1()
     {
-        onSectionTitle( Sink.SECTION_LEVEL_1 );
+        sectionTitle( SECTION_LEVEL_1, null );
     }
 
     /** {@inheritDoc} */
     public void sectionTitle1_()
     {
-        onSectionTitle_();
+        sectionTitle_( SECTION_LEVEL_1 );
     }
 
     /** {@inheritDoc} */
     public void section1_()
     {
-        onSection_();
+        section_( SECTION_LEVEL_1 );
     }
 
     /** {@inheritDoc} */
     public void section2()
     {
-        subsection++;
-        subsubsection = 0;
-        onSection();
+        section( SECTION_LEVEL_2, null );
     }
 
     /** {@inheritDoc} */
     public void sectionTitle2()
     {
-        onSectionTitle( Sink.SECTION_LEVEL_2 );
+        sectionTitle( SECTION_LEVEL_2, null );
     }
 
     /** {@inheritDoc} */
     public void sectionTitle2_()
     {
-        onSectionTitle_();
+        sectionTitle_( SECTION_LEVEL_2 );
     }
 
     /** {@inheritDoc} */
     public void section2_()
     {
-        onSection_();
+        section_( SECTION_LEVEL_2 );
     }
 
     /** {@inheritDoc} */
     public void section3()
     {
-        subsubsection++;
-        onSection();
+        section( SECTION_LEVEL_3, null );
     }
 
     /** {@inheritDoc} */
     public void sectionTitle3()
     {
-        onSectionTitle( Sink.SECTION_LEVEL_3 );
+        sectionTitle( SECTION_LEVEL_3, null );
     }
 
     /** {@inheritDoc} */
     public void sectionTitle3_()
     {
-        onSectionTitle_();
+        sectionTitle_( SECTION_LEVEL_3 );
     }
 
     /** {@inheritDoc} */
     public void section3_()
     {
-        onSection_();
+        section_( SECTION_LEVEL_3 );
     }
 
     /** {@inheritDoc} */
     public void section4()
     {
-        onSection();
+        section( SECTION_LEVEL_4, null );
     }
 
     /** {@inheritDoc} */
     public void sectionTitle4()
     {
-        onSectionTitle( Sink.SECTION_LEVEL_4 );
+        sectionTitle( SECTION_LEVEL_4, null );
     }
 
     /** {@inheritDoc} */
     public void sectionTitle4_()
     {
-        onSectionTitle_();
+        sectionTitle_( SECTION_LEVEL_4 );
     }
 
     /** {@inheritDoc} */
     public void section4_()
     {
-        onSection_();
+        section_( SECTION_LEVEL_4 );
     }
 
     /** {@inheritDoc} */
     public void section5()
     {
-        onSection();
+        section( SECTION_LEVEL_5, null );
     }
 
     /** {@inheritDoc} */
     public void sectionTitle5()
     {
-        onSectionTitle( Sink.SECTION_LEVEL_5 );
+        sectionTitle( SECTION_LEVEL_5, null );
     }
 
     /** {@inheritDoc} */
     public void sectionTitle5_()
     {
-        onSectionTitle_();
+        sectionTitle_( SECTION_LEVEL_5 );
     }
 
     /** {@inheritDoc} */
     public void section5_()
     {
-        onSection_();
+        section_( SECTION_LEVEL_5 );
     }
 
     /** Starts a section/subsection. */
@@ -392,25 +477,25 @@ public class FoSink
         title.append( getChapterString() );
 
         writeEOL();
-        if ( depth == Sink.SECTION_LEVEL_1 )
+        if ( depth == SECTION_LEVEL_1 )
         {
             writeStartTag( BLOCK_TAG, "body.h1" );
             title.append( section ).append( "   " );
         }
-        else if ( depth == Sink.SECTION_LEVEL_2 )
+        else if ( depth == SECTION_LEVEL_2 )
         {
             writeStartTag( BLOCK_TAG, "body.h2" );
             title.append( section ).append( "." );
             title.append( subsection ).append( "   " );
         }
-        else if ( depth == Sink.SECTION_LEVEL_3 )
+        else if ( depth == SECTION_LEVEL_3 )
         {
             writeStartTag( BLOCK_TAG, "body.h3" );
             title.append( section ).append( "." );
             title.append( subsection ).append( "." );
             title.append( subsubsection ).append( "   " );
         }
-        else if ( depth == Sink.SECTION_LEVEL_4 )
+        else if ( depth == SECTION_LEVEL_4 )
         {
             writeStartTag( BLOCK_TAG, "body.h4" );
         }
@@ -461,10 +546,16 @@ public class FoSink
     // -----------------------------------------------------------------------
 
     /** {@inheritDoc} */
-    public void list()
+    public void list( SinkEventAttributes attributes )
     {
         writeEOL();
         writeStartTag( LIST_BLOCK_TAG, "list" );
+    }
+
+    /** {@inheritDoc} */
+    public void list()
+    {
+        list( null );
     }
 
     /** {@inheritDoc} */
@@ -475,13 +566,24 @@ public class FoSink
     }
 
     /** {@inheritDoc} */
-    public void listItem()
+    public void listItem( SinkEventAttributes attributes )
     {
         writeStartTag( LIST_ITEM_TAG, "list.item" );
-        // TODO customize?
-        writeln( "<fo:list-item-label><fo:block>&#8226;</fo:block></fo:list-item-label>" );
+        writeStartTag( LIST_ITEM_LABEL_TAG );
+        writeStartTag( BLOCK_TAG );
+        write( "&#8226;" ); // TODO customize?
+        writeEndTag( BLOCK_TAG );
+        writeEndTag( LIST_ITEM_LABEL_TAG );
+        writeEOL();
         writeStartTag( LIST_ITEM_BODY_TAG, "list.item" );
-        writeStartTag( BLOCK_TAG, "" );
+        writeEOL();
+        writeStartTag( BLOCK_TAG );
+    }
+
+    /** {@inheritDoc} */
+    public void listItem()
+    {
+        listItem( null );
     }
 
     /** {@inheritDoc} */
@@ -496,11 +598,17 @@ public class FoSink
     }
 
     /** {@inheritDoc} */
-    public void numberedList( int numbering )
+    public void numberedList( int numbering, SinkEventAttributes attributes )
     {
         listStack.push( new NumberedListItem( numbering ) );
         writeEOL();
         writeStartTag( LIST_BLOCK_TAG, "list" );
+    }
+
+    /** {@inheritDoc} */
+    public void numberedList( int numbering )
+    {
+        numberedList( numbering, null );
     }
 
     /** {@inheritDoc} */
@@ -512,15 +620,17 @@ public class FoSink
     }
 
     /** {@inheritDoc} */
-    public void numberedListItem()
+    public void numberedListItem( SinkEventAttributes attributes )
     {
         NumberedListItem current = (NumberedListItem) listStack.peek();
         current.next();
 
         writeStartTag( LIST_ITEM_TAG, "list.item" );
 
-        writeStartTag( LIST_ITEM_LABEL_TAG, "" );
-        writeStartTag( BLOCK_TAG, "" );
+        writeEOL();
+        writeStartTag( LIST_ITEM_LABEL_TAG );
+        writeEOL();
+        writeStartTag( BLOCK_TAG );
         write( current.getListItemSymbol() );
         writeEndTag( BLOCK_TAG );
         writeEOL();
@@ -528,7 +638,14 @@ public class FoSink
         writeEOL();
 
         writeStartTag( LIST_ITEM_BODY_TAG, "list.item" );
-        writeStartTag( BLOCK_TAG, "" );
+        writeEOL();
+        writeStartTag( BLOCK_TAG );
+    }
+
+    /** {@inheritDoc} */
+    public void numberedListItem()
+    {
+        numberedListItem( null );
     }
 
     /** {@inheritDoc} */
@@ -543,10 +660,16 @@ public class FoSink
     }
 
     /** {@inheritDoc} */
-    public void definitionList()
+    public void definitionList( SinkEventAttributes attributes )
     {
         writeEOL();
         writeStartTag( BLOCK_TAG, "dl" );
+    }
+
+    /** {@inheritDoc} */
+    public void definitionList()
+    {
+        definitionList( null );
     }
 
     /** {@inheritDoc} */
@@ -557,9 +680,15 @@ public class FoSink
     }
 
     /** {@inheritDoc} */
-    public void definitionListItem()
+    public void definitionListItem( SinkEventAttributes attributes )
     {
         // nop
+    }
+
+    /** {@inheritDoc} */
+    public void definitionListItem()
+    {
+        definitionListItem( null );
     }
 
     /** {@inheritDoc} */
@@ -569,9 +698,15 @@ public class FoSink
     }
 
     /** {@inheritDoc} */
-    public void definedTerm()
+    public void definedTerm( SinkEventAttributes attributes )
     {
         writeStartTag( BLOCK_TAG, "dt" );
+    }
+
+    /** {@inheritDoc} */
+    public void definedTerm()
+    {
+        definedTerm( null );
     }
 
     /** {@inheritDoc} */
@@ -582,10 +717,16 @@ public class FoSink
     }
 
     /** {@inheritDoc} */
-    public void definition()
+    public void definition( SinkEventAttributes attributes )
     {
         writeEOL();
         writeStartTag( BLOCK_TAG, "dd" );
+    }
+
+    /** {@inheritDoc} */
+    public void definition()
+    {
+        definition( null );
     }
 
     /** {@inheritDoc} */
@@ -596,11 +737,17 @@ public class FoSink
     }
 
     /** {@inheritDoc} */
-    public void figure()
+    public void figure( SinkEventAttributes attributes )
     {
         this.inFigure = true;
         writeEOL();
         writeStartTag( BLOCK_TAG, "figure.display" );
+    }
+
+    /** {@inheritDoc} */
+    public void figure()
+    {
+        figure( null );
     }
 
     /** {@inheritDoc} */
@@ -623,18 +770,17 @@ public class FoSink
         MutableAttributeSet atts = config.getAttributeSet( "figure.graphics" );
         atts.addAttribute( Attribute.SRC.toString(), src );
 
-        if ( attributes != null && attributes.isDefined( SinkEventAttributes.WIDTH ) )
-        {
-            atts.addAttribute( "content-width", attributes.getAttribute( SinkEventAttributes.WIDTH ) );
-        }
+        // http://xmlgraphics.apache.org/fop/graphics.html#resolution
 
-        if ( attributes != null && attributes.isDefined( SinkEventAttributes.HEIGHT ) )
+        final String[] valids = new String[] {"content-height", "content-width", "height", "width"};
+        final MutableAttributeSet filtered = SinkUtils.filterAttributes( attributes, valids );
+
+        if ( filtered != null )
         {
-            atts.addAttribute( "content-height", attributes.getAttribute( SinkEventAttributes.HEIGHT ) );
+            atts.addAttributes( filtered );
         }
 
         writeln( "<fo:external-graphic" + SinkUtils.getAttributeString( atts ) + "/>" );
-
     }
 
     /**
@@ -648,9 +794,15 @@ public class FoSink
     }
 
     /** {@inheritDoc} */
-    public void figureCaption()
+    public void figureCaption( SinkEventAttributes attributes )
     {
         writeStartTag( BLOCK_TAG, "figure.caption" );
+    }
+
+    /** {@inheritDoc} */
+    public void figureCaption()
+    {
+        figureCaption( null );
     }
 
     /** {@inheritDoc} */
@@ -688,9 +840,18 @@ public class FoSink
     }
 
     /** {@inheritDoc} */
-    public void verbatim( boolean boxed )
+    public void verbatim( SinkEventAttributes attributes )
     {
         this.verbatim = true;
+
+        boolean boxed = false;
+
+        if ( attributes != null && attributes.isDefined( SinkEventAttributes.DECORATION ) )
+        {
+            boxed =
+                "boxed".equals( attributes.getAttribute( SinkEventAttributes.DECORATION ).toString() );
+        }
+
         if ( boxed )
         {
             writeStartTag( BLOCK_TAG, "body.source" );
@@ -702,6 +863,12 @@ public class FoSink
     }
 
     /** {@inheritDoc} */
+    public void verbatim( boolean boxed )
+    {
+        verbatim( boxed ? SinkEventAttributeSet.BOXED : null );
+    }
+
+    /** {@inheritDoc} */
     public void verbatim_()
     {
         this.verbatim = false;
@@ -710,38 +877,58 @@ public class FoSink
     }
 
     /** {@inheritDoc} */
-    public void horizontalRule()
+    public void horizontalRule( SinkEventAttributes attributes )
     {
         writeEOL();
-        writeStartTag( BLOCK_TAG, "" );
+        writeEOL();
+        writeStartTag( BLOCK_TAG );
         writeEmptyTag( LEADER_TAG, "body.rule" );
         writeEndTag( BLOCK_TAG );
         writeEOL();
     }
 
     /** {@inheritDoc} */
+    public void horizontalRule()
+    {
+        horizontalRule( null );
+    }
+
+    /** {@inheritDoc} */
     public void pageBreak()
     {
-        //writeln( "<fo:block break-before=\"page\"/>" );
         writeEmptyTag( BLOCK_TAG, "break-before", "page" );
         writeEOL();
     }
 
     /** {@inheritDoc} */
-    public void table()
+    public void table( SinkEventAttributes attributes )
     {
         writeEOL();
         writeStartTag( BLOCK_TAG, "table.padding" );
 
-        // <fo:table-and-caption> is XSL-FO 1.0 standard but not implemented in FOP 0.93
-        //writeStartTag( TABLE_AND_CAPTION_TAG, "" );
+        // <fo:table-and-caption> is XSL-FO 1.0 standard but still not implemented in FOP 0.95
+        //writeStartTag( TABLE_AND_CAPTION_TAG );
 
         writeStartTag( TABLE_TAG, "table.layout" );
     }
 
     /** {@inheritDoc} */
+    public void table()
+    {
+        table( null );
+    }
+
+    /** {@inheritDoc} */
     public void table_()
     {
+        String tableCaption = null;
+        if ( tableCaptionXMLWriter != null )
+        {
+            tableCaption = tableCaptionWriter.toString();
+            tableCaptionXMLWriter = null;
+            tableCaptionWriter = null;
+        }
+
         String content = tempWriter.toString();
         if ( content.lastIndexOf( "<fo:table " ) != -1 || content.lastIndexOf( "<fo:table>" ) != -1 )
         {
@@ -780,11 +967,21 @@ public class FoSink
         writeEndTag( TABLE_TAG );
         writeEOL();
 
-        // <fo:table-and-caption> is XSL-FO 1.0 standard but not implemented in FOP 0.93
+        // <fo:table-and-caption> is XSL-FO 1.0 standard but still not implemented in FOP 0.95
         //writeEndTag( TABLE_AND_CAPTION_TAG );
 
         writeEndTag( BLOCK_TAG );
         writeEOL();
+
+        if ( tableCaption != null )
+        {
+            SinkEventAttributeSet atts = new SinkEventAttributeSet();
+            atts.addAttribute( SinkEventAttributes.ALIGN, "center" );
+
+            paragraph( atts );
+            write( tableCaption );
+            paragraph_();
+        }
     }
 
     /** {@inheritDoc} */
@@ -793,7 +990,8 @@ public class FoSink
         this.tableGrid = grid;
         this.cellJustif = justification;
         this.isCellJustif = true;
-        writeStartTag( TABLE_BODY_TAG, "" );
+        writeEOL();
+        writeStartTag( TABLE_BODY_TAG );
     }
 
     /** {@inheritDoc} */
@@ -806,11 +1004,17 @@ public class FoSink
     }
 
     /** {@inheritDoc} */
-    public void tableRow()
+    public void tableRow( SinkEventAttributes attributes )
     {
         // TODO spacer rows
         writeStartTag( TABLE_ROW_TAG, "table.body.row" );
         this.cellCount = 0;
+    }
+
+    /** {@inheritDoc} */
+    public void tableRow()
+    {
+        tableRow( null );
     }
 
     /** {@inheritDoc} */
@@ -821,9 +1025,15 @@ public class FoSink
     }
 
     /** {@inheritDoc} */
-    public void tableCell()
+    public void tableCell( SinkEventAttributes attributes )
     {
         tableCell( false );
+    }
+
+    /** {@inheritDoc} */
+    public void tableCell()
+    {
+        tableCell( (SinkEventAttributes) null );
     }
 
     /** {@inheritDoc} */
@@ -834,10 +1044,15 @@ public class FoSink
     }
 
     /** {@inheritDoc} */
+    public void tableHeaderCell( SinkEventAttributes attributes )
+    {
+        tableCell( true );
+    }
+
+    /** {@inheritDoc} */
     public void tableHeaderCell()
     {
-        // TODO: how to implement?
-        tableCell( true );
+        tableHeaderCell( (SinkEventAttributes) null );
     }
 
     /** {@inheritDoc} */
@@ -850,7 +1065,7 @@ public class FoSink
     /**
      * Writes a table cell.
      *
-     * @param headerRow Currently not used.
+     * @param headerRow true if this is a header cell.
      */
     private void tableCell( boolean headerRow )
     {
@@ -860,35 +1075,44 @@ public class FoSink
          {
              switch ( cellJustif[Math.min( cellCount, cellJustif.length - 1 )] )
              {
-                 case Sink.JUSTIFY_LEFT:
+                 case JUSTIFY_LEFT:
                      justif = "left";
                      break;
-                 case Sink.JUSTIFY_RIGHT:
+                 case JUSTIFY_RIGHT:
                      justif = "right";
                      break;
-                 case Sink.JUSTIFY_CENTER:
+                 case JUSTIFY_CENTER:
                  default:
                      justif = "center";
                      break;
              }
          }
 
-         if ( justif != null )
-         {
-            // the column-number is needed for the hack to center the table, see tableRows.
-            write( "<fo:table-cell column-number=\"" + String.valueOf( cellCount + 2 ) + "\"" );
-            if ( tableGrid )
-            {
-                // http://xmlgraphics.apache.org/fop/faq.html#keep-together
-                write( " border-style=\"solid\" border-width=\"0.2mm\" keep-together.within-column=\"always\"" );
-            }
-            writeln( config.getAttributeString( "table.body.cell" ) + ">" );
-         }
-         else
-         {
-             writeStartTag( TABLE_CELL_TAG, "table.body.cell" );
-         }
-        writeln( "<fo:block text-align=\"" + justif + "\">" );
+        MutableAttributeSet cellAtts = headerRow
+                 ? config.getAttributeSet( "table.heading.cell" )
+                 : config.getAttributeSet( "table.body.cell" );
+
+        // the column-number is needed for the hack to center the table, see tableRows.
+        cellAtts.addAttribute( "column-number", String.valueOf( cellCount + 2 ) );
+
+        if ( tableGrid )
+        {
+            cellAtts.addAttributes( config.getAttributeSet( "table.body.cell.grid" ) );
+        }
+
+        MutableAttributeSet blockAtts = headerRow
+                 ? config.getAttributeSet( "table.heading.block" )
+                 : config.getAttributeSet( "table.body.block" );
+
+        if ( justif != null )
+        {
+           blockAtts.addAttribute( "text-align", justif );
+        }
+
+        writeStartTag( TABLE_CELL_TAG, cellAtts );
+        writeEOL();
+        writeStartTag( BLOCK_TAG, blockAtts );
+        writeEOL();
     }
 
     /** {@inheritDoc} */
@@ -912,24 +1136,33 @@ public class FoSink
     }
 
     /** {@inheritDoc} */
-    public void tableCaption()
+    public void tableCaption( SinkEventAttributes attributes )
     {
-        // <fo:table-caption> is XSL-FO 1.0 standard but not implemented in FOP 0.93
-        //writeStartTag( TABLE_CAPTION_TAG, "" );
+        tableCaptionWriter = new StringWriter();
+        tableCaptionXMLWriter = new PrettyPrintXMLWriter( tableCaptionWriter );
+
+        // <fo:table-caption> is XSL-FO 1.0 standard but not implemented in FOP 0.95
+        //writeStartTag( TABLE_CAPTION_TAG );
 
         // TODO: how to implement this otherwise?
         // table-footer doesn't work because it has to be declared before table-body.
     }
 
     /** {@inheritDoc} */
+    public void tableCaption()
+    {
+        tableCaption( null );
+    }
+
+    /** {@inheritDoc} */
     public void tableCaption_()
     {
-        // <fo:table-caption> is XSL-FO 1.0 standard but not implemented in FOP 0.93
+        // <fo:table-caption> is XSL-FO 1.0 standard but not implemented in FOP 0.95
         //writeEndTag( TABLE_CAPTION_TAG );
     }
 
     /** {@inheritDoc} */
-    public void anchor( String name )
+    public void anchor( String name, SinkEventAttributes attributes )
     {
         if ( name == null )
         {
@@ -942,12 +1175,19 @@ public class FoSink
         {
             anchor = DoxiaUtils.encodeId( name, true );
 
-            getLog().warn( "[FO Sink] Modified invalid anchor name: " + name );
+            String msg = "Modified invalid anchor name: '" + name + "' to '" + anchor + "'";
+            logMessage( "modifiedLink", msg );
         }
 
         anchor = "#" + name;
 
         writeStartTag( INLINE_TAG, "id", anchor );
+    }
+
+    /** {@inheritDoc} */
+    public void anchor( String name )
+    {
+        anchor( name, null );
     }
 
     /** {@inheritDoc} */
@@ -957,7 +1197,7 @@ public class FoSink
     }
 
     /** {@inheritDoc} */
-    public void link( String name )
+    public void link( String name, SinkEventAttributes attributes )
     {
         if ( name == null )
         {
@@ -977,7 +1217,8 @@ public class FoSink
             {
                 anchor = DoxiaUtils.encodeId( anchor, true );
 
-                getLog().warn( "[FO Sink] Modified invalid link name: " + name );
+                String msg = "Modified invalid anchor name: '" + name + "' to '" + anchor + "'";
+                logMessage( "modifiedLink", msg );
             }
 
             anchor = "#" + anchor;
@@ -993,6 +1234,12 @@ public class FoSink
             writeStartTag( BASIC_LINK_TAG, "internal-destination", HtmlTools.escapeHTML( anchor ) );
             writeStartTag( INLINE_TAG, "href.internal" );
         }
+    }
+
+    /** {@inheritDoc} */
+    public void link( String name )
+    {
+        link( name, null );
     }
 
     /** {@inheritDoc} */
@@ -1039,10 +1286,17 @@ public class FoSink
     }
 
     /** {@inheritDoc} */
-    public void lineBreak()
+    public void lineBreak( SinkEventAttributes attributes )
     {
         writeEOL();
-        writeEmptyTag( BLOCK_TAG, "" );
+        writeEOL();
+        writeSimpleTag( BLOCK_TAG );
+    }
+
+    /** {@inheritDoc} */
+    public void lineBreak()
+    {
+        lineBreak( null );
     }
 
     /** {@inheritDoc} */
@@ -1052,9 +1306,15 @@ public class FoSink
     }
 
     /** {@inheritDoc} */
-    public void text( String text )
+    public void text( String text, SinkEventAttributes attributes )
     {
         content( text );
+    }
+
+    /** {@inheritDoc} */
+    public void text( String text )
+    {
+        text( text, null );
     }
 
     /** {@inheritDoc} */
@@ -1089,6 +1349,25 @@ public class FoSink
         {
             getLog().debug( e );
         }
+
+        if ( getLog().isWarnEnabled() && this.warnMessages != null )
+        {
+            for ( Iterator it = this.warnMessages.entrySet().iterator(); it.hasNext(); )
+            {
+                Map.Entry entry = (Map.Entry) it.next();
+
+                Set set = (Set) entry.getValue();
+
+                for ( Iterator it2 = set.iterator(); it2.hasNext(); )
+                {
+                    String msg = (String) it2.next();
+
+                    getLog().warn( msg );
+                }
+            }
+
+            this.warnMessages = null;
+        }
     }
 
     /**
@@ -1099,7 +1378,34 @@ public class FoSink
      */
     public void unknown( String name, Object[] requiredParams, SinkEventAttributes attributes )
     {
-        getLog().warn( "Unknown Sink event in FoSink: " + name + ", ignoring!" );
+        String msg = "Unknown Sink event: '" + name + "', ignoring!";
+        logMessage( "unknownEvent", msg );
+    }
+
+    /** {@inheritDoc} */
+    public void comment( String comment )
+    {
+
+        if ( StringUtils.isNotEmpty( comment ) && comment.indexOf( "--" ) != -1 )
+        {
+            String originalComment = comment;
+            // http://www.w3.org/TR/2000/REC-xml-20001006#sec-comments
+            while ( comment.indexOf( "--" ) != -1 )
+            {
+                comment = StringUtils.replace( comment, "--", "- -" );
+            }
+
+            String msg = "Modified invalid comment: '" + originalComment + "' to '" + comment + "'";
+            logMessage( "modifyComment", msg );
+        }
+
+        StringBuffer buf = new StringBuffer( comment.length() + 9 );
+
+        buf.append( LESS_THAN ).append( BANG ).append( MINUS ).append( MINUS ).append( SPACE );
+        buf.append( comment );
+        buf.append( SPACE ).append( MINUS ).append( MINUS ).append( GREATER_THAN );
+
+        write( buf.toString() );
     }
 
     /**
@@ -1125,7 +1431,7 @@ public class FoSink
 
         writeStartTag( ROOT_TAG, atts );
 
-        writeStartTag( LAYOUT_MASTER_SET_TAG, "" );
+        writeStartTag( LAYOUT_MASTER_SET_TAG );
 
         writeStartTag( SIMPLE_PAGE_MASTER_TAG, "layout.master.set.cover-page" );
         writeEmptyTag( REGION_BODY_TAG, "layout.master.set.cover-page.region-body" );
@@ -1200,8 +1506,7 @@ public class FoSink
     protected void writeStartTag( Tag tag, String id, String name )
     {
         writeEOL();
-        MutableAttributeSet att = new SimpleAttributeSet();
-        att.addAttribute( id, name );
+        MutableAttributeSet att = new SinkEventAttributeSet( new String[] {id, name} );
 
         writeStartTag( tag, att );
     }
@@ -1239,8 +1544,7 @@ public class FoSink
      */
     protected void writeEmptyTag( Tag tag, String id, String name )
     {
-        MutableAttributeSet att = new SimpleAttributeSet();
-        att.addAttribute( id, name );
+        MutableAttributeSet att = new SinkEventAttributeSet( new String[] {id, name} );
 
         writeEOL();
         writeSimpleTag( tag, att );
@@ -1265,7 +1569,14 @@ public class FoSink
      */
     protected void write( String text )
     {
-        tempWriter.write( unifyEOLs( text ) );
+        if ( tableCaptionXMLWriter == null )
+        {
+            tempWriter.write( unifyEOLs( text ) );
+        }
+        else
+        {
+            tableCaptionXMLWriter.writeText( unifyEOLs( text ) );
+        }
     }
 
     /**
@@ -1325,9 +1636,6 @@ public class FoSink
                 case '&':
                     buffer.append( "&amp;" );
                     break;
-                case '\u00a9': // copyright
-                    buffer.append( "&#169;" );
-                    break;
                 case '\n':
                     buffer.append( EOL );
                     if ( verb )
@@ -1336,11 +1644,80 @@ public class FoSink
                     }
                     break;
                 default:
-                    buffer.append( c );
+                    if ( needsSymbolFont( c ) )
+                    {
+                        // TODO: make font configurable?
+                        buffer.append( "<fo:inline font-family=\"Symbol\">" ).append( c ).append( "</fo:inline>" );
+                    }
+                    else
+                    {
+                        buffer.append( c );
+                    }
             }
         }
 
         return buffer.toString();
+    }
+
+    /** {@inheritDoc} */
+    protected void writeStartTag( Tag t, MutableAttributeSet att, boolean isSimpleTag )
+    {
+        if ( tableCaptionXMLWriter == null )
+        {
+            super.writeStartTag ( t, att, isSimpleTag );
+        }
+        else
+        {
+            String tag = ( getNameSpace() != null ? getNameSpace() + ":" : "" ) + t.toString();
+            tableCaptionXMLWriter.startElement( tag );
+
+            if ( att != null )
+            {
+                Enumeration names = att.getAttributeNames();
+                while ( names.hasMoreElements() )
+                {
+                    Object key = names.nextElement();
+                    Object value = att.getAttribute( key );
+
+                    tableCaptionXMLWriter.addAttribute( key.toString(), value.toString() );
+                }
+            }
+
+            if ( isSimpleTag )
+            {
+                tableCaptionXMLWriter.endElement();
+            }
+        }
+    }
+
+    /** {@inheritDoc} */
+    protected void writeEndTag( Tag t )
+    {
+        if ( tableCaptionXMLWriter == null )
+        {
+            super.writeEndTag( t );
+        }
+        else
+        {
+            tableCaptionXMLWriter.endElement();
+        }
+    }
+
+    private static final char UPPER_ALPHA = 0x391;
+    private static final char PIV = 0x3d6;
+    private static final char OLINE = 0x203e;
+    private static final char DIAMS = 0x2666;
+    private static final char EURO = 0x20ac;
+    private static final char TRADE = 0x2122;
+
+    private static boolean needsSymbolFont( char c )
+    {
+        // greek characters and mathematical symbols, except the euro and trade symbols
+        // symbols I couldn't get to display in any font:
+        // zwnj (0x200C), zwj (0x200D), lrm (0x200E), rlm (0x200F), oline (0x203E), prime (0x2032),
+        // Prime (0x2033), lceil (0x2038), rceil (0x2039), lfloor (0x203A), rfloor (0x203B)
+        return ( c >= UPPER_ALPHA && c <= PIV )
+                || ( c >= OLINE && c <= DIAMS && c != EURO && c != TRADE );
     }
 
     /**
@@ -1396,5 +1773,37 @@ public class FoSink
     protected void pdfBookmarks()
     {
         // do nothing, overridden by AggregateSink
+    }
+
+    /**
+     * If debug mode is enabled, log the <code>msg</code> as is, otherwise add unique msg in <code>warnMessages</code>.
+     *
+     * @param key not null
+     * @param msg not null
+     * @see #close()
+     * @since 1.1.1
+     */
+    protected void logMessage( String key, String msg )
+    {
+        msg = "[FO Sink] " + msg;
+        if ( getLog().isDebugEnabled() )
+        {
+            getLog().debug( msg );
+
+            return;
+        }
+
+        if ( warnMessages == null )
+        {
+            warnMessages = new HashMap();
+        }
+
+        Set set = (Set) warnMessages.get( key );
+        if ( set == null )
+        {
+            set = new TreeSet();
+        }
+        set.add( msg );
+        warnMessages.put( key, set );
     }
 }

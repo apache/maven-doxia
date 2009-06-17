@@ -29,7 +29,6 @@ import com.lowagie.text.xml.XmlToRtf;
 import java.io.InputStream;
 import java.io.OutputStream;
 import java.lang.reflect.Field;
-import java.lang.reflect.Modifier;
 import java.util.Locale;
 
 /**
@@ -63,35 +62,50 @@ public class ITextUtil
     /**
      * Return a page size as String.
      *
-     * @param rect a Rectangle
-     * @return a page size as String
+     * @param rect a Rectangle defined in {@link PageSize}.
+     * @return a page size as String or A4 if not found.
      * @see com.lowagie.text.PageSize
      */
     public static String getPageSize( Rectangle rect )
     {
-        if ( ( rect.width() == PageSize.LETTER.width() ) && ( rect.height() == PageSize.LETTER.height() ) )
+        Field[] fields = PageSize.class.getFields();
+        for ( int i = 0; i < fields.length; i++ )
         {
-            return "LETTER";
+            Field currentField = fields[i];
+            try
+            {
+                if ( currentField.getType().equals( Rectangle.class ) )
+                {
+                    Rectangle fPageSize = (Rectangle) currentField.get( null );
+                    if ( ( rect.width() == fPageSize.width() ) && ( rect.height() == fPageSize.height() ) )
+                    {
+                        return currentField.getName();
+                    }
+                }
+            }
+            catch ( Exception e )
+            {
+                // nop
+            }
         }
 
         return "A4";
     }
 
     /**
-     * Return true if the page size is supported by <code>PageSize</code> class, false otherwise
+     * Return <code>true</code> if the page size is supported by {@link PageSize} class, <code>false</code> otherwise.
      *
      * @param aPageSize a page size
-     * @return true if the page size is supported, false otherwise
+     * @return <code>true</code> if the page size is supported, <code>false</code> otherwise
      * @see com.lowagie.text.PageSize
      */
     public static boolean isPageSizeSupported( String aPageSize )
     {
-        Field[] sizes = PageSize.class.getDeclaredFields();
-        for ( int i = 0; i < sizes.length; i++ )
+        Field[] fields = PageSize.class.getFields();
+        for ( int i = 0; i < fields.length; i++ )
         {
-            Field currentField = sizes[i];
+            Field currentField = fields[i];
             if ( ( currentField.getName().equalsIgnoreCase( aPageSize ) )
-                && ( Modifier.isStatic( currentField.getModifiers() ) )
                 && ( currentField.getType().equals( Rectangle.class ) ) )
             {
                 return true;
@@ -163,10 +177,5 @@ public class ITextUtil
         {
             throw new RuntimeException( "DocumentException : " + e.getMessage() );
         }
-    }
-
-    private ITextUtil()
-    {
-        // private
     }
 }

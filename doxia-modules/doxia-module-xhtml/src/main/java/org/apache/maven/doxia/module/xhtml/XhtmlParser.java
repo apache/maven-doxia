@@ -20,7 +20,6 @@ package org.apache.maven.doxia.module.xhtml;
  */
 
 import javax.swing.text.html.HTML.Attribute;
-import javax.swing.text.html.HTML.Tag;
 
 import org.apache.maven.doxia.macro.MacroExecutionException;
 import org.apache.maven.doxia.parser.XhtmlBaseParser;
@@ -56,20 +55,20 @@ public class XhtmlParser
 
         SinkEventAttributeSet attribs = getAttributesFromParser( parser );
 
-        if ( parser.getName().equals( Tag.HTML.toString() ) )
+        if ( parser.getName().equals( HTML.toString() ) )
         {
             //Do nothing
             return;
         }
-        else if ( parser.getName().equals( Tag.HEAD.toString() ) )
+        else if ( parser.getName().equals( HEAD.toString() ) )
         {
             sink.head( attribs );
         }
-        else if ( parser.getName().equals( Tag.TITLE.toString() ) )
+        else if ( parser.getName().equals( TITLE.toString() ) )
         {
             sink.title( attribs );
         }
-        else if ( parser.getName().equals( Tag.META.toString() ) )
+        else if ( parser.getName().equals( META.toString() ) )
         {
             String name = parser.getAttributeValue( null, Attribute.NAME.toString() );
             String content = parser.getAttributeValue( null, Attribute.CONTENT.toString() );
@@ -100,15 +99,15 @@ public class XhtmlParser
          * for a model or a major part of a model such as a form. This element
          *  often appears at the beginning or end of a model.
          */
-        else if ( parser.getName().equals( Tag.ADDRESS.toString() ) )
+        else if ( parser.getName().equals( ADDRESS.toString() ) )
         {
             sink.author( attribs );
         }
-        else if ( parser.getName().equals( Tag.BODY.toString() ) )
+        else if ( parser.getName().equals( BODY.toString() ) )
         {
             sink.body( attribs );
         }
-        else if ( parser.getName().equals( Tag.DIV.toString() ) )
+        else if ( parser.getName().equals( DIV.toString() ) )
         {
             String divclass = parser.getAttributeValue( null, Attribute.CLASS.toString() );
 
@@ -129,7 +128,7 @@ public class XhtmlParser
          * Non-visual user agents are not required to respect extra white space
          * in the content of a PRE element.
          */
-        else if ( parser.getName().equals( Tag.PRE.toString() ) )
+        else if ( parser.getName().equals( PRE.toString() ) )
         {
             if ( boxed )
             {
@@ -166,30 +165,30 @@ public class XhtmlParser
     protected void handleEndTag( XmlPullParser parser, Sink sink )
         throws XmlPullParserException, MacroExecutionException
     {
-        if ( parser.getName().equals( Tag.HTML.toString() ) )
+        if ( parser.getName().equals( HTML.toString() ) )
         {
             //Do nothing
             return;
         }
-        else if ( parser.getName().equals( Tag.HEAD.toString() ) )
+        else if ( parser.getName().equals( HEAD.toString() ) )
         {
             sink.head_();
         }
-        else if ( parser.getName().equals( Tag.TITLE.toString() ) )
+        else if ( parser.getName().equals( TITLE.toString() ) )
         {
             sink.title_();
         }
-        else if ( parser.getName().equals( Tag.BODY.toString() ) )
+        else if ( parser.getName().equals( BODY.toString() ) )
         {
             consecutiveSections( 0, sink );
 
             sink.body_();
         }
-        else if ( parser.getName().equals( Tag.ADDRESS.toString() ) )
+        else if ( parser.getName().equals( ADDRESS.toString() ) )
         {
             sink.author_();
         }
-        else if ( parser.getName().equals( Tag.DIV.toString() ) )
+        else if ( parser.getName().equals( DIV.toString() ) )
         {
             this.boxed = false;
             super.baseEndTag( parser, sink );
