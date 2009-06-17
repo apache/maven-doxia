@@ -35,14 +35,14 @@ public abstract class AbstractFatherBlock
     private  List blocks;
 
     /**
-     * <p>before</p>
+     * <p>before.</p>
      *
      * @param sink the Sink to receive events.
      */
     public abstract void before( Sink sink );
 
     /**
-     * <p>after</p>
+     * <p>after.</p>
      *
      * @param sink the Sink to receive events.
      */

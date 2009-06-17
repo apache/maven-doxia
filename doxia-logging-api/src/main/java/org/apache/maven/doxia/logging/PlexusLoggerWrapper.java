@@ -23,11 +23,11 @@ import org.codehaus.plexus.logging.Logger;
 
 /**
  * Wrap a Plexus logger into a Doxia logger.
+ * Based on org.apache.maven.plugin.logging.Log.
  *
  * @author <a href="mailto:vincent.siveton@gmail.com">Vincent Siveton</a>
  * @version $Id$
  * @since 1.1
- * @see org.apache.maven.plugin.logging.Logger
  */
 public class PlexusLoggerWrapper
     implements Log

@@ -527,7 +527,6 @@ public class DocBookSink
     /**
      * {@inheritDoc}
      * @see SimplifiedDocbookMarkup#DEFAULT_XML_PUBLIC_ID
-     * @see SimplifiedDocbookMarkup#DEFAULT_SGML_PUBLIC_ID
      * @see SimplifiedDocbookMarkup#DEFAULT_XML_SYSTEM_ID
      * @see SimplifiedDocbookMarkup#ARTICLE_TAG
      */
@@ -541,10 +540,10 @@ public class DocBookSink
     }
 
     /**
-     * <p>writeXmlHeader</p>
+     * writeXmlHeader.
      *
-     * @param root not null
-     * @return an attribute set
+     * @param root not null.
+     * @return an attribute set.
      * @see SimplifiedDocbookMarkup#DEFAULT_XML_PUBLIC_ID
      * @see SimplifiedDocbookMarkup#DEFAULT_XML_SYSTEM_ID
      * @see SimplifiedDocbookMarkup#ARTICLE_TAG

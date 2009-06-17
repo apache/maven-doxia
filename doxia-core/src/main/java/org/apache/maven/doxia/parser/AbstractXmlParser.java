@@ -439,7 +439,7 @@ public abstract class AbstractXmlParser
     }
 
     /**
-     * <p>isIgnorableWhitespace</p>
+     * <p>isIgnorableWhitespace.</p>
      *
      * @return <code>true</code> if whitespace will be ignored, <code>false</code> otherwise.
      * @see #setIgnorableWhitespace(boolean)
@@ -451,7 +451,7 @@ public abstract class AbstractXmlParser
     }
 
     /**
-     * Specify that whitespace will be ignore i.e.:
+     * Specify that whitespace will be ignored. I.e.:
      * <pre>&lt;tr&gt; &lt;td/&gt; &lt;/tr&gt;</pre>
      * is equivalent to
      * <pre>&lt;tr&gt;&lt;td/&gt;&lt;/tr&gt;</pre>
@@ -465,7 +465,7 @@ public abstract class AbstractXmlParser
     }
 
     /**
-     * <p>isCollapsibleWhitespace</p>
+     * <p>isCollapsibleWhitespace.</p>
      *
      * @return <code>true</code> if text will collapse, <code>false</code> otherwise.
      * @see #setCollapsibleWhitespace(boolean)
@@ -477,7 +477,7 @@ public abstract class AbstractXmlParser
     }
 
     /**
-     * Specify that text will be collapse i.e.:
+     * Specify that text will be collapsed. I.e.:
      * <pre>Text   Text</pre>
      * is equivalent to
      * <pre>Text Text</pre>
@@ -491,7 +491,7 @@ public abstract class AbstractXmlParser
     }
 
     /**
-     * <p>isTrimmableWhitespace</p>
+     * <p>isTrimmableWhitespace.</p>
      *
      * @return <code>true</code> if text will be trim, <code>false</code> otherwise.
      * @see #setTrimmableWhitespace(boolean)
@@ -503,7 +503,7 @@ public abstract class AbstractXmlParser
     }
 
     /**
-     * Specify that text will be collapse i.e.:
+     * Specify that text will be collapsed. I.e.:
      * <pre>&lt;p&gt; Text &lt;/p&gt;</pre>
      * is equivalent to
      * <pre>&lt;p&gt;Text&lt;/p&gt;</pre>
@@ -517,7 +517,7 @@ public abstract class AbstractXmlParser
     }
 
     /**
-     * <p>getText</p>
+     * <p>getText.</p>
      *
      * @param parser A parser, not null.
      * @return the {@link XmlPullParser#getText()} taking care of trimmable or collapsible configuration.
@@ -554,7 +554,7 @@ public abstract class AbstractXmlParser
     }
 
     /**
-     * Return the defined entities in a local doctype, i.e.:
+     * Return the defined entities in a local doctype. I.e.:
      * <pre>
      * &lt;!DOCTYPE foo [
      *   &lt;!ENTITY bar "&#38;#x160;"&gt;
@@ -576,7 +576,7 @@ public abstract class AbstractXmlParser
     }
 
     /**
-     * <p>isValidate</p>
+     * <p>isValidate.</p>
      *
      * @return <code>true</code> if XML content will be validate, <code>false</code> otherwise.
      * @since 1.1

@@ -256,7 +256,7 @@ public class XhtmlSink
     }
 
     /**
-     * <p>isHeadTitleFlag</p>
+     * <p>isHeadTitleFlag.</p>
      *
      * @return the current headTitleFlag.
      * @since 1.1

@@ -30,7 +30,7 @@ import org.apache.maven.doxia.parser.ParseException;
 public interface BlockParser
 {
     /**
-     * <p>accept</p>
+     * accept.
      *
      * @param line the line.
      * @param source the source.
@@ -39,12 +39,12 @@ public interface BlockParser
     boolean accept( String line, ByLineSource source );
 
     /**
-     * <p>visit</p>
+     * visit.
      *
      * @param line the line.
      * @param source the source.
      * @return boolean true if valid.
-     * @throws org.apache.maven.doxia.parser.ParseException if any
+     * @throws org.apache.maven.doxia.parser.ParseException if any.
      */
     Block visit( String line, ByLineSource source ) throws ParseException;
 }

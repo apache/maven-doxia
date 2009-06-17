@@ -74,7 +74,7 @@ public class HtmlTools
     }
 
     /**
-     * Returns a tag for a defined HTML tag name (i.e. one of
+     * Returns a tag for a defined HTML tag name. This is one of
      * the tags defined in {@link org.apache.maven.doxia.markup.HtmlMarkup}.
      * If the given name does not represent one of the defined tags, then
      * <code>null</code> will be returned.

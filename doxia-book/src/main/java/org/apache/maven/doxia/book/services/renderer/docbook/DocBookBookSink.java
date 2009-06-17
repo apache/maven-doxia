@@ -140,7 +140,7 @@ public class DocBookBookSink
     /**
      * Emit the start tag for the book.
      *
-     * @see DocbookMarkup#BOOK_TAG
+     * @see org.apache.maven.doxia.module.docbook.DocbookMarkup#BOOK_TAG
      */
     public void book()
     {
@@ -155,7 +155,7 @@ public class DocBookBookSink
     /**
      * Emit the end tag for the book.
      *
-     * @see DocbookMarkup#BOOK_TAG
+     * @see org.apache.maven.doxia.module.docbook.DocbookMarkup#BOOK_TAG
      */
     public void book_()
     {

@@ -29,7 +29,7 @@ import org.apache.maven.doxia.sink.Sink;
 public interface Block
 {
     /**
-     * <p>traverse</p>
+     * <p>traverse.</p>
      *
      * @param sink a {@link org.apache.maven.doxia.sink.Sink} object.
      */

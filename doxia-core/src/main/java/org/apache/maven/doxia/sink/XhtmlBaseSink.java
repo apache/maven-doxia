@@ -160,7 +160,7 @@ public class XhtmlBaseSink
     }
 
     /**
-     * <p>isHeadFlag</p>
+     * <p>isHeadFlag.</p>
      *
      * @return the current headFlag.
      */
@@ -180,7 +180,7 @@ public class XhtmlBaseSink
     }
 
     /**
-     * <p>isVerbatimFlag</p>
+     * <p>isVerbatimFlag.</p>
      *
      * @return the current verbatim flag.
      */

@@ -282,10 +282,10 @@ public class RtfSink
     }
 
     /**
-     * <p>setPaperSize</p>
+     * setPaperSize.
      *
-     * @param width in cm
-     * @param height in cm
+     * @param width in cm.
+     * @param height in cm.
      */
     public void setPaperSize( double width /*cm*/, double height /*cm*/ )
     {
@@ -296,7 +296,7 @@ public class RtfSink
     /**
      * <p>Setter for the field <code>topMargin</code>.</p>
      *
-     * @param margin
+     * @param margin margin.
      */
     public void setTopMargin( double margin )
     {
@@ -306,7 +306,7 @@ public class RtfSink
     /**
      * <p>Setter for the field <code>bottomMargin</code>.</p>
      *
-     * @param margin
+     * @param margin margin.
      */
     public void setBottomMargin( double margin )
     {
@@ -316,7 +316,7 @@ public class RtfSink
     /**
      * <p>Setter for the field <code>leftMargin</code>.</p>
      *
-     * @param margin
+     * @param margin margin
      */
     public void setLeftMargin( double margin )
     {
@@ -326,7 +326,7 @@ public class RtfSink
     /**
      * <p>Setter for the field <code>rightMargin</code>.</p>
      *
-     * @param margin
+     * @param margin margin
      */
     public void setRightMargin( double margin )
     {
@@ -344,9 +344,9 @@ public class RtfSink
     }
 
     /**
-     * <p>setSpacing</p>
+     * <p>setSpacing.</p>
      *
-     * @param spacing in pts
+     * @param spacing in pts.
      */
     public void setSpacing( int spacing /*pts*/ )
     {
@@ -471,7 +471,7 @@ public class RtfSink
     }
 
     /**
-     * <p>toTwips</p>
+     * <p>toTwips.</p>
      *
      * @param length a double.
      * @param unit a int.
@@ -1662,7 +1662,7 @@ public class RtfSink
     }
 
     /**
-     * <p>getFont</p>
+     * <p>getFont.</p>
      *
      * @param style a int.
      * @param size a int.

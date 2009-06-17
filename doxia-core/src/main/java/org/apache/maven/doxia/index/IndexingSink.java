@@ -25,7 +25,7 @@ import org.apache.maven.doxia.util.HtmlTools;
 import org.apache.maven.doxia.sink.SinkAdapter;
 
 /**
- * A sink implementation for index
+ * A sink implementation for index.
  *
  * @author <a href="mailto:trygvis@inamo.no">Trygve Laugst&oslash;l</a>
  * @author <a href="mailto:vincent.siveton@gmail.com">Vincent Siveton</a>
@@ -216,9 +216,9 @@ public class IndexingSink
     }
 
     /**
-     * Pushes an IndexEntry onto the top of this stack
+     * Pushes an IndexEntry onto the top of this stack.
      *
-     * @param entry to put
+     * @param entry to put.
      */
     public void push( IndexEntry entry )
     {
@@ -226,7 +226,7 @@ public class IndexingSink
     }
 
     /**
-     * Removes the IndexEntry at the top of this stack
+     * Removes the IndexEntry at the top of this stack.
      */
     public void pop()
     {
@@ -234,9 +234,9 @@ public class IndexingSink
     }
 
     /**
-     * <p>peek</p>
+     * <p>peek.</p>
      *
-     * @return Looks at the IndexEntry at the top of this stack
+     * @return Looks at the IndexEntry at the top of this stack.
      */
     public IndexEntry peek()
     {

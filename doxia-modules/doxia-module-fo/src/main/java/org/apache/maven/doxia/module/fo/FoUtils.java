@@ -67,7 +67,7 @@ public class FoUtils
      * If null, defaults to the parent directory of fo.
      * @param documentModel the document model to add PDF metadatas like author, title and keywords, could be null.
      * @throws javax.xml.transform.TransformerException In case of a conversion problem.
-     * @see 1.1.1
+     * @since 1.1.1
      */
     public static void convertFO2PDF( File fo, File pdf, String resourceDir, DocumentModel documentModel )
         throws TransformerException
@@ -127,7 +127,7 @@ public class FoUtils
      * @param foUserAgent the FOUserAgent to use.
      *      May be null, in which case a default user agent will be used.
      * @throws javax.xml.transform.TransformerException In case of a conversion problem.
-     * @see 1.1.1
+     * @since 1.1.1
      */
     public static void convertFO2PDF( File fo, File pdf, String resourceDir, FOUserAgent foUserAgent )
         throws TransformerException

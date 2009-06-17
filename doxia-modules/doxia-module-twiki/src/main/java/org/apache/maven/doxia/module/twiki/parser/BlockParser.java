@@ -31,7 +31,7 @@ import org.apache.maven.doxia.parser.ParseException;
 public interface BlockParser
 {
     /**
-     * <p>accept</p>
+     * <p>accept.</p>
      *
      * @param line text line
      * @return <code>true</code> if this class can handle this line
@@ -39,7 +39,7 @@ public interface BlockParser
     boolean accept( String line );
 
     /**
-     * <p>visit</p>
+     * <p>visit.</p>
      *
      * @param line   a line of text
      * @param source the source of lines
