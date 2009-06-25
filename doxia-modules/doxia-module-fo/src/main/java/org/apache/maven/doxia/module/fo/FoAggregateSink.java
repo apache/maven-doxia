@@ -1059,8 +1059,7 @@ public class FoAggregateSink extends FoSink
 
         writeStartTag( TABLE_CELL_TAG, "number-columns-spanned", "2", "cover.border.left.bottom" );
         writeStartTag( BLOCK_TAG, "cover.subtitle" );
-        write( subtitle == null ? " v. " + ( version == null ? "" : version )
-                        : subtitle );
+        write( subtitle == null ? ( version == null ? "" : " v. " + version ) : subtitle );
         writeEndTag( BLOCK_TAG );
         writeStartTag( BLOCK_TAG, "cover.subtitle" );
         write( type == null ? "" : type );
