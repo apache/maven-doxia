@@ -70,9 +70,9 @@ public class LatexSinkTest
     /** {@inheritDoc} */
     protected String getHeadBlock()
     {
-        return ((LatexSink) getSink()).defaultSinkCommands()
+        return ( (LatexSink) getSink() ).defaultSinkCommands()
             + "\\documentclass[a4paper]{article}" + EOL + EOL
-            + ((LatexSink) getSink()).defaultPreamble()
+            + ( (LatexSink) getSink() ).defaultPreamble()
             + "\\begin{document}" + EOL + EOL;
     }
 
@@ -134,7 +134,8 @@ public class LatexSinkTest
     /** {@inheritDoc} */
     protected String getDefinitionListBlock( String definum, String definition )
     {
-        return EOL + "\\begin{description}" + EOL + "\\item[\\mbox{" + definum + "}] " + definition + EOL + "\\end{description}" + EOL;
+        return EOL + "\\begin{description}" + EOL + "\\item[\\mbox{" + definum + "}] "
+                + definition + EOL + "\\end{description}" + EOL;
     }
 
     /** {@inheritDoc} */
@@ -223,19 +224,19 @@ public class LatexSinkTest
     protected String getTextBlock( String text )
     {
         // TODO: how to retrieve those outside the sink?
-        return "\\textasciitilde" + EOL + ",\\_=,\\_\\symbol{45},\\_+,\\_*,\\_[,\\_],\\_\\symbol{60},\\_\\symbol{62},\\_\\{,\\_\\},\\_\\textbackslash";
+        return "\\textasciitilde" + EOL + ",\\_=,\\_\\symbol{45},\\_+,\\_*,\\_[,\\_],"
+                + "\\_\\symbol{60},\\_\\symbol{62},\\_\\{,\\_\\},\\_\\textbackslash";
     }
 
     /** {@inheritDoc} */
     protected String getRawTextBlock( String text )
     {
-        // TODO: not implemented
-        return "";
+        return "~,_=,_-,_+,_*,_[,_],_<,_>,_{,_},_\\";
     }
 
     /** {@inheritDoc} */
     protected String getCommentBlock( String text )
     {
-        return "";
+        return EOL + "% Simple comment with ----";
     }
 }

@@ -22,6 +22,7 @@ package org.apache.maven.doxia.module.latex;
 import org.apache.maven.doxia.sink.AbstractTextSink;
 import org.apache.maven.doxia.sink.Sink;
 import org.apache.maven.doxia.sink.SinkEventAttributes;
+import org.apache.maven.doxia.sink.SinkEventAttributeSet;
 import org.apache.maven.doxia.util.DoxiaUtils;
 import org.apache.maven.doxia.util.LineBreaker;
 
@@ -64,8 +65,6 @@ public class LatexSink
     private int numberedListNesting;
 
     private boolean verbatimFlag;
-
-    private boolean boxFlag;
 
     private boolean figureFlag;
 
@@ -172,10 +171,15 @@ public class LatexSink
      */
     public void head()
     {
+        head( null );
+    }
+
+    /** {@inheritDoc} */
+    public void head( SinkEventAttributes attributes )
+    {
         titleFlag = false;
         numberedListNesting = 0;
         verbatimFlag = false;
-        boxFlag = false;
         figureFlag = false;
         tableFlag = false;
         gridFlag = false;
@@ -198,6 +202,12 @@ public class LatexSink
      * {@inheritDoc}
      */
     public void body()
+    {
+        body( null );
+    }
+
+    /** {@inheritDoc} */
+    public void body( SinkEventAttributes attributes )
     {
         if ( titleFlag )
         {
@@ -231,6 +241,12 @@ public class LatexSink
      */
     public void title()
     {
+        title( null );
+    }
+
+    /** {@inheritDoc} */
+    public void title( SinkEventAttributes attributes )
+    {
         if ( !fragmentDocument )
         {
             titleFlag = true;
@@ -262,6 +278,12 @@ public class LatexSink
      */
     public void author()
     {
+        author( null );
+    }
+
+    /** {@inheritDoc} */
+    public void author( SinkEventAttributes attributes )
+    {
         if ( !fragmentDocument )
         {
             markup( "\\author{" );
@@ -292,6 +314,12 @@ public class LatexSink
      */
     public void date()
     {
+        date( null );
+    }
+
+    /** {@inheritDoc} */
+    public void date( SinkEventAttributes attributes )
+    {
         if ( !fragmentDocument )
         {
             markup( "\\date{" );
@@ -317,6 +345,47 @@ public class LatexSink
         }
     }
 
+    /** {@inheritDoc} */
+    public void sectionTitle( int level, SinkEventAttributes attributes )
+    {
+        isTitle = true;
+    }
+
+    /** {@inheritDoc} */
+    public void sectionTitle_( int level )
+    {
+        String command = "";
+        switch ( level )
+        {
+            case SECTION_LEVEL_1:
+                command = "section";
+                break;
+            case SECTION_LEVEL_2:
+                command = "subsection";
+                break;
+            case SECTION_LEVEL_3:
+                command = "subsubsection";
+                break;
+            case SECTION_LEVEL_4:
+                command = "paragraph";
+                break;
+            case SECTION_LEVEL_5:
+                command = "subparagraph";
+                break;
+            default:
+                throw new IllegalArgumentException( "Not a section level: " + level );
+        }
+
+        isTitle = false;
+
+        if ( StringUtils.isNotEmpty( title ) )
+        {
+            markup( EOL + "\\" + command + "{" + title + "}" + EOL );
+
+            title = null;
+        }
+    }
+
     // ----------------------------------------------------------------------
     // Section Title 1
     // ----------------------------------------------------------------------
@@ -326,7 +395,7 @@ public class LatexSink
      */
     public void sectionTitle1()
     {
-        isTitle = true;
+        sectionTitle( SECTION_LEVEL_1, null );
     }
 
     /**
@@ -334,14 +403,7 @@ public class LatexSink
      */
     public void sectionTitle1_()
     {
-        isTitle = false;
-
-        if ( StringUtils.isNotEmpty( title ) )
-        {
-            markup( EOL + "\\section{" + title + "}" + EOL );
-
-            title = null;
-        }
+        sectionTitle_( SECTION_LEVEL_1 );
     }
 
     // ----------------------------------------------------------------------
@@ -353,7 +415,7 @@ public class LatexSink
      */
     public void sectionTitle2()
     {
-        isTitle = true;
+        sectionTitle( SECTION_LEVEL_2, null );
     }
 
     /**
@@ -361,14 +423,7 @@ public class LatexSink
      */
     public void sectionTitle2_()
     {
-        isTitle = false;
-
-        if ( StringUtils.isNotEmpty( title ) )
-        {
-            markup( EOL + "\\subsection{" + title + "}" + EOL );
-
-            title = null;
-        }
+        sectionTitle_( SECTION_LEVEL_2 );
     }
 
     // ----------------------------------------------------------------------
@@ -380,7 +435,7 @@ public class LatexSink
      */
     public void sectionTitle3()
     {
-        isTitle = true;
+        sectionTitle( SECTION_LEVEL_3, null );
     }
 
     /**
@@ -388,14 +443,7 @@ public class LatexSink
      */
     public void sectionTitle3_()
     {
-        isTitle = false;
-
-        if ( StringUtils.isNotEmpty( title ) )
-        {
-            markup( EOL + "\\subsubsection{" + title + "}" + EOL );
-
-            title = null;
-        }
+        sectionTitle_( SECTION_LEVEL_3 );
     }
 
     // ----------------------------------------------------------------------
@@ -407,7 +455,7 @@ public class LatexSink
      */
     public void sectionTitle4()
     {
-        isTitle = true;
+        sectionTitle( SECTION_LEVEL_4, null );
     }
 
     /**
@@ -415,14 +463,7 @@ public class LatexSink
      */
     public void sectionTitle4_()
     {
-        isTitle = false;
-
-        if ( StringUtils.isNotEmpty( title ) )
-        {
-            markup( EOL + "\\paragraph{" + title + "}" + EOL );
-
-            title = null;
-        }
+        sectionTitle_( SECTION_LEVEL_4 );
     }
 
     // ----------------------------------------------------------------------
@@ -434,7 +475,7 @@ public class LatexSink
      */
     public void sectionTitle5()
     {
-        isTitle = true;
+        sectionTitle( SECTION_LEVEL_5, null );
     }
 
     /**
@@ -442,14 +483,7 @@ public class LatexSink
      */
     public void sectionTitle5_()
     {
-        isTitle = false;
-
-        if ( StringUtils.isNotEmpty( title ) )
-        {
-            markup( EOL + "\\subparagraph{" + title + "}" + EOL );
-
-            title = null;
-        }
+        sectionTitle_( SECTION_LEVEL_5 );
     }
 
     // ----------------------------------------------------------------------
@@ -460,6 +494,12 @@ public class LatexSink
      * {@inheritDoc}
      */
     public void list()
+    {
+        list( null );
+    }
+
+    /** {@inheritDoc} */
+    public void list( SinkEventAttributes attributes )
     {
         markup( EOL + "\\begin{itemize}" );
     }
@@ -477,6 +517,12 @@ public class LatexSink
      */
     public void listItem()
     {
+        listItem( null );
+    }
+
+    /** {@inheritDoc} */
+    public void listItem( SinkEventAttributes attributes )
+    {
         markup( EOL + "\\item " );
     }
 
@@ -484,6 +530,12 @@ public class LatexSink
      * {@inheritDoc}
      */
     public void numberedList( int numbering )
+    {
+        numberedList( numbering, null );
+    }
+
+    /** {@inheritDoc} */
+    public void numberedList( int numbering, SinkEventAttributes attributes )
     {
         ++numberedListNesting;
 
@@ -542,6 +594,12 @@ public class LatexSink
      */
     public void numberedListItem()
     {
+        numberedListItem( null );
+    }
+
+    /** {@inheritDoc} */
+    public void numberedListItem( SinkEventAttributes attributes )
+    {
         markup( "\\item " );
     }
 
@@ -549,6 +607,12 @@ public class LatexSink
      * {@inheritDoc}
      */
     public void definitionList()
+    {
+        definitionList( null );
+    }
+
+    /** {@inheritDoc} */
+    public void definitionList( SinkEventAttributes attributes )
     {
         markup( EOL + "\\begin{description}" );
     }
@@ -566,6 +630,12 @@ public class LatexSink
      */
     public void definedTerm()
     {
+        definedTerm( null );
+    }
+
+    /** {@inheritDoc} */
+    public void definedTerm( SinkEventAttributes attributes )
+    {
         markup( EOL + "\\item[\\mbox{" );
     }
 
@@ -577,6 +647,42 @@ public class LatexSink
         markup( "}] " );
     }
 
+    /** {@inheritDoc} */
+    public void definitionListItem()
+    {
+        definitionListItem( null );
+    }
+
+    /** {@inheritDoc} */
+    public void definitionListItem( SinkEventAttributes attributes )
+    {
+        // nop
+    }
+
+    /** {@inheritDoc} */
+    public void definitionListItem_()
+    {
+        // nop
+    }
+
+    /** {@inheritDoc} */
+    public void definition()
+    {
+        definition( null );
+    }
+
+    /** {@inheritDoc} */
+    public void definition( SinkEventAttributes attributes )
+    {
+        // nop
+    }
+
+    /** {@inheritDoc} */
+    public void definition_()
+    {
+        // nop
+    }
+
     // ----------------------------------------------------------------------
     // Figure
     // ----------------------------------------------------------------------
@@ -585,6 +691,12 @@ public class LatexSink
      * {@inheritDoc}
      */
     public void figure()
+    {
+        figure( null );
+    }
+
+    /** {@inheritDoc} */
+    public void figure( SinkEventAttributes attributes )
     {
         figureFlag = true;
         markup( EOL + "\\begin{figure}[htb]" + EOL );
@@ -604,13 +716,19 @@ public class LatexSink
      */
     public void figureGraphics( String name )
     {
-        if ( !name.toLowerCase( Locale.ENGLISH ).endsWith( ".eps" ) )
+        figureGraphics( name, null );
+    }
+
+    /** {@inheritDoc} */
+    public void figureGraphics( String src, SinkEventAttributes attributes )
+    {
+        if ( !src.toLowerCase( Locale.ENGLISH ).endsWith( ".eps" ) )
         {
             getLog().warn( "[Latex Sink] Found non-eps figure graphics!" );
         }
 
         markup( "\\begin{center}" + EOL );
-        markup( "\\includegraphics{" + name + "}" + EOL );
+        markup( "\\includegraphics{" + src + "}" + EOL );
         markup( "\\end{center}" + EOL );
     }
 
@@ -618,6 +736,12 @@ public class LatexSink
      * {@inheritDoc}
      */
     public void figureCaption()
+    {
+        figureCaption( null );
+    }
+
+    /** {@inheritDoc} */
+    public void figureCaption( SinkEventAttributes attributes )
     {
         markup( "\\caption{" );
     }
@@ -638,6 +762,12 @@ public class LatexSink
      * {@inheritDoc}
      */
     public void table()
+    {
+        table( null );
+    }
+
+    /** {@inheritDoc} */
+    public void table( SinkEventAttributes attributes )
     {
         tableFlag = true;
         markup( EOL + "\\begin{table}[htp]" + EOL );
@@ -712,6 +842,12 @@ public class LatexSink
      */
     public void tableRow()
     {
+        tableRow( null );
+    }
+
+    /** {@inheritDoc} */
+    public void tableRow( SinkEventAttributes attributes )
+    {
         cellCount = 0;
     }
 
@@ -734,6 +870,21 @@ public class LatexSink
      */
     public void tableCell()
     {
+        tableCell( (SinkEventAttributes) null );
+    }
+
+    /** {@inheritDoc} */
+    public void tableCell( String width )
+    {
+        SinkEventAttributeSet att = new SinkEventAttributeSet();
+        att.addAttribute( javax.swing.text.html.HTML.Attribute.WIDTH, width );
+
+        tableCell( att );
+    }
+
+    /** {@inheritDoc} */
+    public void tableCell( SinkEventAttributes attributes )
+    {
         tableCell( false );
     }
 
@@ -742,13 +893,29 @@ public class LatexSink
      */
     public void tableCell_()
     {
-        tableCell_( false );
+        markup( "\\end{tabular}" );
+        ++cellCount;
     }
 
     /**
      * {@inheritDoc}
      */
     public void tableHeaderCell()
+    {
+        tableCell( (SinkEventAttributes) null );
+    }
+
+    /** {@inheritDoc} */
+    public void tableHeaderCell( String width )
+    {
+        SinkEventAttributeSet att = new SinkEventAttributeSet();
+        att.addAttribute( javax.swing.text.html.HTML.Attribute.WIDTH, width );
+
+        tableHeaderCell( att );
+    }
+
+    /** {@inheritDoc} */
+    public void tableHeaderCell( SinkEventAttributes attributes )
     {
         tableCell( true );
     }
@@ -758,7 +925,7 @@ public class LatexSink
      */
     public void tableHeaderCell_()
     {
-        tableCell_( true );
+        tableCell_();
     }
 
     private boolean lastCellWasHeader = false;
@@ -795,20 +962,15 @@ public class LatexSink
     }
 
     /**
-     * Ends a table cell.
-     *
-     * @param header True if this is a header cell.
-     */
-    private void tableCell_( boolean header )
-    {
-        markup( "\\end{tabular}" );
-        ++cellCount;
-    }
-
-    /**
      * {@inheritDoc}
      */
     public void tableCaption()
+    {
+        tableCaption( null );
+    }
+
+    /** {@inheritDoc} */
+    public void tableCaption( SinkEventAttributes attributes )
     {
         markup( "\\caption{" );
     }
@@ -826,6 +988,12 @@ public class LatexSink
      */
     public void paragraph()
     {
+        paragraph( null );
+    }
+
+    /** {@inheritDoc} */
+    public void paragraph( SinkEventAttributes attributes )
+    {
         markup( EOL + EOL );
     }
 
@@ -842,6 +1010,20 @@ public class LatexSink
      */
     public void verbatim( boolean boxed )
     {
+        verbatim( boxed ? SinkEventAttributeSet.BOXED : null );
+    }
+
+    /** {@inheritDoc} */
+    public void verbatim( SinkEventAttributes attributes )
+    {
+        boolean boxed = false;
+
+        if ( attributes != null && attributes.isDefined( SinkEventAttributes.DECORATION ) )
+        {
+            boxed = "boxed".equals(
+                (String) attributes.getAttribute( SinkEventAttributes.DECORATION ) );
+        }
+
         markup( EOL + "\\begin{small}" + EOL );
 
         if ( boxed )
@@ -854,7 +1036,6 @@ public class LatexSink
         }
 
         verbatimFlag = true;
-        boxFlag = boxed;
     }
 
     /**
@@ -866,13 +1047,18 @@ public class LatexSink
         markup( "\\end{small}" + EOL );
 
         verbatimFlag = false;
-        boxFlag = false;
     }
 
     /**
      * {@inheritDoc}
      */
     public void horizontalRule()
+    {
+        horizontalRule( null );
+    }
+
+    /** {@inheritDoc} */
+    public void horizontalRule( SinkEventAttributes attributes )
     {
         markup( EOL + "\\begin{center}\\rule[0.5ex]{\\linewidth}{1pt}\\end{center}" + EOL );
     }
@@ -890,6 +1076,12 @@ public class LatexSink
      */
     public void anchor( String name )
     {
+        anchor( name, null );
+    }
+
+    /** {@inheritDoc} */
+    public void anchor( String name, SinkEventAttributes attributes )
+    {
         markup( "\\hypertarget{" + name + "}{" );
     }
 
@@ -905,6 +1097,12 @@ public class LatexSink
      * {@inheritDoc}
      */
     public void link( String name )
+    {
+        link( name, null );
+    }
+
+    /** {@inheritDoc} */
+    public void link( String name, SinkEventAttributes attributes )
     {
         // TODO: use \\url for simple links
         if ( DoxiaUtils.isExternalLink( name ) )
@@ -978,6 +1176,12 @@ public class LatexSink
      */
     public void lineBreak()
     {
+        lineBreak( null );
+    }
+
+    /** {@inheritDoc} */
+    public void lineBreak( SinkEventAttributes attributes )
+    {
         markup( ( figureFlag || tableFlag || titleFlag || verbatimFlag ) ? EOL : "\\newline" + EOL );
     }
 
@@ -993,6 +1197,12 @@ public class LatexSink
      * {@inheritDoc}
      */
     public void text( String text )
+    {
+        text( text, null );
+    }
+
+    /** {@inheritDoc} */
+    public void text( String text, SinkEventAttributes attributes )
     {
         if ( ignoreText )
         {
@@ -1010,6 +1220,18 @@ public class LatexSink
         {
             content( text );
         }
+    }
+
+    /** {@inheritDoc} */
+    public void rawText( String text )
+    {
+        verbatimContent( text );
+    }
+
+    /** {@inheritDoc} */
+    public void comment( String comment )
+    {
+        rawText( EOL + "% " + comment );
     }
 
     /**
@@ -1211,5 +1433,4 @@ public class LatexSink
             return "";
         }
     }
-
 }
