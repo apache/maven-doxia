@@ -69,7 +69,7 @@ import org.codehaus.plexus.util.xml.XMLWriter;
  * @author <a href="mailto:vincent.siveton@gmail.com">Vincent Siveton</a>
  * @version $Id$
  */
-public final class ITextSink
+public class ITextSink
     extends SinkAdapter
 {
     /** This is the place where the iText DTD is located. IMPORTANT: this DTD is not uptodate! */
@@ -104,7 +104,7 @@ public final class ITextSink
     /** The font object */
     private ITextFont font;
 
-    private int numberDepth = 0;
+    private int numberDepth = 1;
 
     private int depth = 0;
 
@@ -1320,6 +1320,10 @@ public final class ITextSink
         font.addUnderlined();
 
         writeStartElement( ElementTags.ANCHOR );
+        if ( StringUtils.isNotEmpty( name )&& name.startsWith( "#" ) && StringUtils.isNotEmpty( header.getTitle() ))
+        {
+            name = "#" + DoxiaUtils.encodeId( header.getTitle(), true ) + "_" + name.substring( 1 );
+        }
         writeAddAttribute( ElementTags.REFERENCE, HtmlTools.escapeHTML( name ) );
         writeAddAttribute( ElementTags.FONT, font.getFontName() );
         writeAddAttribute( ElementTags.SIZE, font.getFontSize() );
@@ -1359,6 +1363,10 @@ public final class ITextSink
             throw new NullPointerException( "Anchor name cannot be null!" );
         }
 
+        if ( StringUtils.isNotEmpty( header.getTitle() ) )
+        {
+            name = header.getTitle() + "_" + name;
+        }
         String id = name;
 
         if ( !DoxiaUtils.isValidId( id ) )
