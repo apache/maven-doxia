@@ -21,6 +21,7 @@ package org.apache.maven.doxia.module.fo;
 
 import java.io.File;
 import java.io.IOException;
+import java.io.PrintWriter;
 import java.io.StringWriter;
 import java.io.Writer;
 import java.util.Enumeration;
@@ -65,11 +66,7 @@ public class FoSink
     implements FoMarkup
 {
     /** For writing the result. */
-    private final Writer out;
-
-    /** The StringWriter to write the result temporary, so we could play with the output and fix fo.
-     * Calling the method {@link #close()} is needed to perform the changes in the {@link #out}. */
-    private StringWriter tempWriter;
+    private final PrintWriter out;
 
     /** Used to get the current position in numbered lists. */
     private final Stack listStack = new Stack();
@@ -108,6 +105,9 @@ public class FoSink
 
     private String languageId;
 
+    /** The StringWriter to write the table result temporary, so we could play with the output and fix fo. */
+    private StringWriter tableContentWriter;
+
     private StringWriter tableCaptionWriter = null;
 
     private XMLWriter tableCaptionXMLWriter = null;
@@ -141,8 +141,7 @@ public class FoSink
             throw new NullPointerException( "Null writer in FO Sink!" );
         }
 
-        this.out = writer;
-        this.tempWriter = new StringWriter();
+        this.out = new PrintWriter( writer );
         this.encoding = encoding;
         this.config = new FoConfiguration();
 
@@ -909,6 +908,7 @@ public class FoSink
         // <fo:table-and-caption> is XSL-FO 1.0 standard but still not implemented in FOP 0.95
         //writeStartTag( TABLE_AND_CAPTION_TAG );
 
+        tableContentWriter = new StringWriter();
         writeStartTag( TABLE_TAG, "table.layout" );
     }
 
@@ -929,40 +929,29 @@ public class FoSink
             tableCaptionWriter = null;
         }
 
-        String content = tempWriter.toString();
-        if ( content.lastIndexOf( "<fo:table " ) != -1 || content.lastIndexOf( "<fo:table>" ) != -1 )
+        String content = tableContentWriter.toString();
+        tableContentWriter = null;
+
+        StringBuffer sb = new StringBuffer();
+        // FOP hack to center the table, see
+        // http://xmlgraphics.apache.org/fop/fo.html#fo-center-table-horizon
+        sb.append( "<fo:table-column column-width=\"proportional-column-width(1)\"/>" );
+        sb.append( EOL );
+
+        int percent = 100 / cellCount;
+        for ( int i = 0; i < cellCount; i++ )
         {
-            StringBuffer sb = new StringBuffer();
-            // FOP hack to center the table, see
-            // http://xmlgraphics.apache.org/fop/fo.html#fo-center-table-horizon
-            sb.append( "<fo:table-column column-width=\"proportional-column-width(1)\"/>" );
+            sb.append( "<fo:table-column column-width=\"" + percent + "%\"/>" );
             sb.append( EOL );
-
-            int percent = 100 / cellCount;
-            for ( int i = 0; i < cellCount; i++ )
-            {
-                sb.append( "<fo:table-column column-width=\"" + percent + "%\"/>" );
-                sb.append( EOL );
-            }
-
-            sb.append( "<fo:table-column column-width=\"proportional-column-width(1)\"/>" );
-            sb.append( EOL );
-
-            String subContent;
-            if ( content.lastIndexOf( "<fo:table " ) != -1 )
-            {
-                subContent = content.substring( content.lastIndexOf( "<fo:table " ) );
-            }
-            else
-            {
-                subContent = content.substring( content.lastIndexOf( "<fo:table>" ) );
-            }
-            String table = subContent.substring( 0, subContent.indexOf( ">" ) + 1 );
-            String subContentUpdated = StringUtils.replace( subContent, table, table + EOL + sb.toString() );
-
-            tempWriter = new StringWriter();
-            tempWriter.write( StringUtils.replace( content, subContent, subContentUpdated ) );
         }
+
+        sb.append( "<fo:table-column column-width=\"proportional-column-width(1)\"/>" );
+        sb.append( EOL );
+
+        int index = content.indexOf( ">" ) + 1;
+        writeln( content.substring( 0, index ) );
+        write( sb.toString() );
+        write( content.substring( index ) );
 
         writeEndTag( TABLE_TAG );
         writeEOL();
@@ -1326,29 +1315,13 @@ public class FoSink
     /** {@inheritDoc} */
     public void flush()
     {
-        try
-        {
-            out.flush();
-        }
-        catch ( IOException e )
-        {
-            getLog().debug( e );
-        }
+        out.flush();
     }
 
     /** {@inheritDoc} */
     public void close()
     {
-        try
-        {
-            out.write( tempWriter.toString() );
-            tempWriter = new StringWriter();
-            out.close();
-        }
-        catch ( IOException e )
-        {
-            getLog().debug( e );
-        }
+        out.close();
 
         if ( getLog().isWarnEnabled() && this.warnMessages != null )
         {
@@ -1569,13 +1542,17 @@ public class FoSink
      */
     protected void write( String text )
     {
-        if ( tableCaptionXMLWriter == null )
+        if ( tableCaptionXMLWriter != null )
         {
-            tempWriter.write( unifyEOLs( text ) );
+            tableCaptionXMLWriter.writeText( unifyEOLs( text ) );
+        }
+        else if ( tableContentWriter != null )
+        {
+            tableContentWriter.write( unifyEOLs( text ) );
         }
         else
         {
-            tableCaptionXMLWriter.writeText( unifyEOLs( text ) );
+            out.write( unifyEOLs( text ) );
         }
     }
 
