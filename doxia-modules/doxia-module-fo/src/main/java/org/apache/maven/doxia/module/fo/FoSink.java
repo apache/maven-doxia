@@ -986,6 +986,21 @@ public class FoSink
     /** {@inheritDoc} */
     public void tableRows_()
     {
+        String tableCaption = null;
+        if ( tableCaptionXMLWriter != null )
+        {
+            tableCaption = tableCaptionWriter.toString();
+            tableCaptionXMLWriter = null;
+            tableCaptionWriter = null;
+
+            SinkEventAttributeSet atts = new SinkEventAttributeSet();
+            atts.addAttribute( SinkEventAttributes.ALIGN, "center" );
+
+            paragraph( atts );
+            write( tableCaption );
+            paragraph_();
+        }
+
         this.cellJustif = null;
         this.isCellJustif = false;
         writeEndTag( TABLE_BODY_TAG );

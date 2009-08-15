@@ -20,6 +20,8 @@ package org.apache.maven.doxia.module.fo;
  */
 
 import java.io.File;
+import java.io.StringReader;
+import java.io.StringWriter;
 import java.io.Writer;
 
 import org.apache.maven.doxia.document.DocumentMeta;
@@ -27,6 +29,7 @@ import org.apache.maven.doxia.document.DocumentModel;
 import org.apache.maven.doxia.document.DocumentTOC;
 import org.apache.maven.doxia.document.DocumentTOCItem;
 
+import org.apache.maven.doxia.parser.XhtmlBaseParser;
 import org.apache.maven.doxia.sink.Sink;
 import org.apache.maven.doxia.sink.AbstractSinkTest;
 import org.apache.maven.doxia.sink.SinkTestDocument;
@@ -425,5 +428,32 @@ public class FoSinkTest extends AbstractSinkTest
     protected String getCommentBlock( String text )
     {
         return "<!-- Simple comment with - - - - -->";
+    }
+
+    /**
+     * DOXIA-357
+     *
+     * @throws Exception if any
+     */
+    public void testTableCaption()
+        throws Exception
+    {
+        StringBuffer html = new StringBuffer();
+        html.append( "<table>" ).append( EOL );
+        html.append( "<caption>caption table</caption>" ).append( EOL );
+        html.append( "<tr>" ).append( EOL );
+        html.append( "<td>foo</td>" ).append( EOL );
+        html.append( "</tr>" ).append( EOL );
+        html.append( "<tr>" ).append( EOL );
+        html.append( "<td>bar</td>" ).append( EOL );
+        html.append( "</tr>" ).append( EOL );
+        html.append( "</table>" ).append( EOL );
+
+        StringWriter sw = new StringWriter();
+        XhtmlBaseParser parser = new XhtmlBaseParser();
+        Sink sink = createSink( sw );
+        parser.parse( new StringReader( html.toString() ), sink );
+        sink.close();
+        assertTrue( true );
     }
 }
