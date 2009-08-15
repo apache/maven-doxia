@@ -449,11 +449,22 @@ public class FoSinkTest extends AbstractSinkTest
         html.append( "</tr>" ).append( EOL );
         html.append( "</table>" ).append( EOL );
 
-        StringWriter sw = new StringWriter();
+        String fileName = "testTableCaption";
+
+        // first create fo
+        FoSink fosink = new FoSink( getTestWriter( fileName ) );
+        fosink.beginDocument();
+        SinkTestDocument.generateHead( fosink );
+
+        fosink.body();
         XhtmlBaseParser parser = new XhtmlBaseParser();
-        Sink sink = createSink( sw );
-        parser.parse( new StringReader( html.toString() ), sink );
-        sink.close();
-        assertTrue( true );
+        parser.parse( new StringReader( html.toString() ), fosink );
+        fosink.body_();
+
+        fosink.endDocument();
+        fosink.close();
+
+        // then generate PDF
+        fo2pdf( fileName );
     }
 }

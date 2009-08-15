@@ -112,6 +112,9 @@ public class FoSink
 
     private XMLWriter tableCaptionXMLWriter = null;
 
+    /** The table caption */
+    private String tableCaption = null;
+
     /** Map of warn messages with a String as key to describe the error type and a Set as value.
      * Using to reduce warn messages. */
     protected Map warnMessages;
@@ -921,14 +924,6 @@ public class FoSink
     /** {@inheritDoc} */
     public void table_()
     {
-        String tableCaption = null;
-        if ( tableCaptionXMLWriter != null )
-        {
-            tableCaption = tableCaptionWriter.toString();
-            tableCaptionXMLWriter = null;
-            tableCaptionWriter = null;
-        }
-
         String content = tableContentWriter.toString();
         tableContentWriter = null;
 
@@ -986,21 +981,6 @@ public class FoSink
     /** {@inheritDoc} */
     public void tableRows_()
     {
-        String tableCaption = null;
-        if ( tableCaptionXMLWriter != null )
-        {
-            tableCaption = tableCaptionWriter.toString();
-            tableCaptionXMLWriter = null;
-            tableCaptionWriter = null;
-
-            SinkEventAttributeSet atts = new SinkEventAttributeSet();
-            atts.addAttribute( SinkEventAttributes.ALIGN, "center" );
-
-            paragraph( atts );
-            write( tableCaption );
-            paragraph_();
-        }
-
         this.cellJustif = null;
         this.isCellJustif = false;
         writeEndTag( TABLE_BODY_TAG );
@@ -1161,6 +1141,12 @@ public class FoSink
     /** {@inheritDoc} */
     public void tableCaption_()
     {
+        if ( tableCaptionXMLWriter != null )
+        {
+            tableCaption = tableCaptionWriter.toString();
+            tableCaptionXMLWriter = null;
+            tableCaptionWriter = null;
+        }
         // <fo:table-caption> is XSL-FO 1.0 standard but not implemented in FOP 0.95
         //writeEndTag( TABLE_CAPTION_TAG );
     }
