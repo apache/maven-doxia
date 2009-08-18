@@ -69,6 +69,9 @@ public class XdocParser
     /** Indicates that we're inside &lt;properties&gt; or &lt;head&gt;.*/
     private boolean inHead;
 
+    /** Indicates that &lt;title&gt; was called from &lt;properties&gt; or &lt;head&gt;.*/
+    private boolean hasTitle;
+
     /** {@inheritDoc} */
     public void parse( Reader source, Sink sink )
         throws ParseException
@@ -94,6 +97,8 @@ public class XdocParser
         //setIgnorableWhitespace( true );
 
         super.parse( tmp, sink );
+
+        this.hasTitle = false;
     }
 
     /** {@inheritDoc} */
@@ -120,7 +125,13 @@ public class XdocParser
         }
         else if ( parser.getName().equals( TITLE.toString() ) )
         {
+            if ( hasTitle )
+            {
+                throw new XmlPullParserException( "<title/> should be defined in <properties/> or in <head/>, "
+                    + "not both." );
+            }
             sink.title( attribs );
+            this.hasTitle = true;
         }
         else if ( parser.getName().equals( AUTHOR_TAG.toString() ) )
         {

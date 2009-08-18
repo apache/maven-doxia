@@ -189,6 +189,20 @@ public class XdocParserTest
         assertEquals( "body", ( (SinkEventElement) it.next() ).getName() );
         assertEquals( "body_", ( (SinkEventElement) it.next() ).getName() );
         assertFalse( it.hasNext() );
+
+        text = "<document>"
+                + "<properties><title>title</title>"
+                + "<author email=\"a@b.c\">John Doe</author></properties>"
+                + "<head><title>title</title></head><body></body></document>";
+        try
+        {
+            parser.parse( text, sink );
+            assertTrue( false );
+        }
+        catch ( ParseException e )
+        {
+            assertTrue( true );
+        }
     }
 
     /** @throws Exception  */
