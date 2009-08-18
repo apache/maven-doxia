@@ -959,10 +959,7 @@ public class FoSink
 
         if ( tableCaption != null )
         {
-            SinkEventAttributeSet atts = new SinkEventAttributeSet();
-            atts.addAttribute( SinkEventAttributes.ALIGN, "center" );
-
-            paragraph( atts );
+            paragraph( SinkEventAttributeSet.CENTER );
             write( tableCaption );
             paragraph_();
         }
@@ -1011,7 +1008,7 @@ public class FoSink
     /** {@inheritDoc} */
     public void tableCell( SinkEventAttributes attributes )
     {
-        tableCell( false );
+        tableCell( false, attributes );
     }
 
     /** {@inheritDoc} */
@@ -1024,13 +1021,13 @@ public class FoSink
     public void tableCell( String width )
     {
         // TODO: fop can't handle cell width
-        tableCell( false );
+        tableCell();
     }
 
     /** {@inheritDoc} */
     public void tableHeaderCell( SinkEventAttributes attributes )
     {
-        tableCell( true );
+        tableCell( true, attributes );
     }
 
     /** {@inheritDoc} */
@@ -1043,35 +1040,17 @@ public class FoSink
     public void tableHeaderCell( String width )
     {
         // TODO: fop can't handle cell width
-        tableCell( true );
+        tableHeaderCell();
     }
 
     /**
      * Writes a table cell.
      *
      * @param headerRow true if this is a header cell.
+     * @param attributes the cell attributes, could be null.
      */
-    private void tableCell( boolean headerRow )
+    private void tableCell( boolean headerRow, SinkEventAttributes attributes )
     {
-         String justif = null;
-
-         if ( cellJustif != null && isCellJustif )
-         {
-             switch ( cellJustif[Math.min( cellCount, cellJustif.length - 1 )] )
-             {
-                 case JUSTIFY_LEFT:
-                     justif = "left";
-                     break;
-                 case JUSTIFY_RIGHT:
-                     justif = "right";
-                     break;
-                 case JUSTIFY_CENTER:
-                 default:
-                     justif = "center";
-                     break;
-             }
-         }
-
         MutableAttributeSet cellAtts = headerRow
                  ? config.getAttributeSet( "table.heading.cell" )
                  : config.getAttributeSet( "table.body.cell" );
@@ -1088,9 +1067,36 @@ public class FoSink
                  ? config.getAttributeSet( "table.heading.block" )
                  : config.getAttributeSet( "table.body.block" );
 
+        String justif = null;
+        if ( attributes == null )
+        {
+            attributes = new SinkEventAttributeSet( 0 );
+        }
+
+        if ( attributes.isDefined( Attribute.ALIGN.toString() ) )
+        {
+            justif = attributes.getAttribute( Attribute.ALIGN.toString() ).toString();
+        }
+
+        if ( justif == null && cellJustif != null && cellJustif.length > 0 && isCellJustif )
+        {
+            switch ( cellJustif[Math.min( cellCount, cellJustif.length - 1 )] )
+            {
+                case JUSTIFY_LEFT:
+                    justif = "left";
+                    break;
+                case JUSTIFY_RIGHT:
+                    justif = "right";
+                    break;
+                case JUSTIFY_CENTER:
+                default:
+                    justif = "center";
+            }
+        }
+
         if ( justif != null )
         {
-           blockAtts.addAttribute( "text-align", justif );
+            blockAtts.addAttribute( "text-align", justif );
         }
 
         writeStartTag( TABLE_CELL_TAG, cellAtts );

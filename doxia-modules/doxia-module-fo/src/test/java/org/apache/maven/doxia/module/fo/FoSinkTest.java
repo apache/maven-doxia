@@ -21,7 +21,6 @@ package org.apache.maven.doxia.module.fo;
 
 import java.io.File;
 import java.io.StringReader;
-import java.io.StringWriter;
 import java.io.Writer;
 
 import org.apache.maven.doxia.document.DocumentMeta;

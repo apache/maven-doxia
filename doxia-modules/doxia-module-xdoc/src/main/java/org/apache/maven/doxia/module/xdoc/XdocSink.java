@@ -445,11 +445,32 @@ public class XdocSink
      */
     public void tableRows( int[] justification, boolean grid )
     {
+        // similar to super.tableRows( justification, grid ) but without class.
+
+        this.tableRows = true;
+
         setCellJustif( justification );
 
+        if ( this.tableAttributes == null )
+        {
+            this.tableAttributes = new SinkEventAttributeSet( 0 );
+        }
+
         MutableAttributeSet att = new SinkEventAttributeSet();
-        att.addAttribute( Attribute.ALIGN, "center" );
-        att.addAttribute( Attribute.BORDER, ( grid ? "1" : "0" ) );
+
+        if ( !tableAttributes.isDefined( Attribute.ALIGN.toString() ) )
+        {
+            att.addAttribute( Attribute.ALIGN, "center" );
+        }
+
+        if ( !tableAttributes.isDefined( Attribute.BORDER.toString() ) )
+        {
+            att.addAttribute( Attribute.BORDER, ( grid ? "1" : "0" ) );
+        }
+
+        att.addAttributes( tableAttributes );
+
+        tableAttributes.removeAttributes( tableAttributes );
 
         writeStartTag( TABLE, att );
     }

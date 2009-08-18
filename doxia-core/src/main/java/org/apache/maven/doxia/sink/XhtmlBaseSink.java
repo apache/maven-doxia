@@ -90,7 +90,7 @@ public class XhtmlBaseSink
     private boolean evenTableRow = true;
 
     /** used to store attributes passed to table(). */
-    private MutableAttributeSet tableAttributes;
+    protected MutableAttributeSet tableAttributes;
 
     /** Used to distinguish old-style figure handling. */
     private boolean legacyFigure;
@@ -114,7 +114,7 @@ public class XhtmlBaseSink
      * sink.tableRow();
      * </pre>
      * */
-    private boolean tableRows = false;
+    protected boolean tableRows = false;
 
     /** Map of warn messages with a String as key to describe the error type and a Set as value.
      * Using to reduce warn messages. */
@@ -1173,8 +1173,7 @@ public class XhtmlBaseSink
     {
         this.tableRows = true;
 
-        this.cellJustif = justification;
-        this.isCellJustif = true;
+        setCellJustif( justification );
 
         if ( this.tableAttributes == null )
         {
@@ -1321,29 +1320,36 @@ public class XhtmlBaseSink
      */
     private void tableCell( boolean headerRow, MutableAttributeSet attributes )
     {
-        String justif = null;
-
-        if ( cellJustif != null && isCellJustif )
-        {
-            switch ( cellJustif[Math.min( cellCount, cellJustif.length - 1 )] )
-            {
-                case Sink.JUSTIFY_LEFT:
-                    justif = "left";
-                    break;
-                case Sink.JUSTIFY_RIGHT:
-                    justif = "right";
-                    break;
-                case Sink.JUSTIFY_CENTER:
-                default:
-                    justif = "center";
-                    break;
-            }
-        }
-
-
         Tag t = ( headerRow ? HtmlMarkup.TH : HtmlMarkup.TD );
 
         MutableAttributeSet att = new SinkEventAttributeSet();
+
+        String justif = null;
+        if ( attributes == null )
+        {
+            attributes = new SinkEventAttributeSet( 0 );
+        }
+
+        if ( attributes.isDefined( Attribute.ALIGN.toString() ) )
+        {
+            justif = attributes.getAttribute( Attribute.ALIGN.toString() ).toString();
+        }
+
+        if ( justif == null && cellJustif != null && cellJustif.length > 0 && isCellJustif )
+        {
+            switch ( cellJustif[Math.min( cellCount, cellJustif.length - 1 )] )
+            {
+                case JUSTIFY_LEFT:
+                    justif = "left";
+                    break;
+                case JUSTIFY_RIGHT:
+                    justif = "right";
+                    break;
+                case JUSTIFY_CENTER:
+                default:
+                    justif = "center";
+            }
+        }
 
         if ( justif != null )
         {
