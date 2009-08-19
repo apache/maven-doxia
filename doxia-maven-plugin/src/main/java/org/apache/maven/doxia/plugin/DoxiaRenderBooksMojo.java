@@ -85,14 +85,14 @@ public class DoxiaRenderBooksMojo
     /**
      * Base directory of the project.
      *
-     * @parameter expression="${basedir}"
+     * @parameter default-value="${basedir}"
      */
     private File basedir;
 
     /**
      * Directory containing the generated project docs.
      *
-     * @parameter expression="${project.build.directory}/generated-site"
+     * @parameter default-value="${project.build.directory}/generated-site"
      */
     private File generatedDocs;
 
@@ -100,7 +100,7 @@ public class DoxiaRenderBooksMojo
      * A comma separated list of locales supported by Maven. The first valid token will be the default Locale
      * for this instance of the Java Virtual Machine.
      *
-     * @parameter expression="${locales}"
+     * @parameter default-value="${locales}"
      */
     protected String locales;
 
