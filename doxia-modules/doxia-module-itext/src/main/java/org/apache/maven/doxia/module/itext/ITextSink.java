@@ -857,6 +857,8 @@ public class ITextSink
         writeEndElement(); // ElementTags.CHUNK
 
         actionContext.release();
+
+        lineBreak();
     }
 
     /** {@inheritDoc} */
@@ -869,6 +871,20 @@ public class ITextSink
         writeAddAttribute( ElementTags.BLUE, font.getFontColorBlue() );
         writeAddAttribute( ElementTags.GREEN, font.getFontColorGreen() );
         writeAddAttribute( ElementTags.RED, font.getFontColorRed() );
+
+
+        writeStartElement( ElementTags.CHUNK );
+        writeAddAttribute( ElementTags.FONT, font.getFontName() );
+        writeAddAttribute( ElementTags.SIZE, font.getFontSize() );
+        writeAddAttribute( ElementTags.STYLE, font.getFontStyle() );
+        writeAddAttribute( ElementTags.BLUE, font.getFontColorBlue() );
+        writeAddAttribute( ElementTags.GREEN, font.getFontColorGreen() );
+        writeAddAttribute( ElementTags.RED, font.getFontColorRed() );
+
+        // We need to add a non break space first to display empty string
+        write( "\u00A0" + StringUtils.repeat( " ", 16 ), false, false );
+
+        writeEndElement(); // ElementTags.CHUNK
 
         actionContext.setAction( SinkActionContext.DEFINITION );
     }
