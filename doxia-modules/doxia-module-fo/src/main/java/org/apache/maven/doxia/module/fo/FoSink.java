@@ -27,6 +27,7 @@ import java.io.Writer;
 import java.util.Enumeration;
 import java.util.HashMap;
 import java.util.Iterator;
+import java.util.LinkedList;
 import java.util.Map;
 import java.util.Set;
 import java.util.Stack;
@@ -45,7 +46,6 @@ import org.apache.maven.doxia.util.HtmlTools;
 
 import org.codehaus.plexus.util.StringUtils;
 import org.codehaus.plexus.util.xml.PrettyPrintXMLWriter;
-import org.codehaus.plexus.util.xml.XMLWriter;
 
 /**
  * A Doxia Sink that produces a FO model. The usage is similar to the following:
@@ -69,7 +69,7 @@ public class FoSink
     private final PrintWriter out;
 
     /** Used to get the current position in numbered lists. */
-    private final Stack listStack = new Stack();
+    private final Stack listStack;
 
     /** Used to get attributes for a given FO element. */
     private final FoConfiguration config;
@@ -83,18 +83,6 @@ public class FoSink
     /** Counts the current subsubsection level. */
     private int subsubsection = 0;
 
-    /** Drawing borders on table cells. */
-    private boolean tableGrid;
-
-    /** Alignment of table cells. */
-    private int[] cellJustif;
-
-    /** Justification of table cells. */
-    private boolean isCellJustif;
-
-    /** Current table cell. */
-    private int cellCount;
-
     /** Verbatim flag. */
     private boolean verbatim;
 
@@ -105,15 +93,27 @@ public class FoSink
 
     private String languageId;
 
-    /** The StringWriter to write the table result temporary, so we could play with the output and fix fo. */
-    private StringWriter tableContentWriter;
+    /** Stack of drawing borders on table cells. */
+    private final LinkedList tableGridStack;
 
-    private StringWriter tableCaptionWriter = null;
+    /** Stack of alignment int[] of table cells. */
+    private final LinkedList cellJustifStack;
 
-    private XMLWriter tableCaptionXMLWriter = null;
+    /** Stack of justification of table cells. */
+    private final LinkedList isCellJustifStack;
 
-    /** The table caption */
-    private String tableCaption = null;
+    /** Stack of current table cell. */
+    private final LinkedList cellCountStack;
+
+    /** The stack of StringWriter to write the table result temporary, so we could play with the output and fix fo. */
+    private final LinkedList tableContentWriterStack;
+
+    private final LinkedList tableCaptionWriterStack;
+
+    private final LinkedList tableCaptionXMLWriterStack;
+
+    /** The stack of table caption */
+    private final LinkedList tableCaptionStack;
 
     /** Map of warn messages with a String as key to describe the error type and a Set as value.
      * Using to reduce warn messages. */
@@ -147,6 +147,16 @@ public class FoSink
         this.out = new PrintWriter( writer );
         this.encoding = encoding;
         this.config = new FoConfiguration();
+
+        this.listStack = new Stack();
+        this.tableGridStack = new LinkedList();
+        this.cellJustifStack = new LinkedList();
+        this.isCellJustifStack = new LinkedList();
+        this.cellCountStack = new LinkedList();
+        this.tableContentWriterStack = new LinkedList();
+        this.tableCaptionWriterStack = new LinkedList();
+        this.tableCaptionXMLWriterStack = new LinkedList();
+        this.tableCaptionStack = new LinkedList();
 
         setNameSpace( "fo" );
     }
@@ -602,7 +612,7 @@ public class FoSink
     /** {@inheritDoc} */
     public void numberedList( int numbering, SinkEventAttributes attributes )
     {
-        listStack.push( new NumberedListItem( numbering ) );
+        this.listStack.push( new NumberedListItem( numbering ) );
         writeEOL();
         writeStartTag( LIST_BLOCK_TAG, "list" );
     }
@@ -616,7 +626,7 @@ public class FoSink
     /** {@inheritDoc} */
     public void numberedList_()
     {
-        listStack.pop();
+        this.listStack.pop();
         writeEndTag( LIST_BLOCK_TAG );
         writeEOL();
     }
@@ -624,7 +634,7 @@ public class FoSink
     /** {@inheritDoc} */
     public void numberedListItem( SinkEventAttributes attributes )
     {
-        NumberedListItem current = (NumberedListItem) listStack.peek();
+        NumberedListItem current = (NumberedListItem) this.listStack.peek();
         current.next();
 
         writeStartTag( LIST_ITEM_TAG, "list.item" );
@@ -911,7 +921,7 @@ public class FoSink
         // <fo:table-and-caption> is XSL-FO 1.0 standard but still not implemented in FOP 0.95
         //writeStartTag( TABLE_AND_CAPTION_TAG );
 
-        tableContentWriter = new StringWriter();
+        this.tableContentWriterStack.addLast( new StringWriter() );
         writeStartTag( TABLE_TAG, "table.layout" );
     }
 
@@ -924,8 +934,7 @@ public class FoSink
     /** {@inheritDoc} */
     public void table_()
     {
-        String content = tableContentWriter.toString();
-        tableContentWriter = null;
+        String content = this.tableContentWriterStack.removeLast().toString();
 
         StringBuffer sb = new StringBuffer();
         // FOP hack to center the table, see
@@ -933,6 +942,7 @@ public class FoSink
         sb.append( "<fo:table-column column-width=\"proportional-column-width(1)\"/>" );
         sb.append( EOL );
 
+        int cellCount = Integer.parseInt( this.cellCountStack.removeLast().toString() );
         int percent = 100 / cellCount;
         for ( int i = 0; i < cellCount; i++ )
         {
@@ -957,10 +967,10 @@ public class FoSink
         writeEndTag( BLOCK_TAG );
         writeEOL();
 
-        if ( tableCaption != null )
+        if ( !this.tableCaptionStack.isEmpty() && this.tableCaptionStack.getLast() != null )
         {
             paragraph( SinkEventAttributeSet.CENTER );
-            write( tableCaption );
+            write( this.tableCaptionStack.removeLast().toString() );
             paragraph_();
         }
     }
@@ -968,9 +978,10 @@ public class FoSink
     /** {@inheritDoc} */
     public void tableRows( int[] justification, boolean grid )
     {
-        this.tableGrid = grid;
-        this.cellJustif = justification;
-        this.isCellJustif = true;
+        this.tableGridStack.addLast( Boolean.valueOf( grid ) );
+        this.cellJustifStack.addLast( justification );
+        this.isCellJustifStack.addLast( Boolean.valueOf( true ) );
+        this.cellCountStack.addLast( new Integer( 0 ) );
         writeEOL();
         writeStartTag( TABLE_BODY_TAG );
     }
@@ -978,8 +989,9 @@ public class FoSink
     /** {@inheritDoc} */
     public void tableRows_()
     {
-        this.cellJustif = null;
-        this.isCellJustif = false;
+        this.tableGridStack.removeLast();
+        this.cellJustifStack.removeLast();
+        this.isCellJustifStack.removeLast();
         writeEndTag( TABLE_BODY_TAG );
         writeEOL();
     }
@@ -989,7 +1001,8 @@ public class FoSink
     {
         // TODO spacer rows
         writeStartTag( TABLE_ROW_TAG, "table.body.row" );
-        this.cellCount = 0;
+        this.cellCountStack.removeLast();
+        this.cellCountStack.addLast( new Integer( 0 ) );
     }
 
     /** {@inheritDoc} */
@@ -1056,9 +1069,10 @@ public class FoSink
                  : config.getAttributeSet( "table.body.cell" );
 
         // the column-number is needed for the hack to center the table, see tableRows.
+        int cellCount = Integer.parseInt( this.cellCountStack.getLast().toString() );
         cellAtts.addAttribute( "column-number", String.valueOf( cellCount + 2 ) );
 
-        if ( tableGrid )
+        if ( this.tableGridStack.getLast().equals( Boolean.TRUE ) )
         {
             cellAtts.addAttributes( config.getAttributeSet( "table.body.cell.grid" ) );
         }
@@ -1078,7 +1092,9 @@ public class FoSink
             justif = attributes.getAttribute( Attribute.ALIGN.toString() ).toString();
         }
 
-        if ( justif == null && cellJustif != null && cellJustif.length > 0 && isCellJustif )
+        int[] cellJustif = (int[]) this.cellJustifStack.getLast();
+        if ( justif == null && cellJustif != null && cellJustif.length > 0
+            && this.isCellJustifStack.getLast().equals( Boolean.TRUE ) )
         {
             switch ( cellJustif[Math.min( cellCount, cellJustif.length - 1 )] )
             {
@@ -1113,9 +1129,10 @@ public class FoSink
         writeEndTag( TABLE_CELL_TAG );
         writeEOL();
 
-        if ( isCellJustif )
+        if ( this.isCellJustifStack.getLast().equals( Boolean.TRUE ) )
         {
-            ++cellCount;
+            int cellCount = Integer.parseInt( this.cellCountStack.removeLast().toString() );
+            this.cellCountStack.addLast( new Integer( ++cellCount ) );
         }
     }
 
@@ -1128,8 +1145,9 @@ public class FoSink
     /** {@inheritDoc} */
     public void tableCaption( SinkEventAttributes attributes )
     {
-        tableCaptionWriter = new StringWriter();
-        tableCaptionXMLWriter = new PrettyPrintXMLWriter( tableCaptionWriter );
+        StringWriter sw = new StringWriter();
+        this.tableCaptionWriterStack.addLast( sw );
+        this.tableCaptionXMLWriterStack.addLast( new PrettyPrintXMLWriter( sw ) );
 
         // <fo:table-caption> is XSL-FO 1.0 standard but not implemented in FOP 0.95
         //writeStartTag( TABLE_CAPTION_TAG );
@@ -1147,11 +1165,10 @@ public class FoSink
     /** {@inheritDoc} */
     public void tableCaption_()
     {
-        if ( tableCaptionXMLWriter != null )
+        if ( !this.tableCaptionXMLWriterStack.isEmpty() && this.tableCaptionXMLWriterStack.getLast() != null )
         {
-            tableCaption = tableCaptionWriter.toString();
-            tableCaptionXMLWriter = null;
-            tableCaptionWriter = null;
+            this.tableCaptionStack.addLast( this.tableCaptionWriterStack.removeLast().toString() );
+            this.tableCaptionXMLWriterStack.removeLast();
         }
         // <fo:table-caption> is XSL-FO 1.0 standard but not implemented in FOP 0.95
         //writeEndTag( TABLE_CAPTION_TAG );
@@ -1549,13 +1566,13 @@ public class FoSink
      */
     protected void write( String text )
     {
-        if ( tableCaptionXMLWriter != null )
+        if ( !this.tableCaptionXMLWriterStack.isEmpty() && this.tableCaptionXMLWriterStack.getLast() != null )
         {
-            tableCaptionXMLWriter.writeText( unifyEOLs( text ) );
+            ( (PrettyPrintXMLWriter) this.tableCaptionXMLWriterStack.getLast() ).writeText( unifyEOLs( text ) );
         }
-        else if ( tableContentWriter != null )
+        else if ( !this.tableContentWriterStack.isEmpty() && this.tableContentWriterStack.getLast() != null )
         {
-            tableContentWriter.write( unifyEOLs( text ) );
+            ( (StringWriter) this.tableContentWriterStack.getLast() ).write( unifyEOLs( text ) );
         }
         else
         {
@@ -1646,14 +1663,14 @@ public class FoSink
     /** {@inheritDoc} */
     protected void writeStartTag( Tag t, MutableAttributeSet att, boolean isSimpleTag )
     {
-        if ( tableCaptionXMLWriter == null )
+        if ( this.tableCaptionXMLWriterStack.isEmpty() )
         {
             super.writeStartTag ( t, att, isSimpleTag );
         }
         else
         {
             String tag = ( getNameSpace() != null ? getNameSpace() + ":" : "" ) + t.toString();
-            tableCaptionXMLWriter.startElement( tag );
+            ( (PrettyPrintXMLWriter) this.tableCaptionXMLWriterStack.getLast() ).startElement( tag );
 
             if ( att != null )
             {
@@ -1663,13 +1680,13 @@ public class FoSink
                     Object key = names.nextElement();
                     Object value = att.getAttribute( key );
 
-                    tableCaptionXMLWriter.addAttribute( key.toString(), value.toString() );
+                    ( (PrettyPrintXMLWriter) this.tableCaptionXMLWriterStack.getLast() ).addAttribute( key.toString(), value.toString() );
                 }
             }
 
             if ( isSimpleTag )
             {
-                tableCaptionXMLWriter.endElement();
+                ( (PrettyPrintXMLWriter) this.tableCaptionXMLWriterStack.getLast() ).endElement();
             }
         }
     }
@@ -1677,13 +1694,13 @@ public class FoSink
     /** {@inheritDoc} */
     protected void writeEndTag( Tag t )
     {
-        if ( tableCaptionXMLWriter == null )
+        if ( this.tableCaptionXMLWriterStack.isEmpty() )
         {
             super.writeEndTag( t );
         }
         else
         {
-            tableCaptionXMLWriter.endElement();
+            ( (PrettyPrintXMLWriter) this.tableCaptionXMLWriterStack.getLast() ).endElement();
         }
     }
 

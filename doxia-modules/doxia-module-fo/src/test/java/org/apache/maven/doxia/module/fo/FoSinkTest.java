@@ -466,4 +466,64 @@ public class FoSinkTest extends AbstractSinkTest
         // then generate PDF
         fo2pdf( fileName );
     }
+
+    /**
+     * @throws Exception if any
+     */
+    public void testNestedTables()
+        throws Exception
+    {
+        StringBuffer html = new StringBuffer();
+        html.append( "<table>" ).append( EOL );
+        html.append( "<caption>first caption</caption>" ).append( EOL );
+        html.append( "<tr>" ).append( EOL );
+        html.append( "<td>foo</td>" ).append( EOL );
+        html.append( "</tr>" ).append( EOL );
+        html.append( "<tr>" ).append( EOL );
+        html.append( "<td>" ).append( EOL );
+
+        html.append( "<table>" ).append( EOL );
+        html.append( "<caption>second caption</caption>" ).append( EOL );
+        html.append( "<tr>" ).append( EOL );
+        html.append( "<td>foo</td>" ).append( EOL );
+        html.append( "<td>bar</td>" ).append( EOL );
+        html.append( "</tr>" ).append( EOL );
+        html.append( "<tr>" ).append( EOL );
+        html.append( "<td>foo1</td>" ).append( EOL );
+        html.append( "<td>" ).append( EOL );
+
+        html.append( "<table>" ).append( EOL );
+        html.append( "<caption>third caption</caption>" ).append( EOL );
+        html.append( "<tr>" ).append( EOL );
+        html.append( "<td>foo1</td>" ).append( EOL );
+        html.append( "<td>bar1</td>" ).append( EOL );
+        html.append( "</tr>" ).append( EOL );
+        html.append( "</table>" ).append( EOL );
+        html.append( "</td>" ).append( EOL );
+
+        html.append( "</tr>" ).append( EOL );
+        html.append( "</table>" ).append( EOL );
+
+        html.append( "</td>" ).append( EOL );
+        html.append( "</tr>" ).append( EOL );
+        html.append( "</table>" ).append( EOL );
+
+        String fileName = "testNestedTables";
+
+        // first create fo
+        FoSink fosink = new FoSink( getTestWriter( fileName ) );
+        fosink.beginDocument();
+        SinkTestDocument.generateHead( fosink );
+
+        fosink.body();
+        XhtmlBaseParser parser = new XhtmlBaseParser();
+        parser.parse( new StringReader( html.toString() ), fosink );
+        fosink.body_();
+
+        fosink.endDocument();
+        fosink.close();
+
+        // then generate PDF
+        fo2pdf( fileName );
+    }
 }
