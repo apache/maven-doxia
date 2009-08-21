@@ -125,13 +125,15 @@ public class XdocParser
         }
         else if ( parser.getName().equals( TITLE.toString() ) )
         {
-            if ( hasTitle )
+            if ( hasTitle && getLog().isWarnEnabled() )
             {
-                throw new XmlPullParserException( "<title/> should be defined in <properties/> or in <head/>, "
-                    + "not both." );
+                getLog().warn( "<title/> was already defined in <properties/>, ignored <title/> in <head/>." );
             }
-            sink.title( attribs );
-            this.hasTitle = true;
+            else
+            {
+                sink.title( attribs );
+                this.hasTitle = true;
+            }
         }
         else if ( parser.getName().equals( AUTHOR_TAG.toString() ) )
         {

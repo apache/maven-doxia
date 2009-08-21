@@ -194,15 +194,8 @@ public class XdocParserTest
                 + "<properties><title>title</title>"
                 + "<author email=\"a@b.c\">John Doe</author></properties>"
                 + "<head><title>title</title></head><body></body></document>";
-        try
-        {
-            parser.parse( text, sink );
-            assertTrue( false );
-        }
-        catch ( ParseException e )
-        {
-            assertTrue( true );
-        }
+        parser.parse( text, sink );
+        assertTrue( true );
     }
 
     /** @throws Exception  */
