@@ -48,7 +48,7 @@ public class XdocParserTest
 {
     private XdocParser parser;
 
-    /** @see junit.framework.TestCase#setUp() */
+    /** {@inheritDoc} */
     protected void setUp()
         throws Exception
     {
@@ -190,12 +190,29 @@ public class XdocParserTest
         assertEquals( "body_", ( (SinkEventElement) it.next() ).getName() );
         assertFalse( it.hasNext() );
 
+        // DOXIA-359
         text = "<document>"
-                + "<properties><title>title</title>"
-                + "<author email=\"a@b.c\">John Doe</author></properties>"
-                + "<head><title>title</title></head><body></body></document>";
+                + "<properties><title>properties title</title></properties>"
+                + "<head><title>head title</title></head>"
+                + "<body></body></document>";
+
+        sink.reset();
         parser.parse( text, sink );
-        assertTrue( true );
+
+        it = sink.getEventList().iterator();
+
+        assertEquals( "head", ( (SinkEventElement) it.next() ).getName() );
+        assertEquals( "title", ( (SinkEventElement) it.next() ).getName() );
+
+        SinkEventElement title = (SinkEventElement) it.next();
+        assertEquals( "text", title.getName() );
+        assertEquals( "properties title", title.getArgs()[0] );
+
+        assertEquals( "title_", ( (SinkEventElement) it.next() ).getName() );
+        assertEquals( "head_", ( (SinkEventElement) it.next() ).getName() );
+        assertEquals( "body", ( (SinkEventElement) it.next() ).getName() );
+        assertEquals( "body_", ( (SinkEventElement) it.next() ).getName() );
+        assertFalse( it.hasNext() );
     }
 
     /** @throws Exception  */

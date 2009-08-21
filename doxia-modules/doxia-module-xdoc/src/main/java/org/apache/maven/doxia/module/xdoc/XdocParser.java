@@ -125,14 +125,22 @@ public class XdocParser
         }
         else if ( parser.getName().equals( TITLE.toString() ) )
         {
-            if ( hasTitle && getLog().isWarnEnabled() )
+            if ( hasTitle )
             {
-                getLog().warn( "<title/> was already defined in <properties/>, ignored <title/> in <head/>." );
+                getLog().warn( "<title> was already defined in <properties>, ignored <title> in <head>." );
+
+                try
+                {
+                    parser.nextText(); // ignore next text event
+                }
+                catch ( IOException ex )
+                {
+                    throw new XmlPullParserException( "Failed to parse text", parser, ex );
+                }
             }
             else
             {
                 sink.title( attribs );
-                this.hasTitle = true;
             }
         }
         else if ( parser.getName().equals( AUTHOR_TAG.toString() ) )
@@ -238,7 +246,11 @@ public class XdocParser
         }
         else if ( parser.getName().equals( TITLE.toString() ) )
         {
-            sink.title_();
+            if ( !hasTitle )
+            {
+                sink.title_();
+                this.hasTitle = true;
+            }
         }
         else if ( parser.getName().equals( AUTHOR_TAG.toString() ) )
         {
