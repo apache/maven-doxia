@@ -1365,6 +1365,16 @@ public class FoSink
 
             this.warnMessages = null;
         }
+
+        this.listStack.clear();
+        this.tableGridStack.clear();
+        this.cellJustifStack.clear();
+        this.isCellJustifStack.clear();
+        this.cellCountStack.clear();
+        this.tableContentWriterStack.clear();
+        this.tableCaptionWriterStack.clear();
+        this.tableCaptionXMLWriterStack.clear();
+        this.tableCaptionStack.clear();
     }
 
     /**
