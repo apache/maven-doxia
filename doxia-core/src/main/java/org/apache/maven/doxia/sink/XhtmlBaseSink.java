@@ -252,12 +252,17 @@ public class XhtmlBaseSink
     protected void resetState()
     {
         resetTextBuffer();
-        headFlag = false;
-        verbatimFlag = false;
-        cellJustifStack.clear();
-        isCellJustifStack.clear();
-        cellCountStack.clear();
-        evenTableRow = true;
+
+        this.headFlag = false;
+        this.verbatimFlag = false;
+        this.evenTableRow = true;
+        this.cellJustifStack.clear();
+        this.isCellJustifStack.clear();
+        this.cellCountStack.clear();
+        this.tableContentWriterStack.clear();
+        this.tableCaptionWriterStack.clear();
+        this.tableCaptionXMLWriterStack.clear();
+        this.tableCaptionStack.clear();
     }
 
     /**
@@ -1139,6 +1144,11 @@ public class XhtmlBaseSink
 
         writeEndTag( HtmlMarkup.TABLE );
 
+        if ( !this.cellCountStack.isEmpty() )
+        {
+            this.cellCountStack.removeLast().toString();
+        }
+
         if ( this.tableContentWriterStack.isEmpty() )
         {
             if ( getLog().isWarnEnabled() )
@@ -1169,11 +1179,6 @@ public class XhtmlBaseSink
         else
         {
             write( tableContent );
-        }
-
-        if ( !this.cellCountStack.isEmpty() )
-        {
-            this.cellCountStack.removeLast().toString();
         }
     }
 
@@ -1358,7 +1363,7 @@ public class XhtmlBaseSink
             justif = attributes.getAttribute( Attribute.ALIGN.toString() ).toString();
         }
 
-        if ( !this.cellCountStack.isEmpty() )
+        if ( !this.cellCountStack.isEmpty() && !this.cellJustifStack.isEmpty() )
         {
             int cellCount = Integer.parseInt( this.cellCountStack.getLast().toString() );
             int[] cellJustif = (int[]) this.cellJustifStack.getLast();
@@ -1931,6 +1936,8 @@ public class XhtmlBaseSink
 
             this.warnMessages = null;
         }
+
+        resetState();
     }
 
     // ----------------------------------------------------------------------
