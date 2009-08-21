@@ -24,8 +24,13 @@ import javax.swing.text.SimpleAttributeSet;
 
 import junit.framework.TestCase;
 
-/** FoConfiguration tests. */
-public class FoConfigurationTest extends TestCase
+/**
+ * FoConfiguration tests.
+ *
+ * @version $Id$
+ */
+public class FoConfigurationTest
+    extends TestCase
 {
 
     /** Tests the getAttributeString( String ) method. */
@@ -33,18 +38,13 @@ public class FoConfigurationTest extends TestCase
     {
         FoConfiguration config = new FoConfiguration();
 
-        assertEquals(
-            "Null attribute ID should return empty string!",
-            "", config.getAttributeString( null ) );
+        assertEquals( "Null attribute ID should return empty string!", "", config.getAttributeString( null ) );
 
-        assertEquals(
-            "Non existent attribute ID should return empty string!",
-            "", config.getAttributeString( "a.dummy.attribute" ) );
+        assertEquals( "Non existent attribute ID should return empty string!", "",
+                      config.getAttributeString( "a.dummy.attribute" ) );
 
-        assertEquals(
-            "Wrong attributes returned for body.pre!",
-            " font-family=\"monospace\" font-size=\"10pt\"",
-            config.getAttributeString( "body.pre" ) );
+        assertEquals( "Wrong attributes returned for body.pre!", " font-family=\"monospace\" font-size=\"10pt\"",
+                      config.getAttributeString( "body.pre" ) );
     }
 
     /** Tests the getAttributeSet( String ) method. */
@@ -52,28 +52,19 @@ public class FoConfigurationTest extends TestCase
     {
         FoConfiguration config = new FoConfiguration();
 
-        assertNull(
-            "Null attribute ID should return null AttributeSet!",
-            config.getAttributeSet( null ) );
+        assertNull( "Null attribute ID should return null AttributeSet!", config.getAttributeSet( null ) );
 
-        assertNull(
-            "Empty attribute ID should return null AttributeSet!",
-            config.getAttributeSet( "" ) );
+        assertNull( "Empty attribute ID should return null AttributeSet!", config.getAttributeSet( "" ) );
 
-        assertNull(
-            "Non existent attribute ID should return null AttributeSet!",
-            config.getAttributeSet( "a.dummy.attribute" ) );
-
+        assertNull( "Non existent attribute ID should return null AttributeSet!",
+                    config.getAttributeSet( "a.dummy.attribute" ) );
 
         MutableAttributeSet expected = new SimpleAttributeSet();
         expected.addAttribute( "font-size", "10pt" );
         expected.addAttribute( "font-family", "monospace" );
         MutableAttributeSet actual = config.getAttributeSet( "body.pre" );
 
-        assertTrue(
-            "Wrong AttributeSet returned for body.pre!",
-            expected.isEqual( actual ) );
+        assertTrue( "Wrong AttributeSet returned for body.pre!", expected.isEqual( actual ) );
     }
-
 
 }

@@ -28,11 +28,13 @@ import junit.framework.TestCase;
  * Test FoAggregateSink.
  *
  * @author ltheussl
+ * @version $Id$
  */
 public class FoAggregateSinkTest
-        extends TestCase
+    extends TestCase
 {
     private FoAggregateSink sink;
+
     private Writer writer;
 
     /**
@@ -41,10 +43,10 @@ public class FoAggregateSinkTest
      * @throws java.lang.Exception if any.
      */
     protected void setUp()
-            throws Exception
+        throws Exception
     {
         super.setUp();
-        writer =  new StringWriter();
+        writer = new StringWriter();
     }
 
     /**

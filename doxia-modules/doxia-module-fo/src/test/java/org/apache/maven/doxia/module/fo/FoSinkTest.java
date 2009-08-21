@@ -35,8 +35,11 @@ import org.apache.maven.doxia.sink.SinkTestDocument;
 
 /**
  * <code>FO Sink</code> Test case.
+ *
+ * @version $Id$
  */
-public class FoSinkTest extends AbstractSinkTest
+public class FoSinkTest
+    extends AbstractSinkTest
 {
     private FoConfiguration config;
 
@@ -48,7 +51,8 @@ public class FoSinkTest extends AbstractSinkTest
      * Uses fop to generate a pdf from a test document.
      * @throws Exception If the conversion fails.
      */
-    public void testConvertFO2PDF() throws Exception
+    public void testConvertFO2PDF()
+        throws Exception
     {
         String fileName = "test";
         // first create fo
@@ -66,7 +70,8 @@ public class FoSinkTest extends AbstractSinkTest
      * Uses fop to generate an aggregated pdf from two test documents.
      * @throws Exception If the conversion fails.
      */
-    public void testAggregateMode() throws Exception
+    public void testAggregateMode()
+        throws Exception
     {
         FoAggregateSink fosink = new FoAggregateSink( getTestWriter( "aggregate" ) );
 
@@ -98,7 +103,7 @@ public class FoSinkTest extends AbstractSinkTest
         DocumentModel model = new DocumentModel();
         model.setToc( getToc() );
         model.setMeta( getMeta() );
-        return model ;
+        return model;
     }
 
     private DocumentMeta getMeta()
@@ -200,8 +205,8 @@ public class FoSinkTest extends AbstractSinkTest
     {
         String attribs = getConfig().getAttributeString( "body.text" );
         String attrib2 = getConfig().getAttributeString( "body.h1" );
-        return EOL + EOL + "<fo:block" + attribs + ">"  + EOL + EOL + "<fo:block"
-            + attrib2 + ">1   " + title + "</fo:block>" + EOL + "</fo:block>" + EOL;
+        return EOL + EOL + "<fo:block" + attribs + ">" + EOL + EOL + "<fo:block" + attrib2 + ">1   " + title
+            + "</fo:block>" + EOL + "</fo:block>" + EOL;
     }
 
     /** {@inheritDoc} */
@@ -209,8 +214,8 @@ public class FoSinkTest extends AbstractSinkTest
     {
         String attribs = getConfig().getAttributeString( "body.text" );
         String attrib2 = getConfig().getAttributeString( "body.h2" );
-        return EOL + EOL + "<fo:block" + attribs + ">"  + EOL + EOL + "<fo:block"
-            + attrib2 + ">0.1   " + title + "</fo:block>" + EOL + "</fo:block>" + EOL;
+        return EOL + EOL + "<fo:block" + attribs + ">" + EOL + EOL + "<fo:block" + attrib2 + ">0.1   " + title
+            + "</fo:block>" + EOL + "</fo:block>" + EOL;
     }
 
     /** {@inheritDoc} */
@@ -218,8 +223,8 @@ public class FoSinkTest extends AbstractSinkTest
     {
         String attribs = getConfig().getAttributeString( "body.text" );
         String attrib2 = getConfig().getAttributeString( "body.h3" );
-        return EOL + EOL + "<fo:block" + attribs + ">"  + EOL + EOL + "<fo:block"
-            + attrib2 + ">0.0.1   " + title + "</fo:block>" + EOL + "</fo:block>" + EOL;
+        return EOL + EOL + "<fo:block" + attribs + ">" + EOL + EOL + "<fo:block" + attrib2 + ">0.0.1   " + title
+            + "</fo:block>" + EOL + "</fo:block>" + EOL;
     }
 
     /** {@inheritDoc} */
@@ -227,8 +232,8 @@ public class FoSinkTest extends AbstractSinkTest
     {
         String attribs = getConfig().getAttributeString( "body.text" );
         String attrib2 = getConfig().getAttributeString( "body.h4" );
-        return EOL + EOL + "<fo:block" + attribs + ">"  + EOL + EOL + "<fo:block"
-            + attrib2 + ">" + title + "</fo:block>" + EOL + "</fo:block>" + EOL;
+        return EOL + EOL + "<fo:block" + attribs + ">" + EOL + EOL + "<fo:block" + attrib2 + ">" + title
+            + "</fo:block>" + EOL + "</fo:block>" + EOL;
     }
 
     /** {@inheritDoc} */
@@ -236,8 +241,8 @@ public class FoSinkTest extends AbstractSinkTest
     {
         String attribs = getConfig().getAttributeString( "body.text" );
         String attrib2 = getConfig().getAttributeString( "body.h5" );
-        return EOL + EOL + "<fo:block" + attribs + ">"  + EOL + EOL + "<fo:block"
-            + attrib2 + ">" + title + "</fo:block>" + EOL + "</fo:block>" + EOL;
+        return EOL + EOL + "<fo:block" + attribs + ">" + EOL + EOL + "<fo:block" + attrib2 + ">" + title
+            + "</fo:block>" + EOL + "</fo:block>" + EOL;
     }
 
     /** {@inheritDoc} */
@@ -246,9 +251,9 @@ public class FoSinkTest extends AbstractSinkTest
         String attribs = getConfig().getAttributeString( "list" );
         String itemAttribs = getConfig().getAttributeString( "list.item" );
         return EOL + EOL + "<fo:list-block" + attribs + ">" + EOL + "<fo:list-item" + itemAttribs
-            + "><fo:list-item-label><fo:block>&#8226;</fo:block></fo:list-item-label>"
-            + EOL + EOL + "<fo:list-item-body" + itemAttribs + ">" + EOL + "<fo:block>" + item
-            + "</fo:block>" + EOL + "</fo:list-item-body>" + EOL + "</fo:list-item>" + EOL + "</fo:list-block>" + EOL;
+            + "><fo:list-item-label><fo:block>&#8226;</fo:block></fo:list-item-label>" + EOL + EOL
+            + "<fo:list-item-body" + itemAttribs + ">" + EOL + "<fo:block>" + item + "</fo:block>" + EOL
+            + "</fo:list-item-body>" + EOL + "</fo:list-item>" + EOL + "</fo:list-block>" + EOL;
     }
 
     /** {@inheritDoc} */
@@ -256,11 +261,10 @@ public class FoSinkTest extends AbstractSinkTest
     {
         String attribs = getConfig().getAttributeString( "list" );
         String itemAttribs = getConfig().getAttributeString( "list.item" );
-        return EOL + EOL + "<fo:list-block" + attribs + ">" + EOL + "<fo:list-item" + itemAttribs
-            + ">" + EOL + "<fo:list-item-label>" + EOL + "<fo:block>i</fo:block>" + EOL
-            + "</fo:list-item-label>" + EOL + EOL + "<fo:list-item-body" + itemAttribs
-            + ">" + EOL + "<fo:block>" + item + "</fo:block>" + EOL + "</fo:list-item-body>" + EOL
-            + "</fo:list-item>" + EOL + "</fo:list-block>" + EOL;
+        return EOL + EOL + "<fo:list-block" + attribs + ">" + EOL + "<fo:list-item" + itemAttribs + ">" + EOL
+            + "<fo:list-item-label>" + EOL + "<fo:block>i</fo:block>" + EOL + "</fo:list-item-label>" + EOL + EOL
+            + "<fo:list-item-body" + itemAttribs + ">" + EOL + "<fo:block>" + item + "</fo:block>" + EOL
+            + "</fo:list-item-body>" + EOL + "</fo:list-item>" + EOL + "</fo:list-block>" + EOL;
     }
 
     /** {@inheritDoc} */
@@ -269,9 +273,9 @@ public class FoSinkTest extends AbstractSinkTest
         String dlAtts = getConfig().getAttributeString( "dl" );
         String dtAtts = getConfig().getAttributeString( "dt" );
         String ddAtts = getConfig().getAttributeString( "dd" );
-        return EOL + EOL + "<fo:block" + dlAtts + ">" + EOL + "<fo:block" + dtAtts + ">" + definum
-        + "</fo:block>" + EOL + EOL + EOL + "<fo:block" + ddAtts + ">" + definition
-        + "</fo:block>" + EOL + "</fo:block>" + EOL;
+        return EOL + EOL + "<fo:block" + dlAtts + ">" + EOL + "<fo:block" + dtAtts + ">" + definum + "</fo:block>"
+            + EOL + EOL + EOL + "<fo:block" + ddAtts + ">" + definition + "</fo:block>" + EOL + "</fo:block>"
+            + EOL;
     }
 
     /** {@inheritDoc} */
@@ -280,9 +284,8 @@ public class FoSinkTest extends AbstractSinkTest
         String dlAtts = getConfig().getAttributeString( "figure.display" );
         String dtAtts = getConfig().getAttributeString( "figure.graphics" );
         String ddAtts = getConfig().getAttributeString( "figure.caption" );
-        return EOL + EOL + "<fo:block" + dlAtts + "><fo:external-graphic"
-            + " src=\"" + source +  "\"" + dtAtts + "/>" + EOL + EOL + "<fo:block" + ddAtts
-            + ">" + caption + "</fo:block>" + EOL + "</fo:block>" + EOL;
+        return EOL + EOL + "<fo:block" + dlAtts + "><fo:external-graphic" + " src=\"" + source + "\"" + dtAtts
+            + "/>" + EOL + EOL + "<fo:block" + ddAtts + ">" + caption + "</fo:block>" + EOL + "</fo:block>" + EOL;
     }
 
     /** {@inheritDoc} */
@@ -291,21 +294,19 @@ public class FoSinkTest extends AbstractSinkTest
         String dlAtts = getConfig().getAttributeString( "table.padding" );
         String dtAtts = getConfig().getAttributeString( "table.layout" );
         String ddAtts = getConfig().getAttributeString( "table.body.row" );
-        //String deAtts = getConfig().getAttributeString( "table.body.cell" );
+        // String deAtts = getConfig().getAttributeString( "table.body.cell" );
 
         return EOL + EOL + "<fo:block" + dlAtts + ">" + EOL + "<fo:table" + dtAtts + ">" + EOL
-            + "<fo:table-column column-width=\"proportional-column-width(1)\"/>"
-            + EOL + "<fo:table-column column-width=\"100%\"/>"
-            + EOL + "<fo:table-column column-width=\"proportional-column-width(1)\"/>"
-            + EOL + EOL + "<fo:table-body>" + EOL + "<fo:table-row" + ddAtts
+            + "<fo:table-column column-width=\"proportional-column-width(1)\"/>" + EOL
+            + "<fo:table-column column-width=\"100%\"/>" + EOL
+            + "<fo:table-column column-width=\"proportional-column-width(1)\"/>" + EOL + EOL + "<fo:table-body>"
+            + EOL + "<fo:table-row" + ddAtts
             + "><fo:table-cell column-number=\"2\" padding-after=\"1.5pt\" padding-end=\"5pt\" "
             + "keep-together.within-column=\"always\" padding-start=\"2.5pt\" "
             + "background-color=\"#eeeeee\" padding-before=\"4pt\">" + EOL + "<fo:block line-height=\"1.2em\" "
             + "text-align=\"center\" font-family=\"Helvetica,sans-serif\" font-size=\"9pt\">" + EOL + cell
             + "</fo:block>" + EOL + "</fo:table-cell>" + EOL + "</fo:table-row>" + EOL + "</fo:table-body>" + EOL
-            + "</fo:table>"+ EOL
-            + "</fo:block>"+ EOL
-            + EOL
+            + "</fo:table>" + EOL + "</fo:block>" + EOL + EOL
             + "<fo:block white-space-collapse=\"true\" space-after=\"6pt\" space-before=\"3pt\" "
             + "font-family=\"Garamond,serif\" line-height=\"12pt\" text-align=\"center\" font-size=\"11pt\">"
             + "Table_caption</fo:block>" + EOL;
@@ -349,8 +350,8 @@ public class FoSinkTest extends AbstractSinkTest
     protected String getLinkBlock( String link, String text )
     {
         String attribs = getConfig().getAttributeString( "href.internal" );
-        return EOL + "<fo:basic-link internal-destination=\"" + link + "\">" + EOL + "<fo:inline"
-            + attribs + ">" + text + "</fo:inline></fo:basic-link>";
+        return EOL + "<fo:basic-link internal-destination=\"" + link + "\">" + EOL + "<fo:inline" + attribs + ">"
+            + text + "</fo:inline></fo:basic-link>";
     }
 
     /** {@inheritDoc} */
@@ -402,10 +403,10 @@ public class FoSinkTest extends AbstractSinkTest
     // Auxiliary methods
     // ----------------------------------------------------------------------
 
-
-    private void fo2pdf( String baseName ) throws Exception
+    private void fo2pdf( String baseName )
+        throws Exception
     {
-        //File outputDirectory = new File( getBasedirFile(), getOutputDir() );
+        // File outputDirectory = new File( getBasedirFile(), getOutputDir() );
         File outputDirectory = new File( getBasedir(), outputBaseDir() + getOutputDir() );
         File resourceDirectory = new File( getBasedirFile(), "target/test-classes" );
         File foFile = new File( outputDirectory, baseName + "." + outputExtension() );
