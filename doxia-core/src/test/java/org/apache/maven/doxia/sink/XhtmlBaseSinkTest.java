@@ -82,28 +82,70 @@ public class XhtmlBaseSinkTest
         assertEquals( expected, actual );
     }
 
-    /** @throws Exception */
+    /**
+     * @throws Exception if any
+     */
     public void testNestedTables()
         throws Exception
     {
         // DOXIA-177
-
         try
         {
             sink = new XhtmlBaseSink( writer );
 
             sink.table();
-            sink.tableRows( new int[] {0}, false );
+            sink.tableRows( new int[] { Sink.JUSTIFY_CENTER }, false );
+            sink.tableRow();
+            sink.tableCell();
+            sink.text( "cell11" );
+            sink.tableCell_();
+            sink.tableCell();
+            sink.text( "cell12" );
+            sink.tableCell_();
+            sink.tableRow_();
+
+            sink.tableRow();
+            sink.tableCell();
+            sink.table( SinkEventAttributeSet.LEFT );
+            sink.tableRows( new int[] { Sink.JUSTIFY_LEFT }, false );
+            sink.tableRow();
+            sink.tableCell();
+            sink.text( "nestedTable1Cell11" );
+            sink.tableCell_();
+            sink.tableCell();
+            sink.text( "nestedTable1Cell12" );
+            sink.tableCell_();
+            sink.tableRow_();
+            sink.tableRow();
+            sink.tableCell();
+
+            sink.table( SinkEventAttributeSet.RIGHT );
+            sink.tableRows( new int[] { Sink.JUSTIFY_RIGHT }, false );
+            sink.tableRow();
+            sink.tableCell();
+            sink.text( "nestedTable2Cell11" );
+            sink.tableCell_();
+            sink.tableCell();
+            sink.text( "nestedTable2Cell12" );
+            sink.tableCell_();
+            sink.tableRow_();
+            sink.tableRow();
+            sink.tableCell();
+            sink.text( "nestedTable2Cell21" );
+            sink.tableCell_();
+            sink.tableCell();
+            sink.text( "nestedTable2Cell22" );
+            sink.tableCell_();
+            sink.tableRow_();
+            sink.tableRows_();
             sink.tableCaption();
-            sink.text( "caption1" );
+            sink.text( "caption3" );
             sink.tableCaption_();
-            sink.tableRow();
+            sink.table_();
+
+            sink.tableCell_();
             sink.tableCell();
-            sink.table();
-            sink.tableRows( new int[] {0}, false );
-            sink.tableRow();
-            sink.tableCell();
-            sink.text( "nestedTableCell" );
+            sink.text( "nestedTable1Cell22" );
             sink.tableCell_();
             sink.tableRow_();
             sink.tableRows_();
@@ -111,9 +153,16 @@ public class XhtmlBaseSinkTest
             sink.text( "caption2" );
             sink.tableCaption_();
             sink.table_();
+
+            sink.tableCell_();
+            sink.tableCell();
+            sink.text( "cell22" );
             sink.tableCell_();
             sink.tableRow_();
             sink.tableRows_();
+            sink.tableCaption();
+            sink.text( "caption1" );
+            sink.tableCaption_();
             sink.table_();
         }
         finally
@@ -122,9 +171,18 @@ public class XhtmlBaseSinkTest
         }
 
         String actual = writer.toString();
-        assertTrue( actual.indexOf( "nestedTableCell" ) != 1 );
-        assertTrue( actual.indexOf( "class=\"bodyTable\"><caption>caption1</caption><tr" ) != 1 );
-        assertTrue( actual.indexOf( "class=\"bodyTable\"><caption>caption2</caption><tr" ) != 1 );
+        assertTrue( actual.indexOf( "<table align=\"center\" border=\"0\" class=\"bodyTable\">"
+            + "<caption>caption1</caption>" ) != 1 );
+        assertTrue( actual.indexOf( "<table border=\"0\" class=\"bodyTable\" align=\"left\">"
+            + "<caption>caption2</caption>" ) != 1 );
+        assertTrue( actual.indexOf( "<table align=\"center\" border=\"0\" class=\"bodyTable\">"
+            + "<caption>caption3</caption>" ) != 1 );
+
+        assertTrue( actual.indexOf( "<td align=\"center\">cell11</td>" ) != 1 );
+        assertTrue( actual.indexOf( "<td align=\"left\">nestedTable1Cell11</td>" ) != 1 );
+        assertTrue( actual.indexOf( "<td align=\"right\">nestedTable2Cell11</td>" ) != 1 );
+        assertTrue( actual.indexOf( "<td align=\"left\">nestedTable1Cell22</td>" ) != 1 );
+        assertTrue( actual.indexOf( "<td align=\"center\">cell22</td>" ) != 1 );
     }
 
     /**
@@ -643,15 +701,21 @@ public class XhtmlBaseSinkTest
         {
             sink = new XhtmlBaseSink( writer );
 
+            sink.table();
+            sink.tableRows( null, false );
             sink.tableCaption( attributes );
+            sink.text( "caption" );
             sink.tableCaption_();
+            sink.tableRows_();
+            sink.table_();
         }
         finally
         {
             sink.close();
         }
 
-        assertEquals( "<caption style=\"bold\"></caption>", writer.toString() );
+        assertEquals( "<table align=\"center\" border=\"0\" class=\"bodyTable\">" +
+                "<caption style=\"bold\">caption</caption></table>", writer.toString() );
     }
 
     /**

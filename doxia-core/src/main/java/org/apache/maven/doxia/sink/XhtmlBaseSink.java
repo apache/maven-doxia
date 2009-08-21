@@ -25,6 +25,7 @@ import java.io.Writer;
 import java.util.Enumeration;
 import java.util.HashMap;
 import java.util.Iterator;
+import java.util.LinkedList;
 import java.util.Map;
 import java.util.Set;
 import java.util.TreeSet;
@@ -39,6 +40,7 @@ import org.apache.maven.doxia.util.DoxiaUtils;
 import org.apache.maven.doxia.util.HtmlTools;
 
 import org.codehaus.plexus.util.StringUtils;
+import org.codehaus.plexus.util.xml.PrettyPrintXMLWriter;
 
 /**
  * Abstract base xhtml sink implementation.
@@ -59,10 +61,6 @@ public class XhtmlBaseSink
     /** The PrintWriter to write the result. */
     private PrintWriter writer;
 
-    /** The StringWriter to write the result temporary, so we could play with the output and fix XHTML
-     * like DOXIA-177. Calling the method {@link #close()} is needed to perform the changes in the {@link #writer}. */
-    private StringWriter tempWriter;
-
     /** Used to collect text events mainly for the head events. */
     private StringBuffer textBuffer = new StringBuffer();
 
@@ -78,17 +76,27 @@ public class XhtmlBaseSink
     /** An indication on if we're in verbatim mode. */
     private boolean verbatimFlag;
 
-    /** Alignment of table cells. */
-    private int[] cellJustif;
+    /** Stack of alignment int[] of table cells. */
+    private final LinkedList cellJustifStack;
 
-    /** Justification of table cells. */
-    private boolean isCellJustif;
+    /** Stack of justification of table cells. */
+    private final LinkedList isCellJustifStack;
 
-    /** Number of cells in a table row. */
-    private int cellCount;
+    /** Stack of current table cell. */
+    private final LinkedList cellCountStack;
 
     /** Used to style successive table rows differently. */
     private boolean evenTableRow = true;
+
+    /** The stack of StringWriter to write the table result temporary, so we could play with the output DOXIA-177. */
+    private final LinkedList tableContentWriterStack;
+
+    private final LinkedList tableCaptionWriterStack;
+
+    private final LinkedList tableCaptionXMLWriterStack;
+
+    /** The stack of table caption */
+    private final LinkedList tableCaptionStack;
 
     /** used to store attributes passed to table(). */
     protected MutableAttributeSet tableAttributes;
@@ -133,7 +141,14 @@ public class XhtmlBaseSink
     public XhtmlBaseSink( Writer out )
     {
         this.writer = new PrintWriter( out );
-        this.tempWriter = new StringWriter();
+
+        this.cellJustifStack = new LinkedList();
+        this.isCellJustifStack = new LinkedList();
+        this.cellCountStack = new LinkedList();
+        this.tableContentWriterStack = new LinkedList();
+        this.tableCaptionWriterStack = new LinkedList();
+        this.tableCaptionXMLWriterStack = new LinkedList();
+        this.tableCaptionStack = new LinkedList();
     }
 
     // ----------------------------------------------------------------------
@@ -197,8 +212,8 @@ public class XhtmlBaseSink
      */
     protected void setCellJustif( int[] justif )
     {
-        this.cellJustif = justif;
-        this.isCellJustif = true;
+        this.cellJustifStack.addLast( justif );
+        this.isCellJustifStack.addLast( Boolean.TRUE );
     }
 
     /**
@@ -208,7 +223,7 @@ public class XhtmlBaseSink
      */
     protected int[] getCellJustif()
     {
-        return this.cellJustif ;
+        return (int[])this.cellJustifStack.getLast();
     }
 
     /**
@@ -218,7 +233,7 @@ public class XhtmlBaseSink
      */
     protected void setCellCount( int count )
     {
-        this.cellCount = count;
+        this.cellCountStack.addLast( Integer.valueOf( count ) );
     }
 
     /**
@@ -228,7 +243,7 @@ public class XhtmlBaseSink
      */
     protected int getCellCount()
     {
-        return this.cellCount ;
+        return Integer.parseInt( this.cellCountStack.getLast().toString() );
     }
 
     /**
@@ -239,9 +254,9 @@ public class XhtmlBaseSink
         resetTextBuffer();
         headFlag = false;
         verbatimFlag = false;
-        cellJustif = null;
-        isCellJustif = false;
-        cellCount = 0;
+        cellJustifStack.clear();
+        isCellJustifStack.clear();
+        cellCountStack.clear();
         evenTableRow = true;
     }
 
@@ -1091,6 +1106,7 @@ public class XhtmlBaseSink
     /** {@inheritDoc} */
     public void table( SinkEventAttributes attributes )
     {
+        this.tableContentWriterStack.addLast( new StringWriter() );
         this.tableRows = false;
 
         if ( paragraphFlag )
@@ -1102,7 +1118,7 @@ public class XhtmlBaseSink
         }
 
         // start table with tableRows
-        if ( attributes == null )
+        if ( this.tableAttributes == null )
         {
             this.tableAttributes = new SinkEventAttributeSet( 0 );
         }
@@ -1123,49 +1139,41 @@ public class XhtmlBaseSink
 
         writeEndTag( HtmlMarkup.TABLE );
 
-        String content = tempWriter.toString();
-
-        String startTable =
-            new StringBuffer().append( Markup.LESS_THAN ).append( HtmlMarkup.TABLE.toString() ).toString();
-
-        if ( content.lastIndexOf( startTable ) == -1 )
+        if ( this.tableContentWriterStack.isEmpty() )
         {
-            if ( getLog().isDebugEnabled() )
+            if ( getLog().isWarnEnabled() )
             {
-                getLog().debug( "table() NOT call firstly" );
+                getLog().warn( "No table content." );
             }
             return;
         }
 
-        content = content.substring( content.lastIndexOf( startTable ) );
+        String tableContent = this.tableContentWriterStack.removeLast().toString();
 
-        String startCaption =
-            new StringBuffer().append( Markup.LESS_THAN ).append( HtmlMarkup.CAPTION.toString() )
-                              .append( Markup.GREATER_THAN ).toString();
-        String endCaption =
-            new StringBuffer().append( Markup.LESS_THAN ).append( Markup.SLASH ).append( HtmlMarkup.CAPTION.toString() )
-                              .append( Markup.GREATER_THAN ).toString();
+        String tableCaption = null;
+        if ( !this.tableCaptionStack.isEmpty() && this.tableCaptionStack.getLast() != null )
+        {
+            tableCaption = this.tableCaptionStack.removeLast().toString();
+        }
 
-        if ( content.indexOf( startCaption ) != -1 && content.indexOf( endCaption ) != -1 )
+        if ( tableCaption != null )
         {
             // DOXIA-177
-            int iStartCaption = content.indexOf( startCaption );
-            int iEndCaption = content.indexOf( endCaption ) + endCaption.length();
+            StringBuffer sb = new StringBuffer();
+            sb.append( tableContent.substring( 0, tableContent.indexOf( Markup.GREATER_THAN ) + 1 ) );
+            sb.append( tableCaption );
+            sb.append( tableContent.substring( tableContent.indexOf( Markup.GREATER_THAN ) + 1 ) );
 
-            String captionTag = content.substring( iStartCaption, iEndCaption );
-            String contentWithoutCaption = StringUtils.replace( content, captionTag, "" );
+            write( sb.toString() );
+        }
+        else
+        {
+            write( tableContent );
+        }
 
-            String startTr =
-                new StringBuffer().append( Markup.LESS_THAN ).append( HtmlMarkup.TR.toString() ).toString();
-
-            StringBuffer text = new StringBuffer();
-            text.append( contentWithoutCaption.substring( 0, contentWithoutCaption.indexOf( startTr ) ) );
-            text.append( captionTag );
-            text.append( contentWithoutCaption.substring( contentWithoutCaption.indexOf( startTr ) ) );
-
-            String contentWithCaption = tempWriter.toString();
-            tempWriter = new StringWriter();
-            tempWriter.write( StringUtils.replace( contentWithCaption, content, text.toString() ) );
+        if ( !this.cellCountStack.isEmpty() )
+        {
+            this.cellCountStack.removeLast().toString();
         }
     }
 
@@ -1188,35 +1196,41 @@ public class XhtmlBaseSink
         }
 
         MutableAttributeSet att = new SinkEventAttributeSet();
-
-        if ( !tableAttributes.isDefined( Attribute.ALIGN.toString() ) )
+        if ( !this.tableAttributes.isDefined( Attribute.ALIGN.toString() ) )
         {
             att.addAttribute( Attribute.ALIGN, "center" );
         }
 
-        if ( !tableAttributes.isDefined( Attribute.BORDER.toString() ) )
+        if ( !this.tableAttributes.isDefined( Attribute.BORDER.toString() ) )
         {
             att.addAttribute( Attribute.BORDER, ( grid ? "1" : "0" ) );
         }
 
-        if ( !tableAttributes.isDefined( Attribute.CLASS.toString() ) )
+        if ( !this.tableAttributes.isDefined( Attribute.CLASS.toString() ) )
         {
             att.addAttribute( Attribute.CLASS, "bodyTable" );
         }
 
-        att.addAttributes( tableAttributes );
-
-        tableAttributes.removeAttributes( tableAttributes );
+        att.addAttributes( this.tableAttributes );
+        this.tableAttributes.removeAttributes( this.tableAttributes );
 
         writeStartTag( HtmlMarkup.TABLE, att );
+
+        this.cellCountStack.addLast( new Integer( 0 ) );
     }
 
     /** {@inheritDoc} */
     public void tableRows_()
     {
         this.tableRows = false;
-        this.cellJustif = null;
-        this.isCellJustif = false;
+        if ( !this.cellJustifStack.isEmpty() )
+        {
+            this.cellJustifStack.removeLast();
+        }
+        if ( !this.isCellJustifStack.isEmpty() )
+        {
+            this.isCellJustifStack.removeLast();
+        }
 
         this.evenTableRow = true;
     }
@@ -1263,7 +1277,11 @@ public class XhtmlBaseSink
 
         evenTableRow = !evenTableRow;
 
-        cellCount = 0;
+        if ( !this.cellCountStack.isEmpty() )
+        {
+            this.cellCountStack.removeLast();
+            this.cellCountStack.addLast( new Integer( 0 ) );
+        }
     }
 
     /**
@@ -1273,8 +1291,6 @@ public class XhtmlBaseSink
     public void tableRow_()
     {
         writeEndTag( HtmlMarkup.TR );
-
-        cellCount = 0;
     }
 
     /** {@inheritDoc} */
@@ -1342,19 +1358,25 @@ public class XhtmlBaseSink
             justif = attributes.getAttribute( Attribute.ALIGN.toString() ).toString();
         }
 
-        if ( justif == null && cellJustif != null && cellJustif.length > 0 && isCellJustif )
+        if ( !this.cellCountStack.isEmpty() )
         {
-            switch ( cellJustif[Math.min( cellCount, cellJustif.length - 1 )] )
+            int cellCount = Integer.parseInt( this.cellCountStack.getLast().toString() );
+            int[] cellJustif = (int[]) this.cellJustifStack.getLast();
+            if ( justif == null && cellJustif != null && cellJustif.length > 0
+                && this.isCellJustifStack.getLast().equals( Boolean.TRUE ) )
             {
-                case JUSTIFY_LEFT:
-                    justif = "left";
-                    break;
-                case JUSTIFY_RIGHT:
-                    justif = "right";
-                    break;
-                case JUSTIFY_CENTER:
-                default:
-                    justif = "center";
+                switch ( cellJustif[Math.min( cellCount, cellJustif.length - 1 )] )
+                {
+                    case JUSTIFY_LEFT:
+                        justif = "left";
+                        break;
+                    case JUSTIFY_RIGHT:
+                        justif = "right";
+                        break;
+                    case JUSTIFY_CENTER:
+                    default:
+                        justif = "center";
+                }
             }
         }
 
@@ -1394,9 +1416,11 @@ public class XhtmlBaseSink
 
         writeEndTag( t );
 
-        if ( isCellJustif )
+        if ( !this.isCellJustifStack.isEmpty() && this.isCellJustifStack.getLast().equals( Boolean.TRUE )
+            && !this.cellCountStack.isEmpty() )
         {
-            ++cellCount;
+            int cellCount = Integer.parseInt( this.cellCountStack.removeLast().toString() );
+            this.cellCountStack.addLast( new Integer( ++cellCount ) );
         }
     }
 
@@ -1415,6 +1439,10 @@ public class XhtmlBaseSink
      */
     public void tableCaption( SinkEventAttributes attributes )
     {
+        StringWriter sw = new StringWriter();
+        this.tableCaptionWriterStack.addLast( sw );
+        this.tableCaptionXMLWriterStack.addLast( new PrettyPrintXMLWriter( sw ) );
+
         // TODO: tableCaption should be written before tableRows (DOXIA-177)
         MutableAttributeSet atts = SinkUtils.filterAttributes(
                 attributes, SinkUtils.SINK_SECTION_ATTRIBUTES  );
@@ -1429,6 +1457,12 @@ public class XhtmlBaseSink
     public void tableCaption_()
     {
         writeEndTag( HtmlMarkup.CAPTION );
+
+        if ( !this.tableCaptionXMLWriterStack.isEmpty() && this.tableCaptionXMLWriterStack.getLast() != null )
+        {
+            this.tableCaptionStack.addLast( this.tableCaptionWriterStack.removeLast().toString() );
+            this.tableCaptionXMLWriterStack.removeLast();
+        }
     }
 
     /**
@@ -1877,8 +1911,6 @@ public class XhtmlBaseSink
     /** {@inheritDoc} */
     public void close()
     {
-        writer.write( tempWriter.toString() );
-        tempWriter = new StringWriter();
         writer.close();
 
         if ( getLog().isWarnEnabled() && this.warnMessages != null )
@@ -1955,7 +1987,62 @@ public class XhtmlBaseSink
     /** {@inheritDoc} */
     protected void write( String text )
     {
-        tempWriter.write( unifyEOLs( text ) );
+        if ( !this.tableCaptionXMLWriterStack.isEmpty() && this.tableCaptionXMLWriterStack.getLast() != null )
+        {
+            ( (PrettyPrintXMLWriter) this.tableCaptionXMLWriterStack.getLast() ).writeText( unifyEOLs( text ) );
+        }
+        else if ( !this.tableContentWriterStack.isEmpty() && this.tableContentWriterStack.getLast() != null )
+        {
+            ( (StringWriter) this.tableContentWriterStack.getLast() ).write( unifyEOLs( text ) );
+        }
+        else
+        {
+            writer.write( unifyEOLs( text ) );
+        }
+    }
+
+    /** {@inheritDoc} */
+    protected void writeStartTag( Tag t, MutableAttributeSet att, boolean isSimpleTag )
+    {
+        if ( this.tableCaptionXMLWriterStack.isEmpty() )
+        {
+            super.writeStartTag ( t, att, isSimpleTag );
+        }
+        else
+        {
+            String tag = ( getNameSpace() != null ? getNameSpace() + ":" : "" ) + t.toString();
+            ( (PrettyPrintXMLWriter) this.tableCaptionXMLWriterStack.getLast() ).startElement( tag );
+
+            if ( att != null )
+            {
+                Enumeration names = att.getAttributeNames();
+                while ( names.hasMoreElements() )
+                {
+                    Object key = names.nextElement();
+                    Object value = att.getAttribute( key );
+
+                    ( (PrettyPrintXMLWriter) this.tableCaptionXMLWriterStack.getLast() ).addAttribute( key.toString(), value.toString() );
+                }
+            }
+
+            if ( isSimpleTag )
+            {
+                ( (PrettyPrintXMLWriter) this.tableCaptionXMLWriterStack.getLast() ).endElement();
+            }
+        }
+    }
+
+    /** {@inheritDoc} */
+    protected void writeEndTag( Tag t )
+    {
+        if ( this.tableCaptionXMLWriterStack.isEmpty() )
+        {
+            super.writeEndTag( t );
+        }
+        else
+        {
+            ( (PrettyPrintXMLWriter) this.tableCaptionXMLWriterStack.getLast() ).endElement();
+        }
     }
 
     /**
