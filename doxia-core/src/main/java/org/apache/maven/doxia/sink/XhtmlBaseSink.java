@@ -22,6 +22,7 @@ package org.apache.maven.doxia.sink;
 import java.io.PrintWriter;
 import java.io.StringWriter;
 import java.io.Writer;
+import java.util.Enumeration;
 import java.util.HashMap;
 import java.util.Iterator;
 import java.util.Map;
@@ -844,7 +845,7 @@ public class XhtmlBaseSink
      */
     public void figureGraphics( String name )
     {
-        write( String.valueOf( SPACE ) + Attribute.SRC + EQUAL + QUOTE + name + QUOTE );
+        write( String.valueOf( SPACE ) + Attribute.SRC + EQUAL + QUOTE + escapeHTML( name ) + QUOTE );
     }
 
     /** {@inheritDoc} */
@@ -858,13 +859,19 @@ public class XhtmlBaseSink
             writeStartTag( HtmlMarkup.P, atts );
         }
 
+        MutableAttributeSet filtered = SinkUtils.filterAttributes( attributes, SinkUtils.SINK_IMG_ATTRIBUTES );
+        if ( filtered != null )
+        {
+            filtered.removeAttribute( Attribute.SRC.toString() );
+        }
+
         int count = ( attributes == null ? 1 : attributes.getAttributeCount() + 1 );
 
         MutableAttributeSet atts = new SinkEventAttributeSet( count );
 
-        atts.addAttribute( Attribute.SRC, src );
-        atts.addAttributes( SinkUtils.filterAttributes(
-                attributes, SinkUtils.SINK_IMG_ATTRIBUTES ) );
+        atts.addAttribute( Attribute.SRC, escapeHTML( src ) );
+        atts.addAttributes( filtered );
+
         if ( atts.getAttribute( Attribute.ALT.toString() ) == null )
         {
             atts.addAttribute( Attribute.ALT.toString(), "" );
@@ -1827,11 +1834,11 @@ public class XhtmlBaseSink
         {
             if ( tagType == TAG_TYPE_SIMPLE )
             {
-                writeSimpleTag( tag, attributes );
+                writeSimpleTag( tag, escapeAttributeValues( attributes ) );
             }
             else if ( tagType == TAG_TYPE_START )
             {
-                writeStartTag( tag, attributes );
+                writeStartTag( tag, escapeAttributeValues( attributes ) );
             }
             else if ( tagType == TAG_TYPE_END )
             {
@@ -1843,6 +1850,22 @@ public class XhtmlBaseSink
                 logMessage( "noTypeInfo", msg );
             }
         }
+    }
+
+    private SinkEventAttributes escapeAttributeValues( SinkEventAttributes attributes )
+    {
+        SinkEventAttributeSet set = new SinkEventAttributeSet( attributes.getAttributeCount() );
+
+        Enumeration names = attributes.getAttributeNames();
+
+        while ( names.hasMoreElements() )
+        {
+            Object name = names.nextElement();
+
+            set.addAttribute( name, escapeHTML( attributes.getAttribute( name ).toString() ) );
+        }
+
+        return set;
     }
 
     /** {@inheritDoc} */

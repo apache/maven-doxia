@@ -22,6 +22,7 @@ package org.apache.maven.doxia.parser;
 import java.util.Iterator;
 
 import org.apache.maven.doxia.logging.Log;
+import org.apache.maven.doxia.sink.SinkEventAttributeSet;
 import org.apache.maven.doxia.sink.SinkEventElement;
 import org.apache.maven.doxia.sink.SinkEventTestingSink;
 
@@ -629,5 +630,41 @@ public class XhtmlBaseParserTest
         assertEquals( "anchor", element.getName() );
         assertEquals( "a1invalid", element.getArgs()[0] );
         assertEquals( "anchor_", ( (SinkEventElement) it.next() ).getName() );
+    }
+
+    /**
+     * Test entities in attributes.
+     *
+     * @throws java.lang.Exception if any.
+     */
+    public void testAttributeEntities()
+        throws Exception
+    {
+        String text = "<script type=\"text/javascript\" src=\"http://ex.com/ex.js?v=l&amp;l=e\"></script>";
+
+        parser.parse( text, sink );
+
+        Iterator it = sink.getEventList().iterator();
+
+        SinkEventElement event = (SinkEventElement) it.next();
+
+        assertEquals( "unknown", event.getName() );
+        assertEquals( "script", event.getArgs()[0] );
+        SinkEventAttributeSet attribs = (SinkEventAttributeSet) event.getArgs()[2];
+        // ampersand should be un-escaped
+        assertEquals( "http://ex.com/ex.js?v=l&l=e", attribs.getAttribute( "src" ) );
+        assertEquals( "unknown", ( (SinkEventElement) it.next() ).getName() );
+        assertFalse( it.hasNext() );
+
+        sink.reset();
+        text = "<img src=\"http://ex.com/ex.jpg?v=l&amp;l=e\" alt=\"image\"/>";
+        parser.parse( text, sink );
+
+        it = sink.getEventList().iterator();
+        event = (SinkEventElement) it.next();
+        assertEquals( "figureGraphics", event.getName() );
+        attribs = (SinkEventAttributeSet) event.getArgs()[1];
+        // ampersand should be un-escaped
+        assertEquals( "http://ex.com/ex.jpg?v=l&l=e", attribs.getAttribute( "src" ) );
     }
 }

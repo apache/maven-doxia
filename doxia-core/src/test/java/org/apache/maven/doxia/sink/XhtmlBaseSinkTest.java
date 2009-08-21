@@ -833,6 +833,37 @@ public class XhtmlBaseSinkTest
     }
 
     /**
+     * Test entities in attribute values.
+     */
+    public void testAttributeEntities()
+    {
+        final Object[] startTag = new Object[] { new Integer( XhtmlBaseSink.TAG_TYPE_START ) };
+        final Object[] endTag = new Object[] { new Integer( XhtmlBaseSink.TAG_TYPE_END ) };
+        final String script = XhtmlBaseSink.SCRIPT.toString();
+        final SinkEventAttributes src = new SinkEventAttributeSet(
+                new String[] {SinkEventAttributes.SRC.toString(), "http://ex.com/ex.js?v=l&l=e"} );
+
+        try
+        {
+            sink = new XhtmlBaseSink( writer );
+
+            sink.unknown( script, startTag, src );
+            sink.unknown( script, endTag, null );
+
+            sink.figureGraphics( "http://ex.com/ex.jpg?v=l&l=e", src );
+        }
+        finally
+        {
+            sink.close();
+        }
+
+        String result = writer.toString();
+
+        assertTrue( result.indexOf( "ex.js?v=l&amp;l=e" ) != -1 );
+        assertTrue( result.indexOf( "ex.jpg?v=l&amp;l=e" ) != -1 );
+    }
+
+    /**
      * Test of entity.
      */
     public void testEntity()
