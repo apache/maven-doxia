@@ -266,14 +266,19 @@ public class FoAggregateSink extends FoSink
         String idName = name.replace( '\\', '/' );
 
         // prepend "./" and strip extension
+        while ( idName.indexOf( "//" ) != -1 )
+        {
+            idName = StringUtils.replace( idName, "//", "/" );
+        }
+
         if ( !idName.startsWith( "./" ) )
         {
             idName = "./" + idName;
         }
 
-        if ( idName.indexOf( ".", 2 ) != -1 )
+        if ( idName.substring( 2 ).lastIndexOf( "." ) != -1 )
         {
-            idName = idName.substring( 0, idName.indexOf( ".", 2 ) );
+            idName = idName.substring( 0, idName.lastIndexOf( "." ) );
         }
 
         return idName;
@@ -360,11 +365,17 @@ public class FoAggregateSink extends FoSink
             // external links
             writeStartTag( BASIC_LINK_TAG, "external-destination", HtmlTools.escapeHTML( name ) );
             writeStartTag( INLINE_TAG, "href.external" );
+            return;
         }
-        else if ( DoxiaUtils.isInternalLink( name ) )
+
+        while ( name.indexOf( "//" ) != -1 )
+        {
+            name = StringUtils.replace( name, "//", "/" );
+        }
+
+        if ( DoxiaUtils.isInternalLink( name ) )
         {
             // internal link (ie anchor is in the same source document)
-
             String anchor = name.substring( 1 );
 
             if ( !DoxiaUtils.isValidId( anchor ) )

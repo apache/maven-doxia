@@ -140,10 +140,27 @@ public class FoAggregateSinkTest
         {
             sink = new FoAggregateSink( writer );
             sink.link( "http://www.example.com/" );
+            sink.text( "http://www.example.com/" );
+            sink.link_();
             sink.setDocumentName( "./folder\\docName.xml" );
             sink.link( "#anchor" );
+            sink.text( "#anchor" );
+            sink.link_();
             sink.link( "./././index.html" );
+            sink.text( "./././index.html" );
+            sink.link_();
             sink.link( "./../download.html" );
+            sink.text( "./../download.html" );
+            sink.link_();
+            sink.link( ".///test.html" );
+            sink.text( "./test.html" );
+            sink.link_();
+            sink.link( "./whatsnew-1.1.html" );
+            sink.text( "./whatsnew-1.1.html" );
+            sink.link_();
+            sink.setDocumentName( ".///whatsnew-1.1.html" );
+            sink.body();
+            sink.body_();
         }
         finally
         {
@@ -156,5 +173,8 @@ public class FoAggregateSinkTest
         assertTrue( result.indexOf( "<fo:basic-link internal-destination=\"./folder/docName#anchor\">" ) != -1 );
         assertTrue( result.indexOf( "<fo:basic-link internal-destination=\"./folder/index\">" ) != -1 );
         assertTrue( result.indexOf( "<fo:basic-link internal-destination=\"./download\">" ) != -1 );
+        assertTrue( result.indexOf( "<fo:basic-link internal-destination=\"./folder/test\">" ) != -1 );
+        assertTrue( result.indexOf( "<fo:basic-link internal-destination=\"./folder/whatsnew-1.1\">" ) != -1 );
+        assertTrue( result.indexOf( "<fo:block id=\"./whatsnew-1.1\">" ) != -1 );
     }
 }
