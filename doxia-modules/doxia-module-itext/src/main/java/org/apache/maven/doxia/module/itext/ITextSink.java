@@ -39,8 +39,8 @@ import java.util.Map;
 import java.util.Set;
 import java.util.TreeSet;
 
+import org.apache.maven.doxia.sink.AbstractXmlSink;
 import org.apache.maven.doxia.sink.Sink;
-import org.apache.maven.doxia.sink.SinkAdapter;
 import org.apache.maven.doxia.sink.SinkEventAttributes;
 import org.apache.maven.doxia.util.DoxiaUtils;
 import org.apache.maven.doxia.util.HtmlTools;
@@ -70,7 +70,7 @@ import org.codehaus.plexus.util.xml.XMLWriter;
  * @version $Id$
  */
 public class ITextSink
-    extends SinkAdapter
+    extends AbstractXmlSink
 {
     /** This is the place where the iText DTD is located. IMPORTANT: this DTD is not uptodate! */
     public static final String DTD = "http://itext.sourceforge.net/itext.dtd";
@@ -94,7 +94,7 @@ public class ITextSink
     private Writer writer;
 
     /** The XML Writer used */
-    private XMLWriter xmlWriter;
+    private final XMLWriter xmlWriter;
 
     private boolean writeStart;
 
@@ -146,7 +146,7 @@ public class ITextSink
         this( new PrettyPrintXMLWriter( writer, encoding, null ) );
 
         this.writer = writer;
-        writeStart = true;
+        this.writeStart = true;
     }
 
     /**
@@ -158,11 +158,9 @@ public class ITextSink
     {
         this.xmlWriter = xmlWriter;
 
-        actionContext = new SinkActionContext();
-        font = new ITextFont();
-        header = new ITextHeader();
+        this.writeStart = false;
 
-        writeStart = false;
+        init();
     }
 
     /**
@@ -212,6 +210,8 @@ public class ITextSink
 
             this.warnMessages = null;
         }
+
+        init();
     }
 
     /** {@inheritDoc} */
@@ -233,6 +233,8 @@ public class ITextSink
     /** {@inheritDoc} */
     public void head()
     {
+        init();
+
         actionContext.setAction( SinkActionContext.HEAD );
     }
 
@@ -1589,6 +1591,24 @@ public class ITextSink
         logMessage( "unknownEvent", msg );
     }
 
+    /** {@inheritDoc} */
+    protected void init()
+    {
+        super.init();
+
+        this.actionContext = new SinkActionContext();
+        this.font = new ITextFont();
+        this.header = new ITextHeader();
+
+        this.numberDepth = 1;
+        this.depth = 0;
+        this.tableCaptionWriter = null;
+        this.tableCaptionXMLWriter = null;
+        this.anchorDefined = false;
+        this.figureDefined = false;
+        this.warnMessages = null;
+    }
+
     /**
      * Convenience method to write a starting element.
      *
@@ -1662,7 +1682,7 @@ public class ITextSink
      *
      * @param aString
      */
-    private void write( String aString )
+    protected void write( String aString )
     {
         write( aString, false );
     }
