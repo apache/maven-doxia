@@ -204,4 +204,12 @@ public class XhtmlParser
         isEmptyElement = false;
     }
 
+    /** {@inheritDoc} */
+    protected void init()
+    {
+        super.init();
+
+        this.boxed = false;
+        this.isEmptyElement = false;
+    }
 }

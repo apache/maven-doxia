@@ -104,7 +104,7 @@ public class XhtmlSink
     /** {@inheritDoc} */
     public void head()
     {
-        resetState();
+        init();
 
         setHeadFlag( true );
 
@@ -237,7 +237,7 @@ public class XhtmlSink
 
         flush();
 
-        resetState();
+        init();
     }
 
     // ----------------------------------------------------------------------
