@@ -38,8 +38,8 @@ import java.util.StringTokenizer;
 import java.util.TreeSet;
 import java.util.Vector;
 
+import org.apache.maven.doxia.sink.AbstractTextSink;
 import org.apache.maven.doxia.sink.Sink;
-import org.apache.maven.doxia.sink.SinkAdapter;
 import org.apache.maven.doxia.sink.SinkEventAttributes;
 
 /**
@@ -49,7 +49,7 @@ import org.apache.maven.doxia.sink.SinkEventAttributes;
  * @since 1.0
  */
 public class RtfSink
-    extends SinkAdapter
+    extends AbstractTextSink
 {
     /** Paper width, 21 cm */
     public static final double DEFAULT_PAPER_WIDTH = 21.;   /*cm*/
@@ -177,7 +177,7 @@ public class RtfSink
 
     private int charSet = DEFAULT_CHAR_SET;
 
-    private Hashtable fontTable;
+    private final Hashtable fontTable;
 
     private Context context;
 
@@ -189,9 +189,9 @@ public class RtfSink
 
     private int listItemIndent;
 
-    private Vector numbering;
+    private final Vector numbering;
 
-    private Vector itemNumber;
+    private final Vector itemNumber;
 
     private int style = STYLE_ROMAN;
 
@@ -201,7 +201,7 @@ public class RtfSink
 
     private StringBuffer verbatim;
 
-    boolean frame;
+    private boolean frame;
 
     private Table table;
 
@@ -254,21 +254,12 @@ public class RtfSink
     protected RtfSink( OutputStream output, String encoding )
         throws IOException
     {
-        fontTable = new Hashtable();
-        context = new Context();
-        indentation = new Indentation( 0 );
-        space = new Space( 20 * DEFAULT_SPACING );
-        numbering = new Vector();
-        itemNumber = new Vector();
-
-        Font font = getFont( STYLE_BOLD, fontSize );
-        if ( font != null )
-        {
-            listItemIndent = textWidth( LIST_ITEM_HEADER, font );
-        }
+        this.fontTable = new Hashtable();
+        this.numbering = new Vector();
+        this.itemNumber = new Vector();
 
         Writer w;
-        stream = new BufferedOutputStream( output );
+        this.stream = new BufferedOutputStream( output );
         // TODO: encoding should be consistent with codePage
         if ( encoding != null )
         {
@@ -278,7 +269,9 @@ public class RtfSink
         {
             w = new OutputStreamWriter( stream );
         }
-        writer = new PrintWriter( new BufferedWriter( w ) );
+        this.writer = new PrintWriter( new BufferedWriter( w ) );
+
+        init();
     }
 
     /**
@@ -426,6 +419,8 @@ public class RtfSink
     /** {@inheritDoc} */
     public void head()
     {
+        init();
+
         writer.println( "{\\rtf1\\ansi\\ansicpg" + codePage + "\\deff0" );
 
         writer.println( "{\\fonttbl" );
@@ -1748,6 +1743,8 @@ public class RtfSink
 
             this.warnMessages = null;
         }
+
+        init();
     }
 
     /**
@@ -1780,6 +1777,35 @@ public class RtfSink
         }
         set.add( msg );
         warnMessages.put( key, set );
+    }
+
+    /** {@inheritDoc} */
+    protected void init()
+    {
+        super.init();
+
+        this.fontTable.clear();
+        this.context = new Context();
+        this.paragraph = null;
+        this.indentation = new Indentation( 0 );
+        this.space = new Space( 20 * DEFAULT_SPACING );
+        Font font = getFont( STYLE_BOLD, fontSize );
+        if ( font != null )
+        {
+            this.listItemIndent = textWidth( LIST_ITEM_HEADER, font );
+        }
+        this.numbering.clear();
+        this.itemNumber.clear();
+        this.style = STYLE_ROMAN;
+        this.sectionLevel = 0;
+        this.emptyHeader = false;
+        this.verbatim = null;
+        this.frame = false;
+        this.table = null;
+        this.row = null;
+        this.cell = null;
+        this.line = null;
+        this.warnMessages = null;
     }
 
     // -----------------------------------------------------------------------
