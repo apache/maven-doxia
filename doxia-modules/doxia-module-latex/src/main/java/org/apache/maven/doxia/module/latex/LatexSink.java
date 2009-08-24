@@ -50,15 +50,15 @@ public class LatexSink
      *
      * This implies that <code>\\begin{document}</code>, <code>\\title{..}</code> will not be output.
      */
-    private boolean fragmentDocument;
+    private final boolean fragmentDocument;
 
     private boolean ignoreText;
 
-    private LineBreaker out;
+    private final LineBreaker out;
 
-    private String sinkCommands;
+    private final String sinkCommands;
 
-    private String preamble;
+    private final String preamble;
 
     private boolean titleFlag;
 
@@ -92,9 +92,7 @@ public class LatexSink
      */
     protected LatexSink( Writer out )
     {
-        this.out = new LineBreaker( out );
-        this.sinkCommands = defaultSinkCommands();
-        this.preamble = defaultPreamble();
+        this( out, null, null );
     }
 
     /**
@@ -123,9 +121,21 @@ public class LatexSink
     protected LatexSink( Writer out, String sinkCommands, String preamble, boolean fragmentDocument )
     {
         this.out = new LineBreaker( out );
+
+        if ( sinkCommands == null )
+        {
+            sinkCommands = defaultSinkCommands();
+        }
+        if ( preamble == null )
+        {
+            preamble = defaultPreamble();
+        }
+
         this.sinkCommands = sinkCommands;
         this.preamble = preamble;
         this.fragmentDocument = fragmentDocument;
+
+        init();
     }
 
     // ----------------------------------------------------------------------
@@ -177,14 +187,7 @@ public class LatexSink
     /** {@inheritDoc} */
     public void head( SinkEventAttributes attributes )
     {
-        titleFlag = false;
-        numberedListNesting = 0;
-        verbatimFlag = false;
-        figureFlag = false;
-        tableFlag = false;
-        gridFlag = false;
-        cellJustif = null;
-        cellCount = 0;
+        init();
 
         if ( !fragmentDocument )
         {
@@ -1021,7 +1024,7 @@ public class LatexSink
         if ( attributes != null && attributes.isDefined( SinkEventAttributes.DECORATION ) )
         {
             boxed = "boxed".equals(
-                (String) attributes.getAttribute( SinkEventAttributes.DECORATION ) );
+                attributes.getAttribute( SinkEventAttributes.DECORATION ) );
         }
 
         markup( EOL + "\\begin{small}" + EOL );
@@ -1362,6 +1365,8 @@ public class LatexSink
     public void close()
     {
         out.close();
+
+        init();
     }
 
     // ----------------------------------------------------------------------
@@ -1432,5 +1437,23 @@ public class LatexSink
 
             return "";
         }
+    }
+
+    /** {@inheritDoc} */
+    protected void init()
+    {
+        super.init();
+
+        this.ignoreText = false;
+        this.titleFlag = false;
+        this.numberedListNesting = 0;
+        this.verbatimFlag = false;
+        this.figureFlag = false;
+        this.tableFlag = false;
+        this.gridFlag = false;
+        this.cellJustif = null;
+        this.cellCount = 0;
+        this.isTitle = false;
+        this.title = null;
     }
 }
