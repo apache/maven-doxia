@@ -89,9 +89,9 @@ public class FoSink
     /** figure flag. */
     private boolean inFigure;
 
-    private String encoding;
+    private final String encoding;
 
-    private String languageId;
+    private final String languageId;
 
     /** Stack of drawing borders on table cells. */
     private final LinkedList tableGridStack;
@@ -139,26 +139,7 @@ public class FoSink
      */
     protected FoSink( Writer writer, String encoding )
     {
-        if ( writer == null )
-        {
-            throw new NullPointerException( "Null writer in FO Sink!" );
-        }
-
-        this.out = new PrintWriter( writer );
-        this.encoding = encoding;
-        this.config = new FoConfiguration();
-
-        this.listStack = new Stack();
-        this.tableGridStack = new LinkedList();
-        this.cellJustifStack = new LinkedList();
-        this.isCellJustifStack = new LinkedList();
-        this.cellCountStack = new LinkedList();
-        this.tableContentWriterStack = new LinkedList();
-        this.tableCaptionWriterStack = new LinkedList();
-        this.tableCaptionXMLWriterStack = new LinkedList();
-        this.tableCaptionStack = new LinkedList();
-
-        setNameSpace( "fo" );
+        this( writer, encoding, null );
     }
 
     /**
@@ -173,9 +154,27 @@ public class FoSink
      */
     protected FoSink( Writer writer, String encoding, String languageId )
     {
-        this( writer, encoding );
+        if ( writer == null )
+        {
+            throw new NullPointerException( "Null writer in FO Sink!" );
+        }
 
+        this.out = new PrintWriter( writer );
+        this.encoding = encoding;
         this.languageId = languageId;
+        this.config = new FoConfiguration();
+
+        this.listStack = new Stack();
+        this.tableGridStack = new LinkedList();
+        this.cellJustifStack = new LinkedList();
+        this.isCellJustifStack = new LinkedList();
+        this.cellCountStack = new LinkedList();
+        this.tableContentWriterStack = new LinkedList();
+        this.tableCaptionWriterStack = new LinkedList();
+        this.tableCaptionXMLWriterStack = new LinkedList();
+        this.tableCaptionStack = new LinkedList();
+
+        setNameSpace( "fo" );
     }
 
     // TODO add FOP compliance mode?
@@ -199,6 +198,8 @@ public class FoSink
     /** {@inheritDoc} */
     public void head( SinkEventAttributes attributes )
     {
+        init();
+
         startPageSequence( "0", null, null );
     }
 
@@ -1366,15 +1367,7 @@ public class FoSink
             this.warnMessages = null;
         }
 
-        this.listStack.clear();
-        this.tableGridStack.clear();
-        this.cellJustifStack.clear();
-        this.isCellJustifStack.clear();
-        this.cellCountStack.clear();
-        this.tableContentWriterStack.clear();
-        this.tableCaptionWriterStack.clear();
-        this.tableCaptionXMLWriterStack.clear();
-        this.tableCaptionStack.clear();
+        init();
     }
 
     /**
@@ -1816,5 +1809,28 @@ public class FoSink
         }
         set.add( msg );
         warnMessages.put( key, set );
+    }
+
+    /** {@inheritDoc} */
+    protected void init()
+    {
+        super.init();
+
+        this.listStack.clear();
+        this.tableGridStack.clear();
+        this.cellJustifStack.clear();
+        this.isCellJustifStack.clear();
+        this.cellCountStack.clear();
+        this.tableContentWriterStack.clear();
+        this.tableCaptionWriterStack.clear();
+        this.tableCaptionXMLWriterStack.clear();
+        this.tableCaptionStack.clear();
+
+        this.section = 0;
+        this.subsection = 0;
+        this.subsubsection = 0;
+        this.verbatim = false;
+        this.inFigure = false;
+        this.warnMessages = null;
     }
 }
