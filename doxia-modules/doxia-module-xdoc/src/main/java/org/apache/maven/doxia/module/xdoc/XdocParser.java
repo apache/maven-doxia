@@ -76,6 +76,9 @@ public class XdocParser
     public void parse( Reader source, Sink sink )
         throws ParseException
     {
+        this.sourceContent = null;
+        init();
+
         try
         {
             StringWriter contentWriter = new StringWriter();
@@ -96,9 +99,17 @@ public class XdocParser
         // leave this at default (false) until everything is properly implemented, see DOXIA-226
         //setIgnorableWhitespace( true );
 
-        super.parse( tmp, sink );
+        try
+        {
+            super.parse( tmp, sink );
+        }
+        finally
+        {
+            this.sourceContent = null;
 
-        this.hasTitle = false;
+            setSecondParsing( false );
+            init();
+        }
     }
 
     /** {@inheritDoc} */
@@ -309,6 +320,18 @@ public class XdocParser
         openMissingSections( newLevel, sink );
 
         setSectionLevel( newLevel );
+    }
+
+    /** {@inheritDoc} */
+    protected void init()
+    {
+        super.init();
+
+        this.isEmptyElement = false;
+        this.macroName = null;
+        this.macroParameters = null;
+        this.inHead = false;
+        this.hasTitle = false;
     }
 
     /**

@@ -108,14 +108,11 @@ public class XdocSink
     // Public protected methods
     // ----------------------------------------------------------------------
 
-    /**
-     * {@inheritDoc}
-     *
-     * Reset all variables.
-     */
-    protected void resetState()
+    /** {@inheritDoc} */
+    protected void init()
     {
-        super.resetState();
+        super.init();
+
         boxedFlag = false;
     }
 
@@ -135,7 +132,7 @@ public class XdocSink
      */
     public void head( SinkEventAttributes attributes )
     {
-        resetState();
+        init();
 
         setHeadFlag( true );
 
@@ -266,7 +263,7 @@ public class XdocSink
 
         flush();
 
-        resetState();
+        init();
     }
 
     // ----------------------------------------------------------------------
@@ -489,6 +486,13 @@ public class XdocSink
         writeStartTag( TR, att );
 
         setCellCount( 0 );
+    }
+
+    public void close()
+    {
+        super.close();
+
+        init();
     }
 
     /**
