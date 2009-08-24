@@ -93,6 +93,10 @@ public class FmlParser
     public void parse( Reader source, Sink sink )
         throws ParseException
     {
+        this.faqs = null;
+        this.sourceContent = null;
+        init();
+
         try
         {
             StringWriter contentWriter = new StringWriter();
@@ -121,8 +125,12 @@ public class FmlParser
         }
         finally
         {
-
             logWarnings();
+
+            this.faqs = null;
+            this.sourceContent = null;
+            setSecondParsing( false );
+            init();
         }
     }
 
@@ -422,6 +430,19 @@ public class FmlParser
         {
             super.handleEntity( parser, sink );
         }
+    }
+
+    /** {@inheritDoc} */
+    protected void init()
+    {
+        super.init();
+
+        this.currentFaq = null;
+        this.currentPart = null;
+        this.buffer = null;
+        this.warnMessages = null;
+        this.macroName = null;
+        this.macroParameters = null;
     }
 
     /**

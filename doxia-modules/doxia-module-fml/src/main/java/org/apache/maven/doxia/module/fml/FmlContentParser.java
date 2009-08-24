@@ -109,4 +109,12 @@ public class FmlContentParser
 
         isEmptyElement = false;
     }
+
+    /** {@inheritDoc} */
+    protected void init()
+    {
+        super.init();
+
+        this.isEmptyElement = false;
+    }
 }
