@@ -223,7 +223,7 @@ public class XhtmlBaseSink
      */
     protected int[] getCellJustif()
     {
-        return (int[])this.cellJustifStack.getLast();
+        return (int[]) this.cellJustifStack.getLast();
     }
 
     /**
@@ -1123,7 +1123,7 @@ public class XhtmlBaseSink
         }
 
         // start table with tableRows
-        if ( this.tableAttributes == null )
+        if ( attributes == null )
         {
             this.tableAttributes = new SinkEventAttributeSet( 0 );
         }
@@ -2028,7 +2028,8 @@ public class XhtmlBaseSink
                     Object key = names.nextElement();
                     Object value = att.getAttribute( key );
 
-                    ( (PrettyPrintXMLWriter) this.tableCaptionXMLWriterStack.getLast() ).addAttribute( key.toString(), value.toString() );
+                    ( (PrettyPrintXMLWriter) this.tableCaptionXMLWriterStack.getLast() )
+                            .addAttribute( key.toString(), value.toString() );
                 }
             }
 
