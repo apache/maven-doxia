@@ -164,6 +164,9 @@ public abstract class AbstractXmlParser
         {
             throw new ParseException( "Macro execution failed: " + ex.getMessage(), ex );
         }
+
+        setSecondParsing( false );
+        init();
     }
 
     /**
@@ -207,18 +210,6 @@ public abstract class AbstractXmlParser
         }
 
         return atts;
-    }
-
-    /**
-     * Initialize the parser. This is called first by
-     * {@link #parse(java.io.Reader, org.apache.maven.doxia.sink.Sink)} and can be used
-     * to set the parser into a clear state so it can be re-used.
-     *
-     * @since 1.1.1
-     */
-    protected void init()
-    {
-        // default: empty
     }
 
     /**

@@ -59,7 +59,7 @@ public class XhtmlBaseSink
     // ----------------------------------------------------------------------
 
     /** The PrintWriter to write the result. */
-    private PrintWriter writer;
+    private final PrintWriter writer;
 
     /** Used to collect text events mainly for the head events. */
     private StringBuffer textBuffer = new StringBuffer();
@@ -149,6 +149,8 @@ public class XhtmlBaseSink
         this.tableCaptionWriterStack = new LinkedList();
         this.tableCaptionXMLWriterStack = new LinkedList();
         this.tableCaptionStack = new LinkedList();
+
+        init();
     }
 
     // ----------------------------------------------------------------------
@@ -248,9 +250,19 @@ public class XhtmlBaseSink
 
     /**
      * Reset all variables.
+     *
+     * @deprecated since 1.1.2, use {@link #init()} instead of.
      */
     protected void resetState()
     {
+        init();
+    }
+
+    /** {@inheritDoc} */
+    protected void init()
+    {
+        super.init();
+
         resetTextBuffer();
 
         this.headFlag = false;
@@ -263,6 +275,18 @@ public class XhtmlBaseSink
         this.tableCaptionWriterStack.clear();
         this.tableCaptionXMLWriterStack.clear();
         this.tableCaptionStack.clear();
+
+        this.headFlag = false;
+        this.figureCaptionFlag = false;
+        this.paragraphFlag = false;
+        this.verbatimFlag = false;
+        this.evenTableRow = true;
+        this.tableAttributes = null;
+        this.legacyFigure = false;
+        this.legacyFigureCaption = false;
+        this.inFigure = false;
+        this.tableRows = false;
+        this.warnMessages = null;
     }
 
     /**
@@ -1937,7 +1961,7 @@ public class XhtmlBaseSink
             this.warnMessages = null;
         }
 
-        resetState();
+        init();
     }
 
     // ----------------------------------------------------------------------

@@ -68,7 +68,7 @@ public class IndexingSink
     private String title;
 
     /** The stack. */
-    private Stack stack = new Stack();
+    private final Stack stack;
 
     /**
      * Default constructor.
@@ -77,7 +77,10 @@ public class IndexingSink
      */
     public IndexingSink( IndexEntry sectionEntry )
     {
+        stack = new Stack();
         stack.push( sectionEntry );
+
+        init();
     }
 
     /**
@@ -241,5 +244,20 @@ public class IndexingSink
     public IndexEntry peek()
     {
         return (IndexEntry) stack.peek();
+    }
+
+    /** {@inheritDoc} */
+    public void close()
+    {
+        super.close();
+
+        init();
+    }
+
+    /** {@inheritDoc} */
+    protected void init()
+    {
+        this.type = 0;
+        this.title = null;
     }
 }

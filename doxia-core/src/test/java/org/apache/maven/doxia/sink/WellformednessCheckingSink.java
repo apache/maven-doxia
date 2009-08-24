@@ -34,449 +34,549 @@ import java.util.Stack;
 public class WellformednessCheckingSink
     extends AbstractSink
 {
-    private Stack elements = new Stack();
+    private final Stack elements = new Stack();
 
-    private List errors = new LinkedList();
+    private final List errors = new LinkedList();
 
+    /** {@inheritDoc} */
     public void head()
     {
         startElement( "head" );
     }
 
+    /** {@inheritDoc} */
     public void head_()
     {
         checkWellformedness( "head" );
     }
 
+    /** {@inheritDoc} */
     public void body()
     {
         startElement( "body" );
     }
 
+    /** {@inheritDoc} */
     public void body_()
     {
         checkWellformedness( "body" );
     }
 
+    /** {@inheritDoc} */
     public void section1()
     {
         startElement( "section1" );
     }
 
+    /** {@inheritDoc} */
     public void section1_()
     {
         checkWellformedness( "section1" );
     }
 
+    /** {@inheritDoc} */
     public void section2()
     {
         startElement( "section2" );
     }
 
+    /** {@inheritDoc} */
     public void section2_()
     {
         checkWellformedness( "section2" );
     }
 
+    /** {@inheritDoc} */
     public void section3()
     {
         startElement( "section3" );
     }
 
+    /** {@inheritDoc} */
     public void section3_()
     {
         checkWellformedness( "section3" );
     }
 
+    /** {@inheritDoc} */
     public void section4()
     {
         startElement( "section4" );
     }
 
+    /** {@inheritDoc} */
     public void section4_()
     {
         checkWellformedness( "section4" );
     }
 
+    /** {@inheritDoc} */
     public void section5()
     {
         startElement( "section5" );
     }
 
+    /** {@inheritDoc} */
     public void section5_()
     {
         checkWellformedness( "section5" );
     }
 
+    /** {@inheritDoc} */
     public void list()
     {
         startElement( "list" );
     }
 
+    /** {@inheritDoc} */
     public void list_()
     {
         checkWellformedness( "list" );
     }
 
+    /** {@inheritDoc} */
     public void listItem()
     {
         startElement( "listItem" );
     }
 
+    /** {@inheritDoc} */
     public void listItem_()
     {
         checkWellformedness( "listItem" );
     }
 
+    /** {@inheritDoc} */
     public void numberedList( int numbering )
     {
         startElement( "numberedList" );
     }
 
+    /** {@inheritDoc} */
     public void numberedList_()
     {
         checkWellformedness( "numberedList" );
     }
 
+    /** {@inheritDoc} */
     public void numberedListItem()
     {
         startElement( "numberedListItem" );
     }
 
+    /** {@inheritDoc} */
     public void numberedListItem_()
     {
         checkWellformedness( "numberedListItem" );
     }
 
+    /** {@inheritDoc} */
     public void definitionList()
     {
         startElement( "definitionList" );
     }
 
+    /** {@inheritDoc} */
     public void definitionList_()
     {
         checkWellformedness( "definitionList" );
     }
 
+    /** {@inheritDoc} */
     public void definitionListItem()
     {
         startElement( "definitionListItem" );
     }
 
+    /** {@inheritDoc} */
     public void definitionListItem_()
     {
         checkWellformedness( "definitionListItem" );
     }
 
+    /** {@inheritDoc} */
     public void definition()
     {
         startElement( "definition" );
     }
 
+    /** {@inheritDoc} */
     public void definition_()
     {
         checkWellformedness( "definition" );
     }
 
+    /** {@inheritDoc} */
     public void figure()
     {
         startElement( "figure" );
     }
 
+    /** {@inheritDoc} */
     public void figure_()
     {
         checkWellformedness( "figure" );
     }
 
+    /** {@inheritDoc} */
     public void table()
     {
         startElement( "table" );
     }
 
+    /** {@inheritDoc} */
     public void table_()
     {
         checkWellformedness( "table" );
     }
 
+    /** {@inheritDoc} */
     public void tableRows( int[] justification, boolean grid )
     {
         startElement( "tableRows" );
     }
 
+    /** {@inheritDoc} */
     public void tableRows_()
     {
         checkWellformedness( "tableRows" );
     }
 
+    /** {@inheritDoc} */
     public void tableRow()
     {
         startElement( "tableRow" );
     }
 
+    /** {@inheritDoc} */
     public void tableRow_()
     {
         checkWellformedness( "tableRow" );
     }
 
+    /** {@inheritDoc} */
     public void title()
     {
         startElement( "title" );
     }
 
+    /** {@inheritDoc} */
     public void title_()
     {
         checkWellformedness( "title" );
     }
 
+    /** {@inheritDoc} */
     public void author()
     {
         startElement( "author" );
     }
 
+    /** {@inheritDoc} */
     public void author_()
     {
         checkWellformedness( "author" );
     }
 
+    /** {@inheritDoc} */
     public void date()
     {
         startElement( "date" );
     }
 
+    /** {@inheritDoc} */
     public void date_()
     {
         checkWellformedness( "date" );
     }
 
+    /** {@inheritDoc} */
     public void sectionTitle()
     {
         startElement( "sectionTitle" );
     }
 
+    /** {@inheritDoc} */
     public void sectionTitle_()
     {
         checkWellformedness( "sectionTitle" );
     }
 
+    /** {@inheritDoc} */
     public void sectionTitle1()
     {
         startElement( "sectionTitle1" );
     }
 
+    /** {@inheritDoc} */
     public void sectionTitle1_()
     {
         checkWellformedness( "sectionTitle1" );
     }
 
+    /** {@inheritDoc} */
     public void sectionTitle2()
     {
         startElement( "sectionTitle2" );
     }
 
+    /** {@inheritDoc} */
     public void sectionTitle2_()
     {
         checkWellformedness( "sectionTitle2" );
     }
 
+    /** {@inheritDoc} */
     public void sectionTitle3()
     {
         startElement( "sectionTitle3" );
     }
 
+    /** {@inheritDoc} */
     public void sectionTitle3_()
     {
         checkWellformedness( "sectionTitle3" );
     }
 
+    /** {@inheritDoc} */
     public void sectionTitle4()
     {
         startElement( "sectionTitle4" );
     }
 
+    /** {@inheritDoc} */
     public void sectionTitle4_()
     {
         checkWellformedness( "sectionTitle4" );
     }
 
+    /** {@inheritDoc} */
     public void sectionTitle5()
     {
         startElement( "sectionTitle5" );
     }
 
+    /** {@inheritDoc} */
     public void sectionTitle5_()
     {
         checkWellformedness( "sectionTitle5" );
     }
 
+    /** {@inheritDoc} */
     public void paragraph()
     {
         startElement( "paragraph" );
     }
 
+    /** {@inheritDoc} */
     public void paragraph_()
     {
         checkWellformedness( "paragraph" );
     }
 
+    /** {@inheritDoc} */
     public void verbatim( boolean boxed )
     {
         startElement( "verbatim" );
     }
 
+    /** {@inheritDoc} */
     public void verbatim_()
     {
         checkWellformedness( "verbatim" );
     }
 
+    /** {@inheritDoc} */
     public void definedTerm()
     {
         startElement( "definedTerm" );
     }
 
+    /** {@inheritDoc} */
     public void definedTerm_()
     {
         checkWellformedness( "definedTerm" );
     }
 
+    /** {@inheritDoc} */
     public void figureCaption()
     {
         startElement( "figureCaption" );
     }
 
+    /** {@inheritDoc} */
     public void figureCaption_()
     {
         checkWellformedness( "figureCaption" );
     }
 
+    /** {@inheritDoc} */
     public void tableCell()
     {
         startElement( "tableCell" );
     }
 
+    /** {@inheritDoc} */
     public void tableCell( String width )
     {
         startElement( "tableCell" );
     }
 
+    /** {@inheritDoc} */
     public void tableCell_()
     {
         checkWellformedness( "tableCell" );
     }
 
+    /** {@inheritDoc} */
     public void tableHeaderCell()
     {
         startElement( "tableHeaderCell" );
     }
 
+    /** {@inheritDoc} */
     public void tableHeaderCell( String width )
     {
         startElement( "tableHeaderCell" );
     }
 
+    /** {@inheritDoc} */
     public void tableHeaderCell_()
     {
         checkWellformedness( "tableHeaderCell" );
     }
 
+    /** {@inheritDoc} */
     public void tableCaption()
     {
         startElement( "tableCaption" );
     }
 
+    /** {@inheritDoc} */
     public void tableCaption_()
     {
         checkWellformedness( "tableCaption" );
     }
 
+    /** {@inheritDoc} */
     public void figureGraphics( String name )
     {
+        // nop
     }
 
+    /** {@inheritDoc} */
     public void horizontalRule()
     {
+        // nop
     }
 
+    /** {@inheritDoc} */
     public void pageBreak()
     {
+        // nop
     }
 
+    /** {@inheritDoc} */
     public void anchor( String name )
     {
         startElement( "anchor" );
     }
 
+    /** {@inheritDoc} */
     public void anchor_()
     {
         checkWellformedness( "anchor" );
     }
 
+    /** {@inheritDoc} */
     public void link( String name )
     {
         startElement( "link" );
     }
 
+    /** {@inheritDoc} */
     public void link_()
     {
         checkWellformedness( "link" );
     }
 
+    /** {@inheritDoc} */
     public void italic()
     {
         startElement( "italic" );
     }
 
+    /** {@inheritDoc} */
     public void italic_()
     {
         checkWellformedness( "italic" );
     }
 
+    /** {@inheritDoc} */
     public void bold()
     {
         startElement( "bold" );
     }
 
+    /** {@inheritDoc} */
     public void bold_()
     {
         checkWellformedness( "bold" );
     }
 
+    /** {@inheritDoc} */
     public void monospaced()
     {
         startElement( "monospaced" );
     }
 
+    /** {@inheritDoc} */
     public void monospaced_()
     {
         checkWellformedness( "monospaced" );
     }
 
+    /** {@inheritDoc} */
     public void lineBreak()
     {
+        // nop
     }
 
+    /** {@inheritDoc} */
     public void nonBreakingSpace()
     {
+        // nop
     }
 
+    /** {@inheritDoc} */
     public void text( String text )
     {
+        // nop
     }
 
+    /** {@inheritDoc} */
     public void rawText( String text )
     {
+        // nop
     }
 
     /** {@inheritDoc} */
     public void comment( String comment )
     {
+        // nop
     }
 
+    /** {@inheritDoc} */
     public void flush()
     {
+        // nop
     }
 
+    /** {@inheritDoc} */
     public void close()
     {
+        this.elements.clear();
+        this.errors.clear();
     }
 
     /**

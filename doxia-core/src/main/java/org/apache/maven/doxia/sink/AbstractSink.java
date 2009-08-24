@@ -100,4 +100,15 @@ public abstract class AbstractSink
 
         return buffer.toString();
     }
+
+     /**
+      * This is called in {@link #head()} or in {@link #close()}, and can be used
+      * to set the sink into a clear state so it can be re-used.
+      *
+      * @since 1.1.2
+      */
+     protected void init()
+     {
+         // nop
+     }
 }

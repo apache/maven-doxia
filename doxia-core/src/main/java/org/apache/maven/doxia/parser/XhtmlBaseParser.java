@@ -83,6 +83,8 @@ public class XhtmlBaseParser
     public void parse( Reader source, Sink sink )
         throws ParseException
     {
+        init();
+
         try
         {
             super.parse( source, sink );
@@ -90,6 +92,9 @@ public class XhtmlBaseParser
         finally
         {
             logWarnings();
+
+            setSecondParsing( false );
+            init();
         }
     }
 
@@ -691,6 +696,25 @@ public class XhtmlBaseParser
         }
 
         return id;
+    }
+
+    /** {@inheritDoc} */
+    protected void init()
+    {
+        super.init();
+
+        this.scriptBlock = false;
+        this.isLink = false;
+        this.isAnchor = false;
+        this.orderedListDepth = 0;
+        this.sectionLevel = 0;
+        this.inVerbatim = false;
+        this.inFigure = false;
+        while( this.decoration.getAttributeNames().hasMoreElements() )
+        {
+            this.decoration.removeAttribute( this.decoration.getAttributeNames().nextElement() );
+        }
+        this.warnMessages = null;
     }
 
     private void handleAEnd( Sink sink )

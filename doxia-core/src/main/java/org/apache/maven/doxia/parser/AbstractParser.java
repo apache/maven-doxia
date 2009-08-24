@@ -166,4 +166,16 @@ public abstract class AbstractParser
     {
         return macroManager;
     }
+
+    /**
+     * Initialize the parser. This is called first by
+     * {@link #parse(java.io.Reader, org.apache.maven.doxia.sink.Sink)} and can be used
+     * to set the parser into a clear state so it can be re-used.
+     *
+     * @since 1.1.2
+     */
+    protected void init()
+    {
+        // nop
+    }
 }
