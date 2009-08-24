@@ -85,27 +85,14 @@ public class TWikiParser
     private final VerbatimBlockParser verbatimParser = new VerbatimBlockParser();
 
     /** list of parsers to try to apply to the toplevel */
-    private final BlockParser[] parsers;
+    private BlockParser[] parsers;
 
     /**
      * Creates the TWikiParser.
      */
     public TWikiParser()
     {
-        paraParser.setSectionParser( sectionParser );
-        paraParser.setListParser( listParser );
-        paraParser.setTextParser( formatTextParser );
-        paraParser.setHrulerParser( hrulerParser );
-        paraParser.setTableBlockParser( tableParser );
-        paraParser.setVerbatimParser( verbatimParser );
-        sectionParser.setParaParser( paraParser );
-        sectionParser.setHrulerParser( hrulerParser );
-        sectionParser.setVerbatimBlockParser( verbatimParser );
-        listParser.setTextParser( formatTextParser );
-        formatTextParser.setTextParser( textParser );
-        tableParser.setTextParser( formatTextParser );
-
-        parsers = new BlockParser[] { sectionParser, hrulerParser, verbatimParser, paraParser };
+        init();
     }
 
     /**
@@ -149,6 +136,7 @@ public class TWikiParser
     public final synchronized void parse( final Reader source, final Sink sink )
         throws ParseException
     {
+        init();
 
         List blocks;
         final ByLineSource src = new ByLineReaderSource( source );
@@ -182,6 +170,11 @@ public class TWikiParser
             block.traverse( sink );
         }
         sink.body_();
+        sink.flush();
+        sink.close();
+
+        setSecondParsing( false );
+        init();
     }
 
     /**
@@ -231,5 +224,26 @@ public class TWikiParser
         }
 
         return title;
+    }
+
+    /** {@inheritDoc} */
+    protected void init()
+    {
+        super.init();
+
+        paraParser.setSectionParser( sectionParser );
+        paraParser.setListParser( listParser );
+        paraParser.setTextParser( formatTextParser );
+        paraParser.setHrulerParser( hrulerParser );
+        paraParser.setTableBlockParser( tableParser );
+        paraParser.setVerbatimParser( verbatimParser );
+        sectionParser.setParaParser( paraParser );
+        sectionParser.setHrulerParser( hrulerParser );
+        sectionParser.setVerbatimBlockParser( verbatimParser );
+        listParser.setTextParser( formatTextParser );
+        formatTextParser.setTextParser( textParser );
+        tableParser.setTextParser( formatTextParser );
+
+        this.parsers = new BlockParser[] { sectionParser, hrulerParser, verbatimParser, paraParser };
     }
 }

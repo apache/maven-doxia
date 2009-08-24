@@ -49,7 +49,7 @@ public class TWikiSink
     implements TWikiMarkup
 {
     /**  The writer to use. */
-    private PrintWriter out;
+    private final PrintWriter out;
 
     /**  The writer to use. */
     private StringWriter writer;
@@ -66,7 +66,7 @@ public class TWikiSink
     private int levelList = 0;
 
     /**  listStyles. */
-    private Stack listStyles;
+    private final Stack listStyles;
 
     /**
      * Constructor, initialize the Writer and the variables.
@@ -77,8 +77,9 @@ public class TWikiSink
     protected TWikiSink( Writer writer )
     {
         this.out = new PrintWriter( writer );
-        this.writer = new StringWriter();
         this.listStyles = new Stack();
+
+        init();
     }
 
     /** {@inheritDoc} */
@@ -183,6 +184,8 @@ public class TWikiSink
     {
         out.write( writer.toString() );
         out.close();
+
+        init();
     }
 
     /**
@@ -363,6 +366,8 @@ public class TWikiSink
     /** {@inheritDoc} */
     public void head()
     {
+        init();
+
         headFlag = true;
     }
 
@@ -1260,6 +1265,19 @@ public class TWikiSink
     protected void content( String text )
     {
         write( escapeHTML( text ) );
+    }
+
+    /** {@inheritDoc} */
+    protected void init()
+    {
+        super.init();
+
+        this.writer = new StringWriter();
+        this.headFlag = false;
+        this.levelList = 0;
+        this.listStyles.clear();
+        this.boldFlag = false;
+        this.boldItalicOrMonodpacedFlag = false;
     }
 
     /**
