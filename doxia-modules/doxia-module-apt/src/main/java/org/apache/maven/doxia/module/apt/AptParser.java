@@ -187,19 +187,21 @@ public class AptParser
     public void parse( Reader source, Sink sink )
         throws ParseException
     {
+        init();
+
         try
         {
-            try
-            {
-                StringWriter contentWriter = new StringWriter();
-                IOUtil.copy( source, contentWriter );
-                sourceContent = contentWriter.toString();
-            }
-            catch ( IOException e )
-            {
-                throw new AptParseException( "IOException: " + e.getMessage(), e );
-            }
+            StringWriter contentWriter = new StringWriter();
+            IOUtil.copy( source, contentWriter );
+            sourceContent = contentWriter.toString();
+        }
+        catch ( IOException e )
+        {
+            throw new AptParseException( "IOException: " + e.getMessage(), e );
+        }
 
+        try
+        {
             this.source = new AptReaderSource( new StringReader( sourceContent ) );
 
             this.sink = sink;
@@ -218,34 +220,18 @@ public class AptParser
             traverseHead();
 
             traverseBody();
-
-            this.source = null;
-
-            this.sink = null;
         }
         catch ( AptParseException ape )
         {
             // TODO handle column number
             throw new AptParseException( ape.getMessage(), ape, getSourceName(), getSourceLineNumber(), -1 );
         }
-
-        if ( getLog().isWarnEnabled() && this.warnMessages != null && !isSecondParsing() )
+        finally
         {
-            for ( Iterator it = this.warnMessages.entrySet().iterator(); it.hasNext(); )
-            {
-                Map.Entry entry = (Map.Entry) it.next();
+            logWarnings();
 
-                Set set = (Set) entry.getValue();
-
-                for ( Iterator it2 = set.iterator(); it2.hasNext(); )
-                {
-                    String msg = (String) it2.next();
-
-                    getLog().warn( msg );
-                }
-            }
-
-            this.warnMessages = null;
+            setSecondParsing( false );
+            init();
         }
     }
 
@@ -705,6 +691,21 @@ public class AptParser
         }
 
         return replaced.toString();
+    }
+
+    /** {@inheritDoc} */
+    protected void init()
+    {
+        super.init();
+
+        this.sourceContent = null;
+        this.sink = null;
+        this.source = null;
+        this.block = null;
+        this.blockFileName = null;
+        this.blockLineNumber = 0;
+        this.line = null;
+        this.warnMessages = null;
     }
 
     // ----------------------------------------------------------------------
@@ -1610,6 +1611,31 @@ public class AptParser
         }
         set.add( msg );
         warnMessages.put( key, set );
+    }
+
+    /**
+     * @since 1.1.2
+     */
+    private void logWarnings()
+    {
+        if ( getLog().isWarnEnabled() && this.warnMessages != null && !isSecondParsing() )
+        {
+            for ( Iterator it = this.warnMessages.entrySet().iterator(); it.hasNext(); )
+            {
+                Map.Entry entry = (Map.Entry) it.next();
+
+                Set set = (Set) entry.getValue();
+
+                for ( Iterator it2 = set.iterator(); it2.hasNext(); )
+                {
+                    String msg = (String) it2.next();
+
+                    getLog().warn( msg );
+                }
+            }
+
+            this.warnMessages = null;
+        }
     }
 
     // -----------------------------------------------------------------------

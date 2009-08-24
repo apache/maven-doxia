@@ -85,7 +85,7 @@ public class AptSink
     private int cellCount;
 
     /**  The writer to use. */
-    private PrintWriter writer;
+    private final PrintWriter writer;
 
     /**  justification of table cells. */
     private int cellJustif[];
@@ -97,7 +97,7 @@ public class AptSink
     private String listNestingIndent;
 
     /**  listStyles. */
-    private Stack listStyles;
+    private final Stack listStyles;
 
     // ----------------------------------------------------------------------
     // Public protected methods
@@ -111,11 +111,10 @@ public class AptSink
      */
     protected AptSink( Writer writer )
     {
-        this.buffer = new StringBuffer();
-        this.tableCaptionBuffer = new StringBuffer();
         this.writer = new PrintWriter( writer );
-        this.listNestingIndent = "";
         this.listStyles = new Stack();
+
+        init();
     }
 
     /**
@@ -140,14 +139,38 @@ public class AptSink
 
     /**
      * Reset all variables.
+     *
+     * @deprecated since 1.1.2, use {@link #init()} instead of.
      */
     protected void resetState()
     {
-        headerFlag = false;
+        init();
+    }
+
+    /** {@inheritDoc} */
+    protected void init()
+    {
+        super.init();
+
         resetBuffer();
-        itemFlag = false;
-        verbatimFlag = false;
-        cellCount = 0;
+
+        this.tableCaptionBuffer = new StringBuffer();
+        this.listNestingIndent = "";
+
+        this.author = null;
+        this.title = null;
+        this.date = null;
+        this.tableCaptionFlag = false;
+        this.headerFlag = false;
+        this.bufferFlag = false;
+        this.itemFlag = false;
+        this.verbatimFlag = false;
+        this.isBoxed = false;
+        this.gridFlag = false;
+        this.cellCount = 0;
+        this.cellJustif = null;
+        this.rowLine = null;
+        this.listStyles.clear();
     }
 
     /**
@@ -169,7 +192,8 @@ public class AptSink
     /** {@inheritDoc} */
     public void head()
     {
-        resetState();
+        init();
+
         headerFlag = true;
     }
 
@@ -926,6 +950,8 @@ public class AptSink
     public void close()
     {
         writer.close();
+
+        init();
     }
 
     // ----------------------------------------------------------------------
