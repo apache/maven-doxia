@@ -171,13 +171,15 @@ public class DocBookParser
     /** {@inheritDoc} */
     protected void init()
     {
-        parent.clear();
-        trademark = 0;
-        level = 0;
-        isBold = false;
-        inHead = false;
-        ignore = false;
-        simpleTag = false;
+        super.init();
+
+        this.parent.clear();
+        this.trademark = 0;
+        this.level = 0;
+        this.isBold = false;
+        this.inHead = false;
+        this.ignore = false;
+        this.simpleTag = false;
     }
 
     // ----------------------------------------------------------------------

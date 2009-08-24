@@ -506,8 +506,16 @@ public class DocBookSink
 
     /**
      * Reset all variables.
+     *
+     * @deprecated since 1.1.2, use {@link #init()} instead of.
      */
     protected void resetState()
+    {
+       init();
+    }
+
+    /** {@inheritDoc} */
+    protected void init()
     {
         hasTitle = false;
         authorDateFlag = false;
@@ -532,7 +540,7 @@ public class DocBookSink
      */
     public void head()
     {
-        resetState();
+        init();
 
         MutableAttributeSet att = writeXmlHeader( "article" );
 
@@ -672,7 +680,7 @@ public class DocBookSink
     {
         writeEndTag( SimplifiedDocbookMarkup.ARTICLE_TAG );
         out.flush();
-        resetState();
+        init();
     }
 
     /**
