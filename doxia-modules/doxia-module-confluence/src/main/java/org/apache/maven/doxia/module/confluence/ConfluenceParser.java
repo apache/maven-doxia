@@ -59,26 +59,14 @@ public class ConfluenceParser
      */
     public ConfluenceParser()
     {
-        BlockParser headingParser = new SectionBlockParser();
-        BlockParser figureParser = new FigureBlockParser();
-        BlockParser verbatimParser = new VerbatimBlockParser();
-        BlockParser definitionParser = new DefinitionListBlockParser();
-        BlockParser horizontalRuleParser = new HorizontalRuleBlockParser();
-        BlockParser listParser = new ListBlockParser();
-        BlockParser tableParser = new TableBlockParser();
-
-        BlockParser[] subparsers =
-                new BlockParser[] { headingParser, figureParser, listParser, tableParser, verbatimParser };
-        BlockParser paragraphParser = new ParagraphBlockParser( subparsers );
-
-        parsers =
-            new BlockParser[] { headingParser, figureParser, verbatimParser, definitionParser, horizontalRuleParser,
-                listParser, tableParser, paragraphParser };
+        init();
     }
 
     private List parse( ByLineSource source )
         throws ParseException
     {
+        init();
+
         List blocks = new ArrayList();
 
         String line;
@@ -127,7 +115,7 @@ public class ConfluenceParser
 
         try
         {
-            blocks = parse( src  );
+            blocks = parse( src );
         }
         catch ( Exception e )
         {
@@ -149,5 +137,32 @@ public class ConfluenceParser
         }
 
         sink.body_();
+        sink.flush();
+        sink.close();
+
+        setSecondParsing( false );
+        init();
+    }
+
+    /** {@inheritDoc} */
+    protected void init()
+    {
+        super.init();
+
+        BlockParser headingParser = new SectionBlockParser();
+        BlockParser figureParser = new FigureBlockParser();
+        BlockParser verbatimParser = new VerbatimBlockParser();
+        BlockParser definitionParser = new DefinitionListBlockParser();
+        BlockParser horizontalRuleParser = new HorizontalRuleBlockParser();
+        BlockParser listParser = new ListBlockParser();
+        BlockParser tableParser = new TableBlockParser();
+
+        BlockParser[] subparsers =
+                new BlockParser[] { headingParser, figureParser, listParser, tableParser, verbatimParser };
+        BlockParser paragraphParser = new ParagraphBlockParser( subparsers );
+
+        this.parsers =
+            new BlockParser[] { headingParser, figureParser, verbatimParser, definitionParser, horizontalRuleParser,
+                listParser, tableParser, paragraphParser };
     }
 }

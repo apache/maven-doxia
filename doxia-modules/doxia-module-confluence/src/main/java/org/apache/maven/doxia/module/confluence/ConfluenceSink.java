@@ -45,7 +45,7 @@ public class ConfluenceSink
     implements ConfluenceMarkup
 {
     /**  The writer to use. */
-    private PrintWriter out;
+    private final PrintWriter out;
 
     /**  The writer to use. */
     private StringWriter writer;
@@ -56,7 +56,7 @@ public class ConfluenceSink
     private int levelList = 0;
 
     /**  listStyles. */
-    private Stack listStyles;
+    private final Stack listStyles;
 
     /** An indication on if we're in verbatim box mode. */
     private boolean verbatimBoxedFlag;
@@ -76,8 +76,9 @@ public class ConfluenceSink
     protected ConfluenceSink( Writer writer )
     {
         this.out = new PrintWriter( writer );
-        this.writer = new StringWriter();
         this.listStyles = new Stack();
+
+        init();
     }
 
     /** {@inheritDoc} */
@@ -175,6 +176,8 @@ public class ConfluenceSink
     {
         out.write( writer.toString() );
         out.close();
+
+        init();
     }
 
     /**
@@ -379,6 +382,8 @@ public class ConfluenceSink
     /** {@inheritDoc} */
     public void head()
     {
+        init();
+
         headFlag = true;
     }
 
@@ -1083,6 +1088,20 @@ public class ConfluenceSink
     protected void content( String text )
     {
         write( escapeHTML( text ) );
+    }
+
+    /** {@inheritDoc} */
+    protected void init()
+    {
+        super.init();
+
+        this.writer = new StringWriter();
+        this.headFlag = false;
+        this.levelList = 0;
+        this.listStyles.clear();
+        this.verbatimBoxedFlag = false;
+        this.tableHeaderFlag = false;
+        this.linkName = null;
     }
 
     /**
