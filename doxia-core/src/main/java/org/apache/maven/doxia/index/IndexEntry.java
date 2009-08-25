@@ -38,7 +38,7 @@ public class IndexEntry
     private final IndexEntry parent;
 
     /** The id of the entry. */
-    private final String id;
+    private String id;
 
     /** The entry title. */
     private String title;
@@ -94,6 +94,16 @@ public class IndexEntry
     public String getId()
     {
         return id;
+    }
+
+    /**
+     * Set the id.
+     *
+     * @since 1.1.2
+     */
+    protected void setId( String id )
+    {
+        this.id = id;
     }
 
     /**

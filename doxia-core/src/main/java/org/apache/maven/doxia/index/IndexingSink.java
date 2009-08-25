@@ -70,6 +70,9 @@ public class IndexingSink
     /** The stack. */
     private final Stack stack;
 
+    /** The current type. */
+    private IndexEntry currentEntry;
+
     /**
      * Default constructor.
      *
@@ -108,7 +111,13 @@ public class IndexingSink
     /** {@inheritDoc} */
     public void sectionTitle1()
     {
+        this.currentEntry = null;
         type = TYPE_SECTION_1;
+    }
+
+    public void sectionTitle1_()
+    {
+        type = 0;
     }
 
     /** {@inheritDoc} */
@@ -120,7 +129,13 @@ public class IndexingSink
     /** {@inheritDoc} */
     public void sectionTitle2()
     {
+        this.currentEntry = null;
         type = TYPE_SECTION_2;
+    }
+
+    public void sectionTitle2_()
+    {
+        type = 0;
     }
 
     /** {@inheritDoc} */
@@ -132,7 +147,13 @@ public class IndexingSink
     /** {@inheritDoc} */
     public void sectionTitle3()
     {
+        this.currentEntry = null;
         type = TYPE_SECTION_3;
+    }
+
+    public void sectionTitle3_()
+    {
+        type = 0;
     }
 
     /** {@inheritDoc} */
@@ -144,7 +165,13 @@ public class IndexingSink
     /** {@inheritDoc} */
     public void sectionTitle4()
     {
+        this.currentEntry = null;
         type = TYPE_SECTION_4;
+    }
+
+    public void sectionTitle4_()
+    {
+        type = 0;
     }
 
     /** {@inheritDoc} */
@@ -156,7 +183,13 @@ public class IndexingSink
     /** {@inheritDoc} */
     public void sectionTitle5()
     {
+        this.currentEntry = null;
         type = TYPE_SECTION_5;
+    }
+
+    public void sectionTitle5_()
+    {
+        type = 0;
     }
 
     /** {@inheritDoc} */
@@ -165,26 +198,24 @@ public class IndexingSink
         pop();
     }
 
-    //    public void definedTerm()
-    //    {
-    //        type = TYPE_DEFINED_TERM;
-    //    }
+    // public void definedTerm()
+    // {
+    // type = TYPE_DEFINED_TERM;
+    // }
     //
-    //    public void figureCaption()
-    //    {
-    //        type = TYPE_FIGURE;
-    //    }
+    // public void figureCaption()
+    // {
+    // type = TYPE_FIGURE;
+    // }
     //
-    //    public void tableCaption()
-    //    {
-    //        type = TYPE_TABLE;
-    //    }
+    // public void tableCaption()
+    // {
+    // type = TYPE_TABLE;
+    // }
 
     /** {@inheritDoc} */
     public void text( String text )
     {
-        IndexEntry entry;
-
         switch ( type )
         {
             case TITLE:
@@ -199,13 +230,26 @@ public class IndexingSink
                 // Sanitize the id. The most important step is to remove any blanks
                 // -----------------------------------------------------------------------
 
-                String id = HtmlTools.encodeId( text );
+                if ( currentEntry == null )
+                {
+                    currentEntry = new IndexEntry( peek(), HtmlTools.encodeId( text ) );
 
-                entry = new IndexEntry( peek(), id );
+                    currentEntry.setTitle( text );
 
-                entry.setTitle( text );
+                    push( currentEntry );
+                }
+                else
+                {
+                    IndexEntry entry = (IndexEntry) stack.lastElement();
 
-                push( entry );
+                    String title = currentEntry.getTitle() + text;
+                    title = title.replaceAll( "[\\r\\n]+", "" );
+
+                    entry.setId( HtmlTools.encodeId( title ) );
+
+                    entry.setTitle( title );
+                }
+
                 break;
             // Dunno how to handle these yet
             case TYPE_DEFINED_TERM:
@@ -214,8 +258,6 @@ public class IndexingSink
             default:
                 break;
         }
-
-        type = 0;
     }
 
     /**
