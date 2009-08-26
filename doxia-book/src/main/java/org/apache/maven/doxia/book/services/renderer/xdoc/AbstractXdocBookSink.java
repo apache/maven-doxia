@@ -96,7 +96,7 @@ public abstract class AbstractXdocBookSink
 
         close();
 
-        resetState();
+        init();
     }
 
     // -----------------------------------------------------------------------

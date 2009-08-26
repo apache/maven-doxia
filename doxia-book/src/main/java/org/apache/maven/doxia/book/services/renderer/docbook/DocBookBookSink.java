@@ -144,7 +144,7 @@ public class DocBookBookSink
      */
     public void book()
     {
-        resetState();
+        init();
 
         MutableAttributeSet att = writeXmlHeader( "book" );
 

@@ -59,7 +59,7 @@ public class XhtmlBookSink
      */
     public void head()
     {
-        resetState();
+        init();
 
         setHeadFlag( true );
     }
