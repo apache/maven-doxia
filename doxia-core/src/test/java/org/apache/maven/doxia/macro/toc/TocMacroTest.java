@@ -20,6 +20,7 @@ package org.apache.maven.doxia.macro.toc;
  */
 
 import java.io.File;
+import java.io.StringWriter;
 
 import java.util.HashMap;
 import java.util.Iterator;
@@ -33,23 +34,24 @@ import org.apache.maven.doxia.parser.XhtmlBaseParser;
 import org.apache.maven.doxia.sink.SinkEventAttributeSet;
 import org.apache.maven.doxia.sink.SinkEventElement;
 import org.apache.maven.doxia.sink.SinkEventTestingSink;
+import org.apache.maven.doxia.sink.XhtmlBaseSink;
 
 /**
  * Test toc macro.
  *
  * @author ltheussl
+ * @version $Id$
  */
 public class TocMacroTest
-        extends TestCase
+    extends TestCase
 {
-
     /**
      * Test of execute method, of class TocMacro.
      *
      * @throws MacroExecutionException if a macro fails during testing.
      */
     public void testExecute()
-            throws MacroExecutionException
+        throws MacroExecutionException
     {
         String sourceContent = "<div><h2>h21</h2><h2>h22</h2><h3>h3</h3><h4>h4</h4><h2>h23</h2></div>";
 
@@ -127,19 +129,51 @@ public class TocMacroTest
         assertEquals( "link", ( (SinkEventElement) it.next() ).getName() );
         event = (SinkEventElement) it.next();
         assertEquals( "text", event.getName() );
-        assertEquals( "h22",  (String) event.getArgs()[0] );
+        assertEquals( "h22", (String) event.getArgs()[0] );
         assertEquals( "link_", ( (SinkEventElement) it.next() ).getName() );
         assertEquals( "list", ( (SinkEventElement) it.next() ).getName() );
         assertEquals( "listItem", ( (SinkEventElement) it.next() ).getName() );
         assertEquals( "link", ( (SinkEventElement) it.next() ).getName() );
         event = (SinkEventElement) it.next();
         assertEquals( "text", event.getName() );
-        assertEquals( "h3",  (String) event.getArgs()[0] );
+        assertEquals( "h3", (String) event.getArgs()[0] );
         assertEquals( "link_", ( (SinkEventElement) it.next() ).getName() );
         assertEquals( "listItem_", ( (SinkEventElement) it.next() ).getName() );
         assertEquals( "list_", ( (SinkEventElement) it.next() ).getName() );
         assertEquals( "listItem_", ( (SinkEventElement) it.next() ).getName() );
         assertEquals( "list_", ( (SinkEventElement) it.next() ).getName() );
         assertFalse( it.hasNext() );
+    }
+
+    /**
+     * Test DOXIA-366.
+     *
+     * @throws MacroExecutionException if a macro fails during testing.
+     */
+    public void testTocStyle()
+        throws MacroExecutionException
+    {
+        String sourceContent =
+            "<div><h2>h<b>21</b></h2><h2>h<i>22</i></h2><h3>h<tt>3</tt></h3><h4>h4</h4><h2>h23</h2></div>";
+
+        XhtmlBaseParser parser = new XhtmlBaseParser();
+        parser.setSecondParsing( true );
+
+        Map macroParameters = new HashMap();
+        macroParameters.put( "parser", parser );
+        macroParameters.put( "sourceContent", sourceContent );
+        macroParameters.put( "section", "sec1" );
+
+        File basedir = new File( "" );
+
+        StringWriter out = new StringWriter();
+        XhtmlBaseSink sink = new XhtmlBaseSink( out );
+        MacroRequest request = new MacroRequest( macroParameters, basedir );
+        TocMacro macro = new TocMacro();
+        macro.execute( sink, request );
+
+        assertTrue( out.toString().indexOf( "<a href=\"#h21\">h21</a>" ) != -1 );
+        assertTrue( out.toString().indexOf( "<a href=\"#h22\">h22</a>" ) != -1 );
+        assertTrue( out.toString().indexOf( "<a href=\"#h3\">h3</a>" ) != -1 );
     }
 }

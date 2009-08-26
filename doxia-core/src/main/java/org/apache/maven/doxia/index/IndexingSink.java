@@ -103,21 +103,25 @@ public class IndexingSink
     /** {@inheritDoc} */
     public void title()
     {
-        super.title();
-
-        type = TITLE;
+        this.type = TITLE;
     }
 
     /** {@inheritDoc} */
     public void sectionTitle1()
     {
         this.currentEntry = null;
-        type = TYPE_SECTION_1;
+        this.type = TYPE_SECTION_1;
+    }
+
+    /** {@inheritDoc} */
+    public void title_()
+    {
+        this.type = 0;
     }
 
     public void sectionTitle1_()
     {
-        type = 0;
+        this.type = 0;
     }
 
     /** {@inheritDoc} */
@@ -130,12 +134,12 @@ public class IndexingSink
     public void sectionTitle2()
     {
         this.currentEntry = null;
-        type = TYPE_SECTION_2;
+        this.type = TYPE_SECTION_2;
     }
 
     public void sectionTitle2_()
     {
-        type = 0;
+        this.type = 0;
     }
 
     /** {@inheritDoc} */
@@ -148,12 +152,12 @@ public class IndexingSink
     public void sectionTitle3()
     {
         this.currentEntry = null;
-        type = TYPE_SECTION_3;
+        this.type = TYPE_SECTION_3;
     }
 
     public void sectionTitle3_()
     {
-        type = 0;
+        this.type = 0;
     }
 
     /** {@inheritDoc} */
@@ -166,12 +170,12 @@ public class IndexingSink
     public void sectionTitle4()
     {
         this.currentEntry = null;
-        type = TYPE_SECTION_4;
+        this.type = TYPE_SECTION_4;
     }
 
     public void sectionTitle4_()
     {
-        type = 0;
+        this.type = 0;
     }
 
     /** {@inheritDoc} */
@@ -184,12 +188,12 @@ public class IndexingSink
     public void sectionTitle5()
     {
         this.currentEntry = null;
-        type = TYPE_SECTION_5;
+        this.type = TYPE_SECTION_5;
     }
 
     public void sectionTitle5_()
     {
-        type = 0;
+        this.type = 0;
     }
 
     /** {@inheritDoc} */
@@ -216,7 +220,7 @@ public class IndexingSink
     /** {@inheritDoc} */
     public void text( String text )
     {
-        switch ( type )
+        switch ( this.type )
         {
             case TITLE:
                 this.title = text;
@@ -230,11 +234,11 @@ public class IndexingSink
                 // Sanitize the id. The most important step is to remove any blanks
                 // -----------------------------------------------------------------------
 
-                if ( currentEntry == null )
+                if ( this.currentEntry == null )
                 {
-                    currentEntry = new IndexEntry( peek(), HtmlTools.encodeId( text ) );
+                    this.currentEntry = new IndexEntry( peek(), HtmlTools.encodeId( text ) );
 
-                    currentEntry.setTitle( text );
+                    this.currentEntry.setTitle( text );
 
                     push( currentEntry );
                 }
