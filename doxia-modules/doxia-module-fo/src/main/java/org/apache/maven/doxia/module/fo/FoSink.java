@@ -938,21 +938,12 @@ public class FoSink
         String content = this.tableContentWriterStack.removeLast().toString();
 
         StringBuffer sb = new StringBuffer();
-        // FOP hack to center the table, see
-        // http://xmlgraphics.apache.org/fop/fo.html#fo-center-table-horizon
-        sb.append( "<fo:table-column column-width=\"proportional-column-width(1)\"/>" );
-        sb.append( EOL );
-
         int cellCount = Integer.parseInt( this.cellCountStack.removeLast().toString() );
-        int percent = 100 / cellCount;
         for ( int i = 0; i < cellCount; i++ )
         {
-            sb.append( "<fo:table-column column-width=\"" + percent + "%\"/>" );
+            sb.append( "<fo:table-column column-width=\"proportional-column-width(1)\"/>" );
             sb.append( EOL );
         }
-
-        sb.append( "<fo:table-column column-width=\"proportional-column-width(1)\"/>" );
-        sb.append( EOL );
 
         int index = content.indexOf( ">" ) + 1;
         writeln( content.substring( 0, index ) );
@@ -1071,7 +1062,7 @@ public class FoSink
 
         // the column-number is needed for the hack to center the table, see tableRows.
         int cellCount = Integer.parseInt( this.cellCountStack.getLast().toString() );
-        cellAtts.addAttribute( "column-number", String.valueOf( cellCount + 2 ) );
+        cellAtts.addAttribute( "column-number", String.valueOf( cellCount + 1 ) );
 
         if ( this.tableGridStack.getLast().equals( Boolean.TRUE ) )
         {
