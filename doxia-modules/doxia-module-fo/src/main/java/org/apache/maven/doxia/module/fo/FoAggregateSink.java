@@ -25,6 +25,7 @@ import java.io.Writer;
 import java.util.Calendar;
 import java.util.Date;
 import java.util.Iterator;
+import java.util.LinkedList;
 import java.util.List;
 import java.util.Locale;
 import java.util.ResourceBundle;
@@ -248,6 +249,15 @@ public class FoAggregateSink extends FoSink
     public void setDocumentModel( DocumentModel model )
     {
         this.docModel = model;
+
+        DocumentTOCItem tocItem = new DocumentTOCItem();
+        tocItem.setName( this.docModel.getToc().getName() );
+        tocItem.setRef( "./toc" );
+        List items = new LinkedList();
+        items.add( tocItem );
+        items.addAll( this.docModel.getToc().getItems() );
+
+        this.docModel.getToc().setItems( items );
     }
 
     /**
@@ -783,6 +793,7 @@ public class FoAggregateSink extends FoSink
         regionBefore( toc.getName() );
         regionAfter( getFooterText() );
         writeStartTag( FLOW_TAG, "flow-name", "xsl-region-body" );
+        writeStartTag( BLOCK_TAG, "id", "./toc" );
         chapterHeading( toc.getName(), false );
         writeln( "<fo:table table-layout=\"fixed\" width=\"100%\" >" );
         writeEmptyTag( TABLE_COLUMN_TAG, "column-width", "0.45in" );
@@ -795,6 +806,7 @@ public class FoAggregateSink extends FoSink
 
         writeEndTag( TABLE_BODY_TAG );
         writeEndTag( TABLE_TAG );
+        writeEndTag( BLOCK_TAG );
         writeEndTag( FLOW_TAG );
         writeEndTag( PAGE_SEQUENCE_TAG );
     }
