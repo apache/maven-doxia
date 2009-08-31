@@ -108,6 +108,8 @@ public class FoAggregateSink extends FoSink
     /** {@inheritDoc} */
     public void head( SinkEventAttributes attributes )
     {
+        init();
+
         ignoreText = true;
     }
 
@@ -266,11 +268,6 @@ public class FoAggregateSink extends FoSink
         String idName = name.replace( '\\', '/' );
 
         // prepend "./" and strip extension
-        while ( idName.indexOf( "//" ) != -1 )
-        {
-            idName = StringUtils.replace( idName, "//", "/" );
-        }
-
         if ( !idName.startsWith( "./" ) )
         {
             idName = "./" + idName;
@@ -279,6 +276,11 @@ public class FoAggregateSink extends FoSink
         if ( idName.substring( 2 ).lastIndexOf( "." ) != -1 )
         {
             idName = idName.substring( 0, idName.lastIndexOf( "." ) );
+        }
+
+        while ( idName.indexOf( "//" ) != -1 )
+        {
+            idName = StringUtils.replace( idName, "//", "/" );
         }
 
         return idName;
