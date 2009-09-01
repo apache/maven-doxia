@@ -84,6 +84,9 @@ public class FoAggregateSink extends FoSink
     /** Content in head is ignored in aggregated documents. */
     private boolean ignoreText;
 
+    /** Flag to include of not the toc */
+    private boolean addToc;
+
     /** Used to get the current position in the TOC. */
     private final Stack tocStack = new Stack();
 
@@ -245,19 +248,37 @@ public class FoAggregateSink extends FoSink
      * required to render a document, eg settings for the cover page, table of contents, etc.
      *
      * @param model the DocumentModel.
+     * @see #setDocumentModel(DocumentModel, boolean)
      */
     public void setDocumentModel( DocumentModel model )
     {
+        setDocumentModel( model, true );
+    }
+
+    /**
+     * Sets the DocumentModel to be used by this sink. The DocumentModel provides all the meta-information
+     * required to render a document, eg settings for the cover page, table of contents, etc.
+     *
+     * @param model the DocumentModel.
+     * @param addToc true to include the TOC in the sink.
+     * @since 1.1.2
+     */
+    public void setDocumentModel( DocumentModel model, boolean addToc )
+    {
         this.docModel = model;
+        this.addToc = addToc;
 
-        DocumentTOCItem tocItem = new DocumentTOCItem();
-        tocItem.setName( this.docModel.getToc().getName() );
-        tocItem.setRef( "./toc" );
-        List items = new LinkedList();
-        items.add( tocItem );
-        items.addAll( this.docModel.getToc().getItems() );
+        if ( this.addToc )
+        {
+            DocumentTOCItem tocItem = new DocumentTOCItem();
+            tocItem.setName( this.docModel.getToc().getName() );
+            tocItem.setRef( "./toc" );
+            List items = new LinkedList();
+            items.add( tocItem );
+            items.addAll( this.docModel.getToc().getItems() );
 
-        this.docModel.getToc().setItems( items );
+            this.docModel.getToc().setItems( items );
+        }
     }
 
     /**
@@ -782,6 +803,11 @@ public class FoAggregateSink extends FoSink
      */
     public void toc()
     {
+        if ( !this.addToc )
+        {
+            return;
+        }
+
         if ( docModel == null || docModel.getToc() == null || docModel.getToc().getItems() == null )
         {
             return;
