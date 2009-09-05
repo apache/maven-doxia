@@ -229,7 +229,7 @@ under the License.
       <dependency>
         <groupId>org.codehaus.plexus</groupId>
         <artifactId>plexus-utils</artifactId>
-        <version>1.5.15</version>
+        <version>1.5.12</version>
       </dependency>
     </dependencies>
   </dependencyManagement>
