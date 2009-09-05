@@ -67,8 +67,30 @@ import org.codehaus.plexus.util.StringUtils;
  * @version $Id$
  * @since 1.1
  */
-public class FoAggregateSink extends FoSink
+public class FoAggregateSink
+    extends FoSink
 {
+    /**
+     * No Table Of Content.
+     * @see #setDocumentModel(DocumentModel, int)
+     */
+    public static int TOC_NONE = 0;
+
+    /**
+     * Table Of Content at the start of the document.
+     * @see #setDocumentModel(DocumentModel, int)
+     */
+    public static int TOC_START = 1;
+
+    /**
+     * Table Of Content at the end of the document.
+     * @see #setDocumentModel(DocumentModel, int)
+     */
+    public static int TOC_END = 2;
+
+    // TODO: make configurable
+    private static final String COVER_HEADER_HEIGHT = "1.5in";
+
     /** The document model to be used by this sink. */
     private DocumentModel docModel;
 
@@ -84,14 +106,11 @@ public class FoAggregateSink extends FoSink
     /** Content in head is ignored in aggregated documents. */
     private boolean ignoreText;
 
-    /** Flag to include of not the toc */
-    private boolean addToc;
+    /** Current position of the TOC, see {@link #TOC_POSITION} */
+    private int tocPosition;
 
     /** Used to get the current position in the TOC. */
     private final Stack tocStack = new Stack();
-
-    // TODO: make configurable
-    private static final String COVER_HEADER_HEIGHT = "1.5in";
 
     /**
      * Constructor.
@@ -231,7 +250,6 @@ public class FoAggregateSink extends FoSink
         }
     }
 
-
     /**
      * Sets the name of the current source document, relative to the source root.
      * Used to resolve links to other source documents.
@@ -246,36 +264,54 @@ public class FoAggregateSink extends FoSink
     /**
      * Sets the DocumentModel to be used by this sink. The DocumentModel provides all the meta-information
      * required to render a document, eg settings for the cover page, table of contents, etc.
+     * <br/>
+     * By default, a TOC will be added at the beginning of the document.
      *
      * @param model the DocumentModel.
-     * @see #setDocumentModel(DocumentModel, boolean)
+     * @see #setDocumentModel(DocumentModel, String)
+     * @see #TOC_START
      */
     public void setDocumentModel( DocumentModel model )
     {
-        setDocumentModel( model, true );
+        setDocumentModel( model, TOC_START );
     }
 
     /**
      * Sets the DocumentModel to be used by this sink. The DocumentModel provides all the meta-information
      * required to render a document, eg settings for the cover page, table of contents, etc.
      *
-     * @param model the DocumentModel.
-     * @param addToc true to include the TOC in the sink.
+     * @param model the DocumentModel, could be null.
+     * @param tocPos should be one of these values: {@link #TOC_NONE}, {@link #TOC_START} and {@link #TOC_END}.
      * @since 1.1.2
      */
-    public void setDocumentModel( DocumentModel model, boolean addToc )
+    public void setDocumentModel( DocumentModel model, int tocPos )
     {
         this.docModel = model;
-        this.addToc = addToc;
+        if ( !( tocPos == TOC_NONE || tocPos == TOC_START || tocPos == TOC_END ) )
+        {
+            if ( getLog().isDebugEnabled() )
+            {
+                getLog().debug( "Unrecognized value for tocPosition: " + tocPos + ", using no toc." );
+            }
+            tocPos = TOC_NONE;
+        }
+        this.tocPosition = tocPos;
 
-        if ( this.addToc )
+        if ( this.docModel != null && this.docModel.getToc() != null && this.tocPosition != TOC_NONE )
         {
             DocumentTOCItem tocItem = new DocumentTOCItem();
             tocItem.setName( this.docModel.getToc().getName() );
             tocItem.setRef( "./toc" );
             List items = new LinkedList();
-            items.add( tocItem );
+            if ( this.tocPosition == TOC_START )
+            {
+                items.add( tocItem );
+            }
             items.addAll( this.docModel.getToc().getItems() );
+            if ( this.tocPosition == TOC_END )
+            {
+                items.add( tocItem );
+            }
 
             this.docModel.getToc().setItems( items );
         }
@@ -352,7 +388,7 @@ public class FoAggregateSink extends FoSink
     }
 
     /** {@inheritDoc} */
-    public void anchor( String name, SinkEventAttributes attributes  )
+    public void anchor( String name, SinkEventAttributes attributes )
     {
         if ( name == null )
         {
@@ -380,13 +416,13 @@ public class FoAggregateSink extends FoSink
     }
 
     /** {@inheritDoc} */
-    public void link( String name  )
+    public void link( String name )
     {
         link( name, null );
     }
 
     /** {@inheritDoc} */
-    public void link( String name, SinkEventAttributes attributes  )
+    public void link( String name, SinkEventAttributes attributes )
     {
         if ( name == null )
         {
@@ -458,7 +494,7 @@ public class FoAggregateSink extends FoSink
                 return;
             }
 
-            anchor = chopExtension ( anchor );
+            anchor = chopExtension( anchor );
 
             String base = docName.substring( 0, docName.lastIndexOf( "/" ) );
             anchor = base + "/" + anchor;
@@ -488,7 +524,7 @@ public class FoAggregateSink extends FoSink
         return base + "/" + anchor;
     }
 
-    private  String chopExtension( String name )
+    private String chopExtension( String name )
     {
         String anchor = name;
 
@@ -504,13 +540,14 @@ public class FoAggregateSink extends FoSink
 
                 if ( dot2 != -1 )
                 {
-                    anchor = anchor.substring( 0, dot ) + "#"
-                        + HtmlTools.encodeId( anchor.substring( hash + 1, dot2 ) );
+                    anchor =
+                        anchor.substring( 0, dot ) + "#" + HtmlTools.encodeId( anchor.substring( hash + 1, dot2 ) );
                 }
                 else
                 {
-                    anchor = anchor.substring( 0, dot ) + "#"
-                        + HtmlTools.encodeId( anchor.substring( hash + 1, anchor.length() ) );
+                    anchor =
+                        anchor.substring( 0, dot ) + "#"
+                            + HtmlTools.encodeId( anchor.substring( hash + 1, anchor.length() ) );
                 }
             }
             else
@@ -803,12 +840,8 @@ public class FoAggregateSink extends FoSink
      */
     public void toc()
     {
-        if ( !this.addToc )
-        {
-            return;
-        }
-
-        if ( docModel == null || docModel.getToc() == null || docModel.getToc().getItems() == null )
+        if ( docModel == null || docModel.getToc() == null || docModel.getToc().getItems() == null
+            || this.tocPosition == TOC_NONE )
         {
             return;
         }
@@ -1107,7 +1140,6 @@ public class FoAggregateSink extends FoSink
         writeSimpleTag( BLOCK_TAG );
         writeEndTag( TABLE_CELL_TAG );
 
-
         writeStartTag( TABLE_CELL_TAG, "number-columns-spanned", "2", "cover.border.left.bottom" );
         writeStartTag( BLOCK_TAG, "cover.subtitle" );
         write( subtitle == null ? ( version == null ? "" : " v. " + version ) : subtitle );
@@ -1140,7 +1172,7 @@ public class FoAggregateSink extends FoSink
         writeEndTag( TABLE_ROW_TAG );
     }
 
-    private void writeCoverFooter( DocumentCover cover, DocumentMeta meta  )
+    private void writeCoverFooter( DocumentCover cover, DocumentMeta meta )
     {
         if ( cover == null && meta == null )
         {
@@ -1214,7 +1246,7 @@ public class FoAggregateSink extends FoSink
 
         if ( atts == null )
         {
-            return new SinkEventAttributeSet( new String[] {SinkEventAttributes.HEIGHT, COVER_HEADER_HEIGHT} );
+            return new SinkEventAttributeSet( new String[] { SinkEventAttributes.HEIGHT, COVER_HEADER_HEIGHT } );
         }
 
         // FOP dpi: 72
