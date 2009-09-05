@@ -235,7 +235,7 @@ public class XhtmlBaseSink
      */
     protected void setCellCount( int count )
     {
-        this.cellCountStack.addLast( Integer.valueOf( count ) );
+        this.cellCountStack.addLast( new Integer( count ) );
     }
 
     /**
