@@ -176,5 +176,29 @@ public class FoAggregateSinkTest
         assertTrue( result.indexOf( "<fo:basic-link internal-destination=\"./folder/test\">" ) != -1 );
         assertTrue( result.indexOf( "<fo:basic-link internal-destination=\"./folder/whatsnew-1.1\">" ) != -1 );
         assertTrue( result.indexOf( "<fo:block id=\"./whatsnew-1.1\">" ) != -1 );
+
+        writer = new StringWriter();
+        try
+        {
+            sink = new FoAggregateSink( writer );
+            sink.setDocumentName( "./subdir/dir/index.html" );
+            sink.link( "../../root.html" );
+            sink.text( "../../root.html" );
+            sink.link_();
+            sink.link( "../../../outside.html" );
+            sink.text( "../../../outside.html" );
+            sink.link_();
+            sink.body();
+            sink.body_();
+        }
+        finally
+        {
+            sink.close();
+        }
+
+        result = writer.toString();
+
+        assertTrue( result.indexOf( "<fo:basic-link internal-destination=\"./root\">" ) != -1 );
+        assertTrue( result.indexOf( "<fo:basic-link internal-destination=\"./outside\">" ) != -1 );
     }
 }

@@ -518,6 +518,15 @@ public class FoAggregateSink
                 base = base.substring( 0, base.lastIndexOf( "/" ) );
 
                 anchor = anchor.substring( 3 );
+
+                if ( base.lastIndexOf( "/" ) == -1 )
+                {
+                    while ( anchor.startsWith( "../" ) )
+                    {
+                        anchor = anchor.substring( 3 );
+                    }
+                    break;
+                }
             }
         }
 
