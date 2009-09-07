@@ -1674,7 +1674,8 @@ public class FoSink
                     Object key = names.nextElement();
                     Object value = att.getAttribute( key );
 
-                    ( (PrettyPrintXMLWriter) this.tableCaptionXMLWriterStack.getLast() ).addAttribute( key.toString(), value.toString() );
+                    ( (PrettyPrintXMLWriter) this.tableCaptionXMLWriterStack.getLast() )
+                            .addAttribute( key.toString(), value.toString() );
                 }
             }
 
@@ -1704,14 +1705,17 @@ public class FoSink
     private static final char DIAMS = 0x2666;
     private static final char EURO = 0x20ac;
     private static final char TRADE = 0x2122;
+    private static final char PRIME = 0x2032;
+    private static final char PPRIME = 0x2033;
 
     private static boolean needsSymbolFont( char c )
     {
         // greek characters and mathematical symbols, except the euro and trade symbols
         // symbols I couldn't get to display in any font:
-        // zwnj (0x200C), zwj (0x200D), lrm (0x200E), rlm (0x200F), oline (0x203E), prime (0x2032),
-        // Prime (0x2033), lceil (0x2038), rceil (0x2039), lfloor (0x203A), rfloor (0x203B)
+        // zwnj (0x200C), zwj (0x200D), lrm (0x200E), rlm (0x200F), oline (0x203E),
+        // lceil (0x2038), rceil (0x2039), lfloor (0x203A), rfloor (0x203B)
         return ( c >= UPPER_ALPHA && c <= PIV )
+                || ( c == PRIME || c == PPRIME )
                 || ( c >= OLINE && c <= DIAMS && c != EURO && c != TRADE );
     }
 
