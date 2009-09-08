@@ -464,7 +464,8 @@ public class AptParser
 
                                 if ( hash.endsWith( ".html" ) && !hash.startsWith( "./" ) )
                                 {
-                                    String msg = "Ambiguous link: '" + hash + "'. If this is a local link, prepend \"./\"!";
+                                    String msg = "Ambiguous link: '" + hash
+                                            + "'. If this is a local link, prepend \"./\"!";
                                     logMessage( "ambiguousLink", msg );
                                 }
 
@@ -2889,6 +2890,11 @@ public class AptParser
             for ( int i = 1; i < params.length; i++ )
             {
                 String[] param = StringUtils.split( params[i], "=" );
+
+                if ( param.length == 1 )
+                {
+                    throw new AptParseException( "Missing 'key=value' pair for macro parameter: " + params[i] );
+                }
 
                 String key = unescapeForMacro( param[0] );
                 String value = unescapeForMacro( param[1] );
