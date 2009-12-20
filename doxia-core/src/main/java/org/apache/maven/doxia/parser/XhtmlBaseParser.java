@@ -925,7 +925,7 @@ public class XhtmlBaseParser
         String border = parser.getAttributeValue( null, Attribute.BORDER.toString() );
         boolean grid = true;
 
-        if ( "0".equals( border ) )
+        if ( border == null || "0".equals( border ) )
         {
             grid = false;
         }

@@ -551,7 +551,12 @@ public class XhtmlBaseParserTest
         Iterator it = sink.getEventList().iterator();
 
         assertEquals( "table", ( (SinkEventElement) it.next() ).getName() );
-        assertEquals( "tableRows", ( (SinkEventElement) it.next() ).getName() );
+
+        // DOXIA-374
+        SinkEventElement el = (SinkEventElement) it.next();
+        assertEquals( "tableRows", el.getName() );
+        assertFalse( ( (Boolean) el.getArgs()[1] ).booleanValue() );
+
         assertEquals( "tableCaption", ( (SinkEventElement) it.next() ).getName() );
         assertEquals( "tableCaption_", ( (SinkEventElement) it.next() ).getName() );
         assertEquals( "tableRow", ( (SinkEventElement) it.next() ).getName() );
