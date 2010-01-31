@@ -487,7 +487,7 @@ public interface Sink
      *   Neither Parsers nor Sinks should insert any content that is not explicitly present
      *   in the original source document, as this would lead to undefined behaviour for
      *   multi-format processing chains. However, while Parsers <b>must never</b> emit anchors
-     *   for section titles, some specialised Sinks may implement such a feature if the resulting
+     *   for section titles, some specialized Sinks may implement such a feature if the resulting
      *   output documents are not going to be further processed (and this is properly documented).
      * </p>
      * <p>
@@ -816,7 +816,7 @@ public interface Sink
      * </blockquote>
      * <p>
      *   If the {@link SinkEventAttributes#SRC SRC} attribute is specified in SinkEventAttributes,
-     *   it will be overidden by the <code>src</code> parameter.
+     *   it will be overridden by the <code>src</code> parameter.
      * </p>
      *
      * @param src the image source, a valid URL.
@@ -1345,7 +1345,7 @@ public interface Sink
     void comment( String comment );
 
     /**
-     * Add an unkown event. This may be used by parsers to notify a general Sink about
+     * Add an unknown event. This may be used by parsers to notify a general Sink about
      * an event that doesn't fit into any event defined by the Sink API.
      * Depending on the parameters, a Sink may decide whether or not to process the event,
      * emit it as raw text, as a comment, log it, etc.
