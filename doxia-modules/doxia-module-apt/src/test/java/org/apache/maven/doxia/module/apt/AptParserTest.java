@@ -61,16 +61,15 @@ public class AptParserTest
         return parser;
     }
 
-    /** @throws Exception  */
-    public void testLineBreak()
-        throws Exception
+    protected String parseFileToAptSink( String file )
+        throws ParseException
     {
         StringWriter output = null;
         Reader reader = null;
         try
         {
             output = new StringWriter();
-            reader = getTestReader( "test/linebreak", "apt" );
+            reader = getTestReader( file );
 
             Sink sink = new AptSink( output );
             createParser().parse( reader, sink );
@@ -81,30 +80,25 @@ public class AptParserTest
             IOUtil.close( reader );
         }
 
-        assertTrue( output.toString().indexOf( "Line\\" + EOL + "break." ) != -1 );
+        return output.toString();
+    }
+
+    /** @throws Exception  */
+    public void testLineBreak()
+        throws Exception
+    {
+        String linebreak = parseFileToAptSink( "test/linebreak" );
+
+        assertTrue( linebreak.indexOf( "Line\\" + EOL + "break." ) != -1 );
     }
 
     /** @throws Exception  */
     public void testSnippetMacro()
         throws Exception
     {
-        StringWriter output = null;
-        Reader reader = null;
-        try
-        {
-            output = new StringWriter();
-            reader = getTestReader( "test/macro", "apt" );
+        String macro = parseFileToAptSink( "test/macro" );
 
-            Sink sink = new AptSink( output );
-            createParser().parse( reader, sink );
-        }
-        finally
-        {
-            IOUtil.close( output );
-            IOUtil.close( reader );
-        }
-
-        assertTrue( output.toString().indexOf( "<modelVersion\\>4.0.0\\</modelVersion\\>" ) != -1 );
+        assertTrue( macro.indexOf( "<modelVersion\\>4.0.0\\</modelVersion\\>" ) != -1 );
     }
 
     /** @throws Exception  */
@@ -118,7 +112,7 @@ public class AptParserTest
 
         try
         {
-            reader = getTestReader( "test/snippet", "apt" );
+            reader = getTestReader( "test/snippet" );
 
             createParser().parse( reader, sink );
         }
@@ -161,25 +155,11 @@ public class AptParserTest
     public void testTocMacro()
         throws Exception
     {
-        StringWriter output = null;
-        Reader reader = null;
-        try
-        {
-            output = new StringWriter();
-            reader = getTestReader( "test/toc", "apt" );
-
-            Sink sink = new AptSink( output );
-            createParser().parse( reader, sink );
-        }
-        finally
-        {
-            IOUtil.close( output );
-            IOUtil.close( reader );
-        }
+        String toc = parseFileToAptSink( "test/toc" );
 
         // No section, only subsection 1 and 2
-        assertTrue( output.toString().indexOf( "* {{{SubSection_1.1}SubSection 1.1}}" ) != -1 );
-        assertTrue( output.toString().indexOf( "* {{{SubSection_1.1.2.1.1}SubSection 1.1.2.1.1}}" ) == -1 );
+        assertTrue( toc.indexOf( "* {{{SubSection_1.1}SubSection 1.1}}" ) != -1 );
+        assertTrue( toc.indexOf( "* {{{SubSection_1.1.2.1.1}SubSection 1.1.2.1.1}}" ) == -1 );
     }
 
     /**
