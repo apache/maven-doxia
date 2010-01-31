@@ -102,6 +102,16 @@ public class AptParserTest
     }
 
     /** @throws Exception  */
+    public void testCommentsBeforeTitle()
+        throws Exception
+    {
+        String comments = parseFileToAptSink( "test/comments" );
+
+        assertEquals( 0, comments.indexOf( "~~ comments before title" + EOL + "~~ like a license header, for example"
+            + EOL + " -----" + EOL + " Test DOXIA-379" ) );
+    }
+
+    /** @throws Exception  */
     public void testSnippet()
         throws Exception
     {

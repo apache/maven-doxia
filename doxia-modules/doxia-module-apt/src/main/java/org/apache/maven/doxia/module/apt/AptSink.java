@@ -60,6 +60,9 @@ public class AptSink
     /**  date. */
     private String date;
 
+    /** startFlag. */
+    private boolean startFlag;
+
     /**  tableCaptionFlag. */
     private boolean tableCaptionFlag;
 
@@ -160,6 +163,7 @@ public class AptSink
         this.author = null;
         this.title = null;
         this.date = null;
+        this.startFlag = true;
         this.tableCaptionFlag = false;
         this.headerFlag = false;
         this.bufferFlag = false;
@@ -192,9 +196,12 @@ public class AptSink
     /** {@inheritDoc} */
     public void head()
     {
+        boolean startFlag = this.startFlag;
+
         init();
 
         headerFlag = true;
+        this.startFlag = startFlag;
     }
 
     /** {@inheritDoc} */
@@ -202,6 +209,10 @@ public class AptSink
     {
         headerFlag = false;
 
+        if ( ! startFlag )
+        {
+            write( EOL );
+        }
         write( HEADER_START_MARKUP + EOL );
         if ( title != null )
         {
@@ -896,7 +907,7 @@ public class AptSink
     /** {@inheritDoc} */
     public void comment( String comment )
     {
-        rawText( EOL + COMMENT + COMMENT + SPACE + comment.trim() );
+        rawText( ( startFlag ? "" : EOL ) + COMMENT + COMMENT + SPACE + comment.trim() );
     }
 
     /**
@@ -917,6 +928,7 @@ public class AptSink
      */
     protected void write( String text )
     {
+        startFlag = false;
         writer.write( unifyEOLs( text ) );
     }
 

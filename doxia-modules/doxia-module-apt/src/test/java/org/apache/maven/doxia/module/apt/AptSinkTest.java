@@ -269,6 +269,6 @@ public class AptSinkTest extends AbstractSinkTest
     /** {@inheritDoc} */
     protected String getCommentBlock( String text )
     {
-        return EOL + "~~ Simple comment with ----";
+        return "~~ Simple comment with ----";
     }
 }

@@ -217,6 +217,13 @@ public class AptParser
             // Lookahead block.
             nextBlock( /*first*/true );
 
+            // traverse comments
+            while ( ( block != null ) && ( block.getType() == COMMENT_BLOCK ) )
+            {
+                block.traverse();
+                nextBlock( /*first*/true );
+            }
+
             traverseHead();
 
             traverseBody();
