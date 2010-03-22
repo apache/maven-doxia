@@ -629,7 +629,7 @@ public class XhtmlBaseSinkTest
             sink.close();
         }
 
-        assertEquals( "<table align=\"center\" border=\"0\" class=\"bodyTable\">", writer.toString() );
+        assertEquals( "<table border=\"0\" class=\"bodyTable\">", writer.toString() );
     }
 
     /**
@@ -714,7 +714,7 @@ public class XhtmlBaseSinkTest
             sink.close();
         }
 
-        assertEquals( "<table align=\"center\" border=\"0\" class=\"bodyTable\">" +
+        assertEquals( "<table border=\"0\" class=\"bodyTable\">" +
                 "<caption style=\"bold\">caption</caption></table>", writer.toString() );
     }
 

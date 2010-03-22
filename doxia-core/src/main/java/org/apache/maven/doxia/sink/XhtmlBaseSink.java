@@ -1225,11 +1225,6 @@ public class XhtmlBaseSink
         }
 
         MutableAttributeSet att = new SinkEventAttributeSet();
-        if ( !this.tableAttributes.isDefined( Attribute.ALIGN.toString() ) )
-        {
-            att.addAttribute( Attribute.ALIGN, "center" );
-        }
-
         if ( !this.tableAttributes.isDefined( Attribute.BORDER.toString() ) )
         {
             att.addAttribute( Attribute.BORDER, ( grid ? "1" : "0" ) );
@@ -1376,42 +1371,9 @@ public class XhtmlBaseSink
 
         MutableAttributeSet att = new SinkEventAttributeSet();
 
-        String justif = null;
         if ( attributes == null )
         {
             attributes = new SinkEventAttributeSet( 0 );
-        }
-
-        if ( attributes.isDefined( Attribute.ALIGN.toString() ) )
-        {
-            justif = attributes.getAttribute( Attribute.ALIGN.toString() ).toString();
-        }
-
-        if ( !this.cellCountStack.isEmpty() && !this.cellJustifStack.isEmpty() )
-        {
-            int cellCount = Integer.parseInt( this.cellCountStack.getLast().toString() );
-            int[] cellJustif = (int[]) this.cellJustifStack.getLast();
-            if ( justif == null && cellJustif != null && cellJustif.length > 0
-                && this.isCellJustifStack.getLast().equals( Boolean.TRUE ) )
-            {
-                switch ( cellJustif[Math.min( cellCount, cellJustif.length - 1 )] )
-                {
-                    case JUSTIFY_LEFT:
-                        justif = "left";
-                        break;
-                    case JUSTIFY_RIGHT:
-                        justif = "right";
-                        break;
-                    case JUSTIFY_CENTER:
-                    default:
-                        justif = "center";
-                }
-            }
-        }
-
-        if ( justif != null )
-        {
-            att.addAttribute( Attribute.ALIGN, justif );
         }
 
         att.addAttributes( SinkUtils.filterAttributes(
