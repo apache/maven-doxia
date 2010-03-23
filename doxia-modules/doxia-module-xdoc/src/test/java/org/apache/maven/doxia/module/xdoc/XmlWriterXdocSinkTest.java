@@ -85,10 +85,10 @@ public class XmlWriterXdocSinkTest
     /** {@inheritDoc} */
     protected String getTableBlock( String cell, String caption )
     {
-        return "<table align=\"center\" border=\"0\">" + XmlUtil.DEFAULT_LINE_SEPARATOR + DEFAULT_INDENT
+        return "<table border=\"0\">" + XmlUtil.DEFAULT_LINE_SEPARATOR + DEFAULT_INDENT
             + "<caption>" + caption + "</caption>" + XmlUtil.DEFAULT_LINE_SEPARATOR + DEFAULT_INDENT
             + "<tr valign=\"top\">" + XmlUtil.DEFAULT_LINE_SEPARATOR + DEFAULT_INDENT + DEFAULT_INDENT
-            + "<td align=\"center\">" + cell + "</td>" + XmlUtil.DEFAULT_LINE_SEPARATOR + DEFAULT_INDENT + "</tr>"
+            + "<td>" + cell + "</td>" + XmlUtil.DEFAULT_LINE_SEPARATOR + DEFAULT_INDENT + "</tr>"
             + XmlUtil.DEFAULT_LINE_SEPARATOR + "</table>";
     }
 

@@ -455,11 +455,6 @@ public class XdocSink
 
         MutableAttributeSet att = new SinkEventAttributeSet();
 
-        if ( !tableAttributes.isDefined( Attribute.ALIGN.toString() ) )
-        {
-            att.addAttribute( Attribute.ALIGN, "center" );
-        }
-
         if ( !tableAttributes.isDefined( Attribute.BORDER.toString() ) )
         {
             att.addAttribute( Attribute.BORDER, ( grid ? "1" : "0" ) );
