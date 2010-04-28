@@ -62,8 +62,6 @@ import org.codehaus.plexus.util.xml.pull.XmlPullParserException;
 import org.xml.sax.EntityResolver;
 import org.xml.sax.InputSource;
 import org.xml.sax.SAXException;
-import org.xml.sax.SAXNotRecognizedException;
-import org.xml.sax.SAXNotSupportedException;
 import org.xml.sax.SAXParseException;
 import org.xml.sax.XMLReader;
 import org.xml.sax.helpers.DefaultHandler;
@@ -636,14 +634,6 @@ public abstract class AbstractXmlParser
             }
         }
         catch ( IOException e )
-        {
-            throw new ParseException( "Error validating the model: " + e.getMessage(), e );
-        }
-        catch ( SAXNotRecognizedException e )
-        {
-            throw new ParseException( "Error validating the model: " + e.getMessage(), e );
-        }
-        catch ( SAXNotSupportedException e )
         {
             throw new ParseException( "Error validating the model: " + e.getMessage(), e );
         }
