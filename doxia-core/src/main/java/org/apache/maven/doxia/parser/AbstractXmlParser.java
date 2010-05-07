@@ -37,20 +37,19 @@ import java.util.Map;
 import java.util.regex.Matcher;
 import java.util.regex.Pattern;
 
-import javax.xml.XMLConstants;
-
 import org.apache.commons.httpclient.DefaultHttpMethodRetryHandler;
 import org.apache.commons.httpclient.HttpClient;
 import org.apache.commons.httpclient.HttpException;
 import org.apache.commons.httpclient.HttpStatus;
 import org.apache.commons.httpclient.methods.GetMethod;
 import org.apache.commons.httpclient.params.HttpMethodParams;
-import org.apache.maven.doxia.logging.Log;
+
 import org.apache.maven.doxia.macro.MacroExecutionException;
 import org.apache.maven.doxia.markup.XmlMarkup;
 import org.apache.maven.doxia.sink.Sink;
 import org.apache.maven.doxia.sink.SinkEventAttributeSet;
 import org.apache.maven.doxia.util.HtmlTools;
+import org.apache.maven.doxia.util.XmlValidator;
 
 import org.codehaus.plexus.util.FileUtils;
 import org.codehaus.plexus.util.IOUtil;
@@ -62,10 +61,6 @@ import org.codehaus.plexus.util.xml.pull.XmlPullParserException;
 import org.xml.sax.EntityResolver;
 import org.xml.sax.InputSource;
 import org.xml.sax.SAXException;
-import org.xml.sax.SAXParseException;
-import org.xml.sax.XMLReader;
-import org.xml.sax.helpers.DefaultHandler;
-import org.xml.sax.helpers.XMLReaderFactory;
 
 /**
  * An abstract class that defines some convenience methods for <code>XML</code> parsers.
@@ -96,15 +91,6 @@ public abstract class AbstractXmlParser
     private static final Pattern PATTERN_ENTITY_2 =
         Pattern.compile( ENTITY_START + "(\\s)+([^>|^\\s]+)(\\s)+\"(\\s)*(&(#x?[0-9a-fA-F]{1,5};)*)(\\s)*\"(\\s)*>" );
 
-    /**
-     * Doctype pattern i.e. ".*<!DOCTYPE([^>]*)>.*"
-     * see <a href="http://www.w3.org/TR/REC-xml/#NT-doctypedecl">http://www.w3.org/TR/REC-xml/#NT-doctypedecl</a>.
-     */
-    private static final Pattern PATTERN_DOCTYPE = Pattern.compile( ".*" + DOCTYPE_START + "([^>]*)>.*" );
-
-    /** Tag pattern as defined in http://www.w3.org/TR/REC-xml/#NT-Name */
-    private static final Pattern PATTERN_TAG = Pattern.compile( ".*<([A-Za-z][A-Za-z0-9:_.-]*)([^>]*)>.*" );
-
     private boolean ignorableWhitespace;
 
     private boolean collapsibleWhitespace;
@@ -114,9 +100,6 @@ public abstract class AbstractXmlParser
     private Map entities;
 
     private boolean validate = true;
-
-    /** lazy xmlReader to validate xml content*/
-    private XMLReader xmlReader;
 
     /** {@inheritDoc} */
     public void parse( Reader source, Sink sink )
@@ -137,7 +120,7 @@ public abstract class AbstractXmlParser
                 throw new ParseException( "Error reading the model: " + e.getMessage(), e );
             }
 
-            validate( content );
+            new XmlValidator( getLog() ).validate( content );
 
             source = new StringReader( content );
         }
@@ -592,82 +575,6 @@ public abstract class AbstractXmlParser
     // ----------------------------------------------------------------------
 
     /**
-     * Validate an XML content with SAX.
-     *
-     * @param content a not null xml content
-     * @throws ParseException if any.
-     */
-    private void validate( String content )
-        throws ParseException
-    {
-        try
-        {
-            // 1 if there's a doctype
-            boolean hasDoctype = false;
-            Matcher matcher = PATTERN_DOCTYPE.matcher( content );
-            if ( matcher.find() )
-            {
-                hasDoctype = true;
-            }
-
-            // 2 check for an xmlns instance
-            boolean hasXsd = false;
-            matcher = PATTERN_TAG.matcher( content );
-            if ( matcher.find() )
-            {
-                String value = matcher.group( 2 );
-
-                if ( value.indexOf( XMLConstants.W3C_XML_SCHEMA_INSTANCE_NS_URI ) != -1 )
-                {
-                    hasXsd = true;
-                }
-            }
-
-            // 3 validate content if doctype or xsd
-            if ( hasDoctype || hasXsd )
-            {
-                if ( getLog().isDebugEnabled() )
-                {
-                    getLog().debug( "Validating the content..." );
-                }
-                getXmlReader( hasXsd && hasDoctype ).parse( new InputSource( new StringReader( content ) ) );
-            }
-        }
-        catch ( IOException e )
-        {
-            throw new ParseException( "Error validating the model: " + e.getMessage(), e );
-        }
-        catch ( SAXException e )
-        {
-            throw new ParseException( "Error validating the model: " + e.getMessage(), e );
-        }
-    }
-
-    /**
-     * @param hasDtdAndXsd to flag the <code>ErrorHandler</code>.
-     * @return an xmlReader instance.
-     * @throws SAXException if any
-     */
-    private XMLReader getXmlReader( boolean hasDtdAndXsd )
-        throws SAXException
-    {
-        if ( xmlReader == null )
-        {
-            MessagesErrorHandler errorHandler = new MessagesErrorHandler( getLog() );
-
-            xmlReader = XMLReaderFactory.createXMLReader( "org.apache.xerces.parsers.SAXParser" );
-            xmlReader.setFeature( "http://xml.org/sax/features/validation", true );
-            xmlReader.setFeature( "http://apache.org/xml/features/validation/schema", true );
-            xmlReader.setErrorHandler( errorHandler );
-            xmlReader.setEntityResolver( new CachedFileEntityResolver() );
-        }
-
-        ( (MessagesErrorHandler) xmlReader.getErrorHandler() ).setHasDtdAndXsd( hasDtdAndXsd );
-
-        return xmlReader;
-    }
-
-    /**
      * Add an entity given by <code>entityName</code> and <code>entityValue</code> to {@link #entities}.
      * <br/>
      * By default, we exclude the default XML entities: &#38;amp;, &#38;lt;, &#38;gt;, &#38;quot; and &#38;apos;.
@@ -782,125 +689,6 @@ public abstract class AbstractXmlParser
             finally
             {
                 IOUtil.close( reader );
-            }
-        }
-    }
-
-    /**
-     * Convenience class to beautify <code>SAXParseException</code> messages.
-     */
-    static class MessagesErrorHandler
-        extends DefaultHandler
-    {
-        private static final int TYPE_UNKNOWN = 0;
-
-        private static final int TYPE_WARNING = 1;
-
-        private static final int TYPE_ERROR = 2;
-
-        private static final int TYPE_FATAL = 3;
-
-        /** @see org/apache/xerces/impl/msg/XMLMessages.properties#MSG_ELEMENT_NOT_DECLARED */
-        private static final Pattern ELEMENT_TYPE_PATTERN =
-            Pattern.compile( "Element type \".*\" must be declared.", Pattern.DOTALL );
-
-        private final Log log;
-
-        private boolean hasDtdAndXsd;
-
-        public MessagesErrorHandler( Log log )
-        {
-            this.log = log;
-        }
-
-        /**
-         * @param hasDtdAndXsd the hasDtdAndXsd to set
-         */
-        protected void setHasDtdAndXsd( boolean hasDtdAndXsd )
-        {
-            this.hasDtdAndXsd = hasDtdAndXsd;
-        }
-
-        /** {@inheritDoc} */
-        public void warning( SAXParseException e )
-            throws SAXException
-        {
-            processException( TYPE_WARNING, e );
-        }
-
-        /** {@inheritDoc} */
-        public void error( SAXParseException e )
-            throws SAXException
-        {
-            // Workaround for Xerces complaints when an XML with XSD needs also a <!DOCTYPE []> to specify entities
-            // like &nbsp;
-            // See http://xsd.stylusstudio.com/2001Nov/post08021.htm
-            if ( !hasDtdAndXsd )
-            {
-                processException( TYPE_ERROR, e );
-                return;
-            }
-
-            Matcher m = ELEMENT_TYPE_PATTERN.matcher( e.getMessage() );
-            if ( !m.find() )
-            {
-                processException( TYPE_ERROR, e );
-            }
-        }
-
-        /** {@inheritDoc} */
-        public void fatalError( SAXParseException e )
-            throws SAXException
-        {
-            processException( TYPE_FATAL, e );
-        }
-
-        private void processException( int type, SAXParseException e )
-            throws SAXException
-        {
-            StringBuffer message = new StringBuffer();
-
-            switch ( type )
-            {
-                case TYPE_WARNING:
-                    message.append( "Warning:" );
-                    break;
-
-                case TYPE_ERROR:
-                    message.append( "Error:" );
-                    break;
-
-                case TYPE_FATAL:
-                    message.append( "Fatal error:" );
-                    break;
-
-                case TYPE_UNKNOWN:
-                default:
-                    message.append( "Unknown:" );
-                    break;
-            }
-
-            message.append( EOL );
-            message.append( "  Public ID: " + e.getPublicId() ).append( EOL );
-            message.append( "  System ID: " + e.getSystemId() ).append( EOL );
-            message.append( "  Line number: " + e.getLineNumber() ).append( EOL );
-            message.append( "  Column number: " + e.getColumnNumber() ).append( EOL );
-            message.append( "  Message: " + e.getMessage() ).append( EOL );
-
-            switch ( type )
-            {
-                case TYPE_WARNING:
-                    if ( log.isWarnEnabled() )
-                    {
-                        log.warn( message.toString() );
-                    }
-                    break;
-
-                case TYPE_UNKNOWN:
-                case TYPE_ERROR:
-                case TYPE_FATAL:
-                default:
-                    throw new SAXException( message.toString() );
             }
         }
     }
