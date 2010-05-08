@@ -42,5 +42,7 @@ Doxia Sink API
 |        3.0+        | <no more dependency>         |
 *--------------------+------------------------------+
 
-  To hide the difference between <<<doxia-sink-api 1.0-alpha-6>>> and <<<1.0>>> included in different Maven 2.0.x version,
+  Maven 2.0.8 is the first Maven 2.0.x version including <<<doxia-sink-api 1.0(-alpha-9)>>>.
+
+  To hide the difference between <<<doxia-sink-api 1.0-alpha-6>>> and <<<1.0>>> included in previous Maven 2.0.x versions,
   <<<org.apache.maven.doxia.sink.SinkFactory>>> interface was copied into <<<maven-site-plugin 2.0-beta-6>>>.
