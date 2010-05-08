@@ -1,0 +1,46 @@
+ -----
+ Doxia Sink API
+ -----
+ Hervé Boutemy
+ -----
+ 2010-05-08
+ -----
+
+Doxia Sink API
+
+  API to generate Doxia documents.
+
+* API Changes
+
+  With every Doxia release, a new <<<doxia-sink-api>>> artifact has been released even if the API itself didn't change.
+
+  Here is a summary of API changes:
+
+*--------------+--------------------------+
+|| <<doxia-sink-api version>> || <<change description>> ||
+*--------------+--------------------------+
+| 1.0-alpha-6  | added <<<org.apache.maven.doxia.sink.Sink>>> interface which supercedes <<<org.codehaus.doxia.sink.Sink>>> |
+*--------------+--------------------------+
+| 1.0-alpha-9  | added <<<org.apache.maven.doxia.sink.SinkFactory>>> interface |
+*--------------+--------------------------+
+| 1.1          | added <<<org.apache.maven.doxia.sink.SinkEventAttributes>>> interface and a dependency on <<<doxia-logging-api>>> |
+*--------------+--------------------------+
+
+  Note that <<<doxia-sink-api 1.0>>> is equivalent to <<<doxia-sink-api 1.0-alpha-9>>>.
+
+* Maven dependency
+
+  <<<doxia-sink-api>>> is included in every Maven 2 distribution. Decoupling has been done in Maven 3.
+
+*--------------------+------------------------------+
+|| <<Maven version>> || <<doxia-sink-api version>>  ||
+*--------------------+------------------------------+
+|        2.0.x       |            1.0               |
+*--------------------+------------------------------+
+|        2.1.x+      |            1.1               |
+*--------------------+------------------------------+
+|        3.0+        | <no more dependency>         |
+*--------------------+------------------------------+
+
+  To hide the difference between <<<doxia-sink-api 1.0-alpha-6>>> and <<<1.0>>> included in different Maven 2.0.x version,
+  <<<org.apache.maven.doxia.sink.SinkFactory>>> interface was copied into <<<maven-site-plugin 2.0-beta-6>>>.
