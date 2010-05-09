@@ -31,16 +31,6 @@
   </bannerRight>
 
   <body>
-    <links>
-      <item name="Apache" href="http://www.apache.org/"/>
-      <item name="Maven 1.x" href="http://maven.apache.org/maven-1.x"/>
-      <item name="Maven 2.x" href="http://maven.apache.org/"/>
-      <item name="SCM" href="http://maven.apache.org/scm"/>
-      <item name="Wagon" href="http://maven.apache.org/wagon"/>
-      <item name="JXR" href="http://maven.apache.org/jxr"/>
-      <item name="Doxia" href="http://maven.apache.org/doxia"/>
-    </links>
-
     <head>
       <script src="http://www.google-analytics.com/urchin.js" type="text/javascript">
       </script>
