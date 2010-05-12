@@ -335,6 +335,28 @@ public class XdocParserTest
     }
 
     /** @throws Exception  */
+    public void testSourceContainingDTD()
+        throws Exception
+    {
+        String text = "<source><![CDATA[" +
+                          "<!DOCTYPE web-app PUBLIC " +
+                          "\"-//Sun Microsystems, Inc.//DTD Web Application 2.2//EN\"" +
+                          " \"http://java.sun.com/j2ee/dtds/web-app_2.2.dtd\">" +
+                      "]]></source>";
+
+        SinkEventTestingSink sink = new SinkEventTestingSink();
+
+        parser.parse( text, sink );
+
+        Iterator it = sink.getEventList().iterator();
+        assertEquals( "verbatim", ( (SinkEventElement) it.next() ).getName() );
+        assertEquals( "text", ( (SinkEventElement) it.next() ).getName() );
+        assertEquals( "verbatim_", ( (SinkEventElement) it.next() ).getName() );
+        assertFalse( it.hasNext() );
+
+    }
+
+    /** @throws Exception  */
     public void testPreEOL()
         throws Exception
     {
