@@ -103,12 +103,9 @@ public class XmlValidator
                 }
             }
 
-            // 3 validate content if doctype or xsd
-            if ( hasDoctype || hasXsd )
-            {
-                getLog().debug( "Validating the content..." );
-                getXmlReader( hasXsd && hasDoctype ).parse( new InputSource( new StringReader( content ) ) );
-            }
+            // 3 validate content
+            getLog().debug( "Validating the content..." );
+            getXmlReader( hasXsd && hasDoctype ).parse( new InputSource( new StringReader( content ) ) );
         }
         catch ( IOException e )
         {
