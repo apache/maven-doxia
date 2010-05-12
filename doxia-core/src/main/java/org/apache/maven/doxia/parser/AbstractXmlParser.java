@@ -99,7 +99,7 @@ public abstract class AbstractXmlParser
 
     private Map entities;
 
-    private boolean validate = true;
+    private boolean validate = false;
 
     /** {@inheritDoc} */
     public void parse( Reader source, Sink sink )
