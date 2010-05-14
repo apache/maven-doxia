@@ -294,8 +294,13 @@ under the License.
         </plugin>
         <plugin>
           <groupId>org.apache.maven.plugins</groupId>
+          <artifactId>maven-resources-plugin</artifactId>
+          <version>2.4.2</version>
+        </plugin>        
+        <plugin>
+          <groupId>org.apache.maven.plugins</groupId>
           <artifactId>maven-javadoc-plugin</artifactId>
-          <version>2.6.1</version>
+          <version>2.7</version>
           <configuration>
             <source>1.4</source>
             <links>
@@ -463,5 +468,37 @@ under the License.
         </plugins>
       </reporting>
     </profile>
+    <profile>
+      <id>m2e</id>
+      <properties>
+        <m2BuildDirectory>target</m2BuildDirectory>
+      </properties>
+      <activation>
+        <property>
+          <name>m2e.version</name>
+        </property>
+      </activation>
+      <build>
+        <directory>${m2BuildDirectory}</directory>
+        <plugins>
+          <plugin>
+            <groupId>org.maven.ide.eclipse</groupId>
+            <artifactId>lifecycle-mapping</artifactId>
+            <version>0.10.0</version>
+            <configuration>
+              <mappingId>customizable</mappingId>
+              <configurators>
+                <configurator id="org.maven.ide.eclipse.jdt.javaConfigurator" />
+                <configurator id="org.maven.ide.eclipse.modello.modelloConfigurator" />
+                <configurator id="org.maven.ide.eclipse.plexus.annotations.plexusConfigurator" />
+              </configurators>
+              <mojoExecutions>
+                <mojoExecution>org.apache.maven.plugins:maven-resources-plugin::</mojoExecution>
+              </mojoExecutions>
+            </configuration>
+          </plugin>
+        </plugins>
+      </build>
+    </profile>    
   </profiles>
 </project>
