@@ -160,7 +160,8 @@ public class NumberedListItem
             default:
                 symbol = DECIMALS[j];
         }
-        return symbol;
+
+        return symbol + ".";
     }
 
     /**
