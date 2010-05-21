@@ -109,39 +109,37 @@ public class ConfluenceParser
     public synchronized void parse( Reader source, Sink sink )
         throws ParseException
     {
-        List blocks;
-
         ByLineSource src = new ByLineReaderSource( source );
 
         try
         {
-            blocks = parse( src );
+            List blocks = parse( src );
+
+            sink.head();
+
+            sink.head_();
+
+            sink.body();
+
+            for ( Iterator i = blocks.iterator(); i.hasNext(); )
+            {
+                Block block = (Block) i.next();
+
+                block.traverse( sink );
+            }
+
+            sink.body_();
         }
         catch ( Exception e )
         {
             // TODO handle column number
             throw new ParseException( e, src.getName(), src.getLineNumber(), -1 );
         }
-
-        sink.head();
-
-        sink.head_();
-
-        sink.body();
-
-        for ( Iterator i = blocks.iterator(); i.hasNext(); )
+        finally
         {
-            Block block = (Block) i.next();
-
-            block.traverse( sink );
+            setSecondParsing( false );
+            init();
         }
-
-        sink.body_();
-        sink.flush();
-        sink.close();
-
-        setSecondParsing( false );
-        init();
     }
 
     /** {@inheritDoc} */

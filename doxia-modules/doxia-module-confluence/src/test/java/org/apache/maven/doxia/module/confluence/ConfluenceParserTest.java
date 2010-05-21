@@ -19,6 +19,7 @@ package org.apache.maven.doxia.module.confluence;
  * under the License.
  */
 
+import java.io.FilterWriter;
 import java.io.IOException;
 import java.io.Reader;
 import java.io.StringReader;
@@ -443,6 +444,45 @@ public class ConfluenceParserTest
 
         assertTrue( "generated document should have a size > 0", output.toString().length() > 0 );
     }
+
+    public void testDoxia382SinkCannotBeReused()
+            throws ParseException
+    {
+        String document1 = "Test A"
+            + "\n\n* list1"
+            + "\n\n* list2"
+            + "\n\n* list2{pre}123{/pre} "
+            + "\n123";
+
+        String document2 = "Test B"
+            + "\n\n* list1"
+            + "\n\n* list2"
+            + "\n\n* list2{pre}123{/pre}"
+            + "\n123";
+
+        output = new StringWriter();
+        Sink sink = new TextSink( new FilterWriter( output )
+        {
+            public void close() throws IOException
+            {
+                super.close();
+                this.out = null;
+            }
+
+            public void write( String str, int off, int len )
+                    throws IOException
+            {
+                if ( out == null )
+                {
+                    throw new IOException( "Writing to an already closed Writer" );
+                }
+            }
+        });
+
+        createParser().parse( new StringReader( document1 ), sink );
+        createParser().parse( new StringReader( document2 ), sink );
+    }
+    
 
     private void assertContainsLines( String message, String result, String lines )
     {
