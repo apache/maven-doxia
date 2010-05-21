@@ -83,10 +83,13 @@ public abstract class AbstractParser
      * Returns the current base directory.
      *
      * @return The base directory.
+     *
+     * @deprecated this does not work in multi-module builds, see DOXIA-373
      */
     protected File getBasedir()
     {
         // TODO: This is baaad, it should come in with the request.
+        // (this is only used for macro requests, see AptParser)
 
         String basedir = System.getProperty( "basedir" );
 

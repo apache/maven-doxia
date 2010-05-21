@@ -2916,6 +2916,8 @@ public class AptParser
             aptParser.enableLogging( getLog() );
             parameters.put( "parser", aptParser );
 
+            // getBasedir() does not work in multi-module builds, see DOXIA-373
+            // the basedir should be injected from here, see DOXIA-224
             MacroRequest request = new MacroRequest( parameters, getBasedir() );
             try
             {
