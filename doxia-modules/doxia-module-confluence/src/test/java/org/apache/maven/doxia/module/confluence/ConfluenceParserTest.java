@@ -86,6 +86,14 @@ public class ConfluenceParserTest
     }
 
     /** @throws Exception */
+    public void testMarkupTestPage()
+        throws Exception
+    {
+        String result = locateAndParseTestSourceFile( "test" );
+        assertContainsLines( result, "end:body" );
+    }
+
+    /** @throws Exception */
     public void testParagraphWithSimpleFormatting()
         throws Exception
     {
@@ -483,6 +491,25 @@ public class ConfluenceParserTest
         createParser().parse( new StringReader( document2 ), sink );
     }
     
+
+    /**
+     * DOXIA-370
+     *
+     * @throws ParseException
+     */
+    public void testSeparatorInParagraph()
+        throws ParseException
+    {
+        String document = "Up\n---\nDown\n";
+
+        output = new StringWriter();
+        Sink sink = new TextSink( output );
+
+        /* parsing with separator in middle of paragraph */
+        createParser().parse( new StringReader( document ), sink );
+        assertTrue( "generated document should have a size > 0", output.toString().length() > 0 );
+
+    }
 
     private void assertContainsLines( String message, String result, String lines )
     {
