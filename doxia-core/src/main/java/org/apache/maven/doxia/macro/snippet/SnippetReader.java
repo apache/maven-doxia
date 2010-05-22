@@ -122,6 +122,7 @@ public class SnippetReader
     private List readLines( String snippetId )
         throws IOException
     {
+        // TODO: DOXIA-386, use InputStreamReader(InputStream in, Charset cs)
         BufferedReader reader = new BufferedReader( new InputStreamReader( source.openStream() ) );
         List lines = new ArrayList();
         try
