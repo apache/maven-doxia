@@ -317,6 +317,12 @@ under the License.
             </tagletArtifacts>
           </configuration>
         </plugin>
+        <plugin>
+          <artifactId>maven-site-plugin</artifactId>
+          <configuration>
+            <stagingSiteURL>scp://people.apache.org/www/maven.apache.org/doxia/${project.artifactId}-${project.version}</stagingSiteURL>
+          </configuration>
+        </plugin>
       </plugins>
     </pluginManagement>
     <plugins>
