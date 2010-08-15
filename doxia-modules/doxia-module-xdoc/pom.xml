@@ -94,7 +94,7 @@ under the License.
                     <condition property="dir" value="${project.reporting.outputDirectory}/xsddoc">
                       <matches string="${project.reporting.outputDirectory}" pattern="^${basedir}" />
                     </condition>
-                    <condition property="dir" value="${basedir}/${project.reporting.outputDirectory}/xsddoc">
+                    <condition property="dir" value="${project.reporting.outputDirectory}/xsddoc">
                       <not>
                         <isset property="dir" />
                       </not>
