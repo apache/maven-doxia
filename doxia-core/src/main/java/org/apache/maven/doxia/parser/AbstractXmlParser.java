@@ -37,12 +37,15 @@ import java.util.Map;
 import java.util.regex.Matcher;
 import java.util.regex.Pattern;
 
-import org.apache.commons.httpclient.DefaultHttpMethodRetryHandler;
-import org.apache.commons.httpclient.HttpClient;
-import org.apache.commons.httpclient.HttpException;
-import org.apache.commons.httpclient.HttpStatus;
-import org.apache.commons.httpclient.methods.GetMethod;
-import org.apache.commons.httpclient.params.HttpMethodParams;
+import org.apache.http.HttpEntity;
+import org.apache.http.HttpResponse;
+import org.apache.http.HttpStatus;
+import org.apache.http.client.ClientProtocolException;
+import org.apache.http.client.HttpRequestRetryHandler;
+import org.apache.http.client.methods.HttpGet;
+import org.apache.http.impl.client.DefaultHttpClient;
+import org.apache.http.impl.client.DefaultHttpRequestRetryHandler;
+import org.apache.http.util.EntityUtils;
 
 import org.apache.maven.doxia.macro.MacroExecutionException;
 import org.apache.maven.doxia.markup.XmlMarkup;
@@ -398,7 +401,7 @@ public abstract class AbstractXmlParser
      * @param type the tag event type. This should be one of HtmlMarkup.TAG_TYPE_SIMPLE,
      * HtmlMarkup.TAG_TYPE_START, HtmlMarkup.TAG_TYPE_END or HtmlMarkup.ENTITY_TYPE.
      * It will be passed as the first argument of the required parameters to the Sink
-     * {@link org.apache.maven.doxia.sink.Sink#unknown(String, Object[], SinkEventAttributes)}
+     * {@link org.apache.maven.doxia.sink.Sink#unknown(String, Object[], org.apache.maven.doxia.sink.SinkEventAttributes)}
      * method.
      */
     protected void handleUnknown( XmlPullParser parser, Sink sink, int type )
@@ -758,7 +761,7 @@ public abstract class AbstractXmlParser
         /**
          * If url is not an http/https urls, call {@link IOUtil#toByteArray(java.io.InputStream)} to get the url
          * content.
-         * Otherwise, call {@link GetMethod#getResponseBody()} from HttpClient to get the http content.
+         * Otherwise, use HttpClient to get the http content.
          * Wrap all internal exceptions to throw SAXException.
          *
          * @param url not null
@@ -791,25 +794,28 @@ public abstract class AbstractXmlParser
             }
 
             // it is an HTTP url, using HttpClient...
-            HttpClient client = new HttpClient();
-            GetMethod method = new GetMethod( url.toString() );
+            DefaultHttpClient client = new DefaultHttpClient();
+            HttpGet method = new HttpGet( url.toString() );
 
-            method.getParams().setParameter( HttpMethodParams.RETRY_HANDLER,
-                                             new DefaultHttpMethodRetryHandler( 3, false ) );
+            HttpRequestRetryHandler retryHandler = new DefaultHttpRequestRetryHandler( 3, false );
+            client.setHttpRequestRetryHandler(retryHandler);
 
+            HttpEntity entity = null;
             try
             {
-                int statusCode = client.executeMethod( method );
+                HttpResponse response = client.execute( method );
+                int statusCode = response.getStatusLine().getStatusCode();
                 if ( statusCode != HttpStatus.SC_OK )
                 {
-                    throw new IOException( "Method failed: " + method.getStatusLine() );
+                    throw new IOException( "Method failed: " + response.getStatusLine().getReasonPhrase() );
                 }
 
-                return method.getResponseBody();
+                entity = response.getEntity();
+                return EntityUtils.toByteArray( entity );
             }
-            catch ( HttpException e )
+            catch ( ClientProtocolException e )
             {
-                throw new SAXException( "HttpException: Fatal protocol violation: " + e.getMessage(), e );
+                throw new SAXException( "ClientProtocolException: Fatal protocol violation: " + e.getMessage(), e );
             }
             catch ( IOException e )
             {
@@ -817,7 +823,16 @@ public abstract class AbstractXmlParser
             }
             finally
             {
-                method.releaseConnection();
+                if ( entity != null ) {
+                    try
+                    {
+                        entity.consumeContent();
+                    }
+                    catch ( IOException e )
+                    {
+                        // Ignore
+                    }
+                }
             }
         }
 
