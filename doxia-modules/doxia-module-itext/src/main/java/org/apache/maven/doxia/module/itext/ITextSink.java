@@ -192,6 +192,12 @@ public class ITextSink
     {
         IOUtil.close( writer );
 
+        init();
+    }
+
+    /** {@inheritDoc} */
+    public void flush()
+    {
         if ( getLog().isWarnEnabled() && this.warnMessages != null )
         {
             for ( Iterator it = this.warnMessages.entrySet().iterator(); it.hasNext(); )
@@ -207,17 +213,9 @@ public class ITextSink
                     getLog().warn( msg );
                 }
             }
-
-            this.warnMessages = null;
         }
 
-        init();
-    }
-
-    /** {@inheritDoc} */
-    public void flush()
-    {
-        super.flush();
+        this.warnMessages = null;
     }
 
     // ----------------------------------------------------------------------
@@ -1186,7 +1184,7 @@ public class ITextSink
                 try
                 {
                     nameFile = new File( System.getProperty( "itext.basedir" ), name );
-                    urlName = nameFile.toURL().toString();
+                    urlName = nameFile.toURI().toURL().toString();
                 }
                 catch ( MalformedURLException e )
                 {
