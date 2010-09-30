@@ -25,10 +25,8 @@ import java.io.IOException;
 import java.io.Reader;
 import java.io.Writer;
 import java.text.DateFormat;
-import java.util.ArrayList;
 import java.util.Date;
 import java.util.Iterator;
-import java.util.List;
 
 import org.apache.maven.doxia.Doxia;
 import org.apache.maven.doxia.book.BookDoxiaException;
@@ -36,7 +34,6 @@ import org.apache.maven.doxia.book.context.BookContext;
 import org.apache.maven.doxia.book.model.BookModel;
 import org.apache.maven.doxia.book.model.Chapter;
 import org.apache.maven.doxia.book.model.Section;
-import org.apache.maven.doxia.sink.PipelineSink;
 import org.apache.maven.doxia.module.itext.ITextSinkFactory;
 import org.apache.maven.doxia.parser.ParseException;
 import org.apache.maven.doxia.parser.manager.ParserNotFoundException;
@@ -138,6 +135,7 @@ public abstract class AbstractITextBookRenderer
         // TODO: Write out TOC
 
         System.setProperty( "itext.basedir", bookFile.getParentFile().getAbsolutePath() );
+        Sink sink = new ITextSinkFactory().createSink( writer );
 
         try
         {
@@ -145,13 +143,16 @@ public abstract class AbstractITextBookRenderer
             {
                 Chapter chapter = (Chapter) it.next();
 
-                renderChapter( writer, chapter, context );
+                renderChapter( sink, writer, chapter, context );
             }
 
             writer.endElement(); // itext
         }
         finally
         {
+            sink.flush();
+            sink.close();
+
             IOUtil.close( fileWriter );
             System.getProperties().remove( "itext.basedir" );
         }
@@ -199,7 +200,7 @@ public abstract class AbstractITextBookRenderer
      * @param context the BookContext.
      * @throws BookDoxiaException if the chapter cannot be written.
      */
-    private void renderChapter( PrettyPrintXMLWriter writer, Chapter chapter, BookContext context )
+    private void renderChapter( Sink sink, PrettyPrintXMLWriter writer, Chapter chapter, BookContext context )
         throws BookDoxiaException
     {
         writer.startElement( "chapter" );
@@ -216,7 +217,7 @@ public abstract class AbstractITextBookRenderer
         {
             Section section = (Section) it.next();
 
-            renderSection( writer, section, context );
+            renderSection( sink, writer, section, context );
         }
         //        writer.endElement(); // sectioncontent
 
@@ -231,7 +232,7 @@ public abstract class AbstractITextBookRenderer
      * @param context the BookContext.
      * @throws BookDoxiaException if the section cannot be written.
      */
-    private void renderSection( PrettyPrintXMLWriter writer, Section section, BookContext context )
+    private void renderSection( Sink sink, PrettyPrintXMLWriter writer, Section section, BookContext context )
         throws BookDoxiaException
     {
         //        writer.startElement( "section" );
@@ -250,12 +251,6 @@ public abstract class AbstractITextBookRenderer
         // ----------------------------------------------------------------------
         //
         // ----------------------------------------------------------------------
-
-        Sink itextSink = new ITextSinkFactory().createSink( writer );
-
-        List pipeline = new ArrayList();
-        pipeline.add( itextSink );
-        Sink sink = PipelineSink.newInstance( pipeline );
 
         Reader reader = null;
         try
@@ -281,6 +276,10 @@ public abstract class AbstractITextBookRenderer
         {
             throw new BookDoxiaException( "Error while rendering book: "
                       + bookFile.getFile().getAbsolutePath() + ".", e );
+        }
+        finally
+        {
+            IOUtil.close( reader );
         }
     }
 

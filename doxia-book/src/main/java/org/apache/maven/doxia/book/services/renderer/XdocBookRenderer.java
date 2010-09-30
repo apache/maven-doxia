@@ -24,9 +24,7 @@ import java.io.FileNotFoundException;
 import java.io.IOException;
 import java.io.Reader;
 import java.io.Writer;
-import java.util.ArrayList;
 import java.util.Iterator;
-import java.util.List;
 import java.util.Locale;
 
 import org.apache.maven.doxia.Doxia;
@@ -38,12 +36,10 @@ import org.apache.maven.doxia.book.model.Section;
 import org.apache.maven.doxia.book.services.renderer.xdoc.ChapterXdocBookSink;
 import org.apache.maven.doxia.book.services.renderer.xdoc.IndexXdocBookSink;
 import org.apache.maven.doxia.book.services.renderer.xdoc.SectionXdocBookSink;
-import org.apache.maven.doxia.sink.PipelineSink;
 import org.apache.maven.doxia.index.IndexEntry;
 import org.apache.maven.doxia.module.xdoc.XdocSink;
 import org.apache.maven.doxia.parser.ParseException;
 import org.apache.maven.doxia.parser.manager.ParserNotFoundException;
-import org.apache.maven.doxia.sink.Sink;
 import org.apache.maven.doxia.util.HtmlTools;
 import org.codehaus.plexus.i18n.I18N;
 import org.codehaus.plexus.logging.AbstractLogEnabled;
@@ -419,16 +415,11 @@ public class XdocBookRenderer
                 throw new BookDoxiaException( "No document that matches section with id=" + section.getId() + "." );
             }
 
-            List pipeline = new ArrayList();
-            //            pipeline.add( DebugSink.newInstance() );
-            pipeline.add( sink );
-            Sink pipelineSink = PipelineSink.newInstance( pipeline );
-
             Reader reader = null;
             try
             {
                 reader = ReaderFactory.newReader( bookFile.getFile(), context.getInputEncoding() );
-                doxia.parse( reader, bookFile.getParserId(), pipelineSink );
+                doxia.parse( reader, bookFile.getParserId(), sink );
             }
             catch ( ParserNotFoundException e )
             {
@@ -446,6 +437,9 @@ public class XdocBookRenderer
             }
             finally
             {
+                sink.flush();
+                sink.close();
+
                 IOUtil.close( reader );
                 IOUtil.close( writer );
             }

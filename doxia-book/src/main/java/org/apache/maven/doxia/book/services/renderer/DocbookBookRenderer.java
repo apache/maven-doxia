@@ -139,7 +139,7 @@ public class DocbookBookRenderer
                     sink.chapterTitle_();
                 }
 
-                renderChapter( fileWriter, chapter, context, sink );
+                renderChapter( chapter, context, sink );
 
                 sink.chapter_();
             }
@@ -165,14 +165,14 @@ public class DocbookBookRenderer
      * @param sink a Sink.
      * @throws BookDoxiaException if the chapter cannot be written.
      */
-    private void renderChapter( Writer writer, Chapter chapter, BookContext context, Sink sink )
+    private void renderChapter( Chapter chapter, BookContext context, Sink sink )
         throws BookDoxiaException
     {
         for ( Iterator it = chapter.getSections().iterator(); it.hasNext(); )
         {
             Section section = (Section) it.next();
 
-            renderSection( writer, section, context, sink );
+            renderSection( section, context, sink );
         }
     }
 
@@ -185,7 +185,7 @@ public class DocbookBookRenderer
      * @param sink a Sink.
      * @throws BookDoxiaException if the section cannot be written.
      */
-    private void renderSection( Writer writer, Section section, BookContext context, Sink sink )
+    private void renderSection( Section section, BookContext context, Sink sink )
         throws BookDoxiaException
     {
         BookContext.BookFile bookFile = (BookContext.BookFile) context.getFiles().get( section.getId() );

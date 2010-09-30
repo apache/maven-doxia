@@ -239,6 +239,9 @@ public class LatexBookRenderer
         }
         finally
         {
+            sink.flush();
+            sink.close();
+
             IOUtil.close( reader );
             IOUtil.close( writer );
         }
