@@ -231,7 +231,7 @@ public class ITextSink
     /** {@inheritDoc} */
     public void head()
     {
-        init();
+        //init(); // why? this causes DOXIA-413
 
         actionContext.setAction( SinkActionContext.HEAD );
     }
