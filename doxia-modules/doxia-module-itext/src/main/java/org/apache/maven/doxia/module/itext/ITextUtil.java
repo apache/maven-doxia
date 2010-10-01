@@ -133,7 +133,7 @@ public class ITextUtil
         }
         catch ( DocumentException e )
         {
-            throw new RuntimeException( "DocumentException : " + e.getMessage() );
+            throw new RuntimeException( "DocumentException : " + e.getMessage(), e );
         }
     }
 
@@ -154,7 +154,7 @@ public class ITextUtil
         }
         catch ( DocumentException e )
         {
-            throw new RuntimeException( "DocumentException : " + e.getMessage() );
+            throw new RuntimeException( "DocumentException : " + e.getMessage(), e );
         }
     }
 
@@ -175,7 +175,7 @@ public class ITextUtil
         }
         catch ( DocumentException e )
         {
-            throw new RuntimeException( "DocumentException : " + e.getMessage() );
+            throw new RuntimeException( "DocumentException : " + e.getMessage(), e );
         }
     }
 }
