@@ -807,7 +807,9 @@ public abstract class AbstractXmlParser
                 int statusCode = response.getStatusLine().getStatusCode();
                 if ( statusCode != HttpStatus.SC_OK )
                 {
-                    throw new IOException( "Method failed: " + response.getStatusLine().getReasonPhrase() );
+                    throw new IOException( "The status code when accessing the URL '" + url.toString() + "' was "
+                        + statusCode + ", which is not allowed. The server gave this reason for the failure '"
+                        + response.getStatusLine().getReasonPhrase() + "'.");
                 }
 
                 entity = response.getEntity();
