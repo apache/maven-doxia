@@ -724,14 +724,16 @@ public abstract class AbstractXmlParser
                     {
                         // Doxia XSDs are included in the jars, so try to find the resource systemName from
                         // the classpath...
-                        URL url = getClass().getResource( "/" + systemName );
+                        String resource = "/" + systemName;
+                        URL url = getClass().getResource( resource );
                         if ( url != null )
                         {
                             res = toByteArray( url );
                         }
                         else
                         {
-                            throw new SAXException( "Could not find the SYSTEM entity: " + systemId );
+                            throw new SAXException( "Could not find the SYSTEM entity: " + systemId
+                            + " because '" + resource + "' is not available of the classpath." );
                         }
                     }
                     else
