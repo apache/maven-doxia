@@ -724,14 +724,16 @@ public abstract class AbstractXmlParser
                     {
                         // Doxia XSDs are included in the jars, so try to find the resource systemName from
                         // the classpath...
-                        URL url = getClass().getResource( "/" + systemName );
+                        String resource = "/" + systemName;
+                        URL url = getClass().getResource( resource );
                         if ( url != null )
                         {
                             res = toByteArray( url );
                         }
                         else
                         {
-                            throw new SAXException( "Could not find the SYSTEM entity: " + systemId );
+                            throw new SAXException( "Could not find the SYSTEM entity: " + systemId
+                            + " because '" + resource + "' is not available of the classpath." );
                         }
                     }
                     else
@@ -796,6 +798,9 @@ public abstract class AbstractXmlParser
             // it is an HTTP url, using HttpClient...
             DefaultHttpClient client = new DefaultHttpClient();
             HttpGet method = new HttpGet( url.toString() );
+            // Set a user-agent that doesn't contain the word "java", otherwise it will be blocked by the W3C
+            // The default user-agent is "Apache-HttpClient/4.0.2 (java 1.5)"
+            method.setHeader( "user-agent", "Apache-Doxia/1.1.4" );
 
             HttpRequestRetryHandler retryHandler = new DefaultHttpRequestRetryHandler( 3, false );
             client.setHttpRequestRetryHandler(retryHandler);
@@ -807,7 +812,9 @@ public abstract class AbstractXmlParser
                 int statusCode = response.getStatusLine().getStatusCode();
                 if ( statusCode != HttpStatus.SC_OK )
                 {
-                    throw new IOException( "Method failed: " + response.getStatusLine().getReasonPhrase() );
+                    throw new IOException( "The status code when accessing the URL '" + url.toString() + "' was "
+                        + statusCode + ", which is not allowed. The server gave this reason for the failure '"
+                        + response.getStatusLine().getReasonPhrase() + "'.");
                 }
 
                 entity = response.getEntity();
