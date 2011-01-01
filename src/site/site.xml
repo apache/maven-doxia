@@ -21,13 +21,18 @@
  */
  -->
 
-<project>
+<project name="Doxia" xmlns="http://maven.apache.org/DECORATION/1.0.0" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+  xsi:schemaLocation="http://maven.apache.org/DECORATION/1.0.0 http://maven.apache.org/xsd/decoration-1.0.0.xsd">
+
   <bannerLeft>
-    <name>Doxia</name>
+    <name>Maven</name>
     <src>images/apache-maven-project-2.png</src>
+    <href>http://maven.apache.org/</href>
   </bannerLeft>
   <bannerRight>
+    <name>Doxia</name>
     <src>images/maven-logo-2.gif</src>
+    <href>http://maven.apache.org/doxia/</href>
   </bannerRight>
 
   <body>
@@ -39,6 +44,11 @@
         urchinTracker();
       </script>
     </head>
+
+    <breadcrumbs>
+      <item name="Doxia" href="http://maven.apache.org/doxia/index.html"/>
+      <item name="Trunk" href="http://maven.apache.org/doxia/doxia/index.html"/>
+    </breadcrumbs>
 
     <menu name="Downloads" inherit="bottom">
       <item name="Download ${project.name}" href="http://maven.apache.org/doxia/downloads.html"/>
