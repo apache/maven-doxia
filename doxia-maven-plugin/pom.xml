@@ -34,6 +34,7 @@ under the License.
 
   <name>Doxia :: Maven Plugin</name>
   <description>A Maven plugin for Doxia.</description>
+  <url>http://maven.apache.org/doxia/doxia/doxia-maven-plugin/</url>
 
   <prerequisites>
     <maven>2.0.2</maven>

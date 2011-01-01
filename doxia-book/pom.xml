@@ -32,6 +32,7 @@ under the License.
   <artifactId>doxia-book</artifactId>
   <name>Doxia :: Book Component</name>
   <description>A component to write books like user manuals and guides in any format supported by Doxia.</description>
+  <url>http://maven.apache.org/doxia/doxia/doxia-book/</url>
 
   <dependencies>
     <!-- doxia core -->

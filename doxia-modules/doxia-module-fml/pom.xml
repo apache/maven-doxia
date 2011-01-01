@@ -33,6 +33,7 @@ under the License.
 
   <name>Doxia :: FML Module</name>
   <description>A Doxia module for FML source documents.</description>
+  <url>http://maven.apache.org/doxia/doxia/doxia-modules/doxia-module-fml/</url>
 
   <dependencies>
     <dependency>

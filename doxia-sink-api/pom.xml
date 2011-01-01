@@ -32,6 +32,7 @@ under the License.
   <artifactId>doxia-sink-api</artifactId>
   <name>Doxia :: Sink API</name>
   <description>Doxia Sink API.</description>
+  <url>http://maven.apache.org/doxia/doxia/doxia-sink-api/</url>
 
   <dependencies>
       <dependency>

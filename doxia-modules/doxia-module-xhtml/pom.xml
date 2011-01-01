@@ -33,6 +33,7 @@ under the License.
 
   <name>Doxia :: XHTML Module</name>
   <description>A Doxia module for Xhtml source documents.</description>
+  <url>http://maven.apache.org/doxia/doxia/doxia-modules/doxia-module-xhtml/</url>
 
   <dependencies>
     <dependency>

@@ -31,6 +31,7 @@ under the License.
 
   <name>Doxia :: Confluence Module</name>
   <description>A Doxia module for Confluence source documents.</description>
+  <url>http://maven.apache.org/doxia/doxia/doxia-modules/doxia-module-confluence/</url>
 
   <dependencies>
     <dependency>

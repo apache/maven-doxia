@@ -33,6 +33,7 @@ under the License.
 
   <name>Doxia :: RTF Module</name>
   <description>A Doxia module for Rich Text Format source documents.</description>
+  <url>http://maven.apache.org/doxia/doxia/doxia-modules/doxia-module-rtf/</url>
 
   <dependencies>
     <!-- test -->

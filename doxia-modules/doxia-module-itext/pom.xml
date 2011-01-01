@@ -33,6 +33,7 @@ under the License.
 
   <name>Doxia :: iText Module</name>
   <description>A Doxia module for iText source documents.</description>
+  <url>http://maven.apache.org/doxia/doxia/doxia-modules/doxia-module-itext/</url>
 
   <developers>
     <developer>

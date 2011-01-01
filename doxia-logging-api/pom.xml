@@ -32,6 +32,7 @@ under the License.
   <artifactId>doxia-logging-api</artifactId>
   <name>Doxia :: Logging API</name>
   <description>Doxia Logging API.</description>
+  <url>http://maven.apache.org/doxia/doxia/doxia-logging-api/</url>
 
   <dependencies>
     <dependency>

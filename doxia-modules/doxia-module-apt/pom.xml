@@ -33,6 +33,7 @@ under the License.
 
   <name>Doxia :: APT Module</name>
   <description>A Doxia module for Almost Plain Text source documents.</description>
+  <url>http://maven.apache.org/doxia/doxia/doxia-modules/doxia-module-apt/</url>
 
 <!-- START SNIPPET: test -->
     <!-- test snippet -->

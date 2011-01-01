@@ -32,4 +32,5 @@ under the License.
   <artifactId>doxia-test-docs</artifactId>
   <name>Doxia :: Test Documents</name>
   <description>Several test documents to check syntax structures under Doxia.</description>
+  <url>http://maven.apache.org/doxia/doxia/doxia-test-docs/</url>
 </project>

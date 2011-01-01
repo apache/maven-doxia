@@ -33,6 +33,7 @@ under the License.
 
   <name>Doxia :: Simplified DocBook Module</name>
   <description>A Doxia module for Simplified DocBook source documents.</description>
+  <url>http://maven.apache.org/doxia/doxia/doxia-modules/doxia-module-docbook-simple/</url>
 
   <dependencies>
     <dependency>
