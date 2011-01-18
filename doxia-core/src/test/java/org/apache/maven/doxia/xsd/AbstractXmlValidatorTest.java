@@ -247,7 +247,7 @@ public abstract class AbstractXmlValidatorTest
         else
         {
             // IDE projects
-            File testDocsDir = new File( testJar.getFile() ).getParentFile();
+            File testDocsDir = FileUtils.toFile( testJar ).getParentFile();
 
             List files = FileUtils.getFiles( testDocsDir, "**/*.*", FileUtils.getDefaultExcludesAsString(), true );
             for ( Iterator it = files.iterator(); it.hasNext();)
