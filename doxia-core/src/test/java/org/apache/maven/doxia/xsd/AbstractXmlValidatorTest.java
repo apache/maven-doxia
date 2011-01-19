@@ -45,6 +45,7 @@ import org.codehaus.plexus.util.FileUtils;
 import org.codehaus.plexus.util.IOUtil;
 import org.codehaus.plexus.util.ReaderFactory;
 import org.codehaus.plexus.util.SelectorUtils;
+import org.codehaus.plexus.util.StringUtils;
 import org.codehaus.plexus.util.xml.XmlUtil;
 import org.xml.sax.InputSource;
 import org.xml.sax.SAXException;
@@ -247,8 +248,7 @@ public abstract class AbstractXmlValidatorTest
         else
         {
             // IDE projects
-            System.out.println( testJar );
-            File testDocsDir = FileUtils.toFile( testJar ).getParentFile();
+            File testDocsDir = new File( StringUtils.replace( testJar.getPath(), "%20", " " ) ).getParentFile();
 
             List files = FileUtils.getFiles( testDocsDir, "**/*.*", FileUtils.getDefaultExcludesAsString(), true );
             for ( Iterator it = files.iterator(); it.hasNext();)
