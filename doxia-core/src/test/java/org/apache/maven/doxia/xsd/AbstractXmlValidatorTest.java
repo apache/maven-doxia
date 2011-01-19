@@ -26,7 +26,6 @@ import java.io.Reader;
 import java.io.StringReader;
 import java.net.JarURLConnection;
 import java.net.URL;
-import java.net.URISyntaxException;
 import java.util.ArrayList;
 import java.util.Collections;
 import java.util.Enumeration;
@@ -247,16 +246,9 @@ public abstract class AbstractXmlValidatorTest
         }
         else
         {
-            // IDE projects - get parent directory of "doxia-site"
-            File testDocsDir;
-            try
-            {
-                testDocsDir = new File( testJar.toURI() ).getParentFile();
-            }
-            catch ( URISyntaxException e )
-            {
-                testDocsDir = new File( testJar.getPath() ).getParentFile();
-            }
+            // IDE projects
+            System.out.println( testJar );
+            File testDocsDir = FileUtils.toFile( testJar ).getParentFile();
 
             List files = FileUtils.getFiles( testDocsDir, "**/*.*", FileUtils.getDefaultExcludesAsString(), true );
             for ( Iterator it = files.iterator(); it.hasNext();)
