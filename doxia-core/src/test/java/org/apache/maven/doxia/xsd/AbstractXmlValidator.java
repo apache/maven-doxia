@@ -29,12 +29,12 @@ import java.util.Map;
 
 import junit.framework.AssertionFailedError;
 
-import org.apache.maven.doxia.parser.AbstractXmlParser;
 import org.apache.maven.doxia.parser.Parser;
 
 import org.codehaus.plexus.PlexusTestCase;
 import org.codehaus.plexus.logging.Logger;
 
+import org.xml.sax.EntityResolver;
 import org.xml.sax.InputSource;
 import org.xml.sax.SAXException;
 import org.xml.sax.SAXNotRecognizedException;
@@ -147,6 +147,12 @@ public abstract class AbstractXmlValidator
     protected abstract Map getTestDocuments()
             throws IOException;
 
+    /**
+     * Returns the EntityResolver that is used by the XMLReader for validation.
+     *
+     * @return an EntityResolver. Not null.
+     */
+    protected abstract EntityResolver getEntityResolver();
 
     // ----------------------------------------------------------------------
     // Private methods
@@ -162,7 +168,7 @@ public abstract class AbstractXmlValidator
                 xmlReader.setFeature( "http://xml.org/sax/features/validation", true );
                 xmlReader.setFeature( "http://apache.org/xml/features/validation/schema", true );
                 xmlReader.setErrorHandler( new MessagesErrorHandler() );
-                xmlReader.setEntityResolver( new AbstractXmlParser.CachedFileEntityResolver() );
+                xmlReader.setEntityResolver( getEntityResolver() );
             }
             catch ( SAXNotRecognizedException e )
             {

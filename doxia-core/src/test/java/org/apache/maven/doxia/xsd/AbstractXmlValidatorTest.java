@@ -35,11 +35,15 @@ import java.util.Map;
 import java.util.jar.JarEntry;
 import java.util.jar.JarFile;
 
+import org.apache.maven.doxia.parser.AbstractXmlParser;
+
 import org.codehaus.plexus.util.FileUtils;
 import org.codehaus.plexus.util.IOUtil;
 import org.codehaus.plexus.util.ReaderFactory;
 import org.codehaus.plexus.util.SelectorUtils;
 import org.codehaus.plexus.util.xml.XmlUtil;
+
+import org.xml.sax.EntityResolver;
 
 /**
  * Abstract class to validate XML files with DTD or XSD mainly for Doxia namespaces.
@@ -99,6 +103,20 @@ public abstract class AbstractXmlValidatorTest
         }
 
         return ret;
+    }
+
+    /**
+     * Returns the EntityResolver that is used by the XMLReader for validation.
+     * By default a {@link AbstractXmlParser.CachedFileEntityResolver} is used,
+     * but implementations should override this for performance reasons.
+     *
+     * @return an EntityResolver. Not null.
+     *
+     * @since 1.1.5
+     */
+    protected EntityResolver getEntityResolver()
+    {
+        return new AbstractXmlParser.CachedFileEntityResolver();
     }
 
     /**
