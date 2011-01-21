@@ -30,8 +30,10 @@ import java.util.Map;
 import junit.framework.AssertionFailedError;
 
 import org.apache.maven.doxia.parser.AbstractXmlParser;
+import org.apache.maven.doxia.parser.Parser;
 
 import org.codehaus.plexus.PlexusTestCase;
+import org.codehaus.plexus.logging.Logger;
 
 import org.xml.sax.InputSource;
 import org.xml.sax.SAXException;
@@ -98,13 +100,15 @@ public abstract class AbstractXmlValidator
     public void testValidateFiles()
         throws Exception
     {
+        final Logger logger = getContainer().getLoggerManager().getLoggerForComponent( Parser.ROLE );
+
         for ( Iterator it = getTestDocuments().entrySet().iterator(); it.hasNext(); )
         {
             Map.Entry entry = (Map.Entry) it.next();
 
-            if ( getContainer().getLogger().isDebugEnabled() )
+            if ( logger.isDebugEnabled() )
             {
-                getContainer().getLogger().debug( "Validate '" + entry.getKey() + "'" );
+                logger.debug( "Validate '" + entry.getKey() + "'" );
             }
 
             List errors = parseXML( entry.getValue().toString() );
@@ -119,9 +123,9 @@ public abstract class AbstractXmlValidator
                 }
                 else
                 {
-                    if ( getContainer().getLogger().isDebugEnabled() )
+                    if ( logger.isDebugEnabled() )
                     {
-                        getContainer().getLogger().debug( entry.getKey() + EOL + error.toString() );
+                        logger.debug( entry.getKey() + EOL + error.toString() );
                     }
                 }
             }
