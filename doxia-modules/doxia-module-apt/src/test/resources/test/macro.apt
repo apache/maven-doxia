@@ -6,4 +6,4 @@
 
 Test DOXIA-77
 
-%{snippet|id=superpom|url=http://svn.apache.org/repos/asf/maven/doxia/doxia/trunk/doxia-test-docs/src/main/resources/pom-4.0.0.xml}
+%{snippet|id=superpom|file=src/test/resources/pom-4.0.0.xml}

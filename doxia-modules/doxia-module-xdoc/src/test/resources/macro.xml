@@ -29,7 +29,7 @@ under the License.
     <section name="Test DOXIA-77">
       <macro name="snippet">
         <param name="id" value="superpom"/>
-        <param name="url" value="http://svn.apache.org/repos/asf/maven/doxia/doxia/trunk/doxia-test-docs/src/main/resources/pom-4.0.0.xml"/>
+        <param name="file" value="src/test/resources/pom-4.0.0.xml"/>
       </macro>
     </section>
   </body>
