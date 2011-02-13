@@ -45,7 +45,7 @@ public class AptSink
     // Instance fields
     // ----------------------------------------------------------------------
 
-    /**  A buffer that holds the current text. */
+    /**  A buffer that holds the current text when headerFlag or bufferFlag set to <code>true</code>. */
     private StringBuffer buffer;
 
     /**  A buffer that holds the table caption. */
