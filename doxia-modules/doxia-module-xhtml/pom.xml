@@ -32,7 +32,10 @@ under the License.
   <artifactId>doxia-module-xhtml</artifactId>
 
   <name>Doxia :: XHTML Module</name>
-  <description>A Doxia module for Xhtml source documents.</description>
+  <description>
+    A Doxia module for Xhtml source documents.
+    Xhtml format is supported both as source and target formats.
+  </description>
   <url>http://maven.apache.org/doxia/doxia/doxia-modules/doxia-module-xhtml/</url>
 
   <dependencies>

@@ -28,6 +28,11 @@
 
     <menu ref="parent"/>
 
+    <menu name="Documentation" inherit="bottom">
+      <item name="Format References" href="http://maven.apache.org/doxia/references/index.html"/>
+      <item name="Doxia Modules Guide" href="http://maven.apache.org/doxia/modules/index.html"/>
+    </menu>
+
     <menu ref="modules"/>
 
     <menu ref="reports"/>

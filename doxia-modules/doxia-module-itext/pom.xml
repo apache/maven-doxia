@@ -32,7 +32,10 @@ under the License.
   <artifactId>doxia-module-itext</artifactId>
 
   <name>Doxia :: iText Module</name>
-  <description>A Doxia module for iText source documents.</description>
+  <description>
+    A Doxia module for iText source documents.
+    iText format is only supported as target format.
+  </description>
   <url>http://maven.apache.org/doxia/doxia/doxia-modules/doxia-module-itext/</url>
 
   <developers>

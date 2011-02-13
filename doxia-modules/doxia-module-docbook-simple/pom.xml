@@ -32,7 +32,10 @@ under the License.
   <artifactId>doxia-module-docbook-simple</artifactId>
 
   <name>Doxia :: Simplified DocBook Module</name>
-  <description>A Doxia module for Simplified DocBook source documents.</description>
+  <description>
+    A Doxia module for Simplified DocBook documents.
+    DocBook format is supported both as source and target formats.
+  </description>
   <url>http://maven.apache.org/doxia/doxia/doxia-modules/doxia-module-docbook-simple/</url>
 
   <dependencies>

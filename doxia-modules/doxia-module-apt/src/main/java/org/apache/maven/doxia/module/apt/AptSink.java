@@ -29,7 +29,7 @@ import org.apache.maven.doxia.sink.SinkEventAttributes;
 import org.codehaus.plexus.util.StringUtils;
 
 /**
- * APT Sink implementation.
+ * APT generator implementation.
  * <br/>
  * <b>Note</b>: The encoding used is UTF-8.
  *

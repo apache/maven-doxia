@@ -30,7 +30,10 @@ under the License.
   <artifactId>doxia-module-confluence</artifactId>
 
   <name>Doxia :: Confluence Module</name>
-  <description>A Doxia module for Confluence source documents.</description>
+  <description>
+    A Doxia module for Confluence documents.
+    Confluence format is supported both as source and target formats.
+  </description>
   <url>http://maven.apache.org/doxia/doxia/doxia-modules/doxia-module-confluence/</url>
 
   <dependencies>

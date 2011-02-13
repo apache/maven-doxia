@@ -32,7 +32,10 @@ under the License.
   <artifactId>doxia-module-apt</artifactId>
 
   <name>Doxia :: APT Module</name>
-  <description>A Doxia module for Almost Plain Text source documents.</description>
+  <description>
+    A Doxia module for Almost Plain Text source documents.
+    APT format is supported both as source and target formats.
+  </description>
   <url>http://maven.apache.org/doxia/doxia/doxia-modules/doxia-module-apt/</url>
 
 <!-- START SNIPPET: test -->

@@ -32,7 +32,10 @@ under the License.
   <artifactId>doxia-module-rtf</artifactId>
 
   <name>Doxia :: RTF Module</name>
-  <description>A Doxia module for Rich Text Format source documents.</description>
+  <description>
+    A Doxia module for Rich Text Format source documents.
+    RTF format is only supported as target format.
+  </description>
   <url>http://maven.apache.org/doxia/doxia/doxia-modules/doxia-module-rtf/</url>
 
   <dependencies>

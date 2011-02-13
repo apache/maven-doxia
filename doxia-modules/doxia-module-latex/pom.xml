@@ -32,7 +32,10 @@ under the License.
   <artifactId>doxia-module-latex</artifactId>
 
   <name>Doxia :: Latex Module</name>
-  <description>A Doxia module for LaTeX source documents.</description>
+  <description>
+    A Doxia module for LaTeX source documents.
+    LaTeX format is only supported as target format.
+  </description>
   <url>http://maven.apache.org/doxia/doxia/doxia-modules/doxia-module-latex/</url>
 
   <dependencies>
