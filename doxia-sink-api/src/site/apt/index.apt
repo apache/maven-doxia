@@ -8,7 +8,27 @@
 
 Doxia Sink API
 
-  API to generate Doxia documents.
+  The <Sink> interface is a generic markup language interface provided as a Java API.
+It contains several methods that encapsulate common text syntax. A start tag is denoted by
+<<<xxxx()>>> method and a end of tag by <<<xxxx_()>>> method.
+
+  For instance, you could do things like:
+
++--
+sink.paragraph();
+sink.text( "my text" );
+sink.paragraph_();
++--
+
+  similar to this HTML markup:
+
++--
+<p>my text</p>
++--
+
+  To find out more about the Sink API, you can read the
+  {{{./apidocs/org/apache/maven/doxia/sink/Sink.html}Javadoc}}.
+
 
 * API Changes
 
