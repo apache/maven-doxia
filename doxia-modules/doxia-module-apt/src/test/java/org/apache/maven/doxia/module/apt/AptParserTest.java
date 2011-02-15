@@ -580,6 +580,43 @@ public class AptParserTest
         assertEquals( "tableCell_", ( (SinkEventElement) it.next() ).getName() );
     }
 
+    /** @throws Exception  */
+    public void testSectionTitleAnchors()
+        throws Exception
+    {
+        // DOXIA-420
+        String text = "Enhancements to the APT format" + EOL + EOL
+            + "{Title with anchor}" + EOL;
+
+        SinkEventTestingSink sink = new SinkEventTestingSink();
+
+        parser.parse( text, sink );
+
+        Iterator it = sink.getEventList().iterator();
+
+        assertEquals( "head", ( (SinkEventElement) it.next() ).getName() );
+        assertEquals( "head_", ( (SinkEventElement) it.next() ).getName() );
+        assertEquals( "body", ( (SinkEventElement) it.next() ).getName() );
+
+        assertEquals( "section1", ( (SinkEventElement) it.next() ).getName() );
+        assertEquals( "sectionTitle1", ( (SinkEventElement) it.next() ).getName() );
+        assertEquals( "text", ( (SinkEventElement) it.next() ).getName() );
+        assertEquals( "sectionTitle1_", ( (SinkEventElement) it.next() ).getName() );
+        assertEquals( "section1_", ( (SinkEventElement) it.next() ).getName() );
+
+        assertEquals( "section1", ( (SinkEventElement) it.next() ).getName() );
+        assertEquals( "sectionTitle1", ( (SinkEventElement) it.next() ).getName() );
+        assertEquals( "anchor", ( (SinkEventElement) it.next() ).getName() );
+        assertEquals( "text", ( (SinkEventElement) it.next() ).getName() );
+        assertEquals( "anchor_", ( (SinkEventElement) it.next() ).getName() );
+        assertEquals( "sectionTitle1_", ( (SinkEventElement) it.next() ).getName() );
+        assertEquals( "section1_", ( (SinkEventElement) it.next() ).getName() );
+
+        assertEquals( "body_", ( (SinkEventElement) it.next() ).getName() );
+
+        assertFalse( it.hasNext() );
+    }
+
     /** {@inheritDoc} */
     protected String outputExtension()
     {
