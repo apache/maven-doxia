@@ -25,7 +25,7 @@ under the License.
   <parent>
     <groupId>org.apache.maven</groupId>
     <artifactId>maven-parent</artifactId>
-    <version>18</version>
+    <version>19</version>
     <relativePath>../../pom/maven/pom.xml</relativePath>
   </parent>
 
@@ -275,7 +275,6 @@ under the License.
             <tagBase>https://svn.apache.org/repos/asf/maven/doxia/doxia/tags</tagBase>
           </configuration>
         </plugin>
-        <!-- TODO need to upgrade to last version or Maven parent version -->
         <plugin>
           <groupId>org.codehaus.plexus</groupId>
           <artifactId>plexus-maven-plugin</artifactId>
@@ -283,31 +282,15 @@ under the License.
           <version>1.3.5</version>
         </plugin>
         <plugin>
-          <groupId>org.codehaus.modello</groupId>
-          <artifactId>modello-maven-plugin</artifactId>
-          <version>1.1</version>
-        </plugin>
-        <plugin>
-          <artifactId>maven-project-info-reports-plugin</artifactId>
-          <version>2.3.1</version>
-        </plugin>
-        <plugin>
           <groupId>org.codehaus.mojo</groupId>
           <artifactId>clirr-maven-plugin</artifactId>
-          <version>2.2.2</version>
           <configuration>
             <comparisonVersion>1.1</comparisonVersion>
           </configuration>
         </plugin>
         <plugin>
           <groupId>org.apache.maven.plugins</groupId>
-          <artifactId>maven-resources-plugin</artifactId>
-          <version>2.4.2</version>
-        </plugin>        
-        <plugin>
-          <groupId>org.apache.maven.plugins</groupId>
           <artifactId>maven-javadoc-plugin</artifactId>
-          <version>2.7</version>
           <configuration>
             <source>1.4</source>
             <links>
@@ -318,15 +301,14 @@ under the License.
             <tagletArtifacts>
               <tagletArtifact>
                 <groupId>org.codehaus.plexus</groupId>
-                <artifactId>plexus-javadoc</artifactId>
-                <version>1.0</version>
+                <artifactId>plexus-component-javadoc</artifactId>
+                <version>1.5.5</version>
               </tagletArtifact>
             </tagletArtifacts>
           </configuration>
         </plugin>
         <plugin>
           <artifactId>maven-site-plugin</artifactId>
-          <version>2.2</version>
           <configuration>
             <stagingSiteURL>scp://people.apache.org/www/maven.apache.org/doxia/doxia-${project.version}</stagingSiteURL>
           </configuration>
@@ -354,20 +336,16 @@ under the License.
             <goals>
               <goal>check</goal>
             </goals>
+            <configuration>
+              <excludes>
+                <exclude>org/apache/maven/doxia/document/*</exclude>
+              </excludes>
+            </configuration>
           </execution>
         </executions>
       </plugin>
     </plugins>
   </build>
-
-  <reporting>
-    <plugins>
-      <plugin>
-        <artifactId>maven-project-info-reports-plugin</artifactId>
-        <version>2.3.1</version>
-      </plugin>
-    </plugins>
-  </reporting>
 
   <profiles>
     <profile>
@@ -414,21 +392,11 @@ under the License.
               <tagletArtifacts>
                 <tagletArtifact>
                   <groupId>org.codehaus.plexus</groupId>
-                  <artifactId>plexus-javadoc</artifactId>
-                  <version>1.0</version>
+                  <artifactId>plexus-component-javadoc</artifactId>
+                  <version>1.5.5</version>
                 </tagletArtifact>
               </tagletArtifacts>
             </configuration>
-          </plugin>
-          <plugin>
-            <artifactId>maven-checkstyle-plugin</artifactId>
-            <configuration>
-              <configLocation>http://svn.apache.org/repos/asf/maven/doxia/doxia/trunk/src/main/resources/config/doxia_checkstyle.xml</configLocation>
-            </configuration>
-          </plugin>
-          <plugin>
-            <groupId>org.codehaus.mojo</groupId>
-            <artifactId>clirr-maven-plugin</artifactId>
           </plugin>
         </plugins>
       </reporting>
@@ -465,8 +433,8 @@ under the License.
               <tagletArtifacts>
                 <tagletArtifact>
                   <groupId>org.codehaus.plexus</groupId>
-                  <artifactId>plexus-javadoc</artifactId>
-                  <version>1.0</version>
+                  <artifactId>plexus-component-javadoc</artifactId>
+                  <version>1.5.5</version>
                 </tagletArtifact>
               </tagletArtifacts>
             </configuration>
