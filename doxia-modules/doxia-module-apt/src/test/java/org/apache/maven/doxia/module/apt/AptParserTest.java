@@ -581,6 +581,57 @@ public class AptParserTest
     }
 
     /** @throws Exception  */
+    public void testSpacesAndBracketsInAnchors()
+        throws Exception
+    {
+        final String text = "  {Anchor with spaces (and brackets)}" + EOL
+            + "  Link to {{Anchor with spaces (and brackets)}}" + EOL
+            + "  {{{http://fake.api#method(with, args)}method(with, args)}}" + EOL;
+
+        final SinkEventTestingSink sink = new SinkEventTestingSink();
+
+        parser.parse( text, sink );
+
+        Iterator it = sink.getEventList().iterator();
+
+        assertEquals( "head", ( (SinkEventElement) it.next() ).getName() );
+        assertEquals( "head_", ( (SinkEventElement) it.next() ).getName() );
+        assertEquals( "body", ( (SinkEventElement) it.next() ).getName() );
+        assertEquals( "paragraph", ( (SinkEventElement) it.next() ).getName() );
+
+        SinkEventElement event = (SinkEventElement) it.next();
+        assertEquals( "anchor", event.getName() );
+        assertEquals( "Anchor_with_spaces_and_brackets", event.getArgs()[0] );
+        event = (SinkEventElement) it.next();
+        assertEquals( "text", event.getName() );
+        assertEquals( "Anchor with spaces (and brackets)", event.getArgs()[0] );
+        assertEquals( "anchor_", ( (SinkEventElement) it.next() ).getName() );
+
+        assertEquals( "text", ( (SinkEventElement) it.next() ).getName() );
+        event = (SinkEventElement) it.next();
+        assertEquals( "link", event.getName() );
+        assertEquals( "#Anchor_with_spaces_and_brackets", event.getArgs()[0] );
+        event = (SinkEventElement) it.next();
+        assertEquals( "text", event.getName() );
+        assertEquals( "Anchor with spaces (and brackets)", event.getArgs()[0] );
+        assertEquals( "link_", ( (SinkEventElement) it.next() ).getName() );
+
+        assertEquals( "text", ( (SinkEventElement) it.next() ).getName() );
+        event = (SinkEventElement) it.next();
+        assertEquals( "link", event.getName() );
+        assertEquals( "http://fake.api#method(with, args)", event.getArgs()[0] );
+        event = (SinkEventElement) it.next();
+        assertEquals( "text", event.getName() );
+        assertEquals( "method(with, args)", event.getArgs()[0] );
+        assertEquals( "link_", ( (SinkEventElement) it.next() ).getName() );
+
+        assertEquals( "paragraph_", ( (SinkEventElement) it.next() ).getName() );
+        assertEquals( "body_", ( (SinkEventElement) it.next() ).getName() );
+
+        assertFalse( it.hasNext() );
+    }
+
+    /** @throws Exception  */
     public void testSectionTitleAnchors()
         throws Exception
     {
