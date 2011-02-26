@@ -28,7 +28,7 @@ import org.codehaus.plexus.util.PathTool;
 import org.codehaus.plexus.util.StringUtils;
 
 /**
- * <p>RenderingContext class.</p>
+ * The rendering context of a document.
  *
  * @author <a href="mailto:jason@maven.org">Jason van Zyl</a>
  * @version $Id$
@@ -48,7 +48,7 @@ public class RenderingContext
 
     private final String extension;
 
-    private Map attributes;
+    private Map/*String, String*/ attributes;
 
     /**
      * <p>Constructor for RenderingContext.</p>
