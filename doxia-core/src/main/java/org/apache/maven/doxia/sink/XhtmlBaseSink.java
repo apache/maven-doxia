@@ -1816,11 +1816,43 @@ public class XhtmlBaseSink
     }
 
     /**
-     * {@inheritDoc}
+     * Add an unknown event.
+     * This can be used to generate html tags for which no corresponding sink event exists.
      *
-     * Adding an unkown event, <i>ie</i> an event that was not recognized by a parser.
+     * <p>
      * If {@link org.apache.maven.doxia.util.HtmlTools#getHtmlTag(String) HtmlTools.getHtmlTag( name )}
      * does not return null, the corresponding tag will be written.
+     * </p>
+     *
+     * <p>For example, the div block</p>
+     *
+     * <pre>
+     *  &lt;div class="detail" style="display:inline"&gt;text&lt;/div&gt;
+     * </pre>
+     *
+     * <p>can be generated via the following event sequence:</p>
+     *
+     * <pre>
+     *  SinkEventAttributeSet atts = new SinkEventAttributeSet();
+     *  atts.addAttribute( SinkEventAttributes.CLASS, "detail" );
+     *  atts.addAttribute( SinkEventAttributes.STYLE, "display:inline" );
+     *  sink.unknown( "div", new Object[]{new Integer( HtmlMarkup.TAG_TYPE_START )}, atts );
+     *  sink.text( "text" );
+     *  sink.unknown( "div", new Object[]{new Integer( HtmlMarkup.TAG_TYPE_END )}, null );
+     * </pre>
+     *
+     * @param name the name of the event. If this is not a valid xhtml tag name
+     *      as defined in {@link org.apache.maven.doxia.markup.HtmlMarkup} then the event is ignored.
+     * @param requiredParams If this is null or the first argument is not an Integer then the event is ignored.
+     *      The first argument should indicate the type of the unknown event, its integer value should be one of
+     *      {@link org.apache.maven.doxia.markup.HtmlMarkup#TAG_TYPE_START TAG_TYPE_START},
+     *      {@link org.apache.maven.doxia.markup.HtmlMarkup#TAG_TYPE_END TAG_TYPE_END},
+     *      {@link org.apache.maven.doxia.markup.HtmlMarkup#TAG_TYPE_SIMPLE TAG_TYPE_SIMPLE},
+     *      {@link org.apache.maven.doxia.markup.HtmlMarkup#ENTITY_TYPE ENTITY_TYPE}, or
+     *      {@link org.apache.maven.doxia.markup.HtmlMarkup#CDATA_TYPE CDATA_TYPE},
+     *      otherwise the event will be ignored.
+     * @param attributes a set of attributes for the event. May be null.
+     *      The attributes will always be written, no validity check is performed.
      */
     public void unknown( String name, Object[] requiredParams, SinkEventAttributes attributes )
     {
