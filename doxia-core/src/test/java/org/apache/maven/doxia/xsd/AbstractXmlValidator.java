@@ -141,8 +141,6 @@ public abstract class AbstractXmlValidator
     /**
      * @return a Map &lt; filePath, fileContent &gt; of files to validate.
      * @throws IOException if any
-     * @see #getIncludes()
-     * @see #getAllTestDocuments()
      */
     protected abstract Map getTestDocuments()
             throws IOException;

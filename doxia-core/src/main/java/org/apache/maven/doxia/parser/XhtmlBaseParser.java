@@ -710,7 +710,7 @@ public class XhtmlBaseParser
         this.sectionLevel = 0;
         this.inVerbatim = false;
         this.inFigure = false;
-        while( this.decoration.getAttributeNames().hasMoreElements() )
+        while ( this.decoration.getAttributeNames().hasMoreElements() )
         {
             this.decoration.removeAttribute( this.decoration.getAttributeNames().nextElement() );
         }

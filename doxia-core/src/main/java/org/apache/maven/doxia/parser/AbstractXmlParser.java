@@ -803,7 +803,7 @@ public abstract class AbstractXmlParser
             method.setHeader( "user-agent", "Apache-Doxia/1.1.4" );
 
             HttpRequestRetryHandler retryHandler = new DefaultHttpRequestRetryHandler( 3, false );
-            client.setHttpRequestRetryHandler(retryHandler);
+            client.setHttpRequestRetryHandler( retryHandler );
 
             HttpEntity entity = null;
             try
@@ -814,7 +814,7 @@ public abstract class AbstractXmlParser
                 {
                     throw new IOException( "The status code when accessing the URL '" + url.toString() + "' was "
                         + statusCode + ", which is not allowed. The server gave this reason for the failure '"
-                        + response.getStatusLine().getReasonPhrase() + "'.");
+                        + response.getStatusLine().getReasonPhrase() + "'." );
                 }
 
                 entity = response.getEntity();
@@ -830,7 +830,8 @@ public abstract class AbstractXmlParser
             }
             finally
             {
-                if ( entity != null ) {
+                if ( entity != null )
+                {
                     try
                     {
                         entity.consumeContent();
