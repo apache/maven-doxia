@@ -23,20 +23,20 @@
   <components>
     <component>
       <role>org.apache.maven.doxia.parser.Parser</role>
-      <role-hint>doc-book</role-hint>
+      <role-hint>docbook</role-hint>
       <implementation>org.apache.maven.doxia.module.docbook.DocBookParser</implementation>
       <description>Parse a &lt;code&gt;Docbook&lt;/code&gt; document and emit events into the specified doxia
         Sink.</description>
     </component>
     <component>
       <role>org.apache.maven.doxia.sink.SinkFactory</role>
-      <role-hint>doc-book</role-hint>
+      <role-hint>docbook</role-hint>
       <implementation>org.apache.maven.doxia.module.docbook.DocbookSinkFactory</implementation>
       <description>Docbook implementation of the Sink factory.</description>
     </component>
     <component>
       <role>org.apache.maven.doxia.module.site.SiteModule</role>
-      <role-hint>doc-book</role-hint>
+      <role-hint>docbook</role-hint>
       <implementation>org.apache.maven.doxia.module.docbook.DocBookSiteModule</implementation>
       <description></description>
     </component>
