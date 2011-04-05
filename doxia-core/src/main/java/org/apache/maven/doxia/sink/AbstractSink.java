@@ -64,6 +64,8 @@ public abstract class AbstractSink
      * make sure that text output is filtered through this method.
      *
      * @param text the text to scan.
+     *      May be null in which case null is returned.
+     *
      * @return a String that contains only System EOLs.
      */
      protected static String unifyEOLs( String text )

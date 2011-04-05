@@ -149,7 +149,7 @@ public class XmlValidator
     /**
      * Convenience class to beautify <code>SAXParseException</code> messages.
      */
-    static class MessagesErrorHandler
+    private static class MessagesErrorHandler
         extends DefaultHandler
     {
         private static final int TYPE_UNKNOWN = 0;
@@ -170,7 +170,7 @@ public class XmlValidator
 
         private boolean hasDtdAndXsd;
 
-        public MessagesErrorHandler( Log log )
+        private MessagesErrorHandler( Log log )
         {
             this.log = log;
         }
@@ -243,11 +243,11 @@ public class XmlValidator
             }
 
             message.append( EOL );
-            message.append( "  Public ID: " + e.getPublicId() ).append( EOL );
-            message.append( "  System ID: " + e.getSystemId() ).append( EOL );
-            message.append( "  Line number: " + e.getLineNumber() ).append( EOL );
-            message.append( "  Column number: " + e.getColumnNumber() ).append( EOL );
-            message.append( "  Message: " + e.getMessage() ).append( EOL );
+            message.append( "  Public ID: " ).append( e.getPublicId() ).append( EOL );
+            message.append( "  System ID: " ).append( e.getSystemId() ).append( EOL );
+            message.append( "  Line number: " ).append( e.getLineNumber() ).append( EOL );
+            message.append( "  Column number: " ).append( e.getColumnNumber() ).append( EOL );
+            message.append( "  Message: " ).append( e.getMessage() ).append( EOL );
 
             final String logMessage = message.toString();
 

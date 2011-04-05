@@ -50,20 +50,24 @@ import org.apache.maven.doxia.sink.SinkEventAttributeSet;
  */
 public class DoxiaUtils
 {
-
     private static final int MINUS_ONE = 0xFF;
 
     /**
      * Checks if the given string corresponds to an internal link,
      * ie it is a link to an anchor within the same document.
+     * If link is not null, then exactly one of the three methods
+     * {@link #isInternalLink(java.lang.String)}, {@link #isExternalLink(java.lang.String)} and
+     * {@link #isLocalLink(java.lang.String)} will return true.
      *
-     * @param link The link to check.
+     * @param link The link to check. Not null.
      * @return True if the link starts with "#".
+     *
+     * @throws NullPointerException if link is null.
      *
      * @see #isExternalLink(String)
      * @see #isLocalLink(String)
      */
-    public static boolean isInternalLink( String link )
+    public static boolean isInternalLink( final String link )
     {
         return link.startsWith( "#" );
     }
@@ -72,17 +76,23 @@ public class DoxiaUtils
      * Checks if the given string corresponds to an external URI,
      * ie is not a link within the same document nor a relative link
      * to another document (a local link) of the same site.
+     * If link is not null, then exactly one of the three methods
+     * {@link #isInternalLink(java.lang.String)}, {@link #isExternalLink(java.lang.String)} and
+     * {@link #isLocalLink(java.lang.String)} will return true.
      *
-     * @param link The link to check.
+     * @param link The link to check. Not null.
+     *
      * @return True if the link (ignoring case) starts with either "http:/",
      * "https:/", "ftp:/", "mailto:", "file:/", or contains the string "://".
      * Note that Windows style separators "\" are not allowed
      * for URIs, see  http://www.ietf.org/rfc/rfc2396.txt , section 2.4.3.
      *
+     * @throws NullPointerException if link is null.
+     *
      * @see #isInternalLink(String)
      * @see #isLocalLink(String)
      */
-    public static boolean isExternalLink( String link )
+    public static boolean isExternalLink( final String link )
     {
         String text = link.toLowerCase( Locale.ENGLISH );
 
@@ -95,14 +105,20 @@ public class DoxiaUtils
      * Checks if the given string corresponds to a relative link to another document
      * within the same site, ie it is neither an {@link #isInternalLink(String) internal}
      * nor an {@link #isExternalLink(String) external} link.
+     * If link is not null, then exactly one of the three methods
+     * {@link #isInternalLink(java.lang.String)}, {@link #isExternalLink(java.lang.String)} and
+     * {@link #isLocalLink(java.lang.String)} will return true.
      *
-     * @param link The link to check.
+     * @param link The link to check. Not null.
+     *
      * @return True if the link is neither an external nor an internal link.
+     *
+     * @throws NullPointerException if link is null.
      *
      * @see #isExternalLink(String)
      * @see #isInternalLink(String)
      */
-    public static boolean isLocalLink( String link )
+    public static boolean isLocalLink( final String link )
     {
         return ( !isExternalLink( link ) && !isInternalLink( link ) );
     }
@@ -115,10 +131,13 @@ public class DoxiaUtils
      * </p>
      *
      * @param id The id to be encoded.
+     *      May be null in which case null is returned.
+     *
      * @return The trimmed and encoded id, or null if id is null.
+     *
      * @see #encodeId(java.lang.String, boolean)
      */
-    public static String encodeId( String id )
+    public static String encodeId( final String id )
     {
         return encodeId( id, false );
     }
@@ -179,22 +198,26 @@ public class DoxiaUtils
      * </pre>
      *
      * @param id The id to be encoded.
+     *      May be null in which case null is returned.
      * @param chop true if non-ASCII characters should be ignored.
      * If false, any non-ASCII characters will be replaced as specified above.
+     *
      * @return The trimmed and encoded id, or null if id is null.
      * If id is not null, the return value is guaranteed to be a valid Doxia id.
      *
+     * @see #isValidId(java.lang.String)
+     *
      * @since 1.1.1
      */
-    public static String encodeId( String id, boolean chop )
+    public static String encodeId( final String id, final boolean chop )
     {
         if ( id == null )
         {
             return null;
         }
 
-        id = id.trim();
-        int length = id.length();
+        final String idd = id.trim();
+        int length = idd.length();
 
         if ( length == 0 )
         {
@@ -205,7 +228,7 @@ public class DoxiaUtils
 
         for ( int i = 0; i < length; ++i )
         {
-            char c = id.charAt( i );
+            char c = idd.charAt( i );
 
             if ( ( i == 0 ) && ( !isAsciiLetter( c ) ) )
             {
@@ -261,7 +284,7 @@ public class DoxiaUtils
      *
      * @since 1.1.1
      */
-    public static String byteToHex( byte b )
+    public static String byteToHex( final byte b )
     {
         return Integer.toHexString( b & MINUS_ONE );
     }
@@ -271,10 +294,13 @@ public class DoxiaUtils
      * laid out in {@link #encodeId(String)}.
      *
      * @param text The text to be tested.
+     *      May be null in which case false is returned.
+     *
      * @return <code>true</code> if the text is a valid id, otherwise <code>false</code>.
+     *
      * @see #encodeId(String)
      */
-    public static boolean isValidId( String text )
+    public static boolean isValidId( final String text )
     {
         if ( text == null || text.length() == 0 )
         {
@@ -324,13 +350,16 @@ public class DoxiaUtils
      * (ignoring case) return the current date.</p>
      *
      * @param str the date to parse, not null.
+     *
      * @return the parsed date, or the current date if the input String (ignoring case) was
      *      <code>"today"</code> or <code>"now"</code>.
+     *
      * @throws ParseException if no pattern matches.
+     * @throws NullPointerException if str is null.
      *
      * @since 1.1.1.
      */
-    public static Date parseDate( String str )
+    public static Date parseDate( final String str )
             throws ParseException
     {
         if ( "today".equals( str.toLowerCase( Locale.ENGLISH ) )
@@ -358,12 +387,12 @@ public class DoxiaUtils
      // private
     //
 
-    private static boolean isAsciiLetter( char c )
+    private static boolean isAsciiLetter( final char c )
     {
         return ( ( c >= 'a' && c <= 'z' ) || ( c >= 'A' && c <= 'Z' ) );
     }
 
-    private static boolean isAsciiDigit( char c )
+    private static boolean isAsciiDigit( final char c )
     {
         return ( c >= '0' && c <= '9' );
     }
@@ -372,12 +401,16 @@ public class DoxiaUtils
      * Determine width and height of an image. If successful, the returned SinkEventAttributes
      * contain width and height attribute keys whose values are the width and height of the image (as a String).
      *
-     * @param logo a String containing either a URL or a path to an image file.
+     * @param logo a String containing either a URL or a path to an image file. Not null.
+     *
      * @return a set of SinkEventAttributes, or null if no ImageReader was found to read the image.
+     *
      * @throws java.io.IOException if an error occurs during reading.
+     * @throws NullPointerException if logo is null.
+     *
      * @since 1.1.1
      */
-    public static MutableAttributeSet getImageAttributes( String logo )
+    public static MutableAttributeSet getImageAttributes( final String logo )
             throws IOException
     {
         BufferedImage img = null;

@@ -152,6 +152,7 @@ public class HtmlToolsTest
      */
     public void testGetHtmlTag()
     {
+        assertNull( HtmlTools.getHtmlTag( null ) );
         assertNull( HtmlTools.getHtmlTag( "" ) );
         assertNull( HtmlTools.getHtmlTag( "weirdHtmlTag" ) );
         assertNotNull( HtmlTools.getHtmlTag( "strong" ) );

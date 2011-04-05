@@ -21,7 +21,7 @@ package org.apache.maven.doxia.util;
 
 import java.io.UnsupportedEncodingException;
 import java.util.ArrayList;
-import java.util.Hashtable;
+import java.util.HashMap;
 import java.util.List;
 
 import javax.swing.text.html.HTML.Tag;
@@ -61,7 +61,7 @@ public class HtmlTools
         HtmlMarkup.TR, HtmlMarkup.TT, HtmlMarkup.U, HtmlMarkup.UL, HtmlMarkup.VAR
     };
 
-    private static final Hashtable TAG_HASHTABLE = new Hashtable( ALL_TAGS.length );
+    private static final HashMap TAG_MAP = new HashMap( ALL_TAGS.length );
 
     private static final int ASCII = 0x7E;
 
@@ -69,7 +69,7 @@ public class HtmlTools
     {
         for ( int i = 0; i < ALL_TAGS.length; i++ )
         {
-            TAG_HASHTABLE.put( ALL_TAGS[i].toString(), ALL_TAGS[i] );
+            TAG_MAP.put( ALL_TAGS[i].toString(), ALL_TAGS[i] );
         }
     }
 
@@ -87,9 +87,9 @@ public class HtmlTools
      */
     public static Tag getHtmlTag( String tagName )
     {
-        Object t =  TAG_HASHTABLE.get( tagName );
+        Object t =  TAG_MAP.get( tagName );
 
-        return ( t == null ? null : (Tag) t );
+        return (Tag) t;
     }
 
     /**
@@ -134,7 +134,7 @@ public class HtmlTools
      * @see <a href="http://www.w3.org/TR/2000/REC-xml-20001006#sec-predefined-ent">http://www.w3.org/TR/2000/REC-xml-20001006#sec-predefined-ent</a>
      * @see <a href="http://www.w3.org/TR/html401/charset.html#h-5.3">http://www.w3.org/TR/html401/charset.html#h-5.3</a>
      */
-    public static final String escapeHTML( String text, boolean xmlMode )
+    public static String escapeHTML( final String text, final boolean xmlMode )
     {
         if ( text == null )
         {
