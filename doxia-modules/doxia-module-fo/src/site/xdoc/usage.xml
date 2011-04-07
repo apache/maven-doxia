@@ -44,13 +44,14 @@ under the License.
 
       <source>
 import java.io.File;
-import java.io.FileNotFoundException;
+import java.io.FileOutputStream;
 import java.io.FileReader;
-import java.io.FileWriter;
 import java.io.IOException;
+import java.io.OutputStream;
 
 import org.apache.maven.doxia.module.apt.AptParser;
 import org.apache.maven.doxia.module.fo.FoSink;
+import org.apache.maven.doxia.module.fo.FoSinkFactory;
 import org.apache.maven.doxia.parser.ParseException;
 
 
@@ -65,21 +66,22 @@ public class Apt2FO
                 new File( "resources", "test.apt" ) );
 
             // Create FO sink:
-            FoSink fosink = new FoSink( new FileWriter(
-                new File( "output", "test.fo" ) ) );
+            OutputStream out = new FileOutputStream(
+                new File( "output", "test.fo" ) );
+            FoSinkFactory factory = new FoSinkFactory();
+            FoSink fosink = (FoSink) factory.createSink( out );
 
+            // parse apt to fo:
+            fosink.beginDocument();
             AptParser parser = new AptParser();
             parser.parse( source, fosink );
+            fosink.endDocument();
 
             // close streams
             fosink.close();
             source.close();
         }
         catch ( ParseException e )
-        {
-            e.printStackTrace();
-        }
-        catch ( FileNotFoundException e )
         {
             e.printStackTrace();
         }
