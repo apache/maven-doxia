@@ -34,16 +34,16 @@ public class Book
     private String descriptor;
 
     /** The list of formats to produce. */
-    private List formats;
+    private List<Format> formats;
 
     /** The base directory of source files. */
     private String directory;
 
     /** Files to include. */
-    private List includes;
+    private List<String> includes;
 
     /** Files to exclude. */
-    private List excludes;
+    private List<String> excludes;
 
     /**
      * Returns the path to the book descriptor file.
@@ -60,7 +60,7 @@ public class Book
      *
      * @return the list of formats.
      */
-    public List getFormats()
+    public List<Format> getFormats()
     {
         return formats;
     }
@@ -80,7 +80,7 @@ public class Book
      *
      * @return the list of files to include.
      */
-    public List getIncludes()
+    public List<String> getIncludes()
     {
         return includes;
     }
@@ -90,7 +90,7 @@ public class Book
      *
      * @return the list of files to exclude.
      */
-    public List getExcludes()
+    public List<String> getExcludes()
     {
         return excludes;
     }

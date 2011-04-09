@@ -19,7 +19,6 @@ package org.apache.maven.doxia.sink;
  * under the License.
  */
 
-
 import java.util.Enumeration;
 import java.util.Arrays;
 
@@ -187,7 +186,7 @@ public class SinkUtils
 
         StringBuffer sb = new StringBuffer();
 
-        Enumeration names = att.getAttributeNames();
+        Enumeration<?> names = att.getAttributeNames();
 
         while ( names.hasMoreElements() )
         {
@@ -218,7 +217,7 @@ public class SinkUtils
     {
         StringBuffer sb = new StringBuffer();
 
-        Enumeration names = att.getAttributeNames();
+        Enumeration<?> names = att.getAttributeNames();
 
         while ( names.hasMoreElements() )
         {
@@ -266,7 +265,7 @@ public class SinkUtils
 
         MutableAttributeSet atts = new SinkEventAttributeSet( attributes.getAttributeCount() );
 
-        Enumeration names = attributes.getAttributeNames();
+        Enumeration<?> names = attributes.getAttributeNames();
 
         while ( names.hasMoreElements() )
         {

@@ -23,6 +23,7 @@ import java.io.UnsupportedEncodingException;
 import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.List;
+import java.util.Map;
 
 import javax.swing.text.html.HTML.Tag;
 
@@ -61,15 +62,15 @@ public class HtmlTools
         HtmlMarkup.TR, HtmlMarkup.TT, HtmlMarkup.U, HtmlMarkup.UL, HtmlMarkup.VAR
     };
 
-    private static final HashMap TAG_MAP = new HashMap( ALL_TAGS.length );
+    private static final Map<String, Tag> TAG_MAP = new HashMap<String, Tag>( ALL_TAGS.length );
 
     private static final int ASCII = 0x7E;
 
     static
     {
-        for ( int i = 0; i < ALL_TAGS.length; i++ )
+        for ( Tag tag : ALL_TAGS )
         {
-            TAG_MAP.put( ALL_TAGS[i].toString(), ALL_TAGS[i] );
+            TAG_MAP.put( tag.toString(), tag );
         }
     }
 
@@ -253,7 +254,7 @@ public class HtmlTools
         }
 
         String tmp = unescaped;
-        List entities = new ArrayList();
+        List<String> entities = new ArrayList<String>();
         while ( true )
         {
             int i = tmp.indexOf( "&#x" );
@@ -278,10 +279,8 @@ public class HtmlTools
             }
         }
 
-        for ( int i = 0; i < entities.size(); i++ )
+        for ( String entity : entities )
         {
-            String entity = (String) entities.get( i );
-
             int codePoint = Integer.parseInt( entity, 16 );
             unescaped = StringUtils.replace( unescaped, "&#x" + entity + ";", new String( toChars( codePoint ) ) );
         }

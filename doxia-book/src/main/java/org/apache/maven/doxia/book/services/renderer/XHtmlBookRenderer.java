@@ -39,7 +39,6 @@ import java.io.FileWriter;
 import java.io.IOException;
 import java.io.Reader;
 import java.io.Writer;
-import java.util.Iterator;
 
 /**
  * <p>XHtmlBookRenderer class.</p>
@@ -109,10 +108,8 @@ public class XHtmlBookRenderer
 
             int chapterNumber = 1;
 
-            for ( Iterator it = book.getChapters().iterator(); it.hasNext(); )
+            for ( Chapter chapter : book.getChapters() )
             {
-                Chapter chapter = (Chapter) it.next();
-
                 sink.sectionTitle();
                 sink.text( Integer.toString( chapterNumber ) + ". " + chapter.getTitle() );
                 sink.sectionTitle_();
@@ -149,10 +146,8 @@ public class XHtmlBookRenderer
     private void renderChapter( XhtmlBookSink sink, Chapter chapter, BookContext context )
         throws BookDoxiaException
     {
-        for ( Iterator it = chapter.getSections().iterator(); it.hasNext(); )
+        for ( Section section : chapter.getSections() )
         {
-            Section section = (Section) it.next();
-
             renderSection( sink, section, context );
         }
     }
@@ -170,7 +165,7 @@ public class XHtmlBookRenderer
     {
         sink.section2();
 
-        BookContext.BookFile bookFile = (BookContext.BookFile) context.getFiles().get( section.getId() );
+        BookContext.BookFile bookFile = context.getFiles().get( section.getId() );
 
         if ( bookFile == null )
         {

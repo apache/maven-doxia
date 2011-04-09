@@ -21,8 +21,6 @@ package org.apache.maven.doxia.macro.toc;
 
 import java.io.StringReader;
 
-import java.util.Iterator;
-
 import org.apache.maven.doxia.index.IndexEntry;
 import org.apache.maven.doxia.index.IndexingSink;
 import org.apache.maven.doxia.macro.AbstractMacro;
@@ -128,10 +126,8 @@ public class TocMacro
 
             int i = 1;
 
-            for ( Iterator it = index.getChildEntries().iterator(); it.hasNext(); )
+            for ( IndexEntry sectionIndex : index.getChildEntries() )
             {
-                IndexEntry sectionIndex = (IndexEntry) it.next();
-
                 if ( ( i == section ) || ( section == 0 ) )
                 {
                     writeSubSectionN( sink, sectionIndex, 1 );
@@ -168,10 +164,8 @@ public class TocMacro
                     sink.list();
                 }
 
-                for ( Iterator it = sectionIndex.getChildEntries().iterator(); it.hasNext(); )
+                for ( IndexEntry subsectionIndex : sectionIndex.getChildEntries() )
                 {
-                    IndexEntry subsectionIndex = (IndexEntry) it.next();
-
                     if ( n == toDepth - 1 )
                     {
                         sink.listItem();

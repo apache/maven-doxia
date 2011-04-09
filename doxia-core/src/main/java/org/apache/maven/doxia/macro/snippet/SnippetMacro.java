@@ -43,7 +43,7 @@ public class SnippetMacro
     extends AbstractMacro
 {
     /** Holds the cache. */
-    private static Map cache = new HashMap();
+    private static Map<String, String> cache = new HashMap<String, String>();
 
     private static final int HOUR = 60;
 
@@ -51,7 +51,7 @@ public class SnippetMacro
     private long timeout = HOUR * HOUR * 1000;
 
     /** Holds the time cache. */
-    private static Map timeCached = new HashMap();
+    private static Map<String, Long> timeCached = new HashMap<String, Long>();
 
     /** Debug. */
     private boolean debug = false;
@@ -149,7 +149,7 @@ public class SnippetMacro
     {
         StringBuffer result;
 
-        String cachedSnippet = (String) getCachedSnippet( url, id );
+        String cachedSnippet = getCachedSnippet( url, id );
 
         if ( cachedSnippet != null )
         {
@@ -182,7 +182,7 @@ public class SnippetMacro
      * @param id The id of the snippet.
      * @return The snippet.
      */
-    private Object getCachedSnippet( URL url, String id )
+    private String getCachedSnippet( URL url, String id )
     {
         if ( isCacheTimedout( url, id ) )
         {
@@ -227,7 +227,7 @@ public class SnippetMacro
     {
         String globalId = globalSnippetId( url, id );
 
-        return timeCached.containsKey( globalId ) ? ( (Long) timeCached.get( globalId ) ).longValue() : 0;
+        return timeCached.containsKey( globalId ) ? timeCached.get( globalId ).longValue() : 0;
     }
 
     /**

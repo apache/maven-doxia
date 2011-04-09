@@ -64,7 +64,7 @@ public class DefaultBookDoxia
     /**
      * @plexus.requirement role="org.apache.maven.doxia.book.services.renderer.BookRenderer"
      */
-    private Map bookRenderers;
+    private Map<String, BookRenderer> bookRenderers;
 
     // ----------------------------------------------------------------------
     // BookDoxia Implementation
@@ -78,15 +78,15 @@ public class DefaultBookDoxia
     }
 
     /** {@inheritDoc} */
-    public void renderBook( BookModel book, String bookRendererId, List files, File outputDirectory )
+    public void renderBook( BookModel book, String bookRendererId, List<File> files, File outputDirectory )
         throws BookDoxiaException
     {
         renderBook( book, bookRendererId, files, outputDirectory, Locale.getDefault(), "UTF-8", "UTF-8" );
     }
 
     /** {@inheritDoc} */
-    public void renderBook( BookModel book, String bookRendererId, List files, File outputDirectory, Locale locale,
-                            String inputEncoding, String outputEncoding )
+    public void renderBook( BookModel book, String bookRendererId, List<File> files, File outputDirectory,
+                            Locale locale, String inputEncoding, String outputEncoding )
         throws BookDoxiaException
     {
         // ----------------------------------------------------------------------
@@ -132,7 +132,7 @@ public class DefaultBookDoxia
         // Render the book
         // ----------------------------------------------------------------------
 
-        BookRenderer bookRenderer = (BookRenderer) bookRenderers.get( bookRendererId );
+        BookRenderer bookRenderer = bookRenderers.get( bookRendererId );
 
         if ( bookRenderer == null )
         {
@@ -147,7 +147,7 @@ public class DefaultBookDoxia
      *
      * @return Set
      */
-    public Set getAvailableBookRenderers()
+    public Set<String> getAvailableBookRenderers()
     {
         return Collections.unmodifiableSet( bookRenderers.keySet() );
     }

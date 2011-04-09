@@ -100,7 +100,7 @@ public class AptSink
     private String listNestingIndent;
 
     /**  listStyles. */
-    private final Stack listStyles;
+    private final Stack<String> listStyles;
 
     // ----------------------------------------------------------------------
     // Public protected methods
@@ -115,7 +115,7 @@ public class AptSink
     protected AptSink( Writer writer )
     {
         this.writer = new PrintWriter( writer );
-        this.listStyles = new Stack();
+        this.listStyles = new Stack<String>();
 
         init();
     }

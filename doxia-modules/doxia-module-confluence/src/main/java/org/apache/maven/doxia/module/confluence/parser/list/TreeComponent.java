@@ -21,7 +21,6 @@ package org.apache.maven.doxia.module.confluence.parser.list;
 
 import java.util.List;
 import java.util.ArrayList;
-import java.util.Iterator;
 
 /**
  * @author <a href="mailto:jason@maven.org">Jason van Zyl</a>
@@ -31,7 +30,7 @@ class TreeComponent
 {
     private static final String EOL = System.getProperty( "line.separator" );
 
-    private List children = new ArrayList();
+    private List<TreeComponent> children = new ArrayList<TreeComponent>();
 
     private String text;
 
@@ -46,7 +45,7 @@ class TreeComponent
         this.type = type;
     }
 
-    List getChildren()
+    List<TreeComponent> getChildren()
     {
         return children;
     }
@@ -102,10 +101,8 @@ class TreeComponent
             sb.append( EOL );
         }
 
-        for ( Iterator i = children.iterator(); i.hasNext(); )
+        for ( TreeComponent lc : children )
         {
-            TreeComponent lc = (TreeComponent) i.next();
-
             sb.append( lc.toString( indent + "   " ) );
         }
 

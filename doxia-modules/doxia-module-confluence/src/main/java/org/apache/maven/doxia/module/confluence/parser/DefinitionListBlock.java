@@ -19,7 +19,6 @@ package org.apache.maven.doxia.module.confluence.parser;
  * under the License.
  */
 
-import java.util.Iterator;
 import java.util.List;
 
 import org.apache.maven.doxia.sink.Sink;
@@ -33,7 +32,7 @@ class DefinitionListBlock
 {
     private String title;
 
-    private List text;
+    private List<Block> text;
 
     DefinitionListBlock( String title, String text )
     {
@@ -55,9 +54,8 @@ class DefinitionListBlock
 
         sink.definition();
 
-        for ( Iterator iterator = text.iterator(); iterator.hasNext(); )
+        for ( Block block : text )
         {
-            Block block = (Block) iterator.next();
             block.traverse( sink );
         }
 

@@ -75,7 +75,7 @@ public class SectionBlockParser
         }
 
         String newLine;
-        final ArrayList blocks = new ArrayList();
+        final ArrayList<Block> blocks = new ArrayList<Block>();
 
         while ( ( newLine = source.getNextLine() ) != null && !accept( newLine ) )
         {
@@ -101,7 +101,7 @@ public class SectionBlockParser
             source.ungetLine();
         }
 
-        return new SectionBlock( m.group( 2 ), getLevel( m.group( 1 ) ), (Block[]) blocks.toArray( new Block[] {} ) );
+        return new SectionBlock( m.group( 2 ), getLevel( m.group( 1 ) ), blocks.toArray( new Block[] {} ) );
     }
 
     /**

@@ -56,7 +56,7 @@ public class ConfluenceSink
     private int levelList = 0;
 
     /**  listStyles. */
-    private final Stack listStyles;
+    private final Stack<String> listStyles;
 
     /** An indication on if we're in verbatim box mode. */
     private boolean verbatimBoxedFlag;
@@ -76,7 +76,7 @@ public class ConfluenceSink
     protected ConfluenceSink( Writer writer )
     {
         this.out = new PrintWriter( writer );
-        this.listStyles = new Stack();
+        this.listStyles = new Stack<String>();
 
         init();
     }

@@ -41,7 +41,7 @@ public class ChildBlocksBuilder
 
     private boolean insideLink = false;
 
-    private List blocks = new ArrayList();
+    private List<Block> blocks = new ArrayList<Block>();
 
     private StringBuffer text = new StringBuffer();
 
@@ -64,9 +64,9 @@ public class ChildBlocksBuilder
      *
      * @return a list of Blocks that can be used to render it
      */
-    public List getBlocks()
+    public List<Block> getBlocks()
     {
-        List specialBlocks = new ArrayList();
+        List<Block> specialBlocks = new ArrayList<Block>();
 
         for ( int i = 0; i < input.length(); i++ )
         {
@@ -253,9 +253,9 @@ public class ChildBlocksBuilder
         return blocks;
     }
 
-    private List getList( Block block, List currentBlocks )
+    private List<Block> getList( Block block, List<Block> currentBlocks )
     {
-        List list = new ArrayList();
+        List<Block> list = new ArrayList<Block>();
 
         if ( insideBold || insideItalic || insideMonospaced )
         {
@@ -267,16 +267,16 @@ public class ChildBlocksBuilder
         return list;
     }
 
-    private List getChildren( StringBuffer buffer, List currentBlocks )
+    private List<Block> getChildren( StringBuffer buffer, List<Block> currentBlocks )
     {
         String txt = buffer.toString().trim();
 
         if ( currentBlocks.isEmpty() && StringUtils.isEmpty( txt ) )
         {
-            return new ArrayList();
+            return new ArrayList<Block>();
         }
 
-        ArrayList list = new ArrayList();
+        ArrayList<Block> list = new ArrayList<Block>();
 
         if ( !insideBold && !insideItalic && !insideMonospaced )
         {
@@ -298,7 +298,7 @@ public class ChildBlocksBuilder
         return input.length() > i + 1 ? input.charAt( i + 1 ) : '\0';
     }
 
-    private StringBuffer addTextBlockIfNecessary( List blcks, List specialBlocks, StringBuffer txt )
+    private StringBuffer addTextBlockIfNecessary( List<Block> blcks, List<Block> specialBlocks, StringBuffer txt )
     {
         if ( txt.length() == 0 )
         {

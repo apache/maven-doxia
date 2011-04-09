@@ -67,50 +67,50 @@ public class DocBookParser
     /**
      * A selective stack of parent elements
      */
-    private final Stack parent = new Stack();
+    private final Stack<String> parent = new Stack<String>();
 
     /**
      * The list of DocBook elements that introduce a new level of hierarchy.
      */
-    private static final Collection HIER_ELEMENTS = new HashSet();
+    private static final Collection<String> HIER_ELEMENTS = new HashSet<String>();
 
     /**
      * Simplified DocBook elements that are direct children of &lt;article&gt;
      * and that should be emitted into the Sink's head.
      */
-    private static final Collection META_ELEMENTS = new HashSet();
+    private static final Collection<String> META_ELEMENTS = new HashSet<String>();
 
     /**
      * Simplified DocBook elements that occur within &lt;articleinfo&gt;
      * and that are currently recognized by the parser.
      */
-    private static final Collection ARTICLEINFO_ELEMENTS = new HashSet();
+    private static final Collection<String> ARTICLEINFO_ELEMENTS = new HashSet<String>();
 
     /**
      * The list of DocBook elements that will be rendered verbatim
      */
-    private static final Collection VERBATIM_ELEMENTS = new HashSet();
+    private static final Collection<String> VERBATIM_ELEMENTS = new HashSet<String>();
 
     /**
      * The list of DocBook elements that will be rendered inline and bold
      */
-    private static final Collection BOLD_ELEMENTS = new HashSet();
+    private static final Collection<String> BOLD_ELEMENTS = new HashSet<String>();
 
     /**
      * The list of DocBook elements that will be rendered inline and italic
      */
-    private static final Collection ITALIC_ELEMENTS = new HashSet();
+    private static final Collection<String> ITALIC_ELEMENTS = new HashSet<String>();
 
     /**
      * The list of DocBook elements that will be rendered inline and monospace
      */
-    private static final Collection MONOSPACE_ELEMENTS = new HashSet();
+    private static final Collection<String> MONOSPACE_ELEMENTS = new HashSet<String>();
 
     /**
      * The list of DocBook elements that may be ignored, either because they don't
      * require any special processing or because they are not yet implemented.
      */
-    private static final Collection IGNORABLE_ELEMENTS = new HashSet();
+    private static final Collection<String> IGNORABLE_ELEMENTS = new HashSet<String>();
     static
     {
         META_ELEMENTS.add( SimplifiedDocbookMarkup.ARTICLEINFO_TAG.toString() );

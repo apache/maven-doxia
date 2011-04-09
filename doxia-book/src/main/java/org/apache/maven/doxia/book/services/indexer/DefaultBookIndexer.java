@@ -21,7 +21,6 @@ package org.apache.maven.doxia.book.services.indexer;
 
 import java.io.FileNotFoundException;
 import java.io.FileReader;
-import java.util.Iterator;
 
 import org.apache.maven.doxia.Doxia;
 import org.apache.maven.doxia.book.BookDoxiaException;
@@ -63,10 +62,8 @@ public class DefaultBookIndexer
     {
         BookIndex index = new BookIndex();
 
-        for ( Iterator it = book.getChapters().iterator(); it.hasNext(); )
+        for ( Chapter chapter : book.getChapters() )
         {
-            Chapter chapter = (Chapter) it.next();
-
             indexChapter( bookContext, index, chapter );
         }
 
@@ -92,10 +89,8 @@ public class DefaultBookIndexer
 
         chapterEntry.setTitle( chapter.getTitle() );
 
-        for ( Iterator it = chapter.getSections().iterator(); it.hasNext(); )
+        for ( Section section : chapter.getSections() )
         {
-            Section section = (Section) it.next();
-
             indexSection( context, chapterEntry, section );
         }
     }

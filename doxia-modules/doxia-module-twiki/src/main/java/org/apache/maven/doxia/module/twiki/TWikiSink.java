@@ -66,7 +66,7 @@ public class TWikiSink
     private int levelList = 0;
 
     /**  listStyles. */
-    private final Stack listStyles;
+    private final Stack<String> listStyles;
 
     /**
      * Constructor, initialize the Writer and the variables.
@@ -77,7 +77,7 @@ public class TWikiSink
     protected TWikiSink( Writer writer )
     {
         this.out = new PrintWriter( writer );
-        this.listStyles = new Stack();
+        this.listStyles = new Stack<String>();
 
         init();
     }

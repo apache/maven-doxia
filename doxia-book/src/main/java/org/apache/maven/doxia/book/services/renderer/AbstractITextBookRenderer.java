@@ -26,7 +26,6 @@ import java.io.Reader;
 import java.io.Writer;
 import java.text.DateFormat;
 import java.util.Date;
-import java.util.Iterator;
 
 import org.apache.maven.doxia.Doxia;
 import org.apache.maven.doxia.book.BookDoxiaException;
@@ -139,10 +138,8 @@ public abstract class AbstractITextBookRenderer
 
         try
         {
-            for ( Iterator it = book.getChapters().iterator(); it.hasNext(); )
+            for ( Chapter chapter : book.getChapters() )
             {
-                Chapter chapter = (Chapter) it.next();
-
                 renderChapter( sink, writer, chapter, context );
             }
 
@@ -213,10 +210,8 @@ public abstract class AbstractITextBookRenderer
         writer.endElement(); // title
 
         //        writer.startElement( "sectioncontent" );
-        for ( Iterator it = chapter.getSections().iterator(); it.hasNext(); )
+        for ( Section section : chapter.getSections() )
         {
-            Section section = (Section) it.next();
-
             renderSection( sink, writer, section, context );
         }
         //        writer.endElement(); // sectioncontent

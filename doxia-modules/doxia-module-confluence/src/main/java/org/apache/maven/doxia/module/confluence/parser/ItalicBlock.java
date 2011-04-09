@@ -29,7 +29,7 @@ import java.util.List;
 class ItalicBlock
     extends AbstractFatherBlock
 {
-    ItalicBlock( List childBlocks )
+    ItalicBlock( List<Block> childBlocks )
     {
         super( childBlocks );
     }

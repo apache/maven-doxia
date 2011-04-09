@@ -19,8 +19,6 @@ package org.apache.maven.doxia.macro;
  * under the License.
  */
 
-import java.util.Iterator;
-
 import org.apache.maven.doxia.sink.Sink;
 import org.codehaus.plexus.util.StringUtils;
 
@@ -54,77 +52,67 @@ public class SwfMacro
         String allowScript = "sameDomain";
 
         // assign parameters
-        for ( Iterator i = request.getParameters().keySet().iterator(); i.hasNext(); )
+        for ( String key : request.getParameters().keySet() )
         {
-            String str = "";
-            String key = (String) i.next();
+            String str = (String) request.getParameter( key );
             if ( key.equals( "src" ) )
             {
-                str = (String) request.getParameter( key );
                 if ( StringUtils.isNotEmpty( str ) )
                 {
                     src = str;
                 }
             }
-            if ( key.equals( "id" ) )
+            else if ( key.equals( "id" ) )
             {
-                str = (String) request.getParameter( key );
                 if ( StringUtils.isNotEmpty( str ) )
                 {
                     id = str;
                 }
             }
-            if ( key.equals( "width" ) )
+            else if ( key.equals( "width" ) )
             {
-                str = (String) request.getParameter( key );
                 if ( StringUtils.isNotEmpty( str ) )
                 {
                     width = str;
                 }
             }
-            if ( key.equals( "height" ) )
+            else if ( key.equals( "height" ) )
             {
-                str = (String) request.getParameter( key );
                 if ( StringUtils.isNotEmpty( str ) )
                 {
                     height = str;
                 }
             }
-            if ( key.equals( "quality" ) )
+            else if ( key.equals( "quality" ) )
             {
-                str = (String) request.getParameter( key );
                 if ( StringUtils.isNotEmpty( str ) )
                 {
                     quality = str;
                 }
             }
-            if ( key.equals( "menu" ) )
+            else if ( key.equals( "menu" ) )
             {
-                str = (String) request.getParameter( key );
                 if ( StringUtils.isNotEmpty( str ) )
                 {
                     menu = str;
                 }
             }
-            if ( key.equals( "loop" ) )
+            else if ( key.equals( "loop" ) )
             {
-                str = (String) request.getParameter( key );
                 if ( StringUtils.isNotEmpty( str ) )
                 {
                     loop = str;
                 }
             }
-            if ( key.equals( "play" ) )
+            else if ( key.equals( "play" ) )
             {
-                str = (String) request.getParameter( key );
                 if ( StringUtils.isNotEmpty( str ) )
                 {
                     play = str;
                 }
             }
-            if ( key.equals( "version" ) )
+            else if ( key.equals( "version" ) )
             {
-                str = (String) request.getParameter( key );
                 // enable version shorthand
                 // TODO: put in other shorthand versions
                 if ( str.equals( "6" ) )
@@ -146,9 +134,8 @@ public class SwfMacro
                     }
                 }
             }
-            if ( key.equals( "allowScript" ) )
+            else if ( key.equals( "allowScript" ) )
             {
-                str = (String) request.getParameter( key );
                 if ( StringUtils.isNotEmpty( str ) )
                 {
                     allowScript = str;

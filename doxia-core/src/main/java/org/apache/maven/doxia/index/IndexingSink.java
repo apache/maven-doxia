@@ -68,7 +68,7 @@ public class IndexingSink
     private String title;
 
     /** The stack. */
-    private final Stack stack;
+    private final Stack<IndexEntry> stack;
 
     /** The current type. */
     private IndexEntry currentEntry;
@@ -80,7 +80,7 @@ public class IndexingSink
      */
     public IndexingSink( IndexEntry sectionEntry )
     {
-        stack = new Stack();
+        stack = new Stack<IndexEntry>();
         stack.push( sectionEntry );
 
         init();
@@ -289,7 +289,7 @@ public class IndexingSink
      */
     public IndexEntry peek()
     {
-        return (IndexEntry) stack.peek();
+        return stack.peek();
     }
 
     /** {@inheritDoc} */

@@ -30,7 +30,6 @@ import java.io.Reader;
 import java.io.StringReader;
 import java.net.URL;
 import java.util.Hashtable;
-import java.util.Iterator;
 import java.util.LinkedHashMap;
 import java.util.Locale;
 import java.util.Map;
@@ -100,7 +99,7 @@ public abstract class AbstractXmlParser
 
     private boolean trimmableWhitespace;
 
-    private Map entities;
+    private Map<String, String> entities;
 
     private boolean validate = false;
 
@@ -259,10 +258,8 @@ public abstract class AbstractXmlParser
             {
                 addLocalEntities( parser, parser.getText() );
 
-                for ( Iterator it = CachedFileEntityResolver.ENTITY_CACHE.values().iterator(); it.hasNext(); )
+                for ( byte[] res : CachedFileEntityResolver.ENTITY_CACHE.values() )
                 {
-                    byte[] res = (byte[]) it.next();
-
                     addDTDEntities( parser, new String( res ) );
                 }
             }
@@ -540,11 +537,11 @@ public abstract class AbstractXmlParser
      * @return a map of the defined entities in a local doctype.
      * @since 1.1
      */
-    protected Map getLocalEntities()
+    protected Map<String, String> getLocalEntities()
     {
         if ( entities == null )
         {
-            entities = new LinkedHashMap();
+            entities = new LinkedHashMap<String, String>();
         }
 
         return entities;
@@ -704,13 +701,13 @@ public abstract class AbstractXmlParser
         implements EntityResolver
     {
         /** Map with systemId as key and the content of systemId as byte[]. */
-        protected static final Map ENTITY_CACHE = new Hashtable();
+        protected static final Map<String, byte[]> ENTITY_CACHE = new Hashtable<String, byte[]>();
 
         /** {@inheritDoc} */
         public InputSource resolveEntity( String publicId, String systemId )
             throws SAXException, IOException
         {
-            byte[] res = (byte[]) ENTITY_CACHE.get( systemId );
+            byte[] res = ENTITY_CACHE.get( systemId );
             // already cached?
             if ( res == null )
             {

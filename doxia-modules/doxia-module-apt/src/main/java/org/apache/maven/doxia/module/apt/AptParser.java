@@ -38,7 +38,6 @@ import java.io.Reader;
 import java.io.StringReader;
 import java.io.StringWriter;
 import java.util.HashMap;
-import java.util.Iterator;
 import java.util.Map;
 import java.util.Set;
 import java.util.StringTokenizer;
@@ -165,7 +164,7 @@ public class AptParser
 
     /** Map of warn messages with a String as key to describe the error type and a Set as value.
      * Using to reduce warn messages. */
-    protected Map warnMessages;
+    protected Map<String, Set<String>> warnMessages;
 
     private static final int NUMBER_OF_SPACES = 85;
 
@@ -1211,7 +1210,7 @@ public class AptParser
 
             length = line.length();
             indent = 0;
-            lineLoop: for ( i = 0; i < length; ++i )
+            for ( i = 0; i < length; ++i )
             {
                 switch ( line.charAt( i ) )
                 {
@@ -1609,13 +1608,13 @@ public class AptParser
 
         if ( warnMessages == null )
         {
-            warnMessages = new HashMap();
+            warnMessages = new HashMap<String, Set<String>>();
         }
 
-        Set set = (Set) warnMessages.get( key );
+        Set<String> set = warnMessages.get( key );
         if ( set == null )
         {
-            set = new TreeSet();
+            set = new TreeSet<String>();
         }
         set.add( msg );
         warnMessages.put( key, set );
@@ -1628,16 +1627,10 @@ public class AptParser
     {
         if ( getLog().isWarnEnabled() && this.warnMessages != null && !isSecondParsing() )
         {
-            for ( Iterator it = this.warnMessages.entrySet().iterator(); it.hasNext(); )
+            for ( Map.Entry<String, Set<String>> entry : this.warnMessages.entrySet() )
             {
-                Map.Entry entry = (Map.Entry) it.next();
-
-                Set set = (Set) entry.getValue();
-
-                for ( Iterator it2 = set.iterator(); it2.hasNext(); )
+                for ( String msg : entry.getValue() )
                 {
-                    String msg = (String) it2.next();
-
                     getLog().warn( msg );
                 }
             }
@@ -2892,7 +2885,7 @@ public class AptParser
 
             String macroId = params[0];
 
-            Map parameters = new HashMap();
+            Map<String, Object> parameters = new HashMap<String, Object>();
 
             for ( int i = 1; i < params.length; i++ )
             {

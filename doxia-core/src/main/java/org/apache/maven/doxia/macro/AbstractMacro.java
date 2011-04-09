@@ -19,7 +19,6 @@ package org.apache.maven.doxia.macro;
  * under the License.
  */
 
-import java.util.Iterator;
 import java.util.Map;
 
 import org.apache.maven.doxia.logging.Log;
@@ -91,7 +90,7 @@ public abstract class AbstractMacro
      *
      * @since 1.1.1.
      */
-    protected static SinkEventAttributes getAttributesFromMap( Map parameters )
+    protected static SinkEventAttributes getAttributesFromMap( Map<?, ?> parameters )
     {
         if ( parameters == null )
         {
@@ -107,10 +106,9 @@ public abstract class AbstractMacro
 
         final SinkEventAttributeSet atts = new SinkEventAttributeSet( count );
 
-        for ( Iterator it = parameters.keySet().iterator(); it.hasNext(); )
+        for ( Map.Entry<?, ?> entry : parameters.entrySet() )
         {
-            final Object key = it.next();
-            atts.addAttribute( key, parameters.get( key ) );
+            atts.addAttribute( entry.getKey(), entry.getValue() );
         }
 
         return atts;

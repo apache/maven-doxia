@@ -33,12 +33,12 @@ class ParagraphBlock
 
     private boolean generateParagraphTags = true;
 
-    ParagraphBlock( List blocks )
+    ParagraphBlock( List<Block> blocks )
     {
         super( blocks );
     }
 
-    ParagraphBlock( List blocks, boolean generateParagraphTags )
+    ParagraphBlock( List<Block> blocks, boolean generateParagraphTags )
     {
         super( blocks );
         this.generateParagraphTags = generateParagraphTags;

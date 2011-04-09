@@ -35,7 +35,7 @@ public class MacroRequest
     private File basedir;
 
     /** A map of parameters. */
-    private Map parameters;
+    private Map<String, Object> parameters;
 
     /**
      * Constructor.
@@ -43,7 +43,7 @@ public class MacroRequest
      * @param param A map of parameters.
      * @param base The current base directory.
      */
-    public MacroRequest( Map param, File base )
+    public MacroRequest( Map<String, Object> param, File base )
     {
         this.parameters = param;
         this.basedir = base;
@@ -74,7 +74,7 @@ public class MacroRequest
      *
      * @return The map of parameters.
      */
-    public Map getParameters()
+    public Map<String, Object> getParameters()
     {
         return parameters;
     }

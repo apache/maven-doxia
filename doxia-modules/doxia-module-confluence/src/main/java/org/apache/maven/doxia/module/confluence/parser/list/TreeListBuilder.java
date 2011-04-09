@@ -20,9 +20,9 @@ package org.apache.maven.doxia.module.confluence.parser.list;
  */
 
 import java.util.ArrayList;
-import java.util.Iterator;
 import java.util.List;
 
+import org.apache.maven.doxia.module.confluence.parser.Block;
 import org.apache.maven.doxia.module.confluence.parser.ChildBlocksBuilder;
 
 /**
@@ -32,7 +32,7 @@ import org.apache.maven.doxia.module.confluence.parser.ChildBlocksBuilder;
  */
 public class TreeListBuilder
 {
-    private  TreeComponent root;
+    private TreeComponent root;
 
     private TreeComponent current;
 
@@ -56,7 +56,7 @@ public class TreeListBuilder
         else if ( incomingLevel > currentDepth )
         {
             // el actual ahora es el �ltimo que insert�
-            List components = current.getChildren();
+            List<TreeComponent> components = current.getChildren();
 
             if ( components.size() == 0 )
             {
@@ -71,7 +71,7 @@ public class TreeListBuilder
             }
             else
             {
-                current = (TreeComponent) components.get( components.size() - 1 );
+                current = components.get( components.size() - 1 );
             }
         }
         else
@@ -96,9 +96,9 @@ public class TreeListBuilder
 
     private ListBlock getList( TreeComponent treeComponent )
     {
-        List list = getListItems( treeComponent );
+        List<Block> list = getListItems( treeComponent );
 
-        int type = ( (TreeComponent) treeComponent.getChildren().get( 0 ) ).getType();
+        int type = treeComponent.getChildren().get( 0 ).getType();
 
         if ( type == ListBlockParser.BULLETED_LIST )
         {
@@ -108,15 +108,13 @@ public class TreeListBuilder
         return new NumberedListBlock( list );
     }
 
-    private List getListItems( TreeComponent tc )
+    private List<Block> getListItems( TreeComponent tc )
     {
-        List blocks = new ArrayList();
+        List<Block> blocks = new ArrayList<Block>();
 
-        for ( Iterator i = tc.getChildren().iterator(); i.hasNext(); )
+        for ( TreeComponent child : tc.getChildren() )
         {
-            TreeComponent child = (TreeComponent) i.next();
-
-            List childBlocks = new ArrayList();
+            List<Block> childBlocks = new ArrayList<Block>();
 
             if ( child.getFather() != null )
             {

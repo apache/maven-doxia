@@ -24,8 +24,6 @@ import org.codehaus.plexus.util.StringUtils;
 import org.apache.maven.doxia.book.model.BookModel;
 import org.apache.maven.doxia.book.model.Chapter;
 
-import java.util.Iterator;
-
 /**
  * Default implementation of BookValidator.
  *
@@ -63,10 +61,8 @@ public class DefaultBookValidator
         }
         else
         {
-            for ( Iterator it = book.getChapters().iterator(); it.hasNext(); )
+            for ( Chapter chapter : book.getChapters() )
             {
-                Chapter chapter = (Chapter) it.next();
-
                 validateChapter( result, chapter );
 
                 // TODO: Validate the chapter id

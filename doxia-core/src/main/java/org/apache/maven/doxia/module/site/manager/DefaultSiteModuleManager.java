@@ -20,7 +20,6 @@ package org.apache.maven.doxia.module.site.manager;
  */
 
 import java.util.Collection;
-import java.util.Iterator;
 import java.util.LinkedHashMap;
 import java.util.Map;
 
@@ -40,20 +39,19 @@ public class DefaultSiteModuleManager
     /**
      * @plexus.requirement role="org.apache.maven.doxia.module.site.SiteModule"
      */
-    private Map siteModules;
+    private Map<String, SiteModule> siteModules;
 
-    private Collection siteModulesValues;
+    private Collection<SiteModule> siteModulesValues;
 
     /** {@inheritDoc} */
-    public Collection getSiteModules()
+    public Collection<SiteModule> getSiteModules()
     {
         if ( siteModulesValues == null )
         {
-            Map siteModulesTmp = new LinkedHashMap();
-            for ( Iterator it = siteModules.values().iterator(); it.hasNext(); )
+            Map<Class<?>, SiteModule> siteModulesTmp = new LinkedHashMap<Class<?>, SiteModule>();
+            for ( SiteModule module : siteModules.values() )
             {
-                Object obj = it.next();
-                siteModulesTmp.put( obj.getClass(), obj );
+                siteModulesTmp.put( module.getClass(), module );
             }
             siteModulesValues = siteModulesTmp.values();
         }
@@ -65,7 +63,7 @@ public class DefaultSiteModuleManager
     public SiteModule getSiteModule( String id )
         throws SiteModuleNotFoundException
     {
-        SiteModule siteModule = (SiteModule) siteModules.get( id );
+        SiteModule siteModule = siteModules.get( id );
 
         if ( siteModule == null )
         {

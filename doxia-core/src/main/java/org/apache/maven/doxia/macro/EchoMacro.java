@@ -21,7 +21,6 @@ package org.apache.maven.doxia.macro;
 
 import org.apache.maven.doxia.sink.Sink;
 
-import java.util.Iterator;
 import org.apache.maven.doxia.sink.SinkEventAttributeSet;
 
 /**
@@ -40,10 +39,8 @@ public class EchoMacro
 
         sink.text( "echo" + EOL );
 
-        for ( Iterator i = request.getParameters().keySet().iterator(); i.hasNext(); )
+        for ( String key : request.getParameters().keySet() )
         {
-            String key = (String) i.next();
-
             // TODO: DOXIA-242: separate or define internal params
             if ( "parser".equals( key ) || "sourceContent".equals( key ) )
             {

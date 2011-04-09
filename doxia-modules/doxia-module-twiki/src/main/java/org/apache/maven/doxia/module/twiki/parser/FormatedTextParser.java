@@ -40,7 +40,7 @@ public class FormatedTextParser
     /**
      * map used to create blocks dependening on the text format
      */
-    private static final Map FACTORY_MAP = new HashMap();
+    private static final Map<String, FormatBlockFactory> FACTORY_MAP = new HashMap<String, FormatBlockFactory>();
 
     /**
      * creates bold blocks
@@ -122,7 +122,7 @@ public class FormatedTextParser
      */
     final Block[] parse( final String line )
     {
-        return (Block[]) parseFormat( line ).toArray( new Block[] {} );
+        return parseFormat( line ).toArray( new Block[] {} );
     }
 
     /**
@@ -161,9 +161,9 @@ public class FormatedTextParser
      * @param line line to parse
      * @return list of blocks
      */
-    private List parseFormat( final String line )
+    private List<Block> parseFormat( final String line )
     {
-        final List ret = new ArrayList();
+        final List<Block> ret = new ArrayList<Block>();
         final int[] lhOffsets = new int[SPECIAL_CHAR.length];
         final int[] rhOffsets = new int[SPECIAL_CHAR.length];
 
@@ -259,8 +259,8 @@ public class FormatedTextParser
         {
             int len = SPECIAL_CHAR[charType].length();
             ret.addAll( parseFormat( line.substring( 0, minIndex ) ) );
-            ret.add( ( (FormatBlockFactory) FACTORY_MAP.get( SPECIAL_CHAR[charType] ) )
-                     .createBlock( (Block[]) parseFormat( line.substring( minIndex + len, rhOffsets[charType] ) )
+            ret.add( FACTORY_MAP.get( SPECIAL_CHAR[charType] )
+                     .createBlock( parseFormat( line.substring( minIndex + len, rhOffsets[charType] ) )
                                    .toArray( new Block[] {} ) ) );
             ret.addAll( parseFormat( line.substring( rhOffsets[charType] + len ) ) );
         }

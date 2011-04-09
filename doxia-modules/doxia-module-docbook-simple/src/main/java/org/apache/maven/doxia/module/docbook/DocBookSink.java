@@ -23,7 +23,6 @@ import java.io.PrintWriter;
 import java.io.StringWriter;
 import java.io.Writer;
 import java.util.HashMap;
-import java.util.Iterator;
 import java.util.Locale;
 import java.util.Map;
 import java.util.Set;
@@ -154,7 +153,7 @@ public class DocBookSink
 
     /** Map of warn messages with a String as key to describe the error type and a Set as value.
      * Using to reduce warn messages. */
-    private Map warnMessages;
+    private Map<String, Set<String>> warnMessages;
 
     /**
      * Constructor, initialize the Writer.
@@ -1591,7 +1590,7 @@ public class DocBookSink
     /**
      * {@inheritDoc}
      *
-     * Unkown events just log a warning message but are ignored otherwise.
+     * Unknown events just log a warning message but are ignored otherwise.
      * @see org.apache.maven.doxia.sink.Sink#unknown(String,Object[],SinkEventAttributes)
      */
     public void unknown( String name, Object[] requiredParams, SinkEventAttributes attributes )
@@ -1656,16 +1655,10 @@ public class DocBookSink
 
         if ( getLog().isWarnEnabled() && this.warnMessages != null )
         {
-            for ( Iterator it = this.warnMessages.entrySet().iterator(); it.hasNext(); )
+            for ( Map.Entry<String, Set<String>> entry : this.warnMessages.entrySet() )
             {
-                Map.Entry entry = (Map.Entry) it.next();
-
-                Set set = (Set) entry.getValue();
-
-                for ( Iterator it2 = set.iterator(); it2.hasNext(); )
+                for ( String msg : entry.getValue() )
                 {
-                    String msg = (String) it2.next();
-
                     getLog().warn( msg );
                 }
             }
@@ -1711,13 +1704,13 @@ public class DocBookSink
 
         if ( warnMessages == null )
         {
-            warnMessages = new HashMap();
+            warnMessages = new HashMap<String, Set<String>>();
         }
 
-        Set set = (Set) warnMessages.get( key );
+        Set<String> set = warnMessages.get( key );
         if ( set == null )
         {
-            set = new TreeSet();
+            set = new TreeSet<String>();
         }
         set.add( msg );
         warnMessages.put( key, set );

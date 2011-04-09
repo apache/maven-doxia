@@ -24,7 +24,6 @@ import org.apache.maven.doxia.parser.ParseException;
 import org.apache.maven.doxia.sink.Sink;
 
 import java.util.ArrayList;
-import java.util.Iterator;
 import java.util.List;
 import java.util.regex.Matcher;
 import java.util.regex.Pattern;
@@ -366,7 +365,7 @@ class TreeListBuilder
      */
     private ListBlock getList( final TreeComponent tc )
     {
-        ListItemBlock[] li = (ListItemBlock[]) getListItems( tc ).toArray( new ListItemBlock[] {} );
+        ListItemBlock[] li = getListItems( tc ).toArray( new ListItemBlock[] {} );
         return tc.getChildren()[0].getType().createList( li );
     }
 
@@ -374,9 +373,9 @@ class TreeListBuilder
      * @param tc tree
      * @return list Block for this tree
      */
-    private List getListItems( final TreeComponent tc )
+    private List<ListItemBlock> getListItems( final TreeComponent tc )
     {
-        final List blocks = new ArrayList();
+        final List<ListItemBlock> blocks = new ArrayList<ListItemBlock>();
 
         for ( int i = 0; i < tc.getChildren().length; i++ )
         {
@@ -412,7 +411,7 @@ class TreeListBuilder
         /**
          * childrens
          */
-        private List children = new ArrayList();
+        private List<TreeComponent> children = new ArrayList<TreeComponent>();
 
         /**
          * node text
@@ -513,9 +512,8 @@ class TreeListBuilder
                 sb.append( text );
                 sb.append( GenericListBlockParser.EOL );
             }
-            for ( Iterator it = children.iterator(); it.hasNext(); )
+            for ( TreeComponent lc : children )
             {
-                TreeComponent lc = (TreeComponent) it.next();
                 sb.append( lc.toString( indent + "   " ) );
             }
             return sb.toString();

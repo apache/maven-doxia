@@ -114,7 +114,7 @@ public class SinkActionContext
     /** Constant <code>UNDEFINED=82</code> */
     public static final int UNDEFINED = 82;
 
-    private Stack stack = new Stack();
+    private Stack<Integer> stack = new Stack<Integer>();
 
     private int currentAction;
 

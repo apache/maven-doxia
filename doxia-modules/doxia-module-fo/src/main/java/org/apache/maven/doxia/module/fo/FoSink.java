@@ -26,7 +26,6 @@ import java.io.StringWriter;
 import java.io.Writer;
 import java.util.Enumeration;
 import java.util.HashMap;
-import java.util.Iterator;
 import java.util.LinkedList;
 import java.util.Map;
 import java.util.Set;
@@ -69,7 +68,7 @@ public class FoSink
     private final PrintWriter out;
 
     /** Used to get the current position in numbered lists. */
-    private final Stack listStack;
+    private final Stack<NumberedListItem> listStack;
 
     /** Used to get attributes for a given FO element. */
     private final FoConfiguration config;
@@ -94,30 +93,30 @@ public class FoSink
     private final String languageId;
 
     /** Stack of drawing borders on table cells. */
-    private final LinkedList tableGridStack;
+    private final LinkedList<Boolean> tableGridStack;
 
     /** Stack of alignment int[] of table cells. */
-    private final LinkedList cellJustifStack;
+    private final LinkedList<int[]> cellJustifStack;
 
     /** Stack of justification of table cells. */
-    private final LinkedList isCellJustifStack;
+    private final LinkedList<Boolean> isCellJustifStack;
 
     /** Stack of current table cell. */
-    private final LinkedList cellCountStack;
+    private final LinkedList<Integer> cellCountStack;
 
     /** The stack of StringWriter to write the table result temporary, so we could play with the output and fix fo. */
-    private final LinkedList tableContentWriterStack;
+    private final LinkedList<StringWriter> tableContentWriterStack;
 
-    private final LinkedList tableCaptionWriterStack;
+    private final LinkedList<StringWriter> tableCaptionWriterStack;
 
-    private final LinkedList tableCaptionXMLWriterStack;
+    private final LinkedList<PrettyPrintXMLWriter> tableCaptionXMLWriterStack;
 
     /** The stack of table caption */
-    private final LinkedList tableCaptionStack;
+    private final LinkedList<String> tableCaptionStack;
 
     /** Map of warn messages with a String as key to describe the error type and a Set as value.
      * Using to reduce warn messages. */
-    protected Map warnMessages;
+    protected Map<String, Set<String>> warnMessages;
 
     /**
      * Constructor, initialize the Writer.
@@ -164,15 +163,15 @@ public class FoSink
         this.languageId = languageId;
         this.config = new FoConfiguration();
 
-        this.listStack = new Stack();
-        this.tableGridStack = new LinkedList();
-        this.cellJustifStack = new LinkedList();
-        this.isCellJustifStack = new LinkedList();
-        this.cellCountStack = new LinkedList();
-        this.tableContentWriterStack = new LinkedList();
-        this.tableCaptionWriterStack = new LinkedList();
-        this.tableCaptionXMLWriterStack = new LinkedList();
-        this.tableCaptionStack = new LinkedList();
+        this.listStack = new Stack<NumberedListItem>();
+        this.tableGridStack = new LinkedList<Boolean>();
+        this.cellJustifStack = new LinkedList<int[]>();
+        this.isCellJustifStack = new LinkedList<Boolean>();
+        this.cellCountStack = new LinkedList<Integer>();
+        this.tableContentWriterStack = new LinkedList<StringWriter>();
+        this.tableCaptionWriterStack = new LinkedList<StringWriter>();
+        this.tableCaptionXMLWriterStack = new LinkedList<PrettyPrintXMLWriter>();
+        this.tableCaptionStack = new LinkedList<String>();
 
         setNameSpace( "fo" );
     }
@@ -1341,16 +1340,10 @@ public class FoSink
 
         if ( getLog().isWarnEnabled() && this.warnMessages != null )
         {
-            for ( Iterator it = this.warnMessages.entrySet().iterator(); it.hasNext(); )
+            for ( Map.Entry<String, Set<String>> entry : this.warnMessages.entrySet() )
             {
-                Map.Entry entry = (Map.Entry) it.next();
-
-                Set set = (Set) entry.getValue();
-
-                for ( Iterator it2 = set.iterator(); it2.hasNext(); )
+                for ( String msg : entry.getValue() )
                 {
-                    String msg = (String) it2.next();
-
                     getLog().warn( msg );
                 }
             }
@@ -1562,11 +1555,11 @@ public class FoSink
     {
         if ( !this.tableCaptionXMLWriterStack.isEmpty() && this.tableCaptionXMLWriterStack.getLast() != null )
         {
-            ( (PrettyPrintXMLWriter) this.tableCaptionXMLWriterStack.getLast() ).writeText( unifyEOLs( text ) );
+            this.tableCaptionXMLWriterStack.getLast().writeText( unifyEOLs( text ) );
         }
         else if ( !this.tableContentWriterStack.isEmpty() && this.tableContentWriterStack.getLast() != null )
         {
-            ( (StringWriter) this.tableContentWriterStack.getLast() ).write( unifyEOLs( text ) );
+            this.tableContentWriterStack.getLast().write( unifyEOLs( text ) );
         }
         else
         {
@@ -1664,24 +1657,23 @@ public class FoSink
         else
         {
             String tag = ( getNameSpace() != null ? getNameSpace() + ":" : "" ) + t.toString();
-            ( (PrettyPrintXMLWriter) this.tableCaptionXMLWriterStack.getLast() ).startElement( tag );
+            this.tableCaptionXMLWriterStack.getLast().startElement( tag );
 
             if ( att != null )
             {
-                Enumeration names = att.getAttributeNames();
+                Enumeration<?> names = att.getAttributeNames();
                 while ( names.hasMoreElements() )
                 {
                     Object key = names.nextElement();
                     Object value = att.getAttribute( key );
 
-                    ( (PrettyPrintXMLWriter) this.tableCaptionXMLWriterStack.getLast() )
-                            .addAttribute( key.toString(), value.toString() );
+                    this.tableCaptionXMLWriterStack.getLast().addAttribute( key.toString(), value.toString() );
                 }
             }
 
             if ( isSimpleTag )
             {
-                ( (PrettyPrintXMLWriter) this.tableCaptionXMLWriterStack.getLast() ).endElement();
+                this.tableCaptionXMLWriterStack.getLast().endElement();
             }
         }
     }
@@ -1695,7 +1687,7 @@ public class FoSink
         }
         else
         {
-            ( (PrettyPrintXMLWriter) this.tableCaptionXMLWriterStack.getLast() ).endElement();
+            this.tableCaptionXMLWriterStack.getLast().endElement();
         }
     }
 
@@ -1794,13 +1786,13 @@ public class FoSink
 
         if ( warnMessages == null )
         {
-            warnMessages = new HashMap();
+            warnMessages = new HashMap<String, Set<String>>();
         }
 
-        Set set = (Set) warnMessages.get( key );
+        Set<String> set = warnMessages.get( key );
         if ( set == null )
         {
-            set = new TreeSet();
+            set = new TreeSet<String>();
         }
         set.add( msg );
         warnMessages.put( key, set );

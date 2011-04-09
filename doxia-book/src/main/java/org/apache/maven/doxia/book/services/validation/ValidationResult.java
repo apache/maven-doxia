@@ -30,14 +30,11 @@ import java.util.ArrayList;
  */
 public class ValidationResult
 {
-    /** If all is OK. */
-    private boolean allOk;
-
     /** List of errors. */
-    private List errors;
+    private List<String> errors;
 
     /** List of warnings. */
-    private List warnings;
+    private List<String> warnings;
 
     /**
      * Checks if there were any errors or warnings.
@@ -54,11 +51,11 @@ public class ValidationResult
      *
      * @return List. A new ArrayList is constructed if the current List is null.
      */
-    public List getErrors()
+    public List<String> getErrors()
     {
         if ( errors == null )
         {
-            errors = new ArrayList();
+            errors = new ArrayList<String>();
         }
 
         return errors;
@@ -69,11 +66,11 @@ public class ValidationResult
      *
      * @return List. A new ArrayList is constructed if the current List is null.
      */
-    public List getWarnings()
+    public List<String> getWarnings()
     {
         if ( warnings == null )
         {
-            warnings = new ArrayList();
+            warnings = new ArrayList<String>();
         }
 
         return warnings;

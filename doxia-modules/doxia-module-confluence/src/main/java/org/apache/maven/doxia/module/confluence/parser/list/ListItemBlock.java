@@ -20,6 +20,7 @@ package org.apache.maven.doxia.module.confluence.parser.list;
  */
 
 import org.apache.maven.doxia.module.confluence.parser.AbstractFatherBlock;
+import org.apache.maven.doxia.module.confluence.parser.Block;
 import org.apache.maven.doxia.sink.Sink;
 
 import java.util.List;
@@ -30,14 +31,14 @@ import java.util.List;
 class ListItemBlock
     extends AbstractFatherBlock
 {
-    private  ListBlock innerList;
+    private ListBlock innerList;
 
-    ListItemBlock(  List blocks )
+    ListItemBlock( List<Block> blocks )
     {
         this( blocks, null );
     }
 
-    ListItemBlock(  List blocks,  ListBlock innerList )
+    ListItemBlock( List<Block> blocks, ListBlock innerList )
     {
         super( blocks );
 
@@ -45,13 +46,13 @@ class ListItemBlock
     }
 
     /** {@inheritDoc} */
-    public  void before(  Sink sink )
+    public  void before( Sink sink )
     {
         sink.listItem();
     }
 
     /** {@inheritDoc} */
-    public  void after(  Sink sink )
+    public void after( Sink sink )
     {
         if ( innerList != null )
         {

@@ -97,9 +97,9 @@ public class TextParser
      * @param line line to parse
      * @return a list of block that represents the input
      */
-    public final List parse( final String line )
+    public final List<Block> parse( final String line )
     {
-        final List ret = new ArrayList();
+        final List<Block> ret = new ArrayList<Block>();
 
         final Matcher linkMatcher = SPECIFICLINK_PATTERN.matcher( line );
         final Matcher wikiMatcher = WIKIWORD_PATTERN.matcher( line );
@@ -164,7 +164,7 @@ public class TextParser
      * @param ret where the results live
      * @param imageTagMatcher image tag matcher
      */
-    private void parseImage( final String line, final List ret, final Matcher imageTagMatcher )
+    private void parseImage( final String line, final List<Block> ret, final Matcher imageTagMatcher )
     {
         ret.addAll( parse( line.substring( 0, imageTagMatcher.start() ) ) );
         final String src = imageTagMatcher.group( 2 );
@@ -178,7 +178,7 @@ public class TextParser
      * @param ret where the results live
      * @param urlMatcher url matcher
      */
-    private void parseUrl( final String line, final List ret, final Matcher urlMatcher )
+    private void parseUrl( final String line, final List<Block> ret, final Matcher urlMatcher )
     {
         ret.addAll( parse( line.substring( 0, urlMatcher.start() ) ) );
         final String url = urlMatcher.group( 0 );
@@ -200,7 +200,7 @@ public class TextParser
      * @param ret where the results live
      * @param anchorMatcher anchor matcher
      */
-    private void parseAnchor( final String line, final List ret, final Matcher anchorMatcher )
+    private void parseAnchor( final String line, final List<Block> ret, final Matcher anchorMatcher )
     {
         ret.addAll( parse( line.substring( 0, anchorMatcher.start() ) ) );
         ret.add( new AnchorBlock( anchorMatcher.group( 1 ) ) );
@@ -213,7 +213,7 @@ public class TextParser
      * @param ret where the results live
      * @param forcedLinkMatcher forced link matcher
      */
-    private void parseForcedLink( final String line, final List ret, final Matcher forcedLinkMatcher )
+    private void parseForcedLink( final String line, final List<Block> ret, final Matcher forcedLinkMatcher )
     {
         if ( forcedLinkMatcher.group( 1 ) != null )
         {
@@ -286,7 +286,7 @@ public class TextParser
      * @param ret where the results live
      * @param wikiMatcher wiki matcher
      */
-    private void parseWiki( final String line, final List ret, final Matcher wikiMatcher )
+    private void parseWiki( final String line, final List<Block> ret, final Matcher wikiMatcher )
     {
         final String wikiWord = wikiMatcher.group();
         ret.addAll( parse( line.substring( 0, wikiMatcher.start() ) ) );
@@ -307,7 +307,7 @@ public class TextParser
      * @param ret where the results live
      * @param linkMatcher link matcher
      */
-    private void parseLink( final String line, final List ret, final Matcher linkMatcher )
+    private void parseLink( final String line, final List<Block> ret, final Matcher linkMatcher )
     {
         ret.addAll( parse( line.substring( 0, linkMatcher.start() ) ) );
         if ( line.charAt( linkMatcher.start() ) == '!' )
@@ -328,7 +328,7 @@ public class TextParser
      * @param ret where the results live
      * @param xhtmlMatcher xhtml matcher
      */
-    private void parseXHTML( final String line, final List ret, final Matcher xhtmlMatcher )
+    private void parseXHTML( final String line, final List<Block> ret, final Matcher xhtmlMatcher )
     {
         if ( xhtmlMatcher.group( 1 ).indexOf( "noautolink" ) != -1 )
         {

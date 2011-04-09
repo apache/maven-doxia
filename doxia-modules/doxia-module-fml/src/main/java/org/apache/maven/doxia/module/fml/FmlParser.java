@@ -78,7 +78,7 @@ public class FmlParser
 
     /** Map of warn messages with a String as key to describe the error type and a Set as value.
      * Using to reduce warn messages. */
-    private Map warnMessages;
+    private Map<String, Set<String>> warnMessages;
 
     /** The source content of the input reader. Used to pass into macros. */
     private String sourceContent;
@@ -87,7 +87,7 @@ public class FmlParser
     private String macroName;
 
     /** The macro parameters. */
-    private Map macroParameters = new HashMap();
+    private Map<String, Object> macroParameters = new HashMap<String, Object>();
 
     /** {@inheritDoc} */
     public void parse( Reader source, Sink sink )
@@ -460,7 +460,7 @@ public class FmlParser
 
             if ( macroParameters == null )
             {
-                macroParameters = new HashMap();
+                macroParameters = new HashMap<String, Object>();
             }
 
             if ( StringUtils.isEmpty( macroName ) )
@@ -577,10 +577,8 @@ public class FmlParser
         // Write summary
         // ----------------------------------------------------------------------
 
-        for ( Iterator partIterator = faqs.getParts().iterator(); partIterator.hasNext(); )
+        for ( Part part : faqs.getParts() )
         {
-            Part part = (Part) partIterator.next();
-
             if ( StringUtils.isNotEmpty( part.getTitle() ) )
             {
                 sink.paragraph();
@@ -592,9 +590,8 @@ public class FmlParser
 
             sink.numberedList( Sink.NUMBERING_DECIMAL );
 
-            for ( Iterator faqIterator = part.getFaqs().iterator(); faqIterator.hasNext(); )
+            for ( Faq faq : part.getFaqs() )
             {
-                Faq faq = (Faq) faqIterator.next();
                 sink.numberedListItem();
                 sink.link( "#" + faq.getId() );
 
@@ -620,10 +617,8 @@ public class FmlParser
         // Write content
         // ----------------------------------------------------------------------
 
-        for ( Iterator partIterator = faqs.getParts().iterator(); partIterator.hasNext(); )
+        for ( Part part : faqs.getParts() )
         {
-            Part part = (Part) partIterator.next();
-
             if ( StringUtils.isNotEmpty( part.getTitle() ) )
             {
                 sink.section1();
@@ -635,9 +630,9 @@ public class FmlParser
 
             sink.definitionList();
 
-            for ( Iterator faqIterator = part.getFaqs().iterator(); faqIterator.hasNext(); )
+            for ( Iterator<Faq> faqIterator = part.getFaqs().iterator(); faqIterator.hasNext(); )
             {
-                Faq faq = (Faq) faqIterator.next();
+                Faq faq = faqIterator.next();
 
                 sink.definedTerm();
                 sink.anchor( faq.getId() );
@@ -725,13 +720,13 @@ public class FmlParser
 
         if ( warnMessages == null )
         {
-            warnMessages = new HashMap();
+            warnMessages = new HashMap<String, Set<String>>();
         }
 
-        Set set = (Set) warnMessages.get( key );
+        Set<String> set = warnMessages.get( key );
         if ( set == null )
         {
-            set = new TreeSet();
+            set = new TreeSet<String>();
         }
         set.add( msg );
         warnMessages.put( key, set );
@@ -744,15 +739,10 @@ public class FmlParser
     {
         if ( getLog().isWarnEnabled() && this.warnMessages != null && !isSecondParsing() )
         {
-            for ( Iterator it = this.warnMessages.entrySet().iterator(); it.hasNext(); )
+            for ( Map.Entry<String, Set<String>> entry : this.warnMessages.entrySet() )
             {
-                Map.Entry entry = (Map.Entry) it.next();
-
-                Set set = (Set) entry.getValue();
-                for ( Iterator it2 = set.iterator(); it2.hasNext(); )
+                for ( String msg : entry.getValue() )
                 {
-                    String msg = (String) it2.next();
-
                     getLog().warn( msg );
                 }
             }

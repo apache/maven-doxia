@@ -64,7 +64,7 @@ public class XdocParser
     private String macroName;
 
     /** The macro parameters. */
-    private Map macroParameters = new HashMap();
+    private Map<String, Object> macroParameters = new HashMap<String, Object>();
 
     /** Indicates that we're inside &lt;properties&gt; or &lt;head&gt;.*/
     private boolean inHead;
@@ -401,7 +401,7 @@ public class XdocParser
 
             if ( macroParameters == null )
             {
-                macroParameters = new HashMap();
+                macroParameters = new HashMap<String, Object>();
             }
 
             if ( StringUtils.isEmpty( macroName ) )

@@ -109,7 +109,7 @@ public class SinkEventAttributeSet
         JUSTIFY = new SinkEventAttributeSet( new String[] {ALIGN, "justify"} ).unmodifiable();
     }
 
-    private Map attribs;
+    private Map<String, Object> attribs;
 
     private AttributeSet resolveParent;
 
@@ -128,7 +128,7 @@ public class SinkEventAttributeSet
      */
     public SinkEventAttributeSet( int size )
     {
-        attribs = new LinkedHashMap( size );
+        attribs = new LinkedHashMap<String, Object>( size );
     }
 
     /**
@@ -147,7 +147,7 @@ public class SinkEventAttributeSet
             throw new IllegalArgumentException( "Missing attribute!" );
         }
 
-        attribs = new LinkedHashMap( n / 2 );
+        attribs = new LinkedHashMap<String, Object>( n / 2 );
 
         for ( int i = 0; i < n; i = i + 2 )
         {
@@ -163,15 +163,15 @@ public class SinkEventAttributeSet
      */
     public SinkEventAttributeSet( AttributeSet attributes )
     {
-        attribs = new LinkedHashMap( attributes.getAttributeCount() );
+        attribs = new LinkedHashMap<String, Object>( attributes.getAttributeCount() );
 
-        Enumeration names = attributes.getAttributeNames();
+        Enumeration<?> names = attributes.getAttributeNames();
 
         while ( names.hasMoreElements() )
         {
             Object name = names.nextElement();
 
-            attribs.put( name, attributes.getAttribute( name ) );
+            attribs.put( name.toString(), attributes.getAttribute( name ) );
         }
     }
 
@@ -227,7 +227,7 @@ public class SinkEventAttributeSet
     }
 
     /** {@inheritDoc} */
-    public Enumeration getAttributeNames()
+    public Enumeration<String> getAttributeNames()
     {
         return Collections.enumeration( attribs.keySet() );
     }
@@ -261,7 +261,7 @@ public class SinkEventAttributeSet
     {
         boolean result = true;
 
-        Enumeration names = attributes.getAttributeNames();
+        Enumeration<?> names = attributes.getAttributeNames();
 
         while ( result && names.hasMoreElements() )
         {
@@ -290,7 +290,7 @@ public class SinkEventAttributeSet
             return;
         }
 
-        Enumeration names = attributes.getAttributeNames();
+        Enumeration<?> names = attributes.getAttributeNames();
 
         while ( names.hasMoreElements() )
         {
@@ -307,7 +307,7 @@ public class SinkEventAttributeSet
     }
 
     /** {@inheritDoc} */
-    public void removeAttributes( Enumeration names )
+    public void removeAttributes( Enumeration<?> names )
     {
         while ( names.hasMoreElements() )
         {
@@ -328,7 +328,7 @@ public class SinkEventAttributeSet
         }
         else
         {
-            Enumeration names = attributes.getAttributeNames();
+            Enumeration<?> names = attributes.getAttributeNames();
 
             while ( names.hasMoreElements() )
             {
@@ -359,7 +359,7 @@ public class SinkEventAttributeSet
     public Object clone()
     {
         SinkEventAttributeSet attr = new SinkEventAttributeSet( attribs.size() );
-        attr.attribs = new LinkedHashMap( attribs );
+        attr.attribs = new LinkedHashMap<String, Object>( attribs );
 
         if ( resolveParent != null )
         {
@@ -397,11 +397,11 @@ public class SinkEventAttributeSet
     public String toString()
     {
         StringBuffer s = new StringBuffer();
-        Enumeration names = getAttributeNames();
+        Enumeration<String> names = getAttributeNames();
 
         while ( names.hasMoreElements() )
         {
-            String key = names.nextElement().toString();
+            String key = names.nextElement();
             String value = getAttribute( key ).toString();
 
             s.append( ' ' ).append( key ).append( '=' ).append( value );

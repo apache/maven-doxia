@@ -48,7 +48,7 @@ public class RenderingContext
 
     private final String extension;
 
-    private Map/*String, String*/ attributes;
+    private Map<String, String> attributes;
 
     /**
      * <p>Constructor for RenderingContext.</p>
@@ -107,7 +107,7 @@ public class RenderingContext
 
         this.parserId = parserId;
 
-        this.attributes = new HashMap();
+        this.attributes = new HashMap<String, String>();
     }
 
     /**

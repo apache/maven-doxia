@@ -21,7 +21,6 @@ package org.apache.maven.doxia.module.confluence;
 
 import java.io.Reader;
 import java.util.ArrayList;
-import java.util.Iterator;
 import java.util.List;
 
 import org.apache.maven.doxia.module.confluence.parser.Block;
@@ -62,18 +61,18 @@ public class ConfluenceParser
         init();
     }
 
-    private List parse( ByLineSource source )
+    private List<Block> parse( ByLineSource source )
         throws ParseException
     {
         init();
 
-        List blocks = new ArrayList();
+        List<Block> blocks = new ArrayList<Block>();
 
         String line;
 
         while ( ( line = source.getNextLine() ) != null )
         {
-            boolean accepted = false;
+            //boolean accepted = false;
 
             for ( int i = 0; i < parsers.length; i++ )
             {
@@ -86,7 +85,7 @@ public class ConfluenceParser
 
                 if ( parser.accept( line, source ) )
                 {
-                    accepted = true;
+                    //accepted = true;
 
                     blocks.add( parser.visit( line, source ) );
 
@@ -113,7 +112,7 @@ public class ConfluenceParser
 
         try
         {
-            List blocks = parse( src );
+            List<Block> blocks = parse( src );
 
             sink.head();
 
@@ -121,10 +120,8 @@ public class ConfluenceParser
 
             sink.body();
 
-            for ( Iterator i = blocks.iterator(); i.hasNext(); )
+            for ( Block block : blocks )
             {
-                Block block = (Block) i.next();
-
                 block.traverse( sink );
             }
 

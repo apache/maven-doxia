@@ -34,7 +34,6 @@ import org.codehaus.plexus.util.StringUtils;
 
 import java.io.File;
 import java.io.IOException;
-import java.util.Iterator;
 import java.util.List;
 import java.util.Locale;
 
@@ -80,7 +79,7 @@ public class DoxiaRenderBooksMojo
      * @parameter
      * @required
      */
-    private List books;
+    private List<Book> books;
 
     /**
      * Base directory of the project.
@@ -130,10 +129,8 @@ public class DoxiaRenderBooksMojo
     public void execute()
         throws MojoExecutionException, MojoFailureException
     {
-        for ( Iterator it = books.iterator(); it.hasNext(); )
+        for ( Book book : books )
         {
-            Book book = (Book) it.next();
-
             // ----------------------------------------------------------------------
             // Validate
             // ----------------------------------------------------------------------
@@ -162,16 +159,10 @@ public class DoxiaRenderBooksMojo
 
             File descriptor = new File( basedir, book.getDescriptor() );
 
-            String includes = "";
-
+            String includes;
             if ( book.getIncludes() != null )
             {
-                for ( Iterator j = book.getIncludes().iterator(); j.hasNext(); )
-                {
-                    String include = (String) j.next();
-
-                    includes += include + ",";
-                }
+                includes = StringUtils.join( book.getIncludes().iterator(), "," );
             }
             else
             {
@@ -182,12 +173,7 @@ public class DoxiaRenderBooksMojo
 
             if ( book.getExcludes() != null )
             {
-                for ( Iterator j = book.getExcludes().iterator(); j.hasNext(); )
-                {
-                    String exclude = (String) j.next();
-
-                    excludes += exclude + ",";
-                }
+                excludes = StringUtils.join( book.getExcludes().iterator(), "," );
             }
 
             // ----------------------------------------------------------------------
@@ -202,7 +188,7 @@ public class DoxiaRenderBooksMojo
                 getLog().debug( "Excludes: " + excludes );
             }
 
-            List files;
+            List<File> files;
 
             try
             {
@@ -238,20 +224,16 @@ public class DoxiaRenderBooksMojo
             // Render the book in all the formats
             // -----------------------------------------------------------------------
 
-            List localesList = siteTool.getAvailableLocales( locales );
+            List<Locale> localesList = siteTool.getAvailableLocales( locales );
 
             // Default is first in the list
-            Locale defaultLocale = (Locale) localesList.get( 0 );
+            Locale defaultLocale = localesList.get( 0 );
             Locale.setDefault( defaultLocale );
 
-            for ( Iterator iterator = localesList.iterator(); iterator.hasNext(); )
+            for ( Locale locale : localesList )
             {
-                Locale locale = (Locale) iterator.next();
-
-                for ( Iterator j = book.getFormats().iterator(); j.hasNext(); )
+                for ( Format format : book.getFormats() )
                 {
-                    Format format = (Format) j.next();
-
                     File outputDirectory = new File( generatedDocs, format.getId() );
                     File directory = new File( outputDirectory + "/" + locale.toString(), bookModel.getId() );
 
@@ -311,10 +293,8 @@ public class DoxiaRenderBooksMojo
         {
             buffer.append( "Validation errors:" );
 
-            for ( Iterator it = result.getErrors().iterator(); it.hasNext(); )
+            for ( String error : result.getErrors() )
             {
-                String error = (String) it.next();
-
                 buffer.append( LINE_SEPARATOR ).append( " " ).append( error );
             }
         }
@@ -323,10 +303,8 @@ public class DoxiaRenderBooksMojo
         {
             buffer.append( "Validation warnings:" );
 
-            for ( Iterator it = result.getWarnings().iterator(); it.hasNext(); )
+            for ( String error : result.getWarnings() )
             {
-                String error = (String) it.next();
-
                 buffer.append( LINE_SEPARATOR ).append( " " ).append( error );
             }
         }

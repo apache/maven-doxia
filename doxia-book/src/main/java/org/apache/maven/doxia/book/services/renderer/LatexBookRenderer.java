@@ -40,7 +40,6 @@ import java.io.PrintWriter;
 import java.io.FileNotFoundException;
 import java.io.Reader;
 import java.io.Writer;
-import java.util.Iterator;
 import java.util.Map;
 import java.util.HashMap;
 
@@ -130,16 +129,12 @@ public class LatexBookRenderer
         // Process all the section documents and collect their names
         // ----------------------------------------------------------------------
 
-        Map sectionInfos = new HashMap();
+        Map<String, SectionInfo> sectionInfos = new HashMap<String, SectionInfo>();
 
-        for ( Iterator it = book.getChapters().iterator(); it.hasNext(); )
+        for ( Chapter chapter : book.getChapters() )
         {
-            Chapter chapter = (Chapter) it.next();
-
-            for ( Iterator j = chapter.getSections().iterator(); j.hasNext(); )
+            for ( Section section : chapter.getSections() )
             {
-                Section section = (Section) j.next();
-
                 SectionInfo info = writeSection( section, context );
 
                 sectionInfos.put( info.id, info );
@@ -171,17 +166,13 @@ public class LatexBookRenderer
         writer.println( "\\tableofcontents" );
 //        writer.println( "\\listoffigures" );
 
-        for ( Iterator it = book.getChapters().iterator(); it.hasNext(); )
+        for ( Chapter chapter : book.getChapters() )
         {
-            Chapter chapter = (Chapter) it.next();
-
             writer.println( "\\chapter{" + chapter.getTitle() + "}" );
 
-            for ( Iterator j = chapter.getSections().iterator(); j.hasNext(); )
+            for ( Section section : chapter.getSections() )
             {
-                Section section = (Section) j.next();
-
-                SectionInfo info = (SectionInfo) sectionInfos.get( section.getId() );
+                SectionInfo info = sectionInfos.get( section.getId() );
 
                 writer.println( "\\input{" + info.id + "}" );
             }

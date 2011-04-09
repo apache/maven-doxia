@@ -36,7 +36,6 @@ import org.apache.maven.doxia.module.confluence.parser.BoldBlock;
 import org.apache.maven.doxia.parser.ParseException;
 import org.codehaus.plexus.util.StringUtils;
 
-
 /**
  * Parse tables
  *
@@ -65,7 +64,7 @@ public class TableBlockParser
             throw new IllegalAccessError( "call accept before this ;)" );
         }
 
-        List rows = new ArrayList();
+        List<Block> rows = new ArrayList<Block>();
 
         String l = line;
 
@@ -73,7 +72,7 @@ public class TableBlockParser
         {
             l = l.substring( 0, l.lastIndexOf( "|" ) );
 
-            List cells = new ArrayList();
+            List<Block> cells = new ArrayList<Block>();
 
             BlockParser headingParser = new SectionBlockParser();
             BlockParser figureParser = new FigureBlockParser();
@@ -87,12 +86,12 @@ public class TableBlockParser
 
                 for ( int i = 0; i < text.length; i++ )
                 {
-                    List textBlocks = new ArrayList();
+                    List<Block> textBlocks = new ArrayList<Block>();
 
                     textBlocks.add( ( ( ParagraphBlockParser) paragraphParser )
                             .visit(text[i], new ByLineReaderSource( new StringReader( EMPTY_STRING ) ), false ) );
 
-                    List blocks = new ArrayList();
+                    List<Block> blocks = new ArrayList<Block>();
 
                     blocks.add( new BoldBlock( textBlocks ) );
 
@@ -103,7 +102,7 @@ public class TableBlockParser
             {
                 int it = 0;
                 String[] text = StringUtils.split( l, "|" );
-                List texts = new LinkedList();
+                List<String> texts = new LinkedList<String>();
 
 
                 while ( it < text.length )
@@ -124,7 +123,7 @@ public class TableBlockParser
                 Object[] pText = texts.toArray();
                 for ( int i = 0; i < pText.length; i++ )
                 {
-                    List blocks = new ArrayList();
+                    List<Block> blocks = new ArrayList<Block>();
 
                     blocks.add( ( (ParagraphBlockParser) paragraphParser ).visit( (String) pText[i],
                             new ByLineReaderSource( new StringReader( EMPTY_STRING ) ), false ) );

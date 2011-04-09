@@ -20,6 +20,7 @@ package org.apache.maven.doxia.module.confluence.parser.table;
  */
 
 import org.apache.maven.doxia.module.confluence.parser.AbstractFatherBlock;
+import org.apache.maven.doxia.module.confluence.parser.Block;
 import org.apache.maven.doxia.sink.Sink;
 
 import java.util.List;
@@ -30,7 +31,7 @@ import java.util.List;
 class TableBlock
     extends AbstractFatherBlock
 {
-    TableBlock( List childBlocks )
+    TableBlock( List<Block> childBlocks )
     {
         super( childBlocks );
     }

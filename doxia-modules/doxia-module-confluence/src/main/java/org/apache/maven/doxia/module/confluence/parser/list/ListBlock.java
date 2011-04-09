@@ -20,6 +20,7 @@ package org.apache.maven.doxia.module.confluence.parser.list;
  */
 
 import org.apache.maven.doxia.module.confluence.parser.AbstractFatherBlock;
+import org.apache.maven.doxia.module.confluence.parser.Block;
 
 import java.util.List;
 
@@ -30,7 +31,7 @@ import java.util.List;
 abstract class ListBlock
     extends AbstractFatherBlock
 {
-    ListBlock(  List childBlocks )
+    ListBlock( List<Block> childBlocks )
     {
         super( childBlocks );
     }

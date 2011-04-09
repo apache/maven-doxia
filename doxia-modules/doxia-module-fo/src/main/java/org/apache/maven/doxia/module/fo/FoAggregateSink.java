@@ -24,7 +24,6 @@ import java.io.Writer;
 
 import java.util.Calendar;
 import java.util.Date;
-import java.util.Iterator;
 import java.util.LinkedList;
 import java.util.List;
 import java.util.Locale;
@@ -110,7 +109,7 @@ public class FoAggregateSink
     private int tocPosition;
 
     /** Used to get the current position in the TOC. */
-    private final Stack tocStack = new Stack();
+    private final Stack<NumberedListItem> tocStack = new Stack<NumberedListItem>();
 
     /**
      * Constructor.
@@ -302,7 +301,7 @@ public class FoAggregateSink
             DocumentTOCItem tocItem = new DocumentTOCItem();
             tocItem.setName( this.docModel.getToc().getName() );
             tocItem.setRef( "./toc" );
-            List items = new LinkedList();
+            List<DocumentTOCItem> items = new LinkedList<DocumentTOCItem>();
             if ( this.tocPosition == TOC_START )
             {
                 items.add( tocItem );
@@ -879,7 +878,7 @@ public class FoAggregateSink
         writeEndTag( PAGE_SEQUENCE_TAG );
     }
 
-    private void writeTocItems( List tocItems, int level )
+    private void writeTocItems( List<DocumentTOCItem> tocItems, int level )
     {
         final int maxTocLevel = 4;
 
@@ -890,10 +889,8 @@ public class FoAggregateSink
 
         tocStack.push( new NumberedListItem( NUMBERING_DECIMAL ) );
 
-        for ( Iterator k = tocItems.iterator(); k.hasNext(); )
+        for ( DocumentTOCItem tocItem : tocItems )
         {
-            DocumentTOCItem tocItem = (DocumentTOCItem) k.next();
-
             String ref = getIdName( tocItem.getRef() );
 
             writeStartTag( TABLE_ROW_TAG, "keep-with-next", "auto" );
@@ -980,12 +977,10 @@ public class FoAggregateSink
         writeEndTag( BOOKMARK_TREE_TAG );
     }
 
-    private void renderBookmarkItems( List items )
+    private void renderBookmarkItems( List<DocumentTOCItem> items )
     {
-        for ( Iterator k = items.iterator(); k.hasNext(); )
+        for ( DocumentTOCItem tocItem : items )
         {
-            DocumentTOCItem tocItem = (DocumentTOCItem) k.next();
-
             String ref = getIdName( tocItem.getRef() );
 
             writeStartTag( BOOKMARK_TAG, "internal-destination", ref );

@@ -147,13 +147,11 @@ public class XdocBookRenderer
         // Render all the chapter pages
         // -----------------------------------------------------------------------
 
-        Iterator ii = context.getIndex().getChildEntries().iterator();
+        Iterator<IndexEntry> ii = context.getIndex().getChildEntries().iterator();
 
-        for ( Iterator it = book.getChapters().iterator(); it.hasNext(); )
+        for ( Chapter chapter : book.getChapters() )
         {
-            Chapter chapter = (Chapter) it.next();
-
-            renderChapter( chapter, context, (IndexEntry) ii.next() );
+            renderChapter( chapter, context, ii.next() );
         }
     }
 
@@ -198,9 +196,9 @@ public class XdocBookRenderer
             sink.sectionTitle1_();
 
             sink.list();
-            for ( Iterator it = context.getIndex().getChildEntries().iterator(); it.hasNext(); )
+            for ( IndexEntry entry : context.getIndex().getChildEntries() )
             {
-                writeChapterIndexForBookIndex( sink, (IndexEntry) it.next() );
+                writeChapterIndexForBookIndex( sink, entry );
             }
             sink.list_();
 
@@ -232,9 +230,8 @@ public class XdocBookRenderer
         sink.link_();
 
         sink.list();
-        for ( Iterator it = chapterEntry.getChildEntries().iterator(); it.hasNext(); )
+        for ( IndexEntry sectionIndex : chapterEntry.getChildEntries() )
         {
-            IndexEntry sectionIndex = (IndexEntry) it.next();
             writeSectionIndexForBookIndex( sink, sectionIndex );
         }
         sink.list_();
@@ -256,9 +253,8 @@ public class XdocBookRenderer
         sink.link_();
 
         sink.list();
-        for ( Iterator it = sectionIndex.getChildEntries().iterator(); it.hasNext(); )
+        for ( IndexEntry subsectionIndex : sectionIndex.getChildEntries() )
         {
-            IndexEntry subsectionIndex = (IndexEntry) it.next();
             writeSubsectionIndexForBookIndex( sink, sectionIndex, subsectionIndex );
         }
         sink.list_();
@@ -317,13 +313,11 @@ public class XdocBookRenderer
         // Render all section pages
         // -----------------------------------------------------------------------
 
-        Iterator ii = chapterIndex.getChildEntries().iterator();
+        Iterator<IndexEntry> ii = chapterIndex.getChildEntries().iterator();
 
-        for ( Iterator it = chapter.getSections().iterator(); it.hasNext(); )
+        for ( Section section : chapter.getSections() )
         {
-            Section section = (Section) it.next();
-
-            renderSection( context, section, (IndexEntry) ii.next() );
+            renderSection( context, section, ii.next() );
         }
     }
 
@@ -369,9 +363,8 @@ public class XdocBookRenderer
             sink.sectionTitle1_();
 
             sink.list();
-            for ( Iterator it = chapterIndex.getChildEntries().iterator(); it.hasNext(); )
+            for ( IndexEntry sectionIndex : chapterIndex.getChildEntries() )
             {
-                IndexEntry sectionIndex = (IndexEntry) it.next();
                 writeSectionIndexForBookIndex( sink, sectionIndex );
             }
             sink.list_();

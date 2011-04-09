@@ -21,7 +21,6 @@ package org.apache.maven.doxia.index;
 
 import java.util.List;
 import java.util.ArrayList;
-import java.util.Iterator;
 import java.util.Collections;
 
 import org.codehaus.plexus.util.StringUtils;
@@ -44,7 +43,7 @@ public class IndexEntry
     private String title;
 
     /** The child entries. */
-    private List childEntries = new ArrayList();
+    private List<IndexEntry> childEntries = new ArrayList<IndexEntry>();
 
     /** System-dependent EOL. */
     private static final String EOL = System.getProperty( "line.separator" );
@@ -131,7 +130,7 @@ public class IndexEntry
      *
      * @return child entries.
      */
-    public List getChildEntries()
+    public List<IndexEntry> getChildEntries()
     {
         return Collections.unmodifiableList( childEntries );
     }
@@ -141,11 +140,11 @@ public class IndexEntry
      *
      * @param entries the entries.
      */
-    public void setChildEntries( List entries )
+    public void setChildEntries( List<IndexEntry> entries )
     {
         if ( entries == null )
         {
-            childEntries = new ArrayList();
+            childEntries = new ArrayList<IndexEntry>();
         }
 
         this.childEntries = entries;
@@ -167,7 +166,7 @@ public class IndexEntry
             return null;
         }
 
-        List entries = parent.getChildEntries();
+        List<IndexEntry> entries = parent.getChildEntries();
 
         int index = entries.indexOf( this );
 
@@ -176,7 +175,7 @@ public class IndexEntry
             return null;
         }
 
-        return (IndexEntry) entries.get( index + 1 );
+        return entries.get( index + 1 );
     }
 
     /**
@@ -191,7 +190,7 @@ public class IndexEntry
             return null;
         }
 
-        List entries = parent.getChildEntries();
+        List<IndexEntry> entries = parent.getChildEntries();
 
         int index = entries.indexOf( this );
 
@@ -200,7 +199,7 @@ public class IndexEntry
             return null;
         }
 
-        return (IndexEntry) entries.get( index - 1 );
+        return entries.get( index - 1 );
     }
 
     /**
@@ -210,14 +209,14 @@ public class IndexEntry
      */
     public IndexEntry getFirstEntry()
     {
-        List entries = getChildEntries();
+        List<IndexEntry> entries = getChildEntries();
 
         if ( entries.size() == 0 )
         {
             return null;
         }
 
-        return (IndexEntry) entries.get( 0 );
+        return entries.get( 0 );
     }
 
     /**
@@ -227,14 +226,14 @@ public class IndexEntry
      */
     public IndexEntry getLastEntry()
     {
-        List entries = getChildEntries();
+        List<IndexEntry> entries = getChildEntries();
 
         if ( entries.size() == 0 )
         {
             return null;
         }
 
-        return (IndexEntry) entries.get( entries.size() - 1 );
+        return entries.get( entries.size() - 1 );
     }
 
     /**
@@ -244,7 +243,7 @@ public class IndexEntry
      */
     public IndexEntry getRootEntry()
     {
-        List entries = getChildEntries();
+        List<IndexEntry> entries = getChildEntries();
 
         if ( entries.size() == 0 )
         {
@@ -256,7 +255,7 @@ public class IndexEntry
         }
         else
         {
-            return (IndexEntry) entries.get( 0 );
+            return entries.get( 0 );
         }
     }
 
@@ -300,10 +299,8 @@ public class IndexEntry
             indent += " ";
         }
 
-        for ( Iterator it = getChildEntries().iterator(); it.hasNext(); )
+        for ( IndexEntry entry : getChildEntries() )
         {
-            IndexEntry entry = (IndexEntry) it.next();
-
             message.append( indent ).append( entry.toString( depth + 1 ) );
         }
 

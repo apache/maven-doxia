@@ -37,13 +37,13 @@ public class DefaultParserManager
     /**
      * @plexus.requirement role="org.apache.maven.doxia.parser.Parser"
      */
-    private Map parsers;
+    private Map<String, Parser> parsers;
 
     /** {@inheritDoc} */
     public Parser getParser( String id )
         throws ParserNotFoundException
     {
-        Parser parser = (Parser) parsers.get( id );
+        Parser parser = parsers.get( id );
 
         if ( parser == null )
         {

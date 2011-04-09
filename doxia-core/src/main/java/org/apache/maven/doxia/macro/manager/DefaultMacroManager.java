@@ -35,13 +35,13 @@ public class DefaultMacroManager
     implements MacroManager
 {
     /** @plexus.requirement role="org.apache.maven.doxia.macro.Macro" */
-    private Map macros;
+    private Map<String, Macro> macros;
 
     /** {@inheritDoc} */
     public Macro getMacro( String id )
         throws MacroNotFoundException
     {
-        Macro macro = (Macro) macros.get( id );
+        Macro macro = macros.get( id );
 
         if ( macro == null )
         {

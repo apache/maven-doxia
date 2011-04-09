@@ -24,7 +24,6 @@ import java.io.FileNotFoundException;
 import java.io.IOException;
 import java.io.Reader;
 import java.io.Writer;
-import java.util.Iterator;
 
 import org.apache.maven.doxia.Doxia;
 import org.apache.maven.doxia.book.BookDoxiaException;
@@ -126,10 +125,8 @@ public class DocbookBookRenderer
 
             sink.bookHead_();
 
-            for ( Iterator it = book.getChapters().iterator(); it.hasNext(); )
+            for ( Chapter chapter : book.getChapters() )
             {
-                Chapter chapter = (Chapter) it.next();
-
                 sink.chapter();
 
                 if ( StringUtils.isNotEmpty( chapter.getTitle() ) )
@@ -168,10 +165,8 @@ public class DocbookBookRenderer
     private void renderChapter( Chapter chapter, BookContext context, Sink sink )
         throws BookDoxiaException
     {
-        for ( Iterator it = chapter.getSections().iterator(); it.hasNext(); )
+        for ( Section section : chapter.getSections() )
         {
-            Section section = (Section) it.next();
-
             renderSection( section, context, sink );
         }
     }

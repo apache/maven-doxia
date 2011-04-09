@@ -38,7 +38,7 @@ public class BookContext
     private BookModel book;
 
     /** The files. */
-    private Map files;
+    private Map<String, BookContext.BookFile> files;
 
     /** The output directory. */
     private File outputDirectory;
@@ -130,11 +130,11 @@ public class BookContext
      *
      * @return Map. A new HashMap is constructed if the current Map is null.
      */
-    public Map getFiles()
+    public Map<String, BookContext.BookFile> getFiles()
     {
         if ( files == null )
         {
-            files = new HashMap();
+            files = new HashMap<String, BookContext.BookFile>();
         }
 
         return files;
@@ -145,7 +145,7 @@ public class BookContext
      *
      * @param files the Map of files.
      */
-    public void setFiles( Map files )
+    public void setFiles( Map<String, BookContext.BookFile> files )
     {
         this.files = files;
     }

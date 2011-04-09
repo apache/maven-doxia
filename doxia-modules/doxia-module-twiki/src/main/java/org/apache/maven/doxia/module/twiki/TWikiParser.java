@@ -39,7 +39,6 @@ import org.apache.maven.doxia.util.ByLineSource;
 
 import java.io.Reader;
 import java.util.ArrayList;
-import java.util.Iterator;
 import java.util.List;
 
 /**
@@ -102,20 +101,18 @@ public class TWikiParser
      * @return the blocks that represent source.
      * @throws org.apache.maven.doxia.parser.ParseException on error.
      */
-    public final List parse( final ByLineSource source )
+    public final List<Block> parse( final ByLineSource source )
         throws ParseException
     {
-        final List ret = new ArrayList();
+        final List<Block> ret = new ArrayList<Block>();
 
         String line;
         while ( ( line = source.getNextLine() ) != null )
         {
             boolean accepted = false;
 
-            for ( int i = 0; i < parsers.length; i++ )
+            for ( BlockParser parser : parsers )
             {
-                final BlockParser parser = parsers[i];
-
                 if ( parser.accept( line ) )
                 {
                     accepted = true;
@@ -138,7 +135,7 @@ public class TWikiParser
     {
         init();
 
-        List blocks;
+        List<Block> blocks;
         final ByLineSource src = new ByLineReaderSource( source );
 
         try
@@ -163,10 +160,8 @@ public class TWikiParser
 
         sink.head_();
         sink.body();
-        for ( Iterator it = blocks.iterator(); it.hasNext(); )
+        for ( Block block : blocks )
         {
-            final Block block = (Block) it.next();
-
             block.traverse( sink );
         }
         sink.body_();
@@ -187,18 +182,17 @@ public class TWikiParser
      * @return a title for a page
      * @since 1.1
      */
-    public final String getTitle( final List blocks, final ByLineSource source )
+    public final String getTitle( final List<Block> blocks, final ByLineSource source )
     {
         String title = null;
 
-        for ( Iterator it = blocks.iterator(); title == null && it.hasNext(); )
+        for ( Block block : blocks )
         {
-            final Block block = (Block) it.next();
-
             if ( block instanceof SectionBlock )
             {
                 final SectionBlock sectionBlock = (SectionBlock) block;
                 title = sectionBlock.getTitle();
+                break;
             }
         }
 

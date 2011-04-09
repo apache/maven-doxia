@@ -21,7 +21,6 @@ package org.apache.maven.doxia.parser;
 
 import java.io.Reader;
 import java.util.HashMap;
-import java.util.Iterator;
 import java.util.Map;
 import java.util.Set;
 import java.util.TreeSet;
@@ -77,7 +76,7 @@ public class XhtmlBaseParser
 
     /** Map of warn messages with a String as key to describe the error type and a Set as value.
      * Using to reduce warn messages. */
-    private Map warnMessages;
+    private Map<String, Set<String>> warnMessages;
 
     /** {@inheritDoc} */
     public void parse( Reader source, Sink sink )
@@ -965,13 +964,13 @@ public class XhtmlBaseParser
 
         if ( warnMessages == null )
         {
-            warnMessages = new HashMap();
+            warnMessages = new HashMap<String, Set<String>>();
         }
 
-        Set set = (Set) warnMessages.get( key );
+        Set<String> set = warnMessages.get( key );
         if ( set == null )
         {
-            set = new TreeSet();
+            set = new TreeSet<String>();
         }
         set.add( msg );
         warnMessages.put( key, set );
@@ -984,15 +983,10 @@ public class XhtmlBaseParser
     {
         if ( getLog().isWarnEnabled() && this.warnMessages != null && !isSecondParsing() )
         {
-            for ( Iterator it = this.warnMessages.entrySet().iterator(); it.hasNext(); )
+            for ( Map.Entry<String, Set<String>> entry : this.warnMessages.entrySet() )
             {
-                Map.Entry entry = (Map.Entry) it.next();
-
-                Set set = (Set) entry.getValue();
-                for ( Iterator it2 = set.iterator(); it2.hasNext(); )
+                for ( String msg : entry.getValue() )
                 {
-                    String msg = (String) it2.next();
-
                     getLog().warn( msg );
                 }
             }

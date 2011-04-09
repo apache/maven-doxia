@@ -19,7 +19,6 @@ package org.apache.maven.doxia.module.confluence.parser;
  * under the License.
  */
 
-import java.util.Iterator;
 import java.util.List;
 
 import org.apache.maven.doxia.sink.Sink;
@@ -32,7 +31,7 @@ import org.apache.maven.doxia.sink.Sink;
 public abstract class AbstractFatherBlock
     implements Block
 {
-    private  List blocks;
+    private List<Block> blocks;
 
     /**
      * <p>before.</p>
@@ -53,7 +52,7 @@ public abstract class AbstractFatherBlock
      *
      * @param childBlocks the child blocks.
      */
-    public AbstractFatherBlock(  List childBlocks )
+    public AbstractFatherBlock( List<Block> childBlocks )
     {
         if ( childBlocks == null )
         {
@@ -64,14 +63,12 @@ public abstract class AbstractFatherBlock
     }
 
     /** {@inheritDoc} */
-    public  void traverse(  Sink sink )
+    public void traverse(  Sink sink )
     {
         before( sink );
 
-        for ( Iterator i = blocks.iterator(); i.hasNext(); )
+        for ( Block block : blocks )
         {
-            Block block = (Block) i.next();
-
             block.traverse( sink );
         }
 
@@ -83,7 +80,7 @@ public abstract class AbstractFatherBlock
      *
      * @return a {@link java.util.List} object.
      */
-    public  List getBlocks()
+    public List<Block> getBlocks()
     {
         return blocks;
     }

@@ -48,7 +48,7 @@ public class FoConfiguration
     private final XMLConfiguration config;
 
     /** The list of attribute sets. */
-    private List sets;
+    private List<?> sets;
 
     /**
      * Constructor.
@@ -160,8 +160,8 @@ public class FoConfiguration
 
         if ( prop instanceof List )
         {
-            List values = (List) prop;
-            List keys = config.getList( keybase + ".xsl:attribute[@name]" );
+            List<?> values = (List<?>) prop;
+            List<?> keys = config.getList( keybase + ".xsl:attribute[@name]" );
 
             for ( int i = 0; i < values.size(); i++ )
             {

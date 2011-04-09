@@ -36,7 +36,7 @@ public class BoldBlock
      *
      * @param childBlocks the child blocks.
      */
-    public BoldBlock( List childBlocks )
+    public BoldBlock( List<Block> childBlocks )
     {
         super( childBlocks );
     }

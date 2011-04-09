@@ -40,7 +40,7 @@ public interface SiteModuleManager
      *
      * @return The SiteModules.
      */
-    Collection getSiteModules();
+    Collection<SiteModule> getSiteModules();
 
     /**
      * Returns the SiteModule that corresponds to the given id.

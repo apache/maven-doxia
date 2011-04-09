@@ -57,7 +57,7 @@ public interface BookDoxia
      * @see #renderBook(BookModel, String, List, File, Locale, String, String)
      * @see Locale#getDefault()
      */
-    void renderBook( BookModel book, String bookRendererId, List files, File outputDirectory )
+    void renderBook( BookModel book, String bookRendererId, List<File> files, File outputDirectory )
         throws BookDoxiaException;
 
     /**
@@ -73,7 +73,7 @@ public interface BookDoxia
      * @throws org.apache.maven.doxia.book.BookDoxiaException if the model cannot be loaded.
      * @since 1.1
      */
-    void renderBook( BookModel book, String bookRendererId, List files, File outputDirectory, Locale locale,
+    void renderBook( BookModel book, String bookRendererId, List<File> files, File outputDirectory, Locale locale,
                      String inputEncoding, String outputEncoding )
         throws BookDoxiaException;
 }

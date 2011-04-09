@@ -34,7 +34,6 @@ import java.io.IOException;
 import java.io.File;
 import java.io.Reader;
 import java.util.Collection;
-import java.util.Iterator;
 import java.util.Map;
 import java.util.TreeMap;
 import java.util.List;
@@ -84,28 +83,24 @@ public class DefaultBookIo
     }
 
     /** {@inheritDoc} */
-    public void loadFiles( BookContext context, List files )
+    public void loadFiles( BookContext context, List<File> files )
     {
         // ----------------------------------------------------------------------
         // Find all the files, map the file names to ids
         // ----------------------------------------------------------------------
 
-        Collection siteModules = siteModuleManager.getSiteModules();
+        Collection<SiteModule> siteModules = siteModuleManager.getSiteModules();
 
-        for ( Iterator it = siteModules.iterator(); it.hasNext(); )
+        for ( SiteModule siteModule : siteModules )
         {
-            SiteModule siteModule = (SiteModule) it.next();
-
             String extension = siteModule.getExtension();
 
             String sourceDirectory = File.separator + siteModule.getSourceDirectory() + File.separator;
 
             String parserId = siteModule.getParserId();
 
-            for ( Iterator j = files.iterator(); j.hasNext(); )
+            for ( File file : files )
             {
-                File file = (File) j.next();
-
                 String name = file.getName();
 
                 String path = file.getAbsolutePath();
@@ -136,13 +131,11 @@ public class DefaultBookIo
         {
             getLogger().debug( "Dumping document <-> id mapping:" );
 
-            Map map = new TreeMap( context.getFiles() );
+            Map<String, BookContext.BookFile> map = new TreeMap<String, BookContext.BookFile>( context.getFiles() );
 
-            for ( Iterator it = map.entrySet().iterator(); it.hasNext(); )
+            for ( Map.Entry<String, BookContext.BookFile> entry : map.entrySet() )
             {
-                Map.Entry entry = (Map.Entry) it.next();
-
-                BookContext.BookFile file = (BookContext.BookFile) entry.getValue();
+                BookContext.BookFile file = entry.getValue();
 
                 getLogger().debug( " " + entry.getKey() + "=" + file.getFile() + ", parser: " + file.getParserId() );
             }

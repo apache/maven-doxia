@@ -28,7 +28,7 @@ import java.util.List;
  */
 class MonospaceBlock extends AbstractFatherBlock
 {
-    MonospaceBlock( List childBlocks )
+    MonospaceBlock( List<Block> childBlocks )
     {
         super( childBlocks );
     }

@@ -19,6 +19,7 @@ package org.apache.maven.doxia.module.confluence.parser.list;
  * under the License.
  */
 
+import org.apache.maven.doxia.module.confluence.parser.Block;
 import org.apache.maven.doxia.sink.Sink;
 
 import java.util.List;
@@ -30,7 +31,7 @@ import java.util.List;
 class BulletedListBlock
     extends ListBlock
 {
-    BulletedListBlock(  List childBlocks )
+    BulletedListBlock( List<Block> childBlocks )
     {
         super( childBlocks );
     }

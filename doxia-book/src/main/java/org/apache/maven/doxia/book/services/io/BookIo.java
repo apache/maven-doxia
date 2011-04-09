@@ -53,5 +53,5 @@ public interface BookIo
      * @param context the BookContext.
      * @param files a list of files.
      */
-    void loadFiles( BookContext context, List files );
+    void loadFiles( BookContext context, List<File> files );
 }

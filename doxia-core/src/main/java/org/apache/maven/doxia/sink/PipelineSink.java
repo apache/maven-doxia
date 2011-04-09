@@ -25,7 +25,6 @@ import java.lang.reflect.Method;
 import java.lang.reflect.Proxy;
 
 import java.util.List;
-import java.util.Iterator;
 
 /**
  * May be used to invoke the same method on a List of Sinks.
@@ -36,14 +35,14 @@ import java.util.Iterator;
 public class PipelineSink
     implements InvocationHandler
 {
-    private List pipeline;
+    private List<Sink> pipeline;
 
     /**
      * Constructs a PipelineSink for a given List of Sinks.
      *
      * @param pipeline A List of Sinks.
      */
-    public PipelineSink( List pipeline )
+    public PipelineSink( List<Sink> pipeline )
     {
         this.pipeline = pipeline;
     }
@@ -69,10 +68,8 @@ public class PipelineSink
     public Object invoke( Object proxy, Method method, Object[] args )
             throws IllegalAccessException, InvocationTargetException
     {
-        for ( Iterator it = pipeline.iterator(); it.hasNext(); )
+        for ( Sink sink : pipeline )
         {
-            Sink sink = (Sink) it.next();
-
             method.invoke( sink, args );
         }
 
@@ -85,7 +82,7 @@ public class PipelineSink
      * @param pipeline A List of Sinks.
      * @return a {@link org.apache.maven.doxia.sink.Sink} object.
      */
-    public static Sink newInstance( List pipeline )
+    public static Sink newInstance( List<Sink> pipeline )
     {
         return (Sink) Proxy.newProxyInstance( PipelineSink.class.getClassLoader(),
                                               new Class[]{Sink.class},

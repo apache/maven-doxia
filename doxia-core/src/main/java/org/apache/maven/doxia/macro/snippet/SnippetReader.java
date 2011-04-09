@@ -24,7 +24,6 @@ import java.io.IOException;
 import java.io.InputStreamReader;
 import java.net.URL;
 import java.util.ArrayList;
-import java.util.Iterator;
 import java.util.List;
 import java.util.Locale;
 
@@ -63,12 +62,11 @@ public class SnippetReader
     public StringBuffer readSnippet( String snippetId )
         throws IOException
     {
-        List lines = readLines( snippetId );
+        List<String> lines = readLines( snippetId );
         int minIndent = minIndent( lines );
         StringBuffer result = new StringBuffer();
-        for ( Iterator iterator = lines.iterator(); iterator.hasNext(); )
+        for ( String line : lines )
         {
-            String line = (String) iterator.next();
             result.append( line.substring( minIndent ) );
             result.append( EOL );
         }
@@ -81,12 +79,11 @@ public class SnippetReader
      * @param lines A List of lines.
      * @return the minimal indent.
      */
-    int minIndent( List lines )
+    int minIndent( List<String> lines )
     {
         int minIndent = Integer.MAX_VALUE;
-        for ( Iterator iterator = lines.iterator(); iterator.hasNext(); )
+        for ( String line : lines )
         {
-            String line = (String) iterator.next();
             minIndent = Math.min( minIndent, indent( line ) );
         }
         return minIndent;
@@ -119,12 +116,12 @@ public class SnippetReader
      * @return A List of lines.
      * @throws IOException if something goes wrong.
      */
-    private List readLines( String snippetId )
+    private List<String> readLines( String snippetId )
         throws IOException
     {
         // TODO: DOXIA-386, use InputStreamReader(InputStream in, Charset cs)
         BufferedReader reader = new BufferedReader( new InputStreamReader( source.openStream() ) );
-        List lines = new ArrayList();
+        List<String> lines = new ArrayList<String>();
         try
         {
             boolean capture = false;

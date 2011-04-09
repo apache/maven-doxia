@@ -63,7 +63,7 @@ public class TableBlockParser
             throw new IllegalAccessError( "call accept before this ;)" );
         }
 
-        final List rows = new ArrayList();
+        final List<Block> rows = new ArrayList<Block>();
         String l = line;
 
         do
@@ -71,7 +71,7 @@ public class TableBlockParser
             final Matcher m = TABLE_PATTERN.matcher( l );
             if ( m.lookingAt() )
             {
-                final List cells = new ArrayList();
+                final List<Block> cells = new ArrayList<Block>();
 
                 /* for each cell... */
                 for ( int lh = l.indexOf( '|' ) + 1, rh; ( rh = l.indexOf( '|', lh ) ) != -1; lh = rh + 1 )
@@ -95,7 +95,7 @@ public class TableBlockParser
 
         assert rows.size() >= 1;
 
-        return new TableBlock( (Block[]) rows.toArray( new Block[] {} ) );
+        return new TableBlock( rows.toArray( new Block[] {} ) );
     }
 
     /**

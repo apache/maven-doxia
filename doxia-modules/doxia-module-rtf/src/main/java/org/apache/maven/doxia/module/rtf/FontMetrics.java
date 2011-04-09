@@ -69,7 +69,7 @@ class FontMetrics
         }
 
         String className = buf.toString();
-        Class classObject = Class.forName( className );
+        Class<?> classObject = Class.forName( className );
         return (FontMetrics) classObject.newInstance();
     }
 

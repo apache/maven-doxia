@@ -90,7 +90,7 @@ public class ParagraphBlockParser
         throws ParseException
     {
         StringBuffer sb = new StringBuffer();
-        List childs = new ArrayList();
+        List<Block> childs = new ArrayList<Block>();
 
         boolean sawText = false;
 
@@ -173,7 +173,7 @@ public class ParagraphBlockParser
             return NOP;
         }
 
-        return new ParagraphBlock( (Block[]) childs.toArray( new Block[] {} ) );
+        return new ParagraphBlock( childs.toArray( new Block[] {} ) );
     }
 
     /**
