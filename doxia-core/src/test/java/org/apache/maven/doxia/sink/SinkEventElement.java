@@ -79,6 +79,7 @@ public class SinkEventElement
      * {@inheritDoc}
      * @since 1.1.1
      */
+    @Override
     public String toString()
     {
         return ToStringBuilder.reflectionToString( this );

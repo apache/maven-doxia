@@ -38,6 +38,7 @@ public class SinkEventAttributeSetTest extends TestCase
     /**
      * @throws java.lang.Exception if any.
      */
+    @Override
     protected void setUp()
             throws Exception
     {
@@ -145,7 +146,7 @@ public class SinkEventAttributeSetTest extends TestCase
     public void testGetAttributeNames()
     {
         sinkEventAttributeSet.addAttributes( SinkEventAttributeSet.UNDERLINE );
-        Enumeration result = sinkEventAttributeSet.getAttributeNames();
+        Enumeration<String> result = sinkEventAttributeSet.getAttributeNames();
         assertEquals( "decoration", result.nextElement() );
         assertFalse( result.hasMoreElements() );
     }

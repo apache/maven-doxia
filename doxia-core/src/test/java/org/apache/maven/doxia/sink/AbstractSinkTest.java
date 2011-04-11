@@ -46,6 +46,7 @@ public abstract class AbstractSinkTest
      *
      * @throws java.lang.Exception if something goes wrong.
      */
+    @Override
     protected void setUp()
         throws Exception
     {

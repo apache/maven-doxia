@@ -152,9 +152,9 @@ public class DocumentModelTest
 
     private void verifyDocumentCover( DocumentCover cover )
     {
-        List authors = cover.getAuthors();
+        List<DocumentAuthor> authors = cover.getAuthors();
         assertEquals( 1, authors.size() );
-        verifyAuthor( (DocumentAuthor) authors.get( 0 ), 1 );
+        verifyAuthor( authors.get( 0 ), 1 );
 
         assertEquals( "Author", cover.getAuthor() );
         assertEquals( "companyLogo", cover.getCompanyLogo() );
@@ -258,9 +258,9 @@ public class DocumentModelTest
     private void verifyDocumentMeta( DocumentMeta meta )
     {
         assertEquals( "author", meta.getAuthor() );
-        List authors = meta.getAuthors();
+        List<DocumentAuthor> authors = meta.getAuthors();
         assertEquals( 1, authors.size() );
-        verifyAuthor( (DocumentAuthor) authors.get( 0 ), 2 );
+        verifyAuthor( authors.get( 0 ), 2 );
 
         assertTrue( meta.isConfidential() );
         assertEquals( 1L, meta.getCreationDate().getTime() );

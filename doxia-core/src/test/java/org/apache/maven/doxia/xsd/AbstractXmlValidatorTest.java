@@ -57,7 +57,7 @@ public abstract class AbstractXmlValidatorTest
 {
 
     /** Simple cache mechanism to load test documents. */
-    private static final Map CACHE_DOXIA_TEST_DOCUMENTS = new Hashtable();
+    private static final Map<String,String> CACHE_DOXIA_TEST_DOCUMENTS = new Hashtable<String,String>();
 
     /** Maven resource in the doxia-test-docs-XXX.jar */
     private static final String MAVEN_RESOURCE_PATH = "META-INF/maven/org.apache.maven.doxia/doxia-test-docs/";
@@ -78,20 +78,20 @@ public abstract class AbstractXmlValidatorTest
      * @see #getIncludes()
      * @see #getAllTestDocuments()
      */
-    protected Map getTestDocuments()
+    protected Map<String, String> getTestDocuments()
         throws IOException
     {
         if ( getIncludes() == null )
         {
-            return Collections.EMPTY_MAP;
+            return Collections.emptyMap();
         }
 
-        Map testDocs = getAllTestDocuments();
-        Map ret = new Hashtable();
+        Map<String,String> testDocs = getAllTestDocuments();
+        Map<String,String> ret = new Hashtable<String,String>();
         ret.putAll( testDocs );
-        for ( Iterator it = testDocs.keySet().iterator(); it.hasNext(); )
+        for ( Iterator<String> it = testDocs.keySet().iterator(); it.hasNext(); )
         {
-            String key = it.next().toString();
+            String key = it.next();
 
             for ( int i = 0; i < getIncludes().length; i++ )
             {
@@ -130,7 +130,7 @@ public abstract class AbstractXmlValidatorTest
      * </ul>
      * @throws IOException if any
      */
-    protected static Map getAllTestDocuments()
+    protected static Map<String,String> getAllTestDocuments()
         throws IOException
     {
         if ( CACHE_DOXIA_TEST_DOCUMENTS != null && !CACHE_DOXIA_TEST_DOCUMENTS.isEmpty() )
@@ -155,9 +155,9 @@ public abstract class AbstractXmlValidatorTest
             {
             JarURLConnection conn = (JarURLConnection) testJar.openConnection();
             JarFile jarFile = conn.getJarFile();
-            for ( Enumeration e = jarFile.entries(); e.hasMoreElements(); )
+            for ( Enumeration<JarEntry> e = jarFile.entries(); e.hasMoreElements(); )
             {
-                JarEntry entry = (JarEntry) e.nextElement();
+                JarEntry entry = e.nextElement();
 
                 if ( entry.getName().startsWith( "META-INF" ) )
                 {
@@ -186,8 +186,8 @@ public abstract class AbstractXmlValidatorTest
             // IDE projects
             File testDocsDir = FileUtils.toFile( testJar ).getParentFile();
 
-            List files = FileUtils.getFiles( testDocsDir, "**/*.*", FileUtils.getDefaultExcludesAsString(), true );
-            for ( Iterator it = files.iterator(); it.hasNext();)
+            List<File> files = FileUtils.getFiles( testDocsDir, "**/*.*", FileUtils.getDefaultExcludesAsString(), true );
+            for ( Iterator<File> it = files.iterator(); it.hasNext();)
             {
                 File file = new File( it.next().toString() );
 

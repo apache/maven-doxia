@@ -109,6 +109,8 @@ public class HtmlToolsTest
 
     /**
      * Verify the expected results.
+     *
+     * @throws Exception should not happen.
      */
     public void testEncodeURL()
         throws Exception

@@ -49,7 +49,7 @@ public class SnippetMacroTest
             throws MacroExecutionException
     {
         File basedir = new File( getBasedir() );
-        Map macroParameters = new HashMap();
+        Map<String, Object> macroParameters = new HashMap<String, Object>();
         macroParameters.put( "file", "src/test/resources/macro/snippet/testSnippet.txt" );
 
         SinkEventTestingSink sink = new SinkEventTestingSink();
@@ -58,12 +58,12 @@ public class SnippetMacroTest
         SnippetMacro macro = new SnippetMacro();
         macro.execute( sink, request );
 
-        Iterator it = sink.getEventList().iterator();
-        assertEquals( "verbatim", ( (SinkEventElement) it.next() ).getName() );
-        SinkEventElement event = (SinkEventElement) it.next();
+        Iterator<SinkEventElement> it = sink.getEventList().iterator();
+        assertEquals( "verbatim", ( it.next() ).getName() );
+        SinkEventElement event = it.next();
         assertEquals( "text", event.getName() );
         String snippet = (String) event.getArgs()[0];
-        assertEquals( "verbatim_", ( (SinkEventElement) it.next() ).getName() );
+        assertEquals( "verbatim_", ( it.next() ).getName() );
         assertFalse( it.hasNext() );
 
         assertTrue( snippet.indexOf( "preamble" ) != -1 );
@@ -81,11 +81,11 @@ public class SnippetMacroTest
         macro.execute( sink, request );
 
         it = sink.getEventList().iterator();
-        assertEquals( "verbatim", ( (SinkEventElement) it.next() ).getName() );
-        event = (SinkEventElement) it.next();
+        assertEquals( "verbatim", ( it.next() ).getName() );
+        event = it.next();
         assertEquals( "text", event.getName() );
         snippet = (String) event.getArgs()[0];
-        assertEquals( "verbatim_", ( (SinkEventElement) it.next() ).getName() );
+        assertEquals( "verbatim_", ( it.next() ).getName() );
         assertFalse( it.hasNext() );
 
         assertTrue( snippet.indexOf( "preamble" ) == -1 );
@@ -103,7 +103,7 @@ public class SnippetMacroTest
         macro.execute( sink, request );
 
         it = sink.getEventList().iterator();
-        event = (SinkEventElement) it.next();
+        event = it.next();
         assertEquals( "rawText", event.getName() );
         snippet = (String) event.getArgs()[0];
         assertFalse( it.hasNext() );

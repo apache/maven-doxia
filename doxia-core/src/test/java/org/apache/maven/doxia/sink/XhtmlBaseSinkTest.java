@@ -44,6 +44,7 @@ public class XhtmlBaseSinkTest
      *
      * @throws java.lang.Exception if any.
      */
+    @Override
     protected void setUp()
             throws Exception
     {

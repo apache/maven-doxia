@@ -48,7 +48,7 @@ public class SwfMacroTest
             throws MacroExecutionException
     {
 
-        Map macroParameters = new HashMap();
+        Map<String, Object> macroParameters = new HashMap<String, Object>();
         macroParameters.put( "src", "src.swf" );
         macroParameters.put( "id", "Movie" );
         macroParameters.put( "width", "50" );
@@ -88,19 +88,19 @@ public class SwfMacroTest
 
         macro.execute( sink, request );
 
-        Iterator it = sink.getEventList().iterator();
-        SinkEventElement event = (SinkEventElement) it.next();
+        Iterator<SinkEventElement> it = sink.getEventList().iterator();
+        SinkEventElement event = it.next();
 
         assertEquals( "rawText", event.getName() );
         assertFalse( it.hasNext() );
 
-        request = new MacroRequest( new HashMap(), new File( "." ) );
+        request = new MacroRequest( new HashMap<String, Object>(), new File( "." ) );
         sink.reset();
 
         macro.execute( sink, request );
 
         it = sink.getEventList().iterator();
-        event = (SinkEventElement) it.next();
+        event = it.next();
 
         assertEquals( "rawText", event.getName() );
         assertFalse( it.hasNext() );

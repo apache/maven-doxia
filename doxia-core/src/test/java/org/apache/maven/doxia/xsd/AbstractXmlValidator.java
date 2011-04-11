@@ -81,6 +81,7 @@ public abstract class AbstractXmlValidator
         return false;
     }
 
+    @Override
     protected void tearDown()
             throws Exception
     {
@@ -102,20 +103,20 @@ public abstract class AbstractXmlValidator
     {
         final Logger logger = getContainer().getLoggerManager().getLoggerForComponent( Parser.ROLE );
 
-        for ( Iterator it = getTestDocuments().entrySet().iterator(); it.hasNext(); )
+        for ( Iterator<Map.Entry<String, String>> it = getTestDocuments().entrySet().iterator(); it.hasNext(); )
         {
-            Map.Entry entry = (Map.Entry) it.next();
+            Map.Entry<String, String> entry = it.next();
 
             if ( logger.isDebugEnabled() )
             {
                 logger.debug( "Validate '" + entry.getKey() + "'" );
             }
 
-            List errors = parseXML( entry.getValue().toString() );
+            List<ErrorMessage> errors = parseXML( entry.getValue().toString() );
 
-            for ( Iterator it2 = errors.iterator(); it2.hasNext(); )
+            for ( Iterator<ErrorMessage> it2 = errors.iterator(); it2.hasNext(); )
             {
-                ErrorMessage error = (ErrorMessage) it2.next();
+                ErrorMessage error = it2.next();
 
                 if ( isFailErrorMessage( error.getMessage() ) )
                 {
@@ -142,7 +143,7 @@ public abstract class AbstractXmlValidator
      * @return a Map &lt; filePath, fileContent &gt; of files to validate.
      * @throws IOException if any
      */
-    protected abstract Map getTestDocuments()
+    protected abstract Map<String,String> getTestDocuments()
             throws IOException;
 
     /**
@@ -193,7 +194,7 @@ public abstract class AbstractXmlValidator
      * @throws IOException is any
      * @throws SAXException if any
      */
-    private List parseXML( String content )
+    private List<ErrorMessage> parseXML( String content )
         throws IOException, SAXException
     {
         String xmlContent = addNamespaces( content );
@@ -272,6 +273,7 @@ public abstract class AbstractXmlValidator
         }
 
         /** {@inheritDoc} */
+        @Override
         public String toString()
         {
             StringBuffer sb = new StringBuffer( 512 );
@@ -287,6 +289,7 @@ public abstract class AbstractXmlValidator
         }
 
         /** {@inheritDoc} */
+        @Override
         public int hashCode()
         {
             final int prime = 31;
@@ -301,6 +304,7 @@ public abstract class AbstractXmlValidator
         }
 
         /** {@inheritDoc} */
+        @Override
         public boolean equals( Object obj )
         {
             if ( this == obj )
@@ -375,14 +379,15 @@ public abstract class AbstractXmlValidator
     private static class MessagesErrorHandler
         extends DefaultHandler
     {
-        private final List messages;
+        private final List<ErrorMessage> messages;
 
         MessagesErrorHandler()
         {
-            messages = new ArrayList( 8 );
+            messages = new ArrayList<ErrorMessage>( 8 );
         }
 
         /** {@inheritDoc} */
+        @Override
         public void warning( SAXParseException e )
             throws SAXException
         {
@@ -390,6 +395,7 @@ public abstract class AbstractXmlValidator
         }
 
         /** {@inheritDoc} */
+        @Override
         public void error( SAXParseException e )
             throws SAXException
         {
@@ -397,6 +403,7 @@ public abstract class AbstractXmlValidator
         }
 
         /** {@inheritDoc} */
+        @Override
         public void fatalError( SAXParseException e )
             throws SAXException
         {
@@ -412,7 +419,7 @@ public abstract class AbstractXmlValidator
             messages.add( error );
         }
 
-        protected List getMessages()
+        protected List<ErrorMessage> getMessages()
         {
             return Collections.unmodifiableList( messages );
         }

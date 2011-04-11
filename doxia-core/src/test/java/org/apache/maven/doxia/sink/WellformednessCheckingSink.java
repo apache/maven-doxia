@@ -34,9 +34,9 @@ import java.util.Stack;
 public class WellformednessCheckingSink
     extends AbstractSink
 {
-    private final Stack elements = new Stack();
+    private final Stack<String> elements = new Stack<String>();
 
-    private final List errors = new LinkedList();
+    private final List<String> errors = new LinkedList<String>();
 
     /** {@inheritDoc} */
     public void head()
@@ -603,7 +603,7 @@ public class WellformednessCheckingSink
             return null;
         }
 
-        return (String) errors.get( errors.size() - 1 );
+        return errors.get( errors.size() - 1 );
     }
 
     /**
@@ -611,7 +611,7 @@ public class WellformednessCheckingSink
      *
      * @return a list of String of error messages
      */
-    public List getOffenders()
+    public List<String> getOffenders()
     {
         return errors;
     }
@@ -624,7 +624,7 @@ public class WellformednessCheckingSink
      */
     private void checkWellformedness( String actual )
     {
-        String expected = (String) elements.pop();
+        String expected = elements.pop();
 
         if ( !expected.equals( actual ) )
         {

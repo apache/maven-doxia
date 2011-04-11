@@ -34,14 +34,14 @@ public class SinkEventTestingSink
     extends AbstractSink
 {
     /** The list of sink events. */
-    private final List events = new LinkedList();
+    private final List<SinkEventElement> events = new LinkedList<SinkEventElement>();
 
     /**
      * Return the collected list of SinkEventElements.
      *
      * @return the collected list of SinkEventElements.
      */
-    public List getEventList()
+    public List<SinkEventElement> getEventList()
     {
         return this.events;
     }
