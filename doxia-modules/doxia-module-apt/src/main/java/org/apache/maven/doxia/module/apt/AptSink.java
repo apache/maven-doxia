@@ -440,7 +440,7 @@ public class AptSink
     /** {@inheritDoc} */
     public void numberedListItem()
     {
-        String style = (String) listStyles.peek();
+        String style = listStyles.peek();
         if ( style.equals( String.valueOf( STAR ) ) )
         {
             write( EOL + listNestingIndent + String.valueOf( STAR ) + String.valueOf( SPACE ) );

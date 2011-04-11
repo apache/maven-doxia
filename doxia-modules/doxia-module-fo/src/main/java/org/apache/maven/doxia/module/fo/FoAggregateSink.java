@@ -908,7 +908,7 @@ public class FoAggregateSink
             writeStartTag( TABLE_CELL_TAG, "toc.cell" );
             writeStartTag( BLOCK_TAG, "toc.number.style" );
 
-            NumberedListItem current = (NumberedListItem) tocStack.peek();
+            NumberedListItem current = tocStack.peek();
             current.next();
             write( currentTocNumber() );
 
@@ -948,11 +948,11 @@ public class FoAggregateSink
 
     private String currentTocNumber()
     {
-        String ch = ( (NumberedListItem) tocStack.get( 0 ) ).getListItemSymbol();
+        String ch = ( tocStack.get( 0 ) ).getListItemSymbol();
 
         for ( int i = 1; i < tocStack.size(); i++ )
         {
-            ch = ch + "." + ( (NumberedListItem) tocStack.get( i ) ).getListItemSymbol();
+            ch = ch + "." + tocStack.get( i ).getListItemSymbol();
         }
 
         return ch;

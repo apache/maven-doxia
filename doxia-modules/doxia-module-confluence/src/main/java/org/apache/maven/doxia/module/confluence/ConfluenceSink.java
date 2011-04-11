@@ -557,7 +557,7 @@ public class ConfluenceSink
     public void numberedListItem()
     {
         writeEOL( true );
-        String style = (String) listStyles.peek();
+        String style = listStyles.peek();
         write( style + SPACE );
     }
 

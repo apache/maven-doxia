@@ -45,7 +45,7 @@ public class FmlParserTest
 {
     private FmlParser parser;
 
-    /** {@inheritDoc} */
+    @Override
     protected void setUp()
         throws Exception
     {
@@ -57,8 +57,8 @@ public class FmlParserTest
         // Be sure to delete them
         String tmpDir = System.getProperty( "java.io.tmpdir" );
         String excludes = "fml-*.xsd, xml.xsd";
-        List tmpFiles = FileUtils.getFileNames( new File( tmpDir ), excludes, null, true );
-        for ( Iterator it = tmpFiles.iterator(); it.hasNext(); )
+        List<String> tmpFiles = FileUtils.getFileNames( new File( tmpDir ), excludes, null, true );
+        for ( Iterator<String> it = tmpFiles.iterator(); it.hasNext(); )
         {
             File tmpFile = new File( it.next().toString() );
             tmpFile.delete();
@@ -95,57 +95,57 @@ public class FmlParserTest
             IOUtil.close( reader );
         }
 
-        Iterator it = sink.getEventList().iterator();
+        Iterator<SinkEventElement> it = sink.getEventList().iterator();
 
-        assertEquals( "comment", ( (SinkEventElement) it.next() ).getName() );
-        assertEquals( "head", ( (SinkEventElement) it.next() ).getName() );
-        assertEquals( "title", ( (SinkEventElement) it.next() ).getName() );
-        assertEquals( "text", ( (SinkEventElement) it.next() ).getName() );
-        assertEquals( "title_", ( (SinkEventElement) it.next() ).getName() );
-        assertEquals( "head_", ( (SinkEventElement) it.next() ).getName() );
-        assertEquals( "body", ( (SinkEventElement) it.next() ).getName() );
-        assertEquals( "section1", ( (SinkEventElement) it.next() ).getName() );
-        assertEquals( "sectionTitle1", ( (SinkEventElement) it.next() ).getName() );
-        assertEquals( "anchor", ( (SinkEventElement) it.next() ).getName() );
-        assertEquals( "text", ( (SinkEventElement) it.next() ).getName() );
-        assertEquals( "anchor_", ( (SinkEventElement) it.next() ).getName() );
-        assertEquals( "sectionTitle1_", ( (SinkEventElement) it.next() ).getName() );
-        assertEquals( "paragraph", ( (SinkEventElement) it.next() ).getName() );
-        assertEquals( "bold", ( (SinkEventElement) it.next() ).getName() );
-        assertEquals( "text", ( (SinkEventElement) it.next() ).getName() );
-        assertEquals( "bold_", ( (SinkEventElement) it.next() ).getName() );
-        assertEquals( "paragraph_", ( (SinkEventElement) it.next() ).getName() );
-        assertEquals( "numberedList", ( (SinkEventElement) it.next() ).getName() );
-        assertEquals( "numberedListItem", ( (SinkEventElement) it.next() ).getName() );
-        assertEquals( "link", ( (SinkEventElement) it.next() ).getName() );
-        assertEquals( "text", ( (SinkEventElement) it.next() ).getName() );
-        assertEquals( "link_", ( (SinkEventElement) it.next() ).getName() );
-        assertEquals( "numberedListItem_", ( (SinkEventElement) it.next() ).getName() );
-        assertEquals( "numberedList_", ( (SinkEventElement) it.next() ).getName() );
-        assertEquals( "section1_", ( (SinkEventElement) it.next() ).getName() );
-        assertEquals( "section1", ( (SinkEventElement) it.next() ).getName() );
-        assertEquals( "sectionTitle1", ( (SinkEventElement) it.next() ).getName() );
-        assertEquals( "text", ( (SinkEventElement) it.next() ).getName() );
-        assertEquals( "sectionTitle1_", ( (SinkEventElement) it.next() ).getName() );
-        assertEquals( "definitionList", ( (SinkEventElement) it.next() ).getName() );
-        assertEquals( "definedTerm", ( (SinkEventElement) it.next() ).getName() );
-        assertEquals( "anchor", ( (SinkEventElement) it.next() ).getName() );
-        assertEquals( "text", ( (SinkEventElement) it.next() ).getName() );
-        assertEquals( "anchor_", ( (SinkEventElement) it.next() ).getName() );
-        assertEquals( "definedTerm_", ( (SinkEventElement) it.next() ).getName() );
-        assertEquals( "definition", ( (SinkEventElement) it.next() ).getName() );
-        assertEquals( "paragraph", ( (SinkEventElement) it.next() ).getName() );
-        assertEquals( "text", ( (SinkEventElement) it.next() ).getName() );
-        assertEquals( "paragraph_", ( (SinkEventElement) it.next() ).getName() );
-        assertEquals( "paragraph", ( (SinkEventElement) it.next() ).getName() );
-        assertEquals( "link", ( (SinkEventElement) it.next() ).getName() );
-        assertEquals( "text", ( (SinkEventElement) it.next() ).getName() );
-        assertEquals( "link_", ( (SinkEventElement) it.next() ).getName() );
-        assertEquals( "paragraph_", ( (SinkEventElement) it.next() ).getName() );
-        assertEquals( "definition_", ( (SinkEventElement) it.next() ).getName() );
-        assertEquals( "definitionList_", ( (SinkEventElement) it.next() ).getName() );
-        assertEquals( "section1_", ( (SinkEventElement) it.next() ).getName() );
-        assertEquals( "body_", ( (SinkEventElement) it.next() ).getName() );
+        assertEquals( "comment", ( it.next() ).getName() );
+        assertEquals( "head", ( it.next() ).getName() );
+        assertEquals( "title", ( it.next() ).getName() );
+        assertEquals( "text", ( it.next() ).getName() );
+        assertEquals( "title_", ( it.next() ).getName() );
+        assertEquals( "head_", ( it.next() ).getName() );
+        assertEquals( "body", ( it.next() ).getName() );
+        assertEquals( "section1", ( it.next() ).getName() );
+        assertEquals( "sectionTitle1", ( it.next() ).getName() );
+        assertEquals( "anchor", ( it.next() ).getName() );
+        assertEquals( "text", ( it.next() ).getName() );
+        assertEquals( "anchor_", ( it.next() ).getName() );
+        assertEquals( "sectionTitle1_", ( it.next() ).getName() );
+        assertEquals( "paragraph", ( it.next() ).getName() );
+        assertEquals( "bold", ( it.next() ).getName() );
+        assertEquals( "text", ( it.next() ).getName() );
+        assertEquals( "bold_", ( it.next() ).getName() );
+        assertEquals( "paragraph_", ( it.next() ).getName() );
+        assertEquals( "numberedList", ( it.next() ).getName() );
+        assertEquals( "numberedListItem", ( it.next() ).getName() );
+        assertEquals( "link", ( it.next() ).getName() );
+        assertEquals( "text", ( it.next() ).getName() );
+        assertEquals( "link_", ( it.next() ).getName() );
+        assertEquals( "numberedListItem_", ( it.next() ).getName() );
+        assertEquals( "numberedList_", ( it.next() ).getName() );
+        assertEquals( "section1_", ( it.next() ).getName() );
+        assertEquals( "section1", ( it.next() ).getName() );
+        assertEquals( "sectionTitle1", ( it.next() ).getName() );
+        assertEquals( "text", ( it.next() ).getName() );
+        assertEquals( "sectionTitle1_", ( it.next() ).getName() );
+        assertEquals( "definitionList", ( it.next() ).getName() );
+        assertEquals( "definedTerm", ( it.next() ).getName() );
+        assertEquals( "anchor", ( it.next() ).getName() );
+        assertEquals( "text", ( it.next() ).getName() );
+        assertEquals( "anchor_", ( it.next() ).getName() );
+        assertEquals( "definedTerm_", ( it.next() ).getName() );
+        assertEquals( "definition", ( it.next() ).getName() );
+        assertEquals( "paragraph", ( it.next() ).getName() );
+        assertEquals( "text", ( it.next() ).getName() );
+        assertEquals( "paragraph_", ( it.next() ).getName() );
+        assertEquals( "paragraph", ( it.next() ).getName() );
+        assertEquals( "link", ( it.next() ).getName() );
+        assertEquals( "text", ( it.next() ).getName() );
+        assertEquals( "link_", ( it.next() ).getName() );
+        assertEquals( "paragraph_", ( it.next() ).getName() );
+        assertEquals( "definition_", ( it.next() ).getName() );
+        assertEquals( "definitionList_", ( it.next() ).getName() );
+        assertEquals( "section1_", ( it.next() ).getName() );
+        assertEquals( "body_", ( it.next() ).getName() );
         assertFalse( it.hasNext() );
     }
 
@@ -164,87 +164,87 @@ public class FmlParserTest
         parser.setValidate( false );
         parser.parse( text, sink );
 
-        Iterator it = sink.getEventList().iterator();
+        Iterator<SinkEventElement> it = sink.getEventList().iterator();
 
-        assertEquals( "head", ( (SinkEventElement) it.next() ).getName() );
-        assertEquals( "title", ( (SinkEventElement) it.next() ).getName() );
+        assertEquals( "head", ( it.next() ).getName() );
+        assertEquals( "title", ( it.next() ).getName() );
 
         // head title TODO: should be two events
-        assertTextEvent( (SinkEventElement) it.next(), "&&#913;" );
+        assertTextEvent( it.next(), "&&#913;" );
 
-        assertEquals( "title_", ( (SinkEventElement) it.next() ).getName() );
-        assertEquals( "head_", ( (SinkEventElement) it.next() ).getName() );
-        assertEquals( "body", ( (SinkEventElement) it.next() ).getName() );
-        assertEquals( "section1", ( (SinkEventElement) it.next() ).getName() );
-        assertEquals( "sectionTitle1", ( (SinkEventElement) it.next() ).getName() );
-        assertEquals( "anchor", ( (SinkEventElement) it.next() ).getName() );
+        assertEquals( "title_", ( it.next() ).getName() );
+        assertEquals( "head_", ( it.next() ).getName() );
+        assertEquals( "body", ( it.next() ).getName() );
+        assertEquals( "section1", ( it.next() ).getName() );
+        assertEquals( "sectionTitle1", ( it.next() ).getName() );
+        assertEquals( "anchor", ( it.next() ).getName() );
 
         // faq title TODO: should be two events
-        assertTextEvent( (SinkEventElement) it.next(), "&&#913;" );
+        assertTextEvent( it.next(), "&&#913;" );
 
-        assertEquals( "anchor_", ( (SinkEventElement) it.next() ).getName() );
-        assertEquals( "sectionTitle1_", ( (SinkEventElement) it.next() ).getName() );
-        assertEquals( "paragraph", ( (SinkEventElement) it.next() ).getName() );
-        assertEquals( "bold", ( (SinkEventElement) it.next() ).getName() );
+        assertEquals( "anchor_", ( it.next() ).getName() );
+        assertEquals( "sectionTitle1_", ( it.next() ).getName() );
+        assertEquals( "paragraph", ( it.next() ).getName() );
+        assertEquals( "bold", ( it.next() ).getName() );
 
         // part title in TOC
-        assertTextEvent( (SinkEventElement) it.next(), "<" );
-        assertTextEvent( (SinkEventElement) it.next(), "\u0391" );
+        assertTextEvent( it.next(), "<" );
+        assertTextEvent( it.next(), "\u0391" );
 
-        assertEquals( "bold_", ( (SinkEventElement) it.next() ).getName() );
-        assertEquals( "paragraph_", ( (SinkEventElement) it.next() ).getName() );
-        assertEquals( "numberedList", ( (SinkEventElement) it.next() ).getName() );
-        assertEquals( "numberedListItem", ( (SinkEventElement) it.next() ).getName() );
-        assertEquals( "link", ( (SinkEventElement) it.next() ).getName() );
+        assertEquals( "bold_", ( it.next() ).getName() );
+        assertEquals( "paragraph_", ( it.next() ).getName() );
+        assertEquals( "numberedList", ( it.next() ).getName() );
+        assertEquals( "numberedListItem", ( it.next() ).getName() );
+        assertEquals( "link", ( it.next() ).getName() );
 
         // question in TOC
-        assertTextEvent( (SinkEventElement) it.next(), ">" );
-        assertTextEvent( (SinkEventElement) it.next(), "\u0391" );
+        assertTextEvent( it.next(), ">" );
+        assertTextEvent( it.next(), "\u0391" );
 
-        assertEquals( "link_", ( (SinkEventElement) it.next() ).getName() );
-        assertEquals( "numberedListItem_", ( (SinkEventElement) it.next() ).getName() );
-        assertEquals( "numberedList_", ( (SinkEventElement) it.next() ).getName() );
-        assertEquals( "section1_", ( (SinkEventElement) it.next() ).getName() );
-        assertEquals( "section1", ( (SinkEventElement) it.next() ).getName() );
-        assertEquals( "sectionTitle1", ( (SinkEventElement) it.next() ).getName() );
+        assertEquals( "link_", ( it.next() ).getName() );
+        assertEquals( "numberedListItem_", ( it.next() ).getName() );
+        assertEquals( "numberedList_", ( it.next() ).getName() );
+        assertEquals( "section1_", ( it.next() ).getName() );
+        assertEquals( "section1", ( it.next() ).getName() );
+        assertEquals( "sectionTitle1", ( it.next() ).getName() );
 
         // part title
-        assertTextEvent( (SinkEventElement) it.next(), "<" );
-        assertTextEvent( (SinkEventElement) it.next(), "\u0391" );
+        assertTextEvent( it.next(), "<" );
+        assertTextEvent( it.next(), "\u0391" );
 
-        assertEquals( "sectionTitle1_", ( (SinkEventElement) it.next() ).getName() );
-        assertEquals( "definitionList", ( (SinkEventElement) it.next() ).getName() );
-        assertEquals( "definedTerm", ( (SinkEventElement) it.next() ).getName() );
-        assertEquals( "anchor", ( (SinkEventElement) it.next() ).getName() );
+        assertEquals( "sectionTitle1_", ( it.next() ).getName() );
+        assertEquals( "definitionList", ( it.next() ).getName() );
+        assertEquals( "definedTerm", ( it.next() ).getName() );
+        assertEquals( "anchor", ( it.next() ).getName() );
 
         // question
-        assertTextEvent( (SinkEventElement) it.next(), ">" );
-        assertTextEvent( (SinkEventElement) it.next(), "\u0391" );
+        assertTextEvent( it.next(), ">" );
+        assertTextEvent( it.next(), "\u0391" );
 
-        assertEquals( "anchor_", ( (SinkEventElement) it.next() ).getName() );
-        assertEquals( "definedTerm_", ( (SinkEventElement) it.next() ).getName() );
-        assertEquals( "definition", ( (SinkEventElement) it.next() ).getName() );
-        assertEquals( "paragraph", ( (SinkEventElement) it.next() ).getName() );
+        assertEquals( "anchor_", ( it.next() ).getName() );
+        assertEquals( "definedTerm_", ( it.next() ).getName() );
+        assertEquals( "definition", ( it.next() ).getName() );
+        assertEquals( "paragraph", ( it.next() ).getName() );
 
         // answer
-        assertEquals( "monospaced", ( (SinkEventElement) it.next() ).getName() );
-        assertTextEvent( (SinkEventElement) it.next(), "<" );
-        assertTextEvent( (SinkEventElement) it.next(), "img" );
-        assertTextEvent( (SinkEventElement) it.next(), ">" );
-        assertEquals( "monospaced_", ( (SinkEventElement) it.next() ).getName() );
-        assertTextEvent( (SinkEventElement) it.next(), "\"" );
-        assertTextEvent( (SinkEventElement) it.next(), "\u0391" );
+        assertEquals( "monospaced", ( it.next() ).getName() );
+        assertTextEvent( it.next(), "<" );
+        assertTextEvent( it.next(), "img" );
+        assertTextEvent( it.next(), ">" );
+        assertEquals( "monospaced_", ( it.next() ).getName() );
+        assertTextEvent( it.next(), "\"" );
+        assertTextEvent( it.next(), "\u0391" );
 
-        assertEquals( "paragraph_", ( (SinkEventElement) it.next() ).getName() );
-        assertEquals( "paragraph", ( (SinkEventElement) it.next() ).getName() );
-        assertEquals( "link", ( (SinkEventElement) it.next() ).getName() );
-        assertEquals( "text", ( (SinkEventElement) it.next() ).getName() );
-        assertEquals( "link_", ( (SinkEventElement) it.next() ).getName() );
-        assertEquals( "paragraph_", ( (SinkEventElement) it.next() ).getName() );
-        assertEquals( "definition_", ( (SinkEventElement) it.next() ).getName() );
-        assertEquals( "definitionList_", ( (SinkEventElement) it.next() ).getName() );
-        assertEquals( "section1_", ( (SinkEventElement) it.next() ).getName() );
-        assertEquals( "body_", ( (SinkEventElement) it.next() ).getName() );
+        assertEquals( "paragraph_", ( it.next() ).getName() );
+        assertEquals( "paragraph", ( it.next() ).getName() );
+        assertEquals( "link", ( it.next() ).getName() );
+        assertEquals( "text", ( it.next() ).getName() );
+        assertEquals( "link_", ( it.next() ).getName() );
+        assertEquals( "paragraph_", ( it.next() ).getName() );
+        assertEquals( "definition_", ( it.next() ).getName() );
+        assertEquals( "definitionList_", ( it.next() ).getName() );
+        assertEquals( "section1_", ( it.next() ).getName() );
+        assertEquals( "body_", ( it.next() ).getName() );
 
         assertFalse( it.hasNext() );
     }

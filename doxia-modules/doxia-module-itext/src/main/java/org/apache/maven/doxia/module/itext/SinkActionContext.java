@@ -132,7 +132,7 @@ public class SinkActionContext
         }
         else
         {
-            return ( (Integer) stack.peek() ).intValue();
+            return stack.peek().intValue();
         }
     }
 

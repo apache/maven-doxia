@@ -41,20 +41,6 @@ public class FmlValidatorTest
     private static final File FML_XSD = new File( getBasedir(), "/src/main/resources/fml-1.0.1.xsd" );
 
     /** {@inheritDoc} */
-    protected void setUp()
-        throws Exception
-    {
-        super.setUp();
-    }
-
-    /** {@inheritDoc} */
-    protected void tearDown()
-        throws Exception
-    {
-        super.tearDown();
-    }
-
-    /** {@inheritDoc} */
     protected String[] getIncludes()
     {
         return new String[] { "**/*.fml" };

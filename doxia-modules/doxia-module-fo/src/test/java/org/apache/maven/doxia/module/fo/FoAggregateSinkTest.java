@@ -37,11 +37,7 @@ public class FoAggregateSinkTest
 
     private Writer writer;
 
-    /**
-     * Set up the writer.
-     *
-     * @throws java.lang.Exception if any.
-     */
+    @Override
     protected void setUp()
         throws Exception
     {

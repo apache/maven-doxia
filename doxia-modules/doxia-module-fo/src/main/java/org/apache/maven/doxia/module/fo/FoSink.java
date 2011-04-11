@@ -634,7 +634,7 @@ public class FoSink
     /** {@inheritDoc} */
     public void numberedListItem( SinkEventAttributes attributes )
     {
-        NumberedListItem current = (NumberedListItem) this.listStack.peek();
+        NumberedListItem current = this.listStack.peek();
         current.next();
 
         writeStartTag( LIST_ITEM_TAG, "list.item" );
@@ -1083,7 +1083,7 @@ public class FoSink
             justif = attributes.getAttribute( Attribute.ALIGN.toString() ).toString();
         }
 
-        int[] cellJustif = (int[]) this.cellJustifStack.getLast();
+        int[] cellJustif = this.cellJustifStack.getLast();
         if ( justif == null && cellJustif != null && cellJustif.length > 0
             && this.isCellJustifStack.getLast().equals( Boolean.TRUE ) )
         {

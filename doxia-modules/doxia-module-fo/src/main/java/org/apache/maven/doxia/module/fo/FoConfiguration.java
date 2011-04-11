@@ -158,7 +158,7 @@ public class FoConfiguration
 
         Object prop = config.getProperty( keybase + ".xsl:attribute" );
 
-        if ( prop instanceof List )
+        if ( prop instanceof List<?> )
         {
             List<?> values = (List<?>) prop;
             List<?> keys = config.getList( keybase + ".xsl:attribute[@name]" );

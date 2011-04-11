@@ -46,7 +46,7 @@ public class AptParserTest
 
     private AptParser parser;
 
-    /** {@inheritDoc} */
+    @Override
     protected void setUp()
         throws Exception
     {
@@ -131,32 +131,32 @@ public class AptParserTest
             IOUtil.close( reader );
         }
 
-        Iterator it = sink.getEventList().iterator();
+        Iterator<SinkEventElement> it = sink.getEventList().iterator();
 
-        assertEquals( "head", ( (SinkEventElement) it.next() ).getName() );
-        assertEquals( "head_", ( (SinkEventElement) it.next() ).getName() );
-        assertEquals( "body", ( (SinkEventElement) it.next() ).getName() );
-        assertEquals( "list", ( (SinkEventElement) it.next() ).getName() );
-        assertEquals( "listItem", ( (SinkEventElement) it.next() ).getName() );
-        assertEquals( "text", ( (SinkEventElement) it.next() ).getName() );
-        assertEquals( "verbatim", ( (SinkEventElement) it.next() ).getName() );
-        assertEquals( "text", ( (SinkEventElement) it.next() ).getName() );
-        assertEquals( "verbatim_", ( (SinkEventElement) it.next() ).getName() );
-        assertEquals( "paragraph", ( (SinkEventElement) it.next() ).getName() );
-        assertEquals( "text", ( (SinkEventElement) it.next() ).getName() );
-        assertEquals( "paragraph_", ( (SinkEventElement) it.next() ).getName() );
-        assertEquals( "listItem_", ( (SinkEventElement) it.next() ).getName() );
-        assertEquals( "listItem", ( (SinkEventElement) it.next() ).getName() );
-        assertEquals( "text", ( (SinkEventElement) it.next() ).getName() );
-        assertEquals( "verbatim", ( (SinkEventElement) it.next() ).getName() );
-        assertEquals( "text", ( (SinkEventElement) it.next() ).getName() );
-        assertEquals( "verbatim_", ( (SinkEventElement) it.next() ).getName() );
-        assertEquals( "paragraph", ( (SinkEventElement) it.next() ).getName() );
-        assertEquals( "text", ( (SinkEventElement) it.next() ).getName() );
-        assertEquals( "paragraph_", ( (SinkEventElement) it.next() ).getName() );
-        assertEquals( "listItem_", ( (SinkEventElement) it.next() ).getName() );
-        assertEquals( "list_", ( (SinkEventElement) it.next() ).getName() );
-        assertEquals( "body_", ( (SinkEventElement) it.next() ).getName() );
+        assertEquals( "head", ( it.next() ).getName() );
+        assertEquals( "head_", ( it.next() ).getName() );
+        assertEquals( "body", ( it.next() ).getName() );
+        assertEquals( "list", ( it.next() ).getName() );
+        assertEquals( "listItem", ( it.next() ).getName() );
+        assertEquals( "text", ( it.next() ).getName() );
+        assertEquals( "verbatim", ( it.next() ).getName() );
+        assertEquals( "text", ( it.next() ).getName() );
+        assertEquals( "verbatim_", ( it.next() ).getName() );
+        assertEquals( "paragraph", ( it.next() ).getName() );
+        assertEquals( "text", ( it.next() ).getName() );
+        assertEquals( "paragraph_", ( it.next() ).getName() );
+        assertEquals( "listItem_", ( it.next() ).getName() );
+        assertEquals( "listItem", ( it.next() ).getName() );
+        assertEquals( "text", ( it.next() ).getName() );
+        assertEquals( "verbatim", ( it.next() ).getName() );
+        assertEquals( "text", ( it.next() ).getName() );
+        assertEquals( "verbatim_", ( it.next() ).getName() );
+        assertEquals( "paragraph", ( it.next() ).getName() );
+        assertEquals( "text", ( it.next() ).getName() );
+        assertEquals( "paragraph_", ( it.next() ).getName() );
+        assertEquals( "listItem_", ( it.next() ).getName() );
+        assertEquals( "list_", ( it.next() ).getName() );
+        assertEquals( "body_", ( it.next() ).getName() );
 
         assertFalse( it.hasNext() );
     }
@@ -211,28 +211,28 @@ public class AptParserTest
 
         parser.parse( text, sink );
 
-        Iterator it = sink.getEventList().iterator();
+        Iterator<SinkEventElement> it = sink.getEventList().iterator();
 
-        assertEquals( "head", ( (SinkEventElement) it.next() ).getName() );
-        assertEquals( "head_", ( (SinkEventElement) it.next() ).getName() );
-        assertEquals( "body", ( (SinkEventElement) it.next() ).getName() );
+        assertEquals( "head", ( it.next() ).getName() );
+        assertEquals( "head_", ( it.next() ).getName() );
+        assertEquals( "body", ( it.next() ).getName() );
 
-        SinkEventElement element = (SinkEventElement) it.next();
+        SinkEventElement element = it.next();
         assertEquals( "verbatim", element.getName() );
         Object[] args = element.getArgs();
         assertEquals( SinkEventAttributeSet.BOXED, args[0] );
 
-        assertEquals( "text", ( (SinkEventElement) it.next() ).getName() );
-        assertEquals( "verbatim_", ( (SinkEventElement) it.next() ).getName() );
+        assertEquals( "text", ( it.next() ).getName() );
+        assertEquals( "verbatim_", ( it.next() ).getName() );
 
-        element = (SinkEventElement) it.next();
+        element = it.next();
         assertEquals( "verbatim", element.getName() );
         args = element.getArgs();
         assertNull( args[0] );
 
-        assertEquals( "text", ( (SinkEventElement) it.next() ).getName() );
-        assertEquals( "verbatim_", ( (SinkEventElement) it.next() ).getName() );
-        assertEquals( "body_", ( (SinkEventElement) it.next() ).getName() );
+        assertEquals( "text", ( it.next() ).getName() );
+        assertEquals( "verbatim_", ( it.next() ).getName() );
+        assertEquals( "body_", ( it.next() ).getName() );
 
         assertFalse( it.hasNext() );
     }
@@ -256,81 +256,81 @@ public class AptParserTest
 
         parser.parse( text, sink );
 
-        Iterator it = sink.getEventList().iterator();
+        Iterator<SinkEventElement> it = sink.getEventList().iterator();
 
-        assertEquals( "head", ( (SinkEventElement) it.next() ).getName() );
-        assertEquals( "head_", ( (SinkEventElement) it.next() ).getName() );
-        assertEquals( "body", ( (SinkEventElement) it.next() ).getName() );
+        assertEquals( "head", ( it.next() ).getName() );
+        assertEquals( "head_", ( it.next() ).getName() );
+        assertEquals( "body", ( it.next() ).getName() );
 
-        assertEquals( "table", ( (SinkEventElement) it.next() ).getName() );
-        assertEquals( "tableRows", ( (SinkEventElement) it.next() ).getName() );
+        assertEquals( "table", ( it.next() ).getName() );
+        assertEquals( "tableRows", ( it.next() ).getName() );
 
-        assertEquals( "tableRow", ( (SinkEventElement) it.next() ).getName() );
-        assertEquals( "tableCell", ( (SinkEventElement) it.next() ).getName() );
-        SinkEventElement element = (SinkEventElement) it.next();
+        assertEquals( "tableRow", ( it.next() ).getName() );
+        assertEquals( "tableCell", ( it.next() ).getName() );
+        SinkEventElement element = it.next();
         assertEquals( "text", element.getName() );
         assertNotNull( element.getArgs()[0] );
         assertEquals( "cell 1, 1", element.getArgs()[0] );
-        assertEquals( "tableCell_", ( (SinkEventElement) it.next() ).getName() );
-        assertEquals( "tableCell", ( (SinkEventElement) it.next() ).getName() );
-        element = (SinkEventElement) it.next();
+        assertEquals( "tableCell_", ( it.next() ).getName() );
+        assertEquals( "tableCell", ( it.next() ).getName() );
+        element = it.next();
         assertEquals( "text", element.getName() );
         assertNotNull( element.getArgs()[0] );
         assertEquals( "cell 1,2", element.getArgs()[0] );
-        assertEquals( "tableCell_", ( (SinkEventElement) it.next() ).getName() );
-        assertEquals( "tableCell", ( (SinkEventElement) it.next() ).getName() );
-        element = (SinkEventElement) it.next();
+        assertEquals( "tableCell_", ( it.next() ).getName() );
+        assertEquals( "tableCell", ( it.next() ).getName() );
+        element = it.next();
         assertEquals( "text", element.getName() );
         assertNotNull( element.getArgs()[0] );
         assertEquals( "cell 1,3", element.getArgs()[0] );
-        assertEquals( "tableCell_", ( (SinkEventElement) it.next() ).getName() );
-        assertEquals( "tableRow_", ( (SinkEventElement) it.next() ).getName() );
+        assertEquals( "tableCell_", ( it.next() ).getName() );
+        assertEquals( "tableRow_", ( it.next() ).getName() );
 
-        assertEquals( "tableRow", ( (SinkEventElement) it.next() ).getName() );
-        assertEquals( "tableCell", ( (SinkEventElement) it.next() ).getName() );
-        element = (SinkEventElement) it.next();
+        assertEquals( "tableRow", ( it.next() ).getName() );
+        assertEquals( "tableCell", ( it.next() ).getName() );
+        element = it.next();
         assertEquals( "text", element.getName() );
         assertNotNull( element.getArgs()[0] );
         assertEquals( "cell 2,1", element.getArgs()[0] );
-        assertEquals( "tableCell_", ( (SinkEventElement) it.next() ).getName() );
-        assertEquals( "tableCell", ( (SinkEventElement) it.next() ).getName() );
-        element = (SinkEventElement) it.next();
+        assertEquals( "tableCell_", ( it.next() ).getName() );
+        assertEquals( "tableCell", ( it.next() ).getName() );
+        element = it.next();
         assertEquals( "text", element.getName() );
         assertNotNull( element.getArgs()[0] );
         assertEquals( "cell 2, 2", element.getArgs()[0] );
-        assertEquals( "tableCell_", ( (SinkEventElement) it.next() ).getName() );
-        assertEquals( "tableCell", ( (SinkEventElement) it.next() ).getName() );
-        element = (SinkEventElement) it.next();
+        assertEquals( "tableCell_", ( it.next() ).getName() );
+        assertEquals( "tableCell", ( it.next() ).getName() );
+        element = it.next();
         assertEquals( "text", element.getName() );
         assertNotNull( element.getArgs()[0] );
         assertEquals( "cell 2,3", element.getArgs()[0] );
-        assertEquals( "tableCell_", ( (SinkEventElement) it.next() ).getName() );
-        assertEquals( "tableRow_", ( (SinkEventElement) it.next() ).getName() );
+        assertEquals( "tableCell_", ( it.next() ).getName() );
+        assertEquals( "tableRow_", ( it.next() ).getName() );
 
-        assertEquals( "tableRow", ( (SinkEventElement) it.next() ).getName() );
-        assertEquals( "tableCell", ( (SinkEventElement) it.next() ).getName() );
-        element = (SinkEventElement) it.next();
+        assertEquals( "tableRow", ( it.next() ).getName() );
+        assertEquals( "tableCell", ( it.next() ).getName() );
+        element = it.next();
         assertEquals( "text", element.getName() );
         assertNotNull( element.getArgs()[0] );
         assertEquals( "cell 3,1", element.getArgs()[0] );
-        assertEquals( "tableCell_", ( (SinkEventElement) it.next() ).getName() );
-        assertEquals( "tableCell", ( (SinkEventElement) it.next() ).getName() );
-        element = (SinkEventElement) it.next();
+        assertEquals( "tableCell_", ( it.next() ).getName() );
+        assertEquals( "tableCell", ( it.next() ).getName() );
+        element = it.next();
         assertEquals( "text", element.getName() );
         assertNotNull( element.getArgs()[0] );
         assertEquals( "cell 3,2", element.getArgs()[0] );
-        assertEquals( "tableCell_", ( (SinkEventElement) it.next() ).getName() );
-        assertEquals( "tableCell", ( (SinkEventElement) it.next() ).getName() );
-        element = (SinkEventElement) it.next();
+        assertEquals( "tableCell_", ( it.next() ).getName() );
+        assertEquals( "tableCell", ( it.next() ).getName() );
+        element = it.next();
         assertEquals( "text", element.getName() );
         assertNotNull( element.getArgs()[0] );
         assertEquals( "cell 3, 3", element.getArgs()[0] );
-        assertEquals( "tableCell_", ( (SinkEventElement) it.next() ).getName() );
-        assertEquals( "tableRow_", ( (SinkEventElement) it.next() ).getName() );
+        assertEquals( "tableCell_", ( it.next() ).getName() );
+        assertEquals( "tableRow_", ( it.next() ).getName() );
 
-        assertEquals( "tableRows_", ( (SinkEventElement) it.next() ).getName() );
-        assertEquals( "table_", ( (SinkEventElement) it.next() ).getName() );
-        assertEquals( "body_", ( (SinkEventElement) it.next() ).getName() );
+        assertEquals( "tableRows_", ( it.next() ).getName() );
+        assertEquals( "table_", ( it.next() ).getName() );
+        assertEquals( "body_", ( it.next() ).getName() );
 
         assertFalse( it.hasNext() );
     }
@@ -354,96 +354,96 @@ public class AptParserTest
 
         parser.parse( text, sink );
 
-        Iterator it = sink.getEventList().iterator();
+        Iterator<SinkEventElement> it = sink.getEventList().iterator();
 
-        assertEquals( "head", ( (SinkEventElement) it.next() ).getName() );
-        assertEquals( "head_", ( (SinkEventElement) it.next() ).getName() );
-        assertEquals( "body", ( (SinkEventElement) it.next() ).getName() );
+        assertEquals( "head", ( it.next() ).getName() );
+        assertEquals( "head_", ( it.next() ).getName() );
+        assertEquals( "body", ( it.next() ).getName() );
 
-        assertEquals( "table", ( (SinkEventElement) it.next() ).getName() );
-        assertEquals( "tableRows", ( (SinkEventElement) it.next() ).getName() );
+        assertEquals( "table", ( it.next() ).getName() );
+        assertEquals( "tableRows", ( it.next() ).getName() );
 
-        assertEquals( "tableRow", ( (SinkEventElement) it.next() ).getName() );
-        assertEquals( "tableCell", ( (SinkEventElement) it.next() ).getName() );
-        SinkEventElement element = (SinkEventElement) it.next();
+        assertEquals( "tableRow", ( it.next() ).getName() );
+        assertEquals( "tableCell", ( it.next() ).getName() );
+        SinkEventElement element = it.next();
         assertEquals( "text", element.getName() );
         assertNotNull( element.getArgs()[0] );
         assertEquals( "cell 1,\u00A0", element.getArgs()[0] );
-        assertEquals( "lineBreak", ( (SinkEventElement) it.next() ).getName() );
-        element = (SinkEventElement) it.next();
+        assertEquals( "lineBreak", ( it.next() ).getName() );
+        element = it.next();
         assertEquals( "text", element.getName() );
         assertNotNull( element.getArgs()[0] );
         assertEquals( "1", element.getArgs()[0] );
-        assertEquals( "tableCell_", ( (SinkEventElement) it.next() ).getName() );
-        assertEquals( "tableCell", ( (SinkEventElement) it.next() ).getName() );
-        element = (SinkEventElement) it.next();
+        assertEquals( "tableCell_", ( it.next() ).getName() );
+        assertEquals( "tableCell", ( it.next() ).getName() );
+        element = it.next();
         assertEquals( "text", element.getName() );
         assertNotNull( element.getArgs()[0] );
         assertEquals( "cell 1,2", element.getArgs()[0] );
-        assertEquals( "tableCell_", ( (SinkEventElement) it.next() ).getName() );
-        assertEquals( "tableCell", ( (SinkEventElement) it.next() ).getName() );
-        element = (SinkEventElement) it.next();
+        assertEquals( "tableCell_", ( it.next() ).getName() );
+        assertEquals( "tableCell", ( it.next() ).getName() );
+        element = it.next();
         assertEquals( "text", element.getName() );
         assertNotNull( element.getArgs()[0] );
         assertEquals( "cell 1,3", element.getArgs()[0] );
-        assertEquals( "tableCell_", ( (SinkEventElement) it.next() ).getName() );
-        assertEquals( "tableRow_", ( (SinkEventElement) it.next() ).getName() );
+        assertEquals( "tableCell_", ( it.next() ).getName() );
+        assertEquals( "tableRow_", ( it.next() ).getName() );
 
-        assertEquals( "tableRow", ( (SinkEventElement) it.next() ).getName() );
-        assertEquals( "tableCell", ( (SinkEventElement) it.next() ).getName() );
-        element = (SinkEventElement) it.next();
+        assertEquals( "tableRow", ( it.next() ).getName() );
+        assertEquals( "tableCell", ( it.next() ).getName() );
+        element = it.next();
         assertEquals( "text", element.getName() );
         assertNotNull( element.getArgs()[0] );
         assertEquals( "cell 2,1", element.getArgs()[0] );
-        assertEquals( "tableCell_", ( (SinkEventElement) it.next() ).getName() );
-        assertEquals( "tableCell", ( (SinkEventElement) it.next() ).getName() );
-        element = (SinkEventElement) it.next();
+        assertEquals( "tableCell_", ( it.next() ).getName() );
+        assertEquals( "tableCell", ( it.next() ).getName() );
+        element = it.next();
         assertEquals( "text", element.getName() );
         assertNotNull( element.getArgs()[0] );
         assertEquals( "cell 2,\u00A0", element.getArgs()[0] );
-        assertEquals( "lineBreak", ( (SinkEventElement) it.next() ).getName() );
-        element = (SinkEventElement) it.next();
+        assertEquals( "lineBreak", ( it.next() ).getName() );
+        element = it.next();
         assertEquals( "text", element.getName() );
         assertNotNull( element.getArgs()[0] );
         assertEquals( "2", element.getArgs()[0] );
-        assertEquals( "tableCell_", ( (SinkEventElement) it.next() ).getName() );
-        assertEquals( "tableCell", ( (SinkEventElement) it.next() ).getName() );
-        element = (SinkEventElement) it.next();
+        assertEquals( "tableCell_", ( it.next() ).getName() );
+        assertEquals( "tableCell", ( it.next() ).getName() );
+        element = it.next();
         assertEquals( "text", element.getName() );
         assertNotNull( element.getArgs()[0] );
         assertEquals( "cell 2,3", element.getArgs()[0] );
-        assertEquals( "tableCell_", ( (SinkEventElement) it.next() ).getName() );
-        assertEquals( "tableRow_", ( (SinkEventElement) it.next() ).getName() );
+        assertEquals( "tableCell_", ( it.next() ).getName() );
+        assertEquals( "tableRow_", ( it.next() ).getName() );
 
-        assertEquals( "tableRow", ( (SinkEventElement) it.next() ).getName() );
-        assertEquals( "tableCell", ( (SinkEventElement) it.next() ).getName() );
-        element = (SinkEventElement) it.next();
+        assertEquals( "tableRow", ( it.next() ).getName() );
+        assertEquals( "tableCell", ( it.next() ).getName() );
+        element = it.next();
         assertEquals( "text", element.getName() );
         assertNotNull( element.getArgs()[0] );
         assertEquals( "cell 3,1", element.getArgs()[0] );
-        assertEquals( "tableCell_", ( (SinkEventElement) it.next() ).getName() );
-        assertEquals( "tableCell", ( (SinkEventElement) it.next() ).getName() );
-        element = (SinkEventElement) it.next();
+        assertEquals( "tableCell_", ( it.next() ).getName() );
+        assertEquals( "tableCell", ( it.next() ).getName() );
+        element = it.next();
         assertEquals( "text", element.getName() );
         assertNotNull( element.getArgs()[0] );
         assertEquals( "cell 3,2", element.getArgs()[0] );
-        assertEquals( "tableCell_", ( (SinkEventElement) it.next() ).getName() );
-        assertEquals( "tableCell", ( (SinkEventElement) it.next() ).getName() );
-        element = (SinkEventElement) it.next();
+        assertEquals( "tableCell_", ( it.next() ).getName() );
+        assertEquals( "tableCell", ( it.next() ).getName() );
+        element = it.next();
         assertEquals( "text", element.getName() );
         assertNotNull( element.getArgs()[0] );
         assertEquals( "cell 3,\u00A0", element.getArgs()[0] );
-        assertEquals( "lineBreak", ( (SinkEventElement) it.next() ).getName() );
-        element = (SinkEventElement) it.next();
+        assertEquals( "lineBreak", ( it.next() ).getName() );
+        element = it.next();
         assertEquals( "text", element.getName() );
         assertNotNull( element.getArgs()[0] );
         assertEquals( "3", element.getArgs()[0] );
-        assertEquals( "tableCell_", ( (SinkEventElement) it.next() ).getName() );
-        assertEquals( "tableRow_", ( (SinkEventElement) it.next() ).getName() );
+        assertEquals( "tableCell_", ( it.next() ).getName() );
+        assertEquals( "tableRow_", ( it.next() ).getName() );
 
-        assertEquals( "tableRows_", ( (SinkEventElement) it.next() ).getName() );
-        assertEquals( "table_", ( (SinkEventElement) it.next() ).getName() );
-        assertEquals( "body_", ( (SinkEventElement) it.next() ).getName() );
+        assertEquals( "tableRows_", ( it.next() ).getName() );
+        assertEquals( "table_", ( it.next() ).getName() );
+        assertEquals( "body_", ( it.next() ).getName() );
 
         assertFalse( it.hasNext() );
     }
@@ -463,78 +463,78 @@ public class AptParserTest
 
         parser.parse( text, sink );
 
-        Iterator it = sink.getEventList().iterator();
+        Iterator<SinkEventElement> it = sink.getEventList().iterator();
 
-        assertEquals( "head", ( (SinkEventElement) it.next() ).getName() );
-        assertEquals( "head_", ( (SinkEventElement) it.next() ).getName() );
-        assertEquals( "body", ( (SinkEventElement) it.next() ).getName() );
+        assertEquals( "head", ( it.next() ).getName() );
+        assertEquals( "head_", ( it.next() ).getName() );
+        assertEquals( "body", ( it.next() ).getName() );
 
-        assertEquals( "table", ( (SinkEventElement) it.next() ).getName() );
-        assertEquals( "tableRows", ( (SinkEventElement) it.next() ).getName() );
+        assertEquals( "table", ( it.next() ).getName() );
+        assertEquals( "tableRows", ( it.next() ).getName() );
 
-        assertEquals( "tableRow", ( (SinkEventElement) it.next() ).getName() );
-        SinkEventElement event = (SinkEventElement) it.next();
+        assertEquals( "tableRow", ( it.next() ).getName() );
+        SinkEventElement event = it.next();
         assertEquals( "tableCell", event.getName() );
         SinkEventAttributeSet atts = (SinkEventAttributeSet) event.getArgs()[0];
         assertEquals( "center", atts.getAttribute( SinkEventAttributeSet.ALIGN ) );
-        event = (SinkEventElement) it.next();
+        event = it.next();
         assertEquals( "text", event.getName() );
         assertNotNull( event.getArgs()[0] );
         assertEquals( "Centered", event.getArgs()[0] );
-        assertEquals( "tableCell_", ( (SinkEventElement) it.next() ).getName() );
-        event = (SinkEventElement) it.next();
+        assertEquals( "tableCell_", ( it.next() ).getName() );
+        event = it.next();
         assertEquals( "tableCell", event.getName() );
         atts = (SinkEventAttributeSet) event.getArgs()[0];
         assertEquals( "center", atts.getAttribute( SinkEventAttributeSet.ALIGN ) );
-        event = (SinkEventElement) it.next();
+        event = it.next();
         assertEquals( "text", event.getName() );
         assertNotNull( event.getArgs()[0] );
         assertEquals( "Centered", event.getArgs()[0] );
-        assertEquals( "tableCell_", ( (SinkEventElement) it.next() ).getName() );
-        event = (SinkEventElement) it.next();
+        assertEquals( "tableCell_", ( it.next() ).getName() );
+        event = it.next();
         assertEquals( "tableCell", event.getName() );
         atts = (SinkEventAttributeSet) event.getArgs()[0];
         assertEquals( "center", atts.getAttribute( SinkEventAttributeSet.ALIGN ) );
-        event = (SinkEventElement) it.next();
+        event = it.next();
         assertEquals( "text", event.getName() );
         assertNotNull( event.getArgs()[0] );
         assertEquals( "Centered", event.getArgs()[0] );
-        assertEquals( "tableCell_", ( (SinkEventElement) it.next() ).getName() );
-        assertEquals( "tableRow_", ( (SinkEventElement) it.next() ).getName() );
+        assertEquals( "tableCell_", ( it.next() ).getName() );
+        assertEquals( "tableRow_", ( it.next() ).getName() );
 
-        assertEquals( "tableRow", ( (SinkEventElement) it.next() ).getName() );
-        event = (SinkEventElement) it.next();
+        assertEquals( "tableRow", ( it.next() ).getName() );
+        event = it.next();
         assertEquals( "tableCell", event.getName() );
         atts = (SinkEventAttributeSet) event.getArgs()[0];
         assertEquals( "center", atts.getAttribute( SinkEventAttributeSet.ALIGN ) );
-        event = (SinkEventElement) it.next();
+        event = it.next();
         assertEquals( "text", event.getName() );
         assertNotNull( event.getArgs()[0] );
         assertEquals( "Centered", event.getArgs()[0] );
-        assertEquals( "tableCell_", ( (SinkEventElement) it.next() ).getName() );
-        event = (SinkEventElement) it.next();
+        assertEquals( "tableCell_", ( it.next() ).getName() );
+        event = it.next();
         assertEquals( "tableCell", event.getName() );
         atts = (SinkEventAttributeSet) event.getArgs()[0];
         assertEquals( "left", atts.getAttribute( SinkEventAttributeSet.ALIGN ) );
-        event = (SinkEventElement) it.next();
+        event = it.next();
         assertEquals( "text", event.getName() );
         assertNotNull( event.getArgs()[0] );
         assertEquals( "Left-aligned", event.getArgs()[0] );
-        assertEquals( "tableCell_", ( (SinkEventElement) it.next() ).getName() );
-        event = (SinkEventElement) it.next();
+        assertEquals( "tableCell_", ( it.next() ).getName() );
+        event = it.next();
         assertEquals( "tableCell", event.getName() );
         atts = (SinkEventAttributeSet) event.getArgs()[0];
         assertEquals( "right", atts.getAttribute( SinkEventAttributeSet.ALIGN ) );
-        event = (SinkEventElement) it.next();
+        event = it.next();
         assertEquals( "text", event.getName() );
         assertNotNull( event.getArgs()[0] );
         assertEquals( "Right-aligned", event.getArgs()[0] );
-        assertEquals( "tableCell_", ( (SinkEventElement) it.next() ).getName() );
-        assertEquals( "tableRow_", ( (SinkEventElement) it.next() ).getName() );
+        assertEquals( "tableCell_", ( it.next() ).getName() );
+        assertEquals( "tableRow_", ( it.next() ).getName() );
 
-        assertEquals( "tableRows_", ( (SinkEventElement) it.next() ).getName() );
-        assertEquals( "table_", ( (SinkEventElement) it.next() ).getName() );
-        assertEquals( "body_", ( (SinkEventElement) it.next() ).getName() );
+        assertEquals( "tableRows_", ( it.next() ).getName() );
+        assertEquals( "table_", ( it.next() ).getName() );
+        assertEquals( "body_", ( it.next() ).getName() );
 
         assertFalse( it.hasNext() );
     }
@@ -554,30 +554,30 @@ public class AptParserTest
         SinkEventTestingSink sink = new SinkEventTestingSink();
         parser.parse( text, sink );
 
-        Iterator it = sink.getEventList().iterator();
+        Iterator<SinkEventElement> it = sink.getEventList().iterator();
 
-        assertEquals( "head", ( (SinkEventElement) it.next() ).getName() );
-        assertEquals( "head_", ( (SinkEventElement) it.next() ).getName() );
-        assertEquals( "body", ( (SinkEventElement) it.next() ).getName() );
+        assertEquals( "head", ( it.next() ).getName() );
+        assertEquals( "head_", ( it.next() ).getName() );
+        assertEquals( "body", ( it.next() ).getName() );
 
-        assertEquals( "paragraph", ( (SinkEventElement) it.next() ).getName() );
-        SinkEventElement event = (SinkEventElement) it.next();
+        assertEquals( "paragraph", ( it.next() ).getName() );
+        SinkEventElement event = it.next();
         assertEquals( "text", event.getName() );
         assertEquals( "~ = - + * [ ] < > { } \\", event.getArgs()[0] );
-        assertEquals( "paragraph_", ( (SinkEventElement) it.next() ).getName() );
+        assertEquals( "paragraph_", ( it.next() ).getName() );
 
-        assertEquals( "table", ( (SinkEventElement) it.next() ).getName() );
-        assertEquals( "tableRows", ( (SinkEventElement) it.next() ).getName() );
-        assertEquals( "tableRow", ( (SinkEventElement) it.next() ).getName() );
-        assertEquals( "tableCell", ( (SinkEventElement) it.next() ).getName() );
+        assertEquals( "table", ( it.next() ).getName() );
+        assertEquals( "tableRows", ( it.next() ).getName() );
+        assertEquals( "tableRow", ( it.next() ).getName() );
+        assertEquals( "tableCell", ( it.next() ).getName() );
 
-        event = (SinkEventElement) it.next();
+        event = it.next();
         assertEquals( "text", event.getName() );
         assertEquals( "~ = - + * [ ] < > { } \\", event.getArgs()[0] );
-        assertEquals( "tableCell_", ( (SinkEventElement) it.next() ).getName() );
-        assertEquals( "tableCell", ( (SinkEventElement) it.next() ).getName() );
-        assertEquals( "text", ( (SinkEventElement) it.next() ).getName() );
-        assertEquals( "tableCell_", ( (SinkEventElement) it.next() ).getName() );
+        assertEquals( "tableCell_", ( it.next() ).getName() );
+        assertEquals( "tableCell", ( it.next() ).getName() );
+        assertEquals( "text", ( it.next() ).getName() );
+        assertEquals( "tableCell_", ( it.next() ).getName() );
     }
 
     /** @throws Exception  */
@@ -592,41 +592,41 @@ public class AptParserTest
 
         parser.parse( text, sink );
 
-        Iterator it = sink.getEventList().iterator();
+        Iterator<SinkEventElement> it = sink.getEventList().iterator();
 
-        assertEquals( "head", ( (SinkEventElement) it.next() ).getName() );
-        assertEquals( "head_", ( (SinkEventElement) it.next() ).getName() );
-        assertEquals( "body", ( (SinkEventElement) it.next() ).getName() );
-        assertEquals( "paragraph", ( (SinkEventElement) it.next() ).getName() );
+        assertEquals( "head", ( it.next() ).getName() );
+        assertEquals( "head_", ( it.next() ).getName() );
+        assertEquals( "body", ( it.next() ).getName() );
+        assertEquals( "paragraph", ( it.next() ).getName() );
 
-        SinkEventElement event = (SinkEventElement) it.next();
+        SinkEventElement event = it.next();
         assertEquals( "anchor", event.getName() );
         assertEquals( "Anchor_with_spaces_and_brackets", event.getArgs()[0] );
-        event = (SinkEventElement) it.next();
+        event = it.next();
         assertEquals( "text", event.getName() );
         assertEquals( "Anchor with spaces (and brackets)", event.getArgs()[0] );
-        assertEquals( "anchor_", ( (SinkEventElement) it.next() ).getName() );
+        assertEquals( "anchor_", ( it.next() ).getName() );
 
-        assertEquals( "text", ( (SinkEventElement) it.next() ).getName() );
-        event = (SinkEventElement) it.next();
+        assertEquals( "text", ( it.next() ).getName() );
+        event = it.next();
         assertEquals( "link", event.getName() );
         assertEquals( "#Anchor_with_spaces_and_brackets", event.getArgs()[0] );
-        event = (SinkEventElement) it.next();
+        event = it.next();
         assertEquals( "text", event.getName() );
         assertEquals( "Anchor with spaces (and brackets)", event.getArgs()[0] );
-        assertEquals( "link_", ( (SinkEventElement) it.next() ).getName() );
+        assertEquals( "link_", ( it.next() ).getName() );
 
-        assertEquals( "text", ( (SinkEventElement) it.next() ).getName() );
-        event = (SinkEventElement) it.next();
+        assertEquals( "text", ( it.next() ).getName() );
+        event = it.next();
         assertEquals( "link", event.getName() );
         assertEquals( "http://fake.api#method(with, args)", event.getArgs()[0] );
-        event = (SinkEventElement) it.next();
+        event = it.next();
         assertEquals( "text", event.getName() );
         assertEquals( "method(with, args)", event.getArgs()[0] );
-        assertEquals( "link_", ( (SinkEventElement) it.next() ).getName() );
+        assertEquals( "link_", ( it.next() ).getName() );
 
-        assertEquals( "paragraph_", ( (SinkEventElement) it.next() ).getName() );
-        assertEquals( "body_", ( (SinkEventElement) it.next() ).getName() );
+        assertEquals( "paragraph_", ( it.next() ).getName() );
+        assertEquals( "body_", ( it.next() ).getName() );
 
         assertFalse( it.hasNext() );
     }
@@ -643,27 +643,27 @@ public class AptParserTest
 
         parser.parse( text, sink );
 
-        Iterator it = sink.getEventList().iterator();
+        Iterator<SinkEventElement> it = sink.getEventList().iterator();
 
-        assertEquals( "head", ( (SinkEventElement) it.next() ).getName() );
-        assertEquals( "head_", ( (SinkEventElement) it.next() ).getName() );
-        assertEquals( "body", ( (SinkEventElement) it.next() ).getName() );
+        assertEquals( "head", ( it.next() ).getName() );
+        assertEquals( "head_", ( it.next() ).getName() );
+        assertEquals( "body", ( it.next() ).getName() );
 
-        assertEquals( "section1", ( (SinkEventElement) it.next() ).getName() );
-        assertEquals( "sectionTitle1", ( (SinkEventElement) it.next() ).getName() );
-        assertEquals( "text", ( (SinkEventElement) it.next() ).getName() );
-        assertEquals( "sectionTitle1_", ( (SinkEventElement) it.next() ).getName() );
-        assertEquals( "section1_", ( (SinkEventElement) it.next() ).getName() );
+        assertEquals( "section1", ( it.next() ).getName() );
+        assertEquals( "sectionTitle1", ( it.next() ).getName() );
+        assertEquals( "text", ( it.next() ).getName() );
+        assertEquals( "sectionTitle1_", ( it.next() ).getName() );
+        assertEquals( "section1_", ( it.next() ).getName() );
 
-        assertEquals( "section1", ( (SinkEventElement) it.next() ).getName() );
-        assertEquals( "sectionTitle1", ( (SinkEventElement) it.next() ).getName() );
-        assertEquals( "anchor", ( (SinkEventElement) it.next() ).getName() );
-        assertEquals( "text", ( (SinkEventElement) it.next() ).getName() );
-        assertEquals( "anchor_", ( (SinkEventElement) it.next() ).getName() );
-        assertEquals( "sectionTitle1_", ( (SinkEventElement) it.next() ).getName() );
-        assertEquals( "section1_", ( (SinkEventElement) it.next() ).getName() );
+        assertEquals( "section1", ( it.next() ).getName() );
+        assertEquals( "sectionTitle1", ( it.next() ).getName() );
+        assertEquals( "anchor", ( it.next() ).getName() );
+        assertEquals( "text", ( it.next() ).getName() );
+        assertEquals( "anchor_", ( it.next() ).getName() );
+        assertEquals( "sectionTitle1_", ( it.next() ).getName() );
+        assertEquals( "section1_", ( it.next() ).getName() );
 
-        assertEquals( "body_", ( (SinkEventElement) it.next() ).getName() );
+        assertEquals( "body_", ( it.next() ).getName() );
 
         assertFalse( it.hasNext() );
     }

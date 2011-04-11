@@ -41,20 +41,6 @@ public class XdocValidatorTest
     private static final File XDOC_XSD = new File( getBasedir(), "/src/main/resources/xdoc-2.0.xsd" );
 
     /** {@inheritDoc} */
-    protected void setUp()
-        throws Exception
-    {
-        super.setUp();
-    }
-
-    /** {@inheritDoc} */
-    protected void tearDown()
-        throws Exception
-    {
-        super.tearDown();
-    }
-
-    /** {@inheritDoc} */
     protected String[] getIncludes()
     {
         return new String[] { "**/*.xml", "**/xdoc/*" };
@@ -84,6 +70,7 @@ public class XdocValidatorTest
         return content;
     }
 
+    @Override
     public void testValidateFiles()
         throws Exception
     {
