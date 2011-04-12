@@ -112,7 +112,7 @@ public abstract class AbstractXmlValidatorTest
      *
      * @return an EntityResolver. Not null.
      *
-     * @since 1.1.5
+     * @since 1.2
      */
     protected EntityResolver getEntityResolver()
     {

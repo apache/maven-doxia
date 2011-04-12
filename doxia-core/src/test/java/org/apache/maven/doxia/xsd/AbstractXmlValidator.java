@@ -49,7 +49,7 @@ import org.xml.sax.helpers.XMLReaderFactory;
  *
  * @author ltheussl
  *
- * @since 1.1.5
+ * @since 1.2
  */
 public abstract class AbstractXmlValidator
         extends PlexusTestCase
