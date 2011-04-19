@@ -797,7 +797,7 @@ public abstract class AbstractXmlParser
             HttpGet method = new HttpGet( url.toString() );
             // Set a user-agent that doesn't contain the word "java", otherwise it will be blocked by the W3C
             // The default user-agent is "Apache-HttpClient/4.0.2 (java 1.5)"
-            method.setHeader( "user-agent", "Apache-Doxia/1.1.4" );
+            method.setHeader( "user-agent", "Apache-Doxia/" + doxiaVersion() );
 
             HttpRequestRetryHandler retryHandler = new DefaultHttpRequestRetryHandler( 3, false );
             client.setHttpRequestRetryHandler( retryHandler );

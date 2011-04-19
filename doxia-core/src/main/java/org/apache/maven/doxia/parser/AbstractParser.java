@@ -20,7 +20,11 @@ package org.apache.maven.doxia.parser;
  */
 
 import java.io.File;
+import java.io.IOException;
+import java.io.InputStream;
 import java.io.StringReader;
+
+import java.util.Properties;
 
 import org.apache.maven.doxia.logging.Log;
 import org.apache.maven.doxia.logging.SystemStreamLog;
@@ -51,6 +55,43 @@ public abstract class AbstractParser
 
     /** Log instance. */
     private Log logger;
+
+    private static final String DOXIA_VERSION;
+
+    static
+    {
+        final Properties props = new Properties();
+        final InputStream is = AbstractParser.class.getResourceAsStream( "/build-info.properties" );
+
+        if ( is == null )
+        {
+            props.setProperty( "version", "unknown" ); // should not happen
+        }
+        else
+        {
+            try
+            {
+                props.load( is );
+            }
+            catch ( IOException ex )
+            {
+                props.setProperty( "version", "unknown" ); // should not happen
+            }
+            finally
+            {
+                try
+                {
+                    is.close();
+                }
+                catch ( IOException ex )
+                {
+                    // oh well...
+                }
+            }
+        }
+
+        DOXIA_VERSION = props.getProperty( "version" );
+    }
 
     /** {@inheritDoc} */
     public int getType()
@@ -180,5 +221,17 @@ public abstract class AbstractParser
     protected void init()
     {
         // nop
+    }
+
+    /**
+     * The current Doxia version.
+     *
+     * @return the current Doxia version as a String.
+     *
+     * @since 1.2
+     */
+    protected static String doxiaVersion()
+    {
+        return DOXIA_VERSION;
     }
 }

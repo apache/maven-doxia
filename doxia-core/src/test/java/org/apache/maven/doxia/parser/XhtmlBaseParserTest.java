@@ -51,6 +51,12 @@ public class XhtmlBaseParserTest
         sink.reset();
     }
 
+    public void testDoxiaVersion()
+    {
+        assertNotNull( XhtmlBaseParser.doxiaVersion() );
+        assertFalse( "unknown".equals( XhtmlBaseParser.doxiaVersion() ) );
+    }
+
     /** @throws Exception  */
     public void testHeadingEventsList()
         throws Exception
