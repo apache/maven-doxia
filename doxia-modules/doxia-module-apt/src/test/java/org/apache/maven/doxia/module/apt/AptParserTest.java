@@ -161,6 +161,32 @@ public class AptParserTest
         assertFalse( it.hasNext() );
     }
 
+
+    /** @throws Exception  */
+    public void testSnippetTrailingSpace()
+        throws Exception
+    {
+        // DOXIA-425
+        String text = "%{snippet|id=myid|file=pom.xml}  " + EOL;
+
+        SinkEventTestingSink sink = new SinkEventTestingSink();
+
+        parser.parse( text, sink );
+
+        Iterator<SinkEventElement> it = sink.getEventList().iterator();
+
+        assertEquals( "head", ( it.next() ).getName() );
+        assertEquals( "head_", ( it.next() ).getName() );
+        assertEquals( "body", ( it.next() ).getName() );
+
+        assertEquals( "verbatim", ( it.next() ).getName() );
+        assertEquals( "text", ( it.next() ).getName() );
+        assertEquals( "verbatim_", ( it.next() ).getName() );
+        assertEquals( "body_", ( it.next() ).getName() );
+
+        assertFalse( it.hasNext() );
+    }
+
     /** @throws Exception  */
     public void testTocMacro()
         throws Exception

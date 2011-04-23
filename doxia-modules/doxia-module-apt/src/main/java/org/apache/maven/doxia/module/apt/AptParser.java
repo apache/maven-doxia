@@ -2875,9 +2875,10 @@ public class AptParser
                 return;
             }
 
-            String s = text;
+            final int start = text.indexOf( '{' );
+            final int end = text.indexOf( '}' );
 
-            s = s.substring( 2, s.length() - 1 );
+            String s = text.substring( start + 1, end );
 
             s = escapeForMacro( s );
 
