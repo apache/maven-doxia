@@ -93,11 +93,6 @@ under the License.
       <artifactId>doxia-module-xhtml</artifactId>
       <version>${projectVersion}</version>
     </dependency>
-    <dependency>
-      <groupId>org.apache.maven.doxia</groupId>
-      <artifactId>doxia-decoration-model</artifactId>
-      <version>1.2-SNAPSHOT</version>
-    </dependency>
 
     <dependency>
       <groupId>org.codehaus.plexus</groupId>
