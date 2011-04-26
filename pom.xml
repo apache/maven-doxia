@@ -113,8 +113,8 @@ under the License.
   </issueManagement>
 
   <ciManagement>
-    <system>Hudson</system>
-    <url>https://hudson.apache.org/hudson/</url>
+    <system>Jenkins</system>
+    <url>https://builds.apache.org/hudson/job/doxia/</url>
   </ciManagement>
 
   <distributionManagement>
