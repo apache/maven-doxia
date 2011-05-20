@@ -43,8 +43,8 @@ public class FoConfigurationTest
         assertEquals( "Non existent attribute ID should return empty string!", "",
                       config.getAttributeString( "a.dummy.attribute" ) );
 
-        assertEquals( "Wrong attributes returned for body.pre!", " font-family=\"monospace\" font-size=\"10pt\"",
-                      config.getAttributeString( "body.pre" ) );
+        assertEquals( "Wrong attributes returned for italic!", " font-style=\"italic\"",
+                      config.getAttributeString( "italic" ) );
     }
 
     /** Tests the getAttributeSet( String ) method. */
@@ -60,11 +60,10 @@ public class FoConfigurationTest
                     config.getAttributeSet( "a.dummy.attribute" ) );
 
         MutableAttributeSet expected = new SimpleAttributeSet();
-        expected.addAttribute( "font-size", "10pt" );
-        expected.addAttribute( "font-family", "monospace" );
-        MutableAttributeSet actual = config.getAttributeSet( "body.pre" );
+        expected.addAttribute( "font-style", "italic" );
+        MutableAttributeSet actual = config.getAttributeSet( "italic" );
 
-        assertTrue( "Wrong AttributeSet returned for body.pre!", expected.isEqual( actual ) );
+        assertTrue( "Wrong AttributeSet returned for italic!", expected.isEqual( actual ) );
     }
 
 }
