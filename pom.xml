@@ -255,7 +255,7 @@ under the License.
         <directory>src/main/resources</directory>
       </resource>
       <resource>
-        <directory>${build.directory}/generated-site/xsd</directory>
+        <directory>${project.build.directory}/generated-site/xsd</directory>
         <includes>
           <include>**/*.xsd</include>
         </includes>
