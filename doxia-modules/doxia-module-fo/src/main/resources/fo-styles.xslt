@@ -86,6 +86,10 @@
     </xsl:attribute-set>
     <xsl:attribute-set name="base.pre.style">
         <xsl:attribute name="font-family">monospace</xsl:attribute>
+        <xsl:attribute name="linefeed-treatment">preserve</xsl:attribute>
+        <xsl:attribute name="wrap-option">no-wrap</xsl:attribute>
+        <xsl:attribute name="keep-together">always</xsl:attribute>
+        <xsl:attribute name="white-space-collapse">false</xsl:attribute>
     </xsl:attribute-set>
 
     <xsl:attribute-set name="italic">
@@ -113,9 +117,6 @@
         <xsl:attribute name="end-indent">inherited-property-value(end-indent) + 1em</xsl:attribute>
     </xsl:attribute-set>
     <xsl:attribute-set name="body.source" use-attribute-sets="body.pre">
-        <xsl:attribute name="wrap-option">no-wrap</xsl:attribute>
-        <xsl:attribute name="keep-together">always</xsl:attribute>
-        <xsl:attribute name="white-space-collapse">false</xsl:attribute>
         <xsl:attribute name="color">black</xsl:attribute>
         <xsl:attribute name="border-style">solid</xsl:attribute>
         <xsl:attribute name="border-width">0.5pt</xsl:attribute>
