@@ -177,7 +177,7 @@ under the License.
 
   <ciManagement>
     <system>Jenkins</system>
-    <url>https://builds.apache.org/hudson/job/doxia/</url>
+    <url>https://builds.apache.org/job/doxia/</url>
   </ciManagement>
 
   <distributionManagement>
