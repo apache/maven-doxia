@@ -1,2 +1,0 @@
-* List item
-* List item
