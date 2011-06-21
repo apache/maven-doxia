@@ -569,12 +569,12 @@ public class AptParserTest
     public void testSpecialCharactersInTables()
         throws Exception
     {
-        // DOXIA-323
+        // DOXIA-323, DOXIA-433
         String text =
-                "  \\~ \\= \\- \\+ \\* \\[ \\] \\< \\> \\{ \\} \\\\" + EOL
+                "  \\~ \\= \\- \\+ \\* \\[ \\] \\< \\> \\{ \\} \\\\ \\u2713" + EOL
                 + EOL
                 + "*--------------------------------------------------+---------------+" + EOL
-                + "| \\~ \\= \\- \\+ \\* \\[ \\] \\< \\> \\{ \\} \\\\ | special chars |" + EOL
+                + "| \\~ \\= \\- \\+ \\* \\[ \\] \\< \\> \\{ \\} \\\\ \\u2713 | special chars |" + EOL
                 + "*--------------------------------------------------+---------------+";
 
         SinkEventTestingSink sink = new SinkEventTestingSink();
@@ -589,7 +589,7 @@ public class AptParserTest
         assertEquals( "paragraph", ( it.next() ).getName() );
         SinkEventElement event = it.next();
         assertEquals( "text", event.getName() );
-        assertEquals( "~ = - + * [ ] < > { } \\", event.getArgs()[0] );
+        assertEquals( "~ = - + * [ ] < > { } \\ \u2713", event.getArgs()[0] );
         assertEquals( "paragraph_", ( it.next() ).getName() );
 
         assertEquals( "table", ( it.next() ).getName() );
@@ -599,11 +599,18 @@ public class AptParserTest
 
         event = it.next();
         assertEquals( "text", event.getName() );
-        assertEquals( "~ = - + * [ ] < > { } \\", event.getArgs()[0] );
+        assertEquals( "~ = - + * [ ] < > { } \\ \u2713", event.getArgs()[0] );
         assertEquals( "tableCell_", ( it.next() ).getName() );
         assertEquals( "tableCell", ( it.next() ).getName() );
         assertEquals( "text", ( it.next() ).getName() );
         assertEquals( "tableCell_", ( it.next() ).getName() );
+        assertEquals( "tableRow_", ( it.next() ).getName() );
+
+        assertEquals( "tableRows_", ( it.next() ).getName() );
+        assertEquals( "table_", ( it.next() ).getName() );
+        assertEquals( "body_", ( it.next() ).getName() );
+
+        assertFalse( it.hasNext() );
     }
 
     /** @throws Exception  */

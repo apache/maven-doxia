@@ -948,4 +948,32 @@ public class XhtmlBaseSinkTest
 
         assertEquals( "a text '&#x1d7ed;'", writer.toString() );
     }
+
+    /**
+     * Test unicode chracters in tables. DOXIA-433.
+     */
+    public void testSpecialCharacters()
+    {
+        try
+        {
+            sink = new XhtmlBaseSink( writer );
+            sink.table( null );
+            sink.tableRows( null, true );
+            sink.tableRow( null );
+            sink.tableCell();
+            sink.text( "\u2713", null );
+            sink.tableCell_();
+            sink.tableRow_();
+            sink.tableRows_();
+            sink.table_();
+        }
+        finally
+        {
+            sink.close();
+        }
+
+        final String result = writer.toString();
+
+        assertTrue( result.indexOf( "&#x2713;" ) != -1 );
+    }
 }

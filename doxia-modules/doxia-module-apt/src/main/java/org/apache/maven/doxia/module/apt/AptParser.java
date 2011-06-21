@@ -2482,6 +2482,7 @@ public class AptParser
                         cellLine = replaceAll( cellLine, "\\u00A0>", "\\>" );
                         cellLine = replaceAll( cellLine, "\\u00A0{", "\\{" );
                         cellLine = replaceAll( cellLine, "\\u00A0}", "\\}" );
+                        cellLine = replaceAll( cellLine, "\\u00A0u", "\\u" );
                         cellLine = replaceAll( cellLine, "\\u00A0\\u00A0", "\\\\" );
                         cellLine = cellLine.trim();
 
