@@ -149,12 +149,13 @@ public class SwfMacro
             .append( "codebase=\"http://download.macromedia.com/pub/shockwave/cabs/flash/swflash.cab#version=" )
             .append( version ).append( "\" width=\"" ).append( width ).append( "\" height=\"" ).append( height )
             .append( "\" id=\"" ).append( id ).append( "\">" ).append( EOL );
-        content.append( "<param name=\"movie\" value=\"" ).append( src ).append( "\">" ).append( EOL );
-        content.append( "<param name=\"quality\" value=\"" ).append( quality ).append( "\">" ).append( EOL );
-        content.append( "<param name=\"menu\" value=\"" ).append( menu ).append( "\">" ).append( EOL );
-        content.append( "<param name=\"loop\" value=\"" ).append( loop ).append( "\">" ).append( EOL );
-        content.append( "<param name=\"play\" value=\"" ).append( play ).append( "\">" ).append( EOL );
-        content.append( "<param name=\"allowScriptAccess\" value=\"" ).append( allowScript ).append( "\">" );
+        content.append( "<param name=\"movie\" value=\"" ).append( src ).append( "\" />" ).append( EOL );
+        content.append( "<param name=\"quality\" value=\"" ).append( quality ).append( "\" />" ).append( EOL );
+        content.append( "<param name=\"menu\" value=\"" ).append( menu ).append( "\" />" ).append( EOL );
+        content.append( "<param name=\"loop\" value=\"" ).append( loop ).append( "\" />" ).append( EOL );
+        content.append( "<param name=\"play\" value=\"" ).append( play ).append( "\" />" ).append( EOL );
+        content.append( "<param name=\"allowScriptAccess\" value=\"" )
+            .append( allowScript ).append( "\" />" ).append( EOL );
         content.append( "<embed src=\"" ).append( src ).append( "\" width=\"" ).append( width ).append( "\" height=\"" )
             .append( height ).append( "\" loop=\"" ).append( loop ).append( "\" play=\"" ).append( play )
             .append( "\" quality=\"" ).append( quality ).append( "\" allowScriptAccess=\"" ).append( allowScript )
