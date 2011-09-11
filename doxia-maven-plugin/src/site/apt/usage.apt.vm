@@ -6,7 +6,7 @@
 
 Usage
 
- Below is a sample pom.xml illustrate how to use it.
+ Below is a sample <<<pom.xml>>> illustrating how to use it.
 
 +------------------------------------------------------
       <plugin>
