@@ -31,12 +31,14 @@
     <menu name="About Doxia :: Book Components">
       <item name="Introduction" href="index.html"/>
       <item name="Usage" href="usage.html"/>
-      <!--<item name="FAQ" href="faq.html"/>-->
+      <item name="JavaDocs" href="apidocs/index.html"/>
+      <item name="Source Xref" href="xref/index.html"/>
+      <!--item name="FAQ" href="faq.html"/-->
     </menu>
 
-    <menu name="Schema Book 1.0">
-      <item name="Reference of Schema Book" href="book.html"/>
-      <item name="Using Schema Book" href="using-book-xsd.html"/>
+    <menu name="Book Schema">
+      <item name="Reference" href="book.html"/>
+      <item name="Using Book Schema" href="using-book-xsd.html"/>
     </menu>
 
     <menu ref="reports"/>

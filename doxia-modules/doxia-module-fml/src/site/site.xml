@@ -29,9 +29,16 @@
 
     <menu ref="parent"/>
 
-    <menu name="Schema FML 1.0.1">
-      <item name="Reference of Schema FML" href="xsddoc/index.html"/>
-      <item name="Using Schema FML" href="using-fml-xsd.html"/>
+    <menu name="Overview">
+      <item name="Introduction" href="index.html"/>
+      <item name="JavaDocs" href="apidocs/index.html"/>
+      <item name="Source Xref" href="xref/index.html"/>
+      <!--item name="FAQ" href="faq.html"/-->
+    </menu>
+
+    <menu name="FML Schema">
+      <item name="Reference" href="xsddoc/index.html"/>
+      <item name="Using FML Schema" href="using-fml-xsd.html"/>
     </menu>
 
     <menu ref="reports"/>

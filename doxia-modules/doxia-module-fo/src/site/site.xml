@@ -33,6 +33,9 @@
       <item name="Overview" href="index.html"/>
       <item name="Usage" href="usage.html"/>
       <item name="Links" href="links.html"/>
+      <item name="JavaDocs" href="apidocs/index.html"/>
+      <item name="Source Xref" href="xref/index.html"/>
+      <!--item name="FAQ" href="faq.html"/-->
     </menu>
 
     <menu ref="reports"/>
