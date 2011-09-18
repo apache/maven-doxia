@@ -179,9 +179,9 @@ public class SnippetReader
     protected boolean isDemarcator( String snippetId, String what, String line )
     {
         String upper = line.toUpperCase( Locale.ENGLISH );
-        return upper.indexOf( what.toUpperCase( Locale.ENGLISH ) ) != -1
-            && upper.indexOf( "SNIPPET" ) != -1
-            && line.indexOf( snippetId ) != -1;
+        return upper.contains( what.toUpperCase( Locale.ENGLISH ) )
+            && upper.contains( "SNIPPET" )
+            && line.contains( snippetId );
     }
 
     /**

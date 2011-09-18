@@ -97,7 +97,7 @@ public class XmlValidator
             {
                 String value = matcher.group( 2 );
 
-                if ( value.indexOf( XMLConstants.W3C_XML_SCHEMA_INSTANCE_NS_URI ) != -1 )
+                if ( value.contains( XMLConstants.W3C_XML_SCHEMA_INSTANCE_NS_URI ) )
                 {
                     hasXsd = true;
                 }

@@ -98,7 +98,7 @@ public class DoxiaUtils
 
         return ( text.startsWith( "http:/" ) || text.startsWith( "https:/" )
             || text.startsWith( "ftp:/" ) || text.startsWith( "mailto:" )
-            || text.startsWith( "file:/" ) || text.indexOf( "://" ) != -1 );
+            || text.startsWith( "file:/" ) || text.contains( "://" ) );
     }
 
     /**
@@ -362,8 +362,7 @@ public class DoxiaUtils
     public static Date parseDate( final String str )
             throws ParseException
     {
-        if ( "today".equals( str.toLowerCase( Locale.ENGLISH ) )
-                || "now".equals( str.toLowerCase( Locale.ENGLISH ) ) )
+        if ( "today".equalsIgnoreCase( str ) || "now".equalsIgnoreCase( str ) )
         {
             return new Date();
         }

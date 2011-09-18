@@ -924,8 +924,8 @@ public class XhtmlBaseSinkTest
 
         String result = writer.toString();
 
-        assertTrue( result.indexOf( "ex.js?v=l&amp;l=e" ) != -1 );
-        assertTrue( result.indexOf( "ex.jpg?v=l&amp;l=e" ) != -1 );
+        assertTrue( result.contains( "ex.js?v=l&amp;l=e" ) );
+        assertTrue( result.contains( "ex.jpg?v=l&amp;l=e" ) );
     }
 
     /**
@@ -974,6 +974,6 @@ public class XhtmlBaseSinkTest
 
         final String result = writer.toString();
 
-        assertTrue( result.indexOf( "&#x2713;" ) != -1 );
+        assertTrue( result.contains( "&#x2713;" ) );
     }
 }

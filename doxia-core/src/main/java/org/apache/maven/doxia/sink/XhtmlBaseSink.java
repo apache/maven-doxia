@@ -1792,11 +1792,11 @@ public class XhtmlBaseSink
     /** {@inheritDoc} */
     public void comment( String comment )
     {
-        if ( StringUtils.isNotEmpty( comment ) && comment.indexOf( "--" ) != -1 )
+        if ( StringUtils.isNotEmpty( comment ) && comment.contains( "--" ) )
         {
             String originalComment = comment;
             // http://www.w3.org/TR/2000/REC-xml-20001006#sec-comments
-            while ( comment.indexOf( "--" ) != -1 )
+            while ( comment.contains( "--" ) )
             {
                 comment = StringUtils.replace( comment, "--", "- -" );
             }

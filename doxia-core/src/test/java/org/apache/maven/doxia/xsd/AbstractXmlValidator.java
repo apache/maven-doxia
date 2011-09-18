@@ -68,17 +68,12 @@ public abstract class AbstractXmlValidator
      */
     protected boolean isFailErrorMessage( String message )
     {
-        if ( message.indexOf( "schema_reference.4: Failed to read schema document 'http://www.w3.org/2001/xml.xsd'" ) == -1
-            && message.indexOf( "cvc-complex-type.4: Attribute 'alt' must appear on element 'img'." ) == -1
-            && message.indexOf( "cvc-complex-type.2.4.a: Invalid content starting with element" ) == -1
-            && message.indexOf( "cvc-complex-type.2.4.a: Invalid content was found starting with element" ) == -1
-            && message.indexOf( "cvc-datatype-valid.1.2.1:" ) == -1 // Doxia allow space
-            && message.indexOf( "cvc-attribute.3:" ) == -1 ) // Doxia allow space
-        {
-            return true;
-        }
-
-        return false;
+        return !( message.contains( "schema_reference.4: Failed to read schema document 'http://www.w3.org/2001/xml.xsd'" )
+            || message.contains( "cvc-complex-type.4: Attribute 'alt' must appear on element 'img'." )
+            || message.contains( "cvc-complex-type.2.4.a: Invalid content starting with element" )
+            || message.contains( "cvc-complex-type.2.4.a: Invalid content was found starting with element" )
+            || message.contains( "cvc-datatype-valid.1.2.1:" ) // Doxia allow space
+            || message.contains( "cvc-attribute.3:" ) ); // Doxia allow space
     }
 
     @Override

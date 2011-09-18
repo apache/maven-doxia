@@ -66,11 +66,11 @@ public class SnippetMacroTest
         assertEquals( "verbatim_", ( it.next() ).getName() );
         assertFalse( it.hasNext() );
 
-        assertTrue( snippet.indexOf( "preamble" ) != -1 );
-        assertTrue( snippet.indexOf( "first snippet" ) != -1 );
-        assertTrue( snippet.indexOf( "interlude" ) != -1 );
-        assertTrue( snippet.indexOf( "second snippet" ) != -1 );
-        assertTrue( snippet.indexOf( "conclusion" ) != -1 );
+        assertTrue( snippet.contains( "preamble" ) );
+        assertTrue( snippet.contains( "first snippet" ) );
+        assertTrue( snippet.contains( "interlude" ) );
+        assertTrue( snippet.contains( "second snippet" ) );
+        assertTrue( snippet.contains( "conclusion" ) );
 
         // again
 
@@ -88,11 +88,11 @@ public class SnippetMacroTest
         assertEquals( "verbatim_", ( it.next() ).getName() );
         assertFalse( it.hasNext() );
 
-        assertTrue( snippet.indexOf( "preamble" ) == -1 );
-        assertTrue( snippet.indexOf( "first snippet" ) != -1 );
-        assertTrue( snippet.indexOf( "interlude" ) == -1 );
-        assertTrue( snippet.indexOf( "second snippet" ) == -1 );
-        assertTrue( snippet.indexOf( "conclusion" ) == -1 );
+        assertFalse( snippet.contains( "preamble" ) );
+        assertTrue( snippet.contains( "first snippet" ) );
+        assertFalse( snippet.contains( "interlude" ) );
+        assertFalse( snippet.contains( "second snippet" ) );
+        assertFalse( snippet.contains( "conclusion" ) );
 
         // again
 
@@ -108,10 +108,10 @@ public class SnippetMacroTest
         snippet = (String) event.getArgs()[0];
         assertFalse( it.hasNext() );
 
-        assertTrue( snippet.indexOf( "preamble" ) == -1 );
-        assertTrue( snippet.indexOf( "first snippet" ) == -1 );
-        assertTrue( snippet.indexOf( "interlude" ) == -1 );
-        assertTrue( snippet.indexOf( "second snippet" ) != -1 );
-        assertTrue( snippet.indexOf( "conclusion" ) == -1 );
+        assertFalse( snippet.contains( "preamble" ) );
+        assertFalse( snippet.contains( "first snippet" ) );
+        assertFalse( snippet.contains( "interlude" ) );
+        assertTrue( snippet.contains( "second snippet" ) );
+        assertFalse( snippet.contains( "conclusion" ) );
     }
 }

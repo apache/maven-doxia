@@ -172,8 +172,8 @@ public class TocMacroTest
         TocMacro macro = new TocMacro();
         macro.execute( sink, request );
 
-        assertTrue( out.toString().indexOf( "<a href=\"#h21\">h21</a>" ) != -1 );
-        assertTrue( out.toString().indexOf( "<a href=\"#h22\">h22</a>" ) != -1 );
-        assertTrue( out.toString().indexOf( "<a href=\"#h3\">h3</a>" ) != -1 );
+        assertTrue( out.toString().contains( "<a href=\"#h21\">h21</a>" ) );
+        assertTrue( out.toString().contains( "<a href=\"#h22\">h22</a>" ) );
+        assertTrue( out.toString().contains( "<a href=\"#h3\">h3</a>" ) );
     }
 }

@@ -191,7 +191,7 @@ public abstract class AbstractXmlValidatorTest
             {
                 File file = new File( it.next().toString() );
 
-                if ( file.getAbsolutePath().indexOf( "META-INF" ) != -1 )
+                if ( file.getAbsolutePath().contains( "META-INF" ) )
                 {
                     continue;
                 }
