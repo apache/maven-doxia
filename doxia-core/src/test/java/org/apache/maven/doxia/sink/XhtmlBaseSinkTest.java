@@ -22,6 +22,7 @@ package org.apache.maven.doxia.sink;
 import java.io.StringWriter;
 import java.io.Writer;
 
+import javax.swing.text.html.HTML.Attribute;
 import org.codehaus.plexus.PlexusTestCase;
 
 /**
@@ -34,8 +35,7 @@ import org.codehaus.plexus.PlexusTestCase;
 public class XhtmlBaseSinkTest
     extends PlexusTestCase
 {
-    private final SinkEventAttributes attributes =
-            new SinkEventAttributeSet( new String[] {SinkEventAttributes.STYLE, "bold"} );
+    private final SinkEventAttributes attributes = SinkEventAttributeSet.BOLD;
     private XhtmlBaseSink sink;
     private Writer writer;
 
@@ -553,13 +553,32 @@ public class XhtmlBaseSinkTest
 
         assertEquals( "<div class=\"source\"><pre></pre></div>", writer.toString() );
 
+        checkVerbatimAttributes( attributes, "<div><pre style=\"bold\"></pre></div>" );
+
+        final SinkEventAttributes att =
+            new SinkEventAttributeSet( new String[] {SinkEventAttributes.ID, "id"} );
+        checkVerbatimAttributes( att, "<div><pre id=\"id\"></pre></div>" );
+
+        att.addAttribute( Attribute.CLASS, "class" );
+        checkVerbatimAttributes( att, "<div><pre id=\"id\" class=\"class\"></pre></div>" );
+
+        att.addAttribute( SinkEventAttributes.DECORATION, "boxed" );
+        checkVerbatimAttributes( att, "<div class=\"source\"><pre id=\"id\" class=\"class\"></pre></div>" );
+
+        att.removeAttribute( Attribute.CLASS.toString() );
+        checkVerbatimAttributes( att, "<div class=\"source\"><pre id=\"id\"></pre></div>" );
+    }
+
+    private void checkVerbatimAttributes( final SinkEventAttributes att, final String expected )
+    {
+
         writer =  new StringWriter();
 
         try
         {
             sink = new XhtmlBaseSink( writer );
 
-            sink.verbatim( attributes );
+            sink.verbatim( att );
             sink.verbatim_();
         }
         finally
@@ -567,7 +586,7 @@ public class XhtmlBaseSinkTest
             sink.close();
         }
 
-        assertEquals( "<div style=\"bold\"><pre style=\"bold\"></pre></div>", writer.toString() );
+        assertEquals( expected, writer.toString() );
     }
 
     /**

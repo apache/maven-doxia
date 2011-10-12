@@ -1066,26 +1066,16 @@ public class XhtmlBaseSink
                 "boxed".equals( atts.getAttribute( SinkEventAttributes.DECORATION ).toString() );
         }
 
+        SinkEventAttributes divAtts = null;
+
         if ( boxed )
         {
-            atts.addAttribute( Attribute.CLASS, "source" );
+            divAtts = new SinkEventAttributeSet( new String[] { Attribute.CLASS.toString(), "source" } );
         }
 
         atts.removeAttribute( SinkEventAttributes.DECORATION );
 
-        String width = (String) atts.getAttribute( Attribute.WIDTH.toString() );
-        atts.removeAttribute( Attribute.WIDTH.toString() );
-
-        writeStartTag( HtmlMarkup.DIV, atts );
-
-        if ( width != null )
-        {
-            atts.addAttribute( Attribute.WIDTH.toString(), width );
-        }
-
-        atts.removeAttribute( Attribute.ALIGN.toString() );
-        atts.removeAttribute( Attribute.CLASS.toString() );
-
+        writeStartTag( HtmlMarkup.DIV, divAtts );
         writeStartTag( HtmlMarkup.PRE, atts );
     }
 
