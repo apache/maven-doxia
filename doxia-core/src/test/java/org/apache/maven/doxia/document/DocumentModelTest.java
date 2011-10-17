@@ -359,7 +359,7 @@ public class DocumentModelTest
         }
         catch ( XmlPullParserException e )
         {
-            throw new IOException( "Error parsing document descriptor", e );
+            throw (IOException) new IOException( "Error parsing document descriptor" ).initCause( e );
         }
         finally
         {
