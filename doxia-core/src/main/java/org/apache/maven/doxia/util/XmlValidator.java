@@ -184,6 +184,7 @@ public class XmlValidator
         }
 
         /** {@inheritDoc} */
+        @Override
         public void warning( SAXParseException e )
             throws SAXException
         {
@@ -191,6 +192,7 @@ public class XmlValidator
         }
 
         /** {@inheritDoc} */
+        @Override
         public void error( SAXParseException e )
             throws SAXException
         {
@@ -211,6 +213,7 @@ public class XmlValidator
         }
 
         /** {@inheritDoc} */
+        @Override
         public void fatalError( SAXParseException e )
             throws SAXException
         {
@@ -220,7 +223,7 @@ public class XmlValidator
         private void processException( int type, SAXParseException e )
             throws SAXException
         {
-            StringBuffer message = new StringBuffer();
+            StringBuilder message = new StringBuilder();
 
             switch ( type )
             {

@@ -79,6 +79,7 @@ public class XhtmlBaseParser
     private Map<String, Set<String>> warnMessages;
 
     /** {@inheritDoc} */
+    @Override
     public void parse( Reader source, Sink sink )
         throws ParseException
     {
@@ -462,6 +463,7 @@ public class XhtmlBaseParser
     }
 
     /** {@inheritDoc} */
+    @Override
     protected void handleText( XmlPullParser parser, Sink sink )
         throws XmlPullParserException
     {
@@ -480,6 +482,7 @@ public class XhtmlBaseParser
     }
 
     /** {@inheritDoc} */
+    @Override
     protected void handleComment( XmlPullParser parser, Sink sink )
         throws XmlPullParserException
     {
@@ -496,6 +499,7 @@ public class XhtmlBaseParser
     }
 
     /** {@inheritDoc} */
+    @Override
     protected void handleCdsect( XmlPullParser parser, Sink sink )
         throws XmlPullParserException
     {
@@ -698,6 +702,7 @@ public class XhtmlBaseParser
     }
 
     /** {@inheritDoc} */
+    @Override
     protected void init()
     {
         super.init();
@@ -736,7 +741,7 @@ public class XhtmlBaseParser
 
         if ( href != null )
         {
-            int hashIndex = href.indexOf( "#" );
+            int hashIndex = href.indexOf( '#');
             if ( hashIndex != -1 && !DoxiaUtils.isExternalLink( href ) )
             {
                 String hash = href.substring( hashIndex + 1 );
@@ -954,10 +959,10 @@ public class XhtmlBaseParser
      */
     private void logMessage( String key, String msg )
     {
-        msg = "[XHTML Parser] " + msg;
+        final String log = "[XHTML Parser] " + msg;
         if ( getLog().isDebugEnabled() )
         {
-            getLog().debug( msg );
+            getLog().debug( log );
 
             return;
         }
@@ -972,7 +977,7 @@ public class XhtmlBaseParser
         {
             set = new TreeSet<String>();
         }
-        set.add( msg );
+        set.add( log );
         warnMessages.put( key, set );
     }
 

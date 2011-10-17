@@ -44,7 +44,7 @@ public class EchoMacroTest
      */
     public void testExecute()
     {
-        Map macroParameters = new HashMap();
+        final Map<String,Object> macroParameters = new HashMap<String,Object>();
         macroParameters.put( "paramName", "paramValue" );
         macroParameters.put( "parser", "parserValue" );
         macroParameters.put( "sourceContent", "sourceContentValue" );
@@ -54,16 +54,16 @@ public class EchoMacroTest
 
         new EchoMacro().execute( sink, request );
 
-        Iterator it = sink.getEventList().iterator();
-        SinkEventElement event = (SinkEventElement) it.next();
+        Iterator<SinkEventElement> it = sink.getEventList().iterator();
+        SinkEventElement event = it.next();
         assertEquals( "verbatim", event.getName() );
-        event = (SinkEventElement) it.next();
+        event = it.next();
         assertEquals( "text", event.getName() );
         assertEquals( "echo" + Macro.EOL,  (String) event.getArgs()[0] );
-        event = (SinkEventElement) it.next();
+        event = it.next();
         assertEquals( "text", event.getName() );
         assertEquals( "paramName ---> paramValue" + Macro.EOL,  (String) event.getArgs()[0] );
-        event = (SinkEventElement) it.next();
+        event = it.next();
         assertEquals( "verbatim_", event.getName() );
         assertFalse( it.hasNext() );
     }

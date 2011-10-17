@@ -78,8 +78,8 @@ public class DocumentModelTest
 
     private void verifyModel( DocumentModel model )
     {
+        assertNotNull( model );
         assertTrue( model.equals( model ) );
-        assertFalse( model.equals( null ) );
         assertTrue ( model.hashCode() != 0 );
         assertTrue( model.toString().length() > 0 );
 
@@ -359,7 +359,7 @@ public class DocumentModelTest
         }
         catch ( XmlPullParserException e )
         {
-            throw (IOException) new IOException( "Error parsing document descriptor" ).initCause( e );
+            throw new IOException( "Error parsing document descriptor", e );
         }
         finally
         {

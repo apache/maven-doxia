@@ -85,7 +85,7 @@ public class PipelineSink
     public static Sink newInstance( List<Sink> pipeline )
     {
         return (Sink) Proxy.newProxyInstance( PipelineSink.class.getClassLoader(),
-                                              new Class[]{Sink.class},
+                                              new Class<?>[]{Sink.class},
                                               new PipelineSink( pipeline ) );
     }
 }

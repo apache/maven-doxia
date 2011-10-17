@@ -149,7 +149,7 @@ public class SinkEventAttributeSet
 
         attribs = new LinkedHashMap<String, Object>( n / 2 );
 
-        for ( int i = 0; i < n; i = i + 2 )
+        for ( int i = 0; i < n; i += 2 )
         {
             attribs.put( attributes[i], attributes[i + 1] );
         }
@@ -356,6 +356,7 @@ public class SinkEventAttributeSet
     }
 
     /** {@inheritDoc} */
+    @Override
     public Object clone()
     {
         SinkEventAttributeSet attr = new SinkEventAttributeSet( attribs.size() );
@@ -370,6 +371,7 @@ public class SinkEventAttributeSet
     }
 
     /** {@inheritDoc} */
+    @Override
     public int hashCode()
     {
         final int parentHash = ( resolveParent == null ? 0 : resolveParent.hashCode() );
@@ -378,6 +380,7 @@ public class SinkEventAttributeSet
     }
 
     /** {@inheritDoc} */
+    @Override
     public boolean equals( Object obj )
     {
         if ( this == obj )
@@ -394,9 +397,10 @@ public class SinkEventAttributeSet
     }
 
     /** {@inheritDoc} */
+    @Override
     public String toString()
     {
-        StringBuffer s = new StringBuffer();
+        StringBuilder s = new StringBuilder();
         Enumeration<String> names = getAttributeNames();
 
         while ( names.hasMoreElements() )

@@ -224,7 +224,7 @@ public class XhtmlBaseSink
      */
     protected int[] getCellJustif()
     {
-        return (int[]) this.cellJustifStack.getLast();
+        return this.cellJustifStack.getLast();
     }
 
     /**
@@ -258,6 +258,7 @@ public class XhtmlBaseSink
     }
 
     /** {@inheritDoc} */
+    @Override
     protected void init()
     {
         super.init();
@@ -301,144 +302,168 @@ public class XhtmlBaseSink
     // ----------------------------------------------------------------------
 
     /** {@inheritDoc} */
+    @Override
     public void section( int level, SinkEventAttributes attributes )
     {
         onSection( level, attributes );
     }
 
     /** {@inheritDoc} */
+    @Override
     public void sectionTitle( int level, SinkEventAttributes attributes )
     {
         onSectionTitle( level, attributes );
     }
 
     /** {@inheritDoc} */
+    @Override
     public void sectionTitle_( int level )
     {
         onSectionTitle_( level );
     }
 
     /** {@inheritDoc} */
+    @Override
     public void section_( int level )
     {
         onSection_( level );
     }
 
     /** {@inheritDoc} */
+    @Override
     public void section1()
     {
         onSection( SECTION_LEVEL_1, null );
     }
 
     /** {@inheritDoc} */
+    @Override
     public void sectionTitle1()
     {
         onSectionTitle( SECTION_LEVEL_1, null );
     }
 
     /** {@inheritDoc} */
+    @Override
     public void sectionTitle1_()
     {
         onSectionTitle_( SECTION_LEVEL_1 );
     }
 
     /** {@inheritDoc} */
+    @Override
     public void section1_()
     {
         onSection_( SECTION_LEVEL_1 );
     }
 
     /** {@inheritDoc} */
+    @Override
     public void section2()
     {
         onSection( SECTION_LEVEL_2, null );
     }
 
     /** {@inheritDoc} */
+    @Override
     public void sectionTitle2()
     {
         onSectionTitle( SECTION_LEVEL_2, null );
     }
 
     /** {@inheritDoc} */
+    @Override
     public void sectionTitle2_()
     {
         onSectionTitle_( SECTION_LEVEL_2 );
     }
 
     /** {@inheritDoc} */
+    @Override
     public void section2_()
     {
         onSection_( SECTION_LEVEL_2 );
     }
 
     /** {@inheritDoc} */
+    @Override
     public void section3()
     {
         onSection( SECTION_LEVEL_3, null );
     }
 
     /** {@inheritDoc} */
+    @Override
     public void sectionTitle3()
     {
         onSectionTitle( SECTION_LEVEL_3, null );
     }
 
     /** {@inheritDoc} */
+    @Override
     public void sectionTitle3_()
     {
         onSectionTitle_( SECTION_LEVEL_3 );
     }
 
     /** {@inheritDoc} */
+    @Override
     public void section3_()
     {
         onSection_( SECTION_LEVEL_3 );
     }
 
     /** {@inheritDoc} */
+    @Override
     public void section4()
     {
         onSection( SECTION_LEVEL_4, null );
     }
 
     /** {@inheritDoc} */
+    @Override
     public void sectionTitle4()
     {
         onSectionTitle( SECTION_LEVEL_4, null );
     }
 
     /** {@inheritDoc} */
+    @Override
     public void sectionTitle4_()
     {
         onSectionTitle_( SECTION_LEVEL_4 );
     }
 
     /** {@inheritDoc} */
+    @Override
     public void section4_()
     {
         onSection_( SECTION_LEVEL_4 );
     }
 
     /** {@inheritDoc} */
+    @Override
     public void section5()
     {
         onSection( SECTION_LEVEL_5, null );
     }
 
     /** {@inheritDoc} */
+    @Override
     public void sectionTitle5()
     {
         onSectionTitle( SECTION_LEVEL_5, null );
     }
 
     /** {@inheritDoc} */
+    @Override
     public void sectionTitle5_()
     {
         onSectionTitle_( SECTION_LEVEL_5 );
     }
 
     /** {@inheritDoc} */
+    @Override
     public void section5_()
     {
         onSection_( SECTION_LEVEL_5 );
@@ -560,6 +585,7 @@ public class XhtmlBaseSink
      * {@inheritDoc}
      * @see javax.swing.text.html.HTML.Tag#UL
      */
+    @Override
     public void list()
     {
         list( null );
@@ -569,6 +595,7 @@ public class XhtmlBaseSink
      * {@inheritDoc}
      * @see javax.swing.text.html.HTML.Tag#UL
      */
+    @Override
     public void list( SinkEventAttributes attributes )
     {
         if ( paragraphFlag )
@@ -589,6 +616,7 @@ public class XhtmlBaseSink
      * {@inheritDoc}
      * @see javax.swing.text.html.HTML.Tag#UL
      */
+    @Override
     public void list_()
     {
         writeEndTag( HtmlMarkup.UL );
@@ -598,6 +626,7 @@ public class XhtmlBaseSink
      * {@inheritDoc}
      * @see javax.swing.text.html.HTML.Tag#LI
      */
+    @Override
     public void listItem()
     {
         listItem( null );
@@ -607,6 +636,7 @@ public class XhtmlBaseSink
      * {@inheritDoc}
      * @see javax.swing.text.html.HTML.Tag#LI
      */
+    @Override
     public void listItem( SinkEventAttributes attributes )
     {
         MutableAttributeSet atts = SinkUtils.filterAttributes(
@@ -619,6 +649,7 @@ public class XhtmlBaseSink
      * {@inheritDoc}
      * @see javax.swing.text.html.HTML.Tag#LI
      */
+    @Override
     public void listItem_()
     {
         writeEndTag( HtmlMarkup.LI );
@@ -630,6 +661,7 @@ public class XhtmlBaseSink
      * {@inheritDoc}
      * @see javax.swing.text.html.HTML.Tag#OL
      */
+    @Override
     public void numberedList( int numbering )
     {
         numberedList( numbering, null );
@@ -641,6 +673,7 @@ public class XhtmlBaseSink
      * {@inheritDoc}
      * @see javax.swing.text.html.HTML.Tag#OL
      */
+    @Override
     public void numberedList( int numbering, SinkEventAttributes attributes )
     {
         if ( paragraphFlag )
@@ -688,6 +721,7 @@ public class XhtmlBaseSink
      * {@inheritDoc}
      * @see javax.swing.text.html.HTML.Tag#OL
      */
+    @Override
     public void numberedList_()
     {
         writeEndTag( HtmlMarkup.OL );
@@ -697,6 +731,7 @@ public class XhtmlBaseSink
      * {@inheritDoc}
      * @see javax.swing.text.html.HTML.Tag#LI
      */
+    @Override
     public void numberedListItem()
     {
         numberedListItem( null );
@@ -706,6 +741,7 @@ public class XhtmlBaseSink
      * {@inheritDoc}
      * @see javax.swing.text.html.HTML.Tag#LI
      */
+    @Override
     public void numberedListItem( SinkEventAttributes attributes )
     {
         MutableAttributeSet atts = SinkUtils.filterAttributes(
@@ -718,6 +754,7 @@ public class XhtmlBaseSink
      * {@inheritDoc}
      * @see javax.swing.text.html.HTML.Tag#LI
      */
+    @Override
     public void numberedListItem_()
     {
         writeEndTag( HtmlMarkup.LI );
@@ -727,6 +764,7 @@ public class XhtmlBaseSink
      * {@inheritDoc}
      * @see javax.swing.text.html.HTML.Tag#DL
      */
+    @Override
     public void definitionList()
     {
         definitionList( null );
@@ -736,6 +774,7 @@ public class XhtmlBaseSink
      * {@inheritDoc}
      * @see javax.swing.text.html.HTML.Tag#DL
      */
+    @Override
     public void definitionList( SinkEventAttributes attributes )
     {
         if ( paragraphFlag )
@@ -756,6 +795,7 @@ public class XhtmlBaseSink
      * {@inheritDoc}
      * @see javax.swing.text.html.HTML.Tag#DL
      */
+    @Override
     public void definitionList_()
     {
         writeEndTag( HtmlMarkup.DL );
@@ -765,6 +805,7 @@ public class XhtmlBaseSink
      * {@inheritDoc}
      * @see javax.swing.text.html.HTML.Tag#DT
      */
+    @Override
     public void definedTerm( SinkEventAttributes attributes )
     {
         MutableAttributeSet atts = SinkUtils.filterAttributes(
@@ -777,6 +818,7 @@ public class XhtmlBaseSink
      * {@inheritDoc}
      * @see javax.swing.text.html.HTML.Tag#DT
      */
+    @Override
     public void definedTerm()
     {
         definedTerm( null );
@@ -786,6 +828,7 @@ public class XhtmlBaseSink
      * {@inheritDoc}
      * @see javax.swing.text.html.HTML.Tag#DT
      */
+    @Override
     public void definedTerm_()
     {
         writeEndTag( HtmlMarkup.DT );
@@ -795,6 +838,7 @@ public class XhtmlBaseSink
      * {@inheritDoc}
      * @see javax.swing.text.html.HTML.Tag#DD
      */
+    @Override
     public void definition()
     {
         definition( null );
@@ -804,6 +848,7 @@ public class XhtmlBaseSink
      * {@inheritDoc}
      * @see javax.swing.text.html.HTML.Tag#DD
      */
+    @Override
     public void definition( SinkEventAttributes attributes )
     {
         MutableAttributeSet atts = SinkUtils.filterAttributes(
@@ -816,6 +861,7 @@ public class XhtmlBaseSink
      * {@inheritDoc}
      * @see javax.swing.text.html.HTML.Tag#DD
      */
+    @Override
     public void definition_()
     {
         writeEndTag( HtmlMarkup.DD );
@@ -828,6 +874,7 @@ public class XhtmlBaseSink
      * backward compatibility. Note that the behavior is different though, as this method
      * writes an img tag, while correctly the img tag should be written by  figureGraphics().
      */
+    @Override
     public void figure()
     {
         write( String.valueOf( LESS_THAN ) + HtmlMarkup.IMG );
@@ -838,6 +885,7 @@ public class XhtmlBaseSink
      * {@inheritDoc}
      * @see javax.swing.text.html.HTML.Tag#IMG
      */
+    @Override
     public void figure( SinkEventAttributes attributes )
     {
         inFigure = true;
@@ -859,6 +907,7 @@ public class XhtmlBaseSink
     }
 
     /** {@inheritDoc} */
+    @Override
     public void figure_()
     {
         if ( legacyFigure )
@@ -886,12 +935,14 @@ public class XhtmlBaseSink
      * this method is only kept for backward compatibility. Note that the behavior is
      * different though, as this method does not write the img tag, only the src attribute.
      */
+    @Override
     public void figureGraphics( String name )
     {
         write( String.valueOf( SPACE ) + Attribute.SRC + EQUAL + QUOTE + escapeHTML( name ) + QUOTE );
     }
 
     /** {@inheritDoc} */
+    @Override
     public void figureGraphics( String src, SinkEventAttributes attributes )
     {
         if ( inFigure )
@@ -934,6 +985,7 @@ public class XhtmlBaseSink
      * this method is only kept for backward compatibility. Note that the behavior is
      * different though, as this method only writes an alt attribute.
      */
+    @Override
     public void figureCaption()
     {
         figureCaptionFlag = true;
@@ -942,6 +994,7 @@ public class XhtmlBaseSink
     }
 
     /** {@inheritDoc} */
+    @Override
     public void figureCaption( SinkEventAttributes attributes )
     {
         if ( legacyFigureCaption )
@@ -963,6 +1016,7 @@ public class XhtmlBaseSink
     }
 
     /** {@inheritDoc} */
+    @Override
     public void figureCaption_()
     {
         if ( legacyFigureCaption )
@@ -980,6 +1034,7 @@ public class XhtmlBaseSink
      * {@inheritDoc}
      * @see javax.swing.text.html.HTML.Tag#P
      */
+    @Override
     public void paragraph()
     {
         paragraph( null );
@@ -989,6 +1044,7 @@ public class XhtmlBaseSink
      * {@inheritDoc}
      * @see javax.swing.text.html.HTML.Tag#P
      */
+    @Override
     public void paragraph( SinkEventAttributes attributes )
     {
         paragraphFlag = true;
@@ -1003,6 +1059,7 @@ public class XhtmlBaseSink
      * {@inheritDoc}
      * @see javax.swing.text.html.HTML.Tag#P
      */
+    @Override
     public void paragraph_()
     {
         if ( paragraphFlag )
@@ -1019,6 +1076,7 @@ public class XhtmlBaseSink
      * @see javax.swing.text.html.HTML.Tag#DIV
      * @see javax.swing.text.html.HTML.Tag#PRE
      */
+    @Override
     public void verbatim( boolean boxed )
     {
         if ( boxed )
@@ -1038,6 +1096,7 @@ public class XhtmlBaseSink
      * @see javax.swing.text.html.HTML.Tag#DIV
      * @see javax.swing.text.html.HTML.Tag#PRE
      */
+    @Override
     public void verbatim( SinkEventAttributes attributes )
     {
         if ( paragraphFlag )
@@ -1084,6 +1143,7 @@ public class XhtmlBaseSink
      * @see javax.swing.text.html.HTML.Tag#DIV
      * @see javax.swing.text.html.HTML.Tag#PRE
      */
+    @Override
     public void verbatim_()
     {
         writeEndTag( HtmlMarkup.PRE );
@@ -1097,6 +1157,7 @@ public class XhtmlBaseSink
      * {@inheritDoc}
      * @see javax.swing.text.html.HTML.Tag#HR
      */
+    @Override
     public void horizontalRule()
     {
         horizontalRule( null );
@@ -1106,6 +1167,7 @@ public class XhtmlBaseSink
      * {@inheritDoc}
      * @see javax.swing.text.html.HTML.Tag#HR
      */
+    @Override
     public void horizontalRule( SinkEventAttributes attributes )
     {
         MutableAttributeSet atts = SinkUtils.filterAttributes(
@@ -1115,6 +1177,7 @@ public class XhtmlBaseSink
     }
 
     /** {@inheritDoc} */
+    @Override
     public void table()
     {
         // start table with tableRows
@@ -1122,6 +1185,7 @@ public class XhtmlBaseSink
     }
 
     /** {@inheritDoc} */
+    @Override
     public void table( SinkEventAttributes attributes )
     {
         this.tableContentWriterStack.addLast( new StringWriter() );
@@ -1151,6 +1215,7 @@ public class XhtmlBaseSink
      * {@inheritDoc}
      * @see javax.swing.text.html.HTML.Tag#TABLE
      */
+    @Override
     public void table_()
     {
         this.tableRows = false;
@@ -1182,7 +1247,7 @@ public class XhtmlBaseSink
         if ( tableCaption != null )
         {
             // DOXIA-177
-            StringBuffer sb = new StringBuffer();
+            StringBuilder sb = new StringBuilder();
             sb.append( tableContent.substring( 0, tableContent.indexOf( Markup.GREATER_THAN ) + 1 ) );
             sb.append( tableCaption );
             sb.append( tableContent.substring( tableContent.indexOf( Markup.GREATER_THAN ) + 1 ) );
@@ -1202,6 +1267,7 @@ public class XhtmlBaseSink
      * {@inheritDoc}
      * @see javax.swing.text.html.HTML.Tag#TABLE
      */
+    @Override
     public void tableRows( int[] justification, boolean grid )
     {
         this.tableRows = true;
@@ -1233,6 +1299,7 @@ public class XhtmlBaseSink
     }
 
     /** {@inheritDoc} */
+    @Override
     public void tableRows_()
     {
         this.tableRows = false;
@@ -1254,6 +1321,7 @@ public class XhtmlBaseSink
      * {@inheritDoc}
      * @see javax.swing.text.html.HTML.Tag#TR
      */
+    @Override
     public void tableRow()
     {
         // To be backward compatible
@@ -1270,6 +1338,7 @@ public class XhtmlBaseSink
      * {@inheritDoc}
      * @see javax.swing.text.html.HTML.Tag#TR
      */
+    @Override
     public void tableRow( SinkEventAttributes attributes )
     {
         MutableAttributeSet att = new SinkEventAttributeSet();
@@ -1301,24 +1370,28 @@ public class XhtmlBaseSink
      * {@inheritDoc}
      * @see javax.swing.text.html.HTML.Tag#TR
      */
+    @Override
     public void tableRow_()
     {
         writeEndTag( HtmlMarkup.TR );
     }
 
     /** {@inheritDoc} */
+    @Override
     public void tableCell()
     {
         tableCell( (SinkEventAttributeSet) null );
     }
 
     /** {@inheritDoc} */
+    @Override
     public void tableHeaderCell()
     {
         tableHeaderCell( (SinkEventAttributeSet) null );
     }
 
     /** {@inheritDoc} */
+    @Override
     public void tableCell( String width )
     {
         MutableAttributeSet att = new SinkEventAttributeSet();
@@ -1328,6 +1401,7 @@ public class XhtmlBaseSink
     }
 
     /** {@inheritDoc} */
+    @Override
     public void tableHeaderCell( String width )
     {
         MutableAttributeSet att = new SinkEventAttributeSet();
@@ -1337,12 +1411,14 @@ public class XhtmlBaseSink
     }
 
     /** {@inheritDoc} */
+    @Override
     public void tableCell( SinkEventAttributes attributes )
     {
         tableCell( false, attributes );
     }
 
     /** {@inheritDoc} */
+    @Override
     public void tableHeaderCell( SinkEventAttributes attributes )
     {
         tableCell( true, attributes );
@@ -1358,26 +1434,26 @@ public class XhtmlBaseSink
     {
         Tag t = ( headerRow ? HtmlMarkup.TH : HtmlMarkup.TD );
 
-        MutableAttributeSet att = new SinkEventAttributeSet();
-
         if ( attributes == null )
         {
-            attributes = new SinkEventAttributeSet( 0 );
+            writeStartTag( t, null );
         }
-
-        att.addAttributes( SinkUtils.filterAttributes(
-                attributes, SinkUtils.SINK_TD_ATTRIBUTES  ) );
-
-        writeStartTag( t, att );
+        else
+        {
+            writeStartTag( t,
+                SinkUtils.filterAttributes( attributes, SinkUtils.SINK_TD_ATTRIBUTES ) );
+        }
     }
 
     /** {@inheritDoc} */
+    @Override
     public void tableCell_()
     {
         tableCell_( false );
     }
 
     /** {@inheritDoc} */
+    @Override
     public void tableHeaderCell_()
     {
         tableCell_( true );
@@ -1408,6 +1484,7 @@ public class XhtmlBaseSink
      * {@inheritDoc}
      * @see javax.swing.text.html.HTML.Tag#CAPTION
      */
+    @Override
     public void tableCaption()
     {
         tableCaption( null );
@@ -1417,6 +1494,7 @@ public class XhtmlBaseSink
      * {@inheritDoc}
      * @see javax.swing.text.html.HTML.Tag#CAPTION
      */
+    @Override
     public void tableCaption( SinkEventAttributes attributes )
     {
         StringWriter sw = new StringWriter();
@@ -1434,6 +1512,7 @@ public class XhtmlBaseSink
      * {@inheritDoc}
      * @see javax.swing.text.html.HTML.Tag#CAPTION
      */
+    @Override
     public void tableCaption_()
     {
         writeEndTag( HtmlMarkup.CAPTION );
@@ -1449,6 +1528,7 @@ public class XhtmlBaseSink
      * {@inheritDoc}
      * @see javax.swing.text.html.HTML.Tag#A
      */
+    @Override
     public void anchor( String name )
     {
         anchor( name, null );
@@ -1458,6 +1538,7 @@ public class XhtmlBaseSink
      * {@inheritDoc}
      * @see javax.swing.text.html.HTML.Tag#A
      */
+    @Override
     public void anchor( String name, SinkEventAttributes attributes )
     {
         if ( name == null )
@@ -1494,6 +1575,7 @@ public class XhtmlBaseSink
      * {@inheritDoc}
      * @see javax.swing.text.html.HTML.Tag#A
      */
+    @Override
     public void anchor_()
     {
         if ( !headFlag )
@@ -1503,12 +1585,14 @@ public class XhtmlBaseSink
     }
 
     /** {@inheritDoc} */
+    @Override
     public void link( String name )
     {
         link( name, null );
     }
 
     /** {@inheritDoc} */
+    @Override
     public void link( String name, SinkEventAttributes attributes )
     {
         if ( attributes == null )
@@ -1575,6 +1659,7 @@ public class XhtmlBaseSink
      * {@inheritDoc}
      * @see javax.swing.text.html.HTML.Tag#A
      */
+    @Override
     public void link_()
     {
         if ( !headFlag )
@@ -1587,6 +1672,7 @@ public class XhtmlBaseSink
      * {@inheritDoc}
      * @see javax.swing.text.html.HTML.Tag#I
      */
+    @Override
     public void italic()
     {
         if ( !headFlag )
@@ -1599,6 +1685,7 @@ public class XhtmlBaseSink
      * {@inheritDoc}
      * @see javax.swing.text.html.HTML.Tag#I
      */
+    @Override
     public void italic_()
     {
         if ( !headFlag )
@@ -1611,6 +1698,7 @@ public class XhtmlBaseSink
      * {@inheritDoc}
      * @see javax.swing.text.html.HTML.Tag#B
      */
+    @Override
     public void bold()
     {
         if ( !headFlag )
@@ -1623,6 +1711,7 @@ public class XhtmlBaseSink
      * {@inheritDoc}
      * @see javax.swing.text.html.HTML.Tag#B
      */
+    @Override
     public void bold_()
     {
         if ( !headFlag )
@@ -1635,6 +1724,7 @@ public class XhtmlBaseSink
      * {@inheritDoc}
      * @see javax.swing.text.html.HTML.Tag#TT
      */
+    @Override
     public void monospaced()
     {
         if ( !headFlag )
@@ -1647,6 +1737,7 @@ public class XhtmlBaseSink
      * {@inheritDoc}
      * @see javax.swing.text.html.HTML.Tag#TT
      */
+    @Override
     public void monospaced_()
     {
         if ( !headFlag )
@@ -1659,6 +1750,7 @@ public class XhtmlBaseSink
      * {@inheritDoc}
      * @see javax.swing.text.html.HTML.Tag#BR
      */
+    @Override
     public void lineBreak()
     {
         lineBreak( null );
@@ -1668,6 +1760,7 @@ public class XhtmlBaseSink
      * {@inheritDoc}
      * @see javax.swing.text.html.HTML.Tag#BR
      */
+    @Override
     public void lineBreak( SinkEventAttributes attributes )
     {
         if ( headFlag || isVerbatimFlag() )
@@ -1684,12 +1777,14 @@ public class XhtmlBaseSink
     }
 
     /** {@inheritDoc} */
+    @Override
     public void pageBreak()
     {
         comment( "PB" );
     }
 
     /** {@inheritDoc} */
+    @Override
     public void nonBreakingSpace()
     {
         if ( headFlag )
@@ -1703,6 +1798,7 @@ public class XhtmlBaseSink
     }
 
     /** {@inheritDoc} */
+    @Override
     public void text( String text )
     {
         if ( headFlag )
@@ -1720,6 +1816,7 @@ public class XhtmlBaseSink
     }
 
     /** {@inheritDoc} */
+    @Override
     public void text( String text, SinkEventAttributes attributes )
     {
         if ( attributes == null )
@@ -1767,6 +1864,7 @@ public class XhtmlBaseSink
     }
 
     /** {@inheritDoc} */
+    @Override
     public void rawText( String text )
     {
         if ( headFlag )
@@ -1780,25 +1878,27 @@ public class XhtmlBaseSink
     }
 
     /** {@inheritDoc} */
+    @Override
     public void comment( String comment )
     {
-        if ( StringUtils.isNotEmpty( comment ) && comment.contains( "--" ) )
+        String cmt = comment;
+
+        if ( StringUtils.isNotEmpty( cmt ) && cmt.contains( "--" ) )
         {
-            String originalComment = comment;
+            String originalComment = cmt;
             // http://www.w3.org/TR/2000/REC-xml-20001006#sec-comments
-            while ( comment.contains( "--" ) )
+            while ( cmt.contains( "--" ) )
             {
-                comment = StringUtils.replace( comment, "--", "- -" );
+                cmt = StringUtils.replace( cmt, "--", "- -" );
             }
 
-            getLog()
-                    .warn( "[Xhtml Sink] Modified invalid comment: '" + originalComment + "' to '" + comment + "'" );
+            getLog().warn( "[Xhtml Sink] Modified invalid comment: '" + originalComment + "' to '" + cmt + "'" );
         }
 
-        StringBuffer buf = new StringBuffer( comment.length() + 9 );
+        StringBuilder buf = new StringBuilder( cmt.length() + 9 );
 
         buf.append( LESS_THAN ).append( BANG ).append( MINUS ).append( MINUS ).append( SPACE );
-        buf.append( comment );
+        buf.append( cmt );
         buf.append( SPACE ).append( MINUS ).append( MINUS ).append( GREATER_THAN );
 
         write( buf.toString() );
@@ -1843,6 +1943,7 @@ public class XhtmlBaseSink
      * @param attributes a set of attributes for the event. May be null.
      *      The attributes will always be written, no validity check is performed.
      */
+    @Override
     public void unknown( String name, Object[] requiredParams, SinkEventAttributes attributes )
     {
         if ( requiredParams == null || !( requiredParams[0] instanceof Integer ) )
@@ -1915,12 +2016,14 @@ public class XhtmlBaseSink
     }
 
     /** {@inheritDoc} */
+    @Override
     public void flush()
     {
         writer.flush();
     }
 
     /** {@inheritDoc} */
+    @Override
     public void close()
     {
         writer.close();
@@ -1953,9 +2056,9 @@ public class XhtmlBaseSink
     protected void content( String text )
     {
         // small hack due to DOXIA-314
-        text = escapeHTML( text );
-        text = StringUtils.replace( text, "&amp;#", "&#" );
-        write( text );
+        String txt = escapeHTML( text );
+        txt = StringUtils.replace( txt, "&amp;#", "&#" );
+        write( txt );
     }
 
     /**
@@ -2010,6 +2113,7 @@ public class XhtmlBaseSink
     }
 
     /** {@inheritDoc} */
+    @Override
     protected void writeStartTag( Tag t, MutableAttributeSet att, boolean isSimpleTag )
     {
         if ( this.tableCaptionXMLWriterStack.isEmpty() )
@@ -2041,6 +2145,7 @@ public class XhtmlBaseSink
     }
 
     /** {@inheritDoc} */
+    @Override
     protected void writeEndTag( Tag t )
     {
         if ( this.tableCaptionXMLWriterStack.isEmpty() )
@@ -2063,10 +2168,10 @@ public class XhtmlBaseSink
      */
     private void logMessage( String key, String msg )
     {
-        msg = "[XHTML Sink] " + msg;
+        final String mesg = "[XHTML Sink] " + msg;
         if ( getLog().isDebugEnabled() )
         {
-            getLog().debug( msg );
+            getLog().debug( mesg );
 
             return;
         }
@@ -2081,7 +2186,7 @@ public class XhtmlBaseSink
         {
             set = new TreeSet<String>();
         }
-        set.add( msg );
+        set.add( mesg );
         warnMessages.put( key, set );
     }
 }

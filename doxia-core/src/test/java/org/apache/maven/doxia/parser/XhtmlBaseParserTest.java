@@ -51,6 +51,7 @@ public class XhtmlBaseParserTest
         sink.reset();
     }
 
+    /** Test Doxia version. */
     public void testDoxiaVersion()
     {
         assertNotNull( XhtmlBaseParser.doxiaVersion() );
@@ -319,7 +320,7 @@ public class XhtmlBaseParserTest
     public void testDoxia250()
         throws Exception
     {
-        StringBuffer sb = new StringBuffer();
+        StringBuilder sb = new StringBuilder();
         sb.append( "<!DOCTYPE test [" ).append( XhtmlBaseParser.EOL );
         sb.append( "<!ENTITY foo \"&#x159;\">" ).append( XhtmlBaseParser.EOL );
         sb.append( "<!ENTITY foo1 \"&nbsp;\">" ).append( XhtmlBaseParser.EOL );

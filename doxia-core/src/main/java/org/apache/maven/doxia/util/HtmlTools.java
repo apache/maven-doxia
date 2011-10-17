@@ -143,7 +143,7 @@ public class HtmlTools
         }
 
         int length = text.length();
-        StringBuffer buffer = new StringBuffer( length );
+        StringBuilder buffer = new StringBuilder( length );
 
         for ( int i = 0; i < length; ++i )
         {
@@ -301,7 +301,7 @@ public class HtmlTools
             return null;
         }
 
-        StringBuffer encoded = new StringBuffer();
+        StringBuilder encoded = new StringBuilder();
         int length = url.length();
 
         char[] unicode = new char[1];

@@ -109,13 +109,15 @@ public abstract class AbstractXmlParser
     {
         init();
 
+        Reader src = source;
+
         // 1 first parsing if validation is required
         if ( isValidate() )
         {
             String content;
             try
             {
-                content = IOUtil.toString( new BufferedReader( source ) );
+                content = IOUtil.toString( new BufferedReader( src ) );
             }
             catch ( IOException e )
             {
@@ -124,7 +126,7 @@ public abstract class AbstractXmlParser
 
             new XmlValidator( getLog() ).validate( content );
 
-            source = new StringReader( content );
+            src = new StringReader( content );
         }
 
         // 2 second parsing to process
@@ -132,7 +134,7 @@ public abstract class AbstractXmlParser
         {
             XmlPullParser parser = new MXParser();
 
-            parser.setInput( source );
+            parser.setInput( src );
 
             sink.enableLogging( getLog() );
 
@@ -157,6 +159,7 @@ public abstract class AbstractXmlParser
      *
      * Convenience method to parse an arbitrary string and emit any xml events into the given sink.
      */
+    @Override
     public void parse( String string, Sink sink )
         throws ParseException
     {
@@ -164,6 +167,7 @@ public abstract class AbstractXmlParser
     }
 
     /** {@inheritDoc} */
+    @Override
     public final int getType()
     {
         return XML_TYPE;
@@ -224,7 +228,7 @@ public abstract class AbstractXmlParser
 
                 if ( isIgnorableWhitespace() )
                 {
-                    if ( !text.trim().equals( "" ) )
+                    if ( text.trim().length() != 0 )
                     {
                         handleText( parser, sink );
                     }
@@ -509,7 +513,7 @@ public abstract class AbstractXmlParser
 
         if ( isCollapsibleWhitespace() )
         {
-            StringBuffer newText = new StringBuffer();
+            StringBuilder newText = new StringBuilder();
             String[] elts = StringUtils.split( text, " \r\n" );
             for ( int i = 0; i < elts.length; i++ )
             {
@@ -618,12 +622,11 @@ public abstract class AbstractXmlParser
         if ( entitiesCount > 0 )
         {
             // text should be foo [...]
-            int start = text.indexOf( "[" );
-            int end = text.lastIndexOf( "]" );
+            int start = text.indexOf( '[');
+            int end = text.lastIndexOf( ']');
             if ( start != -1 && end != -1 )
             {
-                text = text.substring( start + 1, end );
-                addDTDEntities( parser, text );
+                addDTDEntities( parser, text.substring( start + 1, end ) );
             }
         }
     }
@@ -649,8 +652,8 @@ public abstract class AbstractXmlParser
         int entitiesCount = StringUtils.countMatches( text, ENTITY_START );
         if ( entitiesCount > 0 )
         {
-            text = StringUtils.replace( text, ENTITY_START, "\n" + ENTITY_START );
-            BufferedReader reader = new BufferedReader( new StringReader( text ) );
+            final String txt = StringUtils.replace( text, ENTITY_START, "\n" + ENTITY_START );
+            BufferedReader reader = new BufferedReader( new StringReader( txt ) );
             String line;
             String tmpLine = "";
             try

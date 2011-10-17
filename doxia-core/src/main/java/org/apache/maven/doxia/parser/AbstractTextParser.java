@@ -33,6 +33,7 @@ public abstract class AbstractTextParser
     implements TextMarkup
 {
     /** {@inheritDoc} */
+    @Override
     public final int getType()
     {
         return TXT_TYPE;

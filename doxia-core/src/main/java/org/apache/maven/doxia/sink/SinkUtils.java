@@ -184,7 +184,7 @@ public class SinkUtils
             return "";
         }
 
-        StringBuffer sb = new StringBuffer();
+        StringBuilder sb = new StringBuilder();
 
         Enumeration<?> names = att.getAttributeNames();
 
@@ -215,7 +215,7 @@ public class SinkUtils
 
     private static String asCssString( AttributeSet att )
     {
-        StringBuffer sb = new StringBuffer();
+        StringBuilder sb = new StringBuilder();
 
         Enumeration<?> names = att.getAttributeNames();
 

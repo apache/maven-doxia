@@ -73,6 +73,7 @@ public interface HtmlMarkup
     Tag ABBR = new Tag()
     {
         /** {@inheritDoc} */
+        @Override
         public String toString()
         {
             return "abbr";
@@ -83,6 +84,7 @@ public interface HtmlMarkup
     Tag ACRONYM = new Tag()
     {
         /** {@inheritDoc} */
+        @Override
         public String toString()
         {
             return "acronym";
@@ -111,6 +113,7 @@ public interface HtmlMarkup
     Tag BDO = new Tag()
     {
         /** {@inheritDoc} */
+        @Override
         public String toString()
         {
             return "bdo";
@@ -133,6 +136,7 @@ public interface HtmlMarkup
     Tag BUTTON = new Tag()
     {
         /** {@inheritDoc} */
+        @Override
         public String toString()
         {
             return "button";
@@ -155,6 +159,7 @@ public interface HtmlMarkup
     Tag COL = new Tag()
     {
         /** {@inheritDoc} */
+        @Override
         public String toString()
         {
             return "col";
@@ -165,6 +170,7 @@ public interface HtmlMarkup
     Tag COLGROUP = new Tag()
     {
         /** {@inheritDoc} */
+        @Override
         public String toString()
         {
             return "colgroup";
@@ -178,6 +184,7 @@ public interface HtmlMarkup
     Tag DEL = new Tag()
     {
         /** {@inheritDoc} */
+        @Override
         public String toString()
         {
             return "del";
@@ -206,6 +213,7 @@ public interface HtmlMarkup
     Tag FIELDSET = new Tag()
     {
         /** {@inheritDoc} */
+        @Override
         public String toString()
         {
             return "fieldset";
@@ -258,6 +266,7 @@ public interface HtmlMarkup
     Tag IFRAME = new Tag()
     {
         /** {@inheritDoc} */
+        @Override
         public String toString()
         {
             return "iframe";
@@ -274,6 +283,7 @@ public interface HtmlMarkup
     Tag INS = new Tag()
     {
         /** {@inheritDoc} */
+        @Override
         public String toString()
         {
             return "ins";
@@ -290,6 +300,7 @@ public interface HtmlMarkup
     Tag LABEL = new Tag()
     {
         /** {@inheritDoc} */
+        @Override
         public String toString()
         {
             return "label";
@@ -300,6 +311,7 @@ public interface HtmlMarkup
     Tag LEGEND = new Tag()
     {
         /** {@inheritDoc} */
+        @Override
         public String toString()
         {
             return "legend";
@@ -328,6 +340,7 @@ public interface HtmlMarkup
     Tag NOSCRIPT = new Tag()
     {
         /** {@inheritDoc} */
+        @Override
         public String toString()
         {
             return "noscript";
@@ -344,6 +357,7 @@ public interface HtmlMarkup
     Tag OPTGROUP = new Tag()
     {
         /** {@inheritDoc} */
+        @Override
         public String toString()
         {
             return "optgroup";
@@ -366,6 +380,7 @@ public interface HtmlMarkup
     Tag Q = new Tag()
     {
         /** {@inheritDoc} */
+        @Override
         public String toString()
         {
             return "q";
@@ -412,6 +427,7 @@ public interface HtmlMarkup
     Tag TBODY = new Tag()
     {
         /** {@inheritDoc} */
+        @Override
         public String toString()
         {
             return "tbody";
@@ -428,6 +444,7 @@ public interface HtmlMarkup
     Tag TFOOT = new Tag()
     {
         /** {@inheritDoc} */
+        @Override
         public String toString()
         {
             return "tfoot";
@@ -441,6 +458,7 @@ public interface HtmlMarkup
     Tag THEAD = new Tag()
     {
         /** {@inheritDoc} */
+        @Override
         public String toString()
         {
             return "thead";

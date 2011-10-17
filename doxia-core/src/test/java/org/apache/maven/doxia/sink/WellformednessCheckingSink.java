@@ -587,7 +587,7 @@ public class WellformednessCheckingSink
      */
     public boolean isWellformed()
     {
-        return errors.size() == 0;
+        return errors.isEmpty();
     }
 
     /**
