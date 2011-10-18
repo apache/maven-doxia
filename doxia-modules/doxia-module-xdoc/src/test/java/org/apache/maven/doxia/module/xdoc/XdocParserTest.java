@@ -31,6 +31,7 @@ import org.apache.maven.doxia.parser.AbstractParserTest;
 import org.apache.maven.doxia.parser.ParseException;
 import org.apache.maven.doxia.parser.Parser;
 import org.apache.maven.doxia.sink.Sink;
+import org.apache.maven.doxia.sink.SinkEventAttributeSet;
 import org.apache.maven.doxia.sink.SinkEventElement;
 import org.apache.maven.doxia.sink.SinkEventTestingSink;
 
@@ -253,6 +254,40 @@ public class XdocParserTest
         assertEquals( "text", ( it.next() ).getName() );
         assertEquals( "sectionTitle2_", ( it.next() ).getName() );
         assertEquals( "section2_", ( it.next() ).getName() );
+        assertEquals( "section1_", ( it.next() ).getName() );
+        assertFalse( it.hasNext() );
+    }
+
+    /** @throws Exception  */
+    public void testSectionAttributes()
+        throws Exception
+    {
+        // DOXIA-448
+        String text = "<section name=\"section name\" class=\"foo\" id=\"bar\"></section>";
+
+        SinkEventTestingSink sink = new SinkEventTestingSink();
+
+        parser.parse( text, sink );
+
+        Iterator<SinkEventElement> it = sink.getEventList().iterator();
+
+        assertEquals( "anchor", ( it.next() ).getName() );
+        assertEquals( "anchor_", ( it.next() ).getName() );
+
+        SinkEventElement next = it.next();
+        assertEquals( "section1", next.getName() );
+        SinkEventAttributeSet set = (SinkEventAttributeSet) next.getArgs()[0];
+        assertEquals( 3, set.getAttributeCount() );
+        assertTrue( set.containsAttribute( "name", "section name" ) );
+        assertTrue( set.containsAttribute( "class", "foo" ) );
+        assertTrue( set.containsAttribute( "id", "bar" ) );
+
+        next = it.next();
+        assertEquals( "sectionTitle1", next.getName() );
+        assertNull( (SinkEventAttributeSet) next.getArgs()[0] );
+
+        assertEquals( "text", ( it.next() ).getName() );
+        assertEquals( "sectionTitle1_", ( it.next() ).getName() );
         assertEquals( "section1_", ( it.next() ).getName() );
         assertFalse( it.hasNext() );
     }

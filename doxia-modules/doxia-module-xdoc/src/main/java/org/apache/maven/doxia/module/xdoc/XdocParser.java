@@ -476,7 +476,7 @@ public class XdocParser
         }
 
         sink.section( level, attribs );
-        sink.sectionTitle( level, attribs );
+        sink.sectionTitle( level, null );
         sink.text( HtmlTools.unescapeHTML( parser.getAttributeValue( null, Attribute.NAME.toString() ) ) );
         sink.sectionTitle_( level );
     }

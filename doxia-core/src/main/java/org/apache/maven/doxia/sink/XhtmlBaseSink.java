@@ -486,7 +486,6 @@ public class XhtmlBaseSink
             att.addAttributes( SinkUtils.filterAttributes(
                     attributes, SinkUtils.SINK_BASE_ATTRIBUTES  ) );
 
-            att.removeAttribute( Attribute.ID.toString() );
             writeStartTag( HtmlMarkup.DIV, att );
         }
     }

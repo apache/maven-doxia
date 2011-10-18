@@ -23,6 +23,7 @@ import java.io.StringWriter;
 import java.io.Writer;
 
 import javax.swing.text.html.HTML.Attribute;
+
 import org.codehaus.plexus.PlexusTestCase;
 
 /**
@@ -208,6 +209,32 @@ public class XhtmlBaseSinkTest
         }
 
         assertEquals( "<div class=\"section\" style=\"bold\"><h2 style=\"bold\"></h2></div>", writer.toString() );
+    }
+
+    /**
+     * Test of section method, of class XhtmlBaseSink.
+     */
+    public void testSectionAttributes()
+    {
+        final int level = XhtmlBaseSink.SECTION_LEVEL_1;
+        final SinkEventAttributeSet set = new SinkEventAttributeSet(
+            new String[] {"name", "section name", "class", "foo", "id", "bar"} );
+
+        try
+        {
+            sink = new XhtmlBaseSink( writer );
+
+            sink.section( level, set );
+            sink.sectionTitle( level, null );
+            sink.sectionTitle_( level );
+            sink.section_( level );
+        }
+        finally
+        {
+            sink.close();
+        }
+
+        assertEquals( "<div class=\"foo\" id=\"bar\"><h2></h2></div>", writer.toString() );
     }
 
     /**
