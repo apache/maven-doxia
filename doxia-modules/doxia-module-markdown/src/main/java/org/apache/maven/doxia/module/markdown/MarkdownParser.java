@@ -31,6 +31,7 @@ import org.codehaus.plexus.util.IOUtil;
 
 import org.pegdown.Extensions;
 import org.pegdown.PegDownProcessor;
+import org.pegdown.ast.RootNode;
 
 /**
  * Implementation of {@link org.apache.maven.doxia.parser.Parser} for Markdown documents.
@@ -60,12 +61,14 @@ public class MarkdownParser
      * {@inheritDoc}
      */
     @Override
-    public void parse( Reader reader, Sink sink )
+    public void parse( Reader source, Sink sink )
         throws ParseException
     {
         try
         {
-            super.parse( new StringReader( "<html><body>" + PEGDOWN_PROCESSOR.markdownToHtml( IOUtil.toString( reader ) ) + "</body></html>" ), sink );
+            RootNode rootNode = PEGDOWN_PROCESSOR.parseMarkdown( IOUtil.toString( source ).toCharArray() );
+            String markdownAsHtml = new MarkdownToDoxiaHtmlSerializer().toHtml( rootNode );
+            super.parse( new StringReader( "<html><body>" + markdownAsHtml + "</body></html>" ), sink );
         }
         catch ( IOException e )
         {

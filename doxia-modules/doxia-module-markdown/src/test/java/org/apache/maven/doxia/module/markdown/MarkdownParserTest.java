@@ -147,9 +147,7 @@ public class MarkdownParserTest
         assertEquals( "paragraph_", it.next().getName() );
         assertEquals( "text", it.next().getName() );
         assertEquals( "verbatim", it.next().getName() );
-        assertEquals( "monospaced", it.next().getName() );
         assertEquals( "text", it.next().getName() );
-        assertEquals( "monospaced_", it.next().getName() );
         assertEquals( "verbatim_", it.next().getName() );
         assertEquals( "body_", it.next().getName() );
 
