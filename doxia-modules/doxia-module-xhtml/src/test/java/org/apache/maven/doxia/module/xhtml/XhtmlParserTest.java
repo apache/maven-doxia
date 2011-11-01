@@ -29,7 +29,6 @@ import org.apache.maven.doxia.sink.SinkEventElement;
 import org.apache.maven.doxia.sink.SinkEventTestingSink;
 import org.codehaus.plexus.util.FileUtils;
 
-
 /**
  * @author <a href="mailto:lars@trieloff.net">Lars Trieloff</a>
  * @version $Id$
@@ -51,10 +50,11 @@ public class XhtmlParserTest
         // Be sure to delete them
         String tmpDir = System.getProperty( "java.io.tmpdir" );
         String excludes = "xhtml-lat1.ent, xhtml1-transitional.dtd, xhtml-special.ent, xhtml-symbol.ent";
-        List tmpFiles = FileUtils.getFileNames( new File( tmpDir ), excludes, null, true );
-        for ( Iterator it = tmpFiles.iterator(); it.hasNext(); )
+        @SuppressWarnings( "unchecked" )
+        List<String> tmpFiles = FileUtils.getFileNames( new File( tmpDir ), excludes, null, true );
+        for ( String filename : tmpFiles )
         {
-            File tmpFile = new File( it.next().toString() );
+            File tmpFile = new File( filename );
             tmpFile.delete();
         }
     }
@@ -81,10 +81,10 @@ public class XhtmlParserTest
 
         ( (XhtmlParser) createParser() ).parse( text, sink );
 
-        Iterator it = sink.getEventList().iterator();
+        Iterator<SinkEventElement> it = sink.getEventList().iterator();
 
-        assertEquals( "body", ( (SinkEventElement) it.next() ).getName() );
-        assertEquals( "body_", ( (SinkEventElement) it.next() ).getName() );
+        assertEquals( "body", it.next().getName() );
+        assertEquals( "body_", it.next().getName() );
         assertFalse( it.hasNext() );
     }
 
@@ -99,20 +99,20 @@ public class XhtmlParserTest
 
         ( (XhtmlParser) createParser() ).parse( text, sink );
 
-        Iterator it = sink.getEventList().iterator();
+        Iterator<SinkEventElement> it = sink.getEventList().iterator();
 
-        assertEquals( "head", ( (SinkEventElement) it.next() ).getName() );
-        assertEquals( "title", ( (SinkEventElement) it.next() ).getName() );
-        assertEquals( "text", ( (SinkEventElement) it.next() ).getName() );
-        assertEquals( "title_", ( (SinkEventElement) it.next() ).getName() );
-        assertEquals( "author", ( (SinkEventElement) it.next() ).getName() );
-        assertEquals( "text", ( (SinkEventElement) it.next() ).getName() );
-        assertEquals( "author_", ( (SinkEventElement) it.next() ).getName() );
-        assertEquals( "date", ( (SinkEventElement) it.next() ).getName() );
-        assertEquals( "text", ( (SinkEventElement) it.next() ).getName() );
-        assertEquals( "date_", ( (SinkEventElement) it.next() ).getName() );
-        assertEquals( "unknown", ( (SinkEventElement) it.next() ).getName() );
-        assertEquals( "head_", ( (SinkEventElement) it.next() ).getName() );
+        assertEquals( "head", it.next().getName() );
+        assertEquals( "title", it.next().getName() );
+        assertEquals( "text", it.next().getName() );
+        assertEquals( "title_", it.next().getName() );
+        assertEquals( "author", it.next().getName() );
+        assertEquals( "text", it.next().getName() );
+        assertEquals( "author_", it.next().getName() );
+        assertEquals( "date", it.next().getName() );
+        assertEquals( "text", it.next().getName() );
+        assertEquals( "date_", it.next().getName() );
+        assertEquals( "unknown", it.next().getName() );
+        assertEquals( "head_", it.next().getName() );
         assertFalse( it.hasNext() );
     }
 
@@ -126,10 +126,10 @@ public class XhtmlParserTest
 
         ( (XhtmlParser) createParser() ).parse( text, sink );
 
-        Iterator it = sink.getEventList().iterator();
+        Iterator<SinkEventElement> it = sink.getEventList().iterator();
 
-        assertEquals( "verbatim", ( (SinkEventElement) it.next() ).getName() );
-        assertEquals( "verbatim_", ( (SinkEventElement) it.next() ).getName() );
+        assertEquals( "verbatim", it.next().getName() );
+        assertEquals( "verbatim_", it.next().getName() );
         assertFalse( it.hasNext() );
     }
 
@@ -147,11 +147,11 @@ public class XhtmlParserTest
 
         ( (XhtmlParser) createParser() ).parse( text, sink );
 
-        Iterator it = sink.getEventList().iterator();
-        assertEquals( "unknown", ( (SinkEventElement) it.next() ).getName() );
-        assertEquals( "unknown", ( (SinkEventElement) it.next() ).getName() );
-        assertEquals( "unknown", ( (SinkEventElement) it.next() ).getName() );
-        assertEquals( "unknown", ( (SinkEventElement) it.next() ).getName() );
+        Iterator<SinkEventElement> it = sink.getEventList().iterator();
+        assertEquals( "unknown", it.next().getName() );
+        assertEquals( "unknown", it.next().getName() );
+        assertEquals( "unknown", it.next().getName() );
+        assertEquals( "unknown", it.next().getName() );
         assertFalse( it.hasNext() );
     }
 }
