@@ -38,6 +38,7 @@
     <menu name="Document Schema">
       <item name="Reference" href="document.html"/>
       <item name="Using Document Schema" href="using-document-xsd.html"/>
+      <item name="Using RandomAccessSink" href="using-randomaccesssink.html"/>
     </menu>
 
     <menu ref="reports"/>
