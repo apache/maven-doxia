@@ -151,7 +151,7 @@ under the License.
   </mailingLists>
 
   <prerequisites>
-    <maven>2.0.6</maven>
+    <maven>${mavenVersion}</maven>
   </prerequisites>
 
   <modules>
@@ -188,6 +188,7 @@ under the License.
   </distributionManagement>
 
   <properties>
+    <mavenVersion>2.0.6</mavenVersion>
     <projectVersion>${project.version}</projectVersion>
   </properties>
 
