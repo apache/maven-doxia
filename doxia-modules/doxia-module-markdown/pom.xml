@@ -21,42 +21,42 @@ under the License.
 
 <project xmlns="http://maven.apache.org/POM/4.0.0" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
          xsi:schemaLocation="http://maven.apache.org/POM/4.0.0 http://maven.apache.org/xsd/maven-4.0.0.xsd">
-    <modelVersion>4.0.0</modelVersion>
+  <modelVersion>4.0.0</modelVersion>
 
-    <parent>
-        <artifactId>doxia-modules</artifactId>
-        <groupId>org.apache.maven.doxia</groupId>
-        <version>1.3-SNAPSHOT</version>
-        <relativePath>../pom.xml</relativePath>
-    </parent>
+  <parent>
+    <groupId>org.apache.maven.doxia</groupId>
+    <artifactId>doxia-modules</artifactId>
+    <version>1.3-SNAPSHOT</version>
+    <relativePath>../pom.xml</relativePath>
+  </parent>
 
-    <artifactId>doxia-module-markdown</artifactId>
+  <artifactId>doxia-module-markdown</artifactId>
 
-    <name>Doxia :: Markdown Module</name>
-    <description>
-        A Doxia module for Markdown source documents.
-    </description>
-    <url>http://maven.apache.org/doxia/doxia/doxia-modules/doxia-module-markdown/</url>
+  <name>Doxia :: Markdown Module</name>
+  <description>
+    A Doxia module for Markdown source documents.
+  </description>
+  <url>http://maven.apache.org/doxia/doxia/doxia-modules/doxia-module-markdown/</url>
 
-    <contributors>
-        <contributor>
-            <name>Julien Nicoulaud</name>
-            <email>julien.nicoulaud@gmail.com</email>
-            <timezone>+1</timezone>
-            <url>http://www.twitter.com/nicoulaj</url>
-        </contributor>
-    </contributors>
+  <contributors>
+    <contributor>
+      <name>Julien Nicoulaud</name>
+      <email>julien.nicoulaud@gmail.com</email>
+      <timezone>+1</timezone>
+      <url>http://www.twitter.com/nicoulaj</url>
+    </contributor>
+  </contributors>
 
-    <dependencies>
-        <dependency>
-            <groupId>org.pegdown</groupId>
-            <artifactId>pegdown</artifactId>
-            <version>1.0.2</version>
-        </dependency>
-        <dependency>
-            <groupId>org.apache.maven.doxia</groupId>
-            <artifactId>doxia-module-xhtml</artifactId>
-        </dependency>
-    </dependencies>
+  <dependencies>
+    <dependency>
+      <groupId>org.pegdown</groupId>
+      <artifactId>pegdown</artifactId>
+      <version>1.0.2</version>
+    </dependency>
+    <dependency>
+      <groupId>org.apache.maven.doxia</groupId>
+      <artifactId>doxia-module-xhtml</artifactId>
+    </dependency>
+  </dependencies>
 
 </project>
