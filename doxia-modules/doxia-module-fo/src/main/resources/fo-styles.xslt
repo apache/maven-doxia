@@ -327,10 +327,10 @@
         <xsl:attribute name="text-align">center</xsl:attribute>
     </xsl:attribute-set>
     <xsl:attribute-set name="figure.graphics">
-        <xsl:attribute name="height">auto</xsl:attribute>
-        <xsl:attribute name="width">auto</xsl:attribute>
-        <xsl:attribute name="content-height">auto</xsl:attribute>
-        <xsl:attribute name="content-width">auto</xsl:attribute>
+        <xsl:attribute name="height">100%</xsl:attribute>
+        <xsl:attribute name="width">100%</xsl:attribute>
+        <xsl:attribute name="content-height">scale-down-to-fit</xsl:attribute>
+        <xsl:attribute name="content-width">scale-down-to-fit</xsl:attribute>
     </xsl:attribute-set>
     <xsl:attribute-set name="figure.caption" use-attribute-sets="base.body.style">
         <xsl:attribute name="keep-with-previous">always</xsl:attribute>
