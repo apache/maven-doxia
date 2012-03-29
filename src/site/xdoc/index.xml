@@ -22,7 +22,7 @@
 <document>
 
   <properties>
-    <title>Doxia</title>
+    <title>Doxia (base)</title>
     <author email="hboutemy_AT_apache_DOT_org">Hervé Boutemy</author>
   </properties>
 
@@ -32,6 +32,9 @@
 
       <p>Doxia is a content generation framework that provides powerful techniques for generating static and dynamic content,
        supporting <a href="/doxia/references/index.html">a variety of markup languages</a>.</p>
+
+      <p>The actual component is the base component from the whole Doxia suite, used by the
+      <a href="../doxia-sitetools">Doxia Sitetools</a> extension that adds site and documents support.</p>
 
       <p>
         <img src="images/doxia-deps.png" width="647" height="440" border="0" usemap="#Doxia_dependencies" />
