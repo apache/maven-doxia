@@ -160,8 +160,6 @@ under the License.
     <module>doxia-test-docs</module>
     <module>doxia-core</module>
     <module>doxia-modules</module>
-    <module>doxia-book</module>
-    <module>doxia-maven-plugin</module>
   </modules>
 
   <scm>
