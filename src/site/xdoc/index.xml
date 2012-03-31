@@ -37,34 +37,30 @@
       <a href="../doxia-sitetools">Doxia Sitetools</a> extension that adds site and documents support.</p>
 
       <p>
-        <img src="images/doxia-deps.png" width="647" height="440" border="0" usemap="#Doxia_dependencies" />
+        <img src="images/doxia-deps.png" width="647" height="335" border="0" usemap="#Doxia_dependencies" />
         <map name="Doxia_dependencies">
-          <area shape="rect" coords="98,408,220,439"  href="./doxia-test-docs/" />
-          <area shape="rect" coords="262,408,385,439" href="./doxia-logging-api/" />
-          <area shape="rect" coords="262,359,385,390" href="./doxia-sink-api/" />
-          <area shape="rect" coords="262,306,385,339" href="./doxia-core/" />
-          <area shape="rect" coords="41,117,167,149"  href="./doxia-modules/doxia-module-apt/" />
-          <area shape="rect" coords="190,116,315,149" href="./doxia-modules/doxia-module-xdoc/" />
-          <area shape="rect" coords="339,117,462,149" href="./doxia-modules/doxia-module-xhtml/" />
-          <area shape="rect" coords="486,117,609,149" href="./doxia-modules/doxia-module-fml/" />
-          <area shape="rect" coords="68,159,243,190"  href="./doxia-modules/doxia-module-confluence/" />
-          <area shape="rect" coords="276,159,399,190" href="./doxia-modules/doxia-module-twiki/" />
-          <area shape="rect" coords="431,158,554,190" href="./doxia-modules/doxia-module-latex/" />
-          <area shape="rect" coords="14,201,232,232"  href="./doxia-modules/doxia-module-docbook-simple/" />
-          <area shape="rect" coords="242,201,365,232" href="./doxia-modules/doxia-module-rtf/" />
-          <area shape="rect" coords="378,201,501,232" href="./doxia-modules/doxia-module-itext" />
-          <area shape="rect" coords="512,201,636,232" href="./doxia-modules/doxia-module-fo/" />
-          <area shape="rect" coords="91,241,272,273"  href="./doxia-modules/doxia-module-markdown/" />
-          <area shape="rect" coords="0,106,646,280"   href="./doxia-modules/" />
-          <area shape="rect" coords="251,53,396,85"   href="./doxia-book/" />
-          <area shape="rect" coords="251,0,395,32"    href="./doxia-maven-plugin/" />
-          <area shape="rect" coords="71,34,232,66"    href="http://maven.apache.org/shared/maven-doxia-tools/" />
-          <area shape="rect" coords="420,34,580,66"   href="http://maven.apache.org/ref/current/maven-plugin-api/" />
-          <area shape="rect" coords="136,305,228,338" href="http://www.pegdown.org/" />
-          <area shape="rect" coords="136,355,228,387" href="http://www.parboiled.org/" />
-          <area shape="rect" coords="407,306,472,338" href="http://www.lowagie.com/iText/" />
-          <area shape="rect" coords="552,280,599,312" href="http://xmlgraphics.apache.org/fop/" />
-          <area shape="rect" coords="420,408,542,439" href="http://plexus.codehaus.org/" />
+          <area shape="rect" coords="98,303,220,335"  href="./doxia-test-docs/" />
+          <area shape="rect" coords="262,303,385,335" href="./doxia-logging-api/" />
+          <area shape="rect" coords="262,254,385,285" href="./doxia-sink-api/" />
+          <area shape="rect" coords="262,201,385,234" href="./doxia-core/" />
+          <area shape="rect" coords="41,12,167,44"    href="./doxia-modules/doxia-module-apt/" />
+          <area shape="rect" coords="190,11,315,44"   href="./doxia-modules/doxia-module-xdoc/" />
+          <area shape="rect" coords="339,12,462,44"   href="./doxia-modules/doxia-module-xhtml/" />
+          <area shape="rect" coords="486,12,609,44"   href="./doxia-modules/doxia-module-fml/" />
+          <area shape="rect" coords="68,54,243,85"    href="./doxia-modules/doxia-module-confluence/" />
+          <area shape="rect" coords="276,54,399,85"   href="./doxia-modules/doxia-module-twiki/" />
+          <area shape="rect" coords="431,53,554,85"   href="./doxia-modules/doxia-module-latex/" />
+          <area shape="rect" coords="14,96,232,127"   href="./doxia-modules/doxia-module-docbook-simple/" />
+          <area shape="rect" coords="242,96,365,127"  href="./doxia-modules/doxia-module-rtf/" />
+          <area shape="rect" coords="378,96,501,127"  href="./doxia-modules/doxia-module-itext" />
+          <area shape="rect" coords="512,96,636,127"  href="./doxia-modules/doxia-module-fo/" />
+          <area shape="rect" coords="91,136,272,168"  href="./doxia-modules/doxia-module-markdown/" />
+          <area shape="rect" coords="0,0,646,175"     href="./doxia-modules/" />
+          <area shape="rect" coords="136,200,228,233" href="http://www.pegdown.org/" />
+          <area shape="rect" coords="136,250,228,282" href="http://www.parboiled.org/" />
+          <area shape="rect" coords="407,201,472,233" href="http://www.lowagie.com/iText/" />
+          <area shape="rect" coords="551,199,600,232" href="http://xmlgraphics.apache.org/fop/" />
+          <area shape="rect" coords="420,303,542,334" href="http://plexus.codehaus.org/" />
         </map>
       </p>
 
