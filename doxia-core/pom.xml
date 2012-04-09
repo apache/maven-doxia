@@ -66,6 +66,11 @@ under the License.
       <artifactId>httpclient</artifactId>
       <version>4.0.2</version>
     </dependency>
+    <dependency>
+      <groupId>org.apache.httpcomponents</groupId>
+      <artifactId>httpcore</artifactId>
+      <version>4.0.1</version>
+    </dependency>
 
     <!-- test -->
   </dependencies>
