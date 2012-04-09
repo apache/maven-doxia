@@ -277,18 +277,6 @@ under the License.
         <version>${projectVersion}</version>
       </dependency>
 
-      <!-- Others -->
-      <dependency>
-        <groupId>org.apache.maven.doxia</groupId>
-        <artifactId>doxia-book</artifactId>
-        <version>${projectVersion}</version>
-      </dependency>
-      <dependency>
-        <groupId>org.apache.maven.doxia</groupId>
-        <artifactId>doxia-maven-plugin</artifactId>
-        <version>${projectVersion}</version>
-      </dependency>
-
       <!-- Plexus -->
       <dependency>
         <groupId>org.codehaus.plexus</groupId>
