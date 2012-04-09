@@ -55,11 +55,8 @@ under the License.
         <p>
           Doxia also has a fairly simple tool for writing books. It comes complete with a Maven plugin
           to produce PDFs, LaTeX documents and Xdoc for direct integration in your Maven site.
-          The <a href="http://svn.apache.org/repos/asf/maven/doxia/doxia/trunk/doxia-book/">Doxia Book code</a>
+          The <a href="http://svn.apache.org/repos/asf/maven/doxia/doxia-tools/trunk/doxia-book-renderer/">Doxia Book code</a>
           is still limited but fully functional.
-        </p>
-        <p>
-          See <a href="./book/index.html">Writing Books in Doxia</a> for more information.
         </p>
       </answer>
     </faq>
