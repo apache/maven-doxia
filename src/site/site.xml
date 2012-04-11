@@ -47,7 +47,7 @@
 
     <breadcrumbs>
       <item name="Doxia" href="http://maven.apache.org/doxia/index.html"/>
-      <item name="Trunk" href="http://maven.apache.org/doxia/doxia/index.html"/>
+      <item name="Doxia base" href="http://maven.apache.org/doxia/doxia/index.html"/>
     </breadcrumbs>
 
     <menu name="Downloads" inherit="bottom">
