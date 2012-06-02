@@ -44,26 +44,4 @@ under the License.
       <artifactId>plexus-utils</artifactId>
     </dependency>
   </dependencies>
-
-  <build>
-    <plugins>
-      <plugin>
-        <groupId>org.codehaus.plexus</groupId>
-        <artifactId>plexus-maven-plugin</artifactId>
-        <configuration>
-          <descriptors>
-            <descriptor>src/main/components/components.xml</descriptor>
-            <descriptor>target/generated-resources/plexus/META-INF/plexus/components.xml</descriptor>
-          </descriptors>
-        </configuration>
-        <executions>
-          <execution>
-            <goals>
-              <goal>merge-descriptors</goal>
-            </goals>
-          </execution>
-        </executions>
-      </plugin>
-    </plugins>
-  </build>
 </project>
