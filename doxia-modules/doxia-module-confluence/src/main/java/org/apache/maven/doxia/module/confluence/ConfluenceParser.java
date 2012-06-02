@@ -35,9 +35,11 @@ import org.apache.maven.doxia.module.confluence.parser.list.ListBlockParser;
 import org.apache.maven.doxia.module.confluence.parser.table.TableBlockParser;
 import org.apache.maven.doxia.parser.AbstractTextParser;
 import org.apache.maven.doxia.parser.ParseException;
+import org.apache.maven.doxia.parser.Parser;
 import org.apache.maven.doxia.sink.Sink;
 import org.apache.maven.doxia.util.ByLineReaderSource;
 import org.apache.maven.doxia.util.ByLineSource;
+import org.codehaus.plexus.component.annotations.Component;
 
 /**
  * Parse the <a href="http://www.atlassian.com/software/confluence/">Confluence</a>.
@@ -46,8 +48,8 @@ import org.apache.maven.doxia.util.ByLineSource;
  *
  * @version $Id$
  * @since 1.0
- * @plexus.component role="org.apache.maven.doxia.parser.Parser" role-hint="confluence"
  */
+@Component( role = Parser.class, hint = "confluence" )
 public class ConfluenceParser
     extends AbstractTextParser
 {

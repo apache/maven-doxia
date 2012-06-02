@@ -34,6 +34,8 @@ import org.apache.maven.doxia.macro.MacroRequest;
 import org.apache.maven.doxia.macro.manager.MacroManager;
 import org.apache.maven.doxia.macro.manager.MacroNotFoundException;
 import org.apache.maven.doxia.sink.Sink;
+import org.codehaus.plexus.component.annotations.Component;
+import org.codehaus.plexus.component.annotations.Requirement;
 
 /**
  * An abstract base class that defines some convenience methods for parsers.
@@ -42,15 +44,15 @@ import org.apache.maven.doxia.sink.Sink;
  * @author Jason van Zyl
  * @version $Id$
  * @since 1.0
- * @plexus.component
  */
+@Component( role = Parser.class )
 public abstract class AbstractParser
     implements Parser
 {
     /** Indicates that a second parsing is required. */
     private boolean secondParsing = false;
 
-    /** @plexus.requirement */
+    @Requirement
     private MacroManager macroManager;
 
     /** Log instance. */

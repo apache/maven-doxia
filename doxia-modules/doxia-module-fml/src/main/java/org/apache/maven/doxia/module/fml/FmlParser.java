@@ -40,12 +40,14 @@ import org.apache.maven.doxia.module.fml.model.Faqs;
 import org.apache.maven.doxia.module.fml.model.Part;
 import org.apache.maven.doxia.parser.AbstractXmlParser;
 import org.apache.maven.doxia.parser.ParseException;
+import org.apache.maven.doxia.parser.Parser;
 import org.apache.maven.doxia.sink.Sink;
 import org.apache.maven.doxia.sink.SinkEventAttributeSet;
 import org.apache.maven.doxia.sink.XhtmlBaseSink;
 import org.apache.maven.doxia.util.DoxiaUtils;
 import org.apache.maven.doxia.util.HtmlTools;
 
+import org.codehaus.plexus.component.annotations.Component;
 import org.codehaus.plexus.util.IOUtil;
 import org.codehaus.plexus.util.StringUtils;
 import org.codehaus.plexus.util.xml.pull.XmlPullParser;
@@ -58,8 +60,8 @@ import org.codehaus.plexus.util.xml.pull.XmlPullParserException;
  * @author ltheussl
  * @version $Id$
  * @since 1.0
- * @plexus.component role="org.apache.maven.doxia.parser.Parser" role-hint="fml"
  */
+@Component( role = Parser.class, hint = "fml" )
 public class FmlParser
     extends AbstractXmlParser
     implements FmlMarkup

@@ -33,9 +33,11 @@ import org.apache.maven.doxia.module.twiki.parser.VerbatimBlockParser;
 import org.apache.maven.doxia.module.twiki.parser.XHTMLWikiWordLinkResolver;
 import org.apache.maven.doxia.parser.AbstractTextParser;
 import org.apache.maven.doxia.parser.ParseException;
+import org.apache.maven.doxia.parser.Parser;
 import org.apache.maven.doxia.sink.Sink;
 import org.apache.maven.doxia.util.ByLineReaderSource;
 import org.apache.maven.doxia.util.ByLineSource;
+import org.codehaus.plexus.component.annotations.Component;
 
 import java.io.Reader;
 import java.util.ArrayList;
@@ -48,8 +50,8 @@ import java.util.List;
  * @author Juan F. Codagnone
  * @version $Id$
  * @since 1.0
- * @plexus.component role="org.apache.maven.doxia.parser.Parser" role-hint="twiki"
  */
+@Component( role = Parser.class, hint = "twiki" )
 public class TWikiParser
     extends AbstractTextParser
 {

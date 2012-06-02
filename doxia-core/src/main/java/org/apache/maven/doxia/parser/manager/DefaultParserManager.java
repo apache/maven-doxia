@@ -20,6 +20,8 @@ package org.apache.maven.doxia.parser.manager;
  */
 
 import org.apache.maven.doxia.parser.Parser;
+import org.codehaus.plexus.component.annotations.Component;
+import org.codehaus.plexus.component.annotations.Requirement;
 
 import java.util.Map;
 
@@ -29,14 +31,12 @@ import java.util.Map;
  * @author <a href="mailto:jason@maven.org">Jason van Zyl</a>
  * @version $Id$
  * @since 1.0
- * @plexus.component
  */
+@Component( role = ParserManager.class )
 public class DefaultParserManager
     implements ParserManager
 {
-    /**
-     * @plexus.requirement role="org.apache.maven.doxia.parser.Parser"
-     */
+    @Requirement( role = Parser.class )
     private Map<String, Parser> parsers;
 
     /** {@inheritDoc} */

@@ -20,6 +20,8 @@ package org.apache.maven.doxia.module.twiki;
  */
 
 import org.apache.maven.doxia.module.site.AbstractSiteModule;
+import org.apache.maven.doxia.module.site.SiteModule;
+import org.codehaus.plexus.component.annotations.Component;
 
 /**
  * <p>TWikiSiteModule class.</p>
@@ -27,8 +29,8 @@ import org.apache.maven.doxia.module.site.AbstractSiteModule;
  * @author Juan F. Codagnone
  * @version $Id$
  * @since 1.0
- * @plexus.component role="org.apache.maven.doxia.module.site.SiteModule" role-hint="twiki"
  */
+@Component( role = SiteModule.class, hint = "twiki" )
 public class TWikiSiteModule
     extends AbstractSiteModule
 {

@@ -24,12 +24,14 @@ import org.apache.maven.doxia.macro.MacroRequest;
 import org.apache.maven.doxia.macro.manager.MacroNotFoundException;
 import org.apache.maven.doxia.parser.AbstractTextParser;
 import org.apache.maven.doxia.parser.ParseException;
+import org.apache.maven.doxia.parser.Parser;
 import org.apache.maven.doxia.sink.Sink;
 import org.apache.maven.doxia.sink.SinkAdapter;
 import org.apache.maven.doxia.sink.SinkEventAttributeSet;
 import org.apache.maven.doxia.sink.SinkEventAttributes;
 import org.apache.maven.doxia.util.DoxiaUtils;
 
+import org.codehaus.plexus.component.annotations.Component;
 import org.codehaus.plexus.util.IOUtil;
 import org.codehaus.plexus.util.StringUtils;
 
@@ -50,8 +52,8 @@ import java.util.TreeSet;
  *
  * @version $Id$
  * @since 1.0
- * @plexus.component role="org.apache.maven.doxia.parser.Parser" role-hint="apt"
  */
+@Component( role = Parser.class, hint = "apt" )
 public class AptParser
     extends AbstractTextParser
     implements AptMarkup

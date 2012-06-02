@@ -23,6 +23,8 @@ import java.io.Writer;
 
 import org.apache.maven.doxia.sink.AbstractXmlSinkFactory;
 import org.apache.maven.doxia.sink.Sink;
+import org.apache.maven.doxia.sink.SinkFactory;
+import org.codehaus.plexus.component.annotations.Component;
 
 /**
  * FO implementation of the Sink factory.
@@ -30,8 +32,8 @@ import org.apache.maven.doxia.sink.Sink;
  * @author <a href="mailto:vincent.siveton@gmail.com">Vincent Siveton</a>
  * @version $Id$
  * @since 1.1
- * @plexus.component role="org.apache.maven.doxia.sink.SinkFactory" role-hint="fo"
  */
+@Component( role = SinkFactory.class, hint = "fo" )
 public class FoSinkFactory
     extends AbstractXmlSinkFactory
 {

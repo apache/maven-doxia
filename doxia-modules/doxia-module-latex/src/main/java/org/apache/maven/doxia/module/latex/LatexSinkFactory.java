@@ -23,6 +23,8 @@ import java.io.Writer;
 
 import org.apache.maven.doxia.sink.AbstractTextSinkFactory;
 import org.apache.maven.doxia.sink.Sink;
+import org.apache.maven.doxia.sink.SinkFactory;
+import org.codehaus.plexus.component.annotations.Component;
 
 /**
  * Latex implementation of the Sink factory.
@@ -30,8 +32,8 @@ import org.apache.maven.doxia.sink.Sink;
  * @author <a href="mailto:vincent.siveton@gmail.com">Vincent Siveton</a>
  * @version $Id$
  * @since 1.0
- * @plexus.component role="org.apache.maven.doxia.sink.SinkFactory" role-hint="latex"
  */
+@Component( role = SinkFactory.class, hint = "latex" )
 public class LatexSinkFactory
     extends AbstractTextSinkFactory
 {

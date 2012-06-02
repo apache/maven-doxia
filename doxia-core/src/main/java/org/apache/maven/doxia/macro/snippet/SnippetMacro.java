@@ -20,9 +20,11 @@ package org.apache.maven.doxia.macro.snippet;
  */
 
 import org.apache.maven.doxia.macro.AbstractMacro;
+import org.apache.maven.doxia.macro.Macro;
 import org.apache.maven.doxia.macro.MacroExecutionException;
 import org.apache.maven.doxia.macro.MacroRequest;
 import org.apache.maven.doxia.sink.Sink;
+import org.codehaus.plexus.component.annotations.Component;
 import org.codehaus.plexus.util.StringUtils;
 
 import java.io.IOException;
@@ -36,9 +38,9 @@ import org.apache.maven.doxia.sink.SinkEventAttributeSet;
 /**
  * A macro that prints out the content of a file or a URL.
  *
- * @plexus.component role-hint="snippet"
  * @version $Id$
  */
+@Component( role = Macro.class, hint = "snippet" )
 public class SnippetMacro
     extends AbstractMacro
 {

@@ -25,8 +25,10 @@ import java.io.StringReader;
 
 import org.apache.maven.doxia.module.xhtml.XhtmlParser;
 import org.apache.maven.doxia.parser.ParseException;
+import org.apache.maven.doxia.parser.Parser;
 import org.apache.maven.doxia.sink.Sink;
 
+import org.codehaus.plexus.component.annotations.Component;
 import org.codehaus.plexus.util.IOUtil;
 
 import org.pegdown.Extensions;
@@ -39,9 +41,9 @@ import org.pegdown.ast.RootNode;
  * Defers parsing to the <a href="http://pegdown.org">PegDown library</a>.
  *
  * @author Julien Nicoulaud <julien.nicoulaud@gmail.com>
- * @plexus.component role="org.apache.maven.doxia.parser.Parser" role-hint="markdown"
  * @since 1.3
  */
+@Component( role = Parser.class, hint="markdown" )
 public class MarkdownParser
     extends XhtmlParser
 {

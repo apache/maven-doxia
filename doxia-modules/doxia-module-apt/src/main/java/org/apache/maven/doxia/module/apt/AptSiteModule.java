@@ -20,6 +20,8 @@ package org.apache.maven.doxia.module.apt;
  */
 
 import org.apache.maven.doxia.module.site.AbstractSiteModule;
+import org.apache.maven.doxia.module.site.SiteModule;
+import org.codehaus.plexus.component.annotations.Component;
 
 /**
  * <p>AptSiteModule class.</p>
@@ -27,8 +29,8 @@ import org.apache.maven.doxia.module.site.AbstractSiteModule;
  * @author <a href="mailto:jason@maven.org">Jason van Zyl</a>
  * @version $Id$
  * @since 1.0
- * @plexus.component role="org.apache.maven.doxia.module.site.SiteModule" role-hint="apt"
  */
+@Component( role = SiteModule.class, hint = "apt" )
 public class AptSiteModule
     extends AbstractSiteModule
 {

@@ -24,6 +24,8 @@ import java.util.LinkedHashMap;
 import java.util.Map;
 
 import org.apache.maven.doxia.module.site.SiteModule;
+import org.codehaus.plexus.component.annotations.Component;
+import org.codehaus.plexus.component.annotations.Requirement;
 
 /**
  * Simple implementation of the SiteModuleManager interface.
@@ -31,14 +33,12 @@ import org.apache.maven.doxia.module.site.SiteModule;
  * @author Jason van Zyl
  * @version $Id$
  * @since 1.0
- * @plexus.component
  */
+@Component( role = SiteModuleManager.class )
 public class DefaultSiteModuleManager
     implements SiteModuleManager
 {
-    /**
-     * @plexus.requirement role="org.apache.maven.doxia.module.site.SiteModule"
-     */
+    @Requirement( role = SiteModule.class )
     private Map<String, SiteModule> siteModules;
 
     private Collection<SiteModule> siteModulesValues;

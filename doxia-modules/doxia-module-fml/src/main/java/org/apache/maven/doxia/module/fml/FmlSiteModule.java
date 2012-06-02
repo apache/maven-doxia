@@ -20,6 +20,8 @@ package org.apache.maven.doxia.module.fml;
  */
 
 import org.apache.maven.doxia.module.site.AbstractSiteModule;
+import org.apache.maven.doxia.module.site.SiteModule;
+import org.codehaus.plexus.component.annotations.Component;
 
 /**
  * <p>FmlSiteModule class.</p>
@@ -27,8 +29,8 @@ import org.apache.maven.doxia.module.site.AbstractSiteModule;
  * @author <a href="mailto:evenisse@codehaus.org">Emmanuel Venisse</a>
  * @version $Id$
  * @since 1.0
- * @plexus.component role="org.apache.maven.doxia.module.site.SiteModule" role-hint="fml"
  */
+@Component( role = SiteModule.class, hint = "fml" )
 public class FmlSiteModule
     extends AbstractSiteModule
 {

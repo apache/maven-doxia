@@ -22,13 +22,14 @@ package org.apache.maven.doxia.macro;
 import org.apache.maven.doxia.sink.Sink;
 
 import org.apache.maven.doxia.sink.SinkEventAttributeSet;
+import org.codehaus.plexus.component.annotations.Component;
 
 /**
  * A simple macro that prints out the key and value of some supplied parameters.
  *
- * @plexus.component role-hint="echo"
  * @version $Id$
  */
+@Component( role = Macro.class, hint = "echo" )
 public class EchoMacro
     extends AbstractMacro
 {

@@ -20,6 +20,8 @@ package org.apache.maven.doxia.module.docbook;
  */
 
 import org.apache.maven.doxia.module.site.AbstractSiteModule;
+import org.apache.maven.doxia.module.site.SiteModule;
+import org.codehaus.plexus.component.annotations.Component;
 
 /**
  * <p>DocBookSiteModule class.</p>
@@ -27,8 +29,8 @@ import org.apache.maven.doxia.module.site.AbstractSiteModule;
  * @author <a href="mailto:evenisse@codehaus.org">Emmanuel Venisse</a>
  * @version $Id$
  * @since 1.0
- * @plexus.component role="org.apache.maven.doxia.module.site.SiteModule" role-hint="docbook"
  */
+@Component( role = SiteModule.class, hint = "docbook" )
 public class DocBookSiteModule
     extends AbstractSiteModule
 {

@@ -20,14 +20,16 @@ package org.apache.maven.doxia.module.markdown;
  */
 
 import org.apache.maven.doxia.module.site.AbstractSiteModule;
+import org.apache.maven.doxia.module.site.SiteModule;
+import org.codehaus.plexus.component.annotations.Component;
 
 /**
  * {@link org.apache.maven.doxia.module.site.SiteModule} for Markdown.
  *
  * @author Julien Nicoulaud <julien.nicoulaud@gmail.com>
- * @plexus.component role="org.apache.maven.doxia.module.site.SiteModule" role-hint="markdown"
  * @since 1.3
  */
+@Component( role = SiteModule.class, hint = "markdown" )
 public class MarkdownSiteModule
     extends AbstractSiteModule
 {

@@ -24,6 +24,8 @@ import java.io.OutputStream;
 
 import org.apache.maven.doxia.sink.AbstractBinarySinkFactory;
 import org.apache.maven.doxia.sink.Sink;
+import org.apache.maven.doxia.sink.SinkFactory;
+import org.codehaus.plexus.component.annotations.Component;
 
 /**
  * Rtf implementation of the Sink factory.
@@ -31,8 +33,8 @@ import org.apache.maven.doxia.sink.Sink;
  * @author <a href="mailto:vincent.siveton@gmail.com">Vincent Siveton</a>
  * @version $Id$
  * @since 1.0
- * @plexus.component role="org.apache.maven.doxia.sink.SinkFactory" role-hint="rtf"
  */
+@Component( role = SinkFactory.class, hint = "rtf" )
 public class RtfSinkFactory
     extends AbstractBinarySinkFactory
 {

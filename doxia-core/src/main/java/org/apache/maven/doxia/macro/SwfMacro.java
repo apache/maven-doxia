@@ -20,18 +20,17 @@ package org.apache.maven.doxia.macro;
  */
 
 import org.apache.maven.doxia.sink.Sink;
+import org.codehaus.plexus.component.annotations.Component;
 import org.codehaus.plexus.util.StringUtils;
 
 /**
  * Macro for embedding Flash (SWF) within Maven documentation.
  *
- * @plexus.component role="org.apache.maven.doxia.macro.Macro"
- * role-hint="swf"
- *
  * @author <a href="mailto:steve.motola@gmail.com">Steve Motola</a>
  * @author <a href="mailto:vincent.siveton@gmail.com">Vincent Siveton</a>
  * @version $Id$
  */
+@Component( role = Macro.class, hint = "swf" )
 public class SwfMacro
     extends AbstractMacro
 {

@@ -26,6 +26,8 @@ import org.apache.maven.doxia.parser.manager.ParserManager;
 import org.apache.maven.doxia.parser.manager.ParserNotFoundException;
 import org.apache.maven.doxia.sink.Sink;
 
+import org.codehaus.plexus.component.annotations.Component;
+import org.codehaus.plexus.component.annotations.Requirement;
 import org.codehaus.plexus.logging.AbstractLogEnabled;
 
 import java.io.Reader;
@@ -37,13 +39,13 @@ import java.io.Reader;
  * @author Jason van Zyl
  * @version $Id$
  * @since 1.0
- * @plexus.component
  */
+@Component( role = Doxia.class )
 public class DefaultDoxia
     extends AbstractLogEnabled
     implements Doxia
 {
-    /** @plexus.requirement */
+    @Requirement
     private ParserManager parserManager;
 
     // ----------------------------------------------------------------------

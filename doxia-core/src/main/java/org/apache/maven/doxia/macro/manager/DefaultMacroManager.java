@@ -20,6 +20,8 @@ package org.apache.maven.doxia.macro.manager;
  */
 
 import org.apache.maven.doxia.macro.Macro;
+import org.codehaus.plexus.component.annotations.Component;
+import org.codehaus.plexus.component.annotations.Requirement;
 
 import java.util.Map;
 
@@ -29,12 +31,12 @@ import java.util.Map;
  * @author <a href="mailto:jason@maven.org">Jason van Zyl</a>
  * @version $Id$
  * @since 1.0
- * @plexus.component
  */
+@Component( role = MacroManager.class )
 public class DefaultMacroManager
     implements MacroManager
 {
-    /** @plexus.requirement role="org.apache.maven.doxia.macro.Macro" */
+    @Requirement( role = Macro.class )
     private Map<String, Macro> macros;
 
     /** {@inheritDoc} */

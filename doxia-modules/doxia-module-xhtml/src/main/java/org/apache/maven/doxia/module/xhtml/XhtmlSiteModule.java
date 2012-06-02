@@ -20,6 +20,8 @@ package org.apache.maven.doxia.module.xhtml;
  */
 
 import org.apache.maven.doxia.module.site.AbstractSiteModule;
+import org.apache.maven.doxia.module.site.SiteModule;
+import org.codehaus.plexus.component.annotations.Component;
 
 /**
  * <p>XhtmlSiteModule class.</p>
@@ -27,8 +29,8 @@ import org.apache.maven.doxia.module.site.AbstractSiteModule;
  * @author ltheussl
  * @version $Id$
  * @since 1.0
- * @plexus.component role="org.apache.maven.doxia.module.site.SiteModule" role-hint="xhtml"
  */
+@Component( role = SiteModule.class, hint = "xhtml" )
 public class XhtmlSiteModule
     extends AbstractSiteModule
 {
