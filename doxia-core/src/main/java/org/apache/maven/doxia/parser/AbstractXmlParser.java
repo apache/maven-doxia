@@ -392,7 +392,7 @@ public abstract class AbstractXmlParser
     }
 
     /**
-     * Handles an unkown event.
+     * Handles an unknown event.
      *
      * <p>This is a default implementation, all events are emitted as unknown
      * events into the specified sink.</p>
