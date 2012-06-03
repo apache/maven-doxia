@@ -22,8 +22,10 @@ package org.apache.maven.doxia.module.xhtml;
 import java.io.StringWriter;
 import java.io.Writer;
 
+import org.apache.maven.doxia.markup.HtmlMarkup;
 import org.apache.maven.doxia.sink.AbstractSinkTest;
 import org.apache.maven.doxia.sink.Sink;
+import org.apache.maven.doxia.sink.SinkEventAttributeSet;
 
 /**
  * @author Jason van Zyl
@@ -322,6 +324,9 @@ public class XhtmlSinkTest
             // note: this is really illegal, there should be no un-resolved entities emitted into text()
             sink.text( "&#x123;&" );
             sink.author_();
+            SinkEventAttributeSet atts = new SinkEventAttributeSet( 1 );
+            atts.addAttribute( "href", "http://maven.apache.org/" );
+            sink.unknown( "base", new Object[] {new Integer( HtmlMarkup.TAG_TYPE_SIMPLE )}, atts );
             sink.head_();
         }
         finally
@@ -329,9 +334,11 @@ public class XhtmlSinkTest
             sink.close();
         }
 
-        String exp =
-                "<head><title>Title</title><!-- A comment --><meta name=\"author\" content=\"&#x123;&amp;\" /></head>";
-        assertTrue( writer.toString().indexOf( exp ) != -1 );
+        String expected =
+            "<head><title>Title</title><!-- A comment --><meta name=\"author\" content=\"&#x123;&amp;\" />"
+                + "<base href=\"http://maven.apache.org/\" /></head>";
+        String actual = writer.toString();
+        assertTrue( actual, actual.indexOf( expected ) != -1 );
     }
 
     /** {@inheritDoc} */
