@@ -114,18 +114,19 @@ public class ChildBlocksBuilder
 
                         if ( !link.endsWith( ".html" ) )
                         {
-                            if ( link.indexOf( "http" ) < 0 )
+                            if ( !link.contains( "http" ) )
                             {
+                                // relative path: see DOXIA-298
                                 addHTMLSuffix = true;
                             }
                         }
-                        if ( link.indexOf( "|" ) > 0 )
+                        if ( link.contains( "|" ) )
                         {
                             String[] pieces = StringUtils.split( text.toString(), "|" );
 
                             if ( addHTMLSuffix )
                             {
-                                if ( pieces[1].indexOf( "#" ) < 0 )
+                                if ( !pieces[1].contains( "#" ) )
                                 {
                                     pieces[1] = pieces[1].concat( ".html" );
                                 }
@@ -152,7 +153,7 @@ public class ChildBlocksBuilder
 
                             if ( addHTMLSuffix )
                             {
-                                if ( link.indexOf( "#" ) < 0 )
+                                if ( !link.contains( "#" ) )
                                 {
                                     link = link.concat( ".html" );
                                 }
