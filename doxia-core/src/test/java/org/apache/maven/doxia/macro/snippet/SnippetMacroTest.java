@@ -19,18 +19,16 @@ package org.apache.maven.doxia.macro.snippet;
  * under the License.
  */
 
-import java.io.File;
-
-import java.util.HashMap;
-import java.util.Iterator;
-import java.util.Map;
-
 import org.apache.maven.doxia.macro.MacroExecutionException;
 import org.apache.maven.doxia.macro.MacroRequest;
 import org.apache.maven.doxia.sink.SinkEventElement;
 import org.apache.maven.doxia.sink.SinkEventTestingSink;
-
 import org.codehaus.plexus.PlexusTestCase;
+
+import java.io.File;
+import java.util.HashMap;
+import java.util.Iterator;
+import java.util.Map;
 
 /**
  * Test snippet macro.
@@ -38,7 +36,7 @@ import org.codehaus.plexus.PlexusTestCase;
  * @author ltheussl
  */
 public class SnippetMacroTest
-        extends PlexusTestCase
+    extends PlexusTestCase
 {
     /**
      * Test of execute method, of class SnippetMacro.
@@ -46,7 +44,7 @@ public class SnippetMacroTest
      * @throws MacroExecutionException if a macro fails during testing.
      */
     public void testExecute()
-            throws MacroExecutionException
+        throws MacroExecutionException
     {
         File basedir = new File( getBasedir() );
         Map<String, Object> macroParameters = new HashMap<String, Object>();
@@ -113,5 +111,30 @@ public class SnippetMacroTest
         assertFalse( snippet.contains( "interlude" ) );
         assertTrue( snippet.contains( "second snippet" ) );
         assertFalse( snippet.contains( "conclusion" ) );
+    }
+
+    public void testIgnoreDownloadError()
+        throws Exception
+    {
+        Map<String, Object> macroParameters = new HashMap<String, Object>();
+        macroParameters.put( "debug", "true" );
+        macroParameters.put( "ignoreDownloadError", "true" );
+
+        macroParameters.put( "url", "http://foo.bar.com/wine.txt" );
+
+        File basedir = new File( getBasedir() );
+
+        SinkEventTestingSink sink = new SinkEventTestingSink();
+
+        MacroRequest request = new MacroRequest( macroParameters, basedir );
+        SnippetMacro macro = new SnippetMacro();
+        macro.execute( sink, request );
+        Iterator<SinkEventElement> it = sink.getEventList().iterator();
+        assertEquals( "verbatim", ( it.next() ).getName() );
+        SinkEventElement event = it.next();
+        assertEquals( "text", event.getName() );
+        String snippet = (String) event.getArgs()[0];
+        assertTrue( snippet.contains( "Error during retrieving content" ) );
+
     }
 }
