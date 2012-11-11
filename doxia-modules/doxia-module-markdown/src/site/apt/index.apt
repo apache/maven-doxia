@@ -30,6 +30,7 @@ doxia-module-markdown
 
   Markdown is a popular lightweight markup language, easy to read and easy to write.
   It is supported by a large panel of websites, text editors/IDEs and converter tools.
+  Markdown format is only supported as Doxia source format.
 
   <<References>>
 
