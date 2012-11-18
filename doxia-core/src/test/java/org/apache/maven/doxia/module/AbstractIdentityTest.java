@@ -123,7 +123,8 @@ public abstract class AbstractIdentityTest
         if ( assertIdentity )
         {
             // TODO: make this work for at least apt and xdoc modules?
-            assertEquals( "Identity test failed!", getExpected(), actual );
+            assertEquals( "Identity test failed! See results in " + getTestWriterFile( "actual" ).getParent(),
+                          getExpected(), actual );
         }
     }
 
