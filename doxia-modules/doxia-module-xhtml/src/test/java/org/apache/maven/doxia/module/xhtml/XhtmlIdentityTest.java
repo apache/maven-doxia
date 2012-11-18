@@ -44,7 +44,9 @@ public class XhtmlIdentityTest
     /** {@inheritDoc} */
     protected Sink createSink( Writer writer )
     {
-        return new XhtmlSink( writer );
+        XhtmlSink sink = new XhtmlSink( writer );
+        sink.setInsertNewline( false );
+        return sink;
     }
 
     /** {@inheritDoc} */

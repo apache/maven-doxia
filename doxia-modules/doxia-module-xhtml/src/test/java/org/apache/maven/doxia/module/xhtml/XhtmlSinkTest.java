@@ -112,7 +112,7 @@ public class XhtmlSinkTest
     protected String getHeadBlock()
     {
         return "<!DOCTYPE html PUBLIC \"-//W3C//DTD XHTML 1.0 Transitional//EN\" \"http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd\">" +
-                "<html xmlns=\"http://www.w3.org/1999/xhtml\"><head><title></title><meta http-equiv=\"Content-Type\" content=\"text/html; charset=UTF-8\"/></head>";
+                "<html xmlns=\"http://www.w3.org/1999/xhtml\">\n<head>\n<title></title>\n<meta http-equiv=\"Content-Type\" content=\"text/html; charset=UTF-8\"/></head>";
     }
 
     /** {@inheritDoc} */
@@ -130,49 +130,49 @@ public class XhtmlSinkTest
     /** {@inheritDoc} */
     protected String getSection1Block( String title )
     {
-        return "<div class=\"section\"><h2>" + title + "</h2></div>";
+        return "<div class=\"section\">\n<h2>" + title + "</h2></div>";
     }
 
     /** {@inheritDoc} */
     protected String getSection2Block( String title )
     {
-        return "<div class=\"section\"><h3>" + title + "</h3></div>";
+        return "<div class=\"section\">\n<h3>" + title + "</h3></div>";
     }
 
     /** {@inheritDoc} */
     protected String getSection3Block( String title )
     {
-        return "<div class=\"section\"><h4>" + title + "</h4></div>";
+        return "<div class=\"section\">\n<h4>" + title + "</h4></div>";
     }
 
     /** {@inheritDoc} */
     protected String getSection4Block( String title )
     {
-        return "<div class=\"section\"><h5>" + title + "</h5></div>";
+        return "<div class=\"section\">\n<h5>" + title + "</h5></div>";
     }
 
     /** {@inheritDoc} */
     protected String getSection5Block( String title )
     {
-        return "<div class=\"section\"><h6>" + title + "</h6></div>";
+        return "<div class=\"section\">\n<h6>" + title + "</h6></div>";
     }
 
     /** {@inheritDoc} */
     protected String getListBlock( String item )
     {
-        return "<ul><li>" + item + "</li></ul>";
+        return "<ul>\n<li>" + item + "</li></ul>";
     }
 
     /** {@inheritDoc} */
     protected String getNumberedListBlock( String item )
     {
-        return "<ol style=\"list-style-type: lower-roman\"><li>" + item + "</li></ol>";
+        return "<ol style=\"list-style-type: lower-roman\">\n<li>" + item + "</li></ol>";
     }
 
     /** {@inheritDoc} */
     protected String getDefinitionListBlock( String definum, String definition )
     {
-        return "<dl><dt>" + definum + "</dt><dd>" + definition + "</dd></dl>";
+        return "<dl>\n<dt>" + definum + "</dt>\n<dd>" + definition + "</dd></dl>";
     }
 
     /** {@inheritDoc} */
@@ -185,7 +185,7 @@ public class XhtmlSinkTest
     protected String getTableBlock( String cell, String caption )
     {
         return "<table border=\"0\" class=\"bodyTable\">"
-            + "<caption>Table caption</caption><tr class=\"a\"><td>cell</td></tr>"
+            + "<caption>Table caption</caption><tr class=\"a\">\n<td>cell</td></tr>"
             + "</table>";
     }
 
@@ -206,7 +206,7 @@ public class XhtmlSinkTest
     /** {@inheritDoc} */
     protected String getVerbatimBlock( String text )
     {
-        return "<div class=\"source\"><pre>" + text + "</pre></div>";
+        return "<div class=\"source\">\n<pre>" + text + "</pre></div>";
     }
 
     /** {@inheritDoc} */
@@ -301,7 +301,7 @@ public class XhtmlSinkTest
             sink.close();
         }
 
-        assertEquals( "<div class=\"section\"><h2>&amp;</h2><p>&amp;</p></div>", writer.toString() );
+        assertEquals( "<div class=\"section\">\n<h2>&amp;</h2>\n<p>&amp;</p></div>", writer.toString() );
     }
 
     /**
@@ -335,7 +335,7 @@ public class XhtmlSinkTest
         }
 
         String expected =
-            "<head><title>Title</title><!-- A comment --><meta name=\"author\" content=\"&#x123;&amp;\" />"
+            "<head>\n<title>Title</title><!-- A comment --><meta name=\"author\" content=\"&#x123;&amp;\" />"
                 + "<base href=\"http://maven.apache.org/\" /></head>";
         String actual = writer.toString();
         assertTrue( actual, actual.indexOf( expected ) != -1 );

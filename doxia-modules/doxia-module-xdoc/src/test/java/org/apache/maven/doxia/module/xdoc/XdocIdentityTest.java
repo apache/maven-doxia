@@ -44,7 +44,9 @@ public class XdocIdentityTest
     /** {@inheritDoc} */
     protected Sink createSink( Writer writer )
     {
-        return new XdocSink( writer );
+        XdocSink sink = new XdocSink( writer );
+        sink.setInsertNewline( false );
+        return sink;
     }
 
     /** {@inheritDoc} */

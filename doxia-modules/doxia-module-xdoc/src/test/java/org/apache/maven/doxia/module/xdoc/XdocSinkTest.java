@@ -126,19 +126,19 @@ public class XdocSinkTest
     /** {@inheritDoc} */
     protected String getListBlock( String item )
     {
-        return "<ul><li>" + item + "</li></ul>";
+        return "<ul>\n<li>" + item + "</li></ul>";
     }
 
     /** {@inheritDoc} */
     protected String getNumberedListBlock( String item )
     {
-        return "<ol style=\"list-style-type: lower-roman\"><li>" + item + "</li></ol>";
+        return "<ol style=\"list-style-type: lower-roman\">\n<li>" + item + "</li></ol>";
     }
 
     /** {@inheritDoc} */
     protected String getDefinitionListBlock( String definum, String definition )
     {
-        return "<dl><dt>" + definum + "</dt><dd>" + definition + "</dd></dl>";
+        return "<dl>\n<dt>" + definum + "</dt>\n<dd>" + definition + "</dd></dl>";
     }
 
     /** {@inheritDoc} */
@@ -151,7 +151,7 @@ public class XdocSinkTest
     protected String getTableBlock( String cell, String caption )
     {
         return "<table border=\"0\"><caption>" + caption
-                + "</caption><tr valign=\"top\"><td>" + cell + "</td></tr></table>";
+                + "</caption>\n<tr valign=\"top\">\n<td>" + cell + "</td></tr></table>";
     }
 
     /** {@inheritDoc} */
@@ -257,7 +257,7 @@ public class XdocSinkTest
             sink.close();
         }
 
-        assertEquals( "<pre></pre><source></source><pre width=\"20%\"></pre>", writer.toString() );
+        assertEquals( "<pre></pre><source></source>\n<pre width=\"20%\"></pre>", writer.toString() );
     }
 
     /**

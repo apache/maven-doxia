@@ -38,6 +38,15 @@ public abstract class AbstractXmlSink
     /** Default namespace prepended to all tags */
     private String nameSpace;
 
+    private boolean firstTag  = true;
+
+    private boolean insertNewline = true;
+
+    public void setInsertNewline( boolean insertNewline )
+    {
+        this.insertNewline = insertNewline;
+    }
+
     /**
      * Sets the default namespace that is prepended to all tags written by this sink.
      *
@@ -107,6 +116,13 @@ public abstract class AbstractXmlSink
         }
 
         StringBuilder sb = new StringBuilder();
+
+        if ( insertNewline && t.isBlock() && !firstTag )
+        {
+            sb.append( EOL );
+        }
+        firstTag = false;
+
         sb.append( LESS_THAN );
 
         if ( nameSpace != null )
