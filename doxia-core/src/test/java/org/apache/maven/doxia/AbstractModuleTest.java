@@ -71,15 +71,20 @@ public abstract class AbstractModuleTest
     protected Writer getTestWriter( String baseName, String extension )
         throws IOException
     {
-        File outputDirectory =
-            new File( getBasedirFile(), outputBaseDir() + getOutputDir() );
+        File outputFile = getTestWriterFile( baseName, extension );
 
-        if ( !outputDirectory.exists() )
+        if ( !outputFile.getParentFile().exists() )
         {
-            outputDirectory.mkdirs();
+            outputFile.getParentFile().mkdirs();
         }
 
-        return WriterFactory.newWriter( new File( outputDirectory, baseName + "." + extension ), "UTF-8" );
+        return WriterFactory.newWriter( outputFile, "UTF-8" );
+    }
+
+    protected File getTestWriterFile( String baseName, String extension )
+    {
+        File outputDirectory = new File( getBasedirFile(), outputBaseDir() + getOutputDir() );
+        return new File( outputDirectory, baseName + '.' + extension );
     }
 
     /**
@@ -110,16 +115,14 @@ public abstract class AbstractModuleTest
     protected Writer getXmlTestWriter( String baseName, String extension )
         throws IOException
     {
-        File outputDirectory =
-            new File( getBasedirFile(), outputBaseDir() + getOutputDir() );
+        File outputFile = getTestWriterFile( baseName, extension );
 
-        if ( !outputDirectory.exists() )
+        if ( !outputFile.getParentFile().exists() )
         {
-            outputDirectory.mkdirs();
+            outputFile.getParentFile().mkdirs();
         }
 
-        return WriterFactory.newXmlWriter(
-            new File( outputDirectory, baseName + "." + extension ) );
+        return WriterFactory.newXmlWriter( outputFile );
     }
 
     /**
@@ -137,6 +140,11 @@ public abstract class AbstractModuleTest
         return getTestWriter( baseName, outputExtension() );
     }
 
+    protected File getTestWriterFile( String baseName )
+    {
+        return getTestWriterFile( baseName, outputExtension() );
+    }
+
     /**
      * Returns an InputStreamReader to read a resource from a file
      * in the test target output directory.
@@ -151,8 +159,7 @@ public abstract class AbstractModuleTest
             Thread.currentThread().getContextClassLoader().getResourceAsStream(
                 baseName + "." + extension );
 
-        assertNotNull( "Could not find resource: "
-            + baseName + "." + extension, is );
+        assertNotNull( "Could not find resource: " + baseName + "." + extension, is );
 
         InputStreamReader reader = new InputStreamReader( is );
 
