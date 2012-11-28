@@ -36,6 +36,7 @@ import org.codehaus.plexus.PlexusTestCase;
 public class XhtmlBaseSinkTest
     extends PlexusTestCase
 {
+    protected static final String LS = System.getProperty( "line.separator" );
     private final SinkEventAttributes attributes = SinkEventAttributeSet.BOLD;
     private XhtmlBaseSink sink;
     private Writer writer;
@@ -208,7 +209,7 @@ public class XhtmlBaseSinkTest
             sink.close();
         }
 
-        assertEquals( "<div class=\"section\" style=\"bold\">\n<h2 style=\"bold\"></h2></div>", writer.toString() );
+        assertEquals( "<div class=\"section\" style=\"bold\">" + LS + "<h2 style=\"bold\"></h2></div>", writer.toString() );
     }
 
     /**
@@ -234,7 +235,7 @@ public class XhtmlBaseSinkTest
             sink.close();
         }
 
-        assertEquals( "<div class=\"foo\" id=\"bar\">\n<h2></h2></div>", writer.toString() );
+        assertEquals( "<div class=\"foo\" id=\"bar\">" + LS + "<h2></h2></div>", writer.toString() );
     }
 
     /**
@@ -257,7 +258,7 @@ public class XhtmlBaseSinkTest
             sink.close();
         }
 
-        assertEquals( "<div class=\"section\">\n<h2></h2></div>", writer.toString() );
+        assertEquals( "<div class=\"section\">" + LS + "<h2></h2></div>", writer.toString() );
     }
 
     /**
@@ -280,7 +281,7 @@ public class XhtmlBaseSinkTest
             sink.close();
         }
 
-        assertEquals( "<div class=\"section\">\n<h3></h3></div>", writer.toString() );
+        assertEquals( "<div class=\"section\">" + LS + "<h3></h3></div>", writer.toString() );
     }
 
     /**
@@ -303,7 +304,7 @@ public class XhtmlBaseSinkTest
             sink.close();
         }
 
-        assertEquals( "<div class=\"section\">\n<h4></h4></div>", writer.toString() );
+        assertEquals( "<div class=\"section\">" + LS + "<h4></h4></div>", writer.toString() );
     }
 
     /**
@@ -325,7 +326,7 @@ public class XhtmlBaseSinkTest
             sink.close();
         }
 
-        assertEquals( "<div class=\"section\">\n<h5></h5></div>", writer.toString() );
+        assertEquals( "<div class=\"section\">" + LS + "<h5></h5></div>", writer.toString() );
     }
 
     /**
@@ -347,7 +348,7 @@ public class XhtmlBaseSinkTest
             sink.close();
         }
 
-        assertEquals( "<div class=\"section\">\n<h6></h6></div>", writer.toString() );
+        assertEquals( "<div class=\"section\">" + LS + "<h6></h6></div>", writer.toString() );
     }
 
     /**
@@ -371,7 +372,7 @@ public class XhtmlBaseSinkTest
             sink.close();
         }
 
-        assertEquals( "<ul>\n<li></li></ul>", writer.toString() );
+        assertEquals( "<ul>" + LS + "<li></li></ul>", writer.toString() );
 
         writer =  new StringWriter();
 
@@ -389,7 +390,7 @@ public class XhtmlBaseSinkTest
             sink.close();
         }
 
-        assertEquals( "<ul style=\"bold\">\n<li style=\"bold\"></li></ul>", writer.toString() );
+        assertEquals( "<ul style=\"bold\">" + LS + "<li style=\"bold\"></li></ul>", writer.toString() );
     }
 
     /**
@@ -413,7 +414,7 @@ public class XhtmlBaseSinkTest
             sink.close();
         }
 
-        assertEquals( "<ol style=\"list-style-type: decimal\">\n<li></li></ol>", writer.toString() );
+        assertEquals( "<ol style=\"list-style-type: decimal\">" + LS + "<li></li></ol>", writer.toString() );
 
         writer =  new StringWriter();
 
@@ -431,7 +432,7 @@ public class XhtmlBaseSinkTest
             sink.close();
         }
 
-        assertEquals( "<ol style=\"list-style-type: decimal\">\n<li style=\"bold\"></li></ol>", writer.toString() );
+        assertEquals( "<ol style=\"list-style-type: decimal\">" + LS + "<li style=\"bold\"></li></ol>", writer.toString() );
     }
 
     /**
@@ -455,7 +456,7 @@ public class XhtmlBaseSinkTest
             sink.close();
         }
 
-        assertEquals( "<dl>\n<dt></dt>\n<dd></dd></dl>", writer.toString() );
+        assertEquals( "<dl>" + LS + "<dt></dt>" + LS + "<dd></dd></dl>", writer.toString() );
 
         writer =  new StringWriter();
 
@@ -475,7 +476,7 @@ public class XhtmlBaseSinkTest
             sink.close();
         }
 
-        assertEquals( "<dl style=\"bold\">\n<dt style=\"bold\"></dt>\n<dd style=\"bold\"></dd></dl>", writer.toString() );
+        assertEquals( "<dl style=\"bold\">" + LS + "<dt style=\"bold\"></dt>" + LS + "<dd style=\"bold\"></dd></dl>", writer.toString() );
     }
 
     /**
@@ -501,8 +502,8 @@ public class XhtmlBaseSinkTest
         }
 
         assertEquals( "<div style=\"bold\" class=\"figure\">"
-                + "\n<p align=\"center\"><img src=\"src.jpg\" style=\"bold\" alt=\"\" /></p>"
-                + "\n<p align=\"center\" style=\"bold\"><i></i></p></div>", writer.toString() );
+                + "" + LS + "<p align=\"center\"><img src=\"src.jpg\" style=\"bold\" alt=\"\" /></p>"
+                + "" + LS + "<p align=\"center\" style=\"bold\"><i></i></p></div>", writer.toString() );
     }
 
     /**
@@ -578,22 +579,22 @@ public class XhtmlBaseSinkTest
             sink.close();
         }
 
-        assertEquals( "<div class=\"source\">\n<pre></pre></div>", writer.toString() );
+        assertEquals( "<div class=\"source\">" + LS + "<pre></pre></div>", writer.toString() );
 
-        checkVerbatimAttributes( attributes, "<div>\n<pre style=\"bold\"></pre></div>" );
+        checkVerbatimAttributes( attributes, "<div>" + LS + "<pre style=\"bold\"></pre></div>" );
 
         final SinkEventAttributes att =
             new SinkEventAttributeSet( new String[] {SinkEventAttributes.ID, "id"} );
-        checkVerbatimAttributes( att, "<div>\n<pre id=\"id\"></pre></div>" );
+        checkVerbatimAttributes( att, "<div>" + LS + "<pre id=\"id\"></pre></div>" );
 
         att.addAttribute( Attribute.CLASS, "class" );
-        checkVerbatimAttributes( att, "<div>\n<pre id=\"id\" class=\"class\"></pre></div>" );
+        checkVerbatimAttributes( att, "<div>" + LS + "<pre id=\"id\" class=\"class\"></pre></div>" );
 
         att.addAttribute( SinkEventAttributes.DECORATION, "boxed" );
-        checkVerbatimAttributes( att, "<div class=\"source\">\n<pre id=\"id\" class=\"class\"></pre></div>" );
+        checkVerbatimAttributes( att, "<div class=\"source\">" + LS + "<pre id=\"id\" class=\"class\"></pre></div>" );
 
         att.removeAttribute( Attribute.CLASS.toString() );
-        checkVerbatimAttributes( att, "<div class=\"source\">\n<pre id=\"id\"></pre></div>" );
+        checkVerbatimAttributes( att, "<div class=\"source\">" + LS + "<pre id=\"id\"></pre></div>" );
     }
 
     private void checkVerbatimAttributes( final SinkEventAttributes att, final String expected )
