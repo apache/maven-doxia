@@ -135,6 +135,10 @@ public abstract class AbstractXmlParser
             XmlPullParser parser = new MXParser();
 
             parser.setInput( src );
+            
+            // allow parser initialization, e.g. for additional entities in XHTML
+            // Note: do it after input is set, otherwise values are reset
+            initXmlParser(parser);
 
             sink.enableLogging( getLog() );
 
@@ -152,6 +156,18 @@ public abstract class AbstractXmlParser
 
         setSecondParsing( false );
         init();
+    }
+    
+    /**
+     * Initializes the parser with custom entities or other options.
+     *
+     * @param parser A parser, not null.
+     * @throws org.codehaus.plexus.util.xml.pull.XmlPullParserException if there's a problem initializing the parser
+     */
+    protected void initXmlParser( XmlPullParser parser )
+        throws XmlPullParserException
+    {
+        // nop
     }
 
     /**

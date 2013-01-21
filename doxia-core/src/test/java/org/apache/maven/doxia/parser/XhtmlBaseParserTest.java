@@ -425,6 +425,60 @@ public class XhtmlBaseParserTest
     }
 
     /** @throws Exception  */
+    public void testXhtmlEntities()
+        throws Exception
+    {
+        final String text = "<body><h2>&laquo;&reg;</h2><p>&ldquo;&rsquo;&Phi;&larr;</p></body>";
+
+        parser.parse( text, sink );
+
+        Iterator<SinkEventElement> it = sink.getEventList().iterator();
+
+        assertEquals( "section1", ( it.next() ).getName() );
+        assertEquals( "sectionTitle1", ( it.next() ).getName() );
+
+        // Couple symbols from Latin-1:
+        // http://www.w3.org/TR/xhtml1/dtds.html#a_dtd_Latin-1_characters
+
+        SinkEventElement textEvt = it.next();
+        assertEquals( "text", textEvt.getName() );
+        assertEquals( "\u00AB", textEvt.getArgs()[0] );
+
+        textEvt = it.next();
+        assertEquals( "text", textEvt.getName() );
+        assertEquals( "\u00AE", textEvt.getArgs()[0] );
+
+        assertEquals( "sectionTitle1_", ( it.next() ).getName() );
+        assertEquals( "paragraph", ( it.next() ).getName() );
+
+        // Couple symbols from Special characters:
+        // http://www.w3.org/TR/xhtml1/dtds.html#a_dtd_Special_characters
+
+        textEvt = it.next();
+        assertEquals( "text", textEvt.getName() );
+        assertEquals( "\u201C", textEvt.getArgs()[0] );
+
+        textEvt = it.next();
+        assertEquals( "text", textEvt.getName() );
+        assertEquals( "\u2019", textEvt.getArgs()[0] );
+
+        // Couple symbols from Symbols:
+        // http://www.w3.org/TR/xhtml1/dtds.html#a_dtd_Symbols
+
+        textEvt = it.next();
+        assertEquals( "text", textEvt.getName() );
+        assertEquals( "\u03A6", textEvt.getArgs()[0] );
+
+        textEvt = it.next();
+        assertEquals( "text", textEvt.getName() );
+        assertEquals( "\u2190", textEvt.getArgs()[0] );
+
+        assertEquals( "paragraph_", ( it.next() ).getName() );
+
+        assertFalse( it.hasNext() );
+    }
+
+    /** @throws Exception  */
     public void testDecoration()
         throws Exception
     {
