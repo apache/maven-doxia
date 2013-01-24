@@ -33,19 +33,29 @@ import org.codehaus.plexus.util.StringUtils;
  */
 public class IndexEntry
 {
-    /** The parent entry. */
+    /**
+     * The parent entry.
+     */
     private final IndexEntry parent;
 
-    /** The id of the entry. */
+    /**
+     * The id of the entry.
+     */
     private String id;
 
-    /** The entry title. */
+    /**
+     * The entry title.
+     */
     private String title;
 
-    /** The child entries. */
+    /**
+     * The child entries.
+     */
     private List<IndexEntry> childEntries = new ArrayList<IndexEntry>();
 
-    /** System-dependent EOL. */
+    /**
+     * System-dependent EOL.
+     */
     private static final String EOL = System.getProperty( "line.separator" );
 
     /**
@@ -62,7 +72,7 @@ public class IndexEntry
      * Constructor.
      *
      * @param newParent The parent. May be null.
-     * @param newId The id. May be null.
+     * @param newId     The id. May be null.
      */
     public IndexEntry( IndexEntry newParent, String newId )
     {
@@ -265,7 +275,7 @@ public class IndexEntry
 
     /**
      * {@inheritDoc}
-     *
+     * <p/>
      * Returns a string representation of the object.
      */
     public String toString()
@@ -281,7 +291,7 @@ public class IndexEntry
      */
     public String toString( int depth )
     {
-        StringBuffer message = new StringBuffer();
+        StringBuilder message = new StringBuilder();
 
         message.append( "Id: " ).append( id );
 
@@ -292,11 +302,11 @@ public class IndexEntry
 
         message.append( EOL );
 
-        String indent = "";
+        StringBuilder indent = new StringBuilder( "" );
 
         for ( int i = 0; i < depth; i++ )
         {
-            indent += " ";
+            indent.append( " " );
         }
 
         for ( IndexEntry entry : getChildEntries() )

@@ -47,7 +47,7 @@ import org.codehaus.plexus.util.StringUtils;
 
 /**
  * A Doxia Sink that produces an aggregated FO model. The usage is similar to the following:
- *
+ * <p/>
  * <pre>
  * FoAggregateSink sink = new FoAggregateSink( writer );
  * sink.setDocumentModel( documentModel );
@@ -57,7 +57,7 @@ import org.codehaus.plexus.util.StringUtils;
  * ...
  * sink.endDocument();
  * </pre>
- *
+ * <p/>
  * <b>Note</b>: the documentModel object contains several
  * <a href="http://maven.apache.org/doxia/doxia/doxia-core/document.html">document metadata</a>, but only a few
  * of them are used in this sink (i.e. author, confidential, date and title), the others are ignored.
@@ -71,18 +71,21 @@ public class FoAggregateSink
 {
     /**
      * No Table Of Content.
+     *
      * @see #setDocumentModel(DocumentModel, int)
      */
     public static int TOC_NONE = 0;
 
     /**
      * Table Of Content at the start of the document.
+     *
      * @see #setDocumentModel(DocumentModel, int)
      */
     public static int TOC_START = 1;
 
     /**
      * Table Of Content at the end of the document.
+     *
      * @see #setDocumentModel(DocumentModel, int)
      */
     public static int TOC_END = 2;
@@ -90,25 +93,39 @@ public class FoAggregateSink
     // TODO: make configurable
     private static final String COVER_HEADER_HEIGHT = "1.5in";
 
-    /** The document model to be used by this sink. */
+    /**
+     * The document model to be used by this sink.
+     */
     private DocumentModel docModel;
 
-    /** Counts the current chapter level. */
+    /**
+     * Counts the current chapter level.
+     */
     private int chapter = 0;
 
-    /** Name of the source file of the current document, relative to the source root. */
+    /**
+     * Name of the source file of the current document, relative to the source root.
+     */
     private String docName;
 
-    /** Title of the chapter, used in the page header. */
+    /**
+     * Title of the chapter, used in the page header.
+     */
     private String docTitle = "";
 
-    /** Content in head is ignored in aggregated documents. */
+    /**
+     * Content in head is ignored in aggregated documents.
+     */
     private boolean ignoreText;
 
-    /** Current position of the TOC, see {@link #TOC_POSITION} */
+    /**
+     * Current position of the TOC, see {@link #TOC_POSITION}
+     */
     private int tocPosition;
 
-    /** Used to get the current position in the TOC. */
+    /**
+     * Used to get the current position in the TOC.
+     */
     private final Stack<NumberedListItem> tocStack = new Stack<NumberedListItem>();
 
     /**
@@ -121,13 +138,17 @@ public class FoAggregateSink
         super( writer );
     }
 
-    /** {@inheritDoc} */
+    /**
+     * {@inheritDoc}
+     */
     public void head()
     {
         head( null );
     }
 
-    /** {@inheritDoc} */
+    /**
+     * {@inheritDoc}
+     */
     public void head( SinkEventAttributes attributes )
     {
         init();
@@ -135,74 +156,98 @@ public class FoAggregateSink
         ignoreText = true;
     }
 
-    /** {@inheritDoc} */
+    /**
+     * {@inheritDoc}
+     */
     public void head_()
     {
         ignoreText = false;
         writeEOL();
     }
 
-    /** {@inheritDoc} */
+    /**
+     * {@inheritDoc}
+     */
     public void title()
     {
         title( null );
     }
 
-    /** {@inheritDoc} */
+    /**
+     * {@inheritDoc}
+     */
     public void title( SinkEventAttributes attributes )
     {
         // ignored
     }
 
-    /** {@inheritDoc} */
+    /**
+     * {@inheritDoc}
+     */
     public void title_()
     {
         // ignored
     }
 
-    /** {@inheritDoc} */
+    /**
+     * {@inheritDoc}
+     */
     public void author()
     {
         author( null );
     }
 
-    /** {@inheritDoc} */
+    /**
+     * {@inheritDoc}
+     */
     public void author( SinkEventAttributes attributes )
     {
         // ignored
     }
 
-    /** {@inheritDoc} */
+    /**
+     * {@inheritDoc}
+     */
     public void author_()
     {
         // ignored
     }
 
-    /** {@inheritDoc} */
+    /**
+     * {@inheritDoc}
+     */
     public void date()
     {
         date( null );
     }
 
-    /** {@inheritDoc} */
+    /**
+     * {@inheritDoc}
+     */
     public void date( SinkEventAttributes attributes )
     {
         // ignored
     }
 
-    /** {@inheritDoc} */
+    /**
+     * {@inheritDoc}
+     */
     public void date_()
     {
         // ignored
     }
 
-    /** {@inheritDoc} */
+    /**
+     * {@inheritDoc}
+     */
     public void body()
     {
         body( null );
     }
 
-    /** {@inheritDoc} */
+    /**
+     * {@inheritDoc}
+     */
     public void body( SinkEventAttributes attributes )
     {
         chapter++;
@@ -222,7 +267,9 @@ public class FoAggregateSink
 
     }
 
-    /** {@inheritDoc} */
+    /**
+     * {@inheritDoc}
+     */
     public void body_()
     {
         writeEOL();
@@ -279,7 +326,7 @@ public class FoAggregateSink
      * Sets the DocumentModel to be used by this sink. The DocumentModel provides all the meta-information
      * required to render a document, eg settings for the cover page, table of contents, etc.
      *
-     * @param model the DocumentModel, could be null.
+     * @param model  the DocumentModel, could be null.
      * @param tocPos should be one of these values: {@link #TOC_NONE}, {@link #TOC_START} and {@link #TOC_END}.
      * @since 1.1.2
      */
@@ -356,13 +403,17 @@ public class FoAggregateSink
     //
     // -----------------------------------------------------------------------
 
-    /** {@inheritDoc} */
+    /**
+     * {@inheritDoc}
+     */
     public void figureGraphics( String name )
     {
         figureGraphics( name, null );
     }
 
-    /** {@inheritDoc} */
+    /**
+     * {@inheritDoc}
+     */
     public void figureGraphics( String src, SinkEventAttributes attributes )
     {
         String anchor = src;
@@ -380,13 +431,17 @@ public class FoAggregateSink
         super.figureGraphics( anchor, attributes );
     }
 
-    /** {@inheritDoc} */
+    /**
+     * {@inheritDoc}
+     */
     public void anchor( String name )
     {
         anchor( name, null );
     }
 
-    /** {@inheritDoc} */
+    /**
+     * {@inheritDoc}
+     */
     public void anchor( String name, SinkEventAttributes attributes )
     {
         if ( name == null )
@@ -414,13 +469,17 @@ public class FoAggregateSink
         writeStartTag( INLINE_TAG, "id", anchor );
     }
 
-    /** {@inheritDoc} */
+    /**
+     * {@inheritDoc}
+     */
     public void link( String name )
     {
         link( name, null );
     }
 
-    /** {@inheritDoc} */
+    /**
+     * {@inheritDoc}
+     */
     public void link( String name, SinkEventAttributes attributes )
     {
         if ( name == null )
@@ -553,9 +612,8 @@ public class FoAggregateSink
                 }
                 else
                 {
-                    anchor =
-                        anchor.substring( 0, dot ) + "#"
-                            + HtmlTools.encodeId( anchor.substring( hash + 1, anchor.length() ) );
+                    anchor = anchor.substring( 0, dot ) + "#" + HtmlTools.encodeId(
+                        anchor.substring( hash + 1, anchor.length() ) );
                 }
             }
             else
@@ -573,7 +631,7 @@ public class FoAggregateSink
 
     /**
      * {@inheritDoc}
-     *
+     * <p/>
      * Writes a start tag, prepending EOL.
      */
     protected void writeStartTag( Tag tag, String attributeId )
@@ -586,7 +644,7 @@ public class FoAggregateSink
 
     /**
      * {@inheritDoc}
-     *
+     * <p/>
      * Writes a start tag, prepending EOL.
      */
     protected void writeStartTag( Tag tag, String id, String name )
@@ -599,7 +657,7 @@ public class FoAggregateSink
 
     /**
      * {@inheritDoc}
-     *
+     * <p/>
      * Writes an end tag, appending EOL.
      */
     protected void writeEndTag( Tag t )
@@ -612,7 +670,7 @@ public class FoAggregateSink
 
     /**
      * {@inheritDoc}
-     *
+     * <p/>
      * Writes a simple tag, appending EOL.
      */
     protected void writeEmptyTag( Tag tag, String attributeId )
@@ -625,7 +683,7 @@ public class FoAggregateSink
 
     /**
      * {@inheritDoc}
-     *
+     * <p/>
      * Writes a text, swallowing any exceptions.
      */
     protected void write( String text )
@@ -638,7 +696,7 @@ public class FoAggregateSink
 
     /**
      * {@inheritDoc}
-     *
+     * <p/>
      * Writes a text, appending EOL.
      */
     protected void writeln( String text )
@@ -651,7 +709,7 @@ public class FoAggregateSink
 
     /**
      * {@inheritDoc}
-     *
+     * <p/>
      * Writes content, escaping special characters.
      */
     protected void content( String text )
@@ -738,7 +796,7 @@ public class FoAggregateSink
 
     /**
      * {@inheritDoc}
-     *
+     * <p/>
      * Returns the current chapter number as a string.
      */
     protected String getChapterString()
@@ -748,7 +806,7 @@ public class FoAggregateSink
 
     /**
      * {@inheritDoc}
-     *
+     * <p/>
      * Writes a 'xsl-region-before' block.
      */
     protected void regionBefore( String headerText )
@@ -782,7 +840,7 @@ public class FoAggregateSink
 
     /**
      * {@inheritDoc}
-     *
+     * <p/>
      * Writes a 'xsl-region-after' block.
      */
     protected void regionAfter( String footerText )
@@ -801,7 +859,7 @@ public class FoAggregateSink
 
     /**
      * {@inheritDoc}
-     *
+     * <p/>
      * Writes a chapter heading.
      */
     protected void chapterHeading( String headerText, boolean chapterNumber )
@@ -948,19 +1006,19 @@ public class FoAggregateSink
 
     private String currentTocNumber()
     {
-        String ch = ( tocStack.get( 0 ) ).getListItemSymbol();
+        StringBuilder ch = new StringBuilder( tocStack.get( 0 ).getListItemSymbol() );
 
         for ( int i = 1; i < tocStack.size(); i++ )
         {
-            ch = ch + "." + tocStack.get( i ).getListItemSymbol();
+            ch.append( "." + tocStack.get( i ).getListItemSymbol() );
         }
 
-        return ch;
+        return ch.toString();
     }
 
     /**
      * {@inheritDoc}
-     *
+     * <p/>
      * Writes a fo:bookmark-tree. The DocumentModel has to contain a DocumentTOC for this to work.
      */
     protected void pdfBookmarks()
@@ -1250,7 +1308,7 @@ public class FoAggregateSink
 
         if ( atts == null )
         {
-            return new SinkEventAttributeSet( new String[] { SinkEventAttributes.HEIGHT, COVER_HEADER_HEIGHT } );
+            return new SinkEventAttributeSet( new String[]{ SinkEventAttributes.HEIGHT, COVER_HEADER_HEIGHT } );
         }
 
         // FOP dpi: 72
