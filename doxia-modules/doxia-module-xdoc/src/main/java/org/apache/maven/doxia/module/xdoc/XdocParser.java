@@ -51,30 +51,44 @@ import org.codehaus.plexus.util.xml.pull.XmlPullParserException;
  * @version $Id$
  * @since 1.0
  */
-@Component( role = Parser.class, hint = "xdoc" )
+@Component(role = Parser.class, hint = "xdoc")
 public class XdocParser
     extends XhtmlBaseParser
     implements XdocMarkup
 {
-    /** The source content of the input reader. Used to pass into macros. */
+    /**
+     * The source content of the input reader. Used to pass into macros.
+     */
     private String sourceContent;
 
-    /** Empty elements don't write a closing tag. */
+    /**
+     * Empty elements don't write a closing tag.
+     */
     private boolean isEmptyElement;
 
-    /** A macro name. */
+    /**
+     * A macro name.
+     */
     private String macroName;
 
-    /** The macro parameters. */
+    /**
+     * The macro parameters.
+     */
     private Map<String, Object> macroParameters = new HashMap<String, Object>();
 
-    /** Indicates that we're inside &lt;properties&gt; or &lt;head&gt;.*/
+    /**
+     * Indicates that we're inside &lt;properties&gt; or &lt;head&gt;.
+     */
     private boolean inHead;
 
-    /** Indicates that &lt;title&gt; was called from &lt;properties&gt; or &lt;head&gt;.*/
+    /**
+     * Indicates that &lt;title&gt; was called from &lt;properties&gt; or &lt;head&gt;.
+     */
     private boolean hasTitle;
 
-    /** {@inheritDoc} */
+    /**
+     * {@inheritDoc}
+     */
     public void parse( Reader source, Sink sink )
         throws ParseException
     {
@@ -114,7 +128,9 @@ public class XdocParser
         }
     }
 
-    /** {@inheritDoc} */
+    /**
+     * {@inheritDoc}
+     */
     protected void handleStartTag( XmlPullParser parser, Sink sink )
         throws XmlPullParserException, MacroExecutionException
     {
@@ -229,8 +245,7 @@ public class XdocParser
 
             if ( getLog().isDebugEnabled() )
             {
-                String position = "[" + parser.getLineNumber() + ":"
-                    + parser.getColumnNumber() + "]";
+                String position = "[" + parser.getLineNumber() + ":" + parser.getColumnNumber() + "]";
                 String tag = "<" + parser.getName() + ">";
 
                 getLog().debug( "Unrecognized xdoc tag: " + tag + " at " + position );
@@ -238,7 +253,9 @@ public class XdocParser
         }
     }
 
-    /** {@inheritDoc} */
+    /**
+     * {@inheritDoc}
+     */
     protected void handleEndTag( XmlPullParser parser, Sink sink )
         throws XmlPullParserException, MacroExecutionException
     {
@@ -315,7 +332,9 @@ public class XdocParser
         isEmptyElement = false;
     }
 
-    /** {@inheritDoc} */
+    /**
+     * {@inheritDoc}
+     */
     protected void consecutiveSections( int newLevel, Sink sink )
     {
         closeOpenSections( newLevel, sink );
@@ -324,7 +343,9 @@ public class XdocParser
         setSectionLevel( newLevel );
     }
 
-    /** {@inheritDoc} */
+    /**
+     * {@inheritDoc}
+     */
     protected void init()
     {
         super.init();
@@ -365,7 +386,7 @@ public class XdocParser
     }
 
     private void handleMacroEnd( Sink sink )
-            throws MacroExecutionException
+        throws MacroExecutionException
     {
         if ( !isSecondParsing() )
         {
@@ -382,7 +403,8 @@ public class XdocParser
                 try
                 {
                     executeMacro( macroName, request, sink );
-                } catch ( MacroNotFoundException me )
+                }
+                catch ( MacroNotFoundException me )
                 {
                     throw new MacroExecutionException( "Macro not found: " + macroName, me );
                 }
@@ -395,7 +417,7 @@ public class XdocParser
     }
 
     private void handleMacroStart( XmlPullParser parser )
-            throws MacroExecutionException
+        throws MacroExecutionException
     {
         if ( !isSecondParsing() )
         {
@@ -408,8 +430,9 @@ public class XdocParser
 
             if ( StringUtils.isEmpty( macroName ) )
             {
-                throw new MacroExecutionException( "The '" + Attribute.NAME.toString()
-                        + "' attribute for the '" + MACRO_TAG.toString() + "' tag is required." );
+                throw new MacroExecutionException(
+                    "The '" + Attribute.NAME.toString() + "' attribute for the '" + MACRO_TAG.toString()
+                        + "' tag is required." );
             }
         }
     }
@@ -433,26 +456,26 @@ public class XdocParser
         }
         else
         {
-            sink.unknown( "meta", new Object[] {new Integer( TAG_TYPE_SIMPLE )}, attribs );
+            sink.unknown( "meta", new Object[]{ Integer.valueOf( TAG_TYPE_SIMPLE ) }, attribs );
         }
     }
 
     private void handleParamStart( XmlPullParser parser, Sink sink )
-            throws MacroExecutionException
+        throws MacroExecutionException
     {
         if ( !isSecondParsing() )
         {
             if ( StringUtils.isNotEmpty( macroName ) )
             {
                 String paramName = parser.getAttributeValue( null, Attribute.NAME.toString() );
-                String paramValue = parser.getAttributeValue( null,
-                        Attribute.VALUE.toString() );
+                String paramValue = parser.getAttributeValue( null, Attribute.VALUE.toString() );
 
                 if ( StringUtils.isEmpty( paramName ) || StringUtils.isEmpty( paramValue ) )
                 {
-                    throw new MacroExecutionException( "'" + Attribute.NAME.toString()
-                            + "' and '" + Attribute.VALUE.toString() + "' attributes for the '" + PARAM.toString()
-                            + "' tag are required inside the '" + MACRO_TAG.toString() + "' tag." );
+                    throw new MacroExecutionException(
+                        "'" + Attribute.NAME.toString() + "' and '" + Attribute.VALUE.toString()
+                            + "' attributes for the '" + PARAM.toString() + "' tag are required inside the '"
+                            + MACRO_TAG.toString() + "' tag." );
                 }
 
                 macroParameters.put( paramName, paramValue );

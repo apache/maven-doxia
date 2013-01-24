@@ -697,7 +697,7 @@ public class RtfSink
     /** {@inheritDoc} */
     public void numberedList( int numbering )
     {
-        this.numbering.addElement( new Integer( numbering ) );
+        this.numbering.addElement( Integer.valueOf( numbering ) );
         itemNumber.addElement( new Counter( 0 ) );
 
         indentation.add( LIST_INDENT );
@@ -1848,7 +1848,7 @@ public class RtfSink
 
         void set( int context )
         {
-            stack.addElement( new Integer( this.context ) );
+            stack.addElement( Integer.valueOf( this.context ) );
             this.context = context;
         }
 
@@ -1987,7 +1987,7 @@ public class RtfSink
 
         void set( int space /*twips*/ )
         {
-            stack.addElement( new Integer( this.space ) );
+            stack.addElement( Integer.valueOf( this.space ) );
             this.space = space;
             next = space;
         }
@@ -2048,7 +2048,7 @@ public class RtfSink
 
         void set( int indent /*twips*/ )
         {
-            stack.addElement( new Integer( this.indent ) );
+            stack.addElement( Integer.valueOf( this.indent ) );
             this.indent = indent;
         }
 

@@ -786,7 +786,7 @@ public class XhtmlBaseParser
 
         if ( isScriptBlock() )
         {
-            sink.unknown( CDATA, new Object[] {new Integer( CDATA_TYPE ), text}, null );
+            sink.unknown( CDATA, new Object[] { Integer.valueOf( CDATA_TYPE ), text}, null );
         }
         else
         {

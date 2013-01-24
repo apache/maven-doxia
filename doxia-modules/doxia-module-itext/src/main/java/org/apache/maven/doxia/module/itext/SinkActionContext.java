@@ -154,6 +154,6 @@ public class SinkActionContext
     {
         //currentAction = action;
 
-        stack.push( new Integer( action ) );
+        stack.push( Integer.valueOf( action ) );
     }
 }

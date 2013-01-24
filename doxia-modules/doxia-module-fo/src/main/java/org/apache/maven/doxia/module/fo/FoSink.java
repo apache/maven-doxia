@@ -972,7 +972,7 @@ public class FoSink
         this.tableGridStack.addLast( Boolean.valueOf( grid ) );
         this.cellJustifStack.addLast( justification );
         this.isCellJustifStack.addLast( Boolean.valueOf( true ) );
-        this.cellCountStack.addLast( new Integer( 0 ) );
+        this.cellCountStack.addLast( Integer.valueOf( 0 ) );
         writeEOL();
         writeStartTag( TABLE_BODY_TAG );
     }
@@ -993,7 +993,7 @@ public class FoSink
         // TODO spacer rows
         writeStartTag( TABLE_ROW_TAG, "table.body.row" );
         this.cellCountStack.removeLast();
-        this.cellCountStack.addLast( new Integer( 0 ) );
+        this.cellCountStack.addLast( Integer.valueOf( 0 ) );
     }
 
     /** {@inheritDoc} */
@@ -1123,7 +1123,7 @@ public class FoSink
         if ( this.isCellJustifStack.getLast().equals( Boolean.TRUE ) )
         {
             int cellCount = Integer.parseInt( this.cellCountStack.removeLast().toString() );
-            this.cellCountStack.addLast( new Integer( ++cellCount ) );
+            this.cellCountStack.addLast( Integer.valueOf( ++cellCount ) );
         }
     }
 

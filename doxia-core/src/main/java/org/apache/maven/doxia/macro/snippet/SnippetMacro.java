@@ -312,7 +312,7 @@ public class SnippetMacro
     {
         cache.put( globalSnippetId( url, id ), content );
 
-        timeCached.put( globalSnippetId( url, id ), new Long( System.currentTimeMillis() ) );
+        timeCached.put( globalSnippetId( url, id ), Long.valueOf( System.currentTimeMillis() ) );
     }
 
     /**

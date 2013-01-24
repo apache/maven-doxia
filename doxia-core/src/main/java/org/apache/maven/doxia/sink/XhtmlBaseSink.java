@@ -1294,7 +1294,7 @@ public class XhtmlBaseSink
 
         writeStartTag( HtmlMarkup.TABLE, att );
 
-        this.cellCountStack.addLast( new Integer( 0 ) );
+        this.cellCountStack.addLast( Integer.valueOf( 0 ) );
     }
 
     /** {@inheritDoc} */
@@ -1361,7 +1361,7 @@ public class XhtmlBaseSink
         if ( !this.cellCountStack.isEmpty() )
         {
             this.cellCountStack.removeLast();
-            this.cellCountStack.addLast( new Integer( 0 ) );
+            this.cellCountStack.addLast( Integer.valueOf( 0 ) );
         }
     }
 
@@ -1475,7 +1475,7 @@ public class XhtmlBaseSink
             && !this.cellCountStack.isEmpty() )
         {
             int cellCount = Integer.parseInt( this.cellCountStack.removeLast().toString() );
-            this.cellCountStack.addLast( new Integer( ++cellCount ) );
+            this.cellCountStack.addLast( Integer.valueOf( ++cellCount ) );
         }
     }
 
