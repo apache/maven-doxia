@@ -1578,7 +1578,7 @@ public class DocBookSink
             logMessage( "modifiedComment", msg );
         }
 
-        StringBuffer buffer = new StringBuffer( comment.length() + 9 );
+        StringBuilder buffer = new StringBuilder( comment.length() + 9 );
 
         buffer.append( LESS_THAN ).append( BANG ).append( MINUS ).append( MINUS ).append( SPACE );
         buffer.append( comment );

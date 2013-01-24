@@ -45,8 +45,8 @@ public class DefinitionListBlockParser
     public Block visit( String line, ByLineSource source )
         throws ParseException
     {
-        StringBuffer text = new StringBuffer();
-        StringBuffer title = new StringBuffer();
+        StringBuilder text = new StringBuilder();
+        StringBuilder title = new StringBuilder();
 
         int index = line.indexOf( "title=" );
 
@@ -80,7 +80,7 @@ public class DefinitionListBlockParser
         return new DefinitionListBlock( title.toString(), text.toString() );
     }
 
-    private void append( StringBuffer title, String line )
+    private void append( StringBuilder title, String line )
     {
         if ( title.length() > 0 )
         {

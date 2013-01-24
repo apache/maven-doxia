@@ -503,7 +503,7 @@ class TreeListBuilder
         /** {@inheritDoc} */
         public String toString( final String indent )
         {
-            final StringBuffer sb = new StringBuffer();
+            final StringBuilder sb = new StringBuilder();
 
             if ( father != null )
             {

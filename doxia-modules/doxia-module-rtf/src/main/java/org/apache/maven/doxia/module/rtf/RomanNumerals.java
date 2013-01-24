@@ -41,7 +41,7 @@ class RomanNumerals
 
     static String toString( int n, boolean lowerCase )
     {
-        StringBuffer roman = new StringBuffer();
+        StringBuilder roman = new StringBuilder();
         String[] letters = lowerCase ? LOWER_CASE_LETTERS : UPPER_CASE_LETTERS;
 
         for ( int i = 0; i < NUMBERS.length; ++i )

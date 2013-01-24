@@ -34,7 +34,7 @@ public class ITextHeader
 {
     private String title;
 
-    private StringBuffer authors;
+    private StringBuilder authors;
 
     private Date date;
 
@@ -80,7 +80,7 @@ public class ITextHeader
     {
         if ( this.authors == null )
         {
-            this.authors = new StringBuffer();
+            this.authors = new StringBuilder();
         }
         else
         {

@@ -131,7 +131,7 @@ public class AbstractXmlSinkTest
     private class XmlTestSink
             extends AbstractXmlSink
     {
-        private final StringBuffer buffer = new StringBuffer( 0 );
+        private final StringBuilder buffer = new StringBuilder( 0 );
 
         public void reset()
         {

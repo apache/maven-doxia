@@ -56,7 +56,7 @@ public class ListBlockParser
     {
         TreeListBuilder treeListBuilder = new TreeListBuilder();
 
-        StringBuffer text = new StringBuffer();
+        StringBuilder text = new StringBuilder();
 
         do
         {
@@ -91,7 +91,7 @@ public class ListBlockParser
         return treeListBuilder.getBlock();
     }
 
-    private void addItem( TreeListBuilder treeListBuilder, StringBuffer text )
+    private void addItem( TreeListBuilder treeListBuilder, StringBuilder text )
     {
         String item = text.toString();
         int level = getLevel( item );

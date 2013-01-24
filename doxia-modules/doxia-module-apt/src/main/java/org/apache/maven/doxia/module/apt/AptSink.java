@@ -49,7 +49,7 @@ public class AptSink
     private StringBuffer buffer;
 
     /**  A buffer that holds the table caption. */
-    private StringBuffer tableCaptionBuffer;
+    private StringBuilder tableCaptionBuffer;
 
     /**  author. */
     private String author;
@@ -157,7 +157,7 @@ public class AptSink
 
         resetBuffer();
 
-        this.tableCaptionBuffer = new StringBuffer();
+        this.tableCaptionBuffer = new StringBuilder();
         this.listNestingIndent = "";
 
         this.author = null;
@@ -178,7 +178,7 @@ public class AptSink
     }
 
     /**
-     * Reset the StringBuffer.
+     * Reset the StringBuilder.
      */
     protected void resetBuffer()
     {
@@ -190,7 +190,7 @@ public class AptSink
      */
     protected void resetTableCaptionBuffer()
     {
-        tableCaptionBuffer = new StringBuffer();
+        tableCaptionBuffer = new StringBuilder();
     }
 
     /** {@inheritDoc} */
@@ -645,7 +645,7 @@ public class AptSink
     /** Construct a table row. */
     private void buildRowLine()
     {
-        StringBuffer rLine = new StringBuffer();
+        StringBuilder rLine = new StringBuilder();
         rLine.append( TABLE_ROW_START_MARKUP );
 
         for ( int i = 0; i < cellCount; i++ )
@@ -988,7 +988,7 @@ public class AptSink
         }
 
         int length = text.length();
-        StringBuffer buffer = new StringBuffer( length );
+        StringBuilder buffer = new StringBuilder( length );
 
         for ( int i = 0; i < length; ++i )
         {

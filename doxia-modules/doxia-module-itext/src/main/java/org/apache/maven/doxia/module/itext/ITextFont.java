@@ -200,7 +200,7 @@ public class ITextFont
     public String getFontStyle()
     {
         Font font = getCurrentFont();
-        StringBuffer sb = new StringBuffer();
+        StringBuilder sb = new StringBuilder();
 
         if ( font.isBold() )
         {

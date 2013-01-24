@@ -145,7 +145,7 @@ public class SectionBlock
     /** {@inheritDoc} */
     public final String toString()
     {
-        final StringBuffer sb = new StringBuffer();
+        final StringBuilder sb = new StringBuilder();
 
         sb.append( "Section  {title: '" );
         sb.append( getTitle() );

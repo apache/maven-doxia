@@ -245,7 +245,7 @@ class PBMReader
             throws IOException
         {
             char c;
-            StringBuffer field = new StringBuffer();
+            StringBuilder field = new StringBuilder();
 
             try
             {

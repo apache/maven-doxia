@@ -83,19 +83,19 @@ public class ParagraphBlockParser
     }
 
     /**
-     * Slurp lines from the source starting with the given line appending them together into a StringBuffer until an
+     * Slurp lines from the source starting with the given line appending them together into a StringBuilder until an
      * empty line is reached, and while the source contains more lines. The result can be passed to the
      * {@link #getBlocks(String)} method.
      *
      * @param line the first line
      * @param source the source to read new lines from
-     * @return a StringBuffer appended with lines
+     * @return a StringBuilder appended with lines
      * @throws ParseException
      */
     private String appendUntilEmptyLine( String line, ByLineSource source )
         throws ParseException
     {
-        StringBuffer text = new StringBuffer();
+        StringBuilder text = new StringBuilder();
 
         do
         {

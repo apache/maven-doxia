@@ -49,7 +49,7 @@ class FontMetrics
         String s = FontMetrics.class.getName();
         String packageName = s.substring( 0, s.lastIndexOf( '.' ) );
 
-        StringBuffer buf = new StringBuffer( packageName + "." );
+        StringBuilder buf = new StringBuilder( packageName + "." );
 
         switch ( style )
         {

@@ -67,17 +67,17 @@ public class FigureBlockParser
     }
 
     /**
-     * Slurp lines from the source starting with the given line appending them together into a StringBuffer until an
+     * Slurp lines from the source starting with the given line appending them together into a StringBuilder until an
      * empty line is reached, and while the source contains more lines.
      *
      * @param source the source to read new lines from
-     * @return a StringBuffer appended with lines
+     * @return a StringBuilder appended with lines
      * @throws ParseException
      */
     private String appendUntilEmptyLine( ByLineSource source )
         throws ParseException
     {
-        StringBuffer text = new StringBuffer();
+        StringBuilder text = new StringBuilder();
 
         String line;
 

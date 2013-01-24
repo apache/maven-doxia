@@ -1196,7 +1196,7 @@ public class TWikiSink
             throw new IllegalArgumentException( "A tag is required" );
         }
 
-        StringBuffer sb = new StringBuffer();
+        StringBuilder sb = new StringBuilder();
         sb.append( LESS_THAN );
 
         sb.append( t.toString() );
@@ -1247,7 +1247,7 @@ public class TWikiSink
      */
     private void writeEndTag( Tag t )
     {
-        StringBuffer sb = new StringBuffer();
+        StringBuilder sb = new StringBuilder();
         sb.append( LESS_THAN );
         sb.append( SLASH );
 

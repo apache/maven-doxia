@@ -43,7 +43,7 @@ public class ChildBlocksBuilder
 
     private List<Block> blocks = new ArrayList<Block>();
 
-    private StringBuffer text = new StringBuffer();
+    private StringBuilder text = new StringBuilder();
 
     private String input;
 
@@ -79,7 +79,7 @@ public class ChildBlocksBuilder
                     {
                         insideBold = false;
                         specialBlocks = getList( new BoldBlock( getChildren( text, specialBlocks ) ), specialBlocks );
-                        text = new StringBuffer();
+                        text = new StringBuilder();
                     }
                     else
                     {
@@ -93,7 +93,7 @@ public class ChildBlocksBuilder
                     {
                         insideItalic = false;
                         specialBlocks = getList( new ItalicBlock( getChildren( text, specialBlocks ) ), specialBlocks );
-                        text = new StringBuffer();
+                        text = new StringBuilder();
                     }
                     else
                     {
@@ -170,7 +170,7 @@ public class ChildBlocksBuilder
                             blocks.add( new LinkBlock( link, value ) );
                         }
 
-                        text = new StringBuffer();
+                        text = new StringBuilder();
                         insideLink = false;
                     }
 
@@ -197,7 +197,7 @@ public class ChildBlocksBuilder
                         insideMonospaced = false;
                         specialBlocks = getList( new MonospaceBlock( getChildren( text, specialBlocks ) ),
                                                  specialBlocks );
-                        text = new StringBuffer();
+                        text = new StringBuilder();
                     }
                     else
                     {
@@ -210,7 +210,7 @@ public class ChildBlocksBuilder
                         {
                             blocks.add( new TextBlock( "{" + name + "}" ) );
                         }
-                        text = new StringBuffer();
+                        text = new StringBuilder();
                     }
 
                     break;
@@ -268,7 +268,7 @@ public class ChildBlocksBuilder
         return list;
     }
 
-    private List<Block> getChildren( StringBuffer buffer, List<Block> currentBlocks )
+    private List<Block> getChildren( StringBuilder buffer, List<Block> currentBlocks )
     {
         String txt = buffer.toString().trim();
 
@@ -299,7 +299,7 @@ public class ChildBlocksBuilder
         return input.length() > i + 1 ? input.charAt( i + 1 ) : '\0';
     }
 
-    private StringBuffer addTextBlockIfNecessary( List<Block> blcks, List<Block> specialBlocks, StringBuffer txt )
+    private StringBuilder addTextBlockIfNecessary( List<Block> blcks, List<Block> specialBlocks, StringBuilder txt )
     {
         if ( txt.length() == 0 )
         {
@@ -317,7 +317,7 @@ public class ChildBlocksBuilder
             specialBlocks.add( textBlock );
         }
 
-        return new StringBuffer();
+        return new StringBuilder();
     }
 
 }

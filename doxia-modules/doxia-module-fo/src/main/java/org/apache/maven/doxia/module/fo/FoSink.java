@@ -484,7 +484,7 @@ public class FoSink
      */
     private void onSectionTitle( int depth )
     {
-        StringBuffer title = new StringBuffer( 16 );
+        StringBuilder title = new StringBuilder( 16 );
 
         title.append( getChapterString() );
 
@@ -936,7 +936,7 @@ public class FoSink
     {
         String content = this.tableContentWriterStack.removeLast().toString();
 
-        StringBuffer sb = new StringBuffer();
+        StringBuilder sb = new StringBuilder();
         int cellCount = Integer.parseInt( this.cellCountStack.removeLast().toString() );
         for ( int i = 0; i < cellCount; i++ )
         {
@@ -1383,7 +1383,7 @@ public class FoSink
             logMessage( "modifyComment", msg );
         }
 
-        StringBuffer buf = new StringBuffer( comment.length() + 9 );
+        StringBuilder buf = new StringBuilder( comment.length() + 9 );
 
         buf.append( LESS_THAN ).append( BANG ).append( MINUS ).append( MINUS ).append( SPACE );
         buf.append( comment );
@@ -1598,7 +1598,7 @@ public class FoSink
     public static String escaped( String text, boolean verb )
     {
         int length = text.length();
-        StringBuffer buffer = new StringBuffer( length );
+        StringBuilder buffer = new StringBuilder( length );
 
         for ( int i = 0; i < length; ++i )
         {

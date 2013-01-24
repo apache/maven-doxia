@@ -1707,7 +1707,7 @@ public class ITextSink
             aString = StringUtils.replace( aString, "\n", "" );
 
             LineNumberReader lnr = new LineNumberReader( new StringReader( aString ) );
-            StringBuffer sb = new StringBuffer();
+            StringBuilder sb = new StringBuilder();
             String line;
             try
             {
@@ -1761,7 +1761,7 @@ public class ITextSink
     private static String beautifyPhrase( String aString )
     {
         String[] strings = StringUtils.split( aString, " " );
-        StringBuffer sb = new StringBuffer();
+        StringBuilder sb = new StringBuilder();
         for ( int i = 0; i < strings.length; i++ )
         {
             if ( strings[i].trim().length() != 0 )

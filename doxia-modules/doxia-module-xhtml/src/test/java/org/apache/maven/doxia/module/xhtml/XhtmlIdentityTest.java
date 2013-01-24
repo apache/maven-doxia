@@ -73,7 +73,7 @@ public class XhtmlIdentityTest
         int iStartTableRows =
             expected.substring( 0, iStartCaption ).lastIndexOf( "begin:tableRows" ) + "begin:tableRows".length();
 
-        StringBuffer text = new StringBuffer();
+        StringBuilder text = new StringBuilder();
         text.append( expected.substring( 0, iStartTableRows ) );
         text.append( EOL + EOL + EOL );
         text.append( captionTag.subSequence( 0, captionTag.indexOf( "end:tableCaption" )

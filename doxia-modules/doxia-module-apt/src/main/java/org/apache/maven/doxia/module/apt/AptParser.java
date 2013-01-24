@@ -297,7 +297,7 @@ public class AptParser
         boolean italic = false;
         boolean bold = false;
         boolean monospaced = false;
-        StringBuffer buffer = new StringBuffer( end - begin );
+        StringBuilder buffer = new StringBuilder( end - begin );
 
         for ( int i = begin; i < end; ++i )
         {
@@ -449,7 +449,7 @@ public class AptParser
                             if ( i + 1 < end && text.charAt( i + 1 ) == LEFT_CURLY_BRACKET /*}*/ )
                             {
                                 ++i;
-                                StringBuffer buf = new StringBuffer();
+                                StringBuilder buf = new StringBuilder();
                                 i = skipTraversedLinkAnchor( text, i + 1, end, buf );
                                 linkAnchor = buf.toString();
                             }
@@ -680,7 +680,7 @@ public class AptParser
      */
     protected static String replaceAll( String string, String oldSub, String newSub )
     {
-        StringBuffer replaced = new StringBuffer();
+        StringBuilder replaced = new StringBuilder();
         int oldSubLength = oldSub.length();
         int begin, end;
 
@@ -1427,10 +1427,10 @@ public class AptParser
     /**
      * Emits the text so far parsed into the given sink.
      *
-     * @param buffer A StringBuffer that contains the text to be flushed.
+     * @param buffer A StringBuilder that contains the text to be flushed.
      * @param sink The sink to receive the text.
      */
-    private static void flushTraversed( StringBuffer buffer, Sink sink )
+    private static void flushTraversed( StringBuilder buffer, Sink sink )
     {
         if ( buffer.length() > 0 )
         {
@@ -1445,11 +1445,11 @@ public class AptParser
      * @param text the text to parse.
      * @param begin offset.
      * @param end offset.
-     * @param linkAnchor a StringBuffer.
+     * @param linkAnchor a StringBuilder.
      * @return int
      * @throws AptParseException if something goes wrong.
      */
-    private static int skipTraversedLinkAnchor( String text, int begin, int end, StringBuffer linkAnchor )
+    private static int skipTraversedLinkAnchor( String text, int begin, int end, StringBuilder linkAnchor )
         throws AptParseException
     {
         int i;
@@ -1563,7 +1563,7 @@ public class AptParser
     private String doGetTraversedLink( String text, int begin, int end )
         throws AptParseException
     {
-        final StringBuffer buffer = new StringBuffer( end - begin );
+        final StringBuilder buffer = new StringBuilder( end - begin );
 
         Sink linkSink = new SinkAdapter()
         {
@@ -1696,7 +1696,7 @@ public class AptParser
             else
             {
                 // Read block ---
-                StringBuffer buffer = new StringBuffer( firstLine );
+                StringBuilder buffer = new StringBuilder( firstLine );
 
                 while ( AptParser.this.line != null )
                 {
@@ -2251,7 +2251,7 @@ public class AptParser
 
             // Read block (first line already skipped) ---
 
-            StringBuffer buffer = new StringBuffer();
+            StringBuilder buffer = new StringBuilder();
             char firstChar = firstLine.charAt( 0 );
             boxed = ( firstChar == PLUS );
 
@@ -2386,7 +2386,7 @@ public class AptParser
             int[] justification = null;
             int rows = 0;
             int columns = 0;
-            StringBuffer[] cells = null;
+            StringBuilder[] cells = null;
             boolean[] headers = null;
             boolean grid;
 
@@ -2422,11 +2422,11 @@ public class AptParser
                         init = 1;
                         justification = parseJustification( line, lineLength );
                         columns = justification.length;
-                        cells = new StringBuffer[columns];
+                        cells = new StringBuilder[columns];
                         headers = new boolean[columns];
                         for ( i = 0; i < columns; ++i )
                         {
-                            cells[i] = new StringBuffer();
+                            cells[i] = new StringBuilder();
                             headers[i] = false;
                         }
                     }
@@ -2488,7 +2488,7 @@ public class AptParser
                         cellLine = replaceAll( cellLine, "\\u00A0\\u00A0", "\\\\" );
                         cellLine = cellLine.trim();
 
-                        StringBuffer cell = cells[i];
+                        StringBuilder cell = cells[i];
                         if ( cellLine.length() > 0 )
                         {
                             // line break in table cells
@@ -2596,7 +2596,7 @@ public class AptParser
          * @return boolean
          * @throws AptParseException if something goes wrong.
          */
-        private boolean traverseRow( StringBuffer[] cells, boolean[] headers, int[] justification )
+        private boolean traverseRow( StringBuilder[] cells, boolean[] headers, int[] justification )
             throws AptParseException
         {
             // Skip empty row (a decorative line).
@@ -2615,7 +2615,7 @@ public class AptParser
                 AptParser.this.sink.tableRow();
                 for ( int i = 0; i < cells.length; ++i )
                 {
-                    StringBuffer cell = cells[i];
+                    StringBuilder cell = cells[i];
 
                     SinkEventAttributes justif;
                     switch ( justification[i] )

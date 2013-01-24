@@ -91,7 +91,7 @@ class TreeComponent
 
     String toString( String indent )
     {
-        StringBuffer sb = new StringBuffer();
+        StringBuilder sb = new StringBuilder();
 
         if ( father != null )
         {

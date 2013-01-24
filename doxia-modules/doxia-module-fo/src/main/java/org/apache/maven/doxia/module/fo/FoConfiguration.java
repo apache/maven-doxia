@@ -145,7 +145,7 @@ public class FoConfiguration
     }
 
     /**
-     * Adds an attribute to the current StringBuffer.
+     * Adds an attribute to the current StringBuilder.
      *
      * @param attributeId A unique id to identify the set of attributes.
      * This should correspond to the name of an attribute-set

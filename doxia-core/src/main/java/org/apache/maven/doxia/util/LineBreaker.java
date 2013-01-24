@@ -51,7 +51,7 @@ public class LineBreaker
     private int lineLength = 0;
 
     /** The string buffer to store the current text. */
-    private StringBuffer word = new StringBuffer( 1024 );
+    private StringBuilder word = new StringBuilder( 1024 );
 
     /**
      * Constructs a new LineBreaker with DEFAULT_MAX_LINE_LENGTH.
@@ -158,7 +158,7 @@ public class LineBreaker
     }
 
     /**
-     * Write out the current StringBuffer and flush the writer.
+     * Write out the current StringBuilder and flush the writer.
      * Any IOException will be swallowed.
      */
     public void flush()
@@ -175,7 +175,7 @@ public class LineBreaker
     }
 
     /**
-     * Writes the current StringBuffer to the writer.
+     * Writes the current StringBuilder to the writer.
      *
      * @throws IOException if an exception occurs during writing.
      */

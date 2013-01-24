@@ -199,7 +199,7 @@ public class RtfSink
 
     private boolean emptyHeader;
 
-    private StringBuffer verbatim;
+    private StringBuilder verbatim;
 
     private boolean frame;
 
@@ -753,7 +753,7 @@ public class RtfSink
     {
         int nmb = ( (Integer) this.numbering.lastElement() ).intValue();
         int iNmb = ( (Counter) this.itemNumber.lastElement() ).get();
-        StringBuffer buf = new StringBuffer();
+        StringBuilder buf = new StringBuilder();
 
         switch ( nmb )
         {
@@ -1119,7 +1119,7 @@ public class RtfSink
     /** {@inheritDoc} */
     public void verbatim( boolean boxed )
     {
-        verbatim = new StringBuffer();
+        verbatim = new StringBuilder();
         frame = boxed;
 
         context.set( CONTEXT_VERBATIM );
@@ -1606,7 +1606,7 @@ public class RtfSink
     private static String normalize( String s )
     {
         int length = s.length();
-        StringBuffer buffer = new StringBuffer( length );
+        StringBuilder buffer = new StringBuilder( length );
 
         for ( int i = 0; i < length; ++i )
         {
@@ -1632,7 +1632,7 @@ public class RtfSink
     private static String escape( String s )
     {
         int length = s.length();
-        StringBuffer buffer = new StringBuffer( length );
+        StringBuilder buffer = new StringBuilder( length );
 
         for ( int i = 0; i < length; ++i )
         {
@@ -1667,7 +1667,7 @@ public class RtfSink
     {
         Font font = null;
 
-        StringBuffer buf = new StringBuffer();
+        StringBuilder buf = new StringBuilder();
         buf.append( style );
         buf.append( size );
         String key = buf.toString();

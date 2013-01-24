@@ -121,7 +121,7 @@ public class AptUtils
     public static String linkToKey( String text )
     {
         int length = text.length();
-        StringBuffer buffer = new StringBuffer( length );
+        StringBuilder buffer = new StringBuilder( length );
 
         for ( int i = 0; i < length; ++i )
         {
@@ -162,7 +162,7 @@ public class AptUtils
         id = id.trim();
 
         int length = id.length();
-        StringBuffer buffer = new StringBuffer( length );
+        StringBuilder buffer = new StringBuilder( length );
 
         for ( int i = 0; i < length; ++i )
         {

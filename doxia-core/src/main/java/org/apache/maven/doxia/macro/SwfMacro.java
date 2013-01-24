@@ -142,7 +142,7 @@ public class SwfMacro
             }
         }
 
-        StringBuffer content = new StringBuffer();
+        StringBuilder content = new StringBuilder();
         content.append( "<center>" ).append( EOL );
         content.append( "<object classid=\"clsid:D27CDB6E-AE6D-11cf-96B8-444553540000\" " )
             .append( "codebase=\"http://download.macromedia.com/pub/shockwave/cabs/flash/swflash.cab#version=" )

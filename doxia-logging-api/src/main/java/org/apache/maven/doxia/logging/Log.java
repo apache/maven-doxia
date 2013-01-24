@@ -25,7 +25,7 @@ package org.apache.maven.doxia.logging;
  * <br/>
  * There should be no big surprises here, although you may notice that the methods accept
  * <code>java.lang.CharSequence</code> rather than <code>java.lang.String</code>. This is provided mainly as a
- * convenience, to enable developers to pass things like <code>java.lang.StringBuffer</code> directly into the logger,
+ * convenience, to enable developers to pass things like <code>java.lang.StringBuilder</code> directly into the logger,
  * rather than formatting first by calling <code>toString()</code>.
  * <br/>
  * Based on <code>org.apache.maven.plugin.logging.Log</code>.

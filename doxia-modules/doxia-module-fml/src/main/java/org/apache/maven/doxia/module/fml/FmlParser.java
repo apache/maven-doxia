@@ -76,7 +76,7 @@ public class FmlParser
     private Faq currentFaq;
 
     /** Used to collect text events. */
-    private StringBuffer buffer;
+    private StringBuilder buffer;
 
     /** Map of warn messages with a String as key to describe the error type and a Set as value.
      * Using to reduce warn messages. */
@@ -186,7 +186,7 @@ public class FmlParser
         }
         else if ( parser.getName().equals( TITLE.toString() ) )
         {
-            buffer = new StringBuffer();
+            buffer = new StringBuilder();
 
             buffer.append( String.valueOf( LESS_THAN ) ).append( parser.getName() )
                 .append( String.valueOf( GREATER_THAN ) );
@@ -214,14 +214,14 @@ public class FmlParser
         }
         else if ( parser.getName().equals( QUESTION_TAG.toString() ) )
         {
-            buffer = new StringBuffer();
+            buffer = new StringBuilder();
 
             buffer.append( String.valueOf( LESS_THAN ) ).append( parser.getName() )
                 .append( String.valueOf( GREATER_THAN ) );
         }
         else if ( parser.getName().equals( ANSWER_TAG.toString() ) )
         {
-            buffer = new StringBuffer();
+            buffer = new StringBuilder();
 
             buffer.append( String.valueOf( LESS_THAN ) ).append( parser.getName() )
                 .append( String.valueOf( GREATER_THAN ) );
@@ -479,7 +479,7 @@ public class FmlParser
      * @param buffer not null
      * @throws MacroExecutionException if any
      */
-    private void handleMacroEnd( StringBuffer buffer )
+    private void handleMacroEnd( StringBuilder buffer )
             throws MacroExecutionException
     {
         if ( !isSecondParsing() )

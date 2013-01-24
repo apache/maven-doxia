@@ -791,7 +791,7 @@ public class LatexSink
     public void tableRows( int[] justification, boolean grid )
 
     {
-        StringBuffer justif = new StringBuffer();
+        StringBuilder justif = new StringBuilder();
         for ( int i = 0; i < justification.length; ++i )
         {
             if ( grid )
@@ -1294,7 +1294,7 @@ public class LatexSink
     public static String escaped( String text )
     {
         int length = text.length();
-        StringBuffer buffer = new StringBuffer( length );
+        StringBuilder buffer = new StringBuilder( length );
 
         for ( int i = 0; i < length; ++i )
         {

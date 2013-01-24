@@ -271,7 +271,7 @@ public abstract class AbstractXmlValidator
         @Override
         public String toString()
         {
-            StringBuffer sb = new StringBuffer( 512 );
+            StringBuilder sb = new StringBuilder( 512 );
 
             sb.append( level ).append( EOL );
             sb.append( "  Public ID: " ).append( publicID ).append( EOL );

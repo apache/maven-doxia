@@ -232,7 +232,7 @@ public class AptSinkTest extends AbstractSinkTest
     protected String getTextBlock( String text )
     {
         // "\\~, \\=, \\-, \\+, \\*, \\[, \\], \\<, \\>, \\{, \\}, \\\\"
-        StringBuffer sb = new StringBuffer();
+        StringBuilder sb = new StringBuilder();
         sb.append( getSpecialCharacters( AptMarkup.COMMENT ) ).append( ",_" );
         sb.append( getSpecialCharacters( Markup.EQUAL ) ).append( ",_" );
         sb.append( getSpecialCharacters( Markup.MINUS ) ).append( ",_" );

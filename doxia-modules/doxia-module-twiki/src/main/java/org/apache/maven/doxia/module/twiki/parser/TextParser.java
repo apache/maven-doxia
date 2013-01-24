@@ -269,7 +269,7 @@ public class TextParser
         }
 
         final StringTokenizer tokenizer = new StringTokenizer( link );
-        final StringBuffer sb = new StringBuffer();
+        final StringBuilder sb = new StringBuilder();
 
         while ( tokenizer.hasMoreElements() )
         {

@@ -48,7 +48,7 @@ public class VerbatimBlockParser
     public Block visit( String line, ByLineSource source )
         throws ParseException
     {
-        StringBuffer text = new StringBuffer();
+        StringBuilder text = new StringBuilder();
 
         while ( ( line = source.getNextLine() ) != null )
         {

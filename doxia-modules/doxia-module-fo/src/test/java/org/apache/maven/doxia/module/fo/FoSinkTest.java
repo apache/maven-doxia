@@ -436,7 +436,7 @@ public class FoSinkTest
     public void testTableCaption()
         throws Exception
     {
-        StringBuffer html = new StringBuffer();
+        StringBuilder html = new StringBuilder();
         html.append( "<table>" ).append( EOL );
         html.append( "<caption>caption table</caption>" ).append( EOL );
         html.append( "<tr>" ).append( EOL );
@@ -472,7 +472,7 @@ public class FoSinkTest
     public void testNestedTables()
         throws Exception
     {
-        StringBuffer html = new StringBuffer();
+        StringBuilder html = new StringBuilder();
         html.append( "<table>" ).append( EOL );
         html.append( "<caption>first caption</caption>" ).append( EOL );
         html.append( "<tr>" ).append( EOL );

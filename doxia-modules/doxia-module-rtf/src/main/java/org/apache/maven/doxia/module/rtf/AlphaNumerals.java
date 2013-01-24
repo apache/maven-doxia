@@ -31,7 +31,7 @@ class AlphaNumerals
 
     static String toString( int n, boolean lowerCase )
     {
-        StringBuffer alpha = new StringBuffer();
+        StringBuilder alpha = new StringBuilder();
         char zeroLetter = lowerCase ? '`' : '@';
 
         while ( n > 0 )
