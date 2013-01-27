@@ -93,7 +93,7 @@ public class XhtmlParser
             }
             else
             {
-                sink.unknown( "meta", new Object[] {new Integer( TAG_TYPE_SIMPLE )}, attribs );
+                sink.unknown( "meta", new Object[] { Integer.valueOf( TAG_TYPE_SIMPLE ) }, attribs );
             }
         }
         /*

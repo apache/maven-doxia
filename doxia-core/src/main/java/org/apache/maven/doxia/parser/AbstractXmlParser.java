@@ -423,7 +423,7 @@ public abstract class AbstractXmlParser
      */
     protected void handleUnknown( XmlPullParser parser, Sink sink, int type )
     {
-        Object[] required = new Object[] { new Integer( type ) };
+        Object[] required = new Object[] { Integer.valueOf( type ) };
 
         SinkEventAttributeSet attribs = getAttributesFromParser( parser );
 
