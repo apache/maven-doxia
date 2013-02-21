@@ -123,6 +123,13 @@ public class ChildBlocksBuilder
                         if ( link.contains( "|" ) )
                         {
                             String[] pieces = StringUtils.split( text.toString(), "|" );
+                            
+                        	if ( pieces[1].startsWith("^") )
+                        	{
+                        		// use the "file attachment" ^ syntax to force verbatim link: needed to allow actually linking to some non-html resources
+                        		pieces[1] = pieces[1].substring(1); // now just get rid of the lead ^
+                        		addHTMLSuffix = false;  // force verbatim link to support attaching files/resources (not just .html files) 
+                        	} 
 
                             if ( addHTMLSuffix )
                             {
@@ -149,6 +156,13 @@ public class ChildBlocksBuilder
                             if ( link.startsWith( "#" ) )
                             {
                                 value = link.substring( 1 );
+                            }
+                            else if ( link.startsWith( "^" ) )
+                            {
+                                link = link.substring( 1 );  // chop off the lead ^ from link and from value
+                                value = link;
+                                addHTMLSuffix =
+                                    false; // force verbatim link to support attaching files/resources (not just .html files)
                             }
 
                             if ( addHTMLSuffix )

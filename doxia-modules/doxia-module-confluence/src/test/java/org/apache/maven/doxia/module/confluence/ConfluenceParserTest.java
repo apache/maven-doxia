@@ -272,10 +272,12 @@ public class ConfluenceParserTest
         assertContainsLines( result, "begin:link, name: link.html\ntext: alias\nend:link" );
         assertContainsLines( result, "begin:link, name: link.html#anchor\ntext: link#anchor\nend:link" );
         assertContainsLines( result, "begin:link, name: #simple\ntext: simple\nend:link" );
-        // 3 paragraphs in the input...
-        assertEquals( 4, result.split( "end:paragraph\n" ).length );
-        // 5 links in the input...
-        assertEquals( 6, result.split( "end:link\n" ).length );
+        assertContainsLines( result, "begin:link, name: resource.pdf\ntext: resource.pdf\nend:link" );
+        assertContainsLines( result, "begin:link, name: resource.pdf\ntext: alias pdf\nend:link" );
+        // 5 paragraphs in the input...
+        assertEquals( 5, result.split( "end:paragraph\n" ).length );
+        // 8 links in the input...
+        assertEquals( 8, result.split( "end:link\n" ).length );
     }
 
     /** @throws Exception */
