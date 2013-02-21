@@ -150,6 +150,12 @@ under the License.
     </mailingList>
   </mailingLists>
 
+  <contributors>
+    <contributor>
+      <name>Valters Vingolds</name>
+    </contributor>
+  </contributors>
+
   <prerequisites>
     <maven>${mavenVersion}</maven>
   </prerequisites>
