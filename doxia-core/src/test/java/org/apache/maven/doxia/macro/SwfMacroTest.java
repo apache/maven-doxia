@@ -106,4 +106,53 @@ public class SwfMacroTest
         assertFalse( it.hasNext() );
     }
 
+    /**
+     * Test that SwfMacro does not crash if other things then Strings are provided.
+     *
+     * @throws MacroExecutionException if a macro fails during testing.
+     */
+    public void testOthersThenStringParameters()
+            throws MacroExecutionException
+    {
+
+        Map<String, Object> macroParameters = new HashMap<String, Object>();
+        macroParameters.put( "src", "src.swf" );
+        macroParameters.put( "id", "Movie" );
+        macroParameters.put( "width", "50" );
+        macroParameters.put( "height", "60" );
+        macroParameters.put( "quality", "best" );
+        macroParameters.put( "menu", "true" );
+        macroParameters.put( "loop", "3" );
+        macroParameters.put( "play", "false" );
+        macroParameters.put( "version", "6" );
+        macroParameters.put( "allowScript", "always" );
+        macroParameters.put( "notAString", new Integer(0) );
+
+
+        SinkEventTestingSink sink = new SinkEventTestingSink();
+        MacroRequest request = new MacroRequest( macroParameters, new File( "." ) );
+        SwfMacro macro = new SwfMacro();
+        macro.required( "src", "value" );
+
+        macro.execute( sink, request );
+
+        Iterator<SinkEventElement> it = sink.getEventList().iterator();
+        SinkEventElement event = it.next();
+
+        assertEquals( "rawText", event.getName() );
+        assertFalse( it.hasNext() );
+
+        request = new MacroRequest( new HashMap<String, Object>(), new File( "." ) );
+        sink.reset();
+
+        macro.execute( sink, request );
+
+        it = sink.getEventList().iterator();
+        event = it.next();
+
+        assertEquals( "rawText", event.getName() );
+        assertFalse( it.hasNext() );
+    }
+
+
 }

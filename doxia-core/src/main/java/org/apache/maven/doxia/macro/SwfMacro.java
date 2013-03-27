@@ -53,7 +53,12 @@ public class SwfMacro
         // assign parameters
         for ( String key : request.getParameters().keySet() )
         {
-            String str = (String) request.getParameter( key );
+            Object parameterObject = request.getParameter( key );
+            if(!(parameterObject instanceof String))
+            {
+                continue;
+            }
+            String str = (String) parameterObject;
             if ( key.equals( "src" ) )
             {
                 if ( StringUtils.isNotEmpty( str ) )
