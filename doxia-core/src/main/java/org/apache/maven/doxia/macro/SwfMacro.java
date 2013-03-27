@@ -54,7 +54,7 @@ public class SwfMacro
         for ( String key : request.getParameters().keySet() )
         {
             Object parameterObject = request.getParameter( key );
-            if(!(parameterObject instanceof String))
+            if ( !( parameterObject instanceof String ) )
             {
                 continue;
             }
