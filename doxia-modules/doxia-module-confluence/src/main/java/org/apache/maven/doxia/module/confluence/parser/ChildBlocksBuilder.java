@@ -95,6 +95,10 @@ public class ChildBlocksBuilder
                         specialBlocks = getList( new ItalicBlock( getChildren( text, specialBlocks ) ), specialBlocks );
                         text = new StringBuilder();
                     }
+                    else if ( insideLink )
+                    {
+                        text.append( '_' );    
+                    }
                     else
                     {
                         text = addTextBlockIfNecessary( blocks, specialBlocks, text );

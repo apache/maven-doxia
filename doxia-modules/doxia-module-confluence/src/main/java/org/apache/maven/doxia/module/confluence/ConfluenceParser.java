@@ -76,10 +76,8 @@ public class ConfluenceParser
         {
             //boolean accepted = false;
 
-            for ( int i = 0; i < parsers.length; i++ )
+            for ( BlockParser parser : parsers )
             {
-                BlockParser parser = parsers[i];
-
                 if ( line.trim().length() == 0 )
                 {
                     continue;

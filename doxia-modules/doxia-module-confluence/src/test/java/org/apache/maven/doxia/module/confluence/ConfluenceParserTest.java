@@ -274,10 +274,11 @@ public class ConfluenceParserTest
         assertContainsLines( result, "begin:link, name: #simple\ntext: simple\nend:link" );
         assertContainsLines( result, "begin:link, name: resource.pdf\ntext: resource.pdf\nend:link" );
         assertContainsLines( result, "begin:link, name: resource.pdf\ntext: alias pdf\nend:link" );
+        assertContainsLines( result, "begin:link, name: http://link.to/page_with_underscore-and-dash\ntext: underscore_-dash\nend:link" );
         // 5 paragraphs in the input...
-        assertEquals( 5, result.split( "end:paragraph\n" ).length );
+        assertEquals( 6, result.split( "end:paragraph\n" ).length );
         // 8 links in the input...
-        assertEquals( 8, result.split( "end:link\n" ).length );
+        assertEquals( 9, result.split( "end:link\n" ).length );
     }
 
     /** @throws Exception */
