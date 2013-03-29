@@ -791,7 +791,7 @@ public class FoAggregateSink
             actualYear = Calendar.getInstance().get( Calendar.YEAR );
         }
 
-        return "&#169;" + actualYear + ", " + companyName + add;
+        return "&#169;" + actualYear + ", " + escaped( companyName, false ) + add;
     }
 
     /**
@@ -884,11 +884,11 @@ public class FoAggregateSink
 
         if ( headerText == null )
         {
-            write( docTitle );
+            text( docTitle );
         }
         else
         {
-            write( headerText );
+            text( headerText );
         }
 
         writeEndTag( BLOCK_TAG );
@@ -985,7 +985,7 @@ public class FoAggregateSink
             atts.addAttribute( "text-align-last", "justify" );
             writeStartTag( BLOCK_TAG, atts );
             writeStartTag( BASIC_LINK_TAG, "internal-destination", ref );
-            write( tocItem.getName() );
+            text( tocItem.getName() );
             writeEndTag( BASIC_LINK_TAG );
             writeEmptyTag( LEADER_TAG, "toc.leader.style" );
             writeStartTag( INLINE_TAG, "page.number" );
@@ -1043,7 +1043,7 @@ public class FoAggregateSink
 
             writeStartTag( BOOKMARK_TAG, "internal-destination", ref );
             writeStartTag( BOOKMARK_TITLE_TAG );
-            write( tocItem.getName() );
+            text( tocItem.getName() );
             writeEndTag( BOOKMARK_TITLE_TAG );
 
             if ( tocItem.getItems() != null )
@@ -1192,7 +1192,7 @@ public class FoAggregateSink
 
         writeStartTag( TABLE_CELL_TAG, "number-columns-spanned", "2", "cover.border.left" );
         writeStartTag( BLOCK_TAG, "cover.title" );
-        write( title == null ? "" : title );
+        text( title == null ? "" : title );
         writeEndTag( BLOCK_TAG );
         writeEndTag( TABLE_CELL_TAG );
         writeEndTag( TABLE_ROW_TAG );
@@ -1204,10 +1204,10 @@ public class FoAggregateSink
 
         writeStartTag( TABLE_CELL_TAG, "number-columns-spanned", "2", "cover.border.left.bottom" );
         writeStartTag( BLOCK_TAG, "cover.subtitle" );
-        write( subtitle == null ? ( version == null ? "" : " v. " + version ) : subtitle );
+        text( subtitle == null ? ( version == null ? "" : " v. " + version ) : subtitle );
         writeEndTag( BLOCK_TAG );
         writeStartTag( BLOCK_TAG, "cover.subtitle" );
-        write( type == null ? "" : type );
+        text( type == null ? "" : type );
         writeEndTag( BLOCK_TAG );
         writeEndTag( TABLE_CELL_TAG );
         writeEndTag( TABLE_ROW_TAG );
@@ -1272,7 +1272,7 @@ public class FoAggregateSink
         att.addAttribute( "height", "0.3in" );
         att.addAttribute( "text-align", "left" );
         writeStartTag( BLOCK_TAG, att );
-        write( compName == null ? ( cover.getAuthor() == null ? "" : cover.getAuthor() ) : compName );
+        text( compName == null ? ( cover.getAuthor() == null ? "" : cover.getAuthor() ) : compName );
         writeEndTag( BLOCK_TAG );
         writeEndTag( TABLE_CELL_TAG );
 
@@ -1281,7 +1281,7 @@ public class FoAggregateSink
         att.addAttribute( "height", "0.3in" );
         att.addAttribute( "text-align", "right" );
         writeStartTag( BLOCK_TAG, att );
-        write( date == null ? "" : date );
+        text( date == null ? "" : date );
         writeEndTag( BLOCK_TAG );
         writeEndTag( TABLE_CELL_TAG );
 

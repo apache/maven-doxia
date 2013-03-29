@@ -50,6 +50,12 @@ under the License.
       <timezone>+1</timezone>
     </developer>
   </developers>
+  
+  <contributors>
+    <contributor>
+      <name>Birger Zimmermann</name>
+    </contributor>
+  </contributors>
 
   <dependencies>
     <!-- Doxia -->

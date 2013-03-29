@@ -19,8 +19,17 @@ package org.apache.maven.doxia.module.fo;
  * under the License.
  */
 
+import java.io.File;
+import java.io.IOException;
 import java.io.StringWriter;
 import java.io.Writer;
+
+import javax.xml.transform.TransformerException;
+
+import org.apache.maven.doxia.document.DocumentCover;
+import org.apache.maven.doxia.document.DocumentModel;
+import org.codehaus.plexus.util.WriterFactory;
+import org.xml.sax.SAXParseException;
 
 import junit.framework.TestCase;
 
@@ -85,6 +94,62 @@ public class FoAggregateSinkTest
         }
 
         assertTrue( writer.toString().indexOf( "<fo:block id=\"./folder/documentName\">" ) != -1 );
+    }
+    
+    /**
+     * Test the FO PDF generation with some special characters in company name.
+     */
+    public void testSpecialCharacters()
+        throws IOException, TransformerException
+    {
+        DocumentModel model = new DocumentModel();
+        DocumentCover cover = new DocumentCover();
+
+        cover.setCompanyName( "Partner & Friends" );
+        cover.setCoverTitle( "A Masterpice in Encoding Theory <>&" );
+        cover.setCoverSubTitle( "Some nice Encodings & <METHODS>" );
+        cover.setProjectName( "A Masterpice in Encoding Theory <>&" );
+        cover.setAuthor( "Partner & Friends" );
+        model.setCover( cover );
+
+        File foFile = File.createTempFile( "fo-test", ".fo" );
+        File pdfFile = File.createTempFile( "fo-test", ".pdf" );
+        try
+        {
+
+            sink = new FoAggregateSink( WriterFactory.newXmlWriter( foFile ) );
+
+            sink.setDocumentModel( model );
+            sink.setDocumentTitle( "A Masterpice in Encoding Theory <>&" );
+            sink.beginDocument();
+            sink.coverPage();
+            // sink.toc();
+            sink.endDocument();
+        }
+        finally
+        {
+            sink.close();
+        }
+
+        try
+        {
+            FoUtils.convertFO2PDF( foFile, pdfFile, null, model );
+        }
+        catch ( TransformerException e )
+        {
+            if ( ( e.getCause() != null ) && ( e.getCause() instanceof SAXParseException ) )
+            {
+                SAXParseException sax = (SAXParseException) e.getCause();
+
+                StringBuffer sb = new StringBuffer();
+                sb.append( "Error creating PDF from " ).append( foFile.getAbsolutePath() ).append( ":" ).append( sax.getLineNumber() ).append( ":" ).append( sax.getColumnNumber() ).append( "\n" );
+                sb.append( e.getMessage() );
+
+                throw new RuntimeException( sb.toString() );
+            }
+
+            throw new TransformerException( "Error creating PDF from " + foFile + ": " + e.getMessage() );
+        }
     }
 
     /**
