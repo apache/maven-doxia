@@ -2652,6 +2652,8 @@ public class AptParser
                     if ( headers[i] )
                     {
                         AptParser.this.sink.tableHeaderCell_();
+                        // DOXIA-404: reset header for next row
+                        headers[i] = false;
                     }
                     else
                     {

@@ -700,6 +700,66 @@ public class AptParserTest
 
         assertFalse( it.hasNext() );
     }
+    
+    /**
+     * @throws Exception
+     */
+    public void testTableHeaders() throws Exception
+    {
+        // DOXIA-404
+        String text = "*-----------+-----------+" + EOL + 
+        		"|| Header 1 || Header 2 |" + EOL +
+        		"*-----------+-----------+" + EOL +
+        		"  Cell 1    | Cell 2    |" + EOL +
+        		"*-----------+-----------+" + EOL +
+        		"  Cell 3    | Cell 4    |" + EOL +
+        		"*-----------+-----------+" + EOL;
+        
+        SinkEventTestingSink sink = new SinkEventTestingSink();
+
+        parser.parse( text, sink );
+
+        Iterator<SinkEventElement> it = sink.getEventList().iterator();
+        assertEquals( "head", it.next().getName() );
+        assertEquals( "head_", it.next().getName() );
+        assertEquals( "body", it.next().getName() );
+
+        assertEquals( "table", it.next().getName() );
+        assertEquals( "tableRows", it.next().getName() );
+
+        assertEquals( "tableRow", it.next().getName() );
+        assertEquals( "tableHeaderCell", it.next().getName() );
+        assertEquals( "text", it.next().getName() );
+        assertEquals( "tableHeaderCell_", it.next().getName() );
+        assertEquals( "tableHeaderCell", it.next().getName() );
+        assertEquals( "text", it.next().getName() );
+        assertEquals( "tableHeaderCell_", it.next().getName() );
+        assertEquals( "tableRow_", it.next().getName() );
+
+        assertEquals( "tableRow", it.next().getName() );
+        assertEquals( "tableCell", it.next().getName() );
+        assertEquals( "text", it.next().getName() );
+        assertEquals( "tableCell_", it.next().getName() );
+        assertEquals( "tableCell", it.next().getName() );
+        assertEquals( "text", it.next().getName() );
+        assertEquals( "tableCell_", it.next().getName() );
+        assertEquals( "tableRow_", it.next().getName() );
+
+        assertEquals( "tableRow", it.next().getName() );
+        assertEquals( "tableCell", it.next().getName() );
+        assertEquals( "text", it.next().getName() );
+        assertEquals( "tableCell_", it.next().getName() );
+        assertEquals( "tableCell", it.next().getName() );
+        assertEquals( "text", it.next().getName() );
+        assertEquals( "tableCell_", it.next().getName() );
+        assertEquals( "tableRow_", it.next().getName() );
+
+        assertEquals( "tableRows_", it.next().getName() );
+        assertEquals( "table_", it.next().getName() );
+
+        assertEquals( "body_", ( it.next() ).getName() );
+        assertFalse( it.hasNext() );
+    }
 
     /** {@inheritDoc} */
     protected String outputExtension()
