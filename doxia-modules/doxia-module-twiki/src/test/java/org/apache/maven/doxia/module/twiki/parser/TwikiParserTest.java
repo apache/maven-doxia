@@ -91,10 +91,9 @@ public class TwikiParserTest
         assertEquals( "b", textElement.getArgs()[0] );
         assertEquals( "bold_", ( it.next() ).getName() );
 
-        // FIXME!
-        //textElement = it.next();
-        //assertEquals( "text", textElement.getName() );
-        //assertEquals( "and a bit of", textElement.getArgs()[0] );
+        textElement = it.next();
+        assertEquals( "text", textElement.getName() );
+        assertEquals( " and a bit of ", textElement.getArgs()[0] );
 
         textElement = it.next();
         assertEquals( "rawText", textElement.getName() );

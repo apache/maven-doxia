@@ -330,6 +330,7 @@ public class TextParser
      */
     private void parseXHTML( final String line, final List<Block> ret, final Matcher xhtmlMatcher )
     {
+        ret.addAll( parse( line.substring( 0, xhtmlMatcher.start() ) ) );
         if ( xhtmlMatcher.group( 1 ).indexOf( "noautolink" ) != -1 )
         {
             noautolink = true;
