@@ -23,6 +23,7 @@ import java.io.IOException;
 import java.io.Reader;
 import java.io.StringWriter;
 import java.io.Writer;
+import java.util.Arrays;
 import java.util.Iterator;
 
 import org.apache.maven.doxia.parser.AbstractParserTest;
@@ -760,10 +761,50 @@ public class AptParserTest
         assertEquals( "body_", ( it.next() ).getName() );
         assertFalse( it.hasNext() );
     }
+    
+    public void testEscapedPipeInTableCell() throws Exception
+    {
+        // DOXIA-479
+        String text="*---+---+" + EOL + 
+        		"| cell \\| pipe | next cell " + EOL + 
+        		"*---+---+" + EOL;
+        
+        SinkEventTestingSink sink = new SinkEventTestingSink();
+
+        parser.parse( text, sink );
+
+        Iterator<SinkEventElement> it = sink.getEventList().iterator();
+        assertEquals( "head", it.next().getName() );
+        assertEquals( "head_", it.next().getName() );
+        assertEquals( "body", it.next().getName() );
+
+        assertEquals( "table", it.next().getName() );
+        assertEquals( "tableRows", it.next().getName() );
+
+        assertEquals( "tableRow", it.next().getName() );
+        assertEquals( "tableCell", it.next().getName() );
+        assertEquals( it.next(), "text", "cell | pipe" );
+        assertEquals( "tableCell_", it.next().getName() );
+        assertEquals( "tableCell", it.next().getName() );
+        assertEquals( it.next(), "text", "next cell" );
+        assertEquals( "tableCell_", it.next().getName() );
+        assertEquals( "tableRow_", it.next().getName() );
+
+        assertEquals( "tableRows_", it.next().getName() );
+        assertEquals( "table_", it.next().getName() );
+
+        assertEquals( "body_", ( it.next() ).getName() );
+        assertFalse( it.hasNext() );
+    }
 
     /** {@inheritDoc} */
     protected String outputExtension()
     {
         return "apt";
+    }
+    
+    protected void assertEquals( SinkEventElement element, String name, Object... args  )
+    {
+        assertTrue( name.equals( element.getName() ) && Arrays.equals( element.getArgs(), args ) );
     }
 }
