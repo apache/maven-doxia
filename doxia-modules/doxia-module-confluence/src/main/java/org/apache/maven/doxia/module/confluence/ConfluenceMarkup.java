@@ -83,8 +83,8 @@ public interface ConfluenceMarkup
     /** Syntax for the mono-spaced style start: "}}" */
     String MONOSPACED_START_MARKUP = "}}";
 
-    /** Syntax for the numbering decimal markup char: "1." */
-    String NUMBERING_MARKUP = "1.";
+    /** Syntax for the numbering decimal markup char: "#" */
+    String NUMBERING_MARKUP = "#";
 
     /** Syntax for the table cell header end markup: "|" */
     String TABLE_CELL_HEADER_END_MARKUP = "|";
