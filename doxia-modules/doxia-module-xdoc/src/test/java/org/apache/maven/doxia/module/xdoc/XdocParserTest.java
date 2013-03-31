@@ -37,6 +37,7 @@ import org.apache.maven.doxia.sink.SinkEventTestingSink;
 
 import org.codehaus.plexus.util.FileUtils;
 import org.codehaus.plexus.util.IOUtil;
+import org.junit.Assert;
 
 /**
  * @author <a href="mailto:jason@maven.org">Jason van Zyl</a>
@@ -582,6 +583,35 @@ public class XdocParserTest
 
         assertEquals( "paragraph_", it.next().getName() );
         assertEquals( "section1_", it.next().getName() );
+        assertFalse( it.hasNext() );
+    }
+    
+    public void testStyleWithCData() throws Exception
+    {
+        // DOXIA-449
+        final String text = "<style type=\"text/css\">\n" + 
+        		"<![CDATA[\n" + 
+        		"h2 {\n" + 
+        		"font-size: 50px;\n" + 
+        		"}\n" + 
+        		"]]>\n" + 
+        		"</style>"; 
+        
+        SinkEventTestingSink sink = new SinkEventTestingSink();
+
+        parser.setValidate( false );
+        parser.parse( text, sink );
+        
+        Iterator<SinkEventElement> it = sink.getEventList().iterator();
+        SinkEventElement styleElm = it.next(); 
+        assertEquals( "unknown", styleElm.getName() );
+        assertEquals( "style", styleElm.getArgs()[0] );
+        SinkEventElement cdataElm = it.next(); 
+        assertEquals( "unknown", cdataElm.getName() );
+        assertEquals( "CDATA", cdataElm.getArgs()[0] );
+        SinkEventElement styleElm_ = it.next(); 
+        assertEquals( "unknown", styleElm_.getName() );
+        assertEquals( "style", styleElm_.getArgs()[0] );
         assertFalse( it.hasNext() );
     }
 }

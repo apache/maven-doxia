@@ -50,7 +50,7 @@ public class XhtmlBaseParser
     extends AbstractXmlParser
         implements HtmlMarkup
 {
-    /** True if a &lt;script&gt;&lt;/script&gt; block is read. CDATA sections within are handled as rawText. */
+    /** True if a &lt;script&gt;&lt;/script&gt; or &lt;style&gt;&lt;/style&gt; block is read. CDATA sections within are handled as rawText. */
     private boolean scriptBlock;
 
     /** Used to distinguish &lt;a href=""&gt; from &lt;a name=""&gt;. */
@@ -531,7 +531,8 @@ public class XhtmlBaseParser
         {
             handleImgStart( parser, sink, attribs );
         }
-        else if ( parser.getName().equals( HtmlMarkup.SCRIPT.toString() ) )
+        else if ( parser.getName().equals( HtmlMarkup.SCRIPT.toString() )
+            || parser.getName().equals( HtmlMarkup.STYLE.toString() ) )
         {
             handleUnknown( parser, sink, TAG_TYPE_START );
             scriptBlock = true;
@@ -690,7 +691,8 @@ public class XhtmlBaseParser
         {
             sink.sectionTitle5_();
         }
-        else if ( parser.getName().equals( HtmlMarkup.SCRIPT.toString() ) )
+        else if ( parser.getName().equals( HtmlMarkup.SCRIPT.toString() )
+            || parser.getName().equals( HtmlMarkup.STYLE.toString() ) )
         {
             handleUnknown( parser, sink, TAG_TYPE_END );
 
