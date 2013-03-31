@@ -39,8 +39,11 @@ public class AptReaderSource
     /** lineNumber. */
     private int lineNumber;
 
+    /** The name, e.g. the filename. */
+    private String name;
+
     /**
-     * Constructor: intialize reader.
+     * Constructor: initialize reader.
      *
      * @param in the reader.
      */
@@ -49,6 +52,19 @@ public class AptReaderSource
         reader = new LineNumberReader( in );
 
         lineNumber = -1;
+    }
+
+    /**
+     * Constructor: initialize reader.
+     *
+     * @param in the reader.
+     * @param name the name of the source
+     */
+    public AptReaderSource( Reader in, String name )
+    {
+        this( in );
+
+        this.name = name;
     }
 
     /** {@inheritDoc} */
@@ -87,7 +103,8 @@ public class AptReaderSource
     /** {@inheritDoc} */
     public String getName()
     {
-        return "";
+        // never return null
+        return name != null ? name : "";
     }
 
     /** {@inheritDoc} */
