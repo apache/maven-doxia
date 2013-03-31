@@ -23,7 +23,6 @@ import java.io.IOException;
 import java.io.Reader;
 import java.io.StringWriter;
 import java.io.Writer;
-import java.util.Arrays;
 import java.util.Iterator;
 
 import org.apache.maven.doxia.parser.AbstractParserTest;
@@ -518,25 +517,5 @@ public class AptParserTest
     protected String outputExtension()
     {
         return "apt";
-    }
-    
-    protected void assertEquals( SinkEventElement element, String name, Object... args  )
-    {
-        assertTrue( name.equals( element.getName() ) && Arrays.equals( element.getArgs(), args ) );
-    }
-
-    protected void assertAttributeEquals( SinkEventElement element, String name, String attr, String value  )
-    {
-        assertEquals( name, element.getName() );
-        SinkEventAttributeSet atts = (SinkEventAttributeSet) element.getArgs()[0];
-        assertEquals( value, atts.getAttribute( attr ) );
-    }
-
-    protected void assertEquals( Iterator<SinkEventElement> it, String... names )
-    {
-        for ( String name: names )
-        {
-            assertEquals( name, it.next().getName() );
-        }
     }
 }

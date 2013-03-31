@@ -23,12 +23,16 @@ import org.apache.maven.doxia.AbstractModuleTest;
 import org.apache.maven.doxia.sink.WellformednessCheckingSink;
 
 import org.apache.maven.doxia.sink.Sink;
+import org.apache.maven.doxia.sink.SinkEventAttributeSet;
+import org.apache.maven.doxia.sink.SinkEventElement;
 import org.apache.maven.doxia.sink.TextSink;
 import org.codehaus.plexus.util.IOUtil;
 
 import java.io.IOException;
 import java.io.Reader;
 import java.io.Writer;
+import java.util.Arrays;
+import java.util.Iterator;
 
 /**
  * Test the parsing of sample input files.
@@ -116,6 +120,26 @@ public abstract class AbstractParserTest
         {
             IOUtil.close( reader );
             IOUtil.close( writer );
+        }
+    }
+
+    protected void assertEquals( SinkEventElement element, String name, Object... args )
+    {
+        assertTrue( name.equals( element.getName() ) && Arrays.equals( element.getArgs(), args ) );
+    }
+
+    protected void assertAttributeEquals( SinkEventElement element, String name, String attr, String value )
+    {
+        assertEquals( name, element.getName() );
+        SinkEventAttributeSet atts = (SinkEventAttributeSet) element.getArgs()[0];
+        assertEquals( value, atts.getAttribute( attr ) );
+    }
+
+    protected void assertEquals( Iterator<SinkEventElement> it, String... names )
+    {
+        for ( String name: names )
+        {
+            assertEquals( name, it.next().getName() );
         }
     }
 
