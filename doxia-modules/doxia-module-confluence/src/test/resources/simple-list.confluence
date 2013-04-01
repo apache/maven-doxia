@@ -3,6 +3,7 @@
 * Here is a link with no text [http://jira.codehaus.org]
 * This is some {{monospaced}} text.
 * Item with no formatting
+* This is {{some escaped monospaced \\unc\path}}.
 
 Paragraph
 

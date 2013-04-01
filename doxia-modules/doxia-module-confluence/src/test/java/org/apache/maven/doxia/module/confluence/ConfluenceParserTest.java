@@ -193,6 +193,7 @@ public class ConfluenceParserTest
         assertContainsLines( result, "begin:bold\ntext: bold\n" );
         assertContainsLines( result, "begin:italic\ntext: italic\n" );
         assertContainsLines( result, "begin:monospaced\ntext: monospaced\n" );
+        assertContainsLines( result, "begin:monospaced\ntext: some escaped monospaced \\\\unc\\path\n" );
         assertContainsLines( result, "begin:link, name: http://jira.codehaus.org\ntext: http://jira.codehaus.org\n" );
         assertContainsLines( result, "begin:link, name: http://jira.codehaus.org\ntext: JIRA\n" );
         assertContainsLines( result, "begin:listItem\ntext: Item with no formatting\nend:listItem\n" );
@@ -201,7 +202,7 @@ public class ConfluenceParserTest
         // 3 lists in the input...
         assertEquals( 4, result.split( "end:list\n" ).length );
         // ...and 7 list items
-        assertEquals( 8, result.split( "end:listItem\n" ).length );
+        assertEquals( 9, result.split( "end:listItem\n" ).length );
     }
 
     /** @throws Exception */

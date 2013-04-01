@@ -233,15 +233,16 @@ public class ChildBlocksBuilder
 
                     break;
                 case '\\':
-
-                    // System.out.println( "line = " + line );
-                    if ( nextChar( input, i ) == '\\' )
+                    if ( insideMonospaced )
+                    {
+                        text.append( c );
+                    }
+                    else if ( nextChar( input, i ) == '\\' )
                     {
                         i++;
                         text = addTextBlockIfNecessary( blocks, specialBlocks, text );
                         blocks.add( new LinebreakBlock() );
                     }
-                    
                     else
                     {
                         // DOXIA-467 single trailing backward slash, double is considered linebreak
