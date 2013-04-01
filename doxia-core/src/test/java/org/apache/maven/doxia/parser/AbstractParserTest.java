@@ -27,6 +27,7 @@ import org.apache.maven.doxia.sink.SinkEventAttributeSet;
 import org.apache.maven.doxia.sink.SinkEventElement;
 import org.apache.maven.doxia.sink.TextSink;
 import org.codehaus.plexus.util.IOUtil;
+import org.junit.Assert;
 
 import java.io.IOException;
 import java.io.Reader;
@@ -125,7 +126,8 @@ public abstract class AbstractParserTest
 
     protected void assertEquals( SinkEventElement element, String name, Object... args )
     {
-        assertTrue( name.equals( element.getName() ) && Arrays.equals( element.getArgs(), args ) );
+        assertEquals( "Name of element doesn't match", name, element.getName() );
+        Assert.assertArrayEquals( "Arguments don't match",  args, element.getArgs() );
     }
 
     protected void assertAttributeEquals( SinkEventElement element, String name, String attr, String value )
