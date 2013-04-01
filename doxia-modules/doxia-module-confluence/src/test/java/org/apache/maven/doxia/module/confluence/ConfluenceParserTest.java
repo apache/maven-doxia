@@ -25,11 +25,14 @@ import java.io.Reader;
 import java.io.StringReader;
 import java.io.StringWriter;
 import java.io.Writer;
+import java.util.Iterator;
 
 import org.apache.maven.doxia.parser.AbstractParserTest;
 import org.apache.maven.doxia.parser.ParseException;
 import org.apache.maven.doxia.parser.Parser;
 import org.apache.maven.doxia.sink.Sink;
+import org.apache.maven.doxia.sink.SinkEventElement;
+import org.apache.maven.doxia.sink.SinkEventTestingSink;
 import org.apache.maven.doxia.sink.TextSink;
 
 import org.codehaus.plexus.util.IOUtil;
@@ -512,6 +515,35 @@ public class ConfluenceParserTest
         createParser().parse( new StringReader( document ), sink );
         assertTrue( "generated document should have a size > 0", output.toString().length() > 0 );
 
+    }
+    
+    public void testListFollowedByMacro() throws Exception
+    {
+        // @todo FIX
+        // DOXIA-371
+        String document = "- This is a little test. \r\n" +
+                "\r\n" + // with extra linebreak it succeeds, without it should too 
+        		"{code}\r\n" + 
+        		"    @Autowired\r\n" + 
+        		"    private DataSource dataSource;\r\n" + 
+        		"{code}\r\n"; 
+        output = new StringWriter();
+        SinkEventTestingSink sink = new SinkEventTestingSink();
+        createParser().parse( new StringReader( document ), sink );
+        
+        Iterator<SinkEventElement> it = sink.getEventList().iterator();
+        assertEquals("head", it.next().getName() );
+        assertEquals("head_", it.next().getName() );
+        assertEquals("body", it.next().getName() );
+        assertEquals("list", it.next().getName() );
+        assertEquals("listItem", it.next().getName() );
+        assertEquals( it.next(), "text", "This is a little test." );
+        assertEquals("listItem_", it.next().getName() );
+        assertEquals("list_", it.next().getName() );
+        assertEquals("verbatim", it.next().getName() );
+        assertEquals( it.next(), "text", "    @Autowired\n    private DataSource dataSource;\n" );
+        assertEquals("verbatim_", it.next().getName() );
+        assertEquals("body_", it.next().getName() );
     }
 
     private void assertContainsLines( String message, String result, String lines )
