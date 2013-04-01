@@ -26,8 +26,6 @@ import org.apache.maven.doxia.sink.SinkEventAttributeSet;
 import org.apache.maven.doxia.sink.SinkEventElement;
 import org.apache.maven.doxia.sink.SinkEventTestingSink;
 
-import org.codehaus.plexus.PlexusTestCase;
-
 /**
  * Test for XhtmlBaseParser.
  *
@@ -36,10 +34,25 @@ import org.codehaus.plexus.PlexusTestCase;
  * @since 1.1
  */
 public class XhtmlBaseParserTest
-    extends PlexusTestCase
+    extends AbstractParserTest
 {
     private XhtmlBaseParser parser;
     private final SinkEventTestingSink sink = new SinkEventTestingSink();
+
+
+    @Override
+    protected Parser createParser()
+    {
+        parser = new XhtmlBaseParser();
+        parser.getLog().setLogLevel( Log.LEVEL_ERROR );
+        return parser;
+    }
+
+    @Override
+    protected String outputExtension()
+    {
+        return "xhtml";
+    }
 
     @Override
     protected void setUp() throws Exception
@@ -726,5 +739,29 @@ public class XhtmlBaseParserTest
         attribs = (SinkEventAttributeSet) event.getArgs()[1];
         // ampersand should be un-escaped
         assertEquals( "http://ex.com/ex.jpg?v=l&l=e", attribs.getAttribute( "src" ) );
+    }
+    
+    public void testUnbalancedDefinitionListItem() throws Exception
+    {
+        String text = "<body><dl><dt>key</dt><dd>value</dd></dl>" +
+                        "<dl><dd>value</dd></dl>" +
+                        "<dl><dt>key</dt></dl>" +
+                        "<dl></dl>" +
+                        "<dl><dd>value</dd><dt>key</dt></dl></body>";
+
+        parser.parse( text, sink );
+
+        Iterator<SinkEventElement> it = sink.getEventList().iterator();
+        assertEquals( it, "definitionList", "definitionListItem", "definedTerm", "text", "definedTerm_", "definition",
+                      "text", "definition_", "definitionListItem_", "definitionList_" );
+        assertEquals( it, "definitionList", "definitionListItem", "definition", "text", "definition_",
+                      "definitionListItem_", "definitionList_" );
+        assertEquals( it, "definitionList", "definitionListItem", "definedTerm", "text", "definedTerm_",
+                      "definitionListItem_", "definitionList_" );
+        assertEquals( it, "definitionList", "definitionList_" );
+        assertEquals( it, "definitionList", "definitionListItem", "definition", "text", "definition_",
+                      "definitionListItem_", "definitionListItem", "definedTerm", "text", "definedTerm_",
+                      "definitionListItem_", "definitionList_" );
+        assertFalse( it.hasNext() );
     }
 }

@@ -71,6 +71,9 @@ public class XhtmlBaseParser
     /** Used to recognize the case of img inside figure. */
     private boolean inFigure;
 
+    /** Used to wrap the definedTerm with its definition, even when one is omitted */
+    boolean hasDefinitionListItem = false;
+
     /** Decoration properties, eg for texts. */
     private final SinkEventAttributeSet decoration = new SinkEventAttributeSet();
 
@@ -472,11 +475,21 @@ public class XhtmlBaseParser
         }
         else if ( parser.getName().equals( HtmlMarkup.DT.toString() ) )
         {
+            if ( hasDefinitionListItem )
+            {
+                //close previous listItem
+                sink.definitionListItem_();
+            }    
             sink.definitionListItem( attribs );
+            hasDefinitionListItem = true;
             sink.definedTerm( attribs );
         }
         else if ( parser.getName().equals( HtmlMarkup.DD.toString() ) )
         {
+            if( !hasDefinitionListItem )
+            {
+                sink.definitionListItem( attribs );
+            }
             sink.definition( attribs );
         }
         else if ( ( parser.getName().equals( HtmlMarkup.B.toString() ) )
@@ -613,6 +626,11 @@ public class XhtmlBaseParser
         }
         else if ( parser.getName().equals( HtmlMarkup.DL.toString() ) )
         {
+            if( hasDefinitionListItem )
+            {
+                sink.definitionListItem_();
+                hasDefinitionListItem = false;
+            }
             sink.definitionList_();
         }
         else if ( parser.getName().equals( HtmlMarkup.DT.toString() ) )
@@ -623,6 +641,7 @@ public class XhtmlBaseParser
         {
             sink.definition_();
             sink.definitionListItem_();
+            hasDefinitionListItem = false;
         }
         else if ( ( parser.getName().equals( HtmlMarkup.B.toString() ) )
                 || ( parser.getName().equals( HtmlMarkup.STRONG.toString() ) ) )
