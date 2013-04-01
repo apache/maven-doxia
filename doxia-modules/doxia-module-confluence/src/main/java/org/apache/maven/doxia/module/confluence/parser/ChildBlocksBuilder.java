@@ -197,7 +197,7 @@ public class ChildBlocksBuilder
 
                     text = addTextBlockIfNecessary( blocks, specialBlocks, text );
 
-                    if ( charAt( input, i ) == '{' ) // it's monospaced
+                    if ( nextChar( input, i ) == '{' ) // it's monospaced
                     {
                         i++;
                         insideMonospaced = true;
@@ -209,7 +209,7 @@ public class ChildBlocksBuilder
 
                     // System.out.println( "line = " + line );
 
-                    if ( charAt( input, i ) == '}' )
+                    if ( nextChar( input, i ) == '}' )
                     {
                         i++;
                         insideMonospaced = false;
@@ -235,17 +235,24 @@ public class ChildBlocksBuilder
                 case '\\':
 
                     // System.out.println( "line = " + line );
-
-                    if ( charAt( input, i ) == '\\' )
+                    if ( nextChar( input, i ) == '\\' )
                     {
                         i++;
                         text = addTextBlockIfNecessary( blocks, specialBlocks, text );
                         blocks.add( new LinebreakBlock() );
                     }
+                    
                     else
                     {
-                        i++;
-                        text.append( input.charAt( i ) );
+                        // DOXIA-467 single trailing backward slash, double is considered linebreak
+                        if( i == input.length() -1 )
+                        {
+                            text.append( '\\' );
+                        }
+                        else
+                        {
+                            text.append( input.charAt( ++i ) );
+                        }
                     }
 
                     break;
@@ -312,7 +319,7 @@ public class ChildBlocksBuilder
         return list;
     }
 
-    private static char charAt( String input, int i )
+    private static char nextChar( String input, int i )
     {
         return input.length() > i + 1 ? input.charAt( i + 1 ) : '\0';
     }

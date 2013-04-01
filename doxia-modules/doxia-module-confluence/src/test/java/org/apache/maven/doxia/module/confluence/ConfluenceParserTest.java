@@ -135,6 +135,7 @@ public class ConfluenceParserTest
         assertContainsLines( result, "asterisk *not bold*" );
         assertContainsLines( result, "underline _not italic_" );
         assertContainsLines( result, "normal character" );
+        assertContainsLines( result, "trailing slash\\\n" );
     }
 
     /** @throws Exception */
