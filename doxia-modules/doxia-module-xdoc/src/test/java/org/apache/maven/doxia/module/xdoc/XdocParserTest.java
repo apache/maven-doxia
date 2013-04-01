@@ -20,12 +20,14 @@ package org.apache.maven.doxia.module.xdoc;
  */
 
 import java.io.File;
+import java.io.FileFilter;
 import java.io.FileReader;
 import java.io.Reader;
 import java.io.Writer;
 
 import java.util.Iterator;
 import java.util.List;
+import java.util.regex.Pattern;
 
 import org.apache.maven.doxia.parser.AbstractParserTest;
 import org.apache.maven.doxia.parser.ParseException;
@@ -61,13 +63,30 @@ public class XdocParserTest
         // AbstractXmlParser.CachedFileEntityResolver downloads DTD/XSD files in ${java.io.tmpdir}
         // Be sure to delete them
         String tmpDir = System.getProperty( "java.io.tmpdir" );
-        String excludes = "xdoc-*.xsd, xml.xsd";
-        List<String> tmpFiles = FileUtils.getFileNames( new File( tmpDir ), excludes, null, true );
-        for ( Iterator<String> it = tmpFiles.iterator(); it.hasNext(); )
+
+        final Pattern xsdFilePattern = Pattern.compile( "(xdoc\\-.*|xml)\\.xsd" );
+
+        File[] xsdFiles = new File( tmpDir ).listFiles( new FileFilter()
         {
-            File tmpFile = new File( it.next().toString() );
-            tmpFile.delete();
+
+            public boolean accept( File pathname )
+            {
+                return pathname.isFile() && xsdFilePattern.matcher( pathname.getName() ).matches();
+            }
+        } );
+
+        for ( File xsdFile : xsdFiles )
+        {
+            xsdFile.delete();
         }
+
+        /* FileUtils 3.0.10 is about 5-8 times slower than File.listFiles() + regexp */
+//        String includes = "xdoc-*.xsd, xml.xsd";
+//        List<File> tmpFiles = FileUtils.getFiles( new File( tmpDir ), includes, null, true );
+//        for ( File tmpFile  : tmpFiles )
+//        {
+//            tmpFile.delete();
+//        }
     }
 
     /** {@inheritDoc} */
