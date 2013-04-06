@@ -86,6 +86,24 @@ public interface ConfluenceMarkup
     /** Syntax for the numbering decimal markup char: "#" */
     String NUMBERING_MARKUP = "#";
 
+    /** Syntax for the strikethrough markup start: "-" */
+    String STRIKETHROUGH_START_MARKUP = "-";
+
+    /** Syntax for the strikethrough markup end: "-" */
+    String STRIKETHROUGH_END_MARKUP = "-";
+
+    /** Syntax for the subscript markup start: "-" */
+    String SUBSCRIPT_START_MARKUP = "~";
+
+    /** Syntax for the subscript markup end: "-" */
+    String SUBSCRIPT_END_MARKUP = "~";
+
+    /** Syntax for the superscript markup start: "-" */
+    String SUPERSCRIPT_START_MARKUP = "^";
+
+    /** Syntax for the superscript markup end: "-" */
+    String SUPERSCRIPT_END_MARKUP = "^";
+
     /** Syntax for the table cell header end markup: "|" */
     String TABLE_CELL_HEADER_END_MARKUP = "|";
 
@@ -97,4 +115,10 @@ public interface ConfluenceMarkup
 
     /** Syntax for the table row markup: "|" */
     String TABLE_ROW_MARKUP = "|";
+
+    /** Syntax for the underlined markup start: "-" */
+    String UNDERLINED_START_MARKUP = "+";
+
+    /** Syntax for the underlined markup end: "-" */
+    String UNDERLINED_END_MARKUP = "+";
 }

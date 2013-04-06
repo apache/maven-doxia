@@ -25,6 +25,7 @@ import java.io.Writer;
 import java.util.Stack;
 
 import javax.swing.text.html.HTML.Attribute;
+import javax.swing.text.html.HTML.Tag;
 
 import org.apache.maven.doxia.sink.AbstractTextSink;
 import org.apache.maven.doxia.sink.SinkEventAttributes;
@@ -975,7 +976,48 @@ public class ConfluenceSink
     /** {@inheritDoc} */
     public void text( String text, SinkEventAttributes attributes )
     {
-        text( text );
+        if ( attributes == null )
+        {
+            text( text );
+        }
+        else
+        {
+            if ( attributes.containsAttribute( SinkEventAttributes.DECORATION, "underline" ) )
+            {
+                write( UNDERLINED_START_MARKUP );
+            }
+            else if ( attributes.containsAttribute( SinkEventAttributes.DECORATION, "line-through" ) )
+            {
+                write( STRIKETHROUGH_START_MARKUP );
+            }
+            if ( attributes.containsAttribute( SinkEventAttributes.VALIGN, "sub" ) )
+            {
+                write( SUBSCRIPT_START_MARKUP );
+            }
+            else if ( attributes.containsAttribute( SinkEventAttributes.VALIGN, "sup" ) )
+            {
+                write( SUPERSCRIPT_START_MARKUP );
+            }
+
+            text( text );
+
+            if ( attributes.containsAttribute( SinkEventAttributes.VALIGN, "sup" ) )
+            {
+                write( SUPERSCRIPT_END_MARKUP );
+            }
+            else if ( attributes.containsAttribute( SinkEventAttributes.VALIGN, "sub" ) )
+            {
+                write( SUBSCRIPT_END_MARKUP );
+            }
+            if ( attributes.containsAttribute( SinkEventAttributes.DECORATION, "line-through" ) )
+            {
+                write( STRIKETHROUGH_END_MARKUP );
+            }
+            else if ( attributes.containsAttribute( SinkEventAttributes.DECORATION, "underline" ) )
+            {
+                write( UNDERLINED_END_MARKUP );
+            }
+        }
     }
 
     /**

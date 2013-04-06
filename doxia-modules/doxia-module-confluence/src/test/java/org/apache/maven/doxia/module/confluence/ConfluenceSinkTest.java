@@ -233,6 +233,30 @@ public class ConfluenceSinkTest
     {
         return "twiki";
     }
+    
+    // ----------------------------------------------------------------------
+    // Confluence specific 
+    // ----------------------------------------------------------------------
+
+    public void testSuperScript()
+    {
+        verifyValignSup( "^ValignSup^" );
+    }
+
+    public void testSubScript()
+    {
+        verifyValignSub( "~ValignSub~" );
+    }
+
+    public void testStrikeStrough()
+    {
+        verifyDecorationLineThrough( "-DecorationLineThrough-" );
+    }
+
+    public void testUnderline()
+    {
+        verifyDecorationUnderline( "+DecorationUnderline+" );
+    }
 
     // ----------------------------------------------------------------------
     // Override unused tests
