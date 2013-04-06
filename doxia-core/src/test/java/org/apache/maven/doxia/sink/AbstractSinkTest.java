@@ -19,13 +19,13 @@ package org.apache.maven.doxia.sink;
  * under the License.
  */
 
-import org.apache.maven.doxia.AbstractModuleTest;
-import org.apache.maven.doxia.logging.PlexusLoggerWrapper;
-import org.codehaus.plexus.util.IOUtil;
-
 import java.io.CharArrayWriter;
 import java.io.IOException;
 import java.io.Writer;
+
+import org.apache.maven.doxia.AbstractModuleTest;
+import org.apache.maven.doxia.logging.PlexusLoggerWrapper;
+import org.codehaus.plexus.util.IOUtil;
 
 /**
  * Abstract base class to test sinks.
@@ -1012,4 +1012,50 @@ public abstract class AbstractSinkTest
      * @since 1.1.1
      */
     protected abstract String getCommentBlock( String text );
+    
+    protected final void verifyValignSup( String text )
+    {
+        sink.text( "ValignSup", new SinkEventAttributeSet( SinkEventAttributes.VALIGN, "sup"  ) );
+        sink.flush();
+        sink.close();
+
+        String actual = testWriter.toString();
+
+        assertEquals( "Wrong valign sup!", text, actual );
+    }
+    
+    protected final void verifyValignSub( String text )
+    {
+        sink.text( "ValignSub", new SinkEventAttributeSet( SinkEventAttributes.VALIGN, "sub"  ) );
+        sink.flush();
+        sink.close();
+
+        String actual = testWriter.toString();
+
+        assertEquals( "Wrong valign sub!", text, actual );
+    }
+
+    protected final void verifyDecorationUnderline( String text )
+    {
+        sink.text( "DecorationUnderline", new SinkEventAttributeSet( SinkEventAttributes.DECORATION, "underline"  ) );
+        sink.flush();
+        sink.close();
+
+        String actual = testWriter.toString();
+
+        assertEquals( "Wrong decoration underline!", text, actual );
+    }
+
+    protected final void verifyDecorationLineThrough( String text )
+    {
+        sink.text( "DecorationLineThrough", new SinkEventAttributeSet( SinkEventAttributes.DECORATION, "line-through"  ) );
+        sink.flush();
+        sink.close();
+
+        String actual = testWriter.toString();
+
+        assertEquals( "Wrong decoration line-through!", text, actual );
+    }
+
+    
 }
