@@ -513,6 +513,26 @@ public class AptParserTest
         assertFalse( it.hasNext() );
     }
 
+    public void testLiteralAnchor()
+        throws Exception
+    {
+        // DOXIA-397
+        String text =
+            "{{{../apidocs/groovyx/net/http/ParserRegistry.html##parseText(org.apache.http.HttpResponse)}ParserRegistry}}";
+
+        SinkEventTestingSink sink = new SinkEventTestingSink();
+
+        parser.parse( text, sink );
+
+        Iterator<SinkEventElement> it = sink.getEventList().iterator();
+        assertEquals( it, "head", "head_", "body", "section1", "sectionTitle1" );
+        assertEquals( it.next(), "link",
+                      "../apidocs/groovyx/net/http/ParserRegistry.html#parseText(org.apache.http.HttpResponse)" );
+        assertEquals( it.next(), "text", "ParserRegistry" );
+        assertEquals( it, "link_", "sectionTitle1_", "section1_", "body_" );
+        assertFalse( it.hasNext() );
+    }
+
     /** {@inheritDoc} */
     protected String outputExtension()
     {

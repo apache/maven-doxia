@@ -477,7 +477,12 @@ public class AptParser
                                     logMessage( "ambiguousLink", msg );
                                 }
 
-                                if ( !DoxiaUtils.isValidId( hash ) )
+                                // link##anchor means literal
+                                if( hash.startsWith( "#" ) )
+                                {
+                                    linkAnchor = linkAnchor.substring( 0, hashIndex ) + hash;
+                                }
+                                else if ( !DoxiaUtils.isValidId( hash ) )
                                 {
                                     linkAnchor =
                                         linkAnchor.substring( 0, hashIndex ) + "#"
