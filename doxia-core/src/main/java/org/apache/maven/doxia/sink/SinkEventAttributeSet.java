@@ -138,7 +138,7 @@ public class SinkEventAttributeSet
      * @param attributes the specified String array. If the length of this array
      * is not an even number, an IllegalArgumentException is thrown.
      */
-    public SinkEventAttributeSet( String[] attributes )
+    public SinkEventAttributeSet( String... attributes )
     {
         int n = attributes.length;
 
