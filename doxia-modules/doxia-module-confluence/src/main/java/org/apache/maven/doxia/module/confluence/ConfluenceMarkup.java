@@ -77,11 +77,11 @@ public interface ConfluenceMarkup
     /** Syntax for the list item markup: "* */
     String LIST_ITEM_MARKUP = "* ";
 
-    /** Syntax for the mono-spaced style end: "{{" */
-    String MONOSPACED_END_MARKUP = "{{";
+    /** Syntax for the mono-spaced style start: "{{" */
+    String MONOSPACED_START_MARKUP = "{{";
 
-    /** Syntax for the mono-spaced style start: "}}" */
-    String MONOSPACED_START_MARKUP = "}}";
+    /** Syntax for the mono-spaced style end: "}}" */
+    String MONOSPACED_END_MARKUP = "}}";
 
     /** Syntax for the numbering decimal markup char: "#" */
     String NUMBERING_MARKUP = "#";
