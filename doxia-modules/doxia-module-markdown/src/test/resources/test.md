@@ -6,8 +6,10 @@ This document aggregates all test documents of the Pegdown library, it was gener
     git clone git://github.com/sirthias/pegdown.git
     for doc in pegdown/src/test/resources/**/*.md; do
       echo -e "\n\n$doc\n---\n"  >> test.md
-      cat $doc                   >> test.md
+      cat "$doc"                 >> test.md
     done
+
+Then every test failing with Doxia because Doxia is more strict about HTML formatting has been deleted...
 
 
 pegdown/src/test/resources/docs-php-markdown-todo/Email_auto_links.md
