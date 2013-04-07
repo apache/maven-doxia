@@ -43,7 +43,7 @@ import org.pegdown.ast.RootNode;
  * @author Julien Nicoulaud <julien.nicoulaud@gmail.com>
  * @since 1.3
  */
-@Component( role = Parser.class, hint="markdown" )
+@Component( role = Parser.class, hint = "markdown" )
 public class MarkdownParser
     extends XhtmlParser
 {

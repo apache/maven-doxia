@@ -51,7 +51,7 @@ import org.codehaus.plexus.util.xml.pull.XmlPullParserException;
  * @version $Id$
  * @since 1.0
  */
-@Component(role = Parser.class, hint = "xdoc")
+@Component( role = Parser.class, hint = "xdoc" )
 public class XdocParser
     extends XhtmlBaseParser
     implements XdocMarkup

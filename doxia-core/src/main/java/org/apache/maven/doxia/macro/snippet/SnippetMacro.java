@@ -40,7 +40,7 @@ import java.util.Map;
  *
  * @version $Id$
  */
-@Component (role = Macro.class, hint = "snippet")
+@Component( role = Macro.class, hint = "snippet" )
 public class SnippetMacro
     extends AbstractMacro
 {

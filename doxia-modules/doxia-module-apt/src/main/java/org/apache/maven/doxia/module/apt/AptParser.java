@@ -478,7 +478,7 @@ public class AptParser
                                 }
 
                                 // link##anchor means literal
-                                if( hash.startsWith( "#" ) )
+                                if ( hash.startsWith( "#" ) )
                                 {
                                     linkAnchor = linkAnchor.substring( 0, hashIndex ) + hash;
                                 }

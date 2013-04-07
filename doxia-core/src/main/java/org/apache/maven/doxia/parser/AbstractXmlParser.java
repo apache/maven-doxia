@@ -138,7 +138,7 @@ public abstract class AbstractXmlParser
             
             // allow parser initialization, e.g. for additional entities in XHTML
             // Note: do it after input is set, otherwise values are reset
-            initXmlParser(parser);
+            initXmlParser( parser );
 
             sink.enableLogging( getLog() );
 
@@ -638,8 +638,8 @@ public abstract class AbstractXmlParser
         if ( entitiesCount > 0 )
         {
             // text should be foo [...]
-            int start = text.indexOf( '[');
-            int end = text.lastIndexOf( ']');
+            int start = text.indexOf( '[' );
+            int end = text.lastIndexOf( ']' );
             if ( start != -1 && end != -1 )
             {
                 addDTDEntities( parser, text.substring( start + 1, end ) );

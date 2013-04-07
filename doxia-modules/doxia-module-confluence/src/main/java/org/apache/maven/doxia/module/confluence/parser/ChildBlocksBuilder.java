@@ -128,12 +128,14 @@ public class ChildBlocksBuilder
                         {
                             String[] pieces = StringUtils.split( text.toString(), "|" );
                             
-                        	if ( pieces[1].startsWith("^") )
-                        	{
-                        		// use the "file attachment" ^ syntax to force verbatim link: needed to allow actually linking to some non-html resources
-                        		pieces[1] = pieces[1].substring(1); // now just get rid of the lead ^
-                        		addHTMLSuffix = false;  // force verbatim link to support attaching files/resources (not just .html files) 
-                        	} 
+                            if ( pieces[1].startsWith( "^" ) )
+                            {
+                                // use the "file attachment" ^ syntax to force verbatim link: needed to allow actually
+                                // linking to some non-html resources
+                                pieces[1] = pieces[1].substring( 1 ); // now just get rid of the lead ^
+                                addHTMLSuffix = false; // force verbatim link to support attaching files/resources (not
+                                                       // just .html files)
+                            }
 
                             if ( addHTMLSuffix )
                             {
@@ -246,7 +248,7 @@ public class ChildBlocksBuilder
                     else
                     {
                         // DOXIA-467 single trailing backward slash, double is considered linebreak
-                        if( i == input.length() -1 )
+                        if ( i == input.length() - 1 )
                         {
                             text.append( '\\' );
                         }
