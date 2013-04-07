@@ -41,6 +41,14 @@ public class ChildBlocksBuilder
 
     private boolean insideLink = false;
 
+    private boolean insideLinethrough = false;
+
+    private boolean insideUnderline = false;
+
+    private boolean insideSub = false;
+
+    private boolean insideSup = false;
+
     private List<Block> blocks = new ArrayList<Block>();
 
     private StringBuilder text = new StringBuilder();
@@ -105,6 +113,74 @@ public class ChildBlocksBuilder
                         insideItalic = true;
                     }
 
+                    break;
+                case '-':
+                    if ( insideLinethrough )
+                    {
+                        insideLinethrough = false;
+                        blocks.add( new LinethroughBlock( text.toString() ) );
+                        text = new StringBuilder();
+                    }
+                    else if ( insideLink )
+                    {
+                        text.append( c );    
+                    }
+                    else
+                    {
+                        text = addTextBlockIfNecessary( blocks, specialBlocks, text );
+                        insideLinethrough = true;                            
+                    }
+                    break;
+                case '+':
+                    if ( insideUnderline )
+                    {
+                    	insideUnderline = false;
+                        blocks.add( new UnderlineBlock( text.toString() ) );
+                        text = new StringBuilder();
+                    }
+                    else if ( insideLink )
+                    {
+                        text.append( c );    
+                    }
+                    else
+                    {
+                        text = addTextBlockIfNecessary( blocks, specialBlocks, text );
+                        insideUnderline = true;                            
+                    }
+                    break;
+                case '~':
+                    if ( insideSub )
+                    {
+                    	insideSub = false;
+                        blocks.add( new SubBlock( text.toString() ) );
+                        text = new StringBuilder();
+                    }
+                    else if ( insideLink )
+                    {
+                        text.append( c );    
+                    }
+                    else
+                    {
+                        text = addTextBlockIfNecessary( blocks, specialBlocks, text );
+                        insideSub = true;                            
+                    }
+                    break;
+                case '^':
+                    if ( insideSup )
+                    {
+                    	insideSup = false;
+                        blocks.add( new SupBlock( text.toString() ) );
+                        text = new StringBuilder();
+                    }
+                    else if ( insideLink )
+                    {
+                        text.append( c );    
+                    }
+                    else
+                    {
+                        text = addTextBlockIfNecessary( blocks, specialBlocks, text );
+                        insideSup = true;                            
+                    }
                     break;
                 case '[':
                     insideLink = true;

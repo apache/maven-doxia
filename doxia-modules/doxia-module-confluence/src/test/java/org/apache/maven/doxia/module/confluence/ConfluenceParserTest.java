@@ -31,6 +31,7 @@ import org.apache.maven.doxia.parser.AbstractParserTest;
 import org.apache.maven.doxia.parser.ParseException;
 import org.apache.maven.doxia.parser.Parser;
 import org.apache.maven.doxia.sink.Sink;
+import org.apache.maven.doxia.sink.SinkEventAttributeSet;
 import org.apache.maven.doxia.sink.SinkEventElement;
 import org.apache.maven.doxia.sink.SinkEventTestingSink;
 import org.apache.maven.doxia.sink.TextSink;
@@ -547,6 +548,62 @@ public class ConfluenceParserTest
         assertEquals("verbatim_", it.next().getName() );
         assertEquals("body_", it.next().getName() );
     }
+
+	public void testLinethrough() throws Exception {
+		String document = "-Linethrough-";
+		output = new StringWriter();
+		SinkEventTestingSink sink = new SinkEventTestingSink();
+		createParser().parse(new StringReader(document), sink);
+
+		Iterator<SinkEventElement> it = sink.getEventList().iterator();
+		assertEquals(it, "head", "head_", "body", "paragraph");
+		assertEquals(it.next(), "text", "Linethrough",
+				new SinkEventAttributeSet("decoration", "line-through"));
+		assertEquals(it, "paragraph_", "body_");
+		assertFalse(it.hasNext());
+	}
+
+	public void testUnderline() throws Exception {
+		String document = "+Underline+";
+		output = new StringWriter();
+		SinkEventTestingSink sink = new SinkEventTestingSink();
+		createParser().parse(new StringReader(document), sink);
+
+		Iterator<SinkEventElement> it = sink.getEventList().iterator();
+		assertEquals(it, "head", "head_", "body", "paragraph");
+		assertEquals(it.next(), "text", "Underline", new SinkEventAttributeSet(
+				"decoration", "underline"));
+		assertEquals(it, "paragraph_", "body_");
+		assertFalse(it.hasNext());
+	}
+
+	public void testSub() throws Exception {
+		String document = "~Sub~";
+		output = new StringWriter();
+		SinkEventTestingSink sink = new SinkEventTestingSink();
+		createParser().parse(new StringReader(document), sink);
+
+		Iterator<SinkEventElement> it = sink.getEventList().iterator();
+		assertEquals(it, "head", "head_", "body", "paragraph");
+		assertEquals(it.next(), "text", "Sub", new SinkEventAttributeSet(
+				"valign", "sub"));
+		assertEquals(it, "paragraph_", "body_");
+		assertFalse(it.hasNext());
+	}
+
+	public void testSup() throws Exception {
+		String document = "^Sup^";
+		output = new StringWriter();
+		SinkEventTestingSink sink = new SinkEventTestingSink();
+		createParser().parse(new StringReader(document), sink);
+
+		Iterator<SinkEventElement> it = sink.getEventList().iterator();
+		assertEquals(it, "head", "head_", "body", "paragraph");
+		assertEquals(it.next(), "text", "Sup", new SinkEventAttributeSet(
+				"valign", "sup"));
+		assertEquals(it, "paragraph_", "body_");
+		assertFalse(it.hasNext());
+	}
 
     private void assertContainsLines( String message, String result, String lines )
     {
