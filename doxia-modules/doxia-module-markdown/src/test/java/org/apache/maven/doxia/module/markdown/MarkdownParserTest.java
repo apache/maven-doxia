@@ -50,7 +50,8 @@ public class MarkdownParserTest
      * {@inheritDoc}
      */
     @Override
-    protected void setUp() throws Exception
+    protected void setUp()
+        throws Exception
     {
         super.setUp();
         parser = (MarkdownParser) lookup( Parser.ROLE, MarkdownParser.ROLE_HINT );
@@ -79,15 +80,12 @@ public class MarkdownParserTest
      *
      * @throws Exception if the event list is not correct when parsing the document.
      */
-    public void testParagraphSinkEvent() throws Exception
+    public void testParagraphSinkEvent()
+        throws Exception
     {
         Iterator<SinkEventElement> it = parseFileToEventTestingSink( "paragraph" ).getEventList().iterator();
 
-        assertEquals( "body", it.next().getName() );
-        assertEquals( "paragraph", it.next().getName() );
-        assertEquals( "text", it.next().getName() );
-        assertEquals( "paragraph_", it.next().getName() );
-        assertEquals( "body_", it.next().getName() );
+        assertEquals( it, "body", "paragraph", "text", "paragraph_", "body_" );
 
         assertFalse( it.hasNext() );
     }
@@ -97,17 +95,12 @@ public class MarkdownParserTest
      *
      * @throws Exception if the event list is not correct when parsing the document.
      */
-    public void testBoldSinkEvent() throws Exception
+    public void testBoldSinkEvent()
+        throws Exception
     {
         Iterator<SinkEventElement> it = parseFileToEventTestingSink( "bold" ).getEventList().iterator();
 
-        assertEquals( "body", it.next().getName() );
-        assertEquals( "paragraph", it.next().getName() );
-        assertEquals( "bold", it.next().getName() );
-        assertEquals( "text", it.next().getName() );
-        assertEquals( "bold_", it.next().getName() );
-        assertEquals( "paragraph_", it.next().getName() );
-        assertEquals( "body_", it.next().getName() );
+        assertEquals( it, "body", "paragraph", "bold", "text", "bold_", "paragraph_", "body_" );
 
         assertFalse( it.hasNext() );
     }
@@ -117,17 +110,12 @@ public class MarkdownParserTest
      *
      * @throws Exception if the event list is not correct when parsing the document.
      */
-    public void testItalicSinkEvent() throws Exception
+    public void testItalicSinkEvent()
+        throws Exception
     {
         Iterator<SinkEventElement> it = parseFileToEventTestingSink( "italic" ).getEventList().iterator();
 
-        assertEquals( "body", it.next().getName() );
-        assertEquals( "paragraph", it.next().getName() );
-        assertEquals( "italic", it.next().getName() );
-        assertEquals( "text", it.next().getName() );
-        assertEquals( "italic_", it.next().getName() );
-        assertEquals( "paragraph_", it.next().getName() );
-        assertEquals( "body_", it.next().getName() );
+        assertEquals( it, "body", "paragraph", "italic", "text", "italic_", "paragraph_", "body_" );
 
         assertFalse( it.hasNext() );
     }
@@ -137,19 +125,12 @@ public class MarkdownParserTest
      *
      * @throws Exception if the event list is not correct when parsing the document.
      */
-    public void testCodeSinkEvent() throws Exception
+    public void testCodeSinkEvent()
+        throws Exception
     {
         Iterator<SinkEventElement> it = parseFileToEventTestingSink( "code" ).getEventList().iterator();
 
-        assertEquals( "body", it.next().getName() );
-        assertEquals( "paragraph", it.next().getName() );
-        assertEquals( "text", it.next().getName() );
-        assertEquals( "paragraph_", it.next().getName() );
-        assertEquals( "text", it.next().getName() );
-        assertEquals( "verbatim", it.next().getName() );
-        assertEquals( "text", it.next().getName() );
-        assertEquals( "verbatim_", it.next().getName() );
-        assertEquals( "body_", it.next().getName() );
+        assertEquals( it, "body", "paragraph", "text", "paragraph_", "text", "verbatim", "text", "verbatim_", "body_" );
 
         assertFalse( it.hasNext() );
     }
@@ -159,17 +140,12 @@ public class MarkdownParserTest
      *
      * @throws Exception if the event list is not correct when parsing the document.
      */
-    public void testImageSinkEvent() throws Exception
+    public void testImageSinkEvent()
+        throws Exception
     {
         Iterator<SinkEventElement> it = parseFileToEventTestingSink( "image" ).getEventList().iterator();
 
-        assertEquals( "body", it.next().getName() );
-        assertEquals( "paragraph", it.next().getName() );
-        assertEquals( "text", it.next().getName() );
-        assertEquals( "figureGraphics", it.next().getName() );
-        assertEquals( "text", it.next().getName() );
-        assertEquals( "paragraph_", it.next().getName() );
-        assertEquals( "body_", it.next().getName() );
+        assertEquals( it, "body", "paragraph", "text", "figureGraphics", "text", "paragraph_", "body_" );
 
         assertFalse( it.hasNext() );
     }
@@ -179,19 +155,12 @@ public class MarkdownParserTest
      *
      * @throws Exception if the event list is not correct when parsing the document.
      */
-    public void testLinkSinkEvent() throws Exception
+    public void testLinkSinkEvent()
+        throws Exception
     {
         Iterator<SinkEventElement> it = parseFileToEventTestingSink( "link" ).getEventList().iterator();
 
-        assertEquals( "body", it.next().getName() );
-        assertEquals( "paragraph", it.next().getName() );
-        assertEquals( "text", it.next().getName() );
-        assertEquals( "link", it.next().getName() );
-        assertEquals( "text", it.next().getName() );
-        assertEquals( "link_", it.next().getName() );
-        assertEquals( "text", it.next().getName() );
-        assertEquals( "paragraph_", it.next().getName() );
-        assertEquals( "body_", it.next().getName() );
+        assertEquals( it, "body", "paragraph", "text", "link", "text", "link_", "text", "paragraph_", "body_" );
 
         assertFalse( it.hasNext() );
     }
@@ -201,23 +170,13 @@ public class MarkdownParserTest
      *
      * @throws Exception if the event list is not correct when parsing the document.
      */
-    public void testListSinkEvent() throws Exception
+    public void testListSinkEvent()
+        throws Exception
     {
         Iterator<SinkEventElement> it = parseFileToEventTestingSink( "list" ).getEventList().iterator();
 
-        assertEquals( "body", it.next().getName() );
-        assertEquals( "list", it.next().getName() );
-        assertEquals( "text", it.next().getName() );
-        assertEquals( "listItem", it.next().getName() );
-        assertEquals( "text", it.next().getName() );
-        assertEquals( "listItem_", it.next().getName() );
-        assertEquals( "text", it.next().getName() );
-        assertEquals( "listItem", it.next().getName() );
-        assertEquals( "text", it.next().getName() );
-        assertEquals( "listItem_", it.next().getName() );
-        assertEquals( "text", it.next().getName() );
-        assertEquals( "list_", it.next().getName() );
-        assertEquals( "body_", it.next().getName() );
+        assertEquals( it, "body", "list", "text", "listItem", "text", "listItem_", "text", "listItem", "text",
+                      "listItem_", "text", "list_", "body_" );
 
         assertFalse( it.hasNext() );
     }
@@ -227,23 +186,13 @@ public class MarkdownParserTest
      *
      * @throws Exception if the event list is not correct when parsing the document.
      */
-    public void testNumberedListSinkEvent() throws Exception
+    public void testNumberedListSinkEvent()
+        throws Exception
     {
         Iterator<SinkEventElement> it = parseFileToEventTestingSink( "numbered-list" ).getEventList().iterator();
 
-        assertEquals( "body", it.next().getName() );
-        assertEquals( "numberedList", it.next().getName() );
-        assertEquals( "text", it.next().getName() );
-        assertEquals( "numberedListItem", it.next().getName() );
-        assertEquals( "text", it.next().getName() );
-        assertEquals( "numberedListItem_", it.next().getName() );
-        assertEquals( "text", it.next().getName() );
-        assertEquals( "numberedListItem", it.next().getName() );
-        assertEquals( "text", it.next().getName() );
-        assertEquals( "numberedListItem_", it.next().getName() );
-        assertEquals( "text", it.next().getName() );
-        assertEquals( "numberedList_", it.next().getName() );
-        assertEquals( "body_", it.next().getName() );
+        assertEquals( it, "body", "numberedList", "text", "numberedListItem", "text", "numberedListItem_", "text",
+                      "numberedListItem", "text", "numberedListItem_", "text", "numberedList_", "body_" );
 
         assertFalse( it.hasNext() );
     }
@@ -255,7 +204,8 @@ public class MarkdownParserTest
      * @return a sink to test parsing events.
      * @throws ParseException if the document parsing failed.
      */
-    protected SinkEventTestingSink parseFileToEventTestingSink( String file ) throws ParseException
+    protected SinkEventTestingSink parseFileToEventTestingSink( String file )
+        throws ParseException
     {
         Reader reader = null;
         SinkEventTestingSink sink = null;
