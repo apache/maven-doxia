@@ -21,6 +21,8 @@ package org.apache.maven.doxia.sink;
 
 import javax.swing.text.html.HTML.Tag;
 
+import org.apache.maven.doxia.markup.Markup;
+
 import junit.framework.TestCase;
 
 /**
@@ -108,7 +110,7 @@ public class AbstractXmlSinkTest
         final XmlTestSink instance = new XmlTestSink();
 
         instance.writeEOL();
-        assertEquals( System.getProperty( "line.separator" ), instance.getText() );
+        assertEquals( Markup.EOL, instance.getText() );
     }
 
     /**

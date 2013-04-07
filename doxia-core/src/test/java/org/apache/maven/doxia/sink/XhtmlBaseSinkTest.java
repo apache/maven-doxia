@@ -24,7 +24,9 @@ import java.io.Writer;
 
 import javax.swing.text.html.HTML.Attribute;
 
-import org.codehaus.plexus.PlexusTestCase;
+import junit.framework.TestCase;
+
+import org.apache.maven.doxia.markup.Markup;
 
 /**
  * Test for XhtmlBaseSink.
@@ -34,9 +36,9 @@ import org.codehaus.plexus.PlexusTestCase;
  * @since 1.1
  */
 public class XhtmlBaseSinkTest
-    extends PlexusTestCase
+    extends TestCase
 {
-    protected static final String LS = System.getProperty( "line.separator" );
+    protected static final String LS = Markup.EOL;
     private final SinkEventAttributes attributes = SinkEventAttributeSet.BOLD;
     private XhtmlBaseSink sink;
     private Writer writer;
