@@ -39,3 +39,5 @@ doxia-module-markdown
    * {{{http://en.wikipedia.org/wiki/Markdown}Markdown Wikipedia page}}
 
    * {{{http://xbeta.org/wiki/show/Markdown}Markdown wiki}}
+
+   * {{{http://pegdown.org}Pegdown}}, the library used by this Doxia module
