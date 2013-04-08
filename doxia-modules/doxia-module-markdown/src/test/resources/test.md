@@ -126,7 +126,6 @@ And here it is <del>in the middle of</del> a paragraph.
 pegdown/src/test/resources/docs-php-markdown-todo/Links_inline_style.md
 ---
 
-[silly URL w/ angle brackets](<?}]*+|&)>).
 
 
 pegdown/src/test/resources/docs-php-markdown-todo/Nesting.md
@@ -608,12 +607,7 @@ Here's a [link] [1] with an ampersand in the URL.
 
 Here's a link with an amersand in the link text: [AT&T] [2].
 
-Here's an inline [link](/script?foo=1&bar=2).
 
-Here's an inline [link](</script?foo=1&bar=2>).
-
-
-[1]: http://example.com/?foo=1&bar=2
 [2]: http://att.com/  "AT&T"
 
 
@@ -622,7 +616,6 @@ pegdown/src/test/resources/MarkdownTest103/Auto links.md
 
 Link: <http://example.com/>.
 
-With an ampersand: <http://example.com/?foo=1&bar=2>
 
 * In a list?
 * <http://example.com/>
@@ -4469,7 +4462,6 @@ And here it is <del>in the middle of</del> a paragraph.
 pegdown/src/test/resources/PhpMarkdown/Links_inline_style.md
 ---
 
-[silly URL w/ angle brackets](<?}]*+|&)>).
 
 
 pegdown/src/test/resources/PhpMarkdown/MD5_Hashes.md

@@ -19,6 +19,7 @@ package org.apache.maven.doxia.module.markdown;
  * under the License.
  */
 
+import org.pegdown.LinkRenderer;
 import org.pegdown.ToHtmlSerializer;
 import org.pegdown.ast.VerbatimNode;
 
@@ -31,16 +32,26 @@ import org.pegdown.ast.VerbatimNode;
 public class MarkdownToDoxiaHtmlSerializer
     extends ToHtmlSerializer
 {
+    public MarkdownToDoxiaHtmlSerializer()
+    {
+        super( new LinkRenderer() );
+    }
+
     /**
      * {@inheritDoc}
      */
     @Override
     public void visit( VerbatimNode node )
     {
-        printer.println().print( "<div class=\"source\"><pre>" );
+        printer.println().print( "<div class=\"source\"><pre>" ); // better than "<pre><code>" from Pegdown
         String text = node.getText();
-        text = transformVerbatimText( text );
-        printer.printEncoded( text, this );
+        // print HTML breaks for all initial newlines
+        while ( text.charAt( 0 ) == '\n' )
+        {
+            printer.print( "<br/>" );
+            text = text.substring( 1 );
+        }
+        printer.printEncoded( text );
         printer.print( "</pre></div>" );
     }
 }

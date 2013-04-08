@@ -370,6 +370,7 @@ under the License.
             <configuration>
               <excludes>
                 <exclude>org/apache/maven/doxia/document/*</exclude>
+                <exclude>org/apache/maven/doxia/module/markdown/MarkdownToDoxiaHtmlSerializer</exclude>
               </excludes>
             </configuration>
           </execution>
