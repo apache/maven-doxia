@@ -1,7 +1,8 @@
 package org.apache.maven.doxia.module.twiki.parser;
 
+import static org.junit.Assert.assertArrayEquals;
+
 import java.io.StringReader;
-import java.util.Arrays;
 import java.util.List;
 
 import org.apache.maven.doxia.parser.ParseException;
@@ -90,8 +91,8 @@ public class VerbatimTest
                     new TextBlock( " this is a verbatim text \n" ),
                     new TextBlock( " which i would like to test \n" ), new TextBlock( " Thanks \n" ) } ) };
 
-        List block = twikiParser.parse( source );
-        assertTrue( Arrays.equals( block.toArray(), expected ) );
+        List<Block> block = twikiParser.parse( source );
+        assertArrayEquals( expected, block.toArray() );
 
     }
 
@@ -110,7 +111,7 @@ public class VerbatimTest
             new Block[] { new SectionBlock( "foo", 2, new Block[] { new VerbatimBlock( new Block[] {
                 new TextBlock( " hello, \n" ), new TextBlock( " Thanks \n" ) } ) } ) };
 
-        List block = twikiParser.parse( source );
-        assertTrue( Arrays.equals( block.toArray(), expected ) );
+        List<Block> block = twikiParser.parse( source );
+        assertArrayEquals( expected, block.toArray() );
     }
 }

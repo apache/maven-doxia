@@ -19,7 +19,7 @@ package org.apache.maven.doxia.module.twiki.parser;
  * under the License.
  */
 
-import java.util.Arrays;
+import static org.junit.Assert.assertArrayEquals;
 
 /**
  * tests the WikiWord parsing (and things like that)
@@ -49,7 +49,7 @@ public class WordsTest
 
         expected = new Block[] { new TextBlock( "     Some text    " ) };
         blocks = (Block[]) textParser.parse( "     Some text    " ).toArray( TOARRAY );
-        assertTrue( Arrays.equals( expected, blocks ) );
+        assertArrayEquals( expected, blocks );
     }
 
     /**
@@ -61,24 +61,24 @@ public class WordsTest
 
         expected = new Block[] { new WikiWordBlock( "WikiWord", resolver ) };
         blocks = (Block[]) textParser.parse( "WikiWord" ).toArray( TOARRAY );
-        assertTrue( Arrays.equals( expected, blocks ) );
+        assertArrayEquals( expected, blocks );
 
         // this is not a wiki word
         expected = new Block[] { new TextBlock( "Wiki" ) };
         blocks = (Block[]) textParser.parse( "Wiki" ).toArray( TOARRAY );
-        assertTrue( Arrays.equals( expected, blocks ) );
+        assertArrayEquals( expected, blocks );
 
         expected = new Block[] { new TextBlock( "Web." ) };
         blocks = (Block[]) textParser.parse( "Web." ).toArray( TOARRAY );
-        assertTrue( Arrays.equals( expected, blocks ) );
+        assertArrayEquals( expected, blocks );
 
         expected = new Block[] { new TextBlock( "fooWikiBar" ) };
         blocks = (Block[]) textParser.parse( "fooWikiBar" ).toArray( TOARRAY );
-        assertTrue( Arrays.equals( expected, blocks ) );
+        assertArrayEquals( expected, blocks );
 
         expected = new Block[] { new WikiWordBlock( "WikiWord", resolver ), new TextBlock( "...." ) };
         blocks = (Block[]) textParser.parse( "WikiWord...." ).toArray( TOARRAY );
-        assertTrue( Arrays.equals( expected, blocks ) );
+        assertArrayEquals( expected, blocks );
     }
 
     /**
@@ -90,11 +90,11 @@ public class WordsTest
 
         expected = new Block[] { new WikiWordBlock( "Web.WikiWord", resolver ) };
         blocks = (Block[]) textParser.parse( "Web.WikiWord" ).toArray( TOARRAY );
-        assertTrue( Arrays.equals( expected, blocks ) );
+        assertArrayEquals( expected, blocks );
 
         expected = new Block[] { new WikiWordBlock( "My1Web.WikiWord", resolver ) };
         blocks = (Block[]) textParser.parse( "My1Web.WikiWord" ).toArray( TOARRAY );
-        assertTrue( Arrays.equals( expected, blocks ) );
+        assertArrayEquals( expected, blocks );
     }
 
     /**
@@ -106,11 +106,11 @@ public class WordsTest
 
         expected = new Block[] { new WikiWordBlock( "WikiWord#anchor", resolver ) };
         blocks = (Block[]) textParser.parse( "WikiWord#anchor" ).toArray( TOARRAY );
-        assertTrue( Arrays.equals( expected, blocks ) );
+        assertArrayEquals( expected, blocks );
 
         expected = new Block[] { new WikiWordBlock( "MyWeb.WikiWord#anchor", resolver ) };
         blocks = (Block[]) textParser.parse( "MyWeb.WikiWord#anchor" ).toArray( TOARRAY );
-        assertTrue( Arrays.equals( expected, blocks ) );
+        assertArrayEquals( expected, blocks );
 
     }
 
@@ -123,19 +123,19 @@ public class WordsTest
 
         expected = new Block[] { new LinkBlock( "http://reference.com", new TextBlock( "text" ) ) };
         blocks = (Block[]) textParser.parse( "[[http://reference.com][text]]" ).toArray( TOARRAY );
-        assertTrue( Arrays.equals( expected, blocks ) );
+        assertArrayEquals( expected, blocks );
 
         expected =
             new Block[] { new TextBlock( "foo" ),
                 new LinkBlock( "http://reference.com", new TextBlock( "text" ) ), new TextBlock( "bar" ) };
         blocks = (Block[]) textParser.parse( "foo[[http://reference.com][text]]bar" ).toArray( TOARRAY );
-        assertTrue( Arrays.equals( expected, blocks ) );
+        assertArrayEquals( expected, blocks );
 
         expected =
             new Block[] { new TextBlock( " foo " ),
                 new LinkBlock( "http://reference.com", new TextBlock( "text" ) ), new TextBlock( " bar " ) };
         blocks = (Block[]) textParser.parse( " foo [[http://reference.com][text]] bar " ).toArray( TOARRAY );
-        assertTrue( Arrays.equals( expected, blocks ) );
+        assertArrayEquals( expected, blocks );
 
         expected =
             new Block[] {
@@ -148,7 +148,7 @@ public class WordsTest
                                         "[[http://www.apache.org/licenses/LICENSE-2.0]"
                                             + "[Apache License, version 2.0]]. You can download it "
                                             + "[[DoxiaDownload][here]]" ).toArray( TOARRAY );
-        assertTrue( Arrays.equals( expected, blocks ) );
+        assertArrayEquals( expected, blocks );
 
     }
 
@@ -161,19 +161,19 @@ public class WordsTest
 
         expected = new Block[] { new WikiWordBlock( "Reference", new TextBlock( "text" ), resolver ) };
         blocks = (Block[]) textParser.parse( "[[reference][text]]" ).toArray( TOARRAY );
-        assertTrue( Arrays.equals( expected, blocks ) );
+        assertArrayEquals( expected, blocks );
 
         expected =
             new Block[] { new TextBlock( "foo" ),
                 new WikiWordBlock( "ReferenceLink", new TextBlock( "text" ), resolver ), new TextBlock( "bar" ) };
         blocks = (Block[]) textParser.parse( "foo[[referenceLink][text]]bar" ).toArray( TOARRAY );
-        assertTrue( Arrays.equals( expected, blocks ) );
+        assertArrayEquals( expected, blocks );
 
         expected =
             new Block[] { new TextBlock( " foo " ),
                 new WikiWordBlock( "ReferenceLink", new TextBlock( "text" ), resolver ), new TextBlock( " bar " ) };
         blocks = (Block[]) textParser.parse( " foo [[reference link][text]] bar " ).toArray( TOARRAY );
-        assertTrue( Arrays.equals( expected, blocks ) );
+        assertArrayEquals( expected, blocks );
     }
 
     /**
@@ -185,7 +185,7 @@ public class WordsTest
 
         expected = new Block[] { new TextBlock( "[[reference][text]]" ) };
         blocks = (Block[]) textParser.parse( "![[reference][text]]" ).toArray( TOARRAY );
-        assertTrue( Arrays.equals( expected, blocks ) );
+        assertArrayEquals( expected, blocks );
     }
 
     /**
@@ -197,11 +197,11 @@ public class WordsTest
 
         expected = new Block[] { new TextBlock( " " ), new TextBlock( "WikiWord" ), new TextBlock( " " ) };
         blocks = (Block[]) textParser.parse( " !WikiWord " ).toArray( TOARRAY );
-        assertTrue( Arrays.equals( expected, blocks ) );
+        assertArrayEquals( expected, blocks );
 
         expected = new Block[] { new TextBlock( " !!WikiWord " ) };
         blocks = (Block[]) textParser.parse( " !!WikiWord " ).toArray( TOARRAY );
-        assertTrue( Arrays.equals( expected, blocks ) );
+        assertArrayEquals( expected, blocks );
     }
 
     /**
@@ -213,24 +213,24 @@ public class WordsTest
 
         expected = new Block[] { new WikiWordBlock( "WikiSyntax", new TextBlock( "wiki syntax" ), resolver ) };
         blocks = (Block[]) textParser.parse( "[[wiki syntax]]" ).toArray( TOARRAY );
-        assertTrue( Arrays.equals( expected, blocks ) );
+        assertArrayEquals( expected, blocks );
 
         expected = new Block[] { new TextBlock( "[[wiki syntax]]" ) };
         blocks = (Block[]) textParser.parse( "![[wiki syntax]]" ).toArray( TOARRAY );
-        assertTrue( Arrays.equals( expected, blocks ) );
+        assertArrayEquals( expected, blocks );
 
         expected =
             new Block[] { new TextBlock( "foo" ),
                 new WikiWordBlock( "WikiSyntax", new TextBlock( "wiki syntax" ), resolver ),
                 new TextBlock( "bar" ) };
         blocks = (Block[]) textParser.parse( "foo[[wiki syntax]]bar" ).toArray( TOARRAY );
-        assertTrue( Arrays.equals( expected, blocks ) );
+        assertArrayEquals( expected, blocks );
 
         expected =
             new Block[] { new TextBlock( "foo" ),
                 new LinkBlock( "http://twiki.com", new TextBlock( "http://twiki.com" ) ), new TextBlock( "bar" ) };
         blocks = (Block[]) textParser.parse( "foo[[http://twiki.com]]bar" ).toArray( TOARRAY );
-        assertTrue( Arrays.equals( expected, blocks ) );
+        assertArrayEquals( expected, blocks );
     }
 
     /**
@@ -242,7 +242,7 @@ public class WordsTest
 
         expected = new Block[] { new LinkBlock( "mailto:a@z.com", new TextBlock( "Mail" ) ) };
         blocks = (Block[]) textParser.parse( "[[mailto:a@z.com Mail]]" ).toArray( TOARRAY );
-        assertTrue( Arrays.equals( expected, blocks ) );
+        assertArrayEquals( expected, blocks );
     }
 
     /**
@@ -254,17 +254,17 @@ public class WordsTest
 
         expected = new Block[] { new TextBlock( "mary has #anchor a little lamb" ) };
         blocks = (Block[]) textParser.parse( "mary has #anchor a little lamb" ).toArray( TOARRAY );
-        assertTrue( Arrays.equals( expected, blocks ) );
+        assertArrayEquals( expected, blocks );
 
         expected =
             new Block[] { new TextBlock( "mary has " ), new AnchorBlock( "AnchorName" ),
                 new TextBlock( " a little lamb" ) };
         blocks = (Block[]) textParser.parse( "mary has #AnchorName a little lamb" ).toArray( TOARRAY );
-        assertTrue( Arrays.equals( expected, blocks ) );
+        assertArrayEquals( expected, blocks );
 
         expected = new Block[] { new TextBlock( "mary has #AnchorName1233 a little lamb" ) };
         blocks = (Block[]) textParser.parse( "mary has #AnchorName1233 a little lamb" ).toArray( TOARRAY );
-        assertTrue( Arrays.equals( expected, blocks ) );
+        assertArrayEquals( expected, blocks );
     }
 
     /**
@@ -279,7 +279,7 @@ public class WordsTest
                 new LinkBlock( "http://twiki.com", new TextBlock( "http://twiki.com" ) ),
                 new TextBlock( " and ..." ) };
         blocks = (Block[]) textParser.parse( "Go to http://twiki.com and ..." ).toArray( TOARRAY );
-        assertTrue( Arrays.equals( expected, blocks ) );
+        assertArrayEquals( expected, blocks );
     }
 
     /** unit test */
@@ -290,7 +290,7 @@ public class WordsTest
         expected =
             new Block[] { new LinkBlock( "http://twiki.org", new ImageBlock( "http://twiki.org/logo.png" ) ) };
         blocks = (Block[]) textParser.parse( "[[http://twiki.org][http://twiki.org/logo.png]]" ).toArray( TOARRAY );
-        assertTrue( Arrays.equals( expected, blocks ) );
+        assertArrayEquals( expected, blocks );
     }
 
     /** unit test */
@@ -304,7 +304,7 @@ public class WordsTest
         blocks =
             (Block[]) textParser.parse( "Go to http://twiki.com/image.png " + "thisisnotanimage.png and ..." )
                                 .toArray( TOARRAY );
-        assertTrue( Arrays.equals( expected, blocks ) );
+        assertArrayEquals( expected, blocks );
     }
 
     /**
@@ -322,6 +322,6 @@ public class WordsTest
                                 .parse(
                                         "My summer house: <img class=\"some_class\" src=\"images/summerhouse.png\"/> isn't it great?!" )
                                 .toArray( TOARRAY );
-        assertTrue( Arrays.equals( expected, blocks ) );
+        assertArrayEquals( expected, blocks );
     }
 }
