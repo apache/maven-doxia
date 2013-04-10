@@ -27,13 +27,13 @@ import org.apache.maven.doxia.sink.SinkEventElement;
 import org.apache.maven.doxia.sink.SinkEventTestingSink;
 
 /**
- *
  * @author ltheussl
  */
 public class TwikiParserTest
     extends AbstractParserTest
 {
     private TWikiParser parser;
+
     private static final String id = "twiki";
 
     @Override
@@ -57,7 +57,7 @@ public class TwikiParserTest
         return id;
     }
 
-    /** @throws Exception  */
+    /** @throws Exception */
     public void testHtml()
         throws Exception
     {
@@ -70,47 +70,25 @@ public class TwikiParserTest
 
         Iterator<SinkEventElement> it = sink.getEventList().iterator();
 
-        assertEquals( "head", ( it.next() ).getName() );
-        assertEquals( "head_", ( it.next() ).getName() );
-        assertEquals( "body", ( it.next() ).getName() );
-        assertEquals( "paragraph", ( it.next() ).getName() );
+        assertEquals( it, "head", "head_", "body", "paragraph" );
 
         assertEquals( "italic", ( it.next() ).getName() );
-        SinkEventElement textElement = it.next();
-        assertEquals( "text", textElement.getName() );
-        assertEquals( "ita", textElement.getArgs()[0] );
+        assertEquals( it.next(), "text", "ita" );
         assertEquals( "italic_", ( it.next() ).getName() );
 
-        textElement = it.next();
-        assertEquals( "text", textElement.getName() );
-        assertEquals( ", ", textElement.getArgs()[0] );
+        assertEquals( it.next(), "text", ", " );
 
         assertEquals( "bold", ( it.next() ).getName() );
-        textElement = it.next();
-        assertEquals( "text", textElement.getName() );
-        assertEquals( "b", textElement.getArgs()[0] );
+        assertEquals( it.next(), "text", "b" );
         assertEquals( "bold_", ( it.next() ).getName() );
 
-        textElement = it.next();
-        assertEquals( "text", textElement.getName() );
-        assertEquals( " and a bit of ", textElement.getArgs()[0] );
+        assertEquals( it.next(), "text", " and a bit of " );
 
-        textElement = it.next();
-        assertEquals( "rawText", textElement.getName() );
-        assertEquals( "<font color=\"red\">", textElement.getArgs()[0] );
+        assertEquals( it.next(), "rawText", "<font color=\"red\">" );
+        assertEquals( it.next(), "text", "red" );
+        assertEquals( it.next(), "rawText", "</font>" );
 
-        textElement = it.next();
-        assertEquals( "text", textElement.getName() );
-        assertEquals( "red", textElement.getArgs()[0] );
-
-        textElement = it.next();
-        assertEquals( "rawText", textElement.getName() );
-        assertEquals( "</font>", textElement.getArgs()[0] );
-
-        assertEquals( "paragraph_", ( it.next() ).getName() );
-        assertEquals( "body_", ( it.next() ).getName() );
-        assertEquals( "flush", ( it.next() ).getName() );
-        assertEquals( "close", ( it.next() ).getName() );
+        assertEquals( it, "paragraph_", "body_", "flush", "close" );
         assertFalse( it.hasNext() );
     }
 }
