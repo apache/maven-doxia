@@ -245,26 +245,40 @@ public class ConfluenceParserTest
     public void testFigure()
         throws Exception
     {
-        String result = locateAndParseTestSourceFile( "figure" );
+        Reader result = getTestReader( "figure" );
 
-        assertContainsLines( result, "begin:figure\nfigureGraphics, name: images/photo.jpg\nend:figure\n" );
-        assertContainsLines( result, "attempted inline !image.jpg! (should fail)" );
-        // this isn't ideal... Doxia captions are not the same as what people would use to add text to a confluence
-        assertContainsLines( result, "figureGraphics, name: images/photo.jpg\n"
-            + "begin:figureCaption\ntext: With caption on same line\n" + "end:figureCaption" );
-        assertContainsLines( result, "figureGraphics, name: images/nolinebreak.jpg\n"
-            + "begin:figureCaption\ntext: With caption underneath and no linebreak\nend:figureCaption" );
-        // ignore linebreak after figure insert...
-        assertContainsLines( result, "figureGraphics, name: images/linebreak.jpg\n"
-            + "begin:figureCaption\ntext: With caption underneath and linebreak\nend:figureCaption" );
-        // ignore formtting in caption...
-        assertContainsLines( result, "figureGraphics, name: images/bold.jpg\n"
-            + "begin:figureCaption\ntext: With *bold* caption underneath\nend:figureCaption" );
-        // DOXIA-303: image attributes are ignored
-        assertContainsLines( result, "begin:figure\nfigureGraphics, name: image.gif\nend:figure\n" );
+        SinkEventTestingSink sink = new SinkEventTestingSink();
 
-        // 2 paragraphs in the input... (the figures do not go in a paragraph by analogy with AptParser)
-        assertEquals( 3, result.split( "end:paragraph\n" ).length );
+        parser.parse( result, sink );
+
+        Iterator<SinkEventElement> it = sink.getEventList().iterator();
+
+        assertEquals( it, "head", "head_", "body", "paragraph" );
+        assertEquals( it.next(), "text", "Simple paragraph." );
+        assertEquals( it, "paragraph_", "figure" );
+        assertEquals( it.next(), "figureGraphics", "images/photo.jpg" );
+        assertEquals( it, "figure_", "paragraph" );
+        assertEquals( it.next(), "text", "Simple paragraph with attempted inline !image.jpg! (should fail)." );
+        assertEquals( it, "paragraph_", "figure" );
+        assertEquals( it.next(), "figureGraphics", "images/photo.jpg" );
+        assertEquals( it.next().getName(), "figureCaption" ); 
+        assertEquals( it.next(), "text", "With caption on same line" );
+        assertEquals( it, "figureCaption_", "figure_", "figure" );
+        assertEquals( it.next(), "figureGraphics", "images/linebreak.jpg" );
+        assertEquals( it.next().getName(), "figureCaption" );
+        assertEquals( it.next(), "text", "With caption underneath and linebreak" );
+        assertEquals( it, "figureCaption_", "figure_", "figure" );
+        assertEquals( it.next(), "figureGraphics", "images/nolinebreak.jpg" );
+        assertEquals( it.next().getName(), "figureCaption" );
+        assertEquals( it.next(), "text", "With caption underneath and no linebreak" );
+        assertEquals( it, "figureCaption_", "figure_", "figure" );
+        assertEquals( it.next(), "figureGraphics", "images/bold.jpg" );
+        assertEquals( it.next().getName(), "figureCaption" );
+        assertEquals( it.next(), "text", "With *bold* caption underneath" );
+        assertEquals( it, "figureCaption_", "figure_", "figure" );
+        assertEquals( it.next(), "figureGraphics", "image.gif" );
+        assertEquals( it, "figure_", "body_" );
+        assertFalse( it.hasNext() );
     }
 
     /** @throws Exception */
