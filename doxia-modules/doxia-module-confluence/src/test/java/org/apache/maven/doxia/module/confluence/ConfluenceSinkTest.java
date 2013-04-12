@@ -90,7 +90,12 @@ public class ConfluenceSinkTest
     /** {@inheritDoc} */
     protected String getFigureBlock( String source, String caption )
     {
-        return EOL + ConfluenceMarkup.FIGURE_START_MARKUP + source + ConfluenceMarkup.FIGURE_END_MARKUP + caption;
+        String figureBlock = EOL + ConfluenceMarkup.FIGURE_START_MARKUP + source + ConfluenceMarkup.FIGURE_END_MARKUP;
+        if ( caption != null )
+        {
+            figureBlock += caption;
+        }
+        return figureBlock;
     }
 
     /** Not used.

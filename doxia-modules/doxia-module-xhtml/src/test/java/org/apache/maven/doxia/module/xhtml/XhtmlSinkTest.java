@@ -178,7 +178,17 @@ public class XhtmlSinkTest
     /** {@inheritDoc} */
     protected String getFigureBlock( String source, String caption )
     {
-        return "<img src=\"" + source + "\" alt=\"" + caption + "\" />";
+        String figureBlock = "<img src=\"" + source + "\"";
+        if( caption != null )
+        {
+            figureBlock += " alt=\"" + caption + "\"";
+        }
+        else //@todo fix DOXIA-361
+        {
+            figureBlock += " alt=\"\"";
+        }
+        figureBlock += " />";
+        return figureBlock;
     }
 
     /** {@inheritDoc} */

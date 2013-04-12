@@ -32,6 +32,7 @@ import org.apache.maven.doxia.parser.XhtmlBaseParser;
 import org.apache.maven.doxia.sink.Sink;
 import org.apache.maven.doxia.sink.AbstractSinkTest;
 import org.apache.maven.doxia.sink.SinkTestDocument;
+import org.codehaus.plexus.util.StringUtils;
 
 /**
  * <code>FO Sink</code> Test case.
@@ -284,8 +285,17 @@ public class FoSinkTest
         String dlAtts = getConfig().getAttributeString( "figure.display" );
         String dtAtts = getConfig().getAttributeString( "figure.graphics" );
         String ddAtts = getConfig().getAttributeString( "figure.caption" );
-        return EOL + EOL + "<fo:block" + dlAtts + "><fo:external-graphic" + " src=\"" + source + "\"" + dtAtts
-            + "/>" + EOL + EOL + "<fo:block" + ddAtts + ">" + caption + "</fo:block>" + EOL + "</fo:block>" + EOL;
+
+        String figureBlock = EOL + EOL + "<fo:block" + dlAtts + "><fo:external-graphic" + " src=\"" + source + "\"" + dtAtts
+            + "/>" + EOL;
+        if ( caption != null )
+        {
+            figureBlock += EOL + "<fo:block" + ddAtts + ">" + caption + "</fo:block>" + EOL;
+        }
+        figureBlock +=  "</fo:block>" + EOL;
+        
+        
+        return figureBlock;
     }
 
     /** {@inheritDoc} */

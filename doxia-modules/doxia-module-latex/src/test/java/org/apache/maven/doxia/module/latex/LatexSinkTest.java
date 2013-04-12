@@ -141,8 +141,14 @@ public class LatexSinkTest
     /** {@inheritDoc} */
     protected String getFigureBlock( String source, String caption )
     {
-        return EOL + "\\begin{figure}[htb]" + EOL + "\\begin{center}" + EOL + "\\includegraphics{" + source + "}" + EOL
-            + "\\end{center}" + EOL + "\\caption{Figure\\_caption}" + EOL + "\\end{figure}" + EOL;
+        String figureBlock = EOL + "\\begin{figure}[htb]" + EOL + "\\begin{center}" + EOL + "\\includegraphics{" + source + "}" + EOL
+            + "\\end{center}" + EOL;
+        if (caption != null )
+        {
+            figureBlock += "\\caption{Figure\\_caption}" + EOL;
+        }
+        figureBlock += "\\end{figure}" + EOL;
+        return figureBlock;        
     }
 
     /** {@inheritDoc} */

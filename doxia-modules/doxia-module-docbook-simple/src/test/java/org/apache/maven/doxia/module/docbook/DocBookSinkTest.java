@@ -150,10 +150,16 @@ public class DocBookSinkTest extends AbstractSinkTest
     protected String getFigureBlock( String source, String caption )
     {
         String format = FileUtils.extension( source ).toUpperCase( Locale.ENGLISH );
-
-        return "<mediaobject><imageobject>"
+        String figureBlock = "<mediaobject><imageobject>"
                 + "<imagedata fileref=\"" + source + "\" format=\"" + format + "\" />"
-                + "</imageobject><caption><para>" + caption + "</para></caption></mediaobject>";
+                + "</imageobject>";
+        if ( caption != null )
+        {
+            figureBlock += "<caption><para>" + caption + "</para></caption>";
+        }
+        figureBlock += "</mediaobject>";
+        
+        return figureBlock;
     }
 
     /** {@inheritDoc} */

@@ -148,8 +148,12 @@ public class AptSinkTest extends AbstractSinkTest
     /** {@inheritDoc} */
     protected String getFigureBlock( String source, String caption )
     {
-        return EOL + Markup.LEFT_SQUARE_BRACKET + source + Markup.RIGHT_SQUARE_BRACKET
-            + Markup.SPACE + caption + EOL;
+       String figureBlock = EOL + Markup.LEFT_SQUARE_BRACKET + source + Markup.RIGHT_SQUARE_BRACKET + Markup.SPACE;
+       if( caption != null )
+       {
+           figureBlock += caption + EOL;
+       }
+       return figureBlock;
     }
 
     /** {@inheritDoc} */

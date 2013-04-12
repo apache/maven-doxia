@@ -91,7 +91,13 @@ public class TWikiSinkTest
     /** {@inheritDoc} */
     protected String getFigureBlock( String source, String caption )
     {
-        return "<img src=\"" + source + "\" alt=\"" + caption + "\" />";
+        String figureBlock = "<img src=\"" + source + "\"";
+        if ( caption != null )
+        {
+            figureBlock += " alt=\"" + caption + "\"";
+        }
+        figureBlock += " />";
+        return figureBlock;
     }
 
     /** Not used.
