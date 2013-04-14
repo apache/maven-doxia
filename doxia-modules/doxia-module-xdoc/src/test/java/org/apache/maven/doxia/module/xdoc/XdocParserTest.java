@@ -26,7 +26,6 @@ import java.io.Reader;
 import java.io.Writer;
 
 import java.util.Iterator;
-import java.util.List;
 import java.util.regex.Pattern;
 
 import org.apache.maven.doxia.parser.AbstractParserTest;
@@ -37,9 +36,7 @@ import org.apache.maven.doxia.sink.SinkEventAttributeSet;
 import org.apache.maven.doxia.sink.SinkEventElement;
 import org.apache.maven.doxia.sink.SinkEventTestingSink;
 
-import org.codehaus.plexus.util.FileUtils;
 import org.codehaus.plexus.util.IOUtil;
-import org.junit.Assert;
 
 /**
  * @author <a href="mailto:jason@maven.org">Jason van Zyl</a>
@@ -201,14 +198,7 @@ public class XdocParserTest
 
         Iterator<SinkEventElement> it = sink.getEventList().iterator();
 
-        assertEquals( "head", it.next().getName() );
-        assertEquals( "title", it.next().getName() );
-        assertEquals( "text", it.next().getName() );
-        assertEquals( "title_", it.next().getName() );
-        assertEquals( "comment", it.next().getName() );
-        assertEquals( "author", it.next().getName() );
-        assertEquals( "text", it.next().getName() );
-        assertEquals( "author_", it.next().getName() );
+        assertEquals( it, "head", "title", "text", "title_", "comment", "author", "text", "author_" );
 
         SinkEventElement unknown = it.next();
         assertEquals( "unknown", unknown.getName() );
@@ -218,9 +208,7 @@ public class XdocParserTest
         assertEquals( "unknown", unknown.getName() );
         assertEquals( "base", unknown.getArgs()[0] );
 
-        assertEquals( "head_", it.next().getName() );
-        assertEquals( "body", it.next().getName() );
-        assertEquals( "body_", it.next().getName() );
+        assertEquals( it, "head_", "body", "body_" );
         assertFalse( it.hasNext() );
 
         // DOXIA-359
@@ -234,17 +222,13 @@ public class XdocParserTest
 
         it = sink.getEventList().iterator();
 
-        assertEquals( "head", it.next().getName() );
-        assertEquals( "title", it.next().getName() );
+        assertEquals( it, "head", "title" );
 
         SinkEventElement title = it.next();
         assertEquals( "text", title.getName() );
         assertEquals( "properties title", title.getArgs()[0] );
 
-        assertEquals( "title_", it.next().getName() );
-        assertEquals( "head_", it.next().getName() );
-        assertEquals( "body", it.next().getName() );
-        assertEquals( "body_", it.next().getName() );
+        assertEquals( it, "title_", "head_", "body",  "body_" );
         assertFalse( it.hasNext() );
     }
 
@@ -260,8 +244,7 @@ public class XdocParserTest
 
         Iterator<SinkEventElement> it = sink.getEventList().iterator();
 
-        assertEquals( "body", it.next().getName() );
-        assertEquals( "body_", it.next().getName() );
+        assertEquals( it, "body", "body_" );
         assertFalse( it.hasNext() );
     }
 
@@ -277,16 +260,8 @@ public class XdocParserTest
 
         Iterator<SinkEventElement> it = sink.getEventList().iterator();
 
-        assertEquals( "section1", it.next().getName() );
-        assertEquals( "sectionTitle1", it.next().getName() );
-        assertEquals( "text", it.next().getName() );
-        assertEquals( "sectionTitle1_", it.next().getName() );
-        assertEquals( "section2", it.next().getName() );
-        assertEquals( "sectionTitle2", it.next().getName() );
-        assertEquals( "text", it.next().getName() );
-        assertEquals( "sectionTitle2_", it.next().getName() );
-        assertEquals( "section2_", it.next().getName() );
-        assertEquals( "section1_", it.next().getName() );
+        assertEquals( it, "section1", "sectionTitle1", "text", "sectionTitle1_", "section2", "sectionTitle2", "text",
+                      "sectionTitle2_", "section2_", "section1_" );
         assertFalse( it.hasNext() );
     }
 
@@ -303,8 +278,7 @@ public class XdocParserTest
 
         Iterator<SinkEventElement> it = sink.getEventList().iterator();
 
-        assertEquals( "anchor", it.next().getName() );
-        assertEquals( "anchor_", it.next().getName() );
+        assertEquals( it, "anchor", "anchor_" );
 
         SinkEventElement next = it.next();
         assertEquals( "section1", next.getName() );
@@ -318,9 +292,7 @@ public class XdocParserTest
         assertEquals( "sectionTitle1", next.getName() );
         assertNull( (SinkEventAttributeSet) next.getArgs()[0] );
 
-        assertEquals( "text", it.next().getName() );
-        assertEquals( "sectionTitle1_", it.next().getName() );
-        assertEquals( "section1_", it.next().getName() );
+        assertEquals( it, "text", "sectionTitle1_", "section1_" );
         assertFalse( it.hasNext() );
     }
 
@@ -337,28 +309,9 @@ public class XdocParserTest
 
         Iterator<SinkEventElement> it = sink.getEventList().iterator();
 
-        assertEquals( "section1", it.next().getName() );
-        assertEquals( "sectionTitle1", it.next().getName() );
-        assertEquals( "text", it.next().getName() );
-        assertEquals( "sectionTitle1_", it.next().getName() );
-        assertEquals( "section2", it.next().getName() );
-        assertEquals( "section3", it.next().getName() );
-        assertEquals( "section4", it.next().getName() );
-        assertEquals( "section5", it.next().getName() );
-        assertEquals( "sectionTitle5", it.next().getName() );
-        assertEquals( "text", it.next().getName() );
-        assertEquals( "sectionTitle5_", it.next().getName() );
-        assertEquals( "section5_", it.next().getName() );
-        assertEquals( "section4_", it.next().getName() );
-        assertEquals( "section3_", it.next().getName() );
-        assertEquals( "section2_", it.next().getName() );
-
-        assertEquals( "section2", it.next().getName() );
-        assertEquals( "sectionTitle2", it.next().getName() );
-        assertEquals( "text", it.next().getName() );
-        assertEquals( "sectionTitle2_", it.next().getName() );
-        assertEquals( "section2_", it.next().getName() );
-        assertEquals( "section1_", it.next().getName() );
+        assertEquals( it, "section1", "sectionTitle1", "text", "sectionTitle1_", "section2", "section3", "section4",
+                      "section5", "sectionTitle5", "text", "sectionTitle5_", "section5_", "section4_", "section3_",
+                      "section2_", "section2", "sectionTitle2", "text", "sectionTitle2_", "section2_", "section1_" );
         assertFalse( it.hasNext() );
     }
 
@@ -373,11 +326,7 @@ public class XdocParserTest
         parser.parse( text, sink );
 
         Iterator<SinkEventElement> it = sink.getEventList().iterator();
-        assertEquals( "verbatim", it.next().getName() );
-        assertEquals( "link", it.next().getName() );
-        assertEquals( "text", it.next().getName() );
-        assertEquals( "link_", it.next().getName() );
-        assertEquals( "verbatim_", it.next().getName() );
+        assertEquals( it, "verbatim", "link", "text", "link_", "verbatim_" );
         assertFalse( it.hasNext() );
 
         text = "<source><![CDATA[<a href=\"what.html\">what</a>]]></source>";
@@ -385,9 +334,7 @@ public class XdocParserTest
         parser.parse( text, sink );
 
         it = sink.getEventList().iterator();
-        assertEquals( "verbatim", it.next().getName() );
-        assertEquals( "text", it.next().getName() );
-        assertEquals( "verbatim_", it.next().getName() );
+        assertEquals( it, "verbatim", "text", "verbatim_" );
         assertFalse( it.hasNext() );
 
         text = "<source><![CDATA[<source>what</source>]]></source>";
@@ -395,9 +342,7 @@ public class XdocParserTest
         parser.parse( text, sink );
 
         it = sink.getEventList().iterator();
-        assertEquals( "verbatim", it.next().getName() );
-        assertEquals( "text", it.next().getName() );
-        assertEquals( "verbatim_", it.next().getName() );
+        assertEquals( it, "verbatim", "text", "verbatim_" );
         assertFalse( it.hasNext() );
     }
 
@@ -416,9 +361,7 @@ public class XdocParserTest
         parser.parse( text, sink );
 
         Iterator<SinkEventElement> it = sink.getEventList().iterator();
-        assertEquals( "verbatim", it.next().getName() );
-        assertEquals( "text", it.next().getName() );
-        assertEquals( "verbatim_", it.next().getName() );
+        assertEquals( it, "verbatim", "text", "verbatim_" );
         assertFalse( it.hasNext() );
 
     }
@@ -437,15 +380,7 @@ public class XdocParserTest
 
         Iterator<SinkEventElement> it = sink.getEventList().iterator();
 
-        assertEquals( "verbatim", it.next().getName() );
-        assertEquals( "link", it.next().getName() );
-        assertEquals( "text", it.next().getName() );
-        assertEquals( "link_", it.next().getName() );
-        assertEquals( "text", it.next().getName() );
-        assertEquals( "link", it.next().getName() );
-        assertEquals( "text", it.next().getName() );
-        assertEquals( "link_", it.next().getName() );
-        assertEquals( "verbatim_", it.next().getName() );
+        assertEquals( it, "verbatim", "link", "text", "link_", "text", "link", "text", "link_", "verbatim_" );
     }
 
     /**
@@ -465,29 +400,14 @@ public class XdocParserTest
 
         Iterator<SinkEventElement> it = sink.getEventList().iterator();
 
-        SinkEventElement anchorEvt = it.next();
+        assertEquals( it.next(), "anchor", "test-id" );
 
-        assertEquals( "anchor", anchorEvt.getName() );
-        assertEquals( "test-id", anchorEvt.getArgs()[0] );
-        assertEquals( "anchor_", it.next().getName() );
-        assertEquals( "section1", it.next().getName() );
-        assertEquals( "sectionTitle1", it.next().getName() );
-        assertEquals( "text", it.next().getName() );
-        assertEquals( "sectionTitle1_", it.next().getName() );
-        assertEquals( "text", it.next().getName() );
+        assertEquals( it, "anchor_", "section1", "sectionTitle1", "text", "sectionTitle1_", "text" );
 
-        anchorEvt = it.next();
-        assertEquals( "anchor", anchorEvt.getName() );
-        assertEquals( "sub-id", anchorEvt.getArgs()[0] );
-        assertEquals( "anchor_", it.next().getName() );
-        assertEquals( "section2", it.next().getName() );
-        assertEquals( "sectionTitle2", it.next().getName() );
-        assertEquals( "text", it.next().getName() );
-        assertEquals( "sectionTitle2_", it.next().getName() );
-        assertEquals( "text", it.next().getName() );
-        assertEquals( "section2_", it.next().getName() );
+        assertEquals( it.next(), "anchor", "sub-id" );
 
-        assertEquals( "section1_", it.next().getName() );
+        assertEquals( it, "anchor_", "section2", "sectionTitle2", "text", "sectionTitle2_", "text", "section2_",
+                      "section1_" );
         assertFalse( it.hasNext() );
     }
 
@@ -506,9 +426,7 @@ public class XdocParserTest
         parser.parse( text, sink );
 
         Iterator<SinkEventElement> it = sink.getEventList().iterator();
-        assertEquals( "unknown", it.next().getName() );
-        assertEquals( "unknown", it.next().getName() );
-        assertEquals( "unknown", it.next().getName() );
+        assertEquals( it, "unknown", "unknown", "unknown" );
         assertFalse( it.hasNext() );
     }
 
@@ -527,11 +445,7 @@ public class XdocParserTest
         parser.parse( text, sink );
 
         Iterator<SinkEventElement> it = sink.getEventList().iterator();
-        assertEquals( "unknown", it.next().getName() );
-        assertEquals( "unknown", it.next().getName() );
-        assertEquals( "unknown", it.next().getName() );
-        assertEquals( "unknown", it.next().getName() );
-        assertEquals( "unknown", it.next().getName() );
+        assertEquals( it, "unknown", "unknown", "unknown", "unknown", "unknown" );
         assertFalse( it.hasNext() );
     }
 
@@ -578,30 +492,19 @@ public class XdocParserTest
 
         Iterator<SinkEventElement> it = sink.getEventList().iterator();
 
-        assertEquals( "section1", it.next().getName() );
-        assertEquals( "sectionTitle1", it.next().getName() );
+        assertEquals( it, "section1", "sectionTitle1" );
 
-        SinkEventElement textEvt = it.next();
-        assertEquals( "text", textEvt.getName() );
-        assertEquals( "&\u0159\uD835\uDFED", textEvt.getArgs()[0] );
+        assertEquals( it.next(), "text", "&\u0159\uD835\uDFED" );
 
-        assertEquals( "sectionTitle1_", it.next().getName() );
-        assertEquals( "paragraph", it.next().getName() );
+        assertEquals( it, "sectionTitle1_", "paragraph" );
 
-        textEvt = it.next();
-        assertEquals( "text", textEvt.getName() );
-        assertEquals( "&", textEvt.getArgs()[0] );
+        assertEquals( it.next(), "text", "&" );
 
-        textEvt = it.next();
-        assertEquals( "text", textEvt.getName() );
-        assertEquals( "\u0159", textEvt.getArgs()[0] );
+        assertEquals( it.next(), "text", "\u0159" );
 
-        textEvt = it.next();
-        assertEquals( "text", textEvt.getName() );
-        assertEquals( "\uD835\uDFED", textEvt.getArgs()[0] );
+        assertEquals( it.next(), "text", "\uD835\uDFED" );
 
-        assertEquals( "paragraph_", it.next().getName() );
-        assertEquals( "section1_", it.next().getName() );
+        assertEquals( it, "paragraph_", "section1_" );
         assertFalse( it.hasNext() );
     }
     
