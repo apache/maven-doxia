@@ -42,7 +42,6 @@ under the License.
     <dependency>
       <groupId>org.apache.maven.doxia</groupId>
       <artifactId>doxia-module-apt</artifactId>
-      <version>${projectVersion}</version>
       <scope>test</scope>
     </dependency>
     <dependency>
