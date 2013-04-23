@@ -36,7 +36,6 @@ under the License.
     A Doxia module for FML source documents.
     FML format is only supported as source format.
   </description>
-  <url>http://maven.apache.org/doxia/doxia/doxia-modules/doxia-module-fml/</url>
 
   <dependencies>
     <dependency>

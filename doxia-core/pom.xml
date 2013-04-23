@@ -32,7 +32,6 @@ under the License.
   <artifactId>doxia-core</artifactId>
   <name>Doxia :: Core</name>
   <description>Doxia core classes and interfaces.</description>
-  <url>http://maven.apache.org/doxia/doxia/doxia-core/</url>
 
   <dependencies>
     <dependency>

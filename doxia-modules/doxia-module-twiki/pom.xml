@@ -36,7 +36,6 @@ under the License.
     A Doxia module for Twiki source documents.
     Twiki format is supported both as source and target formats.
   </description>
-  <url>http://maven.apache.org/doxia/doxia/doxia-modules/doxia-module-twiki/</url>
 
    <developers>
     <developer>

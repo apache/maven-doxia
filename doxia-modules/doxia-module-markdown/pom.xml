@@ -35,7 +35,6 @@ under the License.
   <description>
     A Doxia module for Markdown source documents.
   </description>
-  <url>http://maven.apache.org/doxia/doxia/doxia-modules/doxia-module-markdown/</url>
 
   <contributors>
     <contributor>

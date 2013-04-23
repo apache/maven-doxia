@@ -36,7 +36,6 @@ under the License.
     A Doxia module for Xdoc source documents.
     Xdoc format is supported both as source and target formats.
   </description>
-  <url>http://maven.apache.org/doxia/doxia/doxia-modules/doxia-module-xdoc/</url>
 
   <dependencies>
     <dependency>

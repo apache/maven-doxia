@@ -36,7 +36,6 @@ under the License.
     A Doxia module for iText source documents.
     iText format is only supported as target format.
   </description>
-  <url>http://maven.apache.org/doxia/doxia/doxia-modules/doxia-module-itext/</url>
 
   <developers>
     <developer>

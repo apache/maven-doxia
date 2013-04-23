@@ -36,7 +36,6 @@ under the License.
     A Doxia module for Rich Text Format source documents.
     RTF format is only supported as target format.
   </description>
-  <url>http://maven.apache.org/doxia/doxia/doxia-modules/doxia-module-rtf/</url>
 
   <dependencies>
     <!-- test -->

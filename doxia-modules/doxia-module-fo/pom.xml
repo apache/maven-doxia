@@ -36,7 +36,6 @@ under the License.
     A Doxia module for FO (Formatting Objects) source documents.
     FO format is only supported as target format.
   </description>
-  <url>http://maven.apache.org/doxia/doxia/doxia-modules/doxia-module-fo/</url>
 
   <developers>
     <developer>

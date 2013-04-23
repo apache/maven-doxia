@@ -32,7 +32,6 @@ under the License.
   <packaging>pom</packaging>
 
   <description>Doxia modules for several markup languages.</description>
-  <url>http://maven.apache.org/doxia/doxia/doxia-modules/</url>
 
   <modules>
     <module>doxia-module-apt</module>

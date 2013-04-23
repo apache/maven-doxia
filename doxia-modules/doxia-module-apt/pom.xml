@@ -36,7 +36,6 @@ under the License.
     A Doxia module for Almost Plain Text source documents.
     APT format is supported both as source and target formats.
   </description>
-  <url>http://maven.apache.org/doxia/doxia/doxia-modules/doxia-module-apt/</url>
 
 <!-- START SNIPPET: test -->
     <!-- test snippet -->
