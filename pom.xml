@@ -187,14 +187,14 @@ under the License.
   <distributionManagement>
     <site>
       <id>apache.website</id>
-      <url>scm:svn:https://svn.apache.org/repos/infra/websites/production/maven/content/${maven.site.path}</url>
+      <url>scm:svn:https://svn.apache.org/repos/infra/websites/production/maven-doxia/content/${maven.site.path}</url>
     </site>
   </distributionManagement>
 
   <properties>
     <mavenVersion>2.0.6</mavenVersion>
     <projectVersion>${project.version}</projectVersion>
-    <maven.site.path>doxia/doxia-archives/doxia-LATEST</maven.site.path>
+    <maven.site.path>doxia-archives/doxia-LATEST</maven.site.path>
   </properties>
 
   <dependencyManagement>
