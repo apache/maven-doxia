@@ -176,27 +176,25 @@ under the License.
     <developerConnection>scm:svn:https://svn.apache.org/repos/asf/maven/doxia/doxia/trunk</developerConnection>
     <url>http://svn.apache.org/viewcvs.cgi/maven/doxia/doxia/trunk</url>
   </scm>
-
   <issueManagement>
     <system>jira</system>
     <url>http://jira.codehaus.org/browse/DOXIA</url>
   </issueManagement>
-
   <ciManagement>
     <system>Jenkins</system>
     <url>https://builds.apache.org/job/doxia/</url>
   </ciManagement>
-
   <distributionManagement>
     <site>
       <id>apache.website</id>
-      <url>scp://people.apache.org/www/maven.apache.org/doxia/doxia</url>
+      <url>scm:svn:https://svn.apache.org/repos/infra/websites/production/maven/content/${maven.site.path}</url>
     </site>
   </distributionManagement>
 
   <properties>
     <mavenVersion>2.0.6</mavenVersion>
     <projectVersion>${project.version}</projectVersion>
+    <maven.site.path>doxia/doxia-archives/doxia-LATEST</maven.site.path>
   </properties>
 
   <dependencyManagement>
@@ -339,9 +337,12 @@ under the License.
           <artifactId>clirr-maven-plugin</artifactId>
         </plugin>
         <plugin>
-          <artifactId>maven-site-plugin</artifactId>
+          <groupId>org.apache.maven.plugins</groupId>
+          <artifactId>maven-scm-publish-plugin</artifactId>
           <configuration>
-            <stagingSiteURL>scp://people.apache.org/www/maven.apache.org/doxia/doxia-${project.version}</stagingSiteURL>
+            <content>${project.build.directory}/staging/${maven.site.path}</content>
+            <checkoutDirectory>${maven.site.cache}/${maven.site.path}</checkoutDirectory>
+            <tryUpdate>true</tryUpdate>
           </configuration>
         </plugin>
       </plugins>
