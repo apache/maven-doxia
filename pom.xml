@@ -340,7 +340,7 @@ under the License.
           <groupId>org.apache.maven.plugins</groupId>
           <artifactId>maven-scm-publish-plugin</artifactId>
           <configuration>
-            <content>${project.build.directory}/staging/${maven.site.path}</content>
+            <content>${project.build.directory}/staging</content>
             <checkoutDirectory>${maven.site.cache}/doxia/${maven.site.path}</checkoutDirectory>
             <tryUpdate>true</tryUpdate>
           </configuration>
