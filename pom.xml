@@ -193,7 +193,6 @@ under the License.
 
   <properties>
     <mavenVersion>2.0.6</mavenVersion>
-    <projectVersion>${project.version}</projectVersion>
     <maven.site.path>doxia-archives/doxia-LATEST</maven.site.path>
   </properties>
 
@@ -203,27 +202,27 @@ under the License.
       <dependency>
         <groupId>org.apache.maven.doxia</groupId>
         <artifactId>doxia-sink-api</artifactId>
-        <version>${projectVersion}</version>
+        <version>${project.version}</version>
       </dependency>
       <dependency>
         <groupId>org.apache.maven.doxia</groupId>
         <artifactId>doxia-logging-api</artifactId>
-        <version>${projectVersion}</version>
+        <version>${project.version}</version>
       </dependency>
       <dependency>
         <groupId>org.apache.maven.doxia</groupId>
         <artifactId>doxia-test-docs</artifactId>
-        <version>${projectVersion}</version>
+        <version>${project.version}</version>
       </dependency>
       <dependency>
         <groupId>org.apache.maven.doxia</groupId>
         <artifactId>doxia-core</artifactId>
-        <version>${projectVersion}</version>
+        <version>${project.version}</version>
       </dependency>
       <dependency>
         <groupId>org.apache.maven.doxia</groupId>
         <artifactId>doxia-core</artifactId>
-        <version>${projectVersion}</version>
+        <version>${project.version}</version>
         <type>test-jar</type>
       </dependency>
 
@@ -231,57 +230,57 @@ under the License.
       <dependency>
         <groupId>org.apache.maven.doxia</groupId>
         <artifactId>doxia-module-apt</artifactId>
-        <version>${projectVersion}</version>
+        <version>${project.version}</version>
       </dependency>
       <dependency>
         <groupId>org.apache.maven.doxia</groupId>
         <artifactId>doxia-module-confluence</artifactId>
-        <version>${projectVersion}</version>
+        <version>${project.version}</version>
       </dependency>
       <dependency>
         <groupId>org.apache.maven.doxia</groupId>
         <artifactId>doxia-module-docbook-simple</artifactId>
-        <version>${projectVersion}</version>
+        <version>${project.version}</version>
       </dependency>
       <dependency>
         <groupId>org.apache.maven.doxia</groupId>
         <artifactId>doxia-module-fml</artifactId>
-        <version>${projectVersion}</version>
+        <version>${project.version}</version>
       </dependency>
       <dependency>
         <groupId>org.apache.maven.doxia</groupId>
         <artifactId>doxia-module-fo</artifactId>
-        <version>${projectVersion}</version>
+        <version>${project.version}</version>
       </dependency>
       <dependency>
         <groupId>org.apache.maven.doxia</groupId>
         <artifactId>doxia-module-latex</artifactId>
-        <version>${projectVersion}</version>
+        <version>${project.version}</version>
       </dependency>
       <dependency>
         <groupId>org.apache.maven.doxia</groupId>
         <artifactId>doxia-module-itext</artifactId>
-        <version>${projectVersion}</version>
+        <version>${project.version}</version>
       </dependency>
       <dependency>
         <groupId>org.apache.maven.doxia</groupId>
         <artifactId>doxia-module-rtf</artifactId>
-        <version>${projectVersion}</version>
+        <version>${project.version}</version>
       </dependency>
       <dependency>
         <groupId>org.apache.maven.doxia</groupId>
         <artifactId>doxia-module-twiki</artifactId>
-        <version>${projectVersion}</version>
+        <version>${project.version}</version>
       </dependency>
       <dependency>
         <groupId>org.apache.maven.doxia</groupId>
         <artifactId>doxia-module-xdoc</artifactId>
-        <version>${projectVersion}</version>
+        <version>${project.version}</version>
       </dependency>
       <dependency>
         <groupId>org.apache.maven.doxia</groupId>
         <artifactId>doxia-module-xhtml</artifactId>
-        <version>${projectVersion}</version>
+        <version>${project.version}</version>
       </dependency>
 
       <!-- Plexus -->
