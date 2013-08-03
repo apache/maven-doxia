@@ -24,21 +24,22 @@ import java.util.ArrayList;
 import java.util.LinkedList;
 import java.util.List;
 
-import org.apache.maven.doxia.util.ByLineReaderSource;
 import org.apache.maven.doxia.module.confluence.ConfluenceMarkup;
+import org.apache.maven.doxia.module.confluence.parser.Block;
+import org.apache.maven.doxia.module.confluence.parser.BlockParser;
+import org.apache.maven.doxia.module.confluence.parser.BoldBlock;
 import org.apache.maven.doxia.module.confluence.parser.FigureBlockParser;
 import org.apache.maven.doxia.module.confluence.parser.ParagraphBlockParser;
 import org.apache.maven.doxia.module.confluence.parser.SectionBlockParser;
-import org.apache.maven.doxia.util.ByLineSource;
-import org.apache.maven.doxia.module.confluence.parser.BlockParser;
-import org.apache.maven.doxia.module.confluence.parser.Block;
-import org.apache.maven.doxia.module.confluence.parser.BoldBlock;
+import org.apache.maven.doxia.module.confluence.parser.list.ListBlockParser;
 import org.apache.maven.doxia.parser.ParseException;
+import org.apache.maven.doxia.util.ByLineReaderSource;
+import org.apache.maven.doxia.util.ByLineSource;
 import org.codehaus.plexus.util.StringUtils;
 
 /**
  * Parse tables
- *
+ * 
  * @author Juan F. Codagnone
  * @version $Id$
  */
@@ -46,17 +47,37 @@ public class TableBlockParser
     implements BlockParser
 {
     private static final String EMPTY_STRING = "";
+
     private static final String ANY_CHARACTER = ".*";
+
     private static final String ESCAPE_CHARACTER = "\\";
 
+    private BlockParser[] parsers;
+
+    /**
+     * Default constructor TableBlockParser.
+     */
+    public TableBlockParser()
+    {
+        BlockParser headingParser = new SectionBlockParser();
+        BlockParser figureParser = new FigureBlockParser();
+        BlockParser listParser = new ListBlockParser();
+
+        BlockParser[] subparsers = new BlockParser[] { headingParser, figureParser, listParser };
+        BlockParser paragraphParser = new ParagraphBlockParser( subparsers );
+
+        this.parsers = new BlockParser[] { headingParser, figureParser, listParser, paragraphParser };
+
+    }
+
     /** {@inheritDoc} */
-    public  boolean accept( String line, ByLineSource source )
+    public boolean accept( String line, ByLineSource source )
     {
         return line.startsWith( "|" );
     }
 
     /** {@inheritDoc} */
-    public  Block visit(  String line,  ByLineSource source )
+    public Block visit( String line, ByLineSource source )
         throws ParseException
     {
         if ( !accept( line, source ) )
@@ -74,22 +95,15 @@ public class TableBlockParser
 
             List<Block> cells = new ArrayList<Block>();
 
-            BlockParser headingParser = new SectionBlockParser();
-            BlockParser figureParser = new FigureBlockParser();
-            BlockParser[] subparsers = new BlockParser[] { headingParser, figureParser };
-            BlockParser paragraphParser = new ParagraphBlockParser( subparsers );
-
             if ( l.startsWith( "||" ) )
             {
                 String[] text = StringUtils.split( l, "||" );
-
 
                 for ( int i = 0; i < text.length; i++ )
                 {
                     List<Block> textBlocks = new ArrayList<Block>();
 
-                    textBlocks.add( ( ( ParagraphBlockParser) paragraphParser )
-                            .visit( text[i], new ByLineReaderSource( new StringReader( EMPTY_STRING ) ), false ) );
+                    textBlocks.add( parseLine( text[i], new ByLineReaderSource( new StringReader( EMPTY_STRING ) ) ) );
 
                     List<Block> blocks = new ArrayList<Block>();
 
@@ -104,29 +118,27 @@ public class TableBlockParser
                 String[] text = StringUtils.split( l, "|" );
                 List<String> texts = new LinkedList<String>();
 
-
                 while ( it < text.length )
                 {
-                    if ( text[it].matches( ANY_CHARACTER + ESCAPE_CHARACTER
-                                + ConfluenceMarkup.LINK_START_MARKUP + ANY_CHARACTER )
-                            && !text[it].matches( ANY_CHARACTER + ESCAPE_CHARACTER
-                                + ConfluenceMarkup.LINK_END_MARKUP + ANY_CHARACTER ) )
+                    if ( text[it].matches( ANY_CHARACTER + ESCAPE_CHARACTER + ConfluenceMarkup.LINK_START_MARKUP
+                        + ANY_CHARACTER )
+                        && !text[it].matches( ANY_CHARACTER + ESCAPE_CHARACTER + ConfluenceMarkup.LINK_END_MARKUP
+                            + ANY_CHARACTER ) )
                     {
                         texts.add( text[it] + ConfluenceMarkup.TABLE_CELL_MARKUP + text[it + 1] );
                         it += 2;
                         continue;
-                     }
+                    }
                     texts.add( text[it] );
                     it++;
                 }
 
-                Object[] pText = texts.toArray();
+                String[] pText = texts.toArray( new String[0] );
                 for ( int i = 0; i < pText.length; i++ )
                 {
                     List<Block> blocks = new ArrayList<Block>();
 
-                    blocks.add( ( (ParagraphBlockParser) paragraphParser ).visit( (String) pText[i],
-                            new ByLineReaderSource( new StringReader( EMPTY_STRING ) ), false ) );
+                    blocks.add( parseLine( pText[i], new ByLineReaderSource( new StringReader( EMPTY_STRING ) ) ) );
 
                     cells.add( new TableCellBlock( blocks ) );
                 }
@@ -140,5 +152,28 @@ public class TableBlockParser
         assert rows.size() >= 1;
 
         return new TableBlock( rows );
+    }
+
+    private Block parseLine( String text, ByLineSource source )
+        throws ParseException
+    {
+        if ( text.trim().length() > 0 )
+        {
+            for ( BlockParser parser : parsers )
+            {
+                if ( parser.accept( text, source ) )
+                {
+                    if ( parser instanceof ParagraphBlockParser )
+                    {
+                        return ( (ParagraphBlockParser) parser ).visit( text, source, false );
+                    }
+                    else
+                    {
+                        return parser.visit( text, source );
+                    }
+                }
+            }
+        }
+        return null;
     }
 }

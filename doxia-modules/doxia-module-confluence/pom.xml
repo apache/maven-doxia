@@ -59,4 +59,10 @@ under the License.
       <timezone>-5</timezone>
     </developer>
   </developers>
+  
+  <contributors>
+    <contributor>
+      <name>Mark Schenk</name>
+    </contributor>
+  </contributors>
 </project>

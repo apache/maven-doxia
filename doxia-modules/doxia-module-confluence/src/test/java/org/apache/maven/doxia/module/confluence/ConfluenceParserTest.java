@@ -315,6 +315,31 @@ public class ConfluenceParserTest
     }
 
     /** @throws Exception */
+    public void testTableWithImages()
+        throws Exception
+    {
+        // DOXIA-493
+        StringReader reader =
+            new StringReader( "Table containing image in cell:\n" + "\n" + "||Header 1||\n"
+                + "|!images/test/Image.png!|" );
+
+        SinkEventTestingSink sink = new SinkEventTestingSink();
+
+        parser.parse( reader, sink );
+
+        Iterator<SinkEventElement> it = sink.getEventList().iterator();
+
+        assertEquals( it, "head", "head_", "body", "paragraph" );
+        assertEquals( it.next(), "text", "Table containing image in cell:" );
+        assertEquals( it, "paragraph_", "table", "tableRows", "tableRow", "tableHeaderCell", "bold" );
+        assertEquals( it.next(), "text", "Header 1" );
+        assertEquals( it, "bold_", "tableHeaderCell_", "tableRow_", "tableRow", "tableCell", "figure" );
+        assertEquals( it.next(), "figureGraphics", "images/test/Image.png" );
+        assertEquals( it, "figure_", "tableCell_", "tableRow_", "tableRows_", "table_", "body_" );
+        assertFalse( it.hasNext() );
+    }
+
+    /** @throws Exception */
     public void testParagraphWithList()
         throws Exception
     {
