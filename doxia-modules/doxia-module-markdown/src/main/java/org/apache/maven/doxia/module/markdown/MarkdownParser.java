@@ -57,7 +57,8 @@ public class MarkdownParser
      * The {@link PegDownProcessor} used to convert Pegdown documents to HTML.
      */
     protected static final PegDownProcessor PEGDOWN_PROCESSOR =
-        new PegDownProcessor( Extensions.ALL & ~Extensions.HARDWRAPS );
+        new PegDownProcessor( Extensions.ALL & ~Extensions.HARDWRAPS, Long.MAX_VALUE );
+
 
     /**
      * {@inheritDoc}
