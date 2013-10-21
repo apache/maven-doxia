@@ -370,8 +370,7 @@ under the License.
             </goals>
             <configuration>
               <excludes>
-                <exclude>org/apache/maven/doxia/document/*</exclude>
-                <exclude>org/apache/maven/doxia/module/markdown/MarkdownToDoxiaHtmlSerializer</exclude>
+                <exclude>org/apache/maven/doxia/sink/render/*</exclude>
               </excludes>
             </configuration>
           </execution>
