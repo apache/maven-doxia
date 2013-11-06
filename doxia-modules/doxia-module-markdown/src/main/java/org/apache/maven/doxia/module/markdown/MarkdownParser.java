@@ -19,21 +19,23 @@ package org.apache.maven.doxia.module.markdown;
  * under the License.
  */
 
-import java.io.IOException;
-import java.io.Reader;
-import java.io.StringReader;
-
+import org.apache.commons.lang.StringEscapeUtils;
+import org.apache.commons.lang.StringUtils;
 import org.apache.maven.doxia.module.xhtml.XhtmlParser;
 import org.apache.maven.doxia.parser.ParseException;
 import org.apache.maven.doxia.parser.Parser;
 import org.apache.maven.doxia.sink.Sink;
-
 import org.codehaus.plexus.component.annotations.Component;
 import org.codehaus.plexus.util.IOUtil;
-
 import org.pegdown.Extensions;
 import org.pegdown.PegDownProcessor;
 import org.pegdown.ast.RootNode;
+
+import java.io.IOException;
+import java.io.Reader;
+import java.io.StringReader;
+import java.util.regex.Matcher;
+import java.util.regex.Pattern;
 
 /**
  * Implementation of {@link org.apache.maven.doxia.parser.Parser} for Markdown documents.
@@ -59,6 +61,17 @@ public class MarkdownParser
     protected static final PegDownProcessor PEGDOWN_PROCESSOR =
         new PegDownProcessor( Extensions.ALL & ~Extensions.HARDWRAPS, Long.MAX_VALUE );
 
+    /**
+     * Regex that identifies a multimarkdown-style metadata section at the start of the document
+     */
+    private static final String MULTI_MARKDOWN_METADATA_SECTION =
+        "^((?:[^\\s:][^:]*):(?:.*(?:\r?\n\\s[^\\s].*)*\r?\n))+(?:\\s*\r?\n)";
+
+    /**
+     * Regex that captures the key and value of a multimarkdown-style metadata entry.
+     */
+    private static final String MULTI_MARKDOWN_METADATA_ENTRY = "([^\\s:][^:]*):(.*(?:\r?\n\\s[^\\s].*)*)\r?\n";
+
 
     /**
      * {@inheritDoc}
@@ -69,9 +82,48 @@ public class MarkdownParser
     {
         try
         {
-            RootNode rootNode = PEGDOWN_PROCESSOR.parseMarkdown( IOUtil.toString( source ).toCharArray() );
-            String markdownAsHtml = new MarkdownToDoxiaHtmlSerializer().toHtml( rootNode );
-            super.parse( new StringReader( "<html><body>" + markdownAsHtml + "</body></html>" ), sink );
+            String text = IOUtil.toString( source );
+            StringBuilder html = new StringBuilder( text.length() * 2 );
+            html.append( "<html>" );
+            html.append( "<head>" );
+            Pattern metadataPattern = Pattern.compile( MULTI_MARKDOWN_METADATA_SECTION, Pattern.MULTILINE );
+            Matcher metadataMatcher = metadataPattern.matcher( text );
+            if ( metadataMatcher.find() )
+            {
+                metadataPattern = Pattern.compile( MULTI_MARKDOWN_METADATA_ENTRY, Pattern.MULTILINE );
+                for ( int i = 1; i <= metadataMatcher.groupCount(); i++ )
+                {
+                    String line = metadataMatcher.group( i );
+                    Matcher lineMatcher = metadataPattern.matcher( line );
+                    if ( lineMatcher.matches() )
+                    {
+                        String key = StringUtils.trimToEmpty( lineMatcher.group( 1 ) );
+                        String value = StringUtils.trimToEmpty( lineMatcher.group( 2 ) );
+                        if ( "title".equalsIgnoreCase( key ) )
+                        {
+                            html.append( "<title>" );
+                            html.append( StringEscapeUtils.escapeXml( value ) );
+                            html.append( "</title>" );
+                        }
+                        else
+                        {
+                            html.append( "<meta name=\'" );
+                            html.append( StringEscapeUtils.escapeXml( key ) );
+                            html.append( "\' content=\'" );
+                            html.append( StringEscapeUtils.escapeXml( value ) );
+                            html.append( "\' />" );
+                        }
+                    }
+                }
+                text = text.substring( metadataMatcher.end() );
+            }
+            html.append( "</head>" );
+            html.append( "<body>" );
+            RootNode rootNode = PEGDOWN_PROCESSOR.parseMarkdown( text.toCharArray() );
+            html.append( new MarkdownToDoxiaHtmlSerializer().toHtml( rootNode ) );
+            html.append( "</body>" );
+            html.append( "</html>" );
+            super.parse( new StringReader( html.toString() ), sink );
         }
         catch ( IOException e )
         {
