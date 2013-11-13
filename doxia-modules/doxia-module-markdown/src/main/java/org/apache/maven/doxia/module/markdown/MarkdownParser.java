@@ -29,7 +29,11 @@ import org.codehaus.plexus.component.annotations.Component;
 import org.codehaus.plexus.util.IOUtil;
 import org.pegdown.Extensions;
 import org.pegdown.PegDownProcessor;
+import org.pegdown.ast.HeaderNode;
+import org.pegdown.ast.Node;
 import org.pegdown.ast.RootNode;
+import org.pegdown.ast.SuperNode;
+import org.pegdown.ast.TextNode;
 
 import java.io.IOException;
 import java.io.Reader;
@@ -65,12 +69,21 @@ public class MarkdownParser
      * Regex that identifies a multimarkdown-style metadata section at the start of the document
      */
     private static final String MULTI_MARKDOWN_METADATA_SECTION =
-        "^((?:[^\\s:][^:]*):(?:.*(?:\r?\n\\s[^\\s].*)*\r?\n))+(?:\\s*\r?\n)";
+        "^(((?:[^\\s:][^:]*):(?:.*(?:\r?\n\\s[^\\s].*)*\r?\n))+)(?:\\s*\r?\n)";
 
     /**
      * Regex that captures the key and value of a multimarkdown-style metadata entry.
      */
     private static final String MULTI_MARKDOWN_METADATA_ENTRY = "([^\\s:][^:]*):(.*(?:\r?\n\\s[^\\s].*)*)\r?\n";
+
+    /**
+     * In order to ensure that we have minimal risk of false positives when slurping metadata sections, the
+     * first key in the metadata section must be one of these standard keys or else the entire metadata section is
+     * ignored.
+     */
+    private static final String[] STANDARD_METADATA_KEYS =
+        { "title", "author", "date", "address", "affiliation", "copyright", "email", "keywords", "language", "phone",
+            "subtitle" };
 
 
     /**
@@ -88,38 +101,80 @@ public class MarkdownParser
             html.append( "<head>" );
             Pattern metadataPattern = Pattern.compile( MULTI_MARKDOWN_METADATA_SECTION, Pattern.MULTILINE );
             Matcher metadataMatcher = metadataPattern.matcher( text );
+            boolean haveTitle = false;
             if ( metadataMatcher.find() )
             {
                 metadataPattern = Pattern.compile( MULTI_MARKDOWN_METADATA_ENTRY, Pattern.MULTILINE );
-                for ( int i = 1; i <= metadataMatcher.groupCount(); i++ )
+                Matcher lineMatcher = metadataPattern.matcher( metadataMatcher.group( 1 ) );
+                boolean first = true;
+                while ( lineMatcher.find() )
                 {
-                    String line = metadataMatcher.group( i );
-                    Matcher lineMatcher = metadataPattern.matcher( line );
-                    if ( lineMatcher.matches() )
+                    String key = StringUtils.trimToEmpty( lineMatcher.group( 1 ) );
+                    if ( first )
                     {
-                        String key = StringUtils.trimToEmpty( lineMatcher.group( 1 ) );
-                        String value = StringUtils.trimToEmpty( lineMatcher.group( 2 ) );
-                        if ( "title".equalsIgnoreCase( key ) )
+                        boolean found = false;
+                        for ( String k : STANDARD_METADATA_KEYS )
                         {
-                            html.append( "<title>" );
-                            html.append( StringEscapeUtils.escapeXml( value ) );
-                            html.append( "</title>" );
+                            if ( k.equalsIgnoreCase( key ) )
+                            {
+                                found = true;
+                                break;
+                            }
                         }
-                        else
+                        if ( !found )
                         {
-                            html.append( "<meta name=\'" );
-                            html.append( StringEscapeUtils.escapeXml( key ) );
-                            html.append( "\' content=\'" );
-                            html.append( StringEscapeUtils.escapeXml( value ) );
-                            html.append( "\' />" );
+                            break;
                         }
+                        first = false;
+                    }
+                    String value = StringUtils.trimToEmpty( lineMatcher.group( 2 ) );
+                    if ( "title".equalsIgnoreCase( key ) )
+                    {
+                        haveTitle = true;
+                        html.append( "<title>" );
+                        html.append( StringEscapeUtils.escapeXml( value ) );
+                        html.append( "</title>" );
+                    }
+                    else if ( "author".equalsIgnoreCase( key ) )
+                    {
+                        html.append( "<meta name=\'author\' content=\'" );
+                        html.append( StringEscapeUtils.escapeXml( value ) );
+                        html.append( "\' />" );
+                    }
+                    else if ( "date".equalsIgnoreCase( key ) )
+                    {
+                        html.append( "<meta name=\'date\' content=\'" );
+                        html.append( StringEscapeUtils.escapeXml( value ) );
+                        html.append( "\' />" );
+                    }
+                    else
+                    {
+                        html.append( "<meta name=\'" );
+                        html.append( StringEscapeUtils.escapeXml( key ) );
+                        html.append( "\' content=\'" );
+                        html.append( StringEscapeUtils.escapeXml( value ) );
+                        html.append( "\' />" );
                     }
                 }
-                text = text.substring( metadataMatcher.end() );
+                if ( !first )
+                {
+                    text = text.substring( metadataMatcher.end() );
+                }
+            }
+            RootNode rootNode = PEGDOWN_PROCESSOR.parseMarkdown( text.toCharArray() );
+            if ( !haveTitle && rootNode.getChildren().size() > 0 )
+            {
+                // use the first node only if it is a heading
+                final Node firstNode = rootNode.getChildren().get( 0 );
+                if ( firstNode instanceof HeaderNode )
+                {
+                    html.append( "<title>" );
+                    html.append( StringEscapeUtils.escapeXml( nodeText( firstNode ) ) );
+                    html.append( "</title>" );
+                }
             }
             html.append( "</head>" );
             html.append( "<body>" );
-            RootNode rootNode = PEGDOWN_PROCESSOR.parseMarkdown( text.toCharArray() );
             html.append( new MarkdownToDoxiaHtmlSerializer().toHtml( rootNode ) );
             html.append( "</body>" );
             html.append( "</html>" );
@@ -130,4 +185,29 @@ public class MarkdownParser
             throw new ParseException( "Failed reading Markdown source document", e );
         }
     }
+
+    public static String nodeText( Node node )
+    {
+        StringBuilder builder = new StringBuilder();
+        if ( node instanceof TextNode )
+        {
+            builder.append( TextNode.class.cast( node ).getText() );
+        }
+        else
+        {
+            for ( Node n : node.getChildren() )
+            {
+                if ( n instanceof TextNode )
+                {
+                    builder.append( TextNode.class.cast( n ).getText() );
+                }
+                else if ( n instanceof SuperNode )
+                {
+                    builder.append( nodeText( n ) );
+                }
+            }
+        }
+        return builder.toString();
+    }
+
 }

@@ -19,17 +19,15 @@ package org.apache.maven.doxia.module.markdown;
  * under the License.
  */
 
-import java.io.Reader;
-
-import java.util.Iterator;
-
 import org.apache.maven.doxia.parser.AbstractParserTest;
 import org.apache.maven.doxia.parser.ParseException;
 import org.apache.maven.doxia.parser.Parser;
 import org.apache.maven.doxia.sink.SinkEventElement;
 import org.apache.maven.doxia.sink.SinkEventTestingSink;
-
 import org.codehaus.plexus.util.IOUtil;
+
+import java.io.Reader;
+import java.util.Iterator;
 
 /**
  * Tests for {@link MarkdownParser}.
@@ -85,7 +83,7 @@ public class MarkdownParserTest
     {
         Iterator<SinkEventElement> it = parseFileToEventTestingSink( "paragraph" ).getEventList().iterator();
 
-        assertEquals( it, "body", "paragraph", "text", "paragraph_", "body_" );
+        assertEquals( it, "head", "head_", "body", "paragraph", "text", "paragraph_", "body_" );
 
         assertFalse( it.hasNext() );
     }
@@ -100,7 +98,7 @@ public class MarkdownParserTest
     {
         Iterator<SinkEventElement> it = parseFileToEventTestingSink( "bold" ).getEventList().iterator();
 
-        assertEquals( it, "body", "paragraph", "bold", "text", "bold_", "paragraph_", "body_" );
+        assertEquals( it, "head", "head_", "body", "paragraph", "bold", "text", "bold_", "paragraph_", "body_" );
 
         assertFalse( it.hasNext() );
     }
@@ -115,7 +113,7 @@ public class MarkdownParserTest
     {
         Iterator<SinkEventElement> it = parseFileToEventTestingSink( "italic" ).getEventList().iterator();
 
-        assertEquals( it, "body", "paragraph", "italic", "text", "italic_", "paragraph_", "body_" );
+        assertEquals( it, "head", "head_", "body", "paragraph", "italic", "text", "italic_", "paragraph_", "body_" );
 
         assertFalse( it.hasNext() );
     }
@@ -130,7 +128,7 @@ public class MarkdownParserTest
     {
         Iterator<SinkEventElement> it = parseFileToEventTestingSink( "code" ).getEventList().iterator();
 
-        assertEquals( it, "body", "paragraph", "text", "paragraph_", "text", "verbatim", "text", "verbatim_", "body_" );
+        assertEquals( it, "head", "head_", "body", "paragraph", "text", "paragraph_", "text", "verbatim", "text", "verbatim_", "body_" );
 
         assertFalse( it.hasNext() );
     }
@@ -145,7 +143,7 @@ public class MarkdownParserTest
     {
         Iterator<SinkEventElement> it = parseFileToEventTestingSink( "image" ).getEventList().iterator();
 
-        assertEquals( it, "body", "paragraph", "text", "figureGraphics", "text", "paragraph_", "body_" );
+        assertEquals( it, "head", "head_", "body", "paragraph", "text", "figureGraphics", "text", "paragraph_", "body_" );
 
         assertFalse( it.hasNext() );
     }
@@ -160,7 +158,7 @@ public class MarkdownParserTest
     {
         Iterator<SinkEventElement> it = parseFileToEventTestingSink( "link" ).getEventList().iterator();
 
-        assertEquals( it, "body", "paragraph", "text", "link", "text", "link_", "text", "paragraph_", "body_" );
+        assertEquals( it, "head", "head_", "body", "paragraph", "text", "link", "text", "link_", "text", "paragraph_", "body_" );
 
         assertFalse( it.hasNext() );
     }
@@ -175,7 +173,7 @@ public class MarkdownParserTest
     {
         Iterator<SinkEventElement> it = parseFileToEventTestingSink( "list" ).getEventList().iterator();
 
-        assertEquals( it, "body", "list", "text", "listItem", "text", "listItem_", "text", "listItem", "text",
+        assertEquals( it, "head", "head_", "body", "list", "text", "listItem", "text", "listItem_", "text", "listItem", "text",
                       "listItem_", "text", "list_", "body_" );
 
         assertFalse( it.hasNext() );
@@ -191,8 +189,40 @@ public class MarkdownParserTest
     {
         Iterator<SinkEventElement> it = parseFileToEventTestingSink( "numbered-list" ).getEventList().iterator();
 
-        assertEquals( it, "body", "numberedList", "text", "numberedListItem", "text", "numberedListItem_", "text",
+        assertEquals( it, "head", "head_", "body", "numberedList", "text", "numberedListItem", "text", "numberedListItem_", "text",
                       "numberedListItem", "text", "numberedListItem_", "text", "numberedList_", "body_" );
+
+        assertFalse( it.hasNext() );
+    }
+
+    /**
+     * Assert the metadata is passed through when parsing "metadata.md".
+     *
+     * @throws Exception if the event list is not correct when parsing the document.
+     */
+    public void testMetadataSinkEvent()
+        throws Exception
+    {
+        Iterator<SinkEventElement> it = parseFileToEventTestingSink( "metadata" ).getEventList().iterator();
+
+        assertEquals( it, "head", "title", "text", "title_", "author", "text", "author_", "date", "text", "date_",
+                      "head_", "body", "paragraph", "text", "paragraph_", "body_" );
+
+        assertFalse( it.hasNext() );
+    }
+
+    /**
+     * Assert the first header is passed as title event when parsing "first-heading.md".
+     *
+     * @throws Exception if the event list is not correct when parsing the document.
+     */
+    public void testFirstHeadingSinkEvent()
+        throws Exception
+    {
+        Iterator<SinkEventElement> it = parseFileToEventTestingSink( "first-heading" ).getEventList().iterator();
+
+        assertEquals( it, "head", "title", "text", "title_", "head_", "body", "section1", "sectionTitle1", "text",
+                      "sectionTitle1_", "paragraph", "text", "paragraph_", "section1_", "body_" );
 
         assertFalse( it.hasNext() );
     }
