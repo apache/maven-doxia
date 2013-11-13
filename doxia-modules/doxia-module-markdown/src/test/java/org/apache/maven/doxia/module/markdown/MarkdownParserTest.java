@@ -221,7 +221,7 @@ public class MarkdownParserTest
     {
         Iterator<SinkEventElement> it = parseFileToEventTestingSink( "first-heading" ).getEventList().iterator();
 
-        // NOTE: H1 is rendered as "unknown" and H2 is "section1"
+        // NOTE: H1 is rendered as "unknown" and H2 is "section1" (see DOXIA-203)
         assertEquals( it, "head", "title", "text", "title_", "head_", "body", "section1", "sectionTitle1", "text",
                       "sectionTitle1_", "paragraph", "text", "paragraph_", "section1_", "body_" );
 
@@ -238,9 +238,9 @@ public class MarkdownParserTest
     {
         Iterator<SinkEventElement> it = parseFileToEventTestingSink( "comment-before-heading" ).getEventList().iterator();
 
-        // NOTE: H1 is rendered as "unknown" and H2 is "section1"
+        // NOTE: H1 is rendered as "unknown" and H2 is "section1" (see DOXIA-203)
         assertEquals( it, "head", "title", "text", "title_", "head_", "body", "comment", "unknown", "text",
-                      "unknown", "paragraph", "text", "paragraph_", "body_" );
+                      "unknown", "paragraph", "text", "link", "text", "link_", "text", "paragraph_", "body_" );
 
         assertFalse( it.hasNext() );
     }
