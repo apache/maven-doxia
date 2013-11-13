@@ -30,6 +30,7 @@ import org.codehaus.plexus.util.IOUtil;
 import org.pegdown.Extensions;
 import org.pegdown.PegDownProcessor;
 import org.pegdown.ast.HeaderNode;
+import org.pegdown.ast.HtmlBlockNode;
 import org.pegdown.ast.Node;
 import org.pegdown.ast.RootNode;
 import org.pegdown.ast.SuperNode;
@@ -164,8 +165,14 @@ public class MarkdownParser
             RootNode rootNode = PEGDOWN_PROCESSOR.parseMarkdown( text.toCharArray() );
             if ( !haveTitle && rootNode.getChildren().size() > 0 )
             {
-                // use the first node only if it is a heading
-                final Node firstNode = rootNode.getChildren().get( 0 );
+                // use the first (non-comment) node only if it is a heading
+                int i = 0;
+                Node firstNode = null;
+                while ( i < rootNode.getChildren().size() && isHtmlComment(
+                    ( firstNode = rootNode.getChildren().get( i ) ) ) )
+                {
+                    i++;
+                }
                 if ( firstNode instanceof HeaderNode )
                 {
                     html.append( "<title>" );
@@ -184,6 +191,14 @@ public class MarkdownParser
         {
             throw new ParseException( "Failed reading Markdown source document", e );
         }
+    }
+
+    public static boolean isHtmlComment( Node node ) {
+        if (node instanceof HtmlBlockNode) {
+            HtmlBlockNode blockNode = (HtmlBlockNode) node;
+            return blockNode.getText().startsWith( "<!--" );
+        }
+        return false;
     }
 
     public static String nodeText( Node node )

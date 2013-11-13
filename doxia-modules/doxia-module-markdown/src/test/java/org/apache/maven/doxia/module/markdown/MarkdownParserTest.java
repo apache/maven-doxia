@@ -221,8 +221,26 @@ public class MarkdownParserTest
     {
         Iterator<SinkEventElement> it = parseFileToEventTestingSink( "first-heading" ).getEventList().iterator();
 
+        // NOTE: H1 is rendered as "unknown" and H2 is "section1"
         assertEquals( it, "head", "title", "text", "title_", "head_", "body", "section1", "sectionTitle1", "text",
                       "sectionTitle1_", "paragraph", "text", "paragraph_", "section1_", "body_" );
+
+        assertFalse( it.hasNext() );
+    }
+
+    /**
+     * Assert the first header is passed as title event when parsing "comment-before-heading.md".
+     *
+     * @throws Exception if the event list is not correct when parsing the document.
+     */
+    public void testCommentBeforeHeadingSinkEvent()
+        throws Exception
+    {
+        Iterator<SinkEventElement> it = parseFileToEventTestingSink( "comment-before-heading" ).getEventList().iterator();
+
+        // NOTE: H1 is rendered as "unknown" and H2 is "section1"
+        assertEquals( it, "head", "title", "text", "title_", "head_", "body", "comment", "unknown", "text",
+                      "unknown", "paragraph", "text", "paragraph_", "body_" );
 
         assertFalse( it.hasNext() );
     }
