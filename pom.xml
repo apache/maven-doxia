@@ -338,6 +338,14 @@ under the License.
         </plugin>
         <plugin>
           <groupId>org.apache.maven.plugins</groupId>
+          <artifactId>maven-site-plugin</artifactId>
+          <version>3.3</version>
+          <configuration>
+            <topSiteURL>scm:svn:https://svn.apache.org/repos/infra/websites/production/maven-doxia/content/doxia-archives/doxia-LATEST</topSiteURL>
+          </configuration>
+        </plugin>
+        <plugin>
+          <groupId>org.apache.maven.plugins</groupId>
           <artifactId>maven-scm-publish-plugin</artifactId>
           <configuration>
             <content>${project.build.directory}/staging</content>
