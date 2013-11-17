@@ -459,6 +459,28 @@ under the License.
           <plugin>
             <groupId>org.apache.maven.plugins</groupId>
             <artifactId>maven-javadoc-plugin</artifactId>
+            <version>2.9.1</version>
+            <configuration>
+              <linksource>true</linksource>
+              <groups>
+                <group>
+                  <title>Doxia Core</title>
+                  <packages>org.apache.maven.doxia*:org.apache.maven.doxia.module.site*</packages>
+                </group>
+                <group>
+                  <title>Doxia Sink API</title>
+                  <packages>org.apache.maven.doxia.sink:org.codehaus.doxia.sink</packages>
+                </group>
+                <group>
+                  <title>Doxia Logging API</title>
+                  <packages>org.apache.maven.doxia.logging</packages>
+                </group>
+                <group>
+                  <title>Doxia Modules</title>
+                  <packages>org.apache.maven.doxia.module*</packages>
+                </group>
+              </groups>
+            </configuration>
             <reportSets>
               <reportSet>
                 <id>non-aggregate</id>
