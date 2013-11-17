@@ -134,7 +134,7 @@ public class ChildBlocksBuilder
                 case '+':
                     if ( insideUnderline )
                     {
-                    	insideUnderline = false;
+                        insideUnderline = false;
                         blocks.add( new UnderlineBlock( text.toString() ) );
                         text = new StringBuilder();
                     }
@@ -151,7 +151,7 @@ public class ChildBlocksBuilder
                 case '~':
                     if ( insideSub )
                     {
-                    	insideSub = false;
+                        insideSub = false;
                         blocks.add( new SubBlock( text.toString() ) );
                         text = new StringBuilder();
                     }
@@ -168,7 +168,7 @@ public class ChildBlocksBuilder
                 case '^':
                     if ( insideSup )
                     {
-                    	insideSup = false;
+                        insideSup = false;
                         blocks.add( new SupBlock( text.toString() ) );
                         text = new StringBuilder();
                     }

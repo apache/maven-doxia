@@ -497,7 +497,7 @@ public class FmlParser
                 try
                 {
                     StringWriter sw = new StringWriter();
-                    XhtmlBaseSink sink = new XhtmlBaseSink(sw);
+                    XhtmlBaseSink sink = new XhtmlBaseSink( sw );
                     executeMacro( macroName, request, sink );
                     sink.close();
                     buffer.append( sw.toString() );
