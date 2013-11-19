@@ -42,14 +42,19 @@ public class SnippetReader
     /** The source. */
     private URL source;
 
+    /** The encoding of the source. */
+    private String encoding;
+
     /**
      * Constructor.
      *
-     * @param src The source.
+     * @param src The source
+     * @param encoding The file encoding
      */
-    public SnippetReader( URL src )
+    public SnippetReader( URL src, String encoding )
     {
         this.source = src;
+        this.encoding = encoding;
     }
 
     /**
@@ -119,8 +124,12 @@ public class SnippetReader
     private List<String> readLines( String snippetId )
         throws IOException
     {
-        // TODO: DOXIA-386, use InputStreamReader(InputStream in, Charset cs)
-        BufferedReader reader = new BufferedReader( new InputStreamReader( source.openStream() ) );
+        BufferedReader reader;
+        if ( encoding == null || "".equals(encoding) )
+            reader = new BufferedReader( new InputStreamReader( source.openStream() ) );
+        else
+            reader = new BufferedReader( new InputStreamReader( source.openStream(), encoding ) );
+
         List<String> lines = new ArrayList<String>();
         try
         {

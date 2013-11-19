@@ -106,6 +106,8 @@ public class SnippetMacro
             verbatim = Boolean.valueOf( verbatimParam ).booleanValue();
         }
 
+        String encoding = (String) request.getParameter( "encoding" );
+
         URL url;
 
         if ( !StringUtils.isEmpty( urlParam ) )
@@ -146,7 +148,7 @@ public class SnippetMacro
 
         try
         {
-            snippet = getSnippet( url, id );
+            snippet = getSnippet( url, encoding, id );
         }
         catch ( IOException e )
         {
@@ -171,11 +173,12 @@ public class SnippetMacro
      * Return a snippet of the given url.
      *
      * @param url The URL to parse.
+     * @param encoding The encoding of the URL to parse.
      * @param id  The id of the snippet.
      * @return The snippet.
      * @throws IOException if something goes wrong.
      */
-    private StringBuffer getSnippet( URL url, String id )
+    private StringBuffer getSnippet( URL url, String encoding, String id )
         throws IOException
     {
         StringBuffer result;
@@ -195,7 +198,7 @@ public class SnippetMacro
         {
             try
             {
-                result = new SnippetReader( url ).readSnippet( id );
+                result = new SnippetReader( url, encoding ).readSnippet( id );
                 cacheSnippet( url, id, result.toString() );
                 if ( debug )
                 {
