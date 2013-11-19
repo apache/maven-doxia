@@ -125,10 +125,14 @@ public class SnippetReader
         throws IOException
     {
         BufferedReader reader;
-        if ( encoding == null || "".equals(encoding) )
+        if ( encoding == null || "".equals( encoding ) )
+        {
             reader = new BufferedReader( new InputStreamReader( source.openStream() ) );
+        }
         else
+        {
             reader = new BufferedReader( new InputStreamReader( source.openStream(), encoding ) );
+        }
 
         List<String> lines = new ArrayList<String>();
         try
