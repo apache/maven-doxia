@@ -11,4 +11,8 @@ another snippet to start: secondId
 second snippet
 another snippet to end:   secondId
 
+Unicode snippet start thirdId
+Этот сниппет в формате Unicode (UTF-8)
+Unicode snippet end thirdId
+
 conclusion

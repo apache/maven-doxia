@@ -58,6 +58,16 @@ public class SnippetReader
     }
 
     /**
+     * Constructor.
+     *
+     * @param src The source
+     */
+    public SnippetReader( URL src )
+    {
+        this( src, null ) ;
+    }
+
+    /**
      * Reads the snippet with given id.
      *
      * @param snippetId The id of the snippet.

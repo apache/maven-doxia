@@ -49,6 +49,7 @@ public class SnippetMacroTest
         File basedir = new File( getBasedir() );
         Map<String, Object> macroParameters = new HashMap<String, Object>();
         macroParameters.put( "file", "src/test/resources/macro/snippet/testSnippet.txt" );
+        macroParameters.put( "encoding", "UTF-8" );
 
         SinkEventTestingSink sink = new SinkEventTestingSink();
 
@@ -111,6 +112,23 @@ public class SnippetMacroTest
         assertFalse( snippet.contains( "interlude" ) );
         assertTrue( snippet.contains( "second snippet" ) );
         assertFalse( snippet.contains( "conclusion" ) );
+
+        // again
+
+        macroParameters.put( "id", "thirdId" );
+        macroParameters.put( "verbatim", "false" );
+        sink.reset();
+        request = new MacroRequest( macroParameters, basedir );
+        macro.execute( sink, request );
+
+        it = sink.getEventList().iterator();
+        event = it.next();
+        assertEquals( "rawText", event.getName() );
+        snippet = (String) event.getArgs()[0];
+        assertFalse( it.hasNext() );
+
+        // no need to verify the absence of the first and second snippets if tests above were successful
+        assertTrue( snippet.contains( "Этот сниппет в формате Unicode (UTF-8)" ) );
     }
 
     public void testIgnoreDownloadError()
