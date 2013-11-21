@@ -206,7 +206,9 @@ public class MarkdownParserTest
         Iterator<SinkEventElement> it = parseFileToEventTestingSink( "metadata" ).getEventList().iterator();
 
         assertEquals( it, "head", "title", "text", "title_", "author", "text", "author_", "date", "text", "date_",
-                      "head_", "body", "paragraph", "text", "paragraph_", "body_" );
+                      "head_", "body", "unknown", "text", "unknown", "paragraph", "text", "paragraph_", "section1",
+                      "sectionTitle1", "text", "sectionTitle1_", "paragraph", "text", "paragraph_", "section1_",
+                      "body_" );
 
         assertFalse( it.hasNext() );
     }

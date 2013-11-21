@@ -70,12 +70,13 @@ public class MarkdownParser
      * Regex that identifies a multimarkdown-style metadata section at the start of the document
      */
     private static final String MULTI_MARKDOWN_METADATA_SECTION =
-        "^(((?:[^\\s:][^:]*):(?:.*(?:\r?\n\\s[^\\s].*)*\r?\n))+)(?:\\s*\r?\n)";
+        "^(((?:[^\\s:][^:]*):(?:.*(?:\r?\n\\p{Blank}+[^\\s].*)*\r?\n))+)(?:\\s*\r?\n)";
 
     /**
      * Regex that captures the key and value of a multimarkdown-style metadata entry.
      */
-    private static final String MULTI_MARKDOWN_METADATA_ENTRY = "([^\\s:][^:]*):(.*(?:\r?\n\\s[^\\s].*)*)\r?\n";
+    private static final String MULTI_MARKDOWN_METADATA_ENTRY =
+        "([^\\s:][^:]*):(.*(?:\r?\n\\p{Blank}+[^\\s].*)*)\r?\n";
 
     /**
      * In order to ensure that we have minimal risk of false positives when slurping metadata sections, the
