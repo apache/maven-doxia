@@ -1,4 +1,4 @@
-package org.apache.maven.doxia.module.site.manager;
+package org.apache.maven.doxia.parser.module;
 
 /*
  * Licensed to the Apache Software Foundation (ASF) under one
@@ -20,47 +20,41 @@ package org.apache.maven.doxia.module.site.manager;
  */
 
 /**
- * Encapsulate a Doxia exception that indicates that a SiteModule
+ * Encapsulate a Doxia exception that indicates that a ParserModule
  * does not exist or could not be found.
  *
- * @author <a href="mailto:jason@maven.org">Jason van Zyl</a>
- * @version $Id$
- * @since 1.0
- * @deprecated
+ * @since 1.6
  */
-public class SiteModuleNotFoundException
+public class ParserModuleNotFoundException
     extends Exception
 {
-    /** serialVersionUID */
-    static final long serialVersionUID = 295967936746221567L;
-
     /**
-     * Construct a new SiteModuleNotFoundException with the
+     * Construct a new ParserModuleNotFoundException with the
      * specified detail message.
      *
      * @param message The detailed message.
      * This can later be retrieved by the Throwable.getMessage() method.
      */
-    public SiteModuleNotFoundException( String message )
+    public ParserModuleNotFoundException( String message )
     {
         super( message );
     }
 
     /**
-     * Constructs a new SiteModuleNotFoundException with the specified cause.
+     * Constructs a new ParserModuleNotFoundException with the specified cause.
      * The error message is (cause == null ? null : cause.toString() ).
      *
      * @param cause the cause. This can be retrieved later by the
      * Throwable.getCause() method. (A null value is permitted, and indicates
      * that the cause is nonexistent or unknown.)
      */
-    public SiteModuleNotFoundException( Throwable cause )
+    public ParserModuleNotFoundException( Throwable cause )
     {
         super( cause );
     }
 
     /**
-     * Construct a new SiteModuleNotFoundException with the specified
+     * Construct a new ParserModuleNotFoundException with the specified
      * detail message and cause.
      *
      * @param message The detailed message.
@@ -69,7 +63,7 @@ public class SiteModuleNotFoundException
      * Throwable.getCause() method. (A null value is permitted, and indicates
      * that the cause is nonexistent or unknown.)
      */
-    public SiteModuleNotFoundException( String message, Throwable cause )
+    public ParserModuleNotFoundException( String message, Throwable cause )
     {
         super( message, cause );
     }

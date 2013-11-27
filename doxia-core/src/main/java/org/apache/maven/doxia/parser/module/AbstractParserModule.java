@@ -1,4 +1,4 @@
-package org.apache.maven.doxia.module.site;
+package org.apache.maven.doxia.parser.module;
 
 /*
  * Licensed to the Apache Software Foundation (ASF) under one
@@ -20,15 +20,12 @@ package org.apache.maven.doxia.module.site;
  */
 
 /**
- * An abstract base class that implements the SiteModule interface.
+ * An abstract base class that implements the ParserModule interface.
  *
- * @author <a href="mailto:jason@maven.org">Jason van Zyl</a>
- * @version $Id$
- * @since 1.0
- * @deprecated replaced by AbstractParserModule
+ * @since 1.6
  */
-public abstract class AbstractSiteModule
-    implements SiteModule
+public abstract class AbstractParserModule
+    implements ParserModule
 {
     /** The source directory. */
     private final String sourceDirectory;
@@ -42,9 +39,25 @@ public abstract class AbstractSiteModule
     /**
      * Constructor with null.
      */
-    public AbstractSiteModule()
+    public AbstractParserModule()
     {
         this( null, null, null );
+    }
+
+    /**
+     * Constructor with same value for everything: source directory and file extension equal parserId.
+     */
+    public AbstractParserModule( String parserId )
+    {
+        this( parserId, parserId, parserId );
+    }
+
+    /**
+     * Constructor with same value for parser id and source directory.
+     */
+    public AbstractParserModule( String parserId, String extension )
+    {
+        this( parserId, extension, parserId );
     }
 
     /**
@@ -53,7 +66,7 @@ public abstract class AbstractSiteModule
      * @param parserId not null
      * @since 1.1.1
      */
-    protected AbstractSiteModule( String sourceDirectory, String extension, String parserId )
+    protected AbstractParserModule( String sourceDirectory, String extension, String parserId )
     {
         super();
         this.sourceDirectory = sourceDirectory;

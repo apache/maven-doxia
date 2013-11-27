@@ -1,4 +1,4 @@
-package org.apache.maven.doxia.module.site;
+package org.apache.maven.doxia.parser.module;
 
 /*
  * Licensed to the Apache Software Foundation (ASF) under one
@@ -19,22 +19,14 @@ package org.apache.maven.doxia.module.site;
  * under the License.
  */
 
-import org.apache.maven.doxia.parser.module.ParserModule;
-
 /**
- * Provides definitions for a Doxia module. This is used by the doxia site tools.
+ * Provides definitions for a Doxia Parser module. This is used by the Doxia Site Tools to find which
+ * Doxia modules can parse files, and where to find these files by default (directory and extension).
  *
- * @author <a href="mailto:jason@maven.org">Jason van Zyl</a>
- * @version $Id$
- * @since 1.0
- * @deprecated use ParserModule
- * @see ParserModule
+ * @since 1.6
  */
-public interface SiteModule
+public interface ParserModule
 {
-    /** The Plexus lookup role. */
-    String ROLE = SiteModule.class.getName();
-
     /**
      * Returns the directory that contains source files for a given module.
      *

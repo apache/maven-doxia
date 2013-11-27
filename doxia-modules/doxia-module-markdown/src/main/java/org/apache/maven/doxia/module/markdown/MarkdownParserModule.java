@@ -1,4 +1,4 @@
-package org.apache.maven.doxia.module.site;
+package org.apache.maven.doxia.module.markdown;
 
 /*
  * Licensed to the Apache Software Foundation (ASF) under one
@@ -19,40 +19,29 @@ package org.apache.maven.doxia.module.site;
  * under the License.
  */
 
+import org.apache.maven.doxia.parser.module.AbstractParserModule;
 import org.apache.maven.doxia.parser.module.ParserModule;
+import org.codehaus.plexus.component.annotations.Component;
 
 /**
- * Provides definitions for a Doxia module. This is used by the doxia site tools.
+ * {@link org.apache.maven.doxia.parser.module.ParserModule} for Markdown.
  *
- * @author <a href="mailto:jason@maven.org">Jason van Zyl</a>
- * @version $Id$
- * @since 1.0
- * @deprecated use ParserModule
- * @see ParserModule
+ * @since 1.6
  */
-public interface SiteModule
+@Component( role = ParserModule.class, hint = "markdown" )
+public class MarkdownParserModule
+    extends AbstractParserModule
 {
-    /** The Plexus lookup role. */
-    String ROLE = SiteModule.class.getName();
+    /**
+     * The extension for Markdown files.
+     */
+    public static final String FILE_EXTENSION = "md";
 
     /**
-     * Returns the directory that contains source files for a given module.
-     *
-     * @return The source directory.
+     * Build a new instance of {@link MarkdownSiteModule}.
      */
-    String getSourceDirectory();
-
-    /**
-     * Returns the default file extension for a given module.
-     *
-     * @return The default file extension.
-     */
-    String getExtension();
-
-    /**
-     * Returns the parser id for a given module.
-     *
-     * @return The parser id.
-     */
-    String getParserId();
+    public MarkdownParserModule()
+    {
+        super( MarkdownParser.ROLE_HINT, FILE_EXTENSION );
+    }
 }

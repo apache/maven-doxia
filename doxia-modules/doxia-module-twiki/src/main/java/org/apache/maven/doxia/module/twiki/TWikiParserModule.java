@@ -1,4 +1,4 @@
-package org.apache.maven.doxia.module.site;
+package org.apache.maven.doxia.module.twiki;
 
 /*
  * Licensed to the Apache Software Foundation (ASF) under one
@@ -19,40 +19,24 @@ package org.apache.maven.doxia.module.site;
  * under the License.
  */
 
+import org.apache.maven.doxia.parser.module.AbstractParserModule;
 import org.apache.maven.doxia.parser.module.ParserModule;
+import org.codehaus.plexus.component.annotations.Component;
 
 /**
- * Provides definitions for a Doxia module. This is used by the doxia site tools.
+ * <p>TWikiParserModule class.</p>
  *
- * @author <a href="mailto:jason@maven.org">Jason van Zyl</a>
- * @version $Id$
- * @since 1.0
- * @deprecated use ParserModule
- * @see ParserModule
+ * @since 1.6
  */
-public interface SiteModule
+@Component( role = ParserModule.class, hint = "twiki" )
+public class TWikiParserModule
+    extends AbstractParserModule
 {
-    /** The Plexus lookup role. */
-    String ROLE = SiteModule.class.getName();
-
     /**
-     * Returns the directory that contains source files for a given module.
-     *
-     * @return The source directory.
+     * Default constructor.
      */
-    String getSourceDirectory();
-
-    /**
-     * Returns the default file extension for a given module.
-     *
-     * @return The default file extension.
-     */
-    String getExtension();
-
-    /**
-     * Returns the parser id for a given module.
-     *
-     * @return The parser id.
-     */
-    String getParserId();
+    public TWikiParserModule()
+    {
+        super( "twiki" );
+    }
 }

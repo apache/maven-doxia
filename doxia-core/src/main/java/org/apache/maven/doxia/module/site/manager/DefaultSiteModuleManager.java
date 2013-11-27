@@ -33,6 +33,7 @@ import org.codehaus.plexus.component.annotations.Requirement;
  * @author Jason van Zyl
  * @version $Id$
  * @since 1.0
+ * @deprecated replaced by DefaultParserModuleManager
  */
 @Component( role = SiteModuleManager.class )
 public class DefaultSiteModuleManager

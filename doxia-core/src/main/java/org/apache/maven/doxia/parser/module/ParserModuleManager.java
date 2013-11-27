@@ -1,4 +1,4 @@
-package org.apache.maven.doxia.module.site.manager;
+package org.apache.maven.doxia.parser.module;
 
 /*
  * Licensed to the Apache Software Foundation (ASF) under one
@@ -19,40 +19,30 @@ package org.apache.maven.doxia.module.site.manager;
  * under the License.
  */
 
-import org.apache.maven.doxia.module.site.SiteModule;
-import org.apache.maven.doxia.parser.module.ParserModuleManager;
-
 import java.util.Collection;
 
 /**
- * Handles SiteModule lookups.
+ * Handles ParserModule lookups.
  *
- * @author <a href="mailto:jason@maven.org">Jason van Zyl</a>
- * @version $Id$
- * @since 1.0
- * @deprecated use ParserModuleManager
- * @see ParserModuleManager
+ * @since 1.6
  */
-public interface SiteModuleManager
+public interface ParserModuleManager
 {
-    /** The Plexus lookup role. */
-    String ROLE = SiteModuleManager.class.getName();
-
     /**
-     * Returns a collection of SiteModules.
+     * Returns a collection of ParserModules.
      *
-     * @return The SiteModules.
+     * @return The ParserModules.
      */
-    Collection<SiteModule> getSiteModules();
+    Collection<ParserModule> getParserModules();
 
     /**
-     * Returns the SiteModule that corresponds to the given id.
+     * Returns the ParserModule that corresponds to the given id.
      *
      * @param id The identifier.
-     * @return The corresponding SiteModule.
-     * @throws org.apache.maven.doxia.module.site.manager.SiteModuleNotFoundException if no SiteModule could be found
+     * @return The corresponding ParserModule.
+     * @throws ParserModuleNotFoundException if no ParserModule could be found
      * for the given id.
      */
-    SiteModule getSiteModule( String id )
-        throws SiteModuleNotFoundException;
+    ParserModule getParserModule( String id )
+        throws ParserModuleNotFoundException;
 }

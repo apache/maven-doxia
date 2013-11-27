@@ -379,6 +379,7 @@ under the License.
             <configuration>
               <excludes>
                 <exclude>org/apache/maven/doxia/sink/render/*</exclude>
+                <exclude>org/apache/maven/doxia/parser/module/*</exclude>
               </excludes>
             </configuration>
           </execution>
