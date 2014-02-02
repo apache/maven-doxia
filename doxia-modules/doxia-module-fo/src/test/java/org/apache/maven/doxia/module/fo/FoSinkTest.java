@@ -27,12 +27,10 @@ import org.apache.maven.doxia.document.DocumentMeta;
 import org.apache.maven.doxia.document.DocumentModel;
 import org.apache.maven.doxia.document.DocumentTOC;
 import org.apache.maven.doxia.document.DocumentTOCItem;
-
 import org.apache.maven.doxia.parser.XhtmlBaseParser;
-import org.apache.maven.doxia.sink.Sink;
 import org.apache.maven.doxia.sink.AbstractSinkTest;
+import org.apache.maven.doxia.sink.Sink;
 import org.apache.maven.doxia.sink.SinkTestDocument;
-import org.codehaus.plexus.util.StringUtils;
 
 /**
  * <code>FO Sink</code> Test case.
@@ -47,6 +45,12 @@ public class FoSinkTest
     // ----------------------------------------------------------------------
     // Specific test methods
     // ----------------------------------------------------------------------
+
+    @Override
+    protected String wrapXml( String xmlFragment )
+    {
+        return "<fo:fo xmlns:fo=\"" + FoMarkup.FO_NAMESPACE + "\">" + xmlFragment + "</fo:fo>";
+    }
 
     /**
      * Uses fop to generate a pdf from a test document.

@@ -76,6 +76,12 @@ under the License.
     </dependency>
 
     <!-- test -->
+    <dependency>
+      <groupId>xmlunit</groupId>
+      <artifactId>xmlunit</artifactId>
+      <version>1.5</version>
+    </dependency>
+
   </dependencies>
 
   <build>

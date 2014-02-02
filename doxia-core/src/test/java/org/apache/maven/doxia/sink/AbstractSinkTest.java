@@ -26,6 +26,8 @@ import java.io.Writer;
 import org.apache.maven.doxia.AbstractModuleTest;
 import org.apache.maven.doxia.logging.PlexusLoggerWrapper;
 import org.codehaus.plexus.util.IOUtil;
+import org.custommonkey.xmlunit.Diff;
+import org.custommonkey.xmlunit.XMLUnit;
 
 /**
  * Abstract base class to test sinks.
@@ -55,6 +57,17 @@ public abstract class AbstractSinkTest
         testWriter.reset();
         sink = createSink( testWriter );
         sink.enableLogging( new PlexusLoggerWrapper( getContainer().getLogger() ) );
+    }
+
+    /**
+     * Ability to wrap the xmlFragment with a roottag and namespaces, when required
+     * 
+     * @param xmlFragment
+     * @return valid XML
+     */
+    protected String wrapXml( String xmlFragment )
+    {
+        return xmlFragment;
     }
 
     // ---------------------------------------------------------------------
@@ -405,7 +418,7 @@ public abstract class AbstractSinkTest
      * invoked on the current sink, produces the same result as
      * {@link #getFigureBlock getFigureBlock}( source, caption ).
      */
-    public void testFigure()
+    public void testFigure() throws Exception
     {
         String source = "figure.jpg";
         String caption = "Figure_caption";
@@ -421,11 +434,19 @@ public abstract class AbstractSinkTest
         String actual = testWriter.toString();
         String expected = getFigureBlock( source, caption );
 
-        assertEquals( "Wrong figure!", expected, actual );
+        if ( isXmlSink() )
+        {
+            Diff diff = XMLUnit.compareXML( wrapXml( expected ), wrapXml( actual ) );
+            assertTrue( "Wrong figure!", diff.identical() );
+        }
+        else
+        {
+            assertEquals( "Wrong figure!", expected, actual );
+        }
     }
 
 
-    public void testFigureWithoutCaption()
+    public void testFigureWithoutCaption() throws Exception
     {
         String source = "figure.jpg";
         sink.figure();
@@ -437,8 +458,15 @@ public abstract class AbstractSinkTest
         String actual = testWriter.toString();
         String expected = getFigureBlock( source, null );
 
-        assertEquals( "Wrong figure!", expected, actual );
-        
+        if ( isXmlSink() )
+        {
+            Diff diff = XMLUnit.compareXML( wrapXml( expected ), wrapXml( actual ) );
+            assertTrue( "Wrong figure!", diff.identical() );
+        }
+        else
+        {
+            assertEquals( "Wrong figure!", expected, actual );
+        }
     }
     
     /**
@@ -449,7 +477,7 @@ public abstract class AbstractSinkTest
      * invoked on the current sink, produces the same result as
      * {@link #getTableBlock getTableBlock}( cell, caption ).
      */
-    public void testTable()
+    public void testTable() throws Exception
     {
         String cell = "cell";
         String caption = "Table_caption";
@@ -472,7 +500,15 @@ public abstract class AbstractSinkTest
         String actual = testWriter.toString();
         String expected = getTableBlock( cell, caption );
 
-        assertEquals( "Wrong table!", expected, actual );
+        if ( isXmlSink() )
+        {
+            Diff diff = XMLUnit.compareXML( wrapXml( expected ), wrapXml( actual ) );
+            assertTrue( "Wrong table!", diff.identical() );
+        }
+        else
+        {
+            assertEquals( "Wrong table!", expected, actual );
+        }
     }
 
     /**

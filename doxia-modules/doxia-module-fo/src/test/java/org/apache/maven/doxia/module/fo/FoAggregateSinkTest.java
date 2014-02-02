@@ -28,7 +28,10 @@ import javax.xml.transform.TransformerException;
 
 import org.apache.maven.doxia.document.DocumentCover;
 import org.apache.maven.doxia.document.DocumentModel;
+import org.apache.maven.doxia.markup.Markup;
 import org.codehaus.plexus.util.WriterFactory;
+import org.custommonkey.xmlunit.Diff;
+import org.custommonkey.xmlunit.XMLUnit;
 import org.xml.sax.SAXParseException;
 
 import junit.framework.TestCase;
@@ -53,6 +56,12 @@ public class FoAggregateSinkTest
         super.setUp();
         writer = new StringWriter();
     }
+    
+    protected String wrapXml( String xmlFragment )
+    {
+        return "<fo:fo xmlns:fo=\"" + FoMarkup.FO_NAMESPACE+ "\">" + xmlFragment + "</fo:fo>";
+    }
+
 
     /**
      * Test of body method, of class FoAggregateSink.
@@ -155,7 +164,7 @@ public class FoAggregateSinkTest
     /**
      * Test of figureGraphics method, of class FoAggregateSink.
      */
-    public void testFigureGraphics()
+    public void testFigureGraphics() throws Exception
     {
         try
         {
@@ -168,7 +177,15 @@ public class FoAggregateSinkTest
             sink.close();
         }
 
-        assertTrue( writer.toString().indexOf( "<fo:external-graphic src=\"./images/fig.png\"" ) != -1 );
+        String expected = "<fo:external-graphic src=\"./images/fig.png\" "
+                        + "content-width=\"scale-down-to-fit\" "
+                        + "content-height=\"scale-down-to-fit\" "
+                        + "height=\"100%\" "
+                        + "width=\"100%\"/>" + Markup.EOL;
+        String actual = writer.toString();
+
+        Diff diff = XMLUnit.compareXML( wrapXml( expected ), wrapXml( actual ) );
+        assertTrue( "Wrong figure!", diff.identical() );
     }
 
     /**
