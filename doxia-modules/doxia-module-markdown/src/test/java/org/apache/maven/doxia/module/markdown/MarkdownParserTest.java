@@ -128,7 +128,7 @@ public class MarkdownParserTest
     {
         Iterator<SinkEventElement> it = parseFileToEventTestingSink( "code" ).getEventList().iterator();
 
-        assertEquals( it, "head", "head_", "body", "paragraph", "text", "paragraph_", "text", "verbatim", "text", "verbatim_", "body_" );
+        assertEquals( it, "head", "head_", "body", "paragraph", "text", "paragraph_", "text", "unknown", "verbatim", "text", "verbatim_", "unknown", "body_" );
 
         assertFalse( it.hasNext() );
     }
@@ -243,6 +243,27 @@ public class MarkdownParserTest
         // NOTE: H1 is rendered as "unknown" and H2 is "section1" (see DOXIA-203)
         assertEquals( it, "head", "title", "text", "title_", "head_", "body", "comment", "unknown", "text",
                       "unknown", "paragraph", "text", "link", "text", "link_", "text", "paragraph_", "body_" );
+
+        assertFalse( it.hasNext() );
+    }
+
+    /**
+     * Assert the first header is passed as title event when parsing "comment-before-heading.md".
+     *
+     * @throws Exception if the event list is not correct when parsing the document.
+     */
+    public void testHtmlContent()
+        throws Exception
+    {
+        Iterator<SinkEventElement> it = parseFileToEventTestingSink( "html-content" ).getEventList().iterator();
+
+        // NOTE: H1 and DIV are rendered as "unknown" and H2 is "section1" (see DOXIA-203)
+        assertEquals( it, "head", "head_", "body", "unknown", "text", "paragraph", "bold", "text",
+                      "bold_", "text", "bold", "text", "bold_", "text", "paragraph_", "text", "unknown", "text", "horizontalRule", "unknown",
+                "text", "unknown", "paragraph", "text", "paragraph_", "text", "table", "tableRows", "text", "tableRow",
+                "tableHeaderCell", "text", "tableHeaderCell_", "tableRow_", "text", "tableRow",
+                                "tableCell", "text", "tableCell_", "tableRow_", "text", "tableRows_", "table_",
+                "body_" );
 
         assertFalse( it.hasNext() );
     }

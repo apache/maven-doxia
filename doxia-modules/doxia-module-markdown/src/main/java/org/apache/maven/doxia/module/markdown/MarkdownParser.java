@@ -21,12 +21,16 @@ package org.apache.maven.doxia.module.markdown;
 
 import org.apache.commons.lang.StringEscapeUtils;
 import org.apache.commons.lang.StringUtils;
+import org.apache.maven.doxia.macro.MacroExecutionException;
+import org.apache.maven.doxia.markup.HtmlMarkup;
 import org.apache.maven.doxia.module.xhtml.XhtmlParser;
 import org.apache.maven.doxia.parser.ParseException;
 import org.apache.maven.doxia.parser.Parser;
 import org.apache.maven.doxia.sink.Sink;
 import org.codehaus.plexus.component.annotations.Component;
 import org.codehaus.plexus.util.IOUtil;
+import org.codehaus.plexus.util.xml.pull.XmlPullParser;
+import org.codehaus.plexus.util.xml.pull.XmlPullParserException;
 import org.pegdown.Extensions;
 import org.pegdown.PegDownProcessor;
 import org.pegdown.ast.HeaderNode;
@@ -226,4 +230,32 @@ public class MarkdownParser
         return builder.toString();
     }
 
+    @Override
+    protected boolean baseEndTag( XmlPullParser parser, Sink sink )
+    {
+        boolean visited = super.baseEndTag( parser, sink );
+        if ( !visited )
+        {
+            if ( parser.getName().equals( HtmlMarkup.DIV.toString() ) )
+            {
+                handleUnknown( parser, sink, TAG_TYPE_END );
+                visited = true;
+            }
+        }
+        return visited;
+    }
+
+    @Override
+    protected boolean baseStartTag(XmlPullParser parser, Sink sink) {
+        boolean visited = super.baseStartTag( parser, sink );
+        if ( !visited )
+        {
+            if ( parser.getName().equals( HtmlMarkup.DIV.toString() ) )
+            {
+                handleUnknown( parser, sink, TAG_TYPE_START );
+                visited = true;
+            }
+        }
+        return visited;
+    }
 }
