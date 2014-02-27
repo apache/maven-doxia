@@ -138,10 +138,18 @@ public abstract class AbstractParserTest
 
     protected void assertEquals( Iterator<SinkEventElement> it, String... names )
     {
-        for ( String name: names )
+        StringBuilder expected = new StringBuilder();
+        StringBuilder actual = new StringBuilder();
+
+        for ( String name : names )
         {
-            assertEquals( name, it.next().getName() );
+            expected.append( name ).append( '\n' );
+            if ( it.hasNext() )
+            {
+                actual.append( it.next().getName() ).append( '\n' );
+            }
         }
+        assertEquals( expected.toString(), actual.toString() );
     }
 
 
