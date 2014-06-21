@@ -50,8 +50,11 @@
       <item name="Doxia base" href="http://maven.apache.org/doxia/doxia/index.html"/>
     </breadcrumbs>
 
-    <menu name="Downloads" inherit="bottom">
-      <item name="Download ${project.name}" href="http://maven.apache.org/doxia/downloads.html"/>
+    <menu name="Overview" inherit="bottom">
+      <item name="Introduction" href="index.html"/>
+      <!-- According to http://jira.codehaus.org/browse/MNGSITE-152 -->
+      <item name="License" href="http://www.apache.org/licenses/"/>
+      <item name="Download" href="download.html"/>
     </menu>
 
     <menu ref="modules"/>
