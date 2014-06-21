@@ -34,7 +34,6 @@ import org.apache.maven.doxia.macro.MacroRequest;
 import org.apache.maven.doxia.macro.manager.MacroManager;
 import org.apache.maven.doxia.macro.manager.MacroNotFoundException;
 import org.apache.maven.doxia.sink.Sink;
-import org.codehaus.plexus.component.annotations.Component;
 import org.codehaus.plexus.component.annotations.Requirement;
 
 /**
@@ -45,7 +44,6 @@ import org.codehaus.plexus.component.annotations.Requirement;
  * @version $Id$
  * @since 1.0
  */
-@Component( role = Parser.class )
 public abstract class AbstractParser
     implements Parser
 {
