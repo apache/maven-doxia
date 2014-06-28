@@ -48,23 +48,18 @@ public class SnippetMacroTest
     public void testExecute()
         throws MacroExecutionException
     {
-        File basedir = new File( getBasedir() );
         Map<String, Object> macroParameters = new HashMap<String, Object>();
         macroParameters.put( "file", "src/test/resources/macro/snippet/testSnippet.txt" );
         macroParameters.put( "encoding", "UTF-8" );
 
-        SinkEventTestingSink sink = new SinkEventTestingSink();
-
-        MacroRequest request = new MacroRequest( macroParameters, basedir );
-        SnippetMacro macro = new SnippetMacro();
-        macro.execute( sink, request );
+        SinkEventTestingSink sink = executeSnippetMacro( macroParameters );
 
         Iterator<SinkEventElement> it = sink.getEventList().iterator();
-        assertEquals( "verbatim", ( it.next() ).getName() );
+        assertEquals( "verbatim", it.next().getName() );
         SinkEventElement event = it.next();
         assertEquals( "text", event.getName() );
         String snippet = (String) event.getArgs()[0];
-        assertEquals( "verbatim_", ( it.next() ).getName() );
+        assertEquals( "verbatim_", it.next().getName() );
         assertFalse( it.hasNext() );
 
         assertTrue( snippet.contains( "preamble" ) );
@@ -77,16 +72,14 @@ public class SnippetMacroTest
 
         macroParameters.put( "id", "firstId" );
         macroParameters.put( "verbatim", "" );
-        sink.reset();
-        request = new MacroRequest( macroParameters, basedir );
-        macro.execute( sink, request );
+        sink = executeSnippetMacro( macroParameters );
 
         it = sink.getEventList().iterator();
-        assertEquals( "verbatim", ( it.next() ).getName() );
+        assertEquals( "verbatim", it.next().getName() );
         event = it.next();
         assertEquals( "text", event.getName() );
         snippet = (String) event.getArgs()[0];
-        assertEquals( "verbatim_", ( it.next() ).getName() );
+        assertEquals( "verbatim_", it.next().getName() );
         assertFalse( it.hasNext() );
 
         assertFalse( snippet.contains( "preamble" ) );
@@ -99,9 +92,7 @@ public class SnippetMacroTest
 
         macroParameters.put( "id", "secondId" );
         macroParameters.put( "verbatim", "false" );
-        sink.reset();
-        request = new MacroRequest( macroParameters, basedir );
-        macro.execute( sink, request );
+        sink = executeSnippetMacro( macroParameters );
 
         it = sink.getEventList().iterator();
         event = it.next();
@@ -119,9 +110,7 @@ public class SnippetMacroTest
 
         macroParameters.put( "id", "thirdId" );
         macroParameters.put( "verbatim", "false" );
-        sink.reset();
-        request = new MacroRequest( macroParameters, basedir );
-        macro.execute( sink, request );
+        sink = executeSnippetMacro( macroParameters );
 
         it = sink.getEventList().iterator();
         event = it.next();
@@ -141,6 +130,19 @@ public class SnippetMacroTest
         macroParameters.put( "ignoreDownloadError", "true" );
         macroParameters.put( "url", "http://foo.bar.com/wine.txt" );
 
+        SinkEventTestingSink sink = executeSnippetMacro( macroParameters );
+
+        Iterator<SinkEventElement> it = sink.getEventList().iterator();
+        assertEquals( "verbatim", it.next().getName() );
+        SinkEventElement event = it.next();
+        assertEquals( "text", event.getName() );
+        String snippet = (String) event.getArgs()[0];
+        Assert.assertThat( snippet, CoreMatchers.containsString( "Error during retrieving content" ) );
+    }
+
+    private SinkEventTestingSink executeSnippetMacro( Map<String, Object> macroParameters )
+        throws MacroExecutionException
+    {
         File basedir = new File( getBasedir() );
 
         SinkEventTestingSink sink = new SinkEventTestingSink();
@@ -149,11 +151,6 @@ public class SnippetMacroTest
         SnippetMacro macro = new SnippetMacro();
         macro.execute( sink, request );
 
-        Iterator<SinkEventElement> it = sink.getEventList().iterator();
-        assertEquals( "verbatim", ( it.next() ).getName() );
-        SinkEventElement event = it.next();
-        assertEquals( "text", event.getName() );
-        String snippet = (String) event.getArgs()[0];
-        Assert.assertThat( snippet, CoreMatchers.containsString( "Error during retrieving content" ) );
+        return sink;
     }
 }
