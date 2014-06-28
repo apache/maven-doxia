@@ -24,6 +24,8 @@ import org.apache.maven.doxia.macro.MacroRequest;
 import org.apache.maven.doxia.sink.SinkEventElement;
 import org.apache.maven.doxia.sink.SinkEventTestingSink;
 import org.codehaus.plexus.PlexusTestCase;
+import org.hamcrest.CoreMatchers;
+import org.junit.Assert;
 
 import java.io.File;
 import java.util.HashMap;
@@ -128,7 +130,7 @@ public class SnippetMacroTest
         assertFalse( it.hasNext() );
 
         // no need to verify the absence of the first and second snippets if tests above were successful
-        assertTrue( snippet.contains( "Этот сниппет в формате Unicode (UTF-8)" ) );
+        Assert.assertThat( snippet, CoreMatchers.containsString( "Этот сниппет в формате Unicode (UTF-8)" ) );
     }
 
     public void testIgnoreDownloadError()
@@ -137,7 +139,6 @@ public class SnippetMacroTest
         Map<String, Object> macroParameters = new HashMap<String, Object>();
         macroParameters.put( "debug", "true" );
         macroParameters.put( "ignoreDownloadError", "true" );
-
         macroParameters.put( "url", "http://foo.bar.com/wine.txt" );
 
         File basedir = new File( getBasedir() );
@@ -147,12 +148,12 @@ public class SnippetMacroTest
         MacroRequest request = new MacroRequest( macroParameters, basedir );
         SnippetMacro macro = new SnippetMacro();
         macro.execute( sink, request );
+
         Iterator<SinkEventElement> it = sink.getEventList().iterator();
         assertEquals( "verbatim", ( it.next() ).getName() );
         SinkEventElement event = it.next();
         assertEquals( "text", event.getName() );
         String snippet = (String) event.getArgs()[0];
-        assertTrue( snippet.contains( "Error during retrieving content" ) );
-
+        Assert.assertThat( snippet, CoreMatchers.containsString( "Error during retrieving content" ) );
     }
 }

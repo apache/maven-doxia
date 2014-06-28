@@ -207,6 +207,7 @@ public class SnippetMacro
             }
             catch ( IOException e )
             {
+                getLog().debug( "IOException which reading " + url + ": " + e );
                 result = new StringBuffer( "Error during retrieving content skip as ignoreDownloadError activated." );
             }
 
