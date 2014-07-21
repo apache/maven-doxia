@@ -382,6 +382,28 @@ under the License.
           </execution>
         </executions>
       </plugin>
+      <plugin>
+        <groupId>org.apache.rat</groupId>
+        <artifactId>apache-rat-plugin</artifactId>
+        <configuration>
+          <excludes>
+            <exclude>src/test/resources/**/*.apt</exclude>
+            <exclude>src/test/resources/**/*.apt.vm</exclude>
+            <exclude>src/test/resources/**/*.confluence</exclude>
+            <exclude>src/test/site/**/*.confluence</exclude>
+            <exclude>src/test/resources/**/*.twiki</exclude>
+            <exclude>src/test/resources/**/*.md</exclude>
+          </excludes>            
+        </configuration>
+        <executions>
+          <execution>
+            <id>check</id>
+            <goals>
+              <goal>check</goal>
+            </goals>
+          </execution>
+        </executions>
+      </plugin>      
     </plugins>
   </build>
 
