@@ -385,9 +385,9 @@ under the License.
       <plugin>
         <groupId>org.apache.rat</groupId>
         <artifactId>apache-rat-plugin</artifactId>
+        <version>0.11-SNAPSHOT</version>
         <configuration>
           <excludes>
-            <excludes>src/site/xdoc/doxia-deps.odg</excludes>
             <exclude>src/test/resources/**/*.apt</exclude>
             <exclude>src/test/resources/**/*.apt.vm</exclude>
             <exclude>src/test/resources/**/*.confluence</exclude>
@@ -407,6 +407,17 @@ under the License.
       </plugin>      
     </plugins>
   </build>
+
+  <pluginRepositories>
+    <pluginRepository>
+      <id>apache.snapshots</id>
+      <name>Apache Snapshot Repository</name>
+      <url>http://repository.apache.org/snapshots</url>
+      <releases>
+        <enabled>false</enabled>
+      </releases>
+    </pluginRepository>
+  </pluginRepositories>
 
   <profiles>
     <profile>
