@@ -74,21 +74,21 @@ public class FoAggregateSink
      *
      * @see #setDocumentModel(DocumentModel, int)
      */
-    public static int TOC_NONE = 0;
+    public static final int TOC_NONE = 0;
 
     /**
      * Table Of Content at the start of the document.
      *
      * @see #setDocumentModel(DocumentModel, int)
      */
-    public static int TOC_START = 1;
+    public static final int TOC_START = 1;
 
     /**
      * Table Of Content at the end of the document.
      *
      * @see #setDocumentModel(DocumentModel, int)
      */
-    public static int TOC_END = 2;
+    public static final int TOC_END = 2;
 
     // TODO: make configurable
     private static final String COVER_HEADER_HEIGHT = "1.5in";

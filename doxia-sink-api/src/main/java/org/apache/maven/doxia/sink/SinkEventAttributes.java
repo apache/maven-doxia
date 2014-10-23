@@ -50,6 +50,7 @@ import javax.swing.text.MutableAttributeSet;
  * @version $Id$
  * @since 1.1
  */
+@SuppressWarnings( "checkstyle:interfaceistype" )
 public interface SinkEventAttributes
     extends MutableAttributeSet
 {

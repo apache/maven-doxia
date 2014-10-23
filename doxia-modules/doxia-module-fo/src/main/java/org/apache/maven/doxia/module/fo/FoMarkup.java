@@ -30,6 +30,7 @@ import org.apache.maven.doxia.markup.XmlMarkup;
  * @version $Id$
  * @since 1.1
  */
+@SuppressWarnings( "checkstyle:interfaceistype" )
 public interface FoMarkup
     extends XmlMarkup
 {

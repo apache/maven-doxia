@@ -32,6 +32,7 @@ import org.apache.maven.doxia.markup.XmlMarkup;
  * @version $Id$
  * @since 1.1.1
  */
+@SuppressWarnings( "checkstyle:interfaceistype" )
 public interface SimplifiedDocbookMarkup
     extends XmlMarkup
 {

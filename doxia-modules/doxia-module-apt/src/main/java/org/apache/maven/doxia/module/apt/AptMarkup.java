@@ -31,6 +31,7 @@ import org.codehaus.plexus.util.StringUtils;
  * @version $Id$
  * @since 1.0
  */
+@SuppressWarnings( "checkstyle:interfaceistype" )
 public interface AptMarkup
     extends TextMarkup
 {

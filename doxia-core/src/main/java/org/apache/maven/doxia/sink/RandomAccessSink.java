@@ -60,7 +60,8 @@ public class RandomAccessSink
     {
         this.sinkFactory = sinkFactory;
         this.coreOutputStream = stream;
-        this.coreSink = this.currentSink = sinkFactory.createSink( stream );
+        this.currentSink = sinkFactory.createSink( stream );
+        this.coreSink = this.currentSink;
     }
 
     public RandomAccessSink( SinkFactory sinkFactory, OutputStream stream, String encoding )
@@ -69,7 +70,8 @@ public class RandomAccessSink
         this.sinkFactory = sinkFactory;
         this.coreOutputStream = stream;
         this.encoding = encoding;
-        this.coreSink = this.currentSink = sinkFactory.createSink( stream, encoding );
+        this.currentSink = sinkFactory.createSink( stream, encoding );
+        this.coreSink = this.currentSink;
     }
 
     public RandomAccessSink( SinkFactory sinkFactory, File outputDirectory, String outputName )
@@ -77,7 +79,8 @@ public class RandomAccessSink
     {
         this.sinkFactory = sinkFactory;
         this.coreOutputStream = new FileOutputStream( new File( outputDirectory, outputName ) );
-        this.coreSink = this.currentSink = sinkFactory.createSink( coreOutputStream );
+        this.currentSink = sinkFactory.createSink( coreOutputStream );
+        this.coreSink = this.currentSink;
     }
 
     public RandomAccessSink( SinkFactory sinkFactory, File outputDirectory, String outputName, String encoding )
@@ -86,7 +89,8 @@ public class RandomAccessSink
         this.sinkFactory = sinkFactory;
         this.coreOutputStream = new FileOutputStream( new File( outputDirectory, outputName ) );
         this.encoding = encoding;
-        this.coreSink = this.currentSink = sinkFactory.createSink( coreOutputStream, encoding );
+        this.currentSink = sinkFactory.createSink( coreOutputStream, encoding );
+        this.coreSink = this.currentSink;
     }
 
     /**

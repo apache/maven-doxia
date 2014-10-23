@@ -96,6 +96,7 @@ class PBMReader
             case TYPE_PPM:
                 bytesPerLine = 3 * width;
                 break;
+            default:
         }
 
         stream = new BufferedInputStream( new FileInputStream( fileName ) );
@@ -297,7 +298,7 @@ class PBMReader
             {
                 while ( getChar() != '\n' )
                 {
-                    ;
+                    // nop
                 }
             }
             catch ( EOFException ignore )

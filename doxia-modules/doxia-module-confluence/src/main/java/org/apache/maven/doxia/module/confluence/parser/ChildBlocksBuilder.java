@@ -243,8 +243,8 @@ public class ChildBlocksBuilder
                             {
                                 link = link.substring( 1 );  // chop off the lead ^ from link and from value
                                 value = link;
-                                addHTMLSuffix =
-                                    false; // force verbatim link to support attaching files/resources (not just .html files)
+                                addHTMLSuffix = false; // force verbatim link to support attaching files/resources (not
+                                                       // just .html files)
                             }
 
                             if ( addHTMLSuffix )

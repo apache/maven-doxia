@@ -21,7 +21,6 @@ package org.apache.maven.doxia.module.markdown;
 
 import org.apache.commons.lang.StringEscapeUtils;
 import org.apache.commons.lang.StringUtils;
-import org.apache.maven.doxia.macro.MacroExecutionException;
 import org.apache.maven.doxia.markup.HtmlMarkup;
 import org.apache.maven.doxia.module.xhtml.XhtmlParser;
 import org.apache.maven.doxia.parser.ParseException;
@@ -30,7 +29,6 @@ import org.apache.maven.doxia.sink.Sink;
 import org.codehaus.plexus.component.annotations.Component;
 import org.codehaus.plexus.util.IOUtil;
 import org.codehaus.plexus.util.xml.pull.XmlPullParser;
-import org.codehaus.plexus.util.xml.pull.XmlPullParserException;
 import org.pegdown.Extensions;
 import org.pegdown.PegDownProcessor;
 import org.pegdown.ast.HeaderNode;
@@ -198,8 +196,10 @@ public class MarkdownParser
         }
     }
 
-    public static boolean isHtmlComment( Node node ) {
-        if (node instanceof HtmlBlockNode) {
+    public static boolean isHtmlComment( Node node )
+    {
+        if ( node instanceof HtmlBlockNode )
+        {
             HtmlBlockNode blockNode = (HtmlBlockNode) node;
             return blockNode.getText().startsWith( "<!--" );
         }
@@ -246,7 +246,8 @@ public class MarkdownParser
     }
 
     @Override
-    protected boolean baseStartTag(XmlPullParser parser, Sink sink) {
+    protected boolean baseStartTag( XmlPullParser parser, Sink sink )
+    {
         boolean visited = super.baseStartTag( parser, sink );
         if ( !visited )
         {

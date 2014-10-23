@@ -33,6 +33,7 @@ import org.apache.maven.doxia.markup.XmlMarkup;
  * @since 1.0
  * @deprecated This interface is incomplete and will be removed. Use {@link SimplifiedDocbookMarkup} instead.
  */
+@SuppressWarnings( "checkstyle:interfaceistype" )
 public interface DocbookMarkup
     extends XmlMarkup
 {

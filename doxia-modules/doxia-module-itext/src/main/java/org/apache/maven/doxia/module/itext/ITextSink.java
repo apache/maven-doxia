@@ -1157,9 +1157,10 @@ public class ITextSink
     }
 
     /**
-     * If the <code>name</code> is a relative link, the internal link will used a System property <code>itext.basedir</code>,
-     * or the class loader.
-     * {@inheritDoc} */
+     * If the <code>name</code> is a relative link, the internal link will used a System property
+     * <code>itext.basedir</code>, or the class loader.
+     * {@inheritDoc}
+     */
     public void figureGraphics( String name )
     {
         String urlName = null;
@@ -1328,7 +1329,7 @@ public class ITextSink
         font.addUnderlined();
 
         writeStartElement( ElementTags.ANCHOR );
-        if ( StringUtils.isNotEmpty( name )&& name.startsWith( "#" ) && StringUtils.isNotEmpty( header.getTitle() ))
+        if ( StringUtils.isNotEmpty( name ) && name.startsWith( "#" ) && StringUtils.isNotEmpty( header.getTitle() ) )
         {
             name = "#" + DoxiaUtils.encodeId( header.getTitle(), true ) + "_" + name.substring( 1 );
         }

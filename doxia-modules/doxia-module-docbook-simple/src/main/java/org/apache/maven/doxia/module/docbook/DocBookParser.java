@@ -394,7 +394,7 @@ public class DocBookParser
         }
         else if ( parser.getName().equals( SimplifiedDocbookMarkup.CAPTION_TAG.toString() ) )
         {
-            handleCaptionEnd(sink);
+            handleCaptionEnd( sink );
         }
         else if ( parser.getName().equals( SimplifiedDocbookMarkup.TABLE_TAG.toString() )
             || parser.getName().equals( SimplifiedDocbookMarkup.INFORMALTABLE_TAG.toString() ) )

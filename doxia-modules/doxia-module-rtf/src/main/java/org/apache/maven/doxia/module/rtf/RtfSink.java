@@ -636,6 +636,7 @@ public class RtfSink
             case 5:
                 stl = STYLE_ROMAN;
                 break;
+            default:
         }
 
         Paragraph p = new Paragraph( stl, size );

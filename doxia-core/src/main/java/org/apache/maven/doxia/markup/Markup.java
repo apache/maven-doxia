@@ -26,6 +26,7 @@ package org.apache.maven.doxia.markup;
  * @version $Id$
  * @since 1.0
  */
+@SuppressWarnings( "checkstyle:interfaceistype" )
 public interface Markup
 {
     /** The vm line separator */

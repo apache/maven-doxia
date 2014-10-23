@@ -25,7 +25,7 @@ package org.apache.maven.doxia.module.rtf;
 class SansSerifBoldItalic
     extends FontMetrics
 {
-    static final CharMetrics[] metrics = {new CharMetrics( 278, 0, 0, 0, 0, 0 ),
+    static final CharMetrics[] METRICS = {new CharMetrics( 278, 0, 0, 0, 0, 0 ),
         new CharMetrics( 278, 0, 0, 0, 0, 0 ), new CharMetrics( 278, 0, 0, 0, 0, 0 ),
         new CharMetrics( 278, 0, 0, 0, 0, 0 ), new CharMetrics( 278, 0, 0, 0, 0, 0 ),
         new CharMetrics( 278, 0, 0, 0, 0, 0 ), new CharMetrics( 278, 0, 0, 0, 0, 0 ),
@@ -157,6 +157,6 @@ class SansSerifBoldItalic
 
     SansSerifBoldItalic()
     {
-        super( false, 718, -207, new CharMetrics( 0, 0, -174, -228, 1114, 962 ), metrics );
+        super( false, 718, -207, new CharMetrics( 0, 0, -174, -228, 1114, 962 ), METRICS );
     }
 }

@@ -31,6 +31,7 @@ import org.apache.maven.doxia.markup.TextMarkup;
  * @version $Id$
  * @since 1.0
  */
+@SuppressWarnings( "checkstyle:interfaceistype" )
 public interface ConfluenceMarkup
     extends TextMarkup
 {

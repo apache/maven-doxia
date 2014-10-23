@@ -131,7 +131,8 @@ public class ListBlockParser
         if ( line.startsWith( "*" ) || line.startsWith( "-" ) || line.startsWith( "#" ) )
         {
             String temp = line.substring( 1 );
-            while ( temp.length() > 0 && ( temp.charAt( 0 ) == '*' || temp.charAt( 0 ) == '-' || temp.charAt( 0 ) == '#' ) )
+            while ( temp.length() > 0
+                && ( temp.charAt( 0 ) == '*' || temp.charAt( 0 ) == '-' || temp.charAt( 0 ) == '#' ) )
             {
                 temp = temp.substring( 1 );
             }

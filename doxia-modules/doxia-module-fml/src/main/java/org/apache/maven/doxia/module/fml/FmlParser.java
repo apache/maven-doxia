@@ -501,7 +501,8 @@ public class FmlParser
                     executeMacro( macroName, request, sink );
                     sink.close();
                     buffer.append( sw.toString() );
-                } catch ( MacroNotFoundException me )
+                }
+                catch ( MacroNotFoundException me )
                 {
                     throw new MacroExecutionException( "Macro not found: " + macroName, me );
                 }

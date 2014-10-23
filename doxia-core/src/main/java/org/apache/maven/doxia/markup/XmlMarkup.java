@@ -19,6 +19,7 @@ package org.apache.maven.doxia.markup;
  * under the License.
  */
 
+
 /**
  * List of constants used by <code>Xml</code> markup syntax.
  *
@@ -26,6 +27,7 @@ package org.apache.maven.doxia.markup;
  * @version $Id$
  * @since 1.0
  */
+@SuppressWarnings( "checkstyle:interfaceistype" )
 public interface XmlMarkup
     extends Markup
 {

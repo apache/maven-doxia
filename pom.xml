@@ -25,7 +25,7 @@ under the License.
   <parent>
     <groupId>org.apache.maven</groupId>
     <artifactId>maven-parent</artifactId>
-    <version>24</version>
+    <version>25</version>
     <relativePath>../../pom/maven/pom.xml</relativePath>
   </parent>
 
@@ -194,6 +194,7 @@ under the License.
   <properties>
     <mavenVersion>2.0.6</mavenVersion>
     <maven.site.path>doxia-archives/doxia-LATEST</maven.site.path>
+    <checkstyle.violation.ignore>RedundantThrows,NewlineAtEndOfFile,ParameterNumber,MethodLength,FileLength,MethodName,InnerAssignment,MagicNumber</checkstyle.violation.ignore>
   </properties>
 
   <dependencyManagement>
@@ -377,6 +378,7 @@ under the License.
               <excludes>
                 <exclude>org/apache/maven/doxia/sink/render/*</exclude>
                 <exclude>org/apache/maven/doxia/parser/module/*</exclude>
+                <exclude>org/apache/maven/doxia/module/fo/*</exclude>
               </excludes>
             </configuration>
           </execution>
@@ -385,7 +387,6 @@ under the License.
       <plugin>
         <groupId>org.apache.rat</groupId>
         <artifactId>apache-rat-plugin</artifactId>
-        <version>0.11</version>
         <configuration>
           <excludes>
             <exclude>src/test/resources/**/*.apt</exclude>

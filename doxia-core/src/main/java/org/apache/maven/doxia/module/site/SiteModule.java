@@ -19,8 +19,6 @@ package org.apache.maven.doxia.module.site;
  * under the License.
  */
 
-import org.apache.maven.doxia.parser.module.ParserModule;
-
 /**
  * Provides definitions for a Doxia module. This is used by the doxia site tools.
  *
@@ -28,7 +26,7 @@ import org.apache.maven.doxia.parser.module.ParserModule;
  * @version $Id$
  * @since 1.0
  * @deprecated use ParserModule
- * @see ParserModule
+ * @see org.apache.maven.doxia.parser.module.ParserModule
  */
 public interface SiteModule
 {

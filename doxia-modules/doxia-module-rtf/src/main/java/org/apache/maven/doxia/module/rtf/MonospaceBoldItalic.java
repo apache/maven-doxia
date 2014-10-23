@@ -25,7 +25,7 @@ package org.apache.maven.doxia.module.rtf;
 class MonospaceBoldItalic
     extends FontMetrics
 {
-    static final CharMetrics[] metrics = {new CharMetrics( 600, 0, 0, 0, 0, 0 ),
+    static final CharMetrics[] METRICS = {new CharMetrics( 600, 0, 0, 0, 0, 0 ),
         new CharMetrics( 600, 0, 0, 0, 0, 0 ), new CharMetrics( 600, 0, 0, 0, 0, 0 ),
         new CharMetrics( 600, 0, 0, 0, 0, 0 ), new CharMetrics( 600, 0, 0, 0, 0, 0 ),
         new CharMetrics( 600, 0, 0, 0, 0, 0 ), new CharMetrics( 600, 0, 0, 0, 0, 0 ),
@@ -157,6 +157,6 @@ class MonospaceBoldItalic
 
     MonospaceBoldItalic()
     {
-        super( true, 626, -142, new CharMetrics( 0, 0, -56, -250, 868, 801 ), metrics );
+        super( true, 626, -142, new CharMetrics( 0, 0, -56, -250, 868, 801 ), METRICS );
     }
 }

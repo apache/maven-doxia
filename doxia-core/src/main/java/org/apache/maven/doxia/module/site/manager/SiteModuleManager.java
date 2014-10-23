@@ -20,7 +20,6 @@ package org.apache.maven.doxia.module.site.manager;
  */
 
 import org.apache.maven.doxia.module.site.SiteModule;
-import org.apache.maven.doxia.parser.module.ParserModuleManager;
 
 import java.util.Collection;
 
@@ -31,7 +30,7 @@ import java.util.Collection;
  * @version $Id$
  * @since 1.0
  * @deprecated use ParserModuleManager
- * @see ParserModuleManager
+ * @see org.apache.maven.doxia.parser.module.ParserModuleManager
  */
 public interface SiteModuleManager
 {

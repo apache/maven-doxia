@@ -35,6 +35,7 @@ import javax.swing.text.html.HTML.Tag;
  * @version $Id$
  * @since 1.0
  */
+@SuppressWarnings( "checkstyle:interfaceistype" )
 public interface HtmlMarkup
     extends XmlMarkup
 {

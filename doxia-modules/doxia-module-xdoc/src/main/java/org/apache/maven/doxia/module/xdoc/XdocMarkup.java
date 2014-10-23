@@ -33,6 +33,7 @@ import org.apache.maven.doxia.markup.HtmlMarkup;
  * @version $Id$
  * @since 1.0
  */
+@SuppressWarnings( "checkstyle:interfaceistype" )
 public interface XdocMarkup
     extends HtmlMarkup
 {
