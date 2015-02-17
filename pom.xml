@@ -395,6 +395,7 @@ under the License.
             <exclude>src/test/site/**/*.confluence</exclude>
             <exclude>src/test/resources/**/*.twiki</exclude>
             <exclude>src/test/resources/**/*.md</exclude>
+            <exclude>*.state</exclude>
           </excludes>            
         </configuration>
         <executions>

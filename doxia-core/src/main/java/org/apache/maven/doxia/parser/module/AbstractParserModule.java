@@ -27,13 +27,19 @@ package org.apache.maven.doxia.parser.module;
 public abstract class AbstractParserModule
     implements ParserModule
 {
-    /** The source directory. */
+    /**
+     * The source directory.
+     */
     private final String sourceDirectory;
 
-    /** The default file extension. */
-    private final String extension;
+    /**
+     * The default file extension.
+     */
+    private final String[] extension;
 
-    /** The default file extension. */
+    /**
+     * The default file extension.
+     */
     private final String parserId;
 
     /**
@@ -55,18 +61,18 @@ public abstract class AbstractParserModule
     /**
      * Constructor with same value for parser id and source directory.
      */
-    public AbstractParserModule( String parserId, String extension )
+    public AbstractParserModule( String parserId, String... extension )
     {
         this( parserId, extension, parserId );
     }
 
     /**
      * @param sourceDirectory not null
-     * @param extension not null
-     * @param parserId not null
+     * @param extension       not null
+     * @param parserId        not null
      * @since 1.1.1
      */
-    protected AbstractParserModule( String sourceDirectory, String extension, String parserId )
+    protected AbstractParserModule( String sourceDirectory, String[] extension, String parserId )
     {
         super();
         this.sourceDirectory = sourceDirectory;
@@ -74,19 +80,25 @@ public abstract class AbstractParserModule
         this.parserId = parserId;
     }
 
-    /** {@inheritDoc} */
+    /**
+     * {@inheritDoc}
+     */
     public String getSourceDirectory()
     {
         return sourceDirectory;
     }
 
-    /** {@inheritDoc} */
-    public String getExtension()
+    /**
+     * {@inheritDoc}
+     */
+    public String[] getExtension()
     {
         return extension;
     }
 
-    /** {@inheritDoc} */
+    /**
+     * {@inheritDoc}
+     */
     public String getParserId()
     {
         return parserId;

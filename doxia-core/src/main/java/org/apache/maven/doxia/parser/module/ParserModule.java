@@ -39,7 +39,7 @@ public interface ParserModule
      *
      * @return The default file extension.
      */
-    String getExtension();
+    String[] getExtension();
 
     /**
      * Returns the parser id for a given module.
