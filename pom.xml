@@ -25,7 +25,7 @@ under the License.
   <parent>
     <groupId>org.apache.maven</groupId>
     <artifactId>maven-parent</artifactId>
-    <version>25</version>
+    <version>26</version>
     <relativePath>../../pom/maven/pom.xml</relativePath>
   </parent>
 
@@ -388,7 +388,7 @@ under the License.
         <groupId>org.apache.rat</groupId>
         <artifactId>apache-rat-plugin</artifactId>
         <configuration>
-          <excludes>
+          <excludes combine.children="append">
             <exclude>src/test/resources/**/*.apt</exclude>
             <exclude>src/test/resources/**/*.apt.vm</exclude>
             <exclude>src/test/resources/**/*.confluence</exclude>
