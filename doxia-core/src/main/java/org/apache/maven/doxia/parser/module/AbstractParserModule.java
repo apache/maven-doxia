@@ -30,8 +30,8 @@ public abstract class AbstractParserModule
     /** The source directory. */
     private final String sourceDirectory;
 
-    /** The default file extension. */
-    private final String extension;
+    /** The supported file extensions. */
+    private final String[] extensions;
 
     /** The default file extension. */
     private final String parserId;
@@ -41,7 +41,7 @@ public abstract class AbstractParserModule
      */
     public AbstractParserModule()
     {
-        this( null, null, null );
+        this( null, (String[]) null, null );
     }
 
     /**
@@ -55,9 +55,9 @@ public abstract class AbstractParserModule
     /**
      * Constructor with same value for parser id and source directory.
      */
-    public AbstractParserModule( String parserId, String extension )
+    public AbstractParserModule( String parserId, String... extensions )
     {
-        this( parserId, extension, parserId );
+        this( parserId, extensions, parserId );
     }
 
     /**
@@ -70,7 +70,21 @@ public abstract class AbstractParserModule
     {
         super();
         this.sourceDirectory = sourceDirectory;
-        this.extension = extension;
+        this.extensions = new String[] { extension };
+        this.parserId = parserId;
+    }
+
+    /**
+     * @param sourceDirectory not null
+     * @param extensions not null
+     * @param parserId not null
+     * @since 1.7
+     */
+    protected AbstractParserModule( String sourceDirectory, String[] extensions, String parserId )
+    {
+        super();
+        this.sourceDirectory = sourceDirectory;
+        this.extensions = extensions;
         this.parserId = parserId;
     }
 
@@ -81,9 +95,9 @@ public abstract class AbstractParserModule
     }
 
     /** {@inheritDoc} */
-    public String getExtension()
+    public String[] getExtensions()
     {
-        return extension;
+        return extensions;
     }
 
     /** {@inheritDoc} */

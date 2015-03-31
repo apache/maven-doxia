@@ -35,11 +35,12 @@ public interface ParserModule
     String getSourceDirectory();
 
     /**
-     * Returns the default file extension for a given module.
+     * Returns the supported file extensions for a given module.
      *
-     * @return The default file extension.
+     * @return The supported file extensions.
+     * @since 1.7 (was String getExtension() before)
      */
-    String getExtension();
+    String[] getExtensions();
 
     /**
      * Returns the parser id for a given module.
