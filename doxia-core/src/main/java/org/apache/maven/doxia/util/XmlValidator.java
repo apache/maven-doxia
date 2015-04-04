@@ -129,7 +129,7 @@ public class XmlValidator
         {
             MessagesErrorHandler errorHandler = new MessagesErrorHandler( getLog() );
 
-            xmlReader = XMLReaderFactory.createXMLReader( "org.apache.xerces.parsers.SAXParser" );
+            xmlReader = XMLReaderFactory.createXMLReader();
             xmlReader.setFeature( "http://xml.org/sax/features/validation", true );
             xmlReader.setFeature( "http://apache.org/xml/features/validation/schema", true );
             xmlReader.setErrorHandler( errorHandler );
