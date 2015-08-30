@@ -23,6 +23,7 @@ import org.apache.commons.lang.StringEscapeUtils;
 import org.apache.commons.lang.StringUtils;
 import org.apache.maven.doxia.markup.HtmlMarkup;
 import org.apache.maven.doxia.module.xhtml.XhtmlParser;
+import org.apache.maven.doxia.parser.AbstractParser;
 import org.apache.maven.doxia.parser.ParseException;
 import org.apache.maven.doxia.parser.Parser;
 import org.apache.maven.doxia.sink.Sink;
@@ -47,14 +48,16 @@ import java.util.regex.Pattern;
 /**
  * Implementation of {@link org.apache.maven.doxia.parser.Parser} for Markdown documents.
  * <p/>
- * Defers parsing to the <a href="http://pegdown.org">PegDown library</a>.
+ * Defers effective parsing to the <a href="http://pegdown.org">PegDown library</a>, which generates HTML content
+ * then delegates parsing of this content to a slightly modified Doxia Xhtml parser.
  *
  * @author Julien Nicoulaud <julien.nicoulaud@gmail.com>
  * @since 1.3
+ * @see MarkdownToDoxiaHtmlSerializer
  */
 @Component( role = Parser.class, hint = "markdown" )
 public class MarkdownParser
-    extends XhtmlParser
+    extends AbstractParser
 {
 
     /**
@@ -89,111 +92,126 @@ public class MarkdownParser
         { "title", "author", "date", "address", "affiliation", "copyright", "email", "keywords", "language", "phone",
             "subtitle" };
 
+    public int getType()
+    {
+        return TXT_TYPE;
+    }
 
-    /**
-     * {@inheritDoc}
-     */
-    @Override
     public void parse( Reader source, Sink sink )
         throws ParseException
     {
         try
         {
-            String text = IOUtil.toString( source );
-            StringBuilder html = new StringBuilder( text.length() * 2 );
-            html.append( "<html>" );
-            html.append( "<head>" );
-            Pattern metadataPattern = Pattern.compile( MULTI_MARKDOWN_METADATA_SECTION, Pattern.MULTILINE );
-            Matcher metadataMatcher = metadataPattern.matcher( text );
-            boolean haveTitle = false;
-            if ( metadataMatcher.find() )
-            {
-                metadataPattern = Pattern.compile( MULTI_MARKDOWN_METADATA_ENTRY, Pattern.MULTILINE );
-                Matcher lineMatcher = metadataPattern.matcher( metadataMatcher.group( 1 ) );
-                boolean first = true;
-                while ( lineMatcher.find() )
-                {
-                    String key = StringUtils.trimToEmpty( lineMatcher.group( 1 ) );
-                    if ( first )
-                    {
-                        boolean found = false;
-                        for ( String k : STANDARD_METADATA_KEYS )
-                        {
-                            if ( k.equalsIgnoreCase( key ) )
-                            {
-                                found = true;
-                                break;
-                            }
-                        }
-                        if ( !found )
-                        {
-                            break;
-                        }
-                        first = false;
-                    }
-                    String value = StringUtils.trimToEmpty( lineMatcher.group( 2 ) );
-                    if ( "title".equalsIgnoreCase( key ) )
-                    {
-                        haveTitle = true;
-                        html.append( "<title>" );
-                        html.append( StringEscapeUtils.escapeXml( value ) );
-                        html.append( "</title>" );
-                    }
-                    else if ( "author".equalsIgnoreCase( key ) )
-                    {
-                        html.append( "<meta name=\'author\' content=\'" );
-                        html.append( StringEscapeUtils.escapeXml( value ) );
-                        html.append( "\' />" );
-                    }
-                    else if ( "date".equalsIgnoreCase( key ) )
-                    {
-                        html.append( "<meta name=\'date\' content=\'" );
-                        html.append( StringEscapeUtils.escapeXml( value ) );
-                        html.append( "\' />" );
-                    }
-                    else
-                    {
-                        html.append( "<meta name=\'" );
-                        html.append( StringEscapeUtils.escapeXml( key ) );
-                        html.append( "\' content=\'" );
-                        html.append( StringEscapeUtils.escapeXml( value ) );
-                        html.append( "\' />" );
-                    }
-                }
-                if ( !first )
-                {
-                    text = text.substring( metadataMatcher.end() );
-                }
-            }
-            RootNode rootNode = PEGDOWN_PROCESSOR.parseMarkdown( text.toCharArray() );
-            if ( !haveTitle && rootNode.getChildren().size() > 0 )
-            {
-                // use the first (non-comment) node only if it is a heading
-                int i = 0;
-                Node firstNode = null;
-                while ( i < rootNode.getChildren().size() && isHtmlComment(
-                    ( firstNode = rootNode.getChildren().get( i ) ) ) )
-                {
-                    i++;
-                }
-                if ( firstNode instanceof HeaderNode )
-                {
-                    html.append( "<title>" );
-                    html.append( StringEscapeUtils.escapeXml( nodeText( firstNode ) ) );
-                    html.append( "</title>" );
-                }
-            }
-            html.append( "</head>" );
-            html.append( "<body>" );
-            html.append( new MarkdownToDoxiaHtmlSerializer().toHtml( rootNode ) );
-            html.append( "</body>" );
-            html.append( "</html>" );
-            super.parse( new StringReader( html.toString() ), sink );
+            new PegDownHtmlParser().parse( new StringReader( toHtml( source ) ), sink );
         }
         catch ( IOException e )
         {
             throw new ParseException( "Failed reading Markdown source document", e );
         }
+    }
+
+    /**
+     * uses PegDown library to parse content and generate HTML output.
+     * 
+     * @param source the Markdown source
+     * @return HTML content generated by PegDown 
+     * @throws IOException
+     * @see MarkdownToDoxiaHtmlSerializer
+     */
+    private String toHtml( Reader source )
+        throws IOException
+    {
+        String text = IOUtil.toString( source );
+        StringBuilder html = new StringBuilder( text.length() * 2 );
+        html.append( "<html>" );
+        html.append( "<head>" );
+        Pattern metadataPattern = Pattern.compile( MULTI_MARKDOWN_METADATA_SECTION, Pattern.MULTILINE );
+        Matcher metadataMatcher = metadataPattern.matcher( text );
+        boolean haveTitle = false;
+        if ( metadataMatcher.find() )
+        {
+            metadataPattern = Pattern.compile( MULTI_MARKDOWN_METADATA_ENTRY, Pattern.MULTILINE );
+            Matcher lineMatcher = metadataPattern.matcher( metadataMatcher.group( 1 ) );
+            boolean first = true;
+            while ( lineMatcher.find() )
+            {
+                String key = StringUtils.trimToEmpty( lineMatcher.group( 1 ) );
+                if ( first )
+                {
+                    boolean found = false;
+                    for ( String k : STANDARD_METADATA_KEYS )
+                    {
+                        if ( k.equalsIgnoreCase( key ) )
+                        {
+                            found = true;
+                            break;
+                        }
+                    }
+                    if ( !found )
+                    {
+                        break;
+                    }
+                    first = false;
+                }
+                String value = StringUtils.trimToEmpty( lineMatcher.group( 2 ) );
+                if ( "title".equalsIgnoreCase( key ) )
+                {
+                    haveTitle = true;
+                    html.append( "<title>" );
+                    html.append( StringEscapeUtils.escapeXml( value ) );
+                    html.append( "</title>" );
+                }
+                else if ( "author".equalsIgnoreCase( key ) )
+                {
+                    html.append( "<meta name=\'author\' content=\'" );
+                    html.append( StringEscapeUtils.escapeXml( value ) );
+                    html.append( "\' />" );
+                }
+                else if ( "date".equalsIgnoreCase( key ) )
+                {
+                    html.append( "<meta name=\'date\' content=\'" );
+                    html.append( StringEscapeUtils.escapeXml( value ) );
+                    html.append( "\' />" );
+                }
+                else
+                {
+                    html.append( "<meta name=\'" );
+                    html.append( StringEscapeUtils.escapeXml( key ) );
+                    html.append( "\' content=\'" );
+                    html.append( StringEscapeUtils.escapeXml( value ) );
+                    html.append( "\' />" );
+                }
+            }
+            if ( !first )
+            {
+                text = text.substring( metadataMatcher.end() );
+            }
+        }
+        RootNode rootNode = PEGDOWN_PROCESSOR.parseMarkdown( text.toCharArray() );
+        if ( !haveTitle && rootNode.getChildren().size() > 0 )
+        {
+            // use the first (non-comment) node only if it is a heading
+            int i = 0;
+            Node firstNode = null;
+            while ( i < rootNode.getChildren().size() && isHtmlComment(
+                ( firstNode = rootNode.getChildren().get( i ) ) ) )
+            {
+                i++;
+            }
+            if ( firstNode instanceof HeaderNode )
+            {
+                html.append( "<title>" );
+                html.append( StringEscapeUtils.escapeXml( nodeText( firstNode ) ) );
+                html.append( "</title>" );
+            }
+        }
+        html.append( "</head>" );
+        html.append( "<body>" );
+        html.append( new MarkdownToDoxiaHtmlSerializer().toHtml( rootNode ) );
+        html.append( "</body>" );
+        html.append( "</html>" );
+
+        return html.toString();
     }
 
     public static boolean isHtmlComment( Node node )
@@ -230,33 +248,37 @@ public class MarkdownParser
         return builder.toString();
     }
 
-    @Override
-    protected boolean baseEndTag( XmlPullParser parser, Sink sink )
+    private static class PegDownHtmlParser
+        extends XhtmlParser
     {
-        boolean visited = super.baseEndTag( parser, sink );
-        if ( !visited )
+        @Override
+        protected boolean baseEndTag( XmlPullParser parser, Sink sink )
         {
-            if ( parser.getName().equals( HtmlMarkup.DIV.toString() ) )
+            boolean visited = super.baseEndTag( parser, sink );
+            if ( !visited )
             {
-                handleUnknown( parser, sink, TAG_TYPE_END );
-                visited = true;
+                if ( parser.getName().equals( HtmlMarkup.DIV.toString() ) )
+                {
+                    handleUnknown( parser, sink, TAG_TYPE_END );
+                    visited = true;
+                }
             }
+            return visited;
         }
-        return visited;
-    }
-
-    @Override
-    protected boolean baseStartTag( XmlPullParser parser, Sink sink )
-    {
-        boolean visited = super.baseStartTag( parser, sink );
-        if ( !visited )
+    
+        @Override
+        protected boolean baseStartTag( XmlPullParser parser, Sink sink )
         {
-            if ( parser.getName().equals( HtmlMarkup.DIV.toString() ) )
+            boolean visited = super.baseStartTag( parser, sink );
+            if ( !visited )
             {
-                handleUnknown( parser, sink, TAG_TYPE_START );
-                visited = true;
+                if ( parser.getName().equals( HtmlMarkup.DIV.toString() ) )
+                {
+                    handleUnknown( parser, sink, TAG_TYPE_START );
+                    visited = true;
+                }
             }
+            return visited;
         }
-        return visited;
     }
 }
