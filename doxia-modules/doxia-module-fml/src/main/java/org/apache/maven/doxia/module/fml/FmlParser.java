@@ -486,13 +486,8 @@ public class FmlParser
         {
             if ( StringUtils.isNotEmpty( macroName ) )
             {
-                // TODO handles specific macro attributes
-                macroParameters.put( "sourceContent", sourceContent );
-                FmlParser fmlParser = new FmlParser();
-                fmlParser.setSecondParsing( true );
-                macroParameters.put( "parser", fmlParser );
-
-                MacroRequest request = new MacroRequest( macroParameters, getBasedir() );
+                MacroRequest request =
+                    new MacroRequest( sourceContent, new FmlParser(), macroParameters, getBasedir() );
 
                 try
                 {

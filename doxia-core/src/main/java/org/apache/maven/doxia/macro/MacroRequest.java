@@ -20,6 +20,10 @@ package org.apache.maven.doxia.macro;
  */
 
 import java.util.Map;
+
+import org.apache.maven.doxia.parser.AbstractParser;
+import org.apache.maven.doxia.parser.Parser;
+
 import java.io.File;
 
 /**
@@ -31,6 +35,9 @@ import java.io.File;
  */
 public class MacroRequest
 {
+    private static final String PARAM_SOURCE_CONTENT = "sourceContent";
+    private static final String PARAM_PARSER = "parser";
+
     /** The current base directory. */
     private File basedir;
 
@@ -42,11 +49,21 @@ public class MacroRequest
      *
      * @param param A map of parameters.
      * @param base The current base directory.
+     * @deprecated prefer other constructor
      */
     public MacroRequest( Map<String, Object> param, File base )
     {
         this.parameters = param;
         this.basedir = base;
+    }
+
+    public MacroRequest( String sourceContent, AbstractParser parser, Map<String, Object> param, File base )
+    {
+        this.parameters = param;
+        this.basedir = base;
+        param.put( PARAM_SOURCE_CONTENT, sourceContent );
+        parser.setSecondParsing( true );
+        param.put( PARAM_PARSER, parser );
     }
 
     /**
@@ -89,5 +106,15 @@ public class MacroRequest
     public Object getParameter( String key )
     {
         return parameters.get( key );
+    }
+
+    public String getSourceContent()
+    {
+        return (String) getParameter( PARAM_SOURCE_CONTENT );
+    }
+
+    public Parser getParser()
+    {
+        return (Parser) getParameter( PARAM_PARSER );
     }
 }

@@ -392,13 +392,8 @@ public class XdocParser
         {
             if ( StringUtils.isNotEmpty( macroName ) )
             {
-                // TODO handles specific macro attributes
-                macroParameters.put( "sourceContent", sourceContent );
-                XdocParser xdocParser = new XdocParser();
-                xdocParser.setSecondParsing( true );
-                macroParameters.put( "parser", xdocParser );
-
-                MacroRequest request = new MacroRequest( macroParameters, getBasedir() );
+                MacroRequest request =
+                    new MacroRequest( sourceContent, new XdocParser(), macroParameters, getBasedir() );
 
                 try
                 {

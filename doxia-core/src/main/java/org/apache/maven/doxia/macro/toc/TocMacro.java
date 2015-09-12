@@ -97,8 +97,8 @@ public class TocMacro
     public void execute( Sink sink, MacroRequest request )
         throws MacroExecutionException
     {
-        String source = (String) request.getParameter( "sourceContent" );
-        Parser parser = (Parser) request.getParameter( "parser" );
+        String source = request.getSourceContent();
+        Parser parser = request.getParser();
 
         section = getInt( request, "section", 0 );
         fromDepth = getInt( request, "fromDepth", 0 );

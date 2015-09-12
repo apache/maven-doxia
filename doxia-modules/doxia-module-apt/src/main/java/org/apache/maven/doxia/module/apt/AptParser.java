@@ -2913,16 +2913,9 @@ public class AptParser
                 parameters.put( key, value );
             }
 
-            parameters.put( "sourceContent", sourceContent );
-
-            AptParser aptParser = new AptParser();
-            aptParser.setSecondParsing( true );
-            aptParser.enableLogging( getLog() );
-            parameters.put( "parser", aptParser );
-
             // getBasedir() does not work in multi-module builds, see DOXIA-373
             // the basedir should be injected from here, see DOXIA-224
-            MacroRequest request = new MacroRequest( parameters, getBasedir() );
+            MacroRequest request = new MacroRequest( sourceContent, new AptParser(), parameters, getBasedir() );
             try
             {
                 AptParser.this.executeMacro( macroId, request, sink );
