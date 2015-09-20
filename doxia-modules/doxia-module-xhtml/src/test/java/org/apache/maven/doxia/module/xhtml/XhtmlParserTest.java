@@ -154,4 +154,36 @@ public class XhtmlParserTest
         assertEquals( "unknown", it.next().getName() );
         assertFalse( it.hasNext() );
     }
+
+    /** @throws Exception  */
+    public void testTocMacro()
+        throws Exception
+    {
+        String text = "<html><body>" +
+                "<!-- MACRO{toc|fromDepth=1|toDepth=2} -->" +
+                "<h1>heading 1</h1><h2>heading 2</h2><h3>heading 3</h3>" +
+                "</body></html>";
+
+        SinkEventTestingSink sink = new SinkEventTestingSink();
+
+        ( (XhtmlParser) createParser() ).parse( text, sink );
+
+        Iterator<SinkEventElement> it = sink.getEventList().iterator();
+
+        assertEquals( "body", it.next().getName() );
+        assertEquals( "list", it.next().getName() );
+        assertEquals( "listItem", it.next().getName() );
+        assertEquals( "link", it.next().getName() );
+        assertEquals( "text", it.next().getName() );
+        assertEquals( "link_", it.next().getName() );
+        assertEquals( "list", it.next().getName() );
+        assertEquals( "listItem", it.next().getName() );
+        assertEquals( "link", it.next().getName() );
+        assertEquals( "text", it.next().getName() );
+        assertEquals( "link_", it.next().getName() );
+        assertEquals( "listItem_", it.next().getName() );
+        assertEquals( "list_", it.next().getName() );
+        assertEquals( "listItem_", it.next().getName() );
+        assertEquals( "list_", it.next().getName() );
+    }
 }

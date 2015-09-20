@@ -19,15 +19,26 @@ package org.apache.maven.doxia.module.xhtml;
  * under the License.
  */
 
+import java.io.IOException;
+import java.io.Reader;
+import java.io.StringReader;
+import java.io.StringWriter;
+import java.util.HashMap;
+import java.util.Map;
 import javax.swing.text.html.HTML.Attribute;
 
 import org.apache.maven.doxia.macro.MacroExecutionException;
+import org.apache.maven.doxia.macro.manager.MacroNotFoundException;
+import org.apache.maven.doxia.macro.MacroRequest;
+import org.apache.maven.doxia.parser.ParseException;
 import org.apache.maven.doxia.parser.Parser;
 import org.apache.maven.doxia.parser.XhtmlBaseParser;
 import org.apache.maven.doxia.sink.Sink;
 import org.apache.maven.doxia.sink.SinkEventAttributeSet;
 
 import org.codehaus.plexus.component.annotations.Component;
+import org.codehaus.plexus.util.IOUtil;
+import org.codehaus.plexus.util.StringUtils;
 import org.codehaus.plexus.util.xml.pull.XmlPullParser;
 import org.codehaus.plexus.util.xml.pull.XmlPullParserException;
 
@@ -48,6 +59,9 @@ public class XhtmlParser
 
     /** Empty elements don't write a closing tag. */
     private boolean isEmptyElement;
+
+    /** The source content of the input reader. Used to pass into macros. */
+    private String sourceContent;
 
     /** {@inheritDoc} */
     protected void handleStartTag( XmlPullParser parser, Sink sink )
@@ -207,11 +221,136 @@ public class XhtmlParser
     }
 
     /** {@inheritDoc} */
+    @Override
+    protected void handleComment( XmlPullParser parser, Sink sink )
+        throws XmlPullParserException
+    {
+        String text = getText( parser ).trim();
+
+        if ( text.startsWith( "MACRO" ) && !isSecondParsing() )
+        {
+            processMacro( text, sink );
+        }
+        else
+        {
+            super.handleComment( parser, sink );
+        }
+    }
+
+    /** process macro embedded in XHTML commment */
+    private void processMacro( String text, Sink sink )
+        throws XmlPullParserException
+    {
+        String s = text.substring( text.indexOf( '{' ) + 1, text.indexOf( '}' ) );
+        s = escapeForMacro( s );
+        String[] params = StringUtils.split( s, "|" );
+        String macroName = params[0];
+
+        Map<String, Object> parameters = new HashMap<String, Object>();
+        for ( int i = 1; i < params.length; i++ )
+        {
+            String[] param = StringUtils.split( params[i], "=" );
+            if ( param.length == 1 )
+            {
+                throw new XmlPullParserException( "Missing 'key=value' pair for macro parameter: " + params[i] );
+            }
+
+            String key = unescapeForMacro( param[0] );
+            String value = unescapeForMacro( param[1] );
+            parameters.put( key, value );
+        }
+
+        parameters.put( "sourceContent", sourceContent );
+        XhtmlParser xhtmlParser = new XhtmlParser();
+        xhtmlParser.setSecondParsing( true );
+        parameters.put( "parser", xhtmlParser );
+        MacroRequest request = new MacroRequest( parameters, getBasedir() );
+        try
+        {
+            executeMacro( macroName, request, sink );
+        }
+        catch ( MacroExecutionException e )
+        {
+            throw new XmlPullParserException( "Unable to execute macro in the document: " + macroName );
+        }
+        catch ( MacroNotFoundException me )
+        {
+            throw new XmlPullParserException( "Macro not found: " + macroName );
+        }
+    }
+
+    /**
+     * escapeForMacro
+     *
+     * @param s String
+     * @return String
+     */
+    private String escapeForMacro( String s )
+    {
+        if ( s == null || s.length() < 1 )
+        {
+            return s;
+        }
+
+        String result = s;
+
+        // use some outrageously out-of-place chars for text
+        // (these are device control one/two in unicode)
+        result = StringUtils.replace( result, "\\=", "\u0011" );
+        result = StringUtils.replace( result, "\\|", "\u0012" );
+
+        return result;
+    }
+
+    /**
+     * unescapeForMacro
+     *
+     * @param s String
+     * @return String
+     */
+    private String unescapeForMacro( String s )
+    {
+        if ( s == null || s.length() < 1 )
+        {
+            return s;
+        }
+
+        String result = s;
+
+        result = StringUtils.replace( result, "\u0011", "=" );
+        result = StringUtils.replace( result, "\u0012", "|" );
+
+        return result;
+    }
+
+    /** {@inheritDoc} */
     protected void init()
     {
         super.init();
 
         this.boxed = false;
         this.isEmptyElement = false;
+    }
+
+    /** {@inheritDoc} */
+    public void parse( Reader source, Sink sink )
+        throws ParseException
+    {
+        this.sourceContent = null;
+        try
+        {
+            StringWriter contentWriter = new StringWriter();
+            IOUtil.copy( source, contentWriter );
+            sourceContent = contentWriter.toString();
+            super.parse( new StringReader( sourceContent ), sink );
+        }
+        catch ( IOException ex )
+        {
+            throw new ParseException( "Error reading the input source: " + ex.getMessage(), ex );
+        }
+        finally
+        {
+            this.sourceContent = null;
+        }
     }
 }
