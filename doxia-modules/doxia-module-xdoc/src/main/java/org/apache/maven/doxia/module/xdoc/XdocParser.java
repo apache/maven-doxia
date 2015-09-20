@@ -93,7 +93,6 @@ public class XdocParser
         throws ParseException
     {
         this.sourceContent = null;
-        init();
 
         try
         {
@@ -110,21 +109,16 @@ public class XdocParser
             IOUtil.close( source );
         }
 
-        Reader tmp = new StringReader( sourceContent );
-
         // leave this at default (false) until everything is properly implemented, see DOXIA-226
         //setIgnorableWhitespace( true );
 
         try
         {
-            super.parse( tmp, sink );
+            super.parse( new StringReader( sourceContent ), sink );
         }
         finally
         {
             this.sourceContent = null;
-
-            setSecondParsing( false );
-            init();
         }
     }
 

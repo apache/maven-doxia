@@ -60,7 +60,9 @@ public class XhtmlParser
     /** Empty elements don't write a closing tag. */
     private boolean isEmptyElement;
 
-    /** The source content of the input reader. Used to pass into macros. */
+    /**
+     * The source content of the input reader. Used to pass into macros.
+     */
     private String sourceContent;
 
     /** {@inheritDoc} */
@@ -337,16 +339,25 @@ public class XhtmlParser
         throws ParseException
     {
         this.sourceContent = null;
+
         try
         {
             StringWriter contentWriter = new StringWriter();
             IOUtil.copy( source, contentWriter );
             sourceContent = contentWriter.toString();
-            super.parse( new StringReader( sourceContent ), sink );
         }
         catch ( IOException ex )
         {
             throw new ParseException( "Error reading the input source: " + ex.getMessage(), ex );
+        }
+        finally
+        {
+            IOUtil.close( source );
+        }
+
+        try
+        {
+            super.parse( new StringReader( sourceContent ), sink );
         }
         finally
         {
