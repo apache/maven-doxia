@@ -382,21 +382,18 @@ public class XdocParser
     private void handleMacroEnd( Sink sink )
         throws MacroExecutionException
     {
-        if ( !isSecondParsing() )
+        if ( !isSecondParsing() && StringUtils.isNotEmpty( macroName ) )
         {
-            if ( StringUtils.isNotEmpty( macroName ) )
-            {
-                MacroRequest request =
-                    new MacroRequest( sourceContent, new XdocParser(), macroParameters, getBasedir() );
+            MacroRequest request =
+                new MacroRequest( sourceContent, new XdocParser(), macroParameters, getBasedir() );
 
-                try
-                {
-                    executeMacro( macroName, request, sink );
-                }
-                catch ( MacroNotFoundException me )
-                {
-                    throw new MacroExecutionException( "Macro not found: " + macroName, me );
-                }
+            try
+            {
+                executeMacro( macroName, request, sink );
+            }
+            catch ( MacroNotFoundException me )
+            {
+                throw new MacroExecutionException( "Macro not found: " + macroName, me );
             }
         }
 
