@@ -262,11 +262,8 @@ public class XhtmlParser
             parameters.put( key, value );
         }
 
-        parameters.put( "sourceContent", sourceContent );
-        XhtmlParser xhtmlParser = new XhtmlParser();
-        xhtmlParser.setSecondParsing( true );
-        parameters.put( "parser", xhtmlParser );
-        MacroRequest request = new MacroRequest( parameters, getBasedir() );
+        MacroRequest request = new MacroRequest( sourceContent, new XhtmlParser(), parameters, getBasedir() );
+
         try
         {
             executeMacro( macroName, request, sink );
