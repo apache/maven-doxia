@@ -102,7 +102,11 @@ public class MarkdownParser
     {
         try
         {
-            new PegDownHtmlParser().parse( new StringReader( toHtml( source ) ), sink );
+            // Markdown to HTML (using Pegdown library)
+            String html = toHtml( source );
+            // then HTML to Sink API
+            XhtmlParser parser = new PegDownHtmlParser( isSecondParsing() );
+            parser.parse( new StringReader( html ), sink );
         }
         catch ( IOException e )
         {
@@ -251,6 +255,12 @@ public class MarkdownParser
     private static class PegDownHtmlParser
         extends XhtmlParser
     {
+        PegDownHtmlParser( boolean secondParsing )
+        {
+            super();
+            setSecondParsing( secondParsing );
+        }
+
         @Override
         protected boolean baseEndTag( XmlPullParser parser, Sink sink )
         {
