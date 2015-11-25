@@ -1,7 +1,5 @@
 package org.apache.maven.doxia.module.markdown;
 
-import org.apache.maven.doxia.module.xhtml.XhtmlParser;
-
 /*
  * Licensed to the Apache Software Foundation (ASF) under one
  * or more contributor license agreements.  See the NOTICE file
