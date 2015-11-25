@@ -265,7 +265,6 @@ public class MarkdownParser
         public PegDownHtmlParser()
         {
             super();
-            setSecondParsing( true );
         }
 
         @Override

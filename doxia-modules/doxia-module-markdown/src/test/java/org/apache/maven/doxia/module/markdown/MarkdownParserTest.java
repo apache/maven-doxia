@@ -1,5 +1,7 @@
 package org.apache.maven.doxia.module.markdown;
 
+import org.apache.maven.doxia.module.xhtml.XhtmlParser;
+
 /*
  * Licensed to the Apache Software Foundation (ASF) under one
  * or more contributor license agreements.  See the NOTICE file
@@ -292,5 +294,18 @@ public class MarkdownParserTest
         }
 
         return sink;
+    }
+
+    /** @throws Exception  */
+    public void testTocMacro()
+        throws Exception
+    {
+        Iterator<SinkEventElement> it = parseFileToEventTestingSink( "macro-toc" ).getEventList().iterator();
+
+        assertEquals( it, "head", "title", "text", "title_", "head_",
+                      "body", "list",
+                      "listItem", "link", "text", "link_", "listItem_",
+                      "listItem", "link", "text", "link_", "listItem_",
+                      "list_", "section1", "section2" );
     }
 }
