@@ -236,6 +236,15 @@ public class SinkEventTestingSink
         addEvent( "figure_" );
     }
 
+    /**
+     * {@inheritDoc}
+     * @since 1.7
+     */
+    public void ssi( final String directive )
+    {
+        addEvent( "ssi" );
+    }
+
     /** {@inheritDoc} */
     public void table()
     {

@@ -1904,6 +1904,22 @@ public class XhtmlBaseSink
     }
 
     /**
+     * {@inheritDoc}
+     * @sine 1.7
+     */
+    @Override
+    public void ssi( final String directive )
+    {
+        final StringBuilder buf = new StringBuilder( directive.length() + 9 );
+
+        buf.append( LESS_THAN ).append( BANG ).append( MINUS ).append( MINUS ).append( HASH );
+        buf.append( directive );
+        buf.append( SPACE ).append( MINUS ).append( MINUS ).append( GREATER_THAN );
+
+        write( buf.toString() );
+    }
+
+    /**
      * Add an unknown event.
      * This can be used to generate html tags for which no corresponding sink event exists.
      *

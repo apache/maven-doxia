@@ -260,7 +260,7 @@ public abstract class AbstractXmlParser
             }
             else if ( eventType == XmlPullParser.COMMENT )
             {
-                handleComment( parser, sink );
+                handleCommentOrSsi( parser, sink );
             }
             else if ( eventType == XmlPullParser.ENTITY_REF )
             {
@@ -359,6 +359,31 @@ public abstract class AbstractXmlParser
     }
 
     /**
+     * Decides whether a comment is a SSI directive and delegates to the
+     * corresponding method.
+     *
+     * @param parser A parser, not null.
+     * @param sink the sink to receive the events. Not null.
+     *
+     * @throws org.codehaus.plexus.util.xml.pull.XmlPullParserException if there's a problem parsing the model
+     * @since 1.7
+     */
+    private void handleCommentOrSsi( XmlPullParser parser, Sink sink )
+        throws XmlPullParserException
+    {
+        final String text = getText( parser ).trim();
+
+        if ( text.indexOf( HASH ) == 0 )
+        {
+            handleSsi( parser, sink );
+        }
+        else
+        {
+            handleComment( parser, sink );
+        }
+    }
+
+    /**
      * Handles comments.
      *
      * <p>This is a default implementation, all data are emitted as comment
@@ -372,6 +397,23 @@ public abstract class AbstractXmlParser
         throws XmlPullParserException
     {
         sink.comment( getText( parser ).trim() );
+    }
+
+    /**
+     * Handles SSI directives.
+     *
+     * <p>This is a default implementation, all data are emitted as SSI
+     * events into the specified sink.</p>
+     *
+     * @param parser A parser, not null.
+     * @param sink the sink to receive the events. Not null.
+     * @throws org.codehaus.plexus.util.xml.pull.XmlPullParserException if there's a problem parsing the model
+     * @since 1.7
+     */
+    protected void handleSsi( XmlPullParser parser, Sink sink )
+        throws XmlPullParserException
+    {
+        sink.ssi( getText( parser ).trim().substring( 1 ) );
     }
 
     /**

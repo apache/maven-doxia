@@ -408,6 +408,26 @@ public class FmlParser
         }
     }
 
+    /**
+     * {@inheritDoc}
+     * @sine 1.7
+     */
+    protected void handleSsi( XmlPullParser parser, Sink sink )
+        throws XmlPullParserException
+    {
+        final String directive = parser.getText().trim().substring( 1 );
+
+        if ( buffer != null )
+        {
+            buffer.append( LESS_THAN ).append( BANG ).append( MINUS ).append( MINUS ).append( HASH ).append( SPACE )
+                .append( directive ).append( SPACE ).append( MINUS ).append( MINUS ).append( GREATER_THAN );
+        }
+        else
+        {
+            sink.ssi( directive );
+        }
+    }
+
     /** {@inheritDoc} */
     protected void handleEntity( XmlPullParser parser, Sink sink )
         throws XmlPullParserException

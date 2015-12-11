@@ -1589,6 +1589,21 @@ public class DocBookSink
 
     /**
      * {@inheritDoc}
+     * @since 1.7
+     */
+    public void ssi( final String directive )
+    {
+        final StringBuilder buf = new StringBuilder( directive.length() + 10 );
+
+        buf.append( LESS_THAN ).append( BANG ).append( MINUS ).append( MINUS ).append( HASH ).append( SPACE );
+        buf.append( directive );
+        buf.append( SPACE ).append( MINUS ).append( MINUS ).append( GREATER_THAN );
+
+        write( buf.toString() );
+    }
+
+    /**
+     * {@inheritDoc}
      *
      * Unknown events just log a warning message but are ignored otherwise.
      * @see org.apache.maven.doxia.sink.Sink#unknown(String,Object[],SinkEventAttributes)

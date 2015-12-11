@@ -1,5 +1,8 @@
+~~
 ~~ comments before title
 ~~ like a license header, for example
+~~#
+~~# echo var="code"
  -----
  Test DOXIA-379
  -----
