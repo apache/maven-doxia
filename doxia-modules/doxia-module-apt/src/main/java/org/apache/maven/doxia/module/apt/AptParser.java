@@ -1368,7 +1368,7 @@ public class AptParser
             case COMMENT:
                 if ( charAt( line, length, i + 1 ) == COMMENT )
                 {
-                    block = new Comment( line.substring( i + 2 ).trim() );
+                    block = new Comment( line.substring( i + 2 ) );
                 }
                 break;
             default:

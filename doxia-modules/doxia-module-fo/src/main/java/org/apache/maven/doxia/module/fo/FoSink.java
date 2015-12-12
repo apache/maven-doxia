@@ -1379,15 +1379,20 @@ public class FoSink
                 comment = StringUtils.replace( comment, "--", "- -" );
             }
 
+            if ( comment.endsWith( "-" ) )
+            {
+                comment += " ";
+            }
+
             String msg = "Modified invalid comment: '" + originalComment + "' to '" + comment + "'";
             logMessage( "modifyComment", msg );
         }
 
-        StringBuilder buf = new StringBuilder( comment.length() + 9 );
+        StringBuilder buf = new StringBuilder( comment.length() + 7 );
 
-        buf.append( LESS_THAN ).append( BANG ).append( MINUS ).append( MINUS ).append( SPACE );
+        buf.append( LESS_THAN ).append( BANG ).append( MINUS ).append( MINUS );
         buf.append( comment );
-        buf.append( SPACE ).append( MINUS ).append( MINUS ).append( GREATER_THAN );
+        buf.append( MINUS ).append( MINUS ).append( GREATER_THAN );
 
         write( buf.toString() );
     }

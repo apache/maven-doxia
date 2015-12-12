@@ -789,9 +789,9 @@ public class XhtmlBaseParser
     protected void handleComment( XmlPullParser parser, Sink sink )
         throws XmlPullParserException
     {
-        String text = getText( parser ).trim();
+        String text = getText( parser );
 
-        if ( "PB".equals( text ) )
+        if ( "PB".equals( text.trim() ) )
         {
             sink.pageBreak();
         }

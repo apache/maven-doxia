@@ -371,7 +371,7 @@ public abstract class AbstractXmlParser
     protected void handleComment( XmlPullParser parser, Sink sink )
         throws XmlPullParserException
     {
-        sink.comment( getText( parser ).trim() );
+        sink.comment( getText( parser ) );
     }
 
     /**

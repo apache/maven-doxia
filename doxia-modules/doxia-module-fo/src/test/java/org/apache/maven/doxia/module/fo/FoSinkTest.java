@@ -439,7 +439,7 @@ public class FoSinkTest
     /** {@inheritDoc} */
     protected String getCommentBlock( String text )
     {
-        return "<!-- Simple comment with - - - - -->";
+        return "<!--Simple comment with - - - - -->";
     }
 
     /**

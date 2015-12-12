@@ -345,7 +345,7 @@ public class XhtmlSinkTest
         }
 
         String expected =
-            "<head>\n<title>Title</title><!-- A comment --><meta name=\"author\" content=\"&#x123;&amp;\" />"
+            "<head>\n<title>Title</title><!--A comment--><meta name=\"author\" content=\"&#x123;&amp;\" />"
                 + "<base href=\"http://maven.apache.org/\" /></head>";
         String actual = writer.toString();
         assertTrue( actual, actual.indexOf( expected ) != -1 );
@@ -354,6 +354,6 @@ public class XhtmlSinkTest
     /** {@inheritDoc} */
     protected String getCommentBlock( String text )
     {
-        return "<!-- Simple comment with - - - - -->";
+        return "<!--Simple comment with - - - - -->";
     }
 }

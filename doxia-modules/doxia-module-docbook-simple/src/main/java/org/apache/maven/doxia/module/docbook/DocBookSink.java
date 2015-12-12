@@ -1441,7 +1441,7 @@ public class DocBookSink
      */
     public void anchor_()
     {
-        comment( "anchor_end" );
+        comment( " anchor_end " );
     }
 
     /**
@@ -1574,15 +1574,20 @@ public class DocBookSink
                 comment = StringUtils.replace( comment, "--", "- -" );
             }
 
+            if ( comment.endsWith( "-" ) )
+            {
+                comment += " ";
+            }
+
             String msg = "Modified invalid comment: '" + originalComment + "' to '" + comment + "'";
             logMessage( "modifiedComment", msg );
         }
 
-        StringBuilder buffer = new StringBuilder( comment.length() + 9 );
+        StringBuilder buffer = new StringBuilder( comment.length() + 7 );
 
-        buffer.append( LESS_THAN ).append( BANG ).append( MINUS ).append( MINUS ).append( SPACE );
+        buffer.append( LESS_THAN ).append( BANG ).append( MINUS ).append( MINUS );
         buffer.append( comment );
-        buffer.append( SPACE ).append( MINUS ).append( MINUS ).append( GREATER_THAN );
+        buffer.append( MINUS ).append( MINUS ).append( GREATER_THAN );
 
         markup( buffer.toString() );
     }

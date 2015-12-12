@@ -907,7 +907,7 @@ public class AptSink
     /** {@inheritDoc} */
     public void comment( String comment )
     {
-        rawText( ( startFlag ? "" : EOL ) + COMMENT + COMMENT + SPACE + comment.trim() );
+        rawText( ( startFlag ? "" : EOL ) + COMMENT + COMMENT + comment );
     }
 
     /**

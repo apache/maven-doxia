@@ -514,7 +514,7 @@ public class DocBookParser
         }
         else
         {
-            sink.comment( text.trim() );
+            sink.comment( text );
         }
     }
 

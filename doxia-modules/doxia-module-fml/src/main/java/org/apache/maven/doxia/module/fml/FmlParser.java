@@ -404,7 +404,7 @@ public class FmlParser
         }
         else
         {
-            sink.comment( comment.trim() );
+            sink.comment( comment );
         }
     }
 

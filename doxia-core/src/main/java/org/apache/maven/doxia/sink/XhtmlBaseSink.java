@@ -1779,7 +1779,7 @@ public class XhtmlBaseSink
     @Override
     public void pageBreak()
     {
-        comment( "PB" );
+        comment( " PB " );
     }
 
     /** {@inheritDoc} */
@@ -1891,14 +1891,19 @@ public class XhtmlBaseSink
                 cmt = StringUtils.replace( cmt, "--", "- -" );
             }
 
+            if ( cmt.endsWith( "-" ) )
+            {
+                cmt += " ";
+            }
+
             getLog().warn( "[Xhtml Sink] Modified invalid comment: '" + originalComment + "' to '" + cmt + "'" );
         }
 
-        StringBuilder buf = new StringBuilder( cmt.length() + 9 );
+        StringBuilder buf = new StringBuilder( cmt.length() + 7 );
 
-        buf.append( LESS_THAN ).append( BANG ).append( MINUS ).append( MINUS ).append( SPACE );
+        buf.append( LESS_THAN ).append( BANG ).append( MINUS ).append( MINUS );
         buf.append( cmt );
-        buf.append( SPACE ).append( MINUS ).append( MINUS ).append( GREATER_THAN );
+        buf.append( MINUS ).append( MINUS ).append( GREATER_THAN );
 
         write( buf.toString() );
     }

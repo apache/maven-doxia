@@ -1234,7 +1234,7 @@ public class LatexSink
     /** {@inheritDoc} */
     public void comment( String comment )
     {
-        rawText( EOL + "% " + comment );
+        rawText( EOL + "%" + comment );
     }
 
     /**

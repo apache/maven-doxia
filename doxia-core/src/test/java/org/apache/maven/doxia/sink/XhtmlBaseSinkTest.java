@@ -916,13 +916,16 @@ public class XhtmlBaseSinkTest
         {
             sink = new XhtmlBaseSink( writer );
             sink.comment( "a comment" );
+            sink.comment( " a comment" );
+            sink.comment( "a comment " );
+            sink.comment( " a comment " );
         }
         finally
         {
             sink.close();
         }
 
-        assertEquals( "<!-- a comment -->", writer.toString() );
+        assertEquals( "<!--a comment--><!-- a comment--><!--a comment --><!-- a comment -->", writer.toString() );
     }
 
     /**
