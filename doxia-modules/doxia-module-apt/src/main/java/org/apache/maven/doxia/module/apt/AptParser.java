@@ -112,9 +112,6 @@ public class AptParser
     /** Comment event id. */
     private static final int COMMENT_BLOCK = 17;
 
-    /** SSI event id. */
-    private static final int SSI_BLOCK = 18;
-
     /** String representations of event ids */
     private static final String TYPE_NAMES[] = {
         "TITLE",
@@ -134,8 +131,7 @@ public class AptParser
         "PG_BREAK",
         "LIST_BREAK",
         "MACRO",
-        "COMMENT_BLOCK",
-        "SSI_BLOCK" };
+        "COMMENT_BLOCK" };
 
     /** An array of 85 spaces. */
     protected static final char[] SPACES;
@@ -222,8 +218,8 @@ public class AptParser
             // Lookahead block.
             nextBlock( /*first*/true );
 
-            // traverse comments and SSI directives
-            while ( ( block != null ) && ( block.getType() == COMMENT_BLOCK || block.getType() == SSI_BLOCK ) )
+            // traverse comments
+            while ( ( block != null ) && ( block.getType() == COMMENT_BLOCK ) )
             {
                 block.traverse();
                 nextBlock( /*first*/true );
@@ -1372,10 +1368,7 @@ public class AptParser
             case COMMENT:
                 if ( charAt( line, length, i + 1 ) == COMMENT )
                 {
-                    block = charAt( line, length, i + 2 ) == HASH
-                                ? new SSI( line.substring( i + 3 ).trim() )
-                                : new Comment( line.substring( i + 2 ).trim() );
-
+                    block = new Comment( line.substring( i + 2 ).trim() );
                 }
                 break;
             default:
@@ -2239,30 +2232,6 @@ public class AptParser
             throws AptParseException
         {
             AptParser.this.sink.comment( text );
-        }
-    }
-
-    /** A SSI Block. */
-    private class SSI
-        extends Block
-    {
-        /**
-         * Constructor.
-         *
-         * @param line the SSI directive.
-         * @throws AptParseException AptParseException
-         */
-        public SSI( String line )
-            throws AptParseException
-        {
-            super( SSI_BLOCK, 0, line );
-        }
-
-        /** {@inheritDoc} */
-        public void traverse()
-            throws AptParseException
-        {
-            AptParser.this.sink.ssi( text );
         }
     }
 

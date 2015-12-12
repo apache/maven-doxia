@@ -597,14 +597,13 @@ public class XhtmlBaseParserTest
     public void testSpecial()
         throws Exception
     {
-        String text = "<p><!-- a pagebreak: --><!-- PB --><!--#echo var=\"code\" -->&nbsp;&#160;<unknown /></p>";
+        String text = "<p><!-- a pagebreak: --><!-- PB -->&nbsp;&#160;<unknown /></p>";
         parser.parse( text, sink );
         Iterator<SinkEventElement> it = sink.getEventList().iterator();
 
         assertEquals( "paragraph", it.next().getName() );
         assertEquals( "comment", it.next().getName() );
         assertEquals( "pageBreak", it.next().getName() );
-        assertEquals( "ssi", it.next().getName() );
         assertEquals( "nonBreakingSpace", it.next().getName() );
         assertEquals( "nonBreakingSpace", it.next().getName() );
         // unknown events are not reported by the base parser

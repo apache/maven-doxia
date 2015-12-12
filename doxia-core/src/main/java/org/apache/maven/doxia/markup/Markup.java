@@ -80,8 +80,4 @@ public interface Markup
 
     /** semicolon character: ';' */
     char SEMICOLON = ';';
-
-    /** hash character: '#' */
-    char HASH = '#';
-
 }

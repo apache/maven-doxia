@@ -912,15 +912,6 @@ public class AptSink
 
     /**
      * {@inheritDoc}
-     * @since 1.7
-     */
-    public void ssi( final String directive )
-    {
-        rawText( ( startFlag ? "" : EOL ) + COMMENT + COMMENT + HASH + SPACE + directive );
-    }
-
-    /**
-     * {@inheritDoc}
      *
      * Unkown events just log a warning message but are ignored otherwise.
      * @see org.apache.maven.doxia.sink.Sink#unknown(String,Object[],SinkEventAttributes)

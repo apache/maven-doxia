@@ -218,15 +218,6 @@ public class WellformednessCheckingSink
         checkWellformedness( "figure" );
     }
 
-    /**
-     * {@inheritDoc}
-     * @since 1.7
-     */
-    public void ssi( final String directive )
-    {
-        // ignore
-    }
-
     /** {@inheritDoc} */
     public void table()
     {

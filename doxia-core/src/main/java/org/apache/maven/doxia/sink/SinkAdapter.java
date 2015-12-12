@@ -212,15 +212,6 @@ public class SinkAdapter
         // nop
     }
 
-    /**
-     * {@inheritDoc}
-     * @since 1.7
-     */
-    public void ssi( final String directive )
-    {
-        // nop
-    }
-
     /** {@inheritDoc} */
     public void table()
     {

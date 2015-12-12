@@ -1345,14 +1345,6 @@ public interface Sink
     void comment( String comment );
 
     /**
-     * Add a SSI directive.
-     *
-     * @param directive The directive to write.
-     * @since 1.7
-     */
-    void ssi( String directive );
-
-    /**
      * Add an unknown event. This may be used by parsers to notify a general Sink about
      * an event that doesn't fit into any event defined by the Sink API.
      * Depending on the parameters, a Sink may decide whether or not to process the event,

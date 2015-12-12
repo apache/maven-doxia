@@ -726,15 +726,6 @@ public class RandomAccessSink
         currentSink.section_( level );
     }
 
-    /**
-     * {@inheritDoc}
-     * @since 1.7
-     */
-    public void ssi( final String directive )
-    {
-        currentSink.ssi( directive );
-    }
-
     /** {@inheritDoc} */
     public void table()
     {

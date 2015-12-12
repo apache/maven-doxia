@@ -222,15 +222,6 @@ public class TextSink
         writeln( "end:figure" );
     }
 
-    /**
-     * {@inheritDoc}
-     * @since 1.7
-     */
-    public void ssi( final String directive )
-    {
-        writeln( "ssi:" + directive );
-    }
-
     /** {@inheritDoc} */
     public void table()
     {
