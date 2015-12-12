@@ -260,6 +260,6 @@ public class DocBookSinkTest extends AbstractSinkTest
     /** {@inheritDoc} */
     protected String getCommentBlock( String text )
     {
-        return "<!--Simple comment with - - - - -->";
+        return "<!--" + toXmlComment( text ) + "-->";
     }
 }

@@ -39,7 +39,6 @@ import org.apache.maven.doxia.util.DoxiaUtils;
 import org.apache.maven.doxia.util.HtmlTools;
 
 import org.codehaus.plexus.util.FileUtils;
-import org.codehaus.plexus.util.StringUtils;
 
 /**
  * <a href="http://www.oasis-open.org/docbook">Docbook</a> Sink implementation.
@@ -1565,13 +1564,14 @@ public class DocBookSink
     /** {@inheritDoc} */
     public void comment( String comment )
     {
-        if ( StringUtils.isNotEmpty( comment ) && comment.indexOf( "--" ) != -1 )
+        if ( comment != null )
         {
             String originalComment = comment;
+
             // http://www.w3.org/TR/2000/REC-xml-20001006#sec-comments
-            while ( comment.indexOf( "--" ) != -1 )
+            while ( comment.contains( "--" ) )
             {
-                comment = StringUtils.replace( comment, "--", "- -" );
+                comment = comment.replace( "--", "- -" );
             }
 
             if ( comment.endsWith( "-" ) )
@@ -1579,17 +1579,20 @@ public class DocBookSink
                 comment += " ";
             }
 
-            String msg = "Modified invalid comment: '" + originalComment + "' to '" + comment + "'";
-            logMessage( "modifiedComment", msg );
+            if ( !originalComment.equals( comment ) )
+            {
+                String msg = "Modified invalid comment: '" + originalComment + "' to '" + comment + "'";
+                logMessage( "modifiedComment", msg );
+            }
+
+            StringBuilder buffer = new StringBuilder( comment.length() + 7 );
+
+            buffer.append( LESS_THAN ).append( BANG ).append( MINUS ).append( MINUS );
+            buffer.append( comment );
+            buffer.append( MINUS ).append( MINUS ).append( GREATER_THAN );
+
+            markup( buffer.toString() );
         }
-
-        StringBuilder buffer = new StringBuilder( comment.length() + 7 );
-
-        buffer.append( LESS_THAN ).append( BANG ).append( MINUS ).append( MINUS );
-        buffer.append( comment );
-        buffer.append( MINUS ).append( MINUS ).append( GREATER_THAN );
-
-        markup( buffer.toString() );
     }
 
     /**

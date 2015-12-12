@@ -243,6 +243,6 @@ public class LatexSinkTest
     /** {@inheritDoc} */
     protected String getCommentBlock( String text )
     {
-        return EOL + "%Simple comment with ----";
+        return EOL + "%" + text;
     }
 }

@@ -298,6 +298,6 @@ public class XdocSinkTest
     /** {@inheritDoc} */
     protected String getCommentBlock( String text )
     {
-        return "<!--Simple comment with - - - - -->";
+        return "<!--" + toXmlComment( text ) + "-->";
     }
 }

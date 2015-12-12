@@ -43,7 +43,6 @@ import org.apache.maven.doxia.sink.SinkUtils;
 import org.apache.maven.doxia.util.DoxiaUtils;
 import org.apache.maven.doxia.util.HtmlTools;
 
-import org.codehaus.plexus.util.StringUtils;
 import org.codehaus.plexus.util.xml.PrettyPrintXMLWriter;
 
 /**
@@ -1369,14 +1368,14 @@ public class FoSink
     /** {@inheritDoc} */
     public void comment( String comment )
     {
-
-        if ( StringUtils.isNotEmpty( comment ) && comment.indexOf( "--" ) != -1 )
+        if ( comment != null )
         {
-            String originalComment = comment;
+            final String originalComment = comment;
+
             // http://www.w3.org/TR/2000/REC-xml-20001006#sec-comments
-            while ( comment.indexOf( "--" ) != -1 )
+            while ( comment.contains( "--" ) )
             {
-                comment = StringUtils.replace( comment, "--", "- -" );
+                comment = comment.replace( "--", "- -" );
             }
 
             if ( comment.endsWith( "-" ) )
@@ -1384,17 +1383,20 @@ public class FoSink
                 comment += " ";
             }
 
-            String msg = "Modified invalid comment: '" + originalComment + "' to '" + comment + "'";
-            logMessage( "modifyComment", msg );
+            if ( !originalComment.equals( comment ) )
+            {
+                String msg = "Modified invalid comment: '" + originalComment + "' to '" + comment + "'";
+                logMessage( "modifyComment", msg );
+            }
+
+            final StringBuilder buffer = new StringBuilder( comment.length() + 7 );
+
+            buffer.append( LESS_THAN ).append( BANG ).append( MINUS ).append( MINUS );
+            buffer.append( comment );
+            buffer.append( MINUS ).append( MINUS ).append( GREATER_THAN );
+
+            write( buffer.toString() );
         }
-
-        StringBuilder buf = new StringBuilder( comment.length() + 7 );
-
-        buf.append( LESS_THAN ).append( BANG ).append( MINUS ).append( MINUS );
-        buf.append( comment );
-        buf.append( MINUS ).append( MINUS ).append( GREATER_THAN );
-
-        write( buf.toString() );
     }
 
     /**

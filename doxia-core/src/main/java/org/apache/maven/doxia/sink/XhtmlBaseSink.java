@@ -1880,32 +1880,34 @@ public class XhtmlBaseSink
     @Override
     public void comment( String comment )
     {
-        String cmt = comment;
-
-        if ( StringUtils.isNotEmpty( cmt ) && cmt.contains( "--" ) )
+        if ( comment != null )
         {
-            String originalComment = cmt;
+            final String originalComment = comment;
+
             // http://www.w3.org/TR/2000/REC-xml-20001006#sec-comments
-            while ( cmt.contains( "--" ) )
+            while ( comment.contains( "--" ) )
             {
-                cmt = StringUtils.replace( cmt, "--", "- -" );
+                comment = comment.replace( "--", "- -" );
             }
 
-            if ( cmt.endsWith( "-" ) )
+            if ( comment.endsWith( "-" ) )
             {
-                cmt += " ";
+                comment += " ";
             }
 
-            getLog().warn( "[Xhtml Sink] Modified invalid comment: '" + originalComment + "' to '" + cmt + "'" );
+            if ( !originalComment.equals( comment ) )
+            {
+                getLog().warn( "[Xhtml Sink] Modified invalid comment '" + originalComment + "' to '" + comment + "'" );
+            }
+
+            final StringBuilder buffer = new StringBuilder( comment.length() + 7 );
+
+            buffer.append( LESS_THAN ).append( BANG ).append( MINUS ).append( MINUS );
+            buffer.append( comment );
+            buffer.append( MINUS ).append( MINUS ).append( GREATER_THAN );
+
+            write( buffer.toString() );
         }
-
-        StringBuilder buf = new StringBuilder( cmt.length() + 7 );
-
-        buf.append( LESS_THAN ).append( BANG ).append( MINUS ).append( MINUS );
-        buf.append( cmt );
-        buf.append( MINUS ).append( MINUS ).append( GREATER_THAN );
-
-        write( buf.toString() );
     }
 
     /**
