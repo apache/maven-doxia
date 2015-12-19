@@ -265,9 +265,6 @@ public class XhtmlBaseSink
 
         resetTextBuffer();
 
-        this.headFlag = false;
-        this.verbatimFlag = false;
-        this.evenTableRow = true;
         this.cellJustifStack.clear();
         this.isCellJustifStack.clear();
         this.cellCountStack.clear();
@@ -280,6 +277,7 @@ public class XhtmlBaseSink
         this.figureCaptionFlag = false;
         this.paragraphFlag = false;
         this.verbatimFlag = false;
+
         this.evenTableRow = true;
         this.tableAttributes = null;
         this.legacyFigure = false;
