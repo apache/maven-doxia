@@ -1,8 +1,5 @@
 package org.apache.maven.doxia.util;
 
-import org.apache.maven.doxia.logging.Log;
-import org.apache.maven.doxia.logging.SystemStreamLog;
-
 /*
  * Licensed to the Apache Software Foundation (ASF) under one
  * or more contributor license agreements.  See the NOTICE file
@@ -22,6 +19,8 @@ import org.apache.maven.doxia.logging.SystemStreamLog;
  * under the License.
  */
 
+import org.apache.maven.doxia.logging.Log;
+import org.apache.maven.doxia.logging.SystemStreamLog;
 import org.codehaus.plexus.PlexusTestCase;
 import org.codehaus.plexus.util.IOUtil;
 import org.codehaus.plexus.util.xml.XmlStreamReader;
@@ -38,11 +37,11 @@ extends PlexusTestCase
     public void testValidate()
     throws Exception
     {
-        String content = IOUtil.toString( new XmlStreamReader( this.getClass().getResourceAsStream( "/test.xhtml" ) ) );
+        String xml = IOUtil.toString( new XmlStreamReader( this.getClass().getResourceAsStream( "/test.xhtml" ) ) );
 
         Log log = new SystemStreamLog();
         XmlValidator validator = new XmlValidator( log );
 
-        validator.validate( content );
+        validator.validate( xml );
     }
 }
