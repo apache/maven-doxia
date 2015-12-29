@@ -1643,7 +1643,7 @@ work best -- and look better -- when you format them with hard breaks.
 Markdown supports two styles of headers, [Setext] [1] and [atx] [2].
 
 Setext-style headers are "underlined" using equal signs (for first-level
-headers) and dashes (for second-level headers). For example:
+headers) and hyphens (for second-level headers). For example:
 
     This is an H1
     =============
@@ -3786,9 +3786,9 @@ And more      |               |   And more   |
 pegdown/src/test/resources/PhpMarkdown/Backslash_escapes.md
 ---
 
-Tricky combinaisons:
+Tricky combinations:
 
-backslash with \-- two dashes
+backslash with \-- two hyphens
 
 backslash with \> greater than
 
