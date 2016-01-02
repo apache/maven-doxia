@@ -141,7 +141,7 @@ public class Apt2FO
       <p>
         To compile and run the following example,
         you need the following dependencies on your classpath
-        (numbers in brackets are tested versions).<br/>
+        (tested versions in parentheses).<br/>
         Compile:
         <code>doxia-core (1.1.4)</code>, <code>doxia-module-fo (1.1.1)</code>,
         <code>doxia-sink-api (1.1.4)</code>, <code>doxia-logging-api (1.1.4)</code>.<br/>
