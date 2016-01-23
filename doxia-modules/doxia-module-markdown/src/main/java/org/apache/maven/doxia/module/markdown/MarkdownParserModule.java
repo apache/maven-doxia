@@ -38,10 +38,15 @@ public class MarkdownParserModule
     public static final String FILE_EXTENSION = "md";
 
     /**
+     * Alternate extension for Markdown files.
+     */
+    public static final String ALTERNATE_FILE_EXTENSION = "markdown";
+
+    /**
      * Build a new instance of {@link MarkdownSiteModule}.
      */
     public MarkdownParserModule()
     {
-        super( MarkdownParser.ROLE_HINT, FILE_EXTENSION );
+        super( MarkdownParser.ROLE_HINT, FILE_EXTENSION, ALTERNATE_FILE_EXTENSION );
     }
 }
