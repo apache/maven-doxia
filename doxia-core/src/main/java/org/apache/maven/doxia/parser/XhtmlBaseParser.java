@@ -797,7 +797,10 @@ public class XhtmlBaseParser
         }
         else
         {
-            sink.comment( text );
+            if ( isEmitComments() )
+            {
+                sink.comment( text );
+            }
         }
     }
 

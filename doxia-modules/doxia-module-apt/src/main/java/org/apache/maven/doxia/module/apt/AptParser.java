@@ -2231,7 +2231,10 @@ public class AptParser
         public void traverse()
             throws AptParseException
         {
-            AptParser.this.sink.comment( text );
+            if ( isEmitComments() )
+            {
+                AptParser.this.sink.comment( text );
+            }
         }
     }
 

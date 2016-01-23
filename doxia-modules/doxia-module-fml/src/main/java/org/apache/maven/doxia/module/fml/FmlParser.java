@@ -404,7 +404,10 @@ public class FmlParser
         }
         else
         {
-            sink.comment( comment );
+            if ( isEmitComments() )
+            {
+                sink.comment( comment );
+            }
         }
     }
 

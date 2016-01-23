@@ -272,6 +272,8 @@ under the License.
                 <exclude>org/apache/maven/doxia/module/site</exclude>
                 <exclude>org/apache/maven/doxia/module/site/**</exclude>
                 <exclude>org/apache/maven/doxia/module/*/*SiteModule</exclude>
+                <!-- DOXIA-482 -->
+                <exclude>org/apache/maven/doxia/parser/Parser</exclude>
               </excludes>
             </configuration>
           </execution>

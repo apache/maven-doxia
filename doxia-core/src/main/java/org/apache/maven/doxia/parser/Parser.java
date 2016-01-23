@@ -66,4 +66,18 @@ public interface Parser
      * @return the type of Parser
      */
     int getType();
+
+    /**
+     * When comments are found in source markup, emit comment Doxia events or just ignore?
+     *
+     * @param emitComments <code>true</code> (default value) to emit comment Doxia events
+     */
+    void setEmitComments( boolean emitComments );
+
+    /**
+     * Does the parser emit Doxia comments event when comments found in source?
+     *
+     * @return <code>true</code> (default value) if comment Doxia events are emitted
+     */
+    boolean isEmitComments();
 }

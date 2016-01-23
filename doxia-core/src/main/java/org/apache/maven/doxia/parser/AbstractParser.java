@@ -56,6 +56,11 @@ public abstract class AbstractParser
     /** Log instance. */
     private Log logger;
 
+    /**
+     * Emit Doxia comment events when parsing comments?
+     */
+    private boolean emitComments = true;
+
     private static final String DOXIA_VERSION;
 
     static
@@ -97,6 +102,16 @@ public abstract class AbstractParser
     public int getType()
     {
         return UNKNOWN_TYPE;
+    }
+
+    public void setEmitComments( boolean emitComments )
+    {
+        this.emitComments = emitComments;
+    }
+
+    public boolean isEmitComments()
+    {
+        return emitComments;
     }
 
     /**

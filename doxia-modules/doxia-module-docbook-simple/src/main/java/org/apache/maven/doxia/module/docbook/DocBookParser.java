@@ -514,7 +514,10 @@ public class DocBookParser
         }
         else
         {
-            sink.comment( text );
+            if ( isEmitComments() )
+            {
+                sink.comment( text );
+            }
         }
     }
 
