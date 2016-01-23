@@ -300,6 +300,21 @@ public class ConfluenceParserTest
         assertEquals( 9, result.split( "end:link\n" ).length );
     }
 
+    public void testTable()
+        throws Exception
+    {
+        String result = locateAndParseTestSourceFile( "table" );
+        
+        // DOXIA-537
+        // |1|2|3|
+        assertContainsLines( result, "begin:tableRow\nbegin:tableCell\ntext: 1\nend:tableCell\n\n\nbegin:tableCell\ntext: 2\nend:tableCell\n\n\nbegin:tableCell\ntext: 3\nend:tableCell\n" );
+        // |1||3|
+        assertContainsLines( result, "begin:tableRow\nbegin:tableCell\ntext: 1\nend:tableCell\n\n\nbegin:tableCell\ntext: 3\nend:tableCell\n" );
+        // |1| |3|
+        assertContainsLines( result, "begin:tableRow\nbegin:tableCell\ntext: 1\nend:tableCell\n\n\nbegin:tableCell\ntext:  \nend:tableCell\n\n\nbegin:tableCell\ntext: 3\nend:tableCell\n" );
+        
+    }
+
     /** @throws Exception */
     public void testTableWithLinks()
         throws Exception

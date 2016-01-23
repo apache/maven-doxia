@@ -133,12 +133,11 @@ public class TableBlockParser
                     it++;
                 }
 
-                String[] pText = texts.toArray( new String[0] );
-                for ( int i = 0; i < pText.length; i++ )
+                for ( String pText : texts )
                 {
                     List<Block> blocks = new ArrayList<Block>();
 
-                    blocks.add( parseLine( pText[i], new ByLineReaderSource( new StringReader( EMPTY_STRING ) ) ) );
+                    blocks.add( parseLine( pText, new ByLineReaderSource( new StringReader( EMPTY_STRING ) ) ) );
 
                     cells.add( new TableCellBlock( blocks ) );
                 }
@@ -146,7 +145,6 @@ public class TableBlockParser
 
             rows.add( new TableRowBlock( cells ) );
         }
-
         while ( ( l = source.getNextLine() ) != null && accept( l, source ) );
 
         assert rows.size() >= 1;
@@ -157,7 +155,7 @@ public class TableBlockParser
     private Block parseLine( String text, ByLineSource source )
         throws ParseException
     {
-        if ( text.trim().length() > 0 )
+        if ( text.length() > 0 )
         {
             for ( BlockParser parser : parsers )
             {
