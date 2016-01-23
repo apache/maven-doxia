@@ -70,7 +70,7 @@ public class MarkdownParserTest
     @Override
     protected String outputExtension()
     {
-        return MarkdownSiteModule.FILE_EXTENSION;
+        return MarkdownParserModule.FILE_EXTENSION;
     }
 
     /**

@@ -263,10 +263,15 @@ under the License.
             </goals>
             <configuration>
               <excludes>
-                <exclude>org/apache/maven/doxia/sink/render/*</exclude>
-                <exclude>org/apache/maven/doxia/parser/module/*</exclude>
-                <exclude>org/apache/maven/doxia/module/fo/*</exclude>
-                <exclude>org/apache/maven/doxia/module/markdown/*</exclude>
+                <exclude>org/apache/maven/doxia/module/fo/FoAggregateSink</exclude>
+                <!-- DOXIA-527 -->
+                <exclude>org/apache/maven/doxia/parser/module/*Module</exclude>
+                <!-- DOXIA-492 -->
+                <exclude>org/apache/maven/doxia/module/markdown/MarkdownParser</exclude>
+                <!-- DOXIA-511 -->
+                <exclude>org/apache/maven/doxia/module/site</exclude>
+                <exclude>org/apache/maven/doxia/module/site/**</exclude>
+                <exclude>org/apache/maven/doxia/module/*/*SiteModule</exclude>
               </excludes>
             </configuration>
           </execution>
