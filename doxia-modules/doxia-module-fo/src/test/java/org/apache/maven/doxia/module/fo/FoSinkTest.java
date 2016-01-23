@@ -28,9 +28,9 @@ import org.apache.maven.doxia.document.DocumentModel;
 import org.apache.maven.doxia.document.DocumentTOC;
 import org.apache.maven.doxia.document.DocumentTOCItem;
 import org.apache.maven.doxia.parser.XhtmlBaseParser;
-import org.apache.maven.doxia.sink.AbstractSinkTest;
 import org.apache.maven.doxia.sink.Sink;
-import org.apache.maven.doxia.sink.SinkTestDocument;
+import org.apache.maven.doxia.sink.impl.AbstractSinkTest;
+import org.apache.maven.doxia.sink.impl.SinkTestDocument;
 
 /**
  * <code>FO Sink</code> Test case.

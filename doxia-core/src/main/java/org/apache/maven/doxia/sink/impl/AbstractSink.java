@@ -1,4 +1,4 @@
-package org.apache.maven.doxia.sink;
+package org.apache.maven.doxia.sink.impl;
 
 /*
  * Licensed to the Apache Software Foundation (ASF) under one
@@ -22,6 +22,7 @@ package org.apache.maven.doxia.sink;
 import org.apache.maven.doxia.logging.Log;
 import org.apache.maven.doxia.logging.SystemStreamLog;
 import org.apache.maven.doxia.markup.Markup;
+import org.apache.maven.doxia.sink.Sink;
 
 /**
  * An abstract base class that defines some convenience methods for sinks.

@@ -1,4 +1,4 @@
-package org.apache.maven.doxia.sink;
+package org.apache.maven.doxia.sink.impl;
 
 /*
  * Licensed to the Apache Software Foundation (ASF) under one
@@ -35,6 +35,7 @@ import javax.swing.text.html.HTML.Tag;
 
 import org.apache.maven.doxia.markup.HtmlMarkup;
 import org.apache.maven.doxia.markup.Markup;
+import org.apache.maven.doxia.sink.SinkEventAttributes;
 import org.apache.maven.doxia.util.DoxiaUtils;
 import org.apache.maven.doxia.util.HtmlTools;
 

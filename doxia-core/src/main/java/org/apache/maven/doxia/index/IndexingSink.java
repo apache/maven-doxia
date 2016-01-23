@@ -21,8 +21,8 @@ package org.apache.maven.doxia.index;
 
 import java.util.Stack;
 
+import org.apache.maven.doxia.sink.impl.SinkAdapter;
 import org.apache.maven.doxia.util.HtmlTools;
-import org.apache.maven.doxia.sink.SinkAdapter;
 
 /**
  * A sink implementation for index.

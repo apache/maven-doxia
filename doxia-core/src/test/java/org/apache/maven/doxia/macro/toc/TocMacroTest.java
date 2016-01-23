@@ -31,10 +31,10 @@ import junit.framework.TestCase;
 import org.apache.maven.doxia.macro.MacroExecutionException;
 import org.apache.maven.doxia.macro.MacroRequest;
 import org.apache.maven.doxia.parser.XhtmlBaseParser;
-import org.apache.maven.doxia.sink.SinkEventAttributeSet;
-import org.apache.maven.doxia.sink.SinkEventElement;
-import org.apache.maven.doxia.sink.SinkEventTestingSink;
-import org.apache.maven.doxia.sink.XhtmlBaseSink;
+import org.apache.maven.doxia.sink.impl.SinkEventAttributeSet;
+import org.apache.maven.doxia.sink.impl.SinkEventElement;
+import org.apache.maven.doxia.sink.impl.SinkEventTestingSink;
+import org.apache.maven.doxia.sink.impl.XhtmlBaseSink;
 
 /**
  * Test toc macro.

@@ -20,12 +20,12 @@ package org.apache.maven.doxia.module.xdoc;
  */
 
 import org.apache.maven.doxia.sink.Sink;
-import org.apache.maven.doxia.sink.AbstractSinkTest;
+import org.apache.maven.doxia.sink.impl.AbstractSinkTest;
+import org.apache.maven.doxia.sink.impl.SinkEventAttributeSet;
 import org.apache.maven.doxia.util.HtmlTools;
 
 import java.io.StringWriter;
 import java.io.Writer;
-import org.apache.maven.doxia.sink.SinkEventAttributeSet;
 
 /**
  * @author <a href="mailto:jason@maven.org">Jason van Zyl</a>

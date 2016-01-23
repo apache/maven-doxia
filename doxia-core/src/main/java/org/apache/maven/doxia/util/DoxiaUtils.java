@@ -38,7 +38,7 @@ import javax.imageio.ImageIO;
 
 import javax.swing.text.MutableAttributeSet;
 
-import org.apache.maven.doxia.sink.SinkEventAttributeSet;
+import org.apache.maven.doxia.sink.impl.SinkEventAttributeSet;
 
 /**
  * General Doxia utility methods. The methods in this class should not assume

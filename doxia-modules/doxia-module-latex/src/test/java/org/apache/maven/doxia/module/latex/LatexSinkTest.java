@@ -22,7 +22,7 @@ package org.apache.maven.doxia.module.latex;
 import java.io.Writer;
 
 import org.apache.maven.doxia.sink.Sink;
-import org.apache.maven.doxia.sink.AbstractSinkTest;
+import org.apache.maven.doxia.sink.impl.AbstractSinkTest;
 
 /**
  * @author <a href="mailto:jason@maven.org">Jason van Zyl</a>

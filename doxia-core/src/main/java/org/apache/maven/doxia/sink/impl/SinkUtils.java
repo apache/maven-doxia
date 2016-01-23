@@ -1,4 +1,4 @@
-package org.apache.maven.doxia.sink;
+package org.apache.maven.doxia.sink.impl;
 
 /*
  * Licensed to the Apache Software Foundation (ASF) under one
@@ -26,6 +26,7 @@ import javax.swing.text.AttributeSet;
 import javax.swing.text.MutableAttributeSet;
 
 import org.apache.maven.doxia.markup.Markup;
+import org.apache.maven.doxia.sink.SinkEventAttributes;
 
 /**
  * Collection of common utility methods for sinks.

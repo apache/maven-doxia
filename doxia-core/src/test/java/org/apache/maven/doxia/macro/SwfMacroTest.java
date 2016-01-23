@@ -25,10 +25,10 @@ import java.util.HashMap;
 import java.util.Iterator;
 import java.util.Map;
 
-import junit.framework.TestCase;
+import org.apache.maven.doxia.sink.impl.SinkEventElement;
+import org.apache.maven.doxia.sink.impl.SinkEventTestingSink;
 
-import org.apache.maven.doxia.sink.SinkEventElement;
-import org.apache.maven.doxia.sink.SinkEventTestingSink;
+import junit.framework.TestCase;
 
 /**
  * Test swf macro.

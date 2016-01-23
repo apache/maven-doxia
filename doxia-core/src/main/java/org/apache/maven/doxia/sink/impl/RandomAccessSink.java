@@ -1,4 +1,4 @@
-package org.apache.maven.doxia.sink;
+package org.apache.maven.doxia.sink.impl;
 
 /*
  * Licensed to the Apache Software Foundation (ASF) under one
@@ -28,6 +28,9 @@ import java.util.ArrayList;
 import java.util.List;
 
 import org.apache.maven.doxia.logging.Log;
+import org.apache.maven.doxia.sink.Sink;
+import org.apache.maven.doxia.sink.SinkEventAttributes;
+import org.apache.maven.doxia.sink.SinkFactory;
 
 /**
  * The RandomAccessSink provides the ability to create a {@link Sink} with hooks.

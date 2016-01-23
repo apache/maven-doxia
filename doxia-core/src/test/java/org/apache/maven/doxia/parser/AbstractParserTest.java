@@ -20,12 +20,11 @@ package org.apache.maven.doxia.parser;
  */
 
 import org.apache.maven.doxia.AbstractModuleTest;
-import org.apache.maven.doxia.sink.WellformednessCheckingSink;
-
+import org.apache.maven.doxia.sink.impl.SinkEventAttributeSet;
+import org.apache.maven.doxia.sink.impl.SinkEventElement;
+import org.apache.maven.doxia.sink.impl.TextSink;
+import org.apache.maven.doxia.sink.impl.WellformednessCheckingSink;
 import org.apache.maven.doxia.sink.Sink;
-import org.apache.maven.doxia.sink.SinkEventAttributeSet;
-import org.apache.maven.doxia.sink.SinkEventElement;
-import org.apache.maven.doxia.sink.TextSink;
 import org.codehaus.plexus.util.IOUtil;
 import org.junit.Assert;
 
@@ -95,7 +94,7 @@ public abstract class AbstractParserTest
      /**
      * Parse a test document '"test." + outputExtension()'
      * with parser from {@link #createParser()}, and output to a text file,
-     * using the {@link org.apache.maven.doxia.sink.TextSink TextSink}.
+     * using the {@link org.apache.maven.doxia.sink.impl.TextSink TextSink}.
      *
      * @throws IOException if the test document cannot be read.
      * @throws ParseException if the test document cannot be parsed.

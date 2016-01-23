@@ -1,4 +1,4 @@
-package org.apache.maven.doxia.sink;
+package org.apache.maven.doxia.sink.impl;
 
 /*
  * Licensed to the Apache Software Foundation (ASF) under one
@@ -21,6 +21,10 @@ package org.apache.maven.doxia.sink;
 
 import javax.swing.text.AttributeSet;
 import javax.swing.text.MutableAttributeSet;
+
+import org.apache.maven.doxia.sink.SinkEventAttributes;
+import org.apache.maven.doxia.sink.impl.SinkEventAttributeSet;
+import org.apache.maven.doxia.sink.impl.SinkUtils;
 
 import junit.framework.TestCase;
 

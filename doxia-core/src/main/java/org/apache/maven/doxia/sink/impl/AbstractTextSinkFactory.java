@@ -1,4 +1,4 @@
-package org.apache.maven.doxia.sink;
+package org.apache.maven.doxia.sink.impl;
 
 /*
  * Licensed to the Apache Software Foundation (ASF) under one
@@ -20,22 +20,36 @@ package org.apache.maven.doxia.sink;
  */
 
 import java.io.File;
-import java.io.FileOutputStream;
 import java.io.IOException;
 import java.io.OutputStream;
+import java.io.OutputStreamWriter;
+import java.io.Writer;
 
+import org.apache.maven.doxia.sink.Sink;
+import org.apache.maven.doxia.sink.SinkFactory;
 import org.codehaus.plexus.util.WriterFactory;
 
 /**
- * An abstract <code>SinkFactory</code> for binary output.
+ * An abstract <code>SinkFactory</code> for Text markup syntax. <code>UTF-8</code> is used
+ * when no encoding is specified.
  *
- * @author <a href="mailto:hboutemy@apache.org">Hervé Boutemy</a>
+ * @author Hervé Boutemy
+ * @author Benjamin Bentmann
  * @version $Id$
  * @since 1.1
  */
-public abstract class AbstractBinarySinkFactory
+public abstract class AbstractTextSinkFactory
     implements SinkFactory
 {
+    /**
+     * Create a text Sink for a given encoding.
+     *
+     * @param writer The writer for the sink output, never <code>null</code>.
+     * @param encoding The character encoding used by the writer.
+     * @return a Sink for text output in the given encoding.
+     */
+    protected abstract Sink createSink( Writer writer, String encoding );
+
     /** {@inheritDoc} */
     public Sink createSink( File outputDir, String outputName )
         throws IOException
@@ -64,9 +78,9 @@ public abstract class AbstractBinarySinkFactory
             }
         }
 
-        OutputStream out = new FileOutputStream( new File( outputDir, outputName ) );
+        Writer writer = WriterFactory.newWriter( new File( outputDir, outputName ), encoding );
 
-        return createSink( out, encoding );
+        return createSink( writer, encoding );
     }
 
     /** {@inheritDoc} */
@@ -74,5 +88,12 @@ public abstract class AbstractBinarySinkFactory
         throws IOException
     {
         return createSink( out, WriterFactory.UTF_8 );
+    }
+
+    /** {@inheritDoc} */
+    public Sink createSink( OutputStream out, String encoding )
+        throws IOException
+    {
+        return createSink( new OutputStreamWriter( out, encoding ), encoding );
     }
 }

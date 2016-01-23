@@ -28,8 +28,7 @@ import javax.swing.text.SimpleAttributeSet;
 
 import org.apache.commons.configuration.ConfigurationException;
 import org.apache.commons.configuration.XMLConfiguration;
-
-import org.apache.maven.doxia.sink.SinkUtils;
+import org.apache.maven.doxia.sink.impl.SinkUtils;
 import org.codehaus.plexus.util.ReaderFactory;
 
 /**

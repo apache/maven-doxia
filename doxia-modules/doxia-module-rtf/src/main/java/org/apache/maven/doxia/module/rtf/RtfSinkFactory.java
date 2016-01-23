@@ -22,9 +22,9 @@ package org.apache.maven.doxia.module.rtf;
 import java.io.IOException;
 import java.io.OutputStream;
 
-import org.apache.maven.doxia.sink.AbstractBinarySinkFactory;
 import org.apache.maven.doxia.sink.Sink;
 import org.apache.maven.doxia.sink.SinkFactory;
+import org.apache.maven.doxia.sink.impl.AbstractBinarySinkFactory;
 import org.codehaus.plexus.component.annotations.Component;
 
 /**

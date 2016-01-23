@@ -1,4 +1,4 @@
-package org.apache.maven.doxia.sink;
+package org.apache.maven.doxia.sink.impl;
 
 /*
  * Licensed to the Apache Software Foundation (ASF) under one
@@ -25,6 +25,8 @@ import java.util.LinkedHashMap;
 import java.util.Map;
 
 import javax.swing.text.AttributeSet;
+
+import org.apache.maven.doxia.sink.SinkEventAttributes;
 
 /**
  * Implementation of MutableAttributeSet using a LinkedHashMap.

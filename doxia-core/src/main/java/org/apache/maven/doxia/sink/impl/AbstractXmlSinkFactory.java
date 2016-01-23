@@ -1,4 +1,4 @@
-package org.apache.maven.doxia.sink;
+package org.apache.maven.doxia.sink.impl;
 
 /*
  * Licensed to the Apache Software Foundation (ASF) under one
@@ -20,6 +20,8 @@ package org.apache.maven.doxia.sink;
  */
 
 import java.io.Writer;
+
+import org.apache.maven.doxia.sink.Sink;
 
 /**
  * An abstract <code>SinkFactory</code> for XML markup syntax. <code>UTF-8</code> is used

@@ -20,7 +20,7 @@ package org.apache.maven.doxia.parser;
  */
 
 import org.apache.maven.doxia.sink.Sink;
-import org.apache.maven.doxia.sink.SinkAdapter;
+import org.apache.maven.doxia.sink.impl.SinkAdapter;
 import org.codehaus.plexus.PlexusTestCase;
 
 import java.io.FileReader;

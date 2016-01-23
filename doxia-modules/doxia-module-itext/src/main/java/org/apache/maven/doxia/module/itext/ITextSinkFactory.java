@@ -21,9 +21,9 @@ package org.apache.maven.doxia.module.itext;
 
 import java.io.Writer;
 
-import org.apache.maven.doxia.sink.AbstractTextSinkFactory;
 import org.apache.maven.doxia.sink.Sink;
 import org.apache.maven.doxia.sink.SinkFactory;
+import org.apache.maven.doxia.sink.impl.AbstractTextSinkFactory;
 import org.codehaus.plexus.component.annotations.Component;
 import org.codehaus.plexus.util.WriterFactory;
 import org.codehaus.plexus.util.xml.PrettyPrintXMLWriter;

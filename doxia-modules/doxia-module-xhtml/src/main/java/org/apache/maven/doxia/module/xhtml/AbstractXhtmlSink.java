@@ -19,7 +19,7 @@ package org.apache.maven.doxia.module.xhtml;
  * under the License.
  */
 
-import org.apache.maven.doxia.sink.SinkAdapter;
+import org.apache.maven.doxia.sink.impl.SinkAdapter;
 
 /**
  * <p>Abstract AbstractXhtmlSink class.</p>

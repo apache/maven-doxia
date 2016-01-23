@@ -1,4 +1,7 @@
-package org.apache.maven.doxia.sink;
+package org.apache.maven.doxia.sink.impl;
+
+import org.apache.maven.doxia.sink.Sink;
+import org.apache.maven.doxia.sink.impl.SinkEventAttributeSet;
 
 /*
  * Licensed to the Apache Software Foundation (ASF) under one

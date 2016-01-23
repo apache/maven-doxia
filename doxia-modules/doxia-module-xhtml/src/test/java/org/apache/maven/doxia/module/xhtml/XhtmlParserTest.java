@@ -25,8 +25,8 @@ import java.util.List;
 
 import org.apache.maven.doxia.parser.AbstractParserTest;
 import org.apache.maven.doxia.parser.Parser;
-import org.apache.maven.doxia.sink.SinkEventElement;
-import org.apache.maven.doxia.sink.SinkEventTestingSink;
+import org.apache.maven.doxia.sink.impl.SinkEventElement;
+import org.apache.maven.doxia.sink.impl.SinkEventTestingSink;
 import org.codehaus.plexus.util.FileUtils;
 
 /**

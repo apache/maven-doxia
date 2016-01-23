@@ -23,9 +23,8 @@ import java.io.PrintWriter;
 import java.io.Writer;
 import java.util.Stack;
 
-import org.apache.maven.doxia.sink.AbstractTextSink;
 import org.apache.maven.doxia.sink.SinkEventAttributes;
-
+import org.apache.maven.doxia.sink.impl.AbstractTextSink;
 import org.codehaus.plexus.util.StringUtils;
 
 /**

@@ -26,9 +26,9 @@ import java.util.Locale;
 import javax.swing.text.MutableAttributeSet;
 import javax.swing.text.SimpleAttributeSet;
 
-import org.apache.maven.doxia.sink.AbstractSinkTest;
 import org.apache.maven.doxia.sink.Sink;
-import org.apache.maven.doxia.sink.SinkUtils;
+import org.apache.maven.doxia.sink.impl.AbstractSinkTest;
+import org.apache.maven.doxia.sink.impl.SinkUtils;
 import org.apache.maven.doxia.util.DoxiaUtils;
 
 import org.codehaus.plexus.util.FileUtils;

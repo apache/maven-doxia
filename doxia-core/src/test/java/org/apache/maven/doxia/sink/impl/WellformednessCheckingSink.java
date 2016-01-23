@@ -1,4 +1,4 @@
-package org.apache.maven.doxia.sink;
+package org.apache.maven.doxia.sink.impl;
 
 /*
  * Licensed to the Apache Software Foundation (ASF) under one
@@ -19,437 +19,446 @@ package org.apache.maven.doxia.sink;
  * under the License.
  */
 
-import javax.swing.text.MutableAttributeSet;
+import java.util.LinkedList;
+import java.util.List;
+import java.util.Stack;
+
+import org.apache.maven.doxia.sink.SinkEventAttributes;
+import org.apache.maven.doxia.sink.impl.AbstractSink;
+
 
 /**
- * Empty implementation of the <code>Sink</code> interface. Useful for testing purposes.
+ * This sink is used for testing purposes in order to check wether
+ * the input of some parser is well-formed.
  *
- * @since 1.0
- * @author <a href="mailto:jason@maven.org">Jason van Zyl</a>
- * @author <a href="mailto:vincent.siveton@gmail.com">Vincent Siveton</a>
+ * @author <a href="mailto:lars@trieloff.net">Lars Trieloff</a>
  * @version $Id$
  */
-public class SinkAdapter
+public class WellformednessCheckingSink
     extends AbstractSink
 {
+    private final Stack<String> elements = new Stack<String>();
+
+    private final List<String> errors = new LinkedList<String>();
+
     /** {@inheritDoc} */
     public void head()
     {
-        // nop
+        startElement( "head" );
     }
 
     /** {@inheritDoc} */
     public void head_()
     {
-        // nop
+        checkWellformedness( "head" );
     }
 
     /** {@inheritDoc} */
     public void body()
     {
-        // nop
+        startElement( "body" );
     }
 
     /** {@inheritDoc} */
     public void body_()
     {
-        // nop
+        checkWellformedness( "body" );
     }
 
     /** {@inheritDoc} */
     public void section1()
     {
-        // nop
+        startElement( "section1" );
     }
 
     /** {@inheritDoc} */
     public void section1_()
     {
-        // nop
+        checkWellformedness( "section1" );
     }
 
     /** {@inheritDoc} */
     public void section2()
     {
-        // nop
+        startElement( "section2" );
     }
 
     /** {@inheritDoc} */
     public void section2_()
     {
-        // nop
+        checkWellformedness( "section2" );
     }
 
     /** {@inheritDoc} */
     public void section3()
     {
-        // nop
+        startElement( "section3" );
     }
 
     /** {@inheritDoc} */
     public void section3_()
     {
-        // nop
+        checkWellformedness( "section3" );
     }
 
     /** {@inheritDoc} */
     public void section4()
     {
-        // nop
+        startElement( "section4" );
     }
 
     /** {@inheritDoc} */
     public void section4_()
     {
-        // nop
+        checkWellformedness( "section4" );
     }
 
     /** {@inheritDoc} */
     public void section5()
     {
-        // nop
+        startElement( "section5" );
     }
 
     /** {@inheritDoc} */
     public void section5_()
     {
-        // nop
+        checkWellformedness( "section5" );
     }
 
     /** {@inheritDoc} */
     public void list()
     {
-        // nop
+        startElement( "list" );
     }
 
     /** {@inheritDoc} */
     public void list_()
     {
-        // nop
+        checkWellformedness( "list" );
     }
 
     /** {@inheritDoc} */
     public void listItem()
     {
-        // nop
+        startElement( "listItem" );
     }
 
     /** {@inheritDoc} */
     public void listItem_()
     {
-        // nop
+        checkWellformedness( "listItem" );
     }
 
     /** {@inheritDoc} */
     public void numberedList( int numbering )
     {
-        // nop
+        startElement( "numberedList" );
     }
 
     /** {@inheritDoc} */
     public void numberedList_()
     {
-        // nop
+        checkWellformedness( "numberedList" );
     }
 
     /** {@inheritDoc} */
     public void numberedListItem()
     {
-        // nop
+        startElement( "numberedListItem" );
     }
 
     /** {@inheritDoc} */
     public void numberedListItem_()
     {
-        // nop
+        checkWellformedness( "numberedListItem" );
     }
 
     /** {@inheritDoc} */
     public void definitionList()
     {
-        // nop
+        startElement( "definitionList" );
     }
 
     /** {@inheritDoc} */
     public void definitionList_()
     {
-        // nop
+        checkWellformedness( "definitionList" );
     }
 
     /** {@inheritDoc} */
     public void definitionListItem()
     {
-        // nop
+        startElement( "definitionListItem" );
     }
 
     /** {@inheritDoc} */
     public void definitionListItem_()
     {
-        // nop
+        checkWellformedness( "definitionListItem" );
     }
 
     /** {@inheritDoc} */
     public void definition()
     {
-        // nop
+        startElement( "definition" );
     }
 
     /** {@inheritDoc} */
     public void definition_()
     {
-        // nop
+        checkWellformedness( "definition" );
     }
 
     /** {@inheritDoc} */
     public void figure()
     {
-        // nop
+        startElement( "figure" );
     }
 
     /** {@inheritDoc} */
     public void figure_()
     {
-        // nop
+        checkWellformedness( "figure" );
     }
 
     /** {@inheritDoc} */
     public void table()
     {
-        // nop
+        startElement( "table" );
     }
 
     /** {@inheritDoc} */
     public void table_()
     {
-        // nop
+        checkWellformedness( "table" );
     }
 
     /** {@inheritDoc} */
     public void tableRows( int[] justification, boolean grid )
     {
-        // nop
+        startElement( "tableRows" );
     }
 
     /** {@inheritDoc} */
     public void tableRows_()
     {
-        // nop
+        checkWellformedness( "tableRows" );
     }
 
     /** {@inheritDoc} */
     public void tableRow()
     {
-        // nop
+        startElement( "tableRow" );
     }
 
     /** {@inheritDoc} */
     public void tableRow_()
     {
-        // nop
+        checkWellformedness( "tableRow" );
     }
 
     /** {@inheritDoc} */
     public void title()
     {
-        // nop
+        startElement( "title" );
     }
 
     /** {@inheritDoc} */
     public void title_()
     {
-        // nop
+        checkWellformedness( "title" );
     }
 
     /** {@inheritDoc} */
     public void author()
     {
-        // nop
+        startElement( "author" );
     }
 
     /** {@inheritDoc} */
     public void author_()
     {
-        // nop
+        checkWellformedness( "author" );
     }
 
     /** {@inheritDoc} */
     public void date()
     {
-        // nop
+        startElement( "date" );
     }
 
     /** {@inheritDoc} */
     public void date_()
     {
-        // nop
+        checkWellformedness( "date" );
     }
 
     /** {@inheritDoc} */
     public void sectionTitle()
     {
-        // nop
+        startElement( "sectionTitle" );
     }
 
     /** {@inheritDoc} */
     public void sectionTitle_()
     {
-        // nop
+        checkWellformedness( "sectionTitle" );
     }
 
     /** {@inheritDoc} */
     public void sectionTitle1()
     {
-        // nop
+        startElement( "sectionTitle1" );
     }
 
     /** {@inheritDoc} */
     public void sectionTitle1_()
     {
-        // nop
+        checkWellformedness( "sectionTitle1" );
     }
 
     /** {@inheritDoc} */
     public void sectionTitle2()
     {
-        // nop
+        startElement( "sectionTitle2" );
     }
 
     /** {@inheritDoc} */
     public void sectionTitle2_()
     {
-        // nop
+        checkWellformedness( "sectionTitle2" );
     }
 
     /** {@inheritDoc} */
     public void sectionTitle3()
     {
-        // nop
+        startElement( "sectionTitle3" );
     }
 
     /** {@inheritDoc} */
     public void sectionTitle3_()
     {
-        // nop
+        checkWellformedness( "sectionTitle3" );
     }
 
     /** {@inheritDoc} */
     public void sectionTitle4()
     {
-        // nop
+        startElement( "sectionTitle4" );
     }
 
     /** {@inheritDoc} */
     public void sectionTitle4_()
     {
-        // nop
+        checkWellformedness( "sectionTitle4" );
     }
 
     /** {@inheritDoc} */
     public void sectionTitle5()
     {
-        // nop
+        startElement( "sectionTitle5" );
     }
 
     /** {@inheritDoc} */
     public void sectionTitle5_()
     {
-        // nop
+        checkWellformedness( "sectionTitle5" );
     }
 
     /** {@inheritDoc} */
     public void paragraph()
     {
-        // nop
+        startElement( "paragraph" );
     }
 
     /** {@inheritDoc} */
     public void paragraph_()
     {
-        // nop
+        checkWellformedness( "paragraph" );
     }
 
     /** {@inheritDoc} */
     public void verbatim( boolean boxed )
     {
-        // nop
+        startElement( "verbatim" );
     }
 
     /** {@inheritDoc} */
     public void verbatim_()
     {
-        // nop
+        checkWellformedness( "verbatim" );
     }
 
     /** {@inheritDoc} */
     public void definedTerm()
     {
-        // nop
+        startElement( "definedTerm" );
     }
 
     /** {@inheritDoc} */
     public void definedTerm_()
     {
-        // nop
+        checkWellformedness( "definedTerm" );
     }
 
     /** {@inheritDoc} */
     public void figureCaption()
     {
-        // nop
+        startElement( "figureCaption" );
     }
 
     /** {@inheritDoc} */
     public void figureCaption_()
     {
-        // nop
+        checkWellformedness( "figureCaption" );
     }
 
     /** {@inheritDoc} */
     public void tableCell()
     {
-        // nop
+        startElement( "tableCell" );
     }
 
     /** {@inheritDoc} */
     public void tableCell( String width )
     {
-        // nop
+        startElement( "tableCell" );
     }
 
     /** {@inheritDoc} */
     public void tableCell_()
     {
-        // nop
+        checkWellformedness( "tableCell" );
     }
 
     /** {@inheritDoc} */
     public void tableHeaderCell()
     {
-        // nop
+        startElement( "tableHeaderCell" );
     }
 
     /** {@inheritDoc} */
     public void tableHeaderCell( String width )
     {
-        // nop
+        startElement( "tableHeaderCell" );
     }
 
     /** {@inheritDoc} */
     public void tableHeaderCell_()
     {
-        // nop
+        checkWellformedness( "tableHeaderCell" );
     }
 
     /** {@inheritDoc} */
     public void tableCaption()
     {
-        // nop
+        startElement( "tableCaption" );
     }
 
     /** {@inheritDoc} */
     public void tableCaption_()
     {
-        // nop
+        checkWellformedness( "tableCaption" );
     }
 
     /** {@inheritDoc} */
@@ -473,61 +482,61 @@ public class SinkAdapter
     /** {@inheritDoc} */
     public void anchor( String name )
     {
-        // nop
+        startElement( "anchor" );
     }
 
     /** {@inheritDoc} */
     public void anchor_()
     {
-        // nop
+        checkWellformedness( "anchor" );
     }
 
     /** {@inheritDoc} */
     public void link( String name )
     {
-        // nop
+        startElement( "link" );
     }
 
     /** {@inheritDoc} */
     public void link_()
     {
-        // nop
+        checkWellformedness( "link" );
     }
 
     /** {@inheritDoc} */
     public void italic()
     {
-        // nop
+        startElement( "italic" );
     }
 
     /** {@inheritDoc} */
     public void italic_()
     {
-        // nop
+        checkWellformedness( "italic" );
     }
 
     /** {@inheritDoc} */
     public void bold()
     {
-        // nop
+        startElement( "bold" );
     }
 
     /** {@inheritDoc} */
     public void bold_()
     {
-        // nop
+        checkWellformedness( "bold" );
     }
 
     /** {@inheritDoc} */
     public void monospaced()
     {
-        // nop
+        startElement( "monospaced" );
     }
 
     /** {@inheritDoc} */
     public void monospaced_()
     {
-        // nop
+        checkWellformedness( "monospaced" );
     }
 
     /** {@inheritDoc} */
@@ -569,8 +578,74 @@ public class SinkAdapter
     /** {@inheritDoc} */
     public void close()
     {
-        // nop
+        this.elements.clear();
+        this.errors.clear();
     }
+
+    /**
+     * Finds out wether the wellformedness-contraints of the model have been
+     * violated.
+     *
+     * @return false for non-wellformed models
+     */
+    public boolean isWellformed()
+    {
+        return errors.isEmpty();
+    }
+
+    /**
+     * Gets the offending element that breaks the wellformedness as well
+     * as the exepected element.
+     *
+     * @return the expected and acual elements
+     */
+    public String getOffender()
+    {
+        if ( isWellformed() )
+        {
+            return null;
+        }
+
+        return errors.get( errors.size() - 1 );
+    }
+
+    /**
+     * Gets the list of errors found during wellformedness-check
+     *
+     * @return a list of String of error messages
+     */
+    public List<String> getOffenders()
+    {
+        return errors;
+    }
+
+    /**
+     * Checks wether a newly encountered end-tag breaks the wellformedness
+     * of the model.
+     *
+     * @param actual the local-name of the encountered element
+     */
+    private void checkWellformedness( String actual )
+    {
+        String expected = elements.pop();
+
+        if ( !expected.equals( actual ) )
+        {
+            errors.add( "Encountered closing: " + actual + ", expected " + expected );
+        }
+    }
+
+    /**
+     * Starts a new element and puts it on the stack in order to calculate
+     * wellformedness of the model at a later point of time.
+     *
+     * @param string the local-name of the start-tag
+     */
+    private void startElement( String string )
+    {
+        elements.push( string );
+    }
+
     /** {@inheritDoc} */
     public void head( SinkEventAttributes attributes )
     {
@@ -604,101 +679,25 @@ public class SinkAdapter
     /** {@inheritDoc} */
     public void section( int level, SinkEventAttributes attributes )
     {
-        if ( level == SECTION_LEVEL_1 )
-        {
-            section1();
-        }
-        else if ( level == SECTION_LEVEL_2 )
-        {
-            section2();
-        }
-        else if ( level == SECTION_LEVEL_3 )
-        {
-            section3();
-        }
-        else if ( level == SECTION_LEVEL_4 )
-        {
-            section4();
-        }
-        else if ( level == SECTION_LEVEL_5 )
-        {
-            section5();
-        }
+        startElement( "section" + level );
     }
 
     /** {@inheritDoc} */
     public void section_( int level )
     {
-        if ( level == SECTION_LEVEL_1 )
-        {
-            section1_();
-        }
-        else if ( level == SECTION_LEVEL_2 )
-        {
-            section2_();
-        }
-        else if ( level == SECTION_LEVEL_3 )
-        {
-            section3_();
-        }
-        else if ( level == SECTION_LEVEL_4 )
-        {
-            section4_();
-        }
-        else if ( level == SECTION_LEVEL_5 )
-        {
-            section5_();
-        }
+        checkWellformedness( "section" + level );
     }
 
     /** {@inheritDoc} */
     public void sectionTitle( int level, SinkEventAttributes attributes )
     {
-        if ( level == SECTION_LEVEL_1 )
-        {
-            sectionTitle1();
-        }
-        else if ( level == SECTION_LEVEL_2 )
-        {
-            sectionTitle2();
-        }
-        else if ( level == SECTION_LEVEL_3 )
-        {
-            sectionTitle3();
-        }
-        else if ( level == SECTION_LEVEL_4 )
-        {
-            sectionTitle4();
-        }
-        else if ( level == SECTION_LEVEL_5 )
-        {
-            sectionTitle5();
-        }
+        startElement( "sectionTitle" + level );
     }
 
     /** {@inheritDoc} */
     public void sectionTitle_( int level )
     {
-        if ( level == SECTION_LEVEL_1 )
-        {
-            sectionTitle1_();
-        }
-        else if ( level == SECTION_LEVEL_2 )
-        {
-            sectionTitle2_();
-        }
-        else if ( level == SECTION_LEVEL_3 )
-        {
-            sectionTitle3_();
-        }
-        else if ( level == SECTION_LEVEL_4 )
-        {
-            sectionTitle4_();
-        }
-        else if ( level == SECTION_LEVEL_5 )
-        {
-            sectionTitle5_();
-        }
+        checkWellformedness( "sectionTitle" + level );
     }
 
     /** {@inheritDoc} */
@@ -806,16 +805,7 @@ public class SinkAdapter
     /** {@inheritDoc} */
     public void verbatim( SinkEventAttributes attributes )
     {
-        MutableAttributeSet atts = SinkUtils.filterAttributes( attributes, SinkUtils.SINK_VERBATIM_ATTRIBUTES );
-
-        boolean boxed = false;
-
-        if ( atts != null && atts.isDefined( SinkEventAttributes.DECORATION ) )
-        {
-            boxed = "boxed".equals( atts.getAttribute( SinkEventAttributes.DECORATION ).toString() );
-        }
-
-        verbatim( boxed );
+        verbatim( false );
     }
 
     /** {@inheritDoc} */
@@ -851,6 +841,6 @@ public class SinkAdapter
     /** {@inheritDoc} */
     public void unknown( String name, Object[] requiredParams, SinkEventAttributes attributes )
     {
-        // nop
+        // ignore
     }
 }

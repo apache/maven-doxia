@@ -21,9 +21,9 @@ package org.apache.maven.doxia.module.apt;
 
 import java.io.Writer;
 
-import org.apache.maven.doxia.sink.AbstractTextSinkFactory;
 import org.apache.maven.doxia.sink.Sink;
 import org.apache.maven.doxia.sink.SinkFactory;
+import org.apache.maven.doxia.sink.impl.AbstractTextSinkFactory;
 import org.codehaus.plexus.component.annotations.Component;
 
 /**

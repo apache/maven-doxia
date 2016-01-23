@@ -20,7 +20,7 @@ package org.apache.maven.doxia.module.twiki.parser;
  */
 
 import org.apache.maven.doxia.sink.Sink;
-import org.apache.maven.doxia.sink.SinkEventAttributeSet;
+import org.apache.maven.doxia.sink.impl.SinkEventAttributeSet;
 
 /**
  * Represents a verbatim block

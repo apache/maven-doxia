@@ -19,10 +19,10 @@ package org.apache.maven.doxia.module.latex;
  * under the License.
  */
 
-import org.apache.maven.doxia.sink.AbstractTextSink;
 import org.apache.maven.doxia.sink.Sink;
 import org.apache.maven.doxia.sink.SinkEventAttributes;
-import org.apache.maven.doxia.sink.SinkEventAttributeSet;
+import org.apache.maven.doxia.sink.impl.AbstractTextSink;
+import org.apache.maven.doxia.sink.impl.SinkEventAttributeSet;
 import org.apache.maven.doxia.util.DoxiaUtils;
 import org.apache.maven.doxia.util.LineBreaker;
 

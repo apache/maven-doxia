@@ -1,4 +1,4 @@
-package org.apache.maven.doxia.sink;
+package org.apache.maven.doxia.sink.impl;
 
 /*
  * Licensed to the Apache Software Foundation (ASF) under one
@@ -19,805 +19,818 @@ package org.apache.maven.doxia.sink;
  * under the License.
  */
 
-import java.util.LinkedList;
-import java.util.List;
+import java.io.IOException;
+import java.io.Writer;
+
+import org.apache.maven.doxia.sink.SinkEventAttributes;
+import org.apache.maven.doxia.sink.impl.AbstractSink;
+import org.apache.maven.doxia.sink.impl.SinkUtils;
 
 /**
- * This sink is used for testing purposes in order to check wether
- * the input of some parser is well-formed.
- *
- * @author ltheussl
- * @version $Id$
- * @since 1.1
+ * A simple text-based implementation of the <code>Sink</code> interface.
+ * Useful for testing purposes.
  */
-public class SinkEventTestingSink
+public class TextSink
     extends AbstractSink
 {
-    /** The list of sink events. */
-    private final List<SinkEventElement> events = new LinkedList<SinkEventElement>();
 
-    /**
-     * Return the collected list of SinkEventElements.
-     *
-     * @return the collected list of SinkEventElements.
+    /** For writing the result. */
+    private final Writer out;
+
+    /** Constructor.
+     * @param writer The writer for writing the result.
      */
-    public List<SinkEventElement> getEventList()
+    public TextSink( Writer writer )
     {
-        return this.events;
+        this.out = writer;
     }
 
-    /** Clears the list of sink events. */
-    public void reset()
-    {
-        this.events.clear();
-    }
-
-      //
-     // sink methods
-    //
 
     /** {@inheritDoc} */
     public void head()
     {
-        addEvent( "head" );
+        writeln( "begin:head" );
     }
 
     /** {@inheritDoc} */
     public void head_()
     {
-        addEvent( "head_" );
+        writeln( "end:head" );
     }
 
     /** {@inheritDoc} */
     public void body()
     {
-        addEvent( "body" );
+        writeln( "begin:body" );
     }
 
     /** {@inheritDoc} */
     public void body_()
     {
-        addEvent( "body_" );
+        writeln( "end:body" );
     }
 
     /** {@inheritDoc} */
     public void section1()
     {
-        addEvent( "section1" );
+        write( "begin:section1" );
     }
 
     /** {@inheritDoc} */
     public void section1_()
     {
-        addEvent( "section1_" );
+        writeln( "end:section1" );
     }
 
     /** {@inheritDoc} */
     public void section2()
     {
-        addEvent( "section2" );
+        write( "begin:section2" );
     }
 
     /** {@inheritDoc} */
     public void section2_()
     {
-        addEvent( "section2_" );
+        writeln( "end:section2" );
     }
 
     /** {@inheritDoc} */
     public void section3()
     {
-        addEvent( "section3" );
+        write( "begin:section3" );
     }
 
     /** {@inheritDoc} */
     public void section3_()
     {
-        addEvent( "section3_" );
+        writeln( "end:section3" );
     }
 
     /** {@inheritDoc} */
     public void section4()
     {
-        addEvent( "section4" );
+        write( "begin:section4" );
     }
 
     /** {@inheritDoc} */
     public void section4_()
     {
-        addEvent( "section4_" );
+        writeln( "end:section4" );
     }
 
     /** {@inheritDoc} */
     public void section5()
     {
-        addEvent( "section5" );
+        write( "begin:section5" );
     }
 
     /** {@inheritDoc} */
     public void section5_()
     {
-        addEvent( "section5_" );
+        writeln( "end:section5" );
     }
 
     /** {@inheritDoc} */
     public void list()
     {
-        addEvent( "list" );
+        writeln( "begin:list" );
     }
 
     /** {@inheritDoc} */
     public void list_()
     {
-        addEvent( "list_" );
+        writeln( "end:list" );
     }
 
     /** {@inheritDoc} */
     public void listItem()
     {
-        addEvent( "listItem" );
+        write( "begin:listItem" );
     }
 
     /** {@inheritDoc} */
     public void listItem_()
     {
-        addEvent( "listItem_" );
+        writeln( "end:listItem" );
     }
 
     /** {@inheritDoc} */
     public void numberedList( int numbering )
     {
-        addEvent( "numberedList", new Object[] {new Integer( numbering )} );
+        writeln( "begin:numberedList, numbering: " + numbering );
     }
 
     /** {@inheritDoc} */
     public void numberedList_()
     {
-        addEvent( "numberedList_" );
+        writeln( "end:numberedList" );
     }
 
     /** {@inheritDoc} */
     public void numberedListItem()
     {
-        addEvent( "numberedListItem" );
+        write( "begin:numberedListItem" );
     }
 
     /** {@inheritDoc} */
     public void numberedListItem_()
     {
-        addEvent( "numberedListItem_" );
+        writeln( "end:numberedListItem" );
     }
 
     /** {@inheritDoc} */
     public void definitionList()
     {
-        addEvent( "definitionList" );
+        writeln( "begin:definitionList" );
     }
 
     /** {@inheritDoc} */
     public void definitionList_()
     {
-        addEvent( "definitionList_" );
+        writeln( "end:definitionList" );
     }
 
     /** {@inheritDoc} */
     public void definitionListItem()
     {
-        addEvent( "definitionListItem" );
+        write( "begin:definitionListItem" );
     }
 
     /** {@inheritDoc} */
     public void definitionListItem_()
     {
-        addEvent( "definitionListItem_" );
+        writeln( "end:definitionListItem" );
     }
 
     /** {@inheritDoc} */
     public void definition()
     {
-        addEvent( "definition" );
+        write( "begin:definition" );
     }
 
     /** {@inheritDoc} */
     public void definition_()
     {
-        addEvent( "definition_" );
+        writeln( "end:definition" );
     }
 
     /** {@inheritDoc} */
     public void figure()
     {
-        addEvent( "figure" );
+        write( "begin:figure" );
     }
 
     /** {@inheritDoc} */
     public void figure_()
     {
-        addEvent( "figure_" );
+        writeln( "end:figure" );
     }
 
     /** {@inheritDoc} */
     public void table()
     {
-        addEvent( "table" );
+        writeln( "begin:table" );
     }
 
     /** {@inheritDoc} */
     public void table_()
     {
-        addEvent( "table_" );
+        writeln( "end:table" );
     }
 
     /** {@inheritDoc} */
     public void tableRows( int[] justification, boolean grid )
     {
-        addEvent( "tableRows", new Object[] {justification, new Boolean( grid )} );
+        writeln( "begin:tableRows" );
     }
 
     /** {@inheritDoc} */
     public void tableRows_()
     {
-        addEvent( "tableRows_" );
+        writeln( "end:tableRows" );
     }
 
     /** {@inheritDoc} */
     public void tableRow()
     {
-        addEvent( "tableRow" );
+        write( "begin:tableRow" );
     }
 
     /** {@inheritDoc} */
     public void tableRow_()
     {
-        addEvent( "tableRow_" );
+        writeln( "end:tableRow" );
     }
 
     /** {@inheritDoc} */
     public void title()
     {
-        addEvent( "title" );
+        write( "begin:title" );
     }
 
     /** {@inheritDoc} */
     public void title_()
     {
-        addEvent( "title_" );
+        writeln( "end:title" );
     }
 
     /** {@inheritDoc} */
     public void author()
     {
-        addEvent( "author" );
+        write( "begin:author" );
     }
 
     /** {@inheritDoc} */
     public void author_()
     {
-        addEvent( "author_" );
+        writeln( "end:author" );
     }
 
     /** {@inheritDoc} */
     public void date()
     {
-        addEvent( "date" );
+        write( "begin:date" );
     }
 
     /** {@inheritDoc} */
     public void date_()
     {
-        addEvent( "date_" );
+        writeln( "end:date" );
     }
 
     /** {@inheritDoc} */
     public void sectionTitle()
     {
-        addEvent( "sectionTitle" );
+        write( "begin:sectionTitle" );
     }
 
     /** {@inheritDoc} */
     public void sectionTitle_()
     {
-        addEvent( "sectionTitle_" );
+        writeln( "end:sectionTitle" );
     }
 
     /** {@inheritDoc} */
     public void sectionTitle1()
     {
-        addEvent( "sectionTitle1" );
+        write( "begin:sectionTitle1" );
     }
 
     /** {@inheritDoc} */
     public void sectionTitle1_()
     {
-        addEvent( "sectionTitle1_" );
+        writeln( "end:sectionTitle1" );
     }
 
     /** {@inheritDoc} */
     public void sectionTitle2()
     {
-        addEvent( "sectionTitle2" );
+        write( "begin:sectionTitle2" );
     }
 
     /** {@inheritDoc} */
     public void sectionTitle2_()
     {
-        addEvent( "sectionTitle2_" );
+        writeln( "end:sectionTitle2" );
     }
 
     /** {@inheritDoc} */
     public void sectionTitle3()
     {
-        addEvent( "sectionTitle3" );
+        write( "begin:sectionTitle3" );
     }
 
     /** {@inheritDoc} */
     public void sectionTitle3_()
     {
-        addEvent( "sectionTitle3_" );
+        writeln( "end:sectionTitle3" );
     }
 
     /** {@inheritDoc} */
     public void sectionTitle4()
     {
-        addEvent( "sectionTitle4" );
+        write( "begin:sectionTitle4" );
     }
 
     /** {@inheritDoc} */
     public void sectionTitle4_()
     {
-        addEvent( "sectionTitle4_" );
+        writeln( "end:sectionTitle4" );
     }
 
     /** {@inheritDoc} */
     public void sectionTitle5()
     {
-        addEvent( "sectionTitle5" );
+        write( "begin:sectionTitle5" );
     }
 
     /** {@inheritDoc} */
     public void sectionTitle5_()
     {
-        addEvent( "sectionTitle5_" );
+        writeln( "end:sectionTitle5" );
     }
 
     /** {@inheritDoc} */
     public void paragraph()
     {
-        addEvent( "paragraph" );
+        write( "begin:paragraph" );
     }
 
     /** {@inheritDoc} */
     public void paragraph_()
     {
-        addEvent( "paragraph_" );
+        writeln( "end:paragraph" );
     }
 
     /** {@inheritDoc} */
     public void verbatim( boolean boxed )
     {
-        addEvent( "verbatim", new Object[] {new Boolean( boxed )} );
+        write( "begin:verbatim, boxed: " + boxed );
     }
 
     /** {@inheritDoc} */
     public void verbatim_()
     {
-        addEvent( "verbatim_" );
+        writeln( "end:verbatim" );
     }
 
     /** {@inheritDoc} */
     public void definedTerm()
     {
-        addEvent( "definedTerm" );
+        write( "begin:definedTerm" );
     }
 
     /** {@inheritDoc} */
     public void definedTerm_()
     {
-        addEvent( "definedTerm_" );
+        writeln( "end:definedTerm" );
     }
 
     /** {@inheritDoc} */
     public void figureCaption()
     {
-        addEvent( "figureCaption" );
+        write( "begin:figureCaption" );
     }
 
     /** {@inheritDoc} */
     public void figureCaption_()
     {
-        addEvent( "figureCaption_" );
+        writeln( "end:figureCaption" );
     }
 
     /** {@inheritDoc} */
     public void tableCell()
     {
-        addEvent( "tableCell" );
+        write( "begin:tableCell" );
     }
 
     /** {@inheritDoc} */
     public void tableCell( String width )
     {
-        addEvent( "tableCell", new Object[] {width} );
+        write( "begin:tableCell, width: " + width );
     }
 
     /** {@inheritDoc} */
     public void tableCell_()
     {
-        addEvent( "tableCell_" );
+        writeln( "end:tableCell" );
     }
 
     /** {@inheritDoc} */
     public void tableHeaderCell()
     {
-        addEvent( "tableHeaderCell" );
+        write( "begin:tableHeaderCell" );
     }
 
     /** {@inheritDoc} */
     public void tableHeaderCell( String width )
     {
-        addEvent( "tableHeaderCell", new Object[] {width} );
+        write( "begin:tableHeaderCell, width: " + width );
     }
 
     /** {@inheritDoc} */
     public void tableHeaderCell_()
     {
-        addEvent( "tableHeaderCell_" );
+        writeln( "end:tableHeaderCell" );
     }
 
     /** {@inheritDoc} */
     public void tableCaption()
     {
-        addEvent( "tableCaption" );
+        write( "begin:tableCaption" );
     }
 
     /** {@inheritDoc} */
     public void tableCaption_()
     {
-        addEvent( "tableCaption_" );
+        writeln( "end:tableCaption" );
     }
 
     /** {@inheritDoc} */
     public void figureGraphics( String name )
     {
-        addEvent( "figureGraphics", new Object[] {name} );
+        write( "figureGraphics, name: " + name );
     }
 
     /** {@inheritDoc} */
     public void horizontalRule()
     {
-        addEvent( "horizontalRule" );
+        write( "horizontalRule" );
     }
 
     /** {@inheritDoc} */
     public void pageBreak()
     {
-        addEvent( "pageBreak" );
+        write( "pageBreak" );
     }
 
     /** {@inheritDoc} */
     public void anchor( String name )
     {
-        addEvent( "anchor", new Object[] {name} );
+        write( "begin:anchor, name: " + name  );
     }
 
     /** {@inheritDoc} */
     public void anchor_()
     {
-        addEvent( "anchor_" );
+        writeln( "end:anchor" );
     }
 
     /** {@inheritDoc} */
     public void link( String name )
     {
-        addEvent( "link", new Object[] {name} );
+        write( "begin:link, name: " + name  );
     }
 
     /** {@inheritDoc} */
     public void link_()
     {
-        addEvent( "link_" );
+        writeln( "end:link" );
     }
 
     /** {@inheritDoc} */
     public void italic()
     {
-        addEvent( "italic" );
+        write( "begin:italic" );
     }
 
     /** {@inheritDoc} */
     public void italic_()
     {
-        addEvent( "italic_" );
+        writeln( "end:italic" );
     }
 
     /** {@inheritDoc} */
     public void bold()
     {
-        addEvent( "bold" );
+        write( "begin:bold" );
     }
 
     /** {@inheritDoc} */
     public void bold_()
     {
-        addEvent( "bold_" );
+        writeln( "end:bold" );
     }
 
     /** {@inheritDoc} */
     public void monospaced()
     {
-        addEvent( "monospaced" );
+        write( "begin:monospaced" );
     }
 
     /** {@inheritDoc} */
     public void monospaced_()
     {
-        addEvent( "monospaced_" );
+        writeln( "end:monospaced" );
     }
 
     /** {@inheritDoc} */
     public void lineBreak()
     {
-        addEvent( "lineBreak" );
+        write( "lineBreak" );
     }
 
     /** {@inheritDoc} */
     public void nonBreakingSpace()
     {
-        addEvent( "nonBreakingSpace" );
+        write( "nonBreakingSpace" );
     }
 
     /** {@inheritDoc} */
     public void text( String text )
     {
-        addEvent( "text", new Object[] {text} );
+        write( "text: " + text );
     }
 
     /** {@inheritDoc} */
     public void rawText( String text )
     {
-        addEvent( "rawText", new Object[] {text} );
+        write( "rawText: " + text );
     }
 
     /** {@inheritDoc} */
     public void comment( String comment )
     {
-        addEvent( "comment", new Object[] {comment} );
+        write( "comment: " + comment );
     }
 
     /** {@inheritDoc} */
     public void flush()
     {
-        addEvent( "flush" );
+        try
+        {
+            out.flush();
+        }
+        catch ( IOException e )
+        {
+            getLog().warn( "Could not flush sink: " + e.getMessage(), e );
+        }
     }
 
     /** {@inheritDoc} */
     public void close()
     {
-        addEvent( "close" );
+        try
+        {
+            out.close();
+        }
+        catch ( IOException e )
+        {
+            getLog().warn( "Could not close sink: " + e.getMessage(), e );
+        }
     }
 
     /** {@inheritDoc} */
     public void head( SinkEventAttributes attributes )
     {
-        addEvent( "head", new Object[] {attributes} );
+        head();
     }
 
     /** {@inheritDoc} */
     public void title( SinkEventAttributes attributes )
     {
-        addEvent( "title", new Object[] {attributes} );
+        title();
     }
 
     /** {@inheritDoc} */
     public void author( SinkEventAttributes attributes )
     {
-        addEvent( "author", new Object[] {attributes} );
+        author();
     }
 
     /** {@inheritDoc} */
     public void date( SinkEventAttributes attributes )
     {
-        addEvent( "date", new Object[] {attributes} );
+        date();
     }
 
     /** {@inheritDoc} */
     public void body( SinkEventAttributes attributes )
     {
-        addEvent( "body", new Object[] {attributes} );
+        body();
     }
 
     /** {@inheritDoc} */
     public void section( int level, SinkEventAttributes attributes )
     {
-        addEvent( "section" + level, new Object[] {attributes} );
+        write( "begin:section" + level );
     }
 
     /** {@inheritDoc} */
     public void section_( int level )
     {
-        addEvent( "section" + level + "_" );
+        writeln( "end:section" + level );
     }
 
     /** {@inheritDoc} */
     public void sectionTitle( int level, SinkEventAttributes attributes )
     {
-        addEvent( "sectionTitle" + level, new Object[] {attributes} );
+        write( "begin:sectionTitle" + level );
     }
 
     /** {@inheritDoc} */
     public void sectionTitle_( int level )
     {
-
-        addEvent( "sectionTitle" + level + "_" );
+        writeln( "end:sectionTitle" + level );
     }
 
     /** {@inheritDoc} */
     public void list( SinkEventAttributes attributes )
     {
-        addEvent( "list", new Object[] {attributes} );
+        list();
     }
 
     /** {@inheritDoc} */
     public void listItem( SinkEventAttributes attributes )
     {
-        addEvent( "listItem", new Object[] {attributes} );
+        listItem();
     }
 
     /** {@inheritDoc} */
     public void numberedList( int numbering, SinkEventAttributes attributes )
     {
-        addEvent( "numberedList", new Object[] {new Integer( numbering ), attributes} );
+        numberedList( numbering );
     }
 
     /** {@inheritDoc} */
     public void numberedListItem( SinkEventAttributes attributes )
     {
-        addEvent( "numberedListItem", new Object[] {attributes} );
+        numberedListItem();
     }
 
     /** {@inheritDoc} */
     public void definitionList( SinkEventAttributes attributes )
     {
-        addEvent( "definitionList", new Object[] {attributes} );
+        definitionList();
     }
 
     /** {@inheritDoc} */
     public void definitionListItem( SinkEventAttributes attributes )
     {
-        addEvent( "definitionListItem", new Object[] {attributes} );
+        definitionListItem();
     }
 
     /** {@inheritDoc} */
     public void definition( SinkEventAttributes attributes )
     {
-        addEvent( "definition", new Object[] {attributes} );
+        definition();
     }
 
     /** {@inheritDoc} */
     public void definedTerm( SinkEventAttributes attributes )
     {
-        addEvent( "definedTerm", new Object[] {attributes} );
+        definedTerm();
     }
 
     /** {@inheritDoc} */
     public void figure( SinkEventAttributes attributes )
     {
-        addEvent( "figure", new Object[] {attributes} );
+        write( "begin:figure" + SinkUtils.getAttributeString( attributes ) );
     }
 
     /** {@inheritDoc} */
     public void figureCaption( SinkEventAttributes attributes )
     {
-        addEvent( "figureCaption", new Object[] {attributes} );
+        figureCaption();
     }
 
     /** {@inheritDoc} */
     public void figureGraphics( String src, SinkEventAttributes attributes )
     {
-        addEvent( "figureGraphics", new Object[] {src, attributes} );
+        figureGraphics( src );
     }
 
     /** {@inheritDoc} */
     public void table( SinkEventAttributes attributes )
     {
-        addEvent( "table", new Object[] {attributes} );
+        table();
     }
 
     /** {@inheritDoc} */
     public void tableRow( SinkEventAttributes attributes )
     {
-        addEvent( "tableRow", new Object[] {attributes} );
+        tableRow();
     }
 
     /** {@inheritDoc} */
     public void tableCell( SinkEventAttributes attributes )
     {
-        addEvent( "tableCell", new Object[] {attributes} );
+        tableCell();
     }
 
     /** {@inheritDoc} */
     public void tableHeaderCell( SinkEventAttributes attributes )
     {
-        addEvent( "tableHeaderCell", new Object[] {attributes} );
+        tableHeaderCell();
     }
 
     /** {@inheritDoc} */
     public void tableCaption( SinkEventAttributes attributes )
     {
-        addEvent( "tableCaption", new Object[] {attributes} );
+        tableCaption();
     }
 
     /** {@inheritDoc} */
     public void paragraph( SinkEventAttributes attributes )
     {
-        addEvent( "paragraph", new Object[] {attributes} );
+        paragraph();
     }
 
     /** {@inheritDoc} */
     public void verbatim( SinkEventAttributes attributes )
     {
-        addEvent( "verbatim", new Object[] {attributes} );
+        boolean boxed = false;
+
+        if ( attributes != null && attributes.isDefined( SinkEventAttributes.DECORATION ) )
+        {
+            boxed = "boxed".equals(
+                attributes.getAttribute( SinkEventAttributes.DECORATION ).toString() );
+        }
+
+        verbatim( boxed );
     }
 
     /** {@inheritDoc} */
     public void horizontalRule( SinkEventAttributes attributes )
     {
-        addEvent( "horizontalRule", new Object[] {attributes} );
+        horizontalRule();
     }
 
     /** {@inheritDoc} */
     public void anchor( String name, SinkEventAttributes attributes )
     {
-        addEvent( "anchor", new Object[] {name, attributes} );
+        anchor( name );
     }
 
     /** {@inheritDoc} */
     public void link( String name, SinkEventAttributes attributes )
     {
-        addEvent( "link", new Object[] {name, attributes} );
+        link( name );
     }
 
     /** {@inheritDoc} */
     public void lineBreak( SinkEventAttributes attributes )
     {
-        addEvent( "lineBreak", new Object[] {attributes} );
+        lineBreak();
     }
 
     /** {@inheritDoc} */
     public void text( String text, SinkEventAttributes attributes )
     {
-        addEvent( "text", new Object[] {text, attributes} );
+        text( text );
     }
 
     /** {@inheritDoc} */
     public void unknown( String name, Object[] requiredParams, SinkEventAttributes attributes )
     {
-        addEvent( "unknown", new Object[] {name, requiredParams, attributes} );
-    }
-
-      //
-     // private
-    //
-
-    /**
-     * Adds a no-arg event to the list of events.
-     *
-     * @param string the name of the event.
-     */
-    private void addEvent( String string )
-    {
-        addEvent( string, null );
+        write( "unknown: " + name );
     }
 
     /**
-     * Adds an event to the list of events.
+     * Writes the given string + EOL.
      *
-     * @param string the name of the event.
-     * @param arguments The array of arguments to the sink method.
+     * @param text The text to write.
      */
-    private void addEvent( String string, Object[] arguments )
+    private void write( String text )
     {
-        events.add( new SinkEventElement( string, arguments ) );
+        try
+        {
+            out.write( text + EOL );
+        }
+        catch ( IOException e )
+        {
+            getLog().warn( "Could not write to sink: " + e.getMessage(), e );
+        }
     }
 
+    /**
+     * Writes the given string + two EOLs.
+     *
+     * @param text The text to write.
+     */
+    private void writeln( String text )
+    {
+        write( text );
+        write( EOL );
+    }
 }

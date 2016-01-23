@@ -1,4 +1,4 @@
-package org.apache.maven.doxia.sink;
+package org.apache.maven.doxia.sink.impl;
 
 /*
  * Licensed to the Apache Software Foundation (ASF) under one
@@ -24,6 +24,11 @@ package org.apache.maven.doxia.sink;
  */
 import java.io.ByteArrayOutputStream;
 import java.io.Writer;
+
+import org.apache.maven.doxia.sink.Sink;
+import org.apache.maven.doxia.sink.SinkFactory;
+import org.apache.maven.doxia.sink.impl.AbstractXmlSinkFactory;
+import org.apache.maven.doxia.sink.impl.RandomAccessSink;
 
 import junit.framework.TestCase;
 

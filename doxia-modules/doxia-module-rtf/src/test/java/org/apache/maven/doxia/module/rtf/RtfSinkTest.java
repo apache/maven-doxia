@@ -20,8 +20,8 @@ package org.apache.maven.doxia.module.rtf;
  */
 
 import org.apache.maven.doxia.sink.Sink;
-import org.apache.maven.doxia.sink.AbstractSinkTestCase;
-import org.apache.maven.doxia.sink.SinkTestDocument;
+import org.apache.maven.doxia.sink.impl.AbstractSinkTestCase;
+import org.apache.maven.doxia.sink.impl.SinkTestDocument;
 import org.apache.maven.doxia.parser.Parser;
 import org.apache.maven.doxia.module.apt.AptParser;
 import org.codehaus.plexus.util.IOUtil;

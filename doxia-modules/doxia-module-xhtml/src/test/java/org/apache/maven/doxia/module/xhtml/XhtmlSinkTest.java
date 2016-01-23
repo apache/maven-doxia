@@ -23,9 +23,9 @@ import java.io.StringWriter;
 import java.io.Writer;
 
 import org.apache.maven.doxia.markup.HtmlMarkup;
-import org.apache.maven.doxia.sink.AbstractSinkTest;
 import org.apache.maven.doxia.sink.Sink;
-import org.apache.maven.doxia.sink.SinkEventAttributeSet;
+import org.apache.maven.doxia.sink.impl.AbstractSinkTest;
+import org.apache.maven.doxia.sink.impl.SinkEventAttributeSet;
 
 /**
  * @author Jason van Zyl

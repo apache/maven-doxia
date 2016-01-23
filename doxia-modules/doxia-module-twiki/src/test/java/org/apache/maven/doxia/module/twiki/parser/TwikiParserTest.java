@@ -23,8 +23,8 @@ import java.util.Iterator;
 import org.apache.maven.doxia.module.twiki.TWikiParser;
 import org.apache.maven.doxia.parser.AbstractParserTest;
 import org.apache.maven.doxia.parser.Parser;
-import org.apache.maven.doxia.sink.SinkEventElement;
-import org.apache.maven.doxia.sink.SinkEventTestingSink;
+import org.apache.maven.doxia.sink.impl.SinkEventElement;
+import org.apache.maven.doxia.sink.impl.SinkEventTestingSink;
 
 /**
  * @author ltheussl

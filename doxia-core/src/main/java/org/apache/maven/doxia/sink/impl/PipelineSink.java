@@ -1,4 +1,4 @@
-package org.apache.maven.doxia.sink;
+package org.apache.maven.doxia.sink.impl;
 
 /*
  * Licensed to the Apache Software Foundation (ASF) under one
@@ -25,6 +25,8 @@ import java.lang.reflect.Method;
 import java.lang.reflect.Proxy;
 
 import java.util.List;
+
+import org.apache.maven.doxia.sink.Sink;
 
 /**
  * May be used to invoke the same method on a List of Sinks.

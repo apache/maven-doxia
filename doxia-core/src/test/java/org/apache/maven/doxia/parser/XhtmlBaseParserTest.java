@@ -22,9 +22,9 @@ package org.apache.maven.doxia.parser;
 import java.util.Iterator;
 
 import org.apache.maven.doxia.logging.Log;
-import org.apache.maven.doxia.sink.SinkEventAttributeSet;
-import org.apache.maven.doxia.sink.SinkEventElement;
-import org.apache.maven.doxia.sink.SinkEventTestingSink;
+import org.apache.maven.doxia.sink.impl.SinkEventAttributeSet;
+import org.apache.maven.doxia.sink.impl.SinkEventElement;
+import org.apache.maven.doxia.sink.impl.SinkEventTestingSink;
 
 /**
  * Test for XhtmlBaseParser.

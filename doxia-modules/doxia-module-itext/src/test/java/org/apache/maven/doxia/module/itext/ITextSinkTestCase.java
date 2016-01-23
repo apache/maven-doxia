@@ -29,7 +29,7 @@ import java.net.URLClassLoader;
 
 import org.apache.maven.doxia.AbstractModuleTest;
 import org.apache.maven.doxia.sink.Sink;
-import org.apache.maven.doxia.sink.SinkTestDocument;
+import org.apache.maven.doxia.sink.impl.SinkTestDocument;
 
 /**
  * <code>iText Sink</code> Test case.

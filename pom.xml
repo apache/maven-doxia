@@ -274,6 +274,12 @@ under the License.
                 <exclude>org/apache/maven/doxia/module/*/*SiteModule</exclude>
                 <!-- DOXIA-482 -->
                 <exclude>org/apache/maven/doxia/parser/Parser</exclude>
+                <!-- DOXIA-506 -->
+                <exclude>org/apache/maven/doxia/sink/**</exclude>
+                <exclude>org/apache/maven/doxia/index/IndexingSink</exclude>
+                <exclude>org/apache/maven/doxia/parser/AbstractXmlParser</exclude>
+                <exclude>org/apache/maven/doxia/module/*/*Sink</exclude>
+                <exclude>org/apache/maven/doxia/module/*/*SinkFactory</exclude>
               </excludes>
             </configuration>
           </execution>

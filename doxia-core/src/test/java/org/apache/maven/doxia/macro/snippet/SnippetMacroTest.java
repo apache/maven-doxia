@@ -21,8 +21,8 @@ package org.apache.maven.doxia.macro.snippet;
 
 import org.apache.maven.doxia.macro.MacroExecutionException;
 import org.apache.maven.doxia.macro.MacroRequest;
-import org.apache.maven.doxia.sink.SinkEventElement;
-import org.apache.maven.doxia.sink.SinkEventTestingSink;
+import org.apache.maven.doxia.sink.impl.SinkEventElement;
+import org.apache.maven.doxia.sink.impl.SinkEventTestingSink;
 import org.codehaus.plexus.PlexusTestCase;
 import org.hamcrest.CoreMatchers;
 import org.junit.Assert;

@@ -31,8 +31,8 @@ import org.apache.maven.doxia.parser.ParseException;
 import org.apache.maven.doxia.parser.Parser;
 
 import org.apache.maven.doxia.sink.Sink;
-import org.apache.maven.doxia.sink.SinkTestDocument;
-import org.apache.maven.doxia.sink.TextSink;
+import org.apache.maven.doxia.sink.impl.SinkTestDocument;
+import org.apache.maven.doxia.sink.impl.TextSink;
 import org.codehaus.plexus.util.IOUtil;
 
 /**
