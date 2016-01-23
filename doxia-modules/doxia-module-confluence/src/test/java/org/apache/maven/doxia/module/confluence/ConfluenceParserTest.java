@@ -408,14 +408,24 @@ public class ConfluenceParserTest
         assertContainsLines( result, "text: A paragraph with \nbegin:bold\ntext: bold \nbegin:italic\ntext: italic\nend:italic" );
         assertContainsLines( result, "begin:italic\ntext: italic \nbegin:bold\ntext: bold\nend:bold" );
         assertContainsLines( result, "begin:bold\ntext: bold \nbegin:monospaced\ntext: monospaced\nend:monospaced" );
-        // 2 paragraphs in the input...
-        assertEquals( 3, result.split( "end:paragraph\n" ).length );
+        assertContainsLines( result, "begin:monospaced\ntext: monospaced-with-dashes\nend:monospaced");
+        assertContainsLines( result, "begin:monospaced\ntext: monospaced_with_underscores\nend:monospaced");
+        assertContainsLines( result, "begin:monospaced\ntext: monospaced*with*stars\nend:monospaced");
+        assertContainsLines( result, "begin:monospaced\ntext: monospaced+with+plus\nend:monospaced");
+        assertContainsLines( result, "begin:monospaced\ntext: monospaced~with~tilde\nend:monospaced");
+        assertContainsLines( result, "begin:monospaced\ntext: monospaced^with^circumflex^accent\nend:monospaced");
+        assertContainsLines( result, "begin:monospaced\ntext: monospaced[with]brackets\nend:monospaced");
+        assertContainsLines( result, "begin:monospaced\ntext: monospaced{with}curly{brackets\nend:monospaced");
+        assertContainsLines( result, "begin:monospaced\ntext: monospaced\\\\\\with\\\\backslashes\nend:monospaced");
+
+        // 3 paragraphs in the input...
+        assertEquals( 4, result.split( "end:paragraph\n" ).length );
         // 6 bolds in the input...
         assertEquals( 7, result.split( "end:bold\n" ).length );
         // 4 italics in the input...
         assertEquals( 5, result.split( "end:italic\n" ).length );
-        // 2 monospaced in the input...
-        assertEquals( 3, result.split( "end:monospaced\n" ).length );
+        // 11 monospaced in the input...
+        assertEquals( 12, result.split( "end:monospaced\n" ).length );
     }
 
     /** @throws Exception */

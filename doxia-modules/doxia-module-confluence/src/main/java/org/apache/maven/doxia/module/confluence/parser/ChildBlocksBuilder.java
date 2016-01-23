@@ -89,6 +89,10 @@ public class ChildBlocksBuilder
                         specialBlocks = getList( new BoldBlock( getChildren( text, specialBlocks ) ), specialBlocks );
                         text = new StringBuilder();
                     }
+                    else if ( insideMonospaced )
+                    {
+                        text.append( c );
+                    }
                     else
                     {
                         text = addTextBlockIfNecessary( blocks, specialBlocks, text );
@@ -103,9 +107,9 @@ public class ChildBlocksBuilder
                         specialBlocks = getList( new ItalicBlock( getChildren( text, specialBlocks ) ), specialBlocks );
                         text = new StringBuilder();
                     }
-                    else if ( insideLink )
+                    else if ( insideLink || insideMonospaced )
                     {
-                        text.append( '_' );    
+                        text.append( c );
                     }
                     else
                     {
@@ -121,7 +125,7 @@ public class ChildBlocksBuilder
                         blocks.add( new LinethroughBlock( text.toString() ) );
                         text = new StringBuilder();
                     }
-                    else if ( insideLink )
+                    else if ( insideLink || insideMonospaced )
                     {
                         text.append( c );    
                     }
@@ -138,7 +142,7 @@ public class ChildBlocksBuilder
                         blocks.add( new UnderlineBlock( text.toString() ) );
                         text = new StringBuilder();
                     }
-                    else if ( insideLink )
+                    else if ( insideLink || insideMonospaced )
                     {
                         text.append( c );    
                     }
@@ -155,7 +159,7 @@ public class ChildBlocksBuilder
                         blocks.add( new SubBlock( text.toString() ) );
                         text = new StringBuilder();
                     }
-                    else if ( insideLink )
+                    else if ( insideLink || insideMonospaced )
                     {
                         text.append( c );    
                     }
@@ -172,7 +176,7 @@ public class ChildBlocksBuilder
                         blocks.add( new SupBlock( text.toString() ) );
                         text = new StringBuilder();
                     }
-                    else if ( insideLink )
+                    else if ( insideLink || insideMonospaced )
                     {
                         text.append( c );    
                     }
@@ -183,8 +187,15 @@ public class ChildBlocksBuilder
                     }
                     break;
                 case '[':
-                    insideLink = true;
-                    text = addTextBlockIfNecessary( blocks, specialBlocks, text );
+                    if ( insideMonospaced )
+                    {
+                        text.append( c );
+                    }
+                    else
+                    {
+                        insideLink = true;
+                        text = addTextBlockIfNecessary( blocks, specialBlocks, text );
+                    }
                     break;
                 case ']':
                     if ( insideLink )
@@ -269,24 +280,31 @@ public class ChildBlocksBuilder
                         text = new StringBuilder();
                         insideLink = false;
                     }
+                    else if ( insideMonospaced )
+                    {
+                        text.append( c );
+                    }
 
                     break;
                 case '{':
-
-                    text = addTextBlockIfNecessary( blocks, specialBlocks, text );
-
-                    if ( nextChar( input, i ) == '{' ) // it's monospaced
+                    if ( insideMonospaced )
                     {
-                        i++;
-                        insideMonospaced = true;
+                        text.append( c );
+                    }
+                    else
+                    {
+                        text = addTextBlockIfNecessary( blocks, specialBlocks, text );
+
+                        if ( nextChar( input, i ) == '{' ) // it's monospaced
+                        {
+                            i++;
+                            insideMonospaced = true;
+                        }
                     }
                     // else it's a confluence macro...
 
                     break;
                 case '}':
-
-                    // System.out.println( "line = " + line );
-
                     if ( nextChar( input, i ) == '}' )
                     {
                         i++;
@@ -294,6 +312,10 @@ public class ChildBlocksBuilder
                         specialBlocks = getList( new MonospaceBlock( getChildren( text, specialBlocks ) ),
                                                  specialBlocks );
                         text = new StringBuilder();
+                    }
+                    else if ( insideMonospaced )
+                    {
+                        text.append( c );
                     }
                     else
                     {
