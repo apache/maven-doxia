@@ -20,14 +20,14 @@ package org.apache.maven.doxia.module.xhtml;
  */
 
 import java.io.File;
+import java.io.FileFilter;
 import java.util.Iterator;
-import java.util.List;
+import java.util.regex.Pattern;
 
 import org.apache.maven.doxia.parser.AbstractParserTest;
 import org.apache.maven.doxia.parser.Parser;
 import org.apache.maven.doxia.sink.impl.SinkEventElement;
 import org.apache.maven.doxia.sink.impl.SinkEventTestingSink;
-import org.codehaus.plexus.util.FileUtils;
 
 /**
  * @author <a href="mailto:lars@trieloff.net">Lars Trieloff</a>
@@ -49,14 +49,24 @@ public class XhtmlParserTest
         // AbstractXmlParser.CachedFileEntityResolver downloads DTD/XSD files in ${java.io.tmpdir}
         // Be sure to delete them
         String tmpDir = System.getProperty( "java.io.tmpdir" );
-        String excludes = "xhtml-lat1.ent, xhtml1-transitional.dtd, xhtml-special.ent, xhtml-symbol.ent";
-        @SuppressWarnings( "unchecked" )
-        List<String> tmpFiles = FileUtils.getFileNames( new File( tmpDir ), excludes, null, true );
-        for ( String filename : tmpFiles )
+
+        // Using FileFilter, because is it is much faster then FileUtils.listFiles 
+        File[] tmpFiles = new File( tmpDir ).listFiles( new FileFilter()
         {
-            File tmpFile = new File( filename );
+            Pattern xsdPatterns = Pattern.compile( "(xhtml-lat1.ent|xhtml1-transitional.dtd|xhtml-special.ent|xhtml-symbol.ent)" );
+            
+            @Override
+            public boolean accept( File pathname )
+            {
+                return xsdPatterns.matcher( pathname.getName() ).matches(); 
+            }
+        } );
+        
+        for ( File tmpFile : tmpFiles )
+        {
             tmpFile.delete();
         }
+
     }
 
     /** {@inheritDoc} */
