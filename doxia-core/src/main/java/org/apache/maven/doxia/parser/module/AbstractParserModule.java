@@ -41,7 +41,7 @@ public abstract class AbstractParserModule
      */
     public AbstractParserModule()
     {
-        this( null, (String[]) null, null );
+        this( null, null, (String[]) null );
     }
 
     /**
@@ -55,9 +55,9 @@ public abstract class AbstractParserModule
     /**
      * Constructor with same value for parser id and source directory.
      */
-    public AbstractParserModule( String parserId, String... extensions )
+    public AbstractParserModule( String parserId, String extension )
     {
-        this( parserId, extensions, parserId );
+        this( parserId, parserId, new String[] { extension } );
     }
 
     /**
@@ -65,6 +65,7 @@ public abstract class AbstractParserModule
      * @param extension not null
      * @param parserId not null
      * @since 1.1.1
+     * @deprecated can cause confusion with constructor with multiple extensions
      */
     protected AbstractParserModule( String sourceDirectory, String extension, String parserId )
     {
@@ -76,11 +77,11 @@ public abstract class AbstractParserModule
 
     /**
      * @param sourceDirectory not null
+     * @param parserId not null (usually equals sourceDirectory)
      * @param extensions not null
-     * @param parserId not null
      * @since 1.7
      */
-    protected AbstractParserModule( String sourceDirectory, String[] extensions, String parserId )
+    protected AbstractParserModule( String sourceDirectory, String parserId, String... extensions )
     {
         super();
         this.sourceDirectory = sourceDirectory;
