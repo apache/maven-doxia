@@ -19,34 +19,33 @@ package org.apache.maven.doxia.module.markdown;
  * under the License.
  */
 
-import org.apache.maven.doxia.parser.module.AbstractParserModule;
 import org.apache.maven.doxia.parser.module.ParserModule;
-import org.codehaus.plexus.component.annotations.Component;
+import org.codehaus.plexus.PlexusTestCase;
 
 /**
- * {@link org.apache.maven.doxia.parser.module.ParserModule} for Markdown.
- *
- * @since 1.6
+ * Test MarkdownParserModule.
  */
-@Component( role = ParserModule.class, hint = "markdown" )
-public class MarkdownParserModule
-    extends AbstractParserModule
+public class MarkdownParserModuleTest
+    extends PlexusTestCase
 {
     /**
-     * The extension for Markdown files.
+     * The {@link MarkdownParser} used for the tests.
      */
-    public static final String FILE_EXTENSION = "md";
+    protected MarkdownParserModule parserModule;
 
     /**
-     * Alternate extension for Markdown files.
+     * {@inheritDoc}
      */
-    public static final String ALTERNATE_FILE_EXTENSION = "markdown";
-
-    /**
-     * Build a new instance of {@link MarkdownParserModule}.
-     */
-    public MarkdownParserModule()
+    @Override
+    protected void setUp()
+        throws Exception
     {
-        super( MarkdownParser.ROLE_HINT, MarkdownParser.ROLE_HINT, FILE_EXTENSION, ALTERNATE_FILE_EXTENSION );
+        super.setUp();
+        parserModule = (MarkdownParserModule) lookup( ParserModule.class, MarkdownParser.ROLE_HINT );
+    }
+
+    public void testExtensions()
+    {
+        assertEquals( 2, parserModule.getExtensions().length );
     }
 }
