@@ -59,740 +59,764 @@ public class SinkEventTestingSink
      // sink methods
     //
 
-    /** {@inheritDoc} */
+    @Override
     public void head()
     {
         addEvent( "head" );
     }
 
-    /** {@inheritDoc} */
+    @Override
     public void head_()
     {
         addEvent( "head_" );
     }
 
-    /** {@inheritDoc} */
+    @Override
     public void body()
     {
         addEvent( "body" );
     }
 
-    /** {@inheritDoc} */
+    @Override
     public void body_()
     {
         addEvent( "body_" );
     }
 
-    /** {@inheritDoc} */
+    @Override
     public void section1()
     {
         addEvent( "section1" );
     }
 
-    /** {@inheritDoc} */
+    @Override
     public void section1_()
     {
         addEvent( "section1_" );
     }
 
-    /** {@inheritDoc} */
+    @Override
     public void section2()
     {
         addEvent( "section2" );
     }
 
-    /** {@inheritDoc} */
+    @Override
     public void section2_()
     {
         addEvent( "section2_" );
     }
 
-    /** {@inheritDoc} */
+    @Override
     public void section3()
     {
         addEvent( "section3" );
     }
 
-    /** {@inheritDoc} */
+    @Override
     public void section3_()
     {
         addEvent( "section3_" );
     }
 
-    /** {@inheritDoc} */
+    @Override
     public void section4()
     {
         addEvent( "section4" );
     }
 
-    /** {@inheritDoc} */
+    @Override
     public void section4_()
     {
         addEvent( "section4_" );
     }
 
-    /** {@inheritDoc} */
+    @Override
     public void section5()
     {
         addEvent( "section5" );
     }
 
-    /** {@inheritDoc} */
+    @Override
     public void section5_()
     {
         addEvent( "section5_" );
     }
 
-    /** {@inheritDoc} */
+    @Override
+    public void section6()
+    {
+        addEvent( "section6" );
+    }
+
+    @Override
+    public void section6_()
+    {
+        addEvent( "section6_" );
+    }
+
+    @Override
     public void list()
     {
         addEvent( "list" );
     }
 
-    /** {@inheritDoc} */
+    @Override
     public void list_()
     {
         addEvent( "list_" );
     }
 
-    /** {@inheritDoc} */
+    @Override
     public void listItem()
     {
         addEvent( "listItem" );
     }
 
-    /** {@inheritDoc} */
+    @Override
     public void listItem_()
     {
         addEvent( "listItem_" );
     }
 
-    /** {@inheritDoc} */
+    @Override
     public void numberedList( int numbering )
     {
         addEvent( "numberedList", new Object[] {new Integer( numbering )} );
     }
 
-    /** {@inheritDoc} */
+    @Override
     public void numberedList_()
     {
         addEvent( "numberedList_" );
     }
 
-    /** {@inheritDoc} */
+    @Override
     public void numberedListItem()
     {
         addEvent( "numberedListItem" );
     }
 
-    /** {@inheritDoc} */
+    @Override
     public void numberedListItem_()
     {
         addEvent( "numberedListItem_" );
     }
 
-    /** {@inheritDoc} */
+    @Override
     public void definitionList()
     {
         addEvent( "definitionList" );
     }
 
-    /** {@inheritDoc} */
+    @Override
     public void definitionList_()
     {
         addEvent( "definitionList_" );
     }
 
-    /** {@inheritDoc} */
+    @Override
     public void definitionListItem()
     {
         addEvent( "definitionListItem" );
     }
 
-    /** {@inheritDoc} */
+    @Override
     public void definitionListItem_()
     {
         addEvent( "definitionListItem_" );
     }
 
-    /** {@inheritDoc} */
+    @Override
     public void definition()
     {
         addEvent( "definition" );
     }
 
-    /** {@inheritDoc} */
+    @Override
     public void definition_()
     {
         addEvent( "definition_" );
     }
 
-    /** {@inheritDoc} */
+    @Override
     public void figure()
     {
         addEvent( "figure" );
     }
 
-    /** {@inheritDoc} */
+    @Override
     public void figure_()
     {
         addEvent( "figure_" );
     }
 
-    /** {@inheritDoc} */
+    @Override
     public void table()
     {
         addEvent( "table" );
     }
 
-    /** {@inheritDoc} */
+    @Override
     public void table_()
     {
         addEvent( "table_" );
     }
 
-    /** {@inheritDoc} */
+    @Override
     public void tableRows( int[] justification, boolean grid )
     {
         addEvent( "tableRows", new Object[] {justification, new Boolean( grid )} );
     }
 
-    /** {@inheritDoc} */
+    @Override
     public void tableRows_()
     {
         addEvent( "tableRows_" );
     }
 
-    /** {@inheritDoc} */
+    @Override
     public void tableRow()
     {
         addEvent( "tableRow" );
     }
 
-    /** {@inheritDoc} */
+    @Override
     public void tableRow_()
     {
         addEvent( "tableRow_" );
     }
 
-    /** {@inheritDoc} */
+    @Override
     public void title()
     {
         addEvent( "title" );
     }
 
-    /** {@inheritDoc} */
+    @Override
     public void title_()
     {
         addEvent( "title_" );
     }
 
-    /** {@inheritDoc} */
+    @Override
     public void author()
     {
         addEvent( "author" );
     }
 
-    /** {@inheritDoc} */
+    @Override
     public void author_()
     {
         addEvent( "author_" );
     }
 
-    /** {@inheritDoc} */
+    @Override
     public void date()
     {
         addEvent( "date" );
     }
 
-    /** {@inheritDoc} */
+    @Override
     public void date_()
     {
         addEvent( "date_" );
     }
 
-    /** {@inheritDoc} */
+    @Override
     public void sectionTitle()
     {
         addEvent( "sectionTitle" );
     }
 
-    /** {@inheritDoc} */
+    @Override
     public void sectionTitle_()
     {
         addEvent( "sectionTitle_" );
     }
 
-    /** {@inheritDoc} */
+    @Override
     public void sectionTitle1()
     {
         addEvent( "sectionTitle1" );
     }
 
-    /** {@inheritDoc} */
+    @Override
     public void sectionTitle1_()
     {
         addEvent( "sectionTitle1_" );
     }
 
-    /** {@inheritDoc} */
+    @Override
     public void sectionTitle2()
     {
         addEvent( "sectionTitle2" );
     }
 
-    /** {@inheritDoc} */
+    @Override
     public void sectionTitle2_()
     {
         addEvent( "sectionTitle2_" );
     }
 
-    /** {@inheritDoc} */
+    @Override
     public void sectionTitle3()
     {
         addEvent( "sectionTitle3" );
     }
 
-    /** {@inheritDoc} */
+    @Override
     public void sectionTitle3_()
     {
         addEvent( "sectionTitle3_" );
     }
 
-    /** {@inheritDoc} */
+    @Override
     public void sectionTitle4()
     {
         addEvent( "sectionTitle4" );
     }
 
-    /** {@inheritDoc} */
+    @Override
     public void sectionTitle4_()
     {
         addEvent( "sectionTitle4_" );
     }
 
-    /** {@inheritDoc} */
+    @Override
     public void sectionTitle5()
     {
         addEvent( "sectionTitle5" );
     }
 
-    /** {@inheritDoc} */
+    @Override
     public void sectionTitle5_()
     {
         addEvent( "sectionTitle5_" );
     }
 
-    /** {@inheritDoc} */
+    @Override
+    public void sectionTitle6()
+    {
+        addEvent( "sectionTitle6" );
+    }
+
+    @Override
+    public void sectionTitle6_()
+    {
+        addEvent( "sectionTitle6_" );
+    }
+
+    @Override
     public void paragraph()
     {
         addEvent( "paragraph" );
     }
 
-    /** {@inheritDoc} */
+    @Override
     public void paragraph_()
     {
         addEvent( "paragraph_" );
     }
 
-    /** {@inheritDoc} */
+    @Override
     public void verbatim( boolean boxed )
     {
         addEvent( "verbatim", new Object[] {new Boolean( boxed )} );
     }
 
-    /** {@inheritDoc} */
+    @Override
     public void verbatim_()
     {
         addEvent( "verbatim_" );
     }
 
-    /** {@inheritDoc} */
+    @Override
     public void definedTerm()
     {
         addEvent( "definedTerm" );
     }
 
-    /** {@inheritDoc} */
+    @Override
     public void definedTerm_()
     {
         addEvent( "definedTerm_" );
     }
 
-    /** {@inheritDoc} */
+    @Override
     public void figureCaption()
     {
         addEvent( "figureCaption" );
     }
 
-    /** {@inheritDoc} */
+    @Override
     public void figureCaption_()
     {
         addEvent( "figureCaption_" );
     }
 
-    /** {@inheritDoc} */
+    @Override
     public void tableCell()
     {
         addEvent( "tableCell" );
     }
 
-    /** {@inheritDoc} */
+    @Override
     public void tableCell( String width )
     {
         addEvent( "tableCell", new Object[] {width} );
     }
 
-    /** {@inheritDoc} */
+    @Override
     public void tableCell_()
     {
         addEvent( "tableCell_" );
     }
 
-    /** {@inheritDoc} */
+    @Override
     public void tableHeaderCell()
     {
         addEvent( "tableHeaderCell" );
     }
 
-    /** {@inheritDoc} */
+    @Override
     public void tableHeaderCell( String width )
     {
         addEvent( "tableHeaderCell", new Object[] {width} );
     }
 
-    /** {@inheritDoc} */
+    @Override
     public void tableHeaderCell_()
     {
         addEvent( "tableHeaderCell_" );
     }
 
-    /** {@inheritDoc} */
+    @Override
     public void tableCaption()
     {
         addEvent( "tableCaption" );
     }
 
-    /** {@inheritDoc} */
+    @Override
     public void tableCaption_()
     {
         addEvent( "tableCaption_" );
     }
 
-    /** {@inheritDoc} */
+    @Override
     public void figureGraphics( String name )
     {
         addEvent( "figureGraphics", new Object[] {name} );
     }
 
-    /** {@inheritDoc} */
+    @Override
     public void horizontalRule()
     {
         addEvent( "horizontalRule" );
     }
 
-    /** {@inheritDoc} */
+    @Override
     public void pageBreak()
     {
         addEvent( "pageBreak" );
     }
 
-    /** {@inheritDoc} */
+    @Override
     public void anchor( String name )
     {
         addEvent( "anchor", new Object[] {name} );
     }
 
-    /** {@inheritDoc} */
+    @Override
     public void anchor_()
     {
         addEvent( "anchor_" );
     }
 
-    /** {@inheritDoc} */
+    @Override
     public void link( String name )
     {
         addEvent( "link", new Object[] {name} );
     }
 
-    /** {@inheritDoc} */
+    @Override
     public void link_()
     {
         addEvent( "link_" );
     }
 
-    /** {@inheritDoc} */
+    @Override
     public void italic()
     {
         addEvent( "italic" );
     }
 
-    /** {@inheritDoc} */
+    @Override
     public void italic_()
     {
         addEvent( "italic_" );
     }
 
-    /** {@inheritDoc} */
+    @Override
     public void bold()
     {
         addEvent( "bold" );
     }
 
-    /** {@inheritDoc} */
+    @Override
     public void bold_()
     {
         addEvent( "bold_" );
     }
 
-    /** {@inheritDoc} */
+    @Override
     public void monospaced()
     {
         addEvent( "monospaced" );
     }
 
-    /** {@inheritDoc} */
+    @Override
     public void monospaced_()
     {
         addEvent( "monospaced_" );
     }
 
-    /** {@inheritDoc} */
+    @Override
     public void lineBreak()
     {
         addEvent( "lineBreak" );
     }
 
-    /** {@inheritDoc} */
+    @Override
     public void nonBreakingSpace()
     {
         addEvent( "nonBreakingSpace" );
     }
 
-    /** {@inheritDoc} */
+    @Override
     public void text( String text )
     {
         addEvent( "text", new Object[] {text} );
     }
 
-    /** {@inheritDoc} */
+    @Override
     public void rawText( String text )
     {
         addEvent( "rawText", new Object[] {text} );
     }
 
-    /** {@inheritDoc} */
+    @Override
     public void comment( String comment )
     {
         addEvent( "comment", new Object[] {comment} );
     }
 
-    /** {@inheritDoc} */
+    @Override
     public void flush()
     {
         addEvent( "flush" );
     }
 
-    /** {@inheritDoc} */
+    @Override
     public void close()
     {
         addEvent( "close" );
     }
 
-    /** {@inheritDoc} */
+    @Override
     public void head( SinkEventAttributes attributes )
     {
         addEvent( "head", new Object[] {attributes} );
     }
 
-    /** {@inheritDoc} */
+    @Override
     public void title( SinkEventAttributes attributes )
     {
         addEvent( "title", new Object[] {attributes} );
     }
 
-    /** {@inheritDoc} */
+    @Override
     public void author( SinkEventAttributes attributes )
     {
         addEvent( "author", new Object[] {attributes} );
     }
 
-    /** {@inheritDoc} */
+    @Override
     public void date( SinkEventAttributes attributes )
     {
         addEvent( "date", new Object[] {attributes} );
     }
 
-    /** {@inheritDoc} */
+    @Override
     public void body( SinkEventAttributes attributes )
     {
         addEvent( "body", new Object[] {attributes} );
     }
 
-    /** {@inheritDoc} */
+    @Override
     public void section( int level, SinkEventAttributes attributes )
     {
         addEvent( "section" + level, new Object[] {attributes} );
     }
 
-    /** {@inheritDoc} */
+    @Override
     public void section_( int level )
     {
         addEvent( "section" + level + "_" );
     }
 
-    /** {@inheritDoc} */
+    @Override
     public void sectionTitle( int level, SinkEventAttributes attributes )
     {
         addEvent( "sectionTitle" + level, new Object[] {attributes} );
     }
 
-    /** {@inheritDoc} */
+    @Override
     public void sectionTitle_( int level )
     {
 
         addEvent( "sectionTitle" + level + "_" );
     }
 
-    /** {@inheritDoc} */
+    @Override
     public void list( SinkEventAttributes attributes )
     {
         addEvent( "list", new Object[] {attributes} );
     }
 
-    /** {@inheritDoc} */
+    @Override
     public void listItem( SinkEventAttributes attributes )
     {
         addEvent( "listItem", new Object[] {attributes} );
     }
 
-    /** {@inheritDoc} */
+    @Override
     public void numberedList( int numbering, SinkEventAttributes attributes )
     {
         addEvent( "numberedList", new Object[] {new Integer( numbering ), attributes} );
     }
 
-    /** {@inheritDoc} */
+    @Override
     public void numberedListItem( SinkEventAttributes attributes )
     {
         addEvent( "numberedListItem", new Object[] {attributes} );
     }
 
-    /** {@inheritDoc} */
+    @Override
     public void definitionList( SinkEventAttributes attributes )
     {
         addEvent( "definitionList", new Object[] {attributes} );
     }
 
-    /** {@inheritDoc} */
+    @Override
     public void definitionListItem( SinkEventAttributes attributes )
     {
         addEvent( "definitionListItem", new Object[] {attributes} );
     }
 
-    /** {@inheritDoc} */
+    @Override
     public void definition( SinkEventAttributes attributes )
     {
         addEvent( "definition", new Object[] {attributes} );
     }
 
-    /** {@inheritDoc} */
+    @Override
     public void definedTerm( SinkEventAttributes attributes )
     {
         addEvent( "definedTerm", new Object[] {attributes} );
     }
 
-    /** {@inheritDoc} */
+    @Override
     public void figure( SinkEventAttributes attributes )
     {
         addEvent( "figure", new Object[] {attributes} );
     }
 
-    /** {@inheritDoc} */
+    @Override
     public void figureCaption( SinkEventAttributes attributes )
     {
         addEvent( "figureCaption", new Object[] {attributes} );
     }
 
-    /** {@inheritDoc} */
+    @Override
     public void figureGraphics( String src, SinkEventAttributes attributes )
     {
         addEvent( "figureGraphics", new Object[] {src, attributes} );
     }
 
-    /** {@inheritDoc} */
+    @Override
     public void table( SinkEventAttributes attributes )
     {
         addEvent( "table", new Object[] {attributes} );
     }
 
-    /** {@inheritDoc} */
+    @Override
     public void tableRow( SinkEventAttributes attributes )
     {
         addEvent( "tableRow", new Object[] {attributes} );
     }
 
-    /** {@inheritDoc} */
+    @Override
     public void tableCell( SinkEventAttributes attributes )
     {
         addEvent( "tableCell", new Object[] {attributes} );
     }
 
-    /** {@inheritDoc} */
+    @Override
     public void tableHeaderCell( SinkEventAttributes attributes )
     {
         addEvent( "tableHeaderCell", new Object[] {attributes} );
     }
 
-    /** {@inheritDoc} */
+    @Override
     public void tableCaption( SinkEventAttributes attributes )
     {
         addEvent( "tableCaption", new Object[] {attributes} );
     }
 
-    /** {@inheritDoc} */
+    @Override
     public void paragraph( SinkEventAttributes attributes )
     {
         addEvent( "paragraph", new Object[] {attributes} );
     }
 
-    /** {@inheritDoc} */
+    @Override
     public void verbatim( SinkEventAttributes attributes )
     {
         addEvent( "verbatim", new Object[] {attributes} );
     }
 
-    /** {@inheritDoc} */
+    @Override
     public void horizontalRule( SinkEventAttributes attributes )
     {
         addEvent( "horizontalRule", new Object[] {attributes} );
     }
 
-    /** {@inheritDoc} */
+    @Override
     public void anchor( String name, SinkEventAttributes attributes )
     {
         addEvent( "anchor", new Object[] {name, attributes} );
     }
 
-    /** {@inheritDoc} */
+    @Override
     public void link( String name, SinkEventAttributes attributes )
     {
         addEvent( "link", new Object[] {name, attributes} );
     }
 
-    /** {@inheritDoc} */
+    @Override
     public void lineBreak( SinkEventAttributes attributes )
     {
         addEvent( "lineBreak", new Object[] {attributes} );
     }
 
-    /** {@inheritDoc} */
+    @Override
     public void text( String text, SinkEventAttributes attributes )
     {
         addEvent( "text", new Object[] {text, attributes} );
     }
 
-    /** {@inheritDoc} */
+    @Override
     public void unknown( String name, Object[] requiredParams, SinkEventAttributes attributes )
     {
         addEvent( "unknown", new Object[] {name, requiredParams, attributes} );

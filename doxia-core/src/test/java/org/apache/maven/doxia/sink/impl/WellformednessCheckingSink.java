@@ -41,541 +41,566 @@ public class WellformednessCheckingSink
 
     private final List<String> errors = new LinkedList<String>();
 
-    /** {@inheritDoc} */
+    @Override
     public void head()
     {
         startElement( "head" );
     }
 
-    /** {@inheritDoc} */
+    @Override
     public void head_()
     {
         checkWellformedness( "head" );
     }
 
-    /** {@inheritDoc} */
+    @Override
     public void body()
     {
         startElement( "body" );
     }
 
-    /** {@inheritDoc} */
+    @Override
     public void body_()
     {
         checkWellformedness( "body" );
     }
 
-    /** {@inheritDoc} */
+    @Override
     public void section1()
     {
         startElement( "section1" );
     }
 
-    /** {@inheritDoc} */
+    @Override
     public void section1_()
     {
         checkWellformedness( "section1" );
     }
 
-    /** {@inheritDoc} */
+    @Override
     public void section2()
     {
         startElement( "section2" );
     }
 
-    /** {@inheritDoc} */
+    @Override
     public void section2_()
     {
         checkWellformedness( "section2" );
     }
 
-    /** {@inheritDoc} */
+    @Override
     public void section3()
     {
         startElement( "section3" );
     }
 
-    /** {@inheritDoc} */
+    @Override
     public void section3_()
     {
         checkWellformedness( "section3" );
     }
 
-    /** {@inheritDoc} */
+    @Override
     public void section4()
     {
         startElement( "section4" );
     }
 
-    /** {@inheritDoc} */
+    @Override
     public void section4_()
     {
         checkWellformedness( "section4" );
     }
 
-    /** {@inheritDoc} */
+    @Override
     public void section5()
     {
         startElement( "section5" );
     }
 
-    /** {@inheritDoc} */
+    @Override
     public void section5_()
     {
         checkWellformedness( "section5" );
     }
 
-    /** {@inheritDoc} */
+    @Override
+    public void section6()
+    {
+        startElement( "section6" );
+    }
+
+    @Override
+    public void section6_()
+    {
+        checkWellformedness( "section6" );
+    }
+
+    @Override
     public void list()
     {
         startElement( "list" );
     }
 
-    /** {@inheritDoc} */
+    @Override
     public void list_()
     {
         checkWellformedness( "list" );
     }
 
-    /** {@inheritDoc} */
+    @Override
     public void listItem()
     {
         startElement( "listItem" );
     }
 
-    /** {@inheritDoc} */
+    @Override
     public void listItem_()
     {
         checkWellformedness( "listItem" );
     }
 
-    /** {@inheritDoc} */
+    @Override
     public void numberedList( int numbering )
     {
         startElement( "numberedList" );
     }
 
-    /** {@inheritDoc} */
+    @Override
     public void numberedList_()
     {
         checkWellformedness( "numberedList" );
     }
 
-    /** {@inheritDoc} */
+    @Override
     public void numberedListItem()
     {
         startElement( "numberedListItem" );
     }
 
-    /** {@inheritDoc} */
+    @Override
     public void numberedListItem_()
     {
         checkWellformedness( "numberedListItem" );
     }
 
-    /** {@inheritDoc} */
+    @Override
     public void definitionList()
     {
         startElement( "definitionList" );
     }
 
-    /** {@inheritDoc} */
+    @Override
     public void definitionList_()
     {
         checkWellformedness( "definitionList" );
     }
 
-    /** {@inheritDoc} */
+    @Override
     public void definitionListItem()
     {
         startElement( "definitionListItem" );
     }
 
-    /** {@inheritDoc} */
+    @Override
     public void definitionListItem_()
     {
         checkWellformedness( "definitionListItem" );
     }
 
-    /** {@inheritDoc} */
+    @Override
     public void definition()
     {
         startElement( "definition" );
     }
 
-    /** {@inheritDoc} */
+    @Override
     public void definition_()
     {
         checkWellformedness( "definition" );
     }
 
-    /** {@inheritDoc} */
+    @Override
     public void figure()
     {
         startElement( "figure" );
     }
 
-    /** {@inheritDoc} */
+    @Override
     public void figure_()
     {
         checkWellformedness( "figure" );
     }
 
-    /** {@inheritDoc} */
+    @Override
     public void table()
     {
         startElement( "table" );
     }
 
-    /** {@inheritDoc} */
+    @Override
     public void table_()
     {
         checkWellformedness( "table" );
     }
 
-    /** {@inheritDoc} */
+    @Override
     public void tableRows( int[] justification, boolean grid )
     {
         startElement( "tableRows" );
     }
 
-    /** {@inheritDoc} */
+    @Override
     public void tableRows_()
     {
         checkWellformedness( "tableRows" );
     }
 
-    /** {@inheritDoc} */
+    @Override
     public void tableRow()
     {
         startElement( "tableRow" );
     }
 
-    /** {@inheritDoc} */
+    @Override
     public void tableRow_()
     {
         checkWellformedness( "tableRow" );
     }
 
-    /** {@inheritDoc} */
+    @Override
     public void title()
     {
         startElement( "title" );
     }
 
-    /** {@inheritDoc} */
+    @Override
     public void title_()
     {
         checkWellformedness( "title" );
     }
 
-    /** {@inheritDoc} */
+    @Override
     public void author()
     {
         startElement( "author" );
     }
 
-    /** {@inheritDoc} */
+    @Override
     public void author_()
     {
         checkWellformedness( "author" );
     }
 
-    /** {@inheritDoc} */
+    @Override
     public void date()
     {
         startElement( "date" );
     }
 
-    /** {@inheritDoc} */
+    @Override
     public void date_()
     {
         checkWellformedness( "date" );
     }
 
-    /** {@inheritDoc} */
+    @Override
     public void sectionTitle()
     {
         startElement( "sectionTitle" );
     }
 
-    /** {@inheritDoc} */
+    @Override
     public void sectionTitle_()
     {
         checkWellformedness( "sectionTitle" );
     }
 
-    /** {@inheritDoc} */
+    @Override
     public void sectionTitle1()
     {
         startElement( "sectionTitle1" );
     }
 
-    /** {@inheritDoc} */
+    @Override
     public void sectionTitle1_()
     {
         checkWellformedness( "sectionTitle1" );
     }
 
-    /** {@inheritDoc} */
+    @Override
     public void sectionTitle2()
     {
         startElement( "sectionTitle2" );
     }
 
-    /** {@inheritDoc} */
+    @Override
     public void sectionTitle2_()
     {
         checkWellformedness( "sectionTitle2" );
     }
 
-    /** {@inheritDoc} */
+    @Override
     public void sectionTitle3()
     {
         startElement( "sectionTitle3" );
     }
 
-    /** {@inheritDoc} */
+    @Override
     public void sectionTitle3_()
     {
         checkWellformedness( "sectionTitle3" );
     }
 
-    /** {@inheritDoc} */
+    @Override
     public void sectionTitle4()
     {
         startElement( "sectionTitle4" );
     }
 
-    /** {@inheritDoc} */
+    @Override
     public void sectionTitle4_()
     {
         checkWellformedness( "sectionTitle4" );
     }
 
-    /** {@inheritDoc} */
+    @Override
     public void sectionTitle5()
     {
         startElement( "sectionTitle5" );
     }
 
-    /** {@inheritDoc} */
+    @Override
     public void sectionTitle5_()
     {
         checkWellformedness( "sectionTitle5" );
     }
 
-    /** {@inheritDoc} */
+
+    @Override
+    public void sectionTitle6()
+    {
+        startElement( "sectionTitle6" );
+    }
+
+    @Override
+    public void sectionTitle6_()
+    {
+        checkWellformedness( "sectionTitle6" );
+    }
+
+    @Override
     public void paragraph()
     {
         startElement( "paragraph" );
     }
 
-    /** {@inheritDoc} */
+    @Override
     public void paragraph_()
     {
         checkWellformedness( "paragraph" );
     }
 
-    /** {@inheritDoc} */
+    @Override
     public void verbatim( boolean boxed )
     {
         startElement( "verbatim" );
     }
 
-    /** {@inheritDoc} */
+    @Override
     public void verbatim_()
     {
         checkWellformedness( "verbatim" );
     }
 
-    /** {@inheritDoc} */
+    @Override
     public void definedTerm()
     {
         startElement( "definedTerm" );
     }
 
-    /** {@inheritDoc} */
+    @Override
     public void definedTerm_()
     {
         checkWellformedness( "definedTerm" );
     }
 
-    /** {@inheritDoc} */
+    @Override
     public void figureCaption()
     {
         startElement( "figureCaption" );
     }
 
-    /** {@inheritDoc} */
+    @Override
     public void figureCaption_()
     {
         checkWellformedness( "figureCaption" );
     }
 
-    /** {@inheritDoc} */
+    @Override
     public void tableCell()
     {
         startElement( "tableCell" );
     }
 
-    /** {@inheritDoc} */
+    @Override
     public void tableCell( String width )
     {
         startElement( "tableCell" );
     }
 
-    /** {@inheritDoc} */
+    @Override
     public void tableCell_()
     {
         checkWellformedness( "tableCell" );
     }
 
-    /** {@inheritDoc} */
+    @Override
     public void tableHeaderCell()
     {
         startElement( "tableHeaderCell" );
     }
 
-    /** {@inheritDoc} */
+    @Override
     public void tableHeaderCell( String width )
     {
         startElement( "tableHeaderCell" );
     }
 
-    /** {@inheritDoc} */
+    @Override
     public void tableHeaderCell_()
     {
         checkWellformedness( "tableHeaderCell" );
     }
 
-    /** {@inheritDoc} */
+    @Override
     public void tableCaption()
     {
         startElement( "tableCaption" );
     }
 
-    /** {@inheritDoc} */
+    @Override
     public void tableCaption_()
     {
         checkWellformedness( "tableCaption" );
     }
 
-    /** {@inheritDoc} */
+    @Override
     public void figureGraphics( String name )
     {
         // nop
     }
 
-    /** {@inheritDoc} */
+    @Override
     public void horizontalRule()
     {
         // nop
     }
 
-    /** {@inheritDoc} */
+    @Override
     public void pageBreak()
     {
         // nop
     }
 
-    /** {@inheritDoc} */
+    @Override
     public void anchor( String name )
     {
         startElement( "anchor" );
     }
 
-    /** {@inheritDoc} */
+    @Override
     public void anchor_()
     {
         checkWellformedness( "anchor" );
     }
 
-    /** {@inheritDoc} */
+    @Override
     public void link( String name )
     {
         startElement( "link" );
     }
 
-    /** {@inheritDoc} */
+    @Override
     public void link_()
     {
         checkWellformedness( "link" );
     }
 
-    /** {@inheritDoc} */
+    @Override
     public void italic()
     {
         startElement( "italic" );
     }
 
-    /** {@inheritDoc} */
+    @Override
     public void italic_()
     {
         checkWellformedness( "italic" );
     }
 
-    /** {@inheritDoc} */
+    @Override
     public void bold()
     {
         startElement( "bold" );
     }
 
-    /** {@inheritDoc} */
+    @Override
     public void bold_()
     {
         checkWellformedness( "bold" );
     }
 
-    /** {@inheritDoc} */
+    @Override
     public void monospaced()
     {
         startElement( "monospaced" );
     }
 
-    /** {@inheritDoc} */
+    @Override
     public void monospaced_()
     {
         checkWellformedness( "monospaced" );
     }
 
-    /** {@inheritDoc} */
+    @Override
     public void lineBreak()
     {
         // nop
     }
 
-    /** {@inheritDoc} */
+    @Override
     public void nonBreakingSpace()
     {
         // nop
     }
 
-    /** {@inheritDoc} */
+    @Override
     public void text( String text )
     {
         // nop
     }
 
-    /** {@inheritDoc} */
+    @Override
     public void rawText( String text )
     {
         // nop
     }
 
-    /** {@inheritDoc} */
+    @Override
     public void comment( String comment )
     {
         // nop
     }
 
-    /** {@inheritDoc} */
+    @Override
     public void flush()
     {
         // nop
     }
 
-    /** {@inheritDoc} */
+    @Override
     public void close()
     {
         this.elements.clear();
@@ -646,199 +671,199 @@ public class WellformednessCheckingSink
         elements.push( string );
     }
 
-    /** {@inheritDoc} */
+    @Override
     public void head( SinkEventAttributes attributes )
     {
         head();
     }
 
-    /** {@inheritDoc} */
+    @Override
     public void title( SinkEventAttributes attributes )
     {
         title();
     }
 
-    /** {@inheritDoc} */
+    @Override
     public void author( SinkEventAttributes attributes )
     {
         author();
     }
 
-    /** {@inheritDoc} */
+    @Override
     public void date( SinkEventAttributes attributes )
     {
         date();
     }
 
-    /** {@inheritDoc} */
+    @Override
     public void body( SinkEventAttributes attributes )
     {
         body();
     }
 
-    /** {@inheritDoc} */
+    @Override
     public void section( int level, SinkEventAttributes attributes )
     {
         startElement( "section" + level );
     }
 
-    /** {@inheritDoc} */
+    @Override
     public void section_( int level )
     {
         checkWellformedness( "section" + level );
     }
 
-    /** {@inheritDoc} */
+    @Override
     public void sectionTitle( int level, SinkEventAttributes attributes )
     {
         startElement( "sectionTitle" + level );
     }
 
-    /** {@inheritDoc} */
+    @Override
     public void sectionTitle_( int level )
     {
         checkWellformedness( "sectionTitle" + level );
     }
 
-    /** {@inheritDoc} */
+    @Override
     public void list( SinkEventAttributes attributes )
     {
         list();
     }
 
-    /** {@inheritDoc} */
+    @Override
     public void listItem( SinkEventAttributes attributes )
     {
         listItem();
     }
 
-    /** {@inheritDoc} */
+    @Override
     public void numberedList( int numbering, SinkEventAttributes attributes )
     {
         numberedList( numbering );
     }
 
-    /** {@inheritDoc} */
+    @Override
     public void numberedListItem( SinkEventAttributes attributes )
     {
         numberedListItem();
     }
 
-    /** {@inheritDoc} */
+    @Override
     public void definitionList( SinkEventAttributes attributes )
     {
         definitionList();
     }
 
-    /** {@inheritDoc} */
+    @Override
     public void definitionListItem( SinkEventAttributes attributes )
     {
         definitionListItem();
     }
 
-    /** {@inheritDoc} */
+    @Override
     public void definition( SinkEventAttributes attributes )
     {
         definition();
     }
 
-    /** {@inheritDoc} */
+    @Override
     public void definedTerm( SinkEventAttributes attributes )
     {
         definedTerm();
     }
 
-    /** {@inheritDoc} */
+    @Override
     public void figure( SinkEventAttributes attributes )
     {
         figure();
     }
 
-    /** {@inheritDoc} */
+    @Override
     public void figureCaption( SinkEventAttributes attributes )
     {
         figureCaption();
     }
 
-    /** {@inheritDoc} */
+    @Override
     public void figureGraphics( String src, SinkEventAttributes attributes )
     {
         figureGraphics( src );
     }
 
-    /** {@inheritDoc} */
+    @Override
     public void table( SinkEventAttributes attributes )
     {
         table();
     }
 
-    /** {@inheritDoc} */
+    @Override
     public void tableRow( SinkEventAttributes attributes )
     {
         tableRow();
     }
 
-    /** {@inheritDoc} */
+    @Override
     public void tableCell( SinkEventAttributes attributes )
     {
         tableCell();
     }
 
-    /** {@inheritDoc} */
+    @Override
     public void tableHeaderCell( SinkEventAttributes attributes )
     {
         tableHeaderCell();
     }
 
-    /** {@inheritDoc} */
+    @Override
     public void tableCaption( SinkEventAttributes attributes )
     {
         tableCaption();
     }
 
-    /** {@inheritDoc} */
+    @Override
     public void paragraph( SinkEventAttributes attributes )
     {
         paragraph();
     }
 
-    /** {@inheritDoc} */
+    @Override
     public void verbatim( SinkEventAttributes attributes )
     {
         verbatim( false );
     }
 
-    /** {@inheritDoc} */
+    @Override
     public void horizontalRule( SinkEventAttributes attributes )
     {
         horizontalRule();
     }
 
-    /** {@inheritDoc} */
+    @Override
     public void anchor( String name, SinkEventAttributes attributes )
     {
         anchor( name );
     }
 
-    /** {@inheritDoc} */
+    @Override
     public void link( String name, SinkEventAttributes attributes )
     {
         link( name );
     }
 
-    /** {@inheritDoc} */
+    @Override
     public void lineBreak( SinkEventAttributes attributes )
     {
         lineBreak();
     }
 
-    /** {@inheritDoc} */
+    @Override
     public void text( String text, SinkEventAttributes attributes )
     {
         text( text );
     }
 
-    /** {@inheritDoc} */
+    @Override
     public void unknown( String name, Object[] requiredParams, SinkEventAttributes attributes )
     {
         // ignore

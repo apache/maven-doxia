@@ -46,535 +46,559 @@ public class TextSink
     }
 
 
-    /** {@inheritDoc} */
+    @Override
     public void head()
     {
         writeln( "begin:head" );
     }
 
-    /** {@inheritDoc} */
+    @Override
     public void head_()
     {
         writeln( "end:head" );
     }
 
-    /** {@inheritDoc} */
+    @Override
     public void body()
     {
         writeln( "begin:body" );
     }
 
-    /** {@inheritDoc} */
+    @Override
     public void body_()
     {
         writeln( "end:body" );
     }
 
-    /** {@inheritDoc} */
+    @Override
     public void section1()
     {
         write( "begin:section1" );
     }
 
-    /** {@inheritDoc} */
+    @Override
     public void section1_()
     {
         writeln( "end:section1" );
     }
 
-    /** {@inheritDoc} */
+    @Override
     public void section2()
     {
         write( "begin:section2" );
     }
 
-    /** {@inheritDoc} */
+    @Override
     public void section2_()
     {
         writeln( "end:section2" );
     }
 
-    /** {@inheritDoc} */
+    @Override
     public void section3()
     {
         write( "begin:section3" );
     }
 
-    /** {@inheritDoc} */
+    @Override
     public void section3_()
     {
         writeln( "end:section3" );
     }
 
-    /** {@inheritDoc} */
+    @Override
     public void section4()
     {
         write( "begin:section4" );
     }
 
-    /** {@inheritDoc} */
+    @Override
     public void section4_()
     {
         writeln( "end:section4" );
     }
 
-    /** {@inheritDoc} */
+    @Override
     public void section5()
     {
         write( "begin:section5" );
     }
 
-    /** {@inheritDoc} */
+    @Override
     public void section5_()
     {
         writeln( "end:section5" );
     }
 
-    /** {@inheritDoc} */
+    @Override
+    public void section6()
+    {
+        write( "begin:section6" );
+    }
+
+    @Override
+    public void section6_()
+    {
+        writeln( "end:section6" );
+    }
+
+    @Override
     public void list()
     {
         writeln( "begin:list" );
     }
 
-    /** {@inheritDoc} */
+    @Override
     public void list_()
     {
         writeln( "end:list" );
     }
 
-    /** {@inheritDoc} */
+    @Override
     public void listItem()
     {
         write( "begin:listItem" );
     }
 
-    /** {@inheritDoc} */
+    @Override
     public void listItem_()
     {
         writeln( "end:listItem" );
     }
 
-    /** {@inheritDoc} */
+    @Override
     public void numberedList( int numbering )
     {
         writeln( "begin:numberedList, numbering: " + numbering );
     }
 
-    /** {@inheritDoc} */
+    @Override
     public void numberedList_()
     {
         writeln( "end:numberedList" );
     }
 
-    /** {@inheritDoc} */
+    @Override
     public void numberedListItem()
     {
         write( "begin:numberedListItem" );
     }
 
-    /** {@inheritDoc} */
+    @Override
     public void numberedListItem_()
     {
         writeln( "end:numberedListItem" );
     }
 
-    /** {@inheritDoc} */
+    @Override
     public void definitionList()
     {
         writeln( "begin:definitionList" );
     }
 
-    /** {@inheritDoc} */
+    @Override
     public void definitionList_()
     {
         writeln( "end:definitionList" );
     }
 
-    /** {@inheritDoc} */
+    @Override
     public void definitionListItem()
     {
         write( "begin:definitionListItem" );
     }
 
-    /** {@inheritDoc} */
+    @Override
     public void definitionListItem_()
     {
         writeln( "end:definitionListItem" );
     }
 
-    /** {@inheritDoc} */
+    @Override
     public void definition()
     {
         write( "begin:definition" );
     }
 
-    /** {@inheritDoc} */
+    @Override
     public void definition_()
     {
         writeln( "end:definition" );
     }
 
-    /** {@inheritDoc} */
+    @Override
     public void figure()
     {
         write( "begin:figure" );
     }
 
-    /** {@inheritDoc} */
+    @Override
     public void figure_()
     {
         writeln( "end:figure" );
     }
 
-    /** {@inheritDoc} */
+    @Override
     public void table()
     {
         writeln( "begin:table" );
     }
 
-    /** {@inheritDoc} */
+    @Override
     public void table_()
     {
         writeln( "end:table" );
     }
 
-    /** {@inheritDoc} */
+    @Override
     public void tableRows( int[] justification, boolean grid )
     {
         writeln( "begin:tableRows" );
     }
 
-    /** {@inheritDoc} */
+    @Override
     public void tableRows_()
     {
         writeln( "end:tableRows" );
     }
 
-    /** {@inheritDoc} */
+    @Override
     public void tableRow()
     {
         write( "begin:tableRow" );
     }
 
-    /** {@inheritDoc} */
+    @Override
     public void tableRow_()
     {
         writeln( "end:tableRow" );
     }
 
-    /** {@inheritDoc} */
+    @Override
     public void title()
     {
         write( "begin:title" );
     }
 
-    /** {@inheritDoc} */
+    @Override
     public void title_()
     {
         writeln( "end:title" );
     }
 
-    /** {@inheritDoc} */
+    @Override
     public void author()
     {
         write( "begin:author" );
     }
 
-    /** {@inheritDoc} */
+    @Override
     public void author_()
     {
         writeln( "end:author" );
     }
 
-    /** {@inheritDoc} */
+    @Override
     public void date()
     {
         write( "begin:date" );
     }
 
-    /** {@inheritDoc} */
+    @Override
     public void date_()
     {
         writeln( "end:date" );
     }
 
-    /** {@inheritDoc} */
+    @Override
     public void sectionTitle()
     {
         write( "begin:sectionTitle" );
     }
 
-    /** {@inheritDoc} */
+    @Override
     public void sectionTitle_()
     {
         writeln( "end:sectionTitle" );
     }
 
-    /** {@inheritDoc} */
+    @Override
     public void sectionTitle1()
     {
         write( "begin:sectionTitle1" );
     }
 
-    /** {@inheritDoc} */
+    @Override
     public void sectionTitle1_()
     {
         writeln( "end:sectionTitle1" );
     }
 
-    /** {@inheritDoc} */
+    @Override
     public void sectionTitle2()
     {
         write( "begin:sectionTitle2" );
     }
 
-    /** {@inheritDoc} */
+    @Override
     public void sectionTitle2_()
     {
         writeln( "end:sectionTitle2" );
     }
 
-    /** {@inheritDoc} */
+    @Override
     public void sectionTitle3()
     {
         write( "begin:sectionTitle3" );
     }
 
-    /** {@inheritDoc} */
+    @Override
     public void sectionTitle3_()
     {
         writeln( "end:sectionTitle3" );
     }
 
-    /** {@inheritDoc} */
+    @Override
     public void sectionTitle4()
     {
         write( "begin:sectionTitle4" );
     }
 
-    /** {@inheritDoc} */
+    @Override
     public void sectionTitle4_()
     {
         writeln( "end:sectionTitle4" );
     }
 
-    /** {@inheritDoc} */
+    @Override
     public void sectionTitle5()
     {
         write( "begin:sectionTitle5" );
     }
 
-    /** {@inheritDoc} */
+    @Override
     public void sectionTitle5_()
     {
         writeln( "end:sectionTitle5" );
     }
 
-    /** {@inheritDoc} */
+    @Override
+    public void sectionTitle6()
+    {
+        write( "begin:sectionTitle6" );
+    }
+
+    @Override
+    public void sectionTitle6_()
+    {
+        writeln( "end:sectionTitle6" );
+    }
+
+    @Override
     public void paragraph()
     {
         write( "begin:paragraph" );
     }
 
-    /** {@inheritDoc} */
+    @Override
     public void paragraph_()
     {
         writeln( "end:paragraph" );
     }
 
-    /** {@inheritDoc} */
+    @Override
     public void verbatim( boolean boxed )
     {
         write( "begin:verbatim, boxed: " + boxed );
     }
 
-    /** {@inheritDoc} */
+    @Override
     public void verbatim_()
     {
         writeln( "end:verbatim" );
     }
 
-    /** {@inheritDoc} */
+    @Override
     public void definedTerm()
     {
         write( "begin:definedTerm" );
     }
 
-    /** {@inheritDoc} */
+    @Override
     public void definedTerm_()
     {
         writeln( "end:definedTerm" );
     }
 
-    /** {@inheritDoc} */
+    @Override
     public void figureCaption()
     {
         write( "begin:figureCaption" );
     }
 
-    /** {@inheritDoc} */
+    @Override
     public void figureCaption_()
     {
         writeln( "end:figureCaption" );
     }
 
-    /** {@inheritDoc} */
+    @Override
     public void tableCell()
     {
         write( "begin:tableCell" );
     }
 
-    /** {@inheritDoc} */
+    @Override
     public void tableCell( String width )
     {
         write( "begin:tableCell, width: " + width );
     }
 
-    /** {@inheritDoc} */
+    @Override
     public void tableCell_()
     {
         writeln( "end:tableCell" );
     }
 
-    /** {@inheritDoc} */
+    @Override
     public void tableHeaderCell()
     {
         write( "begin:tableHeaderCell" );
     }
 
-    /** {@inheritDoc} */
+    @Override
     public void tableHeaderCell( String width )
     {
         write( "begin:tableHeaderCell, width: " + width );
     }
 
-    /** {@inheritDoc} */
+    @Override
     public void tableHeaderCell_()
     {
         writeln( "end:tableHeaderCell" );
     }
 
-    /** {@inheritDoc} */
+    @Override
     public void tableCaption()
     {
         write( "begin:tableCaption" );
     }
 
-    /** {@inheritDoc} */
+    @Override
     public void tableCaption_()
     {
         writeln( "end:tableCaption" );
     }
 
-    /** {@inheritDoc} */
+    @Override
     public void figureGraphics( String name )
     {
         write( "figureGraphics, name: " + name );
     }
 
-    /** {@inheritDoc} */
+    @Override
     public void horizontalRule()
     {
         write( "horizontalRule" );
     }
 
-    /** {@inheritDoc} */
+    @Override
     public void pageBreak()
     {
         write( "pageBreak" );
     }
 
-    /** {@inheritDoc} */
+    @Override
     public void anchor( String name )
     {
         write( "begin:anchor, name: " + name  );
     }
 
-    /** {@inheritDoc} */
+    @Override
     public void anchor_()
     {
         writeln( "end:anchor" );
     }
 
-    /** {@inheritDoc} */
+    @Override
     public void link( String name )
     {
         write( "begin:link, name: " + name  );
     }
 
-    /** {@inheritDoc} */
+    @Override
     public void link_()
     {
         writeln( "end:link" );
     }
 
-    /** {@inheritDoc} */
+    @Override
     public void italic()
     {
         write( "begin:italic" );
     }
 
-    /** {@inheritDoc} */
+    @Override
     public void italic_()
     {
         writeln( "end:italic" );
     }
 
-    /** {@inheritDoc} */
+    @Override
     public void bold()
     {
         write( "begin:bold" );
     }
 
-    /** {@inheritDoc} */
+    @Override
     public void bold_()
     {
         writeln( "end:bold" );
     }
 
-    /** {@inheritDoc} */
+    @Override
     public void monospaced()
     {
         write( "begin:monospaced" );
     }
 
-    /** {@inheritDoc} */
+    @Override
     public void monospaced_()
     {
         writeln( "end:monospaced" );
     }
 
-    /** {@inheritDoc} */
+    @Override
     public void lineBreak()
     {
         write( "lineBreak" );
     }
 
-    /** {@inheritDoc} */
+    @Override
     public void nonBreakingSpace()
     {
         write( "nonBreakingSpace" );
     }
 
-    /** {@inheritDoc} */
+    @Override
     public void text( String text )
     {
         write( "text: " + text );
     }
 
-    /** {@inheritDoc} */
+    @Override
     public void rawText( String text )
     {
         write( "rawText: " + text );
     }
 
-    /** {@inheritDoc} */
+    @Override
     public void comment( String comment )
     {
         write( "comment: " + comment );
     }
 
-    /** {@inheritDoc} */
+    @Override
     public void flush()
     {
         try
@@ -587,7 +611,7 @@ public class TextSink
         }
     }
 
-    /** {@inheritDoc} */
+    @Override
     public void close()
     {
         try
@@ -600,163 +624,163 @@ public class TextSink
         }
     }
 
-    /** {@inheritDoc} */
+    @Override
     public void head( SinkEventAttributes attributes )
     {
         head();
     }
 
-    /** {@inheritDoc} */
+    @Override
     public void title( SinkEventAttributes attributes )
     {
         title();
     }
 
-    /** {@inheritDoc} */
+    @Override
     public void author( SinkEventAttributes attributes )
     {
         author();
     }
 
-    /** {@inheritDoc} */
+    @Override
     public void date( SinkEventAttributes attributes )
     {
         date();
     }
 
-    /** {@inheritDoc} */
+    @Override
     public void body( SinkEventAttributes attributes )
     {
         body();
     }
 
-    /** {@inheritDoc} */
+    @Override
     public void section( int level, SinkEventAttributes attributes )
     {
         write( "begin:section" + level );
     }
 
-    /** {@inheritDoc} */
+    @Override
     public void section_( int level )
     {
         writeln( "end:section" + level );
     }
 
-    /** {@inheritDoc} */
+    @Override
     public void sectionTitle( int level, SinkEventAttributes attributes )
     {
         write( "begin:sectionTitle" + level );
     }
 
-    /** {@inheritDoc} */
+    @Override
     public void sectionTitle_( int level )
     {
         writeln( "end:sectionTitle" + level );
     }
 
-    /** {@inheritDoc} */
+    @Override
     public void list( SinkEventAttributes attributes )
     {
         list();
     }
 
-    /** {@inheritDoc} */
+    @Override
     public void listItem( SinkEventAttributes attributes )
     {
         listItem();
     }
 
-    /** {@inheritDoc} */
+    @Override
     public void numberedList( int numbering, SinkEventAttributes attributes )
     {
         numberedList( numbering );
     }
 
-    /** {@inheritDoc} */
+    @Override
     public void numberedListItem( SinkEventAttributes attributes )
     {
         numberedListItem();
     }
 
-    /** {@inheritDoc} */
+    @Override
     public void definitionList( SinkEventAttributes attributes )
     {
         definitionList();
     }
 
-    /** {@inheritDoc} */
+    @Override
     public void definitionListItem( SinkEventAttributes attributes )
     {
         definitionListItem();
     }
 
-    /** {@inheritDoc} */
+    @Override
     public void definition( SinkEventAttributes attributes )
     {
         definition();
     }
 
-    /** {@inheritDoc} */
+    @Override
     public void definedTerm( SinkEventAttributes attributes )
     {
         definedTerm();
     }
 
-    /** {@inheritDoc} */
+    @Override
     public void figure( SinkEventAttributes attributes )
     {
         write( "begin:figure" + SinkUtils.getAttributeString( attributes ) );
     }
 
-    /** {@inheritDoc} */
+    @Override
     public void figureCaption( SinkEventAttributes attributes )
     {
         figureCaption();
     }
 
-    /** {@inheritDoc} */
+    @Override
     public void figureGraphics( String src, SinkEventAttributes attributes )
     {
         figureGraphics( src );
     }
 
-    /** {@inheritDoc} */
+    @Override
     public void table( SinkEventAttributes attributes )
     {
         table();
     }
 
-    /** {@inheritDoc} */
+    @Override
     public void tableRow( SinkEventAttributes attributes )
     {
         tableRow();
     }
 
-    /** {@inheritDoc} */
+    @Override
     public void tableCell( SinkEventAttributes attributes )
     {
         tableCell();
     }
 
-    /** {@inheritDoc} */
+    @Override
     public void tableHeaderCell( SinkEventAttributes attributes )
     {
         tableHeaderCell();
     }
 
-    /** {@inheritDoc} */
+    @Override
     public void tableCaption( SinkEventAttributes attributes )
     {
         tableCaption();
     }
 
-    /** {@inheritDoc} */
+    @Override
     public void paragraph( SinkEventAttributes attributes )
     {
         paragraph();
     }
 
-    /** {@inheritDoc} */
+    @Override
     public void verbatim( SinkEventAttributes attributes )
     {
         boolean boxed = false;
@@ -770,37 +794,37 @@ public class TextSink
         verbatim( boxed );
     }
 
-    /** {@inheritDoc} */
+    @Override
     public void horizontalRule( SinkEventAttributes attributes )
     {
         horizontalRule();
     }
 
-    /** {@inheritDoc} */
+    @Override
     public void anchor( String name, SinkEventAttributes attributes )
     {
         anchor( name );
     }
 
-    /** {@inheritDoc} */
+    @Override
     public void link( String name, SinkEventAttributes attributes )
     {
         link( name );
     }
 
-    /** {@inheritDoc} */
+    @Override
     public void lineBreak( SinkEventAttributes attributes )
     {
         lineBreak();
     }
 
-    /** {@inheritDoc} */
+    @Override
     public void text( String text, SinkEventAttributes attributes )
     {
         text( text );
     }
 
-    /** {@inheritDoc} */
+    @Override
     public void unknown( String name, Object[] requiredParams, SinkEventAttributes attributes )
     {
         write( "unknown: " + name );
