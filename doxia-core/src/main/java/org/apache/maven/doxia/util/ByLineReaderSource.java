@@ -58,6 +58,8 @@ public class ByLineReaderSource implements ByLineSource
      * called
      */
     private boolean ungetted = false;
+    
+    private String name;
 
     /**
      * Creates the ByLineReaderSource.
@@ -66,9 +68,16 @@ public class ByLineReaderSource implements ByLineSource
      */
     public ByLineReaderSource( final Reader in )
     {
-        reader = new LineNumberReader( in );
+        this( in, "" );
+    }
+    
+    public ByLineReaderSource( final Reader in, final String name )
+    {
+        this.reader = new LineNumberReader( in );
+        
+        this.name = name;
 
-        lineNumber = -1;
+        this.lineNumber = -1;
     }
 
     /** {@inheritDoc} */
@@ -113,7 +122,7 @@ public class ByLineReaderSource implements ByLineSource
     /** {@inheritDoc} */
     public final String getName()
     {
-        return "";
+        return name;
     }
 
     /** {@inheritDoc} */

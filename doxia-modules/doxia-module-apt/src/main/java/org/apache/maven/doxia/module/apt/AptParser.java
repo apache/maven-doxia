@@ -184,8 +184,15 @@ public class AptParser
     // Public methods
     // ----------------------------------------------------------------------
 
-    /** {@inheritDoc} */
+    @Override
     public void parse( Reader source, Sink sink )
+        throws ParseException
+    {
+        parse( source, sink, "" );
+    }
+    
+    @Override
+    public void parse( Reader source, Sink sink, String reference )
         throws ParseException
     {
         init();
@@ -203,7 +210,7 @@ public class AptParser
 
         try
         {
-            this.source = new AptReaderSource( new StringReader( sourceContent ) );
+            this.source = new AptReaderSource( new StringReader( sourceContent ), reference );
 
             this.sink = sink;
             sink.enableLogging( getLog() );

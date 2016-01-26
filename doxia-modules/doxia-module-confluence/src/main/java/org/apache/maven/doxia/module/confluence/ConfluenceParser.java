@@ -104,11 +104,18 @@ public class ConfluenceParser
         return blocks;
     }
 
-    /** {@inheritDoc} */
-    public synchronized void parse( Reader source, Sink sink )
+    @Override
+    public void parse( Reader source, Sink sink )
         throws ParseException
     {
-        ByLineSource src = new ByLineReaderSource( source );
+        parse( source, sink, "" );
+    }
+
+    @Override
+    public synchronized void parse( Reader source, Sink sink, String reference )
+        throws ParseException
+    {
+        ByLineSource src = new ByLineReaderSource( source, reference );
 
         try
         {

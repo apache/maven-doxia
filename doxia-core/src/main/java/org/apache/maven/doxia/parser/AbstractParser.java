@@ -22,6 +22,7 @@ package org.apache.maven.doxia.parser;
 import java.io.File;
 import java.io.IOException;
 import java.io.InputStream;
+import java.io.Reader;
 import java.io.StringReader;
 
 import java.util.Properties;
@@ -169,6 +170,13 @@ public abstract class AbstractParser
         throws ParseException
     {
         parse( new StringReader( string ), sink );
+    }
+    
+    @Override
+    public void parse( Reader source, Sink sink, String reference )
+        throws ParseException
+    {
+        parse( source, sink );
     }
 
     /**

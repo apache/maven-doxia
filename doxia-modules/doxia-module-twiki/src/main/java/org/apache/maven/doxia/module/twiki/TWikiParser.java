@@ -131,14 +131,21 @@ public class TWikiParser
         return ret;
     }
 
-    /** {@inheritDoc} */
-    public final synchronized void parse( final Reader source, final Sink sink )
+    @Override
+    public void parse( Reader source, Sink sink )
+        throws ParseException
+    {
+        parse( source, sink, "" );
+    }
+    
+    @Override
+    public final synchronized void parse( final Reader source, final Sink sink, String reference )
         throws ParseException
     {
         init();
 
         List<Block> blocks;
-        final ByLineSource src = new ByLineReaderSource( source );
+        final ByLineSource src = new ByLineReaderSource( source, reference );
 
         try
         {
