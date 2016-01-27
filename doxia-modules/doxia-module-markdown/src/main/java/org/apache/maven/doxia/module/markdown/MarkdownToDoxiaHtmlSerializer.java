@@ -44,7 +44,7 @@ public class MarkdownToDoxiaHtmlSerializer
     public void visit( VerbatimNode node )
     {
         // Pegdown renders verbatim as "<pre><code>", but Doxia base Xhtml Sink renders as "<div class=..><pre>"
-        // see XhtmlBaseParser.verbatim() implementation
+        // see XhtmlBaseSink.verbatim(SinkEventAttributes) implementation
         printer.println().print( "<div class=\"source\"><pre>" );
         String text = node.getText();
         // print HTML breaks for all initial newlines
