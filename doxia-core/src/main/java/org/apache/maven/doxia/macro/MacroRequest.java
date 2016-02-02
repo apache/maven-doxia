@@ -117,4 +117,9 @@ public class MacroRequest
     {
         return (Parser) getParameter( PARAM_PARSER );
     }
+
+    public static boolean isInternalParameter( String name )
+    {
+        return PARAM_PARSER.equals( name ) || PARAM_SOURCE_CONTENT.equals( name );
+    }
 }
