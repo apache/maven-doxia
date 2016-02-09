@@ -26,7 +26,7 @@
 
   <bannerRight>
     <name>Doxia</name>
-    <src>images/doxia-logo.png</src>
+    <src>http://maven.apache.org/doxia/images/doxia-logo.png</src>
     <href>http://maven.apache.org/doxia/</href>
   </bannerRight>
 
