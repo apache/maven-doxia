@@ -256,26 +256,26 @@ public interface Sink
 
     /**
      * Starts the date element.
-     * <br/>
-     * The date is recommended (but it is not a requirement) to be align to the
-     * <a href="http://www.iso.org/iso/iso_catalogue/catalogue_tc/catalogue_detail.htm?csnumber=26780">ISO-8601</a>
-     * standard, i.e.:
-     * <pre>
-     * YYYY-MM-DD
-     * </pre>
-     * where
-     * <ul>
-     * <li>YYYY is the year in the Gregorian calendar</li>
-     * <li>MM is the month of the year between 01 (January) and 12 (December)</li>
-     * <li>and DD is the day of the month between 01 and 31</li>
-     * </ul>
      *
      * @see #date(SinkEventAttributes)
      */
     void date();
 
     /**
-     * Starts the date element. This is used to identify the date of the document.
+     * Starts the date element. This is used to identify the date of the document: there is no strict definition
+     * if it is <b>creation date</b> or <b>last modification date</b>, which are the 2 classical semantics.
+     * There is no formal formatting requirements either.
+     * <br/>
+     * The date is recommended (but it is not a requirement) to be aligned to the
+     * <a href="http://www.iso.org/iso/iso_catalogue/catalogue_tc/catalogue_detail.htm?csnumber=26780">ISO-8601</a>
+     * standard, i.e.:
+     * <pre>YYYY-MM-DD</pre>
+     * where
+     * <ul>
+     * <li><code>YYYY</code> is the year in the Gregorian calendar,</li>
+     * <li><code>MM</code> is the month of the year between 01 (January) and 12 (December),</li>
+     * <li>and <code>DD</code> is the day of the month between 01 and 31.</li>
+     * </ul>
      *
      * <p>
      *   Supported attributes are: none.
