@@ -19,6 +19,11 @@ package org.apache.maven.doxia.macro.snippet;
  * under the License.
  */
 
+import java.io.File;
+import java.util.HashMap;
+import java.util.Iterator;
+import java.util.Map;
+
 import org.apache.maven.doxia.macro.MacroExecutionException;
 import org.apache.maven.doxia.macro.MacroRequest;
 import org.apache.maven.doxia.sink.impl.SinkEventElement;
@@ -26,11 +31,6 @@ import org.apache.maven.doxia.sink.impl.SinkEventTestingSink;
 import org.codehaus.plexus.PlexusTestCase;
 import org.hamcrest.CoreMatchers;
 import org.junit.Assert;
-
-import java.io.File;
-import java.util.HashMap;
-import java.util.Iterator;
-import java.util.Map;
 
 /**
  * Test snippet macro.
@@ -120,6 +120,21 @@ public class SnippetMacroTest
 
         // no need to verify the absence of the first and second snippets if tests above were successful
         Assert.assertThat( snippet, CoreMatchers.containsString( "Этот сниппет в формате Unicode (UTF-8)" ) );
+        
+        // again
+        // Shouldn't work because no snippet called "first" exists, only "firstId"
+        macroParameters.put( "id", "first" );
+        macroParameters.put( "verbatim", "" );
+        macroParameters.put( "ignoreDownloadError", "false" );
+        try
+        {
+            executeSnippetMacro( macroParameters );
+            fail();
+        }
+        catch ( Exception e )
+        {
+            // good
+        }
     }
 
     public void testIgnoreDownloadError()

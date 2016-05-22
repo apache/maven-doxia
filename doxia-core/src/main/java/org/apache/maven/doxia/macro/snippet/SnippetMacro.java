@@ -69,7 +69,7 @@ public class SnippetMacro
     /**
      * in case of Exception during snippet download error will ignored and empty content returned.
      */
-    private boolean ignoreDownloadError;
+    private boolean ignoreDownloadError = true;
 
     /**
      * {@inheritDoc}
@@ -207,13 +207,18 @@ public class SnippetMacro
             }
             catch ( IOException e )
             {
-                getLog().debug( "IOException which reading " + url + ": " + e );
-                result = new StringBuffer( "Error during retrieving content skip as ignoreDownloadError activated." );
+                if ( ignoreDownloadError )
+                {
+                    getLog().debug( "IOException which reading " + url + ": " + e );
+                    result =
+                        new StringBuffer( "Error during retrieving content skip as ignoreDownloadError activated." );
+                }
+                else
+                {
+                    throw e;
+                }
             }
-
-
         }
-
         return result;
     }
 
