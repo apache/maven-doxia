@@ -25,7 +25,7 @@ import java.io.InputStreamReader;
 import java.net.URL;
 import java.util.ArrayList;
 import java.util.List;
-import java.util.Locale;
+import java.util.regex.Pattern;
 
 import org.codehaus.plexus.util.IOUtil;
 
@@ -199,12 +199,17 @@ public class SnippetReader
      * @param line the line.
      * @return True, if the line is a start demarcator.
      */
-    protected boolean isDemarcator( String snippetId, String what, String line )
+    protected static boolean isDemarcator( String snippetId, String what, String line )
     {
-        String upper = line.toUpperCase( Locale.ENGLISH );
-        return upper.contains( what.toUpperCase( Locale.ENGLISH ) )
-            && upper.contains( "SNIPPET" )
-            && line.contains( snippetId );
+        // SNIPPET and what are case insensitive
+        // SNIPPET and what can switch order
+        String snippetRegExp = "(^|\\W)(?i:SNIPPET)($|\\W)";
+        String snippetIdRegExp = "(^|\\W)" + snippetId + "($|\\W)";
+        String whatRegExp = "(^|\\W)(?i:" + what + ")($|\\W)";
+        
+        return Pattern.compile( snippetRegExp ).matcher( line ).find()
+            && Pattern.compile( whatRegExp ).matcher( line ).find()
+            && Pattern.compile( snippetIdRegExp ).matcher( line ).find();
     }
 
     /**
