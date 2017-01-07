@@ -20,7 +20,6 @@ package org.apache.maven.doxia.util;
  */
 
 import java.net.URLEncoder;
-import java.util.Locale;
 
 import org.codehaus.plexus.PlexusTestCase;
 
