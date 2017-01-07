@@ -184,7 +184,7 @@ under the License.
       <dependency>
         <groupId>org.codehaus.plexus</groupId>
         <artifactId>plexus-utils</artifactId>
-        <version>3.0.22</version>
+        <version>3.0.24</version>
       </dependency>
     </dependencies>
   </dependencyManagement>
@@ -248,9 +248,9 @@ under the License.
               <exclude>src/test/site/**/*.confluence</exclude>
               <exclude>src/test/resources/**/*.twiki</exclude>
               <exclude>src/test/resources/**/*.md</exclude>
-            </excludes>            
+            </excludes>
           </configuration>
-        </plugin>      
+        </plugin>
       </plugins>
     </pluginManagement>
     <plugins>
