@@ -159,10 +159,10 @@ public class DoxiaUtilsTest
         assertEquals( DoxiaUtils.encodeId( "a b-c123 " ), "a_b-c123" );
         assertEquals( DoxiaUtils.encodeId( "   anchor" ), "anchor" );
         assertEquals( DoxiaUtils.encodeId( "myAnchor" ), "myAnchor" );
-        assertEquals( DoxiaUtils.encodeId( "my&Anchor" ), "my%26Anchor" );
-        assertEquals( DoxiaUtils.encodeId( "H\u00E5kon" ), "H%c3%a5kon" );
+        assertEquals( DoxiaUtils.encodeId( "my&Anchor" ), "my.26Anchor" );
+        assertEquals( DoxiaUtils.encodeId( "H\u00E5kon" ), "H.C3.A5kon" );
         assertEquals( DoxiaUtils.encodeId( "H\u00E5kon", true ), "Hkon" );
-        assertEquals( DoxiaUtils.encodeId( "Theu\u00DFl" ), "Theu%c3%9fl" );
+        assertEquals( DoxiaUtils.encodeId( "Theu\u00DFl" ), "Theu.C3.9Fl" );
         assertEquals( DoxiaUtils.encodeId( "Theu\u00DFl", true ), "Theul" );
     }
 
@@ -188,6 +188,8 @@ public class DoxiaUtilsTest
         assertTrue( DoxiaUtils.isValidId( "a." ) );
         assertTrue( DoxiaUtils.isValidId( "index.html" ) );
         assertFalse( DoxiaUtils.isValidId( "Theu\u00DFl" ) );
+        assertTrue( DoxiaUtils.isValidId( "Theu.C3.9Fl" ) );
+        assertFalse( DoxiaUtils.isValidId( "Theu%C3%9Fl" ) );
     }
 
     /**

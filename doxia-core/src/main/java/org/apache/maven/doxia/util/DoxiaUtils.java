@@ -259,16 +259,8 @@ public class DoxiaUtils
 
                 for ( int j = 0; j < bytes.length; ++j )
                 {
-                    String hex = byteToHex( bytes[j] );
-
-                    buffer.append( '%' );
-
-                    if ( hex.length() == 1 )
-                    {
-                        buffer.append( '0' );
-                    }
-
-                    buffer.append( hex );
+                    buffer.append( '.' );
+                    buffer.append( String.format( "%02X", bytes[j] ) );
                 }
             }
         }
