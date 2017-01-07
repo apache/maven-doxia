@@ -102,8 +102,8 @@ public class HtmlToolsTest
         assertEquals( HtmlTools.encodeId( "a b-c123 " ), "a_b-c123" );
         assertEquals( HtmlTools.encodeId( "   anchor" ), "anchor" );
         assertEquals( HtmlTools.encodeId( "myAnchor" ), "myAnchor" );
-        assertEquals( HtmlTools.encodeId( "H\u00E5kon" ), "Hkon" );
-        assertEquals( HtmlTools.encodeId( "Theu\u00DFl" ), "Theul" );
+        assertEquals( HtmlTools.encodeId( "H\u00E5kon" ), "H.C3.A5kon" );
+        assertEquals( HtmlTools.encodeId( "Theu\u00DFl" ), "Theu.C3.9Fl" );
     }
 
     /**
