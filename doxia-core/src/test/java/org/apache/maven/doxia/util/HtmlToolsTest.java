@@ -124,7 +124,7 @@ public class HtmlToolsTest
                       "http://www.example.com/?This%20is%20a%20simple%20&%20short%20test." );
 
         String url = "\uD808\uDF45";
-        assertEquals( HtmlTools.encodeURL( url ), URLEncoder.encode( url, "UTF-8" ).toLowerCase( Locale.ENGLISH ) );
+        assertEquals( HtmlTools.encodeURL( url ), URLEncoder.encode( url, "UTF-8" ) );
     }
 
     /**

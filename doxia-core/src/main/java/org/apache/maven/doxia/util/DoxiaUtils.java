@@ -275,7 +275,9 @@ public class DoxiaUtils
      * @return the result of Integer.toHexString( b & 0xFF ).
      *
      * @since 1.1.1
+     * @deprecated Use {@code String.format( "%02X", bytes[j] )}
      */
+    @Deprecated
     public static String byteToHex( final byte b )
     {
         return Integer.toHexString( b & MINUS_ONE );

@@ -366,14 +366,8 @@ public class HtmlTools
 
                         for ( int j = 0; j < bytes.length; ++j )
                         {
-                            String hex = DoxiaUtils.byteToHex( bytes[j] );
-
                             encoded.append( '%' );
-                            if ( hex.length() == 1 )
-                            {
-                                encoded.append( '0' );
-                            }
-                            encoded.append( hex );
+                            encoded.append( String.format( "%02X", bytes[j] ) );
                         }
                     }
             }
