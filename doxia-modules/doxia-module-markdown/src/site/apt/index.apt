@@ -1,9 +1,9 @@
  -----
  doxia-module-markdown
  -----
- Julien Nicoulaud <julien.nicoulaud@gmail.com>
+ Vladimir Schneider <vladimir@vladsch.com>, Julien Nicoulaud <julien.nicoulaud@gmail.com>
  ------
- 2011-05-28
+ 2017-03-04
  ------
 
 ~~ Licensed to the Apache Software Foundation (ASF) under one
@@ -40,4 +40,4 @@ doxia-module-markdown
 
    * {{{http://xbeta.org/wiki/show/Markdown}Markdown wiki}}
 
-   * {{{http://pegdown.org}Pegdown}}, the library used by this Doxia module
+   * {{{http://github.com/vsch/flexmark-java}flexmark-java}}, the library used by this Doxia module in {{{http://pegdown.org}Pegdown}} compatibility mode.
