@@ -386,6 +386,7 @@ This example from
 <http://orestis.gr/en/blog/2007/05/28/python-markdown-problems/>:
 
 [![the google logo][logo]][google]
+
 [logo]: http://www.google.com/images/logo.gif
 [google]: http://www.google.com/ "click to visit Google.com"
 
@@ -3911,8 +3912,8 @@ Let's talk about the U.S.A., (É.U. or É.-U. d'A. in French).
 *[HTML]: Hyper Text Markup Language
 *[SGML]: Standard Generalized Markup Language
 *[U.S.A.]: United States of America
-*[É.U.] : États-Unis d'Amérique
-*[É.-U. d'A.] : États-Unis d'Amérique
+*[E.U.]: États-Unis d'Amérique
+*[É.-U. d'A.]: États-Unis d'Amérique
 
 And here we have a CD, some CDs, and some other CD's.
 
