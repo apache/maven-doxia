@@ -55,7 +55,7 @@ under the License.
     <dependency>
       <groupId>com.vladsch.flexmark</groupId>
       <artifactId>flexmark-profile-pegdown</artifactId>
-      <version>0.18.0</version>
+      <version>0.18.2</version>
     </dependency>
     <dependency>
       <groupId>org.apache.maven.doxia</groupId>
