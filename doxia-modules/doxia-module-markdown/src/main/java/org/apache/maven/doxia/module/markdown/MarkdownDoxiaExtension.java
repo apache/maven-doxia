@@ -24,20 +24,27 @@ import com.vladsch.flexmark.html.HtmlRenderer;
 import com.vladsch.flexmark.util.options.DataKey;
 import com.vladsch.flexmark.util.options.MutableDataHolder;
 
-public class MarkdownDoxiaExtension implements HtmlRenderer.HtmlRendererExtension {
-    final static public DataKey<String> INPUT_FILE_EXTENSION = new DataKey<String>("INPUT_FILE_EXTENSION", "md");
+/**
+ * Implements flexmark-java extension to render fenced code and indented code using doxia format
+ */
+class MarkdownDoxiaExtension implements HtmlRenderer.HtmlRendererExtension
+{
+    public static final DataKey<String> INPUT_FILE_EXTENSION = new DataKey<String>( "INPUT_FILE_EXTENSION", "md" );
 
     @Override
-    public void rendererOptions(final MutableDataHolder options) {
+    public void rendererOptions( final MutableDataHolder options )
+    {
 
     }
 
     @Override
-    public void extend(HtmlRenderer.Builder rendererBuilder, String rendererType) {
-        rendererBuilder.nodeRendererFactory(new MarkdownDoxiaNodeRenderer.Factory());
+    public void extend( HtmlRenderer.Builder rendererBuilder, String rendererType )
+    {
+        rendererBuilder.nodeRendererFactory( new MarkdownDoxiaNodeRenderer.Factory() );
     }
 
-    public static Extension create() {
+    public static Extension create()
+    {
         return new MarkdownDoxiaExtension();
     }
 }

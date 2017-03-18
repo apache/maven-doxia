@@ -36,59 +36,71 @@ import java.util.Set;
 /**
  * The node renderer that renders all the core nodes (comes last in the order of node renderers).
  */
-@SuppressWarnings("WeakerAccess")
-public class MarkdownDoxiaNodeRenderer implements NodeRenderer {
-
-    public MarkdownDoxiaNodeRenderer(DataHolder options) {
+@SuppressWarnings( "WeakerAccess" )
+class MarkdownDoxiaNodeRenderer implements NodeRenderer
+{
+    public MarkdownDoxiaNodeRenderer( DataHolder options )
+    {
     }
 
     @Override
-    public Set<NodeRenderingHandler<?>> getNodeRenderingHandlers() {
+    public Set<NodeRenderingHandler<?>> getNodeRenderingHandlers()
+    {
         //noinspection unchecked
-        return new HashSet<NodeRenderingHandler<?>>(Arrays.asList(
-                new NodeRenderingHandler<IndentedCodeBlock>(IndentedCodeBlock.class, new CustomNodeRenderer<IndentedCodeBlock>() {
-                    @Override
-                    public void render(IndentedCodeBlock node, NodeRendererContext context, HtmlWriter html) {
-                        MarkdownDoxiaNodeRenderer.this.render(node, context, html);
-                    }
-                }),
-                new NodeRenderingHandler<FencedCodeBlock>(FencedCodeBlock.class, new CustomNodeRenderer<FencedCodeBlock>() {
-                    @Override
-                    public void render(FencedCodeBlock node, NodeRendererContext context, HtmlWriter html) {
-                        MarkdownDoxiaNodeRenderer.this.render(node, context, html);
-                    }
-                })
-        ));
+        return new HashSet<NodeRenderingHandler<?>>( Arrays.asList(
+                new NodeRenderingHandler<IndentedCodeBlock>( IndentedCodeBlock.class,
+                        new CustomNodeRenderer<IndentedCodeBlock>()
+                        {
+                            @Override
+                            public void render( IndentedCodeBlock node, NodeRendererContext context, HtmlWriter html )
+                            {
+                                MarkdownDoxiaNodeRenderer.this.render( node, context, html );
+                            }
+                        } ),
+                new NodeRenderingHandler<FencedCodeBlock>( FencedCodeBlock.class,
+                        new CustomNodeRenderer<FencedCodeBlock>()
+                        {
+                            @Override
+                            public void render( FencedCodeBlock node, NodeRendererContext context, HtmlWriter html )
+                            {
+                                MarkdownDoxiaNodeRenderer.this.render( node, context, html );
+                            }
+                        } )
+        ) );
     }
 
-    private void render(IndentedCodeBlock node, NodeRendererContext context, HtmlWriter html) {
+    private void render( IndentedCodeBlock node, NodeRendererContext context, HtmlWriter html )
+    {
         html.line();
-        html.attr("class", "source").tag("div");
-        html.srcPosWithEOL(node.getChars()).withAttr().tag("pre").openPre();
+        html.attr( "class", "source" ).tag( "div" );
+        html.srcPosWithEOL( node.getChars() ).withAttr().tag( "pre" ).openPre();
 
         String noLanguageClass = context.getHtmlOptions().noLanguageClass.trim();
-        if (!noLanguageClass.isEmpty()) {
-            html.attr("class", noLanguageClass);
+        if ( !noLanguageClass.isEmpty() )
+        {
+            html.attr( "class", noLanguageClass );
         }
 
         //html.srcPosWithEOL(node.getContentChars()).withAttr(CoreNodeRenderer.CODE_CONTENT).tag("code");
         String s = node.getContentChars().trimTailBlankLines().normalizeEndWithEOL();
-        while (!s.isEmpty() && s.charAt(0) == '\n') {
-            html.raw("<br/>");
-            s = s.substring(1);
+        while ( !s.isEmpty() && s.charAt( 0 ) == '\n' )
+        {
+            html.raw( "<br/>" );
+            s = s.substring( 1 );
         }
-        html.text(s);
+        html.text( s );
 
         //html.tag("/code");
-        html.tag("/pre").closePre();
-        html.tag("/div");
+        html.tag( "/pre" ).closePre();
+        html.tag( "/div" );
         html.line();
     }
 
-    private void render(FencedCodeBlock node, NodeRendererContext context, HtmlWriter html) {
+    private void render( FencedCodeBlock node, NodeRendererContext context, HtmlWriter html )
+    {
         html.line();
-        html.attr("class", "source").tag("div");
-        html.srcPosWithTrailingEOL(node.getChars()).withAttr().tag("pre").openPre();
+        html.attr( "class", "source" ).tag( "div" );
+        html.srcPosWithTrailingEOL( node.getChars() ).withAttr().tag( "pre" ).openPre();
 
         //BasedSequence info = node.getInfo();
         //if (info.isNotNull() && !info.isBlank()) {
@@ -109,22 +121,28 @@ public class MarkdownDoxiaNodeRenderer implements NodeRenderer {
 
         //html.srcPosWithEOL(node.getContentChars()).withAttr(CoreNodeRenderer.CODE_CONTENT).tag("code");
         String s = node.getContentChars().normalizeEOL();
-        while (!s.isEmpty() && s.charAt(0) == '\n') {
-            html.raw("<br/>");
-            s = s.substring(1);
+        while ( !s.isEmpty() && s.charAt( 0 ) == '\n' )
+        {
+            html.raw( "<br/>" );
+            s = s.substring( 1 );
         }
-        html.text(s);
+        html.text( s );
 
         //html.tag("/code");
-        html.tag("/pre").closePre();
-        html.tag("/div");
+        html.tag( "/pre" ).closePre();
+        html.tag( "/div" );
         html.line();
     }
 
-    public static class Factory implements NodeRendererFactory {
+    /**
+     * Factory for doxia node renderer
+     */
+    public static class Factory implements NodeRendererFactory
+    {
         @Override
-        public NodeRenderer create(final DataHolder options) {
-            return new MarkdownDoxiaNodeRenderer(options);
+        public NodeRenderer create( final DataHolder options )
+        {
+            return new MarkdownDoxiaNodeRenderer( options );
         }
     }
 }
