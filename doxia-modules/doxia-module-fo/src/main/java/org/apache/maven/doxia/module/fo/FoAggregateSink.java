@@ -262,7 +262,7 @@ public class FoAggregateSink
         }
         else
         {
-            writeStartTag( BLOCK_TAG, "id", docName );
+            writeStartTag( BLOCK_TAG, "" );
         }
 
     }
@@ -864,7 +864,16 @@ public class FoAggregateSink
      */
     protected void chapterHeading( String headerText, boolean chapterNumber )
     {
-        writeStartTag( BLOCK_TAG, "" );
+        if ( docName == null )
+        {
+            getLog().warn( "No document root specified, local links will not be resolved correctly!" );
+            writeStartTag( BLOCK_TAG, "" );
+        }
+        else
+        {
+            writeStartTag( BLOCK_TAG, "id", docName );
+        }
+
         writeStartTag( LIST_BLOCK_TAG, "" );
         writeStartTag( LIST_ITEM_TAG, "" );
         writeln( "<fo:list-item-label end-indent=\"6.375in\" start-indent=\"-1in\">" );
