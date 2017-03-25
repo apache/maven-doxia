@@ -277,6 +277,10 @@ under the License.
             </goals>
             <configuration>
               <excludes>
+                <!-- module-markdown flexmark-java implementation -->
+                <exclude>org/apache/maven/doxia/module/markdown/MarkdownParser$MarkdownHtmlParser</exclude>
+                <exclude>org/apache/maven/doxia/module/markdown/MarkdownParser$PegDownHtmlParser</exclude>
+                <exclude>org/apache/maven/doxia/module/markdown/MarkdownToDoxiaHtmlSerializer</exclude>
                 <exclude>org/apache/maven/doxia/module/fo/FoAggregateSink</exclude>
                 <!-- DOXIA-527 -->
                 <exclude>org/apache/maven/doxia/parser/module/*Module</exclude>

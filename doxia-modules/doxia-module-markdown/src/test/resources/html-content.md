@@ -1,7 +1,6 @@
 
 <div>
 <p><b>Example</b> is a <b>test</b> of mixing html and markdown
-
 </p>
 </div>
 

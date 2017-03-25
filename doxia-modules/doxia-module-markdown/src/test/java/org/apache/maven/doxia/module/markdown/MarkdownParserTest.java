@@ -173,7 +173,7 @@ public class MarkdownParserTest
     {
         Iterator<SinkEventElement> it = parseFileToEventTestingSink( "list" ).getEventList().iterator();
 
-        assertEquals( it, "head", "head_", "body", "list", "text", "listItem", "text", "listItem_", "text", "listItem", "text",
+        assertEquals( it, "head", "head_", "body", "list", "text", "listItem", "text", "listItem_", "listItem", "text",
                       "listItem_", "text", "list_", "body_" );
 
         assertFalse( it.hasNext() );
@@ -189,7 +189,7 @@ public class MarkdownParserTest
     {
         Iterator<SinkEventElement> it = parseFileToEventTestingSink( "numbered-list" ).getEventList().iterator();
 
-        assertEquals( it, "head", "head_", "body", "numberedList", "text", "numberedListItem", "text", "numberedListItem_", "text",
+        assertEquals( it, "head", "head_", "body", "numberedList", "text", "numberedListItem", "text", "numberedListItem_",
                       "numberedListItem", "text", "numberedListItem_", "text", "numberedList_", "body_" );
 
         assertFalse( it.hasNext() );
@@ -241,7 +241,7 @@ public class MarkdownParserTest
         Iterator<SinkEventElement> it = parseFileToEventTestingSink( "comment-before-heading" ).getEventList().iterator();
 
         // NOTE: H1 is rendered as "unknown" and H2 is "section1" (see DOXIA-203)
-        assertEquals( it, "head", "title", "text", "title_", "head_", "body", "comment", "unknown", "text",
+        assertEquals( it, "head", "title", "text", "title_", "head_", "body", "comment", "text", "unknown", "text",
                       "unknown", "paragraph", "text", "link", "text", "link_", "text", "paragraph_", "body_" );
 
         assertFalse( it.hasNext() );
@@ -304,6 +304,6 @@ public class MarkdownParserTest
                       "body", "list",
                       "listItem", "link", "text", "link_", "listItem_",
                       "listItem", "link", "text", "link_", "listItem_",
-                      "list_", "section1", "section2" );
+                      "list_", "text", "section1", "section2" );
     }
 }

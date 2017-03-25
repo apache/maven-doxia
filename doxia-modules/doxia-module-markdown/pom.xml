@@ -38,6 +38,12 @@ under the License.
 
   <contributors>
     <contributor>
+      <name>Vladimir Schneider</name>
+      <email>vladimir@vladsch.com</email>
+      <organization>vladsch.com</organization>
+      <organizationUrl>https://vladsch.com/</organizationUrl>
+    </contributor>
+    <contributor>
       <name>Julien Nicoulaud</name>
       <email>julien.nicoulaud@gmail.com</email>
       <timezone>+1</timezone>
@@ -45,11 +51,15 @@ under the License.
     </contributor>
   </contributors>
 
+  <properties>
+    <maven.compiler.target>1.7</maven.compiler.target><!-- required by flexmark -->
+  </properties>
+
   <dependencies>
     <dependency>
-      <groupId>org.pegdown</groupId>
-      <artifactId>pegdown</artifactId>
-      <version>1.2.1</version>
+      <groupId>com.vladsch.flexmark</groupId>
+      <artifactId>flexmark-all</artifactId>
+      <version>0.18.4</version>
     </dependency>
     <dependency>
       <groupId>org.apache.maven.doxia</groupId>
@@ -60,5 +70,4 @@ under the License.
       <artifactId>plexus-utils</artifactId>
     </dependency>
   </dependencies>
-
 </project>
