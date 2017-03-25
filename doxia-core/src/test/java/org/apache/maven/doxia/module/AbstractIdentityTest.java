@@ -33,6 +33,7 @@ import org.apache.maven.doxia.parser.Parser;
 import org.apache.maven.doxia.sink.Sink;
 import org.apache.maven.doxia.sink.impl.SinkTestDocument;
 import org.apache.maven.doxia.sink.impl.TextSink;
+import org.codehaus.plexus.DefaultPlexusContainer;
 import org.codehaus.plexus.util.IOUtil;
 
 /**
@@ -107,7 +108,7 @@ public abstract class AbstractIdentityTest
         writer = new StringWriter();
         sink = new TextSink( writer );
         Parser parser = createParser();
-        parser.enableLogging( new PlexusLoggerWrapper( getContainer().getLogger() ) );
+        parser.enableLogging( new PlexusLoggerWrapper( ( ( DefaultPlexusContainer )getContainer() ).getLogger() ) );
         parser.parse( reader, sink );
         String actual = writer.toString();
 

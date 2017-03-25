@@ -31,6 +31,7 @@ import junit.framework.AssertionFailedError;
 
 import org.apache.maven.doxia.parser.Parser;
 
+import org.codehaus.plexus.DefaultPlexusContainer;
 import org.codehaus.plexus.PlexusTestCase;
 import org.codehaus.plexus.logging.Logger;
 
@@ -96,7 +97,8 @@ public abstract class AbstractXmlValidator
     public void testValidateFiles()
         throws Exception
     {
-        final Logger logger = getContainer().getLoggerManager().getLoggerForComponent( Parser.ROLE );
+        final Logger logger =
+            ( (DefaultPlexusContainer) getContainer() ).getLoggerManager().getLoggerForComponent( Parser.ROLE );
 
         for ( Iterator<Map.Entry<String, String>> it = getTestDocuments().entrySet().iterator(); it.hasNext(); )
         {

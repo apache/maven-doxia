@@ -28,6 +28,7 @@ import org.apache.maven.doxia.logging.PlexusLoggerWrapper;
 import org.apache.maven.doxia.sink.Sink;
 import org.apache.maven.doxia.sink.SinkEventAttributes;
 import org.apache.maven.doxia.sink.impl.SinkEventAttributeSet;
+import org.codehaus.plexus.DefaultPlexusContainer;
 import org.codehaus.plexus.util.IOUtil;
 import org.custommonkey.xmlunit.Diff;
 import org.custommonkey.xmlunit.XMLUnit;
@@ -59,7 +60,7 @@ public abstract class AbstractSinkTest
 
         testWriter.reset();
         sink = createSink( testWriter );
-        sink.enableLogging( new PlexusLoggerWrapper( getContainer().getLogger() ) );
+        sink.enableLogging( new PlexusLoggerWrapper( ( ( DefaultPlexusContainer )getContainer() ).getLogger() ) );
     }
 
     /**
@@ -809,7 +810,7 @@ public abstract class AbstractSinkTest
 
         testWriter.reset();
         sink = createSink( testWriter );
-        sink.enableLogging( new PlexusLoggerWrapper( getContainer().getLogger() ) );
+        sink.enableLogging( new PlexusLoggerWrapper( ( ( DefaultPlexusContainer )getContainer() ).getLogger() ) );
 
         comment = "-";
         sink.comment( comment );
