@@ -19,7 +19,7 @@ package org.apache.maven.doxia.sink.impl;
  * under the License.
  */
 
-import org.apache.commons.lang.builder.ToStringBuilder;
+import org.apache.commons.lang3.builder.ToStringBuilder;
 
 /**
  * A single sink event, used for testing purposes in order to check
