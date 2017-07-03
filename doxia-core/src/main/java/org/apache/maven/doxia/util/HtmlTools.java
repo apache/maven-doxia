@@ -27,7 +27,7 @@ import java.util.Map;
 
 import javax.swing.text.html.HTML.Tag;
 
-import org.apache.commons.lang.StringEscapeUtils;
+import org.apache.commons.lang3.StringEscapeUtils;
 import org.apache.maven.doxia.markup.HtmlMarkup;
 import org.codehaus.plexus.util.StringUtils;
 
@@ -249,8 +249,8 @@ public class HtmlTools
         }
         else
         {
-            // StringEscapeUtils.unescapeHtml returns entities it doesn't recognize unchanged
-            unescaped = StringEscapeUtils.unescapeHtml( text );
+            // StringEscapeUtils.unescapeHtml4 returns entities it doesn't recognize unchanged
+            unescaped = StringEscapeUtils.unescapeHtml4( text );
         }
 
         String tmp = unescaped;
