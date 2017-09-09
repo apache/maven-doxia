@@ -70,7 +70,7 @@ public class TwikiParserTest
 
         Iterator<SinkEventElement> it = sink.getEventList().iterator();
 
-        assertEquals( it, "head", "head_", "body", "paragraph" );
+        assertStartsWith( it, "head", "head_", "body", "paragraph" );
 
         assertEquals( "italic", ( it.next() ).getName() );
         assertEquals( it.next(), "text", "ita" );
@@ -89,6 +89,5 @@ public class TwikiParserTest
         assertEquals( it.next(), "rawText", "</font>" );
 
         assertEquals( it, "paragraph_", "body_", "flush", "close" );
-        assertFalse( it.hasNext() );
     }
 }

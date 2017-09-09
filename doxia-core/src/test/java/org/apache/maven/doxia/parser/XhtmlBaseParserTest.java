@@ -752,16 +752,15 @@ public class XhtmlBaseParserTest
         parser.parse( text, sink );
 
         Iterator<SinkEventElement> it = sink.getEventList().iterator();
-        assertEquals( it, "definitionList", "definitionListItem", "definedTerm", "text", "definedTerm_", "definition",
-                      "text", "definition_", "definitionListItem_", "definitionList_" );
+        assertStartsWith( it, "definitionList", "definitionListItem", "definedTerm", "text", "definedTerm_",
+                          "definition", "text", "definition_", "definitionListItem_", "definitionList_" );
+        assertStartsWith( it, "definitionList", "definitionListItem", "definition", "text", "definition_",
+                          "definitionListItem_", "definitionList_" );
+        assertStartsWith( it, "definitionList", "definitionListItem", "definedTerm", "text", "definedTerm_",
+                          "definitionListItem_", "definitionList_" );
+        assertStartsWith( it, "definitionList", "definitionList_" );
         assertEquals( it, "definitionList", "definitionListItem", "definition", "text", "definition_",
-                      "definitionListItem_", "definitionList_" );
-        assertEquals( it, "definitionList", "definitionListItem", "definedTerm", "text", "definedTerm_",
-                      "definitionListItem_", "definitionList_" );
-        assertEquals( it, "definitionList", "definitionList_" );
-        assertEquals( it, "definitionList", "definitionListItem", "definition", "text", "definition_",
-                      "definitionListItem_", "definitionListItem", "definedTerm", "text", "definedTerm_",
-                      "definitionListItem_", "definitionList_" );
-        assertFalse( it.hasNext() );
+                          "definitionListItem_", "definitionListItem", "definedTerm", "text", "definedTerm_",
+                          "definitionListItem_", "definitionList_" );
     }
 }

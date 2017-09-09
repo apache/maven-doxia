@@ -252,32 +252,31 @@ public class ConfluenceParserTest
 
         Iterator<SinkEventElement> it = sink.getEventList().iterator();
 
-        assertEquals( it, "head", "head_", "body", "paragraph" );
+        assertStartsWith( it, "head", "head_", "body", "paragraph" );
         assertEquals( it.next(), "text", "Simple paragraph." );
-        assertEquals( it, "paragraph_", "figure" );
+        assertStartsWith( it, "paragraph_", "figure" );
         assertEquals( it.next(), "figureGraphics", "images/photo.jpg" );
-        assertEquals( it, "figure_", "paragraph" );
+        assertStartsWith( it, "figure_", "paragraph" );
         assertEquals( it.next(), "text", "Simple paragraph with attempted inline !image.jpg! (should fail)." );
-        assertEquals( it, "paragraph_", "figure" );
+        assertStartsWith( it, "paragraph_", "figure" );
         assertEquals( it.next(), "figureGraphics", "images/photo.jpg" );
         assertEquals( it.next().getName(), "figureCaption" ); 
         assertEquals( it.next(), "text", "With caption on same line" );
-        assertEquals( it, "figureCaption_", "figure_", "figure" );
+        assertStartsWith( it, "figureCaption_", "figure_", "figure" );
         assertEquals( it.next(), "figureGraphics", "images/linebreak.jpg" );
         assertEquals( it.next().getName(), "figureCaption" );
         assertEquals( it.next(), "text", "With caption underneath and linebreak" );
-        assertEquals( it, "figureCaption_", "figure_", "figure" );
+        assertStartsWith( it, "figureCaption_", "figure_", "figure" );
         assertEquals( it.next(), "figureGraphics", "images/nolinebreak.jpg" );
         assertEquals( it.next().getName(), "figureCaption" );
         assertEquals( it.next(), "text", "With caption underneath and no linebreak" );
-        assertEquals( it, "figureCaption_", "figure_", "figure" );
+        assertStartsWith( it, "figureCaption_", "figure_", "figure" );
         assertEquals( it.next(), "figureGraphics", "images/bold.jpg" );
         assertEquals( it.next().getName(), "figureCaption" );
         assertEquals( it.next(), "text", "With *bold* caption underneath" );
-        assertEquals( it, "figureCaption_", "figure_", "figure" );
+        assertStartsWith( it, "figureCaption_", "figure_", "figure" );
         assertEquals( it.next(), "figureGraphics", "image.gif" );
         assertEquals( it, "figure_", "body_" );
-        assertFalse( it.hasNext() );
     }
 
     /** @throws Exception */
@@ -343,14 +342,13 @@ public class ConfluenceParserTest
 
         Iterator<SinkEventElement> it = sink.getEventList().iterator();
 
-        assertEquals( it, "head", "head_", "body", "paragraph" );
+        assertStartsWith( it, "head", "head_", "body", "paragraph" );
         assertEquals( it.next(), "text", "Table containing image in cell:" );
-        assertEquals( it, "paragraph_", "table", "tableRows", "tableRow", "tableHeaderCell", "bold" );
+        assertStartsWith( it, "paragraph_", "table", "tableRows", "tableRow", "tableHeaderCell", "bold" );
         assertEquals( it.next(), "text", "Header 1" );
-        assertEquals( it, "bold_", "tableHeaderCell_", "tableRow_", "tableRow", "tableCell", "figure" );
+        assertStartsWith( it, "bold_", "tableHeaderCell_", "tableRow_", "tableRow", "tableCell", "figure" );
         assertEquals( it.next(), "figureGraphics", "images/test/Image.png" );
         assertEquals( it, "figure_", "tableCell_", "tableRow_", "tableRows_", "table_", "body_" );
-        assertFalse( it.hasNext() );
     }
 
     /** @throws Exception */
@@ -619,11 +617,10 @@ public class ConfluenceParserTest
 		createParser().parse(new StringReader(document), sink);
 
 		Iterator<SinkEventElement> it = sink.getEventList().iterator();
-		assertEquals(it, "head", "head_", "body", "paragraph");
+		assertStartsWith(it, "head", "head_", "body", "paragraph");
 		assertEquals(it.next(), "text", "Linethrough",
 				new SinkEventAttributeSet("decoration", "line-through"));
 		assertEquals(it, "paragraph_", "body_");
-		assertFalse(it.hasNext());
 	}
 
 	public void testUnderline() throws Exception {
@@ -633,11 +630,10 @@ public class ConfluenceParserTest
 		createParser().parse(new StringReader(document), sink);
 
 		Iterator<SinkEventElement> it = sink.getEventList().iterator();
-		assertEquals(it, "head", "head_", "body", "paragraph");
+		assertStartsWith(it, "head", "head_", "body", "paragraph");
 		assertEquals(it.next(), "text", "Underline", new SinkEventAttributeSet(
 				"decoration", "underline"));
 		assertEquals(it, "paragraph_", "body_");
-		assertFalse(it.hasNext());
 	}
 
 	public void testSub() throws Exception {
@@ -647,11 +643,10 @@ public class ConfluenceParserTest
 		createParser().parse(new StringReader(document), sink);
 
 		Iterator<SinkEventElement> it = sink.getEventList().iterator();
-		assertEquals(it, "head", "head_", "body", "paragraph");
+		assertStartsWith(it, "head", "head_", "body", "paragraph");
 		assertEquals(it.next(), "text", "Sub", new SinkEventAttributeSet(
 				"valign", "sub"));
 		assertEquals(it, "paragraph_", "body_");
-		assertFalse(it.hasNext());
 	}
 
 	public void testSup() throws Exception {
@@ -661,11 +656,10 @@ public class ConfluenceParserTest
 		createParser().parse(new StringReader(document), sink);
 
 		Iterator<SinkEventElement> it = sink.getEventList().iterator();
-		assertEquals(it, "head", "head_", "body", "paragraph");
+		assertStartsWith(it, "head", "head_", "body", "paragraph");
 		assertEquals(it.next(), "text", "Sup", new SinkEventAttributeSet(
 				"valign", "sup"));
 		assertEquals(it, "paragraph_", "body_");
-		assertFalse(it.hasNext());
 	}
 
     private void assertContainsLines( String message, String result, String lines )

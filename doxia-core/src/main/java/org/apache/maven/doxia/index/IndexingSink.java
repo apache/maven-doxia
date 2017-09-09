@@ -70,9 +70,6 @@ public class IndexingSink
     /** The stack. */
     private final Stack<IndexEntry> stack;
 
-    /** The current type. */
-    private IndexEntry currentEntry;
-
     /**
      * Default constructor.
      *
@@ -107,9 +104,14 @@ public class IndexingSink
     }
 
     /** {@inheritDoc} */
+    public void section1()
+    {
+        pushNewEntry();
+    }
+
+    /** {@inheritDoc} */
     public void sectionTitle1()
     {
-        this.currentEntry = null;
         this.type = TYPE_SECTION_1;
     }
 
@@ -131,9 +133,14 @@ public class IndexingSink
     }
 
     /** {@inheritDoc} */
+    public void section2()
+    {
+        pushNewEntry();
+    }
+
+    /** {@inheritDoc} */
     public void sectionTitle2()
     {
-        this.currentEntry = null;
         this.type = TYPE_SECTION_2;
     }
 
@@ -149,9 +156,14 @@ public class IndexingSink
     }
 
     /** {@inheritDoc} */
+    public void section3()
+    {
+        pushNewEntry();
+    }
+
+    /** {@inheritDoc} */
     public void sectionTitle3()
     {
-        this.currentEntry = null;
         this.type = TYPE_SECTION_3;
     }
 
@@ -167,9 +179,14 @@ public class IndexingSink
     }
 
     /** {@inheritDoc} */
+    public void section4()
+    {
+        pushNewEntry();
+    }
+
+    /** {@inheritDoc} */
     public void sectionTitle4()
     {
-        this.currentEntry = null;
         this.type = TYPE_SECTION_4;
     }
 
@@ -185,9 +202,14 @@ public class IndexingSink
     }
 
     /** {@inheritDoc} */
+    public void section5()
+    {
+        pushNewEntry();
+    }
+
+    /** {@inheritDoc} */
     public void sectionTitle5()
     {
-        this.currentEntry = null;
         this.type = TYPE_SECTION_5;
     }
 
@@ -234,25 +256,14 @@ public class IndexingSink
                 // Sanitize the id. The most important step is to remove any blanks
                 // -----------------------------------------------------------------------
 
-                if ( this.currentEntry == null )
-                {
-                    this.currentEntry = new IndexEntry( peek(), HtmlTools.encodeId( text ) );
+                // append text to current entry
+                IndexEntry entry = (IndexEntry) stack.lastElement();
 
-                    this.currentEntry.setTitle( text );
+                String title = entry.getTitle() + text;
+                title = title.replaceAll( "[\\r\\n]+", "" );
+                entry.setTitle( title );
 
-                    push( currentEntry );
-                }
-                else
-                {
-                    IndexEntry entry = (IndexEntry) stack.lastElement();
-
-                    String title = currentEntry.getTitle() + text;
-                    title = title.replaceAll( "[\\r\\n]+", "" );
-
-                    entry.setId( HtmlTools.encodeId( title ) );
-
-                    entry.setTitle( title );
-                }
+                entry.setId( HtmlTools.encodeId( title ) );
 
                 break;
             // Dunno how to handle these yet
@@ -262,6 +273,20 @@ public class IndexingSink
             default:
                 break;
         }
+    }
+
+    /**
+     * Creates and pushes a new IndexEntry onto the top of this stack.
+     *
+     * @param entry to put.
+     */
+    public void pushNewEntry()
+    {
+        IndexEntry entry = new IndexEntry( peek(), "" );
+
+        entry.setTitle( "" );
+
+        stack.push( entry );
     }
 
     /**

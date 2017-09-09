@@ -301,9 +301,52 @@ public class MarkdownParserTest
         Iterator<SinkEventElement> it = parseFileToEventTestingSink( "macro-toc" ).getEventList().iterator();
 
         assertEquals( it, "head", "title", "text", "title_", "head_",
-                      "body", "list",
-                      "listItem", "link", "text", "link_", "listItem_",
-                      "listItem", "link", "text", "link_", "listItem_",
-                      "list_", "text", "section1", "section2" );
+                      "body",
+                      "list", // TOC start
+                      "listItem", "link", "text", "link_", // emtpy section 2 TOC entry
+                      "list", // sections 3 list start
+                      "listItem", "link", "text", "link_", "listItem_", // first section 3 TOC entry
+                      "listItem", "link", "text", "link_", "listItem_", // second section 3 TOC entry
+                      "list_", // sections 3 list end
+                      "listItem_", // emtpy section 2 TOC entry end
+                      "list_", // TOC end
+                      "text",
+                      "section1",
+                      "section2", "sectionTitle2", "text", "sectionTitle2_", "section2_",
+                      "section2", "sectionTitle2", "text", "sectionTitle2_", "section2_",
+                      "section1_",
+                      "body_" );
+    }
+
+    /**
+     * TOC macro fails with EmptyStackException when title 2 followed by title 4 then title 2
+     * 
+     * @throws Exception
+     */
+    public void testTocMacroDoxia559()
+        throws Exception
+    {
+        Iterator<SinkEventElement> it = parseFileToEventTestingSink( "macro-toc-DOXIA-559" ).getEventList().iterator();
+
+        assertEquals( it, "head", "title", "text", "title_", "head_",
+                      "body",
+                      "list", // TOC start
+                      "listItem", "link", "text", "link_", // first section 2 TOC entry
+                      "list", // sections 3 list start
+                      "listItem", "link", "text", "link_", "listItem_", // empty section 3 TOC entry
+                      "list_", // sections 3 list end
+                      "listItem_", // first section 2 TOC entry end
+                      "listItem", "link", "text", "link_", "listItem_", // second section 2 TOC entry
+                      "list_", // TOC end
+                      "text",
+                      "section1", "sectionTitle1", "text", "sectionTitle1_",
+                      "section2",
+                      "section3", "sectionTitle3", "text", "sectionTitle3_",
+                      "section3_",
+                      "section2_",
+                      "section1_",
+                      "section1", "sectionTitle1", "text", "sectionTitle1_",
+                      "section1_",
+                      "body_" );
     }
 }

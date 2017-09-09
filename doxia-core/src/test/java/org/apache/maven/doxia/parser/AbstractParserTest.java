@@ -143,6 +143,24 @@ public abstract class AbstractParserTest
         for ( String name : names )
         {
             expected.append( name ).append( '\n' );
+        }
+
+        while ( it.hasNext() )
+        {
+            actual.append( it.next().getName() ).append( '\n' );
+        }
+
+        assertEquals( expected.toString(), actual.toString() );
+    }
+
+    protected void assertStartsWith( Iterator<SinkEventElement> it, String... names )
+    {
+        StringBuilder expected = new StringBuilder();
+        StringBuilder actual = new StringBuilder();
+
+        for ( String name : names )
+        {
+            expected.append( name ).append( '\n' );
             if ( it.hasNext() )
             {
                 actual.append( it.next().getName() ).append( '\n' );
@@ -150,6 +168,4 @@ public abstract class AbstractParserTest
         }
         assertEquals( expected.toString(), actual.toString() );
     }
-
-
 }

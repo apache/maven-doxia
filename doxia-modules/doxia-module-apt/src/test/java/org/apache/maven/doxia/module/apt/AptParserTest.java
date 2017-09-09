@@ -135,8 +135,6 @@ public class AptParserTest
         assertEquals( it, "head", "head_", "body", "list", "listItem", "text", "verbatim", "text", "verbatim_",
                       "paragraph", "text", "paragraph_", "listItem_", "listItem", "text", "verbatim", "text",
                       "verbatim_", "paragraph", "text", "paragraph_", "listItem_", "list_", "body_" );
-
-        assertFalse( it.hasNext() );
     }
 
 
@@ -154,8 +152,6 @@ public class AptParserTest
         Iterator<SinkEventElement> it = sink.getEventList().iterator();
 
         assertEquals( it, "head", "head_", "body", "verbatim", "text", "verbatim_", "body_" );
-
-        assertFalse( it.hasNext() );
     }
 
     /** @throws Exception  */
@@ -210,14 +206,12 @@ public class AptParserTest
 
         Iterator<SinkEventElement> it = sink.getEventList().iterator();
 
-        assertEquals( it, "head", "head_", "body" );
+        assertStartsWith( it, "head", "head_", "body" );
         assertEquals( it.next(), "verbatim", SinkEventAttributeSet.BOXED );
-        assertEquals( it, "text", "verbatim_" );
+        assertStartsWith( it, "text", "verbatim_" );
 
         assertEquals( it.next(), "verbatim", new Object[] { null } );
         assertEquals( it, "text", "verbatim_", "body_" );
-
-        assertFalse( it.hasNext() );
     }
 
     /** @throws Exception  */
@@ -241,36 +235,34 @@ public class AptParserTest
 
         Iterator<SinkEventElement> it = sink.getEventList().iterator();
 
-        assertEquals( it, "head", "head_", "body", "table", "tableRows", "tableRow", "tableCell" );
+        assertStartsWith( it, "head", "head_", "body", "table", "tableRows", "tableRow", "tableCell" );
         assertEquals( it.next(), "text", "cell 1, 1" );
 
-        assertEquals( it, "tableCell_", "tableCell" );
+        assertStartsWith( it, "tableCell_", "tableCell" );
         assertEquals( it.next(), "text", "cell 1,2" );
 
-        assertEquals( it, "tableCell_", "tableCell" );
+        assertStartsWith( it, "tableCell_", "tableCell" );
         assertEquals( it.next(), "text", "cell 1,3" );
 
-        assertEquals( it, "tableCell_", "tableRow_", "tableRow", "tableCell" );
+        assertStartsWith( it, "tableCell_", "tableRow_", "tableRow", "tableCell" );
         assertEquals( it.next(), "text", "cell 2,1" );
 
-        assertEquals( it, "tableCell_", "tableCell" );
+        assertStartsWith( it, "tableCell_", "tableCell" );
         assertEquals( it.next(), "text", "cell 2, 2" );
 
-        assertEquals( it, "tableCell_", "tableCell" );
+        assertStartsWith( it, "tableCell_", "tableCell" );
         assertEquals( it.next(), "text", "cell 2,3" );
         
-        assertEquals( it, "tableCell_", "tableRow_", "tableRow", "tableCell" );
+        assertStartsWith( it, "tableCell_", "tableRow_", "tableRow", "tableCell" );
         assertEquals( it.next(), "text", "cell 3,1" );
 
-        assertEquals( it, "tableCell_", "tableCell" );
+        assertStartsWith( it, "tableCell_", "tableCell" );
         assertEquals( it.next(), "text", "cell 3,2" );
 
-        assertEquals( it, "tableCell_", "tableCell" );
+        assertStartsWith( it, "tableCell_", "tableCell" );
         assertEquals( it.next(), "text", "cell 3, 3" );
 
         assertEquals( it, "tableCell_", "tableRow_", "tableRows_", "table_", "body_" );
-
-        assertFalse( it.hasNext() );
     }
 
     /** @throws Exception  */
@@ -294,45 +286,43 @@ public class AptParserTest
 
         Iterator<SinkEventElement> it = sink.getEventList().iterator();
 
-        assertEquals( it, "head", "head_", "body", "table", "tableRows", "tableRow", "tableCell" );
+        assertStartsWith( it, "head", "head_", "body", "table", "tableRows", "tableRow", "tableCell" );
         assertEquals( it.next(), "text", "cell 1,\u00A0" );
 
         assertEquals( it.next().getName(), "lineBreak" );
         assertEquals( it.next(), "text", "1" );
 
-        assertEquals( it, "tableCell_", "tableCell" );
+        assertStartsWith( it, "tableCell_", "tableCell" );
         assertEquals( it.next(), "text", "cell 1,2" );
 
-        assertEquals( it, "tableCell_", "tableCell" );
+        assertStartsWith( it, "tableCell_", "tableCell" );
         assertEquals( it.next(), "text", "cell 1,3" );
 
-        assertEquals( it, "tableCell_", "tableRow_", "tableRow", "tableCell" );
+        assertStartsWith( it, "tableCell_", "tableRow_", "tableRow", "tableCell" );
         assertEquals( it.next(), "text", "cell 2,1" );
 
-        assertEquals( it, "tableCell_", "tableCell" );
+        assertStartsWith( it, "tableCell_", "tableCell" );
         assertEquals( it.next(), "text", "cell 2,\u00A0" );
 
         assertEquals( it.next().getName(), "lineBreak" );
         assertEquals( it.next(), "text", "2" );
 
-        assertEquals( it, "tableCell_", "tableCell" );
+        assertStartsWith( it, "tableCell_", "tableCell" );
         assertEquals( it.next(), "text", "cell 2,3" );
 
-        assertEquals( it, "tableCell_", "tableRow_", "tableRow", "tableCell" );
+        assertStartsWith( it, "tableCell_", "tableRow_", "tableRow", "tableCell" );
         assertEquals( it.next(), "text", "cell 3,1" );
 
-        assertEquals( it, "tableCell_", "tableCell" );
+        assertStartsWith( it, "tableCell_", "tableCell" );
         assertEquals( it.next(), "text", "cell 3,2" );
 
-        assertEquals( it, "tableCell_", "tableCell" );
+        assertStartsWith( it, "tableCell_", "tableCell" );
         assertEquals( it.next(), "text", "cell 3,\u00A0" );
 
         assertEquals( it.next().getName(), "lineBreak" );
         assertEquals( it.next(), "text", "3" );
 
         assertEquals( it, "tableCell_", "tableRow_", "tableRows_", "table_", "body_" );
-
-        assertFalse( it.hasNext() );
     }
 
     /** @throws Exception  */
@@ -352,7 +342,7 @@ public class AptParserTest
 
         Iterator<SinkEventElement> it = sink.getEventList().iterator();
 
-        assertEquals( it, "head", "head_", "body", "table", "tableRows", "tableRow" );
+        assertStartsWith( it, "head", "head_", "body", "table", "tableRows", "tableRow" );
         assertAttributeEquals( it.next(), "tableCell", SinkEventAttributeSet.ALIGN, "center" );
         assertEquals( it.next(), "text", "Centered" );
         assertEquals( it.next().getName(), "tableCell_" );
@@ -363,7 +353,7 @@ public class AptParserTest
         
         assertAttributeEquals( it.next(), "tableCell", SinkEventAttributeSet.ALIGN, "center" );
         assertEquals( it.next(), "text", "Centered" );
-        assertEquals( it, "tableCell_", "tableRow_", "tableRow" );
+        assertStartsWith( it, "tableCell_", "tableRow_", "tableRow" );
         
         assertAttributeEquals( it.next(), "tableCell", SinkEventAttributeSet.ALIGN, "center" );
         assertEquals( it.next(), "text", "Centered" );
@@ -376,8 +366,6 @@ public class AptParserTest
         assertAttributeEquals( it.next(), "tableCell", SinkEventAttributeSet.ALIGN, "right" );
         assertEquals( it.next(), "text", "Right-aligned" );
         assertEquals( it, "tableCell_", "tableRow_", "tableRows_", "table_", "body_" );
-
-        assertFalse( it.hasNext() );
     }
 
     /** @throws Exception  */
@@ -397,15 +385,13 @@ public class AptParserTest
 
         Iterator<SinkEventElement> it = sink.getEventList().iterator();
 
-        assertEquals( it, "head", "head_", "body", "paragraph" );
+        assertStartsWith( it, "head", "head_", "body", "paragraph" );
         assertEquals( it.next(), "text", "~ = - + * [ ] < > { } \\ \u2713" );
 
-        assertEquals( it, "paragraph_", "table", "tableRows", "tableRow", "tableCell" );
+        assertStartsWith( it, "paragraph_", "table", "tableRows", "tableRow", "tableCell" );
         assertEquals( it.next(), "text", "~ = - + * [ ] < > { } \\ \u2713" );
 
         assertEquals( it, "tableCell_", "tableCell", "text", "tableCell_", "tableRow_", "tableRows_", "table_", "body_" );
-
-        assertFalse( it.hasNext() );
     }
 
     /** @throws Exception  */
@@ -422,24 +408,22 @@ public class AptParserTest
 
         Iterator<SinkEventElement> it = sink.getEventList().iterator();
 
-        assertEquals( it, "head", "head_", "body", "paragraph" );
+        assertStartsWith( it, "head", "head_", "body", "paragraph" );
         assertEquals( it.next(), "anchor", "Anchor_with_spaces_and_brackets" );
 
         assertEquals( it.next(), "text", "Anchor with spaces (and brackets)" );
 
-        assertEquals( it, "anchor_", "text" );
+        assertStartsWith( it, "anchor_", "text" );
         assertEquals( it.next(), "link", "#Anchor_with_spaces_and_brackets" );
 
         assertEquals( it.next(), "text", "Anchor with spaces (and brackets)" );
 
-        assertEquals( it, "link_", "text" );
+        assertStartsWith( it, "link_", "text" );
         assertEquals( it.next(), "link", "http://fake.api#method(with, args)" );
 
         assertEquals( it.next(), "text", "method(with, args)" );
 
         assertEquals( it, "link_", "paragraph_", "body_" );
-
-        assertFalse( it.hasNext() );
     }
 
     /** @throws Exception  */
@@ -458,8 +442,6 @@ public class AptParserTest
 
         assertEquals( it, "head", "head_", "body", "section1", "sectionTitle1", "text", "sectionTitle1_", "section1_",
                       "section1", "sectionTitle1", "anchor", "text", "anchor_", "sectionTitle1_", "section1_", "body_" );
-
-        assertFalse( it.hasNext() );
     }
     
     /**
@@ -482,14 +464,14 @@ public class AptParserTest
 
         Iterator<SinkEventElement> it = sink.getEventList().iterator();
 
-        assertEquals( it, "head", "head_", "body", "table", "tableRows" );
-        assertEquals( it, "tableRow", "tableHeaderCell", "text", "tableHeaderCell_", "tableHeaderCell", "text",
-                      "tableHeaderCell_", "tableRow_" );
-        assertEquals( it, "tableRow", "tableCell", "text", "tableCell_", "tableCell", "text", "tableCell_", "tableRow_" );
-        assertEquals( it, "tableRow", "tableCell", "text", "tableCell_", "tableCell", "text", "tableCell_", "tableRow_" );
+        assertStartsWith( it, "head", "head_", "body", "table", "tableRows" );
+        assertStartsWith( it, "tableRow", "tableHeaderCell", "text", "tableHeaderCell_", "tableHeaderCell", "text",
+                          "tableHeaderCell_", "tableRow_" );
+        assertStartsWith( it, "tableRow", "tableCell", "text", "tableCell_", "tableCell", "text", "tableCell_",
+                          "tableRow_" );
+        assertStartsWith( it, "tableRow", "tableCell", "text", "tableCell_", "tableCell", "text", "tableCell_",
+                          "tableRow_" );
         assertEquals( it, "tableRows_", "table_", "body_" );
-
-        assertFalse( it.hasNext() );
     }
     
     public void testEscapedPipeInTableCell() throws Exception
@@ -504,12 +486,11 @@ public class AptParserTest
         parser.parse( text, sink );
 
         Iterator<SinkEventElement> it = sink.getEventList().iterator();
-        assertEquals( it, "head", "head_", "body", "table", "tableRows", "tableRow", "tableCell" );
+        assertStartsWith( it, "head", "head_", "body", "table", "tableRows", "tableRow", "tableCell" );
         assertEquals( it.next(), "text", "cell | pipe" );
-        assertEquals( it, "tableCell_", "tableCell" );
+        assertStartsWith( it, "tableCell_", "tableCell" );
         assertEquals( it.next(), "text", "next cell" );
         assertEquals( it, "tableCell_", "tableRow_", "tableRows_", "table_", "body_" );
-        assertFalse( it.hasNext() );
     }
 
     public void testLiteralAnchor()
@@ -524,12 +505,11 @@ public class AptParserTest
         parser.parse( text, sink );
 
         Iterator<SinkEventElement> it = sink.getEventList().iterator();
-        assertEquals( it, "head", "head_", "body", "section1", "sectionTitle1" );
+        assertStartsWith( it, "head", "head_", "body", "section1", "sectionTitle1" );
         assertEquals( it.next(), "link",
                       "../apidocs/groovyx/net/http/ParserRegistry.html#parseText(org.apache.http.HttpResponse)" );
         assertEquals( it.next(), "text", "ParserRegistry" );
         assertEquals( it, "link_", "sectionTitle1_", "section1_", "body_" );
-        assertFalse( it.hasNext() );
     }
 
     /** {@inheritDoc} */
