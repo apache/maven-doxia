@@ -63,9 +63,10 @@ under the License.
   </modules>
 
   <scm>
-    <connection>scm:svn:http://svn.apache.org/repos/asf/maven/doxia/doxia/trunk</connection>
-    <developerConnection>scm:svn:https://svn.apache.org/repos/asf/maven/doxia/doxia/trunk</developerConnection>
-    <url>http://svn.apache.org/viewvc/maven/doxia/doxia/trunk</url>
+    <connection>scm:git:https://gitbox.apache.org/repos/asf/maven-doxia.git</connection>
+    <developerConnection>scm:git:https://gitbox.apache.org/repos/asf/maven-doxia.git</developerConnection>
+    <url>https://github.com/apache/maven-doxia/tree/${project.scm.tag}</url>
+    <tag>HEAD</tag>
   </scm>
   <issueManagement>
     <system>jira</system>
