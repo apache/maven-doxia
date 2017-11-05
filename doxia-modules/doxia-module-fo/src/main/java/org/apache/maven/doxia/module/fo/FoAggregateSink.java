@@ -956,6 +956,8 @@ public class FoAggregateSink
 
         tocStack.push( new NumberedListItem( NUMBERING_DECIMAL ) );
 
+        boolean printToc = ( level == 1 );
+
         for ( DocumentTOCItem tocItem : tocItems )
         {
             String ref = getIdName( tocItem.getRef() );
@@ -976,8 +978,16 @@ public class FoAggregateSink
             writeStartTag( BLOCK_TAG, "toc.number.style" );
 
             NumberedListItem current = tocStack.peek();
-            current.next();
-            write( currentTocNumber() );
+            if ( printToc )
+            {
+                // MPDF-59: no entry numbering for first, since it's the "Table of Contents"
+                printToc = false;
+            }
+            else
+            {
+                current.next();
+                write( currentTocNumber() );
+            }
 
             writeEndTag( BLOCK_TAG );
             writeEndTag( TABLE_CELL_TAG );
@@ -1019,7 +1029,7 @@ public class FoAggregateSink
 
         for ( int i = 1; i < tocStack.size(); i++ )
         {
-            ch.append( "." + tocStack.get( i ).getListItemSymbol() );
+            ch.append( tocStack.get( i ).getListItemSymbol() );
         }
 
         return ch.toString();
