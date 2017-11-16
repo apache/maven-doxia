@@ -19,12 +19,21 @@
   under the License.
 -->
 
-<model xmlns="http://modello.codehaus.org/MODELLO/1.0.0" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:schemaLocation="http://modello.codehaus.org/MODELLO/1.0.0 http://modello.codehaus.org/xsd/modello-1.0.0.xsd"
-  xml.namespace="http://maven.apache.org/DOCUMENT/${version}">
+<model xmlns="http://codehaus-plexus.github.io/MODELLO/1.8.0" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+  xsi:schemaLocation="http://codehaus-plexus.github.io/MODELLO/1.8.0 http://codehaus-plexus.github.io/modello/xsd/https://codehaus-plexus.github.io/modello/xsd/modello-1.8.0.xsd"
+  xml.namespace="http://maven.apache.org/DOCUMENT/${version}"
+  xml.schemaLocation="http://maven.apache.org/xsd/document-${version}.xsd">
   <id>document</id>
   <name>Document</name>
   <description><![CDATA[
-    <p>This is a reference for the Document model used in Doxia.</p>
+    <p>This is a reference for the Document descriptor model used in Doxia, also known as <code>pdf.xml</code>.</p>
+    <p>It is composed of 3 parts:</p>
+    <ol>
+      <li>document metadata, mostly inspired by the
+        <a href="http://docs.oasis-open.org/office/v1.1/">Open Document Format Specification v. 1.1</a></li>
+      <li>table of content,</li>
+      <li>cover description.</li>
+    </ol>
     <p>An XSD is available at:</p>
     <ul>
       <li><a href="http://maven.apache.org/xsd/document-1.0.1.xsd">http://maven.apache.org/xsd/document-1.0.1.xsd</a>.</li>
@@ -63,7 +72,7 @@
           </association>
           <identifier>true</identifier>
         </field>
-        <field>
+        <field xdoc.separator="blank">
           <name>toc</name>
           <description><![CDATA[
             The TOC (Table of Contents) information properties.
@@ -74,7 +83,7 @@
           </association>
           <identifier>true</identifier>
         </field>
-        <field>
+        <field xdoc.separator="blank">
           <name>cover</name>
           <description><![CDATA[
             The meta data to construct a cover page for the document.

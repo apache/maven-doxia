@@ -35,9 +35,11 @@
       <!--item name="FAQ" href="faq.html"/-->
     </menu>
 
-    <menu name="Document Schema">
-      <item name="Reference" href="document.html"/>
-      <item name="Using Document Schema" href="using-document-xsd.html"/>
+    <menu name="Descriptors Reference">
+      <item name="Document Model Reference" href="document.html"/>
+    </menu>
+
+    <menu name="Development">
       <item name="Using RandomAccessSink" href="using-randomaccesssink.html"/>
     </menu>
 
