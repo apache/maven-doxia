@@ -30,11 +30,12 @@ import org.apache.maven.doxia.document.DocumentCover;
 import org.apache.maven.doxia.document.DocumentModel;
 import org.apache.maven.doxia.markup.Markup;
 import org.codehaus.plexus.util.WriterFactory;
-import org.custommonkey.xmlunit.Diff;
-import org.custommonkey.xmlunit.XMLUnit;
 import org.xml.sax.SAXParseException;
 
 import junit.framework.TestCase;
+import org.xmlunit.matchers.CompareMatcher;
+
+import static org.junit.Assert.assertThat;
 
 /**
  * Test FoAggregateSink.
@@ -184,8 +185,7 @@ public class FoAggregateSinkTest
                         + "width=\"100%\"/>" + Markup.EOL;
         String actual = writer.toString();
 
-        Diff diff = XMLUnit.compareXML( wrapXml( expected ), wrapXml( actual ) );
-        assertTrue( "Wrong figure!", diff.identical() );
+        assertThat ( wrapXml( actual ), CompareMatcher.isIdenticalTo( wrapXml( expected ) ));
     }
 
     /**

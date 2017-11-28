@@ -78,7 +78,7 @@ under the License.
     <dependency>
       <groupId>commons-collections</groupId>
       <artifactId>commons-collections</artifactId>
-      <version>3.2.1</version>
+      <version>3.2.2</version>
       <!-- runtime dependency for commons-configuration -->
       <scope>runtime</scope>
     </dependency>
@@ -90,9 +90,19 @@ under the License.
     <dependency>
       <groupId>log4j</groupId>
       <artifactId>log4j</artifactId>
-      <version>1.2.12</version>
+      <version>1.2.17</version>
       <!-- runtime dep for fop -->
       <scope>runtime</scope>
+    </dependency>
+    <dependency>
+      <groupId>org.xmlunit</groupId>
+      <artifactId>xmlunit-core</artifactId>
+      <scope>test</scope>
+    </dependency>
+    <dependency>
+      <groupId>org.xmlunit</groupId>
+      <artifactId>xmlunit-matchers</artifactId>
+      <scope>test</scope>
     </dependency>
   </dependencies>
 
