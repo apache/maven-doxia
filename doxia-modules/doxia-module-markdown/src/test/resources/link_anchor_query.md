@@ -1,0 +1,1 @@
+[This is a link with an ampersand](http://www.example.com?query#obj=foo&id=bar)

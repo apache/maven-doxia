@@ -1,5 +1,8 @@
 package org.apache.maven.doxia.module.markdown;
 
+import java.io.Reader;
+import java.util.Iterator;
+
 /*
  * Licensed to the Apache Software Foundation (ASF) under one
  * or more contributor license agreements.  See the NOTICE file
@@ -22,12 +25,11 @@ package org.apache.maven.doxia.module.markdown;
 import org.apache.maven.doxia.parser.AbstractParserTest;
 import org.apache.maven.doxia.parser.ParseException;
 import org.apache.maven.doxia.parser.Parser;
+import org.apache.maven.doxia.sink.Sink;
+import org.apache.maven.doxia.sink.impl.SinkEventAttributeSet;
 import org.apache.maven.doxia.sink.impl.SinkEventElement;
 import org.apache.maven.doxia.sink.impl.SinkEventTestingSink;
 import org.codehaus.plexus.util.IOUtil;
-
-import java.io.Reader;
-import java.util.Iterator;
 
 /**
  * Tests for {@link MarkdownParser}.
@@ -159,6 +161,15 @@ public class MarkdownParserTest
         Iterator<SinkEventElement> it = parseFileToEventTestingSink( "link" ).getEventList().iterator();
 
         assertEquals( it, "head", "head_", "body", "paragraph", "text", "link", "text", "link_", "text", "paragraph_", "body_" );
+
+        assertFalse( it.hasNext() );
+    }
+    
+    public void testLinkWithAnchorAndQuery() throws Exception
+    {
+        Iterator<SinkEventElement> it = parseFileToEventTestingSink( "link_anchor_query" ).getEventList().iterator();
+        
+        assertEquals( it, "head", "head_", "body", "paragraph", "link", "text", "link_", "paragraph_", "body_" );
 
         assertFalse( it.hasNext() );
     }
