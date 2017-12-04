@@ -27,11 +27,11 @@ import org.apache.maven.doxia.AbstractModuleTest;
 import org.apache.maven.doxia.logging.PlexusLoggerWrapper;
 import org.apache.maven.doxia.sink.Sink;
 import org.apache.maven.doxia.sink.SinkEventAttributes;
-import org.apache.maven.doxia.sink.impl.SinkEventAttributeSet;
 import org.codehaus.plexus.DefaultPlexusContainer;
 import org.codehaus.plexus.util.IOUtil;
-import org.custommonkey.xmlunit.Diff;
-import org.custommonkey.xmlunit.XMLUnit;
+import org.xmlunit.matchers.CompareMatcher;
+
+import static org.junit.Assert.assertThat;
 
 /**
  * Abstract base class to test sinks.
@@ -207,8 +207,8 @@ public abstract class AbstractSinkTest
         sink.flush();
         sink.close();
 
-        String actual = testWriter.toString();
-        String expected = getHeadBlock();
+        String actual = normalizeLineEnds( testWriter.toString() );
+        String expected = normalizeLineEnds( getHeadBlock() );
 
         assertEquals( "Wrong head!", expected, actual );
     }
@@ -470,12 +470,11 @@ public abstract class AbstractSinkTest
 
         if ( isXmlSink() )
         {
-            Diff diff = XMLUnit.compareXML( wrapXml( expected ), wrapXml( actual ) );
-            assertTrue( "Wrong figure!", diff.identical() );
+            assertThat ( wrapXml( actual ), CompareMatcher.isIdenticalTo( wrapXml( expected ) ));
         }
         else
         {
-            assertEquals( "Wrong figure!", expected, actual );
+            assertEquals( actual, expected );
         }
     }
 
@@ -494,12 +493,11 @@ public abstract class AbstractSinkTest
 
         if ( isXmlSink() )
         {
-            Diff diff = XMLUnit.compareXML( wrapXml( expected ), wrapXml( actual ) );
-            assertTrue( "Wrong figure!", diff.identical() );
+            assertThat ( wrapXml( actual ), CompareMatcher.isIdenticalTo( wrapXml( expected ) ));
         }
         else
         {
-            assertEquals( "Wrong figure!", expected, actual );
+            assertEquals( actual, expected );
         }
     }
 
@@ -536,12 +534,11 @@ public abstract class AbstractSinkTest
 
         if ( isXmlSink() )
         {
-            Diff diff = XMLUnit.compareXML( wrapXml( expected ), wrapXml( actual ) );
-            assertTrue( "Wrong table!", diff.identical() );
+            assertThat ( wrapXml( actual ), CompareMatcher.isIdenticalTo( wrapXml( expected ) ));
         }
         else
         {
-            assertEquals( "Wrong table!", expected, actual );
+            assertEquals( actual, expected );
         }
     }
 
