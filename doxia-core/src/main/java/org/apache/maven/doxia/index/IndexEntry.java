@@ -108,6 +108,7 @@ public class IndexEntry
     /**
      * Set the id.
      *
+     * @param id the id
      * @since 1.1.2
      */
     protected void setId( String id )
@@ -274,8 +275,6 @@ public class IndexEntry
     // -----------------------------------------------------------------------
 
     /**
-     * {@inheritDoc}
-     * <p/>
      * Returns a string representation of the object.
      */
     public String toString()

@@ -43,7 +43,7 @@ public class ParseException
 
     /**
      * Construct a new <code>ParseException</code> with the specified detail message.
-     * <br/>
+     * <br>
      * <b>Note</b>: no line or column number will be used.
      *
      * @param message The detailed message.
@@ -56,7 +56,7 @@ public class ParseException
 
     /**
      * Construct a new <code>ParseException</code> with the specified detail message and cause.
-     * <br/>
+     * <br>
      * <b>Note</b>: no line or column number will be used.
      *
      * @param message The detailed message.

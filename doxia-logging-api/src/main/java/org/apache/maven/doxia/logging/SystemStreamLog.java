@@ -24,7 +24,7 @@ import java.io.StringWriter;
 
 /**
  * Logger with "standard" output and error output stream. The log prefix is voluntarily in lower case.
- * <br/>
+ * <br>
  * Based on <code>org.apache.maven.plugin.logging.SystemStreamLog</code>.
  *
  * @author jdcasey

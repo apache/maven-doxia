@@ -81,7 +81,8 @@ public abstract class AbstractSinkTest
      *
      * @return The given string transformed to be compatible to XML comments.
      *
-     * @see http://www.w3.org/TR/2000/REC-xml-20001006#sec-comments
+     * @see <a href="http://www.w3.org/TR/2000/REC-xml-20001006#sec-comments">
+     *   http://www.w3.org/TR/2000/REC-xml-20001006#sec-comments</a>
      * @since 1.7
      */
     protected static String toXmlComment( final String comment )

@@ -265,7 +265,7 @@ public interface Sink
      * Starts the date element. This is used to identify the date of the document: there is no strict definition
      * if it is <b>creation date</b> or <b>last modification date</b>, which are the 2 classical semantics.
      * There is no formal formatting requirements either.
-     * <br/>
+     * <br>
      * The date is recommended (but it is not a requirement) to be aligned to the
      * <a href="http://www.iso.org/iso/iso_catalogue/catalogue_tc/catalogue_detail.htm?csnumber=26780">ISO-8601</a>
      * standard, i.e.:

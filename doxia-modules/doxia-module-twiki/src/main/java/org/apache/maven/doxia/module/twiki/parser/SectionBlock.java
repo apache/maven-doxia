@@ -41,12 +41,10 @@ public class SectionBlock
 
     /**
      * Creates the SectionBlock.
-     * <p/>
-     * No parameter can be <code>null</code>
      *
-     * @param title  the section title.
-     * @param level  the section level: 0 < level < 6
-     * @param blocks child blocks
+     * @param title  the section title, cannot be {@code null}
+     * @param level  the section level: 0 &lt; level &lt; 6
+     * @param blocks child blocks, cannot be {@code null}
      */
     public SectionBlock( final String title, final int level, final Block[] blocks )
     {

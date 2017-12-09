@@ -78,7 +78,7 @@ public abstract class AbstractXmlParser
     /**
      * Entity pattern for HTML entity, i.e. &#38;nbsp;
      * "<!ENTITY(\\s)+([^>|^\\s]+)(\\s)+\"(\\s)*(&[a-zA-Z]{2,6};)(\\s)*\"(\\s)*>
-     * <br/>
+     * <br>
      * see <a href="http://www.w3.org/TR/REC-xml/#NT-EntityDecl">http://www.w3.org/TR/REC-xml/#NT-EntityDecl</a>.
      */
     private static final Pattern PATTERN_ENTITY_1 =
@@ -87,7 +87,7 @@ public abstract class AbstractXmlParser
     /**
      * Entity pattern for Unicode entity, i.e. &#38;#38;
      * "<!ENTITY(\\s)+([^>|^\\s]+)(\\s)+\"(\\s)*(&(#x?[0-9a-fA-F]{1,5};)*)(\\s)*\"(\\s)*>"
-     * <br/>
+     * <br>
      * see <a href="http://www.w3.org/TR/REC-xml/#NT-EntityDecl">http://www.w3.org/TR/REC-xml/#NT-EntityDecl</a>.
      */
     private static final Pattern PATTERN_ENTITY_2 =
@@ -600,7 +600,7 @@ public abstract class AbstractXmlParser
 
     /**
      * Add an entity given by <code>entityName</code> and <code>entityValue</code> to {@link #entities}.
-     * <br/>
+     * <br>
      * By default, we exclude the default XML entities: &#38;amp;, &#38;lt;, &#38;gt;, &#38;quot; and &#38;apos;.
      *
      * @param parser not null

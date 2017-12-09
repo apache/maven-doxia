@@ -40,14 +40,14 @@ import org.codehaus.plexus.util.StringUtils;
  * The input parameters for this macro are:
  * <dl>
  * <dt>section</dt>
- * <dd>Display a TOC for the specified section only, or all sections if 0.<br/>
+ * <dd>Display a TOC for the specified section only, or all sections if 0.<br>
  * Positive int, not mandatory, 0 by default.</dd>
  * <dt>fromDepth</dt>
  * <dd>Minimal depth of entries to display in the TOC.
- * Sections are depth 1, sub-sections depth 2, etc.<br/>
+ * Sections are depth 1, sub-sections depth 2, etc.<br>
  * Positive int, not mandatory, 0 by default.</dd>
  * <dt>toDepth</dt>
- * <dd>Maximum depth of entries to display in the TOC.<br/>
+ * <dd>Maximum depth of entries to display in the TOC.<br>
  * Positive int, not mandatory, 5 by default.</dd>
  * </dl>
  * For instance, in an APT file, you could write:

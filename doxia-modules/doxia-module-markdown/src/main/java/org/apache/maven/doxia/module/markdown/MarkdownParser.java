@@ -49,14 +49,17 @@ import java.util.regex.Matcher;
 import java.util.regex.Pattern;
 
 /**
+ * <p>
  * Implementation of {@link org.apache.maven.doxia.parser.Parser} for Markdown documents.
- * <p/>
+ * </p>
+ * <p>
  * Defers effective parsing to the <a href="https://github.com/vsch/flexmark-java">flexmark-java library</a>,
  * which generates HTML content then delegates parsing of this content to a slightly modified Doxia Xhtml parser.
  * (before 1.8, the <a href="http://pegdown.org">PegDown library</a> was used)
+ * </p>
  *
- * @author Vladimir Schneider <vladimir@vladsch.com>
- * @author Julien Nicoulaud <julien.nicoulaud@gmail.com>
+ * @author Vladimir Schneider
+ * @author Julien Nicoulaud
  * @since 1.3
  */
 @Component( role = Parser.class, hint = "markdown" )

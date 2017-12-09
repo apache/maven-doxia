@@ -47,7 +47,6 @@ import org.codehaus.plexus.util.StringUtils;
 
 /**
  * A Doxia Sink that produces an aggregated FO model. The usage is similar to the following:
- * <p/>
  * <pre>
  * FoAggregateSink sink = new FoAggregateSink( writer );
  * sink.setDocumentModel( documentModel );
@@ -57,9 +56,8 @@ import org.codehaus.plexus.util.StringUtils;
  * ...
  * sink.endDocument();
  * </pre>
- * <p/>
  * <b>Note</b>: the documentModel object contains several
- * <a href="http://maven.apache.org/doxia/doxia/doxia-core/document.html">document metadata</a>, but only a few
+ * <a href="https://maven.apache.org/doxia/doxia/doxia-core/document.html">document metadata</a>, but only a few
  * of them are used in this sink (i.e. author, confidential, date and title), the others are ignored.
  *
  * @author ltheussl
@@ -310,11 +308,11 @@ public class FoAggregateSink
     /**
      * Sets the DocumentModel to be used by this sink. The DocumentModel provides all the meta-information
      * required to render a document, eg settings for the cover page, table of contents, etc.
-     * <br/>
+     * <br>
      * By default, a TOC will be added at the beginning of the document.
      *
      * @param model the DocumentModel.
-     * @see #setDocumentModel(DocumentModel, String)
+     * @see #setDocumentModel(DocumentModel, int)
      * @see #TOC_START
      */
     public void setDocumentModel( DocumentModel model )
@@ -629,11 +627,7 @@ public class FoAggregateSink
     //
     // ----------------------------------------------------------------------
 
-    /**
-     * {@inheritDoc}
-     * <p/>
-     * Writes a start tag, prepending EOL.
-     */
+    @Override
     protected void writeStartTag( Tag tag, String attributeId )
     {
         if ( !ignoreText )
@@ -642,11 +636,7 @@ public class FoAggregateSink
         }
     }
 
-    /**
-     * {@inheritDoc}
-     * <p/>
-     * Writes a start tag, prepending EOL.
-     */
+    @Override
     protected void writeStartTag( Tag tag, String id, String name )
     {
         if ( !ignoreText )
@@ -655,11 +645,7 @@ public class FoAggregateSink
         }
     }
 
-    /**
-     * {@inheritDoc}
-     * <p/>
-     * Writes an end tag, appending EOL.
-     */
+    @Override
     protected void writeEndTag( Tag t )
     {
         if ( !ignoreText )
@@ -668,11 +654,7 @@ public class FoAggregateSink
         }
     }
 
-    /**
-     * {@inheritDoc}
-     * <p/>
-     * Writes a simple tag, appending EOL.
-     */
+    @Override
     protected void writeEmptyTag( Tag tag, String attributeId )
     {
         if ( !ignoreText )
@@ -681,11 +663,7 @@ public class FoAggregateSink
         }
     }
 
-    /**
-     * {@inheritDoc}
-     * <p/>
-     * Writes a text, swallowing any exceptions.
-     */
+    @Override
     protected void write( String text )
     {
         if ( !ignoreText )
@@ -694,11 +672,7 @@ public class FoAggregateSink
         }
     }
 
-    /**
-     * {@inheritDoc}
-     * <p/>
-     * Writes a text, appending EOL.
-     */
+    @Override
     protected void writeln( String text )
     {
         if ( !ignoreText )
@@ -707,11 +681,7 @@ public class FoAggregateSink
         }
     }
 
-    /**
-     * {@inheritDoc}
-     * <p/>
-     * Writes content, escaping special characters.
-     */
+    @Override
     protected void content( String text )
     {
         if ( !ignoreText )
@@ -794,21 +764,13 @@ public class FoAggregateSink
         return "&#169;" + actualYear + ", " + escaped( companyName, false ) + add;
     }
 
-    /**
-     * {@inheritDoc}
-     * <p/>
-     * Returns the current chapter number as a string.
-     */
+    @Override
     protected String getChapterString()
     {
         return Integer.toString( chapter ) + ".";
     }
 
-    /**
-     * {@inheritDoc}
-     * <p/>
-     * Writes a 'xsl-region-before' block.
-     */
+    @Override
     protected void regionBefore( String headerText )
     {
         writeStartTag( STATIC_CONTENT_TAG, "flow-name", "xsl-region-before" );
@@ -838,11 +800,7 @@ public class FoAggregateSink
         writeEndTag( STATIC_CONTENT_TAG );
     }
 
-    /**
-     * {@inheritDoc}
-     * <p/>
-     * Writes a 'xsl-region-after' block.
-     */
+    @Override
     protected void regionAfter( String footerText )
     {
         writeStartTag( STATIC_CONTENT_TAG, "flow-name", "xsl-region-after" );
@@ -857,11 +815,7 @@ public class FoAggregateSink
         writeEndTag( STATIC_CONTENT_TAG );
     }
 
-    /**
-     * {@inheritDoc}
-     * <p/>
-     * Writes a chapter heading.
-     */
+    @Override
     protected void chapterHeading( String headerText, boolean chapterNumber )
     {
         if ( docName == null )
@@ -1036,8 +990,6 @@ public class FoAggregateSink
     }
 
     /**
-     * {@inheritDoc}
-     * <p/>
      * Writes a fo:bookmark-tree. The DocumentModel has to contain a DocumentTOC for this to work.
      */
     protected void pdfBookmarks()

@@ -32,7 +32,7 @@ import org.codehaus.plexus.util.StringUtils;
 
 /**
  * <a href="http://www.w3.org/TR/xhtml1/">Xhtml 1.0 Transitional</a> sink implementation.
- * <br/>
+ * <br>
  * It uses the DTD/xhtml1-transitional <a href="http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
  * http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd</a>.
  *

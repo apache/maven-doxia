@@ -277,8 +277,6 @@ public class IndexingSink
 
     /**
      * Creates and pushes a new IndexEntry onto the top of this stack.
-     *
-     * @param entry to put.
      */
     public void pushNewEntry()
     {

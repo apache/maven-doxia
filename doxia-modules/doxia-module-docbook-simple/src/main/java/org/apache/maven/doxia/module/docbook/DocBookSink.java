@@ -42,7 +42,7 @@ import org.codehaus.plexus.util.FileUtils;
 
 /**
  * <a href="http://www.oasis-open.org/docbook">Docbook</a> Sink implementation.
- * <br/>
+ * <br>
  * It uses the Docbook v4.4 DTD <a href="http://www.oasis-open.org/docbook/sgml/4.4/docbookx.dtd">
  * http://www.oasis-open.org/docbook/sgml/4.4/docbookx.dtd</a>.
  *
@@ -385,7 +385,7 @@ public class DocBookSink
     /**
      * Returns the current italicBeginTag.
      *
-     * @return the current italicBeginTag. Defaults to "<emphasis>".
+     * @return the current italicBeginTag. Defaults to {@code <emphasis>}.
      */
     public String getItalicElement()
     {
@@ -410,7 +410,7 @@ public class DocBookSink
     /**
      * Returns the current boldBeginTag.
      *
-     * @return the current boldBeginTag. Defaults to "<emphasis role=\"bold\">".
+     * @return the current boldBeginTag. Defaults to {@code <emphasis role=\"bold\">}.
      */
     public String getBoldElement()
     {
@@ -435,7 +435,7 @@ public class DocBookSink
     /**
      * Returns the current monospacedBeginTag.
      *
-     * @return the current monospacedBeginTag. Defaults to "<literal>>".
+     * @return the current monospacedBeginTag. Defaults to {@code <literal>}.
      */
     public String getMonospacedElement()
     {

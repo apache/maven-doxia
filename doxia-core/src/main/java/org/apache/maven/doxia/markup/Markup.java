@@ -39,7 +39,7 @@ public interface Markup
     /** equal character: '=' */
     char EQUAL = '=';
 
-    /** end character: '>' */
+    /** end character: '&lt;' */
     char GREATER_THAN = '>';
 
     /** left curly bracket character: '{' */
@@ -48,7 +48,7 @@ public interface Markup
     /** left square bracket character: '[' */
     char LEFT_SQUARE_BRACKET = '[';
 
-    /** start character: '<' */
+    /** start character: '&gt;' */
     char LESS_THAN = '<';
 
     /** minus character: '-' */

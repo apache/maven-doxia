@@ -29,7 +29,7 @@ import org.codehaus.plexus.util.StringUtils;
 
 /**
  * APT generator implementation.
- * <br/>
+ * <br>
  * <b>Note</b>: The encoding used is UTF-8.
  *
  * @author eredmond

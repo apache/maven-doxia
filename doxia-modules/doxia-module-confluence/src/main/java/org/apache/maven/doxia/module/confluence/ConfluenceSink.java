@@ -33,7 +33,7 @@ import org.codehaus.plexus.util.StringUtils;
 
 /**
  * Confluence Sink implementation.
- * <br/>
+ * <br>
  * <b>Note</b>: The encoding used is UTF-8.
  *
  * @author <a href="mailto:vincent.siveton@gmail.com">Vincent Siveton</a>

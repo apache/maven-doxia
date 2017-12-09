@@ -566,7 +566,7 @@ public class XhtmlBaseParser
      *   Goes through a common list of possible html end tags.
      *   These should be re-usable by different xhtml-based parsers.
      *   The tags handled here are the same as for {@link #baseStartTag(XmlPullParser,Sink)},
-     *   except for the empty elements (<code>&lt;br/&gt;, &lt;hr/&gt;, &lt;img/&gt;<code>).
+     *   except for the empty elements ({@code<br/>, <hr/>, <img/>}).
      * </p>
      *
      * @param parser A parser.
@@ -831,16 +831,20 @@ public class XhtmlBaseParser
      *
      * <p>
      * For instance, if the following sequence is parsed:
+     * </p>
      * <pre>
      * &lt;h3&gt;&lt;/h3&gt;
      * &lt;h6&gt;&lt;/h6&gt;
      * </pre>
+     * <p>
      * we have to insert two section starts before we open the <code>&lt;h6&gt;</code>.
      * In the following sequence
+     * </p>
      * <pre>
      * &lt;h6&gt;&lt;/h6&gt;
      * &lt;h3&gt;&lt;/h3&gt;
      * </pre>
+     * <p>
      * we have to close two sections before we open the <code>&lt;h3&gt;</code>.
      * </p>
      *

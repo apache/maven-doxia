@@ -47,7 +47,7 @@ import java.util.TreeSet;
 
 /**
  * The APT parser.
- * <br/>
+ * <br>
  * Based on the <a href="http://www.xmlmind.com/aptconvert.html">APTconvert</a> project.
  *
  * @version $Id$
@@ -651,7 +651,7 @@ public class AptParser
      * @param string the string.
      * @param length length.
      * @param i offset.
-     * @return the character, or '\0' if i > length.
+     * @return the character, or '\0' if i &gt; length.
      */
     protected static char charAt( String string, int length, int i )
     {

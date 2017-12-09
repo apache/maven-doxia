@@ -35,7 +35,7 @@ import java.util.Iterator;
 
 /**
  * Test the parsing of sample input files.
- * <br/>
+ * <br>
  * <b>Note</b>: you have to provide a sample "test." + outputExtension()
  * file in the test resources directory if you extend this class.
  *

@@ -23,7 +23,7 @@ import org.apache.maven.doxia.markup.HtmlMarkup;
 
 /**
  * List of <code>Xhtml</code> markups.
- * <br/>
+ * <br>
  * Xhtml uses all {@link javax.swing.text.html.HTML.Tag} and {@link javax.swing.text.html.HTML.Attribute}
  * as markups.
  *

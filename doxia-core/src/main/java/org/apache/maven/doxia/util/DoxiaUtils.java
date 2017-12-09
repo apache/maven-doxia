@@ -272,7 +272,7 @@ public class DoxiaUtils
      * Convert a byte to it's hexadecimal equivalent.
      *
      * @param b the byte value.
-     * @return the result of Integer.toHexString( b & 0xFF ).
+     * @return the result of Integer.toHexString( b &amp; 0xFF ).
      *
      * @since 1.1.1
      * @deprecated Use {@code String.format( "%02X", bytes[j] )}

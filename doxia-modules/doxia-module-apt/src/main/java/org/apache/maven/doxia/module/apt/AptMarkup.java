@@ -79,10 +79,10 @@ public interface AptMarkup
     /** Syntax for the anchor start: "{" */
     String ANCHOR_START_MARKUP = String.valueOf( LEFT_CURLY_BRACKET );
 
-    /** Syntax for the bold style end: ">>" */
+    /** Syntax for the bold style end: "&gt;&gt;" */
     String BOLD_END_MARKUP = StringUtils.repeat( String.valueOf( GREATER_THAN ), 2 );
 
-    /** Syntax for the bold style start: "<<" */
+    /** Syntax for the bold style start: "&lt;&lt;" */
     String BOLD_START_MARKUP = StringUtils.repeat( String.valueOf( LESS_THAN ), 2 );
 
     /** Syntax for the boxed verbatim start: "+------+" */
@@ -95,10 +95,10 @@ public interface AptMarkup
     /** Syntax for the horizontal rule: "========" */
     String HORIZONTAL_RULE_MARKUP = StringUtils.repeat( String.valueOf( EQUAL ), 8 );
 
-    /** Syntax for the italic style end: ">" */
+    /** Syntax for the italic style end: "&gt;" */
     String ITALIC_END_MARKUP = String.valueOf( GREATER_THAN );
 
-    /** Syntax for the italic style start: "<" */
+    /** Syntax for the italic style start: "&lt;" */
     String ITALIC_START_MARKUP = String.valueOf( LESS_THAN );
 
     /** Syntax for the link end: "}}" */
@@ -116,10 +116,10 @@ public interface AptMarkup
     /** Syntax for the list start: "*" */
     String LIST_START_MARKUP = String.valueOf( STAR );
 
-    /** Syntax for the mono-spaced style end: ">>>" */
+    /** Syntax for the mono-spaced style end: "&gt;&gt;&gt;" */
     String MONOSPACED_END_MARKUP = StringUtils.repeat( String.valueOf( GREATER_THAN ), 3 );
 
-    /** Syntax for the mono-spaced style start: "<<<" */
+    /** Syntax for the mono-spaced style start: "&lt;&lt;&lt;" */
     String MONOSPACED_START_MARKUP = StringUtils.repeat( String.valueOf( LESS_THAN ), 3 );
 
     /** Syntax for the non boxed verbatim start: "------" */

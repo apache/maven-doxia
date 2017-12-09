@@ -22,12 +22,12 @@ package org.apache.maven.doxia.logging;
 /**
  * This interface supplies the API for providing feedback to the user from
  * a Parser or Sink, using standard <code>Doxia</code> channels.
- * <br/>
+ * <br>
  * There should be no big surprises here, although you may notice that the methods accept
  * <code>java.lang.CharSequence</code> rather than <code>java.lang.String</code>. This is provided mainly as a
  * convenience, to enable developers to pass things like <code>java.lang.StringBuilder</code> directly into the logger,
  * rather than formatting first by calling <code>toString()</code>.
- * <br/>
+ * <br>
  * Based on <code>org.apache.maven.plugin.logging.Log</code>.
  *
  * @author jdcasey
@@ -78,7 +78,7 @@ public interface Log
 
     /**
      * Send a message (and accompanying exception) to the user in the <b>debug</b> error level.
-     * <br/>
+     * <br>
      * The error's stacktrace will be output when this error level is enabled.
      *
      * @param content the message to log.
@@ -88,7 +88,7 @@ public interface Log
 
     /**
      * Send an exception to the user in the <b>debug</b> error level.
-     * <br/>
+     * <br>
      * The stack trace for this exception will be output when this error level is enabled.
      *
      * @param error the error to log.
@@ -111,7 +111,7 @@ public interface Log
 
     /**
      * Send a message (and accompanying exception) to the user in the <b>info</b> error level.
-     * <br/>
+     * <br>
      * The error's stacktrace will be output when this error level is enabled.
      *
      * @param content the message to log.
@@ -121,7 +121,7 @@ public interface Log
 
     /**
      * Send an exception to the user in the <b>info</b> error level.
-     * <br/>
+     * <br>
      * The stack trace for this exception will be output when this error level is enabled.
      *
      * @param error the error to log.
@@ -144,7 +144,7 @@ public interface Log
 
     /**
      * Send a message (and accompanying exception) to the user in the <b>warn</b> error level.
-     * <br/>
+     * <br>
      * The error's stacktrace will be output when this error level is enabled.
      *
      * @param content the message to log.
@@ -154,7 +154,7 @@ public interface Log
 
     /**
      * Send an exception to the user in the <b>warn</b> error level.
-     * <br/>
+     * <br>
      * The stack trace for this exception will be output when this error level is enabled.
      *
      * @param error the error to log.
@@ -177,7 +177,7 @@ public interface Log
 
     /**
      * Send a message (and accompanying exception) to the user in the <b>error</b> error level.
-     * <br/>
+     * <br>
      * The error's stacktrace will be output when this error level is enabled.
      *
      * @param content the message to log.
@@ -187,7 +187,7 @@ public interface Log
 
     /**
      * Send an exception to the user in the <b>error</b> error level.
-     * <br/>
+     * <br>
      * The stack trace for this exception will be output when this error level is enabled.
      *
      * @param error the error to log.

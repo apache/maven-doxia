@@ -58,7 +58,8 @@ import org.codehaus.plexus.util.xml.XMLWriter;
  * See <a href="http://www.mail-archive.com/itext-questions@lists.sourceforge.net/msg10323.html">
  * http://www.mail-archive.com/itext-questions@lists.sourceforge.net/msg10323.html</a></li>
  * <li>iText has some problems with <code>ElementTags.TABLE</code> and <code>ElementTags.TABLEFITSPAGE</code>.
- * See http://sourceforge.net/tracker/index.php?func=detail&aid=786427&group_id=15255&atid=115255.</li>
+ * See <a href="http://sourceforge.net/tracker/index.php?func=detail&aid=786427&group_id=15255&atid=115255">
+ * SourceForce Tracker</a>.</li>
  * <li>Images could be on another page and next text on the last one.</li>
  * </ul>
  *

@@ -25,7 +25,7 @@ import org.apache.maven.doxia.markup.HtmlMarkup;
 
 /**
  * List of <code>FML</code> markups.
- * <br/>
+ * <br>
  * FML uses several  {@link javax.swing.text.html.HTML.Tag} and {@link javax.swing.text.html.HTML.Attribute}
  * as markups and custom tags.
  *

@@ -47,11 +47,6 @@ public class XhtmlBaseSinkTest
     private XhtmlBaseSink sink;
     private Writer writer;
 
-    /**
-     * Set up the writer.
-     *
-     * @throws java.lang.Exception if any.
-     */
     @Override
     protected void setUp()
             throws Exception
@@ -60,7 +55,6 @@ public class XhtmlBaseSinkTest
         writer =  new StringWriter();
     }
 
-    /** @throws Exception */
     public void testSpaceAfterClosingTag()
         throws Exception
     {

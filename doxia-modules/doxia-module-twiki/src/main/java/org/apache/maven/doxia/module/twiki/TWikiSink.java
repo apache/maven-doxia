@@ -37,7 +37,7 @@ import org.codehaus.plexus.util.StringUtils;
 
 /**
  * TWiki Sink implementation.
- * <br/>
+ * <br>
  * <b>Note</b>: The encoding used is UTF-8.
  *
  * @author <a href="mailto:vincent.siveton@gmail.com">Vincent Siveton</a>
@@ -1147,7 +1147,7 @@ public class TWikiSink
      * <pre>
      * &lt;tag&gt;
      * </pre>
-     * <br/>
+     * <br>
      * <b>Note</b>: Copy from {@link AbstractXmlSink#writeStartTag(javax.swing.text.html.HTML.Tag)}
      *
      * @param t a non null tag
@@ -1163,7 +1163,7 @@ public class TWikiSink
      * <pre>
      * &lt;tag attName="attValue"&gt;
      * </pre>
-     * <br/>
+     * <br>
      * <b>Note</b>: Copy from {@link AbstractXmlSink#writeStartTag(javax.swing.text.html.HTML.Tag,
      *      javax.swing.text.MutableAttributeSet)}
      *
@@ -1181,7 +1181,7 @@ public class TWikiSink
      * <pre>
      * &lt;tag attName="attValue"&gt;
      * </pre>
-     * <br/>
+     * <br>
      * <b>Note</b>: Copy from {@link AbstractXmlSink#writeStartTag(javax.swing.text.html.HTML.Tag,
      *      javax.swing.text.MutableAttributeSet, boolean)}
      *
@@ -1240,7 +1240,7 @@ public class TWikiSink
 
     /**
      * Ends a Tag without writing an EOL. For instance: <pre>&lt;/tag&gt;</pre>.
-     * <br/>
+     * <br>
      * <b>Note</b>: Copy from {@link AbstractXmlSink#writeEndTag(javax.swing.text.html.HTML.Tag)}
      *
      * @param t a tag.

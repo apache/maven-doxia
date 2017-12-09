@@ -111,9 +111,9 @@ public class HtmlTools
      * Escape special HTML characters in a String.
      *
      * <pre>
-     * < becomes <code>&#38;lt;</code>
-     * > becomes <code>&#38;gt;</code>
-     * & becomes <code>&#38;amp;</code>
+     * &lt; becomes <code>&#38;lt;</code>
+     * &gt; becomes <code>&#38;gt;</code>
+     * &amp; becomes <code>&#38;amp;</code>
      * " becomes <code>&#38;quot;</code>
      * ' becomes <code>&#38;apos;</code> if xmlMode = true
      * </pre>
@@ -400,7 +400,7 @@ public class HtmlTools
      *
      * @param text The text to be tested.
      * @return <code>true</code> if the text is a valid id, otherwise <code>false</code>.
-     * @see #encodeId(String).
+     * @see DoxiaUtils#isValidId(String)
      */
     public static boolean isId( String text )
     {
