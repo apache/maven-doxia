@@ -74,7 +74,7 @@ under the License.
   </issueManagement>
   <ciManagement>
     <system>Jenkins</system>
-    <url>https://builds.apache.org/job/doxia/</url>
+    <url>https://builds.apache.org/view/M-R/view/Maven/job/maven-box/job/maven-doxia/</url>
   </ciManagement>
   <distributionManagement>
     <site>
