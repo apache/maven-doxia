@@ -29,6 +29,7 @@ package org.apache.maven.doxia.logging;
  * @version $Id$
  * @since 1.1
  */
+@Deprecated replaced by slf4j
 public interface LogEnabled
 {
     /**

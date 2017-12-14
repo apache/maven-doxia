@@ -74,7 +74,6 @@ public class EchoMacroTest
     public void testLog()
     {
         EchoMacro macro = new EchoMacro();
-        macro.enableLogging( null );
         assertNotNull ( macro.getLog() );
         assertNotNull ( macro.getLog() );
     }

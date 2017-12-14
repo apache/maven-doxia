@@ -19,7 +19,6 @@ package org.apache.maven.doxia;
  * under the License.
  */
 
-import org.apache.maven.doxia.logging.PlexusLoggerWrapper;
 import org.apache.maven.doxia.parser.ParseException;
 import org.apache.maven.doxia.parser.Parser;
 import org.apache.maven.doxia.parser.manager.ParserManager;
@@ -28,7 +27,6 @@ import org.apache.maven.doxia.sink.Sink;
 
 import org.codehaus.plexus.component.annotations.Component;
 import org.codehaus.plexus.component.annotations.Requirement;
-import org.codehaus.plexus.logging.AbstractLogEnabled;
 
 import java.io.Reader;
 
@@ -42,7 +40,6 @@ import java.io.Reader;
  */
 @Component( role = Doxia.class )
 public class DefaultDoxia
-    extends AbstractLogEnabled
     implements Doxia
 {
     @Requirement
@@ -59,8 +56,6 @@ public class DefaultDoxia
         throws ParserNotFoundException, ParseException
     {
         Parser parser = parserManager.getParser( parserId );
-
-        parser.enableLogging( new PlexusLoggerWrapper( getLogger() ) );
 
         parser.parse( source, sink );
     }

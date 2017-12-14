@@ -558,7 +558,6 @@ public class FmlParser
         throws ParseException
     {
         FmlContentParser xdocParser = new FmlContentParser();
-        xdocParser.enableLogging( getLog() );
 
         sink.head();
         sink.title();

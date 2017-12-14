@@ -1411,8 +1411,7 @@ public class LatexSink
         catch ( IOException ioe )
         {
             // this should not happen
-            getLog().warn( "Could not read default LaTeX commands, the generated LaTeX file will not compile!" );
-            getLog().debug( ioe );
+            getLog().warn( "Could not read default LaTeX commands, the generated LaTeX file will not compile!", ioe );
 
             return "";
         }
@@ -1432,8 +1431,7 @@ public class LatexSink
         catch ( IOException ioe )
         {
             // this should not happen
-            getLog().warn( "Could not read default LaTeX preamble, the generated LaTeX file will not compile!" );
-            getLog().debug( ioe );
+            getLog().warn( "Could not read default LaTeX preamble, the generated LaTeX file will not compile!", ioe );
 
             return "";
         }

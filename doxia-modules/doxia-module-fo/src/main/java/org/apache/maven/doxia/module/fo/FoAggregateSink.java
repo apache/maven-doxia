@@ -1274,7 +1274,7 @@ public class FoAggregateSink
         }
         catch ( IOException e )
         {
-            getLog().debug( e );
+            getLog().debug( e.getMessage() );
         }
 
         if ( atts == null )

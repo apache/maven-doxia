@@ -21,11 +21,11 @@ package org.apache.maven.doxia.macro;
 
 import java.util.Map;
 
-import org.apache.maven.doxia.logging.Log;
-import org.apache.maven.doxia.logging.SystemStreamLog;
 import org.apache.maven.doxia.sink.SinkEventAttributes;
 import org.apache.maven.doxia.sink.impl.SinkEventAttributeSet;
 import org.codehaus.plexus.util.StringUtils;
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
 
 /**
  * Abstract base class to execute <code>Macro</code>.
@@ -38,13 +38,7 @@ public abstract class AbstractMacro
     implements Macro
 {
     /** Log instance. */
-    private Log logger;
-
-    /** {@inheritDoc} */
-    public void enableLogging( Log log )
-    {
-        this.logger = log;
-    }
+    private Logger logger;
 
     /**
      * Returns a logger for this macro.
@@ -53,11 +47,11 @@ public abstract class AbstractMacro
      * @return Log
      * @since 1.1
      */
-    protected Log getLog()
+    protected Logger getLog()
     {
         if ( logger == null )
         {
-            logger = new SystemStreamLog();
+            logger = LoggerFactory.getLogger( this.getClass() );
         }
 
         return logger;

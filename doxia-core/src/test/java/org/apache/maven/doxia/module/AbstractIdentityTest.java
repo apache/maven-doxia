@@ -26,7 +26,6 @@ import java.io.Writer;
 
 import org.apache.maven.doxia.AbstractModuleTest;
 
-import org.apache.maven.doxia.logging.PlexusLoggerWrapper;
 import org.apache.maven.doxia.parser.ParseException;
 import org.apache.maven.doxia.parser.Parser;
 
@@ -108,7 +107,6 @@ public abstract class AbstractIdentityTest
         writer = new StringWriter();
         sink = new TextSink( writer );
         Parser parser = createParser();
-        parser.enableLogging( new PlexusLoggerWrapper( ( ( DefaultPlexusContainer )getContainer() ).getLogger() ) );
         parser.parse( reader, sink );
         String actual = writer.toString();
 

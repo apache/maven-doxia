@@ -35,6 +35,7 @@ package org.apache.maven.doxia.logging;
  * @version $Id$
  * @since 1.1
  */
+@Depecated replaced by slf4j
 public interface Log
 {
     /** Typecode for debugging messages. */

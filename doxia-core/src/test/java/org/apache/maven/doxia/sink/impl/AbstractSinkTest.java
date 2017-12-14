@@ -24,7 +24,6 @@ import java.io.IOException;
 import java.io.Writer;
 
 import org.apache.maven.doxia.AbstractModuleTest;
-import org.apache.maven.doxia.logging.PlexusLoggerWrapper;
 import org.apache.maven.doxia.sink.Sink;
 import org.apache.maven.doxia.sink.SinkEventAttributes;
 import org.codehaus.plexus.DefaultPlexusContainer;
@@ -60,7 +59,6 @@ public abstract class AbstractSinkTest
 
         testWriter.reset();
         sink = createSink( testWriter );
-        sink.enableLogging( new PlexusLoggerWrapper( ( ( DefaultPlexusContainer )getContainer() ).getLogger() ) );
     }
 
     /**
@@ -212,6 +210,15 @@ public abstract class AbstractSinkTest
         String expected = normalizeLineEnds( getHeadBlock() );
 
         assertEquals( "Wrong head!", expected, actual );
+    }
+
+    protected static String normalizeLineEnds(String s) {
+        if ( s != null) {
+            return s.replace("\r\n", "\n" );
+//                    .replace('\r', '\n');
+        } else {
+            return null;
+        }
     }
 
     /**
@@ -808,7 +815,6 @@ public abstract class AbstractSinkTest
 
         testWriter.reset();
         sink = createSink( testWriter );
-        sink.enableLogging( new PlexusLoggerWrapper( ( ( DefaultPlexusContainer )getContainer() ).getLogger() ) );
 
         comment = "-";
         sink.comment( comment );

@@ -213,7 +213,6 @@ public class AptParser
             this.source = new AptReaderSource( new StringReader( sourceContent ), reference );
 
             this.sink = sink;
-            sink.enableLogging( getLog() );
 
             blockFileName = null;
 

@@ -27,11 +27,12 @@ import java.util.regex.Pattern;
 
 import javax.xml.XMLConstants;
 
-import org.apache.maven.doxia.logging.Log;
 import org.apache.maven.doxia.markup.XmlMarkup;
 import org.apache.maven.doxia.parser.AbstractXmlParser.CachedFileEntityResolver;
 import org.apache.maven.doxia.parser.ParseException;
 
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
 import org.xml.sax.InputSource;
 import org.xml.sax.SAXException;
 import org.xml.sax.SAXParseException;
@@ -59,16 +60,15 @@ public class XmlValidator
     /** lazy xmlReader to validate xml content*/
     private XMLReader xmlReader;
 
-    private Log logger;
+    private Logger logger = LoggerFactory.getLogger( XmlValidator.class );
 
     /**
      * Constructor.
      *
-     * @param log a logger, not null.
      */
-    public XmlValidator( Log log )
+    public XmlValidator( )
     {
-        this.logger = log;
+
     }
 
     /**
@@ -127,7 +127,7 @@ public class XmlValidator
     {
         if ( xmlReader == null )
         {
-            MessagesErrorHandler errorHandler = new MessagesErrorHandler( getLog() );
+            MessagesErrorHandler errorHandler = new MessagesErrorHandler( );
 
             xmlReader = XMLReaderFactory.createXMLReader();
             xmlReader.setFeature( "http://xml.org/sax/features/validation", true );
@@ -141,7 +141,7 @@ public class XmlValidator
         return xmlReader;
     }
 
-    private Log getLog()
+    private Logger getLog()
     {
         return logger;
     }
@@ -166,13 +166,12 @@ public class XmlValidator
         private static final Pattern ELEMENT_TYPE_PATTERN =
             Pattern.compile( "Element type \".*\" must be declared.", Pattern.DOTALL );
 
-        private final Log log;
+        private final Logger log = LoggerFactory.getLogger( MessagesErrorHandler.class );
 
         private boolean hasDtdAndXsd;
 
-        private MessagesErrorHandler( Log log )
+        private MessagesErrorHandler( )
         {
-            this.log = log;
         }
 
         /**

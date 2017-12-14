@@ -43,7 +43,6 @@
         <img src="images/doxia-deps.png" width="647" height="335" border="0" usemap="#Doxia_dependencies" />
         <map name="Doxia_dependencies">
           <area shape="rect" coords="98,303,220,335"  href="./doxia-test-docs/" />
-          <area shape="rect" coords="262,303,385,335" href="./doxia-logging-api/" />
           <area shape="rect" coords="262,254,385,285" href="./doxia-sink-api/" />
           <area shape="rect" coords="262,201,385,234" href="./doxia-core/" />
           <area shape="rect" coords="41,12,167,44"    href="./doxia-modules/doxia-module-apt/" />

@@ -27,8 +27,6 @@ import java.io.StringReader;
 
 import java.util.Properties;
 
-import org.apache.maven.doxia.logging.Log;
-import org.apache.maven.doxia.logging.SystemStreamLog;
 import org.apache.maven.doxia.macro.Macro;
 import org.apache.maven.doxia.macro.MacroExecutionException;
 import org.apache.maven.doxia.macro.MacroRequest;
@@ -36,6 +34,8 @@ import org.apache.maven.doxia.macro.manager.MacroManager;
 import org.apache.maven.doxia.macro.manager.MacroNotFoundException;
 import org.apache.maven.doxia.sink.Sink;
 import org.codehaus.plexus.component.annotations.Requirement;
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
 
 /**
  * An abstract base class that defines some convenience methods for parsers.
@@ -55,7 +55,7 @@ public abstract class AbstractParser
     private MacroManager macroManager;
 
     /** Log instance. */
-    private Log logger;
+    private Logger logger;
 
     /**
      * Emit Doxia comment events when parsing comments?
@@ -131,8 +131,6 @@ public abstract class AbstractParser
     {
         Macro macro = getMacroManager().getMacro( macroId );
 
-        macro.enableLogging( getLog() );
-
         macro.execute( sink, request );
     }
 
@@ -200,12 +198,6 @@ public abstract class AbstractParser
         return secondParsing;
     }
 
-    /** {@inheritDoc} */
-    public void enableLogging( Log log )
-    {
-        this.logger = log;
-    }
-
     /**
      * Returns the current logger for this parser.
      * If no logger has been configured yet, a new SystemStreamLog is returned.
@@ -213,11 +205,11 @@ public abstract class AbstractParser
      * @return Log
      * @since 1.1
      */
-    protected Log getLog()
+    protected Logger getLog()
     {
         if ( logger == null )
         {
-            logger = new SystemStreamLog();
+            logger = LoggerFactory.getLogger( this.getClass() );
         }
 
         return logger;

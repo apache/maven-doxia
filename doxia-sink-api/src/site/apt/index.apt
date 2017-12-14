@@ -65,6 +65,8 @@ sink.paragraph_();
 *--------------+--------------------------+
 | 1.1          | added <<<org.apache.maven.doxia.sink.SinkEventAttributes>>> interface and a dependency on <<<doxia-logging-api>>> |
 *--------------+--------------------------+
+| 1.8          | removed <<<doxia-logging-api>>> - replaced by slf4j|
+*--------------+--------------------------+
 
   Note that <<<doxia-sink-api 1.0>>> is equivalent to <<<doxia-sink-api 1.0-alpha-9>>>.
 

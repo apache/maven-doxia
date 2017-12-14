@@ -124,7 +124,7 @@ public abstract class AbstractXmlParser
                 throw new ParseException( "Error reading the model: " + e.getMessage(), e );
             }
 
-            new XmlValidator( getLog() ).validate( content );
+            new XmlValidator( ).validate( content );
 
             src = new StringReader( content );
         }
@@ -139,8 +139,6 @@ public abstract class AbstractXmlParser
             // allow parser initialization, e.g. for additional entities in XHTML
             // Note: do it after input is set, otherwise values are reset
             initXmlParser( parser );
-
-            sink.enableLogging( getLog() );
 
             parseXml( parser, sink );
         }

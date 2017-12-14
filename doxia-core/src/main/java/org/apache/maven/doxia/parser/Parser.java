@@ -19,7 +19,6 @@ package org.apache.maven.doxia.parser;
  * under the License.
  */
 
-import org.apache.maven.doxia.logging.LogEnabled;
 import org.apache.maven.doxia.sink.Sink;
 
 import java.io.Reader;
@@ -34,7 +33,6 @@ import java.io.Reader;
  * @since 1.0
  */
 public interface Parser
-    extends LogEnabled
 {
     /** The Plexus lookup role. */
     String ROLE = Parser.class.getName();
