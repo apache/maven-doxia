@@ -31,7 +31,7 @@ under the License.
 
   <groupId>org.apache.maven.doxia</groupId>
   <artifactId>doxia</artifactId>
-  <version>1.8-SNAPSHOT</version>
+  <version>1.9-SNAPSHOT</version>
   <packaging>pom</packaging>
 
   <name>Doxia</name>
@@ -75,14 +75,6 @@ under the License.
   <ciManagement>
     <system>Jenkins</system>
     <url>https://builds.apache.org/job/maven-box/job/maven-doxia/</url>
-    <notifiers>
-      <notifier>
-        <type>mail</type>
-        <configuration>
-          <address>notifications@maven.apache.org</address>
-        </configuration>
-      </notifier>
-    </notifiers>
   </ciManagement>
   <distributionManagement>
     <site>
