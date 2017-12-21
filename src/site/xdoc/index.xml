@@ -59,8 +59,7 @@
           <area shape="rect" coords="512,96,636,127"  href="./doxia-modules/doxia-module-fo/" />
           <area shape="rect" coords="91,136,272,168"  href="./doxia-modules/doxia-module-markdown/" />
           <area shape="rect" coords="0,0,646,175"     href="./doxia-modules/" />
-          <area shape="rect" coords="136,200,228,233" href="http://www.pegdown.org/" />
-          <area shape="rect" coords="136,250,228,282" href="http://www.parboiled.org/" />
+          <area shape="rect" coords="107,199,256,234" href="https://github.com/vsch/flexmark-java" />
           <area shape="rect" coords="407,201,472,233" href="http://www.lowagie.com/iText/" />
           <area shape="rect" coords="551,199,600,232" href="http://xmlgraphics.apache.org/fop/" />
           <area shape="rect" coords="420,303,542,334" href="http://plexus.codehaus.org/" />
