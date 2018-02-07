@@ -57,8 +57,8 @@ public class FoUtils
     /** To reuse the TransformerFactory **/
     private static final TransformerFactory TRANSFORMER_FACTORY = TransformerFactory.newInstance();
 
-
-    private static void prepareUserAgent( FOUserAgent foUserAgent, DocumentModel documentModel ) {
+    private static void prepareUserAgent( FOUserAgent foUserAgent, DocumentModel documentModel )
+    {
         if ( documentModel != null && documentModel.getMeta() != null )
         {
             // http://xmlgraphics.apache.org/fop/embedding.html#user-agent

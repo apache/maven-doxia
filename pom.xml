@@ -320,6 +320,8 @@ under the License.
                 <exclude>org/apache/maven/doxia/parser/AbstractXmlParser</exclude>
                 <exclude>org/apache/maven/doxia/module/*/*Sink</exclude>
                 <exclude>org/apache/maven/doxia/module/*/*SinkFactory</exclude>
+                <!-- DOXIA-409 -->
+                <exclude>org/apache/maven/doxia/module/fo/FoUtils</exclude>
               </excludes>
             </configuration>
           </execution>
