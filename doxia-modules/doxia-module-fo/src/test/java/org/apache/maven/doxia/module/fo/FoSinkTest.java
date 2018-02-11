@@ -32,6 +32,8 @@ import org.apache.maven.doxia.sink.Sink;
 import org.apache.maven.doxia.sink.impl.AbstractSinkTest;
 import org.apache.maven.doxia.sink.impl.SinkTestDocument;
 
+import static org.apache.maven.doxia.util.HtmlTools.escapeHTML;
+
 /**
  * <code>FO Sink</code> Test case.
  *
@@ -321,8 +323,8 @@ public class FoSinkTest
         String dtAtts = getConfig().getAttributeString( "figure.graphics" );
         String ddAtts = getConfig().getAttributeString( "figure.caption" );
 
-        String figureBlock = EOL + EOL + "<fo:block" + dlAtts + "><fo:external-graphic" + " src=\"" + source + "\"" + dtAtts
-            + "/>" + EOL;
+        String figureBlock = EOL + EOL + "<fo:block" + dlAtts + ">" +
+                "<fo:external-graphic" + " src=\"" + escapeHTML( source ) + "\"" + dtAtts + "/>" + EOL;
         if ( caption != null )
         {
             figureBlock += EOL + "<fo:block" + ddAtts + ">" + caption + "</fo:block>" + EOL;

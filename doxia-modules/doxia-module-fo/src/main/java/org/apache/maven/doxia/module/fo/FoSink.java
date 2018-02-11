@@ -47,6 +47,8 @@ import org.apache.maven.doxia.util.HtmlTools;
 
 import org.codehaus.plexus.util.xml.PrettyPrintXMLWriter;
 
+import static org.apache.maven.doxia.util.HtmlTools.escapeHTML;
+
 /**
  * A Doxia Sink that produces a FO model. The usage is similar to the following:
  *
@@ -784,9 +786,9 @@ public class FoSink
     public void figureGraphics( String src, SinkEventAttributes attributes )
     {
         MutableAttributeSet atts = config.getAttributeSet( "figure.graphics" );
-        atts.addAttribute( Attribute.SRC.toString(), src );
+        atts.addAttribute( Attribute.SRC.toString(), escapeHTML( src ) );
 
-        // http://xmlgraphics.apache.org/fop/graphics.html#resolution
+        // https://xmlgraphics.apache.org/fop/trunk/graphics.html#resolution
 
         final String[] valids = new String[] {"content-height", "content-width", "height", "width"};
         final MutableAttributeSet filtered = SinkUtils.filterAttributes( attributes, valids );

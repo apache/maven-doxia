@@ -28,6 +28,8 @@ import org.apache.maven.doxia.sink.Sink;
 import org.apache.maven.doxia.sink.impl.AbstractSinkTest;
 import org.apache.maven.doxia.sink.impl.SinkEventAttributeSet;
 
+import static org.apache.maven.doxia.util.HtmlTools.escapeHTML;
+
 public class Xhtml5SinkTest
     extends AbstractSinkTest
 {
@@ -210,7 +212,7 @@ public class Xhtml5SinkTest
     /** {@inheritDoc} */
     protected String getFigureBlock( String source, String caption )
     {
-        String figureBlock = "<figure><img src=\"" + source + "\" alt=\"\" />";
+        String figureBlock = "<figure><img src=\"" + escapeHTML( source, true ) + "\" alt=\"\" />";
         if( caption != null )
         {
             figureBlock += "<figcaption>" + caption + "</figcaption>";

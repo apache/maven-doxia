@@ -40,8 +40,9 @@ import org.apache.maven.doxia.sink.SinkEventAttributes;
 import org.apache.maven.doxia.sink.impl.AbstractXmlSink;
 import org.apache.maven.doxia.sink.impl.SinkEventAttributeSet;
 import org.apache.maven.doxia.util.DoxiaUtils;
-import org.apache.maven.doxia.util.HtmlTools;
 import org.codehaus.plexus.util.FileUtils;
+
+import static org.apache.maven.doxia.util.HtmlTools.escapeHTML;
 
 /**
  * <a href="http://www.oasis-open.org/docbook">Docbook</a> Sink implementation.
@@ -219,7 +220,7 @@ public class DocBookSink
      */
     public static String escapeSGML( String text, boolean xmlMode )
     {
-        return HtmlTools.escapeHTML( text, xmlMode );
+        return escapeHTML( text, xmlMode );
     }
 
     /**
@@ -1176,9 +1177,8 @@ public class DocBookSink
             writeStartTag( SimplifiedDocbookMarkup.IMAGEOBJECT_TAG );
 
             MutableAttributeSet att = new SimpleAttributeSet();
-            att.addAttribute( SimplifiedDocbookMarkup.FORMAT_ATTRIBUTE, format );
-            att.addAttribute( SimplifiedDocbookMarkup.FILEREF_ATTRIBUTE,
-                    HtmlTools.escapeHTML( graphicsFileName, true ) );
+            att.addAttribute( SimplifiedDocbookMarkup.FORMAT_ATTRIBUTE, escapeHTML( format, true ) );
+            att.addAttribute( SimplifiedDocbookMarkup.FILEREF_ATTRIBUTE, escapeHTML( graphicsFileName, true ) );
 
             writeSimpleTag( SimplifiedDocbookMarkup.IMAGEDATA_TAG, att );
 
@@ -1196,8 +1196,8 @@ public class DocBookSink
         writeStartTag( SimplifiedDocbookMarkup.IMAGEOBJECT_TAG );
 
         MutableAttributeSet att = new SimpleAttributeSet();
-        att.addAttribute( SimplifiedDocbookMarkup.FORMAT_ATTRIBUTE, format );
-        att.addAttribute( SimplifiedDocbookMarkup.FILEREF_ATTRIBUTE, HtmlTools.escapeHTML( name, true ) );
+        att.addAttribute( SimplifiedDocbookMarkup.FORMAT_ATTRIBUTE, escapeHTML( format, true ) );
+        att.addAttribute( SimplifiedDocbookMarkup.FILEREF_ATTRIBUTE, escapeHTML( name, true ) );
 
         writeSimpleTag( SimplifiedDocbookMarkup.IMAGEDATA_TAG, att );
 
@@ -1503,7 +1503,7 @@ public class DocBookSink
         {
             String linkend = name.substring( 1 );
             MutableAttributeSet att = new SimpleAttributeSet();
-            att.addAttribute( SimplifiedDocbookMarkup.LINKEND_ATTRIBUTE, HtmlTools.escapeHTML( linkend ) );
+            att.addAttribute( SimplifiedDocbookMarkup.LINKEND_ATTRIBUTE, escapeHTML( linkend ) );
 
             writeStartTag( SimplifiedDocbookMarkup.LINK_TAG, att );
         }
@@ -1511,7 +1511,7 @@ public class DocBookSink
         {
             externalLinkFlag = true;
             MutableAttributeSet att = new SimpleAttributeSet();
-            att.addAttribute( SimplifiedDocbookMarkup.URL_ATTRIBUTE, HtmlTools.escapeHTML( name, true ) );
+            att.addAttribute( SimplifiedDocbookMarkup.URL_ATTRIBUTE, escapeHTML( name, true ) );
 
             writeStartTag( SimplifiedDocbookMarkup.ULINK_TAG, att );
         }
@@ -1716,7 +1716,7 @@ public class DocBookSink
     {
         if ( !skip )
         {
-            out.write( HtmlTools.escapeHTML( text, true ) );
+            out.write( escapeHTML( text, true ) );
         }
     }
 
@@ -1729,7 +1729,7 @@ public class DocBookSink
     {
         if ( !skip )
         {
-            out.write( HtmlTools.escapeHTML( text, true ) );
+            out.write( escapeHTML( text, true ) );
         }
     }
 

@@ -31,6 +31,8 @@ import org.apache.maven.doxia.sink.impl.SinkUtils;
 import org.apache.maven.doxia.util.DoxiaUtils;
 import org.codehaus.plexus.util.FileUtils;
 
+import static org.apache.maven.doxia.util.HtmlTools.escapeHTML;
+
 /**
  * @author <a href="mailto:jason@maven.org">Jason van Zyl</a>
  * @version $Id$
@@ -185,7 +187,7 @@ public class DocBookSinkTest extends AbstractSinkTest
     {
         String format = FileUtils.extension( source ).toUpperCase( Locale.ENGLISH );
         String figureBlock = "<mediaobject><imageobject>"
-                + "<imagedata fileref=\"" + source + "\" format=\"" + format + "\" />"
+                + "<imagedata fileref=\"" + escapeHTML( source ) + "\" format=\"" + escapeHTML( format ) + "\" />"
                 + "</imageobject>";
         if ( caption != null )
         {

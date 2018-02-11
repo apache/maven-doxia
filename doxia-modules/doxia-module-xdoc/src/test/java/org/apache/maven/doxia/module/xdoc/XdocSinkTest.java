@@ -27,6 +27,8 @@ import org.apache.maven.doxia.util.HtmlTools;
 import java.io.StringWriter;
 import java.io.Writer;
 
+import static org.apache.maven.doxia.util.HtmlTools.escapeHTML;
+
 /**
  * @author <a href="mailto:jason@maven.org">Jason van Zyl</a>
  * @version $Id$
@@ -180,7 +182,7 @@ public class XdocSinkTest
     /** {@inheritDoc} */
     protected String getFigureBlock( String source, String caption )
     {
-        String figureBlock = "<img src=\"" + source + "\"";
+        String figureBlock = "<img src=\"" + escapeHTML( source ) + "\"";
         if ( caption != null )
         {
             figureBlock += " alt=\"" + caption + "\"";
@@ -330,7 +332,7 @@ public class XdocSinkTest
     protected String getTextBlock( String text )
     {
         // TODO: need to be able to retreive those from outside the sink
-        return HtmlTools.escapeHTML( text );
+        return escapeHTML( text );
     }
 
     /** {@inheritDoc} */

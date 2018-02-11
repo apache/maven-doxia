@@ -618,6 +618,27 @@ public abstract class AbstractSinkTest
             assertEquals( actual, expected );
         }
     }
+    public void testFigureFromUrl()
+    {
+        String source = "http://www.gravatar.com/avatar/cdbe99fe3d6af6a18dd8c35b0687a50b?d=mm&s=60";
+        sink.figure();
+        sink.figureGraphics( source );
+        sink.figure_();
+        sink.flush();
+        sink.close();
+
+        String actual = testWriter.toString();
+        String expected = getFigureBlock( source, null );
+
+        if ( isXmlSink() )
+        {
+            assertThat ( wrapXml( actual ), CompareMatcher.isIdenticalTo( wrapXml( expected ) ));
+        }
+        else
+        {
+            assertEquals( actual, expected );
+        }
+    }
 
     /**
      * Checks that the sequence <code>[table(),

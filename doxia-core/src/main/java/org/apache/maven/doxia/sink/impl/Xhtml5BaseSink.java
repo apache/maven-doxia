@@ -1103,7 +1103,7 @@ public class Xhtml5BaseSink
 
         MutableAttributeSet atts = new SinkEventAttributeSet( count );
 
-        atts.addAttribute( Attribute.SRC, escapeHTML( src ) );
+        atts.addAttribute( Attribute.SRC, HtmlTools.escapeHTML( src, true ) );
         atts.addAttributes( filtered );
 
         if ( atts.getAttribute( Attribute.ALT.toString() ) == null )
