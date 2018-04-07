@@ -35,7 +35,7 @@ class BoldBlock
      *
      * @param childBlocks child blocks
      */
-    public BoldBlock( final Block[] childBlocks )
+    BoldBlock( final Block[] childBlocks )
     {
         super( childBlocks );
     }

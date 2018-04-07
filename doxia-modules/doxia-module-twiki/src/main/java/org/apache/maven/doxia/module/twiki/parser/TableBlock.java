@@ -35,7 +35,7 @@ class TableBlock
      *
      * @param childBlocks child blocks
      */
-    public TableBlock( final Block[] childBlocks )
+    TableBlock( final Block[] childBlocks )
     {
         super( childBlocks );
     }
