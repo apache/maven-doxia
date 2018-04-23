@@ -250,7 +250,7 @@ under the License.
           <groupId>org.apache.maven.plugins</groupId>
           <artifactId>maven-site-plugin</artifactId>
           <configuration>
-            <topSiteURL>scm:svn:https://svn.apache.org/repos/infra/websites/production/maven-doxia/content/${maven.site.path}</topSiteURL>
+            <topSiteURL>scm:svn:https://svn.apache.org/repos/infra/websites/production/maven-doxia/components/${maven.site.path}</topSiteURL>
           </configuration>
         </plugin>
         <plugin>
