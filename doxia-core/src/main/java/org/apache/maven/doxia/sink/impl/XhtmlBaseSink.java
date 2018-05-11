@@ -22,11 +22,14 @@ package org.apache.maven.doxia.sink.impl;
 import java.io.PrintWriter;
 import java.io.StringWriter;
 import java.io.Writer;
+import java.util.ArrayList;
 import java.util.Enumeration;
 import java.util.HashMap;
 import java.util.LinkedList;
+import java.util.List;
 import java.util.Map;
 import java.util.Set;
+import java.util.Stack;
 import java.util.TreeSet;
 
 import javax.swing.text.MutableAttributeSet;
@@ -124,6 +127,9 @@ public class XhtmlBaseSink
      * </pre>
      * */
     protected boolean tableRows = false;
+
+    /** Keep track of the closing tags for inline events. */
+    protected Stack<List<Tag>> inlineStack = new Stack<List<Tag>>();
 
     /** Map of warn messages with a String as key to describe the error type and a Set as value.
      * Using to reduce warn messages. */
@@ -1009,7 +1015,7 @@ public class XhtmlBaseSink
                 attributes, SinkUtils.SINK_BASE_ATTRIBUTES  ) );
 
             paragraph( atts );
-            italic();
+            inline( SinkEventAttributeSet.Semantics.ITALIC );
         }
     }
 
@@ -1023,7 +1029,7 @@ public class XhtmlBaseSink
         }
         else
         {
-            italic_();
+            inline_();
             paragraph_();
         }
     }
@@ -1065,6 +1071,105 @@ public class XhtmlBaseSink
             writeEndTag( HtmlMarkup.P );
             paragraphFlag = false;
         }
+    }
+
+    /**
+     * {@inheritDoc}
+     * @see javax.swing.text.html.HTML.Tag#ADDRESS
+     */
+    @Override
+    public void address()
+    {
+        address( null );
+    }
+
+    /**
+     * {@inheritDoc}
+     * @see javax.swing.text.html.HTML.Tag#ADDRESS
+     */
+    @Override
+    public void address( SinkEventAttributes attributes )
+    {
+        MutableAttributeSet atts = SinkUtils.filterAttributes(
+                attributes, SinkUtils.SINK_SECTION_ATTRIBUTES  );
+
+        writeStartTag( HtmlMarkup.ADDRESS, atts );
+    }
+
+    /**
+     * {@inheritDoc}
+     * @see javax.swing.text.html.HTML.Tag#ADDRESS
+     */
+    @Override
+    public void address_()
+    {
+        writeEndTag( HtmlMarkup.ADDRESS );
+    }
+
+    /**
+     * {@inheritDoc}
+     * @see javax.swing.text.html.HTML.Tag#BLOCKQUOTE
+     */
+    @Override
+    public void blockquote()
+    {
+        blockquote( null );
+    }
+
+    /**
+     * {@inheritDoc}
+     * @see javax.swing.text.html.HTML.Tag#BLOCKQUOTE
+     */
+    @Override
+    public void blockquote( SinkEventAttributes attributes )
+    {
+        MutableAttributeSet atts = SinkUtils.filterAttributes(
+                attributes, SinkUtils.SINK_SECTION_ATTRIBUTES  );
+
+        writeStartTag( HtmlMarkup.BLOCKQUOTE, atts );
+    }
+
+    /**
+     * {@inheritDoc}
+     * @see javax.swing.text.html.HTML.Tag#BLOCKQUOTE
+     */
+    @Override
+    public void blockquote_()
+    {
+        writeEndTag( HtmlMarkup.BLOCKQUOTE );
+    }
+
+    /**
+     * {@inheritDoc}
+     * @see javax.swing.text.html.HTML.Tag#DIV
+     */
+    @Override
+    public void division()
+    {
+        division( null );
+    }
+
+    /**
+     * {@inheritDoc}
+     * @see javax.swing.text.html.HTML.Tag#DIV
+     */
+    @Override
+    public void division( SinkEventAttributes attributes )
+    {
+        MutableAttributeSet atts = SinkUtils.filterAttributes(
+                attributes, SinkUtils.SINK_SECTION_ATTRIBUTES  );
+
+        writeStartTag( HtmlMarkup.DIV, atts );
+    }
+
+    /**
+     * {@inheritDoc}
+     * @see javax.swing.text.html.HTML.Tag#DIV
+     */
+    @Override
+    public void division_()
+    {
+        writeEndTag( HtmlMarkup.DIV );
     }
 
     /**
@@ -1666,6 +1771,74 @@ public class XhtmlBaseSink
         }
     }
 
+    /** {@inheritDoc} */
+    @Override
+    public void inline()
+    {
+        inline( null );
+    }
+
+    private void inlineSemantics( SinkEventAttributes attributes, String semantic,
+            List<Tag> tags, Tag tag )
+    {
+        if ( attributes.containsAttribute( SinkEventAttributes.SEMANTICS, semantic ) )
+        {
+            writeStartTag( tag );
+            tags.add( 0, tag );
+        }
+    }
+
+    /** {@inheritDoc} */
+    @Override
+    public void inline( SinkEventAttributes attributes )
+    {
+        if ( !headFlag )
+        {
+            List<Tag> tags = new ArrayList<Tag>();
+
+            if ( attributes != null )
+            {
+                inlineSemantics( attributes, "emphasis", tags, HtmlMarkup.EM );
+                inlineSemantics( attributes, "strong", tags, HtmlMarkup.STRONG );
+                inlineSemantics( attributes, "small", tags, HtmlMarkup.SMALL );
+                inlineSemantics( attributes, "line-through", tags, HtmlMarkup.S );
+                inlineSemantics( attributes, "citation", tags, HtmlMarkup.CITE );
+                inlineSemantics( attributes, "quote", tags, HtmlMarkup.Q );
+                inlineSemantics( attributes, "definition", tags, HtmlMarkup.DFN );
+                inlineSemantics( attributes, "abbreviation", tags, HtmlMarkup.ABBR );
+                inlineSemantics( attributes, "italic", tags, HtmlMarkup.I );
+                inlineSemantics( attributes, "bold", tags, HtmlMarkup.B );
+                inlineSemantics( attributes, "monospaced", tags, HtmlMarkup.TT );
+                inlineSemantics( attributes, "code", tags, HtmlMarkup.CODE );
+                inlineSemantics( attributes, "variable", tags, HtmlMarkup.VAR );
+                inlineSemantics( attributes, "sample", tags, HtmlMarkup.SAMP );
+                inlineSemantics( attributes, "keyboard", tags, HtmlMarkup.KBD );
+                inlineSemantics( attributes, "superscript", tags, HtmlMarkup.SUP );
+                inlineSemantics( attributes, "subscript", tags, HtmlMarkup.SUB );
+                inlineSemantics( attributes, "annotation", tags, HtmlMarkup.U );
+                inlineSemantics( attributes, "bidirectionalOverride", tags, HtmlMarkup.BDO );
+                inlineSemantics( attributes, "phrase", tags, HtmlMarkup.SPAN );
+                inlineSemantics( attributes, "insert", tags, HtmlMarkup.INS );
+                inlineSemantics( attributes, "delete", tags, HtmlMarkup.DEL );
+            }
+
+            inlineStack.push( tags );
+        }
+    }
+
+    /** {@inheritDoc} */
+    @Override
+    public void inline_()
+    {
+        if ( !headFlag )
+        {
+            for ( Tag tag: inlineStack.pop() )
+            {
+                writeEndTag( tag );
+            }
+        }
+    }
+
     /**
      * {@inheritDoc}
      * @see javax.swing.text.html.HTML.Tag#I
@@ -1673,10 +1846,7 @@ public class XhtmlBaseSink
     @Override
     public void italic()
     {
-        if ( !headFlag )
-        {
-            writeStartTag( HtmlMarkup.I );
-        }
+        inline( SinkEventAttributeSet.Semantics.ITALIC );
     }
 
     /**
@@ -1686,10 +1856,7 @@ public class XhtmlBaseSink
     @Override
     public void italic_()
     {
-        if ( !headFlag )
-        {
-            writeEndTag( HtmlMarkup.I );
-        }
+        inline_();
     }
 
     /**
@@ -1699,10 +1866,7 @@ public class XhtmlBaseSink
     @Override
     public void bold()
     {
-        if ( !headFlag )
-        {
-            writeStartTag( HtmlMarkup.B );
-        }
+        inline( SinkEventAttributeSet.Semantics.BOLD );
     }
 
     /**
@@ -1712,10 +1876,7 @@ public class XhtmlBaseSink
     @Override
     public void bold_()
     {
-        if ( !headFlag )
-        {
-            writeEndTag( HtmlMarkup.B );
-        }
+        inline_();
     }
 
     /**
@@ -1725,10 +1886,7 @@ public class XhtmlBaseSink
     @Override
     public void monospaced()
     {
-        if ( !headFlag )
-        {
-            writeStartTag( HtmlMarkup.TT );
-        }
+        inline( SinkEventAttributeSet.Semantics.MONOSPACED );
     }
 
     /**
@@ -1738,10 +1896,7 @@ public class XhtmlBaseSink
     @Override
     public void monospaced_()
     {
-        if ( !headFlag )
-        {
-            writeEndTag( HtmlMarkup.TT );
-        }
+        inline_();
     }
 
     /**
@@ -1817,48 +1972,7 @@ public class XhtmlBaseSink
     @Override
     public void text( String text, SinkEventAttributes attributes )
     {
-        if ( attributes == null )
-        {
-            text( text );
-        }
-        else
-        {
-            if ( attributes.containsAttribute( SinkEventAttributes.DECORATION, "underline" ) )
-            {
-                writeStartTag( HtmlMarkup.U );
-            }
-            if ( attributes.containsAttribute( SinkEventAttributes.DECORATION, "line-through" ) )
-            {
-                writeStartTag( HtmlMarkup.S );
-            }
-            if ( attributes.containsAttribute( SinkEventAttributes.VALIGN, "sub" ) )
-            {
-                writeStartTag( HtmlMarkup.SUB );
-            }
-            if ( attributes.containsAttribute( SinkEventAttributes.VALIGN, "sup" ) )
-            {
-                writeStartTag( HtmlMarkup.SUP );
-            }
-
-            text( text );
-
-            if ( attributes.containsAttribute( SinkEventAttributes.VALIGN, "sup" ) )
-            {
-                writeEndTag( HtmlMarkup.SUP );
-            }
-            if ( attributes.containsAttribute( SinkEventAttributes.VALIGN, "sub" ) )
-            {
-                writeEndTag( HtmlMarkup.SUB );
-            }
-            if ( attributes.containsAttribute( SinkEventAttributes.DECORATION, "line-through" ) )
-            {
-                writeEndTag( HtmlMarkup.S );
-            }
-            if ( attributes.containsAttribute( SinkEventAttributes.DECORATION, "underline" ) )
-            {
-                writeEndTag( HtmlMarkup.U );
-            }
-        }
+        text( text );
     }
 
     /** {@inheritDoc} */

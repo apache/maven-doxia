@@ -100,7 +100,7 @@ public class MarkdownParserTest
     {
         Iterator<SinkEventElement> it = parseFileToEventTestingSink( "bold" ).getEventList().iterator();
 
-        assertEquals( it, "head", "head_", "body", "paragraph", "bold", "text", "bold_", "paragraph_", "body_" );
+        assertEquals( it, "head", "head_", "body", "paragraph", "inline", "text", "inline_", "paragraph_", "body_" );
 
         assertFalse( it.hasNext() );
     }
@@ -115,7 +115,7 @@ public class MarkdownParserTest
     {
         Iterator<SinkEventElement> it = parseFileToEventTestingSink( "italic" ).getEventList().iterator();
 
-        assertEquals( it, "head", "head_", "body", "paragraph", "italic", "text", "italic_", "paragraph_", "body_" );
+        assertEquals( it, "head", "head_", "body", "paragraph", "inline", "text", "inline_", "paragraph_", "body_" );
 
         assertFalse( it.hasNext() );
     }
@@ -269,8 +269,8 @@ public class MarkdownParserTest
         Iterator<SinkEventElement> it = parseFileToEventTestingSink( "html-content" ).getEventList().iterator();
 
         // NOTE: H1 and DIV are rendered as "unknown" and H2 is "section1" (see DOXIA-203)
-        assertEquals( it, "head", "head_", "body", "unknown", "text", "paragraph", "bold", "text",
-                      "bold_", "text", "bold", "text", "bold_", "text", "paragraph_", "text", "unknown", "text", "horizontalRule", "unknown",
+        assertEquals( it, "head", "head_", "body", "unknown", "text", "paragraph", "inline", "text",
+                      "inline_", "text", "inline", "text", "inline_", "text", "paragraph_", "text", "unknown", "text", "horizontalRule", "unknown",
                 "text", "unknown", "paragraph", "text", "paragraph_", "text", "table", "tableRows", "text", "tableRow",
                 "tableHeaderCell", "text", "tableHeaderCell_", "tableRow_", "text", "tableRow",
                                 "tableCell", "text", "tableCell_", "tableRow_", "text", "tableRows_", "table_",

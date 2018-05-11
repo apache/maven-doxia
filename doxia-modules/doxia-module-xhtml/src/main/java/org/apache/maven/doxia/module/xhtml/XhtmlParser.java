@@ -118,7 +118,7 @@ public class XhtmlParser
          */
         else if ( parser.getName().equals( ADDRESS.toString() ) )
         {
-            sink.author( attribs );
+            sink.address( attribs );
         }
         else if ( parser.getName().equals( BODY.toString() ) )
         {
@@ -203,7 +203,7 @@ public class XhtmlParser
         }
         else if ( parser.getName().equals( ADDRESS.toString() ) )
         {
-            sink.author_();
+            sink.address_();
         }
         else if ( parser.getName().equals( DIV.toString() ) )
         {

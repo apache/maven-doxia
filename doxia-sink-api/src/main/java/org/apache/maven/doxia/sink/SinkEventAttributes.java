@@ -359,4 +359,29 @@ public interface SinkEventAttributes
      * </p>
      */
     String DECORATION = "decoration";
+
+    /**
+     * Specifies the semantics of an element.
+     *
+     * <p>
+     *   Generally accepted values are "emphasis", "strong",
+     *   "small", "line-through", "citation", "quote", "definition", "abbreviation",
+     *   "italic", "bold", "monospaced", "code, "variable", "sample", "keyboard",
+     *   "superscript", "subscript", "annotation", "highlight", "ruby", "rubyBase",
+     *   "rubyText", "rubyTextContainer", "rubyParentheses", "bidirectionalIsolation",
+     *   "bidirectionalOverride", "phrase", "insert", "delete".
+     * </p>
+     */
+    String SEMANTICS = "semantics";
+
+    /**
+     * Specifies a value for the data element.
+     */
+    String VALUE = "value";
+
+    /**
+     * Specifies a machine readable date/time for the time element.
+     */
+    String DATETIME = "datetime";
+
 }

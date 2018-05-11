@@ -22,22 +22,25 @@ package org.apache.maven.doxia.module.docbook;
 import java.io.PrintWriter;
 import java.io.StringWriter;
 import java.io.Writer;
+import java.util.ArrayList;
 import java.util.HashMap;
+import java.util.List;
 import java.util.Locale;
 import java.util.Map;
 import java.util.Set;
+import java.util.Stack;
 import java.util.StringTokenizer;
 import java.util.TreeSet;
 
 import javax.swing.text.MutableAttributeSet;
 import javax.swing.text.SimpleAttributeSet;
 
+import org.apache.maven.doxia.sink.Sink;
 import org.apache.maven.doxia.sink.SinkEventAttributes;
 import org.apache.maven.doxia.sink.impl.AbstractXmlSink;
-import org.apache.maven.doxia.sink.Sink;
+import org.apache.maven.doxia.sink.impl.SinkEventAttributeSet;
 import org.apache.maven.doxia.util.DoxiaUtils;
 import org.apache.maven.doxia.util.HtmlTools;
-
 import org.codehaus.plexus.util.FileUtils;
 
 /**
@@ -149,6 +152,9 @@ public class DocBookSink
     private boolean paragraph;
 
     private String encoding;
+
+    /** Keep track of the closing tags for inline events. */
+    protected Stack<List<String>> inlineStack = new Stack<List<String>>();
 
     /** Map of warn messages with a String as key to describe the error type and a Set as value.
      * Using to reduce warn messages. */
@@ -683,6 +689,24 @@ public class DocBookSink
 
     /**
      * {@inheritDoc}
+     * @see SimplifiedDocbookMarkup#SIDEBAR_TAG
+     */
+    public void sidebar()
+    {
+        writeStartTag( SimplifiedDocbookMarkup.SIDEBAR_TAG );
+    }
+
+    /**
+     * {@inheritDoc}
+     * @see SimplifiedDocbookMarkup#SIDEBAR_TAG
+     */
+    public void sidebar_()
+    {
+        writeEndTag( SimplifiedDocbookMarkup.SIDEBAR_TAG );
+    }
+
+    /**
+     * {@inheritDoc}
      * @see SimplifiedDocbookMarkup#SECTION_TAG
      */
     public void section1()
@@ -877,6 +901,24 @@ public class DocBookSink
     public void sectionTitle5_()
     {
         writeEndTag( SimplifiedDocbookMarkup.TITLE_TAG );
+    }
+
+    /**
+     * {@inheritDoc}
+     * @see SimplifiedDocbookMarkup#SECTIONINFO_TAG
+     */
+    public void header()
+    {
+        writeStartTag( SimplifiedDocbookMarkup.SECTIONINFO_TAG );
+    }
+
+    /**
+     * {@inheritDoc}
+     * @see SimplifiedDocbookMarkup#SECTIONINFO_TAG
+     */
+    public void header_()
+    {
+        writeEndTag( SimplifiedDocbookMarkup.SECTIONINFO_TAG );
     }
 
     /**
@@ -1494,45 +1536,88 @@ public class DocBookSink
     }
 
     /** {@inheritDoc} */
+    public void inline()
+    {
+        inline( null );
+    }
+
+    /** {@inheritDoc} */
+    public void inline( SinkEventAttributes attributes )
+    {
+        List<String> tags = new ArrayList<String>();
+
+        if ( attributes != null )
+        {
+
+            if ( attributes.containsAttribute( SinkEventAttributes.SEMANTICS, "italic" ) )
+            {
+                markup( italicBeginTag );
+                tags.add( 0, italicEndTag );
+            }
+
+            if ( attributes.containsAttribute( SinkEventAttributes.SEMANTICS, "bold" ) )
+            {
+                write( boldBeginTag );
+                tags.add( 0, boldEndTag );
+            }
+
+            if ( attributes.containsAttribute( SinkEventAttributes.SEMANTICS, "code" ) )
+            {
+                if ( !authorDateFlag )
+                {
+                    write( monospacedBeginTag );
+                    tags.add( 0, monospacedEndTag );
+                }
+            }
+
+        }
+
+        inlineStack.push( tags );
+    }
+
+    /** {@inheritDoc} */
+    public void inline_()
+    {
+        for ( String tag: inlineStack.pop() )
+        {
+            markup( tag );
+        }
+    }
+
+    /** {@inheritDoc} */
     public void italic()
     {
-        markup( italicBeginTag );
+        inline( SinkEventAttributeSet.Semantics.ITALIC );
     }
 
     /** {@inheritDoc} */
     public void italic_()
     {
-        markup( italicEndTag );
+        inline_();
     }
 
     /** {@inheritDoc} */
     public void bold()
     {
-        markup( boldBeginTag );
+        inline( SinkEventAttributeSet.Semantics.BOLD );
     }
 
     /** {@inheritDoc} */
     public void bold_()
     {
-        markup( boldEndTag );
+        inline_();
     }
 
     /** {@inheritDoc} */
     public void monospaced()
     {
-        if ( !authorDateFlag )
-        {
-            markup( monospacedBeginTag );
-        }
+        inline( SinkEventAttributeSet.Semantics.CODE );
     }
 
     /** {@inheritDoc} */
     public void monospaced_()
     {
-        if ( !authorDateFlag )
-        {
-            markup( monospacedEndTag );
-        }
+        inline_();
     }
 
     /** {@inheritDoc} */

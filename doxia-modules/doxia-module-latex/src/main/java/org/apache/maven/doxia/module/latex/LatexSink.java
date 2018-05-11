@@ -32,7 +32,10 @@ import org.codehaus.plexus.util.StringUtils;
 import java.io.IOException;
 import java.io.InputStream;
 import java.io.Writer;
+import java.util.ArrayList;
+import java.util.List;
 import java.util.Locale;
+import java.util.Stack;
 
 /**
  * Latex Sink implementation.
@@ -79,6 +82,9 @@ public class LatexSink
     private boolean isTitle;
 
     private String title;
+
+    /** Keep track of the closing tags for inline events. */
+    protected Stack<List<String>> inlineStack = new Stack<List<String>>();
 
     // ----------------------------------------------------------------------
     //
@@ -1126,12 +1132,58 @@ public class LatexSink
         markup( "}" );
     }
 
+    /** {@inheritDoc} */
+    public void inline()
+    {
+        inline( null );
+    }
+
+    /** {@inheritDoc} */
+    public void inline( SinkEventAttributes attributes )
+    {
+        List<String> tags = new ArrayList<String>();
+
+        if ( attributes != null )
+        {
+
+            if ( attributes.containsAttribute( SinkEventAttributes.SEMANTICS, "italic" ) )
+            {
+                markup( "\\textit{" );
+                tags.add( 0, "}" );
+            }
+
+            if ( attributes.containsAttribute( SinkEventAttributes.SEMANTICS, "bold" ) )
+            {
+                markup( "\\textbf{" );
+                tags.add( 0, "}" );
+            }
+
+            if ( attributes.containsAttribute( SinkEventAttributes.SEMANTICS, "code" ) )
+            {
+                markup( "\\texttt{\\small " );
+                tags.add( 0, "}" );
+            }
+
+        }
+
+        inlineStack.push( tags );
+    }
+
+    /** {@inheritDoc} */
+    public void inline_()
+    {
+        for ( String tag: inlineStack.pop() )
+        {
+            markup( tag );
+        }
+    }
+
     /**
      * {@inheritDoc}
      */
     public void italic()
     {
-        markup( "\\textit{" );
+        inline( SinkEventAttributeSet.Semantics.ITALIC );
     }
 
     /**
@@ -1139,7 +1191,7 @@ public class LatexSink
      */
     public void italic_()
     {
-        markup( "}" );
+        inline_();
     }
 
     /**
@@ -1147,7 +1199,7 @@ public class LatexSink
      */
     public void bold()
     {
-        markup( "\\textbf{" );
+        inline( SinkEventAttributeSet.Semantics.BOLD );
     }
 
     /**
@@ -1155,7 +1207,7 @@ public class LatexSink
      */
     public void bold_()
     {
-        markup( "}" );
+        inline_();
     }
 
     /**
@@ -1163,7 +1215,7 @@ public class LatexSink
      */
     public void monospaced()
     {
-        markup( "\\texttt{\\small " );
+        inline( SinkEventAttributeSet.Semantics.CODE );
     }
 
     /**
@@ -1171,7 +1223,7 @@ public class LatexSink
      */
     public void monospaced_()
     {
-        markup( "}" );
+        inline_();
     }
 
     /**

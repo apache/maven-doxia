@@ -22,6 +22,8 @@ package org.apache.maven.doxia.module.twiki;
 import java.io.PrintWriter;
 import java.io.StringWriter;
 import java.io.Writer;
+import java.util.ArrayList;
+import java.util.List;
 import java.util.Stack;
 
 import javax.swing.text.MutableAttributeSet;
@@ -57,9 +59,6 @@ public class TWikiSink
     /** An indication on if we're in bold mode. */
     private boolean boldFlag;
 
-    /** An indication on if we're in bold italic or monospaced mode. */
-    private boolean boldItalicOrMonodpacedFlag;
-
     /** An indication on if we're in head mode. */
     private boolean headFlag;
 
@@ -67,6 +66,12 @@ public class TWikiSink
 
     /**  listStyles. */
     private final Stack<String> listStyles;
+
+    /** Keep track of the nested bold flag. */
+    protected Stack<Boolean> boldStack = new Stack<Boolean>();
+
+    /** Keep track of the closing tags for inline events. */
+    protected Stack<List<String>> inlineStack = new Stack<List<String>>();
 
     /**
      * Constructor, initialize the Writer and the variables.
@@ -155,19 +160,13 @@ public class TWikiSink
     /** {@inheritDoc} */
     public void bold()
     {
-        boldFlag = true;
-        write( BOLD_START_MARKUP );
+        inline( SinkEventAttributeSet.Semantics.BOLD );
     }
 
     /** {@inheritDoc} */
     public void bold_()
     {
-        boldFlag = false;
-        if ( !boldItalicOrMonodpacedFlag )
-        {
-            write( BOLD_END_MARKUP );
-        }
-        boldItalicOrMonodpacedFlag = false;
+        inline_();
     }
 
     /**
@@ -398,34 +397,87 @@ public class TWikiSink
     }
 
     /** {@inheritDoc} */
+    public void inline()
+    {
+        inline( null );
+    }
+
+    /** {@inheritDoc} */
+    public void inline( SinkEventAttributes attributes )
+    {
+        List<String> tags = new ArrayList<String>();
+
+        boldStack.push( boldFlag );
+
+        if ( attributes != null )
+        {
+
+            if ( attributes.containsAttribute( SinkEventAttributes.SEMANTICS, "bold" ) )
+            {
+                boldFlag = true;
+                write( BOLD_START_MARKUP );
+                tags.add( 0, BOLD_END_MARKUP );
+            }
+
+            if ( attributes.containsAttribute( SinkEventAttributes.SEMANTICS, "italic" ) )
+            {
+                if ( boldFlag )
+                {
+                    String tmp = writer.toString();
+                    writer = new StringWriter();
+                    writer.write( tmp.substring( 0, tmp.length() - 1 ) );
+                    write( BOLD_ITALIC_START_MARKUP );
+                    tags.add( 0, BOLD_ITALIC_END_MARKUP );
+                }
+                else
+                {
+                    write( ITALIC_START_MARKUP );
+                    tags.add( ITALIC_END_MARKUP );
+                }
+            }
+
+            if ( attributes.containsAttribute( SinkEventAttributes.SEMANTICS, "code" ) )
+            {
+                if ( boldFlag )
+                {
+                    String tmp = writer.toString();
+                    writer = new StringWriter();
+                    writer.write( tmp.substring( 0, tmp.length() - 1 ) );
+                    write( BOLD_MONOSPACED_START_MARKUP );
+                    tags.add( 0, BOLD_MONOSPACED_END_MARKUP );
+                }
+                else
+                {
+                    write( MONOSPACED_START_MARKUP );
+                    tags.add( 0, MONOSPACED_END_MARKUP );
+                }
+            }
+
+        }
+
+        inlineStack.push( tags );
+    }
+
+    /** {@inheritDoc} */
+    public void inline_()
+    {
+        for ( String tag: inlineStack.pop() )
+        {
+            write( tag );
+        }
+        this.boldFlag = boldStack.pop();
+    }
+
+    /** {@inheritDoc} */
     public void italic()
     {
-        if ( boldFlag )
-        {
-            boldItalicOrMonodpacedFlag = true;
-
-            String tmp = writer.toString();
-            writer = new StringWriter();
-            writer.write( tmp.substring( 0, tmp.length() - 1 ) );
-            write( BOLD_ITALIC_START_MARKUP );
-        }
-        else
-        {
-            write( ITALIC_START_MARKUP );
-        }
+        inline( SinkEventAttributeSet.Semantics.ITALIC );
     }
 
     /** {@inheritDoc} */
     public void italic_()
     {
-        if ( boldFlag )
-        {
-            write( BOLD_ITALIC_END_MARKUP );
-        }
-        else
-        {
-            write( ITALIC_END_MARKUP );
-        }
+        inline_();
     }
 
     /**
@@ -506,32 +558,13 @@ public class TWikiSink
     /** {@inheritDoc} */
     public void monospaced()
     {
-        if ( boldFlag )
-        {
-            boldItalicOrMonodpacedFlag = true;
-
-            String tmp = writer.toString();
-            writer = new StringWriter();
-            writer.write( tmp.substring( 0, tmp.length() - 1 ) );
-            write( BOLD_MONOSPACED_START_MARKUP );
-        }
-        else
-        {
-            write( MONOSPACED_START_MARKUP );
-        }
+        inline( SinkEventAttributeSet.Semantics.CODE );
     }
 
     /** {@inheritDoc} */
     public void monospaced_()
     {
-        if ( boldFlag )
-        {
-            write( BOLD_MONOSPACED_END_MARKUP );
-        }
-        else
-        {
-            write( MONOSPACED_END_MARKUP );
-        }
+        inline_();
     }
 
     /**
@@ -1277,7 +1310,6 @@ public class TWikiSink
         this.levelList = 0;
         this.listStyles.clear();
         this.boldFlag = false;
-        this.boldItalicOrMonodpacedFlag = false;
     }
 
     /**

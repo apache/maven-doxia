@@ -71,6 +71,42 @@ public class TextSink
     }
 
     @Override
+    public void article()
+    {
+        writeln( "begin:article" );
+    }
+
+    @Override
+    public void article_()
+    {
+        writeln( "end:article" );
+    }
+
+    @Override
+    public void navigation()
+    {
+        writeln( "begin:navigation" );
+    }
+
+    @Override
+    public void navigation_()
+    {
+        writeln( "end:navigation" );
+    }
+
+    @Override
+    public void sidebar()
+    {
+        writeln( "begin:sidebar" );
+    }
+
+    @Override
+    public void sidebar_()
+    {
+        writeln( "end:sidebar" );
+    }
+
+    @Override
     public void section1()
     {
         write( "begin:section1" );
@@ -395,6 +431,42 @@ public class TextSink
     }
 
     @Override
+    public void header()
+    {
+        write( "begin:header" );
+    }
+
+    @Override
+    public void header_()
+    {
+        writeln( "end:header" );
+    }
+
+    @Override
+    public void content()
+    {
+        write( "begin:content" );
+    }
+
+    @Override
+    public void content_()
+    {
+        writeln( "end:content" );
+    }
+
+    @Override
+    public void footer()
+    {
+        write( "begin:footer" );
+    }
+
+    @Override
+    public void footer_()
+    {
+        writeln( "end:footer" );
+    }
+
+    @Override
     public void paragraph()
     {
         write( "begin:paragraph" );
@@ -404,6 +476,66 @@ public class TextSink
     public void paragraph_()
     {
         writeln( "end:paragraph" );
+    }
+
+    @Override
+    public void data( String value )
+    {
+        write( "begin:data, value: " + value );
+    }
+
+    @Override
+    public void data_()
+    {
+        writeln( "end:data" );
+    }
+
+    @Override
+    public void time( String datetime )
+    {
+        write( "begin:time, datetime: " + datetime );
+    }
+
+    @Override
+    public void time_()
+    {
+        writeln( "end:time" );
+    }
+
+    @Override
+    public void address()
+    {
+        write( "begin:address" );
+    }
+
+    @Override
+    public void address_()
+    {
+        writeln( "end:address" );
+    }
+
+    @Override
+    public void blockquote()
+    {
+        write( "begin:blockquote" );
+    }
+
+    @Override
+    public void blockquote_()
+    {
+        writeln( "end:blockquote" );
+    }
+
+    @Override
+    public void division()
+    {
+        write( "begin:division" );
+    }
+
+    @Override
+    public void division_()
+    {
+        writeln( "end:division" );
     }
 
     @Override
@@ -533,6 +665,18 @@ public class TextSink
     }
 
     @Override
+    public void inline()
+    {
+        write( "begin:inline" );
+    }
+
+    @Override
+    public void inline_()
+    {
+        writeln( "end:inline" );
+    }
+
+    @Override
     public void italic()
     {
         write( "begin:italic" );
@@ -572,6 +716,12 @@ public class TextSink
     public void lineBreak()
     {
         write( "lineBreak" );
+    }
+
+    @Override
+    public void lineBreakOpportunity()
+    {
+        write( "lineBreakOpportunity" );
     }
 
     @Override
@@ -655,6 +805,24 @@ public class TextSink
     }
 
     @Override
+    public void article( SinkEventAttributes attributes )
+    {
+    	article();
+    }
+
+    @Override
+    public void navigation( SinkEventAttributes attributes )
+    {
+    	navigation();
+    }
+
+    @Override
+    public void sidebar( SinkEventAttributes attributes )
+    {
+    	sidebar();
+    }
+
+    @Override
     public void section( int level, SinkEventAttributes attributes )
     {
         write( "begin:section" + level );
@@ -676,6 +844,24 @@ public class TextSink
     public void sectionTitle_( int level )
     {
         writeln( "end:sectionTitle" + level );
+    }
+
+    @Override
+    public void header( SinkEventAttributes attributes )
+    {
+        header();
+    }
+
+    @Override
+    public void content( SinkEventAttributes attributes )
+    {
+        content();
+    }
+
+    @Override
+    public void footer( SinkEventAttributes attributes )
+    {
+    	footer();
     }
 
     @Override
@@ -781,6 +967,36 @@ public class TextSink
     }
 
     @Override
+    public void data( String value, SinkEventAttributes attributes )
+    {
+        data( value );
+    }
+
+    @Override
+    public void time( String datetime, SinkEventAttributes attributes )
+    {
+        time( datetime );
+    }
+
+    @Override
+    public void address( SinkEventAttributes attributes )
+    {
+        address();
+    }
+
+    @Override
+    public void blockquote( SinkEventAttributes attributes )
+    {
+    	blockquote();
+    }
+
+    @Override
+    public void division( SinkEventAttributes attributes )
+    {
+    	division();
+    }
+
+    @Override
     public void verbatim( SinkEventAttributes attributes )
     {
         boolean boxed = false;
@@ -813,9 +1029,21 @@ public class TextSink
     }
 
     @Override
+    public void inline( SinkEventAttributes attributes )
+    {
+        inline();
+    }
+
+    @Override
     public void lineBreak( SinkEventAttributes attributes )
     {
         lineBreak();
+    }
+
+    @Override
+    public void lineBreakOpportunity( SinkEventAttributes attributes )
+    {
+    	lineBreakOpportunity();
     }
 
     @Override

@@ -24,9 +24,11 @@ import java.io.IOException;
 import java.io.PrintWriter;
 import java.io.StringWriter;
 import java.io.Writer;
+import java.util.ArrayList;
 import java.util.Enumeration;
 import java.util.HashMap;
 import java.util.LinkedList;
+import java.util.List;
 import java.util.Map;
 import java.util.Set;
 import java.util.Stack;
@@ -112,6 +114,9 @@ public class FoSink
 
     /** The stack of table caption */
     private final LinkedList<String> tableCaptionStack;
+
+    /** Keep track of the closing tags for inline events. */
+    protected Stack<List<Tag>> inlineStack = new Stack<List<Tag>>();
 
     /** Map of warn messages with a String as key to describe the error type and a Set as value.
      * Using to reduce warn messages. */
@@ -1253,39 +1258,85 @@ public class FoSink
     }
 
     /** {@inheritDoc} */
+    public void inline()
+    {
+        inline( null );
+    }
+
+    /** {@inheritDoc} */
+    public void inline( SinkEventAttributes attributes )
+    {
+        List<Tag> tags = new ArrayList<Tag>();
+
+        if ( attributes != null )
+        {
+
+            if ( attributes.containsAttribute( SinkEventAttributes.SEMANTICS, "italic" ) )
+            {
+                writeStartTag( INLINE_TAG, "italic" );
+                tags.add( 0, INLINE_TAG );
+            }
+
+            if ( attributes.containsAttribute( SinkEventAttributes.SEMANTICS, "bold" ) )
+            {
+                writeStartTag( INLINE_TAG, "bold" );
+                tags.add( 0, INLINE_TAG );
+            }
+
+            if ( attributes.containsAttribute( SinkEventAttributes.SEMANTICS, "code" ) )
+            {
+                writeStartTag( INLINE_TAG, "monospace" );
+                tags.add( 0, INLINE_TAG );
+            }
+
+        }
+
+        inlineStack.push( tags );
+    }
+
+    /** {@inheritDoc} */
+    public void inline_()
+    {
+        for ( Tag tag: inlineStack.pop() )
+        {
+            writeEndTag( tag );
+        }
+    }
+
+    /** {@inheritDoc} */
     public void italic()
     {
-        writeStartTag( INLINE_TAG, "italic" );
+        inline( SinkEventAttributeSet.Semantics.ITALIC );
     }
 
     /** {@inheritDoc} */
     public void italic_()
     {
-        writeEndTag( INLINE_TAG );
+        inline_();
     }
 
     /** {@inheritDoc} */
     public void bold()
     {
-        writeStartTag( INLINE_TAG, "bold" );
+        inline( SinkEventAttributeSet.Semantics.BOLD );
     }
 
     /** {@inheritDoc} */
     public void bold_()
     {
-        writeEndTag( INLINE_TAG );
+        inline_();
     }
 
     /** {@inheritDoc} */
     public void monospaced()
     {
-        writeStartTag( INLINE_TAG, "monospace" );
+        inline( SinkEventAttributeSet.Semantics.CODE );
     }
 
     /** {@inheritDoc} */
     public void monospaced_()
     {
-        writeEndTag( INLINE_TAG );
+        inline_();
     }
 
     /** {@inheritDoc} */
