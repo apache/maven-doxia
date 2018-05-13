@@ -47,7 +47,7 @@ import org.codehaus.plexus.util.StringUtils;
 import org.codehaus.plexus.util.xml.PrettyPrintXMLWriter;
 
 /**
- * Abstract base xhtml sink implementation.
+ * Abstract base xhtml5 sink implementation.
  *
  * @author Jason van Zyl
  * @author ltheussl
@@ -2230,7 +2230,8 @@ public class Xhtml5BaseSink
 
             if ( !originalComment.equals( comment ) )
             {
-                getLog().warn( "[Xhtml Sink] Modified invalid comment '" + originalComment + "' to '" + comment + "'" );
+                getLog().warn( "[Xhtml5 Sink] Modified invalid comment '" + originalComment
+                        + "' to '" + comment + "'" );
             }
 
             final StringBuilder buffer = new StringBuilder( comment.length() + 7 );
@@ -2507,7 +2508,7 @@ public class Xhtml5BaseSink
      */
     private void logMessage( String key, String msg )
     {
-        final String mesg = "[XHTML Sink] " + msg;
+        final String mesg = "[XHTML5 Sink] " + msg;
         if ( getLog().isDebugEnabled() )
         {
             getLog().debug( mesg );
