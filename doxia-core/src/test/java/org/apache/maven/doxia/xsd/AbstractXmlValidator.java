@@ -60,7 +60,10 @@ public abstract class AbstractXmlValidator
     /** XMLReader to validate xml file */
     private XMLReader xmlReader;
 
-    /**
+    /** HTML5 does not have a DTD or XSD, include option to disable validation */
+    private boolean validate = true;
+    
+	/**
      * Filter fail message.
      *
      * @param message not null
@@ -150,6 +153,22 @@ public abstract class AbstractXmlValidator
      */
     protected abstract EntityResolver getEntityResolver();
 
+    /**
+     * Returns whether the XMLReader should validate XML.
+     * @return true if validation should be performed, false otherwise.
+     */
+    protected boolean isValidate() {
+		return validate;
+	}
+
+    /**
+     * Sets whether the XMLReader should validate XML.
+     * @param validate true if validation should be performed, false otherwise.
+     */
+    protected void setValidate(boolean validate) {
+		this.validate = validate;
+	}
+
     // ----------------------------------------------------------------------
     // Private methods
     // ----------------------------------------------------------------------
@@ -161,8 +180,8 @@ public abstract class AbstractXmlValidator
             try
             {
                 xmlReader = XMLReaderFactory.createXMLReader( "org.apache.xerces.parsers.SAXParser" );
-                xmlReader.setFeature( "http://xml.org/sax/features/validation", true );
-                xmlReader.setFeature( "http://apache.org/xml/features/validation/schema", true );
+                xmlReader.setFeature( "http://xml.org/sax/features/validation", validate );
+                xmlReader.setFeature( "http://apache.org/xml/features/validation/schema", validate );
                 xmlReader.setErrorHandler( new MessagesErrorHandler() );
                 xmlReader.setEntityResolver( getEntityResolver() );
             }
