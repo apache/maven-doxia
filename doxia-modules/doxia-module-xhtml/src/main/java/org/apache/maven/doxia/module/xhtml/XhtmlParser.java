@@ -269,11 +269,11 @@ public class XhtmlParser
         }
         catch ( MacroExecutionException e )
         {
-            throw new XmlPullParserException( "Unable to execute macro in the document: " + macroName , e);
+            throw new XmlPullParserException( "Unable to execute macro in the document: " + macroName , null, e );
         }
         catch ( MacroNotFoundException me )
         {
-            throw new XmlPullParserException( "Macro not found: " + macroName, me);
+            throw new XmlPullParserException( "Macro not found: " + macroName, null, me );
         }
     }
 
