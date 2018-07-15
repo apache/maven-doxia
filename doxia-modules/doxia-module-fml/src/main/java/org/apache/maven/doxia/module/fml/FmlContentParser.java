@@ -40,6 +40,7 @@ public class FmlContentParser
     private boolean isEmptyElement;
 
     /** {@inheritDoc} */
+    @Override
     protected void handleStartTag( XmlPullParser parser, Sink sink )
         throws XmlPullParserException, MacroExecutionException
     {
@@ -69,18 +70,19 @@ public class FmlContentParser
                 handleUnknown( parser, sink, TAG_TYPE_START );
             }
 
-            if ( getLog().isDebugEnabled() )
+            if ( logger.isDebugEnabled() )
             {
                 String position = "[" + parser.getLineNumber() + ":"
                     + parser.getColumnNumber() + "]";
                 String tag = "<" + parser.getName() + ">";
 
-                getLog().debug( "Unrecognized fml tag: " + tag + " at " + position );
+                logger.debug( "Unrecognized fml tag: " + tag + " at " + position );
             }
         }
     }
 
     /** {@inheritDoc} */
+    @Override
     protected void handleEndTag( XmlPullParser parser, Sink sink )
         throws XmlPullParserException, MacroExecutionException
     {

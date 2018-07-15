@@ -757,7 +757,7 @@ public class TextSink
         }
         catch ( IOException e )
         {
-            getLog().warn( "Could not flush sink: " + e.getMessage(), e );
+            logger.warn( "Could not flush sink: " + e.getMessage(), e );
         }
     }
 
@@ -770,7 +770,7 @@ public class TextSink
         }
         catch ( IOException e )
         {
-            getLog().warn( "Could not close sink: " + e.getMessage(), e );
+            logger.warn( "Could not close sink: " + e.getMessage(), e );
         }
     }
 
@@ -1071,7 +1071,7 @@ public class TextSink
         }
         catch ( IOException e )
         {
-            getLog().warn( "Could not write to sink: " + e.getMessage(), e );
+            logger.warn( "Could not write to sink: " + e.getMessage(), e );
         }
     }
 

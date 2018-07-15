@@ -1100,7 +1100,7 @@ public class AptSink
      */
     public void unknown( String name, Object[] requiredParams, SinkEventAttributes attributes )
     {
-        getLog().warn( "[Apt Sink] Unknown Sink event: '" + name + "', ignoring!" );
+        logger.warn( "[Apt Sink] Unknown Sink event: '" + name + "', ignoring!" );
     }
 
     /**

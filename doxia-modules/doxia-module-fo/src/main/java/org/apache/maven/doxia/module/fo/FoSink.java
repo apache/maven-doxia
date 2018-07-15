@@ -1553,13 +1553,13 @@ public class FoSink
     {
         out.close();
 
-        if ( getLog().isWarnEnabled() && this.warnMessages != null )
+        if ( logger.isWarnEnabled() && this.warnMessages != null )
         {
             for ( Map.Entry<String, Set<String>> entry : this.warnMessages.entrySet() )
             {
                 for ( String msg : entry.getValue() )
                 {
-                    getLog().warn( msg );
+                    logger.warn( msg );
                 }
             }
 
@@ -2004,9 +2004,9 @@ public class FoSink
     protected void logMessage( String key, String msg )
     {
         msg = "[FO Sink] " + msg;
-        if ( getLog().isDebugEnabled() )
+        if ( logger.isDebugEnabled() )
         {
-            getLog().debug( msg );
+            logger.debug( msg );
 
             return;
         }

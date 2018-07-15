@@ -144,7 +144,7 @@ public class XdocParser
         {
             if ( hasTitle )
             {
-                getLog().warn( "<title> was already defined in <properties>, ignored <title> in <head>." );
+                logger.warn( "<title> was already defined in <properties>, ignored <title> in <head>." );
 
                 try
                 {
@@ -231,12 +231,12 @@ public class XdocParser
                 handleUnknown( parser, sink, TAG_TYPE_START );
             }
 
-            if ( getLog().isDebugEnabled() )
+            if ( logger.isDebugEnabled() )
             {
                 String position = "[" + parser.getLineNumber() + ":" + parser.getColumnNumber() + "]";
                 String tag = "<" + parser.getName() + ">";
 
-                getLog().debug( "Unrecognized xdoc tag: " + tag + " at " + position );
+                logger.debug( "Unrecognized xdoc tag: " + tag + " at " + position );
             }
         }
     }

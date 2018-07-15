@@ -1290,7 +1290,7 @@ public class RtfSink
         }
         catch ( Exception e )
         {
-            getLog().error( e.getMessage(), e );
+            logger.error( e.getMessage(), e );
         }
 
         endParagraph();

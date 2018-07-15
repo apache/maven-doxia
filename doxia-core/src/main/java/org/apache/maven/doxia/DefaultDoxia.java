@@ -19,7 +19,6 @@ package org.apache.maven.doxia;
  * under the License.
  */
 
-import org.apache.maven.doxia.logging.PlexusLoggerWrapper;
 import org.apache.maven.doxia.parser.ParseException;
 import org.apache.maven.doxia.parser.Parser;
 import org.apache.maven.doxia.parser.manager.ParserManager;
@@ -58,8 +57,6 @@ public class DefaultDoxia
         throws ParserNotFoundException, ParseException
     {
         Parser parser = parserManager.getParser( parserId );
-
-        parser.enableLogging( new PlexusLoggerWrapper( getLogger() ) );
 
         parser.parse( source, sink );
     }

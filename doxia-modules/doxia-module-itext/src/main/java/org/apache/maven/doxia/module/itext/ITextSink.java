@@ -206,13 +206,13 @@ public class ITextSink
      */
     public void flush()
     {
-        if ( getLog().isWarnEnabled() && this.warnMessages != null )
+        if ( logger.isWarnEnabled() && this.warnMessages != null )
         {
             for ( Map.Entry<String, Set<String>> entry : this.warnMessages.entrySet() )
             {
                 for ( String msg : entry.getValue() )
                 {
-                    getLog().warn( msg );
+                    logger.warn( msg );
                 }
             }
         }
@@ -1321,7 +1321,7 @@ public class ITextSink
                 }
                 catch ( MalformedURLException e )
                 {
-                    getLog().error( "MalformedURLException: " + e.getMessage(), e );
+                    logger.error( "MalformedURLException: " + e.getMessage(), e );
                 }
             }
             else
@@ -1378,15 +1378,15 @@ public class ITextSink
         }
         catch ( BadElementException e )
         {
-            getLog().error( "BadElementException: " + e.getMessage(), e );
+            logger.error( "BadElementException: " + e.getMessage(), e );
         }
         catch ( MalformedURLException e )
         {
-            getLog().error( "MalformedURLException: " + e.getMessage(), e );
+            logger.error( "MalformedURLException: " + e.getMessage(), e );
         }
         catch ( IOException e )
         {
-            getLog().error( "IOException: " + e.getMessage(), e );
+            logger.error( "IOException: " + e.getMessage(), e );
         }
 
         writeAddAttribute( ElementTags.URL, urlName );
@@ -2026,9 +2026,9 @@ public class ITextSink
     private void logMessage( String key, String msg )
     {
         msg = "[iText Sink] " + msg;
-        if ( getLog().isDebugEnabled() )
+        if ( logger.isDebugEnabled() )
         {
-            getLog().debug( msg );
+            logger.debug( msg );
 
             return;
         }

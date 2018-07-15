@@ -245,7 +245,7 @@ public class FoAggregateSink
 
         if ( docName == null )
         {
-            getLog().warn( "No document root specified, local links will not be resolved correctly!" );
+            logger.warn( "No document root specified, local links will not be resolved correctly!" );
         }
         else
         {
@@ -322,9 +322,9 @@ public class FoAggregateSink
         this.docModel = model;
         if ( !( tocPos == TOC_NONE || tocPos == TOC_START || tocPos == TOC_END ) )
         {
-            if ( getLog().isDebugEnabled() )
+            if ( logger.isDebugEnabled() )
             {
-                getLog().debug( "Unrecognized value for tocPosition: " + tocPos + ", using no toc." );
+                logger.debug( "Unrecognized value for tocPosition: " + tocPos + ", using no toc." );
             }
             tocPos = TOC_NONE;
         }
@@ -361,7 +361,7 @@ public class FoAggregateSink
     {
         if ( StringUtils.isEmpty( name ) )
         {
-            getLog().warn( "Empty document reference, links will not be resolved correctly!" );
+            logger.warn( "Empty document reference, links will not be resolved correctly!" );
             return "";
         }
 
@@ -808,7 +808,7 @@ public class FoAggregateSink
     {
         if ( docName == null )
         {
-            getLog().warn( "No document root specified, local links will not be resolved correctly!" );
+            logger.warn( "No document root specified, local links will not be resolved correctly!" );
             writeStartTag( BLOCK_TAG, "" );
         }
         else
@@ -1109,7 +1109,7 @@ public class FoAggregateSink
         if ( cover == null )
         {
             // aleady checked that meta != null
-            getLog().debug( "The DocumentCover is not defined, using the DocumentMeta title as cover title." );
+            logger.debug( "The DocumentCover is not defined, using the DocumentMeta title as cover title." );
             title = meta.getTitle();
         }
         else
@@ -1205,7 +1205,7 @@ public class FoAggregateSink
         if ( cover == null )
         {
             // aleady checked that meta != null
-            getLog().debug( "The DocumentCover is not defined, using the DocumentMeta author as company name." );
+            logger.debug( "The DocumentCover is not defined, using the DocumentMeta author as company name." );
             compName = meta.getAuthor();
         }
         else
@@ -1262,7 +1262,7 @@ public class FoAggregateSink
         }
         catch ( IOException e )
         {
-            getLog().debug( e );
+            logger.debug( e.getMessage(), e );
         }
 
         if ( atts == null )

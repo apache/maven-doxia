@@ -27,6 +27,7 @@ import org.codehaus.plexus.logging.Logger;
  *
  * @author <a href="mailto:vincent.siveton@gmail.com">Vincent Siveton</a>
  * @since 1.1
+ * @deprecated use slf4j
  */
 public class PlexusLoggerWrapper
     implements Log

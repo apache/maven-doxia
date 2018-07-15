@@ -1331,10 +1331,7 @@ public class XhtmlBaseSink
 
         if ( this.tableContentWriterStack.isEmpty() )
         {
-            if ( getLog().isWarnEnabled() )
-            {
-                getLog().warn( "No table content." );
-            }
+            logger.warn( "No table content." );
             return;
         }
 
@@ -2009,7 +2006,7 @@ public class XhtmlBaseSink
 
             if ( !originalComment.equals( comment ) )
             {
-                getLog().warn( "[Xhtml Sink] Modified invalid comment '" + originalComment + "' to '" + comment + "'" );
+                logger.warn( "[Xhtml Sink] Modified invalid comment '" + originalComment + "' to '" + comment + "'" );
             }
 
             final StringBuilder buffer = new StringBuilder( comment.length() + 7 );
@@ -2148,13 +2145,13 @@ public class XhtmlBaseSink
     {
         writer.close();
 
-        if ( getLog().isWarnEnabled() && this.warnMessages != null )
+        if ( logger.isWarnEnabled() && this.warnMessages != null )
         {
             for ( Map.Entry<String, Set<String>> entry : this.warnMessages.entrySet() )
             {
                 for ( String msg : entry.getValue() )
                 {
-                    getLog().warn( msg );
+                    logger.warn( msg );
                 }
             }
 
@@ -2289,9 +2286,9 @@ public class XhtmlBaseSink
     private void logMessage( String key, String msg )
     {
         final String mesg = "[XHTML Sink] " + msg;
-        if ( getLog().isDebugEnabled() )
+        if ( logger.isDebugEnabled() )
         {
-            getLog().debug( mesg );
+            logger.debug( mesg );
 
             return;
         }

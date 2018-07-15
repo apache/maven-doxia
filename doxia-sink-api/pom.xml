@@ -38,5 +38,10 @@ under the License.
         <groupId>org.apache.maven.doxia</groupId>
         <artifactId>doxia-logging-api</artifactId>
       </dependency>
+    <dependency>
+      <groupId>org.slf4j</groupId>
+      <artifactId>slf4j-api</artifactId>
+      <scope>provided</scope>
+    </dependency>
   </dependencies>
 </project>

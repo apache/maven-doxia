@@ -33,6 +33,7 @@ package org.apache.maven.doxia.logging;
  * @author jdcasey
  * @author ltheussl
  * @since 1.1
+ * @deprecated use slf4j
  */
 public interface Log
 {

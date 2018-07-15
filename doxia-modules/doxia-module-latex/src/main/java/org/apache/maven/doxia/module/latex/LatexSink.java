@@ -736,7 +736,7 @@ public class LatexSink
     {
         if ( !src.toLowerCase( Locale.ENGLISH ).endsWith( ".eps" ) )
         {
-            getLog().warn( "[Latex Sink] Found non-eps figure graphics!" );
+            logger.warn( "[Latex Sink] Found non-eps figure graphics!" );
         }
 
         markup( "\\begin{center}" + EOL );
@@ -1298,7 +1298,7 @@ public class LatexSink
      */
     public void unknown( String name, Object[] requiredParams, SinkEventAttributes attributes )
     {
-        getLog().warn( "[Latex Sink] Unknown Sink event: '" + name + "', ignoring!" );
+        logger.warn( "[Latex Sink] Unknown Sink event: '" + name + "', ignoring!" );
     }
 
     // -----------------------------------------------------------------------
@@ -1464,8 +1464,7 @@ public class LatexSink
         catch ( IOException ioe )
         {
             // this should not happen
-            getLog().warn( "Could not read default LaTeX commands, the generated LaTeX file will not compile!" );
-            getLog().debug( ioe );
+            logger.warn( "Could not read default LaTeX commands, the generated LaTeX file will not compile!", ioe );
 
             return "";
         }
@@ -1485,8 +1484,7 @@ public class LatexSink
         catch ( IOException ioe )
         {
             // this should not happen
-            getLog().warn( "Could not read default LaTeX preamble, the generated LaTeX file will not compile!" );
-            getLog().debug( ioe );
+           logger.warn( "Could not read default LaTeX preamble, the generated LaTeX file will not compile!", ioe );
 
             return "";
         }

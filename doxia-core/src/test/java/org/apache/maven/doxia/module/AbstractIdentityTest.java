@@ -26,7 +26,6 @@ import java.io.Writer;
 
 import org.apache.maven.doxia.AbstractModuleTest;
 
-import org.apache.maven.doxia.logging.PlexusLoggerWrapper;
 import org.apache.maven.doxia.parser.ParseException;
 import org.apache.maven.doxia.parser.Parser;
 
@@ -34,6 +33,7 @@ import org.apache.maven.doxia.sink.Sink;
 import org.apache.maven.doxia.sink.impl.SinkTestDocument;
 import org.apache.maven.doxia.sink.impl.TextSink;
 import org.codehaus.plexus.DefaultPlexusContainer;
+import org.codehaus.plexus.util.IOUtil;
 
 /**
  * If a module provides both Parser and Sink, this class
@@ -105,7 +105,6 @@ public abstract class AbstractIdentityTest
         writer = new StringWriter();
         sink = new TextSink( writer );
         Parser parser = createParser();
-        parser.enableLogging( new PlexusLoggerWrapper( ( ( DefaultPlexusContainer )getContainer() ).getLogger() ) );
         parser.parse( reader, sink );
         String actual = writer.toString();
 

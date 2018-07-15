@@ -28,7 +28,7 @@ import java.io.StringReader;
 import java.util.Properties;
 
 import org.apache.maven.doxia.logging.Log;
-import org.apache.maven.doxia.logging.SystemStreamLog;
+import org.apache.maven.doxia.logging.Slf4jLoggerWrapper;
 import org.apache.maven.doxia.macro.Macro;
 import org.apache.maven.doxia.macro.MacroExecutionException;
 import org.apache.maven.doxia.macro.MacroRequest;
@@ -36,6 +36,8 @@ import org.apache.maven.doxia.macro.manager.MacroManager;
 import org.apache.maven.doxia.macro.manager.MacroNotFoundException;
 import org.apache.maven.doxia.sink.Sink;
 import org.codehaus.plexus.component.annotations.Requirement;
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
 
 /**
  * An abstract base class that defines some convenience methods for parsers.
@@ -54,8 +56,10 @@ public abstract class AbstractParser
     private MacroManager macroManager;
 
     /** Log instance. */
-    private Log logger;
+    @Deprecated
+    private Log log;
 
+    protected Logger logger = LoggerFactory.getLogger(  getClass() );
     /**
      * Emit Doxia comment events when parsing comments?
      */
@@ -140,8 +144,6 @@ public abstract class AbstractParser
     {
         Macro macro = getMacroManager().getMacro( macroId );
 
-        macro.enableLogging( getLog() );
-
         macro.execute( sink, request );
     }
 
@@ -151,6 +153,7 @@ public abstract class AbstractParser
      * @return The base directory.
      * @deprecated this does not work in multi-module builds, see DOXIA-373
      */
+    @Deprecated
     protected File getBasedir()
     {
         // TODO: This is baaad, it should come in with the request.
@@ -214,7 +217,7 @@ public abstract class AbstractParser
     /** {@inheritDoc} */
     public void enableLogging( Log log )
     {
-        this.logger = log;
+        // ignore provided log
     }
 
     /**
@@ -223,15 +226,17 @@ public abstract class AbstractParser
      *
      * @return Log
      * @since 1.1
+     * @deprecated use slf4j Loggers
      */
+    @Deprecated
     protected Log getLog()
     {
-        if ( logger == null )
+        if ( log == null )
         {
-            logger = new SystemStreamLog();
+            log = new Slf4jLoggerWrapper( logger );
         }
 
-        return logger;
+        return log;
     }
 
     /**

@@ -112,7 +112,7 @@ public class AptParser
     private static final int COMMENT_BLOCK = 17;
 
     /** String representations of event ids */
-    private static final String[] TYPE_NAMES = {
+    private static final String[] TYPE_NAMES= {
         "TITLE",
         "SECTION1",
         "SECTION2",
@@ -214,7 +214,6 @@ public class AptParser
             this.source = new AptReaderSource( new StringReader( sourceContent ), reference );
 
             this.sink = sink;
-            sink.enableLogging( getLog() );
 
             blockFileName = null;
 
@@ -361,9 +360,9 @@ public class AptParser
                                     }
                                     catch ( NumberFormatException e )
                                     {
-                                        if ( getLog().isDebugEnabled() )
+                                        if ( logger.isDebugEnabled() )
                                         {
-                                            getLog().debug( "Not a number: " + text.substring( i + 2, i + 4 ) );
+                                            logger.debug( "Not a number: " + text.substring( i + 2, i + 4 ) );
                                         }
                                     }
 
@@ -387,9 +386,9 @@ public class AptParser
                                     }
                                     catch ( NumberFormatException e )
                                     {
-                                        if ( getLog().isDebugEnabled() )
+                                        if ( logger.isDebugEnabled() )
                                         {
-                                            getLog().debug( "Not a number: " + text.substring( i + 2, i + 6 ) );
+                                            logger.debug( "Not a number: " + text.substring( i + 2, i + 6 ) );
                                         }
                                     }
 
@@ -420,10 +419,9 @@ public class AptParser
                                     }
                                     catch ( NumberFormatException e )
                                     {
-                                        if ( getLog().isDebugEnabled() )
+                                        if ( logger.isDebugEnabled() )
                                         {
-                                            getLog().debug(
-                                                            "Not a number: "
+                                            logger.debug("Not a number: "
                                                                 + text.substring( i + 1, i + 1 + octalChars ) );
                                         }
                                     }
@@ -1583,18 +1581,21 @@ public class AptParser
         Sink linkSink = new SinkAdapter()
         {
             /** {@inheritDoc} */
+            @Override
             public void lineBreak()
             {
                 buffer.append( SPACE );
             }
 
             /** {@inheritDoc} */
+            @Override
             public void nonBreakingSpace()
             {
                 buffer.append( SPACE );
             }
 
             /** {@inheritDoc} */
+            @Override
             public void text( String text )
             {
                 buffer.append( text );
@@ -1616,9 +1617,9 @@ public class AptParser
     private void logMessage( String key, String msg )
     {
         msg = "[APT Parser] " + msg;
-        if ( getLog().isDebugEnabled() )
+        if ( logger.isDebugEnabled() )
         {
-            getLog().debug( msg );
+            logger.debug( msg );
 
             return;
         }
@@ -1642,13 +1643,13 @@ public class AptParser
      */
     private void logWarnings()
     {
-        if ( getLog().isWarnEnabled() && this.warnMessages != null && !isSecondParsing() )
+        if ( logger.isWarnEnabled() && warnMessages != null && !isSecondParsing() )
         {
             for ( Map.Entry<String, Set<String>> entry : this.warnMessages.entrySet() )
             {
                 for ( String msg : entry.getValue() )
                 {
-                    getLog().warn( msg );
+                    logger.warn( msg );
                 }
             }
 

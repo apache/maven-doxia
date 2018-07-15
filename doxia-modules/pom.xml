@@ -63,7 +63,11 @@ under the License.
       <groupId>org.codehaus.plexus</groupId>
       <artifactId>plexus-component-annotations</artifactId>
     </dependency>
-
+    <dependency>
+      <groupId>org.slf4j</groupId>
+      <artifactId>slf4j-simple</artifactId>
+      <scope>test</scope>
+    </dependency>
     <!-- test -->
     <dependency>
       <groupId>org.apache.maven.doxia</groupId>

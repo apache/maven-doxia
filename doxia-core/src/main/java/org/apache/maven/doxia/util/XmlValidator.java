@@ -32,6 +32,8 @@ import org.apache.maven.doxia.markup.XmlMarkup;
 import org.apache.maven.doxia.parser.AbstractXmlParser.CachedFileEntityResolver;
 import org.apache.maven.doxia.parser.ParseException;
 
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
 import org.xml.sax.InputSource;
 import org.xml.sax.SAXException;
 import org.xml.sax.SAXParseException;
@@ -58,18 +60,24 @@ public class XmlValidator
     /** lazy xmlReader to validate xml content*/
     private XMLReader xmlReader;
 
-    private Log logger;
+    private static final Logger LOGGER = LoggerFactory.getLogger( XmlValidator.class );
 
     /**
      * Constructor.
-     *
-     * @param log a logger, not null.
+     *@deprecated
      */
     public XmlValidator( Log log )
     {
-        this.logger = log;
-    }
 
+    }
+    /**
+     * Constructor.
+     *
+     */
+    public XmlValidator( )
+    {
+
+    }
     /**
      * Validate an XML content with SAX.
      *
@@ -103,7 +111,7 @@ public class XmlValidator
             }
 
             // 3 validate content
-            getLog().debug( "Validating the content..." );
+           LOGGER.debug( "Validating the content..." );
             getXmlReader( hasXsd && hasDoctype ).parse( new InputSource( new StringReader( content ) ) );
         }
         catch ( IOException | SAXException e )
@@ -122,7 +130,7 @@ public class XmlValidator
     {
         if ( xmlReader == null )
         {
-            MessagesErrorHandler errorHandler = new MessagesErrorHandler( getLog() );
+            MessagesErrorHandler errorHandler = new MessagesErrorHandler( );
 
             xmlReader = XMLReaderFactory.createXMLReader();
             xmlReader.setFeature( "http://xml.org/sax/features/validation", true );
@@ -134,11 +142,6 @@ public class XmlValidator
         ( (MessagesErrorHandler) xmlReader.getErrorHandler() ).setHasDtdAndXsd( hasDtdAndXsd );
 
         return xmlReader;
-    }
-
-    private Log getLog()
-    {
-        return logger;
     }
 
     /**
@@ -161,13 +164,12 @@ public class XmlValidator
         private static final Pattern ELEMENT_TYPE_PATTERN =
             Pattern.compile( "Element type \".*\" must be declared.", Pattern.DOTALL );
 
-        private final Log log;
+        private final Logger log = LoggerFactory.getLogger( MessagesErrorHandler.class );
 
         private boolean hasDtdAndXsd;
 
-        private MessagesErrorHandler( Log log )
+        private MessagesErrorHandler( )
         {
-            this.log = log;
         }
 
         /**

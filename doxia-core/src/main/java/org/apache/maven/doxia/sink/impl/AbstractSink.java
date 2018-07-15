@@ -20,9 +20,11 @@ package org.apache.maven.doxia.sink.impl;
  */
 
 import org.apache.maven.doxia.logging.Log;
-import org.apache.maven.doxia.logging.SystemStreamLog;
+import org.apache.maven.doxia.logging.Slf4jLoggerWrapper;
+import org.slf4j.Logger;
 import org.apache.maven.doxia.markup.Markup;
 import org.apache.maven.doxia.sink.Sink;
+import org.slf4j.LoggerFactory;
 
 /**
  * An abstract base class that defines some convenience methods for sinks.
@@ -34,12 +36,14 @@ import org.apache.maven.doxia.sink.Sink;
 public abstract class AbstractSink
     implements Sink, Markup
 {
-    private Log logger;
+    private Log log;
+
+    protected Logger logger = LoggerFactory.getLogger( getClass() );
 
     /** {@inheritDoc} */
     public void enableLogging( Log log )
     {
-        this.logger = log;
+        // ignore provided log
     }
 
     /**
@@ -47,15 +51,17 @@ public abstract class AbstractSink
      * If no logger has been configured, a new SystemStreamLog is returned.
      *
      * @return Log
+     * @deprecated use slf4j Loggers
      */
+    @Deprecated
     protected Log getLog()
     {
-        if ( logger == null )
+        if ( log == null )
         {
-            logger = new SystemStreamLog();
+            log = new Slf4jLoggerWrapper( logger );
         }
 
-        return logger;
+        return log;
     }
 
      /**

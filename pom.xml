@@ -87,6 +87,7 @@ under the License.
     <javaVersion>7</javaVersion><!-- remove when upgrade to maven-parent 34 -->
     <maven.site.path>doxia-archives/doxia-LATEST</maven.site.path>
     <checkstyle.violation.ignore>RedundantThrows,NewlineAtEndOfFile,ParameterNumber,MethodLength,FileLength,MethodName,InnerAssignment,MagicNumber</checkstyle.violation.ignore>
+    <sl4j.version>1.7.25</sl4j.version>
     <project.build.outputTimestamp>2020-02-13T21:13:17Z</project.build.outputTimestamp>
   </properties>
 
@@ -207,6 +208,25 @@ under the License.
         <artifactId>plexus-utils</artifactId>
         <version>3.1.0</version>
       </dependency>
+
+      <dependency>
+        <groupId>org.slf4j</groupId>
+        <artifactId>slf4j-api</artifactId>
+        <version>${sl4j.version}</version>
+        <scope>provided</scope>
+      </dependency>
+      <dependency>
+        <groupId>org.slf4j</groupId>
+        <artifactId>slf4j-simple</artifactId>
+        <version>${sl4j.version}</version>
+        <scope>test</scope>
+      </dependency>
+      <dependency>
+        <groupId>org.slf4j</groupId>
+        <artifactId>log4j-over-slf4j</artifactId>
+        <version>${sl4j.version}</version>
+        <scope>test</scope>
+      </dependency>
     </dependencies>
   </dependencyManagement>
 
@@ -321,6 +341,22 @@ under the License.
           </execution>
         </executions>
       </plugin>
+      <plugin><!-- TODO remove when upgrading to parent pom 31 -->
+        <groupId>org.apache.maven.plugins</groupId>
+        <artifactId>maven-enforcer-plugin</artifactId>
+        <dependencies>
+          <dependency>
+            <groupId>org.codehaus.mojo</groupId>
+            <artifactId>extra-enforcer-rules</artifactId>
+            <version>1.0-beta-6</version>
+          </dependency>
+        </dependencies>
+      </plugin>
+        <plugin><!-- TODO remove when upgrading parent pom -->
+            <groupId>org.apache.maven.plugins</groupId>
+            <artifactId>maven-surefire-plugin</artifactId>
+            <version>2.20.1</version>
+        </plugin>
     </plugins>
   </build>
 

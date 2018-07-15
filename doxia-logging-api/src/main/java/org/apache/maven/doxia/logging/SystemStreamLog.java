@@ -30,6 +30,7 @@ import java.io.StringWriter;
  * @author jdcasey
  * @author ltheussl
  * @since 1.1
+ * @deprecated use slf4j
  */
 public class SystemStreamLog
     implements Log

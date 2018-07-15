@@ -166,13 +166,13 @@ public class XhtmlParser
                 handleUnknown( parser, sink, TAG_TYPE_START );
             }
 
-            if ( getLog().isDebugEnabled() )
+            if ( logger.isDebugEnabled() )
             {
                 String position = "[" + parser.getLineNumber() + ":"
                     + parser.getColumnNumber() + "]";
                 String tag = "<" + parser.getName() + ">";
 
-                getLog().debug( "Unrecognized xhtml tag: " + tag + " at " + position );
+                logger.debug( "Unrecognized xhtml tag: " + tag + " at " + position );
             }
         }
     }

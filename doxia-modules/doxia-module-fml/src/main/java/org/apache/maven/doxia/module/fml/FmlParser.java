@@ -546,7 +546,6 @@ public class FmlParser
         throws ParseException
     {
         FmlContentParser xdocParser = new FmlContentParser();
-        xdocParser.enableLogging( getLog() );
 
         sink.head();
         sink.title();
@@ -700,9 +699,9 @@ public class FmlParser
     private void logMessage( String key, String msg )
     {
         msg = "[FML Parser] " + msg;
-        if ( getLog().isDebugEnabled() )
+        if ( logger.isDebugEnabled() )
         {
-            getLog().debug( msg );
+            logger.debug( msg );
 
             return;
         }
@@ -726,13 +725,13 @@ public class FmlParser
      */
     private void logWarnings()
     {
-        if ( getLog().isWarnEnabled() && this.warnMessages != null && !isSecondParsing() )
+        if ( logger.isWarnEnabled() && this.warnMessages != null && !isSecondParsing() )
         {
             for ( Map.Entry<String, Set<String>> entry : this.warnMessages.entrySet() )
             {
                 for ( String msg : entry.getValue() )
                 {
-                    getLog().warn( msg );
+                    logger.warn( msg );
                 }
             }
 

@@ -25,6 +25,8 @@ import java.util.HashMap;
 import java.util.Iterator;
 import java.util.Map;
 
+import org.apache.maven.doxia.logging.Log;
+import org.apache.maven.doxia.logging.Slf4jLoggerWrapper;
 import org.apache.maven.doxia.sink.impl.SinkEventElement;
 import org.apache.maven.doxia.sink.impl.SinkEventTestingSink;
 
@@ -76,8 +78,8 @@ public class EchoMacroTest
     public void testLog()
     {
         EchoMacro macro = new EchoMacro();
-        macro.enableLogging( null );
-        assertNotNull( macro.getLog() );
-        assertNotNull( macro.getLog() );
+        Log log = macro.getLog();
+        assertNotNull ( log );
+        assertTrue ( log instanceof Slf4jLoggerWrapper );
     }
 }
