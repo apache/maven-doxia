@@ -539,14 +539,14 @@ public class AptSink
     /** {@inheritDoc} */
     public void paragraph_()
     {
-    	if ( tableCellFlag )
-    	{
-    		// ignore paragraphs in table cells
-    	}
-    	else
-    	{
-    		write( EOL + EOL );
-    	}
+        if ( tableCellFlag )
+        {
+            // ignore paragraphs in table cells
+        }
+        else
+        {
+            write( EOL + EOL );
+        }
     }
 
     /** {@inheritDoc} */
@@ -947,12 +947,12 @@ public class AptSink
         startFlag = false;
         if ( tableCellFlag )
         {
-        	buffer.append( text );
-    	}
+            buffer.append( text );
+        }
         else
         {
-        	writer.write( unifyEOLs( text ) );
-    	}
+            writer.write( unifyEOLs( text ) );
+        }
     }
 
     /**

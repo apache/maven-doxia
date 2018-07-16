@@ -288,13 +288,13 @@ public class AptSinkTest extends AbstractSinkTest
         sink.table();
         sink.tableRow();
         sink.tableCell();
-        sink.link(linkTarget);
-        sink.text(linkText);
+        sink.link( linkTarget );
+        sink.text( linkText );
         sink.link_();
         sink.tableCell_();
         sink.tableCell();
         sink.paragraph();
-        sink.text(paragraphText);
+        sink.text( paragraphText );
         sink.paragraph_();
         sink.tableCell_();
         sink.tableRow_();
@@ -327,6 +327,6 @@ public class AptSinkTest extends AbstractSinkTest
                 AptMarkup.STAR +
                 EOL;
 
-        assertEquals("Wrong link or paragraph markup in table cell", expected, getSinkContent());
+        assertEquals( "Wrong link or paragraph markup in table cell", expected, getSinkContent() );
     }
 }
