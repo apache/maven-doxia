@@ -39,7 +39,7 @@ import java.util.Set;
 @SuppressWarnings( "WeakerAccess" )
 class FlexmarkDoxiaNodeRenderer implements NodeRenderer
 {
-    public FlexmarkDoxiaNodeRenderer( DataHolder options )
+    FlexmarkDoxiaNodeRenderer( DataHolder options )
     {
     }
 

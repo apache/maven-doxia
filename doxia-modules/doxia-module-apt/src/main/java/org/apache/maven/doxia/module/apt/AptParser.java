@@ -1677,7 +1677,7 @@ public class AptParser
          * @param indent indent.
          * @throws AptParseException AptParseException
          */
-        public Block( int type, int indent )
+        Block( int type, int indent )
             throws AptParseException
         {
             this( type, indent, null );
@@ -1691,7 +1691,7 @@ public class AptParser
          * @param firstLine the first line.
          * @throws AptParseException AptParseException
          */
-        public Block( int type, int indent, String firstLine )
+        Block( int type, int indent, String firstLine )
             throws AptParseException
         {
             this.type = type;
@@ -1864,7 +1864,7 @@ public class AptParser
          * @param firstLine the first line.
          * @throws AptParseException AptParseException
          */
-        public ListBreak( int indent, String firstLine )
+        ListBreak( int indent, String firstLine )
             throws AptParseException
         {
             super( AptParser.LIST_BREAK, indent, firstLine );
@@ -1889,7 +1889,7 @@ public class AptParser
          * @param firstLine the first line.
          * @throws AptParseException AptParseException
          */
-        public Title( int indent, String firstLine )
+        Title( int indent, String firstLine )
             throws AptParseException
         {
             super( TITLE, indent, firstLine );
@@ -2019,7 +2019,7 @@ public class AptParser
          * @param firstLine the first line.
          * @throws AptParseException AptParseException
          */
-        public Section( int type, int indent, String firstLine )
+        Section( int type, int indent, String firstLine )
             throws AptParseException
         {
             super( type, indent, firstLine );
@@ -2052,7 +2052,7 @@ public class AptParser
          * @param firstLine the first line.
          * @throws AptParseException AptParseException
          */
-        public Section1( int indent, String firstLine )
+        Section1( int indent, String firstLine )
             throws AptParseException
         {
             super( SECTION1, indent, firstLine );
@@ -2082,7 +2082,7 @@ public class AptParser
          * @param firstLine the first line.
          * @throws AptParseException AptParseException
          */
-        public Section2( int indent, String firstLine )
+        Section2( int indent, String firstLine )
             throws AptParseException
         {
             super( SECTION2, indent, firstLine );
@@ -2102,7 +2102,7 @@ public class AptParser
     }
 
     /** A Section3 Block. */
-    private class Section3
+    public class Section3
         extends Section
     {
         /**
@@ -2112,7 +2112,7 @@ public class AptParser
          * @param firstLine the first line.
          * @throws AptParseException AptParseException
          */
-        public Section3( int indent, String firstLine )
+        Section3( int indent, String firstLine )
             throws AptParseException
         {
             super( SECTION3, indent, firstLine );
@@ -2142,7 +2142,7 @@ public class AptParser
          * @param firstLine the first line.
          * @throws AptParseException AptParseException
          */
-        public Section4( int indent, String firstLine )
+        Section4( int indent, String firstLine )
             throws AptParseException
         {
             super( SECTION4, indent, firstLine );
@@ -2172,7 +2172,7 @@ public class AptParser
          * @param firstLine the first line.
          * @throws AptParseException AptParseException
          */
-        public Section5( int indent, String firstLine )
+        Section5( int indent, String firstLine )
             throws AptParseException
         {
             super( SECTION5, indent, firstLine );
@@ -2202,7 +2202,7 @@ public class AptParser
          * @param firstLine the first line.
          * @throws AptParseException AptParseException
          */
-        public Paragraph( int indent, String firstLine )
+        Paragraph( int indent, String firstLine )
             throws AptParseException
         {
             super( PARAGRAPH, indent, firstLine );
@@ -2228,7 +2228,7 @@ public class AptParser
          * @param line the comment line.
          * @throws AptParseException AptParseException
          */
-        public Comment( String line )
+        Comment( String line )
             throws AptParseException
         {
             super( COMMENT_BLOCK, 0, line );
@@ -2259,7 +2259,7 @@ public class AptParser
          * @param firstLine the first line.
          * @throws AptParseException AptParseException
          */
-        public Verbatim( int indent, String firstLine )
+        Verbatim( int indent, String firstLine )
             throws AptParseException
         {
             super( VERBATIM, indent, null );
@@ -2347,7 +2347,7 @@ public class AptParser
          * @param firstLine the first line.
          * @throws AptParseException AptParseException
          */
-        public Figure( int indent, String firstLine )
+        Figure( int indent, String firstLine )
             throws AptParseException
         {
             super( FIGURE, indent, firstLine );
@@ -2385,7 +2385,7 @@ public class AptParser
          * @param firstLine the first line.
          * @throws AptParseException AptParseException
          */
-        public Table( int indent, String firstLine )
+        Table( int indent, String firstLine )
             throws AptParseException
         {
             super( TABLE, indent, firstLine );
@@ -2693,7 +2693,7 @@ public class AptParser
          * @param firstLine the first line.
          * @throws AptParseException AptParseException
          */
-        public ListItem( int indent, String firstLine )
+        ListItem( int indent, String firstLine )
             throws AptParseException
         {
             super( LIST_ITEM, indent, firstLine );
@@ -2722,7 +2722,7 @@ public class AptParser
          * @param number numbering.
          * @throws AptParseException AptParseException
          */
-        public NumberedListItem( int indent, String firstLine, int number )
+        NumberedListItem( int indent, String firstLine, int number )
             throws AptParseException
         {
             super( NUMBERED_LIST_ITEM, indent, firstLine );
@@ -2788,7 +2788,7 @@ public class AptParser
          * @param firstLine the first line.
          * @throws AptParseException AptParseException
          */
-        public DefinitionListItem( int indent, String firstLine )
+        DefinitionListItem( int indent, String firstLine )
             throws AptParseException
         {
             super( DEFINITION_LIST_ITEM, indent, firstLine );
@@ -2828,7 +2828,7 @@ public class AptParser
          * @param firstLine the first line.
          * @throws AptParseException AptParseException
          */
-        public HorizontalRule( int indent, String firstLine )
+        HorizontalRule( int indent, String firstLine )
             throws AptParseException
         {
             super( HORIZONTAL_RULE, indent, firstLine );
@@ -2853,7 +2853,7 @@ public class AptParser
          * @param firstLine the first line.
          * @throws AptParseException AptParseException
          */
-        public PageBreak( int indent, String firstLine )
+        PageBreak( int indent, String firstLine )
             throws AptParseException
         {
             super( PG_BREAK, indent, firstLine );
@@ -2878,7 +2878,7 @@ public class AptParser
          * @param firstLine the first line.
          * @throws AptParseException AptParseException
          */
-        public MacroBlock( int indent, String firstLine )
+        MacroBlock( int indent, String firstLine )
             throws AptParseException
         {
             super( MACRO, indent );

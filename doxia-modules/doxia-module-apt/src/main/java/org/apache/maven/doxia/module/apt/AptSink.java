@@ -65,6 +65,9 @@ public class AptSink
     /**  tableCaptionFlag. */
     private boolean tableCaptionFlag;
 
+    /**  tableCellFlag. */
+    private boolean tableCellFlag;
+
     /**  headerFlag. */
     private boolean headerFlag;
 
@@ -164,6 +167,7 @@ public class AptSink
         this.date = null;
         this.startFlag = true;
         this.tableCaptionFlag = false;
+        this.tableCellFlag = false;
         this.headerFlag = false;
         this.bufferFlag = false;
         this.itemFlag = false;
@@ -518,7 +522,11 @@ public class AptSink
     /** {@inheritDoc} */
     public void paragraph()
     {
-        if ( itemFlag )
+        if ( tableCellFlag )
+        {
+            // ignore paragraphs in table cells
+        }
+        else if ( itemFlag )
         {
             write( EOL + EOL + "  " + listNestingIndent );
         }
@@ -531,7 +539,14 @@ public class AptSink
     /** {@inheritDoc} */
     public void paragraph_()
     {
-        write( EOL + EOL );
+        if ( tableCellFlag )
+        {
+            // ignore paragraphs in table cells
+        }
+        else
+        {
+            write( EOL + EOL );
+        }
     }
 
     /** {@inheritDoc} */
@@ -696,6 +711,7 @@ public class AptSink
         {
             buffer.append( TABLE_CELL_SEPARATOR_MARKUP );
         }
+        tableCellFlag = true;
     }
 
     /** {@inheritDoc} */
@@ -715,6 +731,7 @@ public class AptSink
      */
     private void endTableCell()
     {
+        tableCellFlag = false;
         buffer.append( TABLE_CELL_SEPARATOR_MARKUP );
         cellCount++;
     }
@@ -928,7 +945,14 @@ public class AptSink
     protected void write( String text )
     {
         startFlag = false;
-        writer.write( unifyEOLs( text ) );
+        if ( tableCellFlag )
+        {
+            buffer.append( text );
+        }
+        else
+        {
+            writer.write( unifyEOLs( text ) );
+        }
     }
 
     /**

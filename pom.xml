@@ -25,7 +25,7 @@ under the License.
   <parent>
     <groupId>org.apache.maven</groupId>
     <artifactId>maven-parent</artifactId>
-    <version>30</version>
+    <version>33</version>
     <relativePath>../../pom/maven/pom.xml</relativePath>
   </parent>
 
@@ -79,7 +79,7 @@ under the License.
   <distributionManagement>
     <site>
       <id>apache.website</id>
-      <url>scm:svn:https://svn.apache.org/repos/infra/websites/production/maven-doxia/components/${maven.site.path}</url>
+      <url>scm:svn:https://svn.apache.org/repos/asf/maven/doxia/website/components/${maven.site.path}</url>
     </site>
   </distributionManagement>
 
@@ -250,7 +250,7 @@ under the License.
           <groupId>org.apache.maven.plugins</groupId>
           <artifactId>maven-site-plugin</artifactId>
           <configuration>
-            <topSiteURL>scm:svn:https://svn.apache.org/repos/infra/websites/production/maven-doxia/components/${maven.site.path}</topSiteURL>
+            <topSiteURL>scm:svn:https://svn.apache.org/repos/asf/maven/doxia/website/components/${maven.site.path}</topSiteURL>
           </configuration>
         </plugin>
         <plugin>

@@ -275,4 +275,58 @@ public class AptSinkTest extends AbstractSinkTest
     {
         return "~~" + text;
     }
+
+    /**
+     * test for DOXIA-497.
+     */
+    public void testLinksAndParagraphsInTableCells()
+    {
+        final String linkTarget = "target";
+        final String linkText = "link";
+        final String paragraphText = "paragraph text";
+        final Sink sink = getSink();
+        sink.table();
+        sink.tableRow();
+        sink.tableCell();
+        sink.link( linkTarget );
+        sink.text( linkText );
+        sink.link_();
+        sink.tableCell_();
+        sink.tableCell();
+        sink.paragraph();
+        sink.text( paragraphText );
+        sink.paragraph_();
+        sink.tableCell_();
+        sink.tableRow_();
+        sink.table_();
+        sink.flush();
+        sink.close();
+
+        String expected = EOL + AptMarkup.TABLE_ROW_START_MARKUP +
+                AptMarkup.MINUS +
+                AptMarkup.MINUS +
+                AptMarkup.TABLE_ROW_START_MARKUP +
+                AptMarkup.STAR +
+                EOL +
+                AptMarkup.LEFT_CURLY_BRACKET +
+                AptMarkup.LEFT_CURLY_BRACKET +
+                AptMarkup.LEFT_CURLY_BRACKET +
+                linkTarget +
+                AptMarkup.RIGHT_CURLY_BRACKET +
+                linkText +
+                AptMarkup.RIGHT_CURLY_BRACKET +
+                AptMarkup.RIGHT_CURLY_BRACKET +
+                AptMarkup.TABLE_CELL_SEPARATOR_MARKUP +
+                paragraphText +
+                AptMarkup.TABLE_CELL_SEPARATOR_MARKUP +
+                EOL +
+                AptMarkup.TABLE_ROW_START_MARKUP +
+                AptMarkup.MINUS +
+                AptMarkup.MINUS +
+                AptMarkup.TABLE_ROW_START_MARKUP +
+                AptMarkup.STAR +
+                EOL;
+
+        assertEquals( "Wrong link or paragraph markup in table cell", expected, getSinkContent() );
+    }
 }
