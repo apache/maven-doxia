@@ -375,6 +375,16 @@ public interface SinkEventAttributes
     String SEMANTICS = "semantics";
 
     /**
+     * Specifies the semantics of an element.
+     *
+     * <p>
+     *   Generally accepted values are "article", "section",
+     *   "navigation", "sidebar".
+     * </p>
+     */
+    String SECTIONS = "sections";
+
+    /**
      * Specifies a value for the data element.
      */
     String VALUE = "value";
