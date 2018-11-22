@@ -61,6 +61,9 @@ public class ConfluenceSink
     /** An indication on if we're in verbatim box mode. */
     private boolean verbatimBoxedFlag;
 
+    /** An indication on if we're in table mode. */
+    private boolean tableFlag;
+
     /** An indication on if we're in table header mode. */
     private boolean tableHeaderFlag;
 
@@ -819,6 +822,7 @@ public class ConfluenceSink
     public void table()
     {
         // nop
+        tableFlag = true;
         writeEOL( true );
         writeEOL();
     }
@@ -832,6 +836,7 @@ public class ConfluenceSink
     /** {@inheritDoc} */
     public void table_()
     {
+        tableFlag = false;
         writeEOL( true );
         writeEOL();
     }
@@ -964,7 +969,21 @@ public class ConfluenceSink
             write( LINK_START_MARKUP );
         }
 
-        content( text );
+        if ( tableFlag )
+        {
+            // Remove line breaks, because it interferes with the table syntax
+            String strippedText = StringUtils.replace( text, "\n", "" );
+            // Trim if only whitespace, to handle ignorable whitespace from xdoc documents
+            if ( StringUtils.isWhitespace( strippedText ) )
+            {
+                strippedText = StringUtils.trim( strippedText );
+            }
+            content( strippedText );
+        }
+        else
+        {
+            content( text );
+        }
 
         if ( linkName != null )
         {
