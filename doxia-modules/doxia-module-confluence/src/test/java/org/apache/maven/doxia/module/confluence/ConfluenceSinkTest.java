@@ -230,7 +230,7 @@ public class ConfluenceSinkTest
     /** {@inheritDoc} */
     protected String getVerbatimBlock( String text )
     {
-        return "{code|borderStyle=solid}" + EOL + text + "{code}" + EOL + EOL;
+        return "{code:borderStyle=solid}" + EOL + text + "{code}" + EOL + EOL;
     }
 
     /** {@inheritDoc} */

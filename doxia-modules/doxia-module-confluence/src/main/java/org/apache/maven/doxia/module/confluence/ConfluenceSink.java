@@ -1081,7 +1081,7 @@ public class ConfluenceSink
 
         if ( verbatimBoxedFlag )
         {
-            write( "{code|borderStyle=solid}" );
+            write( "{code:borderStyle=solid}" );
         }
         else
         {
