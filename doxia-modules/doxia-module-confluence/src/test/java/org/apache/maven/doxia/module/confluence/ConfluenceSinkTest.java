@@ -133,7 +133,7 @@ public class ConfluenceSinkTest
     /** {@inheritDoc} */
     protected String getListBlock( String item )
     {
-        return ConfluenceMarkup.LIST_ITEM_MARKUP + item + EOL;
+        return ConfluenceMarkup.LIST_ITEM_MARKUP + item + EOL + EOL;
     }
 
     /** {@inheritDoc} */
@@ -151,7 +151,7 @@ public class ConfluenceSinkTest
     /** {@inheritDoc} */
     protected String getNumberedListBlock( String item )
     {
-        return ConfluenceMarkup.NUMBERING_MARKUP + " " + item + EOL;
+        return ConfluenceMarkup.NUMBERING_MARKUP + " " + item + EOL + EOL;
     }
 
     /** {@inheritDoc} */

@@ -482,6 +482,11 @@ public class ConfluenceSink
     public void list_()
     {
         levelList--;
+        if ( levelList == 0 )
+        {
+            writeEOL( true );
+            writeEOL();
+        }
     }
 
     /** {@inheritDoc} */
@@ -526,6 +531,10 @@ public class ConfluenceSink
     /** {@inheritDoc} */
     public void numberedList( int numbering )
     {
+        if ( !writer.toString().endsWith( EOL + EOL ) )
+        {
+            writeEOL( true );
+        }
         levelList++;
 
         String style;
@@ -553,6 +562,11 @@ public class ConfluenceSink
     public void numberedList_()
     {
         levelList--;
+        if ( levelList == 0 )
+        {
+            writeEOL( true );
+            writeEOL();
+        }
         listStyles.pop();
     }
 
