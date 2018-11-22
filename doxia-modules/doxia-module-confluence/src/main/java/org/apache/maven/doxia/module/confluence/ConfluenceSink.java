@@ -575,7 +575,12 @@ public class ConfluenceSink
     {
         writeEOL( true );
         String style = listStyles.peek();
-        write( style + SPACE );
+        // We currently only handle one type of numbering style for Confluence,
+        // so we can just repeat the latest numbering markup for each level.
+        // If we ever decide to handle multiple different numbering styles, we'd
+        // need to traverse the entire listStyles stack and use the correct
+        // numbering style for each level.
+        write( StringUtils.repeat( style, levelList ) + SPACE );
     }
 
     /** {@inheritDoc} */
