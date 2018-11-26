@@ -80,11 +80,10 @@ public class ConfluenceSinkTest
         return null;
     }
 
-    /** Not used.
-     * {@inheritDoc} */
+    /** {@inheritDoc} */
     protected String getDefinitionListBlock( String definum, String definition )
     {
-        return null;
+        return definum + EOL + ConfluenceMarkup.CITATION_START_MARKUP + definition + ConfluenceMarkup.CITATION_END_MARKUP + EOL + EOL;
     }
 
     /** {@inheritDoc} */

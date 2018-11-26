@@ -210,7 +210,7 @@ public class ConfluenceSink
     /** {@inheritDoc} */
     public void definedTerm()
     {
-        write( " " );
+        // nop
     }
 
     /** {@inheritDoc} */
@@ -220,39 +220,36 @@ public class ConfluenceSink
     }
 
     /**
-     * Not used.
      * {@inheritDoc}
      */
     public void definedTerm_()
     {
-        // nop
+        writeEOL( true );
     }
 
     /**
-     * Not used.
      * {@inheritDoc}
      */
     public void definition()
     {
-        // nop
+        writer.write( CITATION_START_MARKUP );
     }
 
     /**
-     * Not used.
      * {@inheritDoc}
      */
     public void definition( SinkEventAttributes attributes )
     {
-        // nop
+        definition();
     }
 
     /**
-     * Not used.
      * {@inheritDoc}
      */
     public void definition_()
     {
-        // nop
+        writer.write( CITATION_END_MARKUP );
+        writeEOL( true );
     }
 
     /**
@@ -274,12 +271,11 @@ public class ConfluenceSink
     }
 
     /**
-     * Not used.
      * {@inheritDoc}
      */
     public void definitionList_()
     {
-        // nop
+        writeEOL();
     }
 
     /**
