@@ -313,4 +313,14 @@ public class ConfluenceSinkTest
     {
         return "";
     }
+
+    public void testEscapeConfluenceNull()
+    {
+        assertEquals( "Wrong Confluence escape!", "", ConfluenceSink.escapeConfluence( null ) );
+    }
+
+    public void testEscapeConfluenceCurlies()
+    {
+        assertEquals( "Wrong Confluence escape!", "$\\{finalName\\}", ConfluenceSink.escapeConfluence( "${finalName}" ) );
+    }
 }

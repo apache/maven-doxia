@@ -58,6 +58,9 @@ public class ConfluenceSink
     /**  listStyles. */
     private final Stack<String> listStyles;
 
+    /** An indication on if we're in monospaced mode. */
+    private boolean monospacedFlag;
+
     /** An indication on if we're in verbatim box mode. */
     private boolean verbatimBoxedFlag;
 
@@ -506,12 +509,14 @@ public class ConfluenceSink
     /** {@inheritDoc} */
     public void monospaced()
     {
+        monospacedFlag = true;
         write( MONOSPACED_START_MARKUP );
     }
 
     /** {@inheritDoc} */
     public void monospaced_()
     {
+        monospacedFlag = false;
         write( MONOSPACED_END_MARKUP );
     }
 
@@ -995,6 +1000,10 @@ public class ConfluenceSink
             }
             content( strippedText );
         }
+        else if ( monospacedFlag )
+        {
+            content( text, true );
+        }
         else
         {
             content( text );
@@ -1165,18 +1174,73 @@ public class ConfluenceSink
         write( escapeHTML( text ) );
     }
 
+    /**
+     * Write HTML, and optionally Confluence, escaped text to output.
+     *
+     * @param text The text to write.
+     */
+    protected void content( String text, boolean escapeConfluence )
+    {
+        if ( escapeConfluence )
+        {
+            write( escapeConfluence( escapeHTML( text ) ) );
+        }
+        else
+        {
+            content( text );
+        }
+    }
+
     /** {@inheritDoc} */
     protected void init()
     {
         super.init();
 
         this.writer = new StringWriter();
+        this.monospacedFlag = false;
         this.headFlag = false;
         this.levelList = 0;
         this.listStyles.clear();
         this.verbatimBoxedFlag = false;
         this.tableHeaderFlag = false;
         this.linkName = null;
+    }
+
+    /**
+     * Escape characters that have special meaning in Confluence.
+     *
+     * @param text the String to escape, may be null
+     * @return the text escaped, "" if null String input
+     */
+    protected static String escapeConfluence( String text )
+    {
+        if ( text == null )
+        {
+            return "";
+        }
+        else
+        {
+            int length = text.length();
+            StringBuilder buffer = new StringBuilder( length );
+
+            for ( int i = 0; i < length; ++i )
+            {
+                char c = text.charAt( i );
+                switch ( c )
+                {
+                    case '{':
+                        buffer.append( "\\{" );
+                        break;
+                    case '}':
+                        buffer.append( "\\}" );
+                        break;
+                    default:
+                         buffer.append( c );
+                }
+            }
+
+            return buffer.toString();
+        }
     }
 
     /**
