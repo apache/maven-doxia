@@ -230,7 +230,7 @@ public class XhtmlParser
 
         if ( text.startsWith( "MACRO" ) && !isSecondParsing() )
         {
-            processMacro( text, sink );
+            processMacro( parser, text, sink );
         }
         else
         {
@@ -239,7 +239,7 @@ public class XhtmlParser
     }
 
     /** process macro embedded in XHTML commment */
-    private void processMacro( String text, Sink sink )
+    private void processMacro( XmlPullParser parser, String text, Sink sink )
         throws XmlPullParserException
     {
         String s = text.substring( text.indexOf( '{' ) + 1, text.indexOf( '}' ) );
@@ -253,7 +253,8 @@ public class XhtmlParser
             String[] param = StringUtils.split( params[i], "=" );
             if ( param.length == 1 )
             {
-                throw new XmlPullParserException( "Missing 'key=value' pair for macro parameter: " + params[i] );
+                throw new XmlPullParserException( "Invalid 'key=value' pair for macro " + macroName + " parameter: "
+                    + params[i], parser, null );
             }
 
             String key = unescapeForMacro( param[0] );
@@ -269,11 +270,11 @@ public class XhtmlParser
         }
         catch ( MacroExecutionException e )
         {
-            throw new XmlPullParserException( "Unable to execute macro in the document: " + macroName );
+            throw new XmlPullParserException( "Unable to execute macro in the document: " + macroName, parser, e );
         }
         catch ( MacroNotFoundException me )
         {
-            throw new XmlPullParserException( "Macro not found: " + macroName );
+            throw new XmlPullParserException( "Macro not found: " + macroName, parser, null );
         }
     }
 
