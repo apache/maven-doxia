@@ -2,6 +2,7 @@ package org.apache.maven.doxia.module.markdown;
 
 import java.io.Reader;
 import java.util.Iterator;
+import java.util.List;
 
 /*
  * Licensed to the Apache Software Foundation (ASF) under one
@@ -164,7 +165,27 @@ public class MarkdownParserTest
 
         assertFalse( it.hasNext() );
     }
-    
+
+    /**
+     * Assert the link sink event is fired when parsing "link.md".
+     *
+     * @throws Exception if the event list is not correct when parsing the document.
+     */
+    public void testLinkRewriteSinkEvent()
+        throws Exception
+    {
+        List<SinkEventElement> eventList = parseFileToEventTestingSink( "link_rewrite" ).getEventList();
+
+        Iterator<SinkEventElement> it = eventList.iterator();
+        assertEquals( it, "head", "head_", "body", "paragraph", "text", "link", "text", "link_", "text", "link", "text",
+                      "link_", "text", "paragraph_", "body_" );
+
+        assertFalse( it.hasNext() );
+
+        assertEquals( "doc.html", eventList.get( 5 ).getArgs()[0] );
+        assertEquals( "ftp://doc.md", eventList.get( 9 ).getArgs()[0] );
+    }
+
     public void testLinkWithAnchorAndQuery() throws Exception
     {
         Iterator<SinkEventElement> it = parseFileToEventTestingSink( "link_anchor_query" ).getEventList().iterator();

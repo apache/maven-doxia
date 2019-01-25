@@ -22,7 +22,7 @@ package org.apache.maven.doxia.module.markdown;
 import com.vladsch.flexmark.Extension;
 import com.vladsch.flexmark.ast.Heading;
 import com.vladsch.flexmark.ast.HtmlCommentBlock;
-import com.vladsch.flexmark.ast.Node;
+import com.vladsch.flexmark.util.ast.Node;
 import com.vladsch.flexmark.ast.util.TextCollectingVisitor;
 import com.vladsch.flexmark.html.HtmlRenderer;
 import com.vladsch.flexmark.profiles.pegdown.Extensions;
@@ -144,7 +144,10 @@ public class MarkdownParser
 
         com.vladsch.flexmark.parser.Parser parser = com.vladsch.flexmark.parser.Parser.builder( flexmarkOptions )
                 .build();
-        HtmlRenderer renderer = HtmlRenderer.builder( flexmarkOptions ).build();
+        HtmlRenderer renderer = HtmlRenderer.builder( flexmarkOptions )
+                                    .linkResolverFactory( new FlexmarkDoxiaLinkResolver.Factory() )
+                                    .build();
+
 
         StringBuilder html = new StringBuilder( 1000 );
         html.append( "<html>" );

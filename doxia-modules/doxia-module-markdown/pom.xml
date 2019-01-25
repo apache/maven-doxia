@@ -59,7 +59,7 @@ under the License.
     <dependency>
       <groupId>com.vladsch.flexmark</groupId>
       <artifactId>flexmark-all</artifactId>
-      <version>0.18.4</version>
+      <version>0.40.12</version>
     </dependency>
     <dependency>
       <groupId>org.apache.maven.doxia</groupId>
