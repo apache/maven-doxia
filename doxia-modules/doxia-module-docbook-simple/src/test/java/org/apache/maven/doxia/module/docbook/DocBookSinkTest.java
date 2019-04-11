@@ -20,7 +20,6 @@ package org.apache.maven.doxia.module.docbook;
  */
 
 import java.io.Writer;
-
 import java.util.Locale;
 
 import javax.swing.text.MutableAttributeSet;
@@ -30,7 +29,6 @@ import org.apache.maven.doxia.sink.Sink;
 import org.apache.maven.doxia.sink.impl.AbstractSinkTest;
 import org.apache.maven.doxia.sink.impl.SinkUtils;
 import org.apache.maven.doxia.util.DoxiaUtils;
-
 import org.codehaus.plexus.util.FileUtils;
 
 /**
@@ -90,6 +88,24 @@ public class DocBookSinkTest extends AbstractSinkTest
     }
 
     /** {@inheritDoc} */
+    protected String getArticleBlock()
+    {
+        return "";
+    }
+
+    /** {@inheritDoc} */
+    protected String getNavigationBlock()
+    {
+        return "";
+    }
+
+    /** {@inheritDoc} */
+    protected String getSidebarBlock()
+    {
+        return "<sidebar></sidebar>";
+    }
+
+    /** {@inheritDoc} */
     protected String getSectionTitleBlock( String title )
     {
         return "<title>" + title + "</title>";
@@ -98,31 +114,49 @@ public class DocBookSinkTest extends AbstractSinkTest
     /** {@inheritDoc} */
     protected String getSection1Block( String title )
     {
-        return "<section><title>" + title + "</title>" + "</section>";
+        return "<section><sectioninfo><title>" + title + "</title></sectioninfo></section>";
     }
 
     /** {@inheritDoc} */
     protected String getSection2Block( String title )
     {
-        return "<section><title>" + title + "</title>" + "</section>";
+        return "<section><sectioninfo><title>" + title + "</title></sectioninfo></section>";
     }
 
     /** {@inheritDoc} */
     protected String getSection3Block( String title )
     {
-        return "<section><title>" + title + "</title>" + "</section>";
+        return "<section><sectioninfo><title>" + title + "</title></sectioninfo></section>";
     }
 
     /** {@inheritDoc} */
     protected String getSection4Block( String title )
     {
-        return "<section><title>" + title + "</title>" + "</section>";
+        return "<section><sectioninfo><title>" + title + "</title></sectioninfo></section>";
     }
 
     /** {@inheritDoc} */
     protected String getSection5Block( String title )
     {
-        return "<section><title>" + title + "</title>" + "</section>";
+        return "<section><sectioninfo><title>" + title + "</title></sectioninfo></section>";
+    }
+
+    /** {@inheritDoc} */
+    protected String getHeaderBlock()
+    {
+        return "<sectioninfo></sectioninfo>";
+    }
+
+    /** {@inheritDoc} */
+    protected String getContentBlock()
+    {
+        return "";
+    }
+
+    /** {@inheritDoc} */
+    protected String getFooterBlock()
+    {
+        return "";
     }
 
     /** {@inheritDoc} */
@@ -183,6 +217,36 @@ public class DocBookSinkTest extends AbstractSinkTest
     }
 
     /** {@inheritDoc} */
+    protected String getDataBlock( String value, String text )
+    {
+        return text;
+    }
+
+    /** {@inheritDoc} */
+    protected String getTimeBlock( String datetime, String text )
+    {
+        return text;
+    }
+
+    /** {@inheritDoc} */
+    protected String getAddressBlock( String text )
+    {
+        return text;
+    }
+
+    /** {@inheritDoc} */
+    protected String getBlockquoteBlock( String text )
+    {
+        return text;
+    }
+
+    /** {@inheritDoc} */
+    protected String getDivisionBlock( String text )
+    {
+        return text;
+    }
+
+    /** {@inheritDoc} */
     protected String getVerbatimBlock( String text )
     {
         return "<programlisting>" + text + "</programlisting>";
@@ -214,6 +278,30 @@ public class DocBookSinkTest extends AbstractSinkTest
     }
 
     /** {@inheritDoc} */
+    protected String getInlineBlock( String text )
+    {
+        return text;
+    }
+
+    /** {@inheritDoc} */
+    protected String getInlineItalicBlock( String text )
+    {
+        return "<emphasis>" + text + "</emphasis>";
+    }
+
+    /** {@inheritDoc} */
+    protected String getInlineBoldBlock( String text )
+    {
+        return "<emphasis role=\"bold\">" + text + "</emphasis>";
+    }
+
+    /** {@inheritDoc} */
+    protected String getInlineCodeBlock( String text )
+    {
+        return "<literal>" + text + "</literal>";
+    }
+
+    /** {@inheritDoc} */
     protected String getItalicBlock( String text )
     {
         return "<emphasis>" + text + "</emphasis>";
@@ -235,6 +323,12 @@ public class DocBookSinkTest extends AbstractSinkTest
     protected String getLineBreakBlock()
     {
         return "<!-- LB -->";
+    }
+
+    /** {@inheritDoc} */
+    protected String getLineBreakOpportunityBlock()
+    {
+        return "";
     }
 
     /** {@inheritDoc} */

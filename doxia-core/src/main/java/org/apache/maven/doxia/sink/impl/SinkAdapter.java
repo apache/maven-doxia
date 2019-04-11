@@ -59,6 +59,42 @@ public class SinkAdapter
     }
 
     @Override
+    public void article()
+    {
+        // nop
+    }
+
+    @Override
+    public void article_()
+    {
+        // nop
+    }
+
+    @Override
+    public void navigation()
+    {
+        // nop
+    }
+
+    @Override
+    public void navigation_()
+    {
+        // nop
+    }
+
+    @Override
+    public void sidebar()
+    {
+        // nop
+    }
+
+    @Override
+    public void sidebar_()
+    {
+        // nop
+    }
+
+    @Override
     public void section1()
     {
         // nop
@@ -383,6 +419,42 @@ public class SinkAdapter
     }
 
     @Override
+    public void header()
+    {
+        // nop
+    }
+
+    @Override
+    public void header_()
+    {
+        // nop
+    }
+
+    @Override
+    public void content()
+    {
+        // nop
+    }
+
+    @Override
+    public void content_()
+    {
+        // nop
+    }
+
+    @Override
+    public void footer()
+    {
+        // nop
+    }
+
+    @Override
+    public void footer_()
+    {
+        // nop
+    }
+
+    @Override
     public void paragraph()
     {
         // nop
@@ -390,6 +462,66 @@ public class SinkAdapter
 
     @Override
     public void paragraph_()
+    {
+        // nop
+    }
+
+    @Override
+    public void data( String value )
+    {
+        // nop
+    }
+
+    @Override
+    public void data_()
+    {
+        // nop
+    }
+
+    @Override
+    public void time( String datetime )
+    {
+        // nop
+    }
+
+    @Override
+    public void time_()
+    {
+        // nop
+    }
+
+    @Override
+    public void address()
+    {
+        // nop
+    }
+
+    @Override
+    public void address_()
+    {
+        // nop
+    }
+
+    @Override
+    public void blockquote()
+    {
+        // nop
+    }
+
+    @Override
+    public void blockquote_()
+    {
+        // nop
+    }
+
+    @Override
+    public void division()
+    {
+        // nop
+    }
+
+    @Override
+    public void division_()
     {
         // nop
     }
@@ -521,6 +653,18 @@ public class SinkAdapter
     }
 
     @Override
+    public void inline()
+    {
+        // nop
+    }
+
+    @Override
+    public void inline_()
+    {
+        // nop
+    }
+
+    @Override
     public void italic()
     {
         // nop
@@ -558,6 +702,12 @@ public class SinkAdapter
 
     @Override
     public void lineBreak()
+    {
+        // nop
+    }
+
+    @Override
+    public void lineBreakOpportunity()
     {
         // nop
     }
@@ -625,6 +775,24 @@ public class SinkAdapter
     public void body( SinkEventAttributes attributes )
     {
         body();
+    }
+
+    @Override
+    public void article( SinkEventAttributes attributes )
+    {
+        article();
+    }
+
+    @Override
+    public void navigation( SinkEventAttributes attributes )
+    {
+        navigation();
+    }
+
+    @Override
+    public void sidebar( SinkEventAttributes attributes )
+    {
+        sidebar();
     }
 
     @Override
@@ -725,6 +893,24 @@ public class SinkAdapter
         {
             sectionTitle5_();
         }
+    }
+
+    @Override
+    public void header( SinkEventAttributes attributes )
+    {
+        header();
+    }
+
+    @Override
+    public void content( SinkEventAttributes attributes )
+    {
+        content();
+    }
+
+    @Override
+    public void footer( SinkEventAttributes attributes )
+    {
+        footer();
     }
 
     @Override
@@ -830,6 +1016,36 @@ public class SinkAdapter
     }
 
     @Override
+    public void data( String value, SinkEventAttributes attributes )
+    {
+        data( value );
+    }
+
+    @Override
+    public void time( String datetime, SinkEventAttributes attributes )
+    {
+        time( datetime );
+    }
+
+    @Override
+    public void address( SinkEventAttributes attributes )
+    {
+        address();
+    }
+
+    @Override
+    public void blockquote( SinkEventAttributes attributes )
+    {
+        blockquote();
+    }
+
+    @Override
+    public void division( SinkEventAttributes attributes )
+    {
+        division();
+    }
+
+    @Override
     public void verbatim( SinkEventAttributes attributes )
     {
         MutableAttributeSet atts = SinkUtils.filterAttributes( attributes, SinkUtils.SINK_VERBATIM_ATTRIBUTES );
@@ -863,9 +1079,21 @@ public class SinkAdapter
     }
 
     @Override
+    public void inline( SinkEventAttributes attributes )
+    {
+        inline();
+    }
+
+    @Override
     public void lineBreak( SinkEventAttributes attributes )
     {
         lineBreak();
+    }
+
+    @Override
+    public void lineBreakOpportunity( SinkEventAttributes attributes )
+    {
+        lineBreakOpportunity();
     }
 
     @Override

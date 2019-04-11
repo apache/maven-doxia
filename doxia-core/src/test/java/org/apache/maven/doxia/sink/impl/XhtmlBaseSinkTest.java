@@ -65,9 +65,9 @@ public class XhtmlBaseSinkTest
 
             sink.paragraph();
             sink.text( "There should be no space before the " );
-            sink.italic();
+            sink.inline( SinkEventAttributeSet.Semantics.ITALIC );
             sink.text( "period" );
-            sink.italic_();
+            sink.inline_();
             sink.text( "." );
             sink.paragraph_();
         }
@@ -816,12 +816,12 @@ public class XhtmlBaseSinkTest
         try
         {
             sink = new XhtmlBaseSink( writer );
-            sink.italic();
-            sink.italic_();
-            sink.bold();
-            sink.bold_();
-            sink.monospaced();
-            sink.monospaced_();
+            sink.inline( SinkEventAttributeSet.Semantics.ITALIC );
+            sink.inline_();
+            sink.inline( SinkEventAttributeSet.Semantics.BOLD );
+            sink.inline_();
+            sink.inline( SinkEventAttributeSet.Semantics.MONOSPACED );
+            sink.inline_();
         }
         finally
         {

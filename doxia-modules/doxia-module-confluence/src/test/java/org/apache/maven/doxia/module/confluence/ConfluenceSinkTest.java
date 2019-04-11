@@ -53,11 +53,30 @@ public class ConfluenceSinkTest
         return false;
     }
 
+    /** {@inheritDoc} */
+    protected String getAddressBlock( String text )
+    {
+        return text;
+    }
+
+    /** Not used.
+     * {@inheritDoc} */
+    protected String getArticleBlock()
+    {
+        return "";
+    }
+
     /** Not used.
      * {@inheritDoc} */
     protected String getAuthorBlock( String author )
     {
         return null;
+    }
+
+    /** {@inheritDoc} */
+    protected String getBlockquoteBlock( String text )
+    {
+        return text;
     }
 
     /** Not used.
@@ -75,6 +94,13 @@ public class ConfluenceSinkTest
 
     /** Not used.
      * {@inheritDoc} */
+    protected String getDataBlock( String value, String text )
+    {
+        return text;
+    }
+
+    /** Not used.
+     * {@inheritDoc} */
     protected String getDateBlock( String date )
     {
         return null;
@@ -84,6 +110,12 @@ public class ConfluenceSinkTest
     protected String getDefinitionListBlock( String definum, String definition )
     {
         return definum + EOL + ConfluenceMarkup.CITATION_START_MARKUP + definition + ConfluenceMarkup.CITATION_END_MARKUP + EOL + EOL;
+    }
+
+    /** {@inheritDoc} */
+    protected String getDivisionBlock( String text )
+    {
+        return text;
     }
 
     /** {@inheritDoc} */
@@ -111,6 +143,30 @@ public class ConfluenceSinkTest
     }
 
     /** {@inheritDoc} */
+    protected String getInlineBlock( String text )
+    {
+        return text;
+    }
+
+    /** {@inheritDoc} */
+    protected String getInlineBoldBlock( String text )
+    {
+        return ConfluenceMarkup.BOLD_START_MARKUP + text + ConfluenceMarkup.BOLD_END_MARKUP;
+    }
+
+    /** {@inheritDoc} */
+    protected String getInlineCodeBlock( String text )
+    {
+        return ConfluenceMarkup.MONOSPACED_START_MARKUP + text + ConfluenceMarkup.MONOSPACED_END_MARKUP;
+    }
+
+    /** {@inheritDoc} */
+    protected String getInlineItalicBlock( String text )
+    {
+        return ConfluenceMarkup.ITALIC_START_MARKUP + text + ConfluenceMarkup.ITALIC_END_MARKUP;
+    }
+
+    /** {@inheritDoc} */
     protected String getItalicBlock( String text )
     {
         return ConfluenceMarkup.ITALIC_START_MARKUP + text + ConfluenceMarkup.ITALIC_END_MARKUP;
@@ -120,6 +176,12 @@ public class ConfluenceSinkTest
     protected String getLineBreakBlock()
     {
         return ConfluenceMarkup.LINE_BREAK_MARKUP + EOL;
+    }
+
+    /** {@inheritDoc} */
+    protected String getLineBreakOpportunityBlock()
+    {
+        return "";
     }
 
     /** {@inheritDoc} */
@@ -139,6 +201,13 @@ public class ConfluenceSinkTest
     protected String getMonospacedBlock( String text )
     {
         return ConfluenceMarkup.MONOSPACED_START_MARKUP + text + ConfluenceMarkup.MONOSPACED_END_MARKUP;
+    }
+
+    /** Not used.
+     * {@inheritDoc} */
+    protected String getNavigationBlock()
+    {
+        return "";
     }
 
     /** {@inheritDoc} */
@@ -163,6 +232,19 @@ public class ConfluenceSinkTest
     protected String getParagraphBlock( String text )
     {
         return text + EOL + EOL;
+    }
+
+    /** Not used.
+     * {@inheritDoc} */
+    protected String getSidebarBlock()
+    {
+        return "";
+    }
+
+    /** {@inheritDoc} */
+    protected String getTimeBlock( String datetime, String text )
+    {
+        return text;
     }
 
     /** {@inheritDoc} */
@@ -205,6 +287,27 @@ public class ConfluenceSinkTest
     protected String getSectionTitleBlock( String title )
     {
         return title;
+    }
+
+    /** Not used.
+     * {@inheritDoc} */
+    protected String getHeaderBlock()
+    {
+        return "";
+    }
+
+    /** Not used.
+     * {@inheritDoc} */
+    protected String getContentBlock()
+    {
+        return "";
+    }
+
+    /** Not used.
+     * {@inheritDoc} */
+    protected String getFooterBlock()
+    {
+        return "";
     }
 
     /** {@inheritDoc} */

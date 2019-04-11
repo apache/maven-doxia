@@ -23,7 +23,6 @@ import java.io.IOException;
 import java.io.Reader;
 import java.io.StringReader;
 import java.io.StringWriter;
-
 import java.util.HashMap;
 import java.util.Iterator;
 import java.util.Map;
@@ -46,7 +45,6 @@ import org.apache.maven.doxia.sink.impl.SinkEventAttributeSet;
 import org.apache.maven.doxia.sink.impl.XhtmlBaseSink;
 import org.apache.maven.doxia.util.DoxiaUtils;
 import org.apache.maven.doxia.util.HtmlTools;
-
 import org.codehaus.plexus.component.annotations.Component;
 import org.codehaus.plexus.util.IOUtil;
 import org.codehaus.plexus.util.StringUtils;
@@ -583,9 +581,9 @@ public class FmlParser
             if ( StringUtils.isNotEmpty( part.getTitle() ) )
             {
                 sink.paragraph();
-                sink.bold();
+                sink.inline( SinkEventAttributeSet.Semantics.BOLD );
                 xdocParser.parse( part.getTitle(), sink );
-                sink.bold_();
+                sink.inline_();
                 sink.paragraph_();
             }
 

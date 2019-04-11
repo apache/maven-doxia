@@ -54,6 +54,36 @@ public class SinkAdapterTest
     }
 
     /**
+     * Test of article method, of class SinkAdapter.
+     */
+    public void testArticle()
+    {
+        instance.article();
+        instance.article( null );
+        instance.article_();
+    }
+
+    /**
+     * Test of navigation method, of class SinkAdapter.
+     */
+    public void testNavigation()
+    {
+        instance.navigation();
+        instance.navigation( null );
+        instance.navigation_();
+    }
+
+    /**
+     * Test of sidebar method, of class SinkAdapter.
+     */
+    public void testSidebar()
+    {
+        instance.sidebar();
+        instance.sidebar( null );
+        instance.sidebar_();
+    }
+
+    /**
      * Test of section1 method, of class SinkAdapter.
      */
     public void testSection1()
@@ -328,6 +358,36 @@ public class SinkAdapterTest
     }
 
     /**
+     * Test of header method, of class SinkAdapter.
+     */
+    public void testHeader()
+    {
+        instance.header();
+        instance.header( null );
+        instance.header_();
+    }
+
+    /**
+     * Test of content method, of class SinkAdapter.
+     */
+    public void testContent()
+    {
+        instance.content();
+        instance.content( null );
+        instance.content_();
+    }
+
+    /**
+     * Test of footer method, of class SinkAdapter.
+     */
+    public void testFooter()
+    {
+        instance.footer();
+        instance.footer( null );
+        instance.footer_();
+    }
+
+    /**
      * Test of paragraph method, of class SinkAdapter.
      */
     public void testParagraph()
@@ -335,6 +395,58 @@ public class SinkAdapterTest
         instance.paragraph();
         instance.paragraph( null );
         instance.paragraph_();
+    }
+
+    /**
+     * Test of data method, of class SinkAdapter.
+     */
+    public void testData()
+    {
+    	String value = "";
+        instance.data( value );
+        instance.data( value, null );
+        instance.data_();
+    }
+
+    /**
+     * Test of time method, of class SinkAdapter.
+     */
+    public void testTime()
+    {
+    	String datetime = "";
+        instance.time( datetime );
+        instance.time( datetime, null );
+        instance.time_();
+    }
+
+    /**
+     * Test of address method, of class SinkAdapter.
+     */
+    public void testAddress()
+    {
+        instance.address();
+        instance.address( null );
+        instance.address_();
+    }
+
+    /**
+     * Test of blockquote method, of class SinkAdapter.
+     */
+    public void testBlockquote()
+    {
+        instance.blockquote();
+        instance.blockquote( null );
+        instance.blockquote_();
+    }
+
+    /**
+     * Test of division method, of class SinkAdapter.
+     */
+    public void testDivision()
+    {
+        instance.division();
+        instance.division( null );
+        instance.division_();
     }
 
     /**
@@ -449,12 +561,22 @@ public class SinkAdapterTest
     }
 
     /**
+     * Test of inline method, of class SinkAdapter.
+     */
+    public void testInline()
+    {
+        instance.inline();
+        instance.inline( null );
+        instance.inline_();
+    }
+
+    /**
      * Test of italic method, of class SinkAdapter.
      */
     public void testItalic()
     {
-        instance.italic();
-        instance.italic_();
+        instance.inline( SinkEventAttributeSet.Semantics.ITALIC );
+        instance.inline_();
     }
 
     /**
@@ -462,8 +584,8 @@ public class SinkAdapterTest
      */
     public void testBold()
     {
-        instance.bold();
-        instance.bold_();
+        instance.inline( SinkEventAttributeSet.Semantics.BOLD );
+        instance.inline_();
     }
 
     /**
@@ -471,8 +593,8 @@ public class SinkAdapterTest
      */
     public void testMonospaced()
     {
-        instance.monospaced();
-        instance.monospaced_();
+        instance.inline( SinkEventAttributeSet.Semantics.MONOSPACED );
+        instance.inline_();
     }
 
     /**
@@ -482,6 +604,15 @@ public class SinkAdapterTest
     {
         instance.lineBreak();
         instance.lineBreak( null );
+    }
+
+    /**
+     * Test of lineBreakOpportunity method, of class SinkAdapter.
+     */
+    public void testLineBreakOpportunities()
+    {
+        instance.lineBreakOpportunity();
+        instance.lineBreakOpportunity( null );
     }
 
     /**

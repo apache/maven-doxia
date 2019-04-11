@@ -20,7 +20,6 @@ package org.apache.maven.doxia.module.rtf;
  */
 
 import java.awt.Color;
-
 import java.io.BufferedOutputStream;
 import java.io.BufferedWriter;
 import java.io.IOException;
@@ -28,12 +27,14 @@ import java.io.OutputStream;
 import java.io.OutputStreamWriter;
 import java.io.PrintWriter;
 import java.io.Writer;
-
+import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.Hashtable;
 import java.util.Iterator;
+import java.util.List;
 import java.util.Map;
 import java.util.Set;
+import java.util.Stack;
 import java.util.StringTokenizer;
 import java.util.TreeSet;
 import java.util.Vector;
@@ -41,6 +42,7 @@ import java.util.Vector;
 import org.apache.maven.doxia.sink.Sink;
 import org.apache.maven.doxia.sink.SinkEventAttributes;
 import org.apache.maven.doxia.sink.impl.AbstractTextSink;
+import org.apache.maven.doxia.sink.impl.SinkEventAttributeSet;
 
 /**
  * <a href="http://en.wikipedia.org/wiki/Rich_Text_Format">RTF</a> Sink implementation.
@@ -214,6 +216,9 @@ public class RtfSink
     protected PrintWriter writer;
 
     protected OutputStream stream; // for raw image data
+
+    /** Keep track of the closing tags for inline events. */
+    protected Stack<List<Integer>> inlineStack = new Stack<List<Integer>>();
 
     /** Map of warn messages with a String as key to describe the error type and a Set as value.
      * Using to reduce warn messages. */
@@ -1445,39 +1450,86 @@ public class RtfSink
     }
 
     /** {@inheritDoc} */
+    public void inline()
+    {
+        inline( null );
+    }
+
+    /** {@inheritDoc} */
+    public void inline( SinkEventAttributes attributes )
+    {
+        List<Integer> tags = new ArrayList<Integer>();
+
+        if ( attributes != null )
+        {
+
+            if ( attributes.containsAttribute( SinkEventAttributes.SEMANTICS, "italic" ) )
+            {
+                tags.add( 0, this.style );
+                beginStyle( STYLE_ITALIC );
+            }
+
+            if ( attributes.containsAttribute( SinkEventAttributes.SEMANTICS, "bold" ) )
+            {
+                tags.add( 0, this.style );
+                beginStyle( STYLE_BOLD );
+            }
+
+            if ( attributes.containsAttribute( SinkEventAttributes.SEMANTICS, "code" ) )
+            {
+                tags.add( 0, this.style );
+                beginStyle( STYLE_TYPEWRITER );
+            }
+
+        }
+            
+        inlineStack.push( tags );
+    }
+
+    /** {@inheritDoc} */
+    public void inline_()
+    {
+        for ( Integer style: inlineStack.pop() )
+        {
+            endStyle();
+            this.style = style;
+        }
+    }
+
+    /** {@inheritDoc} */
     public void italic()
     {
-        beginStyle( STYLE_ITALIC );
+        inline( SinkEventAttributeSet.Semantics.ITALIC );
     }
 
     /** {@inheritDoc} */
     public void italic_()
     {
-        endStyle();
+        inline_();
     }
 
     /** {@inheritDoc} */
     public void bold()
     {
-        beginStyle( STYLE_BOLD );
+        inline( SinkEventAttributeSet.Semantics.BOLD );
     }
 
     /** {@inheritDoc} */
     public void bold_()
     {
-        endStyle();
+        inline_();
     }
 
     /** {@inheritDoc} */
     public void monospaced()
     {
-        beginStyle( STYLE_TYPEWRITER );
+        inline( SinkEventAttributeSet.Semantics.CODE );
     }
 
     /** {@inheritDoc} */
     public void monospaced_()
     {
-        endStyle();
+        inline_();
     }
 
     private void beginStyle( int style )

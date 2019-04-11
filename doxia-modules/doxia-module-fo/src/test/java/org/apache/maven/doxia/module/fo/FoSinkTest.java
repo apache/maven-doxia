@@ -199,6 +199,21 @@ public class FoSinkTest
         return EOL + "</fo:flow>" + EOL + "</fo:page-sequence>" + EOL + "</fo:root>" + EOL;
     }
 
+    protected String getArticleBlock()
+    {
+        return "";
+    }
+
+    protected String getNavigationBlock()
+    {
+        return "";
+    }
+
+    protected String getSidebarBlock()
+    {
+        return "";
+    }
+
     /** {@inheritDoc} */
     protected String getSectionTitleBlock( String title )
     {
@@ -248,6 +263,22 @@ public class FoSinkTest
         String attrib2 = getConfig().getAttributeString( "body.h5" );
         return EOL + EOL + "<fo:block" + attribs + ">" + EOL + EOL + "<fo:block" + attrib2 + ">" + title
             + "</fo:block>" + EOL + "</fo:block>" + EOL;
+    }
+
+    protected String getHeaderBlock()
+    {
+        return "";
+    }
+
+    /** {@inheritDoc} */
+    protected String getContentBlock()
+    {
+        return "";
+    }
+
+    protected String getFooterBlock()
+    {
+        return "";
     }
 
     /** {@inheritDoc} */
@@ -332,6 +363,36 @@ public class FoSinkTest
     }
 
     /** {@inheritDoc} */
+    protected String getDataBlock( String value, String text )
+    {
+        return text;
+    }
+
+    /** {@inheritDoc} */
+    protected String getTimeBlock( String datetime, String text )
+    {
+        return text;
+    }
+
+    /** {@inheritDoc} */
+    protected String getAddressBlock( String text )
+    {
+        return text;
+    }
+
+    /** {@inheritDoc} */
+    protected String getBlockquoteBlock( String text )
+    {
+        return text;
+    }
+
+    /** {@inheritDoc} */
+    protected String getDivisionBlock( String text )
+    {
+        return text;
+    }
+
+    /** {@inheritDoc} */
     protected String getVerbatimBlock( String text )
     {
         String attribs = getConfig().getAttributeString( "body.source" );
@@ -367,6 +428,33 @@ public class FoSinkTest
     }
 
     /** {@inheritDoc} */
+    protected String getInlineBlock( String text )
+    {
+        return text;
+    }
+
+    /** {@inheritDoc} */
+    protected String getInlineItalicBlock( String text )
+    {
+        String attribs = getConfig().getAttributeString( "italic" );
+        return EOL + "<fo:inline" + attribs + ">" + text + "</fo:inline>";
+    }
+
+    /** {@inheritDoc} */
+    protected String getInlineBoldBlock( String text )
+    {
+        String attribs = getConfig().getAttributeString( "bold" );
+        return EOL + "<fo:inline" + attribs + ">" + text + "</fo:inline>";
+    }
+
+    /** {@inheritDoc} */
+    protected String getInlineCodeBlock( String text )
+    {
+        String attribs = getConfig().getAttributeString( "monospace" );
+        return EOL + "<fo:inline" + attribs + ">" + text + "</fo:inline>";
+    }
+
+    /** {@inheritDoc} */
     protected String getItalicBlock( String text )
     {
         String attribs = getConfig().getAttributeString( "italic" );
@@ -391,6 +479,12 @@ public class FoSinkTest
     protected String getLineBreakBlock()
     {
         return EOL + EOL + "<fo:block />";
+    }
+
+    /** {@inheritDoc} */
+    protected String getLineBreakOpportunityBlock()
+    {
+        return "";
     }
 
     /** {@inheritDoc} */

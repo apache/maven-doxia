@@ -83,6 +83,24 @@ public class AptSinkTest extends AbstractSinkTest
     }
 
     /** {@inheritDoc} */
+    protected String getArticleBlock()
+    {
+        return "";
+    }
+
+    /** {@inheritDoc} */
+    protected String getNavigationBlock()
+    {
+        return "";
+    }
+
+    /** {@inheritDoc} */
+    protected String getSidebarBlock()
+    {
+        return "";
+    }
+
+    /** {@inheritDoc} */
     protected String getSectionTitleBlock( String title )
     {
         return title;
@@ -119,6 +137,24 @@ public class AptSinkTest extends AbstractSinkTest
     {
         return EOL + StringUtils.repeat( String.valueOf( AptMarkup.SECTION_TITLE_START_MARKUP ), 4 )
                 + title + EOL + EOL + EOL;
+    }
+
+    /** {@inheritDoc} */
+    protected String getHeaderBlock()
+    {
+        return "";
+    }
+
+    /** {@inheritDoc} */
+    protected String getContentBlock()
+    {
+        return "";
+    }
+
+    /** {@inheritDoc} */
+    protected String getFooterBlock()
+    {
+        return "";
     }
 
     /** {@inheritDoc} */
@@ -171,6 +207,36 @@ public class AptSinkTest extends AbstractSinkTest
     }
 
     /** {@inheritDoc} */
+    protected String getDataBlock( String value, String text )
+    {
+        return text;
+    }
+
+    /** {@inheritDoc} */
+    protected String getTimeBlock( String datetime, String text )
+    {
+        return text;
+    }
+
+    /** {@inheritDoc} */
+    protected String getAddressBlock( String text )
+    {
+        return text;
+    }
+
+    /** {@inheritDoc} */
+    protected String getBlockquoteBlock( String text )
+    {
+        return text;
+    }
+
+    /** {@inheritDoc} */
+    protected String getDivisionBlock( String text )
+    {
+        return text;
+    }
+
+    /** {@inheritDoc} */
     protected String getVerbatimBlock( String text )
     {
         return EOL + EOL + AptMarkup.BOXED_VERBATIM_START_MARKUP + EOL + text + EOL
@@ -203,6 +269,30 @@ public class AptSinkTest extends AbstractSinkTest
     }
 
     /** {@inheritDoc} */
+    protected String getInlineBlock( String text )
+    {
+        return text;
+    }
+
+    /** {@inheritDoc} */
+    protected String getInlineItalicBlock( String text )
+    {
+        return AptMarkup.ITALIC_START_MARKUP + text + AptMarkup.ITALIC_END_MARKUP;
+    }
+
+    /** {@inheritDoc} */
+    protected String getInlineBoldBlock( String text )
+    {
+        return AptMarkup.BOLD_START_MARKUP + text + AptMarkup.BOLD_END_MARKUP;
+    }
+
+    /** {@inheritDoc} */
+    protected String getInlineCodeBlock( String text )
+    {
+        return AptMarkup.MONOSPACED_START_MARKUP + text + AptMarkup.MONOSPACED_END_MARKUP;
+    }
+
+    /** {@inheritDoc} */
     protected String getItalicBlock( String text )
     {
         return AptMarkup.ITALIC_START_MARKUP + text + AptMarkup.ITALIC_END_MARKUP;
@@ -217,13 +307,19 @@ public class AptSinkTest extends AbstractSinkTest
     /** {@inheritDoc} */
     protected String getMonospacedBlock( String text )
     {
-        return AptMarkup.MONOSPACED_START_MARKUP + text + AptMarkup.MONOSPACED_END_MARKUP;
+        return text;
     }
 
     /** {@inheritDoc} */
     protected String getLineBreakBlock()
     {
         return String.valueOf( AptMarkup.BACKSLASH ) + EOL;
+    }
+
+    /** {@inheritDoc} */
+    protected String getLineBreakOpportunityBlock()
+    {
+        return "";
     }
 
     /** {@inheritDoc} */

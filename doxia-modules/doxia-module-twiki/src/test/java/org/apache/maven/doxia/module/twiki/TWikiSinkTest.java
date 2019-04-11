@@ -49,9 +49,21 @@ public class TWikiSinkTest
     }
 
     /** {@inheritDoc} */
+    protected String getAddressBlock( String text )
+    {
+        return text;
+    }
+
+    /** {@inheritDoc} */
     protected String getAnchorBlock( String anchor )
     {
         return EOL + "#" + anchor + anchor;
+    }
+
+    /** {@inheritDoc} */
+    protected String getArticleBlock()
+    {
+        return "";
     }
 
     /** Not used.
@@ -59,6 +71,12 @@ public class TWikiSinkTest
     protected String getAuthorBlock( String author )
     {
         return null;
+    }
+
+    /** {@inheritDoc} */
+    protected String getBlockquoteBlock( String text )
+    {
+        return text;
     }
 
     /** Not used.
@@ -72,6 +90,18 @@ public class TWikiSinkTest
     protected String getBoldBlock( String text )
     {
         return TWikiMarkup.BOLD_START_MARKUP + text + TWikiMarkup.BOLD_END_MARKUP;
+    }
+
+    /** {@inheritDoc} */
+    protected String getContentBlock()
+    {
+        return "";
+    }
+
+    /** {@inheritDoc} */
+    protected String getDataBlock( String value, String text )
+    {
+        return text;
     }
 
     /** Not used.
@@ -89,6 +119,12 @@ public class TWikiSinkTest
     }
 
     /** {@inheritDoc} */
+    protected String getDivisionBlock( String text )
+    {
+        return text;
+    }
+
+    /** {@inheritDoc} */
     protected String getFigureBlock( String source, String caption )
     {
         String figureBlock = "<img src=\"" + source + "\"";
@@ -100,6 +136,12 @@ public class TWikiSinkTest
         return figureBlock;
     }
 
+    /** {@inheritDoc} */
+    protected String getFooterBlock()
+    {
+        return "";
+    }
+
     /** Not used.
      * {@inheritDoc} */
     protected String getHeadBlock()
@@ -108,9 +150,39 @@ public class TWikiSinkTest
     }
 
     /** {@inheritDoc} */
+    protected String getHeaderBlock()
+    {
+        return "";
+    }
+
+    /** {@inheritDoc} */
     protected String getHorizontalRuleBlock()
     {
         return TWikiMarkup.HORIZONTAL_RULE_MARKUP + EOL;
+    }
+
+    /** {@inheritDoc} */
+    protected String getInlineBlock( String text )
+    {
+        return text;
+    }
+
+    /** {@inheritDoc} */
+    protected String getInlineItalicBlock( String text )
+    {
+        return TWikiMarkup.ITALIC_START_MARKUP + text + TWikiMarkup.ITALIC_END_MARKUP;
+    }
+
+    /** {@inheritDoc} */
+    protected String getInlineBoldBlock( String text )
+    {
+        return TWikiMarkup.BOLD_START_MARKUP + text + TWikiMarkup.BOLD_END_MARKUP;
+    }
+
+    /** {@inheritDoc} */
+    protected String getInlineCodeBlock( String text )
+    {
+        return TWikiMarkup.MONOSPACED_START_MARKUP + text + TWikiMarkup.MONOSPACED_END_MARKUP;
     }
 
     /** {@inheritDoc} */
@@ -121,6 +193,12 @@ public class TWikiSinkTest
 
     /** {@inheritDoc} */
     protected String getLineBreakBlock()
+    {
+        return "";
+    }
+
+    /** {@inheritDoc} */
+    protected String getLineBreakOpportunityBlock()
     {
         return "";
     }
@@ -142,6 +220,12 @@ public class TWikiSinkTest
     protected String getMonospacedBlock( String text )
     {
         return TWikiMarkup.MONOSPACED_START_MARKUP + text + TWikiMarkup.MONOSPACED_END_MARKUP;
+    }
+
+    /** {@inheritDoc} */
+    protected String getNavigationBlock()
+    {
+        return "";
     }
 
     /** {@inheritDoc} */
@@ -211,6 +295,12 @@ public class TWikiSinkTest
     }
 
     /** {@inheritDoc} */
+    protected String getSidebarBlock()
+    {
+        return "";
+    }
+
+    /** {@inheritDoc} */
     protected String getTableBlock( String cell, String caption )
     {
         return "| " + cell + " |" + EOL + "Table_caption";
@@ -220,6 +310,12 @@ public class TWikiSinkTest
     protected String getTextBlock( String text )
     {
         return HtmlTools.escapeHTML( text );
+    }
+
+    /** {@inheritDoc} */
+    protected String getTimeBlock( String datetime, String text )
+    {
+        return text;
     }
 
     /** Not used.

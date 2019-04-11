@@ -32,15 +32,19 @@ import java.io.StringWriter;
 import java.io.Writer;
 import java.net.MalformedURLException;
 import java.net.URL;
+import java.util.ArrayList;
 import java.util.HashMap;
+import java.util.List;
 import java.util.Locale;
 import java.util.Map;
 import java.util.Set;
+import java.util.Stack;
 import java.util.TreeSet;
 
 import org.apache.maven.doxia.sink.Sink;
 import org.apache.maven.doxia.sink.SinkEventAttributes;
 import org.apache.maven.doxia.sink.impl.AbstractXmlSink;
+import org.apache.maven.doxia.sink.impl.SinkEventAttributeSet;
 import org.apache.maven.doxia.util.DoxiaUtils;
 import org.apache.maven.doxia.util.HtmlTools;
 
@@ -117,6 +121,9 @@ public class ITextSink
 
     /** Flag to know if an figure event is called. */
     private boolean figureDefined = false;
+
+    /** Keep track of the closing tags for inline events. */
+    protected Stack<List<String>> inlineStack = new Stack<List<String>>();
 
     /** Map of warn messages with a String as key to describe the error type and a Set as value.
      * Using to reduce warn messages. */
@@ -1268,39 +1275,96 @@ public class ITextSink
     // ----------------------------------------------------------------------
 
     /** {@inheritDoc} */
+    public void inline()
+    {
+        inline( null );
+    }
+
+    /** {@inheritDoc} */
+    public void inline( SinkEventAttributes attributes )
+    {
+        List<String> tags = new ArrayList<String>();
+
+        if ( attributes != null )
+        {
+
+            if ( attributes.containsAttribute( SinkEventAttributes.SEMANTICS, "italic" ) )
+            {
+                font.addItalic();
+                tags.add( 0, "italic" );
+            }
+
+            if ( attributes.containsAttribute( SinkEventAttributes.SEMANTICS, "bold" ) )
+            {
+                font.addBold();
+                tags.add( 0, "bold" );
+            }
+
+            if ( attributes.containsAttribute( SinkEventAttributes.SEMANTICS, "code" ) )
+            {
+                font.setMonoSpaced( true );
+                tags.add( 0, "code" );
+            }
+
+        }
+
+        inlineStack.push( tags );
+    }
+
+    /** {@inheritDoc} */
+    public void inline_()
+    {
+        for ( String tag: inlineStack.pop() )
+        {
+            if ( "italic".equals( tag ) )
+            {
+                font.removeItalic();
+            }
+            else if ( "bold".equals( tag ) )
+            {
+                font.removeBold();
+            }
+            else if ( "code".equals( tag ) )
+            {
+                font.setMonoSpaced( false );
+            }
+        }
+    }
+
+    /** {@inheritDoc} */
     public void bold_()
     {
-        font.removeBold();
+        inline_();
     }
 
     /** {@inheritDoc} */
     public void bold()
     {
-        font.addBold();
+        inline( SinkEventAttributeSet.Semantics.BOLD );
     }
 
     /** {@inheritDoc} */
     public void italic_()
     {
-        font.removeItalic();
+        inline_();
     }
 
     /** {@inheritDoc} */
     public void italic()
     {
-        font.addItalic();
+        inline( SinkEventAttributeSet.Semantics.ITALIC );
     }
 
     /** {@inheritDoc} */
     public void monospaced_()
     {
-        font.setMonoSpaced( false );
+        inline_();
     }
 
     /** {@inheritDoc} */
     public void monospaced()
     {
-        font.setMonoSpaced( true );
+        inline( SinkEventAttributeSet.Semantics.CODE );
     }
 
     // ----------------------------------------------------------------------

@@ -123,9 +123,9 @@ public class FmlParserTest
         assertEquals( "anchor_", ( it.next() ).getName() );
         assertEquals( "sectionTitle1_", ( it.next() ).getName() );
         assertEquals( "paragraph", ( it.next() ).getName() );
-        assertEquals( "bold", ( it.next() ).getName() );
+        assertEquals( "inline", ( it.next() ).getName() );
         assertEquals( "text", ( it.next() ).getName() );
-        assertEquals( "bold_", ( it.next() ).getName() );
+        assertEquals( "inline_", ( it.next() ).getName() );
         assertEquals( "paragraph_", ( it.next() ).getName() );
         assertEquals( "numberedList", ( it.next() ).getName() );
         assertEquals( "numberedListItem", ( it.next() ).getName() );
@@ -197,13 +197,13 @@ public class FmlParserTest
         assertEquals( "anchor_", ( it.next() ).getName() );
         assertEquals( "sectionTitle1_", ( it.next() ).getName() );
         assertEquals( "paragraph", ( it.next() ).getName() );
-        assertEquals( "bold", ( it.next() ).getName() );
+        assertEquals( "inline", ( it.next() ).getName() );
 
         // part title in TOC
         assertTextEvent( it.next(), "<" );
         assertTextEvent( it.next(), "\u0391" );
 
-        assertEquals( "bold_", ( it.next() ).getName() );
+        assertEquals( "inline_", ( it.next() ).getName() );
         assertEquals( "paragraph_", ( it.next() ).getName() );
         assertEquals( "numberedList", ( it.next() ).getName() );
         assertEquals( "numberedListItem", ( it.next() ).getName() );
@@ -239,11 +239,11 @@ public class FmlParserTest
         assertEquals( "paragraph", ( it.next() ).getName() );
 
         // answer
-        assertEquals( "monospaced", ( it.next() ).getName() );
+        assertEquals( "inline", ( it.next() ).getName() );
         assertTextEvent( it.next(), "<" );
         assertTextEvent( it.next(), "img" );
         assertTextEvent( it.next(), ">" );
-        assertEquals( "monospaced_", ( it.next() ).getName() );
+        assertEquals( "inline_", ( it.next() ).getName() );
         assertTextEvent( it.next(), "\"" );
         assertTextEvent( it.next(), "\u0391" );
 
