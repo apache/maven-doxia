@@ -80,11 +80,10 @@ public class ConfluenceSinkTest
         return null;
     }
 
-    /** Not used.
-     * {@inheritDoc} */
+    /** {@inheritDoc} */
     protected String getDefinitionListBlock( String definum, String definition )
     {
-        return null;
+        return definum + EOL + ConfluenceMarkup.CITATION_START_MARKUP + definition + ConfluenceMarkup.CITATION_END_MARKUP + EOL + EOL;
     }
 
     /** {@inheritDoc} */
@@ -133,7 +132,7 @@ public class ConfluenceSinkTest
     /** {@inheritDoc} */
     protected String getListBlock( String item )
     {
-        return ConfluenceMarkup.LIST_ITEM_MARKUP + item + EOL;
+        return ConfluenceMarkup.LIST_ITEM_MARKUP + item + EOL + EOL;
     }
 
     /** {@inheritDoc} */
@@ -151,7 +150,7 @@ public class ConfluenceSinkTest
     /** {@inheritDoc} */
     protected String getNumberedListBlock( String item )
     {
-        return ConfluenceMarkup.NUMBERING_MARKUP + " " + item + EOL;
+        return ConfluenceMarkup.NUMBERING_MARKUP + " " + item + EOL + EOL;
     }
 
     /** {@inheritDoc} */
@@ -230,7 +229,7 @@ public class ConfluenceSinkTest
     /** {@inheritDoc} */
     protected String getVerbatimBlock( String text )
     {
-        return "{code|borderStyle=solid}" + EOL + text + "{code}" + EOL + EOL;
+        return "{code:borderStyle=solid}" + EOL + text + "{code}" + EOL + EOL;
     }
 
     /** {@inheritDoc} */
@@ -313,5 +312,15 @@ public class ConfluenceSinkTest
     protected String getCommentBlock( String text )
     {
         return "";
+    }
+
+    public void testEscapeConfluenceNull()
+    {
+        assertEquals( "Wrong Confluence escape!", "", ConfluenceSink.escapeConfluence( null ) );
+    }
+
+    public void testEscapeConfluenceCurlies()
+    {
+        assertEquals( "Wrong Confluence escape!", "$\\{finalName\\}", ConfluenceSink.escapeConfluence( "${finalName}" ) );
     }
 }

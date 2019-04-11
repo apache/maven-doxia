@@ -58,8 +58,14 @@ public class ConfluenceSink
     /**  listStyles. */
     private final Stack<String> listStyles;
 
+    /** An indication on if we're in monospaced mode. */
+    private boolean monospacedFlag;
+
     /** An indication on if we're in verbatim box mode. */
     private boolean verbatimBoxedFlag;
+
+    /** An indication on if we're in table mode. */
+    private boolean tableFlag;
 
     /** An indication on if we're in table header mode. */
     private boolean tableHeaderFlag;
@@ -207,7 +213,7 @@ public class ConfluenceSink
     /** {@inheritDoc} */
     public void definedTerm()
     {
-        write( " " );
+        // nop
     }
 
     /** {@inheritDoc} */
@@ -217,39 +223,36 @@ public class ConfluenceSink
     }
 
     /**
-     * Not used.
      * {@inheritDoc}
      */
     public void definedTerm_()
     {
-        // nop
+        writeEOL( true );
     }
 
     /**
-     * Not used.
      * {@inheritDoc}
      */
     public void definition()
     {
-        // nop
+        writer.write( CITATION_START_MARKUP );
     }
 
     /**
-     * Not used.
      * {@inheritDoc}
      */
     public void definition( SinkEventAttributes attributes )
     {
-        // nop
+        definition();
     }
 
     /**
-     * Not used.
      * {@inheritDoc}
      */
     public void definition_()
     {
-        // nop
+        writer.write( CITATION_END_MARKUP );
+        writeEOL( true );
     }
 
     /**
@@ -271,12 +274,11 @@ public class ConfluenceSink
     }
 
     /**
-     * Not used.
      * {@inheritDoc}
      */
     public void definitionList_()
     {
-        // nop
+        writeEOL();
     }
 
     /**
@@ -479,6 +481,11 @@ public class ConfluenceSink
     public void list_()
     {
         levelList--;
+        if ( levelList == 0 )
+        {
+            writeEOL( true );
+            writeEOL();
+        }
     }
 
     /** {@inheritDoc} */
@@ -502,12 +509,14 @@ public class ConfluenceSink
     /** {@inheritDoc} */
     public void monospaced()
     {
+        monospacedFlag = true;
         write( MONOSPACED_START_MARKUP );
     }
 
     /** {@inheritDoc} */
     public void monospaced_()
     {
+        monospacedFlag = false;
         write( MONOSPACED_END_MARKUP );
     }
 
@@ -523,6 +532,10 @@ public class ConfluenceSink
     /** {@inheritDoc} */
     public void numberedList( int numbering )
     {
+        if ( !writer.toString().endsWith( EOL + EOL ) )
+        {
+            writeEOL( true );
+        }
         levelList++;
 
         String style;
@@ -550,6 +563,11 @@ public class ConfluenceSink
     public void numberedList_()
     {
         levelList--;
+        if ( levelList == 0 )
+        {
+            writeEOL( true );
+            writeEOL();
+        }
         listStyles.pop();
     }
 
@@ -558,7 +576,12 @@ public class ConfluenceSink
     {
         writeEOL( true );
         String style = listStyles.peek();
-        write( style + SPACE );
+        // We currently only handle one type of numbering style for Confluence,
+        // so we can just repeat the latest numbering markup for each level.
+        // If we ever decide to handle multiple different numbering styles, we'd
+        // need to traverse the entire listStyles stack and use the correct
+        // numbering style for each level.
+        write( StringUtils.repeat( style, levelList ) + SPACE );
     }
 
     /** {@inheritDoc} */
@@ -819,6 +842,7 @@ public class ConfluenceSink
     public void table()
     {
         // nop
+        tableFlag = true;
         writeEOL( true );
         writeEOL();
     }
@@ -832,6 +856,7 @@ public class ConfluenceSink
     /** {@inheritDoc} */
     public void table_()
     {
+        tableFlag = false;
         writeEOL( true );
         writeEOL();
     }
@@ -964,7 +989,25 @@ public class ConfluenceSink
             write( LINK_START_MARKUP );
         }
 
-        content( text );
+        if ( tableFlag )
+        {
+            // Remove line breaks, because it interferes with the table syntax
+            String strippedText = StringUtils.replace( text, "\n", "" );
+            // Trim if only whitespace, to handle ignorable whitespace from xdoc documents
+            if ( StringUtils.isWhitespace( strippedText ) )
+            {
+                strippedText = StringUtils.trim( strippedText );
+            }
+            content( strippedText );
+        }
+        else if ( monospacedFlag )
+        {
+            content( text, true );
+        }
+        else
+        {
+            content( text );
+        }
 
         if ( linkName != null )
         {
@@ -1062,7 +1105,7 @@ public class ConfluenceSink
 
         if ( verbatimBoxedFlag )
         {
-            write( "{code|borderStyle=solid}" );
+            write( "{code:borderStyle=solid}" );
         }
         else
         {
@@ -1131,18 +1174,73 @@ public class ConfluenceSink
         write( escapeHTML( text ) );
     }
 
+    /**
+     * Write HTML, and optionally Confluence, escaped text to output.
+     *
+     * @param text The text to write.
+     */
+    protected void content( String text, boolean escapeConfluence )
+    {
+        if ( escapeConfluence )
+        {
+            write( escapeConfluence( escapeHTML( text ) ) );
+        }
+        else
+        {
+            content( text );
+        }
+    }
+
     /** {@inheritDoc} */
     protected void init()
     {
         super.init();
 
         this.writer = new StringWriter();
+        this.monospacedFlag = false;
         this.headFlag = false;
         this.levelList = 0;
         this.listStyles.clear();
         this.verbatimBoxedFlag = false;
         this.tableHeaderFlag = false;
         this.linkName = null;
+    }
+
+    /**
+     * Escape characters that have special meaning in Confluence.
+     *
+     * @param text the String to escape, may be null
+     * @return the text escaped, "" if null String input
+     */
+    protected static String escapeConfluence( String text )
+    {
+        if ( text == null )
+        {
+            return "";
+        }
+        else
+        {
+            int length = text.length();
+            StringBuilder buffer = new StringBuilder( length );
+
+            for ( int i = 0; i < length; ++i )
+            {
+                char c = text.charAt( i );
+                switch ( c )
+                {
+                    case '{':
+                        buffer.append( "\\{" );
+                        break;
+                    case '}':
+                        buffer.append( "\\}" );
+                        break;
+                    default:
+                         buffer.append( c );
+                }
+            }
+
+            return buffer.toString();
+        }
     }
 
     /**

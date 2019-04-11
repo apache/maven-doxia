@@ -51,6 +51,12 @@ public interface ConfluenceMarkup
     /** Syntax for the bold markup: "*" */
     String BOLD_START_MARKUP = "*";
 
+    /** Syntax for the citation markup: "??" */
+    String CITATION_END_MARKUP = "??";
+
+    /** Syntax for the citation markup: "??" */
+    String CITATION_START_MARKUP = "??";
+
     /** Syntax for the figure markup: "!" */
     String FIGURE_END_MARKUP = "!";
 

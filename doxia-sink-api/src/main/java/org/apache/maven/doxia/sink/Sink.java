@@ -744,7 +744,7 @@ public interface Sink
     void definedTerm( SinkEventAttributes attributes );
 
     /**
-     * Starts a definition term element within a definition list.
+     * Ends a definition term element within a definition list.
      */
     void definedTerm_();
 
