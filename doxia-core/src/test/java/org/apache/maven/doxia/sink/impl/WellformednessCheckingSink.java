@@ -66,6 +66,42 @@ public class WellformednessCheckingSink
     }
 
     @Override
+    public void article()
+    {
+        startElement( "article" );
+    }
+
+    @Override
+    public void article_()
+    {
+        checkWellformedness( "article" );
+    }
+
+    @Override
+    public void navigation()
+    {
+        startElement( "navigation" );
+    }
+
+    @Override
+    public void navigation_()
+    {
+        checkWellformedness( "navigation" );
+    }
+
+    @Override
+    public void sidebar()
+    {
+        startElement( "sidebar" );
+    }
+
+    @Override
+    public void sidebar_()
+    {
+        checkWellformedness( "sidebar" );
+    }
+
+    @Override
     public void section1()
     {
         startElement( "section1" );
@@ -135,6 +171,42 @@ public class WellformednessCheckingSink
     public void section6_()
     {
         checkWellformedness( "section6" );
+    }
+
+    @Override
+    public void header()
+    {
+        startElement( "header" );
+    }
+
+    @Override
+    public void header_()
+    {
+        checkWellformedness( "header" );
+    }
+
+    @Override
+    public void content()
+    {
+        startElement( "content" );
+    }
+
+    @Override
+    public void content_()
+    {
+        checkWellformedness( "content" );
+    }
+
+    @Override
+    public void footer()
+    {
+        startElement( "footer" );
+    }
+
+    @Override
+    public void footer_()
+    {
+        checkWellformedness( "footer" );
     }
 
     @Override
@@ -403,6 +475,66 @@ public class WellformednessCheckingSink
     }
 
     @Override
+    public void data( String value )
+    {
+        startElement( "data" );
+    }
+
+    @Override
+    public void data_()
+    {
+        checkWellformedness( "data" );
+    }
+
+    @Override
+    public void time( String datetime )
+    {
+        startElement( "time" );
+    }
+
+    @Override
+    public void time_()
+    {
+        checkWellformedness( "time" );
+    }
+
+    @Override
+    public void address()
+    {
+        startElement( "address" );
+    }
+
+    @Override
+    public void address_()
+    {
+        checkWellformedness( "address" );
+    }
+
+    @Override
+    public void blockquote()
+    {
+        startElement( "blockquote" );
+    }
+
+    @Override
+    public void blockquote_()
+    {
+        checkWellformedness( "blockquote" );
+    }
+
+    @Override
+    public void division()
+    {
+        startElement( "division" );
+    }
+
+    @Override
+    public void division_()
+    {
+        checkWellformedness( "division" );
+    }
+
+    @Override
     public void verbatim( boolean boxed )
     {
         startElement( "verbatim" );
@@ -529,6 +661,18 @@ public class WellformednessCheckingSink
     }
 
     @Override
+    public void inline()
+    {
+        startElement( "inline" );
+    }
+
+    @Override
+    public void inline_()
+    {
+        checkWellformedness( "inline" );
+    }
+
+    @Override
     public void italic()
     {
         startElement( "italic" );
@@ -566,6 +710,12 @@ public class WellformednessCheckingSink
 
     @Override
     public void lineBreak()
+    {
+        // nop
+    }
+
+    @Override
+    public void lineBreakOpportunity()
     {
         // nop
     }
@@ -702,6 +852,24 @@ public class WellformednessCheckingSink
     }
 
     @Override
+    public void article( SinkEventAttributes attributes )
+    {
+        article();
+    }
+
+    @Override
+    public void navigation( SinkEventAttributes attributes )
+    {
+        navigation();
+    }
+
+    @Override
+    public void sidebar( SinkEventAttributes attributes )
+    {
+        sidebar();
+    }
+
+    @Override
     public void section( int level, SinkEventAttributes attributes )
     {
         startElement( "section" + level );
@@ -723,6 +891,24 @@ public class WellformednessCheckingSink
     public void sectionTitle_( int level )
     {
         checkWellformedness( "sectionTitle" + level );
+    }
+
+    @Override
+    public void header( SinkEventAttributes attributes )
+    {
+        header();
+    }
+
+    @Override
+    public void content( SinkEventAttributes attributes )
+    {
+        content();
+    }
+
+    @Override
+    public void footer( SinkEventAttributes attributes )
+    {
+        footer();
     }
 
     @Override
@@ -828,6 +1014,36 @@ public class WellformednessCheckingSink
     }
 
     @Override
+    public void data( String value, SinkEventAttributes attributes )
+    {
+        data( value );
+    }
+
+    @Override
+    public void time( String datetime, SinkEventAttributes attributes )
+    {
+        time( datetime );
+    }
+
+    @Override
+    public void address( SinkEventAttributes attributes )
+    {
+        address();
+    }
+
+    @Override
+    public void blockquote( SinkEventAttributes attributes )
+    {
+        blockquote();
+    }
+
+    @Override
+    public void division( SinkEventAttributes attributes )
+    {
+        division();
+    }
+
+    @Override
     public void verbatim( SinkEventAttributes attributes )
     {
         verbatim( false );
@@ -852,9 +1068,21 @@ public class WellformednessCheckingSink
     }
 
     @Override
+    public void inline( SinkEventAttributes attributes )
+    {
+        inline();
+    }
+
+    @Override
     public void lineBreak( SinkEventAttributes attributes )
     {
         lineBreak();
+    }
+
+    @Override
+    public void lineBreakOpportunity( SinkEventAttributes attributes )
+    {
+        lineBreakOpportunity();
     }
 
     @Override

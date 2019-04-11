@@ -21,10 +21,13 @@ package org.apache.maven.doxia.module.apt;
 
 import java.io.PrintWriter;
 import java.io.Writer;
+import java.util.ArrayList;
+import java.util.List;
 import java.util.Stack;
 
 import org.apache.maven.doxia.sink.SinkEventAttributes;
 import org.apache.maven.doxia.sink.impl.AbstractTextSink;
+import org.apache.maven.doxia.sink.impl.SinkEventAttributeSet;
 import org.codehaus.plexus.util.StringUtils;
 
 /**
@@ -104,6 +107,9 @@ public class AptSink
     /**  listStyles. */
     private final Stack<String> listStyles;
 
+    /** Keep track of the closing tags for inline events. */
+    protected Stack<List<String>> inlineStack = new Stack<List<String>>();
+
     // ----------------------------------------------------------------------
     // Public protected methods
     // ----------------------------------------------------------------------
@@ -178,6 +184,7 @@ public class AptSink
         this.cellJustif = null;
         this.rowLine = null;
         this.listStyles.clear();
+        this.inlineStack.clear();
     }
 
     /**
@@ -810,57 +817,91 @@ public class AptSink
     }
 
     /** {@inheritDoc} */
-    public void italic()
+    public void inline()
+    {
+        inline( null );
+    }
+
+    /** {@inheritDoc} */
+    public void inline( SinkEventAttributes attributes )
     {
         if ( !headerFlag )
         {
-            write( ITALIC_START_MARKUP );
+            List<String> tags = new ArrayList<String>();
+
+            if ( attributes != null )
+            {
+
+                if ( attributes.containsAttribute( SinkEventAttributes.SEMANTICS, "italic" ) )
+                {
+                    write( ITALIC_START_MARKUP );
+                    tags.add( 0, ITALIC_END_MARKUP );
+                }
+
+                if ( attributes.containsAttribute( SinkEventAttributes.SEMANTICS, "bold" ) )
+                {
+                    write( BOLD_START_MARKUP );
+                    tags.add( 0, BOLD_END_MARKUP );
+                }
+
+                if ( attributes.containsAttribute( SinkEventAttributes.SEMANTICS, "code" ) )
+                {
+                    write( MONOSPACED_START_MARKUP );
+                    tags.add( 0, MONOSPACED_END_MARKUP );
+                }
+
+            }
+
+            inlineStack.push( tags );
         }
+    }
+
+    /** {@inheritDoc} */
+    public void inline_()
+    {
+        if ( !headerFlag )
+        {
+            for ( String tag: inlineStack.pop() )
+            {
+                write( tag );
+            }
+        }
+    }
+
+    /** {@inheritDoc} */
+    public void italic()
+    {
+        inline( SinkEventAttributeSet.Semantics.ITALIC );
     }
 
     /** {@inheritDoc} */
     public void italic_()
     {
-        if ( !headerFlag )
-        {
-            write( ITALIC_END_MARKUP );
-        }
+        inline_();
     }
 
     /** {@inheritDoc} */
     public void bold()
     {
-        if ( !headerFlag )
-        {
-            write( BOLD_START_MARKUP );
-        }
+        inline( SinkEventAttributeSet.Semantics.BOLD );
     }
 
     /** {@inheritDoc} */
     public void bold_()
     {
-        if ( !headerFlag )
-        {
-            write( BOLD_END_MARKUP );
-        }
+        inline_();
     }
 
     /** {@inheritDoc} */
     public void monospaced()
     {
-        if ( !headerFlag )
-        {
-            write( MONOSPACED_START_MARKUP );
-        }
+        inline( SinkEventAttributeSet.Semantics.CODE );
     }
 
     /** {@inheritDoc} */
     public void monospaced_()
     {
-        if ( !headerFlag )
-        {
-            write( MONOSPACED_END_MARKUP );
-        }
+        inline_();
     }
 
     /** {@inheritDoc} */

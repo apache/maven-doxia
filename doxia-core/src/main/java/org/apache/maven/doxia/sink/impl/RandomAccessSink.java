@@ -96,6 +96,24 @@ public class RandomAccessSink
         this.coreSink = this.currentSink;
     }
 
+    @Override
+    public void address()
+    {
+        currentSink.address();
+    }
+
+    @Override
+    public void address( SinkEventAttributes attributes )
+    {
+        currentSink.address( attributes );
+    }
+
+    @Override
+    public void address_()
+    {
+        currentSink.address_();
+    }
+
     /**
      * By calling this method a sink reference is added at the current position. You can write to both the new sink
      * reference and the original sink. After flushing all sinks will be flushed in the right order.
@@ -152,6 +170,24 @@ public class RandomAccessSink
     }
 
     @Override
+    public void article()
+    {
+        currentSink.article();
+    }
+
+    @Override
+    public void article( SinkEventAttributes attributes )
+    {
+        currentSink.article( attributes );
+    }
+
+    @Override
+    public void article_()
+    {
+        currentSink.article_();
+    }
+
+    @Override
     public void author()
     {
         currentSink.author();
@@ -167,6 +203,24 @@ public class RandomAccessSink
     public void author_()
     {
         currentSink.author_();
+    }
+
+    @Override
+    public void blockquote()
+    {
+        currentSink.blockquote();
+    }
+
+    @Override
+    public void blockquote( SinkEventAttributes attributes )
+    {
+        currentSink.blockquote( attributes );
+    }
+
+    @Override
+    public void blockquote_()
+    {
+        currentSink.blockquote_();
     }
 
     @Override
@@ -216,6 +270,42 @@ public class RandomAccessSink
     public void comment( String comment )
     {
         currentSink.comment( comment );
+    }
+
+    @Override
+    public void content()
+    {
+        currentSink.content();
+    }
+
+    @Override
+    public void content( SinkEventAttributes attributes )
+    {
+        currentSink.content( attributes );
+    }
+
+    @Override
+    public void content_()
+    {
+        currentSink.content_();
+    }
+
+    @Override
+    public void data( String value )
+    {
+        currentSink.data( value );
+    }
+
+    @Override
+    public void data( String value, SinkEventAttributes attributes )
+    {
+        currentSink.data( value, attributes );
+    }
+
+    @Override
+    public void data_()
+    {
+        currentSink.data_();
     }
 
     @Override
@@ -309,6 +399,24 @@ public class RandomAccessSink
     }
 
     @Override
+    public void division()
+    {
+        currentSink.division();
+    }
+
+    @Override
+    public void division( SinkEventAttributes attributes )
+    {
+        currentSink.division( attributes );
+    }
+
+    @Override
+    public void division_()
+    {
+        currentSink.division_();
+    }
+
+    @Override
     public void figure()
     {
         currentSink.figure();
@@ -382,6 +490,24 @@ public class RandomAccessSink
     }
 
     @Override
+    public void footer()
+    {
+        currentSink.footer();
+    }
+
+    @Override
+    public void footer( SinkEventAttributes attributes )
+    {
+        currentSink.footer( attributes );
+    }
+
+    @Override
+    public void footer_()
+    {
+        currentSink.footer_();
+    }
+
+    @Override
     public void head()
     {
         currentSink.head();
@@ -400,6 +526,24 @@ public class RandomAccessSink
     }
 
     @Override
+    public void header()
+    {
+        currentSink.header();
+    }
+
+    @Override
+    public void header( SinkEventAttributes attributes )
+    {
+        currentSink.header( attributes );
+    }
+
+    @Override
+    public void header_()
+    {
+        currentSink.header_();
+    }
+
+    @Override
     public void horizontalRule()
     {
         currentSink.horizontalRule();
@@ -409,6 +553,24 @@ public class RandomAccessSink
     public void horizontalRule( SinkEventAttributes attributes )
     {
         currentSink.horizontalRule( attributes );
+    }
+
+    @Override
+    public void inline()
+    {
+        currentSink.inline();
+    }
+
+    @Override
+    public void inline( SinkEventAttributes attributes )
+    {
+        currentSink.inline( attributes );
+    }
+
+    @Override
+    public void inline_()
+    {
+        currentSink.inline_();
     }
 
     @Override
@@ -433,6 +595,18 @@ public class RandomAccessSink
     public void lineBreak( SinkEventAttributes attributes )
     {
         currentSink.lineBreak( attributes );
+    }
+
+    @Override
+    public void lineBreakOpportunity()
+    {
+        currentSink.lineBreakOpportunity();
+    }
+
+    @Override
+    public void lineBreakOpportunity( SinkEventAttributes attributes )
+    {
+        currentSink.lineBreakOpportunity( attributes );
     }
 
     @Override
@@ -499,6 +673,24 @@ public class RandomAccessSink
     public void monospaced_()
     {
         currentSink.monospaced_();
+    }
+
+    @Override
+    public void navigation()
+    {
+        currentSink.navigation();
+    }
+
+    @Override
+    public void navigation( SinkEventAttributes attributes )
+    {
+        currentSink.navigation( attributes );
+    }
+
+    @Override
+    public void navigation_()
+    {
+        currentSink.navigation_();
     }
 
     @Override
@@ -754,6 +946,24 @@ public class RandomAccessSink
     }
 
     @Override
+    public void sidebar()
+    {
+        currentSink.sidebar();
+    }
+
+    @Override
+    public void sidebar( SinkEventAttributes attributes )
+    {
+        currentSink.sidebar( attributes );
+    }
+
+    @Override
+    public void sidebar_()
+    {
+        currentSink.sidebar_();
+    }
+
+    @Override
     public void table()
     {
         currentSink.table();
@@ -877,6 +1087,24 @@ public class RandomAccessSink
     public void text( String text, SinkEventAttributes attributes )
     {
         currentSink.text( text, attributes );
+    }
+
+    @Override
+    public void time( String datetime )
+    {
+        currentSink.time( datetime );
+    }
+
+    @Override
+    public void time( String datetime, SinkEventAttributes attributes )
+    {
+        currentSink.time( datetime, attributes );
+    }
+
+    @Override
+    public void time_()
+    {
+        currentSink.time_();
     }
 
     @Override

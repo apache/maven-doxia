@@ -318,6 +318,79 @@ public interface Sink
     void body_();
 
     /**
+     * Starts an article within a document.
+     *
+     * @see #article(SinkEventAttributes)
+     */
+    void article();
+
+    /**
+     * Starts an article within a document.
+     *
+     * <p>
+     *   Supported attributes are the {@link SinkEventAttributes base attributes}.
+     * </p>
+     *
+     * @param attributes A set of {@link SinkEventAttributes}, may be <code>null</code>.
+     * @since 2.0
+     */
+    void article( SinkEventAttributes attributes );
+
+    /**
+     * Ends the article element.
+     */
+    void article_();
+
+    /**
+     * Starts a navigation section within a document.
+     *
+     * @see #navigation(SinkEventAttributes)
+     */
+    void navigation();
+
+    /**
+     * Starts a navigation section within a document.
+     *
+     * <p>
+     *   Supported attributes are the {@link SinkEventAttributes base attributes}.
+     * </p>
+     *
+     * @param attributes A set of {@link SinkEventAttributes}, may be <code>null</code>.
+     * @since 2.0
+     * @see #navigation(SinkEventAttributes)
+     */
+    void navigation( SinkEventAttributes attributes );
+
+    /**
+     * Ends the navigation element.
+     */
+    void navigation_();
+
+    /**
+     * Starts a sidebar section within a document.
+     *
+     * @see #sidebar(SinkEventAttributes)
+     */
+    void sidebar();
+
+    /**
+     * Starts a sidebar section within a document.
+     *
+     * <p>
+     *   Supported attributes are the {@link SinkEventAttributes base attributes}.
+     * </p>
+     *
+     * @param attributes A set of {@link SinkEventAttributes}, may be <code>null</code>.
+     * @since 2.0
+     */
+    void sidebar( SinkEventAttributes attributes );
+
+    /**
+     * Ends the sidebar element.
+     */
+    void sidebar_();
+
+    /**
      * Starts a title heading element.
      */
     void sectionTitle();
@@ -455,7 +528,7 @@ public interface Sink
      * Ends a 5th title heading element.
      */
     void sectionTitle5_();
-    
+
     /**
      * Starts a 6th heading element which contains the topic of the section.
      * This has to be contained within a {@link #section5()} element.
@@ -544,6 +617,74 @@ public interface Sink
      * @since 1.1
      */
     void sectionTitle_( int level );
+
+    /**
+     * Start a new header within the section or body.
+     */
+    void header();
+
+    /**
+     * Start a new header within the section or body.
+     *
+     * <p>
+     *   Supported attributes are the {@link SinkEventAttributes base attributes}.
+     * </p>
+     *
+     * @param attributes A set of {@link SinkEventAttributes}, may be <code>null</code>.
+     * @since 2.0
+     */
+    void header( SinkEventAttributes attributes );
+
+    /**
+     * Ends a header element.
+     */
+    void header_();
+
+    /**
+     * Start the main content section between the header and the
+     * footer within the sections and/or body.
+     */
+    void content();
+
+    /**
+     * Start the main content section between the header and the
+     * footer within the sections and/or body.
+     *
+     * <p>
+     *   Supported attributes are the {@link SinkEventAttributes base attributes}.
+     * </p>
+     *
+     * @param attributes A set of {@link SinkEventAttributes}, may be <code>null</code>.
+     * @since 2.0
+     */
+    void content( SinkEventAttributes attributes );
+
+    /**
+     * Ends a main content section.
+     */
+    void content_();
+
+    /**
+     * Start a new footer within the section or body.
+     */
+    void footer();
+
+    /**
+     * Start a new footer within the section or body.
+     *
+     * <p>
+     *   Supported attributes are the {@link SinkEventAttributes base attributes}.
+     * </p>
+     *
+     * @param attributes A set of {@link SinkEventAttributes}, may be <code>null</code>.
+     * @since 2.0
+     */
+    void footer( SinkEventAttributes attributes );
+
+    /**
+     * Ends a footer element.
+     */
+    void footer_();
 
     /**
      * Starts an unordered list element.
@@ -1107,6 +1248,127 @@ public interface Sink
     void paragraph_();
 
     /**
+     * Starts a data element which groups together other elements representing microformats.
+     *
+     * @see #data(SinkEventAttributes)
+     */
+    void data( String value );
+
+    /**
+     * Starts a data element which groups together other elements representing microformats.
+     *
+     * <p>
+     *   Supported attributes are the {@link SinkEventAttributes base attributes}
+     *   plus {@link SinkEventAttributes#VALUE VALUE}.
+     * </p>
+     *
+     * @param value the machine readable value of the data, may be <code>null</code>.
+     * @param attributes A set of {@link SinkEventAttributes}, may be <code>null</code>.
+     * @since 2.0
+     */
+    void data( String value, SinkEventAttributes attributes );
+
+    /**
+     * Ends an data element.
+     */
+    void data_();
+
+    /**
+     * Starts a time element which groups together other elements representing a time.
+     *
+     * @see #time(SinkEventAttributes)
+     */
+    void time( String datetime );
+
+    /**
+     * Starts a time element which groups together other elements representing a time.
+     *
+     * <p>
+     *   Supported attributes are the {@link SinkEventAttributes base attributes}
+     *   plus {@link SinkEventAttributes#DATETIME DATETIME}.
+     * </p>
+     *
+     * @param datetime the machine readable value of the time, may be <code>null</code>.
+     * @param attributes A set of {@link SinkEventAttributes}, may be <code>null</code>.
+     * @since 2.0
+     */
+    void time( String datetime, SinkEventAttributes attributes );
+
+    /**
+     * Ends a time element.
+     */
+    void time_();
+
+    /**
+     * Starts an address element.
+     *
+     * @see #address(SinkEventAttributes)
+     */
+    void address();
+
+    /**
+     * Starts an address element.
+     *
+     * @param attributes A set of {@link SinkEventAttributes}, may be <code>null</code>.
+     * @since 2.0
+     */
+    void address( SinkEventAttributes attributes );
+
+    /**
+     * Ends an address element.
+     */
+    void address_();
+
+    /**
+     * Starts a blockquote element.
+     *
+     * @see #blockquote(SinkEventAttributes)
+     */
+    void blockquote();
+
+    /**
+     * Starts a blockquote element.
+     *
+     * <p>
+     *   Supported attributes are the {@link SinkEventAttributes base attributes}.
+     * </p>
+     *
+     * @param attributes A set of {@link SinkEventAttributes}, may be <code>null</code>.
+     * @since 2.0
+     */
+    void blockquote( SinkEventAttributes attributes );
+
+    /**
+     * Ends an blockquote element.
+     */
+    void blockquote_();
+
+    /**
+     * Starts a division element grouping together other elements.
+     *
+     * @see #division(SinkEventAttributes)
+     */
+    void division();
+
+    /**
+     * Starts a division element grouping together other elements.
+     *
+     * <p>
+     *   Supported attributes are the {@link SinkEventAttributes base attributes}
+     *   plus {@link SinkEventAttributes#ALIGN ALIGN}.
+     * </p>
+     *
+     * @param attributes A set of {@link SinkEventAttributes}, may be <code>null</code>.
+     * @since 2.0
+     */
+    void division( SinkEventAttributes attributes );
+
+    /**
+     * Ends a division element.
+     */
+    void division_();
+
+    /**
      * Starts an element which indicates that whitespace in the enclosed text has semantic relevance.
      *
      * @param boxed true to add a box, false otherwise
@@ -1255,6 +1517,44 @@ public interface Sink
     void link_();
 
     /**
+     * Starts an inline element.
+     *
+     * @see #inline(String,SinkEventAttributes)
+     */
+    void inline();
+
+    /**
+     * Starts an inline element.
+     *
+     * <p>
+     *   The inline method is similar to {@link #text(String,SinkEventAttributes)}, but
+     *   allows you to wrap arbitrary elements in addition to text.
+     * </p>
+     *
+     * <p>
+     *   Supported attributes are the {@link SinkEventAttributes base attributes} plus
+     * </p>
+     * <blockquote>
+     *   {@link SinkEventAttributes#SEMANTICS SEMANTICS} (values "emphasis", "strong",
+     *   "small", "line-through", "citation", "quote", "definition", "abbreviation",
+     *   "italic", "bold", "monospaced", "variable", "sample", "keyboard", "superscript",
+     *   "subscript", "annotation", "highlight", "ruby", "rubyBase", "rubyText",
+     *   "rubyTextContainer", "rubyParentheses", "bidirectionalIsolation",
+     *   "bidirectionalOverride", "phrase", "insert", "delete").
+     * </blockquote>
+     *
+     * @param text The text to write.
+     * @param attributes A set of {@link SinkEventAttributes}, may be <code>null</code>.
+     * @since 2.0
+     */
+    void inline( SinkEventAttributes attributes );
+
+    /**
+     * Ends an inline element.
+     */
+    void inline_();
+
+    /**
      * Starts an italic element.
      *
      * Alternatively one may use {@link #text(String,SinkEventAttributes)} with
@@ -1326,6 +1626,29 @@ public interface Sink
     void lineBreak( SinkEventAttributes attributes );
 
     /**
+     * Adds a line break opportunity.
+     *
+     * @see #lineBreak(SinkEventAttributes)
+     */
+    void lineBreakOpportunity();
+
+    /**
+     * Adds a line break opportunity.
+     *
+     * <p>
+     *   Supported attributes are:
+     * </p>
+     * <blockquote>
+     *   {@link SinkEventAttributes#ID ID}, {@link SinkEventAttributes#CLASS CLASS},
+     *   {@link SinkEventAttributes#TITLE TITLE}, {@link SinkEventAttributes#STYLE STYLE}.
+     * </blockquote>
+     *
+     * @param attributes A set of {@link SinkEventAttributes}, may be <code>null</code>.
+     * @since 2.0
+     */
+    void lineBreakOpportunity( SinkEventAttributes attributes );
+
+    /**
      * Adding a non breaking space, <i>ie</i> a space without any special formatting operations.
      */
     void nonBreakingSpace();
@@ -1352,6 +1675,17 @@ public interface Sink
      * </p>
      * <p>
      *   Supported attributes are the {@link SinkEventAttributes base attributes} plus
+     * </p>
+     * <blockquote>
+     *   {@link SinkEventAttributes#SEMANTICS SEMANTICS} (values "emphasis", "strong",
+     *   "small", "line-through", "citation", "quote", "definition", "abbreviation",
+     *   "italic", "bold", "monospaced", "variable", "sample", "keyboard", "superscript",
+     *   "subscript", "annotation", "highlight", "ruby", "rubyBase", "rubyText",
+     *   "rubyTextContainer", "rubyParentheses", "bidirectionalIsolation",
+     *   "bidirectionalOverride", "phrase", "insert", "delete").
+     * </blockquote>
+     * <p>
+     *   The following attributes are deprecated:
      * </p>
      * <blockquote>
      *   {@link SinkEventAttributes#VALIGN VALIGN} (values "sub", "sup"),

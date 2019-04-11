@@ -22,12 +22,15 @@ package org.apache.maven.doxia.module.confluence;
 import java.io.PrintWriter;
 import java.io.StringWriter;
 import java.io.Writer;
+import java.util.ArrayList;
+import java.util.List;
 import java.util.Stack;
 
 import javax.swing.text.html.HTML.Attribute;
 
 import org.apache.maven.doxia.sink.SinkEventAttributes;
 import org.apache.maven.doxia.sink.impl.AbstractTextSink;
+import org.apache.maven.doxia.sink.impl.SinkEventAttributeSet;
 import org.apache.maven.doxia.util.HtmlTools;
 import org.codehaus.plexus.util.StringUtils;
 
@@ -60,6 +63,9 @@ public class ConfluenceSink
 
     /** An indication on if we're in monospaced mode. */
     private boolean monospacedFlag;
+
+    /** Keep track of the closing tags for inline events. */
+    protected Stack<List<String>> inlineStack = new Stack<List<String>>();
 
     /** An indication on if we're in verbatim box mode. */
     private boolean verbatimBoxedFlag;
@@ -159,13 +165,13 @@ public class ConfluenceSink
     /** {@inheritDoc} */
     public void bold()
     {
-        write( BOLD_START_MARKUP );
+        inline( SinkEventAttributeSet.Semantics.BOLD );
     }
 
     /** {@inheritDoc} */
     public void bold_()
     {
-        write( BOLD_END_MARKUP );
+        inline_();
     }
 
     /**
@@ -417,15 +423,67 @@ public class ConfluenceSink
     }
 
     /** {@inheritDoc} */
+    public void inline()
+    {
+        inline( null );
+    }
+
+    /** {@inheritDoc} */
+    public void inline( SinkEventAttributes attributes )
+    {
+        if ( !headFlag )
+        {
+            List<String> tags = new ArrayList<String>();
+
+            if ( attributes != null )
+            {
+
+                if ( attributes.containsAttribute( SinkEventAttributes.SEMANTICS, "italic" ) )
+                {
+                    write( ITALIC_START_MARKUP );
+                    tags.add( 0, ITALIC_END_MARKUP );
+                }
+
+                if ( attributes.containsAttribute( SinkEventAttributes.SEMANTICS, "bold" ) )
+                {
+                    write( BOLD_START_MARKUP );
+                    tags.add( 0, BOLD_END_MARKUP );
+                }
+
+                if ( attributes.containsAttribute( SinkEventAttributes.SEMANTICS, "code" ) )
+                {
+                    write( MONOSPACED_START_MARKUP );
+                    tags.add( 0, MONOSPACED_END_MARKUP );
+                }
+
+            }
+
+            inlineStack.push( tags );
+        }
+    }
+
+    /** {@inheritDoc} */
+    public void inline_()
+    {
+        if ( !headFlag )
+        {
+            for ( String tag: inlineStack.pop() )
+            {
+                write( tag );
+            }
+        }
+    }
+
+    /** {@inheritDoc} */
     public void italic()
     {
-        write( ITALIC_START_MARKUP );
+        inline( SinkEventAttributeSet.Semantics.ITALIC );
     }
 
     /** {@inheritDoc} */
     public void italic_()
     {
-        write( ITALIC_END_MARKUP );
+        inline_();
     }
 
     /** {@inheritDoc} */
@@ -510,14 +568,14 @@ public class ConfluenceSink
     public void monospaced()
     {
         monospacedFlag = true;
-        write( MONOSPACED_START_MARKUP );
+        inline( SinkEventAttributeSet.Semantics.CODE );
     }
 
     /** {@inheritDoc} */
     public void monospaced_()
     {
         monospacedFlag = false;
-        write( MONOSPACED_END_MARKUP );
+        inline_();
     }
 
     /**

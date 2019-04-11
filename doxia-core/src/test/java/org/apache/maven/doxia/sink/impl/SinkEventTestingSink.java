@@ -84,6 +84,42 @@ public class SinkEventTestingSink
     }
 
     @Override
+    public void article()
+    {
+        addEvent( "article" );
+    }
+
+    @Override
+    public void article_()
+    {
+        addEvent( "article_" );
+    }
+
+    @Override
+    public void navigation()
+    {
+        addEvent( "navigation" );
+    }
+
+    @Override
+    public void navigation_()
+    {
+        addEvent( "navigation_" );
+    }
+
+    @Override
+    public void sidebar()
+    {
+        addEvent( "sidebar" );
+    }
+
+    @Override
+    public void sidebar_()
+    {
+        addEvent( "sidebar_" );
+    }
+
+    @Override
     public void section1()
     {
         addEvent( "section1" );
@@ -408,6 +444,42 @@ public class SinkEventTestingSink
     }
 
     @Override
+    public void header()
+    {
+        addEvent( "header" );
+    }
+
+    @Override
+    public void header_()
+    {
+        addEvent( "header_" );
+    }
+
+    @Override
+    public void content()
+    {
+        addEvent( "content" );
+    }
+
+    @Override
+    public void content_()
+    {
+        addEvent( "content_" );
+    }
+
+    @Override
+    public void footer()
+    {
+        addEvent( "footer" );
+    }
+
+    @Override
+    public void footer_()
+    {
+        addEvent( "footer_" );
+    }
+
+    @Override
     public void paragraph()
     {
         addEvent( "paragraph" );
@@ -417,6 +489,66 @@ public class SinkEventTestingSink
     public void paragraph_()
     {
         addEvent( "paragraph_" );
+    }
+
+    @Override
+    public void data( String value )
+    {
+        addEvent( "data", new Object[] {value} );
+    }
+
+    @Override
+    public void data_()
+    {
+        addEvent( "data_" );
+    }
+
+    @Override
+    public void time( String datetime )
+    {
+        addEvent( "time", new Object[] {datetime} );
+    }
+
+    @Override
+    public void time_()
+    {
+        addEvent( "time_" );
+    }
+
+    @Override
+    public void address()
+    {
+        addEvent( "address" );
+    }
+
+    @Override
+    public void address_()
+    {
+        addEvent( "address_" );
+    }
+
+    @Override
+    public void blockquote()
+    {
+        addEvent( "blockquote" );
+    }
+
+    @Override
+    public void blockquote_()
+    {
+        addEvent( "blockquote_" );
+    }
+
+    @Override
+    public void division()
+    {
+        addEvent( "division" );
+    }
+
+    @Override
+    public void division_()
+    {
+        addEvent( "division_" );
     }
 
     @Override
@@ -546,6 +678,18 @@ public class SinkEventTestingSink
     }
 
     @Override
+    public void inline()
+    {
+        addEvent( "inline" );
+    }
+
+    @Override
+    public void inline_()
+    {
+        addEvent( "inline_" );
+    }
+
+    @Override
     public void italic()
     {
         addEvent( "italic" );
@@ -585,6 +729,12 @@ public class SinkEventTestingSink
     public void lineBreak()
     {
         addEvent( "lineBreak" );
+    }
+
+    @Override
+    public void lineBreakOpportunity()
+    {
+        addEvent( "lineBreakOpportunity" );
     }
 
     @Override
@@ -654,6 +804,24 @@ public class SinkEventTestingSink
     }
 
     @Override
+    public void article( SinkEventAttributes attributes )
+    {
+        addEvent( "article", new Object[] {attributes} );
+    }
+
+    @Override
+    public void navigation( SinkEventAttributes attributes )
+    {
+        addEvent( "navigation", new Object[] {attributes} );
+    }
+
+    @Override
+    public void sidebar( SinkEventAttributes attributes )
+    {
+        addEvent( "sidebar", new Object[] {attributes} );
+    }
+
+    @Override
     public void section( int level, SinkEventAttributes attributes )
     {
         addEvent( "section" + level, new Object[] {attributes} );
@@ -676,6 +844,24 @@ public class SinkEventTestingSink
     {
 
         addEvent( "sectionTitle" + level + "_" );
+    }
+
+    @Override
+    public void header( SinkEventAttributes attributes )
+    {
+        addEvent( "header", new Object[] {attributes} );
+    }
+
+    @Override
+    public void content( SinkEventAttributes attributes )
+    {
+        addEvent( "content", new Object[] {attributes} );
+    }
+
+    @Override
+    public void footer( SinkEventAttributes attributes )
+    {
+        addEvent( "footer", new Object[] {attributes} );
     }
 
     @Override
@@ -781,6 +967,36 @@ public class SinkEventTestingSink
     }
 
     @Override
+    public void data( String value, SinkEventAttributes attributes )
+    {
+        addEvent( "data", new Object[] {value, attributes} );
+    }
+
+    @Override
+    public void time( String datetime, SinkEventAttributes attributes )
+    {
+        addEvent( "time", new Object[] {datetime, attributes} );
+    }
+
+    @Override
+    public void address( SinkEventAttributes attributes )
+    {
+        addEvent( "address", new Object[] {attributes} );
+    }
+
+    @Override
+    public void blockquote( SinkEventAttributes attributes )
+    {
+        addEvent( "blockquote", new Object[] {attributes} );
+    }
+
+    @Override
+    public void division( SinkEventAttributes attributes )
+    {
+        addEvent( "division", new Object[] {attributes} );
+    }
+
+    @Override
     public void verbatim( SinkEventAttributes attributes )
     {
         addEvent( "verbatim", new Object[] {attributes} );
@@ -805,9 +1021,21 @@ public class SinkEventTestingSink
     }
 
     @Override
+    public void inline( SinkEventAttributes attributes )
+    {
+        addEvent( "inline", new Object[] {attributes} );
+    }
+
+    @Override
     public void lineBreak( SinkEventAttributes attributes )
     {
         addEvent( "lineBreak", new Object[] {attributes} );
+    }
+
+    @Override
+    public void lineBreakOpportunity( SinkEventAttributes attributes )
+    {
+        addEvent( "lineBreakOpportunity", new Object[] {attributes} );
     }
 
     @Override

@@ -122,6 +122,24 @@ public class XhtmlSinkTest
     }
 
     /** {@inheritDoc} */
+    protected String getArticleBlock()
+    {
+        return "";
+    }
+
+    /** {@inheritDoc} */
+    protected String getNavigationBlock()
+    {
+        return "";
+    }
+
+    /** {@inheritDoc} */
+    protected String getSidebarBlock()
+    {
+        return "";
+    }
+
+    /** {@inheritDoc} */
     protected String getSectionTitleBlock( String title )
     {
         return title;
@@ -155,6 +173,24 @@ public class XhtmlSinkTest
     protected String getSection5Block( String title )
     {
         return "<div class=\"section\">\n<h6>" + title + "</h6></div>";
+    }
+
+    /** {@inheritDoc} */
+    protected String getHeaderBlock()
+    {
+        return "";
+    }
+
+    /** {@inheritDoc} */
+    protected String getContentBlock()
+    {
+        return "";
+    }
+
+    /** {@inheritDoc} */
+    protected String getFooterBlock()
+    {
+        return "";
     }
 
     /** {@inheritDoc} */
@@ -214,6 +250,36 @@ public class XhtmlSinkTest
     }
 
     /** {@inheritDoc} */
+    protected String getDataBlock( String value, String text )
+    {
+        return text;
+    }
+
+    /** {@inheritDoc} */
+    protected String getTimeBlock( String datetime, String text )
+    {
+        return text;
+    }
+
+    /** {@inheritDoc} */
+    protected String getAddressBlock( String text )
+    {
+        return "<address>" + text + "</address>";
+    }
+
+    /** {@inheritDoc} */
+    protected String getBlockquoteBlock( String text )
+    {
+        return "<blockquote>" + text + "</blockquote>";
+    }
+
+    /** {@inheritDoc} */
+    protected String getDivisionBlock( String text )
+    {
+        return "<div>" + text + "</div>";
+    }
+
+    /** {@inheritDoc} */
     protected String getVerbatimBlock( String text )
     {
         return "<div class=\"source\">\n<pre>" + text + "</pre></div>";
@@ -244,6 +310,30 @@ public class XhtmlSinkTest
     }
 
     /** {@inheritDoc} */
+    protected String getInlineBlock( String text )
+    {
+        return text;
+    }
+
+    /** {@inheritDoc} */
+    protected String getInlineItalicBlock( String text )
+    {
+        return "<i>" + text + "</i>";
+    }
+
+    /** {@inheritDoc} */
+    protected String getInlineBoldBlock( String text )
+    {
+        return "<b>" + text + "</b>";
+    }
+
+    /** {@inheritDoc} */
+    protected String getInlineCodeBlock( String text )
+    {
+        return "<code>" + text + "</code>";
+    }
+
+    /** {@inheritDoc} */
     protected String getItalicBlock( String text )
     {
         return "<i>" + text + "</i>";
@@ -265,6 +355,12 @@ public class XhtmlSinkTest
     protected String getLineBreakBlock()
     {
         return "<br />";
+    }
+
+    /** {@inheritDoc} */
+    protected String getLineBreakOpportunityBlock()
+    {
+        return "";
     }
 
     /** {@inheritDoc} */

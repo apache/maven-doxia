@@ -77,9 +77,6 @@ public class XhtmlBaseParser
     /** Used to wrap the definedTerm with its definition, even when one is omitted */
     boolean hasDefinitionListItem = false;
 
-    /** Decoration properties, eg for texts. */
-    private final SinkEventAttributeSet decoration = new SinkEventAttributeSet();
-
     /** Map of warn messages with a String as key to describe the error type and a Set as value.
      * Using to reduce warn messages. */
     private Map<String, Set<String>> warnMessages;
@@ -432,21 +429,25 @@ public class XhtmlBaseParser
         }
         else if ( parser.getName().equals( HtmlMarkup.U.toString() ) )
         {
-            decoration.addAttribute( SinkEventAttributes.DECORATION, "underline" );
+            attribs.addAttributes( SinkEventAttributeSet.Semantics.ANNOTATION );
+            sink.inline( attribs );
         }
         else if ( parser.getName().equals( HtmlMarkup.S.toString() )
                 || parser.getName().equals( HtmlMarkup.STRIKE.toString() )
                 || parser.getName().equals( "del" ) )
         {
-            decoration.addAttribute( SinkEventAttributes.DECORATION, "line-through" );
+            attribs.addAttributes( SinkEventAttributeSet.Semantics.LINE_THROUGH );
+            sink.inline( attribs );
         }
         else if ( parser.getName().equals( HtmlMarkup.SUB.toString() ) )
         {
-            decoration.addAttribute( SinkEventAttributes.VALIGN, "sub" );
+            attribs.addAttributes( SinkEventAttributeSet.Semantics.SUBSCRIPT );
+            sink.inline( attribs );
         }
         else if ( parser.getName().equals( HtmlMarkup.SUP.toString() ) )
         {
-            decoration.addAttribute( SinkEventAttributes.VALIGN, "sup" );
+            attribs.addAttributes( SinkEventAttributeSet.Semantics.SUPERSCRIPT );
+            sink.inline( attribs );
         }
         else if ( parser.getName().equals( HtmlMarkup.P.toString() ) )
         {
@@ -498,7 +499,7 @@ public class XhtmlBaseParser
         else if ( ( parser.getName().equals( HtmlMarkup.B.toString() ) )
                 || ( parser.getName().equals( HtmlMarkup.STRONG.toString() ) ) )
         {
-            sink.bold();
+            sink.inline( SinkEventAttributeSet.Semantics.BOLD );
         }
         else if ( ( parser.getName().equals( HtmlMarkup.I.toString() ) )
                 || ( parser.getName().equals( HtmlMarkup.EM.toString() ) ) )
@@ -509,7 +510,7 @@ public class XhtmlBaseParser
                 || ( parser.getName().equals( HtmlMarkup.SAMP.toString() ) )
                 || ( parser.getName().equals( HtmlMarkup.TT.toString() ) ) )
         {
-            sink.monospaced();
+            sink.inline( SinkEventAttributeSet.Semantics.MONOSPACED );
         }
         else if ( parser.getName().equals( HtmlMarkup.A.toString() ) )
         {
@@ -589,12 +590,12 @@ public class XhtmlBaseParser
                 || parser.getName().equals( HtmlMarkup.STRIKE.toString() )
                 || parser.getName().equals( "del" ) )
         {
-            decoration.removeAttribute( SinkEventAttributes.DECORATION );
+            sink.inline_();
         }
         else if ( parser.getName().equals( HtmlMarkup.SUB.toString() )
                 || parser.getName().equals( HtmlMarkup.SUP.toString() ) )
         {
-            decoration.removeAttribute( SinkEventAttributes.VALIGN );
+            sink.inline_();
         }
         else if ( parser.getName().equals( HtmlMarkup.DIV.toString() ) )
         {
@@ -649,7 +650,7 @@ public class XhtmlBaseParser
         else if ( ( parser.getName().equals( HtmlMarkup.B.toString() ) )
                 || ( parser.getName().equals( HtmlMarkup.STRONG.toString() ) ) )
         {
-            sink.bold_();
+            sink.inline_();
         }
         else if ( ( parser.getName().equals( HtmlMarkup.I.toString() ) )
                 || ( parser.getName().equals( HtmlMarkup.EM.toString() ) ) )
@@ -660,7 +661,7 @@ public class XhtmlBaseParser
                 || ( parser.getName().equals( HtmlMarkup.SAMP.toString() ) )
                 || ( parser.getName().equals( HtmlMarkup.TT.toString() ) ) )
         {
-            sink.monospaced_();
+            sink.inline_();
         }
         else if ( parser.getName().equals( HtmlMarkup.A.toString() ) )
         {
@@ -780,7 +781,7 @@ public class XhtmlBaseParser
          */
         if ( StringUtils.isNotEmpty( text ) && !isScriptBlock() )
         {
-            sink.text( text, decoration );
+            sink.text( text );
         }
     }
 
@@ -1024,10 +1025,6 @@ public class XhtmlBaseParser
         this.sectionLevel = 0;
         this.inVerbatim = false;
         this.inFigure = false;
-        while ( this.decoration.getAttributeNames().hasMoreElements() )
-        {
-            this.decoration.removeAttribute( this.decoration.getAttributeNames().nextElement() );
-        }
         this.warnMessages = null;
     }
 
@@ -1117,7 +1114,7 @@ public class XhtmlBaseParser
         }
         else
         {
-            sink.italic_();
+            sink.inline_();
         }
     }
 
@@ -1129,7 +1126,7 @@ public class XhtmlBaseParser
         }
         else
         {
-            sink.italic();
+            sink.inline( SinkEventAttributeSet.Semantics.ITALIC );
         }
     }
 
@@ -1222,7 +1219,6 @@ public class XhtmlBaseParser
     private void handlePreStart( SinkEventAttributeSet attribs, Sink sink )
     {
         verbatim();
-        attribs.removeAttribute( SinkEventAttributes.DECORATION );
         sink.verbatim( attribs );
     }
 

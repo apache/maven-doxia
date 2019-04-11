@@ -25,11 +25,13 @@ import javax.swing.text.html.HTML.Tag;
 /**
  * List of <code>Html</code> tags.
  * <p>
- *   This should contain all valid XHTML 1.0 tags, comprising the tags in
- *   {@link javax.swing.text.html.HTML.Tag} plus several others.
+ * This should contain all valid XHTML 1.0 and HTML5 tags, comprising the tags
+ * in {@link javax.swing.text.html.HTML.Tag} plus several others.
  * </p>
  *
- * @see <a href="http://www.w3.org/TR/html401/index/elements.html">http://www.w3.org/TR/html401/index/elements.html</a>
+ * @see <a href=
+ *      "https://www.w3.org/TR/2012/WD-html-markup-20121011/elements-by-function.html">
+ *      https://www.w3.org/TR/2012/WD-html-markup-20121011/elements-by-function.html</a>
  *
  * @author ltheussl
  * @version $Id$
@@ -101,6 +103,39 @@ public interface HtmlMarkup
     /** Xhtml tag for <code>area</code>. */
     Tag AREA = Tag.AREA;
 
+    /** Html5 tag for <code>article</code>. */
+    Tag ARTICLE = new Tag()
+    {
+        /** {@inheritDoc} */
+        @Override
+        public String toString()
+        {
+            return "article";
+        }
+    };
+
+    /** Html5 tag for <code>aside</code>. */
+    Tag ASIDE = new Tag()
+    {
+        /** {@inheritDoc} */
+        @Override
+        public String toString()
+        {
+            return "aside";
+        }
+    };
+
+    /** Html5 tag for <code>audio</code>. */
+    Tag AUDIO = new Tag()
+    {
+        /** {@inheritDoc} */
+        @Override
+        public String toString()
+        {
+            return "audio";
+        }
+    };
+
     /** Xhtml tag for <code>b</code>. */
     Tag B = Tag.B;
 
@@ -109,6 +144,17 @@ public interface HtmlMarkup
 
     /** Xhtml tag for <code>basefont</code>. */
     Tag BASEFONT = Tag.BASEFONT;
+
+    /** Html5 tag for <code>bdi</code>. */
+    Tag BDI = new Tag()
+    {
+        /** {@inheritDoc} */
+        @Override
+        public String toString()
+        {
+            return "bdi";
+        }
+    };
 
     /** Xhtml tag for <code>bdo</code>. */
     Tag BDO = new Tag()
@@ -141,6 +187,17 @@ public interface HtmlMarkup
         public String toString()
         {
             return "button";
+        }
+    };
+
+    /** Html5 tag for <code>canvas</code>. */
+    Tag CANVAS = new Tag()
+    {
+        /** {@inheritDoc} */
+        @Override
+        public String toString()
+        {
+            return "canvas";
         }
     };
 
@@ -178,6 +235,39 @@ public interface HtmlMarkup
         }
     };
 
+    /** Html5 tag for <code>command</code>. */
+    Tag COMMAND = new Tag()
+    {
+        /** {@inheritDoc} */
+        @Override
+        public String toString()
+        {
+            return "command";
+        }
+    };
+
+    /** Html5 tag for <code>data</code>. */
+    Tag DATA = new Tag()
+    {
+        /** {@inheritDoc} */
+        @Override
+        public String toString()
+        {
+            return "data";
+        }
+    };
+
+    /** Html5 tag for <code>datalist</code>. */
+    Tag DATALIST = new Tag()
+    {
+        /** {@inheritDoc} */
+        @Override
+        public String toString()
+        {
+            return "datalist";
+        }
+    };
+
     /** Xhtml tag for <code>dd</code>. */
     Tag DD = Tag.DD;
 
@@ -192,8 +282,30 @@ public interface HtmlMarkup
         }
     };
 
+    /** Html5 tag for <code>details</code>. */
+    Tag DETAILS = new Tag()
+    {
+        /** {@inheritDoc} */
+        @Override
+        public String toString()
+        {
+            return "details";
+        }
+    };
+
     /** Xhtml tag for <code>dfn</code>. */
     Tag DFN = Tag.DFN;
+
+    /** Html5 tag for <code>dialog</code>. */
+    Tag DIALOG = new Tag()
+    {
+        /** {@inheritDoc} */
+        @Override
+        public String toString()
+        {
+            return "dialog";
+        }
+    };
 
     /** Xhtml tag for <code>dir</code>. */
     Tag DIR = Tag.DIR;
@@ -210,6 +322,17 @@ public interface HtmlMarkup
     /** Xhtml tag for <code>em</code>. */
     Tag EM = Tag.EM;
 
+    /** Html5 tag for <code>embed</code>. */
+    Tag EMBED = new Tag()
+    {
+        /** {@inheritDoc} */
+        @Override
+        public String toString()
+        {
+            return "embed";
+        }
+    };
+
     /** Xhtml tag for <code>fieldset</code>. */
     Tag FIELDSET = new Tag()
     {
@@ -221,8 +344,41 @@ public interface HtmlMarkup
         }
     };
 
+    /** Html5 tag for <code>figcaption</code>. */
+    Tag FIGCAPTION = new Tag()
+    {
+        /** {@inheritDoc} */
+        @Override
+        public String toString()
+        {
+            return "figcaption";
+        }
+    };
+
+    /** Html5 tag for <code>figure</code>. */
+    Tag FIGURE = new Tag()
+    {
+        /** {@inheritDoc} */
+        @Override
+        public String toString()
+        {
+            return "figure";
+        }
+    };
+
     /** Xhtml tag for <code>font</code>. */
     Tag FONT = Tag.FONT;
+
+    /** Html5 tag for <code>footer</code>. */
+    Tag FOOTER = new Tag()
+    {
+        /** {@inheritDoc} */
+        @Override
+        public String toString()
+        {
+            return "footer";
+        }
+    };
 
     /** Xhtml tag for <code>form</code>. */
     Tag FORM = Tag.FORM;
@@ -253,6 +409,28 @@ public interface HtmlMarkup
 
     /** Xhtml tag for <code>head</code>. */
     Tag HEAD = Tag.HEAD;
+
+    /** Html5 tag for <code>header</code>. */
+    Tag HEADER = new Tag()
+    {
+        /** {@inheritDoc} */
+        @Override
+        public String toString()
+        {
+            return "header";
+        }
+    };
+
+    /** Html5 tag for <code>hgroup</code>. */
+    Tag HGROUP = new Tag()
+    {
+        /** {@inheritDoc} */
+        @Override
+        public String toString()
+        {
+            return "hgroup";
+        }
+    };
 
     /** Xhtml tag for <code>hr</code>. */
     Tag HR = Tag.HR;
@@ -328,11 +506,55 @@ public interface HtmlMarkup
     /** Xhtml tag for <code>map</code>. */
     Tag MAP = Tag.MAP;
 
+    /** Html5 tag for <code>main</code>. */
+    Tag MAIN = new Tag()
+    {
+        /** {@inheritDoc} */
+        @Override
+        public String toString()
+        {
+            return "main";
+        }
+    };
+
+    /** Html5 tag for <code>mark</code>. */
+    Tag MARK = new Tag()
+    {
+        /** {@inheritDoc} */
+        @Override
+        public String toString()
+        {
+            return "mark";
+        }
+    };
+
     /** Xhtml tag for <code>menu</code>. */
     Tag MENU = Tag.MENU;
 
     /** Xhtml tag for <code>meta</code>. */
     Tag META = Tag.META;
+
+    /** Html5 tag for <code>meter</code>. */
+    Tag METER = new Tag()
+    {
+        /** {@inheritDoc} */
+        @Override
+        public String toString()
+        {
+            return "meter";
+        }
+    };
+
+    /** Html5 tag for <code>nav</code>. */
+    Tag NAV = new Tag()
+    {
+        /** {@inheritDoc} */
+        @Override
+        public String toString()
+        {
+            return "nav";
+        }
+    };
 
     /** Xhtml tag for <code>noframes</code>. */
     Tag NOFRAMES = Tag.NOFRAMES;
@@ -368,14 +590,47 @@ public interface HtmlMarkup
     /** Xhtml tag for <code>option</code>. */
     Tag OPTION = Tag.OPTION;
 
+    /** Html5 tag for <code>output</code>. */
+    Tag OUTPUT = new Tag()
+    {
+        /** {@inheritDoc} */
+        @Override
+        public String toString()
+        {
+            return "output";
+        }
+    };
+
     /** Xhtml tag for <code>p</code>. */
     Tag P = Tag.P;
 
     /** Xhtml tag for <code>param</code>. */
     Tag PARAM = Tag.PARAM;
 
+    /** Html5 tag for <code>picture</code>. */
+    Tag PICTURE = new Tag()
+    {
+        /** {@inheritDoc} */
+        @Override
+        public String toString()
+        {
+            return "picture";
+        }
+    };
+
     /** Xhtml tag for <code>pre</code>. */
     Tag PRE = Tag.PRE;
+
+    /** Html5 tag for <code>progress</code>. */
+    Tag PROGRESS = new Tag()
+    {
+        /** {@inheritDoc} */
+        @Override
+        public String toString()
+        {
+            return "progress";
+        }
+    };
 
     /** Xhtml tag for <code>q</code>. */
     Tag Q = new Tag()
@@ -388,6 +643,61 @@ public interface HtmlMarkup
         }
     };
 
+    /** Html5 tag for <code>rb</code>. */
+    Tag RB = new Tag()
+    {
+        /** {@inheritDoc} */
+        @Override
+        public String toString()
+        {
+            return "rb";
+        }
+    };
+
+    /** Html5 tag for <code>rp</code>. */
+    Tag RP = new Tag()
+    {
+        /** {@inheritDoc} */
+        @Override
+        public String toString()
+        {
+            return "rp";
+        }
+    };
+
+    /** Html5 tag for <code>rt</code>. */
+    Tag RT = new Tag()
+    {
+        /** {@inheritDoc} */
+        @Override
+        public String toString()
+        {
+            return "rt";
+        }
+    };
+
+    /** Html5 tag for <code>rtc</code>. */
+    Tag RTC = new Tag()
+    {
+        /** {@inheritDoc} */
+        @Override
+        public String toString()
+        {
+            return "rtc";
+        }
+    };
+
+    /** Html5 tag for <code>ruby</code>. */
+    Tag RUBY = new Tag()
+    {
+        /** {@inheritDoc} */
+        @Override
+        public String toString()
+        {
+            return "ruby";
+        }
+    };
+
     /** Xhtml tag for <code>s</code>. */
     Tag S = Tag.S;
 
@@ -397,11 +707,33 @@ public interface HtmlMarkup
     /** Xhtml tag for <code>script</code>. */
     Tag SCRIPT = Tag.SCRIPT;
 
+    /** Html5 tag for <code>section</code>. */
+    Tag SECTION = new Tag()
+    {
+        /** {@inheritDoc} */
+        @Override
+        public String toString()
+        {
+            return "section";
+        }
+    };
+
     /** Xhtml tag for <code>select</code>. */
     Tag SELECT = Tag.SELECT;
 
     /** Xhtml tag for <code>small</code>. */
     Tag SMALL = Tag.SMALL;
+
+    /** Html5 tag for <code>source</code>. */
+    Tag SOURCE = new Tag()
+    {
+        /** {@inheritDoc} */
+        @Override
+        public String toString()
+        {
+            return "source";
+        }
+    };
 
     /** Xhtml tag for <code>span</code>. */
     Tag SPAN = Tag.SPAN;
@@ -417,6 +749,17 @@ public interface HtmlMarkup
 
     /** Xhtml tag for <code>sub</code>. */
     Tag SUB = Tag.SUB;
+
+    /** Html5 tag for <code>summary</code>. */
+    Tag SUMMARY = new Tag()
+    {
+        /** {@inheritDoc} */
+        @Override
+        public String toString()
+        {
+            return "summary";
+        }
+    };
 
     /** Xhtml tag for <code>sup</code>. */
     Tag SUP = Tag.SUP;
@@ -437,6 +780,17 @@ public interface HtmlMarkup
 
     /** Xhtml tag for <code>td</code>. */
     Tag TD = Tag.TD;
+
+    /** Html5 tag for <code>template</code>. */
+    Tag TEMPLATE = new Tag()
+    {
+        /** {@inheritDoc} */
+        @Override
+        public String toString()
+        {
+            return "template";
+        }
+    };
 
     /** Xhtml tag for <code>textarea</code>. */
     Tag TEXTAREA = Tag.TEXTAREA;
@@ -466,11 +820,33 @@ public interface HtmlMarkup
         }
     };
 
+    /** Html5 tag for <code>time</code>. */
+    Tag TIME = new Tag()
+    {
+        /** {@inheritDoc} */
+        @Override
+        public String toString()
+        {
+            return "time";
+        }
+    };
+
     /** Xhtml tag for <code>title</code>. */
     Tag TITLE = Tag.TITLE;
 
     /** Xhtml tag for <code>tr</code>. */
     Tag TR = Tag.TR;
+
+    /** Html5 tag for <code>track</code>. */
+    Tag TRACK = new Tag()
+    {
+        /** {@inheritDoc} */
+        @Override
+        public String toString()
+        {
+            return "track";
+        }
+    };
 
     /** Xhtml tag for <code>tt</code>. */
     Tag TT = Tag.TT;
@@ -483,4 +859,27 @@ public interface HtmlMarkup
 
     /** Xhtml tag for <code>var</code>. */
     Tag VAR = Tag.VAR ;
+
+    /** Html5 tag for <code>video</code>. */
+    Tag VIDEO = new Tag()
+    {
+        /** {@inheritDoc} */
+        @Override
+        public String toString()
+        {
+            return "video";
+        }
+    };
+
+    /** Html5 tag for <code>wbr</code>. */
+    Tag WBR = new Tag()
+    {
+        /** {@inheritDoc} */
+        @Override
+        public String toString()
+        {
+            return "wbr";
+        }
+    };
+
 }
