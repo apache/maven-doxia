@@ -48,6 +48,9 @@ public class Xhtml5BaseSinkTest
     private Xhtml5BaseSink sink;
     private Writer writer;
 
+    /** The vm line separator */
+    String EOL = System.getProperty( "line.separator" );
+
     @Override
     protected void setUp()
             throws Exception
@@ -515,7 +518,7 @@ public class Xhtml5BaseSinkTest
             sink.close();
         }
 
-        assertEquals( "<main>\n<div class=\"content\"></div></main>", writer.toString() );
+        assertEquals( "<main>" + EOL + "<div class=\"content\"></div></main>", writer.toString() );
 
         writer =  new StringWriter();
 
@@ -533,7 +536,7 @@ public class Xhtml5BaseSinkTest
             sink.close();
         }
 
-        assertEquals( "<main style=\"bold\">\n<div style=\"bold\" class=\"content\"></div></main>", writer.toString() );
+        assertEquals( "<main style=\"bold\">" + EOL + "<div style=\"bold\" class=\"content\"></div></main>", writer.toString() );
     }
 
     /**
