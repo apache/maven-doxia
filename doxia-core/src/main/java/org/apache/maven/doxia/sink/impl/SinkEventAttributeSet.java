@@ -566,7 +566,8 @@ public class SinkEventAttributeSet
          */
         public static final SinkEventAttributes DELETE;
 
-        static {
+        static 
+        {
             EMPHASIS = new SinkEventAttributeSet( new String[] {SEMANTICS, "emphasis"} ).unmodifiable();
             STRONG = new SinkEventAttributeSet( new String[] {SEMANTICS, "strong"} ).unmodifiable();
             SMALL = new SinkEventAttributeSet( new String[] {SEMANTICS, "small"} ).unmodifiable();
