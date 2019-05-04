@@ -45,7 +45,6 @@ class HorizontalRuleBlock
     /** {@inheritDoc} */
     public final int hashCode()
     {
-        final int hashCode = 214905655;
-        return hashCode;
+        return 214905655;
     }
 }

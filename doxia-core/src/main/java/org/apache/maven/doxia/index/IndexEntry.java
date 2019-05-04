@@ -51,7 +51,7 @@ public class IndexEntry
     /**
      * The child entries.
      */
-    private List<IndexEntry> childEntries = new ArrayList<IndexEntry>();
+    private List<IndexEntry> childEntries = new ArrayList<>();
 
     /**
      * System-dependent EOL.
@@ -155,7 +155,7 @@ public class IndexEntry
     {
         if ( entries == null )
         {
-            childEntries = new ArrayList<IndexEntry>();
+            childEntries = new ArrayList<>();
         }
 
         this.childEntries = entries;
@@ -301,7 +301,7 @@ public class IndexEntry
 
         message.append( EOL );
 
-        StringBuilder indent = new StringBuilder( "" );
+        StringBuilder indent = new StringBuilder();
 
         for ( int i = 0; i < depth; i++ )
         {

@@ -77,7 +77,7 @@ public class ListBlockParser
             }
             else
             {
-                text.append( " " + line.trim() );
+                text.append( " " ).append( line.trim() );
             }
 
         }

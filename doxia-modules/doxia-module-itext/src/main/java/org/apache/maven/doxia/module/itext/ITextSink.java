@@ -123,7 +123,7 @@ public class ITextSink
     private boolean figureDefined = false;
 
     /** Keep track of the closing tags for inline events. */
-    protected Stack<List<String>> inlineStack = new Stack<List<String>>();
+    protected Stack<List<String>> inlineStack = new Stack<>();
 
     /** Map of warn messages with a String as key to describe the error type and a Set as value.
      * Using to reduce warn messages. */
@@ -1283,7 +1283,7 @@ public class ITextSink
     /** {@inheritDoc} */
     public void inline( SinkEventAttributes attributes )
     {
-        List<String> tags = new ArrayList<String>();
+        List<String> tags = new ArrayList<>();
 
         if ( attributes != null )
         {
@@ -1828,11 +1828,11 @@ public class ITextSink
     {
         String[] strings = StringUtils.split( aString, " " );
         StringBuilder sb = new StringBuilder();
-        for ( int i = 0; i < strings.length; i++ )
+        for ( String string : strings )
         {
-            if ( strings[i].trim().length() != 0 )
+            if ( string.trim().length() != 0 )
             {
-                sb.append( strings[i].trim() );
+                sb.append( string.trim() );
                 sb.append( " " );
             }
         }
@@ -1873,13 +1873,13 @@ public class ITextSink
 
         if ( warnMessages == null )
         {
-            warnMessages = new HashMap<String, Set<String>>();
+            warnMessages = new HashMap<>();
         }
 
         Set<String> set = warnMessages.get( key );
         if ( set == null )
         {
-            set = new TreeSet<String>();
+            set = new TreeSet<>();
         }
         set.add( msg );
         warnMessages.put( key, set );

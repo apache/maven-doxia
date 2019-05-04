@@ -110,11 +110,11 @@ public class TreeListBuilder
 
     private List<Block> getListItems( TreeComponent tc )
     {
-        List<Block> blocks = new ArrayList<Block>();
+        List<Block> blocks = new ArrayList<>();
 
         for ( TreeComponent child : tc.getChildren() )
         {
-            List<Block> childBlocks = new ArrayList<Block>();
+            List<Block> childBlocks = new ArrayList<>();
 
             if ( child.getFather() != null )
             {

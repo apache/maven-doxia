@@ -108,7 +108,7 @@ public class XhtmlParser
             }
             else
             {
-                sink.unknown( "meta", new Object[] { Integer.valueOf( TAG_TYPE_SIMPLE ) }, attribs );
+                sink.unknown( "meta", new Object[] { TAG_TYPE_SIMPLE }, attribs );
             }
         }
         /*
@@ -247,7 +247,7 @@ public class XhtmlParser
         String[] params = StringUtils.split( s, "|" );
         String macroName = params[0];
 
-        Map<String, Object> parameters = new HashMap<String, Object>();
+        Map<String, Object> parameters = new HashMap<>();
         for ( int i = 1; i < params.length; i++ )
         {
             String[] param = StringUtils.split( params[i], "=" );

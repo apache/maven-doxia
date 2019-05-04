@@ -324,8 +324,8 @@ public class Xhtml5BaseSinkTest
     public void testSectionAttributes()
     {
         final int level = Xhtml5BaseSink.SECTION_LEVEL_1;
-        final SinkEventAttributeSet set = new SinkEventAttributeSet(
-            new String[] {"name", "section name", "class", "foo", "id", "bar"} );
+        final SinkEventAttributeSet set = new SinkEventAttributeSet( "name", "section name", "class", "foo", "id",
+                "bar" );
 
         try
         {
@@ -952,7 +952,7 @@ public class Xhtml5BaseSinkTest
         checkVerbatimAttributes( attributes, "<div>" + LS + "<pre style=\"bold\"></pre></div>" );
 
         final SinkEventAttributes att =
-            new SinkEventAttributeSet( new String[] {SinkEventAttributes.ID, "id"} );
+            new SinkEventAttributeSet( SinkEventAttributes.ID, "id" );
         checkVerbatimAttributes( att, "<div>" + LS + "<pre id=\"id\"></pre></div>" );
 
         att.addAttribute( Attribute.CLASS, "class" );
@@ -1399,11 +1399,11 @@ public class Xhtml5BaseSinkTest
      */
     public void testAttributeEntities()
     {
-        final Object[] startTag = new Object[] { new Integer( Xhtml5BaseSink.TAG_TYPE_START ) };
-        final Object[] endTag = new Object[] { new Integer( Xhtml5BaseSink.TAG_TYPE_END ) };
+        final Object[] startTag = new Object[] { Xhtml5BaseSink.TAG_TYPE_START };
+        final Object[] endTag = new Object[] { Xhtml5BaseSink.TAG_TYPE_END };
         final String script = Xhtml5BaseSink.SCRIPT.toString();
-        final SinkEventAttributes src = new SinkEventAttributeSet(
-                new String[] {SinkEventAttributes.SRC.toString(), "http://ex.com/ex.js?v=l&l=e"} );
+        final SinkEventAttributes src = new SinkEventAttributeSet( SinkEventAttributes.SRC.toString(),
+                "http://ex.com/ex.js?v=l&l=e" );
 
         try
         {

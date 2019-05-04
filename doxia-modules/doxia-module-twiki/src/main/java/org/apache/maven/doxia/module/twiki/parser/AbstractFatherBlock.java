@@ -77,10 +77,8 @@ abstract class AbstractFatherBlock
     public final void traverse( final Sink sink )
     {
         before( sink );
-        for ( int i = 0; i < childBlocks.length; i++ )
+        for ( Block block : childBlocks )
         {
-            Block block = childBlocks[i];
-
             block.traverse( sink );
         }
         after( sink );
@@ -127,9 +125,9 @@ abstract class AbstractFatherBlock
         int result = 1;
         if ( childBlocks != null )
         {
-            for ( int i = 0; i < childBlocks.length; i++ )
+            for ( Block childBlock : childBlocks )
             {
-                result += childBlocks[i].hashCode();
+                result += childBlock.hashCode();
             }
         }
 

@@ -54,7 +54,7 @@ public class SinkUtilsTest
         result = SinkUtils.getAttributeString( at );
         assertEquals( expResult, result );
 
-        att = new SinkEventAttributeSet( new String[] {"color", "red", "margin-left", "20px"} );
+        att = new SinkEventAttributeSet( "color", "red", "margin-left", "20px" );
 
         at = new SinkEventAttributeSet();
         at.addAttribute( SinkEventAttributeSet.STYLE, att );

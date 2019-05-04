@@ -72,11 +72,10 @@ public class ParagraphTest
                 + "This is more text in the same paragraph\n" + "\n" + "Another paragraph";
 
         final ByLineReaderSource source = new ByLineReaderSource( new StringReader( text ) );
-        final ParagraphBlockParser parser = paraParser;
 
         ParagraphBlock block;
 
-        block = (ParagraphBlock) parser.visit( source.getNextLine(), source );
+        block = (ParagraphBlock) paraParser.visit( source.getNextLine(), source );
         assertNotNull( block );
         final Block[] firstLevelChilds = block.getBlocks();
         final int numberOfChilds = 3;
@@ -105,11 +104,10 @@ public class ParagraphTest
                 + "Another paragraph";
 
         final ByLineReaderSource source = new ByLineReaderSource( new StringReader( text ) );
-        final ParagraphBlockParser parser = paraParser;
 
         ParagraphBlock block;
 
-        block = (ParagraphBlock) parser.visit( source.getNextLine(), source );
+        block = (ParagraphBlock) paraParser.visit( source.getNextLine(), source );
         assertNotNull( block );
         final Block[] firstLevelChilds = block.getBlocks();
         assertEquals( 2, firstLevelChilds.length );
@@ -163,7 +161,7 @@ public class ParagraphTest
         expected =
             new Block[] { new ParagraphBlock( new Block[] { new TextBlock( "Some text" ) } ),
                 new HorizontalRuleBlock(), new ParagraphBlock( new Block[] { new TextBlock( "More text" ) } ) };
-        blocks = (Block[]) twikiParser.parse( source ).toArray( new Block[] {} );
+        blocks = twikiParser.parse( source ).toArray( new Block[] {} );
         assertTrue( Arrays.equals( expected, blocks ) );
     }
 }

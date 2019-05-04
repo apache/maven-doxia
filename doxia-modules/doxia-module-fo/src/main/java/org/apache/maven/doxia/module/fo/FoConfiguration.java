@@ -83,9 +83,7 @@ public class FoConfiguration
         }
         catch ( ConfigurationException cex )
         {
-            IOException ioe = new IOException();
-            ioe.initCause( cex );
-            throw ioe;
+            throw new IOException( cex );
         }
 
         loadDefaultConfig(); // this adds default values that are missing from above
@@ -153,7 +151,7 @@ public class FoConfiguration
     private void addAttributes( String attributeId )
     {
         int index = sets.indexOf( attributeId );
-        String keybase = "xsl:attribute-set(" + String.valueOf( index ) + ")";
+        String keybase = "xsl:attribute-set(" + index + ")";
 
         Object prop = config.getProperty( keybase + ".xsl:attribute" );
 
@@ -189,15 +187,10 @@ public class FoConfiguration
         {
             config.load( ReaderFactory.newXmlReader( getClass().getResourceAsStream( "/fo-styles.xslt" ) ) );
         }
-        catch ( ConfigurationException cex )
+        catch ( ConfigurationException | IOException cex )
         {
             // this should not happen
             throw new RuntimeException( cex );
-        }
-        catch ( IOException e )
-        {
-            // this should not happen
-            throw new RuntimeException( e );
         }
 
         this.sets = config.getList( "xsl:attribute-set[@name]" );

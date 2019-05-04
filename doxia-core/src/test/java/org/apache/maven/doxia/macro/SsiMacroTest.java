@@ -44,7 +44,7 @@ public class SsiMacroTest
         throws MacroExecutionException
     {
 
-        Map<String, Object> macroParameters = new HashMap<String, Object>();
+        Map<String, Object> macroParameters = new HashMap<>();
         macroParameters.put( "function", "include" );
         macroParameters.put( "file", "include-file.html" );
 

@@ -355,7 +355,7 @@ public class XdocSinkTest
             sink.verbatim_();
             sink.verbatim( SinkEventAttributeSet.BOXED );
             sink.verbatim_();
-            sink.verbatim( new SinkEventAttributeSet( new String[] {SinkEventAttributeSet.WIDTH, "20%"} ) );
+            sink.verbatim( new SinkEventAttributeSet( SinkEventAttributeSet.WIDTH, "20%" ) );
             sink.verbatim_();
         }
         finally

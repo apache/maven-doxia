@@ -52,9 +52,9 @@ public class RandomAccessSink
 
     private Sink coreSink;
 
-    private List<Sink> sinks = new ArrayList<Sink>();
+    private List<Sink> sinks = new ArrayList<>();
 
-    private List<ByteArrayOutputStream> outputStreams = new ArrayList<ByteArrayOutputStream>();
+    private List<ByteArrayOutputStream> outputStreams = new ArrayList<>();
 
     private Sink currentSink;
 

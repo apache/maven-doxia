@@ -281,17 +281,17 @@ public class XdocSink
     {
         if ( depth == SECTION_LEVEL_1 )
         {
-            write( String.valueOf( LESS_THAN ) + SECTION_TAG.toString()
+            write( LESS_THAN + SECTION_TAG.toString()
                     + SinkUtils.getAttributeString(
                         SinkUtils.filterAttributes( attributes, SinkUtils.SINK_BASE_ATTRIBUTES ) )
-                    + String.valueOf( SPACE ) + Attribute.NAME + String.valueOf( EQUAL ) + String.valueOf( QUOTE ) );
+                    + SPACE + Attribute.NAME + EQUAL + QUOTE );
         }
         else if ( depth == SECTION_LEVEL_2 )
         {
-            write( String.valueOf( LESS_THAN ) + SUBSECTION_TAG.toString()
+            write( LESS_THAN + SUBSECTION_TAG.toString()
                     + SinkUtils.getAttributeString(
                         SinkUtils.filterAttributes( attributes, SinkUtils.SINK_BASE_ATTRIBUTES  ) )
-                    + String.valueOf( SPACE ) + Attribute.NAME + String.valueOf( EQUAL ) + String.valueOf( QUOTE ) );
+                    + SPACE + Attribute.NAME + EQUAL + QUOTE );
         }
     }
 
@@ -353,7 +353,7 @@ public class XdocSink
     {
         if ( depth == SECTION_LEVEL_1 || depth == SECTION_LEVEL_2 )
         {
-            write( String.valueOf( QUOTE ) + String.valueOf( GREATER_THAN ) );
+            write( String.valueOf( QUOTE ) + GREATER_THAN );
         }
         else if ( depth == SECTION_LEVEL_3 )
         {
@@ -395,8 +395,7 @@ public class XdocSink
 
         if ( atts.isDefined( SinkEventAttributes.DECORATION ) )
         {
-            boxed = "boxed".equals(
-                (String) atts.getAttribute( SinkEventAttributes.DECORATION ) );
+            boxed = "boxed".equals( atts.getAttribute( SinkEventAttributes.DECORATION ) );
         }
 
         boxedFlag = boxed;

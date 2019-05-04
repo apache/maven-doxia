@@ -19,7 +19,7 @@ package org.apache.maven.doxia.util;
  * under the License.
  */
 
-import java.io.UnsupportedEncodingException;
+import java.nio.charset.StandardCharsets;
 import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.List;
@@ -62,7 +62,7 @@ public class HtmlTools
         HtmlMarkup.TR, HtmlMarkup.TT, HtmlMarkup.U, HtmlMarkup.UL, HtmlMarkup.VAR
     };
 
-    private static final Map<String, Tag> TAG_MAP = new HashMap<String, Tag>( ALL_TAGS.length );
+    private static final Map<String, Tag> TAG_MAP = new HashMap<>( ALL_TAGS.length );
 
     private static final int ASCII = 0x7E;
 
@@ -88,9 +88,7 @@ public class HtmlTools
      */
     public static Tag getHtmlTag( String tagName )
     {
-        Object t =  TAG_MAP.get( tagName );
-
-        return (Tag) t;
+        return TAG_MAP.get( tagName );
     }
 
     /**
@@ -254,7 +252,7 @@ public class HtmlTools
         }
 
         String tmp = unescaped;
-        List<String> entities = new ArrayList<String>();
+        List<String> entities = new ArrayList<>();
         while ( true )
         {
             int i = tmp.indexOf( "&#x" );
@@ -345,29 +343,22 @@ public class HtmlTools
                     {
                         byte[] bytes;
 
-                        try
+                        if ( isHighSurrogate( c ) )
                         {
-                            if ( isHighSurrogate( c ) )
-                            {
-                                int codePoint = toCodePoint( c, url.charAt( ++i ) );
-                                unicode = toChars( codePoint );
-                                bytes = ( new String( unicode, 0, unicode.length ) ).getBytes( "UTF8" );
-                            }
-                            else
-                            {
-                                unicode[0] = c;
-                                bytes = ( new String( unicode, 0, 1 ) ).getBytes( "UTF8" );
-                            }
+                            int codePoint = toCodePoint( c, url.charAt( ++i ) );
+                            unicode = toChars( codePoint );
+                            bytes = ( new String( unicode, 0, unicode.length ) ).getBytes( StandardCharsets.UTF_8 );
                         }
-                        catch ( UnsupportedEncodingException cannotHappen )
+                        else
                         {
-                            bytes = new byte[0];
+                            unicode[0] = c;
+                            bytes = ( new String( unicode, 0, 1 ) ).getBytes( StandardCharsets.UTF_8 );
                         }
 
-                        for ( int j = 0; j < bytes.length; ++j )
+                        for ( byte aByte : bytes )
                         {
                             encoded.append( '%' );
-                            encoded.append( String.format( "%02X", bytes[j] ) );
+                            encoded.append( String.format( "%02X", aByte ) );
                         }
                     }
             }

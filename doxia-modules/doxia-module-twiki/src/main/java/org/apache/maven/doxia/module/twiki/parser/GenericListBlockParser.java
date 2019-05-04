@@ -375,7 +375,7 @@ class TreeListBuilder
      */
     private List<ListItemBlock> getListItems( final TreeComponent tc )
     {
-        final List<ListItemBlock> blocks = new ArrayList<ListItemBlock>();
+        final List<ListItemBlock> blocks = new ArrayList<>();
 
         for ( int i = 0; i < tc.getChildren().length; i++ )
         {
@@ -411,7 +411,7 @@ class TreeListBuilder
         /**
          * childrens
          */
-        private List<TreeComponent> children = new ArrayList<TreeComponent>();
+        private List<TreeComponent> children = new ArrayList<>();
 
         /**
          * node text
@@ -447,7 +447,7 @@ class TreeListBuilder
          */
         TreeComponent[] getChildren()
         {
-            return (TreeComponent[]) children.toArray( new TreeComponent[] {} );
+            return children.toArray( new TreeComponent[] {} );
         }
 
         /**

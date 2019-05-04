@@ -145,7 +145,7 @@ public class SnippetReader
             reader = new BufferedReader( new InputStreamReader( source.openStream(), encoding ) );
         }
 
-        List<String> lines = new ArrayList<String>();
+        List<String> lines = new ArrayList<>();
         try
         {
             boolean capture = false;

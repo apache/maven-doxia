@@ -48,7 +48,7 @@ public class SnippetMacroTest
     public void testExecute()
         throws MacroExecutionException
     {
-        Map<String, Object> macroParameters = new HashMap<String, Object>();
+        Map<String, Object> macroParameters = new HashMap<>();
         macroParameters.put( "file", "src/test/resources/macro/snippet/testSnippet.txt" );
         macroParameters.put( "encoding", "UTF-8" );
 
@@ -140,7 +140,7 @@ public class SnippetMacroTest
     public void testIgnoreDownloadError()
         throws Exception
     {
-        Map<String, Object> macroParameters = new HashMap<String, Object>();
+        Map<String, Object> macroParameters = new HashMap<>();
         macroParameters.put( "debug", "true" );
         macroParameters.put( "ignoreDownloadError", "true" );
         macroParameters.put( "url", "http://foo.bar.com/wine.txt" );

@@ -69,9 +69,8 @@ public class ITextUtil
     public static String getPageSize( Rectangle rect )
     {
         Field[] fields = PageSize.class.getFields();
-        for ( int i = 0; i < fields.length; i++ )
+        for ( Field currentField : fields )
         {
-            Field currentField = fields[i];
             try
             {
                 if ( currentField.getType().equals( Rectangle.class ) )
@@ -102,11 +101,10 @@ public class ITextUtil
     public static boolean isPageSizeSupported( String aPageSize )
     {
         Field[] fields = PageSize.class.getFields();
-        for ( int i = 0; i < fields.length; i++ )
+        for ( Field currentField : fields )
         {
-            Field currentField = fields[i];
-            if ( ( currentField.getName().equalsIgnoreCase( aPageSize ) )
-                && ( currentField.getType().equals( Rectangle.class ) ) )
+            if ( ( currentField.getName().equalsIgnoreCase( aPageSize ) ) && ( currentField.getType().equals(
+                    Rectangle.class ) ) )
             {
                 return true;
             }

@@ -23,10 +23,10 @@ import java.awt.image.BufferedImage;
 
 import java.io.File;
 import java.io.IOException;
-import java.io.UnsupportedEncodingException;
 
 import java.net.URL;
 
+import java.nio.charset.StandardCharsets;
 import java.text.ParseException;
 import java.text.ParsePosition;
 import java.text.SimpleDateFormat;
@@ -246,21 +246,13 @@ public class DoxiaUtils
             }
             else if ( !chop )
             {
-                byte[] bytes;
 
-                try
-                {
-                    bytes = String.valueOf( c ).getBytes( "UTF8" );
-                }
-                catch ( UnsupportedEncodingException cannotHappen )
-                {
-                    bytes = new byte[0];
-                }
+                byte[] bytes = String.valueOf( c ).getBytes( StandardCharsets.UTF_8 );
 
-                for ( int j = 0; j < bytes.length; ++j )
+                for ( byte aByte : bytes )
                 {
                     buffer.append( '.' );
-                    buffer.append( String.format( "%02X", bytes[j] ) );
+                    buffer.append( String.format( "%02X", aByte ) );
                 }
             }
         }
@@ -361,9 +353,9 @@ public class DoxiaUtils
             return new Date();
         }
 
-        for ( int i = 0; i < DATE_PATTERNS.length; i++ )
+        for ( String datePattern : DATE_PATTERNS )
         {
-            DATE_PARSER.applyPattern( DATE_PATTERNS[i] );
+            DATE_PARSER.applyPattern( datePattern );
             DATE_PARSE_POSITION.setIndex( 0 );
             final Date date = DATE_PARSER.parse( str, DATE_PARSE_POSITION );
 

@@ -154,7 +154,7 @@ public class DocBookSink
     private String encoding;
 
     /** Keep track of the closing tags for inline events. */
-    protected Stack<List<String>> inlineStack = new Stack<List<String>>();
+    protected Stack<List<String>> inlineStack = new Stack<>();
 
     /** Map of warn messages with a String as key to describe the error type and a Set as value.
      * Using to reduce warn messages. */
@@ -217,7 +217,7 @@ public class DocBookSink
      * @return The escaped text.
      * @deprecated Use HtmlTools#escapeHTML(String,boolean).
      */
-    public static final String escapeSGML( String text, boolean xmlMode )
+    public static String escapeSGML( String text, boolean xmlMode )
     {
         return HtmlTools.escapeHTML( text, xmlMode );
     }
@@ -1297,10 +1297,10 @@ public class DocBookSink
 
         writeStartTag( SimplifiedDocbookMarkup.TGROUP_TAG, att );
 
-        for ( int i = 0; i < justification.length; ++i )
+        for ( int i1 : justification )
         {
             String justif;
-            switch ( justification[i] )
+            switch ( i1 )
             {
                 case Sink.JUSTIFY_LEFT:
                     justif = "left";
@@ -1544,7 +1544,7 @@ public class DocBookSink
     /** {@inheritDoc} */
     public void inline( SinkEventAttributes attributes )
     {
-        List<String> tags = new ArrayList<String>();
+        List<String> tags = new ArrayList<>();
 
         if ( attributes != null )
         {
@@ -1797,13 +1797,13 @@ public class DocBookSink
 
         if ( warnMessages == null )
         {
-            warnMessages = new HashMap<String, Set<String>>();
+            warnMessages = new HashMap<>();
         }
 
         Set<String> set = warnMessages.get( key );
         if ( set == null )
         {
-            set = new TreeSet<String>();
+            set = new TreeSet<>();
         }
         set.add( msg );
         warnMessages.put( key, set );

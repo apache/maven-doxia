@@ -23,7 +23,6 @@ import java.io.IOException;
 import java.io.StringReader;
 import java.util.ArrayList;
 import java.util.Collections;
-import java.util.Iterator;
 import java.util.List;
 import java.util.Map;
 
@@ -103,21 +102,17 @@ public abstract class AbstractXmlValidator
         final Logger logger =
             ( (DefaultPlexusContainer) getContainer() ).getLoggerManager().getLoggerForComponent( Parser.ROLE );
 
-        for ( Iterator<Map.Entry<String, String>> it = getTestDocuments().entrySet().iterator(); it.hasNext(); )
+        for ( Map.Entry<String, String> entry : getTestDocuments().entrySet() )
         {
-            Map.Entry<String, String> entry = it.next();
-
             if ( logger.isDebugEnabled() )
             {
                 logger.debug( "Validate '" + entry.getKey() + "'" );
             }
 
-            List<ErrorMessage> errors = parseXML( entry.getValue().toString() );
+            List<ErrorMessage> errors = parseXML( entry.getValue() );
 
-            for ( Iterator<ErrorMessage> it2 = errors.iterator(); it2.hasNext(); )
+            for ( ErrorMessage error : errors )
             {
-                ErrorMessage error = it2.next();
-
                 if ( isFailErrorMessage( error.getMessage() ) )
                 {
                     fail( entry.getKey() + EOL + error.toString() );
@@ -399,7 +394,7 @@ public abstract class AbstractXmlValidator
 
         MessagesErrorHandler()
         {
-            messages = new ArrayList<ErrorMessage>( 8 );
+            messages = new ArrayList<>( 8 );
         }
 
         /** {@inheritDoc} */

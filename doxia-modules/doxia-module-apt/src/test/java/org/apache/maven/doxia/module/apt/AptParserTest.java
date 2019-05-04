@@ -51,7 +51,7 @@ public class AptParserTest
     {
         super.setUp();
 
-        parser = (AptParser) lookup( Parser.ROLE, "apt" );
+        parser = lookup( Parser.ROLE, "apt" );
     }
 
     /** {@inheritDoc} */
@@ -88,7 +88,7 @@ public class AptParserTest
     {
         String linebreak = parseFileToAptSink( "test/linebreak" );
 
-        assertTrue( linebreak.indexOf( "Line\\" + EOL + "break." ) != -1 );
+        assertTrue( linebreak.contains( "Line\\" + EOL + "break." ) );
     }
 
     /** @throws Exception  */
@@ -97,7 +97,7 @@ public class AptParserTest
     {
         String macro = parseFileToAptSink( "test/macro" );
 
-        assertTrue( macro.indexOf( "<modelVersion\\>4.0.0\\</modelVersion\\>" ) != -1 );
+        assertTrue( macro.contains( "<modelVersion\\>4.0.0\\</modelVersion\\>" ) );
     }
 
     /** @throws Exception  */
@@ -116,18 +116,10 @@ public class AptParserTest
     {
         // DOXIA-259
 
-        Reader reader = null;
         SinkEventTestingSink sink = new SinkEventTestingSink();
-
-        try
+        try ( Reader reader = getTestReader( "test/snippet" ) )
         {
-            reader = getTestReader( "test/snippet" );
-
             createParser().parse( reader, sink );
-        }
-        finally
-        {
-            IOUtil.close( reader );
         }
 
         Iterator<SinkEventElement> it = sink.getEventList().iterator();
@@ -161,8 +153,8 @@ public class AptParserTest
         String toc = parseFileToAptSink( "test/toc" );
 
         // No section, only subsection 1 and 2
-        assertTrue( toc.indexOf( "* {{{SubSection_1.1}SubSection 1.1}}" ) != -1 );
-        assertTrue( toc.indexOf( "* {{{SubSection_1.1.2.1.1}SubSection 1.1.2.1.1}}" ) == -1 );
+        assertTrue( toc.contains( "* {{{SubSection_1.1}SubSection 1.1}}" ) );
+        assertTrue( !toc.contains( "* {{{SubSection_1.1.2.1.1}SubSection 1.1.2.1.1}}" ) );
     }
 
     /**

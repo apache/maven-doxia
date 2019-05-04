@@ -58,7 +58,7 @@ public class ConfluenceParserTest
     {
         super.setUp();
 
-        parser = (ConfluenceParser) lookup( Parser.ROLE, "confluence" );
+        parser = lookup( Parser.ROLE, "confluence" );
 
         output = null;
         reader = null;
@@ -667,11 +667,11 @@ public class ConfluenceParserTest
         lines = StringUtils.replace( lines, "\n", EOL );
         if ( message != null )
         {
-            assertTrue( message, result.indexOf( lines ) != -1 );
+            assertTrue( message, result.contains( lines ) );
         }
         else
         {
-            assertTrue( result.indexOf( lines ) != -1 );
+            assertTrue( result.contains( lines ) );
         }
     }
 

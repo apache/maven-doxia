@@ -48,7 +48,7 @@ public class SwfMacroTest
             throws MacroExecutionException
     {
 
-        Map<String, Object> macroParameters = new HashMap<String, Object>();
+        Map<String, Object> macroParameters = new HashMap<>();
         macroParameters.put( "src", "src.swf" );
         macroParameters.put( "id", "Movie" );
         macroParameters.put( "width", "50" );
@@ -115,7 +115,7 @@ public class SwfMacroTest
             throws MacroExecutionException
     {
 
-        Map<String, Object> macroParameters = new HashMap<String, Object>();
+        Map<String, Object> macroParameters = new HashMap<>();
         macroParameters.put( "src", "src.swf" );
         macroParameters.put( "id", "Movie" );
         macroParameters.put( "width", "50" );
@@ -126,7 +126,7 @@ public class SwfMacroTest
         macroParameters.put( "play", "false" );
         macroParameters.put( "version", "6" );
         macroParameters.put( "allowScript", "always" );
-        macroParameters.put( "notAString", new Integer(0) );
+        macroParameters.put( "notAString", 0 );
 
 
         SinkEventTestingSink sink = new SinkEventTestingSink();

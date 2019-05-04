@@ -56,7 +56,7 @@ public class FmlValidatorTest
             String root = matcher.group( 1 );
             String value = matcher.group( 2 );
 
-            if ( value.indexOf( FML_XSD.getName() ) == -1 )
+            if ( !value.contains( FML_XSD.getName() ) )
             {
                 String faqs =
                     "<" + root + " xmlns=\"" + FmlMarkup.FML_NAMESPACE + "\""

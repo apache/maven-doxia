@@ -262,9 +262,9 @@ class WMFWriter
             write16( function, out );
             if ( parameters != null )
             {
-                for ( int i = 0; i < parameters.length; ++i )
+                for ( short parameter : parameters )
                 {
-                    write16( parameters[i], out );
+                    write16( parameter, out );
                 }
             }
         }
@@ -276,9 +276,9 @@ class WMFWriter
             print16( function, out );
             if ( parameters != null )
             {
-                for ( int i = 0; i < parameters.length; ++i )
+                for ( short parameter : parameters )
                 {
-                    print16( parameters[i], out );
+                    print16( parameter, out );
                 }
             }
         }

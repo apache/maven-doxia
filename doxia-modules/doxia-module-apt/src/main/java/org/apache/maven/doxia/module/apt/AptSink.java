@@ -96,7 +96,7 @@ public class AptSink
     private final PrintWriter writer;
 
     /**  justification of table cells. */
-    private int cellJustif[];
+    private int[] cellJustif;
 
     /**  a line of a row in a table. */
     private String rowLine;
@@ -108,7 +108,7 @@ public class AptSink
     private final Stack<String> listStyles;
 
     /** Keep track of the closing tags for inline events. */
-    protected Stack<List<String>> inlineStack = new Stack<List<String>>();
+    protected Stack<List<String>> inlineStack = new Stack<>();
 
     // ----------------------------------------------------------------------
     // Public protected methods
@@ -123,7 +123,7 @@ public class AptSink
     protected AptSink( Writer writer )
     {
         this.writer = new PrintWriter( writer );
-        this.listStyles = new Stack<String>();
+        this.listStyles = new Stack<>();
 
         init();
     }
@@ -453,13 +453,13 @@ public class AptSink
         String style = listStyles.peek();
         if ( style.equals( String.valueOf( STAR ) ) )
         {
-            write( EOL + listNestingIndent + String.valueOf( STAR ) + String.valueOf( SPACE ) );
+            write( EOL + listNestingIndent + STAR + SPACE );
         }
         else
         {
-            write( EOL + listNestingIndent + String.valueOf( LEFT_SQUARE_BRACKET )
-                + String.valueOf( LEFT_SQUARE_BRACKET ) + style + String.valueOf( RIGHT_SQUARE_BRACKET )
-                + String.valueOf( RIGHT_SQUARE_BRACKET ) + String.valueOf( SPACE ) );
+            write( EOL + listNestingIndent + LEFT_SQUARE_BRACKET
+                + LEFT_SQUARE_BRACKET + style + RIGHT_SQUARE_BRACKET
+                + RIGHT_SQUARE_BRACKET + SPACE );
         }
         itemFlag = true;
     }
@@ -617,7 +617,7 @@ public class AptSink
     }
 
     /** {@inheritDoc} */
-    public void tableRows( int justification[], boolean grid )
+    public void tableRows( int[] justification, boolean grid )
     {
         cellJustif = justification;
         gridFlag = grid;
@@ -827,7 +827,7 @@ public class AptSink
     {
         if ( !headerFlag )
         {
-            List<String> tags = new ArrayList<String>();
+            List<String> tags = new ArrayList<>();
 
             if ( attributes != null )
             {

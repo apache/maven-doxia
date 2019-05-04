@@ -427,7 +427,7 @@ public abstract class AbstractXmlParser
      */
     protected void handleUnknown( XmlPullParser parser, Sink sink, int type )
     {
-        Object[] required = new Object[] { Integer.valueOf( type ) };
+        Object[] required = new Object[] { type };
 
         SinkEventAttributeSet attribs = getAttributesFromParser( parser );
 
@@ -565,7 +565,7 @@ public abstract class AbstractXmlParser
     {
         if ( entities == null )
         {
-            entities = new LinkedHashMap<String, String>();
+            entities = new LinkedHashMap<>();
         }
 
         return entities;
@@ -673,11 +673,10 @@ public abstract class AbstractXmlParser
         if ( entitiesCount > 0 )
         {
             final String txt = StringUtils.replace( text, ENTITY_START, "\n" + ENTITY_START );
-            BufferedReader reader = new BufferedReader( new StringReader( txt ) );
-            String line;
-            String tmpLine = "";
-            try
+            try ( BufferedReader reader = new BufferedReader( new StringReader( txt ) ) )
             {
+                String line;
+                String tmpLine = "";
                 Matcher matcher;
                 while ( ( line = reader.readLine() ) != null )
                 {
@@ -709,10 +708,6 @@ public abstract class AbstractXmlParser
             {
                 // nop
             }
-            finally
-            {
-                IOUtil.close( reader );
-            }
         }
     }
 
@@ -724,7 +719,7 @@ public abstract class AbstractXmlParser
         implements EntityResolver
     {
         /** Map with systemId as key and the content of systemId as byte[]. */
-        protected static final Map<String, byte[]> ENTITY_CACHE = new Hashtable<String, byte[]>();
+        protected static final Map<String, byte[]> ENTITY_CACHE = new Hashtable<>();
 
         /** {@inheritDoc} */
         public InputSource resolveEntity( String publicId, String systemId )

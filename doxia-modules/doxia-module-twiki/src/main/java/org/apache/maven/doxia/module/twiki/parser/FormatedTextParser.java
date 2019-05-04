@@ -40,7 +40,7 @@ public class FormatedTextParser
     /**
      * map used to create blocks dependening on the text format
      */
-    private static final Map<String, FormatBlockFactory> FACTORY_MAP = new HashMap<String, FormatBlockFactory>();
+    private static final Map<String, FormatBlockFactory> FACTORY_MAP = new HashMap<>();
 
     /**
      * creates bold blocks
@@ -163,7 +163,7 @@ public class FormatedTextParser
      */
     private List<Block> parseFormat( final String line )
     {
-        final List<Block> ret = new ArrayList<Block>();
+        final List<Block> ret = new ArrayList<>();
         final int[] lhOffsets = new int[SPECIAL_CHAR.length];
         final int[] rhOffsets = new int[SPECIAL_CHAR.length];
 

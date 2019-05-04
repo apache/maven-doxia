@@ -170,7 +170,7 @@ public class SectionTest
             new Block[] { new SectionBlock( "Title", 1, new Block[] {
                 new ParagraphBlock( new Block[] { new TextBlock( "Some text" ) } ), new HorizontalRuleBlock(),
                 new ParagraphBlock( new Block[] { new TextBlock( "More text" ) } ) } ) };
-        blocks = (Block[]) twikiParser.parse( source ).toArray( new Block[] {} );
+        blocks = twikiParser.parse( source ).toArray( new Block[] {} );
         assertTrue( Arrays.equals( expected, blocks ) );
     }
 }

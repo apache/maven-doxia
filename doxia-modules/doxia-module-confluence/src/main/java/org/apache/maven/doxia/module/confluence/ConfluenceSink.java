@@ -65,7 +65,7 @@ public class ConfluenceSink
     private boolean monospacedFlag;
 
     /** Keep track of the closing tags for inline events. */
-    protected Stack<List<String>> inlineStack = new Stack<List<String>>();
+    protected Stack<List<String>> inlineStack = new Stack<>();
 
     /** An indication on if we're in verbatim box mode. */
     private boolean verbatimBoxedFlag;
@@ -88,7 +88,7 @@ public class ConfluenceSink
     protected ConfluenceSink( Writer writer )
     {
         this.out = new PrintWriter( writer );
-        this.listStyles = new Stack<String>();
+        this.listStyles = new Stack<>();
 
         init();
     }
@@ -433,7 +433,7 @@ public class ConfluenceSink
     {
         if ( !headFlag )
         {
-            List<String> tags = new ArrayList<String>();
+            List<String> tags = new ArrayList<>();
 
             if ( attributes != null )
             {

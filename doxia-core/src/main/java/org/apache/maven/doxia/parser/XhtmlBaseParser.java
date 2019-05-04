@@ -814,7 +814,7 @@ public class XhtmlBaseParser
 
         if ( isScriptBlock() )
         {
-            sink.unknown( CDATA, new Object[] { Integer.valueOf( CDATA_TYPE ), text}, null );
+            sink.unknown( CDATA, new Object[] { CDATA_TYPE, text }, null );
         }
         else
         {
@@ -1172,25 +1172,25 @@ public class XhtmlBaseParser
 
         if ( style != null )
         {
-            if ( "list-style-type: upper-alpha".equals( style ) )
+            switch ( style )
             {
-                numbering = Sink.NUMBERING_UPPER_ALPHA;
-            }
-            else if ( "list-style-type: lower-alpha".equals( style ) )
-            {
-                numbering = Sink.NUMBERING_LOWER_ALPHA;
-            }
-            else if ( "list-style-type: upper-roman".equals( style ) )
-            {
-                numbering = Sink.NUMBERING_UPPER_ROMAN;
-            }
-            else if ( "list-style-type: lower-roman".equals( style ) )
-            {
-                numbering = Sink.NUMBERING_LOWER_ROMAN;
-            }
-            else if ( "list-style-type: decimal".equals( style ) )
-            {
-                numbering = Sink.NUMBERING_DECIMAL;
+                case "list-style-type: upper-alpha":
+                    numbering = Sink.NUMBERING_UPPER_ALPHA;
+                    break;
+                case "list-style-type: lower-alpha":
+                    numbering = Sink.NUMBERING_LOWER_ALPHA;
+                    break;
+                case "list-style-type: upper-roman":
+                    numbering = Sink.NUMBERING_UPPER_ROMAN;
+                    break;
+                case "list-style-type: lower-roman":
+                    numbering = Sink.NUMBERING_LOWER_ROMAN;
+                    break;
+                case "list-style-type: decimal":
+                    numbering = Sink.NUMBERING_DECIMAL;
+                    break;
+                default:
+                    // ignore all other
             }
         }
 
@@ -1275,13 +1275,13 @@ public class XhtmlBaseParser
 
         if ( warnMessages == null )
         {
-            warnMessages = new HashMap<String, Set<String>>();
+            warnMessages = new HashMap<>();
         }
 
         Set<String> set = warnMessages.get( key );
         if ( set == null )
         {
-            set = new TreeSet<String>();
+            set = new TreeSet<>();
         }
         set.add( log );
         warnMessages.put( key, set );

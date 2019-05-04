@@ -68,7 +68,7 @@ public class ConfluenceParser
     {
         init();
 
-        List<Block> blocks = new ArrayList<Block>();
+        List<Block> blocks = new ArrayList<>();
 
         String line;
 

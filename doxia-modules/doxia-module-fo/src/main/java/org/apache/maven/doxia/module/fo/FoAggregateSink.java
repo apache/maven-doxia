@@ -124,7 +124,7 @@ public class FoAggregateSink
     /**
      * Used to get the current position in the TOC.
      */
-    private final Stack<NumberedListItem> tocStack = new Stack<NumberedListItem>();
+    private final Stack<NumberedListItem> tocStack = new Stack<>();
 
     /**
      * Constructor.
@@ -346,7 +346,7 @@ public class FoAggregateSink
             DocumentTOCItem tocItem = new DocumentTOCItem();
             tocItem.setName( this.docModel.getToc().getName() );
             tocItem.setRef( "./toc" );
-            List<DocumentTOCItem> items = new LinkedList<DocumentTOCItem>();
+            List<DocumentTOCItem> items = new LinkedList<>();
             if ( this.tocPosition == TOC_START )
             {
                 items.add( tocItem );
@@ -389,7 +389,7 @@ public class FoAggregateSink
             idName = idName.substring( 0, idName.lastIndexOf( "." ) );
         }
 
-        while ( idName.indexOf( "//" ) != -1 )
+        while ( idName.contains( "//" ) )
         {
             idName = StringUtils.replace( idName, "//", "/" );
         }
@@ -493,7 +493,7 @@ public class FoAggregateSink
             return;
         }
 
-        while ( name.indexOf( "//" ) != -1 )
+        while ( name.contains( "//" ) )
         {
             name = StringUtils.replace( name, "//", "/" );
         }
@@ -567,7 +567,7 @@ public class FoAggregateSink
 
         String base = docName.substring( 0, docName.lastIndexOf( "/" ) );
 
-        if ( base.indexOf( "/" ) != -1 )
+        if ( base.contains( "/" ) )
         {
             while ( anchor.startsWith( "../" ) )
             {
@@ -611,7 +611,7 @@ public class FoAggregateSink
                 else
                 {
                     anchor = anchor.substring( 0, dot ) + "#" + HtmlTools.encodeId(
-                        anchor.substring( hash + 1, anchor.length() ) );
+                        anchor.substring( hash + 1 ) );
                 }
             }
             else
@@ -726,7 +726,7 @@ public class FoAggregateSink
      */
     protected String getHeaderText()
     {
-        return Integer.toString( chapter ) + "   " + docTitle;
+        return chapter + "   " + docTitle;
     }
 
     /**
@@ -767,7 +767,7 @@ public class FoAggregateSink
     @Override
     protected String getChapterString()
     {
-        return Integer.toString( chapter ) + ".";
+        return chapter + ".";
     }
 
     @Override
@@ -1279,7 +1279,7 @@ public class FoAggregateSink
 
         if ( atts == null )
         {
-            return new SinkEventAttributeSet( new String[]{ SinkEventAttributes.HEIGHT, COVER_HEADER_HEIGHT } );
+            return new SinkEventAttributeSet( SinkEventAttributes.HEIGHT, COVER_HEADER_HEIGHT );
         }
 
         // FOP dpi: 72

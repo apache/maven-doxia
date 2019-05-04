@@ -75,19 +75,12 @@ public abstract class AbstractParserTest
     {
         WellformednessCheckingSink sink = new WellformednessCheckingSink();
 
-        Reader reader = null;
-        try
+        try ( Reader reader = getTestReader( "test", outputExtension() ) )
         {
-            reader = getTestReader( "test", outputExtension() );
-
             createParser().parse( reader, sink );
 
-            assertTrue( "Parser output not well-formed, last offending element: "
-                + sink.getOffender(), sink.isWellformed() );
-        }
-        finally
-        {
-            IOUtil.close( reader );
+            assertTrue( "Parser output not well-formed, last offending element: " + sink.getOffender(),
+                    sink.isWellformed() );
         }
     }
 
@@ -102,23 +95,11 @@ public abstract class AbstractParserTest
     public final void testDocument()
         throws IOException, ParseException
     {
-        Writer writer = null;
-        Reader reader = null;
-
-        try
+        try ( Writer writer = getTestWriter( "test", "txt" );
+              Reader reader = getTestReader( "test", outputExtension() ) )
         {
-            writer = getTestWriter( "test", "txt" );
-
-            reader = getTestReader( "test", outputExtension() );
-
             Sink sink = new TextSink( writer );
-
             createParser().parse( reader, sink );
-        }
-        finally
-        {
-            IOUtil.close( reader );
-            IOUtil.close( writer );
         }
     }
 

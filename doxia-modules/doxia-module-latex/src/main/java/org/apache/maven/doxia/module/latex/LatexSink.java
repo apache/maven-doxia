@@ -84,7 +84,7 @@ public class LatexSink
     private String title;
 
     /** Keep track of the closing tags for inline events. */
-    protected Stack<List<String>> inlineStack = new Stack<List<String>>();
+    protected Stack<List<String>> inlineStack = new Stack<>();
 
     // ----------------------------------------------------------------------
     //
@@ -798,13 +798,13 @@ public class LatexSink
 
     {
         StringBuilder justif = new StringBuilder();
-        for ( int i = 0; i < justification.length; ++i )
+        for ( int i1 : justification )
         {
             if ( grid )
             {
                 justif.append( '|' );
             }
-            switch ( justification[i] )
+            switch ( i1 )
             {
                 case Sink.JUSTIFY_CENTER:
                     justif.append( 'c' );
@@ -1141,7 +1141,7 @@ public class LatexSink
     /** {@inheritDoc} */
     public void inline( SinkEventAttributes attributes )
     {
-        List<String> tags = new ArrayList<String>();
+        List<String> tags = new ArrayList<>();
 
         if ( attributes != null )
         {

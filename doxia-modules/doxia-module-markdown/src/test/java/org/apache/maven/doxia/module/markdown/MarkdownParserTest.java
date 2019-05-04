@@ -1,5 +1,6 @@
 package org.apache.maven.doxia.module.markdown;
 
+import java.io.IOException;
 import java.io.Reader;
 import java.util.Iterator;
 import java.util.List;
@@ -26,7 +27,6 @@ import java.util.List;
 import org.apache.maven.doxia.parser.AbstractParserTest;
 import org.apache.maven.doxia.parser.ParseException;
 import org.apache.maven.doxia.parser.Parser;
-import org.apache.maven.doxia.sink.Sink;
 import org.apache.maven.doxia.sink.impl.SinkEventAttributeSet;
 import org.apache.maven.doxia.sink.impl.SinkEventElement;
 import org.apache.maven.doxia.sink.impl.SinkEventTestingSink;
@@ -55,7 +55,7 @@ public class MarkdownParserTest
         throws Exception
     {
         super.setUp();
-        parser = (MarkdownParser) lookup( Parser.ROLE, MarkdownParser.ROLE_HINT );
+        parser = lookup( Parser.ROLE, MarkdownParser.ROLE_HINT );
     }
 
     /**
@@ -307,20 +307,13 @@ public class MarkdownParserTest
      * @return a sink to test parsing events.
      * @throws ParseException if the document parsing failed.
      */
-    protected SinkEventTestingSink parseFileToEventTestingSink( String file )
-        throws ParseException
+    protected SinkEventTestingSink parseFileToEventTestingSink( String file ) throws ParseException, IOException
     {
-        Reader reader = null;
         SinkEventTestingSink sink = null;
-        try
+        try ( Reader reader = getTestReader( file ) )
         {
-            reader = getTestReader( file );
             sink = new SinkEventTestingSink();
             parser.parse( reader, sink );
-        }
-        finally
-        {
-            IOUtil.close( reader );
         }
 
         return sink;

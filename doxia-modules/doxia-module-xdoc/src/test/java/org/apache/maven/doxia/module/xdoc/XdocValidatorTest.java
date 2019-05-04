@@ -56,7 +56,7 @@ public class XdocValidatorTest
             String root = matcher.group( 1 );
             String value = matcher.group( 2 );
 
-            if ( value.indexOf( XDOC_XSD.getName() ) == -1 )
+            if ( !value.contains( XDOC_XSD.getName() ) )
             {
                 String faqs =
                     "<" + root + " xmlns=\"http://maven.apache.org/XDOC/2.0\""

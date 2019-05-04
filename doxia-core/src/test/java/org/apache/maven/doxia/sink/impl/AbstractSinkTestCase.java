@@ -127,9 +127,7 @@ public abstract class AbstractSinkTestCase
     {
         InputStream is = Thread.currentThread().getContextClassLoader().getResourceAsStream( "test.apt" );
 
-        InputStreamReader reader = new InputStreamReader( is );
-
-        return reader;
+        return new InputStreamReader( is );
     }
 
     // ----------------------------------------------------------------------

@@ -121,22 +121,19 @@ public class AptSinkTest extends AbstractSinkTest
     /** {@inheritDoc} */
     protected String getSection3Block( String title )
     {
-        return EOL + StringUtils.repeat( String.valueOf( AptMarkup.SECTION_TITLE_START_MARKUP ), 2 )
-                + title + EOL + EOL + EOL;
+        return EOL + StringUtils.repeat( AptMarkup.SECTION_TITLE_START_MARKUP, 2 ) + title + EOL + EOL + EOL;
     }
 
     /** {@inheritDoc} */
     protected String getSection4Block( String title )
     {
-        return EOL + StringUtils.repeat( String.valueOf( AptMarkup.SECTION_TITLE_START_MARKUP ), 3 )
-                + title + EOL + EOL + EOL;
+        return EOL + StringUtils.repeat( AptMarkup.SECTION_TITLE_START_MARKUP, 3 ) + title + EOL + EOL + EOL;
     }
 
     /** {@inheritDoc} */
     protected String getSection5Block( String title )
     {
-        return EOL + StringUtils.repeat( String.valueOf( AptMarkup.SECTION_TITLE_START_MARKUP ), 4 )
-                + title + EOL + EOL + EOL;
+        return EOL + StringUtils.repeat( AptMarkup.SECTION_TITLE_START_MARKUP, 4 ) + title + EOL + EOL + EOL;
     }
 
     /** {@inheritDoc} */
@@ -313,7 +310,7 @@ public class AptSinkTest extends AbstractSinkTest
     /** {@inheritDoc} */
     protected String getLineBreakBlock()
     {
-        return String.valueOf( AptMarkup.BACKSLASH ) + EOL;
+        return AptMarkup.BACKSLASH + EOL;
     }
 
     /** {@inheritDoc} */

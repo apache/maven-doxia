@@ -116,7 +116,7 @@ public class FoSink
     private final LinkedList<String> tableCaptionStack;
 
     /** Keep track of the closing tags for inline events. */
-    protected Stack<List<Tag>> inlineStack = new Stack<List<Tag>>();
+    protected Stack<List<Tag>> inlineStack = new Stack<>();
 
     /** Map of warn messages with a String as key to describe the error type and a Set as value.
      * Using to reduce warn messages. */
@@ -167,15 +167,15 @@ public class FoSink
         this.languageId = languageId;
         this.config = new FoConfiguration();
 
-        this.listStack = new Stack<NumberedListItem>();
-        this.tableGridStack = new LinkedList<Boolean>();
-        this.cellJustifStack = new LinkedList<int[]>();
-        this.isCellJustifStack = new LinkedList<Boolean>();
-        this.cellCountStack = new LinkedList<Integer>();
-        this.tableContentWriterStack = new LinkedList<StringWriter>();
-        this.tableCaptionWriterStack = new LinkedList<StringWriter>();
-        this.tableCaptionXMLWriterStack = new LinkedList<PrettyPrintXMLWriter>();
-        this.tableCaptionStack = new LinkedList<String>();
+        this.listStack = new Stack<>();
+        this.tableGridStack = new LinkedList<>();
+        this.cellJustifStack = new LinkedList<>();
+        this.isCellJustifStack = new LinkedList<>();
+        this.cellCountStack = new LinkedList<>();
+        this.tableContentWriterStack = new LinkedList<>();
+        this.tableCaptionWriterStack = new LinkedList<>();
+        this.tableCaptionXMLWriterStack = new LinkedList<>();
+        this.tableCaptionStack = new LinkedList<>();
 
         setNameSpace( "fo" );
     }
@@ -965,7 +965,7 @@ public class FoSink
         if ( !this.tableCaptionStack.isEmpty() && this.tableCaptionStack.getLast() != null )
         {
             paragraph( SinkEventAttributeSet.CENTER );
-            write( this.tableCaptionStack.removeLast().toString() );
+            write( this.tableCaptionStack.removeLast() );
             paragraph_();
         }
     }
@@ -973,10 +973,10 @@ public class FoSink
     /** {@inheritDoc} */
     public void tableRows( int[] justification, boolean grid )
     {
-        this.tableGridStack.addLast( Boolean.valueOf( grid ) );
+        this.tableGridStack.addLast( grid );
         this.cellJustifStack.addLast( justification );
-        this.isCellJustifStack.addLast( Boolean.valueOf( true ) );
-        this.cellCountStack.addLast( Integer.valueOf( 0 ) );
+        this.isCellJustifStack.addLast( Boolean.TRUE );
+        this.cellCountStack.addLast( 0 );
         writeEOL();
         writeStartTag( TABLE_BODY_TAG );
     }
@@ -997,7 +997,7 @@ public class FoSink
         // TODO spacer rows
         writeStartTag( TABLE_ROW_TAG, "table.body.row" );
         this.cellCountStack.removeLast();
-        this.cellCountStack.addLast( Integer.valueOf( 0 ) );
+        this.cellCountStack.addLast( 0 );
     }
 
     /** {@inheritDoc} */
@@ -1127,7 +1127,7 @@ public class FoSink
         if ( this.isCellJustifStack.getLast().equals( Boolean.TRUE ) )
         {
             int cellCount = Integer.parseInt( this.cellCountStack.removeLast().toString() );
-            this.cellCountStack.addLast( Integer.valueOf( ++cellCount ) );
+            this.cellCountStack.addLast( ++cellCount );
         }
     }
 
@@ -1237,9 +1237,7 @@ public class FoSink
         else
         {
             // treat everything else as is
-            String anchor = name;
-
-            writeStartTag( BASIC_LINK_TAG, "internal-destination", HtmlTools.escapeHTML( anchor ) );
+            writeStartTag( BASIC_LINK_TAG, "internal-destination", HtmlTools.escapeHTML( name ) );
             writeStartTag( INLINE_TAG, "href.internal" );
         }
     }
@@ -1266,7 +1264,7 @@ public class FoSink
     /** {@inheritDoc} */
     public void inline( SinkEventAttributes attributes )
     {
-        List<Tag> tags = new ArrayList<Tag>();
+        List<Tag> tags = new ArrayList<>();
 
         if ( attributes != null )
         {
@@ -1548,7 +1546,7 @@ public class FoSink
     protected void writeStartTag( Tag tag, String id, String name )
     {
         writeEOL();
-        MutableAttributeSet att = new SinkEventAttributeSet( new String[] {id, name} );
+        MutableAttributeSet att = new SinkEventAttributeSet( id, name );
 
         writeStartTag( tag, att );
     }
@@ -1586,7 +1584,7 @@ public class FoSink
      */
     protected void writeEmptyTag( Tag tag, String id, String name )
     {
-        MutableAttributeSet att = new SinkEventAttributeSet( new String[] {id, name} );
+        MutableAttributeSet att = new SinkEventAttributeSet( id, name );
 
         writeEOL();
         writeSimpleTag( tag, att );
@@ -1686,7 +1684,7 @@ public class FoSink
                     buffer.append( EOL );
                     if ( verb )
                     {
-                        buffer.append( "<fo:block/>" + EOL );
+                        buffer.append( "<fo:block/>" ).append( EOL );
                     }
                     break;
                 default:
@@ -1844,13 +1842,13 @@ public class FoSink
 
         if ( warnMessages == null )
         {
-            warnMessages = new HashMap<String, Set<String>>();
+            warnMessages = new HashMap<>();
         }
 
         Set<String> set = warnMessages.get( key );
         if ( set == null )
         {
-            set = new TreeSet<String>();
+            set = new TreeSet<>();
         }
         set.add( msg );
         warnMessages.put( key, set );

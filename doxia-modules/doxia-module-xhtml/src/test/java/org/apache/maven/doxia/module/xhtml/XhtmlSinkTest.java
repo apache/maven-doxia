@@ -84,10 +84,10 @@ public class XhtmlSinkTest
         }
 
         String actual = writer.toString();
-        assertTrue( actual.indexOf( "<a class=\"externalLink\" href=\"http:/www.xdoc.com\"></a>" ) != -1 );
-        assertTrue( actual.indexOf( "<a href=\"./index.html#anchor\"></a>" ) != -1 );
-        assertTrue( actual.indexOf( "<a href=\"../index.html#anchor\"></a>" ) != -1 );
-        assertTrue( actual.indexOf( "<a href=\"index.html\"></a>" ) != -1 );
+        assertTrue( actual.contains( "<a class=\"externalLink\" href=\"http:/www.xdoc.com\"></a>" ) );
+        assertTrue( actual.contains( "<a href=\"./index.html#anchor\"></a>" ) );
+        assertTrue( actual.contains( "<a href=\"../index.html#anchor\"></a>" ) );
+        assertTrue( actual.contains( "<a href=\"index.html\"></a>" ) );
     }
 
     /** {@inheritDoc} */
@@ -432,7 +432,7 @@ public class XhtmlSinkTest
             sink.author_();
             SinkEventAttributeSet atts = new SinkEventAttributeSet( 1 );
             atts.addAttribute( "href", "http://maven.apache.org/" );
-            sink.unknown( "base", new Object[] {new Integer( HtmlMarkup.TAG_TYPE_SIMPLE )}, atts );
+            sink.unknown( "base", new Object[] { HtmlMarkup.TAG_TYPE_SIMPLE }, atts );
             sink.head_();
         }
         finally
@@ -444,7 +444,7 @@ public class XhtmlSinkTest
             "<head>\n<title>Title</title><!--A comment--><meta name=\"author\" content=\"&#x123;&amp;\" />"
                 + "<base href=\"http://maven.apache.org/\" /></head>";
         String actual = writer.toString();
-        assertTrue( actual, actual.indexOf( expected ) != -1 );
+        assertTrue( actual, actual.contains( expected ) );
     }
 
     /** {@inheritDoc} */

@@ -45,7 +45,6 @@ class NopBlock
     /** {@inheritDoc} */
     public final int hashCode()
     {
-        final int magic = 518409602;
-        return magic;
+        return 518409602;
     }
 }

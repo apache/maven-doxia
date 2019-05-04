@@ -37,9 +37,9 @@ import org.apache.maven.doxia.sink.impl.AbstractSink;
 public class WellformednessCheckingSink
     extends AbstractSink
 {
-    private final Stack<String> elements = new Stack<String>();
+    private final Stack<String> elements = new Stack<>();
 
-    private final List<String> errors = new LinkedList<String>();
+    private final List<String> errors = new LinkedList<>();
 
     @Override
     public void head()

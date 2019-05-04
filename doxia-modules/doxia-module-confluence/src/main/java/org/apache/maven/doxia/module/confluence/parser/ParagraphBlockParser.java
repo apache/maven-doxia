@@ -106,9 +106,8 @@ public class ParagraphBlockParser
             }
 
             boolean accepted = false;
-            for ( int i = 0; i < parsers.length; i++ )
+            for ( BlockParser parser : parsers )
             {
-                BlockParser parser = parsers[i];
                 if ( parser.accept( line, source ) )
                 {
                     accepted = true;
@@ -129,7 +128,7 @@ public class ParagraphBlockParser
             }
             else
             {
-                text.append( " " + line.trim() );
+                text.append( " " ).append( line.trim() );
             }
 
         }

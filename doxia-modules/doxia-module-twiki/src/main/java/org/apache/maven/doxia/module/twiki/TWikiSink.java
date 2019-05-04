@@ -68,10 +68,10 @@ public class TWikiSink
     private final Stack<String> listStyles;
 
     /** Keep track of the nested bold flag. */
-    protected Stack<Boolean> boldStack = new Stack<Boolean>();
+    protected Stack<Boolean> boldStack = new Stack<>();
 
     /** Keep track of the closing tags for inline events. */
-    protected Stack<List<String>> inlineStack = new Stack<List<String>>();
+    protected Stack<List<String>> inlineStack = new Stack<>();
 
     /**
      * Constructor, initialize the Writer and the variables.
@@ -82,7 +82,7 @@ public class TWikiSink
     protected TWikiSink( Writer writer )
     {
         this.out = new PrintWriter( writer );
-        this.listStyles = new Stack<String>();
+        this.listStyles = new Stack<>();
 
         init();
     }
@@ -301,7 +301,7 @@ public class TWikiSink
     /** {@inheritDoc} */
     public void figure()
     {
-        write( String.valueOf( LESS_THAN ) + Tag.IMG.toString() + SPACE );
+        write( LESS_THAN + Tag.IMG.toString() + SPACE );
     }
 
     /** {@inheritDoc} */
@@ -346,7 +346,7 @@ public class TWikiSink
     /** {@inheritDoc} */
     public void figureGraphics( String name )
     {
-        write( Attribute.SRC.toString() + EQUAL + QUOTE + name + QUOTE + String.valueOf( SPACE ) );
+        write( Attribute.SRC.toString() + EQUAL + QUOTE + name + QUOTE + SPACE );
     }
 
     /** {@inheritDoc} */
@@ -405,7 +405,7 @@ public class TWikiSink
     /** {@inheritDoc} */
     public void inline( SinkEventAttributes attributes )
     {
-        List<String> tags = new ArrayList<String>();
+        List<String> tags = new ArrayList<>();
 
         boldStack.push( boldFlag );
 
@@ -621,7 +621,7 @@ public class TWikiSink
     public void numberedListItem()
     {
         writeEOL( true );
-        String style = (String) listStyles.peek();
+        String style = listStyles.peek();
         String indent = StringUtils.repeat( THREE_SPACES_MARKUP, levelList );
         write( indent + style + SPACE );
     }

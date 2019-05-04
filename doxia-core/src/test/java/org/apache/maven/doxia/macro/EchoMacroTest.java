@@ -44,7 +44,7 @@ public class EchoMacroTest
      */
     public void testExecute()
     {
-        final Map<String,Object> macroParameters = new HashMap<String,Object>();
+        final Map<String,Object> macroParameters = new HashMap<>();
         macroParameters.put( "paramName", "paramValue" );
         macroParameters.put( "parser", "parserValue" );
         macroParameters.put( "sourceContent", "sourceContentValue" );

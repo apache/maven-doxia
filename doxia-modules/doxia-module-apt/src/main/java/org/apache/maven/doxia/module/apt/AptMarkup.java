@@ -86,11 +86,10 @@ public interface AptMarkup
     String BOLD_START_MARKUP = StringUtils.repeat( String.valueOf( LESS_THAN ), 2 );
 
     /** Syntax for the boxed verbatim start: "+------+" */
-    String BOXED_VERBATIM_START_MARKUP = String.valueOf( PLUS )
-        + StringUtils.repeat( String.valueOf( MINUS ), 6 ) + String.valueOf( PLUS );
+    String BOXED_VERBATIM_START_MARKUP = PLUS + StringUtils.repeat( String.valueOf( MINUS ), 6 ) + PLUS;
 
     /** Syntax for the header start: " -----" */
-    String HEADER_START_MARKUP = String.valueOf( SPACE ) + StringUtils.repeat( String.valueOf( MINUS ), 5 );
+    String HEADER_START_MARKUP = SPACE + StringUtils.repeat( String.valueOf( MINUS ), 5 );
 
     /** Syntax for the horizontal rule: "========" */
     String HORIZONTAL_RULE_MARKUP = StringUtils.repeat( String.valueOf( EQUAL ), 8 );
@@ -111,7 +110,7 @@ public interface AptMarkup
     String LINK_START_2_MARKUP = String.valueOf( RIGHT_CURLY_BRACKET );
 
     /** Syntax for the list end: "[]" */
-    String LIST_END_MARKUP = String.valueOf( LEFT_SQUARE_BRACKET ) + String.valueOf( RIGHT_SQUARE_BRACKET );
+    String LIST_END_MARKUP = String.valueOf( LEFT_SQUARE_BRACKET ) + RIGHT_SQUARE_BRACKET;
 
     /** Syntax for the list start: "*" */
     String LIST_START_MARKUP = String.valueOf( STAR );
@@ -126,7 +125,7 @@ public interface AptMarkup
     String NON_BOXED_VERBATIM_START_MARKUP = StringUtils.repeat( String.valueOf( MINUS ), 6 );
 
     /** Syntax for the non breaking space: "\ " */
-    String NON_BREAKING_SPACE_MARKUP = String.valueOf( BACKSLASH ) + String.valueOf( SPACE );
+    String NON_BREAKING_SPACE_MARKUP = String.valueOf( BACKSLASH ) + SPACE;
 
     /** Syntax for the page break: "\f" */
     String PAGE_BREAK_MARKUP = String.valueOf( PAGE_BREAK );
@@ -138,22 +137,19 @@ public interface AptMarkup
     String TABLE_CELL_SEPARATOR_MARKUP = String.valueOf( PIPE );
 
     /** Syntax for the table column, centered style: "-*" */
-    String TABLE_COL_CENTERED_ALIGNED_MARKUP = StringUtils.repeat( String.valueOf( MINUS ), 2 )
-        + String.valueOf( STAR );
+    String TABLE_COL_CENTERED_ALIGNED_MARKUP = StringUtils.repeat( String.valueOf( MINUS ), 2 ) + STAR;
 
     /** Syntax for the table column, left style: "-+" */
-    String TABLE_COL_LEFT_ALIGNED_MARKUP = StringUtils.repeat( String.valueOf( MINUS ), 2 )
-        + String.valueOf( PLUS );
+    String TABLE_COL_LEFT_ALIGNED_MARKUP = StringUtils.repeat( String.valueOf( MINUS ), 2 ) + PLUS;
 
     /** Syntax for the table column, right style: "-:" */
-    String TABLE_COL_RIGHT_ALIGNED_MARKUP = StringUtils.repeat( String.valueOf( MINUS ), 2 )
-        + String.valueOf( COLON );
+    String TABLE_COL_RIGHT_ALIGNED_MARKUP = StringUtils.repeat( String.valueOf( MINUS ), 2 ) + COLON;
 
     /** Syntax for the table row end: "|" */
     String TABLE_ROW_SEPARATOR_MARKUP = String.valueOf( PIPE );
 
     /** Syntax for the table row start: "*--" */
-    String TABLE_ROW_START_MARKUP = String.valueOf( STAR ) + StringUtils.repeat( String.valueOf( MINUS ), 2 );
+    String TABLE_ROW_START_MARKUP = STAR + StringUtils.repeat( String.valueOf( MINUS ), 2 );
 
     /** Syntax for the boxed verbatim end: "+------+" */
     String BOXED_VERBATIM_END_MARKUP = BOXED_VERBATIM_START_MARKUP;

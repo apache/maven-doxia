@@ -73,7 +73,7 @@ public class XdocParser
     /**
      * The macro parameters.
      */
-    private Map<String, Object> macroParameters = new HashMap<String, Object>();
+    private Map<String, Object> macroParameters = new HashMap<>();
 
     /**
      * Indicates that we're inside &lt;properties&gt; or &lt;head&gt;.
@@ -410,7 +410,7 @@ public class XdocParser
 
             if ( macroParameters == null )
             {
-                macroParameters = new HashMap<String, Object>();
+                macroParameters = new HashMap<>();
             }
 
             if ( StringUtils.isEmpty( macroName ) )
@@ -441,7 +441,7 @@ public class XdocParser
         }
         else
         {
-            sink.unknown( "meta", new Object[]{ Integer.valueOf( TAG_TYPE_SIMPLE ) }, attribs );
+            sink.unknown( "meta", new Object[]{ TAG_TYPE_SIMPLE }, attribs );
         }
     }
 

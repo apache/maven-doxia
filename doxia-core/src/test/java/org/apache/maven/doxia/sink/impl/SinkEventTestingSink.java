@@ -37,7 +37,7 @@ public class SinkEventTestingSink
     extends AbstractSink
 {
     /** The list of sink events. */
-    private final List<SinkEventElement> events = new LinkedList<SinkEventElement>();
+    private final List<SinkEventElement> events = new LinkedList<>();
 
     /**
      * Return the collected list of SinkEventElements.
@@ -218,7 +218,7 @@ public class SinkEventTestingSink
     @Override
     public void numberedList( int numbering )
     {
-        addEvent( "numberedList", new Object[] {new Integer( numbering )} );
+        addEvent( "numberedList", new Object[] { numbering } );
     }
 
     @Override
@@ -302,7 +302,7 @@ public class SinkEventTestingSink
     @Override
     public void tableRows( int[] justification, boolean grid )
     {
-        addEvent( "tableRows", new Object[] {justification, new Boolean( grid )} );
+        addEvent( "tableRows", new Object[] { justification, grid } );
     }
 
     @Override
@@ -554,7 +554,7 @@ public class SinkEventTestingSink
     @Override
     public void verbatim( boolean boxed )
     {
-        addEvent( "verbatim", new Object[] {new Boolean( boxed )} );
+        addEvent( "verbatim", new Object[] { boxed } );
     }
 
     @Override
@@ -879,7 +879,7 @@ public class SinkEventTestingSink
     @Override
     public void numberedList( int numbering, SinkEventAttributes attributes )
     {
-        addEvent( "numberedList", new Object[] {new Integer( numbering ), attributes} );
+        addEvent( "numberedList", new Object[] { numbering, attributes } );
     }
 
     @Override

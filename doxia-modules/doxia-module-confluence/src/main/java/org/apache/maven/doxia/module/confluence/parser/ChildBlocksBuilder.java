@@ -49,7 +49,7 @@ public class ChildBlocksBuilder
 
     private boolean insideSup = false;
 
-    private List<Block> blocks = new ArrayList<Block>();
+    private List<Block> blocks = new ArrayList<>();
 
     private StringBuilder text = new StringBuilder();
 
@@ -74,7 +74,7 @@ public class ChildBlocksBuilder
      */
     public List<Block> getBlocks()
     {
-        List<Block> specialBlocks = new ArrayList<Block>();
+        List<Block> specialBlocks = new ArrayList<>();
 
         for ( int i = 0; i < input.length(); i++ )
         {
@@ -382,7 +382,7 @@ public class ChildBlocksBuilder
 
     private List<Block> getList( Block block, List<Block> currentBlocks )
     {
-        List<Block> list = new ArrayList<Block>();
+        List<Block> list = new ArrayList<>();
 
         if ( insideBold || insideItalic || insideMonospaced )
         {
@@ -400,10 +400,10 @@ public class ChildBlocksBuilder
 
         if ( currentBlocks.isEmpty() && StringUtils.isEmpty( txt ) )
         {
-            return new ArrayList<Block>();
+            return new ArrayList<>();
         }
 
-        ArrayList<Block> list = new ArrayList<Block>();
+        ArrayList<Block> list = new ArrayList<>();
 
         if ( !insideBold && !insideItalic && !insideMonospaced )
         {

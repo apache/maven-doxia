@@ -110,7 +110,7 @@ public class SectionBlock
     {
         try
         {
-            final Method m = sink.getClass().getMethod( name, new Class[] {} );
+            final Method m = sink.getClass().getMethod( name );
             m.invoke( sink, Collections.EMPTY_LIST.toArray() );
         }
         catch ( Exception e )

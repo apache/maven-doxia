@@ -129,7 +129,7 @@ public class XhtmlBaseSink
     protected boolean tableRows = false;
 
     /** Keep track of the closing tags for inline events. */
-    protected Stack<List<Tag>> inlineStack = new Stack<List<Tag>>();
+    protected Stack<List<Tag>> inlineStack = new Stack<>();
 
     /** Map of warn messages with a String as key to describe the error type and a Set as value.
      * Using to reduce warn messages. */
@@ -148,13 +148,13 @@ public class XhtmlBaseSink
     {
         this.writer = new PrintWriter( out );
 
-        this.cellJustifStack = new LinkedList<int[]>();
-        this.isCellJustifStack = new LinkedList<Boolean>();
-        this.cellCountStack = new LinkedList<Integer>();
-        this.tableContentWriterStack = new LinkedList<StringWriter>();
-        this.tableCaptionWriterStack = new LinkedList<StringWriter>();
-        this.tableCaptionXMLWriterStack = new LinkedList<PrettyPrintXMLWriter>();
-        this.tableCaptionStack = new LinkedList<String>();
+        this.cellJustifStack = new LinkedList<>();
+        this.isCellJustifStack = new LinkedList<>();
+        this.cellCountStack = new LinkedList<>();
+        this.tableContentWriterStack = new LinkedList<>();
+        this.tableCaptionWriterStack = new LinkedList<>();
+        this.tableCaptionXMLWriterStack = new LinkedList<>();
+        this.tableCaptionStack = new LinkedList<>();
 
         init();
     }
@@ -1232,7 +1232,7 @@ public class XhtmlBaseSink
 
         if ( boxed )
         {
-            divAtts = new SinkEventAttributeSet( new String[] { Attribute.CLASS.toString(), "source" } );
+            divAtts = new SinkEventAttributeSet( Attribute.CLASS.toString(), "source" );
         }
 
         atts.removeAttribute( SinkEventAttributes.DECORATION );
@@ -1344,14 +1344,14 @@ public class XhtmlBaseSink
         String tableCaption = null;
         if ( !this.tableCaptionStack.isEmpty() && this.tableCaptionStack.getLast() != null )
         {
-            tableCaption = this.tableCaptionStack.removeLast().toString();
+            tableCaption = this.tableCaptionStack.removeLast();
         }
 
         if ( tableCaption != null )
         {
             // DOXIA-177
             StringBuilder sb = new StringBuilder();
-            sb.append( tableContent.substring( 0, tableContent.indexOf( Markup.GREATER_THAN ) + 1 ) );
+            sb.append( tableContent, 0, tableContent.indexOf( Markup.GREATER_THAN ) + 1 );
             sb.append( tableCaption );
             sb.append( tableContent.substring( tableContent.indexOf( Markup.GREATER_THAN ) + 1 ) );
 
@@ -1398,7 +1398,7 @@ public class XhtmlBaseSink
 
         writeStartTag( HtmlMarkup.TABLE, att );
 
-        this.cellCountStack.addLast( Integer.valueOf( 0 ) );
+        this.cellCountStack.addLast( 0 );
     }
 
     /** {@inheritDoc} */
@@ -1465,7 +1465,7 @@ public class XhtmlBaseSink
         if ( !this.cellCountStack.isEmpty() )
         {
             this.cellCountStack.removeLast();
-            this.cellCountStack.addLast( Integer.valueOf( 0 ) );
+            this.cellCountStack.addLast( 0 );
         }
     }
 
@@ -1579,7 +1579,7 @@ public class XhtmlBaseSink
             && !this.cellCountStack.isEmpty() )
         {
             int cellCount = Integer.parseInt( this.cellCountStack.removeLast().toString() );
-            this.cellCountStack.addLast( Integer.valueOf( ++cellCount ) );
+            this.cellCountStack.addLast( ++cellCount );
         }
     }
 
@@ -1794,7 +1794,7 @@ public class XhtmlBaseSink
     {
         if ( !headFlag )
         {
-            List<Tag> tags = new ArrayList<Tag>();
+            List<Tag> tags = new ArrayList<>();
 
             if ( attributes != null )
             {
@@ -2073,7 +2073,7 @@ public class XhtmlBaseSink
             return;
         }
 
-        int tagType = ( (Integer) requiredParams[0] ).intValue();
+        int tagType = (Integer) requiredParams[0];
 
         if ( tagType == ENTITY_TYPE )
         {
@@ -2297,13 +2297,13 @@ public class XhtmlBaseSink
 
         if ( warnMessages == null )
         {
-            warnMessages = new HashMap<String, Set<String>>();
+            warnMessages = new HashMap<>();
         }
 
         Set<String> set = warnMessages.get( key );
         if ( set == null )
         {
-            set = new TreeSet<String>();
+            set = new TreeSet<>();
         }
         set.add( mesg );
         warnMessages.put( key, set );

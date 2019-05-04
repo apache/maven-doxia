@@ -26,7 +26,6 @@ import java.io.Reader;
 import java.io.Writer;
 
 import java.util.Iterator;
-import java.util.List;
 import java.util.regex.Pattern;
 
 import org.apache.maven.doxia.parser.AbstractParserTest;
@@ -53,7 +52,7 @@ public class FmlParserTest
     {
         super.setUp();
 
-        parser = (FmlParser) lookup( Parser.ROLE, "fml" );
+        parser = lookup( Parser.ROLE, "fml" );
 
         // AbstractXmlParser.CachedFileEntityResolver downloads DTD/XSD files in ${java.io.tmpdir}
         // Be sure to delete them
@@ -95,16 +94,9 @@ public class FmlParserTest
     {
         SinkEventTestingSink sink = new SinkEventTestingSink();
 
-        Reader reader = null;
-        try
+        try ( Reader reader = getTestReader( "simpleFaq" ) )
         {
-            reader = getTestReader( "simpleFaq" );
-
             createParser().parse( reader, sink );
-        }
-        finally
-        {
-            IOUtil.close( reader );
         }
 
         Iterator<SinkEventElement> it = sink.getEventList().iterator();
@@ -299,7 +291,7 @@ public class FmlParserTest
             IOUtil.close( reader );
         }
 
-        assertTrue( content.indexOf( "<a name=\"macro-definition\">Macro Question</a>" ) != -1 );
+        assertTrue( content.contains( "<a name=\"macro-definition\">Macro Question</a>" ) );
     }
 
     private void assertTextEvent( SinkEventElement textEvt, String string )

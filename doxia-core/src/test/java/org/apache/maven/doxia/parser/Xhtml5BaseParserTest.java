@@ -708,7 +708,7 @@ public class Xhtml5BaseParserTest
         // DOXIA-374
         SinkEventElement el = it.next();
         assertEquals( "tableRows", el.getName() );
-        assertFalse( ( (Boolean) el.getArgs()[1] ).booleanValue() );
+        assertFalse( (Boolean) el.getArgs()[1] );
 
         assertEquals( "tableCaption", it.next().getName() );
         assertEquals( "tableCaption_", it.next().getName() );

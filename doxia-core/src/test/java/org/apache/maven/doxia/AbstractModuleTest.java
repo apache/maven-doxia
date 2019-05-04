@@ -173,9 +173,7 @@ public abstract class AbstractModuleTest
 
         assertNotNull( "Could not find resource: " + baseName + "." + extension, is );
 
-        InputStreamReader reader = new InputStreamReader( is );
-
-        return reader;
+        return new InputStreamReader( is );
     }
 
     /**

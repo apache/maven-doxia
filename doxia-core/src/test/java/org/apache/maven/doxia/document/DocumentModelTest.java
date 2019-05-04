@@ -350,20 +350,13 @@ public class DocumentModelTest
 
         DocumentModel documentModel;
 
-        Reader reader = null;
-
-        try
+        try ( Reader reader = ReaderFactory.newXmlReader( testFile ) )
         {
-            reader = ReaderFactory.newXmlReader( testFile );
             documentModel = new DocumentXpp3Reader().read( reader );
         }
         catch ( XmlPullParserException e )
         {
-            throw (IOException) new IOException( "Error parsing document descriptor" ).initCause( e );
-        }
-        finally
-        {
-            IOUtil.close( reader );
+            throw new IOException( "Error parsing document descriptor", e );
         }
 
         return documentModel;

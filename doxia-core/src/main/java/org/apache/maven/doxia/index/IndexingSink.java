@@ -77,7 +77,7 @@ public class IndexingSink
      */
     public IndexingSink( IndexEntry sectionEntry )
     {
-        stack = new Stack<IndexEntry>();
+        stack = new Stack<>();
         stack.push( sectionEntry );
 
         init();
@@ -257,7 +257,7 @@ public class IndexingSink
                 // -----------------------------------------------------------------------
 
                 // append text to current entry
-                IndexEntry entry = (IndexEntry) stack.lastElement();
+                IndexEntry entry = stack.lastElement();
 
                 String title = entry.getTitle() + text;
                 title = title.replaceAll( "[\\r\\n]+", "" );

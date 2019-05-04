@@ -21,6 +21,7 @@ package org.apache.maven.doxia.util;
 
 import java.text.ParseException;
 
+import java.util.Calendar;
 import java.util.Date;
 import java.util.GregorianCalendar;
 
@@ -198,7 +199,7 @@ public class DoxiaUtilsTest
     public void testParseDate()
     {
         final int year = 1973;
-        final int month = 1;
+        final int month = Calendar.FEBRUARY;
         final int day = 27;
 
         try
@@ -215,9 +216,9 @@ public class DoxiaUtilsTest
             assertEquals( feb27, DoxiaUtils.parseDate( "February 27, 1973" ) );
             assertEquals( feb27, DoxiaUtils.parseDate( "19730227" ) );
 
-            assertEquals( new GregorianCalendar( year, 0, 1 ).getTime(), DoxiaUtils.parseDate( "1973" ) );
+            assertEquals( new GregorianCalendar( year, Calendar.JANUARY, 1 ).getTime(), DoxiaUtils.parseDate( "1973" ) );
 
-            final Date feb1 = new GregorianCalendar( year, 1, 1 ).getTime();
+            final Date feb1 = new GregorianCalendar( year, Calendar.FEBRUARY, 1 ).getTime();
             assertEquals( feb1, DoxiaUtils.parseDate( "February 1973" ) );
             assertEquals( feb1, DoxiaUtils.parseDate( "Feb. 1973" ) );
             assertEquals( feb1, DoxiaUtils.parseDate( "February '73" ) );

@@ -87,7 +87,7 @@ public class FmlParser
     private String macroName;
 
     /** The macro parameters. */
-    private Map<String, Object> macroParameters = new HashMap<String, Object>();
+    private Map<String, Object> macroParameters = new HashMap<>();
 
     /** {@inheritDoc} */
     public void parse( Reader source, Sink sink )
@@ -185,9 +185,7 @@ public class FmlParser
         else if ( parser.getName().equals( TITLE.toString() ) )
         {
             buffer = new StringBuilder();
-
-            buffer.append( String.valueOf( LESS_THAN ) ).append( parser.getName() )
-                .append( String.valueOf( GREATER_THAN ) );
+            buffer.append( LESS_THAN ).append( parser.getName() ).append( GREATER_THAN );
         }
         else if ( parser.getName().equals( FAQ_TAG.toString() ) )
         {
@@ -213,16 +211,12 @@ public class FmlParser
         else if ( parser.getName().equals( QUESTION_TAG.toString() ) )
         {
             buffer = new StringBuilder();
-
-            buffer.append( String.valueOf( LESS_THAN ) ).append( parser.getName() )
-                .append( String.valueOf( GREATER_THAN ) );
+            buffer.append( LESS_THAN ).append( parser.getName() ).append( GREATER_THAN );
         }
         else if ( parser.getName().equals( ANSWER_TAG.toString() ) )
         {
             buffer = new StringBuilder();
-
-            buffer.append( String.valueOf( LESS_THAN ) ).append( parser.getName() )
-                .append( String.valueOf( GREATER_THAN ) );
+            buffer.append( LESS_THAN ).append( parser.getName() ).append( GREATER_THAN );
 
         }
 
@@ -240,23 +234,23 @@ public class FmlParser
         }
         else if ( buffer != null )
         {
-            buffer.append( String.valueOf( LESS_THAN ) ).append( parser.getName() );
+            buffer.append( LESS_THAN ).append( parser.getName() );
 
             int count = parser.getAttributeCount();
 
             for ( int i = 0; i < count; i++ )
             {
-                buffer.append( String.valueOf( SPACE ) ).append( parser.getAttributeName( i ) );
+                buffer.append( SPACE ).append( parser.getAttributeName( i ) );
 
-                buffer.append( String.valueOf( EQUAL ) ).append( String.valueOf( QUOTE ) );
+                buffer.append( EQUAL ).append( QUOTE );
 
                 // TODO: why are attribute values HTML-encoded?
                 buffer.append( HtmlTools.escapeHTML( parser.getAttributeValue( i ) ) );
 
-                buffer.append( String.valueOf( QUOTE ) );
+                buffer.append( QUOTE );
             }
 
-            buffer.append( String.valueOf( GREATER_THAN ) );
+            buffer.append( GREATER_THAN );
         }
     }
 
@@ -295,8 +289,7 @@ public class FmlParser
                     + parser.getLineNumber() + ":" + parser.getColumnNumber() + ")" );
             }
 
-            buffer.append( String.valueOf( LESS_THAN ) ).append( String.valueOf( SLASH ) )
-                .append( parser.getName() ).append( String.valueOf( GREATER_THAN ) );
+            buffer.append( LESS_THAN ).append( SLASH ).append( parser.getName() ).append( GREATER_THAN );
 
             currentFaq.setQuestion( buffer.toString() );
 
@@ -310,8 +303,7 @@ public class FmlParser
                     + parser.getLineNumber() + ":" + parser.getColumnNumber() + ")" );
             }
 
-            buffer.append( String.valueOf( LESS_THAN ) ).append( String.valueOf( SLASH ) )
-                .append( parser.getName() ).append( String.valueOf( GREATER_THAN ) );
+            buffer.append( LESS_THAN ).append( SLASH ).append( parser.getName() ).append( GREATER_THAN );
 
             currentFaq.setAnswer( buffer.toString() );
 
@@ -325,8 +317,7 @@ public class FmlParser
                     + parser.getLineNumber() + ":" + parser.getColumnNumber() + ")" );
             }
 
-            buffer.append( String.valueOf( LESS_THAN ) ).append( String.valueOf( SLASH ) )
-                .append( parser.getName() ).append( String.valueOf( GREATER_THAN ) );
+            buffer.append( LESS_THAN ).append( SLASH ).append( parser.getName() ).append( GREATER_THAN );
 
             currentPart.setTitle( buffer.toString() );
 
@@ -355,8 +346,7 @@ public class FmlParser
                 buffer.deleteCharAt( buffer.length() - 1 );
             }
 
-            buffer.append( String.valueOf( LESS_THAN ) ).append( String.valueOf( SLASH ) )
-                .append( parser.getName() ).append( String.valueOf( GREATER_THAN ) );
+            buffer.append( LESS_THAN ).append( SLASH ).append( parser.getName() ).append( GREATER_THAN );
         }
     }
 
@@ -463,7 +453,7 @@ public class FmlParser
 
             if ( macroParameters == null )
             {
-                macroParameters = new HashMap<String, Object>();
+                macroParameters = new HashMap<>();
             }
 
             if ( StringUtils.isEmpty( macroName ) )
@@ -719,13 +709,13 @@ public class FmlParser
 
         if ( warnMessages == null )
         {
-            warnMessages = new HashMap<String, Set<String>>();
+            warnMessages = new HashMap<>();
         }
 
         Set<String> set = warnMessages.get( key );
         if ( set == null )
         {
-            set = new TreeSet<String>();
+            set = new TreeSet<>();
         }
         set.add( msg );
         warnMessages.put( key, set );

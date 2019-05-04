@@ -83,7 +83,7 @@ public class FoAggregateSinkTest
             sink.close();
         }
 
-        assertTrue( writer.toString().indexOf( "<fo:block id=\"./folder/documentName\">" ) != -1 );
+        assertTrue( writer.toString().contains( "<fo:block id=\"./folder/documentName\">" ) );
     }
 
     /**
@@ -103,7 +103,7 @@ public class FoAggregateSinkTest
             sink.close();
         }
 
-        assertTrue( writer.toString().indexOf( "<fo:block id=\"./folder/documentName\">" ) != -1 );
+        assertTrue( writer.toString().contains( "<fo:block id=\"./folder/documentName\">" ) );
     }
     
     /**
@@ -151,7 +151,7 @@ public class FoAggregateSinkTest
             {
                 SAXParseException sax = (SAXParseException) e.getCause();
 
-                StringBuffer sb = new StringBuffer();
+                StringBuilder sb = new StringBuilder();
                 sb.append( "Error creating PDF from " ).append( foFile.getAbsolutePath() ).append( ":" ).append( sax.getLineNumber() ).append( ":" ).append( sax.getColumnNumber() ).append( "\n" );
                 sb.append( e.getMessage() );
 
@@ -205,8 +205,8 @@ public class FoAggregateSinkTest
             sink.close();
         }
 
-        assertTrue( writer.toString().indexOf( "<fo:inline id=\"#invalid_Anchor\">" ) != -1 );
-        assertTrue( writer.toString().indexOf( "<fo:inline id=\"./folder/docName#validAnchor\">" ) != -1 );
+        assertTrue( writer.toString().contains( "<fo:inline id=\"#invalid_Anchor\">" ) );
+        assertTrue( writer.toString().contains( "<fo:inline id=\"./folder/docName#validAnchor\">" ) );
     }
 
     /**
@@ -247,13 +247,13 @@ public class FoAggregateSinkTest
 
         String result = writer.toString();
 
-        assertTrue( result.indexOf( "<fo:basic-link external-destination=\"http://www.example.com/\">" ) != -1 );
-        assertTrue( result.indexOf( "<fo:basic-link internal-destination=\"./folder/docName#anchor\">" ) != -1 );
-        assertTrue( result.indexOf( "<fo:basic-link internal-destination=\"./folder/index\">" ) != -1 );
-        assertTrue( result.indexOf( "<fo:basic-link internal-destination=\"./download\">" ) != -1 );
-        assertTrue( result.indexOf( "<fo:basic-link internal-destination=\"./folder/test\">" ) != -1 );
-        assertTrue( result.indexOf( "<fo:basic-link internal-destination=\"./folder/whatsnew-1.1\">" ) != -1 );
-        assertTrue( result.indexOf( "<fo:block id=\"./whatsnew-1.1\">" ) != -1 );
+        assertTrue( result.contains( "<fo:basic-link external-destination=\"http://www.example.com/\">" ) );
+        assertTrue( result.contains( "<fo:basic-link internal-destination=\"./folder/docName#anchor\">" ) );
+        assertTrue( result.contains( "<fo:basic-link internal-destination=\"./folder/index\">" ) );
+        assertTrue( result.contains( "<fo:basic-link internal-destination=\"./download\">" ) );
+        assertTrue( result.contains( "<fo:basic-link internal-destination=\"./folder/test\">" ) );
+        assertTrue( result.contains( "<fo:basic-link internal-destination=\"./folder/whatsnew-1.1\">" ) );
+        assertTrue( result.contains( "<fo:block id=\"./whatsnew-1.1\">" ) );
 
         writer = new StringWriter();
         try
@@ -276,7 +276,7 @@ public class FoAggregateSinkTest
 
         result = writer.toString();
 
-        assertTrue( result.indexOf( "<fo:basic-link internal-destination=\"./root\">" ) != -1 );
-        assertTrue( result.indexOf( "<fo:basic-link internal-destination=\"./outside\">" ) != -1 );
+        assertTrue( result.contains( "<fo:basic-link internal-destination=\"./root\">" ) );
+        assertTrue( result.contains( "<fo:basic-link internal-destination=\"./outside\">" ) );
     }
 }

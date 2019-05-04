@@ -54,7 +54,7 @@ public class DefinitionListBlockParser
         {
             line = line.substring( index + 6 );
 
-            while ( !( line.indexOf( "}" ) >= 0 ) && line != null )
+            while ( !( line.contains( "}" ) ) && line != null )
             {
                 append( title, line );
                 line = source.getNextLine();

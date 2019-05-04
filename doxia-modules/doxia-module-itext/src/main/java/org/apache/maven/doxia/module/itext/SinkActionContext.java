@@ -114,7 +114,7 @@ public class SinkActionContext
     /** Constant <code>UNDEFINED=82</code> */
     public static final int UNDEFINED = 82;
 
-    private Stack<Integer> stack = new Stack<Integer>();
+    private Stack<Integer> stack = new Stack<>();
 
     private int currentAction;
 
@@ -132,7 +132,7 @@ public class SinkActionContext
         }
         else
         {
-            return stack.peek().intValue();
+            return stack.peek();
         }
     }
 
@@ -154,6 +154,6 @@ public class SinkActionContext
     {
         //currentAction = action;
 
-        stack.push( Integer.valueOf( action ) );
+        stack.push( action );
     }
 }

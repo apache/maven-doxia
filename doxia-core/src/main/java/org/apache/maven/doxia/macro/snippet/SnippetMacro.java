@@ -47,7 +47,7 @@ public class SnippetMacro
     /**
      * Holds the cache.
      */
-    private static Map<String, String> cache = new HashMap<String, String>();
+    private static Map<String, String> cache = new HashMap<>();
 
     private static final int HOUR = 60;
 
@@ -59,7 +59,7 @@ public class SnippetMacro
     /**
      * Holds the time cache.
      */
-    private static Map<String, Long> timeCached = new HashMap<String, Long>();
+    private static Map<String, Long> timeCached = new HashMap<>();
 
     /**
      * Debug.
@@ -103,7 +103,7 @@ public class SnippetMacro
 
         if ( verbatimParam != null && !"".equals( verbatimParam ) )
         {
-            verbatim = Boolean.valueOf( verbatimParam ).booleanValue();
+            verbatim = Boolean.valueOf( verbatimParam );
         }
 
         String encoding = (String) request.getParameter( "encoding" );
@@ -274,7 +274,7 @@ public class SnippetMacro
     {
         String globalId = globalSnippetId( url, id );
 
-        return timeCached.containsKey( globalId ) ? timeCached.get( globalId ).longValue() : 0;
+        return timeCached.containsKey( globalId ) ? timeCached.get( globalId ) : 0;
     }
 
     /**
@@ -321,7 +321,7 @@ public class SnippetMacro
     {
         cache.put( globalSnippetId( url, id ), content );
 
-        timeCached.put( globalSnippetId( url, id ), Long.valueOf( System.currentTimeMillis() ) );
+        timeCached.put( globalSnippetId( url, id ), System.currentTimeMillis() );
     }
 
     /**

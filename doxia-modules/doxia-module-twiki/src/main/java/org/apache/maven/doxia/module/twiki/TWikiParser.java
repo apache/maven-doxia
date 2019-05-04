@@ -106,7 +106,7 @@ public class TWikiParser
     public final List<Block> parse( final ByLineSource source )
         throws ParseException
     {
-        final List<Block> ret = new ArrayList<Block>();
+        final List<Block> ret = new ArrayList<>();
 
         String line;
         while ( ( line = source.getNextLine() ) != null )

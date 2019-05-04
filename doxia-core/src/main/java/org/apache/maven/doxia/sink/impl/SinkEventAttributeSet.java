@@ -96,7 +96,7 @@ public class SinkEventAttributeSet
 
     static
     {
-        UNDERLINE = new SinkEventAttributeSet( new String[] {DECORATION, "underline"} ).unmodifiable();
+        UNDERLINE = new SinkEventAttributeSet( DECORATION, "underline" ).unmodifiable();
         OVERLINE = new SinkEventAttributeSet( new String[] {DECORATION, "overline"} ).unmodifiable();
         LINETHROUGH = new SinkEventAttributeSet( new String[] {DECORATION, "line-through"} ).unmodifiable();
         BOXED = new SinkEventAttributeSet( new String[] {DECORATION, "boxed"} ).unmodifiable();
@@ -130,7 +130,7 @@ public class SinkEventAttributeSet
      */
     public SinkEventAttributeSet( int size )
     {
-        attribs = new LinkedHashMap<String, Object>( size );
+        attribs = new LinkedHashMap<>( size );
     }
 
     /**
@@ -149,7 +149,7 @@ public class SinkEventAttributeSet
             throw new IllegalArgumentException( "Missing attribute!" );
         }
 
-        attribs = new LinkedHashMap<String, Object>( n / 2 );
+        attribs = new LinkedHashMap<>( n / 2 );
 
         for ( int i = 0; i < n; i += 2 )
         {
@@ -165,7 +165,7 @@ public class SinkEventAttributeSet
      */
     public SinkEventAttributeSet( AttributeSet attributes )
     {
-        attribs = new LinkedHashMap<String, Object>( attributes.getAttributeCount() );
+        attribs = new LinkedHashMap<>( attributes.getAttributeCount() );
 
         Enumeration<?> names = attributes.getAttributeNames();
 
@@ -362,7 +362,7 @@ public class SinkEventAttributeSet
     public Object clone()
     {
         SinkEventAttributeSet attr = new SinkEventAttributeSet( attribs.size() );
-        attr.attribs = new LinkedHashMap<String, Object>( attribs );
+        attr.attribs = new LinkedHashMap<>( attribs );
 
         if ( resolveParent != null )
         {

@@ -173,7 +173,7 @@ public class FoUtils
     public static void convertFO2PDF( File fo, File pdf, String resourceDir )
         throws TransformerException
     {
-        convertFO2PDF( fo, pdf, resourceDir, (DocumentModel) null );
+        convertFO2PDF( fo, pdf, resourceDir, null );
     }
 
     /**

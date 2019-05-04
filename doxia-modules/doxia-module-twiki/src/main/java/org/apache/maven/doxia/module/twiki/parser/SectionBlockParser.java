@@ -75,7 +75,7 @@ public class SectionBlockParser
         }
 
         String newLine;
-        final ArrayList<Block> blocks = new ArrayList<Block>();
+        final ArrayList<Block> blocks = new ArrayList<>();
 
         while ( ( newLine = source.getNextLine() ) != null && !accept( newLine ) )
         {

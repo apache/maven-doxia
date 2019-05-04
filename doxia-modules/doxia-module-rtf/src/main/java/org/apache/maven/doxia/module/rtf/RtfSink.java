@@ -30,7 +30,6 @@ import java.io.Writer;
 import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.Hashtable;
-import java.util.Iterator;
 import java.util.List;
 import java.util.Map;
 import java.util.Set;
@@ -218,7 +217,7 @@ public class RtfSink
     protected OutputStream stream; // for raw image data
 
     /** Keep track of the closing tags for inline events. */
-    protected Stack<List<Integer>> inlineStack = new Stack<List<Integer>>();
+    protected Stack<List<Integer>> inlineStack = new Stack<>();
 
     /** Map of warn messages with a String as key to describe the error type and a Set as value.
      * Using to reduce warn messages. */
@@ -703,7 +702,7 @@ public class RtfSink
     /** {@inheritDoc} */
     public void numberedList( int numbering )
     {
-        this.numbering.addElement( Integer.valueOf( numbering ) );
+        this.numbering.addElement( numbering );
         itemNumber.addElement( new Counter( 0 ) );
 
         indentation.add( LIST_INDENT );
@@ -757,7 +756,7 @@ public class RtfSink
 
     private String getItemHeader()
     {
-        int nmb = ( (Integer) this.numbering.lastElement() ).intValue();
+        int nmb = (Integer) this.numbering.lastElement();
         int iNmb = ( (Counter) this.itemNumber.lastElement() ).get();
         StringBuilder buf = new StringBuilder();
 
@@ -1458,7 +1457,7 @@ public class RtfSink
     /** {@inheritDoc} */
     public void inline( SinkEventAttributes attributes )
     {
-        List<Integer> tags = new ArrayList<Integer>();
+        List<Integer> tags = new ArrayList<>();
 
         if ( attributes != null )
         {
@@ -1780,15 +1779,15 @@ public class RtfSink
 
         if ( getLog().isWarnEnabled() && this.warnMessages != null )
         {
-            for ( Iterator it = this.warnMessages.entrySet().iterator(); it.hasNext(); )
+            for ( Object o1 : this.warnMessages.entrySet() )
             {
-                Map.Entry entry = (Map.Entry) it.next();
+                Map.Entry entry = (Map.Entry) o1;
 
                 Set set = (Set) entry.getValue();
 
-                for ( Iterator it2 = set.iterator(); it2.hasNext(); )
+                for ( Object o : set )
                 {
-                    String msg = (String) it2.next();
+                    String msg = (String) o;
 
                     getLog().warn( msg );
                 }
@@ -1901,7 +1900,7 @@ public class RtfSink
 
         void set( int context )
         {
-            stack.addElement( Integer.valueOf( this.context ) );
+            stack.addElement( this.context );
             this.context = context;
         }
 
@@ -1909,7 +1908,7 @@ public class RtfSink
         {
             if ( !stack.isEmpty() )
             {
-                context = ( (Integer) stack.lastElement() ).intValue();
+                context = (Integer) stack.lastElement();
                 stack.removeElementAt( stack.size() - 1 );
             }
         }
@@ -2040,7 +2039,7 @@ public class RtfSink
 
         void set( int space /*twips*/ )
         {
-            stack.addElement( Integer.valueOf( this.space ) );
+            stack.addElement( this.space );
             this.space = space;
             next = space;
         }
@@ -2054,7 +2053,7 @@ public class RtfSink
         {
             if ( !stack.isEmpty() )
             {
-                space = ( (Integer) stack.lastElement() ).intValue();
+                space = (Integer) stack.lastElement();
                 stack.removeElementAt( stack.size() - 1 );
                 next = space;
             }
@@ -2101,7 +2100,7 @@ public class RtfSink
 
         void set( int indent /*twips*/ )
         {
-            stack.addElement( Integer.valueOf( this.indent ) );
+            stack.addElement( this.indent );
             this.indent = indent;
         }
 
@@ -2114,7 +2113,7 @@ public class RtfSink
         {
             if ( !stack.isEmpty() )
             {
-                indent = ( (Integer) stack.lastElement() ).intValue();
+                indent = (Integer) stack.lastElement();
                 stack.removeElementAt( stack.size() - 1 );
             }
         }

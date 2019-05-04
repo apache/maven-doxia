@@ -59,91 +59,86 @@ public class SwfMacro
                 continue;
             }
             String str = (String) parameterObject;
-            if ( key.equals( "src" ) )
+            switch ( key )
             {
-                if ( StringUtils.isNotEmpty( str ) )
-                {
-                    src = str;
-                }
-            }
-            else if ( key.equals( "id" ) )
-            {
-                if ( StringUtils.isNotEmpty( str ) )
-                {
-                    id = str;
-                }
-            }
-            else if ( key.equals( "width" ) )
-            {
-                if ( StringUtils.isNotEmpty( str ) )
-                {
-                    width = str;
-                }
-            }
-            else if ( key.equals( "height" ) )
-            {
-                if ( StringUtils.isNotEmpty( str ) )
-                {
-                    height = str;
-                }
-            }
-            else if ( key.equals( "quality" ) )
-            {
-                if ( StringUtils.isNotEmpty( str ) )
-                {
-                    quality = str;
-                }
-            }
-            else if ( key.equals( "menu" ) )
-            {
-                if ( StringUtils.isNotEmpty( str ) )
-                {
-                    menu = str;
-                }
-            }
-            else if ( key.equals( "loop" ) )
-            {
-                if ( StringUtils.isNotEmpty( str ) )
-                {
-                    loop = str;
-                }
-            }
-            else if ( key.equals( "play" ) )
-            {
-                if ( StringUtils.isNotEmpty( str ) )
-                {
-                    play = str;
-                }
-            }
-            else if ( key.equals( "version" ) )
-            {
-                // enable version shorthand
-                // TODO: put in other shorthand versions
-                if ( str.equals( "6" ) )
-                {
-                    version = "6,0,29,0";
-                }
-                else
-                {
-                    if ( str.equals( "9" ) )
+                case "src":
+                    if ( StringUtils.isNotEmpty( str ) )
                     {
-                        version = "9,0,45,0";
+                        src = str;
+                    }
+                    break;
+                case "id":
+                    if ( StringUtils.isNotEmpty( str ) )
+                    {
+                        id = str;
+                    }
+                    break;
+                case "width":
+                    if ( StringUtils.isNotEmpty( str ) )
+                    {
+                        width = str;
+                    }
+                    break;
+                case "height":
+                    if ( StringUtils.isNotEmpty( str ) )
+                    {
+                        height = str;
+                    }
+                    break;
+                case "quality":
+                    if ( StringUtils.isNotEmpty( str ) )
+                    {
+                        quality = str;
+                    }
+                    break;
+                case "menu":
+                    if ( StringUtils.isNotEmpty( str ) )
+                    {
+                        menu = str;
+                    }
+                    break;
+                case "loop":
+                    if ( StringUtils.isNotEmpty( str ) )
+                    {
+                        loop = str;
+                    }
+                    break;
+                case "play":
+                    if ( StringUtils.isNotEmpty( str ) )
+                    {
+                        play = str;
+                    }
+                    break;
+                case "version":
+                    // enable version shorthand
+                    // TODO: put in other shorthand versions
+                    if ( str.equals( "6" ) )
+                    {
+                        version = "6,0,29,0";
                     }
                     else
                     {
-                        if ( StringUtils.isNotEmpty( str ) )
+                        if ( str.equals( "9" ) )
                         {
-                            version = str;
+                            version = "9,0,45,0";
+                        }
+                        else
+                        {
+                            if ( StringUtils.isNotEmpty( str ) )
+                            {
+                                version = str;
+                            }
                         }
                     }
-                }
-            }
-            else if ( key.equals( "allowScript" ) )
-            {
-                if ( StringUtils.isNotEmpty( str ) )
-                {
-                    allowScript = str;
-                }
+                    break;
+                case "allowScript":
+                    if ( StringUtils.isNotEmpty( str ) )
+                    {
+                        allowScript = str;
+                    }
+                    break;
+                 default:
+                        // ignore all other
             }
         }
 

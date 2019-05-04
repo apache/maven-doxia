@@ -30,7 +30,7 @@ class TreeComponent
 {
     private static final String EOL = System.getProperty( "line.separator" );
 
-    private List<TreeComponent> children = new ArrayList<TreeComponent>();
+    private List<TreeComponent> children = new ArrayList<>();
 
     private String text;
 

@@ -113,7 +113,7 @@ public class AptParser
     private static final int COMMENT_BLOCK = 17;
 
     /** String representations of event ids */
-    private static final String TYPE_NAMES[] = {
+    private static final String[] TYPE_NAMES = {
         "TITLE",
         "SECTION1",
         "SECTION2",
@@ -1622,13 +1622,13 @@ public class AptParser
 
         if ( warnMessages == null )
         {
-            warnMessages = new HashMap<String, Set<String>>();
+            warnMessages = new HashMap<>();
         }
 
         Set<String> set = warnMessages.get( key );
         if ( set == null )
         {
-            set = new TreeSet<String>();
+            set = new TreeSet<>();
         }
         set.add( msg );
         warnMessages.put( key, set );
@@ -2616,9 +2616,9 @@ public class AptParser
         {
             // Skip empty row (a decorative line).
             boolean traversed = false;
-            for ( int i = 0; i < cells.length; ++i )
+            for ( StringBuilder cell1 : cells )
             {
-                if ( cells[i].length() > 0 )
+                if ( cell1.length() > 0 )
                 {
                     traversed = true;
                     break;
@@ -2906,7 +2906,7 @@ public class AptParser
 
             String macroId = params[0];
 
-            Map<String, Object> parameters = new HashMap<String, Object>();
+            Map<String, Object> parameters = new HashMap<>();
 
             for ( int i = 1; i < params.length; i++ )
             {

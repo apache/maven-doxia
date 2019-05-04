@@ -90,7 +90,7 @@ public class ParagraphBlockParser
         throws ParseException
     {
         StringBuilder sb = new StringBuilder();
-        List<Block> childs = new ArrayList<Block>();
+        List<Block> childs = new ArrayList<>();
 
         boolean sawText = false;
 
@@ -133,11 +133,11 @@ public class ParagraphBlockParser
                 {
                     sb.append( l );
                     // specific
-                    if ( l.indexOf( "<pre>" ) != -1 )
+                    if ( l.contains( "<pre>" ) )
                     {
                         pre = true;
                     }
-                    if ( l.indexOf( "</pre>" ) != -1 )
+                    if ( l.contains( "</pre>" ) )
                     {
                         pre = false;
                     }

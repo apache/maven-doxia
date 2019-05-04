@@ -56,7 +56,7 @@ public class SinkEventAttributeSetTest extends TestCase
     {
         try
         {
-            SinkEventAttributeSet aset = new SinkEventAttributeSet( new String[] {"key"} );
+            SinkEventAttributeSet aset = new SinkEventAttributeSet( "key" );
             fail( "missing attribute value!" );
         }
         catch ( IllegalArgumentException e )

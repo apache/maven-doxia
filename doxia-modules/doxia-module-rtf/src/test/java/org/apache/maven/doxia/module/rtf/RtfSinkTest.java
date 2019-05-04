@@ -67,9 +67,7 @@ public class RtfSinkTest
     {
         InputStream is = Thread.currentThread().getContextClassLoader().getResourceAsStream( "test.apt" );
 
-        InputStreamReader reader = new InputStreamReader( is );
-
-        return reader;
+        return new InputStreamReader( is );
     }
 
     public void testDocument()

@@ -58,7 +58,7 @@ public class TocMacroTest
         XhtmlBaseParser parser = new XhtmlBaseParser();
         parser.setSecondParsing( true );
 
-        Map<String, Object> macroParameters = new HashMap<String, Object>();
+        Map<String, Object> macroParameters = new HashMap<>();
         macroParameters.put( "parser", parser );
         macroParameters.put( "sourceContent", sourceContent );
         macroParameters.put( "section", "sec1" );
@@ -159,7 +159,7 @@ public class TocMacroTest
         XhtmlBaseParser parser = new XhtmlBaseParser();
         parser.setSecondParsing( true );
 
-        Map<String, Object> macroParameters = new HashMap<String, Object>();
+        Map<String, Object> macroParameters = new HashMap<>();
         macroParameters.put( "parser", parser );
         macroParameters.put( "sourceContent", sourceContent );
         macroParameters.put( "section", "sec1" );

@@ -130,7 +130,7 @@ public class MarkdownParser
         String text = IOUtil.toString( source );
         MutableDataHolder flexmarkOptions = PegdownOptionsAdapter.flexmarkOptions(
                 Extensions.ALL & ~( Extensions.HARDWRAPS | Extensions.ANCHORLINKS ) ).toMutable();
-        ArrayList<Extension> extensions = new ArrayList<Extension>();
+        ArrayList<Extension> extensions = new ArrayList<>();
         for ( Extension extension : flexmarkOptions.get( com.vladsch.flexmark.parser.Parser.EXTENSIONS ) )
         {
             extensions.add( extension );

@@ -54,7 +54,7 @@ public class XdocParserTest
     {
         super.setUp();
 
-        parser = (XdocParser) lookup( Parser.ROLE, "xdoc" );
+        parser = lookup( Parser.ROLE, "xdoc" );
 
         // AbstractXmlParser.CachedFileEntityResolver downloads DTD/XSD files in ${java.io.tmpdir}
         // Be sure to delete them
@@ -133,7 +133,7 @@ public class XdocParserTest
             IOUtil.close( reader );
         }
 
-        assertTrue( content.indexOf( "&lt;modelVersion&gt;4.0.0&lt;/modelVersion&gt;" ) != -1 );
+        assertTrue( content.contains( "&lt;modelVersion&gt;4.0.0&lt;/modelVersion&gt;" ) );
     }
 
     /** @throws Exception  */
@@ -173,8 +173,8 @@ public class XdocParserTest
         }
 
         // No section, only subsection 1 and 2
-        assertTrue( content.indexOf( "<a href=\"#Section_11\">Section 11</a>" ) != -1 );
-        assertTrue( content.indexOf( "<a href=\"#Section_1211\">Section 1211</a>" ) == -1 );
+        assertTrue( content.contains( "<a href=\"#Section_11\">Section 11</a>" ) );
+        assertTrue( !content.contains( "<a href=\"#Section_1211\">Section 1211</a>" ) );
     }
 
     private Iterator<SinkEventElement> parseText( String text )
@@ -276,7 +276,7 @@ public class XdocParserTest
 
         next = it.next();
         assertEquals( "sectionTitle1", next.getName() );
-        assertNull( (SinkEventAttributeSet) next.getArgs()[0] );
+        assertNull( next.getArgs()[0] );
 
         assertEquals( it, "text", "sectionTitle1_", "section1_" );
     }

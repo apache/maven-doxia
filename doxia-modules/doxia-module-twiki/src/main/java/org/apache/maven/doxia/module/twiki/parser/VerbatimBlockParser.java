@@ -61,7 +61,7 @@ public class VerbatimBlockParser
             throw new IllegalAccessError( "call accept before this ;)" );
         }
 
-        final List<Block> lines = new ArrayList<Block>();
+        final List<Block> lines = new ArrayList<>();
         Matcher matcher = VERBATIM_START_PATTERN.matcher( line );
         matcher.find();
         String l = line.substring( matcher.end() );

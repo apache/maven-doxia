@@ -45,7 +45,7 @@ public class DefaultParserModuleManager
     {
         if ( parserModulesValues == null )
         {
-            Map<Class<?>, ParserModule> parserModulesTmp = new LinkedHashMap<Class<?>, ParserModule>();
+            Map<Class<?>, ParserModule> parserModulesTmp = new LinkedHashMap<>();
             for ( ParserModule module : parserModules.values() )
             {
                 parserModulesTmp.put( module.getClass(), module );

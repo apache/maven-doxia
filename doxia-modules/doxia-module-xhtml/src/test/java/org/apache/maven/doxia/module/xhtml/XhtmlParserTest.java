@@ -44,7 +44,7 @@ public class XhtmlParserTest
     {
         super.setUp();
 
-        parser = (XhtmlParser) lookup( Parser.ROLE, "xhtml" );
+        parser = lookup( Parser.ROLE, "xhtml" );
 
         // AbstractXmlParser.CachedFileEntityResolver downloads DTD/XSD files in ${java.io.tmpdir}
         // Be sure to delete them

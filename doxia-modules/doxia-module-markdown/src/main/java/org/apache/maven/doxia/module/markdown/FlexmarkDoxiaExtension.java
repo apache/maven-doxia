@@ -29,7 +29,7 @@ import com.vladsch.flexmark.util.options.MutableDataHolder;
  */
 class FlexmarkDoxiaExtension implements HtmlRenderer.HtmlRendererExtension
 {
-    public static final DataKey<String> INPUT_FILE_EXTENSION = new DataKey<String>( "INPUT_FILE_EXTENSION", "md" );
+    public static final DataKey<String> INPUT_FILE_EXTENSION = new DataKey<>( "INPUT_FILE_EXTENSION", "md" );
 
     @Override
     public void rendererOptions( final MutableDataHolder options )

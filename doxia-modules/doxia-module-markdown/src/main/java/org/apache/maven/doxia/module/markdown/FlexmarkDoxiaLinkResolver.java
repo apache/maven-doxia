@@ -90,7 +90,7 @@ public class FlexmarkDoxiaLinkResolver implements LinkResolver
         @Override
         public Set<Class<? extends LinkResolverFactory>> getBeforeDependents()
         {
-            Set<Class<? extends LinkResolverFactory>> set = new HashSet<Class<? extends LinkResolverFactory>>();
+            Set<Class<? extends LinkResolverFactory>> set = new HashSet<>();
             set.add( WikiLinkLinkResolver.Factory.class );
             return set;
         }
