@@ -84,8 +84,8 @@ under the License.
   </distributionManagement>
 
   <properties>
+    <javaVersion>7</javaVersion><!-- remove when upgrade to maven-parent 34 -->
     <maven.site.path>doxia-archives/doxia-LATEST</maven.site.path>
-    <surefire.version>2.21.0</surefire.version>
     <checkstyle.violation.ignore>RedundantThrows,NewlineAtEndOfFile,ParameterNumber,MethodLength,FileLength,MethodName,InnerAssignment,MagicNumber</checkstyle.violation.ignore>
   </properties>
 

@@ -51,10 +51,6 @@ under the License.
     </contributor>
   </contributors>
 
-  <properties>
-    <maven.compiler.target>1.7</maven.compiler.target><!-- required by flexmark -->
-  </properties>
-
   <dependencies>
     <dependency>
       <groupId>com.vladsch.flexmark</groupId>

@@ -32,30 +32,6 @@ doxia-module-markdown
   It is supported by a large panel of websites, text editors/IDEs and converter tools.
   Markdown format is only supported as Doxia source format.
 
-* Notice
-
-  This Doxia module requires Java 7 for {{{http://github.com/vsch/flexmark-java}flexmark-java}} parser,
-  unlike other Doxia modules which require only Java 6.
-
-  If your project requires Java 6 to launch Maven, you may consider the use of doxia-module-markdown version 1.7.
-
-+----+
-  <plugin>
-    <groupId>org.apache.maven.plugins</groupId>
-    <artifactId>maven-site-plugin</artifactId>
-    <dependencies>
-      <dependency>
-        <groupId>org.apache.maven.doxia</groupId>
-        <artifactId>doxia-module-markdown</artifactId>
-        <version>1.7</version><!-- to keep Java 6 compatibility-->
-      </dependency>
-    </dependencies>
-  </plugin>
-+----+
-  
-  In this situation, you should be aware that Pegdown has known technical issues and that
-  {{{http://pegdown.org}"Pegdown has reached its end of life"}}.
-
 * References
 
    * {{{http://daringfireball.net/projects/markdown}Markdown project website}}
