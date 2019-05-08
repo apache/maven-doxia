@@ -19,8 +19,8 @@ package org.apache.maven.doxia.module.markdown;
  * under the License.
  */
 
-import com.vladsch.flexmark.Extension;
 import com.vladsch.flexmark.html.HtmlRenderer;
+import com.vladsch.flexmark.util.builder.Extension;
 import com.vladsch.flexmark.util.options.DataKey;
 import com.vladsch.flexmark.util.options.MutableDataHolder;
 

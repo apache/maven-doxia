@@ -55,7 +55,14 @@ under the License.
     <dependency>
       <groupId>com.vladsch.flexmark</groupId>
       <artifactId>flexmark-all</artifactId>
-      <version>0.40.12</version>
+      <version>0.42.8</version>
+      <exclusions>
+        <!-- exclude to PDF converter -->
+        <exclusion>
+          <groupId>com.vladsch.flexmark</groupId>
+          <artifactId>flexmark-pdf-converter</artifactId>
+        </exclusion>
+      </exclusions>
     </dependency>
     <dependency>
       <groupId>org.apache.maven.doxia</groupId>

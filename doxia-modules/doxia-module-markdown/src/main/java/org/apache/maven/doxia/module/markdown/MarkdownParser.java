@@ -19,7 +19,6 @@ package org.apache.maven.doxia.module.markdown;
  * under the License.
  */
 
-import com.vladsch.flexmark.Extension;
 import com.vladsch.flexmark.ast.Heading;
 import com.vladsch.flexmark.ast.HtmlCommentBlock;
 import com.vladsch.flexmark.util.ast.Node;
@@ -27,6 +26,7 @@ import com.vladsch.flexmark.ast.util.TextCollectingVisitor;
 import com.vladsch.flexmark.html.HtmlRenderer;
 import com.vladsch.flexmark.profiles.pegdown.Extensions;
 import com.vladsch.flexmark.profiles.pegdown.PegdownOptionsAdapter;
+import com.vladsch.flexmark.util.builder.Extension;
 import com.vladsch.flexmark.util.options.MutableDataHolder;
 import org.apache.commons.lang3.StringEscapeUtils;
 import org.apache.commons.lang3.StringUtils;
@@ -62,7 +62,7 @@ import java.util.regex.Pattern;
  * @author Julien Nicoulaud
  * @since 1.3
  */
-@Component( role = Parser.class, hint = "markdown" )
+@Component( role = Parser.class, hint = MarkdownParser.ROLE_HINT )
 public class MarkdownParser
     extends AbstractParser
 {
