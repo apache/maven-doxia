@@ -363,7 +363,7 @@ public class LatexSink
     /** {@inheritDoc} */
     public void sectionTitle_( int level )
     {
-        String command = "";
+        String command;
         switch ( level )
         {
             case SECTION_LEVEL_1:

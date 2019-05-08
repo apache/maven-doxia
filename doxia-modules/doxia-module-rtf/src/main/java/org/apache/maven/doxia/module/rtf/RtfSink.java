@@ -1732,11 +1732,11 @@ public class RtfSink
                 font = new Font( style, size );
                 fontTable.put( key, font );
             }
-            catch ( Exception ignored )
+            catch ( Exception e )
             {
                 if ( getLog().isDebugEnabled() )
                 {
-                    getLog().debug( ignored.getMessage(), ignored );
+                    getLog().debug( e.getMessage(), e );
                 }
             }
         }

@@ -41,7 +41,7 @@ public abstract class AbstractModuleTest
     extends PlexusTestCase
     implements Markup
 {
-    /**
+    /*
      * Set the system properties:
      * <ul>
      * <li><code>line.separator</code> to <code>\n</code> (Unix) to prevent

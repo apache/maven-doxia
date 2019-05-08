@@ -35,6 +35,7 @@ import org.codehaus.plexus.component.annotations.Requirement;
 public class DefaultParserModuleManager
     implements ParserModuleManager
 {
+    @SuppressWarnings( "MismatchedQueryAndUpdateOfCollection" )
     @Requirement( role = ParserModule.class )
     private Map<String, ParserModule> parserModules;
 

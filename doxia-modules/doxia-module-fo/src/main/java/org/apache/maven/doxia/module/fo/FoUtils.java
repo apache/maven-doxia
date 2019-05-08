@@ -42,7 +42,6 @@ import org.apache.fop.apps.FopFactory;
 import org.apache.fop.apps.FopFactoryBuilder;
 import org.apache.fop.apps.MimeConstants;
 import org.apache.maven.doxia.document.DocumentModel;
-import org.codehaus.plexus.util.IOUtil;
 import org.codehaus.plexus.util.StringUtils;
 
 /**
@@ -114,49 +113,22 @@ public class FoUtils
     public static void convertFO2PDF( File fo, File pdf, String resourceDir, DocumentModel documentModel )
         throws TransformerException
     {
-        OutputStream out = null;
-        try
+        try ( OutputStream out = new BufferedOutputStream( new FileOutputStream( pdf ) ) )
         {
-            try
-            {
-                out = new BufferedOutputStream( new FileOutputStream( pdf ) );
-            }
-            catch ( IOException e )
-            {
-                throw new TransformerException( e );
-            }
+            URI baseURI = getBaseURI( fo, resourceDir );
+            FopFactory fopFactory = new FopFactoryBuilder( baseURI ).build();
+            FOUserAgent userAgent = fopFactory.newFOUserAgent();
+            prepareUserAgent( userAgent, documentModel );
+            Fop fop = fopFactory.newFop( MimeConstants.MIME_PDF, userAgent, out );
+            Result res = new SAXResult( fop.getDefaultHandler() );
 
-            Result res = null;
-            try
-            {
-                URI baseURI = getBaseURI( fo, resourceDir );
-                FopFactory fopFactory = new FopFactoryBuilder( baseURI ).build();
-                FOUserAgent userAgent = fopFactory.newFOUserAgent();
-                prepareUserAgent( userAgent, documentModel );
-                Fop fop = fopFactory.newFop( MimeConstants.MIME_PDF, userAgent, out );
-                res = new SAXResult( fop.getDefaultHandler() );
-            }
-            catch ( FOPException e )
-            {
-                throw new TransformerException( e );
-            }
-
-            Transformer transformer = null;
-            try
-            {
-                // identity transformer
-                transformer = TRANSFORMER_FACTORY.newTransformer();
-            }
-            catch ( TransformerConfigurationException e )
-            {
-                throw new TransformerException( e );
-            }
-
+            // identity transformer
+            Transformer transformer = TRANSFORMER_FACTORY.newTransformer();
             transformer.transform( new StreamSource( fo ), res );
         }
-        finally
+        catch ( FOPException | TransformerConfigurationException | IOException e )
         {
-            IOUtil.close( out );
+            throw new TransformerException( e );
         }
     }
 

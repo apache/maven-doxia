@@ -398,7 +398,7 @@ public class DoxiaUtils
     public static MutableAttributeSet getImageAttributes( final String logo )
             throws IOException
     {
-        BufferedImage img = null;
+        BufferedImage img;
 
         if ( isExternalLink( logo ) )
         {

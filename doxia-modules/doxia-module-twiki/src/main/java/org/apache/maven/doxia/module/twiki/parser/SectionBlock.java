@@ -20,7 +20,6 @@ package org.apache.maven.doxia.module.twiki.parser;
  */
 
 import java.lang.reflect.Method;
-import java.util.Collections;
 
 import org.apache.maven.doxia.sink.Sink;
 
@@ -111,7 +110,7 @@ public class SectionBlock
         try
         {
             final Method m = sink.getClass().getMethod( name );
-            m.invoke( sink, Collections.EMPTY_LIST.toArray() );
+            m.invoke( sink );
         }
         catch ( Exception e )
         {

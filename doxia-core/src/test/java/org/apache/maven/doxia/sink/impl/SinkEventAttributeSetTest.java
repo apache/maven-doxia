@@ -24,7 +24,6 @@ import java.util.Enumeration;
 import javax.swing.text.AttributeSet;
 
 import org.apache.maven.doxia.sink.SinkEventAttributes;
-import org.apache.maven.doxia.sink.impl.SinkEventAttributeSet;
 
 import junit.framework.TestCase;
 
@@ -56,7 +55,7 @@ public class SinkEventAttributeSetTest extends TestCase
     {
         try
         {
-            SinkEventAttributeSet aset = new SinkEventAttributeSet( "key" );
+            new SinkEventAttributeSet( "key" );
             fail( "missing attribute value!" );
         }
         catch ( IllegalArgumentException e )

@@ -19,7 +19,7 @@ package org.apache.maven.doxia.sink.impl;
  * under the License.
  */
 
-/**
+/*
  * @author Robert Scholte
  */
 import java.io.ByteArrayOutputStream;
@@ -27,8 +27,6 @@ import java.io.Writer;
 
 import org.apache.maven.doxia.sink.Sink;
 import org.apache.maven.doxia.sink.SinkFactory;
-import org.apache.maven.doxia.sink.impl.AbstractXmlSinkFactory;
-import org.apache.maven.doxia.sink.impl.RandomAccessSink;
 
 import junit.framework.TestCase;
 

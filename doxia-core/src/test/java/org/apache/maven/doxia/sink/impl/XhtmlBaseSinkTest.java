@@ -955,7 +955,7 @@ public class XhtmlBaseSinkTest
         final Object[] startTag = new Object[] { XhtmlBaseSink.TAG_TYPE_START };
         final Object[] endTag = new Object[] { XhtmlBaseSink.TAG_TYPE_END };
         final String script = XhtmlBaseSink.SCRIPT.toString();
-        final SinkEventAttributes src = new SinkEventAttributeSet( SinkEventAttributes.SRC.toString(),
+        final SinkEventAttributes src = new SinkEventAttributeSet( SinkEventAttributes.SRC,
                 "http://ex.com/ex.js?v=l&l=e" );
 
         try

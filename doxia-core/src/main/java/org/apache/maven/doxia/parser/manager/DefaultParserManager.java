@@ -36,6 +36,7 @@ import java.util.Map;
 public class DefaultParserManager
     implements ParserManager
 {
+    @SuppressWarnings( "MismatchedQueryAndUpdateOfCollection" )
     @Requirement( role = Parser.class )
     private Map<String, Parser> parsers;
 

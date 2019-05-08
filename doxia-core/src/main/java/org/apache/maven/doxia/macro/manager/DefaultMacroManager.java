@@ -36,6 +36,7 @@ import java.util.Map;
 public class DefaultMacroManager
     implements MacroManager
 {
+    @SuppressWarnings( "MismatchedQueryAndUpdateOfCollection" )
     @Requirement( role = Macro.class )
     private Map<String, Macro> macros;
 

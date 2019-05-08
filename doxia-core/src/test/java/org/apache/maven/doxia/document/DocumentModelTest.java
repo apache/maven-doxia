@@ -79,6 +79,7 @@ public class DocumentModelTest
     private void verifyModel( DocumentModel model )
     {
         assertNotNull( model );
+        //noinspection EqualsWithItself
         assertTrue( model.equals( model ) );
         assertTrue ( model.hashCode() != 0 );
         assertTrue( model.toString().length() > 0 );

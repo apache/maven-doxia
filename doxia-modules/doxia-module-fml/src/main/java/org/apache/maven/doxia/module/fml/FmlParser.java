@@ -538,7 +538,6 @@ public class FmlParser
     /**
      * Writes the faqs to the specified sink.
      *
-     * @param faqs The faqs to emit.
      * @param sink The sink to consume the event.
      * @throws ParseException if something goes wrong.
      */

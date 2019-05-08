@@ -192,7 +192,7 @@ public abstract class AbstractXmlValidatorTest
                     continue;
                 }
 
-                Reader reader = null;
+                Reader reader;
                 if ( XmlUtil.isXml( file ) )
                 {
                     reader = ReaderFactory.newXmlReader( file );

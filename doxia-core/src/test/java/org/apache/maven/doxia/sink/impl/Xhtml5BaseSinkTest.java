@@ -1402,7 +1402,7 @@ public class Xhtml5BaseSinkTest
         final Object[] startTag = new Object[] { Xhtml5BaseSink.TAG_TYPE_START };
         final Object[] endTag = new Object[] { Xhtml5BaseSink.TAG_TYPE_END };
         final String script = Xhtml5BaseSink.SCRIPT.toString();
-        final SinkEventAttributes src = new SinkEventAttributeSet( SinkEventAttributes.SRC.toString(),
+        final SinkEventAttributes src = new SinkEventAttributeSet( SinkEventAttributes.SRC,
                 "http://ex.com/ex.js?v=l&l=e" );
 
         try

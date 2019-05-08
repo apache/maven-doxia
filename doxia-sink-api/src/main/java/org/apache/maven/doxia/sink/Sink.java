@@ -1250,7 +1250,7 @@ public interface Sink
     /**
      * Starts a data element which groups together other elements representing microformats.
      *
-     * @see #data(SinkEventAttributes)
+     * @see #data(String, SinkEventAttributes)
      */
     void data( String value );
 
@@ -1276,7 +1276,7 @@ public interface Sink
     /**
      * Starts a time element which groups together other elements representing a time.
      *
-     * @see #time(SinkEventAttributes)
+     * @see #time(String, SinkEventAttributes)
      */
     void time( String datetime );
 
@@ -1519,7 +1519,7 @@ public interface Sink
     /**
      * Starts an inline element.
      *
-     * @see #inline(String,SinkEventAttributes)
+     * @see #inline(SinkEventAttributes)
      */
     void inline();
 
@@ -1543,7 +1543,6 @@ public interface Sink
      *   "bidirectionalOverride", "phrase", "insert", "delete").
      * </blockquote>
      *
-     * @param text The text to write.
      * @param attributes A set of {@link SinkEventAttributes}, may be <code>null</code>.
      * @since 2.0
      */

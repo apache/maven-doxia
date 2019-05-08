@@ -44,7 +44,7 @@ public class MacroManagerTest
 
         try
         {
-            macro = mm.getMacro( "weirdId" );
+            mm.getMacro( "weirdId" );
             fail( "should not exist!" );
         }
         catch ( MacroNotFoundException macroNotFoundException )

@@ -701,7 +701,7 @@ public class AptParser
         {
             if ( end > begin )
             {
-                replaced.append( string.substring( begin, end ) );
+                replaced.append( string, begin, end );
             }
             replaced.append( newSub );
             begin = end + oldSubLength;

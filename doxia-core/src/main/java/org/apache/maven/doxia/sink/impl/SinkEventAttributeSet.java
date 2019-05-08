@@ -97,18 +97,18 @@ public class SinkEventAttributeSet
     static
     {
         UNDERLINE = new SinkEventAttributeSet( DECORATION, "underline" ).unmodifiable();
-        OVERLINE = new SinkEventAttributeSet( new String[] {DECORATION, "overline"} ).unmodifiable();
-        LINETHROUGH = new SinkEventAttributeSet( new String[] {DECORATION, "line-through"} ).unmodifiable();
-        BOXED = new SinkEventAttributeSet( new String[] {DECORATION, "boxed"} ).unmodifiable();
+        OVERLINE = new SinkEventAttributeSet( DECORATION, "overline" ).unmodifiable();
+        LINETHROUGH = new SinkEventAttributeSet( DECORATION, "line-through" ).unmodifiable();
+        BOXED = new SinkEventAttributeSet( DECORATION, "boxed" ).unmodifiable();
 
-        BOLD = new SinkEventAttributeSet( new String[] {STYLE, "bold"} ).unmodifiable();
-        ITALIC = new SinkEventAttributeSet( new String[] {STYLE, "italic"} ).unmodifiable();
-        MONOSPACED = new SinkEventAttributeSet( new String[] {STYLE, "monospaced"} ).unmodifiable();
+        BOLD = new SinkEventAttributeSet( STYLE, "bold" ).unmodifiable();
+        ITALIC = new SinkEventAttributeSet( STYLE, "italic" ).unmodifiable();
+        MONOSPACED = new SinkEventAttributeSet( STYLE, "monospaced" ).unmodifiable();
 
-        LEFT = new SinkEventAttributeSet( new String[] {ALIGN, "left"} ).unmodifiable();
-        RIGHT = new SinkEventAttributeSet( new String[] {ALIGN, "right"} ).unmodifiable();
-        CENTER = new SinkEventAttributeSet( new String[] {ALIGN, "center"} ).unmodifiable();
-        JUSTIFY = new SinkEventAttributeSet( new String[] {ALIGN, "justify"} ).unmodifiable();
+        LEFT = new SinkEventAttributeSet( ALIGN, "left" ).unmodifiable();
+        RIGHT = new SinkEventAttributeSet( ALIGN, "right" ).unmodifiable();
+        CENTER = new SinkEventAttributeSet( ALIGN, "center" ).unmodifiable();
+        JUSTIFY = new SinkEventAttributeSet( ALIGN, "justify" ).unmodifiable();
     }
 
     private Map<String, Object> attribs;
@@ -568,39 +568,35 @@ public class SinkEventAttributeSet
 
         static
         {
-            EMPHASIS = new SinkEventAttributeSet( new String[] {SEMANTICS, "emphasis"} ).unmodifiable();
-            STRONG = new SinkEventAttributeSet( new String[] {SEMANTICS, "strong"} ).unmodifiable();
-            SMALL = new SinkEventAttributeSet( new String[] {SEMANTICS, "small"} ).unmodifiable();
-            LINE_THROUGH = new SinkEventAttributeSet( new String[] {SEMANTICS, "line-through"} ).unmodifiable();
-            CITATION = new SinkEventAttributeSet( new String[] {SEMANTICS, "citation"} ).unmodifiable();
-            QUOTE = new SinkEventAttributeSet( new String[] {SEMANTICS, "quote"} ).unmodifiable();
-            DEFINITION = new SinkEventAttributeSet( new String[] {SEMANTICS, "definition"} ).unmodifiable();
-            ABBREVIATION = new SinkEventAttributeSet( new String[] {SEMANTICS, "abbreviation"} ).unmodifiable();
-            ITALIC = new SinkEventAttributeSet( new String[] {SEMANTICS, "italic"} ).unmodifiable();
-            BOLD = new SinkEventAttributeSet( new String[] {SEMANTICS, "bold"} ).unmodifiable();
-            MONOSPACED = new SinkEventAttributeSet( new String[] {SEMANTICS, "monospaced"} ).unmodifiable();
-            CODE = new SinkEventAttributeSet( new String[] {SEMANTICS, "code"} ).unmodifiable();
-            VARIABLE = new SinkEventAttributeSet( new String[] {SEMANTICS, "variable"} ).unmodifiable();
-            SAMPLE = new SinkEventAttributeSet( new String[] {SEMANTICS, "sample"} ).unmodifiable();
-            KEYBOARD = new SinkEventAttributeSet( new String[] {SEMANTICS, "keyboard"} ).unmodifiable();
-            SUPERSCRIPT = new SinkEventAttributeSet( new String[] {SEMANTICS, "superscript"} ).unmodifiable();
-            SUBSCRIPT = new SinkEventAttributeSet( new String[] {SEMANTICS, "subscript"} ).unmodifiable();
-            ANNOTATION = new SinkEventAttributeSet( new String[] {SEMANTICS, "annotation"} ).unmodifiable();
-            HIGHLIGHT = new SinkEventAttributeSet( new String[] {SEMANTICS, "highlight"} ).unmodifiable();
-            RUBY = new SinkEventAttributeSet( new String[] {SEMANTICS, "ruby"} ).unmodifiable();
-            RUBY_BASE = new SinkEventAttributeSet( new String[] {SEMANTICS, "rubyBase"} ).unmodifiable();
-            RUBY_TEXT = new SinkEventAttributeSet( new String[] {SEMANTICS, "rubyText"} ).unmodifiable();
-            RUBY_TEXT_CONTAINER = new SinkEventAttributeSet( new String[] {SEMANTICS,
-                    "rubyTextContainer"} ).unmodifiable();
-            RUBY_PARANTHESES = new SinkEventAttributeSet( new String[] {SEMANTICS,
-                    "rubyParentheses"} ).unmodifiable();
-            BIDIRECTIONAL_ISOLATION = new SinkEventAttributeSet( new String[] {SEMANTICS,
-                    "bidirectionalIsolation"} ).unmodifiable();
-            BIDIRECTIONAL_OVERRIDE = new SinkEventAttributeSet( new String[] {SEMANTICS,
-                    "bidirectionalOverride"} ).unmodifiable();
-            PHRASE = new SinkEventAttributeSet( new String[] {SEMANTICS, "phrase"} ).unmodifiable();
-            INSERT = new SinkEventAttributeSet( new String[] {SEMANTICS, "insert"} ).unmodifiable();
-            DELETE = new SinkEventAttributeSet( new String[] {SEMANTICS, "delete"} ).unmodifiable();
+            EMPHASIS = new SinkEventAttributeSet( SEMANTICS, "emphasis" ).unmodifiable();
+            STRONG = new SinkEventAttributeSet( SEMANTICS, "strong" ).unmodifiable();
+            SMALL = new SinkEventAttributeSet( SEMANTICS, "small" ).unmodifiable();
+            LINE_THROUGH = new SinkEventAttributeSet( SEMANTICS, "line-through" ).unmodifiable();
+            CITATION = new SinkEventAttributeSet( SEMANTICS, "citation" ).unmodifiable();
+            QUOTE = new SinkEventAttributeSet( SEMANTICS, "quote" ).unmodifiable();
+            DEFINITION = new SinkEventAttributeSet( SEMANTICS, "definition" ).unmodifiable();
+            ABBREVIATION = new SinkEventAttributeSet( SEMANTICS, "abbreviation" ).unmodifiable();
+            ITALIC = new SinkEventAttributeSet( SEMANTICS, "italic" ).unmodifiable();
+            BOLD = new SinkEventAttributeSet( SEMANTICS, "bold" ).unmodifiable();
+            MONOSPACED = new SinkEventAttributeSet( SEMANTICS, "monospaced" ).unmodifiable();
+            CODE = new SinkEventAttributeSet( SEMANTICS, "code" ).unmodifiable();
+            VARIABLE = new SinkEventAttributeSet( SEMANTICS, "variable" ).unmodifiable();
+            SAMPLE = new SinkEventAttributeSet( SEMANTICS, "sample" ).unmodifiable();
+            KEYBOARD = new SinkEventAttributeSet( SEMANTICS, "keyboard" ).unmodifiable();
+            SUPERSCRIPT = new SinkEventAttributeSet( SEMANTICS, "superscript" ).unmodifiable();
+            SUBSCRIPT = new SinkEventAttributeSet( SEMANTICS, "subscript" ).unmodifiable();
+            ANNOTATION = new SinkEventAttributeSet( SEMANTICS, "annotation" ).unmodifiable();
+            HIGHLIGHT = new SinkEventAttributeSet( SEMANTICS, "highlight" ).unmodifiable();
+            RUBY = new SinkEventAttributeSet( SEMANTICS, "ruby" ).unmodifiable();
+            RUBY_BASE = new SinkEventAttributeSet( SEMANTICS, "rubyBase" ).unmodifiable();
+            RUBY_TEXT = new SinkEventAttributeSet( SEMANTICS, "rubyText" ).unmodifiable();
+            RUBY_TEXT_CONTAINER = new SinkEventAttributeSet( SEMANTICS, "rubyTextContainer" ).unmodifiable();
+            RUBY_PARANTHESES = new SinkEventAttributeSet( SEMANTICS, "rubyParentheses" ).unmodifiable();
+            BIDIRECTIONAL_ISOLATION = new SinkEventAttributeSet( SEMANTICS, "bidirectionalIsolation" ).unmodifiable();
+            BIDIRECTIONAL_OVERRIDE = new SinkEventAttributeSet( SEMANTICS, "bidirectionalOverride" ).unmodifiable();
+            PHRASE = new SinkEventAttributeSet( SEMANTICS, "phrase" ).unmodifiable();
+            INSERT = new SinkEventAttributeSet( SEMANTICS, "insert" ).unmodifiable();
+            DELETE = new SinkEventAttributeSet( SEMANTICS, "delete" ).unmodifiable();
         }
     }
 }

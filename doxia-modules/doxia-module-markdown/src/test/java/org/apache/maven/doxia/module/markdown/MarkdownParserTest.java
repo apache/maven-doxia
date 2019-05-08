@@ -27,10 +27,8 @@ import java.util.List;
 import org.apache.maven.doxia.parser.AbstractParserTest;
 import org.apache.maven.doxia.parser.ParseException;
 import org.apache.maven.doxia.parser.Parser;
-import org.apache.maven.doxia.sink.impl.SinkEventAttributeSet;
 import org.apache.maven.doxia.sink.impl.SinkEventElement;
 import org.apache.maven.doxia.sink.impl.SinkEventTestingSink;
-import org.codehaus.plexus.util.IOUtil;
 
 /**
  * Tests for {@link MarkdownParser}.
@@ -309,7 +307,7 @@ public class MarkdownParserTest
      */
     protected SinkEventTestingSink parseFileToEventTestingSink( String file ) throws ParseException, IOException
     {
-        SinkEventTestingSink sink = null;
+        SinkEventTestingSink sink;
         try ( Reader reader = getTestReader( file ) )
         {
             sink = new SinkEventTestingSink();

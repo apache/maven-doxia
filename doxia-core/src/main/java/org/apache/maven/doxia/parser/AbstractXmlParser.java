@@ -604,7 +604,7 @@ public abstract class AbstractXmlParser
      * @param entityName not null
      * @param entityValue not null
      * @throws XmlPullParserException if any
-     * @see {@link XmlPullParser#defineEntityReplacementText(String, String)}
+     * @see XmlPullParser#defineEntityReplacementText(String, String)
      */
     private void addEntity( XmlPullParser parser, String entityName, String entityValue )
         throws XmlPullParserException
@@ -815,16 +815,15 @@ public abstract class AbstractXmlParser
                     // The default user-agent is "Apache-HttpClient/4.5.8 (java 7)"
                     .setUserAgent( "Apache-Doxia/" + doxiaVersion() );
 
-            CloseableHttpResponse response = null;
-            try
+            try ( CloseableHttpResponse response = httpClientBuilder.build().execute( new HttpGet( url.toString() ) ) )
             {
-                response = httpClientBuilder.build( ).execute( new HttpGet( url.toString( ) ) );
                 int statusCode = response.getStatusLine().getStatusCode();
                 if ( statusCode != HttpStatus.SC_OK )
                 {
-                    throw new IOException( "The status code when accessing the URL '" + url.toString() + "' was "
-                        + statusCode + ", which is not allowed. The server gave this reason for the failure '"
-                        + response.getStatusLine().getReasonPhrase() + "'." );
+                    throw new IOException(
+                            "The status code when accessing the URL '" + url.toString() + "' was " + statusCode
+                                    + ", which is not allowed. The server gave this reason for the failure '"
+                                    + response.getStatusLine().getReasonPhrase() + "'." );
                 }
 
                 return EntityUtils.toByteArray( response.getEntity() );
@@ -837,20 +836,6 @@ public abstract class AbstractXmlParser
             {
                 throw new SAXException( "IOException: Fatal transport error: " + e.getMessage(), e );
             }
-            finally
-            {
-                if ( response != null )
-                {
-                    try
-                    {
-                        response.close();
-                    }
-                    catch ( IOException e )
-                    {
-                        // Ignore
-                    }
-                }
-            }
         }
 
         /**
@@ -859,7 +844,7 @@ public abstract class AbstractXmlParser
          * @param res not null array of byte
          * @param f the file where to write the bytes
          * @throws SAXException if any
-         * @see {@link IOUtil#copy(byte[], OutputStream)}
+         * @see IOUtil#copy(byte[], OutputStream)
          */
         private void copy( byte[] res, File f )
             throws SAXException

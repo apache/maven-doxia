@@ -1115,7 +1115,7 @@ public class FoAggregateSink
         }
 
         String subtitle = null;
-        String title = null;
+        String title;
         String type = null;
         String version = null;
         if ( cover == null )
@@ -1213,7 +1213,7 @@ public class FoAggregateSink
         }
 
         String date = null;
-        String compName = null;
+        String compName;
         if ( cover == null )
         {
             // aleady checked that meta != null

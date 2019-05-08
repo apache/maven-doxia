@@ -25,7 +25,6 @@ import org.apache.maven.doxia.sink.impl.SinkEventElement;
 import org.apache.maven.doxia.sink.impl.TextSink;
 import org.apache.maven.doxia.sink.impl.WellformednessCheckingSink;
 import org.apache.maven.doxia.sink.Sink;
-import org.codehaus.plexus.util.IOUtil;
 import org.junit.Assert;
 
 import java.io.IOException;
