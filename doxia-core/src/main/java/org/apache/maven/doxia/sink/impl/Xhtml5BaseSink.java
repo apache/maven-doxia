@@ -2434,7 +2434,7 @@ public class Xhtml5BaseSink
     {
         if ( !this.tableCaptionXMLWriterStack.isEmpty() && this.tableCaptionXMLWriterStack.getLast() != null )
         {
-            this.tableCaptionXMLWriterStack.getLast().writeText( unifyEOLs( text ) );
+            this.tableCaptionXMLWriterStack.getLast().writeMarkup( unifyEOLs( text ) );
         }
         else if ( !this.tableContentWriterStack.isEmpty() && this.tableContentWriterStack.getLast() != null )
         {
