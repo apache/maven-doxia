@@ -164,7 +164,7 @@ public class XhtmlBaseSinkTest
             sink.tableRow_();
             sink.tableRows_();
             sink.tableCaption();
-            sink.text( "caption1" );
+            sink.text( "caption&1" );
             sink.tableCaption_();
             sink.table_();
         }
@@ -175,7 +175,7 @@ public class XhtmlBaseSinkTest
 
         String actual = writer.toString();
         assertTrue( actual.contains( "<table border=\"0\" class=\"bodyTable\">"
-            + "<caption>caption1</caption>" ) );
+            + "<caption>caption&amp;1</caption>" ) );
         assertTrue( actual.contains( "<table border=\"0\" class=\"bodyTable\" align=\"left\">"
             + "<caption>caption2</caption>" ) );
         assertTrue( actual.contains( "<table border=\"0\" class=\"bodyTable\" align=\"right\">"
