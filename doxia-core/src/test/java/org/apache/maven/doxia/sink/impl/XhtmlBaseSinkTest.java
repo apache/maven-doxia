@@ -174,18 +174,18 @@ public class XhtmlBaseSinkTest
         }
 
         String actual = writer.toString();
-        assertTrue( actual.indexOf( "<table align=\"center\" border=\"0\" class=\"bodyTable\">"
-            + "<caption>caption1</caption>" ) != 1 );
-        assertTrue( actual.indexOf( "<table border=\"0\" class=\"bodyTable\" align=\"left\">"
-            + "<caption>caption2</caption>" ) != 1 );
-        assertTrue( actual.indexOf( "<table align=\"center\" border=\"0\" class=\"bodyTable\">"
-            + "<caption>caption3</caption>" ) != 1 );
+        assertTrue( actual.contains( "<table border=\"0\" class=\"bodyTable\">"
+            + "<caption>caption1</caption>" ) );
+        assertTrue( actual.contains( "<table border=\"0\" class=\"bodyTable\" align=\"left\">"
+            + "<caption>caption2</caption>" ) );
+        assertTrue( actual.contains( "<table border=\"0\" class=\"bodyTable\" align=\"right\">"
+            + "<caption>caption3</caption>" ) );
 
-        assertTrue( actual.indexOf( "<td align=\"center\">cell11</td>" ) != 1 );
-        assertTrue( actual.indexOf( "<td align=\"left\">nestedTable1Cell11</td>" ) != 1 );
-        assertTrue( actual.indexOf( "<td align=\"right\">nestedTable2Cell11</td>" ) != 1 );
-        assertTrue( actual.indexOf( "<td align=\"left\">nestedTable1Cell22</td>" ) != 1 );
-        assertTrue( actual.indexOf( "<td align=\"center\">cell22</td>" ) != 1 );
+        assertTrue( actual.contains( "<td>cell11</td>" ) );
+        assertTrue( actual.contains( "<td>nestedTable1Cell11</td>" ) );
+        assertTrue( actual.contains( "<td>nestedTable2Cell11</td>" ) );
+        assertTrue( actual.contains( "<td>nestedTable1Cell22</td>" ) );
+        assertTrue( actual.contains( "<td>cell22</td>" ) );
     }
 
     /**
