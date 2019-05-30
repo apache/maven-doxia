@@ -31,7 +31,7 @@ under the License.
 
   <groupId>org.apache.maven.doxia</groupId>
   <artifactId>doxia</artifactId>
-  <version>1.9</version>
+  <version>1.9.1-SNAPSHOT</version>
   <packaging>pom</packaging>
 
   <name>Doxia</name>
@@ -66,7 +66,7 @@ under the License.
     <connection>scm:git:https://gitbox.apache.org/repos/asf/maven-doxia.git</connection>
     <developerConnection>scm:git:https://gitbox.apache.org/repos/asf/maven-doxia.git</developerConnection>
     <url>https://github.com/apache/maven-doxia/tree/${project.scm.tag}</url>
-    <tag>doxia-1.9</tag>
+    <tag>master</tag>
   </scm>
   <issueManagement>
     <system>jira</system>
