@@ -27,6 +27,8 @@ import java.util.List;
 import org.apache.maven.doxia.parser.AbstractParserTest;
 import org.apache.maven.doxia.parser.ParseException;
 import org.apache.maven.doxia.parser.Parser;
+import org.apache.maven.doxia.sink.SinkEventAttributes;
+import org.apache.maven.doxia.sink.impl.SinkEventAttributeSet;
 import org.apache.maven.doxia.sink.impl.SinkEventElement;
 import org.apache.maven.doxia.sink.impl.SinkEventTestingSink;
 
@@ -90,37 +92,71 @@ public class MarkdownParserTest
     }
 
     /**
-     * Assert the bold sink event is fired when parsing "bold.md".
+     * Assert the bold sink event is fired when parsing "font-bold.md".
      *
      * @throws Exception if the event list is not correct when parsing the document.
      */
-    public void testBoldSinkEvent()
+    public void testFontBoldSinkEvent()
         throws Exception
     {
-        Iterator<SinkEventElement> it = parseFileToEventTestingSink( "bold" ).getEventList().iterator();
+        //System.out.println( parseFileToHtml( "font-bold" ) );
+        List<SinkEventElement> eventList = parseFileToEventTestingSink( "font-bold" ).getEventList();
+        Iterator<SinkEventElement> it = eventList.iterator();
 
         assertEquals( it, "head", "head_", "body", "paragraph", "inline", "text", "inline_", "paragraph_", "body_" );
 
         assertFalse( it.hasNext() );
+
+        SinkEventElement inline = eventList.get( 4 );
+        assertEquals( "inline", inline.getName() );
+        SinkEventAttributeSet atts = (SinkEventAttributeSet) inline.getArgs()[0];
+        assertTrue( atts.containsAttribute( SinkEventAttributes.SEMANTICS, "bold" ) );
     }
 
     /**
-     * Assert the italic sink event is fired when parsing "italic.md".
+     * Assert the italic sink event is fired when parsing "font-italic.md".
      *
      * @throws Exception if the event list is not correct when parsing the document.
      */
-    public void testItalicSinkEvent()
+    public void testFontItalicSinkEvent()
         throws Exception
     {
-        Iterator<SinkEventElement> it = parseFileToEventTestingSink( "italic" ).getEventList().iterator();
+        //System.out.println( parseFileToHtml( "font-italic" ) );
+        List<SinkEventElement> eventList = parseFileToEventTestingSink( "font-italic" ).getEventList();
+        Iterator<SinkEventElement> it = eventList.iterator();
 
         assertEquals( it, "head", "head_", "body", "paragraph", "inline", "text", "inline_", "paragraph_", "body_" );
 
         assertFalse( it.hasNext() );
+        SinkEventElement inline = eventList.get( 4 );
+        assertEquals( "inline", inline.getName() );
+        SinkEventAttributeSet atts = (SinkEventAttributeSet) inline.getArgs()[0];
+        assertTrue( atts.containsAttribute( SinkEventAttributes.SEMANTICS, "italic" ) );
     }
 
     /**
-     * Assert the code sink event is fired when parsing "code.md".
+     * Assert the monospaced/code sink event is fired when parsing "font-monospaced.md".
+     *
+     * @throws Exception if the event list is not correct when parsing the document.
+     */
+    public void testFontMonospacedSinkEvent()
+        throws Exception
+    {
+        //System.out.println( parseFileToHtml( "font-monospaced" ) );
+        List<SinkEventElement> eventList = parseFileToEventTestingSink( "font-monospaced" ).getEventList();
+        Iterator<SinkEventElement> it = eventList.iterator();
+
+        assertEquals( it, "head", "head_", "body", "paragraph", "inline", "text", "inline_", "paragraph_", "body_" );
+
+        assertFalse( it.hasNext() );
+        SinkEventElement inline = eventList.get( 4 );
+        assertEquals( "inline", inline.getName() );
+        SinkEventAttributeSet atts = (SinkEventAttributeSet) inline.getArgs()[0];
+        assertTrue( atts.containsAttribute( SinkEventAttributes.SEMANTICS, "code" ) );
+    }
+
+    /**
+     * Assert the verbatim sink event is fired when parsing "code.md".
      *
      * @throws Exception if the event list is not correct when parsing the document.
      */
@@ -135,7 +171,7 @@ public class MarkdownParserTest
     }
 
     /**
-     * Assert the image sink event is fired when parsing "image.md".
+     * Assert the figureGraphics sink event is fired when parsing "image.md".
      *
      * @throws Exception if the event list is not correct when parsing the document.
      */
@@ -315,6 +351,14 @@ public class MarkdownParserTest
         }
 
         return sink;
+    }
+
+    protected String parseFileToHtml( String file ) throws ParseException, IOException
+    {
+        try ( Reader reader = getTestReader( file ) )
+        {
+            return parser.toHtml( reader );
+        }
     }
 
     /** @throws Exception  */

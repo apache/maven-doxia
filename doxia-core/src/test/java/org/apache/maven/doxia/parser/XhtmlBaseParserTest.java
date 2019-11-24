@@ -554,11 +554,11 @@ public class XhtmlBaseParserTest
 
         event = it.next();
         assertEquals( "inline", event.getName() );
-        assertEquals( "semantics=monospaced",  event.getArgs()[0].toString().trim() );
+        assertEquals( "semantics=code",  event.getArgs()[0].toString().trim() );
 
         event = it.next();
         assertEquals( "inline", event.getName() );
-        assertEquals( "semantics=monospaced",  event.getArgs()[0].toString().trim() );
+        assertEquals( "semantics=code",  event.getArgs()[0].toString().trim() );
 
         event = it.next();
         assertEquals( "inline", event.getName() );
