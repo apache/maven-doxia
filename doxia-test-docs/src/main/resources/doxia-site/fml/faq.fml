@@ -75,8 +75,8 @@ under the License.
       <question>Where are the Maven Doxia XSD schemas for Xdoc and FML files?</question>
       <answer>
         <p>
-          The Xdoc XSD is located <a href="http://maven.apache.org/xsd/xdoc-2.0.xsd">here</a> and
-          the FML XSD is located <a href="http://maven.apache.org/xsd/fml-1.0.1.xsd">here</a>.
+          The Xdoc XSD is located <a href="https://maven.apache.org/xsd/xdoc-2.0.xsd">here</a> and
+          the FML XSD is located <a href="https://maven.apache.org/xsd/fml-1.0.1.xsd">here</a>.
         </p>
         <p>
           Your favorite IDE probably supports XSD schema's for Xdoc and FML files. You need to
@@ -84,13 +84,13 @@ under the License.
         <source>
 &lt;document xmlns="http://maven.apache.org/XDOC/2.0"
   xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
-  xsi:schemaLocation="http://maven.apache.org/XDOC/2.0 http://maven.apache.org/xsd/xdoc-2.0.xsd"&gt;
+  xsi:schemaLocation="http://maven.apache.org/XDOC/2.0 https://maven.apache.org/xsd/xdoc-2.0.xsd"&gt;
   ...
 &lt;/document&gt;</source>
         <source>
 &lt;faqs xmlns="http://maven.apache.org/FML/1.0.1"
   xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
-  xsi:schemaLocation="http://maven.apache.org/FML/1.0.1 http://maven.apache.org/xsd/fml-1.0.1.xsd"&gt;
+  xsi:schemaLocation="http://maven.apache.org/FML/1.0.1 https://maven.apache.org/xsd/fml-1.0.1.xsd"&gt;
   ...
 &lt;/faqs&gt;</source>
         </p>

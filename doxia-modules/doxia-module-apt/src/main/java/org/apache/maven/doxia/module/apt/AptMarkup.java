@@ -25,7 +25,7 @@ import org.codehaus.plexus.util.StringUtils;
 /**
  * This interface defines all markups and syntaxes used by the <b>APT</b> format.
  *
- * @see <a href="http://maven.apache.org/doxia/references/apt-format.html">http://maven.apache.org/doxia/references/apt-format.html</a>
+ * @see <a href="https://maven.apache.org/doxia/references/apt-format.html">https://maven.apache.org/doxia/references/apt-format.html</a>
  *
  * @author <a href="mailto:vincent.siveton@gmail.com">Vincent Siveton</a>
  * @version $Id$

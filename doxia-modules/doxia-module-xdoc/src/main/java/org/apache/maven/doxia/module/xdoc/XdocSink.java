@@ -33,10 +33,10 @@ import org.apache.maven.doxia.util.HtmlTools;
 import org.codehaus.plexus.util.StringUtils;
 
 /**
- * <a href="http://maven.apache.org/doxia/references/xdoc-format.html">Xdoc</a> Sink implementation.
+ * <a href="https://maven.apache.org/doxia/references/xdoc-format.html">Xdoc</a> Sink implementation.
  * <br>
- * It uses the Xdoc XSD <a href="http://maven.apache.org/xsd/xdoc-2.0.xsd">
- * http://maven.apache.org/xsd/xdoc-2.0.xsd</a>.
+ * It uses the Xdoc XSD <a href="https://maven.apache.org/xsd/xdoc-2.0.xsd">
+ * https://maven.apache.org/xsd/xdoc-2.0.xsd</a>.
  *
  * @author <a href="mailto:james@jamestaylor.org">James Taylor</a>
  * @version $Id$

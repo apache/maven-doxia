@@ -35,7 +35,7 @@
       http://www.w3.org/2002/08/xhtml/xhtml1-transitional.xsd
 
       For further information, see:
-      http://maven.apache.org/doxia/references/xdoc-format.html
+      https://maven.apache.org/doxia/references/xdoc-format.html
     </xs:documentation>
   </xs:annotation>
 

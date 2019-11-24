@@ -22,7 +22,7 @@
  -->
 
 <project xmlns="http://maven.apache.org/DECORATION/1.1.0" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
-  xsi:schemaLocation="http://maven.apache.org/DECORATION/1.1.0 http://maven.apache.org/xsd/decoration-1.1.0.xsd"
+  xsi:schemaLocation="http://maven.apache.org/DECORATION/1.1.0 https://maven.apache.org/xsd/decoration-1.1.0.xsd"
   name="Modules">
 
   <body>
@@ -30,8 +30,8 @@
     <menu ref="parent"/>
 
     <menu name="Documentation" inherit="bottom">
-      <item name="Format References" href="http://maven.apache.org/doxia/references/index.html"/>
-      <item name="Doxia Modules Guide" href="http://maven.apache.org/doxia/modules/index.html"/>
+      <item name="Format References" href="https://maven.apache.org/doxia/references/index.html"/>
+      <item name="Doxia Modules Guide" href="https://maven.apache.org/doxia/modules/index.html"/>
     </menu>
 
     <menu ref="modules"/>

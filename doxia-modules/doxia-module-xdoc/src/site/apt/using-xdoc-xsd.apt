@@ -28,7 +28,7 @@
 
 Using Schema XDOC 2.0
 
-  The XDOC XSD is located {{{http://maven.apache.org/xsd/xdoc-2.0.xsd}here}}.
+  The XDOC XSD is located {{{https://maven.apache.org/xsd/xdoc-2.0.xsd}here}}.
 
   Your favorite IDE probably supports XSD schema's for .xml/.xdoc files. You need to specify the following:
 
@@ -36,7 +36,7 @@ Using Schema XDOC 2.0
 
 <document xmlns="http://maven.apache.org/XDOC/2.0"
   xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
-  xsi:schemaLocation="http://maven.apache.org/XDOC/2.0 http://maven.apache.org/xsd/xdoc-2.0.xsd">
+  xsi:schemaLocation="http://maven.apache.org/XDOC/2.0 https://maven.apache.org/xsd/xdoc-2.0.xsd">
 ...
 </document>
 +-----+

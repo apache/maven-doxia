@@ -332,7 +332,7 @@ Where: <path-to-file>  the path to the file to load
       <answer>
         <p>
           The Maven XSD is located <a href="http://maven.apache.org/maven-v4_0_0.xsd">here</a> and the Maven
-          Settings XSD is located <a href="http://maven.apache.org/xsd/settings-1.0.0.xsd">here</a>.
+          Settings XSD is located <a href="https://maven.apache.org/xsd/settings-1.0.0.xsd">here</a>.
         </p>
         <p>
           Your favorite IDE probably supports XSD schema's for pom.xml and settings.xml editing. You need to
@@ -349,7 +349,7 @@ Where: <path-to-file>  the path to the file to load
 &lt;settings xmlns="http://maven.apache.org/SETTINGS/1.0.0"
   xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
   xsi:schemaLocation="http://maven.apache.org/SETTINGS/1.0.0
-                      http://maven.apache.org/xsd/settings-1.0.0.xsd"&gt;
+                      https://maven.apache.org/xsd/settings-1.0.0.xsd"&gt;
   ...
 &lt;/settings&gt;</source>
         </p>

@@ -28,13 +28,13 @@ under the License.
     <section name="Doxia FO Module">
 
       <p>
-        This is a <a href="http://maven.apache.org/doxia/">Doxia</a> module
+        This is a <a href="https://maven.apache.org/doxia/">Doxia</a> module
         for <a href="http://www.w3.org/TR/xsl/">XSL Formatting Objects</a>.
       </p>
       <p>
         Currently only a sink is available, ie you can generate FO files
         either programmatically or by converting from any other
-        <a href="http://maven.apache.org/doxia/references/index.html">input format</a>
+        <a href="https://maven.apache.org/doxia/references/index.html">input format</a>
         supported by Doxia, but you cannot parse them.
       </p>
       <p>

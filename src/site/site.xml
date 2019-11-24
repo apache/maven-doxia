@@ -22,19 +22,19 @@
  -->
 
 <project name="Doxia" xmlns="http://maven.apache.org/DECORATION/1.0.0" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
-  xsi:schemaLocation="http://maven.apache.org/DECORATION/1.0.0 http://maven.apache.org/xsd/decoration-1.0.0.xsd">
+  xsi:schemaLocation="http://maven.apache.org/DECORATION/1.0.0 https://maven.apache.org/xsd/decoration-1.0.0.xsd">
 
   <bannerRight>
     <name>Doxia</name>
-    <src>http://maven.apache.org/doxia/images/doxia-logo.png</src>
-    <href>http://maven.apache.org/doxia/</href>
+    <src>https://maven.apache.org/doxia/images/doxia-logo.png</src>
+    <href>https://maven.apache.org/doxia/</href>
   </bannerRight>
 
   <body>
 
     <breadcrumbs>
-      <item name="Doxia" href="http://maven.apache.org/doxia/index.html"/>
-      <item name="Doxia base" href="http://maven.apache.org/doxia/doxia/index.html"/>
+      <item name="Doxia" href="https://maven.apache.org/doxia/index.html"/>
+      <item name="Doxia base" href="https://maven.apache.org/doxia/doxia/index.html"/>
     </breadcrumbs>
 
     <menu name="Overview">
