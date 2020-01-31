@@ -1,0 +1,10 @@
+# see https://s.apache.org/asfyaml
+github:
+  description: "Apache Maven Doxia base"
+  homepage: https://maven.apache.org/doxia/doxia
+  labels:
+    - java
+    - build-management
+    - apache-maven
+    - maven
+    - doxia
