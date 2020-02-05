@@ -416,4 +416,15 @@ public class MarkdownParserTest
                       "section1_",
                       "body_" );
     }
+
+    /**
+     * test fix for https://github.com/vsch/flexmark-java/issues/384
+     *
+     * @throws Exception
+     */
+    public void testFlexIssue384()
+        throws Exception
+    {
+        parseFileToEventTestingSink( "flex-384" );
+    }
 }
