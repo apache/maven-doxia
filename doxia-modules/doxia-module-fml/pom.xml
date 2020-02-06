@@ -87,13 +87,13 @@ under the License.
               <execution>
                 <phase>site</phase>
                 <configuration>
-                  <tasks>
+                  <target>
                     <taskdef name="xsddoc" classname="net.sf.xframe.xsddoc.Task" />
 
                     <mkdir dir="${project.reporting.outputDirectory}/xsddoc" />
 
                     <xsddoc file="${basedir}/src/main/resources/fml-1.0.1.xsd" out="${project.reporting.outputDirectory}/xsddoc" doctitle="Reference of FML 1.0.1 Schema" verbose="true" />
-                  </tasks>
+                  </target>
                 </configuration>
                 <goals>
                   <goal>run</goal>

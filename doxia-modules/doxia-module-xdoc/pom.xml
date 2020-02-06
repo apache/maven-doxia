@@ -88,22 +88,13 @@ under the License.
               <execution>
                 <phase>site</phase>
                 <configuration>
-                  <tasks>
+                  <target>
                     <taskdef name="xsddoc" classname="net.sf.xframe.xsddoc.Task" />
 
-                    <condition property="dir" value="${project.reporting.outputDirectory}/xsddoc">
-                      <matches string="${project.reporting.outputDirectory}" pattern="^${basedir}" />
-                    </condition>
-                    <condition property="dir" value="${project.reporting.outputDirectory}/xsddoc">
-                      <not>
-                        <isset property="dir" />
-                      </not>
-                    </condition>
+                    <mkdir dir="${project.reporting.outputDirectory}/xsddoc" />
 
-                    <mkdir dir="${dir}" />
-
-                    <xsddoc file="${basedir}/src/main/resources/xdoc-2.0.xsd" out="${dir}" doctitle="Reference of Schema Xdoc 2.0" verbose="true" />
-                  </tasks>
+                    <xsddoc file="${basedir}/src/main/resources/xdoc-2.0.xsd" out="${project.reporting.outputDirectory}/xsddoc" doctitle="Reference of Schema Xdoc 2.0" verbose="true" />
+                  </target>
                 </configuration>
                 <goals>
                   <goal>run</goal>
