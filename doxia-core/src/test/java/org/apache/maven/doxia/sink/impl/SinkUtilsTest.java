@@ -23,22 +23,22 @@ import javax.swing.text.AttributeSet;
 import javax.swing.text.MutableAttributeSet;
 
 import org.apache.maven.doxia.sink.SinkEventAttributes;
-import org.apache.maven.doxia.sink.impl.SinkEventAttributeSet;
-import org.apache.maven.doxia.sink.impl.SinkUtils;
 
-import junit.framework.TestCase;
+import org.junit.Assert;
+import org.junit.Test;
+
+import static org.junit.Assert.assertEquals;
 
 /**
  *
  * @author ltheussl
  */
 public class SinkUtilsTest
-        extends TestCase
 {
-
     /**
      * Test of getAttributeString method, of class SinkUtils.
      */
+    @Test
     public void testGetAttributeString()
     {
         assertEquals( "", SinkUtils.getAttributeString( null ) );
@@ -66,9 +66,10 @@ public class SinkUtilsTest
     /**
      * Test of filterAttributes method, of class SinkUtils.
      */
+    @Test
     public void testFilterAttributes()
     {
-        assertNull( SinkUtils.filterAttributes( null, null ) );
+        Assert.assertNull( SinkUtils.filterAttributes( null, null ) );
 
         AttributeSet attributes = new SinkEventAttributeSet( 1 );
         String[] valids = null;

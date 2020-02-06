@@ -154,7 +154,7 @@ public class AptParserTest
 
         // No section, only subsection 1 and 2
         assertTrue( toc.contains( "* {{{SubSection_1.1}SubSection 1.1}}" ) );
-        assertTrue( !toc.contains( "* {{{SubSection_1.1.2.1.1}SubSection 1.1.2.1.1}}" ) );
+        assertFalse( toc.contains( "* {{{SubSection_1.1.2.1.1}SubSection 1.1.2.1.1}}" ) );
     }
 
     /**

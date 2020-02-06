@@ -1,7 +1,4 @@
 package org.apache.maven.doxia.sink.impl;
-
-import org.apache.maven.doxia.sink.impl.AbstractSink;
-
 /*
  * Licensed to the Apache Software Foundation (ASF) under one
  * or more contributor license agreements.  See the NOTICE file
@@ -21,12 +18,13 @@ import org.apache.maven.doxia.sink.impl.AbstractSink;
  * under the License.
  */
 
-import junit.framework.TestCase;
+import org.junit.Test;
+
+import static org.junit.Assert.assertEquals;
 
 public class TestAbstractSink
-    extends TestCase
 {
-
+    @Test
     public void testUnifiedEOL()
     {
         String EOL = AbstractSink.EOL;

@@ -19,8 +19,6 @@ package org.apache.maven.doxia.module.twiki.parser;
  * under the License.
  */
 
-import junit.framework.TestCase;
-
 import org.apache.maven.doxia.module.twiki.TWikiParser;
 
 /**
@@ -30,7 +28,6 @@ import org.apache.maven.doxia.module.twiki.TWikiParser;
  * @since Nov 1, 2005
  */
 public abstract class AbstractBlockTestCase
-    extends TestCase
 {
     /**
      * sectionParser to use in all the tests

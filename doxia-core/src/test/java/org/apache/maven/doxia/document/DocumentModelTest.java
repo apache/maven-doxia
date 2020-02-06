@@ -60,7 +60,7 @@ public class DocumentModelTest
 
         DocumentModel copy = writeAndRecover( model );
         verifyModel( copy );
-        assertTrue( copy.equals( model ) );
+        assertEquals( copy, model );
     }
 
     private DocumentModel getModel()
@@ -80,7 +80,7 @@ public class DocumentModelTest
     {
         assertNotNull( model );
         //noinspection EqualsWithItself
-        assertTrue( model.equals( model ) );
+        assertEquals( model, model );
         assertTrue ( model.hashCode() != 0 );
         assertTrue( model.toString().length() > 0 );
 

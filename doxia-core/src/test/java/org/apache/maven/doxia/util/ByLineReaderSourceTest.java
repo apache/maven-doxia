@@ -23,8 +23,9 @@ import java.io.StringReader;
 
 import org.apache.maven.doxia.parser.ParseException;
 
-import junit.framework.TestCase;
+import org.junit.Test;
 
+import static org.junit.Assert.*;
 
 /**
  * Unit test for {@link org.apache.maven.doxia.util.ByLineReaderSource}.
@@ -32,16 +33,16 @@ import junit.framework.TestCase;
  * @author Juan F. Codagnone
  * @since Nov 1, 2005
  */
-public class ByLineReaderSourceTest extends TestCase
+public class ByLineReaderSourceTest
 {
 
     /**
      * @throws ParseException on error
      */
+    @Test
     public final void testUse() throws ParseException
     {
-        ByLineReaderSource r = new ByLineReaderSource(
-            new StringReader( "1 \n2\n3" ) );
+        ByLineReaderSource r = new ByLineReaderSource( new StringReader( "1 \n2\n3" ) );
         assertEquals( -1, r.getLineNumber() );
         assertEquals( "", r.getName() );
 
@@ -61,6 +62,6 @@ public class ByLineReaderSourceTest extends TestCase
         }
         assertEquals( "2", r.getNextLine() );
         assertEquals( "3", r.getNextLine() );
-        assertEquals( null, r.getNextLine() );
+        assertNull( r.getNextLine() );
     }
 }

@@ -32,6 +32,8 @@ import org.codehaus.plexus.PlexusTestCase;
 import org.hamcrest.CoreMatchers;
 import org.junit.Assert;
 
+import static org.hamcrest.MatcherAssert.assertThat;
+
 /**
  * Test snippet macro.
  *
@@ -119,7 +121,7 @@ public class SnippetMacroTest
         assertFalse( it.hasNext() );
 
         // no need to verify the absence of the first and second snippets if tests above were successful
-        Assert.assertThat( snippet, CoreMatchers.containsString( "Этот сниппет в формате Unicode (UTF-8)" ) );
+        assertThat( snippet, CoreMatchers.containsString( "Этот сниппет в формате Unicode (UTF-8)" ) );
         
         // again
         // Shouldn't work because no snippet called "first" exists, only "firstId"
@@ -152,7 +154,7 @@ public class SnippetMacroTest
         SinkEventElement event = it.next();
         assertEquals( "text", event.getName() );
         String snippet = (String) event.getArgs()[0];
-        Assert.assertThat( snippet, CoreMatchers.containsString( "Error during retrieving content" ) );
+        assertThat( snippet, CoreMatchers.containsString( "Error during retrieving content" ) );
     }
 
     private SinkEventTestingSink executeSnippetMacro( Map<String, Object> macroParameters )

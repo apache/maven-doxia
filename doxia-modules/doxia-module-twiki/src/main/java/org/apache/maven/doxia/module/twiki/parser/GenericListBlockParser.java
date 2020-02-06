@@ -406,7 +406,7 @@ class TreeListBuilder
      * @author Juan F. Codagnone
      * @version $Id$
      */
-    class TreeComponent
+    static class TreeComponent
     {
         /**
          * childrens

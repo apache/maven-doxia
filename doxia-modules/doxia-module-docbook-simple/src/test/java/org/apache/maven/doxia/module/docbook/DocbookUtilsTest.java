@@ -19,9 +19,10 @@ package org.apache.maven.doxia.module.docbook;
  * under the License.
  */
 
-import junit.framework.TestCase;
-
 import org.apache.maven.doxia.sink.Sink;
+import org.junit.Test;
+
+import static org.junit.Assert.*;
 
 /**
  * Test DocbookUtils.
@@ -30,11 +31,11 @@ import org.apache.maven.doxia.sink.Sink;
  * @version $Id$
  */
 public class DocbookUtilsTest
-        extends TestCase
 {
     /**
      * Test of doxiaTableFrameAttribute method, of class DocbookUtils.
      */
+    @Test
     public void testDoxiaTableFrameAttribute()
     {
         assertEquals( "box", DocbookUtils.doxiaTableFrameAttribute( "all" ) );
@@ -58,6 +59,7 @@ public class DocbookUtilsTest
     /**
      * Test of doxiaListNumbering method, of class DocbookUtils.
      */
+    @Test
     public void testDoxiaListNumbering()
     {
         assertEquals( Sink.NUMBERING_LOWER_ALPHA,
@@ -85,6 +87,7 @@ public class DocbookUtilsTest
     /**
      * Test of docbookListNumbering method, of class DocbookUtils.
      */
+    @Test
     public void testDocbookListNumbering()
     {
         assertEquals( SimplifiedDocbookMarkup.UPPERALPHA_STYLE,
@@ -112,6 +115,7 @@ public class DocbookUtilsTest
     /**
      * Test of trademarkFromClass method, of class DocbookUtils.
      */
+    @Test
     public void testTrademarkFromClass()
     {
         assertEquals( '\u00AE', DocbookUtils.trademarkFromClass( "registered" ) );

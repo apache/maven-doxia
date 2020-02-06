@@ -1,13 +1,14 @@
 package org.apache.maven.doxia.module.twiki.parser;
 
-import static org.junit.Assert.assertArrayEquals;
-
 import java.io.StringReader;
 import java.util.List;
 
 import org.apache.maven.doxia.parser.ParseException;
 import org.apache.maven.doxia.util.ByLineReaderSource;
 import org.apache.maven.doxia.util.ByLineSource;
+import org.junit.Test;
+
+import static org.junit.Assert.*;
 
 /*
  * Licensed to the Apache Software Foundation (ASF) under one
@@ -41,6 +42,7 @@ public class VerbatimTest
     /**
      * unit test the regex
      */
+    @Test
     public final void testRegex()
     {
         assertTrue( getVerbatimParser().accept( "<verbatim>" ) );
@@ -53,6 +55,7 @@ public class VerbatimTest
      * @throws ParseException if the parser does not accept the line
      *
      */
+    @Test
     public void testVerbatim()
         throws ParseException
     {
@@ -72,9 +75,7 @@ public class VerbatimTest
         assertEquals( block, expected );
     }
 
-    /**
-     * @throws Exception .
-     */
+    @Test
     public void testTwiki()
         throws Exception
     {
@@ -96,9 +97,7 @@ public class VerbatimTest
 
     }
 
-    /** test
-     * @throws org.apache.maven.doxia.parser.ParseException
-     */
+    @Test
     public void testVerbatimAfterSection()
         throws ParseException
     {

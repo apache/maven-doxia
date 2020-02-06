@@ -24,6 +24,9 @@ import java.io.StringReader;
 import org.apache.maven.doxia.util.ByLineReaderSource;
 import org.apache.maven.doxia.util.ByLineSource;
 import org.apache.maven.doxia.parser.ParseException;
+import org.junit.Test;
+
+import static org.junit.Assert.*;
 
 /**
  * Tests the {@link org.apache.maven.doxia.module.twiki.parser.TableBlockParser}
@@ -38,15 +41,14 @@ public class TableTest
     /**
      * unit test the regex
      */
+    @Test
     public final void testRegex()
     {
         assertTrue( tableParser.accept( "  | cell1 | cell2|   " ) );
         assertFalse( tableParser.accept( "  | cell1 | cell" ) );
     }
 
-    /**
-     * @throws ParseException on error
-     */
+    @Test
     public final void testTable()
         throws ParseException
     {
@@ -66,9 +68,7 @@ public class TableTest
         assertEquals( block, expected );
     }
 
-    /**
-     * @throws ParseException on error
-     */
+    @Test
     public final void testTableHeader()
         throws ParseException
     {

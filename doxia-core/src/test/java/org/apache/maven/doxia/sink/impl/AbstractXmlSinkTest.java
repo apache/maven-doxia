@@ -23,21 +23,21 @@ import javax.swing.text.html.HTML.Tag;
 
 import org.apache.maven.doxia.markup.Markup;
 import org.apache.maven.doxia.sink.SinkEventAttributes;
-import org.apache.maven.doxia.sink.impl.AbstractXmlSink;
-import org.apache.maven.doxia.sink.impl.SinkEventAttributeSet;
 
-import junit.framework.TestCase;
+import org.junit.Test;
+
+import static org.junit.Assert.*;
 
 /**
  *
  * @author ltheussl
  */
 public class AbstractXmlSinkTest
-        extends TestCase
 {
     /**
      * Test of set/getNameSpace method, of class AbstractXmlSink.
      */
+    @Test
     public void testNameSpace()
     {
         final Tag t = Tag.A;
@@ -86,6 +86,7 @@ public class AbstractXmlSinkTest
     /**
      * Test of writeStartTag method, of class AbstractXmlSink.
      */
+    @Test
     public void testWriteStartTag()
     {
         final Tag t = Tag.A;
@@ -108,6 +109,7 @@ public class AbstractXmlSinkTest
     /**
      * Test of writeEOL method, of class AbstractXmlSink.
      */
+    @Test
     public void testWriteEOL()
     {
         final XmlTestSink instance = new XmlTestSink();
@@ -119,6 +121,7 @@ public class AbstractXmlSinkTest
     /**
      * Test of writeSimpleTag method, of class AbstractXmlSink.
      */
+    @Test
     public void testWriteSimpleTag()
     {
         final Tag t = Tag.A;
@@ -133,8 +136,7 @@ public class AbstractXmlSinkTest
     }
 
     /** Test sink. */
-    private class XmlTestSink
-            extends AbstractXmlSink
+    private static class XmlTestSink extends AbstractXmlSink
     {
         private final StringBuilder buffer = new StringBuilder( 0 );
 

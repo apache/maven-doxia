@@ -26,6 +26,8 @@ import org.apache.maven.doxia.sink.impl.SinkEventAttributeSet;
 import org.apache.maven.doxia.sink.impl.SinkEventElement;
 import org.apache.maven.doxia.sink.impl.SinkEventTestingSink;
 
+import static org.junit.Assert.assertNotEquals;
+
 /**
  * Test for XhtmlBaseParser.
  *
@@ -68,7 +70,7 @@ public class XhtmlBaseParserTest
     public void testDoxiaVersion()
     {
         assertNotNull( XhtmlBaseParser.doxiaVersion() );
-        assertFalse( "unknown".equals( XhtmlBaseParser.doxiaVersion() ) );
+        assertNotEquals( "unknown", XhtmlBaseParser.doxiaVersion() );
     }
 
     /** @throws Exception  */

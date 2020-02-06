@@ -22,12 +22,13 @@ package org.apache.maven.doxia.module.markdown;
 import com.vladsch.flexmark.html.renderer.LinkStatus;
 import com.vladsch.flexmark.html.renderer.LinkType;
 import com.vladsch.flexmark.html.renderer.ResolvedLink;
-import junit.framework.TestCase;
+import org.junit.Test;
+
+import static org.junit.Assert.assertEquals;
 
 public class FlexmarkDoxiaLinkResolverTest
-    extends TestCase
 {
-
+    @Test
     public void testResolveLink()
     {
         FlexmarkDoxiaLinkResolver flexmarkDoxiaLinkResolver = new FlexmarkDoxiaLinkResolver( null );

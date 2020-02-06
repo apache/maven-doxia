@@ -21,19 +21,20 @@ package org.apache.maven.doxia.module.itext;
 
 import java.util.Locale;
 
-import junit.framework.TestCase;
-
 import com.lowagie.text.PageSize;
+import org.junit.Test;
+
+import static org.junit.Assert.assertEquals;
+import static org.junit.Assert.assertTrue;
 
 /**
  * @author <a href="mailto:vincent.siveton@gmail.com">Vincent Siveton</a>
  * @version $Id$
  */
 public class ITextUtilTest
-    extends TestCase
 {
+    @Test
     public void testGetDefaultPageSize()
-        throws Exception
     {
         Locale oldLocale = Locale.getDefault();
 
@@ -54,6 +55,7 @@ public class ITextUtilTest
         }
     }
 
+    @Test
     public void testGetPageSize()
         throws Exception
     {
@@ -72,23 +74,23 @@ public class ITextUtilTest
         assertEquals( "LEGAL", ITextUtil.getPageSize( PageSize.LEGAL ) );
     }
 
+    @Test
     public void testIsPageSupported()
-        throws Exception
     {
-        assertEquals( true, ITextUtil.isPageSizeSupported( "A0" ) );
-        assertEquals( true, ITextUtil.isPageSizeSupported( "A1" ) );
-        assertEquals( true, ITextUtil.isPageSizeSupported( "A2" ) );
-        assertEquals( true, ITextUtil.isPageSizeSupported( "A3" ) );
-        assertEquals( true, ITextUtil.isPageSizeSupported( "A4" ) );
-        assertEquals( true, ITextUtil.isPageSizeSupported( "A5" ) );
-        assertEquals( true, ITextUtil.isPageSizeSupported( "A6" ) );
-        assertEquals( true, ITextUtil.isPageSizeSupported( "A7" ) );
-        assertEquals( true, ITextUtil.isPageSizeSupported( "A8" ) );
-        assertEquals( true, ITextUtil.isPageSizeSupported( "A9" ) );
-        assertEquals( true, ITextUtil.isPageSizeSupported( "A10" ) );
-        assertEquals( true, ITextUtil.isPageSizeSupported( "LETTER" ) );
-        assertEquals( true, ITextUtil.isPageSizeSupported( "letter" ) );
-        assertEquals( true, ITextUtil.isPageSizeSupported( "LEGAL" ) );
-        assertEquals( true, ITextUtil.isPageSizeSupported( "legal" ) );
+        assertTrue( ITextUtil.isPageSizeSupported( "A0" ) );
+        assertTrue( ITextUtil.isPageSizeSupported( "A1" ) );
+        assertTrue( ITextUtil.isPageSizeSupported( "A2" ) );
+        assertTrue( ITextUtil.isPageSizeSupported( "A3" ) );
+        assertTrue( ITextUtil.isPageSizeSupported( "A4" ) );
+        assertTrue( ITextUtil.isPageSizeSupported( "A5" ) );
+        assertTrue( ITextUtil.isPageSizeSupported( "A6" ) );
+        assertTrue( ITextUtil.isPageSizeSupported( "A7" ) );
+        assertTrue( ITextUtil.isPageSizeSupported( "A8" ) );
+        assertTrue( ITextUtil.isPageSizeSupported( "A9" ) );
+        assertTrue( ITextUtil.isPageSizeSupported( "A10" ) );
+        assertTrue( ITextUtil.isPageSizeSupported( "LETTER" ) );
+        assertTrue( ITextUtil.isPageSizeSupported( "letter" ) );
+        assertTrue( ITextUtil.isPageSizeSupported( "LEGAL" ) );
+        assertTrue( ITextUtil.isPageSizeSupported( "legal" ) );
     }
 }

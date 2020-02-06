@@ -19,6 +19,8 @@ package org.apache.maven.doxia.module.twiki.parser;
  * under the License.
  */
 
+import org.junit.Test;
+
 import static org.junit.Assert.assertArrayEquals;
 
 /**
@@ -40,9 +42,7 @@ public class WordsTest
      */
     private final WikiWordLinkResolver resolver = new XHTMLWikiWordLinkResolver();
 
-    /**
-     * ...
-     */
+    @Test
     public final void testText()
     {
         Block[] blocks, expected;
@@ -52,9 +52,7 @@ public class WordsTest
         assertArrayEquals( expected, blocks );
     }
 
-    /**
-     * ...
-     */
+    @Test
     public final void testWikiWords()
     {
         Block[] blocks, expected;
@@ -81,9 +79,7 @@ public class WordsTest
         assertArrayEquals( expected, blocks );
     }
 
-    /**
-     * ...
-     */
+    @Test
     public final void testWebWikiWords()
     {
         Block[] blocks, expected;
@@ -97,9 +93,7 @@ public class WordsTest
         assertArrayEquals( expected, blocks );
     }
 
-    /**
-     * ...
-     */
+    @Test
     public final void testWebAnchorWikiWords()
     {
         Block[] blocks, expected;
@@ -117,6 +111,7 @@ public class WordsTest
     /**
      * test Specific Links
      */
+    @Test
     public final void testURLSpecificLinks()
     {
         Block[] blocks, expected;
@@ -154,6 +149,7 @@ public class WordsTest
     /**
      * test Specific Links with wikiWords
      */
+    @Test
     public final void testWikiSpecificLinks()
     {
         Block[] blocks, expected;
@@ -178,6 +174,7 @@ public class WordsTest
     /**
      * test Specific Links
      */
+    @Test
     public final void testSpecificLinkPrevention()
     {
         Block[] blocks, expected;
@@ -187,9 +184,7 @@ public class WordsTest
         assertArrayEquals( expected, blocks );
     }
 
-    /**
-     * ...
-     */
+    @Test
     public final void testPreventLinkingWikiWord()
     {
         Block[] blocks, expected;
@@ -206,6 +201,7 @@ public class WordsTest
     /**
      * ej [[Main.TWiki rules]] would be wikiword Main.TWikiRules
      */
+    @Test
     public final void testForcedLinks()
     {
         Block[] blocks, expected;
@@ -232,9 +228,7 @@ public class WordsTest
         assertArrayEquals( expected, blocks );
     }
 
-    /**
-     * ...
-     */
+    @Test
     public final void testMailtoForcedLinks()
     {
         Block[] blocks, expected;
@@ -244,9 +238,7 @@ public class WordsTest
         assertArrayEquals( expected, blocks );
     }
 
-    /**
-     * ...
-     */
+    @Test
     public final void testAnchors()
     {
         Block[] blocks, expected;
@@ -266,9 +258,7 @@ public class WordsTest
         assertArrayEquals( expected, blocks );
     }
 
-    /**
-     * unit test
-     */
+    @Test
     public final void testAutomaticLink()
     {
         Block[] blocks, expected;
@@ -281,7 +271,7 @@ public class WordsTest
         assertArrayEquals( expected, blocks );
     }
 
-    /** unit test */
+    @Test
     public final void testAutomaticImage()
     {
         Block[] blocks, expected;
@@ -292,7 +282,7 @@ public class WordsTest
         assertArrayEquals( expected, blocks );
     }
 
-    /** unit test */
+    @Test
     public final void testLinkImage()
     {
         Block[] blocks, expected;
@@ -308,6 +298,7 @@ public class WordsTest
     /**
      * Test image inserted with a html img tag
      */
+    @Test
     public final void testRelativeImage()
     {
         Block[] blocks, expected;

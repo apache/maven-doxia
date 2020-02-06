@@ -20,10 +20,12 @@ package org.apache.maven.doxia.module.twiki.parser;
  */
 
 import java.io.StringReader;
-import java.util.Arrays;
 
 import org.apache.maven.doxia.util.ByLineReaderSource;
 import org.apache.maven.doxia.parser.ParseException;
+import org.junit.Test;
+
+import static org.junit.Assert.*;
 
 /**
  * Tests the {@link org.apache.maven.doxia.module.twiki.parser.SectionBlockParser}
@@ -35,9 +37,7 @@ public class SectionTest
     extends AbstractBlockTestCase
 {
 
-    /**
-     * @see SectionBlock#SectionBlock(String, int, Block[])
-     */
+    @Test
     public final void testSectionBlockWrongArgs()
     {
         final int maxLevel = 5;
@@ -77,9 +77,7 @@ public class SectionTest
         new SectionBlock( "", 1, new Block[] {} );
     }
 
-    /**
-     * @see SectionBlockParser#getLevel(String)
-     */
+    @Test
     public final void testSectionParserGetLevel()
     {
         assertEquals( 2, SectionBlockParser.getLevel( "++" ) );
@@ -94,10 +92,7 @@ public class SectionTest
         }
     }
 
-    /**
-     * @throws java.lang.Exception
-     * @see SectionBlockParser
-     */
+    @Test
     public final void testSectionParser()
         throws Exception
     {
@@ -137,6 +132,7 @@ public class SectionTest
      *
      * @throws Exception on error
      */
+    @Test
     public final void testSectionWithParagraphs()
         throws Exception
     {
@@ -154,9 +150,7 @@ public class SectionTest
                       ( (TextBlock) ( (ParagraphBlock) block.getBlocks()[1] ).getBlocks()[0] ).getText() );
     }
 
-    /**
-     * @throws ParseException on error
-     */
+    @Test
     public final void testSectionAndParaAndHrule()
         throws ParseException
     {
@@ -171,6 +165,6 @@ public class SectionTest
                 new ParagraphBlock( new Block[] { new TextBlock( "Some text" ) } ), new HorizontalRuleBlock(),
                 new ParagraphBlock( new Block[] { new TextBlock( "More text" ) } ) } ) };
         blocks = twikiParser.parse( source ).toArray( new Block[] {} );
-        assertTrue( Arrays.equals( expected, blocks ) );
+        assertArrayEquals( expected, blocks );
     }
 }

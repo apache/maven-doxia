@@ -25,6 +25,10 @@ import org.apache.maven.doxia.util.ByLineReaderSource;
 import org.apache.maven.doxia.util.ByLineSource;
 import org.apache.maven.doxia.parser.ParseException;
 import org.apache.maven.doxia.sink.Sink;
+import org.junit.Test;
+
+import static org.junit.Assert.assertEquals;
+import static org.junit.Assert.assertNotNull;
 
 /**
  * Units tests for Lists
@@ -35,12 +39,12 @@ import org.apache.maven.doxia.sink.Sink;
 public class ListTest
     extends AbstractBlockTestCase
 {
-
     /**
      * unit test for recurrent enumeration
      *
      * @throws ParseException on error
      */
+    @Test
     public final void testList()
         throws ParseException
     {
@@ -78,9 +82,7 @@ public class ListTest
         assertEquals( "item2.1", ( (TextBlock) item.getBlocks()[0] ).getText() );
     }
 
-    /**
-     * @throws ParseException on error
-     */
+    @Test
     public final void testNumeringDecimal()
         throws ParseException
     {
@@ -97,9 +99,7 @@ public class ListTest
         assertEquals( expected, blocks );
     }
 
-    /**
-     * @throws ParseException on error
-     */
+    @Test
     public final void testHetero()
         throws ParseException
     {

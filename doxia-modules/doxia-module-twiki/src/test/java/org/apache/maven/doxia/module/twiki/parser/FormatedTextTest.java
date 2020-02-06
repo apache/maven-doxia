@@ -19,7 +19,10 @@ package org.apache.maven.doxia.module.twiki.parser;
  * under the License.
  */
 
-import java.util.Arrays;
+import org.junit.Test;
+
+import static org.junit.Assert.assertArrayEquals;
+import static org.junit.Assert.assertEquals;
 
 /**
  * Tests the {@link org.apache.maven.doxia.module.twiki.parser.FormatedTextParser}
@@ -34,6 +37,7 @@ public class FormatedTextTest
     /**
      * test bold text
      */
+    @Test
     public final void testBold()
     {
         String text;
@@ -46,24 +50,24 @@ public class FormatedTextTest
 
         text = "foo *bold* bar";
         blocks = formatTextParser.parse( text );
-        assertTrue( Arrays.equals( new Block[] { new TextBlock( "foo " ),
-            new BoldBlock( new Block[] { new TextBlock( "bold" ) } ), new TextBlock( " bar" ) }, blocks ) );
+        assertArrayEquals( new Block[] {new TextBlock( "foo " ), new BoldBlock(
+                new Block[] {new TextBlock( "bold" )} ), new TextBlock( " bar" )}, blocks );
 
         text = "\t*bold* bar";
         blocks = formatTextParser.parse( text );
-        assertTrue( Arrays.equals( new Block[] { new TextBlock( "\t" ),
-            new BoldBlock( new Block[] { new TextBlock( "bold" ) } ), new TextBlock( " bar" ) }, blocks ) );
+        assertArrayEquals( new Block[] {new TextBlock( "\t" ), new BoldBlock(
+                new Block[] {new TextBlock( "bold" )} ), new TextBlock( " bar" )}, blocks );
 
         text = "*nice* foo *bold* bar";
         blocks = formatTextParser.parse( text );
-        assertTrue( Arrays.equals( new Block[] { new BoldBlock( new Block[] { new TextBlock( "nice" ) } ),
-            new TextBlock( " foo " ), new BoldBlock( new Block[] { new TextBlock( "bold" ) } ),
-            new TextBlock( " bar" ) }, blocks ) );
+        assertArrayEquals( new Block[] {new BoldBlock( new Block[] {new TextBlock( "nice" )} ), new TextBlock(
+                " foo " ), new BoldBlock( new Block[] {new TextBlock( "bold" )} ), new TextBlock( " bar" )}, blocks );
     }
 
     /**
      * test italic text
      */
+    @Test
     public final void testItalic()
     {
         String text;
@@ -76,19 +80,20 @@ public class FormatedTextTest
 
         text = "foo _italic_ bar";
         blocks = formatTextParser.parse( text );
-        assertTrue( Arrays.equals( new Block[] { new TextBlock( "foo " ),
-            new ItalicBlock( new Block[] { new TextBlock( "italic" ) } ), new TextBlock( " bar" ) }, blocks ) );
+        assertArrayEquals( new Block[] {new TextBlock( "foo " ), new ItalicBlock(
+                new Block[] {new TextBlock( "italic" )} ), new TextBlock( " bar" )}, blocks );
 
         text = "_nice_ foo _italic_ bar";
         blocks = formatTextParser.parse( text );
-        assertTrue( Arrays.equals( new Block[] { new ItalicBlock( new Block[] { new TextBlock( "nice" ) } ),
-            new TextBlock( " foo " ), new ItalicBlock( new Block[] { new TextBlock( "italic" ) } ),
-            new TextBlock( " bar" ) }, blocks ) );
+        assertArrayEquals( new Block[] {new ItalicBlock( new Block[] {new TextBlock( "nice" )} ), new TextBlock(
+                        " foo " ), new ItalicBlock( new Block[] {new TextBlock( "italic" )} ), new TextBlock( " bar" )},
+                blocks );
     }
 
     /**
      * test monospaced text
      */
+    @Test
     public final void testMonospaced()
     {
         String text;
@@ -96,17 +101,17 @@ public class FormatedTextTest
 
         text = "mary =has= a =little= lamb He followed her (=to school one day=)";
         blocks = formatTextParser.parse( text );
-        assertTrue( Arrays.equals( new Block[] { new TextBlock( "mary " ),
-            new MonospaceBlock( new Block[] { new TextBlock( "has" ) } ), new TextBlock( " a " ),
-            new MonospaceBlock( new Block[] { new TextBlock( "little" ) } ),
-            new TextBlock( " lamb He followed her (" ),
-            new MonospaceBlock( new Block[] { new TextBlock( "to school one day" ) } ), new TextBlock( ")" ) },
-                                   blocks ) );
+        assertArrayEquals( new Block[] {new TextBlock( "mary " ), new MonospaceBlock(
+                new Block[] {new TextBlock( "has" )} ), new TextBlock( " a " ), new MonospaceBlock(
+                new Block[] {new TextBlock( "little" )} ), new TextBlock(
+                " lamb He followed her (" ), new MonospaceBlock(
+                new Block[] {new TextBlock( "to school one day" )} ), new TextBlock( ")" )}, blocks );
     }
 
     /**
      * test monospaced text
      */
+    @Test
     public final void testBoldMonospaced()
     {
         String text;
@@ -121,12 +126,13 @@ public class FormatedTextTest
                 new BoldBlock( new Block[] { new MonospaceBlock( new Block[] { new TextBlock( "little" ) } ) } ),
                 new TextBlock( " lamb" ) };
 
-        assertTrue( Arrays.equals( expected, blocks ) );
+        assertArrayEquals( expected, blocks );
     }
 
     /**
      * test monospaced text
      */
+    @Test
     public final void testBoldItalic()
     {
         String text;
@@ -134,16 +140,17 @@ public class FormatedTextTest
 
         text = "mary __has__ a __little__ lamb";
         blocks = formatTextParser.parse( text );
-        assertTrue( Arrays.equals( new Block[] { new TextBlock( "mary " ),
-            new BoldBlock( new Block[] { new ItalicBlock( new Block[] { new TextBlock( "has" ) } ) } ),
-            new TextBlock( " a " ),
-            new BoldBlock( new Block[] { new ItalicBlock( new Block[] { new TextBlock( "little" ) } ) } ),
-            new TextBlock( " lamb" ) }, blocks ) );
+        assertArrayEquals( new Block[] {new TextBlock( "mary " ), new BoldBlock(
+                        new Block[] {new ItalicBlock( new Block[] {new TextBlock( "has" )} )} ), new TextBlock(
+                        " a " ), new BoldBlock(
+                        new Block[] {new ItalicBlock( new Block[] {new TextBlock( "little" )} )} ), new TextBlock( " lamb" )},
+                blocks );
     }
 
     /**
      * test mixed formats side by side
      */
+    @Test
     public final void testMultiFormatSideBySide()
     {
         String text;
@@ -158,13 +165,14 @@ public class FormatedTextTest
                 new TextBlock( " " ), new MonospaceBlock( new Block[] { new TextBlock( "no play" ) } ),
                 new TextBlock( " " ), new ItalicBlock( new Block[] { new TextBlock( "makes" ) } ),
                 new TextBlock( " Juan a dull " ), new BoldBlock( new Block[] { new TextBlock( "boy" ) } ) };
-        assertTrue( Arrays.equals( expected, blocks ) );
+        assertArrayEquals( expected, blocks );
 
     }
 
     /**
      * test mixed formats recursevily
      */
+    @Test
     public final void testMultiFormatInside()
     {
         String text;
@@ -184,30 +192,31 @@ public class FormatedTextTest
                                        new ItalicBlock( new Block[] { new TextBlock( "makes" ) } ),
                                        new TextBlock( " Juan" ) } ), new TextBlock( " a dull" ) } ),
                 new TextBlock( " boy" ) };
-        assertTrue( Arrays.equals( expected, blocks ) );
+        assertArrayEquals( expected, blocks );
     }
 
     /**
      * test unbonded formats
      */
+    @Test
     public final void testUnboundedFormat()
     {
-        testHanging( "All *work and no play makes Juan a dull boy" );
-        testHanging( "All __work and no play makes Juan a dull boy" );
-        testHanging( "All __work and *no play makes _Juan a = dull boy" );
-        testHanging( "*" );
-        testHanging( "==" );
-        testHanging( "**" ); // hehe
-        testHanging( "*  hello   *" );
-        testHanging( "*  hello   =*" );
-        testHanging( "*=_  hello   _=*" );
+        internalTestHanging( "All *work and no play makes Juan a dull boy" );
+        internalTestHanging( "All __work and no play makes Juan a dull boy" );
+        internalTestHanging( "All __work and *no play makes _Juan a = dull boy" );
+        internalTestHanging( "*" );
+        internalTestHanging( "==" );
+        internalTestHanging( "**" ); // hehe
+        internalTestHanging( "*  hello   *" );
+        internalTestHanging( "*  hello   =*" );
+        internalTestHanging( "*=_  hello   _=*" );
     }
 
     /**
      * @param text unbonded text
      */
-    public final void testHanging( final String text )
+    private void internalTestHanging( final String text )
     {
-        assertTrue( Arrays.equals( new Block[] { new TextBlock( text ) }, formatTextParser.parse( text ) ) );
+        assertArrayEquals( new Block[] {new TextBlock( text )}, formatTextParser.parse( text ) );
     }
 }

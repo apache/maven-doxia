@@ -92,7 +92,7 @@ public class HtmlToolsTest
      */
     public void testEncodeId()
     {
-        assertEquals( HtmlTools.encodeId( null ), null );
+        assertNull( HtmlTools.encodeId( null ) );
         assertEquals( HtmlTools.encodeId( "" ), "a" );
         assertEquals( HtmlTools.encodeId( " " ), "a" );
         assertEquals( HtmlTools.encodeId( " _ " ), "a_" );

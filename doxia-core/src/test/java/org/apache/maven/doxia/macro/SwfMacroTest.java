@@ -28,7 +28,9 @@ import java.util.Map;
 import org.apache.maven.doxia.sink.impl.SinkEventElement;
 import org.apache.maven.doxia.sink.impl.SinkEventTestingSink;
 
-import junit.framework.TestCase;
+import org.junit.Test;
+
+import static org.junit.Assert.*;
 
 /**
  * Test swf macro.
@@ -36,14 +38,13 @@ import junit.framework.TestCase;
  * @author ltheussl
  */
 public class SwfMacroTest
-        extends TestCase
 {
-
     /**
      * Test of execute method, of class SwfMacro.
      *
      * @throws MacroExecutionException if a macro fails during testing.
      */
+    @Test
     public void testExecute()
             throws MacroExecutionException
     {
@@ -111,6 +112,7 @@ public class SwfMacroTest
      *
      * @throws MacroExecutionException if a macro fails during testing.
      */
+    @Test
     public void testOthersThenStringParameters()
             throws MacroExecutionException
     {
@@ -153,6 +155,4 @@ public class SwfMacroTest
         assertEquals( "rawText", event.getName() );
         assertFalse( it.hasNext() );
     }
-
-
 }

@@ -31,7 +31,7 @@ import org.codehaus.plexus.DefaultPlexusContainer;
 import org.codehaus.plexus.util.IOUtil;
 import org.xmlunit.matchers.CompareMatcher;
 
-import static org.junit.Assert.assertThat;
+import static org.hamcrest.MatcherAssert.assertThat;
 
 /**
  * Abstract base class to test sinks.
@@ -570,7 +570,7 @@ public abstract class AbstractSinkTest
      * invoked on the current sink, produces the same result as
      * {@link #getFigureBlock getFigureBlock}( source, caption ).
      */
-    public void testFigure() throws Exception
+    public void testFigure()
     {
         String source = "figure.jpg";
         String caption = "Figure_caption";
@@ -597,7 +597,7 @@ public abstract class AbstractSinkTest
     }
 
 
-    public void testFigureWithoutCaption() throws Exception
+    public void testFigureWithoutCaption()
     {
         String source = "figure.jpg";
         sink.figure();
@@ -648,7 +648,7 @@ public abstract class AbstractSinkTest
      * invoked on the current sink, produces the same result as
      * {@link #getTableBlock getTableBlock}( cell, caption ).
      */
-    public void testTable() throws Exception
+    public void testTable()
     {
         String cell = "cell";
         String caption = "Table_caption";

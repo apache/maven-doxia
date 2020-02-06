@@ -28,14 +28,14 @@ import java.io.Writer;
 import org.apache.maven.doxia.sink.Sink;
 import org.apache.maven.doxia.sink.SinkFactory;
 
-import junit.framework.TestCase;
+import org.junit.Test;
+
+import static org.junit.Assert.assertEquals;
 
 public class RandomAccessSinkTest
-    extends TestCase
 {
     private SinkFactory factory = new AbstractXmlSinkFactory()
     {
-
         protected Sink createSink( Writer writer, String encoding, String languageId )
         {
             return new TextSink( writer );
@@ -48,13 +48,13 @@ public class RandomAccessSinkTest
     };
 
     private void buildSimple( Sink sink, String text )
-        throws Exception
     {
         sink.anchor( "foobar" );
         sink.text( text );
         sink.anchor_();
     }
 
+    @Test
     public void testSimple()
         throws Exception
     {
@@ -75,6 +75,7 @@ public class RandomAccessSinkTest
         assertEquals( outFlatSink.toString( encoding ), outRandomAccessSink.toString( encoding ) );
     }
 
+    @Test
     public void testComplex()
         throws Exception
     {

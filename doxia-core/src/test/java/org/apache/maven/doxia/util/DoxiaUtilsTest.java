@@ -150,7 +150,7 @@ public class DoxiaUtilsTest
      */
     public void testEncodeId()
     {
-        assertEquals( DoxiaUtils.encodeId( null ), null );
+        assertNull( DoxiaUtils.encodeId( null ) );
         assertEquals( DoxiaUtils.encodeId( "" ), "a" );
         assertEquals( DoxiaUtils.encodeId( " " ), "a" );
         assertEquals( DoxiaUtils.encodeId( " _ " ), "a_" );

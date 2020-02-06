@@ -21,111 +21,82 @@ package org.apache.maven.doxia.module.twiki.parser;
 
 import java.util.Arrays;
 
-import junit.framework.TestCase;
+import org.junit.Test;
+
+import static org.junit.Assert.*;
 
 /**
- * Generic unit tests for
- * {@link Block}s
+ * Generic unit tests for {@link Block}s
  *
  * @author Juan F. Codagnone
  * @since Nov 2, 2005
  */
 public class BlockTest
-    extends TestCase
 {
-
-    /**
-     * @see TextBlock#equals(Object)
-     */
+    @Test
     public final void testTextBlockEquals()
     {
-        testEquals( new TextBlock( "bar" ), new TextBlock( "bar" ), new TextBlock( "foo" ) );
+        internaTestEquals( new TextBlock( "bar" ), new TextBlock( "bar" ), new TextBlock( "foo" ) );
     }
 
-    /**
-     * @see WikiWordBlock#equals(Object)
-     */
+    @Test
     public final void testWikiWordBlockEquals()
     {
         final WikiWordLinkResolver resolver = new XHTMLWikiWordLinkResolver();
-        testEquals( new WikiWordBlock( "bar", resolver ), new WikiWordBlock( "bar", resolver ),
+        internaTestEquals( new WikiWordBlock( "bar", resolver ), new WikiWordBlock( "bar", resolver ),
                     new WikiWordBlock( "foo", resolver ) );
 
-        testEquals( new WikiWordBlock( "bar", new TextBlock( "text" ), resolver ),
+        internaTestEquals( new WikiWordBlock( "bar", new TextBlock( "text" ), resolver ),
                     new WikiWordBlock( "bar", new TextBlock( "text" ), resolver ), new WikiWordBlock( "bar",
                                                                                                       resolver ) );
 
-        testEquals( new WikiWordBlock( "bar", new TextBlock( "text" ), resolver ),
+        internaTestEquals( new WikiWordBlock( "bar", new TextBlock( "text" ), resolver ),
                     new WikiWordBlock( "bar", new TextBlock( "text" ), resolver ),
                     new WikiWordBlock( "text", new TextBlock( "bar" ), resolver ) );
-
     }
 
-    /**
-     * @see LinkBlock#equals(Object)
-     */
+    @Test
     public final void testLinkBlockEquals()
     {
-        testEquals( new LinkBlock( "foo", new TextBlock( "bar" ) ),
+        internaTestEquals( new LinkBlock( "foo", new TextBlock( "bar" ) ),
                     new LinkBlock( "foo", new TextBlock( "bar" ) ), new LinkBlock( "bar", new TextBlock( "foo" ) ) );
     }
 
-    /**
-     * @see ListItemBlock#equals(Object)
-     */
+    @Test
     public final void testListBlockEquals()
     {
         final Block[] blocks = new Block[] { new TextBlock( "hello" ) };
 
-        testEquals( new ListItemBlock( blocks ), new ListItemBlock( blocks ), new ListItemBlock( new Block[] {} ) );
+        internaTestEquals( new ListItemBlock( blocks ), new ListItemBlock( blocks ), new ListItemBlock( new Block[] {} ) );
     }
 
-    /**
-     * @see ListItemBlock#equals(Object)
-     */
+    @Test
     public final void testNestedBlockEquals()
     {
-
-        testEquals( new ParagraphBlock( new Block[] { new BoldBlock( new Block[] { new TextBlock( "foo" ) } ) } ),
+        internaTestEquals( new ParagraphBlock( new Block[] { new BoldBlock( new Block[] { new TextBlock( "foo" ) } ) } ),
                     new ParagraphBlock( new Block[] { new BoldBlock( new Block[] { new TextBlock( "foo" ) } ) } ),
                     new ParagraphBlock( new Block[] { new BoldBlock( new Block[] { new TextBlock( "bar" ) } ) } ) );
     }
 
-    /**
-     * @see AbstractFatherBlock#equals(Object)
-     */
+    @Test
     public final void testAbstractFatherBlockEquals()
     {
-        assertFalse( Arrays
-                           .equals(
-                                    new Block[] {
-                                        new TextBlock( "mary " ),
-                                        new ItalicBlock(
-                                                         new Block[] { new MonospaceBlock(
-                                                                                           new Block[] { new TextBlock(
-                                                                                                                        "has" ) } ) } ) },
-                                    new Block[] {
-                                        new TextBlock( "mary " ),
-                                        new BoldBlock(
-                                                       new Block[] { new MonospaceBlock(
-                                                                                         new Block[] { new TextBlock(
-                                                                                                                      "has" ) } ) } ) } ) );
+        assertFalse( Arrays.equals( new Block[] {new TextBlock( "mary " ), new ItalicBlock(
+                        new Block[] {new MonospaceBlock( new Block[] {new TextBlock( "has" )} )} )},
+                new Block[] {new TextBlock( "mary " ), new BoldBlock(
+                        new Block[] {new MonospaceBlock( new Block[] {new TextBlock( "has" )} )} )} ) );
     }
 
-    /**
-     * @see AnchorBlock#equals(Object)
-     */
+    @Test
     public final void testAnchorBlockEquals()
     {
-        testEquals( new AnchorBlock( "anchor" ), new AnchorBlock( "anchor" ), new AnchorBlock( "anch" ) );
+        internaTestEquals( new AnchorBlock( "anchor" ), new AnchorBlock( "anchor" ), new AnchorBlock( "anch" ) );
     }
 
-    /**
-     * @see HorizontalRuleBlock#equals(Object)
-     */
+    @Test
     public final void testHorizontalEquals()
     {
-        testEquals( new HorizontalRuleBlock(), new HorizontalRuleBlock(), "foo" );
+        internaTestEquals( new HorizontalRuleBlock(), new HorizontalRuleBlock(), "foo" );
     }
 
     /**
@@ -133,7 +104,8 @@ public class BlockTest
      * @param b an object that is equals to a
      * @param c a diferent object
      */
-    public final void testEquals( final Object a, final Object b, final Object c )
+    @SuppressWarnings( "SimplifiableJUnitAssertion" )
+    private void internaTestEquals( final Object a, final Object b, final Object c )
     {
         assertFalse( a.equals( null ) );
         assertFalse( b.equals( null ) );

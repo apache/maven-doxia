@@ -174,7 +174,7 @@ public class XdocParserTest
 
         // No section, only subsection 1 and 2
         assertTrue( content.contains( "<a href=\"#Section_11\">Section 11</a>" ) );
-        assertTrue( !content.contains( "<a href=\"#Section_1211\">Section 1211</a>" ) );
+        assertFalse( content.contains( "<a href=\"#Section_1211\">Section 1211</a>" ) );
     }
 
     private Iterator<SinkEventElement> parseText( String text )

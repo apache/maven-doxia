@@ -72,7 +72,6 @@ public class XdocValidatorTest
 
     @Override
     public void testValidateFiles()
-        throws Exception
     {
         // TODO: super.testValidateFiles() only validates files from doxia-test-docs, what's the point?
     }

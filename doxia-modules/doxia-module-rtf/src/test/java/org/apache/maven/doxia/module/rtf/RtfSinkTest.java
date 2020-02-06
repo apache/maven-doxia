@@ -63,7 +63,6 @@ public class RtfSinkTest
 
     /** {@inheritDoc} */
     protected Reader getTestReader()
-        throws Exception
     {
         InputStream is = Thread.currentThread().getContextClassLoader().getResourceAsStream( "test.apt" );
 

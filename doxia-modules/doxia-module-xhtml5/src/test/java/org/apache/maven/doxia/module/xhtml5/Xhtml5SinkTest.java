@@ -54,10 +54,8 @@ public class Xhtml5SinkTest
     /**
      * Test link generation.
      *
-     * @throws java.lang.Exception if any.
      */
     public void testLinks()
-        throws Exception
     {
         Xhtml5Sink sink = null;
         Writer writer =  new StringWriter();

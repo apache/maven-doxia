@@ -28,7 +28,9 @@ import java.util.Map;
 import org.apache.maven.doxia.sink.impl.SinkEventElement;
 import org.apache.maven.doxia.sink.impl.SinkEventTestingSink;
 
-import junit.framework.TestCase;
+import org.junit.Test;
+
+import static org.junit.Assert.*;
 
 /**
  * Test echo macro.
@@ -36,12 +38,11 @@ import junit.framework.TestCase;
  * @author ltheussl
  */
 public class EchoMacroTest
-        extends TestCase
 {
-
     /**
      * Test of execute method, of class EchoMacro.
      */
+    @Test
     public void testExecute()
     {
         final Map<String,Object> macroParameters = new HashMap<>();
@@ -59,10 +60,10 @@ public class EchoMacroTest
         assertEquals( "verbatim", event.getName() );
         event = it.next();
         assertEquals( "text", event.getName() );
-        assertEquals( "echo" + Macro.EOL,  (String) event.getArgs()[0] );
+        assertEquals( "echo" + Macro.EOL, event.getArgs()[0] );
         event = it.next();
         assertEquals( "text", event.getName() );
-        assertEquals( "paramName ---> paramValue" + Macro.EOL,  (String) event.getArgs()[0] );
+        assertEquals( "paramName ---> paramValue" + Macro.EOL, event.getArgs()[0] );
         event = it.next();
         assertEquals( "verbatim_", event.getName() );
         assertFalse( it.hasNext() );
@@ -71,11 +72,12 @@ public class EchoMacroTest
     /**
      * Test log.
      */
+    @Test
     public void testLog()
     {
         EchoMacro macro = new EchoMacro();
         macro.enableLogging( null );
-        assertNotNull ( macro.getLog() );
-        assertNotNull ( macro.getLog() );
+        assertNotNull( macro.getLog() );
+        assertNotNull( macro.getLog() );
     }
 }

@@ -19,23 +19,23 @@ package org.apache.maven.doxia.module.fo;
  * under the License.
  */
 
+import org.apache.maven.doxia.document.DocumentCover;
+import org.apache.maven.doxia.document.DocumentModel;
+import org.apache.maven.doxia.markup.Markup;
+import org.codehaus.plexus.util.WriterFactory;
+import org.junit.Before;
+import org.junit.Test;
+import org.xml.sax.SAXParseException;
+import org.xmlunit.matchers.CompareMatcher;
+
+import javax.xml.transform.TransformerException;
 import java.io.File;
 import java.io.IOException;
 import java.io.StringWriter;
 import java.io.Writer;
 
-import javax.xml.transform.TransformerException;
-
-import org.apache.maven.doxia.document.DocumentCover;
-import org.apache.maven.doxia.document.DocumentModel;
-import org.apache.maven.doxia.markup.Markup;
-import org.codehaus.plexus.util.WriterFactory;
-import org.xml.sax.SAXParseException;
-
-import junit.framework.TestCase;
-import org.xmlunit.matchers.CompareMatcher;
-
-import static org.junit.Assert.assertThat;
+import static org.hamcrest.MatcherAssert.assertThat;
+import static org.junit.Assert.assertTrue;
 
 /**
  * Test FoAggregateSink.
@@ -44,17 +44,14 @@ import static org.junit.Assert.assertThat;
  * @version $Id$
  */
 public class FoAggregateSinkTest
-    extends TestCase
 {
     private FoAggregateSink sink;
 
     private Writer writer;
 
-    @Override
-    protected void setUp()
-        throws Exception
+    @Before
+    public void setUp()
     {
-        super.setUp();
         writer = new StringWriter();
     }
     
@@ -67,6 +64,7 @@ public class FoAggregateSinkTest
     /**
      * Test of body method, of class FoAggregateSink.
      */
+    @Test
     public void testBody()
     {
         try
@@ -89,6 +87,7 @@ public class FoAggregateSinkTest
     /**
      * Test of setDocumentName method, of class FoAggregateSink.
      */
+    @Test
     public void testSetDocumentName()
     {
         try
@@ -109,6 +108,7 @@ public class FoAggregateSinkTest
     /**
      * Test the FO PDF generation with some special characters in company name.
      */
+    @Test
     public void testSpecialCharacters()
         throws IOException, TransformerException
     {
@@ -150,12 +150,9 @@ public class FoAggregateSinkTest
             if ( ( e.getCause() != null ) && ( e.getCause() instanceof SAXParseException ) )
             {
                 SAXParseException sax = (SAXParseException) e.getCause();
-
-                StringBuilder sb = new StringBuilder();
-                sb.append( "Error creating PDF from " ).append( foFile.getAbsolutePath() ).append( ":" ).append( sax.getLineNumber() ).append( ":" ).append( sax.getColumnNumber() ).append( "\n" );
-                sb.append( e.getMessage() );
-
-                throw new RuntimeException( sb.toString() );
+                String sb = "Error creating PDF from " + foFile.getAbsolutePath() + ":" + sax.getLineNumber() + ":"
+                 + sax.getColumnNumber() + "\n" + e.getMessage();
+                throw new RuntimeException( sb );
             }
 
             throw new TransformerException( "Error creating PDF from " + foFile + ": " + e.getMessage() );
@@ -165,7 +162,8 @@ public class FoAggregateSinkTest
     /**
      * Test of figureGraphics method, of class FoAggregateSink.
      */
-    public void testFigureGraphics() throws Exception
+    @Test
+    public void testFigureGraphics()
     {
         try
         {
@@ -191,6 +189,7 @@ public class FoAggregateSinkTest
     /**
      * Test of anchor method, of class FoAggregateSink.
      */
+    @Test
     public void testAnchor()
     {
         try
@@ -212,6 +211,7 @@ public class FoAggregateSinkTest
     /**
      * Test of link method, of class FoAggregateSink.
      */
+    @Test
     public void testLink()
     {
         try
