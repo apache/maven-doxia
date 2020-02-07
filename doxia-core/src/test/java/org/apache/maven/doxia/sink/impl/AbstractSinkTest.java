@@ -29,9 +29,9 @@ import org.apache.maven.doxia.sink.Sink;
 import org.apache.maven.doxia.sink.SinkEventAttributes;
 import org.codehaus.plexus.DefaultPlexusContainer;
 import org.codehaus.plexus.util.IOUtil;
-import org.xmlunit.matchers.CompareMatcher;
 
 import static org.hamcrest.MatcherAssert.assertThat;
+import static org.xmlunit.matchers.CompareMatcher.isIdenticalTo;
 
 /**
  * Abstract base class to test sinks.
@@ -588,7 +588,7 @@ public abstract class AbstractSinkTest
 
         if ( isXmlSink() )
         {
-            assertThat ( wrapXml( actual ), CompareMatcher.isIdenticalTo( wrapXml( expected ) ));
+            assertThat ( wrapXml( actual ), isIdenticalTo( wrapXml( expected ) ));
         }
         else
         {
@@ -611,7 +611,7 @@ public abstract class AbstractSinkTest
 
         if ( isXmlSink() )
         {
-            assertThat ( wrapXml( actual ), CompareMatcher.isIdenticalTo( wrapXml( expected ) ));
+            assertThat ( wrapXml( actual ), isIdenticalTo( wrapXml( expected ) ));
         }
         else
         {
@@ -632,7 +632,7 @@ public abstract class AbstractSinkTest
 
         if ( isXmlSink() )
         {
-            assertThat ( wrapXml( actual ), CompareMatcher.isIdenticalTo( wrapXml( expected ) ));
+            assertThat ( wrapXml( actual ), isIdenticalTo( wrapXml( expected ) ));
         }
         else
         {
@@ -673,7 +673,7 @@ public abstract class AbstractSinkTest
 
         if ( isXmlSink() )
         {
-            assertThat ( wrapXml( actual ), CompareMatcher.isIdenticalTo( wrapXml( expected ) ));
+            assertThat ( wrapXml( actual ), isIdenticalTo( wrapXml( expected ) ));
         }
         else
         {

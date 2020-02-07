@@ -94,6 +94,7 @@ public class ParagraphTest
      *
      * @throws ParseException on error
      */
+    @Test
     public final void testParagraphWithStartingList()
         throws ParseException
     {

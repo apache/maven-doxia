@@ -259,35 +259,21 @@ public class FmlParserTest
     public void testFaqMacro()
         throws Exception
     {
-        Writer output = null;
-        Reader reader = null;
-        try
+        try ( Writer output = getTestWriter( "macro" );
+              Reader reader = getTestReader( "macro" ) )
         {
-            output = getTestWriter( "macro" );
-            reader = getTestReader( "macro" );
-
             Sink sink = new XhtmlBaseSink( output );
             createParser().parse( reader, sink );
             sink.close();
-        }
-        finally
-        {
-            IOUtil.close( output );
-            IOUtil.close( reader );
         }
 
         File f = getTestFile( getBasedir(), outputBaseDir() + getOutputDir() + "macro.fml" );
         assertTrue( "The file " + f.getAbsolutePath() + " was not created", f.exists() );
 
         String content;
-        try
+        try ( Reader reader = new FileReader( f ) )
         {
-            reader = new FileReader( f );
             content = IOUtil.toString( reader );
-        }
-        finally
-        {
-            IOUtil.close( reader );
         }
 
         assertTrue( content.contains( "<a name=\"macro-definition\">Macro Question</a>" ) );

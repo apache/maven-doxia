@@ -36,6 +36,7 @@ import java.io.Writer;
 
 import static org.hamcrest.MatcherAssert.assertThat;
 import static org.junit.Assert.assertTrue;
+import static org.xmlunit.matchers.CompareMatcher.isIdenticalTo;
 
 /**
  * Test FoAggregateSink.
@@ -183,7 +184,7 @@ public class FoAggregateSinkTest
                         + "width=\"100%\"/>" + Markup.EOL;
         String actual = writer.toString();
 
-        assertThat ( wrapXml( actual ), CompareMatcher.isIdenticalTo( wrapXml( expected ) ));
+        assertThat ( wrapXml( actual ), isIdenticalTo( wrapXml( expected ) ));
     }
 
     /**

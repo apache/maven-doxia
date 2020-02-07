@@ -101,75 +101,44 @@ public class XdocParserTest
     public void testSnippetMacro()
         throws Exception
     {
-        Writer output = null;
-        Reader reader = null;
-
-        try
+        try( Writer output = getTestWriter( "macro" );
+             Reader reader = getTestReader( "macro" ) )
         {
-            output = getTestWriter( "macro" );
-            reader = getTestReader( "macro" );
-
             Sink sink = new XdocSink( output );
             createParser().parse( reader, sink );
             sink.close();
-        }
-        finally
-        {
-            IOUtil.close( output );
-            IOUtil.close( reader );
         }
 
         File f = getTestFile( getBasedir(), outputBaseDir() + getOutputDir() + "macro.xml" );
         assertTrue( "The file " + f.getAbsolutePath() + " was not created", f.exists() );
 
         String content;
-        try
+        try( Reader reader = new FileReader( f ) )
         {
-            reader = new FileReader( f );
             content = IOUtil.toString( reader );
-        }
-        finally
-        {
-            IOUtil.close( reader );
         }
 
         assertTrue( content.contains( "&lt;modelVersion&gt;4.0.0&lt;/modelVersion&gt;" ) );
     }
 
-    /** @throws Exception  */
     public void testTocMacro()
         throws Exception
     {
-        Writer output = null;
-        Reader reader = null;
-
-        try
+        try( Writer output = getTestWriter( "toc" );
+             Reader reader = getTestReader( "toc" ) )
         {
-            output = getTestWriter( "toc" );
-            reader = getTestReader( "toc" );
-
             Sink sink = new XdocSink( output );
             createParser().parse( reader, sink );
             sink.close();
-        }
-        finally
-        {
-            IOUtil.close( output );
-            IOUtil.close( reader );
         }
 
         File f = getTestFile( getBasedir(), outputBaseDir() + getOutputDir() + "toc.xml" );
         assertTrue( "The file " + f.getAbsolutePath() + " was not created", f.exists() );
 
         String content;
-        try
+        try ( Reader reader = new FileReader( f ) )
         {
-            reader = new FileReader( f );
             content = IOUtil.toString( reader );
-        }
-        finally
-        {
-            IOUtil.close( reader );
         }
 
         // No section, only subsection 1 and 2
@@ -187,7 +156,6 @@ public class XdocParserTest
         return sink.getEventList().iterator();
     }
 
-    /** @throws Exception  */
     public void testHeadEventsList()
         throws Exception
     {
@@ -232,7 +200,6 @@ public class XdocParserTest
         assertEquals( it, "title_", "head_", "body",  "body_" );
     }
 
-    /** @throws Exception  */
     public void testDocumentBodyEventsList()
         throws Exception
     {
@@ -243,7 +210,6 @@ public class XdocParserTest
         assertEquals( it, "body", "body_" );
     }
 
-    /** @throws Exception  */
     public void testSectionEventsList()
         throws Exception
     {
@@ -255,7 +221,6 @@ public class XdocParserTest
                       "sectionTitle2_", "section2_", "section1_" );
     }
 
-    /** @throws Exception  */
     public void testSectionAttributes()
         throws Exception
     {
@@ -281,7 +246,6 @@ public class XdocParserTest
         assertEquals( it, "text", "sectionTitle1_", "section1_" );
     }
 
-    /** @throws Exception  */
     public void testNestedSectionsEventsList()
         throws Exception
     {
@@ -295,7 +259,6 @@ public class XdocParserTest
                       "section2_", "section2", "sectionTitle2", "text", "sectionTitle2_", "section2_", "section1_" );
     }
 
-    /** @throws Exception  */
     public void testSourceEventsList()
         throws Exception
     {
@@ -316,7 +279,6 @@ public class XdocParserTest
         assertEquals( it, "verbatim", "text", "verbatim_" );
     }
 
-    /** @throws Exception  */
     public void testSourceContainingDTD()
         throws Exception
     {
@@ -331,7 +293,6 @@ public class XdocParserTest
         assertEquals( it, "verbatim", "text", "verbatim_" );
     }
 
-    /** @throws Exception  */
     public void testPreEOL()
         throws Exception
     {
@@ -346,8 +307,6 @@ public class XdocParserTest
 
     /**
      * Test section with ids.
-     *
-     * @throws java.lang.Exception if any.
      */
     public void testSectionIdAnchor()
         throws Exception
@@ -369,8 +328,6 @@ public class XdocParserTest
 
     /**
      * Test script block.
-     *
-     * @throws java.lang.Exception if any.
      */
     public void testJavaScript()
         throws Exception
@@ -383,8 +340,6 @@ public class XdocParserTest
 
     /**
      * Test unknown tags.
-     *
-     * @throws java.lang.Exception if any.
      */
     public void testUnknown()
         throws Exception
@@ -424,7 +379,6 @@ public class XdocParserTest
         }
     }
 
-    /** @throws Exception  */
     public void testEntities()
         throws Exception
     {

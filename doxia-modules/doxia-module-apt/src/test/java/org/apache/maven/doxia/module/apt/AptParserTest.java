@@ -54,35 +54,23 @@ public class AptParserTest
         parser = lookup( Parser.ROLE, "apt" );
     }
 
-    /** {@inheritDoc} */
     protected Parser createParser()
     {
         return parser;
     }
 
-    protected String parseFileToAptSink( String file )
-        throws ParseException
+    protected String parseFileToAptSink( String file ) throws ParseException, IOException
     {
-        StringWriter output = null;
-        Reader reader = null;
-        try
+        try( StringWriter output = new StringWriter();
+             Reader reader = getTestReader( file ) )
         {
-            output = new StringWriter();
-            reader = getTestReader( file );
-
             Sink sink = new AptSink( output );
             createParser().parse( reader, sink );
-        }
-        finally
-        {
-            IOUtil.close( output );
-            IOUtil.close( reader );
-        }
 
-        return output.toString();
+            return output.toString();
+        }
     }
 
-    /** @throws Exception  */
     public void testLineBreak()
         throws Exception
     {
@@ -91,7 +79,6 @@ public class AptParserTest
         assertTrue( linebreak.contains( "Line\\" + EOL + "break." ) );
     }
 
-    /** @throws Exception  */
     public void testSnippetMacro()
         throws Exception
     {
@@ -100,7 +87,6 @@ public class AptParserTest
         assertTrue( macro.contains( "<modelVersion\\>4.0.0\\</modelVersion\\>" ) );
     }
 
-    /** @throws Exception  */
     public void testCommentsBeforeTitle()
         throws Exception
     {
@@ -110,7 +96,6 @@ public class AptParserTest
             + EOL + " -----" + EOL + " Test DOXIA-379" ) );
     }
 
-    /** @throws Exception  */
     public void testSnippet()
         throws Exception
     {
@@ -129,8 +114,6 @@ public class AptParserTest
                       "verbatim_", "paragraph", "text", "paragraph_", "listItem_", "list_", "body_" );
     }
 
-
-    /** @throws Exception  */
     public void testSnippetTrailingSpace()
         throws Exception
     {
@@ -146,7 +129,6 @@ public class AptParserTest
         assertEquals( it, "head", "head_", "body", "verbatim", "text", "verbatim_", "body_" );
     }
 
-    /** @throws Exception  */
     public void testTocMacro()
         throws Exception
     {
@@ -161,31 +143,20 @@ public class AptParserTest
      * Parses the test document test.apt and re-emits
      * it into parser/test.apt.
      *
-     * @throws java.io.IOException if the test file cannot be read.
-     * @throws org.apache.maven.doxia.parser.ParseException if the test file cannot be parsed.
+     * @throws IOException if the test file cannot be read.
+     * @throws ParseException if the test file cannot be parsed.
      */
     public void testTestDocument()
         throws IOException, ParseException
     {
-        Writer writer = null;
-        Reader reader = null;
-        try
+        try( Writer writer = getTestWriter( "test" );
+             Reader reader = getTestReader( "test" ) )
         {
-            writer = getTestWriter( "test" );
-            reader = getTestReader( "test" );
-
             Sink sink = new AptSink( writer );
-
             createParser().parse( reader, sink );
-        }
-        finally
-        {
-            IOUtil.close( writer );
-            IOUtil.close( reader );
         }
     }
 
-    /** @throws Exception  */
     public void testBoxedVerbatim()
         throws Exception
     {
@@ -206,7 +177,6 @@ public class AptParserTest
         assertEquals( it, "text", "verbatim_", "body_" );
     }
 
-    /** @throws Exception  */
     public void testMultiLinesInTableCells()
         throws Exception
     {
@@ -257,7 +227,6 @@ public class AptParserTest
         assertEquals( it, "tableCell_", "tableRow_", "tableRows_", "table_", "body_" );
     }
 
-    /** @throws Exception  */
     public void testLineBreakInTableCells()
         throws Exception
     {
@@ -317,7 +286,6 @@ public class AptParserTest
         assertEquals( it, "tableCell_", "tableRow_", "tableRows_", "table_", "body_" );
     }
 
-    /** @throws Exception  */
     public void testDOXIA38()
         throws Exception
     {
@@ -360,7 +328,6 @@ public class AptParserTest
         assertEquals( it, "tableCell_", "tableRow_", "tableRows_", "table_", "body_" );
     }
 
-    /** @throws Exception  */
     public void testSpecialCharactersInTables()
         throws Exception
     {
@@ -386,7 +353,6 @@ public class AptParserTest
         assertEquals( it, "tableCell_", "tableCell", "text", "tableCell_", "tableRow_", "tableRows_", "table_", "body_" );
     }
 
-    /** @throws Exception  */
     public void testSpacesAndBracketsInAnchors()
         throws Exception
     {
@@ -418,7 +384,6 @@ public class AptParserTest
         assertEquals( it, "link_", "paragraph_", "body_" );
     }
 
-    /** @throws Exception  */
     public void testSectionTitleAnchors()
         throws Exception
     {
@@ -436,9 +401,6 @@ public class AptParserTest
                       "section1", "sectionTitle1", "anchor", "text", "anchor_", "sectionTitle1_", "section1_", "body_" );
     }
     
-    /**
-     * @throws Exception
-     */
     public void testTableHeaders() throws Exception
     {
         // DOXIA-404
@@ -504,7 +466,6 @@ public class AptParserTest
         assertEquals( it, "link_", "sectionTitle1_", "section1_", "body_" );
     }
 
-    /** {@inheritDoc} */
     protected String outputExtension()
     {
         return "apt";

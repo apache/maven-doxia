@@ -94,10 +94,10 @@ public abstract class AbstractIdentityTest
         expected = writer.toString();
 
         // write to file for comparison
-        Writer fileWriter = getTestWriter( "expected" );
-        fileWriter.write( expected );
-        IOUtil.close( fileWriter );
-
+        try ( Writer fileWriter = getTestWriter( "expected" ) )
+        {
+            fileWriter.write( expected );
+        }
         // generate the actual model
         writer = new StringWriter();
         sink = createSink( writer );
@@ -113,9 +113,10 @@ public abstract class AbstractIdentityTest
         String actual = writer.toString();
 
         // write to file for comparison
-        fileWriter = getTestWriter( "actual" );
-        fileWriter.write( actual );
-        IOUtil.close( fileWriter );
+        try( Writer fileWriter = getTestWriter( "actual" ) )
+        {
+            fileWriter.write( actual );
+        }
 
         // Disabled by default, it's unlikely that all our modules
         // will pass this test any time soon, but the generated

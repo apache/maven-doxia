@@ -19,21 +19,19 @@ package org.apache.maven.doxia.document;
  * under the License.
  */
 
+import org.apache.maven.doxia.document.io.xpp3.DocumentXpp3Reader;
+import org.apache.maven.doxia.document.io.xpp3.DocumentXpp3Writer;
+import org.codehaus.plexus.PlexusTestCase;
+import org.codehaus.plexus.util.ReaderFactory;
+import org.codehaus.plexus.util.WriterFactory;
+import org.codehaus.plexus.util.xml.pull.XmlPullParserException;
+
 import java.io.File;
 import java.io.IOException;
 import java.io.Reader;
 import java.io.Writer;
 import java.util.Date;
 import java.util.List;
-
-import org.apache.maven.doxia.document.io.xpp3.DocumentXpp3Reader;
-import org.apache.maven.doxia.document.io.xpp3.DocumentXpp3Writer;
-
-import org.codehaus.plexus.PlexusTestCase;
-import org.codehaus.plexus.util.IOUtil;
-import org.codehaus.plexus.util.ReaderFactory;
-import org.codehaus.plexus.util.WriterFactory;
-import org.codehaus.plexus.util.xml.pull.XmlPullParserException;
 
 /**
  * Test DocumentModel.
@@ -337,16 +335,9 @@ public class DocumentModelTest
         }
 
         File testFile = getTestFile( dir.getAbsolutePath(), "testModel.xml" );
-        Writer w = null;
-
-        try
+        try( Writer w = WriterFactory.newXmlWriter( testFile ) )
         {
-            w = WriterFactory.newXmlWriter( testFile );
             new DocumentXpp3Writer().write( w, model );
-        }
-        finally
-        {
-            IOUtil.close( w );
         }
 
         DocumentModel documentModel;

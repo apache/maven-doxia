@@ -98,7 +98,6 @@ public class DocBookParserTest extends AbstractParserTest
         }
     }
 
-    /** @throws Exception  */
     public void testSignificantWhiteSpace()
         throws Exception
     {

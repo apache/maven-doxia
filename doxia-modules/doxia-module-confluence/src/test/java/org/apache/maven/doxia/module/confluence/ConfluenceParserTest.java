@@ -76,19 +76,16 @@ public class ConfluenceParserTest
         super.tearDown();
     }
 
-    /** {@inheritDoc} */
     protected Parser createParser()
     {
         return parser;
     }
 
-    /** {@inheritDoc} */
     protected String outputExtension()
     {
         return "confluence";
     }
 
-    /** @throws Exception */
     public void testMarkupTestPage()
         throws Exception
     {
@@ -96,7 +93,6 @@ public class ConfluenceParserTest
         assertContainsLines( result, "end:body" );
     }
 
-    /** @throws Exception */
     public void testParagraphWithSimpleFormatting()
         throws Exception
     {
@@ -111,7 +107,6 @@ public class ConfluenceParserTest
         assertEquals( 5, result.split( "end:paragraph" ).length );
     }
 
-    /** @throws Exception */
     public void testLineBreak()
         throws Exception
     {
@@ -124,7 +119,6 @@ public class ConfluenceParserTest
         assertContainsLines( result, "inline\n" + lineBreak );
     }
 
-    /** @throws Exception */
     public void testEscapes()
         throws Exception
     {
@@ -138,7 +132,6 @@ public class ConfluenceParserTest
         assertContainsLines( result, "trailing slash\\\n" );
     }
 
-    /** @throws Exception */
     public void testSectionTitles()
         throws Exception
     {
@@ -153,7 +146,6 @@ public class ConfluenceParserTest
         assertContainsLines( "Section title has leading space", result, "sectionTitle1\ntext: TitleWithLeadingSpace" );
     }
 
-    /** @throws Exception */
     public void testNestedBulletList()
         throws Exception
     {
@@ -167,7 +159,6 @@ public class ConfluenceParserTest
         assertEquals( 5, result.split( "end:listItem\n" ).length );
     }
 
-    /** @throws Exception */
     public void testNestedHeterogenousList()
         throws Exception
     {
@@ -184,7 +175,6 @@ public class ConfluenceParserTest
         assertEquals( 5, result.split( "end:listItem\n" ).length );
     }
 
-    /** @throws Exception */
     public void testListWithSimpleFormatting()
         throws Exception
     {
@@ -205,7 +195,6 @@ public class ConfluenceParserTest
         assertEquals( 9, result.split( "end:listItem\n" ).length );
     }
 
-    /** @throws Exception */
     public void testAnchor()
         throws Exception
     {
@@ -218,7 +207,6 @@ public class ConfluenceParserTest
         assertEquals( 4, result.split( "end:anchor\n" ).length );
     }
 
-    /** @throws Exception */
     public void testUnknownMacro()
         throws Exception
     {
@@ -227,7 +215,6 @@ public class ConfluenceParserTest
         assertContainsLines( result, "begin:paragraph\ntext: {unknown:start}" );
     }
 
-    /** @throws Exception */
     public void testCodeMacro()
         throws Exception
     {
@@ -240,7 +227,6 @@ public class ConfluenceParserTest
         assertEquals( 3, result.split( "end:verbatim\n" ).length );
     }
 
-    /** @throws Exception */
     public void testFigure()
         throws Exception
     {
@@ -279,7 +265,6 @@ public class ConfluenceParserTest
         assertEquals( it, "figure_", "body_" );
     }
 
-    /** @throws Exception */
     public void testLink()
         throws Exception
     {
@@ -314,7 +299,6 @@ public class ConfluenceParserTest
         
     }
 
-    /** @throws Exception */
     public void testTableWithLinks()
         throws Exception
     {
@@ -327,7 +311,6 @@ public class ConfluenceParserTest
         assertEquals( 4, result.split( "end:link\n" ).length );
     }
 
-    /** @throws Exception */
     public void testTableWithImages()
         throws Exception
     {
@@ -351,7 +334,6 @@ public class ConfluenceParserTest
         assertEquals( it, "figure_", "tableCell_", "tableRow_", "tableRows_", "table_", "body_" );
     }
 
-    /** @throws Exception */
     public void testParagraphWithList()
         throws Exception
     {
@@ -366,7 +348,6 @@ public class ConfluenceParserTest
         assertEquals( 2, result.split( "end:list\n" ).length );
     }
 
-    /** @throws Exception */
     public void testParagraphWithFigure()
         throws Exception
     {
@@ -380,7 +361,6 @@ public class ConfluenceParserTest
         assertEquals( 2, result.split( "end:figure\n" ).length );
     }
 
-    /** @throws Exception */
     public void testParagraphWithHeader()
         throws Exception
     {
@@ -394,7 +374,6 @@ public class ConfluenceParserTest
         assertEquals( 2, result.split( "end:sectionTitle2\n" ).length );
     }
 
-    /** @throws Exception */
     public void testNestedFormats()
         throws Exception
     {
@@ -426,7 +405,6 @@ public class ConfluenceParserTest
         assertEquals( 12, result.split( "end:monospaced\n" ).length );
     }
 
-    /** @throws Exception */
     public void testNoteInfoTipQuote()
         throws Exception
     {
@@ -484,8 +462,6 @@ public class ConfluenceParserTest
 
     /**
      * DOXIA-247
-     *
-     * @throws ParseException
      */
     public void testEndBracketInList()
         throws ParseException
@@ -564,8 +540,6 @@ public class ConfluenceParserTest
 
     /**
      * DOXIA-370
-     *
-     * @throws ParseException
      */
     public void testSeparatorInParagraph()
         throws ParseException
@@ -578,7 +552,6 @@ public class ConfluenceParserTest
         /* parsing with separator in middle of paragraph */
         createParser().parse( new StringReader( document ), sink );
         assertTrue( "generated document should have a size > 0", output.toString().length() > 0 );
-
     }
     
     public void testListFollowedByMacro() throws Exception
