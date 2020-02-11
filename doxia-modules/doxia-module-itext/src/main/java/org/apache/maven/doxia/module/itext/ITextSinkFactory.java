@@ -32,7 +32,6 @@ import org.codehaus.plexus.util.xml.PrettyPrintXMLWriter;
  * IText implementation of the Sink factory.
  *
  * @author <a href="mailto:vincent.siveton@gmail.com">Vincent Siveton</a>
- * @version $Id$
  * @since 1.0
  */
 @Component( role = SinkFactory.class, hint = "itext" )

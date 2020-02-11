@@ -33,8 +33,6 @@ import org.codehaus.plexus.util.IOUtil;
 
 /**
  * {@link ByLineSource} default implementation
- *
- * @version $Id$
  */
 public class ByLineReaderSource implements ByLineSource
 {
@@ -71,6 +69,12 @@ public class ByLineReaderSource implements ByLineSource
         this( in, "" );
     }
     
+    /**
+     * <p>Constructor for ByLineReaderSource.</p>
+     *
+     * @param in a {@link java.io.Reader} object.
+     * @param name a {@link java.lang.String} object.
+     */
     public ByLineReaderSource( final Reader in, final String name )
     {
         this.reader = new LineNumberReader( in );
@@ -80,7 +84,12 @@ public class ByLineReaderSource implements ByLineSource
         this.lineNumber = -1;
     }
 
-    /** {@inheritDoc} */
+    /**
+     * {@inheritDoc}
+     *
+     * @return a {@link java.lang.String} object.
+     * @throws org.apache.maven.doxia.parser.ParseException if any.
+     */
     public final String getNextLine() throws ParseException
     {
         if ( reader == null )
@@ -119,26 +128,38 @@ public class ByLineReaderSource implements ByLineSource
         return line;
     }
 
-    /** {@inheritDoc} */
+    /**
+     * {@inheritDoc}
+     *
+     * @return a {@link java.lang.String} object.
+     */
     public final String getName()
     {
         return name;
     }
 
-    /** {@inheritDoc} */
+    /**
+     * {@inheritDoc}
+     *
+     * @return a int.
+     */
     public final int getLineNumber()
     {
         return lineNumber;
     }
 
-    /** {@inheritDoc} */
+    /**
+     * {@inheritDoc}
+     */
     public final void close()
     {
         IOUtil.close( reader );
         reader = null;
     }
 
-    /** {@inheritDoc} */
+    /**
+     * {@inheritDoc}
+     */
     public final void ungetLine()
     {
         if ( ungetted )

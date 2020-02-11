@@ -29,7 +29,6 @@ import java.util.regex.Pattern;
  * Parse almost plain text in search of WikiWords, links, ...
  *
  * @author Juan F. Codagnone
- * @version $Id$
  */
 public class TextParser
 {

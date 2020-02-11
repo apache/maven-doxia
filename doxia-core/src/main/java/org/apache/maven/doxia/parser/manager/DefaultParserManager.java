@@ -29,7 +29,6 @@ import java.util.Map;
  * Simple implementation of the <code>ParserManager</code> interface.
  *
  * @author <a href="mailto:jason@maven.org">Jason van Zyl</a>
- * @version $Id$
  * @since 1.0
  */
 @Component( role = ParserManager.class )

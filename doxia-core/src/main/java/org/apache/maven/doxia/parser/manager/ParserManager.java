@@ -25,7 +25,6 @@ import org.apache.maven.doxia.parser.Parser;
  * Handles parser lookups.
  *
  * @author <a href="mailto:jason@maven.org">Jason van Zyl</a>
- * @version $Id$
  * @since 1.0
  */
 public interface ParserManager

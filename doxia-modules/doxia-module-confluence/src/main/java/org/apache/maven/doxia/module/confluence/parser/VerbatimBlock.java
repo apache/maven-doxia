@@ -23,8 +23,9 @@ import org.apache.maven.doxia.sink.Sink;
 import org.apache.maven.doxia.sink.impl.SinkEventAttributeSet;
 
 /**
+ * VerbatimBlock
+ *
  * @author <a href="mailto:jason@maven.org">Jason van Zyl</a>
- * @version $Id$
  */
 class VerbatimBlock
     implements Block

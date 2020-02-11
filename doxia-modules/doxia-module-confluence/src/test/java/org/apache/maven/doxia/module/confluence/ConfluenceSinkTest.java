@@ -29,7 +29,6 @@ import org.apache.maven.doxia.util.HtmlTools;
  * Test the Confluence Sink
  *
  * @author <a href="mailto:vincent.siveton@gmail.com">Vincent Siveton</a>
- * @version $Id$
  * @see ConfluenceSink
  */
 public class ConfluenceSinkTest

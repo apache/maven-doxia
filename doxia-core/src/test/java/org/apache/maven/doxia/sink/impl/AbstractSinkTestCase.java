@@ -33,7 +33,6 @@ import org.codehaus.plexus.PlexusTestCase;
 
 /**
  * @author <a href="mailto:jason@maven.org">Jason van Zyl</a>
- * @version $Id$
  * @since 1.0
  */
 public abstract class AbstractSinkTestCase

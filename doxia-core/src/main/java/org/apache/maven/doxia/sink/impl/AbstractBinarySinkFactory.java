@@ -32,7 +32,6 @@ import org.codehaus.plexus.util.WriterFactory;
  * An abstract <code>SinkFactory</code> for binary output.
  *
  * @author <a href="mailto:hboutemy@apache.org">Hervé Boutemy</a>
- * @version $Id$
  * @since 1.1
  */
 public abstract class AbstractBinarySinkFactory

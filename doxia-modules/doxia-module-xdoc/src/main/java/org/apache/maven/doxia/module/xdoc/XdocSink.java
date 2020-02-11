@@ -39,7 +39,6 @@ import org.codehaus.plexus.util.StringUtils;
  * https://maven.apache.org/xsd/xdoc-2.0.xsd</a>.
  *
  * @author <a href="mailto:james@jamestaylor.org">James Taylor</a>
- * @version $Id$
  * @since 1.0
  */
 public class XdocSink
@@ -108,7 +107,9 @@ public class XdocSink
     // Public protected methods
     // ----------------------------------------------------------------------
 
-    /** {@inheritDoc} */
+    /**
+     * {@inheritDoc}
+     */
     protected void init()
     {
         super.init();
@@ -118,6 +119,7 @@ public class XdocSink
 
     /**
      * {@inheritDoc}
+     *
      * @see #head(org.apache.maven.doxia.sink.SinkEventAttributes)
      */
     public void head()
@@ -166,6 +168,7 @@ public class XdocSink
 
     /**
      * {@inheritDoc}
+     *
      * @see XdocMarkup#DOCUMENT_TAG
      * @see XdocMarkup#PROPERTIES_TAG
      */
@@ -178,6 +181,7 @@ public class XdocSink
 
     /**
      * {@inheritDoc}
+     *
      * @see javax.swing.text.html.HTML.Tag#TITLE
      */
     public void title()
@@ -187,6 +191,7 @@ public class XdocSink
 
     /**
      * {@inheritDoc}
+     *
      * @see javax.swing.text.html.HTML.Tag#TITLE
      */
     public void title_()
@@ -200,6 +205,7 @@ public class XdocSink
 
     /**
      * {@inheritDoc}
+     *
      * @see XdocMarkup#AUTHOR_TAG
      */
     public void author_()
@@ -219,6 +225,7 @@ public class XdocSink
 
     /**
      * {@inheritDoc}
+     *
      * @see XdocMarkup#DATE_TAG
      */
     public void date_()
@@ -234,6 +241,7 @@ public class XdocSink
 
     /**
      * {@inheritDoc}
+     *
      * @see #body(org.apache.maven.doxia.sink.SinkEventAttributes)
      */
     public void body()
@@ -252,6 +260,7 @@ public class XdocSink
 
     /**
      * {@inheritDoc}
+     *
      * @see javax.swing.text.html.HTML.Tag#BODY
      * @see XdocMarkup#DOCUMENT_TAG
      */
@@ -375,8 +384,10 @@ public class XdocSink
 
     /**
      * {@inheritDoc}
+     *
      * @see XdocMarkup#SOURCE_TAG
      * @see javax.swing.text.html.HTML.Tag#PRE
+     * @param attributes a {@link org.apache.maven.doxia.sink.SinkEventAttributes} object.
      */
     public void verbatim( SinkEventAttributes attributes )
     {
@@ -414,6 +425,7 @@ public class XdocSink
 
     /**
      * {@inheritDoc}
+     *
      * @see XdocMarkup#SOURCE_TAG
      * @see javax.swing.text.html.HTML.Tag#PRE
      */
@@ -470,6 +482,7 @@ public class XdocSink
      * The default valign is <code>top</code>.
      *
      * {@inheritDoc}
+     *
      * @see javax.swing.text.html.HTML.Tag#TR
      */
     public void tableRow()
@@ -482,6 +495,9 @@ public class XdocSink
         setCellCount( 0 );
     }
 
+    /**
+     * <p>close.</p>
+     */
     public void close()
     {
         super.close();

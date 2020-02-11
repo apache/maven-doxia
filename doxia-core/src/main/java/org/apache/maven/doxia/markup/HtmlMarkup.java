@@ -32,9 +32,7 @@ import javax.swing.text.html.HTML.Tag;
  * @see <a href=
  *      "https://www.w3.org/TR/2012/WD-html-markup-20121011/elements-by-function.html">
  *      https://www.w3.org/TR/2012/WD-html-markup-20121011/elements-by-function.html</a>
- *
  * @author ltheussl
- * @version $Id$
  * @since 1.0
  */
 @SuppressWarnings( "checkstyle:interfaceistype" )

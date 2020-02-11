@@ -32,7 +32,6 @@ import org.apache.maven.doxia.sink.impl.AbstractSink;
  * the input of some parser is well-formed.
  *
  * @author <a href="mailto:lars@trieloff.net">Lars Trieloff</a>
- * @version $Id$
  */
 public class WellformednessCheckingSink
     extends AbstractSink

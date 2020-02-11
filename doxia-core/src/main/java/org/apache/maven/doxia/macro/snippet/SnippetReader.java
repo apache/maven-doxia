@@ -32,8 +32,6 @@ import org.codehaus.plexus.util.IOUtil;
 
 /**
  * Utility class for reading snippets.
- *
- * @version $Id$
  */
 public class SnippetReader
 {

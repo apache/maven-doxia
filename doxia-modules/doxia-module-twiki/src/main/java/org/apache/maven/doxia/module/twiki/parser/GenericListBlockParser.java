@@ -32,7 +32,6 @@ import java.util.regex.Pattern;
  * Generic list parser
  *
  * @author Juan F. Codagnone
- * @version $Id$
  */
 public class GenericListBlockParser
     implements BlockParser
@@ -73,9 +72,7 @@ public class GenericListBlockParser
         return ret;
     }
 
-    /**
-     * {@inheritDoc}
-     */
+    /** {@inheritDoc} */
     public final Block visit( final String line, final ByLineSource source )
         throws ParseException
     {
@@ -260,7 +257,6 @@ public class GenericListBlockParser
  * It helps to build
  *
  * @author Juan F. Codagnone
- * @version $Id$
  */
 class TreeListBuilder
 {
@@ -404,7 +400,6 @@ class TreeListBuilder
      * A bidirectional tree node
      *
      * @author Juan F. Codagnone
-     * @version $Id$
      */
     static class TreeComponent
     {

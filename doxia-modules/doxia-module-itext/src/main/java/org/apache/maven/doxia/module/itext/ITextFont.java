@@ -31,9 +31,7 @@ import com.lowagie.text.pdf.BaseFont;
  * <code>iText</code> wrapper object for font.
  *
  * @see com.lowagie.text.Font
- *
  * @author <a href="mailto:vincent.siveton@gmail.com">Vincent Siveton</a>
- * @version $Id$
  */
 public class ITextFont
 {

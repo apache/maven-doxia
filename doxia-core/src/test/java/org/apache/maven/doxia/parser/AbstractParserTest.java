@@ -37,8 +37,6 @@ import java.util.Iterator;
  * <br>
  * <b>Note</b>: you have to provide a sample "test." + outputExtension()
  * file in the test resources directory if you extend this class.
- *
- * @version $Id$
  * @since 1.0
  */
 public abstract class AbstractParserTest

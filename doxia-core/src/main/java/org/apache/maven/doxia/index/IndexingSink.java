@@ -29,7 +29,6 @@ import org.apache.maven.doxia.util.HtmlTools;
  *
  * @author <a href="mailto:trygvis@inamo.no">Trygve Laugst&oslash;l</a>
  * @author <a href="mailto:vincent.siveton@gmail.com">Vincent Siveton</a>
- * @version $Id$
  */
 public class IndexingSink
     extends SinkAdapter
@@ -97,128 +96,177 @@ public class IndexingSink
     // Sink Overrides
     // ----------------------------------------------------------------------
 
-    /** {@inheritDoc} */
+    /**
+     * {@inheritDoc}
+     */
     public void title()
     {
         this.type = TITLE;
     }
 
-    /** {@inheritDoc} */
+    /**
+     * {@inheritDoc}
+     */
     public void section1()
     {
         pushNewEntry();
     }
 
-    /** {@inheritDoc} */
+    /**
+     * {@inheritDoc}
+     */
     public void sectionTitle1()
     {
         this.type = TYPE_SECTION_1;
     }
 
-    /** {@inheritDoc} */
+    /**
+     * {@inheritDoc}
+     */
     public void title_()
     {
         this.type = 0;
     }
 
+    /**
+     * <p>sectionTitle1_.</p>
+     */
     public void sectionTitle1_()
     {
         this.type = 0;
     }
 
-    /** {@inheritDoc} */
+    /**
+     * {@inheritDoc}
+     */
     public void section1_()
     {
         pop();
     }
 
-    /** {@inheritDoc} */
+    /**
+     * {@inheritDoc}
+     */
     public void section2()
     {
         pushNewEntry();
     }
 
-    /** {@inheritDoc} */
+    /**
+     * {@inheritDoc}
+     */
     public void sectionTitle2()
     {
         this.type = TYPE_SECTION_2;
     }
 
+    /**
+     * <p>sectionTitle2_.</p>
+     */
     public void sectionTitle2_()
     {
         this.type = 0;
     }
 
-    /** {@inheritDoc} */
+    /**
+     * {@inheritDoc}
+     */
     public void section2_()
     {
         pop();
     }
 
-    /** {@inheritDoc} */
+    /**
+     * {@inheritDoc}
+     */
     public void section3()
     {
         pushNewEntry();
     }
 
-    /** {@inheritDoc} */
+    /**
+     * {@inheritDoc}
+     */
     public void sectionTitle3()
     {
         this.type = TYPE_SECTION_3;
     }
 
+    /**
+     * <p>sectionTitle3_.</p>
+     */
     public void sectionTitle3_()
     {
         this.type = 0;
     }
 
-    /** {@inheritDoc} */
+    /**
+     * {@inheritDoc}
+     */
     public void section3_()
     {
         pop();
     }
 
-    /** {@inheritDoc} */
+    /**
+     * {@inheritDoc}
+     */
     public void section4()
     {
         pushNewEntry();
     }
 
-    /** {@inheritDoc} */
+    /**
+     * {@inheritDoc}
+     */
     public void sectionTitle4()
     {
         this.type = TYPE_SECTION_4;
     }
 
+    /**
+     * <p>sectionTitle4_.</p>
+     */
     public void sectionTitle4_()
     {
         this.type = 0;
     }
 
-    /** {@inheritDoc} */
+    /**
+     * {@inheritDoc}
+     */
     public void section4_()
     {
         pop();
     }
 
-    /** {@inheritDoc} */
+    /**
+     * {@inheritDoc}
+     */
     public void section5()
     {
         pushNewEntry();
     }
 
-    /** {@inheritDoc} */
+    /**
+     * {@inheritDoc}
+     */
     public void sectionTitle5()
     {
         this.type = TYPE_SECTION_5;
     }
 
+    /**
+     * <p>sectionTitle5_.</p>
+     */
     public void sectionTitle5_()
     {
         this.type = 0;
     }
 
-    /** {@inheritDoc} */
+    /**
+     * {@inheritDoc}
+     */
     public void section5_()
     {
         pop();
@@ -315,7 +363,9 @@ public class IndexingSink
         return stack.peek();
     }
 
-    /** {@inheritDoc} */
+    /**
+     * {@inheritDoc}
+     */
     public void close()
     {
         super.close();
@@ -323,7 +373,9 @@ public class IndexingSink
         init();
     }
 
-    /** {@inheritDoc} */
+    /**
+     * {@inheritDoc}
+     */
     protected void init()
     {
         this.type = 0;

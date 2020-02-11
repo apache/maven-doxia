@@ -22,8 +22,9 @@ package org.apache.maven.doxia.module.confluence.parser;
 import org.apache.maven.doxia.sink.Sink;
 
 /**
+ * SectionBlock
+ *
  * @author <a href="mailto:jason@maven.org">Jason van Zyl</a>
- * @version $Id$
  */
 class SectionBlock
     implements Block

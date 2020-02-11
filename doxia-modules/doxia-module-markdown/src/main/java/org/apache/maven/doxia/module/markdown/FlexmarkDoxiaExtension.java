@@ -29,20 +29,28 @@ import com.vladsch.flexmark.util.options.MutableDataHolder;
  */
 class FlexmarkDoxiaExtension implements HtmlRenderer.HtmlRendererExtension
 {
+    /** Constant <code>INPUT_FILE_EXTENSION</code> */
     public static final DataKey<String> INPUT_FILE_EXTENSION = new DataKey<>( "INPUT_FILE_EXTENSION", "md" );
 
+    /** {@inheritDoc} */
     @Override
     public void rendererOptions( final MutableDataHolder options )
     {
 
     }
 
+    /** {@inheritDoc} */
     @Override
     public void extend( HtmlRenderer.Builder rendererBuilder, String rendererType )
     {
         rendererBuilder.nodeRendererFactory( new FlexmarkDoxiaNodeRenderer.Factory() );
     }
 
+    /**
+     * <p>create.</p>
+     *
+     * @return a {@link com.vladsch.flexmark.util.builder.Extension} object.
+     */
     public static Extension create()
     {
         return new FlexmarkDoxiaExtension();

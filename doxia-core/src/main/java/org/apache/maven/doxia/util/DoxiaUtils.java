@@ -46,7 +46,6 @@ import org.apache.maven.doxia.sink.impl.SinkEventAttributeSet;
  *
  * @author ltheussl
  * @since 1.1
- * @version $Id$
  */
 public class DoxiaUtils
 {
@@ -63,7 +62,6 @@ public class DoxiaUtils
      * @return True if the link starts with "#".
      *
      * @throws NullPointerException if link is null.
-     *
      * @see #isExternalLink(String)
      * @see #isLocalLink(String)
      */
@@ -81,7 +79,6 @@ public class DoxiaUtils
      * {@link #isLocalLink(java.lang.String)} will return true.
      *
      * @param link The link to check. Not null.
-     *
      * @return True if the link (ignoring case) starts with either "http:/",
      * "https:/", "ftp:/", "mailto:", "file:/", or contains the string "://".
      * Note that Windows style separators "\" are not allowed
@@ -110,7 +107,6 @@ public class DoxiaUtils
      * {@link #isLocalLink(java.lang.String)} will return true.
      *
      * @param link The link to check. Not null.
-     *
      * @return True if the link is neither an external nor an internal link.
      *
      * @throws NullPointerException if link is null.
@@ -132,9 +128,7 @@ public class DoxiaUtils
      *
      * @param id The id to be encoded.
      *      May be null in which case null is returned.
-     *
      * @return The trimmed and encoded id, or null if id is null.
-     *
      * @see #encodeId(java.lang.String, boolean)
      */
     public static String encodeId( final String id )
@@ -201,12 +195,9 @@ public class DoxiaUtils
      *      May be null in which case null is returned.
      * @param chop true if non-ASCII characters should be ignored.
      * If false, any non-ASCII characters will be replaced as specified above.
-     *
      * @return The trimmed and encoded id, or null if id is null.
      * If id is not null, the return value is guaranteed to be a valid Doxia id.
-     *
      * @see #isValidId(java.lang.String)
-     *
      * @since 1.1.1
      */
     public static String encodeId( final String id, final boolean chop )
@@ -265,7 +256,6 @@ public class DoxiaUtils
      *
      * @param b the byte value.
      * @return the result of Integer.toHexString( b &amp; 0xFF ).
-     *
      * @since 1.1.1
      * @deprecated Use {@code String.format( "%02X", bytes[j] )}
      */
@@ -281,9 +271,7 @@ public class DoxiaUtils
      *
      * @param text The text to be tested.
      *      May be null in which case false is returned.
-     *
      * @return <code>true</code> if the text is a valid id, otherwise <code>false</code>.
-     *
      * @see #encodeId(String)
      */
     public static boolean isValidId( final String text )
@@ -336,13 +324,11 @@ public class DoxiaUtils
      * (ignoring case) return the current date.</p>
      *
      * @param str the date to parse, not null.
-     *
      * @return the parsed date, or the current date if the input String (ignoring case) was
      *      <code>"today"</code> or <code>"now"</code>.
      *
      * @throws ParseException if no pattern matches.
      * @throws NullPointerException if str is null.
-     *
      * @since 1.1.1.
      */
     public static Date parseDate( final String str )
@@ -387,7 +373,6 @@ public class DoxiaUtils
      * contain width and height attribute keys whose values are the width and height of the image (as a String).
      *
      * @param logo a String containing either a URL or a path to an image file. Not null.
-     *
      * @return a set of SinkEventAttributes, or null if no ImageReader was found to read the image.
      *
      * @throws java.io.IOException if an error occurs during reading.

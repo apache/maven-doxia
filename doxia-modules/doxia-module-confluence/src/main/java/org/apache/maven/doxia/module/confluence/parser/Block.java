@@ -23,8 +23,6 @@ import org.apache.maven.doxia.sink.Sink;
 
 /**
  * <p>Block interface.</p>
- *
- * @version $Id$
  */
 public interface Block
 {

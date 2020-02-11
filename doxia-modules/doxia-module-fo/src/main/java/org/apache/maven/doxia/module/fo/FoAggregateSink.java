@@ -61,7 +61,6 @@ import org.codehaus.plexus.util.StringUtils;
  * of them are used in this sink (i.e. author, confidential, date and title), the others are ignored.
  *
  * @author ltheussl
- * @version $Id$
  * @since 1.1
  */
 public class FoAggregateSink
@@ -144,9 +143,7 @@ public class FoAggregateSink
         head( null );
     }
 
-    /**
-     * {@inheritDoc}
-     */
+    /** {@inheritDoc} */
     public void head( SinkEventAttributes attributes )
     {
         init();
@@ -171,9 +168,7 @@ public class FoAggregateSink
         title( null );
     }
 
-    /**
-     * {@inheritDoc}
-     */
+    /** {@inheritDoc} */
     public void title( SinkEventAttributes attributes )
     {
         // ignored
@@ -195,9 +190,7 @@ public class FoAggregateSink
         author( null );
     }
 
-    /**
-     * {@inheritDoc}
-     */
+    /** {@inheritDoc} */
     public void author( SinkEventAttributes attributes )
     {
         // ignored
@@ -219,9 +212,7 @@ public class FoAggregateSink
         date( null );
     }
 
-    /**
-     * {@inheritDoc}
-     */
+    /** {@inheritDoc} */
     public void date( SinkEventAttributes attributes )
     {
         // ignored
@@ -243,9 +234,7 @@ public class FoAggregateSink
         body( null );
     }
 
-    /**
-     * {@inheritDoc}
-     */
+    /** {@inheritDoc} */
     public void body( SinkEventAttributes attributes )
     {
         chapter++;
@@ -401,17 +390,13 @@ public class FoAggregateSink
     //
     // -----------------------------------------------------------------------
 
-    /**
-     * {@inheritDoc}
-     */
+    /** {@inheritDoc} */
     public void figureGraphics( String name )
     {
         figureGraphics( name, null );
     }
 
-    /**
-     * {@inheritDoc}
-     */
+    /** {@inheritDoc} */
     public void figureGraphics( String src, SinkEventAttributes attributes )
     {
         String anchor = src;
@@ -429,17 +414,13 @@ public class FoAggregateSink
         super.figureGraphics( anchor, attributes );
     }
 
-    /**
-     * {@inheritDoc}
-     */
+    /** {@inheritDoc} */
     public void anchor( String name )
     {
         anchor( name, null );
     }
 
-    /**
-     * {@inheritDoc}
-     */
+    /** {@inheritDoc} */
     public void anchor( String name, SinkEventAttributes attributes )
     {
         if ( name == null )
@@ -467,17 +448,13 @@ public class FoAggregateSink
         writeStartTag( INLINE_TAG, "id", anchor );
     }
 
-    /**
-     * {@inheritDoc}
-     */
+    /** {@inheritDoc} */
     public void link( String name )
     {
         link( name, null );
     }
 
-    /**
-     * {@inheritDoc}
-     */
+    /** {@inheritDoc} */
     public void link( String name, SinkEventAttributes attributes )
     {
         if ( name == null )
@@ -627,6 +604,7 @@ public class FoAggregateSink
     //
     // ----------------------------------------------------------------------
 
+    /** {@inheritDoc} */
     @Override
     protected void writeStartTag( Tag tag, String attributeId )
     {
@@ -636,6 +614,7 @@ public class FoAggregateSink
         }
     }
 
+    /** {@inheritDoc} */
     @Override
     protected void writeStartTag( Tag tag, String id, String name )
     {
@@ -645,6 +624,7 @@ public class FoAggregateSink
         }
     }
 
+    /** {@inheritDoc} */
     @Override
     protected void writeEndTag( Tag t )
     {
@@ -654,6 +634,7 @@ public class FoAggregateSink
         }
     }
 
+    /** {@inheritDoc} */
     @Override
     protected void writeEmptyTag( Tag tag, String attributeId )
     {
@@ -663,6 +644,7 @@ public class FoAggregateSink
         }
     }
 
+    /** {@inheritDoc} */
     @Override
     protected void write( String text )
     {
@@ -672,6 +654,7 @@ public class FoAggregateSink
         }
     }
 
+    /** {@inheritDoc} */
     @Override
     protected void writeln( String text )
     {
@@ -681,6 +664,7 @@ public class FoAggregateSink
         }
     }
 
+    /** {@inheritDoc} */
     @Override
     protected void content( String text )
     {
@@ -764,12 +748,14 @@ public class FoAggregateSink
         return "&#169;" + actualYear + ", " + escaped( companyName, false ) + add;
     }
 
+    /** {@inheritDoc} */
     @Override
     protected String getChapterString()
     {
         return chapter + ".";
     }
 
+    /** {@inheritDoc} */
     @Override
     protected void regionBefore( String headerText )
     {
@@ -800,6 +786,7 @@ public class FoAggregateSink
         writeEndTag( STATIC_CONTENT_TAG );
     }
 
+    /** {@inheritDoc} */
     @Override
     protected void regionAfter( String footerText )
     {
@@ -815,6 +802,7 @@ public class FoAggregateSink
         writeEndTag( STATIC_CONTENT_TAG );
     }
 
+    /** {@inheritDoc} */
     @Override
     protected void chapterHeading( String headerText, boolean chapterNumber )
     {

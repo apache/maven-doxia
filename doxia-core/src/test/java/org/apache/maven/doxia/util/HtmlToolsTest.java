@@ -27,7 +27,6 @@ import org.codehaus.plexus.PlexusTestCase;
  * Test case for <code>HtmlTools</code>.
  *
  * @author <a href="mailto:vincent.siveton@gmail.com">Vincent Siveton</a>
- * @version $Id$
  */
 public class HtmlToolsTest
     extends PlexusTestCase

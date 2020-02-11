@@ -31,7 +31,6 @@ import org.codehaus.plexus.PlexusTestCase;
  * Test case for <code>DoxiaUtils</code>.
  *
  * @author ltheussl
- * @version $Id$
  */
 public class DoxiaUtilsTest
     extends PlexusTestCase

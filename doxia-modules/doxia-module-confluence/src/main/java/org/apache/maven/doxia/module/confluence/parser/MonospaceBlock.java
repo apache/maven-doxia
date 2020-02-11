@@ -24,7 +24,7 @@ import org.apache.maven.doxia.sink.Sink;
 import java.util.List;
 
 /**
- * @version $Id$
+ * MonospaceBlock
  */
 class MonospaceBlock extends AbstractFatherBlock
 {

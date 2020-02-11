@@ -31,7 +31,6 @@ import static org.apache.maven.doxia.util.HtmlTools.escapeHTML;
 
 /**
  * @author Jason van Zyl
- * @version $Id$
  * @since 1.0
  */
 public class XhtmlSinkTest

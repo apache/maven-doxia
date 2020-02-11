@@ -25,7 +25,6 @@ import org.apache.maven.doxia.sink.Sink;
  * Block that not represent anything
  *
  * @author Juan F. Codagnone
- * @version $Id$
  */
 class NopBlock
     implements Block
@@ -42,7 +41,11 @@ class NopBlock
         return this == obj && getClass().equals( obj.getClass() );
     }
 
-    /** {@inheritDoc} */
+    /**
+     * {@inheritDoc}
+     *
+     * @return a int.
+     */
     public final int hashCode()
     {
         return 518409602;

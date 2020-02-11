@@ -30,7 +30,6 @@ import org.codehaus.plexus.util.StringUtils;
  * Test the TWiki Sink
  *
  * @author <a href="mailto:vincent.siveton@gmail.com">Vincent Siveton</a>
- * @version $Id$
  * @see TWikiSink
  */
 public class TWikiSinkTest

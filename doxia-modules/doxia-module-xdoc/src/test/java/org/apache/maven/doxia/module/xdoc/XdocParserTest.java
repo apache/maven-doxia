@@ -40,7 +40,6 @@ import org.codehaus.plexus.util.IOUtil;
 /**
  * @author <a href="mailto:jason@maven.org">Jason van Zyl</a>
  * @author <a href="mailto:evenisse@codehaus.org">Emmanuel Venisse</a>
- * @version $Id$
  * @since 1.0
  */
 public class XdocParserTest

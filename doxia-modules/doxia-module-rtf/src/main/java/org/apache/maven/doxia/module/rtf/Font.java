@@ -22,8 +22,6 @@ package org.apache.maven.doxia.module.rtf;
 /**
  * A basic font descriptor using standard PostScript font metrics to compute
  * text extents. All dimensions returned are in twips.
- *
- * @version $Id$
  */
 class Font
 {

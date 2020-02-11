@@ -46,7 +46,7 @@ public abstract class AbstractParserModule
 
     /**
      * Constructor with same value for everything: source directory and file extension equal parserId.
-     * 
+     *
      * @param parserId the parser id
      */
     public AbstractParserModule( String parserId )
@@ -56,7 +56,7 @@ public abstract class AbstractParserModule
 
     /**
      * Constructor with same value for parser id and source directory.
-     * 
+     *
      * @param parserId the parser id
      * @param extension the file extension
      */
@@ -66,6 +66,8 @@ public abstract class AbstractParserModule
     }
 
     /**
+     * <p>Constructor for AbstractParserModule.</p>
+     *
      * @param sourceDirectory not null
      * @param extension not null
      * @param parserId not null
@@ -81,6 +83,8 @@ public abstract class AbstractParserModule
     }
 
     /**
+     * <p>Constructor for AbstractParserModule.</p>
+     *
      * @param sourceDirectory not null
      * @param parserId not null (usually equals sourceDirectory)
      * @param extensions not null
@@ -94,19 +98,31 @@ public abstract class AbstractParserModule
         this.parserId = parserId;
     }
 
-    /** {@inheritDoc} */
+    /**
+     * {@inheritDoc}
+     *
+     * @return a {@link java.lang.String} object.
+     */
     public String getSourceDirectory()
     {
         return sourceDirectory;
     }
 
-    /** {@inheritDoc} */
+    /**
+     * {@inheritDoc}
+     *
+     * @return an array of {@link java.lang.String} objects.
+     */
     public String[] getExtensions()
     {
         return extensions;
     }
 
-    /** {@inheritDoc} */
+    /**
+     * {@inheritDoc}
+     *
+     * @return a {@link java.lang.String} object.
+     */
     public String getParserId()
     {
         return parserId;

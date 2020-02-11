@@ -25,7 +25,6 @@ import org.apache.maven.doxia.macro.Macro;
  * Handles MacroManager lookups.
  *
  * @author <a href="mailto:jason@maven.org">Jason van Zyl</a>
- * @version $Id$
  * @since 1.0
  */
 public interface MacroManager

@@ -31,7 +31,6 @@ import org.codehaus.plexus.util.StringUtils;
  * Abstract base class to execute <code>Macro</code>.
  *
  * @author <a href="mailto:jason@maven.org">Jason van Zyl</a>
- * @version $Id$
  * @since 1.0
  */
 public abstract class AbstractMacro
@@ -86,7 +85,6 @@ public abstract class AbstractMacro
      * @param parameters the macro parameters.
      * @return a SinkEventAttributeSet containing the same parameters,
      *  or null if parameters is null.
-     *
      * @since 1.1.1.
      */
     protected static SinkEventAttributes getAttributesFromMap( Map<?, ?> parameters )

@@ -23,8 +23,9 @@ import java.util.List;
 import java.util.ArrayList;
 
 /**
+ * TreeComponent
+ *
  * @author <a href="mailto:jason@maven.org">Jason van Zyl</a>
- * @version $Id$
  */
 class TreeComponent
 {
@@ -83,7 +84,11 @@ class TreeComponent
         return ret;
     }
 
-    /** {@inheritDoc} */
+    /**
+     * {@inheritDoc}
+     *
+     * @return a {@link java.lang.String} object.
+     */
     public String toString()
     {
         return toString( "" );

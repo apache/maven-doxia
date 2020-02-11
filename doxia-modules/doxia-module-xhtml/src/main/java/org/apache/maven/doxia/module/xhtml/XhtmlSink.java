@@ -38,7 +38,6 @@ import org.codehaus.plexus.util.StringUtils;
  *
  * @author Jason van Zyl
  * @author ltheussl
- * @version $Id$
  * @since 1.0
  */
 public class XhtmlSink
@@ -101,7 +100,9 @@ public class XhtmlSink
         this.languageId = languageId;
     }
 
-    /** {@inheritDoc} */
+    /**
+     * {@inheritDoc}
+     */
     public void head()
     {
         init();
@@ -125,7 +126,9 @@ public class XhtmlSink
         writeStartTag( HEAD );
     }
 
-    /** {@inheritDoc} */
+    /**
+     * {@inheritDoc}
+     */
     public void head_()
     {
         if ( !isHeadTitleFlag() )
@@ -152,6 +155,7 @@ public class XhtmlSink
 
     /**
      * {@inheritDoc}
+     *
      * @see javax.swing.text.html.HTML.Tag#TITLE
      */
     public void title()
@@ -163,6 +167,7 @@ public class XhtmlSink
 
     /**
      * {@inheritDoc}
+     *
      * @see javax.swing.text.html.HTML.Tag#TITLE
      */
     public void title_()
@@ -177,6 +182,7 @@ public class XhtmlSink
 
     /**
      * {@inheritDoc}
+     *
      * @see javax.swing.text.html.HTML.Tag#META
      */
     public void author_()
@@ -199,6 +205,7 @@ public class XhtmlSink
 
     /**
      * {@inheritDoc}
+     *
      * @see javax.swing.text.html.HTML.Tag#META
      */
     public void date_()
@@ -217,6 +224,7 @@ public class XhtmlSink
 
     /**
      * {@inheritDoc}
+     *
      * @see javax.swing.text.html.HTML.Tag#BODY
      */
     public void body()
@@ -226,6 +234,7 @@ public class XhtmlSink
 
     /**
      * {@inheritDoc}
+     *
      * @see javax.swing.text.html.HTML.Tag#BODY
      * @see javax.swing.text.html.HTML.Tag#HTML
      */

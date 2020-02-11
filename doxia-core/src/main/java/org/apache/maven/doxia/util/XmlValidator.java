@@ -42,7 +42,6 @@ import org.xml.sax.helpers.XMLReaderFactory;
 /**
  * A class to validate xml documents.
  *
- * @version $Id$
  * @since 1.1.3
  */
 public class XmlValidator

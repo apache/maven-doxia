@@ -31,7 +31,6 @@ import org.apache.maven.doxia.parser.ParseException;
  * Parse tables
  *
  * @author Juan F. Codagnone
- * @version $Id$
  */
 public class TableBlockParser
     implements BlockParser
@@ -52,9 +51,7 @@ public class TableBlockParser
         return TABLE_PATTERN.matcher( line ).lookingAt();
     }
 
-    /**
-     * {@inheritDoc}
-     */
+    /** {@inheritDoc} */
     public final Block visit( final String line, final ByLineSource source )
         throws ParseException
     {

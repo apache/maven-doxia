@@ -35,7 +35,6 @@ import org.codehaus.plexus.util.IOUtil;
 
 /**
  * @author <a href="mailto:lars@trieloff.net">Lars Trieloff</a>
- * @version $Id$
  */
 public class DocBookParserTest extends AbstractParserTest
 {

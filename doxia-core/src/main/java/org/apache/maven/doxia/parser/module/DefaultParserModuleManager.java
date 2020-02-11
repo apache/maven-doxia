@@ -41,7 +41,11 @@ public class DefaultParserModuleManager
 
     private Collection<ParserModule> parserModulesValues;
 
-    /** {@inheritDoc} */
+    /**
+     * {@inheritDoc}
+     *
+     * @return a {@link java.util.Collection} object.
+     */
     public Collection<ParserModule> getParserModules()
     {
         if ( parserModulesValues == null )

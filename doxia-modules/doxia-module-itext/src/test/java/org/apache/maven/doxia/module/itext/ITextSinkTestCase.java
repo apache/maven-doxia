@@ -35,7 +35,6 @@ import org.apache.maven.doxia.sink.impl.SinkTestDocument;
  * <code>iText Sink</code> Test case.
  *
  * @author <a href="mailto:vincent.siveton@gmail.com">Vincent Siveton</a>
- * @version $Id$
  */
 public class ITextSinkTestCase
     extends AbstractModuleTest

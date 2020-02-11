@@ -31,7 +31,6 @@ import org.apache.maven.doxia.sink.impl.SinkEventTestingSink;
 
 /**
  * @author <a href="mailto:lars@trieloff.net">Lars Trieloff</a>
- * @version $Id$
  */
 public class XhtmlParserTest
     extends AbstractParserTest

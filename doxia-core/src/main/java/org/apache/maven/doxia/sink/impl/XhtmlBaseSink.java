@@ -50,7 +50,6 @@ import org.codehaus.plexus.util.xml.PrettyPrintXMLWriter;
  *
  * @author Jason van Zyl
  * @author ltheussl
- * @version $Id$
  * @since 1.1
  */
 public class XhtmlBaseSink
@@ -2024,6 +2023,8 @@ public class XhtmlBaseSink
     }
 
     /**
+     * {@inheritDoc}
+     *
      * Add an unknown event.
      * This can be used to generate html tags for which no corresponding sink event exists.
      *

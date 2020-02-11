@@ -29,7 +29,6 @@ import org.codehaus.plexus.util.StringUtils;
  * <p>IndexEntry class.</p>
  *
  * @author <a href="mailto:trygvis@inamo.no">Trygve Laugst&oslash;l</a>
- * @version $Id$
  */
 public class IndexEntry
 {
@@ -276,6 +275,8 @@ public class IndexEntry
 
     /**
      * Returns a string representation of the object.
+     *
+     * @return Returns a string representation of all objects
      */
     public String toString()
     {

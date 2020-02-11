@@ -27,7 +27,6 @@ import org.apache.maven.doxia.sink.Sink;
  * Generic Block for the Block that have child blocks.
  *
  * @author Juan F. Codagnone
- * @version $Id$
  */
 abstract class AbstractFatherBlock
     implements Block
@@ -94,7 +93,7 @@ abstract class AbstractFatherBlock
         return childBlocks;
     }
 
-    /** {@inheritDoc}*/
+    /** {@inheritDoc} */
     public boolean equals( final Object obj )
     {
         boolean ret = false;
@@ -119,7 +118,11 @@ abstract class AbstractFatherBlock
         return ret;
     }
 
-    /** {@inheritDoc}*/
+    /**
+     * {@inheritDoc}
+     *
+     * @return a int.
+     */
     public int hashCode()
     {
         int result = 1;

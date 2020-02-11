@@ -20,7 +20,7 @@ package org.apache.maven.doxia.module.rtf;
  */
 
 /**
- * @version $Id$
+ * Monospace
  */
 class Monospace
     extends FontMetrics

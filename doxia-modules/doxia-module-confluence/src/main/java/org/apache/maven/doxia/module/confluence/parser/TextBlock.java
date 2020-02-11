@@ -25,7 +25,6 @@ import org.apache.maven.doxia.sink.Sink;
  * <p>TextBlock class.</p>
  *
  * @author <a href="mailto:jason@maven.org">Jason van Zyl</a>
- * @version $Id$
  */
 public class TextBlock
     implements Block

@@ -28,8 +28,6 @@ import static org.junit.Assert.*;
 
 /**
  * FoConfiguration tests.
- *
- * @version $Id$
  */
 public class FoConfigurationTest
 {

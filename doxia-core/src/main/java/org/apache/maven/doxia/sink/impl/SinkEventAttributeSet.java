@@ -32,7 +32,6 @@ import org.apache.maven.doxia.sink.SinkEventAttributes;
  * Implementation of MutableAttributeSet using a LinkedHashMap.
  *
  * @author ltheussl
- * @version $Id$
  * @since 1.1
  */
 public class SinkEventAttributeSet
@@ -183,7 +182,6 @@ public class SinkEventAttributeSet
      * will result in an UnsupportedOperationException.
      *
      * @return an unmodifiable view of this AttributeSet.
-     *
      * @since 1.1.1
      */
     public SinkEventAttributeSet unmodifiable()
@@ -203,7 +201,11 @@ public class SinkEventAttributeSet
         return attribs.isEmpty();
     }
 
-    /** {@inheritDoc} */
+    /**
+     * {@inheritDoc}
+     *
+     * @return a int.
+     */
     public int getAttributeCount()
     {
         return attribs.size();
@@ -222,13 +224,21 @@ public class SinkEventAttributeSet
                 && containsAttributes( attr ) );
     }
 
-    /** {@inheritDoc} */
+    /**
+     * {@inheritDoc}
+     *
+     * @return a {@link javax.swing.text.AttributeSet} object.
+     */
     public AttributeSet copyAttributes()
     {
         return ( (AttributeSet) clone() );
     }
 
-    /** {@inheritDoc} */
+    /**
+     * {@inheritDoc}
+     *
+     * @return a {@link java.util.Enumeration} object.
+     */
     public Enumeration<String> getAttributeNames()
     {
         return Collections.enumeration( attribs.keySet() );
@@ -317,7 +327,11 @@ public class SinkEventAttributeSet
         }
     }
 
-    /** {@inheritDoc} */
+    /**
+     * {@inheritDoc}
+     *
+     * @param attributes a {@link javax.swing.text.AttributeSet} object.
+     */
     public void removeAttributes( AttributeSet attributes  )
     {
         if ( attributes == null )
@@ -345,7 +359,11 @@ public class SinkEventAttributeSet
         }
     }
 
-    /** {@inheritDoc} */
+    /**
+     * {@inheritDoc}
+     *
+     * @return a {@link javax.swing.text.AttributeSet} object.
+     */
     public AttributeSet getResolveParent()
     {
         return this.resolveParent;

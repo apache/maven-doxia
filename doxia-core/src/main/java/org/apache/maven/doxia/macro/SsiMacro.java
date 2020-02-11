@@ -27,6 +27,7 @@ import org.codehaus.plexus.component.annotations.Component;
  * Server-Side Include directive, to insert a SSI into the output.
  * Required parameter is <code>function</code> to define SSI function, then
  * additional parameters are completely free.
+ *
  * @since 1.7
  */
 @Component( role = Macro.class, hint = "ssi" )

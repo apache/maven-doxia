@@ -42,7 +42,6 @@ import java.util.Stack;
  * <br>
  * <b>Note</b>: The encoding used is UTF-8.
  *
- * @version $Id$
  * @since 1.0
  */
 public class LatexSink
@@ -535,9 +534,7 @@ public class LatexSink
         markup( EOL + "\\item " );
     }
 
-    /**
-     * {@inheritDoc}
-     */
+    /** {@inheritDoc} */
     public void numberedList( int numbering )
     {
         numberedList( numbering, null );
@@ -656,7 +653,9 @@ public class LatexSink
         markup( "}] " );
     }
 
-    /** {@inheritDoc} */
+    /**
+     * {@inheritDoc}
+     */
     public void definitionListItem()
     {
         definitionListItem( null );
@@ -668,13 +667,17 @@ public class LatexSink
         // nop
     }
 
-    /** {@inheritDoc} */
+    /**
+     * {@inheritDoc}
+     */
     public void definitionListItem_()
     {
         // nop
     }
 
-    /** {@inheritDoc} */
+    /**
+     * {@inheritDoc}
+     */
     public void definition()
     {
         definition( null );
@@ -686,7 +689,9 @@ public class LatexSink
         // nop
     }
 
-    /** {@inheritDoc} */
+    /**
+     * {@inheritDoc}
+     */
     public void definition_()
     {
         // nop
@@ -720,9 +725,7 @@ public class LatexSink
         figureFlag = false;
     }
 
-    /**
-     * {@inheritDoc}
-     */
+    /** {@inheritDoc} */
     public void figureGraphics( String name )
     {
         figureGraphics( name, null );
@@ -791,9 +794,7 @@ public class LatexSink
         tableFlag = false;
     }
 
-    /**
-     * {@inheritDoc}
-     */
+    /** {@inheritDoc} */
     public void tableRows( int[] justification, boolean grid )
 
     {
@@ -1014,15 +1015,17 @@ public class LatexSink
         markup( EOL );
     }
 
-    /**
-     * {@inheritDoc}
-     */
+    /** {@inheritDoc} */
     public void verbatim( boolean boxed )
     {
         verbatim( boxed ? SinkEventAttributeSet.BOXED : null );
     }
 
-    /** {@inheritDoc} */
+    /**
+     * {@inheritDoc}
+     *
+     * @param attributes a {@link org.apache.maven.doxia.sink.SinkEventAttributes} object.
+     */
     public void verbatim( SinkEventAttributes attributes )
     {
         boolean boxed = false;
@@ -1080,9 +1083,7 @@ public class LatexSink
         markup( EOL + "\\newpage" + EOL );
     }
 
-    /**
-     * {@inheritDoc}
-     */
+    /** {@inheritDoc} */
     public void anchor( String name )
     {
         anchor( name, null );
@@ -1102,9 +1103,7 @@ public class LatexSink
         markup( "}" );
     }
 
-    /**
-     * {@inheritDoc}
-     */
+    /** {@inheritDoc} */
     public void link( String name )
     {
         link( name, null );
@@ -1132,7 +1131,9 @@ public class LatexSink
         markup( "}" );
     }
 
-    /** {@inheritDoc} */
+    /**
+     * {@inheritDoc}
+     */
     public void inline()
     {
         inline( null );
@@ -1169,7 +1170,9 @@ public class LatexSink
         inlineStack.push( tags );
     }
 
-    /** {@inheritDoc} */
+    /**
+     * {@inheritDoc}
+     */
     public void inline_()
     {
         for ( String tag: inlineStack.pop() )
@@ -1248,9 +1251,7 @@ public class LatexSink
         markup( "~" );
     }
 
-    /**
-     * {@inheritDoc}
-     */
+    /** {@inheritDoc} */
     public void text( String text )
     {
         text( text, null );
@@ -1491,7 +1492,9 @@ public class LatexSink
         }
     }
 
-    /** {@inheritDoc} */
+    /**
+     * {@inheritDoc}
+     */
     protected void init()
     {
         super.init();

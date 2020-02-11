@@ -322,7 +322,9 @@ public class Xhtml5Parser
         return result;
     }
 
-    /** {@inheritDoc} */
+    /**
+     * {@inheritDoc}
+     */
     protected void init()
     {
         super.init();

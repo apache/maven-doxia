@@ -25,8 +25,9 @@ import org.apache.maven.doxia.sink.Sink;
 import java.util.List;
 
 /**
+ * BulletedListBlock
+ *
  * @author <a href="mailto:jason@maven.org">Jason van Zyl</a>
- * @version $Id$
  */
 class BulletedListBlock
     extends ListBlock

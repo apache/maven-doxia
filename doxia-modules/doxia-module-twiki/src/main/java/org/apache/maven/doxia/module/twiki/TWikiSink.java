@@ -43,7 +43,6 @@ import org.codehaus.plexus.util.StringUtils;
  * <b>Note</b>: The encoding used is UTF-8.
  *
  * @author <a href="mailto:vincent.siveton@gmail.com">Vincent Siveton</a>
- * @version $Id$
  * @since 1.0
  */
 public class TWikiSink
@@ -157,13 +156,17 @@ public class TWikiSink
         // nop
     }
 
-    /** {@inheritDoc} */
+    /**
+     * {@inheritDoc}
+     */
     public void bold()
     {
         inline( SinkEventAttributeSet.Semantics.BOLD );
     }
 
-    /** {@inheritDoc} */
+    /**
+     * {@inheritDoc}
+     */
     public void bold_()
     {
         inline_();
@@ -178,7 +181,9 @@ public class TWikiSink
         // nop
     }
 
-    /** {@inheritDoc} */
+    /**
+     * {@inheritDoc}
+     */
     public void close()
     {
         out.write( writer.toString() );
@@ -235,7 +240,9 @@ public class TWikiSink
         // nop
     }
 
-    /** {@inheritDoc} */
+    /**
+     * {@inheritDoc}
+     */
     public void definition()
     {
         write( DEFINITION_LIST_DEFINITION_MARKUP );
@@ -247,7 +254,9 @@ public class TWikiSink
         definition();
     }
 
-    /** {@inheritDoc} */
+    /**
+     * {@inheritDoc}
+     */
     public void definition_()
     {
         writeEOL();
@@ -277,7 +286,9 @@ public class TWikiSink
         // nop
     }
 
-    /** {@inheritDoc} */
+    /**
+     * {@inheritDoc}
+     */
     public void definitionListItem()
     {
         write( DEFINITION_LIST_ITEM_MARKUP );
@@ -298,7 +309,9 @@ public class TWikiSink
         // nop
     }
 
-    /** {@inheritDoc} */
+    /**
+     * {@inheritDoc}
+     */
     public void figure()
     {
         write( LESS_THAN + Tag.IMG.toString() + SPACE );
@@ -355,14 +368,18 @@ public class TWikiSink
         figureGraphics( src );
     }
 
-    /** {@inheritDoc} */
+    /**
+     * {@inheritDoc}
+     */
     public void flush()
     {
         close();
         writer.flush();
     }
 
-    /** {@inheritDoc} */
+    /**
+     * {@inheritDoc}
+     */
     public void head()
     {
         init();
@@ -376,13 +393,17 @@ public class TWikiSink
         head();
     }
 
-    /** {@inheritDoc} */
+    /**
+     * {@inheritDoc}
+     */
     public void head_()
     {
         headFlag = false;
     }
 
-    /** {@inheritDoc} */
+    /**
+     * {@inheritDoc}
+     */
     public void horizontalRule()
     {
         writeEOL( true );
@@ -396,7 +417,9 @@ public class TWikiSink
         horizontalRule();
     }
 
-    /** {@inheritDoc} */
+    /**
+     * {@inheritDoc}
+     */
     public void inline()
     {
         inline( null );
@@ -458,7 +481,9 @@ public class TWikiSink
         inlineStack.push( tags );
     }
 
-    /** {@inheritDoc} */
+    /**
+     * {@inheritDoc}
+     */
     public void inline_()
     {
         for ( String tag: inlineStack.pop() )
@@ -468,13 +493,17 @@ public class TWikiSink
         this.boldFlag = boldStack.pop();
     }
 
-    /** {@inheritDoc} */
+    /**
+     * {@inheritDoc}
+     */
     public void italic()
     {
         inline( SinkEventAttributeSet.Semantics.ITALIC );
     }
 
-    /** {@inheritDoc} */
+    /**
+     * {@inheritDoc}
+     */
     public void italic_()
     {
         inline_();
@@ -507,13 +536,17 @@ public class TWikiSink
         link( name );
     }
 
-    /** {@inheritDoc} */
+    /**
+     * {@inheritDoc}
+     */
     public void link_()
     {
         write( LINK_END_MARKUP );
     }
 
-    /** {@inheritDoc} */
+    /**
+     * {@inheritDoc}
+     */
     public void list()
     {
         if ( !writer.toString().endsWith( EOL + EOL ) )
@@ -530,13 +563,17 @@ public class TWikiSink
         list();
     }
 
-    /** {@inheritDoc} */
+    /**
+     * {@inheritDoc}
+     */
     public void list_()
     {
         levelList--;
     }
 
-    /** {@inheritDoc} */
+    /**
+     * {@inheritDoc}
+     */
     public void listItem()
     {
         String indent = StringUtils.repeat( THREE_SPACES_MARKUP, levelList );
@@ -549,19 +586,25 @@ public class TWikiSink
         listItem();
     }
 
-    /** {@inheritDoc} */
+    /**
+     * {@inheritDoc}
+     */
     public void listItem_()
     {
         writeEOL( true );
     }
 
-    /** {@inheritDoc} */
+    /**
+     * {@inheritDoc}
+     */
     public void monospaced()
     {
         inline( SinkEventAttributeSet.Semantics.CODE );
     }
 
-    /** {@inheritDoc} */
+    /**
+     * {@inheritDoc}
+     */
     public void monospaced_()
     {
         inline_();
@@ -610,14 +653,18 @@ public class TWikiSink
         numberedList( numbering );
     }
 
-    /** {@inheritDoc} */
+    /**
+     * {@inheritDoc}
+     */
     public void numberedList_()
     {
         levelList--;
         listStyles.pop();
     }
 
-    /** {@inheritDoc} */
+    /**
+     * {@inheritDoc}
+     */
     public void numberedListItem()
     {
         writeEOL( true );
@@ -632,7 +679,9 @@ public class TWikiSink
         numberedListItem();
     }
 
-    /** {@inheritDoc} */
+    /**
+     * {@inheritDoc}
+     */
     public void numberedListItem_()
     {
         writeEOL( true );
@@ -662,7 +711,9 @@ public class TWikiSink
         paragraph();
     }
 
-    /** {@inheritDoc} */
+    /**
+     * {@inheritDoc}
+     */
     public void paragraph_()
     {
         writeEOL( true );
@@ -804,61 +855,81 @@ public class TWikiSink
         }
     }
 
-    /** {@inheritDoc} */
+    /**
+     * {@inheritDoc}
+     */
     public void sectionTitle1()
     {
         sectionTitle( 1, null );
     }
 
-    /** {@inheritDoc} */
+    /**
+     * {@inheritDoc}
+     */
     public void sectionTitle1_()
     {
         sectionTitle_( 1 );
     }
 
-    /** {@inheritDoc} */
+    /**
+     * {@inheritDoc}
+     */
     public void sectionTitle2()
     {
         sectionTitle( 2, null );
     }
 
-    /** {@inheritDoc} */
+    /**
+     * {@inheritDoc}
+     */
     public void sectionTitle2_()
     {
         sectionTitle_( 2 );
     }
 
-    /** {@inheritDoc} */
+    /**
+     * {@inheritDoc}
+     */
     public void sectionTitle3()
     {
         sectionTitle( 3, null );
     }
 
-    /** {@inheritDoc} */
+    /**
+     * {@inheritDoc}
+     */
     public void sectionTitle3_()
     {
         sectionTitle_( 3 );
     }
 
-    /** {@inheritDoc} */
+    /**
+     * {@inheritDoc}
+     */
     public void sectionTitle4()
     {
         sectionTitle( 4, null );
     }
 
-    /** {@inheritDoc} */
+    /**
+     * {@inheritDoc}
+     */
     public void sectionTitle4_()
     {
         sectionTitle_( 4 );
     }
 
-    /** {@inheritDoc} */
+    /**
+     * {@inheritDoc}
+     */
     public void sectionTitle5()
     {
         sectionTitle( 5, null );
     }
 
-    /** {@inheritDoc} */
+    /**
+     * {@inheritDoc}
+     */
     public void sectionTitle5_()
     {
         sectionTitle_( 5 );
@@ -928,7 +999,9 @@ public class TWikiSink
         // nop
     }
 
-    /** {@inheritDoc} */
+    /**
+     * {@inheritDoc}
+     */
     public void tableCell()
     {
         write( " " );
@@ -946,13 +1019,17 @@ public class TWikiSink
         tableCell();
     }
 
-    /** {@inheritDoc} */
+    /**
+     * {@inheritDoc}
+     */
     public void tableCell_()
     {
         write( TABLE_CELL_MARKUP );
     }
 
-    /** {@inheritDoc} */
+    /**
+     * {@inheritDoc}
+     */
     public void tableHeaderCell()
     {
         write( TABLE_CELL_HEADER_START_MARKUP );
@@ -970,13 +1047,17 @@ public class TWikiSink
         tableHeaderCell();
     }
 
-    /** {@inheritDoc} */
+    /**
+     * {@inheritDoc}
+     */
     public void tableHeaderCell_()
     {
         write( TABLE_CELL_HEADER_END_MARKUP );
     }
 
-    /** {@inheritDoc} */
+    /**
+     * {@inheritDoc}
+     */
     public void tableRow()
     {
         write( TABLE_ROW_MARKUP );
@@ -988,7 +1069,9 @@ public class TWikiSink
         tableRow();
     }
 
-    /** {@inheritDoc} */
+    /**
+     * {@inheritDoc}
+     */
     public void tableRow_()
     {
         writeEOL( true );
@@ -1116,7 +1199,11 @@ public class TWikiSink
         verbatim( att );
     }
 
-    /** {@inheritDoc} */
+    /**
+     * {@inheritDoc}
+     *
+     * @param attributes a {@link org.apache.maven.doxia.sink.SinkEventAttributes} object.
+     */
     public void verbatim( SinkEventAttributes attributes )
     {
         MutableAttributeSet atts = SinkUtils.filterAttributes( attributes, SinkUtils.SINK_VERBATIM_ATTRIBUTES );
@@ -1157,7 +1244,9 @@ public class TWikiSink
         writeStartTag( VERBATIM_TAG, atts );
     }
 
-    /** {@inheritDoc} */
+    /**
+     * {@inheritDoc}
+     */
     public void verbatim_()
     {
         writeEndTag( VERBATIM_TAG );
@@ -1181,7 +1270,6 @@ public class TWikiSink
      * &lt;tag&gt;
      * </pre>
      * <br>
-     * <b>Note</b>: Copy from {@link AbstractXmlSink#writeStartTag(javax.swing.text.html.HTML.Tag)}
      *
      * @param t a non null tag
      * @see #writeStartTag(javax.swing.text.html.HTML.Tag)
@@ -1197,8 +1285,6 @@ public class TWikiSink
      * &lt;tag attName="attValue"&gt;
      * </pre>
      * <br>
-     * <b>Note</b>: Copy from {@link AbstractXmlSink#writeStartTag(javax.swing.text.html.HTML.Tag,
-     *      javax.swing.text.MutableAttributeSet)}
      *
      * @param t a non null tag
      * @param att a set of attributes
@@ -1215,8 +1301,6 @@ public class TWikiSink
      * &lt;tag attName="attValue"&gt;
      * </pre>
      * <br>
-     * <b>Note</b>: Copy from {@link AbstractXmlSink#writeStartTag(javax.swing.text.html.HTML.Tag,
-     *      javax.swing.text.MutableAttributeSet, boolean)}
      *
      * @param t a non null tag
      * @param att a set of attributes
@@ -1273,8 +1357,6 @@ public class TWikiSink
 
     /**
      * Ends a Tag without writing an EOL. For instance: <pre>&lt;/tag&gt;</pre>.
-     * <br>
-     * <b>Note</b>: Copy from {@link AbstractXmlSink#writeEndTag(javax.swing.text.html.HTML.Tag)}
      *
      * @param t a tag.
      */
@@ -1300,7 +1382,9 @@ public class TWikiSink
         write( escapeHTML( text ) );
     }
 
-    /** {@inheritDoc} */
+    /**
+     * {@inheritDoc}
+     */
     protected void init()
     {
         super.init();

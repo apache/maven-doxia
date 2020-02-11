@@ -41,7 +41,6 @@ import static org.junit.Assert.*;
  * Test toc macro.
  *
  * @author ltheussl
- * @version $Id$
  */
 public class TocMacroTest
 {

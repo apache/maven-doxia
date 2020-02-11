@@ -95,7 +95,9 @@ public class Xhtml5Sink
         this.languageId = languageId;
     }
 
-    /** {@inheritDoc} */
+    /**
+     * {@inheritDoc}
+     */
     public void head()
     {
         init();
@@ -118,7 +120,9 @@ public class Xhtml5Sink
         writeStartTag( HEAD );
     }
 
-    /** {@inheritDoc} */
+    /**
+     * {@inheritDoc}
+     */
     public void head_()
     {
         if ( !isHeadTitleFlag() )
@@ -145,6 +149,7 @@ public class Xhtml5Sink
 
     /**
      * {@inheritDoc}
+     *
      * @see javax.swing.text.html.HTML.Tag#TITLE
      */
     public void title()
@@ -156,6 +161,7 @@ public class Xhtml5Sink
 
     /**
      * {@inheritDoc}
+     *
      * @see javax.swing.text.html.HTML.Tag#TITLE
      */
     public void title_()
@@ -170,6 +176,7 @@ public class Xhtml5Sink
 
     /**
      * {@inheritDoc}
+     *
      * @see javax.swing.text.html.HTML.Tag#META
      */
     public void author_()
@@ -192,6 +199,7 @@ public class Xhtml5Sink
 
     /**
      * {@inheritDoc}
+     *
      * @see javax.swing.text.html.HTML.Tag#META
      */
     public void date_()
@@ -210,6 +218,7 @@ public class Xhtml5Sink
 
     /**
      * {@inheritDoc}
+     *
      * @see javax.swing.text.html.HTML.Tag#BODY
      */
     public void body()
@@ -219,6 +228,7 @@ public class Xhtml5Sink
 
     /**
      * {@inheritDoc}
+     *
      * @see javax.swing.text.html.HTML.Tag#BODY
      * @see javax.swing.text.html.HTML.Tag#HTML
      */
@@ -234,10 +244,9 @@ public class Xhtml5Sink
     }
 
     /**
-     * Starts a section..
+     * {@inheritDoc}
      *
-     * @param depth The level of the section.
-     * @param attributes some attributes. May be null.
+     * Starts a section..
      * @see javax.swing.text.html.HTML.Tag#DIV
      */
     protected void onSection( int depth, SinkEventAttributes attributes )
@@ -253,9 +262,9 @@ public class Xhtml5Sink
     }
 
     /**
-     * Ends a section.
+     * {@inheritDoc}
      *
-     * @param depth The level of the section.
+     * Ends a section.
      * @see javax.swing.text.html.HTML.Tag#DIV
      */
     protected void onSection_( int depth )
@@ -267,10 +276,9 @@ public class Xhtml5Sink
     }
 
     /**
-     * Starts a section title.
+     * {@inheritDoc}
      *
-     * @param depth The level of the section title.
-     * @param attributes some attributes. May be null.
+     * Starts a section title.
      * @see javax.swing.text.html.HTML.Tag#H2
      * @see javax.swing.text.html.HTML.Tag#H3
      * @see javax.swing.text.html.HTML.Tag#H4
@@ -305,9 +313,9 @@ public class Xhtml5Sink
     }
 
     /**
-     * Ends a section title.
+     * {@inheritDoc}
      *
-     * @param depth The level of the section title.
+     * Ends a section title.
      * @see javax.swing.text.html.HTML.Tag#H2
      * @see javax.swing.text.html.HTML.Tag#H3
      * @see javax.swing.text.html.HTML.Tag#H4

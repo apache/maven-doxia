@@ -31,8 +31,6 @@ import java.nio.charset.StandardCharsets;
 
 /**
  * <a href="http://en.wikipedia.org/wiki/Portable_pixmap">PBM</a> images reader.
- *
- * @version $Id$
  */
 class PBMReader
 {

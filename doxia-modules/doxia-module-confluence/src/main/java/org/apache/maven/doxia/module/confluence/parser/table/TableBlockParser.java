@@ -39,9 +39,8 @@ import org.codehaus.plexus.util.StringUtils;
 
 /**
  * Parse tables
- * 
+ *
  * @author Juan F. Codagnone
- * @version $Id$
  */
 public class TableBlockParser
     implements BlockParser

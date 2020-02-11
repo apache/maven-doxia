@@ -35,7 +35,6 @@ import java.io.InputStreamReader;
 
 /**
  * @author <a href="mailto:jason@maven.org">Jason van Zyl</a>
- * @version $Id$
  */
 public class RtfSinkTest
     extends AbstractSinkTestCase

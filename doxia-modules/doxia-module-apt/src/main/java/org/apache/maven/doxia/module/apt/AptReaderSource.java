@@ -27,8 +27,6 @@ import org.codehaus.plexus.util.IOUtil;
 
 /**
  * Reader for apt source documents.
- *
- * @version $Id$
  */
 public class AptReaderSource
     implements AptSource
@@ -67,7 +65,12 @@ public class AptReaderSource
         this.name = name;
     }
 
-    /** {@inheritDoc} */
+    /**
+     * {@inheritDoc}
+     *
+     * @return a {@link java.lang.String} object.
+     * @throws org.apache.maven.doxia.module.apt.AptParseException if any.
+     */
     public String getNextLine()
         throws AptParseException
     {
@@ -100,14 +103,22 @@ public class AptReaderSource
         return line;
     }
 
-    /** {@inheritDoc} */
+    /**
+     * {@inheritDoc}
+     *
+     * @return a {@link java.lang.String} object.
+     */
     public String getName()
     {
         // never return null
         return name != null ? name : "";
     }
 
-    /** {@inheritDoc} */
+    /**
+     * {@inheritDoc}
+     *
+     * @return a int.
+     */
     public int getLineNumber()
     {
         return lineNumber;

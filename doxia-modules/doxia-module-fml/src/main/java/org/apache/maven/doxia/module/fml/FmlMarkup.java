@@ -30,7 +30,6 @@ import org.apache.maven.doxia.markup.HtmlMarkup;
  * as markups and custom tags.
  *
  * @author ltheussl
- * @version $Id$
  * @since 1.0
  */
 @SuppressWarnings( "checkstyle:interfaceistype" )

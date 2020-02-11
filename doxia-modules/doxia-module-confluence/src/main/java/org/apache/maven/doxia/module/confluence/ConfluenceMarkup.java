@@ -28,7 +28,6 @@ import org.apache.maven.doxia.markup.TextMarkup;
  * Confluence Notation Guide Overview</a>
  *
  * @author <a href="mailto:vincent.siveton@gmail.com">Vincent Siveton</a>
- * @version $Id$
  * @since 1.0
  */
 @SuppressWarnings( "checkstyle:interfaceistype" )
@@ -81,7 +80,7 @@ public interface ConfluenceMarkup
     /** Syntax for the link start markup: "[" */
     String LINK_START_MARKUP = "[";
 
-    /** Syntax for the list item markup: "* */
+    /** Syntax for the list item markup: <code>"* "</code> */
     String LIST_ITEM_MARKUP = "* ";
 
     /** Syntax for the mono-spaced style start: "{{" */

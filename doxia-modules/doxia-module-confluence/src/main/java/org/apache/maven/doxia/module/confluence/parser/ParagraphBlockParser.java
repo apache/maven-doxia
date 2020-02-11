@@ -24,8 +24,6 @@ import org.apache.maven.doxia.util.ByLineSource;
 
 /**
  * <p>ParagraphBlockParser class.</p>
- *
- * @version $Id$
  */
 public class ParagraphBlockParser
     implements BlockParser
@@ -56,8 +54,7 @@ public class ParagraphBlockParser
      * @param source the source.
      * @param generateParagraphTags whether to generate a paragraph.
      * @return the visited Block.
-     *
-     * @throws org.apache.maven.doxia.parser.ParseException if any
+     * @throws org.apache.maven.doxia.parser.ParseException if any.
      */
     public Block visit( String line, ByLineSource source, boolean generateParagraphTags )
             throws ParseException

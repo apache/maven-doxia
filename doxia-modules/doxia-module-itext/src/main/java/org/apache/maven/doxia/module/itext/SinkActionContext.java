@@ -25,7 +25,6 @@ import java.util.Stack;
  * <p>SinkActionContext class.</p>
  *
  * @author Jason van Zyl
- * @version $Id$
  */
 public class SinkActionContext
 {

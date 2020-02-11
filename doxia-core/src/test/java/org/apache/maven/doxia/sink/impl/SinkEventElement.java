@@ -26,7 +26,6 @@ import org.apache.commons.lang3.builder.ToStringBuilder;
  * the order and effect of some parser events.
  *
  * @author ltheussl
- * @version $Id$
  * @since 1.1
  */
 public class SinkEventElement

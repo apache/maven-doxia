@@ -25,7 +25,6 @@ import org.apache.maven.doxia.sink.Sink;
  * Block that represents the item in a list
  *
  * @author Juan F. Codagnone
- * @version $Id$
  */
 class ListItemBlock
     extends AbstractFatherBlock
@@ -111,7 +110,11 @@ class ListItemBlock
         return ret;
     }
 
-    /** {@inheritDoc} */
+    /**
+     * {@inheritDoc}
+     *
+     * @return a int.
+     */
     public final int hashCode()
     {
         final int magic1 = 17;

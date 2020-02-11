@@ -27,8 +27,6 @@ import java.io.Writer;
 
 /**
  * Allows to specify the line-length of an output writer.
- *
- * @version $Id$
  */
 public class LineBreaker
 {

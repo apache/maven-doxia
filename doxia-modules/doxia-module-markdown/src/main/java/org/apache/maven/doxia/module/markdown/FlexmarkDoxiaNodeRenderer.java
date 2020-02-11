@@ -43,6 +43,7 @@ class FlexmarkDoxiaNodeRenderer implements NodeRenderer
     {
     }
 
+    /** {@inheritDoc} */
     @Override
     public Set<NodeRenderingHandler<?>> getNodeRenderingHandlers()
     {

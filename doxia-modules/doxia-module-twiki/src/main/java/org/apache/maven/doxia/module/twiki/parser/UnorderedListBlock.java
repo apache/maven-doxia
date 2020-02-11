@@ -30,7 +30,6 @@ import org.apache.maven.doxia.sink.Sink;
  * </pre>
  *
  * @author Juan F. Codagnone
- * @version $Id$
  */
 class UnorderedListBlock
     extends ListBlock

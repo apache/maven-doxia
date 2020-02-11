@@ -27,7 +27,6 @@ import org.apache.maven.doxia.sink.Sink;
  * Block that represents a section
  *
  * @author Juan F. Codagnone
- * @version $Id$
  */
 public class SectionBlock
     extends AbstractFatherBlock
@@ -139,7 +138,11 @@ public class SectionBlock
         return title;
     }
 
-    /** {@inheritDoc} */
+    /**
+     * {@inheritDoc}
+     *
+     * @return a {@link java.lang.String} object.
+     */
     public final String toString()
     {
         final StringBuilder sb = new StringBuilder();

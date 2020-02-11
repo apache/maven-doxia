@@ -29,7 +29,6 @@ import org.apache.maven.doxia.sink.Sink;
  *
  * @author ltheussl
  * @author <a href="mailto:vincent.siveton@gmail.com">Vincent Siveton</a>
- * @version $Id$
  * @since 1.1
  */
 public abstract class AbstractSink
@@ -59,16 +58,15 @@ public abstract class AbstractSink
         return logger;
     }
 
-    /**
-     * Parses the given String and replaces all occurrences of
-     * '\n', '\r' and '\r\n' with the system EOL. All Sinks should
-     * make sure that text output is filtered through this method.
-     *
-     * @param text the text to scan.
-     *      May be null in which case null is returned.
-     *
-     * @return a String that contains only System EOLs.
-     */
+     /**
+      * Parses the given String and replaces all occurrences of
+      * '\n', '\r' and '\r\n' with the system EOL. All Sinks should
+      * make sure that text output is filtered through this method.
+      *
+      * @param text the text to scan.
+      *      May be null in which case null is returned.
+      * @return a String that contains only System EOLs.
+      */
      protected static String unifyEOLs( String text )
      {
         if ( text == null )

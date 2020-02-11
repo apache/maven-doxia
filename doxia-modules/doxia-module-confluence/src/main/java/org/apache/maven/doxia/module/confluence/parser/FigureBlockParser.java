@@ -25,7 +25,6 @@ import org.apache.maven.doxia.util.ByLineSource;
 /**
  * <p>FigureBlockParser class.</p>
  *
- * @version $Id$
  * @since 1.1
  */
 public class FigureBlockParser

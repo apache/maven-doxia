@@ -29,7 +29,6 @@ import java.io.StringWriter;
  *
  * @author jdcasey
  * @author ltheussl
- * @version $Id$
  * @since 1.1
  */
 public class SystemStreamLog
@@ -64,7 +63,11 @@ public class SystemStreamLog
         }
     }
 
-    /** {@inheritDoc} */
+    /**
+     * {@inheritDoc}
+     *
+     * @param content a {@link java.lang.CharSequence} object.
+     */
     public void debug( CharSequence content )
     {
         if ( isDebugEnabled() )
@@ -109,7 +112,11 @@ public class SystemStreamLog
         }
     }
 
-    /** {@inheritDoc} */
+    /**
+     * {@inheritDoc}
+     *
+     * @param error a {@link java.lang.Throwable} object.
+     */
     public void info( Throwable error )
     {
         if ( isInfoEnabled() )
@@ -118,7 +125,11 @@ public class SystemStreamLog
         }
     }
 
-    /** {@inheritDoc} */
+    /**
+     * {@inheritDoc}
+     *
+     * @param content a {@link java.lang.CharSequence} object.
+     */
     public void warn( CharSequence content )
     {
         if ( isWarnEnabled() )
@@ -169,7 +180,11 @@ public class SystemStreamLog
         }
     }
 
-    /** {@inheritDoc} */
+    /**
+     * {@inheritDoc}
+     *
+     * @param error a {@link java.lang.Throwable} object.
+     */
     public void error( Throwable error )
     {
         if ( isErrorEnabled() )
@@ -183,25 +198,41 @@ public class SystemStreamLog
         }
     }
 
-    /** {@inheritDoc} */
+    /**
+     * {@inheritDoc}
+     *
+     * @return a boolean.
+     */
     public boolean isDebugEnabled()
     {
         return ( currentLevel <= LEVEL_DEBUG );
     }
 
-    /** {@inheritDoc} */
+    /**
+     * {@inheritDoc}
+     *
+     * @return a boolean.
+     */
     public boolean isInfoEnabled()
     {
         return ( currentLevel <= LEVEL_INFO );
     }
 
-    /** {@inheritDoc} */
+    /**
+     * {@inheritDoc}
+     *
+     * @return a boolean.
+     */
     public boolean isWarnEnabled()
     {
         return ( currentLevel <= LEVEL_WARN );
     }
 
-    /** {@inheritDoc} */
+    /**
+     * {@inheritDoc}
+     *
+     * @return a boolean.
+     */
     public boolean isErrorEnabled()
     {
         return ( currentLevel <= LEVEL_ERROR );

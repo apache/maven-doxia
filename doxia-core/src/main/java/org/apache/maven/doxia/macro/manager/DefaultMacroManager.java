@@ -29,7 +29,6 @@ import java.util.Map;
  * Default implementation of <code>MacroManager</code>
  *
  * @author <a href="mailto:jason@maven.org">Jason van Zyl</a>
- * @version $Id$
  * @since 1.0
  */
 @Component( role = MacroManager.class )

@@ -35,7 +35,6 @@ import java.util.Locale;
  * A set of util methods for the <code>iText</code> framework
  *
  * @author <a href="mailto:vincent.siveton@gmail.com">Vincent Siveton</a>
- * @version $Id$
  */
 public class ITextUtil
 {

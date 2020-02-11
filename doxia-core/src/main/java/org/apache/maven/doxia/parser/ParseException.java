@@ -23,7 +23,6 @@ package org.apache.maven.doxia.parser;
  * Encapsulate a Doxia parse error.
  *
  * @author <a href="mailto:jason@maven.org">Jason van Zyl</a>
- * @version $Id$
  * @since 1.0
  */
 public class ParseException

@@ -25,7 +25,7 @@ import org.apache.maven.doxia.sink.Sink;
 import org.codehaus.plexus.util.StringUtils;
 
 /**
- * @version $Id$
+ * DefinitionListBlock
  */
 class DefinitionListBlock
     implements Block

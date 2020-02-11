@@ -28,7 +28,6 @@ import org.codehaus.plexus.util.StringUtils;
  *
  * @author <a href="mailto:steve.motola@gmail.com">Steve Motola</a>
  * @author <a href="mailto:vincent.siveton@gmail.com">Vincent Siveton</a>
- * @version $Id$
  */
 @Component( role = Macro.class, hint = "swf" )
 public class SwfMacro

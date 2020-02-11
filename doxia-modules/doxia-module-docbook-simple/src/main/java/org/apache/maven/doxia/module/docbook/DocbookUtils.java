@@ -25,7 +25,6 @@ import org.apache.maven.doxia.sink.Sink;
  * Utility methods for Doxia Docbook Parser and Sink.
  *
  * @author ltheussl
- * @version $Id$
  * @since 1.1.1
  */
 public final class DocbookUtils
@@ -126,6 +125,7 @@ public final class DocbookUtils
      * otherwise an IllegalArgumentException is thrown.</p>
      *
      * <p>The output is one of the style constants defined in {@link SimplifiedDocbookMarkup}.</p>
+     *
      * @param numbering a doxia numbering style.
      * @return a docbook ordered-list numbering style.
      */

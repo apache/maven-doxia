@@ -30,7 +30,6 @@ import org.codehaus.plexus.component.annotations.Component;
  * Latex implementation of the Sink factory.
  *
  * @author <a href="mailto:vincent.siveton@gmail.com">Vincent Siveton</a>
- * @version $Id$
  * @since 1.0
  */
 @Component( role = SinkFactory.class, hint = "latex" )

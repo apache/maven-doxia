@@ -21,8 +21,6 @@ package org.apache.maven.doxia.module.apt;
 
 /**
  * An interface to read apt source documents.
- *
- * @version $Id$
  */
 public interface AptSource
 {

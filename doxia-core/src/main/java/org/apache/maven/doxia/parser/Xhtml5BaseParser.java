@@ -447,7 +447,7 @@ public class Xhtml5BaseParser
      *   Goes through a common list of possible html end tags.
      *   These should be re-usable by different xhtml-based parsers.
      *   The tags handled here are the same as for {@link #baseStartTag(XmlPullParser,Sink)},
-     *   except for the empty elements ({@code<br/>, <hr/>, <img/>}).
+     *   except for the empty elements ({@code <br/>, <hr/>, <img/>}).
      * </p>
      *
      * @param parser A parser.
@@ -844,6 +844,7 @@ public class Xhtml5BaseParser
      *
      * @param newLevel the new section level, all upper levels have to be closed.
      * @param sink the sink to receive the events.
+     * @param attribs a {@link org.apache.maven.doxia.sink.impl.SinkEventAttributeSet} object.
      */
     protected void consecutiveSections( int newLevel, Sink sink, SinkEventAttributeSet attribs )
     {
@@ -975,7 +976,6 @@ public class Xhtml5BaseParser
      * Checks if we are currently inside a &lt;script&gt; tag.
      *
      * @return true if we are currently inside <code>&lt;script&gt;</code> tags.
-     *
      * @since 1.1.1.
      */
     protected boolean isScriptBlock()

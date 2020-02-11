@@ -24,8 +24,6 @@ import org.apache.maven.doxia.parser.ParseException;
 
 /**
  * <p>HorizontalRuleBlockParser class.</p>
- *
- * @version $Id$
  */
 public class HorizontalRuleBlockParser
     implements BlockParser

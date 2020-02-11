@@ -25,7 +25,6 @@ import org.apache.maven.doxia.sink.Sink;
  * Represent a WikiWord
  *
  * @author Juan F. Codagnone
- * @version $Id$
  */
 class WikiWordBlock
     implements Block
@@ -46,7 +45,7 @@ class WikiWordBlock
     private final WikiWordLinkResolver wikiWordLinkResolver;
 
     /**
-     * @see #WikiWordBlock(String, String)
+     * @see WikiWordBlock(String, String)
      * @param aWikiword the wikiWord
      * @param resolver responsible of resolving the link to the wikiWord
      */
@@ -114,7 +113,11 @@ class WikiWordBlock
         return ret;
     }
 
-    /** {@inheritDoc} */
+    /**
+     * {@inheritDoc}
+     *
+     * @return a int.
+     */
     public final int hashCode()
     {
         final int magic1 = 17;

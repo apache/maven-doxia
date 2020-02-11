@@ -30,7 +30,6 @@ import java.io.Reader;
  * Basic interface of the Doxia framework.
  *
  * @author Jason van Zyl
- * @version $Id$
  * @since 1.0
  */
 public interface Doxia

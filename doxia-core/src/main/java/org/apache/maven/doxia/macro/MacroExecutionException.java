@@ -23,7 +23,6 @@ package org.apache.maven.doxia.macro;
  * Wrap an exception that occurs during the execution of a Doxia macro.
  *
  * @author <a href="mailto:brett@apache.org">Brett Porter</a>
- * @version $Id$
  * @since 1.0
  */
 public class MacroExecutionException

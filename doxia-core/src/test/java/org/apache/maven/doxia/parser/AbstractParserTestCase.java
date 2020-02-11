@@ -31,7 +31,6 @@ import java.io.Reader;
  *
  * @author <a href="mailto:carlos@apache.org">Carlos Sanchez</a>
  * @author <a href="mailto:evenisse@codehaus.org">Emmanuel Venisse</a>
- * @version $Id$
  * @since 1.0
  */
 public abstract class AbstractParserTestCase

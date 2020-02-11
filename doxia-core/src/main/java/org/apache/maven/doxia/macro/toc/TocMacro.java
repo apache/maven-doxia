@@ -75,7 +75,6 @@ import org.codehaus.plexus.util.StringUtils;
  * </pre>
  *
  * @author <a href="mailto:vincent.siveton@gmail.com">Vincent Siveton</a>
- * @version $Id$
  */
 @Component( role = Macro.class, hint = "toc" )
 public class TocMacro

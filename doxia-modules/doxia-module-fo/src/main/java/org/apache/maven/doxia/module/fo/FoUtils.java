@@ -48,7 +48,6 @@ import org.codehaus.plexus.util.StringUtils;
  * <code>FO Sink</code> utilities.
  *
  * @author ltheussl
- * @version $Id$
  * @since 1.1
  */
 public class FoUtils

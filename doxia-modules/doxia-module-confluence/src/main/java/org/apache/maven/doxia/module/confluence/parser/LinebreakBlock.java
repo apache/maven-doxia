@@ -23,7 +23,6 @@ import org.apache.maven.doxia.sink.Sink;
 
 /**
  * @author Dave Syer
- * @version $Id$
  */
 class LinebreakBlock
     implements Block

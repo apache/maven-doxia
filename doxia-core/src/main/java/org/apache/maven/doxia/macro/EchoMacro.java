@@ -25,8 +25,6 @@ import org.codehaus.plexus.component.annotations.Component;
 
 /**
  * A simple macro that prints out the key and value of some supplied parameters.
- *
- * @version $Id$
  */
 @Component( role = Macro.class, hint = "echo" )
 public class EchoMacro

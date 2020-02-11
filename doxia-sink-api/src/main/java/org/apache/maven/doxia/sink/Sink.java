@@ -54,7 +54,6 @@ import org.apache.maven.doxia.logging.LogEnabled;
  * @author <a href="mailto:jason@maven.org">Jason van Zyl</a>
  * @author <a href="mailto:vincent.siveton@gmail.com">Vincent Siveton</a>
  * @author ltheussl
- * @version $Id$
  */
 public interface Sink
     extends LogEnabled
@@ -540,6 +539,7 @@ public interface Sink
 
     /**
      * Ends a 6th heading element.
+     *
      * @since 1.7
      */
     void section6_();
@@ -555,6 +555,7 @@ public interface Sink
 
     /**
      * Ends a 6th title heading element.
+     *
      * @since 1.7
      */
     void sectionTitle6_();
@@ -1251,6 +1252,7 @@ public interface Sink
      * Starts a data element which groups together other elements representing microformats.
      *
      * @see #data(String, SinkEventAttributes)
+     * @param value a {@link java.lang.String} object.
      */
     void data( String value );
 

@@ -45,7 +45,6 @@ import org.codehaus.plexus.util.xml.pull.XmlPullParserException;
  * Parse an xhtml model and emit events into a Doxia Sink.
  *
  * @author <a href="mailto:jason@maven.org">Jason van Zyl</a>
- * @version $Id$
  * @since 1.0
  */
 @Component( role = Parser.class, hint = "xhtml" )
@@ -322,7 +321,9 @@ public class XhtmlParser
         return result;
     }
 
-    /** {@inheritDoc} */
+    /**
+     * {@inheritDoc}
+     */
     protected void init()
     {
         super.init();

@@ -27,7 +27,6 @@ import static org.junit.Assert.*;
  * Test AptUtils.
  *
  * @author ltheussl
- * @version $Id$
  */
 public class AptUtilsTest
 {

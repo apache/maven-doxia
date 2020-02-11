@@ -30,7 +30,6 @@ import org.apache.maven.doxia.parser.ParseException;
  * Parse looking for sections
  *
  * @author Juan F. Codagnone
- * @version $Id$
  */
 public class SectionBlockParser
     implements BlockParser
@@ -53,17 +52,13 @@ public class SectionBlockParser
     /** {@link VerbatimBlockParser} */
     private VerbatimBlockParser verbatimBlockParser;
 
-    /**
-     * {@inheritDoc}
-     */
+    /** {@inheritDoc} */
     public final boolean accept( final String line )
     {
         return HEADER_DA.matcher( line ).lookingAt();
     }
 
-    /**
-     * {@inheritDoc}
-     */
+    /** {@inheritDoc} */
     public final Block visit( final String line, final ByLineSource source )
         throws ParseException
     {

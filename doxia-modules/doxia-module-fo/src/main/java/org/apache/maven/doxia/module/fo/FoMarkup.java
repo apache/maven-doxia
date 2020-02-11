@@ -27,7 +27,6 @@ import org.apache.maven.doxia.markup.XmlMarkup;
  * List of <code>FO</code> markups.
  *
  * @author ltheussl
- * @version $Id$
  * @since 1.1
  */
 @SuppressWarnings( "checkstyle:interfaceistype" )

@@ -93,6 +93,11 @@ public class MarkdownParser
         { "title", "author", "date", "address", "affiliation", "copyright", "email", "keywords", "language", "phone",
             "subtitle" };
 
+    /**
+     * <p>getType.</p>
+     *
+     * @return a int.
+     */
     public int getType()
     {
         return TXT_TYPE;
@@ -101,6 +106,7 @@ public class MarkdownParser
     @Requirement
     private MarkdownHtmlParser parser;
 
+    /** {@inheritDoc} */
     public void parse( Reader source, Sink sink )
         throws ParseException
     {

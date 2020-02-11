@@ -34,15 +34,12 @@ import org.apache.maven.doxia.sink.Sink;
 import org.apache.maven.doxia.sink.impl.SinkTestDocument;
 import org.apache.maven.doxia.sink.impl.TextSink;
 import org.codehaus.plexus.DefaultPlexusContainer;
-import org.codehaus.plexus.util.IOUtil;
 
 /**
  * If a module provides both Parser and Sink, this class
  * can be used to check that chaining them together
  * results in the identity transformation, ie the model is still the same
  * after being piped through a Parser and the corresponding Sink.
- *
- * @version $Id$
  */
 public abstract class AbstractIdentityTest
     extends AbstractModuleTest

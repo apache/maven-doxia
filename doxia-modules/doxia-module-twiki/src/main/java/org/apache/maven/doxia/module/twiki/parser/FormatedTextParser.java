@@ -28,7 +28,6 @@ import java.util.Map;
  * Parse looking for formated text (bold, italic, ...)
  *
  * @author Juan F. Codagnone
- * @version $Id$
  */
 public class FormatedTextParser
 {
@@ -297,7 +296,6 @@ public class FormatedTextParser
 
 /**
  * @author Juan F. Codagnone
- * @version $Id$
  */
 interface FormatBlockFactory
 {

@@ -32,7 +32,6 @@ import org.apache.maven.doxia.sink.Sink;
  * May be used to invoke the same method on a List of Sinks.
  *
  * @author <a href="mailto:trygvis@inamo.no">Trygve Laugst&oslash;l</a>
- * @version $Id$
  */
 public class PipelineSink
     implements InvocationHandler
@@ -66,6 +65,10 @@ public class PipelineSink
      *
      * @throws IllegalAccessException if any.
      * @throws InvocationTargetException if any.
+     * @param proxy a {@link java.lang.Object} object.
+     * @param method a {@link java.lang.reflect.Method} object.
+     * @param args an array of {@link java.lang.Object} objects.
+     * @return a {@link java.lang.Object} object.
      */
     public Object invoke( Object proxy, Method method, Object[] args )
             throws IllegalAccessException, InvocationTargetException

@@ -37,7 +37,6 @@ import java.io.Reader;
  * uses a ParserManager to lookup a parser.
  *
  * @author Jason van Zyl
- * @version $Id$
  * @since 1.0
  */
 @Component( role = Doxia.class )

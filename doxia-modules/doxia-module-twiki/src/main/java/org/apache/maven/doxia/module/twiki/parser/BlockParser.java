@@ -26,7 +26,6 @@ import org.apache.maven.doxia.parser.ParseException;
  * Parse a twiki syntax block
  *
  * @author Juan F. Codagnone
- * @version $Id$
  */
 public interface BlockParser
 {

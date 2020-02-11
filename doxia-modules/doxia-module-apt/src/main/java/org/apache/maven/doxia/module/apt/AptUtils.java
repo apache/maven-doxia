@@ -26,7 +26,6 @@ import org.apache.maven.doxia.util.DoxiaUtils;
  *
  * @author ltheussl
  * @since 1.1
- * @version $Id$
  */
 public class AptUtils
 {
@@ -64,7 +63,6 @@ public class AptUtils
      *
      * @param link The link to check.
      * @return True if DoxiaUtils.isExternalLink(link) returns true.
-     *
      * @see org.apache.maven.doxia.util.DoxiaUtils#isExternalLink(String)
      * @see #isInternalLink(String)
      * @see #isLocalLink(String)
@@ -81,7 +79,6 @@ public class AptUtils
      * @param link The link to check.
      * @return True if link is neither an {@link #isExternalLink(String) external}
      * nor a {@link #isLocalLink(String) local} link.
-     *
      * @see org.apache.maven.doxia.util.DoxiaUtils#isInternalLink(String)
      * @see #isExternalLink(String)
      * @see #isLocalLink(String)
@@ -97,7 +94,6 @@ public class AptUtils
      *
      * @param link The link to check.
      * @return True if the link starts with either "/", "./" or "../".
-     *
      * @see org.apache.maven.doxia.util.DoxiaUtils#isLocalLink(String)
      * @see #isExternalLink(String)
      * @see #isInternalLink(String)

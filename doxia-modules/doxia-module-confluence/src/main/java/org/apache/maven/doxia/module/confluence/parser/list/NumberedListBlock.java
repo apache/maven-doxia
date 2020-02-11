@@ -26,8 +26,6 @@ import java.util.List;
 
 /**
  * <p>NumberedListBlock class.</p>
- *
- * @version $Id$
  */
 public class NumberedListBlock
     extends ListBlock

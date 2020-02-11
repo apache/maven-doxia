@@ -26,7 +26,7 @@ import org.apache.maven.doxia.sink.Sink;
 import java.util.List;
 
 /**
- * @version $Id$
+ * ListItemBlock
  */
 class ListItemBlock
     extends AbstractFatherBlock

@@ -26,7 +26,6 @@ import org.codehaus.plexus.util.WriterFactory;
 import org.junit.Before;
 import org.junit.Test;
 import org.xml.sax.SAXParseException;
-import org.xmlunit.matchers.CompareMatcher;
 
 import javax.xml.transform.TransformerException;
 import java.io.File;
@@ -42,7 +41,6 @@ import static org.xmlunit.matchers.CompareMatcher.isIdenticalTo;
  * Test FoAggregateSink.
  *
  * @author ltheussl
- * @version $Id$
  */
 public class FoAggregateSinkTest
 {

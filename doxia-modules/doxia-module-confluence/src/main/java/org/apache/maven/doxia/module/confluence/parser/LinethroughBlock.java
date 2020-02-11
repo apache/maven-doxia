@@ -24,7 +24,8 @@ import org.apache.maven.doxia.sink.SinkEventAttributes;
 import org.apache.maven.doxia.sink.impl.SinkEventAttributeSet;
 
 /**
- * 
+ * <p>LinethroughBlock class.</p>
+ *
  * @author Robert Scholte
  * @since 1.4
  */
@@ -33,11 +34,17 @@ public class LinethroughBlock
 {
     private String text;
     
+    /**
+     * <p>Constructor for LinethroughBlock.</p>
+     *
+     * @param text a {@link java.lang.String} object.
+     */
     public LinethroughBlock( String text )
     {
         this.text = text;
     }
 
+    /** {@inheritDoc} */
     public void traverse( Sink sink )
     {
         sink.text( text, new SinkEventAttributeSet( SinkEventAttributes.DECORATION, "line-through" ) );

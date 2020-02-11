@@ -26,7 +26,6 @@ import org.apache.maven.doxia.sink.Sink;
  * Base interface of a macro.
  *
  * @author <a href="mailto:jason@maven.org">Jason van Zyl</a>
- * @version $Id$
  * @since 1.0
  */
 public interface Macro

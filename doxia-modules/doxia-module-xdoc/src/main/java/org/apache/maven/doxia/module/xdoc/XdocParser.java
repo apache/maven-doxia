@@ -47,7 +47,6 @@ import org.codehaus.plexus.util.xml.pull.XmlPullParserException;
  * Parse an xdoc model and emit events into the specified doxia Sink.
  *
  * @author <a href="mailto:jason@maven.org">Jason van Zyl</a>
- * @version $Id$
  * @since 1.0
  */
 @Component( role = Parser.class, hint = "xdoc" )
@@ -85,9 +84,7 @@ public class XdocParser
      */
     private boolean hasTitle;
 
-    /**
-     * {@inheritDoc}
-     */
+    /** {@inheritDoc} */
     public void parse( Reader source, Sink sink )
         throws ParseException
     {
@@ -121,9 +118,7 @@ public class XdocParser
         }
     }
 
-    /**
-     * {@inheritDoc}
-     */
+    /** {@inheritDoc} */
     protected void handleStartTag( XmlPullParser parser, Sink sink )
         throws XmlPullParserException, MacroExecutionException
     {
@@ -246,9 +241,7 @@ public class XdocParser
         }
     }
 
-    /**
-     * {@inheritDoc}
-     */
+    /** {@inheritDoc} */
     protected void handleEndTag( XmlPullParser parser, Sink sink )
         throws XmlPullParserException, MacroExecutionException
     {
@@ -325,9 +318,7 @@ public class XdocParser
         isEmptyElement = false;
     }
 
-    /**
-     * {@inheritDoc}
-     */
+    /** {@inheritDoc} */
     protected void consecutiveSections( int newLevel, Sink sink )
     {
         closeOpenSections( newLevel, sink );

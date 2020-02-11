@@ -30,7 +30,6 @@ import java.io.Reader;
  * by any Doxia Sink.
  *
  * @author <a href="mailto:jason@maven.org">Jason van Zyl</a>
- * @version $Id$
  * @since 1.0
  */
 public interface Parser

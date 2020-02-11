@@ -24,7 +24,8 @@ import org.apache.maven.doxia.sink.SinkEventAttributes;
 import org.apache.maven.doxia.sink.impl.SinkEventAttributeSet;
 
 /**
- * 
+ * <p>SubBlock class.</p>
+ *
  * @author Robert Scholte
  * @since 1.4
  */
@@ -33,11 +34,17 @@ public class SubBlock
 {
     private String text;
     
+    /**
+     * <p>Constructor for SubBlock.</p>
+     *
+     * @param text a {@link java.lang.String} object.
+     */
     public SubBlock( String text )
     {
         this.text = text;
     }
 
+    /** {@inheritDoc} */
     public void traverse( Sink sink )
     {
         sink.text( text, new SinkEventAttributeSet( SinkEventAttributes.VALIGN, "sub" ) );

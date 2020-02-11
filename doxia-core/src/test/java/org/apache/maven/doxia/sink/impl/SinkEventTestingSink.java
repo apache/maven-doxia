@@ -30,7 +30,6 @@ import org.apache.maven.doxia.sink.impl.AbstractSink;
  * the input of some parser is well-formed.
  *
  * @author ltheussl
- * @version $Id$
  * @since 1.1
  */
 public class SinkEventTestingSink

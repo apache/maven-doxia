@@ -23,7 +23,6 @@ package org.apache.maven.doxia.markup;
  * List of constants used by all markup syntax.
  *
  * @author <a href="mailto:vincent.siveton@gmail.com">Vincent Siveton</a>
- * @version $Id$
  * @since 1.0
  */
 @SuppressWarnings( "checkstyle:interfaceistype" )

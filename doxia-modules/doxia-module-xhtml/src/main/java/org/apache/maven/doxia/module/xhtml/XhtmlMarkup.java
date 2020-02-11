@@ -28,7 +28,6 @@ import org.apache.maven.doxia.markup.HtmlMarkup;
  * as markups.
  *
  * @author <a href="mailto:vincent.siveton@gmail.com">Vincent Siveton</a>
- * @version $Id$
  * @since 1.0
  */
 @SuppressWarnings( "checkstyle:interfaceistype" )

@@ -28,7 +28,6 @@ import org.apache.maven.doxia.markup.XmlMarkup;
  * An abstract <code>Sink</code> for xml markup syntax.
  *
  * @author <a href="mailto:vincent.siveton@gmail.com">Vincent Siveton</a>
- * @version $Id$
  * @since 1.0
  */
 public abstract class AbstractXmlSink
@@ -42,6 +41,11 @@ public abstract class AbstractXmlSink
 
     private boolean insertNewline = true;
 
+    /**
+     * <p>Setter for the field <code>insertNewline</code>.</p>
+     *
+     * @param insertNewline a boolean.
+     */
     public void setInsertNewline( boolean insertNewline )
     {
         this.insertNewline = insertNewline;

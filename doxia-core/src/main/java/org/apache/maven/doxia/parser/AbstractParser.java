@@ -42,7 +42,6 @@ import org.codehaus.plexus.component.annotations.Requirement;
  * Provides a macro mechanism to give dynamic functionalities for the parsing.
  *
  * @author Jason van Zyl
- * @version $Id$
  * @since 1.0
  */
 public abstract class AbstractParser
@@ -99,17 +98,27 @@ public abstract class AbstractParser
         DOXIA_VERSION = props.getProperty( "version" );
     }
 
-    /** {@inheritDoc} */
+    /**
+     * {@inheritDoc}
+     *
+     * @return a int.
+     */
     public int getType()
     {
         return UNKNOWN_TYPE;
     }
 
+    /** {@inheritDoc} */
     public void setEmitComments( boolean emitComments )
     {
         this.emitComments = emitComments;
     }
 
+    /**
+     * <p>isEmitComments.</p>
+     *
+     * @return a boolean.
+     */
     public boolean isEmitComments()
     {
         return emitComments;
@@ -140,7 +149,6 @@ public abstract class AbstractParser
      * Returns the current base directory.
      *
      * @return The base directory.
-     *
      * @deprecated this does not work in multi-module builds, see DOXIA-373
      */
     protected File getBasedir()
@@ -159,6 +167,8 @@ public abstract class AbstractParser
     }
 
     /**
+     * {@inheritDoc}
+     *
      * Convenience method to parse an arbitrary string and emit events into the given sink.
      *
      * @param string A string that provides the source input.
@@ -172,6 +182,7 @@ public abstract class AbstractParser
         parse( new StringReader( string ), sink );
     }
     
+    /** {@inheritDoc} */
     @Override
     public void parse( Reader source, Sink sink, String reference )
         throws ParseException
@@ -250,7 +261,6 @@ public abstract class AbstractParser
      * The current Doxia version.
      *
      * @return the current Doxia version as a String.
-     *
      * @since 1.2
      */
     protected static String doxiaVersion()

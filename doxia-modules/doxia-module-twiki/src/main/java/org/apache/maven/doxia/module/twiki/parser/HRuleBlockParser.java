@@ -29,7 +29,6 @@ import org.apache.maven.doxia.parser.ParseException;
  * Block that represents an horizontal rule
  *
  * @author Juan F. Codagnone
- * @version $Id$
  */
 public class HRuleBlockParser
     implements BlockParser
@@ -58,9 +57,7 @@ public class HRuleBlockParser
         return ret;
     }
 
-    /**
-     * {@inheritDoc}
-     */
+    /** {@inheritDoc} */
     public final Block visit( final String line, final ByLineSource source )
         throws ParseException
     {

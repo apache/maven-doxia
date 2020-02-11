@@ -30,7 +30,6 @@ import org.codehaus.plexus.util.StringUtils;
  * on the stack to preserve stateless behaviour in the caller.
  *
  * @author Dave Syer
- * @version $Id$
  * @since 1.1
  */
 public class ChildBlocksBuilder

@@ -46,7 +46,6 @@ import org.codehaus.plexus.component.annotations.Component;
  * See <a href="http://confluence.atlassian.com/display/CONF25/Confluence+Notation+Guide+Overview">
  * Confluence Notation Guide Overview</a>
  *
- * @version $Id$
  * @since 1.0
  */
 @Component( role = Parser.class, hint = "confluence" )
@@ -104,6 +103,7 @@ public class ConfluenceParser
         return blocks;
     }
 
+    /** {@inheritDoc} */
     @Override
     public void parse( Reader source, Sink sink )
         throws ParseException
@@ -111,6 +111,7 @@ public class ConfluenceParser
         parse( source, sink, "" );
     }
 
+    /** {@inheritDoc} */
     @Override
     public synchronized void parse( Reader source, Sink sink, String reference )
         throws ParseException
@@ -146,7 +147,9 @@ public class ConfluenceParser
         }
     }
 
-    /** {@inheritDoc} */
+    /**
+     * {@inheritDoc}
+     */
     protected void init()
     {
         super.init();

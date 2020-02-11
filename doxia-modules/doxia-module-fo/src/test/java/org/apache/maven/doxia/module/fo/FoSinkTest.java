@@ -36,8 +36,6 @@ import static org.apache.maven.doxia.util.HtmlTools.escapeHTML;
 
 /**
  * <code>FO Sink</code> Test case.
- *
- * @version $Id$
  */
 public class FoSinkTest
     extends AbstractSinkTest

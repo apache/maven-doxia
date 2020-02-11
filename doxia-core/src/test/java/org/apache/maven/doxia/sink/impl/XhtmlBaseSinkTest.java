@@ -37,7 +37,6 @@ import static org.junit.Assert.assertTrue;
  * Test for XhtmlBaseSink.
  *
  * @author ltheussl
- * @version $Id$
  * @since 1.1
  */
 public class XhtmlBaseSinkTest

@@ -19,6 +19,7 @@
 package org.apache.maven.doxia.module.twiki.parser;
 
 import java.io.StringReader;
+import java.util.List;
 
 import org.apache.maven.doxia.module.twiki.TWikiParser;
 import org.apache.maven.doxia.parser.ParseException;
@@ -29,7 +30,7 @@ import org.junit.Test;
 import static org.junit.Assert.assertEquals;
 
 /**
- * Tests for {@link TWikiParser#getTitle(java.util.List)}
+ * Tests for {@link TWikiParser#getTitle(List, ByLineSource)}
  *
  *
  * @author Juan F. Codagnone

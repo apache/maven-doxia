@@ -38,12 +38,12 @@ import com.vladsch.flexmark.util.ast.Node;
  * The FlexmarkDoxiaLinkResolver rewrites the md, markdown links to html.
  *
  * Sample links it rewrites:
- * - doc.md -> doc.html
- * - doc.markdown -> doc.html
- * - doc.md#anchor -> doc.html#anchor
- * - doc.markdown#anchor -> doc.html#anchor
- * - :doc.md -> :doc.html
- * - :doc.markdown -> :doc.html
+ * - doc.md to doc.html
+ * - doc.markdown to doc.html
+ * - doc.md#anchor to doc.html#anchor
+ * - doc.markdown#anchor to doc.html#anchor
+ * - :doc.md to :doc.html
+ * - :doc.markdown to :doc.html
  *
  * Sample links it leaves untouched:
  * - http://doc.md
@@ -56,6 +56,11 @@ public class FlexmarkDoxiaLinkResolver implements LinkResolver
 {
     final Pattern pattern;
 
+    /**
+     * <p>Constructor for FlexmarkDoxiaLinkResolver.</p>
+     *
+     * @param context a {@link com.vladsch.flexmark.html.renderer.LinkResolverContext} object.
+     */
     public FlexmarkDoxiaLinkResolver( LinkResolverContext context )
     {
         this.pattern = Pattern.compile(
@@ -67,6 +72,7 @@ public class FlexmarkDoxiaLinkResolver implements LinkResolver
                         );
     }
 
+    /** {@inheritDoc} */
     @Override
     public ResolvedLink resolveLink( Node node, LinkResolverContext context, ResolvedLink link )
     {

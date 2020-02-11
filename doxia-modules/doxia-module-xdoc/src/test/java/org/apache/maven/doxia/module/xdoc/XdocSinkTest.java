@@ -30,7 +30,6 @@ import static org.apache.maven.doxia.util.HtmlTools.escapeHTML;
 
 /**
  * @author <a href="mailto:jason@maven.org">Jason van Zyl</a>
- * @version $Id$
  * @since 1.0
  */
 public class XdocSinkTest

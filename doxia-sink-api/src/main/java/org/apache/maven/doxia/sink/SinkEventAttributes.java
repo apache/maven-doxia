@@ -49,7 +49,6 @@ import javax.swing.text.MutableAttributeSet;
  * </p>
  *
  * @author ltheussl
- * @version $Id$
  * @since 1.1
  */
 @SuppressWarnings( "checkstyle:interfaceistype" )

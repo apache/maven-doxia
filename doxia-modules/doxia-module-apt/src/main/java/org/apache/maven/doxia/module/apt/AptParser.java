@@ -50,7 +50,6 @@ import java.util.TreeSet;
  * <br>
  * Based on the <a href="http://www.xmlmind.com/aptconvert.html">APTconvert</a> project.
  *
- * @version $Id$
  * @since 1.0
  */
 @Component( role = Parser.class, hint = "apt" )
@@ -184,6 +183,7 @@ public class AptParser
     // Public methods
     // ----------------------------------------------------------------------
 
+    /** {@inheritDoc} */
     @Override
     public void parse( Reader source, Sink sink )
         throws ParseException
@@ -191,6 +191,7 @@ public class AptParser
         parse( source, sink, "" );
     }
     
+    /** {@inheritDoc} */
     @Override
     public void parse( Reader source, Sink sink, String reference )
         throws ParseException
@@ -714,7 +715,9 @@ public class AptParser
         return replaced.toString();
     }
 
-    /** {@inheritDoc} */
+    /**
+     * {@inheritDoc}
+     */
     protected void init()
     {
         super.init();

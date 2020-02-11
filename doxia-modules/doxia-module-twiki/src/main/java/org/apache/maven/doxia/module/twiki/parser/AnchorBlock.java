@@ -25,7 +25,6 @@ import org.apache.maven.doxia.sink.Sink;
  * Represents an anchor
  *
  * @author Juan F. Codagnone
- * @version $Id$
  */
 class AnchorBlock
     implements Block
@@ -49,14 +48,14 @@ class AnchorBlock
         this.name = name;
     }
 
-    /** {@inheritDoc}*/
+    /** {@inheritDoc} */
     public final void traverse( final Sink sink )
     {
         sink.anchor( name );
         sink.anchor_();
     }
 
-    /** {@inheritDoc}*/
+    /** {@inheritDoc} */
     public final boolean equals( final Object obj )
     {
         boolean ret = false;
@@ -75,13 +74,21 @@ class AnchorBlock
         return ret;
     }
 
-    /** {@inheritDoc}*/
+    /**
+     * {@inheritDoc}
+     *
+     * @return a int.
+     */
     public final int hashCode()
     {
         return name.hashCode();
     }
 
-    /** {@inheritDoc}*/
+    /**
+     * {@inheritDoc}
+     *
+     * @return a {@link java.lang.String} object.
+     */
     public String toString()
     {
         return name;

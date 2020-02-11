@@ -25,7 +25,6 @@ import org.apache.maven.doxia.markup.TextMarkup;
  * An abstract class that defines some convenience methods for <code>Text</code> parsers.
  *
  * @author <a href="mailto:vincent.siveton@gmail.com">Vincent Siveton</a>
- * @version $Id$
  * @since 1.0
  */
 public abstract class AbstractTextParser

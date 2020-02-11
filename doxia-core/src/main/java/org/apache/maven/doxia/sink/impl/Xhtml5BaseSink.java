@@ -290,18 +290,14 @@ public class Xhtml5BaseSink
     // Sections
     // ----------------------------------------------------------------------
 
-    /**
-     * {@inheritDoc}
-     */
+    /** {@inheritDoc} */
     @Override
     public void article()
     {
         article( null );
     }
 
-    /**
-     * {@inheritDoc}
-     */
+    /** {@inheritDoc} */
     @Override
     public void article( SinkEventAttributes attributes )
     {
@@ -311,27 +307,21 @@ public class Xhtml5BaseSink
         writeStartTag( HtmlMarkup.ARTICLE, atts );
     }
 
-    /**
-     * {@inheritDoc}
-     */
+    /** {@inheritDoc} */
     @Override
     public void article_()
     {
         writeEndTag( HtmlMarkup.ARTICLE );
     }
 
-    /**
-     * {@inheritDoc}
-     */
+    /** {@inheritDoc} */
     @Override
     public void navigation()
     {
         navigation( null );
     }
 
-    /**
-     * {@inheritDoc}
-     */
+    /** {@inheritDoc} */
     @Override
     public void navigation( SinkEventAttributes attributes )
     {
@@ -341,27 +331,21 @@ public class Xhtml5BaseSink
         writeStartTag( HtmlMarkup.NAV, atts );
     }
 
-    /**
-     * {@inheritDoc}
-     */
+    /** {@inheritDoc} */
     @Override
     public void navigation_()
     {
         writeEndTag( HtmlMarkup.NAV );
     }
 
-    /**
-     * {@inheritDoc}
-     */
+    /** {@inheritDoc} */
     @Override
     public void sidebar()
     {
         sidebar( null );
     }
 
-    /**
-     * {@inheritDoc}
-     */
+    /** {@inheritDoc} */
     @Override
     public void sidebar( SinkEventAttributes attributes )
     {
@@ -371,9 +355,7 @@ public class Xhtml5BaseSink
         writeStartTag( HtmlMarkup.ASIDE, atts );
     }
 
-    /**
-     * {@inheritDoc}
-     */
+    /** {@inheritDoc} */
     @Override
     public void sidebar_()
     {
@@ -553,7 +535,6 @@ public class Xhtml5BaseSink
      *
      * @param depth The level of the section.
      * @param attributes some attributes. May be null.
-     * @see javax.swing.text.html.HTML.Tag#SECTION
      */
     protected void onSection( int depth, SinkEventAttributes attributes )
     {
@@ -653,18 +634,14 @@ public class Xhtml5BaseSink
         }
     }
 
-    /**
-     * {@inheritDoc}
-     */
+    /** {@inheritDoc} */
     @Override
     public void header()
     {
         header( null );
     }
 
-    /**
-     * {@inheritDoc}
-     */
+    /** {@inheritDoc} */
     @Override
     public void header( SinkEventAttributes attributes )
     {
@@ -674,27 +651,21 @@ public class Xhtml5BaseSink
         writeStartTag( HtmlMarkup.HEADER, atts );
     }
 
-    /**
-     * {@inheritDoc}
-     */
+    /** {@inheritDoc} */
     @Override
     public void header_()
     {
         writeEndTag( HtmlMarkup.HEADER );
     }
 
-    /**
-     * {@inheritDoc}
-     */
+    /** {@inheritDoc} */
     @Override
     public void content()
     {
         content( (SinkEventAttributes) null );
     }
 
-    /**
-     * {@inheritDoc}
-     */
+    /** {@inheritDoc} */
     @Override
     public void content( SinkEventAttributes attributes )
     {
@@ -721,9 +692,7 @@ public class Xhtml5BaseSink
         }
     }
 
-    /**
-     * {@inheritDoc}
-     */
+    /** {@inheritDoc} */
     @Override
     public void content_()
     {
@@ -737,18 +706,14 @@ public class Xhtml5BaseSink
         }
     }
 
-    /**
-     * {@inheritDoc}
-     */
+    /** {@inheritDoc} */
     @Override
     public void footer()
     {
         footer( null );
     }
 
-    /**
-     * {@inheritDoc}
-     */
+    /** {@inheritDoc} */
     @Override
     public void footer( SinkEventAttributes attributes )
     {
@@ -758,9 +723,7 @@ public class Xhtml5BaseSink
         writeStartTag( HtmlMarkup.FOOTER, atts );
     }
 
-    /**
-     * {@inheritDoc}
-     */
+    /** {@inheritDoc} */
     @Override
     public void footer_()
     {
@@ -1057,18 +1020,14 @@ public class Xhtml5BaseSink
         writeEndTag( HtmlMarkup.DD );
     }
 
-    /**
-     * {@inheritDoc}
-     */
+    /** {@inheritDoc} */
     @Override
     public void figure()
     {
         figure( null );
     }
 
-    /**
-     * {@inheritDoc}
-     */
+    /** {@inheritDoc} */
     @Override
     public void figure( SinkEventAttributes attributes )
     {
@@ -1114,9 +1073,7 @@ public class Xhtml5BaseSink
         writeStartTag( HtmlMarkup.IMG, atts, true );
     }
 
-    /**
-     * {@inheritDoc}
-     */
+    /** {@inheritDoc} */
     @Override
     public void figureCaption()
     {
@@ -1176,20 +1133,14 @@ public class Xhtml5BaseSink
         }
     }
 
-    /**
-     * {@inheritDoc}
-     * @see javax.swing.text.html.HTML.Tag#DATA
-     */
+    /** {@inheritDoc} */
     @Override
     public void data( String value )
     {
         data( value, null );
     }
 
-    /**
-     * {@inheritDoc}
-     * @see javax.swing.text.html.HTML.Tag#DATA
-     */
+    /** {@inheritDoc} */
     @Override
     public void data( String value, SinkEventAttributes attributes )
     {
@@ -1206,30 +1157,21 @@ public class Xhtml5BaseSink
         writeStartTag( HtmlMarkup.DATA, att );
     }
 
-    /**
-     * {@inheritDoc}
-     * @see javax.swing.text.html.HTML.Tag#DATA
-     */
+    /** {@inheritDoc} */
     @Override
     public void data_()
     {
         writeEndTag( HtmlMarkup.DATA );
     }
 
-    /**
-     * {@inheritDoc}
-     * @see javax.swing.text.html.HTML.Tag#TIME
-     */
+    /** {@inheritDoc} */
     @Override
     public void time( String datetime )
     {
         time( datetime, null );
     }
 
-    /**
-     * {@inheritDoc}
-     * @see javax.swing.text.html.HTML.Tag#DATA
-     */
+    /** {@inheritDoc} */
     @Override
     public void time( String datetime, SinkEventAttributes attributes )
     {
@@ -1246,9 +1188,7 @@ public class Xhtml5BaseSink
         writeStartTag( HtmlMarkup.TIME, att );
     }
 
-    /**
-     * {@inheritDoc}
-     */
+    /** {@inheritDoc} */
     @Override
     public void time_()
     {
@@ -2117,20 +2057,14 @@ public class Xhtml5BaseSink
         }
     }
 
-    /**
-     * {@inheritDoc}
-     * @see javax.swing.text.html.HTML.Tag#WBR
-     */
+    /** {@inheritDoc} */
     @Override
     public void lineBreakOpportunity()
     {
         lineBreakOpportunity( null );
     }
 
-    /**
-     * {@inheritDoc}
-     * @see javax.swing.text.html.HTML.Tag#WBR
-     */
+    /** {@inheritDoc} */
     @Override
     public void lineBreakOpportunity( SinkEventAttributes attributes )
     {
@@ -2239,6 +2173,8 @@ public class Xhtml5BaseSink
     }
 
     /**
+     * {@inheritDoc}
+     *
      * Add an unknown event.
      * This can be used to generate html tags for which no corresponding sink event exists.
      *

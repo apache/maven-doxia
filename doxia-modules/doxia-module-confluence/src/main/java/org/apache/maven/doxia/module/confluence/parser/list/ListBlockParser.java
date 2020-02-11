@@ -28,7 +28,6 @@ import org.apache.maven.doxia.parser.ParseException;
  * <p>ListBlockParser class.</p>
  *
  * @author <a href="mailto:jason@maven.org">Jason van Zyl</a>
- * @version $Id$
  */
 public class ListBlockParser
     implements BlockParser

@@ -30,7 +30,6 @@ import org.apache.maven.doxia.sink.Sink;
  * </p>
  *
  * @author Juan F. Codagnone
- * @version $Id$
  */
 public interface Block
 {

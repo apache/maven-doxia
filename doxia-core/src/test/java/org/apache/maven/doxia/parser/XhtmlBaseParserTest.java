@@ -32,7 +32,6 @@ import static org.junit.Assert.assertNotEquals;
  * Test for XhtmlBaseParser.
  *
  * @author ltheussl
- * @version $Id$
  * @since 1.1
  */
 public class XhtmlBaseParserTest

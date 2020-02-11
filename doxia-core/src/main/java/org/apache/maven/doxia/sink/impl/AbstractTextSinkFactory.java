@@ -35,7 +35,6 @@ import org.codehaus.plexus.util.WriterFactory;
  *
  * @author Hervé Boutemy
  * @author Benjamin Bentmann
- * @version $Id$
  * @since 1.1
  */
 public abstract class AbstractTextSinkFactory

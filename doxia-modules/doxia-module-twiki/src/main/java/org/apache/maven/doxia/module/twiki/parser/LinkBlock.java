@@ -25,7 +25,6 @@ import org.apache.maven.doxia.sink.Sink;
  * Block that represents a link.
  *
  * @author Juan F. Codagnone
- * @version $Id$
  */
 class LinkBlock
     implements Block
@@ -95,7 +94,11 @@ class LinkBlock
         return ret;
     }
 
-    /** {@inheritDoc} */
+    /**
+     * {@inheritDoc}
+     *
+     * @return a int.
+     */
     public final int hashCode()
     {
         final int magic1 = 17;

@@ -32,7 +32,6 @@ import org.codehaus.plexus.util.xml.XmlUtil;
  *
  * @author juan <a href="mailto:james@jamestaylor.org">James Taylor</a>
  * @author Juan F. Codagnone  (replaced println with XmlWriterXdocSink)
- * @version $Id$
  * @deprecated Since 1.1, this sink is not more supported. If you are looking for a <code>Sink</code> which produces
  * pretty formatted XML, you could use the {@link XdocSink#XdocSink(java.io.Writer)} as usual and reformat the
  * <code>Sink</code> content produced with {@link XmlUtil#prettyFormat(java.io.Reader, java.io.Writer)}.
@@ -64,7 +63,9 @@ public class XmlWriterXdocSink
         this.xmlWriter = out;
     }
 
-    /** {@inheritDoc} */
+    /**
+     * {@inheritDoc}
+     */
     public void close()
     {
         super.close();

@@ -28,7 +28,6 @@ import java.util.Date;
  * Header object containing meta-informations.
  *
  * @author <a href="mailto:vincent.siveton@gmail.com">Vincent Siveton</a>
- * @version $Id$
  */
 public class ITextHeader
 {

@@ -60,7 +60,6 @@ import static org.apache.maven.doxia.util.HtmlTools.escapeHTML;
  * </pre>
  *
  * @author ltheussl
- * @version $Id$
  * @since 1.1
  */
 public class FoSink
@@ -208,13 +207,17 @@ public class FoSink
         startPageSequence( "0", null, null );
     }
 
-    /** {@inheritDoc} */
+    /**
+     * {@inheritDoc}
+     */
     public void head()
     {
         head( null );
     }
 
-    /** {@inheritDoc} */
+    /**
+     * {@inheritDoc}
+     */
     public void head_()
     {
         writeEOL();
@@ -226,13 +229,17 @@ public class FoSink
         writeStartTag( BLOCK_TAG, "doc.header.title" );
     }
 
-    /** {@inheritDoc} */
+    /**
+     * {@inheritDoc}
+     */
     public void title()
     {
         title( null );
     }
 
-    /** {@inheritDoc} */
+    /**
+     * {@inheritDoc}
+     */
     public void title_()
     {
         writeEndTag( BLOCK_TAG );
@@ -245,13 +252,17 @@ public class FoSink
         writeStartTag( BLOCK_TAG, "doc.header.author" );
     }
 
-    /** {@inheritDoc} */
+    /**
+     * {@inheritDoc}
+     */
     public void author()
     {
         author( null );
     }
 
-    /** {@inheritDoc} */
+    /**
+     * {@inheritDoc}
+     */
     public void author_()
     {
         writeEndTag( BLOCK_TAG );
@@ -264,13 +275,17 @@ public class FoSink
         writeStartTag( BLOCK_TAG, "doc.header.date" );
     }
 
-    /** {@inheritDoc} */
+    /**
+     * {@inheritDoc}
+     */
     public void date()
     {
         date( null );
     }
 
-    /** {@inheritDoc} */
+    /**
+     * {@inheritDoc}
+     */
     public void date_()
     {
         writeEndTag( BLOCK_TAG );
@@ -283,13 +298,17 @@ public class FoSink
         // noop
     }
 
-    /** {@inheritDoc} */
+    /**
+     * {@inheritDoc}
+     */
     public void body()
     {
         body( null );
     }
 
-    /** {@inheritDoc} */
+    /**
+     * {@inheritDoc}
+     */
     public void body_()
     {
         writeEOL();
@@ -304,13 +323,17 @@ public class FoSink
     //
     // -----------------------------------------------------------------------
 
-    /** {@inheritDoc} */
+    /**
+     * {@inheritDoc}
+     */
     public void sectionTitle()
     {
         // nop
     }
 
-    /** {@inheritDoc} */
+    /**
+     * {@inheritDoc}
+     */
     public void sectionTitle_()
     {
         // nop
@@ -356,121 +379,161 @@ public class FoSink
         onSectionTitle_();
     }
 
-    /** {@inheritDoc} */
+    /**
+     * {@inheritDoc}
+     */
     public void section1()
     {
         section( SECTION_LEVEL_1, null );
     }
 
-    /** {@inheritDoc} */
+    /**
+     * {@inheritDoc}
+     */
     public void sectionTitle1()
     {
         sectionTitle( SECTION_LEVEL_1, null );
     }
 
-    /** {@inheritDoc} */
+    /**
+     * {@inheritDoc}
+     */
     public void sectionTitle1_()
     {
         sectionTitle_( SECTION_LEVEL_1 );
     }
 
-    /** {@inheritDoc} */
+    /**
+     * {@inheritDoc}
+     */
     public void section1_()
     {
         section_( SECTION_LEVEL_1 );
     }
 
-    /** {@inheritDoc} */
+    /**
+     * {@inheritDoc}
+     */
     public void section2()
     {
         section( SECTION_LEVEL_2, null );
     }
 
-    /** {@inheritDoc} */
+    /**
+     * {@inheritDoc}
+     */
     public void sectionTitle2()
     {
         sectionTitle( SECTION_LEVEL_2, null );
     }
 
-    /** {@inheritDoc} */
+    /**
+     * {@inheritDoc}
+     */
     public void sectionTitle2_()
     {
         sectionTitle_( SECTION_LEVEL_2 );
     }
 
-    /** {@inheritDoc} */
+    /**
+     * {@inheritDoc}
+     */
     public void section2_()
     {
         section_( SECTION_LEVEL_2 );
     }
 
-    /** {@inheritDoc} */
+    /**
+     * {@inheritDoc}
+     */
     public void section3()
     {
         section( SECTION_LEVEL_3, null );
     }
 
-    /** {@inheritDoc} */
+    /**
+     * {@inheritDoc}
+     */
     public void sectionTitle3()
     {
         sectionTitle( SECTION_LEVEL_3, null );
     }
 
-    /** {@inheritDoc} */
+    /**
+     * {@inheritDoc}
+     */
     public void sectionTitle3_()
     {
         sectionTitle_( SECTION_LEVEL_3 );
     }
 
-    /** {@inheritDoc} */
+    /**
+     * {@inheritDoc}
+     */
     public void section3_()
     {
         section_( SECTION_LEVEL_3 );
     }
 
-    /** {@inheritDoc} */
+    /**
+     * {@inheritDoc}
+     */
     public void section4()
     {
         section( SECTION_LEVEL_4, null );
     }
 
-    /** {@inheritDoc} */
+    /**
+     * {@inheritDoc}
+     */
     public void sectionTitle4()
     {
         sectionTitle( SECTION_LEVEL_4, null );
     }
 
-    /** {@inheritDoc} */
+    /**
+     * {@inheritDoc}
+     */
     public void sectionTitle4_()
     {
         sectionTitle_( SECTION_LEVEL_4 );
     }
 
-    /** {@inheritDoc} */
+    /**
+     * {@inheritDoc}
+     */
     public void section4_()
     {
         section_( SECTION_LEVEL_4 );
     }
 
-    /** {@inheritDoc} */
+    /**
+     * {@inheritDoc}
+     */
     public void section5()
     {
         section( SECTION_LEVEL_5, null );
     }
 
-    /** {@inheritDoc} */
+    /**
+     * {@inheritDoc}
+     */
     public void sectionTitle5()
     {
         sectionTitle( SECTION_LEVEL_5, null );
     }
 
-    /** {@inheritDoc} */
+    /**
+     * {@inheritDoc}
+     */
     public void sectionTitle5_()
     {
         sectionTitle_( SECTION_LEVEL_5 );
     }
 
-    /** {@inheritDoc} */
+    /**
+     * {@inheritDoc}
+     */
     public void section5_()
     {
         section_( SECTION_LEVEL_5 );
@@ -570,13 +633,17 @@ public class FoSink
         writeStartTag( LIST_BLOCK_TAG, "list" );
     }
 
-    /** {@inheritDoc} */
+    /**
+     * {@inheritDoc}
+     */
     public void list()
     {
         list( null );
     }
 
-    /** {@inheritDoc} */
+    /**
+     * {@inheritDoc}
+     */
     public void list_()
     {
         writeEndTag( LIST_BLOCK_TAG );
@@ -598,13 +665,17 @@ public class FoSink
         writeStartTag( BLOCK_TAG );
     }
 
-    /** {@inheritDoc} */
+    /**
+     * {@inheritDoc}
+     */
     public void listItem()
     {
         listItem( null );
     }
 
-    /** {@inheritDoc} */
+    /**
+     * {@inheritDoc}
+     */
     public void listItem_()
     {
         writeEndTag( BLOCK_TAG );
@@ -629,7 +700,9 @@ public class FoSink
         numberedList( numbering, null );
     }
 
-    /** {@inheritDoc} */
+    /**
+     * {@inheritDoc}
+     */
     public void numberedList_()
     {
         this.listStack.pop();
@@ -660,13 +733,17 @@ public class FoSink
         writeStartTag( BLOCK_TAG );
     }
 
-    /** {@inheritDoc} */
+    /**
+     * {@inheritDoc}
+     */
     public void numberedListItem()
     {
         numberedListItem( null );
     }
 
-    /** {@inheritDoc} */
+    /**
+     * {@inheritDoc}
+     */
     public void numberedListItem_()
     {
         writeEndTag( BLOCK_TAG );
@@ -684,13 +761,17 @@ public class FoSink
         writeStartTag( BLOCK_TAG, "dl" );
     }
 
-    /** {@inheritDoc} */
+    /**
+     * {@inheritDoc}
+     */
     public void definitionList()
     {
         definitionList( null );
     }
 
-    /** {@inheritDoc} */
+    /**
+     * {@inheritDoc}
+     */
     public void definitionList_()
     {
         writeEndTag( BLOCK_TAG );
@@ -703,13 +784,17 @@ public class FoSink
         // nop
     }
 
-    /** {@inheritDoc} */
+    /**
+     * {@inheritDoc}
+     */
     public void definitionListItem()
     {
         definitionListItem( null );
     }
 
-    /** {@inheritDoc} */
+    /**
+     * {@inheritDoc}
+     */
     public void definitionListItem_()
     {
         // nop
@@ -721,13 +806,17 @@ public class FoSink
         writeStartTag( BLOCK_TAG, "dt" );
     }
 
-    /** {@inheritDoc} */
+    /**
+     * {@inheritDoc}
+     */
     public void definedTerm()
     {
         definedTerm( null );
     }
 
-    /** {@inheritDoc} */
+    /**
+     * {@inheritDoc}
+     */
     public void definedTerm_()
     {
         writeEndTag( BLOCK_TAG );
@@ -741,13 +830,17 @@ public class FoSink
         writeStartTag( BLOCK_TAG, "dd" );
     }
 
-    /** {@inheritDoc} */
+    /**
+     * {@inheritDoc}
+     */
     public void definition()
     {
         definition( null );
     }
 
-    /** {@inheritDoc} */
+    /**
+     * {@inheritDoc}
+     */
     public void definition_()
     {
         writeEndTag( BLOCK_TAG );
@@ -762,13 +855,17 @@ public class FoSink
         writeStartTag( BLOCK_TAG, "figure.display" );
     }
 
-    /** {@inheritDoc} */
+    /**
+     * {@inheritDoc}
+     */
     public void figure()
     {
         figure( null );
     }
 
-    /** {@inheritDoc} */
+    /**
+     * {@inheritDoc}
+     */
     public void figure_()
     {
         this.inFigure = false;
@@ -817,20 +914,26 @@ public class FoSink
         writeStartTag( BLOCK_TAG, "figure.caption" );
     }
 
-    /** {@inheritDoc} */
+    /**
+     * {@inheritDoc}
+     */
     public void figureCaption()
     {
         figureCaption( null );
     }
 
-    /** {@inheritDoc} */
+    /**
+     * {@inheritDoc}
+     */
     public void figureCaption_()
     {
         writeEndTag( BLOCK_TAG );
         writeEOL();
     }
 
-    /** {@inheritDoc} */
+    /**
+     * {@inheritDoc}
+     */
     public void paragraph()
     {
         paragraph( null );
@@ -850,14 +953,20 @@ public class FoSink
         writeStartTag( BLOCK_TAG, atts );
     }
 
-    /** {@inheritDoc} */
+    /**
+     * {@inheritDoc}
+     */
     public void paragraph_()
     {
         writeEndTag( BLOCK_TAG );
         writeEOL();
     }
 
-    /** {@inheritDoc} */
+    /**
+     * {@inheritDoc}
+     *
+     * @param attributes a {@link org.apache.maven.doxia.sink.SinkEventAttributes} object.
+     */
     public void verbatim( SinkEventAttributes attributes )
     {
         this.verbatim = true;
@@ -886,7 +995,9 @@ public class FoSink
         verbatim( boxed ? SinkEventAttributeSet.BOXED : null );
     }
 
-    /** {@inheritDoc} */
+    /**
+     * {@inheritDoc}
+     */
     public void verbatim_()
     {
         this.verbatim = false;
@@ -905,13 +1016,17 @@ public class FoSink
         writeEOL();
     }
 
-    /** {@inheritDoc} */
+    /**
+     * {@inheritDoc}
+     */
     public void horizontalRule()
     {
         horizontalRule( null );
     }
 
-    /** {@inheritDoc} */
+    /**
+     * {@inheritDoc}
+     */
     public void pageBreak()
     {
         writeEmptyTag( BLOCK_TAG, "break-before", "page" );
@@ -931,13 +1046,17 @@ public class FoSink
         writeStartTag( TABLE_TAG, "table.layout" );
     }
 
-    /** {@inheritDoc} */
+    /**
+     * {@inheritDoc}
+     */
     public void table()
     {
         table( null );
     }
 
-    /** {@inheritDoc} */
+    /**
+     * {@inheritDoc}
+     */
     public void table_()
     {
         String content = this.tableContentWriterStack.removeLast().toString();
@@ -983,7 +1102,9 @@ public class FoSink
         writeStartTag( TABLE_BODY_TAG );
     }
 
-    /** {@inheritDoc} */
+    /**
+     * {@inheritDoc}
+     */
     public void tableRows_()
     {
         this.tableGridStack.removeLast();
@@ -1002,13 +1123,17 @@ public class FoSink
         this.cellCountStack.addLast( 0 );
     }
 
-    /** {@inheritDoc} */
+    /**
+     * {@inheritDoc}
+     */
     public void tableRow()
     {
         tableRow( null );
     }
 
-    /** {@inheritDoc} */
+    /**
+     * {@inheritDoc}
+     */
     public void tableRow_()
     {
         writeEndTag( TABLE_ROW_TAG );
@@ -1021,7 +1146,9 @@ public class FoSink
         tableCell( false, attributes );
     }
 
-    /** {@inheritDoc} */
+    /**
+     * {@inheritDoc}
+     */
     public void tableCell()
     {
         tableCell( (SinkEventAttributes) null );
@@ -1040,7 +1167,9 @@ public class FoSink
         tableCell( true, attributes );
     }
 
-    /** {@inheritDoc} */
+    /**
+     * {@inheritDoc}
+     */
     public void tableHeaderCell()
     {
         tableHeaderCell( (SinkEventAttributes) null );
@@ -1118,7 +1247,9 @@ public class FoSink
         writeEOL();
     }
 
-    /** {@inheritDoc} */
+    /**
+     * {@inheritDoc}
+     */
     public void tableCell_()
     {
         writeEndTag( BLOCK_TAG );
@@ -1133,7 +1264,9 @@ public class FoSink
         }
     }
 
-    /** {@inheritDoc} */
+    /**
+     * {@inheritDoc}
+     */
     public void tableHeaderCell_()
     {
         tableCell_();
@@ -1153,13 +1286,17 @@ public class FoSink
         // table-footer doesn't work because it has to be declared before table-body.
     }
 
-    /** {@inheritDoc} */
+    /**
+     * {@inheritDoc}
+     */
     public void tableCaption()
     {
         tableCaption( null );
     }
 
-    /** {@inheritDoc} */
+    /**
+     * {@inheritDoc}
+     */
     public void tableCaption_()
     {
         if ( !this.tableCaptionXMLWriterStack.isEmpty() && this.tableCaptionXMLWriterStack.getLast() != null )
@@ -1200,7 +1337,9 @@ public class FoSink
         anchor( name, null );
     }
 
-    /** {@inheritDoc} */
+    /**
+     * {@inheritDoc}
+     */
     public void anchor_()
     {
         writeEndTag( INLINE_TAG );
@@ -1250,14 +1389,18 @@ public class FoSink
         link( name, null );
     }
 
-    /** {@inheritDoc} */
+    /**
+     * {@inheritDoc}
+     */
     public void link_()
     {
         writeEndTag( INLINE_TAG );
         writeEndTag( BASIC_LINK_TAG );
     }
 
-    /** {@inheritDoc} */
+    /**
+     * {@inheritDoc}
+     */
     public void inline()
     {
         inline( null );
@@ -1294,7 +1437,9 @@ public class FoSink
         inlineStack.push( tags );
     }
 
-    /** {@inheritDoc} */
+    /**
+     * {@inheritDoc}
+     */
     public void inline_()
     {
         for ( Tag tag: inlineStack.pop() )
@@ -1303,37 +1448,49 @@ public class FoSink
         }
     }
 
-    /** {@inheritDoc} */
+    /**
+     * {@inheritDoc}
+     */
     public void italic()
     {
         inline( SinkEventAttributeSet.Semantics.ITALIC );
     }
 
-    /** {@inheritDoc} */
+    /**
+     * {@inheritDoc}
+     */
     public void italic_()
     {
         inline_();
     }
 
-    /** {@inheritDoc} */
+    /**
+     * {@inheritDoc}
+     */
     public void bold()
     {
         inline( SinkEventAttributeSet.Semantics.BOLD );
     }
 
-    /** {@inheritDoc} */
+    /**
+     * {@inheritDoc}
+     */
     public void bold_()
     {
         inline_();
     }
 
-    /** {@inheritDoc} */
+    /**
+     * {@inheritDoc}
+     */
     public void monospaced()
     {
         inline( SinkEventAttributeSet.Semantics.CODE );
     }
 
-    /** {@inheritDoc} */
+    /**
+     * {@inheritDoc}
+     */
     public void monospaced_()
     {
         inline_();
@@ -1347,13 +1504,17 @@ public class FoSink
         writeSimpleTag( BLOCK_TAG );
     }
 
-    /** {@inheritDoc} */
+    /**
+     * {@inheritDoc}
+     */
     public void lineBreak()
     {
         lineBreak( null );
     }
 
-    /** {@inheritDoc} */
+    /**
+     * {@inheritDoc}
+     */
     public void nonBreakingSpace()
     {
         write( "&#160;" );
@@ -1377,13 +1538,17 @@ public class FoSink
         write( text );
     }
 
-    /** {@inheritDoc} */
+    /**
+     * {@inheritDoc}
+     */
     public void flush()
     {
         out.flush();
     }
 
-    /** {@inheritDoc} */
+    /**
+     * {@inheritDoc}
+     */
     public void close()
     {
         out.close();
@@ -1736,7 +1901,11 @@ public class FoSink
         }
     }
 
-    /** {@inheritDoc} */
+    /**
+     * {@inheritDoc}
+     *
+     * @param t a {@link javax.swing.text.html.HTML.Tag} object.
+     */
     protected void writeEndTag( Tag t )
     {
         if ( this.tableCaptionXMLWriterStack.isEmpty() )
@@ -1856,7 +2025,9 @@ public class FoSink
         warnMessages.put( key, set );
     }
 
-    /** {@inheritDoc} */
+    /**
+     * {@inheritDoc}
+     */
     protected void init()
     {
         super.init();

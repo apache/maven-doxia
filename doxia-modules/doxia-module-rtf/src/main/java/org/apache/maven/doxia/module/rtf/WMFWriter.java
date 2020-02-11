@@ -29,7 +29,7 @@ import java.util.Vector;
 /**
  * A Windows MetaFile writer.
  *
- * @version $Id$
+ * WMFWriter
  */
 class WMFWriter
 {

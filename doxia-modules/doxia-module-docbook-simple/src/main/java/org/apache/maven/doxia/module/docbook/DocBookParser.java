@@ -39,7 +39,6 @@ import org.codehaus.plexus.util.xml.pull.XmlPullParserException;
  * and emit events into the specified doxia Sink.
  *
  * @author <a href="mailto:jason@maven.org">Jason van Zyl</a>
- * @version $Id$
  * @since 1.0
  */
 @Component( role = Parser.class, hint = "docbook" )
@@ -169,7 +168,9 @@ public class DocBookParser
         IGNORABLE_ELEMENTS.add( SimplifiedDocbookMarkup.VOLUMENUM_TAG.toString() );
     }
 
-    /** {@inheritDoc} */
+    /**
+     * {@inheritDoc}
+     */
     protected void init()
     {
         super.init();

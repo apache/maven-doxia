@@ -30,7 +30,6 @@ import java.io.File;
  * <p>MacroRequest class.</p>
  *
  * @author <a href="mailto:jason@maven.org">Jason van Zyl</a>
- * @version $Id$
  * @since 1.0
  */
 public class MacroRequest
@@ -57,6 +56,14 @@ public class MacroRequest
         this.basedir = base;
     }
 
+    /**
+     * <p>Constructor for MacroRequest.</p>
+     *
+     * @param sourceContent a {@link java.lang.String} object.
+     * @param parser a {@link org.apache.maven.doxia.parser.AbstractParser} object.
+     * @param param a {@link java.util.Map} object.
+     * @param base a {@link java.io.File} object.
+     */
     public MacroRequest( String sourceContent, AbstractParser parser, Map<String, Object> param, File base )
     {
         this.parameters = param;
@@ -108,16 +115,32 @@ public class MacroRequest
         return parameters.get( key );
     }
 
+    /**
+     * <p>getSourceContent.</p>
+     *
+     * @return a {@link java.lang.String} object.
+     */
     public String getSourceContent()
     {
         return (String) getParameter( PARAM_SOURCE_CONTENT );
     }
 
+    /**
+     * <p>getParser.</p>
+     *
+     * @return a {@link org.apache.maven.doxia.parser.Parser} object.
+     */
     public Parser getParser()
     {
         return (Parser) getParameter( PARAM_PARSER );
     }
 
+    /**
+     * <p>isInternalParameter.</p>
+     *
+     * @param name a {@link java.lang.String} object.
+     * @return a boolean.
+     */
     public static boolean isInternalParameter( String name )
     {
         return PARAM_PARSER.equals( name ) || PARAM_SOURCE_CONTENT.equals( name );

@@ -30,7 +30,6 @@ import org.codehaus.plexus.util.xml.pull.XmlPullParserException;
  * Parse Fml questions and answers, these may contain arbitrary xdoc elements.
  *
  * @author ltheussl
- * @version $Id$
  * @since 1.0
  */
 public class FmlContentParser
@@ -109,7 +108,9 @@ public class FmlContentParser
         isEmptyElement = false;
     }
 
-    /** {@inheritDoc} */
+    /**
+     * {@inheritDoc}
+     */
     protected void init()
     {
         super.init();

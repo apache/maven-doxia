@@ -65,7 +65,6 @@ import org.xml.sax.SAXException;
  * An abstract class that defines some convenience methods for <code>XML</code> parsers.
  *
  * @author <a href="mailto:vincent.siveton@gmail.com">Vincent Siveton</a>
- * @version $Id$
  * @since 1.0
  */
 public abstract class AbstractXmlParser

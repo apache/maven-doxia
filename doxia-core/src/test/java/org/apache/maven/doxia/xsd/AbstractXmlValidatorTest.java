@@ -48,7 +48,6 @@ import org.xml.sax.EntityResolver;
  * Abstract class to validate XML files with DTD or XSD mainly for Doxia namespaces.
  *
  * @author <a href="mailto:vincent.siveton@gmail.com">Vincent Siveton</a>
- * @version $Id$
  * @since 1.0
  */
 public abstract class AbstractXmlValidatorTest

@@ -20,101 +20,114 @@ under the License.
 -->
 
 <body>
-  <h1>Maven Doxia API.</h1>
-  <p>The Doxia API is based on <i>Sinks</i> objects: each sink consumes Doxia events to produce a resultant output
-  format (eg Docbook, PDF, XHTML...).</p>
+<h1>Maven Doxia API.</h1>
+<p>The Doxia API is based on <i>Sinks</i> objects: each sink consumes Doxia events to produce a resultant output
+    format (eg Docbook, PDF, XHTML...).</p>
 
-  <h2>Using Maven Doxia API</h2>
-  <p>The following snippet shows how to use a Doxia <code>Sink</code>:</p>
+<h2>Using Maven Doxia API</h2>
+<p>The following snippet shows how to use a Doxia <code>Sink</code>:</p>
 
-  <div align="left" class="java">
-    <table border="0" cellpadding="3" cellspacing="0" bgcolor="#ffffff">
-      <tr>
-        <!-- start source code -->
-        <td nowrap="nowrap" valign="top" align="left"><code> <font
-          color="#ffffff">&nbsp;&nbsp;</font><font color="#000000">File&nbsp;userDir&nbsp;=&nbsp;</font><font
-          color="#7f0055"><b>new&nbsp;</b></font><font color="#000000">File</font><font
-          color="#000000">(&nbsp;</font><font color="#000000">System.getProperty&nbsp;</font><font
-          color="#000000">(&nbsp;</font><font color="#2a00ff">&#34;user.dir&#34;&nbsp;</font><font
-          color="#000000">)&nbsp;)</font><font color="#000000">;</font><br />
-        <font color="#ffffff">&nbsp;&nbsp;</font><font color="#000000">File&nbsp;outputFile&nbsp;=&nbsp;</font><font
-          color="#7f0055"><b>new&nbsp;</b></font><font color="#000000">File</font><font
-          color="#000000">(&nbsp;</font><font color="#000000">userDir,&nbsp;</font><font
-          color="#2a00ff">&#34;test.html&#34;&nbsp;</font><font color="#000000">)</font><font
-          color="#000000">;</font><br />
-        <font color="#ffffff"></font><br />
-        <font color="#ffffff">&nbsp;&nbsp;</font><font color="#000000">SinkFactory&nbsp;sinkFactory&nbsp;=&nbsp;</font><font
-          color="#000000">(</font><font color="#000000">SinkFactory</font><font
-          color="#000000">)&nbsp;</font><font color="#000000">lookup</font><font
-          color="#000000">(&nbsp;</font><font color="#000000">SinkFactory.ROLE,&nbsp;</font><font
-          color="#2a00ff">&#34;html&#34;&nbsp;</font><font color="#000000">)</font><font
-          color="#000000">;&nbsp;</font><font color="#3f7f5f">//&nbsp;Plexus&nbsp;lookup</font><br />
-        <font color="#ffffff">&nbsp;&nbsp;</font><font color="#000000">Sink&nbsp;sink&nbsp;=&nbsp;sinkFactory.createSink</font><font
-          color="#000000">(&nbsp;</font><font color="#000000">outputFile.getParentFile</font><font
-          color="#000000">()</font><font color="#000000">,&nbsp;outputFile.getName</font><font
-          color="#000000">()&nbsp;)&nbsp;)</font><font color="#000000">;</font><br />
-        <font color="#ffffff"></font><br />
-        <font color="#ffffff">&nbsp;&nbsp;</font><font color="#3f7f5f">//&nbsp;Sink&nbsp;head</font><br />
-        <font color="#ffffff">&nbsp;&nbsp;</font><font color="#000000">sink.head</font><font
-          color="#000000">()</font><font color="#000000">;</font><br />
-        <font color="#ffffff"></font><br />
-        <font color="#ffffff">&nbsp;&nbsp;</font><font color="#000000">sink.title</font><font
-          color="#000000">()</font><font color="#000000">;</font><br />
-        <font color="#ffffff">&nbsp;&nbsp;</font><font color="#000000">sink.text</font><font
-          color="#000000">(&nbsp;</font><font color="#2a00ff">&#34;Title&#34;&nbsp;</font><font
-          color="#000000">)</font><font color="#000000">;</font><br />
-        <font color="#ffffff">&nbsp;&nbsp;</font><font color="#000000">sink.title_</font><font
-          color="#000000">()</font><font color="#000000">;</font><br />
-        <font color="#ffffff"></font><br />
-        <font color="#ffffff">&nbsp;&nbsp;</font><font color="#000000">sink.author</font><font
-          color="#000000">()</font><font color="#000000">;</font><br />
-        <font color="#ffffff">&nbsp;&nbsp;</font><font color="#000000">sink.text</font><font
-          color="#000000">(&nbsp;</font><font color="#2a00ff">&#34;Author&#34;&nbsp;</font><font
-          color="#000000">)</font><font color="#000000">;</font><br />
-        <font color="#ffffff">&nbsp;&nbsp;</font><font color="#000000">sink.author_</font><font
-          color="#000000">()</font><font color="#000000">;</font><br />
-        <font color="#ffffff"></font><br />
-        <font color="#ffffff">&nbsp;&nbsp;</font><font color="#000000">sink.date</font><font
-          color="#000000">()</font><font color="#000000">;</font><br />
-        <font color="#ffffff">&nbsp;&nbsp;</font><font color="#000000">sink.text</font><font
-          color="#000000">(&nbsp;</font><font color="#2a00ff">&#34;Date&#34;&nbsp;</font><font
-          color="#000000">)</font><font color="#000000">;</font><br />
-        <font color="#ffffff">&nbsp;&nbsp;</font><font color="#000000">sink.date_</font><font
-          color="#000000">()</font><font color="#000000">;</font><br />
-        <font color="#ffffff"></font><br />
-        <font color="#ffffff">&nbsp;&nbsp;</font><font color="#000000">sink.head_</font><font
-          color="#000000">()</font><font color="#000000">;</font><br />
-        <font color="#ffffff">&nbsp;&nbsp;</font><font color="#3f7f5f">//&nbsp;Sink&nbsp;head</font><br />
-        <font color="#ffffff"></font><br />
-        <font color="#ffffff">&nbsp;&nbsp;</font><font color="#000000">sink.body</font><font
-          color="#000000">()</font><font color="#000000">;</font><br />
-        <font color="#ffffff"></font><br />
-        <font color="#ffffff">&nbsp;&nbsp;&nbsp;</font><font color="#000000">sink.paragraph</font><font
-          color="#000000">()</font><font color="#000000">;</font><br />
-        <font color="#ffffff">&nbsp;&nbsp;&nbsp;</font><font color="#000000">sink.text</font><font
-          color="#000000">(&nbsp;</font><font color="#2a00ff">&#34;Paragraph&nbsp;1,&nbsp;line&nbsp;1.&nbsp;Paragraph&nbsp;1,&nbsp;line&nbsp;2.&#34;&nbsp;</font><font
-          color="#000000">)</font><font color="#000000">;</font><br />
-        <font color="#ffffff">&nbsp;&nbsp;&nbsp;</font><font color="#000000">sink.paragraph_</font><font
-          color="#000000">()</font><font color="#000000">;</font><br />
-        <font color="#ffffff"></font><br />
-        <font color="#ffffff">&nbsp;&nbsp;&nbsp;</font><font color="#000000">...</font><br />
-        <font color="#ffffff"></font><br />
-        <font color="#ffffff">&nbsp;&nbsp;</font><font color="#000000">sink.body_</font><font
-          color="#000000">()</font><font color="#000000">;</font><br />
-        <font color="#ffffff"></font><br />
-        <font color="#ffffff">&nbsp;&nbsp;</font><font color="#000000">sink.flush</font><font
-          color="#000000">()</font><font color="#000000">;</font><br />
-        <font color="#ffffff"></font><br />
-        <font color="#ffffff">&nbsp;&nbsp;</font><font color="#000000">sink.close</font><font
-          color="#000000">()</font><font color="#000000">;</font></code></td>
-        <!-- end source code -->
-      </tr>
+<div style="text-align:center" class="java">
+    <table>
+        <tr>
+            <!-- start source code -->
+            <td nowrap="nowrap" style="text-align:left">
+                <code>
+                    <span style="color:#ffffff">&nbsp;&nbsp;</span><span style="color:#000000">File&nbsp;userDir&nbsp;=&nbsp;</span><span
+                        style="color:#7f0055"><b>new&nbsp;</b></span><span style="color:#000000">File</span><span
+                        style="color:#000000">(&nbsp;</span><span
+                        style="color:#000000">System.getProperty&nbsp;</span><span
+                        style="color:#000000">(&nbsp;</span><span
+                        style="color:#2a00ff">&#34;user.dir&#34;&nbsp;</span><span
+                        style="color:#000000">)&nbsp;)</span><span style="color:#000000">;</span><br/>
+                    <span style="color:#ffffff">&nbsp;&nbsp;</span><span style="color:#000000">File&nbsp;outputFile&nbsp;=&nbsp;</span><span
+                        style="color:#7f0055"><b>new&nbsp;</b></span><span style="color:#000000">File</span><span
+                        style="color:#000000">(&nbsp;</span><span style="color:#000000">userDir,&nbsp;</span><span
+                        style="color:#2a00ff">&#34;test.html&#34;&nbsp;</span><span style="color:#000000">)</span><span
+                        style="color:#000000">;</span><br/>
+                    <span style="color:#ffffff"></span><br/>
+                    <span style="color:#ffffff">&nbsp;&nbsp;</span><span style="color:#000000">SinkFactory&nbsp;sinkFactory&nbsp;=&nbsp;</span><span
+                        style="color:#000000">(</span><span style="color:#000000">SinkFactory</span><span
+                        style="color:#000000">)&nbsp;</span><span style="color:#000000">lookup</span><span
+                        style="color:#000000">(&nbsp;</span><span
+                        style="color:#000000">SinkFactory.ROLE,&nbsp;</span><span
+                        style="color:#2a00ff">&#34;html&#34;&nbsp;</span><span style="color:#000000">)</span><span
+                        style="color:#000000">;&nbsp;</span><span
+                        style="color:#3f7f5f">//&nbsp;Plexus&nbsp;lookup</span><br/>
+                    <span style="color:#ffffff">&nbsp;&nbsp;</span><span style="color:#000000">Sink&nbsp;sink&nbsp;=&nbsp;sinkFactory.createSink</span><span
+                        style="color:#000000">(&nbsp;</span><span
+                        style="color:#000000">outputFile.getParentFile</span><span
+                        style="color:#000000">()</span><span style="color:#000000">,&nbsp;outputFile.getName</span><span
+                        style="color:#000000">()&nbsp;)&nbsp;)</span><span style="color:#000000">;</span><br/>
+                    <span style="color:#ffffff"></span><br/>
+                    <span style="color:#ffffff">&nbsp;&nbsp;</span><span
+                        style="color:#3f7f5f">//&nbsp;Sink&nbsp;head</span><br/>
+                    <span style="color:#ffffff">&nbsp;&nbsp;</span><span style="color:#000000">sink.head</span><span
+                        style="color:#000000">()</span><span style="color:#000000">;</span><br/>
+                    <span style="color:#ffffff"></span><br/>
+                    <span style="color:#ffffff">&nbsp;&nbsp;</span><span style="color:#000000">sink.title</span><span
+                        style="color:#000000">()</span><span style="color:#000000">;</span><br/>
+                    <span style="color:#ffffff">&nbsp;&nbsp;</span><span style="color:#000000">sink.text</span><span
+                        style="color:#000000">(&nbsp;</span><span
+                        style="color:#2a00ff">&#34;Title&#34;&nbsp;</span><span
+                        style="color:#000000">)</span><span style="color:#000000">;</span><br/>
+                    <span style="color:#ffffff">&nbsp;&nbsp;</span><span style="color:#000000">sink.title_</span><span
+                        style="color:#000000">()</span><span style="color:#000000">;</span><br/>
+                    <span style="color:#ffffff"></span><br/>
+                    <span style="color:#ffffff">&nbsp;&nbsp;</span><span style="color:#000000">sink.author</span><span
+                        style="color:#000000">()</span><span style="color:#000000">;</span><br/>
+                    <span style="color:#ffffff">&nbsp;&nbsp;</span><span style="color:#000000">sink.text</span><span
+                        style="color:#000000">(&nbsp;</span><span
+                        style="color:#2a00ff">&#34;Author&#34;&nbsp;</span><span
+                        style="color:#000000">)</span><span style="color:#000000">;</span><br/>
+                    <span style="color:#ffffff">&nbsp;&nbsp;</span><span style="color:#000000">sink.author_</span><span
+                        style="color:#000000">()</span><span style="color:#000000">;</span><br/>
+                    <span style="color:#ffffff"></span><br/>
+                    <span style="color:#ffffff">&nbsp;&nbsp;</span><span style="color:#000000">sink.date</span><span
+                        style="color:#000000">()</span><span style="color:#000000">;</span><br/>
+                    <span style="color:#ffffff">&nbsp;&nbsp;</span><span style="color:#000000">sink.text</span><span
+                        style="color:#000000">(&nbsp;</span><span style="color:#2a00ff">&#34;Date&#34;&nbsp;</span><span
+                        style="color:#000000">)</span><span style="color:#000000">;</span><br/>
+                    <span style="color:#ffffff">&nbsp;&nbsp;</span><span style="color:#000000">sink.date_</span><span
+                        style="color:#000000">()</span><span style="color:#000000">;</span><br/>
+                    <span style="color:#ffffff"></span><br/>
+                    <span style="color:#ffffff">&nbsp;&nbsp;</span><span style="color:#000000">sink.head_</span><span
+                        style="color:#000000">()</span><span style="color:#000000">;</span><br/>
+                    <span style="color:#ffffff">&nbsp;&nbsp;</span><span
+                        style="color:#3f7f5f">//&nbsp;Sink&nbsp;head</span><br/>
+                    <span style="color:#ffffff"></span><br/>
+                    <span style="color:#ffffff">&nbsp;&nbsp;</span><span style="color:#000000">sink.body</span><span
+                        style="color:#000000">()</span><span style="color:#000000">;</span><br/>
+                    <span style="color:#ffffff"></span><br/>
+                    <span style="color:#ffffff">&nbsp;&nbsp;&nbsp;</span><span
+                        style="color:#000000">sink.paragraph</span><span
+                        style="color:#000000">()</span><span style="color:#000000">;</span><br/>
+                    <span style="color:#ffffff">&nbsp;&nbsp;&nbsp;</span><span
+                        style="color:#000000">sink.text</span><span
+                        style="color:#000000">(&nbsp;</span><span style="color:#2a00ff">&#34;Paragraph&nbsp;1,&nbsp;line&nbsp;1.&nbsp;Paragraph&nbsp;1,&nbsp;line&nbsp;2.&#34;&nbsp;</span><span
+                        style="color:#000000">)</span><span style="color:#000000">;</span><br/>
+                    <span style="color:#ffffff">&nbsp;&nbsp;&nbsp;</span><span
+                        style="color:#000000">sink.paragraph_</span><span
+                        style="color:#000000">()</span><span style="color:#000000">;</span><br/>
+                    <span style="color:#ffffff"></span><br/>
+                    <span style="color:#ffffff">&nbsp;&nbsp;&nbsp;</span><span style="color:#000000">...</span><br/>
+                    <span style="color:#ffffff"></span><br/>
+                    <span style="color:#ffffff">&nbsp;&nbsp;</span><span style="color:#000000">sink.body_</span><span
+                        style="color:#000000">()</span><span style="color:#000000">;</span><br/>
+                    <span style="color:#ffffff"></span><br/>
+                    <span style="color:#ffffff">&nbsp;&nbsp;</span><span style="color:#000000">sink.flush</span><span
+                        style="color:#000000">()</span><span style="color:#000000">;</span><br/>
+                    <span style="color:#ffffff"></span><br/>
+                    <span style="color:#ffffff">&nbsp;&nbsp;</span><span style="color:#000000">sink.close</span><span
+                        style="color:#000000">()</span><span style="color:#000000">;</span></code></td>
+            <!-- end source code -->
+        </tr>
     </table>
-  </div>
+</div>
 
-  <h2>Resources</h2>
-  <ul>
+<h2>Resources</h2>
+<ul>
     <li><a href="https://maven.apache.org/doxia/">Maven Doxia Website</a></li>
     <li><a href="https://codehaus-plexus.github.io/">Plexus</a></li>
-  </ul>
+</ul>
 </body>

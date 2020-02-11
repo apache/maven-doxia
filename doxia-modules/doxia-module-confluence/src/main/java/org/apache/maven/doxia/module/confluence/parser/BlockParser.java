@@ -24,8 +24,6 @@ import org.apache.maven.doxia.parser.ParseException;
 
 /**
  * <p>BlockParser interface.</p>
- *
- * @version $Id$
  */
 public interface BlockParser
 {

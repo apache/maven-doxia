@@ -43,7 +43,6 @@ import org.codehaus.plexus.util.xml.pull.XmlPullParserException;
  *
  * @author <a href="mailto:jason@maven.org">Jason van Zyl</a>
  * @author ltheussl
- * @version $Id$
  * @since 1.1
  */
 public class XhtmlBaseParser
@@ -567,7 +566,7 @@ public class XhtmlBaseParser
      *   Goes through a common list of possible html end tags.
      *   These should be re-usable by different xhtml-based parsers.
      *   The tags handled here are the same as for {@link #baseStartTag(XmlPullParser,Sink)},
-     *   except for the empty elements ({@code<br/>, <hr/>, <img/>}).
+     *   except for the empty elements ({@code <br/>, <hr/>, <img/>}).
      * </p>
      *
      * @param parser A parser.
@@ -982,7 +981,6 @@ public class XhtmlBaseParser
      * Checks if we are currently inside a &lt;script&gt; tag.
      *
      * @return true if we are currently inside <code>&lt;script&gt;</code> tags.
-     *
      * @since 1.1.1.
      */
     protected boolean isScriptBlock()

@@ -25,7 +25,6 @@ import org.apache.maven.doxia.sink.Sink;
  * An XHTML Block
  *
  * @author <a href="mailto:vincent.siveton@gmail.com">Vincent Siveton</a>
- * @version $Id$
  */
 class XHTMLBlock
     implements Block
@@ -47,7 +46,7 @@ class XHTMLBlock
         this.tag = tag;
     }
 
-    /** {@inheritDoc}*/
+    /** {@inheritDoc} */
     public final void traverse( final Sink sink )
     {
         if ( tag.trim().length() == 0 )
@@ -58,7 +57,7 @@ class XHTMLBlock
         sink.rawText( tag );
     }
 
-    /** {@inheritDoc}*/
+    /** {@inheritDoc} */
     public final boolean equals( final Object obj )
     {
         boolean ret = false;
@@ -77,7 +76,11 @@ class XHTMLBlock
         return ret;
     }
 
-    /** {@inheritDoc}*/
+    /**
+     * {@inheritDoc}
+     *
+     * @return a int.
+     */
     public final int hashCode()
     {
         return tag.hashCode();

@@ -24,8 +24,9 @@ import org.apache.maven.doxia.sink.Sink;
 import java.util.List;
 
 /**
+ * ParagraphBlock
+ *
  * @author Juan F. Codagnone
- * @version $Id$
  */
 class ParagraphBlock
     extends AbstractFatherBlock

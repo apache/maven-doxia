@@ -25,7 +25,6 @@ import org.apache.maven.doxia.sink.Sink;
  * Block that holds plain text
  *
  * @author Juan F. Codagnone
- * @version $Id$
  */
 class TextBlock
     implements Block
@@ -57,7 +56,11 @@ class TextBlock
         sink.text( text );
     }
 
-    /** {@inheritDoc} */
+    /**
+     * {@inheritDoc}
+     *
+     * @return a {@link java.lang.String} object.
+     */
     public final String toString()
     {
         return getClass().getName() + ": [" + text.replaceAll( "\n", "\\n" ) + "]";
@@ -91,7 +94,11 @@ class TextBlock
         return ret;
     }
 
-    /** {@inheritDoc} */
+    /**
+     * {@inheritDoc}
+     *
+     * @return a int.
+     */
     public final int hashCode()
     {
         return text.hashCode();

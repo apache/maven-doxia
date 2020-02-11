@@ -56,7 +56,6 @@ import org.codehaus.plexus.util.xml.pull.XmlPullParserException;
  *
  * @author <a href="mailto:evenisse@codehaus.org">Emmanuel Venisse</a>
  * @author ltheussl
- * @version $Id$
  * @since 1.0
  */
 @Component( role = Parser.class, hint = "fml" )
@@ -425,7 +424,9 @@ public class FmlParser
         }
     }
 
-    /** {@inheritDoc} */
+    /**
+     * {@inheritDoc}
+     */
     protected void init()
     {
         super.init();

@@ -28,7 +28,6 @@ import org.apache.maven.doxia.markup.TextMarkup;
  *
  * @see <a href="http://twiki.org/cgi-bin/view/TWiki/TextFormattingRules">http://twiki.org/cgi-bin/view/TWiki/TextFormattingRules</a>
  * @author <a href="mailto:vincent.siveton@gmail.com">Vincent Siveton</a>
- * @version $Id$
  * @since 1.0
  */
 @SuppressWarnings( "checkstyle:interfaceistype" )
@@ -87,7 +86,8 @@ public interface TWikiMarkup
     /** Syntax for the link start markup: "[[" */
     String LINK_START_MARKUP = "[[";
 
-    /** Syntax for the list item markup: "* */
+    /** Syntax for the list item markup: <code>"* "</code> */
+    /** Constant <code>LIST_ITEM_MARKUP="* "</code> */
     String LIST_ITEM_MARKUP = "* ";
 
     /** Syntax for the mono-spaced style end: "=" */

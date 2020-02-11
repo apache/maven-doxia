@@ -26,7 +26,6 @@ package org.apache.maven.doxia.logging;
  * Based on <code>org.codehaus.plexus.logging.LogEnabled</code>.
  *
  * @author ltheussl
- * @version $Id$
  * @since 1.1
  */
 public interface LogEnabled

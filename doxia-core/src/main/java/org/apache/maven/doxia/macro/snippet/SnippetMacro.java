@@ -37,8 +37,6 @@ import java.util.Map;
 
 /**
  * A macro that prints out the content of a file or a URL.
- *
- * @version $Id$
  */
 @Component( role = Macro.class, hint = "snippet" )
 public class SnippetMacro
@@ -71,9 +69,7 @@ public class SnippetMacro
      */
     private boolean ignoreDownloadError = true;
 
-    /**
-     * {@inheritDoc}
-     */
+    /** {@inheritDoc} */
     public void execute( Sink sink, MacroRequest request )
         throws MacroExecutionException
     {

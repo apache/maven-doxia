@@ -26,7 +26,6 @@ import org.apache.maven.doxia.parser.ParseException;
  *
  * @author Juan F. Codagnone
  * @since Nov 4, 2005
- * @version $Id$
  */
 public interface ByLineSource
 {

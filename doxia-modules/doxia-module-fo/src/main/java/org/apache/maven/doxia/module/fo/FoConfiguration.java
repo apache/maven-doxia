@@ -35,7 +35,6 @@ import org.codehaus.plexus.util.ReaderFactory;
  * A utility class to construct FO configuration parameters.
  *
  * @author ltheussl
- * @version $Id$
  * @since 1.1
  */
 public class FoConfiguration

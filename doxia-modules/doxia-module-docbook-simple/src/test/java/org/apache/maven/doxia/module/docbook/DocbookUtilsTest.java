@@ -28,7 +28,6 @@ import static org.junit.Assert.*;
  * Test DocbookUtils.
  *
  * @author ltheussl
- * @version $Id$
  */
 public class DocbookUtilsTest
 {
