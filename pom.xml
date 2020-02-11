@@ -412,7 +412,7 @@ under the License.
             <artifactId>maven-changes-plugin</artifactId>
             <configuration>
               <columnNames>Type,Key,Summary,Resolution,Assignee</columnNames>
-              <maxEntries>100</maxEntries>
+              <maxEntries>1000</maxEntries>
               <onlyCurrentVersion>true</onlyCurrentVersion>
               <sortColumnNames>Key</sortColumnNames>
             </configuration>
