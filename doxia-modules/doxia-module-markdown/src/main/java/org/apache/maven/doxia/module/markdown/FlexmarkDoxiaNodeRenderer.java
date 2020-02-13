@@ -70,8 +70,8 @@ class FlexmarkDoxiaNodeRenderer implements NodeRenderer
     private void render( IndentedCodeBlock node, NodeRendererContext context, HtmlWriter html )
     {
         html.line();
-        html.attr( "class", "source" ).tag( "div" );
-        html.srcPosWithEOL( node.getChars() ).withAttr().tag( "pre" ).openPre();
+        html.attr( "class", "source" ).withAttr().tag( "div" );
+        html.srcPosWithEOL( node.getChars() ).tag( "pre" ).openPre();
 
         String noLanguageClass = context.getHtmlOptions().noLanguageClass.trim();
         if ( !noLanguageClass.isEmpty() )
@@ -97,8 +97,8 @@ class FlexmarkDoxiaNodeRenderer implements NodeRenderer
     private void render( FencedCodeBlock node, NodeRendererContext context, HtmlWriter html )
     {
         html.line();
-        html.attr( "class", "source" ).tag( "div" );
-        html.srcPosWithTrailingEOL( node.getChars() ).withAttr().tag( "pre" ).openPre();
+        html.attr( "class", "source" ).withAttr().tag( "div" );
+        html.srcPosWithTrailingEOL( node.getChars() ).tag( "pre" ).openPre();
 
         //BasedSequence info = node.getInfo();
         //if (info.isNotNull() && !info.isBlank()) {
