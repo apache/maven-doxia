@@ -42,23 +42,23 @@ public class HtmlTools
     private static final Tag[] ALL_TAGS  =
     {
         HtmlMarkup.A, HtmlMarkup.ABBR, HtmlMarkup.ACRONYM, HtmlMarkup.ADDRESS, HtmlMarkup.APPLET,
-        HtmlMarkup.AREA, HtmlMarkup.B, HtmlMarkup.BASE, HtmlMarkup.BASEFONT, HtmlMarkup.BDO,
-        HtmlMarkup.BIG, HtmlMarkup.BLOCKQUOTE, HtmlMarkup.BODY, HtmlMarkup.BR, HtmlMarkup.BUTTON,
-        HtmlMarkup.CAPTION, HtmlMarkup.CENTER, HtmlMarkup.CITE, HtmlMarkup.CODE, HtmlMarkup.COL,
-        HtmlMarkup.COLGROUP, HtmlMarkup.DD, HtmlMarkup.DEL, HtmlMarkup.DFN, HtmlMarkup.DIR,
-        HtmlMarkup.DIV, HtmlMarkup.DL, HtmlMarkup.DT, HtmlMarkup.EM, HtmlMarkup.FIELDSET,
-        HtmlMarkup.FONT, HtmlMarkup.FORM, HtmlMarkup.FRAME, HtmlMarkup.FRAMESET, HtmlMarkup.H1,
-        HtmlMarkup.H2, HtmlMarkup.H3, HtmlMarkup.H4, HtmlMarkup.H5, HtmlMarkup.H6, HtmlMarkup.HEAD,
-        HtmlMarkup.HR, HtmlMarkup.HTML, HtmlMarkup.I, HtmlMarkup.IFRAME, HtmlMarkup.IMG,
-        HtmlMarkup.INPUT, HtmlMarkup.INS, HtmlMarkup.ISINDEX, HtmlMarkup.KBD, HtmlMarkup.LABEL,
-        HtmlMarkup.LEGEND, HtmlMarkup.LI, HtmlMarkup.LINK, HtmlMarkup.MAP, HtmlMarkup.MENU,
-        HtmlMarkup.META, HtmlMarkup.NOFRAMES, HtmlMarkup.NOSCRIPT, HtmlMarkup.OBJECT, HtmlMarkup.OL,
-        HtmlMarkup.OPTGROUP, HtmlMarkup.OPTION, HtmlMarkup.P, HtmlMarkup.PARAM, HtmlMarkup.PRE,
-        HtmlMarkup.Q, HtmlMarkup.S, HtmlMarkup.SAMP, HtmlMarkup.SCRIPT, HtmlMarkup.SELECT,
-        HtmlMarkup.SMALL, HtmlMarkup.SPAN, HtmlMarkup.STRIKE, HtmlMarkup.STRONG, HtmlMarkup.STYLE,
-        HtmlMarkup.SUB, HtmlMarkup.SUP, HtmlMarkup.TABLE, HtmlMarkup.TBODY, HtmlMarkup.TD,
-        HtmlMarkup.TEXTAREA, HtmlMarkup.TFOOT, HtmlMarkup.TH, HtmlMarkup.THEAD, HtmlMarkup.TITLE,
-        HtmlMarkup.TR, HtmlMarkup.TT, HtmlMarkup.U, HtmlMarkup.UL, HtmlMarkup.VAR
+        HtmlMarkup.AREA, HtmlMarkup.B, HtmlMarkup.BASE, HtmlMarkup.BASEFONT, HtmlMarkup.BDO, HtmlMarkup.BIG,
+        HtmlMarkup.BLOCKQUOTE, HtmlMarkup.BODY, HtmlMarkup.BR, HtmlMarkup.BUTTON, HtmlMarkup.CAPTION,
+        HtmlMarkup.CENTER, HtmlMarkup.CITE, HtmlMarkup.CODE, HtmlMarkup.COL, HtmlMarkup.COLGROUP,
+        HtmlMarkup.DD, HtmlMarkup.DEL, HtmlMarkup.DFN, HtmlMarkup.DIR, HtmlMarkup.DIV, HtmlMarkup.DL,
+        HtmlMarkup.DT, HtmlMarkup.EM, HtmlMarkup.FIELDSET, HtmlMarkup.FONT, HtmlMarkup.FORM,
+        HtmlMarkup.FRAME, HtmlMarkup.FRAMESET, HtmlMarkup.H1, HtmlMarkup.H2, HtmlMarkup.H3, HtmlMarkup.H4,
+        HtmlMarkup.H5, HtmlMarkup.H6, HtmlMarkup.HEAD, HtmlMarkup.HR, HtmlMarkup.HTML, HtmlMarkup.I,
+        HtmlMarkup.IFRAME, HtmlMarkup.IMG, HtmlMarkup.INPUT, HtmlMarkup.INS, HtmlMarkup.ISINDEX,
+        HtmlMarkup.KBD, HtmlMarkup.KEYGEN, HtmlMarkup.LABEL, HtmlMarkup.LEGEND, HtmlMarkup.LI,
+        HtmlMarkup.LINK, HtmlMarkup.MAP, HtmlMarkup.MENU, HtmlMarkup.META, HtmlMarkup.NOFRAMES,
+        HtmlMarkup.NOSCRIPT, HtmlMarkup.OBJECT, HtmlMarkup.OL, HtmlMarkup.OPTGROUP, HtmlMarkup.OPTION,
+        HtmlMarkup.P, HtmlMarkup.PARAM, HtmlMarkup.PRE, HtmlMarkup.Q, HtmlMarkup.S, HtmlMarkup.SAMP,
+        HtmlMarkup.SCRIPT, HtmlMarkup.SELECT, HtmlMarkup.SMALL, HtmlMarkup.SPAN, HtmlMarkup.STRIKE,
+        HtmlMarkup.STRONG, HtmlMarkup.STYLE, HtmlMarkup.SUB, HtmlMarkup.SUP, HtmlMarkup.TABLE,
+        HtmlMarkup.TBODY, HtmlMarkup.TD, HtmlMarkup.TEXTAREA, HtmlMarkup.TFOOT, HtmlMarkup.TH,
+        HtmlMarkup.THEAD, HtmlMarkup.TITLE, HtmlMarkup.TR, HtmlMarkup.TT, HtmlMarkup.U, HtmlMarkup.UL,
+        HtmlMarkup.VAR
     };
 
     private static final Map<String, Tag> TAG_MAP = new HashMap<>( ALL_TAGS.length );
