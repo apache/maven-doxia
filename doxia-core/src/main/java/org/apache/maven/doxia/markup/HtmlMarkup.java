@@ -473,6 +473,17 @@ public interface HtmlMarkup
     /** Xhtml tag for <code>kbd</code>. */
     Tag KBD = Tag.KBD;
 
+    /** Html5 tag for <code>keygen</code>. */
+    Tag KEYGEN = new Tag()
+    {
+        /** {@inheritDoc} */
+        @Override
+        public String toString()
+        {
+            return "keygen";
+        }
+    };
+
     /** Xhtml tag for <code>label</code>. */
     Tag LABEL = new Tag()
     {
