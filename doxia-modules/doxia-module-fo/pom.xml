@@ -86,6 +86,17 @@ under the License.
       <groupId>org.apache.xmlgraphics</groupId>
       <artifactId>fop</artifactId>
       <version>2.4</version>
+      <exclusions>
+        <!-- exclude JAI - missing on Maven Central -->
+        <exclusion>
+          <groupId>javax.media</groupId>
+          <artifactId>jai-core</artifactId>
+        </exclusion>
+        <exclusion>
+          <groupId>com.sun.media</groupId>
+          <artifactId>jai-codec</artifactId>
+        </exclusion>
+      </exclusions>
     </dependency>
     <dependency>
       <groupId>log4j</groupId>
