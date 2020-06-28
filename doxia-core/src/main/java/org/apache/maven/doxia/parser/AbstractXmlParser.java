@@ -19,6 +19,29 @@ package org.apache.maven.doxia.parser;
  * under the License.
  */
 
+import org.apache.http.HttpStatus;
+import org.apache.http.client.ClientProtocolException;
+import org.apache.http.client.methods.CloseableHttpResponse;
+import org.apache.http.client.methods.HttpGet;
+import org.apache.http.impl.client.DefaultHttpRequestRetryHandler;
+import org.apache.http.impl.client.HttpClientBuilder;
+import org.apache.http.util.EntityUtils;
+import org.apache.maven.doxia.macro.MacroExecutionException;
+import org.apache.maven.doxia.markup.XmlMarkup;
+import org.apache.maven.doxia.sink.Sink;
+import org.apache.maven.doxia.sink.impl.SinkEventAttributeSet;
+import org.apache.maven.doxia.util.HtmlTools;
+import org.apache.maven.doxia.util.XmlValidator;
+import org.codehaus.plexus.util.FileUtils;
+import org.codehaus.plexus.util.IOUtil;
+import org.codehaus.plexus.util.StringUtils;
+import org.codehaus.plexus.util.xml.pull.MXParser;
+import org.codehaus.plexus.util.xml.pull.XmlPullParser;
+import org.codehaus.plexus.util.xml.pull.XmlPullParserException;
+import org.xml.sax.EntityResolver;
+import org.xml.sax.InputSource;
+import org.xml.sax.SAXException;
+
 import java.io.BufferedReader;
 import java.io.ByteArrayInputStream;
 import java.io.File;
@@ -35,31 +58,6 @@ import java.util.Locale;
 import java.util.Map;
 import java.util.regex.Matcher;
 import java.util.regex.Pattern;
-
-import org.apache.http.HttpStatus;
-import org.apache.http.client.ClientProtocolException;
-import org.apache.http.client.methods.CloseableHttpResponse;
-import org.apache.http.client.methods.HttpGet;
-import org.apache.http.impl.client.DefaultHttpRequestRetryHandler;
-import org.apache.http.impl.client.HttpClientBuilder;
-import org.apache.http.util.EntityUtils;
-import org.apache.maven.doxia.macro.MacroExecutionException;
-import org.apache.maven.doxia.markup.XmlMarkup;
-import org.apache.maven.doxia.sink.Sink;
-import org.apache.maven.doxia.sink.impl.SinkEventAttributeSet;
-import org.apache.maven.doxia.util.HtmlTools;
-import org.apache.maven.doxia.util.XmlValidator;
-
-import org.codehaus.plexus.util.FileUtils;
-import org.codehaus.plexus.util.IOUtil;
-import org.codehaus.plexus.util.StringUtils;
-import org.codehaus.plexus.util.xml.pull.MXParser;
-import org.codehaus.plexus.util.xml.pull.XmlPullParser;
-import org.codehaus.plexus.util.xml.pull.XmlPullParserException;
-
-import org.xml.sax.EntityResolver;
-import org.xml.sax.InputSource;
-import org.xml.sax.SAXException;
 
 /**
  * An abstract class that defines some convenience methods for <code>XML</code> parsers.
@@ -100,7 +98,7 @@ public abstract class AbstractXmlParser
     private boolean validate = false;
 
     /** {@inheritDoc} */
-    public void parse( Reader source, Sink sink )
+    public void parse( Reader source, Sink sink, String reference )
         throws ParseException
     {
         init();
@@ -153,7 +151,7 @@ public abstract class AbstractXmlParser
         setSecondParsing( false );
         init();
     }
-    
+
     /**
      * Initializes the parser with custom entities or other options.
      *
@@ -164,18 +162,6 @@ public abstract class AbstractXmlParser
         throws XmlPullParserException
     {
         // nop
-    }
-
-    /**
-     * {@inheritDoc}
-     *
-     * Convenience method to parse an arbitrary string and emit any xml events into the given sink.
-     */
-    @Override
-    public void parse( String string, Sink sink )
-        throws ParseException
-    {
-        super.parse( string, sink );
     }
 
     /** {@inheritDoc} */

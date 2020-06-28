@@ -85,7 +85,7 @@ public class XdocParser
     private boolean hasTitle;
 
     /** {@inheritDoc} */
-    public void parse( Reader source, Sink sink )
+    public void parse( Reader source, Sink sink, String reference )
         throws ParseException
     {
         this.sourceContent = null;
@@ -110,7 +110,7 @@ public class XdocParser
 
         try
         {
-            super.parse( new StringReader( sourceContent ), sink );
+            super.parse( new StringReader( sourceContent ), sink, reference );
         }
         finally
         {

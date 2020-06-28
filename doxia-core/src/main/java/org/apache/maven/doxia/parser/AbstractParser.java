@@ -19,14 +19,6 @@ package org.apache.maven.doxia.parser;
  * under the License.
  */
 
-import java.io.File;
-import java.io.IOException;
-import java.io.InputStream;
-import java.io.Reader;
-import java.io.StringReader;
-
-import java.util.Properties;
-
 import org.apache.maven.doxia.logging.Log;
 import org.apache.maven.doxia.logging.SystemStreamLog;
 import org.apache.maven.doxia.macro.Macro;
@@ -36,6 +28,13 @@ import org.apache.maven.doxia.macro.manager.MacroManager;
 import org.apache.maven.doxia.macro.manager.MacroNotFoundException;
 import org.apache.maven.doxia.sink.Sink;
 import org.codehaus.plexus.component.annotations.Requirement;
+
+import java.io.File;
+import java.io.IOException;
+import java.io.InputStream;
+import java.io.Reader;
+import java.io.StringReader;
+import java.util.Properties;
 
 /**
  * An abstract base class that defines some convenience methods for parsers.
@@ -179,15 +178,32 @@ public abstract class AbstractParser
     public void parse( String string, Sink sink )
         throws ParseException
     {
-        parse( new StringReader( string ), sink );
+        this.parse( string, sink, null );
     }
-    
-    /** {@inheritDoc} */
-    @Override
-    public void parse( Reader source, Sink sink, String reference )
+
+    /**
+     * {@inheritDoc}
+     *
+     * Convenience method to parse an arbitrary string and emit events into the given sink.
+     *
+     * @param string A string that provides the source input.
+     * @param sink A sink that consumes the Doxia events.
+     * @param reference A string containing the reference to the source of the input string (e.g. filename).
+     * @throws org.apache.maven.doxia.parser.ParseException if the string could not be parsed.
+     * @since 1.9.2
+     */
+    public void parse( String string, Sink sink, String reference )
         throws ParseException
     {
-        parse( source, sink );
+        parse( new StringReader( string ), sink, reference );
+    }
+
+    /** {@inheritDoc} */
+    @Override
+    public void parse( Reader source, Sink sink )
+        throws ParseException
+    {
+        parse( source, sink, null );
     }
 
     /**

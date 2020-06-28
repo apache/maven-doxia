@@ -21,6 +21,7 @@ package org.apache.maven.doxia.module.xhtml;
 
 import java.io.File;
 import java.io.FileFilter;
+import java.io.StringReader;
 import java.util.Iterator;
 import java.util.regex.Pattern;
 
