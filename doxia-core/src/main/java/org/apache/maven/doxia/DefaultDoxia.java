@@ -57,11 +57,19 @@ public class DefaultDoxia
     public void parse( Reader source, String parserId, Sink sink )
         throws ParserNotFoundException, ParseException
     {
+        this.parse( source, parserId, sink, null );
+    }
+
+    /** {@inheritDoc} */
+    @Override
+    public void parse( Reader source, String parserId, Sink sink, String reference )
+        throws ParserNotFoundException, ParseException
+    {
         Parser parser = parserManager.getParser( parserId );
 
         parser.enableLogging( new PlexusLoggerWrapper( getLogger() ) );
 
-        parser.parse( source, sink );
+        parser.parse( source, sink, reference );
     }
 
     /** {@inheritDoc} */

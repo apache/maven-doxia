@@ -53,6 +53,22 @@ public interface Doxia
         throws ParserNotFoundException, ParseException;
 
     /**
+     * Parses the given source model using a parser with given id,
+     * and emits Doxia events into the given sink.
+     *
+     * @param source not null reader that provides the source document.
+     * You could use <code>newReader</code> methods from {@link org.codehaus.plexus.util.ReaderFactory}.
+     * @param parserId Identifier for the parser to use.
+     * @param sink A sink that consumes the Doxia events.
+     * @param reference A string containing the reference to the source of the input string (e.g. filename).
+     * @throws org.apache.maven.doxia.parser.manager.ParserNotFoundException
+     * if no parser could be found for the given id.
+     * @throws org.apache.maven.doxia.parser.ParseException if the model could not be parsed.
+     */
+    void parse( Reader source, String parserId, Sink sink, String reference )
+        throws ParserNotFoundException, ParseException;
+
+    /**
      * Return a parser for the given <code>parserId</code>.
      *
      * @param parserId Identifier for the parser to use.
