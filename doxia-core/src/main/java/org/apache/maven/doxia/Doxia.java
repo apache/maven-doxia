@@ -51,6 +51,20 @@ public interface Doxia
         throws ParserNotFoundException, ParseException;
 
     /**
+     * Parses the given source model using a parser with given id,
+     * and emits Doxia events into the given sink.
+     *
+     * @param source not null reader that provides the source document
+     * @param parserId identifier for the parser to use
+     * @param sink a sink that consumes the Doxia events
+     * @param reference string containing the reference to the source (e.g. filename)
+     * @throws ParserNotFoundException if no parser could be found for the given id
+     * @throws ParseException if the model could not be parsed
+     */
+    void parse( Reader source, String parserId, Sink sink, String reference )
+        throws ParserNotFoundException, ParseException;
+
+    /**
      * Return a parser for the given <code>parserId</code>.
      *
      * @param parserId identifier for the parser to use
