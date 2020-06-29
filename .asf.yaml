@@ -8,3 +8,9 @@ github:
     - apache-maven
     - maven
     - doxia
+notifications:
+  commits:              commits@maven.apache.org
+  issues:               issues@maven.apache.org
+  pullrequests_status:  dev@maven.apache.org
+  pullrequests_comment: issues@maven.apache.org
+  jira_options: link label comment
