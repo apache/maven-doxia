@@ -8,6 +8,10 @@ github:
     - apache-maven
     - maven
     - doxia
+  enabled_merge_buttons:
+    squash:  true
+    merge:   false
+    rebase:  true
 notifications:
   commits:              commits@maven.apache.org
   issues:               issues@maven.apache.org
