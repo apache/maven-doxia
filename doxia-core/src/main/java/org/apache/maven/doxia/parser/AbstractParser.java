@@ -19,6 +19,14 @@ package org.apache.maven.doxia.parser;
  * under the License.
  */
 
+import java.io.File;
+import java.io.IOException;
+import java.io.InputStream;
+import java.io.Reader;
+import java.io.StringReader;
+
+import java.util.Properties;
+
 import org.apache.maven.doxia.logging.Log;
 import org.apache.maven.doxia.logging.SystemStreamLog;
 import org.apache.maven.doxia.macro.Macro;
@@ -28,13 +36,6 @@ import org.apache.maven.doxia.macro.manager.MacroManager;
 import org.apache.maven.doxia.macro.manager.MacroNotFoundException;
 import org.apache.maven.doxia.sink.Sink;
 import org.codehaus.plexus.component.annotations.Requirement;
-
-import java.io.File;
-import java.io.IOException;
-import java.io.InputStream;
-import java.io.Reader;
-import java.io.StringReader;
-import java.util.Properties;
 
 /**
  * An abstract base class that defines some convenience methods for parsers.
