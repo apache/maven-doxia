@@ -153,7 +153,7 @@ public abstract class AbstractXmlParser
         setSecondParsing( false );
         init();
     }
-    
+
     /**
      * Initializes the parser with custom entities or other options.
      *
