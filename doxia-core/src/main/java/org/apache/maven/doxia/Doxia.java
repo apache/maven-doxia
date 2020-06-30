@@ -68,7 +68,7 @@ public interface Doxia
      * Return a parser for the given <code>parserId</code>.
      *
      * @param parserId identifier for the parser to use
-     * @return the parser defining by parserId
+     * @return the parser identified by parserId
      * @throws ParserNotFoundException if no parser could be found for the given id
      */
     Parser getParser( String parserId )
