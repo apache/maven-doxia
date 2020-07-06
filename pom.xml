@@ -31,7 +31,7 @@ under the License.
 
   <groupId>org.apache.maven.doxia</groupId>
   <artifactId>doxia</artifactId>
-  <version>1.10-SNAPSHOT</version>
+  <version>1.10-${revlist}-SNAPSHOT</version>
   <packaging>pom</packaging>
 
   <name>Doxia</name>
@@ -92,8 +92,8 @@ under the License.
 
   <dependencyManagement>
     <dependencies>
-      <!-- doxia -->
-      <dependency>
+      <!-- doxia --><!-- not needed any more with build/consumer POM -->
+      <!--dependency>
         <groupId>org.apache.maven.doxia</groupId>
         <artifactId>doxia-sink-api</artifactId>
         <version>${project.version}</version>
@@ -118,10 +118,10 @@ under the License.
         <artifactId>doxia-core</artifactId>
         <version>${project.version}</version>
         <type>test-jar</type>
-      </dependency>
+      </dependency-->
 
-      <!-- doxia modules -->
-      <dependency>
+      <!-- doxia modules --><!-- not needed any more with build/consumer POM -->
+      <!--dependency>
         <groupId>org.apache.maven.doxia</groupId>
         <artifactId>doxia-module-apt</artifactId>
         <version>${project.version}</version>
@@ -175,7 +175,7 @@ under the License.
         <groupId>org.apache.maven.doxia</groupId>
         <artifactId>doxia-module-xhtml</artifactId>
         <version>${project.version}</version>
-      </dependency>
+      </dependency-->
 
       <!-- test -->
       <dependency>

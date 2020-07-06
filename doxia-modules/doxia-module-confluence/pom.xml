@@ -23,7 +23,7 @@ under the License.
   <parent>
     <artifactId>doxia-modules</artifactId>
     <groupId>org.apache.maven.doxia</groupId>
-    <version>1.10-SNAPSHOT</version>
+    <!--version>1.10-SNAPSHOT</version--><!-- not needed any more with build/consumer POM -->
     <relativePath>../pom.xml</relativePath>
   </parent>
 
