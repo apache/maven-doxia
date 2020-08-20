@@ -299,33 +299,20 @@ under the License.
               <goal>check</goal>
             </goals>
             <configuration>
+              <comparisonVersion>1.9.1</comparisonVersion>
               <excludes>
-                <!-- module-markdown flexmark-java implementation -->
-                <exclude>org/apache/maven/doxia/module/markdown/MarkdownParser$MarkdownHtmlParser</exclude>
-                <exclude>org/apache/maven/doxia/module/markdown/MarkdownParser$PegDownHtmlParser</exclude>
-                <exclude>org/apache/maven/doxia/module/markdown/MarkdownToDoxiaHtmlSerializer</exclude>
-                <exclude>org/apache/maven/doxia/module/fo/FoAggregateSink</exclude>
-                <!-- DOXIA-527 -->
-                <exclude>org/apache/maven/doxia/parser/module/*Module</exclude>
-                <!-- DOXIA-492 -->
-                <exclude>org/apache/maven/doxia/module/markdown/MarkdownParser</exclude>
-                <!-- DOXIA-511 -->
-                <exclude>org/apache/maven/doxia/module/site</exclude>
-                <exclude>org/apache/maven/doxia/module/site/**</exclude>
-                <exclude>org/apache/maven/doxia/module/*/*SiteModule</exclude>
-                <!-- DOXIA-482 -->
-                <exclude>org/apache/maven/doxia/parser/Parser</exclude>
-                <!-- DOXIA-506 -->
-                <exclude>org/apache/maven/doxia/sink/**</exclude>
-                <exclude>org/apache/maven/doxia/index/IndexingSink</exclude>
+                <!-- DOXIA-614 expected API changes to 1.9.1 -->
+                <exclude>org/apache/maven/doxia/Doxia</exclude>
+                <exclude>org/apache/maven/doxia/parser/AbstractParser</exclude>
                 <exclude>org/apache/maven/doxia/parser/AbstractXmlParser</exclude>
-                <exclude>org/apache/maven/doxia/module/*/*Sink</exclude>
-                <exclude>org/apache/maven/doxia/module/*/*SinkFactory</exclude>
-                <!-- DOXIA-409 -->
-                <exclude>org/apache/maven/doxia/module/fo/FoUtils</exclude>
-                <!--  -->
-                <exclude>org/apache/maven/doxia/module/fml/FmlContentParser</exclude>
+                <exclude>org/apache/maven/doxia/parser/FmlParser</exclude>
+                <exclude>org/apache/maven/doxia/parser/XhtmlBaseParser</exclude>
+                <exclude>org/apache/maven/doxia/parser/Xhtml5BaseParser</exclude>
+                <exclude>org/apache/maven/doxia/module/fml/FmlParser</exclude>
+                <exclude>org/apache/maven/doxia/module/markdown/MarkdownParser</exclude>
                 <exclude>org/apache/maven/doxia/module/xdoc/XdocParser</exclude>
+                <exclude>org/apache/maven/doxia/module/xhtml/XhtmlParser</exclude>
+                <exclude>org/apache/maven/doxia/module/xhtml5/Xhtml5Parser</exclude>
               </excludes>
               <ignored>
                 <!-- DOXIA-616 -->
