@@ -362,7 +362,6 @@ public class MarkdownParserTest
         }
     }
 
-    /** @throws Exception if the document parsing failed. */
     public void testTocMacro()
         throws Exception
     {
@@ -386,11 +385,7 @@ public class MarkdownParserTest
                       "body_" );
     }
 
-    /**
-     * TOC macro fails with EmptyStackException when title 2 followed by title 4 then title 2
-     * 
-     * @throws Exception if the document parsing failed.
-     */
+    // TOC macro fails with EmptyStackException when title 2 followed by title 4 then title 2
     public void testTocMacroDoxia559()
         throws Exception
     {
@@ -418,11 +413,7 @@ public class MarkdownParserTest
                       "body_" );
     }
 
-    /**
-     * test fix for https://github.com/vsch/flexmark-java/issues/384
-     *
-     * @throws Exception if the document parsing failed.
-     */
+    // test fix for https://github.com/vsch/flexmark-java/issues/384
     public void testFlexIssue384()
         throws Exception
     {
