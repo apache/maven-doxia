@@ -79,7 +79,7 @@ public class MarkdownParserTest
     /**
      * Assert the paragraph sink event is fired when parsing "paragraph.md".
      *
-     * @throws Exception if the event list is not correct when parsing the document.
+     * @throws Exception if the event list is not correct when parsing the document
      */
     public void testParagraphSinkEvent()
         throws Exception
@@ -94,7 +94,7 @@ public class MarkdownParserTest
     /**
      * Assert the bold sink event is fired when parsing "font-bold.md".
      *
-     * @throws Exception if the event list is not correct when parsing the document.
+     * @throws Exception if the event list is not correct when parsing the document
      */
     public void testFontBoldSinkEvent()
         throws Exception
@@ -116,7 +116,7 @@ public class MarkdownParserTest
     /**
      * Assert the italic sink event is fired when parsing "font-italic.md".
      *
-     * @throws Exception if the event list is not correct when parsing the document.
+     * @throws Exception if the event list is not correct when parsing the document
      */
     public void testFontItalicSinkEvent()
         throws Exception
@@ -137,7 +137,7 @@ public class MarkdownParserTest
     /**
      * Assert the monospaced/code sink event is fired when parsing "font-monospaced.md".
      *
-     * @throws Exception if the event list is not correct when parsing the document.
+     * @throws Exception if the event list is not correct when parsing the document
      */
     public void testFontMonospacedSinkEvent()
         throws Exception
@@ -158,7 +158,7 @@ public class MarkdownParserTest
     /**
      * Assert the verbatim sink event is fired when parsing "code.md".
      *
-     * @throws Exception if the event list is not correct when parsing the document.
+     * @throws Exception if the event list is not correct when parsing the document
      */
     public void testCodeSinkEvent()
         throws Exception
@@ -173,7 +173,7 @@ public class MarkdownParserTest
     /**
      * Assert the figureGraphics sink event is fired when parsing "image.md".
      *
-     * @throws Exception if the event list is not correct when parsing the document.
+     * @throws Exception if the event list is not correct when parsing the document
      */
     public void testImageSinkEvent()
         throws Exception
@@ -188,7 +188,7 @@ public class MarkdownParserTest
     /**
      * Assert the link sink event is fired when parsing "link.md".
      *
-     * @throws Exception if the event list is not correct when parsing the document.
+     * @throws Exception if the event list is not correct when parsing the document
      */
     public void testLinkSinkEvent()
         throws Exception
@@ -203,7 +203,7 @@ public class MarkdownParserTest
     /**
      * Assert the link sink event is fired when parsing "link.md".
      *
-     * @throws Exception if the event list is not correct when parsing the document.
+     * @throws Exception if the event list is not correct when parsing the document
      */
     public void testLinkRewriteSinkEvent()
         throws Exception
@@ -232,7 +232,7 @@ public class MarkdownParserTest
     /**
      * Assert the list sink event is fired when parsing "list.md".
      *
-     * @throws Exception if the event list is not correct when parsing the document.
+     * @throws Exception if the event list is not correct when parsing the document
      */
     public void testListSinkEvent()
         throws Exception
@@ -248,7 +248,7 @@ public class MarkdownParserTest
     /**
      * Assert the numbered list sink event is fired when parsing "numbered-list.md".
      *
-     * @throws Exception if the event list is not correct when parsing the document.
+     * @throws Exception if the event list is not correct when parsing the document
      */
     public void testNumberedListSinkEvent()
         throws Exception
@@ -264,7 +264,7 @@ public class MarkdownParserTest
     /**
      * Assert the metadata is passed through when parsing "metadata.md".
      *
-     * @throws Exception if the event list is not correct when parsing the document.
+     * @throws Exception if the event list is not correct when parsing the document
      */
     public void testMetadataSinkEvent()
         throws Exception
@@ -282,7 +282,7 @@ public class MarkdownParserTest
     /**
      * Assert the first header is passed as title event when parsing "first-heading.md".
      *
-     * @throws Exception if the event list is not correct when parsing the document.
+     * @throws Exception if the event list is not correct when parsing the document
      */
     public void testFirstHeadingSinkEvent()
         throws Exception
@@ -299,7 +299,7 @@ public class MarkdownParserTest
     /**
      * Assert the first header is passed as title event when parsing "comment-before-heading.md".
      *
-     * @throws Exception if the event list is not correct when parsing the document.
+     * @throws Exception if the event list is not correct when parsing the document
      */
     public void testCommentBeforeHeadingSinkEvent()
         throws Exception
@@ -316,7 +316,7 @@ public class MarkdownParserTest
     /**
      * Assert the first header is passed as title event when parsing "comment-before-heading.md".
      *
-     * @throws Exception if the event list is not correct when parsing the document.
+     * @throws Exception if the event list is not correct when parsing the document
      */
     public void testHtmlContent()
         throws Exception
@@ -337,10 +337,10 @@ public class MarkdownParserTest
     /**
      * Parse the file and return a {@link SinkEventTestingSink}.
      *
-     * @param file the file to parse with {@link #parser}.
-     * @return a sink to test parsing events.
-     * @throws ParseException if the document parsing failed.
-     * @throws IOException if an I/O error occurs while closing test reader.
+     * @param file the file to parse with {@link #parser}
+     * @return a sink to test parsing events
+     * @throws ParseException if the document parsing failed
+     * @throws IOException if an I/O error occurs while closing test reader
      */
     protected SinkEventTestingSink parseFileToEventTestingSink( String file ) throws ParseException, IOException
     {
