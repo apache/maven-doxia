@@ -69,7 +69,6 @@ public class Xhtml5BaseParserTest
         assertNotEquals( "unknown", XhtmlBaseParser.doxiaVersion() );
     }
 
-    /** @throws Exception  */
     public void testHeadingEventsList()
         throws Exception
     {
@@ -110,7 +109,6 @@ public class Xhtml5BaseParserTest
         assertFalse( it.hasNext() );
     }
 
-    /** @throws Exception  */
     public void testNestedHeadingEventsList()
         throws Exception
     {
@@ -150,7 +148,6 @@ public class Xhtml5BaseParserTest
         assertFalse( it.hasNext() );
     }
 
-    /** @throws Exception  */
     public void testFigureEventsList()
         throws Exception
     {
@@ -164,7 +161,6 @@ public class Xhtml5BaseParserTest
         assertFalse( it.hasNext() );
     }
 
-    /** @throws Exception  */
     public void testTableEventsList()
         throws Exception
     {
@@ -194,7 +190,6 @@ public class Xhtml5BaseParserTest
         assertFalse( it.hasNext() );
     }
 
-    /** @throws Exception  */
     public void testSignificantWhiteSpace()
         throws Exception
     {
@@ -267,7 +262,6 @@ public class Xhtml5BaseParserTest
         assertFalse( it.hasNext() );
     }
 
-    /** @throws Exception  */
     public void testPreFormattedText()
         throws Exception
     {
@@ -304,7 +298,6 @@ public class Xhtml5BaseParserTest
         assertFalse( it.hasNext() );
     }
 
-    /** @throws Exception  */
     public void testPreEOL()
         throws Exception
     {
@@ -327,7 +320,6 @@ public class Xhtml5BaseParserTest
         assertEquals( "verbatim_", it.next().getName() );
     }
 
-    /** @throws Exception  */
     public void testDoxia250()
         throws Exception
     {
@@ -368,7 +360,6 @@ public class Xhtml5BaseParserTest
         assertEquals( "paragraph_", event.getName() );
     }
 
-    /** @throws Exception  */
     public void testEntities()
         throws Exception
     {
@@ -437,7 +428,6 @@ public class Xhtml5BaseParserTest
         assertFalse( it.hasNext() );
     }
 
-    /** @throws Exception  */
     public void testXhtmlEntities()
         throws Exception
     {
@@ -478,7 +468,6 @@ public class Xhtml5BaseParserTest
         assertFalse( it.hasNext() );
     }
 
-    /** @throws Exception  */
     public void testLists()
         throws Exception
     {
@@ -508,7 +497,6 @@ public class Xhtml5BaseParserTest
         assertEquals( "division_", it.next().getName() );
     }
 
-    /** @throws Exception  */
     public void testSimpleTags()
         throws Exception
     {
@@ -524,7 +512,6 @@ public class Xhtml5BaseParserTest
         assertEquals( "division_", it.next().getName() );
     }
 
-    /** @throws Exception  */
     public void testSemanticTags()
         throws Exception
     {
@@ -680,7 +667,6 @@ public class Xhtml5BaseParserTest
 
     }
 
-    /** @throws Exception  */
     public void testSpecial()
         throws Exception
     {
@@ -697,7 +683,6 @@ public class Xhtml5BaseParserTest
         assertEquals( "paragraph_", it.next().getName() );
     }
 
-    /** @throws Exception  */
     public void testTable()
         throws Exception
     {
@@ -726,7 +711,6 @@ public class Xhtml5BaseParserTest
         assertEquals( "table_", it.next().getName() );
     }
 
-    /** @throws Exception  */
     public void testFigure()
         throws Exception
     {
@@ -741,7 +725,6 @@ public class Xhtml5BaseParserTest
         assertEquals( "figure_", it.next().getName() );
     }
 
-    /** @throws Exception  */
     public void testAnchorLink()
         throws Exception
     {
