@@ -35,7 +35,7 @@ import org.apache.maven.doxia.sink.impl.SinkEventTestingSink;
 /**
  * Tests for {@link MarkdownParser}.
  *
- * @author Julien Nicoulaud <julien.nicoulaud@gmail.com>
+ * @author <a href="mailto:julien.nicoulaud@gmail.com">Julien Nicoulaud</a>
  * @since 1.3
  */
 public class MarkdownParserTest
@@ -340,6 +340,7 @@ public class MarkdownParserTest
      * @param file the file to parse with {@link #parser}.
      * @return a sink to test parsing events.
      * @throws ParseException if the document parsing failed.
+     * @throws IOException if an I/O error occurs while closing test reader.
      */
     protected SinkEventTestingSink parseFileToEventTestingSink( String file ) throws ParseException, IOException
     {
@@ -361,7 +362,7 @@ public class MarkdownParserTest
         }
     }
 
-    /** @throws Exception  */
+    /** @throws Exception if the document parsing failed. */
     public void testTocMacro()
         throws Exception
     {
@@ -388,7 +389,7 @@ public class MarkdownParserTest
     /**
      * TOC macro fails with EmptyStackException when title 2 followed by title 4 then title 2
      * 
-     * @throws Exception
+     * @throws Exception if the document parsing failed.
      */
     public void testTocMacroDoxia559()
         throws Exception
@@ -420,7 +421,7 @@ public class MarkdownParserTest
     /**
      * test fix for https://github.com/vsch/flexmark-java/issues/384
      *
-     * @throws Exception
+     * @throws Exception if the document parsing failed.
      */
     public void testFlexIssue384()
         throws Exception
