@@ -24,18 +24,25 @@ import com.vladsch.flexmark.ast.HtmlCommentBlock;
 import com.vladsch.flexmark.util.ast.Node;
 import com.vladsch.flexmark.ast.util.TextCollectingVisitor;
 import com.vladsch.flexmark.html.HtmlRenderer;
-import com.vladsch.flexmark.profiles.pegdown.Extensions;
-import com.vladsch.flexmark.profiles.pegdown.PegdownOptionsAdapter;
-import com.vladsch.flexmark.util.builder.Extension;
-import com.vladsch.flexmark.util.options.MutableDataHolder;
-import org.apache.commons.lang3.StringEscapeUtils;
-import org.apache.commons.lang3.StringUtils;
+import com.vladsch.flexmark.parser.ParserEmulationProfile;
+import com.vladsch.flexmark.util.options.MutableDataSet;
+import com.vladsch.flexmark.ext.escaped.character.EscapedCharacterExtension;
+import com.vladsch.flexmark.ext.abbreviation.AbbreviationExtension;
+import com.vladsch.flexmark.ext.autolink.AutolinkExtension;
+import com.vladsch.flexmark.ext.definition.DefinitionExtension;
+import com.vladsch.flexmark.ext.typographic.TypographicExtension;
+import com.vladsch.flexmark.ext.tables.TablesExtension;
+import com.vladsch.flexmark.ext.wikilink.WikiLinkExtension;
+import com.vladsch.flexmark.ext.gfm.strikethrough.StrikethroughExtension;
+
+import org.apache.commons.io.input.CharSequenceReader;
 import org.apache.maven.doxia.markup.HtmlMarkup;
 import org.apache.maven.doxia.module.xhtml.XhtmlParser;
 import org.apache.maven.doxia.parser.AbstractParser;
 import org.apache.maven.doxia.parser.ParseException;
 import org.apache.maven.doxia.parser.Parser;
 import org.apache.maven.doxia.sink.Sink;
+import org.apache.maven.doxia.util.HtmlTools;
 import org.codehaus.plexus.component.annotations.Component;
 import org.codehaus.plexus.component.annotations.Requirement;
 import org.codehaus.plexus.util.IOUtil;
@@ -43,8 +50,7 @@ import org.codehaus.plexus.util.xml.pull.XmlPullParser;
 
 import java.io.IOException;
 import java.io.Reader;
-import java.io.StringReader;
-import java.util.ArrayList;
+import java.util.Arrays;
 import java.util.regex.Matcher;
 import java.util.regex.Pattern;
 
@@ -74,48 +80,103 @@ public class MarkdownParser
 
     /**
      * Regex that identifies a multimarkdown-style metadata section at the start of the document
-     */
-    private static final String MULTI_MARKDOWN_METADATA_SECTION =
-        "^(((?:[^\\s:][^:]*):(?:.*(?:\r?\n\\p{Blank}+[^\\s].*)*\r?\n))+)(?:\\s*\r?\n)";
-
-    /**
-     * Regex that captures the key and value of a multimarkdown-style metadata entry.
-     */
-    private static final String MULTI_MARKDOWN_METADATA_ENTRY =
-        "([^\\s:][^:]*):(.*(?:\r?\n\\p{Blank}+[^\\s].*)*)\r?\n";
-
-    /**
+     *
      * In order to ensure that we have minimal risk of false positives when slurping metadata sections, the
      * first key in the metadata section must be one of these standard keys or else the entire metadata section is
      * ignored.
      */
-    private static final String[] STANDARD_METADATA_KEYS =
-        { "title", "author", "date", "address", "affiliation", "copyright", "email", "keywords", "language", "phone",
-            "subtitle" };
+    private static final Pattern METADATA_SECTION_PATTERN = Pattern.compile(
+            "\\A^\\s*"
+            + "(?:title|author|date|address|affiliation|copyright|email|keywords|language|phone|subtitle)"
+            + "\\h*:\\h*\\V*\\h*$\\v+"
+            + "(?:^\\h*[^:\\v]+\\h*:\\h*\\V*\\h*$\\v+)*",
+            Pattern.MULTILINE | Pattern.CASE_INSENSITIVE );
+
+    /**
+     * Regex that captures the key and value of a multimarkdown-style metadata entry.
+     */
+    private static final Pattern METADATA_ENTRY_PATTERN = Pattern.compile(
+            "^\\h*([^:\\v]+?)\\h*:\\h*(\\V*)\\h*$",
+            Pattern.MULTILINE );
 
     /**
      * <p>getType.</p>
      *
      * @return a int.
      */
+    @Override
     public int getType()
     {
         return TXT_TYPE;
     }
 
+    /**
+     * The parser of the HTML produced by Flexmark, that we will
+     * use to convert this HTML to Sink events
+     */
     @Requirement
     private MarkdownHtmlParser parser;
 
+    /**
+     * Flexmark's Markdown parser (one static instance fits all)
+     */
+    private static final com.vladsch.flexmark.parser.Parser FLEXMARK_PARSER;
+
+    /**
+     * Flexmark's HTML renderer (its output will be re-parsed and converted to Sink events)
+     */
+    private static final HtmlRenderer FLEXMARK_HTML_RENDERER;
+
+    // Initialize the Flexmark parser and renderer, once and for all
+    static
+    {
+        MutableDataSet flexmarkOptions = new MutableDataSet();
+
+        // Emulate Pegdown's behavior
+        flexmarkOptions.setFrom( ParserEmulationProfile.PEGDOWN );
+
+        // Enable the extensions that we used to have in Pegdown
+        flexmarkOptions.set( com.vladsch.flexmark.parser.Parser.EXTENSIONS, Arrays.asList(
+                EscapedCharacterExtension.create(),
+                AbbreviationExtension.create(),
+                AutolinkExtension.create(),
+                DefinitionExtension.create(),
+                TypographicExtension.create(),
+                TablesExtension.create(),
+                WikiLinkExtension.create(),
+                StrikethroughExtension.create()
+        ) );
+
+        // Disable wrong apostrophe replacement
+        flexmarkOptions.set( TypographicExtension.SINGLE_QUOTE_UNMATCHED, "&apos;" );
+
+        // Additional options on the HTML rendering
+        flexmarkOptions.set( HtmlRenderer.HTML_BLOCK_OPEN_TAG_EOL, false );
+        flexmarkOptions.set( HtmlRenderer.HTML_BLOCK_CLOSE_TAG_EOL, false );
+        flexmarkOptions.set( HtmlRenderer.MAX_TRAILING_BLANK_LINES, -1 );
+
+        // Build the Markdown parser
+        FLEXMARK_PARSER = com.vladsch.flexmark.parser.Parser.builder( flexmarkOptions ).build();
+
+        // Build the HTML renderer
+        FLEXMARK_HTML_RENDERER = HtmlRenderer.builder( flexmarkOptions )
+                .linkResolverFactory( new FlexmarkDoxiaLinkResolver.Factory() )
+                .build();
+
+    }
+
     /** {@inheritDoc} */
+    @Override
     public void parse( Reader source, Sink sink )
         throws ParseException
     {
         try
         {
             // Markdown to HTML (using flexmark-java library)
-            String html = toHtml( source );
+            CharSequence html = toHtml( source );
+
             // then HTML to Sink API
-            parser.parse( new StringReader( html ), sink );
+            parser.parse( new CharSequenceReader( html ), sink );
         }
         catch ( IOException e )
         {
@@ -130,133 +191,98 @@ public class MarkdownParser
      * @return HTML content generated by flexmark-java
      * @throws IOException passed through
      */
-    String toHtml( Reader source )
+    CharSequence toHtml( Reader source )
         throws IOException
     {
+        // Read the source
         String text = IOUtil.toString( source );
-        MutableDataHolder flexmarkOptions = PegdownOptionsAdapter.flexmarkOptions(
-                Extensions.ALL & ~( Extensions.HARDWRAPS | Extensions.ANCHORLINKS ) ).toMutable();
-        ArrayList<Extension> extensions = new ArrayList<>();
-        for ( Extension extension : flexmarkOptions.get( com.vladsch.flexmark.parser.Parser.EXTENSIONS ) )
-        {
-            extensions.add( extension );
-        }
 
-        extensions.add( FlexmarkDoxiaExtension.create() );
-        flexmarkOptions.set( com.vladsch.flexmark.parser.Parser.EXTENSIONS, extensions );
-        flexmarkOptions.set( HtmlRenderer.HTML_BLOCK_OPEN_TAG_EOL, false );
-        flexmarkOptions.set( HtmlRenderer.HTML_BLOCK_CLOSE_TAG_EOL, false );
-        flexmarkOptions.set( HtmlRenderer.MAX_TRAILING_BLANK_LINES, -1 );
-
-        com.vladsch.flexmark.parser.Parser parser = com.vladsch.flexmark.parser.Parser.builder( flexmarkOptions )
-                .build();
-        HtmlRenderer renderer = HtmlRenderer.builder( flexmarkOptions )
-                                    .linkResolverFactory( new FlexmarkDoxiaLinkResolver.Factory() )
-                                    .build();
-
-
+        // Now, build the HTML document
         StringBuilder html = new StringBuilder( 1000 );
         html.append( "<html>" );
         html.append( "<head>" );
-        Pattern metadataPattern = Pattern.compile( MULTI_MARKDOWN_METADATA_SECTION, Pattern.MULTILINE );
-        Matcher metadataMatcher = metadataPattern.matcher( text );
+
+        // First, we interpret the "metadata" section of the document and add the corresponding HTML headers
+        Matcher metadataMatcher = METADATA_SECTION_PATTERN.matcher( text );
         boolean haveTitle = false;
         if ( metadataMatcher.find() )
         {
-            metadataPattern = Pattern.compile( MULTI_MARKDOWN_METADATA_ENTRY, Pattern.MULTILINE );
-            Matcher lineMatcher = metadataPattern.matcher( metadataMatcher.group( 1 ) );
-            boolean first = true;
-            while ( lineMatcher.find() )
+            Matcher entryMatcher = METADATA_ENTRY_PATTERN.matcher( metadataMatcher.group( 0 ) );
+            while ( entryMatcher.find() )
             {
-                String key = StringUtils.trimToEmpty( lineMatcher.group( 1 ) );
-                if ( first )
-                {
-                    boolean found = false;
-                    for ( String k : STANDARD_METADATA_KEYS )
-                    {
-                        if ( k.equalsIgnoreCase( key ) )
-                        {
-                            found = true;
-                            break;
-                        }
-                    }
-                    if ( !found )
-                    {
-                        break;
-                    }
-                    first = false;
-                }
-                String value = StringUtils.trimToEmpty( lineMatcher.group( 2 ) );
+                String key = entryMatcher.group( 1 );
+                String value = entryMatcher.group( 2 );
                 if ( "title".equalsIgnoreCase( key ) )
                 {
                     haveTitle = true;
                     html.append( "<title>" );
-                    html.append( StringEscapeUtils.escapeXml( value ) );
+                    html.append( HtmlTools.escapeHTML( value, false ) );
                     html.append( "</title>" );
-                }
-                else if ( "author".equalsIgnoreCase( key ) )
-                {
-                    html.append( "<meta name=\'author\' content=\'" );
-                    html.append( StringEscapeUtils.escapeXml( value ) );
-                    html.append( "\' />" );
-                }
-                else if ( "date".equalsIgnoreCase( key ) )
-                {
-                    html.append( "<meta name=\'date\' content=\'" );
-                    html.append( StringEscapeUtils.escapeXml( value ) );
-                    html.append( "\' />" );
                 }
                 else
                 {
-                    html.append( "<meta name=\'" );
-                    html.append( StringEscapeUtils.escapeXml( key ) );
-                    html.append( "\' content=\'" );
-                    html.append( StringEscapeUtils.escapeXml( value ) );
-                    html.append( "\' />" );
+                    html.append( "<meta name='" );
+                    html.append( HtmlTools.escapeHTML( key, true ) );
+                    html.append( "' content='" );
+                    html.append( HtmlTools.escapeHTML( value, true ) );
+                    html.append( "' />" );
                 }
             }
-            if ( !first )
-            {
-                text = text.substring( metadataMatcher.end() );
-            }
+
+            // Trim the metadata from the source
+            text = text.substring( metadataMatcher.end( 0 ) );
+
         }
 
-        Node rootNode = parser.parse( text );
-        String markdownHtml = renderer.render( rootNode );
+        // Now is the time to parse the Markdown document
+        // (after we've trimmed out the metadatas, and before we check for its headings)
+        Node documentRoot = FLEXMARK_PARSER.parse( text );
 
-        if ( !haveTitle && rootNode.hasChildren() )
+        // Special trick: if there is no title specified as a metadata in the header, we will use the first
+        // heading as the document title
+        if ( !haveTitle && documentRoot.hasChildren() )
         {
-            // use the first (non-comment) node only if it is a heading
-            Node firstNode = rootNode.getFirstChild();
-            while ( firstNode != null && !( firstNode instanceof Heading ) )
+            // Skip the comment nodes
+            Node firstNode = documentRoot.getFirstChild();
+            while ( firstNode != null && firstNode instanceof HtmlCommentBlock )
             {
-                if ( !( firstNode instanceof HtmlCommentBlock ) )
-                {
-                    break;
-                }
                 firstNode = firstNode.getNext();
             }
 
-            if ( firstNode instanceof Heading )
+            // If this first non-comment node is a heading, we use it as the document title
+            if ( firstNode != null && firstNode instanceof Heading )
             {
                 html.append( "<title>" );
                 TextCollectingVisitor collectingVisitor = new TextCollectingVisitor();
                 String headingText = collectingVisitor.collectAndGetText( firstNode );
-                html.append( StringEscapeUtils.escapeXml( headingText ) );
+                html.append( HtmlTools.escapeHTML( headingText, false ) );
                 html.append( "</title>" );
             }
         }
         html.append( "</head>" );
         html.append( "<body>" );
-        html.append( markdownHtml );
+
+        // Convert our Markdown document to HTML and append it to our HTML
+        FLEXMARK_HTML_RENDERER.render( documentRoot, html );
+
         html.append( "</body>" );
         html.append( "</html>" );
 
-        return html.toString();
+        return html;
     }
 
     /**
      * Internal parser for HTML generated by the Markdown library.
+     *
+     * 2 special things:
+     * <ul>
+     * <li> DIV elements are translated as Unknown Sink events
+     * <li> PRE elements are all considered as boxed
+     * </ul>
+     * PRE elements need to be "boxed" because the XhtmlSink will surround the
+     * corresponding verbatim() Sink event with a DIV element with class="source",
+     * which is how most Maven Skin (incl. Fluido) recognize a block of code, which
+     * needs to be highlighted accordingly.
      */
     @Component( role = MarkdownHtmlParser.class )
     public static class MarkdownHtmlParser
@@ -265,6 +291,13 @@ public class MarkdownParser
         public MarkdownHtmlParser()
         {
             super();
+        }
+
+        @Override
+        protected void init()
+        {
+            super.init();
+            super.boxed = true;
         }
 
         @Override
@@ -291,6 +324,7 @@ public class MarkdownParser
                 if ( parser.getName().equals( HtmlMarkup.DIV.toString() ) )
                 {
                     handleUnknown( parser, sink, TAG_TYPE_START );
+                    super.boxed = true;
                     visited = true;
                 }
             }

@@ -30,6 +30,7 @@ import java.io.InputStream;
 import java.io.InputStreamReader;
 import java.io.Reader;
 import java.io.Writer;
+import java.nio.charset.StandardCharsets;
 
 /**
  * Provide some common convenience methods to test Doxia modules (parsers and sinks).
@@ -172,7 +173,7 @@ public abstract class AbstractModuleTest
 
         assertNotNull( "Could not find resource: " + baseName + "." + extension, is );
 
-        return new InputStreamReader( is );
+        return new InputStreamReader( is, StandardCharsets.UTF_8 );
     }
 
     /**

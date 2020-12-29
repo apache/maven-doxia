@@ -72,5 +72,80 @@ under the License.
       <groupId>org.codehaus.plexus</groupId>
       <artifactId>plexus-utils</artifactId>
     </dependency>
+    <dependency>
+      <groupId>commons-io</groupId>
+      <artifactId>commons-io</artifactId>
+    </dependency>
   </dependencies>
+  <build>
+
+    <plugins>
+
+      <!-- install -->
+      <plugin>
+        <artifactId>maven-install-plugin</artifactId>
+        <executions>
+
+          <!-- integration-test -->
+          <!-- Copy the Doxia XHTML module from our working directory to the local-repo -->
+          <!-- We do that manually because the invoker:install goal (below) doesn't do it, as -->
+          <!-- it's not the artifact we're working on, but the ones that are produced by our "siblings" -->
+          <execution>
+            <id>copy-doxia-module-xhtml-to-local-repo</id>
+            <phase>integration-test</phase>
+            <goals>
+              <goal>install-file</goal>
+            </goals>
+            <configuration>
+              <localRepositoryPath>${project.build.directory}/local-repo</localRepositoryPath>
+              <file>${project.basedir}/../doxia-module-xhtml/target/doxia-module-xhtml-${project.version}.jar</file>
+            </configuration>
+          </execution>
+          <execution>
+            <id>copy-doxia-to-local-repo</id>
+            <phase>integration-test</phase>
+            <goals>
+              <goal>install-file</goal>
+            </goals>
+            <configuration>
+              <localRepositoryPath>${project.build.directory}/local-repo</localRepositoryPath>
+              <file>${project.basedir}/../../doxia-core/target/doxia-core-${project.version}.jar</file>
+            </configuration>
+          </execution>
+        </executions>
+      </plugin>
+
+      <!--  maven-invoker-plugin -->
+      <plugin>
+        <groupId>org.apache.maven.plugins</groupId>
+        <artifactId>maven-invoker-plugin</artifactId>
+        <!-- <version>2.0.0</version> -->
+        <configuration>
+          <debug>false</debug>
+          <cloneProjectsTo>${project.build.directory}/it</cloneProjectsTo>
+          <pomIncludes>
+            <pomInclude>**/pom.xml</pomInclude>
+          </pomIncludes>
+          <postBuildHookScript>verify</postBuildHookScript>
+          <localRepositoryPath>${project.build.directory}/local-repo</localRepositoryPath>
+          <extraArtifacts></extraArtifacts>
+          <settingsFile>src/it/settings.xml</settingsFile>
+          <goals>
+            <goal>clean</goal>
+            <goal>site</goal>
+          </goals>
+        </configuration>
+        <executions>
+          <execution>
+            <id>integration-test</id>
+            <goals>
+              <goal>install</goal>
+              <goal>run</goal>
+            </goals>
+          </execution>
+        </executions>
+      </plugin>
+
+    </plugins>
+  </build>
 </project>

@@ -1,10 +1,13 @@
-title: A title
-author: Somebody
-date: 2013
 
-# The document
+title: A Title & a 'Test'
+author: Somebody 'Nickname' Great <somebody@somewhere.org>
 
-Some text
+date: 2013 © Copyleft
+keywords: maven,doxia,markdown
+
+# The document with look-alike header
+
+copyright: none
 
 ## A subheading
 
