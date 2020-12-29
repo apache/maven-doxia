@@ -53,13 +53,3 @@ assert content =~ '<meta name="Empty" content="" />'
 // No description is provided, as it was not part of the metadata at the beginning of the doc
 assert !(content =~ '<meta name="description"')
 
-
-// Verify quotes.html
-
-resultFile = new File(basedir, "target/site/quotes.html")
-assert resultFile.isFile()
-
-content = resultFile.text;
-assert content =~ /This ain't a quote, but an apostrophe./
-assert content =~ /This &#x2018;quoted text&#x2019; isn't surrounded with apostrophes./
-

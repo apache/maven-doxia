@@ -147,9 +147,6 @@ public class MarkdownParser
                 StrikethroughExtension.create()
         ) );
 
-        // Disable wrong apostrophe replacement
-        flexmarkOptions.set( TypographicExtension.SINGLE_QUOTE_UNMATCHED, "&apos;" );
-
         // Additional options on the HTML rendering
         flexmarkOptions.set( HtmlRenderer.HTML_BLOCK_OPEN_TAG_EOL, false );
         flexmarkOptions.set( HtmlRenderer.HTML_BLOCK_CLOSE_TAG_EOL, false );
@@ -222,9 +219,9 @@ public class MarkdownParser
                 else
                 {
                     html.append( "<meta name='" );
-                    html.append( HtmlTools.escapeHTML( key, true ) );
+                    html.append( HtmlTools.escapeHTML( key ) );
                     html.append( "' content='" );
-                    html.append( HtmlTools.escapeHTML( value, true ) );
+                    html.append( HtmlTools.escapeHTML( value ) );
                     html.append( "' />" );
                 }
             }

@@ -473,27 +473,4 @@ public class MarkdownParserTest
     {
         parseFileToEventTestingSink( "flex-384" );
     }
-
-    // Apostrophe versus single quotes
-    // Simple apostrophes (like in Sophie's Choice) must not be replaced with a single quote
-    public void testQuoteVsApostrophe()
-        throws Exception
-    {
-        List<SinkEventElement> eventList = parseFileToEventTestingSink( "quote-vs-apostrophe" ).getEventList();
-
-        StringBuilder content = new StringBuilder();
-        for ( SinkEventElement element : eventList )
-        {
-            if ( "text".equals(element.getName()) )
-            {
-                content.append( element.getArgs()[0] );
-            }
-        }
-        assertEquals(
-                "This apostrophe isn't a quote."
-                + "This \u2018quoted text\u2019 isn't surrounded by apostrophes.",
-                content.toString() );
-
-    }
-
 }
