@@ -24,7 +24,6 @@ import com.vladsch.flexmark.ast.HtmlCommentBlock;
 import com.vladsch.flexmark.util.ast.Node;
 import com.vladsch.flexmark.ast.util.TextCollectingVisitor;
 import com.vladsch.flexmark.html.HtmlRenderer;
-import com.vladsch.flexmark.parser.ParserEmulationProfile;
 import com.vladsch.flexmark.util.options.MutableDataSet;
 import com.vladsch.flexmark.ext.escaped.character.EscapedCharacterExtension;
 import com.vladsch.flexmark.ext.abbreviation.AbbreviationExtension;
@@ -131,9 +130,6 @@ public class MarkdownParser
     static
     {
         MutableDataSet flexmarkOptions = new MutableDataSet();
-
-        // Emulate Pegdown's behavior
-        flexmarkOptions.setFrom( ParserEmulationProfile.PEGDOWN );
 
         // Enable the extensions that we used to have in Pegdown
         flexmarkOptions.set( com.vladsch.flexmark.parser.Parser.EXTENSIONS, Arrays.asList(
