@@ -1905,7 +1905,9 @@ public class Xhtml5BaseSink
     {
         if ( attributes.containsAttribute( SinkEventAttributes.SEMANTICS, semantic ) )
         {
-            writeStartTag( tag );
+            SinkEventAttributes attributesNoSemantics = ( SinkEventAttributes ) attributes.copyAttributes();
+            attributesNoSemantics.removeAttribute( SinkEventAttributes.SEMANTICS );
+            writeStartTag( tag, attributesNoSemantics );
             tags.add( 0, tag );
         }
     }

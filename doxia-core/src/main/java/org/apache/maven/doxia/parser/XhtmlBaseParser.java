@@ -509,7 +509,8 @@ public class XhtmlBaseParser
                 || ( parser.getName().equals( HtmlMarkup.SAMP.toString() ) )
                 || ( parser.getName().equals( HtmlMarkup.TT.toString() ) ) )
         {
-            sink.inline( SinkEventAttributeSet.Semantics.CODE );
+            attribs.addAttributes( SinkEventAttributeSet.Semantics.CODE );
+            sink.inline( attribs );
         }
         else if ( parser.getName().equals( HtmlMarkup.A.toString() ) )
         {
