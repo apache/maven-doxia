@@ -31,7 +31,7 @@ under the License.
 
   <groupId>org.apache.maven.doxia</groupId>
   <artifactId>doxia</artifactId>
-  <version>1.9.2-SNAPSHOT</version>
+  <version>1.10-SNAPSHOT</version>
   <packaging>pom</packaging>
 
   <name>Doxia</name>
@@ -207,6 +207,14 @@ under the License.
         <artifactId>plexus-utils</artifactId>
         <version>3.3.0</version>
       </dependency>
+
+      <!-- Apache Commons IO -->
+      <dependency>
+        <groupId>commons-io</groupId>
+        <artifactId>commons-io</artifactId>
+        <version>2.6</version>
+      </dependency>
+
     </dependencies>
   </dependencyManagement>
 
@@ -262,6 +270,7 @@ under the License.
               <exclude>src/test/site/**/*.confluence</exclude>
               <exclude>src/test/resources/**/*.twiki</exclude>
               <exclude>src/test/resources/**/*.md</exclude>
+              <exclude>src/it/**/site/**/*.md</exclude>
             </excludes>
           </configuration>
         </plugin>
@@ -317,6 +326,13 @@ under the License.
                 <exclude>org/apache/maven/doxia/module/fml/FmlContentParser</exclude>
                 <exclude>org/apache/maven/doxia/module/xdoc/XdocParser</exclude>
               </excludes>
+              <ignored>
+                <!-- DOXIA-616 -->
+                <difference>
+                  <differenceType>8001</differenceType>
+                  <className>org/apache/maven/doxia/module/markdown/FlexmarkDoxiaNodeRenderer$Factory</className>
+                </difference>
+              </ignored>
             </configuration>
           </execution>
         </executions>

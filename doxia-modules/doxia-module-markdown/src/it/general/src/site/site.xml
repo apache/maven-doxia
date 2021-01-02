@@ -19,24 +19,17 @@ specific language governing permissions and limitations
 under the License.
 -->
 
-<project xmlns="http://maven.apache.org/POM/4.0.0" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:schemaLocation="http://maven.apache.org/POM/4.0.0 https://maven.apache.org/xsd/maven-4.0.0.xsd">
-  <modelVersion>4.0.0</modelVersion>
+<project name="${project.name} from site.xml">
 
-  <parent>
-    <artifactId>doxia</artifactId>
-    <groupId>org.apache.maven.doxia</groupId>
-    <version>1.10-SNAPSHOT</version>
-    <relativePath>../pom.xml</relativePath>
-  </parent>
+  <body>
 
-  <artifactId>doxia-sink-api</artifactId>
-  <name>Doxia :: Sink API</name>
-  <description>Doxia Sink API.</description>
+    <menu name="Getting Started">
+      <item name="Overview" href="index.html" />
+    </menu>
 
-  <dependencies>
-      <dependency>
-        <groupId>org.apache.maven.doxia</groupId>
-        <artifactId>doxia-logging-api</artifactId>
-      </dependency>
-  </dependencies>
+    <menu name="Testing">
+      <item name="Metadata" href="metadata.html" />
+    </menu>
+
+  </body>
 </project>
