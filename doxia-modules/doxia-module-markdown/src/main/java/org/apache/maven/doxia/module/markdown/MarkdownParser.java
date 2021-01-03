@@ -143,6 +143,9 @@ public class MarkdownParser
                 StrikethroughExtension.create()
         ) );
 
+        // Disable wrong apostrophe replacement
+        flexmarkOptions.set( TypographicExtension.SINGLE_QUOTE_UNMATCHED, "&apos;" );
+
         // Additional options on the HTML rendering
         flexmarkOptions.set( HtmlRenderer.HTML_BLOCK_OPEN_TAG_EOL, false );
         flexmarkOptions.set( HtmlRenderer.HTML_BLOCK_CLOSE_TAG_EOL, false );
