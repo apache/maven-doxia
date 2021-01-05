@@ -1,6 +1,4 @@
-<?xml version="1.0" encoding="UTF-8"?>
-
-<!--
+<!---
 Licensed to the Apache Software Foundation (ASF) under one
 or more contributor license agreements.  See the NOTICE file
 distributed with this work for additional information
@@ -19,19 +17,15 @@ specific language governing permissions and limitations
 under the License.
 -->
 
-<project name="${project.name} from site.xml">
+# DOXIA-571
 
-  <skin>
-    <groupId>org.apache.maven.skins</groupId>
-    <artifactId>maven-fluido-skin</artifactId>
-    <version>1.9</version>
-  </skin>
+Missing code block color [DOXIA-571](https://issues.apache.org/jira/browse/DOXIA-571):
 
-  <body>
-
-    <menu name="Testing">
-      <item name="Fenced Code Block" href="fenced-code-block.html" />
-    </menu>
-
-  </body>
-</project>
+```
+code block
+Apache Maven 3.6.3 (cecedd343002696d0abb50b32b541b8a6ba2883f)
+Maven home: D:\apache-maven-3.6.3\apache-maven\bin\..
+Java version: 1.8.0_232, vendor: AdoptOpenJDK, runtime: C:\Program Files\AdoptOpenJDK\jdk-8.0.232.09-hotspot\jre
+Default locale: en_US, platform encoding: Cp1250
+OS name: "windows 10", version: "10.0", arch: "amd64", family: "windows"
+```
