@@ -271,6 +271,7 @@ under the License.
               <exclude>src/test/resources/**/*.twiki</exclude>
               <exclude>src/test/resources/**/*.md</exclude>
               <exclude>src/it/**/site/**/*.md</exclude>
+              <exclude>src/it/**/site/**/*.markdown</exclude>
             </excludes>
           </configuration>
         </plugin>

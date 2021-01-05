@@ -21,6 +21,12 @@ under the License.
 
 <project name="${project.name} from site.xml">
 
+  <skin>
+    <groupId>org.apache.maven.skins</groupId>
+    <artifactId>maven-fluido-skin</artifactId>
+    <version>1.9</version>
+  </skin>
+
   <body>
 
     <menu name="Getting Started">
@@ -30,6 +36,11 @@ under the License.
     <menu name="Testing">
       <item name="Metadata" href="metadata.html" />
       <item name="Quotes" href="quotes.html" />
+      <item name="DOXIA-473" href="DOXIA-473.html" />
+      <item name="DOXIA-535" href="DOXIA-535.html" />
+      <item name="DOXIA-571" href="DOXIA-571.html" />
+      <item name="DOXIA-597" href="DOXIA-597.html" />
+      <item name="DOXIA-616 (fenced code block)" href="DOXIA-616-fenced-code-block.html" />
     </menu>
 
   </body>
