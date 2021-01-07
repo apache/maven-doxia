@@ -87,15 +87,15 @@ public class MarkdownParser
     private static final Pattern METADATA_SECTION_PATTERN = Pattern.compile(
             "\\A^\\s*"
             + "(?:title|author|date|address|affiliation|copyright|email|keywords|language|phone|subtitle)"
-            + "\\h*:\\h*\\V*\\h*$\\v+"
-            + "(?:^\\h*[^:\\v]+\\h*:\\h*\\V*\\h*$\\v+)*",
+            + "[ \\t]*:[ \\t]*[^\\r\\n]*[ \\t]*$[\\r\\n]+"
+            + "(?:^[ \\t]*[^:\\r\\n]+[ \\t]*:[ \\t]*[^\\r\\n]*[ \\t]*$[\\r\\n]+)*",
             Pattern.MULTILINE | Pattern.CASE_INSENSITIVE );
 
     /**
      * Regex that captures the key and value of a multimarkdown-style metadata entry.
      */
     private static final Pattern METADATA_ENTRY_PATTERN = Pattern.compile(
-            "^\\h*([^:\\v]+?)\\h*:\\h*(\\V*)\\h*$",
+            "^[ \\t]*([^:\\r\\n]+?)[ \\t]*:[ \\t]*([^\\r\\n]*)[ \\t]*$",
             Pattern.MULTILINE );
 
     /**
