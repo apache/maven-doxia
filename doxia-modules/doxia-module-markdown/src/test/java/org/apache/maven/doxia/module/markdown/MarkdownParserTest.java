@@ -165,40 +165,9 @@ public class MarkdownParserTest
     {
         Iterator<SinkEventElement> it = parseFileToEventTestingSink( "code" ).getEventList().iterator();
 
-        assertEquals( it, "head", "head_", "body", "paragraph", "text", "paragraph_", "text", "verbatim", "inline", "text", "inline_", "verbatim_", "body_" );
+        assertEquals( it, "head", "head_", "body", "paragraph", "text", "paragraph_", "text", "unknown", "verbatim", "text", "verbatim_", "unknown", "body_" );
 
         assertFalse( it.hasNext() );
-    }
-
-    /**
-     * Assert the verbatim sink event is fired when parsing "fenced-code-block.md".
-     *
-     * @throws Exception if the event list is not correct when parsing the document
-     */
-    public void testFencedCodeBlockSinkEvent()
-        throws Exception
-    {
-        List<SinkEventElement> eventList = parseFileToEventTestingSink( "fenced-code-block" ).getEventList();
-        Iterator<SinkEventElement> it = eventList.iterator();
-
-        assertEquals( it, "head", "head_", "body", "paragraph", "text", "paragraph_", "text", "verbatim", "inline", "text", "inline_", "verbatim_", "body_" );
-
-        assertFalse( it.hasNext() );
-
-        // PRE element must be a "verbatim" Sink event that specifies
-        // BOXED = true
-        SinkEventElement pre = eventList.get( 7 );
-        assertEquals( "verbatim", pre.getName() );
-        SinkEventAttributeSet preAtts = (SinkEventAttributeSet) pre.getArgs()[0];
-        assertTrue( preAtts.containsAttribute( SinkEventAttributes.DECORATION, "boxed" ) );
-
-        // * CODE element must be an "inline" Sink event that specifies:
-        // * SEMANTICS = "code" and CLASS = "language-java"
-        SinkEventElement code = eventList.get( 8 );
-        assertEquals( "inline", code.getName() );
-        SinkEventAttributeSet codeAtts = (SinkEventAttributeSet) code.getArgs()[0];
-        assertTrue( codeAtts.containsAttribute( SinkEventAttributes.SEMANTICS, "code" ) );
-        assertTrue( codeAtts.containsAttribute( SinkEventAttributes.CLASS, "language-java" ) );
     }
 
     /**
@@ -254,7 +223,7 @@ public class MarkdownParserTest
     public void testLinkWithAnchorAndQuery() throws Exception
     {
         Iterator<SinkEventElement> it = parseFileToEventTestingSink( "link_anchor_query" ).getEventList().iterator();
-
+        
         assertEquals( it, "head", "head_", "body", "paragraph", "link", "text", "link_", "paragraph_", "body_" );
 
         assertFalse( it.hasNext() );
@@ -300,36 +269,14 @@ public class MarkdownParserTest
     public void testMetadataSinkEvent()
         throws Exception
     {
-        List<SinkEventElement> eventList = parseFileToEventTestingSink( "metadata" ).getEventList();
-        Iterator<SinkEventElement> it = eventList.iterator();
+        Iterator<SinkEventElement> it = parseFileToEventTestingSink( "metadata" ).getEventList().iterator();
 
-        assertEquals( it, "head", "title", "text", "text", "text", "title_", "author", "text", "author_", "date", "text", "date_",
-                      "unknown", "head_", "body", "unknown", "text", "unknown", "paragraph", "text", "paragraph_", "section1",
+        assertEquals( it, "head", "title", "text", "title_", "author", "text", "author_", "date", "text", "date_",
+                      "head_", "body", "unknown", "text", "unknown", "paragraph", "text", "paragraph_", "section1",
                       "sectionTitle1", "text", "sectionTitle1_", "paragraph", "text", "paragraph_", "section1_",
                       "body_" );
 
         assertFalse( it.hasNext() );
-
-        // Title must be "A Title & a Test"
-        assertEquals( "A Title ", eventList.get( 2 ).getArgs()[0]);
-        assertEquals( "&", eventList.get( 3 ).getArgs()[0]);
-        assertEquals( " a 'Test'", eventList.get( 4 ).getArgs()[0]);
-
-        // Author must be "Somebody <somebody@somewhere.org>"
-        assertEquals( "Somebody 'Nickname' Great <somebody@somewhere.org>", eventList.get( 7 ).getArgs()[0]);
-
-        // Date must be "2013 © Copyleft"
-        assertEquals( "2013 \u00A9 Copyleft", eventList.get( 10 ).getArgs()[0]);
-
-        // * META element must be an "unknown" Sink event that specifies:
-        // * name = "keywords" and content = "maven,doxia,markdown"
-        SinkEventElement meta = eventList.get( 12 );
-        assertEquals( "unknown", meta.getName() );
-        assertEquals( "meta", meta.getArgs()[0] );
-        SinkEventAttributeSet metaAtts = (SinkEventAttributeSet) meta.getArgs()[2];
-        assertTrue( metaAtts.containsAttribute( SinkEventAttributes.NAME, "keywords" ) );
-        assertTrue( metaAtts.containsAttribute( "content", "maven,doxia,markdown" ) );
-
     }
 
     /**
@@ -343,9 +290,8 @@ public class MarkdownParserTest
         Iterator<SinkEventElement> it = parseFileToEventTestingSink( "first-heading" ).getEventList().iterator();
 
         // NOTE: H1 is rendered as "unknown" and H2 is "section1" (see DOXIA-203)
-        assertEquals( it, "head", "title", "text", "title_", "head_", "body", "comment", "text",
-                "section1", "sectionTitle1", "text", "sectionTitle1_", "paragraph", "text",
-                "paragraph_", "section1_", "body_" );
+        assertEquals( it, "head", "title", "text", "title_", "head_", "body", "section1", "sectionTitle1", "text",
+                      "sectionTitle1_", "paragraph", "text", "paragraph_", "section1_", "body_" );
 
         assertFalse( it.hasNext() );
     }
@@ -412,7 +358,7 @@ public class MarkdownParserTest
     {
         try ( Reader reader = getTestReader( file ) )
         {
-            return parser.toHtml( reader ).toString();
+            return parser.toHtml( reader );
         }
     }
 
@@ -473,27 +419,4 @@ public class MarkdownParserTest
     {
         parseFileToEventTestingSink( "flex-384" );
     }
-
-    // Apostrophe versus single quotes
-    // Simple apostrophes (like in Sophie's Choice) must not be replaced with a single quote
-    public void testQuoteVsApostrophe()
-        throws Exception
-    {
-        List<SinkEventElement> eventList = parseFileToEventTestingSink( "quote-vs-apostrophe" ).getEventList();
-
-        StringBuilder content = new StringBuilder();
-        for ( SinkEventElement element : eventList )
-        {
-            if ( "text".equals(element.getName()) )
-            {
-                content.append( element.getArgs()[0] );
-            }
-        }
-        assertEquals(
-                "This apostrophe isn't a quote."
-                + "This \u2018quoted text\u2019 isn't surrounded by apostrophes.",
-                content.toString() );
-
-    }
-
 }

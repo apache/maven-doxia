@@ -53,7 +53,7 @@ public class XhtmlParser
     implements XhtmlMarkup
 {
     /** For boxed verbatim. */
-    protected boolean boxed;
+    private boolean boxed;
 
     /** Empty elements don't write a closing tag. */
     private boolean isEmptyElement;

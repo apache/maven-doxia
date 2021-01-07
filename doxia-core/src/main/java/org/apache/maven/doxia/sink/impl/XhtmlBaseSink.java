@@ -1782,9 +1782,7 @@ public class XhtmlBaseSink
     {
         if ( attributes.containsAttribute( SinkEventAttributes.SEMANTICS, semantic ) )
         {
-            SinkEventAttributes attributesNoSemantics = ( SinkEventAttributes ) attributes.copyAttributes();
-            attributesNoSemantics.removeAttribute( SinkEventAttributes.SEMANTICS );
-            writeStartTag( tag, attributesNoSemantics );
+            writeStartTag( tag );
             tags.add( 0, tag );
         }
     }
