@@ -38,5 +38,11 @@ under the License.
       <groupId>org.codehaus.plexus</groupId>
       <artifactId>plexus-container-default</artifactId>
     </dependency>
+<!--
+    <dependency>
+      <groupId>org.eclipse.sisu</groupId>
+      <artifactId>org.eclipse.sisu.plexus</artifactId>
+    </dependency>
+-->
   </dependencies>
 </project>

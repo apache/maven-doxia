@@ -47,7 +47,7 @@ public class DocBookParserTest extends AbstractParserTest
     {
         super.setUp();
 
-        parser = lookup( Parser.ROLE, "docbook" );
+        parser = (DocBookParser) lookup( Parser.class, "docbook" );
     }
 
     /** {@inheritDoc} */

@@ -35,7 +35,7 @@ public class MacroManagerTest
     public void testMacroManager()
         throws Exception
     {
-        MacroManager mm = lookup( MacroManager.ROLE );
+        MacroManager mm = lookup( MacroManager.class );
 
         assertNotNull( mm );
 

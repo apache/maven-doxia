@@ -58,7 +58,7 @@ public class ConfluenceParserTest
     {
         super.setUp();
 
-        parser = lookup( Parser.ROLE, "confluence" );
+        parser = (ConfluenceParser) lookup( Parser.class, "confluence" );
 
         output = null;
         reader = null;

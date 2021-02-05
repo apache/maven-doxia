@@ -42,7 +42,7 @@ public class TwikiParserTest
     {
         super.setUp();
 
-        this.parser = lookup( Parser.ROLE, id );
+        this.parser = (TWikiParser) lookup( Parser.class, id );
     }
 
     @Override
