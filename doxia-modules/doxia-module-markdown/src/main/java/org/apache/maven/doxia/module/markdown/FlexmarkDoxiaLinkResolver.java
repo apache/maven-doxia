@@ -42,6 +42,7 @@ import com.vladsch.flexmark.util.ast.Node;
  * - doc.markdown to doc.html
  * - doc.md#anchor to doc.html#anchor
  * - doc.markdown#anchor to doc.html#anchor
+ * - ../doc.markdown#anchor to ../doc.html#anchor
  * - :doc.md to :doc.html
  * - :doc.markdown to :doc.html
  *
@@ -64,7 +65,7 @@ public class FlexmarkDoxiaLinkResolver implements LinkResolver
     public FlexmarkDoxiaLinkResolver( LinkResolverContext context )
     {
         this.pattern = Pattern.compile(
-                            "^(?![^:]+:)([^\\.]+).(?:"
+                            "^(?![^:]+:)((?:\\./)?(?:\\.\\./)*[^\\.]+).(?:"
                           + MarkdownParserModule.FILE_EXTENSION
                           + "|"
                           + MarkdownParserModule.ALTERNATE_FILE_EXTENSION

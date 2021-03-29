@@ -39,6 +39,26 @@ public class FlexmarkDoxiaLinkResolverTest
         checkLinkRewritten( flexmarkDoxiaLinkResolver, "doc.md#anchor", "doc.html#anchor" );
         checkLinkRewritten( flexmarkDoxiaLinkResolver, "doc.markdown#anchor", "doc.html#anchor" );
 
+        checkLinkRewritten( flexmarkDoxiaLinkResolver, "./doc.md#anchor", "./doc.html#anchor" );
+        checkLinkRewritten( flexmarkDoxiaLinkResolver, "./doc.markdown#anchor", "./doc.html#anchor" );
+        checkLinkRewritten( flexmarkDoxiaLinkResolver, "./dir/doc.md#anchor", "./dir/doc.html#anchor" );
+        checkLinkRewritten( flexmarkDoxiaLinkResolver, "./dir/doc.markdown#anchor", "./dir/doc.html#anchor" );
+
+        checkLinkRewritten( flexmarkDoxiaLinkResolver, "../doc.md#anchor", "../doc.html#anchor" );
+        checkLinkRewritten( flexmarkDoxiaLinkResolver, "../doc.markdown#anchor", "../doc.html#anchor" );
+        checkLinkRewritten( flexmarkDoxiaLinkResolver, "../dir/doc.md#anchor", "../dir/doc.html#anchor" );
+        checkLinkRewritten( flexmarkDoxiaLinkResolver, "../dir/doc.markdown#anchor", "../dir/doc.html#anchor" );
+
+        checkLinkRewritten( flexmarkDoxiaLinkResolver, "./../doc.md#anchor", "./../doc.html#anchor" );
+        checkLinkRewritten( flexmarkDoxiaLinkResolver, "./../doc.markdown#anchor", "./../doc.html#anchor" );
+        checkLinkRewritten( flexmarkDoxiaLinkResolver, "./../dir/doc.md#anchor", "./../dir/doc.html#anchor" );
+        checkLinkRewritten( flexmarkDoxiaLinkResolver, "./../dir/doc.markdown#anchor", "./../dir/doc.html#anchor" );
+
+        checkLinkRewritten( flexmarkDoxiaLinkResolver, "../../doc.md#anchor", "../../doc.html#anchor" );
+        checkLinkRewritten( flexmarkDoxiaLinkResolver, "../../doc.markdown#anchor", "../../doc.html#anchor" );
+        checkLinkRewritten( flexmarkDoxiaLinkResolver, "../../dir/doc.md#anchor", "../../dir/doc.html#anchor" );
+        checkLinkRewritten( flexmarkDoxiaLinkResolver, "../../dir/doc.markdown#anchor", "../../dir/doc.html#anchor" );
+
         // these edge cases are still allowed
         checkLinkRewritten( flexmarkDoxiaLinkResolver, ":doc.md", ":doc.html" );
         checkLinkRewritten( flexmarkDoxiaLinkResolver, ":doc.markdown", ":doc.html" );
@@ -69,6 +89,8 @@ public class FlexmarkDoxiaLinkResolverTest
         checkLinkLeftUnchanged( flexmarkDoxiaLinkResolver, "docs.markdown#bad#format", LinkType.LINK );
         checkLinkLeftUnchanged( flexmarkDoxiaLinkResolver, "docs.markdown#bad.format", LinkType.LINK );
         checkLinkLeftUnchanged( flexmarkDoxiaLinkResolver, "docs.markdown.bad#format", LinkType.LINK );
+
+        checkLinkLeftUnchanged( flexmarkDoxiaLinkResolver, ".../badpath/docs.md", LinkType.LINK );
     }
 
     private static void checkLinkLeftUnchanged( FlexmarkDoxiaLinkResolver flexmarkDoxiaLinkResolver, String url,
