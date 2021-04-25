@@ -37,3 +37,8 @@ jobs:
         distribution: 'adopt'
     - name: Build with Maven
       run: mvn clean compile test site
+    - uses: actions/upload-artifact@v2
+      with:
+        name: ArtifactMvnSiteApresTests
+        path: |
+           target/site
