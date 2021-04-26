@@ -93,7 +93,7 @@ public class XhtmlBaseSinkTest
             sink = new XhtmlBaseSink( writer );
 
             sink.table();
-            sink.tableRows( new int[] { Sink.JUSTIFY_CENTER }, false );
+            sink.tableRows( new int[] { Sink.JUSTIFY_CENTER, Sink.JUSTIFY_LEFT }, false );
             sink.tableRow();
             sink.tableCell();
             sink.text( "cell11" );
@@ -106,7 +106,7 @@ public class XhtmlBaseSinkTest
             sink.tableRow();
             sink.tableCell();
             sink.table( SinkEventAttributeSet.LEFT );
-            sink.tableRows( new int[] { Sink.JUSTIFY_LEFT }, false );
+            sink.tableRows( new int[] { Sink.JUSTIFY_LEFT, Sink.JUSTIFY_RIGHT }, false );
             sink.tableRow();
             sink.tableCell();
             sink.text( "nestedTable1Cell11" );
@@ -119,7 +119,7 @@ public class XhtmlBaseSinkTest
             sink.tableCell();
 
             sink.table( SinkEventAttributeSet.RIGHT );
-            sink.tableRows( new int[] { Sink.JUSTIFY_RIGHT }, false );
+            sink.tableRows( new int[] { Sink.JUSTIFY_RIGHT, Sink.JUSTIFY_CENTER }, false );
             sink.tableRow();
             sink.tableCell();
             sink.text( "nestedTable2Cell11" );
@@ -177,11 +177,10 @@ public class XhtmlBaseSinkTest
         assertTrue( actual.contains(
                 "<table border=\"0\" class=\"bodyTable\" align=\"right\">" + "<caption>caption3</caption>" ) );
 
-        assertTrue( actual.contains( "<td>cell11</td>" ) );
-        assertTrue( actual.contains( "<td>nestedTable1Cell11</td>" ) );
-        assertTrue( actual.contains( "<td>nestedTable2Cell11</td>" ) );
-        assertTrue( actual.contains( "<td>nestedTable1Cell22</td>" ) );
-        assertTrue( actual.contains( "<td>cell22</td>" ) );
+        assertTrue( actual.contains( "<td align=\"center\">cell11</td>" ) );
+        assertTrue( actual.contains( "<td align=\"right\">nestedTable2Cell11</td>" ) );
+        assertTrue( actual.contains( "<td align=\"right\">nestedTable1Cell22</td>" ) );
+        assertTrue( actual.contains( "<td align=\"left\">cell22</td>" ) );
     }
 
     /**

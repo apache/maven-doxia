@@ -422,4 +422,51 @@ public class AptSinkTest extends AbstractSinkTest
 
         assertEquals( "Wrong link or paragraph markup in table cell", expected, getSinkContent() );
     }
+
+    public void testTableCellsWithJustification()
+    {
+        final String linkTarget = "target";
+        final String linkText = "link";
+        final String paragraphText = "paragraph text";
+        final Sink sink = getSink();
+        sink.table();
+        sink.tableRows( new int[] { Sink.JUSTIFY_RIGHT, Sink.JUSTIFY_LEFT }, false );
+        sink.tableRow();
+        sink.tableCell();
+        sink.link( linkTarget );
+        sink.text( linkText );
+        sink.link_();
+        sink.tableCell_();
+        sink.tableCell();
+        sink.paragraph();
+        sink.text( paragraphText );
+        sink.paragraph_();
+        sink.tableCell_();
+        sink.tableRow_();
+        sink.tableRows_();
+        sink.table_();
+        sink.flush();
+        sink.close();
+
+        String expected = EOL +
+                AptMarkup.TABLE_ROW_START_MARKUP +
+                AptMarkup.TABLE_COL_RIGHT_ALIGNED_MARKUP + 
+                AptMarkup.TABLE_COL_LEFT_ALIGNED_MARKUP + 
+                EOL +
+                AptMarkup.LINK_START_1_MARKUP+
+                linkTarget +
+                AptMarkup.LINK_START_2_MARKUP+
+                linkText +
+                AptMarkup.LINK_END_MARKUP+
+                AptMarkup.TABLE_CELL_SEPARATOR_MARKUP +
+                paragraphText +
+                AptMarkup.TABLE_CELL_SEPARATOR_MARKUP +
+                EOL +
+                AptMarkup.TABLE_ROW_START_MARKUP +
+                AptMarkup.TABLE_COL_RIGHT_ALIGNED_MARKUP +
+                AptMarkup.TABLE_COL_LEFT_ALIGNED_MARKUP +
+                EOL;
+
+        assertEquals( "Wrong justification in table cells", expected, getSinkContent() );
+    }
 }
