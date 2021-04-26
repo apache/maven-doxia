@@ -422,4 +422,78 @@ public class AptSinkTest extends AbstractSinkTest
 
         assertEquals( "Wrong link or paragraph markup in table cell", expected, getSinkContent() );
     }
+    public void testTableCellsWithJustification()
+    {
+        final String linkTarget    = "target";
+        final String linkText      = "link";
+        final String paragraphText = "paragraph text";
+        final Sink sink = getSink();
+        sink.table();
+        // Modif D.C. 2021 04 26 Justify the cells
+        int[] ltJustif = new int[]{
+            Sink.JUSTIFY_RIGHT, Sink.JUSTIFY_LEFT
+        };
+        sink.tableRows(ltJustif, false);
+        sink.tableRow();
+        sink.tableCell();
+        sink.link( linkTarget );
+        sink.text( linkText );
+        sink.link_();
+        sink.tableCell_();
+        sink.tableCell();
+        sink.paragraph();
+        sink.text( paragraphText );
+        sink.paragraph_();
+        sink.tableCell_();
+        sink.tableRow_();
+        sink.tableRows_();
+        sink.table_();
+        sink.flush();
+        sink.close();
+
+        String expected = EOL + 
+                //AptMarkup.TABLE_ROW_START_MARKUP + // *--
+                //AptMarkup.MINUS +                  //  -
+                //AptMarkup.MINUS +                  //  -
+                //AptMarkup.TABLE_ROW_START_MARKUP + // *--
+                //AptMarkup.STAR +                   // *
+                
+                AptMarkup.TABLE_ROW_START_MARKUP +         
+                AptMarkup.TABLE_COL_RIGHT_ALIGNED_MARKUP + 
+                AptMarkup.TABLE_COL_LEFT_ALIGNED_MARKUP + 
+                
+                EOL +
+                
+                //AptMarkup.LEFT_CURLY_BRACKET +
+                //AptMarkup.LEFT_CURLY_BRACKET +
+                //AptMarkup.LEFT_CURLY_BRACKET +
+                AptMarkup.LINK_START_1_MARKUP+
+                linkTarget +
+                //AptMarkup.RIGHT_CURLY_BRACKET +
+                AptMarkup.LINK_START_2_MARKUP+
+                linkText +
+                //AptMarkup.RIGHT_CURLY_BRACKET +
+                //AptMarkup.RIGHT_CURLY_BRACKET +
+                AptMarkup.LINK_END_MARKUP+
+                
+                AptMarkup.TABLE_CELL_SEPARATOR_MARKUP +
+                paragraphText +
+                AptMarkup.TABLE_CELL_SEPARATOR_MARKUP +
+                EOL +
+                
+                //AptMarkup.TABLE_ROW_START_MARKUP +  // *--
+                //AptMarkup.MINUS +                   // -
+                //AptMarkup.MINUS +                   // -
+                //AptMarkup.TABLE_ROW_START_MARKUP +  // *--
+                //AptMarkup.STAR +                    // *
+
+                AptMarkup.TABLE_ROW_START_MARKUP +        
+                AptMarkup.TABLE_COL_RIGHT_ALIGNED_MARKUP +
+                AptMarkup.TABLE_COL_LEFT_ALIGNED_MARKUP + 
+
+                EOL;
+        System.out.println(" expected "+expected);
+        System.out.println(" content  "+getSinkContent());
+        assertEquals( "Wrong link or paragraph markup in table cell", expected, getSinkContent() );
+    }
 }
