@@ -38,6 +38,7 @@ import javax.swing.text.html.HTML.Tag;
 
 import org.apache.maven.doxia.markup.HtmlMarkup;
 import org.apache.maven.doxia.markup.Markup;
+import org.apache.maven.doxia.sink.Sink;
 import org.apache.maven.doxia.sink.SinkEventAttributes;
 import org.apache.maven.doxia.util.DoxiaUtils;
 import org.apache.maven.doxia.util.HtmlTools;
@@ -1536,7 +1537,36 @@ public class XhtmlBaseSink
     {
         Tag t = ( headerRow ? HtmlMarkup.TH : HtmlMarkup.TD );
 
-        if ( attributes == null )
+        if (   !headerRow 
+            && null != this.cellCountStack
+            && !this.cellCountStack.isEmpty()
+            && null != cellJustifStack
+            && !this.cellJustifStack.isEmpty()
+            && null != this.getCellJustif()
+                )
+        {
+            int cellCount = this.getCellCount();
+            if (   cellCount < this.getCellJustif().length 
+               ) 
+            {
+                HashMap<Integer, MutableAttributeSet> hash = new HashMap<Integer, MutableAttributeSet>();
+                hash.put( Sink.JUSTIFY_CENTER , SinkEventAttributeSet.CENTER );
+                hash.put( Sink.JUSTIFY_LEFT   , SinkEventAttributeSet.LEFT );
+                hash.put( Sink.JUSTIFY_RIGHT  , SinkEventAttributeSet.RIGHT );
+                MutableAttributeSet atts = hash.get( this.getCellJustif() [cellCount] );
+
+                if ( null == attributes ) 
+                {
+                    attributes = new SinkEventAttributeSet();
+                }
+                if ( null != atts ) 
+                {
+                    attributes.addAttributes( atts );
+                }
+            }
+        }
+
+if ( attributes == null )
         {
             writeStartTag( t, null );
         }
