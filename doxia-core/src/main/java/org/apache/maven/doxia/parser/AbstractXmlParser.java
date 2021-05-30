@@ -100,7 +100,7 @@ public abstract class AbstractXmlParser
     private boolean validate = false;
 
     /** {@inheritDoc} */
-    public void parse( Reader source, Sink sink )
+    public void parse( Reader source, Sink sink, String reference )
         throws ParseException
     {
         init();
@@ -164,18 +164,6 @@ public abstract class AbstractXmlParser
         throws XmlPullParserException
     {
         // nop
-    }
-
-    /**
-     * {@inheritDoc}
-     *
-     * Convenience method to parse an arbitrary string and emit any xml events into the given sink.
-     */
-    @Override
-    public void parse( String string, Sink sink )
-        throws ParseException
-    {
-        super.parse( string, sink );
     }
 
     /** {@inheritDoc} */

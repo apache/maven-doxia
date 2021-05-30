@@ -333,7 +333,7 @@ public class XhtmlParser
     }
 
     /** {@inheritDoc} */
-    public void parse( Reader source, Sink sink )
+    public void parse( Reader source, Sink sink, String reference )
         throws ParseException
     {
         this.sourceContent = null;
@@ -355,7 +355,7 @@ public class XhtmlParser
 
         try
         {
-            super.parse( new StringReader( sourceContent ), sink );
+            super.parse( new StringReader( sourceContent ), sink, reference );
         }
         finally
         {

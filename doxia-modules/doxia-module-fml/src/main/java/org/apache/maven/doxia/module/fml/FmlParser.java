@@ -89,7 +89,7 @@ public class FmlParser
     private Map<String, Object> macroParameters = new HashMap<>();
 
     /** {@inheritDoc} */
-    public void parse( Reader source, Sink sink )
+    public void parse( Reader source, Sink sink, String reference )
         throws ParseException
     {
         this.faqs = null;
@@ -118,7 +118,7 @@ public class FmlParser
             this.faqs = new Faqs();
 
             // this populates faqs
-            super.parse( tmp, sink );
+            super.parse( tmp, sink, reference );
 
             writeFaqs( sink );
         }

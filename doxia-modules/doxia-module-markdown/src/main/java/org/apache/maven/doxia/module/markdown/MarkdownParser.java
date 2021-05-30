@@ -163,7 +163,7 @@ public class MarkdownParser
 
     /** {@inheritDoc} */
     @Override
-    public void parse( Reader source, Sink sink )
+    public void parse( Reader source, Sink sink, String reference )
         throws ParseException
     {
         try

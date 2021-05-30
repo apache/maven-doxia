@@ -179,15 +179,32 @@ public abstract class AbstractParser
     public void parse( String string, Sink sink )
         throws ParseException
     {
-        parse( new StringReader( string ), sink );
+        this.parse( string, sink, null );
+    }
+
+    /**
+     * {@inheritDoc}
+     *
+     * Convenience method to parse an arbitrary string and emit events into the given sink.
+     *
+     * @param string a string that provides the source input
+     * @param sink a sink that consumes the Doxia events
+     * @param reference a string containing the reference to the source of the input string (e.g. filename)
+     * @throws org.apache.maven.doxia.parser.ParseException if the string could not be parsed
+     * @since 1.10
+     */
+    public void parse( String string, Sink sink, String reference )
+        throws ParseException
+    {
+        parse( new StringReader( string ), sink, reference );
     }
 
     /** {@inheritDoc} */
     @Override
-    public void parse( Reader source, Sink sink, String reference )
+    public void parse( Reader source, Sink sink )
         throws ParseException
     {
-        parse( source, sink );
+        parse( source, sink, null );
     }
 
     /**

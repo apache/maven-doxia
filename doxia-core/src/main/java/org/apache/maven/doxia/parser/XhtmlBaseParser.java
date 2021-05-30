@@ -82,14 +82,14 @@ public class XhtmlBaseParser
 
     /** {@inheritDoc} */
     @Override
-    public void parse( Reader source, Sink sink )
+    public void parse( Reader source, Sink sink, String reference )
         throws ParseException
     {
         init();
 
         try
         {
-            super.parse( source, sink );
+            super.parse( source, sink, reference );
         }
         finally
         {
