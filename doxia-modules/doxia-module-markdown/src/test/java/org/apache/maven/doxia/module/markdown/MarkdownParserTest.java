@@ -1,10 +1,5 @@
 package org.apache.maven.doxia.module.markdown;
 
-import java.io.IOException;
-import java.io.Reader;
-import java.util.Iterator;
-import java.util.List;
-
 /*
  * Licensed to the Apache Software Foundation (ASF) under one
  * or more contributor license agreements.  See the NOTICE file
@@ -31,6 +26,12 @@ import org.apache.maven.doxia.sink.SinkEventAttributes;
 import org.apache.maven.doxia.sink.impl.SinkEventAttributeSet;
 import org.apache.maven.doxia.sink.impl.SinkEventElement;
 import org.apache.maven.doxia.sink.impl.SinkEventTestingSink;
+
+import java.io.IOException;
+import java.io.Reader;
+import java.util.List;
+
+import static org.assertj.core.api.Assertions.assertThat;
 
 /**
  * Tests for {@link MarkdownParser}.
@@ -84,11 +85,10 @@ public class MarkdownParserTest
     public void testParagraphSinkEvent()
         throws Exception
     {
-        Iterator<SinkEventElement> it = parseFileToEventTestingSink( "paragraph" ).getEventList().iterator();
+        List<SinkEventElement> list = parseFileToEventTestingSink( "paragraph" ).getEventList();
 
-        assertEquals( it, "head", "head_", "body", "paragraph", "text", "paragraph_", "body_" );
-
-        assertFalse( it.hasNext() );
+        assertThat ( list ).extracting( "name" ).containsExactly(
+                "head", "head_", "body", "paragraph", "text", "paragraph_", "body_" );
     }
 
     /**
@@ -101,11 +101,9 @@ public class MarkdownParserTest
     {
         //System.out.println( parseFileToHtml( "font-bold" ) );
         List<SinkEventElement> eventList = parseFileToEventTestingSink( "font-bold" ).getEventList();
-        Iterator<SinkEventElement> it = eventList.iterator();
 
-        assertEquals( it, "head", "head_", "body", "paragraph", "inline", "text", "inline_", "paragraph_", "body_" );
-
-        assertFalse( it.hasNext() );
+        assertThat( eventList ).extracting( "name" ).containsExactly(
+                "head", "head_", "body", "paragraph", "inline", "text", "inline_", "paragraph_", "body_" );
 
         SinkEventElement inline = eventList.get( 4 );
         assertEquals( "inline", inline.getName() );
@@ -123,11 +121,10 @@ public class MarkdownParserTest
     {
         //System.out.println( parseFileToHtml( "font-italic" ) );
         List<SinkEventElement> eventList = parseFileToEventTestingSink( "font-italic" ).getEventList();
-        Iterator<SinkEventElement> it = eventList.iterator();
 
-        assertEquals( it, "head", "head_", "body", "paragraph", "inline", "text", "inline_", "paragraph_", "body_" );
+        assertThat( eventList ).extracting( "name" ).containsExactly(
+                "head", "head_", "body", "paragraph", "inline", "text", "inline_", "paragraph_", "body_" );
 
-        assertFalse( it.hasNext() );
         SinkEventElement inline = eventList.get( 4 );
         assertEquals( "inline", inline.getName() );
         SinkEventAttributeSet atts = (SinkEventAttributeSet) inline.getArgs()[0];
@@ -142,13 +139,11 @@ public class MarkdownParserTest
     public void testFontMonospacedSinkEvent()
         throws Exception
     {
-        //System.out.println( parseFileToHtml( "font-monospaced" ) );
         List<SinkEventElement> eventList = parseFileToEventTestingSink( "font-monospaced" ).getEventList();
-        Iterator<SinkEventElement> it = eventList.iterator();
 
-        assertEquals( it, "head", "head_", "body", "paragraph", "inline", "text", "inline_", "paragraph_", "body_" );
+        assertThat( eventList ).extracting( "name" ).containsExactly(
+                "head", "head_", "body", "paragraph", "inline", "text", "inline_", "paragraph_", "body_" );
 
-        assertFalse( it.hasNext() );
         SinkEventElement inline = eventList.get( 4 );
         assertEquals( "inline", inline.getName() );
         SinkEventAttributeSet atts = (SinkEventAttributeSet) inline.getArgs()[0];
@@ -163,11 +158,10 @@ public class MarkdownParserTest
     public void testCodeSinkEvent()
         throws Exception
     {
-        Iterator<SinkEventElement> it = parseFileToEventTestingSink( "code" ).getEventList().iterator();
+        List<SinkEventElement> eventList = parseFileToEventTestingSink( "code" ).getEventList();
 
-        assertEquals( it, "head", "head_", "body", "paragraph", "text", "paragraph_", "text", "verbatim", "inline", "text", "inline_", "verbatim_", "body_" );
-
-        assertFalse( it.hasNext() );
+        assertThat( eventList ).extracting( "name" ).containsExactly(
+                "head", "head_", "body", "paragraph", "text", "paragraph_", "text", "verbatim", "inline", "text", "inline_", "verbatim_", "body_" );
     }
 
     /**
@@ -179,11 +173,9 @@ public class MarkdownParserTest
         throws Exception
     {
         List<SinkEventElement> eventList = parseFileToEventTestingSink( "fenced-code-block" ).getEventList();
-        Iterator<SinkEventElement> it = eventList.iterator();
 
-        assertEquals( it, "head", "head_", "body", "paragraph", "text", "paragraph_", "text", "verbatim", "inline", "text", "inline_", "verbatim_", "body_" );
-
-        assertFalse( it.hasNext() );
+        assertThat( eventList ).extracting( "name" ).containsExactly(
+                "head", "head_", "body", "paragraph", "text", "paragraph_", "text", "verbatim", "inline", "text", "inline_", "verbatim_", "body_" );
 
         // PRE element must be a "verbatim" Sink event that specifies
         // BOXED = true
@@ -209,11 +201,10 @@ public class MarkdownParserTest
     public void testImageSinkEvent()
         throws Exception
     {
-        Iterator<SinkEventElement> it = parseFileToEventTestingSink( "image" ).getEventList().iterator();
+        List<SinkEventElement> eventList = parseFileToEventTestingSink( "image" ).getEventList();
 
-        assertEquals( it, "head", "head_", "body", "paragraph", "text", "figureGraphics", "text", "paragraph_", "body_" );
-
-        assertFalse( it.hasNext() );
+        assertThat( eventList ).extracting( "name" ).containsExactly(
+                "head", "head_", "body", "paragraph", "text", "figureGraphics", "text", "paragraph_", "body_" );
     }
 
     /**
@@ -224,11 +215,10 @@ public class MarkdownParserTest
     public void testLinkSinkEvent()
         throws Exception
     {
-        Iterator<SinkEventElement> it = parseFileToEventTestingSink( "link" ).getEventList().iterator();
+        List<SinkEventElement> eventList = parseFileToEventTestingSink( "link" ).getEventList();
 
-        assertEquals( it, "head", "head_", "body", "paragraph", "text", "link", "text", "link_", "text", "paragraph_", "body_" );
-
-        assertFalse( it.hasNext() );
+        assertThat( eventList ).extracting( "name" ).containsExactly(
+                "head", "head_", "body", "paragraph", "text", "link", "text", "link_", "text", "paragraph_", "body_" );
     }
 
     /**
@@ -241,11 +231,9 @@ public class MarkdownParserTest
     {
         List<SinkEventElement> eventList = parseFileToEventTestingSink( "link_rewrite" ).getEventList();
 
-        Iterator<SinkEventElement> it = eventList.iterator();
-        assertEquals( it, "head", "head_", "body", "paragraph", "text", "link", "text", "link_", "text", "link", "text",
+        assertThat( eventList ).extracting( "name" ).containsExactly(
+                "head", "head_", "body", "paragraph", "text", "link", "text", "link_", "text", "link", "text",
                       "link_", "text", "paragraph_", "body_" );
-
-        assertFalse( it.hasNext() );
 
         assertEquals( "doc.html", eventList.get( 5 ).getArgs()[0] );
         assertEquals( "ftp://doc.md", eventList.get( 9 ).getArgs()[0] );
@@ -253,11 +241,10 @@ public class MarkdownParserTest
 
     public void testLinkWithAnchorAndQuery() throws Exception
     {
-        Iterator<SinkEventElement> it = parseFileToEventTestingSink( "link_anchor_query" ).getEventList().iterator();
+        List<SinkEventElement> eventList = parseFileToEventTestingSink( "link_anchor_query" ).getEventList();
 
-        assertEquals( it, "head", "head_", "body", "paragraph", "link", "text", "link_", "paragraph_", "body_" );
-
-        assertFalse( it.hasNext() );
+        assertThat( eventList ).extracting( "name" ).containsExactly(
+                "head", "head_", "body", "paragraph", "link", "text", "link_", "paragraph_", "body_" );
     }
 
     /**
@@ -268,12 +255,11 @@ public class MarkdownParserTest
     public void testListSinkEvent()
         throws Exception
     {
-        Iterator<SinkEventElement> it = parseFileToEventTestingSink( "list" ).getEventList().iterator();
+        List<SinkEventElement> eventList = parseFileToEventTestingSink( "list" ).getEventList();
 
-        assertEquals( it, "head", "head_", "body", "list", "text", "listItem", "text", "listItem_", "listItem", "text",
+        assertThat( eventList ).extracting( "name" ).containsExactly(
+                "head", "head_", "body", "list", "text", "listItem", "text", "listItem_", "listItem", "text",
                       "listItem_", "text", "list_", "body_" );
-
-        assertFalse( it.hasNext() );
     }
 
     /**
@@ -284,12 +270,11 @@ public class MarkdownParserTest
     public void testNumberedListSinkEvent()
         throws Exception
     {
-        Iterator<SinkEventElement> it = parseFileToEventTestingSink( "numbered-list" ).getEventList().iterator();
+        List<SinkEventElement> eventList = parseFileToEventTestingSink( "numbered-list" ).getEventList();
 
-        assertEquals( it, "head", "head_", "body", "numberedList", "text", "numberedListItem", "text", "numberedListItem_",
+        assertThat( eventList ).extracting( "name" ).containsExactly(
+                "head", "head_", "body", "numberedList", "text", "numberedListItem", "text", "numberedListItem_",
                       "numberedListItem", "text", "numberedListItem_", "text", "numberedList_", "body_" );
-
-        assertFalse( it.hasNext() );
     }
 
     /**
@@ -301,14 +286,12 @@ public class MarkdownParserTest
         throws Exception
     {
         List<SinkEventElement> eventList = parseFileToEventTestingSink( "metadata" ).getEventList();
-        Iterator<SinkEventElement> it = eventList.iterator();
 
-        assertEquals( it, "head", "title", "text", "text", "text", "title_", "author", "text", "author_", "date", "text", "date_",
+        assertThat( eventList ).extracting( "name" ).containsExactly(
+                "head", "title", "text", "text", "text", "title_", "author", "text", "author_", "date", "text", "date_",
                       "unknown", "head_", "body", "unknown", "text", "unknown", "paragraph", "text", "paragraph_", "section1",
                       "sectionTitle1", "text", "sectionTitle1_", "paragraph", "text", "paragraph_", "section1_",
                       "body_" );
-
-        assertFalse( it.hasNext() );
 
         // Title must be "A Title & a Test"
         assertEquals( "A Title ", eventList.get( 2 ).getArgs()[0]);
@@ -340,14 +323,13 @@ public class MarkdownParserTest
     public void testFirstHeadingSinkEvent()
         throws Exception
     {
-        Iterator<SinkEventElement> it = parseFileToEventTestingSink( "first-heading" ).getEventList().iterator();
+        List<SinkEventElement> eventList = parseFileToEventTestingSink( "first-heading" ).getEventList();
 
         // NOTE: H1 is rendered as "unknown" and H2 is "section1" (see DOXIA-203)
-        assertEquals( it, "head", "title", "text", "title_", "head_", "body", "comment", "text",
+        assertThat( eventList ).extracting( "name" ).containsExactly(
+                "head", "title", "text", "title_", "head_", "body", "comment", "text",
                 "section1", "sectionTitle1", "text", "sectionTitle1_", "paragraph", "text",
                 "paragraph_", "section1_", "body_" );
-
-        assertFalse( it.hasNext() );
     }
 
     /**
@@ -358,13 +340,12 @@ public class MarkdownParserTest
     public void testCommentBeforeHeadingSinkEvent()
         throws Exception
     {
-        Iterator<SinkEventElement> it = parseFileToEventTestingSink( "comment-before-heading" ).getEventList().iterator();
+        List<SinkEventElement> eventList = parseFileToEventTestingSink( "comment-before-heading" ).getEventList();
 
         // NOTE: H1 is rendered as "unknown" and H2 is "section1" (see DOXIA-203)
-        assertEquals( it, "head", "title", "text", "title_", "head_", "body", "comment", "text", "unknown", "text",
+        assertThat( eventList ).extracting( "name" ).containsExactly(
+                "head", "title", "text", "title_", "head_", "body", "comment", "text", "unknown", "text",
                       "unknown", "paragraph", "text", "link", "text", "link_", "text", "paragraph_", "body_" );
-
-        assertFalse( it.hasNext() );
     }
 
     /**
@@ -375,17 +356,16 @@ public class MarkdownParserTest
     public void testHtmlContent()
         throws Exception
     {
-        Iterator<SinkEventElement> it = parseFileToEventTestingSink( "html-content" ).getEventList().iterator();
+        List<SinkEventElement> eventList = parseFileToEventTestingSink( "html-content" ).getEventList();
 
         // NOTE: H1 and DIV are rendered as "unknown" and H2 is "section1" (see DOXIA-203)
-        assertEquals( it, "head", "head_", "body", "unknown", "text", "paragraph", "inline", "text",
+        assertThat( eventList ).extracting( "name" ).containsExactly(
+                "head", "head_", "body", "unknown", "text", "paragraph", "inline", "text",
                       "inline_", "text", "inline", "text", "inline_", "text", "paragraph_", "text", "unknown", "text", "horizontalRule", "unknown",
                 "text", "unknown", "paragraph", "text", "paragraph_", "text", "table", "tableRows", "text", "tableRow",
                 "tableHeaderCell", "text", "tableHeaderCell_", "tableRow_", "text", "tableRow",
                                 "tableCell", "text", "tableCell_", "tableRow_", "text", "tableRows_", "table_",
                 "body_" );
-
-        assertFalse( it.hasNext() );
     }
 
     /**
@@ -408,7 +388,7 @@ public class MarkdownParserTest
         return sink;
     }
 
-    protected String parseFileToHtml( String file ) throws ParseException, IOException
+    protected String parseFileToHtml( String file ) throws IOException
     {
         try ( Reader reader = getTestReader( file ) )
         {
@@ -416,12 +396,19 @@ public class MarkdownParserTest
         }
     }
 
+    public void testTocMacro2() throws IOException
+    {
+        String html = parseFileToHtml( "macro-toc" );
+        assertThat( html ).contains( "<!-- MACRO{toc|fromDepth=1|toDepth=2} -->" );
+    }
+
     public void testTocMacro()
         throws Exception
     {
-        Iterator<SinkEventElement> it = parseFileToEventTestingSink( "macro-toc" ).getEventList().iterator();
+        List<SinkEventElement> eventList = parseFileToEventTestingSink( "macro-toc" ).getEventList();
 
-        assertEquals( it, "head", "title", "text", "title_", "head_",
+        assertThat( eventList ).extracting( "name" ).containsExactly(
+                "head", "title", "text", "title_", "head_",
                       "body",
                       "list", // TOC start
                       "listItem", "link", "text", "link_", // emtpy section 2 TOC entry
@@ -443,28 +430,29 @@ public class MarkdownParserTest
     public void testTocMacroDoxia559()
         throws Exception
     {
-        Iterator<SinkEventElement> it = parseFileToEventTestingSink( "macro-toc-DOXIA-559" ).getEventList().iterator();
+        List<SinkEventElement> list = parseFileToEventTestingSink( "macro-toc-DOXIA-559" ).getEventList();
 
-        assertEquals( it, "head", "title", "text", "title_", "head_",
-                      "body",
-                      "list", // TOC start
-                      "listItem", "link", "text", "link_", // first section 2 TOC entry
-                      "list", // sections 3 list start
-                      "listItem", "link", "text", "link_", "listItem_", // empty section 3 TOC entry
-                      "list_", // sections 3 list end
-                      "listItem_", // first section 2 TOC entry end
-                      "listItem", "link", "text", "link_", "listItem_", // second section 2 TOC entry
-                      "list_", // TOC end
-                      "text",
-                      "section1", "sectionTitle1", "text", "sectionTitle1_",
-                      "section2",
-                      "section3", "sectionTitle3", "text", "sectionTitle3_",
-                      "section3_",
-                      "section2_",
-                      "section1_",
-                      "section1", "sectionTitle1", "text", "sectionTitle1_",
-                      "section1_",
-                      "body_" );
+        assertThat( list ).extracting( "name" ).containsExactly(
+              "head", "title", "text", "title_", "head_",
+              "body",
+              "list", // TOC start
+              "listItem", "link", "text", "link_", // first section 2 TOC entry
+              "list", // sections 3 list start
+              "listItem", "link", "text", "link_", "listItem_", // empty section 3 TOC entry
+              "list_", // sections 3 list end
+              "listItem_", // first section 2 TOC entry end
+              "listItem", "link", "text", "link_", "listItem_", // second section 2 TOC entry
+              "list_", // TOC end
+              "text",
+              "section1", "sectionTitle1", "text", "sectionTitle1_",
+              "section2",
+              "section3", "sectionTitle3", "text", "sectionTitle3_",
+              "section3_",
+              "section2_",
+              "section1_",
+              "section1", "sectionTitle1", "text", "sectionTitle1_",
+              "section1_",
+              "body_" );
     }
 
     // test fix for https://github.com/vsch/flexmark-java/issues/384

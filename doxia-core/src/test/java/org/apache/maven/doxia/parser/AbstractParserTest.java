@@ -32,6 +32,8 @@ import java.io.Reader;
 import java.io.Writer;
 import java.util.Iterator;
 
+import static org.assertj.core.api.Assertions.assertThat;
+
 /**
  * Test the parsing of sample input files.
  * <br>
@@ -115,20 +117,7 @@ public abstract class AbstractParserTest
 
     protected void assertEquals( Iterator<SinkEventElement> it, String... names )
     {
-        StringBuilder expected = new StringBuilder();
-        StringBuilder actual = new StringBuilder();
-
-        for ( String name : names )
-        {
-            expected.append( name ).append( '\n' );
-        }
-
-        while ( it.hasNext() )
-        {
-            actual.append( it.next().getName() ).append( '\n' );
-        }
-
-        assertEquals( expected.toString(), actual.toString() );
+        assertThat ( it ).extracting( "name" ).containsExactly( names );
     }
 
     protected void assertStartsWith( Iterator<SinkEventElement> it, String... names )

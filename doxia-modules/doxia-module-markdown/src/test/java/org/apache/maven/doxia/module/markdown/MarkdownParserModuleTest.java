@@ -22,6 +22,8 @@ package org.apache.maven.doxia.module.markdown;
 import org.apache.maven.doxia.parser.module.ParserModule;
 import org.codehaus.plexus.PlexusTestCase;
 
+import static org.assertj.core.api.Assertions.assertThat;
+
 /**
  * Test MarkdownParserModule.
  */
@@ -46,6 +48,6 @@ public class MarkdownParserModuleTest
 
     public void testExtensions()
     {
-        assertEquals( 2, parserModule.getExtensions().length );
+        assertThat( parserModule.getExtensions() ).hasSize( 2 );
     }
 }
