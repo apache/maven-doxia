@@ -21,6 +21,7 @@ package org.apache.maven.doxia.module.markdown;
 
 import com.vladsch.flexmark.ast.Heading;
 import com.vladsch.flexmark.ast.HtmlCommentBlock;
+import com.vladsch.flexmark.ext.anchorlink.AnchorLinkExtension;
 import com.vladsch.flexmark.util.ast.Node;
 import com.vladsch.flexmark.ast.util.TextCollectingVisitor;
 import com.vladsch.flexmark.html.HtmlRenderer;
@@ -139,6 +140,7 @@ public class MarkdownParser
                 DefinitionExtension.create(),
                 TypographicExtension.create(),
                 TablesExtension.create(),
+                AnchorLinkExtension.create(),
                 WikiLinkExtension.create(),
                 StrikethroughExtension.create()
         ) );

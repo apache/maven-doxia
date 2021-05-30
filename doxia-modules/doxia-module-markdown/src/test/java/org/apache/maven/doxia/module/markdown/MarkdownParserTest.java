@@ -289,8 +289,8 @@ public class MarkdownParserTest
 
         assertThat( eventList ).extracting( "name" ).containsExactly(
                 "head", "title", "text", "text", "text", "title_", "author", "text", "author_", "date", "text", "date_",
-                      "unknown", "head_", "body", "unknown", "text", "unknown", "paragraph", "text", "paragraph_", "section1",
-                      "sectionTitle1", "text", "sectionTitle1_", "paragraph", "text", "paragraph_", "section1_",
+                      "unknown", "head_", "body", "unknown", "link", "text", "link_", "unknown", "paragraph", "text", "paragraph_", "section1",
+                      "sectionTitle1", "link", "text", "link_", "sectionTitle1_", "paragraph", "text", "paragraph_", "section1_",
                       "body_" );
 
         // Title must be "A Title & a Test"
@@ -328,7 +328,7 @@ public class MarkdownParserTest
         // NOTE: H1 is rendered as "unknown" and H2 is "section1" (see DOXIA-203)
         assertThat( eventList ).extracting( "name" ).containsExactly(
                 "head", "title", "text", "title_", "head_", "body", "comment", "text",
-                "section1", "sectionTitle1", "text", "sectionTitle1_", "paragraph", "text",
+                "section1", "sectionTitle1", "link", "text", "link_", "sectionTitle1_", "paragraph", "text",
                 "paragraph_", "section1_", "body_" );
     }
 
@@ -344,7 +344,7 @@ public class MarkdownParserTest
 
         // NOTE: H1 is rendered as "unknown" and H2 is "section1" (see DOXIA-203)
         assertThat( eventList ).extracting( "name" ).containsExactly(
-                "head", "title", "text", "title_", "head_", "body", "comment", "text", "unknown", "text",
+                "head", "title", "text", "title_", "head_", "body", "comment", "text", "unknown", "link", "text", "link_",
                       "unknown", "paragraph", "text", "link", "text", "link_", "text", "paragraph_", "body_" );
     }
 
@@ -362,7 +362,7 @@ public class MarkdownParserTest
         assertThat( eventList ).extracting( "name" ).containsExactly(
                 "head", "head_", "body", "unknown", "text", "paragraph", "inline", "text",
                       "inline_", "text", "inline", "text", "inline_", "text", "paragraph_", "text", "unknown", "text", "horizontalRule", "unknown",
-                "text", "unknown", "paragraph", "text", "paragraph_", "text", "table", "tableRows", "text", "tableRow",
+                "link", "text", "link_", "unknown", "paragraph", "text", "paragraph_", "text", "table", "tableRows", "text", "tableRow",
                 "tableHeaderCell", "text", "tableHeaderCell_", "tableRow_", "text", "tableRow",
                                 "tableCell", "text", "tableCell_", "tableRow_", "text", "tableRows_", "table_",
                 "body_" );
@@ -420,8 +420,8 @@ public class MarkdownParserTest
                       "list_", // TOC end
                       "text",
                       "section1",
-                      "section2", "sectionTitle2", "text", "sectionTitle2_", "section2_",
-                      "section2", "sectionTitle2", "text", "sectionTitle2_", "section2_",
+                      "section2", "sectionTitle2", "link", "text", "link_", "sectionTitle2_", "section2_",
+                      "section2", "sectionTitle2", "link", "text", "link_", "sectionTitle2_", "section2_",
                       "section1_",
                       "body_" );
     }
@@ -444,13 +444,13 @@ public class MarkdownParserTest
               "listItem", "link", "text", "link_", "listItem_", // second section 2 TOC entry
               "list_", // TOC end
               "text",
-              "section1", "sectionTitle1", "text", "sectionTitle1_",
+              "section1", "sectionTitle1", "link", "text", "link_", "sectionTitle1_",
               "section2",
-              "section3", "sectionTitle3", "text", "sectionTitle3_",
+              "section3", "sectionTitle3", "link", "text", "link_", "sectionTitle3_",
               "section3_",
               "section2_",
               "section1_",
-              "section1", "sectionTitle1", "text", "sectionTitle1_",
+              "section1", "sectionTitle1", "link", "text", "link_", "sectionTitle1_",
               "section1_",
               "body_" );
     }
