@@ -20,9 +20,10 @@ updates:
   directory: "/"
   schedule:
     interval: daily
-    time: '04:00'
-  open-pull-requests-limit: 10
   ignore:
+    - dependency-name: org.apache.maven:*
+      versions:
+        - "> 3.1.1"
 # ignore Java 8+ dependencies
     - dependency-name: org.mockito:mockito-core
       versions:
@@ -30,3 +31,17 @@ updates:
     - dependency-name: org.apache.commons:commons-lang3
       versions:
       - ">= 3.9"
+    - dependency-name: commons-io:commons-io
+      versions:
+        - ">= 2.7"
+# Ignore Maven 3.2.1+
+    - dependency-name: org.apache.maven.plugin-testing:maven-plugin-testing-tools
+      versions:
+        - ">=3.2.0"
+    - dependency-name: org.apache.maven.plugin-testing:maven-plugin-testing-harness
+      versions:
+        - ">=3.2.0"
+- package-ecosystem: "github-actions"
+  directory: "/"
+  schedule:
+    interval: "daily"
