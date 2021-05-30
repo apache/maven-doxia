@@ -57,7 +57,7 @@ class WMFWriter
 
     private short numOfParams;
 
-    private Vector records;
+    private Vector<Record> records;
 
     WMFWriter()
     {
@@ -69,7 +69,7 @@ class WMFWriter
         maxRecordSize = trailer.size();
         numOfParams = 0;
 
-        records = new Vector();
+        records = new Vector<>();
     }
 
     void add( Record record )

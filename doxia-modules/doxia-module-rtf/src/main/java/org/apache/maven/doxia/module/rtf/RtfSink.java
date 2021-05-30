@@ -177,7 +177,7 @@ public class RtfSink
 
     private int charSet = DEFAULT_CHAR_SET;
 
-    private final Hashtable fontTable;
+    private final Hashtable<String, Font> fontTable;
 
     private Context context;
 
@@ -189,9 +189,9 @@ public class RtfSink
 
     private int listItemIndent;
 
-    private final Vector numbering;
+    private final Vector<Integer> numbering;
 
-    private final Vector itemNumber;
+    private final Vector<Counter> itemNumber;
 
     private int style = STYLE_ROMAN;
 
@@ -220,7 +220,7 @@ public class RtfSink
 
     /** Map of warn messages with a String as key to describe the error type and a Set as value.
      * Using to reduce warn messages. */
-    private Map warnMessages;
+    private Map<String, Set<String>> warnMessages;
 
     // -----------------------------------------------------------------------
 
@@ -252,14 +252,14 @@ public class RtfSink
      *
      * @param output not null
      * @param encoding a valid charset
-     * @throws java.io.IOException if any.
+     * @throws java.io.IOException if any
      */
     protected RtfSink( OutputStream output, String encoding )
         throws IOException
     {
-        this.fontTable = new Hashtable();
-        this.numbering = new Vector();
-        this.itemNumber = new Vector();
+        this.fontTable = new Hashtable<>();
+        this.numbering = new Vector<>();
+        this.itemNumber = new Vector<>();
 
         Writer w;
         this.stream = new BufferedOutputStream( output );
@@ -1351,7 +1351,7 @@ public class RtfSink
             bytesPerLine = 4 * ( ( srcWidth + 3 ) / 4 );
             byte[] bitmap = new byte[srcHeight * bytesPerLine];
 
-            Vector colors = new Vector( 256 );
+            Vector<Color> colors = new Vector<>( 256 );
             colors.addElement( Color.white );
             colors.addElement( Color.black );
 
@@ -1920,16 +1920,13 @@ public class RtfSink
 
         if ( getLog().isWarnEnabled() && this.warnMessages != null )
         {
-            for ( Object o1 : this.warnMessages.entrySet() )
+            for ( Map.Entry<String, Set<String>> entry : this.warnMessages.entrySet() )
             {
-                Map.Entry entry = (Map.Entry) o1;
 
-                Set set = (Set) entry.getValue();
+                Set<String> set = entry.getValue();
 
-                for ( Object o : set )
+                for ( String msg : set )
                 {
-                    String msg = (String) o;
-
                     getLog().warn( msg );
                 }
             }
@@ -1960,13 +1957,13 @@ public class RtfSink
 
         if ( warnMessages == null )
         {
-            warnMessages = new HashMap();
+            warnMessages = new HashMap<>();
         }
 
-        Set set = (Set) warnMessages.get( key );
+        Set<String> set = warnMessages.get( key );
         if ( set == null )
         {
-            set = new TreeSet();
+            set = new TreeSet<>();
         }
         set.add( msg );
         warnMessages.put( key, set );
@@ -2039,7 +2036,7 @@ public class RtfSink
     {
         private int context = CONTEXT_UNDEFINED;
 
-        private Vector stack = new Vector();
+        private Vector<Integer> stack = new Vector<>();
 
         void set( int context )
         {
@@ -2051,7 +2048,7 @@ public class RtfSink
         {
             if ( !stack.isEmpty() )
             {
-                context = (Integer) stack.lastElement();
+                context = stack.lastElement();
                 stack.removeElementAt( stack.size() - 1 );
             }
         }
@@ -2172,7 +2169,7 @@ public class RtfSink
 
         private int next;
 
-        private Vector stack = new Vector();
+        private Vector<Integer> stack = new Vector<>();
 
         Space( int space /*twips*/ )
         {
@@ -2196,7 +2193,7 @@ public class RtfSink
         {
             if ( !stack.isEmpty() )
             {
-                space = (Integer) stack.lastElement();
+                space = stack.lastElement();
                 stack.removeElementAt( stack.size() - 1 );
                 next = space;
             }
@@ -2234,7 +2231,7 @@ public class RtfSink
     {
         private int indent;
 
-        private Vector stack = new Vector();
+        private Vector<Integer> stack = new Vector<>();
 
         Indentation( int indent /*twips*/ )
         {
@@ -2256,7 +2253,7 @@ public class RtfSink
         {
             if ( !stack.isEmpty() )
             {
-                indent = (Integer) stack.lastElement();
+                indent = stack.lastElement();
                 stack.removeElementAt( stack.size() - 1 );
             }
         }
@@ -2277,7 +2274,7 @@ public class RtfSink
 
         boolean grid;
 
-        Vector rows;
+        Vector<Row> rows;
 
         Table( int[] justification, boolean grid )
         {
@@ -2285,7 +2282,7 @@ public class RtfSink
             columnWidths = new int[numColumns];
             this.justification = justification;
             this.grid = grid;
-            rows = new Vector();
+            rows = new Vector<>();
         }
 
         void add( Row row )
@@ -2298,7 +2295,7 @@ public class RtfSink
                 {
                     break;
                 }
-                Cell cell = (Cell) row.cells.elementAt( i );
+                Cell cell = row.cells.elementAt( i );
                 int width = cell.boundingBox().width;
                 if ( width > columnWidths[i] )
                 {
@@ -2324,7 +2321,7 @@ public class RtfSink
 
     static class Row
     {
-        Vector cells = new Vector();
+        Vector<Cell> cells = new Vector<>();
 
         void add( Cell cell )
         {
@@ -2337,7 +2334,7 @@ public class RtfSink
             int numCells = cells.size();
             for ( int i = 0; i < numCells; ++i )
             {
-                Cell cell = (Cell) cells.elementAt( i );
+                Cell cell = cells.elementAt( i );
                 Box box = cell.boundingBox();
                 if ( box.height > height )
                 {
@@ -2350,7 +2347,7 @@ public class RtfSink
 
     class Cell
     {
-        Vector lines = new Vector();
+        Vector<Line> lines = new Vector<>();
 
         void add( Line line )
         {
@@ -2403,7 +2400,7 @@ public class RtfSink
 
     static class Line
     {
-        Vector items = new Vector();
+        Vector<Item> items = new Vector<>();
 
         void add( Item item )
         {
