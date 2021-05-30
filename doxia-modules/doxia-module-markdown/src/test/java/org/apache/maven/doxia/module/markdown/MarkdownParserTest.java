@@ -55,7 +55,7 @@ public class MarkdownParserTest
         throws Exception
     {
         super.setUp();
-        parser = lookup( Parser.ROLE, MarkdownParser.ROLE_HINT );
+        parser = (MarkdownParser) lookup( Parser.class, MarkdownParser.ROLE_HINT );
     }
 
     /**

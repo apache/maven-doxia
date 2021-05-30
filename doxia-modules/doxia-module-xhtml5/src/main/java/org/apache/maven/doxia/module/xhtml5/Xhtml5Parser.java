@@ -44,7 +44,7 @@ import org.codehaus.plexus.util.xml.pull.XmlPullParserException;
 /**
  * Parse an xhtml model and emit events into a Doxia Sink.
  */
-@Component( role = Parser.class, hint = "xhtml5" )
+@Component( role = Parser.class, hint = Xhtml5Parser.ROLE_HINT )
 public class Xhtml5Parser
     extends Xhtml5BaseParser
     implements Xhtml5Markup

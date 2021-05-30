@@ -53,7 +53,7 @@ public class XdocParserTest
     {
         super.setUp();
 
-        parser = lookup( Parser.ROLE, "xdoc" );
+        parser = (XdocParser) lookup( Parser.class, "xdoc" );
 
         // AbstractXmlParser.CachedFileEntityResolver downloads DTD/XSD files in ${java.io.tmpdir}
         // Be sure to delete them

@@ -49,7 +49,7 @@ public class AptParserTest
     {
         super.setUp();
 
-        parser = lookup( Parser.ROLE, "apt" );
+        parser = (AptParser) lookup( Parser.class, "apt" );
     }
 
     protected Parser createParser()

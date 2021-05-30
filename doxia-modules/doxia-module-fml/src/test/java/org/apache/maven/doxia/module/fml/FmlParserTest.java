@@ -50,7 +50,7 @@ public class FmlParserTest
     {
         super.setUp();
 
-        parser = lookup( Parser.ROLE, "fml" );
+        parser = (FmlParser) lookup( Parser.class, "fml" );
 
         // AbstractXmlParser.CachedFileEntityResolver downloads DTD/XSD files in ${java.io.tmpdir}
         // Be sure to delete them
