@@ -2002,19 +2002,6 @@ public class ITextSink
         return sb.toString().trim();
     }
 
-    private void startChunk( String fontName, int fontSize, String fontStyle, int fontColorBlue, int fontColorGreen,
-                             int fontColorRed, String localDestination )
-    {
-        writeStartElement( ElementTags.CHUNK );
-        writeAddAttribute( ElementTags.FONT, fontName );
-        writeAddAttribute( ElementTags.SIZE, fontSize );
-        writeAddAttribute( ElementTags.STYLE, fontStyle );
-        writeAddAttribute( ElementTags.BLUE, fontColorBlue );
-        writeAddAttribute( ElementTags.GREEN, fontColorGreen );
-        writeAddAttribute( ElementTags.RED, fontColorRed );
-//        writeAddAttribute( ElementTags.LOCALDESTINATION, localDestination );
-    }
-
     /**
      * If debug mode is enabled, log the <code>msg</code> as is, otherwise add unique msg in <code>warnMessages</code>.
      *
