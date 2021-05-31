@@ -115,8 +115,6 @@ public class SinkActionContext
 
     private Stack<Integer> stack = new Stack<>();
 
-    private int currentAction;
-
     /**
      * <p>Getter for the field <code>currentAction</code>.</p>
      *
