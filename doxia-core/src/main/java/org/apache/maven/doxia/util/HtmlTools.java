@@ -27,7 +27,7 @@ import java.util.Map;
 
 import javax.swing.text.html.HTML.Tag;
 
-import org.apache.commons.lang3.StringEscapeUtils;
+import org.apache.commons.text.StringEscapeUtils;
 import org.apache.maven.doxia.markup.HtmlMarkup;
 import org.codehaus.plexus.util.StringUtils;
 
