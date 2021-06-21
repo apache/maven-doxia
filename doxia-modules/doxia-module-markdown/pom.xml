@@ -25,7 +25,7 @@ under the License.
   <parent>
     <groupId>org.apache.maven.doxia</groupId>
     <artifactId>doxia-modules</artifactId>
-    <version>1.10-SNAPSHOT</version>
+    <version>1.10</version>
     <relativePath>../pom.xml</relativePath>
   </parent>
 
@@ -128,7 +128,7 @@ under the License.
           </pomIncludes>
           <postBuildHookScript>verify</postBuildHookScript>
           <localRepositoryPath>${project.build.directory}/local-repo</localRepositoryPath>
-          <extraArtifacts></extraArtifacts>
+          <extraArtifacts />
           <settingsFile>src/it/settings.xml</settingsFile>
           <goals>
             <goal>clean</goal>
