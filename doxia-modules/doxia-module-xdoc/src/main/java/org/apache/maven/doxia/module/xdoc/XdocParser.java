@@ -306,6 +306,8 @@ public class XdocParser
         else if ( parser.getName().equals( SUBSECTION_TAG.toString() ) )
         {
             consecutiveSections( Sink.SECTION_LEVEL_1, sink );
+
+            // sink.section2_() not necessary
         }
         else if ( !baseEndTag( parser, sink ) )
         {
@@ -342,7 +344,7 @@ public class XdocParser
     }
 
     /**
-     * Close open h4, h5, h6 sections.
+     * Close open h2, h3, h4, h5 sections.
      */
     private void closeOpenSections( int newLevel, Sink sink )
     {
@@ -483,7 +485,7 @@ public class XdocParser
     }
 
     /**
-     * Open missing h4, h5, h6 sections.
+     * Open missing h2, h3, h4, h5 sections.
      */
     private void openMissingSections( int newLevel, Sink sink )
     {

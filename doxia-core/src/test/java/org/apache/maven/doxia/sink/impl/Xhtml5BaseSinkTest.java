@@ -315,7 +315,7 @@ public class Xhtml5BaseSinkTest
             sink.close();
         }
 
-        assertEquals( "<section style=\"bold\">" + LS + "<h2 style=\"bold\"></h2></section>",
+        assertEquals( "<section style=\"bold\">" + LS + "<h1 style=\"bold\"></h1></section>",
                 writer.toString() );
     }
 
@@ -343,7 +343,7 @@ public class Xhtml5BaseSinkTest
             sink.close();
         }
 
-        assertEquals( "<section class=\"foo\" id=\"bar\">" + LS + "<h2></h2></section>", writer.toString() );
+        assertEquals( "<section class=\"foo\" id=\"bar\">" + LS + "<h1></h1></section>", writer.toString() );
     }
 
     /**
@@ -367,7 +367,7 @@ public class Xhtml5BaseSinkTest
             sink.close();
         }
 
-        assertEquals( "<section>" + LS + "<h2></h2></section>", writer.toString() );
+        assertEquals( "<section>" + LS + "<h1></h1></section>", writer.toString() );
     }
 
     /**
@@ -391,7 +391,7 @@ public class Xhtml5BaseSinkTest
             sink.close();
         }
 
-        assertEquals( "<section>" + LS + "<h3></h3></section>", writer.toString() );
+        assertEquals( "<section>" + LS + "<h2></h2></section>", writer.toString() );
     }
 
     /**
@@ -415,7 +415,7 @@ public class Xhtml5BaseSinkTest
             sink.close();
         }
 
-        assertEquals( "<section>" + LS + "<h4></h4></section>", writer.toString() );
+        assertEquals( "<section>" + LS + "<h3></h3></section>", writer.toString() );
     }
 
     /**
@@ -438,7 +438,7 @@ public class Xhtml5BaseSinkTest
             sink.close();
         }
 
-        assertEquals( "<section>" + LS + "<h5></h5></section>", writer.toString() );
+        assertEquals( "<section>" + LS + "<h4></h4></section>", writer.toString() );
     }
 
     /**
@@ -461,7 +461,7 @@ public class Xhtml5BaseSinkTest
             sink.close();
         }
 
-        assertEquals( "<section>" + LS + "<h6></h6></section>", writer.toString() );
+        assertEquals( "<section>" + LS + "<h5></h5></section>", writer.toString() );
     }
 
     /**

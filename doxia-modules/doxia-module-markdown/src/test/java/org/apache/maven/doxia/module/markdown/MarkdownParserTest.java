@@ -314,10 +314,10 @@ public class MarkdownParserTest
         List<SinkEventElement> eventList = parseFileToEventTestingSink( "metadata" ).getEventList();
         Iterator<SinkEventElement> it = eventList.iterator();
 
-        assertSinkEquals( it, "head", "title", "text", "text", "text", "title_", "author", "text", "author_", "date", "text", "date_",
-                      "unknown", "head_", "body", "unknown", "text", "unknown", "paragraph", "text", "paragraph_", "section1",
-                      "sectionTitle1", "text", "sectionTitle1_", "paragraph", "text", "paragraph_", "section1_",
-                      "body_" );
+        assertSinkEquals( it, "head", "title", "text", "text", "text", "title_", "author", "text", "author_", "date",
+                "text", "date_", "unknown", "head_", "body", "section1", "sectionTitle1", "text", "sectionTitle1_",
+                "paragraph", "text", "paragraph_", "section2", "sectionTitle2", "text", "sectionTitle2_", "paragraph",
+                "text", "paragraph_", "section2_", "section1_", "body_" );
 
         assertFalse( it.hasNext() );
 
@@ -354,7 +354,6 @@ public class MarkdownParserTest
     {
         Iterator<SinkEventElement> it = parseFileToEventTestingSink( "first-heading" ).getEventList().iterator();
 
-        // NOTE: H1 is rendered as "unknown" and H2 is "section1" (see DOXIA-203)
         assertSinkEquals( it, "head", "title", "text", "title_", "head_", "body", "comment", "text",
                 "section1", "sectionTitle1", "text", "sectionTitle1_", "paragraph", "text",
                 "paragraph_", "section1_", "body_" );
@@ -373,9 +372,8 @@ public class MarkdownParserTest
     {
         Iterator<SinkEventElement> it = parseFileToEventTestingSink( "comment-before-heading" ).getEventList().iterator();
 
-        // NOTE: H1 is rendered as "unknown" and H2 is "section1" (see DOXIA-203)
-        assertSinkEquals( it, "head", "title", "text", "title_", "head_", "body", "comment", "text", "unknown", "text",
-                      "unknown", "paragraph", "text", "link", "text", "link_", "text", "paragraph_", "body_" );
+        assertSinkEquals( it, "head", "title", "text", "title_", "head_", "body", "comment", "text", "section1",
+                "sectionTitle1", "text", "sectionTitle1_", "paragraph", "text", "paragraph_", "section1_", "body_" );
 
         assertFalse( it.hasNext() );
     }
@@ -391,13 +389,13 @@ public class MarkdownParserTest
     {
         Iterator<SinkEventElement> it = parseFileToEventTestingSink( "html-content" ).getEventList().iterator();
 
-        // NOTE: H1 and DIV are rendered as "unknown" and H2 is "section1" (see DOXIA-203)
+        // NOTE: DIV is rendered as "unknown" (see DOXIA-203)
         assertSinkEquals( it, "head", "head_", "body", "unknown", "text", "paragraph", "inline", "text",
-                      "inline_", "text", "inline", "text", "inline_", "text", "paragraph_", "text", "unknown", "text", "horizontalRule", "unknown",
-                "text", "unknown", "paragraph", "text", "paragraph_", "text", "table", "tableRows", "text", "tableRow",
-                "tableHeaderCell", "text", "tableHeaderCell_", "tableRow_", "text", "tableRow",
-                                "tableCell", "text", "tableCell_", "tableRow_", "text", "tableRows_", "table_",
-                "body_" );
+                "inline_", "text", "inline", "text", "inline_", "text", "paragraph_", "text", "unknown", "text",
+                "horizontalRule", "section1", "sectionTitle1",  "text", "sectionTitle1_", "paragraph", "text",
+                "paragraph_", "text", "table", "tableRows", "text", "tableRow", "tableHeaderCell", "text",
+                "tableHeaderCell_", "tableRow_", "text", "tableRow", "tableCell", "text", "tableCell_", "tableRow_",
+                "text", "tableRows_", "table_", "section1_", "body_" );
 
         assertFalse( it.hasNext() );
     }
@@ -472,13 +470,15 @@ public class MarkdownParserTest
                       "listItem", "link", "text", "link_", "listItem_", // second section 2 TOC entry
                       "list_", // TOC end
                       "text",
-                      "section1", "sectionTitle1", "text", "sectionTitle1_",
-                      "section2",
-                      "section3", "sectionTitle3", "text", "sectionTitle3_",
+                      "section1",
+                      "section2", "sectionTitle2", "text", "sectionTitle2_",
+                      "section3",
+                      "section4", "sectionTitle4", "text", "sectionTitle4_",
+                      "section4_",
                       "section3_",
                       "section2_",
-                      "section1_",
-                      "section1", "sectionTitle1", "text", "sectionTitle1_",
+                      "section2", "sectionTitle2", "text", "sectionTitle2_",
+                      "section2_",
                       "section1_",
                       "body_" );
     }

@@ -265,7 +265,7 @@ public class XdocParserTest
         throws Exception
     {
         // DOXIA-241
-        String text = "<section name=\"section\"><h6>h6</h6><subsection name=\"subsection\"></subsection></section>";
+        String text = "<section name=\"section\"><h5>h5</h5><subsection name=\"subsection\"></subsection></section>";
 
         Iterator<SinkEventElement> it = parseText( text );
 
@@ -421,32 +421,32 @@ public class XdocParserTest
 
         assertSinkEquals( it, "paragraph_", "section1_" );
     }
-    
+
     @Test
     public void testStyleWithCData() throws Exception
     {
         // DOXIA-449
-        final String text = "<style type=\"text/css\">\n" + 
-        		"<![CDATA[\n" + 
-        		"h2 {\n" + 
-        		"font-size: 50px;\n" + 
-        		"}\n" + 
-        		"]]>\n" + 
-        		"</style>"; 
-        
+        final String text = "<style type=\"text/css\">\n" +
+                "<![CDATA[\n" +
+                "h2 {\n" +
+                "font-size: 50px;\n" +
+                "}\n" +
+                "]]>\n" +
+                "</style>";
+
         SinkEventTestingSink sink = new SinkEventTestingSink();
 
         parser.setValidate( false );
         parser.parse( text, sink );
-        
+
         Iterator<SinkEventElement> it = sink.getEventList().iterator();
-        SinkEventElement styleElm = it.next(); 
+        SinkEventElement styleElm = it.next();
         assertEquals( "unknown", styleElm.getName() );
         assertEquals( "style", styleElm.getArgs()[0] );
-        SinkEventElement cdataElm = it.next(); 
+        SinkEventElement cdataElm = it.next();
         assertEquals( "unknown", cdataElm.getName() );
         assertEquals( "CDATA", cdataElm.getArgs()[0] );
-        SinkEventElement styleElm_ = it.next(); 
+        SinkEventElement styleElm_ = it.next();
         assertEquals( "unknown", styleElm_.getName() );
         assertEquals( "style", styleElm_.getArgs()[0] );
         assertFalse( it.hasNext() );

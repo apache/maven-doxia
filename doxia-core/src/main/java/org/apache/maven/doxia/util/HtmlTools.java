@@ -48,7 +48,7 @@ public class HtmlTools
         HtmlMarkup.DD, HtmlMarkup.DEL, HtmlMarkup.DFN, HtmlMarkup.DIR, HtmlMarkup.DIV, HtmlMarkup.DL,
         HtmlMarkup.DT, HtmlMarkup.EM, HtmlMarkup.FIELDSET, HtmlMarkup.FONT, HtmlMarkup.FORM,
         HtmlMarkup.FRAME, HtmlMarkup.FRAMESET, HtmlMarkup.H1, HtmlMarkup.H2, HtmlMarkup.H3, HtmlMarkup.H4,
-        HtmlMarkup.H5, HtmlMarkup.H6, HtmlMarkup.HEAD, HtmlMarkup.HR, HtmlMarkup.HTML, HtmlMarkup.I,
+        HtmlMarkup.H5, HtmlMarkup.HEAD, HtmlMarkup.HR, HtmlMarkup.HTML, HtmlMarkup.I,
         HtmlMarkup.IFRAME, HtmlMarkup.IMG, HtmlMarkup.INPUT, HtmlMarkup.INS, HtmlMarkup.ISINDEX,
         HtmlMarkup.KBD, HtmlMarkup.KEYGEN, HtmlMarkup.LABEL, HtmlMarkup.LEGEND, HtmlMarkup.LI,
         HtmlMarkup.LINK, HtmlMarkup.MAP, HtmlMarkup.MENU, HtmlMarkup.META, HtmlMarkup.NOFRAMES,

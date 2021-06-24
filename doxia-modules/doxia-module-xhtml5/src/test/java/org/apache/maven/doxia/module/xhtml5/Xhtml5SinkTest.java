@@ -148,31 +148,31 @@ public class Xhtml5SinkTest
     /** {@inheritDoc} */
     protected String getSection1Block( String title )
     {
-        return "<section><header>\n<h2>" + title + "</h2></header></section>";
+        return "<section><header>\n<h1>" + title + "</h1></header></section>";
     }
 
     /** {@inheritDoc} */
     protected String getSection2Block( String title )
     {
-        return "<section><header>\n<h3>" + title + "</h3></header></section>";
+        return "<section><header>\n<h2>" + title + "</h2></header></section>";
     }
 
     /** {@inheritDoc} */
     protected String getSection3Block( String title )
     {
-        return "<section><header>\n<h4>" + title + "</h4></header></section>";
+        return "<section><header>\n<h3>" + title + "</h3></header></section>";
     }
 
     /** {@inheritDoc} */
     protected String getSection4Block( String title )
     {
-        return "<section><header>\n<h5>" + title + "</h5></header></section>";
+        return "<section><header>\n<h4>" + title + "</h4></header></section>";
     }
 
     /** {@inheritDoc} */
     protected String getSection5Block( String title )
     {
-        return "<section><header>\n<h6>" + title + "</h6></header></section>";
+        return "<section><header>\n<h5>" + title + "</h5></header></section>";
     }
 
     /** {@inheritDoc} */
@@ -407,7 +407,7 @@ public class Xhtml5SinkTest
             sink.close();
         }
 
-        assertEquals( "<section><header>\n<h2>&amp;</h2></header>\n<p>&amp;</p></section>", writer.toString() );
+        assertEquals( "<section><header>\n<h1>&amp;</h1></header>\n<p>&amp;</p></section>", writer.toString() );
     }
 
     /**

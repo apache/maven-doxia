@@ -21,5 +21,4 @@ Test document
 =============
 
 This document verifies that an initial HTML comment block does not prevent the first heading
-from being used as the document title. Currently the H1 headings are not rendered as sections by
-Doxia (see [DOXIA-203](http://jira.codehaus.org/browse/DOXIA-203)).
+from being used as the document title.

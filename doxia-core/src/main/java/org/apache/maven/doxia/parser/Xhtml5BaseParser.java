@@ -117,8 +117,8 @@ public class Xhtml5BaseParser
      * </p>
      * <p>
      *   <code>
-     *      &lt;article&gt;, &lt;nav&gt;, &lt;aside&gt;, &lt;section&gt;, &lt;h2&gt;, &lt;h3&gt;, &lt;h4&gt;,
-     *      &lt;h5&gt;, &lt;h6&gt;, &lt;header&gt;, &lt;main&gt;, &lt;footer&gt;, &lt;em&gt;, &lt;strong&gt;,
+     *      &lt;article&gt;, &lt;nav&gt;, &lt;aside&gt;, &lt;section&gt;, &lt;h1&gt;, &lt;h2&gt;, &lt;h3&gt;,
+     *      &lt;h4&gt;, &lt;h5&gt;, &lt;header&gt;, &lt;main&gt;, &lt;footer&gt;, &lt;em&gt;, &lt;strong&gt;,
      *      &lt;small&gt;, &lt;s&gt;, &lt;cite&gt;, &lt;q&gt;, &lt;dfn&gt;, &lt;abbr&gt;, &lt;i&gt;,
      *      &lt;b&gt;, &lt;code&gt;, &lt;samp&gt;, &lt;kbd&gt;, &lt;sub&gt;, &lt;sup&gt;, &lt;u&gt;,
      *      &lt;mark&gt;, &lt;ruby&gt;, &lt;rb&gt;, &lt;rt&gt;, &lt;rtc&gt;, &lt;rp&gt;, &lt;bdi&gt;,
@@ -155,23 +155,23 @@ public class Xhtml5BaseParser
         {
             handleSectionStart( sink, attribs );
         }
-        else if ( parser.getName().equals( HtmlMarkup.H2.toString() ) )
+        else if ( parser.getName().equals( HtmlMarkup.H1.toString() ) )
         {
             handleHeadingStart( sink, Sink.SECTION_LEVEL_1, attribs );
         }
-        else if ( parser.getName().equals( HtmlMarkup.H3.toString() ) )
+        else if ( parser.getName().equals( HtmlMarkup.H2.toString() ) )
         {
             handleHeadingStart( sink, Sink.SECTION_LEVEL_2, attribs );
         }
-        else if ( parser.getName().equals( HtmlMarkup.H4.toString() ) )
+        else if ( parser.getName().equals( HtmlMarkup.H3.toString() ) )
         {
             handleHeadingStart( sink, Sink.SECTION_LEVEL_3, attribs );
         }
-        else if ( parser.getName().equals( HtmlMarkup.H5.toString() ) )
+        else if ( parser.getName().equals( HtmlMarkup.H4.toString() ) )
         {
             handleHeadingStart( sink, Sink.SECTION_LEVEL_4, attribs );
         }
-        else if ( parser.getName().equals( HtmlMarkup.H6.toString() ) )
+        else if ( parser.getName().equals( HtmlMarkup.H5.toString() ) )
         {
             handleHeadingStart( sink, Sink.SECTION_LEVEL_5, attribs );
         }
@@ -667,23 +667,23 @@ public class Xhtml5BaseParser
         {
             handleSectionEnd( sink );
         }
-        else if ( parser.getName().equals( HtmlMarkup.H2.toString() ) )
+        else if ( parser.getName().equals( HtmlMarkup.H1.toString() ) )
         {
             sink.sectionTitle1_();
         }
-        else if ( parser.getName().equals( HtmlMarkup.H3.toString() ) )
+        else if ( parser.getName().equals( HtmlMarkup.H2.toString() ) )
         {
             sink.sectionTitle2_();
         }
-        else if ( parser.getName().equals( HtmlMarkup.H4.toString() ) )
+        else if ( parser.getName().equals( HtmlMarkup.H3.toString() ) )
         {
             sink.sectionTitle3_();
         }
-        else if ( parser.getName().equals( HtmlMarkup.H5.toString() ) )
+        else if ( parser.getName().equals( HtmlMarkup.H4.toString() ) )
         {
             sink.sectionTitle4_();
         }
-        else if ( parser.getName().equals( HtmlMarkup.H6.toString() ) )
+        else if ( parser.getName().equals( HtmlMarkup.H5.toString() ) )
         {
             sink.sectionTitle5_();
         }
@@ -805,7 +805,7 @@ public class Xhtml5BaseParser
      * Make sure sections are nested consecutively.
      *
      * <p>
-     * HTML5 heading tags H1 to H6 imply sections where they are not
+     * HTML5 heading tags H1 to H5 imply sections where they are not
      * present, that means we have to open close any sections that
      * are missing in between.
      * </p>
@@ -814,19 +814,19 @@ public class Xhtml5BaseParser
      * For instance, if the following sequence is parsed:
      * </p>
      * <pre>
-     * &lt;h3&gt;&lt;/h3&gt;
-     * &lt;h6&gt;&lt;/h6&gt;
+     * &lt;h2&gt;&lt;/h2&gt;
+     * &lt;h5&gt;&lt;/h5&gt;
      * </pre>
      * <p>
-     * we have to insert two section starts before we open the <code>&lt;h6&gt;</code>.
+     * we have to insert two section starts before we open the <code>&lt;h5&gt;</code>.
      * In the following sequence
      * </p>
      * <pre>
-     * &lt;h6&gt;&lt;/h6&gt;
-     * &lt;h3&gt;&lt;/h3&gt;
+     * &lt;h5&gt;&lt;/h5&gt;
+     * &lt;h2&gt;&lt;/h2&gt;
      * </pre>
      * <p>
-     * we have to close two sections before we open the <code>&lt;h3&gt;</code>.
+     * we have to close two sections before we open the <code>&lt;h2&gt;</code>.
      * </p>
      *
      * <p>The current level is set to newLevel afterwards.</p>

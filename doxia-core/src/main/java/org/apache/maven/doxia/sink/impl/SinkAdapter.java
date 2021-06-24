@@ -173,20 +173,6 @@ public class SinkAdapter
 
     /** {@inheritDoc} */
     @Override
-    public void section6()
-    {
-        // nop
-    }
-
-    /** {@inheritDoc} */
-    @Override
-    public void section6_()
-    {
-        // nop
-    }
-
-    /** {@inheritDoc} */
-    @Override
     public void list()
     {
         // nop
@@ -461,20 +447,6 @@ public class SinkAdapter
     /** {@inheritDoc} */
     @Override
     public void sectionTitle5_()
-    {
-        // nop
-    }
-
-    /** {@inheritDoc} */
-    @Override
-    public void sectionTitle6()
-    {
-        // nop
-    }
-
-    /** {@inheritDoc} */
-    @Override
-    public void sectionTitle6_()
     {
         // nop
     }

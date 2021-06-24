@@ -53,7 +53,7 @@ public class TocMacroTest
     public void testExecute()
         throws MacroExecutionException
     {
-        String sourceContent = "<div><h2>h21</h2><h2>h22</h2><h3>h3</h3><h4>h4</h4><h2>h23</h2></div>";
+        String sourceContent = "<div><h1>h11</h1><h1>h12</h1><h2>h2</h2><h3>h3</h3><h1>h13</h1></div>";
 
         XhtmlBaseParser parser = new XhtmlBaseParser();
 
@@ -124,14 +124,14 @@ public class TocMacroTest
         assertEquals( "link", ( it.next() ).getName() );
         event = it.next();
         assertEquals( "text", event.getName() );
-        assertEquals( "h22", event.getArgs()[0] );
+        assertEquals( "h12", event.getArgs()[0] );
         assertEquals( "link_", ( it.next() ).getName() );
         assertEquals( "list", ( it.next() ).getName() );
         assertEquals( "listItem", ( it.next() ).getName() );
         assertEquals( "link", ( it.next() ).getName() );
         event = it.next();
         assertEquals( "text", event.getName() );
-        assertEquals( "h3", event.getArgs()[0] );
+        assertEquals( "h2", event.getArgs()[0] );
         assertEquals( "link_", ( it.next() ).getName() );
         assertEquals( "listItem_", ( it.next() ).getName() );
         assertEquals( "list_", ( it.next() ).getName() );
@@ -150,7 +150,7 @@ public class TocMacroTest
         throws MacroExecutionException
     {
         String sourceContent =
-            "<div><h2>h<b>21</b></h2><h2>h<i>22</i></h2><h3>h<tt>3</tt></h3><h4>h4</h4><h2>h23</h2></div>";
+            "<div><h1>h<b>11</b></h1><h1>h<i>12</i></h1><h2>h<tt>2</tt></h2><h3>h3</h3><h1>h13</h1></div>";
 
         XhtmlBaseParser parser = new XhtmlBaseParser();
 
@@ -165,8 +165,8 @@ public class TocMacroTest
         TocMacro macro = new TocMacro();
         macro.execute( sink, request );
 
-        assertTrue( out.toString().contains( "<a href=\"#h21\">h21</a>" ) );
-        assertTrue( out.toString().contains( "<a href=\"#h22\">h22</a>" ) );
-        assertTrue( out.toString().contains( "<a href=\"#h3\">h3</a>" ) );
+        assertTrue( out.toString().contains( "<a href=\"#h11\">h11</a>" ) );
+        assertTrue( out.toString().contains( "<a href=\"#h12\">h12</a>" ) );
+        assertTrue( out.toString().contains( "<a href=\"#h2\">h2</a>" ) );
     }
 }

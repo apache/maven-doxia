@@ -402,9 +402,6 @@ public interface HtmlMarkup
     /** Xhtml tag for <code>h5</code>. */
     Tag H5 = Tag.H5;
 
-    /** Xhtml tag for <code>h6</code>. */
-    Tag H6 = Tag.H6;
-
     /** Xhtml tag for <code>head</code>. */
     Tag HEAD = Tag.HEAD;
 

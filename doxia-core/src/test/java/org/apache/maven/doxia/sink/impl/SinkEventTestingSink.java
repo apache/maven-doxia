@@ -179,18 +179,6 @@ public class SinkEventTestingSink
     }
 
     @Override
-    public void section6()
-    {
-        addEvent( "section6" );
-    }
-
-    @Override
-    public void section6_()
-    {
-        addEvent( "section6_" );
-    }
-
-    @Override
     public void list()
     {
         addEvent( "list" );
@@ -428,18 +416,6 @@ public class SinkEventTestingSink
     public void sectionTitle5_()
     {
         addEvent( "sectionTitle5_" );
-    }
-
-    @Override
-    public void sectionTitle6()
-    {
-        addEvent( "sectionTitle6" );
-    }
-
-    @Override
-    public void sectionTitle6_()
-    {
-        addEvent( "sectionTitle6_" );
     }
 
     @Override

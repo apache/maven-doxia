@@ -556,11 +556,11 @@ public class Xhtml5BaseSink
      *
      * @param depth The level of the section title.
      * @param attributes some attributes. May be null.
+     * @see javax.swing.text.html.HTML.Tag#H1
      * @see javax.swing.text.html.HTML.Tag#H2
      * @see javax.swing.text.html.HTML.Tag#H3
      * @see javax.swing.text.html.HTML.Tag#H4
      * @see javax.swing.text.html.HTML.Tag#H5
-     * @see javax.swing.text.html.HTML.Tag#H6
      */
     protected void onSectionTitle( int depth, SinkEventAttributes attributes )
     {
@@ -569,23 +569,23 @@ public class Xhtml5BaseSink
 
         if ( depth == SECTION_LEVEL_1 )
         {
-            writeStartTag( HtmlMarkup.H2, atts );
+            writeStartTag( HtmlMarkup.H1, atts );
         }
         else if ( depth == SECTION_LEVEL_2 )
         {
-            writeStartTag( HtmlMarkup.H3, atts );
+            writeStartTag( HtmlMarkup.H2, atts );
         }
         else if ( depth == SECTION_LEVEL_3 )
         {
-            writeStartTag( HtmlMarkup.H4, atts );
+            writeStartTag( HtmlMarkup.H3, atts );
         }
         else if ( depth == SECTION_LEVEL_4 )
         {
-            writeStartTag( HtmlMarkup.H5, atts );
+            writeStartTag( HtmlMarkup.H4, atts );
         }
         else if ( depth == SECTION_LEVEL_5 )
         {
-            writeStartTag( HtmlMarkup.H6, atts );
+            writeStartTag( HtmlMarkup.H5, atts );
         }
     }
 
@@ -593,33 +593,33 @@ public class Xhtml5BaseSink
      * Ends a section title.
      *
      * @param depth The level of the section title.
+     * @see javax.swing.text.html.HTML.Tag#H1
      * @see javax.swing.text.html.HTML.Tag#H2
      * @see javax.swing.text.html.HTML.Tag#H3
      * @see javax.swing.text.html.HTML.Tag#H4
      * @see javax.swing.text.html.HTML.Tag#H5
-     * @see javax.swing.text.html.HTML.Tag#H6
      */
     protected void onSectionTitle_( int depth )
     {
         if ( depth == SECTION_LEVEL_1 )
         {
-            writeEndTag( HtmlMarkup.H2 );
+            writeEndTag( HtmlMarkup.H1 );
         }
         else if ( depth == SECTION_LEVEL_2 )
         {
-            writeEndTag( HtmlMarkup.H3 );
+            writeEndTag( HtmlMarkup.H2 );
         }
         else if ( depth == SECTION_LEVEL_3 )
         {
-            writeEndTag( HtmlMarkup.H4 );
+            writeEndTag( HtmlMarkup.H3 );
         }
         else if ( depth == SECTION_LEVEL_4 )
         {
-            writeEndTag( HtmlMarkup.H5 );
+            writeEndTag( HtmlMarkup.H4 );
         }
         else if ( depth == SECTION_LEVEL_5 )
         {
-            writeEndTag( HtmlMarkup.H6 );
+            writeEndTag( HtmlMarkup.H5 );
         }
     }
 

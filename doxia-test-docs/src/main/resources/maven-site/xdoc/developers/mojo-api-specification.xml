@@ -102,7 +102,7 @@ under the License.
           logging mechanism which will allow the Mojo to communicate to the
           outside world through standard Maven channels.
         </p>
-        <h6>Method Summary:</h6>
+        <h5>Method Summary:</h5>
         <ul>
           <li>
             <code>
@@ -145,7 +145,7 @@ under the License.
           ,
           to furnish Log access to these concrete implementations.
         </p>
-        <h6>Method Summary:</h6>
+        <h5>Method Summary:</h5>
         <ul>
           <li>
             <code>
@@ -196,7 +196,7 @@ under the License.
           <code>toString()</code>
           .
         </p>
-        <h6>Method Summary:</h6>
+        <h5>Method Summary:</h5>
         <ul>
           <li>
             <code>void debug( java.lang.CharSequence )</code>

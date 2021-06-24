@@ -1,5 +1,5 @@
 
-<!-- MACRO{toc|fromDepth=1|toDepth=2} -->
+<!-- MACRO{toc|fromDepth=2|toDepth=3} -->
 
 ## level 2
 

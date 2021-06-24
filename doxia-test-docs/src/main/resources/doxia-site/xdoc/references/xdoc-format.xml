@@ -101,21 +101,21 @@ code line 2
       <subsection name="Additional sectioning">
 
         <p>
-          Doxia will produce <code>&lt;h2&gt;</code> and
-          <code>&lt;h3&gt;</code> headings for <code>&lt;section&gt;</code>
+          Doxia will produce <code>&lt;h1&gt;</code> and
+          <code>&lt;h2&gt;</code> headings for <code>&lt;section&gt;</code>
           and <code>&lt;subsection&gt;</code> elements, respectively.
           It is therefore perfectly valid to put some sub-headings
-          (<code>&lt;h4&gt;</code>, <code>&lt;h5&gt;</code>,
-          <code>&lt;h6&gt;</code>) inside a subsection. For instance,
+          (<code>&lt;h3&gt;</code>, <code>&lt;h4&gt;</code>,
+          <code>&lt;h5&gt;</code>) inside a subsection. For instance,
         </p>
 
-        <source><![CDATA[<h4>A subsubsection</h4>]]></source>
+        <source><![CDATA[<h3>A subsubsection</h3>]]></source>
 
         <p>
           will produce:
         </p>
 
-        <h4>A subsubsection</h4>
+        <h3>A subsubsection</h3>
 
       </subsection>
 

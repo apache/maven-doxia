@@ -170,18 +170,6 @@ public class TextSink
     }
 
     @Override
-    public void section6()
-    {
-        write( "begin:section6" );
-    }
-
-    @Override
-    public void section6_()
-    {
-        writeln( "end:section6" );
-    }
-
-    @Override
     public void list()
     {
         writeln( "begin:list" );
@@ -419,18 +407,6 @@ public class TextSink
     public void sectionTitle5_()
     {
         writeln( "end:sectionTitle5" );
-    }
-
-    @Override
-    public void sectionTitle6()
-    {
-        write( "begin:sectionTitle6" );
-    }
-
-    @Override
-    public void sectionTitle6_()
-    {
-        writeln( "end:sectionTitle6" );
     }
 
     @Override

@@ -29,7 +29,7 @@ under the License.
 
     <!-- TODO: news? -->
     <div id="downloadbox">
-    <h5>Search Maven Sites</h5>
+    <h4>Search Maven Sites</h4>
 <!-- Google CSE Search Box Begins  -->
 <form action="http://www.google.com/cse" id="searchbox_006660305041243700248:hyqtfwsewpm">
   <input type="hidden" name="cx" value="006660305041243700248:hyqtfwsewpm" />
@@ -39,7 +39,7 @@ under the License.
 <script type="text/javascript" src="http://www.google.com/coop/cse/brand?form=searchbox_006660305041243700248%3Ahyqtfwsewpm"></script>
 <!-- Google CSE Search Box Ends -->
 
-    <h5>Get Maven ${currentVersion}</h5>
+    <h4>Get Maven ${currentVersion}</h4>
       <span style="display: block; text-align: right; font-size: smaller">Released: 20 June 2007</span>
       <p>
         <a href="download.html">
@@ -68,7 +68,7 @@ under the License.
       </p>
       <!-- TODO: what about downloads for Continuum, etc.? Would be good to have one big download page -->
 
-      <h5>Other Maven Projects</h5>
+      <h4>Other Maven Projects</h4>
       <p>
         <a href="/continuum/">
           <img src="images/continuum.png" border="0" width="76" height="32" style="float: left; margin-right: 1em;" alt="" title="Continuum" />
@@ -118,7 +118,7 @@ width="244" height="68"></iframe>
         a <a href="maven-features.html">list of some of its main features</a>, and a set of <a href="general.html">frequently
         asked questions about what Maven is</a>.
       </p>
-      <h3>Learning about Maven</h3>
+      <h2>Learning about Maven</h2>
       <p>
         <!-- TODO: this could be the big button type thing instead of a list of links -->
         This site is separated into the following sections, depending on how you'd like to use Maven:
@@ -177,7 +177,7 @@ width="244" height="68"></iframe>
       <p>
         You can access the guides at any time from the left navigation.
       </p>
-      <h3>Documentation Index</h3>
+      <h2>Documentation Index</h2>
       <p>
         If you are looking for a quick reference, you can use the <a href="guides/index.html">documentation index.</a>
 <!-- TODO
@@ -185,7 +185,7 @@ width="244" height="68"></iframe>
         <a href="todo.html">alphabetical</a> and <a href="todo.html">categorical</a> listing formats.
 -->
       </p>
-      <h3>Plugins</h3>
+      <h2>Plugins</h2>
 <!-- TODO
       <p>
         Maven functionality is provided by plugins. For an explanation of how plugins work, and basic information on how
@@ -197,7 +197,7 @@ width="244" height="68"></iframe>
         <a href="plugins/index.html">plugin list</a>.
       </p>
 <!-- TODO: Should these be here, or just in the user centre?
-      <h3>Converting from a different Build System</h3>
+      <h2>Converting from a different Build System</h2>
       <p>
         If you are currently using a different build system, there are options for converting from that to Maven 2
         either partially or completely. These guides also give an overview of the differences between Maven and the
@@ -209,7 +209,7 @@ width="244" height="68"></iframe>
         <li><a href="todo.html">Adding Maven 2 to an IDE based build</a></li>
       </ul>
 -->
-      <h3>How to Get Support</h3>
+      <h2>How to Get Support</h2>
       <p>
         Support for Maven is available in a variety of different forms.
       </p>

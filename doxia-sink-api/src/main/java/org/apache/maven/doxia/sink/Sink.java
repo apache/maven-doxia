@@ -117,12 +117,6 @@ public interface Sink
     int SECTION_LEVEL_5 = 5;
 
     /**
-     * A level 5 section (sub-sub-sub-subsection).
-     * @see #section(int,SinkEventAttributes)
-     */
-    int SECTION_LEVEL_6 = 6;
-
-    /**
      * Center alignment for table cells.
      * @see #tableRows(int[], boolean)
      */
@@ -522,38 +516,6 @@ public interface Sink
      * Ends a 5th title heading element.
      */
     void sectionTitle5_();
-
-    /**
-     * Starts a 6th heading element which contains the topic of the section.
-     * This has to be contained within a {@link #section5()} element.
-     *
-     * @see #section(int,SinkEventAttributes)
-     * @since 1.7
-     */
-    void section6();
-
-    /**
-     * Ends a 6th heading element.
-     *
-     * @since 1.7
-     */
-    void section6_();
-
-    /**
-     * Starts a 6th title heading element. This element is optional, but if it exists,
-     * it has to be contained, and be the first element, within a {@link #section6()} element.
-     *
-     * @see #sectionTitle(int,SinkEventAttributes)
-     * @since 1.7
-     */
-    void sectionTitle6();
-
-    /**
-     * Ends a 6th title heading element.
-     *
-     * @since 1.7
-     */
-    void sectionTitle6_();
 
     /**
      * Start a new section at the given level.

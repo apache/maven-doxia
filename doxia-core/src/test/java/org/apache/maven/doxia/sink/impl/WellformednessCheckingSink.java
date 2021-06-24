@@ -161,18 +161,6 @@ public class WellformednessCheckingSink
     }
 
     @Override
-    public void section6()
-    {
-        startElement( "section6" );
-    }
-
-    @Override
-    public void section6_()
-    {
-        checkWellformedness( "section6" );
-    }
-
-    @Override
     public void header()
     {
         startElement( "header" );
@@ -448,18 +436,6 @@ public class WellformednessCheckingSink
         checkWellformedness( "sectionTitle5" );
     }
 
-
-    @Override
-    public void sectionTitle6()
-    {
-        startElement( "sectionTitle6" );
-    }
-
-    @Override
-    public void sectionTitle6_()
-    {
-        checkWellformedness( "sectionTitle6" );
-    }
 
     @Override
     public void paragraph()

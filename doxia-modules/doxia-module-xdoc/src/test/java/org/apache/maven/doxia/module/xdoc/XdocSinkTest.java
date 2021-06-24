@@ -128,19 +128,19 @@ public class XdocSinkTest
     /** {@inheritDoc} */
     protected String getSection3Block( String title )
     {
-        return "<h4>" + title + "</h4>";
+        return "<h3>" + title + "</h3>";
     }
 
     /** {@inheritDoc} */
     protected String getSection4Block( String title )
     {
-        return "<h5>" + title + "</h5>";
+        return "<h4>" + title + "</h4>";
     }
 
     /** {@inheritDoc} */
     protected String getSection5Block( String title )
     {
-        return "<h6>" + title + "</h6>";
+        return "<h5>" + title + "</h5>";
     }
 
     /** {@inheritDoc} */

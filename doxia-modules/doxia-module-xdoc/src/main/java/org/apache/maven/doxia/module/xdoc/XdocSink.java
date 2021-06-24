@@ -327,9 +327,9 @@ public class XdocSink
      * {@inheritDoc}
      *
      * Starts a section title.
+     * @see javax.swing.text.html.HTML.Tag#H3
      * @see javax.swing.text.html.HTML.Tag#H4
      * @see javax.swing.text.html.HTML.Tag#H5
-     * @see javax.swing.text.html.HTML.Tag#H6
      */
     protected void onSectionTitle( int depth, SinkEventAttributes attributes )
     {
@@ -338,15 +338,15 @@ public class XdocSink
 
         if ( depth == SECTION_LEVEL_3 )
         {
-            writeStartTag( H4, atts );
+            writeStartTag( H3, atts );
         }
         else if ( depth == SECTION_LEVEL_4 )
         {
-            writeStartTag( H5, atts );
+            writeStartTag( H4, atts );
         }
         else if ( depth == SECTION_LEVEL_5 )
         {
-            writeStartTag( H6, atts );
+            writeStartTag( H5, atts );
         }
     }
 
@@ -354,9 +354,9 @@ public class XdocSink
      * {@inheritDoc}
      *
      * Ends a section title.
+     * @see javax.swing.text.html.HTML.Tag#H3
      * @see javax.swing.text.html.HTML.Tag#H4
      * @see javax.swing.text.html.HTML.Tag#H5
-     * @see javax.swing.text.html.HTML.Tag#H6
      */
     protected void onSectionTitle_( int depth )
     {
@@ -366,15 +366,15 @@ public class XdocSink
         }
         else if ( depth == SECTION_LEVEL_3 )
         {
-            writeEndTag( H4 );
+            writeEndTag( H3 );
         }
         else if ( depth == SECTION_LEVEL_4 )
         {
-            writeEndTag( H5 );
+            writeEndTag( H4 );
         }
         else if ( depth == SECTION_LEVEL_5 )
         {
-            writeEndTag( H6 );
+            writeEndTag( H5 );
         }
     }
 

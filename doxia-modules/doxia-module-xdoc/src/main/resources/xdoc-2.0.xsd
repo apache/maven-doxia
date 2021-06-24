@@ -419,7 +419,7 @@
   <xs:attributeGroup name="TextAlign">
     <xs:annotation>
       <xs:documentation>
-      text alignment for p, div, h1-h6. The default is
+      text alignment for p, div, h1-h5. The default is
       align="left" for ltr headings, "right" for rtl
       </xs:documentation>
     </xs:annotation>
@@ -595,7 +595,6 @@
       <xs:element ref="h3"/>
       <xs:element ref="h4"/>
       <xs:element ref="h5"/>
-      <xs:element ref="h6"/>
     </xs:choice>
   </xs:group>
 
@@ -1007,7 +1006,7 @@
     =================== Headings =========================================
 
     There are six levels of headings from h1 (the most important)
-    to h6 (the least important).
+    to h5 (the least important).
     </xs:documentation>
   </xs:annotation>
 
@@ -1056,17 +1055,6 @@
   </xs:element>
 
   <xs:element name="h5">
-    <xs:complexType mixed="true">
-      <xs:complexContent>
-        <xs:extension base="Inline">
-          <xs:attributeGroup ref="attrs"/>
-          <xs:attributeGroup ref="TextAlign"/>
-        </xs:extension>
-      </xs:complexContent>
-    </xs:complexType>
-  </xs:element>
-
-  <xs:element name="h6">
     <xs:complexType mixed="true">
       <xs:complexContent>
         <xs:extension base="Inline">

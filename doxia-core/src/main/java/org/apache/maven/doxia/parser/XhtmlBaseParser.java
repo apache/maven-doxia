@@ -383,7 +383,7 @@ public class XhtmlBaseParser
      * </p>
      * <p>
      *   <code>
-     *      &lt;h2&gt;, &lt;h3&gt;, &lt;h4&gt;, &lt;h5&gt;, &lt;h6&gt;, &lt;p&gt;, &lt;pre&gt;,
+     *      &lt;h1&gt;, &lt;h2&gt;, &lt;h3&gt;, &lt;h4&gt;, &lt;h5&gt;, &lt;p&gt;, &lt;pre&gt;,
      *      &lt;ul&gt;, &lt;ol&gt;, &lt;li&gt;, &lt;dl&gt;, &lt;dt&gt;, &lt;dd&gt;, &lt;b&gt;, &lt;strong&gt;,
      *      &lt;i&gt;, &lt;em&gt;, &lt;code&gt;, &lt;samp&gt;, &lt;tt&gt;, &lt;a&gt;, &lt;table&gt;, &lt;tr&gt;,
      *      &lt;th&gt;, &lt;td&gt;, &lt;caption&gt;, &lt;br/&gt;, &lt;hr/&gt;, &lt;img/&gt;.
@@ -400,23 +400,23 @@ public class XhtmlBaseParser
 
         SinkEventAttributeSet attribs = getAttributesFromParser( parser );
 
-        if ( parser.getName().equals( HtmlMarkup.H2.toString() ) )
+        if ( parser.getName().equals( HtmlMarkup.H1.toString() ) )
         {
             handleSectionStart( sink, Sink.SECTION_LEVEL_1, attribs );
         }
-        else if ( parser.getName().equals( HtmlMarkup.H3.toString() ) )
+        else if ( parser.getName().equals( HtmlMarkup.H2.toString() ) )
         {
             handleSectionStart( sink, Sink.SECTION_LEVEL_2, attribs );
         }
-        else if ( parser.getName().equals( HtmlMarkup.H4.toString() ) )
+        else if ( parser.getName().equals( HtmlMarkup.H3.toString() ) )
         {
             handleSectionStart( sink, Sink.SECTION_LEVEL_3, attribs );
         }
-        else if ( parser.getName().equals( HtmlMarkup.H5.toString() ) )
+        else if ( parser.getName().equals( HtmlMarkup.H4.toString() ) )
         {
             handleSectionStart( sink, Sink.SECTION_LEVEL_4, attribs );
         }
-        else if ( parser.getName().equals( HtmlMarkup.H6.toString() ) )
+        else if ( parser.getName().equals( HtmlMarkup.H5.toString() ) )
         {
             handleSectionStart( sink, Sink.SECTION_LEVEL_5, attribs );
         }
@@ -688,23 +688,23 @@ public class XhtmlBaseParser
         {
             sink.tableCaption_();
         }
-        else if ( parser.getName().equals( HtmlMarkup.H2.toString() ) )
+        else if ( parser.getName().equals( HtmlMarkup.H1.toString() ) )
         {
             sink.sectionTitle1_();
         }
-        else if ( parser.getName().equals( HtmlMarkup.H3.toString() ) )
+        else if ( parser.getName().equals( HtmlMarkup.H2.toString() ) )
         {
             sink.sectionTitle2_();
         }
-        else if ( parser.getName().equals( HtmlMarkup.H4.toString() ) )
+        else if ( parser.getName().equals( HtmlMarkup.H3.toString() ) )
         {
             sink.sectionTitle3_();
         }
-        else if ( parser.getName().equals( HtmlMarkup.H5.toString() ) )
+        else if ( parser.getName().equals( HtmlMarkup.H4.toString() ) )
         {
             sink.sectionTitle4_();
         }
-        else if ( parser.getName().equals( HtmlMarkup.H6.toString() ) )
+        else if ( parser.getName().equals( HtmlMarkup.H5.toString() ) )
         {
             sink.sectionTitle5_();
         }
@@ -822,19 +822,19 @@ public class XhtmlBaseParser
      * For instance, if the following sequence is parsed:
      * </p>
      * <pre>
-     * &lt;h3&gt;&lt;/h3&gt;
-     * &lt;h6&gt;&lt;/h6&gt;
+     * &lt;h2&gt;&lt;/h2&gt;
+     * &lt;h5&gt;&lt;/h5&gt;
      * </pre>
      * <p>
-     * we have to insert two section starts before we open the <code>&lt;h6&gt;</code>.
+     * we have to insert two section starts before we open the <code>&lt;h5&gt;</code>.
      * In the following sequence
      * </p>
      * <pre>
-     * &lt;h6&gt;&lt;/h6&gt;
-     * &lt;h3&gt;&lt;/h3&gt;
+     * &lt;h5&gt;&lt;/h5&gt;
+     * &lt;h2&gt;&lt;/h2&gt;
      * </pre>
      * <p>
-     * we have to close two sections before we open the <code>&lt;h3&gt;</code>.
+     * we have to close two sections before we open the <code>&lt;h2&gt;</code>.
      * </p>
      *
      * <p>The current level is set to newLevel afterwards.</p>

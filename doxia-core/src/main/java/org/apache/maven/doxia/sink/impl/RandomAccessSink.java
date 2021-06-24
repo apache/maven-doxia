@@ -974,20 +974,6 @@ public class RandomAccessSink
 
     /** {@inheritDoc} */
     @Override
-    public void section6()
-    {
-        currentSink.section5();
-    }
-
-    /** {@inheritDoc} */
-    @Override
-    public void section6_()
-    {
-        currentSink.section5_();
-    }
-
-    /** {@inheritDoc} */
-    @Override
     public void sectionTitle()
     {
         currentSink.sectionTitle();
@@ -1066,20 +1052,6 @@ public class RandomAccessSink
     /** {@inheritDoc} */
     @Override
     public void sectionTitle5_()
-    {
-        currentSink.sectionTitle5_();
-    }
-
-    /** {@inheritDoc} */
-    @Override
-    public void sectionTitle6()
-    {
-        currentSink.sectionTitle5();
-    }
-
-    /** {@inheritDoc} */
-    @Override
-    public void sectionTitle6_()
     {
         currentSink.sectionTitle5_();
     }

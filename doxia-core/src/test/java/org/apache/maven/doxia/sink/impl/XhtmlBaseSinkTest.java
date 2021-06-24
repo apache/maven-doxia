@@ -206,7 +206,7 @@ public class XhtmlBaseSinkTest
             sink.close();
         }
 
-        assertEquals( "<div class=\"section\" style=\"bold\">" + LS + "<h2 style=\"bold\"></h2></div>",
+        assertEquals( "<div class=\"section\" style=\"bold\">" + LS + "<h1 style=\"bold\"></h1></div>",
                 writer.toString() );
     }
 
@@ -234,7 +234,7 @@ public class XhtmlBaseSinkTest
             sink.close();
         }
 
-        assertEquals( "<div class=\"foo\" id=\"bar\">" + LS + "<h2></h2></div>", writer.toString() );
+        assertEquals( "<div class=\"foo\" id=\"bar\">" + LS + "<h1></h1></div>", writer.toString() );
     }
 
     /**
@@ -258,7 +258,7 @@ public class XhtmlBaseSinkTest
             sink.close();
         }
 
-        assertEquals( "<div class=\"section\">" + LS + "<h2></h2></div>", writer.toString() );
+        assertEquals( "<div class=\"section\">" + LS + "<h1></h1></div>", writer.toString() );
     }
 
     /**
@@ -282,7 +282,7 @@ public class XhtmlBaseSinkTest
             sink.close();
         }
 
-        assertEquals( "<div class=\"section\">" + LS + "<h3></h3></div>", writer.toString() );
+        assertEquals( "<div class=\"section\">" + LS + "<h2></h2></div>", writer.toString() );
     }
 
     /**
@@ -306,7 +306,7 @@ public class XhtmlBaseSinkTest
             sink.close();
         }
 
-        assertEquals( "<div class=\"section\">" + LS + "<h4></h4></div>", writer.toString() );
+        assertEquals( "<div class=\"section\">" + LS + "<h3></h3></div>", writer.toString() );
     }
 
     /**
@@ -329,7 +329,7 @@ public class XhtmlBaseSinkTest
             sink.close();
         }
 
-        assertEquals( "<div class=\"section\">" + LS + "<h5></h5></div>", writer.toString() );
+        assertEquals( "<div class=\"section\">" + LS + "<h4></h4></div>", writer.toString() );
     }
 
     /**
@@ -352,7 +352,7 @@ public class XhtmlBaseSinkTest
             sink.close();
         }
 
-        assertEquals( "<div class=\"section\">" + LS + "<h6></h6></div>", writer.toString() );
+        assertEquals( "<div class=\"section\">" + LS + "<h5></h5></div>", writer.toString() );
     }
 
     /**
