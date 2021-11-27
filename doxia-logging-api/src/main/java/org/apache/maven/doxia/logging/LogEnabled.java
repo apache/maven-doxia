@@ -28,6 +28,7 @@ package org.apache.maven.doxia.logging;
  * @author ltheussl
  * @since 1.1
  */
+@Deprecated
 public interface LogEnabled
 {
     /**
