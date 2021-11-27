@@ -30,6 +30,7 @@ import org.codehaus.plexus.component.annotations.Component;
  *
  * @since 1.7
  */
+@Deprecated
 @Component( role = Macro.class, hint = "ssi" )
 public class SsiMacro
     extends AbstractMacro
