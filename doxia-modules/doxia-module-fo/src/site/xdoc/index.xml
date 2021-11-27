@@ -25,6 +25,13 @@ under the License.
   </properties>
 
   <body>
+
+    <section name="Deprecation Notice">
+
+      <p>This Doxia module is deprecated and will be removed in version 2.0.0.</p>
+
+    </section>
+
     <section name="Doxia FO Module">
 
       <p>
