@@ -11,3 +11,4 @@ build
 .surefire-*
 .DS_Store
 *.versionsBackup
+.factorypath
