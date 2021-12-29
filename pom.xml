@@ -289,6 +289,7 @@ under the License.
           </execution>
         </executions>
       </plugin>
+      <!--
       <plugin>
         <groupId>org.codehaus.mojo</groupId>
         <artifactId>clirr-maven-plugin</artifactId>
@@ -301,7 +302,7 @@ under the License.
             <configuration>
               <comparisonVersion>1.9.1</comparisonVersion>
               <excludes>
-                <!-- DOXIA-614 expected API changes to 1.9.1 -->
+                DOXIA-614 expected API changes to 1.9.1
                 <exclude>org/apache/maven/doxia/Doxia</exclude>
                 <exclude>org/apache/maven/doxia/parser/AbstractParser</exclude>
                 <exclude>org/apache/maven/doxia/parser/AbstractXmlParser</exclude>
@@ -315,7 +316,7 @@ under the License.
                 <exclude>org/apache/maven/doxia/module/xhtml5/Xhtml5Parser</exclude>
               </excludes>
               <ignored>
-                <!-- DOXIA-616 -->
+                DOXIA-616
                 <difference>
                   <differenceType>8001</differenceType>
                   <className>org/apache/maven/doxia/module/markdown/FlexmarkDoxiaNodeRenderer$Factory</className>
@@ -325,6 +326,7 @@ under the License.
           </execution>
         </executions>
       </plugin>
+      -->
     </plugins>
   </build>
 
