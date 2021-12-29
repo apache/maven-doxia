@@ -128,42 +128,7 @@ under the License.
       </dependency>
       <dependency>
         <groupId>org.apache.maven.doxia</groupId>
-        <artifactId>doxia-module-confluence</artifactId>
-        <version>${project.version}</version>
-      </dependency>
-      <dependency>
-        <groupId>org.apache.maven.doxia</groupId>
-        <artifactId>doxia-module-docbook-simple</artifactId>
-        <version>${project.version}</version>
-      </dependency>
-      <dependency>
-        <groupId>org.apache.maven.doxia</groupId>
         <artifactId>doxia-module-fml</artifactId>
-        <version>${project.version}</version>
-      </dependency>
-      <dependency>
-        <groupId>org.apache.maven.doxia</groupId>
-        <artifactId>doxia-module-fo</artifactId>
-        <version>${project.version}</version>
-      </dependency>
-      <dependency>
-        <groupId>org.apache.maven.doxia</groupId>
-        <artifactId>doxia-module-latex</artifactId>
-        <version>${project.version}</version>
-      </dependency>
-      <dependency>
-        <groupId>org.apache.maven.doxia</groupId>
-        <artifactId>doxia-module-itext</artifactId>
-        <version>${project.version}</version>
-      </dependency>
-      <dependency>
-        <groupId>org.apache.maven.doxia</groupId>
-        <artifactId>doxia-module-rtf</artifactId>
-        <version>${project.version}</version>
-      </dependency>
-      <dependency>
-        <groupId>org.apache.maven.doxia</groupId>
-        <artifactId>doxia-module-twiki</artifactId>
         <version>${project.version}</version>
       </dependency>
       <dependency>
@@ -174,6 +139,16 @@ under the License.
       <dependency>
         <groupId>org.apache.maven.doxia</groupId>
         <artifactId>doxia-module-xhtml</artifactId>
+        <version>${project.version}</version>
+      </dependency>
+      <dependency>
+        <groupId>org.apache.maven.doxia</groupId>
+        <artifactId>doxia-module-xhtml5</artifactId>
+        <version>${project.version}</version>
+      </dependency>
+      <dependency>
+        <groupId>org.apache.maven.doxia</groupId>
+        <artifactId>doxia-module-markdown</artifactId>
         <version>${project.version}</version>
       </dependency>
 
@@ -266,9 +241,6 @@ under the License.
             <excludes combine.children="append">
               <exclude>src/test/resources/**/*.apt</exclude>
               <exclude>src/test/resources/**/*.apt.vm</exclude>
-              <exclude>src/test/resources/**/*.confluence</exclude>
-              <exclude>src/test/site/**/*.confluence</exclude>
-              <exclude>src/test/resources/**/*.twiki</exclude>
               <exclude>src/test/resources/**/*.md</exclude>
               <exclude>src/it/**/site/**/*.md</exclude>
               <exclude>src/it/**/site/**/*.markdown</exclude>

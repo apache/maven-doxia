@@ -1,9 +1,0 @@
-Line with [middle] link
-
-Line with link at the [end]
-
-Line with [link#anchor] and [#simple] anchor and [alias|link]
-
-Line with [^resource.pdf] file and with [alias pdf|^resource.pdf]
-
-Line with [underscore_-dash|http://link.to/page_with_underscore-and-dash]

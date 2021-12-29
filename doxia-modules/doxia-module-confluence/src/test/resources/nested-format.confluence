@@ -1,8 +1,0 @@
-
-A paragraph with *_bold italic_* _*italic bold*_ *{{bold monospaced}}*
-
-A paragraph with *bold _italic_* _italic *bold*_ *bold {{monospaced}}*
-
-A paragraph with {{monospaced-with-dashes}} {{monospaced_with_underscores}} {{monospaced*with*stars}} {{monospaced+with+plus}} {{monospaced~with~tilde}} {{monospaced^with^circumflex^accent}} {{monospaced[with]brackets}} {{monospaced{with}curly{brackets}} {{monospaced\\\with\\backslashes}}
-
-

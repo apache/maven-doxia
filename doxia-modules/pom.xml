@@ -35,14 +35,7 @@ under the License.
 
   <modules>
     <module>doxia-module-apt</module>
-    <module>doxia-module-confluence</module>
-    <module>doxia-module-docbook-simple</module>
     <module>doxia-module-fml</module>
-    <module>doxia-module-fo</module>
-    <module>doxia-module-itext</module>
-    <module>doxia-module-latex</module>
-    <module>doxia-module-rtf</module>
-    <module>doxia-module-twiki</module>
     <module>doxia-module-xdoc</module>
     <module>doxia-module-xhtml</module>
     <module>doxia-module-xhtml5</module>

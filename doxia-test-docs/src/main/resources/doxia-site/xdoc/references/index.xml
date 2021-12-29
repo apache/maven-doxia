@@ -75,26 +75,6 @@
           </tr>
 
           <tr>
-            <td>Confluence</td>
-            <td>Confluence Enterprise Wiki</td>
-            <td align="center"><img src="../images/icon_success_sml.gif" alt="Yes"/></td>
-            <td align="center"><img src="../images/icon_success_sml.gif" alt="Yes"/></td>
-            <td><code>confluence</code></td>
-            <td><code>confluence</code></td>
-            <td><code>confluence</code></td>
-          </tr>
-
-          <tr>
-            <td>Simplified DocBook</td>
-            <td>Simplified DocBook XML Standard</td>
-            <td align="center"><img src="../images/icon_success_sml.gif" alt="Yes"/></td>
-            <td align="center"><img src="../images/icon_success_sml.gif" alt="Yes"/></td>
-            <td><code>docbook</code></td>
-            <td><code>xml</code></td>
-            <td><code>doc-book</code></td>
-          </tr>
-
-          <tr>
             <td><a href="./fml-format.html">FML</a></td>
             <td>FAQ Markup Language</td>
             <td align="center"><img src="../images/icon_success_sml.gif" alt="Yes"/></td>
@@ -102,46 +82,6 @@
             <td><code>fml</code></td>
             <td><code>fml</code></td>
             <td><code>fml</code></td>
-          </tr>
-
-          <tr>
-            <td>iText</td>
-            <td>iText PDF Library</td>
-            <td align="center"><img src="../images/icon_error_sml.gif" alt="Yes"/></td>
-            <td align="center"><img src="../images/icon_success_sml.gif" alt="Yes"/></td>
-            <td></td>
-            <td></td>
-            <td></td>
-          </tr>
-
-          <tr>
-            <td>LaTeX</td>
-            <td>LaTeX typesetting system</td>
-            <td align="center"><img src="../images/icon_error_sml.gif" alt="Yes"/></td>
-            <td align="center"><img src="../images/icon_success_sml.gif" alt="Yes"/></td>
-            <td></td>
-            <td></td>
-            <td></td>
-          </tr>
-
-          <tr>
-            <td>RTF</td>
-            <td>Microsoft Rich Text Format</td>
-            <td align="center"><img src="../images/icon_error_sml.gif" alt="Yes"/></td>
-            <td align="center"><img src="../images/icon_success_sml.gif" alt="Yes"/></td>
-            <td></td>
-            <td></td>
-            <td></td>
-          </tr>
-
-          <tr>
-            <td>TWiki</td>
-            <td>TWiki Structured Wiki</td>
-            <td align="center"><img src="../images/icon_success_sml.gif" alt="Yes"/></td>
-            <td align="center"><img src="../images/icon_success_sml.gif" alt="Yes"/></td>
-            <td><code>twiki</code></td>
-            <td><code>twiki</code></td>
-            <td><code>twiki</code></td>
           </tr>
 
           <tr>
