@@ -40,6 +40,8 @@ import org.codehaus.plexus.util.IOUtil;
 import org.codehaus.plexus.util.StringUtils;
 import org.codehaus.plexus.util.xml.pull.XmlPullParser;
 import org.codehaus.plexus.util.xml.pull.XmlPullParserException;
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
 
 /**
  * Parse an xhtml model and emit events into a Doxia Sink.
@@ -49,6 +51,8 @@ public class Xhtml5Parser
     extends Xhtml5BaseParser
     implements Xhtml5Markup
 {
+    private static final Logger LOGGER = LoggerFactory.getLogger( Xhtml5Parser.class );
+
     /**
      * The role hint for the {@link Xhtml5Parser} Plexus component.
      */
@@ -168,14 +172,8 @@ public class Xhtml5Parser
                 handleUnknown( parser, sink, TAG_TYPE_START );
             }
 
-            if ( getLog().isDebugEnabled() )
-            {
-                String position = "[" + parser.getLineNumber() + ":"
-                    + parser.getColumnNumber() + "]";
-                String tag = "<" + parser.getName() + ">";
-
-                getLog().debug( "Unrecognized xhtml5 tag: " + tag + " at " + position );
-            }
+            LOGGER.warn( "Unrecognized xhtml5 tag <{}> at [{}:{}]", parser.getName(),
+                    parser.getLineNumber(), parser.getColumnNumber() );
         }
     }
 

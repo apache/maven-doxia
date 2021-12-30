@@ -20,11 +20,7 @@ package org.apache.maven.doxia.parser;
  */
 
 import java.io.Reader;
-import java.util.HashMap;
-import java.util.Map;
-import java.util.Set;
 import java.util.Stack;
-import java.util.TreeSet;
 
 import javax.swing.text.html.HTML.Attribute;
 
@@ -34,9 +30,12 @@ import org.apache.maven.doxia.sink.Sink;
 import org.apache.maven.doxia.sink.SinkEventAttributes;
 import org.apache.maven.doxia.sink.impl.SinkEventAttributeSet;
 import org.apache.maven.doxia.util.DoxiaUtils;
+
 import org.codehaus.plexus.util.StringUtils;
 import org.codehaus.plexus.util.xml.pull.XmlPullParser;
 import org.codehaus.plexus.util.xml.pull.XmlPullParserException;
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
 
 /**
  * Common base parser for xhtml5 events.
@@ -45,6 +44,8 @@ public class Xhtml5BaseParser
     extends AbstractXmlParser
         implements HtmlMarkup
 {
+    private static final Logger LOGGER = LoggerFactory.getLogger( Xhtml5BaseParser.class );
+
     /**
      * True if a &lt;script&gt;&lt;/script&gt; or &lt;style&gt;&lt;/style&gt; block is read. CDATA sections within are
      * handled as rawText.
@@ -75,10 +76,6 @@ public class Xhtml5BaseParser
     /** Used to wrap the definedTerm with its definition, even when one is omitted */
     boolean hasDefinitionListItem = false;
 
-    /** Map of warn messages with a String as key to describe the error type and a Set as value.
-     * Using to reduce warn messages. */
-    private Map<String, Set<String>> warnMessages;
-
     /** {@inheritDoc} */
     @Override
     public void parse( Reader source, Sink sink, String reference )
@@ -92,8 +89,6 @@ public class Xhtml5BaseParser
         }
         finally
         {
-            logWarnings();
-
             setSecondParsing( false );
             init();
         }
@@ -730,14 +725,8 @@ public class Xhtml5BaseParser
     {
         if ( !baseStartTag( parser, sink ) )
         {
-            if ( getLog().isWarnEnabled() )
-            {
-                String position = "[" + parser.getLineNumber() + ":"
-                    + parser.getColumnNumber() + "]";
-                String tag = "<" + parser.getName() + ">";
-
-                getLog().warn( "Unrecognized xml tag: " + tag + " at " + position );
-            }
+            LOGGER.warn( "Unrecognized xml tag <{}> at [{}:{}]", parser.getName(),
+                    parser.getLineNumber(), parser.getColumnNumber() );
         }
     }
 
@@ -996,8 +985,7 @@ public class Xhtml5BaseParser
         {
             String linkAnchor = DoxiaUtils.encodeId( id, true );
 
-            String msg = "Modified invalid link: '" + id + "' to '" + linkAnchor + "'";
-            logMessage( "modifiedLink", msg );
+            LOGGER.debug( "Modified invalid link '{}' to '{}'", id, linkAnchor );
 
             return linkAnchor;
         }
@@ -1017,7 +1005,6 @@ public class Xhtml5BaseParser
         this.orderedListDepth = 0;
         this.headingLevel = 0;
         this.inVerbatim = false;
-        this.warnMessages = null;
     }
 
     private void handleAEnd( Sink sink )
@@ -1049,8 +1036,7 @@ public class Xhtml5BaseParser
                 {
                     href = href.substring( 0, hashIndex ) + "#" + DoxiaUtils.encodeId( hash, true );
 
-                    String msg = "Modified invalid link: '" + hash + "' to '" + href + "'";
-                    logMessage( "modifiedLink", msg );
+                    LOGGER.debug( "Modified invalid link '{}' to '{}'", hash, href );
                 }
             }
             sink.link( href, attribs );
@@ -1253,56 +1239,5 @@ public class Xhtml5BaseParser
         }
 
         sink.tableRows( justif, grid );
-    }
-
-    /**
-     * If debug mode is enabled, log the <code>msg</code> as is, otherwise add unique msg in <code>warnMessages</code>.
-     *
-     * @param key not null
-     * @param msg not null
-     * @see #parse(Reader, Sink)
-     * @since 1.1.1
-     */
-    private void logMessage( String key, String msg )
-    {
-        final String log = "[XHTML Parser] " + msg;
-        if ( getLog().isDebugEnabled() )
-        {
-            getLog().debug( log );
-
-            return;
-        }
-
-        if ( warnMessages == null )
-        {
-            warnMessages = new HashMap<>();
-        }
-
-        Set<String> set = warnMessages.get( key );
-        if ( set == null )
-        {
-            set = new TreeSet<>();
-        }
-        set.add( log );
-        warnMessages.put( key, set );
-    }
-
-    /**
-     * @since 1.1.1
-     */
-    private void logWarnings()
-    {
-        if ( getLog().isWarnEnabled() && this.warnMessages != null && !isSecondParsing() )
-        {
-            for ( Map.Entry<String, Set<String>> entry : this.warnMessages.entrySet() )
-            {
-                for ( String msg : entry.getValue() )
-                {
-                    getLog().warn( msg );
-                }
-            }
-
-            this.warnMessages = null;
-        }
     }
 }

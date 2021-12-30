@@ -68,16 +68,4 @@ public class EchoMacroTest
         assertEquals( "verbatim_", event.getName() );
         assertFalse( it.hasNext() );
     }
-
-    /**
-     * Test log.
-     */
-    @Test
-    public void testLog()
-    {
-        EchoMacro macro = new EchoMacro();
-        macro.enableLogging( null );
-        assertNotNull( macro.getLog() );
-        assertNotNull( macro.getLog() );
-    }
 }

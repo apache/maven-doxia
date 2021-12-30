@@ -71,10 +71,6 @@ public class XmlWriterXdocSink
         super.close();
 
         String xdocContent = xdocWriter.toString();
-        if ( getLog().isDebugEnabled() )
-        {
-            getLog().debug( "Xdoc content: " + xdocContent );
-        }
         StringWriter formattedContent = new StringWriter();
         try
         {
@@ -82,10 +78,6 @@ public class XmlWriterXdocSink
         }
         catch ( IOException e )
         {
-            if ( getLog().isDebugEnabled() )
-            {
-                getLog().error( "IOException: " + e.getMessage(), e );
-            }
             formattedContent = new StringWriter();
             formattedContent.write( xdocContent );
         }

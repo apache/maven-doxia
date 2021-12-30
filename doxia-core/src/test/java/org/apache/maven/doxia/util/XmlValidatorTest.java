@@ -19,8 +19,6 @@ package org.apache.maven.doxia.util;
  * under the License.
  */
 
-import org.apache.maven.doxia.logging.Log;
-import org.apache.maven.doxia.logging.SystemStreamLog;
 import org.codehaus.plexus.PlexusTestCase;
 import org.codehaus.plexus.util.IOUtil;
 import org.codehaus.plexus.util.xml.XmlStreamReader;
@@ -38,8 +36,7 @@ extends PlexusTestCase
     {
         String xml = IOUtil.toString( new XmlStreamReader( this.getClass().getResourceAsStream( "/test.xhtml" ) ) );
 
-        Log log = new SystemStreamLog();
-        XmlValidator validator = new XmlValidator( log );
+        XmlValidator validator = new XmlValidator( );
 
         validator.validate( xml );
     }

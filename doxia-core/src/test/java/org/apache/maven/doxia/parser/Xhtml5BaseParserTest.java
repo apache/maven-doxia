@@ -21,7 +21,6 @@ package org.apache.maven.doxia.parser;
 
 import java.util.Iterator;
 
-import org.apache.maven.doxia.logging.Log;
 import org.apache.maven.doxia.sink.impl.SinkEventAttributeSet;
 import org.apache.maven.doxia.sink.impl.SinkEventElement;
 import org.apache.maven.doxia.sink.impl.SinkEventTestingSink;
@@ -42,7 +41,6 @@ public class Xhtml5BaseParserTest
     protected Parser createParser()
     {
         parser = new Xhtml5BaseParser();
-        parser.getLog().setLogLevel( Log.LEVEL_ERROR );
         return parser;
     }
 
@@ -58,7 +56,6 @@ public class Xhtml5BaseParserTest
         super.setUp();
 
         parser = new Xhtml5BaseParser();
-        parser.getLog().setLogLevel( Log.LEVEL_ERROR );
         sink.reset();
     }
 

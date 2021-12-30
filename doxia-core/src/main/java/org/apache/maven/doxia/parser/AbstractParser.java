@@ -27,8 +27,6 @@ import java.io.StringReader;
 
 import java.util.Properties;
 
-import org.apache.maven.doxia.logging.Log;
-import org.apache.maven.doxia.logging.SystemStreamLog;
 import org.apache.maven.doxia.macro.Macro;
 import org.apache.maven.doxia.macro.MacroExecutionException;
 import org.apache.maven.doxia.macro.MacroRequest;
@@ -52,9 +50,6 @@ public abstract class AbstractParser
 
     @Requirement
     private MacroManager macroManager;
-
-    /** Log instance. */
-    private Log logger;
 
     /**
      * Emit Doxia comment events when parsing comments?
@@ -140,8 +135,6 @@ public abstract class AbstractParser
     {
         Macro macro = getMacroManager().getMacro( macroId );
 
-        macro.enableLogging( getLog() );
-
         macro.execute( sink, request );
     }
 
@@ -226,29 +219,6 @@ public abstract class AbstractParser
     protected boolean isSecondParsing()
     {
         return secondParsing;
-    }
-
-    /** {@inheritDoc} */
-    public void enableLogging( Log log )
-    {
-        this.logger = log;
-    }
-
-    /**
-     * Returns the current logger for this parser.
-     * If no logger has been configured yet, a new SystemStreamLog is returned.
-     *
-     * @return Log
-     * @since 1.1
-     */
-    protected Log getLog()
-    {
-        if ( logger == null )
-        {
-            logger = new SystemStreamLog();
-        }
-
-        return logger;
     }
 
     /**

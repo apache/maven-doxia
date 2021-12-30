@@ -24,10 +24,8 @@ import java.io.IOException;
 import java.io.Writer;
 
 import org.apache.maven.doxia.AbstractModuleTest;
-import org.apache.maven.doxia.logging.PlexusLoggerWrapper;
 import org.apache.maven.doxia.sink.Sink;
 import org.apache.maven.doxia.sink.SinkEventAttributes;
-import org.codehaus.plexus.DefaultPlexusContainer;
 import org.codehaus.plexus.util.IOUtil;
 
 import static org.hamcrest.MatcherAssert.assertThat;
@@ -57,7 +55,6 @@ public abstract class AbstractSinkTest
 
         testWriter.reset();
         sink = createSink( testWriter );
-        sink.enableLogging( new PlexusLoggerWrapper( ( ( DefaultPlexusContainer )getContainer() ).getLogger() ) );
     }
 
     /**
@@ -1085,7 +1082,6 @@ public abstract class AbstractSinkTest
 
         testWriter.reset();
         sink = createSink( testWriter );
-        sink.enableLogging( new PlexusLoggerWrapper( ( ( DefaultPlexusContainer )getContainer() ).getLogger() ) );
 
         comment = "-";
         sink.comment( comment );

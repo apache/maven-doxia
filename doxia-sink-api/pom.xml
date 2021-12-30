@@ -33,10 +33,4 @@ under the License.
   <name>Doxia :: Sink API</name>
   <description>Doxia Sink API.</description>
 
-  <dependencies>
-      <dependency>
-        <groupId>org.apache.maven.doxia</groupId>
-        <artifactId>doxia-logging-api</artifactId>
-      </dependency>
-  </dependencies>
 </project>

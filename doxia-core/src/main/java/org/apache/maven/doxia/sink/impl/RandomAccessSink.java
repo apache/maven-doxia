@@ -27,7 +27,6 @@ import java.io.OutputStream;
 import java.util.ArrayList;
 import java.util.List;
 
-import org.apache.maven.doxia.logging.Log;
 import org.apache.maven.doxia.sink.Sink;
 import org.apache.maven.doxia.sink.SinkEventAttributes;
 import org.apache.maven.doxia.sink.SinkFactory;
@@ -1342,12 +1341,5 @@ public class RandomAccessSink
     public void verbatim_()
     {
         currentSink.verbatim_();
-    }
-
-    /** {@inheritDoc} */
-    @Override
-    public void enableLogging( Log log )
-    {
-        currentSink.enableLogging( log );
     }
 }

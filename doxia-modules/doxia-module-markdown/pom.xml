@@ -76,6 +76,11 @@ under the License.
       <groupId>commons-io</groupId>
       <artifactId>commons-io</artifactId>
     </dependency>
+    <dependency>
+      <groupId>org.slf4j</groupId>
+      <artifactId>slf4j-simple</artifactId>
+      <scope>test</scope>
+    </dependency>
   </dependencies>
   <build>
 
@@ -135,6 +140,7 @@ under the License.
             <goal>site</goal>
           </goals>
         </configuration>
+        <!-- Disabling IT for now since we need a Doxia 2.0.0 compatible Site Plugin
         <executions>
           <execution>
             <id>integration-test</id>
@@ -144,6 +150,7 @@ under the License.
             </goals>
           </execution>
         </executions>
+         -->
       </plugin>
 
     </plugins>

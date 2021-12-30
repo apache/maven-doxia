@@ -21,8 +21,6 @@ package org.apache.maven.doxia.macro;
 
 import java.util.Map;
 
-import org.apache.maven.doxia.logging.Log;
-import org.apache.maven.doxia.logging.SystemStreamLog;
 import org.apache.maven.doxia.sink.SinkEventAttributes;
 import org.apache.maven.doxia.sink.impl.SinkEventAttributeSet;
 import org.codehaus.plexus.util.StringUtils;
@@ -36,32 +34,6 @@ import org.codehaus.plexus.util.StringUtils;
 public abstract class AbstractMacro
     implements Macro
 {
-    /** Log instance. */
-    private Log logger;
-
-    /** {@inheritDoc} */
-    public void enableLogging( Log log )
-    {
-        this.logger = log;
-    }
-
-    /**
-     * Returns a logger for this macro.
-     * If no logger has been configured, a new SystemStreamLog is returned.
-     *
-     * @return Log
-     * @since 1.1
-     */
-    protected Log getLog()
-    {
-        if ( logger == null )
-        {
-            logger = new SystemStreamLog();
-        }
-
-        return logger;
-    }
-
     /**
      * Check if the given parameter is required. Throws an
      * IllegalArgumentException if paramValue is null or empty.
