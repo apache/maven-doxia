@@ -55,7 +55,6 @@ under the License.
   </contributors>
 
   <modules>
-    <module>doxia-logging-api</module>
     <module>doxia-sink-api</module>
     <module>doxia-test-docs</module>
     <module>doxia-core</module>
@@ -88,6 +87,7 @@ under the License.
     <maven.site.path>doxia-archives/doxia-LATEST</maven.site.path>
     <checkstyle.violation.ignore>RedundantThrows,NewlineAtEndOfFile,ParameterNumber,MethodLength,FileLength,MethodName,InnerAssignment,MagicNumber</checkstyle.violation.ignore>
     <project.build.outputTimestamp>2021-11-28T20:51:17Z</project.build.outputTimestamp>
+    <slf4jVersion>1.7.32</slf4jVersion>
   </properties>
 
   <dependencyManagement>
@@ -96,11 +96,6 @@ under the License.
       <dependency>
         <groupId>org.apache.maven.doxia</groupId>
         <artifactId>doxia-sink-api</artifactId>
-        <version>${project.version}</version>
-      </dependency>
-      <dependency>
-        <groupId>org.apache.maven.doxia</groupId>
-        <artifactId>doxia-logging-api</artifactId>
         <version>${project.version}</version>
       </dependency>
       <dependency>
@@ -188,6 +183,18 @@ under the License.
         <groupId>commons-io</groupId>
         <artifactId>commons-io</artifactId>
         <version>2.6</version>
+      </dependency>
+
+      <!--  SLF4J -->
+      <dependency>
+        <groupId>org.slf4j</groupId>
+        <artifactId>slf4j-api</artifactId>
+        <version>${slf4jVersion}</version>
+      </dependency>
+      <dependency>
+        <groupId>org.slf4j</groupId>
+        <artifactId>slf4j-simple</artifactId>
+        <version>${slf4jVersion}</version>
       </dependency>
 
     </dependencies>

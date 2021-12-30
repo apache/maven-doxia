@@ -28,9 +28,7 @@ import java.util.HashMap;
 import java.util.LinkedList;
 import java.util.List;
 import java.util.Map;
-import java.util.Set;
 import java.util.Stack;
-import java.util.TreeSet;
 
 import javax.swing.text.MutableAttributeSet;
 import javax.swing.text.html.HTML.Attribute;
@@ -45,6 +43,8 @@ import org.apache.maven.doxia.util.HtmlTools;
 
 import org.codehaus.plexus.util.StringUtils;
 import org.codehaus.plexus.util.xml.PrettyPrintXMLWriter;
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
 
 /**
  * Abstract base xhtml sink implementation.
@@ -57,6 +57,8 @@ public class XhtmlBaseSink
     extends AbstractXmlSink
     implements HtmlMarkup
 {
+    private static final Logger LOGGER = LoggerFactory.getLogger( XhtmlBaseSink.class );
+
     // ----------------------------------------------------------------------
     // Instance fields
     // ----------------------------------------------------------------------
@@ -130,10 +132,6 @@ public class XhtmlBaseSink
 
     /** Keep track of the closing tags for inline events. */
     protected Stack<List<Tag>> inlineStack = new Stack<>();
-
-    /** Map of warn messages with a String as key to describe the error type and a Set as value.
-     * Using to reduce warn messages. */
-    private Map<String, Set<String>> warnMessages;
 
     // ----------------------------------------------------------------------
     // Constructor
@@ -291,7 +289,6 @@ public class XhtmlBaseSink
         this.legacyFigureCaption = false;
         this.inFigure = false;
         this.tableRows = false;
-        this.warnMessages = null;
     }
 
     /**
@@ -1332,10 +1329,7 @@ public class XhtmlBaseSink
 
         if ( this.tableContentWriterStack.isEmpty() )
         {
-            if ( getLog().isWarnEnabled() )
-            {
-                getLog().warn( "No table content." );
-            }
+            LOGGER.warn( "No table content" );
             return;
         }
 
@@ -1686,8 +1680,7 @@ public class XhtmlBaseSink
         {
             id = DoxiaUtils.encodeId( name, true );
 
-            String msg = "Modified invalid anchor name: '" + name + "' to '" + id + "'";
-            logMessage( "modifiedLink", msg );
+            LOGGER.debug( "Modified invalid anchor name '{}' to '{}'", name, id );
         }
 
         MutableAttributeSet att = new SinkEventAttributeSet();
@@ -2035,7 +2028,7 @@ public class XhtmlBaseSink
 
             if ( !originalComment.equals( comment ) )
             {
-                getLog().warn( "[Xhtml Sink] Modified invalid comment '" + originalComment + "' to '" + comment + "'" );
+                LOGGER.warn( "Modified invalid comment '{}' to '{}'", originalComment, comment );
             }
 
             final StringBuilder buffer = new StringBuilder( comment.length() + 7 );
@@ -2094,8 +2087,7 @@ public class XhtmlBaseSink
     {
         if ( requiredParams == null || !( requiredParams[0] instanceof Integer ) )
         {
-            String msg = "No type information for unknown event: '" + name + "', ignoring!";
-            logMessage( "noTypeInfo", msg );
+            LOGGER.warn( "No type information for unknown event '{}', ignoring!", name );
 
             return;
         }
@@ -2120,8 +2112,7 @@ public class XhtmlBaseSink
 
         if ( tag == null )
         {
-            String msg = "No HTML tag found for unknown event: '" + name + "', ignoring!";
-            logMessage( "noHtmlTag", msg );
+            LOGGER.warn( "No HTML tag found for unknown event '{}', ignoring!", name );
         }
         else
         {
@@ -2139,8 +2130,7 @@ public class XhtmlBaseSink
             }
             else
             {
-                String msg = "No type information for unknown event: '" + name + "', ignoring!";
-                logMessage( "noTypeInfo", msg );
+                LOGGER.warn( "No type information for unknown event '{}', ignoring!", name );
             }
         }
     }
@@ -2173,19 +2163,6 @@ public class XhtmlBaseSink
     public void close()
     {
         writer.close();
-
-        if ( getLog().isWarnEnabled() && this.warnMessages != null )
-        {
-            for ( Map.Entry<String, Set<String>> entry : this.warnMessages.entrySet() )
-            {
-                for ( String msg : entry.getValue() )
-                {
-                    getLog().warn( msg );
-                }
-            }
-
-            this.warnMessages = null;
-        }
 
         init();
     }
@@ -2302,37 +2279,5 @@ public class XhtmlBaseSink
         {
             this.tableCaptionXMLWriterStack.getLast().endElement();
         }
-    }
-
-    /**
-     * If debug mode is enabled, log the <code>msg</code> as is, otherwise add unique msg in <code>warnMessages</code>.
-     *
-     * @param key not null
-     * @param msg not null
-     * @see #close()
-     * @since 1.1.1
-     */
-    private void logMessage( String key, String msg )
-    {
-        final String mesg = "[XHTML Sink] " + msg;
-        if ( getLog().isDebugEnabled() )
-        {
-            getLog().debug( mesg );
-
-            return;
-        }
-
-        if ( warnMessages == null )
-        {
-            warnMessages = new HashMap<>();
-        }
-
-        Set<String> set = warnMessages.get( key );
-        if ( set == null )
-        {
-            set = new TreeSet<>();
-        }
-        set.add( mesg );
-        warnMessages.put( key, set );
     }
 }

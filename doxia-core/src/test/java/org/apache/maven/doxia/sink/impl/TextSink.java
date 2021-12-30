@@ -25,6 +25,8 @@ import java.io.Writer;
 import org.apache.maven.doxia.sink.SinkEventAttributes;
 import org.apache.maven.doxia.sink.impl.AbstractSink;
 import org.apache.maven.doxia.sink.impl.SinkUtils;
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
 
 /**
  * A simple text-based implementation of the <code>Sink</code> interface.
@@ -33,6 +35,7 @@ import org.apache.maven.doxia.sink.impl.SinkUtils;
 public class TextSink
     extends AbstractSink
 {
+    private static final Logger LOGGER = LoggerFactory.getLogger( TextSink.class );
 
     /** For writing the result. */
     private final Writer out;
@@ -757,7 +760,7 @@ public class TextSink
         }
         catch ( IOException e )
         {
-            getLog().warn( "Could not flush sink: " + e.getMessage(), e );
+            LOGGER.warn( "Could not flush sink", e );
         }
     }
 
@@ -770,7 +773,7 @@ public class TextSink
         }
         catch ( IOException e )
         {
-            getLog().warn( "Could not close sink: " + e.getMessage(), e );
+            LOGGER.warn( "Could not close sink", e );
         }
     }
 
@@ -1071,7 +1074,7 @@ public class TextSink
         }
         catch ( IOException e )
         {
-            getLog().warn( "Could not write to sink: " + e.getMessage(), e );
+            LOGGER.warn( "Could not write to sink", e );
         }
     }
 

@@ -19,7 +19,6 @@ package org.apache.maven.doxia.macro;
  * under the License.
  */
 
-import org.apache.maven.doxia.logging.LogEnabled;
 import org.apache.maven.doxia.sink.Sink;
 
 /**
@@ -29,7 +28,6 @@ import org.apache.maven.doxia.sink.Sink;
  * @since 1.0
  */
 public interface Macro
-    extends LogEnabled
 {
     /** The Plexus lookup role. */
     String ROLE = Macro.class.getName();

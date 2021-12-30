@@ -42,6 +42,8 @@ import org.codehaus.plexus.util.IOUtil;
 import org.codehaus.plexus.util.StringUtils;
 import org.codehaus.plexus.util.xml.pull.XmlPullParser;
 import org.codehaus.plexus.util.xml.pull.XmlPullParserException;
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
 
 /**
  * Parse an xdoc model and emit events into the specified doxia Sink.
@@ -54,6 +56,8 @@ public class XdocParser
     extends XhtmlBaseParser
     implements XdocMarkup
 {
+    private static final Logger LOGGER = LoggerFactory.getLogger( XdocParser.class );
+
     /**
      * The source content of the input reader. Used to pass into macros.
      */
@@ -144,7 +148,7 @@ public class XdocParser
         {
             if ( hasTitle )
             {
-                getLog().warn( "<title> was already defined in <properties>, ignored <title> in <head>." );
+                LOGGER.warn( "<title> was already defined in <properties>, ignored <title> in <head>." );
 
                 try
                 {
@@ -231,13 +235,8 @@ public class XdocParser
                 handleUnknown( parser, sink, TAG_TYPE_START );
             }
 
-            if ( getLog().isDebugEnabled() )
-            {
-                String position = "[" + parser.getLineNumber() + ":" + parser.getColumnNumber() + "]";
-                String tag = "<" + parser.getName() + ">";
-
-                getLog().debug( "Unrecognized xdoc tag: " + tag + " at " + position );
-            }
+            LOGGER.warn( "Unrecognized xdoc tag <{}> at [{}:{}]", parser.getName(),
+                    parser.getLineNumber(), parser.getColumnNumber() );
         }
     }
 

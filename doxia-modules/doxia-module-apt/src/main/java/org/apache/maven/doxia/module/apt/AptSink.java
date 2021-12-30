@@ -29,6 +29,8 @@ import org.apache.maven.doxia.sink.SinkEventAttributes;
 import org.apache.maven.doxia.sink.impl.AbstractTextSink;
 import org.apache.maven.doxia.sink.impl.SinkEventAttributeSet;
 import org.codehaus.plexus.util.StringUtils;
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
 
 /**
  * APT generator implementation.
@@ -42,6 +44,8 @@ public class AptSink
     extends AbstractTextSink
     implements AptMarkup
 {
+    private static final Logger LOGGER = LoggerFactory.getLogger( AptSink.class );
+
     // ----------------------------------------------------------------------
     // Instance fields
     // ----------------------------------------------------------------------
@@ -1100,7 +1104,7 @@ public class AptSink
      */
     public void unknown( String name, Object[] requiredParams, SinkEventAttributes attributes )
     {
-        getLog().warn( "[Apt Sink] Unknown Sink event: '" + name + "', ignoring!" );
+        LOGGER.warn( "Unknown Sink event '{}', ignoring!", name );
     }
 
     /**

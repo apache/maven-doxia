@@ -26,8 +26,6 @@ import java.io.StringWriter;
 import java.util.HashMap;
 import java.util.Iterator;
 import java.util.Map;
-import java.util.Set;
-import java.util.TreeSet;
 
 import javax.swing.text.html.HTML.Attribute;
 
@@ -50,6 +48,8 @@ import org.codehaus.plexus.util.IOUtil;
 import org.codehaus.plexus.util.StringUtils;
 import org.codehaus.plexus.util.xml.pull.XmlPullParser;
 import org.codehaus.plexus.util.xml.pull.XmlPullParserException;
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
 
 /**
  * Parse a fml model and emit events into the specified doxia Sink.
@@ -63,6 +63,8 @@ public class FmlParser
     extends AbstractXmlParser
     implements FmlMarkup
 {
+    private static final Logger LOGGER = LoggerFactory.getLogger( FmlParser.class );
+
     /** Collect a faqs model. */
     private Faqs faqs;
 
@@ -74,10 +76,6 @@ public class FmlParser
 
     /** Used to collect text events. */
     private StringBuilder buffer;
-
-    /** Map of warn messages with a String as key to describe the error type and a Set as value.
-     * Using to reduce warn messages. */
-    private Map<String, Set<String>> warnMessages;
 
     /** The source content of the input reader. Used to pass into macros. */
     private String sourceContent;
@@ -124,8 +122,6 @@ public class FmlParser
         }
         finally
         {
-            logWarnings();
-
             this.faqs = null;
             this.sourceContent = null;
             setSecondParsing( false );
@@ -175,8 +171,7 @@ public class FmlParser
             {
                 String linkAnchor = DoxiaUtils.encodeId( currentPart.getId(), true );
 
-                String msg = "Modified invalid link: '" + currentPart.getId() + "' to '" + linkAnchor + "'";
-                logMessage( "modifiedLink", msg );
+                LOGGER.debug( "Modified invalid link '{}' to '{}'", currentPart.getId(), linkAnchor );
 
                 currentPart.setId( linkAnchor );
             }
@@ -201,8 +196,7 @@ public class FmlParser
             {
                 String linkAnchor = DoxiaUtils.encodeId( currentFaq.getId(), true );
 
-                String msg = "Modified invalid link: '" + currentFaq.getId() + "' to '" + linkAnchor + "'";
-                logMessage( "modifiedLink", msg );
+                LOGGER.debug( "Modified invalid link '{}' to '{}'", currentFaq.getId(), linkAnchor );
 
                 currentFaq.setId( linkAnchor );
             }
@@ -434,7 +428,6 @@ public class FmlParser
         this.currentFaq = null;
         this.currentPart = null;
         this.buffer = null;
-        this.warnMessages = null;
         this.macroName = null;
         this.macroParameters = null;
     }
@@ -546,7 +539,6 @@ public class FmlParser
         throws ParseException
     {
         FmlContentParser xdocParser = new FmlContentParser();
-        xdocParser.enableLogging( getLog() );
 
         sink.head();
         sink.title();
@@ -687,56 +679,5 @@ public class FmlParser
         sink.text( "[top]" );
         sink.link_();
         sink.paragraph_();
-    }
-
-    /**
-     * If debug mode is enabled, log the <code>msg</code> as is, otherwise add unique msg in <code>warnMessages</code>.
-     *
-     * @param key not null
-     * @param msg not null
-     * @see #parse(Reader, Sink)
-     * @since 1.1.1
-     */
-    private void logMessage( String key, String msg )
-    {
-        msg = "[FML Parser] " + msg;
-        if ( getLog().isDebugEnabled() )
-        {
-            getLog().debug( msg );
-
-            return;
-        }
-
-        if ( warnMessages == null )
-        {
-            warnMessages = new HashMap<>();
-        }
-
-        Set<String> set = warnMessages.get( key );
-        if ( set == null )
-        {
-            set = new TreeSet<>();
-        }
-        set.add( msg );
-        warnMessages.put( key, set );
-    }
-
-    /**
-     * @since 1.1.1
-     */
-    private void logWarnings()
-    {
-        if ( getLog().isWarnEnabled() && this.warnMessages != null && !isSecondParsing() )
-        {
-            for ( Map.Entry<String, Set<String>> entry : this.warnMessages.entrySet() )
-            {
-                for ( String msg : entry.getValue() )
-                {
-                    getLog().warn( msg );
-                }
-            }
-
-            this.warnMessages = null;
-        }
     }
 }

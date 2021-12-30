@@ -27,6 +27,8 @@ import org.apache.maven.doxia.sink.Sink;
 import org.apache.maven.doxia.sink.impl.SinkEventAttributeSet;
 import org.codehaus.plexus.component.annotations.Component;
 import org.codehaus.plexus.util.StringUtils;
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
 
 import java.io.File;
 import java.io.IOException;
@@ -42,6 +44,8 @@ import java.util.Map;
 public class SnippetMacro
     extends AbstractMacro
 {
+    private static final Logger LOGGER = LoggerFactory.getLogger( SnippetMacro.class );
+
     /**
      * Holds the cache.
      */
@@ -205,7 +209,7 @@ public class SnippetMacro
             {
                 if ( ignoreDownloadError )
                 {
-                    getLog().debug( "IOException which reading " + url + ": " + e );
+                    LOGGER.debug( "Exception while reading '{}'", url, e );
                     result =
                         new StringBuffer( "Error during retrieving content skip as ignoreDownloadError activated." );
                 }

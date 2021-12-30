@@ -19,8 +19,6 @@ package org.apache.maven.doxia.sink.impl;
  * under the License.
  */
 
-import org.apache.maven.doxia.logging.Log;
-import org.apache.maven.doxia.logging.SystemStreamLog;
 import org.apache.maven.doxia.markup.Markup;
 import org.apache.maven.doxia.sink.Sink;
 
@@ -34,31 +32,7 @@ import org.apache.maven.doxia.sink.Sink;
 public abstract class AbstractSink
     implements Sink, Markup
 {
-    private Log logger;
-
-    /** {@inheritDoc} */
-    public void enableLogging( Log log )
-    {
-        this.logger = log;
-    }
-
     /**
-     * Returns a logger for this sink.
-     * If no logger has been configured, a new SystemStreamLog is returned.
-     *
-     * @return Log
-     */
-    protected Log getLog()
-    {
-        if ( logger == null )
-        {
-            logger = new SystemStreamLog();
-        }
-
-        return logger;
-    }
-
-     /**
       * Parses the given String and replaces all occurrences of
       * '\n', '\r' and '\r\n' with the system EOL. All Sinks should
       * make sure that text output is filtered through this method.

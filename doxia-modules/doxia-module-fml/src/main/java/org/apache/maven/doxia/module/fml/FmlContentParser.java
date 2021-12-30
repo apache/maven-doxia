@@ -25,6 +25,8 @@ import org.apache.maven.doxia.sink.Sink;
 import org.apache.maven.doxia.sink.impl.SinkEventAttributeSet;
 import org.codehaus.plexus.util.xml.pull.XmlPullParser;
 import org.codehaus.plexus.util.xml.pull.XmlPullParserException;
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
 
 /**
  * Parse Fml questions and answers, these may contain arbitrary xdoc elements.
@@ -36,6 +38,8 @@ public class FmlContentParser
     extends Xhtml5BaseParser
     implements FmlMarkup
 {
+    private static final Logger LOGGER = LoggerFactory.getLogger( FmlContentParser.class );
+
     /** Empty elements don't write a closing tag. */
     private boolean isEmptyElement;
 
@@ -69,14 +73,8 @@ public class FmlContentParser
                 handleUnknown( parser, sink, TAG_TYPE_START );
             }
 
-            if ( getLog().isDebugEnabled() )
-            {
-                String position = "[" + parser.getLineNumber() + ":"
-                    + parser.getColumnNumber() + "]";
-                String tag = "<" + parser.getName() + ">";
-
-                getLog().debug( "Unrecognized fml tag: " + tag + " at " + position );
-            }
+            LOGGER.warn( "Unrecognized fml tag <{}> at [{}:{}]", parser.getName(),
+                    parser.getLineNumber(), parser.getColumnNumber() );
         }
     }
 

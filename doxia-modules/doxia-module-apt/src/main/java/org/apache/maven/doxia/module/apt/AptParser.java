@@ -34,6 +34,8 @@ import org.apache.maven.doxia.util.DoxiaUtils;
 import org.codehaus.plexus.component.annotations.Component;
 import org.codehaus.plexus.util.IOUtil;
 import org.codehaus.plexus.util.StringUtils;
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
 
 import java.io.IOException;
 import java.io.Reader;
@@ -41,9 +43,7 @@ import java.io.StringReader;
 import java.io.StringWriter;
 import java.util.HashMap;
 import java.util.Map;
-import java.util.Set;
 import java.util.StringTokenizer;
-import java.util.TreeSet;
 
 /**
  * The APT parser.
@@ -57,6 +57,8 @@ public class AptParser
     extends AbstractTextParser
     implements AptMarkup
 {
+    private static final Logger LOGGER = LoggerFactory.getLogger( AptParser.class );
+
     /** Title event id */
     private static final int TITLE = 0;
 
@@ -163,10 +165,6 @@ public class AptParser
     /** a line of AptSource. */
     protected String line;
 
-    /** Map of warn messages with a String as key to describe the error type and a Set as value.
-     * Using to reduce warn messages. */
-    protected Map<String, Set<String>> warnMessages;
-
     private static final int NUMBER_OF_SPACES = 85;
 
     static
@@ -190,7 +188,7 @@ public class AptParser
     {
         parse( source, sink, "" );
     }
-    
+
     /** {@inheritDoc} */
     @Override
     public void parse( Reader source, Sink sink, String reference )
@@ -214,7 +212,6 @@ public class AptParser
             this.source = new AptReaderSource( new StringReader( sourceContent ), reference );
 
             this.sink = sink;
-            sink.enableLogging( getLog() );
 
             blockFileName = null;
 
@@ -244,8 +241,6 @@ public class AptParser
         }
         finally
         {
-            logWarnings();
-
             setSecondParsing( false );
             init();
         }
@@ -361,10 +356,7 @@ public class AptParser
                                     }
                                     catch ( NumberFormatException e )
                                     {
-                                        if ( getLog().isDebugEnabled() )
-                                        {
-                                            getLog().debug( "Not a number: " + text.substring( i + 2, i + 4 ) );
-                                        }
+                                        LOGGER.debug( "Not a number: {}", text.substring( i + 2, i + 4 ) );
                                     }
 
                                     i += 3;
@@ -387,10 +379,7 @@ public class AptParser
                                     }
                                     catch ( NumberFormatException e )
                                     {
-                                        if ( getLog().isDebugEnabled() )
-                                        {
-                                            getLog().debug( "Not a number: " + text.substring( i + 2, i + 6 ) );
-                                        }
+                                        LOGGER.debug( "Not a number: {}", text.substring( i + 2, i + 6 ) );
                                     }
 
                                     i += 5;
@@ -420,12 +409,7 @@ public class AptParser
                                     }
                                     catch ( NumberFormatException e )
                                     {
-                                        if ( getLog().isDebugEnabled() )
-                                        {
-                                            getLog().debug(
-                                                            "Not a number: "
-                                                                + text.substring( i + 1, i + 1 + octalChars ) );
-                                        }
+                                        LOGGER.debug( "Not a number: {}", text.substring( i + 1, i + 1 + octalChars ) );
                                     }
 
                                     i += octalChars;
@@ -480,9 +464,8 @@ public class AptParser
 
                                 if ( hash.endsWith( ".html" ) && !hash.startsWith( "./" ) )
                                 {
-                                    String msg = "Ambiguous link: '" + hash
-                                            + "'. If this is a local link, prepend \"./\"!";
-                                    logMessage( "ambiguousLink", msg );
+                                    LOGGER.debug( "Ambiguous link '{}'. If this is a local link, prepend \"./\"!",
+                                            hash );
                                 }
 
                                 // link##anchor means literal
@@ -496,8 +479,7 @@ public class AptParser
                                         linkAnchor.substring( 0, hashIndex ) + "#"
                                             + DoxiaUtils.encodeId( hash, true );
 
-                                    String msg = "Modified invalid link: '" + hash + "' to '" + linkAnchor + "'";
-                                    logMessage( "modifiedLink", msg );
+                                    LOGGER.debug( "Modified invalid link '{}' to '{}'", hash, linkAnchor );
                                 }
                             }
 
@@ -729,7 +711,6 @@ public class AptParser
         this.blockFileName = null;
         this.blockLineNumber = 0;
         this.line = null;
-        this.warnMessages = null;
     }
 
     // ----------------------------------------------------------------------
@@ -1605,56 +1586,7 @@ public class AptParser
         return buffer.toString().trim();
     }
 
-    /**
-     * If debug mode is enabled, log the <code>msg</code> as is, otherwise add unique msg in <code>warnMessages</code>.
-     *
-     * @param key not null
-     * @param msg not null
-     * @see #parse(Reader, Sink)
-     * @since 1.1.1
-     */
-    private void logMessage( String key, String msg )
-    {
-        msg = "[APT Parser] " + msg;
-        if ( getLog().isDebugEnabled() )
-        {
-            getLog().debug( msg );
 
-            return;
-        }
-
-        if ( warnMessages == null )
-        {
-            warnMessages = new HashMap<>();
-        }
-
-        Set<String> set = warnMessages.get( key );
-        if ( set == null )
-        {
-            set = new TreeSet<>();
-        }
-        set.add( msg );
-        warnMessages.put( key, set );
-    }
-
-    /**
-     * @since 1.1.2
-     */
-    private void logWarnings()
-    {
-        if ( getLog().isWarnEnabled() && this.warnMessages != null && !isSecondParsing() )
-        {
-            for ( Map.Entry<String, Set<String>> entry : this.warnMessages.entrySet() )
-            {
-                for ( String msg : entry.getValue() )
-                {
-                    getLog().warn( msg );
-                }
-            }
-
-            this.warnMessages = null;
-        }
-    }
 
     // -----------------------------------------------------------------------
 

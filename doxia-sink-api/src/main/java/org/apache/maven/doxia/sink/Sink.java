@@ -19,8 +19,6 @@ package org.apache.maven.doxia.sink;
  * under the License.
  */
 
-import org.apache.maven.doxia.logging.LogEnabled;
-
 /**
  * A <i>Sink</i> consumes Doxia events to produce a resultant output format
  * (eg Docbook, PDF, XHTML...).
@@ -56,7 +54,6 @@ import org.apache.maven.doxia.logging.LogEnabled;
  * @author ltheussl
  */
 public interface Sink
-    extends LogEnabled
 {
     /** The Plexus Sink Role. */
     String ROLE = Sink.class.getName();
