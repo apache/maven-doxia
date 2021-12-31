@@ -1170,13 +1170,6 @@ public class RandomAccessSink
 
     /** {@inheritDoc} */
     @Override
-    public void tableCell( String width )
-    {
-        currentSink.tableCell( width );
-    }
-
-    /** {@inheritDoc} */
-    @Override
     public void tableCell( SinkEventAttributes attributes )
     {
         currentSink.tableCell( attributes );
@@ -1194,13 +1187,6 @@ public class RandomAccessSink
     public void tableHeaderCell()
     {
         currentSink.tableHeaderCell();
-    }
-
-    /** {@inheritDoc} */
-    @Override
-    public void tableHeaderCell( String width )
-    {
-        currentSink.tableHeaderCell( width );
     }
 
     /** {@inheritDoc} */
@@ -1320,13 +1306,6 @@ public class RandomAccessSink
     public void unknown( String name, Object[] requiredParams, SinkEventAttributes attributes )
     {
         currentSink.unknown( name, requiredParams, attributes );
-    }
-
-    /** {@inheritDoc} */
-    @Override
-    public void verbatim( boolean boxed )
-    {
-        currentSink.verbatim( boxed );
     }
 
     /** {@inheritDoc} */

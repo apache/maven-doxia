@@ -26,6 +26,7 @@ import java.util.Map;
 
 import org.apache.maven.doxia.macro.MacroExecutionException;
 import org.apache.maven.doxia.macro.MacroRequest;
+import org.apache.maven.doxia.parser.XhtmlBaseParser;
 import org.apache.maven.doxia.sink.impl.SinkEventElement;
 import org.apache.maven.doxia.sink.impl.SinkEventTestingSink;
 import org.codehaus.plexus.PlexusTestCase;
@@ -121,7 +122,7 @@ public class SnippetMacroTest
 
         // no need to verify the absence of the first and second snippets if tests above were successful
         assertThat( snippet, CoreMatchers.containsString( "Этот сниппет в формате Unicode (UTF-8)" ) );
-        
+
         // again
         // Shouldn't work because no snippet called "first" exists, only "firstId"
         macroParameters.put( "id", "first" );
@@ -161,9 +162,11 @@ public class SnippetMacroTest
     {
         File basedir = new File( getBasedir() );
 
+        XhtmlBaseParser parser = new XhtmlBaseParser();
+
         SinkEventTestingSink sink = new SinkEventTestingSink();
 
-        MacroRequest request = new MacroRequest( macroParameters, basedir );
+        MacroRequest request = new MacroRequest( null, parser, macroParameters, basedir );
         SnippetMacro macro = new SnippetMacro();
         macro.execute( sink, request );
 

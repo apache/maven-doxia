@@ -105,19 +105,6 @@ public class ParseException
     }
 
     /**
-     * Constructs a new exception with the specified cause. The error message is
-     *  (cause == null ? null : cause.toString() ).
-     *
-     * @param e the cause. This can be retrieved later by the <code>Throwable.getCause()</code> method.
-     * (A null value is permitted, and indicates that the cause is nonexistent or unknown.)
-     * @deprecated Using {@link #ParseException(Exception, int, int)} to specify the line and column number.
-     */
-    public ParseException( Exception e )
-    {
-        this( e, null, null, -1, -1 );
-    }
-
-    /**
      * Constructs a new exception with the specified cause, line number and column number. The error message is
      *  (cause == null ? null : cause.toString() ).
      *
@@ -132,23 +119,6 @@ public class ParseException
     public ParseException( Exception e, int line, int column )
     {
         this( e, null, null, line, column );
-    }
-
-    /**
-     * Construct a new <code>ParseException</code> with the specified cause,
-     * filename and linenumber.
-     *
-     * @param e the cause. This can be retrieved later by the <code>Throwable.getCause()</code> method.
-     * (A null value is permitted, and indicates that the cause is nonexistent or unknown.)
-     * @param file Name of a file that couldn't be parsed.
-     * This can later be retrieved by the getFileName() method.
-     * @param line The line number where the parsing failed.
-     * This can later be retrieved by the getLineNumber() method.
-     * @deprecated Using {@link #ParseException(Exception, String, int, int)} to specify the column number.
-     */
-    public ParseException( Exception e, String file, int line )
-    {
-        this( e, null, file, line, -1 );
     }
 
     /**

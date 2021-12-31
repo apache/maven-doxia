@@ -56,17 +56,14 @@ public class TocMacroTest
         String sourceContent = "<div><h2>h21</h2><h2>h22</h2><h3>h3</h3><h4>h4</h4><h2>h23</h2></div>";
 
         XhtmlBaseParser parser = new XhtmlBaseParser();
-        parser.setSecondParsing( true );
 
         Map<String, Object> macroParameters = new HashMap<>();
-        macroParameters.put( "parser", parser );
-        macroParameters.put( "sourceContent", sourceContent );
         macroParameters.put( "section", "sec1" );
 
         File basedir = new File( "" );
 
         SinkEventTestingSink sink = new SinkEventTestingSink();
-        MacroRequest request = new MacroRequest( macroParameters, basedir );
+        MacroRequest request = new MacroRequest( sourceContent, parser, macroParameters, basedir );
         TocMacro macro = new TocMacro();
         macro.execute( sink, request );
 
@@ -107,8 +104,6 @@ public class TocMacroTest
         // test parameters
 
         parser = new XhtmlBaseParser();
-        parser.setSecondParsing( true );
-        macroParameters.put( "parser", parser );
         macroParameters.put( "section", "2" );
         macroParameters.put( "fromDepth", "1" );
         macroParameters.put( "toDepth", "2" );
@@ -116,7 +111,7 @@ public class TocMacroTest
         macroParameters.put( "id", "myId" );
 
         sink.reset();
-        request = new MacroRequest( macroParameters, basedir );
+        request = new MacroRequest( sourceContent, parser, macroParameters, basedir );
         macro.execute( sink, request );
 
         it = sink.getEventList().iterator();
@@ -158,18 +153,15 @@ public class TocMacroTest
             "<div><h2>h<b>21</b></h2><h2>h<i>22</i></h2><h3>h<tt>3</tt></h3><h4>h4</h4><h2>h23</h2></div>";
 
         XhtmlBaseParser parser = new XhtmlBaseParser();
-        parser.setSecondParsing( true );
 
         Map<String, Object> macroParameters = new HashMap<>();
-        macroParameters.put( "parser", parser );
-        macroParameters.put( "sourceContent", sourceContent );
         macroParameters.put( "section", "sec1" );
 
         File basedir = new File( "" );
 
         StringWriter out = new StringWriter();
         XhtmlBaseSink sink = new XhtmlBaseSink( out );
-        MacroRequest request = new MacroRequest( macroParameters, basedir );
+        MacroRequest request = new MacroRequest( sourceContent, parser, macroParameters, basedir );
         TocMacro macro = new TocMacro();
         macro.execute( sink, request );
 

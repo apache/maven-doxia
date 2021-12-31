@@ -551,12 +551,6 @@ public class SinkEventTestingSink
     }
 
     @Override
-    public void verbatim( boolean boxed )
-    {
-        addEvent( "verbatim", new Object[] { boxed } );
-    }
-
-    @Override
     public void verbatim_()
     {
         addEvent( "verbatim_" );
@@ -593,12 +587,6 @@ public class SinkEventTestingSink
     }
 
     @Override
-    public void tableCell( String width )
-    {
-        addEvent( "tableCell", new Object[] {width} );
-    }
-
-    @Override
     public void tableCell_()
     {
         addEvent( "tableCell_" );
@@ -608,12 +596,6 @@ public class SinkEventTestingSink
     public void tableHeaderCell()
     {
         addEvent( "tableHeaderCell" );
-    }
-
-    @Override
-    public void tableHeaderCell( String width )
-    {
-        addEvent( "tableHeaderCell", new Object[] {width} );
     }
 
     @Override

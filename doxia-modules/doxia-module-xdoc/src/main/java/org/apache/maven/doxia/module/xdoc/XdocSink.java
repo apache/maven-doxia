@@ -534,14 +534,4 @@ public class XdocSink
     //
     // ----------------------------------------------------------------------
 
-    /**
-     * Write text to output, preserving white space.
-     *
-     * @param text The text to write.
-     * @deprecated use write(String)
-     */
-    protected void markup( String text )
-    {
-        write( text );
-    }
 }

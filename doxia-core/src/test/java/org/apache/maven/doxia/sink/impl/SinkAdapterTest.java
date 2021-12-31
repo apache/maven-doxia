@@ -494,7 +494,6 @@ public class SinkAdapterTest
     public void testVerbatim()
     {
         instance.verbatim( null );
-        instance.verbatim( false );
         instance.verbatim_();
     }
 
@@ -528,20 +527,7 @@ public class SinkAdapterTest
     {
         instance.tableCell();
         instance.tableCell( (SinkEventAttributes) null );
-        instance.tableCell( (String) null );
         instance.tableCell_();
-    }
-
-    /**
-     * Test of tableHeaderCell method, of class SinkAdapter.
-     */
-    @Test
-    public void testTableHeaderCell()
-    {
-        instance.tableHeaderCell();
-        instance.tableHeaderCell( (SinkEventAttributes) null );
-        instance.tableHeaderCell( (String) null );
-        instance.tableHeaderCell_();
     }
 
     /**

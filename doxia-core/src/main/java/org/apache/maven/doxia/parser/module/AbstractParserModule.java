@@ -69,23 +69,6 @@ public abstract class AbstractParserModule
      * <p>Constructor for AbstractParserModule.</p>
      *
      * @param sourceDirectory not null
-     * @param extension not null
-     * @param parserId not null
-     * @since 1.1.1
-     * @deprecated can cause confusion with constructor with multiple extensions
-     */
-    protected AbstractParserModule( String sourceDirectory, String extension, String parserId )
-    {
-        super();
-        this.sourceDirectory = sourceDirectory;
-        this.extensions = new String[] { extension };
-        this.parserId = parserId;
-    }
-
-    /**
-     * <p>Constructor for AbstractParserModule.</p>
-     *
-     * @param sourceDirectory not null
      * @param parserId not null (usually equals sourceDirectory)
      * @param extensions not null
      * @since 1.7

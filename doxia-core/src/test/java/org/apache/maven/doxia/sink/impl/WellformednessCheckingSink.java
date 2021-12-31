@@ -534,12 +534,6 @@ public class WellformednessCheckingSink
     }
 
     @Override
-    public void verbatim( boolean boxed )
-    {
-        startElement( "verbatim" );
-    }
-
-    @Override
     public void verbatim_()
     {
         checkWellformedness( "verbatim" );
@@ -576,12 +570,6 @@ public class WellformednessCheckingSink
     }
 
     @Override
-    public void tableCell( String width )
-    {
-        startElement( "tableCell" );
-    }
-
-    @Override
     public void tableCell_()
     {
         checkWellformedness( "tableCell" );
@@ -589,12 +577,6 @@ public class WellformednessCheckingSink
 
     @Override
     public void tableHeaderCell()
-    {
-        startElement( "tableHeaderCell" );
-    }
-
-    @Override
-    public void tableHeaderCell( String width )
     {
         startElement( "tableHeaderCell" );
     }
@@ -1045,7 +1027,7 @@ public class WellformednessCheckingSink
     @Override
     public void verbatim( SinkEventAttributes attributes )
     {
-        verbatim( false );
+        startElement( "verbatim" );
     }
 
     @Override

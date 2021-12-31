@@ -25,6 +25,7 @@ import java.util.HashMap;
 import java.util.Iterator;
 import java.util.Map;
 
+import org.apache.maven.doxia.parser.XhtmlBaseParser;
 import org.apache.maven.doxia.sink.impl.SinkEventElement;
 import org.apache.maven.doxia.sink.impl.SinkEventTestingSink;
 
@@ -47,11 +48,11 @@ public class EchoMacroTest
     {
         final Map<String,Object> macroParameters = new HashMap<>();
         macroParameters.put( "paramName", "paramValue" );
-        macroParameters.put( "parser", "parserValue" );
-        macroParameters.put( "sourceContent", "sourceContentValue" );
+
+        XhtmlBaseParser parser = new XhtmlBaseParser();
 
         SinkEventTestingSink sink = new SinkEventTestingSink();
-        MacroRequest request = new MacroRequest( macroParameters, new File( "." ) );
+        MacroRequest request = new MacroRequest( null, parser, macroParameters, new File( "." ) );
 
         new EchoMacro().execute( sink, request );
 

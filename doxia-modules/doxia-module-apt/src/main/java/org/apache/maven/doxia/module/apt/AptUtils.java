@@ -31,31 +31,6 @@ public class AptUtils
 {
 
     /**
-     * Replace all characters in a text.
-     *
-     * <pre>
-     * AptTools.encodeFragment( null ) = null
-     * AptTools.encodeFragment( "" ) = ""
-     * AptTools.encodeFragment( "http://www.google.com" ) = "httpwwwgooglecom"
-     * </pre>
-     *
-     * @param text the String to check, may be null.
-     * @return the text with only letter and digit, null if null String input.
-     * @deprecated This method was used for the original apt format, which
-     * removed all non alphanumeric characters from anchors.
-     * Use {@link #encodeAnchor(String)} instead.
-     */
-    public static String encodeFragment( String text )
-    {
-        if ( text == null )
-        {
-            return null;
-        }
-
-        return linkToKey( text );
-    }
-
-    /**
      * Checks if the given string corresponds to an external URI,
      * ie is not a link within the same document nor a link to another
      * document within the same site. This forwards to
@@ -101,34 +76,6 @@ public class AptUtils
     public static boolean isLocalLink( String link )
     {
         return ( link.startsWith( "/" ) || link.startsWith( "./" ) || link.startsWith( "../" ) );
-    }
-
-    /**
-     * Transforms the given text such that it can be used as a link.
-     * All non-LetterOrDigit characters are removed and the remaining
-     * characters are transformed to lower-case.
-     *
-     * @param text The text to transform.
-     * @return The text with all non-LetterOrDigit characters removed.
-     * @deprecated This method was used for the original apt format, which
-     * removed all non alphanumeric characters from anchors.
-     * Use {@link #encodeAnchor(String)} instead.
-     */
-    public static String linkToKey( String text )
-    {
-        int length = text.length();
-        StringBuilder buffer = new StringBuilder( length );
-
-        for ( int i = 0; i < length; ++i )
-        {
-            char c = text.charAt( i );
-            if ( Character.isLetterOrDigit( c ) )
-            {
-                buffer.append( Character.toLowerCase( c ) );
-            }
-        }
-
-        return buffer.toString();
     }
 
     /**

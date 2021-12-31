@@ -25,9 +25,12 @@ import java.util.ArrayList;
 import java.util.List;
 import java.util.Stack;
 
+import javax.swing.text.MutableAttributeSet;
+
 import org.apache.maven.doxia.sink.SinkEventAttributes;
 import org.apache.maven.doxia.sink.impl.AbstractTextSink;
 import org.apache.maven.doxia.sink.impl.SinkEventAttributeSet;
+import org.apache.maven.doxia.sink.impl.SinkUtils;
 import org.codehaus.plexus.util.StringUtils;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
@@ -149,16 +152,6 @@ public class AptSink
     protected void setHeadFlag( boolean headFlag )
     {
         this.headerFlag = headFlag;
-    }
-
-    /**
-     * Reset all variables.
-     *
-     * @deprecated since 1.1.2, use {@link #init()} instead of.
-     */
-    protected void resetState()
-    {
-        init();
     }
 
     /**
@@ -634,8 +627,17 @@ public class AptSink
     }
 
     /** {@inheritDoc} */
-    public void verbatim( boolean boxed )
+    public void verbatim( SinkEventAttributes attributes )
     {
+        MutableAttributeSet atts = SinkUtils.filterAttributes( attributes, SinkUtils.SINK_VERBATIM_ATTRIBUTES );
+
+        boolean boxed = false;
+
+        if ( atts != null && atts.isDefined( SinkEventAttributes.DECORATION ) )
+        {
+            boxed = "boxed".equals( atts.getAttribute( SinkEventAttributes.DECORATION ).toString() );
+        }
+
         verbatimFlag = true;
         this.isBoxed = boxed;
         write( EOL );

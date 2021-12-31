@@ -964,7 +964,7 @@ public class Xhtml5BaseSinkTest
         {
             sink = new Xhtml5BaseSink( writer );
 
-            sink.verbatim( true );
+            sink.verbatim( SinkEventAttributeSet.BOXED );
             sink.verbatim_();
         }
         finally

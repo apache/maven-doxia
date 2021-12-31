@@ -542,12 +542,6 @@ public class TextSink
     }
 
     @Override
-    public void verbatim( boolean boxed )
-    {
-        write( "begin:verbatim, boxed: " + boxed );
-    }
-
-    @Override
     public void verbatim_()
     {
         writeln( "end:verbatim" );
@@ -584,12 +578,6 @@ public class TextSink
     }
 
     @Override
-    public void tableCell( String width )
-    {
-        write( "begin:tableCell, width: " + width );
-    }
-
-    @Override
     public void tableCell_()
     {
         writeln( "end:tableCell" );
@@ -599,12 +587,6 @@ public class TextSink
     public void tableHeaderCell()
     {
         write( "begin:tableHeaderCell" );
-    }
-
-    @Override
-    public void tableHeaderCell( String width )
-    {
-        write( "begin:tableHeaderCell, width: " + width );
     }
 
     @Override
@@ -1010,7 +992,7 @@ public class TextSink
                 attributes.getAttribute( SinkEventAttributes.DECORATION ).toString() );
         }
 
-        verbatim( boxed );
+        write( "begin:verbatim, boxed: " + boxed );
     }
 
     @Override

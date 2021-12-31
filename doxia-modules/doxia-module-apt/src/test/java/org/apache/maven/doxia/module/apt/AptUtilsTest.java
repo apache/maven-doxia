@@ -132,25 +132,4 @@ public class AptUtilsTest
         assertNull( AptUtils.encodeAnchor( null ) );
         assertEquals( "a123_:_.-aBc", AptUtils.encodeAnchor( " 12!3 :_.&-a)Bc " ) );
     }
-
-    /**
-     * Test of encodeFragment method, of class AptUtils.
-     */
-    @SuppressWarnings( "deprecation" )
-    @Test
-    public void testEncodeFragment()
-    {
-        assertNull( AptUtils.encodeFragment( null ) );
-        assertEquals( "abc0d", AptUtils.encodeFragment( "a B&c0)D" ) );
-    }
-
-    /**
-     * Test of linkToKey method, of class AptUtils.
-     */
-    @SuppressWarnings( "deprecation" )
-    @Test
-    public void testLinkToKey()
-    {
-        assertEquals( "abc56au", AptUtils.linkToKey( "aB$%C56 a&\\/'U" ) );
-    }
 }

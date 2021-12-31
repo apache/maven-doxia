@@ -44,19 +44,6 @@ public class MacroRequest
     private Map<String, Object> parameters;
 
     /**
-     * Constructor.
-     *
-     * @param param A map of parameters.
-     * @param base The current base directory.
-     * @deprecated prefer other constructor
-     */
-    public MacroRequest( Map<String, Object> param, File base )
-    {
-        this.parameters = param;
-        this.basedir = base;
-    }
-
-    /**
      * <p>Constructor for MacroRequest.</p>
      *
      * @param sourceContent a {@link java.lang.String} object.

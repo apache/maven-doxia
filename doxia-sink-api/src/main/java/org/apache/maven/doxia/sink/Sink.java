@@ -1124,14 +1124,6 @@ public interface Sink
     void tableCell();
 
     /**
-     * Starts a cell element which defines a cell that contains data.
-     *
-     * @param width the size of the cell.
-     * @deprecated Use #tableCell(SinkEventAttributes) instead.
-     */
-    void tableCell( String width );
-
-    /**
      * Starts a table cell.
      *
      * <p>
@@ -1162,14 +1154,6 @@ public interface Sink
      * @see #tableHeaderCell(SinkEventAttributes)
      */
     void tableHeaderCell();
-
-    /**
-     * Starts a cell element which defines a cell that contains header information.
-     *
-     * @param width the size of the header cell.
-     * @deprecated Use #tableHeaderCell(SinkEventAttributes) instead.
-     */
-    void tableHeaderCell( String width );
 
     /**
      * Starts a table header cell.
@@ -1366,14 +1350,6 @@ public interface Sink
      * Ends a division element.
      */
     void division_();
-
-    /**
-     * Starts an element which indicates that whitespace in the enclosed text has semantic relevance.
-     *
-     * @param boxed true to add a box, false otherwise
-     * @deprecated Use #verbatim(SinkEventAttributes) instead.
-     */
-    void verbatim( boolean boxed );
 
     /**
      * Starts a verbatim block, ie a block where whitespace has semantic relevance.

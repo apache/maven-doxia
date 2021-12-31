@@ -19,8 +19,6 @@ package org.apache.maven.doxia.sink.impl;
  * under the License.
  */
 
-import javax.swing.text.MutableAttributeSet;
-
 import org.apache.maven.doxia.sink.SinkEventAttributes;
 
 /**
@@ -172,14 +170,14 @@ public class SinkAdapter
     {
         // nop
     }
-    
+
     /** {@inheritDoc} */
     @Override
     public void section6()
     {
         // nop
     }
-    
+
     /** {@inheritDoc} */
     @Override
     public void section6_()
@@ -609,13 +607,6 @@ public class SinkAdapter
 
     /** {@inheritDoc} */
     @Override
-    public void verbatim( boolean boxed )
-    {
-        // nop
-    }
-
-    /** {@inheritDoc} */
-    @Override
     public void verbatim_()
     {
         // nop
@@ -658,13 +649,6 @@ public class SinkAdapter
 
     /** {@inheritDoc} */
     @Override
-    public void tableCell( String width )
-    {
-        // nop
-    }
-
-    /** {@inheritDoc} */
-    @Override
     public void tableCell_()
     {
         // nop
@@ -673,13 +657,6 @@ public class SinkAdapter
     /** {@inheritDoc} */
     @Override
     public void tableHeaderCell()
-    {
-        // nop
-    }
-
-    /** {@inheritDoc} */
-    @Override
-    public void tableHeaderCell( String width )
     {
         // nop
     }
@@ -1204,16 +1181,7 @@ public class SinkAdapter
     @Override
     public void verbatim( SinkEventAttributes attributes )
     {
-        MutableAttributeSet atts = SinkUtils.filterAttributes( attributes, SinkUtils.SINK_VERBATIM_ATTRIBUTES );
-
-        boolean boxed = false;
-
-        if ( atts != null && atts.isDefined( SinkEventAttributes.DECORATION ) )
-        {
-            boxed = "boxed".equals( atts.getAttribute( SinkEventAttributes.DECORATION ).toString() );
-        }
-
-        verbatim( boxed );
+        // nop
     }
 
     /** {@inheritDoc} */

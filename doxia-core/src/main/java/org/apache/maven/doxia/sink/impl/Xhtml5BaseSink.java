@@ -240,16 +240,6 @@ public class Xhtml5BaseSink
         return Integer.parseInt( this.cellCountStack.getLast().toString() );
     }
 
-    /**
-     * Reset all variables.
-     *
-     * @deprecated since 1.1.2, use {@link #init()} instead of.
-     */
-    protected void resetState()
-    {
-        init();
-    }
-
     /** {@inheritDoc} */
     @Override
     protected void init()
@@ -1300,26 +1290,6 @@ public class Xhtml5BaseSink
      * @see javax.swing.text.html.HTML.Tag#PRE
      */
     @Override
-    public void verbatim( boolean boxed )
-    {
-        if ( boxed )
-        {
-            verbatim( SinkEventAttributeSet.BOXED );
-        }
-        else
-        {
-            verbatim( null );
-        }
-    }
-
-    /**
-     * The default class style for boxed is <code>source</code>.
-     *
-     * {@inheritDoc}
-     * @see javax.swing.text.html.HTML.Tag#DIV
-     * @see javax.swing.text.html.HTML.Tag#PRE
-     */
-    @Override
     public void verbatim( SinkEventAttributes attributes )
     {
         if ( paragraphFlag )
@@ -1608,26 +1578,6 @@ public class Xhtml5BaseSink
     public void tableHeaderCell()
     {
         tableHeaderCell( (SinkEventAttributeSet) null );
-    }
-
-    /** {@inheritDoc} */
-    @Override
-    public void tableCell( String width )
-    {
-        MutableAttributeSet att = new SinkEventAttributeSet();
-        att.addAttribute( Attribute.WIDTH, width );
-
-        tableCell( false, att );
-    }
-
-    /** {@inheritDoc} */
-    @Override
-    public void tableHeaderCell( String width )
-    {
-        MutableAttributeSet att = new SinkEventAttributeSet();
-        att.addAttribute( Attribute.WIDTH, width );
-
-        tableCell( true, att );
     }
 
     /** {@inheritDoc} */
