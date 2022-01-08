@@ -36,13 +36,6 @@ import java.util.Map;
 import java.util.regex.Matcher;
 import java.util.regex.Pattern;
 
-import org.apache.http.HttpStatus;
-import org.apache.http.client.ClientProtocolException;
-import org.apache.http.client.methods.CloseableHttpResponse;
-import org.apache.http.client.methods.HttpGet;
-import org.apache.http.impl.client.DefaultHttpRequestRetryHandler;
-import org.apache.http.impl.client.HttpClientBuilder;
-import org.apache.http.util.EntityUtils;
 import org.apache.maven.doxia.macro.MacroExecutionException;
 import org.apache.maven.doxia.markup.XmlMarkup;
 import org.apache.maven.doxia.sink.Sink;
@@ -758,11 +751,6 @@ public abstract class AbstractXmlParser
         }
 
         /**
-         * If url is not an http/https urls, call {@link IOUtil#toByteArray(java.io.InputStream)} to get the url
-         * content.
-         * Otherwise, use HttpClient to get the http content.
-         * Wrap all internal exceptions to throw SAXException.
-         *
          * @param url not null
          * @return return an array of byte
          * @throws SAXException if any
@@ -770,56 +758,23 @@ public abstract class AbstractXmlParser
         private static byte[] toByteArray( URL url )
             throws SAXException
         {
-            if ( !( url.getProtocol().equalsIgnoreCase( "http" ) || url.getProtocol().equalsIgnoreCase( "https" ) ) )
+            InputStream is = null;
+            try
             {
-                InputStream is = null;
-                try
+                is = url.openStream();
+                if ( is == null )
                 {
-                    is = url.openStream();
-                    if ( is == null )
-                    {
-                        throw new SAXException( "Cannot open stream from the url: " + url.toString() );
-                    }
-                    return IOUtil.toByteArray( is );
+                    throw new SAXException( "Cannot open stream from the url: " + url );
                 }
-                catch ( IOException e )
-                {
-                    throw new SAXException( "IOException: " + e.getMessage(), e );
-                }
-                finally
-                {
-                    IOUtil.close( is );
-                }
-            }
-
-            // it is an HTTP url, using HttpClient...
-            HttpClientBuilder httpClientBuilder = HttpClientBuilder.create()
-                    .useSystemProperties()
-                    .setRetryHandler( new DefaultHttpRequestRetryHandler( 3, false ) )
-                    // Set a user-agent that doesn't contain the word "java", otherwise it will be blocked by the W3C
-                    // The default user-agent is "Apache-HttpClient/4.5.8 (java 7)"
-                    .setUserAgent( "Apache-Doxia/" + doxiaVersion() );
-
-            try ( CloseableHttpResponse response = httpClientBuilder.build().execute( new HttpGet( url.toString() ) ) )
-            {
-                int statusCode = response.getStatusLine().getStatusCode();
-                if ( statusCode != HttpStatus.SC_OK )
-                {
-                    throw new IOException(
-                            "The status code when accessing the URL '" + url.toString() + "' was " + statusCode
-                                    + ", which is not allowed. The server gave this reason for the failure '"
-                                    + response.getStatusLine().getReasonPhrase() + "'." );
-                }
-
-                return EntityUtils.toByteArray( response.getEntity() );
-            }
-            catch ( ClientProtocolException e )
-            {
-                throw new SAXException( "ClientProtocolException: Fatal protocol violation: " + e.getMessage(), e );
+                return IOUtil.toByteArray( is );
             }
             catch ( IOException e )
             {
-                throw new SAXException( "IOException: Fatal transport error: " + e.getMessage(), e );
+                throw new SAXException( "IOException: " + e.getMessage(), e );
+            }
+            finally
+            {
+                IOUtil.close( is );
             }
         }
 
