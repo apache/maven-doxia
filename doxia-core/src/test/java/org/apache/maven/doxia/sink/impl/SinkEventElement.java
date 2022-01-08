@@ -19,7 +19,7 @@ package org.apache.maven.doxia.sink.impl;
  * under the License.
  */
 
-import org.apache.commons.lang3.builder.ToStringBuilder;
+import java.util.Arrays;
 
 /**
  * A single sink event, used for testing purposes in order to check
@@ -81,6 +81,11 @@ public class SinkEventElement
     @Override
     public String toString()
     {
-        return ToStringBuilder.reflectionToString( this );
+        StringBuilder builder = new StringBuilder();
+        builder.append( this.getClass().getSimpleName() ).append( '[' );
+        builder.append( "methodName: " ).append( methodName ).append( ", " );
+        builder.append( "args: " ).append( Arrays.toString( args ) );
+        builder.append( ']' );
+        return builder.toString();
     }
 }
