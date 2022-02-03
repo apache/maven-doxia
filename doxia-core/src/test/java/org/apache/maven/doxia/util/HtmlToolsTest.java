@@ -21,19 +21,27 @@ package org.apache.maven.doxia.util;
 
 import java.net.URLEncoder;
 
-import org.codehaus.plexus.PlexusTestCase;
+import org.codehaus.plexus.testing.PlexusTest;
+import org.junit.jupiter.api.Test;
+
+import static org.junit.jupiter.api.Assertions.assertEquals;
+import static org.junit.jupiter.api.Assertions.assertFalse;
+import static org.junit.jupiter.api.Assertions.assertNotNull;
+import static org.junit.jupiter.api.Assertions.assertNull;
+import static org.junit.jupiter.api.Assertions.assertTrue;
 
 /**
  * Test case for <code>HtmlTools</code>.
  *
  * @author <a href="mailto:vincent.siveton@gmail.com">Vincent Siveton</a>
  */
+@PlexusTest
 public class HtmlToolsTest
-    extends PlexusTestCase
 {
     /**
      * Verify the expected results.
      */
+    @Test
     public void testEscapeHTML()
     {
         assertEquals( HtmlTools.escapeHTML( null ), "" );
@@ -60,6 +68,7 @@ public class HtmlToolsTest
     /**
      * Verify the expected results.
      */
+    @Test
     public void testUnescapeHTML()
     {
         assertNull( HtmlTools.unescapeHTML( null ) );
@@ -89,6 +98,7 @@ public class HtmlToolsTest
     /**
      * Verify the expected results.
      */
+    @Test
     public void testEncodeId()
     {
         assertNull( HtmlTools.encodeId( null ) );
@@ -110,6 +120,7 @@ public class HtmlToolsTest
      *
      * @throws Exception should not happen.
      */
+    @Test
     public void testEncodeURL()
         throws Exception
     {
@@ -128,6 +139,7 @@ public class HtmlToolsTest
     /**
      * Verify the expected results.
      */
+    @Test
     public void testIsId()
     {
         assertFalse( HtmlTools.isId( null ) );
@@ -150,6 +162,7 @@ public class HtmlToolsTest
     /**
      * Verify the expected results.
      */
+    @Test
     public void testGetHtmlTag()
     {
         assertNull( HtmlTools.getHtmlTag( null ) );

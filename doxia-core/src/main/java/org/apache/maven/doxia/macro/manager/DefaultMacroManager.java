@@ -19,9 +19,10 @@ package org.apache.maven.doxia.macro.manager;
  * under the License.
  */
 
+import javax.inject.Inject;
+import javax.inject.Named;
+
 import org.apache.maven.doxia.macro.Macro;
-import org.codehaus.plexus.component.annotations.Component;
-import org.codehaus.plexus.component.annotations.Requirement;
 
 import java.util.Map;
 
@@ -31,12 +32,12 @@ import java.util.Map;
  * @author <a href="mailto:jason@maven.org">Jason van Zyl</a>
  * @since 1.0
  */
-@Component( role = MacroManager.class )
+@Named
 public class DefaultMacroManager
     implements MacroManager
 {
     @SuppressWarnings( "MismatchedQueryAndUpdateOfCollection" )
-    @Requirement( role = Macro.class )
+    @Inject
     private Map<String, Macro> macros;
 
     /** {@inheritDoc} */

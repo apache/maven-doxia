@@ -19,20 +19,22 @@ package org.apache.maven.doxia.util;
  * under the License.
  */
 
-import org.codehaus.plexus.PlexusTestCase;
+import org.codehaus.plexus.testing.PlexusTest;
 import org.codehaus.plexus.util.IOUtil;
 import org.codehaus.plexus.util.xml.XmlStreamReader;
+import org.junit.jupiter.api.Test;
 
 /**
  * Test case for <code>XmlValidator</code>.
  *
  * @author Hervé Boutemy
  */
+@PlexusTest
 public class XmlValidatorTest
-extends PlexusTestCase
 {
+    @Test
     public void testValidate()
-    throws Exception
+        throws Exception
     {
         String xml = IOUtil.toString( new XmlStreamReader( this.getClass().getResourceAsStream( "/test.xhtml" ) ) );
 

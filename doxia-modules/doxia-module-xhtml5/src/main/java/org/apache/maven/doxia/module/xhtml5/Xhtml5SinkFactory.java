@@ -19,17 +19,17 @@ package org.apache.maven.doxia.module.xhtml5;
  * under the License.
  */
 
+import javax.inject.Named;
+
 import java.io.Writer;
 
 import org.apache.maven.doxia.sink.Sink;
-import org.apache.maven.doxia.sink.SinkFactory;
 import org.apache.maven.doxia.sink.impl.AbstractXmlSinkFactory;
-import org.codehaus.plexus.component.annotations.Component;
 
 /**
  * Xhtml implementation of the Sink factory.
  */
-@Component( role = SinkFactory.class, hint = "xhtml5" )
+@Named( "xhtml5" )
 public class Xhtml5SinkFactory
     extends AbstractXmlSinkFactory
 {

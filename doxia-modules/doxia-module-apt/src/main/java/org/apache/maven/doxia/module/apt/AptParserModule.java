@@ -19,16 +19,16 @@ package org.apache.maven.doxia.module.apt;
  * under the License.
  */
 
+import javax.inject.Named;
+
 import org.apache.maven.doxia.parser.module.AbstractParserModule;
-import org.apache.maven.doxia.parser.module.ParserModule;
-import org.codehaus.plexus.component.annotations.Component;
 
 /**
  * <p>AptParserModule class.</p>
  *
  * @since 1.6
  */
-@Component( role = ParserModule.class, hint = "apt" )
+@Named( "apt" )
 public class AptParserModule
     extends AbstractParserModule
 {

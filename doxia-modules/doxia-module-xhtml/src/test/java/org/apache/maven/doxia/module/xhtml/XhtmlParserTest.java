@@ -19,6 +19,9 @@ package org.apache.maven.doxia.module.xhtml;
  * under the License.
  */
 
+import javax.inject.Inject;
+import javax.inject.Named;
+
 import java.io.File;
 import java.io.FileFilter;
 import java.util.Iterator;
@@ -28,6 +31,11 @@ import org.apache.maven.doxia.parser.AbstractParserTest;
 import org.apache.maven.doxia.parser.Parser;
 import org.apache.maven.doxia.sink.impl.SinkEventElement;
 import org.apache.maven.doxia.sink.impl.SinkEventTestingSink;
+import org.junit.jupiter.api.BeforeEach;
+import org.junit.jupiter.api.Test;
+
+import static org.junit.jupiter.api.Assertions.assertEquals;
+import static org.junit.jupiter.api.Assertions.assertFalse;
 
 /**
  * @author <a href="mailto:lars@trieloff.net">Lars Trieloff</a>
@@ -35,16 +43,14 @@ import org.apache.maven.doxia.sink.impl.SinkEventTestingSink;
 public class XhtmlParserTest
     extends AbstractParserTest
 {
+    @Inject
     private XhtmlParser parser;
 
     /** {@inheritDoc} */
+    @BeforeEach
     protected void setUp()
         throws Exception
     {
-        super.setUp();
-
-        parser = (XhtmlParser) lookup( Parser.class, "xhtml" );
-
         // AbstractXmlParser.CachedFileEntityResolver downloads DTD/XSD files in ${java.io.tmpdir}
         // Be sure to delete them
         String tmpDir = System.getProperty( "java.io.tmpdir" );
@@ -81,6 +87,7 @@ public class XhtmlParserTest
     }
 
     /** @throws Exception  */
+    @Test
     public void testDocumentBodyEventsList()
         throws Exception
     {
@@ -98,6 +105,7 @@ public class XhtmlParserTest
     }
 
     /** @throws Exception  */
+    @Test
     public void testHeadEventsList()
         throws Exception
     {
@@ -126,6 +134,7 @@ public class XhtmlParserTest
     }
 
     /** @throws Exception  */
+    @Test
     public void testPreEventsList()
         throws Exception
     {
@@ -147,6 +156,7 @@ public class XhtmlParserTest
      *
      * @throws java.lang.Exception if any.
      */
+    @Test
     public void testUnknown()
         throws Exception
     {
@@ -165,6 +175,7 @@ public class XhtmlParserTest
     }
 
     /** @throws Exception  */
+    @Test
     public void testTocMacro()
         throws Exception
     {

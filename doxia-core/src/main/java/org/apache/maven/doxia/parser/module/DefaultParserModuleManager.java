@@ -19,24 +19,24 @@ package org.apache.maven.doxia.parser.module;
  * under the License.
  */
 
+import javax.inject.Inject;
+import javax.inject.Named;
+
 import java.util.Collection;
 import java.util.LinkedHashMap;
 import java.util.Map;
-
-import org.codehaus.plexus.component.annotations.Component;
-import org.codehaus.plexus.component.annotations.Requirement;
 
 /**
  * Simple implementation of the ParserModuleManager interface.
  *
  * @since 1.6
  */
-@Component( role = ParserModuleManager.class )
+@Named
 public class DefaultParserModuleManager
     implements ParserModuleManager
 {
     @SuppressWarnings( "MismatchedQueryAndUpdateOfCollection" )
-    @Requirement( role = ParserModule.class )
+    @Inject
     private Map<String, ParserModule> parserModules;
 
     private Collection<ParserModule> parserModulesValues;

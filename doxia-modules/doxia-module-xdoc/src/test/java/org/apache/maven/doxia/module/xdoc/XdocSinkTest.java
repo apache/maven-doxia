@@ -22,11 +22,13 @@ package org.apache.maven.doxia.module.xdoc;
 import org.apache.maven.doxia.sink.Sink;
 import org.apache.maven.doxia.sink.impl.AbstractSinkTest;
 import org.apache.maven.doxia.sink.impl.SinkEventAttributeSet;
+import org.junit.jupiter.api.Test;
 
 import java.io.StringWriter;
 import java.io.Writer;
 
 import static org.apache.maven.doxia.util.HtmlTools.escapeHTML;
+import static org.junit.jupiter.api.Assertions.assertEquals;
 
 /**
  * @author <a href="mailto:jason@maven.org">Jason van Zyl</a>
@@ -342,6 +344,7 @@ public class XdocSinkTest
     /**
      * Test verbatim.
      */
+    @Test
     public void testBoxedVerbatim()
     {
         Writer writer =  new StringWriter();
@@ -369,6 +372,7 @@ public class XdocSinkTest
     /**
      * Test link.
      */
+    @Test
     public void testLinkWithTarget()
     {
         Writer writer =  new StringWriter();

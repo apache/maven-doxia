@@ -24,9 +24,9 @@ import javax.swing.text.html.HTML.Tag;
 import org.apache.maven.doxia.markup.Markup;
 import org.apache.maven.doxia.sink.SinkEventAttributes;
 
-import org.junit.Test;
+import org.junit.jupiter.api.Test;
 
-import static org.junit.Assert.*;
+import static org.junit.jupiter.api.Assertions.*;
 
 /**
  *

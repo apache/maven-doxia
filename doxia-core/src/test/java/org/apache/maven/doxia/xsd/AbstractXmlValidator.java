@@ -26,14 +26,12 @@ import java.util.Collections;
 import java.util.List;
 import java.util.Map;
 
-import junit.framework.AssertionFailedError;
 
-import org.apache.maven.doxia.parser.Parser;
-
-import org.codehaus.plexus.DefaultPlexusContainer;
-import org.codehaus.plexus.PlexusTestCase;
-import org.codehaus.plexus.logging.Logger;
-
+import org.codehaus.plexus.testing.PlexusTest;
+import org.junit.jupiter.api.AfterEach;
+import org.junit.jupiter.api.Test;
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
 import org.xml.sax.EntityResolver;
 import org.xml.sax.InputSource;
 import org.xml.sax.SAXException;
@@ -44,6 +42,8 @@ import org.xml.sax.XMLReader;
 import org.xml.sax.helpers.DefaultHandler;
 import org.xml.sax.helpers.XMLReaderFactory;
 
+import static org.junit.jupiter.api.Assertions.fail;
+
 /**
  * Abstract class to validate XML files.
  *
@@ -51,10 +51,13 @@ import org.xml.sax.helpers.XMLReaderFactory;
  *
  * @since 1.2
  */
+@PlexusTest
 public abstract class AbstractXmlValidator
-        extends PlexusTestCase
 {
+
     protected static final String EOL = System.getProperty( "line.separator" );
+
+    protected final Logger logger = LoggerFactory.getLogger( getClass() );
 
     /** XMLReader to validate xml file */
     private XMLReader xmlReader;
@@ -79,12 +82,9 @@ public abstract class AbstractXmlValidator
             || message.contains( "cvc-attribute.3:" ) ); // Doxia allow space
     }
 
-    @Override
+    @AfterEach
     protected void tearDown()
-            throws Exception
     {
-        super.tearDown();
-
         xmlReader = null;
     }
 
@@ -96,12 +96,10 @@ public abstract class AbstractXmlValidator
      * @see #addNamespaces(String)
      * @see #getTestDocuments()
      */
+    @Test
     public void testValidateFiles()
         throws Exception
     {
-        final Logger logger =
-            ( (DefaultPlexusContainer) getContainer() ).getLoggerManager().getLoggerForComponent( Parser.ROLE );
-
         for ( Map.Entry<String, String> entry : getTestDocuments().entrySet() )
         {
             if ( logger.isDebugEnabled() )
@@ -182,15 +180,15 @@ public abstract class AbstractXmlValidator
             }
             catch ( SAXNotRecognizedException e )
             {
-                throw new AssertionFailedError( "SAXNotRecognizedException: " + e.getMessage() );
+                fail( "SAXNotRecognizedException: " + e.getMessage() );
             }
             catch ( SAXNotSupportedException e )
             {
-                throw new AssertionFailedError( "SAXNotSupportedException: " + e.getMessage() );
+                fail( "SAXNotSupportedException: " + e.getMessage() );
             }
             catch ( SAXException e )
             {
-                throw new AssertionFailedError( "SAXException: " + e.getMessage() );
+                fail( "SAXException: " + e.getMessage() );
             }
         }
 

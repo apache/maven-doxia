@@ -21,7 +21,7 @@ package org.apache.maven.doxia;
 
 import org.apache.maven.doxia.markup.Markup;
 
-import org.codehaus.plexus.PlexusTestCase;
+import org.codehaus.plexus.testing.PlexusTest;
 import org.codehaus.plexus.util.WriterFactory;
 
 import java.io.File;
@@ -32,15 +32,19 @@ import java.io.Reader;
 import java.io.Writer;
 import java.nio.charset.StandardCharsets;
 
+import static org.codehaus.plexus.testing.PlexusExtension.getBasedir;
+import static org.junit.jupiter.api.Assertions.assertNotNull;
+
 /**
  * Provide some common convenience methods to test Doxia modules (parsers and sinks).
  *
  * @since 1.0
  */
+@PlexusTest
 public abstract class AbstractModuleTest
-    extends PlexusTestCase
     implements Markup
 {
+
     /*
      * Set the system properties:
      * <ul>
@@ -171,7 +175,7 @@ public abstract class AbstractModuleTest
             Thread.currentThread().getContextClassLoader().getResourceAsStream(
                 baseName + "." + extension );
 
-        assertNotNull( "Could not find resource: " + baseName + "." + extension, is );
+        assertNotNull( is, "Could not find resource: " + baseName + "." + extension );
 
         return new InputStreamReader( is, StandardCharsets.UTF_8 );
     }

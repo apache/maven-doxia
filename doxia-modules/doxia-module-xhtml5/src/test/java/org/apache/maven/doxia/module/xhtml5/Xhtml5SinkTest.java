@@ -27,8 +27,11 @@ import org.apache.maven.doxia.module.xhtml5.Xhtml5Sink;
 import org.apache.maven.doxia.sink.Sink;
 import org.apache.maven.doxia.sink.impl.AbstractSinkTest;
 import org.apache.maven.doxia.sink.impl.SinkEventAttributeSet;
+import org.junit.jupiter.api.Test;
 
 import static org.apache.maven.doxia.util.HtmlTools.escapeHTML;
+import static org.junit.jupiter.api.Assertions.assertEquals;
+import static org.junit.jupiter.api.Assertions.assertTrue;
 
 public class Xhtml5SinkTest
     extends AbstractSinkTest
@@ -55,6 +58,7 @@ public class Xhtml5SinkTest
      * Test link generation.
      *
      */
+    @Test
     public void testLinks()
     {
         Xhtml5Sink sink = null;
@@ -230,9 +234,10 @@ public class Xhtml5SinkTest
     // Disable testTable until the order of attributes issue is clarified
     // TODO: remove
     /** {@inheritDoc} */
+    @Test
     public void testTable()
     {
-        assertEquals( "Dummy!", "", "" );
+        assertEquals( "", "", "Dummy!" );
     }
 
     /** {@inheritDoc} */
@@ -377,6 +382,7 @@ public class Xhtml5SinkTest
     /**
      * Test entities is section titles and paragraphs.
      */
+    @Test
     public void testEntities()
     {
         Xhtml5Sink sink = null;
@@ -407,6 +413,7 @@ public class Xhtml5SinkTest
     /**
      * Test head events.
      */
+    @Test
     public void testHead()
     {
         Xhtml5Sink sink = null;
@@ -438,7 +445,7 @@ public class Xhtml5SinkTest
             "<head>\n<title>Title</title><!--A comment--><meta name=\"author\" content=\"&#x123;&amp;\" />"
                 + "<base href=\"http://maven.apache.org/\" /></head>";
         String actual = writer.toString();
-        assertTrue( actual, actual.contains( expected ) );
+        assertTrue( actual.contains( expected ), actual );
     }
 
     /** {@inheritDoc} */

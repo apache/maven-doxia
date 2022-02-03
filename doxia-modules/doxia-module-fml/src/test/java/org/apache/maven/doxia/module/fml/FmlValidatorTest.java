@@ -26,6 +26,9 @@ import java.util.regex.Pattern;
 import org.apache.maven.doxia.markup.XmlMarkup;
 import org.apache.maven.doxia.xsd.AbstractXmlValidatorTest;
 import org.codehaus.plexus.util.StringUtils;
+import org.junit.jupiter.api.Test;
+
+import static org.codehaus.plexus.testing.PlexusExtension.getBasedir;
 
 /**
  * Test FML files with namespace.
@@ -69,6 +72,7 @@ public class FmlValidatorTest
         return content;
     }
 
+    @Test
     public void testValidateFiles()
     {
         // TODO: super.testValidateFiles() only validates files from doxia-test-docs, what's the point?

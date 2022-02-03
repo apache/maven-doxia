@@ -88,6 +88,7 @@ under the License.
     <checkstyle.violation.ignore>RedundantThrows,NewlineAtEndOfFile,ParameterNumber,MethodLength,FileLength,MethodName,InnerAssignment,MagicNumber</checkstyle.violation.ignore>
     <project.build.outputTimestamp>2022-01-17T09:10:13Z</project.build.outputTimestamp>
     <slf4jVersion>1.7.32</slf4jVersion>
+    <junitVersion>5.8.2</junitVersion>
   </properties>
 
   <dependencyManagement>
@@ -171,6 +172,12 @@ under the License.
         <version>2.8.4</version>
         <scope>test</scope>
       </dependency>
+      <dependency>
+        <groupId>org.codehaus.plexus</groupId>
+        <artifactId>plexus-testing</artifactId>
+        <version>1.1.0</version>
+        <scope>test</scope>
+      </dependency>
 
       <!-- Plexus -->
       <dependency>
@@ -186,13 +193,13 @@ under the License.
       </dependency>
       <dependency>
         <groupId>org.codehaus.plexus</groupId>
-        <artifactId>plexus-component-annotations</artifactId>
-        <version>2.1.1</version>
-      </dependency>
-      <dependency>
-        <groupId>org.codehaus.plexus</groupId>
         <artifactId>plexus-utils</artifactId>
         <version>3.3.1</version>
+      </dependency>
+      <dependency>
+        <groupId>javax.inject</groupId>
+        <artifactId>javax.inject</artifactId>
+        <version>1</version>
       </dependency>
 
       <!--  SLF4J -->
@@ -206,15 +213,19 @@ under the License.
         <artifactId>slf4j-simple</artifactId>
         <version>${slf4jVersion}</version>
       </dependency>
+      <dependency>
+        <groupId>org.junit.jupiter</groupId>
+        <artifactId>junit-jupiter-engine</artifactId>
+        <version>${junitVersion}</version>
+      </dependency>
 
     </dependencies>
   </dependencyManagement>
 
   <dependencies>
     <dependency>
-      <groupId>junit</groupId>
-      <artifactId>junit</artifactId>
-      <version>4.13.2</version>
+      <groupId>org.junit.jupiter</groupId>
+      <artifactId>junit-jupiter-engine</artifactId>
       <scope>test</scope>
     </dependency>
   </dependencies>
@@ -441,6 +452,9 @@ under the License.
             <groupId>org.apache.maven.plugins</groupId>
             <artifactId>maven-javadoc-plugin</artifactId>
             <configuration>
+              <doclint>none</doclint>
+              <failOnWarnings>false</failOnWarnings>
+              <failOnError>false</failOnError>
               <linksource>true</linksource>
               <groups>
                 <group>

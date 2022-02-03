@@ -19,12 +19,13 @@ package org.apache.maven.doxia.macro.toc;
  * under the License.
  */
 
+import javax.inject.Named;
+
 import java.io.StringReader;
 
 import org.apache.maven.doxia.index.IndexEntry;
 import org.apache.maven.doxia.index.IndexingSink;
 import org.apache.maven.doxia.macro.AbstractMacro;
-import org.apache.maven.doxia.macro.Macro;
 import org.apache.maven.doxia.macro.MacroExecutionException;
 import org.apache.maven.doxia.macro.MacroRequest;
 import org.apache.maven.doxia.util.HtmlTools;
@@ -32,7 +33,6 @@ import org.apache.maven.doxia.parser.ParseException;
 import org.apache.maven.doxia.parser.Parser;
 import org.apache.maven.doxia.sink.Sink;
 
-import org.codehaus.plexus.component.annotations.Component;
 import org.codehaus.plexus.util.StringUtils;
 
 /**
@@ -76,7 +76,7 @@ import org.codehaus.plexus.util.StringUtils;
  *
  * @author <a href="mailto:vincent.siveton@gmail.com">Vincent Siveton</a>
  */
-@Component( role = Macro.class, hint = "toc" )
+@Named( "toc" )
 public class TocMacro
     extends AbstractMacro
 {

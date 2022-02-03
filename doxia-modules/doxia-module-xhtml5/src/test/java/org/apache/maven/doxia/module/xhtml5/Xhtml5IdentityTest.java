@@ -27,6 +27,7 @@ import org.apache.maven.doxia.module.xhtml5.Xhtml5Sink;
 import org.apache.maven.doxia.parser.Parser;
 import org.apache.maven.doxia.sink.Sink;
 import org.codehaus.plexus.util.StringUtils;
+import org.junit.jupiter.api.BeforeEach;
 
 /**
  * Check that piping a full model through an Xhtml5Parser and an Xhtml5Sink
@@ -36,10 +37,9 @@ public class Xhtml5IdentityTest
     extends AbstractIdentityTest
 {
     /** {@inheritDoc} */
+    @BeforeEach
     protected void setUp()
-        throws Exception
     {
-        super.setUp();
         assertIdentity( true );
     }
 

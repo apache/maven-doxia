@@ -25,6 +25,9 @@ import org.apache.maven.doxia.markup.Markup;
 import org.apache.maven.doxia.sink.Sink;
 import org.apache.maven.doxia.sink.impl.AbstractSinkTest;
 import org.codehaus.plexus.util.StringUtils;
+import org.junit.jupiter.api.Test;
+
+import static org.junit.jupiter.api.Assertions.assertEquals;
 
 /**
  * Test the <code>AptSink</code> class
@@ -372,6 +375,7 @@ public class AptSinkTest extends AbstractSinkTest
     /**
      * test for DOXIA-497.
      */
+    @Test
     public void testLinksAndParagraphsInTableCells()
     {
         final String linkTarget = "target";
@@ -420,9 +424,10 @@ public class AptSinkTest extends AbstractSinkTest
                 AptMarkup.STAR +
                 EOL;
 
-        assertEquals( "Wrong link or paragraph markup in table cell", expected, getSinkContent() );
+        assertEquals( expected, getSinkContent(), "Wrong link or paragraph markup in table cell" );
     }
 
+    @Test
     public void testTableCellsWithJustification()
     {
         final String linkTarget = "target";
@@ -467,6 +472,6 @@ public class AptSinkTest extends AbstractSinkTest
                 AptMarkup.TABLE_COL_LEFT_ALIGNED_MARKUP +
                 EOL;
 
-        assertEquals( "Wrong justification in table cells", expected, getSinkContent() );
+        assertEquals( expected, getSinkContent(), "Wrong justification in table cells" );
     }
 }
