@@ -19,37 +19,38 @@ package org.apache.maven.doxia.macro.manager;
  * under the License.
  */
 
+import javax.inject.Inject;
+
 import org.apache.maven.doxia.macro.Macro;
 
-import org.codehaus.plexus.PlexusTestCase;
+import org.codehaus.plexus.testing.PlexusTest;
+import org.junit.jupiter.api.Test;
+
+import static org.junit.jupiter.api.Assertions.assertNotNull;
+import static org.junit.jupiter.api.Assertions.assertThrows;
 
 /** @author Jason van Zyl */
+@PlexusTest
 public class MacroManagerTest
-    extends PlexusTestCase
 {
+
+    @Inject
+    private MacroManager mm;
+
     /**
      * Test MacroManager.
      *
      * @throws java.lang.Exception if any.
      */
+    @Test
     public void testMacroManager()
         throws Exception
     {
-        MacroManager mm = lookup( MacroManager.class );
-
         assertNotNull( mm );
 
         Macro macro = mm.getMacro( "snippet" );
         assertNotNull( macro );
 
-        try
-        {
-            mm.getMacro( "weirdId" );
-            fail( "should not exist!" );
-        }
-        catch ( MacroNotFoundException macroNotFoundException )
-        {
-            assertNotNull( macroNotFoundException );
-        }
+        assertThrows( MacroNotFoundException.class, () -> mm.getMacro( "weirdId" ) );
     }
 }

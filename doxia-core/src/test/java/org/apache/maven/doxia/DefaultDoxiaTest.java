@@ -19,12 +19,23 @@ package org.apache.maven.doxia;
  * under the License.
  */
 
-import org.apache.maven.doxia.parser.manager.ParserNotFoundException;
-import org.codehaus.plexus.PlexusTestCase;
-import org.junit.Test;
+import javax.inject.Inject;
 
-public class DefaultDoxiaTest extends PlexusTestCase
+import org.apache.maven.doxia.parser.manager.ParserNotFoundException;
+import org.codehaus.plexus.testing.PlexusTest;
+import org.junit.jupiter.api.Test;
+
+import static org.junit.jupiter.api.Assertions.assertEquals;
+import static org.junit.jupiter.api.Assertions.assertNotNull;
+import static org.junit.jupiter.api.Assertions.assertThrows;
+
+
+@PlexusTest
+public class DefaultDoxiaTest
 {
+
+    @Inject
+    private Doxia doxia;
 
     @Test
     public void testCreatesDefaultDoxia()
@@ -38,17 +49,9 @@ public class DefaultDoxiaTest extends PlexusTestCase
     public void testFailsWhenParserIdDoesNotExist() throws Exception
     {
         final String parserId = "a-parser";
-        final Doxia doxia = lookup( Doxia.class );
-
-        try
-        {
-            doxia.getParser( parserId );
-            fail( "Call should fail with ParserNotFoundException" );
-        }
-        catch ( ParserNotFoundException e )
-        {
-            assertEquals( "Cannot find parser with id = a-parser", e.getMessage() );
-        }
+        ParserNotFoundException e = assertThrows( ParserNotFoundException.class,
+                () -> doxia.getParser( parserId ) );
+        assertEquals( "Cannot find parser with id = " + parserId, e.getMessage() );
     }
 
 }

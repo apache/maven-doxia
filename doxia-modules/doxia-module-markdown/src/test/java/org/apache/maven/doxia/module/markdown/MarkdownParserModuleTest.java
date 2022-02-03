@@ -19,31 +19,26 @@ package org.apache.maven.doxia.module.markdown;
  * under the License.
  */
 
-import org.apache.maven.doxia.parser.module.ParserModule;
-import org.codehaus.plexus.PlexusTestCase;
+import javax.inject.Inject;
+
+import org.codehaus.plexus.testing.PlexusTest;
+import org.junit.jupiter.api.Test;
+
+import static org.junit.jupiter.api.Assertions.assertEquals;
 
 /**
  * Test MarkdownParserModule.
  */
+@PlexusTest
 public class MarkdownParserModuleTest
-    extends PlexusTestCase
 {
     /**
      * The {@link MarkdownParser} used for the tests.
      */
+    @Inject
     protected MarkdownParserModule parserModule;
 
-    /**
-     * {@inheritDoc}
-     */
-    @Override
-    protected void setUp()
-        throws Exception
-    {
-        super.setUp();
-        parserModule = (MarkdownParserModule) lookup( ParserModule.class, MarkdownParser.ROLE_HINT );
-    }
-
+    @Test
     public void testExtensions()
     {
         assertEquals( 2, parserModule.getExtensions().length );

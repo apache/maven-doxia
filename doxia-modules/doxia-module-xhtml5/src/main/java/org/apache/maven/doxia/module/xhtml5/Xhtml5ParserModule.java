@@ -19,14 +19,14 @@ package org.apache.maven.doxia.module.xhtml5;
  * under the License.
  */
 
+import javax.inject.Named;
+
 import org.apache.maven.doxia.parser.module.AbstractParserModule;
-import org.apache.maven.doxia.parser.module.ParserModule;
-import org.codehaus.plexus.component.annotations.Component;
 
 /**
  * <p>Xhtml5ParserModule class.</p>
  */
-@Component( role = ParserModule.class, hint = "xhtml5" )
+@Named( "xhtml5" )
 public class Xhtml5ParserModule
     extends AbstractParserModule
 {

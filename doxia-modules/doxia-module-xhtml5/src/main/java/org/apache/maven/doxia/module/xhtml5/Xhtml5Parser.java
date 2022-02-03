@@ -25,17 +25,17 @@ import java.io.StringReader;
 import java.io.StringWriter;
 import java.util.HashMap;
 import java.util.Map;
+
+import javax.inject.Named;
 import javax.swing.text.html.HTML.Attribute;
 
 import org.apache.maven.doxia.macro.MacroExecutionException;
 import org.apache.maven.doxia.macro.manager.MacroNotFoundException;
 import org.apache.maven.doxia.macro.MacroRequest;
 import org.apache.maven.doxia.parser.ParseException;
-import org.apache.maven.doxia.parser.Parser;
 import org.apache.maven.doxia.parser.Xhtml5BaseParser;
 import org.apache.maven.doxia.sink.Sink;
 import org.apache.maven.doxia.sink.impl.SinkEventAttributeSet;
-import org.codehaus.plexus.component.annotations.Component;
 import org.codehaus.plexus.util.IOUtil;
 import org.codehaus.plexus.util.StringUtils;
 import org.codehaus.plexus.util.xml.pull.XmlPullParser;
@@ -46,7 +46,7 @@ import org.slf4j.LoggerFactory;
 /**
  * Parse an xhtml model and emit events into a Doxia Sink.
  */
-@Component( role = Parser.class, hint = Xhtml5Parser.ROLE_HINT )
+@Named( Xhtml5Parser.ROLE_HINT )
 public class Xhtml5Parser
     extends Xhtml5BaseParser
     implements Xhtml5Markup

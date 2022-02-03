@@ -19,9 +19,9 @@ package org.apache.maven.doxia.module.apt;
  * under the License.
  */
 
-import org.junit.Test;
+import org.junit.jupiter.api.Test;
 
-import static org.junit.Assert.*;
+import static org.junit.jupiter.api.Assertions.*;
 
 /**
  * Test AptUtils.
@@ -37,48 +37,48 @@ public class AptUtilsTest
     public void testIsExternalLink()
     {
         String link = "http://maven.apache.org/";
-        assertTrue( "Should be an external link: " + link, AptUtils.isExternalLink( link ) );
+        assertTrue( AptUtils.isExternalLink( link ), "Should be an external link: " + link );
 
         link = "https://maven.apache.org/";
-        assertTrue( "Should be an external link: " + link, AptUtils.isExternalLink( link ) );
+        assertTrue( AptUtils.isExternalLink( link ), "Should be an external link: " + link );
 
         link = "HTTPS://MAVEN.APACHE.ORG/";
-        assertTrue( "Should be an external link: " + link, AptUtils.isExternalLink( link ) );
+        assertTrue( AptUtils.isExternalLink( link ), "Should be an external link: " + link );
 
         link = "ftp:/maven.apache.org/";
-        assertTrue( "Should be an external link: " + link, AptUtils.isExternalLink( link ) );
+        assertTrue( AptUtils.isExternalLink( link ), "Should be an external link: " + link );
 
         link = "mailto:maven@apache.org";
-        assertTrue( "Should be an external link: " + link, AptUtils.isExternalLink( link ) );
+        assertTrue( AptUtils.isExternalLink( link ), "Should be an external link: " + link );
 
         link = "file:/index.html";
-        assertTrue( "Should be an external link: " + link, AptUtils.isExternalLink( link ) );
+        assertTrue( AptUtils.isExternalLink( link ), "Should be an external link: " + link );
 
         link = "resource_type://domain:port/filepathname?query_string#anchor";
-        assertTrue( "Should be an external link: " + link, AptUtils.isExternalLink( link ) );
+        assertTrue( AptUtils.isExternalLink( link ), "Should be an external link: " + link );
 
         link = "index.html";
-        assertFalse( "Should NOT be an external link: " + link, AptUtils.isExternalLink( link ) );
+        assertFalse( AptUtils.isExternalLink( link ), "Should NOT be an external link: " + link );
 
         link = "example.pdf";
-        assertFalse( "Should NOT be an external link: " + link, AptUtils.isExternalLink( link ) );
+        assertFalse( AptUtils.isExternalLink( link ), "Should NOT be an external link: " + link );
 
         link = "./index.html";
-        assertFalse( "Should NOT be an external link: " + link, AptUtils.isExternalLink( link ) );
+        assertFalse( AptUtils.isExternalLink( link ), "Should NOT be an external link: " + link );
 
         link = "../index.html";
-        assertFalse( "Should NOT be an external link: " + link, AptUtils.isExternalLink( link ) );
+        assertFalse( AptUtils.isExternalLink( link ), "Should NOT be an external link: " + link );
 
         // Windows style separators "\" are not allowed
 
         link = "file:\\index.html";
-        assertFalse( "Should NOT be an external link: " + link, AptUtils.isExternalLink( link ) );
+        assertFalse( AptUtils.isExternalLink( link ), "Should NOT be an external link: " + link );
 
         link = ".\\index.html";
-        assertFalse( "Should NOT be an external link: " + link, AptUtils.isExternalLink( link ) );
+        assertFalse( AptUtils.isExternalLink( link ), "Should NOT be an external link: " + link );
 
         link = "..\\index.html";
-        assertFalse( "Should NOT be an external link: " + link, AptUtils.isExternalLink( link ) );
+        assertFalse( AptUtils.isExternalLink( link ), "Should NOT be an external link: " + link );
     }
 
     /**
@@ -88,11 +88,11 @@ public class AptUtilsTest
     public void testIsInternalLink()
     {
         String link = "index.html";
-        assertTrue( "Should be an internal link: " + link, AptUtils.isInternalLink( link ) );
+        assertTrue( AptUtils.isInternalLink( link ), "Should be an internal link: " + link );
         link = "file:/index.html";
-        assertFalse( "Should NOT be an internal link: " + link, AptUtils.isInternalLink( link ) );
+        assertFalse( AptUtils.isInternalLink( link ), "Should NOT be an internal link: " + link );
         link = "./index.html";
-        assertFalse( "Should NOT be an internal link: " + link, AptUtils.isInternalLink( link ) );
+        assertFalse( AptUtils.isInternalLink( link ), "Should NOT be an internal link: " + link );
     }
 
     /**
@@ -102,25 +102,25 @@ public class AptUtilsTest
     public void testIsLocalLink()
     {
         String link = "/index.html";
-        assertTrue( "Should be a local link: " + link, AptUtils.isLocalLink( link ) );
+        assertTrue( AptUtils.isLocalLink( link ), "Should be a local link: " + link );
 
         link = "./index.html";
-        assertTrue( "Should be a local link: " + link, AptUtils.isLocalLink( link ) );
+        assertTrue( AptUtils.isLocalLink( link ), "Should be a local link: " + link );
 
         link = "../index.html";
-        assertTrue( "Should be a local link: " + link, AptUtils.isLocalLink( link ) );
+        assertTrue( AptUtils.isLocalLink( link ), "Should be a local link: " + link );
 
         link = "index.html";
-        assertFalse( "Should NOT be a local link: " + link, AptUtils.isLocalLink( link ) );
+        assertFalse( AptUtils.isLocalLink( link ), "Should NOT be a local link: " + link );
 
         link = ".\\index.html";
-        assertFalse( "Should NOT be a local link: " + link, AptUtils.isLocalLink( link ) );
+        assertFalse( AptUtils.isLocalLink( link ), "Should NOT be a local link: " + link );
 
         link = "\\index.html";
-        assertFalse( "Should NOT be a local link: " + link, AptUtils.isLocalLink( link ) );
+        assertFalse( AptUtils.isLocalLink( link ), "Should NOT be a local link: " + link );
 
         link = "..\\index.html";
-        assertFalse( "Should NOT be a local link: " + link, AptUtils.isLocalLink( link ) );
+        assertFalse( AptUtils.isLocalLink( link ), "Should NOT be a local link: " + link );
     }
 
     /**

@@ -22,7 +22,7 @@ import org.apache.maven.doxia.sink.impl.SinkAdapter;
  * under the License.
  */
 
-import org.junit.Test;
+import org.junit.jupiter.api.Test;
 
 /**
  *

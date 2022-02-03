@@ -19,6 +19,8 @@ package org.apache.maven.doxia.module.fml;
  * under the License.
  */
 
+import javax.inject.Inject;
+
 import java.io.File;
 import java.io.FileFilter;
 import java.io.FileReader;
@@ -35,6 +37,14 @@ import org.apache.maven.doxia.sink.impl.SinkEventElement;
 import org.apache.maven.doxia.sink.impl.SinkEventTestingSink;
 import org.apache.maven.doxia.sink.impl.XhtmlBaseSink;
 import org.codehaus.plexus.util.IOUtil;
+import org.junit.jupiter.api.BeforeEach;
+import org.junit.jupiter.api.Test;
+
+import static org.codehaus.plexus.testing.PlexusExtension.getBasedir;
+import static org.codehaus.plexus.testing.PlexusExtension.getTestFile;
+import static org.junit.jupiter.api.Assertions.assertEquals;
+import static org.junit.jupiter.api.Assertions.assertFalse;
+import static org.junit.jupiter.api.Assertions.assertTrue;
 
 /**
  * @author <a href="mailto:evenisse@codehaus.org">Emmanuel Venisse</a>
@@ -42,16 +52,13 @@ import org.codehaus.plexus.util.IOUtil;
 public class FmlParserTest
     extends AbstractParserTest
 {
+    @Inject
     private FmlParser parser;
 
-    @Override
+    @BeforeEach
     protected void setUp()
         throws Exception
     {
-        super.setUp();
-
-        parser = (FmlParser) lookup( Parser.class, "fml" );
-
         // AbstractXmlParser.CachedFileEntityResolver downloads DTD/XSD files in ${java.io.tmpdir}
         // Be sure to delete them
         String tmpDir = System.getProperty( "java.io.tmpdir" );
@@ -59,7 +66,7 @@ public class FmlParserTest
         // Using FileFilter, because is it is much faster then FileUtils.listFiles 
         File[] tmpFiles = new File( tmpDir ).listFiles( new FileFilter()
         {
-            Pattern xsdPatterns = Pattern.compile( "(xml|fml\\-.+)\\.xsd" );
+            final Pattern xsdPatterns = Pattern.compile( "(xml|fml\\-.+)\\.xsd" );
             
             @Override
             public boolean accept( File pathname )
@@ -87,6 +94,7 @@ public class FmlParserTest
     }
 
     /** @throws Exception */
+    @Test
     public void testFaqEventsList()
         throws Exception
     {
@@ -152,6 +160,7 @@ public class FmlParserTest
     }
 
     /** @throws Exception */
+    @Test
     public void testEntities()
         throws Exception
     {
@@ -255,6 +264,7 @@ public class FmlParserTest
      * @throws Exception if any
      * @since 1.1.1
      */
+    @Test
     public void testFaqMacro()
         throws Exception
     {
@@ -267,7 +277,7 @@ public class FmlParserTest
         }
 
         File f = getTestFile( getBasedir(), outputBaseDir() + getOutputDir() + "macro.fml" );
-        assertTrue( "The file " + f.getAbsolutePath() + " was not created", f.exists() );
+        assertTrue( f.exists(), "The file " + f.getAbsolutePath() + " was not created" );
 
         String content;
         try ( Reader reader = new FileReader( f ) )

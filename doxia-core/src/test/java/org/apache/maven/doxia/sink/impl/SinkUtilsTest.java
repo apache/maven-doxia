@@ -24,10 +24,10 @@ import javax.swing.text.MutableAttributeSet;
 
 import org.apache.maven.doxia.sink.SinkEventAttributes;
 
-import org.junit.Assert;
-import org.junit.Test;
+import org.junit.jupiter.api.Test;
 
-import static org.junit.Assert.assertEquals;
+import static org.junit.jupiter.api.Assertions.assertEquals;
+import static org.junit.jupiter.api.Assertions.assertNull;
 
 /**
  *
@@ -69,7 +69,7 @@ public class SinkUtilsTest
     @Test
     public void testFilterAttributes()
     {
-        Assert.assertNull( SinkUtils.filterAttributes( null, null ) );
+        assertNull( SinkUtils.filterAttributes( null, null ) );
 
         AttributeSet attributes = new SinkEventAttributeSet( 1 );
         String[] valids = null;

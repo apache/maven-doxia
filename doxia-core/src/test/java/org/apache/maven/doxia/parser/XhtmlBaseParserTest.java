@@ -24,8 +24,10 @@ import java.util.Iterator;
 import org.apache.maven.doxia.sink.impl.SinkEventAttributeSet;
 import org.apache.maven.doxia.sink.impl.SinkEventElement;
 import org.apache.maven.doxia.sink.impl.SinkEventTestingSink;
+import org.junit.jupiter.api.BeforeEach;
+import org.junit.jupiter.api.Test;
 
-import static org.junit.Assert.assertNotEquals;
+import static org.junit.jupiter.api.Assertions.*;
 
 /**
  * Test for XhtmlBaseParser.
@@ -53,16 +55,15 @@ public class XhtmlBaseParserTest
         return "xhtml";
     }
 
-    @Override
+    @BeforeEach
     protected void setUp() throws Exception
     {
-        super.setUp();
-
         parser = new XhtmlBaseParser();
         sink.reset();
     }
 
     /** Test Doxia version. */
+    @Test
     public void testDoxiaVersion()
     {
         assertNotNull( XhtmlBaseParser.doxiaVersion() );
@@ -70,6 +71,7 @@ public class XhtmlBaseParserTest
     }
 
     /** @throws Exception  */
+    @Test
     public void testHeadingEventsList()
         throws Exception
     {
@@ -111,6 +113,7 @@ public class XhtmlBaseParserTest
     }
 
     /** @throws Exception  */
+    @Test
     public void testNestedHeadingEventsList()
         throws Exception
     {
@@ -151,6 +154,7 @@ public class XhtmlBaseParserTest
     }
 
     /** @throws Exception  */
+    @Test
     public void testFigureEventsList()
         throws Exception
     {
@@ -165,6 +169,7 @@ public class XhtmlBaseParserTest
     }
 
     /** @throws Exception  */
+    @Test
     public void testTableEventsList()
         throws Exception
     {
@@ -195,6 +200,7 @@ public class XhtmlBaseParserTest
     }
 
     /** @throws Exception  */
+    @Test
     public void testSignificantWhiteSpace()
         throws Exception
     {
@@ -268,6 +274,7 @@ public class XhtmlBaseParserTest
     }
 
     /** @throws Exception  */
+    @Test
     public void testPreFormattedText()
         throws Exception
     {
@@ -305,6 +312,7 @@ public class XhtmlBaseParserTest
     }
 
     /** @throws Exception  */
+    @Test
     public void testPreEOL()
         throws Exception
     {
@@ -328,6 +336,7 @@ public class XhtmlBaseParserTest
     }
 
     /** @throws Exception  */
+    @Test
     public void testDoxia250()
         throws Exception
     {
@@ -369,6 +378,7 @@ public class XhtmlBaseParserTest
     }
 
     /** @throws Exception  */
+    @Test
     public void testEntities()
         throws Exception
     {
@@ -436,6 +446,7 @@ public class XhtmlBaseParserTest
     }
 
     /** @throws Exception  */
+    @Test
     public void testXhtmlEntities()
         throws Exception
     {
@@ -490,6 +501,7 @@ public class XhtmlBaseParserTest
     }
 
     /** @throws Exception  */
+    @Test
     public void testLists()
         throws Exception
     {
@@ -518,6 +530,7 @@ public class XhtmlBaseParserTest
     }
 
     /** @throws Exception  */
+    @Test
     public void testSimpleTags()
         throws Exception
     {
@@ -531,6 +544,7 @@ public class XhtmlBaseParserTest
     }
 
     /** @throws Exception  */
+    @Test
     public void testSemanticTags()
         throws Exception
     {
@@ -587,6 +601,7 @@ public class XhtmlBaseParserTest
     }
 
     /** @throws Exception  */
+    @Test
     public void testSpecial()
         throws Exception
     {
@@ -604,6 +619,7 @@ public class XhtmlBaseParserTest
     }
 
     /** @throws Exception  */
+    @Test
     public void testTable()
         throws Exception
     {
@@ -633,6 +649,7 @@ public class XhtmlBaseParserTest
     }
 
     /** @throws Exception  */
+    @Test
     public void testFigure()
         throws Exception
     {
@@ -648,6 +665,7 @@ public class XhtmlBaseParserTest
     }
 
     /** @throws Exception  */
+    @Test
     public void testAnchorLink()
         throws Exception
     {
@@ -703,6 +721,7 @@ public class XhtmlBaseParserTest
      *
      * @throws java.lang.Exception if any.
      */
+    @Test
     public void testAttributeEntities()
         throws Exception
     {
@@ -734,6 +753,7 @@ public class XhtmlBaseParserTest
         assertEquals( "http://ex.com/ex.jpg?v=l&l=e", attribs.getAttribute( "src" ) );
     }
 
+    @Test
     public void testUnbalancedDefinitionListItem() throws Exception
     {
         String text = "<body><dl><dt>key</dt><dd>value</dd></dl>" +
@@ -745,14 +765,14 @@ public class XhtmlBaseParserTest
         parser.parse( text, sink );
 
         Iterator<SinkEventElement> it = sink.getEventList().iterator();
-        assertStartsWith( it, "definitionList", "definitionListItem", "definedTerm", "text", "definedTerm_",
+        assertSinkStartsWith( it, "definitionList", "definitionListItem", "definedTerm", "text", "definedTerm_",
                           "definition", "text", "definition_", "definitionListItem_", "definitionList_" );
-        assertStartsWith( it, "definitionList", "definitionListItem", "definition", "text", "definition_",
+        assertSinkStartsWith( it, "definitionList", "definitionListItem", "definition", "text", "definition_",
                           "definitionListItem_", "definitionList_" );
-        assertStartsWith( it, "definitionList", "definitionListItem", "definedTerm", "text", "definedTerm_",
+        assertSinkStartsWith( it, "definitionList", "definitionListItem", "definedTerm", "text", "definedTerm_",
                           "definitionListItem_", "definitionList_" );
-        assertStartsWith( it, "definitionList", "definitionList_" );
-        assertEquals( it, "definitionList", "definitionListItem", "definition", "text", "definition_",
+        assertSinkStartsWith( it, "definitionList", "definitionList_" );
+        assertSinkEquals( it, "definitionList", "definitionListItem", "definition", "text", "definition_",
                           "definitionListItem_", "definitionListItem", "definedTerm", "text", "definedTerm_",
                           "definitionListItem_", "definitionList_" );
     }

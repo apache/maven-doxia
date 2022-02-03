@@ -25,12 +25,15 @@ import org.apache.maven.doxia.sink.impl.SinkEventElement;
 import org.apache.maven.doxia.sink.impl.TextSink;
 import org.apache.maven.doxia.sink.impl.WellformednessCheckingSink;
 import org.apache.maven.doxia.sink.Sink;
-import org.junit.Assert;
+import org.junit.jupiter.api.Assertions;
+import org.junit.jupiter.api.Test;
 
 import java.io.IOException;
 import java.io.Reader;
 import java.io.Writer;
 import java.util.Iterator;
+
+import static org.junit.jupiter.api.Assertions.assertTrue;
 
 /**
  * Test the parsing of sample input files.
@@ -67,6 +70,7 @@ public abstract class AbstractParserTest
      * @throws IOException if the test document cannot be read.
      * @throws ParseException if the test document cannot be parsed.
      */
+    @Test
     public final void testParser()
         throws IOException, ParseException
     {
@@ -76,8 +80,8 @@ public abstract class AbstractParserTest
         {
             createParser().parse( reader, sink );
 
-            assertTrue( "Parser output not well-formed, last offending element: " + sink.getOffender(),
-                    sink.isWellformed() );
+            assertTrue( sink.isWellformed(),
+                        "Parser output not well-formed, last offending element: " + sink.getOffender() );
         }
     }
 
@@ -89,6 +93,7 @@ public abstract class AbstractParserTest
      * @throws IOException if the test document cannot be read.
      * @throws ParseException if the test document cannot be parsed.
      */
+     @Test
     public final void testDocument()
         throws IOException, ParseException
     {
@@ -100,20 +105,20 @@ public abstract class AbstractParserTest
         }
     }
 
-    protected void assertEquals( SinkEventElement element, String name, Object... args )
+    protected static void assertSinkEquals( SinkEventElement element, String name, Object... args )
     {
-        assertEquals( "Name of element doesn't match", name, element.getName() );
-        Assert.assertArrayEquals( "Arguments don't match",  args, element.getArgs() );
+        Assertions.assertEquals( name, element.getName(), "Name of element doesn't match" );
+        Assertions.assertArrayEquals( args, element.getArgs(), "Arguments don't match" );
     }
 
-    protected void assertAttributeEquals( SinkEventElement element, String name, String attr, String value )
+    protected static void assertSinkAttributeEquals( SinkEventElement element, String name, String attr, String value )
     {
-        assertEquals( name, element.getName() );
+        Assertions.assertEquals( name, element.getName() );
         SinkEventAttributeSet atts = (SinkEventAttributeSet) element.getArgs()[0];
-        assertEquals( value, atts.getAttribute( attr ) );
+        Assertions.assertEquals( value, atts.getAttribute( attr ) );
     }
 
-    protected void assertEquals( Iterator<SinkEventElement> it, String... names )
+    protected static void assertSinkEquals( Iterator<SinkEventElement> it, String... names )
     {
         StringBuilder expected = new StringBuilder();
         StringBuilder actual = new StringBuilder();
@@ -128,10 +133,10 @@ public abstract class AbstractParserTest
             actual.append( it.next().getName() ).append( '\n' );
         }
 
-        assertEquals( expected.toString(), actual.toString() );
+        Assertions.assertEquals( expected.toString(), actual.toString() );
     }
 
-    protected void assertStartsWith( Iterator<SinkEventElement> it, String... names )
+    protected static void assertSinkStartsWith( Iterator<SinkEventElement> it, String... names )
     {
         StringBuilder expected = new StringBuilder();
         StringBuilder actual = new StringBuilder();
@@ -144,6 +149,6 @@ public abstract class AbstractParserTest
                 actual.append( it.next().getName() ).append( '\n' );
             }
         }
-        assertEquals( expected.toString(), actual.toString() );
+        Assertions.assertEquals( expected.toString(), actual.toString() );
     }
 }

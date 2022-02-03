@@ -22,9 +22,14 @@ package org.apache.maven.doxia.parser;
 import org.apache.maven.doxia.sink.Sink;
 import org.apache.maven.doxia.sink.impl.SinkAdapter;
 import org.codehaus.plexus.PlexusTestCase;
+import org.codehaus.plexus.testing.PlexusTest;
+import org.junit.jupiter.api.Test;
 
 import java.io.FileReader;
 import java.io.Reader;
+
+import static org.codehaus.plexus.testing.PlexusExtension.getBasedir;
+import static org.codehaus.plexus.testing.PlexusExtension.getTestFile;
 
 /**
  * Test the parsing of sample input files
@@ -33,8 +38,8 @@ import java.io.Reader;
  * @author <a href="mailto:evenisse@codehaus.org">Emmanuel Venisse</a>
  * @since 1.0
  */
+@PlexusTest
 public abstract class AbstractParserTestCase
-    extends PlexusTestCase
 {
     /**
      * Parser to use to convert input to sink events
@@ -66,6 +71,7 @@ public abstract class AbstractParserTestCase
      *
      * @throws Exception if any.
      */
+    @Test
     public void testParser()
         throws Exception
     {

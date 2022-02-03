@@ -64,6 +64,11 @@ under the License.
       <artifactId>slf4j-simple</artifactId>
       <scope>test</scope>
     </dependency>
+    <dependency>
+      <groupId>org.codehaus.plexus</groupId>
+      <artifactId>plexus-testing</artifactId>
+      <scope>test</scope>
+    </dependency>
   </dependencies>
 
   <build>

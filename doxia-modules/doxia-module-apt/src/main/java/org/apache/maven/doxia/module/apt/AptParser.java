@@ -19,19 +19,19 @@ package org.apache.maven.doxia.module.apt;
  * under the License.
  */
 
+import javax.inject.Named;
+
 import org.apache.maven.doxia.macro.MacroExecutionException;
 import org.apache.maven.doxia.macro.MacroRequest;
 import org.apache.maven.doxia.macro.manager.MacroNotFoundException;
 import org.apache.maven.doxia.parser.AbstractTextParser;
 import org.apache.maven.doxia.parser.ParseException;
-import org.apache.maven.doxia.parser.Parser;
 import org.apache.maven.doxia.sink.Sink;
 import org.apache.maven.doxia.sink.SinkEventAttributes;
 import org.apache.maven.doxia.sink.impl.SinkAdapter;
 import org.apache.maven.doxia.sink.impl.SinkEventAttributeSet;
 import org.apache.maven.doxia.util.DoxiaUtils;
 
-import org.codehaus.plexus.component.annotations.Component;
 import org.codehaus.plexus.util.IOUtil;
 import org.codehaus.plexus.util.StringUtils;
 import org.slf4j.Logger;
@@ -52,7 +52,7 @@ import java.util.StringTokenizer;
  *
  * @since 1.0
  */
-@Component( role = Parser.class, hint = "apt" )
+@Named( "apt" )
 public class AptParser
     extends AbstractTextParser
     implements AptMarkup

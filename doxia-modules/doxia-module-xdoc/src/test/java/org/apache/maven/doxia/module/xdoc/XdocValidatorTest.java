@@ -27,6 +27,8 @@ import org.apache.maven.doxia.markup.XmlMarkup;
 import org.apache.maven.doxia.xsd.AbstractXmlValidatorTest;
 import org.codehaus.plexus.util.StringUtils;
 
+import static org.codehaus.plexus.testing.PlexusExtension.getBasedir;
+
 /**
  * Test XDOC files with namespace.
  *

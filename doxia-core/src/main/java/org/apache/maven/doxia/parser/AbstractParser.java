@@ -19,6 +19,8 @@ package org.apache.maven.doxia.parser;
  * under the License.
  */
 
+import javax.inject.Inject;
+
 import java.io.File;
 import java.io.IOException;
 import java.io.InputStream;
@@ -33,7 +35,6 @@ import org.apache.maven.doxia.macro.MacroRequest;
 import org.apache.maven.doxia.macro.manager.MacroManager;
 import org.apache.maven.doxia.macro.manager.MacroNotFoundException;
 import org.apache.maven.doxia.sink.Sink;
-import org.codehaus.plexus.component.annotations.Requirement;
 
 /**
  * An abstract base class that defines some convenience methods for parsers.
@@ -48,7 +49,7 @@ public abstract class AbstractParser
     /** Indicates that a second parsing is required. */
     private boolean secondParsing = false;
 
-    @Requirement
+    @Inject
     private MacroManager macroManager;
 
     /**

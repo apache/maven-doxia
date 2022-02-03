@@ -19,30 +19,34 @@ package org.apache.maven.doxia.module.xhtml5;
  * under the License.
  */
 
+import javax.inject.Inject;
+
 import java.io.File;
 import java.io.FileFilter;
 import java.util.Iterator;
 import java.util.regex.Pattern;
 
-import org.apache.maven.doxia.module.xhtml5.Xhtml5Parser;
 import org.apache.maven.doxia.parser.AbstractParserTest;
 import org.apache.maven.doxia.parser.Parser;
 import org.apache.maven.doxia.sink.impl.SinkEventElement;
 import org.apache.maven.doxia.sink.impl.SinkEventTestingSink;
+import org.junit.jupiter.api.BeforeEach;
+import org.junit.jupiter.api.Test;
+
+import static org.junit.jupiter.api.Assertions.assertEquals;
+import static org.junit.jupiter.api.Assertions.assertFalse;
 
 public class Xhtml5ParserTest
     extends AbstractParserTest
 {
+    @Inject
     private Xhtml5Parser parser;
 
     /** {@inheritDoc} */
+    @BeforeEach
     protected void setUp()
         throws Exception
     {
-        super.setUp();
-
-        parser = (Xhtml5Parser) lookup( Parser.class, Xhtml5Parser.ROLE_HINT );
-
         // AbstractXmlParser.CachedFileEntityResolver downloads DTD/XSD files in ${java.io.tmpdir}
         // Be sure to delete them
         String tmpDir = System.getProperty( "java.io.tmpdir" );
@@ -79,6 +83,7 @@ public class Xhtml5ParserTest
     }
 
     /** @throws Exception  */
+    @Test
     public void testDocumentBodyEventsList()
         throws Exception
     {
@@ -96,6 +101,7 @@ public class Xhtml5ParserTest
     }
 
     /** @throws Exception  */
+    @Test
     public void testHeadEventsList()
         throws Exception
     {
@@ -124,6 +130,7 @@ public class Xhtml5ParserTest
     }
 
     /** @throws Exception  */
+    @Test
     public void testPreEventsList()
         throws Exception
     {
@@ -145,6 +152,7 @@ public class Xhtml5ParserTest
      *
      * @throws java.lang.Exception if any.
      */
+    @Test
     public void testUnknown()
         throws Exception
     {
@@ -163,6 +171,7 @@ public class Xhtml5ParserTest
     }
 
     /** @throws Exception  */
+    @Test
     public void testTocMacro()
         throws Exception
     {

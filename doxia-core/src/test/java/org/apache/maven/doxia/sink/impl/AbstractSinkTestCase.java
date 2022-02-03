@@ -29,14 +29,17 @@ import java.util.Objects;
 
 import org.apache.maven.doxia.parser.Parser;
 import org.apache.maven.doxia.sink.Sink;
-import org.codehaus.plexus.PlexusTestCase;
+import org.codehaus.plexus.testing.PlexusTest;
+import org.junit.jupiter.api.Test;
+
+import static org.codehaus.plexus.testing.PlexusExtension.getBasedir;
 
 /**
  * @author <a href="mailto:jason@maven.org">Jason van Zyl</a>
  * @since 1.0
  */
+@PlexusTest
 public abstract class AbstractSinkTestCase
-    extends PlexusTestCase
 {
     private Writer testWriter;
 
@@ -50,6 +53,7 @@ public abstract class AbstractSinkTestCase
      *
      * @throws java.lang.Exception if anything goes wrong.
      */
+    @Test
     public void testApt()
         throws Exception
     {

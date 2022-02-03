@@ -19,16 +19,16 @@ package org.apache.maven.doxia.module.markdown;
  * under the License.
  */
 
+import javax.inject.Named;
+
 import org.apache.maven.doxia.parser.module.AbstractParserModule;
-import org.apache.maven.doxia.parser.module.ParserModule;
-import org.codehaus.plexus.component.annotations.Component;
 
 /**
  * {@link org.apache.maven.doxia.parser.module.ParserModule} for Markdown.
  *
  * @since 1.6
  */
-@Component( role = ParserModule.class, hint = "markdown" )
+@Named( "markdown" )
 public class MarkdownParserModule
     extends AbstractParserModule
 {

@@ -19,9 +19,10 @@ package org.apache.maven.doxia.parser.manager;
  * under the License.
  */
 
+import javax.inject.Inject;
+import javax.inject.Named;
+
 import org.apache.maven.doxia.parser.Parser;
-import org.codehaus.plexus.component.annotations.Component;
-import org.codehaus.plexus.component.annotations.Requirement;
 
 import java.util.Map;
 
@@ -31,12 +32,12 @@ import java.util.Map;
  * @author <a href="mailto:jason@maven.org">Jason van Zyl</a>
  * @since 1.0
  */
-@Component( role = ParserManager.class )
+@Named
 public class DefaultParserManager
     implements ParserManager
 {
     @SuppressWarnings( "MismatchedQueryAndUpdateOfCollection" )
-    @Requirement( role = Parser.class )
+    @Inject
     private Map<String, Parser> parsers;
 
     /** {@inheritDoc} */

@@ -27,11 +27,10 @@ import javax.swing.text.html.HTML.Attribute;
 import org.apache.maven.doxia.markup.Markup;
 import org.apache.maven.doxia.sink.Sink;
 import org.apache.maven.doxia.sink.SinkEventAttributes;
-import org.junit.Before;
-import org.junit.Test;
+import org.junit.jupiter.api.BeforeEach;
+import org.junit.jupiter.api.Test;
 
-import static org.junit.Assert.assertEquals;
-import static org.junit.Assert.assertTrue;
+import static org.junit.jupiter.api.Assertions.*;
 
 /**
  * Test for Xhtml5BaseSink.
@@ -45,7 +44,7 @@ public class Xhtml5BaseSinkTest
 
     String EOL = System.lineSeparator();
 
-    @Before
+    @BeforeEach
     public void setUp()
     {
         writer =  new StringWriter();

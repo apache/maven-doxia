@@ -19,13 +19,13 @@ package org.apache.maven.doxia.macro.snippet;
  * under the License.
  */
 
+import javax.inject.Named;
+
 import org.apache.maven.doxia.macro.AbstractMacro;
-import org.apache.maven.doxia.macro.Macro;
 import org.apache.maven.doxia.macro.MacroExecutionException;
 import org.apache.maven.doxia.macro.MacroRequest;
 import org.apache.maven.doxia.sink.Sink;
 import org.apache.maven.doxia.sink.impl.SinkEventAttributeSet;
-import org.codehaus.plexus.component.annotations.Component;
 import org.codehaus.plexus.util.StringUtils;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
@@ -40,7 +40,7 @@ import java.util.Map;
 /**
  * A macro that prints out the content of a file or a URL.
  */
-@Component( role = Macro.class, hint = "snippet" )
+@Named( "snippet" )
 public class SnippetMacro
     extends AbstractMacro
 {

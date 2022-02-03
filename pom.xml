@@ -171,6 +171,12 @@ under the License.
         <version>2.8.4</version>
         <scope>test</scope>
       </dependency>
+      <dependency>
+        <groupId>org.codehaus.plexus</groupId>
+        <artifactId>plexus-testing</artifactId>
+        <version>1.1.0</version>
+        <scope>test</scope>
+      </dependency>
 
       <!-- Plexus -->
       <dependency>
@@ -183,11 +189,6 @@ under the License.
         <artifactId>guice</artifactId>
         <version>4.2.2</version>
         <classifier>no_aop</classifier>
-      </dependency>
-      <dependency>
-        <groupId>org.codehaus.plexus</groupId>
-        <artifactId>plexus-component-annotations</artifactId>
-        <version>2.1.1</version>
       </dependency>
       <dependency>
         <groupId>org.codehaus.plexus</groupId>
@@ -212,9 +213,9 @@ under the License.
 
   <dependencies>
     <dependency>
-      <groupId>junit</groupId>
-      <artifactId>junit</artifactId>
-      <version>4.13.2</version>
+      <groupId>org.junit.jupiter</groupId>
+      <artifactId>junit-jupiter-engine</artifactId>
+      <version>5.8.2</version>
       <scope>test</scope>
     </dependency>
   </dependencies>

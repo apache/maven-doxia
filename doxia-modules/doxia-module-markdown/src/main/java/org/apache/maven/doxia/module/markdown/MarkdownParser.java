@@ -19,6 +19,9 @@ package org.apache.maven.doxia.module.markdown;
  * under the License.
  */
 
+import javax.inject.Inject;
+import javax.inject.Named;
+
 import com.vladsch.flexmark.ast.Heading;
 import com.vladsch.flexmark.ast.HtmlCommentBlock;
 import com.vladsch.flexmark.util.ast.Node;
@@ -38,11 +41,8 @@ import org.apache.maven.doxia.markup.HtmlMarkup;
 import org.apache.maven.doxia.module.xhtml.XhtmlParser;
 import org.apache.maven.doxia.parser.AbstractParser;
 import org.apache.maven.doxia.parser.ParseException;
-import org.apache.maven.doxia.parser.Parser;
 import org.apache.maven.doxia.sink.Sink;
 import org.apache.maven.doxia.util.HtmlTools;
-import org.codehaus.plexus.component.annotations.Component;
-import org.codehaus.plexus.component.annotations.Requirement;
 import org.codehaus.plexus.util.IOUtil;
 import org.codehaus.plexus.util.xml.pull.XmlPullParser;
 
@@ -66,7 +66,7 @@ import java.util.regex.Pattern;
  * @author Julien Nicoulaud
  * @since 1.3
  */
-@Component( role = Parser.class, hint = MarkdownParser.ROLE_HINT )
+@Named( MarkdownParser.ROLE_HINT )
 public class MarkdownParser
     extends AbstractParser
 {
@@ -112,7 +112,7 @@ public class MarkdownParser
      * The parser of the HTML produced by Flexmark, that we will
      * use to convert this HTML to Sink events
      */
-    @Requirement
+    @Inject
     private MarkdownHtmlParser parser;
 
     /**
@@ -279,7 +279,7 @@ public class MarkdownParser
      * which is how most Maven Skin (incl. Fluido) recognize a block of code, which
      * needs to be highlighted accordingly.
      */
-    @Component( role = MarkdownHtmlParser.class )
+    @Named
     public static class MarkdownHtmlParser
         extends XhtmlParser
     {

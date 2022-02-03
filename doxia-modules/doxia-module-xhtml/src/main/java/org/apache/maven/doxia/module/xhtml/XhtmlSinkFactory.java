@@ -19,12 +19,12 @@ package org.apache.maven.doxia.module.xhtml;
  * under the License.
  */
 
+import javax.inject.Named;
+
 import java.io.Writer;
 
 import org.apache.maven.doxia.sink.Sink;
-import org.apache.maven.doxia.sink.SinkFactory;
 import org.apache.maven.doxia.sink.impl.AbstractXmlSinkFactory;
-import org.codehaus.plexus.component.annotations.Component;
 
 /**
  * Xhtml implementation of the Sink factory.
@@ -32,7 +32,7 @@ import org.codehaus.plexus.component.annotations.Component;
  * @author <a href="mailto:vincent.siveton@gmail.com">Vincent Siveton</a>
  * @since 1.0
  */
-@Component( role = SinkFactory.class, hint = "xhtml" )
+@Named( "xhtml" )
 public class XhtmlSinkFactory
     extends AbstractXmlSinkFactory
 {

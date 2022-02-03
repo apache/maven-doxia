@@ -19,14 +19,14 @@ package org.apache.maven.doxia;
  * under the License.
  */
 
+import javax.inject.Inject;
+import javax.inject.Named;
+
 import org.apache.maven.doxia.parser.ParseException;
 import org.apache.maven.doxia.parser.Parser;
 import org.apache.maven.doxia.parser.manager.ParserManager;
 import org.apache.maven.doxia.parser.manager.ParserNotFoundException;
 import org.apache.maven.doxia.sink.Sink;
-
-import org.codehaus.plexus.component.annotations.Component;
-import org.codehaus.plexus.component.annotations.Requirement;
 
 import java.io.Reader;
 
@@ -37,11 +37,11 @@ import java.io.Reader;
  * @author Jason van Zyl
  * @since 1.0
  */
-@Component( role = Doxia.class )
+@Named
 public class DefaultDoxia
     implements Doxia
 {
-    @Requirement
+    @Inject
     private ParserManager parserManager;
 
     // ----------------------------------------------------------------------

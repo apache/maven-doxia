@@ -30,23 +30,31 @@ import org.apache.maven.doxia.parser.XhtmlBaseParser;
 import org.apache.maven.doxia.sink.impl.SinkEventElement;
 import org.apache.maven.doxia.sink.impl.SinkEventTestingSink;
 import org.codehaus.plexus.PlexusTestCase;
+import org.codehaus.plexus.testing.PlexusTest;
 import org.hamcrest.CoreMatchers;
+import org.junit.jupiter.api.Test;
 
+import static org.codehaus.plexus.testing.PlexusExtension.getBasedir;
 import static org.hamcrest.MatcherAssert.assertThat;
+import static org.junit.jupiter.api.Assertions.assertEquals;
+import static org.junit.jupiter.api.Assertions.assertFalse;
+import static org.junit.jupiter.api.Assertions.assertThrows;
+import static org.junit.jupiter.api.Assertions.assertTrue;
 
 /**
  * Test snippet macro.
  *
  * @author ltheussl
  */
+@PlexusTest
 public class SnippetMacroTest
-    extends PlexusTestCase
 {
     /**
      * Test of execute method, of class SnippetMacro.
      *
      * @throws MacroExecutionException if a macro fails during testing.
      */
+    @Test
     public void testExecute()
         throws MacroExecutionException
     {
@@ -128,17 +136,10 @@ public class SnippetMacroTest
         macroParameters.put( "id", "first" );
         macroParameters.put( "verbatim", "" );
         macroParameters.put( "ignoreDownloadError", "false" );
-        try
-        {
-            executeSnippetMacro( macroParameters );
-            fail();
-        }
-        catch ( Exception e )
-        {
-            // good
-        }
+        assertThrows( Exception.class, () -> executeSnippetMacro( macroParameters ) );
     }
 
+    @Test
     public void testIgnoreDownloadError()
         throws Exception
     {
