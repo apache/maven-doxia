@@ -161,8 +161,6 @@ public abstract class AbstractParser
     }
 
     /**
-     * {@inheritDoc}
-     *
      * Convenience method to parse an arbitrary string and emit events into the given sink.
      *
      * @param string a string that provides the source input
@@ -177,8 +175,6 @@ public abstract class AbstractParser
     }
 
     /**
-     * {@inheritDoc}
-     *
      * Convenience method to parse an arbitrary string and emit events into the given sink.
      *
      * @param string a string that provides the source input

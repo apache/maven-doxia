@@ -88,6 +88,7 @@ under the License.
     <checkstyle.violation.ignore>RedundantThrows,NewlineAtEndOfFile,ParameterNumber,MethodLength,FileLength,MethodName,InnerAssignment,MagicNumber</checkstyle.violation.ignore>
     <project.build.outputTimestamp>2022-01-17T09:10:13Z</project.build.outputTimestamp>
     <slf4jVersion>1.7.32</slf4jVersion>
+    <junitVersion>5.8.2</junitVersion>
   </properties>
 
   <dependencyManagement>
@@ -207,6 +208,11 @@ under the License.
         <artifactId>slf4j-simple</artifactId>
         <version>${slf4jVersion}</version>
       </dependency>
+      <dependency>
+        <groupId>org.junit.jupiter</groupId>
+        <artifactId>junit-jupiter-engine</artifactId>
+        <version>${junitVersion}</version>
+      </dependency>
 
     </dependencies>
   </dependencyManagement>
@@ -215,7 +221,6 @@ under the License.
     <dependency>
       <groupId>org.junit.jupiter</groupId>
       <artifactId>junit-jupiter-engine</artifactId>
-      <version>5.8.2</version>
       <scope>test</scope>
     </dependency>
   </dependencies>
@@ -442,6 +447,9 @@ under the License.
             <groupId>org.apache.maven.plugins</groupId>
             <artifactId>maven-javadoc-plugin</artifactId>
             <configuration>
+              <doclint>none</doclint>
+              <failOnWarnings>false</failOnWarnings>
+              <failOnError>false</failOnError>
               <linksource>true</linksource>
               <groups>
                 <group>

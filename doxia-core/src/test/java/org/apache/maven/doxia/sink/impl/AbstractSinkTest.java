@@ -45,8 +45,6 @@ public abstract class AbstractSinkTest
 
     /**
      * Resets the writer and creates a new sink with it.
-     *
-     * {@inheritDoc}
      */
     @BeforeEach
     protected void setUp()
