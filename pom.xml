@@ -83,7 +83,7 @@ under the License.
   </distributionManagement>
 
   <properties>
-    <javaVersion>7</javaVersion><!-- remove when upgrade to maven-parent 34 -->
+    <javaVersion>8</javaVersion><!-- remove when upgrade to maven-parent 34 -->
     <maven.site.path>doxia-archives/doxia-LATEST</maven.site.path>
     <checkstyle.violation.ignore>RedundantThrows,NewlineAtEndOfFile,ParameterNumber,MethodLength,FileLength,MethodName,InnerAssignment,MagicNumber</checkstyle.violation.ignore>
     <project.build.outputTimestamp>2022-01-17T09:10:13Z</project.build.outputTimestamp>
