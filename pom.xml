@@ -87,7 +87,7 @@ under the License.
     <maven.site.path>doxia-archives/doxia-LATEST</maven.site.path>
     <checkstyle.violation.ignore>RedundantThrows,NewlineAtEndOfFile,ParameterNumber,MethodLength,FileLength,MethodName,InnerAssignment,MagicNumber</checkstyle.violation.ignore>
     <project.build.outputTimestamp>2022-01-17T09:10:13Z</project.build.outputTimestamp>
-    <slf4jVersion>1.7.32</slf4jVersion>
+    <slf4jVersion>1.7.35</slf4jVersion>
     <junitVersion>5.8.2</junitVersion>
   </properties>
 
