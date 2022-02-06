@@ -1857,11 +1857,6 @@ public class AptParser
                             {
                                 AptParser.this.sink.title_();
                             }
-                            else
-                            {
-                                throw new AptParseException( "missing title" );
-                            }
-                            break;
                         case 1:
                             if ( author )
                             {
@@ -1919,11 +1914,6 @@ public class AptParser
                     {
                         AptParser.this.sink.title_();
                     }
-                    else
-                    {
-                        throw new AptParseException( "missing title" );
-                    }
-                    break;
                 case 1:
                     if ( author )
                     {
