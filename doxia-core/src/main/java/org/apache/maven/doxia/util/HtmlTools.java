@@ -453,7 +453,7 @@ public class HtmlTools
     {
         if ( !isValidCodePoint( codePoint ) )
         {
-            throw new IllegalArgumentException();
+            throw new IllegalArgumentException( "Code point " + codePoint + " is not valid" );
         }
 
         if ( isSupplementaryCodePoint( codePoint ) )

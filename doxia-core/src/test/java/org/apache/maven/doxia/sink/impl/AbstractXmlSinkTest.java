@@ -67,7 +67,7 @@ public class AbstractXmlSinkTest
             instance.writeStartTag( null );
             fail( "null tag should fail!" );
         }
-        catch ( IllegalArgumentException e )
+        catch ( NullPointerException e )
         {
             assertNotNull( e );
         }
@@ -77,7 +77,7 @@ public class AbstractXmlSinkTest
             instance.writeEndTag( null );
             fail( "null tag should fail!" );
         }
-        catch ( IllegalArgumentException e )
+        catch ( NullPointerException e )
         {
             assertNotNull( e );
         }

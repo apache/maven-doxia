@@ -33,6 +33,17 @@ public class AptParseException
     static final long serialVersionUID = 1694654412921168623L;
 
     /**
+     * Construct a new AptParseException with the cause.
+     *
+     * @param e the cause. This can be retrieved later by the <code>Throwable.getCause()</code> method.
+     * (A null value is permitted, and indicates that the cause is nonexistent or unknown.)
+     */
+    public AptParseException( Exception e )
+    {
+        super( e );
+    }
+
+    /**
      * Construct a new AptParseException with the specified detail message.
      *
      * @param message The detailed message.
@@ -73,7 +84,7 @@ public class AptParseException
      */
     public AptParseException( String message, Exception e, String name, int line, int column )
     {
-        super( e, message, name, line, column );
+        super( message, e, name, line, column );
     }
 
     /**

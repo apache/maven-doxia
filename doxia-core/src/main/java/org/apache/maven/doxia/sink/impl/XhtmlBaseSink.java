@@ -28,6 +28,7 @@ import java.util.HashMap;
 import java.util.LinkedList;
 import java.util.List;
 import java.util.Map;
+import java.util.Objects;
 import java.util.Stack;
 
 import javax.swing.text.MutableAttributeSet;
@@ -1611,10 +1612,7 @@ public class XhtmlBaseSink
     @Override
     public void anchor( String name, SinkEventAttributes attributes )
     {
-        if ( name == null )
-        {
-            throw new NullPointerException( "Anchor name cannot be null!" );
-        }
+        Objects.requireNonNull( name, "name cannot be null" );
 
         if ( headFlag )
         {
@@ -1690,10 +1688,7 @@ public class XhtmlBaseSink
      */
     private void link( String href, String target, MutableAttributeSet attributes )
     {
-        if ( href == null )
-        {
-            throw new NullPointerException( "Link name cannot be null!" );
-        }
+        Objects.requireNonNull( href, "href cannot be null" );
 
         if ( headFlag )
         {

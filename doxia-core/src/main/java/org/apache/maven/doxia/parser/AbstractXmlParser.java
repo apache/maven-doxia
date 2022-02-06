@@ -110,7 +110,7 @@ public abstract class AbstractXmlParser
             }
             catch ( IOException e )
             {
-                throw new ParseException( "Error reading the model: " + e.getMessage(), e );
+                throw new ParseException( "Error reading the model", e );
             }
 
             new XmlValidator( ).validate( content );
@@ -133,12 +133,12 @@ public abstract class AbstractXmlParser
         }
         catch ( XmlPullParserException ex )
         {
-            throw new ParseException( "Error parsing the model: " + ex.getMessage(), ex, ex.getLineNumber(),
+            throw new ParseException( "Error parsing the model", ex, ex.getLineNumber(),
                                       ex.getColumnNumber() );
         }
         catch ( MacroExecutionException ex )
         {
-            throw new ParseException( "Macro execution failed: " + ex.getMessage(), ex );
+            throw new ParseException( "Macro execution failed", ex );
         }
 
         setSecondParsing( false );
@@ -265,6 +265,7 @@ public abstract class AbstractXmlParser
             }
             catch ( IOException io )
             {
+                // Does not have a cause arg
                 throw new XmlPullParserException( "IOException: " + io.getMessage(), parser, io );
             }
         }
@@ -770,7 +771,7 @@ public abstract class AbstractXmlParser
             }
             catch ( IOException e )
             {
-                throw new SAXException( "IOException: " + e.getMessage(), e );
+                throw new SAXException( e );
             }
             finally
             {
@@ -802,7 +803,7 @@ public abstract class AbstractXmlParser
             }
             catch ( IOException e )
             {
-                throw new SAXException( "IOException: " + e.getMessage(), e );
+                throw new SAXException( e );
             }
             finally
             {

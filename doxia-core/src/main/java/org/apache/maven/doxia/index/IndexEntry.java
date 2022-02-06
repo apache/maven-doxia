@@ -261,7 +261,7 @@ public class IndexEntry
         }
         else if ( entries.size() > 1 )
         {
-            throw new RuntimeException( "This index has more than one root entry" );
+            throw new IllegalStateException( "This index has more than one root entry" );
         }
         else
         {

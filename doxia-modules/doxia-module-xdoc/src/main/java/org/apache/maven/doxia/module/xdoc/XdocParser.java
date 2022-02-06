@@ -101,7 +101,7 @@ public class XdocParser
         }
         catch ( IOException ex )
         {
-            throw new ParseException( "Error reading the input source: " + ex.getMessage(), ex );
+            throw new ParseException( "Error reading the input source", ex );
         }
         finally
         {

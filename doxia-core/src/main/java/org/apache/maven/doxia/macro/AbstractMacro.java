@@ -21,6 +21,7 @@ package org.apache.maven.doxia.macro;
 
 import java.util.Map;
 
+import org.apache.commons.lang3.Validate;
 import org.apache.maven.doxia.sink.SinkEventAttributes;
 import org.apache.maven.doxia.sink.impl.SinkEventAttributeSet;
 import org.codehaus.plexus.util.StringUtils;
@@ -41,7 +42,9 @@ public abstract class AbstractMacro
      * @param paramName The name of the parameter to check.
      * @param paramValue The parameter value.
      * @since 1.1
+     * @deprecated Not used, use {@link Validate}
      */
+    @Deprecated
     protected void required( String paramName, String paramValue )
     {
         if ( StringUtils.isEmpty( paramValue ) )

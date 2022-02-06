@@ -117,7 +117,7 @@ public class TocMacro
         }
         catch ( ParseException e )
         {
-            throw new MacroExecutionException( "ParseException: " + e.getMessage(), e );
+            throw new MacroExecutionException( e );
         }
 
         if ( index.getChildEntries().size() > 0 )

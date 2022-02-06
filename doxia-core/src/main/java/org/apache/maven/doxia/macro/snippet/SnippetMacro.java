@@ -118,7 +118,7 @@ public class SnippetMacro
             }
             catch ( MalformedURLException e )
             {
-                throw new IllegalArgumentException( urlParam + " is a malformed URL" );
+                throw new IllegalArgumentException( urlParam + " is a malformed URL", e );
             }
         }
         else if ( !StringUtils.isEmpty( fileParam ) )
@@ -136,7 +136,7 @@ public class SnippetMacro
             }
             catch ( MalformedURLException e )
             {
-                throw new IllegalArgumentException( fileParam + " is a malformed URL" );
+                throw new IllegalArgumentException( fileParam + " is a malformed URL", e );
             }
         }
         else

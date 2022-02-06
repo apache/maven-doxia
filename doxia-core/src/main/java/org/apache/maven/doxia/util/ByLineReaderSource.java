@@ -27,6 +27,7 @@ package org.apache.maven.doxia.util;
 import java.io.IOException;
 import java.io.LineNumberReader;
 import java.io.Reader;
+import java.util.Objects;
 
 import org.apache.maven.doxia.parser.ParseException;
 import org.codehaus.plexus.util.IOUtil;
@@ -56,7 +57,7 @@ public class ByLineReaderSource implements ByLineSource
      * called
      */
     private boolean ungetted = false;
-    
+
     private String name;
 
     /**
@@ -68,7 +69,7 @@ public class ByLineReaderSource implements ByLineSource
     {
         this( in, "" );
     }
-    
+
     /**
      * <p>Constructor for ByLineReaderSource.</p>
      *
@@ -78,7 +79,7 @@ public class ByLineReaderSource implements ByLineSource
     public ByLineReaderSource( final Reader in, final String name )
     {
         this.reader = new LineNumberReader( in );
-        
+
         this.name = name;
 
         this.lineNumber = -1;
@@ -172,10 +173,8 @@ public class ByLineReaderSource implements ByLineSource
     /** {@inheritDoc} */
     public final void unget( final String s )
     {
-        if ( s == null )
-        {
-            throw new IllegalArgumentException( "argument can't be null" );
-        }
+        Objects.requireNonNull( s, "s cannot be null" );
+
         if ( s.length() != 0 )
         {
             ungetLine();

@@ -32,6 +32,18 @@ public class MacroExecutionException
     static final long serialVersionUID = -6314856898570018814L;
 
     /**
+     * Construct a new <code>MacroExecutionException</code> with the specified cause.
+     *
+     * @param cause the cause. This can be retrieved later by the
+     * <code>Throwable.getCause()</code> method. (A null value is permitted, and indicates
+     * that the cause is nonexistent or unknown.)
+     */
+    public MacroExecutionException( Throwable cause )
+    {
+        super( cause );
+    }
+
+    /**
      * Construct a new <code>MacroExecutionException</code> with the specified detail message.
      *
      * @param message The detailed message.

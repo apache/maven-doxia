@@ -20,6 +20,7 @@ package org.apache.maven.doxia.sink.impl;
  */
 
 import java.util.Arrays;
+import java.util.Objects;
 
 /**
  * A single sink event, used for testing purposes in order to check
@@ -45,10 +46,7 @@ public class SinkEventElement
      */
     public SinkEventElement( String name, Object[] arguments )
     {
-        if ( name == null )
-        {
-            throw new NullPointerException( "Element name can't be null!" );
-        }
+        Objects.requireNonNull( name, "name cannot be null" );
 
         this.methodName = name;
         this.args = arguments;

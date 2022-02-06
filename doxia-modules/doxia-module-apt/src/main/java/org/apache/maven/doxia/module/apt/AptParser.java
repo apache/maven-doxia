@@ -204,7 +204,7 @@ public class AptParser
         }
         catch ( IOException e )
         {
-            throw new AptParseException( "IOException: " + e.getMessage(), e );
+            throw new AptParseException( e );
         }
 
         try
@@ -237,7 +237,7 @@ public class AptParser
         catch ( AptParseException ape )
         {
             // TODO handle column number
-            throw new AptParseException( ape.getMessage(), ape, getSourceName(), getSourceLineNumber(), -1 );
+            throw new AptParseException( null, ape, getSourceName(), getSourceLineNumber(), -1 );
         }
         finally
         {

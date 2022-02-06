@@ -97,7 +97,7 @@ public class XmlValidator
         }
         catch ( IOException | SAXException e )
         {
-            throw new ParseException( "Error validating the model: " + e.getMessage(), e );
+            throw new ParseException( "Error validating the model", e );
         }
     }
 

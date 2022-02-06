@@ -71,7 +71,7 @@ public class LineBreaker
     {
         if ( max <= 0 )
         {
-            throw new IllegalArgumentException( "maxLineLength <= 0" );
+            throw new IllegalArgumentException( "max must be a positive integer" );
         }
 
         destination = out;

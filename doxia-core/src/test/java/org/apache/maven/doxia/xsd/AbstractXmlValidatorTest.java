@@ -141,7 +141,7 @@ public abstract class AbstractXmlValidatorTest
 
             if ( testJar == null )
             {
-                throw new RuntimeException(
+                throw new IllegalStateException(
                         "Could not find the Doxia test documents artefact i.e. doxia-test-docs-XXX.jar" );
             }
         }

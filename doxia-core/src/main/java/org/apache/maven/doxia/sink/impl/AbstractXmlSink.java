@@ -19,6 +19,8 @@ package org.apache.maven.doxia.sink.impl;
  * under the License.
  */
 
+import java.util.Objects;
+
 import javax.swing.text.MutableAttributeSet;
 import javax.swing.text.html.HTML.Tag;
 
@@ -114,10 +116,7 @@ public abstract class AbstractXmlSink
      */
     protected void writeStartTag( Tag t, MutableAttributeSet att, boolean isSimpleTag )
     {
-        if ( t == null )
-        {
-            throw new IllegalArgumentException( "A tag is required" );
-        }
+        Objects.requireNonNull( t, "t cannot be null" );
 
         StringBuilder sb = new StringBuilder();
 
@@ -165,10 +164,7 @@ public abstract class AbstractXmlSink
      */
     protected void writeEndTag( Tag t )
     {
-        if ( t == null )
-        {
-            throw new IllegalArgumentException( "A tag is required" );
-        }
+        Objects.requireNonNull( t, "t cannot be null" );
 
         StringBuilder sb = new StringBuilder();
         sb.append( LESS_THAN );

@@ -24,6 +24,7 @@ import java.io.IOException;
 import java.io.OutputStream;
 import java.io.OutputStreamWriter;
 import java.io.Writer;
+import java.util.Objects;
 
 import org.apache.maven.doxia.sink.Sink;
 import org.apache.maven.doxia.sink.SinkFactory;
@@ -60,10 +61,7 @@ public abstract class AbstractTextSinkFactory
     public Sink createSink( File outputDir, String outputName, String encoding )
         throws IOException
     {
-        if ( outputDir == null )
-        {
-            throw new IllegalArgumentException( "outputDir cannot be null." );
-        }
+        Objects.requireNonNull( outputDir, "outputDir cannot be null" );
 
         if ( !outputDir.exists() )
         {
