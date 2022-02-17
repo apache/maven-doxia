@@ -21,6 +21,7 @@ package org.apache.maven.doxia.macro.manager;
 
 import javax.inject.Inject;
 import javax.inject.Named;
+import javax.inject.Singleton;
 
 import org.apache.maven.doxia.macro.Macro;
 
@@ -32,6 +33,7 @@ import java.util.Map;
  * @author <a href="mailto:jason@maven.org">Jason van Zyl</a>
  * @since 1.0
  */
+@Singleton
 @Named
 public class DefaultMacroManager
     implements MacroManager

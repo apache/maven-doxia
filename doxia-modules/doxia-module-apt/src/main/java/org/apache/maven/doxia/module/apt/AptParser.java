@@ -20,6 +20,7 @@ package org.apache.maven.doxia.module.apt;
  */
 
 import javax.inject.Named;
+import javax.inject.Singleton;
 
 import org.apache.maven.doxia.macro.MacroExecutionException;
 import org.apache.maven.doxia.macro.MacroRequest;
@@ -52,6 +53,7 @@ import java.util.StringTokenizer;
  *
  * @since 1.0
  */
+@Singleton
 @Named( "apt" )
 public class AptParser
     extends AbstractTextParser

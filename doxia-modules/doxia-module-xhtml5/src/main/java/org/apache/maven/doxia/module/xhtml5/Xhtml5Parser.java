@@ -27,6 +27,7 @@ import java.util.HashMap;
 import java.util.Map;
 
 import javax.inject.Named;
+import javax.inject.Singleton;
 import javax.swing.text.html.HTML.Attribute;
 
 import org.apache.maven.doxia.macro.MacroExecutionException;
@@ -46,6 +47,7 @@ import org.slf4j.LoggerFactory;
 /**
  * Parse an xhtml model and emit events into a Doxia Sink.
  */
+@Singleton
 @Named( Xhtml5Parser.ROLE_HINT )
 public class Xhtml5Parser
     extends Xhtml5BaseParser

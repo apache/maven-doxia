@@ -21,6 +21,7 @@ package org.apache.maven.doxia;
 
 import javax.inject.Inject;
 import javax.inject.Named;
+import javax.inject.Singleton;
 
 import org.apache.maven.doxia.parser.ParseException;
 import org.apache.maven.doxia.parser.Parser;
@@ -37,6 +38,7 @@ import java.io.Reader;
  * @author Jason van Zyl
  * @since 1.0
  */
+@Singleton
 @Named
 public class DefaultDoxia
     implements Doxia

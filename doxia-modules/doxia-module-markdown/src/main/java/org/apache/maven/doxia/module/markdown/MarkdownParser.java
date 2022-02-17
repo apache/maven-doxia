@@ -21,6 +21,7 @@ package org.apache.maven.doxia.module.markdown;
 
 import javax.inject.Inject;
 import javax.inject.Named;
+import javax.inject.Singleton;
 
 import com.vladsch.flexmark.ast.Heading;
 import com.vladsch.flexmark.ast.HtmlCommentBlock;
@@ -66,6 +67,7 @@ import java.util.regex.Pattern;
  * @author Julien Nicoulaud
  * @since 1.3
  */
+@Singleton
 @Named( MarkdownParser.ROLE_HINT )
 public class MarkdownParser
     extends AbstractParser

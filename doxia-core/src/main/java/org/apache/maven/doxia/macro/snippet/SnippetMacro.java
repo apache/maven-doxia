@@ -20,6 +20,7 @@ package org.apache.maven.doxia.macro.snippet;
  */
 
 import javax.inject.Named;
+import javax.inject.Singleton;
 
 import org.apache.maven.doxia.macro.AbstractMacro;
 import org.apache.maven.doxia.macro.MacroExecutionException;
@@ -40,6 +41,7 @@ import java.util.Map;
 /**
  * A macro that prints out the content of a file or a URL.
  */
+@Singleton
 @Named( "snippet" )
 public class SnippetMacro
     extends AbstractMacro

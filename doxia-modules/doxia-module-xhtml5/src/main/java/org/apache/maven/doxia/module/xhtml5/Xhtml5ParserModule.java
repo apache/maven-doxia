@@ -20,12 +20,14 @@ package org.apache.maven.doxia.module.xhtml5;
  */
 
 import javax.inject.Named;
+import javax.inject.Singleton;
 
 import org.apache.maven.doxia.parser.module.AbstractParserModule;
 
 /**
  * <p>Xhtml5ParserModule class.</p>
  */
+@Singleton
 @Named( "xhtml5" )
 public class Xhtml5ParserModule
     extends AbstractParserModule
