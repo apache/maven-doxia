@@ -29,8 +29,6 @@ import org.apache.maven.doxia.parser.Parser;
  */
 public interface ParserManager
 {
-    /** The Plexus lookup role. */
-    String ROLE = ParserManager.class.getName();
 
     /**
      * Returns the parser that corresponds to the given id.

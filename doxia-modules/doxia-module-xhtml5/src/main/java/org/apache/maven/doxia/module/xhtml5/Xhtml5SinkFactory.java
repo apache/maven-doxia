@@ -20,6 +20,7 @@ package org.apache.maven.doxia.module.xhtml5;
  */
 
 import javax.inject.Named;
+import javax.inject.Singleton;
 
 import java.io.Writer;
 
@@ -29,6 +30,7 @@ import org.apache.maven.doxia.sink.impl.AbstractXmlSinkFactory;
 /**
  * Xhtml implementation of the Sink factory.
  */
+@Singleton
 @Named( "xhtml5" )
 public class Xhtml5SinkFactory
     extends AbstractXmlSinkFactory

@@ -20,6 +20,7 @@ package org.apache.maven.doxia.module.fml;
  */
 
 import javax.inject.Named;
+import javax.inject.Singleton;
 
 import org.apache.maven.doxia.parser.module.AbstractParserModule;
 
@@ -28,6 +29,7 @@ import org.apache.maven.doxia.parser.module.AbstractParserModule;
  *
  * @since 1.6
  */
+@Singleton
 @Named( "fml" )
 public class FmlParserModule
     extends AbstractParserModule

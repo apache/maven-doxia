@@ -29,8 +29,6 @@ import org.apache.maven.doxia.macro.Macro;
  */
 public interface MacroManager
 {
-    /** The Plexus lookup role. */
-    String ROLE = MacroManager.class.getName();
 
     /**
      * Returns the MacroManager that corresponds to the given id.

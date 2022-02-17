@@ -20,6 +20,7 @@ package org.apache.maven.doxia.macro.toc;
  */
 
 import javax.inject.Named;
+import javax.inject.Singleton;
 
 import java.io.StringReader;
 
@@ -76,6 +77,7 @@ import org.codehaus.plexus.util.StringUtils;
  *
  * @author <a href="mailto:vincent.siveton@gmail.com">Vincent Siveton</a>
  */
+@Singleton
 @Named( "toc" )
 public class TocMacro
     extends AbstractMacro

@@ -21,6 +21,7 @@ package org.apache.maven.doxia.parser.module;
 
 import javax.inject.Inject;
 import javax.inject.Named;
+import javax.inject.Singleton;
 
 import java.util.Collection;
 import java.util.LinkedHashMap;
@@ -31,6 +32,7 @@ import java.util.Map;
  *
  * @since 1.6
  */
+@Singleton
 @Named
 public class DefaultParserModuleManager
     implements ParserModuleManager

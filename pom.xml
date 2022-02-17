@@ -89,6 +89,7 @@ under the License.
     <project.build.outputTimestamp>2022-02-13T21:44:43Z</project.build.outputTimestamp>
     <slf4jVersion>1.7.32</slf4jVersion>
     <junitVersion>5.8.2</junitVersion>
+    <sisuVersion>0.3.5</sisuVersion>
   </properties>
 
   <dependencyManagement>
@@ -183,7 +184,7 @@ under the License.
       <dependency>
         <groupId>org.eclipse.sisu</groupId>
         <artifactId>org.eclipse.sisu.plexus</artifactId>
-        <version>0.3.5</version>
+        <version>${sisuVersion}</version>
       </dependency>
       <dependency>
         <groupId>com.google.inject</groupId>
@@ -279,12 +280,14 @@ under the License.
     </pluginManagement>
     <plugins>
       <plugin>
-        <groupId>org.codehaus.plexus</groupId>
-        <artifactId>plexus-component-metadata</artifactId>
+        <groupId>org.eclipse.sisu</groupId>
+        <artifactId>sisu-maven-plugin</artifactId>
+        <version>${sisuVersion}</version>
         <executions>
           <execution>
             <goals>
-              <goal>generate-metadata</goal>
+              <goal>main-index</goal>
+              <goal>test-index</goal>
             </goals>
           </execution>
         </executions>

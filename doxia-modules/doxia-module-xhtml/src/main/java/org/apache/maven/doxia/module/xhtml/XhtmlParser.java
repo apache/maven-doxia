@@ -27,6 +27,7 @@ import java.util.HashMap;
 import java.util.Map;
 
 import javax.inject.Named;
+import javax.inject.Singleton;
 import javax.swing.text.html.HTML.Attribute;
 
 import org.apache.maven.doxia.macro.MacroExecutionException;
@@ -49,6 +50,7 @@ import org.slf4j.LoggerFactory;
  * @author <a href="mailto:jason@maven.org">Jason van Zyl</a>
  * @since 1.0
  */
+@Singleton
 @Named( "xhtml" )
 public class XhtmlParser
     extends XhtmlBaseParser

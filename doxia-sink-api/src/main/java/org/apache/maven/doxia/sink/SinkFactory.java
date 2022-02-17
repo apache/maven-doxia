@@ -31,8 +31,6 @@ import java.io.OutputStream;
  */
 public interface SinkFactory
 {
-    /** The Plexus SinkFactory Role. */
-    String ROLE = SinkFactory.class.getName();
 
     /**
      * Create a <code>Sink</code> into a file.

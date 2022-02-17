@@ -20,6 +20,7 @@ package org.apache.maven.doxia.module.apt;
  */
 
 import javax.inject.Named;
+import javax.inject.Singleton;
 
 import java.io.Writer;
 
@@ -32,6 +33,7 @@ import org.apache.maven.doxia.sink.impl.AbstractTextSinkFactory;
  * @author <a href="mailto:vincent.siveton@gmail.com">Vincent Siveton</a>
  * @since 1.0
  */
+@Singleton
 @Named( "apt" )
 public class AptSinkFactory
     extends AbstractTextSinkFactory

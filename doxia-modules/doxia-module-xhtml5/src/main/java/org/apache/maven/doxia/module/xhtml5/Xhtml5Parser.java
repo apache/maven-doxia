@@ -27,6 +27,7 @@ import java.util.HashMap;
 import java.util.Map;
 
 import javax.inject.Named;
+import javax.inject.Singleton;
 import javax.swing.text.html.HTML.Attribute;
 
 import org.apache.maven.doxia.macro.MacroExecutionException;
@@ -46,17 +47,13 @@ import org.slf4j.LoggerFactory;
 /**
  * Parse an xhtml model and emit events into a Doxia Sink.
  */
-@Named( Xhtml5Parser.ROLE_HINT )
+@Singleton
+@Named( "xhtml5" )
 public class Xhtml5Parser
     extends Xhtml5BaseParser
     implements Xhtml5Markup
 {
     private static final Logger LOGGER = LoggerFactory.getLogger( Xhtml5Parser.class );
-
-    /**
-     * The role hint for the {@link Xhtml5Parser} Plexus component.
-     */
-    public static final String ROLE_HINT = "xhtml5";
 
     /** For boxed verbatim. */
     private boolean boxed;

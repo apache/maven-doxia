@@ -33,8 +33,6 @@ import java.io.Reader;
  */
 public interface Parser
 {
-    /** The Plexus lookup role. */
-    String ROLE = Parser.class.getName();
 
     /** Unknown parser type */
     int UNKNOWN_TYPE = 0;

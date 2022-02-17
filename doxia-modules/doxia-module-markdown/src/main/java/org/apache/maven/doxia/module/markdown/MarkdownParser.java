@@ -21,6 +21,7 @@ package org.apache.maven.doxia.module.markdown;
 
 import javax.inject.Inject;
 import javax.inject.Named;
+import javax.inject.Singleton;
 
 import com.vladsch.flexmark.ast.Heading;
 import com.vladsch.flexmark.ast.HtmlCommentBlock;
@@ -66,15 +67,11 @@ import java.util.regex.Pattern;
  * @author Julien Nicoulaud
  * @since 1.3
  */
-@Named( MarkdownParser.ROLE_HINT )
+@Singleton
+@Named( "markdown" )
 public class MarkdownParser
     extends AbstractParser
 {
-
-    /**
-     * The role hint for the {@link MarkdownParser} Plexus component.
-     */
-    public static final String ROLE_HINT = "markdown";
 
     /**
      * Regex that identifies a multimarkdown-style metadata section at the start of the document

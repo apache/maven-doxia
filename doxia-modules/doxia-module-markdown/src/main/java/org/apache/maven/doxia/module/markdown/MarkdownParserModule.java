@@ -20,6 +20,7 @@ package org.apache.maven.doxia.module.markdown;
  */
 
 import javax.inject.Named;
+import javax.inject.Singleton;
 
 import org.apache.maven.doxia.parser.module.AbstractParserModule;
 
@@ -28,6 +29,7 @@ import org.apache.maven.doxia.parser.module.AbstractParserModule;
  *
  * @since 1.6
  */
+@Singleton
 @Named( "markdown" )
 public class MarkdownParserModule
     extends AbstractParserModule
@@ -47,6 +49,6 @@ public class MarkdownParserModule
      */
     public MarkdownParserModule()
     {
-        super( MarkdownParser.ROLE_HINT, MarkdownParser.ROLE_HINT, FILE_EXTENSION, ALTERNATE_FILE_EXTENSION );
+        super( "markdown", "markdown", FILE_EXTENSION, ALTERNATE_FILE_EXTENSION );
     }
 }
