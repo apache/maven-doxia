@@ -34,8 +34,6 @@ import java.io.Reader;
  */
 public interface Doxia
 {
-    /** The Plexus lookup role. */
-    String ROLE = Doxia.class.getName();
 
     /**
      * Parses the given source model using a parser with given id,

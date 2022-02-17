@@ -49,6 +49,6 @@ public class MarkdownParserModule
      */
     public MarkdownParserModule()
     {
-        super( MarkdownParser.ROLE_HINT, MarkdownParser.ROLE_HINT, FILE_EXTENSION, ALTERNATE_FILE_EXTENSION );
+        super( "markdown", "markdown", FILE_EXTENSION, ALTERNATE_FILE_EXTENSION );
     }
 }

@@ -48,17 +48,12 @@ import org.slf4j.LoggerFactory;
  * Parse an xhtml model and emit events into a Doxia Sink.
  */
 @Singleton
-@Named( Xhtml5Parser.ROLE_HINT )
+@Named( "xhtml5" )
 public class Xhtml5Parser
     extends Xhtml5BaseParser
     implements Xhtml5Markup
 {
     private static final Logger LOGGER = LoggerFactory.getLogger( Xhtml5Parser.class );
-
-    /**
-     * The role hint for the {@link Xhtml5Parser} Plexus component.
-     */
-    public static final String ROLE_HINT = "xhtml5";
 
     /** For boxed verbatim. */
     private boolean boxed;

@@ -29,8 +29,6 @@ import org.apache.maven.doxia.sink.Sink;
  */
 public interface Macro
 {
-    /** The Plexus lookup role. */
-    String ROLE = Macro.class.getName();
 
     /** The vm line separator */
     String EOL = System.getProperty( "line.separator" );

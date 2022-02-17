@@ -55,8 +55,6 @@ package org.apache.maven.doxia.sink;
  */
 public interface Sink
 {
-    /** The Plexus Sink Role. */
-    String ROLE = Sink.class.getName();
 
     /**
      * A numbering to handle a number list.

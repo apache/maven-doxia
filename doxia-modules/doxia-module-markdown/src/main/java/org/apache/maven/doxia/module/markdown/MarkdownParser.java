@@ -68,15 +68,10 @@ import java.util.regex.Pattern;
  * @since 1.3
  */
 @Singleton
-@Named( MarkdownParser.ROLE_HINT )
+@Named( "markdown" )
 public class MarkdownParser
     extends AbstractParser
 {
-
-    /**
-     * The role hint for the {@link MarkdownParser} Plexus component.
-     */
-    public static final String ROLE_HINT = "markdown";
 
     /**
      * Regex that identifies a multimarkdown-style metadata section at the start of the document
