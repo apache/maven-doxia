@@ -1385,9 +1385,8 @@ public class XhtmlBaseSink
     }
 
     /**
-     * The default class style is <code>a</code> or <code>b</code> depending the row id.
+     * Rows are striped with two colors by adding the class <code>a</code> or <code>b</code>. {@inheritDoc}
      *
-     * {@inheritDoc}
      * @see javax.swing.text.html.HTML.Tag#TR
      */
     @Override
@@ -1402,29 +1401,30 @@ public class XhtmlBaseSink
     }
 
     /**
-     * The default class style is <code>a</code> or <code>b</code> depending the row id.
+     * Rows are striped with two colors by adding the class <code>a</code> or <code>b</code>. {@inheritDoc}
      *
-     * {@inheritDoc}
      * @see javax.swing.text.html.HTML.Tag#TR
      */
     @Override
     public void tableRow( SinkEventAttributes attributes )
     {
-        MutableAttributeSet att = new SinkEventAttributeSet();
+        MutableAttributeSet attrs = SinkUtils.filterAttributes( attributes, SinkUtils.SINK_TR_ATTRIBUTES );
 
-        if ( evenTableRow )
+        if ( attrs == null )
         {
-            att.addAttribute( Attribute.CLASS, "a" );
-        }
-        else
-        {
-            att.addAttribute( Attribute.CLASS, "b" );
+            attrs = new SinkEventAttributeSet();
         }
 
-        att.addAttributes( SinkUtils.filterAttributes(
-                attributes, SinkUtils.SINK_TR_ATTRIBUTES  ) );
+        String rowClass = evenTableRow ? "a" : "b";
+        if ( attrs.isDefined( Attribute.CLASS.toString() ) )
+        {
+            String givenRowClass = (String) attrs.getAttribute( Attribute.CLASS.toString() );
+            rowClass = givenRowClass + " " + rowClass;
+        }
 
-        writeStartTag( HtmlMarkup.TR, att );
+        attrs.addAttribute( Attribute.CLASS, rowClass );
+
+        writeStartTag( HtmlMarkup.TR, attrs );
 
         evenTableRow = !evenTableRow;
 
@@ -1652,72 +1652,57 @@ public class XhtmlBaseSink
         }
     }
 
-    /** {@inheritDoc} */
+    /**
+     * The default style class for external link is <code>externalLink</code>.
+     *
+     * {@inheritDoc}
+     * @see javax.swing.text.html.HTML.Tag#A
+     **/
     @Override
     public void link( String name )
     {
         link( name, null );
     }
 
-    /** {@inheritDoc} */
+    /**
+     * The default style class for external link is <code>externalLink</code>.
+     *
+     * {@inheritDoc}
+     * @see javax.swing.text.html.HTML.Tag#A
+     **/
     @Override
     public void link( String name, SinkEventAttributes attributes )
     {
-        if ( attributes == null )
-        {
-            link( name, null, null );
-        }
-        else
-        {
-            String target = (String) attributes.getAttribute( Attribute.TARGET.toString() );
-            MutableAttributeSet atts = SinkUtils.filterAttributes(
-                    attributes, SinkUtils.SINK_LINK_ATTRIBUTES  );
-
-            link( name, target, atts );
-        }
-    }
-
-    /**
-     * Adds a link with an optional target.
-     * The default style class for external link is <code>externalLink</code>.
-     *
-     * @param href the link href.
-     * @param target the link target, may be null.
-     * @param attributes an AttributeSet, may be null.
-     *      This is supposed to be filtered already.
-     * @see javax.swing.text.html.HTML.Tag#A
-     */
-    private void link( String href, String target, MutableAttributeSet attributes )
-    {
-        Objects.requireNonNull( href, "href cannot be null" );
+        Objects.requireNonNull( name, "name cannot be null" );
 
         if ( headFlag )
         {
             return;
         }
 
-        MutableAttributeSet att = new SinkEventAttributeSet();
+        MutableAttributeSet atts = SinkUtils.filterAttributes(
+                attributes, SinkUtils.SINK_LINK_ATTRIBUTES );
 
-        if ( DoxiaUtils.isExternalLink( href  ) )
+        if ( atts == null )
         {
-            att.addAttribute( Attribute.CLASS, "externalLink" );
+            atts = new SinkEventAttributeSet();
         }
 
-        att.addAttribute( Attribute.HREF, HtmlTools.escapeHTML( href  ) );
-
-        if ( target != null )
+        if ( DoxiaUtils.isExternalLink( name ) )
         {
-            att.addAttribute( Attribute.TARGET, target );
+            String linkClass = "externalLink";
+            if ( atts.isDefined( Attribute.CLASS.toString() ) )
+             {
+                 String givenLinkClass = (String) atts.getAttribute( Attribute.CLASS.toString() );
+                 linkClass = givenLinkClass + " " + linkClass;
+             }
+
+             atts.addAttribute( Attribute.CLASS, linkClass );
         }
 
-        if ( attributes != null )
-        {
-            attributes.removeAttribute( Attribute.HREF.toString() );
-            attributes.removeAttribute( Attribute.TARGET.toString() );
-            att.addAttributes( attributes );
-        }
+        atts.addAttribute( Attribute.HREF, HtmlTools.escapeHTML( name ) );
 
-        writeStartTag( HtmlMarkup.A, att );
+        writeStartTag( HtmlMarkup.A, atts );
     }
 
     /**

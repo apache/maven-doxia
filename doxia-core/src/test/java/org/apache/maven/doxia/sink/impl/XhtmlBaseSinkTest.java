@@ -47,6 +47,8 @@ public class XhtmlBaseSinkTest
     private XhtmlBaseSink sink;
     private Writer writer;
 
+    String EOL = System.lineSeparator();
+
     @BeforeEach
     public void setUp()
     {
@@ -705,15 +707,23 @@ public class XhtmlBaseSinkTest
         {
             sink = new XhtmlBaseSink( writer );
 
+            sink.tableRows( null, false );
             sink.tableRow( attributes );
             sink.tableRow_();
+            sink.tableRow();
+            sink.tableRow_();
+            sink.tableRows_();
+            sink.table_();
         }
         finally
         {
             sink.close();
         }
 
-        assertEquals( "<tr class=\"a\" style=\"bold\"></tr>", writer.toString() );
+        String xmlExpected = "<table border=\"0\" class=\"bodyTable\">" + EOL + "<tr style=\"bold\" class=\"a\"></tr>"
+            + EOL + "<tr class=\"b\"></tr></table>";
+
+        assertEquals( xmlExpected, writer.toString() );
     }
 
     /**
@@ -827,7 +837,56 @@ public class XhtmlBaseSinkTest
             sink.close();
         }
 
-        assertEquals( "<a href=\"link.html\" style=\"bold\"></a>", writer.toString() );
+        assertEquals( "<a style=\"bold\" href=\"link.html\"></a>", writer.toString() );
+    }
+
+    /**
+     * Test of link method for an external link.
+     */
+    @Test
+    public void testLinkExternal()
+    {
+        final String name = "https://www.apache.org";
+
+        try
+        {
+            sink = new XhtmlBaseSink( writer );
+            sink.link( name, attributes );
+            sink.link_();
+        }
+        finally
+        {
+            sink.close();
+        }
+
+        assertEquals( "<a style=\"bold\" class=\"externalLink\" href=\"https://www.apache.org\"></a>",
+                      writer.toString() );
+    }
+
+    /**
+     * Test of link method for an external link when a css class is provided.
+     */
+    @Test
+    public void testLinkExternalClassExtend()
+    {
+        final String name = "https://www.apache.org";
+        SinkEventAttributeSet attributes2 = new SinkEventAttributeSet();
+        attributes2.addAttributes( attributes );
+        attributes2.addAttribute( SinkEventAttributes.CLASS, "cs1 cs2" );
+
+        try
+        {
+            sink = new XhtmlBaseSink( writer );
+            sink.link( name, attributes2 );
+            sink.link_();
+        }
+        finally
+        {
+            sink.close();
+        }
+
+        assertEquals( "<a style=\"bold\" class=\"cs1 cs2 externalLink\" href=\"https://www.apache.org\"></a>",
+                      writer.toString() );
     }
 
     /**
