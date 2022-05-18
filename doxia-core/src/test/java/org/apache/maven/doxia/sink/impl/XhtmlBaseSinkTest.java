@@ -712,7 +712,7 @@ public class XhtmlBaseSinkTest
             sink.close();
         }
 
-        assertEquals( "<tr class=\"a\" style=\"bold\"></tr>", writer.toString() );
+        assertEquals( "<tr style=\"bold\" class=\"a\"></tr>", writer.toString() );
     }
 
     /**
@@ -826,7 +826,7 @@ public class XhtmlBaseSinkTest
             sink.close();
         }
 
-        assertEquals( "<a href=\"link.html\" style=\"bold\"></a>", writer.toString() );
+        assertEquals( "<a style=\"bold\" href=\"link.html\"></a>", writer.toString() );
     }
 
     /**

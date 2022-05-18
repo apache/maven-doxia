@@ -1567,21 +1567,24 @@ public class Xhtml5BaseSink
     @Override
     public void tableRow( SinkEventAttributes attributes )
     {
-        MutableAttributeSet att = new SinkEventAttributeSet();
+        MutableAttributeSet atts = SinkUtils.filterAttributes(
+                attributes, SinkUtils.SINK_TR_ATTRIBUTES );
 
-        if ( evenTableRow )
+        if ( atts == null )
         {
-            att.addAttribute( Attribute.CLASS, "a" );
-        }
-        else
-        {
-            att.addAttribute( Attribute.CLASS, "b" );
+            atts = new SinkEventAttributeSet();
         }
 
-        att.addAttributes( SinkUtils.filterAttributes(
-                attributes, SinkUtils.SINK_TR_ATTRIBUTES  ) );
+        String rowClass = evenTableRow ? "a" : "b";
+        if ( atts.isDefined( Attribute.CLASS.toString() ) )
+        {
+            String givenRowClass = (String) atts.getAttribute( Attribute.CLASS.toString() );
+            rowClass = givenRowClass + " " + rowClass;
+        }
 
-        writeStartTag( HtmlMarkup.TR, att );
+        atts.addAttribute( Attribute.CLASS, rowClass );
+
+        writeStartTag( HtmlMarkup.TR, atts );
 
         evenTableRow = !evenTableRow;
 
@@ -1833,44 +1836,28 @@ public class Xhtml5BaseSink
         }
     }
 
-    /** {@inheritDoc} */
+    /**
+     * The default style class for external link is <code>externalLink</code>.
+     *
+     * {@inheritDoc}
+     * @see javax.swing.text.html.HTML.Tag#A
+     **/
     @Override
     public void link( String name )
     {
         link( name, null );
     }
 
-    /** {@inheritDoc} */
+    /**
+     * The default style class for external link is <code>externalLink</code>.
+     *
+     * {@inheritDoc}
+     * @see javax.swing.text.html.HTML.Tag#A
+     **/
     @Override
     public void link( String name, SinkEventAttributes attributes )
     {
-        if ( attributes == null )
-        {
-            link( name, null, null );
-        }
-        else
-        {
-            String target = (String) attributes.getAttribute( Attribute.TARGET.toString() );
-            MutableAttributeSet atts = SinkUtils.filterAttributes(
-                    attributes, SinkUtils.SINK_LINK_ATTRIBUTES  );
-
-            link( name, target, atts );
-        }
-    }
-
-    /**
-     * Adds a link with an optional target.
-     * The default style class for external link is <code>externalLink</code>.
-     *
-     * @param href the link href.
-     * @param target the link target, may be null.
-     * @param attributes an AttributeSet, may be null.
-     *      This is supposed to be filtered already.
-     * @see javax.swing.text.html.HTML.Tag#A
-     */
-    private void link( String href, String target, MutableAttributeSet attributes )
-    {
-        if ( href == null )
+        if ( name == null )
         {
             throw new NullPointerException( "Link name cannot be null!" );
         }
@@ -1880,28 +1867,29 @@ public class Xhtml5BaseSink
             return;
         }
 
-        MutableAttributeSet att = new SinkEventAttributeSet();
+        MutableAttributeSet atts = SinkUtils.filterAttributes(
+                attributes, SinkUtils.SINK_LINK_ATTRIBUTES );
 
-        if ( DoxiaUtils.isExternalLink( href  ) )
+        if ( atts == null )
         {
-            att.addAttribute( Attribute.CLASS, "externalLink" );
+            atts = new SinkEventAttributeSet();
         }
 
-        att.addAttribute( Attribute.HREF, HtmlTools.escapeHTML( href  ) );
-
-        if ( target != null )
+        if ( DoxiaUtils.isExternalLink( name ) )
         {
-            att.addAttribute( Attribute.TARGET, target );
+            String hrefClass = "externalLink";
+            if ( atts.isDefined( Attribute.CLASS.toString() ) )
+             {
+                 String givenClass = (String) atts.getAttribute( Attribute.CLASS.toString() );
+                 hrefClass = givenClass + " " + hrefClass;
+             }
+
+             atts.addAttribute( Attribute.CLASS, hrefClass );
         }
 
-        if ( attributes != null )
-        {
-            attributes.removeAttribute( Attribute.HREF.toString() );
-            attributes.removeAttribute( Attribute.TARGET.toString() );
-            att.addAttributes( attributes );
-        }
+        atts.addAttribute( Attribute.HREF, HtmlTools.escapeHTML( name ) );
 
-        writeStartTag( HtmlMarkup.A, att );
+        writeStartTag( HtmlMarkup.A, atts );
     }
 
     /**
