@@ -36,8 +36,9 @@ import com.vladsch.flexmark.ext.gfm.strikethrough.StrikethroughExtension;
 
 import org.apache.commons.io.input.CharSequenceReader;
 import org.apache.maven.doxia.markup.HtmlMarkup;
+import org.apache.maven.doxia.markup.TextMarkup;
 import org.apache.maven.doxia.module.xhtml.XhtmlParser;
-import org.apache.maven.doxia.parser.AbstractParser;
+import org.apache.maven.doxia.parser.AbstractTextParser;
 import org.apache.maven.doxia.parser.ParseException;
 import org.apache.maven.doxia.parser.Parser;
 import org.apache.maven.doxia.sink.Sink;
@@ -69,7 +70,8 @@ import java.util.regex.Pattern;
  */
 @Component( role = Parser.class, hint = MarkdownParser.ROLE_HINT )
 public class MarkdownParser
-    extends AbstractParser
+    extends AbstractTextParser
+    implements TextMarkup
 {
 
     /**
@@ -97,17 +99,6 @@ public class MarkdownParser
     private static final Pattern METADATA_ENTRY_PATTERN = Pattern.compile(
             "^[ \\t]*([^:\\r\\n]+?)[ \\t]*:[ \\t]*([^\\r\\n]*)[ \\t]*$",
             Pattern.MULTILINE );
-
-    /**
-     * <p>getType.</p>
-     *
-     * @return a int.
-     */
-    @Override
-    public int getType()
-    {
-        return TXT_TYPE;
-    }
 
     /**
      * The parser of the HTML produced by Flexmark, that we will
