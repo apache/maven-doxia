@@ -103,7 +103,7 @@ public class FlexmarkDoxiaLinkResolver implements LinkResolver
         }
 
         @Override
-            public LinkResolver create( LinkResolverContext context )
+        public LinkResolver apply( LinkResolverContext context )
         {
             return new FlexmarkDoxiaLinkResolver( context );
         }
