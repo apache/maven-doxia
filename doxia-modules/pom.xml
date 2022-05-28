@@ -37,7 +37,6 @@ under the License.
     <module>doxia-module-apt</module>
     <module>doxia-module-fml</module>
     <module>doxia-module-xdoc</module>
-    <module>doxia-module-xhtml</module>
     <module>doxia-module-xhtml5</module>
     <module>doxia-module-markdown</module>
   </modules>

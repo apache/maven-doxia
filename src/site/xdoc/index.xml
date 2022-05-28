@@ -47,8 +47,7 @@
           <area shape="rect" coords="165,180,286,209" href="./doxia-core/" />
           <area shape="rect" coords="41,25,118,88"    href="./doxia-modules/doxia-module-apt/" />
           <area shape="rect" coords="212,75,289,107"   href="./doxia-modules/doxia-module-xdoc/" />
-          <area shape="rect" coords="230,25,313,88"   href="./doxia-modules/doxia-module-xhtml/" />
-          <area shape="rect" coords="325,25,407,88"   href="./doxia-modules/doxia-module-xhtml5/" />
+          <area shape="rect" coords="230,25,313,88"   href="./doxia-modules/doxia-module-xhtml5/" />
           <area shape="rect" coords="135,25,213,88"   href="./doxia-modules/doxia-module-fml/" />
           <area shape="rect" coords="304,75,421,107"  href="./doxia-modules/doxia-module-markdown/" />
           <area shape="rect" coords="21,1,432,151"     href="./doxia-modules/" />
