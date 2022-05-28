@@ -62,7 +62,8 @@ public abstract class AbstractParser
     static
     {
         final Properties props = new Properties();
-        final InputStream is = AbstractParser.class.getResourceAsStream( "/build-info.properties" );
+        final InputStream is = AbstractParser.class
+               .getResourceAsStream( "/META-INF/maven/org.apache.maven.doxia/doxia-core/pom.properties" );
 
         if ( is == null )
         {

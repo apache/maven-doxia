@@ -59,14 +59,6 @@ public class Xhtml5BaseParserTest
         sink.reset();
     }
 
-    /** Test Doxia version. */
-    @Test
-    public void testDoxiaVersion()
-    {
-        assertNotNull( XhtmlBaseParser.doxiaVersion() );
-        assertNotEquals( "unknown", XhtmlBaseParser.doxiaVersion() );
-    }
-
     @Test
     public void testHeadingEventsList()
         throws Exception
