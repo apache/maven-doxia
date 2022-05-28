@@ -55,18 +55,18 @@ public class XhtmlParserTest
         // Be sure to delete them
         String tmpDir = System.getProperty( "java.io.tmpdir" );
 
-        // Using FileFilter, because is it is much faster then FileUtils.listFiles 
+        // Using FileFilter, because is it is much faster then FileUtils.listFiles
         File[] tmpFiles = new File( tmpDir ).listFiles( new FileFilter()
         {
             Pattern xsdPatterns = Pattern.compile( "(xhtml-lat1.ent|xhtml1-transitional.dtd|xhtml-special.ent|xhtml-symbol.ent)" );
-            
+
             @Override
             public boolean accept( File pathname )
             {
-                return xsdPatterns.matcher( pathname.getName() ).matches(); 
+                return xsdPatterns.matcher( pathname.getName() ).matches();
             }
         } );
-        
+
         for ( File tmpFile : tmpFiles )
         {
             tmpFile.delete();
@@ -83,7 +83,7 @@ public class XhtmlParserTest
     /** {@inheritDoc} */
     protected String outputExtension()
     {
-        return "xhtml";
+        return "xhtml4";
     }
 
     /** @throws Exception  */

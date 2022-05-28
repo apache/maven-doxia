@@ -531,7 +531,7 @@ public class Xhtml5BaseSink
         {
             MutableAttributeSet att = new SinkEventAttributeSet();
             att.addAttributes( SinkUtils.filterAttributes(
-                    attributes, SinkUtils.SINK_BASE_ATTRIBUTES  ) );
+                    attributes, SinkUtils.SINK_BASE_ATTRIBUTES ) );
 
             writeStartTag( HtmlMarkup.SECTION, att );
         }

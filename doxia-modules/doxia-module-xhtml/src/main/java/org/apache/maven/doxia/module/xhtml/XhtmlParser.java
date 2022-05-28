@@ -51,7 +51,7 @@ import org.slf4j.LoggerFactory;
  * @since 1.0
  */
 @Singleton
-@Named( "xhtml" )
+@Named( "xhtml4" )
 public class XhtmlParser
     extends XhtmlBaseParser
     implements XhtmlMarkup

@@ -42,7 +42,7 @@ public class XhtmlSinkTest
     /** {@inheritDoc} */
     protected String outputExtension()
     {
-        return "xhtml";
+        return "xhtml4";
     }
 
     /** {@inheritDoc} */

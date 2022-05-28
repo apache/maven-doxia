@@ -74,7 +74,7 @@ under the License.
     </dependency>
     <dependency>
       <groupId>org.apache.maven.doxia</groupId>
-      <artifactId>doxia-module-xhtml</artifactId>
+      <artifactId>doxia-module-xhtml5</artifactId>
     </dependency>
     <dependency>
       <groupId>org.codehaus.plexus</groupId>
@@ -107,18 +107,18 @@ under the License.
         <executions>
 
           <!-- integration-test -->
-          <!-- Copy the Doxia XHTML module from our working directory to the local-repo -->
+          <!-- Copy the Doxia XHTML5 module from our working directory to the local-repo -->
           <!-- We do that manually because the invoker:install goal (below) doesn't do it, as -->
           <!-- it's not the artifact we're working on, but the ones that are produced by our "siblings" -->
           <execution>
-            <id>copy-doxia-module-xhtml-to-local-repo</id>
+            <id>copy-doxia-module-xhtml5-to-local-repo</id>
             <phase>integration-test</phase>
             <goals>
               <goal>install-file</goal>
             </goals>
             <configuration>
               <localRepositoryPath>${project.build.directory}/local-repo</localRepositoryPath>
-              <file>${project.basedir}/../doxia-module-xhtml/target/doxia-module-xhtml-${project.version}.jar</file>
+              <file>${project.basedir}/../doxia-module-xhtml5/target/doxia-module-xhtml5-${project.version}.jar</file>
             </configuration>
           </execution>
           <execution>

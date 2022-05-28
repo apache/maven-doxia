@@ -27,7 +27,7 @@ import javax.swing.text.html.HTML.Attribute;
 import org.apache.maven.doxia.sink.SinkEventAttributes;
 import org.apache.maven.doxia.sink.impl.SinkEventAttributeSet;
 import org.apache.maven.doxia.sink.impl.SinkUtils;
-import org.apache.maven.doxia.sink.impl.XhtmlBaseSink;
+import org.apache.maven.doxia.sink.impl.Xhtml5BaseSink;
 import org.apache.maven.doxia.util.HtmlTools;
 
 import org.codehaus.plexus.util.StringUtils;
@@ -42,7 +42,7 @@ import org.codehaus.plexus.util.StringUtils;
  * @since 1.0
  */
 public class XdocSink
-    extends XhtmlBaseSink
+    extends Xhtml5BaseSink
     implements XdocMarkup
 {
     // ----------------------------------------------------------------------

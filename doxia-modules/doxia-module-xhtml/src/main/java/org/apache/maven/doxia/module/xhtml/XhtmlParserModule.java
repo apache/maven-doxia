@@ -30,7 +30,7 @@ import org.apache.maven.doxia.parser.module.AbstractParserModule;
  * @since 1.6
  */
 @Singleton
-@Named( "xhtml" )
+@Named( "xhtml4" )
 public class XhtmlParserModule
     extends AbstractParserModule
 {
@@ -39,6 +39,6 @@ public class XhtmlParserModule
      */
     public XhtmlParserModule()
     {
-        super( "xhtml" );
+        super( "xhtml4" );
     }
 }

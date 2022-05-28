@@ -22,9 +22,9 @@ package org.apache.maven.doxia.module.xhtml5;
 import org.apache.maven.doxia.markup.HtmlMarkup;
 
 /**
- * List of <code>Xhtml</code> markups.
+ * List of <code>Xhtml5</code> markups.
  * <br>
- * Xhtml uses all {@link javax.swing.text.html.HTML.Tag} and {@link javax.swing.text.html.HTML.Attribute}
+ * Xhtml5 uses all {@link javax.swing.text.html.HTML.Tag} and {@link javax.swing.text.html.HTML.Attribute}
  * as markups.
  */
 @SuppressWarnings( "checkstyle:interfaceistype" )

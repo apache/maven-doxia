@@ -110,7 +110,7 @@ public class MarkdownParserTest
         SinkEventElement inline = eventList.get( 4 );
         assertEquals( "inline", inline.getName() );
         SinkEventAttributeSet atts = (SinkEventAttributeSet) inline.getArgs()[0];
-        assertTrue( atts.containsAttribute( SinkEventAttributes.SEMANTICS, "bold" ) );
+        assertTrue( atts.containsAttribute( SinkEventAttributes.SEMANTICS, "strong" ) );
     }
 
     /**
@@ -132,7 +132,7 @@ public class MarkdownParserTest
         SinkEventElement inline = eventList.get( 4 );
         assertEquals( "inline", inline.getName() );
         SinkEventAttributeSet atts = (SinkEventAttributeSet) inline.getArgs()[0];
-        assertTrue( atts.containsAttribute( SinkEventAttributes.SEMANTICS, "italic" ) );
+        assertTrue( atts.containsAttribute( SinkEventAttributes.SEMANTICS, "emphasis" ) );
     }
 
     /**
@@ -389,9 +389,8 @@ public class MarkdownParserTest
     {
         Iterator<SinkEventElement> it = parseFileToEventTestingSink( "html-content" ).getEventList().iterator();
 
-        // NOTE: DIV is rendered as "unknown" (see DOXIA-203)
-        assertSinkEquals( it, "head", "head_", "body", "unknown", "text", "paragraph", "inline", "text",
-                "inline_", "text", "inline", "text", "inline_", "text", "paragraph_", "text", "unknown", "text",
+        assertSinkEquals( it, "head", "head_", "body", "division", "text", "paragraph", "inline", "text",
+                "inline_", "text", "inline", "text", "inline_", "text", "paragraph_", "text", "division_", "text",
                 "horizontalRule", "section1", "sectionTitle1",  "text", "sectionTitle1_", "paragraph", "text",
                 "paragraph_", "text", "table", "tableRows", "text", "tableRow", "tableHeaderCell", "text",
                 "tableHeaderCell_", "tableRow_", "text", "tableRow", "tableCell", "text", "tableCell_", "tableRow_",

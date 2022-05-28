@@ -28,10 +28,10 @@ import org.apache.maven.doxia.sink.Sink;
 import org.apache.maven.doxia.sink.impl.AbstractXmlSinkFactory;
 
 /**
- * Xhtml implementation of the Sink factory.
+ * Xhtml5 implementation of the Sink factory.
  */
 @Singleton
-@Named( "xhtml5" )
+@Named( "xhtml" )
 public class Xhtml5SinkFactory
     extends AbstractXmlSinkFactory
 {
