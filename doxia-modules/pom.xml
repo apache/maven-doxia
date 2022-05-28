@@ -39,7 +39,6 @@ under the License.
     <module>doxia-module-xdoc</module>
     <module>doxia-module-xhtml</module>
     <module>doxia-module-xhtml5</module>
-    <!-- this has a dep on xhtml module, so needs to be built last! -->
     <module>doxia-module-markdown</module>
   </modules>
 

@@ -35,7 +35,7 @@ import org.apache.maven.doxia.parser.Parser;
 import org.apache.maven.doxia.sink.Sink;
 import org.apache.maven.doxia.sink.impl.SinkEventElement;
 import org.apache.maven.doxia.sink.impl.SinkEventTestingSink;
-import org.apache.maven.doxia.sink.impl.XhtmlBaseSink;
+import org.apache.maven.doxia.sink.impl.Xhtml5BaseSink;
 import org.codehaus.plexus.util.IOUtil;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
@@ -63,18 +63,18 @@ public class FmlParserTest
         // Be sure to delete them
         String tmpDir = System.getProperty( "java.io.tmpdir" );
 
-        // Using FileFilter, because is it is much faster then FileUtils.listFiles 
+        // Using FileFilter, because is it is much faster then FileUtils.listFiles
         File[] tmpFiles = new File( tmpDir ).listFiles( new FileFilter()
         {
             final Pattern xsdPatterns = Pattern.compile( "(xml|fml\\-.+)\\.xsd" );
-            
+
             @Override
             public boolean accept( File pathname )
             {
-                return xsdPatterns.matcher( pathname.getName() ).matches(); 
+                return xsdPatterns.matcher( pathname.getName() ).matches();
             }
         } );
-        
+
         for ( File tmpFile : tmpFiles )
         {
             tmpFile.delete();
@@ -271,7 +271,7 @@ public class FmlParserTest
         try ( Writer output = getTestWriter( "macro" );
               Reader reader = getTestReader( "macro" ) )
         {
-            Sink sink = new XhtmlBaseSink( output );
+            Sink sink = new Xhtml5BaseSink( output );
             createParser().parse( reader, sink );
             sink.close();
         }

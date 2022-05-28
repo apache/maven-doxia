@@ -30,7 +30,7 @@ import org.junit.jupiter.api.Test;
 import static org.junit.jupiter.api.Assertions.*;
 
 /**
- * Test for XhtmlBaseParser.
+ * Test for Xhtml5BaseParser.
  */
 public class Xhtml5BaseParserTest
     extends AbstractParserTest
@@ -299,7 +299,7 @@ public class Xhtml5BaseParserTest
         throws Exception
     {
         // test EOLs within <pre>: the sink MUST receive a text event for the EOL
-        String text = "<pre><a href=\"what.html\">what</a>" + XhtmlBaseParser.EOL
+        String text = "<pre><a href=\"what.html\">what</a>" + Xhtml5BaseParser.EOL
                 + "<a href=\"what.html\">what</a></pre>";
 
         parser.parse( text, sink );
@@ -322,12 +322,12 @@ public class Xhtml5BaseParserTest
         throws Exception
     {
         StringBuilder sb = new StringBuilder();
-        sb.append( "<!DOCTYPE test [" ).append( XhtmlBaseParser.EOL );
-        sb.append( "<!ENTITY foo \"&#x159;\">" ).append( XhtmlBaseParser.EOL );
-        sb.append( "<!ENTITY foo1 \"&nbsp;\">" ).append( XhtmlBaseParser.EOL );
-        sb.append( "<!ENTITY foo2 \"&#x161;\">" ).append( XhtmlBaseParser.EOL );
-        sb.append( "<!ENTITY tritPos \"&#x1d7ed;\">" ).append( XhtmlBaseParser.EOL );
-        sb.append( "]>" ).append( XhtmlBaseParser.EOL );
+        sb.append( "<!DOCTYPE test [" ).append( Xhtml5BaseParser.EOL );
+        sb.append( "<!ENTITY foo \"&#x159;\">" ).append( Xhtml5BaseParser.EOL );
+        sb.append( "<!ENTITY foo1 \"&nbsp;\">" ).append( Xhtml5BaseParser.EOL );
+        sb.append( "<!ENTITY foo2 \"&#x161;\">" ).append( Xhtml5BaseParser.EOL );
+        sb.append( "<!ENTITY tritPos \"&#x1d7ed;\">" ).append( Xhtml5BaseParser.EOL );
+        sb.append( "]>" ).append( Xhtml5BaseParser.EOL );
         sb.append( "<p>&foo;&foo1;&foo2;&tritPos;</p>" );
 
         parser.setValidate( false );

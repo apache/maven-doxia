@@ -45,10 +45,10 @@ import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
 /**
- * Parse an xhtml model and emit events into a Doxia Sink.
+ * Parse an xhtml5 model and emit events into a Doxia Sink.
  */
 @Singleton
-@Named( "xhtml5" )
+@Named( "xhtml" )
 public class Xhtml5Parser
     extends Xhtml5BaseParser
     implements Xhtml5Markup
@@ -56,7 +56,7 @@ public class Xhtml5Parser
     private static final Logger LOGGER = LoggerFactory.getLogger( Xhtml5Parser.class );
 
     /** For boxed verbatim. */
-    private boolean boxed;
+    protected boolean boxed;
 
     /** Empty elements don't write a closing tag. */
     private boolean isEmptyElement;

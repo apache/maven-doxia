@@ -38,6 +38,44 @@ public class XdocSinkTest
     extends AbstractSinkTest
 {
     /** {@inheritDoc} */
+    @Test
+    public void testSection1()
+    {
+        String title = "Title1";
+        getSink().section1();
+        getSink().sectionTitle1();
+        getSink().text( title );
+        getSink().sectionTitle1_();
+        getSink().section1_();
+        getSink().flush();
+        getSink().close();
+
+        String actual = getSinkContent();
+        String expected = getSection1Block( title );
+
+        assertEquals( expected, actual, "Wrong section1 block!" );
+    }
+
+    /** {@inheritDoc} */
+    @Test
+    public void testSection2()
+    {
+        String title = "Title2";
+        getSink().section2();
+        getSink().sectionTitle2();
+        getSink().text( title );
+        getSink().sectionTitle2_();
+        getSink().section2_();
+        getSink().flush();
+        getSink().close();
+
+        String actual = getSinkContent();
+        String expected = getSection2Block( title );
+
+        assertEquals( expected, actual, "Wrong section2 block!" );
+    }
+
+    /** {@inheritDoc} */
     protected String outputExtension()
     {
         return "xml";
@@ -92,19 +130,19 @@ public class XdocSinkTest
     /** {@inheritDoc} */
     protected String getArticleBlock()
     {
-        return "";
+        return "<article></article>";
     }
 
     /** {@inheritDoc} */
     protected String getNavigationBlock()
     {
-        return "";
+        return "<nav></nav>";
     }
 
     /** {@inheritDoc} */
     protected String getSidebarBlock()
     {
-        return "";
+        return "<aside></aside>";
     }
 
     /** {@inheritDoc} */
@@ -128,37 +166,37 @@ public class XdocSinkTest
     /** {@inheritDoc} */
     protected String getSection3Block( String title )
     {
-        return "<h3>" + title + "</h3>";
+        return "<header>" + EOL + "<h3>" + title + "</h3></header>";
     }
 
     /** {@inheritDoc} */
     protected String getSection4Block( String title )
     {
-        return "<h4>" + title + "</h4>";
+        return "<header>" + EOL + "<h4>" + title + "</h4></header>";
     }
 
     /** {@inheritDoc} */
     protected String getSection5Block( String title )
     {
-        return "<h5>" + title + "</h5>";
+        return "<header>" + EOL + "<h5>" + title + "</h5></header>";
     }
 
     /** {@inheritDoc} */
     protected String getHeaderBlock()
     {
-        return "";
+        return "<header></header>";
     }
 
     /** {@inheritDoc} */
     protected String getContentBlock()
     {
-        return "";
+        return "<main>" + EOL + "<div class=\"content\"></div></main>";
     }
 
     /** {@inheritDoc} */
     protected String getFooterBlock()
     {
-        return "";
+        return "<footer></footer>";
     }
 
     /** {@inheritDoc} */
@@ -182,16 +220,12 @@ public class XdocSinkTest
     /** {@inheritDoc} */
     protected String getFigureBlock( String source, String caption )
     {
-        String figureBlock = "<img src=\"" + escapeHTML( source ) + "\"";
+        String figureBlock = "<figure><img src=\"" + escapeHTML( source ) + "\"  alt=\"\" />";
         if ( caption != null )
         {
-            figureBlock += " alt=\"" + caption + "\"";
+            figureBlock += "<figcaption>" + caption + "</figcaption>";
         }
-        else //@todo fix DOXIA-361
-        {
-            figureBlock += " alt=\"\"";
-        }
-        figureBlock += " />";
+        figureBlock += "</figure>";
         return figureBlock;
     }
 
@@ -211,13 +245,13 @@ public class XdocSinkTest
     /** {@inheritDoc} */
     protected String getDataBlock( String value, String text )
     {
-        return text;
+        return "<data value=\"" + value + "\">" + text + "</data>";
     }
 
     /** {@inheritDoc} */
     protected String getTimeBlock( String datetime, String text )
     {
-        return text;
+        return "<time datetime=\"" + datetime + "\">" + text + "</time>";
     }
 
     /** {@inheritDoc} */
@@ -319,7 +353,7 @@ public class XdocSinkTest
     /** {@inheritDoc} */
     protected String getLineBreakOpportunityBlock()
     {
-        return "";
+        return "<wbr />";
     }
 
     /** {@inheritDoc} */

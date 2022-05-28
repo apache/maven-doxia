@@ -26,10 +26,9 @@ import java.util.Map;
 
 import org.apache.maven.doxia.macro.MacroExecutionException;
 import org.apache.maven.doxia.macro.MacroRequest;
-import org.apache.maven.doxia.parser.XhtmlBaseParser;
+import org.apache.maven.doxia.parser.Xhtml5BaseParser;
 import org.apache.maven.doxia.sink.impl.SinkEventElement;
 import org.apache.maven.doxia.sink.impl.SinkEventTestingSink;
-import org.codehaus.plexus.PlexusTestCase;
 import org.codehaus.plexus.testing.PlexusTest;
 import org.hamcrest.CoreMatchers;
 import org.junit.jupiter.api.Test;
@@ -163,7 +162,7 @@ public class SnippetMacroTest
     {
         File basedir = new File( getBasedir() );
 
-        XhtmlBaseParser parser = new XhtmlBaseParser();
+        Xhtml5BaseParser parser = new Xhtml5BaseParser();
 
         SinkEventTestingSink sink = new SinkEventTestingSink();
 

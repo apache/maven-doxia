@@ -28,11 +28,11 @@ import java.util.Map;
 
 import org.apache.maven.doxia.macro.MacroExecutionException;
 import org.apache.maven.doxia.macro.MacroRequest;
-import org.apache.maven.doxia.parser.XhtmlBaseParser;
+import org.apache.maven.doxia.parser.Xhtml5BaseParser;
 import org.apache.maven.doxia.sink.impl.SinkEventAttributeSet;
 import org.apache.maven.doxia.sink.impl.SinkEventElement;
 import org.apache.maven.doxia.sink.impl.SinkEventTestingSink;
-import org.apache.maven.doxia.sink.impl.XhtmlBaseSink;
+import org.apache.maven.doxia.sink.impl.Xhtml5BaseSink;
 import org.junit.jupiter.api.Test;
 
 import static org.junit.jupiter.api.Assertions.*;
@@ -55,7 +55,7 @@ public class TocMacroTest
     {
         String sourceContent = "<div><h1>h11</h1><h1>h12</h1><h2>h2</h2><h3>h3</h3><h1>h13</h1></div>";
 
-        XhtmlBaseParser parser = new XhtmlBaseParser();
+        Xhtml5BaseParser parser = new Xhtml5BaseParser();
 
         Map<String, Object> macroParameters = new HashMap<>();
         macroParameters.put( "section", "sec1" );
@@ -103,7 +103,7 @@ public class TocMacroTest
 
         // test parameters
 
-        parser = new XhtmlBaseParser();
+        parser = new Xhtml5BaseParser();
         macroParameters.put( "section", "2" );
         macroParameters.put( "fromDepth", "1" );
         macroParameters.put( "toDepth", "2" );
@@ -152,7 +152,7 @@ public class TocMacroTest
         String sourceContent =
             "<div><h1>h<b>11</b></h1><h1>h<i>12</i></h1><h2>h<tt>2</tt></h2><h3>h3</h3><h1>h13</h1></div>";
 
-        XhtmlBaseParser parser = new XhtmlBaseParser();
+        Xhtml5BaseParser parser = new Xhtml5BaseParser();
 
         Map<String, Object> macroParameters = new HashMap<>();
         macroParameters.put( "section", "sec1" );
@@ -160,7 +160,7 @@ public class TocMacroTest
         File basedir = new File( "" );
 
         StringWriter out = new StringWriter();
-        XhtmlBaseSink sink = new XhtmlBaseSink( out );
+        Xhtml5BaseSink sink = new Xhtml5BaseSink( out );
         MacroRequest request = new MacroRequest( sourceContent, parser, macroParameters, basedir );
         TocMacro macro = new TocMacro();
         macro.execute( sink, request );

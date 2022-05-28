@@ -34,7 +34,7 @@ import org.apache.maven.doxia.sink.impl.AbstractXmlSinkFactory;
  * @since 1.0
  */
 @Singleton
-@Named( "xhtml" )
+@Named( "xhtml4" )
 public class XhtmlSinkFactory
     extends AbstractXmlSinkFactory
 {

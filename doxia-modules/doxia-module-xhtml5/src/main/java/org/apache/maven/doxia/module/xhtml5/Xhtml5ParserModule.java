@@ -28,7 +28,7 @@ import org.apache.maven.doxia.parser.module.AbstractParserModule;
  * <p>Xhtml5ParserModule class.</p>
  */
 @Singleton
-@Named( "xhtml5" )
+@Named( "xhtml" )
 public class Xhtml5ParserModule
     extends AbstractParserModule
 {
@@ -37,6 +37,6 @@ public class Xhtml5ParserModule
      */
     public Xhtml5ParserModule()
     {
-        super( "xhtml5" );
+        super( "xhtml" );
     }
 }

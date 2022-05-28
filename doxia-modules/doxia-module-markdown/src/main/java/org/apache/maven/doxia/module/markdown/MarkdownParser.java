@@ -40,7 +40,7 @@ import com.vladsch.flexmark.util.data.MutableDataSet;
 
 import org.apache.maven.doxia.markup.HtmlMarkup;
 import org.apache.maven.doxia.markup.TextMarkup;
-import org.apache.maven.doxia.module.xhtml.XhtmlParser;
+import org.apache.maven.doxia.module.xhtml5.Xhtml5Parser;
 import org.apache.maven.doxia.parser.AbstractTextParser;
 import org.apache.maven.doxia.parser.ParseException;
 import org.apache.maven.doxia.sink.Sink;
@@ -60,7 +60,7 @@ import java.util.regex.Pattern;
  * </p>
  * <p>
  * Defers effective parsing to the <a href="https://github.com/vsch/flexmark-java">flexmark-java library</a>,
- * which generates HTML content then delegates parsing of this content to a slightly modified Doxia Xhtml parser.
+ * which generates HTML content then delegates parsing of this content to a slightly modified Doxia Xhtml5 parser.
  * (before 1.8, the <a href="http://pegdown.org">PegDown library</a> was used)
  * </p>
  *
@@ -262,14 +262,14 @@ public class MarkdownParser
      * <li> DIV elements are translated as Unknown Sink events
      * <li> PRE elements are all considered as boxed
      * </ul>
-     * PRE elements need to be "boxed" because the XhtmlSink will surround the
+     * PRE elements need to be "boxed" because the Xhtml5Sink will surround the
      * corresponding verbatim() Sink event with a DIV element with class="source",
      * which is how most Maven Skin (incl. Fluido) recognize a block of code, which
      * needs to be highlighted accordingly.
      */
     @Named
     public static class MarkdownHtmlParser
-        extends XhtmlParser
+        extends Xhtml5Parser
     {
         public MarkdownHtmlParser()
         {
