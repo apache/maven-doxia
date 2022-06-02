@@ -44,6 +44,7 @@ import org.apache.maven.doxia.sink.Sink;
 import org.apache.maven.doxia.sink.SinkEventAttributes;
 import org.apache.maven.doxia.util.DoxiaUtils;
 import org.apache.maven.doxia.util.HtmlTools;
+
 import org.codehaus.plexus.util.StringUtils;
 import org.codehaus.plexus.util.xml.PrettyPrintXMLWriter;
 
@@ -250,7 +251,6 @@ public class Xhtml5BaseSink
      *
      * @deprecated since 1.1.2, use {@link #init()} instead of.
      */
-    @Deprecated
     protected void resetState()
     {
         init();
@@ -2393,7 +2393,6 @@ public class Xhtml5BaseSink
     }
 
     /** {@inheritDoc} */
-    @Override
     protected void write( String text )
     {
         if ( !this.tableCaptionXMLWriterStack.isEmpty() && this.tableCaptionXMLWriterStack.getLast() != null )
