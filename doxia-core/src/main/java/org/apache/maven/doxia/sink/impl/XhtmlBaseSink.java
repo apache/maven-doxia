@@ -136,7 +136,7 @@ public class XhtmlBaseSink
     protected boolean tableRows = false;
 
     /** Keep track of the closing tags for inline events. */
-    protected Stack<List<Tag>> inlineStack = new Stack<List<Tag>>();
+    protected Stack<List<Tag>> inlineStack = new Stack<>();
 
     /**
      * Map of warn messages with a String as key to describe the error type and a Set as value. Using to reduce warn
@@ -157,13 +157,13 @@ public class XhtmlBaseSink
     {
         this.writer = new PrintWriter( out );
 
-        this.cellJustifStack = new LinkedList<int[]>();
-        this.isCellJustifStack = new LinkedList<Boolean>();
-        this.cellCountStack = new LinkedList<Integer>();
-        this.tableContentWriterStack = new LinkedList<StringWriter>();
-        this.tableCaptionWriterStack = new LinkedList<StringWriter>();
-        this.tableCaptionXMLWriterStack = new LinkedList<PrettyPrintXMLWriter>();
-        this.tableCaptionStack = new LinkedList<String>();
+        this.cellJustifStack = new LinkedList<>();
+        this.isCellJustifStack = new LinkedList<>();
+        this.cellCountStack = new LinkedList<>();
+        this.tableContentWriterStack = new LinkedList<>();
+        this.tableCaptionWriterStack = new LinkedList<>();
+        this.tableCaptionXMLWriterStack = new LinkedList<>();
+        this.tableCaptionStack = new LinkedList<>();
 
         init();
     }
@@ -1597,7 +1597,7 @@ public class XhtmlBaseSink
             int cellCount = getCellCount();
             if ( cellCount < getCellJustif().length )
             {
-                Map<Integer, MutableAttributeSet> hash = new HashMap<Integer, MutableAttributeSet>();
+                Map<Integer, MutableAttributeSet> hash = new HashMap<>();
                 hash.put( Sink.JUSTIFY_CENTER, SinkEventAttributeSet.CENTER );
                 hash.put( Sink.JUSTIFY_LEFT, SinkEventAttributeSet.LEFT );
                 hash.put( Sink.JUSTIFY_RIGHT, SinkEventAttributeSet.RIGHT );
@@ -1858,7 +1858,7 @@ public class XhtmlBaseSink
     {
         if ( !headFlag )
         {
-            List<Tag> tags = new ArrayList<Tag>();
+            List<Tag> tags = new ArrayList<>();
 
             if ( attributes != null )
             {
@@ -2370,13 +2370,13 @@ public class XhtmlBaseSink
 
         if ( warnMessages == null )
         {
-            warnMessages = new HashMap<String, Set<String>>();
+            warnMessages = new HashMap<>();
         }
 
         Set<String> set = warnMessages.get( key );
         if ( set == null )
         {
-            set = new TreeSet<String>();
+            set = new TreeSet<>();
         }
         set.add( mesg );
         warnMessages.put( key, set );

@@ -71,10 +71,10 @@ public class Xhtml5BaseSink
     private boolean headFlag;
 
     /** Keep track of the main and div tags for content events. */
-    protected Stack<Tag> contentStack = new Stack<Tag>();
+    protected Stack<Tag> contentStack = new Stack<>();
 
     /** Keep track of the closing tags for inline events. */
-    protected Stack<List<Tag>> inlineStack = new Stack<List<Tag>>();
+    protected Stack<List<Tag>> inlineStack = new Stack<>();
 
     /** An indication on if we're inside a paragraph flag. */
     private boolean paragraphFlag;
@@ -139,13 +139,13 @@ public class Xhtml5BaseSink
     {
         this.writer = new PrintWriter( out );
 
-        this.cellJustifStack = new LinkedList<int[]>();
-        this.isCellJustifStack = new LinkedList<Boolean>();
-        this.cellCountStack = new LinkedList<Integer>();
-        this.tableContentWriterStack = new LinkedList<StringWriter>();
-        this.tableCaptionWriterStack = new LinkedList<StringWriter>();
-        this.tableCaptionXMLWriterStack = new LinkedList<PrettyPrintXMLWriter>();
-        this.tableCaptionStack = new LinkedList<String>();
+        this.cellJustifStack = new LinkedList<>();
+        this.isCellJustifStack = new LinkedList<>();
+        this.cellCountStack = new LinkedList<>();
+        this.tableContentWriterStack = new LinkedList<>();
+        this.tableCaptionWriterStack = new LinkedList<>();
+        this.tableCaptionXMLWriterStack = new LinkedList<>();
+        this.tableCaptionStack = new LinkedList<>();
 
         init();
     }
@@ -1682,7 +1682,7 @@ public class Xhtml5BaseSink
             int cellCount = getCellCount();
             if ( cellCount < getCellJustif().length )
             {
-                Map<Integer, MutableAttributeSet> hash = new HashMap<Integer, MutableAttributeSet>();
+                Map<Integer, MutableAttributeSet> hash = new HashMap<>();
                 hash.put( Sink.JUSTIFY_CENTER, SinkEventAttributeSet.CENTER );
                 hash.put( Sink.JUSTIFY_LEFT, SinkEventAttributeSet.LEFT );
                 hash.put( Sink.JUSTIFY_RIGHT, SinkEventAttributeSet.RIGHT );
@@ -1943,7 +1943,7 @@ public class Xhtml5BaseSink
     {
         if ( !headFlag )
         {
-            List<Tag> tags = new ArrayList<Tag>();
+            List<Tag> tags = new ArrayList<>();
 
             if ( attributes != null )
             {
@@ -2476,13 +2476,13 @@ public class Xhtml5BaseSink
 
         if ( warnMessages == null )
         {
-            warnMessages = new HashMap<String, Set<String>>();
+            warnMessages = new HashMap<>();
         }
 
         Set<String> set = warnMessages.get( key );
         if ( set == null )
         {
-            set = new TreeSet<String>();
+            set = new TreeSet<>();
         }
         set.add( mesg );
         warnMessages.put( key, set );
