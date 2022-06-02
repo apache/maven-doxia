@@ -30,6 +30,7 @@ import java.util.List;
 import java.util.Map;
 import java.util.Objects;
 import java.util.Stack;
+import java.util.regex.Pattern;
 
 import javax.swing.text.MutableAttributeSet;
 import javax.swing.text.html.HTML.Attribute;
@@ -67,6 +68,9 @@ public class XhtmlBaseSink
 
     /** The PrintWriter to write the result. */
     private final PrintWriter writer;
+
+    /** Used to identify if a class string contains `hidden` */
+    private static final Pattern HIDDEN_CLASS_PATTERN = Pattern.compile( "(?:.*\\s|^)hidden(?:\\s.*|$)" );
 
     /** Used to collect text events mainly for the head events. */
     private StringBuffer textBuffer = new StringBuffer();
@@ -1401,7 +1405,10 @@ public class XhtmlBaseSink
     }
 
     /**
-     * Rows are striped with two colors by adding the class <code>a</code> or <code>b</code>. {@inheritDoc}
+     * Rows are striped with two colors by adding the class <code>a</code> or <code>b</code>. If the provided attributes
+     * specify the <code>hidden</code> class, the next call to tableRow will set the same striping class as this one. A
+     * style for <code>hidden</code> or <code>table.bodyTable hidden</code> may need to be provided to actually hide
+     * such a row. {@inheritDoc}
      *
      * @see javax.swing.text.html.HTML.Tag#TR
      */
@@ -1416,9 +1423,14 @@ public class XhtmlBaseSink
         }
 
         String rowClass = evenTableRow ? "a" : "b";
+        boolean hidden = false;
         if ( attrs.isDefined( Attribute.CLASS.toString() ) )
         {
             String givenRowClass = (String) attrs.getAttribute( Attribute.CLASS.toString() );
+            if ( HIDDEN_CLASS_PATTERN.matcher( givenRowClass ).matches() )
+            {
+                hidden = true;
+            }
             rowClass = givenRowClass + " " + rowClass;
         }
 
@@ -1426,7 +1438,10 @@ public class XhtmlBaseSink
 
         writeStartTag( HtmlMarkup.TR, attrs );
 
-        evenTableRow = !evenTableRow;
+        if ( !hidden )
+        {
+            evenTableRow = !evenTableRow;
+        }
 
         if ( !this.cellCountStack.isEmpty() )
         {

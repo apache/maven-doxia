@@ -727,6 +727,67 @@ public class XhtmlBaseSinkTest
     }
 
     /**
+     * Test striping for hidden rows in tableRow method.
+     */
+    @Test
+    public void testHiddenTableRowStriping()
+    {
+        try
+        {
+            SinkEventAttributeSet attributes2 = new SinkEventAttributeSet();
+            SinkEventAttributeSet attributes3 = new SinkEventAttributeSet();
+            attributes3.addAttributes( attributes );
+            sink = new XhtmlBaseSink( writer );
+
+            sink.tableRow();
+            sink.tableRow_();
+            sink.tableRow( attributes );
+            sink.tableRow_();
+            attributes2.addAttribute( SinkEventAttributes.CLASS, "hidden xyz abc" );
+            sink.tableRow( attributes2 );
+            sink.tableRow_();
+            attributes2.addAttribute( SinkEventAttributes.CLASS, "abc hidden xyz" );
+            sink.tableRow( attributes2 );
+            sink.tableRow_();
+            sink.tableRow();
+            sink.tableRow_();
+            attributes2.addAttribute( SinkEventAttributes.CLASS, "not-hidden xyz" );
+            sink.tableRow( attributes2 );
+            sink.tableRow_();
+            attributes2.addAttribute( SinkEventAttributes.CLASS, "xyz not-hidden" );
+            sink.tableRow( attributes2 );
+            sink.tableRow_();
+            attributes3.addAttribute( SinkEventAttributes.CLASS, "xyz abc hidden" );
+            sink.tableRow( attributes3 );
+            sink.tableRow_();
+            attributes2.addAttribute( SinkEventAttributes.CLASS, "xyz hidden-not" );
+            sink.tableRow( attributes2 );
+            sink.tableRow_();
+            sink.tableRow();
+            sink.tableRow_();
+        }
+        finally
+        {
+            sink.close();
+        }
+
+        StringBuilder sbExpeted = new StringBuilder( "<table border=\"0\" class=\"bodyTable\">" );
+        sbExpeted.append( EOL ).append( "<tr class=\"a\"></tr>" ).append( EOL );
+        sbExpeted.append( "<tr style=\"bold\" class=\"b\"></tr>" ).append( EOL );
+        sbExpeted.append( "<tr class=\"hidden xyz abc a\"></tr>" ).append( EOL );
+        sbExpeted.append( "<tr class=\"abc hidden xyz a\"></tr>" ).append( EOL );
+        sbExpeted.append( "<tr class=\"a\"></tr>" ).append( EOL );
+        sbExpeted.append( "<tr class=\"not-hidden xyz b\"></tr>" ).append( EOL );
+        sbExpeted.append( "<tr class=\"xyz not-hidden a\"></tr>" ).append( EOL );
+        sbExpeted.append( "<tr style=\"bold\" class=\"xyz abc hidden b\"></tr>" ).append( EOL );
+        sbExpeted.append( "<tr class=\"xyz hidden-not b\"></tr>" ).append( EOL );
+        sbExpeted.append( "<tr class=\"a\"></tr>" );
+
+        String xmlExpected = sbExpeted.toString();
+        assertEquals( xmlExpected, writer.toString() );
+    }
+
+    /**
      * Test of tableCell method, of class XhtmlBaseSink.
      */
     @Test
