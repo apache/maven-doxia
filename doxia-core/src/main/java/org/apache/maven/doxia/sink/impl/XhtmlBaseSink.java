@@ -31,6 +31,7 @@ import java.util.Map;
 import java.util.Set;
 import java.util.Stack;
 import java.util.TreeSet;
+import java.util.regex.Pattern;
 
 import javax.swing.text.MutableAttributeSet;
 import javax.swing.text.html.HTML.Attribute;
@@ -42,7 +43,6 @@ import org.apache.maven.doxia.sink.Sink;
 import org.apache.maven.doxia.sink.SinkEventAttributes;
 import org.apache.maven.doxia.util.DoxiaUtils;
 import org.apache.maven.doxia.util.HtmlTools;
-
 import org.codehaus.plexus.util.StringUtils;
 import org.codehaus.plexus.util.xml.PrettyPrintXMLWriter;
 
@@ -63,6 +63,9 @@ public class XhtmlBaseSink
 
     /** The PrintWriter to write the result. */
     private final PrintWriter writer;
+
+    /** Used to identify if a class string contains `hidden` */
+    private static final Pattern HIDDEN_CLASS_PATTERN = Pattern.compile( "(?:.*\\s|^)hidden(?:\\s.*|$)" );
 
     /** Used to collect text events mainly for the head events. */
     private StringBuffer textBuffer = new StringBuffer();
@@ -113,26 +116,32 @@ public class XhtmlBaseSink
     /** Indicates that an image is part of a figure. */
     private boolean inFigure;
 
-    /** Flag to know if {@link #tableRows(int[], boolean)} is called or not. It is mainly to be backward compatible
-     * with some plugins (like checkstyle) which uses:
+    /**
+     * Flag to know if {@link #tableRows(int[], boolean)} is called or not. It is mainly to be backward compatible with
+     * some plugins (like checkstyle) which uses:
+     *
      * <pre>
      * sink.table();
      * sink.tableRow();
      * </pre>
+     *
      * instead of
+     *
      * <pre>
      * sink.table();
      * sink.tableRows( justify, true );
      * sink.tableRow();
      * </pre>
-     * */
+     */
     protected boolean tableRows = false;
 
     /** Keep track of the closing tags for inline events. */
-    protected Stack<List<Tag>> inlineStack = new Stack<>();
+    protected Stack<List<Tag>> inlineStack = new Stack<List<Tag>>();
 
-    /** Map of warn messages with a String as key to describe the error type and a Set as value.
-     * Using to reduce warn messages. */
+    /**
+     * Map of warn messages with a String as key to describe the error type and a Set as value. Using to reduce warn
+     * messages.
+     */
     private Map<String, Set<String>> warnMessages;
 
     // ----------------------------------------------------------------------
@@ -148,13 +157,13 @@ public class XhtmlBaseSink
     {
         this.writer = new PrintWriter( out );
 
-        this.cellJustifStack = new LinkedList<>();
-        this.isCellJustifStack = new LinkedList<>();
-        this.cellCountStack = new LinkedList<>();
-        this.tableContentWriterStack = new LinkedList<>();
-        this.tableCaptionWriterStack = new LinkedList<>();
-        this.tableCaptionXMLWriterStack = new LinkedList<>();
-        this.tableCaptionStack = new LinkedList<>();
+        this.cellJustifStack = new LinkedList<int[]>();
+        this.isCellJustifStack = new LinkedList<Boolean>();
+        this.cellCountStack = new LinkedList<Integer>();
+        this.tableContentWriterStack = new LinkedList<StringWriter>();
+        this.tableCaptionWriterStack = new LinkedList<StringWriter>();
+        this.tableCaptionXMLWriterStack = new LinkedList<PrettyPrintXMLWriter>();
+        this.tableCaptionStack = new LinkedList<String>();
 
         init();
     }
@@ -174,7 +183,9 @@ public class XhtmlBaseSink
     }
 
     /**
-     * <p>Setter for the field <code>headFlag</code>.</p>
+     * <p>
+     * Setter for the field <code>headFlag</code>.
+     * </p>
      *
      * @param headFlag an header flag.
      */
@@ -184,17 +195,21 @@ public class XhtmlBaseSink
     }
 
     /**
-     * <p>isHeadFlag.</p>
+     * <p>
+     * isHeadFlag.
+     * </p>
      *
      * @return the current headFlag.
      */
     protected boolean isHeadFlag()
     {
-        return this.headFlag ;
+        return this.headFlag;
     }
 
     /**
-     * <p>Setter for the field <code>verbatimFlag</code>.</p>
+     * <p>
+     * Setter for the field <code>verbatimFlag</code>.
+     * </p>
      *
      * @param verb a verbatim flag.
      */
@@ -204,17 +219,21 @@ public class XhtmlBaseSink
     }
 
     /**
-     * <p>isVerbatimFlag.</p>
+     * <p>
+     * isVerbatimFlag.
+     * </p>
      *
      * @return the current verbatim flag.
      */
     protected boolean isVerbatimFlag()
     {
-        return this.verbatimFlag ;
+        return this.verbatimFlag;
     }
 
     /**
-     * <p>Setter for the field <code>cellJustif</code>.</p>
+     * <p>
+     * Setter for the field <code>cellJustif</code>.
+     * </p>
      *
      * @param justif the new cell justification array.
      */
@@ -225,7 +244,9 @@ public class XhtmlBaseSink
     }
 
     /**
-     * <p>Getter for the field <code>cellJustif</code>.</p>
+     * <p>
+     * Getter for the field <code>cellJustif</code>.
+     * </p>
      *
      * @return the current cell justification array.
      */
@@ -235,7 +256,9 @@ public class XhtmlBaseSink
     }
 
     /**
-     * <p>Setter for the field <code>cellCount</code>.</p>
+     * <p>
+     * Setter for the field <code>cellCount</code>.
+     * </p>
      *
      * @param count the new cell count.
      */
@@ -245,7 +268,9 @@ public class XhtmlBaseSink
     }
 
     /**
-     * <p>Getter for the field <code>cellCount</code>.</p>
+     * <p>
+     * Getter for the field <code>cellCount</code>.
+     * </p>
      *
      * @return the current cell count.
      */
@@ -259,6 +284,7 @@ public class XhtmlBaseSink
      *
      * @deprecated since 1.1.2, use {@link #init()} instead of.
      */
+    @Deprecated
     protected void resetState()
     {
         init();
@@ -488,8 +514,7 @@ public class XhtmlBaseSink
             MutableAttributeSet att = new SinkEventAttributeSet();
             att.addAttribute( Attribute.CLASS, "section" );
             // NOTE: any class entry in attributes will overwrite the above
-            att.addAttributes( SinkUtils.filterAttributes(
-                    attributes, SinkUtils.SINK_BASE_ATTRIBUTES  ) );
+            att.addAttributes( SinkUtils.filterAttributes( attributes, SinkUtils.SINK_BASE_ATTRIBUTES ) );
 
             writeStartTag( HtmlMarkup.DIV, att );
         }
@@ -522,8 +547,7 @@ public class XhtmlBaseSink
      */
     protected void onSectionTitle( int depth, SinkEventAttributes attributes )
     {
-        MutableAttributeSet atts = SinkUtils.filterAttributes(
-                attributes, SinkUtils.SINK_SECTION_ATTRIBUTES  );
+        MutableAttributeSet atts = SinkUtils.filterAttributes( attributes, SinkUtils.SINK_SECTION_ATTRIBUTES );
 
         if ( depth == SECTION_LEVEL_1 )
         {
@@ -587,6 +611,7 @@ public class XhtmlBaseSink
 
     /**
      * {@inheritDoc}
+     *
      * @see javax.swing.text.html.HTML.Tag#UL
      */
     @Override
@@ -597,6 +622,7 @@ public class XhtmlBaseSink
 
     /**
      * {@inheritDoc}
+     *
      * @see javax.swing.text.html.HTML.Tag#UL
      */
     @Override
@@ -610,14 +636,14 @@ public class XhtmlBaseSink
             paragraph_();
         }
 
-        MutableAttributeSet atts = SinkUtils.filterAttributes(
-                attributes, SinkUtils.SINK_BASE_ATTRIBUTES  );
+        MutableAttributeSet atts = SinkUtils.filterAttributes( attributes, SinkUtils.SINK_BASE_ATTRIBUTES );
 
         writeStartTag( HtmlMarkup.UL, atts );
     }
 
     /**
      * {@inheritDoc}
+     *
      * @see javax.swing.text.html.HTML.Tag#UL
      */
     @Override
@@ -628,6 +654,7 @@ public class XhtmlBaseSink
 
     /**
      * {@inheritDoc}
+     *
      * @see javax.swing.text.html.HTML.Tag#LI
      */
     @Override
@@ -638,19 +665,20 @@ public class XhtmlBaseSink
 
     /**
      * {@inheritDoc}
+     *
      * @see javax.swing.text.html.HTML.Tag#LI
      */
     @Override
     public void listItem( SinkEventAttributes attributes )
     {
-        MutableAttributeSet atts = SinkUtils.filterAttributes(
-                attributes, SinkUtils.SINK_BASE_ATTRIBUTES  );
+        MutableAttributeSet atts = SinkUtils.filterAttributes( attributes, SinkUtils.SINK_BASE_ATTRIBUTES );
 
         writeStartTag( HtmlMarkup.LI, atts );
     }
 
     /**
      * {@inheritDoc}
+     *
      * @see javax.swing.text.html.HTML.Tag#LI
      */
     @Override
@@ -660,9 +688,8 @@ public class XhtmlBaseSink
     }
 
     /**
-     * The default list style depends on the numbering.
+     * The default list style depends on the numbering. {@inheritDoc}
      *
-     * {@inheritDoc}
      * @see javax.swing.text.html.HTML.Tag#OL
      */
     @Override
@@ -672,9 +699,8 @@ public class XhtmlBaseSink
     }
 
     /**
-     * The default list style depends on the numbering.
+     * The default list style depends on the numbering. {@inheritDoc}
      *
-     * {@inheritDoc}
      * @see javax.swing.text.html.HTML.Tag#OL
      */
     @Override
@@ -708,8 +734,7 @@ public class XhtmlBaseSink
                 style = "decimal";
         }
 
-        MutableAttributeSet atts = SinkUtils.filterAttributes(
-                attributes, SinkUtils.SINK_SECTION_ATTRIBUTES  );
+        MutableAttributeSet atts = SinkUtils.filterAttributes( attributes, SinkUtils.SINK_SECTION_ATTRIBUTES );
 
         if ( atts == null )
         {
@@ -723,6 +748,7 @@ public class XhtmlBaseSink
 
     /**
      * {@inheritDoc}
+     *
      * @see javax.swing.text.html.HTML.Tag#OL
      */
     @Override
@@ -733,6 +759,7 @@ public class XhtmlBaseSink
 
     /**
      * {@inheritDoc}
+     *
      * @see javax.swing.text.html.HTML.Tag#LI
      */
     @Override
@@ -743,19 +770,20 @@ public class XhtmlBaseSink
 
     /**
      * {@inheritDoc}
+     *
      * @see javax.swing.text.html.HTML.Tag#LI
      */
     @Override
     public void numberedListItem( SinkEventAttributes attributes )
     {
-        MutableAttributeSet atts = SinkUtils.filterAttributes(
-                attributes, SinkUtils.SINK_BASE_ATTRIBUTES  );
+        MutableAttributeSet atts = SinkUtils.filterAttributes( attributes, SinkUtils.SINK_BASE_ATTRIBUTES );
 
         writeStartTag( HtmlMarkup.LI, atts );
     }
 
     /**
      * {@inheritDoc}
+     *
      * @see javax.swing.text.html.HTML.Tag#LI
      */
     @Override
@@ -766,6 +794,7 @@ public class XhtmlBaseSink
 
     /**
      * {@inheritDoc}
+     *
      * @see javax.swing.text.html.HTML.Tag#DL
      */
     @Override
@@ -776,6 +805,7 @@ public class XhtmlBaseSink
 
     /**
      * {@inheritDoc}
+     *
      * @see javax.swing.text.html.HTML.Tag#DL
      */
     @Override
@@ -789,14 +819,14 @@ public class XhtmlBaseSink
             paragraph_();
         }
 
-        MutableAttributeSet atts = SinkUtils.filterAttributes(
-                attributes, SinkUtils.SINK_BASE_ATTRIBUTES  );
+        MutableAttributeSet atts = SinkUtils.filterAttributes( attributes, SinkUtils.SINK_BASE_ATTRIBUTES );
 
         writeStartTag( HtmlMarkup.DL, atts );
     }
 
     /**
      * {@inheritDoc}
+     *
      * @see javax.swing.text.html.HTML.Tag#DL
      */
     @Override
@@ -807,19 +837,20 @@ public class XhtmlBaseSink
 
     /**
      * {@inheritDoc}
+     *
      * @see javax.swing.text.html.HTML.Tag#DT
      */
     @Override
     public void definedTerm( SinkEventAttributes attributes )
     {
-        MutableAttributeSet atts = SinkUtils.filterAttributes(
-                attributes, SinkUtils.SINK_BASE_ATTRIBUTES  );
+        MutableAttributeSet atts = SinkUtils.filterAttributes( attributes, SinkUtils.SINK_BASE_ATTRIBUTES );
 
         writeStartTag( HtmlMarkup.DT, atts );
     }
 
     /**
      * {@inheritDoc}
+     *
      * @see javax.swing.text.html.HTML.Tag#DT
      */
     @Override
@@ -830,6 +861,7 @@ public class XhtmlBaseSink
 
     /**
      * {@inheritDoc}
+     *
      * @see javax.swing.text.html.HTML.Tag#DT
      */
     @Override
@@ -840,6 +872,7 @@ public class XhtmlBaseSink
 
     /**
      * {@inheritDoc}
+     *
      * @see javax.swing.text.html.HTML.Tag#DD
      */
     @Override
@@ -850,19 +883,20 @@ public class XhtmlBaseSink
 
     /**
      * {@inheritDoc}
+     *
      * @see javax.swing.text.html.HTML.Tag#DD
      */
     @Override
     public void definition( SinkEventAttributes attributes )
     {
-        MutableAttributeSet atts = SinkUtils.filterAttributes(
-                attributes, SinkUtils.SINK_BASE_ATTRIBUTES  );
+        MutableAttributeSet atts = SinkUtils.filterAttributes( attributes, SinkUtils.SINK_BASE_ATTRIBUTES );
 
         writeStartTag( HtmlMarkup.DD, atts );
     }
 
     /**
      * {@inheritDoc}
+     *
      * @see javax.swing.text.html.HTML.Tag#DD
      */
     @Override
@@ -873,11 +907,13 @@ public class XhtmlBaseSink
 
     /**
      * {@inheritDoc}
+     *
      * @see javax.swing.text.html.HTML.Tag#IMG
-     * @deprecated Use {@link #figure(SinkEventAttributes)}, this method is only kept for
-     * backward compatibility. Note that the behavior is different though, as this method
-     * writes an img tag, while correctly the img tag should be written by  figureGraphics().
+     * @deprecated Use {@link #figure(SinkEventAttributes)}, this method is only kept for backward compatibility. Note
+     *             that the behavior is different though, as this method writes an img tag, while correctly the img tag
+     *             should be written by figureGraphics().
      */
+    @Deprecated
     @Override
     public void figure()
     {
@@ -887,6 +923,7 @@ public class XhtmlBaseSink
 
     /**
      * {@inheritDoc}
+     *
      * @see javax.swing.text.html.HTML.Tag#IMG
      */
     @Override
@@ -894,8 +931,7 @@ public class XhtmlBaseSink
     {
         inFigure = true;
 
-        MutableAttributeSet atts = SinkUtils.filterAttributes(
-                attributes, SinkUtils.SINK_BASE_ATTRIBUTES  );
+        MutableAttributeSet atts = SinkUtils.filterAttributes( attributes, SinkUtils.SINK_BASE_ATTRIBUTES );
 
         if ( atts == null )
         {
@@ -935,10 +971,12 @@ public class XhtmlBaseSink
 
     /**
      * {@inheritDoc}
-     * @deprecated Use {@link #figureGraphics(String,SinkEventAttributes)},
-     * this method is only kept for backward compatibility. Note that the behavior is
-     * different though, as this method does not write the img tag, only the src attribute.
+     *
+     * @deprecated Use {@link #figureGraphics(String,SinkEventAttributes)}, this method is only kept for backward
+     *             compatibility. Note that the behavior is different though, as this method does not write the img tag,
+     *             only the src attribute.
      */
+    @Deprecated
     @Override
     public void figureGraphics( String name )
     {
@@ -985,10 +1023,11 @@ public class XhtmlBaseSink
 
     /**
      * {@inheritDoc}
-     * @deprecated Use {@link #figureCaption(SinkEventAttributes)},
-     * this method is only kept for backward compatibility. Note that the behavior is
-     * different though, as this method only writes an alt attribute.
+     *
+     * @deprecated Use {@link #figureCaption(SinkEventAttributes)}, this method is only kept for backward compatibility.
+     *             Note that the behavior is different though, as this method only writes an alt attribute.
      */
+    @Deprecated
     @Override
     public void figureCaption()
     {
@@ -1011,8 +1050,7 @@ public class XhtmlBaseSink
         {
             SinkEventAttributeSet atts = new SinkEventAttributeSet( 1 );
             atts.addAttribute( SinkEventAttributes.ALIGN, "center" );
-            atts.addAttributes( SinkUtils.filterAttributes(
-                attributes, SinkUtils.SINK_BASE_ATTRIBUTES  ) );
+            atts.addAttributes( SinkUtils.filterAttributes( attributes, SinkUtils.SINK_BASE_ATTRIBUTES ) );
 
             paragraph( atts );
             inline( SinkEventAttributeSet.Semantics.ITALIC );
@@ -1036,6 +1074,7 @@ public class XhtmlBaseSink
 
     /**
      * {@inheritDoc}
+     *
      * @see javax.swing.text.html.HTML.Tag#P
      */
     @Override
@@ -1046,6 +1085,7 @@ public class XhtmlBaseSink
 
     /**
      * {@inheritDoc}
+     *
      * @see javax.swing.text.html.HTML.Tag#P
      */
     @Override
@@ -1053,14 +1093,14 @@ public class XhtmlBaseSink
     {
         paragraphFlag = true;
 
-        MutableAttributeSet atts = SinkUtils.filterAttributes(
-                attributes, SinkUtils.SINK_SECTION_ATTRIBUTES  );
+        MutableAttributeSet atts = SinkUtils.filterAttributes( attributes, SinkUtils.SINK_SECTION_ATTRIBUTES );
 
         writeStartTag( HtmlMarkup.P, atts );
     }
 
     /**
      * {@inheritDoc}
+     *
      * @see javax.swing.text.html.HTML.Tag#P
      */
     @Override
@@ -1075,6 +1115,7 @@ public class XhtmlBaseSink
 
     /**
      * {@inheritDoc}
+     *
      * @see javax.swing.text.html.HTML.Tag#ADDRESS
      */
     @Override
@@ -1085,19 +1126,20 @@ public class XhtmlBaseSink
 
     /**
      * {@inheritDoc}
+     *
      * @see javax.swing.text.html.HTML.Tag#ADDRESS
      */
     @Override
     public void address( SinkEventAttributes attributes )
     {
-        MutableAttributeSet atts = SinkUtils.filterAttributes(
-                attributes, SinkUtils.SINK_SECTION_ATTRIBUTES  );
+        MutableAttributeSet atts = SinkUtils.filterAttributes( attributes, SinkUtils.SINK_SECTION_ATTRIBUTES );
 
         writeStartTag( HtmlMarkup.ADDRESS, atts );
     }
 
     /**
      * {@inheritDoc}
+     *
      * @see javax.swing.text.html.HTML.Tag#ADDRESS
      */
     @Override
@@ -1108,6 +1150,7 @@ public class XhtmlBaseSink
 
     /**
      * {@inheritDoc}
+     *
      * @see javax.swing.text.html.HTML.Tag#BLOCKQUOTE
      */
     @Override
@@ -1118,19 +1161,20 @@ public class XhtmlBaseSink
 
     /**
      * {@inheritDoc}
+     *
      * @see javax.swing.text.html.HTML.Tag#BLOCKQUOTE
      */
     @Override
     public void blockquote( SinkEventAttributes attributes )
     {
-        MutableAttributeSet atts = SinkUtils.filterAttributes(
-                attributes, SinkUtils.SINK_SECTION_ATTRIBUTES  );
+        MutableAttributeSet atts = SinkUtils.filterAttributes( attributes, SinkUtils.SINK_SECTION_ATTRIBUTES );
 
         writeStartTag( HtmlMarkup.BLOCKQUOTE, atts );
     }
 
     /**
      * {@inheritDoc}
+     *
      * @see javax.swing.text.html.HTML.Tag#BLOCKQUOTE
      */
     @Override
@@ -1141,6 +1185,7 @@ public class XhtmlBaseSink
 
     /**
      * {@inheritDoc}
+     *
      * @see javax.swing.text.html.HTML.Tag#DIV
      */
     @Override
@@ -1151,19 +1196,20 @@ public class XhtmlBaseSink
 
     /**
      * {@inheritDoc}
+     *
      * @see javax.swing.text.html.HTML.Tag#DIV
      */
     @Override
     public void division( SinkEventAttributes attributes )
     {
-        MutableAttributeSet atts = SinkUtils.filterAttributes(
-                attributes, SinkUtils.SINK_SECTION_ATTRIBUTES  );
+        MutableAttributeSet atts = SinkUtils.filterAttributes( attributes, SinkUtils.SINK_SECTION_ATTRIBUTES );
 
         writeStartTag( HtmlMarkup.DIV, atts );
     }
 
     /**
      * {@inheritDoc}
+     *
      * @see javax.swing.text.html.HTML.Tag#DIV
      */
     @Override
@@ -1173,9 +1219,8 @@ public class XhtmlBaseSink
     }
 
     /**
-     * The default class style for boxed is <code>source</code>.
+     * The default class style for boxed is <code>source</code>. {@inheritDoc}
      *
-     * {@inheritDoc}
      * @see javax.swing.text.html.HTML.Tag#DIV
      * @see javax.swing.text.html.HTML.Tag#PRE
      */
@@ -1193,9 +1238,8 @@ public class XhtmlBaseSink
     }
 
     /**
-     * The default class style for boxed is <code>source</code>.
+     * The default class style for boxed is <code>source</code>. {@inheritDoc}
      *
-     * {@inheritDoc}
      * @see javax.swing.text.html.HTML.Tag#DIV
      * @see javax.swing.text.html.HTML.Tag#PRE
      */
@@ -1212,8 +1256,7 @@ public class XhtmlBaseSink
 
         verbatimFlag = true;
 
-        MutableAttributeSet atts = SinkUtils.filterAttributes(
-                attributes, SinkUtils.SINK_VERBATIM_ATTRIBUTES  );
+        MutableAttributeSet atts = SinkUtils.filterAttributes( attributes, SinkUtils.SINK_VERBATIM_ATTRIBUTES );
 
         if ( atts == null )
         {
@@ -1224,8 +1267,7 @@ public class XhtmlBaseSink
 
         if ( atts.isDefined( SinkEventAttributes.DECORATION ) )
         {
-            boxed =
-                "boxed".equals( atts.getAttribute( SinkEventAttributes.DECORATION ).toString() );
+            boxed = "boxed".equals( atts.getAttribute( SinkEventAttributes.DECORATION ).toString() );
         }
 
         SinkEventAttributes divAtts = null;
@@ -1243,6 +1285,7 @@ public class XhtmlBaseSink
 
     /**
      * {@inheritDoc}
+     *
      * @see javax.swing.text.html.HTML.Tag#DIV
      * @see javax.swing.text.html.HTML.Tag#PRE
      */
@@ -1258,6 +1301,7 @@ public class XhtmlBaseSink
 
     /**
      * {@inheritDoc}
+     *
      * @see javax.swing.text.html.HTML.Tag#HR
      */
     @Override
@@ -1268,13 +1312,13 @@ public class XhtmlBaseSink
 
     /**
      * {@inheritDoc}
+     *
      * @see javax.swing.text.html.HTML.Tag#HR
      */
     @Override
     public void horizontalRule( SinkEventAttributes attributes )
     {
-        MutableAttributeSet atts = SinkUtils.filterAttributes(
-                attributes, SinkUtils.SINK_HR_ATTRIBUTES  );
+        MutableAttributeSet atts = SinkUtils.filterAttributes( attributes, SinkUtils.SINK_HR_ATTRIBUTES );
 
         writeSimpleTag( HtmlMarkup.HR, atts );
     }
@@ -1309,13 +1353,13 @@ public class XhtmlBaseSink
         }
         else
         {
-            this.tableAttributes = SinkUtils.filterAttributes(
-                attributes, SinkUtils.SINK_TABLE_ATTRIBUTES  );
+            this.tableAttributes = SinkUtils.filterAttributes( attributes, SinkUtils.SINK_TABLE_ATTRIBUTES );
         }
     }
 
     /**
      * {@inheritDoc}
+     *
      * @see javax.swing.text.html.HTML.Tag#TABLE
      */
     @Override
@@ -1364,10 +1408,8 @@ public class XhtmlBaseSink
     }
 
     /**
-     * The default class style is <code>bodyTable</code>.
-     * The default align is <code>center</code>.
+     * The default class style is <code>bodyTable</code>. The default align is <code>center</code>. {@inheritDoc}
      *
-     * {@inheritDoc}
      * @see javax.swing.text.html.HTML.Tag#TABLE
      */
     @Override
@@ -1419,9 +1461,8 @@ public class XhtmlBaseSink
     }
 
     /**
-     * The default class style is <code>a</code> or <code>b</code> depending the row id.
+     * Rows are striped with two colors by adding the class <code>a</code> or <code>b</code>. {@inheritDoc}
      *
-     * {@inheritDoc}
      * @see javax.swing.text.html.HTML.Tag#TR
      */
     @Override
@@ -1436,34 +1477,43 @@ public class XhtmlBaseSink
     }
 
     /**
-     * The default class style is <code>a</code> or <code>b</code> depending the row id.
+     * Rows are striped with two colors by adding the class <code>a</code> or <code>b</code>. If the provided attributes
+     * specify the <code>hidden</code> class, the next call to tableRow will set the same striping class as this one. A
+     * style for <code>hidden</code> or <code>table.bodyTable hidden</code> may need to be provided to actually hide
+     * such a row. {@inheritDoc}
      *
-     * {@inheritDoc}
      * @see javax.swing.text.html.HTML.Tag#TR
      */
     @Override
     public void tableRow( SinkEventAttributes attributes )
     {
-        MutableAttributeSet atts = SinkUtils.filterAttributes(
-                attributes, SinkUtils.SINK_TR_ATTRIBUTES );
+        MutableAttributeSet attrs = SinkUtils.filterAttributes( attributes, SinkUtils.SINK_TR_ATTRIBUTES );
 
-        if ( atts == null )
+        if ( attrs == null )
         {
-            atts = new SinkEventAttributeSet();
+            attrs = new SinkEventAttributeSet();
         }
 
         String rowClass = evenTableRow ? "a" : "b";
-        if ( atts.isDefined( Attribute.CLASS.toString() ) )
+        boolean hidden = false;
+        if ( attrs.isDefined( Attribute.CLASS.toString() ) )
         {
-            String givenRowClass = (String) atts.getAttribute( Attribute.CLASS.toString() );
+            String givenRowClass = (String) attrs.getAttribute( Attribute.CLASS.toString() );
+            if ( HIDDEN_CLASS_PATTERN.matcher( givenRowClass ).matches() )
+            {
+                hidden = true;
+            }
             rowClass = givenRowClass + " " + rowClass;
         }
 
-        atts.addAttribute( Attribute.CLASS, rowClass );
+        attrs.addAttribute( Attribute.CLASS, rowClass );
 
-        writeStartTag( HtmlMarkup.TR, atts );
+        writeStartTag( HtmlMarkup.TR, attrs );
 
-        evenTableRow = !evenTableRow;
+        if ( !hidden )
+        {
+            evenTableRow = !evenTableRow;
+        }
 
         if ( !this.cellCountStack.isEmpty() )
         {
@@ -1474,6 +1524,7 @@ public class XhtmlBaseSink
 
     /**
      * {@inheritDoc}
+     *
      * @see javax.swing.text.html.HTML.Tag#TR
      */
     @Override
@@ -1540,13 +1591,13 @@ public class XhtmlBaseSink
     {
         Tag t = ( headerRow ? HtmlMarkup.TH : HtmlMarkup.TD );
 
-        if ( !headerRow && cellCountStack != null && !cellCountStack.isEmpty()
-            && cellJustifStack != null && !cellJustifStack.isEmpty() && getCellJustif() != null )
+        if ( !headerRow && cellCountStack != null && !cellCountStack.isEmpty() && cellJustifStack != null
+            && !cellJustifStack.isEmpty() && getCellJustif() != null )
         {
             int cellCount = getCellCount();
             if ( cellCount < getCellJustif().length )
             {
-                Map<Integer, MutableAttributeSet> hash = new HashMap<>();
+                Map<Integer, MutableAttributeSet> hash = new HashMap<Integer, MutableAttributeSet>();
                 hash.put( Sink.JUSTIFY_CENTER, SinkEventAttributeSet.CENTER );
                 hash.put( Sink.JUSTIFY_LEFT, SinkEventAttributeSet.LEFT );
                 hash.put( Sink.JUSTIFY_RIGHT, SinkEventAttributeSet.RIGHT );
@@ -1569,8 +1620,7 @@ public class XhtmlBaseSink
         }
         else
         {
-            writeStartTag( t,
-                SinkUtils.filterAttributes( attributes, SinkUtils.SINK_TD_ATTRIBUTES ) );
+            writeStartTag( t, SinkUtils.filterAttributes( attributes, SinkUtils.SINK_TD_ATTRIBUTES ) );
         }
     }
 
@@ -1611,6 +1661,7 @@ public class XhtmlBaseSink
 
     /**
      * {@inheritDoc}
+     *
      * @see javax.swing.text.html.HTML.Tag#CAPTION
      */
     @Override
@@ -1621,6 +1672,7 @@ public class XhtmlBaseSink
 
     /**
      * {@inheritDoc}
+     *
      * @see javax.swing.text.html.HTML.Tag#CAPTION
      */
     @Override
@@ -1631,14 +1683,14 @@ public class XhtmlBaseSink
         this.tableCaptionXMLWriterStack.addLast( new PrettyPrintXMLWriter( sw ) );
 
         // TODO: tableCaption should be written before tableRows (DOXIA-177)
-        MutableAttributeSet atts = SinkUtils.filterAttributes(
-                attributes, SinkUtils.SINK_SECTION_ATTRIBUTES  );
+        MutableAttributeSet atts = SinkUtils.filterAttributes( attributes, SinkUtils.SINK_SECTION_ATTRIBUTES );
 
         writeStartTag( HtmlMarkup.CAPTION, atts );
     }
 
     /**
      * {@inheritDoc}
+     *
      * @see javax.swing.text.html.HTML.Tag#CAPTION
      */
     @Override
@@ -1655,6 +1707,7 @@ public class XhtmlBaseSink
 
     /**
      * {@inheritDoc}
+     *
      * @see javax.swing.text.html.HTML.Tag#A
      */
     @Override
@@ -1665,6 +1718,7 @@ public class XhtmlBaseSink
 
     /**
      * {@inheritDoc}
+     *
      * @see javax.swing.text.html.HTML.Tag#A
      */
     @Override
@@ -1680,8 +1734,7 @@ public class XhtmlBaseSink
             return;
         }
 
-        MutableAttributeSet atts = SinkUtils.filterAttributes(
-                attributes, SinkUtils.SINK_BASE_ATTRIBUTES  );
+        MutableAttributeSet atts = SinkUtils.filterAttributes( attributes, SinkUtils.SINK_BASE_ATTRIBUTES );
 
         String id = name;
 
@@ -1702,6 +1755,7 @@ public class XhtmlBaseSink
 
     /**
      * {@inheritDoc}
+     *
      * @see javax.swing.text.html.HTML.Tag#A
      */
     @Override
@@ -1714,9 +1768,8 @@ public class XhtmlBaseSink
     }
 
     /**
-     * The default style class for external link is <code>externalLink</code>.
+     * The default style class for external link is <code>externalLink</code>. {@inheritDoc}
      *
-     * {@inheritDoc}
      * @see javax.swing.text.html.HTML.Tag#A
      **/
     @Override
@@ -1726,9 +1779,8 @@ public class XhtmlBaseSink
     }
 
     /**
-     * The default style class for external link is <code>externalLink</code>.
+     * The default style class for external link is <code>externalLink</code>. {@inheritDoc}
      *
-     * {@inheritDoc}
      * @see javax.swing.text.html.HTML.Tag#A
      **/
     @Override
@@ -1744,8 +1796,7 @@ public class XhtmlBaseSink
             return;
         }
 
-        MutableAttributeSet atts = SinkUtils.filterAttributes(
-                attributes, SinkUtils.SINK_LINK_ATTRIBUTES );
+        MutableAttributeSet atts = SinkUtils.filterAttributes( attributes, SinkUtils.SINK_LINK_ATTRIBUTES );
 
         if ( atts == null )
         {
@@ -1756,12 +1807,12 @@ public class XhtmlBaseSink
         {
             String hrefClass = "externalLink";
             if ( atts.isDefined( Attribute.CLASS.toString() ) )
-             {
-                 String givenClass = (String) atts.getAttribute( Attribute.CLASS.toString() );
-                 hrefClass = givenClass + " " + hrefClass;
-             }
+            {
+                String givenClass = (String) atts.getAttribute( Attribute.CLASS.toString() );
+                hrefClass = givenClass + " " + hrefClass;
+            }
 
-             atts.addAttribute( Attribute.CLASS, hrefClass );
+            atts.addAttribute( Attribute.CLASS, hrefClass );
         }
 
         atts.addAttribute( Attribute.HREF, HtmlTools.escapeHTML( name ) );
@@ -1771,6 +1822,7 @@ public class XhtmlBaseSink
 
     /**
      * {@inheritDoc}
+     *
      * @see javax.swing.text.html.HTML.Tag#A
      */
     @Override
@@ -1789,12 +1841,11 @@ public class XhtmlBaseSink
         inline( null );
     }
 
-    private void inlineSemantics( SinkEventAttributes attributes, String semantic,
-            List<Tag> tags, Tag tag )
+    private void inlineSemantics( SinkEventAttributes attributes, String semantic, List<Tag> tags, Tag tag )
     {
         if ( attributes.containsAttribute( SinkEventAttributes.SEMANTICS, semantic ) )
         {
-            SinkEventAttributes attributesNoSemantics = ( SinkEventAttributes ) attributes.copyAttributes();
+            SinkEventAttributes attributesNoSemantics = (SinkEventAttributes) attributes.copyAttributes();
             attributesNoSemantics.removeAttribute( SinkEventAttributes.SEMANTICS );
             writeStartTag( tag, attributesNoSemantics );
             tags.add( 0, tag );
@@ -1807,7 +1858,7 @@ public class XhtmlBaseSink
     {
         if ( !headFlag )
         {
-            List<Tag> tags = new ArrayList<>();
+            List<Tag> tags = new ArrayList<Tag>();
 
             if ( attributes != null )
             {
@@ -1845,7 +1896,7 @@ public class XhtmlBaseSink
     {
         if ( !headFlag )
         {
-            for ( Tag tag: inlineStack.pop() )
+            for ( Tag tag : inlineStack.pop() )
             {
                 writeEndTag( tag );
             }
@@ -1854,6 +1905,7 @@ public class XhtmlBaseSink
 
     /**
      * {@inheritDoc}
+     *
      * @see javax.swing.text.html.HTML.Tag#I
      */
     @Override
@@ -1864,6 +1916,7 @@ public class XhtmlBaseSink
 
     /**
      * {@inheritDoc}
+     *
      * @see javax.swing.text.html.HTML.Tag#I
      */
     @Override
@@ -1874,6 +1927,7 @@ public class XhtmlBaseSink
 
     /**
      * {@inheritDoc}
+     *
      * @see javax.swing.text.html.HTML.Tag#B
      */
     @Override
@@ -1884,6 +1938,7 @@ public class XhtmlBaseSink
 
     /**
      * {@inheritDoc}
+     *
      * @see javax.swing.text.html.HTML.Tag#B
      */
     @Override
@@ -1894,6 +1949,7 @@ public class XhtmlBaseSink
 
     /**
      * {@inheritDoc}
+     *
      * @see javax.swing.text.html.HTML.Tag#TT
      */
     @Override
@@ -1904,6 +1960,7 @@ public class XhtmlBaseSink
 
     /**
      * {@inheritDoc}
+     *
      * @see javax.swing.text.html.HTML.Tag#TT
      */
     @Override
@@ -1914,6 +1971,7 @@ public class XhtmlBaseSink
 
     /**
      * {@inheritDoc}
+     *
      * @see javax.swing.text.html.HTML.Tag#BR
      */
     @Override
@@ -1924,6 +1982,7 @@ public class XhtmlBaseSink
 
     /**
      * {@inheritDoc}
+     *
      * @see javax.swing.text.html.HTML.Tag#BR
      */
     @Override
@@ -1935,8 +1994,7 @@ public class XhtmlBaseSink
         }
         else
         {
-            MutableAttributeSet atts = SinkUtils.filterAttributes(
-                attributes, SinkUtils.SINK_BR_ATTRIBUTES  );
+            MutableAttributeSet atts = SinkUtils.filterAttributes( attributes, SinkUtils.SINK_BR_ATTRIBUTES );
 
             writeSimpleTag( HtmlMarkup.BR, atts );
         }
@@ -2037,45 +2095,44 @@ public class XhtmlBaseSink
     }
 
     /**
-     * {@inheritDoc}
-     *
-     * Add an unknown event.
-     * This can be used to generate html tags for which no corresponding sink event exists.
-     *
+     * {@inheritDoc} Add an unknown event. This can be used to generate html tags for which no corresponding sink event
+     * exists.
      * <p>
-     * If {@link org.apache.maven.doxia.util.HtmlTools#getHtmlTag(String) HtmlTools.getHtmlTag( name )}
-     * does not return null, the corresponding tag will be written.
+     * If {@link org.apache.maven.doxia.util.HtmlTools#getHtmlTag(String) HtmlTools.getHtmlTag( name )} does not return
+     * null, the corresponding tag will be written.
      * </p>
-     *
-     * <p>For example, the div block</p>
+     * <p>
+     * For example, the div block
+     * </p>
      *
      * <pre>
      *  &lt;div class="detail" style="display:inline"&gt;text&lt;/div&gt;
      * </pre>
-     *
-     * <p>can be generated via the following event sequence:</p>
+     * <p>
+     * can be generated via the following event sequence:
+     * </p>
      *
      * <pre>
-     *  SinkEventAttributeSet atts = new SinkEventAttributeSet();
-     *  atts.addAttribute( SinkEventAttributes.CLASS, "detail" );
-     *  atts.addAttribute( SinkEventAttributes.STYLE, "display:inline" );
-     *  sink.unknown( "div", new Object[]{new Integer( HtmlMarkup.TAG_TYPE_START )}, atts );
-     *  sink.text( "text" );
-     *  sink.unknown( "div", new Object[]{new Integer( HtmlMarkup.TAG_TYPE_END )}, null );
+     * SinkEventAttributeSet atts = new SinkEventAttributeSet();
+     * atts.addAttribute( SinkEventAttributes.CLASS, "detail" );
+     * atts.addAttribute( SinkEventAttributes.STYLE, "display:inline" );
+     * sink.unknown( "div", new Object[] { new Integer( HtmlMarkup.TAG_TYPE_START ) }, atts );
+     * sink.text( "text" );
+     * sink.unknown( "div", new Object[] { new Integer( HtmlMarkup.TAG_TYPE_END ) }, null );
      * </pre>
      *
-     * @param name the name of the event. If this is not a valid xhtml tag name
-     *      as defined in {@link org.apache.maven.doxia.markup.HtmlMarkup} then the event is ignored.
-     * @param requiredParams If this is null or the first argument is not an Integer then the event is ignored.
-     *      The first argument should indicate the type of the unknown event, its integer value should be one of
-     *      {@link org.apache.maven.doxia.markup.HtmlMarkup#TAG_TYPE_START TAG_TYPE_START},
-     *      {@link org.apache.maven.doxia.markup.HtmlMarkup#TAG_TYPE_END TAG_TYPE_END},
-     *      {@link org.apache.maven.doxia.markup.HtmlMarkup#TAG_TYPE_SIMPLE TAG_TYPE_SIMPLE},
-     *      {@link org.apache.maven.doxia.markup.HtmlMarkup#ENTITY_TYPE ENTITY_TYPE}, or
-     *      {@link org.apache.maven.doxia.markup.HtmlMarkup#CDATA_TYPE CDATA_TYPE},
-     *      otherwise the event will be ignored.
-     * @param attributes a set of attributes for the event. May be null.
-     *      The attributes will always be written, no validity check is performed.
+     * @param name the name of the event. If this is not a valid xhtml tag name as defined in
+     *            {@link org.apache.maven.doxia.markup.HtmlMarkup} then the event is ignored.
+     * @param requiredParams If this is null or the first argument is not an Integer then the event is ignored. The
+     *            first argument should indicate the type of the unknown event, its integer value should be one of
+     *            {@link org.apache.maven.doxia.markup.HtmlMarkup#TAG_TYPE_START TAG_TYPE_START},
+     *            {@link org.apache.maven.doxia.markup.HtmlMarkup#TAG_TYPE_END TAG_TYPE_END},
+     *            {@link org.apache.maven.doxia.markup.HtmlMarkup#TAG_TYPE_SIMPLE TAG_TYPE_SIMPLE},
+     *            {@link org.apache.maven.doxia.markup.HtmlMarkup#ENTITY_TYPE ENTITY_TYPE}, or
+     *            {@link org.apache.maven.doxia.markup.HtmlMarkup#CDATA_TYPE CDATA_TYPE}, otherwise the event will be
+     *            ignored.
+     * @param attributes a set of attributes for the event. May be null. The attributes will always be written, no
+     *            validity check is performed.
      */
     @Override
     public void unknown( String name, Object[] requiredParams, SinkEventAttributes attributes )
@@ -2230,6 +2287,7 @@ public class XhtmlBaseSink
     }
 
     /** {@inheritDoc} */
+    @Override
     protected void write( String text )
     {
         if ( !this.tableCaptionXMLWriterStack.isEmpty() && this.tableCaptionXMLWriterStack.getLast() != null )
@@ -2252,7 +2310,7 @@ public class XhtmlBaseSink
     {
         if ( this.tableCaptionXMLWriterStack.isEmpty() )
         {
-            super.writeStartTag ( t, att, isSimpleTag );
+            super.writeStartTag( t, att, isSimpleTag );
         }
         else
         {
@@ -2312,13 +2370,13 @@ public class XhtmlBaseSink
 
         if ( warnMessages == null )
         {
-            warnMessages = new HashMap<>();
+            warnMessages = new HashMap<String, Set<String>>();
         }
 
         Set<String> set = warnMessages.get( key );
         if ( set == null )
         {
-            set = new TreeSet<>();
+            set = new TreeSet<String>();
         }
         set.add( mesg );
         warnMessages.put( key, set );

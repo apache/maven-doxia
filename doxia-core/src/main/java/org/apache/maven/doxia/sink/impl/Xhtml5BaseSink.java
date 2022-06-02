@@ -32,6 +32,7 @@ import java.util.Map;
 import java.util.Set;
 import java.util.Stack;
 import java.util.TreeSet;
+import java.util.regex.Pattern;
 
 import javax.swing.text.MutableAttributeSet;
 import javax.swing.text.html.HTML.Attribute;
@@ -43,7 +44,6 @@ import org.apache.maven.doxia.sink.Sink;
 import org.apache.maven.doxia.sink.SinkEventAttributes;
 import org.apache.maven.doxia.util.DoxiaUtils;
 import org.apache.maven.doxia.util.HtmlTools;
-
 import org.codehaus.plexus.util.StringUtils;
 import org.codehaus.plexus.util.xml.PrettyPrintXMLWriter;
 
@@ -61,6 +61,9 @@ public class Xhtml5BaseSink
     /** The PrintWriter to write the result. */
     private final PrintWriter writer;
 
+    /** Used to identify if a class string contains `hidden` */
+    private static final Pattern HIDDEN_CLASS_PATTERN = Pattern.compile( "(?:.*\\s|^)hidden(?:\\s.*|$)" );
+
     /** Used to collect text events mainly for the head events. */
     private StringBuffer textBuffer = new StringBuffer();
 
@@ -68,10 +71,10 @@ public class Xhtml5BaseSink
     private boolean headFlag;
 
     /** Keep track of the main and div tags for content events. */
-    protected Stack<Tag> contentStack = new Stack<>();
+    protected Stack<Tag> contentStack = new Stack<Tag>();
 
     /** Keep track of the closing tags for inline events. */
-    protected Stack<List<Tag>> inlineStack = new Stack<>();
+    protected Stack<List<Tag>> inlineStack = new Stack<List<Tag>>();
 
     /** An indication on if we're inside a paragraph flag. */
     private boolean paragraphFlag;
@@ -136,13 +139,13 @@ public class Xhtml5BaseSink
     {
         this.writer = new PrintWriter( out );
 
-        this.cellJustifStack = new LinkedList<>();
-        this.isCellJustifStack = new LinkedList<>();
-        this.cellCountStack = new LinkedList<>();
-        this.tableContentWriterStack = new LinkedList<>();
-        this.tableCaptionWriterStack = new LinkedList<>();
-        this.tableCaptionXMLWriterStack = new LinkedList<>();
-        this.tableCaptionStack = new LinkedList<>();
+        this.cellJustifStack = new LinkedList<int[]>();
+        this.isCellJustifStack = new LinkedList<Boolean>();
+        this.cellCountStack = new LinkedList<Integer>();
+        this.tableContentWriterStack = new LinkedList<StringWriter>();
+        this.tableCaptionWriterStack = new LinkedList<StringWriter>();
+        this.tableCaptionXMLWriterStack = new LinkedList<PrettyPrintXMLWriter>();
+        this.tableCaptionStack = new LinkedList<String>();
 
         init();
     }
@@ -247,6 +250,7 @@ public class Xhtml5BaseSink
      *
      * @deprecated since 1.1.2, use {@link #init()} instead of.
      */
+    @Deprecated
     protected void resetState()
     {
         init();
@@ -1542,9 +1546,8 @@ public class Xhtml5BaseSink
     }
 
     /**
-     * The default class style is <code>a</code> or <code>b</code> depending the row id.
+     * Rows are striped with two colors by adding the class <code>a</code> or <code>b</code>. {@inheritDoc}
      *
-     * {@inheritDoc}
      * @see javax.swing.text.html.HTML.Tag#TR
      */
     @Override
@@ -1559,34 +1562,44 @@ public class Xhtml5BaseSink
     }
 
     /**
-     * The default class style is <code>a</code> or <code>b</code> depending the row id.
+     * Rows are striped with two colors by adding the class <code>a</code> or <code>b</code>. If the provided attributes
+     * specify the <code>hidden</code> class, the next call to tableRow will set the same striping class as this one. A
+     * style for <code>hidden</code> or <code>table.bodyTable hidden</code> may need to be provided to actually hide
+     * such a row. {@inheritDoc}
      *
-     * {@inheritDoc}
      * @see javax.swing.text.html.HTML.Tag#TR
      */
     @Override
     public void tableRow( SinkEventAttributes attributes )
     {
-        MutableAttributeSet atts = SinkUtils.filterAttributes(
+        MutableAttributeSet attrs = SinkUtils.filterAttributes(
                 attributes, SinkUtils.SINK_TR_ATTRIBUTES );
 
-        if ( atts == null )
+        if ( attrs == null )
         {
-            atts = new SinkEventAttributeSet();
+            attrs = new SinkEventAttributeSet();
         }
 
         String rowClass = evenTableRow ? "a" : "b";
-        if ( atts.isDefined( Attribute.CLASS.toString() ) )
+        boolean hidden = false;
+        if ( attrs.isDefined( Attribute.CLASS.toString() ) )
         {
-            String givenRowClass = (String) atts.getAttribute( Attribute.CLASS.toString() );
+            String givenRowClass = (String) attrs.getAttribute( Attribute.CLASS.toString() );
+            if ( HIDDEN_CLASS_PATTERN.matcher( givenRowClass ).matches() )
+            {
+                hidden = true;
+            }
             rowClass = givenRowClass + " " + rowClass;
         }
 
-        atts.addAttribute( Attribute.CLASS, rowClass );
+        attrs.addAttribute( Attribute.CLASS, rowClass );
 
-        writeStartTag( HtmlMarkup.TR, atts );
+        writeStartTag( HtmlMarkup.TR, attrs );
 
-        evenTableRow = !evenTableRow;
+        if ( !hidden )
+        {
+            evenTableRow = !evenTableRow;
+        }
 
         if ( !this.cellCountStack.isEmpty() )
         {
@@ -1669,7 +1682,7 @@ public class Xhtml5BaseSink
             int cellCount = getCellCount();
             if ( cellCount < getCellJustif().length )
             {
-                Map<Integer, MutableAttributeSet> hash = new HashMap<>();
+                Map<Integer, MutableAttributeSet> hash = new HashMap<Integer, MutableAttributeSet>();
                 hash.put( Sink.JUSTIFY_CENTER, SinkEventAttributeSet.CENTER );
                 hash.put( Sink.JUSTIFY_LEFT, SinkEventAttributeSet.LEFT );
                 hash.put( Sink.JUSTIFY_RIGHT, SinkEventAttributeSet.RIGHT );
@@ -1930,7 +1943,7 @@ public class Xhtml5BaseSink
     {
         if ( !headFlag )
         {
-            List<Tag> tags = new ArrayList<>();
+            List<Tag> tags = new ArrayList<Tag>();
 
             if ( attributes != null )
             {
@@ -2380,6 +2393,7 @@ public class Xhtml5BaseSink
     }
 
     /** {@inheritDoc} */
+    @Override
     protected void write( String text )
     {
         if ( !this.tableCaptionXMLWriterStack.isEmpty() && this.tableCaptionXMLWriterStack.getLast() != null )
@@ -2462,13 +2476,13 @@ public class Xhtml5BaseSink
 
         if ( warnMessages == null )
         {
-            warnMessages = new HashMap<>();
+            warnMessages = new HashMap<String, Set<String>>();
         }
 
         Set<String> set = warnMessages.get( key );
         if ( set == null )
         {
-            set = new TreeSet<>();
+            set = new TreeSet<String>();
         }
         set.add( mesg );
         warnMessages.put( key, set );
