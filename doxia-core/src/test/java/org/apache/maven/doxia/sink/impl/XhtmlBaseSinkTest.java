@@ -46,6 +46,8 @@ public class XhtmlBaseSinkTest
     private XhtmlBaseSink sink;
     private Writer writer;
 
+    String EOL = System.lineSeparator();
+
     @Before
     public void setUp()
     {
@@ -717,9 +719,8 @@ public class XhtmlBaseSinkTest
             sink.close();
         }
 
-        String nl = System.lineSeparator();
-        String xmlExpected = "<table border=\"0\" class=\"bodyTable\">" + nl + "<tr style=\"bold\" class=\"a\"></tr>"
-            + nl + "<tr class=\"b\"></tr></table>";
+        String xmlExpected = "<table border=\"0\" class=\"bodyTable\">" + EOL + "<tr style=\"bold\" class=\"a\"></tr>"
+            + EOL + "<tr class=\"b\"></tr></table>";
 
         assertEquals( xmlExpected, writer.toString() );
     }
@@ -769,17 +770,16 @@ public class XhtmlBaseSinkTest
             sink.close();
         }
 
-        String nl = System.lineSeparator();
         StringBuilder sbExpeted = new StringBuilder( "<table border=\"0\" class=\"bodyTable\">" );
-        sbExpeted.append( nl ).append( "<tr class=\"a\"></tr>" ).append( nl );
-        sbExpeted.append( "<tr style=\"bold\" class=\"b\"></tr>" ).append( nl );
-        sbExpeted.append( "<tr class=\"hidden xyz abc a\"></tr>" ).append( nl );
-        sbExpeted.append( "<tr class=\"abc hidden xyz a\"></tr>" ).append( nl );
-        sbExpeted.append( "<tr class=\"a\"></tr>" ).append( nl );
-        sbExpeted.append( "<tr class=\"not-hidden xyz b\"></tr>" ).append( nl );
-        sbExpeted.append( "<tr class=\"xyz not-hidden a\"></tr>" ).append( nl );
-        sbExpeted.append( "<tr style=\"bold\" class=\"xyz abc hidden b\"></tr>" ).append( nl );
-        sbExpeted.append( "<tr class=\"xyz hidden-not b\"></tr>" ).append( nl );
+        sbExpeted.append( EOL ).append( "<tr class=\"a\"></tr>" ).append( EOL );
+        sbExpeted.append( "<tr style=\"bold\" class=\"b\"></tr>" ).append( EOL );
+        sbExpeted.append( "<tr class=\"hidden xyz abc a\"></tr>" ).append( EOL );
+        sbExpeted.append( "<tr class=\"abc hidden xyz a\"></tr>" ).append( EOL );
+        sbExpeted.append( "<tr class=\"a\"></tr>" ).append( EOL );
+        sbExpeted.append( "<tr class=\"not-hidden xyz b\"></tr>" ).append( EOL );
+        sbExpeted.append( "<tr class=\"xyz not-hidden a\"></tr>" ).append( EOL );
+        sbExpeted.append( "<tr style=\"bold\" class=\"xyz abc hidden b\"></tr>" ).append( EOL );
+        sbExpeted.append( "<tr class=\"xyz hidden-not b\"></tr>" ).append( EOL );
         sbExpeted.append( "<tr class=\"a\"></tr>" );
 
         String xmlExpected = sbExpeted.toString();
