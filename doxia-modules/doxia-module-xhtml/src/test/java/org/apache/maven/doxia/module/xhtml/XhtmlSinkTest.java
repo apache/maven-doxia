@@ -36,6 +36,7 @@ import static org.junit.jupiter.api.Assertions.assertTrue;
  * @author Jason van Zyl
  * @since 1.0
  */
+@Deprecated
 public class XhtmlSinkTest
     extends AbstractSinkTest
 {

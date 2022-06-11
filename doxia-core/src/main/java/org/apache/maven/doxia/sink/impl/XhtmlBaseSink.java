@@ -54,6 +54,7 @@ import org.slf4j.LoggerFactory;
  * @author ltheussl
  * @since 1.1
  */
+@Deprecated
 public class XhtmlBaseSink
     extends AbstractXmlSink
     implements HtmlMarkup

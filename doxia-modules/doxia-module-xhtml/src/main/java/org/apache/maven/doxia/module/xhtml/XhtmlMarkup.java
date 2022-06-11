@@ -31,6 +31,7 @@ import org.apache.maven.doxia.markup.HtmlMarkup;
  * @since 1.0
  */
 @SuppressWarnings( "checkstyle:interfaceistype" )
+@Deprecated
 public interface XhtmlMarkup
     extends HtmlMarkup
 {

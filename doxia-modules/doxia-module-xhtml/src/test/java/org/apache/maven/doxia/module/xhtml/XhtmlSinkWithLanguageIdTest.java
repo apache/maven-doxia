@@ -27,6 +27,7 @@ import org.apache.maven.doxia.sink.Sink;
 /**
  * @author <a href="mailto:vincent.siveton@gmail.com">Vincent Siveton</a>
  */
+@Deprecated
 public class XhtmlSinkWithLanguageIdTest
     extends XhtmlSinkTest
 {

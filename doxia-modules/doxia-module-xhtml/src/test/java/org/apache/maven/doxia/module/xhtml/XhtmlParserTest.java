@@ -40,6 +40,7 @@ import static org.junit.jupiter.api.Assertions.assertFalse;
 /**
  * @author <a href="mailto:lars@trieloff.net">Lars Trieloff</a>
  */
+@Deprecated
 public class XhtmlParserTest
     extends AbstractParserTest
 {

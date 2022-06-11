@@ -27,6 +27,7 @@ import org.apache.maven.doxia.sink.impl.SinkAdapter;
  * @author <a href="mailto:jason@maven.org">Jason van Zyl</a>
  * @since 1.0
  */
+@Deprecated
 public abstract class AbstractXhtmlSink
     extends SinkAdapter
 {

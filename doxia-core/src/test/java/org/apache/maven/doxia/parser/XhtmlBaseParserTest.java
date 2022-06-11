@@ -35,6 +35,7 @@ import static org.junit.jupiter.api.Assertions.*;
  * @author ltheussl
  * @since 1.1
  */
+@Deprecated
 public class XhtmlBaseParserTest
     extends AbstractParserTest
 {

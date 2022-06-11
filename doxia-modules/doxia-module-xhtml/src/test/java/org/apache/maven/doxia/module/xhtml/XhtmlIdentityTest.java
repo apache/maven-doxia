@@ -31,6 +31,7 @@ import org.junit.jupiter.api.BeforeEach;
  * Check that piping a full model through an XhtmlParser and an XhtmlSink
  * leaves the model unchanged.
  */
+@Deprecated
 public class XhtmlIdentityTest
     extends AbstractIdentityTest
 {
