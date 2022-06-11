@@ -27,7 +27,6 @@ import javax.swing.text.html.HTML.Attribute;
 import org.apache.maven.doxia.markup.Markup;
 import org.apache.maven.doxia.sink.Sink;
 import org.apache.maven.doxia.sink.SinkEventAttributes;
-import org.junit.jupiter.api.BeforeAll;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
 
@@ -40,6 +39,7 @@ import static org.junit.jupiter.api.Assertions.assertTrue;
  * @author ltheussl
  * @since 1.1
  */
+@Deprecated
 public class XhtmlBaseSinkTest
 {
     protected static final String LS = Markup.EOL;

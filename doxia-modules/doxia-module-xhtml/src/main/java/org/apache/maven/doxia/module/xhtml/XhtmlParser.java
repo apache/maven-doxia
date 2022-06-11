@@ -52,6 +52,7 @@ import org.slf4j.LoggerFactory;
  */
 @Singleton
 @Named( "xhtml4" )
+@Deprecated
 public class XhtmlParser
     extends XhtmlBaseParser
     implements XhtmlMarkup

@@ -40,6 +40,7 @@ import org.codehaus.plexus.util.StringUtils;
  * @author ltheussl
  * @since 1.0
  */
+@Deprecated
 public class XhtmlSink
     extends XhtmlBaseSink
     implements XhtmlMarkup

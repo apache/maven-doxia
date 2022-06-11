@@ -31,6 +31,7 @@ import org.apache.maven.doxia.parser.module.AbstractParserModule;
  */
 @Singleton
 @Named( "xhtml4" )
+@Deprecated
 public class XhtmlParserModule
     extends AbstractParserModule
 {
