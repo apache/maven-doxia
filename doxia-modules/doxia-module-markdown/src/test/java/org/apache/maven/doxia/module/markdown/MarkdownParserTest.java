@@ -394,7 +394,7 @@ public class MarkdownParserTest
                 "horizontalRule", "section1", "sectionTitle1",  "text", "sectionTitle1_", "paragraph", "text",
                 "paragraph_", "text", "table", "tableRows", "text", "tableRow", "tableHeaderCell", "text",
                 "tableHeaderCell_", "tableRow_", "text", "tableRow", "tableCell", "text", "tableCell_", "tableRow_",
-                "text", "tableRows_", "table_", "section1_", "body_" );
+                "text", "tableRows_", "table_", "text", "section1_", "body_" );
 
         assertFalse( it.hasNext() );
     }

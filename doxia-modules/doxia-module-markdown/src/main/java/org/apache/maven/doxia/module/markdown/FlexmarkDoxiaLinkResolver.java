@@ -24,11 +24,13 @@ import java.util.Set;
 import java.util.regex.Matcher;
 import java.util.regex.Pattern;
 
+import org.jetbrains.annotations.NotNull;
+import org.jetbrains.annotations.Nullable;
+
 import com.vladsch.flexmark.ext.wikilink.internal.WikiLinkLinkResolver;
 import com.vladsch.flexmark.html.IndependentLinkResolverFactory;
 import com.vladsch.flexmark.html.LinkResolver;
-import com.vladsch.flexmark.html.LinkResolverFactory;
-import com.vladsch.flexmark.html.renderer.LinkResolverContext;
+import com.vladsch.flexmark.html.renderer.LinkResolverBasicContext;
 import com.vladsch.flexmark.html.renderer.LinkStatus;
 import com.vladsch.flexmark.html.renderer.LinkType;
 import com.vladsch.flexmark.html.renderer.ResolvedLink;
@@ -62,7 +64,7 @@ public class FlexmarkDoxiaLinkResolver implements LinkResolver
      *
      * @param context a {@link com.vladsch.flexmark.html.renderer.LinkResolverContext} object.
      */
-    public FlexmarkDoxiaLinkResolver( LinkResolverContext context )
+    public FlexmarkDoxiaLinkResolver( @NotNull LinkResolverBasicContext context )
     {
         this.pattern = Pattern.compile(
                             "^(?![^:]+:)((?:\\./)?(?:\\.\\./)*[^\\.]+).(?:"
@@ -75,7 +77,8 @@ public class FlexmarkDoxiaLinkResolver implements LinkResolver
 
     /** {@inheritDoc} */
     @Override
-    public ResolvedLink resolveLink( Node node, LinkResolverContext context, ResolvedLink link )
+    public @NotNull ResolvedLink resolveLink( @NotNull Node node, @NotNull LinkResolverBasicContext context,
+                                              @NotNull ResolvedLink link )
     {
         if ( link.getLinkType() == LinkType.LINK )
         {
@@ -95,17 +98,18 @@ public class FlexmarkDoxiaLinkResolver implements LinkResolver
     public static class Factory extends IndependentLinkResolverFactory
     {
         @Override
-        public Set<Class<? extends LinkResolverFactory>> getBeforeDependents()
+        public @Nullable Set<Class<?>> getBeforeDependents()
         {
-            Set<Class<? extends LinkResolverFactory>> set = new HashSet<>();
+            Set<Class<?>> set = new HashSet<>();
             set.add( WikiLinkLinkResolver.Factory.class );
             return set;
         }
 
         @Override
-        public LinkResolver apply( LinkResolverContext context )
+        public @NotNull LinkResolver apply( @NotNull LinkResolverBasicContext context )
         {
             return new FlexmarkDoxiaLinkResolver( context );
         }
     }
+
 }

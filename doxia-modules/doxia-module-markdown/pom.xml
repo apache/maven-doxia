@@ -63,7 +63,8 @@ under the License.
     <dependency>
       <groupId>com.vladsch.flexmark</groupId>
       <artifactId>flexmark-all</artifactId>
-      <version>0.50.50</version>
+      <!-- 0.64.0 requires Java 11 -->
+      <version>0.62.2</version>
       <exclusions>
         <!-- exclude to PDF converter -->
         <exclusion>
@@ -71,6 +72,11 @@ under the License.
           <artifactId>flexmark-pdf-converter</artifactId>
         </exclusion>
       </exclusions>
+    </dependency>
+    <dependency>
+      <groupId>org.jetbrains</groupId>
+      <artifactId>annotations</artifactId>
+      <version>15.0</version>
     </dependency>
     <dependency>
       <groupId>org.apache.maven.doxia</groupId>
