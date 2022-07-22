@@ -49,12 +49,12 @@ public class MacroRequest
      * @param sourceContent a {@link java.lang.String} object.
      * @param parser a {@link org.apache.maven.doxia.parser.AbstractParser} object.
      * @param param a {@link java.util.Map} object.
-     * @param base a {@link java.io.File} object.
+     * @param basedir a {@link java.io.File} object.
      */
-    public MacroRequest( String sourceContent, AbstractParser parser, Map<String, Object> param, File base )
+    public MacroRequest( String sourceContent, AbstractParser parser, Map<String, Object> param, File basedir )
     {
         this.parameters = param;
-        this.basedir = base;
+        this.basedir = basedir;
         param.put( PARAM_SOURCE_CONTENT, sourceContent );
         parser.setSecondParsing( true );
         param.put( PARAM_PARSER, parser );

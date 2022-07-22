@@ -283,7 +283,6 @@ under the License.
       <plugin>
         <groupId>org.eclipse.sisu</groupId>
         <artifactId>sisu-maven-plugin</artifactId>
-        <version>${sisuVersion}</version>
         <executions>
           <execution>
             <goals>

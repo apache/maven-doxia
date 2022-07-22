@@ -21,10 +21,8 @@ package org.apache.maven.doxia.macro;
 
 import java.util.Map;
 
-import org.apache.commons.lang3.Validate;
 import org.apache.maven.doxia.sink.SinkEventAttributes;
 import org.apache.maven.doxia.sink.impl.SinkEventAttributeSet;
-import org.codehaus.plexus.util.StringUtils;
 
 /**
  * Abstract base class to execute <code>Macro</code>.
@@ -35,24 +33,6 @@ import org.codehaus.plexus.util.StringUtils;
 public abstract class AbstractMacro
     implements Macro
 {
-    /**
-     * Check if the given parameter is required. Throws an
-     * IllegalArgumentException if paramValue is null or empty.
-     *
-     * @param paramName The name of the parameter to check.
-     * @param paramValue The parameter value.
-     * @since 1.1
-     * @deprecated Not used, use {@link Validate}
-     */
-    @Deprecated
-    protected void required( String paramName, String paramValue )
-    {
-        if ( StringUtils.isEmpty( paramValue ) )
-        {
-            throw new IllegalArgumentException( paramName + " is a required parameter!" );
-        }
-    }
-
     /**
      * Convert the Map of macro parameters to an AttributeSet.
      * No check of validity is done, all parameters are added.

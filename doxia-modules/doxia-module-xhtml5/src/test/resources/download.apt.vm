@@ -63,7 +63,7 @@ Download Maven ${currentVersion}
 
   [[4]] Run <<<mvn --version>>> to verify that it is correctly installed.
 
-** Unix-based Operating Systems (Linux, Solaris and Mac OS X)
+** Unix-like Operating Systems (Linux, Solaris and Mac OS X)
 
   [[1]] Extract the distribution archive to the directory you wish to install Maven ${currentVersion}. These instructions
         assume you chose <<</usr/local/maven-${currentVersion}>>>. The directory <<<maven-${currentVersion}>>> will be created from
