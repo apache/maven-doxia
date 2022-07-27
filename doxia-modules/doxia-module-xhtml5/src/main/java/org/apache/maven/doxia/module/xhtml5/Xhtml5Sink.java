@@ -24,10 +24,7 @@ import java.io.Writer;
 import javax.swing.text.MutableAttributeSet;
 import javax.swing.text.html.HTML.Attribute;
 
-import org.apache.maven.doxia.markup.HtmlMarkup;
-import org.apache.maven.doxia.sink.SinkEventAttributes;
 import org.apache.maven.doxia.sink.impl.SinkEventAttributeSet;
-import org.apache.maven.doxia.sink.impl.SinkUtils;
 import org.apache.maven.doxia.sink.impl.Xhtml5BaseSink;
 import org.apache.maven.doxia.util.HtmlTools;
 import org.codehaus.plexus.util.StringUtils;
@@ -241,109 +238,6 @@ public class Xhtml5Sink
         flush();
 
         init();
-    }
-
-    /**
-     * {@inheritDoc}
-     *
-     * Starts a section..
-     * @see javax.swing.text.html.HTML.Tag#DIV
-     */
-    protected void onSection( int depth, SinkEventAttributes attributes )
-    {
-        if ( depth >= SECTION_LEVEL_1 && depth <= SECTION_LEVEL_5 )
-        {
-            MutableAttributeSet att = new SinkEventAttributeSet();
-            att.addAttributes( SinkUtils.filterAttributes(
-                    attributes, SinkUtils.SINK_BASE_ATTRIBUTES  ) );
-
-            writeStartTag( HtmlMarkup.SECTION, att );
-        }
-    }
-
-    /**
-     * {@inheritDoc}
-     *
-     * Ends a section.
-     * @see javax.swing.text.html.HTML.Tag#DIV
-     */
-    protected void onSection_( int depth )
-    {
-        if ( depth >= SECTION_LEVEL_1 && depth <= SECTION_LEVEL_5 )
-        {
-            writeEndTag( HtmlMarkup.SECTION );
-        }
-    }
-
-    /**
-     * {@inheritDoc}
-     *
-     * Starts a section title.
-     * @see javax.swing.text.html.HTML.Tag#H1
-     * @see javax.swing.text.html.HTML.Tag#H2
-     * @see javax.swing.text.html.HTML.Tag#H3
-     * @see javax.swing.text.html.HTML.Tag#H4
-     * @see javax.swing.text.html.HTML.Tag#H5
-     */
-    protected void onSectionTitle( int depth, SinkEventAttributes attributes )
-    {
-        MutableAttributeSet atts = SinkUtils.filterAttributes(
-                attributes, SinkUtils.SINK_SECTION_ATTRIBUTES  );
-
-        if ( depth == SECTION_LEVEL_1 )
-        {
-            writeStartTag( HtmlMarkup.H1, atts );
-        }
-        else if ( depth == SECTION_LEVEL_2 )
-        {
-            writeStartTag( HtmlMarkup.H2, atts );
-        }
-        else if ( depth == SECTION_LEVEL_3 )
-        {
-            writeStartTag( HtmlMarkup.H3, atts );
-        }
-        else if ( depth == SECTION_LEVEL_4 )
-        {
-            writeStartTag( HtmlMarkup.H4, atts );
-        }
-        else if ( depth == SECTION_LEVEL_5 )
-        {
-            writeStartTag( HtmlMarkup.H5, atts );
-        }
-    }
-
-    /**
-     * {@inheritDoc}
-     *
-     * Ends a section title.
-     * @see javax.swing.text.html.HTML.Tag#H1
-     * @see javax.swing.text.html.HTML.Tag#H2
-     * @see javax.swing.text.html.HTML.Tag#H3
-     * @see javax.swing.text.html.HTML.Tag#H4
-     * @see javax.swing.text.html.HTML.Tag#H5
-     */
-    protected void onSectionTitle_( int depth )
-    {
-        if ( depth == SECTION_LEVEL_1 )
-        {
-            writeEndTag( HtmlMarkup.H1 );
-        }
-        else if ( depth == SECTION_LEVEL_2 )
-        {
-            writeEndTag( HtmlMarkup.H2 );
-        }
-        else if ( depth == SECTION_LEVEL_3 )
-        {
-            writeEndTag( HtmlMarkup.H3 );
-        }
-        else if ( depth == SECTION_LEVEL_4 )
-        {
-            writeEndTag( HtmlMarkup.H4 );
-        }
-        else if ( depth == SECTION_LEVEL_5 )
-        {
-            writeEndTag( HtmlMarkup.H5 );
-        }
     }
 
     // ----------------------------------------------------------------------
