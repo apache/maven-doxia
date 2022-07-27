@@ -293,7 +293,7 @@ public class XdocSinkTest
     /** {@inheritDoc} */
     protected String getAnchorBlock( String anchor )
     {
-        return "<a name=\"" + anchor + "\">" + anchor + "</a>";
+        return "<a id=\"" + anchor + "\">" + anchor + "</a>";
     }
 
     /** {@inheritDoc} */

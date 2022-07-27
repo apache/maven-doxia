@@ -289,7 +289,7 @@ public class FmlParserTest
             content = IOUtil.toString( reader );
         }
 
-        assertTrue( content.contains( "<a name=\"macro-definition\">Macro Question</a>" ) );
+        assertTrue( content.contains( "<a id=\"macro-definition\">Macro Question</a>" ) );
     }
 
     private void assertTextEvent( SinkEventElement textEvt, String string )

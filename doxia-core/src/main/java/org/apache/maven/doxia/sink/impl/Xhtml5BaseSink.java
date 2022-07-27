@@ -1771,7 +1771,7 @@ public class Xhtml5BaseSink
         }
 
         MutableAttributeSet att = new SinkEventAttributeSet();
-        att.addAttribute( Attribute.NAME, id );
+        att.addAttribute( Attribute.ID, id );
         att.addAttributes( atts );
 
         writeStartTag( HtmlMarkup.A, att );

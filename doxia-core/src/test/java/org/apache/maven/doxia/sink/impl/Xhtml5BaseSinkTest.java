@@ -1254,7 +1254,7 @@ public class Xhtml5BaseSinkTest
             sink.close();
         }
 
-        assertEquals( "<a name=\"anchor\" style=\"bold\"></a>", writer.toString() );
+        assertEquals( "<a id=\"anchor\" style=\"bold\"></a>", writer.toString() );
     }
 
     /**
