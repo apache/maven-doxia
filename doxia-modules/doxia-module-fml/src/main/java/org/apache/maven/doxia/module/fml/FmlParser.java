@@ -606,7 +606,9 @@ public class FmlParser
                 sink.section1();
 
                 sink.sectionTitle1();
+                sink.anchor( part.getId() );
                 xdocParser.parse( part.getTitle(), sink );
+                sink.anchor_();
                 sink.sectionTitle1_();
             }
 

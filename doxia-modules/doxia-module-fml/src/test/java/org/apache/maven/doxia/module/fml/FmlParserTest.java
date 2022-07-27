@@ -135,7 +135,9 @@ public class FmlParserTest
         assertEquals( "section1_", ( it.next() ).getName() );
         assertEquals( "section1", ( it.next() ).getName() );
         assertEquals( "sectionTitle1", ( it.next() ).getName() );
+        assertEquals( "anchor", ( it.next() ).getName() );
         assertEquals( "text", ( it.next() ).getName() );
+        assertEquals( "anchor_", ( it.next() ).getName() );
         assertEquals( "sectionTitle1_", ( it.next() ).getName() );
         assertEquals( "definitionList", ( it.next() ).getName() );
         assertEquals( "definedTerm", ( it.next() ).getName() );
@@ -218,11 +220,13 @@ public class FmlParserTest
         assertEquals( "section1_", ( it.next() ).getName() );
         assertEquals( "section1", ( it.next() ).getName() );
         assertEquals( "sectionTitle1", ( it.next() ).getName() );
+        assertEquals( "anchor", ( it.next() ).getName() );
 
         // part title
         assertTextEvent( it.next(), "<" );
         assertTextEvent( it.next(), "\u0391" );
 
+        assertEquals( "anchor_", ( it.next() ).getName() );
         assertEquals( "sectionTitle1_", ( it.next() ).getName() );
         assertEquals( "definitionList", ( it.next() ).getName() );
         assertEquals( "definedTerm", ( it.next() ).getName() );
