@@ -34,7 +34,7 @@ public abstract class AbstractSink
 {
     /**
       * Parses the given String and replaces all occurrences of
-      * '\n', '\r' and '\r\n' with the system EOL. All Sinks should
+      * '\n', '\r' and '\r\n' with the system LS. All Sinks should
       * make sure that text output is filtered through this method.
       *
       * @param text the text to scan.

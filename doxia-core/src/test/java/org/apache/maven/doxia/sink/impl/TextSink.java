@@ -1020,7 +1020,7 @@ public class TextSink
     }
 
     /**
-     * Writes the given string + EOL.
+     * Writes the given string + LS.
      *
      * @param text The text to write.
      */

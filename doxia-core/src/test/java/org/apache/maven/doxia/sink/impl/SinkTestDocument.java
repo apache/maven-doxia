@@ -1,5 +1,6 @@
 package org.apache.maven.doxia.sink.impl;
 
+import org.apache.maven.doxia.markup.Markup;
 import org.apache.maven.doxia.sink.Sink;
 import org.apache.maven.doxia.sink.impl.SinkEventAttributeSet;
 
@@ -248,8 +249,6 @@ public class SinkTestDocument
      */
     public static void generateDefinitionList( Sink sink )
     {
-        String eol = System.getProperty( "line.separator" );
-
         sink.definitionList();
 
         sink.definitionListItem();
@@ -268,7 +267,7 @@ public class SinkTestDocument
         sink.definition();
         sink.text( "of definition list." );
         sink.verbatim( SinkEventAttributeSet.BOXED );
-        sink.text( "Verbatim text" + eol + "                        in a box        " );
+        sink.text( "Verbatim text" + Markup.EOL + "                        in a box        " );
         sink.verbatim_();
         sink.definition_();
         sink.definitionListItem_();

@@ -211,9 +211,8 @@ public class Xhtml5BaseParserTest
         assertFalse( it.hasNext() );
 
 
-        // same test with EOL
-        String eol = System.getProperty( "line.separator" );
-        text = "<p><b>word</b>" + eol + "<i>word</i></p>";
+        // same test with system line separator
+        text = "<p><b>word</b>" + Xhtml5BaseParser.EOL + "<i>word</i></p>";
 
         sink.reset();
         parser.parse( text, sink );
@@ -236,7 +235,7 @@ public class Xhtml5BaseParserTest
         assertFalse( it.hasNext() );
 
 
-        // DOXIA-189: there should be no EOL after closing tag
+        // DOXIA-189: there should be no LS after closing tag
         text = "<p>There should be no space after the last <i>word</i>.</p>";
 
         sink.reset();
@@ -298,7 +297,7 @@ public class Xhtml5BaseParserTest
     public void testPreEOL()
         throws Exception
     {
-        // test EOLs within <pre>: the sink MUST receive a text event for the EOL
+        // test EOLs within <pre>: the sink MUST receive a text event for the LS
         String text = "<pre><a href=\"what.html\">what</a>" + Xhtml5BaseParser.EOL
                 + "<a href=\"what.html\">what</a></pre>";
 

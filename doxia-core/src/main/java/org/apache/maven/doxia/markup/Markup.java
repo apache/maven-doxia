@@ -29,7 +29,7 @@ package org.apache.maven.doxia.markup;
 public interface Markup
 {
     /** The vm line separator */
-    String EOL = System.getProperty( "line.separator" );
+    String EOL = System.lineSeparator();
 
     // ----------------------------------------------------------------------
     // Generic separator characters

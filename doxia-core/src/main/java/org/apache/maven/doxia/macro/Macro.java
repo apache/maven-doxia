@@ -31,7 +31,7 @@ public interface Macro
 {
 
     /** The vm line separator */
-    String EOL = System.getProperty( "line.separator" );
+    String EOL = System.lineSeparator();
 
     /**
      * Execute the current macro using the given MacroRequest,

@@ -53,9 +53,9 @@ public class IndexEntry
     private List<IndexEntry> childEntries = new ArrayList<>();
 
     /**
-     * System-dependent EOL.
+     * System-dependent line separator.
      */
-    private static final String EOL = System.getProperty( "line.separator" );
+    private static final String LS = System.lineSeparator();
 
     /**
      * Constructor.
@@ -300,7 +300,7 @@ public class IndexEntry
             message.append( ", title: " ).append( title );
         }
 
-        message.append( EOL );
+        message.append( LS );
 
         StringBuilder indent = new StringBuilder();
 

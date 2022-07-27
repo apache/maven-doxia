@@ -148,7 +148,7 @@ public abstract class AbstractXmlSink
     }
 
     /**
-     * Writes a system EOL.
+     * Writes a system LS.
      *
      * @since 1.1
      */
@@ -158,7 +158,7 @@ public abstract class AbstractXmlSink
     }
 
     /**
-     * Ends a Tag without writing an EOL. For instance: <pre>&lt;/tag&gt;</pre>.
+     * Ends a Tag without writing an LS. For instance: <pre>&lt;/tag&gt;</pre>.
      *
      * @param t a tag.
      */

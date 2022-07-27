@@ -433,7 +433,7 @@ public class AptSink
     public void listItem()
     {
         //if ( !numberedList )
-        //write( EOL + listNestingIndent + "*" );
+        //write( LS + listNestingIndent + "*" );
         //else
         numberedListItem();
         itemFlag = true;

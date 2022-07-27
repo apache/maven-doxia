@@ -35,8 +35,8 @@ import org.codehaus.plexus.util.IOUtil;
  */
 public class SnippetReader
 {
-    /** System-dependent EOL. */
-    private static final String EOL = System.getProperty( "line.separator" );
+    /** System-dependent line separator. */
+    private static final String LS = System.lineSeparator();
 
     /** The source. */
     private URL source;
@@ -82,7 +82,7 @@ public class SnippetReader
         for ( String line : lines )
         {
             result.append( line.substring( minIndent ) );
-            result.append( EOL );
+            result.append( LS );
         }
         return result;
     }
@@ -219,7 +219,7 @@ public class SnippetReader
         String snippetRegExp = "(^|\\W)(?i:SNIPPET)($|\\W)";
         String snippetIdRegExp = "(^|\\W)" + snippetId + "($|\\W)";
         String whatRegExp = "(^|\\W)(?i:" + what + ")($|\\W)";
-        
+
         return Pattern.compile( snippetRegExp ).matcher( line ).find()
             && Pattern.compile( whatRegExp ).matcher( line ).find()
             && Pattern.compile( snippetIdRegExp ).matcher( line ).find();

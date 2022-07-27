@@ -314,7 +314,7 @@ public class XdocParserTest
     public void testPreEOL()
         throws Exception
     {
-        // test EOLs within <source>: the sink MUST receive a text event for the EOL
+        // test EOLs within <source>: the sink MUST receive a text event for the LS
         String text = "<source><a href=\"what.html\">what</a>" + EOL
                 + "<a href=\"what.html\">what</a></source>";
 

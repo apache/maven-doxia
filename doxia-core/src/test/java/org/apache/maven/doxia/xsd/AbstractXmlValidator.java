@@ -55,7 +55,7 @@ import static org.junit.jupiter.api.Assertions.fail;
 public abstract class AbstractXmlValidator
 {
 
-    protected static final String EOL = System.getProperty( "line.separator" );
+    protected static final String LS = System.lineSeparator();
 
     protected final Logger logger = LoggerFactory.getLogger( getClass() );
 
@@ -113,13 +113,13 @@ public abstract class AbstractXmlValidator
             {
                 if ( isFailErrorMessage( error.getMessage() ) )
                 {
-                    fail( entry.getKey() + EOL + error.toString() );
+                    fail( entry.getKey() + LS + error );
                 }
                 else
                 {
                     if ( logger.isDebugEnabled() )
                     {
-                        logger.debug( entry.getKey() + EOL + error.toString() );
+                        logger.debug( entry.getKey() + LS + error );
                     }
                 }
             }
@@ -287,12 +287,12 @@ public abstract class AbstractXmlValidator
         {
             StringBuilder sb = new StringBuilder( 512 );
 
-            sb.append( level ).append( EOL );
-            sb.append( "  Public ID: " ).append( publicID ).append( EOL );
-            sb.append( "  System ID: " ).append( systemID ).append( EOL );
-            sb.append( "  Line number: " ).append( lineNumber ).append( EOL );
-            sb.append( "  Column number: " ).append( columnNumber ).append( EOL );
-            sb.append( "  Message: " ).append( message ).append( EOL );
+            sb.append( level ).append( LS );
+            sb.append( "  Public ID: " ).append( publicID ).append( LS );
+            sb.append( "  System ID: " ).append( systemID ).append( LS );
+            sb.append( "  Line number: " ).append( lineNumber ).append( LS );
+            sb.append( "  Column number: " ).append( columnNumber ).append( LS );
+            sb.append( "  Message: " ).append( message ).append( LS );
 
             return sb.toString();
         }
