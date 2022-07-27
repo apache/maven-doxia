@@ -30,6 +30,7 @@ import java.io.Writer;
 import java.util.Iterator;
 import java.util.regex.Pattern;
 
+import org.apache.maven.doxia.markup.Markup;
 import org.apache.maven.doxia.parser.AbstractParserTest;
 import org.apache.maven.doxia.parser.ParseException;
 import org.apache.maven.doxia.parser.Parser;
@@ -426,12 +427,12 @@ public class XdocParserTest
     public void testStyleWithCData() throws Exception
     {
         // DOXIA-449
-        final String text = "<style type=\"text/css\">\n" +
-                "<![CDATA[\n" +
-                "h2 {\n" +
-                "font-size: 50px;\n" +
-                "}\n" +
-                "]]>\n" +
+        final String text = "<style type=\"text/css\">" + Markup.EOL +
+                "<![CDATA" + Markup.EOL +
+                "h2 {" + Markup.EOL +
+                "font-size: 50px;" + Markup.EOL +
+                "}" + Markup.EOL +
+                "]]>" + Markup.EOL +
                 "</style>";
 
         SinkEventTestingSink sink = new SinkEventTestingSink();

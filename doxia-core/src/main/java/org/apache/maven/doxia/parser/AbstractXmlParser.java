@@ -37,6 +37,7 @@ import java.util.regex.Matcher;
 import java.util.regex.Pattern;
 
 import org.apache.maven.doxia.macro.MacroExecutionException;
+import org.apache.maven.doxia.markup.Markup;
 import org.apache.maven.doxia.markup.XmlMarkup;
 import org.apache.maven.doxia.sink.Sink;
 import org.apache.maven.doxia.sink.impl.SinkEventAttributeSet;
@@ -648,7 +649,7 @@ public abstract class AbstractXmlParser
         int entitiesCount = StringUtils.countMatches( text, ENTITY_START );
         if ( entitiesCount > 0 )
         {
-            final String txt = StringUtils.replace( text, ENTITY_START, "\n" + ENTITY_START );
+            final String txt = StringUtils.replace( text, ENTITY_START, Markup.EOL + ENTITY_START );
             try ( BufferedReader reader = new BufferedReader( new StringReader( txt ) ) )
             {
                 String line;
@@ -656,7 +657,7 @@ public abstract class AbstractXmlParser
                 Matcher matcher;
                 while ( ( line = reader.readLine() ) != null )
                 {
-                    tmpLine += "\n" + line;
+                    tmpLine += Markup.EOL + line;
                     matcher = PATTERN_ENTITY_1.matcher( tmpLine );
                     if ( matcher.find() && matcher.groupCount() == 7 )
                     {

@@ -21,6 +21,7 @@ package org.apache.maven.doxia.parser;
 
 import java.util.Iterator;
 
+import org.apache.maven.doxia.markup.Markup;
 import org.apache.maven.doxia.sink.impl.SinkEventAttributeSet;
 import org.apache.maven.doxia.sink.impl.SinkEventElement;
 import org.apache.maven.doxia.sink.impl.SinkEventTestingSink;

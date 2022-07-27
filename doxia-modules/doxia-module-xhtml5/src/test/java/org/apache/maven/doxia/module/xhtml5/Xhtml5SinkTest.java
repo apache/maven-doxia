@@ -23,6 +23,7 @@ import java.io.StringWriter;
 import java.io.Writer;
 
 import org.apache.maven.doxia.markup.HtmlMarkup;
+import org.apache.maven.doxia.markup.Markup;
 import org.apache.maven.doxia.module.xhtml5.Xhtml5Sink;
 import org.apache.maven.doxia.sink.Sink;
 import org.apache.maven.doxia.sink.impl.AbstractSinkTest;
@@ -112,7 +113,7 @@ public class Xhtml5SinkTest
     protected String getHeadBlock()
     {
         return "<!DOCTYPE html\">" +
-                "<html xmlns=\"http://www.w3.org/1999/xhtml\">\n<head>\n<title></title>\n<meta http-equiv=\"Content-Type\" content=\"text/html; charset=UTF-8\"/></head>";
+                "<html xmlns=\"http://www.w3.org/1999/xhtml\">" + Markup.EOL + "<head>" + Markup.EOL + "<title></title>" + Markup.EOL + "<meta http-equiv=\"Content-Type\" content=\"text/html; charset=UTF-8\"/></head>";
     }
 
     /** {@inheritDoc} */
@@ -148,31 +149,31 @@ public class Xhtml5SinkTest
     /** {@inheritDoc} */
     protected String getSection1Block( String title )
     {
-        return "<section><header>\n<h1>" + title + "</h1></header></section>";
+        return "<section><header>" + Markup.EOL + "<h1>" + title + "</h1></header></section>";
     }
 
     /** {@inheritDoc} */
     protected String getSection2Block( String title )
     {
-        return "<section><header>\n<h2>" + title + "</h2></header></section>";
+        return "<section><header>" + Markup.EOL + "<h2>" + title + "</h2></header></section>";
     }
 
     /** {@inheritDoc} */
     protected String getSection3Block( String title )
     {
-        return "<section><header>\n<h3>" + title + "</h3></header></section>";
+        return "<section><header>" + Markup.EOL + "<h3>" + title + "</h3></header></section>";
     }
 
     /** {@inheritDoc} */
     protected String getSection4Block( String title )
     {
-        return "<section><header>\n<h4>" + title + "</h4></header></section>";
+        return "<section><header>" + Markup.EOL + "<h4>" + title + "</h4></header></section>";
     }
 
     /** {@inheritDoc} */
     protected String getSection5Block( String title )
     {
-        return "<section><header>\n<h5>" + title + "</h5></header></section>";
+        return "<section><header>" + Markup.EOL + "<h5>" + title + "</h5></header></section>";
     }
 
     /** {@inheritDoc} */
@@ -196,19 +197,19 @@ public class Xhtml5SinkTest
     /** {@inheritDoc} */
     protected String getListBlock( String item )
     {
-        return "<ul>\n<li>" + item + "</li></ul>";
+        return "<ul>" + Markup.EOL + "<li>" + item + "</li></ul>";
     }
 
     /** {@inheritDoc} */
     protected String getNumberedListBlock( String item )
     {
-        return "<ol style=\"list-style-type: lower-roman\">\n<li>" + item + "</li></ol>";
+        return "<ol style=\"list-style-type: lower-roman\">" + Markup.EOL + "<li>" + item + "</li></ol>";
     }
 
     /** {@inheritDoc} */
     protected String getDefinitionListBlock( String definum, String definition )
     {
-        return "<dl>\n<dt>" + definum + "</dt>\n<dd>" + definition + "</dd></dl>";
+        return "<dl>" + Markup.EOL + "<dt>" + definum + "</dt>" + Markup.EOL + "<dd>" + definition + "</dd></dl>";
     }
 
     /** {@inheritDoc} */
@@ -227,7 +228,7 @@ public class Xhtml5SinkTest
     protected String getTableBlock( String cell, String caption )
     {
         return "<table border=\"0\" class=\"bodyTable\">"
-            + "<caption>Table caption</caption><tr class=\"a\">\n<td>cell</td></tr>"
+            + "<caption>Table caption</caption><tr class=\"a\">" + Markup.EOL + "<td>cell</td></tr>"
             + "</table>";
     }
 
@@ -279,7 +280,7 @@ public class Xhtml5SinkTest
     /** {@inheritDoc} */
     protected String getVerbatimBlock( String text )
     {
-        return "<div class=\"source\">\n<pre>" + text + "</pre></div>";
+        return "<div class=\"source\">" + Markup.EOL + "<pre>" + text + "</pre></div>";
     }
 
     /** {@inheritDoc} */
@@ -407,7 +408,7 @@ public class Xhtml5SinkTest
             sink.close();
         }
 
-        assertEquals( "<section><header>\n<h1>&amp;</h1></header>\n<p>&amp;</p></section>", writer.toString() );
+        assertEquals( "<section><header>" + Markup.EOL + "<h1>&amp;</h1></header>" + Markup.EOL + "<p>&amp;</p></section>", writer.toString() );
     }
 
     /**
@@ -442,7 +443,7 @@ public class Xhtml5SinkTest
         }
 
         String expected =
-            "<head>\n<title>Title</title><!--A comment--><meta name=\"author\" content=\"&#x123;&amp;\" />"
+            "<head>" + Markup.EOL + "<title>Title</title><!--A comment--><meta name=\"author\" content=\"&#x123;&amp;\" />"
                 + "<base href=\"http://maven.apache.org/\" /></head>";
         String actual = writer.toString();
         assertTrue( actual.contains( expected ), actual );

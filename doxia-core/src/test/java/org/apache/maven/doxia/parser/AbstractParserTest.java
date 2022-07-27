@@ -20,6 +20,7 @@ package org.apache.maven.doxia.parser;
  */
 
 import org.apache.maven.doxia.AbstractModuleTest;
+import org.apache.maven.doxia.markup.Markup;
 import org.apache.maven.doxia.sink.impl.SinkEventAttributeSet;
 import org.apache.maven.doxia.sink.impl.SinkEventElement;
 import org.apache.maven.doxia.sink.impl.TextSink;
@@ -125,12 +126,12 @@ public abstract class AbstractParserTest
 
         for ( String name : names )
         {
-            expected.append( name ).append( '\n' );
+            expected.append( name ).append( Markup.EOL );
         }
 
         while ( it.hasNext() )
         {
-            actual.append( it.next().getName() ).append( '\n' );
+            actual.append( it.next().getName() ).append( Markup.EOL );
         }
 
         Assertions.assertEquals( expected.toString(), actual.toString() );
@@ -143,10 +144,10 @@ public abstract class AbstractParserTest
 
         for ( String name : names )
         {
-            expected.append( name ).append( '\n' );
+            expected.append( name ).append( Markup.EOL );
             if ( it.hasNext() )
             {
-                actual.append( it.next().getName() ).append( '\n' );
+                actual.append( it.next().getName() ).append( Markup.EOL );
             }
         }
         Assertions.assertEquals( expected.toString(), actual.toString() );

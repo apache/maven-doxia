@@ -1,5 +1,7 @@
 package org.apache.maven.doxia.module.xdoc;
 
+import org.apache.maven.doxia.markup.Markup;
+
 /*
  * Licensed to the Apache Software Foundation (ASF) under one
  * or more contributor license agreements.  See the NOTICE file
@@ -202,19 +204,19 @@ public class XdocSinkTest
     /** {@inheritDoc} */
     protected String getListBlock( String item )
     {
-        return "<ul>\n<li>" + item + "</li></ul>";
+        return "<ul>" + Markup.EOL + "<li>" + item + "</li></ul>";
     }
 
     /** {@inheritDoc} */
     protected String getNumberedListBlock( String item )
     {
-        return "<ol style=\"list-style-type: lower-roman\">\n<li>" + item + "</li></ol>";
+        return "<ol style=\"list-style-type: lower-roman\">" + Markup.EOL + "<li>" + item + "</li></ol>";
     }
 
     /** {@inheritDoc} */
     protected String getDefinitionListBlock( String definum, String definition )
     {
-        return "<dl>\n<dt>" + definum + "</dt>\n<dd>" + definition + "</dd></dl>";
+        return "<dl>" + Markup.EOL + "<dt>" + definum + "</dt>" + Markup.EOL + "<dd>" + definition + "</dd></dl>";
     }
 
     /** {@inheritDoc} */
@@ -233,7 +235,7 @@ public class XdocSinkTest
     protected String getTableBlock( String cell, String caption )
     {
         return "<table border=\"0\"><caption>" + caption
-                + "</caption>\n<tr valign=\"top\">\n<td align=\"center\">" + cell + "</td></tr></table>";
+                + "</caption>" + Markup.EOL + "<tr valign=\"top\">" + Markup.EOL + "<td align=\"center\">" + cell + "</td></tr></table>";
     }
 
     /** {@inheritDoc} */
@@ -400,7 +402,7 @@ public class XdocSinkTest
             sink.close();
         }
 
-        assertEquals( "<pre></pre><source></source>\n<pre width=\"20%\"></pre>", writer.toString() );
+        assertEquals( "<pre></pre><source></source>" + Markup.EOL + "<pre width=\"20%\"></pre>", writer.toString() );
     }
 
     /**
