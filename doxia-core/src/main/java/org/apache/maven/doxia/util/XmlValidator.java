@@ -115,6 +115,7 @@ public class XmlValidator
 
             xmlReader = XMLReaderFactory.createXMLReader();
             xmlReader.setFeature( "http://xml.org/sax/features/validation", true );
+            xmlReader.setFeature( "http://apache.org/xml/features/validation/dynamic", true );
             xmlReader.setFeature( "http://apache.org/xml/features/validation/schema", true );
             xmlReader.setErrorHandler( errorHandler );
             xmlReader.setEntityResolver( new CachedFileEntityResolver() );

@@ -36,9 +36,9 @@ public class XmlValidatorTest
     public void testValidate()
         throws Exception
     {
-        String xml = IOUtil.toString( new XmlStreamReader( this.getClass().getResourceAsStream( "/test.xhtml" ) ) );
+        String xml = IOUtil.toString( new XmlStreamReader( this.getClass().getResourceAsStream( "/test.xml" ) ) );
 
-        XmlValidator validator = new XmlValidator( );
+        XmlValidator validator = new XmlValidator();
 
         validator.validate( xml );
     }
