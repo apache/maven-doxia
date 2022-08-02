@@ -21,17 +21,16 @@ package org.apache.maven.doxia.parser;
 
 import java.io.BufferedReader;
 import java.io.ByteArrayInputStream;
-import java.io.File;
-import java.io.FileOutputStream;
 import java.io.IOException;
 import java.io.InputStream;
-import java.io.OutputStream;
 import java.io.Reader;
 import java.io.StringReader;
+import java.net.URI;
 import java.net.URL;
+import java.nio.file.Paths;
+import java.util.HashMap;
 import java.util.Hashtable;
 import java.util.LinkedHashMap;
-import java.util.Locale;
 import java.util.Map;
 import java.util.regex.Matcher;
 import java.util.regex.Pattern;
@@ -43,13 +42,13 @@ import org.apache.maven.doxia.sink.impl.SinkEventAttributeSet;
 import org.apache.maven.doxia.util.HtmlTools;
 import org.apache.maven.doxia.util.XmlValidator;
 
-import org.codehaus.plexus.util.FileUtils;
 import org.codehaus.plexus.util.IOUtil;
 import org.codehaus.plexus.util.StringUtils;
 import org.codehaus.plexus.util.xml.pull.MXParser;
 import org.codehaus.plexus.util.xml.pull.XmlPullParser;
 import org.codehaus.plexus.util.xml.pull.XmlPullParserException;
-
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
 import org.xml.sax.EntityResolver;
 import org.xml.sax.InputSource;
 import org.xml.sax.SAXException;
@@ -694,8 +693,24 @@ public abstract class AbstractXmlParser
     public static class CachedFileEntityResolver
         implements EntityResolver
     {
+        private static final Logger LOGGER = LoggerFactory.getLogger( CachedFileEntityResolver.class );
+
         /** Map with systemId as key and the content of systemId as byte[]. */
         protected static final Map<String, byte[]> ENTITY_CACHE = new Hashtable<>();
+
+        private static final Map<String, String> WELL_KNOWN_SYSTEM_IDS = new HashMap<>();
+
+        static
+        {
+            WELL_KNOWN_SYSTEM_IDS.put( "http://www.w3.org/2001/xml.xsd", "xml.xsd" );
+            WELL_KNOWN_SYSTEM_IDS.put( "https://www.w3.org/2001/xml.xsd", "xml.xsd" );
+            WELL_KNOWN_SYSTEM_IDS.put( "http://maven.apache.org/xsd/xdoc-2.0.xsd", "xdoc-2.0.xsd" );
+            WELL_KNOWN_SYSTEM_IDS.put( "https://maven.apache.org/xsd/xdoc-2.0.xsd", "xdoc-2.0.xsd" );
+            WELL_KNOWN_SYSTEM_IDS.put( "http://maven.apache.org/xsd/fml-1.0.1.xsd", "fml-1.0.1.xsd" );
+            WELL_KNOWN_SYSTEM_IDS.put( "https://maven.apache.org/xsd/fml-1.0.1.xsd", "fml-1.0.1.xsd" );
+            WELL_KNOWN_SYSTEM_IDS.put( "http://www.w3.org/TR/xhtml1/DTD/xhtml-lat1.ent", "xhtml-lat1.ent" );
+            WELL_KNOWN_SYSTEM_IDS.put( "https://www.w3.org/TR/xhtml1/DTD/xhtml-lat1.ent", "xhtml-lat1.ent" );
+        }
 
         /** {@inheritDoc} */
         public InputSource resolveEntity( String publicId, String systemId )
@@ -705,43 +720,35 @@ public abstract class AbstractXmlParser
             // already cached?
             if ( res == null )
             {
-                String systemName = FileUtils.getFile( systemId ).getName();
-                File temp = new File( System.getProperty( "java.io.tmpdir" ), systemName );
-                // maybe already as a temp file?
-                if ( !temp.exists() )
+                if ( WELL_KNOWN_SYSTEM_IDS.containsKey( systemId ) )
                 {
-                    // is systemId a file or an url?
-                    if ( systemId.toLowerCase( Locale.ENGLISH ).startsWith( "file" ) )
+                    String resource =  "/" + WELL_KNOWN_SYSTEM_IDS.get( systemId );
+                    URL url = getClass().getResource( resource );
+                    if ( url != null )
                     {
-                        // Doxia XSDs are included in the jars, so try to find the resource systemName from
-                        // the classpath...
-                        String resource = "/" + systemName;
-                        URL url = getClass().getResource( resource );
-                        if ( url != null )
-                        {
-                            res = toByteArray( url );
-                        }
-                        else
-                        {
-                            throw new SAXException( "Could not find the SYSTEM entity: " + systemId
-                            + " because '" + resource + "' is not available of the classpath." );
-                        }
+                        LOGGER.debug( "Resolving SYSTEM '{}' from well-known classpath resource '{}'",
+                                systemId, resource );
+                        res = toByteArray( url );
                     }
-                    else
+                }
+
+                if ( res == null )
+                {
+                    URI uri = URI.create( systemId );
+                    if ( uri.getScheme() == null )
                     {
-                        res = toByteArray( new URL( systemId ) );
+                        uri = Paths.get( systemId ).toUri();
                     }
 
-                    // write systemId as temp file
-                    copy( res, temp );
-                }
-                else
-                {
-                    // TODO How to refresh Doxia XSDs from temp dir?
-                    res = toByteArray( temp.toURI().toURL() );
+                    LOGGER.debug( "Resolving SYSTEM '{}' from URI resource '{}'", systemId, uri );
+                    res = toByteArray( uri.toURL() );
                 }
 
                 ENTITY_CACHE.put( systemId, res );
+            }
+            else
+            {
+                LOGGER.debug( "Resolved SYSTEM '{}' from cache", systemId );
             }
 
             InputSource is = new InputSource( new ByteArrayInputStream( res ) );
@@ -776,38 +783,6 @@ public abstract class AbstractXmlParser
             finally
             {
                 IOUtil.close( is );
-            }
-        }
-
-        /**
-         * Wrap {@link IOUtil#copy(byte[], OutputStream)} to throw SAXException.
-         *
-         * @param res not null array of byte
-         * @param f the file where to write the bytes
-         * @throws SAXException if any
-         * @see IOUtil#copy(byte[], OutputStream)
-         */
-        private void copy( byte[] res, File f )
-            throws SAXException
-        {
-            if ( f.isDirectory() )
-            {
-                throw new SAXException( "'" + f.getAbsolutePath() + "' is a directory, can not write it." );
-            }
-
-            OutputStream os = null;
-            try
-            {
-                os = new FileOutputStream( f );
-                IOUtil.copy( res, os );
-            }
-            catch ( IOException e )
-            {
-                throw new SAXException( e );
-            }
-            finally
-            {
-                IOUtil.close( os );
             }
         }
     }
