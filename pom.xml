@@ -212,6 +212,11 @@ under the License.
       </dependency>
       <dependency>
         <groupId>org.junit.jupiter</groupId>
+        <artifactId>junit-jupiter-api</artifactId>
+        <version>${junitVersion}</version>
+      </dependency>
+      <dependency>
+        <groupId>org.junit.jupiter</groupId>
         <artifactId>junit-jupiter-engine</artifactId>
         <version>${junitVersion}</version>
       </dependency>
@@ -220,6 +225,11 @@ under the License.
   </dependencyManagement>
 
   <dependencies>
+   <dependency>
+      <groupId>org.junit.jupiter</groupId>
+      <artifactId>junit-jupiter-api</artifactId>
+      <scope>test</scope>
+    </dependency>
     <dependency>
       <groupId>org.junit.jupiter</groupId>
       <artifactId>junit-jupiter-engine</artifactId>
