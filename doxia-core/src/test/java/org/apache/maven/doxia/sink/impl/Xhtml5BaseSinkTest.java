@@ -169,11 +169,11 @@ public class Xhtml5BaseSinkTest
 
         String actual = writer.toString();
         assertTrue(
-                actual.contains( "<table border=\"0\" class=\"bodyTable\">" + "<caption>caption&amp;1</caption>" ) );
+                actual.contains( "<table class=\"bodyTable\">" + "<caption>caption&amp;1</caption>" ) );
         assertTrue( actual.contains(
-                "<table border=\"0\" class=\"bodyTable\" align=\"left\">" + "<caption>caption2</caption>" ) );
+                "<table class=\"bodyTable\" align=\"left\">" + "<caption>caption2</caption>" ) );
         assertTrue( actual.contains(
-                "<table border=\"0\" class=\"bodyTable\" align=\"right\">" + "<caption>caption3</caption>" ) );
+                "<table class=\"bodyTable\" align=\"right\">" + "<caption>caption3</caption>" ) );
 
         assertTrue( actual.contains( "<td align=\"center\">cell11</td>" ) );
         assertTrue( actual.contains( "<td align=\"left\">nestedTable1Cell11</td>" ) );
@@ -1074,7 +1074,7 @@ public class Xhtml5BaseSinkTest
             sink.close();
         }
 
-        assertEquals( "<table border=\"0\" class=\"bodyTable\"></table>", writer.toString() );
+        assertEquals( "<table class=\"bodyTable\"></table>", writer.toString() );
     }
 
     /**
@@ -1101,7 +1101,7 @@ public class Xhtml5BaseSinkTest
             sink.close();
         }
 
-        String xmlExpected = "<table border=\"0\" class=\"bodyTable\">" + EOL + "<tr style=\"bold\" class=\"a\"></tr>"
+        String xmlExpected = "<table class=\"bodyTable\">" + EOL + "<tr style=\"bold\" class=\"a\"></tr>"
             + EOL + "<tr class=\"b\"></tr></table>";
 
         assertEquals( xmlExpected, writer.toString() );
@@ -1156,7 +1156,7 @@ public class Xhtml5BaseSinkTest
             sink.close();
         }
 
-        StringBuilder sbExpeted = new StringBuilder( "<table border=\"0\" class=\"bodyTable\">" );
+        StringBuilder sbExpeted = new StringBuilder( "<table class=\"bodyTable\">" );
         sbExpeted.append( EOL ).append( "<tr class=\"a\"></tr>" ).append( EOL );
         sbExpeted.append( "<tr style=\"bold\" class=\"b\"></tr>" ).append( EOL );
         sbExpeted.append( "<tr class=\"hidden xyz abc a\"></tr>" ).append( EOL );
@@ -1238,7 +1238,7 @@ public class Xhtml5BaseSinkTest
         }
 
         assertEquals(
-                "<table border=\"0\" class=\"bodyTable\">" + "<caption style=\"bold\">caption</caption></table>",
+                "<table class=\"bodyTable\">" + "<caption style=\"bold\">caption</caption></table>",
                 writer.toString() );
     }
 

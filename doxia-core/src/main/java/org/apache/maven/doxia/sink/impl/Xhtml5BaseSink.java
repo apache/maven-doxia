@@ -1438,7 +1438,8 @@ public class Xhtml5BaseSink
 
     /**
      * The default class style is <code>bodyTable</code>.
-     * The default align is <code>center</code>.
+     *
+     * @param grid if {@code true} the default class {@code bodyTableBorder} will be added
      *
      * {@inheritDoc}
      * @see javax.swing.text.html.HTML.Tag#TABLE
@@ -1449,14 +1450,10 @@ public class Xhtml5BaseSink
         setCellJustif( justification );
 
         MutableAttributeSet att = new SinkEventAttributeSet();
-        if ( !this.tableAttributes.isDefined( Attribute.BORDER.toString() ) )
-        {
-            att.addAttribute( Attribute.BORDER, ( grid ? "1" : "0" ) );
-        }
 
         if ( !this.tableAttributes.isDefined( Attribute.CLASS.toString() ) )
         {
-            att.addAttribute( Attribute.CLASS, "bodyTable" );
+            att.addAttribute( Attribute.CLASS, "bodyTable" + ( grid ? " bodyTableBorder" : "" ) );
         }
 
         att.addAttributes( this.tableAttributes );

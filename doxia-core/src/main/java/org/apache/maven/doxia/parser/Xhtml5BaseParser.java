@@ -21,6 +21,7 @@ package org.apache.maven.doxia.parser;
 
 import java.io.Reader;
 import java.util.Stack;
+import java.util.regex.Pattern;
 
 import javax.swing.text.html.HTML.Attribute;
 
@@ -45,6 +46,10 @@ public class Xhtml5BaseParser
         implements HtmlMarkup
 {
     private static final Logger LOGGER = LoggerFactory.getLogger( Xhtml5BaseParser.class );
+
+    /** Used to identify if a class string contains `bodyTableBorder` */
+    private static final Pattern BODYTABLEBORDER_CLASS_PATTERN =
+            Pattern.compile( "(?:.*\\s|^)bodyTableBorder(?:\\s.*|$)" );
 
     /**
      * True if a &lt;script&gt;&lt;/script&gt; or &lt;style&gt;&lt;/style&gt; block is read. CDATA sections within are
@@ -1207,12 +1212,11 @@ public class Xhtml5BaseParser
     private void handleTableStart( Sink sink, SinkEventAttributeSet attribs, XmlPullParser parser )
     {
         sink.table( attribs );
-        String border = parser.getAttributeValue( null, Attribute.BORDER.toString() );
-        boolean grid = true;
-
-        if ( border == null || "0".equals( border ) )
+        String givenTableClass = parser.getAttributeValue( null, Attribute.CLASS.toString() );
+        boolean grid = false;
+        if ( givenTableClass != null && BODYTABLEBORDER_CLASS_PATTERN.matcher( givenTableClass ).matches() )
         {
-            grid = false;
+            grid = true;
         }
 
         String align = parser.getAttributeValue( null, Attribute.ALIGN.toString() );

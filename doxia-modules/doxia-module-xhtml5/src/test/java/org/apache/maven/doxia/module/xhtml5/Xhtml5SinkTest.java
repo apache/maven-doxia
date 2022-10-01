@@ -226,7 +226,7 @@ public class Xhtml5SinkTest
     /** {@inheritDoc} */
     protected String getTableBlock( String cell, String caption )
     {
-        return "<table border=\"0\" class=\"bodyTable\">"
+        return "<table class=\"bodyTable\">"
             + "<caption>Table caption</caption><tr class=\"a\">\n<td>cell</td></tr>"
             + "</table>";
     }
