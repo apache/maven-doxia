@@ -44,6 +44,7 @@ import org.apache.maven.doxia.util.XmlValidator;
 
 import org.codehaus.plexus.util.IOUtil;
 import org.codehaus.plexus.util.StringUtils;
+import org.codehaus.plexus.util.xml.pull.EntityReplacementMap;
 import org.codehaus.plexus.util.xml.pull.MXParser;
 import org.codehaus.plexus.util.xml.pull.XmlPullParser;
 import org.codehaus.plexus.util.xml.pull.XmlPullParserException;
@@ -91,6 +92,18 @@ public abstract class AbstractXmlParser
 
     private boolean validate = false;
 
+    /**
+     * If set the parser will be loaded with all single characters
+     * from the XHTML specification.
+     * The entities used:
+     * <ul>
+     * <li>http://www.w3.org/TR/xhtml1/DTD/xhtml-lat1.ent</li>
+     * <li>http://www.w3.org/TR/xhtml1/DTD/xhtml-special.ent</li>
+     * <li>http://www.w3.org/TR/xhtml1/DTD/xhtml-symbol.ent</li>
+     * </ul>
+     */
+    private boolean addDefaultEntities = true;
+
     /** {@inheritDoc} */
     public void parse( Reader source, Sink sink, String reference )
         throws ParseException
@@ -120,7 +133,9 @@ public abstract class AbstractXmlParser
         // 2 second parsing to process
         try
         {
-            XmlPullParser parser = new MXParser();
+            XmlPullParser parser = addDefaultEntities
+                                   ? new MXParser( EntityReplacementMap.defaultEntityReplacementMap )
+                                   : new MXParser();
 
             parser.setInput( src );
 
@@ -568,6 +583,23 @@ public abstract class AbstractXmlParser
     {
         this.validate = validate;
     }
+
+    /**
+     * @since 2.0.0-M4
+     */
+    public boolean getAddDefaultEntities()
+    {
+        return addDefaultEntities;
+    }
+
+    /**
+     * @since 2.0.0-M4
+     */
+    public void setAddDefaultEntities( boolean addDefaultEntities )
+    {
+        this.addDefaultEntities = addDefaultEntities;
+    }
+
 
     // ----------------------------------------------------------------------
     // Private methods
