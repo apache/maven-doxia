@@ -396,7 +396,6 @@ public class XdocSink
         MutableAttributeSet atts = SinkUtils.filterAttributes(
                 attributes, SinkUtils.SINK_VERBATIM_ATTRIBUTES  );
 
-
         if ( atts == null )
         {
             atts = new SinkEventAttributeSet();
@@ -406,10 +405,10 @@ public class XdocSink
 
         if ( atts.isDefined( SinkEventAttributes.DECORATION ) )
         {
-            boxed = "boxed".equals( atts.getAttribute( SinkEventAttributes.DECORATION ) );
+             boxedFlag = boxed =
+                "boxed".equals( atts.getAttribute( SinkEventAttributes.DECORATION ) );
         }
 
-        boxedFlag = boxed;
         atts.removeAttribute( SinkEventAttributes.DECORATION );
 
         if ( boxed )
