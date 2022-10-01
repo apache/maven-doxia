@@ -111,21 +111,6 @@ public class Xhtml5BaseSink
     /** used to store attributes passed to table(). */
     protected MutableAttributeSet tableAttributes;
 
-    /** Flag to know if {@link #tableRows(int[], boolean)} is called or not. It is mainly to be backward compatible
-     * with some plugins (like checkstyle) which uses:
-     * <pre>
-     * sink.table();
-     * sink.tableRow();
-     * </pre>
-     * instead of
-     * <pre>
-     * sink.table();
-     * sink.tableRows( justify, true );
-     * sink.tableRow();
-     * </pre>
-     * */
-    protected boolean tableRows = false;
-
     // ----------------------------------------------------------------------
     // Constructor
     // ----------------------------------------------------------------------
@@ -268,7 +253,6 @@ public class Xhtml5BaseSink
 
         this.evenTableRow = true;
         this.tableAttributes = null;
-        this.tableRows = false;
     }
 
     /**
@@ -1387,7 +1371,6 @@ public class Xhtml5BaseSink
     public void table( SinkEventAttributes attributes )
     {
         this.tableContentWriterStack.addLast( new StringWriter() );
-        this.tableRows = false;
 
         if ( paragraphFlag )
         {
@@ -1416,8 +1399,6 @@ public class Xhtml5BaseSink
     @Override
     public void table_()
     {
-        this.tableRows = false;
-
         writeEndTag( HtmlMarkup.TABLE );
 
         if ( !this.cellCountStack.isEmpty() )
@@ -1465,14 +1446,7 @@ public class Xhtml5BaseSink
     @Override
     public void tableRows( int[] justification, boolean grid )
     {
-        this.tableRows = true;
-
         setCellJustif( justification );
-
-        if ( this.tableAttributes == null )
-        {
-            this.tableAttributes = new SinkEventAttributeSet( 0 );
-        }
 
         MutableAttributeSet att = new SinkEventAttributeSet();
         if ( !this.tableAttributes.isDefined( Attribute.BORDER.toString() ) )
@@ -1497,7 +1471,6 @@ public class Xhtml5BaseSink
     @Override
     public void tableRows_()
     {
-        this.tableRows = false;
         if ( !this.cellJustifStack.isEmpty() )
         {
             this.cellJustifStack.removeLast();
@@ -1518,11 +1491,6 @@ public class Xhtml5BaseSink
     @Override
     public void tableRow()
     {
-        // To be backward compatible
-        if ( !this.tableRows )
-        {
-            tableRows( null, false );
-        }
         tableRow( null );
     }
 

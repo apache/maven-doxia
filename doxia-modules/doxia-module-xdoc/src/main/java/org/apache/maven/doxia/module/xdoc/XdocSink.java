@@ -454,14 +454,7 @@ public class XdocSink
     {
         // similar to super.tableRows( justification, grid ) but without class.
 
-        this.tableRows = true;
-
         setCellJustif( justification );
-
-        if ( this.tableAttributes == null )
-        {
-            this.tableAttributes = new SinkEventAttributeSet( 0 );
-        }
 
         MutableAttributeSet att = new SinkEventAttributeSet();
 

@@ -1064,15 +1064,17 @@ public class Xhtml5BaseSinkTest
         {
             sink = new Xhtml5BaseSink( writer );
 
+            sink.table();
             sink.tableRows( justification, grid );
             sink.tableRows_();
+            sink.table_();
         }
         finally
         {
             sink.close();
         }
 
-        assertEquals( "<table border=\"0\" class=\"bodyTable\">", writer.toString() );
+        assertEquals( "<table border=\"0\" class=\"bodyTable\"></table>", writer.toString() );
     }
 
     /**
@@ -1085,6 +1087,7 @@ public class Xhtml5BaseSinkTest
         {
             sink = new Xhtml5BaseSink( writer );
 
+            sink.table();
             sink.tableRows( null, false );
             sink.tableRow( attributes );
             sink.tableRow_();
@@ -1117,6 +1120,8 @@ public class Xhtml5BaseSinkTest
             attributes3.addAttributes( attributes );
             sink = new Xhtml5BaseSink( writer );
 
+            sink.table();
+            sink.tableRows( null, false );
             sink.tableRow();
             sink.tableRow_();
             sink.tableRow( attributes );
@@ -1143,6 +1148,8 @@ public class Xhtml5BaseSinkTest
             sink.tableRow_();
             sink.tableRow();
             sink.tableRow_();
+            sink.tableRows_();
+            sink.table_();
         }
         finally
         {
@@ -1159,7 +1166,7 @@ public class Xhtml5BaseSinkTest
         sbExpeted.append( "<tr class=\"xyz not-hidden a\"></tr>" ).append( EOL );
         sbExpeted.append( "<tr style=\"bold\" class=\"xyz abc hidden b\"></tr>" ).append( EOL );
         sbExpeted.append( "<tr class=\"xyz hidden-not b\"></tr>" ).append( EOL );
-        sbExpeted.append( "<tr class=\"a\"></tr>" );
+        sbExpeted.append( "<tr class=\"a\"></tr></table>" );
 
         String xmlExpected = sbExpeted.toString();
         assertEquals( xmlExpected, writer.toString() );
