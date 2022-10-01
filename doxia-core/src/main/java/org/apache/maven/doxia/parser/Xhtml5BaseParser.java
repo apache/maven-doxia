@@ -632,7 +632,6 @@ public class Xhtml5BaseParser
         else if ( parser.getName().equals( HtmlMarkup.TABLE.toString() ) )
         {
             sink.tableRows_();
-
             sink.table_();
         }
         else if ( parser.getName().equals( HtmlMarkup.TR.toString() ) )
@@ -1044,21 +1043,11 @@ public class Xhtml5BaseParser
         }
         else
         {
-            String name = parser.getAttributeValue( null, Attribute.NAME.toString() );
-
-            if ( name != null )
+            String id = parser.getAttributeValue( null, Attribute.ID.toString() );
+            if ( id != null )
             {
-                sink.anchor( validAnchor( name ), attribs );
+                sink.anchor( validAnchor( id ), attribs );
                 isAnchor = true;
-            }
-            else
-            {
-                String id = parser.getAttributeValue( null, Attribute.ID.toString() );
-                if ( id != null )
-                {
-                    sink.anchor( validAnchor( id ), attribs );
-                    isAnchor = true;
-                }
             }
         }
     }

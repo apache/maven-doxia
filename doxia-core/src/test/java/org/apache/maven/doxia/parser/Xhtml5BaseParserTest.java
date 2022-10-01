@@ -739,8 +739,8 @@ public class Xhtml5BaseParserTest
                 "<a href=\"valid\"></a>" +
                 "<a href=\"#1invalid\"></a>" +
                 "<a href=\"http://www.fo.com/index.html#1invalid\"></a>" +
-                "<a name=\"valid\"></a>" +
-                "<a name=\"1invalid\"></a>" +
+                "<a id=\"valid\"></a>" +
+                "<a id=\"1invalid\"></a>" +
                 "<a id=\"1invalid\"></a></div>";
 
         parser.parse( text, sink );
