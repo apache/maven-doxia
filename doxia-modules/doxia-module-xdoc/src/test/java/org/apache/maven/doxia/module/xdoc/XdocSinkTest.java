@@ -20,12 +20,15 @@ package org.apache.maven.doxia.module.xdoc;
  */
 
 import org.apache.maven.doxia.sink.Sink;
+import org.apache.maven.doxia.sink.SinkEventAttributes;
 import org.apache.maven.doxia.sink.impl.AbstractSinkTest;
 import org.apache.maven.doxia.sink.impl.SinkEventAttributeSet;
 import org.junit.jupiter.api.Test;
 
 import java.io.StringWriter;
 import java.io.Writer;
+
+import javax.swing.text.html.HTML.Attribute;
 
 import static org.apache.maven.doxia.util.HtmlTools.escapeHTML;
 import static org.junit.jupiter.api.Assertions.assertEquals;
@@ -416,9 +419,11 @@ public class XdocSinkTest
         {
             sink = new XdocSink( writer );
 
-            sink.link( "name", (String) null );
+            sink.link( "name" );
             sink.link_();
-            sink.link( "name", "nirvana" );
+            SinkEventAttributes attrs = new SinkEventAttributeSet();
+            attrs.addAttribute( Attribute.TARGET, "nirvana" );
+            sink.link( "name", attrs );
             sink.link_();
         }
         finally
@@ -426,7 +431,7 @@ public class XdocSinkTest
             sink.close();
         }
 
-        assertEquals( "<a href=\"name\"></a><a href=\"name\" target=\"nirvana\"></a>", writer.toString() );
+        assertEquals( "<a href=\"name\"></a><a target=\"nirvana\" href=\"name\"></a>", writer.toString() );
     }
 
     /** {@inheritDoc} */

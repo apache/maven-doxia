@@ -504,31 +504,6 @@ public class XdocSink
         init();
     }
 
-    /**
-     * Adds a link with an optional target.
-     *
-     * @param name the link name.
-     * @param target the link target, may be null.
-     */
-    public void link( String name, String target )
-    {
-        if ( isHeadFlag() )
-        {
-            return;
-        }
-
-        MutableAttributeSet att = new SinkEventAttributeSet();
-
-        att.addAttribute( Attribute.HREF, HtmlTools.escapeHTML( name ) );
-
-        if ( target != null )
-        {
-            att.addAttribute( Attribute.TARGET, target );
-        }
-
-        writeStartTag( A, att );
-    }
-
     // ----------------------------------------------------------------------
     //
     // ----------------------------------------------------------------------
