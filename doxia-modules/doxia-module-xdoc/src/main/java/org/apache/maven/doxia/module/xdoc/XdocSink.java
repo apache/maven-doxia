@@ -480,7 +480,6 @@ public class XdocSink
     public void tableRow()
     {
         MutableAttributeSet att = new SinkEventAttributeSet();
-        att.addAttribute( Attribute.VALIGN, "top" );
 
         writeStartTag( TR, att );
 

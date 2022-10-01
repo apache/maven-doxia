@@ -1219,18 +1219,6 @@ public class Xhtml5BaseParser
             grid = true;
         }
 
-        String align = parser.getAttributeValue( null, Attribute.ALIGN.toString() );
-        int[] justif = {Sink.JUSTIFY_LEFT};
-
-        if ( "center".equals( align ) )
-        {
-            justif[0] = Sink.JUSTIFY_CENTER;
-        }
-        else if ( "right".equals( align ) )
-        {
-            justif[0] = Sink.JUSTIFY_RIGHT;
-        }
-
-        sink.tableRows( justif, grid );
+        sink.tableRows( null, grid );
     }
 }

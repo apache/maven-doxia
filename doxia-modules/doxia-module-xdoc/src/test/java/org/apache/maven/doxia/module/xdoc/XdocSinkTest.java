@@ -236,7 +236,7 @@ public class XdocSinkTest
     protected String getTableBlock( String cell, String caption )
     {
         return "<table border=\"0\"><caption>" + caption
-                + "</caption>\n<tr valign=\"top\">\n<td align=\"center\">" + cell + "</td></tr></table>";
+                + "</caption>\n<tr>\n<td style=\"text-align: center;\">" + cell + "</td></tr></table>";
     }
 
     /** {@inheritDoc} */

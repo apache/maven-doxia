@@ -1590,12 +1590,16 @@ public class Xhtml5BaseSink
             && cellJustifStack != null && !cellJustifStack.isEmpty() && getCellJustif() != null )
         {
             int cellCount = getCellCount();
-            if ( cellCount < getCellJustif().length )
+            if ( cellCount < getCellJustif().length
+                    && ( attributes == null || !attributes.isDefined( Attribute.STYLE.toString() ) ) )
             {
                 Map<Integer, MutableAttributeSet> hash = new HashMap<>();
-                hash.put( Sink.JUSTIFY_CENTER, SinkEventAttributeSet.CENTER );
-                hash.put( Sink.JUSTIFY_LEFT, SinkEventAttributeSet.LEFT );
-                hash.put( Sink.JUSTIFY_RIGHT, SinkEventAttributeSet.RIGHT );
+                hash.put( Sink.JUSTIFY_CENTER,
+                        new SinkEventAttributeSet( SinkEventAttributes.STYLE, "text-align: center;" ).unmodifiable() );
+                hash.put( Sink.JUSTIFY_LEFT,
+                        new SinkEventAttributeSet( SinkEventAttributes.STYLE, "text-align: left;" ).unmodifiable() );
+                hash.put( Sink.JUSTIFY_RIGHT,
+                        new SinkEventAttributeSet( SinkEventAttributes.STYLE, "text-align: right;" ).unmodifiable() );
                 MutableAttributeSet atts = hash.get( getCellJustif()[cellCount] );
 
                 if ( attributes == null )

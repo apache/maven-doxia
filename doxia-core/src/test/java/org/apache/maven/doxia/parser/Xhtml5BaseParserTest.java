@@ -160,7 +160,7 @@ public class Xhtml5BaseParserTest
     {
         // TODO: table caption, see DOXIA-177
 
-        String text = "<table align=\"center\"><tr><th>Header</th></tr><tr><td>cell</td></tr></table>";
+        String text = "<table><tr><th>Header</th></tr><tr><td>cell</td></tr></table>";
 
         parser.parse( text, sink );
 
