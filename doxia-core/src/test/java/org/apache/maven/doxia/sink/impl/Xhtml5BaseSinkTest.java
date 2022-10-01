@@ -171,9 +171,9 @@ public class Xhtml5BaseSinkTest
         assertTrue(
                 actual.contains( "<table class=\"bodyTable\">" + "<caption>caption&amp;1</caption>" ) );
         assertTrue( actual.contains(
-                "<table class=\"bodyTable\" align=\"left\">" + "<caption>caption2</caption>" ) );
+                "<table class=\"bodyTable\">" + "<caption>caption2</caption>" ) );
         assertTrue( actual.contains(
-                "<table class=\"bodyTable\" align=\"right\">" + "<caption>caption3</caption>" ) );
+                "<table class=\"bodyTable\">" + "<caption>caption3</caption>" ) );
 
         assertTrue( actual.contains( "<td style=\"text-align: center;\">cell11</td>" ) );
         assertTrue( actual.contains( "<td style=\"text-align: left;\">nestedTable1Cell11</td>" ) );

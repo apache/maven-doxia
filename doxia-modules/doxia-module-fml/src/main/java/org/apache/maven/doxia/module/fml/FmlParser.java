@@ -675,9 +675,7 @@ public class FmlParser
      */
     private void writeTopLink( Sink sink )
     {
-        SinkEventAttributeSet atts = new SinkEventAttributeSet();
-        atts.addAttribute( SinkEventAttributeSet.ALIGN, "right" );
-        sink.paragraph( atts );
+        sink.paragraph();
         sink.link( "#top" );
         sink.text( "[top]" );
         sink.link_();

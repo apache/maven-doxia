@@ -395,15 +395,13 @@ public class XdocSinkTest
             sink.verbatim_();
             sink.verbatim( SinkEventAttributeSet.BOXED );
             sink.verbatim_();
-            sink.verbatim( new SinkEventAttributeSet( SinkEventAttributeSet.WIDTH, "20%" ) );
-            sink.verbatim_();
         }
         finally
         {
             sink.close();
         }
 
-        assertEquals( "<pre></pre><source></source>\n<pre width=\"20%\"></pre>", writer.toString() );
+        assertEquals( "<pre></pre><source></source>", writer.toString() );
     }
 
     /**

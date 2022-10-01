@@ -417,7 +417,6 @@ public class XdocSink
         }
         else
         {
-            atts.removeAttribute( Attribute.ALIGN.toString() );
             writeStartTag( PRE, atts );
         }
     }

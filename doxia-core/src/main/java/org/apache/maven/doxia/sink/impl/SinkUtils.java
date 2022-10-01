@@ -103,54 +103,41 @@ public class SinkUtils
 
     private static final String[] IMG_ATTRIBUTES =
     {
-        SinkEventAttributes.ALIGN, SinkEventAttributes.ALT, SinkEventAttributes.BORDER,
-        SinkEventAttributes.HEIGHT, SinkEventAttributes.HSPACE, SinkEventAttributes.ISMAP,
-        SinkEventAttributes.SRC, SinkEventAttributes.USEMAP, SinkEventAttributes.VSPACE,
-        SinkEventAttributes.WIDTH
+        SinkEventAttributes.ALT, SinkEventAttributes.HEIGHT, SinkEventAttributes.ISMAP,
+        SinkEventAttributes.SRC, SinkEventAttributes.WIDTH
     };
 
     private static final String[] HR_ATTRIBUTES =
     {
-        SinkEventAttributes.ALIGN, SinkEventAttributes.NOSHADE, SinkEventAttributes.SIZE,
-        SinkEventAttributes.WIDTH
     };
 
     private static final String[] LINK_ATTRIBUTES =
     {
-        SinkEventAttributes.CHARSET, SinkEventAttributes.COORDS, SinkEventAttributes.HREF,
-        SinkEventAttributes.HREFLANG, SinkEventAttributes.REL, SinkEventAttributes.REV,
-        SinkEventAttributes.SHAPE, SinkEventAttributes.TARGET, SinkEventAttributes.TYPE
+        SinkEventAttributes.HREF, SinkEventAttributes.HREFLANG, SinkEventAttributes.REL,
+        SinkEventAttributes.TARGET, SinkEventAttributes.TYPE
     };
 
     private static final String[] TABLE_ATTRIBUTES =
     {
-        SinkEventAttributes.ALIGN, SinkEventAttributes.BGCOLOR, SinkEventAttributes.BORDER,
-        SinkEventAttributes.CELLPADDING, SinkEventAttributes.CELLSPACING, SinkEventAttributes.FRAME,
-        SinkEventAttributes.RULES, SinkEventAttributes.SUMMARY, SinkEventAttributes.WIDTH
     };
 
     private static final String[] TABLE_CELL_ATTRIBUTES =
     {
-        SinkEventAttributes.ABBRV, SinkEventAttributes.ALIGN, SinkEventAttributes.AXIS,
-        SinkEventAttributes.BGCOLOR, SinkEventAttributes.COLSPAN, SinkEventAttributes.HEADERS,
-        SinkEventAttributes.HEIGHT, SinkEventAttributes.NOWRAP, SinkEventAttributes.ROWSPAN,
-        SinkEventAttributes.SCOPE, SinkEventAttributes.VALIGN, SinkEventAttributes.WIDTH
+        SinkEventAttributes.COLSPAN, SinkEventAttributes.HEADERS, SinkEventAttributes.ROWSPAN
     };
 
     static
     {
         SINK_IMG_ATTRIBUTES = join( SINK_BASE_ATTRIBUTES, IMG_ATTRIBUTES );
         SINK_SECTION_ATTRIBUTES =
-                join( SINK_BASE_ATTRIBUTES, new String[] {SinkEventAttributes.ALIGN} );
+                join( SINK_BASE_ATTRIBUTES, new String[0] );
         SINK_VERBATIM_ATTRIBUTES =
                 join( SINK_BASE_ATTRIBUTES,
-                new String[] {SinkEventAttributes.ALIGN, SinkEventAttributes.DECORATION, SinkEventAttributes.WIDTH} );
+                new String[] {SinkEventAttributes.DECORATION} );
         SINK_HR_ATTRIBUTES = join( SINK_BASE_ATTRIBUTES, HR_ATTRIBUTES );
         SINK_LINK_ATTRIBUTES = join( SINK_BASE_ATTRIBUTES, LINK_ATTRIBUTES );
         SINK_TABLE_ATTRIBUTES = join( SINK_BASE_ATTRIBUTES, TABLE_ATTRIBUTES );
-        SINK_TR_ATTRIBUTES =
-                join( SINK_BASE_ATTRIBUTES,
-                new String[] {SinkEventAttributes.ALIGN, SinkEventAttributes.BGCOLOR, SinkEventAttributes.VALIGN} );
+        SINK_TR_ATTRIBUTES = join( SINK_BASE_ATTRIBUTES, new String[0] );
         SINK_TD_ATTRIBUTES = join( SINK_BASE_ATTRIBUTES, TABLE_CELL_ATTRIBUTES );
     }
 

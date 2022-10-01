@@ -112,7 +112,7 @@ public class Xhtml5SinkTest
     protected String getHeadBlock()
     {
         return "<!DOCTYPE html\">" +
-                "<html xmlns=\"http://www.w3.org/1999/xhtml\">\n<head>\n<title></title>\n<meta http-equiv=\"Content-Type\" content=\"text/html; charset=UTF-8\"/></head>";
+                "<html xmlns=\"http://www.w3.org/1999/xhtml\">\n<head>\n<title></title>\n<meta charset=\"UTF-8\"/></head>";
     }
 
     /** {@inheritDoc} */

@@ -797,7 +797,7 @@ public class Xhtml5BaseParserTest
     public void testAttributeEntities()
         throws Exception
     {
-        String text = "<script type=\"text/javascript\" src=\"http://ex.com/ex.js?v=l&amp;l=e\"></script>";
+        String text = "<script src=\"http://ex.com/ex.js?v=l&amp;l=e\"></script>";
 
         parser.parse( text, sink );
 
