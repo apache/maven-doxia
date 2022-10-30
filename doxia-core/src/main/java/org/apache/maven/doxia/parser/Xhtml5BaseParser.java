@@ -20,6 +20,8 @@ package org.apache.maven.doxia.parser;
  */
 
 import java.io.Reader;
+import java.util.HashSet;
+import java.util.Set;
 import java.util.Stack;
 import java.util.regex.Pattern;
 
@@ -50,6 +52,58 @@ public class Xhtml5BaseParser
     /** Used to identify if a class string contains `bodyTableBorder` */
     private static final Pattern BODYTABLEBORDER_CLASS_PATTERN =
             Pattern.compile( "(?:.*\\s|^)bodyTableBorder(?:\\s.*|$)" );
+
+    private static final Set<String> UNMATCHED_XHTML5_ELEMENTS = new HashSet<>();
+    private static final Set<String> UNMATCHED_XHTML5_SIMPLE_ELEMENTS = new HashSet<>();
+
+    static
+    {
+        UNMATCHED_XHTML5_SIMPLE_ELEMENTS.add( HtmlMarkup.AREA.toString() );
+        UNMATCHED_XHTML5_ELEMENTS.add( HtmlMarkup.AUDIO.toString() );
+        UNMATCHED_XHTML5_ELEMENTS.add( HtmlMarkup.BUTTON.toString() );
+        UNMATCHED_XHTML5_ELEMENTS.add( HtmlMarkup.CANVAS.toString() );
+        UNMATCHED_XHTML5_SIMPLE_ELEMENTS.add( HtmlMarkup.COL.toString() );
+        UNMATCHED_XHTML5_ELEMENTS.add( HtmlMarkup.COLGROUP.toString() );
+        UNMATCHED_XHTML5_ELEMENTS.add( HtmlMarkup.COMMAND.toString() );
+        UNMATCHED_XHTML5_ELEMENTS.add( HtmlMarkup.DATA.toString() );
+        UNMATCHED_XHTML5_ELEMENTS.add( HtmlMarkup.DATALIST.toString() );
+        UNMATCHED_XHTML5_ELEMENTS.add( HtmlMarkup.DETAILS.toString() );
+        UNMATCHED_XHTML5_ELEMENTS.add( HtmlMarkup.DIALOG.toString() );
+        UNMATCHED_XHTML5_SIMPLE_ELEMENTS.add( HtmlMarkup.EMBED.toString() );
+        UNMATCHED_XHTML5_ELEMENTS.add( HtmlMarkup.FIELDSET.toString() );
+        UNMATCHED_XHTML5_ELEMENTS.add( HtmlMarkup.FORM.toString() );
+        UNMATCHED_XHTML5_ELEMENTS.add( HtmlMarkup.HGROUP.toString() );
+        UNMATCHED_XHTML5_ELEMENTS.add( HtmlMarkup.IFRAME.toString() );
+        UNMATCHED_XHTML5_SIMPLE_ELEMENTS.add( HtmlMarkup.INPUT.toString() );
+        UNMATCHED_XHTML5_SIMPLE_ELEMENTS.add( HtmlMarkup.KEYGEN.toString() );
+        UNMATCHED_XHTML5_ELEMENTS.add( HtmlMarkup.LABEL.toString() );
+        UNMATCHED_XHTML5_ELEMENTS.add( HtmlMarkup.LEGEND.toString() );
+        UNMATCHED_XHTML5_ELEMENTS.add( HtmlMarkup.MAP.toString() );
+        UNMATCHED_XHTML5_ELEMENTS.add( HtmlMarkup.MENU.toString() );
+        UNMATCHED_XHTML5_SIMPLE_ELEMENTS.add( HtmlMarkup.MENUITEM.toString() );
+        UNMATCHED_XHTML5_ELEMENTS.add( HtmlMarkup.METER.toString() );
+        UNMATCHED_XHTML5_ELEMENTS.add( HtmlMarkup.NOSCRIPT.toString() );
+        UNMATCHED_XHTML5_ELEMENTS.add( HtmlMarkup.OBJECT.toString() );
+        UNMATCHED_XHTML5_ELEMENTS.add( HtmlMarkup.OPTGROUP.toString() );
+        UNMATCHED_XHTML5_ELEMENTS.add( HtmlMarkup.OPTION.toString() );
+        UNMATCHED_XHTML5_ELEMENTS.add( HtmlMarkup.OUTPUT.toString() );
+        UNMATCHED_XHTML5_SIMPLE_ELEMENTS.add( HtmlMarkup.PARAM.toString() );
+        UNMATCHED_XHTML5_ELEMENTS.add( HtmlMarkup.PICTURE.toString() );
+        UNMATCHED_XHTML5_ELEMENTS.add( HtmlMarkup.PROGRESS.toString() );
+        UNMATCHED_XHTML5_ELEMENTS.add( HtmlMarkup.SELECT.toString() );
+        UNMATCHED_XHTML5_SIMPLE_ELEMENTS.add( HtmlMarkup.SOURCE.toString() );
+        UNMATCHED_XHTML5_ELEMENTS.add( HtmlMarkup.SUMMARY.toString() );
+        UNMATCHED_XHTML5_ELEMENTS.add( HtmlMarkup.SVG.toString() );
+        UNMATCHED_XHTML5_ELEMENTS.add( HtmlMarkup.TEMPLATE.toString() );
+        UNMATCHED_XHTML5_ELEMENTS.add( HtmlMarkup.TEXTAREA.toString() );
+        UNMATCHED_XHTML5_ELEMENTS.add( HtmlMarkup.TBODY.toString() );
+        UNMATCHED_XHTML5_ELEMENTS.add( HtmlMarkup.THEAD.toString() );
+        UNMATCHED_XHTML5_ELEMENTS.add( HtmlMarkup.TFOOT.toString() );
+        UNMATCHED_XHTML5_ELEMENTS.add( HtmlMarkup.TIME.toString() );
+        UNMATCHED_XHTML5_SIMPLE_ELEMENTS.add( HtmlMarkup.TRACK.toString() );
+        UNMATCHED_XHTML5_ELEMENTS.add( HtmlMarkup.VAR.toString() );
+        UNMATCHED_XHTML5_ELEMENTS.add( HtmlMarkup.VIDEO.toString() );
+    }
 
     /**
      * True if a &lt;script&gt;&lt;/script&gt; or &lt;style&gt;&lt;/style&gt; block is read. CDATA sections within are
@@ -428,6 +482,18 @@ public class Xhtml5BaseParser
         {
             handleImgStart( parser, sink, attribs );
         }
+        else if ( parser.getName().equals( HtmlMarkup.BLOCKQUOTE.toString() ) )
+        {
+            sink.blockquote( attribs );
+        }
+        else if ( UNMATCHED_XHTML5_ELEMENTS.contains( parser.getName() ) )
+        {
+            handleUnknown( parser, sink, TAG_TYPE_START );
+        }
+        else if ( UNMATCHED_XHTML5_SIMPLE_ELEMENTS.contains( parser.getName() ) )
+        {
+            handleUnknown( parser, sink, TAG_TYPE_SIMPLE );
+        }
         else if ( parser.getName().equals( HtmlMarkup.SCRIPT.toString() )
             || parser.getName().equals( HtmlMarkup.STYLE.toString() ) )
         {
@@ -702,6 +768,14 @@ public class Xhtml5BaseParser
         else if ( parser.getName().equals( HtmlMarkup.FOOTER.toString() ) )
         {
             sink.footer_();
+        }
+        else if ( parser.getName().equals( HtmlMarkup.BLOCKQUOTE.toString() ) )
+        {
+            sink.blockquote_();
+        }
+        else if ( UNMATCHED_XHTML5_ELEMENTS.contains( parser.getName() ) )
+        {
+            handleUnknown( parser, sink, TAG_TYPE_END );
         }
         else if ( parser.getName().equals( HtmlMarkup.SCRIPT.toString() )
             || parser.getName().equals( HtmlMarkup.STYLE.toString() ) )
