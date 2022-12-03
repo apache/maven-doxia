@@ -1057,15 +1057,12 @@ public class Xhtml5BaseSinkTest
     @Test
     public void testTableRows()
     {
-        final int[] justification = null;
-        final boolean grid = false;
-
         try
         {
             sink = new Xhtml5BaseSink( writer );
 
             sink.table();
-            sink.tableRows( justification, grid );
+            sink.tableRows();
             sink.tableRows_();
             sink.table_();
         }
@@ -1088,7 +1085,7 @@ public class Xhtml5BaseSinkTest
             sink = new Xhtml5BaseSink( writer );
 
             sink.table();
-            sink.tableRows( null, false );
+            sink.tableRows();
             sink.tableRow( attributes );
             sink.tableRow_();
             sink.tableRow();
@@ -1121,7 +1118,7 @@ public class Xhtml5BaseSinkTest
             sink = new Xhtml5BaseSink( writer );
 
             sink.table();
-            sink.tableRows( null, false );
+            sink.tableRows();
             sink.tableRow();
             sink.tableRow_();
             sink.tableRow( attributes );
@@ -1225,7 +1222,7 @@ public class Xhtml5BaseSinkTest
             sink = new Xhtml5BaseSink( writer );
 
             sink.table();
-            sink.tableRows( null, false );
+            sink.tableRows();
             sink.tableCaption( attributes );
             sink.text( "caption" );
             sink.tableCaption_();
@@ -1626,8 +1623,8 @@ public class Xhtml5BaseSinkTest
         try
         {
             sink = new Xhtml5BaseSink( writer );
-            sink.table( null );
-            sink.tableRows( null, true );
+            sink.table();
+            sink.tableRows();
             sink.tableRow( null );
             sink.tableCell();
             sink.text( "\u2713", null );

@@ -1436,6 +1436,12 @@ public class Xhtml5BaseSink
         }
     }
 
+    @Override
+    public void tableRows()
+    {
+        tableRows( null, false );
+    }
+
     /**
      * The default class style is <code>bodyTable</code>.
      *

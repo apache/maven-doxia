@@ -703,6 +703,12 @@ public class AptSink
         resetTableCaptionBuffer();
     }
 
+    @Override
+    public void tableRows()
+    {
+        tableRows( null, false );
+    }
+
     /** {@inheritDoc} */
     public void tableRows( int[] justification, boolean grid )
     {

@@ -287,6 +287,12 @@ public class SinkEventTestingSink
     }
 
     @Override
+    public void tableRows()
+    {
+        addEvent( "tableRows", new Object[] { null, false } );
+    }
+
+    @Override
     public void tableRows( int[] justification, boolean grid )
     {
         addEvent( "tableRows", new Object[] { justification, grid } );

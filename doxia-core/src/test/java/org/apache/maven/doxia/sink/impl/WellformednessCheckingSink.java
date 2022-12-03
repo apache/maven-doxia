@@ -305,7 +305,7 @@ public class WellformednessCheckingSink
     }
 
     @Override
-    public void tableRows( int[] justification, boolean grid )
+    public void tableRows()
     {
         startElement( "tableRows" );
     }
@@ -938,6 +938,12 @@ public class WellformednessCheckingSink
     public void table( SinkEventAttributes attributes )
     {
         table();
+    }
+
+    @Override
+    public void tableRows( int[] justification, boolean grid )
+    {
+        tableRows();
     }
 
     @Override

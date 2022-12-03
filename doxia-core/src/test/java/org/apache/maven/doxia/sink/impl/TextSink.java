@@ -278,7 +278,7 @@ public class TextSink
     }
 
     @Override
-    public void tableRows( int[] justification, boolean grid )
+    public void tableRows()
     {
         writeln( "begin:tableRows" );
     }
@@ -895,6 +895,12 @@ public class TextSink
     public void table( SinkEventAttributes attributes )
     {
         table();
+    }
+
+    @Override
+    public void tableRows( int[] justification, boolean grid )
+    {
+        tableRows();
     }
 
     @Override

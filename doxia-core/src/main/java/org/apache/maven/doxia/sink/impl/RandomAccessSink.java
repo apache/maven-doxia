@@ -1198,6 +1198,13 @@ public class RandomAccessSink
 
     /** {@inheritDoc} */
     @Override
+    public void tableRows()
+    {
+        currentSink.tableRows();
+    }
+
+    /** {@inheritDoc} */
+    @Override
     public void tableRows( int[] justification, boolean grid )
     {
         currentSink.tableRows( justification, grid );

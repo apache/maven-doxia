@@ -299,7 +299,7 @@ public class SinkAdapter
 
     /** {@inheritDoc} */
     @Override
-    public void tableRows( int[] justification, boolean grid )
+    public void tableRows()
     {
         // nop
     }
@@ -1077,6 +1077,13 @@ public class SinkAdapter
     public void table( SinkEventAttributes attributes )
     {
         table();
+    }
+
+    /** {@inheritDoc} */
+    @Override
+    public void tableRows( int[] justification, boolean grid )
+    {
+        tableRows();
     }
 
     /** {@inheritDoc} */

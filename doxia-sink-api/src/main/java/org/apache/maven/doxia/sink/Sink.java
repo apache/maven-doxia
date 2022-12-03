@@ -1030,6 +1030,13 @@ public interface Sink
     /**
      * Starts an element that contains rows of table data.
      *
+     * @See {@link #tableRows(int[], boolean)}
+     */
+    void tableRows();
+
+    /**
+     * Starts an element that contains rows of table data.
+     *
      * @param justification the default justification of columns.
      * This can be overridden by individual table rows or table cells.
      * If null a left alignment is assumed by default. If this array

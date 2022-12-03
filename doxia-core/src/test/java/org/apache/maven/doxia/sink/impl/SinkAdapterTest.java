@@ -258,9 +258,7 @@ public class SinkAdapterTest
     @Test
     public void testTableRows()
     {
-        final int[] justification = null;
-        final boolean grid = false;
-        instance.tableRows( justification, grid );
+        instance.tableRows();
         instance.tableRows_();
     }
 
