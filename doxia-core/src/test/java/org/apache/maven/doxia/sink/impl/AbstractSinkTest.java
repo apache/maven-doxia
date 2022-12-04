@@ -198,7 +198,7 @@ public abstract class AbstractSinkTest
      * invoked on the current sink, produces the same result as
      * {@link #getHeadBlock getHeadBlock()}.
      */
-    public void testHead()
+    public void _testHead()
     {
         sink.head();
         sink.head_();
