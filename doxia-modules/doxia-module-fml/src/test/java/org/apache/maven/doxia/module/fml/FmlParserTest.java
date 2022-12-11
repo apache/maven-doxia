@@ -115,10 +115,10 @@ public class FmlParserTest
         assertEquals( "head_", ( it.next() ).getName() );
         assertEquals( "body", ( it.next() ).getName() );
         assertEquals( "section1", ( it.next() ).getName() );
-        assertEquals( "sectionTitle1", ( it.next() ).getName() );
         assertEquals( "anchor", ( it.next() ).getName() );
-        assertEquals( "text", ( it.next() ).getName() );
         assertEquals( "anchor_", ( it.next() ).getName() );
+        assertEquals( "sectionTitle1", ( it.next() ).getName() );
+        assertEquals( "text", ( it.next() ).getName() );
         assertEquals( "sectionTitle1_", ( it.next() ).getName() );
         assertEquals( "paragraph", ( it.next() ).getName() );
         assertEquals( "inline", ( it.next() ).getName() );
@@ -134,16 +134,16 @@ public class FmlParserTest
         assertEquals( "numberedList_", ( it.next() ).getName() );
         assertEquals( "section1_", ( it.next() ).getName() );
         assertEquals( "section1", ( it.next() ).getName() );
-        assertEquals( "sectionTitle1", ( it.next() ).getName() );
         assertEquals( "anchor", ( it.next() ).getName() );
-        assertEquals( "text", ( it.next() ).getName() );
         assertEquals( "anchor_", ( it.next() ).getName() );
+        assertEquals( "sectionTitle1", ( it.next() ).getName() );
+        assertEquals( "text", ( it.next() ).getName() );
         assertEquals( "sectionTitle1_", ( it.next() ).getName() );
         assertEquals( "definitionList", ( it.next() ).getName() );
-        assertEquals( "definedTerm", ( it.next() ).getName() );
         assertEquals( "anchor", ( it.next() ).getName() );
-        assertEquals( "text", ( it.next() ).getName() );
         assertEquals( "anchor_", ( it.next() ).getName() );
+        assertEquals( "definedTerm", ( it.next() ).getName() );
+        assertEquals( "text", ( it.next() ).getName() );
         assertEquals( "definedTerm_", ( it.next() ).getName() );
         assertEquals( "definition", ( it.next() ).getName() );
         assertEquals( "paragraph", ( it.next() ).getName() );
@@ -189,13 +189,13 @@ public class FmlParserTest
         assertEquals( "head_", ( it.next() ).getName() );
         assertEquals( "body", ( it.next() ).getName() );
         assertEquals( "section1", ( it.next() ).getName() );
-        assertEquals( "sectionTitle1", ( it.next() ).getName() );
         assertEquals( "anchor", ( it.next() ).getName() );
+        assertEquals( "anchor_", ( it.next() ).getName() );
+        assertEquals( "sectionTitle1", ( it.next() ).getName() );
 
         // faq title TODO: should be two events
         assertTextEvent( it.next(), "&&#913;" );
 
-        assertEquals( "anchor_", ( it.next() ).getName() );
         assertEquals( "sectionTitle1_", ( it.next() ).getName() );
         assertEquals( "paragraph", ( it.next() ).getName() );
         assertEquals( "inline", ( it.next() ).getName() );
@@ -219,24 +219,24 @@ public class FmlParserTest
         assertEquals( "numberedList_", ( it.next() ).getName() );
         assertEquals( "section1_", ( it.next() ).getName() );
         assertEquals( "section1", ( it.next() ).getName() );
-        assertEquals( "sectionTitle1", ( it.next() ).getName() );
         assertEquals( "anchor", ( it.next() ).getName() );
+        assertEquals( "anchor_", ( it.next() ).getName() );
+        assertEquals( "sectionTitle1", ( it.next() ).getName() );
 
         // part title
         assertTextEvent( it.next(), "<" );
         assertTextEvent( it.next(), "\u0391" );
 
-        assertEquals( "anchor_", ( it.next() ).getName() );
         assertEquals( "sectionTitle1_", ( it.next() ).getName() );
         assertEquals( "definitionList", ( it.next() ).getName() );
-        assertEquals( "definedTerm", ( it.next() ).getName() );
         assertEquals( "anchor", ( it.next() ).getName() );
+        assertEquals( "anchor_", ( it.next() ).getName() );
+        assertEquals( "definedTerm", ( it.next() ).getName() );
 
         // question
         assertTextEvent( it.next(), ">" );
         assertTextEvent( it.next(), "\u0391" );
 
-        assertEquals( "anchor_", ( it.next() ).getName() );
         assertEquals( "definedTerm_", ( it.next() ).getName() );
         assertEquals( "definition", ( it.next() ).getName() );
         assertEquals( "paragraph", ( it.next() ).getName() );
@@ -289,7 +289,7 @@ public class FmlParserTest
             content = IOUtil.toString( reader );
         }
 
-        assertTrue( content.contains( "<a id=\"macro-definition\">Macro Question</a>" ) );
+        assertTrue( content.contains( "<a id=\"macro-definition\"></a>" + EOL + "<dt>Macro Question</dt>" ) );
     }
 
     private void assertTextEvent( SinkEventElement textEvt, String string )

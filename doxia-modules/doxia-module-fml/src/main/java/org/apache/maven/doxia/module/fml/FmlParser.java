@@ -549,10 +549,10 @@ public class FmlParser
 
         sink.body();
         sink.section1();
-        sink.sectionTitle1();
         sink.anchor( "top" );
-        sink.text( faqs.getTitle() );
         sink.anchor_();
+        sink.sectionTitle1();
+        sink.text( faqs.getTitle() );
         sink.sectionTitle1_();
 
         // ----------------------------------------------------------------------
@@ -604,11 +604,10 @@ public class FmlParser
             if ( StringUtils.isNotEmpty( part.getTitle() ) )
             {
                 sink.section1();
-
-                sink.sectionTitle1();
                 sink.anchor( part.getId() );
-                xdocParser.parse( part.getTitle(), sink );
                 sink.anchor_();
+                sink.sectionTitle1();
+                xdocParser.parse( part.getTitle(), sink );
                 sink.sectionTitle1_();
             }
 
@@ -618,8 +617,10 @@ public class FmlParser
             {
                 Faq faq = faqIterator.next();
 
-                sink.definedTerm();
                 sink.anchor( faq.getId() );
+                sink.anchor_();
+
+                sink.definedTerm();
 
                 if ( StringUtils.isNotEmpty( faq.getQuestion() ) )
                 {
@@ -630,7 +631,6 @@ public class FmlParser
                     throw new ParseException( "Missing <question> for FAQ '" + faq.getId() + "'" );
                 }
 
-                sink.anchor_();
                 sink.definedTerm_();
 
                 sink.definition();
