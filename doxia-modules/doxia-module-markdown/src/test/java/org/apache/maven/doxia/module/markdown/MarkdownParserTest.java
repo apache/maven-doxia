@@ -311,7 +311,24 @@ public class MarkdownParserTest
     public void testMetadataSinkEvent()
         throws Exception
     {
-        List<SinkEventElement> eventList = parseFileToEventTestingSink( "metadata" ).getEventList();
+        testMetadataSinkEvent( "metadata" );
+    }
+
+    /**
+     * Assert the metadata is passed through when parsing "metadata-yaml.md".
+     *
+     * @throws Exception if the event list is not correct when parsing the document
+     */
+    public void testMetadataYamlSinkEvent()
+        throws Exception
+    {
+        testMetadataSinkEvent( "metadata-yaml" );
+    }
+
+    private void testMetadataSinkEvent( String doc )
+        throws Exception
+    {
+        List<SinkEventElement> eventList = parseFileToEventTestingSink( doc ).getEventList();
         Iterator<SinkEventElement> it = eventList.iterator();
 
         assertSinkEquals( it, "head", "title", "text", "text", "text", "title_", "author", "text", "author_", "date",
