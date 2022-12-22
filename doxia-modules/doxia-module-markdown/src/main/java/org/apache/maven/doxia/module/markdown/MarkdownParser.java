@@ -189,6 +189,13 @@ public class MarkdownParser
         html.append( "<html>" );
         html.append( "<head>" );
 
+        // detect yaml style metadata
+        if ( text.startsWith( "---" ) )
+        {
+            // remove the enclosing --- to get back to classical metadata
+            text = text.replaceFirst( "---", "" ).replaceFirst( "---", "" );
+        }
+
         // First, we interpret the "metadata" section of the document and add the corresponding HTML headers
         Matcher metadataMatcher = METADATA_SECTION_PATTERN.matcher( text );
         boolean haveTitle = false;
