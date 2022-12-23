@@ -51,19 +51,62 @@ under the License.
     </contributor>
   </contributors>
 
+  <properties>
+    <flexmarkVersion>0.42.14</flexmarkVersion>
+  </properties>
+
   <dependencies>
     <dependency>
       <groupId>com.vladsch.flexmark</groupId>
-      <artifactId>flexmark-all</artifactId>
-      <version>0.42.14</version>
-      <exclusions>
-        <!-- exclude to PDF converter -->
-        <exclusion>
-          <groupId>com.vladsch.flexmark</groupId>
-          <artifactId>flexmark-pdf-converter</artifactId>
-        </exclusion>
-      </exclusions>
+      <artifactId>flexmark</artifactId>
+      <version>${flexmarkVersion}</version>
     </dependency>
+    <dependency>
+      <groupId>com.vladsch.flexmark</groupId>
+      <artifactId>flexmark-util</artifactId>
+      <version>${flexmarkVersion}</version>
+    </dependency>
+    <dependency>
+      <groupId>com.vladsch.flexmark</groupId>
+      <artifactId>flexmark-ext-abbreviation</artifactId>
+      <version>${flexmarkVersion}</version>
+    </dependency>
+    <dependency>
+      <groupId>com.vladsch.flexmark</groupId>
+      <artifactId>flexmark-ext-autolink</artifactId>
+      <version>${flexmarkVersion}</version>
+    </dependency>
+    <dependency>
+      <groupId>com.vladsch.flexmark</groupId>
+      <artifactId>flexmark-ext-definition</artifactId>
+      <version>${flexmarkVersion}</version>
+    </dependency>
+    <dependency>
+      <groupId>com.vladsch.flexmark</groupId>
+      <artifactId>flexmark-ext-escaped-character</artifactId>
+      <version>${flexmarkVersion}</version>
+    </dependency>
+    <dependency>
+      <groupId>com.vladsch.flexmark</groupId>
+      <artifactId>flexmark-ext-gfm-strikethrough</artifactId>
+      <version>${flexmarkVersion}</version>
+    </dependency>
+    <dependency>
+      <groupId>com.vladsch.flexmark</groupId>
+      <artifactId>flexmark-ext-tables</artifactId>
+      <version>${flexmarkVersion}</version>
+    </dependency>
+    <dependency>
+      <groupId>com.vladsch.flexmark</groupId>
+      <artifactId>flexmark-ext-typographic</artifactId>
+      <version>${flexmarkVersion}</version>
+    </dependency>
+    <dependency>
+      <groupId>com.vladsch.flexmark</groupId>
+      <artifactId>flexmark-ext-wikilink</artifactId>
+      <version>${flexmarkVersion}</version>
+    </dependency>
+
     <dependency>
       <groupId>org.apache.maven.doxia</groupId>
       <artifactId>doxia-module-xhtml</artifactId>
