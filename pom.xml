@@ -262,6 +262,7 @@ under the License.
         <plugin>
           <groupId>org.apache.rat</groupId>
           <artifactId>apache-rat-plugin</artifactId>
+          <version>0.15</version>
           <configuration>
             <excludes combine.children="append">
               <exclude>src/test/resources/**/*.apt</exclude>
