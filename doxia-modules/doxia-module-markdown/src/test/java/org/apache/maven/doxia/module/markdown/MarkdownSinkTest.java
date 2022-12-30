@@ -108,7 +108,7 @@ public class MarkdownSinkTest extends AbstractSinkTest
 
     protected String getSectionBlock( String title, int level )
     {
-        return EOL + StringUtils.repeat( MarkdownMarkup.SECTION_TITLE_START_MARKUP, level + 1 ) + SPACE + title + EOL + EOL + EOL;
+        return EOL + StringUtils.repeat( MarkdownMarkup.SECTION_TITLE_START_MARKUP, level ) + SPACE + title + EOL + EOL + EOL;
     }
 
     /** {@inheritDoc} */

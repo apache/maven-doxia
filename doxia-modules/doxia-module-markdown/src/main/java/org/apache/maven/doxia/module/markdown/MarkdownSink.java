@@ -316,7 +316,7 @@ public class MarkdownSink
 
     private void sectionTitle( int level )
     {
-        write( EOL + StringUtils.repeat( SECTION_TITLE_START_MARKUP, level + 1 ) + SPACE );
+        write( EOL + StringUtils.repeat( SECTION_TITLE_START_MARKUP, level ) + SPACE );
     }
 
     /**
