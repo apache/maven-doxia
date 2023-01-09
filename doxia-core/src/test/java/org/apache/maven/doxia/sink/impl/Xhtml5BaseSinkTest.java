@@ -808,31 +808,32 @@ public class Xhtml5BaseSinkTest {
      * Test of verbatim method, of class Xhtml5BaseSink.
      */
     @Test
-    public void testVerbatim() {
+    public void testVerbatimSource() {
         try {
             sink = new Xhtml5BaseSink(writer);
 
-            sink.verbatim(SinkEventAttributeSet.BOXED);
+            sink.verbatim(SinkEventAttributeSet.SOURCE);
             sink.verbatim_();
         } finally {
             sink.close();
         }
 
-        assertEquals("<div class=\"source\">" + LS + "<pre></pre></div>", writer.toString());
+        assertEquals("<div class=\"verbatim source\">" + LS + "<pre></pre></div>", writer.toString());
 
-        checkVerbatimAttributes(attributes, "<div>" + LS + "<pre style=\"bold\"></pre></div>");
+        checkVerbatimAttributes(attributes, "<div class=\"verbatim\">" + LS + "<pre style=\"bold\"></pre></div>");
 
         final SinkEventAttributes att = new SinkEventAttributeSet(SinkEventAttributes.ID, "id");
-        checkVerbatimAttributes(att, "<div>" + LS + "<pre id=\"id\"></pre></div>");
+        checkVerbatimAttributes(att, "<div class=\"verbatim\">" + LS + "<pre id=\"id\"></pre></div>");
 
         att.addAttribute(Attribute.CLASS, "class");
-        checkVerbatimAttributes(att, "<div>" + LS + "<pre id=\"id\" class=\"class\"></pre></div>");
+        checkVerbatimAttributes(att, "<div class=\"verbatim\">" + LS + "<pre id=\"id\" class=\"class\"></pre></div>");
 
-        att.addAttribute(SinkEventAttributes.DECORATION, "boxed");
-        checkVerbatimAttributes(att, "<div class=\"source\">" + LS + "<pre id=\"id\" class=\"class\"></pre></div>");
+        att.addAttribute(SinkEventAttributes.DECORATION, "source");
+        checkVerbatimAttributes(
+                att, "<div class=\"verbatim source\">" + LS + "<pre id=\"id\" class=\"class\"></pre></div>");
 
         att.removeAttribute(Attribute.CLASS.toString());
-        checkVerbatimAttributes(att, "<div class=\"source\">" + LS + "<pre id=\"id\"></pre></div>");
+        checkVerbatimAttributes(att, "<div class=\"verbatim source\">" + LS + "<pre id=\"id\"></pre></div>");
     }
 
     private void checkVerbatimAttributes(final SinkEventAttributes att, final String expected) {

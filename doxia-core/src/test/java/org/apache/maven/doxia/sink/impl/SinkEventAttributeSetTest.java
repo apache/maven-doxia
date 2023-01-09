@@ -79,7 +79,7 @@ public class SinkEventAttributeSetTest {
 
         sinkEventAttributeSet.addAttributes(SinkEventAttributeSet.BOLD);
         assertEquals(1, sinkEventAttributeSet.getAttributeCount());
-        sinkEventAttributeSet.removeAttributes(SinkEventAttributeSet.BOXED);
+        sinkEventAttributeSet.removeAttributes(SinkEventAttributeSet.SOURCE);
         assertEquals(1, sinkEventAttributeSet.getAttributeCount());
         sinkEventAttributeSet.removeAttributes(SinkEventAttributeSet.BOLD);
         assertEquals(0, sinkEventAttributeSet.getAttributeCount());
@@ -91,7 +91,7 @@ public class SinkEventAttributeSetTest {
     @Test
     public void testIsDefined() {
         assertFalse(sinkEventAttributeSet.isDefined(SinkEventAttributes.DECORATION));
-        sinkEventAttributeSet.addAttributes(SinkEventAttributeSet.BOXED);
+        sinkEventAttributeSet.addAttributes(SinkEventAttributeSet.SOURCE);
         assertTrue(sinkEventAttributeSet.isDefined(SinkEventAttributes.DECORATION));
     }
 
@@ -103,7 +103,7 @@ public class SinkEventAttributeSetTest {
         SinkEventAttributes instance = new SinkEventAttributeSet(SinkEventAttributeSet.BOLD);
         sinkEventAttributeSet.addAttributes(SinkEventAttributeSet.BOLD);
         assertTrue(instance.isEqual(sinkEventAttributeSet));
-        instance.addAttributes(SinkEventAttributeSet.BOXED);
+        instance.addAttributes(SinkEventAttributeSet.SOURCE);
         assertFalse(instance.isEqual(sinkEventAttributeSet));
     }
 
@@ -120,7 +120,7 @@ public class SinkEventAttributeSetTest {
         SinkEventAttributes instance = new SinkEventAttributeSet(SinkEventAttributeSet.BOLD);
         sinkEventAttributeSet.addAttributes(SinkEventAttributeSet.BOLD);
         assertTrue(instance.equals(sinkEventAttributeSet));
-        instance.addAttributes(SinkEventAttributeSet.BOXED);
+        instance.addAttributes(SinkEventAttributeSet.SOURCE);
         assertFalse(instance.equals(sinkEventAttributeSet));
     }
 
@@ -172,7 +172,7 @@ public class SinkEventAttributeSetTest {
     public void testContainsAttributes() {
         sinkEventAttributeSet.addAttributes(SinkEventAttributeSet.JUSTIFY);
         assertTrue(sinkEventAttributeSet.containsAttributes(SinkEventAttributeSet.JUSTIFY));
-        assertFalse(sinkEventAttributeSet.containsAttributes(SinkEventAttributeSet.BOXED));
+        assertFalse(sinkEventAttributeSet.containsAttributes(SinkEventAttributeSet.SOURCE));
     }
 
     /**
@@ -237,7 +237,7 @@ public class SinkEventAttributeSetTest {
 
         result = sinkEventAttributeSet.clone();
         assertEquals(sinkEventAttributeSet, result);
-        sinkEventAttributeSet.setResolveParent(SinkEventAttributeSet.BOXED);
+        sinkEventAttributeSet.setResolveParent(SinkEventAttributeSet.SOURCE);
         // assertFalse(sinkEventAttributeSet.equals(result));
     }
 
@@ -265,12 +265,12 @@ public class SinkEventAttributeSetTest {
         String expected = "";
         assertEquals(expected, sinkEventAttributeSet.toString());
 
-        sinkEventAttributeSet.addAttributes(SinkEventAttributeSet.BOXED);
-        expected = " decoration=boxed";
+        sinkEventAttributeSet.addAttributes(SinkEventAttributeSet.SOURCE);
+        expected = " decoration=source";
         assertEquals(expected, sinkEventAttributeSet.toString());
 
         sinkEventAttributeSet.addAttributes(SinkEventAttributeSet.CENTER);
-        expected = " decoration=boxed align=center";
+        expected = " decoration=source align=center";
         assertEquals(expected, sinkEventAttributeSet.toString());
     }
 }

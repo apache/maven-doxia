@@ -206,11 +206,11 @@ public class MarkdownParserTest extends AbstractParserTest {
         assertFalse(it.hasNext());
 
         // PRE element must be a "verbatim" Sink event that specifies
-        // BOXED = true
+        // SOURCE = true
         SinkEventElement pre = eventList.get(7);
         assertEquals("verbatim", pre.getName());
         SinkEventAttributeSet preAtts = (SinkEventAttributeSet) pre.getArgs()[0];
-        assertTrue(preAtts.containsAttribute(SinkEventAttributes.DECORATION, "boxed"));
+        assertFalse(preAtts.containsAttribute(SinkEventAttributes.DECORATION, "source"));
 
         // * CODE element must be an "inline" Sink event that specifies:
         // * SEMANTICS = "code" and CLASS = "language-java"

@@ -51,8 +51,8 @@ import org.slf4j.LoggerFactory;
 public class Xhtml5Parser extends Xhtml5BaseParser implements Xhtml5Markup {
     private static final Logger LOGGER = LoggerFactory.getLogger(Xhtml5Parser.class);
 
-    /** For boxed verbatim. */
-    protected boolean boxed;
+    /** For verbatim source. */
+    protected boolean source;
 
     /** Empty elements don't write a closing tag. */
     private boolean isEmptyElement;
@@ -106,10 +106,10 @@ public class Xhtml5Parser extends Xhtml5BaseParser implements Xhtml5Markup {
         } else if (parser.getName().equals(BODY.toString())) {
             sink.body(attribs);
         } else if (parser.getName().equals(DIV.toString())) {
-            String divclass = parser.getAttributeValue(null, Attribute.CLASS.toString());
+            String divClass = parser.getAttributeValue(null, Attribute.CLASS.toString());
 
-            if ("source".equals(divclass)) {
-                this.boxed = true;
+            if ("verbatim source".equals(divClass)) {
+                this.source = true;
             }
 
             baseStartTag(parser, sink); // pick up other divs
@@ -125,8 +125,8 @@ public class Xhtml5Parser extends Xhtml5BaseParser implements Xhtml5Markup {
          * in the content of a PRE element.
          */
         else if (parser.getName().equals(PRE.toString())) {
-            if (boxed) {
-                attribs.addAttributes(SinkEventAttributeSet.BOXED);
+            if (source) {
+                attribs.addAttributes(SinkEventAttributeSet.SOURCE);
             }
 
             verbatim();
@@ -164,7 +164,7 @@ public class Xhtml5Parser extends Xhtml5BaseParser implements Xhtml5Markup {
         } else if (parser.getName().equals(ADDRESS.toString())) {
             sink.address_();
         } else if (parser.getName().equals(DIV.toString())) {
-            this.boxed = false;
+            this.source = false;
             baseEndTag(parser, sink);
         } else if (!baseEndTag(parser, sink)) {
             if (!isEmptyElement) {
@@ -263,7 +263,7 @@ public class Xhtml5Parser extends Xhtml5BaseParser implements Xhtml5Markup {
     protected void init() {
         super.init();
 
-        this.boxed = false;
+        this.source = false;
         this.isEmptyElement = false;
     }
 

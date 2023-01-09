@@ -209,14 +209,14 @@ public class MarkdownSinkTest extends AbstractSinkTest {
     }
 
     /** {@inheritDoc} */
-    protected String getVerbatimBlock(String text) {
+    protected String getVerbatimSourceBlock(String text) {
         return EOL
                 + EOL
-                + MarkdownMarkup.NON_BOXED_VERBATIM_START_MARKUP
+                + MarkdownMarkup.VERBATIM_START_MARKUP
                 + EOL
                 + text
                 + EOL
-                + MarkdownMarkup.NON_BOXED_VERBATIM_START_MARKUP
+                + MarkdownMarkup.VERBATIM_START_MARKUP
                 + EOL;
     }
 

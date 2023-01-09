@@ -1105,7 +1105,7 @@ public class Xhtml5BaseSink extends AbstractXmlSink implements HtmlMarkup {
     }
 
     /**
-     * The default class style for boxed is <code>source</code>.
+     * The default class style is <code>verbatim</code>, for source is {@code verbatim source}.
      *
      * {@inheritDoc}
      * @see javax.swing.text.html.HTML.Tag#DIV
@@ -1128,18 +1128,21 @@ public class Xhtml5BaseSink extends AbstractXmlSink implements HtmlMarkup {
             atts = new SinkEventAttributeSet();
         }
 
-        boolean boxed = false;
+        boolean source = false;
 
         if (atts.isDefined(SinkEventAttributes.DECORATION)) {
-            boxed = "boxed"
+            source = "source"
                     .equals(atts.getAttribute(SinkEventAttributes.DECORATION).toString());
         }
 
         SinkEventAttributes divAtts = null;
+        String divClass = "verbatim";
 
-        if (boxed) {
-            divAtts = new SinkEventAttributeSet(Attribute.CLASS.toString(), "source");
+        if (source) {
+            divClass += " source";
         }
+
+        divAtts = new SinkEventAttributeSet(Attribute.CLASS.toString(), divClass);
 
         atts.removeAttribute(SinkEventAttributes.DECORATION);
 

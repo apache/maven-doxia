@@ -1837,8 +1837,8 @@ public class AptParser extends AbstractTextParser implements AptMarkup {
 
     /** A Verbatim Block. */
     private class Verbatim extends Block {
-        /** boxed. */
-        private boolean boxed;
+        /** source. */
+        private boolean source;
 
         /**
          * Constructor.
@@ -1854,7 +1854,7 @@ public class AptParser extends AbstractTextParser implements AptMarkup {
 
             StringBuilder buffer = new StringBuilder();
             char firstChar = firstLine.charAt(0);
-            boxed = (firstChar == PLUS);
+            source = (firstChar == PLUS);
 
             while (AptParser.this.line != null) {
                 String l = AptParser.this.line;
@@ -1908,7 +1908,7 @@ public class AptParser extends AbstractTextParser implements AptMarkup {
 
         /** {@inheritDoc} */
         public void traverse() throws AptParseException {
-            AptParser.this.sink.verbatim(boxed ? SinkEventAttributeSet.BOXED : null);
+            AptParser.this.sink.verbatim(source ? SinkEventAttributeSet.SOURCE : null);
             AptParser.this.sink.text(text);
             AptParser.this.sink.verbatim_();
         }

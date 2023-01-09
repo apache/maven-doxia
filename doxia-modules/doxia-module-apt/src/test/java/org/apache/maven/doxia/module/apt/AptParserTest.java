@@ -164,9 +164,9 @@ public class AptParserTest extends AbstractParserTest {
     }
 
     @Test
-    public void testBoxedVerbatim() throws Exception {
-        String text = "+--" + EOL + "boxed verbatim" + EOL + "+--" + EOL + "---" + EOL + "un-boxed verbatim" + EOL
-                + "---" + EOL;
+    public void testVerbatimSource() throws Exception {
+        String text =
+                "+--" + EOL + "verbatim source" + EOL + "+--" + EOL + "---" + EOL + "verbatim" + EOL + "---" + EOL;
 
         SinkEventTestingSink sink = new SinkEventTestingSink();
 
@@ -175,7 +175,7 @@ public class AptParserTest extends AbstractParserTest {
         Iterator<SinkEventElement> it = sink.getEventList().iterator();
 
         assertSinkStartsWith(it, "head", "head_", "body");
-        assertSinkEquals(it.next(), "verbatim", SinkEventAttributeSet.BOXED);
+        assertSinkEquals(it.next(), "verbatim", SinkEventAttributeSet.SOURCE);
         assertSinkStartsWith(it, "text", "verbatim_");
 
         assertSinkEquals(it.next(), "verbatim", new Object[] {null});

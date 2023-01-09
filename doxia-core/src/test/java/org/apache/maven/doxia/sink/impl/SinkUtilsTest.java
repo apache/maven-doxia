@@ -39,14 +39,14 @@ public class SinkUtilsTest {
     public void testGetAttributeString() {
         assertEquals("", SinkUtils.getAttributeString(null));
 
-        AttributeSet att = new SinkEventAttributeSet(SinkEventAttributeSet.BOXED);
-        String expResult = " decoration=\"boxed\"";
+        AttributeSet att = new SinkEventAttributeSet(SinkEventAttributeSet.SOURCE);
+        String expResult = " decoration=\"source\"";
         String result = SinkUtils.getAttributeString(att);
         assertEquals(expResult, result);
 
         SinkEventAttributes at = new SinkEventAttributeSet(SinkEventAttributeSet.BOLD);
         at.addAttributes(att);
-        expResult = " style=\"bold\" decoration=\"boxed\"";
+        expResult = " style=\"bold\" decoration=\"source\"";
         result = SinkUtils.getAttributeString(at);
         assertEquals(expResult, result);
 

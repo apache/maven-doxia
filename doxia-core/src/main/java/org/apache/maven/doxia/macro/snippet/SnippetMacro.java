@@ -38,7 +38,7 @@ import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
 /**
- * A macro that prints out the content of a file or a URL.
+ * A macro that prints out the (source code) content of a file or a URL.
  */
 @Singleton
 @Named("snippet")
@@ -100,6 +100,14 @@ public class SnippetMacro extends AbstractMacro {
             verbatim = Boolean.valueOf(verbatimParam);
         }
 
+        boolean source = true;
+
+        String sourceParam = (String) request.getParameter("source");
+
+        if (sourceParam != null && !"".equals(sourceParam)) {
+            source = Boolean.valueOf(sourceParam);
+        }
+
         String encoding = (String) request.getParameter("encoding");
 
         URL url;
@@ -135,7 +143,7 @@ public class SnippetMacro extends AbstractMacro {
         }
 
         if (verbatim) {
-            sink.verbatim(SinkEventAttributeSet.BOXED);
+            sink.verbatim(source ? SinkEventAttributeSet.SOURCE : null);
 
             sink.text(snippet.toString());
 

@@ -44,8 +44,8 @@ public class XdocSink extends Xhtml5BaseSink implements XdocMarkup {
     // Instance fields
     // ----------------------------------------------------------------------
 
-    /** An indication on if we're inside a box (verbatim). */
-    private boolean boxedFlag;
+    /** An indication on if we're inside verbatim source. */
+    private boolean sourceFlag;
 
     private String encoding;
 
@@ -105,7 +105,7 @@ public class XdocSink extends Xhtml5BaseSink implements XdocMarkup {
     protected void init() {
         super.init();
 
-        boxedFlag = false;
+        sourceFlag = false;
     }
 
     /**
@@ -359,15 +359,15 @@ public class XdocSink extends Xhtml5BaseSink implements XdocMarkup {
             atts = new SinkEventAttributeSet();
         }
 
-        boolean boxed = false;
+        boolean source = false;
 
         if (atts.isDefined(SinkEventAttributes.DECORATION)) {
-            boxedFlag = boxed = "boxed".equals(atts.getAttribute(SinkEventAttributes.DECORATION));
+            sourceFlag = source = "source".equals(atts.getAttribute(SinkEventAttributes.DECORATION));
         }
 
         atts.removeAttribute(SinkEventAttributes.DECORATION);
 
-        if (boxed) {
+        if (source) {
             writeStartTag(SOURCE_TAG, atts);
         } else {
             writeStartTag(PRE, atts);
@@ -381,7 +381,7 @@ public class XdocSink extends Xhtml5BaseSink implements XdocMarkup {
      * @see javax.swing.text.html.HTML.Tag#PRE
      */
     public void verbatim_() {
-        if (boxedFlag) {
+        if (sourceFlag) {
             writeEndTag(SOURCE_TAG);
         } else {
             writeEndTag(PRE);
@@ -389,7 +389,7 @@ public class XdocSink extends Xhtml5BaseSink implements XdocMarkup {
 
         setVerbatimFlag(false);
 
-        boxedFlag = false;
+        sourceFlag = false;
     }
 
     /**

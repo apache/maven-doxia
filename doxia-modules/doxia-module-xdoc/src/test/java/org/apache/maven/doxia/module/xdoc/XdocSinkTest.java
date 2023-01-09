@@ -239,7 +239,7 @@ public class XdocSinkTest extends AbstractSinkTest {
     }
 
     /** {@inheritDoc} */
-    protected String getVerbatimBlock(String text) {
+    protected String getVerbatimSourceBlock(String text) {
         return "<source>" + text + "</source>";
     }
 
@@ -328,7 +328,7 @@ public class XdocSinkTest extends AbstractSinkTest {
      * Test verbatim.
      */
     @Test
-    public void testBoxedVerbatim() {
+    public void testVerbatimSource() {
         Writer writer = new StringWriter();
         XdocSink sink = null;
 
@@ -337,7 +337,7 @@ public class XdocSinkTest extends AbstractSinkTest {
 
             sink.verbatim(null);
             sink.verbatim_();
-            sink.verbatim(SinkEventAttributeSet.BOXED);
+            sink.verbatim(SinkEventAttributeSet.SOURCE);
             sink.verbatim_();
         } finally {
             sink.close();

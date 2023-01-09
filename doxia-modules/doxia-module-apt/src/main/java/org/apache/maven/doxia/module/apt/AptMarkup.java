@@ -80,8 +80,8 @@ public interface AptMarkup extends TextMarkup {
     /** Syntax for the bold style start: "&lt;&lt;" */
     String BOLD_START_MARKUP = StringUtils.repeat(String.valueOf(LESS_THAN), 2);
 
-    /** Syntax for the boxed verbatim start: "+------+" */
-    String BOXED_VERBATIM_START_MARKUP = PLUS + StringUtils.repeat(String.valueOf(MINUS), 6) + PLUS;
+    /** Syntax for the verbatim source start: "+------+" */
+    String VERBATIM_SOURCE_START_MARKUP = PLUS + StringUtils.repeat(String.valueOf(MINUS), 6) + PLUS;
 
     /** Syntax for the header start: " -----" */
     String HEADER_START_MARKUP = SPACE + StringUtils.repeat(String.valueOf(MINUS), 5);
@@ -116,8 +116,8 @@ public interface AptMarkup extends TextMarkup {
     /** Syntax for the mono-spaced style start: "&lt;&lt;&lt;" */
     String MONOSPACED_START_MARKUP = StringUtils.repeat(String.valueOf(LESS_THAN), 3);
 
-    /** Syntax for the non boxed verbatim start: "------" */
-    String NON_BOXED_VERBATIM_START_MARKUP = StringUtils.repeat(String.valueOf(MINUS), 6);
+    /** Syntax for the verbatim start: "------" */
+    String VERBATIM_START_MARKUP = StringUtils.repeat(String.valueOf(MINUS), 6);
 
     /** Syntax for the non breaking space: "\ " */
     String NON_BREAKING_SPACE_MARKUP = String.valueOf(BACKSLASH) + SPACE;
@@ -146,9 +146,9 @@ public interface AptMarkup extends TextMarkup {
     /** Syntax for the table row start: "*--" */
     String TABLE_ROW_START_MARKUP = STAR + StringUtils.repeat(String.valueOf(MINUS), 2);
 
-    /** Syntax for the boxed verbatim end: "+------+" */
-    String BOXED_VERBATIM_END_MARKUP = BOXED_VERBATIM_START_MARKUP;
+    /** Syntax for the verbatim source end: "+------+" */
+    String VERBATIM_SOURCE_END_MARKUP = VERBATIM_SOURCE_START_MARKUP;
 
-    /** Syntax for the non boxed verbatim end: "------" */
-    String NON_BOXED_VERBATIM_END_MARKUP = NON_BOXED_VERBATIM_START_MARKUP;
+    /** Syntax for the verbatim end: "------" */
+    String VERBATIM_END_MARKUP = VERBATIM_START_MARKUP;
 }

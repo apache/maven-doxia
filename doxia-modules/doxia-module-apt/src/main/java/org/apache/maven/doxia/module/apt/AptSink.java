@@ -85,8 +85,8 @@ public class AptSink extends AbstractTextSink implements AptMarkup {
     /**  verbatimFlag. */
     private boolean verbatimFlag;
 
-    /**  boxed verbatim. */
-    private boolean isBoxed;
+    /**  verbatim source. */
+    private boolean isSource;
 
     /**  gridFlag for tables. */
     private boolean gridFlag;
@@ -168,7 +168,7 @@ public class AptSink extends AbstractTextSink implements AptMarkup {
         this.bufferFlag = false;
         this.itemFlag = false;
         this.verbatimFlag = false;
-        this.isBoxed = false;
+        this.isSource = false;
         this.gridFlag = false;
         this.cellCount = 0;
         this.cellJustif = null;
@@ -566,20 +566,20 @@ public class AptSink extends AbstractTextSink implements AptMarkup {
     public void verbatim(SinkEventAttributes attributes) {
         MutableAttributeSet atts = SinkUtils.filterAttributes(attributes, SinkUtils.SINK_VERBATIM_ATTRIBUTES);
 
-        boolean boxed = false;
+        boolean source = false;
 
         if (atts != null && atts.isDefined(SinkEventAttributes.DECORATION)) {
-            boxed = "boxed"
+            source = "source"
                     .equals(atts.getAttribute(SinkEventAttributes.DECORATION).toString());
         }
 
         verbatimFlag = true;
-        this.isBoxed = boxed;
+        this.isSource = source;
         write(EOL);
-        if (boxed) {
-            write(EOL + BOXED_VERBATIM_START_MARKUP + EOL);
+        if (source) {
+            write(EOL + VERBATIM_SOURCE_START_MARKUP + EOL);
         } else {
-            write(EOL + NON_BOXED_VERBATIM_START_MARKUP + EOL);
+            write(EOL + VERBATIM_START_MARKUP + EOL);
         }
     }
 
@@ -587,12 +587,12 @@ public class AptSink extends AbstractTextSink implements AptMarkup {
      * {@inheritDoc}
      */
     public void verbatim_() {
-        if (isBoxed) {
-            write(EOL + BOXED_VERBATIM_END_MARKUP + EOL);
+        if (isSource) {
+            write(EOL + VERBATIM_SOURCE_END_MARKUP + EOL);
         } else {
-            write(EOL + NON_BOXED_VERBATIM_END_MARKUP + EOL);
+            write(EOL + VERBATIM_END_MARKUP + EOL);
         }
-        isBoxed = false;
+        isSource = false;
         verbatimFlag = false;
     }
 

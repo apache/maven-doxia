@@ -807,16 +807,16 @@ public class TextSink extends AbstractSink {
 
     @Override
     public void verbatim(SinkEventAttributes attributes) {
-        boolean boxed = false;
+        boolean source = false;
 
         if (attributes != null && attributes.isDefined(SinkEventAttributes.DECORATION)) {
-            boxed = "boxed"
+            source = "source"
                     .equals(attributes
                             .getAttribute(SinkEventAttributes.DECORATION)
                             .toString());
         }
 
-        write("begin:verbatim, boxed: " + boxed);
+        write("begin:verbatim, source: " + source);
     }
 
     @Override

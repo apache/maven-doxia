@@ -100,8 +100,8 @@ public interface MarkdownMarkup extends TextMarkup {
     /** Syntax for the mono-spaced style start: "`" */
     String MONOSPACED_START_MARKUP = "`";
 
-    /** Syntax for the non boxed verbatim start: "```" */
-    String NON_BOXED_VERBATIM_START_MARKUP = "```";
+    /** Syntax for the verbatim start: "```" */
+    String VERBATIM_START_MARKUP = "```";
 
     /** Syntax for the non breaking space: "\ " */
     String NON_BREAKING_SPACE_MARKUP = String.valueOf(BACKSLASH) + SPACE;
@@ -127,6 +127,6 @@ public interface MarkdownMarkup extends TextMarkup {
     /** Syntax for the table row end: "|" */
     String TABLE_ROW_SEPARATOR_MARKUP = String.valueOf(PIPE);
 
-    /** Syntax for the non boxed verbatim end: "```" */
-    String NON_BOXED_VERBATIM_END_MARKUP = "```";
+    /** Syntax for the verbatim end: "```" */
+    String VERBATIM_END_MARKUP = "```";
 }

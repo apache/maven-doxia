@@ -158,7 +158,7 @@ public class XdocParser extends Xhtml5BaseParser implements XdocMarkup {
         } else if (parser.getName().equals(SOURCE_TAG.toString())) {
             verbatim();
 
-            attribs.addAttributes(SinkEventAttributeSet.BOXED);
+            attribs.addAttributes(SinkEventAttributeSet.SOURCE);
 
             sink.verbatim(attribs);
         } else if (parser.getName().equals(PROPERTIES_TAG.toString())) {

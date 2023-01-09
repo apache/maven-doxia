@@ -1341,7 +1341,7 @@ public interface Sink {
      *   Supported attributes are the {@link SinkEventAttributes base attributes} plus:
      * </p>
      * <blockquote>
-     *   {@link SinkEventAttributes#DECORATION DECORATION} (value: "boxed"),
+     *   {@link SinkEventAttributes#DECORATION DECORATION} (values: "source"),
      *   {@link SinkEventAttributes#ALIGN ALIGN}, {@link SinkEventAttributes#WIDTH WIDTH}.
      * </blockquote>
      *

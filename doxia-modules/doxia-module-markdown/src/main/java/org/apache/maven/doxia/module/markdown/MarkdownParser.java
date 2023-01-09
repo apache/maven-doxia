@@ -244,9 +244,8 @@ public class MarkdownParser extends AbstractTextParser implements TextMarkup {
      * 2 special things:
      * <ul>
      * <li> DIV elements are translated as Unknown Sink events
-     * <li> PRE elements are all considered as boxed
      * </ul>
-     * PRE elements need to be "boxed" because the Xhtml5Sink will surround the
+     * PRE elements need to be "source" because the Xhtml5Sink will surround the
      * corresponding verbatim() Sink event with a DIV element with class="source",
      * which is how most Maven Skin (incl. Fluido) recognize a block of code, which
      * needs to be highlighted accordingly.
@@ -260,7 +259,6 @@ public class MarkdownParser extends AbstractTextParser implements TextMarkup {
         @Override
         protected void init() {
             super.init();
-            super.boxed = true;
         }
 
         @Override
@@ -281,7 +279,6 @@ public class MarkdownParser extends AbstractTextParser implements TextMarkup {
             if (!visited) {
                 if (parser.getName().equals(HtmlMarkup.DIV.toString())) {
                     handleUnknown(parser, sink, TAG_TYPE_START);
-                    super.boxed = true;
                     visited = true;
                 }
             }

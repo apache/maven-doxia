@@ -802,16 +802,16 @@ public class Xhtml5BaseParser extends AbstractXmlParser implements HtmlMarkup {
     }
 
     private boolean handleDivStart(XmlPullParser parser, SinkEventAttributeSet attribs, Sink sink) {
-        String divclass = parser.getAttributeValue(null, Attribute.CLASS.toString());
+        String divClass = parser.getAttributeValue(null, Attribute.CLASS.toString());
 
-        this.divStack.push(divclass);
+        this.divStack.push(divClass);
 
-        if ("content".equals(divclass)) {
+        if ("content".equals(divClass)) {
             SinkEventAttributeSet atts = new SinkEventAttributeSet(attribs);
             atts.removeAttribute(SinkEventAttributes.CLASS);
             sink.content(atts);
         }
-        if ("source".equals(divclass)) {
+        if ("verbatim".equals(divClass) || "verbatim source".equals(divClass)) {
             return false;
         } else {
             sink.division(attribs);
@@ -821,12 +821,12 @@ public class Xhtml5BaseParser extends AbstractXmlParser implements HtmlMarkup {
     }
 
     private boolean handleDivEnd(Sink sink) {
-        String divclass = divStack.pop();
+        String divClass = divStack.pop();
 
-        if ("content".equals(divclass)) {
+        if ("content".equals(divClass)) {
             sink.content_();
         }
-        if ("source".equals(divclass)) {
+        if ("verbatim".equals(divClass) || "verbatim source".equals(divClass)) {
             return false;
         } else {
             sink.division_();

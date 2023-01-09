@@ -81,8 +81,8 @@ public class SinkTestDocument {
 
         generateList(sink);
 
-        sink.verbatim(SinkEventAttributeSet.BOXED);
-        sink.text("Verbatim text not contained in list item 3");
+        sink.verbatim(SinkEventAttributeSet.SOURCE);
+        sink.text("Verbatim source text not contained in list item 3");
         sink.verbatim_();
 
         generateNumberedList(sink);
@@ -258,8 +258,8 @@ public class SinkTestDocument {
         sink.definedTerm_();
         sink.definition();
         sink.text("of definition list.");
-        sink.verbatim(SinkEventAttributeSet.BOXED);
-        sink.text("Verbatim text" + eol + "                        in a box        ");
+        sink.verbatim(SinkEventAttributeSet.SOURCE);
+        sink.text("Verbatim source text" + eol + "                        in a box        ");
         sink.verbatim_();
         sink.definition_();
         sink.definitionListItem_();

@@ -52,7 +52,7 @@ public class FmlContentParser extends Xhtml5BaseParser implements FmlMarkup {
         } else if (parser.getName().equals(SOURCE_TAG.toString())) {
             verbatim();
 
-            sink.verbatim(SinkEventAttributeSet.BOXED);
+            sink.verbatim(SinkEventAttributeSet.SOURCE);
         } else if (!baseStartTag(parser, sink)) {
             if (isEmptyElement) {
                 handleUnknown(parser, sink, TAG_TYPE_SIMPLE);

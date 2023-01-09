@@ -542,14 +542,14 @@ public class MarkdownSink extends AbstractTextSink implements MarkdownMarkup {
     public void verbatim(SinkEventAttributes attributes) {
         write(EOL);
         verbatimFlag = true;
-        write(EOL + NON_BOXED_VERBATIM_START_MARKUP + EOL);
+        write(EOL + VERBATIM_START_MARKUP + EOL);
     }
 
     /**
      * {@inheritDoc}
      */
     public void verbatim_() {
-        write(EOL + NON_BOXED_VERBATIM_END_MARKUP + EOL);
+        write(EOL + VERBATIM_END_MARKUP + EOL);
         verbatimFlag = false;
     }
 

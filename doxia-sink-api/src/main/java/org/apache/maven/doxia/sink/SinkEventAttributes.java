@@ -350,7 +350,7 @@ public interface SinkEventAttributes extends MutableAttributeSet {
      * Specifies a decoration for an element.
      *
      * <p>
-     *   Generally accepted values are "underline", "overline", "line-through", "boxed".
+     *   Generally accepted values are "underline", "overline", "line-through", "source".
      * </p>
      */
     String DECORATION = "decoration";
