@@ -61,10 +61,10 @@ public interface MarkdownMarkup
     // Markup syntax
     // ----------------------------------------------------------------------
 
-    /** Syntax for the anchor end: "\"></a>" */
+    /** Syntax for the anchor end: "\"&gt;&lt;/a&gt;" */
     String ANCHOR_END_MARKUP = "\"></a>";
 
-    /** Syntax for the anchor start: "<a name=\"" */
+    /** Syntax for the anchor start: "&lt;a name=\"" */
     String ANCHOR_START_MARKUP = "<a name=\"";
 
     /** Syntax for the bold style end: "**" */
