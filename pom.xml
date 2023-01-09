@@ -31,7 +31,7 @@ under the License.
 
   <groupId>org.apache.maven.doxia</groupId>
   <artifactId>doxia</artifactId>
-  <version>1.12.0</version>
+  <version>1.12.1-SNAPSHOT</version>
   <packaging>pom</packaging>
 
   <name>Doxia</name>
@@ -66,7 +66,7 @@ under the License.
     <connection>scm:git:https://gitbox.apache.org/repos/asf/maven-doxia.git</connection>
     <developerConnection>scm:git:https://gitbox.apache.org/repos/asf/maven-doxia.git</developerConnection>
     <url>https://github.com/apache/maven-doxia/tree/${project.scm.tag}</url>
-    <tag>doxia-1.12.0</tag>
+    <tag>doxia-1.11</tag>
   </scm>
   <issueManagement>
     <system>jira</system>
@@ -87,7 +87,7 @@ under the License.
     <javaVersion>7</javaVersion><!-- remove when upgrade to maven-parent 34 -->
     <maven.site.path>doxia-archives/doxia-LATEST</maven.site.path>
     <checkstyle.violation.ignore>RedundantThrows,NewlineAtEndOfFile,ParameterNumber,MethodLength,FileLength,MethodName,InnerAssignment,MagicNumber</checkstyle.violation.ignore>
-    <project.build.outputTimestamp>2023-01-09T21:09:18Z</project.build.outputTimestamp>
+    <project.build.outputTimestamp>2023-01-09T21:09:49Z</project.build.outputTimestamp>
   </properties>
 
   <dependencyManagement>
