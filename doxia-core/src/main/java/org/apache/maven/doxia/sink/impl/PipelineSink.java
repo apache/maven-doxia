@@ -1,3 +1,21 @@
+/*
+ * Licensed to the Apache Software Foundation (ASF) under one
+ * or more contributor license agreements.  See the NOTICE file
+ * distributed with this work for additional information
+ * regarding copyright ownership.  The ASF licenses this file
+ * to you under the Apache License, Version 2.0 (the
+ * "License"); you may not use this file except in compliance
+ * with the License.  You may obtain a copy of the License at
+ *
+ *   http://www.apache.org/licenses/LICENSE-2.0
+ *
+ * Unless required by applicable law or agreed to in writing,
+ * software distributed under the License is distributed on an
+ * "AS IS" BASIS, WITHOUT WARRANTIES OR CONDITIONS OF ANY
+ * KIND, either express or implied.  See the License for the
+ * specific language governing permissions and limitations
+ * under the License.
+ */
 package org.apache.maven.doxia.sink.impl;
 
 /*
@@ -23,7 +41,6 @@ import java.lang.reflect.InvocationHandler;
 import java.lang.reflect.InvocationTargetException;
 import java.lang.reflect.Method;
 import java.lang.reflect.Proxy;
-
 import java.util.List;
 
 import org.apache.maven.doxia.sink.Sink;
@@ -33,9 +50,7 @@ import org.apache.maven.doxia.sink.Sink;
  *
  * @author <a href="mailto:trygvis@inamo.no">Trygve Laugst&oslash;l</a>
  */
-public class PipelineSink
-    implements InvocationHandler
-{
+public class PipelineSink implements InvocationHandler {
     private List<Sink> pipeline;
 
     /**
@@ -43,8 +58,7 @@ public class PipelineSink
      *
      * @param pipeline A List of Sinks.
      */
-    public PipelineSink( List<Sink> pipeline )
-    {
+    public PipelineSink(List<Sink> pipeline) {
         this.pipeline = pipeline;
     }
 
@@ -53,9 +67,8 @@ public class PipelineSink
      *
      * @param sink the Sink to add.
      */
-    public void addSink( Sink sink )
-    {
-        pipeline.add( sink );
+    public void addSink(Sink sink) {
+        pipeline.add(sink);
     }
 
     /**
@@ -70,12 +83,10 @@ public class PipelineSink
      * @param args an array of {@link java.lang.Object} objects.
      * @return a {@link java.lang.Object} object.
      */
-    public Object invoke( Object proxy, Method method, Object[] args )
-            throws IllegalAccessException, InvocationTargetException
-    {
-        for ( Sink sink : pipeline )
-        {
-            method.invoke( sink, args );
+    public Object invoke(Object proxy, Method method, Object[] args)
+            throws IllegalAccessException, InvocationTargetException {
+        for (Sink sink : pipeline) {
+            method.invoke(sink, args);
         }
 
         return null;
@@ -87,10 +98,8 @@ public class PipelineSink
      * @param pipeline A List of Sinks.
      * @return a {@link org.apache.maven.doxia.sink.Sink} object.
      */
-    public static Sink newInstance( List<Sink> pipeline )
-    {
-        return (Sink) Proxy.newProxyInstance( PipelineSink.class.getClassLoader(),
-                                              new Class<?>[]{Sink.class},
-                                              new PipelineSink( pipeline ) );
+    public static Sink newInstance(List<Sink> pipeline) {
+        return (Sink) Proxy.newProxyInstance(
+                PipelineSink.class.getClassLoader(), new Class<?>[] {Sink.class}, new PipelineSink(pipeline));
     }
 }

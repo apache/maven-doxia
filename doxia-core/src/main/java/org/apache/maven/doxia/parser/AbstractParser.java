@@ -1,3 +1,21 @@
+/*
+ * Licensed to the Apache Software Foundation (ASF) under one
+ * or more contributor license agreements.  See the NOTICE file
+ * distributed with this work for additional information
+ * regarding copyright ownership.  The ASF licenses this file
+ * to you under the Apache License, Version 2.0 (the
+ * "License"); you may not use this file except in compliance
+ * with the License.  You may obtain a copy of the License at
+ *
+ *   http://www.apache.org/licenses/LICENSE-2.0
+ *
+ * Unless required by applicable law or agreed to in writing,
+ * software distributed under the License is distributed on an
+ * "AS IS" BASIS, WITHOUT WARRANTIES OR CONDITIONS OF ANY
+ * KIND, either express or implied.  See the License for the
+ * specific language governing permissions and limitations
+ * under the License.
+ */
 package org.apache.maven.doxia.parser;
 
 /*
@@ -26,7 +44,6 @@ import java.io.IOException;
 import java.io.InputStream;
 import java.io.Reader;
 import java.io.StringReader;
-
 import java.util.Properties;
 
 import org.apache.maven.doxia.macro.Macro;
@@ -43,9 +60,7 @@ import org.apache.maven.doxia.sink.Sink;
  * @author Jason van Zyl
  * @since 1.0
  */
-public abstract class AbstractParser
-    implements Parser
-{
+public abstract class AbstractParser implements Parser {
     /** Indicates that a second parsing is required. */
     private boolean secondParsing = false;
 
@@ -59,40 +74,28 @@ public abstract class AbstractParser
 
     private static final String DOXIA_VERSION;
 
-    static
-    {
+    static {
         final Properties props = new Properties();
-        final InputStream is = AbstractParser.class
-               .getResourceAsStream( "/META-INF/maven/org.apache.maven.doxia/doxia-core/pom.properties" );
+        final InputStream is = AbstractParser.class.getResourceAsStream(
+                "/META-INF/maven/org.apache.maven.doxia/doxia-core/pom.properties");
 
-        if ( is == null )
-        {
-            props.setProperty( "version", "unknown" ); // should not happen
-        }
-        else
-        {
-            try
-            {
-                props.load( is );
-            }
-            catch ( IOException ex )
-            {
-                props.setProperty( "version", "unknown" ); // should not happen
-            }
-            finally
-            {
-                try
-                {
+        if (is == null) {
+            props.setProperty("version", "unknown"); // should not happen
+        } else {
+            try {
+                props.load(is);
+            } catch (IOException ex) {
+                props.setProperty("version", "unknown"); // should not happen
+            } finally {
+                try {
                     is.close();
-                }
-                catch ( IOException ex )
-                {
+                } catch (IOException ex) {
                     // oh well...
                 }
             }
         }
 
-        DOXIA_VERSION = props.getProperty( "version" );
+        DOXIA_VERSION = props.getProperty("version");
     }
 
     /**
@@ -100,14 +103,12 @@ public abstract class AbstractParser
      *
      * @return a int
      */
-    public int getType()
-    {
+    public int getType() {
         return UNKNOWN_TYPE;
     }
 
     /** {@inheritDoc} */
-    public void setEmitComments( boolean emitComments )
-    {
+    public void setEmitComments(boolean emitComments) {
         this.emitComments = emitComments;
     }
 
@@ -116,8 +117,7 @@ public abstract class AbstractParser
      *
      * @return a boolean
      */
-    public boolean isEmitComments()
-    {
+    public boolean isEmitComments() {
         return emitComments;
     }
 
@@ -132,12 +132,11 @@ public abstract class AbstractParser
      */
     // Made public right now because of the structure of the APT parser and
     // all its inner classes.
-    public void executeMacro( String macroId, MacroRequest request, Sink sink )
-        throws MacroExecutionException, MacroNotFoundException
-    {
-        Macro macro = getMacroManager().getMacro( macroId );
+    public void executeMacro(String macroId, MacroRequest request, Sink sink)
+            throws MacroExecutionException, MacroNotFoundException {
+        Macro macro = getMacroManager().getMacro(macroId);
 
-        macro.execute( sink, request );
+        macro.execute(sink, request);
     }
 
     /**
@@ -146,19 +145,17 @@ public abstract class AbstractParser
      * @return the base directory
      * @deprecated this does not work in multi-module builds, see DOXIA-373
      */
-    protected File getBasedir()
-    {
+    protected File getBasedir() {
         // TODO: This is baaad, it should come in with the request.
         // (this is only used for macro requests, see AptParser)
 
-        String basedir = System.getProperty( "basedir" );
+        String basedir = System.getProperty("basedir");
 
-        if ( basedir != null )
-        {
-            return new File( basedir );
+        if (basedir != null) {
+            return new File(basedir);
         }
 
-        return new File( new File( "" ).getAbsolutePath() );
+        return new File(new File("").getAbsolutePath());
     }
 
     /**
@@ -169,10 +166,8 @@ public abstract class AbstractParser
      * @throws org.apache.maven.doxia.parser.ParseException if the string could not be parsed
      * @since 1.1
      */
-    public void parse( String string, Sink sink )
-        throws ParseException
-    {
-        this.parse( string, sink, null );
+    public void parse(String string, Sink sink) throws ParseException {
+        this.parse(string, sink, null);
     }
 
     /**
@@ -184,18 +179,14 @@ public abstract class AbstractParser
      * @throws org.apache.maven.doxia.parser.ParseException if the string could not be parsed
      * @since 1.10
      */
-    public void parse( String string, Sink sink, String reference )
-        throws ParseException
-    {
-        parse( new StringReader( string ), sink, reference );
+    public void parse(String string, Sink sink, String reference) throws ParseException {
+        parse(new StringReader(string), sink, reference);
     }
 
     /** {@inheritDoc} */
     @Override
-    public void parse( Reader source, Sink sink )
-        throws ParseException
-    {
-        parse( source, sink, null );
+    public void parse(Reader source, Sink sink) throws ParseException {
+        parse(source, sink, null);
     }
 
     /**
@@ -203,8 +194,7 @@ public abstract class AbstractParser
      *
      * @param second true for second parsing
      */
-    public void setSecondParsing( boolean second )
-    {
+    public void setSecondParsing(boolean second) {
         this.secondParsing = second;
     }
 
@@ -214,8 +204,7 @@ public abstract class AbstractParser
      * @return true if we are currently parsing a second time
      * @since 1.1
      */
-    protected boolean isSecondParsing()
-    {
+    protected boolean isSecondParsing() {
         return secondParsing;
     }
 
@@ -225,8 +214,7 @@ public abstract class AbstractParser
      * @return the current {@link MacroManager}
      * @since 1.1
      */
-    protected MacroManager getMacroManager()
-    {
+    protected MacroManager getMacroManager() {
         return macroManager;
     }
 
@@ -237,8 +225,7 @@ public abstract class AbstractParser
      *
      * @since 1.1.2
      */
-    protected void init()
-    {
+    protected void init() {
         // nop
     }
 
@@ -248,8 +235,7 @@ public abstract class AbstractParser
      * @return the current Doxia version as a String
      * @since 1.2
      */
-    protected static String doxiaVersion()
-    {
+    protected static String doxiaVersion() {
         return DOXIA_VERSION;
     }
 }

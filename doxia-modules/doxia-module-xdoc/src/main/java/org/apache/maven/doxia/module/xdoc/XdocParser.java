@@ -1,3 +1,21 @@
+/*
+ * Licensed to the Apache Software Foundation (ASF) under one
+ * or more contributor license agreements.  See the NOTICE file
+ * distributed with this work for additional information
+ * regarding copyright ownership.  The ASF licenses this file
+ * to you under the Apache License, Version 2.0 (the
+ * "License"); you may not use this file except in compliance
+ * with the License.  You may obtain a copy of the License at
+ *
+ *   http://www.apache.org/licenses/LICENSE-2.0
+ *
+ * Unless required by applicable law or agreed to in writing,
+ * software distributed under the License is distributed on an
+ * "AS IS" BASIS, WITHOUT WARRANTIES OR CONDITIONS OF ANY
+ * KIND, either express or implied.  See the License for the
+ * specific language governing permissions and limitations
+ * under the License.
+ */
 package org.apache.maven.doxia.module.xdoc;
 
 /*
@@ -19,16 +37,16 @@ package org.apache.maven.doxia.module.xdoc;
  * under the License.
  */
 
+import javax.inject.Named;
+import javax.inject.Singleton;
+import javax.swing.text.html.HTML.Attribute;
+
 import java.io.IOException;
 import java.io.Reader;
 import java.io.StringReader;
 import java.io.StringWriter;
 import java.util.HashMap;
 import java.util.Map;
-
-import javax.inject.Named;
-import javax.inject.Singleton;
-import javax.swing.text.html.HTML.Attribute;
 
 import org.apache.maven.doxia.macro.MacroExecutionException;
 import org.apache.maven.doxia.macro.MacroRequest;
@@ -52,12 +70,9 @@ import org.slf4j.LoggerFactory;
  * @since 1.0
  */
 @Singleton
-@Named( "xdoc" )
-public class XdocParser
-    extends Xhtml5BaseParser
-    implements XdocMarkup
-{
-    private static final Logger LOGGER = LoggerFactory.getLogger( XdocParser.class );
+@Named("xdoc")
+public class XdocParser extends Xhtml5BaseParser implements XdocMarkup {
+    private static final Logger LOGGER = LoggerFactory.getLogger(XdocParser.class);
 
     /**
      * The source content of the input reader. Used to pass into macros.
@@ -90,126 +105,87 @@ public class XdocParser
     private boolean hasTitle;
 
     /** {@inheritDoc} */
-    public void parse( Reader source, Sink sink, String reference )
-        throws ParseException
-    {
+    public void parse(Reader source, Sink sink, String reference) throws ParseException {
         this.sourceContent = null;
 
-        try
-        {
+        try {
             StringWriter contentWriter = new StringWriter();
-            IOUtil.copy( source, contentWriter );
+            IOUtil.copy(source, contentWriter);
             sourceContent = contentWriter.toString();
-        }
-        catch ( IOException ex )
-        {
-            throw new ParseException( "Error reading the input source", ex );
-        }
-        finally
-        {
-            IOUtil.close( source );
+        } catch (IOException ex) {
+            throw new ParseException("Error reading the input source", ex);
+        } finally {
+            IOUtil.close(source);
         }
 
         // leave this at default (false) until everything is properly implemented, see DOXIA-226
-        //setIgnorableWhitespace( true );
+        // setIgnorableWhitespace( true );
 
-        try
-        {
-            super.parse( new StringReader( sourceContent ), sink, reference );
-        }
-        finally
-        {
+        try {
+            super.parse(new StringReader(sourceContent), sink, reference);
+        } finally {
             this.sourceContent = null;
         }
     }
 
     /** {@inheritDoc} */
-    protected void handleStartTag( XmlPullParser parser, Sink sink )
-        throws XmlPullParserException, MacroExecutionException
-    {
+    protected void handleStartTag(XmlPullParser parser, Sink sink)
+            throws XmlPullParserException, MacroExecutionException {
         isEmptyElement = parser.isEmptyElementTag();
 
-        SinkEventAttributeSet attribs = getAttributesFromParser( parser );
+        SinkEventAttributeSet attribs = getAttributesFromParser(parser);
 
-        if ( parser.getName().equals( DOCUMENT_TAG.toString() ) )
-        {
-            //Do nothing
+        if (parser.getName().equals(DOCUMENT_TAG.toString())) {
+            // Do nothing
             return;
-        }
-        else if ( parser.getName().equals( HEAD.toString() ) )
-        {
-            if ( !inHead ) // we might be in head from a <properties> already
+        } else if (parser.getName().equals(HEAD.toString())) {
+            if (!inHead) // we might be in head from a <properties> already
             {
                 this.inHead = true;
 
-                sink.head( attribs );
+                sink.head(attribs);
             }
-        }
-        else if ( parser.getName().equals( TITLE.toString() ) )
-        {
-            if ( hasTitle )
-            {
-                LOGGER.warn( "<title> was already defined in <properties>, ignored <title> in <head>." );
+        } else if (parser.getName().equals(TITLE.toString())) {
+            if (hasTitle) {
+                LOGGER.warn("<title> was already defined in <properties>, ignored <title> in <head>.");
 
-                try
-                {
+                try {
                     parser.nextText(); // ignore next text event
+                } catch (IOException ex) {
+                    throw new XmlPullParserException("Failed to parse text", parser, ex);
                 }
-                catch ( IOException ex )
-                {
-                    throw new XmlPullParserException( "Failed to parse text", parser, ex );
-                }
+            } else {
+                sink.title(attribs);
             }
-            else
-            {
-                sink.title( attribs );
-            }
-        }
-        else if ( parser.getName().equals( AUTHOR_TAG.toString() ) )
-        {
-            sink.author( attribs );
-        }
-        else if ( parser.getName().equals( DATE_TAG.toString() ) )
-        {
-            sink.date( attribs );
-        }
-        else if ( parser.getName().equals( META.toString() ) )
-        {
-            handleMetaStart( parser, sink, attribs );
-        }
-        else if ( parser.getName().equals( BODY.toString() ) )
-        {
-            if ( inHead )
-            {
+        } else if (parser.getName().equals(AUTHOR_TAG.toString())) {
+            sink.author(attribs);
+        } else if (parser.getName().equals(DATE_TAG.toString())) {
+            sink.date(attribs);
+        } else if (parser.getName().equals(META.toString())) {
+            handleMetaStart(parser, sink, attribs);
+        } else if (parser.getName().equals(BODY.toString())) {
+            if (inHead) {
                 sink.head_();
                 this.inHead = false;
             }
 
-            sink.body( attribs );
-        }
-        else if ( parser.getName().equals( SECTION_TAG.toString() ) )
-        {
-            handleSectionStart( Sink.SECTION_LEVEL_1, sink, attribs, parser );
-        }
-        else if ( parser.getName().equals( SUBSECTION_TAG.toString() ) )
-        {
-            handleSectionStart( Sink.SECTION_LEVEL_2, sink, attribs, parser );
-        }
-        else if ( parser.getName().equals( SOURCE_TAG.toString() ) )
-        {
+            sink.body(attribs);
+        } else if (parser.getName().equals(SECTION_TAG.toString())) {
+            handleSectionStart(Sink.SECTION_LEVEL_1, sink, attribs, parser);
+        } else if (parser.getName().equals(SUBSECTION_TAG.toString())) {
+            handleSectionStart(Sink.SECTION_LEVEL_2, sink, attribs, parser);
+        } else if (parser.getName().equals(SOURCE_TAG.toString())) {
             verbatim();
 
-            attribs.addAttributes( SinkEventAttributeSet.BOXED );
+            attribs.addAttributes(SinkEventAttributeSet.BOXED);
 
-            sink.verbatim( attribs );
-        }
-        else if ( parser.getName().equals( PROPERTIES_TAG.toString() ) )
-        {
-            if ( !inHead ) // we might be in head from a <head> already
+            sink.verbatim(attribs);
+        } else if (parser.getName().equals(PROPERTIES_TAG.toString())) {
+            if (!inHead) // we might be in head from a <head> already
             {
                 this.inHead = true;
 
-                sink.head( attribs );
+                sink.head(attribs);
             }
         }
 
@@ -217,103 +193,69 @@ public class XdocParser
         // Macro
         // ----------------------------------------------------------------------
 
-        else if ( parser.getName().equals( MACRO_TAG.toString() ) )
-        {
-            handleMacroStart( parser );
-        }
-        else if ( parser.getName().equals( PARAM.toString() ) )
-        {
-            handleParamStart( parser, sink );
-        }
-        else if ( !baseStartTag( parser, sink ) )
-        {
-            if ( isEmptyElement )
-            {
-                handleUnknown( parser, sink, TAG_TYPE_SIMPLE );
-            }
-            else
-            {
-                handleUnknown( parser, sink, TAG_TYPE_START );
+        else if (parser.getName().equals(MACRO_TAG.toString())) {
+            handleMacroStart(parser);
+        } else if (parser.getName().equals(PARAM.toString())) {
+            handleParamStart(parser, sink);
+        } else if (!baseStartTag(parser, sink)) {
+            if (isEmptyElement) {
+                handleUnknown(parser, sink, TAG_TYPE_SIMPLE);
+            } else {
+                handleUnknown(parser, sink, TAG_TYPE_START);
             }
 
-            LOGGER.warn( "Unrecognized xdoc tag <{}> at [{}:{}]", parser.getName(),
-                    parser.getLineNumber(), parser.getColumnNumber() );
+            LOGGER.warn(
+                    "Unrecognized xdoc tag <{}> at [{}:{}]",
+                    parser.getName(),
+                    parser.getLineNumber(),
+                    parser.getColumnNumber());
         }
     }
 
     /** {@inheritDoc} */
-    protected void handleEndTag( XmlPullParser parser, Sink sink )
-        throws XmlPullParserException, MacroExecutionException
-    {
-        if ( parser.getName().equals( DOCUMENT_TAG.toString() ) )
-        {
-            //Do nothing
+    protected void handleEndTag(XmlPullParser parser, Sink sink)
+            throws XmlPullParserException, MacroExecutionException {
+        if (parser.getName().equals(DOCUMENT_TAG.toString())) {
+            // Do nothing
             return;
-        }
-        else if ( parser.getName().equals( HEAD.toString() ) )
-        {
-            //Do nothing, head is closed with BODY start.
-        }
-        else if ( parser.getName().equals( BODY.toString() ) )
-        {
-            consecutiveSections( 0, sink );
+        } else if (parser.getName().equals(HEAD.toString())) {
+            // Do nothing, head is closed with BODY start.
+        } else if (parser.getName().equals(BODY.toString())) {
+            consecutiveSections(0, sink);
 
             sink.body_();
-        }
-        else if ( parser.getName().equals( TITLE.toString() ) )
-        {
-            if ( !hasTitle )
-            {
+        } else if (parser.getName().equals(TITLE.toString())) {
+            if (!hasTitle) {
                 sink.title_();
                 this.hasTitle = true;
             }
-        }
-        else if ( parser.getName().equals( AUTHOR_TAG.toString() ) )
-        {
+        } else if (parser.getName().equals(AUTHOR_TAG.toString())) {
             sink.author_();
-        }
-        else if ( parser.getName().equals( DATE_TAG.toString() ) )
-        {
+        } else if (parser.getName().equals(DATE_TAG.toString())) {
             sink.date_();
-        }
-        else if ( parser.getName().equals( SOURCE_TAG.toString() ) )
-        {
+        } else if (parser.getName().equals(SOURCE_TAG.toString())) {
             verbatim_();
 
             sink.verbatim_();
-        }
-        else if ( parser.getName().equals( PROPERTIES_TAG.toString() ) )
-        {
-            //Do nothing, head is closed with BODY start.
-        }
-        else if ( parser.getName().equals( MACRO_TAG.toString() ) )
-        {
-            handleMacroEnd( sink );
-        }
-        else if ( parser.getName().equals( PARAM.toString() ) )
-        {
-            if ( !StringUtils.isNotEmpty( macroName ) )
-            {
-                handleUnknown( parser, sink, TAG_TYPE_END );
+        } else if (parser.getName().equals(PROPERTIES_TAG.toString())) {
+            // Do nothing, head is closed with BODY start.
+        } else if (parser.getName().equals(MACRO_TAG.toString())) {
+            handleMacroEnd(sink);
+        } else if (parser.getName().equals(PARAM.toString())) {
+            if (!StringUtils.isNotEmpty(macroName)) {
+                handleUnknown(parser, sink, TAG_TYPE_END);
             }
-        }
-        else if ( parser.getName().equals( SECTION_TAG.toString() ) )
-        {
-            consecutiveSections( 0, sink );
+        } else if (parser.getName().equals(SECTION_TAG.toString())) {
+            consecutiveSections(0, sink);
 
             sink.section1_();
-        }
-        else if ( parser.getName().equals( SUBSECTION_TAG.toString() ) )
-        {
-            consecutiveSections( Sink.SECTION_LEVEL_1, sink );
+        } else if (parser.getName().equals(SUBSECTION_TAG.toString())) {
+            consecutiveSections(Sink.SECTION_LEVEL_1, sink);
 
             // sink.section2_() not necessary
-        }
-        else if ( !baseEndTag( parser, sink ) )
-        {
-            if ( !isEmptyElement )
-            {
-                handleUnknown( parser, sink, TAG_TYPE_END );
+        } else if (!baseEndTag(parser, sink)) {
+            if (!isEmptyElement) {
+                handleUnknown(parser, sink, TAG_TYPE_END);
             }
         }
 
@@ -321,19 +263,17 @@ public class XdocParser
     }
 
     /** {@inheritDoc} */
-    protected void consecutiveSections( int newLevel, Sink sink )
-    {
-        closeOpenSections( newLevel, sink );
-        openMissingSections( newLevel, sink );
+    protected void consecutiveSections(int newLevel, Sink sink) {
+        closeOpenSections(newLevel, sink);
+        openMissingSections(newLevel, sink);
 
-        setSectionLevel( newLevel );
+        setSectionLevel(newLevel);
     }
 
     /**
      * {@inheritDoc}
      */
-    protected void init()
-    {
+    protected void init() {
         super.init();
 
         this.isEmptyElement = false;
@@ -346,46 +286,30 @@ public class XdocParser
     /**
      * Close open h2, h3, h4, h5 sections.
      */
-    private void closeOpenSections( int newLevel, Sink sink )
-    {
-        while ( getSectionLevel() >= newLevel )
-        {
-            if ( getSectionLevel() == Sink.SECTION_LEVEL_5 )
-            {
+    private void closeOpenSections(int newLevel, Sink sink) {
+        while (getSectionLevel() >= newLevel) {
+            if (getSectionLevel() == Sink.SECTION_LEVEL_5) {
                 sink.section5_();
-            }
-            else if ( getSectionLevel() == Sink.SECTION_LEVEL_4 )
-            {
+            } else if (getSectionLevel() == Sink.SECTION_LEVEL_4) {
                 sink.section4_();
-            }
-            else if ( getSectionLevel() == Sink.SECTION_LEVEL_3 )
-            {
+            } else if (getSectionLevel() == Sink.SECTION_LEVEL_3) {
                 sink.section3_();
-            }
-            else if ( getSectionLevel() == Sink.SECTION_LEVEL_2 )
-            {
+            } else if (getSectionLevel() == Sink.SECTION_LEVEL_2) {
                 sink.section2_();
             }
 
-            setSectionLevel( getSectionLevel() - 1 );
+            setSectionLevel(getSectionLevel() - 1);
         }
     }
 
-    private void handleMacroEnd( Sink sink )
-        throws MacroExecutionException
-    {
-        if ( !isSecondParsing() && StringUtils.isNotEmpty( macroName ) )
-        {
-            MacroRequest request =
-                new MacroRequest( sourceContent, new XdocParser(), macroParameters, getBasedir() );
+    private void handleMacroEnd(Sink sink) throws MacroExecutionException {
+        if (!isSecondParsing() && StringUtils.isNotEmpty(macroName)) {
+            MacroRequest request = new MacroRequest(sourceContent, new XdocParser(), macroParameters, getBasedir());
 
-            try
-            {
-                executeMacro( macroName, request, sink );
-            }
-            catch ( MacroNotFoundException me )
-            {
-                throw new MacroExecutionException( "Macro not found: " + macroName, me );
+            try {
+                executeMacro(macroName, request, sink);
+            } catch (MacroNotFoundException me) {
+                throw new MacroExecutionException("Macro not found: " + macroName, me);
             }
         }
 
@@ -394,119 +318,89 @@ public class XdocParser
         macroParameters = null;
     }
 
-    private void handleMacroStart( XmlPullParser parser )
-        throws MacroExecutionException
-    {
-        if ( !isSecondParsing() )
-        {
-            macroName = parser.getAttributeValue( null, Attribute.NAME.toString() );
+    private void handleMacroStart(XmlPullParser parser) throws MacroExecutionException {
+        if (!isSecondParsing()) {
+            macroName = parser.getAttributeValue(null, Attribute.NAME.toString());
 
-            if ( macroParameters == null )
-            {
+            if (macroParameters == null) {
                 macroParameters = new HashMap<>();
             }
 
-            if ( StringUtils.isEmpty( macroName ) )
-            {
-                throw new MacroExecutionException(
-                    "The '" + Attribute.NAME.toString() + "' attribute for the '" + MACRO_TAG.toString()
-                        + "' tag is required." );
+            if (StringUtils.isEmpty(macroName)) {
+                throw new MacroExecutionException("The '" + Attribute.NAME.toString() + "' attribute for the '"
+                        + MACRO_TAG.toString() + "' tag is required.");
             }
         }
     }
 
-    private void handleMetaStart( XmlPullParser parser, Sink sink, SinkEventAttributeSet attribs )
-    {
-        String name = parser.getAttributeValue( null, Attribute.NAME.toString() );
-        String content = parser.getAttributeValue( null, Attribute.CONTENT.toString() );
+    private void handleMetaStart(XmlPullParser parser, Sink sink, SinkEventAttributeSet attribs) {
+        String name = parser.getAttributeValue(null, Attribute.NAME.toString());
+        String content = parser.getAttributeValue(null, Attribute.CONTENT.toString());
 
-        if ( "author".equals( name ) )
-        {
-            sink.author( null );
-            sink.text( content );
+        if ("author".equals(name)) {
+            sink.author(null);
+            sink.text(content);
             sink.author_();
-        }
-        else if ( "date".equals( name ) )
-        {
-            sink.date( null );
-            sink.text( content );
+        } else if ("date".equals(name)) {
+            sink.date(null);
+            sink.text(content);
             sink.date_();
-        }
-        else
-        {
-            sink.unknown( "meta", new Object[]{ TAG_TYPE_SIMPLE }, attribs );
+        } else {
+            sink.unknown("meta", new Object[] {TAG_TYPE_SIMPLE}, attribs);
         }
     }
 
-    private void handleParamStart( XmlPullParser parser, Sink sink )
-        throws MacroExecutionException
-    {
-        if ( !isSecondParsing() )
-        {
-            if ( StringUtils.isNotEmpty( macroName ) )
-            {
-                String paramName = parser.getAttributeValue( null, Attribute.NAME.toString() );
-                String paramValue = parser.getAttributeValue( null, Attribute.VALUE.toString() );
+    private void handleParamStart(XmlPullParser parser, Sink sink) throws MacroExecutionException {
+        if (!isSecondParsing()) {
+            if (StringUtils.isNotEmpty(macroName)) {
+                String paramName = parser.getAttributeValue(null, Attribute.NAME.toString());
+                String paramValue = parser.getAttributeValue(null, Attribute.VALUE.toString());
 
-                if ( StringUtils.isEmpty( paramName ) || StringUtils.isEmpty( paramValue ) )
-                {
+                if (StringUtils.isEmpty(paramName) || StringUtils.isEmpty(paramValue)) {
                     throw new MacroExecutionException(
-                        "'" + Attribute.NAME.toString() + "' and '" + Attribute.VALUE.toString()
-                            + "' attributes for the '" + PARAM.toString() + "' tag are required inside the '"
-                            + MACRO_TAG.toString() + "' tag." );
+                            "'" + Attribute.NAME.toString() + "' and '" + Attribute.VALUE.toString()
+                                    + "' attributes for the '" + PARAM.toString() + "' tag are required inside the '"
+                                    + MACRO_TAG.toString() + "' tag.");
                 }
 
-                macroParameters.put( paramName, paramValue );
-            }
-            else
-            {
+                macroParameters.put(paramName, paramValue);
+            } else {
                 // param tag from non-macro object, see MSITE-288
-                handleUnknown( parser, sink, TAG_TYPE_START );
+                handleUnknown(parser, sink, TAG_TYPE_START);
             }
         }
     }
 
-    private void handleSectionStart( int level, Sink sink, SinkEventAttributeSet attribs, XmlPullParser parser )
-    {
-        consecutiveSections( level, sink );
+    private void handleSectionStart(int level, Sink sink, SinkEventAttributeSet attribs, XmlPullParser parser) {
+        consecutiveSections(level, sink);
 
-        Object id = attribs.getAttribute( Attribute.ID.toString() );
+        Object id = attribs.getAttribute(Attribute.ID.toString());
 
-        if ( id != null )
-        {
-            sink.anchor( id.toString() );
+        if (id != null) {
+            sink.anchor(id.toString());
             sink.anchor_();
         }
 
-        sink.section( level, attribs );
-        sink.sectionTitle( level, null );
-        sink.text( HtmlTools.unescapeHTML( parser.getAttributeValue( null, Attribute.NAME.toString() ) ) );
-        sink.sectionTitle_( level );
+        sink.section(level, attribs);
+        sink.sectionTitle(level, null);
+        sink.text(HtmlTools.unescapeHTML(parser.getAttributeValue(null, Attribute.NAME.toString())));
+        sink.sectionTitle_(level);
     }
 
     /**
      * Open missing h2, h3, h4, h5 sections.
      */
-    private void openMissingSections( int newLevel, Sink sink )
-    {
-        while ( getSectionLevel() < newLevel - 1 )
-        {
-            setSectionLevel( getSectionLevel() + 1 );
+    private void openMissingSections(int newLevel, Sink sink) {
+        while (getSectionLevel() < newLevel - 1) {
+            setSectionLevel(getSectionLevel() + 1);
 
-            if ( getSectionLevel() == Sink.SECTION_LEVEL_5 )
-            {
+            if (getSectionLevel() == Sink.SECTION_LEVEL_5) {
                 sink.section5();
-            }
-            else if ( getSectionLevel() == Sink.SECTION_LEVEL_4 )
-            {
+            } else if (getSectionLevel() == Sink.SECTION_LEVEL_4) {
                 sink.section4();
-            }
-            else if ( getSectionLevel() == Sink.SECTION_LEVEL_3 )
-            {
+            } else if (getSectionLevel() == Sink.SECTION_LEVEL_3) {
                 sink.section3();
-            }
-            else if ( getSectionLevel() == Sink.SECTION_LEVEL_2 )
-            {
+            } else if (getSectionLevel() == Sink.SECTION_LEVEL_2) {
                 sink.section2();
             }
         }

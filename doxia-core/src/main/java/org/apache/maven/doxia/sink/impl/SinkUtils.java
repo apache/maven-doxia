@@ -1,3 +1,21 @@
+/*
+ * Licensed to the Apache Software Foundation (ASF) under one
+ * or more contributor license agreements.  See the NOTICE file
+ * distributed with this work for additional information
+ * regarding copyright ownership.  The ASF licenses this file
+ * to you under the Apache License, Version 2.0 (the
+ * "License"); you may not use this file except in compliance
+ * with the License.  You may obtain a copy of the License at
+ *
+ *   http://www.apache.org/licenses/LICENSE-2.0
+ *
+ * Unless required by applicable law or agreed to in writing,
+ * software distributed under the License is distributed on an
+ * "AS IS" BASIS, WITHOUT WARRANTIES OR CONDITIONS OF ANY
+ * KIND, either express or implied.  See the License for the
+ * specific language governing permissions and limitations
+ * under the License.
+ */
 package org.apache.maven.doxia.sink.impl;
 
 /*
@@ -19,11 +37,11 @@ package org.apache.maven.doxia.sink.impl;
  * under the License.
  */
 
-import java.util.Enumeration;
-import java.util.Arrays;
-
 import javax.swing.text.AttributeSet;
 import javax.swing.text.MutableAttributeSet;
+
+import java.util.Arrays;
+import java.util.Enumeration;
 
 import org.apache.maven.doxia.markup.Markup;
 import org.apache.maven.doxia.sink.SinkEventAttributes;
@@ -34,29 +52,28 @@ import org.apache.maven.doxia.sink.SinkEventAttributes;
  * @author ltheussl
  * @since 1.1
  */
-public class SinkUtils
-{
+public class SinkUtils {
 
     /** Do not instantiate. */
-    private SinkUtils()
-    {
+    private SinkUtils() {
         // Utility class
     }
 
     /**
      * The set of base attributes.
      */
-    public static final String[] SINK_BASE_ATTRIBUTES =
-    {
-        SinkEventAttributes.CLASS, SinkEventAttributes.ID, SinkEventAttributes.LANG,
-        SinkEventAttributes.STYLE, SinkEventAttributes.TITLE
+    public static final String[] SINK_BASE_ATTRIBUTES = {
+        SinkEventAttributes.CLASS,
+        SinkEventAttributes.ID,
+        SinkEventAttributes.LANG,
+        SinkEventAttributes.STYLE,
+        SinkEventAttributes.TITLE
     };
 
     /**
      * The attributes that are supported for the br tag.
      */
-    public static final String[] SINK_BR_ATTRIBUTES =
-    {
+    public static final String[] SINK_BR_ATTRIBUTES = {
         SinkEventAttributes.CLASS, SinkEventAttributes.ID,
         SinkEventAttributes.STYLE, SinkEventAttributes.TITLE
     };
@@ -101,53 +118,47 @@ public class SinkUtils
      */
     public static final String[] SINK_TR_ATTRIBUTES;
 
-    private static final String[] IMG_ATTRIBUTES =
-    {
-        SinkEventAttributes.ALT, SinkEventAttributes.HEIGHT, SinkEventAttributes.ISMAP,
-        SinkEventAttributes.SRC, SinkEventAttributes.WIDTH
+    private static final String[] IMG_ATTRIBUTES = {
+        SinkEventAttributes.ALT,
+        SinkEventAttributes.HEIGHT,
+        SinkEventAttributes.ISMAP,
+        SinkEventAttributes.SRC,
+        SinkEventAttributes.WIDTH
     };
 
-    private static final String[] HR_ATTRIBUTES =
-    {
+    private static final String[] HR_ATTRIBUTES = {};
+
+    private static final String[] LINK_ATTRIBUTES = {
+        SinkEventAttributes.HREF,
+        SinkEventAttributes.HREFLANG,
+        SinkEventAttributes.REL,
+        SinkEventAttributes.TARGET,
+        SinkEventAttributes.TYPE
     };
 
-    private static final String[] LINK_ATTRIBUTES =
-    {
-        SinkEventAttributes.HREF, SinkEventAttributes.HREFLANG, SinkEventAttributes.REL,
-        SinkEventAttributes.TARGET, SinkEventAttributes.TYPE
-    };
+    private static final String[] TABLE_ATTRIBUTES = {};
 
-    private static final String[] TABLE_ATTRIBUTES =
-    {
-    };
-
-    private static final String[] TABLE_CELL_ATTRIBUTES =
-    {
+    private static final String[] TABLE_CELL_ATTRIBUTES = {
         SinkEventAttributes.COLSPAN, SinkEventAttributes.HEADERS, SinkEventAttributes.ROWSPAN
     };
 
-    static
-    {
-        SINK_IMG_ATTRIBUTES = join( SINK_BASE_ATTRIBUTES, IMG_ATTRIBUTES );
-        SINK_SECTION_ATTRIBUTES =
-                join( SINK_BASE_ATTRIBUTES, new String[0] );
-        SINK_VERBATIM_ATTRIBUTES =
-                join( SINK_BASE_ATTRIBUTES,
-                new String[] {SinkEventAttributes.DECORATION} );
-        SINK_HR_ATTRIBUTES = join( SINK_BASE_ATTRIBUTES, HR_ATTRIBUTES );
-        SINK_LINK_ATTRIBUTES = join( SINK_BASE_ATTRIBUTES, LINK_ATTRIBUTES );
-        SINK_TABLE_ATTRIBUTES = join( SINK_BASE_ATTRIBUTES, TABLE_ATTRIBUTES );
-        SINK_TR_ATTRIBUTES = join( SINK_BASE_ATTRIBUTES, new String[0] );
-        SINK_TD_ATTRIBUTES = join( SINK_BASE_ATTRIBUTES, TABLE_CELL_ATTRIBUTES );
+    static {
+        SINK_IMG_ATTRIBUTES = join(SINK_BASE_ATTRIBUTES, IMG_ATTRIBUTES);
+        SINK_SECTION_ATTRIBUTES = join(SINK_BASE_ATTRIBUTES, new String[0]);
+        SINK_VERBATIM_ATTRIBUTES = join(SINK_BASE_ATTRIBUTES, new String[] {SinkEventAttributes.DECORATION});
+        SINK_HR_ATTRIBUTES = join(SINK_BASE_ATTRIBUTES, HR_ATTRIBUTES);
+        SINK_LINK_ATTRIBUTES = join(SINK_BASE_ATTRIBUTES, LINK_ATTRIBUTES);
+        SINK_TABLE_ATTRIBUTES = join(SINK_BASE_ATTRIBUTES, TABLE_ATTRIBUTES);
+        SINK_TR_ATTRIBUTES = join(SINK_BASE_ATTRIBUTES, new String[0]);
+        SINK_TD_ATTRIBUTES = join(SINK_BASE_ATTRIBUTES, TABLE_CELL_ATTRIBUTES);
     }
 
-    private static String[] join( String[] a, String[] b )
-    {
+    private static String[] join(String[] a, String[] b) {
         String[] temp = new String[a.length + b.length];
-        System.arraycopy( a, 0, temp, 0, a.length );
-        System.arraycopy( b, 0, temp, a.length, b.length );
+        System.arraycopy(a, 0, temp, 0, a.length);
+        System.arraycopy(b, 0, temp, a.length, b.length);
 
-        Arrays.sort( temp ); // necessary for binary searches in filterAttributes()
+        Arrays.sort(temp); // necessary for binary searches in filterAttributes()
 
         return temp;
     }
@@ -164,10 +175,8 @@ public class SinkUtils
      * @param att The AttributeSet. May be null, in which case an empty String is returned.
      * @return the AttributeSet as a String in a form that can be appended to an xml start tag.
      */
-    public static String getAttributeString( AttributeSet att )
-    {
-        if ( att == null )
-        {
+    public static String getAttributeString(AttributeSet att) {
+        if (att == null) {
             return "";
         }
 
@@ -175,51 +184,51 @@ public class SinkUtils
 
         Enumeration<?> names = att.getAttributeNames();
 
-        while ( names.hasMoreElements() )
-        {
+        while (names.hasMoreElements()) {
             Object key = names.nextElement();
-            Object value = att.getAttribute( key );
+            Object value = att.getAttribute(key);
 
-            if ( value instanceof AttributeSet )
-            {
+            if (value instanceof AttributeSet) {
                 // Other AttributeSets are ignored
-                if ( SinkEventAttributes.STYLE.equals( key.toString() ) )
-                {
-                    sb.append( Markup.SPACE ).append( key.toString() ).append( Markup.EQUAL )
-                        .append( Markup.QUOTE ).append( asCssString( (AttributeSet) value ) )
-                        .append( Markup.QUOTE );
+                if (SinkEventAttributes.STYLE.equals(key.toString())) {
+                    sb.append(Markup.SPACE)
+                            .append(key.toString())
+                            .append(Markup.EQUAL)
+                            .append(Markup.QUOTE)
+                            .append(asCssString((AttributeSet) value))
+                            .append(Markup.QUOTE);
                 }
-            }
-            else
-            {
-                sb.append( Markup.SPACE ).append( key.toString() ).append( Markup.EQUAL )
-                    .append( Markup.QUOTE ).append( value.toString() ).append( Markup.QUOTE );
+            } else {
+                sb.append(Markup.SPACE)
+                        .append(key.toString())
+                        .append(Markup.EQUAL)
+                        .append(Markup.QUOTE)
+                        .append(value.toString())
+                        .append(Markup.QUOTE);
             }
         }
 
         return sb.toString();
     }
 
-    private static String asCssString( AttributeSet att )
-    {
+    private static String asCssString(AttributeSet att) {
         StringBuilder sb = new StringBuilder();
 
         Enumeration<?> names = att.getAttributeNames();
 
-        while ( names.hasMoreElements() )
-        {
+        while (names.hasMoreElements()) {
             Object key = names.nextElement();
-            Object value = att.getAttribute( key );
+            Object value = att.getAttribute(key);
 
             // don't go recursive
-            if ( !( value instanceof AttributeSet ) )
-            {
-                sb.append( key.toString() ).append( Markup.COLON )
-                    .append( Markup.SPACE ).append( value.toString() );
+            if (!(value instanceof AttributeSet)) {
+                sb.append(key.toString())
+                        .append(Markup.COLON)
+                        .append(Markup.SPACE)
+                        .append(value.toString());
 
-                if ( names.hasMoreElements() )
-                {
-                    sb.append( Markup.SEMICOLON ).append( Markup.SPACE );
+                if (names.hasMoreElements()) {
+                    sb.append(Markup.SEMICOLON).append(Markup.SPACE);
                 }
             }
         }
@@ -238,29 +247,24 @@ public class SinkUtils
      * @return A filtered MutableAttributeSet object. Returns null if the input AttributeSet is null.
      *      If the array of valids is either null or empty, an empty AttributeSet is returned.
      */
-    public static MutableAttributeSet filterAttributes( AttributeSet attributes, String[] valids )
-    {
-        if ( attributes == null )
-        {
+    public static MutableAttributeSet filterAttributes(AttributeSet attributes, String[] valids) {
+        if (attributes == null) {
             return null;
         }
 
-        if ( valids == null || valids.length == 0 )
-        {
-            return new SinkEventAttributeSet( 0 );
+        if (valids == null || valids.length == 0) {
+            return new SinkEventAttributeSet(0);
         }
 
-        MutableAttributeSet atts = new SinkEventAttributeSet( attributes.getAttributeCount() );
+        MutableAttributeSet atts = new SinkEventAttributeSet(attributes.getAttributeCount());
 
         Enumeration<?> names = attributes.getAttributeNames();
 
-        while ( names.hasMoreElements() )
-        {
+        while (names.hasMoreElements()) {
             String key = names.nextElement().toString();
 
-            if ( Arrays.binarySearch( valids, key ) >= 0 )
-            {
-                atts.addAttribute( key, attributes.getAttribute( key ) );
+            if (Arrays.binarySearch(valids, key) >= 0) {
+                atts.addAttribute(key, attributes.getAttribute(key));
             }
         }
 

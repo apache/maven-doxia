@@ -1,3 +1,21 @@
+/*
+ * Licensed to the Apache Software Foundation (ASF) under one
+ * or more contributor license agreements.  See the NOTICE file
+ * distributed with this work for additional information
+ * regarding copyright ownership.  The ASF licenses this file
+ * to you under the Apache License, Version 2.0 (the
+ * "License"); you may not use this file except in compliance
+ * with the License.  You may obtain a copy of the License at
+ *
+ *   http://www.apache.org/licenses/LICENSE-2.0
+ *
+ * Unless required by applicable law or agreed to in writing,
+ * software distributed under the License is distributed on an
+ * "AS IS" BASIS, WITHOUT WARRANTIES OR CONDITIONS OF ANY
+ * KIND, either express or implied.  See the License for the
+ * specific language governing permissions and limitations
+ * under the License.
+ */
 package org.apache.maven.doxia.util;
 
 /*
@@ -19,22 +37,21 @@ package org.apache.maven.doxia.util;
  * under the License.
  */
 
-import org.codehaus.plexus.util.IOUtil;
-
 import java.io.BufferedWriter;
 import java.io.IOException;
 import java.io.Writer;
 
+import org.codehaus.plexus.util.IOUtil;
+
 /**
  * Allows to specify the line-length of an output writer.
  */
-public class LineBreaker
-{
+public class LineBreaker {
     /** The default maximal line length. */
     public static final int DEFAULT_MAX_LINE_LENGTH = 78;
 
     /** The system dependent EOL. */
-    private static final String EOL = System.getProperty( "line.separator" );
+    private static final String EOL = System.getProperty("line.separator");
 
     /** The destination writer. */
     private Writer destination;
@@ -49,16 +66,15 @@ public class LineBreaker
     private int lineLength = 0;
 
     /** The string buffer to store the current text. */
-    private StringBuilder word = new StringBuilder( 1024 );
+    private StringBuilder word = new StringBuilder(1024);
 
     /**
      * Constructs a new LineBreaker with DEFAULT_MAX_LINE_LENGTH.
      *
      * @param out The writer to use.
      */
-    public LineBreaker( Writer out )
-    {
-        this( out, DEFAULT_MAX_LINE_LENGTH );
+    public LineBreaker(Writer out) {
+        this(out, DEFAULT_MAX_LINE_LENGTH);
     }
 
     /**
@@ -67,16 +83,14 @@ public class LineBreaker
      * @param out The writer to use.
      * @param max The maximal line length.
      */
-    public LineBreaker( Writer out, int max )
-    {
-        if ( max <= 0 )
-        {
-            throw new IllegalArgumentException( "max must be a positive integer" );
+    public LineBreaker(Writer out, int max) {
+        if (max <= 0) {
+            throw new IllegalArgumentException("max must be a positive integer");
         }
 
         destination = out;
         this.maxLineLength = max;
-        writer = new BufferedWriter( out );
+        writer = new BufferedWriter(out);
     }
 
     /**
@@ -84,8 +98,7 @@ public class LineBreaker
      *
      * @return The destination.
      */
-    public Writer getDestination()
-    {
+    public Writer getDestination() {
         return destination;
     }
 
@@ -95,10 +108,8 @@ public class LineBreaker
      * @param text The text to write.
      * @throws java.io.IOException if there's a problem writing the text.
      */
-    public void write( String text )
-        throws IOException
-    {
-        write( text, /*preserveSpace*/false );
+    public void write(String text) throws IOException {
+        write(text, /*preserveSpace*/ false);
     }
 
     /**
@@ -107,50 +118,39 @@ public class LineBreaker
      * @param text The text to write.
      * @param preserveSpace True to preserve white space.
      */
-    public void write( String text, boolean preserveSpace )
-    {
+    public void write(String text, boolean preserveSpace) {
         int length = text.length();
 
-        try
-        {
-            for ( int i = 0; i < length; ++i )
-            {
-                char c = text.charAt( i );
+        try {
+            for (int i = 0; i < length; ++i) {
+                char c = text.charAt(i);
 
-                switch ( c )
-                {
+                switch (c) {
                     case ' ':
-                        if ( preserveSpace )
-                        {
-                            word.append( c );
-                        }
-                        else
-                        {
+                        if (preserveSpace) {
+                            word.append(c);
+                        } else {
                             writeWord();
                         }
                         break;
 
                     case '\r':
                         // if \r\n (windows) then just pass along \n
-                        if ( i + 1 < length && text.charAt( i + 1 ) == '\n' )
-                        {
+                        if (i + 1 < length && text.charAt(i + 1) == '\n') {
                             break;
                         }
 
                     case '\n':
                         writeWord();
-                        writer.write( EOL );
+                        writer.write(EOL);
                         lineLength = 0;
                         break;
 
                     default:
-                        word.append( c );
+                        word.append(c);
                 }
-
             }
-        }
-        catch ( Exception e )
-        {
+        } catch (Exception e) {
             // TODO: log
         }
     }
@@ -159,15 +159,11 @@ public class LineBreaker
      * Write out the current StringBuilder and flush the writer.
      * Any IOException will be swallowed.
      */
-    public void flush()
-    {
-        try
-        {
+    public void flush() {
+        try {
             writeWord();
             writer.flush();
-        }
-        catch ( IOException e )
-        {
+        } catch (IOException e) {
             // TODO: log
         }
     }
@@ -177,28 +173,21 @@ public class LineBreaker
      *
      * @throws IOException if an exception occurs during writing.
      */
-    private void writeWord()
-        throws IOException
-    {
+    private void writeWord() throws IOException {
         int length = word.length();
-        if ( length > 0 )
-        {
-            if ( lineLength > 0 )
-            {
-                if ( lineLength + 1 + length > maxLineLength )
-                {
-                    writer.write( EOL );
+        if (length > 0) {
+            if (lineLength > 0) {
+                if (lineLength + 1 + length > maxLineLength) {
+                    writer.write(EOL);
                     lineLength = 0;
-                }
-                else
-                {
-                    writer.write( ' ' );
+                } else {
+                    writer.write(' ');
                     ++lineLength;
                 }
             }
 
-            writer.write( word.toString() );
-            word.setLength( 0 );
+            writer.write(word.toString());
+            word.setLength(0);
 
             lineLength += length;
         }
@@ -207,8 +196,7 @@ public class LineBreaker
     /**
      * Close the writer.
      */
-    public void close()
-    {
-        IOUtil.close( writer );
+    public void close() {
+        IOUtil.close(writer);
     }
 }

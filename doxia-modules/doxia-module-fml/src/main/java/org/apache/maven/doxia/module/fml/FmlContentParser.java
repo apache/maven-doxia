@@ -1,3 +1,21 @@
+/*
+ * Licensed to the Apache Software Foundation (ASF) under one
+ * or more contributor license agreements.  See the NOTICE file
+ * distributed with this work for additional information
+ * regarding copyright ownership.  The ASF licenses this file
+ * to you under the Apache License, Version 2.0 (the
+ * "License"); you may not use this file except in compliance
+ * with the License.  You may obtain a copy of the License at
+ *
+ *   http://www.apache.org/licenses/LICENSE-2.0
+ *
+ * Unless required by applicable law or agreed to in writing,
+ * software distributed under the License is distributed on an
+ * "AS IS" BASIS, WITHOUT WARRANTIES OR CONDITIONS OF ANY
+ * KIND, either express or implied.  See the License for the
+ * specific language governing permissions and limitations
+ * under the License.
+ */
 package org.apache.maven.doxia.module.fml;
 
 /*
@@ -34,72 +52,56 @@ import org.slf4j.LoggerFactory;
  * @author ltheussl
  * @since 1.0
  */
-public class FmlContentParser
-    extends Xhtml5BaseParser
-    implements FmlMarkup
-{
-    private static final Logger LOGGER = LoggerFactory.getLogger( FmlContentParser.class );
+public class FmlContentParser extends Xhtml5BaseParser implements FmlMarkup {
+    private static final Logger LOGGER = LoggerFactory.getLogger(FmlContentParser.class);
 
     /** Empty elements don't write a closing tag. */
     private boolean isEmptyElement;
 
     /** {@inheritDoc} */
-    protected void handleStartTag( XmlPullParser parser, Sink sink )
-        throws XmlPullParserException, MacroExecutionException
-    {
+    protected void handleStartTag(XmlPullParser parser, Sink sink)
+            throws XmlPullParserException, MacroExecutionException {
         isEmptyElement = parser.isEmptyElementTag();
 
-        if ( parser.getName().equals( QUESTION_TAG.toString() )
-                || parser.getName().equals( TITLE.toString() )
-            || parser.getName().equals( ANSWER_TAG.toString() ) )
-        {
+        if (parser.getName().equals(QUESTION_TAG.toString())
+                || parser.getName().equals(TITLE.toString())
+                || parser.getName().equals(ANSWER_TAG.toString())) {
             // ignore
             return;
-        }
-        else if ( parser.getName().equals( SOURCE_TAG.toString() ) )
-        {
+        } else if (parser.getName().equals(SOURCE_TAG.toString())) {
             verbatim();
 
-            sink.verbatim( SinkEventAttributeSet.BOXED );
-        }
-        else if ( !baseStartTag( parser, sink ) )
-        {
-            if ( isEmptyElement )
-            {
-                handleUnknown( parser, sink, TAG_TYPE_SIMPLE );
-            }
-            else
-            {
-                handleUnknown( parser, sink, TAG_TYPE_START );
+            sink.verbatim(SinkEventAttributeSet.BOXED);
+        } else if (!baseStartTag(parser, sink)) {
+            if (isEmptyElement) {
+                handleUnknown(parser, sink, TAG_TYPE_SIMPLE);
+            } else {
+                handleUnknown(parser, sink, TAG_TYPE_START);
             }
 
-            LOGGER.warn( "Unrecognized fml tag <{}> at [{}:{}]", parser.getName(),
-                    parser.getLineNumber(), parser.getColumnNumber() );
+            LOGGER.warn(
+                    "Unrecognized fml tag <{}> at [{}:{}]",
+                    parser.getName(),
+                    parser.getLineNumber(),
+                    parser.getColumnNumber());
         }
     }
 
     /** {@inheritDoc} */
-    protected void handleEndTag( XmlPullParser parser, Sink sink )
-        throws XmlPullParserException, MacroExecutionException
-    {
-        if ( parser.getName().equals( QUESTION_TAG.toString() )
-                || parser.getName().equals( TITLE.toString() )
-            || parser.getName().equals( ANSWER_TAG.toString() ) )
-        {
+    protected void handleEndTag(XmlPullParser parser, Sink sink)
+            throws XmlPullParserException, MacroExecutionException {
+        if (parser.getName().equals(QUESTION_TAG.toString())
+                || parser.getName().equals(TITLE.toString())
+                || parser.getName().equals(ANSWER_TAG.toString())) {
             // ignore
             return;
-        }
-        else if ( parser.getName().equals( SOURCE_TAG.toString() ) )
-        {
+        } else if (parser.getName().equals(SOURCE_TAG.toString())) {
             verbatim_();
 
             sink.verbatim_();
-        }
-        else if ( !baseEndTag( parser, sink ) )
-        {
-            if ( !isEmptyElement )
-            {
-                handleUnknown( parser, sink, TAG_TYPE_END );
+        } else if (!baseEndTag(parser, sink)) {
+            if (!isEmptyElement) {
+                handleUnknown(parser, sink, TAG_TYPE_END);
             }
         }
 
@@ -109,8 +111,7 @@ public class FmlContentParser
     /**
      * {@inheritDoc}
      */
-    protected void init()
-    {
+    protected void init() {
         super.init();
 
         this.isEmptyElement = false;

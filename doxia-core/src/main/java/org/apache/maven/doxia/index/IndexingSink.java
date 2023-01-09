@@ -1,3 +1,21 @@
+/*
+ * Licensed to the Apache Software Foundation (ASF) under one
+ * or more contributor license agreements.  See the NOTICE file
+ * distributed with this work for additional information
+ * regarding copyright ownership.  The ASF licenses this file
+ * to you under the Apache License, Version 2.0 (the
+ * "License"); you may not use this file except in compliance
+ * with the License.  You may obtain a copy of the License at
+ *
+ *   http://www.apache.org/licenses/LICENSE-2.0
+ *
+ * Unless required by applicable law or agreed to in writing,
+ * software distributed under the License is distributed on an
+ * "AS IS" BASIS, WITHOUT WARRANTIES OR CONDITIONS OF ANY
+ * KIND, either express or implied.  See the License for the
+ * specific language governing permissions and limitations
+ * under the License.
+ */
 package org.apache.maven.doxia.index;
 
 /*
@@ -33,9 +51,7 @@ import org.apache.maven.doxia.util.HtmlTools;
  * @author <a href="mailto:trygvis@inamo.no">Trygve Laugst&oslash;l</a>
  * @author <a href="mailto:vincent.siveton@gmail.com">Vincent Siveton</a>
  */
-public class IndexingSink
-    extends SinkAdapter
-{
+public class IndexingSink extends SinkAdapter {
     /** Section 1. */
     private static final int TYPE_SECTION_1 = 1;
 
@@ -83,12 +99,11 @@ public class IndexingSink
      *
      * @param sectionEntry The first index entry.
      */
-    public IndexingSink( IndexEntry sectionEntry )
-    {
+    public IndexingSink(IndexEntry sectionEntry) {
         stack = new Stack<>();
-        stack.push( sectionEntry );
+        stack.push(sectionEntry);
         usedIds = new HashMap<>();
-        usedIds.put( sectionEntry.getId(), new AtomicInteger() );
+        usedIds.put(sectionEntry.getId(), new AtomicInteger());
         init();
     }
 
@@ -97,8 +112,7 @@ public class IndexingSink
      *
      * @return the title
      */
-    public String getTitle()
-    {
+    public String getTitle() {
         return title;
     }
 
@@ -109,176 +123,154 @@ public class IndexingSink
     /**
      * {@inheritDoc}
      */
-    public void title()
-    {
+    public void title() {
         this.type = TITLE;
     }
 
     /**
      * {@inheritDoc}
      */
-    public void section1()
-    {
+    public void section1() {
         pushNewEntry();
     }
 
     /**
      * {@inheritDoc}
      */
-    public void sectionTitle1()
-    {
+    public void sectionTitle1() {
         this.type = TYPE_SECTION_1;
     }
 
     /**
      * {@inheritDoc}
      */
-    public void title_()
-    {
+    public void title_() {
         this.type = 0;
     }
 
     /**
      * <p>sectionTitle1_.</p>
      */
-    public void sectionTitle1_()
-    {
+    public void sectionTitle1_() {
         this.type = 0;
     }
 
     /**
      * {@inheritDoc}
      */
-    public void section1_()
-    {
+    public void section1_() {
         pop();
     }
 
     /**
      * {@inheritDoc}
      */
-    public void section2()
-    {
+    public void section2() {
         pushNewEntry();
     }
 
     /**
      * {@inheritDoc}
      */
-    public void sectionTitle2()
-    {
+    public void sectionTitle2() {
         this.type = TYPE_SECTION_2;
     }
 
     /**
      * <p>sectionTitle2_.</p>
      */
-    public void sectionTitle2_()
-    {
+    public void sectionTitle2_() {
         this.type = 0;
     }
 
     /**
      * {@inheritDoc}
      */
-    public void section2_()
-    {
+    public void section2_() {
         pop();
     }
 
     /**
      * {@inheritDoc}
      */
-    public void section3()
-    {
+    public void section3() {
         pushNewEntry();
     }
 
     /**
      * {@inheritDoc}
      */
-    public void sectionTitle3()
-    {
+    public void sectionTitle3() {
         this.type = TYPE_SECTION_3;
     }
 
     /**
      * <p>sectionTitle3_.</p>
      */
-    public void sectionTitle3_()
-    {
+    public void sectionTitle3_() {
         this.type = 0;
     }
 
     /**
      * {@inheritDoc}
      */
-    public void section3_()
-    {
+    public void section3_() {
         pop();
     }
 
     /**
      * {@inheritDoc}
      */
-    public void section4()
-    {
+    public void section4() {
         pushNewEntry();
     }
 
     /**
      * {@inheritDoc}
      */
-    public void sectionTitle4()
-    {
+    public void sectionTitle4() {
         this.type = TYPE_SECTION_4;
     }
 
     /**
      * <p>sectionTitle4_.</p>
      */
-    public void sectionTitle4_()
-    {
+    public void sectionTitle4_() {
         this.type = 0;
     }
 
     /**
      * {@inheritDoc}
      */
-    public void section4_()
-    {
+    public void section4_() {
         pop();
     }
 
     /**
      * {@inheritDoc}
      */
-    public void section5()
-    {
+    public void section5() {
         pushNewEntry();
     }
 
     /**
      * {@inheritDoc}
      */
-    public void sectionTitle5()
-    {
+    public void sectionTitle5() {
         this.type = TYPE_SECTION_5;
     }
 
     /**
      * <p>sectionTitle5_.</p>
      */
-    public void sectionTitle5_()
-    {
+    public void sectionTitle5_() {
         this.type = 0;
     }
 
     /**
      * {@inheritDoc}
      */
-    public void section5_()
-    {
+    public void section5_() {
         pop();
     }
 
@@ -298,10 +290,8 @@ public class IndexingSink
     // }
 
     /** {@inheritDoc} */
-    public void text( String text )
-    {
-        switch ( this.type )
-        {
+    public void text(String text) {
+        switch (this.type) {
             case TITLE:
                 this.title = text;
                 break;
@@ -318,13 +308,13 @@ public class IndexingSink
                 IndexEntry entry = stack.lastElement();
 
                 String title = entry.getTitle() + text;
-                title = title.replaceAll( "[\\r\\n]+", "" );
-                entry.setTitle( title );
+                title = title.replaceAll("[\\r\\n]+", "");
+                entry.setTitle(title);
 
-                entry.setId( getUniqueId ( HtmlTools.encodeId( title ) ) );
+                entry.setId(getUniqueId(HtmlTools.encodeId(title)));
 
                 break;
-            // Dunno how to handle these yet
+                // Dunno how to handle these yet
             case TYPE_DEFINED_TERM:
             case TYPE_FIGURE:
             case TYPE_TABLE:
@@ -339,17 +329,13 @@ public class IndexingSink
      * @param id
      * @return the unique id
      */
-    String getUniqueId( String id )
-    {
+    String getUniqueId(String id) {
         final String uniqueId;
 
-        if ( usedIds.containsKey( id ) )
-        {
-            uniqueId = id + "_" + usedIds.get( id ).incrementAndGet();
-        }
-        else
-        {
-            usedIds.put( id, new AtomicInteger() );
+        if (usedIds.containsKey(id)) {
+            uniqueId = id + "_" + usedIds.get(id).incrementAndGet();
+        } else {
+            usedIds.put(id, new AtomicInteger());
             uniqueId = id;
         }
         return uniqueId;
@@ -358,13 +344,12 @@ public class IndexingSink
     /**
      * Creates and pushes a new IndexEntry onto the top of this stack.
      */
-    public void pushNewEntry()
-    {
-        IndexEntry entry = new IndexEntry( peek(), "" );
+    public void pushNewEntry() {
+        IndexEntry entry = new IndexEntry(peek(), "");
 
-        entry.setTitle( "" );
+        entry.setTitle("");
 
-        stack.push( entry );
+        stack.push(entry);
     }
 
     /**
@@ -372,16 +357,14 @@ public class IndexingSink
      *
      * @param entry to put.
      */
-    public void push( IndexEntry entry )
-    {
-        stack.push( entry );
+    public void push(IndexEntry entry) {
+        stack.push(entry);
     }
 
     /**
      * Removes the IndexEntry at the top of this stack.
      */
-    public void pop()
-    {
+    public void pop() {
         stack.pop();
     }
 
@@ -390,16 +373,14 @@ public class IndexingSink
      *
      * @return Looks at the IndexEntry at the top of this stack.
      */
-    public IndexEntry peek()
-    {
+    public IndexEntry peek() {
         return stack.peek();
     }
 
     /**
      * {@inheritDoc}
      */
-    public void close()
-    {
+    public void close() {
         super.close();
 
         init();
@@ -408,8 +389,7 @@ public class IndexingSink
     /**
      * {@inheritDoc}
      */
-    protected void init()
-    {
+    protected void init() {
         this.type = 0;
         this.title = null;
     }

@@ -1,3 +1,21 @@
+/*
+ * Licensed to the Apache Software Foundation (ASF) under one
+ * or more contributor license agreements.  See the NOTICE file
+ * distributed with this work for additional information
+ * regarding copyright ownership.  The ASF licenses this file
+ * to you under the Apache License, Version 2.0 (the
+ * "License"); you may not use this file except in compliance
+ * with the License.  You may obtain a copy of the License at
+ *
+ *   http://www.apache.org/licenses/LICENSE-2.0
+ *
+ * Unless required by applicable law or agreed to in writing,
+ * software distributed under the License is distributed on an
+ * "AS IS" BASIS, WITHOUT WARRANTIES OR CONDITIONS OF ANY
+ * KIND, either express or implied.  See the License for the
+ * specific language governing permissions and limitations
+ * under the License.
+ */
 package org.apache.maven.doxia.parser;
 
 /*
@@ -41,7 +59,6 @@ import org.apache.maven.doxia.sink.Sink;
 import org.apache.maven.doxia.sink.impl.SinkEventAttributeSet;
 import org.apache.maven.doxia.util.HtmlTools;
 import org.apache.maven.doxia.util.XmlValidator;
-
 import org.codehaus.plexus.util.IOUtil;
 import org.codehaus.plexus.util.StringUtils;
 import org.codehaus.plexus.util.xml.pull.EntityReplacementMap;
@@ -60,10 +77,7 @@ import org.xml.sax.SAXException;
  * @author <a href="mailto:vincent.siveton@gmail.com">Vincent Siveton</a>
  * @since 1.0
  */
-public abstract class AbstractXmlParser
-    extends AbstractParser
-    implements XmlMarkup
-{
+public abstract class AbstractXmlParser extends AbstractParser implements XmlMarkup {
     /**
      * Entity pattern for HTML entity, i.e. &#38;nbsp;
      * "<!ENTITY(\\s)+([^>|^\\s]+)(\\s)+\"(\\s)*(&[a-zA-Z]{2,6};)(\\s)*\"(\\s)*>
@@ -71,7 +85,7 @@ public abstract class AbstractXmlParser
      * see <a href="http://www.w3.org/TR/REC-xml/#NT-EntityDecl">http://www.w3.org/TR/REC-xml/#NT-EntityDecl</a>.
      */
     private static final Pattern PATTERN_ENTITY_1 =
-        Pattern.compile( ENTITY_START + "(\\s)+([^>|^\\s]+)(\\s)+\"(\\s)*(&[a-zA-Z]{2,6};)(\\s)*\"(\\s)*>" );
+            Pattern.compile(ENTITY_START + "(\\s)+([^>|^\\s]+)(\\s)+\"(\\s)*(&[a-zA-Z]{2,6};)(\\s)*\"(\\s)*>");
 
     /**
      * Entity pattern for Unicode entity, i.e. &#38;#38;
@@ -80,7 +94,7 @@ public abstract class AbstractXmlParser
      * see <a href="http://www.w3.org/TR/REC-xml/#NT-EntityDecl">http://www.w3.org/TR/REC-xml/#NT-EntityDecl</a>.
      */
     private static final Pattern PATTERN_ENTITY_2 =
-        Pattern.compile( ENTITY_START + "(\\s)+([^>|^\\s]+)(\\s)+\"(\\s)*(&(#x?[0-9a-fA-F]{1,5};)*)(\\s)*\"(\\s)*>" );
+            Pattern.compile(ENTITY_START + "(\\s)+([^>|^\\s]+)(\\s)+\"(\\s)*(&(#x?[0-9a-fA-F]{1,5};)*)(\\s)*\"(\\s)*>");
 
     private boolean ignorableWhitespace;
 
@@ -105,57 +119,45 @@ public abstract class AbstractXmlParser
     private boolean addDefaultEntities = true;
 
     /** {@inheritDoc} */
-    public void parse( Reader source, Sink sink, String reference )
-        throws ParseException
-    {
+    public void parse(Reader source, Sink sink, String reference) throws ParseException {
         init();
 
         Reader src = source;
 
         // 1 first parsing if validation is required
-        if ( isValidate() )
-        {
+        if (isValidate()) {
             String content;
-            try
-            {
-                content = IOUtil.toString( new BufferedReader( src ) );
-            }
-            catch ( IOException e )
-            {
-                throw new ParseException( "Error reading the model", e );
+            try {
+                content = IOUtil.toString(new BufferedReader(src));
+            } catch (IOException e) {
+                throw new ParseException("Error reading the model", e);
             }
 
-            new XmlValidator( ).validate( content );
+            new XmlValidator().validate(content);
 
-            src = new StringReader( content );
+            src = new StringReader(content);
         }
 
         // 2 second parsing to process
-        try
-        {
+        try {
             XmlPullParser parser = addDefaultEntities
-                                   ? new MXParser( EntityReplacementMap.defaultEntityReplacementMap )
-                                   : new MXParser();
+                    ? new MXParser(EntityReplacementMap.defaultEntityReplacementMap)
+                    : new MXParser();
 
-            parser.setInput( src );
+            parser.setInput(src);
 
             // allow parser initialization, e.g. for additional entities in XHTML
             // Note: do it after input is set, otherwise values are reset
-            initXmlParser( parser );
+            initXmlParser(parser);
 
-            parseXml( parser, sink );
-        }
-        catch ( XmlPullParserException ex )
-        {
-            throw new ParseException( "Error parsing the model", ex, ex.getLineNumber(),
-                                      ex.getColumnNumber() );
-        }
-        catch ( MacroExecutionException ex )
-        {
-            throw new ParseException( "Macro execution failed", ex );
+            parseXml(parser, sink);
+        } catch (XmlPullParserException ex) {
+            throw new ParseException("Error parsing the model", ex, ex.getLineNumber(), ex.getColumnNumber());
+        } catch (MacroExecutionException ex) {
+            throw new ParseException("Macro execution failed", ex);
         }
 
-        setSecondParsing( false );
+        setSecondParsing(false);
         init();
     }
 
@@ -165,16 +167,13 @@ public abstract class AbstractXmlParser
      * @param parser A parser, not null.
      * @throws org.codehaus.plexus.util.xml.pull.XmlPullParserException if there's a problem initializing the parser
      */
-    protected void initXmlParser( XmlPullParser parser )
-        throws XmlPullParserException
-    {
+    protected void initXmlParser(XmlPullParser parser) throws XmlPullParserException {
         // nop
     }
 
     /** {@inheritDoc} */
     @Override
-    public final int getType()
-    {
+    public final int getType() {
         return XML_TYPE;
     }
 
@@ -185,20 +184,17 @@ public abstract class AbstractXmlParser
      * @return a SinkEventAttributeSet or null if the current parser event is not a start tag.
      * @since 1.1
      */
-    protected SinkEventAttributeSet getAttributesFromParser( XmlPullParser parser )
-    {
+    protected SinkEventAttributeSet getAttributesFromParser(XmlPullParser parser) {
         int count = parser.getAttributeCount();
 
-        if ( count < 0 )
-        {
+        if (count < 0) {
             return null;
         }
 
-        SinkEventAttributeSet atts = new SinkEventAttributeSet( count );
+        SinkEventAttributeSet atts = new SinkEventAttributeSet(count);
 
-        for ( int i = 0; i < count; i++ )
-        {
-            atts.addAttribute( parser.getAttributeName( i ), parser.getAttributeValue( i ) );
+        for (int i = 0; i < count; i++) {
+            atts.addAttribute(parser.getAttributeName(i), parser.getAttributeValue(i));
         }
 
         return atts;
@@ -212,75 +208,47 @@ public abstract class AbstractXmlParser
      * @throws org.codehaus.plexus.util.xml.pull.XmlPullParserException if there's a problem parsing the model
      * @throws org.apache.maven.doxia.macro.MacroExecutionException if there's a problem executing a macro
      */
-    private void parseXml( XmlPullParser parser, Sink sink )
-        throws XmlPullParserException, MacroExecutionException
-    {
+    private void parseXml(XmlPullParser parser, Sink sink) throws XmlPullParserException, MacroExecutionException {
         int eventType = parser.getEventType();
 
-        while ( eventType != XmlPullParser.END_DOCUMENT )
-        {
-            if ( eventType == XmlPullParser.START_TAG )
-            {
-                handleStartTag( parser, sink );
-            }
-            else if ( eventType == XmlPullParser.END_TAG )
-            {
-                handleEndTag( parser, sink );
-            }
-            else if ( eventType == XmlPullParser.TEXT )
-            {
-                String text = getText( parser );
+        while (eventType != XmlPullParser.END_DOCUMENT) {
+            if (eventType == XmlPullParser.START_TAG) {
+                handleStartTag(parser, sink);
+            } else if (eventType == XmlPullParser.END_TAG) {
+                handleEndTag(parser, sink);
+            } else if (eventType == XmlPullParser.TEXT) {
+                String text = getText(parser);
 
-                if ( isIgnorableWhitespace() )
-                {
-                    if ( text.trim().length() != 0 )
-                    {
-                        handleText( parser, sink );
+                if (isIgnorableWhitespace()) {
+                    if (text.trim().length() != 0) {
+                        handleText(parser, sink);
                     }
+                } else {
+                    handleText(parser, sink);
                 }
-                else
-                {
-                    handleText( parser, sink );
-                }
-            }
-            else if ( eventType == XmlPullParser.CDSECT )
-            {
-                handleCdsect( parser, sink );
-            }
-            else if ( eventType == XmlPullParser.COMMENT )
-            {
-                handleComment( parser, sink );
-            }
-            else if ( eventType == XmlPullParser.ENTITY_REF )
-            {
-                handleEntity( parser, sink );
-            }
-            else if ( eventType == XmlPullParser.IGNORABLE_WHITESPACE )
-            {
+            } else if (eventType == XmlPullParser.CDSECT) {
+                handleCdsect(parser, sink);
+            } else if (eventType == XmlPullParser.COMMENT) {
+                handleComment(parser, sink);
+            } else if (eventType == XmlPullParser.ENTITY_REF) {
+                handleEntity(parser, sink);
+            } else if (eventType == XmlPullParser.IGNORABLE_WHITESPACE) {
                 // nop
-            }
-            else if ( eventType == XmlPullParser.PROCESSING_INSTRUCTION )
-            {
+            } else if (eventType == XmlPullParser.PROCESSING_INSTRUCTION) {
                 // nop
-            }
-            else if ( eventType == XmlPullParser.DOCDECL )
-            {
-                addLocalEntities( parser, parser.getText() );
+            } else if (eventType == XmlPullParser.DOCDECL) {
+                addLocalEntities(parser, parser.getText());
 
-                for ( byte[] res : CachedFileEntityResolver.ENTITY_CACHE.values() )
-                {
-                    addDTDEntities( parser, new String( res ) );
+                for (byte[] res : CachedFileEntityResolver.ENTITY_CACHE.values()) {
+                    addDTDEntities(parser, new String(res));
                 }
             }
 
-            try
-            {
+            try {
                 eventType = parser.nextToken();
-            }
-            catch ( IOException io )
-            {
+            } catch (IOException io) {
                 // Does not have a cause arg
-                throw new XmlPullParserException( "IOException: " + io.getMessage(), parser, io );
+                throw new XmlPullParserException("IOException: " + io.getMessage(), parser, io);
             }
         }
     }
@@ -293,8 +261,8 @@ public abstract class AbstractXmlParser
      * @throws org.codehaus.plexus.util.xml.pull.XmlPullParserException if there's a problem parsing the model
      * @throws org.apache.maven.doxia.macro.MacroExecutionException if there's a problem executing a macro
      */
-    protected abstract void handleStartTag( XmlPullParser parser, Sink sink )
-        throws XmlPullParserException, MacroExecutionException;
+    protected abstract void handleStartTag(XmlPullParser parser, Sink sink)
+            throws XmlPullParserException, MacroExecutionException;
 
     /**
      * Goes through the possible end tags.
@@ -304,8 +272,8 @@ public abstract class AbstractXmlParser
      * @throws org.codehaus.plexus.util.xml.pull.XmlPullParserException if there's a problem parsing the model
      * @throws org.apache.maven.doxia.macro.MacroExecutionException if there's a problem executing a macro
      */
-    protected abstract void handleEndTag( XmlPullParser parser, Sink sink )
-        throws XmlPullParserException, MacroExecutionException;
+    protected abstract void handleEndTag(XmlPullParser parser, Sink sink)
+            throws XmlPullParserException, MacroExecutionException;
 
     /**
      * Handles text events.
@@ -317,18 +285,15 @@ public abstract class AbstractXmlParser
      * @param sink the sink to receive the events. Not null.
      * @throws org.codehaus.plexus.util.xml.pull.XmlPullParserException if there's a problem parsing the model
      */
-    protected void handleText( XmlPullParser parser, Sink sink )
-        throws XmlPullParserException
-    {
-        String text = getText( parser );
+    protected void handleText(XmlPullParser parser, Sink sink) throws XmlPullParserException {
+        String text = getText(parser);
 
         /*
          * NOTE: Don't do any whitespace trimming here. Whitespace normalization has already been performed by the
          * parser so any whitespace that makes it here is significant.
          */
-        if ( StringUtils.isNotEmpty( text ) )
-        {
-            sink.text( text );
+        if (StringUtils.isNotEmpty(text)) {
+            sink.text(text);
         }
     }
 
@@ -342,10 +307,8 @@ public abstract class AbstractXmlParser
      * @param sink the sink to receive the events. Not null.
      * @throws org.codehaus.plexus.util.xml.pull.XmlPullParserException if there's a problem parsing the model
      */
-    protected void handleCdsect( XmlPullParser parser, Sink sink )
-        throws XmlPullParserException
-    {
-        sink.text( getText( parser ) );
+    protected void handleCdsect(XmlPullParser parser, Sink sink) throws XmlPullParserException {
+        sink.text(getText(parser));
     }
 
     /**
@@ -358,12 +321,9 @@ public abstract class AbstractXmlParser
      * @param sink the sink to receive the events. Not null.
      * @throws org.codehaus.plexus.util.xml.pull.XmlPullParserException if there's a problem parsing the model
      */
-    protected void handleComment( XmlPullParser parser, Sink sink )
-        throws XmlPullParserException
-    {
-        if ( isEmitComments() )
-        {
-            sink.comment( getText( parser ) );
+    protected void handleComment(XmlPullParser parser, Sink sink) throws XmlPullParserException {
+        if (isEmitComments()) {
+            sink.comment(getText(parser));
         }
     }
 
@@ -381,22 +341,17 @@ public abstract class AbstractXmlParser
      * @param sink the sink to receive the events. Not null.
      * @throws org.codehaus.plexus.util.xml.pull.XmlPullParserException if there's a problem parsing the model
      */
-    protected void handleEntity( XmlPullParser parser, Sink sink )
-        throws XmlPullParserException
-    {
-        String text = getText( parser );
+    protected void handleEntity(XmlPullParser parser, Sink sink) throws XmlPullParserException {
+        String text = getText(parser);
 
         String name = parser.getName();
 
-        if ( "#160".equals( name ) || "nbsp".equals( name ) || "#x00A0".equals( name ) )
-        {
+        if ("#160".equals(name) || "nbsp".equals(name) || "#x00A0".equals(name)) {
             sink.nonBreakingSpace();
-        }
-        else
-        {
-            String unescaped = HtmlTools.unescapeHTML( text );
+        } else {
+            String unescaped = HtmlTools.unescapeHTML(text);
 
-            sink.text( unescaped );
+            sink.text(unescaped);
         }
     }
 
@@ -415,13 +370,12 @@ public abstract class AbstractXmlParser
      * org.apache.maven.doxia.sink.Sink#unknown(String, Object[], org.apache.maven.doxia.sink.SinkEventAttributes)}
      * method.
      */
-    protected void handleUnknown( XmlPullParser parser, Sink sink, int type )
-    {
-        Object[] required = new Object[] { type };
+    protected void handleUnknown(XmlPullParser parser, Sink sink, int type) {
+        Object[] required = new Object[] {type};
 
-        SinkEventAttributeSet attribs = getAttributesFromParser( parser );
+        SinkEventAttributeSet attribs = getAttributesFromParser(parser);
 
-        sink.unknown( parser.getName(), required, attribs );
+        sink.unknown(parser.getName(), required, attribs);
     }
 
     /**
@@ -431,8 +385,7 @@ public abstract class AbstractXmlParser
      * @see #setIgnorableWhitespace(boolean)
      * @since 1.1
      */
-    protected boolean isIgnorableWhitespace()
-    {
+    protected boolean isIgnorableWhitespace() {
         return ignorableWhitespace;
     }
 
@@ -445,8 +398,7 @@ public abstract class AbstractXmlParser
      * @param ignorable <code>true</code> to ignore whitespace, <code>false</code> otherwise.
      * @since 1.1
      */
-    protected void setIgnorableWhitespace( boolean ignorable )
-    {
+    protected void setIgnorableWhitespace(boolean ignorable) {
         this.ignorableWhitespace = ignorable;
     }
 
@@ -457,8 +409,7 @@ public abstract class AbstractXmlParser
      * @see #setCollapsibleWhitespace(boolean)
      * @since 1.1
      */
-    protected boolean isCollapsibleWhitespace()
-    {
+    protected boolean isCollapsibleWhitespace() {
         return collapsibleWhitespace;
     }
 
@@ -471,8 +422,7 @@ public abstract class AbstractXmlParser
      * @param collapsible <code>true</code> to allow collapsible text, <code>false</code> otherwise.
      * @since 1.1
      */
-    protected void setCollapsibleWhitespace( boolean collapsible )
-    {
+    protected void setCollapsibleWhitespace(boolean collapsible) {
         this.collapsibleWhitespace = collapsible;
     }
 
@@ -483,8 +433,7 @@ public abstract class AbstractXmlParser
      * @see #setTrimmableWhitespace(boolean)
      * @since 1.1
      */
-    protected boolean isTrimmableWhitespace()
-    {
+    protected boolean isTrimmableWhitespace() {
         return trimmableWhitespace;
     }
 
@@ -497,8 +446,7 @@ public abstract class AbstractXmlParser
      * @param trimmable <code>true</code> to allow trimmable text, <code>false</code> otherwise.
      * @since 1.1
      */
-    protected void setTrimmableWhitespace( boolean trimmable )
-    {
+    protected void setTrimmableWhitespace(boolean trimmable) {
         this.trimmableWhitespace = trimmable;
     }
 
@@ -512,25 +460,20 @@ public abstract class AbstractXmlParser
      * @see #isTrimmableWhitespace()
      * @since 1.1
      */
-    protected String getText( XmlPullParser parser )
-    {
+    protected String getText(XmlPullParser parser) {
         String text = parser.getText();
 
-        if ( isTrimmableWhitespace() )
-        {
+        if (isTrimmableWhitespace()) {
             text = text.trim();
         }
 
-        if ( isCollapsibleWhitespace() )
-        {
+        if (isCollapsibleWhitespace()) {
             StringBuilder newText = new StringBuilder();
-            String[] elts = StringUtils.split( text, " \r\n" );
-            for ( int i = 0; i < elts.length; i++ )
-            {
-                newText.append( elts[i] );
-                if ( ( i + 1 ) < elts.length )
-                {
-                    newText.append( " " );
+            String[] elts = StringUtils.split(text, " \r\n");
+            for (int i = 0; i < elts.length; i++) {
+                newText.append(elts[i]);
+                if ((i + 1) < elts.length) {
+                    newText.append(" ");
                 }
             }
             text = newText.toString();
@@ -551,10 +494,8 @@ public abstract class AbstractXmlParser
      * @return a map of the defined entities in a local doctype.
      * @since 1.1
      */
-    protected Map<String, String> getLocalEntities()
-    {
-        if ( entities == null )
-        {
+    protected Map<String, String> getLocalEntities() {
+        if (entities == null) {
             entities = new LinkedHashMap<>();
         }
 
@@ -567,8 +508,7 @@ public abstract class AbstractXmlParser
      * @return <code>true</code> if XML content will be validate, <code>false</code> otherwise.
      * @since 1.1
      */
-    public boolean isValidate()
-    {
+    public boolean isValidate() {
         return validate;
     }
 
@@ -579,27 +519,23 @@ public abstract class AbstractXmlParser
      * @see #parse(Reader, Sink)
      * @since 1.1
      */
-    public void setValidate( boolean validate )
-    {
+    public void setValidate(boolean validate) {
         this.validate = validate;
     }
 
     /**
      * @since 2.0.0-M4
      */
-    public boolean getAddDefaultEntities()
-    {
+    public boolean getAddDefaultEntities() {
         return addDefaultEntities;
     }
 
     /**
      * @since 2.0.0-M4
      */
-    public void setAddDefaultEntities( boolean addDefaultEntities )
-    {
+    public void setAddDefaultEntities(boolean addDefaultEntities) {
         this.addDefaultEntities = addDefaultEntities;
     }
-
 
     // ----------------------------------------------------------------------
     // Private methods
@@ -616,17 +552,17 @@ public abstract class AbstractXmlParser
      * @throws XmlPullParserException if any
      * @see XmlPullParser#defineEntityReplacementText(String, String)
      */
-    private void addEntity( XmlPullParser parser, String entityName, String entityValue )
-        throws XmlPullParserException
-    {
-        if ( entityName.endsWith( "amp" ) || entityName.endsWith( "lt" ) || entityName.endsWith( "gt" )
-            || entityName.endsWith( "quot" ) || entityName.endsWith( "apos" ) )
-        {
+    private void addEntity(XmlPullParser parser, String entityName, String entityValue) throws XmlPullParserException {
+        if (entityName.endsWith("amp")
+                || entityName.endsWith("lt")
+                || entityName.endsWith("gt")
+                || entityName.endsWith("quot")
+                || entityName.endsWith("apos")) {
             return;
         }
 
-        parser.defineEntityReplacementText( entityName, entityValue );
-        getLocalEntities().put( entityName, entityValue );
+        parser.defineEntityReplacementText(entityName, entityValue);
+        getLocalEntities().put(entityName, entityValue);
     }
 
     /**
@@ -642,18 +578,14 @@ public abstract class AbstractXmlParser
      * @param text not null
      * @throws XmlPullParserException if any
      */
-    private void addLocalEntities( XmlPullParser parser, String text )
-        throws XmlPullParserException
-    {
-        int entitiesCount = StringUtils.countMatches( text, ENTITY_START );
-        if ( entitiesCount > 0 )
-        {
+    private void addLocalEntities(XmlPullParser parser, String text) throws XmlPullParserException {
+        int entitiesCount = StringUtils.countMatches(text, ENTITY_START);
+        if (entitiesCount > 0) {
             // text should be foo [...]
-            int start = text.indexOf( '[' );
-            int end = text.lastIndexOf( ']' );
-            if ( start != -1 && end != -1 )
-            {
-                addDTDEntities( parser, text.substring( start + 1, end ) );
+            int start = text.indexOf('[');
+            int end = text.lastIndexOf(']');
+            if (start != -1 && end != -1) {
+                addDTDEntities(parser, text.substring(start + 1, end));
             }
         }
     }
@@ -673,46 +605,35 @@ public abstract class AbstractXmlParser
      * @param text not null
      * @throws XmlPullParserException if any
      */
-    private void addDTDEntities( XmlPullParser parser, String text )
-        throws XmlPullParserException
-    {
-        int entitiesCount = StringUtils.countMatches( text, ENTITY_START );
-        if ( entitiesCount > 0 )
-        {
-            final String txt = StringUtils.replace( text, ENTITY_START, "\n" + ENTITY_START );
-            try ( BufferedReader reader = new BufferedReader( new StringReader( txt ) ) )
-            {
+    private void addDTDEntities(XmlPullParser parser, String text) throws XmlPullParserException {
+        int entitiesCount = StringUtils.countMatches(text, ENTITY_START);
+        if (entitiesCount > 0) {
+            final String txt = StringUtils.replace(text, ENTITY_START, "\n" + ENTITY_START);
+            try (BufferedReader reader = new BufferedReader(new StringReader(txt))) {
                 String line;
                 String tmpLine = "";
                 Matcher matcher;
-                while ( ( line = reader.readLine() ) != null )
-                {
+                while ((line = reader.readLine()) != null) {
                     tmpLine += "\n" + line;
-                    matcher = PATTERN_ENTITY_1.matcher( tmpLine );
-                    if ( matcher.find() && matcher.groupCount() == 7 )
-                    {
-                        String entityName = matcher.group( 2 );
-                        String entityValue = matcher.group( 5 );
+                    matcher = PATTERN_ENTITY_1.matcher(tmpLine);
+                    if (matcher.find() && matcher.groupCount() == 7) {
+                        String entityName = matcher.group(2);
+                        String entityValue = matcher.group(5);
 
-                        addEntity( parser, entityName, entityValue );
+                        addEntity(parser, entityName, entityValue);
                         tmpLine = "";
-                    }
-                    else
-                    {
-                        matcher = PATTERN_ENTITY_2.matcher( tmpLine );
-                        if ( matcher.find() && matcher.groupCount() == 8 )
-                        {
-                            String entityName = matcher.group( 2 );
-                            String entityValue = matcher.group( 5 );
+                    } else {
+                        matcher = PATTERN_ENTITY_2.matcher(tmpLine);
+                        if (matcher.find() && matcher.groupCount() == 8) {
+                            String entityName = matcher.group(2);
+                            String entityValue = matcher.group(5);
 
-                            addEntity( parser, entityName, entityValue );
+                            addEntity(parser, entityName, entityValue);
                             tmpLine = "";
                         }
                     }
                 }
-            }
-            catch ( IOException e )
-            {
+            } catch (IOException e) {
                 // nop
             }
         }
@@ -722,70 +643,58 @@ public abstract class AbstractXmlParser
      * Implementation of the callback mechanism <code>EntityResolver</code>.
      * Using a mechanism of cached files in temp dir to improve performance when using the <code>XMLReader</code>.
      */
-    public static class CachedFileEntityResolver
-        implements EntityResolver
-    {
-        private static final Logger LOGGER = LoggerFactory.getLogger( CachedFileEntityResolver.class );
+    public static class CachedFileEntityResolver implements EntityResolver {
+        private static final Logger LOGGER = LoggerFactory.getLogger(CachedFileEntityResolver.class);
 
         /** Map with systemId as key and the content of systemId as byte[]. */
         protected static final Map<String, byte[]> ENTITY_CACHE = new Hashtable<>();
 
         private static final Map<String, String> WELL_KNOWN_SYSTEM_IDS = new HashMap<>();
 
-        static
-        {
-            WELL_KNOWN_SYSTEM_IDS.put( "http://www.w3.org/2001/xml.xsd", "xml.xsd" );
-            WELL_KNOWN_SYSTEM_IDS.put( "https://www.w3.org/2001/xml.xsd", "xml.xsd" );
-            WELL_KNOWN_SYSTEM_IDS.put( "http://maven.apache.org/xsd/xdoc-2.0.xsd", "xdoc-2.0.xsd" );
-            WELL_KNOWN_SYSTEM_IDS.put( "https://maven.apache.org/xsd/xdoc-2.0.xsd", "xdoc-2.0.xsd" );
-            WELL_KNOWN_SYSTEM_IDS.put( "http://maven.apache.org/xsd/fml-1.0.1.xsd", "fml-1.0.1.xsd" );
-            WELL_KNOWN_SYSTEM_IDS.put( "https://maven.apache.org/xsd/fml-1.0.1.xsd", "fml-1.0.1.xsd" );
-            WELL_KNOWN_SYSTEM_IDS.put( "http://www.w3.org/TR/xhtml1/DTD/xhtml-lat1.ent", "xhtml-lat1.ent" );
-            WELL_KNOWN_SYSTEM_IDS.put( "https://www.w3.org/TR/xhtml1/DTD/xhtml-lat1.ent", "xhtml-lat1.ent" );
+        static {
+            WELL_KNOWN_SYSTEM_IDS.put("http://www.w3.org/2001/xml.xsd", "xml.xsd");
+            WELL_KNOWN_SYSTEM_IDS.put("https://www.w3.org/2001/xml.xsd", "xml.xsd");
+            WELL_KNOWN_SYSTEM_IDS.put("http://maven.apache.org/xsd/xdoc-2.0.xsd", "xdoc-2.0.xsd");
+            WELL_KNOWN_SYSTEM_IDS.put("https://maven.apache.org/xsd/xdoc-2.0.xsd", "xdoc-2.0.xsd");
+            WELL_KNOWN_SYSTEM_IDS.put("http://maven.apache.org/xsd/fml-1.0.1.xsd", "fml-1.0.1.xsd");
+            WELL_KNOWN_SYSTEM_IDS.put("https://maven.apache.org/xsd/fml-1.0.1.xsd", "fml-1.0.1.xsd");
+            WELL_KNOWN_SYSTEM_IDS.put("http://www.w3.org/TR/xhtml1/DTD/xhtml-lat1.ent", "xhtml-lat1.ent");
+            WELL_KNOWN_SYSTEM_IDS.put("https://www.w3.org/TR/xhtml1/DTD/xhtml-lat1.ent", "xhtml-lat1.ent");
         }
 
         /** {@inheritDoc} */
-        public InputSource resolveEntity( String publicId, String systemId )
-            throws SAXException, IOException
-        {
-            byte[] res = ENTITY_CACHE.get( systemId );
+        public InputSource resolveEntity(String publicId, String systemId) throws SAXException, IOException {
+            byte[] res = ENTITY_CACHE.get(systemId);
             // already cached?
-            if ( res == null )
-            {
-                if ( WELL_KNOWN_SYSTEM_IDS.containsKey( systemId ) )
-                {
-                    String resource =  "/" + WELL_KNOWN_SYSTEM_IDS.get( systemId );
-                    URL url = getClass().getResource( resource );
-                    if ( url != null )
-                    {
-                        LOGGER.debug( "Resolving SYSTEM '{}' from well-known classpath resource '{}'",
-                                systemId, resource );
-                        res = toByteArray( url );
+            if (res == null) {
+                if (WELL_KNOWN_SYSTEM_IDS.containsKey(systemId)) {
+                    String resource = "/" + WELL_KNOWN_SYSTEM_IDS.get(systemId);
+                    URL url = getClass().getResource(resource);
+                    if (url != null) {
+                        LOGGER.debug(
+                                "Resolving SYSTEM '{}' from well-known classpath resource '{}'", systemId, resource);
+                        res = toByteArray(url);
                     }
                 }
 
-                if ( res == null )
-                {
-                    URI uri = URI.create( systemId );
-                    if ( uri.getScheme() == null )
-                    {
-                        uri = Paths.get( systemId ).toUri();
+                if (res == null) {
+                    URI uri = URI.create(systemId);
+                    if (uri.getScheme() == null) {
+                        uri = Paths.get(systemId).toUri();
                     }
 
-                    LOGGER.debug( "Resolving SYSTEM '{}' from URI resource '{}'", systemId, uri );
-                    res = toByteArray( uri.toURL() );
+                    LOGGER.debug("Resolving SYSTEM '{}' from URI resource '{}'", systemId, uri);
+                    res = toByteArray(uri.toURL());
                 }
 
-                ENTITY_CACHE.put( systemId, res );
-            }
-            else
-            {
-                LOGGER.debug( "Resolved SYSTEM '{}' from cache", systemId );
+                ENTITY_CACHE.put(systemId, res);
+            } else {
+                LOGGER.debug("Resolved SYSTEM '{}' from cache", systemId);
             }
 
-            InputSource is = new InputSource( new ByteArrayInputStream( res ) );
-            is.setPublicId( publicId );
-            is.setSystemId( systemId );
+            InputSource is = new InputSource(new ByteArrayInputStream(res));
+            is.setPublicId(publicId);
+            is.setSystemId(systemId);
 
             return is;
         }
@@ -795,26 +704,18 @@ public abstract class AbstractXmlParser
          * @return return an array of byte
          * @throws SAXException if any
          */
-        private static byte[] toByteArray( URL url )
-            throws SAXException
-        {
+        private static byte[] toByteArray(URL url) throws SAXException {
             InputStream is = null;
-            try
-            {
+            try {
                 is = url.openStream();
-                if ( is == null )
-                {
-                    throw new SAXException( "Cannot open stream from the url: " + url );
+                if (is == null) {
+                    throw new SAXException("Cannot open stream from the url: " + url);
                 }
-                return IOUtil.toByteArray( is );
-            }
-            catch ( IOException e )
-            {
-                throw new SAXException( e );
-            }
-            finally
-            {
-                IOUtil.close( is );
+                return IOUtil.toByteArray(is);
+            } catch (IOException e) {
+                throw new SAXException(e);
+            } finally {
+                IOUtil.close(is);
             }
         }
     }

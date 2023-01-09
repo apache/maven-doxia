@@ -1,3 +1,21 @@
+/*
+ * Licensed to the Apache Software Foundation (ASF) under one
+ * or more contributor license agreements.  See the NOTICE file
+ * distributed with this work for additional information
+ * regarding copyright ownership.  The ASF licenses this file
+ * to you under the Apache License, Version 2.0 (the
+ * "License"); you may not use this file except in compliance
+ * with the License.  You may obtain a copy of the License at
+ *
+ *   http://www.apache.org/licenses/LICENSE-2.0
+ *
+ * Unless required by applicable law or agreed to in writing,
+ * software distributed under the License is distributed on an
+ * "AS IS" BASIS, WITHOUT WARRANTIES OR CONDITIONS OF ANY
+ * KIND, either express or implied.  See the License for the
+ * specific language governing permissions and limitations
+ * under the License.
+ */
 package org.apache.maven.doxia.module.markdown;
 
 /*
@@ -37,11 +55,8 @@ import org.slf4j.LoggerFactory;
  * <br>
  * <b>Note</b>: The encoding used is UTF-8.
  */
-public class MarkdownSink
-    extends AbstractTextSink
-    implements MarkdownMarkup
-{
-    private static final Logger LOGGER = LoggerFactory.getLogger( MarkdownSink.class );
+public class MarkdownSink extends AbstractTextSink implements MarkdownMarkup {
+    private static final Logger LOGGER = LoggerFactory.getLogger(MarkdownSink.class);
 
     // ----------------------------------------------------------------------
     // Instance fields
@@ -122,9 +137,8 @@ public class MarkdownSink
      *
      * @param writer not null writer to write the result. <b>Should</b> be an UTF-8 Writer.
      */
-    protected MarkdownSink( Writer writer )
-    {
-        this.writer = new PrintWriter( writer );
+    protected MarkdownSink(Writer writer) {
+        this.writer = new PrintWriter(writer);
         this.listStyles = new Stack<>();
 
         init();
@@ -135,8 +149,7 @@ public class MarkdownSink
      *
      * @return A StringBuffer.
      */
-    protected StringBuffer getBuffer()
-    {
+    protected StringBuffer getBuffer() {
         return buffer;
     }
 
@@ -145,16 +158,14 @@ public class MarkdownSink
      *
      * @param headFlag True for head mode.
      */
-    protected void setHeadFlag( boolean headFlag )
-    {
+    protected void setHeadFlag(boolean headFlag) {
         this.headerFlag = headFlag;
     }
 
     /**
      * {@inheritDoc}
      */
-    protected void init()
-    {
+    protected void init() {
         super.init();
 
         resetBuffer();
@@ -184,24 +195,21 @@ public class MarkdownSink
     /**
      * Reset the StringBuilder.
      */
-    protected void resetBuffer()
-    {
+    protected void resetBuffer() {
         buffer = new StringBuffer();
     }
 
     /**
      * Reset the TableCaptionBuffer.
      */
-    protected void resetTableCaptionBuffer()
-    {
+    protected void resetTableCaptionBuffer() {
         tableCaptionBuffer = new StringBuilder();
     }
 
     /**
      * {@inheritDoc}
      */
-    public void head()
-    {
+    public void head() {
         boolean startFlag = this.startFlag;
 
         init();
@@ -213,27 +221,22 @@ public class MarkdownSink
     /**
      * {@inheritDoc}
      */
-    public void head_()
-    {
+    public void head_() {
         headerFlag = false;
 
-        if ( ! startFlag )
-        {
-            write( EOL );
+        if (!startFlag) {
+            write(EOL);
         }
         // TODO add --- once DOXIA-617 implemented
         // write( METADATA_MARKUP + EOL );
-        if ( title != null )
-        {
-            write( "title: " + title + EOL );
+        if (title != null) {
+            write("title: " + title + EOL);
         }
-        if ( author != null )
-        {
-            write( "author: " + author + EOL );
+        if (author != null) {
+            write("author: " + author + EOL);
         }
-        if ( date != null )
-        {
-            write( "date: " + date + EOL );
+        if (date != null) {
+            write("date: " + date + EOL);
         }
         // write( METADATA_MARKUP + EOL );
     }
@@ -241,10 +244,8 @@ public class MarkdownSink
     /**
      * {@inheritDoc}
      */
-    public void title_()
-    {
-        if ( buffer.length() > 0 )
-        {
+    public void title_() {
+        if (buffer.length() > 0) {
             title = buffer.toString();
             resetBuffer();
         }
@@ -253,10 +254,8 @@ public class MarkdownSink
     /**
      * {@inheritDoc}
      */
-    public void author_()
-    {
-        if ( buffer.length() > 0 )
-        {
+    public void author_() {
+        if (buffer.length() > 0) {
             author = buffer.toString();
             resetBuffer();
         }
@@ -265,10 +264,8 @@ public class MarkdownSink
     /**
      * {@inheritDoc}
      */
-    public void date_()
-    {
-        if ( buffer.length() > 0 )
-        {
+    public void date_() {
+        if (buffer.length() > 0) {
             date = buffer.toString();
             resetBuffer();
         }
@@ -277,145 +274,127 @@ public class MarkdownSink
     /**
      * {@inheritDoc}
      */
-    public void section1_()
-    {
-        write( EOL );
+    public void section1_() {
+        write(EOL);
     }
 
     /**
      * {@inheritDoc}
      */
-    public void section2_()
-    {
-        write( EOL );
+    public void section2_() {
+        write(EOL);
     }
 
     /**
      * {@inheritDoc}
      */
-    public void section3_()
-    {
-        write( EOL );
+    public void section3_() {
+        write(EOL);
     }
 
     /**
      * {@inheritDoc}
      */
-    public void section4_()
-    {
-        write( EOL );
+    public void section4_() {
+        write(EOL);
     }
 
     /**
      * {@inheritDoc}
      */
-    public void section5_()
-    {
-        write( EOL );
+    public void section5_() {
+        write(EOL);
     }
 
-    private void sectionTitle( int level )
-    {
-        write( EOL + StringUtils.repeat( SECTION_TITLE_START_MARKUP, level ) + SPACE );
-    }
-
-    /**
-     * {@inheritDoc}
-     */
-    public void sectionTitle1()
-    {
-        sectionTitle( 1 );
+    private void sectionTitle(int level) {
+        write(EOL + StringUtils.repeat(SECTION_TITLE_START_MARKUP, level) + SPACE);
     }
 
     /**
      * {@inheritDoc}
      */
-    public void sectionTitle1_()
-    {
-        write( EOL + EOL );
+    public void sectionTitle1() {
+        sectionTitle(1);
     }
 
     /**
      * {@inheritDoc}
      */
-    public void sectionTitle2()
-    {
-        sectionTitle( 2 );
+    public void sectionTitle1_() {
+        write(EOL + EOL);
     }
 
     /**
      * {@inheritDoc}
      */
-    public void sectionTitle2_()
-    {
-        write( EOL + EOL );
+    public void sectionTitle2() {
+        sectionTitle(2);
     }
 
     /**
      * {@inheritDoc}
      */
-    public void sectionTitle3()
-    {
-        sectionTitle( 3 );
+    public void sectionTitle2_() {
+        write(EOL + EOL);
     }
 
     /**
      * {@inheritDoc}
      */
-    public void sectionTitle3_()
-    {
-        write( EOL + EOL );
+    public void sectionTitle3() {
+        sectionTitle(3);
     }
 
     /**
      * {@inheritDoc}
      */
-    public void sectionTitle4()
-    {
-        sectionTitle( 4 );
+    public void sectionTitle3_() {
+        write(EOL + EOL);
     }
 
     /**
      * {@inheritDoc}
      */
-    public void sectionTitle4_()
-    {
-        write( EOL + EOL );
+    public void sectionTitle4() {
+        sectionTitle(4);
     }
 
     /**
      * {@inheritDoc}
      */
-    public void sectionTitle5()
-    {
-        sectionTitle( 5 );
+    public void sectionTitle4_() {
+        write(EOL + EOL);
     }
 
     /**
      * {@inheritDoc}
      */
-    public void sectionTitle5_()
-    {
-        write( EOL + EOL );
+    public void sectionTitle5() {
+        sectionTitle(5);
     }
 
     /**
      * {@inheritDoc}
      */
-    public void list()
-    {
+    public void sectionTitle5_() {
+        write(EOL + EOL);
+    }
+
+    /**
+     * {@inheritDoc}
+     */
+    public void list() {
         listNestingIndent += " ";
-        listStyles.push( LIST_START_MARKUP );
-        write( EOL );
+        listStyles.push(LIST_START_MARKUP);
+        write(EOL);
     }
 
     /**
      * {@inheritDoc}
      */
-    public void list_()
-    {
-        write( EOL );
-        listNestingIndent = StringUtils.chomp( listNestingIndent, " " );
+    public void list_() {
+        write(EOL);
+        listNestingIndent = StringUtils.chomp(listNestingIndent, " ");
         listStyles.pop();
         itemFlag = false;
     }
@@ -423,11 +402,10 @@ public class MarkdownSink
     /**
      * {@inheritDoc}
      */
-    public void listItem()
-    {
-        //if ( !numberedList )
-        //write( EOL + listNestingIndent + "*" );
-        //else
+    public void listItem() {
+        // if ( !numberedList )
+        // write( EOL + listNestingIndent + "*" );
+        // else
         numberedListItem();
         itemFlag = true;
     }
@@ -435,48 +413,44 @@ public class MarkdownSink
     /**
      * {@inheritDoc}
      */
-    public void listItem_()
-    {
-        write( EOL );
+    public void listItem_() {
+        write(EOL);
         itemFlag = false;
     }
 
     /** {@inheritDoc} */
-    public void numberedList( int numbering )
-    {
+    public void numberedList(int numbering) {
         listNestingIndent += " ";
-        write( EOL );
+        write(EOL);
 
         String style;
-        switch ( numbering )
-        {
+        switch (numbering) {
             case NUMBERING_UPPER_ALPHA:
-                style = String.valueOf( NUMBERING_UPPER_ALPHA_CHAR );
+                style = String.valueOf(NUMBERING_UPPER_ALPHA_CHAR);
                 break;
             case NUMBERING_LOWER_ALPHA:
-                style = String.valueOf( NUMBERING_LOWER_ALPHA_CHAR );
+                style = String.valueOf(NUMBERING_LOWER_ALPHA_CHAR);
                 break;
             case NUMBERING_UPPER_ROMAN:
-                style = String.valueOf( NUMBERING_UPPER_ROMAN_CHAR );
+                style = String.valueOf(NUMBERING_UPPER_ROMAN_CHAR);
                 break;
             case NUMBERING_LOWER_ROMAN:
-                style = String.valueOf( NUMBERING_LOWER_ROMAN_CHAR );
+                style = String.valueOf(NUMBERING_LOWER_ROMAN_CHAR);
                 break;
             case NUMBERING_DECIMAL:
             default:
-                style = String.valueOf( NUMBERING );
+                style = String.valueOf(NUMBERING);
         }
 
-        listStyles.push( style );
+        listStyles.push(style);
     }
 
     /**
      * {@inheritDoc}
      */
-    public void numberedList_()
-    {
-        write( EOL );
-        listNestingIndent = StringUtils.chomp( listNestingIndent, " " );
+    public void numberedList_() {
+        write(EOL);
+        listNestingIndent = StringUtils.chomp(listNestingIndent, " ");
         listStyles.pop();
         itemFlag = false;
     }
@@ -484,39 +458,35 @@ public class MarkdownSink
     /**
      * {@inheritDoc}
      */
-    public void numberedListItem()
-    {
+    public void numberedListItem() {
         String style = listStyles.peek();
-        write( EOL + listNestingIndent + style + SPACE );
+        write(EOL + listNestingIndent + style + SPACE);
         itemFlag = true;
     }
 
     /**
      * {@inheritDoc}
      */
-    public void numberedListItem_()
-    {
-        write( EOL );
+    public void numberedListItem_() {
+        write(EOL);
         itemFlag = false;
     }
 
     /**
      * {@inheritDoc}
      */
-    public void definitionList()
-    {
+    public void definitionList() {
         listNestingIndent += " ";
-        listStyles.push( "" );
-        write( EOL );
+        listStyles.push("");
+        write(EOL);
     }
 
     /**
      * {@inheritDoc}
      */
-    public void definitionList_()
-    {
-        write( EOL );
-        listNestingIndent = StringUtils.chomp( listNestingIndent, " " );
+    public void definitionList_() {
+        write(EOL);
+        listNestingIndent = StringUtils.chomp(listNestingIndent, " ");
         listStyles.pop();
         itemFlag = false;
     }
@@ -524,128 +494,106 @@ public class MarkdownSink
     /**
      * {@inheritDoc}
      */
-    public void definedTerm()
-    {
-        write( EOL + " [" );
+    public void definedTerm() {
+        write(EOL + " [");
     }
 
     /**
      * {@inheritDoc}
      */
-    public void definedTerm_()
-    {
-        write( "] " );
+    public void definedTerm_() {
+        write("] ");
     }
 
     /**
      * {@inheritDoc}
      */
-    public void definition()
-    {
+    public void definition() {
         itemFlag = true;
     }
 
     /**
      * {@inheritDoc}
      */
-    public void definition_()
-    {
-        write( EOL );
+    public void definition_() {
+        write(EOL);
         itemFlag = false;
     }
 
     /**
      * {@inheritDoc}
      */
-    public void pageBreak()
-    {
-        write( EOL + PAGE_BREAK + EOL );
+    public void pageBreak() {
+        write(EOL + PAGE_BREAK + EOL);
     }
 
     /**
      * {@inheritDoc}
      */
-    public void paragraph()
-    {
-        if ( tableCellFlag )
-        {
+    public void paragraph() {
+        if (tableCellFlag) {
             // ignore paragraphs in table cells
-        }
-        else if ( itemFlag )
-        {
-            write( EOL + EOL + "  " + listNestingIndent );
-        }
-        else
-        {
-            write( EOL + " " );
+        } else if (itemFlag) {
+            write(EOL + EOL + "  " + listNestingIndent);
+        } else {
+            write(EOL + " ");
         }
     }
 
     /**
      * {@inheritDoc}
      */
-    public void paragraph_()
-    {
-        if ( tableCellFlag )
-        {
+    public void paragraph_() {
+        if (tableCellFlag) {
             // ignore paragraphs in table cells
-        }
-        else
-        {
-            write( EOL + EOL );
+        } else {
+            write(EOL + EOL);
         }
     }
 
     /** {@inheritDoc} */
-    public void verbatim( SinkEventAttributes attributes )
-    {
-        write( EOL );
+    public void verbatim(SinkEventAttributes attributes) {
+        write(EOL);
         verbatimFlag = true;
-        write( EOL + NON_BOXED_VERBATIM_START_MARKUP + EOL );
+        write(EOL + NON_BOXED_VERBATIM_START_MARKUP + EOL);
     }
 
     /**
      * {@inheritDoc}
      */
-    public void verbatim_()
-    {
-        write( EOL + NON_BOXED_VERBATIM_END_MARKUP + EOL );
+    public void verbatim_() {
+        write(EOL + NON_BOXED_VERBATIM_END_MARKUP + EOL);
         verbatimFlag = false;
     }
 
     /**
      * {@inheritDoc}
      */
-    public void horizontalRule()
-    {
-        write( EOL + HORIZONTAL_RULE_MARKUP + EOL );
+    public void horizontalRule() {
+        write(EOL + HORIZONTAL_RULE_MARKUP + EOL);
     }
 
     /**
      * {@inheritDoc}
      */
-    public void table()
-    {
-        write( EOL );
+    public void table() {
+        write(EOL);
     }
 
     /**
      * {@inheritDoc}
      */
-    public void table_()
-    {
-        if ( tableCaptionBuffer.length() > 0 )
-        {
-            text( tableCaptionBuffer.toString() + EOL );
+    public void table_() {
+        if (tableCaptionBuffer.length() > 0) {
+            text(tableCaptionBuffer.toString() + EOL);
         }
 
         resetTableCaptionBuffer();
     }
 
     /** {@inheritDoc} */
-    public void tableRows( int[] justification, boolean grid )
-    {
-        cellJustif = null; //justification;
+    public void tableRows(int[] justification, boolean grid) {
+        cellJustif = null; // justification;
         gridFlag = grid;
         headerRow = true;
     }
@@ -653,8 +601,7 @@ public class MarkdownSink
     /**
      * {@inheritDoc}
      */
-    public void tableRows_()
-    {
+    public void tableRows_() {
         cellJustif = null;
         gridFlag = false;
     }
@@ -662,8 +609,7 @@ public class MarkdownSink
     /**
      * {@inheritDoc}
      */
-    public void tableRow()
-    {
+    public void tableRow() {
         bufferFlag = true;
         cellCount = 0;
     }
@@ -671,25 +617,23 @@ public class MarkdownSink
     /**
      * {@inheritDoc}
      */
-    public void tableRow_()
-    {
+    public void tableRow_() {
         bufferFlag = false;
 
         // write out the header row first, then the data in the buffer
         buildRowLine();
 
-        write( TABLE_ROW_SEPARATOR_MARKUP );
+        write(TABLE_ROW_SEPARATOR_MARKUP);
 
-        write( buffer.toString() );
+        write(buffer.toString());
 
         resetBuffer();
 
-        write( EOL );
+        write(EOL);
 
-        if ( headerRow )
-        {
-           write( rowLine );
-           headerRow = false;
+        if (headerRow) {
+            write(rowLine);
+            headerRow = false;
         }
 
         // only reset cell count if this is the last row
@@ -697,32 +641,26 @@ public class MarkdownSink
     }
 
     /** Construct a table row. */
-    private void buildRowLine()
-    {
-        StringBuilder rLine = new StringBuilder( TABLE_ROW_SEPARATOR_MARKUP );
+    private void buildRowLine() {
+        StringBuilder rLine = new StringBuilder(TABLE_ROW_SEPARATOR_MARKUP);
 
-        for ( int i = 0; i < cellCount; i++ )
-        {
-            if ( cellJustif != null )
-            {
-                switch ( cellJustif[i] )
-                {
-                case 1:
-                    rLine.append( TABLE_COL_LEFT_ALIGNED_MARKUP );
-                    break;
-                case 2:
-                    rLine.append( TABLE_COL_RIGHT_ALIGNED_MARKUP );
-                    break;
-                default:
-                    rLine.append( TABLE_COL_DEFAULT_ALIGNED_MARKUP );
+        for (int i = 0; i < cellCount; i++) {
+            if (cellJustif != null) {
+                switch (cellJustif[i]) {
+                    case 1:
+                        rLine.append(TABLE_COL_LEFT_ALIGNED_MARKUP);
+                        break;
+                    case 2:
+                        rLine.append(TABLE_COL_RIGHT_ALIGNED_MARKUP);
+                        break;
+                    default:
+                        rLine.append(TABLE_COL_DEFAULT_ALIGNED_MARKUP);
                 }
-            }
-            else
-            {
-                rLine.append( TABLE_COL_DEFAULT_ALIGNED_MARKUP );
+            } else {
+                rLine.append(TABLE_COL_DEFAULT_ALIGNED_MARKUP);
             }
         }
-        rLine.append( EOL );
+        rLine.append(EOL);
 
         this.rowLine = rLine.toString();
     }
@@ -730,17 +668,15 @@ public class MarkdownSink
     /**
      * {@inheritDoc}
      */
-    public void tableCell()
-    {
-        tableCell( false );
+    public void tableCell() {
+        tableCell(false);
     }
 
     /**
      * {@inheritDoc}
      */
-    public void tableHeaderCell()
-    {
-        tableCell( true );
+    public void tableHeaderCell() {
+        tableCell(true);
     }
 
     /**
@@ -748,88 +684,76 @@ public class MarkdownSink
      *
      * @param headerRow If this cell is part of a header row.
      */
-    public void tableCell( boolean headerRow )
-    {
+    public void tableCell(boolean headerRow) {
         tableCellFlag = true;
     }
 
     /**
      * {@inheritDoc}
      */
-    public void tableCell_()
-    {
+    public void tableCell_() {
         endTableCell();
     }
 
     /**
      * {@inheritDoc}
      */
-    public void tableHeaderCell_()
-    {
+    public void tableHeaderCell_() {
         endTableCell();
     }
 
     /**
      * Ends a table cell.
      */
-    private void endTableCell()
-    {
+    private void endTableCell() {
         tableCellFlag = false;
-        buffer.append( TABLE_CELL_SEPARATOR_MARKUP );
+        buffer.append(TABLE_CELL_SEPARATOR_MARKUP);
         cellCount++;
     }
 
     /**
      * {@inheritDoc}
      */
-    public void tableCaption()
-    {
+    public void tableCaption() {
         tableCaptionFlag = true;
     }
 
     /**
      * {@inheritDoc}
      */
-    public void tableCaption_()
-    {
+    public void tableCaption_() {
         tableCaptionFlag = false;
     }
 
     /**
      * {@inheritDoc}
      */
-    public void figureCaption_()
-    {
-        write( EOL );
+    public void figureCaption_() {
+        write(EOL);
     }
 
     /** {@inheritDoc} */
-    public void figureGraphics( String name )
-    {
-        write( "<img src=\"" + name + "\" />" );
+    public void figureGraphics(String name) {
+        write("<img src=\"" + name + "\" />");
     }
 
     /** {@inheritDoc} */
-    public void anchor( String name )
-    {
-        //write( ANCHOR_START_MARKUP + name );
+    public void anchor(String name) {
+        // write( ANCHOR_START_MARKUP + name );
         // TODO get implementation from Xhtml5 base sink
     }
 
     /**
      * {@inheritDoc}
      */
-    public void anchor_()
-    {
-        //write( ANCHOR_END_MARKUP );
+    public void anchor_() {
+        // write( ANCHOR_END_MARKUP );
     }
 
     /** {@inheritDoc} */
-    public void link( String name )
-    {
-        if ( !headerFlag )
-        {
-            write( LINK_START_1_MARKUP );
+    public void link(String name) {
+        if (!headerFlag) {
+            write(LINK_START_1_MARKUP);
             linkName = name;
         }
     }
@@ -837,13 +761,11 @@ public class MarkdownSink
     /**
      * {@inheritDoc}
      */
-    public void link_()
-    {
-        if ( !headerFlag )
-        {
-            write( LINK_START_2_MARKUP );
-            text( linkName.startsWith( "#" ) ? linkName.substring( 1 ) : linkName );
-            write( LINK_END_MARKUP );
+    public void link_() {
+        if (!headerFlag) {
+            write(LINK_START_2_MARKUP);
+            text(linkName.startsWith("#") ? linkName.substring(1) : linkName);
+            write(LINK_END_MARKUP);
             linkName = null;
         }
     }
@@ -854,66 +776,53 @@ public class MarkdownSink
      * @param name The name of the link.
      * @param target The link target.
      */
-    public void link( String name, String target )
-    {
-        if ( !headerFlag )
-        {
-            write( LINK_START_1_MARKUP );
+    public void link(String name, String target) {
+        if (!headerFlag) {
+            write(LINK_START_1_MARKUP);
         }
     }
 
     /**
      * {@inheritDoc}
      */
-    public void inline()
-    {
-        inline( null );
+    public void inline() {
+        inline(null);
     }
 
     /** {@inheritDoc} */
-    public void inline( SinkEventAttributes attributes )
-    {
-        if ( !headerFlag )
-        {
+    public void inline(SinkEventAttributes attributes) {
+        if (!headerFlag) {
             List<String> tags = new ArrayList<>();
 
-            if ( attributes != null )
-            {
+            if (attributes != null) {
 
-                if ( attributes.containsAttribute( SinkEventAttributes.SEMANTICS, "italic" ) )
-                {
-                    write( ITALIC_START_MARKUP );
-                    tags.add( 0, ITALIC_END_MARKUP );
+                if (attributes.containsAttribute(SinkEventAttributes.SEMANTICS, "italic")) {
+                    write(ITALIC_START_MARKUP);
+                    tags.add(0, ITALIC_END_MARKUP);
                 }
 
-                if ( attributes.containsAttribute( SinkEventAttributes.SEMANTICS, "bold" ) )
-                {
-                    write( BOLD_START_MARKUP );
-                    tags.add( 0, BOLD_END_MARKUP );
+                if (attributes.containsAttribute(SinkEventAttributes.SEMANTICS, "bold")) {
+                    write(BOLD_START_MARKUP);
+                    tags.add(0, BOLD_END_MARKUP);
                 }
 
-                if ( attributes.containsAttribute( SinkEventAttributes.SEMANTICS, "code" ) )
-                {
-                    write( MONOSPACED_START_MARKUP );
-                    tags.add( 0, MONOSPACED_END_MARKUP );
+                if (attributes.containsAttribute(SinkEventAttributes.SEMANTICS, "code")) {
+                    write(MONOSPACED_START_MARKUP);
+                    tags.add(0, MONOSPACED_END_MARKUP);
                 }
-
             }
 
-            inlineStack.push( tags );
+            inlineStack.push(tags);
         }
     }
 
     /**
      * {@inheritDoc}
      */
-    public void inline_()
-    {
-        if ( !headerFlag )
-        {
-            for ( String tag: inlineStack.pop() )
-            {
-                write( tag );
+    public void inline_() {
+        if (!headerFlag) {
+            for (String tag : inlineStack.pop()) {
+                write(tag);
             }
         }
     }
@@ -921,116 +830,90 @@ public class MarkdownSink
     /**
      * {@inheritDoc}
      */
-    public void italic()
-    {
-        inline( SinkEventAttributeSet.Semantics.ITALIC );
+    public void italic() {
+        inline(SinkEventAttributeSet.Semantics.ITALIC);
     }
 
     /**
      * {@inheritDoc}
      */
-    public void italic_()
-    {
+    public void italic_() {
         inline_();
     }
 
     /**
      * {@inheritDoc}
      */
-    public void bold()
-    {
-        inline( SinkEventAttributeSet.Semantics.BOLD );
+    public void bold() {
+        inline(SinkEventAttributeSet.Semantics.BOLD);
     }
 
     /**
      * {@inheritDoc}
      */
-    public void bold_()
-    {
+    public void bold_() {
         inline_();
     }
 
     /**
      * {@inheritDoc}
      */
-    public void monospaced()
-    {
-        inline( SinkEventAttributeSet.Semantics.CODE );
+    public void monospaced() {
+        inline(SinkEventAttributeSet.Semantics.CODE);
     }
 
     /**
      * {@inheritDoc}
      */
-    public void monospaced_()
-    {
+    public void monospaced_() {
         inline_();
     }
 
     /**
      * {@inheritDoc}
      */
-    public void lineBreak()
-    {
-        if ( headerFlag || bufferFlag )
-        {
-            buffer.append( EOL );
-        }
-        else if ( verbatimFlag )
-        {
-            write( EOL );
-        }
-        else
-        {
-            write( BACKSLASH + EOL );
+    public void lineBreak() {
+        if (headerFlag || bufferFlag) {
+            buffer.append(EOL);
+        } else if (verbatimFlag) {
+            write(EOL);
+        } else {
+            write(BACKSLASH + EOL);
         }
     }
 
     /**
      * {@inheritDoc}
      */
-    public void nonBreakingSpace()
-    {
-        if ( headerFlag || bufferFlag )
-        {
-            buffer.append( NON_BREAKING_SPACE_MARKUP );
-        }
-        else
-        {
-            write( NON_BREAKING_SPACE_MARKUP );
+    public void nonBreakingSpace() {
+        if (headerFlag || bufferFlag) {
+            buffer.append(NON_BREAKING_SPACE_MARKUP);
+        } else {
+            write(NON_BREAKING_SPACE_MARKUP);
         }
     }
 
     /** {@inheritDoc} */
-    public void text( String text )
-    {
-        if ( tableCaptionFlag )
-        {
-            tableCaptionBuffer.append( text );
-        }
-        else if ( headerFlag || bufferFlag )
-        {
-            buffer.append( text );
-        }
-        else if ( verbatimFlag )
-        {
-            verbatimContent( text );
-        }
-        else
-        {
-            content( text );
+    public void text(String text) {
+        if (tableCaptionFlag) {
+            tableCaptionBuffer.append(text);
+        } else if (headerFlag || bufferFlag) {
+            buffer.append(text);
+        } else if (verbatimFlag) {
+            verbatimContent(text);
+        } else {
+            content(text);
         }
     }
 
     /** {@inheritDoc} */
-    public void rawText( String text )
-    {
-        write( text );
+    public void rawText(String text) {
+        write(text);
     }
 
     /** {@inheritDoc} */
-    public void comment( String comment )
-    {
-        rawText( ( startFlag ? "" : EOL ) + COMMENT_START + comment + COMMENT_END );
+    public void comment(String comment) {
+        rawText((startFlag ? "" : EOL) + COMMENT_START + comment + COMMENT_END);
     }
 
     /**
@@ -1039,9 +922,8 @@ public class MarkdownSink
      * Unkown events just log a warning message but are ignored otherwise.
      * @see org.apache.maven.doxia.sink.Sink#unknown(String,Object[],SinkEventAttributes)
      */
-    public void unknown( String name, Object[] requiredParams, SinkEventAttributes attributes )
-    {
-        LOGGER.warn( "Unknown Sink event '" + name + "', ignoring!" );
+    public void unknown(String name, Object[] requiredParams, SinkEventAttributes attributes) {
+        LOGGER.warn("Unknown Sink event '" + name + "', ignoring!");
     }
 
     /**
@@ -1049,16 +931,12 @@ public class MarkdownSink
      *
      * @param text The text to write.
      */
-    protected void write( String text )
-    {
+    protected void write(String text) {
         startFlag = false;
-        if ( tableCellFlag )
-        {
-            buffer.append( text );
-        }
-        else
-        {
-            writer.write( unifyEOLs( text ) );
+        if (tableCellFlag) {
+            buffer.append(text);
+        } else {
+            writer.write(unifyEOLs(text));
         }
     }
 
@@ -1067,9 +945,8 @@ public class MarkdownSink
      *
      * @param text The text to write.
      */
-    protected void content( String text )
-    {
-        write( escapeMarkdown( text ) );
+    protected void content(String text) {
+        write(escapeMarkdown(text));
     }
 
     /**
@@ -1077,24 +954,21 @@ public class MarkdownSink
      *
      * @param text The text to write.
      */
-    protected void verbatimContent( String text )
-    {
-        write( text );
+    protected void verbatimContent(String text) {
+        write(text);
     }
 
     /**
      * {@inheritDoc}
      */
-    public void flush()
-    {
+    public void flush() {
         writer.flush();
     }
 
     /**
      * {@inheritDoc}
      */
-    public void close()
-    {
+    public void close() {
         writer.close();
 
         init();
@@ -1114,21 +988,17 @@ public class MarkdownSink
      * @param text the String to escape, may be null
      * @return the text escaped, "" if null String input
      */
-    private static String escapeMarkdown( String text )
-    {
-        if ( text == null )
-        {
+    private static String escapeMarkdown(String text) {
+        if (text == null) {
             return "";
         }
 
         int length = text.length();
-        StringBuilder buffer = new StringBuilder( length );
+        StringBuilder buffer = new StringBuilder(length);
 
-        for ( int i = 0; i < length; ++i )
-        {
-            char c = text.charAt( i );
-            switch ( c )
-            { // 0080
+        for (int i = 0; i < length; ++i) {
+            char c = text.charAt(i);
+            switch (c) { // 0080
                 case '\\':
                 case '~':
                 case '=':
@@ -1140,11 +1010,11 @@ public class MarkdownSink
                 case '>':
                 case '{':
                 case '}':
-                    buffer.append( '\\' );
-                    buffer.append( c );
+                    buffer.append('\\');
+                    buffer.append(c);
                     break;
                 default:
-                    buffer.append( c );
+                    buffer.append(c);
             }
         }
 

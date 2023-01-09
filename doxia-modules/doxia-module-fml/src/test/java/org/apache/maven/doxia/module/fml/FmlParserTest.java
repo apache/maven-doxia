@@ -1,3 +1,21 @@
+/*
+ * Licensed to the Apache Software Foundation (ASF) under one
+ * or more contributor license agreements.  See the NOTICE file
+ * distributed with this work for additional information
+ * regarding copyright ownership.  The ASF licenses this file
+ * to you under the Apache License, Version 2.0 (the
+ * "License"); you may not use this file except in compliance
+ * with the License.  You may obtain a copy of the License at
+ *
+ *   http://www.apache.org/licenses/LICENSE-2.0
+ *
+ * Unless required by applicable law or agreed to in writing,
+ * software distributed under the License is distributed on an
+ * "AS IS" BASIS, WITHOUT WARRANTIES OR CONDITIONS OF ANY
+ * KIND, either express or implied.  See the License for the
+ * specific language governing permissions and limitations
+ * under the License.
+ */
 package org.apache.maven.doxia.module.fml;
 
 /*
@@ -26,7 +44,6 @@ import java.io.FileFilter;
 import java.io.FileReader;
 import java.io.Reader;
 import java.io.Writer;
-
 import java.util.Iterator;
 import java.util.regex.Pattern;
 
@@ -49,123 +66,109 @@ import static org.junit.jupiter.api.Assertions.assertTrue;
 /**
  * @author <a href="mailto:evenisse@codehaus.org">Emmanuel Venisse</a>
  */
-public class FmlParserTest
-    extends AbstractParserTest
-{
+public class FmlParserTest extends AbstractParserTest {
     @Inject
     private FmlParser parser;
 
     @BeforeEach
-    protected void setUp()
-        throws Exception
-    {
+    protected void setUp() throws Exception {
         // AbstractXmlParser.CachedFileEntityResolver downloads DTD/XSD files in ${java.io.tmpdir}
         // Be sure to delete them
-        String tmpDir = System.getProperty( "java.io.tmpdir" );
+        String tmpDir = System.getProperty("java.io.tmpdir");
 
         // Using FileFilter, because is it is much faster then FileUtils.listFiles
-        File[] tmpFiles = new File( tmpDir ).listFiles( new FileFilter()
-        {
-            final Pattern xsdPatterns = Pattern.compile( "(xml|fml\\-.+)\\.xsd" );
+        File[] tmpFiles = new File(tmpDir).listFiles(new FileFilter() {
+            final Pattern xsdPatterns = Pattern.compile("(xml|fml\\-.+)\\.xsd");
 
             @Override
-            public boolean accept( File pathname )
-            {
-                return xsdPatterns.matcher( pathname.getName() ).matches();
+            public boolean accept(File pathname) {
+                return xsdPatterns.matcher(pathname.getName()).matches();
             }
-        } );
+        });
 
-        for ( File tmpFile : tmpFiles )
-        {
+        for (File tmpFile : tmpFiles) {
             tmpFile.delete();
         }
     }
 
     /** {@inheritDoc} */
-    protected Parser createParser()
-    {
+    protected Parser createParser() {
         return parser;
     }
 
     /** {@inheritDoc} */
-    protected String outputExtension()
-    {
+    protected String outputExtension() {
         return "fml";
     }
 
     /** @throws Exception */
     @Test
-    public void testFaqEventsList()
-        throws Exception
-    {
+    public void testFaqEventsList() throws Exception {
         SinkEventTestingSink sink = new SinkEventTestingSink();
 
-        try ( Reader reader = getTestReader( "simpleFaq" ) )
-        {
-            createParser().parse( reader, sink );
+        try (Reader reader = getTestReader("simpleFaq")) {
+            createParser().parse(reader, sink);
         }
 
         Iterator<SinkEventElement> it = sink.getEventList().iterator();
 
-        assertEquals( "comment", ( it.next() ).getName() );
-        assertEquals( "head", ( it.next() ).getName() );
-        assertEquals( "title", ( it.next() ).getName() );
-        assertEquals( "text", ( it.next() ).getName() );
-        assertEquals( "title_", ( it.next() ).getName() );
-        assertEquals( "head_", ( it.next() ).getName() );
-        assertEquals( "body", ( it.next() ).getName() );
-        assertEquals( "section1", ( it.next() ).getName() );
-        assertEquals( "anchor", ( it.next() ).getName() );
-        assertEquals( "anchor_", ( it.next() ).getName() );
-        assertEquals( "sectionTitle1", ( it.next() ).getName() );
-        assertEquals( "text", ( it.next() ).getName() );
-        assertEquals( "sectionTitle1_", ( it.next() ).getName() );
-        assertEquals( "paragraph", ( it.next() ).getName() );
-        assertEquals( "inline", ( it.next() ).getName() );
-        assertEquals( "text", ( it.next() ).getName() );
-        assertEquals( "inline_", ( it.next() ).getName() );
-        assertEquals( "paragraph_", ( it.next() ).getName() );
-        assertEquals( "numberedList", ( it.next() ).getName() );
-        assertEquals( "numberedListItem", ( it.next() ).getName() );
-        assertEquals( "link", ( it.next() ).getName() );
-        assertEquals( "text", ( it.next() ).getName() );
-        assertEquals( "link_", ( it.next() ).getName() );
-        assertEquals( "numberedListItem_", ( it.next() ).getName() );
-        assertEquals( "numberedList_", ( it.next() ).getName() );
-        assertEquals( "section1_", ( it.next() ).getName() );
-        assertEquals( "section1", ( it.next() ).getName() );
-        assertEquals( "anchor", ( it.next() ).getName() );
-        assertEquals( "anchor_", ( it.next() ).getName() );
-        assertEquals( "sectionTitle1", ( it.next() ).getName() );
-        assertEquals( "text", ( it.next() ).getName() );
-        assertEquals( "sectionTitle1_", ( it.next() ).getName() );
-        assertEquals( "definitionList", ( it.next() ).getName() );
-        assertEquals( "anchor", ( it.next() ).getName() );
-        assertEquals( "anchor_", ( it.next() ).getName() );
-        assertEquals( "definedTerm", ( it.next() ).getName() );
-        assertEquals( "text", ( it.next() ).getName() );
-        assertEquals( "definedTerm_", ( it.next() ).getName() );
-        assertEquals( "definition", ( it.next() ).getName() );
-        assertEquals( "paragraph", ( it.next() ).getName() );
-        assertEquals( "text", ( it.next() ).getName() );
-        assertEquals( "paragraph_", ( it.next() ).getName() );
-        assertEquals( "paragraph", ( it.next() ).getName() );
-        assertEquals( "link", ( it.next() ).getName() );
-        assertEquals( "text", ( it.next() ).getName() );
-        assertEquals( "link_", ( it.next() ).getName() );
-        assertEquals( "paragraph_", ( it.next() ).getName() );
-        assertEquals( "definition_", ( it.next() ).getName() );
-        assertEquals( "definitionList_", ( it.next() ).getName() );
-        assertEquals( "section1_", ( it.next() ).getName() );
-        assertEquals( "body_", ( it.next() ).getName() );
-        assertFalse( it.hasNext() );
+        assertEquals("comment", (it.next()).getName());
+        assertEquals("head", (it.next()).getName());
+        assertEquals("title", (it.next()).getName());
+        assertEquals("text", (it.next()).getName());
+        assertEquals("title_", (it.next()).getName());
+        assertEquals("head_", (it.next()).getName());
+        assertEquals("body", (it.next()).getName());
+        assertEquals("section1", (it.next()).getName());
+        assertEquals("anchor", (it.next()).getName());
+        assertEquals("anchor_", (it.next()).getName());
+        assertEquals("sectionTitle1", (it.next()).getName());
+        assertEquals("text", (it.next()).getName());
+        assertEquals("sectionTitle1_", (it.next()).getName());
+        assertEquals("paragraph", (it.next()).getName());
+        assertEquals("inline", (it.next()).getName());
+        assertEquals("text", (it.next()).getName());
+        assertEquals("inline_", (it.next()).getName());
+        assertEquals("paragraph_", (it.next()).getName());
+        assertEquals("numberedList", (it.next()).getName());
+        assertEquals("numberedListItem", (it.next()).getName());
+        assertEquals("link", (it.next()).getName());
+        assertEquals("text", (it.next()).getName());
+        assertEquals("link_", (it.next()).getName());
+        assertEquals("numberedListItem_", (it.next()).getName());
+        assertEquals("numberedList_", (it.next()).getName());
+        assertEquals("section1_", (it.next()).getName());
+        assertEquals("section1", (it.next()).getName());
+        assertEquals("anchor", (it.next()).getName());
+        assertEquals("anchor_", (it.next()).getName());
+        assertEquals("sectionTitle1", (it.next()).getName());
+        assertEquals("text", (it.next()).getName());
+        assertEquals("sectionTitle1_", (it.next()).getName());
+        assertEquals("definitionList", (it.next()).getName());
+        assertEquals("anchor", (it.next()).getName());
+        assertEquals("anchor_", (it.next()).getName());
+        assertEquals("definedTerm", (it.next()).getName());
+        assertEquals("text", (it.next()).getName());
+        assertEquals("definedTerm_", (it.next()).getName());
+        assertEquals("definition", (it.next()).getName());
+        assertEquals("paragraph", (it.next()).getName());
+        assertEquals("text", (it.next()).getName());
+        assertEquals("paragraph_", (it.next()).getName());
+        assertEquals("paragraph", (it.next()).getName());
+        assertEquals("link", (it.next()).getName());
+        assertEquals("text", (it.next()).getName());
+        assertEquals("link_", (it.next()).getName());
+        assertEquals("paragraph_", (it.next()).getName());
+        assertEquals("definition_", (it.next()).getName());
+        assertEquals("definitionList_", (it.next()).getName());
+        assertEquals("section1_", (it.next()).getName());
+        assertEquals("body_", (it.next()).getName());
+        assertFalse(it.hasNext());
     }
 
     /** @throws Exception */
     @Test
-    public void testEntities()
-        throws Exception
-    {
+    public void testEntities() throws Exception {
         final String text = "<!DOCTYPE test [<!ENTITY Alpha \"&#913;\">]>"
                 + "<faqs title=\"&amp;&Alpha;\"><part id=\"General\"><title>&lt;&Alpha;</title>"
                 + "<faq id=\"id\"><question>&gt;&Alpha;</question>"
@@ -174,94 +177,94 @@ public class FmlParserTest
 
         SinkEventTestingSink sink = new SinkEventTestingSink();
 
-        parser.setValidate( false );
-        parser.parse( text, sink );
+        parser.setValidate(false);
+        parser.parse(text, sink);
 
         Iterator<SinkEventElement> it = sink.getEventList().iterator();
 
-        assertEquals( "head", ( it.next() ).getName() );
-        assertEquals( "title", ( it.next() ).getName() );
+        assertEquals("head", (it.next()).getName());
+        assertEquals("title", (it.next()).getName());
 
         // head title TODO: should be two events
-        assertTextEvent( it.next(), "&&#913;" );
+        assertTextEvent(it.next(), "&&#913;");
 
-        assertEquals( "title_", ( it.next() ).getName() );
-        assertEquals( "head_", ( it.next() ).getName() );
-        assertEquals( "body", ( it.next() ).getName() );
-        assertEquals( "section1", ( it.next() ).getName() );
-        assertEquals( "anchor", ( it.next() ).getName() );
-        assertEquals( "anchor_", ( it.next() ).getName() );
-        assertEquals( "sectionTitle1", ( it.next() ).getName() );
+        assertEquals("title_", (it.next()).getName());
+        assertEquals("head_", (it.next()).getName());
+        assertEquals("body", (it.next()).getName());
+        assertEquals("section1", (it.next()).getName());
+        assertEquals("anchor", (it.next()).getName());
+        assertEquals("anchor_", (it.next()).getName());
+        assertEquals("sectionTitle1", (it.next()).getName());
 
         // faq title TODO: should be two events
-        assertTextEvent( it.next(), "&&#913;" );
+        assertTextEvent(it.next(), "&&#913;");
 
-        assertEquals( "sectionTitle1_", ( it.next() ).getName() );
-        assertEquals( "paragraph", ( it.next() ).getName() );
-        assertEquals( "inline", ( it.next() ).getName() );
+        assertEquals("sectionTitle1_", (it.next()).getName());
+        assertEquals("paragraph", (it.next()).getName());
+        assertEquals("inline", (it.next()).getName());
 
         // part title in TOC
-        assertTextEvent( it.next(), "<" );
-        assertTextEvent( it.next(), "\u0391" );
+        assertTextEvent(it.next(), "<");
+        assertTextEvent(it.next(), "\u0391");
 
-        assertEquals( "inline_", ( it.next() ).getName() );
-        assertEquals( "paragraph_", ( it.next() ).getName() );
-        assertEquals( "numberedList", ( it.next() ).getName() );
-        assertEquals( "numberedListItem", ( it.next() ).getName() );
-        assertEquals( "link", ( it.next() ).getName() );
+        assertEquals("inline_", (it.next()).getName());
+        assertEquals("paragraph_", (it.next()).getName());
+        assertEquals("numberedList", (it.next()).getName());
+        assertEquals("numberedListItem", (it.next()).getName());
+        assertEquals("link", (it.next()).getName());
 
         // question in TOC
-        assertTextEvent( it.next(), ">" );
-        assertTextEvent( it.next(), "\u0391" );
+        assertTextEvent(it.next(), ">");
+        assertTextEvent(it.next(), "\u0391");
 
-        assertEquals( "link_", ( it.next() ).getName() );
-        assertEquals( "numberedListItem_", ( it.next() ).getName() );
-        assertEquals( "numberedList_", ( it.next() ).getName() );
-        assertEquals( "section1_", ( it.next() ).getName() );
-        assertEquals( "section1", ( it.next() ).getName() );
-        assertEquals( "anchor", ( it.next() ).getName() );
-        assertEquals( "anchor_", ( it.next() ).getName() );
-        assertEquals( "sectionTitle1", ( it.next() ).getName() );
+        assertEquals("link_", (it.next()).getName());
+        assertEquals("numberedListItem_", (it.next()).getName());
+        assertEquals("numberedList_", (it.next()).getName());
+        assertEquals("section1_", (it.next()).getName());
+        assertEquals("section1", (it.next()).getName());
+        assertEquals("anchor", (it.next()).getName());
+        assertEquals("anchor_", (it.next()).getName());
+        assertEquals("sectionTitle1", (it.next()).getName());
 
         // part title
-        assertTextEvent( it.next(), "<" );
-        assertTextEvent( it.next(), "\u0391" );
+        assertTextEvent(it.next(), "<");
+        assertTextEvent(it.next(), "\u0391");
 
-        assertEquals( "sectionTitle1_", ( it.next() ).getName() );
-        assertEquals( "definitionList", ( it.next() ).getName() );
-        assertEquals( "anchor", ( it.next() ).getName() );
-        assertEquals( "anchor_", ( it.next() ).getName() );
-        assertEquals( "definedTerm", ( it.next() ).getName() );
+        assertEquals("sectionTitle1_", (it.next()).getName());
+        assertEquals("definitionList", (it.next()).getName());
+        assertEquals("anchor", (it.next()).getName());
+        assertEquals("anchor_", (it.next()).getName());
+        assertEquals("definedTerm", (it.next()).getName());
 
         // question
-        assertTextEvent( it.next(), ">" );
-        assertTextEvent( it.next(), "\u0391" );
+        assertTextEvent(it.next(), ">");
+        assertTextEvent(it.next(), "\u0391");
 
-        assertEquals( "definedTerm_", ( it.next() ).getName() );
-        assertEquals( "definition", ( it.next() ).getName() );
-        assertEquals( "paragraph", ( it.next() ).getName() );
+        assertEquals("definedTerm_", (it.next()).getName());
+        assertEquals("definition", (it.next()).getName());
+        assertEquals("paragraph", (it.next()).getName());
 
         // answer
-        assertEquals( "inline", ( it.next() ).getName() );
-        assertTextEvent( it.next(), "<" );
-        assertTextEvent( it.next(), "img" );
-        assertTextEvent( it.next(), ">" );
-        assertEquals( "inline_", ( it.next() ).getName() );
-        assertTextEvent( it.next(), "\"" );
-        assertTextEvent( it.next(), "\u0391" );
+        assertEquals("inline", (it.next()).getName());
+        assertTextEvent(it.next(), "<");
+        assertTextEvent(it.next(), "img");
+        assertTextEvent(it.next(), ">");
+        assertEquals("inline_", (it.next()).getName());
+        assertTextEvent(it.next(), "\"");
+        assertTextEvent(it.next(), "\u0391");
 
-        assertEquals( "paragraph_", ( it.next() ).getName() );
-        assertEquals( "paragraph", ( it.next() ).getName() );
-        assertEquals( "link", ( it.next() ).getName() );
-        assertEquals( "text", ( it.next() ).getName() );
-        assertEquals( "link_", ( it.next() ).getName() );
-        assertEquals( "paragraph_", ( it.next() ).getName() );
-        assertEquals( "definition_", ( it.next() ).getName() );
-        assertEquals( "definitionList_", ( it.next() ).getName() );
-        assertEquals( "section1_", ( it.next() ).getName() );
-        assertEquals( "body_", ( it.next() ).getName() );
+        assertEquals("paragraph_", (it.next()).getName());
+        assertEquals("paragraph", (it.next()).getName());
+        assertEquals("link", (it.next()).getName());
+        assertEquals("text", (it.next()).getName());
+        assertEquals("link_", (it.next()).getName());
+        assertEquals("paragraph_", (it.next()).getName());
+        assertEquals("definition_", (it.next()).getName());
+        assertEquals("definitionList_", (it.next()).getName());
+        assertEquals("section1_", (it.next()).getName());
+        assertEquals("body_", (it.next()).getName());
 
-        assertFalse( it.hasNext() );
+        assertFalse(it.hasNext());
     }
 
     /**
@@ -269,32 +272,27 @@ public class FmlParserTest
      * @since 1.1.1
      */
     @Test
-    public void testFaqMacro()
-        throws Exception
-    {
-        try ( Writer output = getTestWriter( "macro" );
-              Reader reader = getTestReader( "macro" ) )
-        {
-            Sink sink = new Xhtml5BaseSink( output );
-            createParser().parse( reader, sink );
+    public void testFaqMacro() throws Exception {
+        try (Writer output = getTestWriter("macro");
+                Reader reader = getTestReader("macro")) {
+            Sink sink = new Xhtml5BaseSink(output);
+            createParser().parse(reader, sink);
             sink.close();
         }
 
-        File f = getTestFile( getBasedir(), outputBaseDir() + getOutputDir() + "macro.fml" );
-        assertTrue( f.exists(), "The file " + f.getAbsolutePath() + " was not created" );
+        File f = getTestFile(getBasedir(), outputBaseDir() + getOutputDir() + "macro.fml");
+        assertTrue(f.exists(), "The file " + f.getAbsolutePath() + " was not created");
 
         String content;
-        try ( Reader reader = new FileReader( f ) )
-        {
-            content = IOUtil.toString( reader );
+        try (Reader reader = new FileReader(f)) {
+            content = IOUtil.toString(reader);
         }
 
-        assertTrue( content.contains( "<a id=\"macro-definition\"></a>" + EOL + "<dt>Macro Question</dt>" ) );
+        assertTrue(content.contains("<a id=\"macro-definition\"></a>" + EOL + "<dt>Macro Question</dt>"));
     }
 
-    private void assertTextEvent( SinkEventElement textEvt, String string )
-    {
-        assertEquals( "text", textEvt.getName() );
-        assertEquals( string, textEvt.getArgs()[0] );
+    private void assertTextEvent(SinkEventElement textEvt, String string) {
+        assertEquals("text", textEvt.getName());
+        assertEquals(string, textEvt.getArgs()[0]);
     }
 }

@@ -1,3 +1,21 @@
+/*
+ * Licensed to the Apache Software Foundation (ASF) under one
+ * or more contributor license agreements.  See the NOTICE file
+ * distributed with this work for additional information
+ * regarding copyright ownership.  The ASF licenses this file
+ * to you under the Apache License, Version 2.0 (the
+ * "License"); you may not use this file except in compliance
+ * with the License.  You may obtain a copy of the License at
+ *
+ *   http://www.apache.org/licenses/LICENSE-2.0
+ *
+ * Unless required by applicable law or agreed to in writing,
+ * software distributed under the License is distributed on an
+ * "AS IS" BASIS, WITHOUT WARRANTIES OR CONDITIONS OF ANY
+ * KIND, either express or implied.  See the License for the
+ * specific language governing permissions and limitations
+ * under the License.
+ */
 package org.apache.maven.doxia.parser;
 
 /*
@@ -19,9 +37,9 @@ package org.apache.maven.doxia.parser;
  * under the License.
  */
 
-import org.apache.maven.doxia.sink.Sink;
-
 import java.io.Reader;
+
+import org.apache.maven.doxia.sink.Sink;
 
 /**
  * A Parser is responsible for parsing any document in a supported front-end
@@ -31,8 +49,7 @@ import java.io.Reader;
  * @author <a href="mailto:jason@maven.org">Jason van Zyl</a>
  * @since 1.0
  */
-public interface Parser
-{
+public interface Parser {
 
     /** Unknown parser type */
     int UNKNOWN_TYPE = 0;
@@ -51,8 +68,7 @@ public interface Parser
      * @param sink A sink that consumes the Doxia events.
      * @throws org.apache.maven.doxia.parser.ParseException if the model could not be parsed.
      */
-    void parse( Reader source, Sink sink )
-        throws ParseException;
+    void parse(Reader source, Sink sink) throws ParseException;
 
     /**
      * Parses the given source model and emits Doxia events into the given sink.
@@ -63,8 +79,7 @@ public interface Parser
      * @param reference the reference
      * @throws org.apache.maven.doxia.parser.ParseException if the model could not be parsed.
      */
-    void parse( Reader source, Sink sink, String reference )
-        throws ParseException;
+    void parse(Reader source, Sink sink, String reference) throws ParseException;
 
     /**
      * The parser type value could be {@link #UNKNOWN_TYPE}, {@link #TXT_TYPE} or
@@ -79,7 +94,7 @@ public interface Parser
      *
      * @param emitComments <code>true</code> (default value) to emit comment Doxia events
      */
-    void setEmitComments( boolean emitComments );
+    void setEmitComments(boolean emitComments);
 
     /**
      * Does the parser emit Doxia comments event when comments found in source?

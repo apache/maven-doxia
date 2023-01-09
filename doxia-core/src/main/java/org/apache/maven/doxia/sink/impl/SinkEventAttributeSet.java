@@ -1,3 +1,21 @@
+/*
+ * Licensed to the Apache Software Foundation (ASF) under one
+ * or more contributor license agreements.  See the NOTICE file
+ * distributed with this work for additional information
+ * regarding copyright ownership.  The ASF licenses this file
+ * to you under the Apache License, Version 2.0 (the
+ * "License"); you may not use this file except in compliance
+ * with the License.  You may obtain a copy of the License at
+ *
+ *   http://www.apache.org/licenses/LICENSE-2.0
+ *
+ * Unless required by applicable law or agreed to in writing,
+ * software distributed under the License is distributed on an
+ * "AS IS" BASIS, WITHOUT WARRANTIES OR CONDITIONS OF ANY
+ * KIND, either express or implied.  See the License for the
+ * specific language governing permissions and limitations
+ * under the License.
+ */
 package org.apache.maven.doxia.sink.impl;
 
 /*
@@ -19,12 +37,12 @@ package org.apache.maven.doxia.sink.impl;
  * under the License.
  */
 
+import javax.swing.text.AttributeSet;
+
 import java.util.Collections;
 import java.util.Enumeration;
 import java.util.LinkedHashMap;
 import java.util.Map;
-
-import javax.swing.text.AttributeSet;
 
 import org.apache.maven.doxia.sink.SinkEventAttributes;
 
@@ -34,9 +52,7 @@ import org.apache.maven.doxia.sink.SinkEventAttributes;
  * @author ltheussl
  * @since 1.1
  */
-public class SinkEventAttributeSet
-    implements SinkEventAttributes, Cloneable
-{
+public class SinkEventAttributeSet implements SinkEventAttributes, Cloneable {
     /**
      * An unmodifiable attribute set containing only an underline attribute.
      */
@@ -92,22 +108,20 @@ public class SinkEventAttributeSet
      */
     public static final SinkEventAttributes JUSTIFY;
 
+    static {
+        UNDERLINE = new SinkEventAttributeSet(DECORATION, "underline").unmodifiable();
+        OVERLINE = new SinkEventAttributeSet(DECORATION, "overline").unmodifiable();
+        LINETHROUGH = new SinkEventAttributeSet(DECORATION, "line-through").unmodifiable();
+        BOXED = new SinkEventAttributeSet(DECORATION, "boxed").unmodifiable();
 
-    static
-    {
-        UNDERLINE = new SinkEventAttributeSet( DECORATION, "underline" ).unmodifiable();
-        OVERLINE = new SinkEventAttributeSet( DECORATION, "overline" ).unmodifiable();
-        LINETHROUGH = new SinkEventAttributeSet( DECORATION, "line-through" ).unmodifiable();
-        BOXED = new SinkEventAttributeSet( DECORATION, "boxed" ).unmodifiable();
+        BOLD = new SinkEventAttributeSet(STYLE, "bold").unmodifiable();
+        ITALIC = new SinkEventAttributeSet(STYLE, "italic").unmodifiable();
+        MONOSPACED = new SinkEventAttributeSet(STYLE, "monospaced").unmodifiable();
 
-        BOLD = new SinkEventAttributeSet( STYLE, "bold" ).unmodifiable();
-        ITALIC = new SinkEventAttributeSet( STYLE, "italic" ).unmodifiable();
-        MONOSPACED = new SinkEventAttributeSet( STYLE, "monospaced" ).unmodifiable();
-
-        LEFT = new SinkEventAttributeSet( ALIGN, "left" ).unmodifiable();
-        RIGHT = new SinkEventAttributeSet( ALIGN, "right" ).unmodifiable();
-        CENTER = new SinkEventAttributeSet( ALIGN, "center" ).unmodifiable();
-        JUSTIFY = new SinkEventAttributeSet( ALIGN, "justify" ).unmodifiable();
+        LEFT = new SinkEventAttributeSet(ALIGN, "left").unmodifiable();
+        RIGHT = new SinkEventAttributeSet(ALIGN, "right").unmodifiable();
+        CENTER = new SinkEventAttributeSet(ALIGN, "center").unmodifiable();
+        JUSTIFY = new SinkEventAttributeSet(ALIGN, "justify").unmodifiable();
     }
 
     private Map<String, Object> attribs;
@@ -117,9 +131,8 @@ public class SinkEventAttributeSet
     /**
      * Constructs a new, empty SinkEventAttributeSet with default size 5.
      */
-    public SinkEventAttributeSet()
-    {
-        this( 5 );
+    public SinkEventAttributeSet() {
+        this(5);
     }
 
     /**
@@ -127,9 +140,8 @@ public class SinkEventAttributeSet
      *
      * @param size the initial number of attribs.
      */
-    public SinkEventAttributeSet( int size )
-    {
-        attribs = new LinkedHashMap<>( size );
+    public SinkEventAttributeSet(int size) {
+        attribs = new LinkedHashMap<>(size);
     }
 
     /**
@@ -139,20 +151,17 @@ public class SinkEventAttributeSet
      * @param attributes the specified String array. If the length of this array
      * is not an even number, an IllegalArgumentException is thrown.
      */
-    public SinkEventAttributeSet( String... attributes )
-    {
+    public SinkEventAttributeSet(String... attributes) {
         int n = attributes.length;
 
-        if ( ( n % 2 ) != 0 )
-        {
-            throw new IllegalArgumentException( "Missing attribute!" );
+        if ((n % 2) != 0) {
+            throw new IllegalArgumentException("Missing attribute!");
         }
 
-        attribs = new LinkedHashMap<>( n / 2 );
+        attribs = new LinkedHashMap<>(n / 2);
 
-        for ( int i = 0; i < n; i += 2 )
-        {
-            attribs.put( attributes[i], attributes[i + 1] );
+        for (int i = 0; i < n; i += 2) {
+            attribs.put(attributes[i], attributes[i + 1]);
         }
     }
 
@@ -162,17 +171,15 @@ public class SinkEventAttributeSet
      *
      * @param attributes the specified AttributeSet.
      */
-    public SinkEventAttributeSet( AttributeSet attributes )
-    {
-        attribs = new LinkedHashMap<>( attributes.getAttributeCount() );
+    public SinkEventAttributeSet(AttributeSet attributes) {
+        attribs = new LinkedHashMap<>(attributes.getAttributeCount());
 
         Enumeration<?> names = attributes.getAttributeNames();
 
-        while ( names.hasMoreElements() )
-        {
+        while (names.hasMoreElements()) {
             Object name = names.nextElement();
 
-            attribs.put( name.toString(), attributes.getAttribute( name ) );
+            attribs.put(name.toString(), attributes.getAttribute(name));
         }
     }
 
@@ -184,9 +191,8 @@ public class SinkEventAttributeSet
      * @return an unmodifiable view of this AttributeSet.
      * @since 1.1.1
      */
-    public SinkEventAttributeSet unmodifiable()
-    {
-        this.attribs = Collections.unmodifiableMap( attribs );
+    public SinkEventAttributeSet unmodifiable() {
+        this.attribs = Collections.unmodifiableMap(attribs);
 
         return this;
     }
@@ -196,8 +202,7 @@ public class SinkEventAttributeSet
      *
      * @return true if the set is empty.
      */
-    public boolean isEmpty()
-    {
+    public boolean isEmpty() {
         return attribs.isEmpty();
     }
 
@@ -206,22 +211,18 @@ public class SinkEventAttributeSet
      *
      * @return a int.
      */
-    public int getAttributeCount()
-    {
+    public int getAttributeCount() {
         return attribs.size();
     }
 
     /** {@inheritDoc} */
-    public boolean isDefined( Object attrName )
-    {
-        return attribs.containsKey( attrName );
+    public boolean isDefined(Object attrName) {
+        return attribs.containsKey(attrName);
     }
 
     /** {@inheritDoc} */
-    public boolean isEqual( AttributeSet attr )
-    {
-        return ( ( getAttributeCount() == attr.getAttributeCount() )
-                && containsAttributes( attr ) );
+    public boolean isEqual(AttributeSet attr) {
+        return ((getAttributeCount() == attr.getAttributeCount()) && containsAttributes(attr));
     }
 
     /**
@@ -229,9 +230,8 @@ public class SinkEventAttributeSet
      *
      * @return a {@link javax.swing.text.AttributeSet} object.
      */
-    public AttributeSet copyAttributes()
-    {
-        return ( (AttributeSet) clone() );
+    public AttributeSet copyAttributes() {
+        return ((AttributeSet) clone());
     }
 
     /**
@@ -239,23 +239,19 @@ public class SinkEventAttributeSet
      *
      * @return a {@link java.util.Enumeration} object.
      */
-    public Enumeration<String> getAttributeNames()
-    {
-        return Collections.enumeration( attribs.keySet() );
+    public Enumeration<String> getAttributeNames() {
+        return Collections.enumeration(attribs.keySet());
     }
 
     /** {@inheritDoc} */
-    public Object getAttribute( Object key  )
-    {
-        Object value = attribs.get( key  );
+    public Object getAttribute(Object key) {
+        Object value = attribs.get(key);
 
-        if ( value == null )
-        {
+        if (value == null) {
             AttributeSet parent = getResolveParent();
 
-            if ( parent != null )
-            {
-                value = parent.getAttribute( key  );
+            if (parent != null) {
+                value = parent.getAttribute(key);
             }
         }
 
@@ -263,22 +259,19 @@ public class SinkEventAttributeSet
     }
 
     /** {@inheritDoc} */
-    public boolean containsAttribute( Object name, Object value )
-    {
-        return value.equals( getAttribute( name ) );
+    public boolean containsAttribute(Object name, Object value) {
+        return value.equals(getAttribute(name));
     }
 
     /** {@inheritDoc} */
-    public boolean containsAttributes( AttributeSet attributes )
-    {
+    public boolean containsAttributes(AttributeSet attributes) {
         boolean result = true;
 
         Enumeration<?> names = attributes.getAttributeNames();
 
-        while ( result && names.hasMoreElements() )
-        {
+        while (result && names.hasMoreElements()) {
             Object name = names.nextElement();
-            result = attributes.getAttribute( name ).equals( getAttribute( name ) );
+            result = attributes.getAttribute(name).equals(getAttribute(name));
         }
 
         return result;
@@ -289,41 +282,34 @@ public class SinkEventAttributeSet
      *
      * Adds an attribute with the given name and value.
      */
-    public void addAttribute( Object name, Object value )
-    {
-        attribs.put( name.toString(), value );
+    public void addAttribute(Object name, Object value) {
+        attribs.put(name.toString(), value);
     }
 
     /** {@inheritDoc} */
-    public void addAttributes( AttributeSet attributes  )
-    {
-        if ( attributes == null || attributes.getAttributeCount() == 0 )
-        {
+    public void addAttributes(AttributeSet attributes) {
+        if (attributes == null || attributes.getAttributeCount() == 0) {
             return;
         }
 
         Enumeration<?> names = attributes.getAttributeNames();
 
-        while ( names.hasMoreElements() )
-        {
+        while (names.hasMoreElements()) {
             Object name = names.nextElement();
 
-            addAttribute( name, attributes.getAttribute( name ) );
+            addAttribute(name, attributes.getAttribute(name));
         }
     }
 
     /** {@inheritDoc} */
-    public void removeAttribute( Object name )
-    {
-        attribs.remove( name );
+    public void removeAttribute(Object name) {
+        attribs.remove(name);
     }
 
     /** {@inheritDoc} */
-    public void removeAttributes( Enumeration<?> names )
-    {
-        while ( names.hasMoreElements() )
-        {
-            removeAttribute( names.nextElement() );
+    public void removeAttributes(Enumeration<?> names) {
+        while (names.hasMoreElements()) {
+            removeAttribute(names.nextElement());
         }
     }
 
@@ -332,28 +318,20 @@ public class SinkEventAttributeSet
      *
      * @param attributes a {@link javax.swing.text.AttributeSet} object.
      */
-    public void removeAttributes( AttributeSet attributes  )
-    {
-        if ( attributes == null )
-        {
+    public void removeAttributes(AttributeSet attributes) {
+        if (attributes == null) {
             return;
-        }
-        else if ( attributes == this )
-        {
+        } else if (attributes == this) {
             attribs.clear();
-        }
-        else
-        {
+        } else {
             Enumeration<?> names = attributes.getAttributeNames();
 
-            while ( names.hasMoreElements() )
-            {
+            while (names.hasMoreElements()) {
                 Object name = names.nextElement();
-                Object value = attributes.getAttribute( name );
+                Object value = attributes.getAttribute(name);
 
-                if ( value.equals( getAttribute( name ) ) )
-                {
-                    removeAttribute( name );
+                if (value.equals(getAttribute(name))) {
+                    removeAttribute(name);
                 }
             }
         }
@@ -364,26 +342,22 @@ public class SinkEventAttributeSet
      *
      * @return a {@link javax.swing.text.AttributeSet} object.
      */
-    public AttributeSet getResolveParent()
-    {
+    public AttributeSet getResolveParent() {
         return this.resolveParent;
     }
 
     /** {@inheritDoc} */
-    public void setResolveParent( AttributeSet parent )
-    {
+    public void setResolveParent(AttributeSet parent) {
         this.resolveParent = parent;
     }
 
     /** {@inheritDoc} */
     @Override
-    public Object clone()
-    {
-        SinkEventAttributeSet attr = new SinkEventAttributeSet( attribs.size() );
-        attr.attribs = new LinkedHashMap<>( attribs );
+    public Object clone() {
+        SinkEventAttributeSet attr = new SinkEventAttributeSet(attribs.size());
+        attr.attribs = new LinkedHashMap<>(attribs);
 
-        if ( resolveParent != null )
-        {
+        if (resolveParent != null) {
             attr.resolveParent = resolveParent.copyAttributes();
         }
 
@@ -392,25 +366,21 @@ public class SinkEventAttributeSet
 
     /** {@inheritDoc} */
     @Override
-    public int hashCode()
-    {
-        final int parentHash = ( resolveParent == null ? 0 : resolveParent.hashCode() );
+    public int hashCode() {
+        final int parentHash = (resolveParent == null ? 0 : resolveParent.hashCode());
 
         return attribs.hashCode() + parentHash;
     }
 
     /** {@inheritDoc} */
     @Override
-    public boolean equals( Object obj )
-    {
-        if ( this == obj )
-        {
+    public boolean equals(Object obj) {
+        if (this == obj) {
             return true;
         }
 
-        if ( obj instanceof SinkEventAttributeSet )
-        {
-            return isEqual( (SinkEventAttributeSet) obj  );
+        if (obj instanceof SinkEventAttributeSet) {
+            return isEqual((SinkEventAttributeSet) obj);
         }
 
         return false;
@@ -418,17 +388,15 @@ public class SinkEventAttributeSet
 
     /** {@inheritDoc} */
     @Override
-    public String toString()
-    {
+    public String toString() {
         StringBuilder s = new StringBuilder();
         Enumeration<String> names = getAttributeNames();
 
-        while ( names.hasMoreElements() )
-        {
+        while (names.hasMoreElements()) {
             String key = names.nextElement();
-            String value = getAttribute( key ).toString();
+            String value = getAttribute(key).toString();
 
-            s.append( ' ' ).append( key ).append( '=' ).append( value );
+            s.append(' ').append(key).append('=').append(value);
         }
 
         return s.toString();
@@ -437,8 +405,7 @@ public class SinkEventAttributeSet
     /**
      * Attribute sets for the semantic attribute.
      */
-    public static class Semantics
-    {
+    public static class Semantics {
         /**
          * An unmodifiable attribute set containing only an emphasis attribute.
          */
@@ -584,37 +551,36 @@ public class SinkEventAttributeSet
          */
         public static final SinkEventAttributes DELETE;
 
-        static
-        {
-            EMPHASIS = new SinkEventAttributeSet( SEMANTICS, "emphasis" ).unmodifiable();
-            STRONG = new SinkEventAttributeSet( SEMANTICS, "strong" ).unmodifiable();
-            SMALL = new SinkEventAttributeSet( SEMANTICS, "small" ).unmodifiable();
-            LINE_THROUGH = new SinkEventAttributeSet( SEMANTICS, "line-through" ).unmodifiable();
-            CITATION = new SinkEventAttributeSet( SEMANTICS, "citation" ).unmodifiable();
-            QUOTE = new SinkEventAttributeSet( SEMANTICS, "quote" ).unmodifiable();
-            DEFINITION = new SinkEventAttributeSet( SEMANTICS, "definition" ).unmodifiable();
-            ABBREVIATION = new SinkEventAttributeSet( SEMANTICS, "abbreviation" ).unmodifiable();
-            ITALIC = new SinkEventAttributeSet( SEMANTICS, "italic" ).unmodifiable();
-            BOLD = new SinkEventAttributeSet( SEMANTICS, "bold" ).unmodifiable();
-            MONOSPACED = new SinkEventAttributeSet( SEMANTICS, "monospaced" ).unmodifiable();
-            CODE = new SinkEventAttributeSet( SEMANTICS, "code" ).unmodifiable();
-            VARIABLE = new SinkEventAttributeSet( SEMANTICS, "variable" ).unmodifiable();
-            SAMPLE = new SinkEventAttributeSet( SEMANTICS, "sample" ).unmodifiable();
-            KEYBOARD = new SinkEventAttributeSet( SEMANTICS, "keyboard" ).unmodifiable();
-            SUPERSCRIPT = new SinkEventAttributeSet( SEMANTICS, "superscript" ).unmodifiable();
-            SUBSCRIPT = new SinkEventAttributeSet( SEMANTICS, "subscript" ).unmodifiable();
-            ANNOTATION = new SinkEventAttributeSet( SEMANTICS, "annotation" ).unmodifiable();
-            HIGHLIGHT = new SinkEventAttributeSet( SEMANTICS, "highlight" ).unmodifiable();
-            RUBY = new SinkEventAttributeSet( SEMANTICS, "ruby" ).unmodifiable();
-            RUBY_BASE = new SinkEventAttributeSet( SEMANTICS, "rubyBase" ).unmodifiable();
-            RUBY_TEXT = new SinkEventAttributeSet( SEMANTICS, "rubyText" ).unmodifiable();
-            RUBY_TEXT_CONTAINER = new SinkEventAttributeSet( SEMANTICS, "rubyTextContainer" ).unmodifiable();
-            RUBY_PARANTHESES = new SinkEventAttributeSet( SEMANTICS, "rubyParentheses" ).unmodifiable();
-            BIDIRECTIONAL_ISOLATION = new SinkEventAttributeSet( SEMANTICS, "bidirectionalIsolation" ).unmodifiable();
-            BIDIRECTIONAL_OVERRIDE = new SinkEventAttributeSet( SEMANTICS, "bidirectionalOverride" ).unmodifiable();
-            PHRASE = new SinkEventAttributeSet( SEMANTICS, "phrase" ).unmodifiable();
-            INSERT = new SinkEventAttributeSet( SEMANTICS, "insert" ).unmodifiable();
-            DELETE = new SinkEventAttributeSet( SEMANTICS, "delete" ).unmodifiable();
+        static {
+            EMPHASIS = new SinkEventAttributeSet(SEMANTICS, "emphasis").unmodifiable();
+            STRONG = new SinkEventAttributeSet(SEMANTICS, "strong").unmodifiable();
+            SMALL = new SinkEventAttributeSet(SEMANTICS, "small").unmodifiable();
+            LINE_THROUGH = new SinkEventAttributeSet(SEMANTICS, "line-through").unmodifiable();
+            CITATION = new SinkEventAttributeSet(SEMANTICS, "citation").unmodifiable();
+            QUOTE = new SinkEventAttributeSet(SEMANTICS, "quote").unmodifiable();
+            DEFINITION = new SinkEventAttributeSet(SEMANTICS, "definition").unmodifiable();
+            ABBREVIATION = new SinkEventAttributeSet(SEMANTICS, "abbreviation").unmodifiable();
+            ITALIC = new SinkEventAttributeSet(SEMANTICS, "italic").unmodifiable();
+            BOLD = new SinkEventAttributeSet(SEMANTICS, "bold").unmodifiable();
+            MONOSPACED = new SinkEventAttributeSet(SEMANTICS, "monospaced").unmodifiable();
+            CODE = new SinkEventAttributeSet(SEMANTICS, "code").unmodifiable();
+            VARIABLE = new SinkEventAttributeSet(SEMANTICS, "variable").unmodifiable();
+            SAMPLE = new SinkEventAttributeSet(SEMANTICS, "sample").unmodifiable();
+            KEYBOARD = new SinkEventAttributeSet(SEMANTICS, "keyboard").unmodifiable();
+            SUPERSCRIPT = new SinkEventAttributeSet(SEMANTICS, "superscript").unmodifiable();
+            SUBSCRIPT = new SinkEventAttributeSet(SEMANTICS, "subscript").unmodifiable();
+            ANNOTATION = new SinkEventAttributeSet(SEMANTICS, "annotation").unmodifiable();
+            HIGHLIGHT = new SinkEventAttributeSet(SEMANTICS, "highlight").unmodifiable();
+            RUBY = new SinkEventAttributeSet(SEMANTICS, "ruby").unmodifiable();
+            RUBY_BASE = new SinkEventAttributeSet(SEMANTICS, "rubyBase").unmodifiable();
+            RUBY_TEXT = new SinkEventAttributeSet(SEMANTICS, "rubyText").unmodifiable();
+            RUBY_TEXT_CONTAINER = new SinkEventAttributeSet(SEMANTICS, "rubyTextContainer").unmodifiable();
+            RUBY_PARANTHESES = new SinkEventAttributeSet(SEMANTICS, "rubyParentheses").unmodifiable();
+            BIDIRECTIONAL_ISOLATION = new SinkEventAttributeSet(SEMANTICS, "bidirectionalIsolation").unmodifiable();
+            BIDIRECTIONAL_OVERRIDE = new SinkEventAttributeSet(SEMANTICS, "bidirectionalOverride").unmodifiable();
+            PHRASE = new SinkEventAttributeSet(SEMANTICS, "phrase").unmodifiable();
+            INSERT = new SinkEventAttributeSet(SEMANTICS, "insert").unmodifiable();
+            DELETE = new SinkEventAttributeSet(SEMANTICS, "delete").unmodifiable();
         }
     }
 }

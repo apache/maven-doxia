@@ -1,3 +1,21 @@
+/*
+ * Licensed to the Apache Software Foundation (ASF) under one
+ * or more contributor license agreements.  See the NOTICE file
+ * distributed with this work for additional information
+ * regarding copyright ownership.  The ASF licenses this file
+ * to you under the Apache License, Version 2.0 (the
+ * "License"); you may not use this file except in compliance
+ * with the License.  You may obtain a copy of the License at
+ *
+ *   http://www.apache.org/licenses/LICENSE-2.0
+ *
+ * Unless required by applicable law or agreed to in writing,
+ * software distributed under the License is distributed on an
+ * "AS IS" BASIS, WITHOUT WARRANTIES OR CONDITIONS OF ANY
+ * KIND, either express or implied.  See the License for the
+ * specific language governing permissions and limitations
+ * under the License.
+ */
 package org.apache.maven.doxia.xsd;
 
 /*
@@ -35,13 +53,11 @@ import java.util.jar.JarEntry;
 import java.util.jar.JarFile;
 
 import org.apache.maven.doxia.parser.AbstractXmlParser;
-
 import org.codehaus.plexus.util.FileUtils;
 import org.codehaus.plexus.util.IOUtil;
 import org.codehaus.plexus.util.ReaderFactory;
 import org.codehaus.plexus.util.SelectorUtils;
 import org.codehaus.plexus.util.xml.XmlUtil;
-
 import org.xml.sax.EntityResolver;
 
 /**
@@ -50,12 +66,10 @@ import org.xml.sax.EntityResolver;
  * @author <a href="mailto:vincent.siveton@gmail.com">Vincent Siveton</a>
  * @since 1.0
  */
-public abstract class AbstractXmlValidatorTest
-    extends AbstractXmlValidator
-{
+public abstract class AbstractXmlValidatorTest extends AbstractXmlValidator {
 
     /** Simple cache mechanism to load test documents. */
-    private static final Map<String,String> CACHE_DOXIA_TEST_DOCUMENTS = new Hashtable<>();
+    private static final Map<String, String> CACHE_DOXIA_TEST_DOCUMENTS = new Hashtable<>();
 
     /** Maven resource in the doxia-test-docs-XXX.jar */
     private static final String MAVEN_RESOURCE_PATH = "META-INF/maven/org.apache.maven.doxia/doxia-test-docs/";
@@ -76,23 +90,17 @@ public abstract class AbstractXmlValidatorTest
      * @see #getIncludes()
      * @see #getAllTestDocuments()
      */
-    protected Map<String, String> getTestDocuments()
-        throws IOException
-    {
-        if ( getIncludes() == null )
-        {
+    protected Map<String, String> getTestDocuments() throws IOException {
+        if (getIncludes() == null) {
             return Collections.emptyMap();
         }
 
-        Map<String,String> testDocs = getAllTestDocuments();
-        Map<String, String> ret = new Hashtable<>( testDocs );
-        for ( String key : testDocs.keySet() )
-        {
-            for ( int i = 0; i < getIncludes().length; i++ )
-            {
-                if ( !SelectorUtils.matchPath( getIncludes()[i], key.toLowerCase( Locale.ENGLISH ) ) )
-                {
-                    ret.remove( key );
+        Map<String, String> testDocs = getAllTestDocuments();
+        Map<String, String> ret = new Hashtable<>(testDocs);
+        for (String key : testDocs.keySet()) {
+            for (int i = 0; i < getIncludes().length; i++) {
+                if (!SelectorUtils.matchPath(getIncludes()[i], key.toLowerCase(Locale.ENGLISH))) {
+                    ret.remove(key);
                 }
             }
         }
@@ -109,8 +117,7 @@ public abstract class AbstractXmlValidatorTest
      *
      * @since 1.2
      */
-    protected EntityResolver getEntityResolver()
-    {
+    protected EntityResolver getEntityResolver() {
         return new AbstractXmlParser.CachedFileEntityResolver();
     }
 
@@ -125,87 +132,71 @@ public abstract class AbstractXmlValidatorTest
      * </ul>
      * @throws IOException if any
      */
-    protected static Map<String,String> getAllTestDocuments()
-        throws IOException
-    {
-        if ( CACHE_DOXIA_TEST_DOCUMENTS != null && !CACHE_DOXIA_TEST_DOCUMENTS.isEmpty() )
-        {
-            return Collections.unmodifiableMap( CACHE_DOXIA_TEST_DOCUMENTS );
+    protected static Map<String, String> getAllTestDocuments() throws IOException {
+        if (CACHE_DOXIA_TEST_DOCUMENTS != null && !CACHE_DOXIA_TEST_DOCUMENTS.isEmpty()) {
+            return Collections.unmodifiableMap(CACHE_DOXIA_TEST_DOCUMENTS);
         }
 
-        URL testJar = AbstractXmlValidatorTest.class.getClassLoader().getResource( MAVEN_RESOURCE_PATH );
-        if ( testJar == null )
-        {
+        URL testJar = AbstractXmlValidatorTest.class.getClassLoader().getResource(MAVEN_RESOURCE_PATH);
+        if (testJar == null) {
             // maybe in an IDE project
-            testJar = AbstractXmlValidatorTest.class.getClassLoader().getResource( "doxia-site" );
+            testJar = AbstractXmlValidatorTest.class.getClassLoader().getResource("doxia-site");
 
-            if ( testJar == null )
-            {
+            if (testJar == null) {
                 throw new IllegalStateException(
-                        "Could not find the Doxia test documents artefact i.e. doxia-test-docs-XXX.jar" );
+                        "Could not find the Doxia test documents artefact i.e. doxia-test-docs-XXX.jar");
             }
         }
 
-        if ( testJar.toString().startsWith( "jar" ))
-            {
+        if (testJar.toString().startsWith("jar")) {
             JarURLConnection conn = (JarURLConnection) testJar.openConnection();
             JarFile jarFile = conn.getJarFile();
-            for ( Enumeration<JarEntry> e = jarFile.entries(); e.hasMoreElements(); )
-            {
+            for (Enumeration<JarEntry> e = jarFile.entries(); e.hasMoreElements(); ) {
                 JarEntry entry = e.nextElement();
 
-                if ( entry.getName().startsWith( "META-INF" ) )
-                {
+                if (entry.getName().startsWith("META-INF")) {
                     continue;
                 }
-                if ( entry.isDirectory() )
-                {
+                if (entry.isDirectory()) {
                     continue;
                 }
 
                 InputStream in = null;
-                try
-                {
-                    in = AbstractXmlValidatorTest.class.getClassLoader().getResource( entry.getName() ).openStream();
-                    String content = IOUtil.toString( in, "UTF-8" );
-                    CACHE_DOXIA_TEST_DOCUMENTS.put( "jar:" + conn.getJarFileURL() + "!/" + entry.getName(), content );
-                }
-                finally
-                {
-                    IOUtil.close( in );
+                try {
+                    in = AbstractXmlValidatorTest.class
+                            .getClassLoader()
+                            .getResource(entry.getName())
+                            .openStream();
+                    String content = IOUtil.toString(in, "UTF-8");
+                    CACHE_DOXIA_TEST_DOCUMENTS.put("jar:" + conn.getJarFileURL() + "!/" + entry.getName(), content);
+                } finally {
+                    IOUtil.close(in);
                 }
             }
-        }
-        else
-        {
+        } else {
             // IDE projects
-            File testDocsDir = FileUtils.toFile( testJar ).getParentFile();
+            File testDocsDir = FileUtils.toFile(testJar).getParentFile();
 
-            List<File> files = FileUtils.getFiles( testDocsDir, "**/*.*", FileUtils.getDefaultExcludesAsString(), true );
-            for ( File file1 : files )
-            {
-                File file = new File( file1.toString() );
+            List<File> files = FileUtils.getFiles(testDocsDir, "**/*.*", FileUtils.getDefaultExcludesAsString(), true);
+            for (File file1 : files) {
+                File file = new File(file1.toString());
 
-                if ( file.getAbsolutePath().contains( "META-INF" ) )
-                {
+                if (file.getAbsolutePath().contains("META-INF")) {
                     continue;
                 }
 
                 Reader reader;
-                if ( XmlUtil.isXml( file ) )
-                {
-                    reader = ReaderFactory.newXmlReader( file );
-                }
-                else
-                {
-                    reader = ReaderFactory.newReader( file, "UTF-8" );
+                if (XmlUtil.isXml(file)) {
+                    reader = ReaderFactory.newXmlReader(file);
+                } else {
+                    reader = ReaderFactory.newReader(file, "UTF-8");
                 }
 
-                String content = IOUtil.toString( reader );
-                CACHE_DOXIA_TEST_DOCUMENTS.put( file.toURI().toString(), content );
+                String content = IOUtil.toString(reader);
+                CACHE_DOXIA_TEST_DOCUMENTS.put(file.toURI().toString(), content);
             }
         }
 
-        return Collections.unmodifiableMap( CACHE_DOXIA_TEST_DOCUMENTS );
+        return Collections.unmodifiableMap(CACHE_DOXIA_TEST_DOCUMENTS);
     }
 }

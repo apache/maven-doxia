@@ -1,7 +1,24 @@
+/*
+ * Licensed to the Apache Software Foundation (ASF) under one
+ * or more contributor license agreements.  See the NOTICE file
+ * distributed with this work for additional information
+ * regarding copyright ownership.  The ASF licenses this file
+ * to you under the Apache License, Version 2.0 (the
+ * "License"); you may not use this file except in compliance
+ * with the License.  You may obtain a copy of the License at
+ *
+ *   http://www.apache.org/licenses/LICENSE-2.0
+ *
+ * Unless required by applicable law or agreed to in writing,
+ * software distributed under the License is distributed on an
+ * "AS IS" BASIS, WITHOUT WARRANTIES OR CONDITIONS OF ANY
+ * KIND, either express or implied.  See the License for the
+ * specific language governing permissions and limitations
+ * under the License.
+ */
 package org.apache.maven.doxia.sink.impl;
 
 import org.apache.maven.doxia.sink.Sink;
-import org.apache.maven.doxia.sink.impl.SinkEventAttributeSet;
 
 /*
  * Licensed to the Apache Software Foundation (ASF) under one
@@ -25,12 +42,10 @@ import org.apache.maven.doxia.sink.impl.SinkEventAttributeSet;
 /**
  * Static methods to generate standard Doxia sink events.
  */
-public class SinkTestDocument
-{
+public class SinkTestDocument {
 
     /** Private constructor. */
-    private SinkTestDocument()
-    {
+    private SinkTestDocument() {
         // do not instantiate
     }
 
@@ -40,95 +55,94 @@ public class SinkTestDocument
      *
      * @param sink The sink to receive the events.
      */
-    public static void generate( Sink sink )
-    {
-        generateHead( sink );
+    public static void generate(Sink sink) {
+        generateHead(sink);
 
         sink.body();
 
         // TODO: what is this supposed to do?
-        //sink.sectionTitle();
-        //sink.text( "Section Title" );
-        //sink.sectionTitle_();
+        // sink.sectionTitle();
+        // sink.text( "Section Title" );
+        // sink.sectionTitle_();
 
         sink.paragraph();
-        sink.text( "Paragraph 1, line 1. Paragraph 1, line 2." );
+        sink.text("Paragraph 1, line 1. Paragraph 1, line 2.");
         sink.paragraph_();
 
         sink.paragraph();
-        sink.text( "Paragraph 2, line 1. Paragraph 2, line 2." );
+        sink.text("Paragraph 2, line 1. Paragraph 2, line 2.");
         sink.paragraph_();
 
         sink.section1();
         sink.sectionTitle1();
-        sink.text( "Section title" );
+        sink.text("Section title");
         sink.sectionTitle1_();
 
         sink.section2();
         sink.sectionTitle2();
-        sink.text( "Sub-section title" );
+        sink.text("Sub-section title");
         sink.sectionTitle2_();
 
         sink.section3();
         sink.sectionTitle3();
-        sink.text( "Sub-sub-section title" );
+        sink.text("Sub-sub-section title");
         sink.sectionTitle3_();
 
         sink.section4();
         sink.sectionTitle4();
-        sink.text( "Sub-sub-sub-section title" );
+        sink.text("Sub-sub-sub-section title");
         sink.sectionTitle4_();
 
         sink.section5();
         sink.sectionTitle5();
-        sink.text( "Sub-sub-sub-sub-section title" );
+        sink.text("Sub-sub-sub-sub-section title");
         sink.sectionTitle5_();
 
-        generateList( sink );
+        generateList(sink);
 
-        sink.verbatim( SinkEventAttributeSet.BOXED );
-        sink.text( "Verbatim text not contained in list item 3" );
+        sink.verbatim(SinkEventAttributeSet.BOXED);
+        sink.text("Verbatim text not contained in list item 3");
         sink.verbatim_();
 
-        generateNumberedList( sink );
+        generateNumberedList(sink);
 
         sink.paragraph();
-        sink.text( "List numbering schemes: [[1]], [[a]], [[A]], [[i]], [[I]]." );
+        sink.text("List numbering schemes: [[1]], [[a]], [[A]], [[i]], [[I]].");
         sink.paragraph_();
 
-        generateDefinitionList( sink );
+        generateDefinitionList(sink);
 
         sink.paragraph();
-        sink.text( "--- instead of +-- suppresses the box around verbatim text." );
+        sink.text("--- instead of +-- suppresses the box around verbatim text.");
         sink.paragraph_();
 
-        generateFigure( sink );
+        generateFigure(sink);
 
-        generateTable( sink );
+        generateTable(sink);
 
         sink.paragraph();
-        sink.text( "No grid, no caption:" );
+        sink.text("No grid, no caption:");
         sink.paragraph_();
 
-        generateNoGridTable( sink );
+        generateNoGridTable(sink);
 
-        generateHeaderTable( sink );
+        generateHeaderTable(sink);
 
-        generateHorizontalRule( sink );
+        generateHorizontalRule(sink);
 
-        generatePageBreak( sink );
+        generatePageBreak(sink);
 
-        generateFonts( sink );
+        generateFonts(sink);
 
-        generateAnchors( sink );
+        generateAnchors(sink);
 
-        generateLineBreak( sink );
+        generateLineBreak(sink);
 
-        generateNonBreakingSpace( sink );
+        generateNonBreakingSpace(sink);
 
-        generateSpecialCharacters( sink );
+        generateSpecialCharacters(sink);
 
-        sink.comment( "A comment!" );
+        sink.comment("A comment!");
 
         sink.section5_();
         sink.section4_();
@@ -147,20 +161,19 @@ public class SinkTestDocument
      *
      * @param sink The sink to receive the events.
      */
-    public static void generateHead( Sink sink )
-    {
+    public static void generateHead(Sink sink) {
         sink.head();
 
         sink.title();
-        sink.text( "Title" );
+        sink.text("Title");
         sink.title_();
 
         sink.author();
-        sink.text( "Author" );
+        sink.text("Author");
         sink.author_();
 
         sink.date();
-        sink.text( "Date" );
+        sink.text("Date");
         sink.date_();
 
         sink.head_();
@@ -171,28 +184,27 @@ public class SinkTestDocument
      *
      * @param sink The sink to receive the events.
      */
-    public static void generateList( Sink sink )
-    {
+    public static void generateList(Sink sink) {
         sink.list();
 
         sink.listItem();
-        sink.text( "List item 1." );
+        sink.text("List item 1.");
         sink.listItem_();
 
         sink.listItem();
-        sink.text( "List item 2." );
+        sink.text("List item 2.");
         sink.paragraph();
-        sink.text( "Paragraph contained in list item 2." );
+        sink.text("Paragraph contained in list item 2.");
         sink.paragraph_();
 
         sink.list();
 
         sink.listItem();
-        sink.text( "Sub-list item 1." );
+        sink.text("Sub-list item 1.");
         sink.listItem_();
 
         sink.listItem();
-        sink.text( "Sub-list item 2." );
+        sink.text("Sub-list item 2.");
         sink.listItem_();
 
         sink.list_();
@@ -200,7 +212,7 @@ public class SinkTestDocument
         sink.listItem_();
 
         sink.listItem();
-        sink.text( "List item 3. Force end of list:" );
+        sink.text("List item 3. Force end of list:");
         sink.listItem_();
 
         sink.list_();
@@ -212,21 +224,20 @@ public class SinkTestDocument
      *
      * @param sink The sink to receive the events.
      */
-    public static void generateNumberedList( Sink sink )
-    {
-        sink.numberedList( Sink.NUMBERING_DECIMAL );
+    public static void generateNumberedList(Sink sink) {
+        sink.numberedList(Sink.NUMBERING_DECIMAL);
 
         sink.numberedListItem();
-        sink.text( "Numbered item 1." );
+        sink.text("Numbered item 1.");
 
-        sink.numberedList( Sink.NUMBERING_UPPER_ALPHA );
+        sink.numberedList(Sink.NUMBERING_UPPER_ALPHA);
 
         sink.numberedListItem();
-        sink.text( "Numbered item A." );
+        sink.text("Numbered item A.");
         sink.numberedListItem_();
 
         sink.numberedListItem();
-        sink.text( "Numbered item B." );
+        sink.text("Numbered item B.");
         sink.numberedListItem_();
 
         sink.numberedList_();
@@ -234,7 +245,7 @@ public class SinkTestDocument
         sink.numberedListItem_();
 
         sink.numberedListItem();
-        sink.text( "Numbered item 2." );
+        sink.text("Numbered item 2.");
         sink.numberedListItem_();
 
         sink.numberedList_();
@@ -246,29 +257,28 @@ public class SinkTestDocument
      *
      * @param sink The sink to receive the events.
      */
-    public static void generateDefinitionList( Sink sink )
-    {
-        String eol = System.getProperty( "line.separator" );
+    public static void generateDefinitionList(Sink sink) {
+        String eol = System.getProperty("line.separator");
 
         sink.definitionList();
 
         sink.definitionListItem();
         sink.definedTerm();
-        sink.text( "Defined term 1" );
+        sink.text("Defined term 1");
         sink.definedTerm_();
         sink.definition();
-        sink.text( "of definition list." );
+        sink.text("of definition list.");
         sink.definition_();
         sink.definitionListItem_();
 
         sink.definitionListItem();
         sink.definedTerm();
-        sink.text( "Defined term 2" );
+        sink.text("Defined term 2");
         sink.definedTerm_();
         sink.definition();
-        sink.text( "of definition list." );
-        sink.verbatim( SinkEventAttributeSet.BOXED );
-        sink.text( "Verbatim text" + eol + "                        in a box        " );
+        sink.text("of definition list.");
+        sink.verbatim(SinkEventAttributeSet.BOXED);
+        sink.text("Verbatim text" + eol + "                        in a box        ");
         sink.verbatim_();
         sink.definition_();
         sink.definitionListItem_();
@@ -282,14 +292,13 @@ public class SinkTestDocument
      *
      * @param sink The sink to receive the events.
      */
-    public static void generateFigure( Sink sink )
-    {
-        sink.figure( null );
+    public static void generateFigure(Sink sink) {
+        sink.figure(null);
 
-        sink.figureGraphics( "figure.png", null );
+        sink.figureGraphics("figure.png", null);
 
-        sink.figureCaption( null );
-        sink.text( "Figure caption", null );
+        sink.figureCaption(null);
+        sink.text("Figure caption", null);
         sink.figureCaption_();
 
         sink.figure_();
@@ -301,51 +310,47 @@ public class SinkTestDocument
      *
      * @param sink The sink to receive the events.
      */
-    public static void generateTable( Sink sink )
-    {
-        int[] justify =
-        {
-             Sink.JUSTIFY_CENTER, Sink.JUSTIFY_LEFT, Sink.JUSTIFY_RIGHT
-        };
+    public static void generateTable(Sink sink) {
+        int[] justify = {Sink.JUSTIFY_CENTER, Sink.JUSTIFY_LEFT, Sink.JUSTIFY_RIGHT};
 
         sink.table();
 
-        sink.tableRows( justify, true );
+        sink.tableRows(justify, true);
 
         sink.tableRow();
         sink.tableCell();
-        sink.text( "Centered" );
+        sink.text("Centered");
         sink.lineBreak();
-        sink.text( "cell 1,1" );
+        sink.text("cell 1,1");
         sink.tableCell_();
         sink.tableCell();
-        sink.text( "Left-aligned" );
+        sink.text("Left-aligned");
         sink.lineBreak();
-        sink.text( "cell 1,2" );
+        sink.text("cell 1,2");
         sink.tableCell_();
         sink.tableCell();
-        sink.text( "Right-aligned" );
+        sink.text("Right-aligned");
         sink.lineBreak();
-        sink.text( "cell 1,3" );
+        sink.text("cell 1,3");
         sink.tableCell_();
         sink.tableRow_();
 
         sink.tableRow();
         sink.tableCell();
-        sink.text( "cell 2,1" );
+        sink.text("cell 2,1");
         sink.tableCell_();
         sink.tableCell();
-        sink.text( "cell 2,2" );
+        sink.text("cell 2,2");
         sink.tableCell_();
         sink.tableCell();
-        sink.text( "cell 2,3" );
+        sink.text("cell 2,3");
         sink.tableCell_();
         sink.tableRow_();
 
         sink.tableRows_();
 
         sink.tableCaption();
-        sink.text( "Table caption" );
+        sink.text("Table caption");
         sink.tableCaption_();
 
         sink.table_();
@@ -357,32 +362,28 @@ public class SinkTestDocument
      *
      * @param sink The sink to receive the events.
      */
-    public static void generateNoGridTable( Sink sink )
-    {
-        int[] justify =
-        {
-             Sink.JUSTIFY_CENTER, Sink.JUSTIFY_CENTER
-        };
+    public static void generateNoGridTable(Sink sink) {
+        int[] justify = {Sink.JUSTIFY_CENTER, Sink.JUSTIFY_CENTER};
 
         sink.table();
 
-        sink.tableRows( justify, false );
+        sink.tableRows(justify, false);
 
         sink.tableRow();
         sink.tableCell();
-        sink.text( "cell" );
+        sink.text("cell");
         sink.tableCell_();
         sink.tableCell();
-        sink.text( "cell" );
+        sink.text("cell");
         sink.tableCell_();
         sink.tableRow_();
 
         sink.tableRow();
         sink.tableCell();
-        sink.text( "cell" );
+        sink.text("cell");
         sink.tableCell_();
         sink.tableCell();
-        sink.text( "cell" );
+        sink.text("cell");
         sink.tableCell_();
         sink.tableRow_();
 
@@ -397,32 +398,28 @@ public class SinkTestDocument
      *
      * @param sink The sink to receive the events.
      */
-    public static void generateHeaderTable( Sink sink )
-    {
-        int[] justify =
-        {
-             Sink.JUSTIFY_CENTER, Sink.JUSTIFY_CENTER
-        };
+    public static void generateHeaderTable(Sink sink) {
+        int[] justify = {Sink.JUSTIFY_CENTER, Sink.JUSTIFY_CENTER};
 
         sink.table();
 
-        sink.tableRows( justify, true );
+        sink.tableRows(justify, true);
 
         sink.tableRow();
         sink.tableHeaderCell();
-        sink.text( "header" );
+        sink.text("header");
         sink.tableHeaderCell_();
         sink.tableHeaderCell();
-        sink.text( "header" );
+        sink.text("header");
         sink.tableHeaderCell_();
         sink.tableRow_();
 
         sink.tableRow();
         sink.tableCell();
-        sink.text( "cell" );
+        sink.text("cell");
         sink.tableCell_();
         sink.tableCell();
-        sink.text( "cell" );
+        sink.text("cell");
         sink.tableCell_();
         sink.tableRow_();
 
@@ -431,32 +428,29 @@ public class SinkTestDocument
         sink.table_();
     }
 
-
-
     /**
      * Dumps a paragraph with italic, bold and monospaced text
      * into the specified sink. The sink is not flushed or closed.
      *
      * @param sink The sink to receive the events.
      */
-    public static void generateFonts( Sink sink )
-    {
+    public static void generateFonts(Sink sink) {
         sink.paragraph();
 
-        sink.inline( SinkEventAttributeSet.Semantics.ITALIC );
-        sink.text( "Italic" );
+        sink.inline(SinkEventAttributeSet.Semantics.ITALIC);
+        sink.text("Italic");
         sink.inline_();
-        sink.text( " font. " );
+        sink.text(" font. ");
 
-        sink.inline( SinkEventAttributeSet.Semantics.BOLD );
-        sink.text( "Bold" );
+        sink.inline(SinkEventAttributeSet.Semantics.BOLD);
+        sink.text("Bold");
         sink.inline_();
-        sink.text( " font. " );
+        sink.text(" font. ");
 
-        sink.inline( SinkEventAttributeSet.Semantics.CODE );
-        sink.text( "Monospaced (code)" );
+        sink.inline(SinkEventAttributeSet.Semantics.CODE);
+        sink.text("Monospaced (code)");
         sink.inline_();
-        sink.text( " font." );
+        sink.text(" font.");
 
         sink.paragraph_();
     }
@@ -467,35 +461,34 @@ public class SinkTestDocument
      *
      * @param sink The sink to receive the events.
      */
-    public static void generateAnchors( Sink sink )
-    {
+    public static void generateAnchors(Sink sink) {
         sink.paragraph();
 
-        sink.anchor( "Anchor" );
-        sink.text( "Anchor" );
+        sink.anchor("Anchor");
+        sink.text("Anchor");
         sink.anchor_();
 
-        sink.text( ". Link to " );
-        sink.link( "#Anchor" );
-        sink.text( "Anchor" );
+        sink.text(". Link to ");
+        sink.link("#Anchor");
+        sink.text("Anchor");
         sink.link_();
 
-        sink.text( ". Link to " );
-        sink.link( "http://www.pixware.fr" );
-        sink.text( "http://www.pixware.fr" );
+        sink.text(". Link to ");
+        sink.link("http://www.pixware.fr");
+        sink.text("http://www.pixware.fr");
         sink.link_();
 
-        sink.text( ". Link to " );
-        sink.link( "#Anchor" );
-        sink.text( "showing alternate text" );
+        sink.text(". Link to ");
+        sink.link("#Anchor");
+        sink.text("showing alternate text");
         sink.link_();
 
-        sink.text( ". Link to " );
-        sink.link( "http://www.pixware.fr" );
-        sink.text( "Pixware home page" );
+        sink.text(". Link to ");
+        sink.link("http://www.pixware.fr");
+        sink.text("Pixware home page");
         sink.link_();
 
-        sink.text( "." );
+        sink.text(".");
 
         sink.paragraph_();
     }
@@ -506,10 +499,9 @@ public class SinkTestDocument
      *
      * @param sink The sink to receive the events.
      */
-    public static void generateHorizontalRule( Sink sink )
-    {
+    public static void generateHorizontalRule(Sink sink) {
         sink.paragraph();
-        sink.text( "Horizontal line:" );
+        sink.text("Horizontal line:");
         sink.paragraph_();
         sink.horizontalRule();
     }
@@ -520,11 +512,10 @@ public class SinkTestDocument
      *
      * @param sink The sink to receive the events.
      */
-    public static void generatePageBreak( Sink sink )
-    {
+    public static void generatePageBreak(Sink sink) {
         sink.pageBreak();
         sink.paragraph();
-        sink.text( "New page." );
+        sink.text("New page.");
         sink.paragraph_();
     }
 
@@ -534,12 +525,11 @@ public class SinkTestDocument
      *
      * @param sink The sink to receive the events.
      */
-    public static void generateLineBreak( Sink sink )
-    {
+    public static void generateLineBreak(Sink sink) {
         sink.paragraph();
-        sink.text( "Force line" );
+        sink.text("Force line");
         sink.lineBreak();
-        sink.text( "break." );
+        sink.text("break.");
         sink.paragraph_();
     }
 
@@ -549,14 +539,13 @@ public class SinkTestDocument
      *
      * @param sink The sink to receive the events.
      */
-    public static void generateNonBreakingSpace( Sink sink )
-    {
+    public static void generateNonBreakingSpace(Sink sink) {
         sink.paragraph();
-        sink.text( "Non" );
+        sink.text("Non");
         sink.nonBreakingSpace();
-        sink.text( "breaking" );
+        sink.text("breaking");
         sink.nonBreakingSpace();
-        sink.text( "space." );
+        sink.text("space.");
         sink.paragraph_();
     }
 
@@ -566,40 +555,39 @@ public class SinkTestDocument
      *
      * @param sink The sink to receive the events.
      */
-    public static void generateSpecialCharacters( Sink sink )
-    {
+    public static void generateSpecialCharacters(Sink sink) {
         sink.paragraph();
-        sink.text( "Escaped special characters:" );
+        sink.text("Escaped special characters:");
         sink.lineBreak();
-        sink.text( "~" );
+        sink.text("~");
         sink.lineBreak();
-        sink.text( "=" );
+        sink.text("=");
         sink.lineBreak();
-        sink.text( "-" );
+        sink.text("-");
         sink.lineBreak();
-        sink.text( "+" );
+        sink.text("+");
         sink.lineBreak();
-        sink.text( "*" );
+        sink.text("*");
         sink.lineBreak();
-        sink.text( "[" );
+        sink.text("[");
         sink.lineBreak();
-        sink.text( "]" );
+        sink.text("]");
         sink.lineBreak();
-        sink.text( "<" );
+        sink.text("<");
         sink.lineBreak();
-        sink.text( ">" );
+        sink.text(">");
         sink.lineBreak();
-        sink.text( "{" );
+        sink.text("{");
         sink.lineBreak();
-        sink.text( "}" );
+        sink.text("}");
         sink.lineBreak();
-        sink.text( "\\" );
+        sink.text("\\");
         sink.paragraph_();
 
         sink.paragraph();
-        sink.text( "Copyright symbol:" );
+        sink.text("Copyright symbol:");
         sink.lineBreak();
-        sink.text( "\u00a9" );
+        sink.text("\u00a9");
         sink.paragraph_();
     }
 }

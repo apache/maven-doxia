@@ -1,3 +1,21 @@
+/*
+ * Licensed to the Apache Software Foundation (ASF) under one
+ * or more contributor license agreements.  See the NOTICE file
+ * distributed with this work for additional information
+ * regarding copyright ownership.  The ASF licenses this file
+ * to you under the Apache License, Version 2.0 (the
+ * "License"); you may not use this file except in compliance
+ * with the License.  You may obtain a copy of the License at
+ *
+ *   http://www.apache.org/licenses/LICENSE-2.0
+ *
+ * Unless required by applicable law or agreed to in writing,
+ * software distributed under the License is distributed on an
+ * "AS IS" BASIS, WITHOUT WARRANTIES OR CONDITIONS OF ANY
+ * KIND, either express or implied.  See the License for the
+ * specific language governing permissions and limitations
+ * under the License.
+ */
 package org.apache.maven.doxia.module.apt;
 
 /*
@@ -27,8 +45,7 @@ import org.apache.maven.doxia.util.DoxiaUtils;
  * @author ltheussl
  * @since 1.1
  */
-public class AptUtils
-{
+public class AptUtils {
 
     /**
      * Checks if the given string corresponds to an external URI,
@@ -42,9 +59,8 @@ public class AptUtils
      * @see #isInternalLink(String)
      * @see #isLocalLink(String)
      */
-    public static boolean isExternalLink( String link )
-    {
-        return DoxiaUtils.isExternalLink( link );
+    public static boolean isExternalLink(String link) {
+        return DoxiaUtils.isExternalLink(link);
     }
 
     /**
@@ -58,9 +74,8 @@ public class AptUtils
      * @see #isExternalLink(String)
      * @see #isLocalLink(String)
      */
-    public static boolean isInternalLink( String link )
-    {
-        return ( !isExternalLink( link ) && !isLocalLink( link ) );
+    public static boolean isInternalLink(String link) {
+        return (!isExternalLink(link) && !isLocalLink(link));
     }
 
     /**
@@ -73,9 +88,8 @@ public class AptUtils
      * @see #isExternalLink(String)
      * @see #isInternalLink(String)
      */
-    public static boolean isLocalLink( String link )
-    {
-        return ( link.startsWith( "/" ) || link.startsWith( "./" ) || link.startsWith( "../" ) );
+    public static boolean isLocalLink(String link) {
+        return (link.startsWith("/") || link.startsWith("./") || link.startsWith("../"));
     }
 
     /**
@@ -95,43 +109,34 @@ public class AptUtils
      * @param id The id to be encoded.
      * @return The trimmed and encoded id, or null if id is null.
      */
-    public static String encodeAnchor( String id )
-    {
-        if ( id == null )
-        {
+    public static String encodeAnchor(String id) {
+        if (id == null) {
             return null;
         }
 
         id = id.trim();
 
         int length = id.length();
-        StringBuilder buffer = new StringBuilder( length );
+        StringBuilder buffer = new StringBuilder(length);
 
-        for ( int i = 0; i < length; ++i )
-        {
-            char c = id.charAt( i );
+        for (int i = 0; i < length; ++i) {
+            char c = id.charAt(i);
 
-            if ( ( i == 0 ) && ( !Character.isLetter( c ) ) )
-            {
-                buffer.append( 'a' );
+            if ((i == 0) && (!Character.isLetter(c))) {
+                buffer.append('a');
             }
 
-            if ( c == ' ' )
-            {
-                buffer.append( '_' );
-            }
-            else if ( ( Character.isLetterOrDigit( c ) ) || ( c == '-' ) || ( c == '_' ) || ( c == ':' )
-                            || ( c == '.' ) )
-            {
-                buffer.append( c );
+            if (c == ' ') {
+                buffer.append('_');
+            } else if ((Character.isLetterOrDigit(c)) || (c == '-') || (c == '_') || (c == ':') || (c == '.')) {
+                buffer.append(c);
             }
         }
 
         return buffer.toString();
     }
 
-    private AptUtils()
-    {
+    private AptUtils() {
         // utility class
     }
 }

@@ -1,5 +1,4 @@
 <?xml version="1.0" encoding="UTF-8"?>
-
 <!--
 Licensed to the Apache Software Foundation (ASF) under one
 or more contributor license agreements.  See the NOTICE file
@@ -18,14 +17,13 @@ KIND, either express or implied.  See the License for the
 specific language governing permissions and limitations
 under the License.
 -->
-
 <project xmlns="http://maven.apache.org/POM/4.0.0" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:schemaLocation="http://maven.apache.org/POM/4.0.0 https://maven.apache.org/xsd/maven-4.0.0.xsd">
   <modelVersion>4.0.0</modelVersion>
 
   <parent>
     <groupId>org.apache.maven</groupId>
     <artifactId>maven-parent</artifactId>
-    <version>36</version>
+    <version>39</version>
     <relativePath />
   </parent>
 
@@ -64,8 +62,8 @@ under the License.
   <scm>
     <connection>scm:git:https://gitbox.apache.org/repos/asf/maven-doxia.git</connection>
     <developerConnection>scm:git:https://gitbox.apache.org/repos/asf/maven-doxia.git</developerConnection>
-    <url>https://github.com/apache/maven-doxia/tree/${project.scm.tag}</url>
     <tag>doxia-2.0.0-M4</tag>
+    <url>https://github.com/apache/maven-doxia/tree/${project.scm.tag}</url>
   </scm>
   <issueManagement>
     <system>jira</system>
@@ -83,7 +81,8 @@ under the License.
   </distributionManagement>
 
   <properties>
-    <javaVersion>8</javaVersion><!-- remove when upgrade to maven-parent 34 -->
+    <javaVersion>8</javaVersion>
+    <!-- remove when upgrade to maven-parent 34 -->
     <maven.site.path>doxia-archives/doxia-LATEST</maven.site.path>
     <checkstyle.violation.ignore>RedundantThrows,NewlineAtEndOfFile,ParameterNumber,MethodLength,FileLength,MethodName,InnerAssignment,MagicNumber</checkstyle.violation.ignore>
     <project.build.outputTimestamp>2022-10-16T19:05:13Z</project.build.outputTimestamp>
@@ -147,20 +146,20 @@ under the License.
 
       <!-- test -->
       <dependency>
-          <groupId>org.xmlunit</groupId>
-          <artifactId>xmlunit-core</artifactId>
-          <version>${xmlunitVersion}</version>
-          <scope>test</scope>
-          <!-- Exclude due to https://github.com/xmlunit/xmlunit/issues/248 -->
-          <exclusions>
-           <exclusion>
-             <groupId>jakarta.activation</groupId>
-             <artifactId>jakarta.activation-api</artifactId>
-           </exclusion>
-           <exclusion>
-             <groupId>jakarta.xml.bind</groupId>
-             <artifactId>jakarta.xml.bind-api</artifactId>
-           </exclusion>
+        <groupId>org.xmlunit</groupId>
+        <artifactId>xmlunit-core</artifactId>
+        <version>${xmlunitVersion}</version>
+        <scope>test</scope>
+        <!-- Exclude due to https://github.com/xmlunit/xmlunit/issues/248 -->
+        <exclusions>
+          <exclusion>
+            <groupId>jakarta.activation</groupId>
+            <artifactId>jakarta.activation-api</artifactId>
+          </exclusion>
+          <exclusion>
+            <groupId>jakarta.xml.bind</groupId>
+            <artifactId>jakarta.xml.bind-api</artifactId>
+          </exclusion>
         </exclusions>
       </dependency>
       <dependency>
@@ -173,6 +172,12 @@ under the License.
         <groupId>org.codehaus.plexus</groupId>
         <artifactId>plexus-testing</artifactId>
         <version>1.1.0</version>
+        <scope>test</scope>
+      </dependency>
+      <dependency>
+        <groupId>org.hamcrest</groupId>
+        <artifactId>hamcrest-core</artifactId>
+        <version>2.2</version>
         <scope>test</scope>
       </dependency>
 
@@ -210,6 +215,7 @@ under the License.
         <artifactId>slf4j-simple</artifactId>
         <version>${slf4jVersion}</version>
       </dependency>
+
       <dependency>
         <groupId>org.junit.jupiter</groupId>
         <artifactId>junit-jupiter-api</artifactId>
@@ -225,7 +231,7 @@ under the License.
   </dependencyManagement>
 
   <dependencies>
-   <dependency>
+    <dependency>
       <groupId>org.junit.jupiter</groupId>
       <artifactId>junit-jupiter-api</artifactId>
       <scope>test</scope>
@@ -236,6 +242,17 @@ under the License.
       <scope>test</scope>
     </dependency>
   </dependencies>
+
+  <pluginRepositories>
+    <pluginRepository>
+      <releases>
+        <enabled>false</enabled>
+      </releases>
+      <id>apache.snapshots</id>
+      <name>Apache Snapshot Repository</name>
+      <url>https://repository.apache.org/snapshots</url>
+    </pluginRepository>
+  </pluginRepositories>
 
   <build>
     <resources>
@@ -339,17 +356,6 @@ under the License.
     </plugins>
   </build>
 
-  <pluginRepositories>
-    <pluginRepository>
-      <id>apache.snapshots</id>
-      <name>Apache Snapshot Repository</name>
-      <url>https://repository.apache.org/snapshots</url>
-      <releases>
-        <enabled>false</enabled>
-      </releases>
-    </pluginRepository>
-  </pluginRepositories>
-
   <profiles>
     <profile>
       <!-- AbstractXmlParser.CachedFileEntityResolver downloads DTD/XSD files in ${java.io.tmpdir} -->
@@ -361,6 +367,9 @@ under the License.
             <executions>
               <execution>
                 <id>clean-download</id>
+                <goals>
+                  <goal>run</goal>
+                </goals>
                 <phase>clean</phase>
                 <configuration>
                   <tasks>
@@ -369,9 +378,6 @@ under the License.
                     </delete>
                   </tasks>
                 </configuration>
-                <goals>
-                  <goal>run</goal>
-                </goals>
               </execution>
             </executions>
           </plugin>
@@ -379,7 +385,8 @@ under the License.
       </build>
     </profile>
     <profile>
-      <id>dev</id><!-- inject current Doxia version into maven-site-plugin for dev test -->
+      <id>dev</id>
+      <!-- inject current Doxia version into maven-site-plugin for dev test -->
       <build>
         <pluginManagement>
           <plugins>

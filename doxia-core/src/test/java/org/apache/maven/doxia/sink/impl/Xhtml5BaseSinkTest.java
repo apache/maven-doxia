@@ -1,3 +1,21 @@
+/*
+ * Licensed to the Apache Software Foundation (ASF) under one
+ * or more contributor license agreements.  See the NOTICE file
+ * distributed with this work for additional information
+ * regarding copyright ownership.  The ASF licenses this file
+ * to you under the Apache License, Version 2.0 (the
+ * "License"); you may not use this file except in compliance
+ * with the License.  You may obtain a copy of the License at
+ *
+ *   http://www.apache.org/licenses/LICENSE-2.0
+ *
+ * Unless required by applicable law or agreed to in writing,
+ * software distributed under the License is distributed on an
+ * "AS IS" BASIS, WITHOUT WARRANTIES OR CONDITIONS OF ANY
+ * KIND, either express or implied.  See the License for the
+ * specific language governing permissions and limitations
+ * under the License.
+ */
 package org.apache.maven.doxia.sink.impl;
 
 /*
@@ -19,10 +37,10 @@ package org.apache.maven.doxia.sink.impl;
  * under the License.
  */
 
+import javax.swing.text.html.HTML.Attribute;
+
 import java.io.StringWriter;
 import java.io.Writer;
-
-import javax.swing.text.html.HTML.Attribute;
 
 import org.apache.maven.doxia.markup.Markup;
 import org.apache.maven.doxia.sink.Sink;
@@ -35,8 +53,7 @@ import static org.junit.jupiter.api.Assertions.*;
 /**
  * Test for Xhtml5BaseSink.
  */
-public class Xhtml5BaseSinkTest
-{
+public class Xhtml5BaseSinkTest {
     protected static final String LS = Markup.EOL;
     private final SinkEventAttributes attributes = SinkEventAttributeSet.BOLD;
     private Xhtml5BaseSink sink;
@@ -45,31 +62,25 @@ public class Xhtml5BaseSinkTest
     String EOL = System.lineSeparator();
 
     @BeforeEach
-    public void setUp()
-    {
-        writer =  new StringWriter();
+    public void setUp() {
+        writer = new StringWriter();
     }
 
     @Test
-    public void testSpaceAfterClosingTag()
-    {
+    public void testSpaceAfterClosingTag() {
         // DOXIA-189
-        try
-        {
-            sink = new Xhtml5BaseSink( writer );
+        try {
+            sink = new Xhtml5BaseSink(writer);
 
             sink.paragraph();
-            sink.text( "There should be no space before the " );
+            sink.text("There should be no space before the ");
             sink.italic();
-            sink.text( "period" );
+            sink.text("period");
             sink.italic_();
-            sink.text( "." );
+            sink.text(".");
             sink.paragraph_();
-        }
-        finally
-        {
-            if ( sink != null )
-            {
+        } finally {
+            if (sink != null) {
                 sink.close();
             }
         }
@@ -77,603 +88,510 @@ public class Xhtml5BaseSinkTest
         String actual = writer.toString();
         String expected = "<p>There should be no space before the <i>period</i>.</p>";
 
-        assertEquals( expected, actual );
+        assertEquals(expected, actual);
     }
 
     /**
      */
     @Test
-    public void testNestedTables()
-    {
+    public void testNestedTables() {
         // DOXIA-177
-        try
-        {
-            sink = new Xhtml5BaseSink( writer );
+        try {
+            sink = new Xhtml5BaseSink(writer);
 
             sink.table();
-            sink.tableRows( new int[] { Sink.JUSTIFY_CENTER }, false );
+            sink.tableRows(new int[] {Sink.JUSTIFY_CENTER}, false);
             sink.tableRow();
             sink.tableCell();
-            sink.text( "cell11" );
+            sink.text("cell11");
             sink.tableCell_();
             sink.tableCell();
-            sink.text( "cell12" );
+            sink.text("cell12");
             sink.tableCell_();
             sink.tableRow_();
 
             sink.tableRow();
             sink.tableCell();
-            sink.table( SinkEventAttributeSet.LEFT );
-            sink.tableRows( new int[] { Sink.JUSTIFY_LEFT }, false );
+            sink.table(SinkEventAttributeSet.LEFT);
+            sink.tableRows(new int[] {Sink.JUSTIFY_LEFT}, false);
             sink.tableRow();
             sink.tableCell();
-            sink.text( "nestedTable1Cell11" );
+            sink.text("nestedTable1Cell11");
             sink.tableCell_();
             sink.tableCell();
-            sink.text( "nestedTable1Cell12" );
+            sink.text("nestedTable1Cell12");
             sink.tableCell_();
             sink.tableRow_();
             sink.tableRow();
             sink.tableCell();
 
-            sink.table( SinkEventAttributeSet.RIGHT );
-            sink.tableRows( new int[] { Sink.JUSTIFY_RIGHT }, false );
+            sink.table(SinkEventAttributeSet.RIGHT);
+            sink.tableRows(new int[] {Sink.JUSTIFY_RIGHT}, false);
             sink.tableRow();
             sink.tableCell();
-            sink.text( "nestedTable2Cell11" );
+            sink.text("nestedTable2Cell11");
             sink.tableCell_();
             sink.tableCell();
-            sink.text( "nestedTable2Cell12" );
+            sink.text("nestedTable2Cell12");
             sink.tableCell_();
             sink.tableRow_();
             sink.tableRow();
             sink.tableCell();
-            sink.text( "nestedTable2Cell21" );
+            sink.text("nestedTable2Cell21");
             sink.tableCell_();
             sink.tableCell();
-            sink.text( "nestedTable2Cell22" );
+            sink.text("nestedTable2Cell22");
             sink.tableCell_();
             sink.tableRow_();
             sink.tableRows_();
             sink.tableCaption();
-            sink.text( "caption3" );
+            sink.text("caption3");
             sink.tableCaption_();
             sink.table_();
 
             sink.tableCell_();
             sink.tableCell();
-            sink.text( "nestedTable1Cell22" );
+            sink.text("nestedTable1Cell22");
             sink.tableCell_();
             sink.tableRow_();
             sink.tableRows_();
             sink.tableCaption();
-            sink.text( "caption2" );
+            sink.text("caption2");
             sink.tableCaption_();
             sink.table_();
 
             sink.tableCell_();
             sink.tableCell();
-            sink.text( "cell22" );
+            sink.text("cell22");
             sink.tableCell_();
             sink.tableRow_();
             sink.tableRows_();
             sink.tableCaption();
-            sink.text( "caption&1" );
+            sink.text("caption&1");
             sink.tableCaption_();
             sink.table_();
-        }
-        finally
-        {
+        } finally {
             sink.close();
         }
 
         String actual = writer.toString();
-        assertTrue(
-                actual.contains( "<table class=\"bodyTable\">" + "<caption>caption&amp;1</caption>" ) );
-        assertTrue( actual.contains(
-                "<table class=\"bodyTable\">" + "<caption>caption2</caption>" ) );
-        assertTrue( actual.contains(
-                "<table class=\"bodyTable\">" + "<caption>caption3</caption>" ) );
+        assertTrue(actual.contains("<table class=\"bodyTable\">" + "<caption>caption&amp;1</caption>"));
+        assertTrue(actual.contains("<table class=\"bodyTable\">" + "<caption>caption2</caption>"));
+        assertTrue(actual.contains("<table class=\"bodyTable\">" + "<caption>caption3</caption>"));
 
-        assertTrue( actual.contains( "<td style=\"text-align: center;\">cell11</td>" ) );
-        assertTrue( actual.contains( "<td style=\"text-align: left;\">nestedTable1Cell11</td>" ) );
-        assertTrue( actual.contains( "<td style=\"text-align: right;\">nestedTable2Cell11</td>" ) );
-        assertTrue( actual.contains( "<td>nestedTable1Cell22</td>" ) );
-        assertTrue( actual.contains( "<td>cell22</td>" ) );
+        assertTrue(actual.contains("<td style=\"text-align: center;\">cell11</td>"));
+        assertTrue(actual.contains("<td style=\"text-align: left;\">nestedTable1Cell11</td>"));
+        assertTrue(actual.contains("<td style=\"text-align: right;\">nestedTable2Cell11</td>"));
+        assertTrue(actual.contains("<td>nestedTable1Cell22</td>"));
+        assertTrue(actual.contains("<td>cell22</td>"));
     }
 
     /**
      * Test of article method, of class Xhtml5BaseSink.
      */
     @Test
-    public void testArticle()
-    {
-        try
-        {
-            sink = new Xhtml5BaseSink( writer );
+    public void testArticle() {
+        try {
+            sink = new Xhtml5BaseSink(writer);
 
             sink.article();
             sink.article_();
-        }
-        finally
-        {
+        } finally {
             sink.close();
         }
 
-        assertEquals( "<article></article>", writer.toString() );
+        assertEquals("<article></article>", writer.toString());
 
-        writer =  new StringWriter();
+        writer = new StringWriter();
 
-        try
-        {
-            sink = new Xhtml5BaseSink( writer );
+        try {
+            sink = new Xhtml5BaseSink(writer);
 
-            sink.article( attributes );
+            sink.article(attributes);
             sink.article_();
-        }
-        finally
-        {
+        } finally {
             sink.close();
         }
 
-        assertEquals( "<article style=\"bold\"></article>", writer.toString() );
+        assertEquals("<article style=\"bold\"></article>", writer.toString());
     }
 
     /**
      * Test of navigation method, of class Xhtml5BaseSink.
      */
     @Test
-    public void testNavigation()
-    {
-        try
-        {
-            sink = new Xhtml5BaseSink( writer );
+    public void testNavigation() {
+        try {
+            sink = new Xhtml5BaseSink(writer);
 
             sink.navigation();
             sink.navigation_();
-        }
-        finally
-        {
+        } finally {
             sink.close();
         }
 
-        assertEquals( "<nav></nav>", writer.toString() );
+        assertEquals("<nav></nav>", writer.toString());
 
-        writer =  new StringWriter();
+        writer = new StringWriter();
 
-        try
-        {
-            sink = new Xhtml5BaseSink( writer );
+        try {
+            sink = new Xhtml5BaseSink(writer);
 
-            sink.navigation( attributes );
+            sink.navigation(attributes);
             sink.navigation_();
-        }
-        finally
-        {
+        } finally {
             sink.close();
         }
 
-        assertEquals( "<nav style=\"bold\"></nav>", writer.toString() );
+        assertEquals("<nav style=\"bold\"></nav>", writer.toString());
     }
 
     /**
      * Test of sidebar method, of class Xhtml5BaseSink.
      */
     @Test
-    public void testSidebar()
-    {
-        try
-        {
-            sink = new Xhtml5BaseSink( writer );
+    public void testSidebar() {
+        try {
+            sink = new Xhtml5BaseSink(writer);
 
             sink.sidebar();
             sink.sidebar_();
-        }
-        finally
-        {
+        } finally {
             sink.close();
         }
 
-        assertEquals( "<aside></aside>", writer.toString() );
+        assertEquals("<aside></aside>", writer.toString());
 
-        writer =  new StringWriter();
+        writer = new StringWriter();
 
-        try
-        {
-            sink = new Xhtml5BaseSink( writer );
+        try {
+            sink = new Xhtml5BaseSink(writer);
 
-            sink.sidebar( attributes );
+            sink.sidebar(attributes);
             sink.sidebar_();
-        }
-        finally
-        {
+        } finally {
             sink.close();
         }
 
-        assertEquals( "<aside style=\"bold\"></aside>", writer.toString() );
+        assertEquals("<aside style=\"bold\"></aside>", writer.toString());
     }
 
     /**
      * Test of section method, of class Xhtml5BaseSink.
      */
     @Test
-    public void testSection()
-    {
+    public void testSection() {
         final int level = Xhtml5BaseSink.SECTION_LEVEL_1;
 
-        try
-        {
-            sink = new Xhtml5BaseSink( writer );
+        try {
+            sink = new Xhtml5BaseSink(writer);
 
-            sink.section( level, attributes );
-            sink.sectionTitle( level, attributes );
-            sink.sectionTitle_( level );
-            sink.section_( level );
-        }
-        finally
-        {
+            sink.section(level, attributes);
+            sink.sectionTitle(level, attributes);
+            sink.sectionTitle_(level);
+            sink.section_(level);
+        } finally {
             sink.close();
         }
 
-        assertEquals( "<section style=\"bold\">" + LS + "<h1 style=\"bold\"></h1></section>",
-                writer.toString() );
+        assertEquals("<section style=\"bold\">" + LS + "<h1 style=\"bold\"></h1></section>", writer.toString());
     }
 
     /**
      * Test of section method, of class Xhtml5BaseSink.
      */
     @Test
-    public void testSectionAttributes()
-    {
+    public void testSectionAttributes() {
         final int level = Xhtml5BaseSink.SECTION_LEVEL_1;
-        final SinkEventAttributeSet set = new SinkEventAttributeSet( "name", "section name", "class", "foo", "id",
-                "bar" );
+        final SinkEventAttributeSet set =
+                new SinkEventAttributeSet("name", "section name", "class", "foo", "id", "bar");
 
-        try
-        {
-            sink = new Xhtml5BaseSink( writer );
+        try {
+            sink = new Xhtml5BaseSink(writer);
 
-            sink.section( level, set );
-            sink.sectionTitle( level, null );
-            sink.sectionTitle_( level );
-            sink.section_( level );
-        }
-        finally
-        {
+            sink.section(level, set);
+            sink.sectionTitle(level, null);
+            sink.sectionTitle_(level);
+            sink.section_(level);
+        } finally {
             sink.close();
         }
 
-        assertEquals( "<section class=\"foo\" id=\"bar\">" + LS + "<h1></h1></section>", writer.toString() );
+        assertEquals("<section class=\"foo\" id=\"bar\">" + LS + "<h1></h1></section>", writer.toString());
     }
 
     /**
      * Test of section1 method, of class Xhtml5BaseSink.
      */
     @Test
-    public void testSection1()
-    {
+    public void testSection1() {
 
-        try
-        {
-            sink = new Xhtml5BaseSink( writer );
+        try {
+            sink = new Xhtml5BaseSink(writer);
 
             sink.section1();
             sink.sectionTitle1();
             sink.sectionTitle1_();
             sink.section1_();
-        }
-        finally
-        {
+        } finally {
             sink.close();
         }
 
-        assertEquals( "<section>" + LS + "<h1></h1></section>", writer.toString() );
+        assertEquals("<section>" + LS + "<h1></h1></section>", writer.toString());
     }
 
     /**
      * Test of section2 method, of class Xhtml5BaseSink.
      */
     @Test
-    public void testSection2()
-    {
+    public void testSection2() {
 
-        try
-        {
-            sink = new Xhtml5BaseSink( writer );
+        try {
+            sink = new Xhtml5BaseSink(writer);
 
             sink.section2();
             sink.sectionTitle2();
             sink.sectionTitle2_();
             sink.section2_();
-        }
-        finally
-        {
+        } finally {
             sink.close();
         }
 
-        assertEquals( "<section>" + LS + "<h2></h2></section>", writer.toString() );
+        assertEquals("<section>" + LS + "<h2></h2></section>", writer.toString());
     }
 
     /**
      * Test of section3 method, of class Xhtml5BaseSink.
      */
     @Test
-    public void testSection3()
-    {
+    public void testSection3() {
 
-        try
-        {
-            sink = new Xhtml5BaseSink( writer );
+        try {
+            sink = new Xhtml5BaseSink(writer);
 
             sink.section3();
             sink.sectionTitle3();
             sink.sectionTitle3_();
             sink.section3_();
-        }
-        finally
-        {
+        } finally {
             sink.close();
         }
 
-        assertEquals( "<section>" + LS + "<h3></h3></section>", writer.toString() );
+        assertEquals("<section>" + LS + "<h3></h3></section>", writer.toString());
     }
 
     /**
      * Test of section4 method, of class Xhtml5BaseSink.
      */
     @Test
-    public void testSection4()
-    {
-        try
-        {
-            sink = new Xhtml5BaseSink( writer );
+    public void testSection4() {
+        try {
+            sink = new Xhtml5BaseSink(writer);
 
             sink.section4();
             sink.sectionTitle4();
             sink.sectionTitle4_();
             sink.section4_();
-        }
-        finally
-        {
+        } finally {
             sink.close();
         }
 
-        assertEquals( "<section>" + LS + "<h4></h4></section>", writer.toString() );
+        assertEquals("<section>" + LS + "<h4></h4></section>", writer.toString());
     }
 
     /**
      * Test of section5 method, of class Xhtml5BaseSink.
      */
     @Test
-    public void testSection5()
-    {
-        try
-        {
-            sink = new Xhtml5BaseSink( writer );
+    public void testSection5() {
+        try {
+            sink = new Xhtml5BaseSink(writer);
 
             sink.section5();
             sink.sectionTitle5();
             sink.sectionTitle5_();
             sink.section5_();
-        }
-        finally
-        {
+        } finally {
             sink.close();
         }
 
-        assertEquals( "<section>" + LS + "<h5></h5></section>", writer.toString() );
+        assertEquals("<section>" + LS + "<h5></h5></section>", writer.toString());
     }
 
     /**
      * Test of header method, of class Xhtml5BaseSink.
      */
     @Test
-    public void testHeader()
-    {
-        try
-        {
-            sink = new Xhtml5BaseSink( writer );
+    public void testHeader() {
+        try {
+            sink = new Xhtml5BaseSink(writer);
 
             sink.header();
             sink.header_();
-        }
-        finally
-        {
+        } finally {
             sink.close();
         }
 
-        assertEquals( "<header></header>", writer.toString() );
+        assertEquals("<header></header>", writer.toString());
 
-        writer =  new StringWriter();
+        writer = new StringWriter();
 
-        try
-        {
-            sink = new Xhtml5BaseSink( writer );
+        try {
+            sink = new Xhtml5BaseSink(writer);
 
-            sink.header( attributes );
+            sink.header(attributes);
             sink.header_();
-        }
-        finally
-        {
+        } finally {
             sink.close();
         }
 
-        assertEquals( "<header style=\"bold\"></header>", writer.toString() );
+        assertEquals("<header style=\"bold\"></header>", writer.toString());
     }
 
     /**
      * Test of content method, of class Xhtml5BaseSink.
      */
     @Test
-    public void testContent()
-    {
-        try
-        {
-            sink = new Xhtml5BaseSink( writer );
+    public void testContent() {
+        try {
+            sink = new Xhtml5BaseSink(writer);
 
             sink.content();
             sink.content();
             sink.content_();
             sink.content_();
-        }
-        finally
-        {
+        } finally {
             sink.close();
         }
 
-        assertEquals( "<main>" + EOL + "<div class=\"content\"></div></main>", writer.toString() );
+        assertEquals("<main>" + EOL + "<div class=\"content\"></div></main>", writer.toString());
 
-        writer =  new StringWriter();
+        writer = new StringWriter();
 
-        try
-        {
-            sink = new Xhtml5BaseSink( writer );
+        try {
+            sink = new Xhtml5BaseSink(writer);
 
-            sink.content( attributes );
-            sink.content( attributes );
+            sink.content(attributes);
+            sink.content(attributes);
             sink.content_();
             sink.content_();
-        }
-        finally
-        {
+        } finally {
             sink.close();
         }
 
-        assertEquals( "<main style=\"bold\">" + EOL + "<div style=\"bold\" class=\"content\"></div></main>",
-                writer.toString() );
+        assertEquals(
+                "<main style=\"bold\">" + EOL + "<div style=\"bold\" class=\"content\"></div></main>",
+                writer.toString());
     }
 
     /**
      * Test of footer method, of class Xhtml5BaseSink.
      */
     @Test
-    public void testFooter()
-    {
-        try
-        {
-            sink = new Xhtml5BaseSink( writer );
+    public void testFooter() {
+        try {
+            sink = new Xhtml5BaseSink(writer);
 
             sink.footer();
             sink.footer_();
-        }
-        finally
-        {
+        } finally {
             sink.close();
         }
 
-        assertEquals( "<footer></footer>", writer.toString() );
+        assertEquals("<footer></footer>", writer.toString());
 
-        writer =  new StringWriter();
+        writer = new StringWriter();
 
-        try
-        {
-            sink = new Xhtml5BaseSink( writer );
+        try {
+            sink = new Xhtml5BaseSink(writer);
 
-            sink.footer( attributes );
+            sink.footer(attributes);
             sink.footer_();
-        }
-        finally
-        {
+        } finally {
             sink.close();
         }
 
-        assertEquals( "<footer style=\"bold\"></footer>", writer.toString() );
+        assertEquals("<footer style=\"bold\"></footer>", writer.toString());
     }
 
     /**
      * Test of list method, of class Xhtml5BaseSink.
      */
     @Test
-    public void testList()
-    {
-        try
-        {
-            sink = new Xhtml5BaseSink( writer );
+    public void testList() {
+        try {
+            sink = new Xhtml5BaseSink(writer);
 
             sink.list();
             sink.listItem();
             sink.listItem_();
             sink.list_();
-        }
-        finally
-        {
+        } finally {
             sink.close();
         }
 
-        assertEquals( "<ul>" + LS + "<li></li></ul>", writer.toString() );
+        assertEquals("<ul>" + LS + "<li></li></ul>", writer.toString());
 
-        writer =  new StringWriter();
+        writer = new StringWriter();
 
-        try
-        {
-            sink = new Xhtml5BaseSink( writer );
+        try {
+            sink = new Xhtml5BaseSink(writer);
 
-            sink.list( attributes );
-            sink.listItem( attributes );
+            sink.list(attributes);
+            sink.listItem(attributes);
             sink.listItem_();
             sink.list_();
-        }
-        finally
-        {
+        } finally {
             sink.close();
         }
 
-        assertEquals( "<ul style=\"bold\">" + LS + "<li style=\"bold\"></li></ul>", writer.toString() );
+        assertEquals("<ul style=\"bold\">" + LS + "<li style=\"bold\"></li></ul>", writer.toString());
     }
 
     /**
      * Test of numberedList method, of class Xhtml5BaseSink.
      */
     @Test
-    public void testNumberedList()
-    {
+    public void testNumberedList() {
         final int numbering = Xhtml5BaseSink.NUMBERING_DECIMAL;
 
-        try
-        {
-            sink = new Xhtml5BaseSink( writer );
+        try {
+            sink = new Xhtml5BaseSink(writer);
 
-            sink.numberedList( numbering );
+            sink.numberedList(numbering);
             sink.numberedListItem();
             sink.numberedListItem_();
             sink.numberedList_();
-        }
-        finally
-        {
+        } finally {
             sink.close();
         }
 
-        assertEquals( "<ol style=\"list-style-type: decimal\">" + LS + "<li></li></ol>", writer.toString() );
+        assertEquals("<ol style=\"list-style-type: decimal\">" + LS + "<li></li></ol>", writer.toString());
 
-        writer =  new StringWriter();
+        writer = new StringWriter();
 
-        try
-        {
-            sink = new Xhtml5BaseSink( writer );
+        try {
+            sink = new Xhtml5BaseSink(writer);
 
-            sink.numberedList( numbering, attributes );
-            sink.numberedListItem( attributes );
+            sink.numberedList(numbering, attributes);
+            sink.numberedListItem(attributes);
             sink.numberedListItem_();
             sink.numberedList_();
-        }
-        finally
-        {
+        } finally {
             sink.close();
         }
 
-        assertEquals( "<ol style=\"list-style-type: decimal\">" + LS + "<li style=\"bold\"></li></ol>",
-                writer.toString() );
+        assertEquals(
+                "<ol style=\"list-style-type: decimal\">" + LS + "<li style=\"bold\"></li></ol>", writer.toString());
     }
 
     /**
      * Test of definitionList method, of class Xhtml5BaseSink.
      */
     @Test
-    public void testDefinitionList()
-    {
-        try
-        {
-            sink = new Xhtml5BaseSink( writer );
+    public void testDefinitionList() {
+        try {
+            sink = new Xhtml5BaseSink(writer);
 
             sink.definitionList();
             sink.definedTerm();
@@ -681,699 +599,592 @@ public class Xhtml5BaseSinkTest
             sink.definition();
             sink.definition_();
             sink.definitionList_();
-        }
-        finally
-        {
+        } finally {
             sink.close();
         }
 
-        assertEquals( "<dl>" + LS + "<dt></dt>" + LS + "<dd></dd></dl>", writer.toString() );
+        assertEquals("<dl>" + LS + "<dt></dt>" + LS + "<dd></dd></dl>", writer.toString());
 
-        writer =  new StringWriter();
+        writer = new StringWriter();
 
-        try
-        {
-            sink = new Xhtml5BaseSink( writer );
+        try {
+            sink = new Xhtml5BaseSink(writer);
 
-            sink.definitionList( attributes );
-            sink.definedTerm( attributes );
+            sink.definitionList(attributes);
+            sink.definedTerm(attributes);
             sink.definedTerm_();
-            sink.definition( attributes );
+            sink.definition(attributes);
             sink.definition_();
             sink.definitionList_();
-        }
-        finally
-        {
+        } finally {
             sink.close();
         }
 
         assertEquals(
                 "<dl style=\"bold\">" + LS + "<dt style=\"bold\"></dt>" + LS + "<dd style=\"bold\"></dd></dl>",
-                writer.toString() );
+                writer.toString());
     }
 
     /**
      * Test of figure method, of class Xhtml5BaseSink.
      */
     @Test
-    public void testFigure()
-    {
+    public void testFigure() {
         final String src = "src.jpg";
 
-        try
-        {
-            sink = new Xhtml5BaseSink( writer );
+        try {
+            sink = new Xhtml5BaseSink(writer);
 
-            sink.figure( attributes );
-            sink.figureGraphics( src, attributes );
-            sink.figureCaption( attributes );
+            sink.figure(attributes);
+            sink.figureGraphics(src, attributes);
+            sink.figureCaption(attributes);
             sink.figureCaption_();
             sink.figure_();
-        }
-        finally
-        {
+        } finally {
             sink.close();
         }
 
         assertEquals(
-                "<figure style=\"bold\">" + "<img src=\"src.jpg\" style=\"bold\" alt=\"\" />" + "<figcaption style=\"bold\"></figcaption></figure>",
-                writer.toString() );
+                "<figure style=\"bold\">" + "<img src=\"src.jpg\" style=\"bold\" alt=\"\" />"
+                        + "<figcaption style=\"bold\"></figcaption></figure>",
+                writer.toString());
     }
 
     /**
      * Test of figureGraphics method, of class Xhtml5BaseSink.
      */
     @Test
-    public void testFigureGraphics()
-    {
+    public void testFigureGraphics() {
         String src = "source.png";
 
-        try
-        {
-            sink = new Xhtml5BaseSink( writer );
-            sink.figureGraphics( src, attributes );
-        }
-        finally
-        {
+        try {
+            sink = new Xhtml5BaseSink(writer);
+            sink.figureGraphics(src, attributes);
+        } finally {
             sink.close();
         }
 
-        assertEquals( "<img src=\"source.png\" style=\"bold\" alt=\"\" />", writer.toString() );
+        assertEquals("<img src=\"source.png\" style=\"bold\" alt=\"\" />", writer.toString());
     }
 
     /**
      * Test of paragraph method, of class Xhtml5BaseSink.
      */
     @Test
-    public void testParagraph()
-    {
-        try
-        {
-            sink = new Xhtml5BaseSink( writer );
+    public void testParagraph() {
+        try {
+            sink = new Xhtml5BaseSink(writer);
 
             sink.paragraph();
             sink.paragraph_();
-        }
-        finally
-        {
+        } finally {
             sink.close();
         }
 
-        assertEquals( "<p></p>", writer.toString() );
+        assertEquals("<p></p>", writer.toString());
 
-        writer =  new StringWriter();
+        writer = new StringWriter();
 
-        try
-        {
-            sink = new Xhtml5BaseSink( writer );
+        try {
+            sink = new Xhtml5BaseSink(writer);
 
-            sink.paragraph( attributes );
+            sink.paragraph(attributes);
             sink.paragraph_();
-        }
-        finally
-        {
+        } finally {
             sink.close();
         }
 
-        assertEquals( "<p style=\"bold\"></p>", writer.toString() );
+        assertEquals("<p style=\"bold\"></p>", writer.toString());
     }
 
     /**
      * Test of data method, of class Xhtml5BaseSink.
      */
     @Test
-    public void testData()
-    {
+    public void testData() {
         String value = "value";
 
-        try
-        {
-            sink = new Xhtml5BaseSink( writer );
-            sink.data( value, attributes );
+        try {
+            sink = new Xhtml5BaseSink(writer);
+            sink.data(value, attributes);
             sink.data_();
-        }
-        finally
-        {
+        } finally {
             sink.close();
         }
 
-        assertEquals( "<data value=\"value\" style=\"bold\"></data>", writer.toString() );
+        assertEquals("<data value=\"value\" style=\"bold\"></data>", writer.toString());
     }
 
     /**
      * Test of time method, of class Xhtml5BaseSink.
      */
     @Test
-    public void testTime()
-    {
+    public void testTime() {
         String datetime = "datetime";
 
-        try
-        {
-            sink = new Xhtml5BaseSink( writer );
-            sink.time( datetime, attributes );
+        try {
+            sink = new Xhtml5BaseSink(writer);
+            sink.time(datetime, attributes);
             sink.time_();
-        }
-        finally
-        {
+        } finally {
             sink.close();
         }
 
-        assertEquals( "<time datetime=\"datetime\" style=\"bold\"></time>", writer.toString() );
+        assertEquals("<time datetime=\"datetime\" style=\"bold\"></time>", writer.toString());
     }
 
     /**
      * Test of address method, of class Xhtml5BaseSink.
      */
     @Test
-    public void testAddress()
-    {
-        try
-        {
-            sink = new Xhtml5BaseSink( writer );
+    public void testAddress() {
+        try {
+            sink = new Xhtml5BaseSink(writer);
 
             sink.address();
             sink.address_();
-        }
-        finally
-        {
+        } finally {
             sink.close();
         }
 
-        assertEquals( "<address></address>", writer.toString() );
+        assertEquals("<address></address>", writer.toString());
 
-        writer =  new StringWriter();
+        writer = new StringWriter();
 
-        try
-        {
-            sink = new Xhtml5BaseSink( writer );
+        try {
+            sink = new Xhtml5BaseSink(writer);
 
-            sink.address( attributes );
+            sink.address(attributes);
             sink.address_();
-        }
-        finally
-        {
+        } finally {
             sink.close();
         }
 
-        assertEquals( "<address style=\"bold\"></address>", writer.toString() );
+        assertEquals("<address style=\"bold\"></address>", writer.toString());
     }
 
     /**
      * Test of blockquote method, of class Xhtml5BaseSink.
      */
     @Test
-    public void testBlockquote()
-    {
-        try
-        {
-            sink = new Xhtml5BaseSink( writer );
+    public void testBlockquote() {
+        try {
+            sink = new Xhtml5BaseSink(writer);
 
             sink.blockquote();
             sink.blockquote_();
-        }
-        finally
-        {
+        } finally {
             sink.close();
         }
 
-        assertEquals( "<blockquote></blockquote>", writer.toString() );
+        assertEquals("<blockquote></blockquote>", writer.toString());
 
-        writer =  new StringWriter();
+        writer = new StringWriter();
 
-        try
-        {
-            sink = new Xhtml5BaseSink( writer );
+        try {
+            sink = new Xhtml5BaseSink(writer);
 
-            sink.blockquote( attributes );
+            sink.blockquote(attributes);
             sink.blockquote_();
-        }
-        finally
-        {
+        } finally {
             sink.close();
         }
 
-        assertEquals( "<blockquote style=\"bold\"></blockquote>", writer.toString() );
+        assertEquals("<blockquote style=\"bold\"></blockquote>", writer.toString());
     }
 
     /**
      * Test of division method, of class Xhtml5BaseSink.
      */
     @Test
-    public void testDivision()
-    {
-        try
-        {
-            sink = new Xhtml5BaseSink( writer );
+    public void testDivision() {
+        try {
+            sink = new Xhtml5BaseSink(writer);
 
             sink.division();
             sink.division_();
-        }
-        finally
-        {
+        } finally {
             sink.close();
         }
 
-        assertEquals( "<div></div>", writer.toString() );
+        assertEquals("<div></div>", writer.toString());
 
-        writer =  new StringWriter();
+        writer = new StringWriter();
 
-        try
-        {
-            sink = new Xhtml5BaseSink( writer );
+        try {
+            sink = new Xhtml5BaseSink(writer);
 
-            sink.division( attributes );
+            sink.division(attributes);
             sink.division_();
-        }
-        finally
-        {
+        } finally {
             sink.close();
         }
 
-        assertEquals( "<div style=\"bold\"></div>", writer.toString() );
+        assertEquals("<div style=\"bold\"></div>", writer.toString());
     }
 
     /**
      * Test of verbatim method, of class Xhtml5BaseSink.
      */
     @Test
-    public void testVerbatim()
-    {
-        try
-        {
-            sink = new Xhtml5BaseSink( writer );
+    public void testVerbatim() {
+        try {
+            sink = new Xhtml5BaseSink(writer);
 
-            sink.verbatim( SinkEventAttributeSet.BOXED );
+            sink.verbatim(SinkEventAttributeSet.BOXED);
             sink.verbatim_();
-        }
-        finally
-        {
+        } finally {
             sink.close();
         }
 
-        assertEquals( "<div class=\"source\">" + LS + "<pre></pre></div>", writer.toString() );
+        assertEquals("<div class=\"source\">" + LS + "<pre></pre></div>", writer.toString());
 
-        checkVerbatimAttributes( attributes, "<div>" + LS + "<pre style=\"bold\"></pre></div>" );
+        checkVerbatimAttributes(attributes, "<div>" + LS + "<pre style=\"bold\"></pre></div>");
 
-        final SinkEventAttributes att =
-            new SinkEventAttributeSet( SinkEventAttributes.ID, "id" );
-        checkVerbatimAttributes( att, "<div>" + LS + "<pre id=\"id\"></pre></div>" );
+        final SinkEventAttributes att = new SinkEventAttributeSet(SinkEventAttributes.ID, "id");
+        checkVerbatimAttributes(att, "<div>" + LS + "<pre id=\"id\"></pre></div>");
 
-        att.addAttribute( Attribute.CLASS, "class" );
-        checkVerbatimAttributes( att, "<div>" + LS + "<pre id=\"id\" class=\"class\"></pre></div>" );
+        att.addAttribute(Attribute.CLASS, "class");
+        checkVerbatimAttributes(att, "<div>" + LS + "<pre id=\"id\" class=\"class\"></pre></div>");
 
-        att.addAttribute( SinkEventAttributes.DECORATION, "boxed" );
-        checkVerbatimAttributes( att, "<div class=\"source\">" + LS + "<pre id=\"id\" class=\"class\"></pre></div>" );
+        att.addAttribute(SinkEventAttributes.DECORATION, "boxed");
+        checkVerbatimAttributes(att, "<div class=\"source\">" + LS + "<pre id=\"id\" class=\"class\"></pre></div>");
 
-        att.removeAttribute( Attribute.CLASS.toString() );
-        checkVerbatimAttributes( att, "<div class=\"source\">" + LS + "<pre id=\"id\"></pre></div>" );
+        att.removeAttribute(Attribute.CLASS.toString());
+        checkVerbatimAttributes(att, "<div class=\"source\">" + LS + "<pre id=\"id\"></pre></div>");
     }
 
-    private void checkVerbatimAttributes( final SinkEventAttributes att, final String expected )
-    {
+    private void checkVerbatimAttributes(final SinkEventAttributes att, final String expected) {
 
-        writer =  new StringWriter();
+        writer = new StringWriter();
 
-        try
-        {
-            sink = new Xhtml5BaseSink( writer );
+        try {
+            sink = new Xhtml5BaseSink(writer);
 
-            sink.verbatim( att );
+            sink.verbatim(att);
             sink.verbatim_();
-        }
-        finally
-        {
+        } finally {
             sink.close();
         }
 
-        assertEquals( expected, writer.toString() );
+        assertEquals(expected, writer.toString());
     }
 
     /**
      * Test of horizontalRule method, of class Xhtml5BaseSink.
      */
     @Test
-    public void testHorizontalRule()
-    {
-        try
-        {
-            sink = new Xhtml5BaseSink( writer );
+    public void testHorizontalRule() {
+        try {
+            sink = new Xhtml5BaseSink(writer);
 
             sink.horizontalRule();
-            sink.horizontalRule( attributes );
-        }
-        finally
-        {
+            sink.horizontalRule(attributes);
+        } finally {
             sink.close();
         }
 
-        assertEquals( "<hr /><hr style=\"bold\" />", writer.toString() );
+        assertEquals("<hr /><hr style=\"bold\" />", writer.toString());
     }
 
     /**
      * Test of table method, of class Xhtml5BaseSink.
      */
     @Test
-    public void testTable()
-    {
-        try
-        {
-            sink = new Xhtml5BaseSink( writer );
+    public void testTable() {
+        try {
+            sink = new Xhtml5BaseSink(writer);
 
-            sink.table( attributes );
+            sink.table(attributes);
             sink.table_();
-        }
-        finally
-        {
+        } finally {
             sink.close();
         }
 
-        assertEquals( "</table>", writer.toString() );
+        assertEquals("</table>", writer.toString());
     }
 
     /**
      * Test of tableRows method, of class Xhtml5BaseSink.
      */
     @Test
-    public void testTableRows()
-    {
-        try
-        {
-            sink = new Xhtml5BaseSink( writer );
+    public void testTableRows() {
+        try {
+            sink = new Xhtml5BaseSink(writer);
 
             sink.table();
             sink.tableRows();
             sink.tableRows_();
             sink.table_();
-        }
-        finally
-        {
+        } finally {
             sink.close();
         }
 
-        assertEquals( "<table class=\"bodyTable\"></table>", writer.toString() );
+        assertEquals("<table class=\"bodyTable\"></table>", writer.toString());
     }
 
     /**
      * Test of tableRow method, of class Xhtml5BaseSink.
      */
     @Test
-    public void testTableRow()
-    {
-        try
-        {
-            sink = new Xhtml5BaseSink( writer );
+    public void testTableRow() {
+        try {
+            sink = new Xhtml5BaseSink(writer);
 
             sink.table();
             sink.tableRows();
-            sink.tableRow( attributes );
+            sink.tableRow(attributes);
             sink.tableRow_();
             sink.tableRow();
             sink.tableRow_();
             sink.tableRows_();
             sink.table_();
-        }
-        finally
-        {
+        } finally {
             sink.close();
         }
 
-        String xmlExpected = "<table class=\"bodyTable\">" + EOL + "<tr style=\"bold\" class=\"a\"></tr>"
-            + EOL + "<tr class=\"b\"></tr></table>";
+        String xmlExpected = "<table class=\"bodyTable\">" + EOL + "<tr style=\"bold\" class=\"a\"></tr>" + EOL
+                + "<tr class=\"b\"></tr></table>";
 
-        assertEquals( xmlExpected, writer.toString() );
+        assertEquals(xmlExpected, writer.toString());
     }
 
     /**
      * Test striping for hidden rows in tableRow method.
      */
     @Test
-    public void testHiddenTableRowStriping()
-    {
-        try
-        {
+    public void testHiddenTableRowStriping() {
+        try {
             SinkEventAttributeSet attributes2 = new SinkEventAttributeSet();
             SinkEventAttributeSet attributes3 = new SinkEventAttributeSet();
-            attributes3.addAttributes( attributes );
-            sink = new Xhtml5BaseSink( writer );
+            attributes3.addAttributes(attributes);
+            sink = new Xhtml5BaseSink(writer);
 
             sink.table();
             sink.tableRows();
             sink.tableRow();
             sink.tableRow_();
-            sink.tableRow( attributes );
+            sink.tableRow(attributes);
             sink.tableRow_();
-            attributes2.addAttribute( SinkEventAttributes.CLASS, "hidden xyz abc" );
-            sink.tableRow( attributes2 );
+            attributes2.addAttribute(SinkEventAttributes.CLASS, "hidden xyz abc");
+            sink.tableRow(attributes2);
             sink.tableRow_();
-            attributes2.addAttribute( SinkEventAttributes.CLASS, "abc hidden xyz" );
-            sink.tableRow( attributes2 );
+            attributes2.addAttribute(SinkEventAttributes.CLASS, "abc hidden xyz");
+            sink.tableRow(attributes2);
             sink.tableRow_();
             sink.tableRow();
             sink.tableRow_();
-            attributes2.addAttribute( SinkEventAttributes.CLASS, "not-hidden xyz" );
-            sink.tableRow( attributes2 );
+            attributes2.addAttribute(SinkEventAttributes.CLASS, "not-hidden xyz");
+            sink.tableRow(attributes2);
             sink.tableRow_();
-            attributes2.addAttribute( SinkEventAttributes.CLASS, "xyz not-hidden" );
-            sink.tableRow( attributes2 );
+            attributes2.addAttribute(SinkEventAttributes.CLASS, "xyz not-hidden");
+            sink.tableRow(attributes2);
             sink.tableRow_();
-            attributes3.addAttribute( SinkEventAttributes.CLASS, "xyz abc hidden" );
-            sink.tableRow( attributes3 );
+            attributes3.addAttribute(SinkEventAttributes.CLASS, "xyz abc hidden");
+            sink.tableRow(attributes3);
             sink.tableRow_();
-            attributes2.addAttribute( SinkEventAttributes.CLASS, "xyz hidden-not" );
-            sink.tableRow( attributes2 );
+            attributes2.addAttribute(SinkEventAttributes.CLASS, "xyz hidden-not");
+            sink.tableRow(attributes2);
             sink.tableRow_();
             sink.tableRow();
             sink.tableRow_();
             sink.tableRows_();
             sink.table_();
-        }
-        finally
-        {
+        } finally {
             sink.close();
         }
 
-        StringBuilder sbExpeted = new StringBuilder( "<table class=\"bodyTable\">" );
-        sbExpeted.append( EOL ).append( "<tr class=\"a\"></tr>" ).append( EOL );
-        sbExpeted.append( "<tr style=\"bold\" class=\"b\"></tr>" ).append( EOL );
-        sbExpeted.append( "<tr class=\"hidden xyz abc a\"></tr>" ).append( EOL );
-        sbExpeted.append( "<tr class=\"abc hidden xyz a\"></tr>" ).append( EOL );
-        sbExpeted.append( "<tr class=\"a\"></tr>" ).append( EOL );
-        sbExpeted.append( "<tr class=\"not-hidden xyz b\"></tr>" ).append( EOL );
-        sbExpeted.append( "<tr class=\"xyz not-hidden a\"></tr>" ).append( EOL );
-        sbExpeted.append( "<tr style=\"bold\" class=\"xyz abc hidden b\"></tr>" ).append( EOL );
-        sbExpeted.append( "<tr class=\"xyz hidden-not b\"></tr>" ).append( EOL );
-        sbExpeted.append( "<tr class=\"a\"></tr></table>" );
+        StringBuilder sbExpeted = new StringBuilder("<table class=\"bodyTable\">");
+        sbExpeted.append(EOL).append("<tr class=\"a\"></tr>").append(EOL);
+        sbExpeted.append("<tr style=\"bold\" class=\"b\"></tr>").append(EOL);
+        sbExpeted.append("<tr class=\"hidden xyz abc a\"></tr>").append(EOL);
+        sbExpeted.append("<tr class=\"abc hidden xyz a\"></tr>").append(EOL);
+        sbExpeted.append("<tr class=\"a\"></tr>").append(EOL);
+        sbExpeted.append("<tr class=\"not-hidden xyz b\"></tr>").append(EOL);
+        sbExpeted.append("<tr class=\"xyz not-hidden a\"></tr>").append(EOL);
+        sbExpeted.append("<tr style=\"bold\" class=\"xyz abc hidden b\"></tr>").append(EOL);
+        sbExpeted.append("<tr class=\"xyz hidden-not b\"></tr>").append(EOL);
+        sbExpeted.append("<tr class=\"a\"></tr></table>");
 
         String xmlExpected = sbExpeted.toString();
-        assertEquals( xmlExpected, writer.toString() );
+        assertEquals(xmlExpected, writer.toString());
     }
 
     /**
      * Test of tableCell method, of class Xhtml5BaseSink.
      */
     @Test
-    public void testTableCell()
-    {
-        try
-        {
-            sink = new Xhtml5BaseSink( writer );
+    public void testTableCell() {
+        try {
+            sink = new Xhtml5BaseSink(writer);
 
-            sink.tableCell( attributes );
+            sink.tableCell(attributes);
             sink.tableCell_();
-        }
-        finally
-        {
+        } finally {
             sink.close();
         }
 
-        assertEquals( "<td style=\"bold\"></td>", writer.toString() );
+        assertEquals("<td style=\"bold\"></td>", writer.toString());
     }
 
     /**
      * Test of tableHeaderCell method, of class Xhtml5BaseSink.
      */
     @Test
-    public void testTableHeaderCell()
-    {
-        try
-        {
-            sink = new Xhtml5BaseSink( writer );
+    public void testTableHeaderCell() {
+        try {
+            sink = new Xhtml5BaseSink(writer);
 
-            sink.tableHeaderCell( attributes );
+            sink.tableHeaderCell(attributes);
             sink.tableHeaderCell_();
-        }
-        finally
-        {
+        } finally {
             sink.close();
         }
 
-        assertEquals( "<th style=\"bold\"></th>", writer.toString() );
+        assertEquals("<th style=\"bold\"></th>", writer.toString());
     }
 
     /**
      * Test of tableCaption method, of class Xhtml5BaseSink.
      */
     @Test
-    public void testTableCaption()
-    {
-        try
-        {
-            sink = new Xhtml5BaseSink( writer );
+    public void testTableCaption() {
+        try {
+            sink = new Xhtml5BaseSink(writer);
 
             sink.table();
             sink.tableRows();
-            sink.tableCaption( attributes );
-            sink.text( "caption" );
+            sink.tableCaption(attributes);
+            sink.text("caption");
             sink.tableCaption_();
             sink.tableRows_();
             sink.table_();
-        }
-        finally
-        {
+        } finally {
             sink.close();
         }
 
         assertEquals(
-                "<table class=\"bodyTable\">" + "<caption style=\"bold\">caption</caption></table>",
-                writer.toString() );
+                "<table class=\"bodyTable\">" + "<caption style=\"bold\">caption</caption></table>", writer.toString());
     }
 
     /**
      * Test of anchor method, of class Xhtml5BaseSink.
      */
     @Test
-    public void testAnchor()
-    {
+    public void testAnchor() {
         String name = "anchor";
 
-        try
-        {
-            sink = new Xhtml5BaseSink( writer );
-            sink.anchor( name, attributes );
+        try {
+            sink = new Xhtml5BaseSink(writer);
+            sink.anchor(name, attributes);
             sink.anchor_();
-        }
-        finally
-        {
+        } finally {
             sink.close();
         }
 
-        assertEquals( "<a id=\"anchor\" style=\"bold\"></a>", writer.toString() );
+        assertEquals("<a id=\"anchor\" style=\"bold\"></a>", writer.toString());
     }
 
     /**
      * Test of link method, of class Xhtml5BaseSink.
      */
     @Test
-    public void testLink()
-    {
+    public void testLink() {
         final String name = "link.html";
 
-        try
-        {
-            sink = new Xhtml5BaseSink( writer );
-            sink.link( name, attributes );
+        try {
+            sink = new Xhtml5BaseSink(writer);
+            sink.link(name, attributes);
             sink.link_();
-        }
-        finally
-        {
+        } finally {
             sink.close();
         }
 
-        assertEquals( "<a style=\"bold\" href=\"link.html\"></a>", writer.toString() );
+        assertEquals("<a style=\"bold\" href=\"link.html\"></a>", writer.toString());
     }
 
     /**
      * Test of link method for an external link.
      */
     @Test
-    public void testLinkExternal()
-    {
+    public void testLinkExternal() {
         final String name = "https://www.apache.org";
 
-        try
-        {
-            sink = new Xhtml5BaseSink( writer );
-            sink.link( name, attributes );
+        try {
+            sink = new Xhtml5BaseSink(writer);
+            sink.link(name, attributes);
             sink.link_();
-        }
-        finally
-        {
+        } finally {
             sink.close();
         }
 
-        assertEquals( "<a style=\"bold\" class=\"externalLink\" href=\"https://www.apache.org\"></a>",
-                      writer.toString() );
+        assertEquals(
+                "<a style=\"bold\" class=\"externalLink\" href=\"https://www.apache.org\"></a>", writer.toString());
     }
 
     /**
      * Test of link method for an external link when a css class is provided.
      */
     @Test
-    public void testLinkExternalClassExtend()
-    {
+    public void testLinkExternalClassExtend() {
         final String name = "https://www.apache.org";
         SinkEventAttributeSet attributes2 = new SinkEventAttributeSet();
-        attributes2.addAttributes( attributes );
-        attributes2.addAttribute( SinkEventAttributes.CLASS, "cs1 cs2" );
+        attributes2.addAttributes(attributes);
+        attributes2.addAttribute(SinkEventAttributes.CLASS, "cs1 cs2");
 
-        try
-        {
-            sink = new Xhtml5BaseSink( writer );
-            sink.link( name, attributes2 );
+        try {
+            sink = new Xhtml5BaseSink(writer);
+            sink.link(name, attributes2);
             sink.link_();
-        }
-        finally
-        {
+        } finally {
             sink.close();
         }
 
-        assertEquals( "<a style=\"bold\" class=\"cs1 cs2 externalLink\" href=\"https://www.apache.org\"></a>",
-                      writer.toString() );
+        assertEquals(
+                "<a style=\"bold\" class=\"cs1 cs2 externalLink\" href=\"https://www.apache.org\"></a>",
+                writer.toString());
     }
 
     /**
      * Test of inline method, of class Xhtml5BaseSink.
      */
     @Test
-    public void testInline()
-    {
+    public void testInline() {
         String text = "a text & \u00c6";
 
-        writer =  new StringWriter();
+        writer = new StringWriter();
 
-        try
-        {
-            sink = new Xhtml5BaseSink( writer );
-            sink.inline( SinkEventAttributeSet.Semantics.EMPHASIS );
-            sink.inline( SinkEventAttributeSet.Semantics.STRONG );
-            sink.inline( SinkEventAttributeSet.Semantics.SMALL );
-            sink.inline( SinkEventAttributeSet.Semantics.LINE_THROUGH );
-            sink.inline( SinkEventAttributeSet.Semantics.CITATION );
-            sink.inline( SinkEventAttributeSet.Semantics.QUOTE );
-            sink.inline( SinkEventAttributeSet.Semantics.DEFINITION );
-            sink.inline( SinkEventAttributeSet.Semantics.ABBREVIATION );
-            sink.inline( SinkEventAttributeSet.Semantics.ITALIC );
-            sink.inline( SinkEventAttributeSet.Semantics.BOLD );
-            sink.inline( SinkEventAttributeSet.Semantics.CODE );
-            sink.inline( SinkEventAttributeSet.Semantics.VARIABLE );
-            sink.inline( SinkEventAttributeSet.Semantics.SAMPLE );
-            sink.inline( SinkEventAttributeSet.Semantics.KEYBOARD );
-            sink.inline( SinkEventAttributeSet.Semantics.SUPERSCRIPT );
-            sink.inline( SinkEventAttributeSet.Semantics.SUBSCRIPT );
-            sink.inline( SinkEventAttributeSet.Semantics.ANNOTATION );
-            sink.inline( SinkEventAttributeSet.Semantics.HIGHLIGHT );
-            sink.inline( SinkEventAttributeSet.Semantics.RUBY );
-            sink.inline( SinkEventAttributeSet.Semantics.RUBY_BASE );
-            sink.inline( SinkEventAttributeSet.Semantics.RUBY_TEXT );
-            sink.inline( SinkEventAttributeSet.Semantics.RUBY_TEXT_CONTAINER );
-            sink.inline( SinkEventAttributeSet.Semantics.RUBY_PARANTHESES );
-            sink.inline( SinkEventAttributeSet.Semantics.BIDIRECTIONAL_ISOLATION );
-            sink.inline( SinkEventAttributeSet.Semantics.BIDIRECTIONAL_OVERRIDE );
-            sink.inline( SinkEventAttributeSet.Semantics.PHRASE );
-            sink.inline( SinkEventAttributeSet.Semantics.INSERT );
-            sink.inline( SinkEventAttributeSet.Semantics.DELETE );
-            sink.text( text );
+        try {
+            sink = new Xhtml5BaseSink(writer);
+            sink.inline(SinkEventAttributeSet.Semantics.EMPHASIS);
+            sink.inline(SinkEventAttributeSet.Semantics.STRONG);
+            sink.inline(SinkEventAttributeSet.Semantics.SMALL);
+            sink.inline(SinkEventAttributeSet.Semantics.LINE_THROUGH);
+            sink.inline(SinkEventAttributeSet.Semantics.CITATION);
+            sink.inline(SinkEventAttributeSet.Semantics.QUOTE);
+            sink.inline(SinkEventAttributeSet.Semantics.DEFINITION);
+            sink.inline(SinkEventAttributeSet.Semantics.ABBREVIATION);
+            sink.inline(SinkEventAttributeSet.Semantics.ITALIC);
+            sink.inline(SinkEventAttributeSet.Semantics.BOLD);
+            sink.inline(SinkEventAttributeSet.Semantics.CODE);
+            sink.inline(SinkEventAttributeSet.Semantics.VARIABLE);
+            sink.inline(SinkEventAttributeSet.Semantics.SAMPLE);
+            sink.inline(SinkEventAttributeSet.Semantics.KEYBOARD);
+            sink.inline(SinkEventAttributeSet.Semantics.SUPERSCRIPT);
+            sink.inline(SinkEventAttributeSet.Semantics.SUBSCRIPT);
+            sink.inline(SinkEventAttributeSet.Semantics.ANNOTATION);
+            sink.inline(SinkEventAttributeSet.Semantics.HIGHLIGHT);
+            sink.inline(SinkEventAttributeSet.Semantics.RUBY);
+            sink.inline(SinkEventAttributeSet.Semantics.RUBY_BASE);
+            sink.inline(SinkEventAttributeSet.Semantics.RUBY_TEXT);
+            sink.inline(SinkEventAttributeSet.Semantics.RUBY_TEXT_CONTAINER);
+            sink.inline(SinkEventAttributeSet.Semantics.RUBY_PARANTHESES);
+            sink.inline(SinkEventAttributeSet.Semantics.BIDIRECTIONAL_ISOLATION);
+            sink.inline(SinkEventAttributeSet.Semantics.BIDIRECTIONAL_OVERRIDE);
+            sink.inline(SinkEventAttributeSet.Semantics.PHRASE);
+            sink.inline(SinkEventAttributeSet.Semantics.INSERT);
+            sink.inline(SinkEventAttributeSet.Semantics.DELETE);
+            sink.text(text);
             sink.inline_();
             sink.inline_();
             sink.inline_();
@@ -1402,244 +1213,202 @@ public class Xhtml5BaseSinkTest
             sink.inline_();
             sink.inline_();
             sink.inline_();
-        }
-        finally
-        {
+        } finally {
             sink.close();
         }
 
         assertEquals(
                 "<em><strong><small><s><cite><q><dfn><abbr><i><b><code><var><samp><kbd><sup><sub><u><mark><ruby><rb><rt><rtc><rp><bdi><bdo><span><ins><del>a text &amp; &#xc6;</del></ins></span></bdo></bdi></rp></rtc></rt></rb></ruby></mark></u></sub></sup></kbd></samp></var></code></b></i></abbr></dfn></q></cite></s></small></strong></em>",
-                writer.toString() );
+                writer.toString());
     }
 
     /**
      * Test of italic/bold/code method, of class Xhtml5BaseSink.
      */
     @Test
-    public void testItalic()
-    {
-        try
-        {
-            sink = new Xhtml5BaseSink( writer );
-            sink.inline( SinkEventAttributeSet.Semantics.ITALIC );
+    public void testItalic() {
+        try {
+            sink = new Xhtml5BaseSink(writer);
+            sink.inline(SinkEventAttributeSet.Semantics.ITALIC);
             sink.inline_();
-            sink.inline( SinkEventAttributeSet.Semantics.BOLD );
+            sink.inline(SinkEventAttributeSet.Semantics.BOLD);
             sink.inline_();
-            sink.inline( SinkEventAttributeSet.Semantics.CODE );
+            sink.inline(SinkEventAttributeSet.Semantics.CODE);
             sink.inline_();
-        }
-        finally
-        {
+        } finally {
             sink.close();
         }
 
-        assertEquals( "<i></i><b></b><code></code>", writer.toString() );
+        assertEquals("<i></i><b></b><code></code>", writer.toString());
     }
 
     /**
      * Test of lineBreak/lineBreakOpportunity/pageBreak/nonBreakingSpace method, of class Xhtml5BaseSink.
      */
     @Test
-    public void testLineBreak()
-    {
-        try
-        {
-            sink = new Xhtml5BaseSink( writer );
-            sink.lineBreak( attributes );
-            sink.lineBreakOpportunity( attributes );
+    public void testLineBreak() {
+        try {
+            sink = new Xhtml5BaseSink(writer);
+            sink.lineBreak(attributes);
+            sink.lineBreakOpportunity(attributes);
             sink.pageBreak();
             sink.nonBreakingSpace();
-        }
-        finally
-        {
+        } finally {
             sink.close();
         }
 
-        assertEquals( "<br style=\"bold\" /><wbr style=\"bold\" /><!-- PB -->&#160;", writer.toString() );
+        assertEquals("<br style=\"bold\" /><wbr style=\"bold\" /><!-- PB -->&#160;", writer.toString());
     }
 
     /**
      * Test of text method, of class Xhtml5BaseSink.
      */
     @Test
-    public void testText()
-    {
+    public void testText() {
         String text = "a text & \u00c6";
 
-        try
-        {
-            sink = new Xhtml5BaseSink( writer );
-            sink.text( text );
-        }
-        finally
-        {
+        try {
+            sink = new Xhtml5BaseSink(writer);
+            sink.text(text);
+        } finally {
             sink.close();
         }
 
-        assertEquals( "a text &amp; &#xc6;", writer.toString() );
+        assertEquals("a text &amp; &#xc6;", writer.toString());
 
-        writer =  new StringWriter();
+        writer = new StringWriter();
 
-        try
-        {
-            sink = new Xhtml5BaseSink( writer );
-            sink.text( text, attributes );
-        }
-        finally
-        {
+        try {
+            sink = new Xhtml5BaseSink(writer);
+            sink.text(text, attributes);
+        } finally {
             sink.close();
         }
 
-        assertEquals( "a text &amp; &#xc6;", writer.toString() );
+        assertEquals("a text &amp; &#xc6;", writer.toString());
     }
 
     /**
      * Test of rawText method, of class Xhtml5BaseSink.
      */
     @Test
-    public void testRawText()
-    {
+    public void testRawText() {
         String text = "raw text";
 
-        try
-        {
-            sink = new Xhtml5BaseSink( writer );
-            sink.rawText( text );
-        }
-        finally
-        {
+        try {
+            sink = new Xhtml5BaseSink(writer);
+            sink.rawText(text);
+        } finally {
             sink.close();
         }
 
-        assertEquals( "raw text", writer.toString() );
+        assertEquals("raw text", writer.toString());
     }
 
     /**
      * Test of comment method, of class Xhtml5BaseSink.
      */
     @Test
-    public void testComment()
-    {
-        try
-        {
-            sink = new Xhtml5BaseSink( writer );
-            sink.comment( "a comment" );
-            sink.comment( " a comment" );
-            sink.comment( "a comment " );
-            sink.comment( " a comment " );
-        }
-        finally
-        {
+    public void testComment() {
+        try {
+            sink = new Xhtml5BaseSink(writer);
+            sink.comment("a comment");
+            sink.comment(" a comment");
+            sink.comment("a comment ");
+            sink.comment(" a comment ");
+        } finally {
             sink.close();
         }
 
-        assertEquals( "<!--a comment--><!-- a comment--><!--a comment --><!-- a comment -->",
-                writer.toString() );
+        assertEquals("<!--a comment--><!-- a comment--><!--a comment --><!-- a comment -->", writer.toString());
     }
 
     /**
      * Test of unknown method, of class Xhtml5BaseSink.
      */
     @Test
-    public void testUnknown()
-    {
+    public void testUnknown() {
         final String name = "unknown";
         final Object[] requiredParams = null;
 
-        try
-        {
-            sink = new Xhtml5BaseSink( writer );
-            sink.unknown( name, requiredParams, attributes );
-        }
-        finally
-        {
+        try {
+            sink = new Xhtml5BaseSink(writer);
+            sink.unknown(name, requiredParams, attributes);
+        } finally {
             sink.close();
         }
 
-        assertEquals( "", writer.toString() );
+        assertEquals("", writer.toString());
     }
 
     /**
      * Test entities in attribute values.
      */
     @Test
-    public void testAttributeEntities()
-    {
-        final Object[] startTag = new Object[] { Xhtml5BaseSink.TAG_TYPE_START };
-        final Object[] endTag = new Object[] { Xhtml5BaseSink.TAG_TYPE_END };
+    public void testAttributeEntities() {
+        final Object[] startTag = new Object[] {Xhtml5BaseSink.TAG_TYPE_START};
+        final Object[] endTag = new Object[] {Xhtml5BaseSink.TAG_TYPE_END};
         final String script = Xhtml5BaseSink.SCRIPT.toString();
-        final SinkEventAttributes src = new SinkEventAttributeSet( SinkEventAttributes.SRC,
-                "http://ex.com/ex.js?v=l&l=e" );
+        final SinkEventAttributes src =
+                new SinkEventAttributeSet(SinkEventAttributes.SRC, "http://ex.com/ex.js?v=l&l=e");
 
-        try
-        {
-            sink = new Xhtml5BaseSink( writer );
+        try {
+            sink = new Xhtml5BaseSink(writer);
 
-            sink.unknown( script, startTag, src );
-            sink.unknown( script, endTag, null );
+            sink.unknown(script, startTag, src);
+            sink.unknown(script, endTag, null);
 
-            sink.figureGraphics( "http://ex.com/ex.jpg?v=l&l=e", src );
-        }
-        finally
-        {
+            sink.figureGraphics("http://ex.com/ex.jpg?v=l&l=e", src);
+        } finally {
             sink.close();
         }
 
         String result = writer.toString();
 
-        assertTrue( result.contains( "ex.js?v=l&amp;l=e" ) );
-        assertTrue( result.contains( "ex.jpg?v=l&amp;l=e" ) );
+        assertTrue(result.contains("ex.js?v=l&amp;l=e"));
+        assertTrue(result.contains("ex.jpg?v=l&amp;l=e"));
     }
 
     /**
      * Test of entity.
      */
     @Test
-    public void testEntity()
-    {
+    public void testEntity() {
         // DOXIA-314
         String text = "a text '&#x1d7ed;'";
 
-        try
-        {
-            sink = new Xhtml5BaseSink( writer );
-            sink.text( text );
-        }
-        finally
-        {
+        try {
+            sink = new Xhtml5BaseSink(writer);
+            sink.text(text);
+        } finally {
             sink.close();
         }
 
-        assertEquals( "a text '&#x1d7ed;'", writer.toString() );
+        assertEquals("a text '&#x1d7ed;'", writer.toString());
     }
 
     /**
      * Test unicode chracters in tables. DOXIA-433.
      */
     @Test
-    public void testSpecialCharacters()
-    {
-        try
-        {
-            sink = new Xhtml5BaseSink( writer );
+    public void testSpecialCharacters() {
+        try {
+            sink = new Xhtml5BaseSink(writer);
             sink.table();
             sink.tableRows();
-            sink.tableRow( null );
+            sink.tableRow(null);
             sink.tableCell();
-            sink.text( "\u2713", null );
+            sink.text("\u2713", null);
             sink.tableCell_();
             sink.tableRow_();
             sink.tableRows_();
             sink.table_();
-        }
-        finally
-        {
+        } finally {
             sink.close();
         }
 
         final String result = writer.toString();
 
-        assertTrue( result.contains( "&#x2713;" ) );
+        assertTrue(result.contains("&#x2713;"));
     }
 }

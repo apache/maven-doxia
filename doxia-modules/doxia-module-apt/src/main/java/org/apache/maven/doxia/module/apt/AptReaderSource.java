@@ -1,3 +1,21 @@
+/*
+ * Licensed to the Apache Software Foundation (ASF) under one
+ * or more contributor license agreements.  See the NOTICE file
+ * distributed with this work for additional information
+ * regarding copyright ownership.  The ASF licenses this file
+ * to you under the Apache License, Version 2.0 (the
+ * "License"); you may not use this file except in compliance
+ * with the License.  You may obtain a copy of the License at
+ *
+ *   http://www.apache.org/licenses/LICENSE-2.0
+ *
+ * Unless required by applicable law or agreed to in writing,
+ * software distributed under the License is distributed on an
+ * "AS IS" BASIS, WITHOUT WARRANTIES OR CONDITIONS OF ANY
+ * KIND, either express or implied.  See the License for the
+ * specific language governing permissions and limitations
+ * under the License.
+ */
 package org.apache.maven.doxia.module.apt;
 
 /*
@@ -28,9 +46,7 @@ import org.codehaus.plexus.util.IOUtil;
 /**
  * Reader for apt source documents.
  */
-public class AptReaderSource
-    implements AptSource
-{
+public class AptReaderSource implements AptSource {
     /** A reader. */
     private LineNumberReader reader;
 
@@ -45,9 +61,8 @@ public class AptReaderSource
      *
      * @param in the reader.
      */
-    public AptReaderSource( Reader in )
-    {
-        reader = new LineNumberReader( in );
+    public AptReaderSource(Reader in) {
+        reader = new LineNumberReader(in);
 
         lineNumber = -1;
     }
@@ -58,9 +73,8 @@ public class AptReaderSource
      * @param in the reader.
      * @param name the name of the source
      */
-    public AptReaderSource( Reader in, String name )
-    {
-        this( in );
+    public AptReaderSource(Reader in, String name) {
+        this(in);
 
         this.name = name;
     }
@@ -71,33 +85,24 @@ public class AptReaderSource
      * @return a {@link java.lang.String} object.
      * @throws org.apache.maven.doxia.module.apt.AptParseException if any.
      */
-    public String getNextLine()
-        throws AptParseException
-    {
-        if ( reader == null )
-        {
+    public String getNextLine() throws AptParseException {
+        if (reader == null) {
             return null;
         }
 
         String line;
 
-        try
-        {
+        try {
             line = reader.readLine();
-            if ( line == null )
-            {
+            if (line == null) {
                 reader.close();
                 reader = null;
-            }
-            else
-            {
+            } else {
                 lineNumber = reader.getLineNumber();
             }
-        }
-        catch ( IOException e )
-        {
+        } catch (IOException e) {
             // TODO handle column number
-            throw new AptParseException( null, e, lineNumber, -1 );
+            throw new AptParseException(null, e, lineNumber, -1);
         }
 
         return line;
@@ -108,8 +113,7 @@ public class AptReaderSource
      *
      * @return a {@link java.lang.String} object.
      */
-    public String getName()
-    {
+    public String getName() {
         // never return null
         return name != null ? name : "";
     }
@@ -119,17 +123,15 @@ public class AptReaderSource
      *
      * @return a int.
      */
-    public int getLineNumber()
-    {
+    public int getLineNumber() {
         return lineNumber;
     }
 
     /**
      * Closes the reader associated with this AptReaderSource.
      */
-    public void close()
-    {
-        IOUtil.close( reader );
+    public void close() {
+        IOUtil.close(reader);
         reader = null;
     }
 }

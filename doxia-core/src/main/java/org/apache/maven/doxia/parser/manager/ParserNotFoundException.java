@@ -1,3 +1,21 @@
+/*
+ * Licensed to the Apache Software Foundation (ASF) under one
+ * or more contributor license agreements.  See the NOTICE file
+ * distributed with this work for additional information
+ * regarding copyright ownership.  The ASF licenses this file
+ * to you under the Apache License, Version 2.0 (the
+ * "License"); you may not use this file except in compliance
+ * with the License.  You may obtain a copy of the License at
+ *
+ *   http://www.apache.org/licenses/LICENSE-2.0
+ *
+ * Unless required by applicable law or agreed to in writing,
+ * software distributed under the License is distributed on an
+ * "AS IS" BASIS, WITHOUT WARRANTIES OR CONDITIONS OF ANY
+ * KIND, either express or implied.  See the License for the
+ * specific language governing permissions and limitations
+ * under the License.
+ */
 package org.apache.maven.doxia.parser.manager;
 
 /*
@@ -26,9 +44,7 @@ package org.apache.maven.doxia.parser.manager;
  * @author <a href="mailto:jason@maven.org">Jason van Zyl</a>
  * @since 1.0
  */
-public class ParserNotFoundException
-    extends Exception
-{
+public class ParserNotFoundException extends Exception {
     /** serialVersionUID */
     static final long serialVersionUID = 295967936746221567L;
 
@@ -38,9 +54,8 @@ public class ParserNotFoundException
      * @param message The detailed message.
      * This can later be retrieved by the Throwable.getMessage() method.
      */
-    public ParserNotFoundException( String message )
-    {
-        super( message );
+    public ParserNotFoundException(String message) {
+        super(message);
     }
 
     /**
@@ -51,9 +66,8 @@ public class ParserNotFoundException
      * Throwable.getCause() method. (A null value is permitted, and indicates
      * that the cause is nonexistent or unknown.)
      */
-    public ParserNotFoundException( Throwable cause )
-    {
-        super( cause );
+    public ParserNotFoundException(Throwable cause) {
+        super(cause);
     }
 
     /**
@@ -66,8 +80,7 @@ public class ParserNotFoundException
      * Throwable.getCause() method. (A null value is permitted, and indicates
      * that the cause is nonexistent or unknown.)
      */
-    public ParserNotFoundException( String message, Throwable cause )
-    {
-        super( message, cause );
+    public ParserNotFoundException(String message, Throwable cause) {
+        super(message, cause);
     }
 }

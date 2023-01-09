@@ -1,3 +1,21 @@
+/*
+ * Licensed to the Apache Software Foundation (ASF) under one
+ * or more contributor license agreements.  See the NOTICE file
+ * distributed with this work for additional information
+ * regarding copyright ownership.  The ASF licenses this file
+ * to you under the Apache License, Version 2.0 (the
+ * "License"); you may not use this file except in compliance
+ * with the License.  You may obtain a copy of the License at
+ *
+ *   http://www.apache.org/licenses/LICENSE-2.0
+ *
+ * Unless required by applicable law or agreed to in writing,
+ * software distributed under the License is distributed on an
+ * "AS IS" BASIS, WITHOUT WARRANTIES OR CONDITIONS OF ANY
+ * KIND, either express or implied.  See the License for the
+ * specific language governing permissions and limitations
+ * under the License.
+ */
 package org.apache.maven.doxia.sink;
 
 /*
@@ -53,8 +71,7 @@ package org.apache.maven.doxia.sink;
  * @author <a href="mailto:vincent.siveton@gmail.com">Vincent Siveton</a>
  * @author ltheussl
  */
-public interface Sink
-{
+public interface Sink {
 
     /**
      * A numbering to handle a number list.
@@ -185,7 +202,7 @@ public interface Sink
      * @param attributes A set of {@link SinkEventAttributes}, may be <code>null</code>.
      * @since 1.1
      */
-    void head( SinkEventAttributes attributes );
+    void head(SinkEventAttributes attributes);
 
     /**
      * Ends the head element.
@@ -210,7 +227,7 @@ public interface Sink
      * @since 1.1
      * @see #head(SinkEventAttributes)
      */
-    void title( SinkEventAttributes attributes );
+    void title(SinkEventAttributes attributes);
 
     /**
      * Ends the title element.
@@ -235,7 +252,7 @@ public interface Sink
      * @since 1.1
      * @see #head(SinkEventAttributes)
      */
-    void author( SinkEventAttributes attributes );
+    void author(SinkEventAttributes attributes);
 
     /**
      * Ends an author element.
@@ -273,7 +290,7 @@ public interface Sink
      * @since 1.1
      * @see #head(SinkEventAttributes)
      */
-    void date( SinkEventAttributes attributes );
+    void date(SinkEventAttributes attributes);
 
     /**
      * Ends the date element.
@@ -298,7 +315,7 @@ public interface Sink
      * @since 1.1
      * @see #head(SinkEventAttributes)
      */
-    void body( SinkEventAttributes attributes );
+    void body(SinkEventAttributes attributes);
 
     /**
      * Ends the body element.
@@ -322,7 +339,7 @@ public interface Sink
      * @param attributes A set of {@link SinkEventAttributes}, may be <code>null</code>.
      * @since 2.0
      */
-    void article( SinkEventAttributes attributes );
+    void article(SinkEventAttributes attributes);
 
     /**
      * Ends the article element.
@@ -347,7 +364,7 @@ public interface Sink
      * @since 2.0
      * @see #navigation(SinkEventAttributes)
      */
-    void navigation( SinkEventAttributes attributes );
+    void navigation(SinkEventAttributes attributes);
 
     /**
      * Ends the navigation element.
@@ -371,7 +388,7 @@ public interface Sink
      * @param attributes A set of {@link SinkEventAttributes}, may be <code>null</code>.
      * @since 2.0
      */
-    void sidebar( SinkEventAttributes attributes );
+    void sidebar(SinkEventAttributes attributes);
 
     /**
      * Ends the sidebar element.
@@ -531,7 +548,7 @@ public interface Sink
      * @param attributes A set of {@link SinkEventAttributes}, may be <code>null</code>.
      * @since 1.1
      */
-    void section( int level, SinkEventAttributes attributes );
+    void section(int level, SinkEventAttributes attributes);
 
     /**
      * Ends a section at the given level.
@@ -539,7 +556,7 @@ public interface Sink
      * @param level the section level.
      * @since 1.1
      */
-    void section_( int level );
+    void section_(int level);
 
     /**
      * Start a new section title at the given level.
@@ -566,7 +583,7 @@ public interface Sink
      * @param attributes A set of {@link SinkEventAttributes}, may be <code>null</code>.
      * @since 1.1
      */
-    void sectionTitle( int level, SinkEventAttributes attributes );
+    void sectionTitle(int level, SinkEventAttributes attributes);
 
     /**
      * Ends a section title at the given level.
@@ -574,7 +591,7 @@ public interface Sink
      * @param level the section title level.
      * @since 1.1
      */
-    void sectionTitle_( int level );
+    void sectionTitle_(int level);
 
     /**
      * Start a new header within the section or body.
@@ -591,7 +608,7 @@ public interface Sink
      * @param attributes A set of {@link SinkEventAttributes}, may be <code>null</code>.
      * @since 2.0
      */
-    void header( SinkEventAttributes attributes );
+    void header(SinkEventAttributes attributes);
 
     /**
      * Ends a header element.
@@ -615,7 +632,7 @@ public interface Sink
      * @param attributes A set of {@link SinkEventAttributes}, may be <code>null</code>.
      * @since 2.0
      */
-    void content( SinkEventAttributes attributes );
+    void content(SinkEventAttributes attributes);
 
     /**
      * Ends a main content section.
@@ -637,7 +654,7 @@ public interface Sink
      * @param attributes A set of {@link SinkEventAttributes}, may be <code>null</code>.
      * @since 2.0
      */
-    void footer( SinkEventAttributes attributes );
+    void footer(SinkEventAttributes attributes);
 
     /**
      * Ends a footer element.
@@ -661,7 +678,7 @@ public interface Sink
      * @param attributes A set of {@link SinkEventAttributes}, may be <code>null</code>.
      * @since 1.1
      */
-    void list( SinkEventAttributes attributes );
+    void list(SinkEventAttributes attributes);
 
     /**
      * Ends an unordered list element.
@@ -685,7 +702,7 @@ public interface Sink
      * @param attributes A set of {@link SinkEventAttributes}, may be <code>null</code>.
      * @since 1.1
      */
-    void listItem( SinkEventAttributes attributes );
+    void listItem(SinkEventAttributes attributes);
 
     /**
      * Ends a list item element within an unordered list.
@@ -698,7 +715,7 @@ public interface Sink
      * @param numbering the numbering style.
      * @see #numberedList(int,SinkEventAttributes)
      */
-    void numberedList( int numbering );
+    void numberedList(int numbering);
 
     /**
      * Starts an ordered list element.
@@ -716,7 +733,7 @@ public interface Sink
      * @see #NUMBERING_UPPER_ALPHA
      * @see #NUMBERING_UPPER_ROMAN
      */
-    void numberedList( int numbering, SinkEventAttributes attributes );
+    void numberedList(int numbering, SinkEventAttributes attributes);
 
     /**
      * Ends an ordered list element.
@@ -740,7 +757,7 @@ public interface Sink
      * @param attributes A set of {@link SinkEventAttributes}, may be <code>null</code>.
      * @since 1.1
      */
-    void numberedListItem( SinkEventAttributes attributes );
+    void numberedListItem(SinkEventAttributes attributes);
 
     /**
      * Ends a list item element within an ordered list.
@@ -764,7 +781,7 @@ public interface Sink
      * @param attributes A set of {@link SinkEventAttributes}, may be <code>null</code>.
      * @since 1.1
      */
-    void definitionList( SinkEventAttributes attributes );
+    void definitionList(SinkEventAttributes attributes);
 
     /**
      * Ends a definition list element.
@@ -792,7 +809,7 @@ public interface Sink
      * @param attributes A set of {@link SinkEventAttributes}, may be <code>null</code>.
      * @since 1.1
      */
-    void definitionListItem( SinkEventAttributes attributes );
+    void definitionListItem(SinkEventAttributes attributes);
 
     /**
      * Ends a list item element within a definition list.
@@ -816,7 +833,7 @@ public interface Sink
      * @param attributes A set of {@link SinkEventAttributes}, may be <code>null</code>.
      * @since 1.1
      */
-    void definition( SinkEventAttributes attributes );
+    void definition(SinkEventAttributes attributes);
 
     /**
      * Ends a definition element within a definition list.
@@ -840,7 +857,7 @@ public interface Sink
      * @param attributes A set of {@link SinkEventAttributes}, may be <code>null</code>.
      * @since 1.1
      */
-    void definedTerm( SinkEventAttributes attributes );
+    void definedTerm(SinkEventAttributes attributes);
 
     /**
      * Ends a definition term element within a definition list.
@@ -893,7 +910,7 @@ public interface Sink
      * @param attributes A set of {@link SinkEventAttributes}, may be <code>null</code>.
      * @since 1.1
      */
-    void figure( SinkEventAttributes attributes );
+    void figure(SinkEventAttributes attributes);
 
     /**
      * Ends a basic image embedding element.
@@ -918,7 +935,7 @@ public interface Sink
      * @since 1.1
      * @see #figure(SinkEventAttributes)
      */
-    void figureCaption( SinkEventAttributes attributes );
+    void figureCaption(SinkEventAttributes attributes);
 
     /**
      * Ends a caption of an image.
@@ -930,7 +947,7 @@ public interface Sink
      *
      * @param name the source
      */
-    void figureGraphics( String name );
+    void figureGraphics(String name);
 
     /**
      * Adds a graphic element.
@@ -959,7 +976,7 @@ public interface Sink
      * @since 1.1
      * @see #figure(SinkEventAttributes)
      */
-    void figureGraphics( String src, SinkEventAttributes attributes );
+    void figureGraphics(String src, SinkEventAttributes attributes);
 
     /**
      * Starts a table element for marking up tabular information in a document.
@@ -1020,7 +1037,7 @@ public interface Sink
      * @param attributes A set of {@link SinkEventAttributes}, may be <code>null</code>.
      * @since 1.1
      */
-    void table( SinkEventAttributes attributes );
+    void table(SinkEventAttributes attributes);
 
     /**
      * Ends a table element.
@@ -1048,7 +1065,7 @@ public interface Sink
      * @see #JUSTIFY_LEFT
      * @see #JUSTIFY_RIGHT
      */
-    void tableRows( int[] justification, boolean grid );
+    void tableRows(int[] justification, boolean grid);
 
     /**
      * Ends an element that contains rows of table data.
@@ -1076,7 +1093,7 @@ public interface Sink
      * @param attributes A set of {@link SinkEventAttributes}, may be <code>null</code>.
      * @since 1.1
      */
-    void tableRow( SinkEventAttributes attributes );
+    void tableRow(SinkEventAttributes attributes);
 
     /**
      * Ends a row element.
@@ -1108,7 +1125,7 @@ public interface Sink
      * @param attributes A set of {@link SinkEventAttributes}, may be <code>null</code>.
      * @since 1.1
      */
-    void tableCell( SinkEventAttributes attributes );
+    void tableCell(SinkEventAttributes attributes);
 
     /**
      * Ends a cell element.
@@ -1132,7 +1149,7 @@ public interface Sink
      * @param attributes A set of {@link SinkEventAttributes}, may be <code>null</code>.
      * @since 1.1
      */
-    void tableHeaderCell( SinkEventAttributes attributes );
+    void tableHeaderCell(SinkEventAttributes attributes);
 
     /**
      * Ends a cell header element.
@@ -1164,7 +1181,7 @@ public interface Sink
      * @since 1.1
      * @see #table(SinkEventAttributes)
      */
-    void tableCaption( SinkEventAttributes attributes );
+    void tableCaption(SinkEventAttributes attributes);
 
     /**
      * Ends a caption element of a table.
@@ -1189,7 +1206,7 @@ public interface Sink
      * @param attributes A set of {@link SinkEventAttributes}, may be <code>null</code>.
      * @since 1.1
      */
-    void paragraph( SinkEventAttributes attributes );
+    void paragraph(SinkEventAttributes attributes);
 
     /**
      * Ends a paragraph element.
@@ -1202,7 +1219,7 @@ public interface Sink
      * @see #data(String, SinkEventAttributes)
      * @param value a {@link java.lang.String} object.
      */
-    void data( String value );
+    void data(String value);
 
     /**
      * Starts a data element which groups together other elements representing microformats.
@@ -1216,7 +1233,7 @@ public interface Sink
      * @param attributes A set of {@link SinkEventAttributes}, may be <code>null</code>.
      * @since 2.0
      */
-    void data( String value, SinkEventAttributes attributes );
+    void data(String value, SinkEventAttributes attributes);
 
     /**
      * Ends an data element.
@@ -1228,7 +1245,7 @@ public interface Sink
      *
      * @see #time(String, SinkEventAttributes)
      */
-    void time( String datetime );
+    void time(String datetime);
 
     /**
      * Starts a time element which groups together other elements representing a time.
@@ -1242,7 +1259,7 @@ public interface Sink
      * @param attributes A set of {@link SinkEventAttributes}, may be <code>null</code>.
      * @since 2.0
      */
-    void time( String datetime, SinkEventAttributes attributes );
+    void time(String datetime, SinkEventAttributes attributes);
 
     /**
      * Ends a time element.
@@ -1262,7 +1279,7 @@ public interface Sink
      * @param attributes A set of {@link SinkEventAttributes}, may be <code>null</code>.
      * @since 2.0
      */
-    void address( SinkEventAttributes attributes );
+    void address(SinkEventAttributes attributes);
 
     /**
      * Ends an address element.
@@ -1286,7 +1303,7 @@ public interface Sink
      * @param attributes A set of {@link SinkEventAttributes}, may be <code>null</code>.
      * @since 2.0
      */
-    void blockquote( SinkEventAttributes attributes );
+    void blockquote(SinkEventAttributes attributes);
 
     /**
      * Ends an blockquote element.
@@ -1311,7 +1328,7 @@ public interface Sink
      * @param attributes A set of {@link SinkEventAttributes}, may be <code>null</code>.
      * @since 2.0
      */
-    void division( SinkEventAttributes attributes );
+    void division(SinkEventAttributes attributes);
 
     /**
      * Ends a division element.
@@ -1343,7 +1360,7 @@ public interface Sink
      * @param attributes A set of {@link SinkEventAttributes}, may be <code>null</code>.
      * @since 1.1
      */
-    void verbatim( SinkEventAttributes attributes );
+    void verbatim(SinkEventAttributes attributes);
 
     /**
      * Ends a verbatim element.
@@ -1371,7 +1388,7 @@ public interface Sink
      * @param attributes A set of {@link SinkEventAttributes}, may be <code>null</code>.
      * @since 1.1
      */
-    void horizontalRule( SinkEventAttributes attributes );
+    void horizontalRule(SinkEventAttributes attributes);
 
     /**
      * Adding a new page separator.
@@ -1384,7 +1401,7 @@ public interface Sink
      * @param name the name of the anchor.
      * @see #anchor(String,SinkEventAttributes)
      */
-    void anchor( String name );
+    void anchor(String name);
 
     /**
      * Starts an element which defines an anchor.
@@ -1409,7 +1426,7 @@ public interface Sink
      * @param attributes A set of {@link SinkEventAttributes}, may be <code>null</code>.
      * @since 1.1
      */
-    void anchor( String name, SinkEventAttributes attributes );
+    void anchor(String name, SinkEventAttributes attributes);
 
     /**
      * Ends an anchor element.
@@ -1422,7 +1439,7 @@ public interface Sink
      * @param name the name of the link.
      * @see #link(String,SinkEventAttributes)
      */
-    void link( String name );
+    void link(String name);
 
     /**
      * Starts a link.
@@ -1451,7 +1468,7 @@ public interface Sink
      * @param attributes A set of {@link SinkEventAttributes}, may be <code>null</code>.
      * @since 1.1
      */
-    void link( String name, SinkEventAttributes attributes );
+    void link(String name, SinkEventAttributes attributes);
 
     /**
      * Ends a link element.
@@ -1488,7 +1505,7 @@ public interface Sink
      * @param attributes A set of {@link SinkEventAttributes}, may be <code>null</code>.
      * @since 2.0
      */
-    void inline( SinkEventAttributes attributes );
+    void inline(SinkEventAttributes attributes);
 
     /**
      * Ends an inline element.
@@ -1564,7 +1581,7 @@ public interface Sink
      * @param attributes A set of {@link SinkEventAttributes}, may be <code>null</code>.
      * @since 1.1
      */
-    void lineBreak( SinkEventAttributes attributes );
+    void lineBreak(SinkEventAttributes attributes);
 
     /**
      * Adds a line break opportunity.
@@ -1587,7 +1604,7 @@ public interface Sink
      * @param attributes A set of {@link SinkEventAttributes}, may be <code>null</code>.
      * @since 2.0
      */
-    void lineBreakOpportunity( SinkEventAttributes attributes );
+    void lineBreakOpportunity(SinkEventAttributes attributes);
 
     /**
      * Adding a non breaking space, <i>ie</i> a space without any special formatting operations.
@@ -1600,7 +1617,7 @@ public interface Sink
      * @param text The text to write.
      * @see #text(String,SinkEventAttributes)
      */
-    void text( String text );
+    void text(String text);
 
     /**
      * Adds a text.
@@ -1638,14 +1655,14 @@ public interface Sink
      * @param attributes A set of {@link SinkEventAttributes}, may be <code>null</code>.
      * @since 1.1
      */
-    void text( String text, SinkEventAttributes attributes );
+    void text(String text, SinkEventAttributes attributes);
 
     /**
      * Adding a raw text, <i>ie</i> a text without any special formatting operations.
      *
      * @param text The text to write.
      */
-    void rawText( String text );
+    void rawText(String text);
 
     /**
      * Add a comment.
@@ -1653,7 +1670,7 @@ public interface Sink
      * @param comment The comment to write.
      * @since 1.1
      */
-    void comment( String comment );
+    void comment(String comment);
 
     /**
      * Add an unknown event. This may be used by parsers to notify a general Sink about
@@ -1667,7 +1684,7 @@ public interface Sink
      * @param attributes A set of {@link SinkEventAttributes}, may be <code>null</code>.
      * @since 1.1
      */
-    void unknown( String name, Object[] requiredParams, SinkEventAttributes attributes );
+    void unknown(String name, Object[] requiredParams, SinkEventAttributes attributes);
 
     /**
      * Flush the writer or the stream, if needed.

@@ -1,3 +1,21 @@
+/*
+ * Licensed to the Apache Software Foundation (ASF) under one
+ * or more contributor license agreements.  See the NOTICE file
+ * distributed with this work for additional information
+ * regarding copyright ownership.  The ASF licenses this file
+ * to you under the Apache License, Version 2.0 (the
+ * "License"); you may not use this file except in compliance
+ * with the License.  You may obtain a copy of the License at
+ *
+ *   http://www.apache.org/licenses/LICENSE-2.0
+ *
+ * Unless required by applicable law or agreed to in writing,
+ * software distributed under the License is distributed on an
+ * "AS IS" BASIS, WITHOUT WARRANTIES OR CONDITIONS OF ANY
+ * KIND, either express or implied.  See the License for the
+ * specific language governing permissions and limitations
+ * under the License.
+ */
 package org.apache.maven.doxia.sink.impl;
 
 /*
@@ -40,9 +58,7 @@ import org.apache.maven.doxia.sink.SinkFactory;
  * @author Robert Scholte
  * @since 1.3
  */
-public class RandomAccessSink
-    implements Sink
-{
+public class RandomAccessSink implements Sink {
     private SinkFactory sinkFactory;
 
     private String encoding;
@@ -64,12 +80,10 @@ public class RandomAccessSink
      * @param stream a {@link java.io.OutputStream} object.
      * @throws java.io.IOException if any.
      */
-    public RandomAccessSink( SinkFactory sinkFactory, OutputStream stream )
-        throws IOException
-    {
+    public RandomAccessSink(SinkFactory sinkFactory, OutputStream stream) throws IOException {
         this.sinkFactory = sinkFactory;
         this.coreOutputStream = stream;
-        this.currentSink = sinkFactory.createSink( stream );
+        this.currentSink = sinkFactory.createSink(stream);
         this.coreSink = this.currentSink;
     }
 
@@ -81,13 +95,11 @@ public class RandomAccessSink
      * @param encoding a {@link java.lang.String} object.
      * @throws java.io.IOException if any.
      */
-    public RandomAccessSink( SinkFactory sinkFactory, OutputStream stream, String encoding )
-        throws IOException
-    {
+    public RandomAccessSink(SinkFactory sinkFactory, OutputStream stream, String encoding) throws IOException {
         this.sinkFactory = sinkFactory;
         this.coreOutputStream = stream;
         this.encoding = encoding;
-        this.currentSink = sinkFactory.createSink( stream, encoding );
+        this.currentSink = sinkFactory.createSink(stream, encoding);
         this.coreSink = this.currentSink;
     }
 
@@ -99,12 +111,10 @@ public class RandomAccessSink
      * @param outputName a {@link java.lang.String} object.
      * @throws java.io.IOException if any.
      */
-    public RandomAccessSink( SinkFactory sinkFactory, File outputDirectory, String outputName )
-        throws IOException
-    {
+    public RandomAccessSink(SinkFactory sinkFactory, File outputDirectory, String outputName) throws IOException {
         this.sinkFactory = sinkFactory;
-        this.coreOutputStream = new FileOutputStream( new File( outputDirectory, outputName ) );
-        this.currentSink = sinkFactory.createSink( coreOutputStream );
+        this.coreOutputStream = new FileOutputStream(new File(outputDirectory, outputName));
+        this.currentSink = sinkFactory.createSink(coreOutputStream);
         this.coreSink = this.currentSink;
     }
 
@@ -117,34 +127,30 @@ public class RandomAccessSink
      * @param encoding a {@link java.lang.String} object.
      * @throws java.io.IOException if any.
      */
-    public RandomAccessSink( SinkFactory sinkFactory, File outputDirectory, String outputName, String encoding )
-        throws IOException
-    {
+    public RandomAccessSink(SinkFactory sinkFactory, File outputDirectory, String outputName, String encoding)
+            throws IOException {
         this.sinkFactory = sinkFactory;
-        this.coreOutputStream = new FileOutputStream( new File( outputDirectory, outputName ) );
+        this.coreOutputStream = new FileOutputStream(new File(outputDirectory, outputName));
         this.encoding = encoding;
-        this.currentSink = sinkFactory.createSink( coreOutputStream, encoding );
+        this.currentSink = sinkFactory.createSink(coreOutputStream, encoding);
         this.coreSink = this.currentSink;
     }
 
     /** {@inheritDoc} */
     @Override
-    public void address()
-    {
+    public void address() {
         currentSink.address();
     }
 
     /** {@inheritDoc} */
     @Override
-    public void address( SinkEventAttributes attributes )
-    {
-        currentSink.address( attributes );
+    public void address(SinkEventAttributes attributes) {
+        currentSink.address(attributes);
     }
 
     /** {@inheritDoc} */
     @Override
-    public void address_()
-    {
+    public void address_() {
         currentSink.address_();
     }
 
@@ -154,32 +160,25 @@ public class RandomAccessSink
      *
      * @return a subsink reference you can write to
      */
-    public Sink addSinkHook()
-    {
+    public Sink addSinkHook() {
         Sink subSink = null;
-        try
-        {
+        try {
             ByteArrayOutputStream subOut = new ByteArrayOutputStream();
             ByteArrayOutputStream newOut = new ByteArrayOutputStream();
 
-            outputStreams.add( subOut );
-            outputStreams.add( newOut );
+            outputStreams.add(subOut);
+            outputStreams.add(newOut);
 
-            if ( encoding != null )
-            {
-                subSink = sinkFactory.createSink( subOut, encoding );
-                currentSink = sinkFactory.createSink( newOut, encoding );
+            if (encoding != null) {
+                subSink = sinkFactory.createSink(subOut, encoding);
+                currentSink = sinkFactory.createSink(newOut, encoding);
+            } else {
+                subSink = sinkFactory.createSink(subOut);
+                currentSink = sinkFactory.createSink(newOut);
             }
-            else
-            {
-                subSink = sinkFactory.createSink( subOut );
-                currentSink = sinkFactory.createSink( newOut );
-            }
-            sinks.add( subSink );
-            sinks.add( currentSink );
-        }
-        catch ( IOException e )
-        {
+            sinks.add(subSink);
+            sinks.add(currentSink);
+        } catch (IOException e) {
             // IOException can only be caused by our own ByteArrayOutputStream
         }
         return subSink;
@@ -187,130 +186,111 @@ public class RandomAccessSink
 
     /** {@inheritDoc} */
     @Override
-    public void anchor( String name )
-    {
-        currentSink.anchor( name );
+    public void anchor(String name) {
+        currentSink.anchor(name);
     }
 
     /** {@inheritDoc} */
     @Override
-    public void anchor( String name, SinkEventAttributes attributes )
-    {
-        currentSink.anchor( name, attributes );
+    public void anchor(String name, SinkEventAttributes attributes) {
+        currentSink.anchor(name, attributes);
     }
 
     /** {@inheritDoc} */
     @Override
-    public void anchor_()
-    {
+    public void anchor_() {
         currentSink.anchor_();
     }
 
     /** {@inheritDoc} */
     @Override
-    public void article()
-    {
+    public void article() {
         currentSink.article();
     }
 
     /** {@inheritDoc} */
     @Override
-    public void article( SinkEventAttributes attributes )
-    {
-        currentSink.article( attributes );
+    public void article(SinkEventAttributes attributes) {
+        currentSink.article(attributes);
     }
 
     /** {@inheritDoc} */
     @Override
-    public void article_()
-    {
+    public void article_() {
         currentSink.article_();
     }
 
     /** {@inheritDoc} */
     @Override
-    public void author()
-    {
+    public void author() {
         currentSink.author();
     }
 
     /** {@inheritDoc} */
     @Override
-    public void author( SinkEventAttributes attributes )
-    {
-        currentSink.author( attributes );
+    public void author(SinkEventAttributes attributes) {
+        currentSink.author(attributes);
     }
 
     /** {@inheritDoc} */
     @Override
-    public void author_()
-    {
+    public void author_() {
         currentSink.author_();
     }
 
     /** {@inheritDoc} */
     @Override
-    public void blockquote()
-    {
+    public void blockquote() {
         currentSink.blockquote();
     }
 
     /** {@inheritDoc} */
     @Override
-    public void blockquote( SinkEventAttributes attributes )
-    {
-        currentSink.blockquote( attributes );
+    public void blockquote(SinkEventAttributes attributes) {
+        currentSink.blockquote(attributes);
     }
 
     /** {@inheritDoc} */
     @Override
-    public void blockquote_()
-    {
+    public void blockquote_() {
         currentSink.blockquote_();
     }
 
     /** {@inheritDoc} */
     @Override
-    public void body()
-    {
+    public void body() {
         currentSink.body();
     }
 
     /** {@inheritDoc} */
     @Override
-    public void body( SinkEventAttributes attributes )
-    {
-        currentSink.body( attributes );
+    public void body(SinkEventAttributes attributes) {
+        currentSink.body(attributes);
     }
 
     /** {@inheritDoc} */
     @Override
-    public void body_()
-    {
+    public void body_() {
         currentSink.body_();
     }
 
     /** {@inheritDoc} */
     @Override
-    public void bold()
-    {
+    public void bold() {
         currentSink.bold();
     }
 
     /** {@inheritDoc} */
     @Override
-    public void bold_()
-    {
+    public void bold_() {
         currentSink.bold_();
     }
 
     /**
      * Close all sinks
      */
-    public void close()
-    {
-        for ( Sink sink  : sinks )
-        {
+    public void close() {
+        for (Sink sink : sinks) {
             // sink is responsible for closing it's stream
             sink.close();
         }
@@ -319,254 +299,216 @@ public class RandomAccessSink
 
     /** {@inheritDoc} */
     @Override
-    public void comment( String comment )
-    {
-        currentSink.comment( comment );
+    public void comment(String comment) {
+        currentSink.comment(comment);
     }
 
     /** {@inheritDoc} */
     @Override
-    public void content()
-    {
+    public void content() {
         currentSink.content();
     }
 
     /** {@inheritDoc} */
     @Override
-    public void content( SinkEventAttributes attributes )
-    {
-        currentSink.content( attributes );
+    public void content(SinkEventAttributes attributes) {
+        currentSink.content(attributes);
     }
 
     /** {@inheritDoc} */
     @Override
-    public void content_()
-    {
+    public void content_() {
         currentSink.content_();
     }
 
     /** {@inheritDoc} */
     @Override
-    public void data( String value )
-    {
-        currentSink.data( value );
+    public void data(String value) {
+        currentSink.data(value);
     }
 
     /** {@inheritDoc} */
     @Override
-    public void data( String value, SinkEventAttributes attributes )
-    {
-        currentSink.data( value, attributes );
+    public void data(String value, SinkEventAttributes attributes) {
+        currentSink.data(value, attributes);
     }
 
     /** {@inheritDoc} */
     @Override
-    public void data_()
-    {
+    public void data_() {
         currentSink.data_();
     }
 
     /** {@inheritDoc} */
     @Override
-    public void date()
-    {
+    public void date() {
         currentSink.date();
     }
 
     /** {@inheritDoc} */
     @Override
-    public void date( SinkEventAttributes attributes )
-    {
-        currentSink.date( attributes );
+    public void date(SinkEventAttributes attributes) {
+        currentSink.date(attributes);
     }
 
     /** {@inheritDoc} */
     @Override
-    public void date_()
-    {
+    public void date_() {
         currentSink.date_();
     }
 
     /** {@inheritDoc} */
     @Override
-    public void definedTerm()
-    {
+    public void definedTerm() {
         currentSink.definedTerm();
     }
 
     /** {@inheritDoc} */
     @Override
-    public void definedTerm( SinkEventAttributes attributes )
-    {
-        currentSink.definedTerm( attributes );
+    public void definedTerm(SinkEventAttributes attributes) {
+        currentSink.definedTerm(attributes);
     }
 
     /** {@inheritDoc} */
     @Override
-    public void definedTerm_()
-    {
+    public void definedTerm_() {
         currentSink.definedTerm_();
     }
 
     /** {@inheritDoc} */
     @Override
-    public void definition()
-    {
+    public void definition() {
         currentSink.definition();
     }
 
     /** {@inheritDoc} */
     @Override
-    public void definition( SinkEventAttributes attributes )
-    {
-        currentSink.definition( attributes );
+    public void definition(SinkEventAttributes attributes) {
+        currentSink.definition(attributes);
     }
 
     /** {@inheritDoc} */
     @Override
-    public void definitionList()
-    {
+    public void definitionList() {
         currentSink.definitionList();
     }
 
     /** {@inheritDoc} */
     @Override
-    public void definitionList( SinkEventAttributes attributes )
-    {
-        currentSink.definitionList( attributes );
+    public void definitionList(SinkEventAttributes attributes) {
+        currentSink.definitionList(attributes);
     }
 
     /** {@inheritDoc} */
     @Override
-    public void definitionListItem()
-    {
+    public void definitionListItem() {
         currentSink.definitionListItem();
     }
 
     /** {@inheritDoc} */
     @Override
-    public void definitionListItem( SinkEventAttributes attributes )
-    {
-        currentSink.definitionListItem( attributes );
+    public void definitionListItem(SinkEventAttributes attributes) {
+        currentSink.definitionListItem(attributes);
     }
 
     /** {@inheritDoc} */
     @Override
-    public void definitionListItem_()
-    {
+    public void definitionListItem_() {
         currentSink.definitionListItem_();
     }
 
     /** {@inheritDoc} */
     @Override
-    public void definitionList_()
-    {
+    public void definitionList_() {
         currentSink.definitionList_();
     }
 
     /** {@inheritDoc} */
     @Override
-    public void definition_()
-    {
+    public void definition_() {
         currentSink.definition_();
     }
 
     /** {@inheritDoc} */
     @Override
-    public void division()
-    {
+    public void division() {
         currentSink.division();
     }
 
     /** {@inheritDoc} */
     @Override
-    public void division( SinkEventAttributes attributes )
-    {
-        currentSink.division( attributes );
+    public void division(SinkEventAttributes attributes) {
+        currentSink.division(attributes);
     }
 
     /** {@inheritDoc} */
     @Override
-    public void division_()
-    {
+    public void division_() {
         currentSink.division_();
     }
 
     /** {@inheritDoc} */
     @Override
-    public void figure()
-    {
+    public void figure() {
         currentSink.figure();
     }
 
     /** {@inheritDoc} */
     @Override
-    public void figure( SinkEventAttributes attributes )
-    {
-        currentSink.figure( attributes );
+    public void figure(SinkEventAttributes attributes) {
+        currentSink.figure(attributes);
     }
 
     /** {@inheritDoc} */
     @Override
-    public void figureCaption()
-    {
+    public void figureCaption() {
         currentSink.figureCaption();
     }
 
     /** {@inheritDoc} */
     @Override
-    public void figureCaption( SinkEventAttributes attributes )
-    {
-        currentSink.figureCaption( attributes );
+    public void figureCaption(SinkEventAttributes attributes) {
+        currentSink.figureCaption(attributes);
     }
 
     /** {@inheritDoc} */
     @Override
-    public void figureCaption_()
-    {
+    public void figureCaption_() {
         currentSink.figureCaption_();
     }
 
     /** {@inheritDoc} */
     @Override
-    public void figureGraphics( String name )
-    {
-        currentSink.figureGraphics( name );
+    public void figureGraphics(String name) {
+        currentSink.figureGraphics(name);
     }
 
     /** {@inheritDoc} */
     @Override
-    public void figureGraphics( String src, SinkEventAttributes attributes )
-    {
-        currentSink.figureGraphics( src, attributes );
+    public void figureGraphics(String src, SinkEventAttributes attributes) {
+        currentSink.figureGraphics(src, attributes);
     }
 
     /** {@inheritDoc} */
     @Override
-    public void figure_()
-    {
+    public void figure_() {
         currentSink.figure_();
     }
 
     /**
      * Flush all sinks
      */
-    public void flush()
-    {
-        for ( int i = 0; i < sinks.size(); i++ )
-        {
+    public void flush() {
+        for (int i = 0; i < sinks.size(); i++) {
             // first flush to get complete buffer
             // sink is responsible for flushing it's stream
-            Sink sink = sinks.get( i );
+            Sink sink = sinks.get(i);
             sink.flush();
 
-            ByteArrayOutputStream stream = outputStreams.get( i );
-            try
-            {
-                coreOutputStream.write( stream.toByteArray() );
-            }
-            catch ( IOException e )
-            {
+            ByteArrayOutputStream stream = outputStreams.get(i);
+            try {
+                coreOutputStream.write(stream.toByteArray());
+            } catch (IOException e) {
                 // @todo
             }
         }
@@ -575,729 +517,625 @@ public class RandomAccessSink
 
     /** {@inheritDoc} */
     @Override
-    public void footer()
-    {
+    public void footer() {
         currentSink.footer();
     }
 
     /** {@inheritDoc} */
     @Override
-    public void footer( SinkEventAttributes attributes )
-    {
-        currentSink.footer( attributes );
+    public void footer(SinkEventAttributes attributes) {
+        currentSink.footer(attributes);
     }
 
     /** {@inheritDoc} */
     @Override
-    public void footer_()
-    {
+    public void footer_() {
         currentSink.footer_();
     }
 
     /** {@inheritDoc} */
     @Override
-    public void head()
-    {
+    public void head() {
         currentSink.head();
     }
 
     /** {@inheritDoc} */
     @Override
-    public void head( SinkEventAttributes attributes )
-    {
-        currentSink.head( attributes );
+    public void head(SinkEventAttributes attributes) {
+        currentSink.head(attributes);
     }
 
     /** {@inheritDoc} */
     @Override
-    public void head_()
-    {
+    public void head_() {
         currentSink.head_();
     }
 
     /** {@inheritDoc} */
     @Override
-    public void header()
-    {
+    public void header() {
         currentSink.header();
     }
 
     /** {@inheritDoc} */
     @Override
-    public void header( SinkEventAttributes attributes )
-    {
-        currentSink.header( attributes );
+    public void header(SinkEventAttributes attributes) {
+        currentSink.header(attributes);
     }
 
     /** {@inheritDoc} */
     @Override
-    public void header_()
-    {
+    public void header_() {
         currentSink.header_();
     }
 
     /** {@inheritDoc} */
     @Override
-    public void horizontalRule()
-    {
+    public void horizontalRule() {
         currentSink.horizontalRule();
     }
 
     /** {@inheritDoc} */
     @Override
-    public void horizontalRule( SinkEventAttributes attributes )
-    {
-        currentSink.horizontalRule( attributes );
+    public void horizontalRule(SinkEventAttributes attributes) {
+        currentSink.horizontalRule(attributes);
     }
 
     /** {@inheritDoc} */
     @Override
-    public void inline()
-    {
+    public void inline() {
         currentSink.inline();
     }
 
     /** {@inheritDoc} */
     @Override
-    public void inline( SinkEventAttributes attributes )
-    {
-        currentSink.inline( attributes );
+    public void inline(SinkEventAttributes attributes) {
+        currentSink.inline(attributes);
     }
 
     /** {@inheritDoc} */
     @Override
-    public void inline_()
-    {
+    public void inline_() {
         currentSink.inline_();
     }
 
     /** {@inheritDoc} */
     @Override
-    public void italic()
-    {
+    public void italic() {
         currentSink.italic();
     }
 
     /** {@inheritDoc} */
     @Override
-    public void italic_()
-    {
+    public void italic_() {
         currentSink.italic_();
     }
 
     /** {@inheritDoc} */
     @Override
-    public void lineBreak()
-    {
+    public void lineBreak() {
         currentSink.lineBreak();
     }
 
     /** {@inheritDoc} */
     @Override
-    public void lineBreak( SinkEventAttributes attributes )
-    {
-        currentSink.lineBreak( attributes );
+    public void lineBreak(SinkEventAttributes attributes) {
+        currentSink.lineBreak(attributes);
     }
 
     /** {@inheritDoc} */
     @Override
-    public void lineBreakOpportunity()
-    {
+    public void lineBreakOpportunity() {
         currentSink.lineBreakOpportunity();
     }
 
     /** {@inheritDoc} */
     @Override
-    public void lineBreakOpportunity( SinkEventAttributes attributes )
-    {
-        currentSink.lineBreakOpportunity( attributes );
+    public void lineBreakOpportunity(SinkEventAttributes attributes) {
+        currentSink.lineBreakOpportunity(attributes);
     }
 
     /** {@inheritDoc} */
     @Override
-    public void link( String name )
-    {
-        currentSink.link( name );
+    public void link(String name) {
+        currentSink.link(name);
     }
 
     /** {@inheritDoc} */
     @Override
-    public void link( String name, SinkEventAttributes attributes )
-    {
-        currentSink.link( name, attributes );
+    public void link(String name, SinkEventAttributes attributes) {
+        currentSink.link(name, attributes);
     }
 
     /** {@inheritDoc} */
     @Override
-    public void link_()
-    {
+    public void link_() {
         currentSink.link_();
     }
 
     /** {@inheritDoc} */
     @Override
-    public void list()
-    {
+    public void list() {
         currentSink.list();
     }
 
     /** {@inheritDoc} */
     @Override
-    public void list( SinkEventAttributes attributes )
-    {
-        currentSink.list( attributes );
+    public void list(SinkEventAttributes attributes) {
+        currentSink.list(attributes);
     }
 
     /** {@inheritDoc} */
     @Override
-    public void listItem()
-    {
+    public void listItem() {
         currentSink.listItem();
     }
 
     /** {@inheritDoc} */
     @Override
-    public void listItem( SinkEventAttributes attributes )
-    {
-        currentSink.listItem( attributes );
+    public void listItem(SinkEventAttributes attributes) {
+        currentSink.listItem(attributes);
     }
 
     /** {@inheritDoc} */
     @Override
-    public void listItem_()
-    {
+    public void listItem_() {
         currentSink.listItem_();
     }
 
     /** {@inheritDoc} */
     @Override
-    public void list_()
-    {
+    public void list_() {
         currentSink.list_();
     }
 
     /** {@inheritDoc} */
     @Override
-    public void monospaced()
-    {
+    public void monospaced() {
         currentSink.monospaced();
     }
 
     /** {@inheritDoc} */
     @Override
-    public void monospaced_()
-    {
+    public void monospaced_() {
         currentSink.monospaced_();
     }
 
     /** {@inheritDoc} */
     @Override
-    public void navigation()
-    {
+    public void navigation() {
         currentSink.navigation();
     }
 
     /** {@inheritDoc} */
     @Override
-    public void navigation( SinkEventAttributes attributes )
-    {
-        currentSink.navigation( attributes );
+    public void navigation(SinkEventAttributes attributes) {
+        currentSink.navigation(attributes);
     }
 
     /** {@inheritDoc} */
     @Override
-    public void navigation_()
-    {
+    public void navigation_() {
         currentSink.navigation_();
     }
 
     /** {@inheritDoc} */
     @Override
-    public void nonBreakingSpace()
-    {
+    public void nonBreakingSpace() {
         currentSink.nonBreakingSpace();
     }
 
     /** {@inheritDoc} */
     @Override
-    public void numberedList( int numbering )
-    {
-        currentSink.numberedList( numbering );
+    public void numberedList(int numbering) {
+        currentSink.numberedList(numbering);
     }
 
     /** {@inheritDoc} */
     @Override
-    public void numberedList( int numbering, SinkEventAttributes attributes )
-    {
-        currentSink.numberedList( numbering, attributes );
+    public void numberedList(int numbering, SinkEventAttributes attributes) {
+        currentSink.numberedList(numbering, attributes);
     }
 
     /** {@inheritDoc} */
     @Override
-    public void numberedListItem()
-    {
+    public void numberedListItem() {
         currentSink.numberedListItem();
     }
 
     /** {@inheritDoc} */
     @Override
-    public void numberedListItem( SinkEventAttributes attributes )
-    {
-        currentSink.numberedListItem( attributes );
+    public void numberedListItem(SinkEventAttributes attributes) {
+        currentSink.numberedListItem(attributes);
     }
 
     /** {@inheritDoc} */
     @Override
-    public void numberedListItem_()
-    {
+    public void numberedListItem_() {
         currentSink.numberedListItem_();
     }
 
     /** {@inheritDoc} */
     @Override
-    public void numberedList_()
-    {
+    public void numberedList_() {
         currentSink.numberedList_();
     }
 
     /** {@inheritDoc} */
     @Override
-    public void pageBreak()
-    {
+    public void pageBreak() {
         currentSink.pageBreak();
     }
 
     /** {@inheritDoc} */
     @Override
-    public void paragraph()
-    {
+    public void paragraph() {
         currentSink.paragraph();
     }
 
     /** {@inheritDoc} */
     @Override
-    public void paragraph( SinkEventAttributes attributes )
-    {
-        currentSink.paragraph( attributes );
+    public void paragraph(SinkEventAttributes attributes) {
+        currentSink.paragraph(attributes);
     }
 
     /** {@inheritDoc} */
     @Override
-    public void paragraph_()
-    {
+    public void paragraph_() {
         currentSink.paragraph_();
     }
 
     /** {@inheritDoc} */
     @Override
-    public void rawText( String text )
-    {
-        currentSink.rawText( text );
+    public void rawText(String text) {
+        currentSink.rawText(text);
     }
 
     /** {@inheritDoc} */
     @Override
-    public void section( int level, SinkEventAttributes attributes )
-    {
-        currentSink.section( level, attributes );
+    public void section(int level, SinkEventAttributes attributes) {
+        currentSink.section(level, attributes);
     }
 
     /** {@inheritDoc} */
     @Override
-    public void section1()
-    {
+    public void section1() {
         currentSink.section1();
     }
 
     /** {@inheritDoc} */
     @Override
-    public void section1_()
-    {
+    public void section1_() {
         currentSink.section1_();
     }
 
     /** {@inheritDoc} */
     @Override
-    public void section2()
-    {
+    public void section2() {
         currentSink.section2();
     }
 
     /** {@inheritDoc} */
     @Override
-    public void section2_()
-    {
+    public void section2_() {
         currentSink.section2_();
     }
 
     /** {@inheritDoc} */
     @Override
-    public void section3()
-    {
+    public void section3() {
         currentSink.section3();
     }
 
     /** {@inheritDoc} */
     @Override
-    public void section3_()
-    {
+    public void section3_() {
         currentSink.section3_();
     }
 
     /** {@inheritDoc} */
     @Override
-    public void section4()
-    {
+    public void section4() {
         currentSink.section4();
     }
 
     /** {@inheritDoc} */
     @Override
-    public void section4_()
-    {
+    public void section4_() {
         currentSink.section4_();
     }
 
     /** {@inheritDoc} */
     @Override
-    public void section5()
-    {
+    public void section5() {
         currentSink.section5();
     }
 
     /** {@inheritDoc} */
     @Override
-    public void section5_()
-    {
+    public void section5_() {
         currentSink.section5_();
     }
 
     /** {@inheritDoc} */
     @Override
-    public void sectionTitle()
-    {
+    public void sectionTitle() {
         currentSink.sectionTitle();
     }
 
     /** {@inheritDoc} */
     @Override
-    public void sectionTitle( int level, SinkEventAttributes attributes )
-    {
-        currentSink.sectionTitle( level, attributes );
+    public void sectionTitle(int level, SinkEventAttributes attributes) {
+        currentSink.sectionTitle(level, attributes);
     }
 
     /** {@inheritDoc} */
     @Override
-    public void sectionTitle1()
-    {
+    public void sectionTitle1() {
         currentSink.sectionTitle1();
     }
 
     /** {@inheritDoc} */
     @Override
-    public void sectionTitle1_()
-    {
+    public void sectionTitle1_() {
         currentSink.sectionTitle1_();
     }
 
     /** {@inheritDoc} */
     @Override
-    public void sectionTitle2()
-    {
+    public void sectionTitle2() {
         currentSink.sectionTitle2();
     }
 
     /** {@inheritDoc} */
     @Override
-    public void sectionTitle2_()
-    {
+    public void sectionTitle2_() {
         currentSink.sectionTitle2_();
     }
 
     /** {@inheritDoc} */
     @Override
-    public void sectionTitle3()
-    {
+    public void sectionTitle3() {
         currentSink.sectionTitle3();
     }
 
     /** {@inheritDoc} */
     @Override
-    public void sectionTitle3_()
-    {
+    public void sectionTitle3_() {
         currentSink.sectionTitle3_();
     }
 
     /** {@inheritDoc} */
     @Override
-    public void sectionTitle4()
-    {
+    public void sectionTitle4() {
         currentSink.sectionTitle4();
     }
 
     /** {@inheritDoc} */
     @Override
-    public void sectionTitle4_()
-    {
+    public void sectionTitle4_() {
         currentSink.sectionTitle4_();
     }
 
     /** {@inheritDoc} */
     @Override
-    public void sectionTitle5()
-    {
+    public void sectionTitle5() {
         currentSink.sectionTitle5();
     }
 
     /** {@inheritDoc} */
     @Override
-    public void sectionTitle5_()
-    {
+    public void sectionTitle5_() {
         currentSink.sectionTitle5_();
     }
 
     /** {@inheritDoc} */
     @Override
-    public void sectionTitle_()
-    {
+    public void sectionTitle_() {
         currentSink.sectionTitle_();
     }
 
     /** {@inheritDoc} */
     @Override
-    public void sectionTitle_( int level )
-    {
-        currentSink.sectionTitle_( level );
+    public void sectionTitle_(int level) {
+        currentSink.sectionTitle_(level);
     }
 
     /** {@inheritDoc} */
     @Override
-    public void section_( int level )
-    {
-        currentSink.section_( level );
+    public void section_(int level) {
+        currentSink.section_(level);
     }
 
     /** {@inheritDoc} */
     @Override
-    public void sidebar()
-    {
+    public void sidebar() {
         currentSink.sidebar();
     }
 
     /** {@inheritDoc} */
     @Override
-    public void sidebar( SinkEventAttributes attributes )
-    {
-        currentSink.sidebar( attributes );
+    public void sidebar(SinkEventAttributes attributes) {
+        currentSink.sidebar(attributes);
     }
 
     /** {@inheritDoc} */
     @Override
-    public void sidebar_()
-    {
+    public void sidebar_() {
         currentSink.sidebar_();
     }
 
     /** {@inheritDoc} */
     @Override
-    public void table()
-    {
+    public void table() {
         currentSink.table();
     }
 
     /** {@inheritDoc} */
     @Override
-    public void table( SinkEventAttributes attributes )
-    {
-        currentSink.table( attributes );
+    public void table(SinkEventAttributes attributes) {
+        currentSink.table(attributes);
     }
 
     /** {@inheritDoc} */
     @Override
-    public void tableCaption()
-    {
+    public void tableCaption() {
         currentSink.tableCaption();
     }
 
     /** {@inheritDoc} */
     @Override
-    public void tableCaption( SinkEventAttributes attributes )
-    {
-        currentSink.tableCaption( attributes );
+    public void tableCaption(SinkEventAttributes attributes) {
+        currentSink.tableCaption(attributes);
     }
 
     /** {@inheritDoc} */
     @Override
-    public void tableCaption_()
-    {
+    public void tableCaption_() {
         currentSink.tableCaption_();
     }
 
     /** {@inheritDoc} */
     @Override
-    public void tableCell()
-    {
+    public void tableCell() {
         currentSink.tableCell();
     }
 
     /** {@inheritDoc} */
     @Override
-    public void tableCell( SinkEventAttributes attributes )
-    {
-        currentSink.tableCell( attributes );
+    public void tableCell(SinkEventAttributes attributes) {
+        currentSink.tableCell(attributes);
     }
 
     /** {@inheritDoc} */
     @Override
-    public void tableCell_()
-    {
+    public void tableCell_() {
         currentSink.tableCell_();
     }
 
     /** {@inheritDoc} */
     @Override
-    public void tableHeaderCell()
-    {
+    public void tableHeaderCell() {
         currentSink.tableHeaderCell();
     }
 
     /** {@inheritDoc} */
     @Override
-    public void tableHeaderCell( SinkEventAttributes attributes )
-    {
-        currentSink.tableHeaderCell( attributes );
+    public void tableHeaderCell(SinkEventAttributes attributes) {
+        currentSink.tableHeaderCell(attributes);
     }
 
     /** {@inheritDoc} */
     @Override
-    public void tableHeaderCell_()
-    {
+    public void tableHeaderCell_() {
         currentSink.tableHeaderCell_();
     }
 
     /** {@inheritDoc} */
     @Override
-    public void tableRow()
-    {
+    public void tableRow() {
         currentSink.tableRow();
     }
 
     /** {@inheritDoc} */
     @Override
-    public void tableRow( SinkEventAttributes attributes )
-    {
-        currentSink.tableRow( attributes );
+    public void tableRow(SinkEventAttributes attributes) {
+        currentSink.tableRow(attributes);
     }
 
     /** {@inheritDoc} */
     @Override
-    public void tableRow_()
-    {
+    public void tableRow_() {
         currentSink.tableRow_();
     }
 
     /** {@inheritDoc} */
     @Override
-    public void tableRows()
-    {
+    public void tableRows() {
         currentSink.tableRows();
     }
 
     /** {@inheritDoc} */
     @Override
-    public void tableRows( int[] justification, boolean grid )
-    {
-        currentSink.tableRows( justification, grid );
+    public void tableRows(int[] justification, boolean grid) {
+        currentSink.tableRows(justification, grid);
     }
 
     /** {@inheritDoc} */
     @Override
-    public void tableRows_()
-    {
+    public void tableRows_() {
         currentSink.tableRows_();
     }
 
     /** {@inheritDoc} */
     @Override
-    public void table_()
-    {
+    public void table_() {
         currentSink.table_();
     }
 
     /** {@inheritDoc} */
     @Override
-    public void text( String text )
-    {
-        currentSink.text( text );
+    public void text(String text) {
+        currentSink.text(text);
     }
 
     /** {@inheritDoc} */
     @Override
-    public void text( String text, SinkEventAttributes attributes )
-    {
-        currentSink.text( text, attributes );
+    public void text(String text, SinkEventAttributes attributes) {
+        currentSink.text(text, attributes);
     }
 
     /** {@inheritDoc} */
     @Override
-    public void time( String datetime )
-    {
-        currentSink.time( datetime );
+    public void time(String datetime) {
+        currentSink.time(datetime);
     }
 
     /** {@inheritDoc} */
     @Override
-    public void time( String datetime, SinkEventAttributes attributes )
-    {
-        currentSink.time( datetime, attributes );
+    public void time(String datetime, SinkEventAttributes attributes) {
+        currentSink.time(datetime, attributes);
     }
 
     /** {@inheritDoc} */
     @Override
-    public void time_()
-    {
+    public void time_() {
         currentSink.time_();
     }
 
     /** {@inheritDoc} */
     @Override
-    public void title()
-    {
+    public void title() {
         currentSink.title();
     }
 
     /** {@inheritDoc} */
     @Override
-    public void title( SinkEventAttributes attributes )
-    {
-        currentSink.title( attributes );
+    public void title(SinkEventAttributes attributes) {
+        currentSink.title(attributes);
     }
 
     /** {@inheritDoc} */
     @Override
-    public void title_()
-    {
+    public void title_() {
         currentSink.title_();
     }
 
     /** {@inheritDoc} */
     @Override
-    public void unknown( String name, Object[] requiredParams, SinkEventAttributes attributes )
-    {
-        currentSink.unknown( name, requiredParams, attributes );
+    public void unknown(String name, Object[] requiredParams, SinkEventAttributes attributes) {
+        currentSink.unknown(name, requiredParams, attributes);
     }
 
     /** {@inheritDoc} */
     @Override
-    public void verbatim( SinkEventAttributes attributes )
-    {
-        currentSink.verbatim( attributes );
+    public void verbatim(SinkEventAttributes attributes) {
+        currentSink.verbatim(attributes);
     }
 
     /** {@inheritDoc} */
     @Override
-    public void verbatim_()
-    {
+    public void verbatim_() {
         currentSink.verbatim_();
     }
 }

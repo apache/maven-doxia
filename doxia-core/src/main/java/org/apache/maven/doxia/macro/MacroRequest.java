@@ -1,3 +1,21 @@
+/*
+ * Licensed to the Apache Software Foundation (ASF) under one
+ * or more contributor license agreements.  See the NOTICE file
+ * distributed with this work for additional information
+ * regarding copyright ownership.  The ASF licenses this file
+ * to you under the Apache License, Version 2.0 (the
+ * "License"); you may not use this file except in compliance
+ * with the License.  You may obtain a copy of the License at
+ *
+ *   http://www.apache.org/licenses/LICENSE-2.0
+ *
+ * Unless required by applicable law or agreed to in writing,
+ * software distributed under the License is distributed on an
+ * "AS IS" BASIS, WITHOUT WARRANTIES OR CONDITIONS OF ANY
+ * KIND, either express or implied.  See the License for the
+ * specific language governing permissions and limitations
+ * under the License.
+ */
 package org.apache.maven.doxia.macro;
 
 /*
@@ -19,12 +37,11 @@ package org.apache.maven.doxia.macro;
  * under the License.
  */
 
+import java.io.File;
 import java.util.Map;
 
 import org.apache.maven.doxia.parser.AbstractParser;
 import org.apache.maven.doxia.parser.Parser;
-
-import java.io.File;
 
 /**
  * <p>MacroRequest class.</p>
@@ -32,8 +49,7 @@ import java.io.File;
  * @author <a href="mailto:jason@maven.org">Jason van Zyl</a>
  * @since 1.0
  */
-public class MacroRequest
-{
+public class MacroRequest {
     private static final String PARAM_SOURCE_CONTENT = "sourceContent";
     private static final String PARAM_PARSER = "parser";
 
@@ -51,13 +67,12 @@ public class MacroRequest
      * @param param a {@link java.util.Map} object.
      * @param basedir a {@link java.io.File} object.
      */
-    public MacroRequest( String sourceContent, AbstractParser parser, Map<String, Object> param, File basedir )
-    {
+    public MacroRequest(String sourceContent, AbstractParser parser, Map<String, Object> param, File basedir) {
         this.parameters = param;
         this.basedir = basedir;
-        param.put( PARAM_SOURCE_CONTENT, sourceContent );
-        parser.setSecondParsing( true );
-        param.put( PARAM_PARSER, parser );
+        param.put(PARAM_SOURCE_CONTENT, sourceContent);
+        parser.setSecondParsing(true);
+        param.put(PARAM_PARSER, parser);
     }
 
     /**
@@ -65,8 +80,7 @@ public class MacroRequest
      *
      * @return The base dir.
      */
-    public File getBasedir()
-    {
+    public File getBasedir() {
         return basedir;
     }
 
@@ -75,8 +89,7 @@ public class MacroRequest
      *
      * @param base The current base directory.
      */
-    public void setBasedir( File base )
-    {
+    public void setBasedir(File base) {
         this.basedir = base;
     }
 
@@ -85,8 +98,7 @@ public class MacroRequest
      *
      * @return The map of parameters.
      */
-    public Map<String, Object> getParameters()
-    {
+    public Map<String, Object> getParameters() {
         return parameters;
     }
 
@@ -97,9 +109,8 @@ public class MacroRequest
      * @param key The key to lookup the object.
      * @return The value object.
      */
-    public Object getParameter( String key )
-    {
-        return parameters.get( key );
+    public Object getParameter(String key) {
+        return parameters.get(key);
     }
 
     /**
@@ -107,9 +118,8 @@ public class MacroRequest
      *
      * @return a {@link java.lang.String} object.
      */
-    public String getSourceContent()
-    {
-        return (String) getParameter( PARAM_SOURCE_CONTENT );
+    public String getSourceContent() {
+        return (String) getParameter(PARAM_SOURCE_CONTENT);
     }
 
     /**
@@ -117,9 +127,8 @@ public class MacroRequest
      *
      * @return a {@link org.apache.maven.doxia.parser.Parser} object.
      */
-    public Parser getParser()
-    {
-        return (Parser) getParameter( PARAM_PARSER );
+    public Parser getParser() {
+        return (Parser) getParameter(PARAM_PARSER);
     }
 
     /**
@@ -128,8 +137,7 @@ public class MacroRequest
      * @param name a {@link java.lang.String} object.
      * @return a boolean.
      */
-    public static boolean isInternalParameter( String name )
-    {
-        return PARAM_PARSER.equals( name ) || PARAM_SOURCE_CONTENT.equals( name );
+    public static boolean isInternalParameter(String name) {
+        return PARAM_PARSER.equals(name) || PARAM_SOURCE_CONTENT.equals(name);
     }
 }

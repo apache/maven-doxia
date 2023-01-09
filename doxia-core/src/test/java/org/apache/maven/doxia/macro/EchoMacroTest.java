@@ -1,3 +1,21 @@
+/*
+ * Licensed to the Apache Software Foundation (ASF) under one
+ * or more contributor license agreements.  See the NOTICE file
+ * distributed with this work for additional information
+ * regarding copyright ownership.  The ASF licenses this file
+ * to you under the Apache License, Version 2.0 (the
+ * "License"); you may not use this file except in compliance
+ * with the License.  You may obtain a copy of the License at
+ *
+ *   http://www.apache.org/licenses/LICENSE-2.0
+ *
+ * Unless required by applicable law or agreed to in writing,
+ * software distributed under the License is distributed on an
+ * "AS IS" BASIS, WITHOUT WARRANTIES OR CONDITIONS OF ANY
+ * KIND, either express or implied.  See the License for the
+ * specific language governing permissions and limitations
+ * under the License.
+ */
 package org.apache.maven.doxia.macro;
 
 /*
@@ -20,7 +38,6 @@ package org.apache.maven.doxia.macro;
  */
 
 import java.io.File;
-
 import java.util.HashMap;
 import java.util.Iterator;
 import java.util.Map;
@@ -28,7 +45,6 @@ import java.util.Map;
 import org.apache.maven.doxia.parser.Xhtml5BaseParser;
 import org.apache.maven.doxia.sink.impl.SinkEventElement;
 import org.apache.maven.doxia.sink.impl.SinkEventTestingSink;
-
 import org.junit.jupiter.api.Test;
 
 import static org.junit.jupiter.api.Assertions.*;
@@ -38,35 +54,33 @@ import static org.junit.jupiter.api.Assertions.*;
  *
  * @author ltheussl
  */
-public class EchoMacroTest
-{
+public class EchoMacroTest {
     /**
      * Test of execute method, of class EchoMacro.
      */
     @Test
-    public void testExecute()
-    {
-        final Map<String,Object> macroParameters = new HashMap<>();
-        macroParameters.put( "paramName", "paramValue" );
+    public void testExecute() {
+        final Map<String, Object> macroParameters = new HashMap<>();
+        macroParameters.put("paramName", "paramValue");
 
         Xhtml5BaseParser parser = new Xhtml5BaseParser();
 
         SinkEventTestingSink sink = new SinkEventTestingSink();
-        MacroRequest request = new MacroRequest( null, parser, macroParameters, new File( "." ) );
+        MacroRequest request = new MacroRequest(null, parser, macroParameters, new File("."));
 
-        new EchoMacro().execute( sink, request );
+        new EchoMacro().execute(sink, request);
 
         Iterator<SinkEventElement> it = sink.getEventList().iterator();
         SinkEventElement event = it.next();
-        assertEquals( "verbatim", event.getName() );
+        assertEquals("verbatim", event.getName());
         event = it.next();
-        assertEquals( "text", event.getName() );
-        assertEquals( "echo" + Macro.EOL, event.getArgs()[0] );
+        assertEquals("text", event.getName());
+        assertEquals("echo" + Macro.EOL, event.getArgs()[0]);
         event = it.next();
-        assertEquals( "text", event.getName() );
-        assertEquals( "paramName ---> paramValue" + Macro.EOL, event.getArgs()[0] );
+        assertEquals("text", event.getName());
+        assertEquals("paramName ---> paramValue" + Macro.EOL, event.getArgs()[0]);
         event = it.next();
-        assertEquals( "verbatim_", event.getName() );
-        assertFalse( it.hasNext() );
+        assertEquals("verbatim_", event.getName());
+        assertFalse(it.hasNext());
     }
 }

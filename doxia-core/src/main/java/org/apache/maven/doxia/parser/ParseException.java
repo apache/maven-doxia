@@ -1,3 +1,21 @@
+/*
+ * Licensed to the Apache Software Foundation (ASF) under one
+ * or more contributor license agreements.  See the NOTICE file
+ * distributed with this work for additional information
+ * regarding copyright ownership.  The ASF licenses this file
+ * to you under the Apache License, Version 2.0 (the
+ * "License"); you may not use this file except in compliance
+ * with the License.  You may obtain a copy of the License at
+ *
+ *   http://www.apache.org/licenses/LICENSE-2.0
+ *
+ * Unless required by applicable law or agreed to in writing,
+ * software distributed under the License is distributed on an
+ * "AS IS" BASIS, WITHOUT WARRANTIES OR CONDITIONS OF ANY
+ * KIND, either express or implied.  See the License for the
+ * specific language governing permissions and limitations
+ * under the License.
+ */
 package org.apache.maven.doxia.parser;
 
 /*
@@ -25,9 +43,7 @@ package org.apache.maven.doxia.parser;
  * @author <a href="mailto:jason@maven.org">Jason van Zyl</a>
  * @since 1.0
  */
-public class ParseException
-    extends Exception
-{
+public class ParseException extends Exception {
     /** serialVersionUID */
     static final long serialVersionUID = 295967936746221567L;
 
@@ -48,9 +64,8 @@ public class ParseException
      * @param e the cause. This can be retrieved later by the <code>Throwable.getCause()</code> method.
      * (A null value is permitted, and indicates that the cause is nonexistent or unknown.)
      */
-    public ParseException( Exception e )
-    {
-        this( null, e, null, -1, -1 );
+    public ParseException(Exception e) {
+        this(null, e, null, -1, -1);
     }
 
     /**
@@ -61,9 +76,8 @@ public class ParseException
      * @param message The detailed message.
      * This can later be retrieved by the <code>Throwable.getMessage()</code> method.
      */
-    public ParseException( String message )
-    {
-        this( message, null, null, -1, -1 );
+    public ParseException(String message) {
+        this(message, null, null, -1, -1);
     }
 
     /**
@@ -76,9 +90,8 @@ public class ParseException
      * @param e the cause. This can be retrieved later by the <code>Throwable.getCause()</code> method.
      * (A null value is permitted, and indicates that the cause is nonexistent or unknown.)
      */
-    public ParseException( String message, Exception e )
-    {
-        this( message, e, null, -1, -1 );
+    public ParseException(String message, Exception e) {
+        this(message, e, null, -1, -1);
     }
 
     /**
@@ -93,9 +106,8 @@ public class ParseException
      * This can later be retrieved by the getColumnNumber() method.
      * @since 1.1
      */
-    public ParseException( String message, int line, int column )
-    {
-        this( message, null, null, line, column );
+    public ParseException(String message, int line, int column) {
+        this(message, null, null, line, column);
     }
 
     /**
@@ -112,9 +124,8 @@ public class ParseException
      * This can later be retrieved by the getColumnNumber() method.
      * @since 1.1
      */
-    public ParseException( String message, Exception e, int line, int column )
-    {
-        this( message, e, null, line, column );
+    public ParseException(String message, Exception e, int line, int column) {
+        this(message, e, null, line, column);
     }
 
     /**
@@ -129,9 +140,8 @@ public class ParseException
      * This can later be retrieved by the getColumnNumber() method.
      * @since 1.1
      */
-    public ParseException( Exception e, int line, int column )
-    {
-        this( null, e, null, line, column );
+    public ParseException(Exception e, int line, int column) {
+        this(null, e, null, line, column);
     }
 
     /**
@@ -147,9 +157,8 @@ public class ParseException
      * @param column The column number where the parsing failed.
      * This can later be retrieved by the getColumnNumber() method.
      */
-    public ParseException( Exception e, String file, int line, int column )
-    {
-        this( null, e, file, line, column );
+    public ParseException(Exception e, String file, int line, int column) {
+        this(null, e, file, line, column);
     }
 
     /**
@@ -168,9 +177,8 @@ public class ParseException
      *
      * @since 1.1
      */
-    public ParseException( String message, Exception e, String file, int line, int column )
-    {
-        super( message, e );
+    public ParseException(String message, Exception e, String file, int line, int column) {
+        super(message, e);
 
         this.fileName = file;
         this.lineNumber = line;
@@ -182,8 +190,7 @@ public class ParseException
      *
      * @return the file name that caused the <code>ParseException</code>.
      */
-    public String getFileName()
-    {
+    public String getFileName() {
         return fileName;
     }
 
@@ -192,8 +199,7 @@ public class ParseException
      *
      * @return the line number where the <code>ParseException</code> occurred.
      */
-    public int getLineNumber()
-    {
+    public int getLineNumber() {
         return lineNumber;
     }
 
@@ -203,8 +209,7 @@ public class ParseException
      * @return the column number where the <code>ParseException</code> occurred.
      * @since 1.1
      */
-    public int getColumnNumber()
-    {
+    public int getColumnNumber() {
         return columnNumber;
     }
 }

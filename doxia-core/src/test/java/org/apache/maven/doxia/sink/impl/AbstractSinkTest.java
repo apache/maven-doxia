@@ -1,3 +1,21 @@
+/*
+ * Licensed to the Apache Software Foundation (ASF) under one
+ * or more contributor license agreements.  See the NOTICE file
+ * distributed with this work for additional information
+ * regarding copyright ownership.  The ASF licenses this file
+ * to you under the Apache License, Version 2.0 (the
+ * "License"); you may not use this file except in compliance
+ * with the License.  You may obtain a copy of the License at
+ *
+ *   http://www.apache.org/licenses/LICENSE-2.0
+ *
+ * Unless required by applicable law or agreed to in writing,
+ * software distributed under the License is distributed on an
+ * "AS IS" BASIS, WITHOUT WARRANTIES OR CONDITIONS OF ANY
+ * KIND, either express or implied.  See the License for the
+ * specific language governing permissions and limitations
+ * under the License.
+ */
 package org.apache.maven.doxia.sink.impl;
 
 /*
@@ -37,9 +55,7 @@ import static org.xmlunit.matchers.CompareMatcher.isIdenticalTo;
 /**
  * Abstract base class to test sinks.
  */
-public abstract class AbstractSinkTest
-    extends AbstractModuleTest
-{
+public abstract class AbstractSinkTest extends AbstractModuleTest {
     private final CharArrayWriter testWriter = new CharArrayWriter();
     private Sink sink;
 
@@ -47,10 +63,9 @@ public abstract class AbstractSinkTest
      * Resets the writer and creates a new sink with it.
      */
     @BeforeEach
-    protected void setUp()
-    {
+    protected void setUp() {
         testWriter.reset();
-        sink = createSink( testWriter );
+        sink = createSink(testWriter);
     }
 
     /**
@@ -59,8 +74,7 @@ public abstract class AbstractSinkTest
      * @param xmlFragment XML fragment to wrap
      * @return valid XML
      */
-    protected String wrapXml( String xmlFragment )
-    {
+    protected String wrapXml(String xmlFragment) {
         return xmlFragment;
     }
 
@@ -75,19 +89,15 @@ public abstract class AbstractSinkTest
      *   http://www.w3.org/TR/2000/REC-xml-20001006#sec-comments</a>
      * @since 1.7
      */
-    protected static String toXmlComment( final String comment )
-    {
+    protected static String toXmlComment(final String comment) {
         String processed = comment;
 
-        if ( processed != null )
-        {
-            while ( processed.contains( "--" ) )
-            {
-                processed = processed.replace( "--", "- -" );
+        if (processed != null) {
+            while (processed.contains("--")) {
+                processed = processed.replace("--", "- -");
             }
 
-            if ( processed.endsWith( "-" ) )
-            {
+            if (processed.endsWith("-")) {
                 processed += " ";
             }
         }
@@ -111,19 +121,15 @@ public abstract class AbstractSinkTest
      * @see #getXmlTestWriter(String)
      */
     @Test
-    public final void testTestDocument() throws IOException
-    {
-        Writer writer = ( isXmlSink() ? getXmlTestWriter( "testDocument" ) : getTestWriter( "testDocument" ) );
-        Sink testSink = createSink( writer );
+    public final void testTestDocument() throws IOException {
+        Writer writer = (isXmlSink() ? getXmlTestWriter("testDocument") : getTestWriter("testDocument"));
+        Sink testSink = createSink(writer);
 
-        try
-        {
-            SinkTestDocument.generate( testSink );
-        }
-        finally
-        {
+        try {
+            SinkTestDocument.generate(testSink);
+        } finally {
             testSink.close();
-            IOUtil.close( writer );
+            IOUtil.close(writer);
         }
     }
 
@@ -133,19 +139,18 @@ public abstract class AbstractSinkTest
      * {@link #getTitleBlock getTitleBlock}( title ).
      */
     @Test
-    public void testTitle()
-    {
+    public void testTitle() {
         String title = "Grodek";
         sink.title();
-        sink.text( title );
+        sink.text(title);
         sink.title_();
         sink.flush();
         sink.close();
 
         String actual = testWriter.toString();
-        String expected = getTitleBlock( title );
+        String expected = getTitleBlock(title);
 
-        assertEquals( expected, actual, "Wrong title!" );
+        assertEquals(expected, actual, "Wrong title!");
     }
 
     /**
@@ -154,19 +159,18 @@ public abstract class AbstractSinkTest
      * {@link #getAuthorBlock getAuthorBlock}( author ).
      */
     @Test
-    public void testAuthor()
-    {
+    public void testAuthor() {
         String author = "Georg_Trakl";
         sink.author();
-        sink.text( author );
+        sink.text(author);
         sink.author_();
         sink.flush();
         sink.close();
 
         String actual = testWriter.toString();
-        String expected = getAuthorBlock( author );
+        String expected = getAuthorBlock(author);
 
-        assertEquals( expected, actual, "Wrong author!" );
+        assertEquals(expected, actual, "Wrong author!");
     }
 
     /**
@@ -175,19 +179,18 @@ public abstract class AbstractSinkTest
      * {@link #getDateBlock getDateBlock}( date ).
      */
     @Test
-    public void testDate()
-    {
+    public void testDate() {
         String date = "1914";
         sink.date();
-        sink.text( date );
+        sink.text(date);
         sink.date_();
         sink.flush();
         sink.close();
 
         String actual = testWriter.toString();
-        String expected = getDateBlock( date );
+        String expected = getDateBlock(date);
 
-        assertEquals( expected, actual, "Wrong date!" );
+        assertEquals(expected, actual, "Wrong date!");
     }
 
     /**
@@ -196,17 +199,16 @@ public abstract class AbstractSinkTest
      * {@link #getHeadBlock getHeadBlock()}.
      */
     @Test
-    public void testHead()
-    {
+    public void testHead() {
         sink.head();
         sink.head_();
         sink.flush();
         sink.close();
 
-        String actual = normalizeLineEnds( testWriter.toString() );
-        String expected = normalizeLineEnds( getHeadBlock() );
+        String actual = normalizeLineEnds(testWriter.toString());
+        String expected = normalizeLineEnds(getHeadBlock());
 
-        assertEquals( expected, actual, "Wrong head!" );
+        assertEquals(expected, actual, "Wrong head!");
     }
 
     /**
@@ -215,8 +217,7 @@ public abstract class AbstractSinkTest
      * {@link #getBodyBlock getBodyBlock()}.
      */
     @Test
-    public void testBody()
-    {
+    public void testBody() {
         sink.body();
         sink.body_();
         sink.flush();
@@ -225,7 +226,7 @@ public abstract class AbstractSinkTest
         String actual = testWriter.toString();
         String expected = getBodyBlock();
 
-        assertEquals( expected, actual, "Wrong body!" );
+        assertEquals(expected, actual, "Wrong body!");
     }
 
     /**
@@ -234,8 +235,7 @@ public abstract class AbstractSinkTest
      * {@link #getArticleBlock getArticleBlock()}.
      */
     @Test
-    public void testArticle()
-    {
+    public void testArticle() {
         sink.article();
         sink.article_();
         sink.flush();
@@ -244,7 +244,7 @@ public abstract class AbstractSinkTest
         String actual = testWriter.toString();
         String expected = getArticleBlock();
 
-        assertEquals( expected, actual, "Wrong article!" );
+        assertEquals(expected, actual, "Wrong article!");
     }
 
     /**
@@ -253,8 +253,7 @@ public abstract class AbstractSinkTest
      * {@link #getNavigationBlock getNavigationBlock()}.
      */
     @Test
-    public void testNavigation()
-    {
+    public void testNavigation() {
         sink.navigation();
         sink.navigation_();
         sink.flush();
@@ -263,7 +262,7 @@ public abstract class AbstractSinkTest
         String actual = testWriter.toString();
         String expected = getNavigationBlock();
 
-        assertEquals( expected, actual, "Wrong navigation!" );
+        assertEquals(expected, actual, "Wrong navigation!");
     }
 
     /**
@@ -272,8 +271,7 @@ public abstract class AbstractSinkTest
      * {@link #getSidebarBlock getSidebarBlock()}.
      */
     @Test
-    public void testSidebar()
-    {
+    public void testSidebar() {
         sink.sidebar();
         sink.sidebar_();
         sink.flush();
@@ -282,7 +280,7 @@ public abstract class AbstractSinkTest
         String actual = testWriter.toString();
         String expected = getSidebarBlock();
 
-        assertEquals( expected, actual, "Wrong sidebar!" );
+        assertEquals(expected, actual, "Wrong sidebar!");
     }
 
     /**
@@ -292,19 +290,18 @@ public abstract class AbstractSinkTest
      * {@link #getSectionTitleBlock getSectionTitleBlock}( title ).
      */
     @Test
-    public void testSectionTitle()
-    {
+    public void testSectionTitle() {
         String title = "Title";
         sink.sectionTitle();
-        sink.text( title );
+        sink.text(title);
         sink.sectionTitle_();
         sink.flush();
         sink.close();
 
         String actual = testWriter.toString();
-        String expected = getSectionTitleBlock( title );
+        String expected = getSectionTitleBlock(title);
 
-        assertEquals( expected, actual, "Wrong sectionTitle!" );
+        assertEquals(expected, actual, "Wrong sectionTitle!");
     }
 
     /**
@@ -314,13 +311,12 @@ public abstract class AbstractSinkTest
      * {@link #getSection1Block getSection1Block}( title ).
      */
     @Test
-    public void testSection1()
-    {
+    public void testSection1() {
         String title = "Title1";
         sink.section1();
         sink.header();
         sink.sectionTitle1();
-        sink.text( title );
+        sink.text(title);
         sink.sectionTitle1_();
         sink.header_();
         sink.section1_();
@@ -328,9 +324,9 @@ public abstract class AbstractSinkTest
         sink.close();
 
         String actual = testWriter.toString();
-        String expected = getSection1Block( title );
+        String expected = getSection1Block(title);
 
-        assertEquals( expected, actual, "Wrong section1 block!" );
+        assertEquals(expected, actual, "Wrong section1 block!");
     }
 
     /**
@@ -340,13 +336,12 @@ public abstract class AbstractSinkTest
      * {@link #getSection2Block getSection2Block}( title ).
      */
     @Test
-    public void testSection2()
-    {
+    public void testSection2() {
         String title = "Title2";
         sink.section2();
         sink.header();
         sink.sectionTitle2();
-        sink.text( title );
+        sink.text(title);
         sink.sectionTitle2_();
         sink.header_();
         sink.section2_();
@@ -354,9 +349,9 @@ public abstract class AbstractSinkTest
         sink.close();
 
         String actual = testWriter.toString();
-        String expected = getSection2Block( title );
+        String expected = getSection2Block(title);
 
-        assertEquals( expected, actual, "Wrong section2 block!" );
+        assertEquals(expected, actual, "Wrong section2 block!");
     }
 
     /**
@@ -366,13 +361,12 @@ public abstract class AbstractSinkTest
      * {@link #getSection3Block getSection3Block}( title ).
      */
     @Test
-    public void testSection3()
-    {
+    public void testSection3() {
         String title = "Title3";
         sink.section3();
         sink.header();
         sink.sectionTitle3();
-        sink.text( title );
+        sink.text(title);
         sink.sectionTitle3_();
         sink.header_();
         sink.section3_();
@@ -380,9 +374,9 @@ public abstract class AbstractSinkTest
         sink.close();
 
         String actual = testWriter.toString();
-        String expected = getSection3Block( title );
+        String expected = getSection3Block(title);
 
-        assertEquals( expected, actual, "Wrong section3 block!" );
+        assertEquals(expected, actual, "Wrong section3 block!");
     }
 
     /**
@@ -393,13 +387,12 @@ public abstract class AbstractSinkTest
      *
      */
     @Test
-    public void testSection4()
-    {
+    public void testSection4() {
         String title = "Title4";
         sink.section4();
         sink.header();
         sink.sectionTitle4();
-        sink.text( title );
+        sink.text(title);
         sink.sectionTitle4_();
         sink.header_();
         sink.section4_();
@@ -407,9 +400,9 @@ public abstract class AbstractSinkTest
         sink.close();
 
         String actual = testWriter.toString();
-        String expected = getSection4Block( title );
+        String expected = getSection4Block(title);
 
-        assertEquals( expected, actual, "Wrong section4 block!" );
+        assertEquals(expected, actual, "Wrong section4 block!");
     }
 
     /**
@@ -419,13 +412,12 @@ public abstract class AbstractSinkTest
      * {@link #getSection5Block getSection5Block}( title ).
      */
     @Test
-    public void testSection5()
-    {
+    public void testSection5() {
         String title = "Title5";
         sink.section5();
         sink.header();
         sink.sectionTitle5();
-        sink.text( title );
+        sink.text(title);
         sink.sectionTitle5_();
         sink.header_();
         sink.section5_();
@@ -433,9 +425,9 @@ public abstract class AbstractSinkTest
         sink.close();
 
         String actual = testWriter.toString();
-        String expected = getSection5Block( title );
+        String expected = getSection5Block(title);
 
-        assertEquals( expected, actual, "Wrong section5 block!" );
+        assertEquals(expected, actual, "Wrong section5 block!");
     }
 
     /**
@@ -444,8 +436,7 @@ public abstract class AbstractSinkTest
      * {@link #getHeaderBlock getHeaderBlock()}.
      */
     @Test
-    public void testHeader()
-    {
+    public void testHeader() {
         sink.header();
         sink.header_();
         sink.flush();
@@ -454,7 +445,7 @@ public abstract class AbstractSinkTest
         String actual = testWriter.toString();
         String expected = getHeaderBlock();
 
-        assertEquals( expected, actual, "Wrong header!" );
+        assertEquals(expected, actual, "Wrong header!");
     }
 
     /**
@@ -463,8 +454,7 @@ public abstract class AbstractSinkTest
      * {@link #getContentBlock getContentBlock()}.
      */
     @Test
-    public void testContent()
-    {
+    public void testContent() {
         sink.content();
         sink.content();
         sink.content_();
@@ -475,7 +465,7 @@ public abstract class AbstractSinkTest
         String actual = testWriter.toString();
         String expected = getContentBlock();
 
-        assertEquals( expected, actual, "Wrong content!" );
+        assertEquals(expected, actual, "Wrong content!");
     }
 
     /**
@@ -484,8 +474,7 @@ public abstract class AbstractSinkTest
      * {@link #getHeaderBlock getHeaderBlock()}.
      */
     @Test
-    public void testFooter()
-    {
+    public void testFooter() {
         sink.footer();
         sink.footer_();
         sink.flush();
@@ -494,7 +483,7 @@ public abstract class AbstractSinkTest
         String actual = testWriter.toString();
         String expected = getFooterBlock();
 
-        assertEquals( expected, actual, "Wrong footer!" );
+        assertEquals(expected, actual, "Wrong footer!");
     }
 
     /**
@@ -504,21 +493,20 @@ public abstract class AbstractSinkTest
      *
      */
     @Test
-    public void testList()
-    {
+    public void testList() {
         String item = "list_item";
         sink.list();
         sink.listItem();
-        sink.text( item );
+        sink.text(item);
         sink.listItem_();
         sink.list_();
         sink.flush();
         sink.close();
 
         String actual = testWriter.toString();
-        String expected = getListBlock( item );
+        String expected = getListBlock(item);
 
-        assertEquals( expected, actual, "Wrong list!" );
+        assertEquals(expected, actual, "Wrong list!");
     }
 
     /**
@@ -529,21 +517,20 @@ public abstract class AbstractSinkTest
      * {@link #getNumberedListBlock getNumberedListBlock}( item ).
      */
     @Test
-    public void testNumberedList()
-    {
+    public void testNumberedList() {
         String item = "numbered_list_item";
-        sink.numberedList( Sink.NUMBERING_LOWER_ROMAN );
+        sink.numberedList(Sink.NUMBERING_LOWER_ROMAN);
         sink.numberedListItem();
-        sink.text( item );
+        sink.text(item);
         sink.numberedListItem_();
         sink.numberedList_();
         sink.flush();
         sink.close();
 
         String actual = testWriter.toString();
-        String expected = getNumberedListBlock( item );
+        String expected = getNumberedListBlock(item);
 
-        assertEquals( expected, actual, "Wrong numbered list!" );
+        assertEquals(expected, actual, "Wrong numbered list!");
     }
 
     /**
@@ -555,17 +542,16 @@ public abstract class AbstractSinkTest
      * ( definum, definition ).
      */
     @Test
-    public void testDefinitionList()
-    {
+    public void testDefinitionList() {
         String definum = "definum";
         String definition = "definition";
         sink.definitionList();
         sink.definitionListItem();
         sink.definedTerm();
-        sink.text( definum );
+        sink.text(definum);
         sink.definedTerm_();
         sink.definition();
-        sink.text( definition );
+        sink.text(definition);
         sink.definition_();
         sink.definitionListItem_();
         sink.definitionList_();
@@ -573,9 +559,9 @@ public abstract class AbstractSinkTest
         sink.close();
 
         String actual = testWriter.toString();
-        String expected = getDefinitionListBlock( definum, definition );
+        String expected = getDefinitionListBlock(definum, definition);
 
-        assertEquals( expected, actual, "Wrong definition list!" );
+        assertEquals(expected, actual, "Wrong definition list!");
     }
 
     /**
@@ -585,75 +571,63 @@ public abstract class AbstractSinkTest
      * {@link #getFigureBlock getFigureBlock}( source, caption ).
      */
     @Test
-    public void testFigure()
-    {
+    public void testFigure() {
         String source = "figure.jpg";
         String caption = "Figure_caption";
         sink.figure();
-        sink.figureGraphics( source );
+        sink.figureGraphics(source);
         sink.figureCaption();
-        sink.text( caption );
+        sink.text(caption);
         sink.figureCaption_();
         sink.figure_();
         sink.flush();
         sink.close();
 
         String actual = testWriter.toString();
-        String expected = getFigureBlock( source, caption );
+        String expected = getFigureBlock(source, caption);
 
-        if ( isXmlSink() )
-        {
-            assertThat ( wrapXml( actual ), isIdenticalTo( wrapXml( expected ) ));
-        }
-        else
-        {
-            assertEquals( actual, expected );
+        if (isXmlSink()) {
+            assertThat(wrapXml(actual), isIdenticalTo(wrapXml(expected)));
+        } else {
+            assertEquals(actual, expected);
         }
     }
 
-
     @Test
-    public void testFigureWithoutCaption()
-    {
+    public void testFigureWithoutCaption() {
         String source = "figure.jpg";
         sink.figure();
-        sink.figureGraphics( source );
+        sink.figureGraphics(source);
         sink.figure_();
         sink.flush();
         sink.close();
 
         String actual = testWriter.toString();
-        String expected = getFigureBlock( source, null );
+        String expected = getFigureBlock(source, null);
 
-        if ( isXmlSink() )
-        {
-            assertThat ( wrapXml( actual ), isIdenticalTo( wrapXml( expected ) ));
-        }
-        else
-        {
-            assertEquals( actual, expected );
+        if (isXmlSink()) {
+            assertThat(wrapXml(actual), isIdenticalTo(wrapXml(expected)));
+        } else {
+            assertEquals(actual, expected);
         }
     }
+
     @Test
-    public void testFigureFromUrl()
-    {
+    public void testFigureFromUrl() {
         String source = "http://www.gravatar.com/avatar/cdbe99fe3d6af6a18dd8c35b0687a50b?d=mm&s=60";
         sink.figure();
-        sink.figureGraphics( source );
+        sink.figureGraphics(source);
         sink.figure_();
         sink.flush();
         sink.close();
 
         String actual = testWriter.toString();
-        String expected = getFigureBlock( source, null );
+        String expected = getFigureBlock(source, null);
 
-        if ( isXmlSink() )
-        {
-            assertThat ( wrapXml( actual ), isIdenticalTo( wrapXml( expected ) ));
-        }
-        else
-        {
-            assertEquals( actual, expected );
+        if (isXmlSink()) {
+            assertThat(wrapXml(actual), isIdenticalTo(wrapXml(expected)));
+        } else {
+            assertEquals(actual, expected);
         }
     }
 
@@ -666,36 +640,32 @@ public abstract class AbstractSinkTest
      * {@link #getTableBlock getTableBlock}( cell, caption ).
      */
     @Test
-    public void testTable()
-    {
+    public void testTable() {
         String cell = "cell";
         String caption = "Table_caption";
-        int[] justify = { Sink.JUSTIFY_CENTER };
+        int[] justify = {Sink.JUSTIFY_CENTER};
         sink.table();
-        sink.tableRows( justify, false );
+        sink.tableRows(justify, false);
         sink.tableRow();
         sink.tableCell();
-        sink.text( cell );
+        sink.text(cell);
         sink.tableCell_();
         sink.tableRow_();
         sink.tableRows_();
         sink.tableCaption();
-        sink.text( caption );
+        sink.text(caption);
         sink.tableCaption_();
         sink.table_();
         sink.flush();
         sink.close();
 
         String actual = testWriter.toString();
-        String expected = getTableBlock( cell, caption );
+        String expected = getTableBlock(cell, caption);
 
-        if ( isXmlSink() )
-        {
-            assertThat ( wrapXml( actual ), isIdenticalTo( wrapXml( expected ) ));
-        }
-        else
-        {
-            assertEquals( actual, expected );
+        if (isXmlSink()) {
+            assertThat(wrapXml(actual), isIdenticalTo(wrapXml(expected)));
+        } else {
+            assertEquals(actual, expected);
         }
     }
 
@@ -705,19 +675,18 @@ public abstract class AbstractSinkTest
      * the same result as {@link #getParagraphBlock getParagraphBlock}( text ).
      */
     @Test
-    public void testParagraph()
-    {
+    public void testParagraph() {
         String text = "Text";
         sink.paragraph();
-        sink.text( text );
+        sink.text(text);
         sink.paragraph_();
         sink.flush();
         sink.close();
 
         String actual = testWriter.toString();
-        String expected = getParagraphBlock( text );
+        String expected = getParagraphBlock(text);
 
-        assertEquals( expected, actual, "Wrong paragraph!" );
+        assertEquals(expected, actual, "Wrong paragraph!");
     }
 
     /**
@@ -726,20 +695,19 @@ public abstract class AbstractSinkTest
      * the same result as {@link #getDataBlock getDataBlock}( text ).
      */
     @Test
-    public void testData()
-    {
+    public void testData() {
         String value = "Value";
         String text = "Text";
-        sink.data( value );
-        sink.text( text );
+        sink.data(value);
+        sink.text(text);
         sink.data_();
         sink.flush();
         sink.close();
 
         String actual = testWriter.toString();
-        String expected = getDataBlock( value, text );
+        String expected = getDataBlock(value, text);
 
-        assertEquals( expected, actual, "Wrong data!" );
+        assertEquals(expected, actual, "Wrong data!");
     }
 
     /**
@@ -748,20 +716,19 @@ public abstract class AbstractSinkTest
      * the same result as {@link #getTimeBlock getTimeBlock}( text ).
      */
     @Test
-    public void testTime()
-    {
+    public void testTime() {
         String datetime = "DateTime";
         String text = "Text";
-        sink.time( datetime );
-        sink.text( text );
+        sink.time(datetime);
+        sink.text(text);
         sink.time_();
         sink.flush();
         sink.close();
 
         String actual = testWriter.toString();
-        String expected = getTimeBlock( datetime, text );
+        String expected = getTimeBlock(datetime, text);
 
-        assertEquals( expected, actual, "Wrong time!" );
+        assertEquals(expected, actual, "Wrong time!");
     }
 
     /**
@@ -770,19 +737,18 @@ public abstract class AbstractSinkTest
      * the same result as {@link #getAddressBlock getAddressBlock}( text ).
      */
     @Test
-    public void testAddress()
-    {
+    public void testAddress() {
         String text = "Text";
         sink.address();
-        sink.text( text );
+        sink.text(text);
         sink.address_();
         sink.flush();
         sink.close();
 
         String actual = testWriter.toString();
-        String expected = getAddressBlock( text );
+        String expected = getAddressBlock(text);
 
-        assertEquals( expected, actual, "Wrong address!" );
+        assertEquals(expected, actual, "Wrong address!");
     }
 
     /**
@@ -791,19 +757,18 @@ public abstract class AbstractSinkTest
      * the same result as {@link #getBlockquoteBlock}( text ).
      */
     @Test
-    public void testBlockquote()
-    {
+    public void testBlockquote() {
         String text = "Text";
         sink.blockquote();
-        sink.text( text );
+        sink.text(text);
         sink.blockquote_();
         sink.flush();
         sink.close();
 
         String actual = testWriter.toString();
-        String expected = getBlockquoteBlock( text );
+        String expected = getBlockquoteBlock(text);
 
-        assertEquals( expected, actual, "Wrong blockquote!" );
+        assertEquals(expected, actual, "Wrong blockquote!");
     }
 
     /**
@@ -812,19 +777,18 @@ public abstract class AbstractSinkTest
      * the same result as {@link #getDivisionBlock getDivisionBlock}( text ).
      */
     @Test
-    public void testDivider()
-    {
+    public void testDivider() {
         String text = "Text";
         sink.division();
-        sink.text( text );
+        sink.text(text);
         sink.division_();
         sink.flush();
         sink.close();
 
         String actual = testWriter.toString();
-        String expected = getDivisionBlock( text );
+        String expected = getDivisionBlock(text);
 
-        assertEquals( expected, actual, "Wrong division!" );
+        assertEquals(expected, actual, "Wrong division!");
     }
 
     /**
@@ -833,19 +797,18 @@ public abstract class AbstractSinkTest
      * same result as {@link #getVerbatimBlock getVerbatimBlock}( text ).
      */
     @Test
-    public void testVerbatim()
-    {
+    public void testVerbatim() {
         String text = "Text";
-        sink.verbatim( SinkEventAttributeSet.BOXED );
-        sink.text( text );
+        sink.verbatim(SinkEventAttributeSet.BOXED);
+        sink.text(text);
         sink.verbatim_();
         sink.flush();
         sink.close();
 
         String actual = testWriter.toString();
-        String expected = getVerbatimBlock( text );
+        String expected = getVerbatimBlock(text);
 
-        assertEquals( expected, actual, "Wrong verbatim!" );
+        assertEquals(expected, actual, "Wrong verbatim!");
     }
 
     /**
@@ -854,8 +817,7 @@ public abstract class AbstractSinkTest
      * {@link #getHorizontalRuleBlock getHorizontalRuleBlock()}.
      */
     @Test
-    public void testHorizontalRule()
-    {
+    public void testHorizontalRule() {
         sink.horizontalRule();
         sink.flush();
         sink.close();
@@ -863,7 +825,7 @@ public abstract class AbstractSinkTest
         String actual = testWriter.toString();
         String expected = getHorizontalRuleBlock();
 
-        assertEquals( expected, actual, "Wrong horizontal rule!" );
+        assertEquals(expected, actual, "Wrong horizontal rule!");
     }
 
     /**
@@ -872,8 +834,7 @@ public abstract class AbstractSinkTest
      * {@link #getPageBreakBlock getPageBreakBlock()}.
      */
     @Test
-    public void testPageBreak()
-    {
+    public void testPageBreak() {
         sink.pageBreak();
         sink.flush();
         sink.close();
@@ -881,7 +842,7 @@ public abstract class AbstractSinkTest
         String actual = testWriter.toString();
         String expected = getPageBreakBlock();
 
-        assertEquals( expected, actual, "Wrong pageBreak!" );
+        assertEquals(expected, actual, "Wrong pageBreak!");
     }
 
     /**
@@ -890,19 +851,18 @@ public abstract class AbstractSinkTest
      * result as {@link #getAnchorBlock getAnchorBlock}( anchor ).
      */
     @Test
-    public void testAnchor()
-    {
+    public void testAnchor() {
         String anchor = "Anchor";
-        sink.anchor( anchor );
-        sink.text( anchor );
+        sink.anchor(anchor);
+        sink.text(anchor);
         sink.anchor_();
         sink.flush();
         sink.close();
 
         String actual = testWriter.toString();
-        String expected = getAnchorBlock( anchor );
+        String expected = getAnchorBlock(anchor);
 
-        assertEquals( expected, actual, "Wrong anchor!" );
+        assertEquals(expected, actual, "Wrong anchor!");
     }
 
     /**
@@ -911,20 +871,19 @@ public abstract class AbstractSinkTest
      * result as {@link #getLinkBlock getLinkBlock}( link, text ).
      */
     @Test
-    public void testLink()
-    {
+    public void testLink() {
         String link = "#Link";
         String text = "Text";
-        sink.link( link );
-        sink.text( text );
+        sink.link(link);
+        sink.text(text);
         sink.link_();
         sink.flush();
         sink.close();
 
         String actual = testWriter.toString();
-        String expected = getLinkBlock( link, text );
+        String expected = getLinkBlock(link, text);
 
-        assertEquals( expected, actual, "Wrong link!" );
+        assertEquals(expected, actual, "Wrong link!");
     }
 
     /**
@@ -933,19 +892,18 @@ public abstract class AbstractSinkTest
      * {@link #getInlineBlock getInlineBlock}( text ).
      */
     @Test
-    public void testInline()
-    {
+    public void testInline() {
         String text = "Inline";
         sink.inline();
-        sink.text( text );
+        sink.text(text);
         sink.inline_();
         sink.flush();
         sink.close();
 
         String actual = testWriter.toString();
-        String expected = getInlineBlock( text );
+        String expected = getInlineBlock(text);
 
-        assertEquals( expected, actual, "Wrong inline!" );
+        assertEquals(expected, actual, "Wrong inline!");
     }
 
     /**
@@ -954,19 +912,18 @@ public abstract class AbstractSinkTest
      * {@link #getInlineBoldBlock getInlineBoldBlock}( text ).
      */
     @Test
-    public void testInlineBold()
-    {
+    public void testInlineBold() {
         String text = "InlineBold";
-        sink.inline( SinkEventAttributeSet.Semantics.BOLD );
-        sink.text( text );
+        sink.inline(SinkEventAttributeSet.Semantics.BOLD);
+        sink.text(text);
         sink.inline_();
         sink.flush();
         sink.close();
 
         String actual = testWriter.toString();
-        String expected = getInlineBoldBlock( text );
+        String expected = getInlineBoldBlock(text);
 
-        assertEquals( expected, actual, "Wrong inline bold!" );
+        assertEquals(expected, actual, "Wrong inline bold!");
     }
 
     /**
@@ -975,19 +932,18 @@ public abstract class AbstractSinkTest
      * {@link #getInlineBoldBlock getInlineBoldBlock}( text ).
      */
     @Test
-    public void testInlineItalic()
-    {
+    public void testInlineItalic() {
         String text = "InlineItalic";
-        sink.inline( SinkEventAttributeSet.Semantics.ITALIC );
-        sink.text( text );
+        sink.inline(SinkEventAttributeSet.Semantics.ITALIC);
+        sink.text(text);
         sink.inline_();
         sink.flush();
         sink.close();
 
         String actual = testWriter.toString();
-        String expected = getInlineItalicBlock( text );
+        String expected = getInlineItalicBlock(text);
 
-        assertEquals( expected, actual, "Wrong inline italic!" );
+        assertEquals(expected, actual, "Wrong inline italic!");
     }
 
     /**
@@ -996,19 +952,18 @@ public abstract class AbstractSinkTest
      * {@link #getInlineBoldBlock getInlineBoldBlock}( text ).
      */
     @Test
-    public void testInlineCode()
-    {
+    public void testInlineCode() {
         String text = "InlineCode";
-        sink.inline( SinkEventAttributeSet.Semantics.CODE );
-        sink.text( text );
+        sink.inline(SinkEventAttributeSet.Semantics.CODE);
+        sink.text(text);
         sink.inline_();
         sink.flush();
         sink.close();
 
         String actual = testWriter.toString();
-        String expected = getInlineCodeBlock( text );
+        String expected = getInlineCodeBlock(text);
 
-        assertEquals( expected, actual, "Wrong inline code!" );
+        assertEquals(expected, actual, "Wrong inline code!");
     }
 
     /**
@@ -1017,8 +972,7 @@ public abstract class AbstractSinkTest
      * {@link #getLineBreakBlock getLineBreakBlock()}.
      */
     @Test
-    public void testLineBreak()
-    {
+    public void testLineBreak() {
         sink.lineBreak();
         sink.flush();
         sink.close();
@@ -1026,7 +980,7 @@ public abstract class AbstractSinkTest
         String actual = testWriter.toString();
         String expected = getLineBreakBlock();
 
-        assertEquals( expected, actual, "Wrong lineBreak!" );
+        assertEquals(expected, actual, "Wrong lineBreak!");
     }
 
     /**
@@ -1035,8 +989,7 @@ public abstract class AbstractSinkTest
      * {@link #getLineBreakOpportunityBlock getLineBreakOpportunityBlock()}.
      */
     @Test
-    public void testLineBreakOpportunity()
-    {
+    public void testLineBreakOpportunity() {
         sink.lineBreakOpportunity();
         sink.flush();
         sink.close();
@@ -1044,7 +997,7 @@ public abstract class AbstractSinkTest
         String actual = testWriter.toString();
         String expected = getLineBreakOpportunityBlock();
 
-        assertEquals( expected, actual, "Wrong lineBreakOpportunity!" );
+        assertEquals(expected, actual, "Wrong lineBreakOpportunity!");
     }
 
     /**
@@ -1053,8 +1006,7 @@ public abstract class AbstractSinkTest
      * {@link #getNonBreakingSpaceBlock getNonBreakingSpaceBlock()}.
      */
     @Test
-    public void testNonBreakingSpace()
-    {
+    public void testNonBreakingSpace() {
         sink.nonBreakingSpace();
         sink.flush();
         sink.close();
@@ -1062,7 +1014,7 @@ public abstract class AbstractSinkTest
         String actual = testWriter.toString();
         String expected = getNonBreakingSpaceBlock();
 
-        assertEquals( expected, actual, "Wrong nonBreakingSpace!" );
+        assertEquals(expected, actual, "Wrong nonBreakingSpace!");
     }
 
     /**
@@ -1071,17 +1023,16 @@ public abstract class AbstractSinkTest
      * {@link #getTextBlock getTextBlock()}.
      */
     @Test
-    public void testText()
-    {
+    public void testText() {
         String text = "~,_=,_-,_+,_*,_[,_],_<,_>,_{,_},_\\";
-        sink.text( text );
+        sink.text(text);
         sink.flush();
         sink.close();
 
         String actual = testWriter.toString();
-        String expected = getTextBlock( text );
+        String expected = getTextBlock(text);
 
-        assertEquals( expected, actual, "Wrong text!" );
+        assertEquals(expected, actual, "Wrong text!");
     }
 
     /**
@@ -1090,17 +1041,16 @@ public abstract class AbstractSinkTest
      * {@link #getRawTextBlock getRawTextBlock}( text ).
      */
     @Test
-    public void testRawText()
-    {
+    public void testRawText() {
         String text = "~,_=,_-,_+,_*,_[,_],_<,_>,_{,_},_\\";
-        sink.rawText( text );
+        sink.rawText(text);
         sink.flush();
         sink.close();
 
         String actual = testWriter.toString();
-        String expected = getRawTextBlock( text );
+        String expected = getRawTextBlock(text);
 
-        assertEquals( expected, actual, "Wrong rawText!" );
+        assertEquals(expected, actual, "Wrong rawText!");
     }
 
     /**
@@ -1110,30 +1060,29 @@ public abstract class AbstractSinkTest
      * @since 1.1.1
      */
     @Test
-    public void testComment()
-    {
+    public void testComment() {
         String comment = "Simple comment with ----";
-        sink.comment( comment );
+        sink.comment(comment);
         sink.flush();
         sink.close();
 
         String actual = testWriter.toString();
-        String expected = getCommentBlock( comment );
+        String expected = getCommentBlock(comment);
 
-        assertEquals( expected, actual, "Wrong comment!" );
+        assertEquals(expected, actual, "Wrong comment!");
 
         testWriter.reset();
-        sink = createSink( testWriter );
+        sink = createSink(testWriter);
 
         comment = "-";
-        sink.comment( comment );
+        sink.comment(comment);
         sink.flush();
         sink.close();
 
         actual = testWriter.toString();
-        expected = getCommentBlock( comment );
+        expected = getCommentBlock(comment);
 
-        assertEquals( expected, actual, "Wrong comment!" );
+        assertEquals(expected, actual, "Wrong comment!");
     }
 
     // ----------------------------------------------------------------------
@@ -1144,8 +1093,7 @@ public abstract class AbstractSinkTest
      * Returns the sink that is currently being tested.
      * @return The current test sink.
      */
-    protected Sink getSink()
-    {
+    protected Sink getSink() {
         return sink;
     }
 
@@ -1153,8 +1101,7 @@ public abstract class AbstractSinkTest
      * Returns a String representation of all events that have been written to the sink.
      * @return The Sink content as a String.
      */
-    protected String getSinkContent()
-    {
+    protected String getSinkContent() {
         return testWriter.toString();
     }
 
@@ -1162,8 +1109,7 @@ public abstract class AbstractSinkTest
      * Returns the directory where all sink test output will go.
      * @return The test output directory.
      */
-    protected String getOutputDir()
-    {
+    protected String getOutputDir() {
         return "sink/";
     }
 
@@ -1184,7 +1130,7 @@ public abstract class AbstractSinkTest
      * @param writer The writer for the sink.
      * @return A new sink.
      */
-    protected abstract Sink createSink( Writer writer );
+    protected abstract Sink createSink(Writer writer);
 
     /**
      * Returns a title block generated by this sink.
@@ -1192,7 +1138,7 @@ public abstract class AbstractSinkTest
      * @return The result of invoking a title block on the current sink.
      * @see #testTitle()
      */
-    protected abstract String getTitleBlock( String title );
+    protected abstract String getTitleBlock(String title);
 
     /**
      * Returns an author block generated by this sink.
@@ -1200,7 +1146,7 @@ public abstract class AbstractSinkTest
      * @return The result of invoking an author block on the current sink.
      * @see #testAuthor()
      */
-    protected abstract String getAuthorBlock( String author );
+    protected abstract String getAuthorBlock(String author);
 
     /**
      * Returns a date block generated by this sink.
@@ -1208,7 +1154,7 @@ public abstract class AbstractSinkTest
      * @return The result of invoking a date block on the current sink.
      * @see #testDate()
      */
-    protected abstract String getDateBlock( String date );
+    protected abstract String getDateBlock(String date);
 
     /**
      * Returns a head block generated by this sink.
@@ -1251,7 +1197,7 @@ public abstract class AbstractSinkTest
      * @return The result of invoking a SectionTitle block on the current sink.
      * @see #testSectionTitle()
      */
-    protected abstract String getSectionTitleBlock( String title );
+    protected abstract String getSectionTitleBlock(String title);
 
     /**
      * Returns a Section1 block generated by this sink.
@@ -1259,7 +1205,7 @@ public abstract class AbstractSinkTest
      * @return The result of invoking a Section1 block on the current sink.
      * @see #testSection1()
      */
-    protected abstract String getSection1Block( String title );
+    protected abstract String getSection1Block(String title);
 
     /**
      * Returns a Section2 block generated by this sink.
@@ -1267,7 +1213,7 @@ public abstract class AbstractSinkTest
      * @return The result of invoking a Section2 block on the current sink.
      * @see #testSection2()
      */
-    protected abstract String getSection2Block( String title );
+    protected abstract String getSection2Block(String title);
 
     /**
      * Returns a Section3 block generated by this sink.
@@ -1275,7 +1221,7 @@ public abstract class AbstractSinkTest
      * @return The result of invoking a Section3 block on the current sink.
      * @see #testSection3()
      */
-    protected abstract String getSection3Block( String title );
+    protected abstract String getSection3Block(String title);
 
     /**
      * Returns a Section4 block generated by this sink.
@@ -1283,7 +1229,7 @@ public abstract class AbstractSinkTest
      * @return The result of invoking a Section4 block on the current sink.
      * @see #testSection4()
      */
-    protected abstract String getSection4Block( String title );
+    protected abstract String getSection4Block(String title);
 
     /**
      * Returns a Section5 block generated by this sink.
@@ -1291,7 +1237,7 @@ public abstract class AbstractSinkTest
      * @return The result of invoking a Section5 block on the current sink.
      * @see #testSection5()
      */
-    protected abstract String getSection5Block( String title );
+    protected abstract String getSection5Block(String title);
 
     /**
      * Returns a header block generated by this sink.
@@ -1320,7 +1266,7 @@ public abstract class AbstractSinkTest
      * @return The result of invoking a list block on the current sink.
      * @see #testList()
      */
-    protected abstract String getListBlock( String item );
+    protected abstract String getListBlock(String item);
 
     /**
      * Returns a NumberedList block generated by this sink.
@@ -1328,7 +1274,7 @@ public abstract class AbstractSinkTest
      * @return The result of invoking a NumberedList block on the current sink.
      * @see #testNumberedList()
      */
-    protected abstract String getNumberedListBlock( String item );
+    protected abstract String getNumberedListBlock(String item);
 
     /**
      * Returns a DefinitionList block generated by this sink.
@@ -1337,8 +1283,7 @@ public abstract class AbstractSinkTest
      * @return The result of invoking a DefinitionList block on the current sink.
      * @see #testDefinitionList()
      */
-    protected abstract String getDefinitionListBlock( String definum,
-        String definition );
+    protected abstract String getDefinitionListBlock(String definum, String definition);
 
     /**
      * Returns a Figure block generated by this sink.
@@ -1347,7 +1292,7 @@ public abstract class AbstractSinkTest
      * @return The result of invoking a Figure block on the current sink.
      * @see #testFigure()
      */
-    protected abstract String getFigureBlock( String source, String caption );
+    protected abstract String getFigureBlock(String source, String caption);
 
     /**
      * Returns a Table block generated by this sink.
@@ -1356,7 +1301,7 @@ public abstract class AbstractSinkTest
      * @return The result of invoking a Table block on the current sink.
      * @see #testTable()
      */
-    protected abstract String getTableBlock( String cell, String caption );
+    protected abstract String getTableBlock(String cell, String caption);
 
     /**
      * Returns a Paragraph block generated by this sink.
@@ -1364,7 +1309,7 @@ public abstract class AbstractSinkTest
      * @return The result of invoking a Paragraph block on the current sink.
      * @see #testParagraph()
      */
-    protected abstract String getParagraphBlock( String text );
+    protected abstract String getParagraphBlock(String text);
 
     /**
      * Returns a Data block generated by this sink.
@@ -1373,7 +1318,7 @@ public abstract class AbstractSinkTest
      * @return The result of invoking a Data block on the current sink.
      * @see #testData()
      */
-    protected abstract String getDataBlock( String value, String text );
+    protected abstract String getDataBlock(String value, String text);
 
     /**
      * Returns a Time block generated by this sink.
@@ -1382,7 +1327,7 @@ public abstract class AbstractSinkTest
      * @return The result of invoking a Time block on the current sink.
      * @see #testTime()
      */
-    protected abstract String getTimeBlock( String datetime, String text );
+    protected abstract String getTimeBlock(String datetime, String text);
 
     /**
      * Returns an Address block generated by this sink.
@@ -1390,7 +1335,7 @@ public abstract class AbstractSinkTest
      * @return The result of invoking an Address block on the current sink.
      * @see #testAddress()
      */
-    protected abstract String getAddressBlock( String text );
+    protected abstract String getAddressBlock(String text);
 
     /**
      * Returns a Blockquote block generated by this sink.
@@ -1398,7 +1343,7 @@ public abstract class AbstractSinkTest
      * @return The result of invoking a Blockquote block on the current sink.
      * @see #testBlockquote()
      */
-    protected abstract String getBlockquoteBlock( String text );
+    protected abstract String getBlockquoteBlock(String text);
 
     /**
      * Returns a Division block generated by this sink.
@@ -1406,7 +1351,7 @@ public abstract class AbstractSinkTest
      * @return The result of invoking a Division block on the current sink.
      * @see #testDivider()
      */
-    protected abstract String getDivisionBlock( String text );
+    protected abstract String getDivisionBlock(String text);
 
     /**
      * Returns a Verbatim block generated by this sink.
@@ -1414,7 +1359,7 @@ public abstract class AbstractSinkTest
      * @return The result of invoking a Verbatim block on the current sink.
      * @see #testVerbatim()
      */
-    protected abstract String getVerbatimBlock( String text );
+    protected abstract String getVerbatimBlock(String text);
 
     /**
      * Returns a HorizontalRule block generated by this sink.
@@ -1436,7 +1381,7 @@ public abstract class AbstractSinkTest
      * @return The result of invoking a Anchor block on the current sink.
      * @see #testAnchor()
      */
-    protected abstract String getAnchorBlock( String anchor );
+    protected abstract String getAnchorBlock(String anchor);
 
     /**
      * Returns a Link block generated by this sink.
@@ -1445,7 +1390,7 @@ public abstract class AbstractSinkTest
      * @return The result of invoking a Link block on the current sink.
      * @see #testLink()
      */
-    protected abstract String getLinkBlock( String link, String text );
+    protected abstract String getLinkBlock(String link, String text);
 
     /**
      * Returns an Inline block generated by this sink.
@@ -1453,7 +1398,7 @@ public abstract class AbstractSinkTest
      * @return The result of invoking a Inline block on the current sink.
      * @see #testInline()
      */
-    protected abstract String getInlineBlock( String text );
+    protected abstract String getInlineBlock(String text);
 
     /**
      * Returns an Inline italic block generated by this sink.
@@ -1461,7 +1406,7 @@ public abstract class AbstractSinkTest
      * @return The result of invoking a Inline italic block on the current sink.
      * @see #testInlineItalic()
      */
-    protected abstract String getInlineItalicBlock( String text );
+    protected abstract String getInlineItalicBlock(String text);
 
     /**
      * Returns an Inline bold block generated by this sink.
@@ -1469,7 +1414,7 @@ public abstract class AbstractSinkTest
      * @return The result of invoking a Inline bold block on the current sink.
      * @see #testInlineBold()
      */
-    protected abstract String getInlineBoldBlock( String text );
+    protected abstract String getInlineBoldBlock(String text);
 
     /**
      * Returns an Inline code block generated by this sink.
@@ -1477,7 +1422,7 @@ public abstract class AbstractSinkTest
      * @return The result of invoking a Inline code block on the current sink.
      * @see #testInlineBold()
      */
-    protected abstract String getInlineCodeBlock( String text );
+    protected abstract String getInlineCodeBlock(String text);
 
     /**
      * Returns a LineBreak block generated by this sink.
@@ -1508,7 +1453,7 @@ public abstract class AbstractSinkTest
      * @return The result of invoking a Text block on the current sink.
      * @see #testText()
      */
-    protected abstract String getTextBlock( String text );
+    protected abstract String getTextBlock(String text);
 
     /**
      * Returns a RawText block generated by this sink.
@@ -1516,7 +1461,7 @@ public abstract class AbstractSinkTest
      * @return The result of invoking a RawText block on the current sink.
      * @see #testRawText()
      */
-    protected abstract String getRawTextBlock( String text );
+    protected abstract String getRawTextBlock(String text);
 
     /**
      * Returns a comment block generated by this sink.
@@ -1525,51 +1470,45 @@ public abstract class AbstractSinkTest
      * @see #testComment()
      * @since 1.1.1
      */
-    protected abstract String getCommentBlock( String text );
+    protected abstract String getCommentBlock(String text);
 
-    protected final void verifyValignSup( String text )
-    {
-        sink.text( "ValignSup", new SinkEventAttributeSet( SinkEventAttributes.VALIGN, "sup"  ) );
+    protected final void verifyValignSup(String text) {
+        sink.text("ValignSup", new SinkEventAttributeSet(SinkEventAttributes.VALIGN, "sup"));
         sink.flush();
         sink.close();
 
         String actual = testWriter.toString();
 
-        assertEquals( "Wrong valign sup!", text, actual );
+        assertEquals("Wrong valign sup!", text, actual);
     }
 
-    protected final void verifyValignSub( String text )
-    {
-        sink.text( "ValignSub", new SinkEventAttributeSet( SinkEventAttributes.VALIGN, "sub"  ) );
+    protected final void verifyValignSub(String text) {
+        sink.text("ValignSub", new SinkEventAttributeSet(SinkEventAttributes.VALIGN, "sub"));
         sink.flush();
         sink.close();
 
         String actual = testWriter.toString();
 
-        assertEquals( "Wrong valign sub!", text, actual );
+        assertEquals("Wrong valign sub!", text, actual);
     }
 
-    protected final void verifyDecorationUnderline( String text )
-    {
-        sink.text( "DecorationUnderline", new SinkEventAttributeSet( SinkEventAttributes.DECORATION, "underline"  ) );
+    protected final void verifyDecorationUnderline(String text) {
+        sink.text("DecorationUnderline", new SinkEventAttributeSet(SinkEventAttributes.DECORATION, "underline"));
         sink.flush();
         sink.close();
 
         String actual = testWriter.toString();
 
-        assertEquals( "Wrong decoration underline!", text, actual );
+        assertEquals("Wrong decoration underline!", text, actual);
     }
 
-    protected final void verifyDecorationLineThrough( String text )
-    {
-        sink.text( "DecorationLineThrough", new SinkEventAttributeSet( SinkEventAttributes.DECORATION, "line-through"  ) );
+    protected final void verifyDecorationLineThrough(String text) {
+        sink.text("DecorationLineThrough", new SinkEventAttributeSet(SinkEventAttributes.DECORATION, "line-through"));
         sink.flush();
         sink.close();
 
         String actual = testWriter.toString();
 
-        assertEquals( "Wrong decoration line-through!", text, actual );
+        assertEquals("Wrong decoration line-through!", text, actual);
     }
-
-
 }

@@ -1,5 +1,4 @@
 <?xml version="1.0" encoding="UTF-8"?>
-
 <!--
 Licensed to the Apache Software Foundation (ASF) under one
 or more contributor license agreements.  See the NOTICE file
@@ -18,7 +17,6 @@ KIND, either express or implied.  See the License for the
 specific language governing permissions and limitations
 under the License.
 -->
-
 <project xmlns="http://maven.apache.org/POM/4.0.0" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:schemaLocation="http://maven.apache.org/POM/4.0.0 https://maven.apache.org/xsd/maven-4.0.0.xsd">
   <modelVersion>4.0.0</modelVersion>
 
@@ -32,9 +30,7 @@ under the License.
   <artifactId>doxia-module-markdown</artifactId>
 
   <name>Doxia :: Markdown Module</name>
-  <description>
-    A Doxia module for Markdown source documents.
-  </description>
+  <description>A Doxia module for Markdown source documents.</description>
 
   <contributors>
     <contributor>
@@ -46,13 +42,18 @@ under the License.
     <contributor>
       <name>Julien Nicoulaud</name>
       <email>julien.nicoulaud@gmail.com</email>
-      <timezone>+1</timezone>
       <url>http://www.twitter.com/nicoulaj</url>
+      <timezone>+1</timezone>
     </contributor>
   </contributors>
 
+  <scm>
+    <tag>doxia-2.0.0-M4</tag>
+  </scm>
+
   <properties>
-    <flexmarkVersion>0.62.2</flexmarkVersion><!-- 0.64.0 requires Java 11 -->
+    <flexmarkVersion>0.62.2</flexmarkVersion>
+    <!-- 0.64.0 requires Java 11 -->
   </properties>
 
   <dependencies>
@@ -145,6 +146,11 @@ under the License.
       <artifactId>plexus-testing</artifactId>
       <scope>test</scope>
     </dependency>
+    <dependency>
+      <groupId>org.hamcrest</groupId>
+      <artifactId>hamcrest-core</artifactId>
+      <scope>test</scope>
+    </dependency>
   </dependencies>
   <build>
 
@@ -161,10 +167,10 @@ under the License.
           <!-- it's not the artifact we're working on, but the ones that are produced by our "siblings" -->
           <execution>
             <id>copy-doxia-module-xhtml5-to-local-repo</id>
-            <phase>integration-test</phase>
             <goals>
               <goal>install-file</goal>
             </goals>
+            <phase>integration-test</phase>
             <configuration>
               <localRepositoryPath>${project.build.directory}/local-repo</localRepositoryPath>
               <file>${project.basedir}/../doxia-module-xhtml5/target/doxia-module-xhtml5-${project.version}.jar</file>
@@ -172,10 +178,10 @@ under the License.
           </execution>
           <execution>
             <id>copy-doxia-to-local-repo</id>
-            <phase>integration-test</phase>
             <goals>
               <goal>install-file</goal>
             </goals>
+            <phase>integration-test</phase>
             <configuration>
               <localRepositoryPath>${project.build.directory}/local-repo</localRepositoryPath>
               <file>${project.basedir}/../../doxia-core/target/doxia-core-${project.version}.jar</file>
@@ -219,8 +225,4 @@ under the License.
 
     </plugins>
   </build>
-
-  <scm>
-    <tag>doxia-2.0.0-M4</tag>
-  </scm>
 </project>

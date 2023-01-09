@@ -1,3 +1,21 @@
+/*
+ * Licensed to the Apache Software Foundation (ASF) under one
+ * or more contributor license agreements.  See the NOTICE file
+ * distributed with this work for additional information
+ * regarding copyright ownership.  The ASF licenses this file
+ * to you under the Apache License, Version 2.0 (the
+ * "License"); you may not use this file except in compliance
+ * with the License.  You may obtain a copy of the License at
+ *
+ *   http://www.apache.org/licenses/LICENSE-2.0
+ *
+ * Unless required by applicable law or agreed to in writing,
+ * software distributed under the License is distributed on an
+ * "AS IS" BASIS, WITHOUT WARRANTIES OR CONDITIONS OF ANY
+ * KIND, either express or implied.  See the License for the
+ * specific language governing permissions and limitations
+ * under the License.
+ */
 package org.apache.maven.doxia.sink;
 
 /*
@@ -29,8 +47,7 @@ import java.io.OutputStream;
  * @author <a href="kenney@apache.org">Kenney Westerhof</a>
  * @since 1.0-alpha-9
  */
-public interface SinkFactory
-{
+public interface SinkFactory {
 
     /**
      * Create a <code>Sink</code> into a file.
@@ -40,8 +57,7 @@ public interface SinkFactory
      * @return a <code>Sink</code> instance with a file as output.
      * @throws java.io.IOException if any.
      */
-    Sink createSink( File outputDir, String outputName )
-        throws IOException;
+    Sink createSink(File outputDir, String outputName) throws IOException;
 
     /**
      * Create a <code>Sink</code> into a file using a specified encoding.
@@ -54,8 +70,7 @@ public interface SinkFactory
      * @since 1.1
      * @throws java.io.IOException if any.
      */
-    Sink createSink( File outputDir, String outputName, String encoding )
-        throws IOException;
+    Sink createSink(File outputDir, String outputName, String encoding) throws IOException;
 
     /**
      * Create a <code>Sink</code> into an OutputStream.
@@ -65,8 +80,7 @@ public interface SinkFactory
      * @since 1.1
      * @throws java.io.IOException if any.
      */
-    Sink createSink( OutputStream out )
-        throws IOException;
+    Sink createSink(OutputStream out) throws IOException;
 
     /**
      * Create a <code>Sink</code> into an OutputStream using a specified encoding.
@@ -77,6 +91,5 @@ public interface SinkFactory
      * @since 1.1
      * @throws java.io.IOException if any.
      */
-    Sink createSink( OutputStream out, String encoding )
-        throws IOException;
+    Sink createSink(OutputStream out, String encoding) throws IOException;
 }

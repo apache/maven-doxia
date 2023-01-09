@@ -1,3 +1,21 @@
+/*
+ * Licensed to the Apache Software Foundation (ASF) under one
+ * or more contributor license agreements.  See the NOTICE file
+ * distributed with this work for additional information
+ * regarding copyright ownership.  The ASF licenses this file
+ * to you under the Apache License, Version 2.0 (the
+ * "License"); you may not use this file except in compliance
+ * with the License.  You may obtain a copy of the License at
+ *
+ *   http://www.apache.org/licenses/LICENSE-2.0
+ *
+ * Unless required by applicable law or agreed to in writing,
+ * software distributed under the License is distributed on an
+ * "AS IS" BASIS, WITHOUT WARRANTIES OR CONDITIONS OF ANY
+ * KIND, either express or implied.  See the License for the
+ * specific language governing permissions and limitations
+ * under the License.
+ */
 package org.apache.maven.doxia.sink.impl;
 
 /*
@@ -19,10 +37,10 @@ package org.apache.maven.doxia.sink.impl;
  * under the License.
  */
 
-import java.util.Objects;
-
 import javax.swing.text.MutableAttributeSet;
 import javax.swing.text.html.HTML.Tag;
+
+import java.util.Objects;
 
 import org.apache.maven.doxia.markup.XmlMarkup;
 
@@ -32,14 +50,11 @@ import org.apache.maven.doxia.markup.XmlMarkup;
  * @author <a href="mailto:vincent.siveton@gmail.com">Vincent Siveton</a>
  * @since 1.0
  */
-public abstract class AbstractXmlSink
-    extends SinkAdapter
-    implements XmlMarkup
-{
+public abstract class AbstractXmlSink extends SinkAdapter implements XmlMarkup {
     /** Default namespace prepended to all tags */
     private String nameSpace;
 
-    private boolean firstTag  = true;
+    private boolean firstTag = true;
 
     private boolean insertNewline = true;
 
@@ -48,8 +63,7 @@ public abstract class AbstractXmlSink
      *
      * @param insertNewline a boolean.
      */
-    public void setInsertNewline( boolean insertNewline )
-    {
+    public void setInsertNewline(boolean insertNewline) {
         this.insertNewline = insertNewline;
     }
 
@@ -59,8 +73,7 @@ public abstract class AbstractXmlSink
      * @param ns the default namespace.
      * @since 1.1
      */
-    public void setNameSpace( String ns )
-    {
+    public void setNameSpace(String ns) {
         this.nameSpace = ns;
     }
 
@@ -70,8 +83,7 @@ public abstract class AbstractXmlSink
      * @return the current default namespace.
      * @since 1.1
      */
-    public String getNameSpace()
-    {
+    public String getNameSpace() {
         return this.nameSpace;
     }
 
@@ -84,9 +96,8 @@ public abstract class AbstractXmlSink
      * @param t a non null tag
      * @see #writeStartTag(javax.swing.text.html.HTML.Tag, javax.swing.text.MutableAttributeSet)
      */
-    protected void writeStartTag( Tag t )
-    {
-        writeStartTag ( t, null );
+    protected void writeStartTag(Tag t) {
+        writeStartTag(t, null);
     }
 
     /**
@@ -99,9 +110,8 @@ public abstract class AbstractXmlSink
      * @param att a set of attributes. May be null.
      * @see #writeStartTag(javax.swing.text.html.HTML.Tag, javax.swing.text.MutableAttributeSet, boolean)
      */
-    protected void writeStartTag( Tag t, MutableAttributeSet att )
-    {
-        writeStartTag ( t, att, false );
+    protected void writeStartTag(Tag t, MutableAttributeSet att) {
+        writeStartTag(t, att, false);
     }
 
     /**
@@ -114,37 +124,33 @@ public abstract class AbstractXmlSink
      * @param att a set of attributes. May be null.
      * @param isSimpleTag boolean to write as a simple tag.
      */
-    protected void writeStartTag( Tag t, MutableAttributeSet att, boolean isSimpleTag )
-    {
-        Objects.requireNonNull( t, "t cannot be null" );
+    protected void writeStartTag(Tag t, MutableAttributeSet att, boolean isSimpleTag) {
+        Objects.requireNonNull(t, "t cannot be null");
 
         StringBuilder sb = new StringBuilder();
 
-        if ( insertNewline && t.isBlock() && !firstTag )
-        {
-            sb.append( EOL );
+        if (insertNewline && t.isBlock() && !firstTag) {
+            sb.append(EOL);
         }
         firstTag = false;
 
-        sb.append( LESS_THAN );
+        sb.append(LESS_THAN);
 
-        if ( nameSpace != null )
-        {
-            sb.append( nameSpace ).append( ':' );
+        if (nameSpace != null) {
+            sb.append(nameSpace).append(':');
         }
 
-        sb.append( t.toString() );
+        sb.append(t.toString());
 
-        sb.append( SinkUtils.getAttributeString( att ) );
+        sb.append(SinkUtils.getAttributeString(att));
 
-        if ( isSimpleTag )
-        {
-            sb.append( SPACE ).append( SLASH );
+        if (isSimpleTag) {
+            sb.append(SPACE).append(SLASH);
         }
 
-        sb.append( GREATER_THAN );
+        sb.append(GREATER_THAN);
 
-        write( sb.toString() );
+        write(sb.toString());
     }
 
     /**
@@ -152,9 +158,8 @@ public abstract class AbstractXmlSink
      *
      * @since 1.1
      */
-    protected void writeEOL()
-    {
-        write( EOL );
+    protected void writeEOL() {
+        write(EOL);
     }
 
     /**
@@ -162,23 +167,21 @@ public abstract class AbstractXmlSink
      *
      * @param t a tag.
      */
-    protected void writeEndTag( Tag t )
-    {
-        Objects.requireNonNull( t, "t cannot be null" );
+    protected void writeEndTag(Tag t) {
+        Objects.requireNonNull(t, "t cannot be null");
 
         StringBuilder sb = new StringBuilder();
-        sb.append( LESS_THAN );
-        sb.append( SLASH );
+        sb.append(LESS_THAN);
+        sb.append(SLASH);
 
-        if ( nameSpace != null )
-        {
-            sb.append( nameSpace ).append( ':' );
+        if (nameSpace != null) {
+            sb.append(nameSpace).append(':');
         }
 
-        sb.append( t.toString() );
-        sb.append( GREATER_THAN );
+        sb.append(t.toString());
+        sb.append(GREATER_THAN);
 
-        write( sb.toString() );
+        write(sb.toString());
     }
 
     /**
@@ -190,9 +193,8 @@ public abstract class AbstractXmlSink
      * @param t a non null tag
      * @see #writeSimpleTag(javax.swing.text.html.HTML.Tag, javax.swing.text.MutableAttributeSet)
      */
-    protected void writeSimpleTag( Tag t )
-    {
-        writeSimpleTag( t, null );
+    protected void writeSimpleTag(Tag t) {
+        writeSimpleTag(t, null);
     }
 
     /**
@@ -205,9 +207,8 @@ public abstract class AbstractXmlSink
      * @param att a set of attributes. May be null.
      * @see #writeStartTag(javax.swing.text.html.HTML.Tag, javax.swing.text.MutableAttributeSet, boolean)
      */
-    protected void writeSimpleTag( Tag t, MutableAttributeSet att )
-    {
-        writeStartTag ( t, att, true );
+    protected void writeSimpleTag(Tag t, MutableAttributeSet att) {
+        writeStartTag(t, att, true);
     }
 
     /**
@@ -215,5 +216,5 @@ public abstract class AbstractXmlSink
      *
      * @param text the given text to write
      */
-    protected abstract void write( String text );
+    protected abstract void write(String text);
 }

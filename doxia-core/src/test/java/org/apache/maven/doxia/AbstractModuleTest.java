@@ -1,3 +1,21 @@
+/*
+ * Licensed to the Apache Software Foundation (ASF) under one
+ * or more contributor license agreements.  See the NOTICE file
+ * distributed with this work for additional information
+ * regarding copyright ownership.  The ASF licenses this file
+ * to you under the Apache License, Version 2.0 (the
+ * "License"); you may not use this file except in compliance
+ * with the License.  You may obtain a copy of the License at
+ *
+ *   http://www.apache.org/licenses/LICENSE-2.0
+ *
+ * Unless required by applicable law or agreed to in writing,
+ * software distributed under the License is distributed on an
+ * "AS IS" BASIS, WITHOUT WARRANTIES OR CONDITIONS OF ANY
+ * KIND, either express or implied.  See the License for the
+ * specific language governing permissions and limitations
+ * under the License.
+ */
 package org.apache.maven.doxia;
 
 /*
@@ -19,11 +37,6 @@ package org.apache.maven.doxia;
  * under the License.
  */
 
-import org.apache.maven.doxia.markup.Markup;
-
-import org.codehaus.plexus.testing.PlexusTest;
-import org.codehaus.plexus.util.WriterFactory;
-
 import java.io.File;
 import java.io.IOException;
 import java.io.InputStream;
@@ -31,6 +44,10 @@ import java.io.InputStreamReader;
 import java.io.Reader;
 import java.io.Writer;
 import java.nio.charset.StandardCharsets;
+
+import org.apache.maven.doxia.markup.Markup;
+import org.codehaus.plexus.testing.PlexusTest;
+import org.codehaus.plexus.util.WriterFactory;
 
 import static org.codehaus.plexus.testing.PlexusExtension.getBasedir;
 import static org.junit.jupiter.api.Assertions.assertNotNull;
@@ -41,9 +58,7 @@ import static org.junit.jupiter.api.Assertions.assertNotNull;
  * @since 1.0
  */
 @PlexusTest
-public abstract class AbstractModuleTest
-    implements Markup
-{
+public abstract class AbstractModuleTest implements Markup {
 
     /*
      * Set the system properties:
@@ -52,10 +67,9 @@ public abstract class AbstractModuleTest
      * failure on windows.</li>
      * </ul>
      */
-    static
-    {
+    static {
         // Safety
-        System.setProperty( "line.separator", "\n" );
+        System.setProperty("line.separator", "\n");
     }
 
     // ----------------------------------------------------------------------
@@ -72,23 +86,19 @@ public abstract class AbstractModuleTest
      * @throws IOException If the FileWriter could not be generated.
      * @see WriterFactory#newWriter(File, String)
      */
-    protected Writer getTestWriter( String baseName, String extension )
-        throws IOException
-    {
-        File outputFile = getTestWriterFile( baseName, extension );
+    protected Writer getTestWriter(String baseName, String extension) throws IOException {
+        File outputFile = getTestWriterFile(baseName, extension);
 
-        if ( !outputFile.getParentFile().exists() )
-        {
+        if (!outputFile.getParentFile().exists()) {
             outputFile.getParentFile().mkdirs();
         }
 
-        return WriterFactory.newWriter( outputFile, "UTF-8" );
+        return WriterFactory.newWriter(outputFile, "UTF-8");
     }
 
-    protected File getTestWriterFile( String baseName, String extension )
-    {
-        File outputDirectory = new File( getBasedirFile(), outputBaseDir() + getOutputDir() );
-        return new File( outputDirectory, baseName + '.' + extension );
+    protected File getTestWriterFile(String baseName, String extension) {
+        File outputDirectory = new File(getBasedirFile(), outputBaseDir() + getOutputDir());
+        return new File(outputDirectory, baseName + '.' + extension);
     }
 
     /**
@@ -100,20 +110,14 @@ public abstract class AbstractModuleTest
      * @throws IOException If the FileWriter could not be generated.
      * @see #getXmlTestWriter(String, String)
      */
-    protected Writer getXmlTestWriter( String baseName )
-        throws IOException
-    {
-        return getXmlTestWriter( baseName, outputExtension() );
+    protected Writer getXmlTestWriter(String baseName) throws IOException {
+        return getXmlTestWriter(baseName, outputExtension());
     }
 
-    protected static String normalizeLineEnds( String s )
-    {
-        if ( s != null )
-        {
-            return s.replaceAll( "\r\n", "\n" ).replaceAll( "\r", "\n" );
-        }
-        else
-        {
+    protected static String normalizeLineEnds(String s) {
+        if (s != null) {
+            return s.replaceAll("\r\n", "\n").replaceAll("\r", "\n");
+        } else {
             return null;
         }
     }
@@ -128,17 +132,14 @@ public abstract class AbstractModuleTest
      * @throws IOException If the FileWriter could not be generated.
      * @see WriterFactory#newXmlWriter(File)
      */
-    protected Writer getXmlTestWriter( String baseName, String extension )
-        throws IOException
-    {
-        File outputFile = getTestWriterFile( baseName, extension );
+    protected Writer getXmlTestWriter(String baseName, String extension) throws IOException {
+        File outputFile = getTestWriterFile(baseName, extension);
 
-        if ( !outputFile.getParentFile().exists() )
-        {
+        if (!outputFile.getParentFile().exists()) {
             outputFile.getParentFile().mkdirs();
         }
 
-        return WriterFactory.newXmlWriter( outputFile );
+        return WriterFactory.newXmlWriter(outputFile);
     }
 
     /**
@@ -150,15 +151,12 @@ public abstract class AbstractModuleTest
      * @throws IOException If the FileWriter could not be generated.
      * @see #getTestWriter(String, String)
      */
-    protected Writer getTestWriter( String baseName )
-        throws IOException
-    {
-        return getTestWriter( baseName, outputExtension() );
+    protected Writer getTestWriter(String baseName) throws IOException {
+        return getTestWriter(baseName, outputExtension());
     }
 
-    protected File getTestWriterFile( String baseName )
-    {
-        return getTestWriterFile( baseName, outputExtension() );
+    protected File getTestWriterFile(String baseName) {
+        return getTestWriterFile(baseName, outputExtension());
     }
 
     /**
@@ -169,15 +167,12 @@ public abstract class AbstractModuleTest
      * @param extension The file extension of the resource file to read.
      * @return An InputStreamReader.
      */
-    protected Reader getTestReader( String baseName, String extension )
-    {
-        InputStream is =
-            Thread.currentThread().getContextClassLoader().getResourceAsStream(
-                baseName + "." + extension );
+    protected Reader getTestReader(String baseName, String extension) {
+        InputStream is = Thread.currentThread().getContextClassLoader().getResourceAsStream(baseName + "." + extension);
 
-        assertNotNull( is, "Could not find resource: " + baseName + "." + extension );
+        assertNotNull(is, "Could not find resource: " + baseName + "." + extension);
 
-        return new InputStreamReader( is, StandardCharsets.UTF_8 );
+        return new InputStreamReader(is, StandardCharsets.UTF_8);
     }
 
     /**
@@ -188,11 +183,9 @@ public abstract class AbstractModuleTest
      * @return An InputStreamReader.
      * @see #getTestReader(String, String)
      */
-    protected Reader getTestReader( String baseName )
-    {
-        return getTestReader( baseName, outputExtension() );
+    protected Reader getTestReader(String baseName) {
+        return getTestReader(baseName, outputExtension());
     }
-
 
     // ----------------------------------------------------------------------
     // Utility methods
@@ -203,9 +196,8 @@ public abstract class AbstractModuleTest
      *
      * @return The common base directory as a File.
      */
-    protected File getBasedirFile()
-    {
-        return new File( getBasedir() );
+    protected File getBasedirFile() {
+        return new File(getBasedir());
     }
 
     /**
@@ -213,11 +205,9 @@ public abstract class AbstractModuleTest
      *
      * @return The test output directory.
      */
-    protected final String outputBaseDir()
-    {
+    protected final String outputBaseDir() {
         return "target/test-output/";
     }
-
 
     // ----------------------------------------------------------------------
     // Abstract methods the individual ModuleTests must provide

@@ -1,3 +1,21 @@
+/*
+ * Licensed to the Apache Software Foundation (ASF) under one
+ * or more contributor license agreements.  See the NOTICE file
+ * distributed with this work for additional information
+ * regarding copyright ownership.  The ASF licenses this file
+ * to you under the Apache License, Version 2.0 (the
+ * "License"); you may not use this file except in compliance
+ * with the License.  You may obtain a copy of the License at
+ *
+ *   http://www.apache.org/licenses/LICENSE-2.0
+ *
+ * Unless required by applicable law or agreed to in writing,
+ * software distributed under the License is distributed on an
+ * "AS IS" BASIS, WITHOUT WARRANTIES OR CONDITIONS OF ANY
+ * KIND, either express or implied.  See the License for the
+ * specific language governing permissions and limitations
+ * under the License.
+ */
 package org.apache.maven.doxia.util;
 
 /*
@@ -19,24 +37,19 @@ package org.apache.maven.doxia.util;
  * under the License.
  */
 
-import java.awt.image.BufferedImage;
+import javax.imageio.ImageIO;
+import javax.swing.text.MutableAttributeSet;
 
+import java.awt.image.BufferedImage;
 import java.io.File;
 import java.io.IOException;
-
 import java.net.URL;
-
 import java.nio.charset.StandardCharsets;
 import java.text.ParseException;
 import java.text.ParsePosition;
 import java.text.SimpleDateFormat;
-
 import java.util.Date;
 import java.util.Locale;
-
-import javax.imageio.ImageIO;
-
-import javax.swing.text.MutableAttributeSet;
 
 import org.apache.maven.doxia.sink.impl.SinkEventAttributeSet;
 
@@ -47,8 +60,7 @@ import org.apache.maven.doxia.sink.impl.SinkEventAttributeSet;
  * @author ltheussl
  * @since 1.1
  */
-public class DoxiaUtils
-{
+public class DoxiaUtils {
     /**
      * Checks if the given string corresponds to an internal link,
      * ie it is a link to an anchor within the same document.
@@ -63,9 +75,8 @@ public class DoxiaUtils
      * @see #isExternalLink(String)
      * @see #isLocalLink(String)
      */
-    public static boolean isInternalLink( final String link )
-    {
-        return link.startsWith( "#" );
+    public static boolean isInternalLink(final String link) {
+        return link.startsWith("#");
     }
 
     /**
@@ -87,13 +98,15 @@ public class DoxiaUtils
      * @see #isInternalLink(String)
      * @see #isLocalLink(String)
      */
-    public static boolean isExternalLink( final String link )
-    {
-        String text = link.toLowerCase( Locale.ENGLISH );
+    public static boolean isExternalLink(final String link) {
+        String text = link.toLowerCase(Locale.ENGLISH);
 
-        return ( text.startsWith( "http:/" ) || text.startsWith( "https:/" )
-            || text.startsWith( "ftp:/" ) || text.startsWith( "mailto:" )
-            || text.startsWith( "file:/" ) || text.contains( "://" ) );
+        return (text.startsWith("http:/")
+                || text.startsWith("https:/")
+                || text.startsWith("ftp:/")
+                || text.startsWith("mailto:")
+                || text.startsWith("file:/")
+                || text.contains("://"));
     }
 
     /**
@@ -112,9 +125,8 @@ public class DoxiaUtils
      * @see #isExternalLink(String)
      * @see #isInternalLink(String)
      */
-    public static boolean isLocalLink( final String link )
-    {
-        return ( !isExternalLink( link ) && !isInternalLink( link ) );
+    public static boolean isLocalLink(final String link) {
+        return (!isExternalLink(link) && !isInternalLink(link));
     }
 
     /**
@@ -129,9 +141,8 @@ public class DoxiaUtils
      * @return The trimmed and encoded id, or null if id is null.
      * @see #encodeId(java.lang.String, boolean)
      */
-    public static String encodeId( final String id )
-    {
-        return encodeId( id, false );
+    public static String encodeId(final String id) {
+        return encodeId(id, false);
     }
 
     /**
@@ -198,50 +209,38 @@ public class DoxiaUtils
      * @see #isValidId(java.lang.String)
      * @since 1.1.1
      */
-    public static String encodeId( final String id, final boolean chop )
-    {
-        if ( id == null )
-        {
+    public static String encodeId(final String id, final boolean chop) {
+        if (id == null) {
             return null;
         }
 
         final String idd = id.trim();
         int length = idd.length();
 
-        if ( length == 0 )
-        {
+        if (length == 0) {
             return "a";
         }
 
-        StringBuilder buffer = new StringBuilder( length );
+        StringBuilder buffer = new StringBuilder(length);
 
-        for ( int i = 0; i < length; ++i )
-        {
-            char c = idd.charAt( i );
+        for (int i = 0; i < length; ++i) {
+            char c = idd.charAt(i);
 
-            if ( ( i == 0 ) && ( !isAsciiLetter( c ) ) )
-            {
-                buffer.append( 'a' );
+            if ((i == 0) && (!isAsciiLetter(c))) {
+                buffer.append('a');
             }
 
-            if ( c == ' ' )
-            {
-                buffer.append( '_' );
-            }
-            else if ( isAsciiLetter( c ) || isAsciiDigit( c ) || ( c == '-' ) || ( c == '_' ) || ( c == ':' )
-                            || ( c == '.' ) )
-            {
-                buffer.append( c );
-            }
-            else if ( !chop )
-            {
+            if (c == ' ') {
+                buffer.append('_');
+            } else if (isAsciiLetter(c) || isAsciiDigit(c) || (c == '-') || (c == '_') || (c == ':') || (c == '.')) {
+                buffer.append(c);
+            } else if (!chop) {
 
-                byte[] bytes = String.valueOf( c ).getBytes( StandardCharsets.UTF_8 );
+                byte[] bytes = String.valueOf(c).getBytes(StandardCharsets.UTF_8);
 
-                for ( byte aByte : bytes )
-                {
-                    buffer.append( '.' );
-                    buffer.append( String.format( "%02X", aByte ) );
+                for (byte aByte : bytes) {
+                    buffer.append('.');
+                    buffer.append(String.format("%02X", aByte));
                 }
             }
         }
@@ -258,24 +257,19 @@ public class DoxiaUtils
      * @return <code>true</code> if the text is a valid id, otherwise <code>false</code>.
      * @see #encodeId(String)
      */
-    public static boolean isValidId( final String text )
-    {
-        if ( text == null || text.length() == 0 )
-        {
+    public static boolean isValidId(final String text) {
+        if (text == null || text.length() == 0) {
             return false;
         }
 
-        for ( int i = 0; i < text.length(); ++i )
-        {
-            char c = text.charAt( i );
+        for (int i = 0; i < text.length(); ++i) {
+            char c = text.charAt(i);
 
-            if ( isAsciiLetter( c ) )
-            {
+            if (isAsciiLetter(c)) {
                 continue;
             }
 
-            if ( ( i == 0 ) || ( c == ' ' ) || ( !isAsciiDigit( c ) && c != '-' && c != '_' && c != ':' && c != '.' ) )
-            {
+            if ((i == 0) || (c == ' ') || (!isAsciiDigit(c) && c != '-' && c != '_' && c != ':' && c != '.')) {
                 return false;
             }
         }
@@ -283,13 +277,23 @@ public class DoxiaUtils
         return true;
     }
 
-    private static final SimpleDateFormat DATE_PARSER = new SimpleDateFormat( "", Locale.ENGLISH );
-    private static final ParsePosition DATE_PARSE_POSITION = new ParsePosition( 0 );
-    private static final String[] DATE_PATTERNS = new String[]
-    {
-        "yyyy-MM-dd", "yyyy/MM/dd", "yyyyMMdd", "yyyy", "dd.MM.yyyy", "dd MMM yyyy",
-        "dd MMM. yyyy", "MMMM yyyy", "MMM. dd, yyyy", "MMM. yyyy", "MMMM dd, yyyy",
-        "MMM d, ''yy", "MMM. ''yy", "MMMM ''yy"
+    private static final SimpleDateFormat DATE_PARSER = new SimpleDateFormat("", Locale.ENGLISH);
+    private static final ParsePosition DATE_PARSE_POSITION = new ParsePosition(0);
+    private static final String[] DATE_PATTERNS = new String[] {
+        "yyyy-MM-dd",
+        "yyyy/MM/dd",
+        "yyyyMMdd",
+        "yyyy",
+        "dd.MM.yyyy",
+        "dd MMM yyyy",
+        "dd MMM. yyyy",
+        "MMMM yyyy",
+        "MMM. dd, yyyy",
+        "MMM. yyyy",
+        "MMMM dd, yyyy",
+        "MMM d, ''yy",
+        "MMM. ''yy",
+        "MMMM ''yy"
     };
 
     /**
@@ -315,41 +319,34 @@ public class DoxiaUtils
      * @throws NullPointerException if str is null.
      * @since 1.1.1.
      */
-    public static Date parseDate( final String str )
-            throws ParseException
-    {
-        if ( "today".equalsIgnoreCase( str ) || "now".equalsIgnoreCase( str ) )
-        {
+    public static Date parseDate(final String str) throws ParseException {
+        if ("today".equalsIgnoreCase(str) || "now".equalsIgnoreCase(str)) {
             return new Date();
         }
 
-        for ( String datePattern : DATE_PATTERNS )
-        {
-            DATE_PARSER.applyPattern( datePattern );
-            DATE_PARSE_POSITION.setIndex( 0 );
-            final Date date = DATE_PARSER.parse( str, DATE_PARSE_POSITION );
+        for (String datePattern : DATE_PATTERNS) {
+            DATE_PARSER.applyPattern(datePattern);
+            DATE_PARSE_POSITION.setIndex(0);
+            final Date date = DATE_PARSER.parse(str, DATE_PARSE_POSITION);
 
-            if ( date != null && DATE_PARSE_POSITION.getIndex() == str.length() )
-            {
+            if (date != null && DATE_PARSE_POSITION.getIndex() == str.length()) {
                 return date;
             }
         }
 
-        throw new ParseException( "Unable to parse date: " + str, -1 );
+        throw new ParseException("Unable to parse date: " + str, -1);
     }
 
-      //
-     // private
+    //
+    // private
     //
 
-    private static boolean isAsciiLetter( final char c )
-    {
-        return ( ( c >= 'a' && c <= 'z' ) || ( c >= 'A' && c <= 'Z' ) );
+    private static boolean isAsciiLetter(final char c) {
+        return ((c >= 'a' && c <= 'z') || (c >= 'A' && c <= 'Z'));
     }
 
-    private static boolean isAsciiDigit( final char c )
-    {
-        return ( c >= '0' && c <= '9' );
+    private static boolean isAsciiDigit(final char c) {
+        return (c >= '0' && c <= '9');
     }
 
     /**
@@ -364,35 +361,28 @@ public class DoxiaUtils
      *
      * @since 1.1.1
      */
-    public static MutableAttributeSet getImageAttributes( final String logo )
-            throws IOException
-    {
+    public static MutableAttributeSet getImageAttributes(final String logo) throws IOException {
         BufferedImage img;
 
-        if ( isExternalLink( logo ) )
-        {
-            img = ImageIO.read( new URL( logo ) );
-        }
-        else
-        {
-            img = ImageIO.read( new File( logo ) );
+        if (isExternalLink(logo)) {
+            img = ImageIO.read(new URL(logo));
+        } else {
+            img = ImageIO.read(new File(logo));
         }
 
-        if ( img == null )
-        {
+        if (img == null) {
             return null;
         }
 
         MutableAttributeSet atts = new SinkEventAttributeSet();
-        atts.addAttribute( SinkEventAttributeSet.WIDTH, Integer.toString( img.getWidth() ) );
-        atts.addAttribute( SinkEventAttributeSet.HEIGHT, Integer.toString( img.getHeight() ) );
+        atts.addAttribute(SinkEventAttributeSet.WIDTH, Integer.toString(img.getWidth()));
+        atts.addAttribute(SinkEventAttributeSet.HEIGHT, Integer.toString(img.getHeight()));
         // add other attributes?
 
         return atts;
     }
 
-    private DoxiaUtils()
-    {
+    private DoxiaUtils() {
         // utility class
     }
 }

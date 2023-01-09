@@ -1,3 +1,21 @@
+/*
+ * Licensed to the Apache Software Foundation (ASF) under one
+ * or more contributor license agreements.  See the NOTICE file
+ * distributed with this work for additional information
+ * regarding copyright ownership.  The ASF licenses this file
+ * to you under the Apache License, Version 2.0 (the
+ * "License"); you may not use this file except in compliance
+ * with the License.  You may obtain a copy of the License at
+ *
+ *   http://www.apache.org/licenses/LICENSE-2.0
+ *
+ * Unless required by applicable law or agreed to in writing,
+ * software distributed under the License is distributed on an
+ * "AS IS" BASIS, WITHOUT WARRANTIES OR CONDITIONS OF ANY
+ * KIND, either express or implied.  See the License for the
+ * specific language governing permissions and limitations
+ * under the License.
+ */
 package org.apache.maven.doxia.module.markdown;
 
 /*
@@ -25,10 +43,8 @@ import org.codehaus.plexus.util.StringUtils;
 /**
  * This interface defines all markups and syntaxes used by the <b>Markdown</b> format.
  */
-@SuppressWarnings( "checkstyle:interfaceistype" )
-public interface MarkdownMarkup
-    extends TextMarkup
-{
+@SuppressWarnings("checkstyle:interfaceistype")
+public interface MarkdownMarkup extends TextMarkup {
     // ----------------------------------------------------------------------
     // Markup separators
     // ----------------------------------------------------------------------
@@ -74,10 +90,10 @@ public interface MarkdownMarkup
     String BOLD_START_MARKUP = "**";
 
     /** Syntax for the header start: "---" */
-    String METADATA_MARKUP = StringUtils.repeat( String.valueOf( MINUS ), 3 );
+    String METADATA_MARKUP = StringUtils.repeat(String.valueOf(MINUS), 3);
 
     /** Syntax for the horizontal rule: "========" */
-    String HORIZONTAL_RULE_MARKUP = StringUtils.repeat( String.valueOf( EQUAL ), 8 );
+    String HORIZONTAL_RULE_MARKUP = StringUtils.repeat(String.valueOf(EQUAL), 8);
 
     /** Syntax for the italic style end: "_" */
     String ITALIC_END_MARKUP = "_";
@@ -107,28 +123,28 @@ public interface MarkdownMarkup
     String NON_BOXED_VERBATIM_START_MARKUP = "```";
 
     /** Syntax for the non breaking space: "\ " */
-    String NON_BREAKING_SPACE_MARKUP = String.valueOf( BACKSLASH ) + SPACE;
+    String NON_BREAKING_SPACE_MARKUP = String.valueOf(BACKSLASH) + SPACE;
 
     /** Syntax for the page break: "\f" */
-    String PAGE_BREAK_MARKUP = String.valueOf( PAGE_BREAK );
+    String PAGE_BREAK_MARKUP = String.valueOf(PAGE_BREAK);
 
     /** Syntax for the section title start: "#" */
     String SECTION_TITLE_START_MARKUP = "#";
 
     /** Syntax for the table cell start: "|" */
-    String TABLE_CELL_SEPARATOR_MARKUP = String.valueOf( PIPE );
+    String TABLE_CELL_SEPARATOR_MARKUP = String.valueOf(PIPE);
 
     /** Syntax for the table column, centered style: "---|" */
-    String TABLE_COL_DEFAULT_ALIGNED_MARKUP = StringUtils.repeat( String.valueOf( MINUS ), 3 ) + PIPE;
+    String TABLE_COL_DEFAULT_ALIGNED_MARKUP = StringUtils.repeat(String.valueOf(MINUS), 3) + PIPE;
 
     /** Syntax for the table column, left style: "---+" */
-    String TABLE_COL_LEFT_ALIGNED_MARKUP = StringUtils.repeat( String.valueOf( MINUS ), 3 ) + PLUS;
+    String TABLE_COL_LEFT_ALIGNED_MARKUP = StringUtils.repeat(String.valueOf(MINUS), 3) + PLUS;
 
     /** Syntax for the table column, right style: "---:" */
-    String TABLE_COL_RIGHT_ALIGNED_MARKUP = StringUtils.repeat( String.valueOf( MINUS ), 3 ) + COLON;
+    String TABLE_COL_RIGHT_ALIGNED_MARKUP = StringUtils.repeat(String.valueOf(MINUS), 3) + COLON;
 
     /** Syntax for the table row end: "|" */
-    String TABLE_ROW_SEPARATOR_MARKUP = String.valueOf( PIPE );
+    String TABLE_ROW_SEPARATOR_MARKUP = String.valueOf(PIPE);
 
     /** Syntax for the non boxed verbatim end: "```" */
     String NON_BOXED_VERBATIM_END_MARKUP = "```";
