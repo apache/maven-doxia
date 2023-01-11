@@ -89,7 +89,7 @@ under the License.
     <slf4jVersion>1.7.36</slf4jVersion>
     <junitVersion>5.9.0</junitVersion>
     <sisuVersion>0.3.5</sisuVersion>
-    <xmlunitVersion>2.9.0</xmlunitVersion>
+    <xmlunitVersion>2.9.1</xmlunitVersion>
   </properties>
 
   <dependencyManagement>
