@@ -863,8 +863,13 @@ public class WellformednessCheckingSink extends AbstractSink {
     }
 
     @Override
-    public void verbatim(SinkEventAttributes attributes) {
+    public void verbatim() {
         startElement("verbatim");
+    }
+
+    @Override
+    public void verbatim(SinkEventAttributes attributes) {
+        verbatim();
     }
 
     @Override

@@ -823,6 +823,11 @@ public class SinkEventTestingSink extends AbstractSink {
     }
 
     @Override
+    public void verbatim() {
+        addEvent("verbatim");
+    }
+
+    @Override
     public void verbatim(SinkEventAttributes attributes) {
         addEvent("verbatim", new Object[] {attributes});
     }

@@ -820,6 +820,11 @@ public class TextSink extends AbstractSink {
     }
 
     @Override
+    public void verbatim() {
+        verbatim(null);
+    }
+
+    @Override
     public void verbatim(SinkEventAttributes attributes) {
         boolean boxed = false;
 

@@ -1338,6 +1338,13 @@ public interface Sink {
     /**
      * Starts a verbatim block, ie a block where whitespace has semantic relevance.
      *
+     * @see #verbatim(SinkEventAttributes)
+     */
+    void verbatim();
+
+    /**
+     * Starts a verbatim block, ie a block where whitespace has semantic relevance.
+     *
      * <p>
      *   Text in a verbatim block must only be wrapped at the linebreaks in the source,
      *   and spaces should not be collapsed. It should be displayed in a fixed-width font to

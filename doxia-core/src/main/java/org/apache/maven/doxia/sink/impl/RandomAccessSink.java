@@ -1129,6 +1129,12 @@ public class RandomAccessSink implements Sink {
 
     /** {@inheritDoc} */
     @Override
+    public void verbatim() {
+        currentSink.verbatim();
+    }
+
+    /** {@inheritDoc} */
+    @Override
     public void verbatim(SinkEventAttributes attributes) {
         currentSink.verbatim(attributes);
     }

@@ -1121,6 +1121,12 @@ public class Xhtml5BaseSink extends AbstractXmlSink implements HtmlMarkup {
         writeEndTag(HtmlMarkup.DIV);
     }
 
+    /** {@inheritDoc} */
+    @Override
+    public void verbatim() {
+        verbatim(null);
+    }
+
     /**
      * The default class style for boxed is <code>source</code>.
      *

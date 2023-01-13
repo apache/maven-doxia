@@ -552,6 +552,12 @@ public class MarkdownSink extends AbstractTextSink implements MarkdownMarkup {
     }
 
     /** {@inheritDoc} */
+    @Override
+    public void verbatim() {
+        verbatim(null);
+    }
+
+    /** {@inheritDoc} */
     public void verbatim(SinkEventAttributes attributes) {
         write(EOL);
         verbatimFlag = true;

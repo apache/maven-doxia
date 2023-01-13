@@ -718,6 +718,13 @@ public class SinkAdapter extends AbstractSink {
     public void close() {
         // nop
     }
+
+    /** {@inheritDoc} */
+    @Override
+    public void verbatim() {
+        // nop
+    }
+
     /** {@inheritDoc} */
     @Override
     public void head(SinkEventAttributes attributes) {
@@ -989,7 +996,7 @@ public class SinkAdapter extends AbstractSink {
     /** {@inheritDoc} */
     @Override
     public void verbatim(SinkEventAttributes attributes) {
-        // nop
+        verbatim();
     }
 
     /** {@inheritDoc} */

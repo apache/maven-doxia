@@ -576,6 +576,12 @@ public class AptSink extends AbstractTextSink implements AptMarkup {
     }
 
     /** {@inheritDoc} */
+    @Override
+    public void verbatim() {
+        verbatim(null);
+    }
+
+    /** {@inheritDoc} */
     public void verbatim(SinkEventAttributes attributes) {
         MutableAttributeSet atts = SinkUtils.filterAttributes(attributes, SinkUtils.SINK_VERBATIM_ATTRIBUTES);
 
