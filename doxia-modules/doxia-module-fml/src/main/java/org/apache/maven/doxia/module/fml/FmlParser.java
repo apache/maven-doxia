@@ -576,7 +576,9 @@ public class FmlParser extends AbstractXmlParser implements FmlMarkup {
      * @param sink The sink to consume the event.
      */
     private void writeTopLink(Sink sink) {
-        sink.paragraph();
+        SinkEventAttributeSet atts = new SinkEventAttributeSet();
+        atts.addAttribute(SinkEventAttributeSet.STYLE, "text-align: right;");
+        sink.paragraph(atts);
         sink.link("#top");
         sink.text("[top]");
         sink.link_();

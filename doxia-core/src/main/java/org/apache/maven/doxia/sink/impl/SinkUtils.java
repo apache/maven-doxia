@@ -123,6 +123,7 @@ public class SinkUtils {
         SinkEventAttributes.HEIGHT,
         SinkEventAttributes.ISMAP,
         SinkEventAttributes.SRC,
+        SinkEventAttributes.USEMAP,
         SinkEventAttributes.WIDTH
     };
 
