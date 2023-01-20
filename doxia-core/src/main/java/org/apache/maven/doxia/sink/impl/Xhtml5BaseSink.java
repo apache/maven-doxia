@@ -474,7 +474,7 @@ public class Xhtml5BaseSink extends AbstractXmlSink implements HtmlMarkup {
     }
 
     /**
-     * Starts a section. The default class style is <code>section</code>.
+     * Starts a section.
      *
      * @param depth The level of the section.
      * @param attributes some attributes. May be null.
@@ -1273,9 +1273,9 @@ public class Xhtml5BaseSink extends AbstractXmlSink implements HtmlMarkup {
     }
 
     /**
-     * The default class style is <code>bodyTable</code>.
+     * The default style class is <code>bodyTable</code>.
      *
-     * @param grid if {@code true} the default class {@code bodyTableBorder} will be added
+     * @param grid if {@code true} the style class {@code bodyTableBorder} will be added
      *
      * {@inheritDoc}
      * @see javax.swing.text.html.HTML.Tag#TABLE

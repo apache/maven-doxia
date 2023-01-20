@@ -412,9 +412,8 @@ public class XdocSink extends Xhtml5BaseSink implements XdocMarkup {
     }
 
     /**
-     * The default align is <code>center</code>.
-     *
      * {@inheritDoc}
+     *
      * @see javax.swing.text.html.HTML.Tag#TABLE
      */
     public void tableRows(int[] justification, boolean grid) {
@@ -436,8 +435,6 @@ public class XdocSink extends Xhtml5BaseSink implements XdocMarkup {
     }
 
     /**
-     * The default valign is <code>top</code>.
-     *
      * {@inheritDoc}
      *
      * @see javax.swing.text.html.HTML.Tag#TR
