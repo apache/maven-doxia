@@ -213,7 +213,7 @@ public class XdocSinkTest extends AbstractSinkTest {
 
     /** {@inheritDoc} */
     protected String getFigureBlock(String source, String caption) {
-        String figureBlock = "<figure><img src=\"" + escapeHTML(source) + "\"  alt=\"\" />";
+        String figureBlock = "<figure><img src=\"" + escapeHTML(source) + "\" />";
         if (caption != null) {
             figureBlock += "<figcaption>" + caption + "</figcaption>";
         }

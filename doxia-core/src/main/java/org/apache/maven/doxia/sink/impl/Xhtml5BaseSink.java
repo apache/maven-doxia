@@ -923,10 +923,6 @@ public class Xhtml5BaseSink extends AbstractXmlSink implements HtmlMarkup {
         atts.addAttribute(Attribute.SRC, HtmlTools.escapeHTML(src, true));
         atts.addAttributes(filtered);
 
-        if (atts.getAttribute(Attribute.ALT.toString()) == null) {
-            atts.addAttribute(Attribute.ALT.toString(), "");
-        }
-
         writeStartTag(HtmlMarkup.IMG, atts, true);
     }
 

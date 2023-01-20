@@ -200,7 +200,7 @@ public class Xhtml5SinkTest extends AbstractSinkTest {
 
     /** {@inheritDoc} */
     protected String getFigureBlock(String source, String caption) {
-        String figureBlock = "<figure><img src=\"" + escapeHTML(source, true) + "\" alt=\"\" />";
+        String figureBlock = "<figure><img src=\"" + escapeHTML(source, true) + "\" />";
         if (caption != null) {
             figureBlock += "<figcaption>" + caption + "</figcaption>";
         }

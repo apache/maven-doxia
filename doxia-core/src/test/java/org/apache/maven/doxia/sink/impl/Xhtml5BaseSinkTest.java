@@ -645,7 +645,7 @@ public class Xhtml5BaseSinkTest {
         }
 
         assertEquals(
-                "<figure style=\"bold\">" + "<img src=\"src.jpg\" style=\"bold\" alt=\"\" />"
+                "<figure style=\"bold\">" + "<img src=\"src.jpg\" style=\"bold\" />"
                         + "<figcaption style=\"bold\"></figcaption></figure>",
                 writer.toString());
     }
@@ -664,7 +664,7 @@ public class Xhtml5BaseSinkTest {
             sink.close();
         }
 
-        assertEquals("<img src=\"source.png\" style=\"bold\" alt=\"\" />", writer.toString());
+        assertEquals("<img src=\"source.png\" style=\"bold\" />", writer.toString());
     }
 
     /**

@@ -43,7 +43,7 @@ under the License.
       <span style="display: block; text-align: right; font-size: smaller">Released: 10 April 2008</span>
       <p>
         <a href="download.html">
-          <img src="images/folder-open.gif" border="0" alt="" title="Download Maven ${currentVersion}"/>
+          <img src="images/folder-open.gif" title="Download Maven ${currentVersion}"/>
           Maven ${currentVersion}
         </a>
         <small>(1.6Mb)</small>
@@ -56,7 +56,7 @@ under the License.
       </p>
       <p>
         <a href="download.html">
-          <img src="images/folder-open.gif" border="0" alt="" title="Download Maven Tasks for Ant 2.0.9"/>
+          <img src="images/folder-open.gif" title="Download Maven Tasks for Ant 2.0.9"/>
           Maven Tasks for Ant 2.0.9
         </a>
         <small>(994k)</small>
