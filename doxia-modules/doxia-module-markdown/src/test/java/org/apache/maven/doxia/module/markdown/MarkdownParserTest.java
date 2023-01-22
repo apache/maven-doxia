@@ -376,20 +376,8 @@ public class MarkdownParserTest extends AbstractParserTest {
      */
     @Test
     public void testMetadataSinkEvent() throws Exception {
-        testMetadataSinkEvent("metadata");
-    }
-
-    /**
-     * Assert the metadata is passed through when parsing "metadata-yaml.md".
-     *
-     * @throws Exception if the event list is not correct when parsing the document
-     */
-    public void testMetadataYamlSinkEvent() throws Exception {
-        testMetadataSinkEvent("metadata-yaml");
-    }
-
-    private void testMetadataSinkEvent(String doc) throws Exception {
-        List<SinkEventElement> eventList = parseFileToEventTestingSink(doc).getEventList();
+        List<SinkEventElement> eventList =
+                parseFileToEventTestingSink("metadata").getEventList();
         Iterator<SinkEventElement> it = eventList.iterator();
 
         assertSinkEquals(
@@ -434,9 +422,10 @@ public class MarkdownParserTest extends AbstractParserTest {
         assertEquals("&", eventList.get(3).getArgs()[0]);
         assertEquals(" a 'Test'", eventList.get(4).getArgs()[0]);
 
-        // Author must be "Somebody <somebody@somewhere.org>"
+        // Authors on multiple lines are just normalized in terms of whitespaces (i.e. space newline space is replaced
+        // by space)
         assertEquals(
-                "Somebody 'Nickname' Great <somebody@somewhere.org>",
+                "Somebody 'Nickname' Great <somebody@somewhere.org>, another author",
                 eventList.get(7).getArgs()[0]);
 
         // Date must be "2013 © Copyleft"
@@ -445,6 +434,83 @@ public class MarkdownParserTest extends AbstractParserTest {
         // * META element must be an "unknown" Sink event that specifies:
         // * name = "keywords" and content = "maven,doxia,markdown"
         SinkEventElement meta = eventList.get(12);
+        assertEquals("unknown", meta.getName());
+        assertEquals("meta", meta.getArgs()[0]);
+        SinkEventAttributeSet metaAtts = (SinkEventAttributeSet) meta.getArgs()[2];
+        assertTrue(metaAtts.containsAttribute(SinkEventAttributes.NAME, "keywords"));
+        assertTrue(metaAtts.containsAttribute("content", "maven,doxia,markdown"));
+    }
+
+    /**
+     * Assert the metadata is passed through when parsing "metadata-yaml.md".
+     *
+     * @throws Exception if the event list is not correct when parsing the document
+     */
+    @Test
+    public void testMetadataYamlSinkEvent() throws Exception {
+        List<SinkEventElement> eventList =
+                parseFileToEventTestingSink("metadata-yaml").getEventList();
+        Iterator<SinkEventElement> it = eventList.iterator();
+
+        assertSinkEquals(
+                it,
+                "head",
+                "title",
+                "text",
+                "text",
+                "text",
+                "title_",
+                "author",
+                "text",
+                "author_",
+                "author",
+                "text",
+                "author_",
+                "date",
+                "text",
+                "date_",
+                "unknown",
+                "head_",
+                "body",
+                "section1",
+                "sectionTitle1",
+                "text",
+                "sectionTitle1_",
+                "paragraph",
+                "text",
+                "paragraph_",
+                "section2",
+                "sectionTitle2",
+                "text",
+                "sectionTitle2_",
+                "paragraph",
+                "text",
+                "paragraph_",
+                "section2_",
+                "section1_",
+                "body_");
+
+        assertFalse(it.hasNext());
+
+        // Title must be "A Title & a Test"
+        assertEquals("A Title ", eventList.get(2).getArgs()[0]);
+        assertEquals("&", eventList.get(3).getArgs()[0]);
+        assertEquals(" a 'Test'", eventList.get(4).getArgs()[0]);
+
+        // first author must be "Somebody <somebody@somewhere.org>"
+        assertEquals(
+                "Somebody 'Nickname' Great <somebody@somewhere.org>",
+                eventList.get(7).getArgs()[0]);
+
+        // second author must be "another author"
+        assertEquals("another author", eventList.get(10).getArgs()[0]);
+
+        // Date must be "2013 © Copyleft"
+        assertEquals("2013 \u00A9 Copyleft", eventList.get(13).getArgs()[0]);
+
+        // * META element must be an "unknown" Sink event that specifies:
+        // * name = "keywords" and content = "maven,doxia,markdown"
+        SinkEventElement meta = eventList.get(15);
         assertEquals("unknown", meta.getName());
         assertEquals("meta", meta.getArgs()[0]);
         SinkEventAttributeSet metaAtts = (SinkEventAttributeSet) meta.getArgs()[2];

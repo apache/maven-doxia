@@ -1,8 +1,13 @@
 ---
 title: A Title & a 'Test'
-author: Somebody 'Nickname' Great <somebody@somewhere.org>
+author:
+  - Somebody 'Nickname' Great <somebody@somewhere.org>
+  - another author
 date: 2013 © Copyleft
-keywords: maven,doxia,markdown
+keywords: 
+  - maven
+  - doxia
+  - markdown
 ---
 
 # The document with look-alike header
