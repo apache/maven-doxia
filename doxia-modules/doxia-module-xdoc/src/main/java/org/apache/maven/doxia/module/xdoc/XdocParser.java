@@ -100,7 +100,7 @@ public class XdocParser extends Xhtml5BaseParser implements XdocMarkup {
         }
 
         // leave this at default (false) until everything is properly implemented, see DOXIA-226
-        // setIgnorableWhitespace( true );
+        // setIgnorableWhitespace(true);
 
         try {
             super.parse(new StringReader(sourceContent), sink, reference);

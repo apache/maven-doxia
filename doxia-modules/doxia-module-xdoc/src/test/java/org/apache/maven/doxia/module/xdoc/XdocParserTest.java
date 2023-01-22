@@ -78,8 +78,8 @@ public class XdocParserTest extends AbstractParserTest {
 
         /* FileUtils 3.0.10 is about 5-8 times slower than File.listFiles() + regexp */
         //        String includes = "xdoc-*.xsd, xml.xsd";
-        //        List<File> tmpFiles = FileUtils.getFiles( new File( tmpDir ), includes, null, true );
-        //        for ( File tmpFile  : tmpFiles )
+        //        List<File> tmpFiles = FileUtils.getFiles(new File(tmpDir), includes, null, true);
+        //        for (File tmpFile  : tmpFiles)
         //        {
         //            tmpFile.delete();
         //        }

@@ -86,7 +86,7 @@ public class Xhtml5BaseParserTest extends AbstractParserTest {
         assertEquals("sectionTitle1_", it.next().getName());
         // this one is missing because we enclose everything in <p> which is not valid xhtml,
         // needs to be tested in overriding parser, eg XhtmlParser, XdocParser.
-        // assertEquals( "section1_", it.next().getName() );
+        // assertEquals("section1_", it.next().getName());
         assertEquals("paragraph_", it.next().getName());
         assertFalse(it.hasNext());
     }
@@ -123,8 +123,8 @@ public class Xhtml5BaseParserTest extends AbstractParserTest {
         assertEquals("sectionTitle2_", it.next().getName());
         // these two are missing because we enclose everything in <p> which is not valid xhtml,
         // needs to be tested in overriding parser, eg XhtmlParser, XdocParser.
-        // assertEquals( "section2_", it.next().getName() );
-        // assertEquals( "section1_", it.next().getName() );
+        // assertEquals("section2_", it.next().getName());
+        // assertEquals("section1_", it.next().getName());
         assertEquals("paragraph_", it.next().getName());
         assertFalse(it.hasNext());
     }
@@ -396,7 +396,7 @@ public class Xhtml5BaseParserTest extends AbstractParserTest {
 
         assertEquals("paragraph_", it.next().getName());
         // FIXME
-        //        assertEquals( "section1_", it.next().getName() );
+        //        assertEquals("section1_", it.next().getName());
 
         assertFalse(it.hasNext());
     }

@@ -36,7 +36,7 @@ It contains several methods that encapsulate common text syntax. A start tag is 
 
 +--
 sink.paragraph();
-sink.text( "my text" );
+sink.text("my text");
 sink.paragraph_();
 +--
 

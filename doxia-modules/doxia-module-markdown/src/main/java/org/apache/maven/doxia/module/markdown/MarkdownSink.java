@@ -209,7 +209,7 @@ public class MarkdownSink extends AbstractTextSink implements MarkdownMarkup {
             write(EOL);
         }
         // TODO add --- once DOXIA-617 implemented
-        // write( METADATA_MARKUP + EOL );
+        // write(METADATA_MARKUP + EOL);
         if (title != null) {
             write("title: " + title + EOL);
         }
@@ -219,7 +219,7 @@ public class MarkdownSink extends AbstractTextSink implements MarkdownMarkup {
         if (date != null) {
             write("date: " + date + EOL);
         }
-        // write( METADATA_MARKUP + EOL );
+        // write(METADATA_MARKUP + EOL);
     }
 
     /**
@@ -384,8 +384,8 @@ public class MarkdownSink extends AbstractTextSink implements MarkdownMarkup {
      * {@inheritDoc}
      */
     public void listItem() {
-        // if ( !numberedList )
-        // write( EOL + listNestingIndent + "*" );
+        // if (!numberedList)
+        // write(EOL + listNestingIndent + "*");
         // else
         numberedListItem();
         itemFlag = true;
@@ -726,7 +726,7 @@ public class MarkdownSink extends AbstractTextSink implements MarkdownMarkup {
 
     /** {@inheritDoc} */
     public void anchor(String name) {
-        // write( ANCHOR_START_MARKUP + name );
+        // write(ANCHOR_START_MARKUP + name);
         // TODO get implementation from Xhtml5 base sink
     }
 
@@ -734,7 +734,7 @@ public class MarkdownSink extends AbstractTextSink implements MarkdownMarkup {
      * {@inheritDoc}
      */
     public void anchor_() {
-        // write( ANCHOR_END_MARKUP );
+        // write(ANCHOR_END_MARKUP);
     }
 
     /** {@inheritDoc} */

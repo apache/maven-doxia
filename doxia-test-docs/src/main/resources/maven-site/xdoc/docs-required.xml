@@ -85,7 +85,7 @@ under the License.
         > The active project changes during the reactor build. At the compile
         > stage, it refers to the target/classes directory. At the package
         > stage, it points to the jar file. If you are implementing your own
-        > packaging goal, you need to call project.getArtifact().setFile( ... )
+        > packaging goal, you need to call project.getArtifact().setFile(...)
         > to ensure this is used.
 
         - multi module howto

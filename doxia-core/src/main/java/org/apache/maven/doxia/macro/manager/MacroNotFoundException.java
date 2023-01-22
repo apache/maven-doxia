@@ -41,7 +41,7 @@ public class MacroNotFoundException extends Exception {
 
     /**
      * Constructs a new MacroNotFoundException with the specified cause.
-     * The error message is (cause == null ? null : cause.toString() ).
+     * The error message is (cause == null ? null : cause.toString()).
      *
      * @param cause the cause. This can be retrieved later by the
      * Throwable.getCause() method. (A null value is permitted, and indicates

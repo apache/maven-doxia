@@ -389,8 +389,8 @@ public class AptSink extends AbstractTextSink implements AptMarkup {
      * {@inheritDoc}
      */
     public void listItem() {
-        // if ( !numberedList )
-        // write( EOL + listNestingIndent + "*" );
+        // if (!numberedList)
+        // write(EOL + listNestingIndent + "*");
         // else
         numberedListItem();
         itemFlag = true;

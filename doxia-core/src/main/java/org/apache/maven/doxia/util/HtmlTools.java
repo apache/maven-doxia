@@ -420,7 +420,7 @@ public class HtmlTools {
      *
      * <p>
      *   <b>Note</b>: this method is identical to
-     *   {@link DoxiaUtils#encodeId(String,boolean) DoxiaUtils.encodeId( id, false )},
+     *   {@link DoxiaUtils#encodeId(String,boolean) DoxiaUtils.encodeId(id, false)},
      *   the rules to encode an id are laid out there.
      * </p>
      *

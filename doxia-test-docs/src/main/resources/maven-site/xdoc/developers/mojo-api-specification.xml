@@ -58,7 +58,7 @@ under the License.
         interface, which the Mojo
         must implement (or else extend its abstract base class counterpart
         <code>org.apache.maven.plugin.AbstractMojo</code>
-        ). This interface
+       ). This interface
         guarantees the correct execution contract for the Mojo: no parameters,
         void return type, and a throws clause that allows only
         <code>org.apache.maven.plugin.MojoExecutionException</code>
@@ -106,7 +106,7 @@ under the License.
         <ul>
           <li>
             <code>
-              void setLog( org.apache.maven.monitor.logging.Log )
+              void setLog(org.apache.maven.monitor.logging.Log)
             </code>
             <p>Inject a standard Maven logging mechanism to allow this Mojo
               to communicate events and feedback to the user.</p>
@@ -149,7 +149,7 @@ under the License.
         <ul>
           <li>
             <code>
-              public void setLog( org.apache.maven.monitor.logging.Log )
+              public void setLog(org.apache.maven.monitor.logging.Log)
             </code>
             <p>
               <b>[IMPLEMENTED]</b>
@@ -199,7 +199,7 @@ under the License.
         <h5>Method Summary:</h5>
         <ul>
           <li>
-            <code>void debug( java.lang.CharSequence )</code>
+            <code>void debug(java.lang.CharSequence)</code>
             <p>Send a message to the user in the
               <b>debug</b>
               error level.
@@ -207,7 +207,7 @@ under the License.
           </li>
           <li>
             <code>
-              void debug( java.lang.CharSequence, java.lang.Throwable )
+              void debug(java.lang.CharSequence, java.lang.Throwable)
             </code>
             <p>Send a message (and accompanying exception) to the user in the
               <b>debug</b>
@@ -216,7 +216,7 @@ under the License.
             </p>
           </li>
           <li>
-            <code>void debug( java.lang.Throwable )</code>
+            <code>void debug(java.lang.Throwable)</code>
             <p>Send an exception to the user in the
               <b>debug</b>
               error level.
@@ -225,7 +225,7 @@ under the License.
             </p>
           </li>
           <li>
-            <code>void info( java.lang.CharSequence )</code>
+            <code>void info(java.lang.CharSequence)</code>
             <p>Send a message to the user in the
               <b>info</b>
               error level.
@@ -233,7 +233,7 @@ under the License.
           </li>
           <li>
             <code>
-              void info( java.lang.CharSequence, java.lang.Throwable )
+              void info(java.lang.CharSequence, java.lang.Throwable)
             </code>
             <p>Send a message (and accompanying exception) to the user in the
               <b>info</b>
@@ -242,7 +242,7 @@ under the License.
             </p>
           </li>
           <li>
-            <code>void info( java.lang.CharSequence )</code>
+            <code>void info(java.lang.CharSequence)</code>
             <p>Send an exception to the user in the
               <b>info</b>
               error level.
@@ -251,7 +251,7 @@ under the License.
             </p>
           </li>
           <li>
-            <code>void warn( java.lang.CharSequence )</code>
+            <code>void warn(java.lang.CharSequence)</code>
             <p>Send a message to the user in the
               <b>warn</b>
               error level.
@@ -259,7 +259,7 @@ under the License.
           </li>
           <li>
             <code>
-              void warn( java.lang.CharSequence, java.lang.Throwable )
+              void warn(java.lang.CharSequence, java.lang.Throwable)
             </code>
             <p>Send a message (and accompanying exception) to the user in the
               <b>warn</b>
@@ -268,7 +268,7 @@ under the License.
             </p>
           </li>
           <li>
-            <code>void warn( java.lang.CharSequence )</code>
+            <code>void warn(java.lang.CharSequence)</code>
             <p>Send an exception to the user in the
               <b>warn</b>
               error level.
@@ -277,7 +277,7 @@ under the License.
             </p>
           </li>
           <li>
-            <code>void error( java.lang.CharSequence )</code>
+            <code>void error(java.lang.CharSequence)</code>
             <p>Send a message to the user in the
               <b>error</b>
               error level.
@@ -285,7 +285,7 @@ under the License.
           </li>
           <li>
             <code>
-              void error( java.lang.CharSequence, java.lang.Throwable )
+              void error(java.lang.CharSequence, java.lang.Throwable)
             </code>
             <p>Send a message (and accompanying exception) to the user in the
               <b>error</b>
@@ -294,7 +294,7 @@ under the License.
             </p>
           </li>
           <li>
-            <code>void error( java.lang.CharSequence )</code>
+            <code>void error(java.lang.CharSequence)</code>
             <p>Send an exception to the user in the
               <b>error</b>
               error level.

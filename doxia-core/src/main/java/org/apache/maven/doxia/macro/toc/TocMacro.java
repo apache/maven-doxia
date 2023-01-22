@@ -56,7 +56,7 @@ import org.codehaus.plexus.util.StringUtils;
  * subsections (depth 2) and  sub-subsections (depth 3).</dd>
  * <dt>%{toc}</dt>
  * <dd>display a TOC with all section and subsections
- * (similar to %{toc|section=0} )</dd>
+ * (similar to %{toc|section=0})</dd>
  * </dl>
  * Moreover, you need to write APT link for section to allow anchor,
  * for instance:

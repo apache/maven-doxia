@@ -264,7 +264,7 @@ mvn deploy:deploy-file \
         <p>
           You are on Windows XP with Sun JDK 5 or JDK 6 freshly installed, and when you run <i>mvn javadoc:javadoc</i>,
           you are stick by an <i>sun.net.www.ParseUtil.decode()</i> exception like this
-          <a href="javascript:;" onclick="toggleException( '_6219854' );" style="cursor: pointer;vertical-align:text-bottom;">one</a>.
+          <a href="javascript:;" onclick="toggleException('_6219854');" style="cursor: pointer;vertical-align:text-bottom;">one</a>.
           <div id="_6219854" style="display:none">
             <source>
 ...
@@ -367,10 +367,10 @@ mvn deploy:deploy-file \
         </p>
 
         <script language="javascript" type="text/javascript">
-          function toggleException( divId )
+          function toggleException(divId)
           {
-            var div = document.getElementById( divId );
-            if( div.style.display == '' )
+            var div = document.getElementById(divId);
+            if(div.style.display == '')
             {
               div.style.display = 'none';
             }

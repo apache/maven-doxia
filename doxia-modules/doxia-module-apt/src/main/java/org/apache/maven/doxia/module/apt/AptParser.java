@@ -1041,7 +1041,7 @@ public class AptParser extends AbstractTextParser implements AptMarkup {
         int length, indent, i;
 
         skipLoop:
-        for (; ; ) {
+        for (; ;) {
             if (line == null) {
                 block = null;
                 return;
@@ -2302,7 +2302,7 @@ public class AptParser extends AbstractTextParser implements AptMarkup {
             j = skipSpaceFrom(j + 1);
             if (j == textLength) {
                 // TODO: this doesn't handle the case of a dd in a paragraph
-                // throw new AptParseException( "no definition" );
+                // throw new AptParseException("no definition");
             }
 
             AptParser.this.sink.definition();

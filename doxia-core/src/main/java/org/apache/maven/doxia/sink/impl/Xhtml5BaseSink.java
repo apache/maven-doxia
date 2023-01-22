@@ -1835,7 +1835,7 @@ public class Xhtml5BaseSink extends AbstractXmlSink implements HtmlMarkup {
      * This can be used to generate html tags for which no corresponding sink event exists.
      *
      * <p>
-     * If {@link org.apache.maven.doxia.util.HtmlTools#getHtmlTag(String) HtmlTools.getHtmlTag( name )}
+     * If {@link org.apache.maven.doxia.util.HtmlTools#getHtmlTag(String) HtmlTools.getHtmlTag(name)}
      * does not return null, the corresponding tag will be written.
      * </p>
      *
@@ -1849,11 +1849,11 @@ public class Xhtml5BaseSink extends AbstractXmlSink implements HtmlMarkup {
      *
      * <pre>
      *  SinkEventAttributeSet atts = new SinkEventAttributeSet();
-     *  atts.addAttribute( SinkEventAttributes.CLASS, "detail" );
-     *  atts.addAttribute( SinkEventAttributes.STYLE, "display:inline" );
-     *  sink.unknown( "div", new Object[]{new Integer( HtmlMarkup.TAG_TYPE_START )}, atts );
-     *  sink.text( "text" );
-     *  sink.unknown( "div", new Object[]{new Integer( HtmlMarkup.TAG_TYPE_END )}, null );
+     *  atts.addAttribute(SinkEventAttributes.CLASS, "detail");
+     *  atts.addAttribute(SinkEventAttributes.STYLE, "display:inline");
+     *  sink.unknown("div", new Object[]{new Integer(HtmlMarkup.TAG_TYPE_START)}, atts);
+     *  sink.text("text");
+     *  sink.unknown("div", new Object[]{new Integer(HtmlMarkup.TAG_TYPE_END)}, null);
      * </pre>
      *
      * @param name the name of the event. If this is not a valid xhtml tag name
@@ -1962,7 +1962,7 @@ public class Xhtml5BaseSink extends AbstractXmlSink implements HtmlMarkup {
     }
 
     /**
-     * Forward to HtmlTools.escapeHTML( text ).
+     * Forward to HtmlTools.escapeHTML(text).
      *
      * @param text the String to escape, may be null
      * @return the text escaped, "" if null String input
@@ -1973,7 +1973,7 @@ public class Xhtml5BaseSink extends AbstractXmlSink implements HtmlMarkup {
     }
 
     /**
-     * Forward to HtmlTools.encodeURL( text ).
+     * Forward to HtmlTools.encodeURL(text).
      *
      * @param text the String to encode, may be null.
      * @return the text encoded, null if null String input.

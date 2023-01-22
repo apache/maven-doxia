@@ -61,7 +61,7 @@ Using the RandomAccessSink
   When using the RandomAccesSink we can prepare the structure of the page
   
 +--------------------------------------------------------------------------------------------------*
-  RandomAccessSink randomAccessSink = new RandomAccessSink( sinkFactory, outputStream, encoding );
+  RandomAccessSink randomAccessSink = new RandomAccessSink(sinkFactory, outputStream, encoding);
   Sink questions  = randomAccessSink.addSinkHook();
   Sink qAndA      = randomAccessSink.addSinkHook();
 +--------------------------------------------------------------------------------------------------*  

@@ -26,7 +26,7 @@ import javax.swing.text.MutableAttributeSet;
  * All sink methods that produce some presentation-level output should have at least
  * one form that allows to pass in a Set of SinkEventAttributes. For instance in
  * </p>
- * <pre>void text( String text, SinkEventAttributes attributes );</pre>
+ * <pre>void text(String text, SinkEventAttributes attributes);</pre>
  * <p>
  * the <code>attributes</code> parameter can be used to specify some text styling
  * options, or other optional parameters.

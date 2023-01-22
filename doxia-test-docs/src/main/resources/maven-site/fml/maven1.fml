@@ -68,7 +68,7 @@
             <i>No more properties files</i>
             - All plugins are now configured from the POM (which is now called
             <code>pom.xml</code>
-            ).
+           ).
           </li>
           <li>
             <i>No more

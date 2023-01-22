@@ -155,15 +155,15 @@ public interface Sink {
      *   sink.head();
      *
      *   sink.title();
-     *   sink.text( "Title" );
+     *   sink.text("Title");
      *   sink.title_();
      *
      *   sink.author();
-     *   sink.text( "Author" );
+     *   sink.text("Author");
      *   sink.author_();
      *
      *   sink.date();
-     *   sink.text( "Date" );
+     *   sink.text("Date");
      *   sink.date_();
      *
      *   sink.head_();
@@ -861,10 +861,10 @@ public interface Sink {
      * <pre>
      *   sink.figure();
      *
-     *   sink.figureGraphics( "figure.png" );
+     *   sink.figureGraphics("figure.png");
      *
      *   sink.figureCaption();
-     *   sink.text( "Figure caption",);
+     *   sink.text("Figure caption",);
      *   sink.figureCaption_();
      *
      *   sink.figure_();
@@ -975,21 +975,21 @@ public interface Sink {
      * <pre>
      *   sink.table();
      *
-     *   sink.tableRows( justify, true );
+     *   sink.tableRows(justify, true);
      *
      *   sink.tableRow();
      *   sink.tableCell();
-     *   sink.text( "cell 1,1" );
+     *   sink.text("cell 1,1");
      *   sink.tableCell_();
      *   sink.tableCell();
-     *   sink.text( "cell 1,2" );
+     *   sink.text("cell 1,2");
      *   sink.tableCell_();
      *   sink.tableRow_();
      *
      *   sink.tableRows_();
      *
      *   sink.tableCaption();
-     *   sink.text( "Table caption" );
+     *   sink.text("Table caption");
      *   sink.tableCaption_();
      *
      *   sink.table_();

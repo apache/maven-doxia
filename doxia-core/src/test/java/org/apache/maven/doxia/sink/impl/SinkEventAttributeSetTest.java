@@ -233,12 +233,12 @@ public class SinkEventAttributeSetTest {
         result = sinkEventAttributeSet.clone();
         assertEquals(sinkEventAttributeSet, result);
         sinkEventAttributeSet.setResolveParent(SinkEventAttributeSet.CENTER);
-        // assertFalse( sinkEventAttributeSet.equals( result ) );
+        // assertFalse(sinkEventAttributeSet.equals(result));
 
         result = sinkEventAttributeSet.clone();
         assertEquals(sinkEventAttributeSet, result);
         sinkEventAttributeSet.setResolveParent(SinkEventAttributeSet.BOXED);
-        // assertFalse( sinkEventAttributeSet.equals( result ) );
+        // assertFalse(sinkEventAttributeSet.equals(result));
     }
 
     /**

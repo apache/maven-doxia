@@ -111,7 +111,7 @@ public class ParseException extends Exception {
 
     /**
      * Constructs a new exception with the specified cause, line number and column number. The error message is
-     *  (cause == null ? null : cause.toString() ).
+     *  (cause == null ? null : cause.toString()).
      *
      * @param e the cause. This can be retrieved later by the <code>Throwable.getCause()</code> method.
      * (A null value is permitted, and indicates that the cause is nonexistent or unknown.)

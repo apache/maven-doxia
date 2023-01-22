@@ -398,7 +398,7 @@ public class XdocSink extends Xhtml5BaseSink implements XdocMarkup {
      * @see javax.swing.text.html.HTML.Tag#TABLE
      */
     public void tableRows(int[] justification, boolean grid) {
-        // similar to super.tableRows( justification, grid ) but without class.
+        // similar to super.tableRows(justification, grid) but without class.
 
         setCellJustif(justification);
 

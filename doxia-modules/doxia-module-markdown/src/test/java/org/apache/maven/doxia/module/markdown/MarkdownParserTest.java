@@ -90,7 +90,7 @@ public class MarkdownParserTest extends AbstractParserTest {
      */
     @Test
     public void testFontBoldSinkEvent() throws Exception {
-        // System.out.println( parseFileToHtml( "font-bold" ) );
+        // System.out.println(parseFileToHtml("font-bold"));
         List<SinkEventElement> eventList =
                 parseFileToEventTestingSink("font-bold").getEventList();
         Iterator<SinkEventElement> it = eventList.iterator();
@@ -112,7 +112,7 @@ public class MarkdownParserTest extends AbstractParserTest {
      */
     @Test
     public void testFontItalicSinkEvent() throws Exception {
-        // System.out.println( parseFileToHtml( "font-italic" ) );
+        // System.out.println(parseFileToHtml("font-italic"));
         List<SinkEventElement> eventList =
                 parseFileToEventTestingSink("font-italic").getEventList();
         Iterator<SinkEventElement> it = eventList.iterator();
@@ -133,7 +133,7 @@ public class MarkdownParserTest extends AbstractParserTest {
      */
     @Test
     public void testFontMonospacedSinkEvent() throws Exception {
-        // System.out.println( parseFileToHtml( "font-monospaced" ) );
+        // System.out.println(parseFileToHtml("font-monospaced"));
         List<SinkEventElement> eventList =
                 parseFileToEventTestingSink("font-monospaced").getEventList();
         Iterator<SinkEventElement> it = eventList.iterator();

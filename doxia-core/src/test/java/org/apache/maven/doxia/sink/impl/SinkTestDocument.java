@@ -43,7 +43,7 @@ public class SinkTestDocument {
 
         // TODO: what is this supposed to do?
         // sink.sectionTitle();
-        // sink.text( "Section Title" );
+        // sink.text("Section Title");
         // sink.sectionTitle_();
 
         sink.paragraph();

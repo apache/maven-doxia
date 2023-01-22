@@ -127,9 +127,9 @@ public abstract class AbstractSinkTestCase {
     // ----------------------------------------------------------------------
 
     /**
-     * Return the current base diretory as a File.
+     * Return the current base directory as a File.
      *
-     * @return the current base diretory as a File.
+     * @return the current base directory as a File.
      */
     public File getBasedirFile() {
         return new File(getBasedir());

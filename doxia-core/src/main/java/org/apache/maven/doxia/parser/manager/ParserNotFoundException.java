@@ -41,7 +41,7 @@ public class ParserNotFoundException extends Exception {
 
     /**
      * Constructs a new exception with the specified cause. The error
-     * message is (cause == null ? null : cause.toString() ).
+     * message is (cause == null ? null : cause.toString()).
      *
      * @param cause the cause. This can be retrieved later by the
      * Throwable.getCause() method. (A null value is permitted, and indicates

@@ -114,7 +114,7 @@ public class DoxiaUtils {
      * Construct a valid Doxia id.
      *
      * <p>
-     *   This method is equivalent to {@link #encodeId(java.lang.String, boolean) encodeId( id, false )}.
+     *   This method is equivalent to {@link #encodeId(java.lang.String, boolean) encodeId(id, false)}.
      * </p>
      *
      * @param id The id to be encoded.
@@ -169,16 +169,16 @@ public class DoxiaUtils {
      * Here are some examples:
      * </p>
      * <pre>
-     * DoxiaUtils.encodeId( null )        = null
-     * DoxiaUtils.encodeId( "" )          = "a"
-     * DoxiaUtils.encodeId( "  " )        = "a"
-     * DoxiaUtils.encodeId( " _ " )       = "a_"
-     * DoxiaUtils.encodeId( "1" )         = "a1"
-     * DoxiaUtils.encodeId( "1anchor" )   = "a1anchor"
-     * DoxiaUtils.encodeId( "_anchor" )   = "a_anchor"
-     * DoxiaUtils.encodeId( "a b-c123 " ) = "a_b-c123"
-     * DoxiaUtils.encodeId( "   anchor" ) = "anchor"
-     * DoxiaUtils.encodeId( "myAnchor" )  = "myAnchor"
+     * DoxiaUtils.encodeId(null)        = null
+     * DoxiaUtils.encodeId("")          = "a"
+     * DoxiaUtils.encodeId("  ")        = "a"
+     * DoxiaUtils.encodeId(" _ ")       = "a_"
+     * DoxiaUtils.encodeId("1")         = "a1"
+     * DoxiaUtils.encodeId("1anchor")   = "a1anchor"
+     * DoxiaUtils.encodeId("_anchor")   = "a_anchor"
+     * DoxiaUtils.encodeId("a b-c123 ") = "a_b-c123"
+     * DoxiaUtils.encodeId("   anchor") = "anchor"
+     * DoxiaUtils.encodeId("myAnchor")  = "myAnchor"
      * </pre>
      *
      * @param id The id to be encoded.

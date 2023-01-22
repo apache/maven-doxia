@@ -115,9 +115,9 @@ public abstract class AbstractSinkTest extends AbstractModuleTest {
     }
 
     /**
-     * Checks that the sequence <code>[title(), text( title ), title_()]</code>,
+     * Checks that the sequence <code>[title(), text(title), title_()]</code>,
      * invoked on the current sink, produces the same result as
-     * {@link #getTitleBlock getTitleBlock}( title ).
+     * {@link #getTitleBlock getTitleBlock}(title).
      */
     @Test
     public void testTitle() {
@@ -135,9 +135,9 @@ public abstract class AbstractSinkTest extends AbstractModuleTest {
     }
 
     /**
-     * Checks that the sequence <code>[author(), text( author ), author_()]
+     * Checks that the sequence <code>[author(), text(author), author_()]
      * </code>, invoked on the current sink, produces the same result as
-     * {@link #getAuthorBlock getAuthorBlock}( author ).
+     * {@link #getAuthorBlock getAuthorBlock}(author).
      */
     @Test
     public void testAuthor() {
@@ -155,9 +155,9 @@ public abstract class AbstractSinkTest extends AbstractModuleTest {
     }
 
     /**
-     * Checks that the sequence <code>[date(), text( date ), date_()]</code>,
+     * Checks that the sequence <code>[date(), text(date), date_()]</code>,
      * invoked on the current sink, produces the same result as
-     * {@link #getDateBlock getDateBlock}( date ).
+     * {@link #getDateBlock getDateBlock}(date).
      */
     @Test
     public void testDate() {
@@ -265,10 +265,10 @@ public abstract class AbstractSinkTest extends AbstractModuleTest {
     }
 
     /**
-     * Checks that the sequence <code>[sectionTitle(), text( title ),
+     * Checks that the sequence <code>[sectionTitle(), text(title),
      * sectionTitle_()]</code>, invoked on the current sink, produces
      * the same result as
-     * {@link #getSectionTitleBlock getSectionTitleBlock}( title ).
+     * {@link #getSectionTitleBlock getSectionTitleBlock}(title).
      */
     @Test
     public void testSectionTitle() {
@@ -287,9 +287,9 @@ public abstract class AbstractSinkTest extends AbstractModuleTest {
 
     /**
      * Checks that the sequence <code>[section1(), sectionTitle1(),
-     * text( title ), sectionTitle1_(), section1_()]</code>,
+     * text(title), sectionTitle1_(), section1_()]</code>,
      * invoked on the current sink, produces the same result as
-     * {@link #getSection1Block getSection1Block}( title ).
+     * {@link #getSection1Block getSection1Block}(title).
      */
     @Test
     public void testSection1() {
@@ -312,9 +312,9 @@ public abstract class AbstractSinkTest extends AbstractModuleTest {
 
     /**
      * Checks that the sequence <code>[section2(), sectionTitle2(),
-     * text( title ), sectionTitle2_(), section2_()]</code>,
+     * text(title), sectionTitle2_(), section2_()]</code>,
      * invoked on the current sink, produces the same result as
-     * {@link #getSection2Block getSection2Block}( title ).
+     * {@link #getSection2Block getSection2Block}(title).
      */
     @Test
     public void testSection2() {
@@ -337,9 +337,9 @@ public abstract class AbstractSinkTest extends AbstractModuleTest {
 
     /**
      * Checks that the sequence <code>[section3(), sectionTitle3(),
-     * text( title ), sectionTitle3_(), section3_()]</code>,
+     * text(title), sectionTitle3_(), section3_()]</code>,
      * invoked on the current sink, produces the same result as
-     * {@link #getSection3Block getSection3Block}( title ).
+     * {@link #getSection3Block getSection3Block}(title).
      */
     @Test
     public void testSection3() {
@@ -362,9 +362,9 @@ public abstract class AbstractSinkTest extends AbstractModuleTest {
 
     /**
      * Checks that the sequence <code>[section4(), sectionTitle4(),
-     * text( title ), sectionTitle4_(), section4_()]</code>,
+     * text(title), sectionTitle4_(), section4_()]</code>,
      * invoked on the current sink, produces the same result as
-     * {@link #getSection4Block getSection4Block}( title ).
+     * {@link #getSection4Block getSection4Block}(title).
      *
      */
     @Test
@@ -388,9 +388,9 @@ public abstract class AbstractSinkTest extends AbstractModuleTest {
 
     /**
      * Checks that the sequence <code>[section5(), sectionTitle5(),
-     * text( title ), sectionTitle5_(), section5_()]</code>,
+     * text(title), sectionTitle5_(), section5_()]</code>,
      * invoked on the current sink, produces the same result as
-     * {@link #getSection5Block getSection5Block}( title ).
+     * {@link #getSection5Block getSection5Block}(title).
      */
     @Test
     public void testSection5() {
@@ -468,9 +468,9 @@ public abstract class AbstractSinkTest extends AbstractModuleTest {
     }
 
     /**
-     * Checks that the sequence <code>[list(), listItem(), text( item ),
+     * Checks that the sequence <code>[list(), listItem(), text(item),
      * listItem_(), list_()]</code>, invoked on the current sink, produces
-     * the same result as {@link #getListBlock getListBlock}( item ).
+     * the same result as {@link #getListBlock getListBlock}(item).
      *
      */
     @Test
@@ -492,10 +492,10 @@ public abstract class AbstractSinkTest extends AbstractModuleTest {
 
     /**
      * Checks that the sequence <code>
-     * [numberedList( Sink.NUMBERING_LOWER_ROMAN ), numberedListItem(),
-     * text( item ), numberedListItem_(), numberedList_()]</code>,
+     * [numberedList(Sink.NUMBERING_LOWER_ROMAN), numberedListItem(),
+     * text(item), numberedListItem_(), numberedList_()]</code>,
      * invoked on the current sink, produces the same result as
-     * {@link #getNumberedListBlock getNumberedListBlock}( item ).
+     * {@link #getNumberedListBlock getNumberedListBlock}(item).
      */
     @Test
     public void testNumberedList() {
@@ -516,11 +516,11 @@ public abstract class AbstractSinkTest extends AbstractModuleTest {
 
     /**
      * Checks that the sequence <code>[definitionList(), definitionListItem(),
-     * definedTerm(), text( definum ), definedTerm_(), definition(),
-     * text( definition ), definition_(), definitionListItem_(),
+     * definedTerm(), text(definum), definedTerm_(), definition(),
+     * text(definition), definition_(), definitionListItem_(),
      * definitionList_()]</code>, invoked on the current sink, produces the same
      * result as {@link #getDefinitionListBlock getDefinitionListBlock}
-     * ( definum, definition ).
+     * (definum, definition).
      */
     @Test
     public void testDefinitionList() {
@@ -546,10 +546,10 @@ public abstract class AbstractSinkTest extends AbstractModuleTest {
     }
 
     /**
-     * Checks that the sequence <code>[figure(), figureGraphics( source ),
-     * figureCaption(), text( caption ), figureCaption_(), figure_()]</code>,
+     * Checks that the sequence <code>[figure(), figureGraphics(source),
+     * figureCaption(), text(caption), figureCaption_(), figure_()]</code>,
      * invoked on the current sink, produces the same result as
-     * {@link #getFigureBlock getFigureBlock}( source, caption ).
+     * {@link #getFigureBlock getFigureBlock}(source, caption).
      */
     @Test
     public void testFigure() {
@@ -614,11 +614,11 @@ public abstract class AbstractSinkTest extends AbstractModuleTest {
 
     /**
      * Checks that the sequence <code>[table(),
-     * tableRows( Sink.JUSTIFY_CENTER, false ), tableRow(), tableCell(),
-     * text( cell ), tableCell_(), tableRow_(), tableRows_(), tableCaption(),
-     * text( caption ), tableCaption_(), table_()]</code>,
+     * tableRows(Sink.JUSTIFY_CENTER, false), tableRow(), tableCell(),
+     * text(cell), tableCell_(), tableRow_(), tableRows_(), tableCaption(),
+     * text(caption), tableCaption_(), table_()]</code>,
      * invoked on the current sink, produces the same result as
-     * {@link #getTableBlock getTableBlock}( cell, caption ).
+     * {@link #getTableBlock getTableBlock}(cell, caption).
      */
     @Test
     public void testTable() {
@@ -651,9 +651,9 @@ public abstract class AbstractSinkTest extends AbstractModuleTest {
     }
 
     /**
-     * Checks that the sequence <code>[paragraph(), text( text ),
+     * Checks that the sequence <code>[paragraph(), text(text),
      * paragraph_()]</code>, invoked on the current sink, produces
-     * the same result as {@link #getParagraphBlock getParagraphBlock}( text ).
+     * the same result as {@link #getParagraphBlock getParagraphBlock}(text).
      */
     @Test
     public void testParagraph() {
@@ -671,9 +671,9 @@ public abstract class AbstractSinkTest extends AbstractModuleTest {
     }
 
     /**
-     * Checks that the sequence <code>[data(), text( text ),
+     * Checks that the sequence <code>[data(), text(text),
      * data_()]</code>, invoked on the current sink, produces
-     * the same result as {@link #getDataBlock getDataBlock}( text ).
+     * the same result as {@link #getDataBlock getDataBlock}(text).
      */
     @Test
     public void testData() {
@@ -692,9 +692,9 @@ public abstract class AbstractSinkTest extends AbstractModuleTest {
     }
 
     /**
-     * Checks that the sequence <code>[time(), text( text ),
+     * Checks that the sequence <code>[time(), text(text),
      * time_()]</code>, invoked on the current sink, produces
-     * the same result as {@link #getTimeBlock getTimeBlock}( text ).
+     * the same result as {@link #getTimeBlock getTimeBlock}(text).
      */
     @Test
     public void testTime() {
@@ -713,9 +713,9 @@ public abstract class AbstractSinkTest extends AbstractModuleTest {
     }
 
     /**
-     * Checks that the sequence <code>[address(), text( text ),
+     * Checks that the sequence <code>[address(), text(text),
      * address_()]</code>, invoked on the current sink, produces
-     * the same result as {@link #getAddressBlock getAddressBlock}( text ).
+     * the same result as {@link #getAddressBlock getAddressBlock}(text).
      */
     @Test
     public void testAddress() {
@@ -733,9 +733,9 @@ public abstract class AbstractSinkTest extends AbstractModuleTest {
     }
 
     /**
-     * Checks that the sequence <code>[blockquote(), text( text ),
+     * Checks that the sequence <code>[blockquote(), text(text),
      * blockquote_()]</code>, invoked on the current sink, produces
-     * the same result as {@link #getBlockquoteBlock}( text ).
+     * the same result as {@link #getBlockquoteBlock}(text).
      */
     @Test
     public void testBlockquote() {
@@ -753,9 +753,9 @@ public abstract class AbstractSinkTest extends AbstractModuleTest {
     }
 
     /**
-     * Checks that the sequence <code>[division(), text( text ),
+     * Checks that the sequence <code>[division(), text(text),
      * division_()]</code>, invoked on the current sink, produces
-     * the same result as {@link #getDivisionBlock getDivisionBlock}( text ).
+     * the same result as {@link #getDivisionBlock getDivisionBlock}(text).
      */
     @Test
     public void testDivider() {
@@ -773,9 +773,9 @@ public abstract class AbstractSinkTest extends AbstractModuleTest {
     }
 
     /**
-     * Checks that the sequence <code>[verbatim( SinkEventAttributeSet.BOXED ), text( text ),
+     * Checks that the sequence <code>[verbatim(SinkEventAttributeSet.BOXED), text(text),
      * verbatim_()]</code>, invoked on the current sink, produces the
-     * same result as {@link #getVerbatimBlock getVerbatimBlock}( text ).
+     * same result as {@link #getVerbatimBlock getVerbatimBlock}(text).
      */
     @Test
     public void testVerbatim() {
@@ -827,9 +827,9 @@ public abstract class AbstractSinkTest extends AbstractModuleTest {
     }
 
     /**
-     * Checks that the sequence <code>[anchor( anchor ), text( anchor ),
+     * Checks that the sequence <code>[anchor(anchor), text(anchor),
      * anchor_()]</code>, invoked on the current sink, produces the same
-     * result as {@link #getAnchorBlock getAnchorBlock}( anchor ).
+     * result as {@link #getAnchorBlock getAnchorBlock}(anchor).
      */
     @Test
     public void testAnchor() {
@@ -847,9 +847,9 @@ public abstract class AbstractSinkTest extends AbstractModuleTest {
     }
 
     /**
-     * Checks that the sequence <code>[link( link ), text( text ),
+     * Checks that the sequence <code>[link(link), text(text),
      * link_()]</code>, invoked on the current sink, produces the same
-     * result as {@link #getLinkBlock getLinkBlock}( link, text ).
+     * result as {@link #getLinkBlock getLinkBlock}(link, text).
      */
     @Test
     public void testLink() {
@@ -868,9 +868,9 @@ public abstract class AbstractSinkTest extends AbstractModuleTest {
     }
 
     /**
-     * Checks that the sequence <code>[inline(), text( text ), inline_()]</code>,
+     * Checks that the sequence <code>[inline(), text(text), inline_()]</code>,
      * invoked on the current sink, produces the same result as
-     * {@link #getInlineBlock getInlineBlock}( text ).
+     * {@link #getInlineBlock getInlineBlock}(text).
      */
     @Test
     public void testInline() {
@@ -888,9 +888,9 @@ public abstract class AbstractSinkTest extends AbstractModuleTest {
     }
 
     /**
-     * Checks that the sequence <code>[inline(bold), text( text ), inline_()]</code>,
+     * Checks that the sequence <code>[inline(bold), text(text), inline_()]</code>,
      * invoked on the current sink, produces the same result as
-     * {@link #getInlineBoldBlock getInlineBoldBlock}( text ).
+     * {@link #getInlineBoldBlock getInlineBoldBlock}(text).
      */
     @Test
     public void testInlineBold() {
@@ -908,9 +908,9 @@ public abstract class AbstractSinkTest extends AbstractModuleTest {
     }
 
     /**
-     * Checks that the sequence <code>[inline(italic), text( text ), inline_()]</code>,
+     * Checks that the sequence <code>[inline(italic), text(text), inline_()]</code>,
      * invoked on the current sink, produces the same result as
-     * {@link #getInlineBoldBlock getInlineBoldBlock}( text ).
+     * {@link #getInlineBoldBlock getInlineBoldBlock}(text).
      */
     @Test
     public void testInlineItalic() {
@@ -928,9 +928,9 @@ public abstract class AbstractSinkTest extends AbstractModuleTest {
     }
 
     /**
-     * Checks that the sequence <code>[inline(code), text( text ), inline_()]</code>,
+     * Checks that the sequence <code>[inline(code), text(text), inline_()]</code>,
      * invoked on the current sink, produces the same result as
-     * {@link #getInlineBoldBlock getInlineBoldBlock}( text ).
+     * {@link #getInlineBoldBlock getInlineBoldBlock}(text).
      */
     @Test
     public void testInlineCode() {
@@ -999,7 +999,7 @@ public abstract class AbstractSinkTest extends AbstractModuleTest {
     }
 
     /**
-     * Checks that the sequence <code>[text( text )]</code>,
+     * Checks that the sequence <code>[text(text)]</code>,
      * invoked on the current sink, produces the same result as
      * {@link #getTextBlock getTextBlock()}.
      */
@@ -1017,9 +1017,9 @@ public abstract class AbstractSinkTest extends AbstractModuleTest {
     }
 
     /**
-     * Checks that the sequence <code>[rawText( text )]</code>,
+     * Checks that the sequence <code>[rawText(text)]</code>,
      * invoked on the current sink, produces the same result as
-     * {@link #getRawTextBlock getRawTextBlock}( text ).
+     * {@link #getRawTextBlock getRawTextBlock}(text).
      */
     @Test
     public void testRawText() {
@@ -1037,7 +1037,7 @@ public abstract class AbstractSinkTest extends AbstractModuleTest {
     /**
      * Checks that the sequence <code>[comment(comment)]</code>,
      * invoked on the current sink, produces the same result as
-     * {@link #getCommentBlock getCommentBlock}( comment ).
+     * {@link #getCommentBlock getCommentBlock}(comment).
      * @since 1.1.1
      */
     @Test
