@@ -23,7 +23,7 @@ under the License.
   <parent>
     <groupId>org.apache.maven.doxia</groupId>
     <artifactId>doxia-modules</artifactId>
-    <version>2.0.0-M5</version>
+    <version>2.0.0-M6-SNAPSHOT</version>
     <relativePath>../pom.xml</relativePath>
   </parent>
 
@@ -34,7 +34,7 @@ under the License.
     FML format is only supported as source format.</description>
 
   <scm>
-    <tag>doxia-2.0.0-M5</tag>
+    <tag>doxia-2.0.0-M4</tag>
   </scm>
 
   <dependencies>
