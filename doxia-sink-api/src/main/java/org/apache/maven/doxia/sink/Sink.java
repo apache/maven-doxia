@@ -1028,7 +1028,7 @@ public interface Sink {
     /**
      * Starts an element that contains rows of table data.
      *
-     * @See {@link #tableRows(int[], boolean)}
+     * @see #tableRows(int[], boolean)
      */
     void tableRows();
 

@@ -52,7 +52,7 @@ public class SinkEventAttributeSet implements SinkEventAttributes, Cloneable {
     /**
      * An unmodifiable attribute set containing only a boxed attribute.
      *
-     * @deprecated use {@link source} for source code
+     * @deprecated use {@link #SOURCE} for source code
      */
     @Deprecated
     public static final SinkEventAttributes BOXED;
