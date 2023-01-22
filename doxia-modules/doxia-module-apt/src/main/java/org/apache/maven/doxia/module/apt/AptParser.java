@@ -1041,7 +1041,7 @@ public class AptParser extends AbstractTextParser implements AptMarkup {
         int length, indent, i;
 
         skipLoop:
-        for (; ;) {
+        for (; ; ) {
             if (line == null) {
                 block = null;
                 return;

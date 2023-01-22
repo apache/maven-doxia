@@ -132,7 +132,7 @@ public abstract class AbstractXmlValidatorTest extends AbstractXmlValidator {
         if (testJar.toString().startsWith("jar")) {
             JarURLConnection conn = (JarURLConnection) testJar.openConnection();
             JarFile jarFile = conn.getJarFile();
-            for (Enumeration<JarEntry> e = jarFile.entries(); e.hasMoreElements();) {
+            for (Enumeration<JarEntry> e = jarFile.entries(); e.hasMoreElements(); ) {
                 JarEntry entry = e.nextElement();
 
                 if (entry.getName().startsWith("META-INF")) {

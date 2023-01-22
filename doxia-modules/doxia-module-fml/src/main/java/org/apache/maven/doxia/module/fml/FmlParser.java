@@ -506,7 +506,7 @@ public class FmlParser extends AbstractXmlParser implements FmlMarkup {
 
             sink.definitionList();
 
-            for (Iterator<Faq> faqIterator = part.getFaqs().iterator(); faqIterator.hasNext();) {
+            for (Iterator<Faq> faqIterator = part.getFaqs().iterator(); faqIterator.hasNext(); ) {
                 Faq faq = faqIterator.next();
 
                 sink.anchor(faq.getId());
