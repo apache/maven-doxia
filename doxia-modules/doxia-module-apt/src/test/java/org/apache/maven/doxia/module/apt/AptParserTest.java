@@ -486,6 +486,24 @@ public class AptParserTest extends AbstractParserTest {
         assertSinkEquals(it, "link_", "sectionTitle1_", "section1_", "body_");
     }
 
+    @Test
+    public void testMultipleAuthors() throws Exception {
+        // DOXIA-691
+        String head = parseFileToAptSink("test/authors");
+
+        SinkEventTestingSink sink = new SinkEventTestingSink();
+
+        parser.parse(head, sink);
+
+        Iterator<SinkEventElement> it = sink.getEventList().iterator();
+
+        assertSinkEquals(
+                it, "head", "title", "text", "title_", "author", "text", "author_", "author", "text", "author_",
+                "head_", "body", "body_");
+        assertSinkEquals(sink.getEventList().get(5), "text", "Konrad Windszus");
+        assertSinkEquals(sink.getEventList().get(8), "text", "Another author");
+    }
+
     protected String outputExtension() {
         return "apt";
     }
