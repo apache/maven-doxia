@@ -179,7 +179,7 @@ public class MarkdownParser extends AbstractTextParser implements TextMarkup {
     }
 
     private boolean processMetadataForHtml(StringBuilder html, StringBuilder source) {
-        final Map<String, List<String>> metaData;
+        final Map<String, List<String>> metadata;
         final int endOffset; // end of metadata within source
         // support two types of metadata:
         if (source.toString().startsWith("---")) {
@@ -187,20 +187,20 @@ public class MarkdownParser extends AbstractTextParser implements TextMarkup {
             Node documentRoot = FLEXMARK_METADATA_PARSER.parse(source.toString());
             YamlFrontMatterVisitor visitor = new YamlFrontMatterVisitor();
             visitor.visit(documentRoot);
-            metaData = visitor.getData();
+            metadata = visitor.getData();
             endOffset = visitor.getEndOffset();
         } else {
             // 2. Multimarkdown metadata (https://fletcher.github.io/MultiMarkdown-5/metadata.html), not yet supported
             // by Flexmark (https://github.com/vsch/flexmark-java/issues/550)
-            metaData = new LinkedHashMap<>();
+            metadata = new LinkedHashMap<>();
             Matcher metadataMatcher = METADATA_SECTION_PATTERN.matcher(source);
             if (metadataMatcher.find()) {
-                String entry = metadataMatcher.group(0) + '\n';
+                String entry = metadataMatcher.group(0) + EOL;
                 Matcher entryMatcher = METADATA_ENTRY_PATTERN.matcher(entry);
                 while (entryMatcher.find()) {
                     String key = entryMatcher.group(1);
                     String value = normalizeMultilineValue(entryMatcher.group(2));
-                    metaData.put(key, Collections.singletonList(value));
+                    metadata.put(key, Collections.singletonList(value));
                 }
                 endOffset = metadataMatcher.end(0);
             } else {
@@ -211,7 +211,7 @@ public class MarkdownParser extends AbstractTextParser implements TextMarkup {
             // Trim the metadata from the source
             source.delete(0, endOffset);
         }
-        return writeHtmlMetadata(html, metaData);
+        return writeHtmlMetadata(html, metadata);
     }
 
     static String normalizeMultilineValue(String value) {
@@ -241,12 +241,12 @@ public class MarkdownParser extends AbstractTextParser implements TextMarkup {
                     writeHtmlMetadata(html, key, Collections.singletonList(value));
                 }
             } else {
-                // every other multivalue should just be concatenated and emitted in a single meta tag
+                // every other multi-value should just be concatenated and emitted in a single meta tag
                 final String separator;
                 if (key.equalsIgnoreCase("keywords")) {
                     separator = ",";
                 } else {
-                    separator = "\n";
+                    separator = EOL;
                 }
                 html.append("<meta name='");
                 html.append(HtmlTools.escapeHTML(key));
