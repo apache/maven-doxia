@@ -1617,8 +1617,13 @@ public class AptParser extends AbstractTextParser implements AptMarkup {
                                 break;
                         }
                     } else {
-                        // An implicit lineBreak separates title lines.
-                        AptParser.this.sink.lineBreak();
+                        if (separator == 1) {
+                            AptParser.this.sink.author_();
+                            AptParser.this.sink.author();
+                        } else {
+                            // An implicit lineBreak separates title lines.
+                            AptParser.this.sink.lineBreak();
+                        }
                     }
 
                     AptParser.this.doTraverseText(line, 0, lineLength, AptParser.this.sink);

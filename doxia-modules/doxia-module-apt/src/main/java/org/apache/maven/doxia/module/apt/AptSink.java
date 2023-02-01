@@ -23,6 +23,8 @@ import javax.swing.text.MutableAttributeSet;
 import java.io.PrintWriter;
 import java.io.Writer;
 import java.util.ArrayList;
+import java.util.Collection;
+import java.util.LinkedList;
 import java.util.List;
 import java.util.Stack;
 
@@ -55,8 +57,8 @@ public class AptSink extends AbstractTextSink implements AptMarkup {
     /**  A buffer that holds the table caption. */
     private StringBuilder tableCaptionBuffer;
 
-    /**  author. */
-    private String author;
+    /**  authors. */
+    private Collection<String> authors;
 
     /**  title. */
     private String title;
@@ -158,7 +160,7 @@ public class AptSink extends AbstractTextSink implements AptMarkup {
         this.tableCaptionBuffer = new StringBuilder();
         this.listNestingIndent = "";
 
-        this.author = null;
+        this.authors = new LinkedList<>();
         this.title = null;
         this.date = null;
         this.startFlag = true;
@@ -217,7 +219,7 @@ public class AptSink extends AbstractTextSink implements AptMarkup {
             write(" " + title + EOL);
         }
         write(HEADER_START_MARKUP + EOL);
-        if (author != null) {
+        for (String author : authors) {
             write(" " + author + EOL);
         }
         write(HEADER_START_MARKUP + EOL);
@@ -242,7 +244,7 @@ public class AptSink extends AbstractTextSink implements AptMarkup {
      */
     public void author_() {
         if (buffer.length() > 0) {
-            author = buffer.toString();
+            authors.add(buffer.toString());
             resetBuffer();
         }
     }
