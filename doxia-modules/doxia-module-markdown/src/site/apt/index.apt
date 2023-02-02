@@ -30,7 +30,16 @@ doxia-module-markdown
 
   Markdown is a popular lightweight markup language, easy to read and easy to write.
   It is supported by a large panel of websites, text editors/IDEs and converter tools.
-  Markdown format is only supported as Doxia source format.
+  Markdown format is supported both as source (parser) and destination (sink), the latter only since version 1.12.0.
+
+* Metadata
+
+  Although metadata was not part of the original Markdown format it is now widely supported through multiple extensions.
+  This modules supports the following two metadata formats:
+
+  * {{{http://fletcher.github.io/MultiMarkdown-5/metadata.html}MultiMarkdown Metadata}}
+
+  * {{{https://github.com/vsch/flexmark-java/wiki/Extensions#yaml-front-matter}YAML front matter}}
 
 * References
 

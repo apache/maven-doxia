@@ -24,6 +24,7 @@ import org.apache.maven.doxia.markup.Markup;
 import org.apache.maven.doxia.sink.Sink;
 import org.apache.maven.doxia.sink.impl.AbstractSinkTest;
 import org.codehaus.plexus.util.StringUtils;
+import org.junit.jupiter.api.Test;
 
 import static org.junit.jupiter.api.Assertions.assertEquals;
 
@@ -338,6 +339,29 @@ public class MarkdownSinkTest extends AbstractSinkTest {
     /** {@inheritDoc} */
     protected String getCommentBlock(String text) {
         return "<!-- " + text + " -->";
+    }
+
+    @Test
+    public void testMultipleAuthors() {
+        final Sink sink = getSink();
+        sink.head();
+        sink.author();
+        sink.text("first author");
+        sink.author_();
+        sink.author();
+        sink.text("second author");
+        sink.author_();
+        sink.head_();
+        sink.flush();
+        sink.close();
+
+        String expected = MarkdownMarkup.METADATA_MARKUP + EOL
+                + "author: " + EOL
+                + "  - first author" + EOL
+                + "  - second author" + EOL
+                + MarkdownMarkup.METADATA_MARKUP + EOL;
+
+        assertEquals(expected, getSinkContent(), "Wrong metadata section");
     }
 
     /**

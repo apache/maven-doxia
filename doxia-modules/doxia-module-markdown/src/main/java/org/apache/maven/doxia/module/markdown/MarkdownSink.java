@@ -21,6 +21,8 @@ package org.apache.maven.doxia.module.markdown;
 import java.io.PrintWriter;
 import java.io.Writer;
 import java.util.ArrayList;
+import java.util.Collection;
+import java.util.LinkedList;
 import java.util.List;
 import java.util.Stack;
 
@@ -50,7 +52,7 @@ public class MarkdownSink extends AbstractTextSink implements MarkdownMarkup {
     private StringBuilder tableCaptionBuffer;
 
     /**  author. */
-    private String author;
+    private Collection<String> authors;
 
     /**  title. */
     private String title;
@@ -154,7 +156,7 @@ public class MarkdownSink extends AbstractTextSink implements MarkdownMarkup {
         this.tableCaptionBuffer = new StringBuilder();
         this.listNestingIndent = "";
 
-        this.author = null;
+        this.authors = new LinkedList<>();
         this.title = null;
         this.date = null;
         this.linkName = null;
@@ -205,21 +207,24 @@ public class MarkdownSink extends AbstractTextSink implements MarkdownMarkup {
     public void head_() {
         headerFlag = false;
 
-        if (!startFlag) {
-            write(EOL);
+        // only write head block if really necessary
+        if (title == null && authors.isEmpty() && date == null) {
+            return;
         }
-        // TODO add --- once DOXIA-617 implemented
-        // write(METADATA_MARKUP + EOL);
+        write(METADATA_MARKUP + EOL);
         if (title != null) {
             write("title: " + title + EOL);
         }
-        if (author != null) {
-            write("author: " + author + EOL);
+        if (!authors.isEmpty()) {
+            write("author: " + EOL);
+            for (String author : authors) {
+                write("  - " + author + EOL);
+            }
         }
         if (date != null) {
             write("date: " + date + EOL);
         }
-        // write(METADATA_MARKUP + EOL);
+        write(METADATA_MARKUP + EOL);
     }
 
     /**
@@ -237,7 +242,7 @@ public class MarkdownSink extends AbstractTextSink implements MarkdownMarkup {
      */
     public void author_() {
         if (buffer.length() > 0) {
-            author = buffer.toString();
+            authors.add(buffer.toString());
             resetBuffer();
         }
     }

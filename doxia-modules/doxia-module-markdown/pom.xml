@@ -116,6 +116,11 @@ under the License.
       <artifactId>flexmark-ext-wikilink</artifactId>
       <version>${flexmarkVersion}</version>
     </dependency>
+    <dependency>
+      <groupId>com.vladsch.flexmark</groupId>
+      <artifactId>flexmark-ext-yaml-front-matter</artifactId>
+      <version>${flexmarkVersion}</version>
+    </dependency>
 
     <dependency>
       <groupId>org.jetbrains</groupId>
