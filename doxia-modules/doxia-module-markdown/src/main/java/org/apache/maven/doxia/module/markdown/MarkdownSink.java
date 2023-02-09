@@ -933,7 +933,7 @@ public class MarkdownSink extends AbstractTextSink implements MarkdownMarkup {
     }
 
     /**
-     * Write Apt escaped text to output.
+     * Write Markdown escaped text to output.
      *
      * @param text The text to write.
      */
@@ -974,11 +974,12 @@ public class MarkdownSink extends AbstractTextSink implements MarkdownMarkup {
      * Escape special characters in a text in Markdown:
      *
      * <pre>
-     * \~, \=, \-, \+, \*, \[, \], \<, \>, \{, \}, \\
+     * \, `, *, _, {, }, [, ], (, ), #, +, -, ., !
      * </pre>
      *
      * @param text the String to escape, may be null
      * @return the text escaped, "" if null String input
+     * @see <a href="https://daringfireball.net/projects/markdown/syntax#backslash">Backslash Escapes</a>
      */
     private static String escapeMarkdown(String text) {
         if (text == null) {
@@ -990,18 +991,22 @@ public class MarkdownSink extends AbstractTextSink implements MarkdownMarkup {
 
         for (int i = 0; i < length; ++i) {
             char c = text.charAt(i);
-            switch (c) { // 0080
+            switch (c) {
                 case '\\':
-                case '~':
-                case '=':
-                case '+':
+                case '`':
                 case '*':
-                case '[':
-                case ']':
-                case '<':
-                case '>':
+                case '_':
                 case '{':
                 case '}':
+                case '[':
+                case ']':
+                case '(':
+                case ')':
+                case '#':
+                case '+':
+                case '-':
+                case '.':
+                case '!':
                     buffer.append('\\');
                     buffer.append(c);
                     break;
