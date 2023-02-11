@@ -371,7 +371,7 @@ public class MarkdownSink extends AbstractTextSink implements MarkdownMarkup {
      */
     public void list() {
         listNestingIndent += " ";
-        listStyles.push(LIST_START_MARKUP);
+        listStyles.push(LIST_UNORDERED_ITEM_START_MARKUP);
         write(EOL);
     }
 
@@ -388,20 +388,16 @@ public class MarkdownSink extends AbstractTextSink implements MarkdownMarkup {
     /**
      * {@inheritDoc}
      */
+    @Override
     public void listItem() {
-        // if (!numberedList)
-        // write(EOL + listNestingIndent + "*");
-        // else
-        numberedListItem();
-        itemFlag = true;
+        orderedOrUnorderedListItem();
     }
 
     /**
      * {@inheritDoc}
      */
     public void listItem_() {
-        write(EOL);
-        itemFlag = false;
+        orderedOrUnorderedListItem_();
     }
 
     /** {@inheritDoc} */
@@ -409,25 +405,14 @@ public class MarkdownSink extends AbstractTextSink implements MarkdownMarkup {
         listNestingIndent += " ";
         write(EOL);
 
-        String style;
-        switch (numbering) {
-            case NUMBERING_UPPER_ALPHA:
-                style = String.valueOf(NUMBERING_UPPER_ALPHA_CHAR);
-                break;
-            case NUMBERING_LOWER_ALPHA:
-                style = String.valueOf(NUMBERING_LOWER_ALPHA_CHAR);
-                break;
-            case NUMBERING_UPPER_ROMAN:
-                style = String.valueOf(NUMBERING_UPPER_ROMAN_CHAR);
-                break;
-            case NUMBERING_LOWER_ROMAN:
-                style = String.valueOf(NUMBERING_LOWER_ROMAN_CHAR);
-                break;
-            case NUMBERING_DECIMAL:
-            default:
-                style = String.valueOf(NUMBERING);
+        // markdown only supports decimal numbering
+        if (numbering != NUMBERING_DECIMAL) {
+            LOGGER.warn(
+                    "Markdown only supports numbered item with decimal style ({}) but requested was style {}, falling back to decimal style",
+                    NUMBERING_DECIMAL,
+                    numbering);
         }
-
+        String style = LIST_ORDERED_ITEM_START_MARKUP;
         listStyles.push(style);
     }
 
@@ -445,15 +430,23 @@ public class MarkdownSink extends AbstractTextSink implements MarkdownMarkup {
      * {@inheritDoc}
      */
     public void numberedListItem() {
-        String style = listStyles.peek();
-        write(EOL + listNestingIndent + style + SPACE);
-        itemFlag = true;
+        orderedOrUnorderedListItem();
     }
 
     /**
      * {@inheritDoc}
      */
     public void numberedListItem_() {
+        orderedOrUnorderedListItem_();
+    }
+
+    private void orderedOrUnorderedListItem() {
+        String style = listStyles.peek();
+        write(EOL + listNestingIndent + style + SPACE);
+        itemFlag = true;
+    }
+
+    private void orderedOrUnorderedListItem_() {
         write(EOL);
         itemFlag = false;
     }

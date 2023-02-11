@@ -36,21 +36,6 @@ public interface MarkdownMarkup extends TextMarkup {
     String COMMENT_START = "<!-- ";
     String COMMENT_END = " -->";
 
-    /** numbering decimal markup char: '1' */
-    char NUMBERING = '1';
-
-    /** numbering lower alpha markup char: 'a' */
-    char NUMBERING_LOWER_ALPHA_CHAR = 'a';
-
-    /** numbering lower roman markup char: 'i' */
-    char NUMBERING_LOWER_ROMAN_CHAR = 'i';
-
-    /** numbering upper alpha markup char: 'A' */
-    char NUMBERING_UPPER_ALPHA_CHAR = 'A';
-
-    /** numbering upper roman markup char: 'I' */
-    char NUMBERING_UPPER_ROMAN_CHAR = 'I';
-
     /** page break markup char: '\f' */
     char PAGE_BREAK = '\f';
 
@@ -91,8 +76,11 @@ public interface MarkdownMarkup extends TextMarkup {
     /** Syntax for the link start: "](" */
     String LINK_START_2_MARKUP = "](";
 
-    /** Syntax for the list start: "-" */
-    String LIST_START_MARKUP = "-";
+    /** Syntax for the ordered list item: '1.' */
+    String LIST_ORDERED_ITEM_START_MARKUP = "1.";
+
+    /** Syntax for the unordered list item: "-" */
+    String LIST_UNORDERED_ITEM_START_MARKUP = "-";
 
     /** Syntax for the mono-spaced style end: "`" */
     String MONOSPACED_END_MARKUP = "`";
