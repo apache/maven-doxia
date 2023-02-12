@@ -54,7 +54,7 @@ public class MarkdownSinkTest extends AbstractSinkTest {
 
     /** {@inheritDoc} */
     protected String getAuthorBlock(String author) {
-        return author;
+        return getEscapedText(author);
     }
 
     /** {@inheritDoc} */
@@ -144,14 +144,15 @@ public class MarkdownSinkTest extends AbstractSinkTest {
 
     /** {@inheritDoc} */
     protected String getListBlock(String item) {
-        return EOL + EOL + Markup.SPACE + "" + MarkdownMarkup.LIST_START_MARKUP + "" + Markup.SPACE + item + EOL + EOL;
+        return EOL + EOL + Markup.SPACE + "" + MarkdownMarkup.LIST_START_MARKUP + "" + Markup.SPACE
+                + getEscapedText(item) + EOL + EOL;
     }
 
     /** {@inheritDoc} */
     protected String getNumberedListBlock(String item) {
         return EOL + EOL + Markup.SPACE + ""
                 + MarkdownMarkup.NUMBERING_LOWER_ROMAN_CHAR + ""
-                + Markup.SPACE + item + EOL + EOL;
+                + Markup.SPACE + getEscapedText(item) + EOL + EOL;
     }
 
     /** {@inheritDoc} */
@@ -164,7 +165,7 @@ public class MarkdownSinkTest extends AbstractSinkTest {
     protected String getFigureBlock(String source, String caption) {
         String figureBlock = "<img src=\"" + source + "\" />";
         if (caption != null) {
-            figureBlock += caption + EOL;
+            figureBlock += getEscapedText(caption) + EOL;
         }
         return figureBlock;
     }
@@ -298,32 +299,21 @@ public class MarkdownSinkTest extends AbstractSinkTest {
 
     /** {@inheritDoc} */
     protected String getTextBlock(String text) {
-        // "\\~, \\=, \\-, \\+, \\*, \\[, \\], \\<, \\>, \\{, \\}, \\\\"
-        StringBuilder sb = new StringBuilder();
-        sb.append(getSpecialCharacters('~')).append(",_");
-        sb.append(getSpecialCharacters(Markup.EQUAL)).append(",_");
-        sb.append(getSpecialCharacters(Markup.MINUS)).append(",_");
-        sb.append(getSpecialCharacters(Markup.PLUS)).append(",_");
-        sb.append(getSpecialCharacters(Markup.STAR)).append(",_");
-        sb.append(getSpecialCharacters(Markup.LEFT_SQUARE_BRACKET)).append(",_");
-        sb.append(getSpecialCharacters(Markup.RIGHT_SQUARE_BRACKET)).append(",_");
-        sb.append(getSpecialCharacters(Markup.LESS_THAN)).append(",_");
-        sb.append(getSpecialCharacters(Markup.GREATER_THAN)).append(",_");
-        sb.append(getSpecialCharacters(Markup.LEFT_CURLY_BRACKET)).append(",_");
-        sb.append(getSpecialCharacters(Markup.RIGHT_CURLY_BRACKET)).append(",_");
-        sb.append(getSpecialCharacters(MarkdownMarkup.BACKSLASH));
-
-        return sb.toString();
-    }
-
-    @Override
-    public void testText() {
-        // TODO re-enable this test as inherited from parent
+        return getEscapedText(text);
     }
 
     /** {@inheritDoc} */
     protected String getRawTextBlock(String text) {
         return text;
+    }
+
+    /**
+     * Escapes special characters outlined in <a href="https://daringfireball.net/projects/markdown/syntax#backslash">Markdown Spec</a>
+     * @param text
+     * @return the text with all special characters escaped
+     */
+    private String getEscapedText(String text) {
+        return text.replaceAll("\\\\|\\`|\\*|_|\\{|\\}|\\[|\\]|\\(|\\)|#|\\+|\\-|\\.|\\!", "\\\\$0");
     }
 
     /**
