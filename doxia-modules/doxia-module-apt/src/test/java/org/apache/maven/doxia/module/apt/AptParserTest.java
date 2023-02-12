@@ -125,6 +125,23 @@ public class AptParserTest extends AbstractParserTest {
     }
 
     @Test
+    public void testFontStyles() throws Exception {
+        SinkEventTestingSink sink = new SinkEventTestingSink();
+        try (Reader reader = getTestReader("test/font")) {
+            createParser().parse(reader, sink);
+        }
+
+        Iterator<SinkEventElement> it = sink.getEventList().iterator();
+
+        assertSinkStartsWith(it, "head", "head_", "body", "paragraph", "text", "italic");
+        assertSinkEquals(it.next(), "text", "<Italic>");
+        assertSinkStartsWith(it, "italic_", "text", "bold");
+        assertSinkEquals(it.next(), "text", "<Bold>");
+        assertSinkStartsWith(it, "bold_", "text", "monospaced");
+        assertSinkEquals(it.next(), "text", "<Monospaced>");
+    }
+
+    @Test
     public void testSnippetTrailingSpace() throws Exception {
         // DOXIA-425
         String text = "%{snippet|id=myid|file=pom.xml}  " + EOL;
