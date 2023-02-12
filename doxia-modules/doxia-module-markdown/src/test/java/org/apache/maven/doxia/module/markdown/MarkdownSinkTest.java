@@ -144,14 +144,14 @@ public class MarkdownSinkTest extends AbstractSinkTest {
 
     /** {@inheritDoc} */
     protected String getListBlock(String item) {
-        return EOL + EOL + Markup.SPACE + "" + MarkdownMarkup.LIST_START_MARKUP + "" + Markup.SPACE
+        return EOL + EOL + Markup.SPACE + "" + MarkdownMarkup.LIST_UNORDERED_ITEM_START_MARKUP + "" + Markup.SPACE
                 + getEscapedText(item) + EOL + EOL;
     }
 
     /** {@inheritDoc} */
     protected String getNumberedListBlock(String item) {
         return EOL + EOL + Markup.SPACE + ""
-                + MarkdownMarkup.NUMBERING_LOWER_ROMAN_CHAR + ""
+                + MarkdownMarkup.LIST_ORDERED_ITEM_START_MARKUP + ""
                 + Markup.SPACE + getEscapedText(item) + EOL + EOL;
     }
 
