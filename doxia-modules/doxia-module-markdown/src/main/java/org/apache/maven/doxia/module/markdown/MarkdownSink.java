@@ -93,6 +93,9 @@ public class MarkdownSink extends AbstractTextSink implements MarkdownMarkup {
     /**  The writer to use. */
     private final PrintWriter writer;
 
+    /** {@code true} when last written character in {@link #writer} was a line separator, or writer is still at the beginning */
+    private boolean isWriterAtStartOfNewLine;
+
     /**  justification of table cells. */
     private int[] cellJustif;
 
@@ -102,8 +105,8 @@ public class MarkdownSink extends AbstractTextSink implements MarkdownMarkup {
     /**  is header row */
     private boolean headerRow;
 
-    /**  listNestingIndent. */
-    private String listNestingIndent;
+    /**  listNestingLevel, 0 outside the list, 1 for the top-level list, 2 for a nested list, 3 for a list nested inside a nested list, .... */
+    private int listNestingLevel;
 
     /**  listStyles. */
     private final Stack<String> listStyles;
@@ -122,6 +125,7 @@ public class MarkdownSink extends AbstractTextSink implements MarkdownMarkup {
      */
     protected MarkdownSink(Writer writer) {
         this.writer = new PrintWriter(writer);
+        isWriterAtStartOfNewLine = true;
         this.listStyles = new Stack<>();
 
         init();
@@ -145,16 +149,14 @@ public class MarkdownSink extends AbstractTextSink implements MarkdownMarkup {
         this.headerFlag = headFlag;
     }
 
-    /**
-     * {@inheritDoc}
-     */
+    @Override
     protected void init() {
         super.init();
 
         resetBuffer();
 
         this.tableCaptionBuffer = new StringBuilder();
-        this.listNestingIndent = "";
+        this.listNestingLevel = 0;
 
         this.authors = new LinkedList<>();
         this.title = null;
@@ -189,9 +191,7 @@ public class MarkdownSink extends AbstractTextSink implements MarkdownMarkup {
         tableCaptionBuffer = new StringBuilder();
     }
 
-    /**
-     * {@inheritDoc}
-     */
+    @Override
     public void head() {
         boolean startFlag = this.startFlag;
 
@@ -201,9 +201,7 @@ public class MarkdownSink extends AbstractTextSink implements MarkdownMarkup {
         this.startFlag = startFlag;
     }
 
-    /**
-     * {@inheritDoc}
-     */
+    @Override
     public void head_() {
         headerFlag = false;
 
@@ -224,12 +222,10 @@ public class MarkdownSink extends AbstractTextSink implements MarkdownMarkup {
         if (date != null) {
             write("date: " + date + EOL);
         }
-        write(METADATA_MARKUP + EOL);
+        write(METADATA_MARKUP + BLANK_LINE);
     }
 
-    /**
-     * {@inheritDoc}
-     */
+    @Override
     public void title_() {
         if (buffer.length() > 0) {
             title = buffer.toString();
@@ -237,9 +233,7 @@ public class MarkdownSink extends AbstractTextSink implements MarkdownMarkup {
         }
     }
 
-    /**
-     * {@inheritDoc}
-     */
+    @Override
     public void author_() {
         if (buffer.length() > 0) {
             authors.add(buffer.toString());
@@ -247,9 +241,7 @@ public class MarkdownSink extends AbstractTextSink implements MarkdownMarkup {
         }
     }
 
-    /**
-     * {@inheritDoc}
-     */
+    @Override
     public void date_() {
         if (buffer.length() > 0) {
             date = buffer.toString();
@@ -257,154 +249,90 @@ public class MarkdownSink extends AbstractTextSink implements MarkdownMarkup {
         }
     }
 
-    /**
-     * {@inheritDoc}
-     */
-    public void section1_() {
-        write(EOL);
-    }
-
-    /**
-     * {@inheritDoc}
-     */
-    public void section2_() {
-        write(EOL);
-    }
-
-    /**
-     * {@inheritDoc}
-     */
-    public void section3_() {
-        write(EOL);
-    }
-
-    /**
-     * {@inheritDoc}
-     */
-    public void section4_() {
-        write(EOL);
-    }
-
-    /**
-     * {@inheritDoc}
-     */
-    public void section5_() {
-        write(EOL);
-    }
-
     private void sectionTitle(int level) {
-        write(EOL + StringUtils.repeat(SECTION_TITLE_START_MARKUP, level) + SPACE);
+        write(StringUtils.repeat(SECTION_TITLE_START_MARKUP, level) + SPACE);
     }
 
-    /**
-     * {@inheritDoc}
-     */
+    @Override
     public void sectionTitle1() {
         sectionTitle(1);
     }
 
-    /**
-     * {@inheritDoc}
-     */
+    @Override
     public void sectionTitle1_() {
-        write(EOL + EOL);
+        write(BLANK_LINE);
     }
 
-    /**
-     * {@inheritDoc}
-     */
+    @Override
     public void sectionTitle2() {
         sectionTitle(2);
     }
 
-    /**
-     * {@inheritDoc}
-     */
+    @Override
     public void sectionTitle2_() {
-        write(EOL + EOL);
+        write(BLANK_LINE);
     }
 
-    /**
-     * {@inheritDoc}
-     */
+    @Override
     public void sectionTitle3() {
         sectionTitle(3);
     }
 
-    /**
-     * {@inheritDoc}
-     */
+    @Override
     public void sectionTitle3_() {
-        write(EOL + EOL);
+        write(BLANK_LINE);
     }
 
-    /**
-     * {@inheritDoc}
-     */
+    @Override
     public void sectionTitle4() {
         sectionTitle(4);
     }
 
-    /**
-     * {@inheritDoc}
-     */
+    @Override
     public void sectionTitle4_() {
-        write(EOL + EOL);
+        write(BLANK_LINE);
     }
 
-    /**
-     * {@inheritDoc}
-     */
+    @Override
     public void sectionTitle5() {
         sectionTitle(5);
     }
 
-    /**
-     * {@inheritDoc}
-     */
+    @Override
     public void sectionTitle5_() {
-        write(EOL + EOL);
+        write(BLANK_LINE);
     }
 
-    /**
-     * {@inheritDoc}
-     */
+    @Override
     public void list() {
-        listNestingIndent += " ";
+        listNestingLevel++;
         listStyles.push(LIST_UNORDERED_ITEM_START_MARKUP);
-        write(EOL);
     }
 
-    /**
-     * {@inheritDoc}
-     */
+    @Override
     public void list_() {
-        write(EOL);
-        listNestingIndent = StringUtils.chomp(listNestingIndent, " ");
+        listNestingLevel--;
+        if (listNestingLevel == 0) {
+            write(EOL); // end add blank line (together with the preceding EOL of the item) only in case this was not
+            // nested
+        }
         listStyles.pop();
         itemFlag = false;
     }
 
-    /**
-     * {@inheritDoc}
-     */
     @Override
     public void listItem() {
         orderedOrUnorderedListItem();
     }
 
-    /**
-     * {@inheritDoc}
-     */
+    @Override
     public void listItem_() {
         orderedOrUnorderedListItem_();
     }
 
     /** {@inheritDoc} */
     public void numberedList(int numbering) {
-        listNestingIndent += " ";
-        write(EOL);
-
+        listNestingLevel++;
         // markdown only supports decimal numbering
         if (numbering != NUMBERING_DECIMAL) {
             LOGGER.warn(
@@ -416,117 +344,94 @@ public class MarkdownSink extends AbstractTextSink implements MarkdownMarkup {
         listStyles.push(style);
     }
 
-    /**
-     * {@inheritDoc}
-     */
+    @Override
     public void numberedList_() {
-        write(EOL);
-        listNestingIndent = StringUtils.chomp(listNestingIndent, " ");
+        listNestingLevel--;
+        if (listNestingLevel == 0) {
+            write(EOL); // end add blank line (together with the preceding EOL of the item) only in case this was not
+            // nested
+        }
         listStyles.pop();
         itemFlag = false;
     }
 
-    /**
-     * {@inheritDoc}
-     */
+    @Override
     public void numberedListItem() {
         orderedOrUnorderedListItem();
     }
 
-    /**
-     * {@inheritDoc}
-     */
+    @Override
     public void numberedListItem_() {
         orderedOrUnorderedListItem_();
     }
 
     private void orderedOrUnorderedListItem() {
-        String style = listStyles.peek();
-        write(EOL + listNestingIndent + style + SPACE);
+        write(getListPrefix());
         itemFlag = true;
     }
 
     private void orderedOrUnorderedListItem_() {
-        write(EOL);
+        ensureBeginningOfLine();
         itemFlag = false;
     }
 
-    /**
-     * {@inheritDoc}
-     */
-    public void definitionList() {
-        listNestingIndent += " ";
-        listStyles.push("");
-        write(EOL);
-    }
-
-    /**
-     * {@inheritDoc}
-     */
-    public void definitionList_() {
-        write(EOL);
-        listNestingIndent = StringUtils.chomp(listNestingIndent, " ");
-        listStyles.pop();
-        itemFlag = false;
-    }
-
-    /**
-     * {@inheritDoc}
-     */
-    public void definedTerm() {
-        write(EOL + " [");
-    }
-
-    /**
-     * {@inheritDoc}
-     */
-    public void definedTerm_() {
-        write("] ");
-    }
-
-    /**
-     * {@inheritDoc}
-     */
-    public void definition() {
-        itemFlag = true;
-    }
-
-    /**
-     * {@inheritDoc}
-     */
-    public void definition_() {
-        write(EOL);
-        itemFlag = false;
-    }
-
-    /**
-     * {@inheritDoc}
-     */
-    public void pageBreak() {
-        write(EOL + PAGE_BREAK + EOL);
-    }
-
-    /**
-     * {@inheritDoc}
-     */
-    public void paragraph() {
-        if (tableCellFlag) {
-            // ignore paragraphs in table cells
-        } else if (itemFlag) {
-            write(EOL + EOL + "  " + listNestingIndent);
-        } else {
-            write(EOL + " ");
+    private String getListPrefix() {
+        StringBuilder prefix = new StringBuilder();
+        for (int indent = 1; indent < listNestingLevel; indent++) {
+            prefix.append("    "); // 4 spaces per indentation level
         }
+        prefix.append(listStyles.peek());
+        prefix.append(SPACE);
+        return prefix.toString();
     }
 
-    /**
-     * {@inheritDoc}
-     */
+    @Override
+    public void definitionList() {
+        LOGGER.warn("Definition list not natively supported in Markdown, rendering HTML instead");
+        write("<dl>" + EOL);
+    }
+
+    public void definitionList_() {
+        verbatimFlag = true;
+        write("</dl>" + BLANK_LINE);
+    }
+
+    public void definedTerm() {
+        write("<dt>");
+        verbatimFlag = false;
+    }
+
+    @Override
+    public void definedTerm_() {
+        write("</dt>" + EOL);
+    }
+
+    @Override
+    public void definition() {
+        write("<dd>");
+    }
+
+    @Override
+    public void definition_() {
+        write("</dd>" + EOL);
+    }
+
+    @Override
+    public void pageBreak() {
+        LOGGER.warn("Ignoring unsupported page break in Markdown");
+    }
+
+    @Override
+    public void paragraph() {
+        ensureBeginningOfLine();
+    }
+
+    @Override
     public void paragraph_() {
-        if (tableCellFlag) {
-            // ignore paragraphs in table cells
+        if (tableCellFlag || listNestingLevel > 0) {
+            // ignore paragraphs in table cells or lists
         } else {
-            write(EOL + EOL);
+            write(BLANK_LINE);
         }
     }
 
@@ -538,36 +443,30 @@ public class MarkdownSink extends AbstractTextSink implements MarkdownMarkup {
 
     /** {@inheritDoc} */
     public void verbatim(SinkEventAttributes attributes) {
-        write(EOL);
+        ensureBeginningOfLine();
         verbatimFlag = true;
-        write(EOL + VERBATIM_START_MARKUP + EOL);
+        write(VERBATIM_START_MARKUP + EOL);
     }
 
-    /**
-     * {@inheritDoc}
-     */
+    @Override
     public void verbatim_() {
-        write(EOL + VERBATIM_END_MARKUP + EOL);
+        ensureBeginningOfLine();
+        write(VERBATIM_END_MARKUP + BLANK_LINE);
         verbatimFlag = false;
     }
 
-    /**
-     * {@inheritDoc}
-     */
+    @Override
     public void horizontalRule() {
-        write(EOL + HORIZONTAL_RULE_MARKUP + EOL);
+        ensureBeginningOfLine();
+        write(HORIZONTAL_RULE_MARKUP + BLANK_LINE);
     }
 
-    /**
-     * {@inheritDoc}
-     */
+    @Override
     public void table() {
-        write(EOL);
+        ensureBeginningOfLine();
     }
 
-    /**
-     * {@inheritDoc}
-     */
+    @Override
     public void table_() {
         if (tableCaptionBuffer.length() > 0) {
             text(tableCaptionBuffer.toString() + EOL);
@@ -583,25 +482,19 @@ public class MarkdownSink extends AbstractTextSink implements MarkdownMarkup {
         headerRow = true;
     }
 
-    /**
-     * {@inheritDoc}
-     */
+    @Override
     public void tableRows_() {
         cellJustif = null;
         gridFlag = false;
     }
 
-    /**
-     * {@inheritDoc}
-     */
+    @Override
     public void tableRow() {
         bufferFlag = true;
         cellCount = 0;
     }
 
-    /**
-     * {@inheritDoc}
-     */
+    @Override
     public void tableRow_() {
         bufferFlag = false;
 
@@ -650,16 +543,12 @@ public class MarkdownSink extends AbstractTextSink implements MarkdownMarkup {
         this.rowLine = rLine.toString();
     }
 
-    /**
-     * {@inheritDoc}
-     */
+    @Override
     public void tableCell() {
         tableCell(false);
     }
 
-    /**
-     * {@inheritDoc}
-     */
+    @Override
     public void tableHeaderCell() {
         tableCell(true);
     }
@@ -673,16 +562,12 @@ public class MarkdownSink extends AbstractTextSink implements MarkdownMarkup {
         tableCellFlag = true;
     }
 
-    /**
-     * {@inheritDoc}
-     */
+    @Override
     public void tableCell_() {
         endTableCell();
     }
 
-    /**
-     * {@inheritDoc}
-     */
+    @Override
     public void tableHeaderCell_() {
         endTableCell();
     }
@@ -696,23 +581,17 @@ public class MarkdownSink extends AbstractTextSink implements MarkdownMarkup {
         cellCount++;
     }
 
-    /**
-     * {@inheritDoc}
-     */
+    @Override
     public void tableCaption() {
         tableCaptionFlag = true;
     }
 
-    /**
-     * {@inheritDoc}
-     */
+    @Override
     public void tableCaption_() {
         tableCaptionFlag = false;
     }
 
-    /**
-     * {@inheritDoc}
-     */
+    @Override
     public void figureCaption_() {
         write(EOL);
     }
@@ -728,9 +607,7 @@ public class MarkdownSink extends AbstractTextSink implements MarkdownMarkup {
         // TODO get implementation from Xhtml5 base sink
     }
 
-    /**
-     * {@inheritDoc}
-     */
+    @Override
     public void anchor_() {
         // write(ANCHOR_END_MARKUP);
     }
@@ -743,9 +620,7 @@ public class MarkdownSink extends AbstractTextSink implements MarkdownMarkup {
         }
     }
 
-    /**
-     * {@inheritDoc}
-     */
+    @Override
     public void link_() {
         if (!headerFlag) {
             write(LINK_START_2_MARKUP);
@@ -767,16 +642,14 @@ public class MarkdownSink extends AbstractTextSink implements MarkdownMarkup {
         }
     }
 
-    /**
-     * {@inheritDoc}
-     */
+    @Override
     public void inline() {
         inline(null);
     }
 
     /** {@inheritDoc} */
     public void inline(SinkEventAttributes attributes) {
-        if (!headerFlag) {
+        if (!headerFlag && !verbatimFlag) {
             List<String> tags = new ArrayList<>();
 
             if (attributes != null) {
@@ -801,75 +674,57 @@ public class MarkdownSink extends AbstractTextSink implements MarkdownMarkup {
         }
     }
 
-    /**
-     * {@inheritDoc}
-     */
+    @Override
     public void inline_() {
-        if (!headerFlag) {
+        if (!headerFlag && !verbatimFlag) {
             for (String tag : inlineStack.pop()) {
                 write(tag);
             }
         }
     }
 
-    /**
-     * {@inheritDoc}
-     */
+    @Override
     public void italic() {
         inline(SinkEventAttributeSet.Semantics.ITALIC);
     }
 
-    /**
-     * {@inheritDoc}
-     */
+    @Override
     public void italic_() {
         inline_();
     }
 
-    /**
-     * {@inheritDoc}
-     */
+    @Override
     public void bold() {
         inline(SinkEventAttributeSet.Semantics.BOLD);
     }
 
-    /**
-     * {@inheritDoc}
-     */
+    @Override
     public void bold_() {
         inline_();
     }
 
-    /**
-     * {@inheritDoc}
-     */
+    @Override
     public void monospaced() {
         inline(SinkEventAttributeSet.Semantics.CODE);
     }
 
-    /**
-     * {@inheritDoc}
-     */
+    @Override
     public void monospaced_() {
         inline_();
     }
 
-    /**
-     * {@inheritDoc}
-     */
+    @Override
     public void lineBreak() {
         if (headerFlag || bufferFlag) {
             buffer.append(EOL);
         } else if (verbatimFlag) {
             write(EOL);
         } else {
-            write(BACKSLASH + EOL);
+            write("" + SPACE + SPACE + EOL);
         }
     }
 
-    /**
-     * {@inheritDoc}
-     */
+    @Override
     public void nonBreakingSpace() {
         if (headerFlag || bufferFlag) {
             buffer.append(NON_BREAKING_SPACE_MARKUP);
@@ -878,7 +733,7 @@ public class MarkdownSink extends AbstractTextSink implements MarkdownMarkup {
         }
     }
 
-    /** {@inheritDoc} */
+    @Override
     public void text(String text) {
         if (tableCaptionFlag) {
             tableCaptionBuffer.append(text);
@@ -891,12 +746,12 @@ public class MarkdownSink extends AbstractTextSink implements MarkdownMarkup {
         }
     }
 
-    /** {@inheritDoc} */
+    @Override
     public void rawText(String text) {
         write(text);
     }
 
-    /** {@inheritDoc} */
+    @Override
     public void comment(String comment) {
         rawText((startFlag ? "" : EOL) + COMMENT_START + comment + COMMENT_END);
     }
@@ -907,6 +762,7 @@ public class MarkdownSink extends AbstractTextSink implements MarkdownMarkup {
      * Unkown events just log a warning message but are ignored otherwise.
      * @see org.apache.maven.doxia.sink.Sink#unknown(String,Object[],SinkEventAttributes)
      */
+    @Override
     public void unknown(String name, Object[] requiredParams, SinkEventAttributes attributes) {
         LOGGER.warn("Unknown Sink event '" + name + "', ignoring!");
     }
@@ -921,7 +777,9 @@ public class MarkdownSink extends AbstractTextSink implements MarkdownMarkup {
         if (tableCellFlag) {
             buffer.append(text);
         } else {
-            writer.write(unifyEOLs(text));
+            String unifiedText = unifyEOLs(text);
+            isWriterAtStartOfNewLine = unifiedText.endsWith(EOL);
+            writer.write(unifiedText);
         }
     }
 
@@ -943,16 +801,12 @@ public class MarkdownSink extends AbstractTextSink implements MarkdownMarkup {
         write(text);
     }
 
-    /**
-     * {@inheritDoc}
-     */
+    @Override
     public void flush() {
         writer.flush();
     }
 
-    /**
-     * {@inheritDoc}
-     */
+    @Override
     public void close() {
         writer.close();
 
@@ -1009,5 +863,16 @@ public class MarkdownSink extends AbstractTextSink implements MarkdownMarkup {
         }
 
         return buffer.toString();
+    }
+
+    /**
+     * Ensures that the {@link #writer} is currently at the beginning of a new line.
+     * Optionally writes a line separator to ensure that.
+     */
+    private void ensureBeginningOfLine() {
+        // make sure that we are at the start of a line without adding unnecessary blank lines
+        if (!isWriterAtStartOfNewLine) {
+            write(EOL);
+        }
     }
 }

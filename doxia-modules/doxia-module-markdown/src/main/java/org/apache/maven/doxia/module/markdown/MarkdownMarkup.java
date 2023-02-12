@@ -36,8 +36,7 @@ public interface MarkdownMarkup extends TextMarkup {
     String COMMENT_START = "<!-- ";
     String COMMENT_END = " -->";
 
-    /** page break markup char: '\f' */
-    char PAGE_BREAK = '\f';
+    String BLANK_LINE = EOL + EOL;
 
     // ----------------------------------------------------------------------
     // Markup syntax
@@ -58,8 +57,8 @@ public interface MarkdownMarkup extends TextMarkup {
     /** Syntax for the header start: "---" */
     String METADATA_MARKUP = StringUtils.repeat(String.valueOf(MINUS), 3);
 
-    /** Syntax for the horizontal rule: "========" */
-    String HORIZONTAL_RULE_MARKUP = StringUtils.repeat(String.valueOf(EQUAL), 8);
+    /** Syntax for the horizontal rule: "***" */
+    String HORIZONTAL_RULE_MARKUP = "***";
 
     /** Syntax for the italic style end: "_" */
     String ITALIC_END_MARKUP = "_";
@@ -92,10 +91,7 @@ public interface MarkdownMarkup extends TextMarkup {
     String VERBATIM_START_MARKUP = "```";
 
     /** Syntax for the non breaking space: "\ " */
-    String NON_BREAKING_SPACE_MARKUP = String.valueOf(BACKSLASH) + SPACE;
-
-    /** Syntax for the page break: "\f" */
-    String PAGE_BREAK_MARKUP = String.valueOf(PAGE_BREAK);
+    String NON_BREAKING_SPACE_MARKUP = "&npsp;";
 
     /** Syntax for the section title start: "#" */
     String SECTION_TITLE_START_MARKUP = "#";

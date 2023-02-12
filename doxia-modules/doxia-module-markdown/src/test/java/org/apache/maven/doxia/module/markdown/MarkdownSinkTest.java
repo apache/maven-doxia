@@ -18,11 +18,19 @@
  */
 package org.apache.maven.doxia.module.markdown;
 
+import javax.inject.Inject;
+
+import java.io.IOException;
+import java.io.Reader;
+import java.io.StringReader;
 import java.io.Writer;
 
 import org.apache.maven.doxia.markup.Markup;
+import org.apache.maven.doxia.parser.ParseException;
+import org.apache.maven.doxia.parser.Parser;
 import org.apache.maven.doxia.sink.Sink;
 import org.apache.maven.doxia.sink.impl.AbstractSinkTest;
+import org.apache.maven.doxia.sink.impl.SinkEventTestingSink;
 import org.codehaus.plexus.util.StringUtils;
 import org.junit.jupiter.api.Test;
 
@@ -32,6 +40,9 @@ import static org.junit.jupiter.api.Assertions.assertEquals;
  * Test the <code>MarkdownSink</code> class
  */
 public class MarkdownSinkTest extends AbstractSinkTest {
+    @Inject
+    protected MarkdownParser parser;
+
     /** {@inheritDoc} */
     protected String outputExtension() {
         return "md";
@@ -93,13 +104,7 @@ public class MarkdownSinkTest extends AbstractSinkTest {
     }
 
     protected String getSectionBlock(String title, int level) {
-        return EOL
-                + StringUtils.repeat(MarkdownMarkup.SECTION_TITLE_START_MARKUP, level)
-                + SPACE
-                + title
-                + EOL
-                + EOL
-                + EOL;
+        return StringUtils.repeat(MarkdownMarkup.SECTION_TITLE_START_MARKUP, level) + SPACE + title + EOL + EOL;
     }
 
     /** {@inheritDoc} */
@@ -144,21 +149,18 @@ public class MarkdownSinkTest extends AbstractSinkTest {
 
     /** {@inheritDoc} */
     protected String getListBlock(String item) {
-        return EOL + EOL + Markup.SPACE + "" + MarkdownMarkup.LIST_UNORDERED_ITEM_START_MARKUP + "" + Markup.SPACE
-                + getEscapedText(item) + EOL + EOL;
+        return MarkdownMarkup.LIST_UNORDERED_ITEM_START_MARKUP + "" + Markup.SPACE + getEscapedText(item) + EOL + EOL;
     }
 
     /** {@inheritDoc} */
     protected String getNumberedListBlock(String item) {
-        return EOL + EOL + Markup.SPACE + ""
-                + MarkdownMarkup.LIST_ORDERED_ITEM_START_MARKUP + ""
-                + Markup.SPACE + getEscapedText(item) + EOL + EOL;
+        return MarkdownMarkup.LIST_ORDERED_ITEM_START_MARKUP + "" + Markup.SPACE + getEscapedText(item) + EOL + EOL;
     }
 
     /** {@inheritDoc} */
     protected String getDefinitionListBlock(String definum, String definition) {
-        return EOL + EOL + Markup.SPACE + "" + Markup.LEFT_SQUARE_BRACKET + definum + Markup.RIGHT_SQUARE_BRACKET + ""
-                + Markup.SPACE + definition + EOL + EOL;
+        return "<dl>" + EOL + "<dt>" + getEscapedText(definum) + "</dt>" + EOL + "<dd>" + getEscapedText(definition)
+                + "</dd>" + EOL + "</dl>" + EOL + EOL;
     }
 
     /** {@inheritDoc} */
@@ -182,7 +184,7 @@ public class MarkdownSinkTest extends AbstractSinkTest {
 
     /** {@inheritDoc} */
     protected String getParagraphBlock(String text) {
-        return EOL + Markup.SPACE + text + EOL + EOL;
+        return text + EOL + EOL;
     }
 
     /** {@inheritDoc} */
@@ -212,24 +214,23 @@ public class MarkdownSinkTest extends AbstractSinkTest {
 
     /** {@inheritDoc} */
     protected String getVerbatimSourceBlock(String text) {
-        return EOL
-                + EOL
-                + MarkdownMarkup.VERBATIM_START_MARKUP
+        return MarkdownMarkup.VERBATIM_START_MARKUP
                 + EOL
                 + text
                 + EOL
                 + MarkdownMarkup.VERBATIM_START_MARKUP
+                + EOL
                 + EOL;
     }
 
     /** {@inheritDoc} */
     protected String getHorizontalRuleBlock() {
-        return EOL + MarkdownMarkup.HORIZONTAL_RULE_MARKUP + EOL;
+        return MarkdownMarkup.HORIZONTAL_RULE_MARKUP + EOL + EOL;
     }
 
     /** {@inheritDoc} */
     protected String getPageBreakBlock() {
-        return EOL + MarkdownMarkup.PAGE_BREAK_MARKUP + EOL;
+        return "";
     }
 
     /** {@inheritDoc} */
@@ -284,7 +285,7 @@ public class MarkdownSinkTest extends AbstractSinkTest {
 
     /** {@inheritDoc} */
     protected String getLineBreakBlock() {
-        return MarkdownMarkup.BACKSLASH + EOL;
+        return "" + SPACE + SPACE + EOL;
     }
 
     /** {@inheritDoc} */
@@ -349,9 +350,32 @@ public class MarkdownSinkTest extends AbstractSinkTest {
                 + "author: " + EOL
                 + "  - first author" + EOL
                 + "  - second author" + EOL
-                + MarkdownMarkup.METADATA_MARKUP + EOL;
+                + MarkdownMarkup.METADATA_MARKUP + EOL + EOL;
 
         assertEquals(expected, getSinkContent(), "Wrong metadata section");
+    }
+
+    @Test
+    public void testRoundtrip() throws IOException, ParseException {
+        parseFile(parser, "test", getSink());
+
+        final SinkEventTestingSink regeneratedSink = new SinkEventTestingSink();
+        try (Reader reader = new StringReader(getSinkContent())) {
+            parser.parse(reader, regeneratedSink);
+        }
+
+        System.out.println(getSinkContent());
+        final SinkEventTestingSink originalSink = new SinkEventTestingSink();
+        parseFile(parser, "test", originalSink);
+
+        // compare sink events from parsing original markdown with sink events from re-generated markdown
+        assertEquals(originalSink.getEventList(), regeneratedSink.getEventList());
+    }
+
+    private void parseFile(Parser parser, String file, Sink sink) throws ParseException, IOException {
+        try (Reader reader = getTestReader(file)) {
+            parser.parse(reader, sink);
+        }
     }
 
     /**
