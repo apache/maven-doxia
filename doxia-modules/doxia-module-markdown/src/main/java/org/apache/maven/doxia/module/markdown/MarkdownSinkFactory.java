@@ -18,17 +18,19 @@
  */
 package org.apache.maven.doxia.module.markdown;
 
+import javax.inject.Named;
+import javax.inject.Singleton;
+
 import java.io.Writer;
 
 import org.apache.maven.doxia.sink.Sink;
-import org.apache.maven.doxia.sink.SinkFactory;
 import org.apache.maven.doxia.sink.impl.AbstractTextSinkFactory;
-import org.codehaus.plexus.component.annotations.Component;
 
 /**
  * Markdown implementation of the Sink factory.
  */
-@Component(role = SinkFactory.class, hint = "markdown")
+@Singleton
+@Named("markdown")
 public class MarkdownSinkFactory extends AbstractTextSinkFactory {
     /** {@inheritDoc} */
     protected Sink createSink(Writer writer, String encoding) {
