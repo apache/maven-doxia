@@ -24,11 +24,12 @@ import javax.inject.Singleton;
 import java.io.IOException;
 import java.io.Reader;
 import java.io.StringReader;
-import java.io.StringWriter;
 import java.util.HashMap;
 import java.util.Map;
 import java.util.StringTokenizer;
 
+import org.apache.commons.io.IOUtils;
+import org.apache.commons.lang3.StringUtils;
 import org.apache.maven.doxia.macro.MacroExecutionException;
 import org.apache.maven.doxia.macro.MacroRequest;
 import org.apache.maven.doxia.macro.manager.MacroNotFoundException;
@@ -39,8 +40,6 @@ import org.apache.maven.doxia.sink.SinkEventAttributes;
 import org.apache.maven.doxia.sink.impl.SinkAdapter;
 import org.apache.maven.doxia.sink.impl.SinkEventAttributeSet;
 import org.apache.maven.doxia.util.DoxiaUtils;
-import org.codehaus.plexus.util.IOUtil;
-import org.codehaus.plexus.util.StringUtils;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
@@ -189,9 +188,7 @@ public class AptParser extends AbstractTextParser implements AptMarkup {
         init();
 
         try {
-            StringWriter contentWriter = new StringWriter();
-            IOUtil.copy(source, contentWriter);
-            sourceContent = contentWriter.toString();
+            sourceContent = IOUtils.toString(source);
         } catch (IOException e) {
             throw new AptParseException(e);
         }
