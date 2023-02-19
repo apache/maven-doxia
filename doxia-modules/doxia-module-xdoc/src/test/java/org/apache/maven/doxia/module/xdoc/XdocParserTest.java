@@ -128,7 +128,7 @@ public class XdocParserTest extends AbstractParserTest {
 
         String content;
         try (Reader reader = new FileReader(f)) {
-            content = IOUtil.toString(reader);
+            content = IOUtils.toString(reader);
         }
 
         // No section, only subsection 1 and 2
