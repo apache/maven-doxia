@@ -25,7 +25,6 @@ import javax.swing.text.html.HTML.Attribute;
 import java.io.IOException;
 import java.io.Reader;
 import java.io.StringReader;
-import java.io.StringWriter;
 import java.util.HashMap;
 import java.util.Map;
 
@@ -90,9 +89,7 @@ public class XdocParser extends Xhtml5BaseParser implements XdocMarkup {
         this.sourceContent = null;
 
         try {
-            StringWriter contentWriter = new StringWriter();
-            IOUtils.copy(source, contentWriter);
-            sourceContent = contentWriter.toString();
+            sourceContent = IOUtils.toString(source);
         } catch (IOException ex) {
             throw new ParseException("Error reading the input source", ex);
         } finally {
