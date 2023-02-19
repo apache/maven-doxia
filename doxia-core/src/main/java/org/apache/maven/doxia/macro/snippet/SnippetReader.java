@@ -26,8 +26,7 @@ import java.util.ArrayList;
 import java.util.List;
 import java.util.regex.Pattern;
 
-import org.codehaus.plexus.util.IOUtil;
-import org.codehaus.plexus.util.StringUtils;
+import org.apache.commons.io.IOUtils;
 
 /**
  * Utility class for reading snippets.
@@ -114,9 +113,9 @@ public class SnippetReader {
     /**
      * Reads the snippet and returns the lines in a List.
      *
-     * @param snippetId The id of the snippet.
-     * @return A List of lines.
-     * @throws IOException if something goes wrong.
+     * @param snippetId the id of the snippet
+     * @return a List of lines
+     * @throws IOException if something goes wrong
      */
     private List<String> readLines(String snippetId) throws IOException {
         BufferedReader reader;
@@ -132,7 +131,7 @@ public class SnippetReader {
             String line;
             boolean foundStart = false;
             boolean foundEnd = false;
-            boolean hasSnippetId = StringUtils.isNotEmpty(snippetId);
+            boolean hasSnippetId = snippetId != null && !snippetId.isEmpty();
             while ((line = reader.readLine()) != null) {
                 if (!hasSnippetId) {
                     lines.add(line);
@@ -156,7 +155,7 @@ public class SnippetReader {
                 throw new IOException("Failed to find END of snippet " + snippetId + " in file at URL: " + source);
             }
         } finally {
-            IOUtil.close(reader);
+            IOUtils.closeQuietly(reader);
         }
         return lines;
     }
