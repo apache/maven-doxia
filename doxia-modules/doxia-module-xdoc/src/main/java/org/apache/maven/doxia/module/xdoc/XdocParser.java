@@ -29,6 +29,8 @@ import java.io.StringWriter;
 import java.util.HashMap;
 import java.util.Map;
 
+import org.apache.commons.io.IOUtils;
+import org.apache.commons.lang3.StringUtils;
 import org.apache.maven.doxia.macro.MacroExecutionException;
 import org.apache.maven.doxia.macro.MacroRequest;
 import org.apache.maven.doxia.macro.manager.MacroNotFoundException;
@@ -37,8 +39,6 @@ import org.apache.maven.doxia.parser.Xhtml5BaseParser;
 import org.apache.maven.doxia.sink.Sink;
 import org.apache.maven.doxia.sink.impl.SinkEventAttributeSet;
 import org.apache.maven.doxia.util.HtmlTools;
-import org.codehaus.plexus.util.IOUtil;
-import org.codehaus.plexus.util.StringUtils;
 import org.codehaus.plexus.util.xml.pull.XmlPullParser;
 import org.codehaus.plexus.util.xml.pull.XmlPullParserException;
 import org.slf4j.Logger;
@@ -91,12 +91,12 @@ public class XdocParser extends Xhtml5BaseParser implements XdocMarkup {
 
         try {
             StringWriter contentWriter = new StringWriter();
-            IOUtil.copy(source, contentWriter);
+            IOUtils.copy(source, contentWriter);
             sourceContent = contentWriter.toString();
         } catch (IOException ex) {
             throw new ParseException("Error reading the input source", ex);
         } finally {
-            IOUtil.close(source);
+            IOUtils.closeQuietly(source);
         }
 
         // leave this at default (false) until everything is properly implemented, see DOXIA-226
@@ -223,7 +223,7 @@ public class XdocParser extends Xhtml5BaseParser implements XdocMarkup {
         } else if (parser.getName().equals(MACRO_TAG.toString())) {
             handleMacroEnd(sink);
         } else if (parser.getName().equals(PARAM.toString())) {
-            if (!StringUtils.isNotEmpty(macroName)) {
+            if (macroName == null || macroName.isEmpty()) {
                 handleUnknown(parser, sink, TAG_TYPE_END);
             }
         } else if (parser.getName().equals(SECTION_TAG.toString())) {
@@ -284,7 +284,7 @@ public class XdocParser extends Xhtml5BaseParser implements XdocMarkup {
     }
 
     private void handleMacroEnd(Sink sink) throws MacroExecutionException {
-        if (!isSecondParsing() && StringUtils.isNotEmpty(macroName)) {
+        if (!isSecondParsing() && macroName != null && !macroName.isEmpty()) {
             MacroRequest request = new MacroRequest(sourceContent, new XdocParser(), macroParameters, getBasedir());
 
             try {
@@ -307,7 +307,7 @@ public class XdocParser extends Xhtml5BaseParser implements XdocMarkup {
                 macroParameters = new HashMap<>();
             }
 
-            if (StringUtils.isEmpty(macroName)) {
+            if (macroName == null || macroName.isEmpty()) {
                 throw new MacroExecutionException("The '" + Attribute.NAME.toString() + "' attribute for the '"
                         + MACRO_TAG.toString() + "' tag is required.");
             }
@@ -333,7 +333,7 @@ public class XdocParser extends Xhtml5BaseParser implements XdocMarkup {
 
     private void handleParamStart(XmlPullParser parser, Sink sink) throws MacroExecutionException {
         if (!isSecondParsing()) {
-            if (StringUtils.isNotEmpty(macroName)) {
+            if (macroName != null && !macroName.isEmpty()) {
                 String paramName = parser.getAttributeValue(null, Attribute.NAME.toString());
                 String paramValue = parser.getAttributeValue(null, Attribute.VALUE.toString());
 
