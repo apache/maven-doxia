@@ -22,7 +22,7 @@ import java.io.BufferedWriter;
 import java.io.IOException;
 import java.io.Writer;
 
-import org.codehaus.plexus.util.IOUtil;
+import org.apache.commons.io.IOUtils;
 
 /**
  * Allows to specify the line-length of an output writer.
@@ -61,8 +61,8 @@ public class LineBreaker {
     /**
      * Constructs a new LineBreaker with the given max line length.
      *
-     * @param out The writer to use.
-     * @param max The maximal line length.
+     * @param out the writer to use
+     * @param max the maximum line length
      */
     public LineBreaker(Writer out, int max) {
         if (max <= 0) {
@@ -86,8 +86,8 @@ public class LineBreaker {
     /**
      * Writes the given text to the writer. White space is not preserved.
      *
-     * @param text The text to write.
-     * @throws java.io.IOException if there's a problem writing the text.
+     * @param text the text to write
+     * @throws java.io.IOException if there's a problem writing the text
      */
     public void write(String text) throws IOException {
         write(text, /*preserveSpace*/ false);
@@ -96,8 +96,8 @@ public class LineBreaker {
     /**
      * Writes the given text to the writer.
      *
-     * @param text The text to write.
-     * @param preserveSpace True to preserve white space.
+     * @param text the text to write
+     * @param preserveSpace True to preserve white space
      */
     public void write(String text, boolean preserveSpace) {
         int length = text.length();
@@ -131,7 +131,7 @@ public class LineBreaker {
                         word.append(c);
                 }
             }
-        } catch (Exception e) {
+        } catch (RuntimeException | IOException e) {
             // TODO: log
         }
     }
@@ -178,6 +178,6 @@ public class LineBreaker {
      * Close the writer.
      */
     public void close() {
-        IOUtil.close(writer);
+        IOUtils.closeQuietly(writer);
     }
 }
