@@ -22,11 +22,10 @@ import java.io.BufferedReader;
 import java.io.IOException;
 import java.io.InputStreamReader;
 import java.net.URL;
+import java.nio.charset.Charset;
 import java.util.ArrayList;
 import java.util.List;
 import java.util.regex.Pattern;
-
-import org.apache.commons.io.IOUtils;
 
 /**
  * Utility class for reading snippets.
@@ -118,15 +117,15 @@ public class SnippetReader {
      * @throws IOException if something goes wrong
      */
     private List<String> readLines(String snippetId) throws IOException {
-        BufferedReader reader;
+        Charset charset = null;
         if (encoding == null || "".equals(encoding)) {
-            reader = new BufferedReader(new InputStreamReader(source.openStream()));
+            charset = Charset.defaultCharset();
         } else {
-            reader = new BufferedReader(new InputStreamReader(source.openStream(), encoding));
+            charset = Charset.forName(encoding);
         }
 
         List<String> lines = new ArrayList<>();
-        try {
+        try (BufferedReader reader = new BufferedReader(new InputStreamReader(source.openStream(), charset))) {
             boolean capture = false;
             String line;
             boolean foundStart = false;
@@ -154,8 +153,6 @@ public class SnippetReader {
             if (hasSnippetId && !foundEnd) {
                 throw new IOException("Failed to find END of snippet " + snippetId + " in file at URL: " + source);
             }
-        } finally {
-            IOUtils.closeQuietly(reader);
         }
         return lines;
     }
