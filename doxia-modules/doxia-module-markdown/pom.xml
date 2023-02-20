@@ -52,7 +52,7 @@ under the License.
   </scm>
 
   <properties>
-    <flexmarkVersion>0.62.2</flexmarkVersion>
+    <flexmarkVersion>0.64.0</flexmarkVersion>
     <!-- 0.64.0 requires Java 11 -->
   </properties>
 
