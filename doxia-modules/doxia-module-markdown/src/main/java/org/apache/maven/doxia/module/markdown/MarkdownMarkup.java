@@ -90,8 +90,8 @@ public interface MarkdownMarkup extends TextMarkup {
     /** Syntax for the verbatim start: "```" */
     String VERBATIM_START_MARKUP = "```";
 
-    /** Syntax for the non breaking space: "\ " */
-    String NON_BREAKING_SPACE_MARKUP = "&npsp;";
+    /** Syntax for the non breaking space: entity from HTML */
+    String NON_BREAKING_SPACE_MARKUP = "&nbsp;";
 
     /** Syntax for the section title start: "#" */
     String SECTION_TITLE_START_MARKUP = "#";

@@ -33,6 +33,7 @@ import org.apache.maven.doxia.sink.impl.AbstractSinkTest;
 import org.apache.maven.doxia.sink.impl.SinkEventTestingSink;
 import org.codehaus.plexus.util.StringUtils;
 import org.junit.jupiter.api.Test;
+import org.opentest4j.AssertionFailedError;
 
 import static org.junit.jupiter.api.Assertions.assertEquals;
 
@@ -159,6 +160,7 @@ public class MarkdownSinkTest extends AbstractSinkTest {
 
     /** {@inheritDoc} */
     protected String getDefinitionListBlock(String definum, String definition) {
+        // don't reuse constants from compile classes to improve accuracy of tests
         return "<dl>" + EOL + "<dt>" + getEscapedText(definum) + "</dt>" + EOL + "<dd>" + getEscapedText(definition)
                 + "</dd>" + EOL + "</dl>" + EOL + EOL;
     }
@@ -364,12 +366,17 @@ public class MarkdownSinkTest extends AbstractSinkTest {
             parser.parse(reader, regeneratedSink);
         }
 
-        System.out.println(getSinkContent());
         final SinkEventTestingSink originalSink = new SinkEventTestingSink();
         parseFile(parser, "test", originalSink);
 
         // compare sink events from parsing original markdown with sink events from re-generated markdown
-        assertEquals(originalSink.getEventList(), regeneratedSink.getEventList());
+        try {
+            assertEquals(originalSink.getEventList(), regeneratedSink.getEventList());
+        } catch (AssertionFailedError e) {
+            // emit generated markdown to ease debugging
+            System.err.println(getSinkContent());
+            throw e;
+        }
     }
 
     private void parseFile(Parser parser, String file, Sink sink) throws ParseException, IOException {
