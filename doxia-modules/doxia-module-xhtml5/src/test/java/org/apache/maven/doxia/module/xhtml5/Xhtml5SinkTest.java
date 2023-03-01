@@ -18,13 +18,21 @@
  */
 package org.apache.maven.doxia.module.xhtml5;
 
+import javax.inject.Inject;
+
+import java.io.IOException;
+import java.io.Reader;
+import java.io.StringReader;
 import java.io.StringWriter;
 import java.io.Writer;
 
 import org.apache.maven.doxia.markup.HtmlMarkup;
+import org.apache.maven.doxia.parser.ParseException;
+import org.apache.maven.doxia.parser.Parser;
 import org.apache.maven.doxia.sink.Sink;
 import org.apache.maven.doxia.sink.impl.AbstractSinkTest;
 import org.apache.maven.doxia.sink.impl.SinkEventAttributeSet;
+import org.apache.maven.doxia.sink.impl.SinkEventTestingSink;
 import org.junit.jupiter.api.Test;
 
 import static org.apache.maven.doxia.util.HtmlTools.escapeHTML;
@@ -32,6 +40,9 @@ import static org.junit.jupiter.api.Assertions.assertEquals;
 import static org.junit.jupiter.api.Assertions.assertTrue;
 
 public class Xhtml5SinkTest extends AbstractSinkTest {
+    @Inject
+    private Xhtml5Parser parser;
+
     /** {@inheritDoc} */
     protected String outputExtension() {
         return "html";
@@ -384,5 +395,21 @@ public class Xhtml5SinkTest extends AbstractSinkTest {
     /** {@inheritDoc} */
     protected String getCommentBlock(String text) {
         return "<!--" + toXmlComment(text) + "-->";
+    }
+
+    @Test
+    public void testRoundtrip() throws IOException, ParseException {
+        parseFile(parser, "test-sections", getSink());
+
+        final SinkEventTestingSink regeneratedSink = new SinkEventTestingSink();
+        try (Reader reader = new StringReader(getSinkContent())) {
+            parser.parse(reader, regeneratedSink);
+        }
+    }
+
+    private void parseFile(Parser parser, String file, Sink sink) throws ParseException, IOException {
+        try (Reader reader = getTestReader(file)) {
+            parser.parse(reader, sink);
+        }
     }
 }
