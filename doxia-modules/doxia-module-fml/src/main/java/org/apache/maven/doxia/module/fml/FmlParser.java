@@ -144,7 +144,7 @@ public class FmlParser extends AbstractXmlParser implements FmlMarkup {
                 throw new XmlPullParserException("id attribute required for <part> at: (" + parser.getLineNumber() + ":"
                         + parser.getColumnNumber() + ")");
             } else if (!DoxiaUtils.isValidId(currentPart.getId())) {
-                String linkAnchor = DoxiaUtils.encodeId(currentPart.getId(), true);
+                String linkAnchor = DoxiaUtils.encodeId(currentPart.getId());
 
                 LOGGER.debug("Modified invalid link '{}' to '{}'", currentPart.getId(), linkAnchor);
 
@@ -162,7 +162,7 @@ public class FmlParser extends AbstractXmlParser implements FmlMarkup {
                 throw new XmlPullParserException("id attribute required for <faq> at: (" + parser.getLineNumber() + ":"
                         + parser.getColumnNumber() + ")");
             } else if (!DoxiaUtils.isValidId(currentFaq.getId())) {
-                String linkAnchor = DoxiaUtils.encodeId(currentFaq.getId(), true);
+                String linkAnchor = DoxiaUtils.encodeId(currentFaq.getId());
 
                 LOGGER.debug("Modified invalid link '{}' to '{}'", currentFaq.getId(), linkAnchor);
 

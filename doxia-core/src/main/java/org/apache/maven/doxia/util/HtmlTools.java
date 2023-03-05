@@ -420,16 +420,18 @@ public class HtmlTools {
      *
      * <p>
      *   <b>Note</b>: this method is identical to
-     *   {@link DoxiaUtils#encodeId(String,boolean) DoxiaUtils.encodeId(id, false)},
+     *   {@link DoxiaUtils#encodeId(String)},
      *   the rules to encode an id are laid out there.
      * </p>
      *
      * @param id The id to be encoded.
-     * @return The trimmed and encoded id, or null if id is null.
-     * @see DoxiaUtils#encodeId(java.lang.String,boolean)
+     * @return The trimmed and encoded id, or null if id is null, empty or blank.
+     * @see DoxiaUtils#encodeId(java.lang.String)
+     * @deprecated use {@link DoxiaUtils#encodeId(String)}
      */
+    @Deprecated
     public static String encodeId(String id) {
-        return DoxiaUtils.encodeId(id, false);
+        return DoxiaUtils.encodeId(id);
     }
 
     /**

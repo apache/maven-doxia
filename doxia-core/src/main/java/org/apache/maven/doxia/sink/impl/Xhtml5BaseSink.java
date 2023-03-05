@@ -1518,7 +1518,7 @@ public class Xhtml5BaseSink extends AbstractXmlSink implements HtmlMarkup {
         String id = name;
 
         if (!DoxiaUtils.isValidId(id)) {
-            id = DoxiaUtils.encodeId(name, true);
+            id = DoxiaUtils.encodeId(name);
 
             LOGGER.debug("Modified invalid anchor name '{}' to '{}'", name, id);
         }

@@ -415,8 +415,7 @@ public class AptParser extends AbstractTextParser implements AptMarkup {
                                 if (hash.startsWith("#")) {
                                     linkAnchor = linkAnchor.substring(0, hashIndex) + hash;
                                 } else if (!DoxiaUtils.isValidId(hash)) {
-                                    linkAnchor =
-                                            linkAnchor.substring(0, hashIndex) + "#" + DoxiaUtils.encodeId(hash, true);
+                                    linkAnchor = linkAnchor.substring(0, hashIndex) + "#" + DoxiaUtils.encodeId(hash);
 
                                     LOGGER.debug("Modified invalid link '{}' to '{}'", hash, linkAnchor);
                                 }
@@ -429,7 +428,7 @@ public class AptParser extends AbstractTextParser implements AptMarkup {
 
                             String linkAnchor = getTraversedAnchor(text, i + 1, end);
 
-                            linkAnchor = AptUtils.encodeAnchor(linkAnchor);
+                            linkAnchor = DoxiaUtils.encodeId(linkAnchor);
 
                             sink.anchor(linkAnchor);
                         }

@@ -383,12 +383,12 @@ public class AptParserTest extends AbstractParserTest {
         Iterator<SinkEventElement> it = sink.getEventList().iterator();
 
         assertSinkStartsWith(it, "head", "head_", "body", "paragraph");
-        assertSinkEquals(it.next(), "anchor", "Anchor_with_spaces_and_brackets");
+        assertSinkEquals(it.next(), "anchor", "Anchor_with_spaces_.28and_brackets.29");
 
         assertSinkEquals(it.next(), "text", "Anchor with spaces (and brackets)");
 
         assertSinkStartsWith(it, "anchor_", "text");
-        assertSinkEquals(it.next(), "link", "#Anchor_with_spaces_and_brackets");
+        assertSinkEquals(it.next(), "link", "#Anchor_with_spaces_.28and_brackets.29");
 
         assertSinkEquals(it.next(), "text", "Anchor with spaces (and brackets)");
 

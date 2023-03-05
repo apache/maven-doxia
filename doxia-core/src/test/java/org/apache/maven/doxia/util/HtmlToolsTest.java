@@ -97,17 +97,18 @@ public class HtmlToolsTest {
     @Test
     public void testEncodeId() {
         assertNull(HtmlTools.encodeId(null));
-        assertEquals(HtmlTools.encodeId(""), "a");
-        assertEquals(HtmlTools.encodeId(" "), "a");
-        assertEquals(HtmlTools.encodeId(" _ "), "a_");
-        assertEquals(HtmlTools.encodeId("1"), "a1");
-        assertEquals(HtmlTools.encodeId("1anchor"), "a1anchor");
-        assertEquals(HtmlTools.encodeId("_anchor"), "a_anchor");
-        assertEquals(HtmlTools.encodeId("a b-c123 "), "a_b-c123");
-        assertEquals(HtmlTools.encodeId("   anchor"), "anchor");
-        assertEquals(HtmlTools.encodeId("myAnchor"), "myAnchor");
-        assertEquals(HtmlTools.encodeId("H\u00E5kon"), "H.C3.A5kon");
-        assertEquals(HtmlTools.encodeId("Theu\u00DFl"), "Theu.C3.9Fl");
+        assertNull(HtmlTools.encodeId(""));
+        assertNull(HtmlTools.encodeId(" "));
+        assertEquals("_", HtmlTools.encodeId(" _ "));
+        assertEquals("a1", HtmlTools.encodeId("1"));
+        assertEquals("a1anchor", HtmlTools.encodeId("1anchor"));
+        assertEquals("_anchor", HtmlTools.encodeId("_anchor"));
+        assertEquals("a_b-c123", HtmlTools.encodeId("a b-c123 "));
+        assertEquals("anchor", HtmlTools.encodeId("   anchor"));
+        assertEquals("myAnchor", HtmlTools.encodeId("myAnchor"));
+        assertEquals("H.C3.A5kon", HtmlTools.encodeId("H\u00E5kon"));
+        assertEquals("Theu.C3.9Fl", HtmlTools.encodeId("Theu\u00DFl"));
+        assertEquals("a.E2.82.AC", HtmlTools.encodeId("\u20AC"));
     }
 
     /**
@@ -142,15 +143,15 @@ public class HtmlToolsTest {
         assertFalse(HtmlTools.isId(" _ "));
         assertFalse(HtmlTools.isId("1"));
         assertFalse(HtmlTools.isId("1anchor"));
-        assertFalse(HtmlTools.isId("_anchor"));
         assertFalse(HtmlTools.isId("a b-c123 "));
         assertFalse(HtmlTools.isId("   anchor"));
+        assertFalse(HtmlTools.isId("a:"));
+        assertFalse(HtmlTools.isId("Theu\u00DFl"));
+        assertTrue(HtmlTools.isId("_anchor"));
         assertTrue(HtmlTools.isId("myAnchor"));
         assertTrue(HtmlTools.isId("a_"));
         assertTrue(HtmlTools.isId("a-"));
-        assertTrue(HtmlTools.isId("a:"));
         assertTrue(HtmlTools.isId("a."));
-        assertFalse(HtmlTools.isId("Theu\u00DFl"));
     }
 
     /**

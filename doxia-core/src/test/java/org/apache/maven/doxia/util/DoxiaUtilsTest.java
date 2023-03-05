@@ -127,20 +127,20 @@ public class DoxiaUtilsTest {
     @Test
     public void testEncodeId() {
         assertNull(DoxiaUtils.encodeId(null));
-        assertEquals(DoxiaUtils.encodeId(""), "a");
-        assertEquals(DoxiaUtils.encodeId(" "), "a");
-        assertEquals(DoxiaUtils.encodeId(" _ "), "a_");
-        assertEquals(DoxiaUtils.encodeId("1"), "a1");
-        assertEquals(DoxiaUtils.encodeId("1anchor"), "a1anchor");
-        assertEquals(DoxiaUtils.encodeId("_anchor"), "a_anchor");
-        assertEquals(DoxiaUtils.encodeId("a b-c123 "), "a_b-c123");
-        assertEquals(DoxiaUtils.encodeId("   anchor"), "anchor");
-        assertEquals(DoxiaUtils.encodeId("myAnchor"), "myAnchor");
-        assertEquals(DoxiaUtils.encodeId("my&Anchor"), "my.26Anchor");
-        assertEquals(DoxiaUtils.encodeId("H\u00E5kon"), "H.C3.A5kon");
-        assertEquals(DoxiaUtils.encodeId("H\u00E5kon", true), "Hkon");
-        assertEquals(DoxiaUtils.encodeId("Theu\u00DFl"), "Theu.C3.9Fl");
-        assertEquals(DoxiaUtils.encodeId("Theu\u00DFl", true), "Theul");
+        assertNull(DoxiaUtils.encodeId(""));
+        assertNull(DoxiaUtils.encodeId(" "));
+        assertEquals("_", DoxiaUtils.encodeId(" _ "));
+        assertEquals("a1", DoxiaUtils.encodeId("1"));
+        assertEquals("a1anchor", DoxiaUtils.encodeId("1anchor"));
+        assertEquals("_anchor", DoxiaUtils.encodeId("_anchor"));
+        assertEquals("a_b-c123", DoxiaUtils.encodeId("a b-c123 "));
+        assertEquals("anchor", DoxiaUtils.encodeId("   anchor"));
+        assertEquals("myAnchor", DoxiaUtils.encodeId("myAnchor"));
+        assertEquals("my.26Anchor", DoxiaUtils.encodeId("my&Anchor"));
+        assertEquals("H.C3.A5kon", DoxiaUtils.encodeId("H\u00E5kon"));
+        assertEquals("Hkon", DoxiaUtils.encodeId("H\u00E5kon", true));
+        assertEquals("Theu.C3.9Fl", DoxiaUtils.encodeId("Theu\u00DFl"));
+        assertEquals("Theul", DoxiaUtils.encodeId("Theu\u00DFl", true));
     }
 
     /**
@@ -151,22 +151,23 @@ public class DoxiaUtilsTest {
         assertFalse(DoxiaUtils.isValidId(null));
         assertFalse(DoxiaUtils.isValidId(""));
         assertFalse(DoxiaUtils.isValidId(" "));
-        assertFalse(DoxiaUtils.isValidId(" _ "));
         assertFalse(DoxiaUtils.isValidId("1"));
         assertFalse(DoxiaUtils.isValidId("1anchor"));
-        assertFalse(DoxiaUtils.isValidId("_anchor"));
         assertFalse(DoxiaUtils.isValidId("a b-c123 "));
         assertFalse(DoxiaUtils.isValidId("   anchor"));
         assertFalse(DoxiaUtils.isValidId("my&Anchor"));
+        assertFalse(DoxiaUtils.isValidId("Theu\u00DFl"));
+        assertFalse(DoxiaUtils.isValidId("a:"));
+        assertFalse(DoxiaUtils.isValidId("Theu%C3%9Fl"));
+        assertFalse(DoxiaUtils.isValidId(" _ "));
+        assertTrue(DoxiaUtils.isValidId("_"));
+        assertTrue(DoxiaUtils.isValidId("_anchor"));
         assertTrue(DoxiaUtils.isValidId("myAnchor"));
         assertTrue(DoxiaUtils.isValidId("a_"));
         assertTrue(DoxiaUtils.isValidId("a-"));
-        assertTrue(DoxiaUtils.isValidId("a:"));
         assertTrue(DoxiaUtils.isValidId("a."));
         assertTrue(DoxiaUtils.isValidId("index.html"));
-        assertFalse(DoxiaUtils.isValidId("Theu\u00DFl"));
         assertTrue(DoxiaUtils.isValidId("Theu.C3.9Fl"));
-        assertFalse(DoxiaUtils.isValidId("Theu%C3%9Fl"));
     }
 
     /**

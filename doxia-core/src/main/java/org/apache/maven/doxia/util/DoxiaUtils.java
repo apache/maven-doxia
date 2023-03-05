@@ -130,90 +130,76 @@ public class DoxiaUtils {
      * Construct a valid Doxia id.
      *
      * <p>
-     *   A valid Doxia id obeys the same constraints as an HTML ID or NAME token.
-     *   According to the <a href="http://www.w3.org/TR/html4/types.html#type-name">
-     *   HTML 4.01 specification section 6.2 SGML basic types</a>:
-     * </p>
-     * <p>
-     *   <i>ID and NAME tokens must begin with a letter ([A-Za-z]) and may be
-     *   followed by any number of letters, digits ([0-9]), hyphens ("-"),
-     *   underscores ("_"), colons (":"), and periods (".").</i>
-     * </p>
-     * <p>
-     *   According to <a href="http://www.w3.org/TR/xhtml1/#C_8">XHTML 1.0
-     *   section C.8. Fragment Identifiers</a>:
-     * </p>
-     * <p>
-     *   <i>When defining fragment identifiers to be backward-compatible, only
-     *   strings matching the pattern [A-Za-z][A-Za-z0-9:_.-]* should be used.</i>
+     *   A valid Doxia id corresponds to an XML id which is a {code NCName} which is in turn identical
+     *   to a <a href="https://www.w3.org/TR/REC-xml/#NT-Name">{@code Name}</a>, but without a colon
+     *   and without any character above {@code 0x7F}.
      * </p>
      * <p>
      *   To achieve this we need to convert the <i>id</i> String. Two conversions
      *   are necessary and one is done to get prettier ids:
      * </p>
      * <ol>
-     *   <li>Remove whitespace at the start and end before starting to process</li>
-     *   <li>If the first character is not a letter, prepend the id with the letter 'a'</li>
-     *   <li>Any spaces are replaced with an underscore '_'</li>
+     *   <li>Trim with {@link String#trim()} before starting to process,</li>
+     *   <li>if the first character is not a {@code NameStartChar} prepend the letter 'a',</li>
+     *   <li>any space character ({@code 0x20}) is replaced with an underscore,</li>
      *   <li>
-     *     Any characters not matching the above pattern are either dropped,
-     *     or replaced according to the rules specified in the
-     *     <a href="http://www.w3.org/TR/html4/appendix/notes.html#non-ascii-chars">HTML specs</a>.
+     *     any character not matching the above pattern is either dropped,
+     *     or replaced with its UTF-8 encoding where each byte is prepended with a dot.
      *   </li>
      * </ol>
-     * <p>
-     *   For letters, the case is preserved in the conversion.
-     * </p>
      *
      * <p>
      * Here are some examples:
      * </p>
      * <pre>
      * DoxiaUtils.encodeId(null)        = null
-     * DoxiaUtils.encodeId("")          = "a"
-     * DoxiaUtils.encodeId("  ")        = "a"
-     * DoxiaUtils.encodeId(" _ ")       = "a_"
+     * DoxiaUtils.encodeId("")          = null
+     * DoxiaUtils.encodeId("  ")        = null
+     * DoxiaUtils.encodeId(" _ ")       = "_"
      * DoxiaUtils.encodeId("1")         = "a1"
      * DoxiaUtils.encodeId("1anchor")   = "a1anchor"
-     * DoxiaUtils.encodeId("_anchor")   = "a_anchor"
+     * DoxiaUtils.encodeId("_anchor")   = "_anchor"
      * DoxiaUtils.encodeId("a b-c123 ") = "a_b-c123"
      * DoxiaUtils.encodeId("   anchor") = "anchor"
      * DoxiaUtils.encodeId("myAnchor")  = "myAnchor"
+     * DoxiaUtils.encodeId("€")         = "a.E2.82.AC"
      * </pre>
      *
-     * @param id The id to be encoded.
-     *      May be null in which case null is returned.
-     * @param chop true if non-ASCII characters should be ignored.
-     * If false, any non-ASCII characters will be replaced as specified above.
+     * @param text The text to be encoded.
+     *      May be null, empty or blank in which case null is returned.
+     * @param chop true if non-encodable characters should be ignored.
+     * If false, any non-encodable characters will be replaced as specified above.
      * @return The trimmed and encoded id, or null if id is null.
      * If id is not null, the return value is guaranteed to be a valid Doxia id.
      * @see #isValidId(java.lang.String)
      * @since 1.1.1
+     * @deprecated Don't chop characters which might produce collisions in a document
      */
-    public static String encodeId(final String id, final boolean chop) {
-        if (id == null) {
+    @Deprecated
+    public static String encodeId(final String text, final boolean chop) {
+        if (text == null) {
             return null;
         }
 
-        final String idd = id.trim();
-        int length = idd.length();
+        final String textt = text.trim();
+        int length = textt.length();
 
         if (length == 0) {
-            return "a";
+            return null;
         }
 
         StringBuilder buffer = new StringBuilder(length);
 
         for (int i = 0; i < length; ++i) {
-            char c = idd.charAt(i);
+            char c = textt.charAt(i);
 
-            if ((i == 0) && (!isAsciiLetter(c))) {
+            if ((i == 0) && !(isAsciiLetter(c) || c == '_')) {
                 buffer.append('a');
             }
 
             if (c == ' ') {
                 buffer.append('_');
-            } else if (isAsciiLetter(c) || isAsciiDigit(c) || (c == '-') || (c == '_') || (c == ':') || (c == '.')) {
+            } else if (isAsciiLetter(c) || isAsciiDigit(c) || (c == '-') || (c == '_') || (c == '.')) {
                 buffer.append(c);
             } else if (!chop) {
 
@@ -233,8 +219,8 @@ public class DoxiaUtils {
      * Determines if the specified text is a valid id according to the rules
      * laid out in {@link #encodeId(String)}.
      *
-     * @param text The text to be tested.
-     *      May be null in which case false is returned.
+     * @param text The id to be tested.
+     *      May be null or empty in which case false is returned.
      * @return <code>true</code> if the text is a valid id, otherwise <code>false</code>.
      * @see #encodeId(String)
      */
@@ -246,11 +232,11 @@ public class DoxiaUtils {
         for (int i = 0; i < text.length(); ++i) {
             char c = text.charAt(i);
 
-            if (isAsciiLetter(c)) {
+            if (isAsciiLetter(c) || c == '_') {
                 continue;
             }
 
-            if ((i == 0) || (c == ' ') || (!isAsciiDigit(c) && c != '-' && c != '_' && c != ':' && c != '.')) {
+            if ((i == 0) || (!isAsciiDigit(c) && c != '-' && c != '.')) {
                 return false;
             }
         }

@@ -89,7 +89,9 @@ public class AptUtils {
      *
      * @param id The id to be encoded.
      * @return The trimmed and encoded id, or null if id is null.
+     * @deprecated use {@link DoxiaUtils#encodeId(String)}
      */
+    @Deprecated
     public static String encodeAnchor(String id) {
         if (id == null) {
             return null;

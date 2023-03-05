@@ -743,7 +743,7 @@ public class Xhtml5BaseParser extends AbstractXmlParser implements HtmlMarkup {
      */
     protected String validAnchor(String id) {
         if (!DoxiaUtils.isValidId(id)) {
-            String linkAnchor = DoxiaUtils.encodeId(id, true);
+            String linkAnchor = DoxiaUtils.encodeId(id);
 
             LOGGER.debug("Modified invalid link '{}' to '{}'", id, linkAnchor);
 
@@ -785,7 +785,7 @@ public class Xhtml5BaseParser extends AbstractXmlParser implements HtmlMarkup {
                 String hash = href.substring(hashIndex + 1);
 
                 if (!DoxiaUtils.isValidId(hash)) {
-                    href = href.substring(0, hashIndex) + "#" + DoxiaUtils.encodeId(hash, true);
+                    href = href.substring(0, hashIndex) + "#" + DoxiaUtils.encodeId(hash);
 
                     LOGGER.debug("Modified invalid link '{}' to '{}'", hash, href);
                 }
