@@ -21,44 +21,50 @@ under the License.
   <head>
     <meta charset="UTF-8" />
     <meta name="viewport" content="width=device-width, initial-scale=1" />
-    <meta name="generator" content="Apache Maven Doxia Site Renderer 1.9.1" />
+    <meta name="generator" content="Apache Maven Doxia Site Renderer 2.0.0-M5" />
     <meta name="author" content="Jason van Zyl" />
     <meta name="date" content="2005-10-12" />
     <title>Maven &#x2013; Maven Features</title>
-    <link rel="stylesheet" href="./css/apache-maven-fluido-1.8.min.css" />
+    <link rel="stylesheet" href="./css/apache-maven-fluido-2.0.0-M3.min.css" />
     <link rel="stylesheet" href="./css/site.css" />
     <link rel="stylesheet" href="./css/print.css" media="print" />
-    <script src="./js/apache-maven-fluido-1.8.min.js"></script>
-    <!-- Google Analytics -->
+    <script src="./js/apache-maven-fluido-2.0.0-M3.min.js"></script>
+
+    <!-- Matomo -->
     <script>
-      (function(i,s,o,g,r,a,m){i['GoogleAnalyticsObject']=r;i[r]=i[r]||function(){
-       (i[r].q=i[r].q||[]).push(arguments)},i[r].l=1*new Date();a=s.createElement(o),
-            m=s.getElementsByTagName(o)[0];a.async=1;a.src=g;m.parentNode.insertBefore(a,m)
-      })(window,document,'script','//www.google-analytics.com/analytics.js','ga');
-      ga('create', 'UA-140879-1', 'auto');
-      ga('send', 'pageview');
-      ga('set', 'anonymizeIp', true);
-      ga('set', 'forceSSL', true);
+        var _paq = window._paq = window._paq || [];
+        _paq.push(['disableCookies']);
+        _paq.push(['trackPageView']);
+        _paq.push(['enableLinkTracking']);
+
+        (function() {
+            var u="https://analytics.apache.org/";
+            _paq.push(['setTrackerUrl', u+'/matomo.php']);
+            _paq.push(['setSiteId', '3']);
+            var d=document, g=d.createElement('script'), s=d.getElementsByTagName('script')[0];
+            g.async=true; g.src=u+'/matomo.js'; s.parentNode.insertBefore(g,s);
+        })();
     </script>
+    <!-- End Matomo Code -->
   </head>
   <body class="topBarDisabled">
     <div class="container-fluid">
       <header>
         <div id="banner">
-          <div class="pull-left"><a href="https://www.apache.org/" id="bannerLeft"><img src="images/apache-maven-project.png"  alt="Apache Maven Site"/></a></div>
-          <div class="pull-right"><a href="./" id="bannerRight"><img src="images/maven-logo-black-on-white.png"  alt=""/></a></div>
+          <div class="pull-left"><a href="https://www.apache.org/" id="bannerLeft"><img src="images/apache-maven-project.png"  alt="Apache Maven Site" style="" /></a></div>
+          <div class="pull-right"><a href="./" id="bannerRight"><img src="images/maven-logo-black-on-white.png"  alt="" style="" /></a></div>
           <div class="clear"><hr/></div>
         </div>
 
         <div id="breadcrumbs">
           <ul class="breadcrumb">
-      <li class=""><a href="https://www.apache.org/" class="externalLink" title="Apache">Apache</a><span class="divider">/</span></li>
-      <li class=""><a href="index.html" title="Maven">Maven</a><span class="divider">/</span></li>
-    <li class="active ">Maven Features <a href="https://github.com/apache/maven-site/tree/master/content/apt/maven-features.apt"><img src="./images/accessories-text-editor.png" title="Edit" /></a></li>
-        <li id="publishDate" class="pull-right"><span class="divider">|</span> Last Published: 2019-11-02</li>
-      <li class="pull-right"><span class="divider">|</span>
+      <li><a href="https://www.apache.org/" class="externalLink" title="Apache">Apache</a><span class="divider">/</span></li>
+      <li><a href="index.html" title="Maven">Maven</a><span class="divider">/</span></li>
+    <li class="active ">Maven Features <a href="https://github.com/apache/maven-site/tree/master/content\apt/maven-features.apt"><img src="./images/accessories-text-editor.png" title="Edit" /></a></li>
+        <li id="publishDate" class="pull-right"><span class="divider">|</span> Last Published: 2022-12-11</li>
+        <li class="pull-right"><span class="divider">|</span>
 <a href="scm.html" title="Get Sources">Get Sources</a></li>
-      <li class="pull-right"><a href="download.cgi" title="Download">Download</a></li>
+        <li class="pull-right"><a href="download.cgi" title="Download">Download</a></li>
           </ul>
         </div>
       </header>
@@ -70,16 +76,17 @@ under the License.
     <li><a href="https://www.apache.org/licenses/" class="externalLink" title="License"><span class="none"></span>License</a></li>
    <li class="nav-header">About Maven</li>
     <li><a href="what-is-maven.html" title="What is Maven?"><span class="none"></span>What is Maven?</a></li>
-    <li class="active"><a href="#"><span class="none"></span>Features</a></li>
+    <li class="active"><a><span class="none"></span>Features</a></li>
     <li><a href="download.html" title="Download"><span class="none"></span>Download</a></li>
     <li><a href="users/index.html" title="Use"><span class="icon-chevron-right"></span>Use</a></li>
     <li><a href="docs/history.html" title="Release Notes"><span class="none"></span>Release Notes</a></li>
    <li class="nav-header">Documentation</li>
     <li><a href="plugins/index.html" title="Maven Plugins"><span class="none"></span>Maven Plugins</a></li>
+    <li><a href="extensions/index.html" title="Maven Extensions"><span class="none"></span>Maven Extensions</a></li>
     <li><a href="guides/index.html" title="Index (category)"><span class="none"></span>Index (category)</a></li>
     <li><a href="users/index.html" title="User Centre"><span class="icon-chevron-right"></span>User Centre</a></li>
     <li><a href="plugin-developers/index.html" title="Plugin Developer Centre"><span class="icon-chevron-right"></span>Plugin Developer Centre</a></li>
-    <li><a href="repository/index.html" title="Maven Central Repository"><span class="icon-chevron-right"></span>Maven Central Repository</a></li>
+    <li><a href="repositories/index.html" title="Maven Repository Centre"><span class="icon-chevron-right"></span>Maven Repository Centre</a></li>
     <li><a href="developers/index.html" title="Maven Developer Centre"><span class="icon-chevron-right"></span>Maven Developer Centre</a></li>
     <li><a href="articles.html" title="Books and Resources"><span class="none"></span>Books and Resources</a></li>
     <li><a href="security.html" title="Security"><span class="none"></span>Security</a></li>
@@ -97,6 +104,7 @@ under the License.
     <li><a href="archetype/index.html" title="Archetype"><span class="none"></span>Archetype</a></li>
     <li><a href="resolver/index.html" title="Artifact Resolver"><span class="none"></span>Artifact Resolver</a></li>
     <li><a href="doxia/index.html" title="Doxia"><span class="none"></span>Doxia</a></li>
+    <li><a href="extensions/index.html" title="Extensions"><span class="none"></span>Extensions</a></li>
     <li><a href="jxr/index.html" title="JXR"><span class="none"></span>JXR</a></li>
     <li><a href="ref/current" title="Maven"><span class="none"></span>Maven</a></li>
     <li><a href="pom/index.html" title="Parent POMs"><span class="none"></span>Parent POMs</a></li>
@@ -112,23 +120,14 @@ under the License.
    <li class="nav-header">ASF</li>
     <li><a href="https://www.apache.org/foundation/how-it-works.html" class="externalLink" title="How Apache Works"><span class="none"></span>How Apache Works</a></li>
     <li><a href="https://www.apache.org/foundation/" class="externalLink" title="Foundation"><span class="none"></span>Foundation</a></li>
+    <li><a href="https://privacy.apache.org/policies/privacy-policy-public.html" class="externalLink" title="Data Privacy"><span class="none"></span>Data Privacy</a></li>
     <li><a href="https://www.apache.org/foundation/sponsorship.html" class="externalLink" title="Sponsoring Apache"><span class="none"></span>Sponsoring Apache</a></li>
     <li><a href="https://www.apache.org/foundation/thanks.html" class="externalLink" title="Thanks"><span class="none"></span>Thanks</a></li>
   </ul>
           </nav>
           <div class="well sidebar-nav">
-<form id="search-form" action="https://www.google.com/search" method="get" >
-  <input value="https://maven.apache.org" name="sitesearch" type="hidden"/>
-  <input class="search-query" name="q" id="query" type="text" />
-</form>
-<script>asyncJs( 'https://cse.google.com/brand?form=search-form' )</script>
-            <hr />
             <div id="poweredBy">
               <div class="clear"></div>
-    <div id="twitter">
-    <a href="https://twitter.com/ASFMavenProject" class="twitter-follow-button" data-show-count="false" data-align="left" data-size="medium" data-show-screen-name="true" data-lang="en">Follow ASFMavenProject</a>
-    <script>!function(d,s,id){var js,fjs=d.getElementsByTagName(s)[0];if(!d.getElementById(id)){js=d.createElement(s);js.id=id;js.src="//platform.twitter.com/widgets.js";fjs.parentNode.insertBefore(js,fjs);}}(document,"script","twitter-wjs");</script>
-    </div>
               <div class="clear"></div>
               <div class="clear"></div>
 <a href="http://maven.apache.org/" title="Built by Maven" class="poweredBy"><img class="builtBy" alt="Built by Maven" src="./images/logos/maven-feather.png" /></a>
@@ -137,7 +136,7 @@ under the License.
         </header>
         <main id="bodyColumn"  class="span10" >
 <section>
-<h2><a name="Feature_Summary"></a>Feature Summary</h2>
+<h1>Feature Summary</h1>
 <p>The following are the key features of Maven in a nutshell:</p>
 <ul>
 <li>Simple project setup that follows best practices - get a new project or module started in seconds</li>
@@ -159,10 +158,16 @@ under the License.
     <footer>
       <div class="container-fluid">
         <div class="row-fluid">
-            <p>Copyright &#169;      2002&#x2013;2019<a href="https://www.apache.org/">The Apache Software Foundation</a>.
-.</p>
+            <p>&#169;      2002&#x2013;2023
+<a href="https://www.apache.org/">The Apache Software Foundation</a>
+</p>
         </div>
       </div>
     </footer>
+<script>
+	if(anchors) {
+	  anchors.add();
+	}
+</script>
   </body>
 </html>
