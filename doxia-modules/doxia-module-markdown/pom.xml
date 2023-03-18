@@ -52,8 +52,8 @@ under the License.
   </scm>
 
   <properties>
-    <flexmarkVersion>0.62.2</flexmarkVersion>
     <!-- 0.64.0 requires Java 11 -->
+    <flexmarkVersion>0.62.2</flexmarkVersion>
   </properties>
 
   <dependencies>
@@ -69,7 +69,22 @@ under the License.
     </dependency>
     <dependency>
       <groupId>com.vladsch.flexmark</groupId>
-      <artifactId>flexmark-util</artifactId>
+      <artifactId>flexmark-util-data</artifactId>
+      <version>${flexmarkVersion}</version>
+    </dependency>
+    <dependency>
+      <groupId>com.vladsch.flexmark</groupId>
+      <artifactId>flexmark-util-misc</artifactId>
+      <version>${flexmarkVersion}</version>
+    </dependency>
+    <dependency>
+      <groupId>com.vladsch.flexmark</groupId>
+      <artifactId>flexmark-util-sequence</artifactId>
+      <version>${flexmarkVersion}</version>
+    </dependency>
+    <dependency>
+      <groupId>com.vladsch.flexmark</groupId>
+      <artifactId>flexmark-util-ast</artifactId>
       <version>${flexmarkVersion}</version>
     </dependency>
     <dependency>
@@ -118,6 +133,10 @@ under the License.
       <version>${flexmarkVersion}</version>
     </dependency>
 
+    <dependency>
+      <groupId>org.slf4j</groupId>
+      <artifactId>slf4j-api</artifactId>
+    </dependency>
     <dependency>
       <groupId>org.jetbrains</groupId>
       <artifactId>annotations</artifactId>
