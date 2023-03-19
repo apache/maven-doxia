@@ -142,16 +142,12 @@ public abstract class AbstractXmlValidatorTest extends AbstractXmlValidator {
                     continue;
                 }
 
-                InputStream in = null;
-                try {
-                    in = AbstractXmlValidatorTest.class
-                            .getClassLoader()
-                            .getResource(entry.getName())
-                            .openStream();
+                try (InputStream in = AbstractXmlValidatorTest.class
+                        .getClassLoader()
+                        .getResource(entry.getName())
+                        .openStream()) {
                     String content = IOUtils.toString(in, "UTF-8");
                     CACHE_DOXIA_TEST_DOCUMENTS.put("jar:" + conn.getJarFileURL() + "!/" + entry.getName(), content);
-                } finally {
-                    IOUtils.close(in);
                 }
             }
         } else {
