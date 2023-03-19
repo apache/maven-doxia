@@ -26,7 +26,6 @@ import java.util.ArrayList;
 import java.util.List;
 import java.util.regex.Pattern;
 
-import org.apache.commons.io.IOUtils;
 import org.codehaus.plexus.util.StringUtils;
 
 /**
@@ -127,7 +126,7 @@ public class SnippetReader {
         }
 
         List<String> lines = new ArrayList<>();
-        try (BufferedReader withReader = reader){
+        try (BufferedReader withReader = reader) {
             boolean capture = false;
             String line;
             boolean foundStart = false;
