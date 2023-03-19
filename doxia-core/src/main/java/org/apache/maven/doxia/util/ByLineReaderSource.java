@@ -28,7 +28,6 @@ import java.io.LineNumberReader;
 import java.io.Reader;
 import java.util.Objects;
 
-import org.apache.commons.io.IOUtils;
 import org.apache.maven.doxia.parser.ParseException;
 
 /**
@@ -138,7 +137,15 @@ public class ByLineReaderSource implements ByLineSource {
      * {@inheritDoc}
      */
     public final void close() {
-        IOUtils.close(reader);
+        if (reader == null) {
+            return;
+        }
+
+        try {
+            reader.close();
+        } catch (IOException ex) {
+            // ignore
+        }
         reader = null;
     }
 

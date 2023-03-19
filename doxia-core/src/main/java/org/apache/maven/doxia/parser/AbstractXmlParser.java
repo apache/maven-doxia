@@ -686,17 +686,13 @@ public abstract class AbstractXmlParser extends AbstractParser implements XmlMar
          * @throws SAXException if any
          */
         private static byte[] toByteArray(URL url) throws SAXException {
-            InputStream is = null;
-            try {
-                is = url.openStream();
+            try (InputStream is = url.openStream()) {
                 if (is == null) {
                     throw new SAXException("Cannot open stream from the url: " + url);
                 }
                 return IOUtils.toByteArray(is);
             } catch (IOException e) {
                 throw new SAXException(e);
-            } finally {
-                IOUtils.close(is);
             }
         }
     }

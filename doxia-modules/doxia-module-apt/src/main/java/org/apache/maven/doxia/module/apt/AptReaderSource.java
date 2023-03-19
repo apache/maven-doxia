@@ -22,8 +22,6 @@ import java.io.IOException;
 import java.io.LineNumberReader;
 import java.io.Reader;
 
-import org.apache.commons.io.IOUtils;
-
 /**
  * Reader for apt source documents.
  */
@@ -112,7 +110,15 @@ public class AptReaderSource implements AptSource {
      * Closes the reader associated with this AptReaderSource.
      */
     public void close() {
-        IOUtils.close(reader);
+        if (reader == null) {
+            return;
+        }
+
+        try {
+            reader.close();
+        } catch (IOException ex) {
+            // ignore
+        }
         reader = null;
     }
 }

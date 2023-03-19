@@ -89,14 +89,12 @@ public class FmlParser extends AbstractXmlParser implements FmlMarkup {
         this.sourceContent = null;
         init();
 
-        try {
+        try (Reader reader = source) {
             StringWriter contentWriter = new StringWriter();
-            IOUtils.copy(source, contentWriter);
+            IOUtils.copy(reader, contentWriter);
             sourceContent = contentWriter.toString();
         } catch (IOException ex) {
             throw new ParseException("Error reading the input source", ex);
-        } finally {
-            IOUtils.close(source);
         }
 
         try {

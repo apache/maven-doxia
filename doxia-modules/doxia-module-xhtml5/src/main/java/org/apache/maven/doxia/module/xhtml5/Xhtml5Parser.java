@@ -271,14 +271,12 @@ public class Xhtml5Parser extends Xhtml5BaseParser implements Xhtml5Markup {
     public void parse(Reader source, Sink sink, String reference) throws ParseException {
         this.sourceContent = null;
 
-        try {
+        try (Reader reader = source) {
             StringWriter contentWriter = new StringWriter();
-            IOUtils.copy(source, contentWriter);
+            IOUtils.copy(reader, contentWriter);
             sourceContent = contentWriter.toString();
         } catch (IOException ex) {
             throw new ParseException("Error reading the input source", ex);
-        } finally {
-            IOUtils.close(source);
         }
 
         try {

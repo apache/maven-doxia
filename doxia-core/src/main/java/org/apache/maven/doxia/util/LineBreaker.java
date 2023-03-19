@@ -22,8 +22,6 @@ import java.io.BufferedWriter;
 import java.io.IOException;
 import java.io.Writer;
 
-import org.apache.commons.io.IOUtils;
-
 /**
  * Allows to specify the line-length of an output writer.
  */
@@ -178,6 +176,14 @@ public class LineBreaker {
      * Close the writer.
      */
     public void close() {
-        IOUtils.close(writer);
+        if (writer == null) {
+            return;
+        }
+
+        try {
+            writer.close();
+        } catch (IOException ex) {
+            // ignore
+        }
     }
 }
