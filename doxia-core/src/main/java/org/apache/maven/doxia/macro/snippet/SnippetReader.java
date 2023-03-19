@@ -26,7 +26,7 @@ import java.util.ArrayList;
 import java.util.List;
 import java.util.regex.Pattern;
 
-import org.codehaus.plexus.util.IOUtil;
+import org.apache.commons.io.IOUtils;
 import org.codehaus.plexus.util.StringUtils;
 
 /**
@@ -156,7 +156,7 @@ public class SnippetReader {
                 throw new IOException("Failed to find END of snippet " + snippetId + " in file at URL: " + source);
             }
         } finally {
-            IOUtil.close(reader);
+            IOUtils.close(reader);
         }
         return lines;
     }

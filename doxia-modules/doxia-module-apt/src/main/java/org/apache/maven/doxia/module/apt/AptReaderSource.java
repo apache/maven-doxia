@@ -22,7 +22,7 @@ import java.io.IOException;
 import java.io.LineNumberReader;
 import java.io.Reader;
 
-import org.codehaus.plexus.util.IOUtil;
+import org.apache.commons.io.IOUtils;
 
 /**
  * Reader for apt source documents.
@@ -112,7 +112,7 @@ public class AptReaderSource implements AptSource {
      * Closes the reader associated with this AptReaderSource.
      */
     public void close() {
-        IOUtil.close(reader);
+        IOUtils.close(reader);
         reader = null;
     }
 }

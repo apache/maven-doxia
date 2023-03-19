@@ -22,7 +22,7 @@ import java.io.BufferedWriter;
 import java.io.IOException;
 import java.io.Writer;
 
-import org.codehaus.plexus.util.IOUtil;
+import org.apache.commons.io.IOUtils;
 
 /**
  * Allows to specify the line-length of an output writer.
@@ -178,6 +178,6 @@ public class LineBreaker {
      * Close the writer.
      */
     public void close() {
-        IOUtil.close(writer);
+        IOUtils.close(writer);
     }
 }
