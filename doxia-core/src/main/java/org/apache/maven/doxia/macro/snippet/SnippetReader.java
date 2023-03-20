@@ -26,7 +26,6 @@ import java.util.ArrayList;
 import java.util.List;
 import java.util.regex.Pattern;
 
-import org.codehaus.plexus.util.IOUtil;
 import org.codehaus.plexus.util.StringUtils;
 
 /**
@@ -127,13 +126,13 @@ public class SnippetReader {
         }
 
         List<String> lines = new ArrayList<>();
-        try {
+        try (BufferedReader withReader = reader) {
             boolean capture = false;
             String line;
             boolean foundStart = false;
             boolean foundEnd = false;
             boolean hasSnippetId = StringUtils.isNotEmpty(snippetId);
-            while ((line = reader.readLine()) != null) {
+            while ((line = withReader.readLine()) != null) {
                 if (!hasSnippetId) {
                     lines.add(line);
                 } else {
@@ -155,8 +154,6 @@ public class SnippetReader {
             if (hasSnippetId && !foundEnd) {
                 throw new IOException("Failed to find END of snippet " + snippetId + " in file at URL: " + source);
             }
-        } finally {
-            IOUtil.close(reader);
         }
         return lines;
     }

@@ -29,6 +29,7 @@ import java.util.HashMap;
 import java.util.Map;
 import java.util.StringTokenizer;
 
+import org.apache.commons.io.IOUtils;
 import org.apache.maven.doxia.macro.MacroExecutionException;
 import org.apache.maven.doxia.macro.MacroRequest;
 import org.apache.maven.doxia.macro.manager.MacroNotFoundException;
@@ -39,7 +40,6 @@ import org.apache.maven.doxia.sink.SinkEventAttributes;
 import org.apache.maven.doxia.sink.impl.SinkAdapter;
 import org.apache.maven.doxia.sink.impl.SinkEventAttributeSet;
 import org.apache.maven.doxia.util.DoxiaUtils;
-import org.codehaus.plexus.util.IOUtil;
 import org.codehaus.plexus.util.StringUtils;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
@@ -190,7 +190,7 @@ public class AptParser extends AbstractTextParser implements AptMarkup {
 
         try {
             StringWriter contentWriter = new StringWriter();
-            IOUtil.copy(source, contentWriter);
+            IOUtils.copy(source, contentWriter);
             sourceContent = contentWriter.toString();
         } catch (IOException e) {
             throw new AptParseException(e);

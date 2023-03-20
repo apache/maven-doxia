@@ -33,9 +33,9 @@ import java.util.Map;
 import java.util.jar.JarEntry;
 import java.util.jar.JarFile;
 
+import org.apache.commons.io.IOUtils;
 import org.apache.maven.doxia.parser.AbstractXmlParser;
 import org.codehaus.plexus.util.FileUtils;
-import org.codehaus.plexus.util.IOUtil;
 import org.codehaus.plexus.util.ReaderFactory;
 import org.codehaus.plexus.util.SelectorUtils;
 import org.codehaus.plexus.util.xml.XmlUtil;
@@ -142,16 +142,12 @@ public abstract class AbstractXmlValidatorTest extends AbstractXmlValidator {
                     continue;
                 }
 
-                InputStream in = null;
-                try {
-                    in = AbstractXmlValidatorTest.class
-                            .getClassLoader()
-                            .getResource(entry.getName())
-                            .openStream();
-                    String content = IOUtil.toString(in, "UTF-8");
+                try (InputStream in = AbstractXmlValidatorTest.class
+                        .getClassLoader()
+                        .getResource(entry.getName())
+                        .openStream()) {
+                    String content = IOUtils.toString(in, "UTF-8");
                     CACHE_DOXIA_TEST_DOCUMENTS.put("jar:" + conn.getJarFileURL() + "!/" + entry.getName(), content);
-                } finally {
-                    IOUtil.close(in);
                 }
             }
         } else {
@@ -173,7 +169,7 @@ public abstract class AbstractXmlValidatorTest extends AbstractXmlValidator {
                     reader = ReaderFactory.newReader(file, "UTF-8");
                 }
 
-                String content = IOUtil.toString(reader);
+                String content = IOUtils.toString(reader);
                 CACHE_DOXIA_TEST_DOCUMENTS.put(file.toURI().toString(), content);
             }
         }

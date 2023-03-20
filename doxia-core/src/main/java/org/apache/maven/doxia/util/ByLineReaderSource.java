@@ -29,7 +29,6 @@ import java.io.Reader;
 import java.util.Objects;
 
 import org.apache.maven.doxia.parser.ParseException;
-import org.codehaus.plexus.util.IOUtil;
 
 /**
  * {@link ByLineSource} default implementation
@@ -138,7 +137,15 @@ public class ByLineReaderSource implements ByLineSource {
      * {@inheritDoc}
      */
     public final void close() {
-        IOUtil.close(reader);
+        if (reader == null) {
+            return;
+        }
+
+        try {
+            reader.close();
+        } catch (IOException ex) {
+            // ignore
+        }
         reader = null;
     }
 

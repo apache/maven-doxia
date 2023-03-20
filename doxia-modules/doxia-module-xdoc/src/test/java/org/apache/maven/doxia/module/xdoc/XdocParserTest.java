@@ -28,6 +28,7 @@ import java.io.Writer;
 import java.util.Iterator;
 import java.util.regex.Pattern;
 
+import org.apache.commons.io.IOUtils;
 import org.apache.maven.doxia.parser.AbstractParserTest;
 import org.apache.maven.doxia.parser.ParseException;
 import org.apache.maven.doxia.parser.Parser;
@@ -35,7 +36,6 @@ import org.apache.maven.doxia.sink.Sink;
 import org.apache.maven.doxia.sink.impl.SinkEventAttributeSet;
 import org.apache.maven.doxia.sink.impl.SinkEventElement;
 import org.apache.maven.doxia.sink.impl.SinkEventTestingSink;
-import org.codehaus.plexus.util.IOUtil;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
 
@@ -110,7 +110,7 @@ public class XdocParserTest extends AbstractParserTest {
 
         String content;
         try (Reader reader = new FileReader(f)) {
-            content = IOUtil.toString(reader);
+            content = IOUtils.toString(reader);
         }
 
         assertTrue(content.contains("&lt;modelVersion&gt;4.0.0&lt;/modelVersion&gt;"));
@@ -130,7 +130,7 @@ public class XdocParserTest extends AbstractParserTest {
 
         String content;
         try (Reader reader = new FileReader(f)) {
-            content = IOUtil.toString(reader);
+            content = IOUtils.toString(reader);
         }
 
         // No section, only subsection 1 and 2

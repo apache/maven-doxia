@@ -30,6 +30,7 @@ import java.util.HashMap;
 import java.util.Iterator;
 import java.util.Map;
 
+import org.apache.commons.io.IOUtils;
 import org.apache.maven.doxia.macro.MacroExecutionException;
 import org.apache.maven.doxia.macro.MacroRequest;
 import org.apache.maven.doxia.macro.manager.MacroNotFoundException;
@@ -43,7 +44,6 @@ import org.apache.maven.doxia.sink.impl.SinkEventAttributeSet;
 import org.apache.maven.doxia.sink.impl.Xhtml5BaseSink;
 import org.apache.maven.doxia.util.DoxiaUtils;
 import org.apache.maven.doxia.util.HtmlTools;
-import org.codehaus.plexus.util.IOUtil;
 import org.codehaus.plexus.util.StringUtils;
 import org.codehaus.plexus.util.xml.pull.XmlPullParser;
 import org.codehaus.plexus.util.xml.pull.XmlPullParserException;
@@ -89,14 +89,12 @@ public class FmlParser extends AbstractXmlParser implements FmlMarkup {
         this.sourceContent = null;
         init();
 
-        try {
+        try (Reader reader = source) {
             StringWriter contentWriter = new StringWriter();
-            IOUtil.copy(source, contentWriter);
+            IOUtils.copy(reader, contentWriter);
             sourceContent = contentWriter.toString();
         } catch (IOException ex) {
             throw new ParseException("Error reading the input source", ex);
-        } finally {
-            IOUtil.close(source);
         }
 
         try {
