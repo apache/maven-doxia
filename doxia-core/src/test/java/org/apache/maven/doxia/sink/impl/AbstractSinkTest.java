@@ -22,7 +22,6 @@ import java.io.CharArrayWriter;
 import java.io.IOException;
 import java.io.Writer;
 
-import org.apache.commons.io.IOUtils;
 import org.apache.maven.doxia.AbstractModuleTest;
 import org.apache.maven.doxia.sink.Sink;
 import org.apache.maven.doxia.sink.SinkEventAttributes;
@@ -110,7 +109,6 @@ public abstract class AbstractSinkTest extends AbstractModuleTest {
             SinkTestDocument.generate(testSink);
         } finally {
             testSink.close();
-            IOUtils.close(writer);
         }
     }
 
