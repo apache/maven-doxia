@@ -23,6 +23,7 @@ import javax.inject.Singleton;
 
 import java.io.StringReader;
 
+import org.apache.commons.lang3.StringUtils;
 import org.apache.maven.doxia.index.IndexEntry;
 import org.apache.maven.doxia.index.IndexingSink;
 import org.apache.maven.doxia.macro.AbstractMacro;
@@ -32,7 +33,6 @@ import org.apache.maven.doxia.parser.ParseException;
 import org.apache.maven.doxia.parser.Parser;
 import org.apache.maven.doxia.sink.Sink;
 import org.apache.maven.doxia.util.HtmlTools;
-import org.codehaus.plexus.util.StringUtils;
 
 /**
  * Macro to display a <code>Table Of Content</code> in a given <code>Sink</code>.

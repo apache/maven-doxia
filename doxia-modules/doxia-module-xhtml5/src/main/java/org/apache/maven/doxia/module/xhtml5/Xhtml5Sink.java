@@ -23,10 +23,10 @@ import javax.swing.text.html.HTML.Attribute;
 
 import java.io.Writer;
 
+import org.apache.commons.lang3.StringUtils;
 import org.apache.maven.doxia.sink.impl.SinkEventAttributeSet;
 import org.apache.maven.doxia.sink.impl.Xhtml5BaseSink;
 import org.apache.maven.doxia.util.HtmlTools;
-import org.codehaus.plexus.util.StringUtils;
 
 /**
  * <a href="https://www.w3.org/TR/html52/">XHTML 5.2</a> sink implementation.

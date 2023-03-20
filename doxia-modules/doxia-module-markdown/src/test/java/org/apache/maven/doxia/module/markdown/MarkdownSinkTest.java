@@ -25,13 +25,13 @@ import java.io.Reader;
 import java.io.StringReader;
 import java.io.Writer;
 
+import org.apache.commons.lang3.StringUtils;
 import org.apache.maven.doxia.markup.Markup;
 import org.apache.maven.doxia.parser.ParseException;
 import org.apache.maven.doxia.parser.Parser;
 import org.apache.maven.doxia.sink.Sink;
 import org.apache.maven.doxia.sink.impl.AbstractSinkTest;
 import org.apache.maven.doxia.sink.impl.SinkEventTestingSink;
-import org.codehaus.plexus.util.StringUtils;
 import org.junit.jupiter.api.Test;
 import org.opentest4j.AssertionFailedError;
 

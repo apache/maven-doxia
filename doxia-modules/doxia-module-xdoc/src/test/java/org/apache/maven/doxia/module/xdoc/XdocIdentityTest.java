@@ -20,10 +20,10 @@ package org.apache.maven.doxia.module.xdoc;
 
 import java.io.Writer;
 
+import org.apache.commons.lang3.StringUtils;
 import org.apache.maven.doxia.module.AbstractIdentityTest;
 import org.apache.maven.doxia.parser.Parser;
 import org.apache.maven.doxia.sink.Sink;
-import org.codehaus.plexus.util.StringUtils;
 import org.junit.jupiter.api.BeforeEach;
 
 /**

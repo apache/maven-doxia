@@ -20,10 +20,10 @@ package org.apache.maven.doxia.module.apt;
 
 import java.io.Writer;
 
+import org.apache.commons.lang3.StringUtils;
 import org.apache.maven.doxia.markup.Markup;
 import org.apache.maven.doxia.sink.Sink;
 import org.apache.maven.doxia.sink.impl.AbstractSinkTest;
-import org.codehaus.plexus.util.StringUtils;
 import org.junit.jupiter.api.Test;
 
 import static org.junit.jupiter.api.Assertions.assertEquals;

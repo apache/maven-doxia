@@ -29,6 +29,7 @@ import java.io.StringWriter;
 import java.util.HashMap;
 import java.util.Map;
 
+import org.apache.commons.lang3.StringUtils;
 import org.apache.maven.doxia.macro.MacroExecutionException;
 import org.apache.maven.doxia.macro.MacroRequest;
 import org.apache.maven.doxia.macro.manager.MacroNotFoundException;
@@ -37,7 +38,6 @@ import org.apache.maven.doxia.parser.Xhtml5BaseParser;
 import org.apache.maven.doxia.sink.Sink;
 import org.apache.maven.doxia.sink.impl.SinkEventAttributeSet;
 import org.codehaus.plexus.util.IOUtil;
-import org.codehaus.plexus.util.StringUtils;
 import org.codehaus.plexus.util.xml.pull.XmlPullParser;
 import org.codehaus.plexus.util.xml.pull.XmlPullParserException;
 import org.slf4j.Logger;
