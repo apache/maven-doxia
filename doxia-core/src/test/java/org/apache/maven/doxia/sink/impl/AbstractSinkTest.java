@@ -25,7 +25,6 @@ import java.io.Writer;
 import org.apache.maven.doxia.AbstractModuleTest;
 import org.apache.maven.doxia.sink.Sink;
 import org.apache.maven.doxia.sink.SinkEventAttributes;
-import org.codehaus.plexus.util.IOUtil;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
 
@@ -110,7 +109,6 @@ public abstract class AbstractSinkTest extends AbstractModuleTest {
             SinkTestDocument.generate(testSink);
         } finally {
             testSink.close();
-            IOUtil.close(writer);
         }
     }
 

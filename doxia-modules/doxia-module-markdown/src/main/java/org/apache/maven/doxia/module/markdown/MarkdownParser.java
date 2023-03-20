@@ -49,6 +49,7 @@ import com.vladsch.flexmark.ext.yaml.front.matter.YamlFrontMatterExtension;
 import com.vladsch.flexmark.html.HtmlRenderer;
 import com.vladsch.flexmark.util.ast.Node;
 import com.vladsch.flexmark.util.data.MutableDataSet;
+import org.apache.commons.io.IOUtils;
 import org.apache.maven.doxia.markup.HtmlMarkup;
 import org.apache.maven.doxia.markup.TextMarkup;
 import org.apache.maven.doxia.module.xhtml5.Xhtml5Parser;
@@ -56,7 +57,6 @@ import org.apache.maven.doxia.parser.AbstractTextParser;
 import org.apache.maven.doxia.parser.ParseException;
 import org.apache.maven.doxia.sink.Sink;
 import org.apache.maven.doxia.util.HtmlTools;
-import org.codehaus.plexus.util.IOUtil;
 import org.codehaus.plexus.util.xml.pull.XmlPullParser;
 
 /**
@@ -267,7 +267,7 @@ public class MarkdownParser extends AbstractTextParser implements TextMarkup {
      */
     String toHtml(Reader source) throws IOException {
         // Read the source
-        StringBuilder markdownText = new StringBuilder(IOUtil.toString(source));
+        StringBuilder markdownText = new StringBuilder(IOUtils.toString(source));
 
         // Now, build the HTML document
         StringBuilder html = new StringBuilder(1000);

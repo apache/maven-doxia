@@ -29,6 +29,7 @@ import java.io.StringWriter;
 import java.util.HashMap;
 import java.util.Map;
 
+import org.apache.commons.io.IOUtils;
 import org.apache.commons.lang3.StringUtils;
 import org.apache.maven.doxia.macro.MacroExecutionException;
 import org.apache.maven.doxia.macro.MacroRequest;
@@ -38,7 +39,6 @@ import org.apache.maven.doxia.parser.Xhtml5BaseParser;
 import org.apache.maven.doxia.sink.Sink;
 import org.apache.maven.doxia.sink.impl.SinkEventAttributeSet;
 import org.apache.maven.doxia.util.HtmlTools;
-import org.codehaus.plexus.util.IOUtil;
 import org.codehaus.plexus.util.xml.pull.XmlPullParser;
 import org.codehaus.plexus.util.xml.pull.XmlPullParserException;
 import org.slf4j.Logger;
@@ -89,14 +89,12 @@ public class XdocParser extends Xhtml5BaseParser implements XdocMarkup {
     public void parse(Reader source, Sink sink, String reference) throws ParseException {
         this.sourceContent = null;
 
-        try {
+        try (Reader reader = source) {
             StringWriter contentWriter = new StringWriter();
-            IOUtil.copy(source, contentWriter);
+            IOUtils.copy(reader, contentWriter);
             sourceContent = contentWriter.toString();
         } catch (IOException ex) {
             throw new ParseException("Error reading the input source", ex);
-        } finally {
-            IOUtil.close(source);
         }
 
         // leave this at default (false) until everything is properly implemented, see DOXIA-226

@@ -34,6 +34,7 @@ import java.util.Map;
 import java.util.regex.Matcher;
 import java.util.regex.Pattern;
 
+import org.apache.commons.io.IOUtils;
 import org.apache.commons.lang3.StringUtils;
 import org.apache.maven.doxia.macro.MacroExecutionException;
 import org.apache.maven.doxia.markup.XmlMarkup;
@@ -41,7 +42,6 @@ import org.apache.maven.doxia.sink.Sink;
 import org.apache.maven.doxia.sink.impl.SinkEventAttributeSet;
 import org.apache.maven.doxia.util.HtmlTools;
 import org.apache.maven.doxia.util.XmlValidator;
-import org.codehaus.plexus.util.IOUtil;
 import org.codehaus.plexus.util.xml.pull.EntityReplacementMap;
 import org.codehaus.plexus.util.xml.pull.MXParser;
 import org.codehaus.plexus.util.xml.pull.XmlPullParser;
@@ -109,7 +109,7 @@ public abstract class AbstractXmlParser extends AbstractParser implements XmlMar
         if (isValidate()) {
             String content;
             try {
-                content = IOUtil.toString(new BufferedReader(src));
+                content = IOUtils.toString(new BufferedReader(src));
             } catch (IOException e) {
                 throw new ParseException("Error reading the model", e);
             }
@@ -686,17 +686,13 @@ public abstract class AbstractXmlParser extends AbstractParser implements XmlMar
          * @throws SAXException if any
          */
         private static byte[] toByteArray(URL url) throws SAXException {
-            InputStream is = null;
-            try {
-                is = url.openStream();
+            try (InputStream is = url.openStream()) {
                 if (is == null) {
                     throw new SAXException("Cannot open stream from the url: " + url);
                 }
-                return IOUtil.toByteArray(is);
+                return IOUtils.toByteArray(is);
             } catch (IOException e) {
                 throw new SAXException(e);
-            } finally {
-                IOUtil.close(is);
             }
         }
     }

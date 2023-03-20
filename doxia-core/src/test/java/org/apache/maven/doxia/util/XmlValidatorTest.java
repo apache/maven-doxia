@@ -18,8 +18,8 @@
  */
 package org.apache.maven.doxia.util;
 
+import org.apache.commons.io.IOUtils;
 import org.codehaus.plexus.testing.PlexusTest;
-import org.codehaus.plexus.util.IOUtil;
 import org.codehaus.plexus.util.xml.XmlStreamReader;
 import org.junit.jupiter.api.Test;
 
@@ -32,7 +32,7 @@ import org.junit.jupiter.api.Test;
 public class XmlValidatorTest {
     @Test
     public void testValidate() throws Exception {
-        String xml = IOUtil.toString(new XmlStreamReader(this.getClass().getResourceAsStream("/test.xml")));
+        String xml = IOUtils.toString(new XmlStreamReader(this.getClass().getResourceAsStream("/test.xml")));
 
         XmlValidator validator = new XmlValidator();
 
