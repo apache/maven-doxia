@@ -24,16 +24,17 @@ import java.io.InputStream;
 import java.io.Reader;
 import java.net.JarURLConnection;
 import java.net.URL;
+import java.util.Collection;
 import java.util.Collections;
 import java.util.Enumeration;
 import java.util.Hashtable;
-import java.util.List;
 import java.util.Locale;
 import java.util.Map;
 import java.util.jar.JarEntry;
 import java.util.jar.JarFile;
 
 import org.apache.commons.io.FileUtils;
+import org.apache.commons.io.filefilter.TrueFileFilter;
 import org.apache.maven.doxia.parser.AbstractXmlParser;
 import org.codehaus.plexus.util.IOUtil;
 import org.codehaus.plexus.util.ReaderFactory;
@@ -158,7 +159,7 @@ public abstract class AbstractXmlValidatorTest extends AbstractXmlValidator {
             // IDE projects
             File testDocsDir = FileUtils.toFile(testJar).getParentFile();
 
-            List<File> files = FileUtils.getFiles(testDocsDir, "**/*.*", FileUtils.getDefaultExcludesAsString(), true);
+            Collection<File> files = FileUtils.listFiles(testDocsDir, TrueFileFilter.TRUE, TrueFileFilter.TRUE);
             for (File file1 : files) {
                 File file = new File(file1.toString());
 
