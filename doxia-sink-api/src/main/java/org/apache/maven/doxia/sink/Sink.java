@@ -52,7 +52,7 @@ package org.apache.maven.doxia.sink;
  * @author <a href="mailto:vincent.siveton@gmail.com">Vincent Siveton</a>
  * @author ltheussl
  */
-public interface Sink {
+public interface Sink extends AutoCloseable {
 
     /**
      * A numbering to handle a number list.
