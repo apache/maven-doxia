@@ -23,12 +23,12 @@ import javax.swing.text.html.HTML.Attribute;
 
 import java.io.Writer;
 
+import org.apache.commons.lang3.StringUtils;
 import org.apache.maven.doxia.sink.SinkEventAttributes;
 import org.apache.maven.doxia.sink.impl.SinkEventAttributeSet;
 import org.apache.maven.doxia.sink.impl.SinkUtils;
 import org.apache.maven.doxia.sink.impl.Xhtml5BaseSink;
 import org.apache.maven.doxia.util.HtmlTools;
-import org.codehaus.plexus.util.StringUtils;
 
 /**
  * <a href="https://maven.apache.org/doxia/references/xdoc-format.html">Xdoc</a> Sink implementation.

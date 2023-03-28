@@ -40,6 +40,7 @@ import org.xml.sax.XMLReader;
 import org.xml.sax.helpers.DefaultHandler;
 import org.xml.sax.helpers.XMLReaderFactory;
 
+import static org.junit.jupiter.api.Assertions.assertFalse;
 import static org.junit.jupiter.api.Assertions.fail;
 
 /**
@@ -93,7 +94,9 @@ public abstract class AbstractXmlValidator {
      */
     @Test
     public void testValidateFiles() throws Exception {
-        for (Map.Entry<String, String> entry : getTestDocuments().entrySet()) {
+        Map<String, String> testDocuments = getTestDocuments();
+        assertFalse(testDocuments.isEmpty(), "No test documents found");
+        for (Map.Entry<String, String> entry : testDocuments.entrySet()) {
             if (logger.isDebugEnabled()) {
                 logger.debug("Validate '" + entry.getKey() + "'");
             }

@@ -22,9 +22,9 @@ import java.io.File;
 import java.util.regex.Matcher;
 import java.util.regex.Pattern;
 
+import org.apache.commons.lang3.StringUtils;
 import org.apache.maven.doxia.markup.XmlMarkup;
 import org.apache.maven.doxia.xsd.AbstractXmlValidatorTest;
-import org.codehaus.plexus.util.StringUtils;
 
 import static org.codehaus.plexus.testing.PlexusExtension.getBasedir;
 

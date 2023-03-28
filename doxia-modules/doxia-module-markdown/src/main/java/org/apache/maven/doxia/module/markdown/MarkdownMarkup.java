@@ -18,8 +18,8 @@
  */
 package org.apache.maven.doxia.module.markdown;
 
+import org.apache.commons.lang3.StringUtils;
 import org.apache.maven.doxia.markup.TextMarkup;
-import org.codehaus.plexus.util.StringUtils;
 
 /**
  * This interface defines all markups and syntaxes used by the <b>Markdown</b> format.
