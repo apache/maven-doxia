@@ -151,6 +151,40 @@ public class SnippetMacroTest {
         assertThat(snippet, CoreMatchers.containsString("Error during retrieving content"));
     }
 
+    @Test
+    public void testIndentHandling() throws MacroExecutionException {
+        Map<String, Object> macroParameters = new HashMap<>();
+        macroParameters.put("file", "src/test/resources/macro/snippet/testSnippet-indent.txt");
+        macroParameters.put("encoding", "UTF-8");
+        macroParameters.put("id", "firstId");
+        macroParameters.put("verbatim", "false");
+
+        // 1. Ensure leading tabs are trimmed
+        SinkEventTestingSink sink = executeSnippetMacro(macroParameters);
+        String snippet = (String) sink.getEventList().get(0).getArgs()[0];
+        assertEquals(1, sink.getEventList().size(), "There should only be one event");
+        assertEquals("first snippet\n", snippet);
+
+        // 2. Ensure leading spaces are trimmed
+        macroParameters.put("id", "secondId");
+        sink = executeSnippetMacro(macroParameters);
+        snippet = (String) sink.getEventList().get(0).getArgs()[0];
+        assertEquals("second snippet\n", snippet);
+
+        // 3. Ensure empty lines don't break the minIndent calculation
+        macroParameters.put("id", "thirdId");
+        sink = executeSnippetMacro(macroParameters);
+        snippet = (String) sink.getEventList().get(0).getArgs()[0];
+        String[] lines = snippet.split(System.getProperty("line.separator"));
+        assertEquals("Line1", lines[0], "There should not be any leading indentation since the minIndent is two");
+        assertEquals("	Line2", lines[1]);
+        assertEquals("", lines[2]);
+        assertEquals("", lines[3]);
+        assertEquals("", lines[4]);
+        assertEquals("	", lines[5], "The tab should be preserved");
+        assertEquals("		Line6", lines[6]);
+    }
+
     private SinkEventTestingSink executeSnippetMacro(Map<String, Object> macroParameters)
             throws MacroExecutionException {
         File basedir = new File(getBasedir());
