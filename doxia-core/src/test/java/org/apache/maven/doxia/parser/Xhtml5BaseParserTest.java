@@ -860,4 +860,32 @@ public class Xhtml5BaseParserTest extends AbstractParserTest {
                 "definitionListItem_",
                 "definitionList_");
     }
+
+    @Test
+    public void testSectionsAndHeadings() throws ParseException {
+        String text = "<body><h1>Headline1</h1><section><h2>Headline2</h2></section></body>";
+        
+        parser.setValidate(false);
+        parser.parse(text, sink);
+
+        Iterator<SinkEventElement> it = sink.getEventList().iterator();
+        // TODO: this leads to a list with a missing section1_ method
+    
+        assertEquals("section1", it.next().getName());
+        assertEquals("sectionTitle1", it.next().getName());
+
+        SinkEventElement textEvt = it.next();
+        assertEquals("text", textEvt.getName());
+        assertEquals("Headline1", textEvt.getArgs()[0]);
+        assertEquals("sectionTitle1_", it.next().getName());
+        assertEquals("section2", it.next().getName());
+        assertEquals("sectionTitle2", it.next().getName());
+        textEvt = it.next();
+        assertEquals("text", textEvt.getName());
+        assertEquals("Headline1", textEvt.getArgs()[0]);
+        assertEquals("sectionTitle2_", it.next().getName());
+        assertEquals("section2_", it.next().getName());
+        assertEquals("section1_", it.next().getName());
+
+    }
 }
