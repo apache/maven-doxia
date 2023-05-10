@@ -26,8 +26,6 @@ import java.util.ArrayList;
 import java.util.List;
 import java.util.regex.Pattern;
 
-import org.apache.commons.lang3.StringUtils;
-
 /**
  * Utility class for reading snippets.
  */
@@ -131,7 +129,7 @@ public class SnippetReader {
             String line;
             boolean foundStart = false;
             boolean foundEnd = false;
-            boolean hasSnippetId = StringUtils.isNotEmpty(snippetId);
+            boolean hasSnippetId = snippetId != null && !snippetId.isEmpty();
             while ((line = withReader.readLine()) != null) {
                 if (!hasSnippetId) {
                     lines.add(line);

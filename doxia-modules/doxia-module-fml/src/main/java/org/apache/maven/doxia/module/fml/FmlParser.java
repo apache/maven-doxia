@@ -264,7 +264,7 @@ public class FmlParser extends AbstractXmlParser implements FmlMarkup {
         else if (parser.getName().equals(MACRO_TAG.toString())) {
             handleMacroEnd(buffer);
         } else if (parser.getName().equals(PARAM.toString())) {
-            if (!StringUtils.isNotEmpty(macroName)) {
+            if (!(macroName != null && !macroName.isEmpty())) {
                 handleUnknown(parser, sink, TAG_TYPE_END);
             }
         } else if (buffer != null) {
@@ -369,7 +369,7 @@ public class FmlParser extends AbstractXmlParser implements FmlMarkup {
                 macroParameters = new HashMap<>();
             }
 
-            if (StringUtils.isEmpty(macroName)) {
+            if (macroName == null || macroName.isEmpty()) {
                 throw new MacroExecutionException("The '" + Attribute.NAME.toString() + "' attribute for the '"
                         + MACRO_TAG.toString() + "' tag is required.");
             }
@@ -384,7 +384,7 @@ public class FmlParser extends AbstractXmlParser implements FmlMarkup {
      */
     private void handleMacroEnd(StringBuilder buffer) throws MacroExecutionException {
         if (!isSecondParsing()) {
-            if (StringUtils.isNotEmpty(macroName)) {
+            if (macroName != null && !macroName.isEmpty()) {
                 MacroRequest request = new MacroRequest(sourceContent, new FmlParser(), macroParameters, getBasedir());
 
                 try {
@@ -413,11 +413,11 @@ public class FmlParser extends AbstractXmlParser implements FmlMarkup {
      */
     private void handleParamStart(XmlPullParser parser, Sink sink) throws MacroExecutionException {
         if (!isSecondParsing()) {
-            if (StringUtils.isNotEmpty(macroName)) {
+            if (macroName != null && !macroName.isEmpty()) {
                 String paramName = parser.getAttributeValue(null, Attribute.NAME.toString());
                 String paramValue = parser.getAttributeValue(null, Attribute.VALUE.toString());
 
-                if (StringUtils.isEmpty(paramName) || StringUtils.isEmpty(paramValue)) {
+                if ((paramName == null || paramName.isEmpty()) || (paramValue == null || paramValue.isEmpty())) {
                     throw new MacroExecutionException("'" + Attribute.NAME.toString()
                             + "' and '" + Attribute.VALUE.toString() + "' attributes for the '" + PARAM.toString()
                             + "' tag are required inside the '" + MACRO_TAG.toString() + "' tag.");

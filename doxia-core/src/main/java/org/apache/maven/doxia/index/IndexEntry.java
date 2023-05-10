@@ -22,8 +22,6 @@ import java.util.ArrayList;
 import java.util.Collections;
 import java.util.List;
 
-import org.apache.commons.lang3.StringUtils;
-
 /**
  * <p>IndexEntry class.</p>
  *
@@ -264,7 +262,7 @@ public class IndexEntry {
 
         message.append("Id: ").append(id);
 
-        if (StringUtils.isNotEmpty(title)) {
+        if (title != null && !title.isEmpty()) {
             message.append(", title: ").append(title);
         }
 

@@ -26,7 +26,6 @@ import java.util.Set;
 import java.util.Stack;
 import java.util.regex.Pattern;
 
-import org.apache.commons.lang3.StringUtils;
 import org.apache.maven.doxia.macro.MacroExecutionException;
 import org.apache.maven.doxia.markup.HtmlMarkup;
 import org.apache.maven.doxia.sink.Sink;
@@ -320,9 +319,9 @@ public class Xhtml5BaseParser extends AbstractXmlParser implements HtmlMarkup {
                 sink.definitionListItem(attribs);
             }
             sink.definition(attribs);
-        } else if ((parser.getName().equals(HtmlMarkup.FIGURE.toString()))) {
+        } else if (parser.getName().equals(HtmlMarkup.FIGURE.toString())) {
             sink.figure(attribs);
-        } else if ((parser.getName().equals(HtmlMarkup.FIGCAPTION.toString()))) {
+        } else if (parser.getName().equals(HtmlMarkup.FIGCAPTION.toString())) {
             sink.figureCaption(attribs);
         } else if (parser.getName().equals(HtmlMarkup.A.toString())) {
             handleAStart(parser, sink, attribs);
@@ -403,9 +402,9 @@ public class Xhtml5BaseParser extends AbstractXmlParser implements HtmlMarkup {
             sink.definition_();
             sink.definitionListItem_();
             hasDefinitionListItem = false;
-        } else if ((parser.getName().equals(HtmlMarkup.FIGURE.toString()))) {
+        } else if (parser.getName().equals(HtmlMarkup.FIGURE.toString())) {
             sink.figure_();
-        } else if ((parser.getName().equals(HtmlMarkup.FIGCAPTION.toString()))) {
+        } else if (parser.getName().equals(HtmlMarkup.FIGCAPTION.toString())) {
             sink.figureCaption_();
         } else if (parser.getName().equals(HtmlMarkup.A.toString())) {
             handleAEnd(sink);
@@ -563,7 +562,7 @@ public class Xhtml5BaseParser extends AbstractXmlParser implements HtmlMarkup {
          *
          * NOTE: text within script tags is ignored, scripting code should be embedded in CDATA.
          */
-        if (StringUtils.isNotEmpty(text) && !isScriptBlock()) {
+        if ((text != null && !text.isEmpty()) && !isScriptBlock()) {
             sink.text(text);
         }
     }

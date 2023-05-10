@@ -30,7 +30,6 @@ import java.util.HashMap;
 import java.util.Map;
 
 import org.apache.commons.io.IOUtils;
-import org.apache.commons.lang3.StringUtils;
 import org.apache.maven.doxia.macro.MacroExecutionException;
 import org.apache.maven.doxia.macro.MacroRequest;
 import org.apache.maven.doxia.macro.manager.MacroNotFoundException;
@@ -221,7 +220,7 @@ public class XdocParser extends Xhtml5BaseParser implements XdocMarkup {
         } else if (parser.getName().equals(MACRO_TAG.toString())) {
             handleMacroEnd(sink);
         } else if (parser.getName().equals(PARAM.toString())) {
-            if (!StringUtils.isNotEmpty(macroName)) {
+            if (!(macroName != null && !macroName.isEmpty())) {
                 handleUnknown(parser, sink, TAG_TYPE_END);
             }
         } else if (parser.getName().equals(SECTION_TAG.toString())) {
@@ -282,7 +281,7 @@ public class XdocParser extends Xhtml5BaseParser implements XdocMarkup {
     }
 
     private void handleMacroEnd(Sink sink) throws MacroExecutionException {
-        if (!isSecondParsing() && StringUtils.isNotEmpty(macroName)) {
+        if (!isSecondParsing() && (macroName != null && !macroName.isEmpty())) {
             MacroRequest request = new MacroRequest(sourceContent, new XdocParser(), macroParameters, getBasedir());
 
             try {
@@ -305,7 +304,7 @@ public class XdocParser extends Xhtml5BaseParser implements XdocMarkup {
                 macroParameters = new HashMap<>();
             }
 
-            if (StringUtils.isEmpty(macroName)) {
+            if (macroName == null || macroName.isEmpty()) {
                 throw new MacroExecutionException("The '" + Attribute.NAME.toString() + "' attribute for the '"
                         + MACRO_TAG.toString() + "' tag is required.");
             }
@@ -331,11 +330,11 @@ public class XdocParser extends Xhtml5BaseParser implements XdocMarkup {
 
     private void handleParamStart(XmlPullParser parser, Sink sink) throws MacroExecutionException {
         if (!isSecondParsing()) {
-            if (StringUtils.isNotEmpty(macroName)) {
+            if (macroName != null && !macroName.isEmpty()) {
                 String paramName = parser.getAttributeValue(null, Attribute.NAME.toString());
                 String paramValue = parser.getAttributeValue(null, Attribute.VALUE.toString());
 
-                if (StringUtils.isEmpty(paramName) || StringUtils.isEmpty(paramValue)) {
+                if ((paramName == null || paramName.isEmpty()) || (paramValue == null || paramValue.isEmpty())) {
                     throw new MacroExecutionException(
                             "'" + Attribute.NAME.toString() + "' and '" + Attribute.VALUE.toString()
                                     + "' attributes for the '" + PARAM.toString() + "' tag are required inside the '"

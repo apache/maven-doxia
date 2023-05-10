@@ -273,7 +273,7 @@ public abstract class AbstractXmlParser extends AbstractParser implements XmlMar
          * NOTE: Don't do any whitespace trimming here. Whitespace normalization has already been performed by the
          * parser so any whitespace that makes it here is significant.
          */
-        if (StringUtils.isNotEmpty(text)) {
+        if (text != null && !text.isEmpty()) {
             sink.text(text);
         }
     }
