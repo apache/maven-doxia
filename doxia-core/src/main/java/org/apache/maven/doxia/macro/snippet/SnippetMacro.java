@@ -28,7 +28,6 @@ import java.net.URL;
 import java.util.HashMap;
 import java.util.Map;
 
-import org.apache.commons.lang3.StringUtils;
 import org.apache.maven.doxia.macro.AbstractMacro;
 import org.apache.maven.doxia.macro.MacroExecutionException;
 import org.apache.maven.doxia.macro.MacroRequest;
@@ -112,13 +111,13 @@ public class SnippetMacro extends AbstractMacro {
 
         URL url;
 
-        if (!StringUtils.isEmpty(urlParam)) {
+        if (!(urlParam == null || urlParam.isEmpty())) {
             try {
                 url = new URL(urlParam);
             } catch (MalformedURLException e) {
                 throw new IllegalArgumentException(urlParam + " is a malformed URL", e);
             }
-        } else if (!StringUtils.isEmpty(fileParam)) {
+        } else if (!(fileParam == null || fileParam.isEmpty())) {
             File f = new File(fileParam);
 
             if (!f.isAbsolute()) {
@@ -267,7 +266,7 @@ public class SnippetMacro extends AbstractMacro {
      *         or just url.toString() if id is empty or null.
      */
     private String globalSnippetId(URL url, String id) {
-        if (StringUtils.isEmpty(id)) {
+        if (id == null || id.isEmpty()) {
             return url.toString();
         }
 

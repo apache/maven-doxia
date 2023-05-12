@@ -23,7 +23,6 @@ import javax.inject.Singleton;
 
 import java.io.StringReader;
 
-import org.apache.commons.lang3.StringUtils;
 import org.apache.maven.doxia.index.IndexEntry;
 import org.apache.maven.doxia.index.IndexingSink;
 import org.apache.maven.doxia.macro.AbstractMacro;
@@ -181,7 +180,7 @@ public class TocMacro extends AbstractMacro {
     private static int getInt(MacroRequest request, String parameter, int defaultValue) throws MacroExecutionException {
         String value = (String) request.getParameter(parameter);
 
-        if (StringUtils.isEmpty(value)) {
+        if (value == null || value.isEmpty()) {
             return defaultValue;
         }
 
