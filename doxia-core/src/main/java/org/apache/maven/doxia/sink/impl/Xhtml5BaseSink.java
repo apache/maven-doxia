@@ -212,7 +212,7 @@ public class Xhtml5BaseSink extends AbstractXmlSink implements HtmlMarkup {
      * @return the current cell count.
      */
     protected int getCellCount() {
-        return Integer.parseInt(this.cellCountStack.getLast().toString());
+        return this.cellCountStack.getLast();
     }
 
     /** {@inheritDoc} */
