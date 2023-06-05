@@ -894,14 +894,14 @@ public class Xhtml5BaseSink extends AbstractXmlSink implements HtmlMarkup {
     public void figureGraphics(String src, SinkEventAttributes attributes) {
         MutableAttributeSet filtered = SinkUtils.filterAttributes(attributes, SinkUtils.SINK_IMG_ATTRIBUTES);
         if (filtered != null) {
-            filtered.removeAttribute(Attribute.SRC.toString());
+            filtered.removeAttribute(SinkEventAttributes.SRC.toString());
         }
 
         int count = (attributes == null ? 1 : attributes.getAttributeCount() + 1);
 
         MutableAttributeSet atts = new SinkEventAttributeSet(count);
 
-        atts.addAttribute(Attribute.SRC, HtmlTools.escapeHTML(src, true));
+        atts.addAttribute(SinkEventAttributes.SRC, HtmlTools.escapeHTML(src, true));
         atts.addAttributes(filtered);
 
         writeStartTag(HtmlMarkup.IMG, atts, true);
@@ -972,7 +972,7 @@ public class Xhtml5BaseSink extends AbstractXmlSink implements HtmlMarkup {
 
         MutableAttributeSet att = new SinkEventAttributeSet();
         if (value != null) {
-            att.addAttribute(Attribute.VALUE, value);
+            att.addAttribute(SinkEventAttributes.VALUE, value);
         }
         att.addAttributes(atts);
 
@@ -1142,7 +1142,7 @@ public class Xhtml5BaseSink extends AbstractXmlSink implements HtmlMarkup {
             divClass += " source";
         }
 
-        divAtts = new SinkEventAttributeSet(Attribute.CLASS.toString(), divClass);
+        divAtts = new SinkEventAttributeSet(SinkEventAttributes.CLASS.toString(), divClass);
 
         atts.removeAttribute(SinkEventAttributes.DECORATION);
 
@@ -1319,15 +1319,15 @@ public class Xhtml5BaseSink extends AbstractXmlSink implements HtmlMarkup {
 
         String rowClass = evenTableRow ? "a" : "b";
         boolean hidden = false;
-        if (attrs.isDefined(Attribute.CLASS.toString())) {
-            String givenRowClass = (String) attrs.getAttribute(Attribute.CLASS.toString());
+        if (attrs.isDefined(SinkEventAttributes.CLASS.toString())) {
+            String givenRowClass = (String) attrs.getAttribute(SinkEventAttributes.CLASS.toString());
             if (HIDDEN_CLASS_PATTERN.matcher(givenRowClass).matches()) {
                 hidden = true;
             }
             rowClass = givenRowClass + " " + rowClass;
         }
 
-        attrs.addAttribute(Attribute.CLASS, rowClass);
+        attrs.addAttribute(SinkEventAttributes.CLASS, rowClass);
 
         writeStartTag(HtmlMarkup.TR, attrs);
 
@@ -1524,7 +1524,7 @@ public class Xhtml5BaseSink extends AbstractXmlSink implements HtmlMarkup {
         }
 
         MutableAttributeSet att = new SinkEventAttributeSet();
-        att.addAttribute(Attribute.ID, id);
+        att.addAttribute(SinkEventAttributes.ID, id);
         att.addAttributes(atts);
 
         writeStartTag(HtmlMarkup.A, att);
@@ -1579,10 +1579,10 @@ public class Xhtml5BaseSink extends AbstractXmlSink implements HtmlMarkup {
                 linkClass = givenLinkClass + " " + linkClass;
             }
 
-            atts.addAttribute(Attribute.CLASS, linkClass);
+            atts.addAttribute(SinkEventAttributes.CLASS, linkClass);
         }
 
-        atts.addAttribute(Attribute.HREF, HtmlTools.escapeHTML(name));
+        atts.addAttribute(SinkEventAttributes.HREF, HtmlTools.escapeHTML(name));
 
         writeStartTag(HtmlMarkup.A, atts);
     }
