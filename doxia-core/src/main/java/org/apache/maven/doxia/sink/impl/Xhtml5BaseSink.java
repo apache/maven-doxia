@@ -19,7 +19,6 @@
 package org.apache.maven.doxia.sink.impl;
 
 import javax.swing.text.MutableAttributeSet;
-import javax.swing.text.html.HTML.Attribute;
 import javax.swing.text.html.HTML.Tag;
 
 import java.io.PrintWriter;
@@ -570,9 +569,12 @@ public class Xhtml5BaseSink extends AbstractXmlSink implements HtmlMarkup {
                 atts = new SinkEventAttributeSet(1);
             }
 
-            if (!atts.isDefined(SinkEventAttributes.CLASS)) {
-                atts.addAttribute(SinkEventAttributes.CLASS, "content");
+            String divClass = "content";
+            if (atts.isDefined(SinkEventAttributes.CLASS)) {
+                divClass += " " + atts.getAttribute(SinkEventAttributes.CLASS).toString();
             }
+
+            atts.addAttribute(SinkEventAttributes.CLASS, divClass);
 
             writeStartTag(contentStack.push(HtmlMarkup.DIV), atts);
         }
@@ -703,24 +705,25 @@ public class Xhtml5BaseSink extends AbstractXmlSink implements HtmlMarkup {
             paragraph_();
         }
 
-        String style;
+        String olStyle = "list-style-type: ";
         switch (numbering) {
             case NUMBERING_UPPER_ALPHA:
-                style = "upper-alpha";
+                olStyle += "upper-alpha";
                 break;
             case NUMBERING_LOWER_ALPHA:
-                style = "lower-alpha";
+                olStyle += "lower-alpha";
                 break;
             case NUMBERING_UPPER_ROMAN:
-                style = "upper-roman";
+                olStyle += "upper-roman";
                 break;
             case NUMBERING_LOWER_ROMAN:
-                style = "lower-roman";
+                olStyle += "lower-roman";
                 break;
             case NUMBERING_DECIMAL:
             default:
-                style = "decimal";
+                olStyle += "decimal";
         }
+        olStyle += ";";
 
         MutableAttributeSet atts = SinkUtils.filterAttributes(attributes, SinkUtils.SINK_SECTION_ATTRIBUTES);
 
@@ -728,7 +731,11 @@ public class Xhtml5BaseSink extends AbstractXmlSink implements HtmlMarkup {
             atts = new SinkEventAttributeSet(1);
         }
 
-        atts.addAttribute(Attribute.STYLE, "list-style-type: " + style);
+        if (atts.isDefined(SinkEventAttributes.STYLE)) {
+            olStyle += " " + atts.getAttribute(SinkEventAttributes.STYLE).toString();
+        }
+
+        atts.addAttribute(SinkEventAttributes.STYLE, olStyle);
 
         writeStartTag(HtmlMarkup.OL, atts);
     }
@@ -1266,9 +1273,15 @@ public class Xhtml5BaseSink extends AbstractXmlSink implements HtmlMarkup {
 
         MutableAttributeSet att = new SinkEventAttributeSet();
 
-        if (!this.tableAttributes.isDefined(Attribute.CLASS.toString())) {
-            att.addAttribute(Attribute.CLASS, "bodyTable" + (grid ? " bodyTableBorder" : ""));
+        String tableClass = "bodyTable" + (grid ? " bodyTableBorder" : "");
+        if (this.tableAttributes.isDefined(SinkEventAttributes.CLASS.toString())) {
+            tableClass += " "
+                    + this.tableAttributes
+                            .getAttribute(SinkEventAttributes.CLASS)
+                            .toString();
         }
+
+        att.addAttribute(SinkEventAttributes.CLASS, tableClass);
 
         att.addAttributes(this.tableAttributes);
         this.tableAttributes.removeAttributes(this.tableAttributes);
@@ -1324,7 +1337,7 @@ public class Xhtml5BaseSink extends AbstractXmlSink implements HtmlMarkup {
             if (HIDDEN_CLASS_PATTERN.matcher(givenRowClass).matches()) {
                 hidden = true;
             }
-            rowClass = givenRowClass + " " + rowClass;
+            rowClass += " " + givenRowClass;
         }
 
         attrs.addAttribute(SinkEventAttributes.CLASS, rowClass);
@@ -1390,26 +1403,23 @@ public class Xhtml5BaseSink extends AbstractXmlSink implements HtmlMarkup {
                 && !cellJustifStack.isEmpty()
                 && getCellJustif() != null) {
             int cellCount = getCellCount();
-            if (cellCount < getCellJustif().length
-                    && (attributes == null || !attributes.isDefined(Attribute.STYLE.toString()))) {
-                Map<Integer, MutableAttributeSet> hash = new HashMap<>();
-                hash.put(
-                        Sink.JUSTIFY_CENTER,
-                        new SinkEventAttributeSet(SinkEventAttributes.STYLE, "text-align: center;").unmodifiable());
-                hash.put(
-                        Sink.JUSTIFY_LEFT,
-                        new SinkEventAttributeSet(SinkEventAttributes.STYLE, "text-align: left;").unmodifiable());
-                hash.put(
-                        Sink.JUSTIFY_RIGHT,
-                        new SinkEventAttributeSet(SinkEventAttributes.STYLE, "text-align: right;").unmodifiable());
-                MutableAttributeSet atts = hash.get(getCellJustif()[cellCount]);
-
+            int[] cellJustif = getCellJustif();
+            if (cellCount < cellJustif.length) {
                 if (attributes == null) {
                     attributes = new SinkEventAttributeSet();
                 }
-                if (atts != null) {
-                    attributes.addAttributes(atts);
+                Map<Integer, String> hash = new HashMap<>();
+                hash.put(Sink.JUSTIFY_CENTER, "center");
+                hash.put(Sink.JUSTIFY_LEFT, "left");
+                hash.put(Sink.JUSTIFY_RIGHT, "right");
+
+                String tdStyle = "text-align: " + hash.get(cellJustif[cellCount]) + ";";
+                if (attributes.isDefined(SinkEventAttributes.STYLE)) {
+                    tdStyle += " "
+                            + attributes.getAttribute(SinkEventAttributes.STYLE).toString();
                 }
+
+                attributes.addAttribute(SinkEventAttributes.STYLE, tdStyle);
             }
         }
 
@@ -1574,9 +1584,9 @@ public class Xhtml5BaseSink extends AbstractXmlSink implements HtmlMarkup {
 
         if (DoxiaUtils.isExternalLink(name)) {
             String linkClass = "externalLink";
-            if (atts.isDefined(Attribute.CLASS.toString())) {
-                String givenLinkClass = (String) atts.getAttribute(Attribute.CLASS.toString());
-                linkClass = givenLinkClass + " " + linkClass;
+            if (atts.isDefined(SinkEventAttributes.CLASS.toString())) {
+                String givenLinkClass = (String) atts.getAttribute(SinkEventAttributes.CLASS.toString());
+                linkClass += " " + givenLinkClass;
             }
 
             atts.addAttribute(SinkEventAttributes.CLASS, linkClass);

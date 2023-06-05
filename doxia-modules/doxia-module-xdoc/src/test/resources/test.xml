@@ -53,8 +53,8 @@
 
         <source>Verbatim text not contained in list item 3</source>
 
-        <ol style="list-style-type: decimal">
-          <li>Numbered item 1. <ol style="list-style-type: upper-alpha">
+        <ol style="list-style-type: decimal;">
+          <li>Numbered item 1. <ol style="list-style-type: upper-alpha;">
               <li>Numbered item A.</li>
               <li>Numbered item B.</li>
             </ol>

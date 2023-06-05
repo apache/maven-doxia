@@ -865,19 +865,19 @@ public class Xhtml5BaseParser extends AbstractXmlParser implements HtmlMarkup {
 
         if (style != null) {
             switch (style) {
-                case "list-style-type: upper-alpha":
+                case "list-style-type: upper-alpha;":
                     numbering = Sink.NUMBERING_UPPER_ALPHA;
                     break;
-                case "list-style-type: lower-alpha":
+                case "list-style-type: lower-alpha;":
                     numbering = Sink.NUMBERING_LOWER_ALPHA;
                     break;
-                case "list-style-type: upper-roman":
+                case "list-style-type: upper-roman;":
                     numbering = Sink.NUMBERING_UPPER_ROMAN;
                     break;
-                case "list-style-type: lower-roman":
+                case "list-style-type: lower-roman;":
                     numbering = Sink.NUMBERING_LOWER_ROMAN;
                     break;
-                case "list-style-type: decimal":
+                case "list-style-type: decimal;":
                     numbering = Sink.NUMBERING_DECIMAL;
                     break;
                 default:

@@ -445,7 +445,7 @@ public class Xhtml5BaseSinkTest {
             sink.numberedList_();
         }
 
-        assertEquals("<ol style=\"list-style-type: decimal\">" + LS + "<li></li></ol>", writer.toString());
+        assertEquals("<ol style=\"list-style-type: decimal;\">" + LS + "<li></li></ol>", writer.toString());
 
         writer = new StringWriter();
 
@@ -457,7 +457,8 @@ public class Xhtml5BaseSinkTest {
         }
 
         assertEquals(
-                "<ol style=\"list-style-type: decimal\">" + LS + "<li style=\"bold\"></li></ol>", writer.toString());
+                "<ol style=\"list-style-type: decimal; bold\">" + LS + "<li style=\"bold\"></li></ol>",
+                writer.toString());
     }
 
     /**
@@ -793,13 +794,13 @@ public class Xhtml5BaseSinkTest {
         StringBuilder expected = new StringBuilder("<table class=\"bodyTable\">");
         expected.append(EOL).append("<tr class=\"a\"></tr>").append(EOL);
         expected.append("<tr style=\"bold\" class=\"b\"></tr>").append(EOL);
-        expected.append("<tr class=\"hidden xyz abc a\"></tr>").append(EOL);
-        expected.append("<tr class=\"abc hidden xyz a\"></tr>").append(EOL);
+        expected.append("<tr class=\"a hidden xyz abc\"></tr>").append(EOL);
+        expected.append("<tr class=\"a abc hidden xyz\"></tr>").append(EOL);
         expected.append("<tr class=\"a\"></tr>").append(EOL);
-        expected.append("<tr class=\"not-hidden xyz b\"></tr>").append(EOL);
-        expected.append("<tr class=\"xyz not-hidden a\"></tr>").append(EOL);
-        expected.append("<tr style=\"bold\" class=\"xyz abc hidden b\"></tr>").append(EOL);
-        expected.append("<tr class=\"xyz hidden-not b\"></tr>").append(EOL);
+        expected.append("<tr class=\"b not-hidden xyz\"></tr>").append(EOL);
+        expected.append("<tr class=\"a xyz not-hidden\"></tr>").append(EOL);
+        expected.append("<tr style=\"bold\" class=\"b xyz abc hidden\"></tr>").append(EOL);
+        expected.append("<tr class=\"b xyz hidden-not\"></tr>").append(EOL);
         expected.append("<tr class=\"a\"></tr></table>");
 
         String xmlExpected = expected.toString();
@@ -912,7 +913,7 @@ public class Xhtml5BaseSinkTest {
         }
 
         assertEquals(
-                "<a style=\"bold\" class=\"cs1 cs2 externalLink\" href=\"https://www.apache.org\"></a>",
+                "<a style=\"bold\" class=\"externalLink cs1 cs2\" href=\"https://www.apache.org\"></a>",
                 writer.toString());
     }
 

@@ -171,7 +171,7 @@ public class Xhtml5SinkTest extends AbstractSinkTest {
 
     /** {@inheritDoc} */
     protected String getNumberedListBlock(String item) {
-        return "<ol style=\"list-style-type: lower-roman\">\n<li>" + item + "</li></ol>";
+        return "<ol style=\"list-style-type: lower-roman;\">\n<li>" + item + "</li></ol>";
     }
 
     /** {@inheritDoc} */
