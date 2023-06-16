@@ -117,13 +117,4 @@ public class AptUtilsTest {
         link = "..\\index.html";
         assertFalse(AptUtils.isLocalLink(link), "Should NOT be a local link: " + link);
     }
-
-    /**
-     * Test of encodeAnchor method, of class AptUtils.
-     */
-    @Test
-    public void testEncodeAnchor() {
-        assertNull(AptUtils.encodeAnchor(null));
-        assertEquals("a123_:_.-aBc", AptUtils.encodeAnchor(" 12!3 :_.&-a)Bc "));
-    }
 }

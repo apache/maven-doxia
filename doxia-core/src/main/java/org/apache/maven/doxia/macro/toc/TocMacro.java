@@ -31,7 +31,7 @@ import org.apache.maven.doxia.macro.MacroRequest;
 import org.apache.maven.doxia.parser.ParseException;
 import org.apache.maven.doxia.parser.Parser;
 import org.apache.maven.doxia.sink.Sink;
-import org.apache.maven.doxia.util.HtmlTools;
+import org.apache.maven.doxia.util.DoxiaUtils;
 
 /**
  * Macro to display a <code>Table Of Content</code> in a given <code>Sink</code>.
@@ -136,7 +136,7 @@ public class TocMacro extends AbstractMacro {
     private void writeSubSectionN(Sink sink, IndexEntry sectionIndex, int n) {
         if (fromDepth <= n) {
             sink.listItem();
-            sink.link("#" + HtmlTools.encodeId(sectionIndex.getId()));
+            sink.link("#" + DoxiaUtils.encodeId(sectionIndex.getId()));
             sink.text(sectionIndex.getTitle());
             sink.link_();
         }
@@ -150,7 +150,7 @@ public class TocMacro extends AbstractMacro {
                 for (IndexEntry subsectionIndex : sectionIndex.getChildEntries()) {
                     if (n == toDepth - 1) {
                         sink.listItem();
-                        sink.link("#" + HtmlTools.encodeId(subsectionIndex.getId()));
+                        sink.link("#" + DoxiaUtils.encodeId(subsectionIndex.getId()));
                         sink.text(subsectionIndex.getTitle());
                         sink.link_();
                         sink.listItem_();

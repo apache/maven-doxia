@@ -24,10 +24,8 @@ import org.codehaus.plexus.testing.PlexusTest;
 import org.junit.jupiter.api.Test;
 
 import static org.junit.jupiter.api.Assertions.assertEquals;
-import static org.junit.jupiter.api.Assertions.assertFalse;
 import static org.junit.jupiter.api.Assertions.assertNotNull;
 import static org.junit.jupiter.api.Assertions.assertNull;
-import static org.junit.jupiter.api.Assertions.assertTrue;
 
 /**
  * Test case for <code>HtmlTools</code>.
@@ -93,26 +91,6 @@ public class HtmlToolsTest {
 
     /**
      * Verify the expected results.
-     */
-    @Test
-    public void testEncodeId() {
-        assertNull(HtmlTools.encodeId(null));
-        assertNull(HtmlTools.encodeId(""));
-        assertNull(HtmlTools.encodeId(" "));
-        assertEquals("_", HtmlTools.encodeId(" _ "));
-        assertEquals("a1", HtmlTools.encodeId("1"));
-        assertEquals("a1anchor", HtmlTools.encodeId("1anchor"));
-        assertEquals("_anchor", HtmlTools.encodeId("_anchor"));
-        assertEquals("a_b-c123", HtmlTools.encodeId("a b-c123 "));
-        assertEquals("anchor", HtmlTools.encodeId("   anchor"));
-        assertEquals("myAnchor", HtmlTools.encodeId("myAnchor"));
-        assertEquals("H.C3.A5kon", HtmlTools.encodeId("H\u00E5kon"));
-        assertEquals("Theu.C3.9Fl", HtmlTools.encodeId("Theu\u00DFl"));
-        assertEquals("a.E2.82.AC", HtmlTools.encodeId("\u20AC"));
-    }
-
-    /**
-     * Verify the expected results.
      *
      * @throws Exception should not happen.
      */
@@ -130,28 +108,6 @@ public class HtmlToolsTest {
 
         String url = "\uD808\uDF45";
         assertEquals(HtmlTools.encodeURL(url), URLEncoder.encode(url, "UTF-8"));
-    }
-
-    /**
-     * Verify the expected results.
-     */
-    @Test
-    public void testIsId() {
-        assertFalse(HtmlTools.isId(null));
-        assertFalse(HtmlTools.isId(""));
-        assertFalse(HtmlTools.isId(" "));
-        assertFalse(HtmlTools.isId(" _ "));
-        assertFalse(HtmlTools.isId("1"));
-        assertFalse(HtmlTools.isId("1anchor"));
-        assertFalse(HtmlTools.isId("a b-c123 "));
-        assertFalse(HtmlTools.isId("   anchor"));
-        assertFalse(HtmlTools.isId("a:"));
-        assertFalse(HtmlTools.isId("Theu\u00DFl"));
-        assertTrue(HtmlTools.isId("_anchor"));
-        assertTrue(HtmlTools.isId("myAnchor"));
-        assertTrue(HtmlTools.isId("a_"));
-        assertTrue(HtmlTools.isId("a-"));
-        assertTrue(HtmlTools.isId("a."));
     }
 
     /**

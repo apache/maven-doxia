@@ -114,22 +114,6 @@ public class DoxiaUtils {
      * Construct a valid Doxia id.
      *
      * <p>
-     *   This method is equivalent to {@link #encodeId(java.lang.String, boolean) encodeId(id, false)}.
-     * </p>
-     *
-     * @param id The id to be encoded.
-     *      May be null in which case null is returned.
-     * @return The trimmed and encoded id, or null if id is null.
-     * @see #encodeId(java.lang.String, boolean)
-     */
-    public static String encodeId(final String id) {
-        return encodeId(id, false);
-    }
-
-    /**
-     * Construct a valid Doxia id.
-     *
-     * <p>
      *   A valid Doxia id corresponds to an XML id which is a {code NCName} which is in turn identical
      *   to a <a href="https://www.w3.org/TR/REC-xml/#NT-Name">{@code Name}</a>, but without a colon
      *   and without any character above {@code 0x7F}.
@@ -167,16 +151,12 @@ public class DoxiaUtils {
      *
      * @param text The text to be encoded.
      *      May be null, empty or blank in which case null is returned.
-     * @param chop true if non-encodable characters should be ignored.
-     * If false, any non-encodable characters will be replaced as specified above.
      * @return The trimmed and encoded id, or null if id is null.
      * If id is not null, the return value is guaranteed to be a valid Doxia id.
      * @see #isValidId(java.lang.String)
      * @since 1.1.1
-     * @deprecated Don't chop characters which might produce collisions in a document
      */
-    @Deprecated
-    public static String encodeId(final String text, final boolean chop) {
+    public static String encodeId(final String text) {
         if (text == null) {
             return null;
         }
@@ -201,7 +181,7 @@ public class DoxiaUtils {
                 buffer.append('_');
             } else if (isAsciiLetter(c) || isAsciiDigit(c) || (c == '-') || (c == '_') || (c == '.')) {
                 buffer.append(c);
-            } else if (!chop) {
+            } else {
 
                 byte[] bytes = String.valueOf(c).getBytes(StandardCharsets.UTF_8);
 

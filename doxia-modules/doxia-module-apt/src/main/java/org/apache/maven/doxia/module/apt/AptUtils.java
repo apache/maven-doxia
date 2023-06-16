@@ -73,52 +73,6 @@ public class AptUtils {
         return (link.startsWith("/") || link.startsWith("./") || link.startsWith("../"));
     }
 
-    /**
-     * Construct a valid anchor. This is a simplified version of
-     * {@link org.apache.maven.doxia.util.DoxiaUtils#encodeId(String)}
-     * to ensure the anchor is a valid Doxia id.
-     * The procedure is identical to the one in
-     * {@link org.apache.maven.doxia.util.HtmlTools#encodeId(String)}:
-     *
-     * <ol>
-     *   <li> Trim the id</li>
-     *   <li> If the first character is not a letter, prepend the letter 'a'</li>
-     *   <li> Any space is replaced with an underscore '_'</li>
-     *   <li> Remove any non alphanumeric characters  except ':', '_', '.', '-'.</li>
-     * </ol>
-     *
-     * @param id The id to be encoded.
-     * @return The trimmed and encoded id, or null if id is null.
-     * @deprecated use {@link DoxiaUtils#encodeId(String)}
-     */
-    @Deprecated
-    public static String encodeAnchor(String id) {
-        if (id == null) {
-            return null;
-        }
-
-        id = id.trim();
-
-        int length = id.length();
-        StringBuilder buffer = new StringBuilder(length);
-
-        for (int i = 0; i < length; ++i) {
-            char c = id.charAt(i);
-
-            if ((i == 0) && (!Character.isLetter(c))) {
-                buffer.append('a');
-            }
-
-            if (c == ' ') {
-                buffer.append('_');
-            } else if ((Character.isLetterOrDigit(c)) || (c == '-') || (c == '_') || (c == ':') || (c == '.')) {
-                buffer.append(c);
-            }
-        }
-
-        return buffer.toString();
-    }
-
     private AptUtils() {
         // utility class
     }

@@ -138,9 +138,7 @@ public class DoxiaUtilsTest {
         assertEquals("myAnchor", DoxiaUtils.encodeId("myAnchor"));
         assertEquals("my.26Anchor", DoxiaUtils.encodeId("my&Anchor"));
         assertEquals("H.C3.A5kon", DoxiaUtils.encodeId("H\u00E5kon"));
-        assertEquals("Hkon", DoxiaUtils.encodeId("H\u00E5kon", true));
         assertEquals("Theu.C3.9Fl", DoxiaUtils.encodeId("Theu\u00DFl"));
-        assertEquals("Theul", DoxiaUtils.encodeId("Theu\u00DFl", true));
     }
 
     /**

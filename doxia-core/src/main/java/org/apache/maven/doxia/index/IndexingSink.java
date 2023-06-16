@@ -24,7 +24,7 @@ import java.util.Stack;
 import java.util.concurrent.atomic.AtomicInteger;
 
 import org.apache.maven.doxia.sink.impl.SinkAdapter;
-import org.apache.maven.doxia.util.HtmlTools;
+import org.apache.maven.doxia.util.DoxiaUtils;
 
 /**
  * A sink implementation for index.
@@ -292,7 +292,7 @@ public class IndexingSink extends SinkAdapter {
                 title = title.replaceAll("[\\r\\n]+", "");
                 entry.setTitle(title);
 
-                entry.setId(getUniqueId(HtmlTools.encodeId(title)));
+                entry.setId(getUniqueId(DoxiaUtils.encodeId(title)));
 
                 break;
                 // Dunno how to handle these yet

@@ -50,14 +50,6 @@ public class SinkEventAttributeSet implements SinkEventAttributes, Cloneable {
     public static final SinkEventAttributes LINETHROUGH;
 
     /**
-     * An unmodifiable attribute set containing only a boxed attribute.
-     *
-     * @deprecated use {@link #SOURCE} for source code
-     */
-    @Deprecated
-    public static final SinkEventAttributes BOXED;
-
-    /**
      * An unmodifiable attribute set containing only a source attribute.
      */
     public static final SinkEventAttributes SOURCE;
@@ -101,7 +93,6 @@ public class SinkEventAttributeSet implements SinkEventAttributes, Cloneable {
         UNDERLINE = new SinkEventAttributeSet(DECORATION, "underline").unmodifiable();
         OVERLINE = new SinkEventAttributeSet(DECORATION, "overline").unmodifiable();
         LINETHROUGH = new SinkEventAttributeSet(DECORATION, "line-through").unmodifiable();
-        BOXED = new SinkEventAttributeSet(DECORATION, "boxed").unmodifiable();
         SOURCE = new SinkEventAttributeSet(DECORATION, "source").unmodifiable();
 
         BOLD = new SinkEventAttributeSet(STYLE, "bold").unmodifiable();
