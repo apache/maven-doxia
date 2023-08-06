@@ -62,7 +62,7 @@ public class DefaultParserModuleManager implements ParserModuleManager {
         ParserModule parserModule = parserModules.get(id);
 
         if (parserModule == null) {
-            throw new ParserModuleNotFoundException("Cannot find parser module id = " + id);
+            throw new ParserModuleNotFoundException("Cannot find parser module id '" + id + "'");
         }
 
         return parserModule;

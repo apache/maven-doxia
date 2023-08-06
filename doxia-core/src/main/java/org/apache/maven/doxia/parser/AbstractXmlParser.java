@@ -229,7 +229,7 @@ public abstract class AbstractXmlParser extends AbstractParser implements XmlMar
                 eventType = parser.nextToken();
             } catch (IOException io) {
                 // Does not have a cause arg
-                throw new XmlPullParserException("IOException: " + io.getMessage(), parser, io);
+                throw new XmlPullParserException("Failed to parse next token", parser, io);
             }
         }
     }

@@ -44,7 +44,7 @@ public class DefaultParserManager implements ParserManager {
         Parser parser = parsers.get(id);
 
         if (parser == null) {
-            throw new ParserNotFoundException("Cannot find parser with id = " + id);
+            throw new ParserNotFoundException("Cannot find parser with id '" + id + "'");
         }
 
         return parser;

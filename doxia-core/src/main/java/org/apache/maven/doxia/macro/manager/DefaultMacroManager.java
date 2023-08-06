@@ -44,7 +44,7 @@ public class DefaultMacroManager implements MacroManager {
         Macro macro = macros.get(id);
 
         if (macro == null) {
-            throw new MacroNotFoundException("Cannot find macro with id = " + id);
+            throw new MacroNotFoundException("Cannot find macro with id '" + id + "'");
         }
 
         return macro;

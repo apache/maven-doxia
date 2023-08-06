@@ -130,7 +130,7 @@ public class SnippetMacro extends AbstractMacro {
                 throw new IllegalArgumentException(fileParam + " is a malformed URL", e);
             }
         } else {
-            throw new IllegalArgumentException("Either the 'url' or the 'file' param has to be given.");
+            throw new IllegalArgumentException("Either the 'url' or the 'file' param has to be provided");
         }
 
         StringBuffer snippet;
