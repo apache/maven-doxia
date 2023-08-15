@@ -45,6 +45,6 @@ public class DefaultDoxiaTest {
     public void testFailsWhenParserIdDoesNotExist() throws Exception {
         final String parserId = "a-parser";
         ParserNotFoundException e = assertThrows(ParserNotFoundException.class, () -> doxia.getParser(parserId));
-        assertEquals("Cannot find parser with id = " + parserId, e.getMessage());
+        assertEquals("Cannot find parser with id '" + parserId + "'", e.getMessage());
     }
 }
