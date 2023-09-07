@@ -26,6 +26,7 @@ import java.io.Writer;
 import org.apache.maven.doxia.markup.Markup;
 import org.apache.maven.doxia.sink.Sink;
 import org.apache.maven.doxia.sink.SinkEventAttributes;
+import org.apache.maven.doxia.sink.impl.SinkEventAttributeSet.Semantics;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
 
@@ -1043,6 +1044,20 @@ public class Xhtml5BaseSinkTest {
         }
 
         assertEquals("a text &amp; &#xc6;", writer.toString());
+    }
+
+    /**
+     * Test of text method, of class Xhtml5BaseSink.
+     */
+    @Test
+    public void testTextWithAttributes() {
+        String text = "text";
+
+        try (Xhtml5BaseSink sink = new Xhtml5BaseSink(writer)) {
+            sink.text(text, Semantics.STRONG);
+        }
+
+        assertEquals("<strong>text</strong>", writer.toString());
     }
 
     /**
