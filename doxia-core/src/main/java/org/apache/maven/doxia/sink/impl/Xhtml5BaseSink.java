@@ -1799,7 +1799,13 @@ public class Xhtml5BaseSink extends AbstractXmlSink implements HtmlMarkup {
     /** {@inheritDoc} */
     @Override
     public void text(String text, SinkEventAttributes attributes) {
+        if (attributes != null) {
+            inline(attributes);
+        }
         text(text);
+        if (attributes != null) {
+            inline_();
+        }
     }
 
     /** {@inheritDoc} */
