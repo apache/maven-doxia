@@ -696,6 +696,26 @@ public class Xhtml5BaseParserTest extends AbstractParserTest {
     }
 
     @Test
+    public void testLink() throws Exception {
+        // param1 value = "/&ü" URL encoded twice!
+        String text = "<div><a href=\"http://www.fo.com/index.html&amp;param1=%252F%2526%25C3%25BC\"></a></div>";
+
+        parser.parse(text, sink);
+        Iterator<SinkEventElement> it = sink.getEventList().iterator();
+
+        SinkEventElement element = it.next();
+        assertEquals("division", element.getName());
+
+        element = it.next();
+        assertEquals("link", element.getName());
+        assertEquals("http://www.fo.com/index.html&param1=%252F%2526%25C3%25BC", element.getArgs()[0]);
+        assertEquals("link_", it.next().getName());
+
+        element = it.next();
+        assertEquals("division_", element.getName());
+    }
+
+    @Test
     public void testAnchorLink() throws Exception {
         String text = "<div><a href=\"\"></a>" + "<a href=\"valid\"></a>"
                 + "<a href=\"#1invalid\"></a>"
