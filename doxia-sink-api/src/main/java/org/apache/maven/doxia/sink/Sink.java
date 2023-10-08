@@ -1433,9 +1433,11 @@ public interface Sink extends AutoCloseable {
      * Starts a link.
      *
      * <p>
-     *   The <code>name</code> parameter has to be a valid html <code>href</code>
-     *   parameter, ie for internal links (links to an anchor within the same source
+     *   The <code>name</code> parameter has to be a valid URI according to
+     *   <a href="https://datatracker.ietf.org/doc/html/rfc3986">RFC 3986</a>,
+     *   i.e. for internal links (links to an anchor within the same source
      *   document), <code>name</code> should start with the character "#".
+     *   This also implies that all unsafe characters are already encoded.
      * </p>
      * <p>
      *   Supported attributes are the {@link SinkEventAttributes base attributes} plus:
@@ -1455,6 +1457,7 @@ public interface Sink extends AutoCloseable {
      * @param name the name of the link.
      * @param attributes A set of {@link SinkEventAttributes}, may be <code>null</code>.
      * @since 1.1
+     * @see java.net.URI#toASCIIString()
      */
     void link(String name, SinkEventAttributes attributes);
 
