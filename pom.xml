@@ -85,7 +85,7 @@ under the License.
     <checkstyle.violation.ignore>RedundantThrows,NewlineAtEndOfFile,ParameterNumber,MethodLength,FileLength,MethodName,InnerAssignment,MagicNumber</checkstyle.violation.ignore>
     <project.build.outputTimestamp>2023-10-13T19:24:20Z</project.build.outputTimestamp>
     <slf4jVersion>1.7.36</slf4jVersion>
-    <junitVersion>5.10.0</junitVersion>
+    <junitVersion>5.10.1</junitVersion>
     <sisuVersion>0.3.5</sisuVersion>
     <xmlunitVersion>2.9.1</xmlunitVersion>
   </properties>
