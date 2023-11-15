@@ -140,7 +140,7 @@ under the License.
     <dependency>
       <groupId>org.jetbrains</groupId>
       <artifactId>annotations</artifactId>
-      <version>24.0.1</version>
+      <version>24.1.0</version>
     </dependency>
     <dependency>
       <groupId>org.apache.maven.doxia</groupId>
