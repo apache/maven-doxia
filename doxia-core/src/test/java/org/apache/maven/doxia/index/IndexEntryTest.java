@@ -18,9 +18,12 @@
  */
 package org.apache.maven.doxia.index;
 
+import org.apache.maven.doxia.index.IndexEntry.Type;
+import org.apache.maven.doxia.sink.Sink;
 import org.junit.jupiter.api.Test;
 
 import static org.junit.jupiter.api.Assertions.assertEquals;
+import static org.junit.jupiter.api.Assertions.assertThrows;
 import static org.junit.jupiter.api.Assertions.assertTrue;
 
 /**
@@ -34,35 +37,42 @@ public class IndexEntryTest {
     public void testIndexEntry() {
         IndexEntry root = new IndexEntry(null);
 
-        assertIndexEntry(root, null, 0, null, null);
+        assertIndexEntry(root, Type.UNKNOWN, null, 0, null, null);
 
         // -----------------------------------------------------------------------
         // Chapter 1
         // -----------------------------------------------------------------------
 
-        IndexEntry chapter1 = new IndexEntry(root, "chapter-1");
+        IndexEntry chapter1 = new IndexEntry(root, "chapter-1", Type.SECTION_1);
 
-        assertIndexEntry(root, null, 1, null, null);
+        assertIndexEntry(root, Type.UNKNOWN, null, 1, null, null);
 
-        assertIndexEntry(chapter1, root, 0, null, null);
+        assertIndexEntry(chapter1, Type.SECTION_1, root, 0, null, null);
 
         // -----------------------------------------------------------------------
         // Chapter 2
         // -----------------------------------------------------------------------
 
-        IndexEntry chapter2 = new IndexEntry(root, "chapter-2");
+        IndexEntry chapter2 = new IndexEntry(root, "chapter-2", Type.SECTION_1);
 
-        assertIndexEntry(root, null, 2, null, null);
+        assertIndexEntry(root, Type.UNKNOWN, null, 2, null, null);
 
-        assertIndexEntry(chapter1, root, 0, null, chapter2);
-        assertIndexEntry(chapter2, root, 0, chapter1, null);
+        assertIndexEntry(chapter1, Type.SECTION_1, root, 0, null, chapter2);
+        assertIndexEntry(chapter2, Type.SECTION_1, root, 0, chapter1, null);
 
         chapter2.setTitle("Title 2");
         assertTrue(chapter2.toString().contains("Title 2"));
     }
 
     private void assertIndexEntry(
-            IndexEntry entry, IndexEntry parent, int childCount, IndexEntry prevEntry, IndexEntry nextEntry) {
+            IndexEntry entry,
+            Type type,
+            IndexEntry parent,
+            int childCount,
+            IndexEntry prevEntry,
+            IndexEntry nextEntry) {
+        assertEquals(type, entry.getType());
+
         assertEquals(parent, entry.getParent());
 
         assertEquals(childCount, entry.getChildEntries().size());
@@ -70,5 +80,12 @@ public class IndexEntryTest {
         assertEquals(prevEntry, entry.getPrevEntry());
 
         assertEquals(nextEntry, entry.getNextEntry());
+    }
+
+    @Test
+    public void testTypeFromSectionLevel() {
+        assertThrows(IllegalArgumentException.class, () -> Type.fromSectionLevel(0));
+        assertEquals(Type.SECTION_3, Type.fromSectionLevel(Sink.SECTION_LEVEL_3));
+        assertThrows(IllegalArgumentException.class, () -> Type.fromSectionLevel(7));
     }
 }

@@ -44,7 +44,7 @@ public class MacroRequest {
      * <p>Constructor for MacroRequest.</p>
      *
      * @param sourceContent a {@link java.lang.String} object.
-     * @param parser a {@link org.apache.maven.doxia.parser.AbstractParser} object.
+     * @param parser a new {@link org.apache.maven.doxia.parser.AbstractParser} object acting as secondary parser.
      * @param param a {@link java.util.Map} object.
      * @param basedir a {@link java.io.File} object.
      */
@@ -106,7 +106,7 @@ public class MacroRequest {
     /**
      * <p>getParser.</p>
      *
-     * @return a {@link org.apache.maven.doxia.parser.Parser} object.
+     * @return a {@link org.apache.maven.doxia.parser.Parser} object. This is a new secondary parser.
      */
     public Parser getParser() {
         return (Parser) getParameter(PARAM_PARSER);

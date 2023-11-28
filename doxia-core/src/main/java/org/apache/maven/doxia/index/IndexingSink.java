@@ -23,49 +23,25 @@ import java.util.Map;
 import java.util.Stack;
 import java.util.concurrent.atomic.AtomicInteger;
 
+import org.apache.maven.doxia.index.IndexEntry.Type;
+import org.apache.maven.doxia.sink.Sink;
 import org.apache.maven.doxia.sink.SinkEventAttributes;
+import org.apache.maven.doxia.sink.impl.BufferingSinkProxyFactory;
+import org.apache.maven.doxia.sink.impl.BufferingSinkProxyFactory.BufferingSink;
 import org.apache.maven.doxia.sink.impl.SinkAdapter;
 import org.apache.maven.doxia.util.DoxiaUtils;
 
 /**
- * A sink implementation for index.
+ * A sink wrapper for populating an index tree for particular elements in a document.
+ * Currently this only generates {@link IndexEntry} objects for sections.
  *
  * @author <a href="mailto:trygvis@inamo.no">Trygve Laugst&oslash;l</a>
  * @author <a href="mailto:vincent.siveton@gmail.com">Vincent Siveton</a>
  */
-public class IndexingSink extends SinkAdapter {
-    /** Section 1. */
-    private static final int TYPE_SECTION_1 = 1;
-
-    /** Section 2. */
-    private static final int TYPE_SECTION_2 = 2;
-
-    /** Section 3. */
-    private static final int TYPE_SECTION_3 = 3;
-
-    /** Section 4. */
-    private static final int TYPE_SECTION_4 = 4;
-
-    /** Section 5. */
-    private static final int TYPE_SECTION_5 = 5;
-
-    /** Defined term. */
-    private static final int TYPE_DEFINED_TERM = 6;
-
-    /** Figure. */
-    private static final int TYPE_FIGURE = 7;
-
-    /** Table. */
-    private static final int TYPE_TABLE = 8;
-
-    /** Title. */
-    private static final int TITLE = 9;
+public class IndexingSink extends org.apache.maven.doxia.sink.impl.SinkWrapper {
 
     /** The current type. */
-    private int type;
-
-    /** The current title. */
-    private String title;
+    private Type type;
 
     /** The stack. */
     private final Stack<IndexEntry> stack;
@@ -76,26 +52,56 @@ public class IndexingSink extends SinkAdapter {
      */
     private final Map<String, AtomicInteger> usedIds;
 
+    private final IndexEntry rootEntry;
+
+    private boolean isComplete;
+    private boolean isTitle;
     /**
-     * Default constructor.
-     *
-     * @param sectionEntry The first index entry.
+     * @deprecated legacy constructor, use {@link #IndexingSink(Sink)} with {@link SinkAdapter} as argument and call {@link #getRootEntry()} to retrieve the index tree afterwards.
      */
-    public IndexingSink(IndexEntry sectionEntry) {
-        stack = new Stack<>();
-        stack.push(sectionEntry);
-        usedIds = new HashMap<>();
-        usedIds.put(sectionEntry.getId(), new AtomicInteger());
-        init();
+    @Deprecated
+    public IndexingSink(IndexEntry rootEntry) {
+        this(rootEntry, new SinkAdapter());
+    }
+
+    public IndexingSink(Sink delegate) {
+        this(new IndexEntry("index"), delegate);
     }
 
     /**
+     * Default constructor.
+     */
+    private IndexingSink(IndexEntry rootEntry, Sink delegate) {
+        super(delegate);
+        this.rootEntry = rootEntry;
+        stack = new Stack<>();
+        stack.push(rootEntry);
+        usedIds = new HashMap<>();
+        usedIds.put(rootEntry.getId(), new AtomicInteger());
+        this.type = Type.UNKNOWN;
+    }
+
+    /**
+     * This should only be called once the sink is closed.
+     * Before that the tree might not be complete.
+     * @return the tree of entries starting from the root
+     * @throws IllegalStateException in case the sink was not closed yet
+     */
+    public IndexEntry getRootEntry() {
+        if (!isComplete) {
+            throw new IllegalStateException(
+                    "The sink has not been closed yet, i.e. the index tree is not complete yet");
+        }
+        return rootEntry;
+    }
+    /**
      * <p>Getter for the field <code>title</code>.</p>
+     * Shortcut for {@link #getRootEntry()} followed by {@link IndexEntry#getTitle()}.
      *
      * @return the title
      */
     public String getTitle() {
-        return title;
+        return rootEntry.getTitle();
     }
 
     // ----------------------------------------------------------------------
@@ -104,60 +110,47 @@ public class IndexingSink extends SinkAdapter {
 
     @Override
     public void title(SinkEventAttributes attributes) {
-        this.type = TITLE;
+        isTitle = true;
+        super.title(attributes);
+    }
+
+    @Override
+    public void title_() {
+        isTitle = false;
+        super.title_();
     }
 
     @Override
     public void section(int level, SinkEventAttributes attributes) {
-        pushNewEntry();
+        super.section(level, attributes);
+        this.type = IndexEntry.Type.fromSectionLevel(level);
+        pushNewEntry(type);
     }
 
     @Override
     public void section_(int level) {
         pop();
-    }
-
-    @Override
-    public void sectionTitle(int level, SinkEventAttributes attributes) {
-        this.type = level;
+        super.section_(level);
     }
 
     @Override
     public void sectionTitle_(int level) {
-        this.type = 0;
+        indexEntryComplete();
+        super.sectionTitle_(level);
     }
-
-    @Override
-    public void title_() {
-        this.type = 0;
-    }
-
-    // public void definedTerm()
-    // {
-    // type = TYPE_DEFINED_TERM;
-    // }
-    //
-    // public void figureCaption()
-    // {
-    // type = TYPE_FIGURE;
-    // }
-    //
-    // public void tableCaption()
-    // {
-    // type = TYPE_TABLE;
-    // }
 
     @Override
     public void text(String text, SinkEventAttributes attributes) {
+        if (isTitle) {
+            rootEntry.setTitle(text);
+            return;
+        }
         switch (this.type) {
-            case TITLE:
-                this.title = text;
-                break;
-            case TYPE_SECTION_1:
-            case TYPE_SECTION_2:
-            case TYPE_SECTION_3:
-            case TYPE_SECTION_4:
-            case TYPE_SECTION_5:
+            case SECTION_1:
+            case SECTION_2:
+            case SECTION_3:
+            case SECTION_4:
+            case SECTION_5:
                 // -----------------------------------------------------------------------
                 // Sanitize the id. The most important step is to remove any blanks
                 // -----------------------------------------------------------------------
@@ -169,16 +162,43 @@ public class IndexingSink extends SinkAdapter {
                 title = title.replaceAll("[\\r\\n]+", "");
                 entry.setTitle(title);
 
-                entry.setId(getUniqueId(DoxiaUtils.encodeId(title)));
-
+                setEntryId(entry, title);
                 break;
-                // Dunno how to handle these yet
-            case TYPE_DEFINED_TERM:
-            case TYPE_FIGURE:
-            case TYPE_TABLE:
+                // Dunno how to handle others yet
             default:
                 break;
         }
+        super.text(text, attributes);
+    }
+
+    @Override
+    public void anchor(String name, SinkEventAttributes attributes) {
+        parseAnchor(name);
+        super.anchor(name, attributes);
+    }
+
+    private boolean parseAnchor(String name) {
+        switch (type) {
+            case SECTION_1:
+            case SECTION_2:
+            case SECTION_3:
+            case SECTION_4:
+            case SECTION_5:
+                IndexEntry entry = stack.lastElement();
+                entry.setAnchor(true);
+                setEntryId(entry, name);
+                break;
+            default:
+                return false;
+        }
+        return true;
+    }
+
+    private void setEntryId(IndexEntry entry, String id) {
+        if (entry.getId() != null) {
+            usedIds.remove(entry.getId());
+        }
+        entry.setId(getUniqueId(DoxiaUtils.encodeId(id)));
     }
 
     /**
@@ -199,15 +219,34 @@ public class IndexingSink extends SinkAdapter {
         return uniqueId;
     }
 
+    void indexEntryComplete() {
+        this.type = Type.UNKNOWN;
+        // remove buffering sink from pipeline
+        BufferingSink bufferingSink = BufferingSinkProxyFactory.castAsBufferingSink(getWrappedSink());
+        setWrappedSink(bufferingSink.getBufferedSink());
+
+        onIndexEntry(stack.peek());
+
+        // flush the buffer afterwards
+        bufferingSink.flush();
+    }
+
+    /**
+     * Called at the beginning of each entry (once all metadata about it is collected).
+     * The events for the metadata are buffered and only flushed after this method was called.
+     * @param entry the newly collected entry
+     */
+    protected void onIndexEntry(IndexEntry entry) {}
+
     /**
      * Creates and pushes a new IndexEntry onto the top of this stack.
      */
-    public void pushNewEntry() {
-        IndexEntry entry = new IndexEntry(peek(), "");
-
+    private void pushNewEntry(Type type) {
+        IndexEntry entry = new IndexEntry(peek(), "", type);
         entry.setTitle("");
-
         stack.push(entry);
+        // now buffer everything till the next index metadata is complete
+        setWrappedSink(new BufferingSinkProxyFactory().createWrapper(getWrappedSink()));
     }
 
     /**
@@ -235,20 +274,9 @@ public class IndexingSink extends SinkAdapter {
         return stack.peek();
     }
 
-    /**
-     * {@inheritDoc}
-     */
+    @Override
     public void close() {
         super.close();
-
-        init();
-    }
-
-    /**
-     * {@inheritDoc}
-     */
-    protected void init() {
-        this.type = 0;
-        this.title = null;
+        isComplete = true;
     }
 }

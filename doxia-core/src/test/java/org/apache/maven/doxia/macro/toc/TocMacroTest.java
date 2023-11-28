@@ -26,14 +26,21 @@ import java.util.Map;
 
 import org.apache.maven.doxia.macro.MacroExecutionException;
 import org.apache.maven.doxia.macro.MacroRequest;
+import org.apache.maven.doxia.markup.Markup;
+import org.apache.maven.doxia.parser.AbstractParserTest;
+import org.apache.maven.doxia.parser.ParseException;
 import org.apache.maven.doxia.parser.Xhtml5BaseParser;
+import org.apache.maven.doxia.sink.Sink;
+import org.apache.maven.doxia.sink.impl.CreateAnchorsForIndexEntriesFactory;
 import org.apache.maven.doxia.sink.impl.SinkEventAttributeSet;
 import org.apache.maven.doxia.sink.impl.SinkEventElement;
 import org.apache.maven.doxia.sink.impl.SinkEventTestingSink;
 import org.apache.maven.doxia.sink.impl.Xhtml5BaseSink;
 import org.junit.jupiter.api.Test;
 
-import static org.junit.jupiter.api.Assertions.*;
+import static org.junit.jupiter.api.Assertions.assertEquals;
+import static org.junit.jupiter.api.Assertions.assertFalse;
+import static org.junit.jupiter.api.Assertions.assertTrue;
 
 /**
  * Test toc macro.
@@ -96,8 +103,10 @@ public class TocMacroTest {
         assertEquals("list_", (it.next()).getName());
         assertFalse(it.hasNext());
 
-        // test parameters
+        // no wrapper factories should be registered by default
+        assertEquals(0, parser.getSinkWrapperFactories().size());
 
+        // test parameters
         parser = new Xhtml5BaseParser();
         macroParameters.put("section", "2");
         macroParameters.put("fromDepth", "1");
@@ -161,5 +170,36 @@ public class TocMacroTest {
         assertTrue(out.toString().contains("<a href=\"#h11\">h11</a>"));
         assertTrue(out.toString().contains("<a href=\"#h12\">h12</a>"));
         assertTrue(out.toString().contains("<a href=\"#h2\">h2</a>"));
+    }
+
+    @Test
+    public void testGenerateAnchors() throws ParseException, MacroExecutionException {
+        String sourceContent = "<h1>1 Headline</h1>";
+        File basedir = new File("");
+        Xhtml5BaseParser parser = new Xhtml5BaseParser();
+        MacroRequest request = new MacroRequest(sourceContent, parser, new HashMap<>(), basedir);
+        TocMacro macro = new TocMacro();
+        SinkEventTestingSink sink = new SinkEventTestingSink();
+
+        macro.execute(sink, request);
+        parser.parse(sourceContent, sink);
+
+        Iterator<SinkEventElement> it = sink.getEventList().iterator();
+        AbstractParserTest.assertSinkStartsWith(it, "list", "listItem");
+        SinkEventElement link = it.next();
+        assertEquals("link", link.getName());
+        String actualLinkTarget = (String) link.getArgs()[0];
+        AbstractParserTest.assertSinkEquals(it.next(), "text", "1 Headline", null);
+        AbstractParserTest.assertSinkEquals(
+                it, "link_", "listItem_", "list_", "section1", "sectionTitle1", "text", "sectionTitle1_");
+
+        // check html output as well (without the actual TOC)
+        StringWriter out = new StringWriter();
+        Sink sink2 = new Xhtml5BaseSink(out);
+        parser.addSinkWrapperFactory(new CreateAnchorsForIndexEntriesFactory());
+        parser.parse(sourceContent, sink2);
+        assertEquals(
+                "<section><a id=\"" + actualLinkTarget.substring(1) + "\"></a>" + Markup.EOL + "<h1>1 Headline</h1>",
+                out.toString());
     }
 }
