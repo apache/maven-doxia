@@ -134,11 +134,11 @@ public class AptParserTest extends AbstractParserTest {
         Iterator<SinkEventElement> it = sink.getEventList().iterator();
 
         assertSinkStartsWith(it, "head", "head_", "body", "paragraph", "text", "italic");
-        assertSinkEquals(it.next(), "text", "<Italic>");
+        assertSinkEquals(it.next(), "text", "<Italic>", null);
         assertSinkStartsWith(it, "italic_", "text", "bold");
-        assertSinkEquals(it.next(), "text", "<Bold>");
+        assertSinkEquals(it.next(), "text", "<Bold>", null);
         assertSinkStartsWith(it, "bold_", "text", "monospaced");
-        assertSinkEquals(it.next(), "text", "<Monospaced>");
+        assertSinkEquals(it.next(), "text", "<Monospaced>", null);
     }
 
     @Test
@@ -219,31 +219,31 @@ public class AptParserTest extends AbstractParserTest {
         Iterator<SinkEventElement> it = sink.getEventList().iterator();
 
         assertSinkStartsWith(it, "head", "head_", "body", "table", "tableRows", "tableRow", "tableCell");
-        assertSinkEquals(it.next(), "text", "cell 1, 1");
+        assertSinkEquals(it.next(), "text", "cell 1, 1", null);
 
         assertSinkStartsWith(it, "tableCell_", "tableCell");
-        assertSinkEquals(it.next(), "text", "cell 1,2");
+        assertSinkEquals(it.next(), "text", "cell 1,2", null);
 
         assertSinkStartsWith(it, "tableCell_", "tableCell");
-        assertSinkEquals(it.next(), "text", "cell 1,3");
+        assertSinkEquals(it.next(), "text", "cell 1,3", null);
 
         assertSinkStartsWith(it, "tableCell_", "tableRow_", "tableRow", "tableCell");
-        assertSinkEquals(it.next(), "text", "cell 2,1");
+        assertSinkEquals(it.next(), "text", "cell 2,1", null);
 
         assertSinkStartsWith(it, "tableCell_", "tableCell");
-        assertSinkEquals(it.next(), "text", "cell 2, 2");
+        assertSinkEquals(it.next(), "text", "cell 2, 2", null);
 
         assertSinkStartsWith(it, "tableCell_", "tableCell");
-        assertSinkEquals(it.next(), "text", "cell 2,3");
+        assertSinkEquals(it.next(), "text", "cell 2,3", null);
 
         assertSinkStartsWith(it, "tableCell_", "tableRow_", "tableRow", "tableCell");
-        assertSinkEquals(it.next(), "text", "cell 3,1");
+        assertSinkEquals(it.next(), "text", "cell 3,1", null);
 
         assertSinkStartsWith(it, "tableCell_", "tableCell");
-        assertSinkEquals(it.next(), "text", "cell 3,2");
+        assertSinkEquals(it.next(), "text", "cell 3,2", null);
 
         assertSinkStartsWith(it, "tableCell_", "tableCell");
-        assertSinkEquals(it.next(), "text", "cell 3, 3");
+        assertSinkEquals(it.next(), "text", "cell 3, 3", null);
 
         assertSinkEquals(it, "tableCell_", "tableRow_", "tableRows_", "table_", "body_");
     }
@@ -268,40 +268,40 @@ public class AptParserTest extends AbstractParserTest {
         Iterator<SinkEventElement> it = sink.getEventList().iterator();
 
         assertSinkStartsWith(it, "head", "head_", "body", "table", "tableRows", "tableRow", "tableCell");
-        assertSinkEquals(it.next(), "text", "cell 1,\u00A0");
+        assertSinkEquals(it.next(), "text", "cell 1,\u00A0", null);
 
         assertEquals(it.next().getName(), "lineBreak");
-        assertSinkEquals(it.next(), "text", "1");
+        assertSinkEquals(it.next(), "text", "1", null);
 
         assertSinkStartsWith(it, "tableCell_", "tableCell");
-        assertSinkEquals(it.next(), "text", "cell 1,2");
+        assertSinkEquals(it.next(), "text", "cell 1,2", null);
 
         assertSinkStartsWith(it, "tableCell_", "tableCell");
-        assertSinkEquals(it.next(), "text", "cell 1,3");
+        assertSinkEquals(it.next(), "text", "cell 1,3", null);
 
         assertSinkStartsWith(it, "tableCell_", "tableRow_", "tableRow", "tableCell");
-        assertSinkEquals(it.next(), "text", "cell 2,1");
+        assertSinkEquals(it.next(), "text", "cell 2,1", null);
 
         assertSinkStartsWith(it, "tableCell_", "tableCell");
-        assertSinkEquals(it.next(), "text", "cell 2,\u00A0");
+        assertSinkEquals(it.next(), "text", "cell 2,\u00A0", null);
 
         assertEquals(it.next().getName(), "lineBreak");
-        assertSinkEquals(it.next(), "text", "2");
+        assertSinkEquals(it.next(), "text", "2", null);
 
         assertSinkStartsWith(it, "tableCell_", "tableCell");
-        assertSinkEquals(it.next(), "text", "cell 2,3");
+        assertSinkEquals(it.next(), "text", "cell 2,3", null);
 
         assertSinkStartsWith(it, "tableCell_", "tableRow_", "tableRow", "tableCell");
-        assertSinkEquals(it.next(), "text", "cell 3,1");
+        assertSinkEquals(it.next(), "text", "cell 3,1", null);
 
         assertSinkStartsWith(it, "tableCell_", "tableCell");
-        assertSinkEquals(it.next(), "text", "cell 3,2");
+        assertSinkEquals(it.next(), "text", "cell 3,2", null);
 
         assertSinkStartsWith(it, "tableCell_", "tableCell");
-        assertSinkEquals(it.next(), "text", "cell 3,\u00A0");
+        assertSinkEquals(it.next(), "text", "cell 3,\u00A0", null);
 
         assertEquals(it.next().getName(), "lineBreak");
-        assertSinkEquals(it.next(), "text", "3");
+        assertSinkEquals(it.next(), "text", "3", null);
 
         assertSinkEquals(it, "tableCell_", "tableRow_", "tableRows_", "table_", "body_");
     }
@@ -322,27 +322,27 @@ public class AptParserTest extends AbstractParserTest {
 
         assertSinkStartsWith(it, "head", "head_", "body", "table", "tableRows", "tableRow");
         assertSinkAttributeEquals(it.next(), "tableCell", SinkEventAttributeSet.ALIGN, "center");
-        assertSinkEquals(it.next(), "text", "Centered");
+        assertSinkEquals(it.next(), "text", "Centered", null);
         assertEquals(it.next().getName(), "tableCell_");
 
         assertSinkAttributeEquals(it.next(), "tableCell", SinkEventAttributeSet.ALIGN, "center");
-        assertSinkEquals(it.next(), "text", "Centered");
+        assertSinkEquals(it.next(), "text", "Centered", null);
         assertEquals(it.next().getName(), "tableCell_");
 
         assertSinkAttributeEquals(it.next(), "tableCell", SinkEventAttributeSet.ALIGN, "center");
-        assertSinkEquals(it.next(), "text", "Centered");
+        assertSinkEquals(it.next(), "text", "Centered", null);
         assertSinkStartsWith(it, "tableCell_", "tableRow_", "tableRow");
 
         assertSinkAttributeEquals(it.next(), "tableCell", SinkEventAttributeSet.ALIGN, "center");
-        assertSinkEquals(it.next(), "text", "Centered");
+        assertSinkEquals(it.next(), "text", "Centered", null);
         assertEquals(it.next().getName(), "tableCell_");
 
         assertSinkAttributeEquals(it.next(), "tableCell", SinkEventAttributeSet.ALIGN, "left");
-        assertSinkEquals(it.next(), "text", "Left-aligned");
+        assertSinkEquals(it.next(), "text", "Left-aligned", null);
         assertEquals(it.next().getName(), "tableCell_");
 
         assertSinkAttributeEquals(it.next(), "tableCell", SinkEventAttributeSet.ALIGN, "right");
-        assertSinkEquals(it.next(), "text", "Right-aligned");
+        assertSinkEquals(it.next(), "text", "Right-aligned", null);
         assertSinkEquals(it, "tableCell_", "tableRow_", "tableRows_", "table_", "body_");
     }
 
@@ -361,10 +361,10 @@ public class AptParserTest extends AbstractParserTest {
         Iterator<SinkEventElement> it = sink.getEventList().iterator();
 
         assertSinkStartsWith(it, "head", "head_", "body", "paragraph");
-        assertSinkEquals(it.next(), "text", "~ = - + * [ ] < > { } \\ \u2713");
+        assertSinkEquals(it.next(), "text", "~ = - + * [ ] < > { } \\ \u2713", null);
 
         assertSinkStartsWith(it, "paragraph_", "table", "tableRows", "tableRow", "tableCell");
-        assertSinkEquals(it.next(), "text", "~ = - + * [ ] < > { } \\ \u2713");
+        assertSinkEquals(it.next(), "text", "~ = - + * [ ] < > { } \\ \u2713", null);
 
         assertSinkEquals(
                 it, "tableCell_", "tableCell", "text", "tableCell_", "tableRow_", "tableRows_", "table_", "body_");
@@ -383,19 +383,19 @@ public class AptParserTest extends AbstractParserTest {
         Iterator<SinkEventElement> it = sink.getEventList().iterator();
 
         assertSinkStartsWith(it, "head", "head_", "body", "paragraph");
-        assertSinkEquals(it.next(), "anchor", "Anchor_with_spaces_.28and_brackets.29");
+        assertSinkEquals(it.next(), "anchor", "Anchor_with_spaces_.28and_brackets.29", null);
 
-        assertSinkEquals(it.next(), "text", "Anchor with spaces (and brackets)");
+        assertSinkEquals(it.next(), "text", "Anchor with spaces (and brackets)", null);
 
         assertSinkStartsWith(it, "anchor_", "text");
-        assertSinkEquals(it.next(), "link", "#Anchor_with_spaces_.28and_brackets.29");
+        assertSinkEquals(it.next(), "link", "#Anchor_with_spaces_.28and_brackets.29", null);
 
-        assertSinkEquals(it.next(), "text", "Anchor with spaces (and brackets)");
+        assertSinkEquals(it.next(), "text", "Anchor with spaces (and brackets)", null);
 
         assertSinkStartsWith(it, "link_", "text");
-        assertSinkEquals(it.next(), "link", "http://fake.api#method(with, args)");
+        assertSinkEquals(it.next(), "link", "http://fake.api#method(with, args)", null);
 
-        assertSinkEquals(it.next(), "text", "method(with, args)");
+        assertSinkEquals(it.next(), "text", "method(with, args)", null);
 
         assertSinkEquals(it, "link_", "paragraph_", "body_");
     }
@@ -477,9 +477,9 @@ public class AptParserTest extends AbstractParserTest {
 
         Iterator<SinkEventElement> it = sink.getEventList().iterator();
         assertSinkStartsWith(it, "head", "head_", "body", "table", "tableRows", "tableRow", "tableCell");
-        assertSinkEquals(it.next(), "text", "cell | pipe");
+        assertSinkEquals(it.next(), "text", "cell | pipe", null);
         assertSinkStartsWith(it, "tableCell_", "tableCell");
-        assertSinkEquals(it.next(), "text", "next cell");
+        assertSinkEquals(it.next(), "text", "next cell", null);
         assertSinkEquals(it, "tableCell_", "tableRow_", "tableRows_", "table_", "body_");
     }
 
@@ -498,8 +498,9 @@ public class AptParserTest extends AbstractParserTest {
         assertSinkEquals(
                 it.next(),
                 "link",
-                "../apidocs/groovyx/net/http/ParserRegistry.html#parseText(org.apache.http.HttpResponse)");
-        assertSinkEquals(it.next(), "text", "ParserRegistry");
+                "../apidocs/groovyx/net/http/ParserRegistry.html#parseText(org.apache.http.HttpResponse)",
+                null);
+        assertSinkEquals(it.next(), "text", "ParserRegistry", null);
         assertSinkEquals(it, "link_", "sectionTitle1_", "section1_", "body_");
     }
 
@@ -517,8 +518,8 @@ public class AptParserTest extends AbstractParserTest {
         assertSinkEquals(
                 it, "head", "title", "text", "title_", "author", "text", "author_", "author", "text", "author_",
                 "head_", "body", "body_");
-        assertSinkEquals(sink.getEventList().get(5), "text", "Konrad Windszus");
-        assertSinkEquals(sink.getEventList().get(8), "text", "Another author");
+        assertSinkEquals(sink.getEventList().get(5), "text", "Konrad Windszus", null);
+        assertSinkEquals(sink.getEventList().get(8), "text", "Another author", null);
     }
 
     protected String outputExtension() {

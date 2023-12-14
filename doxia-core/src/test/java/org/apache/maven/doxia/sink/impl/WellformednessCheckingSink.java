@@ -36,18 +36,8 @@ public class WellformednessCheckingSink extends AbstractSink {
     private final List<String> errors = new LinkedList<>();
 
     @Override
-    public void head() {
-        startElement("head");
-    }
-
-    @Override
     public void head_() {
         checkWellformedness("head");
-    }
-
-    @Override
-    public void body() {
-        startElement("body");
     }
 
     @Override
@@ -56,18 +46,8 @@ public class WellformednessCheckingSink extends AbstractSink {
     }
 
     @Override
-    public void article() {
-        startElement("article");
-    }
-
-    @Override
     public void article_() {
         checkWellformedness("article");
-    }
-
-    @Override
-    public void navigation() {
-        startElement("navigation");
     }
 
     @Override
@@ -76,68 +56,8 @@ public class WellformednessCheckingSink extends AbstractSink {
     }
 
     @Override
-    public void sidebar() {
-        startElement("sidebar");
-    }
-
-    @Override
     public void sidebar_() {
         checkWellformedness("sidebar");
-    }
-
-    @Override
-    public void section1() {
-        startElement("section1");
-    }
-
-    @Override
-    public void section1_() {
-        checkWellformedness("section1");
-    }
-
-    @Override
-    public void section2() {
-        startElement("section2");
-    }
-
-    @Override
-    public void section2_() {
-        checkWellformedness("section2");
-    }
-
-    @Override
-    public void section3() {
-        startElement("section3");
-    }
-
-    @Override
-    public void section3_() {
-        checkWellformedness("section3");
-    }
-
-    @Override
-    public void section4() {
-        startElement("section4");
-    }
-
-    @Override
-    public void section4_() {
-        checkWellformedness("section4");
-    }
-
-    @Override
-    public void section5() {
-        startElement("section5");
-    }
-
-    @Override
-    public void section5_() {
-        checkWellformedness("section5");
-    }
-
-    @Override
-    public void header() {
-        startElement("header");
     }
 
     @Override
@@ -146,18 +66,8 @@ public class WellformednessCheckingSink extends AbstractSink {
     }
 
     @Override
-    public void content() {
-        startElement("content");
-    }
-
-    @Override
     public void content_() {
         checkWellformedness("content");
-    }
-
-    @Override
-    public void footer() {
-        startElement("footer");
     }
 
     @Override
@@ -166,18 +76,8 @@ public class WellformednessCheckingSink extends AbstractSink {
     }
 
     @Override
-    public void list() {
-        startElement("list");
-    }
-
-    @Override
     public void list_() {
         checkWellformedness("list");
-    }
-
-    @Override
-    public void listItem() {
-        startElement("listItem");
     }
 
     @Override
@@ -186,18 +86,8 @@ public class WellformednessCheckingSink extends AbstractSink {
     }
 
     @Override
-    public void numberedList(int numbering) {
-        startElement("numberedList");
-    }
-
-    @Override
     public void numberedList_() {
         checkWellformedness("numberedList");
-    }
-
-    @Override
-    public void numberedListItem() {
-        startElement("numberedListItem");
     }
 
     @Override
@@ -206,18 +96,8 @@ public class WellformednessCheckingSink extends AbstractSink {
     }
 
     @Override
-    public void definitionList() {
-        startElement("definitionList");
-    }
-
-    @Override
     public void definitionList_() {
         checkWellformedness("definitionList");
-    }
-
-    @Override
-    public void definitionListItem() {
-        startElement("definitionListItem");
     }
 
     @Override
@@ -226,18 +106,8 @@ public class WellformednessCheckingSink extends AbstractSink {
     }
 
     @Override
-    public void definition() {
-        startElement("definition");
-    }
-
-    @Override
     public void definition_() {
         checkWellformedness("definition");
-    }
-
-    @Override
-    public void figure() {
-        startElement("figure");
     }
 
     @Override
@@ -246,18 +116,8 @@ public class WellformednessCheckingSink extends AbstractSink {
     }
 
     @Override
-    public void table() {
-        startElement("table");
-    }
-
-    @Override
     public void table_() {
         checkWellformedness("table");
-    }
-
-    @Override
-    public void tableRows() {
-        startElement("tableRows");
     }
 
     @Override
@@ -266,18 +126,8 @@ public class WellformednessCheckingSink extends AbstractSink {
     }
 
     @Override
-    public void tableRow() {
-        startElement("tableRow");
-    }
-
-    @Override
     public void tableRow_() {
         checkWellformedness("tableRow");
-    }
-
-    @Override
-    public void title() {
-        startElement("title");
     }
 
     @Override
@@ -286,18 +136,8 @@ public class WellformednessCheckingSink extends AbstractSink {
     }
 
     @Override
-    public void author() {
-        startElement("author");
-    }
-
-    @Override
     public void author_() {
         checkWellformedness("author");
-    }
-
-    @Override
-    public void date() {
-        startElement("date");
     }
 
     @Override
@@ -306,78 +146,8 @@ public class WellformednessCheckingSink extends AbstractSink {
     }
 
     @Override
-    public void sectionTitle() {
-        startElement("sectionTitle");
-    }
-
-    @Override
-    public void sectionTitle_() {
-        checkWellformedness("sectionTitle");
-    }
-
-    @Override
-    public void sectionTitle1() {
-        startElement("sectionTitle1");
-    }
-
-    @Override
-    public void sectionTitle1_() {
-        checkWellformedness("sectionTitle1");
-    }
-
-    @Override
-    public void sectionTitle2() {
-        startElement("sectionTitle2");
-    }
-
-    @Override
-    public void sectionTitle2_() {
-        checkWellformedness("sectionTitle2");
-    }
-
-    @Override
-    public void sectionTitle3() {
-        startElement("sectionTitle3");
-    }
-
-    @Override
-    public void sectionTitle3_() {
-        checkWellformedness("sectionTitle3");
-    }
-
-    @Override
-    public void sectionTitle4() {
-        startElement("sectionTitle4");
-    }
-
-    @Override
-    public void sectionTitle4_() {
-        checkWellformedness("sectionTitle4");
-    }
-
-    @Override
-    public void sectionTitle5() {
-        startElement("sectionTitle5");
-    }
-
-    @Override
-    public void sectionTitle5_() {
-        checkWellformedness("sectionTitle5");
-    }
-
-    @Override
-    public void paragraph() {
-        startElement("paragraph");
-    }
-
-    @Override
     public void paragraph_() {
         checkWellformedness("paragraph");
-    }
-
-    @Override
-    public void data(String value) {
-        startElement("data");
     }
 
     @Override
@@ -386,18 +156,8 @@ public class WellformednessCheckingSink extends AbstractSink {
     }
 
     @Override
-    public void time(String datetime) {
-        startElement("time");
-    }
-
-    @Override
     public void time_() {
         checkWellformedness("time");
-    }
-
-    @Override
-    public void address() {
-        startElement("address");
     }
 
     @Override
@@ -406,18 +166,8 @@ public class WellformednessCheckingSink extends AbstractSink {
     }
 
     @Override
-    public void blockquote() {
-        startElement("blockquote");
-    }
-
-    @Override
     public void blockquote_() {
         checkWellformedness("blockquote");
-    }
-
-    @Override
-    public void division() {
-        startElement("division");
     }
 
     @Override
@@ -431,18 +181,8 @@ public class WellformednessCheckingSink extends AbstractSink {
     }
 
     @Override
-    public void definedTerm() {
-        startElement("definedTerm");
-    }
-
-    @Override
     public void definedTerm_() {
         checkWellformedness("definedTerm");
-    }
-
-    @Override
-    public void figureCaption() {
-        startElement("figureCaption");
     }
 
     @Override
@@ -451,18 +191,8 @@ public class WellformednessCheckingSink extends AbstractSink {
     }
 
     @Override
-    public void tableCell() {
-        startElement("tableCell");
-    }
-
-    @Override
     public void tableCell_() {
         checkWellformedness("tableCell");
-    }
-
-    @Override
-    public void tableHeaderCell() {
-        startElement("tableHeaderCell");
     }
 
     @Override
@@ -471,23 +201,8 @@ public class WellformednessCheckingSink extends AbstractSink {
     }
 
     @Override
-    public void tableCaption() {
-        startElement("tableCaption");
-    }
-
-    @Override
     public void tableCaption_() {
         checkWellformedness("tableCaption");
-    }
-
-    @Override
-    public void figureGraphics(String name) {
-        // nop
-    }
-
-    @Override
-    public void horizontalRule() {
-        // nop
     }
 
     @Override
@@ -496,28 +211,13 @@ public class WellformednessCheckingSink extends AbstractSink {
     }
 
     @Override
-    public void anchor(String name) {
-        startElement("anchor");
-    }
-
-    @Override
     public void anchor_() {
         checkWellformedness("anchor");
     }
 
     @Override
-    public void link(String name) {
-        startElement("link");
-    }
-
-    @Override
     public void link_() {
         checkWellformedness("link");
-    }
-
-    @Override
-    public void inline() {
-        startElement("inline");
     }
 
     @Override
@@ -556,22 +256,7 @@ public class WellformednessCheckingSink extends AbstractSink {
     }
 
     @Override
-    public void lineBreak() {
-        // nop
-    }
-
-    @Override
-    public void lineBreakOpportunity() {
-        // nop
-    }
-
-    @Override
     public void nonBreakingSpace() {
-        // nop
-    }
-
-    @Override
-    public void text(String text) {
         // nop
     }
 
@@ -655,42 +340,42 @@ public class WellformednessCheckingSink extends AbstractSink {
 
     @Override
     public void head(SinkEventAttributes attributes) {
-        head();
+        startElement("head");
     }
 
     @Override
     public void title(SinkEventAttributes attributes) {
-        title();
+        startElement("title");
     }
 
     @Override
     public void author(SinkEventAttributes attributes) {
-        author();
+        startElement("author");
     }
 
     @Override
     public void date(SinkEventAttributes attributes) {
-        date();
+        startElement("date");
     }
 
     @Override
     public void body(SinkEventAttributes attributes) {
-        body();
+        startElement("body");
     }
 
     @Override
     public void article(SinkEventAttributes attributes) {
-        article();
+        startElement("article");
     }
 
     @Override
     public void navigation(SinkEventAttributes attributes) {
-        navigation();
+        startElement("navigation");
     }
 
     @Override
     public void sidebar(SinkEventAttributes attributes) {
-        sidebar();
+        startElement("sidebar");
     }
 
     @Override
@@ -715,177 +400,172 @@ public class WellformednessCheckingSink extends AbstractSink {
 
     @Override
     public void header(SinkEventAttributes attributes) {
-        header();
+        startElement("header");
     }
 
     @Override
     public void content(SinkEventAttributes attributes) {
-        content();
+        startElement("content");
     }
 
     @Override
     public void footer(SinkEventAttributes attributes) {
-        footer();
+        startElement("footer");
     }
 
     @Override
     public void list(SinkEventAttributes attributes) {
-        list();
+        startElement("list");
     }
 
     @Override
     public void listItem(SinkEventAttributes attributes) {
-        listItem();
+        startElement("listItem");
     }
 
     @Override
     public void numberedList(int numbering, SinkEventAttributes attributes) {
-        numberedList(numbering);
+        startElement("numberedList");
     }
 
     @Override
     public void numberedListItem(SinkEventAttributes attributes) {
-        numberedListItem();
+        startElement("numberedListItem");
     }
 
     @Override
     public void definitionList(SinkEventAttributes attributes) {
-        definitionList();
+        startElement("definitionList");
     }
 
     @Override
     public void definitionListItem(SinkEventAttributes attributes) {
-        definitionListItem();
+        startElement("definitionListItem");
     }
 
     @Override
     public void definition(SinkEventAttributes attributes) {
-        definition();
+        startElement("definition");
     }
 
     @Override
     public void definedTerm(SinkEventAttributes attributes) {
-        definedTerm();
+        startElement("definedTerm");
     }
 
     @Override
     public void figure(SinkEventAttributes attributes) {
-        figure();
+        startElement("figure");
     }
 
     @Override
     public void figureCaption(SinkEventAttributes attributes) {
-        figureCaption();
+        startElement("figureCaption");
     }
 
     @Override
     public void figureGraphics(String src, SinkEventAttributes attributes) {
-        figureGraphics(src);
+        // nop
     }
 
     @Override
     public void table(SinkEventAttributes attributes) {
-        table();
+        startElement("table");
     }
 
     @Override
     public void tableRows(int[] justification, boolean grid) {
-        tableRows();
+        startElement("tableRows");
     }
 
     @Override
     public void tableRow(SinkEventAttributes attributes) {
-        tableRow();
+        startElement("tableRow");
     }
 
     @Override
     public void tableCell(SinkEventAttributes attributes) {
-        tableCell();
+        startElement("tableCell");
     }
 
     @Override
     public void tableHeaderCell(SinkEventAttributes attributes) {
-        tableHeaderCell();
+        startElement("tableHeaderCell");
     }
 
     @Override
     public void tableCaption(SinkEventAttributes attributes) {
-        tableCaption();
+        startElement("tableCaption");
     }
 
     @Override
     public void paragraph(SinkEventAttributes attributes) {
-        paragraph();
+        startElement("paragraph");
     }
 
     @Override
     public void data(String value, SinkEventAttributes attributes) {
-        data(value);
+        startElement("data");
     }
 
     @Override
     public void time(String datetime, SinkEventAttributes attributes) {
-        time(datetime);
+        startElement("time");
     }
 
     @Override
     public void address(SinkEventAttributes attributes) {
-        address();
+        startElement("address");
     }
 
     @Override
     public void blockquote(SinkEventAttributes attributes) {
-        blockquote();
+        startElement("blockquote");
     }
 
     @Override
     public void division(SinkEventAttributes attributes) {
-        division();
-    }
-
-    @Override
-    public void verbatim() {
-        startElement("verbatim");
+        startElement("division");
     }
 
     @Override
     public void verbatim(SinkEventAttributes attributes) {
-        verbatim();
+        startElement("verbatim");
     }
 
     @Override
     public void horizontalRule(SinkEventAttributes attributes) {
-        horizontalRule();
+        // nop
     }
 
     @Override
     public void anchor(String name, SinkEventAttributes attributes) {
-        anchor(name);
+        startElement("anchor");
     }
 
     @Override
     public void link(String name, SinkEventAttributes attributes) {
-        link(name);
+        startElement("link");
     }
 
     @Override
     public void inline(SinkEventAttributes attributes) {
-        inline();
+        startElement("inline");
     }
 
     @Override
     public void lineBreak(SinkEventAttributes attributes) {
-        lineBreak();
+        // nop
     }
 
     @Override
     public void lineBreakOpportunity(SinkEventAttributes attributes) {
-        lineBreakOpportunity();
+        // nop
     }
 
     @Override
     public void text(String text, SinkEventAttributes attributes) {
-        text(text);
+        // nop
     }
 
     @Override

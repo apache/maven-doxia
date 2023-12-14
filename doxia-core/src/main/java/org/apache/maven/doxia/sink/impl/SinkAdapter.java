@@ -28,21 +28,10 @@ import org.apache.maven.doxia.sink.SinkEventAttributes;
  * @author <a href="mailto:vincent.siveton@gmail.com">Vincent Siveton</a>
  */
 public class SinkAdapter extends AbstractSink {
-    /** {@inheritDoc} */
-    @Override
-    public void head() {
-        // nop
-    }
 
     /** {@inheritDoc} */
     @Override
     public void head_() {
-        // nop
-    }
-
-    /** {@inheritDoc} */
-    @Override
-    public void body() {
         // nop
     }
 
@@ -54,19 +43,7 @@ public class SinkAdapter extends AbstractSink {
 
     /** {@inheritDoc} */
     @Override
-    public void article() {
-        // nop
-    }
-
-    /** {@inheritDoc} */
-    @Override
     public void article_() {
-        // nop
-    }
-
-    /** {@inheritDoc} */
-    @Override
-    public void navigation() {
         // nop
     }
 
@@ -78,79 +55,7 @@ public class SinkAdapter extends AbstractSink {
 
     /** {@inheritDoc} */
     @Override
-    public void sidebar() {
-        // nop
-    }
-
-    /** {@inheritDoc} */
-    @Override
     public void sidebar_() {
-        // nop
-    }
-
-    /** {@inheritDoc} */
-    @Override
-    public void section1() {
-        // nop
-    }
-
-    /** {@inheritDoc} */
-    @Override
-    public void section1_() {
-        // nop
-    }
-
-    /** {@inheritDoc} */
-    @Override
-    public void section2() {
-        // nop
-    }
-
-    /** {@inheritDoc} */
-    @Override
-    public void section2_() {
-        // nop
-    }
-
-    /** {@inheritDoc} */
-    @Override
-    public void section3() {
-        // nop
-    }
-
-    /** {@inheritDoc} */
-    @Override
-    public void section3_() {
-        // nop
-    }
-
-    /** {@inheritDoc} */
-    @Override
-    public void section4() {
-        // nop
-    }
-
-    /** {@inheritDoc} */
-    @Override
-    public void section4_() {
-        // nop
-    }
-
-    /** {@inheritDoc} */
-    @Override
-    public void section5() {
-        // nop
-    }
-
-    /** {@inheritDoc} */
-    @Override
-    public void section5_() {
-        // nop
-    }
-
-    /** {@inheritDoc} */
-    @Override
-    public void list() {
         // nop
     }
 
@@ -162,19 +67,7 @@ public class SinkAdapter extends AbstractSink {
 
     /** {@inheritDoc} */
     @Override
-    public void listItem() {
-        // nop
-    }
-
-    /** {@inheritDoc} */
-    @Override
     public void listItem_() {
-        // nop
-    }
-
-    /** {@inheritDoc} */
-    @Override
-    public void numberedList(int numbering) {
         // nop
     }
 
@@ -186,19 +79,7 @@ public class SinkAdapter extends AbstractSink {
 
     /** {@inheritDoc} */
     @Override
-    public void numberedListItem() {
-        // nop
-    }
-
-    /** {@inheritDoc} */
-    @Override
     public void numberedListItem_() {
-        // nop
-    }
-
-    /** {@inheritDoc} */
-    @Override
-    public void definitionList() {
         // nop
     }
 
@@ -210,19 +91,7 @@ public class SinkAdapter extends AbstractSink {
 
     /** {@inheritDoc} */
     @Override
-    public void definitionListItem() {
-        // nop
-    }
-
-    /** {@inheritDoc} */
-    @Override
     public void definitionListItem_() {
-        // nop
-    }
-
-    /** {@inheritDoc} */
-    @Override
-    public void definition() {
         // nop
     }
 
@@ -234,19 +103,7 @@ public class SinkAdapter extends AbstractSink {
 
     /** {@inheritDoc} */
     @Override
-    public void figure() {
-        // nop
-    }
-
-    /** {@inheritDoc} */
-    @Override
     public void figure_() {
-        // nop
-    }
-
-    /** {@inheritDoc} */
-    @Override
-    public void table() {
         // nop
     }
 
@@ -258,19 +115,7 @@ public class SinkAdapter extends AbstractSink {
 
     /** {@inheritDoc} */
     @Override
-    public void tableRows() {
-        // nop
-    }
-
-    /** {@inheritDoc} */
-    @Override
     public void tableRows_() {
-        // nop
-    }
-
-    /** {@inheritDoc} */
-    @Override
-    public void tableRow() {
         // nop
     }
 
@@ -282,19 +127,7 @@ public class SinkAdapter extends AbstractSink {
 
     /** {@inheritDoc} */
     @Override
-    public void title() {
-        // nop
-    }
-
-    /** {@inheritDoc} */
-    @Override
     public void title_() {
-        // nop
-    }
-
-    /** {@inheritDoc} */
-    @Override
-    public void author() {
         // nop
     }
 
@@ -306,91 +139,7 @@ public class SinkAdapter extends AbstractSink {
 
     /** {@inheritDoc} */
     @Override
-    public void date() {
-        // nop
-    }
-
-    /** {@inheritDoc} */
-    @Override
     public void date_() {
-        // nop
-    }
-
-    /** {@inheritDoc} */
-    @Override
-    public void sectionTitle() {
-        // nop
-    }
-
-    /** {@inheritDoc} */
-    @Override
-    public void sectionTitle_() {
-        // nop
-    }
-
-    /** {@inheritDoc} */
-    @Override
-    public void sectionTitle1() {
-        // nop
-    }
-
-    /** {@inheritDoc} */
-    @Override
-    public void sectionTitle1_() {
-        // nop
-    }
-
-    /** {@inheritDoc} */
-    @Override
-    public void sectionTitle2() {
-        // nop
-    }
-
-    /** {@inheritDoc} */
-    @Override
-    public void sectionTitle2_() {
-        // nop
-    }
-
-    /** {@inheritDoc} */
-    @Override
-    public void sectionTitle3() {
-        // nop
-    }
-
-    /** {@inheritDoc} */
-    @Override
-    public void sectionTitle3_() {
-        // nop
-    }
-
-    /** {@inheritDoc} */
-    @Override
-    public void sectionTitle4() {
-        // nop
-    }
-
-    /** {@inheritDoc} */
-    @Override
-    public void sectionTitle4_() {
-        // nop
-    }
-
-    /** {@inheritDoc} */
-    @Override
-    public void sectionTitle5() {
-        // nop
-    }
-
-    /** {@inheritDoc} */
-    @Override
-    public void sectionTitle5_() {
-        // nop
-    }
-
-    /** {@inheritDoc} */
-    @Override
-    public void header() {
         // nop
     }
 
@@ -402,19 +151,7 @@ public class SinkAdapter extends AbstractSink {
 
     /** {@inheritDoc} */
     @Override
-    public void content() {
-        // nop
-    }
-
-    /** {@inheritDoc} */
-    @Override
     public void content_() {
-        // nop
-    }
-
-    /** {@inheritDoc} */
-    @Override
-    public void footer() {
         // nop
     }
 
@@ -426,19 +163,7 @@ public class SinkAdapter extends AbstractSink {
 
     /** {@inheritDoc} */
     @Override
-    public void paragraph() {
-        // nop
-    }
-
-    /** {@inheritDoc} */
-    @Override
     public void paragraph_() {
-        // nop
-    }
-
-    /** {@inheritDoc} */
-    @Override
-    public void data(String value) {
         // nop
     }
 
@@ -450,19 +175,7 @@ public class SinkAdapter extends AbstractSink {
 
     /** {@inheritDoc} */
     @Override
-    public void time(String datetime) {
-        // nop
-    }
-
-    /** {@inheritDoc} */
-    @Override
     public void time_() {
-        // nop
-    }
-
-    /** {@inheritDoc} */
-    @Override
-    public void address() {
         // nop
     }
 
@@ -474,19 +187,7 @@ public class SinkAdapter extends AbstractSink {
 
     /** {@inheritDoc} */
     @Override
-    public void blockquote() {
-        // nop
-    }
-
-    /** {@inheritDoc} */
-    @Override
     public void blockquote_() {
-        // nop
-    }
-
-    /** {@inheritDoc} */
-    @Override
-    public void division() {
         // nop
     }
 
@@ -504,19 +205,7 @@ public class SinkAdapter extends AbstractSink {
 
     /** {@inheritDoc} */
     @Override
-    public void definedTerm() {
-        // nop
-    }
-
-    /** {@inheritDoc} */
-    @Override
     public void definedTerm_() {
-        // nop
-    }
-
-    /** {@inheritDoc} */
-    @Override
-    public void figureCaption() {
         // nop
     }
 
@@ -528,19 +217,7 @@ public class SinkAdapter extends AbstractSink {
 
     /** {@inheritDoc} */
     @Override
-    public void tableCell() {
-        // nop
-    }
-
-    /** {@inheritDoc} */
-    @Override
     public void tableCell_() {
-        // nop
-    }
-
-    /** {@inheritDoc} */
-    @Override
-    public void tableHeaderCell() {
         // nop
     }
 
@@ -552,25 +229,7 @@ public class SinkAdapter extends AbstractSink {
 
     /** {@inheritDoc} */
     @Override
-    public void tableCaption() {
-        // nop
-    }
-
-    /** {@inheritDoc} */
-    @Override
     public void tableCaption_() {
-        // nop
-    }
-
-    /** {@inheritDoc} */
-    @Override
-    public void figureGraphics(String name) {
-        // nop
-    }
-
-    /** {@inheritDoc} */
-    @Override
-    public void horizontalRule() {
         // nop
     }
 
@@ -582,31 +241,13 @@ public class SinkAdapter extends AbstractSink {
 
     /** {@inheritDoc} */
     @Override
-    public void anchor(String name) {
-        // nop
-    }
-
-    /** {@inheritDoc} */
-    @Override
     public void anchor_() {
         // nop
     }
 
     /** {@inheritDoc} */
     @Override
-    public void link(String name) {
-        // nop
-    }
-
-    /** {@inheritDoc} */
-    @Override
     public void link_() {
-        // nop
-    }
-
-    /** {@inheritDoc} */
-    @Override
-    public void inline() {
         // nop
     }
 
@@ -654,25 +295,7 @@ public class SinkAdapter extends AbstractSink {
 
     /** {@inheritDoc} */
     @Override
-    public void lineBreak() {
-        // nop
-    }
-
-    /** {@inheritDoc} */
-    @Override
-    public void lineBreakOpportunity() {
-        // nop
-    }
-
-    /** {@inheritDoc} */
-    @Override
     public void nonBreakingSpace() {
-        // nop
-    }
-
-    /** {@inheritDoc} */
-    @Override
-    public void text(String text) {
         // nop
     }
 
@@ -702,324 +325,278 @@ public class SinkAdapter extends AbstractSink {
 
     /** {@inheritDoc} */
     @Override
-    public void verbatim() {
+    public void head(SinkEventAttributes attributes) {
         // nop
     }
 
     /** {@inheritDoc} */
     @Override
-    public void head(SinkEventAttributes attributes) {
-        head();
-    }
-
-    /** {@inheritDoc} */
-    @Override
     public void title(SinkEventAttributes attributes) {
-        title();
+        // nop
     }
 
     /** {@inheritDoc} */
     @Override
     public void author(SinkEventAttributes attributes) {
-        author();
+        // nop
     }
 
     /** {@inheritDoc} */
     @Override
     public void date(SinkEventAttributes attributes) {
-        date();
+        // nop
     }
 
     /** {@inheritDoc} */
     @Override
     public void body(SinkEventAttributes attributes) {
-        body();
+        // nop
     }
 
     /** {@inheritDoc} */
     @Override
     public void article(SinkEventAttributes attributes) {
-        article();
+        // nop
     }
 
     /** {@inheritDoc} */
     @Override
     public void navigation(SinkEventAttributes attributes) {
-        navigation();
+        // nop
     }
 
     /** {@inheritDoc} */
     @Override
     public void sidebar(SinkEventAttributes attributes) {
-        sidebar();
+        // nop
     }
 
     /** {@inheritDoc} */
     @Override
     public void section(int level, SinkEventAttributes attributes) {
-        if (level == SECTION_LEVEL_1) {
-            section1();
-        } else if (level == SECTION_LEVEL_2) {
-            section2();
-        } else if (level == SECTION_LEVEL_3) {
-            section3();
-        } else if (level == SECTION_LEVEL_4) {
-            section4();
-        } else if (level == SECTION_LEVEL_5) {
-            section5();
-        }
+        // nop
     }
 
     /** {@inheritDoc} */
     @Override
     public void section_(int level) {
-        if (level == SECTION_LEVEL_1) {
-            section1_();
-        } else if (level == SECTION_LEVEL_2) {
-            section2_();
-        } else if (level == SECTION_LEVEL_3) {
-            section3_();
-        } else if (level == SECTION_LEVEL_4) {
-            section4_();
-        } else if (level == SECTION_LEVEL_5) {
-            section5_();
-        }
+        // nop
     }
 
     /** {@inheritDoc} */
     @Override
     public void sectionTitle(int level, SinkEventAttributes attributes) {
-        if (level == SECTION_LEVEL_1) {
-            sectionTitle1();
-        } else if (level == SECTION_LEVEL_2) {
-            sectionTitle2();
-        } else if (level == SECTION_LEVEL_3) {
-            sectionTitle3();
-        } else if (level == SECTION_LEVEL_4) {
-            sectionTitle4();
-        } else if (level == SECTION_LEVEL_5) {
-            sectionTitle5();
-        }
+        // nop
     }
 
     /** {@inheritDoc} */
     @Override
     public void sectionTitle_(int level) {
-        if (level == SECTION_LEVEL_1) {
-            sectionTitle1_();
-        } else if (level == SECTION_LEVEL_2) {
-            sectionTitle2_();
-        } else if (level == SECTION_LEVEL_3) {
-            sectionTitle3_();
-        } else if (level == SECTION_LEVEL_4) {
-            sectionTitle4_();
-        } else if (level == SECTION_LEVEL_5) {
-            sectionTitle5_();
-        }
+        // nop
     }
 
     /** {@inheritDoc} */
     @Override
     public void header(SinkEventAttributes attributes) {
-        header();
+        // nop
     }
 
     /** {@inheritDoc} */
     @Override
     public void content(SinkEventAttributes attributes) {
-        content();
+        // nop
     }
 
     /** {@inheritDoc} */
     @Override
     public void footer(SinkEventAttributes attributes) {
-        footer();
+        // nop
     }
 
     /** {@inheritDoc} */
     @Override
     public void list(SinkEventAttributes attributes) {
-        list();
+        // nop
     }
 
     /** {@inheritDoc} */
     @Override
     public void listItem(SinkEventAttributes attributes) {
-        listItem();
+        // nop
     }
 
     /** {@inheritDoc} */
     @Override
     public void numberedList(int numbering, SinkEventAttributes attributes) {
-        numberedList(numbering);
+        // nop
     }
 
     /** {@inheritDoc} */
     @Override
     public void numberedListItem(SinkEventAttributes attributes) {
-        numberedListItem();
+        // nop
     }
 
     /** {@inheritDoc} */
     @Override
     public void definitionList(SinkEventAttributes attributes) {
-        definitionList();
+        // nop
     }
 
     /** {@inheritDoc} */
     @Override
     public void definitionListItem(SinkEventAttributes attributes) {
-        definitionListItem();
+        // nop
     }
 
     /** {@inheritDoc} */
     @Override
     public void definition(SinkEventAttributes attributes) {
-        definition();
+        // nop
     }
 
     /** {@inheritDoc} */
     @Override
     public void definedTerm(SinkEventAttributes attributes) {
-        definedTerm();
+        // nop
     }
 
     /** {@inheritDoc} */
     @Override
     public void figure(SinkEventAttributes attributes) {
-        figure();
+        // nop
     }
 
     /** {@inheritDoc} */
     @Override
     public void figureCaption(SinkEventAttributes attributes) {
-        figureCaption();
+        // nop
     }
 
     /** {@inheritDoc} */
     @Override
     public void figureGraphics(String src, SinkEventAttributes attributes) {
-        figureGraphics(src);
+        // nop
     }
 
     /** {@inheritDoc} */
     @Override
     public void table(SinkEventAttributes attributes) {
-        table();
+        // nop
     }
 
     /** {@inheritDoc} */
     @Override
     public void tableRows(int[] justification, boolean grid) {
-        tableRows();
+        // nop
     }
 
     /** {@inheritDoc} */
     @Override
     public void tableRow(SinkEventAttributes attributes) {
-        tableRow();
+        // nop
     }
 
     /** {@inheritDoc} */
     @Override
     public void tableCell(SinkEventAttributes attributes) {
-        tableCell();
+        // nop
     }
 
     /** {@inheritDoc} */
     @Override
     public void tableHeaderCell(SinkEventAttributes attributes) {
-        tableHeaderCell();
+        // nop
     }
 
     /** {@inheritDoc} */
     @Override
     public void tableCaption(SinkEventAttributes attributes) {
-        tableCaption();
+        // nop
     }
 
     /** {@inheritDoc} */
     @Override
     public void paragraph(SinkEventAttributes attributes) {
-        paragraph();
+        // nop
     }
 
     /** {@inheritDoc} */
     @Override
     public void data(String value, SinkEventAttributes attributes) {
-        data(value);
+        // nop
     }
 
     /** {@inheritDoc} */
     @Override
     public void time(String datetime, SinkEventAttributes attributes) {
-        time(datetime);
+        // nop
     }
 
     /** {@inheritDoc} */
     @Override
     public void address(SinkEventAttributes attributes) {
-        address();
+        // nop
     }
 
     /** {@inheritDoc} */
     @Override
     public void blockquote(SinkEventAttributes attributes) {
-        blockquote();
+        // nop
     }
 
     /** {@inheritDoc} */
     @Override
     public void division(SinkEventAttributes attributes) {
-        division();
+        // nop
     }
 
     /** {@inheritDoc} */
     @Override
     public void verbatim(SinkEventAttributes attributes) {
-        verbatim();
+        // nop
     }
 
     /** {@inheritDoc} */
     @Override
     public void horizontalRule(SinkEventAttributes attributes) {
-        horizontalRule();
+        // nop
     }
 
     /** {@inheritDoc} */
     @Override
     public void anchor(String name, SinkEventAttributes attributes) {
-        anchor(name);
+        // nop
     }
 
     /** {@inheritDoc} */
     @Override
     public void link(String name, SinkEventAttributes attributes) {
-        link(name);
+        // nop
     }
 
     /** {@inheritDoc} */
     @Override
     public void inline(SinkEventAttributes attributes) {
-        inline();
+        // nop
     }
 
     /** {@inheritDoc} */
     @Override
     public void lineBreak(SinkEventAttributes attributes) {
-        lineBreak();
+        // nop
     }
 
     /** {@inheritDoc} */
     @Override
     public void lineBreakOpportunity(SinkEventAttributes attributes) {
-        lineBreakOpportunity();
+        // nop
     }
 
     /** {@inheritDoc} */
     @Override
     public void text(String text, SinkEventAttributes attributes) {
-        text(text);
+        // nop
     }
 
     /** {@inheritDoc} */

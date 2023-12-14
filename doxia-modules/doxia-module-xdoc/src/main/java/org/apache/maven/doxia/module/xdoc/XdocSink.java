@@ -110,15 +110,6 @@ public class XdocSink extends Xhtml5BaseSink implements XdocMarkup {
 
     /**
      * {@inheritDoc}
-     *
-     * @see #head(org.apache.maven.doxia.sink.SinkEventAttributes)
-     */
-    public void head() {
-        head(null);
-    }
-
-    /**
-     * {@inheritDoc}
      * @see XdocMarkup#DOCUMENT_TAG
      * @see XdocMarkup#PROPERTIES_TAG
      */
@@ -169,7 +160,8 @@ public class XdocSink extends Xhtml5BaseSink implements XdocMarkup {
      *
      * @see javax.swing.text.html.HTML.Tag#TITLE
      */
-    public void title() {
+    @Override
+    public void title(SinkEventAttributes attributes) {
         writeStartTag(TITLE);
     }
 
@@ -216,15 +208,6 @@ public class XdocSink extends Xhtml5BaseSink implements XdocMarkup {
             writeEndTag(DATE_TAG);
             resetTextBuffer();
         }
-    }
-
-    /**
-     * {@inheritDoc}
-     *
-     * @see #body(org.apache.maven.doxia.sink.SinkEventAttributes)
-     */
-    public void body() {
-        body(null);
     }
 
     /**
@@ -420,10 +403,10 @@ public class XdocSink extends Xhtml5BaseSink implements XdocMarkup {
      *
      * @see javax.swing.text.html.HTML.Tag#TR
      */
-    public void tableRow() {
-        MutableAttributeSet att = new SinkEventAttributeSet();
+    @Override
+    public void tableRow(SinkEventAttributes attributes) {
 
-        writeStartTag(TR, att);
+        writeStartTag(TR, attributes);
 
         setCellCount(0);
     }
