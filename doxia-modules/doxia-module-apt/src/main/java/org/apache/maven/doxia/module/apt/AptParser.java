@@ -1335,18 +1335,18 @@ public class AptParser extends AbstractTextParser implements AptMarkup {
         final StringBuilder buffer = new StringBuilder(end - begin);
 
         Sink linkSink = new SinkAdapter() {
-            /** {@inheritDoc} */
-            public void lineBreak() {
+            @Override
+            public void lineBreak(SinkEventAttributes attributes) {
                 buffer.append(SPACE);
             }
 
-            /** {@inheritDoc} */
+            @Override
             public void nonBreakingSpace() {
                 buffer.append(SPACE);
             }
 
-            /** {@inheritDoc} */
-            public void text(String text) {
+            @Override
+            public void text(String text, SinkEventAttributes attributes) {
                 buffer.append(text);
             }
         };

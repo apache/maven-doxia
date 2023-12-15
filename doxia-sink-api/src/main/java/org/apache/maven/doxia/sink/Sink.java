@@ -133,7 +133,7 @@ public interface Sink extends AutoCloseable {
     int JUSTIFY_RIGHT = 2;
 
     /**
-     * Starts the head element.
+     * Starts the head element. Shortcut for {@link #head(SinkEventAttributes)} with first argument being {@code null}.
      *
      * @see #head(SinkEventAttributes)
      */
@@ -191,7 +191,7 @@ public interface Sink extends AutoCloseable {
     void head_();
 
     /**
-     * Starts the title element.
+     * Starts the title element. Shortcut for {@link #title(SinkEventAttributes)} with first argument being {@code null}.
      *
      * @see #title(SinkEventAttributes)
      */
@@ -216,7 +216,7 @@ public interface Sink extends AutoCloseable {
     void title_();
 
     /**
-     * Starts an author element.
+     * Starts an author element. Shortcut for {@link #author(SinkEventAttributes)} with first argument being {@code null}.
      *
      * @see #author(SinkEventAttributes)
      */
@@ -241,7 +241,7 @@ public interface Sink extends AutoCloseable {
     void author_();
 
     /**
-     * Starts the date element.
+     * Starts the date element. Shortcut for {@link #date(SinkEventAttributes)} with first argument being {@code null}.
      *
      * @see #date(SinkEventAttributes)
      */
@@ -279,7 +279,7 @@ public interface Sink extends AutoCloseable {
     void date_();
 
     /**
-     * Starts the body of a document.
+     * Starts the body of a document. Shortcut for {@link #body(SinkEventAttributes)} with first argument being {@code null}.
      *
      * @see #body(SinkEventAttributes)
      */
@@ -304,7 +304,7 @@ public interface Sink extends AutoCloseable {
     void body_();
 
     /**
-     * Starts an article within a document.
+     * Starts an article within a document. Shortcut for {@link #article(SinkEventAttributes)} with first argument being {@code null}.
      *
      * @see #article(SinkEventAttributes)
      */
@@ -328,7 +328,7 @@ public interface Sink extends AutoCloseable {
     void article_();
 
     /**
-     * Starts a navigation section within a document.
+     * Starts a navigation section within a document. Shortcut for {@link #navigation(SinkEventAttributes)} with first argument being {@code null}.
      *
      * @see #navigation(SinkEventAttributes)
      */
@@ -353,7 +353,7 @@ public interface Sink extends AutoCloseable {
     void navigation_();
 
     /**
-     * Starts a sidebar section within a document.
+     * Starts a sidebar section within a document. Shortcut for {@link #sidebar(SinkEventAttributes)} with first argument being {@code null}.
      *
      * @see #sidebar(SinkEventAttributes)
      */
@@ -377,141 +377,157 @@ public interface Sink extends AutoCloseable {
     void sidebar_();
 
     /**
-     * Starts a title heading element.
+     * Starts a title heading element. Shortcut for {@link #sectionTitle(int, SinkEventAttributes)} with first argument being {@code 0} and second argument being {@code null}.
      */
     void sectionTitle();
 
     /**
-     * Ends a title heading element.
+     * Ends a title heading element. Shortcut for {@link #sectionTitle_(int)} with argument being {@code 0}.
      */
     void sectionTitle_();
 
     /**
-     * Starts a first heading element which contains the topic of the section.
+     * Starts a first heading element which contains the topic of the section. Shortcut for {@link #section(int, SinkEventAttributes)} with first argument being {@code 1} and second argument being {@code null}.
      *
      * @see #section(int,SinkEventAttributes)
      */
     void section1();
 
     /**
-     * Ends a first heading element.
+     * Ends a first heading element. Shortcut for {@link #section_(int)} with argument being {@code 1}.
      */
     void section1_();
 
     /**
      * Starts a first title heading element. This element is optional, but if it exists,
      * it has to be contained, and be the first element, within a {@link #section1()} element.
+     * <p>
+     * Shortcut for {@link #sectionTitle(int, SinkEventAttributes)} with first argument being {@code 1} and second argument being {@code null}.
      *
      * @see #sectionTitle(int,SinkEventAttributes)
      */
     void sectionTitle1();
 
     /**
-     * Ends a first title heading element.
+     * Ends a first title heading element. Shortcut for {@link #sectionTitle_(int)} with argument being {@code 1}.
      */
     void sectionTitle1_();
 
     /**
      * Starts a second heading element which contains the topic of the section.
      * This has to be contained within a {@link #section1()} element.
+     * <p>
+     * Shortcut for {@link #section(int, SinkEventAttributes)} with first argument being {@code 2} and second argument being {@code null}.
      *
      * @see #section(int,SinkEventAttributes)
      */
     void section2();
 
     /**
-     * Ends a second heading element.
+     * Ends a second heading element. Shortcut for {@link #section_(int)} with argument being {@code 2}.
      */
     void section2_();
 
     /**
      * Starts a second title heading element. This element is optional, but if it exists,
      * it has to be contained, and be the first element, within a {@link #section2()} element.
-     *
+     * <p>
+     * Shortcut for {@link #sectionTitle(int, SinkEventAttributes)} with first argument being {@code 2} and second argument being {@code null}.
      * @see #sectionTitle(int,SinkEventAttributes)
      */
     void sectionTitle2();
 
     /**
-     * Ends a second title heading element.
+     * Ends a second title heading element. Shortcut for {@link #sectionTitle_(int)} with argument being {@code 2}.
      */
     void sectionTitle2_();
 
     /**
      * Starts a third heading element which contains the topic of the section.
      * This has to be contained within a {@link #section2()} element.
+     * <p>
+     * Shortcut for {@link #section(int, SinkEventAttributes)} with first argument being {@code 3} and second argument being {@code null}.
      *
      * @see #section(int,SinkEventAttributes)
      */
     void section3();
 
     /**
-     * Ends a third heading element.
+     * Ends a third heading element. Shortcut for {@link #section_(int)} with argument being {@code 3}.
      */
     void section3_();
 
     /**
      * Starts a third title heading element. This element is optional, but if it exists,
      * it has to be contained, and be the first element, within a {@link #section3()} element.
-     *
+     * <p>
+     * Shortcut for {@link #sectionTitle(int, SinkEventAttributes)} with first argument being {@code 3} and second argument being {@code null}.
      * @see #sectionTitle(int,SinkEventAttributes)
      */
     void sectionTitle3();
 
     /**
-     * Ends a third title heading element.
+     * Ends a third title heading element. Shortcut for {@link #sectionTitle_(int)} with argument being {@code 3}.
      */
     void sectionTitle3_();
 
     /**
      * Starts a 4th heading element which contains the topic of the section.
      * This has to be contained within a {@link #section3()} element.
+     * <p>
+     * Shortcut for {@link #section(int, SinkEventAttributes)} with first argument being {@code 4} and second argument being {@code null}.
      *
      * @see #section(int,SinkEventAttributes)
      */
     void section4();
 
     /**
-     * Ends a 4th heading element.
+     * Ends a 4th heading element. Shortcut for {@link #section_(int)} with argument being {@code 4}.
      */
     void section4_();
 
     /**
      * Starts a 4th title heading element. This element is optional, but if it exists,
      * it has to be contained, and be the first element, within a {@link #section4()} element.
+     * <p>
+     * Shortcut for {@link #sectionTitle(int, SinkEventAttributes)} with first argument being {@code 3} and second argument being {@code null}.
      *
      * @see #sectionTitle(int,SinkEventAttributes)
      */
     void sectionTitle4();
 
     /**
-     * Ends a 4th title heading element.
+     * Ends a 4th title heading element. Shortcut for {@link #sectionTitle_(int)} with argument being {@code 4}.
      */
     void sectionTitle4_();
 
     /**
      * Starts a 5th heading element which contains the topic of the section.
      * This has to be contained within a {@link #section4()} element.
+     * <p>
+     * Shortcut for {@link #section(int, SinkEventAttributes)} with first argument being {@code 3} and second argument being {@code null}.
      *
      * @see #section(int,SinkEventAttributes)
      */
     void section5();
 
     /**
-     * Ends a 5th heading element.
+     * Ends a 5th heading element. Shortcut for {@link #section_(int)} with argument being {@code 5}.
      */
     void section5_();
 
     /**
      * Starts a 5th title heading element. This element is optional, but if it exists,
      * it has to be contained, and be the first element, within a {@link #section5()} element.
+     * <p>
+     * Shortcut for {@link #sectionTitle(int, SinkEventAttributes)} with first argument being {@code 3} and second argument being {@code null}.
      *
      * @see #sectionTitle(int,SinkEventAttributes)
      */
     void sectionTitle5();
 
     /**
-     * Ends a 5th title heading element.
+     * Ends a 5th title heading element. Shortcut for {@link #sectionTitle_(int)} with argument being {@code 5}.
      */
     void sectionTitle5_();
 
@@ -575,7 +591,7 @@ public interface Sink extends AutoCloseable {
     void sectionTitle_(int level);
 
     /**
-     * Start a new header within the section or body.
+     * Start a new header within the section or body. Shortcut for {@link #header(SinkEventAttributes)} with argument being {@code null}.
      */
     void header();
 
@@ -599,6 +615,7 @@ public interface Sink extends AutoCloseable {
     /**
      * Start the main content section between the header and the
      * footer within the sections and/or body.
+     * Shortcut for {@link #content(SinkEventAttributes)} with argument being {@code null}.
      */
     void content();
 
@@ -621,7 +638,7 @@ public interface Sink extends AutoCloseable {
     void content_();
 
     /**
-     * Start a new footer within the section or body.
+     * Start a new footer within the section or body. Shortcut for {@link #footer(SinkEventAttributes)} with argument being {@code null}.
      */
     void footer();
 
@@ -643,7 +660,7 @@ public interface Sink extends AutoCloseable {
     void footer_();
 
     /**
-     * Starts an unordered list element.
+     * Starts an unordered list element. Shortcut for {@link #list(SinkEventAttributes)} with argument being {@code null}.
      *
      * @see #list(SinkEventAttributes)
      */
@@ -667,7 +684,7 @@ public interface Sink extends AutoCloseable {
     void list_();
 
     /**
-     * Starts a list item element within an unordered list.
+     * Starts a list item element within an unordered list. Shortcut for {@link #listItem(SinkEventAttributes)} with argument being {@code null}.
      *
      * @see #listItem(SinkEventAttributes)
      */
@@ -691,7 +708,7 @@ public interface Sink extends AutoCloseable {
     void listItem_();
 
     /**
-     * Starts an ordered list element.
+     * Starts an ordered list element. Shortcut for {@link #numberedList(int, SinkEventAttributes)} with first argument being {@code numbering} and second argument being {@code null}.
      *
      * @param numbering the numbering style.
      * @see #numberedList(int,SinkEventAttributes)
@@ -722,7 +739,7 @@ public interface Sink extends AutoCloseable {
     void numberedList_();
 
     /**
-     * Starts a list item element within an ordered list.
+     * Starts a list item element within an ordered list. Shortcut for {@link #numberedListItem(SinkEventAttributes)} with argument being {@code null}.
      *
      * @see #numberedListItem(SinkEventAttributes)
      */
@@ -746,7 +763,7 @@ public interface Sink extends AutoCloseable {
     void numberedListItem_();
 
     /**
-     * Starts a definition list element.
+     * Starts a definition list element. Shortcut for {@link #definitionList(SinkEventAttributes)} with argument being {@code null}.
      *
      * @see #definitionList(SinkEventAttributes)
      */
@@ -770,7 +787,7 @@ public interface Sink extends AutoCloseable {
     void definitionList_();
 
     /**
-     * Starts a list item element within a definition list.
+     * Starts a list item element within a definition list. Shortcut for {@link #definitionListItem(SinkEventAttributes)} with argument being {@code null}.
      *
      * @see #definitionListItem(SinkEventAttributes)
      */
@@ -798,7 +815,7 @@ public interface Sink extends AutoCloseable {
     void definitionListItem_();
 
     /**
-     * Starts a definition element within a definition list.
+     * Starts a definition element within a definition list. Shortcut for {@link #definition(SinkEventAttributes)} with argument being {@code null}.
      *
      * @see #definition(SinkEventAttributes)
      */
@@ -822,7 +839,7 @@ public interface Sink extends AutoCloseable {
     void definition_();
 
     /**
-     * Starts a definition term element within a definition list.
+     * Starts a definition term element within a definition list. Shortcut for {@link #definedTerm(SinkEventAttributes)} with argument being {@code null}.
      *
      * @see #definedTerm(SinkEventAttributes)
      */
@@ -846,7 +863,7 @@ public interface Sink extends AutoCloseable {
     void definedTerm_();
 
     /**
-     * Starts a basic image embedding element.
+     * Starts a basic image embedding element. Shortcut for {@link #figure(SinkEventAttributes)} with argument being {@code null}.
      *
      * @see #figure(SinkEventAttributes)
      */
@@ -899,7 +916,7 @@ public interface Sink extends AutoCloseable {
     void figure_();
 
     /**
-     * Starts a caption of an image element.
+     * Starts a caption of an image element. Shortcut for {@link #figureCaption(SinkEventAttributes)} with argument being {@code null}.
      *
      * @see #figureCaption(SinkEventAttributes)
      */
@@ -924,7 +941,7 @@ public interface Sink extends AutoCloseable {
     void figureCaption_();
 
     /**
-     * Adding a source of a graphic.
+     * Adding a source of a graphic. Shortcut for {@link #figureCaption(String, SinkEventAttributes)} with first argument being {@code name} and second argument being {@code null}.
      *
      * @param name the source
      */
@@ -960,7 +977,7 @@ public interface Sink extends AutoCloseable {
     void figureGraphics(String src, SinkEventAttributes attributes);
 
     /**
-     * Starts a table element for marking up tabular information in a document.
+     * Starts a table element for marking up tabular information in a document. Shortcut for {@link #table(SinkEventAttributes)} with argument being {@code null}.
      *
      * @see #table(SinkEventAttributes)
      */
@@ -1026,7 +1043,7 @@ public interface Sink extends AutoCloseable {
     void table_();
 
     /**
-     * Starts an element that contains rows of table data.
+     * Starts an element that contains rows of table data. Shortcut for {@link #tableRows(int[], boolean)} with first argument being {@code null} and second being {@code false}.
      *
      * @see #tableRows(int[], boolean)
      */
@@ -1054,7 +1071,7 @@ public interface Sink extends AutoCloseable {
     void tableRows_();
 
     /**
-     * Starts a row element which acts as a container for a row of table cells.
+     * Starts a row element which acts as a container for a row of table cells. Shortcut for {@link #tableRow(SinkEventAttributes)} with argument being {@code null}.
      *
      * @see #tableRow(SinkEventAttributes)
      */
@@ -1082,7 +1099,7 @@ public interface Sink extends AutoCloseable {
     void tableRow_();
 
     /**
-     * Starts a cell element which defines a cell that contains data.
+     * Starts a cell element which defines a cell that contains data. Shortcut for {@link #tableCell(SinkEventAttributes)} with argument being {@code null}.
      *
      * @see #tableCell(SinkEventAttributes)
      */
@@ -1114,7 +1131,7 @@ public interface Sink extends AutoCloseable {
     void tableCell_();
 
     /**
-     * Starts a cell element which defines a cell that contains header information.
+     * Starts a cell element which defines a cell that contains header information. Shortcut for {@link #tableHeaderCell(SinkEventAttributes)} with argument being {@code null}.
      *
      * @see #tableHeaderCell(SinkEventAttributes)
      */
@@ -1138,7 +1155,7 @@ public interface Sink extends AutoCloseable {
     void tableHeaderCell_();
 
     /**
-     * Starts a caption element of a table.
+     * Starts a caption element of a table. Shortcut for {@link #tableCaption(SinkEventAttributes)} with argument being {@code null}.
      *
      * @see #tableCaption(SinkEventAttributes)
      */
@@ -1170,7 +1187,7 @@ public interface Sink extends AutoCloseable {
     void tableCaption_();
 
     /**
-     * Starts an element which represents a paragraph.
+     * Starts an element which represents a paragraph. Shortcut for {@link #paragraph(SinkEventAttributes)} with argument being {@code null}.
      *
      * @see #paragraph(SinkEventAttributes)
      */
@@ -1195,7 +1212,7 @@ public interface Sink extends AutoCloseable {
     void paragraph_();
 
     /**
-     * Starts a data element which groups together other elements representing microformats.
+     * Starts a data element which groups together other elements representing microformats. Shortcut for {@link #data(String, SinkEventAttributes)} with first argument being {code value} and second argument being {@code null}.
      *
      * @see #data(String, SinkEventAttributes)
      * @param value a {@link java.lang.String} object.
@@ -1222,7 +1239,7 @@ public interface Sink extends AutoCloseable {
     void data_();
 
     /**
-     * Starts a time element which groups together other elements representing a time.
+     * Starts a time element which groups together other elements representing a time. Shortcut for {@link #time(String, SinkEventAttributes)} with first argument being {code datetime} and second argument being {@code null}.
      *
      * @see #time(String, SinkEventAttributes)
      */
@@ -1248,7 +1265,7 @@ public interface Sink extends AutoCloseable {
     void time_();
 
     /**
-     * Starts an address element.
+     * Starts an address element. Shortcut for {@link #address(SinkEventAttributes)} with argument being {@code null}.
      *
      * @see #address(SinkEventAttributes)
      */
@@ -1268,7 +1285,7 @@ public interface Sink extends AutoCloseable {
     void address_();
 
     /**
-     * Starts a blockquote element.
+     * Starts a blockquote element. Shortcut for {@link #blockquote(SinkEventAttributes)} with argument being {@code null}.
      *
      * @see #blockquote(SinkEventAttributes)
      */
@@ -1292,7 +1309,7 @@ public interface Sink extends AutoCloseable {
     void blockquote_();
 
     /**
-     * Starts a division element grouping together other elements.
+     * Starts a division element grouping together other elements. Shortcut for {@link #division(SinkEventAttributes)} with argument being {@code null}.
      *
      * @see #division(SinkEventAttributes)
      */
@@ -1317,7 +1334,7 @@ public interface Sink extends AutoCloseable {
     void division_();
 
     /**
-     * Starts a verbatim block, ie a block where whitespace has semantic relevance.
+     * Starts a verbatim block, ie a block where whitespace has semantic relevance. Shortcut for {@link #verbatim(SinkEventAttributes)} with argument being {@code null}.
      *
      * @see #verbatim(SinkEventAttributes)
      */
@@ -1356,7 +1373,7 @@ public interface Sink extends AutoCloseable {
     void verbatim_();
 
     /**
-     * Adding a separator of sections from a text to each other.
+     * Adding a separator of sections from a text to each other. Shortcut for {@link #horizontalRule(SinkEventAttributes)} with argument being {@code null}.
      *
      * @see #horizontalRule(SinkEventAttributes)
      */
@@ -1384,7 +1401,7 @@ public interface Sink extends AutoCloseable {
     void pageBreak();
 
     /**
-     * Starts an element which defines an anchor.
+     * Starts an element which defines an anchor. Shortcut for {@link #anchor(String, SinkEventAttributes)} with first argument being {@code name} and second argument being {@code null}.
      *
      * @param name the name of the anchor.
      * @see #anchor(String,SinkEventAttributes)
@@ -1422,7 +1439,7 @@ public interface Sink extends AutoCloseable {
     void anchor_();
 
     /**
-     * Starts an element which defines a link.
+     * Starts an element which defines a link. Shortcut for {@link #link(String, SinkEventAttributes)} with first argument being {@code name} and second argument being {@code null}.
      *
      * @param name the name of the link.
      * @see #link(String,SinkEventAttributes)
@@ -1467,7 +1484,7 @@ public interface Sink extends AutoCloseable {
     void link_();
 
     /**
-     * Starts an inline element.
+     * Starts an inline element. Shortcut for {@link #inline(SinkEventAttributes)} with argument being {@code null}.
      *
      * @see #inline(SinkEventAttributes)
      */
@@ -1552,7 +1569,7 @@ public interface Sink extends AutoCloseable {
     void monospaced_();
 
     /**
-     * Adds a line break.
+     * Adds a line break. Shortcut for {@link #lineBreak(SinkEventAttributes)} with argument being {@code null}.
      *
      * @see #lineBreak(SinkEventAttributes)
      */
@@ -1575,7 +1592,7 @@ public interface Sink extends AutoCloseable {
     void lineBreak(SinkEventAttributes attributes);
 
     /**
-     * Adds a line break opportunity.
+     * Adds a line break opportunity. Shortcut for {@link #lineBreakOpportunity(SinkEventAttributes)} with argument being {@code null}.
      *
      * @see #lineBreak(SinkEventAttributes)
      */
@@ -1603,7 +1620,7 @@ public interface Sink extends AutoCloseable {
     void nonBreakingSpace();
 
     /**
-     * Adding a text.
+     * Adding a text. Shortcut for {@link #text(String, SinkEventAttributes)} with first argument being {@code text} and second argument being {@code null}.
      *
      * @param text The text to write.
      * @see #text(String,SinkEventAttributes)

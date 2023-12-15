@@ -23,6 +23,7 @@ import java.util.Map;
 import java.util.Stack;
 import java.util.concurrent.atomic.AtomicInteger;
 
+import org.apache.maven.doxia.sink.SinkEventAttributes;
 import org.apache.maven.doxia.sink.impl.SinkAdapter;
 import org.apache.maven.doxia.util.DoxiaUtils;
 
@@ -101,158 +102,34 @@ public class IndexingSink extends SinkAdapter {
     // Sink Overrides
     // ----------------------------------------------------------------------
 
-    /**
-     * {@inheritDoc}
-     */
-    public void title() {
+    @Override
+    public void title(SinkEventAttributes attributes) {
         this.type = TITLE;
     }
 
-    /**
-     * {@inheritDoc}
-     */
-    public void section1() {
+    @Override
+    public void section(int level, SinkEventAttributes attributes) {
         pushNewEntry();
     }
 
-    /**
-     * {@inheritDoc}
-     */
-    public void sectionTitle1() {
-        this.type = TYPE_SECTION_1;
+    @Override
+    public void section_(int level) {
+        pop();
     }
 
-    /**
-     * {@inheritDoc}
-     */
+    @Override
+    public void sectionTitle(int level, SinkEventAttributes attributes) {
+        this.type = level;
+    }
+
+    @Override
+    public void sectionTitle_(int level) {
+        this.type = 0;
+    }
+
+    @Override
     public void title_() {
         this.type = 0;
-    }
-
-    /**
-     * <p>sectionTitle1_.</p>
-     */
-    public void sectionTitle1_() {
-        this.type = 0;
-    }
-
-    /**
-     * {@inheritDoc}
-     */
-    public void section1_() {
-        pop();
-    }
-
-    /**
-     * {@inheritDoc}
-     */
-    public void section2() {
-        pushNewEntry();
-    }
-
-    /**
-     * {@inheritDoc}
-     */
-    public void sectionTitle2() {
-        this.type = TYPE_SECTION_2;
-    }
-
-    /**
-     * <p>sectionTitle2_.</p>
-     */
-    public void sectionTitle2_() {
-        this.type = 0;
-    }
-
-    /**
-     * {@inheritDoc}
-     */
-    public void section2_() {
-        pop();
-    }
-
-    /**
-     * {@inheritDoc}
-     */
-    public void section3() {
-        pushNewEntry();
-    }
-
-    /**
-     * {@inheritDoc}
-     */
-    public void sectionTitle3() {
-        this.type = TYPE_SECTION_3;
-    }
-
-    /**
-     * <p>sectionTitle3_.</p>
-     */
-    public void sectionTitle3_() {
-        this.type = 0;
-    }
-
-    /**
-     * {@inheritDoc}
-     */
-    public void section3_() {
-        pop();
-    }
-
-    /**
-     * {@inheritDoc}
-     */
-    public void section4() {
-        pushNewEntry();
-    }
-
-    /**
-     * {@inheritDoc}
-     */
-    public void sectionTitle4() {
-        this.type = TYPE_SECTION_4;
-    }
-
-    /**
-     * <p>sectionTitle4_.</p>
-     */
-    public void sectionTitle4_() {
-        this.type = 0;
-    }
-
-    /**
-     * {@inheritDoc}
-     */
-    public void section4_() {
-        pop();
-    }
-
-    /**
-     * {@inheritDoc}
-     */
-    public void section5() {
-        pushNewEntry();
-    }
-
-    /**
-     * {@inheritDoc}
-     */
-    public void sectionTitle5() {
-        this.type = TYPE_SECTION_5;
-    }
-
-    /**
-     * <p>sectionTitle5_.</p>
-     */
-    public void sectionTitle5_() {
-        this.type = 0;
-    }
-
-    /**
-     * {@inheritDoc}
-     */
-    public void section5_() {
-        pop();
     }
 
     // public void definedTerm()
@@ -270,8 +147,8 @@ public class IndexingSink extends SinkAdapter {
     // type = TYPE_TABLE;
     // }
 
-    /** {@inheritDoc} */
-    public void text(String text) {
+    @Override
+    public void text(String text, SinkEventAttributes attributes) {
         switch (this.type) {
             case TITLE:
                 this.title = text;

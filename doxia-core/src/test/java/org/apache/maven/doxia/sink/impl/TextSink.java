@@ -43,18 +43,8 @@ public class TextSink extends AbstractSink {
     }
 
     @Override
-    public void head() {
-        writeln("begin:head");
-    }
-
-    @Override
     public void head_() {
         writeln("end:head");
-    }
-
-    @Override
-    public void body() {
-        writeln("begin:body");
     }
 
     @Override
@@ -63,18 +53,8 @@ public class TextSink extends AbstractSink {
     }
 
     @Override
-    public void article() {
-        writeln("begin:article");
-    }
-
-    @Override
     public void article_() {
         writeln("end:article");
-    }
-
-    @Override
-    public void navigation() {
-        writeln("begin:navigation");
     }
 
     @Override
@@ -83,68 +63,8 @@ public class TextSink extends AbstractSink {
     }
 
     @Override
-    public void sidebar() {
-        writeln("begin:sidebar");
-    }
-
-    @Override
     public void sidebar_() {
         writeln("end:sidebar");
-    }
-
-    @Override
-    public void section1() {
-        write("begin:section1");
-    }
-
-    @Override
-    public void section1_() {
-        writeln("end:section1");
-    }
-
-    @Override
-    public void section2() {
-        write("begin:section2");
-    }
-
-    @Override
-    public void section2_() {
-        writeln("end:section2");
-    }
-
-    @Override
-    public void section3() {
-        write("begin:section3");
-    }
-
-    @Override
-    public void section3_() {
-        writeln("end:section3");
-    }
-
-    @Override
-    public void section4() {
-        write("begin:section4");
-    }
-
-    @Override
-    public void section4_() {
-        writeln("end:section4");
-    }
-
-    @Override
-    public void section5() {
-        write("begin:section5");
-    }
-
-    @Override
-    public void section5_() {
-        writeln("end:section5");
-    }
-
-    @Override
-    public void list() {
-        writeln("begin:list");
     }
 
     @Override
@@ -153,18 +73,8 @@ public class TextSink extends AbstractSink {
     }
 
     @Override
-    public void listItem() {
-        write("begin:listItem");
-    }
-
-    @Override
     public void listItem_() {
         writeln("end:listItem");
-    }
-
-    @Override
-    public void numberedList(int numbering) {
-        writeln("begin:numberedList, numbering: " + numbering);
     }
 
     @Override
@@ -173,18 +83,8 @@ public class TextSink extends AbstractSink {
     }
 
     @Override
-    public void numberedListItem() {
-        write("begin:numberedListItem");
-    }
-
-    @Override
     public void numberedListItem_() {
         writeln("end:numberedListItem");
-    }
-
-    @Override
-    public void definitionList() {
-        writeln("begin:definitionList");
     }
 
     @Override
@@ -193,18 +93,8 @@ public class TextSink extends AbstractSink {
     }
 
     @Override
-    public void definitionListItem() {
-        write("begin:definitionListItem");
-    }
-
-    @Override
     public void definitionListItem_() {
         writeln("end:definitionListItem");
-    }
-
-    @Override
-    public void definition() {
-        write("begin:definition");
     }
 
     @Override
@@ -213,18 +103,8 @@ public class TextSink extends AbstractSink {
     }
 
     @Override
-    public void figure() {
-        write("begin:figure");
-    }
-
-    @Override
     public void figure_() {
         writeln("end:figure");
-    }
-
-    @Override
-    public void table() {
-        writeln("begin:table");
     }
 
     @Override
@@ -233,18 +113,8 @@ public class TextSink extends AbstractSink {
     }
 
     @Override
-    public void tableRows() {
-        writeln("begin:tableRows");
-    }
-
-    @Override
     public void tableRows_() {
         writeln("end:tableRows");
-    }
-
-    @Override
-    public void tableRow() {
-        write("begin:tableRow");
     }
 
     @Override
@@ -253,18 +123,8 @@ public class TextSink extends AbstractSink {
     }
 
     @Override
-    public void title() {
-        write("begin:title");
-    }
-
-    @Override
     public void title_() {
         writeln("end:title");
-    }
-
-    @Override
-    public void author() {
-        write("begin:author");
     }
 
     @Override
@@ -273,78 +133,8 @@ public class TextSink extends AbstractSink {
     }
 
     @Override
-    public void date() {
-        write("begin:date");
-    }
-
-    @Override
     public void date_() {
         writeln("end:date");
-    }
-
-    @Override
-    public void sectionTitle() {
-        write("begin:sectionTitle");
-    }
-
-    @Override
-    public void sectionTitle_() {
-        writeln("end:sectionTitle");
-    }
-
-    @Override
-    public void sectionTitle1() {
-        write("begin:sectionTitle1");
-    }
-
-    @Override
-    public void sectionTitle1_() {
-        writeln("end:sectionTitle1");
-    }
-
-    @Override
-    public void sectionTitle2() {
-        write("begin:sectionTitle2");
-    }
-
-    @Override
-    public void sectionTitle2_() {
-        writeln("end:sectionTitle2");
-    }
-
-    @Override
-    public void sectionTitle3() {
-        write("begin:sectionTitle3");
-    }
-
-    @Override
-    public void sectionTitle3_() {
-        writeln("end:sectionTitle3");
-    }
-
-    @Override
-    public void sectionTitle4() {
-        write("begin:sectionTitle4");
-    }
-
-    @Override
-    public void sectionTitle4_() {
-        writeln("end:sectionTitle4");
-    }
-
-    @Override
-    public void sectionTitle5() {
-        write("begin:sectionTitle5");
-    }
-
-    @Override
-    public void sectionTitle5_() {
-        writeln("end:sectionTitle5");
-    }
-
-    @Override
-    public void header() {
-        write("begin:header");
     }
 
     @Override
@@ -353,18 +143,8 @@ public class TextSink extends AbstractSink {
     }
 
     @Override
-    public void content() {
-        write("begin:content");
-    }
-
-    @Override
     public void content_() {
         writeln("end:content");
-    }
-
-    @Override
-    public void footer() {
-        write("begin:footer");
     }
 
     @Override
@@ -373,18 +153,8 @@ public class TextSink extends AbstractSink {
     }
 
     @Override
-    public void paragraph() {
-        write("begin:paragraph");
-    }
-
-    @Override
     public void paragraph_() {
         writeln("end:paragraph");
-    }
-
-    @Override
-    public void data(String value) {
-        write("begin:data, value: " + value);
     }
 
     @Override
@@ -393,18 +163,8 @@ public class TextSink extends AbstractSink {
     }
 
     @Override
-    public void time(String datetime) {
-        write("begin:time, datetime: " + datetime);
-    }
-
-    @Override
     public void time_() {
         writeln("end:time");
-    }
-
-    @Override
-    public void address() {
-        write("begin:address");
     }
 
     @Override
@@ -413,18 +173,8 @@ public class TextSink extends AbstractSink {
     }
 
     @Override
-    public void blockquote() {
-        write("begin:blockquote");
-    }
-
-    @Override
     public void blockquote_() {
         writeln("end:blockquote");
-    }
-
-    @Override
-    public void division() {
-        write("begin:division");
     }
 
     @Override
@@ -438,18 +188,8 @@ public class TextSink extends AbstractSink {
     }
 
     @Override
-    public void definedTerm() {
-        write("begin:definedTerm");
-    }
-
-    @Override
     public void definedTerm_() {
         writeln("end:definedTerm");
-    }
-
-    @Override
-    public void figureCaption() {
-        write("begin:figureCaption");
     }
 
     @Override
@@ -458,18 +198,8 @@ public class TextSink extends AbstractSink {
     }
 
     @Override
-    public void tableCell() {
-        write("begin:tableCell");
-    }
-
-    @Override
     public void tableCell_() {
         writeln("end:tableCell");
-    }
-
-    @Override
-    public void tableHeaderCell() {
-        write("begin:tableHeaderCell");
     }
 
     @Override
@@ -478,23 +208,8 @@ public class TextSink extends AbstractSink {
     }
 
     @Override
-    public void tableCaption() {
-        write("begin:tableCaption");
-    }
-
-    @Override
     public void tableCaption_() {
         writeln("end:tableCaption");
-    }
-
-    @Override
-    public void figureGraphics(String name) {
-        write("figureGraphics, name: " + name);
-    }
-
-    @Override
-    public void horizontalRule() {
-        write("horizontalRule");
     }
 
     @Override
@@ -503,28 +218,13 @@ public class TextSink extends AbstractSink {
     }
 
     @Override
-    public void anchor(String name) {
-        write("begin:anchor, name: " + name);
-    }
-
-    @Override
     public void anchor_() {
         writeln("end:anchor");
     }
 
     @Override
-    public void link(String name) {
-        write("begin:link, name: " + name);
-    }
-
-    @Override
     public void link_() {
         writeln("end:link");
-    }
-
-    @Override
-    public void inline() {
-        write("begin:inline");
     }
 
     @Override
@@ -563,23 +263,8 @@ public class TextSink extends AbstractSink {
     }
 
     @Override
-    public void lineBreak() {
-        write("lineBreak");
-    }
-
-    @Override
-    public void lineBreakOpportunity() {
-        write("lineBreakOpportunity");
-    }
-
-    @Override
     public void nonBreakingSpace() {
         write("nonBreakingSpace");
-    }
-
-    @Override
-    public void text(String text) {
-        write("text: " + text);
     }
 
     @Override
@@ -612,42 +297,42 @@ public class TextSink extends AbstractSink {
 
     @Override
     public void head(SinkEventAttributes attributes) {
-        head();
+        writeln("begin:head");
     }
 
     @Override
     public void title(SinkEventAttributes attributes) {
-        title();
+        writeln("begin:title");
     }
 
     @Override
     public void author(SinkEventAttributes attributes) {
-        author();
+        writeln("begin:author");
     }
 
     @Override
     public void date(SinkEventAttributes attributes) {
-        date();
+        writeln("begin:date");
     }
 
     @Override
     public void body(SinkEventAttributes attributes) {
-        body();
+        writeln("begin:body");
     }
 
     @Override
     public void article(SinkEventAttributes attributes) {
-        article();
+        writeln("begin:article");
     }
 
     @Override
     public void navigation(SinkEventAttributes attributes) {
-        navigation();
+        writeln("begin:navigation");
     }
 
     @Override
     public void sidebar(SinkEventAttributes attributes) {
-        sidebar();
+        writeln("begin:head");
     }
 
     @Override
@@ -672,57 +357,57 @@ public class TextSink extends AbstractSink {
 
     @Override
     public void header(SinkEventAttributes attributes) {
-        header();
+        write("begin:header");
     }
 
     @Override
     public void content(SinkEventAttributes attributes) {
-        content();
+        write("begin:content");
     }
 
     @Override
     public void footer(SinkEventAttributes attributes) {
-        footer();
+        write("begin:footer");
     }
 
     @Override
     public void list(SinkEventAttributes attributes) {
-        list();
+        writeln("begin:list");
     }
 
     @Override
     public void listItem(SinkEventAttributes attributes) {
-        listItem();
+        write("begin:listItem");
     }
 
     @Override
     public void numberedList(int numbering, SinkEventAttributes attributes) {
-        numberedList(numbering);
+        writeln("begin:numberedList, numbering: " + numbering);
     }
 
     @Override
     public void numberedListItem(SinkEventAttributes attributes) {
-        numberedListItem();
+        write("begin:numberedListItem");
     }
 
     @Override
     public void definitionList(SinkEventAttributes attributes) {
-        definitionList();
+        writeln("begin:definitionList");
     }
 
     @Override
     public void definitionListItem(SinkEventAttributes attributes) {
-        definitionListItem();
+        write("begin:definitionListItem");
     }
 
     @Override
     public void definition(SinkEventAttributes attributes) {
-        definition();
+        write("begin:definition");
     }
 
     @Override
     public void definedTerm(SinkEventAttributes attributes) {
-        definedTerm();
+        write("begin:definedTerm");
     }
 
     @Override
@@ -732,77 +417,72 @@ public class TextSink extends AbstractSink {
 
     @Override
     public void figureCaption(SinkEventAttributes attributes) {
-        figureCaption();
+        write("begin:figureCaption");
     }
 
     @Override
     public void figureGraphics(String src, SinkEventAttributes attributes) {
-        figureGraphics(src);
+        write("figureGraphics, name: " + src);
     }
 
     @Override
     public void table(SinkEventAttributes attributes) {
-        table();
+        writeln("begin:table");
     }
 
     @Override
     public void tableRows(int[] justification, boolean grid) {
-        tableRows();
+        writeln("begin:tableRows");
     }
 
     @Override
     public void tableRow(SinkEventAttributes attributes) {
-        tableRow();
+        write("begin:tableRow");
     }
 
     @Override
     public void tableCell(SinkEventAttributes attributes) {
-        tableCell();
+        write("begin:tableCell");
     }
 
     @Override
     public void tableHeaderCell(SinkEventAttributes attributes) {
-        tableHeaderCell();
+        write("begin:tableHeaderCell");
     }
 
     @Override
     public void tableCaption(SinkEventAttributes attributes) {
-        tableCaption();
+        write("begin:tableCaption");
     }
 
     @Override
     public void paragraph(SinkEventAttributes attributes) {
-        paragraph();
+        write("begin:paragraph");
     }
 
     @Override
     public void data(String value, SinkEventAttributes attributes) {
-        data(value);
+        write("begin:data, value: " + value);
     }
 
     @Override
     public void time(String datetime, SinkEventAttributes attributes) {
-        time(datetime);
+        write("begin:time, datetime: " + datetime);
     }
 
     @Override
     public void address(SinkEventAttributes attributes) {
-        address();
+        write("begin:address");
     }
 
     @Override
     public void blockquote(SinkEventAttributes attributes) {
-        blockquote();
+        write("begin:blockquote");
     }
 
     @Override
     public void division(SinkEventAttributes attributes) {
-        division();
-    }
-
-    @Override
-    public void verbatim() {
-        verbatim(null);
+        write("begin:division");
     }
 
     @Override
@@ -821,37 +501,37 @@ public class TextSink extends AbstractSink {
 
     @Override
     public void horizontalRule(SinkEventAttributes attributes) {
-        horizontalRule();
+        write("horizontalRule");
     }
 
     @Override
     public void anchor(String name, SinkEventAttributes attributes) {
-        anchor(name);
+        write("begin:anchor, name: " + name);
     }
 
     @Override
     public void link(String name, SinkEventAttributes attributes) {
-        link(name);
+        write("begin:link, name: " + name);
     }
 
     @Override
     public void inline(SinkEventAttributes attributes) {
-        inline();
+        write("begin:inline");
     }
 
     @Override
     public void lineBreak(SinkEventAttributes attributes) {
-        lineBreak();
+        write("lineBreak");
     }
 
     @Override
     public void lineBreakOpportunity(SinkEventAttributes attributes) {
-        lineBreakOpportunity();
+        write("lineBreakOpportunity");
     }
 
     @Override
     public void text(String text, SinkEventAttributes attributes) {
-        text(text);
+        write("text: " + text);
     }
 
     @Override

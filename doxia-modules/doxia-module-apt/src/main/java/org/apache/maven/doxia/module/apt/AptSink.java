@@ -193,10 +193,8 @@ public class AptSink extends AbstractTextSink implements AptMarkup {
         tableCaptionBuffer = new StringBuilder();
     }
 
-    /**
-     * {@inheritDoc}
-     */
-    public void head() {
+    @Override
+    public void head(SinkEventAttributes attributes) {
         boolean startFlag = this.startFlag;
 
         init();
@@ -259,115 +257,29 @@ public class AptSink extends AbstractTextSink implements AptMarkup {
         }
     }
 
-    /**
-     * {@inheritDoc}
-     */
-    public void section1_() {
+    @Override
+    public void section_(int level) {
         write(EOL);
     }
 
-    /**
-     * {@inheritDoc}
-     */
-    public void section2_() {
-        write(EOL);
+    @Override
+    public void sectionTitle(int level, SinkEventAttributes attributes) {
+        if (level == 1) {
+            write(EOL);
+        } else if (level > 1) {
+            write(EOL + StringUtils.repeat(SECTION_TITLE_START_MARKUP, level - 1));
+        }
     }
 
-    /**
-     * {@inheritDoc}
-     */
-    public void section3_() {
-        write(EOL);
+    @Override
+    public void sectionTitle_(int level) {
+        if (level >= 1) {
+            write(EOL + EOL);
+        }
     }
 
-    /**
-     * {@inheritDoc}
-     */
-    public void section4_() {
-        write(EOL);
-    }
-
-    /**
-     * {@inheritDoc}
-     */
-    public void section5_() {
-        write(EOL);
-    }
-
-    /**
-     * {@inheritDoc}
-     */
-    public void sectionTitle1() {
-        write(EOL);
-    }
-
-    /**
-     * {@inheritDoc}
-     */
-    public void sectionTitle1_() {
-        write(EOL + EOL);
-    }
-
-    /**
-     * {@inheritDoc}
-     */
-    public void sectionTitle2() {
-        write(EOL + SECTION_TITLE_START_MARKUP);
-    }
-
-    /**
-     * {@inheritDoc}
-     */
-    public void sectionTitle2_() {
-        write(EOL + EOL);
-    }
-
-    /**
-     * {@inheritDoc}
-     */
-    public void sectionTitle3() {
-        write(EOL + StringUtils.repeat(SECTION_TITLE_START_MARKUP, 2));
-    }
-
-    /**
-     * {@inheritDoc}
-     */
-    public void sectionTitle3_() {
-        write(EOL + EOL);
-    }
-
-    /**
-     * {@inheritDoc}
-     */
-    public void sectionTitle4() {
-        write(EOL + StringUtils.repeat(SECTION_TITLE_START_MARKUP, 3));
-    }
-
-    /**
-     * {@inheritDoc}
-     */
-    public void sectionTitle4_() {
-        write(EOL + EOL);
-    }
-
-    /**
-     * {@inheritDoc}
-     */
-    public void sectionTitle5() {
-        write(EOL + StringUtils.repeat(SECTION_TITLE_START_MARKUP, 4));
-    }
-
-    /**
-     * {@inheritDoc}
-     */
-    public void sectionTitle5_() {
-        write(EOL + EOL);
-    }
-
-    /**
-     * {@inheritDoc}
-     */
-    public void list() {
+    @Override
+    public void list(SinkEventAttributes attributes) {
         listNestingIndent += " ";
         listStyles.push(LIST_START_MARKUP);
         write(EOL);
@@ -387,10 +299,8 @@ public class AptSink extends AbstractTextSink implements AptMarkup {
         itemFlag = false;
     }
 
-    /**
-     * {@inheritDoc}
-     */
-    public void listItem() {
+    @Override
+    public void listItem(SinkEventAttributes attributes) {
         // if (!numberedList)
         // write(EOL + listNestingIndent + "*");
         // else
@@ -406,8 +316,8 @@ public class AptSink extends AbstractTextSink implements AptMarkup {
         itemFlag = false;
     }
 
-    /** {@inheritDoc} */
-    public void numberedList(int numbering) {
+    @Override
+    public void numberedList(int numbering, SinkEventAttributes attributes) {
         listNestingIndent += " ";
         write(EOL);
 
@@ -447,10 +357,8 @@ public class AptSink extends AbstractTextSink implements AptMarkup {
         itemFlag = false;
     }
 
-    /**
-     * {@inheritDoc}
-     */
-    public void numberedListItem() {
+    @Override
+    public void numberedListItem(SinkEventAttributes attributes) {
         String style = listStyles.peek();
         if (style.equals(String.valueOf(STAR))) {
             write(EOL + listNestingIndent + STAR + SPACE);
@@ -475,10 +383,8 @@ public class AptSink extends AbstractTextSink implements AptMarkup {
         itemFlag = false;
     }
 
-    /**
-     * {@inheritDoc}
-     */
-    public void definitionList() {
+    @Override
+    public void definitionList(SinkEventAttributes attributes) {
         listNestingIndent += " ";
         listStyles.push("");
         write(EOL);
@@ -498,10 +404,8 @@ public class AptSink extends AbstractTextSink implements AptMarkup {
         itemFlag = false;
     }
 
-    /**
-     * {@inheritDoc}
-     */
-    public void definedTerm() {
+    @Override
+    public void definedTerm(SinkEventAttributes attributes) {
         write(EOL + " [");
     }
 
@@ -512,10 +416,8 @@ public class AptSink extends AbstractTextSink implements AptMarkup {
         write("] ");
     }
 
-    /**
-     * {@inheritDoc}
-     */
-    public void definition() {
+    @Override
+    public void definition(SinkEventAttributes attributes) {
         itemFlag = true;
     }
 
@@ -534,10 +436,8 @@ public class AptSink extends AbstractTextSink implements AptMarkup {
         write(EOL + PAGE_BREAK + EOL);
     }
 
-    /**
-     * {@inheritDoc}
-     */
-    public void paragraph() {
+    @Override
+    public void paragraph(SinkEventAttributes attributes) {
         if (tableCellFlag) {
             // ignore paragraphs in table cells
         } else if (itemFlag) {
@@ -558,13 +458,7 @@ public class AptSink extends AbstractTextSink implements AptMarkup {
         }
     }
 
-    /** {@inheritDoc} */
     @Override
-    public void verbatim() {
-        verbatim(null);
-    }
-
-    /** {@inheritDoc} */
     public void verbatim(SinkEventAttributes attributes) {
         MutableAttributeSet atts = SinkUtils.filterAttributes(attributes, SinkUtils.SINK_VERBATIM_ATTRIBUTES);
 
@@ -598,17 +492,13 @@ public class AptSink extends AbstractTextSink implements AptMarkup {
         verbatimFlag = false;
     }
 
-    /**
-     * {@inheritDoc}
-     */
-    public void horizontalRule() {
+    @Override
+    public void horizontalRule(SinkEventAttributes attributes) {
         write(EOL + HORIZONTAL_RULE_MARKUP + EOL);
     }
 
-    /**
-     * {@inheritDoc}
-     */
-    public void table() {
+    @Override
+    public void table(SinkEventAttributes attributes) {
         write(EOL);
     }
 
@@ -629,11 +519,6 @@ public class AptSink extends AbstractTextSink implements AptMarkup {
     }
 
     @Override
-    public void tableRows() {
-        tableRows(null, false);
-    }
-
-    /** {@inheritDoc} */
     public void tableRows(int[] justification, boolean grid) {
         cellJustif = justification;
         gridFlag = grid;
@@ -647,10 +532,8 @@ public class AptSink extends AbstractTextSink implements AptMarkup {
         gridFlag = false;
     }
 
-    /**
-     * {@inheritDoc}
-     */
-    public void tableRow() {
+    @Override
+    public void tableRow(SinkEventAttributes attributes) {
         bufferFlag = true;
         cellCount = 0;
     }
@@ -707,17 +590,13 @@ public class AptSink extends AbstractTextSink implements AptMarkup {
         this.rowLine = rLine.toString();
     }
 
-    /**
-     * {@inheritDoc}
-     */
-    public void tableCell() {
+    @Override
+    public void tableCell(SinkEventAttributes attributes) {
         tableCell(false);
     }
 
-    /**
-     * {@inheritDoc}
-     */
-    public void tableHeaderCell() {
+    @Override
+    public void tableHeaderCell(SinkEventAttributes attributes) {
         tableCell(true);
     }
 
@@ -756,10 +635,8 @@ public class AptSink extends AbstractTextSink implements AptMarkup {
         cellCount++;
     }
 
-    /**
-     * {@inheritDoc}
-     */
-    public void tableCaption() {
+    @Override
+    public void tableCaption(SinkEventAttributes attributes) {
         tableCaptionFlag = true;
     }
 
@@ -777,13 +654,13 @@ public class AptSink extends AbstractTextSink implements AptMarkup {
         write(EOL);
     }
 
-    /** {@inheritDoc} */
-    public void figureGraphics(String name) {
+    @Override
+    public void figureGraphics(String name, SinkEventAttributes attributes) {
         write(EOL + "[" + name + "] ");
     }
 
-    /** {@inheritDoc} */
-    public void anchor(String name) {
+    @Override
+    public void anchor(String name, SinkEventAttributes attributes) {
         write(ANCHOR_START_MARKUP);
     }
 
@@ -794,8 +671,8 @@ public class AptSink extends AbstractTextSink implements AptMarkup {
         write(ANCHOR_END_MARKUP);
     }
 
-    /** {@inheritDoc} */
-    public void link(String name) {
+    @Override
+    public void link(String name, SinkEventAttributes attributes) {
         if (!headerFlag) {
             write(LINK_START_1_MARKUP);
             text(name.startsWith("#") ? name.substring(1) : name);
@@ -825,13 +702,6 @@ public class AptSink extends AbstractTextSink implements AptMarkup {
             write(LINK_START_2_MARKUP);
             text(name);
         }
-    }
-
-    /**
-     * {@inheritDoc}
-     */
-    public void inline() {
-        inline(null);
     }
 
     /** {@inheritDoc} */
@@ -914,10 +784,8 @@ public class AptSink extends AbstractTextSink implements AptMarkup {
         inline_();
     }
 
-    /**
-     * {@inheritDoc}
-     */
-    public void lineBreak() {
+    @Override
+    public void lineBreak(SinkEventAttributes attributes) {
         if (headerFlag || bufferFlag) {
             buffer.append(EOL);
         } else if (verbatimFlag) {
@@ -938,8 +806,8 @@ public class AptSink extends AbstractTextSink implements AptMarkup {
         }
     }
 
-    /** {@inheritDoc} */
-    public void text(String text) {
+    @Override
+    public void text(String text, SinkEventAttributes attributes) {
         if (tableCaptionFlag) {
             tableCaptionBuffer.append(text);
         } else if (headerFlag || bufferFlag) {

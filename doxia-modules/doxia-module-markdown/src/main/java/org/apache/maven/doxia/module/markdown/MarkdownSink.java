@@ -192,7 +192,7 @@ public class MarkdownSink extends AbstractTextSink implements MarkdownMarkup {
     }
 
     @Override
-    public void head() {
+    public void head(SinkEventAttributes attributes) {
         boolean startFlag = this.startFlag;
 
         init();
@@ -249,62 +249,22 @@ public class MarkdownSink extends AbstractTextSink implements MarkdownMarkup {
         }
     }
 
-    private void sectionTitle(int level) {
-        write(StringUtils.repeat(SECTION_TITLE_START_MARKUP, level) + SPACE);
+    @Override
+    public void sectionTitle(int level, SinkEventAttributes attributes) {
+        if (level > 0) {
+            write(StringUtils.repeat(SECTION_TITLE_START_MARKUP, level) + SPACE);
+        }
     }
 
     @Override
-    public void sectionTitle1() {
-        sectionTitle(1);
+    public void sectionTitle_(int level) {
+        if (level > 0) {
+            write(BLANK_LINE);
+        }
     }
 
     @Override
-    public void sectionTitle1_() {
-        write(BLANK_LINE);
-    }
-
-    @Override
-    public void sectionTitle2() {
-        sectionTitle(2);
-    }
-
-    @Override
-    public void sectionTitle2_() {
-        write(BLANK_LINE);
-    }
-
-    @Override
-    public void sectionTitle3() {
-        sectionTitle(3);
-    }
-
-    @Override
-    public void sectionTitle3_() {
-        write(BLANK_LINE);
-    }
-
-    @Override
-    public void sectionTitle4() {
-        sectionTitle(4);
-    }
-
-    @Override
-    public void sectionTitle4_() {
-        write(BLANK_LINE);
-    }
-
-    @Override
-    public void sectionTitle5() {
-        sectionTitle(5);
-    }
-
-    @Override
-    public void sectionTitle5_() {
-        write(BLANK_LINE);
-    }
-
-    @Override
-    public void list() {
+    public void list(SinkEventAttributes attributes) {
         listNestingLevel++;
         listStyles.push(LIST_UNORDERED_ITEM_START_MARKUP);
     }
@@ -321,7 +281,7 @@ public class MarkdownSink extends AbstractTextSink implements MarkdownMarkup {
     }
 
     @Override
-    public void listItem() {
+    public void listItem(SinkEventAttributes attributes) {
         orderedOrUnorderedListItem();
     }
 
@@ -331,7 +291,7 @@ public class MarkdownSink extends AbstractTextSink implements MarkdownMarkup {
     }
 
     /** {@inheritDoc} */
-    public void numberedList(int numbering) {
+    public void numberedList(int numbering, SinkEventAttributes attributes) {
         listNestingLevel++;
         // markdown only supports decimal numbering
         if (numbering != NUMBERING_DECIMAL) {
@@ -356,7 +316,7 @@ public class MarkdownSink extends AbstractTextSink implements MarkdownMarkup {
     }
 
     @Override
-    public void numberedListItem() {
+    public void numberedListItem(SinkEventAttributes attributes) {
         orderedOrUnorderedListItem();
     }
 
@@ -386,17 +346,19 @@ public class MarkdownSink extends AbstractTextSink implements MarkdownMarkup {
     }
 
     @Override
-    public void definitionList() {
+    public void definitionList(SinkEventAttributes attributes) {
         LOGGER.warn("Definition list not natively supported in Markdown, rendering HTML instead");
         write("<dl>" + EOL);
     }
 
+    @Override
     public void definitionList_() {
         verbatimFlag = true;
         write("</dl>" + BLANK_LINE);
     }
 
-    public void definedTerm() {
+    @Override
+    public void definedTerm(SinkEventAttributes attributes) {
         write("<dt>");
         verbatimFlag = false;
     }
@@ -407,7 +369,7 @@ public class MarkdownSink extends AbstractTextSink implements MarkdownMarkup {
     }
 
     @Override
-    public void definition() {
+    public void definition(SinkEventAttributes attributes) {
         write("<dd>");
     }
 
@@ -422,7 +384,7 @@ public class MarkdownSink extends AbstractTextSink implements MarkdownMarkup {
     }
 
     @Override
-    public void paragraph() {
+    public void paragraph(SinkEventAttributes attributes) {
         ensureBeginningOfLine();
     }
 
@@ -435,13 +397,7 @@ public class MarkdownSink extends AbstractTextSink implements MarkdownMarkup {
         }
     }
 
-    /** {@inheritDoc} */
     @Override
-    public void verbatim() {
-        verbatim(null);
-    }
-
-    /** {@inheritDoc} */
     public void verbatim(SinkEventAttributes attributes) {
         ensureBeginningOfLine();
         verbatimFlag = true;
@@ -456,13 +412,13 @@ public class MarkdownSink extends AbstractTextSink implements MarkdownMarkup {
     }
 
     @Override
-    public void horizontalRule() {
+    public void horizontalRule(SinkEventAttributes attributes) {
         ensureBeginningOfLine();
         write(HORIZONTAL_RULE_MARKUP + BLANK_LINE);
     }
 
     @Override
-    public void table() {
+    public void table(SinkEventAttributes attributes) {
         ensureBeginningOfLine();
     }
 
@@ -475,7 +431,7 @@ public class MarkdownSink extends AbstractTextSink implements MarkdownMarkup {
         resetTableCaptionBuffer();
     }
 
-    /** {@inheritDoc} */
+    @Override
     public void tableRows(int[] justification, boolean grid) {
         cellJustif = null; // justification;
         gridFlag = grid;
@@ -489,7 +445,7 @@ public class MarkdownSink extends AbstractTextSink implements MarkdownMarkup {
     }
 
     @Override
-    public void tableRow() {
+    public void tableRow(SinkEventAttributes attributes) {
         bufferFlag = true;
         cellCount = 0;
     }
@@ -544,12 +500,12 @@ public class MarkdownSink extends AbstractTextSink implements MarkdownMarkup {
     }
 
     @Override
-    public void tableCell() {
+    public void tableCell(SinkEventAttributes attributes) {
         tableCell(false);
     }
 
     @Override
-    public void tableHeaderCell() {
+    public void tableHeaderCell(SinkEventAttributes attributes) {
         tableCell(true);
     }
 
@@ -582,7 +538,7 @@ public class MarkdownSink extends AbstractTextSink implements MarkdownMarkup {
     }
 
     @Override
-    public void tableCaption() {
+    public void tableCaption(SinkEventAttributes attributes) {
         tableCaptionFlag = true;
     }
 
@@ -597,12 +553,12 @@ public class MarkdownSink extends AbstractTextSink implements MarkdownMarkup {
     }
 
     /** {@inheritDoc} */
-    public void figureGraphics(String name) {
+    public void figureGraphics(String name, SinkEventAttributes attributes) {
         write("<img src=\"" + name + "\" />");
     }
 
     /** {@inheritDoc} */
-    public void anchor(String name) {
+    public void anchor(String name, SinkEventAttributes attributes) {
         // write(ANCHOR_START_MARKUP + name);
         // TODO get implementation from Xhtml5 base sink
     }
@@ -613,7 +569,7 @@ public class MarkdownSink extends AbstractTextSink implements MarkdownMarkup {
     }
 
     /** {@inheritDoc} */
-    public void link(String name) {
+    public void link(String name, SinkEventAttributes attributes) {
         if (!headerFlag) {
             write(LINK_START_1_MARKUP);
             linkName = name;
@@ -636,18 +592,13 @@ public class MarkdownSink extends AbstractTextSink implements MarkdownMarkup {
      * @param name The name of the link.
      * @param target The link target.
      */
-    public void link(String name, String target) {
+    void link(String name, String target) {
         if (!headerFlag) {
             write(LINK_START_1_MARKUP);
         }
     }
 
     @Override
-    public void inline() {
-        inline(null);
-    }
-
-    /** {@inheritDoc} */
     public void inline(SinkEventAttributes attributes) {
         if (!headerFlag && !verbatimFlag) {
             List<String> tags = new ArrayList<>();
@@ -714,7 +665,7 @@ public class MarkdownSink extends AbstractTextSink implements MarkdownMarkup {
     }
 
     @Override
-    public void lineBreak() {
+    public void lineBreak(SinkEventAttributes attributes) {
         if (headerFlag || bufferFlag) {
             buffer.append(EOL);
         } else if (verbatimFlag) {
@@ -734,7 +685,7 @@ public class MarkdownSink extends AbstractTextSink implements MarkdownMarkup {
     }
 
     @Override
-    public void text(String text) {
+    public void text(String text, SinkEventAttributes attributes) {
         if (tableCaptionFlag) {
             tableCaptionBuffer.append(text);
         } else if (headerFlag || bufferFlag) {

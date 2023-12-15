@@ -325,11 +325,11 @@ public class XdocParserTest extends AbstractParserTest {
 
         Iterator<SinkEventElement> it = parseText(text);
 
-        assertSinkEquals(it.next(), "anchor", "test-id");
+        assertSinkEquals(it.next(), "anchor", "test-id", null);
 
         assertSinkStartsWith(it, "anchor_", "section1", "sectionTitle1", "text", "sectionTitle1_", "text");
 
-        assertSinkEquals(it.next(), "anchor", "sub-id");
+        assertSinkEquals(it.next(), "anchor", "sub-id", null);
 
         assertSinkEquals(
                 it, "anchor_", "section2", "sectionTitle2", "text", "sectionTitle2_", "text", "section2_", "section1_");
@@ -390,15 +390,15 @@ public class XdocParserTest extends AbstractParserTest {
 
         assertSinkStartsWith(it, "section1", "sectionTitle1");
 
-        assertSinkEquals(it.next(), "text", "&\u0159\uD835\uDFED");
+        assertSinkEquals(it.next(), "text", "&\u0159\uD835\uDFED", null);
 
         assertSinkStartsWith(it, "sectionTitle1_", "paragraph");
 
-        assertSinkEquals(it.next(), "text", "&");
+        assertSinkEquals(it.next(), "text", "&", null);
 
-        assertSinkEquals(it.next(), "text", "\u0159");
+        assertSinkEquals(it.next(), "text", "\u0159", null);
 
-        assertSinkEquals(it.next(), "text", "\uD835\uDFED");
+        assertSinkEquals(it.next(), "text", "\uD835\uDFED", null);
 
         assertSinkEquals(it, "paragraph_", "section1_");
     }

@@ -53,18 +53,8 @@ public class SinkEventTestingSink extends AbstractSink {
     //
 
     @Override
-    public void head() {
-        addEvent("head");
-    }
-
-    @Override
     public void head_() {
         addEvent("head_");
-    }
-
-    @Override
-    public void body() {
-        addEvent("body");
     }
 
     @Override
@@ -73,18 +63,8 @@ public class SinkEventTestingSink extends AbstractSink {
     }
 
     @Override
-    public void article() {
-        addEvent("article");
-    }
-
-    @Override
     public void article_() {
         addEvent("article_");
-    }
-
-    @Override
-    public void navigation() {
-        addEvent("navigation");
     }
 
     @Override
@@ -93,68 +73,8 @@ public class SinkEventTestingSink extends AbstractSink {
     }
 
     @Override
-    public void sidebar() {
-        addEvent("sidebar");
-    }
-
-    @Override
     public void sidebar_() {
         addEvent("sidebar_");
-    }
-
-    @Override
-    public void section1() {
-        addEvent("section1");
-    }
-
-    @Override
-    public void section1_() {
-        addEvent("section1_");
-    }
-
-    @Override
-    public void section2() {
-        addEvent("section2");
-    }
-
-    @Override
-    public void section2_() {
-        addEvent("section2_");
-    }
-
-    @Override
-    public void section3() {
-        addEvent("section3");
-    }
-
-    @Override
-    public void section3_() {
-        addEvent("section3_");
-    }
-
-    @Override
-    public void section4() {
-        addEvent("section4");
-    }
-
-    @Override
-    public void section4_() {
-        addEvent("section4_");
-    }
-
-    @Override
-    public void section5() {
-        addEvent("section5");
-    }
-
-    @Override
-    public void section5_() {
-        addEvent("section5_");
-    }
-
-    @Override
-    public void list() {
-        addEvent("list");
     }
 
     @Override
@@ -163,18 +83,8 @@ public class SinkEventTestingSink extends AbstractSink {
     }
 
     @Override
-    public void listItem() {
-        addEvent("listItem");
-    }
-
-    @Override
     public void listItem_() {
         addEvent("listItem_");
-    }
-
-    @Override
-    public void numberedList(int numbering) {
-        addEvent("numberedList", new Object[] {numbering});
     }
 
     @Override
@@ -183,18 +93,8 @@ public class SinkEventTestingSink extends AbstractSink {
     }
 
     @Override
-    public void numberedListItem() {
-        addEvent("numberedListItem");
-    }
-
-    @Override
     public void numberedListItem_() {
         addEvent("numberedListItem_");
-    }
-
-    @Override
-    public void definitionList() {
-        addEvent("definitionList");
     }
 
     @Override
@@ -203,18 +103,8 @@ public class SinkEventTestingSink extends AbstractSink {
     }
 
     @Override
-    public void definitionListItem() {
-        addEvent("definitionListItem");
-    }
-
-    @Override
     public void definitionListItem_() {
         addEvent("definitionListItem_");
-    }
-
-    @Override
-    public void definition() {
-        addEvent("definition");
     }
 
     @Override
@@ -223,28 +113,13 @@ public class SinkEventTestingSink extends AbstractSink {
     }
 
     @Override
-    public void figure() {
-        addEvent("figure");
-    }
-
-    @Override
     public void figure_() {
         addEvent("figure_");
     }
 
     @Override
-    public void table() {
-        addEvent("table");
-    }
-
-    @Override
     public void table_() {
         addEvent("table_");
-    }
-
-    @Override
-    public void tableRows() {
-        addEvent("tableRows", new Object[] {null, false});
     }
 
     @Override
@@ -258,18 +133,8 @@ public class SinkEventTestingSink extends AbstractSink {
     }
 
     @Override
-    public void tableRow() {
-        addEvent("tableRow");
-    }
-
-    @Override
     public void tableRow_() {
         addEvent("tableRow_");
-    }
-
-    @Override
-    public void title() {
-        addEvent("title");
     }
 
     @Override
@@ -278,18 +143,8 @@ public class SinkEventTestingSink extends AbstractSink {
     }
 
     @Override
-    public void author() {
-        addEvent("author");
-    }
-
-    @Override
     public void author_() {
         addEvent("author_");
-    }
-
-    @Override
-    public void date() {
-        addEvent("date");
     }
 
     @Override
@@ -298,78 +153,8 @@ public class SinkEventTestingSink extends AbstractSink {
     }
 
     @Override
-    public void sectionTitle() {
-        addEvent("sectionTitle");
-    }
-
-    @Override
-    public void sectionTitle_() {
-        addEvent("sectionTitle_");
-    }
-
-    @Override
-    public void sectionTitle1() {
-        addEvent("sectionTitle1");
-    }
-
-    @Override
-    public void sectionTitle1_() {
-        addEvent("sectionTitle1_");
-    }
-
-    @Override
-    public void sectionTitle2() {
-        addEvent("sectionTitle2");
-    }
-
-    @Override
-    public void sectionTitle2_() {
-        addEvent("sectionTitle2_");
-    }
-
-    @Override
-    public void sectionTitle3() {
-        addEvent("sectionTitle3");
-    }
-
-    @Override
-    public void sectionTitle3_() {
-        addEvent("sectionTitle3_");
-    }
-
-    @Override
-    public void sectionTitle4() {
-        addEvent("sectionTitle4");
-    }
-
-    @Override
-    public void sectionTitle4_() {
-        addEvent("sectionTitle4_");
-    }
-
-    @Override
-    public void sectionTitle5() {
-        addEvent("sectionTitle5");
-    }
-
-    @Override
-    public void sectionTitle5_() {
-        addEvent("sectionTitle5_");
-    }
-
-    @Override
-    public void header() {
-        addEvent("header");
-    }
-
-    @Override
     public void header_() {
         addEvent("header_");
-    }
-
-    @Override
-    public void content() {
-        addEvent("content");
     }
 
     @Override
@@ -378,18 +163,8 @@ public class SinkEventTestingSink extends AbstractSink {
     }
 
     @Override
-    public void footer() {
-        addEvent("footer");
-    }
-
-    @Override
     public void footer_() {
         addEvent("footer_");
-    }
-
-    @Override
-    public void paragraph() {
-        addEvent("paragraph");
     }
 
     @Override
@@ -398,18 +173,8 @@ public class SinkEventTestingSink extends AbstractSink {
     }
 
     @Override
-    public void data(String value) {
-        addEvent("data", new Object[] {value});
-    }
-
-    @Override
     public void data_() {
         addEvent("data_");
-    }
-
-    @Override
-    public void time(String datetime) {
-        addEvent("time", new Object[] {datetime});
     }
 
     @Override
@@ -418,28 +183,13 @@ public class SinkEventTestingSink extends AbstractSink {
     }
 
     @Override
-    public void address() {
-        addEvent("address");
-    }
-
-    @Override
     public void address_() {
         addEvent("address_");
     }
 
     @Override
-    public void blockquote() {
-        addEvent("blockquote");
-    }
-
-    @Override
     public void blockquote_() {
         addEvent("blockquote_");
-    }
-
-    @Override
-    public void division() {
-        addEvent("division");
     }
 
     @Override
@@ -453,18 +203,8 @@ public class SinkEventTestingSink extends AbstractSink {
     }
 
     @Override
-    public void definedTerm() {
-        addEvent("definedTerm");
-    }
-
-    @Override
     public void definedTerm_() {
         addEvent("definedTerm_");
-    }
-
-    @Override
-    public void figureCaption() {
-        addEvent("figureCaption");
     }
 
     @Override
@@ -473,18 +213,8 @@ public class SinkEventTestingSink extends AbstractSink {
     }
 
     @Override
-    public void tableCell() {
-        addEvent("tableCell");
-    }
-
-    @Override
     public void tableCell_() {
         addEvent("tableCell_");
-    }
-
-    @Override
-    public void tableHeaderCell() {
-        addEvent("tableHeaderCell");
     }
 
     @Override
@@ -493,23 +223,8 @@ public class SinkEventTestingSink extends AbstractSink {
     }
 
     @Override
-    public void tableCaption() {
-        addEvent("tableCaption");
-    }
-
-    @Override
     public void tableCaption_() {
         addEvent("tableCaption_");
-    }
-
-    @Override
-    public void figureGraphics(String name) {
-        addEvent("figureGraphics", new Object[] {name});
-    }
-
-    @Override
-    public void horizontalRule() {
-        addEvent("horizontalRule");
     }
 
     @Override
@@ -518,28 +233,13 @@ public class SinkEventTestingSink extends AbstractSink {
     }
 
     @Override
-    public void anchor(String name) {
-        addEvent("anchor", new Object[] {name});
-    }
-
-    @Override
     public void anchor_() {
         addEvent("anchor_");
     }
 
     @Override
-    public void link(String name) {
-        addEvent("link", new Object[] {name});
-    }
-
-    @Override
     public void link_() {
         addEvent("link_");
-    }
-
-    @Override
-    public void inline() {
-        addEvent("inline");
     }
 
     @Override
@@ -578,23 +278,8 @@ public class SinkEventTestingSink extends AbstractSink {
     }
 
     @Override
-    public void lineBreak() {
-        addEvent("lineBreak");
-    }
-
-    @Override
-    public void lineBreakOpportunity() {
-        addEvent("lineBreakOpportunity");
-    }
-
-    @Override
     public void nonBreakingSpace() {
         addEvent("nonBreakingSpace");
-    }
-
-    @Override
-    public void text(String text) {
-        addEvent("text", new Object[] {text});
     }
 
     @Override
@@ -801,11 +486,6 @@ public class SinkEventTestingSink extends AbstractSink {
     @Override
     public void division(SinkEventAttributes attributes) {
         addEvent("division", new Object[] {attributes});
-    }
-
-    @Override
-    public void verbatim() {
-        addEvent("verbatim");
     }
 
     @Override

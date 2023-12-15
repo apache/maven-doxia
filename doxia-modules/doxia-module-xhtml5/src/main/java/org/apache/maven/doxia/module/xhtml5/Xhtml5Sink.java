@@ -24,6 +24,7 @@ import javax.swing.text.html.HTML.Attribute;
 import java.io.Writer;
 
 import org.apache.commons.lang3.StringUtils;
+import org.apache.maven.doxia.sink.SinkEventAttributes;
 import org.apache.maven.doxia.sink.impl.SinkEventAttributeSet;
 import org.apache.maven.doxia.sink.impl.Xhtml5BaseSink;
 import org.apache.maven.doxia.util.HtmlTools;
@@ -85,10 +86,8 @@ public class Xhtml5Sink extends Xhtml5BaseSink implements Xhtml5Markup {
         this.languageId = languageId;
     }
 
-    /**
-     * {@inheritDoc}
-     */
-    public void head() {
+    @Override
+    public void head(SinkEventAttributes attributes) {
         init();
 
         setHeadFlag(true);
@@ -96,6 +95,9 @@ public class Xhtml5Sink extends Xhtml5BaseSink implements Xhtml5Markup {
         write("<!DOCTYPE html>");
 
         MutableAttributeSet atts = new SinkEventAttributeSet();
+        if (attributes != null) {
+            atts.addAttributes(attributes);
+        }
         atts.addAttribute("xmlns", XHTML5_NAMESPACE);
 
         if (languageId != null) {
@@ -137,10 +139,10 @@ public class Xhtml5Sink extends Xhtml5BaseSink implements Xhtml5Markup {
      *
      * @see javax.swing.text.html.HTML.Tag#TITLE
      */
-    public void title() {
+    public void title(SinkEventAttributes attributes) {
         setHeadTitleFlag(true);
 
-        writeStartTag(TITLE);
+        writeStartTag(TITLE, attributes);
     }
 
     /**
@@ -199,8 +201,9 @@ public class Xhtml5Sink extends Xhtml5BaseSink implements Xhtml5Markup {
      *
      * @see javax.swing.text.html.HTML.Tag#BODY
      */
-    public void body() {
-        writeStartTag(BODY);
+    @Override
+    public void body(SinkEventAttributes attributes) {
+        writeStartTag(BODY, attributes);
     }
 
     /**
