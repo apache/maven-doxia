@@ -20,11 +20,13 @@ package org.apache.maven.doxia.parser;
 
 import java.io.IOException;
 import java.io.Reader;
+import java.io.StringWriter;
 import java.io.Writer;
 import java.util.Iterator;
 
 import org.apache.maven.doxia.AbstractModuleTest;
 import org.apache.maven.doxia.sink.Sink;
+import org.apache.maven.doxia.sink.SinkEventAttributes;
 import org.apache.maven.doxia.sink.impl.SinkEventAttributeSet;
 import org.apache.maven.doxia.sink.impl.SinkEventElement;
 import org.apache.maven.doxia.sink.impl.TextSink;
@@ -96,18 +98,69 @@ public abstract class AbstractParserTest extends AbstractModuleTest {
         }
     }
 
-    protected static void assertSinkEquals(SinkEventElement element, String name, Object... args) {
+    @Test
+    public final void testSinkWrapper() throws ParseException, IOException {
+        Parser parser = createParser();
+
+        parser.addSinkWrapperFactory(new SinkWrapperFactory() {
+
+            @Override
+            public Sink createWrapper(Sink sink) {
+                return new SinkWrapper(sink) {
+
+                    @Override
+                    public void text(String text, SinkEventAttributes attributes) {
+                        super.text("beforeWrapper1" + text + "afterWrapper1", attributes);
+                    }
+                };
+            }
+
+            @Override
+            public int getPriority() {
+                return 0;
+            }
+        });
+
+        parser.addSinkWrapperFactory(new SinkWrapperFactory() {
+
+            @Override
+            public Sink createWrapper(Sink sink) {
+                return new SinkWrapper(sink) {
+                    @Override
+                    public void text(String text, SinkEventAttributes attributes) {
+                        super.text("beforeWrapper2" + text + "afterWrapper2", attributes);
+                    }
+                };
+            }
+
+            @Override
+            public int getPriority() {
+                return 1;
+            }
+        });
+        try (StringWriter writer = new StringWriter();
+                Reader reader = getTestReader("test", outputExtension())) {
+            Sink sink = new TextSink(writer);
+            parser.parse(reader, sink);
+
+            // assert order of sink wrappers
+            assertTrue(writer.toString().contains("beforeWrapper2beforeWrapper1"));
+            assertTrue(writer.toString().contains("afterWrapper1afterWrapper2"));
+        }
+    }
+
+    public static void assertSinkEquals(SinkEventElement element, String name, Object... args) {
         Assertions.assertEquals(name, element.getName(), "Name of element doesn't match");
         Assertions.assertArrayEquals(args, element.getArgs(), "Arguments don't match");
     }
 
-    protected static void assertSinkAttributeEquals(SinkEventElement element, String name, String attr, String value) {
+    public static void assertSinkAttributeEquals(SinkEventElement element, String name, String attr, String value) {
         Assertions.assertEquals(name, element.getName());
         SinkEventAttributeSet atts = (SinkEventAttributeSet) element.getArgs()[0];
         Assertions.assertEquals(value, atts.getAttribute(attr));
     }
 
-    protected static void assertSinkEquals(Iterator<SinkEventElement> it, String... names) {
+    public static void assertSinkEquals(Iterator<SinkEventElement> it, String... names) {
         StringBuilder expected = new StringBuilder();
         StringBuilder actual = new StringBuilder();
 
@@ -122,7 +175,7 @@ public abstract class AbstractParserTest extends AbstractModuleTest {
         Assertions.assertEquals(expected.toString(), actual.toString());
     }
 
-    protected static void assertSinkStartsWith(Iterator<SinkEventElement> it, String... names) {
+    public static void assertSinkStartsWith(Iterator<SinkEventElement> it, String... names) {
         StringBuilder expected = new StringBuilder();
         StringBuilder actual = new StringBuilder();
 

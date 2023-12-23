@@ -199,7 +199,7 @@ public class AptParser extends AbstractTextParser implements AptMarkup {
         try {
             this.source = new AptReaderSource(new StringReader(sourceContent), reference);
 
-            this.sink = sink;
+            this.sink = getWrappedSink(sink);
 
             blockFileName = null;
 

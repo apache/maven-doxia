@@ -19,6 +19,7 @@
 package org.apache.maven.doxia.parser;
 
 import java.io.Reader;
+import java.util.Collection;
 
 import org.apache.maven.doxia.sink.Sink;
 
@@ -83,4 +84,18 @@ public interface Parser {
      * @return <code>true</code> (default value) if comment Doxia events are emitted
      */
     boolean isEmitComments();
+
+    /**
+     * Registers a given {@link SinkWrapperFactory} with the parser used in subsequent calls of {@code parse(...)}
+     * @param factory the factory to create the sink wrapper
+     * @since 2.0.0
+     */
+    void addSinkWrapperFactory(SinkWrapperFactory factory);
+
+    /**
+     *
+     * @return all sink wrapper factories in the correct order (both registered automatically and manually)
+     * @since 2.0.0
+     */
+    Collection<SinkWrapperFactory> getSinkWrapperFactories();
 }

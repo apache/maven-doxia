@@ -172,7 +172,7 @@ public class MarkdownParser extends AbstractTextParser implements TextMarkup {
             String html = toHtml(source);
 
             // then HTML to Sink API
-            parser.parse(html, sink);
+            parser.parse(html, getWrappedSink(sink));
         } catch (IOException e) {
             throw new ParseException("Failed reading Markdown source document", e);
         }
