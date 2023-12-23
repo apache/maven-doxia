@@ -22,6 +22,7 @@ import java.io.Reader;
 import java.util.Collection;
 
 import org.apache.maven.doxia.sink.Sink;
+import org.apache.maven.doxia.sink.impl.SinkWrapperFactory;
 
 /**
  * A Parser is responsible for parsing any document in a supported front-end

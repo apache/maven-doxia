@@ -20,8 +20,6 @@ package org.apache.maven.doxia.sink.impl;
 
 import java.util.Comparator;
 
-import org.apache.maven.doxia.parser.SinkWrapperFactory;
-
 /** Sorts the given {@link SinkWrapperFactory}s so that the one with the highest rank comes first (i.e. order by descending ranking) */
 public class SinkWrapperFactoryComparator implements Comparator<SinkWrapperFactory> {
 

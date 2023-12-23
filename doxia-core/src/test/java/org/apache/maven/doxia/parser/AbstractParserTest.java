@@ -29,6 +29,8 @@ import org.apache.maven.doxia.sink.Sink;
 import org.apache.maven.doxia.sink.SinkEventAttributes;
 import org.apache.maven.doxia.sink.impl.SinkEventAttributeSet;
 import org.apache.maven.doxia.sink.impl.SinkEventElement;
+import org.apache.maven.doxia.sink.impl.SinkWrapper;
+import org.apache.maven.doxia.sink.impl.SinkWrapperFactory;
 import org.apache.maven.doxia.sink.impl.TextSink;
 import org.apache.maven.doxia.sink.impl.WellformednessCheckingSink;
 import org.junit.jupiter.api.Assertions;

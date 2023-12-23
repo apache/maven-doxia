@@ -26,7 +26,6 @@ import java.io.OutputStream;
 import java.util.ArrayList;
 import java.util.List;
 
-import org.apache.maven.doxia.parser.SinkWrapper;
 import org.apache.maven.doxia.sink.Sink;
 import org.apache.maven.doxia.sink.SinkFactory;
 
@@ -35,9 +34,12 @@ import org.apache.maven.doxia.sink.SinkFactory;
  * A page can be prepared by first creating its structure and specifying the positions of these hooks.
  * After specifying the structure, the page can be filled with content from one or more models.
  * These hooks can prevent you to have to loop over the model multiple times to build the page as desired.
- *
+ * Consider using the {@link BufferingSinkProxyFactory} instead which allows to buffer on the (higher) Sink API level
+ * which usually is less memory intense and doesn't require dynamically creating new sinks leveraging a {@link SinkFactory} than buffering
+ * the output stream which is done by this class.
  * @author Robert Scholte
  * @since 1.3
+ * @see BufferingSinkProxyFactory
  */
 public class RandomAccessSink extends SinkWrapper {
     private SinkFactory sinkFactory;

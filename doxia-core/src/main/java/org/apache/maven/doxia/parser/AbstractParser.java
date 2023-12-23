@@ -36,6 +36,7 @@ import org.apache.maven.doxia.macro.MacroRequest;
 import org.apache.maven.doxia.macro.manager.MacroManager;
 import org.apache.maven.doxia.macro.manager.MacroNotFoundException;
 import org.apache.maven.doxia.sink.Sink;
+import org.apache.maven.doxia.sink.impl.SinkWrapperFactory;
 import org.apache.maven.doxia.sink.impl.SinkWrapperFactoryComparator;
 
 /**

@@ -16,7 +16,7 @@
  * specific language governing permissions and limitations
  * under the License.
  */
-package org.apache.maven.doxia.parser;
+package org.apache.maven.doxia.sink.impl;
 
 import org.apache.maven.doxia.sink.Sink;
 

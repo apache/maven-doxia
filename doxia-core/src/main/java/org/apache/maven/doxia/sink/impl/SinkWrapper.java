@@ -16,11 +16,11 @@
  * specific language governing permissions and limitations
  * under the License.
  */
-package org.apache.maven.doxia.parser;
+package org.apache.maven.doxia.sink.impl;
 
+import org.apache.maven.doxia.parser.Parser;
 import org.apache.maven.doxia.sink.Sink;
 import org.apache.maven.doxia.sink.SinkEventAttributes;
-import org.apache.maven.doxia.sink.impl.AbstractSink;
 
 /**
  * By default a {@link SinkWrapper} just delegates each method to the wrapped sink's method.
