@@ -20,12 +20,14 @@ package org.apache.maven.doxia.sink.impl;
 
 import java.util.Comparator;
 
-/** Sorts the given {@link SinkWrapperFactory}s so that the one with the highest rank comes first (i.e. order by descending ranking) */
+/** 
+ * Sorts the given {@link SinkWrapperFactory}s so that the one with the highest priority comes first (i.e. order by descending priority)
+ * @since 2.0.0
+ */
 public class SinkWrapperFactoryComparator implements Comparator<SinkWrapperFactory> {
 
     @Override
     public int compare(SinkWrapperFactory o1, SinkWrapperFactory o2) {
-
         return Integer.compare(o2.getPriority(), o1.getPriority());
     }
 }

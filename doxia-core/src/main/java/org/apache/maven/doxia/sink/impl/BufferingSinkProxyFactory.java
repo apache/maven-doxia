@@ -28,7 +28,7 @@ import java.util.Queue;
 import org.apache.maven.doxia.sink.Sink;
 
 /**
- * Buffers all method calls on the wrapped Sink until the proxy sink's method {@link Sink#flush()} is called.
+ * Buffers all method calls on the proxied Sink until its {@link Sink#flush()} is called.
  */
 public class BufferingSinkProxyFactory implements SinkWrapperFactory {
 
@@ -101,7 +101,7 @@ public class BufferingSinkProxyFactory implements SinkWrapperFactory {
         if (sink instanceof BufferingSink) {
             return (BufferingSink) sink;
         } else {
-            throw new IllegalArgumentException("The given sink is no BufferingSink but a " + sink.getClass());
+            throw new IllegalArgumentException("The given sink is not a BufferingSink but a " + sink.getClass());
         }
     }
 
