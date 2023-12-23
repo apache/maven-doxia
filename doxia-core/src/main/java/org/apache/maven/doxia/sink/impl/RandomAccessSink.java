@@ -35,9 +35,9 @@ import org.apache.maven.doxia.sink.SinkFactory;
  * After specifying the structure, the page can be filled with content from one or more models.
  * These hooks can prevent you to have to loop over the model multiple times to build the page as desired.
  * @deprecated Use {@link BufferingSinkProxyFactory} instead which buffers on the (higher) Sink API level
- * which usually is less memory intense than buffering the output stream which is done by this class. 
+ * which usually is less memory intense than buffering the output stream which is done by this class.
  * Also it doesn't require dynamically creating new sinks leveraging a {@link SinkFactory}.
- * 
+ *
  * @author Robert Scholte
  * @since 1.3
  * @see BufferingSinkProxyFactory
