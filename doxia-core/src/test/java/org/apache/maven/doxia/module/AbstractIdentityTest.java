@@ -86,7 +86,7 @@ public abstract class AbstractIdentityTest extends AbstractModuleTest {
         expected = writer.toString();
 
         // write to file for comparison
-        try (Writer fileWriter = getTestWriter("expected")) {
+        try (Writer fileWriter = getTestWriter("expectedTextSink")) {
             fileWriter.write(expected);
         }
         // generate the actual model
@@ -94,8 +94,13 @@ public abstract class AbstractIdentityTest extends AbstractModuleTest {
         sink = createSink(writer);
         SinkTestDocument.generate(sink);
         sink.close();
-        StringReader reader = new StringReader(writer.toString());
-
+        
+        String expectedViaTargetSink = writer.toString();
+        // write to file for comparison
+        try (Writer fileWriter = getTestWriter("expectedTargetSink")) {
+            fileWriter.write(expectedViaTargetSink);
+        }
+        StringReader reader = new StringReader(expectedViaTargetSink);
         writer = new StringWriter();
         sink = new TextSink(writer);
         Parser parser = createParser();
@@ -103,7 +108,7 @@ public abstract class AbstractIdentityTest extends AbstractModuleTest {
         String actual = writer.toString();
 
         // write to file for comparison
-        try (Writer fileWriter = getTestWriter("actual")) {
+        try (Writer fileWriter = getTestWriter("actualTextSink")) {
             fileWriter.write(actual);
         }
 

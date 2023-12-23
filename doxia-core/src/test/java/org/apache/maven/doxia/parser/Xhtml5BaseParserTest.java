@@ -130,6 +130,75 @@ public class Xhtml5BaseParserTest extends AbstractParserTest {
     }
 
     @Test
+    public void testSectionsAndHeadingsOnDifferentLevels() throws ParseException {
+        // section on higher level than heading
+        String text = "<body><section><section><h1>Headline1</h1></section></section></body>";
+        parser.parse(text, sink);
+
+        Iterator<SinkEventElement> it = sink.getEventList().iterator();
+        assertSinkEquals(
+                it,
+                "section1",
+                "section2",
+                "section2_",
+                "section1_",
+                "section1",
+                "sectionTitle1",
+                "text",
+                "sectionTitle1_",
+                "section2",
+                "section2_",
+                "section1_");
+    }
+
+    @Test
+    public void testSectionsAndHeadingsOnDifferentLevels2() throws ParseException {
+        // section on lower level than heading
+        String text = "<body><section><h3>Headline1</h3></section></body>";
+        parser.parse(text, sink);
+
+        Iterator<SinkEventElement> it = sink.getEventList().iterator();
+        assertSinkEquals(
+                it,
+                "section1",
+                "section2",
+                "section3",
+                "sectionTitle3",
+                "text",
+                "sectionTitle3_",
+                "section3_",
+                "section2_",
+                "section1_");
+    }
+
+    @Test
+    public void testSectionsAndHeadingsOnSameLevel() throws ParseException {
+        // heading directly following same level section doesn't need additional sections, while headings following some other element (still same level)
+        // needs an explicit new (same level) section
+        String text = "<body><p>paragraph</p><section><h1>Headline1</h1><section><h2>Headline2</h2></section><h1>Headline3</h1></section></body>";
+        parser.parse(text, sink);
+
+        Iterator<SinkEventElement> it = sink.getEventList().iterator();
+        assertSinkEquals(
+                it,
+                "section1",
+                "sectionTitle1",
+                "text",
+                "sectionTitle1_",
+                "section2",
+                "sectionTitle2",
+                "text",
+                "sectionTitle2_",
+                "section2_",
+                "section1_",
+                "section1",
+                "sectionTitle1",
+                "text",
+                "sectionTitle1_",
+                "section1_");
+    }
+
+    @Test
     public void testFigureEventsList() throws Exception {
         String text = "<img src=\"source\" title=\"caption\" />";
 
@@ -859,33 +928,5 @@ public class Xhtml5BaseParserTest extends AbstractParserTest {
                 "definedTerm_",
                 "definitionListItem_",
                 "definitionList_");
-    }
-
-    @Test
-    public void testSectionsAndHeadings() throws ParseException {
-        String text = "<body><h1>Headline1</h1><section><h2>Headline2</h2></section></body>";
-        
-        parser.setValidate(false);
-        parser.parse(text, sink);
-
-        Iterator<SinkEventElement> it = sink.getEventList().iterator();
-        // TODO: this leads to a list with a missing section1_ method
-    
-        assertEquals("section1", it.next().getName());
-        assertEquals("sectionTitle1", it.next().getName());
-
-        SinkEventElement textEvt = it.next();
-        assertEquals("text", textEvt.getName());
-        assertEquals("Headline1", textEvt.getArgs()[0]);
-        assertEquals("sectionTitle1_", it.next().getName());
-        assertEquals("section2", it.next().getName());
-        assertEquals("sectionTitle2", it.next().getName());
-        textEvt = it.next();
-        assertEquals("text", textEvt.getName());
-        assertEquals("Headline1", textEvt.getArgs()[0]);
-        assertEquals("sectionTitle2_", it.next().getName());
-        assertEquals("section2_", it.next().getName());
-        assertEquals("section1_", it.next().getName());
-
     }
 }

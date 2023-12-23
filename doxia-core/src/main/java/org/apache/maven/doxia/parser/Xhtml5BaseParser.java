@@ -113,10 +113,12 @@ public class Xhtml5BaseParser extends AbstractXmlParser implements HtmlMarkup {
     /** Used for nested lists. */
     private int orderedListDepth = 0;
 
-    /** Counts section level. */
+    /** Counts section nesting level of the sections manually set in the HTML document */
     private int sectionLevel;
 
-    /** Counts heading level. */
+    /** Counts current heading level. This is either the {@link #sectionLevel} if no artificial sections are currently open
+     * for headings or a number higher or lower than {@link #sectionLevel} (for all section currently opened/closed for a preceding heading).
+     * The heading level only changes when a new heading starts, or a section starts or ends. */
     private int headingLevel;
 
     /** Verbatim flag, true whenever we are inside a &lt;pre&gt; tag. */
@@ -127,6 +129,9 @@ public class Xhtml5BaseParser extends AbstractXmlParser implements HtmlMarkup {
 
     /** Used to wrap the definedTerm with its definition, even when one is omitted */
     boolean hasDefinitionListItem = false;
+
+    // TODO: this needs to be implemented in a SinkWrapper in order to be applicable even for subclassed parsers
+    boolean isSectionStartLastSinkEvent = false;
 
     /** {@inheritDoc} */
     @Override
@@ -536,6 +541,7 @@ public class Xhtml5BaseParser extends AbstractXmlParser implements HtmlMarkup {
                     parser.getLineNumber(),
                     parser.getColumnNumber());
         }
+        isSectionStartLastSinkEvent = parser.getName().equals(HtmlMarkup.SECTION.toString());
     }
 
     /**
@@ -549,6 +555,7 @@ public class Xhtml5BaseParser extends AbstractXmlParser implements HtmlMarkup {
         if (!baseEndTag(parser, sink)) {
             // unrecognized tag is already logged in StartTag
         }
+        isSectionStartLastSinkEvent = false;
     }
 
     /** {@inheritDoc} */
@@ -564,6 +571,7 @@ public class Xhtml5BaseParser extends AbstractXmlParser implements HtmlMarkup {
          */
         if ((text != null && !text.isEmpty()) && !isScriptBlock()) {
             sink.text(text);
+            isSectionStartLastSinkEvent = false;
         }
     }
 
@@ -574,9 +582,11 @@ public class Xhtml5BaseParser extends AbstractXmlParser implements HtmlMarkup {
 
         if ("PB".equals(text.trim())) {
             sink.pageBreak();
+            isSectionStartLastSinkEvent = false;
         } else {
             if (isEmitComments()) {
                 sink.comment(text);
+                isSectionStartLastSinkEvent = false;
             }
         }
     }
@@ -591,15 +601,31 @@ public class Xhtml5BaseParser extends AbstractXmlParser implements HtmlMarkup {
         } else {
             sink.text(text);
         }
+        isSectionStartLastSinkEvent = false;
     }
 
     /**
-     * Make sure sections are nested consecutively.
+     * Shortcut for {@link #emitHeadingSections(int, Sink, boolean)} with last argument being {@code true}
+     * @param newLevel
+     * @param sink
+     * @param attribs
+     * @deprecated Use {{@link #emitHeadingSections(int, Sink, boolean)} instead.
+     */
+    @Deprecated
+    protected void consecutiveSections(int newLevel, Sink sink, SinkEventAttributeSet attribs) {
+        emitHeadingSections(newLevel, sink, true);
+    }
+
+    /**
+     * Make sure sections are nested consecutively and correctly inserted for the given heading level
      *
      * <p>
-     * HTML5 heading tags H1 to H5 imply sections where they are not
-     * present, that means we have to open close any sections that
-     * are missing in between.
+     * HTML5 heading tags H1 to H5 imply same level sections in Sink API (compare with {@link Sink#sectionTitle(int, SinkEventAttributes)}.
+     * However (X)HTML5 allows headings without explicit surrounding section elements and is also
+     * less strict with non-consecutive heading levels.
+     * This methods both closes open sections which have been added for previous headings and/or opens
+     * sections necessary for the new heading level.
+     * At least one section needs to be opened directly prior the heading due to Sink API restrictions.
      * </p>
      *
      * <p>
@@ -625,23 +651,30 @@ public class Xhtml5BaseParser extends AbstractXmlParser implements HtmlMarkup {
      *
      * @param newLevel the new section level, all upper levels have to be closed.
      * @param sink the sink to receive the events.
-     * @param attribs a {@link org.apache.maven.doxia.sink.impl.SinkEventAttributeSet} object.
      */
-    protected void consecutiveSections(int newLevel, Sink sink, SinkEventAttributeSet attribs) {
-        closeOpenSections(newLevel, sink);
-        openMissingSections(newLevel, sink);
+    protected void emitHeadingSections(int newLevel, Sink sink, boolean enforceNewSection) {
+        int lowerBoundSectionLevel = newLevel;
+        if (enforceNewSection) {
+            // close one more if either last event was not section start or the new level is lower than the current one
+            // (in this case the last event may be a section start event but for another level)
+            if (!isSectionStartLastSinkEvent || newLevel < this.headingLevel) {
+                lowerBoundSectionLevel--;
+            }
+        }
+        closeOpenHeadingSections(lowerBoundSectionLevel, sink);
+        openMissingHeadingSections(newLevel, sink);
 
         this.headingLevel = newLevel;
     }
 
     /**
-     * Close open sections.
+     * Close open heading sections.
      *
      * @param newLevel the new section level, all upper levels have to be closed.
      * @param sink the sink to receive the events.
      */
-    private void closeOpenSections(int newLevel, Sink sink) {
-        while (this.headingLevel >= newLevel && this.sectionLevel < headingLevel) {
+    private void closeOpenHeadingSections(int newLevel, Sink sink) {
+        while (this.headingLevel > newLevel) {
             if (headingLevel == Sink.SECTION_LEVEL_5) {
                 sink.section5_();
             } else if (headingLevel == Sink.SECTION_LEVEL_4) {
@@ -656,16 +689,17 @@ public class Xhtml5BaseParser extends AbstractXmlParser implements HtmlMarkup {
 
             this.headingLevel--;
         }
+        // enforce the previous element is a section
     }
 
     /**
-     * Open missing sections.
+     * Open missing heading sections.
      *
      * @param newLevel the new section level, all lower levels have to be opened.
      * @param sink the sink to receive the events.
      */
-    private void openMissingSections(int newLevel, Sink sink) {
-        while (this.headingLevel < newLevel && this.sectionLevel < newLevel) {
+    private void openMissingHeadingSections(int newLevel, Sink sink) {
+        while (this.headingLevel < newLevel) {
             this.headingLevel++;
 
             if (headingLevel == Sink.SECTION_LEVEL_5) {
@@ -909,19 +943,20 @@ public class Xhtml5BaseParser extends AbstractXmlParser implements HtmlMarkup {
     }
 
     private void handleSectionStart(Sink sink, SinkEventAttributeSet attribs) {
+        emitHeadingSections(sectionLevel, sink, false);
         sink.section(++sectionLevel, attribs);
+        this.headingLevel = sectionLevel;
     }
 
     private void handleHeadingStart(Sink sink, int level, SinkEventAttributeSet attribs) {
-        consecutiveSections(level, sink, attribs);
+        emitHeadingSections(level, sink, true);
         sink.sectionTitle(level, attribs);
     }
 
     private void handleSectionEnd(Sink sink) {
-        closeOpenSections(sectionLevel, sink);
-        this.headingLevel = 0;
-
+        emitHeadingSections(sectionLevel, sink, false);
         sink.section_(sectionLevel--);
+        this.headingLevel = sectionLevel;
     }
 
     private void handleTableStart(Sink sink, SinkEventAttributeSet attribs, XmlPullParser parser) {
