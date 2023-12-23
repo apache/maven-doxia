@@ -490,7 +490,7 @@ public interface Sink extends AutoCloseable {
      * Starts a 4th title heading element. This element is optional, but if it exists,
      * it has to be contained, and be the first element, within a {@link #section4()} element.
      * <p>
-     * Shortcut for {@link #sectionTitle(int, SinkEventAttributes)} with first argument being {@code 3} and second argument being {@code null}.
+     * Shortcut for {@link #sectionTitle(int, SinkEventAttributes)} with first argument being {@code 4} and second argument being {@code null}.
      *
      * @see #sectionTitle(int,SinkEventAttributes)
      */
@@ -505,7 +505,7 @@ public interface Sink extends AutoCloseable {
      * Starts a 5th heading element which contains the topic of the section.
      * This has to be contained within a {@link #section4()} element.
      * <p>
-     * Shortcut for {@link #section(int, SinkEventAttributes)} with first argument being {@code 3} and second argument being {@code null}.
+     * Shortcut for {@link #section(int, SinkEventAttributes)} with first argument being {@code 5} and second argument being {@code null}.
      *
      * @see #section(int,SinkEventAttributes)
      */
@@ -520,7 +520,7 @@ public interface Sink extends AutoCloseable {
      * Starts a 5th title heading element. This element is optional, but if it exists,
      * it has to be contained, and be the first element, within a {@link #section5()} element.
      * <p>
-     * Shortcut for {@link #sectionTitle(int, SinkEventAttributes)} with first argument being {@code 3} and second argument being {@code null}.
+     * Shortcut for {@link #sectionTitle(int, SinkEventAttributes)} with first argument being {@code 5} and second argument being {@code null}.
      *
      * @see #sectionTitle(int,SinkEventAttributes)
      */
