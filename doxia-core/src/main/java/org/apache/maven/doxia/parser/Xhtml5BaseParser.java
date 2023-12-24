@@ -606,7 +606,7 @@ public class Xhtml5BaseParser extends AbstractXmlParser implements HtmlMarkup {
      * @param newLevel
      * @param sink
      * @param attribs
-     * @deprecated Use {{@link #emitHeadingSections(int, Sink, boolean)} instead.
+     * @deprecated Use {@link #emitHeadingSections(int, Sink, boolean)} instead.
      */
     @Deprecated
     protected void consecutiveSections(int newLevel, Sink sink, SinkEventAttributeSet attribs) {
@@ -617,7 +617,7 @@ public class Xhtml5BaseParser extends AbstractXmlParser implements HtmlMarkup {
      * Make sure sections are nested consecutively and correctly inserted for the given heading level
      *
      * <p>
-     * HTML5 heading tags H1 to H5 imply same level sections in Sink API (compare with {@link Sink#sectionTitle(int, SinkEventAttributes)}.
+     * HTML5 heading tags H1 to H5 imply same level sections in Sink API (compare with {@link Sink#sectionTitle(int, SinkEventAttributes)}).
      * However (X)HTML5 allows headings without explicit surrounding section elements and is also
      * less strict with non-consecutive heading levels.
      * This methods both closes open sections which have been added for previous headings and/or opens
@@ -644,7 +644,7 @@ public class Xhtml5BaseParser extends AbstractXmlParser implements HtmlMarkup {
      * we have to close two sections before we open the <code>&lt;h2&gt;</code>.
      * </p>
      *
-     * <p>The current level is set to newLevel afterwards.</p>
+     * <p>The current heading level is set to newLevel afterwards.</p>
      *
      * @param newLevel the new section level, all upper levels have to be closed.
      * @param sink the sink to receive the events.
@@ -673,6 +673,7 @@ public class Xhtml5BaseParser extends AbstractXmlParser implements HtmlMarkup {
                 && !lastEventName.endsWith("_")
                 && !lastEventName.startsWith("sectionTitle");
     }
+
     /**
      * Close open heading sections.
      *

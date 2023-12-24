@@ -26,7 +26,7 @@ import java.util.List;
 import org.apache.maven.doxia.sink.Sink;
 
 /**
- * A proxy for a Sink which captures all event/method names called on it. 
+ * A proxy for a Sink which captures all event/method names called on it.
  */
 public class EventCapturingSinkProxy implements InvocationHandler {
 
@@ -34,7 +34,7 @@ public class EventCapturingSinkProxy implements InvocationHandler {
     private final List<String> capturedEventNames;
 
     /**
-     * 
+     *
      * @param sink
      * @param capturedEventNames the list to receive the captured event/method names
      * @return
