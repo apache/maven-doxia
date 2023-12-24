@@ -24,7 +24,7 @@ import java.util.Comparator;
  * Sorts the given {@link SinkWrapperFactory}s so that the one with the highest priority comes first (i.e. order by descending priority)
  * @since 2.0.0
  */
-public class SinkWrapperFactoryComparator implements Comparator<SinkWrapperFactory> {
+public final class SinkWrapperFactoryComparator implements Comparator<SinkWrapperFactory> {
 
     @Override
     public int compare(SinkWrapperFactory o1, SinkWrapperFactory o2) {
