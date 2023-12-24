@@ -105,7 +105,7 @@ public class FmlParser extends AbstractXmlParser implements FmlMarkup {
             // this populates faqs
             super.parse(tmp, sink, reference);
 
-            writeFaqs(sink);
+            writeFaqs(getWrappedSink(sink));
         } finally {
             this.faqs = null;
             this.sourceContent = null;

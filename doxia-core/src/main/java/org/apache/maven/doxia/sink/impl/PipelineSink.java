@@ -28,9 +28,12 @@ import org.apache.maven.doxia.sink.Sink;
 
 /**
  * May be used to invoke the same method on a List of Sinks.
+ * @deprecated Use the {@link SinkWrapper} approach which doesn't require the use of dynamic proxies.
  *
  * @author <a href="mailto:trygvis@inamo.no">Trygve Laugst&oslash;l</a>
+ * @see SinkWrapper
  */
+@Deprecated
 public class PipelineSink implements InvocationHandler {
     private List<Sink> pipeline;
 

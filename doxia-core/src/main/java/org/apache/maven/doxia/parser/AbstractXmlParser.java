@@ -131,7 +131,7 @@ public abstract class AbstractXmlParser extends AbstractParser implements XmlMar
             // Note: do it after input is set, otherwise values are reset
             initXmlParser(parser);
 
-            parseXml(parser, sink);
+            parseXml(parser, getWrappedSink(sink));
         } catch (XmlPullParserException ex) {
             throw new ParseException("Error parsing the model", ex, ex.getLineNumber(), ex.getColumnNumber());
         } catch (MacroExecutionException ex) {

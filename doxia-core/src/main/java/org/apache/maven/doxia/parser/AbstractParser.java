@@ -25,6 +25,9 @@ import java.io.IOException;
 import java.io.InputStream;
 import java.io.Reader;
 import java.io.StringReader;
+import java.util.Collection;
+import java.util.LinkedList;
+import java.util.PriorityQueue;
 import java.util.Properties;
 
 import org.apache.maven.doxia.macro.Macro;
@@ -33,6 +36,8 @@ import org.apache.maven.doxia.macro.MacroRequest;
 import org.apache.maven.doxia.macro.manager.MacroManager;
 import org.apache.maven.doxia.macro.manager.MacroNotFoundException;
 import org.apache.maven.doxia.sink.Sink;
+import org.apache.maven.doxia.sink.impl.SinkWrapperFactory;
+import org.apache.maven.doxia.sink.impl.SinkWrapperFactoryComparator;
 
 /**
  * An abstract base class that defines some convenience methods for parsers.
@@ -47,6 +52,11 @@ public abstract class AbstractParser implements Parser {
 
     @Inject
     private MacroManager macroManager;
+
+    @Inject
+    private Collection<SinkWrapperFactory> automaticallyRegisteredSinkWrapperFactories;
+
+    private final Collection<SinkWrapperFactory> manuallyRegisteredSinkWrapperFactories = new LinkedList<>();
 
     /**
      * Emit Doxia comment events when parsing comments?
@@ -171,7 +181,25 @@ public abstract class AbstractParser implements Parser {
     }
 
     /**
-     * Set <code>secondParsing</code> to true, if we need a second parsing.
+     * Retrieves the sink pipeline built from all registered {@link SinkWrapperFactory} objects.
+     * For secondary parsers (i.e. ones with {@link #isSecondParsing()} returning {@code true} just the given original sink is returned.
+     * @param sink
+     * @return the Sink pipeline to be used
+     */
+    protected Sink getWrappedSink(Sink sink) {
+        // no wrapping for secondary parsing
+        if (secondParsing) {
+            return sink;
+        }
+        Sink currentSink = sink;
+        for (SinkWrapperFactory factory : getSinkWrapperFactories()) {
+            currentSink = factory.createWrapper(currentSink);
+        }
+        return currentSink;
+    }
+
+    /**
+     * Set <code>secondParsing</code> to true, if this represents a secondary parsing of the same source.
      *
      * @param second true for second parsing
      */
@@ -187,6 +215,22 @@ public abstract class AbstractParser implements Parser {
      */
     protected boolean isSecondParsing() {
         return secondParsing;
+    }
+
+    @Override
+    public void addSinkWrapperFactory(SinkWrapperFactory factory) {
+        manuallyRegisteredSinkWrapperFactories.add(factory);
+    }
+
+    @Override
+    public Collection<SinkWrapperFactory> getSinkWrapperFactories() {
+        PriorityQueue<SinkWrapperFactory> effectiveSinkWrapperFactories =
+                new PriorityQueue<>(new SinkWrapperFactoryComparator());
+        if (automaticallyRegisteredSinkWrapperFactories != null) {
+            effectiveSinkWrapperFactories.addAll(automaticallyRegisteredSinkWrapperFactories);
+        }
+        effectiveSinkWrapperFactories.addAll(manuallyRegisteredSinkWrapperFactories);
+        return effectiveSinkWrapperFactories;
     }
 
     /**
