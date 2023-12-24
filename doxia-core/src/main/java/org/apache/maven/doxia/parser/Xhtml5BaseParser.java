@@ -22,6 +22,7 @@ import javax.swing.text.html.HTML.Attribute;
 
 import java.io.Reader;
 import java.util.HashSet;
+import java.util.LinkedList;
 import java.util.Set;
 import java.util.Stack;
 import java.util.regex.Pattern;
@@ -30,6 +31,7 @@ import org.apache.maven.doxia.macro.MacroExecutionException;
 import org.apache.maven.doxia.markup.HtmlMarkup;
 import org.apache.maven.doxia.sink.Sink;
 import org.apache.maven.doxia.sink.SinkEventAttributes;
+import org.apache.maven.doxia.sink.impl.EventCapturingSinkProxy;
 import org.apache.maven.doxia.sink.impl.SinkEventAttributeSet;
 import org.apache.maven.doxia.util.DoxiaUtils;
 import org.codehaus.plexus.util.xml.pull.XmlPullParser;
@@ -130,8 +132,7 @@ public class Xhtml5BaseParser extends AbstractXmlParser implements HtmlMarkup {
     /** Used to wrap the definedTerm with its definition, even when one is omitted */
     boolean hasDefinitionListItem = false;
 
-    // TODO: this needs to be implemented in a SinkWrapper in order to be applicable even for subclassed parsers
-    boolean isSectionStartLastSinkEvent = false;
+    private LinkedList<String> capturedSinkEventNames;
 
     /** {@inheritDoc} */
     @Override
@@ -139,7 +140,9 @@ public class Xhtml5BaseParser extends AbstractXmlParser implements HtmlMarkup {
         init();
 
         try {
-            super.parse(source, sink, reference);
+            capturedSinkEventNames = new LinkedList<>();
+            Sink capturingSink = EventCapturingSinkProxy.newInstance(sink, capturedSinkEventNames);
+            super.parse(source, capturingSink, reference);
         } finally {
             setSecondParsing(false);
             init();
@@ -541,7 +544,6 @@ public class Xhtml5BaseParser extends AbstractXmlParser implements HtmlMarkup {
                     parser.getLineNumber(),
                     parser.getColumnNumber());
         }
-        isSectionStartLastSinkEvent = parser.getName().equals(HtmlMarkup.SECTION.toString());
     }
 
     /**
@@ -555,7 +557,6 @@ public class Xhtml5BaseParser extends AbstractXmlParser implements HtmlMarkup {
         if (!baseEndTag(parser, sink)) {
             // unrecognized tag is already logged in StartTag
         }
-        isSectionStartLastSinkEvent = false;
     }
 
     /** {@inheritDoc} */
@@ -571,7 +572,6 @@ public class Xhtml5BaseParser extends AbstractXmlParser implements HtmlMarkup {
          */
         if ((text != null && !text.isEmpty()) && !isScriptBlock()) {
             sink.text(text);
-            isSectionStartLastSinkEvent = false;
         }
     }
 
@@ -582,11 +582,9 @@ public class Xhtml5BaseParser extends AbstractXmlParser implements HtmlMarkup {
 
         if ("PB".equals(text.trim())) {
             sink.pageBreak();
-            isSectionStartLastSinkEvent = false;
         } else {
             if (isEmitComments()) {
                 sink.comment(text);
-                isSectionStartLastSinkEvent = false;
             }
         }
     }
@@ -601,7 +599,6 @@ public class Xhtml5BaseParser extends AbstractXmlParser implements HtmlMarkup {
         } else {
             sink.text(text);
         }
-        isSectionStartLastSinkEvent = false;
     }
 
     /**
@@ -657,7 +654,7 @@ public class Xhtml5BaseParser extends AbstractXmlParser implements HtmlMarkup {
         if (enforceNewSection) {
             // close one more if either last event was not section start or the new level is lower than the current one
             // (in this case the last event may be a section start event but for another level)
-            if (!isSectionStartLastSinkEvent || newLevel < this.headingLevel) {
+            if (!isLastEventSectionStart() || newLevel < this.headingLevel) {
                 lowerBoundSectionLevel--;
             }
         }
@@ -667,6 +664,15 @@ public class Xhtml5BaseParser extends AbstractXmlParser implements HtmlMarkup {
         this.headingLevel = newLevel;
     }
 
+    private boolean isLastEventSectionStart() {
+        String lastEventName = capturedSinkEventNames.pollLast();
+        if (lastEventName == null) {
+            return false;
+        }
+        return lastEventName.startsWith("section")
+                && !lastEventName.endsWith("_")
+                && !lastEventName.startsWith("sectionTitle");
+    }
     /**
      * Close open heading sections.
      *

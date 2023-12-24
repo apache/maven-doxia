@@ -94,7 +94,7 @@ public abstract class AbstractIdentityTest extends AbstractModuleTest {
         sink = createSink(writer);
         SinkTestDocument.generate(sink);
         sink.close();
-        
+
         String expectedViaTargetSink = writer.toString();
         // write to file for comparison
         try (Writer fileWriter = getTestWriter("expectedTargetSink")) {

@@ -173,9 +173,11 @@ public class Xhtml5BaseParserTest extends AbstractParserTest {
 
     @Test
     public void testSectionsAndHeadingsOnSameLevel() throws ParseException {
-        // heading directly following same level section doesn't need additional sections, while headings following some other element (still same level)
+        // heading directly following same level section doesn't need additional sections, while headings following some
+        // other element (still same level)
         // needs an explicit new (same level) section
-        String text = "<body><p>paragraph</p><section><h1>Headline1</h1><section><h2>Headline2</h2></section><h1>Headline3</h1></section></body>";
+        String text =
+                "<body><section><h1>Headline1</h1><section><h2>Headline2</h2></section><h1>Headline3</h1></section></body>";
         parser.parse(text, sink);
 
         Iterator<SinkEventElement> it = sink.getEventList().iterator();
