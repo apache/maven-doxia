@@ -188,8 +188,8 @@ under the License.
       <dependency>
         <groupId>com.google.inject</groupId>
         <artifactId>guice</artifactId>
-        <version>4.2.3</version>
-        <classifier>no_aop</classifier>
+        <version>6.0.0</version>
+        <scope>test</scope>
       </dependency>
       <dependency>
         <groupId>org.codehaus.plexus</groupId>
