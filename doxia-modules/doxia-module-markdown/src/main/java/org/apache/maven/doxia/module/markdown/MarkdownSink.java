@@ -729,10 +729,6 @@ public class MarkdownSink extends AbstractTextSink implements MarkdownMarkup {
 
     @Override
     public void text(String text, SinkEventAttributes attributes) {
-<<<<<<< Upstream, based on master
-=======
-        // evaluate attributes
->>>>>>> 851bc35 [DOXIA-714] Emit proper markdown for table alignment and figures
         if (attributes != null) {
             inline(attributes);
         }
