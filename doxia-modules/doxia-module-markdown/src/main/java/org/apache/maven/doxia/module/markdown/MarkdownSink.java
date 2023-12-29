@@ -686,6 +686,9 @@ public class MarkdownSink extends AbstractTextSink implements MarkdownMarkup {
 
     @Override
     public void text(String text, SinkEventAttributes attributes) {
+        if (attributes != null) {
+            inline(attributes);
+        }
         if (tableCaptionFlag) {
             tableCaptionBuffer.append(text);
         } else if (headerFlag || bufferFlag) {
@@ -694,6 +697,9 @@ public class MarkdownSink extends AbstractTextSink implements MarkdownMarkup {
             verbatimContent(text);
         } else {
             content(text);
+        }
+        if (attributes != null) {
+            inline_();
         }
     }
 
