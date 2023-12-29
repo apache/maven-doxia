@@ -21,12 +21,15 @@ package org.apache.maven.doxia.module.markdown;
 import java.io.PrintWriter;
 import java.io.Writer;
 import java.util.ArrayList;
+import java.util.Arrays;
 import java.util.Collection;
 import java.util.LinkedList;
 import java.util.List;
 import java.util.Stack;
+import java.util.stream.Collectors;
 
 import org.apache.commons.lang3.StringUtils;
+import org.apache.maven.doxia.sink.Sink;
 import org.apache.maven.doxia.sink.SinkEventAttributes;
 import org.apache.maven.doxia.sink.impl.AbstractTextSink;
 import org.apache.maven.doxia.sink.impl.SinkEventAttributeSet;
@@ -45,11 +48,8 @@ public class MarkdownSink extends AbstractTextSink implements MarkdownMarkup {
     // Instance fields
     // ----------------------------------------------------------------------
 
-    /**  A buffer that holds the current text when headerFlag or bufferFlag set to <code>true</code>. */
+    /**  A buffer that holds the current text when headerFlag or bufferFlag set to <code>true</code>. The content of this buffer is already escaped. */
     private StringBuffer buffer;
-
-    /**  A buffer that holds the table caption. */
-    private StringBuilder tableCaptionBuffer;
 
     /**  author. */
     private Collection<String> authors;
@@ -69,23 +69,23 @@ public class MarkdownSink extends AbstractTextSink implements MarkdownMarkup {
     /**  tableCaptionFlag. */
     private boolean tableCaptionFlag;
 
-    /**  tableCellFlag. */
+    /** tableCellFlag, set to {@code true} inside table (header) cells */
     private boolean tableCellFlag;
+
+    /** tableRowHeaderFlag, set to {@code true} for table rows containing at least one table header cell  */
+    private boolean tableHeaderCellFlag;
 
     /**  headerFlag. */
     private boolean headerFlag;
 
-    /**  bufferFlag. */
+    /**  bufferFlag, set to {@code true} in certain elements to prevent direct writing during {@link #text(String, SinkEventAttributes)} */
     private boolean bufferFlag;
-
-    /**  itemFlag. */
-    private boolean itemFlag;
 
     /**  verbatimFlag. */
     private boolean verbatimFlag;
 
-    /**  gridFlag for tables. */
-    private boolean gridFlag;
+    /** figure flag, set to {@code true} between {@link #figure(SinkEventAttributes)} and {@link #figure_()} events */
+    private boolean figureFlag;
 
     /**  number of cells in a table. */
     private int cellCount;
@@ -96,14 +96,11 @@ public class MarkdownSink extends AbstractTextSink implements MarkdownMarkup {
     /** {@code true} when last written character in {@link #writer} was a line separator, or writer is still at the beginning */
     private boolean isWriterAtStartOfNewLine;
 
-    /**  justification of table cells. */
-    private int[] cellJustif;
-
-    /**  a line of a row in a table. */
-    private String rowLine;
+    /**  justification of table cells per column. */
+    private List<Integer> cellJustif;
 
     /**  is header row */
-    private boolean headerRow;
+    private boolean isFirstTableRow;
 
     /**  listNestingLevel, 0 outside the list, 1 for the top-level list, 2 for a nested list, 3 for a list nested inside a nested list, .... */
     private int listNestingLevel;
@@ -113,6 +110,8 @@ public class MarkdownSink extends AbstractTextSink implements MarkdownMarkup {
 
     /** Keep track of the closing tags for inline events. */
     protected Stack<List<String>> inlineStack = new Stack<>();
+
+    private String figureSrc;
 
     // ----------------------------------------------------------------------
     // Public protected methods
@@ -155,7 +154,6 @@ public class MarkdownSink extends AbstractTextSink implements MarkdownMarkup {
 
         resetBuffer();
 
-        this.tableCaptionBuffer = new StringBuilder();
         this.listNestingLevel = 0;
 
         this.authors = new LinkedList<>();
@@ -165,14 +163,13 @@ public class MarkdownSink extends AbstractTextSink implements MarkdownMarkup {
         this.startFlag = true;
         this.tableCaptionFlag = false;
         this.tableCellFlag = false;
+        this.tableHeaderCellFlag = false;
         this.headerFlag = false;
         this.bufferFlag = false;
-        this.itemFlag = false;
         this.verbatimFlag = false;
-        this.gridFlag = false;
+        this.figureFlag = false;
         this.cellCount = 0;
         this.cellJustif = null;
-        this.rowLine = null;
         this.listStyles.clear();
         this.inlineStack.clear();
     }
@@ -182,13 +179,6 @@ public class MarkdownSink extends AbstractTextSink implements MarkdownMarkup {
      */
     protected void resetBuffer() {
         buffer = new StringBuffer();
-    }
-
-    /**
-     * Reset the TableCaptionBuffer.
-     */
-    protected void resetTableCaptionBuffer() {
-        tableCaptionBuffer = new StringBuilder();
     }
 
     @Override
@@ -277,7 +267,6 @@ public class MarkdownSink extends AbstractTextSink implements MarkdownMarkup {
             // nested
         }
         listStyles.pop();
-        itemFlag = false;
     }
 
     @Override
@@ -312,7 +301,6 @@ public class MarkdownSink extends AbstractTextSink implements MarkdownMarkup {
             // nested
         }
         listStyles.pop();
-        itemFlag = false;
     }
 
     @Override
@@ -327,12 +315,10 @@ public class MarkdownSink extends AbstractTextSink implements MarkdownMarkup {
 
     private void orderedOrUnorderedListItem() {
         write(getListPrefix());
-        itemFlag = true;
     }
 
     private void orderedOrUnorderedListItem_() {
         ensureBeginningOfLine();
-        itemFlag = false;
     }
 
     private String getListPrefix() {
@@ -423,41 +409,39 @@ public class MarkdownSink extends AbstractTextSink implements MarkdownMarkup {
     }
 
     @Override
-    public void table_() {
-        if (tableCaptionBuffer.length() > 0) {
-            text(tableCaptionBuffer.toString() + EOL);
-        }
-
-        resetTableCaptionBuffer();
-    }
-
-    @Override
     public void tableRows(int[] justification, boolean grid) {
-        cellJustif = null; // justification;
-        gridFlag = grid;
-        headerRow = true;
+        if (justification != null) {
+            cellJustif = Arrays.stream(justification).boxed().collect(Collectors.toCollection(ArrayList::new));
+        } else {
+            cellJustif = new ArrayList<>();
+        }
+        // grid flag is not supported
+        isFirstTableRow = true;
     }
 
     @Override
     public void tableRows_() {
         cellJustif = null;
-        gridFlag = false;
     }
 
     @Override
     public void tableRow(SinkEventAttributes attributes) {
-        bufferFlag = true;
         cellCount = 0;
     }
 
     @Override
     public void tableRow_() {
-        bufferFlag = false;
+        if (isFirstTableRow && !tableHeaderCellFlag) {
+            // emit empty table header as this is mandatory for GFM table extension
+            // (https://stackoverflow.com/a/17543474/5155923)
+            writeEmptyTableHeader();
+            writeTableDelimiterRow();
+            tableHeaderCellFlag = false;
+            isFirstTableRow = false;
+            // afterwards emit the first row
+        }
 
-        // write out the header row first, then the data in the buffer
-        buildRowLine();
-
-        write(TABLE_ROW_SEPARATOR_MARKUP);
+        write(TABLE_ROW_PREFIX);
 
         write(buffer.toString());
 
@@ -465,57 +449,84 @@ public class MarkdownSink extends AbstractTextSink implements MarkdownMarkup {
 
         write(EOL);
 
-        if (headerRow) {
-            write(rowLine);
-            headerRow = false;
+        if (isFirstTableRow) {
+            // emit delimiter row
+            writeTableDelimiterRow();
+            isFirstTableRow = false;
         }
 
         // only reset cell count if this is the last row
         cellCount = 0;
     }
 
-    /** Construct a table row. */
-    private void buildRowLine() {
-        StringBuilder rLine = new StringBuilder(TABLE_ROW_SEPARATOR_MARKUP);
-
+    private void writeEmptyTableHeader() {
+        write(TABLE_ROW_PREFIX);
         for (int i = 0; i < cellCount; i++) {
-            if (cellJustif != null) {
-                switch (cellJustif[i]) {
-                    case 1:
-                        rLine.append(TABLE_COL_LEFT_ALIGNED_MARKUP);
-                        break;
-                    case 2:
-                        rLine.append(TABLE_COL_RIGHT_ALIGNED_MARKUP);
-                        break;
-                    default:
-                        rLine.append(TABLE_COL_DEFAULT_ALIGNED_MARKUP);
-                }
-            } else {
-                rLine.append(TABLE_COL_DEFAULT_ALIGNED_MARKUP);
-            }
+            write(StringUtils.repeat(String.valueOf(SPACE), 3) + TABLE_CELL_SEPARATOR_MARKUP);
         }
-        rLine.append(EOL);
+        write(EOL);
+    }
 
-        this.rowLine = rLine.toString();
+    /** Emit the delimiter row which determines the alignment */
+    private void writeTableDelimiterRow() {
+        write(TABLE_ROW_PREFIX);
+        int justification = Sink.JUSTIFY_LEFT;
+        for (int i = 0; i < cellCount; i++) {
+            // keep previous column's alignment in case too few are specified
+            if (cellJustif != null && cellJustif.size() > i) {
+                justification = cellJustif.get(i);
+            }
+            switch (justification) {
+                case Sink.JUSTIFY_RIGHT:
+                    write(TABLE_COL_RIGHT_ALIGNED_MARKUP);
+                    break;
+                case Sink.JUSTIFY_CENTER:
+                    write(TABLE_COL_CENTER_ALIGNED_MARKUP);
+                    break;
+                default:
+                    write(TABLE_COL_LEFT_ALIGNED_MARKUP);
+                    break;
+            }
+            write(TABLE_CELL_SEPARATOR_MARKUP);
+        }
+        write(EOL);
     }
 
     @Override
     public void tableCell(SinkEventAttributes attributes) {
-        tableCell(false);
+        if (attributes != null) {
+            // evaluate alignment attributes
+            final int cellJustification;
+            if (attributes.containsAttributes(SinkEventAttributeSet.LEFT)) {
+                cellJustification = Sink.JUSTIFY_LEFT;
+            } else if (attributes.containsAttributes(SinkEventAttributeSet.RIGHT)) {
+                cellJustification = Sink.JUSTIFY_RIGHT;
+            } else if (attributes.containsAttributes(SinkEventAttributeSet.CENTER)) {
+                cellJustification = Sink.JUSTIFY_CENTER;
+            } else {
+                cellJustification = -1;
+            }
+            if (cellJustification > -1) {
+                if (cellJustif.size() > cellCount) {
+                    cellJustif.set(cellCount, cellJustification);
+                } else if (cellJustif.size() == cellCount) {
+                    cellJustif.add(cellJustification);
+                } else {
+                    // create non-existing justifications for preceding columns
+                    for (int precedingCol = cellJustif.size(); precedingCol < cellCount; precedingCol++) {
+                        cellJustif.add(Sink.JUSTIFY_LEFT);
+                    }
+                    cellJustif.add(cellJustification);
+                }
+            }
+        }
+        tableCellFlag = true;
     }
 
     @Override
     public void tableHeaderCell(SinkEventAttributes attributes) {
-        tableCell(true);
-    }
-
-    /**
-     * Starts a table cell.
-     *
-     * @param headerRow If this cell is part of a header row.
-     */
-    public void tableCell(boolean headerRow) {
-        tableCellFlag = true;
+        tableCell(attributes);
+        tableHeaderCellFlag = true;
     }
 
     @Override
@@ -548,13 +559,43 @@ public class MarkdownSink extends AbstractTextSink implements MarkdownMarkup {
     }
 
     @Override
-    public void figureCaption_() {
-        write(EOL);
+    public void figure(SinkEventAttributes attributes) {
+        figureSrc = null;
+        figureFlag = true;
     }
 
-    /** {@inheritDoc} */
+    @Override
+    public void figureCaption(SinkEventAttributes attributes) {
+        bufferFlag = true;
+    }
+
+    @Override
+    public void figureCaption_() {
+        bufferFlag = false;
+    }
+
+    @Override
     public void figureGraphics(String name, SinkEventAttributes attributes) {
-        write("<img src=\"" + name + "\" />");
+        figureSrc = escapeMarkdown(name);
+        if (!figureFlag) {
+            Object alt = attributes.getAttribute(SinkEventAttributes.ALT);
+            if (alt == null) {
+                alt = "";
+            }
+            writeImage(escapeMarkdown(alt.toString()), name);
+        }
+    }
+
+    @Override
+    public void figure_() {
+        writeImage(buffer.toString(), figureSrc);
+        figureFlag = false;
+    }
+
+    private void writeImage(String alt, String src) {
+        write("![");
+        write(alt);
+        write("](" + src + ")");
     }
 
     /** {@inheritDoc} */
@@ -604,13 +645,15 @@ public class MarkdownSink extends AbstractTextSink implements MarkdownMarkup {
             List<String> tags = new ArrayList<>();
 
             if (attributes != null) {
-
-                if (attributes.containsAttribute(SinkEventAttributes.SEMANTICS, "italic")) {
+                // in XHTML "<em>" is used, but some tests still rely on the outdated "<italic>"
+                if (attributes.containsAttribute(SinkEventAttributes.SEMANTICS, "em")
+                        || attributes.containsAttribute(SinkEventAttributes.SEMANTICS, "italic")) {
                     write(ITALIC_START_MARKUP);
                     tags.add(0, ITALIC_END_MARKUP);
                 }
-
-                if (attributes.containsAttribute(SinkEventAttributes.SEMANTICS, "bold")) {
+                // in XHTML "<strong>" is used, but some tests still rely on the outdated "<bold>"
+                if (attributes.containsAttribute(SinkEventAttributes.SEMANTICS, "strong")
+                        || attributes.containsAttribute(SinkEventAttributes.SEMANTICS, "bold")) {
                     write(BOLD_START_MARKUP);
                     tags.add(0, BOLD_END_MARKUP);
                 }
@@ -690,9 +733,10 @@ public class MarkdownSink extends AbstractTextSink implements MarkdownMarkup {
             inline(attributes);
         }
         if (tableCaptionFlag) {
-            tableCaptionBuffer.append(text);
+            // table caption cannot even be emitted via XHTML in markdown as there is no suitable location
+            LOGGER.warn("Ignoring unsupported table caption in Markdown");
         } else if (headerFlag || bufferFlag) {
-            buffer.append(text);
+            buffer.append(escapeMarkdown(text));
         } else if (verbatimFlag) {
             verbatimContent(text);
         } else {
@@ -731,10 +775,10 @@ public class MarkdownSink extends AbstractTextSink implements MarkdownMarkup {
      */
     protected void write(String text) {
         startFlag = false;
+        String unifiedText = unifyEOLs(text);
         if (tableCellFlag) {
-            buffer.append(text);
+            buffer.append(escapeForTableCell(unifiedText));
         } else {
-            String unifiedText = unifyEOLs(text);
             isWriterAtStartOfNewLine = unifiedText.endsWith(EOL);
             writer.write(unifiedText);
         }
@@ -820,6 +864,17 @@ public class MarkdownSink extends AbstractTextSink implements MarkdownMarkup {
         }
 
         return buffer.toString();
+    }
+
+    /**
+     * Escapes the pipe character according to <a href="https://github.github.com/gfm/#tables-extension-">GFM Table Extension</a>.
+     * @param text
+     * @return
+     *
+     */
+    private static String escapeForTableCell(String text) {
+        // assume already contains the regular markdown escape sequences
+        return text.replace("|", "\\|");
     }
 
     /**

@@ -187,6 +187,18 @@ public class AptSinkTest extends AbstractSinkTest {
                 + EOL;
     }
 
+    @Override
+    protected String getTableWithHeaderBlock(String... rowPrefixes) {
+        return "\n"
+                + "*----+--:--*\n"
+                + "|" + rowPrefixes[0] + "0||" + rowPrefixes[0] + "1||" + rowPrefixes[0] + "2|\n"
+                + "*----+--:--*\n"
+                + rowPrefixes[1] + "0|" + rowPrefixes[1] + "1|" + rowPrefixes[1] + "2|\n"
+                + "*----+--:--*\n"
+                + rowPrefixes[2] + "0|" + rowPrefixes[2] + "1|" + rowPrefixes[2] + "2|\n"
+                + "*----+--:--*\n";
+    }
+
     /** {@inheritDoc} */
     protected String getParagraphBlock(String text) {
         return EOL + Markup.SPACE + text + EOL + EOL;
