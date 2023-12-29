@@ -808,6 +808,9 @@ public class AptSink extends AbstractTextSink implements AptMarkup {
 
     @Override
     public void text(String text, SinkEventAttributes attributes) {
+        if (attributes != null) {
+            inline(attributes);
+        }
         if (tableCaptionFlag) {
             tableCaptionBuffer.append(text);
         } else if (headerFlag || bufferFlag) {
@@ -816,6 +819,9 @@ public class AptSink extends AbstractTextSink implements AptMarkup {
             verbatimContent(text);
         } else {
             content(text);
+        }
+        if (attributes != null) {
+            inline_();
         }
     }
 
