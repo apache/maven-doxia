@@ -18,6 +18,8 @@
  */
 package org.apache.maven.doxia.xsd;
 
+import javax.xml.parsers.ParserConfigurationException;
+
 import java.io.IOException;
 import java.io.StringReader;
 import java.util.ArrayList;
@@ -25,6 +27,7 @@ import java.util.Collections;
 import java.util.List;
 import java.util.Map;
 
+import org.apache.maven.doxia.util.XmlValidator;
 import org.codehaus.plexus.testing.PlexusTest;
 import org.junit.jupiter.api.AfterEach;
 import org.junit.jupiter.api.Test;
@@ -38,7 +41,6 @@ import org.xml.sax.SAXNotSupportedException;
 import org.xml.sax.SAXParseException;
 import org.xml.sax.XMLReader;
 import org.xml.sax.helpers.DefaultHandler;
-import org.xml.sax.helpers.XMLReaderFactory;
 
 import static org.junit.jupiter.api.Assertions.assertFalse;
 import static org.junit.jupiter.api.Assertions.fail;
@@ -157,17 +159,19 @@ public abstract class AbstractXmlValidator {
     private XMLReader getXMLReader() {
         if (xmlReader == null) {
             try {
-                xmlReader = XMLReaderFactory.createXMLReader("org.apache.xerces.parsers.SAXParser");
-                xmlReader.setFeature("http://xml.org/sax/features/validation", validate);
-                xmlReader.setFeature("http://apache.org/xml/features/validation/schema", validate);
-                xmlReader.setErrorHandler(new MessagesErrorHandler());
-                xmlReader.setEntityResolver(getEntityResolver());
+                XmlValidator validator = new XmlValidator();
+                validator.setValidate(validate);
+                validator.setDefaultHandler(new MessagesErrorHandler());
+                validator.setEntityResolver(getEntityResolver());
+                xmlReader = validator.getXmlReader();
             } catch (SAXNotRecognizedException e) {
                 fail("SAXNotRecognizedException: " + e.getMessage());
             } catch (SAXNotSupportedException e) {
                 fail("SAXNotSupportedException: " + e.getMessage());
             } catch (SAXException e) {
                 fail("SAXException: " + e.getMessage());
+            } catch (ParserConfigurationException e) {
+                fail("ParserConfigurationException: " + e.getMessage());
             }
         }
 
@@ -185,10 +189,11 @@ public abstract class AbstractXmlValidator {
     private List<ErrorMessage> parseXML(String content) throws IOException, SAXException {
         String xmlContent = addNamespaces(content);
 
-        MessagesErrorHandler errorHandler =
-                (MessagesErrorHandler) getXMLReader().getErrorHandler();
+        XMLReader xmlReader = getXMLReader();
 
-        getXMLReader().parse(new InputSource(new StringReader(xmlContent)));
+        MessagesErrorHandler errorHandler = (MessagesErrorHandler) xmlReader.getErrorHandler();
+
+        xmlReader.parse(new InputSource(new StringReader(xmlContent)));
 
         return errorHandler.getMessages();
     }

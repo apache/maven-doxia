@@ -18,24 +18,26 @@
  */
 package org.apache.maven.doxia.util;
 
-import javax.xml.XMLConstants;
+import javax.xml.parsers.ParserConfigurationException;
+import javax.xml.parsers.SAXParser;
+import javax.xml.parsers.SAXParserFactory;
 
 import java.io.IOException;
 import java.io.StringReader;
+import java.util.Locale;
 import java.util.regex.Matcher;
 import java.util.regex.Pattern;
 
 import org.apache.maven.doxia.markup.XmlMarkup;
-import org.apache.maven.doxia.parser.AbstractXmlParser.CachedFileEntityResolver;
 import org.apache.maven.doxia.parser.ParseException;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
+import org.xml.sax.EntityResolver;
 import org.xml.sax.InputSource;
 import org.xml.sax.SAXException;
 import org.xml.sax.SAXParseException;
 import org.xml.sax.XMLReader;
 import org.xml.sax.helpers.DefaultHandler;
-import org.xml.sax.helpers.XMLReaderFactory;
 
 /**
  * A class to validate xml documents.
@@ -45,17 +47,36 @@ import org.xml.sax.helpers.XMLReaderFactory;
 public class XmlValidator {
     private static final Logger LOGGER = LoggerFactory.getLogger(XmlValidator.class);
 
-    /**
-     * Doctype pattern i.e. ".*<!DOCTYPE([^>]*)>.*"
-     * see <a href="http://www.w3.org/TR/REC-xml/#NT-doctypedecl">http://www.w3.org/TR/REC-xml/#NT-doctypedecl</a>.
-     */
-    private static final Pattern PATTERN_DOCTYPE = Pattern.compile(".*" + XmlMarkup.DOCTYPE_START + "([^>]*)>.*");
-
-    /** Tag pattern as defined in http://www.w3.org/TR/REC-xml/#NT-Name */
-    private static final Pattern PATTERN_TAG = Pattern.compile(".*<([A-Za-z][A-Za-z0-9:_.-]*)([^>]*)>.*");
-
     /** lazy xmlReader to validate xml content*/
     private XMLReader xmlReader;
+
+    private boolean validate = true;
+    private DefaultHandler defaultHandler;
+    private EntityResolver entityResolver;
+
+    public boolean isValidate() {
+        return validate;
+    }
+
+    public void setValidate(boolean validate) {
+        this.validate = validate;
+    }
+
+    public DefaultHandler getDefaultHandler() {
+        return defaultHandler;
+    }
+
+    public void setDefaultHandler(DefaultHandler defaultHandler) {
+        this.defaultHandler = defaultHandler;
+    }
+
+    public EntityResolver getEntityResolver() {
+        return entityResolver;
+    }
+
+    public void setEntityResolver(EntityResolver entityResolver) {
+        this.entityResolver = entityResolver;
+    }
 
     /**
      * Validate an XML content with SAX.
@@ -65,49 +86,34 @@ public class XmlValidator {
      */
     public void validate(String content) throws ParseException {
         try {
-            // 1 if there's a doctype
-            boolean hasDoctype = false;
-            Matcher matcher = PATTERN_DOCTYPE.matcher(content);
-            if (matcher.find()) {
-                hasDoctype = true;
-            }
-
-            // 2 check for an xmlns instance
-            boolean hasXsd = false;
-            matcher = PATTERN_TAG.matcher(content);
-            if (matcher.find()) {
-                String value = matcher.group(2);
-
-                if (value.contains(XMLConstants.W3C_XML_SCHEMA_INSTANCE_NS_URI)) {
-                    hasXsd = true;
-                }
-            }
-
-            // 3 validate content
-            getXmlReader(hasXsd && hasDoctype).parse(new InputSource(new StringReader(content)));
-        } catch (IOException | SAXException e) {
+            getXmlReader().parse(new InputSource(new StringReader(content)));
+        } catch (IOException | SAXException | ParserConfigurationException e) {
             throw new ParseException("Error validating the model", e);
         }
     }
 
     /**
-     * @param hasDtdAndXsd to flag the <code>ErrorHandler</code>.
      * @return an xmlReader instance.
      * @throws SAXException if any
+     * @throws ParserConfigurationException
      */
-    private XMLReader getXmlReader(boolean hasDtdAndXsd) throws SAXException {
+    public XMLReader getXmlReader() throws SAXException, ParserConfigurationException {
         if (xmlReader == null) {
-            MessagesErrorHandler errorHandler = new MessagesErrorHandler();
-
-            xmlReader = XMLReaderFactory.createXMLReader();
-            xmlReader.setFeature("http://xml.org/sax/features/validation", true);
-            xmlReader.setFeature("http://apache.org/xml/features/validation/dynamic", true);
-            xmlReader.setFeature("http://apache.org/xml/features/validation/schema", true);
-            xmlReader.setErrorHandler(errorHandler);
-            xmlReader.setEntityResolver(new CachedFileEntityResolver());
+            SAXParserFactory parserFactory = SAXParserFactory.newInstance();
+            parserFactory.setNamespaceAware(true);
+            SAXParser parser = parserFactory.newSAXParser();
+            // If both DTD and XSD are provided, force XSD
+            parser.setProperty(
+                    "http://java.sun.com/xml/jaxp/properties/schemaLanguage", "http://www.w3.org/2001/XMLSchema");
+            // Always force language-neutral exception messages for MessagesErrorHandler
+            parser.setProperty("http://apache.org/xml/properties/locale", Locale.ROOT);
+            xmlReader = parser.getXMLReader();
+            xmlReader.setFeature("http://xml.org/sax/features/validation", isValidate());
+            xmlReader.setFeature("http://apache.org/xml/features/validation/dynamic", isValidate());
+            xmlReader.setFeature("http://apache.org/xml/features/validation/schema", isValidate());
+            xmlReader.setErrorHandler(getDefaultHandler());
+            xmlReader.setEntityResolver(getEntityResolver());
         }
-
-        ((MessagesErrorHandler) xmlReader.getErrorHandler()).setHasDtdAndXsd(hasDtdAndXsd);
 
         return xmlReader;
     }
@@ -115,7 +121,7 @@ public class XmlValidator {
     /**
      * Convenience class to beautify <code>SAXParseException</code> messages.
      */
-    private static class MessagesErrorHandler extends DefaultHandler {
+    public static class MessagesErrorHandler extends DefaultHandler {
         private static final int TYPE_UNKNOWN = 0;
 
         private static final int TYPE_WARNING = 1;
@@ -130,17 +136,6 @@ public class XmlValidator {
         private static final Pattern ELEMENT_TYPE_PATTERN =
                 Pattern.compile("Element type \".*\" must be declared.", Pattern.DOTALL);
 
-        private boolean hasDtdAndXsd;
-
-        private MessagesErrorHandler() {}
-
-        /**
-         * @param hasDtdAndXsd the hasDtdAndXsd to set
-         */
-        protected void setHasDtdAndXsd(boolean hasDtdAndXsd) {
-            this.hasDtdAndXsd = hasDtdAndXsd;
-        }
-
         /** {@inheritDoc} */
         @Override
         public void warning(SAXParseException e) throws SAXException {
@@ -150,14 +145,6 @@ public class XmlValidator {
         /** {@inheritDoc} */
         @Override
         public void error(SAXParseException e) throws SAXException {
-            // Workaround for Xerces complaints when an XML with XSD needs also a <!DOCTYPE []> to specify entities
-            // like &nbsp;
-            // See http://xsd.stylusstudio.com/2001Nov/post08021.htm
-            if (!hasDtdAndXsd) {
-                processException(TYPE_ERROR, e);
-                return;
-            }
-
             Matcher m = ELEMENT_TYPE_PATTERN.matcher(e.getMessage());
             if (!m.find()) {
                 processException(TYPE_ERROR, e);

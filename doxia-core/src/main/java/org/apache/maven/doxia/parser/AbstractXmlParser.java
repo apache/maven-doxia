@@ -114,7 +114,11 @@ public abstract class AbstractXmlParser extends AbstractParser implements XmlMar
                 throw new ParseException("Error reading the model", e);
             }
 
-            new XmlValidator().validate(content);
+            XmlValidator validator = new XmlValidator();
+            validator.setDefaultHandler(new XmlValidator.MessagesErrorHandler());
+            validator.setEntityResolver(new CachedFileEntityResolver());
+
+            validator.validate(content);
 
             src = new StringReader(content);
         }

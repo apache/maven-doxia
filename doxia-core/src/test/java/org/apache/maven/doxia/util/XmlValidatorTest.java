@@ -19,6 +19,7 @@
 package org.apache.maven.doxia.util;
 
 import org.apache.commons.io.IOUtils;
+import org.apache.maven.doxia.parser.AbstractXmlParser.CachedFileEntityResolver;
 import org.codehaus.plexus.testing.PlexusTest;
 import org.codehaus.plexus.util.xml.XmlStreamReader;
 import org.junit.jupiter.api.Test;
@@ -35,6 +36,8 @@ public class XmlValidatorTest {
         String xml = IOUtils.toString(new XmlStreamReader(this.getClass().getResourceAsStream("/test.xml")));
 
         XmlValidator validator = new XmlValidator();
+        validator.setDefaultHandler(new XmlValidator.MessagesErrorHandler());
+        validator.setEntityResolver(new CachedFileEntityResolver());
 
         validator.validate(xml);
     }
