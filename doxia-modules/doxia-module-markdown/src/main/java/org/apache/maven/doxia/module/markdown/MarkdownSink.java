@@ -48,7 +48,7 @@ public class MarkdownSink extends AbstractTextSink implements MarkdownMarkup {
     // Instance fields
     // ----------------------------------------------------------------------
 
-    /**  A buffer that holds the current text when headerFlag or bufferFlag set to <code>true</code>. This content of this buffer is already escaped. */
+    /**  A buffer that holds the current text when headerFlag or bufferFlag set to <code>true</code>. The content of this buffer is already escaped. */
     private StringBuffer buffer;
 
     /**  author. */
