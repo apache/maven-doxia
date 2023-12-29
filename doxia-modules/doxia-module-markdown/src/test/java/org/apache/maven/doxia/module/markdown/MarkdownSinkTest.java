@@ -168,7 +168,7 @@ public class MarkdownSinkTest extends AbstractSinkTest {
 
     /** {@inheritDoc} */
     protected String getFigureBlock(String source, String caption) {
-        return "![" + (caption != null ? getEscapedText(caption) : "") + "](" + source + ")";
+        return "![" + (caption != null ? getEscapedText(caption) : "") + "](" + getEscapedText(source) + ")";
     }
 
     /** {@inheritDoc} */
@@ -182,8 +182,8 @@ public class MarkdownSinkTest extends AbstractSinkTest {
     @Override
     protected String getTableWithHeaderBlock(String... rowPrefixes) {
         StringBuilder expectedMarkup = new StringBuilder();
-        expectedMarkup.append(MarkdownMarkup.TABLE_ROW_PREFIX + rowPrefixes[0] + "0|" + rowPrefixes[0] + "1|"
-                + rowPrefixes[0] + "2|" + EOL);
+        expectedMarkup.append(MarkdownMarkup.TABLE_ROW_PREFIX + getEscapedText(rowPrefixes[0]) + "0|"
+                + getEscapedText(rowPrefixes[0]) + "1|" + getEscapedText(rowPrefixes[0]) + "2|" + EOL);
         expectedMarkup.append(MarkdownMarkup.TABLE_ROW_PREFIX + "---|---:|:---:|" + EOL);
         for (int n = 1; n < rowPrefixes.length; n++) {
             expectedMarkup.append(MarkdownMarkup.TABLE_ROW_PREFIX + getEscapedText(rowPrefixes[n]) + "0|"

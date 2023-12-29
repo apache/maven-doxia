@@ -650,12 +650,9 @@ public abstract class AbstractSinkTest extends AbstractModuleTest {
     }
 
     /**
-     * Checks that the sequence <code>[table(),
-     * tableRows(Sink.JUSTIFY_CENTER, false), tableRow(), tableCell(),
-     * text(cell), tableCell_(), tableRow_(), tableRows_(), tableCaption(),
-     * text(caption), tableCaption_(), table_()]</code>,
+     * Checks that the sequence of table with header methods
      * invoked on the current sink, produces the same result as
-     * {@link #getTableBlock getTableBlock}(cell, caption).
+     * {@link #getTableWithHeaderBlock(String...)}.
      */
     @Test
     public void testTableWithHeader() {
@@ -665,7 +662,7 @@ public abstract class AbstractSinkTest extends AbstractModuleTest {
         try (IntStream cellStream = getCellStreamForNewRow(3)) {
             cellStream.forEach(col -> {
                 sink.tableHeaderCell();
-                sink.text("header" + col);
+                sink.text("header_" + col);
                 sink.tableHeaderCell_();
             });
         }
@@ -690,7 +687,7 @@ public abstract class AbstractSinkTest extends AbstractModuleTest {
         sink.close();
 
         String actual = testWriter.toString();
-        String expected = getTableWithHeaderBlock("header", "row1_", "row2_");
+        String expected = getTableWithHeaderBlock("header_", "row1_", "row2_");
 
         if (isXmlSink()) {
             assertThat(wrapXml(actual), isIdenticalTo(wrapXml(expected)));
@@ -1338,6 +1335,12 @@ public abstract class AbstractSinkTest extends AbstractModuleTest {
      */
     protected abstract String getTableBlock(String cell, String caption);
 
+    /**
+     * Returns a Table with header block on the current sink.
+     * @param rowPrefixes the text prefix used in the individual rows.
+     * @return the result of invoking a Table with header block on the current sink.
+     * @see #testTableWithHeader()
+     */
     protected abstract String getTableWithHeaderBlock(String... rowPrefixes);
 
     /**

@@ -48,7 +48,7 @@ public class MarkdownSink extends AbstractTextSink implements MarkdownMarkup {
     // Instance fields
     // ----------------------------------------------------------------------
 
-    /**  A buffer that holds the current text when headerFlag or bufferFlag set to <code>true</code>. This value of this buffer is already escaped. */
+    /**  A buffer that holds the current text when headerFlag or bufferFlag set to <code>true</code>. This content of this buffer is already escaped. */
     private StringBuffer buffer;
 
     /**  author. */
@@ -69,20 +69,23 @@ public class MarkdownSink extends AbstractTextSink implements MarkdownMarkup {
     /**  tableCaptionFlag. */
     private boolean tableCaptionFlag;
 
-    /** tableCellFlag, set to true inside table (header) cells */
+    /** tableCellFlag, set to {@code true} inside table (header) cells */
     private boolean tableCellFlag;
 
-    /** tableRowHeaderFlag, set to true for table rows containing at least one table header cell  */
+    /** tableRowHeaderFlag, set to {@code true} for table rows containing at least one table header cell  */
     private boolean tableHeaderCellFlag;
 
     /**  headerFlag. */
     private boolean headerFlag;
 
-    /**  bufferFlag, set to true in certain elements to prevent direct writing during {@link #text(String, SinkEventAttributes)} */
+    /**  bufferFlag, set to {@code true} in certain elements to prevent direct writing during {@link #text(String, SinkEventAttributes)} */
     private boolean bufferFlag;
 
     /**  verbatimFlag. */
     private boolean verbatimFlag;
+
+    /** figure flag, set to {@code true} between {@link #figure(SinkEventAttributes)} and {@link #figure_()} events */
+    private boolean figureFlag;
 
     /**  number of cells in a table. */
     private int cellCount;
@@ -160,9 +163,11 @@ public class MarkdownSink extends AbstractTextSink implements MarkdownMarkup {
         this.startFlag = true;
         this.tableCaptionFlag = false;
         this.tableCellFlag = false;
+        this.tableHeaderCellFlag = false;
         this.headerFlag = false;
         this.bufferFlag = false;
         this.verbatimFlag = false;
+        this.figureFlag = false;
         this.cellCount = 0;
         this.cellJustif = null;
         this.listStyles.clear();
@@ -556,6 +561,7 @@ public class MarkdownSink extends AbstractTextSink implements MarkdownMarkup {
     @Override
     public void figure(SinkEventAttributes attributes) {
         figureSrc = null;
+        figureFlag = true;
     }
 
     @Override
@@ -568,16 +574,28 @@ public class MarkdownSink extends AbstractTextSink implements MarkdownMarkup {
         bufferFlag = false;
     }
 
-    /** {@inheritDoc} */
+    @Override
     public void figureGraphics(String name, SinkEventAttributes attributes) {
-        figureSrc = name;
+        figureSrc = escapeMarkdown(name);
+        if (!figureFlag) {
+            Object alt = attributes.getAttribute(SinkEventAttributes.ALT);
+            if (alt == null) {
+                alt = "";
+            }
+            writeImage(escapeMarkdown(alt.toString()), name);
+        }
     }
 
     @Override
     public void figure_() {
+        writeImage(buffer.toString(), figureSrc);
+        figureFlag = false;
+    }
+
+    private void writeImage(String alt, String src) {
         write("![");
-        write(buffer.toString());
-        write("](" + figureSrc + ")");
+        write(alt);
+        write("](" + src + ")");
     }
 
     /** {@inheritDoc} */
@@ -719,8 +737,7 @@ public class MarkdownSink extends AbstractTextSink implements MarkdownMarkup {
             inline(attributes);
         }
         if (tableCaptionFlag) {
-            // TODO: emitting via HTML markup caption requires buffering the whole table as <caption> must be the first
-            // child of <table>
+            // table caption cannot even be emitted via XHTML in markdown as there is no suitable location
             LOGGER.warn("Ignoring unsupported table caption in Markdown");
         } else if (headerFlag || bufferFlag) {
             buffer.append(escapeMarkdown(text));

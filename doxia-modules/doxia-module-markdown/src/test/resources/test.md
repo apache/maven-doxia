@@ -16,3 +16,5 @@ code
 |---|:---:|---:|
 |b `code` az|test|test|
 |b **bold** im|test|test|
+
+![Some figure](figure.jpg)
