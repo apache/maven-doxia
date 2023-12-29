@@ -11,3 +11,8 @@ Placeholder for future expansion.
 ```
 code
 ```
+
+|col1|col2|col3|
+|---|:---:|---:|
+|b `code` az|test|test|
+|b **bold** im|test|test|

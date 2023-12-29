@@ -90,27 +90,28 @@ public interface MarkdownMarkup extends TextMarkup {
     /** Syntax for the verbatim start: "```" */
     String VERBATIM_START_MARKUP = "```";
 
+    /** Syntax for the verbatim end: "```" */
+    String VERBATIM_END_MARKUP = "```";
+
     /** Syntax for the non breaking space: entity from HTML */
     String NON_BREAKING_SPACE_MARKUP = "&nbsp;";
 
     /** Syntax for the section title start: "#" */
     String SECTION_TITLE_START_MARKUP = "#";
 
+    /* Table markup according to https://github.github.com/gfm/#tables-extension- */
     /** Syntax for the table cell start: "|" */
     String TABLE_CELL_SEPARATOR_MARKUP = String.valueOf(PIPE);
 
-    /** Syntax for the table column, centered style: "---|" */
-    String TABLE_COL_DEFAULT_ALIGNED_MARKUP = StringUtils.repeat(String.valueOf(MINUS), 3) + PIPE;
+    /** Syntax for the table column, left alignment (default): "---" */
+    String TABLE_COL_LEFT_ALIGNED_MARKUP = StringUtils.repeat(String.valueOf(MINUS), 3);
 
-    /** Syntax for the table column, left style: "---+" */
-    String TABLE_COL_LEFT_ALIGNED_MARKUP = StringUtils.repeat(String.valueOf(MINUS), 3) + PLUS;
-
-    /** Syntax for the table column, right style: "---:" */
+    /** Syntax for the table column, right alignment: "---:" */
     String TABLE_COL_RIGHT_ALIGNED_MARKUP = StringUtils.repeat(String.valueOf(MINUS), 3) + COLON;
 
-    /** Syntax for the table row end: "|" */
-    String TABLE_ROW_SEPARATOR_MARKUP = String.valueOf(PIPE);
+    /** Syntax for the table column, center alignment: ":---:" */
+    String TABLE_COL_CENTER_ALIGNED_MARKUP = COLON + StringUtils.repeat(String.valueOf(MINUS), 3) + COLON;
 
-    /** Syntax for the verbatim end: "```" */
-    String VERBATIM_END_MARKUP = "```";
+    /** Syntax for the table row prefix (the other separators in the same row are regular {@link #TABLE_CELL_SEPARATOR_MARKUP} characters) */
+    String TABLE_ROW_PREFIX = String.valueOf(PIPE);
 }

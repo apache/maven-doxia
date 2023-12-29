@@ -208,6 +208,19 @@ public class XdocSinkTest extends AbstractSinkTest {
                 + "</td></tr></table>";
     }
 
+    @Override
+    protected String getTableWithHeaderBlock(String... rowPrefixes) {
+        return "<table border=\"0\">\n<tr>\n<th>" + rowPrefixes[0] + "0</th>\n<th>" + rowPrefixes[0] + "1</th>\n<th>"
+                + rowPrefixes[0] + "2</th></tr>\n"
+                + "<tr>\n<td style=\"text-align: left;\">" + rowPrefixes[1]
+                + "0</td>\n<td style=\"text-align: right;\">" + rowPrefixes[1]
+                + "1</td>\n<td style=\"text-align: center;\">" + rowPrefixes[1] + "2</td></tr>\n"
+                + "<tr>\n<td style=\"text-align: left;\">" + rowPrefixes[2]
+                + "0</td>\n<td style=\"text-align: right;\">" + rowPrefixes[2]
+                + "1</td>\n<td style=\"text-align: center;\">" + rowPrefixes[2] + "2</td></tr>"
+                + "</table>";
+    }
+
     /** {@inheritDoc} */
     protected String getParagraphBlock(String text) {
         return "<p>" + text + "</p>";

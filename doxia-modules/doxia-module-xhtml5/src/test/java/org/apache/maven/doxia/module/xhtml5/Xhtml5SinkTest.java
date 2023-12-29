@@ -196,6 +196,24 @@ public class Xhtml5SinkTest extends AbstractSinkTest {
                 + "</table>";
     }
 
+    @Override
+    protected String getTableWithHeaderBlock(String... rowPrefixes) {
+        return "<table class=\"bodyTable\">\n"
+                + "<tr class=\"a\">\n"
+                + "<th>" + rowPrefixes[0] + "0</th>\n"
+                + "<th>" + rowPrefixes[0] + "1</th>\n"
+                + "<th>" + rowPrefixes[0] + "2</th></tr>\n"
+                + "<tr class=\"b\">\n"
+                + "<td style=\"text-align: left;\">" + rowPrefixes[1] + "0</td>\n"
+                + "<td style=\"text-align: right;\">" + rowPrefixes[1] + "1</td>\n"
+                + "<td style=\"text-align: center;\">" + rowPrefixes[1] + "2</td></tr>\n"
+                + "<tr class=\"a\">\n"
+                + "<td style=\"text-align: left;\">" + rowPrefixes[2] + "0</td>\n"
+                + "<td style=\"text-align: right;\">" + rowPrefixes[2] + "1</td>\n"
+                + "<td style=\"text-align: center;\">" + rowPrefixes[2] + "2</td></tr>"
+                + "</table>";
+    }
+
     // Disable testTable until the order of attributes issue is clarified
     // TODO: remove
     /** {@inheritDoc} */

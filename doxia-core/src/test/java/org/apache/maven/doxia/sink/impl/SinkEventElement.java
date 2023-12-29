@@ -76,7 +76,7 @@ public class SinkEventElement {
         StringBuilder builder = new StringBuilder();
         builder.append(this.getClass().getSimpleName()).append('[');
         builder.append("methodName: ").append(methodName).append(", ");
-        builder.append("args: ").append(Arrays.toString(args));
+        builder.append("args: ").append(Arrays.deepToString(args));
         builder.append(']');
         return builder.toString();
     }
