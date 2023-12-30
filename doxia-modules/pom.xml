@@ -54,6 +54,11 @@ under the License.
 
     <!-- test -->
     <dependency>
+      <groupId>org.junit.jupiter</groupId>
+      <artifactId>junit-jupiter-api</artifactId>
+      <scope>test</scope>
+    </dependency>
+    <dependency>
       <groupId>org.apache.maven.doxia</groupId>
       <artifactId>doxia-core</artifactId>
       <type>test-jar</type>
