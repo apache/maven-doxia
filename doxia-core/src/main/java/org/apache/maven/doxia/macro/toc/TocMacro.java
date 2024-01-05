@@ -31,6 +31,7 @@ import org.apache.maven.doxia.macro.MacroRequest;
 import org.apache.maven.doxia.parser.ParseException;
 import org.apache.maven.doxia.parser.Parser;
 import org.apache.maven.doxia.sink.Sink;
+import org.apache.maven.doxia.sink.impl.SinkAdapter;
 import org.apache.maven.doxia.util.DoxiaUtils;
 
 /**
@@ -102,15 +103,16 @@ public class TocMacro extends AbstractMacro {
             return;
         }
 
-        IndexEntry index = new IndexEntry("index");
-        IndexingSink tocSink = new IndexingSink(index);
-
+        IndexingSink tocSink = new IndexingSink(new SinkAdapter());
         try {
             parser.parse(new StringReader(source), tocSink);
         } catch (ParseException e) {
             throw new MacroExecutionException(e);
+        } finally {
+            tocSink.close();
         }
 
+        IndexEntry index = tocSink.getRootEntry();
         if (index.getChildEntries().size() > 0) {
             sink.list(getAttributesFromMap(request.getParameters()));
 

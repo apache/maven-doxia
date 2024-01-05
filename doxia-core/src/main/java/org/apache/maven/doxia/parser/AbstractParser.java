@@ -36,6 +36,7 @@ import org.apache.maven.doxia.macro.MacroRequest;
 import org.apache.maven.doxia.macro.manager.MacroManager;
 import org.apache.maven.doxia.macro.manager.MacroNotFoundException;
 import org.apache.maven.doxia.sink.Sink;
+import org.apache.maven.doxia.sink.impl.CreateAnchorsForIndexEntriesFactory;
 import org.apache.maven.doxia.sink.impl.SinkWrapperFactory;
 import org.apache.maven.doxia.sink.impl.SinkWrapperFactoryComparator;
 
@@ -62,6 +63,8 @@ public abstract class AbstractParser implements Parser {
      * Emit Doxia comment events when parsing comments?
      */
     private boolean emitComments = true;
+
+    private boolean emitAnchors = false;
 
     private static final String DOXIA_VERSION;
 
@@ -110,6 +113,16 @@ public abstract class AbstractParser implements Parser {
      */
     public boolean isEmitComments() {
         return emitComments;
+    }
+
+    @Override
+    public boolean isEmitAnchorsForIndexableEntries() {
+        return emitAnchors;
+    }
+
+    @Override
+    public void setEmitAnchorsForIndexableEntries(boolean emitAnchors) {
+        this.emitAnchors = emitAnchors;
     }
 
     /**
@@ -230,6 +243,9 @@ public abstract class AbstractParser implements Parser {
             effectiveSinkWrapperFactories.addAll(automaticallyRegisteredSinkWrapperFactories);
         }
         effectiveSinkWrapperFactories.addAll(manuallyRegisteredSinkWrapperFactories);
+        if (emitAnchors) {
+            effectiveSinkWrapperFactories.add(new CreateAnchorsForIndexEntriesFactory());
+        }
         return effectiveSinkWrapperFactories;
     }
 

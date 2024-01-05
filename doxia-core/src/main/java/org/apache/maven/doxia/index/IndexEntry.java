@@ -19,11 +19,18 @@
 package org.apache.maven.doxia.index;
 
 import java.util.ArrayList;
+import java.util.Arrays;
 import java.util.Collections;
 import java.util.List;
+import java.util.Objects;
+
+import org.apache.maven.doxia.markup.Markup;
+import org.apache.maven.doxia.sink.Sink;
 
 /**
- * <p>IndexEntry class.</p>
+ * Representing the index tree within a document with the most important metadata per entry.
+ * Currently this only contains entries for sections, but in the future may be extended, therefore it
+ * is recommended to use {@link #getType()} to filter out irrelevant entries.
  *
  * @author <a href="mailto:trygvis@inamo.no">Trygve Laugst&oslash;l</a>
  */
@@ -39,6 +46,11 @@ public class IndexEntry {
     private String id;
 
     /**
+     * true if there is already an anchor for this
+     */
+    private boolean hasAnchor;
+
+    /**
      * The entry title.
      */
     private String title;
@@ -48,13 +60,50 @@ public class IndexEntry {
      */
     private List<IndexEntry> childEntries = new ArrayList<>();
 
-    /**
-     * System-dependent EOL.
-     */
-    private static final String EOL = System.getProperty("line.separator");
+    public enum Type {
+        /**
+         * Used for unknown types but also for the root entry
+         */
+        UNKNOWN(),
+        SECTION_1(Sink.SECTION_LEVEL_1),
+        SECTION_2(Sink.SECTION_LEVEL_2),
+        SECTION_3(Sink.SECTION_LEVEL_3),
+        SECTION_4(Sink.SECTION_LEVEL_4),
+        SECTION_5(Sink.SECTION_LEVEL_5),
+        SECTION_6(),
+        DEFINED_TERM(),
+        FIGURE(),
+        TABLE();
+
+        private final int sectionLevel;
+
+        Type() {
+            this(-1);
+        }
+
+        Type(int sectionLevel) {
+            this.sectionLevel = sectionLevel;
+        }
+
+        static Type fromSectionLevel(int level) {
+            if (level < Sink.SECTION_LEVEL_1 || level > Sink.SECTION_LEVEL_5) {
+                throw new IllegalArgumentException("Level must be between " + Sink.SECTION_LEVEL_1 + " and "
+                        + Sink.SECTION_LEVEL_5 + " but is " + level);
+            }
+            return Arrays.stream(Type.values())
+                    .filter(t -> level == t.sectionLevel)
+                    .findAny()
+                    .orElseThrow(() -> new IllegalStateException("Could not find enum for sectionLevel " + level));
+        }
+    };
 
     /**
-     * Constructor.
+     * The type of the entry, one of the types defined by {@link IndexingSink}
+     */
+    private final Type type;
+
+    /**
+     * Constructor for root entry.
      *
      * @param newId The id. May be null.
      */
@@ -69,12 +118,24 @@ public class IndexEntry {
      * @param newId     The id. May be null.
      */
     public IndexEntry(IndexEntry newParent, String newId) {
+        this(newParent, newId, Type.UNKNOWN);
+    }
+
+    /**
+     * Constructor.
+     *
+     * @param newParent The parent. May be null.
+     * @param newId     The id. May be null.
+     * @param
+     */
+    public IndexEntry(IndexEntry newParent, String newId, Type type) {
         this.parent = newParent;
         this.id = newId;
 
         if (parent != null) {
             parent.childEntries.add(this);
         }
+        this.type = type;
     }
 
     /**
@@ -103,6 +164,34 @@ public class IndexEntry {
      */
     protected void setId(String id) {
         this.id = id;
+    }
+
+    /**
+     * Returns the type of this entry. Is one of the types defined by {@link IndexingSink}.
+     * @return the type of this entry
+     * @since 2.0.0
+     */
+    public Type getType() {
+        return type;
+    }
+
+    /** Set if the entry's id already has an anchor in the underlying document.
+     *
+     * @param hasAnchor {@true} if the id already has an anchor.
+     * @since 2.0.0
+     */
+    public void setAnchor(boolean hasAnchor) {
+        this.hasAnchor = hasAnchor;
+    }
+
+    /**
+     * Returns if the entry's id already has an anchor in the underlying document.
+     * @return {@code true} if the id already has an anchor otherwise {@code false}.
+     *
+     * @since 2.0.0
+     */
+    public boolean hasAnchor() {
+        return hasAnchor;
     }
 
     /**
@@ -266,7 +355,7 @@ public class IndexEntry {
             message.append(", title: ").append(title);
         }
 
-        message.append(EOL);
+        message.append(Markup.EOL);
 
         StringBuilder indent = new StringBuilder();
 
@@ -279,5 +368,30 @@ public class IndexEntry {
         }
 
         return message.toString();
+    }
+
+    @Override
+    public int hashCode() {
+        return Objects.hash(childEntries, hasAnchor, id, parent, title, type);
+    }
+
+    @Override
+    public boolean equals(Object obj) {
+        if (this == obj) {
+            return true;
+        }
+        if (obj == null) {
+            return false;
+        }
+        if (getClass() != obj.getClass()) {
+            return false;
+        }
+        IndexEntry other = (IndexEntry) obj;
+        return Objects.equals(childEntries, other.childEntries)
+                && hasAnchor == other.hasAnchor
+                && Objects.equals(id, other.id)
+                && Objects.equals(parent, other.parent)
+                && Objects.equals(title, other.title)
+                && type == other.type;
     }
 }

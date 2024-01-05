@@ -21,6 +21,7 @@ package org.apache.maven.doxia.parser;
 import java.io.Reader;
 import java.util.Collection;
 
+import org.apache.maven.doxia.index.IndexingSink;
 import org.apache.maven.doxia.sink.Sink;
 import org.apache.maven.doxia.sink.impl.SinkWrapperFactory;
 
@@ -99,4 +100,20 @@ public interface Parser {
      * @since 2.0.0
      */
     Collection<SinkWrapperFactory> getSinkWrapperFactories();
+
+    /**
+     * Determines whether to automatically generate anchors for each index entry found by {@link IndexingSink} or not.
+     * By default no anchors are generated.
+     *
+     * @param emitAnchors {@code true} to emit anchors otherwise {@code false} (the default)
+     * @since 2.0.0
+     */
+    void setEmitAnchorsForIndexableEntries(boolean emitAnchors);
+
+    /**
+     * Returns whether anchors are automatically generated for each index entry found by {@link IndexingSink} or not.
+     * @return  {@code true} if anchors are emitted otherwise {@code false}
+     * @since 2.0.0
+     */
+    boolean isEmitAnchorsForIndexableEntries();
 }
