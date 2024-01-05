@@ -18,3 +18,7 @@ code
 |b **bold** im|test|test|
 
 ![Some figure](figure.jpg)
+
+###### heading level 6
+
+some paragraph

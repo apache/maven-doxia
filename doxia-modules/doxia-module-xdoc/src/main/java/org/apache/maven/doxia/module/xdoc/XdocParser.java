@@ -266,14 +266,8 @@ public class XdocParser extends Xhtml5BaseParser implements XdocMarkup {
      */
     private void closeOpenSections(int newLevel, Sink sink) {
         while (getSectionLevel() >= newLevel) {
-            if (getSectionLevel() == Sink.SECTION_LEVEL_5) {
-                sink.section5_();
-            } else if (getSectionLevel() == Sink.SECTION_LEVEL_4) {
-                sink.section4_();
-            } else if (getSectionLevel() == Sink.SECTION_LEVEL_3) {
-                sink.section3_();
-            } else if (getSectionLevel() == Sink.SECTION_LEVEL_2) {
-                sink.section2_();
+            if (getSectionLevel() > Sink.SECTION_LEVEL_1) {
+                sink.section_(getSectionLevel());
             }
 
             setSectionLevel(getSectionLevel() - 1);

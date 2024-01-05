@@ -135,6 +135,11 @@ public class MarkdownSinkTest extends AbstractSinkTest {
     }
 
     /** {@inheritDoc} */
+    protected String getSection6Block(String title) {
+        return getSectionBlock(title, 6);
+    }
+
+    /** {@inheritDoc} */
     protected String getHeaderBlock() {
         return "";
     }

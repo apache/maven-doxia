@@ -209,6 +209,8 @@ public class Xhtml5BaseParser extends AbstractXmlParser implements HtmlMarkup {
             handleHeadingStart(sink, Sink.SECTION_LEVEL_4, attribs);
         } else if (parser.getName().equals(HtmlMarkup.H5.toString())) {
             handleHeadingStart(sink, Sink.SECTION_LEVEL_5, attribs);
+        } else if (parser.getName().equals(HtmlMarkup.H6.toString())) {
+            handleHeadingStart(sink, Sink.SECTION_LEVEL_6, attribs);
         } else if (parser.getName().equals(HtmlMarkup.HEADER.toString())) {
             sink.header(attribs);
         } else if (parser.getName().equals(HtmlMarkup.MAIN.toString())) {
@@ -507,6 +509,8 @@ public class Xhtml5BaseParser extends AbstractXmlParser implements HtmlMarkup {
             sink.sectionTitle4_();
         } else if (parser.getName().equals(HtmlMarkup.H5.toString())) {
             sink.sectionTitle5_();
+        } else if (parser.getName().equals(HtmlMarkup.H6.toString())) {
+            sink.sectionTitle6_();
         } else if (parser.getName().equals(HtmlMarkup.HEADER.toString())) {
             sink.header_();
         } else if (parser.getName().equals(HtmlMarkup.MAIN.toString())) {
@@ -648,6 +652,7 @@ public class Xhtml5BaseParser extends AbstractXmlParser implements HtmlMarkup {
      *
      * @param newLevel the new section level, all upper levels have to be closed.
      * @param sink the sink to receive the events.
+     * @param enforceNewSection whether to enforce a new section or not
      */
     protected void emitHeadingSections(int newLevel, Sink sink, boolean enforceNewSection) {
         int lowerBoundSectionLevel = newLevel;
@@ -682,16 +687,8 @@ public class Xhtml5BaseParser extends AbstractXmlParser implements HtmlMarkup {
      */
     private void closeOpenHeadingSections(int newLevel, Sink sink) {
         while (this.headingLevel > newLevel) {
-            if (headingLevel == Sink.SECTION_LEVEL_5) {
-                sink.section5_();
-            } else if (headingLevel == Sink.SECTION_LEVEL_4) {
-                sink.section4_();
-            } else if (headingLevel == Sink.SECTION_LEVEL_3) {
-                sink.section3_();
-            } else if (headingLevel == Sink.SECTION_LEVEL_2) {
-                sink.section2_();
-            } else if (headingLevel == Sink.SECTION_LEVEL_1) {
-                sink.section1_();
+            if (headingLevel >= Sink.SECTION_LEVEL_1 && headingLevel <= Sink.SECTION_LEVEL_6) {
+                sink.section_(headingLevel);
             }
 
             this.headingLevel--;
@@ -709,16 +706,8 @@ public class Xhtml5BaseParser extends AbstractXmlParser implements HtmlMarkup {
         while (this.headingLevel < newLevel) {
             this.headingLevel++;
 
-            if (headingLevel == Sink.SECTION_LEVEL_5) {
-                sink.section5();
-            } else if (headingLevel == Sink.SECTION_LEVEL_4) {
-                sink.section4();
-            } else if (headingLevel == Sink.SECTION_LEVEL_3) {
-                sink.section3();
-            } else if (headingLevel == Sink.SECTION_LEVEL_2) {
-                sink.section2();
-            } else if (headingLevel == Sink.SECTION_LEVEL_1) {
-                sink.section1();
+            if (headingLevel >= Sink.SECTION_LEVEL_1 && headingLevel <= Sink.SECTION_LEVEL_6) {
+                sink.section(headingLevel, null);
             }
         }
     }

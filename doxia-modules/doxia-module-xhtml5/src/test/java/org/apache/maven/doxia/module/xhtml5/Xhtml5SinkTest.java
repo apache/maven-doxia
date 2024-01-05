@@ -150,6 +150,11 @@ public class Xhtml5SinkTest extends AbstractSinkTest {
     }
 
     /** {@inheritDoc} */
+    protected String getSection6Block(String title) {
+        return "<section><header>\n<h6>" + title + "</h6></header></section>";
+    }
+
+    /** {@inheritDoc} */
     protected String getHeaderBlock() {
         return "<header></header>";
     }

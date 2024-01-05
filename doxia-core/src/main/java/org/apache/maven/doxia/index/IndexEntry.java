@@ -70,7 +70,7 @@ public class IndexEntry {
         SECTION_3(Sink.SECTION_LEVEL_3),
         SECTION_4(Sink.SECTION_LEVEL_4),
         SECTION_5(Sink.SECTION_LEVEL_5),
-        SECTION_6(),
+        SECTION_6(Sink.SECTION_LEVEL_6),
         DEFINED_TERM(),
         FIGURE(),
         TABLE();
@@ -86,9 +86,9 @@ public class IndexEntry {
         }
 
         static Type fromSectionLevel(int level) {
-            if (level < Sink.SECTION_LEVEL_1 || level > Sink.SECTION_LEVEL_5) {
+            if (level < Sink.SECTION_LEVEL_1 || level > Sink.SECTION_LEVEL_6) {
                 throw new IllegalArgumentException("Level must be between " + Sink.SECTION_LEVEL_1 + " and "
-                        + Sink.SECTION_LEVEL_5 + " but is " + level);
+                        + Sink.SECTION_LEVEL_6 + " but is " + level);
             }
             return Arrays.stream(Type.values())
                     .filter(t -> level == t.sectionLevel)

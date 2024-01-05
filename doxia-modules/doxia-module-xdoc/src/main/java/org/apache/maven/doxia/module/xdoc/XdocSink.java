@@ -286,9 +286,10 @@ public class XdocSink extends Xhtml5BaseSink implements XdocMarkup {
      * {@inheritDoc}
      *
      * Starts a section title.
-     * @see javax.swing.text.html.HTML.Tag#H3
-     * @see javax.swing.text.html.HTML.Tag#H4
-     * @see javax.swing.text.html.HTML.Tag#H5
+     * @see #H3
+     * @see #H4
+     * @see #H5
+     * @see #H6
      */
     protected void onSectionTitle(int depth, SinkEventAttributes attributes) {
         MutableAttributeSet atts = SinkUtils.filterAttributes(attributes, SinkUtils.SINK_SECTION_ATTRIBUTES);
@@ -299,6 +300,8 @@ public class XdocSink extends Xhtml5BaseSink implements XdocMarkup {
             writeStartTag(H4, atts);
         } else if (depth == SECTION_LEVEL_5) {
             writeStartTag(H5, atts);
+        } else if (depth == SECTION_LEVEL_6) {
+            writeStartTag(H6, atts);
         }
     }
 
@@ -306,9 +309,10 @@ public class XdocSink extends Xhtml5BaseSink implements XdocMarkup {
      * {@inheritDoc}
      *
      * Ends a section title.
-     * @see javax.swing.text.html.HTML.Tag#H3
-     * @see javax.swing.text.html.HTML.Tag#H4
-     * @see javax.swing.text.html.HTML.Tag#H5
+     * @see #H3
+     * @see #H4
+     * @see #H5
+     * @see #H6
      */
     protected void onSectionTitle_(int depth) {
         if (depth == SECTION_LEVEL_1 || depth == SECTION_LEVEL_2) {
@@ -319,6 +323,8 @@ public class XdocSink extends Xhtml5BaseSink implements XdocMarkup {
             writeEndTag(H4);
         } else if (depth == SECTION_LEVEL_5) {
             writeEndTag(H5);
+        } else if (depth == SECTION_LEVEL_6) {
+            writeEndTag(H6);
         }
     }
 
