@@ -264,6 +264,10 @@ public class AptSink extends AbstractTextSink implements AptMarkup {
 
     @Override
     public void sectionTitle(int level, SinkEventAttributes attributes) {
+        if (level > 5) {
+            LOGGER.warn("Replacing unsupported section title level {} in APT with level 5", level);
+            level = 5;
+        }
         if (level == 1) {
             write(EOL);
         } else if (level > 1) {

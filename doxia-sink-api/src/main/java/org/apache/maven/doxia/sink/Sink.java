@@ -115,6 +115,13 @@ public interface Sink extends AutoCloseable {
     int SECTION_LEVEL_5 = 5;
 
     /**
+     * A level 6 section.
+     * @see #section(int,SinkEventAttributes)
+     * @since 2.0.0
+     */
+    int SECTION_LEVEL_6 = 6;
+
+    /**
      * Center alignment for table cells.
      * @see #tableRows(int[], boolean)
      */
@@ -503,7 +510,7 @@ public interface Sink extends AutoCloseable {
 
     /**
      * Starts a 5th heading element which contains the topic of the section.
-     * This has to be contained within a {@link #section4()} element.
+     * This has to be contained within a {@link #section5()} element.
      * <p>
      * Shortcut for {@link #section(int, SinkEventAttributes)} with first argument being {@code 5} and second argument being {@code null}.
      *
@@ -528,8 +535,45 @@ public interface Sink extends AutoCloseable {
 
     /**
      * Ends a 5th title heading element. Shortcut for {@link #sectionTitle_(int)} with argument being {@code 5}.
+     * @since 2.0.0
      */
     void sectionTitle5_();
+
+    /**
+     * Starts a 6th heading element which contains the topic of the section.
+     * This has to be contained within a {@link #section6()} element.
+     * <p>
+     * Shortcut for {@link #section(int, SinkEventAttributes)} with first argument being {@code 6} and second argument being {@code null}.
+     *
+     * @see #section(int,SinkEventAttributes)
+     * @since 2.0.0
+     */
+    void section6();
+
+    /**
+     * Ends a 6th heading element. Shortcut for {@link #section_(int)} with argument being {@code 6}.
+     *
+     * @since 2.0.0
+     */
+    void section6_();
+
+    /**
+     * Starts a 6th title heading element. This element is optional, but if it exists,
+     * it has to be contained, and be the first element, within a {@link #section5()} element.
+     * <p>
+     * Shortcut for {@link #sectionTitle(int, SinkEventAttributes)} with first argument being {@code 6} and second argument being {@code null}.
+     *
+     * @see #sectionTitle(int,SinkEventAttributes)
+     * @since 2.0.0
+     */
+    void sectionTitle6();
+
+    /**
+     * Ends a 6th title heading element. Shortcut for {@link #sectionTitle_(int)} with argument being {@code 6}.
+     *
+     * @since 2.0.0
+     */
+    void sectionTitle6_();
 
     /**
      * Start a new section at the given level.
@@ -541,7 +585,7 @@ public interface Sink extends AutoCloseable {
      *   Supported attributes are the {@link SinkEventAttributes base attributes}.
      * </p>
      *
-     * @param level the section level.
+     * @param level the section level (must be a value between {@value #SECTION_LEVEL_1} and {@value #SECTION_LEVEL_6}).
      * @param attributes A set of {@link SinkEventAttributes}, may be <code>null</code>.
      * @since 1.1
      */
@@ -550,7 +594,7 @@ public interface Sink extends AutoCloseable {
     /**
      * Ends a section at the given level.
      *
-     * @param level the section level.
+     * @param level the section level (must be a value between {@value #SECTION_LEVEL_1} and {@value #SECTION_LEVEL_6}).
      * @since 1.1
      */
     void section_(int level);
@@ -576,7 +620,7 @@ public interface Sink extends AutoCloseable {
      *   {@link SinkEventAttributes#ALIGN ALIGN}.
      * </p>
      *
-     * @param level the section title level.
+     * @param level the section title level (must be a value between {@value #SECTION_LEVEL_1} and {@value #SECTION_LEVEL_6}).
      * @param attributes A set of {@link SinkEventAttributes}, may be <code>null</code>.
      * @since 1.1
      */
@@ -585,7 +629,7 @@ public interface Sink extends AutoCloseable {
     /**
      * Ends a section title at the given level.
      *
-     * @param level the section title level.
+     * @param level the section title level (must be a value between {@value #SECTION_LEVEL_1} and {@value #SECTION_LEVEL_6}).
      * @since 1.1
      */
     void sectionTitle_(int level);

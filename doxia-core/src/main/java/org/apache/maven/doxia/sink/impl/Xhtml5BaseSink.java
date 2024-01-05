@@ -322,7 +322,7 @@ public class Xhtml5BaseSink extends AbstractXmlSink implements HtmlMarkup {
      * @param attributes some attributes. May be null.
      */
     protected void onSection(int depth, SinkEventAttributes attributes) {
-        if (depth >= SECTION_LEVEL_1 && depth <= SECTION_LEVEL_5) {
+        if (depth >= SECTION_LEVEL_1 && depth <= SECTION_LEVEL_6) {
             MutableAttributeSet att = new SinkEventAttributeSet();
             att.addAttributes(SinkUtils.filterAttributes(attributes, SinkUtils.SINK_BASE_ATTRIBUTES));
 
@@ -334,10 +334,10 @@ public class Xhtml5BaseSink extends AbstractXmlSink implements HtmlMarkup {
      * Ends a section.
      *
      * @param depth The level of the section.
-     * @see javax.swing.text.html.HTML.Tag#DIV
+     * @see #SECTION
      */
     protected void onSection_(int depth) {
-        if (depth >= SECTION_LEVEL_1 && depth <= SECTION_LEVEL_5) {
+        if (depth >= SECTION_LEVEL_1 && depth <= SECTION_LEVEL_6) {
             writeEndTag(HtmlMarkup.SECTION);
         }
     }
@@ -347,11 +347,12 @@ public class Xhtml5BaseSink extends AbstractXmlSink implements HtmlMarkup {
      *
      * @param depth The level of the section title.
      * @param attributes some attributes. May be null.
-     * @see javax.swing.text.html.HTML.Tag#H1
-     * @see javax.swing.text.html.HTML.Tag#H2
-     * @see javax.swing.text.html.HTML.Tag#H3
-     * @see javax.swing.text.html.HTML.Tag#H4
-     * @see javax.swing.text.html.HTML.Tag#H5
+     * @see #H1
+     * @see #H2
+     * @see #H3
+     * @see #H4
+     * @see #H5
+     * @see #H6
      */
     protected void onSectionTitle(int depth, SinkEventAttributes attributes) {
         MutableAttributeSet atts = SinkUtils.filterAttributes(attributes, SinkUtils.SINK_SECTION_ATTRIBUTES);
@@ -366,6 +367,8 @@ public class Xhtml5BaseSink extends AbstractXmlSink implements HtmlMarkup {
             writeStartTag(HtmlMarkup.H4, atts);
         } else if (depth == SECTION_LEVEL_5) {
             writeStartTag(HtmlMarkup.H5, atts);
+        } else if (depth == SECTION_LEVEL_6) {
+            writeStartTag(HtmlMarkup.H6, atts);
         }
     }
 
@@ -373,11 +376,12 @@ public class Xhtml5BaseSink extends AbstractXmlSink implements HtmlMarkup {
      * Ends a section title.
      *
      * @param depth The level of the section title.
-     * @see javax.swing.text.html.HTML.Tag#H1
-     * @see javax.swing.text.html.HTML.Tag#H2
-     * @see javax.swing.text.html.HTML.Tag#H3
-     * @see javax.swing.text.html.HTML.Tag#H4
-     * @see javax.swing.text.html.HTML.Tag#H5
+     * @see #H1
+     * @see #H2
+     * @see #H3
+     * @see #H4
+     * @see #H5
+     * @see #H6
      */
     protected void onSectionTitle_(int depth) {
         if (depth == SECTION_LEVEL_1) {
@@ -390,6 +394,8 @@ public class Xhtml5BaseSink extends AbstractXmlSink implements HtmlMarkup {
             writeEndTag(HtmlMarkup.H4);
         } else if (depth == SECTION_LEVEL_5) {
             writeEndTag(HtmlMarkup.H5);
+        } else if (depth == SECTION_LEVEL_6) {
+            writeEndTag(HtmlMarkup.H6);
         }
     }
 

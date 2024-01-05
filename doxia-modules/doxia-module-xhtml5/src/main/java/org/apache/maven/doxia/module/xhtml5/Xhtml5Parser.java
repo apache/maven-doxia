@@ -158,7 +158,7 @@ public class Xhtml5Parser extends Xhtml5BaseParser implements Xhtml5Markup {
         } else if (parser.getName().equals(TITLE.toString())) {
             sink.title_();
         } else if (parser.getName().equals(BODY.toString())) {
-            consecutiveSections(0, sink, null);
+            emitHeadingSections(0, sink, false);
 
             sink.body_();
         } else if (parser.getName().equals(ADDRESS.toString())) {

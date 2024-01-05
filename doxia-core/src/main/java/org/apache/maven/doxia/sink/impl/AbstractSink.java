@@ -186,6 +186,26 @@ public abstract class AbstractSink implements Sink, Markup {
     }
 
     @Override
+    public final void section6() {
+        section(6, null);
+    }
+
+    @Override
+    public final void section6_() {
+        section_(6);
+    }
+
+    @Override
+    public final void sectionTitle6() {
+        sectionTitle(6, null);
+    }
+
+    @Override
+    public final void sectionTitle6_() {
+        sectionTitle_(6);
+    }
+
+    @Override
     public final void header() {
         header(null);
     }

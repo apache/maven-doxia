@@ -127,6 +127,12 @@ public class AptSinkTest extends AbstractSinkTest {
     }
 
     /** {@inheritDoc} */
+    protected String getSection6Block(String title) {
+        // Everything above level 5 is automatically converted to level 5 (as APT doesn't support deeper nesting)
+        return EOL + StringUtils.repeat(AptMarkup.SECTION_TITLE_START_MARKUP, 4) + title + EOL + EOL + EOL;
+    }
+
+    /** {@inheritDoc} */
     protected String getHeaderBlock() {
         return "";
     }

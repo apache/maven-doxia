@@ -163,6 +163,11 @@ public class XdocSinkTest extends AbstractSinkTest {
     }
 
     /** {@inheritDoc} */
+    protected String getSection6Block(String title) {
+        return "<header>" + EOL + "<h6>" + title + "</h6></header>";
+    }
+
+    /** {@inheritDoc} */
     protected String getHeaderBlock() {
         return "<header></header>";
     }

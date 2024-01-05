@@ -321,6 +321,9 @@ public interface HtmlMarkup extends XmlMarkup {
     /** HTML5 tag for <code>h5</code>. */
     Tag H5 = Tag.H5;
 
+    /** HTML5 tag for <code>h6</code>. */
+    Tag H6 = Tag.H6;
+
     /** HTML5 tag for <code>head</code>. */
     Tag HEAD = Tag.HEAD;
 
