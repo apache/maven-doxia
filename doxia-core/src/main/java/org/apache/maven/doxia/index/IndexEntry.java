@@ -126,7 +126,7 @@ public class IndexEntry {
      *
      * @param newParent The parent. May be null.
      * @param newId     The id. May be null.
-     * @param
+     * @param type      The type. Cannot be null.
      */
     public IndexEntry(IndexEntry newParent, String newId, Type type) {
         this.parent = newParent;
@@ -177,7 +177,7 @@ public class IndexEntry {
 
     /** Set if the entry's id already has an anchor in the underlying document.
      *
-     * @param hasAnchor {@true} if the id already has an anchor.
+     * @param hasAnchor {@code true} if the id already has an anchor.
      * @since 2.0.0
      */
     public void setAnchor(boolean hasAnchor) {

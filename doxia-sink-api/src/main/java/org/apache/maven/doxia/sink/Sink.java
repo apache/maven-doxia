@@ -985,11 +985,11 @@ public interface Sink extends AutoCloseable {
     void figureCaption_();
 
     /**
-     * Adding a source of a graphic. Shortcut for {@link #figureCaption(String, SinkEventAttributes)} with first argument being {@code name} and second argument being {@code null}.
+     * Adds a graphic element. Shortcut for {@link #figureGraphics(String, SinkEventAttributes)} with first argument being {@code src} and second argument being {@code null}.
      *
-     * @param name the source
+     * @param src the source
      */
-    void figureGraphics(String name);
+    void figureGraphics(String src);
 
     /**
      * Adds a graphic element.

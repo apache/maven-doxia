@@ -24,7 +24,7 @@ import org.apache.maven.doxia.sink.SinkEventAttributes;
 
 /**
  * An abstract base class that defines some convenience methods for sinks.
- * Also acts as compatibility bridge for Doxia 1.0 methods which have overloaded variants in Doxia > 1.0 (taking an additional argument {@link SinkEventAttributes}).
+ * Also acts as compatibility bridge for Doxia 1.0 methods which have overloaded variants in Doxia &gt; 1.0 (taking an additional argument {@link SinkEventAttributes}).
  * This implementation just delegates the former to the latter with argument {@link SinkEventAttributes} being {@code null}.
  *
  * @author ltheussl

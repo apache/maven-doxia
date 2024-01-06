@@ -25,7 +25,7 @@ import org.apache.maven.doxia.sink.SinkEventAttributes;
 /**
  * By default a {@link SinkWrapper} just delegates each method to the wrapped sink's method.
  * For certain sink methods a derived wrapper may modify the sink before/after or instead of calling the delegate's method.
- * Sink wrappers can either be registered manually via {@link Parser#registerSinkWrapperFactory(int, SinkWrapperFactory)} or
+ * Sink wrappers can either be registered manually via {@link Parser#addSinkWrapperFactory(SinkWrapperFactory)} or
  * are automatically registered if provided as JSR330 component.
  * In addition Sink wrappers can be used programmatically without an according factory.
  * @since 2.0.0
