@@ -18,8 +18,6 @@
  */
 package org.apache.maven.doxia.sink;
 
-import java.nio.file.Path;
-
 public final class EmptyLocator implements Locator {
 
     public static final Locator INSTANCE = new EmptyLocator();
@@ -35,7 +33,7 @@ public final class EmptyLocator implements Locator {
     }
 
     @Override
-    public Path getSourceFile() {
+    public String getReference() {
         return null;
     }
 

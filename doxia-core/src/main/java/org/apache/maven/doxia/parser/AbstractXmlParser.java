@@ -26,7 +26,6 @@ import java.io.Reader;
 import java.io.StringReader;
 import java.net.URI;
 import java.net.URL;
-import java.nio.file.Path;
 import java.nio.file.Paths;
 import java.util.HashMap;
 import java.util.Hashtable;
@@ -137,7 +136,7 @@ public abstract class AbstractXmlParser extends AbstractParser implements XmlMar
             // Note: do it after input is set, otherwise values are reset
             initXmlParser(parser);
 
-            parseXml(parser, getWrappedSink(sink));
+            parseXml(parser, getWrappedSink(sink), reference);
         } catch (XmlPullParserException ex) {
             throw new ParseException("Error parsing the model", ex, ex.getLineNumber(), ex.getColumnNumber());
         } catch (MacroExecutionException ex) {
@@ -191,8 +190,8 @@ public abstract class AbstractXmlParser extends AbstractParser implements XmlMar
 
         private final XmlPullParser parser;
 
-        XmlPullParserLocator(XmlPullParser parser, Path file) {
-            super(file);
+        XmlPullParserLocator(XmlPullParser parser, String reference) {
+            super(reference);
             this.parser = parser;
         }
 
@@ -211,11 +210,13 @@ public abstract class AbstractXmlParser extends AbstractParser implements XmlMar
      *
      * @param parser A parser, not null.
      * @param sink the sink to receive the events.
+     * @param reference the reference (usually the file path of the parsed document)
      * @throws org.codehaus.plexus.util.xml.pull.XmlPullParserException if there's a problem parsing the model
      * @throws org.apache.maven.doxia.macro.MacroExecutionException if there's a problem executing a macro
      */
-    private void parseXml(XmlPullParser parser, Sink sink) throws XmlPullParserException, MacroExecutionException {
-        sink.setDocumentLocator(new XmlPullParserLocator(parser, null));
+    private void parseXml(XmlPullParser parser, Sink sink, String reference)
+            throws XmlPullParserException, MacroExecutionException {
+        sink.setDocumentLocator(new XmlPullParserLocator(parser, reference));
         int eventType = parser.getEventType();
 
         while (eventType != XmlPullParser.END_DOCUMENT) {

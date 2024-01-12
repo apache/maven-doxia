@@ -18,8 +18,6 @@
  */
 package org.apache.maven.doxia.sink.impl;
 
-import java.nio.file.Path;
-
 import org.apache.maven.doxia.sink.Locator;
 
 /**
@@ -27,16 +25,16 @@ import org.apache.maven.doxia.sink.Locator;
  */
 public abstract class AbstractLocator implements Locator {
 
-    private Path file;
+    private String reference;
 
-    protected AbstractLocator(Path file) {
+    protected AbstractLocator(String reference) {
         super();
-        this.file = file;
+        this.reference = reference;
     }
 
     @Override
-    public Path getSourceFile() {
-        return file;
+    public String getReference() {
+        return reference;
     }
 
     @Override
@@ -54,8 +52,8 @@ public abstract class AbstractLocator implements Locator {
     public static String formatLocation(Locator locator) {
         StringBuilder buffer = new StringBuilder();
 
-        if (locator.getSourceFile() != null) {
-            buffer.append(locator.getSourceFile());
+        if (locator.getReference() != null) {
+            buffer.append(locator.getReference());
         }
         if (locator.getLineNumber() > 0) {
             buffer.append(", line ").append(locator.getLineNumber());

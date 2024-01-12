@@ -18,8 +18,6 @@
  */
 package org.apache.maven.doxia.sink;
 
-import java.nio.file.Path;
-
 /**
  * Interface for associating a {@link Sink} event with a document location.
  * @since 2.0.0
@@ -43,10 +41,10 @@ public interface Locator {
     int getColumnNumber();
 
     /**
-     * Returns the underlying source file path (usually a relative path).
+     * Returns the underlying source reference (for file based documents a relative file path, otherwise an arbitrary string or {@code null}).
      * @return the source for the sink event (may be {@code null})
      */
-    Path getSourceFile();
+    String getReference();
 
     /**
      * Returns a prefix containing location information. This is supposed to be used with logging inside Sink events

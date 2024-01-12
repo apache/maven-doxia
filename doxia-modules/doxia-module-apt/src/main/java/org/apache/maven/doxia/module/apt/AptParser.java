@@ -38,6 +38,7 @@ import org.apache.maven.doxia.parser.AbstractTextParser;
 import org.apache.maven.doxia.parser.ParseException;
 import org.apache.maven.doxia.sink.Sink;
 import org.apache.maven.doxia.sink.SinkEventAttributes;
+import org.apache.maven.doxia.sink.impl.AbstractLocator;
 import org.apache.maven.doxia.sink.impl.SinkAdapter;
 import org.apache.maven.doxia.sink.impl.SinkEventAttributeSet;
 import org.apache.maven.doxia.util.DoxiaUtils;
@@ -180,7 +181,26 @@ public class AptParser extends AbstractTextParser implements AptMarkup {
     /** {@inheritDoc} */
     @Override
     public void parse(Reader source, Sink sink) throws ParseException {
-        parse(source, sink, "");
+        parse(source, sink, null);
+    }
+
+    private static final class AptSourceLocator extends AbstractLocator {
+        private final AptSource aptSource;
+
+        AptSourceLocator(AptSource aptSource, String reference) {
+            super(reference);
+            this.aptSource = aptSource;
+        }
+
+        @Override
+        public int getLineNumber() {
+            return aptSource.getLineNumber() > -1 ? aptSource.getLineNumber() + 1 : -1;
+        }
+
+        @Override
+        public int getColumnNumber() {
+            return -1;
+        }
     }
 
     /** {@inheritDoc} */
@@ -200,6 +220,7 @@ public class AptParser extends AbstractTextParser implements AptMarkup {
             this.source = new AptReaderSource(new StringReader(sourceContent), reference);
 
             this.sink = getWrappedSink(sink);
+            sink.setDocumentLocator(new AptSourceLocator(this.source, reference));
 
             blockFileName = null;
 
