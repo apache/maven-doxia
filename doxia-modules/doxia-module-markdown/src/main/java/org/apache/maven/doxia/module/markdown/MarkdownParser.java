@@ -172,8 +172,10 @@ public class MarkdownParser extends AbstractTextParser implements TextMarkup {
             String html = toHtml(source);
 
             // TODO: add locator for the markdown source (not the intermediate HTML format)
+            // this requires writing a custom renderer not leveraging the XHTML parser
+
             // then HTML to Sink API
-            parser.parse(html, getWrappedSink(sink));
+            parser.parse(html, getWrappedSink(sink), "Intermediate HTML from " + reference);
         } catch (IOException e) {
             throw new ParseException("Failed reading Markdown source document", e);
         }
