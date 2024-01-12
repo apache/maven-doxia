@@ -26,6 +26,7 @@ import java.io.Reader;
 import java.io.StringReader;
 import java.net.URI;
 import java.net.URL;
+import java.nio.file.Path;
 import java.nio.file.Paths;
 import java.util.HashMap;
 import java.util.Hashtable;
@@ -39,6 +40,7 @@ import org.apache.commons.lang3.StringUtils;
 import org.apache.maven.doxia.macro.MacroExecutionException;
 import org.apache.maven.doxia.markup.XmlMarkup;
 import org.apache.maven.doxia.sink.Sink;
+import org.apache.maven.doxia.sink.impl.AbstractLocator;
 import org.apache.maven.doxia.sink.impl.SinkEventAttributeSet;
 import org.apache.maven.doxia.util.HtmlTools;
 import org.apache.maven.doxia.util.XmlValidator;
@@ -185,6 +187,25 @@ public abstract class AbstractXmlParser extends AbstractParser implements XmlMar
         return atts;
     }
 
+    private static final class XmlPullParserLocator extends AbstractLocator {
+
+        private final XmlPullParser parser;
+
+        XmlPullParserLocator(XmlPullParser parser, Path file) {
+            super(file);
+            this.parser = parser;
+        }
+
+        @Override
+        public int getLineNumber() {
+            return parser.getLineNumber();
+        }
+
+        @Override
+        public int getColumnNumber() {
+            return parser.getColumnNumber() != -1 ? parser.getColumnNumber() + 1 : -1;
+        }
+    }
     /**
      * Parse the model from the XmlPullParser into the given sink.
      *
@@ -194,6 +215,7 @@ public abstract class AbstractXmlParser extends AbstractParser implements XmlMar
      * @throws org.apache.maven.doxia.macro.MacroExecutionException if there's a problem executing a macro
      */
     private void parseXml(XmlPullParser parser, Sink sink) throws XmlPullParserException, MacroExecutionException {
+        sink.setDocumentLocator(new XmlPullParserLocator(parser, null));
         int eventType = parser.getEventType();
 
         while (eventType != XmlPullParser.END_DOCUMENT) {

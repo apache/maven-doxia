@@ -19,6 +19,8 @@
 package org.apache.maven.doxia.sink.impl;
 
 import org.apache.maven.doxia.markup.Markup;
+import org.apache.maven.doxia.sink.EmptyLocator;
+import org.apache.maven.doxia.sink.Locator;
 import org.apache.maven.doxia.sink.Sink;
 import org.apache.maven.doxia.sink.SinkEventAttributes;
 
@@ -32,6 +34,8 @@ import org.apache.maven.doxia.sink.SinkEventAttributes;
  * @since 1.1
  */
 public abstract class AbstractSink implements Sink, Markup {
+
+    private Locator locator;
 
     // -- start default implementation for legacy doxia 1.0 methods which have overridden variants in Doxia 1.1 or 2.0,
     // all sink implementation derived from this must only override the Doxia > 1.0 variants
@@ -419,5 +423,18 @@ public abstract class AbstractSink implements Sink, Markup {
      */
     protected void init() {
         // nop
+    }
+
+    @Override
+    public void setDocumentLocator(Locator locator) {
+        this.locator = locator;
+    }
+
+    @Override
+    public Locator getDocumentLocator() {
+        if (locator == null) {
+            return EmptyLocator.INSTANCE;
+        }
+        return locator;
     }
 }

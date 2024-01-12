@@ -1749,4 +1749,20 @@ public interface Sink extends AutoCloseable {
      * Closing a previously-closed Sink has no effect.
      */
     void close();
+
+    /**
+     * Sets the locator which exposes location information for a particular Sink event.
+     * @param locator the locator (never {@code null}).
+     * @since 2.0.0
+     */
+    default void setDocumentLocator(Locator locator) {}
+
+    /**
+     * Returns the locator which exposes location information for a particular Sink event.
+     * @return the locator (never {@code null}).
+     * @since 2.0.0
+     */
+    default Locator getDocumentLocator() {
+        return EmptyLocator.INSTANCE;
+    }
 }

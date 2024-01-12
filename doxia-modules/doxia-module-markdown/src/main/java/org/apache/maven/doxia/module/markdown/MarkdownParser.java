@@ -171,6 +171,7 @@ public class MarkdownParser extends AbstractTextParser implements TextMarkup {
             // Markdown to HTML (using flexmark-java library)
             String html = toHtml(source);
 
+            // TODO: add locator for the markdown source (not the intermediate HTML format)
             // then HTML to Sink API
             parser.parse(html, getWrappedSink(sink));
         } catch (IOException e) {
