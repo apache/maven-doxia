@@ -19,7 +19,6 @@
 package org.apache.maven.doxia.parser;
 
 import java.io.Reader;
-import java.util.List;
 
 import org.apache.maven.doxia.index.IndexingSink;
 import org.apache.maven.doxia.sink.Sink;
@@ -93,14 +92,6 @@ public interface Parser {
      * @since 2.0.0
      */
     void addSinkWrapperFactory(SinkWrapperFactory factory);
-
-    /**
-     * Returns all sink wrapper factories (both registered automatically and manually). The collection is ordered in a way that
-     * the factories having the lowest priority come first (i.e. in reverse order).
-     * @return all sink wrapper factories in the reverse order
-     * @since 2.0.0
-     */
-    List<SinkWrapperFactory> getSinkWrapperFactories();
 
     /**
      * Determines whether to automatically generate anchors for each index entry found by {@link IndexingSink} or not.
