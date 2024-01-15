@@ -103,9 +103,6 @@ public class TocMacroTest {
         assertEquals("list_", (it.next()).getName());
         assertFalse(it.hasNext());
 
-        // no wrapper factories should be registered by default
-        assertEquals(0, parser.getSinkWrapperFactories().size());
-
         // test parameters
         parser = new Xhtml5BaseParser();
         macroParameters.put("section", "2");

@@ -25,9 +25,11 @@ import java.io.IOException;
 import java.io.InputStream;
 import java.io.Reader;
 import java.io.StringReader;
+import java.util.ArrayList;
 import java.util.Collection;
+import java.util.Collections;
 import java.util.LinkedList;
-import java.util.PriorityQueue;
+import java.util.List;
 import java.util.Properties;
 
 import org.apache.maven.doxia.macro.Macro;
@@ -194,7 +196,7 @@ public abstract class AbstractParser implements Parser {
     }
 
     /**
-     * Retrieves the sink pipeline built from all registered {@link SinkWrapperFactory} objects.
+     * Creates a sink pipeline built from all registered {@link SinkWrapperFactory} objects.
      * For secondary parsers (i.e. ones with {@link #isSecondParsing()} returning {@code true} just the given original sink is returned.
      * @param sink
      * @return the Sink pipeline to be used
@@ -235,10 +237,14 @@ public abstract class AbstractParser implements Parser {
         manuallyRegisteredSinkWrapperFactories.add(factory);
     }
 
-    @Override
-    public Collection<SinkWrapperFactory> getSinkWrapperFactories() {
-        PriorityQueue<SinkWrapperFactory> effectiveSinkWrapperFactories =
-                new PriorityQueue<>(new SinkWrapperFactoryComparator());
+    /**
+     * Returns all sink wrapper factories (both registered automatically and manually). The collection is ordered in a way that
+     * the factories having the lowest priority come first (i.e. in reverse order).
+     * @return all sink wrapper factories in the reverse order
+     * @since 2.0.0
+     */
+    protected List<SinkWrapperFactory> getSinkWrapperFactories() {
+        List<SinkWrapperFactory> effectiveSinkWrapperFactories = new ArrayList<>();
         if (automaticallyRegisteredSinkWrapperFactories != null) {
             effectiveSinkWrapperFactories.addAll(automaticallyRegisteredSinkWrapperFactories);
         }
@@ -246,6 +252,7 @@ public abstract class AbstractParser implements Parser {
         if (emitAnchors) {
             effectiveSinkWrapperFactories.add(new CreateAnchorsForIndexEntriesFactory());
         }
+        Collections.sort(effectiveSinkWrapperFactories, Collections.reverseOrder(new SinkWrapperFactoryComparator()));
         return effectiveSinkWrapperFactories;
     }
 
