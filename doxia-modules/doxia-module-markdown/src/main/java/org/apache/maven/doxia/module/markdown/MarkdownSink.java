@@ -33,6 +33,7 @@ import org.apache.maven.doxia.sink.Sink;
 import org.apache.maven.doxia.sink.SinkEventAttributes;
 import org.apache.maven.doxia.sink.impl.AbstractTextSink;
 import org.apache.maven.doxia.sink.impl.SinkEventAttributeSet;
+import org.apache.maven.doxia.util.HtmlTools;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
@@ -760,7 +761,7 @@ public class MarkdownSink extends AbstractTextSink implements MarkdownMarkup {
     /**
      * {@inheritDoc}
      *
-     * Unkown events just log a warning message but are ignored otherwise.
+     * Unknown events just log a warning message but are ignored otherwise.
      * @see org.apache.maven.doxia.sink.Sink#unknown(String,Object[],SinkEventAttributes)
      */
     @Override
@@ -819,7 +820,8 @@ public class MarkdownSink extends AbstractTextSink implements MarkdownMarkup {
     // ----------------------------------------------------------------------
 
     /**
-     * Escape special characters in a text in Markdown:
+     * First use XML escaping (leveraging the predefined entities, for browsers)
+     * afterwards escape special characters in a text with a leading backslash (for markdown parsers)
      *
      * <pre>
      * \, `, *, _, {, }, [, ], (, ), #, +, -, ., !
@@ -833,7 +835,7 @@ public class MarkdownSink extends AbstractTextSink implements MarkdownMarkup {
         if (text == null) {
             return "";
         }
-
+        text = HtmlTools.escapeHTML(text, true); // assume UTF-8 output, i.e. only use the mandatory XML entities
         int length = text.length();
         StringBuilder buffer = new StringBuilder(length);
 

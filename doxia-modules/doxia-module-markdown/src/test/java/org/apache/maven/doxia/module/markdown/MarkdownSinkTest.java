@@ -32,6 +32,7 @@ import org.apache.maven.doxia.parser.Parser;
 import org.apache.maven.doxia.sink.Sink;
 import org.apache.maven.doxia.sink.impl.AbstractSinkTest;
 import org.apache.maven.doxia.sink.impl.SinkEventTestingSink;
+import org.apache.maven.doxia.util.HtmlTools;
 import org.hamcrest.MatcherAssert;
 import org.hamcrest.Matchers;
 import org.junit.jupiter.api.Test;
@@ -315,7 +316,11 @@ public class MarkdownSinkTest extends AbstractSinkTest {
 
     /** {@inheritDoc} */
     protected String getTextBlock(String text) {
-        return getEscapedText(text);
+        // this is only called once, therefore hard-code the expected result
+        // return escaped format of "~,_=,_-,_+,_*,_[,_],_<,_>,_{,_},_\\";
+        // i.e. XML entities for <>&"' and Markdown escape sequences for characters outlined in
+        // https://daringfireball.net/projects/markdown/syntax#backslash
+        return "~,\\_=,\\_\\-,\\_\\+,\\_\\*,\\_\\[,\\_\\],\\_&lt;,\\_&gt;,\\_\\{,\\_\\},\\_\\\\";
     }
 
     /** {@inheritDoc} */
@@ -329,6 +334,7 @@ public class MarkdownSinkTest extends AbstractSinkTest {
      * @return the text with all special characters escaped
      */
     private String getEscapedText(String text) {
+        text = HtmlTools.escapeHTML(text, true);
         return text.replaceAll("\\\\|\\`|\\*|_|\\{|\\}|\\[|\\]|\\(|\\)|#|\\+|\\-|\\.|\\!", "\\\\$0");
     }
 
