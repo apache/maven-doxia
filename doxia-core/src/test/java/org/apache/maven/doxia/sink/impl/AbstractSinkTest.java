@@ -613,7 +613,7 @@ public abstract class AbstractSinkTest extends AbstractModuleTest {
         if (isXmlSink()) {
             assertThat(wrapXml(actual), isIdenticalTo(wrapXml(expected)));
         } else {
-            assertEquals(actual, expected);
+            assertEquals(expected, actual);
         }
     }
 
@@ -632,7 +632,7 @@ public abstract class AbstractSinkTest extends AbstractModuleTest {
         if (isXmlSink()) {
             assertThat(wrapXml(actual), isIdenticalTo(wrapXml(expected)));
         } else {
-            assertEquals(actual, expected);
+            assertEquals(expected, actual);
         }
     }
 
