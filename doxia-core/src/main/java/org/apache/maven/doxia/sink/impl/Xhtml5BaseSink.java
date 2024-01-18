@@ -927,7 +927,7 @@ public class Xhtml5BaseSink extends AbstractXmlSink implements HtmlMarkup {
         }
 
         if (this.tableContentWriterStack.isEmpty()) {
-            LOGGER.warn("{}No table content", getDocumentLocator().getLogPrefix());
+            LOGGER.warn("{}No table content", getLocationLogPrefix());
             return;
         }
 
@@ -1182,11 +1182,7 @@ public class Xhtml5BaseSink extends AbstractXmlSink implements HtmlMarkup {
         if (!DoxiaUtils.isValidId(id)) {
             id = DoxiaUtils.encodeId(name);
 
-            LOGGER.debug(
-                    "{}Modified invalid anchor name '{}' to '{}'",
-                    getDocumentLocator().getLogPrefix(),
-                    name,
-                    id);
+            LOGGER.debug("{}Modified invalid anchor name '{}' to '{}'", getLocationLogPrefix(), name, id);
         }
 
         MutableAttributeSet att = new SinkEventAttributeSet();
@@ -1453,10 +1449,7 @@ public class Xhtml5BaseSink extends AbstractXmlSink implements HtmlMarkup {
 
             if (!originalComment.equals(comment)) {
                 LOGGER.warn(
-                        "{}Modified invalid comment '{}' to '{}'",
-                        getDocumentLocator().getLogPrefix(),
-                        originalComment,
-                        comment);
+                        "{}Modified invalid comment '{}' to '{}'", getLocationLogPrefix(), originalComment, comment);
             }
 
             final StringBuilder buffer = new StringBuilder(comment.length() + 7);
@@ -1513,10 +1506,7 @@ public class Xhtml5BaseSink extends AbstractXmlSink implements HtmlMarkup {
     @Override
     public void unknown(String name, Object[] requiredParams, SinkEventAttributes attributes) {
         if (requiredParams == null || !(requiredParams[0] instanceof Integer)) {
-            LOGGER.warn(
-                    "{}No type information for unknown event '{}', ignoring!",
-                    getDocumentLocator().getLogPrefix(),
-                    name);
+            LOGGER.warn("{}No type information for unknown event '{}', ignoring!", getLocationLogPrefix(), name);
 
             return;
         }
@@ -1538,10 +1528,7 @@ public class Xhtml5BaseSink extends AbstractXmlSink implements HtmlMarkup {
         Tag tag = HtmlTools.getHtmlTag(name);
 
         if (tag == null) {
-            LOGGER.warn(
-                    "[]No HTML tag found for unknown event '{}', ignoring!",
-                    getDocumentLocator().getLogPrefix(),
-                    name);
+            LOGGER.warn("[]No HTML tag found for unknown event '{}', ignoring!", getLocationLogPrefix(), name);
         } else {
             if (tagType == TAG_TYPE_SIMPLE) {
                 writeSimpleTag(tag, escapeAttributeValues(attributes));
@@ -1550,10 +1537,7 @@ public class Xhtml5BaseSink extends AbstractXmlSink implements HtmlMarkup {
             } else if (tagType == TAG_TYPE_END) {
                 writeEndTag(tag);
             } else {
-                LOGGER.warn(
-                        "{}No type information for unknown event '{}', ignoring!",
-                        getDocumentLocator().getLogPrefix(),
-                        name);
+                LOGGER.warn("{}No type information for unknown event '{}', ignoring!", getLocationLogPrefix(), name);
             }
         }
     }

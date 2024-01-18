@@ -47,7 +47,7 @@ public class UniqueAnchorNamesValidator extends SinkWrapper {
     private void enforceUniqueAnchor(String name) {
         if (!usedAnchorNames.add(name)) {
             throw new IllegalStateException(
-                    getDocumentLocator().getLogPrefix() + "Anchor name \"" + name + "\" used more than once");
+                    getLocationLogPrefix() + "Anchor name \"" + name + "\" used more than once");
         }
     }
 }

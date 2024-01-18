@@ -45,11 +45,4 @@ public interface Locator {
      * @return the source for the sink event (may be {@code null})
      */
     String getReference();
-
-    /**
-     * Returns a prefix containing location information. This is supposed to be used with logging inside Sink events
-     * to ease tracing the root issue.
-     * @return a prefix to be used for logging (may be empty if no location information is available)
-     */
-    String getLogPrefix();
 }

@@ -36,34 +36,4 @@ public abstract class AbstractLocator implements Locator {
     public String getReference() {
         return reference;
     }
-
-    @Override
-    public String getLogPrefix() {
-        return formatLocation(this);
-    }
-
-    /**
-     * Creates a string with line/column information. Inspired by
-     * {@code o.a.m.model.building.ModelProblemUtils.formatLocation(...)}.
-     *
-     * @param locator The locator must not be {@code null}.
-     * @return The formatted location or an empty string if unknown, never {@code null}.
-     */
-    public static String formatLocation(Locator locator) {
-        StringBuilder buffer = new StringBuilder();
-
-        if (locator.getReference() != null) {
-            buffer.append(locator.getReference());
-        }
-        if (locator.getLineNumber() > 0) {
-            buffer.append(", line ").append(locator.getLineNumber());
-        }
-        if (locator.getColumnNumber() > 0) {
-            buffer.append(", column ").append(locator.getLineNumber());
-        }
-        if (buffer.length() > 0) {
-            buffer.append(": ");
-        }
-        return buffer.toString();
-    }
 }

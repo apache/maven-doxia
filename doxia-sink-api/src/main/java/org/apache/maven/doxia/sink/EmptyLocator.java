@@ -36,9 +36,4 @@ public final class EmptyLocator implements Locator {
     public String getReference() {
         return null;
     }
-
-    @Override
-    public String getLogPrefix() {
-        return "";
-    }
 }
