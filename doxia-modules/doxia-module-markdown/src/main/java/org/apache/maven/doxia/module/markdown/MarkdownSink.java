@@ -23,9 +23,11 @@ import java.io.Writer;
 import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.Collection;
+import java.util.Collections;
 import java.util.LinkedList;
 import java.util.List;
-import java.util.Stack;
+import java.util.Queue;
+import java.util.function.UnaryOperator;
 import java.util.stream.Collectors;
 
 import org.apache.commons.lang3.StringUtils;
@@ -50,7 +52,7 @@ public class MarkdownSink extends AbstractTextSink implements MarkdownMarkup {
     // ----------------------------------------------------------------------
 
     /**  A buffer that holds the current text when headerFlag or bufferFlag set to <code>true</code>. The content of this buffer is already escaped. */
-    private StringBuffer buffer;
+    private StringBuilder buffer;
 
     /**  author. */
     private Collection<String> authors;
@@ -64,38 +66,11 @@ public class MarkdownSink extends AbstractTextSink implements MarkdownMarkup {
     /**  linkName. */
     private String linkName;
 
-    /** startFlag. */
-    private boolean startFlag;
-
-    /**  tableCaptionFlag. */
-    private boolean tableCaptionFlag;
-
-    /** tableCellFlag, set to {@code true} inside table (header) cells */
-    private boolean tableCellFlag;
-
-    /** tableRowHeaderFlag, set to {@code true} for table rows containing at least one table header cell  */
+    /** tableHeaderCellFlag, set to {@code true} for table rows containing at least one table header cell  */
     private boolean tableHeaderCellFlag;
-
-    /**  headerFlag. */
-    private boolean headerFlag;
-
-    /**  bufferFlag, set to {@code true} in certain elements to prevent direct writing during {@link #text(String, SinkEventAttributes)} */
-    private boolean bufferFlag;
-
-    /**  verbatimFlag. */
-    private boolean verbatimFlag;
-
-    /** figure flag, set to {@code true} between {@link #figure(SinkEventAttributes)} and {@link #figure_()} events */
-    private boolean figureFlag;
 
     /**  number of cells in a table. */
     private int cellCount;
-
-    /**  The writer to use. */
-    private final PrintWriter writer;
-
-    /** {@code true} when last written character in {@link #writer} was a line separator, or writer is still at the beginning */
-    private boolean isWriterAtStartOfNewLine;
 
     /**  justification of table cells per column. */
     private List<Integer> cellJustif;
@@ -103,17 +78,69 @@ public class MarkdownSink extends AbstractTextSink implements MarkdownMarkup {
     /**  is header row */
     private boolean isFirstTableRow;
 
-    /**  listNestingLevel, 0 outside the list, 1 for the top-level list, 2 for a nested list, 3 for a list nested inside a nested list, .... */
-    private int listNestingLevel;
+    /**  The writer to use. */
+    private final PrintWriter writer;
 
-    /**  listStyles. */
-    private final Stack<String> listStyles;
+    /** {@code true} when last written character in {@link #writer} was a line separator, or writer is still at the beginning */
+    private boolean isWriterAtStartOfNewLine;
 
-    /** Keep track of the closing tags for inline events. */
-    protected Stack<List<String>> inlineStack = new Stack<>();
+    /** Keep track of end markup for inline events. */
+    protected Queue<Queue<String>> inlineStack = Collections.asLifoQueue(new LinkedList<>());
+
+    /** The context of the surrounding elements as stack (LIFO) */
+    protected Queue<ElementContext> elementContextStack = Collections.asLifoQueue(new LinkedList<>());
 
     private String figureSrc;
 
+    /** Most important contextual metadata (of the surrounding element) */
+    enum ElementContext {
+        HEAD("head", true, null, true),
+        BODY("body", true, MarkdownSink::escapeMarkdown),
+        // only the elements, which affect rendering of children and are different from BODY or HEAD are listed here
+        FIGURE("", false, MarkdownSink::escapeMarkdown, true),
+        CODE_BLOCK("code block", true, null),
+        CODE_SPAN("code span", false, null),
+        TABLE_CAPTION("table caption", false, MarkdownSink::escapeMarkdown),
+        TABLE_CELL("table cell", false, MarkdownSink::escapeForTableCell, true),
+        // same parameters as BODY but paragraphs inside lists are handled differently
+        LIST("list (regular)", true, MarkdownSink::escapeMarkdown),
+        NUMBERED_LIST("list (numbered)", true, MarkdownSink::escapeMarkdown);
+
+        final String name;
+        /**
+         * {@code true} if block element, otherwise {@code false} for inline elements
+         */
+        final boolean isBlock;
+        /**
+         * The function to call to escape the given text. The function is supposed to return the escaped text or return just the given text if no escaping is necessary in this context
+         */
+        final UnaryOperator<String> escapeFunction;
+
+        /**
+         * if {@code true} requires buffering any text appearing inside this context
+         */
+        final boolean requiresBuffering;
+
+        ElementContext(String name, boolean isBlock, UnaryOperator<String> escapeFunction) {
+            this(name, isBlock, escapeFunction, false);
+        }
+
+        ElementContext(String name, boolean isBlock, UnaryOperator<String> escapeFunction, boolean requiresBuffering) {
+            this.name = name;
+            this.isBlock = isBlock;
+            this.escapeFunction = escapeFunction;
+            this.requiresBuffering = requiresBuffering;
+        }
+
+        private String escape(String text) {
+            // is escaping necessary at all?
+            if (escapeFunction == null) {
+                return text;
+            } else {
+                return escapeFunction.apply(text);
+            }
+        }
+    }
     // ----------------------------------------------------------------------
     // Public protected methods
     // ----------------------------------------------------------------------
@@ -126,27 +153,23 @@ public class MarkdownSink extends AbstractTextSink implements MarkdownMarkup {
     protected MarkdownSink(Writer writer) {
         this.writer = new PrintWriter(writer);
         isWriterAtStartOfNewLine = true;
-        this.listStyles = new Stack<>();
 
         init();
     }
 
+    private void leaveContext(ElementContext expectedContext) {
+        ElementContext removedContext = elementContextStack.remove();
+        if (removedContext != expectedContext) {
+            throw new IllegalStateException("Unexpected context " + removedContext);
+        }
+    }
     /**
      * Returns the buffer that holds the current text.
      *
      * @return A StringBuffer.
      */
-    protected StringBuffer getBuffer() {
+    protected StringBuilder getBuffer() {
         return buffer;
-    }
-
-    /**
-     * Used to determine whether we are in head mode.
-     *
-     * @param headFlag True for head mode.
-     */
-    protected void setHeadFlag(boolean headFlag) {
-        this.headerFlag = headFlag;
     }
 
     @Override
@@ -155,65 +178,65 @@ public class MarkdownSink extends AbstractTextSink implements MarkdownMarkup {
 
         resetBuffer();
 
-        this.listNestingLevel = 0;
-
         this.authors = new LinkedList<>();
         this.title = null;
         this.date = null;
         this.linkName = null;
-        this.startFlag = true;
-        this.tableCaptionFlag = false;
-        this.tableCellFlag = false;
         this.tableHeaderCellFlag = false;
-        this.headerFlag = false;
-        this.bufferFlag = false;
-        this.verbatimFlag = false;
-        this.figureFlag = false;
         this.cellCount = 0;
         this.cellJustif = null;
-        this.listStyles.clear();
+        this.elementContextStack.clear();
         this.inlineStack.clear();
+        // always set a default context (at least for tests not emitting a body)
+        elementContextStack.add(ElementContext.BODY);
     }
 
     /**
      * Reset the StringBuilder.
      */
     protected void resetBuffer() {
-        buffer = new StringBuffer();
+        buffer = new StringBuilder();
     }
 
     @Override
     public void head(SinkEventAttributes attributes) {
-        boolean startFlag = this.startFlag;
-
         init();
-
-        headerFlag = true;
-        this.startFlag = startFlag;
+        // remove default body context here
+        leaveContext(ElementContext.BODY);
+        elementContextStack.add(ElementContext.HEAD);
     }
 
     @Override
     public void head_() {
-        headerFlag = false;
-
+        leaveContext(ElementContext.HEAD);
         // only write head block if really necessary
         if (title == null && authors.isEmpty() && date == null) {
             return;
         }
-        write(METADATA_MARKUP + EOL);
+        writeUnescaped(METADATA_MARKUP + EOL);
         if (title != null) {
-            write("title: " + title + EOL);
+            writeUnescaped("title: " + title + EOL);
         }
         if (!authors.isEmpty()) {
-            write("author: " + EOL);
+            writeUnescaped("author: " + EOL);
             for (String author : authors) {
-                write("  - " + author + EOL);
+                writeUnescaped("  - " + author + EOL);
             }
         }
         if (date != null) {
-            write("date: " + date + EOL);
+            writeUnescaped("date: " + date + EOL);
         }
-        write(METADATA_MARKUP + BLANK_LINE);
+        writeUnescaped(METADATA_MARKUP + BLANK_LINE);
+    }
+
+    @Override
+    public void body(SinkEventAttributes attributes) {
+        elementContextStack.add(ElementContext.BODY);
+    }
+
+    @Override
+    public void body_() {
+        leaveContext(ElementContext.BODY);
     }
 
     @Override
@@ -243,31 +266,25 @@ public class MarkdownSink extends AbstractTextSink implements MarkdownMarkup {
     @Override
     public void sectionTitle(int level, SinkEventAttributes attributes) {
         if (level > 0) {
-            write(StringUtils.repeat(SECTION_TITLE_START_MARKUP, level) + SPACE);
+            writeUnescaped(StringUtils.repeat(SECTION_TITLE_START_MARKUP, level) + SPACE);
         }
     }
 
     @Override
     public void sectionTitle_(int level) {
         if (level > 0) {
-            write(BLANK_LINE);
+            writeUnescaped(BLANK_LINE);
         }
     }
 
     @Override
     public void list(SinkEventAttributes attributes) {
-        listNestingLevel++;
-        listStyles.push(LIST_UNORDERED_ITEM_START_MARKUP);
+        elementContextStack.add(ElementContext.LIST);
     }
 
     @Override
     public void list_() {
-        listNestingLevel--;
-        if (listNestingLevel == 0) {
-            write(EOL); // end add blank line (together with the preceding EOL of the item) only in case this was not
-            // nested
-        }
-        listStyles.pop();
+        endNumberedOrRegularList(false);
     }
 
     @Override
@@ -280,9 +297,9 @@ public class MarkdownSink extends AbstractTextSink implements MarkdownMarkup {
         orderedOrUnorderedListItem_();
     }
 
-    /** {@inheritDoc} */
+    @Override
     public void numberedList(int numbering, SinkEventAttributes attributes) {
-        listNestingLevel++;
+        elementContextStack.add(ElementContext.NUMBERED_LIST);
         // markdown only supports decimal numbering
         if (numbering != NUMBERING_DECIMAL) {
             LOGGER.warn(
@@ -290,18 +307,21 @@ public class MarkdownSink extends AbstractTextSink implements MarkdownMarkup {
                     NUMBERING_DECIMAL,
                     numbering);
         }
-        String style = LIST_ORDERED_ITEM_START_MARKUP;
-        listStyles.push(style);
     }
 
     @Override
     public void numberedList_() {
-        listNestingLevel--;
-        if (listNestingLevel == 0) {
-            write(EOL); // end add blank line (together with the preceding EOL of the item) only in case this was not
+        endNumberedOrRegularList(true);
+    }
+
+    private void endNumberedOrRegularList(boolean isNumberedList) {
+        ElementContext context = isNumberedList ? ElementContext.NUMBERED_LIST : ElementContext.LIST;
+        leaveContext(context);
+        if (getListNestingLevel() < 0) {
+            writeUnescaped(
+                    EOL); // end add blank line (together with the preceding EOL of the item) only in case this was not
             // nested
         }
-        listStyles.pop();
     }
 
     @Override
@@ -315,19 +335,44 @@ public class MarkdownSink extends AbstractTextSink implements MarkdownMarkup {
     }
 
     private void orderedOrUnorderedListItem() {
-        write(getListPrefix());
+        writeUnescaped(getListItemPrefix());
     }
 
     private void orderedOrUnorderedListItem_() {
         ensureBeginningOfLine();
     }
 
-    private String getListPrefix() {
-        StringBuilder prefix = new StringBuilder();
-        for (int indent = 1; indent < listNestingLevel; indent++) {
-            prefix.append("    "); // 4 spaces per indentation level
+    /**
+     *
+     * @return the nesting level of the list. -1 for outside a list, 0 for non-nested list, 1 for list inside a list, ....
+     */
+    private int getListNestingLevel() {
+        return (int) (elementContextStack.stream()
+                        .filter(e -> e == ElementContext.LIST)
+                        .count()
+                - 1);
+    }
+
+    /**
+     *
+     * @return {@code true} if in numbered list, {@code false} if inside regular list
+     * @throws IllegalStateException if not inside a list at all
+     */
+    private boolean isInNumberedList() {
+        ElementContext context = elementContextStack.element();
+        if (context == ElementContext.LIST) {
+            return false;
+        } else if (context == ElementContext.NUMBERED_LIST) {
+            return true;
+        } else {
+            throw new IllegalStateException("Not inside a list but inside " + context);
         }
-        prefix.append(listStyles.peek());
+    }
+
+    private String getListItemPrefix() {
+        StringBuilder prefix = new StringBuilder();
+        prefix.append(StringUtils.repeat(INDENT, getListNestingLevel())); // 4 spaces per list nesting level
+        prefix.append(isInNumberedList() ? LIST_ORDERED_ITEM_START_MARKUP : LIST_UNORDERED_ITEM_START_MARKUP);
         prefix.append(SPACE);
         return prefix.toString();
     }
@@ -335,34 +380,32 @@ public class MarkdownSink extends AbstractTextSink implements MarkdownMarkup {
     @Override
     public void definitionList(SinkEventAttributes attributes) {
         LOGGER.warn("Definition list not natively supported in Markdown, rendering HTML instead");
-        write("<dl>" + EOL);
+        writeUnescaped("<dl>" + EOL);
     }
 
     @Override
     public void definitionList_() {
-        verbatimFlag = true;
-        write("</dl>" + BLANK_LINE);
+        writeUnescaped("</dl>" + BLANK_LINE);
     }
 
     @Override
     public void definedTerm(SinkEventAttributes attributes) {
-        write("<dt>");
-        verbatimFlag = false;
+        writeUnescaped("<dt>");
     }
 
     @Override
     public void definedTerm_() {
-        write("</dt>" + EOL);
+        writeUnescaped("</dt>" + EOL);
     }
 
     @Override
     public void definition(SinkEventAttributes attributes) {
-        write("<dd>");
+        writeUnescaped("<dd>");
     }
 
     @Override
     public void definition_() {
-        write("</dd>" + EOL);
+        writeUnescaped("</dd>" + EOL);
     }
 
     @Override
@@ -372,36 +415,43 @@ public class MarkdownSink extends AbstractTextSink implements MarkdownMarkup {
 
     @Override
     public void paragraph(SinkEventAttributes attributes) {
-        ensureBeginningOfLine();
+        // ignore paragraphs in inline elements
+        if (elementContextStack.element().isBlock) {
+            ensureBeginningOfLine();
+            if (elementContextStack.element() == ElementContext.LIST) {
+                // indentation is mandatory inside lists (only for first line)
+                writeUnescaped(INDENT);
+            }
+        }
     }
 
     @Override
     public void paragraph_() {
-        if (tableCellFlag || listNestingLevel > 0) {
-            // ignore paragraphs in table cells or lists
-        } else {
-            write(BLANK_LINE);
+        // ignore paragraphs in inline elements
+        if (elementContextStack.element().isBlock) {
+            writeUnescaped(BLANK_LINE);
         }
     }
 
     @Override
     public void verbatim(SinkEventAttributes attributes) {
+        // always assume is supposed to be monospaced (i.e. emitted inside a <pre><code>...</code></pre>)
         ensureBeginningOfLine();
-        verbatimFlag = true;
-        write(VERBATIM_START_MARKUP + EOL);
+        elementContextStack.add(ElementContext.CODE_BLOCK);
+        writeUnescaped(VERBATIM_START_MARKUP + EOL);
     }
 
     @Override
     public void verbatim_() {
         ensureBeginningOfLine();
-        write(VERBATIM_END_MARKUP + BLANK_LINE);
-        verbatimFlag = false;
+        writeUnescaped(VERBATIM_END_MARKUP + BLANK_LINE);
+        leaveContext(ElementContext.CODE_BLOCK);
     }
 
     @Override
     public void horizontalRule(SinkEventAttributes attributes) {
         ensureBeginningOfLine();
-        write(HORIZONTAL_RULE_MARKUP + BLANK_LINE);
+        writeUnescaped(HORIZONTAL_RULE_MARKUP + BLANK_LINE);
     }
 
     @Override
@@ -442,13 +492,13 @@ public class MarkdownSink extends AbstractTextSink implements MarkdownMarkup {
             // afterwards emit the first row
         }
 
-        write(TABLE_ROW_PREFIX);
+        writeUnescaped(TABLE_ROW_PREFIX);
 
-        write(buffer.toString());
+        writeUnescaped(buffer.toString());
 
         resetBuffer();
 
-        write(EOL);
+        writeUnescaped(EOL);
 
         if (isFirstTableRow) {
             // emit delimiter row
@@ -461,16 +511,16 @@ public class MarkdownSink extends AbstractTextSink implements MarkdownMarkup {
     }
 
     private void writeEmptyTableHeader() {
-        write(TABLE_ROW_PREFIX);
+        writeUnescaped(TABLE_ROW_PREFIX);
         for (int i = 0; i < cellCount; i++) {
-            write(StringUtils.repeat(String.valueOf(SPACE), 3) + TABLE_CELL_SEPARATOR_MARKUP);
+            writeUnescaped(StringUtils.repeat(String.valueOf(SPACE), 3) + TABLE_CELL_SEPARATOR_MARKUP);
         }
-        write(EOL);
+        writeUnescaped(EOL);
     }
 
     /** Emit the delimiter row which determines the alignment */
     private void writeTableDelimiterRow() {
-        write(TABLE_ROW_PREFIX);
+        writeUnescaped(TABLE_ROW_PREFIX);
         int justification = Sink.JUSTIFY_LEFT;
         for (int i = 0; i < cellCount; i++) {
             // keep previous column's alignment in case too few are specified
@@ -479,18 +529,18 @@ public class MarkdownSink extends AbstractTextSink implements MarkdownMarkup {
             }
             switch (justification) {
                 case Sink.JUSTIFY_RIGHT:
-                    write(TABLE_COL_RIGHT_ALIGNED_MARKUP);
+                    writeUnescaped(TABLE_COL_RIGHT_ALIGNED_MARKUP);
                     break;
                 case Sink.JUSTIFY_CENTER:
-                    write(TABLE_COL_CENTER_ALIGNED_MARKUP);
+                    writeUnescaped(TABLE_COL_CENTER_ALIGNED_MARKUP);
                     break;
                 default:
-                    write(TABLE_COL_LEFT_ALIGNED_MARKUP);
+                    writeUnescaped(TABLE_COL_LEFT_ALIGNED_MARKUP);
                     break;
             }
-            write(TABLE_CELL_SEPARATOR_MARKUP);
+            writeUnescaped(TABLE_CELL_SEPARATOR_MARKUP);
         }
-        write(EOL);
+        writeUnescaped(EOL);
     }
 
     @Override
@@ -521,7 +571,7 @@ public class MarkdownSink extends AbstractTextSink implements MarkdownMarkup {
                 }
             }
         }
-        tableCellFlag = true;
+        elementContextStack.add(ElementContext.TABLE_CELL);
     }
 
     @Override
@@ -544,41 +594,32 @@ public class MarkdownSink extends AbstractTextSink implements MarkdownMarkup {
      * Ends a table cell.
      */
     private void endTableCell() {
-        tableCellFlag = false;
+        leaveContext(ElementContext.TABLE_CELL);
         buffer.append(TABLE_CELL_SEPARATOR_MARKUP);
         cellCount++;
     }
 
     @Override
     public void tableCaption(SinkEventAttributes attributes) {
-        tableCaptionFlag = true;
+        elementContextStack.add(ElementContext.TABLE_CAPTION);
     }
 
     @Override
     public void tableCaption_() {
-        tableCaptionFlag = false;
+        leaveContext(ElementContext.TABLE_CAPTION);
     }
 
     @Override
     public void figure(SinkEventAttributes attributes) {
         figureSrc = null;
-        figureFlag = true;
-    }
-
-    @Override
-    public void figureCaption(SinkEventAttributes attributes) {
-        bufferFlag = true;
-    }
-
-    @Override
-    public void figureCaption_() {
-        bufferFlag = false;
+        elementContextStack.add(ElementContext.FIGURE);
     }
 
     @Override
     public void figureGraphics(String name, SinkEventAttributes attributes) {
         figureSrc = escapeMarkdown(name);
-        if (!figureFlag) {
+        // is it a standalone image (outside a figure)?
+        if (elementContextStack.peek() != ElementContext.FIGURE) {
             Object alt = attributes.getAttribute(SinkEventAttributes.ALT);
             if (alt == null) {
                 alt = "";
@@ -589,14 +630,14 @@ public class MarkdownSink extends AbstractTextSink implements MarkdownMarkup {
 
     @Override
     public void figure_() {
+        leaveContext(ElementContext.FIGURE);
         writeImage(buffer.toString(), figureSrc);
-        figureFlag = false;
     }
 
     private void writeImage(String alt, String src) {
-        write("![");
-        write(alt);
-        write("](" + src + ")");
+        writeUnescaped("![");
+        writeUnescaped(alt);
+        writeUnescaped("](" + src + ")");
     }
 
     /** {@inheritDoc} */
@@ -612,69 +653,59 @@ public class MarkdownSink extends AbstractTextSink implements MarkdownMarkup {
 
     /** {@inheritDoc} */
     public void link(String name, SinkEventAttributes attributes) {
-        if (!headerFlag) {
-            write(LINK_START_1_MARKUP);
-            linkName = name;
-        }
+        writeUnescaped(LINK_START_1_MARKUP);
+        linkName = name;
     }
 
     @Override
     public void link_() {
-        if (!headerFlag) {
-            write(LINK_START_2_MARKUP);
-            text(linkName.startsWith("#") ? linkName.substring(1) : linkName);
-            write(LINK_END_MARKUP);
-            linkName = null;
-        }
-    }
-
-    /**
-     * A link with a target.
-     *
-     * @param name The name of the link.
-     * @param target The link target.
-     */
-    void link(String name, String target) {
-        if (!headerFlag) {
-            write(LINK_START_1_MARKUP);
-        }
+        writeUnescaped(LINK_START_2_MARKUP);
+        text(linkName.startsWith("#") ? linkName.substring(1) : linkName);
+        writeUnescaped(LINK_END_MARKUP);
+        linkName = null;
     }
 
     @Override
     public void inline(SinkEventAttributes attributes) {
-        if (!headerFlag && !verbatimFlag) {
-            List<String> tags = new ArrayList<>();
+        Queue<String> endMarkups = Collections.asLifoQueue(new LinkedList<>());
 
-            if (attributes != null) {
+        if (attributes != null
+                && elementContextStack.element() != ElementContext.CODE_BLOCK
+                && elementContextStack.element() != ElementContext.CODE_SPAN) {
+            // code excludes other styles in markdown
+            if (attributes.containsAttribute(SinkEventAttributes.SEMANTICS, "code")
+                    || attributes.containsAttribute(SinkEventAttributes.SEMANTICS, "monospaced")
+                    || attributes.containsAttribute(SinkEventAttributes.STYLE, "monospaced")) {
+                writeUnescaped(MONOSPACED_START_MARKUP);
+                endMarkups.add(MONOSPACED_END_MARKUP);
+                elementContextStack.add(ElementContext.CODE_SPAN);
+            } else {
                 // in XHTML "<em>" is used, but some tests still rely on the outdated "<italic>"
                 if (attributes.containsAttribute(SinkEventAttributes.SEMANTICS, "em")
-                        || attributes.containsAttribute(SinkEventAttributes.SEMANTICS, "italic")) {
-                    write(ITALIC_START_MARKUP);
-                    tags.add(0, ITALIC_END_MARKUP);
+                        || attributes.containsAttribute(SinkEventAttributes.SEMANTICS, "italic")
+                        || attributes.containsAttribute(SinkEventAttributes.STYLE, "italic")) {
+                    writeUnescaped(ITALIC_START_MARKUP);
+                    endMarkups.add(ITALIC_END_MARKUP);
                 }
                 // in XHTML "<strong>" is used, but some tests still rely on the outdated "<bold>"
                 if (attributes.containsAttribute(SinkEventAttributes.SEMANTICS, "strong")
-                        || attributes.containsAttribute(SinkEventAttributes.SEMANTICS, "bold")) {
-                    write(BOLD_START_MARKUP);
-                    tags.add(0, BOLD_END_MARKUP);
-                }
-
-                if (attributes.containsAttribute(SinkEventAttributes.SEMANTICS, "code")) {
-                    write(MONOSPACED_START_MARKUP);
-                    tags.add(0, MONOSPACED_END_MARKUP);
+                        || attributes.containsAttribute(SinkEventAttributes.SEMANTICS, "bold")
+                        || attributes.containsAttribute(SinkEventAttributes.STYLE, "bold")) {
+                    writeUnescaped(BOLD_START_MARKUP);
+                    endMarkups.add(BOLD_END_MARKUP);
                 }
             }
-
-            inlineStack.push(tags);
         }
+        inlineStack.add(endMarkups);
     }
 
     @Override
     public void inline_() {
-        if (!headerFlag && !verbatimFlag) {
-            for (String tag : inlineStack.pop()) {
-                write(tag);
+        for (String endMarkup : inlineStack.remove()) {
+            if (endMarkup.equals(MONOSPACED_END_MARKUP)) {
+                leaveContext(ElementContext.CODE_SPAN);
             }
+            writeUnescaped(endMarkup);
         }
     }
 
@@ -710,22 +741,12 @@ public class MarkdownSink extends AbstractTextSink implements MarkdownMarkup {
 
     @Override
     public void lineBreak(SinkEventAttributes attributes) {
-        if (headerFlag || bufferFlag) {
-            buffer.append(EOL);
-        } else if (verbatimFlag) {
-            write(EOL);
-        } else {
-            write("" + SPACE + SPACE + EOL);
-        }
+        writeUnescaped("" + SPACE + SPACE + EOL);
     }
 
     @Override
     public void nonBreakingSpace() {
-        if (headerFlag || bufferFlag) {
-            buffer.append(NON_BREAKING_SPACE_MARKUP);
-        } else {
-            write(NON_BREAKING_SPACE_MARKUP);
-        }
+        writeUnescaped(NON_BREAKING_SPACE_MARKUP);
     }
 
     @Override
@@ -733,15 +754,13 @@ public class MarkdownSink extends AbstractTextSink implements MarkdownMarkup {
         if (attributes != null) {
             inline(attributes);
         }
-        if (tableCaptionFlag) {
+        ElementContext currentContext = elementContextStack.element();
+        if (currentContext == ElementContext.TABLE_CAPTION) {
             // table caption cannot even be emitted via XHTML in markdown as there is no suitable location
             LOGGER.warn("Ignoring unsupported table caption in Markdown");
-        } else if (headerFlag || bufferFlag) {
-            buffer.append(escapeMarkdown(text));
-        } else if (verbatimFlag) {
-            verbatimContent(text);
         } else {
-            content(text);
+            String unifiedText = currentContext.escape(unifyEOLs(text));
+            writeUnescaped(unifiedText);
         }
         if (attributes != null) {
             inline_();
@@ -750,12 +769,12 @@ public class MarkdownSink extends AbstractTextSink implements MarkdownMarkup {
 
     @Override
     public void rawText(String text) {
-        write(text);
+        writeUnescaped(text);
     }
 
     @Override
     public void comment(String comment) {
-        rawText((startFlag ? "" : EOL) + COMMENT_START + comment + COMMENT_END);
+        rawText(COMMENT_START + comment + COMMENT_END);
     }
 
     /**
@@ -770,37 +789,20 @@ public class MarkdownSink extends AbstractTextSink implements MarkdownMarkup {
     }
 
     /**
-     * Write text to output.
      *
-     * @param text The text to write.
+     * @return {@code true} if any of the parent contexts require buffering
      */
-    protected void write(String text) {
-        startFlag = false;
-        String unifiedText = unifyEOLs(text);
-        if (tableCellFlag) {
-            buffer.append(escapeForTableCell(unifiedText));
+    private boolean requiresBuffering() {
+        return elementContextStack.stream().anyMatch(c -> c.requiresBuffering);
+    }
+
+    protected void writeUnescaped(String text) {
+        if (requiresBuffering()) {
+            buffer.append(text);
         } else {
-            isWriterAtStartOfNewLine = unifiedText.endsWith(EOL);
-            writer.write(unifiedText);
+            isWriterAtStartOfNewLine = text.endsWith(EOL);
+            writer.write(text);
         }
-    }
-
-    /**
-     * Write Markdown escaped text to output.
-     *
-     * @param text The text to write.
-     */
-    protected void content(String text) {
-        write(escapeMarkdown(text));
-    }
-
-    /**
-     * Write verbatim text to output.
-     *
-     * @param text The text to write.
-     */
-    protected void verbatimContent(String text) {
-        write(text);
     }
 
     @Override
@@ -869,14 +871,15 @@ public class MarkdownSink extends AbstractTextSink implements MarkdownMarkup {
     }
 
     /**
-     * Escapes the pipe character according to <a href="https://github.github.com/gfm/#tables-extension-">GFM Table Extension</a>.
+     * Escapes the pipe character according to <a href="https://github.github.com/gfm/#tables-extension-">GFM Table Extension</a> in addition
+     * to the regular markdown escaping.
      * @param text
-     * @return
-     *
+     * @return the escaped text
+     * @see {@link #escapeMarkdown(String)
      */
     private static String escapeForTableCell(String text) {
-        // assume already contains the regular markdown escape sequences
-        return text.replace("|", "\\|");
+
+        return escapeMarkdown(text).replace("|", "\\|");
     }
 
     /**
@@ -886,7 +889,7 @@ public class MarkdownSink extends AbstractTextSink implements MarkdownMarkup {
     private void ensureBeginningOfLine() {
         // make sure that we are at the start of a line without adding unnecessary blank lines
         if (!isWriterAtStartOfNewLine) {
-            write(EOL);
+            writeUnescaped(EOL);
         }
     }
 }
