@@ -28,7 +28,6 @@ public abstract class AbstractLocator implements Locator {
     private String reference;
 
     protected AbstractLocator(String reference) {
-        super();
         this.reference = reference;
     }
 

@@ -23,6 +23,11 @@ package org.apache.maven.doxia.sink;
  * @since 2.0.0
  */
 public interface Locator {
+    /**
+     * Returns the underlying source reference (for file based documents a relative file path, otherwise an arbitrary string or {@code null}).
+     * @return the source for the sink event (may be {@code null})
+     */
+    String getReference();
 
     /**
      * Returns the line number for the sink event (starting from 1).
@@ -39,10 +44,4 @@ public interface Locator {
      * @return the column number for the sink event
      */
     int getColumnNumber();
-
-    /**
-     * Returns the underlying source reference (for file based documents a relative file path, otherwise an arbitrary string or {@code null}).
-     * @return the source for the sink event (may be {@code null})
-     */
-    String getReference();
 }
