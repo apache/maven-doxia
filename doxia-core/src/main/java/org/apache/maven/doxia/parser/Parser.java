@@ -45,11 +45,13 @@ public interface Parser {
 
     /**
      * Parses the given source model and emits Doxia events into the given sink.
+     * Shortcut for {@link #parse(Reader, Sink, String)} with last argument being {@code null}.
      *
      * @param source not null reader that provides the source document.
      * You could use <code>newReader</code> methods from {@link org.codehaus.plexus.util.ReaderFactory}.
      * @param sink A sink that consumes the Doxia events.
      * @throws org.apache.maven.doxia.parser.ParseException if the model could not be parsed.
+     *
      */
     void parse(Reader source, Sink sink) throws ParseException;
 
@@ -59,7 +61,7 @@ public interface Parser {
      * @param source not null reader that provides the source document.
      * You could use <code>newReader</code> methods from {@link org.codehaus.plexus.util.ReaderFactory}.
      * @param sink A sink that consumes the Doxia events.
-     * @param reference the reference
+     * @param reference a string identifying the source (for file based documents the source file path)
      * @throws org.apache.maven.doxia.parser.ParseException if the model could not be parsed.
      */
     void parse(Reader source, Sink sink, String reference) throws ParseException;

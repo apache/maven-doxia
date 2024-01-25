@@ -39,6 +39,7 @@ import org.apache.commons.lang3.StringUtils;
 import org.apache.maven.doxia.macro.MacroExecutionException;
 import org.apache.maven.doxia.markup.XmlMarkup;
 import org.apache.maven.doxia.sink.Sink;
+import org.apache.maven.doxia.sink.impl.AbstractLocator;
 import org.apache.maven.doxia.sink.impl.SinkEventAttributeSet;
 import org.apache.maven.doxia.util.HtmlTools;
 import org.apache.maven.doxia.util.XmlValidator;
@@ -135,7 +136,7 @@ public abstract class AbstractXmlParser extends AbstractParser implements XmlMar
             // Note: do it after input is set, otherwise values are reset
             initXmlParser(parser);
 
-            parseXml(parser, getWrappedSink(sink));
+            parseXml(parser, getWrappedSink(sink), reference);
         } catch (XmlPullParserException ex) {
             throw new ParseException("Error parsing the model", ex, ex.getLineNumber(), ex.getColumnNumber());
         } catch (MacroExecutionException ex) {
@@ -185,15 +186,37 @@ public abstract class AbstractXmlParser extends AbstractParser implements XmlMar
         return atts;
     }
 
+    private static final class XmlPullParserLocator extends AbstractLocator {
+
+        private final XmlPullParser parser;
+
+        XmlPullParserLocator(XmlPullParser parser, String reference) {
+            super(reference);
+            this.parser = parser;
+        }
+
+        @Override
+        public int getLineNumber() {
+            return parser.getLineNumber();
+        }
+
+        @Override
+        public int getColumnNumber() {
+            return parser.getColumnNumber() != -1 ? parser.getColumnNumber() + 1 : -1;
+        }
+    }
     /**
      * Parse the model from the XmlPullParser into the given sink.
      *
      * @param parser A parser, not null.
      * @param sink the sink to receive the events.
+     * @param reference the reference (usually the file path of the parsed document)
      * @throws org.codehaus.plexus.util.xml.pull.XmlPullParserException if there's a problem parsing the model
      * @throws org.apache.maven.doxia.macro.MacroExecutionException if there's a problem executing a macro
      */
-    private void parseXml(XmlPullParser parser, Sink sink) throws XmlPullParserException, MacroExecutionException {
+    private void parseXml(XmlPullParser parser, Sink sink, String reference)
+            throws XmlPullParserException, MacroExecutionException {
+        sink.setDocumentLocator(new XmlPullParserLocator(parser, reference));
         int eventType = parser.getEventType();
 
         while (eventType != XmlPullParser.END_DOCUMENT) {

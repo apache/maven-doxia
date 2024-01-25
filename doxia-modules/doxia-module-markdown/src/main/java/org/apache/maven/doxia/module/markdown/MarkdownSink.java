@@ -303,7 +303,8 @@ public class MarkdownSink extends AbstractTextSink implements MarkdownMarkup {
         // markdown only supports decimal numbering
         if (numbering != NUMBERING_DECIMAL) {
             LOGGER.warn(
-                    "Markdown only supports numbered item with decimal style ({}) but requested was style {}, falling back to decimal style",
+                    "{}Markdown only supports numbered item with decimal style ({}) but requested was style {}, falling back to decimal style",
+                    getLocationLogPrefix(),
                     NUMBERING_DECIMAL,
                     numbering);
         }
@@ -379,7 +380,8 @@ public class MarkdownSink extends AbstractTextSink implements MarkdownMarkup {
 
     @Override
     public void definitionList(SinkEventAttributes attributes) {
-        LOGGER.warn("Definition list not natively supported in Markdown, rendering HTML instead");
+        LOGGER.warn(
+                "{}Definition list not natively supported in Markdown, rendering HTML instead", getLocationLogPrefix());
         writeUnescaped("<dl>" + EOL);
     }
 
@@ -757,7 +759,7 @@ public class MarkdownSink extends AbstractTextSink implements MarkdownMarkup {
         ElementContext currentContext = elementContextStack.element();
         if (currentContext == ElementContext.TABLE_CAPTION) {
             // table caption cannot even be emitted via XHTML in markdown as there is no suitable location
-            LOGGER.warn("Ignoring unsupported table caption in Markdown");
+            LOGGER.warn("{}Ignoring unsupported table caption in Markdown", getLocationLogPrefix());
         } else {
             String unifiedText = currentContext.escape(unifyEOLs(text));
             writeUnescaped(unifiedText);
@@ -785,7 +787,7 @@ public class MarkdownSink extends AbstractTextSink implements MarkdownMarkup {
      */
     @Override
     public void unknown(String name, Object[] requiredParams, SinkEventAttributes attributes) {
-        LOGGER.warn("Unknown Sink event '" + name + "', ignoring!");
+        LOGGER.warn("{}Unknown Sink event '" + name + "', ignoring!", getLocationLogPrefix());
     }
 
     /**

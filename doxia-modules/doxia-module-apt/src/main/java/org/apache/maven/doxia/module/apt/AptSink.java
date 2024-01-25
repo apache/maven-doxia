@@ -265,7 +265,10 @@ public class AptSink extends AbstractTextSink implements AptMarkup {
     @Override
     public void sectionTitle(int level, SinkEventAttributes attributes) {
         if (level > 5) {
-            LOGGER.warn("Replacing unsupported section title level {} in APT with level 5", level);
+            LOGGER.warn(
+                    "{}Replacing unsupported section title level {} in APT with level 5",
+                    getLocationLogPrefix(),
+                    level);
             level = 5;
         }
         if (level == 1) {
@@ -846,7 +849,7 @@ public class AptSink extends AbstractTextSink implements AptMarkup {
      * @see org.apache.maven.doxia.sink.Sink#unknown(String,Object[],SinkEventAttributes)
      */
     public void unknown(String name, Object[] requiredParams, SinkEventAttributes attributes) {
-        LOGGER.warn("Unknown Sink event '{}', ignoring!", name);
+        LOGGER.warn("{}Unknown Sink event '{}', ignoring!", getLocationLogPrefix(), name);
     }
 
     /**
