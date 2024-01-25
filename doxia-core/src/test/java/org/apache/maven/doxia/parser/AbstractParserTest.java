@@ -100,54 +100,49 @@ public abstract class AbstractParserTest extends AbstractModuleTest {
         }
     }
 
+    private static final class TestSinkWrapperFactory implements SinkWrapperFactory {
+
+        private final int priority;
+
+        public TestSinkWrapperFactory(int priority) {
+            super();
+            this.priority = priority;
+        }
+
+        @Override
+        public Sink createWrapper(Sink sink) {
+            return new SinkWrapper(sink) {
+
+                @Override
+                public void text(String text, SinkEventAttributes attributes) {
+                    super.text("beforeWrapper" + priority + text + "afterWrapper" + priority, attributes);
+                }
+            };
+        }
+
+        @Override
+        public int getPriority() {
+            return priority;
+        }
+    }
+
     @Test
     public final void testSinkWrapper() throws ParseException, IOException {
         Parser parser = createParser();
 
-        parser.addSinkWrapperFactory(new SinkWrapperFactory() {
+        parser.addSinkWrapperFactory(new TestSinkWrapperFactory(1));
+        parser.addSinkWrapperFactory(new TestSinkWrapperFactory(0));
+        parser.addSinkWrapperFactory(new TestSinkWrapperFactory(2)); // this must be the first in the pipeline
 
-            @Override
-            public Sink createWrapper(Sink sink) {
-                return new SinkWrapper(sink) {
-
-                    @Override
-                    public void text(String text, SinkEventAttributes attributes) {
-                        super.text("beforeWrapper1" + text + "afterWrapper1", attributes);
-                    }
-                };
-            }
-
-            @Override
-            public int getPriority() {
-                return 0;
-            }
-        });
-
-        parser.addSinkWrapperFactory(new SinkWrapperFactory() {
-
-            @Override
-            public Sink createWrapper(Sink sink) {
-                return new SinkWrapper(sink) {
-                    @Override
-                    public void text(String text, SinkEventAttributes attributes) {
-                        super.text("beforeWrapper2" + text + "afterWrapper2", attributes);
-                    }
-                };
-            }
-
-            @Override
-            public int getPriority() {
-                return 1;
-            }
-        });
         try (StringWriter writer = new StringWriter();
                 Reader reader = getTestReader("test", outputExtension())) {
             Sink sink = new TextSink(writer);
             parser.parse(reader, sink);
 
-            // assert order of sink wrappers
-            assertTrue(writer.toString().contains("beforeWrapper2beforeWrapper1"));
-            assertTrue(writer.toString().contains("afterWrapper1afterWrapper2"));
+            // assert order of sink wrappers: wrapper with lower prio is called with prefix from wrapper with higher
+            // prio, therefore lower prio prefix/suffix is emitted prior higher prio prefix/suffix
+            assertTrue(writer.toString().contains("beforeWrapper0beforeWrapper1beforeWrapper2"));
+            assertTrue(writer.toString().contains("afterWrapper2afterWrapper1afterWrapper0"));
         }
     }
 

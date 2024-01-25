@@ -38,6 +38,8 @@ public interface MarkdownMarkup extends TextMarkup {
 
     String BLANK_LINE = EOL + EOL;
 
+    /** indentation e.g. for paragraphs inside lists */
+    String INDENT = StringUtils.repeat(String.valueOf(SPACE), 4);
     // ----------------------------------------------------------------------
     // Markup syntax
     // ----------------------------------------------------------------------
