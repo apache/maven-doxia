@@ -77,11 +77,11 @@ public interface MarkdownMarkup extends TextMarkup {
     /** Syntax for the link start: "](" */
     String LINK_START_2_MARKUP = "](";
 
-    /** Syntax for the ordered list item: '1.' */
-    String LIST_ORDERED_ITEM_START_MARKUP = "1.";
+    /** Syntax for the ordered list item: '1. ' */
+    String LIST_ORDERED_ITEM_START_MARKUP = "1. ";
 
-    /** Syntax for the unordered list item: "-" */
-    String LIST_UNORDERED_ITEM_START_MARKUP = "-";
+    /** Syntax for the unordered list item: "- " */
+    String LIST_UNORDERED_ITEM_START_MARKUP = "- ";
 
     /** Syntax for the mono-spaced style end: "`" */
     String MONOSPACED_END_MARKUP = "`";
@@ -94,6 +94,9 @@ public interface MarkdownMarkup extends TextMarkup {
 
     /** Syntax for the verbatim end: "```" */
     String VERBATIM_END_MARKUP = "```";
+
+    /** Syntax for the blockquote start: "> " */
+    String BLOCKQUOTE_START_MARKUP = "> ";
 
     /** Syntax for the non breaking space: entity from HTML */
     String NON_BREAKING_SPACE_MARKUP = "&nbsp;";
