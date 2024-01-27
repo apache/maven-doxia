@@ -57,7 +57,7 @@ There are some guidelines which will make applying PRs easier for us:
 + Make commits of logical units.
 + Respect the original code style: by using the same [codestyle][code-style],
   patches should only highlight the actual difference, not being disturbed by any formatting issues:
-  + Only use spaces for indentation.
+  + Use spaces for indentation, not tabs.
   + Create minimal diffs - disable on save actions like reformat source code or organize imports. 
     If you feel the source code should be reformatted, create a separate PR for this change.
   + Check for unnecessary whitespace with `git diff --check` before committing.
