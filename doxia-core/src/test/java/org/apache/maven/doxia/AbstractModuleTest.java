@@ -41,18 +41,6 @@ import static org.junit.jupiter.api.Assertions.assertNotNull;
 @PlexusTest
 public abstract class AbstractModuleTest implements Markup {
 
-    /*
-     * Set the system properties:
-     * <ul>
-     * <li><code>line.separator</code> to <code>\n</code> (Unix) to prevent
-     * failure on windows.</li>
-     * </ul>
-     */
-    static {
-        // Safety
-        System.setProperty("line.separator", "\n");
-    }
-
     // ----------------------------------------------------------------------
     // Methods for creating test reader and writer
     // ----------------------------------------------------------------------

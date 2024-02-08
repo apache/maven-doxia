@@ -184,17 +184,17 @@ public class XdocSinkTest extends AbstractSinkTest {
 
     /** {@inheritDoc} */
     protected String getListBlock(String item) {
-        return "<ul>\n<li>" + item + "</li></ul>";
+        return "<ul>" + EOL + "<li>" + item + "</li></ul>";
     }
 
     /** {@inheritDoc} */
     protected String getNumberedListBlock(String item) {
-        return "<ol style=\"list-style-type: lower-roman;\">\n<li>" + item + "</li></ol>";
+        return "<ol style=\"list-style-type: lower-roman;\">" + EOL + "<li>" + item + "</li></ol>";
     }
 
     /** {@inheritDoc} */
     protected String getDefinitionListBlock(String definum, String definition) {
-        return "<dl>\n<dt>" + definum + "</dt>\n<dd>" + definition + "</dd></dl>";
+        return "<dl>" + EOL + "<dt>" + definum + "</dt>" + EOL + "<dd>" + definition + "</dd></dl>";
     }
 
     /** {@inheritDoc} */
@@ -209,20 +209,21 @@ public class XdocSinkTest extends AbstractSinkTest {
 
     /** {@inheritDoc} */
     protected String getTableBlock(String cell, String caption) {
-        return "<table border=\"0\"><caption>" + caption + "</caption>\n<tr>\n<td style=\"text-align: center;\">" + cell
-                + "</td></tr></table>";
+        return "<table border=\"0\"><caption>" + caption + "</caption>" + EOL + "<tr>" + EOL
+                + "<td style=\"text-align: center;\">" + cell + "</td></tr></table>";
     }
 
     @Override
     protected String getTableWithHeaderBlock(String... rowPrefixes) {
-        return "<table border=\"0\">\n<tr>\n<th>" + rowPrefixes[0] + "0</th>\n<th>" + rowPrefixes[0] + "1</th>\n<th>"
-                + rowPrefixes[0] + "2</th></tr>\n"
-                + "<tr>\n<td style=\"text-align: left;\">" + rowPrefixes[1]
-                + "0</td>\n<td style=\"text-align: right;\">" + rowPrefixes[1]
-                + "1</td>\n<td style=\"text-align: center;\">" + rowPrefixes[1] + "2</td></tr>\n"
-                + "<tr>\n<td style=\"text-align: left;\">" + rowPrefixes[2]
-                + "0</td>\n<td style=\"text-align: right;\">" + rowPrefixes[2]
-                + "1</td>\n<td style=\"text-align: center;\">" + rowPrefixes[2] + "2</td></tr>"
+        return "<table border=\"0\">" + EOL + "<tr>" + EOL + "<th>" + rowPrefixes[0] + "0</th>" + EOL + "<th>"
+                + rowPrefixes[0] + "1</th>" + EOL + "<th>"
+                + rowPrefixes[0] + "2</th></tr>" + EOL
+                + "<tr>" + EOL + "<td style=\"text-align: left;\">" + rowPrefixes[1]
+                + "0</td>" + EOL + "<td style=\"text-align: right;\">" + rowPrefixes[1]
+                + "1</td>" + EOL + "<td style=\"text-align: center;\">" + rowPrefixes[1] + "2</td></tr>" + EOL
+                + "<tr>" + EOL + "<td style=\"text-align: left;\">" + rowPrefixes[2]
+                + "0</td>" + EOL + "<td style=\"text-align: right;\">" + rowPrefixes[2]
+                + "1</td>" + EOL + "<td style=\"text-align: center;\">" + rowPrefixes[2] + "2</td></tr>"
                 + "</table>";
     }
 

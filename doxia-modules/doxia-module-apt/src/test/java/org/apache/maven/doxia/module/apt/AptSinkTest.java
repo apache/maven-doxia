@@ -195,14 +195,14 @@ public class AptSinkTest extends AbstractSinkTest {
 
     @Override
     protected String getTableWithHeaderBlock(String... rowPrefixes) {
-        return "\n"
-                + "*----+--:--*\n"
-                + "|" + rowPrefixes[0] + "0||" + rowPrefixes[0] + "1||" + rowPrefixes[0] + "2|\n"
-                + "*----+--:--*\n"
-                + rowPrefixes[1] + "0|" + rowPrefixes[1] + "1|" + rowPrefixes[1] + "2|\n"
-                + "*----+--:--*\n"
-                + rowPrefixes[2] + "0|" + rowPrefixes[2] + "1|" + rowPrefixes[2] + "2|\n"
-                + "*----+--:--*\n";
+        return EOL
+                + "*----+--:--*" + EOL
+                + "|" + rowPrefixes[0] + "0||" + rowPrefixes[0] + "1||" + rowPrefixes[0] + "2|" + EOL
+                + "*----+--:--*" + EOL
+                + rowPrefixes[1] + "0|" + rowPrefixes[1] + "1|" + rowPrefixes[1] + "2|" + EOL
+                + "*----+--:--*" + EOL
+                + rowPrefixes[2] + "0|" + rowPrefixes[2] + "1|" + rowPrefixes[2] + "2|" + EOL
+                + "*----+--:--*" + EOL;
     }
 
     /** {@inheritDoc} */

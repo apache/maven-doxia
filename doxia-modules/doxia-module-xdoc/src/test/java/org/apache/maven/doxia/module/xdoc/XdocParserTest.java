@@ -406,11 +406,11 @@ public class XdocParserTest extends AbstractParserTest {
     @Test
     public void testStyleWithCData() throws Exception {
         // DOXIA-449
-        final String text = "<style type=\"text/css\">\n" + "<![CDATA[\n"
-                + "h2 {\n"
-                + "font-size: 50px;\n"
-                + "}\n"
-                + "]]>\n"
+        final String text = "<style type=\"text/css\">" + EOL + "<![CDATA[" + EOL
+                + "h2 {" + EOL
+                + "font-size: 50px;" + EOL
+                + "}" + EOL
+                + "]]>" + EOL
                 + "</style>";
 
         SinkEventTestingSink sink = new SinkEventTestingSink();
