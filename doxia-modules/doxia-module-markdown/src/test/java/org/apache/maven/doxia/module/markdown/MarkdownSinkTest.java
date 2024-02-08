@@ -26,7 +26,6 @@ import java.io.StringReader;
 import java.io.Writer;
 
 import org.apache.commons.lang3.StringUtils;
-import org.apache.maven.doxia.markup.Markup;
 import org.apache.maven.doxia.parser.ParseException;
 import org.apache.maven.doxia.parser.Parser;
 import org.apache.maven.doxia.sink.Sink;
@@ -158,12 +157,12 @@ public class MarkdownSinkTest extends AbstractSinkTest {
 
     /** {@inheritDoc} */
     protected String getListBlock(String item) {
-        return MarkdownMarkup.LIST_UNORDERED_ITEM_START_MARKUP + "" + Markup.SPACE + getEscapedText(item) + EOL + EOL;
+        return MarkdownMarkup.LIST_UNORDERED_ITEM_START_MARKUP + getEscapedText(item) + EOL + EOL;
     }
 
     /** {@inheritDoc} */
     protected String getNumberedListBlock(String item) {
-        return MarkdownMarkup.LIST_ORDERED_ITEM_START_MARKUP + "" + Markup.SPACE + getEscapedText(item) + EOL + EOL;
+        return MarkdownMarkup.LIST_ORDERED_ITEM_START_MARKUP + getEscapedText(item) + EOL + EOL;
     }
 
     /** {@inheritDoc} */
@@ -221,7 +220,7 @@ public class MarkdownSinkTest extends AbstractSinkTest {
 
     /** {@inheritDoc} */
     protected String getBlockquoteBlock(String text) {
-        return text;
+        return "> " + text + EOL;
     }
 
     /** {@inheritDoc} */
@@ -231,13 +230,7 @@ public class MarkdownSinkTest extends AbstractSinkTest {
 
     /** {@inheritDoc} */
     protected String getVerbatimSourceBlock(String text) {
-        return MarkdownMarkup.VERBATIM_START_MARKUP
-                + EOL
-                + text
-                + EOL
-                + MarkdownMarkup.VERBATIM_START_MARKUP
-                + EOL
-                + EOL;
+        return MarkdownMarkup.VERBATIM_START_MARKUP + EOL + text + EOL + MarkdownMarkup.VERBATIM_END_MARKUP + EOL + EOL;
     }
 
     /** {@inheritDoc} */
@@ -426,7 +419,8 @@ public class MarkdownSinkTest extends AbstractSinkTest {
         sink.flush();
         sink.close();
 
-        String expected = "|   |   |\n" + "|---|---|\n" + "|[link](target)|paragraph text with \\|**bold**|\n";
+        String expected =
+                "|   |   |" + EOL + "|---|---|" + EOL + "|[link](target)|paragraph text with \\|**bold**|" + EOL;
 
         assertEquals(expected, getSinkContent(), "Wrong link or paragraph markup in table cell");
     }
@@ -442,6 +436,65 @@ public class MarkdownSinkTest extends AbstractSinkTest {
         sink.close();
 
         String expected = "`" + text + "`";
+
+        assertEquals(expected, getSinkContent(), "Wrong inline code!");
+    }
+
+    @Test
+    public void testNestedListWithBlockquotesParagraphsAndCode() {
+        final Sink sink = getSink();
+        sink.list();
+
+        sink.listItem();
+        sink.text("item1");
+        sink.list();
+        sink.listItem();
+        sink.text("item1a");
+        sink.listItem_();
+        sink.list_();
+        sink.listItem_();
+
+        sink.listItem();
+        sink.blockquote();
+        sink.text("blockquote");
+        sink.blockquote_();
+        sink.listItem_();
+
+        sink.listItem();
+        sink.text("item3");
+        sink.paragraph();
+        sink.text("item3paragraph2");
+        sink.paragraph_();
+        sink.listItem_();
+
+        sink.listItem();
+        sink.text("item4");
+        sink.verbatim();
+        sink.text("item4verbatim");
+        sink.lineBreak();
+        sink.text("item4verbatimline2");
+        sink.verbatim_();
+        sink.listItem_();
+
+        sink.list_();
+        sink.flush();
+        sink.close();
+
+        String expected = "- item1" + EOL
+                + "    - item1a" + EOL
+                + EOL
+                + "- " + EOL
+                + "    > blockquote" + EOL
+                + "- item3" + EOL
+                + EOL
+                + "    item3paragraph2" + EOL
+                + EOL
+                + "- item4" + EOL
+                + "    ```" + EOL
+                + "    item4verbatim" + EOL
+                + "    item4verbatimline2" + EOL
+                + "    ```" + EOL
+                + EOL;
 
         assertEquals(expected, getSinkContent(), "Wrong inline code!");
     }

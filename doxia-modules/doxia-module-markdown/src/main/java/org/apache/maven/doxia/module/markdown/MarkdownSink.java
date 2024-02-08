@@ -51,38 +51,39 @@ public class MarkdownSink extends AbstractTextSink implements MarkdownMarkup {
     // Instance fields
     // ----------------------------------------------------------------------
 
-    /**  A buffer that holds the current text when headerFlag or bufferFlag set to <code>true</code>. The content of this buffer is already escaped. */
+    /**  A buffer that holds the current text when headerFlag or bufferFlag set to <code>true</code>.
+     * The content of this buffer is already escaped. */
     private StringBuilder buffer;
 
-    /**  author. */
+    /** author. */
     private Collection<String> authors;
 
-    /**  title. */
+    /** title. */
     private String title;
 
-    /**  date. */
+    /** date. */
     private String date;
 
-    /**  linkName. */
+    /** linkName. */
     private String linkName;
 
-    /** tableHeaderCellFlag, set to {@code true} for table rows containing at least one table header cell  */
+    /** tableHeaderCellFlag, set to {@code true} for table rows containing at least one table header cell */
     private boolean tableHeaderCellFlag;
 
-    /**  number of cells in a table. */
+    /** number of cells in a table. */
     private int cellCount;
 
-    /**  justification of table cells per column. */
+    /** justification of table cells per column. */
     private List<Integer> cellJustif;
 
-    /**  is header row */
+    /** is header row */
     private boolean isFirstTableRow;
 
-    /**  The writer to use. */
+    /** The writer to use. */
     private final PrintWriter writer;
 
-    /** {@code true} when last written character in {@link #writer} was a line separator, or writer is still at the beginning */
-    private boolean isWriterAtStartOfNewLine;
+    /** A temporary writer used to buffer the last two lines */
+    private final LastTwoLinesBufferingWriter bufferingWriter;
 
     /** Keep track of end markup for inline events. */
     protected Queue<Queue<String>> inlineStack = Collections.asLifoQueue(new LinkedList<>());
@@ -94,23 +95,50 @@ public class MarkdownSink extends AbstractTextSink implements MarkdownMarkup {
 
     /** Most important contextual metadata (of the surrounding element) */
     enum ElementContext {
-        HEAD("head", true, null, true),
-        BODY("body", true, MarkdownSink::escapeMarkdown),
+        HEAD("head", Type.GENERIC_CONTAINER, null, true),
+        BODY("body", Type.GENERIC_CONTAINER, MarkdownSink::escapeMarkdown),
         // only the elements, which affect rendering of children and are different from BODY or HEAD are listed here
-        FIGURE("", false, MarkdownSink::escapeMarkdown, true),
-        CODE_BLOCK("code block", true, null),
-        CODE_SPAN("code span", false, null),
-        TABLE_CAPTION("table caption", false, MarkdownSink::escapeMarkdown),
-        TABLE_CELL("table cell", false, MarkdownSink::escapeForTableCell, true),
-        // same parameters as BODY but paragraphs inside lists are handled differently
-        LIST("list (regular)", true, MarkdownSink::escapeMarkdown),
-        NUMBERED_LIST("list (numbered)", true, MarkdownSink::escapeMarkdown);
+        FIGURE("", Type.INLINE, MarkdownSink::escapeMarkdown, true),
+        CODE_BLOCK("code block", Type.LEAF_BLOCK, null, false),
+        CODE_SPAN("code span", Type.INLINE, null),
+        TABLE_CAPTION("table caption", Type.INLINE, MarkdownSink::escapeMarkdown),
+        TABLE_CELL(
+                "table cell",
+                Type.LEAF_BLOCK,
+                MarkdownSink::escapeForTableCell,
+                true), // special type, as allows containing inlines, but not starting on a separate line
+        // same parameters as BODY but paragraphs inside list items are handled differently
+        LIST_ITEM("list item", Type.CONTAINER_BLOCK, MarkdownSink::escapeMarkdown, false, INDENT),
+        BLOCKQUOTE("blockquote", Type.CONTAINER_BLOCK, MarkdownSink::escapeMarkdown, false, BLOCKQUOTE_START_MARKUP);
 
         final String name;
+
+        /**
+         * @see <a href="https://spec.commonmark.org/0.30/#blocks-and-inlines">CommonMark, 3 Blocks and inlines</a>
+         */
+        enum Type {
+            /**
+             * Container with no special meaning for (nested) child element contexts
+             */
+            GENERIC_CONTAINER,
+            /**
+             * Is supposed to start on a new line, and must have a prefix (for nested blocks)
+             */
+            CONTAINER_BLOCK,
+            /**
+             * Is supposed to start on a new line, must not contain any other block element context (neither leaf nor container)
+             */
+            LEAF_BLOCK,
+            /**
+             * Are not allowed to contain any other element context (i.e. leaf contexts), except for some other inlines (depends on the actual type)
+             */
+            INLINE
+        }
         /**
          * {@code true} if block element, otherwise {@code false} for inline elements
          */
-        final boolean isBlock;
+        final Type type;
+
         /**
          * The function to call to escape the given text. The function is supposed to return the escaped text or return just the given text if no escaping is necessary in this context
          */
@@ -121,24 +149,79 @@ public class MarkdownSink extends AbstractTextSink implements MarkdownMarkup {
          */
         final boolean requiresBuffering;
 
-        ElementContext(String name, boolean isBlock, UnaryOperator<String> escapeFunction) {
-            this(name, isBlock, escapeFunction, false);
+        /**
+         * prefix to be used for a (nested) block elements inside the current container context (only not empty for {@link #type} being {@link Type#CONTAINER_BLOCK})
+         */
+        final String prefix;
+
+        /**
+         * Only relevant for block element, if set to {@code true} the element requires to be surrounded by blank lines.
+         */
+        final boolean requiresSurroundingByBlankLines;
+
+        ElementContext(String name, Type type, UnaryOperator<String> escapeFunction) {
+            this(name, type, escapeFunction, false);
         }
 
-        ElementContext(String name, boolean isBlock, UnaryOperator<String> escapeFunction, boolean requiresBuffering) {
+        ElementContext(String name, Type type, UnaryOperator<String> escapeFunction, boolean requiresBuffering) {
+            this(name, type, escapeFunction, requiresBuffering, "");
+        }
+
+        ElementContext(
+                String name,
+                Type type,
+                UnaryOperator<String> escapeFunction,
+                boolean requiresBuffering,
+                String prefix) {
+            this(name, type, escapeFunction, requiresBuffering, prefix, false);
+        }
+
+        ElementContext(
+                String name,
+                Type type,
+                UnaryOperator<String> escapeFunction,
+                boolean requiresBuffering,
+                String prefix,
+                boolean requiresSurroundingByBlankLines) {
             this.name = name;
-            this.isBlock = isBlock;
+            this.type = type;
             this.escapeFunction = escapeFunction;
             this.requiresBuffering = requiresBuffering;
+            if (type != Type.CONTAINER_BLOCK && prefix.length() != 0) {
+                throw new IllegalArgumentException("Only container blocks may define a prefix (for nesting)");
+            }
+            this.prefix = prefix;
+            this.requiresSurroundingByBlankLines = requiresSurroundingByBlankLines;
         }
 
-        private String escape(String text) {
+        /**
+         * Must be called for each inline text to be emitted directly within this context (not relevant for nested context)
+         * @param text
+         * @return the escaped text (may be same as {@code text} when no escaping is necessary)
+         */
+        String escape(String text) {
             // is escaping necessary at all?
             if (escapeFunction == null) {
                 return text;
             } else {
                 return escapeFunction.apply(text);
             }
+        }
+
+        /**
+         *
+         * @return {@code true} for all block types, {@code false} otherwise
+         */
+        boolean isBlock() {
+            return type == Type.CONTAINER_BLOCK || type == Type.LEAF_BLOCK;
+        }
+
+        /**
+         *
+         * @return {@code true} for all containers (allowing block elements as children), {@code false} otherwise
+         */
+        boolean isContainer() {
+            return type == Type.CONTAINER_BLOCK || type == Type.GENERIC_CONTAINER;
         }
     }
     // ----------------------------------------------------------------------
@@ -151,18 +234,78 @@ public class MarkdownSink extends AbstractTextSink implements MarkdownMarkup {
      * @param writer not null writer to write the result. <b>Should</b> be an UTF-8 Writer.
      */
     protected MarkdownSink(Writer writer) {
-        this.writer = new PrintWriter(writer);
-        isWriterAtStartOfNewLine = true;
+        this.bufferingWriter = new LastTwoLinesBufferingWriter(writer);
+        this.writer = new PrintWriter(bufferingWriter);
 
         init();
     }
 
-    private void leaveContext(ElementContext expectedContext) {
+    private void endContext(ElementContext expectedContext) {
         ElementContext removedContext = elementContextStack.remove();
         if (removedContext != expectedContext) {
-            throw new IllegalStateException("Unexpected context " + removedContext);
+            throw new IllegalStateException("Unexpected context " + removedContext + ", expected " + expectedContext);
+        }
+        if (removedContext.isBlock()) {
+            endBlock(removedContext.requiresSurroundingByBlankLines);
         }
     }
+
+    private void startContext(ElementContext newContext) {
+        if (newContext.isBlock()) {
+            startBlock(newContext.requiresSurroundingByBlankLines);
+        }
+        elementContextStack.add(newContext);
+    }
+
+    /**
+     * Ensures that the {@link #writer} is currently at the beginning of a new line.
+     * Optionally writes a line separator to ensure that.
+     */
+    private void ensureBeginningOfLine() {
+        // make sure that we are at the start of a line without adding unnecessary blank lines
+        if (!bufferingWriter.isWriterAtStartOfNewLine()) {
+            writeUnescaped(EOL);
+        }
+    }
+
+    /**
+     * Ensures that the {@link #writer} is either at the beginning or preceded by a blank line.
+     * Optionally writes a blank line to ensure that.
+     */
+    private void ensureBlankLine() {
+        // prevent duplicate blank lines
+        if (!bufferingWriter.isWriterAfterBlankLine()) {
+            if (bufferingWriter.isWriterAtStartOfNewLine()) {
+                writeUnescaped(EOL);
+            } else {
+                writeUnescaped(BLANK_LINE);
+            }
+        }
+    }
+
+    private void startBlock(boolean requireBlankLine) {
+        if (requireBlankLine) {
+            ensureBlankLine();
+        } else {
+            ensureBeginningOfLine();
+        }
+        writeUnescaped(getContainerLinePrefixes());
+    }
+
+    private void endBlock(boolean requireBlankLine) {
+        if (requireBlankLine) {
+            ensureBlankLine();
+        } else {
+            ensureBeginningOfLine();
+        }
+    }
+
+    private String getContainerLinePrefixes() {
+        StringBuilder prefix = new StringBuilder();
+        elementContextStack.stream().filter(c -> c.prefix.length() > 0).forEachOrdered(c -> prefix.insert(0, c.prefix));
+        return prefix.toString();
+    }
+
     /**
      * Returns the buffer that holds the current text.
      *
@@ -202,13 +345,13 @@ public class MarkdownSink extends AbstractTextSink implements MarkdownMarkup {
     public void head(SinkEventAttributes attributes) {
         init();
         // remove default body context here
-        leaveContext(ElementContext.BODY);
+        endContext(ElementContext.BODY);
         elementContextStack.add(ElementContext.HEAD);
     }
 
     @Override
     public void head_() {
-        leaveContext(ElementContext.HEAD);
+        endContext(ElementContext.HEAD);
         // only write head block if really necessary
         if (title == null && authors.isEmpty() && date == null) {
             return;
@@ -236,7 +379,7 @@ public class MarkdownSink extends AbstractTextSink implements MarkdownMarkup {
 
     @Override
     public void body_() {
-        leaveContext(ElementContext.BODY);
+        endContext(ElementContext.BODY);
     }
 
     @Override
@@ -273,33 +416,29 @@ public class MarkdownSink extends AbstractTextSink implements MarkdownMarkup {
     @Override
     public void sectionTitle_(int level) {
         if (level > 0) {
-            writeUnescaped(BLANK_LINE);
+            ensureBlankLine(); // always end headings with blank line to increase compatibility with arbitrary MD
+            // editors
         }
     }
 
     @Override
-    public void list(SinkEventAttributes attributes) {
-        elementContextStack.add(ElementContext.LIST);
-    }
-
-    @Override
     public void list_() {
-        endNumberedOrRegularList(false);
+        ensureBlankLine();
     }
 
     @Override
     public void listItem(SinkEventAttributes attributes) {
-        orderedOrUnorderedListItem();
+        startContext(ElementContext.LIST_ITEM);
+        writeUnescaped(LIST_UNORDERED_ITEM_START_MARKUP);
     }
 
     @Override
     public void listItem_() {
-        orderedOrUnorderedListItem_();
+        endContext(ElementContext.LIST_ITEM);
     }
 
     @Override
     public void numberedList(int numbering, SinkEventAttributes attributes) {
-        elementContextStack.add(ElementContext.NUMBERED_LIST);
         // markdown only supports decimal numbering
         if (numbering != NUMBERING_DECIMAL) {
             LOGGER.warn(
@@ -312,76 +451,25 @@ public class MarkdownSink extends AbstractTextSink implements MarkdownMarkup {
 
     @Override
     public void numberedList_() {
-        endNumberedOrRegularList(true);
-    }
-
-    private void endNumberedOrRegularList(boolean isNumberedList) {
-        ElementContext context = isNumberedList ? ElementContext.NUMBERED_LIST : ElementContext.LIST;
-        leaveContext(context);
-        if (getListNestingLevel() < 0) {
-            writeUnescaped(
-                    EOL); // end add blank line (together with the preceding EOL of the item) only in case this was not
-            // nested
-        }
+        writeUnescaped(EOL);
     }
 
     @Override
     public void numberedListItem(SinkEventAttributes attributes) {
-        orderedOrUnorderedListItem();
+        startContext(ElementContext.LIST_ITEM);
+        writeUnescaped(LIST_ORDERED_ITEM_START_MARKUP);
     }
 
     @Override
     public void numberedListItem_() {
-        orderedOrUnorderedListItem_();
-    }
-
-    private void orderedOrUnorderedListItem() {
-        writeUnescaped(getListItemPrefix());
-    }
-
-    private void orderedOrUnorderedListItem_() {
-        ensureBeginningOfLine();
-    }
-
-    /**
-     *
-     * @return the nesting level of the list. -1 for outside a list, 0 for non-nested list, 1 for list inside a list, ....
-     */
-    private int getListNestingLevel() {
-        return (int) (elementContextStack.stream()
-                        .filter(e -> e == ElementContext.LIST)
-                        .count()
-                - 1);
-    }
-
-    /**
-     *
-     * @return {@code true} if in numbered list, {@code false} if inside regular list
-     * @throws IllegalStateException if not inside a list at all
-     */
-    private boolean isInNumberedList() {
-        ElementContext context = elementContextStack.element();
-        if (context == ElementContext.LIST) {
-            return false;
-        } else if (context == ElementContext.NUMBERED_LIST) {
-            return true;
-        } else {
-            throw new IllegalStateException("Not inside a list but inside " + context);
-        }
-    }
-
-    private String getListItemPrefix() {
-        StringBuilder prefix = new StringBuilder();
-        prefix.append(StringUtils.repeat(INDENT, getListNestingLevel())); // 4 spaces per list nesting level
-        prefix.append(isInNumberedList() ? LIST_ORDERED_ITEM_START_MARKUP : LIST_UNORDERED_ITEM_START_MARKUP);
-        prefix.append(SPACE);
-        return prefix.toString();
+        listItem_(); // identical for both numbered and not numbered list item
     }
 
     @Override
     public void definitionList(SinkEventAttributes attributes) {
         LOGGER.warn(
                 "{}Definition list not natively supported in Markdown, rendering HTML instead", getLocationLogPrefix());
+        ensureBlankLine();
         writeUnescaped("<dl>" + EOL);
     }
 
@@ -417,48 +505,59 @@ public class MarkdownSink extends AbstractTextSink implements MarkdownMarkup {
 
     @Override
     public void paragraph(SinkEventAttributes attributes) {
-        // ignore paragraphs in inline elements
-        if (elementContextStack.element().isBlock) {
-            ensureBeginningOfLine();
-            if (elementContextStack.element() == ElementContext.LIST) {
-                // indentation is mandatory inside lists (only for first line)
-                writeUnescaped(INDENT);
-            }
+        // ignore paragraphs outside container contexts
+        if (elementContextStack.element().isContainer()) {
+            ensureBlankLine();
+            writeUnescaped(getContainerLinePrefixes());
         }
     }
 
     @Override
     public void paragraph_() {
-        // ignore paragraphs in inline elements
-        if (elementContextStack.element().isBlock) {
-            writeUnescaped(BLANK_LINE);
+        // ignore paragraphs outside container contexts
+        if (elementContextStack.element().isContainer()) {
+            ensureBlankLine();
         }
     }
 
     @Override
     public void verbatim(SinkEventAttributes attributes) {
         // always assume is supposed to be monospaced (i.e. emitted inside a <pre><code>...</code></pre>)
-        ensureBeginningOfLine();
-        elementContextStack.add(ElementContext.CODE_BLOCK);
+        startContext(ElementContext.CODE_BLOCK);
         writeUnescaped(VERBATIM_START_MARKUP + EOL);
+        writeUnescaped(getContainerLinePrefixes());
     }
 
     @Override
     public void verbatim_() {
         ensureBeginningOfLine();
+        writeUnescaped(getContainerLinePrefixes());
         writeUnescaped(VERBATIM_END_MARKUP + BLANK_LINE);
-        leaveContext(ElementContext.CODE_BLOCK);
+        endContext(ElementContext.CODE_BLOCK);
+    }
+
+    @Override
+    public void blockquote(SinkEventAttributes attributes) {
+        startContext(ElementContext.BLOCKQUOTE);
+        writeUnescaped(BLOCKQUOTE_START_MARKUP);
+    }
+
+    @Override
+    public void blockquote_() {
+        endContext(ElementContext.BLOCKQUOTE);
     }
 
     @Override
     public void horizontalRule(SinkEventAttributes attributes) {
         ensureBeginningOfLine();
         writeUnescaped(HORIZONTAL_RULE_MARKUP + BLANK_LINE);
+        writeUnescaped(getContainerLinePrefixes());
     }
 
     @Override
     public void table(SinkEventAttributes attributes) {
-        ensureBeginningOfLine();
+        ensureBlankLine();
+        writeUnescaped(getContainerLinePrefixes());
     }
 
     @Override
@@ -518,6 +617,7 @@ public class MarkdownSink extends AbstractTextSink implements MarkdownMarkup {
             writeUnescaped(StringUtils.repeat(String.valueOf(SPACE), 3) + TABLE_CELL_SEPARATOR_MARKUP);
         }
         writeUnescaped(EOL);
+        writeUnescaped(getContainerLinePrefixes());
     }
 
     /** Emit the delimiter row which determines the alignment */
@@ -596,7 +696,7 @@ public class MarkdownSink extends AbstractTextSink implements MarkdownMarkup {
      * Ends a table cell.
      */
     private void endTableCell() {
-        leaveContext(ElementContext.TABLE_CELL);
+        endContext(ElementContext.TABLE_CELL);
         buffer.append(TABLE_CELL_SEPARATOR_MARKUP);
         cellCount++;
     }
@@ -608,7 +708,7 @@ public class MarkdownSink extends AbstractTextSink implements MarkdownMarkup {
 
     @Override
     public void tableCaption_() {
-        leaveContext(ElementContext.TABLE_CAPTION);
+        endContext(ElementContext.TABLE_CAPTION);
     }
 
     @Override
@@ -632,7 +732,7 @@ public class MarkdownSink extends AbstractTextSink implements MarkdownMarkup {
 
     @Override
     public void figure_() {
-        leaveContext(ElementContext.FIGURE);
+        endContext(ElementContext.FIGURE);
         writeImage(buffer.toString(), figureSrc);
     }
 
@@ -705,7 +805,7 @@ public class MarkdownSink extends AbstractTextSink implements MarkdownMarkup {
     public void inline_() {
         for (String endMarkup : inlineStack.remove()) {
             if (endMarkup.equals(MONOSPACED_END_MARKUP)) {
-                leaveContext(ElementContext.CODE_SPAN);
+                endContext(ElementContext.CODE_SPAN);
             }
             writeUnescaped(endMarkup);
         }
@@ -743,7 +843,12 @@ public class MarkdownSink extends AbstractTextSink implements MarkdownMarkup {
 
     @Override
     public void lineBreak(SinkEventAttributes attributes) {
-        writeUnescaped("" + SPACE + SPACE + EOL);
+        if (elementContextStack.element() == ElementContext.CODE_BLOCK) {
+            writeUnescaped(EOL);
+        } else {
+            writeUnescaped("" + SPACE + SPACE + EOL);
+        }
+        writeUnescaped(getContainerLinePrefixes());
     }
 
     @Override
@@ -802,7 +907,6 @@ public class MarkdownSink extends AbstractTextSink implements MarkdownMarkup {
         if (requiresBuffering()) {
             buffer.append(text);
         } else {
-            isWriterAtStartOfNewLine = text.endsWith(EOL);
             writer.write(text);
         }
     }
@@ -882,16 +986,5 @@ public class MarkdownSink extends AbstractTextSink implements MarkdownMarkup {
     private static String escapeForTableCell(String text) {
 
         return escapeMarkdown(text).replace("|", "\\|");
-    }
-
-    /**
-     * Ensures that the {@link #writer} is currently at the beginning of a new line.
-     * Optionally writes a line separator to ensure that.
-     */
-    private void ensureBeginningOfLine() {
-        // make sure that we are at the start of a line without adding unnecessary blank lines
-        if (!isWriterAtStartOfNewLine) {
-            writeUnescaped(EOL);
-        }
     }
 }
