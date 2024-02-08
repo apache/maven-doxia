@@ -36,7 +36,8 @@ public class LastTwoLinesBufferingWriter extends Writer {
     private final String lineSeparator;
 
     public LastTwoLinesBufferingWriter(Writer out) {
-        this(out, System.lineSeparator());
+        // don't use System.lineSeparator, as overwritten in AbstractModuleTest
+        this(out, System.getProperty("line.separator"));
     }
 
     LastTwoLinesBufferingWriter(Writer out, String lineSeparator) {
