@@ -53,16 +53,7 @@ public class LastTwoLinesBufferingWriter extends Writer {
     }
 
     public boolean isWriterAfterBlankLine() {
-        boolean isAfterBlankLine = StringUtils.isAllBlank(currentLine) && StringUtils.isAllBlank(previousLine);
-        if (!isAfterBlankLine) {
-            System.err.println("No blank line preceeding, previous line=" + escapeLineSeparators(previousLine)
-                    + ",current line=" + escapeLineSeparators(currentLine.toString()) + "EndOfMessage");
-        }
-        return isAfterBlankLine;
-    }
-
-    private static String escapeLineSeparators(String text) {
-        return text.replace("\r", "\\r").replace("\n", "\\n");
+        return StringUtils.isAllBlank(currentLine) && StringUtils.isAllBlank(previousLine);
     }
 
     @Override
