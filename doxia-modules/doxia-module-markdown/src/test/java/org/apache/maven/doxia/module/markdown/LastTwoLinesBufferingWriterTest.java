@@ -23,6 +23,8 @@ import java.io.IOException;
 import org.apache.commons.io.output.NullWriter;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
+import org.junit.jupiter.params.ParameterizedTest;
+import org.junit.jupiter.params.provider.ValueSource;
 
 import static org.junit.jupiter.api.Assertions.assertFalse;
 import static org.junit.jupiter.api.Assertions.assertTrue;
@@ -86,5 +88,17 @@ class LastTwoLinesBufferingWriterTest {
         writer.write(System.lineSeparator());
         assertTrue(writer.isWriterAfterBlankLine());
         assertTrue(writer.isWriterAtStartOfNewLine());
+    }
+
+    @ParameterizedTest()
+    @ValueSource(strings = {"\n", "\r\n"})
+    void testDifferentLineSeparators(String lineSeparator) throws IOException {
+        writer = new LastTwoLinesBufferingWriter(NullWriter.INSTANCE, lineSeparator);
+        writer.write("text" + lineSeparator);
+        assertFalse(writer.isWriterAfterBlankLine());
+        assertTrue(writer.isWriterAtStartOfNewLine());
+        writer.write("text" + lineSeparator + lineSeparator + " ");
+        assertTrue(writer.isWriterAfterBlankLine());
+        assertFalse(writer.isWriterAtStartOfNewLine());
     }
 }

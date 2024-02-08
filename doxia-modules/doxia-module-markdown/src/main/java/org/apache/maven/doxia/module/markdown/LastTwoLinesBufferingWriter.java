@@ -24,20 +24,27 @@ import java.io.Writer;
 import org.apache.commons.lang3.StringUtils;
 
 /**
- * Decorates an existing writer to additionally temporarily buffering the last two lines written.
+ * Decorates an existing writer to additionally temporarily buffer the last two lines written.
  * Useful to collapse subsequent new lines or blank lines by evaluating {@link #isWriterAfterBlankLine()} and {@link #isWriterAfterBlankLine()}.
+ * The buffering does not affect or defer delegation to the underlying writer, though.
  */
 public class LastTwoLinesBufferingWriter extends Writer {
 
     private final Writer out;
     private String previousLine;
     private StringBuilder currentLine;
+    private final String lineSeparator;
 
     public LastTwoLinesBufferingWriter(Writer out) {
+        this(out, System.lineSeparator());
+    }
+
+    LastTwoLinesBufferingWriter(Writer out, String lineSeparator) {
         super();
         this.out = out;
         this.previousLine = "";
         this.currentLine = new StringBuilder();
+        this.lineSeparator = lineSeparator;
     }
 
     public boolean isWriterAtStartOfNewLine() {
@@ -45,7 +52,12 @@ public class LastTwoLinesBufferingWriter extends Writer {
     }
 
     public boolean isWriterAfterBlankLine() {
-        return StringUtils.isAllBlank(currentLine) && StringUtils.isAllBlank(previousLine);
+        boolean isAfterBlankLine = StringUtils.isAllBlank(currentLine) && StringUtils.isAllBlank(previousLine);
+        if (!isAfterBlankLine) {
+            System.err.println(
+                    "No blank line preceeding, previous line=" + previousLine + ",current line=" + currentLine);
+        }
+        return isAfterBlankLine;
     }
 
     @Override
@@ -68,7 +80,7 @@ public class LastTwoLinesBufferingWriter extends Writer {
     private void flushLine(char[] cbuf, int off, int len) {
         this.currentLine.append(cbuf, off, len);
         // really a line break?
-        if (currentLine.toString().endsWith(System.lineSeparator())) {
+        if (currentLine.toString().endsWith(lineSeparator)) {
             previousLine = currentLine.toString();
             currentLine.setLength(0);
         }
