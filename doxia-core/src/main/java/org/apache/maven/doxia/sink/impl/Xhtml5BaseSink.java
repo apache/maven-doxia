@@ -40,6 +40,7 @@ import org.apache.maven.doxia.markup.HtmlMarkup;
 import org.apache.maven.doxia.markup.Markup;
 import org.apache.maven.doxia.sink.Sink;
 import org.apache.maven.doxia.sink.SinkEventAttributes;
+import org.apache.maven.doxia.sink.impl.Xhtml5BaseSink.VerbatimMode;
 import org.apache.maven.doxia.util.DoxiaUtils;
 import org.apache.maven.doxia.util.HtmlTools;
 import org.codehaus.plexus.util.xml.PrettyPrintXMLWriter;
@@ -77,8 +78,16 @@ public class Xhtml5BaseSink extends AbstractXmlSink implements HtmlMarkup {
     /** An indication on if we're inside a paragraph flag. */
     private boolean paragraphFlag;
 
-    /** An indication on if we're in verbatim mode. */
-    private boolean verbatimFlag;
+    protected enum VerbatimMode {
+        /** not in verbatim mode */
+        OFF,
+        /** Inside {@code <pre>} */
+        ON,
+        /** Inside {@code <pre><code>} */
+        ON_WITH_CODE
+    }
+    /** An indication on if we're in verbatim mode and if so, surrounded by which tags. */
+    private VerbatimMode verbatimMode;
 
     /** Stack of alignment int[] of table cells. */
     private final LinkedList<int[]> cellJustifStack;
@@ -160,21 +169,28 @@ public class Xhtml5BaseSink extends AbstractXmlSink implements HtmlMarkup {
     }
 
     /**
-     * <p>Setter for the field <code>verbatimFlag</code>.</p>
      *
-     * @param verb a verbatim flag.
+     * @return the current verbatim mode.
      */
-    protected void setVerbatimFlag(boolean verb) {
-        this.verbatimFlag = verb;
+    protected VerbatimMode getVerbatimMode() {
+        return this.verbatimMode;
     }
 
     /**
-     * <p>isVerbatimFlag.</p>
+     * <p>Setter for the field <code>verbatimMode</code>.</p>
      *
-     * @return the current verbatim flag.
+     * @param mode a verbatim mode.
      */
-    protected boolean isVerbatimFlag() {
-        return this.verbatimFlag;
+    protected void setVerbatimMode(VerbatimMode mode) {
+        this.verbatimMode = mode;
+    }
+
+    /**
+     *
+     * @return {@code true} if inside verbatim section, {@code false} otherwise
+     */
+    protected boolean isVerbatim() {
+        return this.verbatimMode != VerbatimMode.OFF;
     }
 
     /**
@@ -232,7 +248,7 @@ public class Xhtml5BaseSink extends AbstractXmlSink implements HtmlMarkup {
 
         this.headFlag = false;
         this.paragraphFlag = false;
-        this.verbatimFlag = false;
+        this.verbatimMode = VerbatimMode.OFF;
 
         this.evenTableRow = true;
         this.tableAttributes = null;
@@ -825,11 +841,13 @@ public class Xhtml5BaseSink extends AbstractXmlSink implements HtmlMarkup {
     }
 
     /**
-     * The default class style is <code>verbatim</code>, for source is {@code verbatim source}.
+     * Depending on whether the decoration attribute is "source" or not, this leads
+     * to either emitting {@code <pre><code>} or just {@code <pre>}.
+     * No default classes are emitted but the given attributes are always added to the {@code pre} element only.
      *
      * {@inheritDoc}
-     * @see javax.swing.text.html.HTML.Tag#DIV
      * @see javax.swing.text.html.HTML.Tag#PRE
+     * @see javax.swing.text.html.HTML.Tag#CODE
      */
     @Override
     public void verbatim(SinkEventAttributes attributes) {
@@ -840,47 +858,41 @@ public class Xhtml5BaseSink extends AbstractXmlSink implements HtmlMarkup {
             paragraph_();
         }
 
-        verbatimFlag = true;
-
         MutableAttributeSet atts = SinkUtils.filterAttributes(attributes, SinkUtils.SINK_VERBATIM_ATTRIBUTES);
 
         if (atts == null) {
             atts = new SinkEventAttributeSet();
         }
 
-        boolean source = false;
-
+        verbatimMode = VerbatimMode.ON;
         if (atts.isDefined(SinkEventAttributes.DECORATION)) {
-            source = "source"
-                    .equals(atts.getAttribute(SinkEventAttributes.DECORATION).toString());
+            if ("source"
+                    .equals(atts.getAttribute(SinkEventAttributes.DECORATION).toString())) {
+                verbatimMode = VerbatimMode.ON_WITH_CODE;
+            }
         }
-
-        SinkEventAttributes divAtts = null;
-        String divClass = "verbatim";
-
-        if (source) {
-            divClass += " source";
-        }
-
-        divAtts = new SinkEventAttributeSet(SinkEventAttributes.CLASS.toString(), divClass);
 
         atts.removeAttribute(SinkEventAttributes.DECORATION);
 
-        writeStartTag(HtmlMarkup.DIV, divAtts);
         writeStartTag(HtmlMarkup.PRE, atts);
+        if (verbatimMode == VerbatimMode.ON_WITH_CODE) {
+            writeStartTag(HtmlMarkup.CODE);
+        }
     }
 
     /**
      * {@inheritDoc}
-     * @see javax.swing.text.html.HTML.Tag#DIV
+     * @see javax.swing.text.html.HTML.Tag#CODE
      * @see javax.swing.text.html.HTML.Tag#PRE
      */
     @Override
     public void verbatim_() {
+        if (verbatimMode == VerbatimMode.ON_WITH_CODE) {
+            writeEndTag(HtmlMarkup.CODE);
+        }
         writeEndTag(HtmlMarkup.PRE);
-        writeEndTag(HtmlMarkup.DIV);
 
-        verbatimFlag = false;
+        verbatimMode = VerbatimMode.OFF;
     }
 
     /**
@@ -1369,7 +1381,7 @@ public class Xhtml5BaseSink extends AbstractXmlSink implements HtmlMarkup {
      */
     @Override
     public void lineBreak(SinkEventAttributes attributes) {
-        if (headFlag || isVerbatimFlag()) {
+        if (headFlag || isVerbatim()) {
             getTextBuffer().append(EOL);
         } else {
             MutableAttributeSet atts = SinkUtils.filterAttributes(attributes, SinkUtils.SINK_BR_ATTRIBUTES);
@@ -1381,7 +1393,7 @@ public class Xhtml5BaseSink extends AbstractXmlSink implements HtmlMarkup {
     /** {@inheritDoc} */
     @Override
     public void lineBreakOpportunity(SinkEventAttributes attributes) {
-        if (!headFlag && !isVerbatimFlag()) {
+        if (!headFlag && !isVerbatim()) {
             MutableAttributeSet atts = SinkUtils.filterAttributes(attributes, SinkUtils.SINK_BR_ATTRIBUTES);
 
             writeSimpleTag(HtmlMarkup.WBR, atts);
@@ -1412,7 +1424,7 @@ public class Xhtml5BaseSink extends AbstractXmlSink implements HtmlMarkup {
         }
         if (headFlag) {
             getTextBuffer().append(text);
-        } else if (verbatimFlag) {
+        } else if (isVerbatim()) {
             verbatimContent(text);
         } else {
             content(text);

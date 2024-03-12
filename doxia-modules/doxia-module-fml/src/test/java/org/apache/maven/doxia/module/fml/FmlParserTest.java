@@ -29,8 +29,8 @@ import java.util.Iterator;
 import java.util.regex.Pattern;
 
 import org.apache.commons.io.IOUtils;
+import org.apache.maven.doxia.parser.AbstractParser;
 import org.apache.maven.doxia.parser.AbstractParserTest;
-import org.apache.maven.doxia.parser.Parser;
 import org.apache.maven.doxia.sink.Sink;
 import org.apache.maven.doxia.sink.impl.SinkEventElement;
 import org.apache.maven.doxia.sink.impl.SinkEventTestingSink;
@@ -73,7 +73,7 @@ public class FmlParserTest extends AbstractParserTest {
     }
 
     /** {@inheritDoc} */
-    protected Parser createParser() {
+    protected AbstractParser createParser() {
         return parser;
     }
 
@@ -270,6 +270,65 @@ public class FmlParserTest extends AbstractParserTest {
         }
 
         assertTrue(content.contains("<a id=\"macro-definition\"></a>" + EOL + "<dt>Macro Question</dt>"));
+    }
+
+    @Override
+    protected void assertEventPrefix(Iterator<SinkEventElement> eventIterator) {
+        assertSinkStartsWith(
+                eventIterator,
+                "head",
+                "title",
+                "text",
+                "title_",
+                "head_",
+                "body",
+                "section1",
+                "anchor",
+                "anchor_",
+                "sectionTitle1",
+                "text",
+                "sectionTitle1_",
+                "numberedList",
+                "numberedListItem",
+                "link",
+                "link_",
+                "numberedListItem_",
+                "numberedList_",
+                "section1_",
+                "definitionList",
+                "anchor",
+                "anchor_",
+                "definedTerm",
+                "definedTerm_",
+                "definition");
+    }
+
+    @Override
+    protected void assertEventSuffix(Iterator<SinkEventElement> eventIterator) {
+        assertSinkEquals(
+                eventIterator,
+                "paragraph",
+                "link",
+                "text",
+                "link_",
+                "paragraph_",
+                "definition_",
+                "definitionList_",
+                "body_");
+    }
+
+    @Override
+    protected String getVerbatimSource() {
+        return "<faqs title=\"title\"><part id=\"general\"><faq id=\"first\"><question></question><answer>"
+                + "<pre>&lt;&gt;{}=#*</pre>"
+                + "</answer></faq></part></faqs>";
+    }
+
+    @Override
+    protected String getVerbatimCodeSource() {
+        return "<faqs title=\"title\"><part id=\"general\"><faq id=\"first\"><question></question><answer>"
+                + "<source>&lt;&gt;{}=#*</source>"
+                + "</answer></faq></part></faqs>";
     }
 
     private void assertTextEvent(SinkEventElement textEvt, String string) {

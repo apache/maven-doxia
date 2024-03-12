@@ -25,8 +25,8 @@ import java.io.FileFilter;
 import java.util.Iterator;
 import java.util.regex.Pattern;
 
+import org.apache.maven.doxia.parser.AbstractParser;
 import org.apache.maven.doxia.parser.AbstractParserTest;
-import org.apache.maven.doxia.parser.Parser;
 import org.apache.maven.doxia.sink.impl.SinkEventElement;
 import org.apache.maven.doxia.sink.impl.SinkEventTestingSink;
 import org.junit.jupiter.api.BeforeEach;
@@ -63,7 +63,7 @@ public class Xhtml5ParserTest extends AbstractParserTest {
     }
 
     /** {@inheritDoc} */
-    protected Parser createParser() {
+    protected AbstractParser createParser() {
         return parser;
     }
 
@@ -180,5 +180,15 @@ public class Xhtml5ParserTest extends AbstractParserTest {
         assertEquals("list_", it.next().getName());
         assertEquals("listItem_", it.next().getName());
         assertEquals("list_", it.next().getName());
+    }
+
+    @Override
+    protected String getVerbatimSource() {
+        return null; // already tested in Xhtml5BaseParserTest
+    }
+
+    @Override
+    protected String getVerbatimCodeSource() {
+        return null; // already tested in Xhtml5BaseParserTest
     }
 }

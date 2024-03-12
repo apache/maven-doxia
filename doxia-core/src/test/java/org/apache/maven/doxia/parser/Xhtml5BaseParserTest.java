@@ -36,7 +36,7 @@ public class Xhtml5BaseParserTest extends AbstractParserTest {
     private final SinkEventTestingSink sink = new SinkEventTestingSink();
 
     @Override
-    protected Parser createParser() {
+    protected AbstractParser createParser() {
         parser = new Xhtml5BaseParser();
         return parser;
     }
@@ -930,5 +930,15 @@ public class Xhtml5BaseParserTest extends AbstractParserTest {
                 "definedTerm_",
                 "definitionListItem_",
                 "definitionList_");
+    }
+
+    @Override
+    protected String getVerbatimSource() {
+        return "<pre>&lt;&gt;{}=#*</pre>";
+    }
+
+    @Override
+    protected String getVerbatimCodeSource() {
+        return "<pre><code>&lt;&gt;{}=#*</code></pre>";
     }
 }
