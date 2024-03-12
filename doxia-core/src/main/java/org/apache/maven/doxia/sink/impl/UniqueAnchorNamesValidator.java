@@ -27,7 +27,7 @@ import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
 /**
- * Validates that each anchor name only appears once per document. Otherwise fails with an {@link IllegalStateException}.
+ * Validates that each anchor name only appears once per document. Otherwise logs a warning.
  */
 public class UniqueAnchorNamesValidator extends SinkWrapper {
 
