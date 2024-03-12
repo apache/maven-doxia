@@ -83,14 +83,6 @@ public abstract class AbstractModuleTest implements Markup {
         return getXmlTestWriter(baseName, outputExtension());
     }
 
-    protected static String normalizeLineEnds(String s) {
-        if (s != null) {
-            return s.replaceAll("\r\n", "\n").replaceAll("\r", "\n");
-        } else {
-            return null;
-        }
-    }
-
     /**
      * Returns an XML FileWriter to write to a file with the given name
      * in the test target output directory.

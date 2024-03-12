@@ -239,7 +239,6 @@ public class SinkTestDocument {
      * @param sink The sink to receive the events.
      */
     public static void generateDefinitionList(Sink sink) {
-        String eol = System.getProperty("line.separator");
 
         sink.definitionList();
 
@@ -259,7 +258,7 @@ public class SinkTestDocument {
         sink.definition();
         sink.text("of definition list.");
         sink.verbatim(SinkEventAttributeSet.SOURCE);
-        sink.text("Verbatim source text" + eol + "                        in a box        ");
+        sink.text("Verbatim source text" + System.lineSeparator() + "                        in a box        ");
         sink.verbatim_();
         sink.definition_();
         sink.definitionListItem_();
