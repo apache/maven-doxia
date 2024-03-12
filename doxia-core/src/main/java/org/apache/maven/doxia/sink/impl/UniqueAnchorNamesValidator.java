@@ -45,10 +45,6 @@ public class UniqueAnchorNamesValidator extends SinkWrapper {
         // assume that other anchor method signature calls this method under the hood in all relevant sink
         // implementations
         super.anchor(name, attributes);
-        enforceUniqueAnchor(name);
-    }
-
-    private void enforceUniqueAnchor(String name) {
         if (!usedAnchorNames.add(name)) {
             LOGGER.warn("{}Anchor name \"{}\" used more than once", getLocationLogPrefix(), name);
         }
