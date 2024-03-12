@@ -26,8 +26,8 @@ package org.apache.maven.doxia.markup;
  */
 @SuppressWarnings("checkstyle:interfaceistype")
 public interface Markup {
-    /** The vm line separator */
-    String EOL = System.getProperty("line.separator");
+    /** The OS dependent line separator */
+    String EOL = System.lineSeparator();
 
     // ----------------------------------------------------------------------
     // Generic separator characters
