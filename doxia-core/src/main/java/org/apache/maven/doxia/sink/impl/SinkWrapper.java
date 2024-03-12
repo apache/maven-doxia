@@ -19,6 +19,7 @@
 package org.apache.maven.doxia.sink.impl;
 
 import org.apache.maven.doxia.parser.Parser;
+import org.apache.maven.doxia.sink.Locator;
 import org.apache.maven.doxia.sink.Sink;
 import org.apache.maven.doxia.sink.SinkEventAttributes;
 
@@ -525,5 +526,15 @@ public class SinkWrapper extends AbstractSink {
     @Override
     public void close() {
         delegate.close();
+    }
+
+    @Override
+    public void setDocumentLocator(Locator locator) {
+        delegate.setDocumentLocator(locator);
+    }
+
+    @Override
+    public Locator getDocumentLocator() {
+        return delegate.getDocumentLocator();
     }
 }

@@ -23,11 +23,15 @@ import java.util.Set;
 
 import org.apache.maven.doxia.sink.Sink;
 import org.apache.maven.doxia.sink.SinkEventAttributes;
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
 
 /**
  * Validates that each anchor name only appears once per document. Otherwise fails with an {@link IllegalStateException}.
  */
 public class UniqueAnchorNamesValidator extends SinkWrapper {
+
+    private static final Logger LOGGER = LoggerFactory.getLogger(UniqueAnchorNamesValidator.class);
 
     private final Set<String> usedAnchorNames;
 
@@ -46,8 +50,7 @@ public class UniqueAnchorNamesValidator extends SinkWrapper {
 
     private void enforceUniqueAnchor(String name) {
         if (!usedAnchorNames.add(name)) {
-            throw new IllegalStateException(
-                    getLocationLogPrefix() + "Anchor name \"" + name + "\" used more than once");
+            LOGGER.warn("{}Anchor name \"{}\" used more than once", getLocationLogPrefix(), name);
         }
     }
 }
