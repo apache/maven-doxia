@@ -459,7 +459,7 @@ public abstract class AbstractSink implements Sink, Markup {
             buffer.append(", line ").append(locator.getLineNumber());
         }
         if (locator.getColumnNumber() > 0) {
-            buffer.append(", column ").append(locator.getLineNumber());
+            buffer.append(", column ").append(locator.getColumnNumber());
         }
         if (buffer.length() > 0) {
             buffer.append(": ");
