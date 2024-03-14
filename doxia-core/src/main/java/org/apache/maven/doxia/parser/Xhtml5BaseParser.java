@@ -187,136 +187,139 @@ public class Xhtml5BaseParser extends AbstractXmlParser implements HtmlMarkup {
      * @return True if the event has been handled by this method, i.e. the tag was recognized, false otherwise.
      */
     protected boolean baseStartTag(XmlPullParser parser, Sink sink) {
+        SinkEventAttributeSet attribs = getAttributesFromParser(parser);
+        return baseStartTag(parser.getName(), attribs, sink);
+    }
+
+    protected boolean baseStartTag(String elementName, SinkEventAttributeSet attribs, Sink sink) {
         boolean visited = true;
 
-        SinkEventAttributeSet attribs = getAttributesFromParser(parser);
-
-        if (parser.getName().equals(HtmlMarkup.ARTICLE.toString())) {
+        if (elementName.equals(HtmlMarkup.ARTICLE.toString())) {
             sink.article(attribs);
-        } else if (parser.getName().equals(HtmlMarkup.NAV.toString())) {
+        } else if (elementName.equals(HtmlMarkup.NAV.toString())) {
             sink.navigation(attribs);
-        } else if (parser.getName().equals(HtmlMarkup.ASIDE.toString())) {
+        } else if (elementName.equals(HtmlMarkup.ASIDE.toString())) {
             sink.sidebar(attribs);
-        } else if (parser.getName().equals(HtmlMarkup.SECTION.toString())) {
+        } else if (elementName.equals(HtmlMarkup.SECTION.toString())) {
             handleSectionStart(sink, attribs);
-        } else if (parser.getName().equals(HtmlMarkup.H1.toString())) {
+        } else if (elementName.equals(HtmlMarkup.H1.toString())) {
             handleHeadingStart(sink, Sink.SECTION_LEVEL_1, attribs);
-        } else if (parser.getName().equals(HtmlMarkup.H2.toString())) {
+        } else if (elementName.equals(HtmlMarkup.H2.toString())) {
             handleHeadingStart(sink, Sink.SECTION_LEVEL_2, attribs);
-        } else if (parser.getName().equals(HtmlMarkup.H3.toString())) {
+        } else if (elementName.equals(HtmlMarkup.H3.toString())) {
             handleHeadingStart(sink, Sink.SECTION_LEVEL_3, attribs);
-        } else if (parser.getName().equals(HtmlMarkup.H4.toString())) {
+        } else if (elementName.equals(HtmlMarkup.H4.toString())) {
             handleHeadingStart(sink, Sink.SECTION_LEVEL_4, attribs);
-        } else if (parser.getName().equals(HtmlMarkup.H5.toString())) {
+        } else if (elementName.equals(HtmlMarkup.H5.toString())) {
             handleHeadingStart(sink, Sink.SECTION_LEVEL_5, attribs);
-        } else if (parser.getName().equals(HtmlMarkup.H6.toString())) {
+        } else if (elementName.equals(HtmlMarkup.H6.toString())) {
             handleHeadingStart(sink, Sink.SECTION_LEVEL_6, attribs);
-        } else if (parser.getName().equals(HtmlMarkup.HEADER.toString())) {
+        } else if (elementName.equals(HtmlMarkup.HEADER.toString())) {
             sink.header(attribs);
-        } else if (parser.getName().equals(HtmlMarkup.MAIN.toString())) {
+        } else if (elementName.equals(HtmlMarkup.MAIN.toString())) {
             sink.content(attribs);
-        } else if (parser.getName().equals(HtmlMarkup.FOOTER.toString())) {
+        } else if (elementName.equals(HtmlMarkup.FOOTER.toString())) {
             sink.footer(attribs);
-        } else if (parser.getName().equals(HtmlMarkup.EM.toString())) {
+        } else if (elementName.equals(HtmlMarkup.EM.toString())) {
             attribs.addAttributes(SinkEventAttributeSet.Semantics.EMPHASIS);
             sink.inline(attribs);
-        } else if (parser.getName().equals(HtmlMarkup.STRONG.toString())) {
+        } else if (elementName.equals(HtmlMarkup.STRONG.toString())) {
             attribs.addAttributes(SinkEventAttributeSet.Semantics.STRONG);
             sink.inline(attribs);
-        } else if (parser.getName().equals(HtmlMarkup.SMALL.toString())) {
+        } else if (elementName.equals(HtmlMarkup.SMALL.toString())) {
             attribs.addAttributes(SinkEventAttributeSet.Semantics.SMALL);
             sink.inline(attribs);
-        } else if (parser.getName().equals(HtmlMarkup.S.toString())) {
+        } else if (elementName.equals(HtmlMarkup.S.toString())) {
             attribs.addAttributes(SinkEventAttributeSet.Semantics.LINE_THROUGH);
             sink.inline(attribs);
             /* deprecated line-through support */
-        } else if (parser.getName().equals(HtmlMarkup.CITE.toString())) {
+        } else if (elementName.equals(HtmlMarkup.CITE.toString())) {
             attribs.addAttributes(SinkEventAttributeSet.Semantics.CITATION);
             sink.inline(attribs);
-        } else if (parser.getName().equals(HtmlMarkup.Q.toString())) {
+        } else if (elementName.equals(HtmlMarkup.Q.toString())) {
             attribs.addAttributes(SinkEventAttributeSet.Semantics.QUOTE);
             sink.inline(attribs);
-        } else if (parser.getName().equals(HtmlMarkup.DFN.toString())) {
+        } else if (elementName.equals(HtmlMarkup.DFN.toString())) {
             attribs.addAttributes(SinkEventAttributeSet.Semantics.DEFINITION);
             sink.inline(attribs);
-        } else if (parser.getName().equals(HtmlMarkup.ABBR.toString())) {
+        } else if (elementName.equals(HtmlMarkup.ABBR.toString())) {
             attribs.addAttributes(SinkEventAttributeSet.Semantics.ABBREVIATION);
             sink.inline(attribs);
-        } else if (parser.getName().equals(HtmlMarkup.I.toString())) {
+        } else if (elementName.equals(HtmlMarkup.I.toString())) {
             attribs.addAttributes(SinkEventAttributeSet.Semantics.ITALIC);
             sink.inline(attribs);
-        } else if (parser.getName().equals(HtmlMarkup.B.toString())) {
+        } else if (elementName.equals(HtmlMarkup.B.toString())) {
             attribs.addAttributes(SinkEventAttributeSet.Semantics.BOLD);
             sink.inline(attribs);
-        } else if (parser.getName().equals(HtmlMarkup.CODE.toString())) {
+        } else if (elementName.equals(HtmlMarkup.CODE.toString())) {
             attribs.addAttributes(SinkEventAttributeSet.Semantics.CODE);
             sink.inline(attribs);
-        } else if (parser.getName().equals(HtmlMarkup.VAR.toString())) {
+        } else if (elementName.equals(HtmlMarkup.VAR.toString())) {
             attribs.addAttributes(SinkEventAttributeSet.Semantics.VARIABLE);
             sink.inline(attribs);
-        } else if (parser.getName().equals(HtmlMarkup.SAMP.toString())) {
+        } else if (elementName.equals(HtmlMarkup.SAMP.toString())) {
             attribs.addAttributes(SinkEventAttributeSet.Semantics.SAMPLE);
             sink.inline(attribs);
-        } else if (parser.getName().equals(HtmlMarkup.KBD.toString())) {
+        } else if (elementName.equals(HtmlMarkup.KBD.toString())) {
             attribs.addAttributes(SinkEventAttributeSet.Semantics.KEYBOARD);
             sink.inline(attribs);
-        } else if (parser.getName().equals(HtmlMarkup.SUP.toString())) {
+        } else if (elementName.equals(HtmlMarkup.SUP.toString())) {
             attribs.addAttributes(SinkEventAttributeSet.Semantics.SUPERSCRIPT);
             sink.inline(attribs);
-        } else if (parser.getName().equals(HtmlMarkup.SUB.toString())) {
+        } else if (elementName.equals(HtmlMarkup.SUB.toString())) {
             attribs.addAttributes(SinkEventAttributeSet.Semantics.SUBSCRIPT);
             sink.inline(attribs);
-        } else if (parser.getName().equals(HtmlMarkup.U.toString())) {
+        } else if (elementName.equals(HtmlMarkup.U.toString())) {
             attribs.addAttributes(SinkEventAttributeSet.Semantics.ANNOTATION);
             sink.inline(attribs);
-        } else if (parser.getName().equals(HtmlMarkup.MARK.toString())) {
+        } else if (elementName.equals(HtmlMarkup.MARK.toString())) {
             attribs.addAttributes(SinkEventAttributeSet.Semantics.HIGHLIGHT);
             sink.inline(attribs);
-        } else if (parser.getName().equals(HtmlMarkup.RUBY.toString())) {
+        } else if (elementName.equals(HtmlMarkup.RUBY.toString())) {
             attribs.addAttributes(SinkEventAttributeSet.Semantics.RUBY);
             sink.inline(attribs);
-        } else if (parser.getName().equals(HtmlMarkup.RB.toString())) {
+        } else if (elementName.equals(HtmlMarkup.RB.toString())) {
             attribs.addAttributes(SinkEventAttributeSet.Semantics.RUBY_BASE);
             sink.inline(attribs);
-        } else if (parser.getName().equals(HtmlMarkup.RT.toString())) {
+        } else if (elementName.equals(HtmlMarkup.RT.toString())) {
             attribs.addAttributes(SinkEventAttributeSet.Semantics.RUBY_TEXT);
             sink.inline(attribs);
-        } else if (parser.getName().equals(HtmlMarkup.RTC.toString())) {
+        } else if (elementName.equals(HtmlMarkup.RTC.toString())) {
             attribs.addAttributes(SinkEventAttributeSet.Semantics.RUBY_TEXT_CONTAINER);
             sink.inline(attribs);
-        } else if (parser.getName().equals(HtmlMarkup.RP.toString())) {
+        } else if (elementName.equals(HtmlMarkup.RP.toString())) {
             attribs.addAttributes(SinkEventAttributeSet.Semantics.RUBY_PARANTHESES);
             sink.inline(attribs);
-        } else if (parser.getName().equals(HtmlMarkup.BDI.toString())) {
+        } else if (elementName.equals(HtmlMarkup.BDI.toString())) {
             attribs.addAttributes(SinkEventAttributeSet.Semantics.BIDIRECTIONAL_ISOLATION);
             sink.inline(attribs);
-        } else if (parser.getName().equals(HtmlMarkup.BDO.toString())) {
+        } else if (elementName.equals(HtmlMarkup.BDO.toString())) {
             attribs.addAttributes(SinkEventAttributeSet.Semantics.BIDIRECTIONAL_OVERRIDE);
             sink.inline(attribs);
-        } else if (parser.getName().equals(HtmlMarkup.SPAN.toString())) {
+        } else if (elementName.equals(HtmlMarkup.SPAN.toString())) {
             attribs.addAttributes(SinkEventAttributeSet.Semantics.PHRASE);
             sink.inline(attribs);
-        } else if (parser.getName().equals(HtmlMarkup.INS.toString())) {
+        } else if (elementName.equals(HtmlMarkup.INS.toString())) {
             attribs.addAttributes(SinkEventAttributeSet.Semantics.INSERT);
             sink.inline(attribs);
-        } else if (parser.getName().equals(HtmlMarkup.DEL.toString())) {
+        } else if (elementName.equals(HtmlMarkup.DEL.toString())) {
             attribs.addAttributes(SinkEventAttributeSet.Semantics.DELETE);
             sink.inline(attribs);
-        } else if (parser.getName().equals(HtmlMarkup.P.toString())) {
+        } else if (elementName.equals(HtmlMarkup.P.toString())) {
             handlePStart(sink, attribs);
-        } else if (parser.getName().equals(HtmlMarkup.DIV.toString())) {
-            handleDivStart(parser, attribs, sink);
-        } else if (parser.getName().equals(HtmlMarkup.PRE.toString())) {
+        } else if (elementName.equals(HtmlMarkup.DIV.toString())) {
+            handleDivStart(attribs, sink);
+        } else if (elementName.equals(HtmlMarkup.PRE.toString())) {
             handlePreStart(attribs, sink);
-        } else if (parser.getName().equals(HtmlMarkup.UL.toString())) {
+        } else if (elementName.equals(HtmlMarkup.UL.toString())) {
             sink.list(attribs);
-        } else if (parser.getName().equals(HtmlMarkup.OL.toString())) {
-            handleOLStart(parser, sink, attribs);
-        } else if (parser.getName().equals(HtmlMarkup.LI.toString())) {
+        } else if (elementName.equals(HtmlMarkup.OL.toString())) {
+            handleOLStart(sink, attribs);
+        } else if (elementName.equals(HtmlMarkup.LI.toString())) {
             handleLIStart(sink, attribs);
-        } else if (parser.getName().equals(HtmlMarkup.DL.toString())) {
+        } else if (elementName.equals(HtmlMarkup.DL.toString())) {
             sink.definitionList(attribs);
-        } else if (parser.getName().equals(HtmlMarkup.DT.toString())) {
+        } else if (elementName.equals(HtmlMarkup.DT.toString())) {
             if (hasDefinitionListItem) {
                 // close previous listItem
                 sink.definitionListItem_();
@@ -324,44 +327,44 @@ public class Xhtml5BaseParser extends AbstractXmlParser implements HtmlMarkup {
             sink.definitionListItem(attribs);
             hasDefinitionListItem = true;
             sink.definedTerm(attribs);
-        } else if (parser.getName().equals(HtmlMarkup.DD.toString())) {
+        } else if (elementName.equals(HtmlMarkup.DD.toString())) {
             if (!hasDefinitionListItem) {
                 sink.definitionListItem(attribs);
             }
             sink.definition(attribs);
-        } else if (parser.getName().equals(HtmlMarkup.FIGURE.toString())) {
+        } else if (elementName.equals(HtmlMarkup.FIGURE.toString())) {
             sink.figure(attribs);
-        } else if (parser.getName().equals(HtmlMarkup.FIGCAPTION.toString())) {
+        } else if (elementName.equals(HtmlMarkup.FIGCAPTION.toString())) {
             sink.figureCaption(attribs);
-        } else if (parser.getName().equals(HtmlMarkup.A.toString())) {
-            handleAStart(parser, sink, attribs);
-        } else if (parser.getName().equals(HtmlMarkup.TABLE.toString())) {
-            handleTableStart(sink, attribs, parser);
-        } else if (parser.getName().equals(HtmlMarkup.TR.toString())) {
+        } else if (elementName.equals(HtmlMarkup.A.toString())) {
+            handleAStart(sink, attribs);
+        } else if (elementName.equals(HtmlMarkup.TABLE.toString())) {
+            handleTableStart(sink, attribs);
+        } else if (elementName.equals(HtmlMarkup.TR.toString())) {
             sink.tableRow(attribs);
-        } else if (parser.getName().equals(HtmlMarkup.TH.toString())) {
+        } else if (elementName.equals(HtmlMarkup.TH.toString())) {
             sink.tableHeaderCell(attribs);
-        } else if (parser.getName().equals(HtmlMarkup.TD.toString())) {
+        } else if (elementName.equals(HtmlMarkup.TD.toString())) {
             sink.tableCell(attribs);
-        } else if (parser.getName().equals(HtmlMarkup.CAPTION.toString())) {
+        } else if (elementName.equals(HtmlMarkup.CAPTION.toString())) {
             sink.tableCaption(attribs);
-        } else if (parser.getName().equals(HtmlMarkup.BR.toString())) {
+        } else if (elementName.equals(HtmlMarkup.BR.toString())) {
             sink.lineBreak(attribs);
-        } else if (parser.getName().equals(HtmlMarkup.WBR.toString())) {
+        } else if (elementName.equals(HtmlMarkup.WBR.toString())) {
             sink.lineBreakOpportunity(attribs);
-        } else if (parser.getName().equals(HtmlMarkup.HR.toString())) {
+        } else if (elementName.equals(HtmlMarkup.HR.toString())) {
             sink.horizontalRule(attribs);
-        } else if (parser.getName().equals(HtmlMarkup.IMG.toString())) {
-            handleImgStart(parser, sink, attribs);
-        } else if (parser.getName().equals(HtmlMarkup.BLOCKQUOTE.toString())) {
+        } else if (elementName.equals(HtmlMarkup.IMG.toString())) {
+            handleImgStart(sink, attribs);
+        } else if (elementName.equals(HtmlMarkup.BLOCKQUOTE.toString())) {
             sink.blockquote(attribs);
-        } else if (UNMATCHED_XHTML5_ELEMENTS.contains(parser.getName())) {
-            handleUnknown(parser, sink, TAG_TYPE_START);
-        } else if (UNMATCHED_XHTML5_SIMPLE_ELEMENTS.contains(parser.getName())) {
-            handleUnknown(parser, sink, TAG_TYPE_SIMPLE);
-        } else if (parser.getName().equals(HtmlMarkup.SCRIPT.toString())
-                || parser.getName().equals(HtmlMarkup.STYLE.toString())) {
-            handleUnknown(parser, sink, TAG_TYPE_START);
+        } else if (UNMATCHED_XHTML5_ELEMENTS.contains(elementName)) {
+            handleUnknown(elementName, attribs, sink, TAG_TYPE_START);
+        } else if (UNMATCHED_XHTML5_SIMPLE_ELEMENTS.contains(elementName)) {
+            handleUnknown(elementName, attribs, sink, TAG_TYPE_SIMPLE);
+        } else if (elementName.equals(HtmlMarkup.SCRIPT.toString())
+                || elementName.equals(HtmlMarkup.STYLE.toString())) {
+            handleUnknown(elementName, attribs, sink, TAG_TYPE_START);
             scriptBlock = true;
         } else {
             visited = false;
@@ -383,96 +386,101 @@ public class Xhtml5BaseParser extends AbstractXmlParser implements HtmlMarkup {
      * @return True if the event has been handled by this method, false otherwise.
      */
     protected boolean baseEndTag(XmlPullParser parser, Sink sink) {
+        SinkEventAttributeSet attribs = getAttributesFromParser(parser);
+        return baseEndTag(parser.getName(), attribs, sink);
+    }
+
+    protected boolean baseEndTag(String elementName, SinkEventAttributeSet attribs, Sink sink) {
         boolean visited = true;
 
-        if (parser.getName().equals(HtmlMarkup.P.toString())) {
+        if (elementName.equals(HtmlMarkup.P.toString())) {
             sink.paragraph_();
-        } else if (parser.getName().equals(HtmlMarkup.DIV.toString())) {
+        } else if (elementName.equals(HtmlMarkup.DIV.toString())) {
             handleDivEnd(sink);
-        } else if (parser.getName().equals(HtmlMarkup.PRE.toString())) {
+        } else if (elementName.equals(HtmlMarkup.PRE.toString())) {
             verbatim_();
 
             sink.verbatim_();
-        } else if (parser.getName().equals(HtmlMarkup.UL.toString())) {
+        } else if (elementName.equals(HtmlMarkup.UL.toString())) {
             sink.list_();
-        } else if (parser.getName().equals(HtmlMarkup.OL.toString())) {
+        } else if (elementName.equals(HtmlMarkup.OL.toString())) {
             sink.numberedList_();
             orderedListDepth--;
-        } else if (parser.getName().equals(HtmlMarkup.LI.toString())) {
+        } else if (elementName.equals(HtmlMarkup.LI.toString())) {
             handleListItemEnd(sink);
-        } else if (parser.getName().equals(HtmlMarkup.DL.toString())) {
+        } else if (elementName.equals(HtmlMarkup.DL.toString())) {
             if (hasDefinitionListItem) {
                 sink.definitionListItem_();
                 hasDefinitionListItem = false;
             }
             sink.definitionList_();
-        } else if (parser.getName().equals(HtmlMarkup.DT.toString())) {
+        } else if (elementName.equals(HtmlMarkup.DT.toString())) {
             sink.definedTerm_();
-        } else if (parser.getName().equals(HtmlMarkup.DD.toString())) {
+        } else if (elementName.equals(HtmlMarkup.DD.toString())) {
             sink.definition_();
             sink.definitionListItem_();
             hasDefinitionListItem = false;
-        } else if (parser.getName().equals(HtmlMarkup.FIGURE.toString())) {
+        } else if (elementName.equals(HtmlMarkup.FIGURE.toString())) {
             sink.figure_();
-        } else if (parser.getName().equals(HtmlMarkup.FIGCAPTION.toString())) {
+        } else if (elementName.equals(HtmlMarkup.FIGCAPTION.toString())) {
             sink.figureCaption_();
-        } else if (parser.getName().equals(HtmlMarkup.A.toString())) {
+        } else if (elementName.equals(HtmlMarkup.A.toString())) {
             handleAEnd(sink);
-        } else if (parser.getName().equals(HtmlMarkup.EM.toString())) {
+        } else if (elementName.equals(HtmlMarkup.EM.toString())) {
             sink.inline_();
-        } else if (parser.getName().equals(HtmlMarkup.STRONG.toString())) {
+        } else if (elementName.equals(HtmlMarkup.STRONG.toString())) {
             sink.inline_();
-        } else if (parser.getName().equals(HtmlMarkup.SMALL.toString())) {
+        } else if (elementName.equals(HtmlMarkup.SMALL.toString())) {
             sink.inline_();
-        } else if (parser.getName().equals(HtmlMarkup.S.toString())) {
+        } else if (elementName.equals(HtmlMarkup.S.toString())) {
             sink.inline_();
-        } else if (parser.getName().equals(HtmlMarkup.CITE.toString())) {
+        } else if (elementName.equals(HtmlMarkup.CITE.toString())) {
             sink.inline_();
-        } else if (parser.getName().equals(HtmlMarkup.Q.toString())) {
+        } else if (elementName.equals(HtmlMarkup.Q.toString())) {
             sink.inline_();
-        } else if (parser.getName().equals(HtmlMarkup.DFN.toString())) {
+        } else if (elementName.equals(HtmlMarkup.DFN.toString())) {
             sink.inline_();
-        } else if (parser.getName().equals(HtmlMarkup.ABBR.toString())) {
+        } else if (elementName.equals(HtmlMarkup.ABBR.toString())) {
             sink.inline_();
-        } else if (parser.getName().equals(HtmlMarkup.I.toString())) {
+        } else if (elementName.equals(HtmlMarkup.I.toString())) {
             sink.inline_();
-        } else if (parser.getName().equals(HtmlMarkup.B.toString())) {
+        } else if (elementName.equals(HtmlMarkup.B.toString())) {
             sink.inline_();
-        } else if (parser.getName().equals(HtmlMarkup.CODE.toString())) {
+        } else if (elementName.equals(HtmlMarkup.CODE.toString())) {
             sink.inline_();
-        } else if (parser.getName().equals(HtmlMarkup.VAR.toString())) {
+        } else if (elementName.equals(HtmlMarkup.VAR.toString())) {
             sink.inline_();
-        } else if (parser.getName().equals(HtmlMarkup.SAMP.toString())) {
+        } else if (elementName.equals(HtmlMarkup.SAMP.toString())) {
             sink.inline_();
-        } else if (parser.getName().equals(HtmlMarkup.KBD.toString())) {
+        } else if (elementName.equals(HtmlMarkup.KBD.toString())) {
             sink.inline_();
-        } else if (parser.getName().equals(HtmlMarkup.SUP.toString())) {
+        } else if (elementName.equals(HtmlMarkup.SUP.toString())) {
             sink.inline_();
-        } else if (parser.getName().equals(HtmlMarkup.SUB.toString())) {
+        } else if (elementName.equals(HtmlMarkup.SUB.toString())) {
             sink.inline_();
-        } else if (parser.getName().equals(HtmlMarkup.U.toString())) {
+        } else if (elementName.equals(HtmlMarkup.U.toString())) {
             sink.inline_();
-        } else if (parser.getName().equals(HtmlMarkup.MARK.toString())) {
+        } else if (elementName.equals(HtmlMarkup.MARK.toString())) {
             sink.inline_();
-        } else if (parser.getName().equals(HtmlMarkup.RUBY.toString())) {
+        } else if (elementName.equals(HtmlMarkup.RUBY.toString())) {
             sink.inline_();
-        } else if (parser.getName().equals(HtmlMarkup.RB.toString())) {
+        } else if (elementName.equals(HtmlMarkup.RB.toString())) {
             sink.inline_();
-        } else if (parser.getName().equals(HtmlMarkup.RT.toString())) {
+        } else if (elementName.equals(HtmlMarkup.RT.toString())) {
             sink.inline_();
-        } else if (parser.getName().equals(HtmlMarkup.RTC.toString())) {
+        } else if (elementName.equals(HtmlMarkup.RTC.toString())) {
             sink.inline_();
-        } else if (parser.getName().equals(HtmlMarkup.RP.toString())) {
+        } else if (elementName.equals(HtmlMarkup.RP.toString())) {
             sink.inline_();
-        } else if (parser.getName().equals(HtmlMarkup.BDI.toString())) {
+        } else if (elementName.equals(HtmlMarkup.BDI.toString())) {
             sink.inline_();
-        } else if (parser.getName().equals(HtmlMarkup.BDO.toString())) {
+        } else if (elementName.equals(HtmlMarkup.BDO.toString())) {
             sink.inline_();
-        } else if (parser.getName().equals(HtmlMarkup.SPAN.toString())) {
+        } else if (elementName.equals(HtmlMarkup.SPAN.toString())) {
             sink.inline_();
-        } else if (parser.getName().equals(HtmlMarkup.INS.toString())) {
+        } else if (elementName.equals(HtmlMarkup.INS.toString())) {
             sink.inline_();
-        } else if (parser.getName().equals(HtmlMarkup.DEL.toString())) {
+        } else if (elementName.equals(HtmlMarkup.DEL.toString())) {
             sink.inline_();
         }
 
@@ -480,50 +488,50 @@ public class Xhtml5BaseParser extends AbstractXmlParser implements HtmlMarkup {
         // Tables
         // ----------------------------------------------------------------------
 
-        else if (parser.getName().equals(HtmlMarkup.TABLE.toString())) {
+        else if (elementName.equals(HtmlMarkup.TABLE.toString())) {
             sink.tableRows_();
             sink.table_();
-        } else if (parser.getName().equals(HtmlMarkup.TR.toString())) {
+        } else if (elementName.equals(HtmlMarkup.TR.toString())) {
             sink.tableRow_();
-        } else if (parser.getName().equals(HtmlMarkup.TH.toString())) {
+        } else if (elementName.equals(HtmlMarkup.TH.toString())) {
             sink.tableHeaderCell_();
-        } else if (parser.getName().equals(HtmlMarkup.TD.toString())) {
+        } else if (elementName.equals(HtmlMarkup.TD.toString())) {
             sink.tableCell_();
-        } else if (parser.getName().equals(HtmlMarkup.CAPTION.toString())) {
+        } else if (elementName.equals(HtmlMarkup.CAPTION.toString())) {
             sink.tableCaption_();
-        } else if (parser.getName().equals(HtmlMarkup.ARTICLE.toString())) {
+        } else if (elementName.equals(HtmlMarkup.ARTICLE.toString())) {
             sink.article_();
-        } else if (parser.getName().equals(HtmlMarkup.NAV.toString())) {
+        } else if (elementName.equals(HtmlMarkup.NAV.toString())) {
             sink.navigation_();
-        } else if (parser.getName().equals(HtmlMarkup.ASIDE.toString())) {
+        } else if (elementName.equals(HtmlMarkup.ASIDE.toString())) {
             sink.sidebar_();
-        } else if (parser.getName().equals(HtmlMarkup.SECTION.toString())) {
+        } else if (elementName.equals(HtmlMarkup.SECTION.toString())) {
             handleSectionEnd(sink);
-        } else if (parser.getName().equals(HtmlMarkup.H1.toString())) {
+        } else if (elementName.equals(HtmlMarkup.H1.toString())) {
             sink.sectionTitle1_();
-        } else if (parser.getName().equals(HtmlMarkup.H2.toString())) {
+        } else if (elementName.equals(HtmlMarkup.H2.toString())) {
             sink.sectionTitle2_();
-        } else if (parser.getName().equals(HtmlMarkup.H3.toString())) {
+        } else if (elementName.equals(HtmlMarkup.H3.toString())) {
             sink.sectionTitle3_();
-        } else if (parser.getName().equals(HtmlMarkup.H4.toString())) {
+        } else if (elementName.equals(HtmlMarkup.H4.toString())) {
             sink.sectionTitle4_();
-        } else if (parser.getName().equals(HtmlMarkup.H5.toString())) {
+        } else if (elementName.equals(HtmlMarkup.H5.toString())) {
             sink.sectionTitle5_();
-        } else if (parser.getName().equals(HtmlMarkup.H6.toString())) {
+        } else if (elementName.equals(HtmlMarkup.H6.toString())) {
             sink.sectionTitle6_();
-        } else if (parser.getName().equals(HtmlMarkup.HEADER.toString())) {
+        } else if (elementName.equals(HtmlMarkup.HEADER.toString())) {
             sink.header_();
-        } else if (parser.getName().equals(HtmlMarkup.MAIN.toString())) {
+        } else if (elementName.equals(HtmlMarkup.MAIN.toString())) {
             sink.content_();
-        } else if (parser.getName().equals(HtmlMarkup.FOOTER.toString())) {
+        } else if (elementName.equals(HtmlMarkup.FOOTER.toString())) {
             sink.footer_();
-        } else if (parser.getName().equals(HtmlMarkup.BLOCKQUOTE.toString())) {
+        } else if (elementName.equals(HtmlMarkup.BLOCKQUOTE.toString())) {
             sink.blockquote_();
-        } else if (UNMATCHED_XHTML5_ELEMENTS.contains(parser.getName())) {
-            handleUnknown(parser, sink, TAG_TYPE_END);
-        } else if (parser.getName().equals(HtmlMarkup.SCRIPT.toString())
-                || parser.getName().equals(HtmlMarkup.STYLE.toString())) {
-            handleUnknown(parser, sink, TAG_TYPE_END);
+        } else if (UNMATCHED_XHTML5_ELEMENTS.contains(elementName)) {
+            handleUnknown(elementName, attribs, sink, TAG_TYPE_END);
+        } else if (elementName.equals(HtmlMarkup.SCRIPT.toString())
+                || elementName.equals(HtmlMarkup.STYLE.toString())) {
+            handleUnknown(elementName, attribs, sink, TAG_TYPE_END);
 
             scriptBlock = false;
         } else {
@@ -805,8 +813,8 @@ public class Xhtml5BaseParser extends AbstractXmlParser implements HtmlMarkup {
         }
     }
 
-    private void handleAStart(XmlPullParser parser, Sink sink, SinkEventAttributeSet attribs) {
-        String href = parser.getAttributeValue(null, Attribute.HREF.toString());
+    private void handleAStart(Sink sink, SinkEventAttributeSet attribs) {
+        String href = (String) attribs.getAttribute(Attribute.HREF.toString());
 
         if (href != null) {
             int hashIndex = href.indexOf('#');
@@ -822,7 +830,7 @@ public class Xhtml5BaseParser extends AbstractXmlParser implements HtmlMarkup {
             sink.link(href, attribs);
             isLink = true;
         } else {
-            String id = parser.getAttributeValue(null, Attribute.ID.toString());
+            String id = (String) attribs.getAttribute(Attribute.ID.toString());
             if (id != null) {
                 sink.anchor(validAnchor(id), attribs);
                 isAnchor = true;
@@ -830,8 +838,8 @@ public class Xhtml5BaseParser extends AbstractXmlParser implements HtmlMarkup {
         }
     }
 
-    private boolean handleDivStart(XmlPullParser parser, SinkEventAttributeSet attribs, Sink sink) {
-        String divClass = parser.getAttributeValue(null, Attribute.CLASS.toString());
+    private boolean handleDivStart(SinkEventAttributeSet attribs, Sink sink) {
+        String divClass = (String) attribs.getAttribute(Attribute.CLASS.toString());
 
         this.divStack.push(divClass);
 
@@ -864,8 +872,8 @@ public class Xhtml5BaseParser extends AbstractXmlParser implements HtmlMarkup {
         return true;
     }
 
-    private void handleImgStart(XmlPullParser parser, Sink sink, SinkEventAttributeSet attribs) {
-        String src = parser.getAttributeValue(null, Attribute.SRC.toString());
+    private void handleImgStart(Sink sink, SinkEventAttributeSet attribs) {
+        String src = (String) attribs.getAttribute(Attribute.SRC.toString());
 
         if (src != null) {
             sink.figureGraphics(src, attribs);
@@ -888,10 +896,10 @@ public class Xhtml5BaseParser extends AbstractXmlParser implements HtmlMarkup {
         }
     }
 
-    private void handleOLStart(XmlPullParser parser, Sink sink, SinkEventAttributeSet attribs) {
+    private void handleOLStart(Sink sink, SinkEventAttributeSet attribs) {
         int numbering = Sink.NUMBERING_DECIMAL;
         // this will have to be generalized if we handle styles
-        String style = parser.getAttributeValue(null, Attribute.STYLE.toString());
+        String style = (String) attribs.getAttribute(Attribute.STYLE.toString());
 
         if (style != null) {
             switch (style) {
@@ -955,9 +963,9 @@ public class Xhtml5BaseParser extends AbstractXmlParser implements HtmlMarkup {
         this.headingLevel = sectionLevel;
     }
 
-    private void handleTableStart(Sink sink, SinkEventAttributeSet attribs, XmlPullParser parser) {
+    private void handleTableStart(Sink sink, SinkEventAttributeSet attribs) {
         sink.table(attribs);
-        String givenTableClass = parser.getAttributeValue(null, Attribute.CLASS.toString());
+        String givenTableClass = (String) attribs.getAttribute(Attribute.CLASS.toString());
         boolean grid = false;
         if (givenTableClass != null
                 && BODYTABLEBORDER_CLASS_PATTERN.matcher(givenTableClass).matches()) {
