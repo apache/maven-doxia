@@ -34,7 +34,7 @@ import org.apache.maven.doxia.macro.MacroExecutionException;
 import org.apache.maven.doxia.macro.MacroRequest;
 import org.apache.maven.doxia.macro.manager.MacroNotFoundException;
 import org.apache.maven.doxia.parser.ParseException;
-import org.apache.maven.doxia.parser.Xhtml5BaseParser;
+import org.apache.maven.doxia.parser.Xhtml1BaseParser;
 import org.apache.maven.doxia.sink.Sink;
 import org.apache.maven.doxia.sink.impl.SinkEventAttributeSet;
 import org.apache.maven.doxia.util.HtmlTools;
@@ -51,7 +51,7 @@ import org.slf4j.LoggerFactory;
  */
 @Singleton
 @Named("xdoc")
-public class XdocParser extends Xhtml5BaseParser implements XdocMarkup {
+public class XdocParser extends Xhtml1BaseParser implements XdocMarkup {
     private static final Logger LOGGER = LoggerFactory.getLogger(XdocParser.class);
 
     /**

@@ -302,21 +302,6 @@ public class XdocSinkTest extends AbstractSinkTest {
     }
 
     /** {@inheritDoc} */
-    protected String getItalicBlock(String text) {
-        return "<i>" + text + "</i>";
-    }
-
-    /** {@inheritDoc} */
-    protected String getBoldBlock(String text) {
-        return "<b>" + text + "</b>";
-    }
-
-    /** {@inheritDoc} */
-    protected String getMonospacedBlock(String text) {
-        return "<tt>" + text + "</tt>";
-    }
-
-    /** {@inheritDoc} */
     protected String getLineBreakBlock() {
         return "<br />";
     }

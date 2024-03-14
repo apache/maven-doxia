@@ -379,11 +379,14 @@ public abstract class AbstractXmlParser extends AbstractParser implements XmlMar
      * method.
      */
     protected void handleUnknown(XmlPullParser parser, Sink sink, int type) {
-        Object[] required = new Object[] {type};
-
         SinkEventAttributeSet attribs = getAttributesFromParser(parser);
 
-        sink.unknown(parser.getName(), required, attribs);
+        handleUnknown(parser.getName(), attribs, sink, type);
+    }
+
+    protected void handleUnknown(String elementName, SinkEventAttributeSet attribs, Sink sink, int type) {
+        Object[] required = new Object[] {type};
+        sink.unknown(elementName, required, attribs);
     }
 
     /**

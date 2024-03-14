@@ -440,4 +440,58 @@ public class XdocParserTest extends AbstractParserTest {
     protected String getVerbatimCodeSource() {
         return "<source><![CDATA[<>{}=#*]]></source>";
     }
+
+    /**
+     * As XDoc 2 is based on XHTML 1.0 Transitional is must support even attributes obsolete in XHTML5
+     * @throws ParseException
+     */
+    @Test
+    public void testXhtml1AttributesObsoleteInXhtml5() throws ParseException {
+        final String text = "<a name=\"test\"></a>";
+
+        SinkEventTestingSink sink = new SinkEventTestingSink();
+
+        parser.setValidate(false);
+        parser.parse(text, sink);
+        Iterator<SinkEventElement> it = sink.getEventList().iterator();
+        SinkEventAttributeSet anchorAttributes = new SinkEventAttributeSet();
+        anchorAttributes.addAttribute("id", "test");
+        assertSinkEquals(it.next(), "anchor", "test", anchorAttributes);
+        assertSinkEquals(it, "anchor_");
+
+        sink.reset();
+        parser.parse("<table class=\"myclass\" border=\"1\" align=\"center\" style=\"color:blue;\"></table>", sink);
+        it = sink.getEventList().iterator();
+        SinkEventElement tableElement = it.next();
+        assertSinkAttributeEquals(tableElement, "table", "style", "text-align: center; color:blue;");
+        assertSinkAttributeEquals(tableElement, "table", "class", "bodyTableBorder myclass");
+        assertSinkEquals(it, "tableRows", "tableRows_", "table_");
+    }
+
+    /**
+     * As XDoc 2 is based on XHTML 1.0 Transitional is must support even elements obsolete in XHTML5
+     * @throws ParseException
+     */
+    @Test
+    public void testXhtml1ElementsObsoleteInXhtml5() throws ParseException {
+        final String text = "<tt>test</tt>";
+
+        SinkEventTestingSink sink = new SinkEventTestingSink();
+
+        parser.setValidate(false);
+        parser.parse(text, sink);
+        Iterator<SinkEventElement> it = sink.getEventList().iterator();
+        SinkEventAttributeSet anchorAttributes = new SinkEventAttributeSet();
+        anchorAttributes.addAttribute("id", "test");
+        assertSinkEquals(it.next(), "inline", SinkEventAttributeSet.Semantics.CODE);
+        assertSinkEquals(it.next(), "text", "test", null);
+        assertSinkEquals(it, "inline_");
+
+        sink.reset();
+        parser.parse("<strike>test</strike>", sink);
+        it = sink.getEventList().iterator();
+        assertSinkEquals(it.next(), "inline", SinkEventAttributeSet.Semantics.DELETE);
+        assertSinkEquals(it.next(), "text", "test", null);
+        assertSinkEquals(it, "inline_");
+    }
 }
