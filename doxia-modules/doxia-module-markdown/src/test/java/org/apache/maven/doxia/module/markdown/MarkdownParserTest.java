@@ -813,7 +813,11 @@ public class MarkdownParserTest extends AbstractParserTest {
 
     @Override
     protected String getVerbatimSource() {
-        return null; // not supported in MD
+        /**
+         * Markdown doesn't support verbatim text which is not code:
+         * https://spec.commonmark.org/0.31.2/#fenced-code-blocks and https://spec.commonmark.org/0.31.2/#indented-code-blocks
+         */
+        return null;
     }
 
     @Override
