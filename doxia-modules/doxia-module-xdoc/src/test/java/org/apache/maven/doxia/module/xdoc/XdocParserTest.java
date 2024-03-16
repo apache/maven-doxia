@@ -29,9 +29,9 @@ import java.util.Iterator;
 import java.util.regex.Pattern;
 
 import org.apache.commons.io.IOUtils;
+import org.apache.maven.doxia.parser.AbstractParser;
 import org.apache.maven.doxia.parser.AbstractParserTest;
 import org.apache.maven.doxia.parser.ParseException;
-import org.apache.maven.doxia.parser.Parser;
 import org.apache.maven.doxia.sink.Sink;
 import org.apache.maven.doxia.sink.impl.SinkEventAttributeSet;
 import org.apache.maven.doxia.sink.impl.SinkEventElement;
@@ -91,7 +91,7 @@ public class XdocParserTest extends AbstractParserTest {
     }
 
     /** {@inheritDoc} */
-    protected Parser createParser() {
+    protected AbstractParser createParser() {
         return parser;
     }
 
@@ -429,5 +429,15 @@ public class XdocParserTest extends AbstractParserTest {
         assertEquals("unknown", styleElm_.getName());
         assertEquals("style", styleElm_.getArgs()[0]);
         assertFalse(it.hasNext());
+    }
+
+    @Override
+    protected String getVerbatimSource() {
+        return "<pre><![CDATA[<>{}=#*]]></pre>";
+    }
+
+    @Override
+    protected String getVerbatimCodeSource() {
+        return "<source><![CDATA[<>{}=#*]]></source>";
     }
 }

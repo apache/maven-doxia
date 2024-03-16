@@ -26,9 +26,9 @@ import java.io.StringWriter;
 import java.io.Writer;
 import java.util.Iterator;
 
+import org.apache.maven.doxia.parser.AbstractParser;
 import org.apache.maven.doxia.parser.AbstractParserTest;
 import org.apache.maven.doxia.parser.ParseException;
-import org.apache.maven.doxia.parser.Parser;
 import org.apache.maven.doxia.sink.Sink;
 import org.apache.maven.doxia.sink.impl.SinkEventAttributeSet;
 import org.apache.maven.doxia.sink.impl.SinkEventElement;
@@ -47,7 +47,7 @@ public class AptParserTest extends AbstractParserTest {
     @Inject
     private AptParser parser;
 
-    protected Parser createParser() {
+    protected AbstractParser createParser() {
         return parser;
     }
 
@@ -522,7 +522,28 @@ public class AptParserTest extends AbstractParserTest {
         assertSinkEquals(sink.getEventList().get(8), "text", "Another author", null);
     }
 
+    @Override
     protected String outputExtension() {
         return "apt";
+    }
+
+    @Override
+    protected void assertEventPrefix(Iterator<SinkEventElement> eventIterator) {
+        assertSinkStartsWith(eventIterator, "head", "head_", "body");
+    }
+
+    @Override
+    protected void assertEventSuffix(Iterator<SinkEventElement> eventIterator) {
+        assertSinkEquals(eventIterator, "body_");
+    }
+
+    @Override
+    protected String getVerbatimSource() {
+        return "---" + EOL + "<>{}=#*" + EOL + "---" + EOL;
+    }
+
+    @Override
+    protected String getVerbatimCodeSource() {
+        return "+--" + EOL + "<>{}=#*" + EOL + "+--" + EOL;
     }
 }

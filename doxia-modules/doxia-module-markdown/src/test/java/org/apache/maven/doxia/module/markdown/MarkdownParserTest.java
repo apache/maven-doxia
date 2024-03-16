@@ -25,9 +25,9 @@ import java.io.Reader;
 import java.util.Iterator;
 import java.util.List;
 
+import org.apache.maven.doxia.parser.AbstractParser;
 import org.apache.maven.doxia.parser.AbstractParserTest;
 import org.apache.maven.doxia.parser.ParseException;
-import org.apache.maven.doxia.parser.Parser;
 import org.apache.maven.doxia.sink.SinkEventAttributes;
 import org.apache.maven.doxia.sink.impl.SinkEventAttributeSet;
 import org.apache.maven.doxia.sink.impl.SinkEventElement;
@@ -56,7 +56,7 @@ public class MarkdownParserTest extends AbstractParserTest {
      * {@inheritDoc}
      */
     @Override
-    protected Parser createParser() {
+    protected AbstractParser createParser() {
         return parser;
     }
 
@@ -205,12 +205,12 @@ public class MarkdownParserTest extends AbstractParserTest {
 
         assertFalse(it.hasNext());
 
-        // PRE element must be a "verbatim" Sink event that specifies
-        // SOURCE = true
+        // PRE element must be a "verbatim" Sink event
         SinkEventElement pre = eventList.get(7);
         assertEquals("verbatim", pre.getName());
         SinkEventAttributeSet preAtts = (SinkEventAttributeSet) pre.getArgs()[0];
-        assertFalse(preAtts.containsAttribute(SinkEventAttributes.DECORATION, "source"));
+        // instead of using a decoration tag on the verbatim event and additional inline event is used
+        assertTrue(preAtts.isEmpty());
 
         // * CODE element must be an "inline" Sink event that specifies:
         // * SEMANTICS = "code" and CLASS = "language-java"
@@ -778,12 +778,14 @@ public class MarkdownParserTest extends AbstractParserTest {
     }
 
     // test fix for https://github.com/vsch/flexmark-java/issues/384
+    @Test
     public void testFlexIssue384() throws Exception {
         parseFileToEventTestingSink("flex-384");
     }
 
     // Apostrophe versus single quotes
     // Simple apostrophes (like in Sophie's Choice) must not be replaced with a single quote
+    @Test
     public void testQuoteVsApostrophe() throws Exception {
         List<SinkEventElement> eventList =
                 parseFileToEventTestingSink("quote-vs-apostrophe").getEventList();
@@ -797,5 +799,29 @@ public class MarkdownParserTest extends AbstractParserTest {
         assertEquals(
                 "This apostrophe isn't a quote." + "This \u2018quoted text\u2019 isn't surrounded by apostrophes.",
                 content.toString());
+    }
+
+    @Override
+    protected void assertEventPrefix(Iterator<SinkEventElement> eventIterator) {
+        assertSinkStartsWith(eventIterator, "head", "head_", "body");
+    }
+
+    @Override
+    protected void assertEventSuffix(Iterator<SinkEventElement> eventIterator) {
+        assertSinkEquals(eventIterator, "body_");
+    }
+
+    @Override
+    protected String getVerbatimSource() {
+        /**
+         * Markdown doesn't support verbatim text which is not code:
+         * https://spec.commonmark.org/0.31.2/#fenced-code-blocks and https://spec.commonmark.org/0.31.2/#indented-code-blocks
+         */
+        return null;
+    }
+
+    @Override
+    protected String getVerbatimCodeSource() {
+        return "```" + EOL + "<>{}=#*" + EOL + "```";
     }
 }

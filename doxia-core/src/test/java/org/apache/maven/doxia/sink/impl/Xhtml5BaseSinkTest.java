@@ -651,28 +651,27 @@ public class Xhtml5BaseSinkTest {
      * Test of verbatim method, of class Xhtml5BaseSink.
      */
     @Test
-    public void testVerbatimSource() {
+    public void testVerbatim() {
         try (Xhtml5BaseSink sink = new Xhtml5BaseSink(writer)) {
             sink.verbatim(SinkEventAttributeSet.SOURCE);
             sink.verbatim_();
         }
 
-        assertEquals("<div class=\"verbatim source\">" + LS + "<pre></pre></div>", writer.toString());
+        assertEquals("<pre><code></code></pre>", writer.toString());
 
-        checkVerbatimAttributes(attributes, "<div class=\"verbatim\">" + LS + "<pre style=\"bold\"></pre></div>");
+        checkVerbatimAttributes(attributes, "<pre style=\"bold\"></pre>");
 
         final SinkEventAttributes att = new SinkEventAttributeSet(SinkEventAttributes.ID, "id");
-        checkVerbatimAttributes(att, "<div class=\"verbatim\">" + LS + "<pre id=\"id\"></pre></div>");
+        checkVerbatimAttributes(att, "<pre id=\"id\"></pre>");
 
         att.addAttribute(Attribute.CLASS, "class");
-        checkVerbatimAttributes(att, "<div class=\"verbatim\">" + LS + "<pre id=\"id\" class=\"class\"></pre></div>");
+        checkVerbatimAttributes(att, "<pre id=\"id\" class=\"class\"></pre>");
 
         att.addAttribute(SinkEventAttributes.DECORATION, "source");
-        checkVerbatimAttributes(
-                att, "<div class=\"verbatim source\">" + LS + "<pre id=\"id\" class=\"class\"></pre></div>");
+        checkVerbatimAttributes(att, "<pre id=\"id\" class=\"class\"><code></code></pre>");
 
         att.removeAttribute(Attribute.CLASS.toString());
-        checkVerbatimAttributes(att, "<div class=\"verbatim source\">" + LS + "<pre id=\"id\"></pre></div>");
+        checkVerbatimAttributes(att, "<pre id=\"id\"><code></code></pre>");
     }
 
     private void checkVerbatimAttributes(final SinkEventAttributes att, final String expected) {

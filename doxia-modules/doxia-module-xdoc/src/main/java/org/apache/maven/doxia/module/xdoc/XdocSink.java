@@ -44,9 +44,6 @@ public class XdocSink extends Xhtml5BaseSink implements XdocMarkup {
     // Instance fields
     // ----------------------------------------------------------------------
 
-    /** An indication on if we're inside verbatim source. */
-    private boolean sourceFlag;
-
     private String encoding;
 
     private String languageId;
@@ -104,8 +101,6 @@ public class XdocSink extends Xhtml5BaseSink implements XdocMarkup {
      */
     protected void init() {
         super.init();
-
-        sourceFlag = false;
     }
 
     /**
@@ -340,7 +335,6 @@ public class XdocSink extends Xhtml5BaseSink implements XdocMarkup {
      * @param attributes a {@link org.apache.maven.doxia.sink.SinkEventAttributes} object.
      */
     public void verbatim(SinkEventAttributes attributes) {
-        setVerbatimFlag(true);
 
         MutableAttributeSet atts = SinkUtils.filterAttributes(attributes, SinkUtils.SINK_VERBATIM_ATTRIBUTES);
 
@@ -348,15 +342,16 @@ public class XdocSink extends Xhtml5BaseSink implements XdocMarkup {
             atts = new SinkEventAttributeSet();
         }
 
-        boolean source = false;
-
+        this.setVerbatimMode(VerbatimMode.ON);
         if (atts.isDefined(SinkEventAttributes.DECORATION)) {
-            sourceFlag = source = "source".equals(atts.getAttribute(SinkEventAttributes.DECORATION));
+            if ("source".equals(atts.getAttribute(SinkEventAttributes.DECORATION))) {
+                this.setVerbatimMode(VerbatimMode.ON_WITH_CODE);
+            }
         }
 
         atts.removeAttribute(SinkEventAttributes.DECORATION);
 
-        if (source) {
+        if (getVerbatimMode() == VerbatimMode.ON_WITH_CODE) {
             writeStartTag(SOURCE_TAG, atts);
         } else {
             writeStartTag(PRE, atts);
@@ -370,15 +365,13 @@ public class XdocSink extends Xhtml5BaseSink implements XdocMarkup {
      * @see javax.swing.text.html.HTML.Tag#PRE
      */
     public void verbatim_() {
-        if (sourceFlag) {
+        if (getVerbatimMode() == VerbatimMode.ON_WITH_CODE) {
             writeEndTag(SOURCE_TAG);
         } else {
             writeEndTag(PRE);
         }
 
-        setVerbatimFlag(false);
-
-        sourceFlag = false;
+        this.setVerbatimMode(VerbatimMode.OFF);
     }
 
     /**
