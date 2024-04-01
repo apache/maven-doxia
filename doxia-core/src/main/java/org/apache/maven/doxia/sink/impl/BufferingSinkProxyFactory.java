@@ -61,11 +61,13 @@ public class BufferingSinkProxyFactory implements SinkWrapperFactory {
         private final Sink delegate;
         private static final Method FLUSH_METHOD;
         private static final Method GET_BUFFERED_SINK_METHOD;
+        private static final Method GET_DOCUMENT_LOCATOR_METHOD;
 
         static {
             try {
                 FLUSH_METHOD = Sink.class.getMethod("flush");
                 GET_BUFFERED_SINK_METHOD = BufferingSink.class.getMethod("getBufferedSink");
+                GET_DOCUMENT_LOCATOR_METHOD = BufferingSink.class.getMethod("getDocumentLocator");
             } catch (NoSuchMethodException | SecurityException e) {
                 throw new IllegalStateException("Could not find flush method in Sink!", e);
             }
@@ -83,8 +85,15 @@ public class BufferingSinkProxyFactory implements SinkWrapperFactory {
                 bufferedInvocations.clear();
             } else if (method.equals(GET_BUFFERED_SINK_METHOD)) {
                 return delegate;
+            } else if (method.equals(GET_DOCUMENT_LOCATOR_METHOD)) {
+                return delegate.getDocumentLocator();
             } else {
                 bufferedInvocations.add(new MethodWithArguments(method, args));
+            }
+            if (method.getReturnType() != Void.TYPE) {
+                throw new IllegalStateException(
+                        "BufferingSinkProxy only works for methods returning void, but given method " + method
+                                + " requires another return type");
             }
             return null;
         }
