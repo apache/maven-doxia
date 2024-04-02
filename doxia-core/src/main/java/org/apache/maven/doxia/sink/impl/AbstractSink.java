@@ -454,6 +454,8 @@ public abstract class AbstractSink implements Sink, Markup {
 
         if (locator.getReference() != null) {
             buffer.append(locator.getReference());
+        } else {
+            buffer.append("Unknown source");
         }
         if (locator.getLineNumber() > 0) {
             buffer.append(", line ").append(locator.getLineNumber());
