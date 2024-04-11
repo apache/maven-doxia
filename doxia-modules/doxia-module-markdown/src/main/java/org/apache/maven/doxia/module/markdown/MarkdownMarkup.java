@@ -95,7 +95,7 @@ public interface MarkdownMarkup extends TextMarkup {
     /** Syntax for the verbatim end: "```" */
     String VERBATIM_END_MARKUP = "```";
 
-    /** Syntax for the blockquote start: "> " */
+    /** Syntax for the blockquote start: "&gt; " */
     String BLOCKQUOTE_START_MARKUP = "> ";
 
     /** Syntax for the non breaking space: entity from HTML */
