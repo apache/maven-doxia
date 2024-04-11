@@ -29,7 +29,7 @@ under the License.
 
   <groupId>org.apache.maven.doxia</groupId>
   <artifactId>doxia</artifactId>
-  <version>2.0.0-M10</version>
+  <version>2.0.0-M11-SNAPSHOT</version>
   <packaging>pom</packaging>
 
   <name>Doxia</name>
@@ -62,7 +62,7 @@ under the License.
   <scm>
     <connection>scm:git:https://gitbox.apache.org/repos/asf/maven-doxia.git</connection>
     <developerConnection>scm:git:https://gitbox.apache.org/repos/asf/maven-doxia.git</developerConnection>
-    <tag>doxia-2.0.0-M10</tag>
+    <tag>master</tag>
     <url>https://github.com/apache/maven-doxia/tree/${project.scm.tag}</url>
   </scm>
   <issueManagement>
@@ -83,7 +83,7 @@ under the License.
   <properties>
     <maven.site.path>doxia-archives/doxia-LATEST</maven.site.path>
     <checkstyle.violation.ignore>RedundantThrows,NewlineAtEndOfFile,ParameterNumber,MethodLength,FileLength,MethodName,InnerAssignment,MagicNumber</checkstyle.violation.ignore>
-    <project.build.outputTimestamp>2024-04-11T11:54:35Z</project.build.outputTimestamp>
+    <project.build.outputTimestamp>2024-04-11T11:55:31Z</project.build.outputTimestamp>
     <slf4jVersion>1.7.36</slf4jVersion>
     <xmlunitVersion>2.9.1</xmlunitVersion>
   </properties>
