@@ -36,7 +36,7 @@ import org.codehaus.plexus.util.xml.pull.XmlPullParser;
  * Adds support for elements/attributes which <a href="https://html.spec.whatwg.org/#non-conforming-features">became obsolete in HTML5</a> but are
  * commonly used for XDoc/FML.
  *
- * @see <a href="https://www.w3.org/TR/html5-diff/">HTML5 Differences from HTML4</a>.
+ * @see <a href="https://www.w3.org/TR/html5-diff/">HTML5 Differences from HTML4</a>
  */
 public class Xhtml1BaseParser extends Xhtml5BaseParser {
 

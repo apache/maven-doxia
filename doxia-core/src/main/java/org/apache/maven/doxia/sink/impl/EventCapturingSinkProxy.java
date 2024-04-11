@@ -37,7 +37,7 @@ public class EventCapturingSinkProxy implements InvocationHandler {
      *
      * @param sink
      * @param capturedEventNames the list to receive the captured event/method names
-     * @return
+     * @return a new, proxied sink
      */
     public static Sink newInstance(Sink sink, List<String> capturedEventNames) {
         return (Sink) java.lang.reflect.Proxy.newProxyInstance(

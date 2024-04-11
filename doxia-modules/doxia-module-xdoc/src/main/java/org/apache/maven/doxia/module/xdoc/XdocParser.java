@@ -240,7 +240,6 @@ public class XdocParser extends Xhtml1BaseParser implements XdocMarkup {
         isEmptyElement = false;
     }
 
-    /** {@inheritDoc} */
     protected void consecutiveSections(int newLevel, Sink sink) {
         closeOpenSections(newLevel, sink);
         openMissingSections(newLevel, sink);
