@@ -301,7 +301,7 @@ public class AptSink extends AbstractTextSink implements AptMarkup {
         } else {
             write(EOL);
         }
-        listNestingIndent = StringUtils.chomp(listNestingIndent, " ");
+        listNestingIndent = StringUtils.removeEnd(listNestingIndent, " ");
         listStyles.pop();
         itemFlag = false;
     }
@@ -359,7 +359,7 @@ public class AptSink extends AbstractTextSink implements AptMarkup {
         } else {
             write(EOL);
         }
-        listNestingIndent = StringUtils.chomp(listNestingIndent, " ");
+        listNestingIndent = StringUtils.removeEnd(listNestingIndent, " ");
         listStyles.pop();
         itemFlag = false;
     }
@@ -406,7 +406,7 @@ public class AptSink extends AbstractTextSink implements AptMarkup {
         } else {
             write(EOL);
         }
-        listNestingIndent = StringUtils.chomp(listNestingIndent, " ");
+        listNestingIndent = StringUtils.removeEnd(listNestingIndent, " ");
         listStyles.pop();
         itemFlag = false;
     }
