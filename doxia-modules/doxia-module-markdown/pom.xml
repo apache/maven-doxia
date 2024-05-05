@@ -47,10 +47,6 @@ under the License.
     </contributor>
   </contributors>
 
-  <scm>
-    <tag>doxia-2.0.0-M4</tag>
-  </scm>
-
   <properties>
     <!-- 0.64.0 requires Java 11 -->
     <flexmarkVersion>0.62.2</flexmarkVersion>
@@ -237,7 +233,7 @@ under the License.
             <goal>site</goal>
           </goals>
         </configuration>
-        <!-- Disabling IT for now since we need a Doxia 2.0.0 compatible Site Plugin
+        <!-- FIXME Disabling IT for now since we need a Doxia 2.0.0 compatible Site Plugin
         <executions>
           <execution>
             <id>integration-test</id>

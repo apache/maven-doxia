@@ -33,10 +33,6 @@ under the License.
   <description>A Doxia module for Xhtml5 source documents.
     Xhtml5 format is supported both as source and target formats.</description>
 
-  <scm>
-    <tag>doxia-2.0.0-M4</tag>
-  </scm>
-
   <dependencies>
     <dependency>
       <groupId>org.slf4j</groupId>

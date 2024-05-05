@@ -33,10 +33,6 @@ under the License.
   <description>A Doxia module for FML source documents.
     FML format is only supported as source format.</description>
 
-  <scm>
-    <tag>doxia-2.0.0-M4</tag>
-  </scm>
-
   <dependencies>
     <dependency>
       <groupId>org.slf4j</groupId>

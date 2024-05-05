@@ -33,10 +33,6 @@ under the License.
   <description>A Doxia module for Almost Plain Text source documents.
     APT format is supported both as source and target formats.</description>
 
-  <scm>
-    <tag>doxia-2.0.0-M4</tag>
-  </scm>
-
   <!-- START SNIPPET: test -->
   <!-- test snippet -->
   <!-- END SNIPPET: test -->
