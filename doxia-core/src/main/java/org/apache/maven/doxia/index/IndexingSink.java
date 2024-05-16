@@ -143,30 +143,30 @@ public class IndexingSink extends org.apache.maven.doxia.sink.impl.SinkWrapper {
     public void text(String text, SinkEventAttributes attributes) {
         if (isTitle) {
             rootEntry.setTitle(text);
-            return;
-        }
-        switch (this.type) {
-            case SECTION_1:
-            case SECTION_2:
-            case SECTION_3:
-            case SECTION_4:
-            case SECTION_5:
-                // -----------------------------------------------------------------------
-                // Sanitize the id. The most important step is to remove any blanks
-                // -----------------------------------------------------------------------
+        } else {
+            switch (this.type) {
+                case SECTION_1:
+                case SECTION_2:
+                case SECTION_3:
+                case SECTION_4:
+                case SECTION_5:
+                    // -----------------------------------------------------------------------
+                    // Sanitize the id. The most important step is to remove any blanks
+                    // -----------------------------------------------------------------------
 
-                // append text to current entry
-                IndexEntry entry = stack.lastElement();
+                    // append text to current entry
+                    IndexEntry entry = stack.lastElement();
 
-                String title = entry.getTitle() + text;
-                title = title.replaceAll("[\\r\\n]+", "");
-                entry.setTitle(title);
+                    String title = entry.getTitle() + text;
+                    title = title.replaceAll("[\\r\\n]+", "");
+                    entry.setTitle(title);
 
-                setEntryId(entry, title);
-                break;
-                // Dunno how to handle others yet
-            default:
-                break;
+                    setEntryId(entry, title);
+                    break;
+                    // Dunno how to handle others yet
+                default:
+                    break;
+            }
         }
         super.text(text, attributes);
     }
