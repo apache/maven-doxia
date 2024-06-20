@@ -40,6 +40,7 @@ import com.vladsch.flexmark.ext.abbreviation.AbbreviationExtension;
 import com.vladsch.flexmark.ext.autolink.AutolinkExtension;
 import com.vladsch.flexmark.ext.definition.DefinitionExtension;
 import com.vladsch.flexmark.ext.escaped.character.EscapedCharacterExtension;
+import com.vladsch.flexmark.ext.footnotes.FootnoteExtension;
 import com.vladsch.flexmark.ext.gfm.strikethrough.StrikethroughExtension;
 import com.vladsch.flexmark.ext.tables.TablesExtension;
 import com.vladsch.flexmark.ext.typographic.TypographicExtension;
@@ -138,6 +139,7 @@ public class MarkdownParser extends AbstractTextParser implements TextMarkup {
                         TypographicExtension.create(),
                         TablesExtension.create(),
                         WikiLinkExtension.create(),
+                        FootnoteExtension.create(),
                         StrikethroughExtension.create()));
 
         // Disable wrong apostrophe replacement
