@@ -88,6 +88,11 @@ under the License.
     </dependency>
     <dependency>
       <groupId>com.vladsch.flexmark</groupId>
+      <artifactId>flexmark-ext-footnotes</artifactId>
+      <version>${flexmarkVersion}</version>
+    </dependency>
+    <dependency>
+      <groupId>com.vladsch.flexmark</groupId>
       <artifactId>flexmark-ext-gfm-strikethrough</artifactId>
       <version>${flexmarkVersion}</version>
     </dependency>

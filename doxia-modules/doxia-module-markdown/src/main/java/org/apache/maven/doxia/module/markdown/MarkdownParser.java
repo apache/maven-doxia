@@ -33,6 +33,7 @@ import com.vladsch.flexmark.ext.typographic.TypographicExtension;
 import com.vladsch.flexmark.ext.tables.TablesExtension;
 import com.vladsch.flexmark.ext.wikilink.WikiLinkExtension;
 import com.vladsch.flexmark.ext.gfm.strikethrough.StrikethroughExtension;
+import com.vladsch.flexmark.ext.footnotes.FootnoteExtension;
 
 import org.apache.commons.io.input.CharSequenceReader;
 import org.apache.maven.doxia.markup.HtmlMarkup;
@@ -131,6 +132,7 @@ public class MarkdownParser
                 TypographicExtension.create(),
                 TablesExtension.create(),
                 WikiLinkExtension.create(),
+                FootnoteExtension.create(),
                 StrikethroughExtension.create()
         ) );
 
