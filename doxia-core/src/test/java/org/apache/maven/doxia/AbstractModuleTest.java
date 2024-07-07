@@ -41,18 +41,6 @@ import static org.junit.jupiter.api.Assertions.assertNotNull;
 @PlexusTest
 public abstract class AbstractModuleTest implements Markup {
 
-    /*
-     * Set the system properties:
-     * <ul>
-     * <li><code>line.separator</code> to <code>\n</code> (Unix) to prevent
-     * failure on windows.</li>
-     * </ul>
-     */
-    static {
-        // Safety
-        System.setProperty("line.separator", "\n");
-    }
-
     // ----------------------------------------------------------------------
     // Methods for creating test reader and writer
     // ----------------------------------------------------------------------
@@ -93,14 +81,6 @@ public abstract class AbstractModuleTest implements Markup {
      */
     protected Writer getXmlTestWriter(String baseName) throws IOException {
         return getXmlTestWriter(baseName, outputExtension());
-    }
-
-    protected static String normalizeLineEnds(String s) {
-        if (s != null) {
-            return s.replaceAll("\r\n", "\n").replaceAll("\r", "\n");
-        } else {
-            return null;
-        }
     }
 
     /**

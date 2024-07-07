@@ -185,8 +185,8 @@ public abstract class AbstractSinkTest extends AbstractModuleTest {
         sink.flush();
         sink.close();
 
-        String actual = normalizeLineEnds(testWriter.toString());
-        String expected = normalizeLineEnds(getHeadBlock());
+        String actual = testWriter.toString();
+        String expected = getHeadBlock();
 
         assertEquals(expected, actual, "Wrong head!");
     }
