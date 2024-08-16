@@ -149,6 +149,7 @@ public class MarkdownParser extends AbstractTextParser implements TextMarkup {
         flexmarkOptions.set(HtmlRenderer.HTML_BLOCK_OPEN_TAG_EOL, false);
         flexmarkOptions.set(HtmlRenderer.HTML_BLOCK_CLOSE_TAG_EOL, false);
         flexmarkOptions.set(HtmlRenderer.MAX_TRAILING_BLANK_LINES, -1);
+        flexmarkOptions.set(HtmlRenderer.FENCED_CODE_NO_LANGUAGE_CLASS, "nohighlight nocode");
 
         // Build the Markdown parser
         FLEXMARK_PARSER =

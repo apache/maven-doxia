@@ -228,7 +228,12 @@ public abstract class AbstractParserTest extends AbstractModuleTest {
         boolean isInlineCode;
         if (atts.isEmpty()) {
             isInlineCode = true;
-            assertSinkAttributesEqual(it.next(), "inline", SinkEventAttributeSet.Semantics.CODE);
+            SinkEventAttributes attrs = new SinkEventAttributeSet();
+            attrs.addAttributes(SinkEventAttributeSet.Semantics.CODE);
+            if (outputExtension().equals("md")) {
+                attrs.addAttribute(SinkEventAttributes.CLASS, "nohighlight nocode");
+            }
+            assertSinkAttributesEqual(it.next(), "inline", attrs);
         } else {
             isInlineCode = false;
             assertEquals(SinkEventAttributeSet.SOURCE, atts);
