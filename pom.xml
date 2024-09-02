@@ -186,11 +186,6 @@ under the License.
         <scope>test</scope>
       </dependency>
       <dependency>
-        <groupId>org.codehaus.plexus</groupId>
-        <artifactId>plexus-utils</artifactId>
-        <version>3.5.1</version>
-      </dependency>
-      <dependency>
         <groupId>javax.inject</groupId>
         <artifactId>javax.inject</artifactId>
         <version>1</version>
