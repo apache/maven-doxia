@@ -801,6 +801,46 @@ public class MarkdownParserTest extends AbstractParserTest {
                 content.toString());
     }
 
+    /** Checks that non consecutive headings are normalized according to Sink API restrictions. */
+    @Test
+    public void testNonConsecutiveHeadingSections() throws ParseException, IOException {
+        parser.setEmitAnchorsForIndexableEntries(true);
+        List<SinkEventElement> eventList =
+                parseFileToEventTestingSink("headings").getEventList();
+
+        assertSinkEquals(
+                eventList.iterator(),
+                "head",
+                "title",
+                "text",
+                "title_",
+                "head_",
+                "body",
+                "section1",
+                "anchor",
+                "anchor_",
+                "sectionTitle1",
+                "text",
+                "sectionTitle1_",
+                "paragraph",
+                "text",
+                "paragraph_",
+                "section2",
+                "section3",
+                "anchor",
+                "anchor_",
+                "sectionTitle3",
+                "text",
+                "sectionTitle3_",
+                "paragraph",
+                "text",
+                "paragraph_",
+                "section3_",
+                "section2_",
+                "section1_",
+                "body_");
+    }
+
     @Override
     protected void assertEventPrefix(Iterator<SinkEventElement> eventIterator) {
         assertSinkStartsWith(eventIterator, "head", "head_", "body");
