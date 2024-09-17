@@ -24,6 +24,8 @@ import java.util.HashMap;
 import java.util.Iterator;
 import java.util.Map;
 
+import org.apache.maven.doxia.index.IndexEntry;
+import org.apache.maven.doxia.index.IndexEntry.Type;
 import org.apache.maven.doxia.macro.MacroExecutionException;
 import org.apache.maven.doxia.macro.MacroRequest;
 import org.apache.maven.doxia.markup.Markup;
@@ -198,5 +200,40 @@ public class TocMacroTest {
         assertEquals(
                 "<section><a id=\"" + actualLinkTarget.substring(1) + "\"></a>" + Markup.EOL + "<h1>1 Headline</h1>",
                 out.toString());
+    }
+
+    @Test
+    void testWriteTocWithEmptyAndNotApplicableIndexEntries() {
+        TocMacro macro = new TocMacro();
+        SinkEventTestingSink sink = new SinkEventTestingSink();
+        final SinkEventAttributeSet atts = new SinkEventAttributeSet();
+        IndexEntry rootEntry = new IndexEntry("root");
+        new IndexEntry(rootEntry, null, Type.SECTION_1);
+        // toc item on level 1
+        IndexEntry entry = new IndexEntry(rootEntry, "id2", Type.SECTION_1);
+        entry.setTitle("title 1");
+        // toc item on level 2 (below toc item 1)
+        new IndexEntry(entry, "id2-1", Type.SECTION_2).setTitle("title 1 - subtitle1");
+        // item not relevant for toc (should be skipped)
+        entry = new IndexEntry(rootEntry, "id3", Type.FIGURE);
+        // toc item below skipped item
+        new IndexEntry(entry, "id3-1", Type.SECTION_1).setTitle("title 4");
+        macro.writeTocForIndexEntry(sink, atts, rootEntry);
+
+        Iterator<SinkEventElement> it = sink.getEventList().iterator();
+        AbstractParserTest.assertSinkStartsWith(it, "list");
+        assertListItem(it, "#id2", "title 1");
+        AbstractParserTest.assertSinkStartsWith(it, "list");
+        assertListItem(it, "#id2-1", "title 1 - subtitle1");
+        AbstractParserTest.assertSinkStartsWith(it, "listItem_", "list_", "listItem_");
+        assertListItem(it, "#id3-1", "title 4");
+        AbstractParserTest.assertSinkEquals(it, "listItem_", "list_");
+    }
+
+    void assertListItem(Iterator<SinkEventElement> it, String link, String text) {
+        AbstractParserTest.assertSinkStartsWith(it, "listItem");
+        AbstractParserTest.assertSinkEquals(it.next(), "link", link, null);
+        AbstractParserTest.assertSinkEquals(it.next(), "text", text, null);
+        AbstractParserTest.assertSinkStartsWith(it, "link_");
     }
 }

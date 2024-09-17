@@ -686,12 +686,7 @@ public class MarkdownParserTest extends AbstractParserTest {
                 "head_",
                 "body",
                 "list", // TOC start
-                "listItem",
-                "link",
-                "text",
-                "link_", // emtpy section 2 TOC entry
-                "list", // sections 3 list start
-                "listItem",
+                "listItem", // skip emtpy section 2 TOC entry, sections 3 list start
                 "link",
                 "text",
                 "link_",
@@ -701,8 +696,6 @@ public class MarkdownParserTest extends AbstractParserTest {
                 "text",
                 "link_",
                 "listItem_", // second section 3 TOC entry
-                "list_", // sections 3 list end
-                "listItem_", // emtpy section 2 TOC entry end
                 "list_", // TOC end
                 "text",
                 "section1",
