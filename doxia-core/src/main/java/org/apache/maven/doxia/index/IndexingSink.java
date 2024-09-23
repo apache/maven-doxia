@@ -166,9 +166,9 @@ public class IndexingSink extends org.apache.maven.doxia.sink.impl.SinkWrapper {
                     // append text to current entry
                     IndexEntry entry = stack.lastElement();
 
-                    String title;
-                    if (entry.getTitle() != null) {
-                        title = entry.getTitle() + text;
+                    String title = entry.getTitle();
+                    if (title != null) {
+                        title += text;
                     } else {
                         title = text;
                     }
