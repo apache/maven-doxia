@@ -686,12 +686,7 @@ public class MarkdownParserTest extends AbstractParserTest {
                 "head_",
                 "body",
                 "list", // TOC start
-                "listItem",
-                "link",
-                "text",
-                "link_", // emtpy section 2 TOC entry
-                "list", // sections 3 list start
-                "listItem",
+                "listItem", // skip emtpy section 2 TOC entry, sections 3 list start
                 "link",
                 "text",
                 "link_",
@@ -701,8 +696,6 @@ public class MarkdownParserTest extends AbstractParserTest {
                 "text",
                 "link_",
                 "listItem_", // second section 3 TOC entry
-                "list_", // sections 3 list end
-                "listItem_", // emtpy section 2 TOC entry end
                 "list_", // TOC end
                 "text",
                 "section1",
@@ -799,6 +792,46 @@ public class MarkdownParserTest extends AbstractParserTest {
         assertEquals(
                 "This apostrophe isn't a quote." + "This \u2018quoted text\u2019 isn't surrounded by apostrophes.",
                 content.toString());
+    }
+
+    /** Checks that non consecutive headings are normalized according to Sink API restrictions. */
+    @Test
+    public void testNonConsecutiveHeadingSections() throws ParseException, IOException {
+        parser.setEmitAnchorsForIndexableEntries(true);
+        List<SinkEventElement> eventList =
+                parseFileToEventTestingSink("headings").getEventList();
+
+        assertSinkEquals(
+                eventList.iterator(),
+                "head",
+                "title",
+                "text",
+                "title_",
+                "head_",
+                "body",
+                "section1",
+                "anchor",
+                "anchor_",
+                "sectionTitle1",
+                "text",
+                "sectionTitle1_",
+                "paragraph",
+                "text",
+                "paragraph_",
+                "section2",
+                "section3",
+                "anchor",
+                "anchor_",
+                "sectionTitle3",
+                "text",
+                "sectionTitle3_",
+                "paragraph",
+                "text",
+                "paragraph_",
+                "section3_",
+                "section2_",
+                "section1_",
+                "body_");
     }
 
     @Override

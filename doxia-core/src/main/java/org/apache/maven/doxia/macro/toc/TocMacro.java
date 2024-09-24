@@ -31,6 +31,7 @@ import org.apache.maven.doxia.macro.MacroRequest;
 import org.apache.maven.doxia.parser.ParseException;
 import org.apache.maven.doxia.parser.Parser;
 import org.apache.maven.doxia.sink.Sink;
+import org.apache.maven.doxia.sink.SinkEventAttributes;
 import org.apache.maven.doxia.sink.impl.SinkAdapter;
 import org.apache.maven.doxia.util.DoxiaUtils;
 
@@ -85,7 +86,7 @@ public class TocMacro extends AbstractMacro {
     private int fromDepth;
 
     /** End depth. */
-    private int toDepth;
+    private int toDepth = DEFAULT_DEPTH;
 
     /** The default end depth. */
     private static final int DEFAULT_DEPTH = 5;
@@ -112,9 +113,13 @@ public class TocMacro extends AbstractMacro {
             tocSink.close();
         }
 
-        IndexEntry index = tocSink.getRootEntry();
+        writeTocForIndexEntry(sink, getAttributesFromMap(request.getParameters()), tocSink.getRootEntry());
+    }
+
+    void writeTocForIndexEntry(Sink sink, SinkEventAttributes listAttributes, IndexEntry rootEntry) {
+        IndexEntry index = rootEntry;
         if (index.getChildEntries().size() > 0) {
-            sink.list(getAttributesFromMap(request.getParameters()));
+            sink.list(listAttributes);
 
             int i = 1;
 
@@ -131,12 +136,14 @@ public class TocMacro extends AbstractMacro {
     }
 
     /**
+     * This recursive method just skips index entries that are not sections (but still evaluates their children).
      * @param sink The sink to write to.
      * @param sectionIndex The section index.
      * @param n The toc depth.
      */
     private void writeSubSectionN(Sink sink, IndexEntry sectionIndex, int n) {
-        if (fromDepth <= n) {
+        boolean isRelevantIndex = isRelevantIndexEntry(sectionIndex);
+        if (fromDepth <= n && isRelevantIndex) {
             sink.listItem();
             sink.link("#" + DoxiaUtils.encodeId(sectionIndex.getId()));
             sink.text(sectionIndex.getTitle());
@@ -145,12 +152,12 @@ public class TocMacro extends AbstractMacro {
 
         if (toDepth > n) {
             if (sectionIndex.getChildEntries().size() > 0) {
-                if (fromDepth <= n) {
+                if (fromDepth <= n && isRelevantIndex) {
                     sink.list();
                 }
 
                 for (IndexEntry subsectionIndex : sectionIndex.getChildEntries()) {
-                    if (n == toDepth - 1) {
+                    if (n == toDepth - 1 && isRelevantIndex) {
                         sink.listItem();
                         sink.link("#" + DoxiaUtils.encodeId(subsectionIndex.getId()));
                         sink.text(subsectionIndex.getTitle());
@@ -161,15 +168,19 @@ public class TocMacro extends AbstractMacro {
                     }
                 }
 
-                if (fromDepth <= n) {
+                if (fromDepth <= n && isRelevantIndex) {
                     sink.list_();
                 }
             }
         }
 
-        if (fromDepth <= n) {
+        if (fromDepth <= n && isRelevantIndex) {
             sink.listItem_();
         }
+    }
+
+    static boolean isRelevantIndexEntry(IndexEntry indexEntry) {
+        return indexEntry.hasId() && indexEntry.getType().isSection();
     }
 
     /**

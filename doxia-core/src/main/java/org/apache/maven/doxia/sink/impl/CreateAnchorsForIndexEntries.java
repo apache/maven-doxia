@@ -36,7 +36,7 @@ public class CreateAnchorsForIndexEntries extends IndexingSink {
 
     @Override
     protected void onIndexEntry(IndexEntry entry) {
-        if (!entry.hasAnchor()) {
+        if (!entry.hasAnchor() && entry.hasId()) {
             getWrappedSink().anchor(entry.getId());
             getWrappedSink().anchor_();
         }

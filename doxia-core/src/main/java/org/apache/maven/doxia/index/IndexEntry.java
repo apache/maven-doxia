@@ -95,7 +95,11 @@ public class IndexEntry {
                     .findAny()
                     .orElseThrow(() -> new IllegalStateException("Could not find enum for sectionLevel " + level));
         }
-    };
+
+        public boolean isSection() {
+            return sectionLevel >= 1;
+        }
+    }
 
     /**
      * The type of the entry, one of the types defined by {@link IndexingSink}
@@ -157,6 +161,14 @@ public class IndexEntry {
     }
 
     /**
+     * Returns if the entry has an id.
+     * @return {@code true} if the entry has a valid id, otherwise it can be considered invalid/empty.
+     */
+    public boolean hasId() {
+        return id != null;
+    }
+
+    /**
      * Set the id.
      *
      * @param id the id
@@ -197,7 +209,7 @@ public class IndexEntry {
     /**
      * Returns the title.
      *
-     * @return the title.
+     * @return the title (may be {@code null}).
      */
     public String getTitle() {
         return title;

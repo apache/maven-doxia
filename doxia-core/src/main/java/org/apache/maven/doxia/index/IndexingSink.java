@@ -54,8 +54,14 @@ public class IndexingSink extends org.apache.maven.doxia.sink.impl.SinkWrapper {
 
     private final IndexEntry rootEntry;
 
+    /** Is {@code true} once the sink has been closed. */
     private boolean isComplete;
+
     private boolean isTitle;
+
+    /** Is {@code true} if the sink is currently populating entry data (i.e. metadata about the current entry is not completely captured yet) */
+    private boolean hasOpenEntry;
+
     /**
      * @deprecated legacy constructor, use {@link #IndexingSink(Sink)} with {@link SinkAdapter} as argument and call {@link #getRootEntry()} to retrieve the index tree afterwards.
      */
@@ -123,12 +129,14 @@ public class IndexingSink extends org.apache.maven.doxia.sink.impl.SinkWrapper {
     @Override
     public void section(int level, SinkEventAttributes attributes) {
         super.section(level, attributes);
+        indexEntryComplete(); // make sure the previous entry is complete
         this.type = IndexEntry.Type.fromSectionLevel(level);
         pushNewEntry(type);
     }
 
     @Override
     public void section_(int level) {
+        indexEntryComplete(); // make sure the previous entry is complete
         pop();
         super.section_(level);
     }
@@ -150,6 +158,7 @@ public class IndexingSink extends org.apache.maven.doxia.sink.impl.SinkWrapper {
                 case SECTION_3:
                 case SECTION_4:
                 case SECTION_5:
+                case SECTION_6:
                     // -----------------------------------------------------------------------
                     // Sanitize the id. The most important step is to remove any blanks
                     // -----------------------------------------------------------------------
@@ -157,7 +166,12 @@ public class IndexingSink extends org.apache.maven.doxia.sink.impl.SinkWrapper {
                     // append text to current entry
                     IndexEntry entry = stack.lastElement();
 
-                    String title = entry.getTitle() + text;
+                    String title = entry.getTitle();
+                    if (title != null) {
+                        title += text;
+                    } else {
+                        title = text;
+                    }
                     title = title.replaceAll("[\\r\\n]+", "");
                     entry.setTitle(title);
 
@@ -220,6 +234,9 @@ public class IndexingSink extends org.apache.maven.doxia.sink.impl.SinkWrapper {
     }
 
     void indexEntryComplete() {
+        if (!hasOpenEntry) {
+            return;
+        }
         this.type = Type.UNKNOWN;
         // remove buffering sink from pipeline
         BufferingSink bufferingSink = BufferingSinkProxyFactory.castAsBufferingSink(getWrappedSink());
@@ -229,6 +246,7 @@ public class IndexingSink extends org.apache.maven.doxia.sink.impl.SinkWrapper {
 
         // flush the buffer afterwards
         bufferingSink.flush();
+        hasOpenEntry = false;
     }
 
     /**
@@ -242,11 +260,11 @@ public class IndexingSink extends org.apache.maven.doxia.sink.impl.SinkWrapper {
      * Creates and pushes a new IndexEntry onto the top of this stack.
      */
     private void pushNewEntry(Type type) {
-        IndexEntry entry = new IndexEntry(peek(), "", type);
-        entry.setTitle("");
+        IndexEntry entry = new IndexEntry(peek(), null, type);
         stack.push(entry);
         // now buffer everything till the next index metadata is complete
         setWrappedSink(new BufferingSinkProxyFactory().createWrapper(getWrappedSink()));
+        hasOpenEntry = true;
     }
 
     /**
