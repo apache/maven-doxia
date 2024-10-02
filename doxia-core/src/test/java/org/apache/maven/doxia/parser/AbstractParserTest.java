@@ -274,7 +274,7 @@ public abstract class AbstractParserTest extends AbstractModuleTest {
         StringBuilder builder = new StringBuilder();
         while (it.hasNext()) {
             SinkEventElement currentEvent = it.next();
-            if (currentEvent.getName() != "text") {
+            if (!"text".equals(currentEvent.getName())) {
                 it.previous();
                 break;
             }
