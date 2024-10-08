@@ -498,4 +498,19 @@ public class MarkdownSinkTest extends AbstractSinkTest {
 
         assertEquals(expected, getSinkContent(), "Wrong inline code!");
     }
+
+    @Test
+    public void testHeadingAfterInlineElement() {
+        try (final Sink sink = getSink()) {
+            sink.text("Text");
+            sink.section1();
+            sink.sectionTitle1();
+            sink.text("Section1");
+            sink.sectionTitle1_();
+            sink.section1_();
+        }
+        // heading must be on a new line
+        String expected = "Text" + EOL + "# Section1" + EOL + EOL;
+        assertEquals(expected, getSinkContent(), "Wrong heading after inline element!");
+    }
 }
