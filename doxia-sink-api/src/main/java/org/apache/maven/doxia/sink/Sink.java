@@ -1725,6 +1725,17 @@ public interface Sink extends AutoCloseable {
     void comment(String comment);
 
     /**
+     * Add a comment. The default implementation will just call {@link #comment(String)}.
+     *
+     * @param comment The comment to write.
+     * @param isBlockComment If <code>true</code> this is a block comment, i.e. nothing should follow on the same line
+     * @since 2.1
+     */
+    default void comment(String comment, boolean isBlockComment) {
+        comment(comment);
+    }
+
+    /**
      * Add an unknown event. This may be used by parsers to notify a general Sink about
      * an event that doesn't fit into any event defined by the Sink API.
      * Depending on the parameters, a Sink may decide whether or not to process the event,

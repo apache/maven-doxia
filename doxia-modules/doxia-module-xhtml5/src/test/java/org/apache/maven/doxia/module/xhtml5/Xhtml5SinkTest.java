@@ -404,8 +404,13 @@ public class Xhtml5SinkTest extends AbstractSinkTest {
         assertTrue(actual.contains(expected), actual);
     }
 
-    /** {@inheritDoc} */
+    @Override
     protected String getCommentBlock(String text) {
         return "<!--" + toXmlComment(text) + "-->";
+    }
+
+    @Override
+    protected String getCommentBlockFollowedByParagraph(String comment, String paragraph) {
+        return getCommentBlock(comment) + getParagraphBlock(paragraph); // no line break in between
     }
 }
