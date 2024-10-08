@@ -1142,6 +1142,42 @@ public abstract class AbstractSinkTest extends AbstractModuleTest {
         assertEquals(expected, actual, "Wrong comment!");
     }
 
+    /**
+     * Checks the line separator between two consecutive comments.
+     */
+    @Test
+    public void testTwoConsecutiveComments() {
+        String comment = "Simple comment";
+        sink.comment(comment);
+        sink.comment(comment);
+        sink.flush();
+        sink.close();
+
+        String actual = testWriter.toString();
+        String expected = getCommentBlock(comment) + EOL + getCommentBlock(comment);
+
+        assertEquals(expected, actual, "Wrong comment!");
+    }
+
+    /**
+     * Checks the line separator between comment and paragraph (in most markup languages a block element which needs to start in the new line)
+     */
+    @Test
+    public void testCommentFollowedByParagraph() {
+        String comment = "Simple comment";
+        sink.comment(comment);
+        sink.paragraph();
+        sink.text("Paragraph");
+        sink.paragraph_();
+        sink.flush();
+        sink.close();
+
+        String actual = testWriter.toString();
+        String expected = getCommentBlock(comment) + EOL + getParagraphBlock("Paragraph");
+
+        assertEquals(expected, actual, "Wrong comment!");
+    }
+
     // ----------------------------------------------------------------------
     // Utility methods
     // ----------------------------------------------------------------------

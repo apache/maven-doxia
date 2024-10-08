@@ -269,7 +269,7 @@ public class Xhtml5SinkTest extends AbstractSinkTest {
 
     /** {@inheritDoc} */
     protected String getPageBreakBlock() {
-        return "<!-- PB -->";
+        return "<!-- PB -->"+EOL;
     }
 
     /** {@inheritDoc} */

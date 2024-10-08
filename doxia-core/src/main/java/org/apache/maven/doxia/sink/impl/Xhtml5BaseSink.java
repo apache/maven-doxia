@@ -1469,7 +1469,7 @@ public class Xhtml5BaseSink extends AbstractXmlSink implements HtmlMarkup {
             buffer.append(LESS_THAN).append(BANG).append(MINUS).append(MINUS);
             buffer.append(comment);
             buffer.append(MINUS).append(MINUS).append(GREATER_THAN);
-
+            buffer.append(EOL);
             write(buffer.toString());
         }
     }

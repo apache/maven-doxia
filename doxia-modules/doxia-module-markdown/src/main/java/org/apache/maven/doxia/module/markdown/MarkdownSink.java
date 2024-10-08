@@ -93,13 +93,13 @@ public class MarkdownSink extends AbstractTextSink implements MarkdownMarkup {
 
     private String figureSrc;
 
-    /** Most important contextual metadata (of the surrounding element) */
+    /** Most important contextual metadata (of elements). This contains information about necessary escaping rules, potential prefixes and newlines */
     enum ElementContext {
         HEAD("head", Type.GENERIC_CONTAINER, null, true),
         BODY("body", Type.GENERIC_CONTAINER, MarkdownSink::escapeMarkdown),
         // only the elements, which affect rendering of children and are different from BODY or HEAD are listed here
         FIGURE("", Type.INLINE, MarkdownSink::escapeMarkdown, true),
-        CODE_BLOCK("code block", Type.LEAF_BLOCK, null, false),
+        CODE_BLOCK("code block", Type.LEAF_BLOCK, null),
         CODE_SPAN("code span", Type.INLINE, null),
         TABLE_CAPTION("table caption", Type.INLINE, MarkdownSink::escapeMarkdown),
         TABLE_CELL(
@@ -109,7 +109,8 @@ public class MarkdownSink extends AbstractTextSink implements MarkdownMarkup {
                 true), // special type, as allows containing inlines, but not starting on a separate line
         // same parameters as BODY but paragraphs inside list items are handled differently
         LIST_ITEM("list item", Type.CONTAINER_BLOCK, MarkdownSink::escapeMarkdown, false, INDENT),
-        BLOCKQUOTE("blockquote", Type.CONTAINER_BLOCK, MarkdownSink::escapeMarkdown, false, BLOCKQUOTE_START_MARKUP);
+        BLOCKQUOTE("blockquote", Type.CONTAINER_BLOCK, MarkdownSink::escapeMarkdown, false, BLOCKQUOTE_START_MARKUP),
+        COMMENT("comment block", Type.LEAF_BLOCK, null);
 
         final String name;
 
@@ -881,7 +882,9 @@ public class MarkdownSink extends AbstractTextSink implements MarkdownMarkup {
 
     @Override
     public void comment(String comment) {
+        startContext(ElementContext.COMMENT);
         rawText(COMMENT_START + comment + COMMENT_END);
+        endContext(ElementContext.COMMENT);
     }
 
     /**
