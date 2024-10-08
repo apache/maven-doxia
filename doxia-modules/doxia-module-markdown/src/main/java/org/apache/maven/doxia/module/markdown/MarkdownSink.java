@@ -409,6 +409,7 @@ public class MarkdownSink extends AbstractTextSink implements MarkdownMarkup {
     @Override
     public void sectionTitle(int level, SinkEventAttributes attributes) {
         if (level > 0) {
+            ensureBeginningOfLine();
             writeUnescaped(StringUtils.repeat(SECTION_TITLE_START_MARKUP, level) + SPACE);
         }
     }
