@@ -1718,9 +1718,11 @@ public interface Sink extends AutoCloseable {
 
     /**
      * Add a comment.
+     * Semantically the same as {@link #comment(String, boolean)} with second argument being {@code false}.
      *
      * @param comment The comment to write.
      * @since 1.1
+     * @see #comment(String, boolean)
      */
     void comment(String comment);
 
@@ -1728,10 +1730,10 @@ public interface Sink extends AutoCloseable {
      * Add a comment. The default implementation will just call {@link #comment(String)}.
      *
      * @param comment The comment to write.
-     * @param isBlockComment If <code>true</code> this is a block comment, i.e. nothing should follow on the same line
+     * @param endsWithLineBreak If {@code true} comment ends with a line break, i.e. nothing else should follow on the same line
      * @since 2.1
      */
-    default void comment(String comment, boolean isBlockComment) {
+    default void comment(String comment, boolean endsWithLineBreak) {
         comment(comment);
     }
 

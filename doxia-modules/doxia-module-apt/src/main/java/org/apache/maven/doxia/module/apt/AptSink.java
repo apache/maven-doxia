@@ -840,8 +840,8 @@ public class AptSink extends AbstractTextSink implements AptMarkup {
     }
 
     @Override
-    public void comment(String comment, boolean isBlockComment) {
-        rawText("" + COMMENT + COMMENT + comment + EOL); // comments are always block comments in APT
+    public void comment(String comment, boolean endsWithLineBreak) {
+        rawText("" + COMMENT + COMMENT + comment + EOL); // comments always end with a line break in APT
     }
 
     /**

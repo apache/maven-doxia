@@ -288,8 +288,8 @@ public class SinkEventTestingSink extends AbstractSink {
     }
 
     @Override
-    public void comment(String comment, boolean isBlockComment) {
-        addEvent("comment", new Object[] {comment, isBlockComment});
+    public void comment(String comment, boolean endsWithLineBreak) {
+        addEvent("comment", new Object[] {comment, endsWithLineBreak});
     }
 
     @Override

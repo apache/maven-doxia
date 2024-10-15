@@ -887,8 +887,8 @@ public class MarkdownSink extends AbstractTextSink implements MarkdownMarkup {
     }
 
     @Override
-    public void comment(String comment, boolean isBlockComment) {
-        rawText(Xhtml5BaseSink.encodeAsHtmlComment(comment, isBlockComment, getLocationLogPrefix()));
+    public void comment(String comment, boolean endsWithLineBreak) {
+        rawText(Xhtml5BaseSink.encodeAsHtmlComment(comment, endsWithLineBreak, getLocationLogPrefix()));
     }
 
     /**

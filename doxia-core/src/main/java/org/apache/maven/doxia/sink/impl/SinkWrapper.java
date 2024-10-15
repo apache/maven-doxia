@@ -514,8 +514,8 @@ public class SinkWrapper extends AbstractSink {
     }
 
     @Override
-    public void comment(String comment, boolean isBlockComment) {
-        delegate.comment(comment, isBlockComment);
+    public void comment(String comment, boolean endsWithLineBreak) {
+        delegate.comment(comment, endsWithLineBreak);
     }
 
     @Override

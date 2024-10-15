@@ -1451,13 +1451,13 @@ public class Xhtml5BaseSink extends AbstractXmlSink implements HtmlMarkup {
 
     /** {@inheritDoc} */
     @Override
-    public void comment(String comment, boolean isBlockComment) {
+    public void comment(String comment, boolean endsWithLineBreak) {
         if (comment != null) {
-            write(encodeAsHtmlComment(comment, isBlockComment, getLocationLogPrefix()));
+            write(encodeAsHtmlComment(comment, endsWithLineBreak, getLocationLogPrefix()));
         }
     }
 
-    public static String encodeAsHtmlComment(String comment, boolean isBlockComment, String locationLogPrefix) {
+    public static String encodeAsHtmlComment(String comment, boolean endsWithLineBreak, String locationLogPrefix) {
         final String originalComment = comment;
 
         // http://www.w3.org/TR/2000/REC-xml-20001006#sec-comments
@@ -1478,7 +1478,7 @@ public class Xhtml5BaseSink extends AbstractXmlSink implements HtmlMarkup {
         buffer.append(LESS_THAN).append(BANG).append(MINUS).append(MINUS);
         buffer.append(comment);
         buffer.append(MINUS).append(MINUS).append(GREATER_THAN);
-        if (isBlockComment) {
+        if (endsWithLineBreak) {
             buffer.append(EOL);
         }
         return buffer.toString();
