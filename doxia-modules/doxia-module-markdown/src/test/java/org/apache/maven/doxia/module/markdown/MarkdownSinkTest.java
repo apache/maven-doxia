@@ -332,9 +332,14 @@ public class MarkdownSinkTest extends AbstractSinkTest {
         return text.replaceAll("\\\\|\\`|\\*|_|\\{|\\}|\\[|\\]|\\(|\\)|#|\\+|\\-|\\.|\\!", "\\\\$0");
     }
 
-    /** {@inheritDoc} */
+    @Override
     protected String getCommentBlock(String text) {
-        return "<!-- " + text + " -->";
+        return "<!--" + toXmlComment(text) + "-->";
+    }
+
+    @Override
+    protected String getCommentBlockFollowedByParagraph(String comment, String paragraph) {
+        return getCommentBlock(comment) + EOL + EOL + getParagraphBlock(paragraph); // paragraph separated by blank line
     }
 
     @Test

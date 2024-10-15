@@ -1855,7 +1855,7 @@ public class AptParser extends AbstractTextParser implements AptMarkup {
         /** {@inheritDoc} */
         public void traverse() throws AptParseException {
             if (isEmitComments()) {
-                AptParser.this.sink.comment(text);
+                AptParser.this.sink.comment(text, true);
             }
         }
     }

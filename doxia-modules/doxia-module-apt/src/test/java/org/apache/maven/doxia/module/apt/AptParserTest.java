@@ -86,6 +86,32 @@ public class AptParserTest extends AbstractParserTest {
     }
 
     @Test
+    public void testCommentsAfterParagraph() throws Exception {
+        SinkEventTestingSink sink = new SinkEventTestingSink();
+        try (Reader reader = getTestReader("test/comments2")) {
+            createParser().parse(reader, sink);
+        }
+
+        Iterator<SinkEventElement> it = sink.getEventList().iterator();
+
+        assertSinkStartsWith(
+                it,
+                "head",
+                "head_",
+                "body",
+                "section1",
+                "sectionTitle1",
+                "text",
+                "sectionTitle1_",
+                "paragraph",
+                "text",
+                "paragraph_");
+        assertSinkEquals(it.next(), "comment", "some comment", Boolean.TRUE);
+        assertSinkEquals(it.next(), "comment", "another comment", Boolean.TRUE);
+        assertSinkEquals(it, "paragraph", "text", "paragraph_", "section1_", "body_");
+    }
+
+    @Test
     public void testSnippet() throws Exception {
         // DOXIA-259
 

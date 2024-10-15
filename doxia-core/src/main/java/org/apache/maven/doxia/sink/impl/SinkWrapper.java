@@ -514,6 +514,11 @@ public class SinkWrapper extends AbstractSink {
     }
 
     @Override
+    public void comment(String comment, boolean endsWithLineBreak) {
+        delegate.comment(comment, endsWithLineBreak);
+    }
+
+    @Override
     public void unknown(String name, Object[] requiredParams, SinkEventAttributes attributes) {
         delegate.unknown(name, requiredParams, attributes);
     }
