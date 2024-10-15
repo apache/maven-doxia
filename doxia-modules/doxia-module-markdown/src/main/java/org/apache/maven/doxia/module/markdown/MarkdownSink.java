@@ -109,7 +109,8 @@ public class MarkdownSink extends AbstractTextSink implements MarkdownMarkup {
                 true), // special type, as allows containing inlines, but not starting on a separate line
         // same parameters as BODY but paragraphs inside list items are handled differently
         LIST_ITEM("list item", Type.CONTAINER_BLOCK, MarkdownSink::escapeMarkdown, false, INDENT),
-        BLOCKQUOTE("blockquote", Type.CONTAINER_BLOCK, MarkdownSink::escapeMarkdown, false, BLOCKQUOTE_START_MARKUP);
+        BLOCKQUOTE("blockquote", Type.CONTAINER_BLOCK, MarkdownSink::escapeMarkdown, false, BLOCKQUOTE_START_MARKUP),
+        HTML_BLOCK("html block", Type.LEAF_BLOCK, MarkdownSink::escapeHtml, false, "", true);
 
         final String name;
 
@@ -470,13 +471,14 @@ public class MarkdownSink extends AbstractTextSink implements MarkdownMarkup {
     public void definitionList(SinkEventAttributes attributes) {
         LOGGER.warn(
                 "{}Definition list not natively supported in Markdown, rendering HTML instead", getLocationLogPrefix());
-        ensureBlankLine();
+        startContext(ElementContext.HTML_BLOCK);
         writeUnescaped("<dl>" + EOL);
     }
 
     @Override
     public void definitionList_() {
-        writeUnescaped("</dl>" + BLANK_LINE);
+        writeUnescaped("</dl>");
+        endContext(ElementContext.HTML_BLOCK);
     }
 
     @Override
@@ -772,6 +774,7 @@ public class MarkdownSink extends AbstractTextSink implements MarkdownMarkup {
     public void inline(SinkEventAttributes attributes) {
         Queue<String> endMarkups = Collections.asLifoQueue(new LinkedList<>());
 
+        boolean requiresHtml = elementContextStack.element() == ElementContext.HTML_BLOCK;
         if (attributes != null
                 && elementContextStack.element() != ElementContext.CODE_BLOCK
                 && elementContextStack.element() != ElementContext.CODE_SPAN) {
@@ -779,23 +782,38 @@ public class MarkdownSink extends AbstractTextSink implements MarkdownMarkup {
             if (attributes.containsAttribute(SinkEventAttributes.SEMANTICS, "code")
                     || attributes.containsAttribute(SinkEventAttributes.SEMANTICS, "monospaced")
                     || attributes.containsAttribute(SinkEventAttributes.STYLE, "monospaced")) {
-                writeUnescaped(MONOSPACED_START_MARKUP);
-                endMarkups.add(MONOSPACED_END_MARKUP);
-                elementContextStack.add(ElementContext.CODE_SPAN);
+                if (requiresHtml) {
+                    writeUnescaped("<code>");
+                    endMarkups.add("</code>");
+                } else {
+                    writeUnescaped(MONOSPACED_START_MARKUP);
+                    endMarkups.add(MONOSPACED_END_MARKUP);
+                    elementContextStack.add(ElementContext.CODE_SPAN);
+                }
             } else {
                 // in XHTML "<em>" is used, but some tests still rely on the outdated "<italic>"
-                if (attributes.containsAttribute(SinkEventAttributes.SEMANTICS, "em")
+                if (attributes.containsAttribute(SinkEventAttributes.SEMANTICS, "emphasis")
                         || attributes.containsAttribute(SinkEventAttributes.SEMANTICS, "italic")
                         || attributes.containsAttribute(SinkEventAttributes.STYLE, "italic")) {
-                    writeUnescaped(ITALIC_START_MARKUP);
-                    endMarkups.add(ITALIC_END_MARKUP);
+                    if (requiresHtml) {
+                        writeUnescaped("<em>");
+                        endMarkups.add("</em>");
+                    } else {
+                        writeUnescaped(ITALIC_START_MARKUP);
+                        endMarkups.add(ITALIC_END_MARKUP);
+                    }
                 }
                 // in XHTML "<strong>" is used, but some tests still rely on the outdated "<bold>"
                 if (attributes.containsAttribute(SinkEventAttributes.SEMANTICS, "strong")
                         || attributes.containsAttribute(SinkEventAttributes.SEMANTICS, "bold")
                         || attributes.containsAttribute(SinkEventAttributes.STYLE, "bold")) {
-                    writeUnescaped(BOLD_START_MARKUP);
-                    endMarkups.add(BOLD_END_MARKUP);
+                    if (requiresHtml) {
+                        writeUnescaped("<strong>");
+                        endMarkups.add("</strong>");
+                    } else {
+                        writeUnescaped(BOLD_START_MARKUP);
+                        endMarkups.add(BOLD_END_MARKUP);
+                    }
                 }
             }
         }
@@ -944,7 +962,7 @@ public class MarkdownSink extends AbstractTextSink implements MarkdownMarkup {
         if (text == null) {
             return "";
         }
-        text = HtmlTools.escapeHTML(text, true); // assume UTF-8 output, i.e. only use the mandatory XML entities
+        text = escapeHtml(text); // assume UTF-8 output, i.e. only use the mandatory XML entities
         int length = text.length();
         StringBuilder buffer = new StringBuilder(length);
 
@@ -975,6 +993,10 @@ public class MarkdownSink extends AbstractTextSink implements MarkdownMarkup {
         }
 
         return buffer.toString();
+    }
+
+    private static String escapeHtml(String text) {
+        return HtmlTools.escapeHTML(text, true);
     }
 
     /**
