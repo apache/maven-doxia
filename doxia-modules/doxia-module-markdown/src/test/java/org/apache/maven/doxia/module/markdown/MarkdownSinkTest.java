@@ -33,11 +33,10 @@ import org.apache.maven.doxia.sink.impl.AbstractSinkTest;
 import org.apache.maven.doxia.sink.impl.SinkEventAttributeSet;
 import org.apache.maven.doxia.sink.impl.SinkEventTestingSink;
 import org.apache.maven.doxia.util.HtmlTools;
-import org.hamcrest.MatcherAssert;
-import org.hamcrest.Matchers;
 import org.junit.jupiter.api.Test;
 
 import static org.junit.jupiter.api.Assertions.assertEquals;
+import static org.junit.jupiter.api.Assertions.assertIterableEquals;
 
 /**
  * Test the <code>MarkdownSink</code> class
@@ -375,9 +374,7 @@ public class MarkdownSinkTest extends AbstractSinkTest {
 
         // compare sink events from parsing original markdown with sink events from re-generated markdown
         try {
-            MatcherAssert.assertThat(
-                    regeneratedSink.getEventList(),
-                    Matchers.contains(originalSink.getEventList().toArray()));
+            assertIterableEquals(originalSink.getEventList(), regeneratedSink.getEventList());
         } catch (AssertionError e) {
             // emit generated markdown to ease debugging
             System.err.println(getSinkContent());
@@ -483,13 +480,13 @@ public class MarkdownSinkTest extends AbstractSinkTest {
         String expected = "- item1" + EOL
                 + "    - item1a" + EOL
                 + EOL
-                + "- " + EOL
-                + "    > blockquote" + EOL
+                + "- " + EOL + EOL
+                + "    > blockquote" + EOL + EOL
                 + "- item3" + EOL
                 + EOL
                 + "    item3paragraph2" + EOL
                 + EOL
-                + "- item4" + EOL
+                + "- item4" + EOL + EOL
                 + "    ```" + EOL
                 + "    item4verbatim" + EOL
                 + "    item4verbatimline2" + EOL
@@ -512,5 +509,25 @@ public class MarkdownSinkTest extends AbstractSinkTest {
         // heading must be on a new line
         String expected = "Text" + EOL + "# Section1" + EOL + EOL;
         assertEquals(expected, getSinkContent(), "Wrong heading after inline element!");
+    }
+
+    @Test
+    public void testMultilineVerbatimSourceAfterListItem() {
+        try (final Sink sink = getSink()) {
+            sink.list();
+            sink.listItem();
+            sink.text("Before");
+            sink.verbatim(SinkEventAttributeSet.SOURCE);
+            sink.text("codeline1\ncodeline2");
+            sink.verbatim_();
+            sink.text("After");
+            sink.listItem_();
+            sink.list_();
+        }
+
+        String expected = "- Before" + EOL + EOL + MarkdownMarkup.INDENT + MarkdownMarkup.VERBATIM_START_MARKUP + EOL
+                + MarkdownMarkup.INDENT + "codeline1" + EOL + MarkdownMarkup.INDENT + "codeline2" + EOL
+                + MarkdownMarkup.INDENT + MarkdownMarkup.VERBATIM_END_MARKUP + EOL + EOL + "After" + EOL + EOL;
+        assertEquals(expected, getSinkContent(), "Wrong verbatim!");
     }
 }
