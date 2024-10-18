@@ -371,6 +371,7 @@ public class MarkdownSinkTest extends AbstractSinkTest {
 
         final SinkEventTestingSink originalSink = new SinkEventTestingSink();
         parseFile(parser, "test", originalSink);
+        // strip empty lines from sink content
 
         // compare sink events from parsing original markdown with sink events from re-generated markdown
         try {
@@ -518,7 +519,7 @@ public class MarkdownSinkTest extends AbstractSinkTest {
             sink.listItem();
             sink.text("Before");
             sink.verbatim(SinkEventAttributeSet.SOURCE);
-            sink.text("codeline1\ncodeline2");
+            sink.text("codeline1" + EOL + "codeline2");
             sink.verbatim_();
             sink.text("After");
             sink.listItem_();

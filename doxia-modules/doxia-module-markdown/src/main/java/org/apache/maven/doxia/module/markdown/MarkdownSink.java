@@ -873,9 +873,6 @@ public class MarkdownSink extends AbstractTextSink implements MarkdownMarkup {
 
     @Override
     public void text(String text, SinkEventAttributes attributes) {
-        if (text.equals("\n")) {
-            return;
-        }
         if (attributes != null) {
             inline(attributes);
         }
@@ -885,10 +882,13 @@ public class MarkdownSink extends AbstractTextSink implements MarkdownMarkup {
             LOGGER.warn("{}Ignoring unsupported table caption in Markdown", getLocationLogPrefix());
         } else {
             String unifiedText = currentContext.escape(unifyEOLs(text));
-            // each line must potentially be prefixed
-            String prefix = getLinePrefix();
-            if (prefix.length() > 0) {
-                unifiedText = unifiedText.replaceAll(EOL, EOL + prefix);
+            // ignore newlines only, because those are emitted often coming from linebreaks in HTML with no semantical
+            // meaning
+            if (!unifiedText.equals(EOL)) {
+                String prefix = getLinePrefix();
+                if (prefix.length() > 0) {
+                    unifiedText = unifiedText.replaceAll(EOL, EOL + prefix);
+                }
             }
             writeUnescaped(unifiedText);
         }
