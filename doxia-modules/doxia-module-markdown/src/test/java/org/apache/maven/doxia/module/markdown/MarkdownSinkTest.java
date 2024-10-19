@@ -31,6 +31,7 @@ import org.apache.maven.doxia.parser.Parser;
 import org.apache.maven.doxia.sink.Sink;
 import org.apache.maven.doxia.sink.impl.AbstractSinkTest;
 import org.apache.maven.doxia.sink.impl.SinkEventAttributeSet;
+import org.apache.maven.doxia.sink.impl.SinkEventAttributeSet.Semantics;
 import org.apache.maven.doxia.sink.impl.SinkEventTestingSink;
 import org.apache.maven.doxia.util.HtmlTools;
 import org.hamcrest.MatcherAssert;
@@ -512,5 +513,19 @@ public class MarkdownSinkTest extends AbstractSinkTest {
         // heading must be on a new line
         String expected = "Text" + EOL + "# Section1" + EOL + EOL;
         assertEquals(expected, getSinkContent(), "Wrong heading after inline element!");
+    }
+
+    @Test
+    public void testCodeLink() {
+        try (final Sink sink = getSink()) {
+            sink.inline(Semantics.CODE);
+            sink.link("http://example.com");
+            sink.text("label");
+            sink.link_();
+            sink.inline_();
+        }
+        // heading must be on a new line
+        String expected = "[`label`](http://example\\.com)";
+        assertEquals(expected, getSinkContent(), "Wrong link on code!");
     }
 }
