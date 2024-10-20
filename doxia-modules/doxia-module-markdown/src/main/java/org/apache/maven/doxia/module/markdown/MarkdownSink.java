@@ -52,9 +52,11 @@ public class MarkdownSink extends AbstractTextSink implements MarkdownMarkup {
     // Instance fields
     // ----------------------------------------------------------------------
 
-    /**  A buffer that holds the current text when headerFlag or bufferFlag set to <code>true</code>.
-     * The content of this buffer is already escaped. */
-    private StringBuilder buffer;
+    /**
+     * A buffer that holds the current text when the current context requires buffering.
+     * The content of this buffer is already escaped.
+     */
+    private Queue<StringBuilder> bufferStack = Collections.asLifoQueue(new LinkedList<>());
 
     /** author. */
     private Collection<String> authors;
@@ -96,24 +98,22 @@ public class MarkdownSink extends AbstractTextSink implements MarkdownMarkup {
 
     /** Most important contextual metadata (of elements). This contains information about necessary escaping rules, potential prefixes and newlines */
     enum ElementContext {
-        HEAD("head", Type.GENERIC_CONTAINER, null, true),
-        BODY("body", Type.GENERIC_CONTAINER, MarkdownSink::escapeMarkdown),
+        HEAD(Type.GENERIC_CONTAINER, null, true),
+        BODY(Type.GENERIC_CONTAINER, MarkdownSink::escapeMarkdown),
         // only the elements, which affect rendering of children and are different from BODY or HEAD are listed here
-        FIGURE("", Type.INLINE, MarkdownSink::escapeMarkdown, true),
-        CODE_BLOCK("code block", Type.LEAF_BLOCK, null),
-        CODE_SPAN("code span", Type.INLINE, null),
-        TABLE_CAPTION("table caption", Type.INLINE, MarkdownSink::escapeMarkdown),
+        FIGURE(Type.INLINE, MarkdownSink::escapeMarkdown, true),
+        CODE_BLOCK(Type.LEAF_BLOCK, null),
+        CODE_SPAN(Type.INLINE, null, true),
+        TABLE_CAPTION(Type.INLINE, MarkdownSink::escapeMarkdown),
+        TABLE_ROW(Type.CONTAINER_BLOCK, null, true),
         TABLE_CELL(
-                "table cell",
                 Type.LEAF_BLOCK,
                 MarkdownSink::escapeForTableCell,
-                true), // special type, as allows containing inlines, but not starting on a separate line
+                false), // special type, as allows containing inlines, but not starting on a separate line
         // same parameters as BODY but paragraphs inside list items are handled differently
-        LIST_ITEM("list item", Type.CONTAINER_BLOCK, MarkdownSink::escapeMarkdown, false, INDENT),
-        BLOCKQUOTE("blockquote", Type.CONTAINER_BLOCK, MarkdownSink::escapeMarkdown, false, BLOCKQUOTE_START_MARKUP),
-        HTML_BLOCK("html block", Type.LEAF_BLOCK, MarkdownSink::escapeHtml, false, "", true);
-
-        final String name;
+        LIST_ITEM(Type.CONTAINER_BLOCK, MarkdownSink::escapeMarkdown, false, INDENT),
+        BLOCKQUOTE(Type.CONTAINER_BLOCK, MarkdownSink::escapeMarkdown, false, BLOCKQUOTE_START_MARKUP),
+        HTML_BLOCK(Type.LEAF_BLOCK, MarkdownSink::escapeHtml, false, "", true);
 
         /**
          * @see <a href="https://spec.commonmark.org/0.30/#blocks-and-inlines">CommonMark, 3 Blocks and inlines</a>
@@ -161,31 +161,24 @@ public class MarkdownSink extends AbstractTextSink implements MarkdownMarkup {
          */
         final boolean requiresSurroundingByBlankLines;
 
-        ElementContext(String name, Type type, UnaryOperator<String> escapeFunction) {
-            this(name, type, escapeFunction, false);
+        ElementContext(Type type, UnaryOperator<String> escapeFunction) {
+            this(type, escapeFunction, false);
         }
 
-        ElementContext(String name, Type type, UnaryOperator<String> escapeFunction, boolean requiresBuffering) {
-            this(name, type, escapeFunction, requiresBuffering, "");
+        ElementContext(Type type, UnaryOperator<String> escapeFunction, boolean requiresBuffering) {
+            this(type, escapeFunction, requiresBuffering, "");
         }
 
-        ElementContext(
-                String name,
-                Type type,
-                UnaryOperator<String> escapeFunction,
-                boolean requiresBuffering,
-                String prefix) {
-            this(name, type, escapeFunction, requiresBuffering, prefix, false);
+        ElementContext(Type type, UnaryOperator<String> escapeFunction, boolean requiresBuffering, String prefix) {
+            this(type, escapeFunction, requiresBuffering, prefix, false);
         }
 
         ElementContext(
-                String name,
                 Type type,
                 UnaryOperator<String> escapeFunction,
                 boolean requiresBuffering,
                 String prefix,
                 boolean requiresSurroundingByBlankLines) {
-            this.name = name;
             this.type = type;
             this.escapeFunction = escapeFunction;
             this.requiresBuffering = requiresBuffering;
@@ -252,9 +245,16 @@ public class MarkdownSink extends AbstractTextSink implements MarkdownMarkup {
                     || (isInListItem() && (removedContext == ElementContext.BLOCKQUOTE)
                             || (removedContext == ElementContext.CODE_BLOCK)));
         }
+        if (removedContext.requiresBuffering) {
+            // remove buffer from stack (assume it has been evaluated already)
+            bufferStack.remove();
+        }
     }
 
     private void startContext(ElementContext newContext) {
+        if (newContext.requiresBuffering) {
+            bufferStack.add(new StringBuilder());
+        }
         if (newContext.isBlock()) {
             // every block element within a list item must
             startBlock(newContext.requiresSurroundingByBlankLines
@@ -323,19 +323,33 @@ public class MarkdownSink extends AbstractTextSink implements MarkdownMarkup {
                 .isPresent();
     }
     /**
-     * Returns the buffer that holds the current text.
-     *
-     * @return A StringBuffer.
+     * Returns the buffer that holds the text of the current context (or the closest container context with a buffer).
+     * @return The StringBuilder representing the current buffer, never {@code null}
+     * @throws NoSuchElementException if no buffer is available
      */
-    protected StringBuilder getBuffer() {
-        return buffer;
+    protected StringBuilder getCurrentBuffer() {
+        return bufferStack.element();
+    }
+
+    /**
+     * Returns the content of the buffer of the current context (or the closest container context with a buffer).
+     * The buffer is reset to an empty string in this method.
+     * @return the content of the buffer as a string or {@code null} if no buffer is available
+     */
+    protected String consumeBuffer() {
+        StringBuilder buffer = bufferStack.peek();
+        if (buffer == null) {
+            return null;
+        } else {
+            String content = buffer.toString();
+            buffer.setLength(0);
+            return content;
+        }
     }
 
     @Override
     protected void init() {
         super.init();
-
-        resetBuffer();
 
         this.authors = new LinkedList<>();
         this.title = null;
@@ -350,19 +364,12 @@ public class MarkdownSink extends AbstractTextSink implements MarkdownMarkup {
         elementContextStack.add(ElementContext.BODY);
     }
 
-    /**
-     * Reset the StringBuilder.
-     */
-    protected void resetBuffer() {
-        buffer = new StringBuilder();
-    }
-
     @Override
     public void head(SinkEventAttributes attributes) {
         init();
         // remove default body context here
         endContext(ElementContext.BODY);
-        elementContextStack.add(ElementContext.HEAD);
+        startContext(ElementContext.HEAD);
     }
 
     @Override
@@ -390,6 +397,7 @@ public class MarkdownSink extends AbstractTextSink implements MarkdownMarkup {
 
     @Override
     public void body(SinkEventAttributes attributes) {
+        startContext(ElementContext.BODY);
         elementContextStack.add(ElementContext.BODY);
     }
 
@@ -400,25 +408,25 @@ public class MarkdownSink extends AbstractTextSink implements MarkdownMarkup {
 
     @Override
     public void title_() {
-        if (buffer.length() > 0) {
-            title = buffer.toString();
-            resetBuffer();
+        String buffer = consumeBuffer();
+        if (buffer != null && !buffer.isEmpty()) {
+            this.title = buffer.toString();
         }
     }
 
     @Override
     public void author_() {
-        if (buffer.length() > 0) {
-            authors.add(buffer.toString());
-            resetBuffer();
+        String buffer = consumeBuffer();
+        if (buffer != null && !buffer.isEmpty()) {
+            authors.add(buffer);
         }
     }
 
     @Override
     public void date_() {
-        if (buffer.length() > 0) {
+        String buffer = consumeBuffer();
+        if (buffer != null && !buffer.isEmpty()) {
             date = buffer.toString();
-            resetBuffer();
         }
     }
 
@@ -596,11 +604,14 @@ public class MarkdownSink extends AbstractTextSink implements MarkdownMarkup {
 
     @Override
     public void tableRow(SinkEventAttributes attributes) {
+        startContext(ElementContext.TABLE_ROW);
         cellCount = 0;
     }
 
     @Override
     public void tableRow_() {
+        String buffer = consumeBuffer();
+        endContext(ElementContext.TABLE_ROW);
         if (isFirstTableRow && !tableHeaderCellFlag) {
             // emit empty table header as this is mandatory for GFM table extension
             // (https://stackoverflow.com/a/17543474/5155923)
@@ -612,11 +623,7 @@ public class MarkdownSink extends AbstractTextSink implements MarkdownMarkup {
         }
 
         writeUnescaped(TABLE_ROW_PREFIX);
-
-        writeUnescaped(buffer.toString());
-
-        resetBuffer();
-
+        writeUnescaped(buffer);
         writeUnescaped(EOL);
 
         if (isFirstTableRow) {
@@ -665,6 +672,7 @@ public class MarkdownSink extends AbstractTextSink implements MarkdownMarkup {
 
     @Override
     public void tableCell(SinkEventAttributes attributes) {
+        startContext(ElementContext.TABLE_CELL);
         if (attributes != null) {
             // evaluate alignment attributes
             final int cellJustification;
@@ -691,7 +699,6 @@ public class MarkdownSink extends AbstractTextSink implements MarkdownMarkup {
                 }
             }
         }
-        elementContextStack.add(ElementContext.TABLE_CELL);
     }
 
     @Override
@@ -715,7 +722,7 @@ public class MarkdownSink extends AbstractTextSink implements MarkdownMarkup {
      */
     private void endTableCell() {
         endContext(ElementContext.TABLE_CELL);
-        buffer.append(TABLE_CELL_SEPARATOR_MARKUP);
+        writeUnescaped(TABLE_CELL_SEPARATOR_MARKUP);
         cellCount++;
     }
 
@@ -732,7 +739,7 @@ public class MarkdownSink extends AbstractTextSink implements MarkdownMarkup {
     @Override
     public void figure(SinkEventAttributes attributes) {
         figureSrc = null;
-        elementContextStack.add(ElementContext.FIGURE);
+        startContext(ElementContext.FIGURE);
     }
 
     @Override
@@ -750,8 +757,13 @@ public class MarkdownSink extends AbstractTextSink implements MarkdownMarkup {
 
     @Override
     public void figure_() {
+        StringBuilder buffer = getCurrentBuffer();
+        String label = "";
+        if (buffer != null) {
+            label = buffer.toString();
+        }
         endContext(ElementContext.FIGURE);
-        writeImage(buffer.toString(), figureSrc);
+        writeImage(label, figureSrc);
     }
 
     private void writeImage(String alt, String src) {
@@ -773,15 +785,36 @@ public class MarkdownSink extends AbstractTextSink implements MarkdownMarkup {
 
     /** {@inheritDoc} */
     public void link(String name, SinkEventAttributes attributes) {
-        writeUnescaped(LINK_START_1_MARKUP);
-        linkName = name;
+        if (elementContextStack.element() == ElementContext.CODE_BLOCK) {
+            LOGGER.warn("{}Ignoring unsupported link inside code block", getLocationLogPrefix());
+        } else if (elementContextStack.element() == ElementContext.CODE_SPAN) {
+            // emit link outside the code span, i.e. insert at the beginning of the buffer
+            getCurrentBuffer().insert(0, LINK_START_1_MARKUP);
+            linkName = name;
+        } else {
+            writeUnescaped(LINK_START_1_MARKUP);
+            linkName = name;
+        }
     }
 
     @Override
     public void link_() {
-        writeUnescaped(LINK_START_2_MARKUP);
-        text(linkName.startsWith("#") ? linkName.substring(1) : linkName);
-        writeUnescaped(LINK_END_MARKUP);
+        if (elementContextStack.element() == ElementContext.CODE_BLOCK) {
+            return;
+        } else if (elementContextStack.element() == ElementContext.CODE_SPAN) {
+            // defer emitting link end markup until inline_() is called
+            StringBuilder linkEndMarkup = new StringBuilder();
+            linkEndMarkup.append(LINK_START_2_MARKUP);
+            linkEndMarkup.append(escapeMarkdown(linkName.startsWith("#") ? linkName.substring(1) : linkName));
+            linkEndMarkup.append(LINK_END_MARKUP);
+            Queue<String> endMarkups = new LinkedList<>(inlineStack.poll());
+            endMarkups.add(linkEndMarkup.toString());
+            inlineStack.add(endMarkups);
+        } else {
+            writeUnescaped(LINK_START_2_MARKUP);
+            text(linkName.startsWith("#") ? linkName.substring(1) : linkName);
+            writeUnescaped(LINK_END_MARKUP);
+        }
         linkName = null;
     }
 
@@ -801,9 +834,9 @@ public class MarkdownSink extends AbstractTextSink implements MarkdownMarkup {
                     writeUnescaped("<code>");
                     endMarkups.add("</code>");
                 } else {
+                    startContext(ElementContext.CODE_SPAN);
                     writeUnescaped(MONOSPACED_START_MARKUP);
                     endMarkups.add(MONOSPACED_END_MARKUP);
-                    elementContextStack.add(ElementContext.CODE_SPAN);
                 }
             } else {
                 // in XHTML "<em>" is used, but some tests still rely on the outdated "<italic>"
@@ -839,7 +872,9 @@ public class MarkdownSink extends AbstractTextSink implements MarkdownMarkup {
     public void inline_() {
         for (String endMarkup : inlineStack.remove()) {
             if (endMarkup.equals(MONOSPACED_END_MARKUP)) {
+                String buffer = getCurrentBuffer().toString();
                 endContext(ElementContext.CODE_SPAN);
+                writeUnescaped(buffer);
             }
             writeUnescaped(endMarkup);
         }
@@ -942,16 +977,9 @@ public class MarkdownSink extends AbstractTextSink implements MarkdownMarkup {
         LOGGER.warn("{}Unknown Sink event '" + name + "', ignoring!", getLocationLogPrefix());
     }
 
-    /**
-     *
-     * @return {@code true} if any of the parent contexts require buffering
-     */
-    private boolean requiresBuffering() {
-        return elementContextStack.stream().anyMatch(c -> c.requiresBuffering);
-    }
-
     protected void writeUnescaped(String text) {
-        if (requiresBuffering()) {
+        StringBuilder buffer = bufferStack.peek();
+        if (buffer != null) {
             buffer.append(text);
         } else {
             writer.write(text);
