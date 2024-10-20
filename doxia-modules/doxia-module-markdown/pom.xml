@@ -149,7 +149,7 @@ under the License.
     <dependency>
       <groupId>org.jetbrains</groupId>
       <artifactId>annotations</artifactId>
-      <version>25.0.0</version>
+      <version>26.0.1</version>
     </dependency>
     <dependency>
       <groupId>org.apache.maven.doxia</groupId>
