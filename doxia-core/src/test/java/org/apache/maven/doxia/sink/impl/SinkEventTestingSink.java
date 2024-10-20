@@ -558,6 +558,6 @@ public class SinkEventTestingSink extends AbstractSink {
      * @param arguments The array of arguments to the sink method.
      */
     private void addEvent(String string, Object[] arguments) {
-        events.add(new SinkEventElement(string, arguments));
+        events.add(new SinkEventElement(string, arguments, getDocumentLocator().getLineNumber()));
     }
 }

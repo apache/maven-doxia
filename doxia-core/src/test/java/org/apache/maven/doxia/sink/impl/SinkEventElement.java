@@ -35,6 +35,9 @@ public class SinkEventElement {
     /** The array of arguments to the sink method. */
     private final Object[] args;
 
+    /** The line number of the source which emitted the event (-1 if unknown) */
+    private final int lineNumber;
+
     /**
      * A SinkEventElement is characterized by the method name and associated array of arguments.
      *
@@ -42,11 +45,12 @@ public class SinkEventElement {
      * @param arguments The array of arguments to the sink method.
      *      For a no-arg element this may be null or an empty array.
      */
-    public SinkEventElement(String name, Object[] arguments) {
+    public SinkEventElement(String name, Object[] arguments, int lineNumber) {
         Objects.requireNonNull(name, "name cannot be null");
 
         this.methodName = name;
         this.args = arguments;
+        this.lineNumber = lineNumber;
     }
 
     /**
@@ -77,6 +81,10 @@ public class SinkEventElement {
         builder.append(this.getClass().getSimpleName()).append('[');
         builder.append("methodName: ").append(methodName).append(", ");
         builder.append("args: ").append(Arrays.deepToString(args));
+        if (lineNumber != -1) {
+            builder.append(", ");
+            builder.append("lineNumber: ").append(lineNumber);
+        }
         builder.append(']');
         return builder.toString();
     }
