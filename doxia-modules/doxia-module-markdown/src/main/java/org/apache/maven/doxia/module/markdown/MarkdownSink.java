@@ -35,6 +35,7 @@ import org.apache.maven.doxia.sink.Sink;
 import org.apache.maven.doxia.sink.SinkEventAttributes;
 import org.apache.maven.doxia.sink.impl.AbstractTextSink;
 import org.apache.maven.doxia.sink.impl.SinkEventAttributeSet;
+import org.apache.maven.doxia.sink.impl.Xhtml5BaseSink;
 import org.apache.maven.doxia.util.HtmlTools;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
@@ -93,13 +94,13 @@ public class MarkdownSink extends AbstractTextSink implements MarkdownMarkup {
 
     private String figureSrc;
 
-    /** Most important contextual metadata (of the surrounding element) */
+    /** Most important contextual metadata (of elements). This contains information about necessary escaping rules, potential prefixes and newlines */
     enum ElementContext {
         HEAD("head", Type.GENERIC_CONTAINER, null, true),
         BODY("body", Type.GENERIC_CONTAINER, MarkdownSink::escapeMarkdown),
         // only the elements, which affect rendering of children and are different from BODY or HEAD are listed here
         FIGURE("", Type.INLINE, MarkdownSink::escapeMarkdown, true),
-        CODE_BLOCK("code block", Type.LEAF_BLOCK, null, false),
+        CODE_BLOCK("code block", Type.LEAF_BLOCK, null),
         CODE_SPAN("code span", Type.INLINE, null),
         TABLE_CAPTION("table caption", Type.INLINE, MarkdownSink::escapeMarkdown),
         TABLE_CELL(
@@ -270,8 +271,8 @@ public class MarkdownSink extends AbstractTextSink implements MarkdownMarkup {
     }
 
     /**
-     * Ensures that the {@link #writer} is either at the beginning or preceded by a blank line.
-     * Optionally writes a blank line to ensure that.
+     * Ensures that the {@link #writer} is preceded by a blank line.
+     * Optionally writes a blank line or just line delimiter to ensure that.
      */
     private void ensureBlankLine() {
         // prevent duplicate blank lines
@@ -900,7 +901,12 @@ public class MarkdownSink extends AbstractTextSink implements MarkdownMarkup {
 
     @Override
     public void comment(String comment) {
-        rawText(COMMENT_START + comment + COMMENT_END);
+        comment(comment, false);
+    }
+
+    @Override
+    public void comment(String comment, boolean endsWithLineBreak) {
+        rawText(Xhtml5BaseSink.encodeAsHtmlComment(comment, endsWithLineBreak, getLocationLogPrefix()));
     }
 
     /**

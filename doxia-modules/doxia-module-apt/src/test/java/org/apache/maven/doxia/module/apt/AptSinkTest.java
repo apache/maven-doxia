@@ -355,7 +355,24 @@ public class AptSinkTest extends AbstractSinkTest {
 
     /** {@inheritDoc} */
     protected String getCommentBlock(String text) {
-        return "~~" + text;
+        return "~~" + text + EOL;
+    }
+
+    @Override
+    protected String getCommentBlockFollowedByParagraph(String comment, String paragraph) {
+        return getCommentBlock(comment) + getParagraphBlock(paragraph);
+    }
+
+    /* Overwrite the test from AbstractSinkTest as EOLs are part of getCommentBlock(...) */
+    @Test
+    public void testTwoConsecutiveBlockComments() {
+        final Sink sink = getSink();
+        String comment = "Simple comment";
+        sink.comment(comment, true);
+        sink.comment(comment, true);
+        sink.flush();
+        sink.close();
+        assertEquals(getCommentBlock(comment) + getCommentBlock(comment), getSinkContent(), "Wrong comment!");
     }
 
     /**

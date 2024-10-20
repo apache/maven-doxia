@@ -1444,34 +1444,44 @@ public class Xhtml5BaseSink extends AbstractXmlSink implements HtmlMarkup {
         }
     }
 
-    /** {@inheritDoc} */
     @Override
     public void comment(String comment) {
+        comment(comment, false);
+    }
+
+    /** {@inheritDoc} */
+    @Override
+    public void comment(String comment, boolean endsWithLineBreak) {
         if (comment != null) {
-            final String originalComment = comment;
-
-            // http://www.w3.org/TR/2000/REC-xml-20001006#sec-comments
-            while (comment.contains("--")) {
-                comment = comment.replace("--", "- -");
-            }
-
-            if (comment.endsWith("-")) {
-                comment += " ";
-            }
-
-            if (!originalComment.equals(comment)) {
-                LOGGER.warn(
-                        "{}Modified invalid comment '{}' to '{}'", getLocationLogPrefix(), originalComment, comment);
-            }
-
-            final StringBuilder buffer = new StringBuilder(comment.length() + 7);
-
-            buffer.append(LESS_THAN).append(BANG).append(MINUS).append(MINUS);
-            buffer.append(comment);
-            buffer.append(MINUS).append(MINUS).append(GREATER_THAN);
-
-            write(buffer.toString());
+            write(encodeAsHtmlComment(comment, endsWithLineBreak, getLocationLogPrefix()));
         }
+    }
+
+    public static String encodeAsHtmlComment(String comment, boolean endsWithLineBreak, String locationLogPrefix) {
+        final String originalComment = comment;
+
+        // http://www.w3.org/TR/2000/REC-xml-20001006#sec-comments
+        while (comment.contains("--")) {
+            comment = comment.replace("--", "- -");
+        }
+
+        if (comment.endsWith("-")) {
+            comment += " ";
+        }
+
+        if (!originalComment.equals(comment)) {
+            LOGGER.warn("{}Modified invalid comment '{}' to '{}'", locationLogPrefix, originalComment, comment);
+        }
+
+        final StringBuilder buffer = new StringBuilder(comment.length() + 7);
+
+        buffer.append(LESS_THAN).append(BANG).append(MINUS).append(MINUS);
+        buffer.append(comment);
+        buffer.append(MINUS).append(MINUS).append(GREATER_THAN);
+        if (endsWithLineBreak) {
+            buffer.append(EOL);
+        }
+        return buffer.toString();
     }
 
     /**

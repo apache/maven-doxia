@@ -373,8 +373,13 @@ public class XdocSinkTest extends AbstractSinkTest {
         assertEquals("<a href=\"name\"></a><a target=\"nirvana\" href=\"name\"></a>", writer.toString());
     }
 
-    /** {@inheritDoc} */
+    @Override
     protected String getCommentBlock(String text) {
         return "<!--" + toXmlComment(text) + "-->";
+    }
+
+    @Override
+    protected String getCommentBlockFollowedByParagraph(String comment, String paragraph) {
+        return getCommentBlock(comment) + getParagraphBlock(paragraph); // no line break in between
     }
 }

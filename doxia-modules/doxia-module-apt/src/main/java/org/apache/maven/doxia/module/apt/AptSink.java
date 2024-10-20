@@ -209,9 +209,6 @@ public class AptSink extends AbstractTextSink implements AptMarkup {
     public void head_() {
         headerFlag = false;
 
-        if (!startFlag) {
-            write(EOL);
-        }
         write(HEADER_START_MARKUP + EOL);
         if (title != null) {
             write(" " + title + EOL);
@@ -839,7 +836,12 @@ public class AptSink extends AbstractTextSink implements AptMarkup {
 
     /** {@inheritDoc} */
     public void comment(String comment) {
-        rawText((startFlag ? "" : EOL) + COMMENT + COMMENT + comment);
+        comment(comment, false);
+    }
+
+    @Override
+    public void comment(String comment, boolean endsWithLineBreak) {
+        rawText("" + COMMENT + COMMENT + comment + EOL); // comments always end with a line break in APT
     }
 
     /**
