@@ -1718,11 +1718,24 @@ public interface Sink extends AutoCloseable {
 
     /**
      * Add a comment.
+     * Semantically the same as {@link #comment(String, boolean)} with second argument being {@code false}.
      *
      * @param comment The comment to write.
      * @since 1.1
+     * @see #comment(String, boolean)
      */
     void comment(String comment);
+
+    /**
+     * Add a comment. The default implementation will just call {@link #comment(String)}.
+     *
+     * @param comment The comment to write.
+     * @param endsWithLineBreak If {@code true} comment ends with a line break, i.e. nothing else should follow on the same line
+     * @since 2.1.0
+     */
+    default void comment(String comment, boolean endsWithLineBreak) {
+        comment(comment);
+    }
 
     /**
      * Add an unknown event. This may be used by parsers to notify a general Sink about

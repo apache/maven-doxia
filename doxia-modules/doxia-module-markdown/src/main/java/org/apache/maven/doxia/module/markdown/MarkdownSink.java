@@ -35,6 +35,7 @@ import org.apache.maven.doxia.sink.Sink;
 import org.apache.maven.doxia.sink.SinkEventAttributes;
 import org.apache.maven.doxia.sink.impl.AbstractTextSink;
 import org.apache.maven.doxia.sink.impl.SinkEventAttributeSet;
+import org.apache.maven.doxia.sink.impl.Xhtml5BaseSink;
 import org.apache.maven.doxia.util.HtmlTools;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
@@ -95,13 +96,13 @@ public class MarkdownSink extends AbstractTextSink implements MarkdownMarkup {
 
     private String figureSrc;
 
-    /** Most important contextual metadata (of the surrounding element) */
+    /** Most important contextual metadata (of elements). This contains information about necessary escaping rules, potential prefixes and newlines */
     enum ElementContext {
         HEAD(Type.GENERIC_CONTAINER, null, true),
         BODY(Type.GENERIC_CONTAINER, MarkdownSink::escapeMarkdown),
         // only the elements, which affect rendering of children and are different from BODY or HEAD are listed here
         FIGURE(Type.INLINE, MarkdownSink::escapeMarkdown, true),
-        CODE_BLOCK(Type.LEAF_BLOCK, null, false),
+        CODE_BLOCK(Type.LEAF_BLOCK, null),
         CODE_SPAN(Type.INLINE, null, true),
         TABLE_CAPTION(Type.INLINE, MarkdownSink::escapeMarkdown),
         TABLE_ROW(Type.CONTAINER_BLOCK, null, true),
@@ -111,7 +112,8 @@ public class MarkdownSink extends AbstractTextSink implements MarkdownMarkup {
                 false), // special type, as allows containing inlines, but not starting on a separate line
         // same parameters as BODY but paragraphs inside list items are handled differently
         LIST_ITEM(Type.CONTAINER_BLOCK, MarkdownSink::escapeMarkdown, false, INDENT),
-        BLOCKQUOTE(Type.CONTAINER_BLOCK, MarkdownSink::escapeMarkdown, false, BLOCKQUOTE_START_MARKUP);
+        BLOCKQUOTE(Type.CONTAINER_BLOCK, MarkdownSink::escapeMarkdown, false, BLOCKQUOTE_START_MARKUP),
+        HTML_BLOCK(Type.LEAF_BLOCK, MarkdownSink::escapeHtml, false, "", true);
 
         /**
          * @see <a href="https://spec.commonmark.org/0.30/#blocks-and-inlines">CommonMark, 3 Blocks and inlines</a>
@@ -150,7 +152,7 @@ public class MarkdownSink extends AbstractTextSink implements MarkdownMarkup {
         final boolean requiresBuffering;
 
         /**
-         * prefix to be used for a (nested) block elements inside the current container context (only not empty for {@link #type} being {@link Type#CONTAINER_BLOCK})
+         * prefix to be used for each line of (nested) block elements inside the current container context (only not empty for {@link #type} being {@link Type#CONTAINER_BLOCK})
          */
         final String prefix;
 
@@ -239,7 +241,9 @@ public class MarkdownSink extends AbstractTextSink implements MarkdownMarkup {
             throw new IllegalStateException("Unexpected context " + removedContext + ", expected " + expectedContext);
         }
         if (removedContext.isBlock()) {
-            endBlock(removedContext.requiresSurroundingByBlankLines);
+            endBlock(removedContext.requiresSurroundingByBlankLines
+                    || (isInListItem() && (removedContext == ElementContext.BLOCKQUOTE)
+                            || (removedContext == ElementContext.CODE_BLOCK)));
         }
         if (removedContext.requiresBuffering) {
             // remove buffer from stack (assume it has been evaluated already)
@@ -252,7 +256,10 @@ public class MarkdownSink extends AbstractTextSink implements MarkdownMarkup {
             bufferStack.add(new StringBuilder());
         }
         if (newContext.isBlock()) {
-            startBlock(newContext.requiresSurroundingByBlankLines);
+            // every block element within a list item must
+            startBlock(newContext.requiresSurroundingByBlankLines
+                    || (isInListItem() && (newContext == ElementContext.BLOCKQUOTE)
+                            || (newContext == ElementContext.CODE_BLOCK)));
         }
         elementContextStack.add(newContext);
     }
@@ -269,8 +276,8 @@ public class MarkdownSink extends AbstractTextSink implements MarkdownMarkup {
     }
 
     /**
-     * Ensures that the {@link #writer} is either at the beginning or preceded by a blank line.
-     * Optionally writes a blank line to ensure that.
+     * Ensures that the {@link #writer} is preceded by a blank line.
+     * Optionally writes a blank line or just line delimiter to ensure that.
      */
     private void ensureBlankLine() {
         // prevent duplicate blank lines
@@ -289,7 +296,7 @@ public class MarkdownSink extends AbstractTextSink implements MarkdownMarkup {
         } else {
             ensureBeginningOfLine();
         }
-        writeUnescaped(getContainerLinePrefixes());
+        writeUnescaped(getLinePrefix());
     }
 
     private void endBlock(boolean requireBlankLine) {
@@ -300,12 +307,21 @@ public class MarkdownSink extends AbstractTextSink implements MarkdownMarkup {
         }
     }
 
-    private String getContainerLinePrefixes() {
+    /**
+     * @return the prefix to be used for each line in the current context (i.e. the prefix of the current container context and all its ancestors), may be empty
+     */
+    private String getLinePrefix() {
         StringBuilder prefix = new StringBuilder();
         elementContextStack.stream().filter(c -> c.prefix.length() > 0).forEachOrdered(c -> prefix.insert(0, c.prefix));
         return prefix.toString();
     }
 
+    private boolean isInListItem() {
+        return elementContextStack.stream()
+                .filter(c -> c == ElementContext.LIST_ITEM)
+                .findFirst()
+                .isPresent();
+    }
     /**
      * Returns the buffer that holds the text of the current context (or the closest container context with a buffer).
      * @return The StringBuilder representing the current buffer, never {@code null}
@@ -478,13 +494,14 @@ public class MarkdownSink extends AbstractTextSink implements MarkdownMarkup {
     public void definitionList(SinkEventAttributes attributes) {
         LOGGER.warn(
                 "{}Definition list not natively supported in Markdown, rendering HTML instead", getLocationLogPrefix());
-        ensureBlankLine();
+        startContext(ElementContext.HTML_BLOCK);
         writeUnescaped("<dl>" + EOL);
     }
 
     @Override
     public void definitionList_() {
-        writeUnescaped("</dl>" + BLANK_LINE);
+        writeUnescaped("</dl>");
+        endContext(ElementContext.HTML_BLOCK);
     }
 
     @Override
@@ -517,7 +534,7 @@ public class MarkdownSink extends AbstractTextSink implements MarkdownMarkup {
         // ignore paragraphs outside container contexts
         if (elementContextStack.element().isContainer()) {
             ensureBlankLine();
-            writeUnescaped(getContainerLinePrefixes());
+            writeUnescaped(getLinePrefix());
         }
     }
 
@@ -534,13 +551,13 @@ public class MarkdownSink extends AbstractTextSink implements MarkdownMarkup {
         // always assume is supposed to be monospaced (i.e. emitted inside a <pre><code>...</code></pre>)
         startContext(ElementContext.CODE_BLOCK);
         writeUnescaped(VERBATIM_START_MARKUP + EOL);
-        writeUnescaped(getContainerLinePrefixes());
+        writeUnescaped(getLinePrefix());
     }
 
     @Override
     public void verbatim_() {
         ensureBeginningOfLine();
-        writeUnescaped(getContainerLinePrefixes());
+        writeUnescaped(getLinePrefix());
         writeUnescaped(VERBATIM_END_MARKUP + BLANK_LINE);
         endContext(ElementContext.CODE_BLOCK);
     }
@@ -560,13 +577,13 @@ public class MarkdownSink extends AbstractTextSink implements MarkdownMarkup {
     public void horizontalRule(SinkEventAttributes attributes) {
         ensureBeginningOfLine();
         writeUnescaped(HORIZONTAL_RULE_MARKUP + BLANK_LINE);
-        writeUnescaped(getContainerLinePrefixes());
+        writeUnescaped(getLinePrefix());
     }
 
     @Override
     public void table(SinkEventAttributes attributes) {
         ensureBlankLine();
-        writeUnescaped(getContainerLinePrefixes());
+        writeUnescaped(getLinePrefix());
     }
 
     @Override
@@ -625,7 +642,7 @@ public class MarkdownSink extends AbstractTextSink implements MarkdownMarkup {
             writeUnescaped(StringUtils.repeat(String.valueOf(SPACE), 3) + TABLE_CELL_SEPARATOR_MARKUP);
         }
         writeUnescaped(EOL);
-        writeUnescaped(getContainerLinePrefixes());
+        writeUnescaped(getLinePrefix());
     }
 
     /** Emit the delimiter row which determines the alignment */
@@ -805,6 +822,7 @@ public class MarkdownSink extends AbstractTextSink implements MarkdownMarkup {
     public void inline(SinkEventAttributes attributes) {
         Queue<String> endMarkups = Collections.asLifoQueue(new LinkedList<>());
 
+        boolean requiresHtml = elementContextStack.element() == ElementContext.HTML_BLOCK;
         if (attributes != null
                 && elementContextStack.element() != ElementContext.CODE_BLOCK
                 && elementContextStack.element() != ElementContext.CODE_SPAN) {
@@ -812,23 +830,38 @@ public class MarkdownSink extends AbstractTextSink implements MarkdownMarkup {
             if (attributes.containsAttribute(SinkEventAttributes.SEMANTICS, "code")
                     || attributes.containsAttribute(SinkEventAttributes.SEMANTICS, "monospaced")
                     || attributes.containsAttribute(SinkEventAttributes.STYLE, "monospaced")) {
-                startContext(ElementContext.CODE_SPAN);
-                writeUnescaped(MONOSPACED_START_MARKUP);
-                endMarkups.add(MONOSPACED_END_MARKUP);
+                if (requiresHtml) {
+                    writeUnescaped("<code>");
+                    endMarkups.add("</code>");
+                } else {
+                    startContext(ElementContext.CODE_SPAN);
+                    writeUnescaped(MONOSPACED_START_MARKUP);
+                    endMarkups.add(MONOSPACED_END_MARKUP);
+                }
             } else {
                 // in XHTML "<em>" is used, but some tests still rely on the outdated "<italic>"
-                if (attributes.containsAttribute(SinkEventAttributes.SEMANTICS, "em")
+                if (attributes.containsAttribute(SinkEventAttributes.SEMANTICS, "emphasis")
                         || attributes.containsAttribute(SinkEventAttributes.SEMANTICS, "italic")
                         || attributes.containsAttribute(SinkEventAttributes.STYLE, "italic")) {
-                    writeUnescaped(ITALIC_START_MARKUP);
-                    endMarkups.add(ITALIC_END_MARKUP);
+                    if (requiresHtml) {
+                        writeUnescaped("<em>");
+                        endMarkups.add("</em>");
+                    } else {
+                        writeUnescaped(ITALIC_START_MARKUP);
+                        endMarkups.add(ITALIC_END_MARKUP);
+                    }
                 }
                 // in XHTML "<strong>" is used, but some tests still rely on the outdated "<bold>"
                 if (attributes.containsAttribute(SinkEventAttributes.SEMANTICS, "strong")
                         || attributes.containsAttribute(SinkEventAttributes.SEMANTICS, "bold")
                         || attributes.containsAttribute(SinkEventAttributes.STYLE, "bold")) {
-                    writeUnescaped(BOLD_START_MARKUP);
-                    endMarkups.add(BOLD_END_MARKUP);
+                    if (requiresHtml) {
+                        writeUnescaped("<strong>");
+                        endMarkups.add("</strong>");
+                    } else {
+                        writeUnescaped(BOLD_START_MARKUP);
+                        endMarkups.add(BOLD_END_MARKUP);
+                    }
                 }
             }
         }
@@ -884,7 +917,7 @@ public class MarkdownSink extends AbstractTextSink implements MarkdownMarkup {
         } else {
             writeUnescaped("" + SPACE + SPACE + EOL);
         }
-        writeUnescaped(getContainerLinePrefixes());
+        writeUnescaped(getLinePrefix());
     }
 
     @Override
@@ -903,6 +936,14 @@ public class MarkdownSink extends AbstractTextSink implements MarkdownMarkup {
             LOGGER.warn("{}Ignoring unsupported table caption in Markdown", getLocationLogPrefix());
         } else {
             String unifiedText = currentContext.escape(unifyEOLs(text));
+            // ignore newlines only, because those are emitted often coming from linebreaks in HTML with no semantical
+            // meaning
+            if (!unifiedText.equals(EOL)) {
+                String prefix = getLinePrefix();
+                if (prefix.length() > 0) {
+                    unifiedText = unifiedText.replaceAll(EOL, EOL + prefix);
+                }
+            }
             writeUnescaped(unifiedText);
         }
         if (attributes != null) {
@@ -917,7 +958,12 @@ public class MarkdownSink extends AbstractTextSink implements MarkdownMarkup {
 
     @Override
     public void comment(String comment) {
-        rawText(COMMENT_START + comment + COMMENT_END);
+        comment(comment, false);
+    }
+
+    @Override
+    public void comment(String comment, boolean endsWithLineBreak) {
+        rawText(Xhtml5BaseSink.encodeAsHtmlComment(comment, endsWithLineBreak, getLocationLogPrefix()));
     }
 
     /**
@@ -972,7 +1018,7 @@ public class MarkdownSink extends AbstractTextSink implements MarkdownMarkup {
         if (text == null) {
             return "";
         }
-        text = HtmlTools.escapeHTML(text, true); // assume UTF-8 output, i.e. only use the mandatory XML entities
+        text = escapeHtml(text); // assume UTF-8 output, i.e. only use the mandatory XML entities
         int length = text.length();
         StringBuilder buffer = new StringBuilder(length);
 
@@ -1003,6 +1049,10 @@ public class MarkdownSink extends AbstractTextSink implements MarkdownMarkup {
         }
 
         return buffer.toString();
+    }
+
+    private static String escapeHtml(String text) {
+        return HtmlTools.escapeHTML(text, true);
     }
 
     /**

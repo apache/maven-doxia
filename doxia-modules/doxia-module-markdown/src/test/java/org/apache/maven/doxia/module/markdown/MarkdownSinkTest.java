@@ -34,11 +34,10 @@ import org.apache.maven.doxia.sink.impl.SinkEventAttributeSet;
 import org.apache.maven.doxia.sink.impl.SinkEventAttributeSet.Semantics;
 import org.apache.maven.doxia.sink.impl.SinkEventTestingSink;
 import org.apache.maven.doxia.util.HtmlTools;
-import org.hamcrest.MatcherAssert;
-import org.hamcrest.Matchers;
 import org.junit.jupiter.api.Test;
 
 import static org.junit.jupiter.api.Assertions.assertEquals;
+import static org.junit.jupiter.api.Assertions.assertIterableEquals;
 
 /**
  * Test the <code>MarkdownSink</code> class
@@ -333,9 +332,14 @@ public class MarkdownSinkTest extends AbstractSinkTest {
         return text.replaceAll("\\\\|\\`|\\*|_|\\{|\\}|\\[|\\]|\\(|\\)|#|\\+|\\-|\\.|\\!", "\\\\$0");
     }
 
-    /** {@inheritDoc} */
+    @Override
     protected String getCommentBlock(String text) {
-        return "<!-- " + text + " -->";
+        return "<!--" + toXmlComment(text) + "-->";
+    }
+
+    @Override
+    protected String getCommentBlockFollowedByParagraph(String comment, String paragraph) {
+        return getCommentBlock(comment) + EOL + EOL + getParagraphBlock(paragraph); // paragraph separated by blank line
     }
 
     @Test
@@ -373,12 +377,11 @@ public class MarkdownSinkTest extends AbstractSinkTest {
 
         final SinkEventTestingSink originalSink = new SinkEventTestingSink();
         parseFile(parser, "test", originalSink);
+        // strip empty lines from sink content
 
         // compare sink events from parsing original markdown with sink events from re-generated markdown
         try {
-            MatcherAssert.assertThat(
-                    regeneratedSink.getEventList(),
-                    Matchers.contains(originalSink.getEventList().toArray()));
+            assertIterableEquals(originalSink.getEventList(), regeneratedSink.getEventList());
         } catch (AssertionError e) {
             // emit generated markdown to ease debugging
             System.err.println(getSinkContent());
@@ -484,13 +487,13 @@ public class MarkdownSinkTest extends AbstractSinkTest {
         String expected = "- item1" + EOL
                 + "    - item1a" + EOL
                 + EOL
-                + "- " + EOL
-                + "    > blockquote" + EOL
+                + "- " + EOL + EOL
+                + "    > blockquote" + EOL + EOL
                 + "- item3" + EOL
                 + EOL
                 + "    item3paragraph2" + EOL
                 + EOL
-                + "- item4" + EOL
+                + "- item4" + EOL + EOL
                 + "    ```" + EOL
                 + "    item4verbatim" + EOL
                 + "    item4verbatimline2" + EOL
@@ -527,5 +530,44 @@ public class MarkdownSinkTest extends AbstractSinkTest {
         // heading must be on a new line
         String expected = "[`label`](http://example\\.com)";
         assertEquals(expected, getSinkContent(), "Wrong link on code!");
+    }
+
+    @Test
+    public void testMultilineVerbatimSourceAfterListItem() {
+        try (final Sink sink = getSink()) {
+            sink.list();
+            sink.listItem();
+            sink.text("Before");
+            sink.verbatim(SinkEventAttributeSet.SOURCE);
+            sink.text("codeline1" + EOL + "codeline2");
+            sink.verbatim_();
+            sink.text("After");
+            sink.listItem_();
+            sink.list_();
+        }
+
+        String expected = "- Before" + EOL + EOL + MarkdownMarkup.INDENT + MarkdownMarkup.VERBATIM_START_MARKUP + EOL
+                + MarkdownMarkup.INDENT + "codeline1" + EOL + MarkdownMarkup.INDENT + "codeline2" + EOL
+                + MarkdownMarkup.INDENT + MarkdownMarkup.VERBATIM_END_MARKUP + EOL + EOL + "After" + EOL + EOL;
+        assertEquals(expected, getSinkContent(), "Wrong verbatim!");
+    }
+
+    @Test
+    public void testDefinitionListWithInlineStyles() {
+        try (final Sink sink = getSink()) {
+            sink.definitionList();
+            sink.definedTerm();
+            sink.text("term");
+            sink.definedTerm_();
+            sink.definition();
+            sink.text("prefix ");
+            sink.text("code", SinkEventAttributeSet.Semantics.CODE);
+            sink.text("suffix<a>test</a>", SinkEventAttributeSet.Semantics.EMPHASIS);
+            sink.definition_();
+            sink.definitionList_();
+        }
+        String expected = "<dl>" + EOL + "<dt>term</dt>" + EOL
+                + "<dd>prefix <code>code</code><em>suffix&lt;a&gt;test&lt;/a&gt;</em></dd>" + EOL + "</dl>" + EOL + EOL;
+        assertEquals(expected, getSinkContent(), "Wrong heading after inline element!");
     }
 }
