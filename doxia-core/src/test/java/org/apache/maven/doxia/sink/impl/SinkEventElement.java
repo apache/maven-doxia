@@ -35,7 +35,7 @@ public class SinkEventElement {
     /** The array of arguments to the sink method. */
     private final Object[] args;
 
-    /** The line number of the source which emitted the source (-1 if unknown) */
+    /** The line number of the source which emitted the event (-1 if unknown) */
     private final int lineNumber;
 
     /**

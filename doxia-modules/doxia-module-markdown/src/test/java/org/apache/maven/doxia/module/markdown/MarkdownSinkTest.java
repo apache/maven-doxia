@@ -531,4 +531,23 @@ public class MarkdownSinkTest extends AbstractSinkTest {
                 + MarkdownMarkup.INDENT + MarkdownMarkup.VERBATIM_END_MARKUP + EOL + EOL + "After" + EOL + EOL;
         assertEquals(expected, getSinkContent(), "Wrong verbatim!");
     }
+
+    @Test
+    public void testDefinitionListWithInlineStyles() {
+        try (final Sink sink = getSink()) {
+            sink.definitionList();
+            sink.definedTerm();
+            sink.text("term");
+            sink.definedTerm_();
+            sink.definition();
+            sink.text("prefix ");
+            sink.text("code", SinkEventAttributeSet.Semantics.CODE);
+            sink.text("suffix<a>test</a>", SinkEventAttributeSet.Semantics.EMPHASIS);
+            sink.definition_();
+            sink.definitionList_();
+        }
+        String expected = "<dl>" + EOL + "<dt>term</dt>" + EOL
+                + "<dd>prefix <code>code</code><em>suffix&lt;a&gt;test&lt;/a&gt;</em></dd>" + EOL + "</dl>" + EOL + EOL;
+        assertEquals(expected, getSinkContent(), "Wrong heading after inline element!");
+    }
 }
