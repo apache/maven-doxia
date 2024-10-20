@@ -1403,7 +1403,7 @@ public class Xhtml5BaseSink extends AbstractXmlSink implements HtmlMarkup {
     /** {@inheritDoc} */
     @Override
     public void pageBreak() {
-        comment(" PB ", false);
+        comment(" PB ");
     }
 
     /** {@inheritDoc} */

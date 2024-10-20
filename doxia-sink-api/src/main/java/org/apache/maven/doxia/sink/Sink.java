@@ -1731,7 +1731,7 @@ public interface Sink extends AutoCloseable {
      *
      * @param comment The comment to write.
      * @param endsWithLineBreak If {@code true} comment ends with a line break, i.e. nothing else should follow on the same line
-     * @since 2.1
+     * @since 2.1.0
      */
     default void comment(String comment, boolean endsWithLineBreak) {
         comment(comment);
