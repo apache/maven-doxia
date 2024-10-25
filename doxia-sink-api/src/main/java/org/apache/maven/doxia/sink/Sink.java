@@ -716,7 +716,7 @@ public interface Sink extends AutoCloseable {
      * <p>
      *   Supported attributes are the {@link SinkEventAttributes base attributes}.
      * </p>
-     *
+     * A list must contain at least one {@link #listItem(SinkEventAttributes)} or {@link #listItem()} as direct successor of this method.
      * @param attributes A set of {@link SinkEventAttributes}, may be <code>null</code>.
      * @since 1.1
      */
@@ -740,7 +740,18 @@ public interface Sink extends AutoCloseable {
      * <p>
      *   Supported attributes are the {@link SinkEventAttributes base attributes}.
      * </p>
-     *
+     * Nested lists must have the following Sink method sequence:
+     * <ol>
+     * <li>{@link #listItem(int,SinkEventAttributes)} or {@link #listItem(int)}</li>
+     * <li>{@link #list(int,SinkEventAttributes)} or {@link #list(int)}</li>
+     * <li>{@link #listItem(int,SinkEventAttributes)} or {@link #listItem(int)}</li>
+     * <li>{@code ...}</li>
+     * <li>{@link #listItem_()}</li>
+     * <li>{@link #list_()}</li>
+     * <li>{@code ...}</li>
+     * <li>{@link #listItem_()}</li>
+     * <li>{@link #list_()}</li>
+     * </ol>
      * @param attributes A set of {@link SinkEventAttributes}, may be <code>null</code>.
      * @since 1.1
      */
@@ -761,11 +772,10 @@ public interface Sink extends AutoCloseable {
 
     /**
      * Starts an ordered list element.
-     *
      * <p>
      *   Supported attributes are the {@link SinkEventAttributes base attributes}.
      * </p>
-     *
+     * A list must contain at least one {@link #numberedListItem(SinkEventAttributes)} or {@link #numberedListItem()} as direct successor of this method.
      * @param numbering the numbering style.
      * @param attributes A set of {@link SinkEventAttributes}, may be <code>null</code>.
      * @since 1.1
@@ -795,7 +805,18 @@ public interface Sink extends AutoCloseable {
      * <p>
      *   Supported attributes are the {@link SinkEventAttributes base attributes}.
      * </p>
-     *
+     * Nested lists must have the following Sink method sequence:
+     * <ol>
+     * <li>{@link #numberedListItem(int,SinkEventAttributes)} or {@link #numberedListItem(int)}</li>
+     * <li>{@link #numberedList(int,SinkEventAttributes)} or {@link #numberedList(int)}</li>
+     * <li>{@link #numberedListItem(int,SinkEventAttributes)} or {@link #numberedListItem(int)}</li>
+     * <li>{@code ...}</li>
+     * <li>{@link #numberedListItem_()}</li>
+     * <li>{@link #numberedList_()}</li>
+     * <li>{@code ...}</li>
+     * <li>{@link #numberedListItem_()}</li>
+     * <li>{@link #numberedList_()}</li>
+     * </ol>
      * @param attributes A set of {@link SinkEventAttributes}, may be <code>null</code>.
      * @since 1.1
      */
