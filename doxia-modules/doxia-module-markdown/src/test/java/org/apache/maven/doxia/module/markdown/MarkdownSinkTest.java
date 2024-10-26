@@ -157,12 +157,12 @@ public class MarkdownSinkTest extends AbstractSinkTest {
 
     /** {@inheritDoc} */
     protected String getListBlock(String item) {
-        return MarkdownMarkup.LIST_UNORDERED_ITEM_START_MARKUP + getEscapedText(item) + EOL + EOL;
+        return MarkdownMarkup.LIST_UNORDERED_ITEM_START_MARKUP + getEscapedText(item) + EOL;
     }
 
     /** {@inheritDoc} */
     protected String getNumberedListBlock(String item) {
-        return MarkdownMarkup.LIST_ORDERED_ITEM_START_MARKUP + getEscapedText(item) + EOL + EOL;
+        return MarkdownMarkup.LIST_ORDERED_ITEM_START_MARKUP + getEscapedText(item) + EOL;
     }
 
     /** {@inheritDoc} */
@@ -486,7 +486,6 @@ public class MarkdownSinkTest extends AbstractSinkTest {
 
         String expected = "- item1" + EOL
                 + "    - item1a" + EOL
-                + EOL
                 + "- " + EOL + EOL
                 + "    > blockquote" + EOL + EOL
                 + "- item3" + EOL
@@ -548,7 +547,7 @@ public class MarkdownSinkTest extends AbstractSinkTest {
 
         String expected = "- Before" + EOL + EOL + MarkdownMarkup.INDENT + MarkdownMarkup.VERBATIM_START_MARKUP + EOL
                 + MarkdownMarkup.INDENT + "codeline1" + EOL + MarkdownMarkup.INDENT + "codeline2" + EOL
-                + MarkdownMarkup.INDENT + MarkdownMarkup.VERBATIM_END_MARKUP + EOL + EOL + "After" + EOL + EOL;
+                + MarkdownMarkup.INDENT + MarkdownMarkup.VERBATIM_END_MARKUP + EOL + EOL + "After" + EOL;
         assertEquals(expected, getSinkContent(), "Wrong verbatim!");
     }
 
@@ -569,5 +568,37 @@ public class MarkdownSinkTest extends AbstractSinkTest {
         String expected = "<dl>" + EOL + "<dt>term</dt>" + EOL
                 + "<dd>prefix <code>code</code><em>suffix&lt;a&gt;test&lt;/a&gt;</em></dd>" + EOL + "</dl>" + EOL + EOL;
         assertEquals(expected, getSinkContent(), "Wrong heading after inline element!");
+    }
+
+    @Test
+    public void testNestedListBeingTight() {
+        try (final Sink sink = getSink()) {
+            sink.list();
+            sink.listItem();
+            sink.text("item 1");
+            sink.listItem_();
+            sink.listItem();
+            sink.text("item 2");
+            sink.list();
+            sink.listItem();
+            sink.text("item 2 a");
+            sink.listItem_();
+            sink.listItem();
+            sink.text("item 2 b");
+            sink.listItem_();
+            sink.list_();
+            sink.listItem_();
+            sink.list_();
+            sink.listItem();
+            sink.text("item 3");
+            sink.listItem_();
+            sink.list();
+        }
+        String expected = "- item 1" + EOL
+                + "- item 2" + EOL
+                + "    - item 2 a" + EOL
+                + "    - item 2 b" + EOL
+                + "- item 3" + EOL;
+        assertEquals(expected, getSinkContent());
     }
 }

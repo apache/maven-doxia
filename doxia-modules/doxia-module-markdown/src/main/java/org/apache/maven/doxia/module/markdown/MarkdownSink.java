@@ -448,7 +448,7 @@ public class MarkdownSink extends AbstractTextSink implements MarkdownMarkup {
 
     @Override
     public void list_() {
-        ensureBlankLine();
+        ensureBeginningOfLine();
     }
 
     @Override
@@ -476,7 +476,7 @@ public class MarkdownSink extends AbstractTextSink implements MarkdownMarkup {
 
     @Override
     public void numberedList_() {
-        writeUnescaped(EOL);
+        ensureBeginningOfLine();
     }
 
     @Override
