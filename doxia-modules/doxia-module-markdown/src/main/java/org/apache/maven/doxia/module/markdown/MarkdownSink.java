@@ -805,15 +805,13 @@ public class MarkdownSink extends AbstractTextSink implements MarkdownMarkup {
             // defer emitting link end markup until inline_() is called
             StringBuilder linkEndMarkup = new StringBuilder();
             linkEndMarkup.append(LINK_START_2_MARKUP);
-            linkEndMarkup.append(escapeMarkdown(linkName.startsWith("#") ? linkName.substring(1) : linkName));
+            linkEndMarkup.append(linkName);
             linkEndMarkup.append(LINK_END_MARKUP);
             Queue<String> endMarkups = new LinkedList<>(inlineStack.poll());
             endMarkups.add(linkEndMarkup.toString());
             inlineStack.add(endMarkups);
         } else {
-            writeUnescaped(LINK_START_2_MARKUP);
-            text(linkName.startsWith("#") ? linkName.substring(1) : linkName);
-            writeUnescaped(LINK_END_MARKUP);
+            writeUnescaped(LINK_START_2_MARKUP + linkName + LINK_END_MARKUP);
         }
         linkName = null;
     }
