@@ -37,5 +37,4 @@ public interface MacroExecutor {
      */
     void executeMacro(String macroId, MacroRequest request, Sink sink)
             throws MacroExecutionException, MacroNotFoundException;
-
 }

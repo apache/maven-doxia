@@ -132,7 +132,7 @@ public abstract class AbstractParser implements Parser, MacroExecutor {
 
     @Override
     public void setMacroExecutor(MacroExecutor macroExecutor) {
-        this.macroExecutor  = macroExecutor;
+        this.macroExecutor = macroExecutor;
     }
     /**
      * Execute a macro on the given sink.
