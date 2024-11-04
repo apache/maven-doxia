@@ -28,6 +28,7 @@ import java.io.StringReader;
 import java.io.StringWriter;
 import java.util.HashMap;
 import java.util.Iterator;
+import java.util.LinkedHashMap;
 import java.util.Map;
 
 import org.apache.commons.io.IOUtils;
@@ -81,7 +82,7 @@ public class FmlParser extends AbstractXmlParser implements FmlMarkup {
     private String macroName;
 
     /** The macro parameters. */
-    private Map<String, Object> macroParameters = new HashMap<>();
+    private Map<String, Object> macroParameters = new LinkedHashMap<>();
 
     /** {@inheritDoc} */
     public void parse(Reader source, Sink sink, String reference) throws ParseException {

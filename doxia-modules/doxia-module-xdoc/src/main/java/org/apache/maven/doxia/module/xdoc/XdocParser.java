@@ -27,6 +27,7 @@ import java.io.Reader;
 import java.io.StringReader;
 import java.io.StringWriter;
 import java.util.HashMap;
+import java.util.LinkedHashMap;
 import java.util.Map;
 
 import org.apache.commons.io.IOUtils;
@@ -72,7 +73,7 @@ public class XdocParser extends Xhtml1BaseParser implements XdocMarkup {
     /**
      * The macro parameters.
      */
-    private Map<String, Object> macroParameters = new HashMap<>();
+    private Map<String, Object> macroParameters = new LinkedHashMap<>();
 
     /**
      * Indicates that we're inside &lt;properties&gt; or &lt;head&gt;.
