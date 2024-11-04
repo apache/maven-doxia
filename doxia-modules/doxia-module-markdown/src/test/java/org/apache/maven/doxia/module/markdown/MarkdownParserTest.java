@@ -24,6 +24,7 @@ import java.io.IOException;
 import java.io.Reader;
 import java.util.Iterator;
 import java.util.List;
+import java.util.ListIterator;
 
 import org.apache.maven.doxia.parser.AbstractParser;
 import org.apache.maven.doxia.parser.AbstractParserTest;
@@ -832,6 +833,38 @@ public class MarkdownParserTest extends AbstractParserTest {
                 "section2_",
                 "section1_",
                 "body_");
+    }
+
+    @Test
+    public void testCommentsNotRemovedWithEmitCommentsTrue() throws ParseException, IOException {
+        parser.setEmitComments(true);
+        List<SinkEventElement> eventList =
+                parseFileToEventTestingSink("comments").getEventList();
+
+        ListIterator<SinkEventElement> it = eventList.listIterator();
+        assertEventPrefix(it);
+        assertComment(it, "comment at beginning");
+        assertSinkStartsWith(it, "paragraph", "text", "paragraph_");
+        assertComment(it, "comment in the middle");
+        assertSinkStartsWith(it, "paragraph", "text", "paragraph_");
+        assertComment(it, "comment at end");
+        assertEventSuffix(it);
+    }
+
+    @Test
+    public void testCommentsRemovedWithEmitCommentsFalse() throws ParseException, IOException {
+        parser.setEmitComments(false);
+        List<SinkEventElement> eventList =
+                parseFileToEventTestingSink("comments").getEventList();
+
+        assertSinkDoesNotContain(eventList.iterator(), "comment", "comment_");
+    }
+
+    protected static void assertComment(ListIterator<SinkEventElement> it, String comment) {
+        assertSinkEquals(it.next(), "comment", comment);
+        // every comment ends with a line break in the emitted html which leads to an additional text event containing a
+        // line break in the event list
+        assertConcatenatedTextEquals(it, "", true);
     }
 
     @Override
