@@ -21,6 +21,7 @@ package org.apache.maven.doxia.parser;
 import java.io.Reader;
 
 import org.apache.maven.doxia.index.IndexingSink;
+import org.apache.maven.doxia.macro.MacroExecutor;
 import org.apache.maven.doxia.sink.Sink;
 import org.apache.maven.doxia.sink.impl.SinkWrapperFactory;
 
@@ -110,4 +111,11 @@ public interface Parser {
      * @since 2.0.0
      */
     boolean isEmitAnchorsForIndexableEntries();
+
+    /**
+     * Delegates macro execution to the given {@link MacroExecutor}.
+     * @param macroExecutor (may be {@code null} to use the built-in macro executor, which resolves all macros to {@link Sink} methods)}
+     * @since 2.1.0
+     */
+    void setMacroExecutor(MacroExecutor macroExecutor);
 }
