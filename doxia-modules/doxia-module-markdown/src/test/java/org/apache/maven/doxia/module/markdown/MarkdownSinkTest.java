@@ -245,7 +245,7 @@ public class MarkdownSinkTest extends AbstractSinkTest {
 
     /** {@inheritDoc} */
     protected String getAnchorBlock(String anchor) {
-        return anchor;
+        return "<a id=\"" + anchor + "\"></a>" + anchor;
     }
 
     /** {@inheritDoc} */
