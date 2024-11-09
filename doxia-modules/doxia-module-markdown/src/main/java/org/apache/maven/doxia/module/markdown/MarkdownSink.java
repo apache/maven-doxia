@@ -18,6 +18,8 @@
  */
 package org.apache.maven.doxia.module.markdown;
 
+import javax.swing.text.MutableAttributeSet;
+
 import java.io.PrintWriter;
 import java.io.Writer;
 import java.util.ArrayList;
@@ -35,7 +37,9 @@ import org.apache.maven.doxia.sink.Sink;
 import org.apache.maven.doxia.sink.SinkEventAttributes;
 import org.apache.maven.doxia.sink.impl.AbstractTextSink;
 import org.apache.maven.doxia.sink.impl.SinkEventAttributeSet;
+import org.apache.maven.doxia.sink.impl.SinkUtils;
 import org.apache.maven.doxia.sink.impl.Xhtml5BaseSink;
+import org.apache.maven.doxia.util.DoxiaUtils;
 import org.apache.maven.doxia.util.HtmlTools;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
@@ -774,13 +778,30 @@ public class MarkdownSink extends AbstractTextSink implements MarkdownMarkup {
 
     /** {@inheritDoc} */
     public void anchor(String name, SinkEventAttributes attributes) {
-        // write(ANCHOR_START_MARKUP + name);
-        // TODO get implementation from Xhtml5 base sink
+        // emit html anchor as markdown does not support anchors
+        MutableAttributeSet atts = SinkUtils.filterAttributes(attributes, SinkUtils.SINK_BASE_ATTRIBUTES);
+
+        String id = name;
+
+        if (!DoxiaUtils.isValidId(id)) {
+            id = DoxiaUtils.encodeId(name);
+
+            LOGGER.debug("{}Modified invalid anchor name '{}' to '{}'", getLocationLogPrefix(), name, id);
+        }
+
+        MutableAttributeSet att = new SinkEventAttributeSet();
+        att.addAttribute(SinkEventAttributes.ID, id);
+        att.addAttributes(atts);
+        StringBuilder htmlAnchor = new StringBuilder("<a");
+        htmlAnchor.append(SinkUtils.getAttributeString(att));
+        htmlAnchor.append(">");
+        htmlAnchor.append("</a>"); // close anchor tag immediately otherwise markdown would not be allowed afterwards
+        writeUnescaped(htmlAnchor.toString());
     }
 
     @Override
     public void anchor_() {
-        // write(ANCHOR_END_MARKUP);
+        // anchor is always empty html element, i.e. already closed with anchor()
     }
 
     /** {@inheritDoc} */
