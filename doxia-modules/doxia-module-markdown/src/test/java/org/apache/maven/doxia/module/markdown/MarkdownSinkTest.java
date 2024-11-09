@@ -250,11 +250,10 @@ public class MarkdownSinkTest extends AbstractSinkTest {
 
     /** {@inheritDoc} */
     protected String getLinkBlock(String link, String text) {
-        String lnk = link.startsWith("#") ? link.substring(1) : link;
         return MarkdownMarkup.LINK_START_1_MARKUP
                 + text
                 + MarkdownMarkup.LINK_START_2_MARKUP
-                + lnk
+                + link
                 + MarkdownMarkup.LINK_END_MARKUP;
     }
 
@@ -527,7 +526,7 @@ public class MarkdownSinkTest extends AbstractSinkTest {
             sink.inline_();
         }
         // heading must be on a new line
-        String expected = "[`label`](http://example\\.com)";
+        String expected = "[`label`](http://example.com)";
         assertEquals(expected, getSinkContent(), "Wrong link on code!");
     }
 
