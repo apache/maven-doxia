@@ -22,6 +22,8 @@ import java.io.IOException;
 import java.io.Reader;
 import java.io.StringWriter;
 import java.io.Writer;
+import java.util.Arrays;
+import java.util.Collection;
 import java.util.Iterator;
 import java.util.ListIterator;
 
@@ -270,7 +272,8 @@ public abstract class AbstractParserTest extends AbstractModuleTest {
      * @param expectedText the expected text which is compared with the concatenated text of all text events
      * @param trimText {@code true} to trim the actual text before comparing with the expected one, otherwise compare without trimming
      */
-    void assertConcatenatedTextEquals(ListIterator<SinkEventElement> it, String expectedText, boolean trimText) {
+    protected static void assertConcatenatedTextEquals(
+            ListIterator<SinkEventElement> it, String expectedText, boolean trimText) {
         StringBuilder builder = new StringBuilder();
         while (it.hasNext()) {
             SinkEventElement currentEvent = it.next();
@@ -300,6 +303,16 @@ public abstract class AbstractParserTest extends AbstractModuleTest {
         }
 
         Assertions.assertEquals(expected.toString(), actual.toString());
+    }
+
+    public static void assertSinkDoesNotContain(Iterator<SinkEventElement> it, String... names) {
+        Collection<String> forbiddenNames = Arrays.asList(names);
+        while (it.hasNext()) {
+            String name = it.next().getName();
+            if (forbiddenNames.contains(name)) {
+                Assertions.fail("Found unexpected event: " + name);
+            }
+        }
     }
 
     public static void assertSinkStartsWith(Iterator<SinkEventElement> it, String... names) {
