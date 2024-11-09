@@ -46,7 +46,7 @@ class IndexingSinkTest {
         sink.section2();
         sink.section3();
         sink.sectionTitle3();
-        sink.text("title3");
+        sink.text("Title 3");
         sink.sectionTitle3_();
         sink.section3_();
         sink.section2_();
@@ -76,7 +76,7 @@ class IndexingSinkTest {
         assertIndexEntry("title1", "title1", 1, entry.getFirstEntry());
         assertIndexEntry(null, null, 1, entry.getFirstEntry().getFirstEntry());
         assertIndexEntry(
-                "title3", "title3", 0, entry.getFirstEntry().getFirstEntry().getFirstEntry());
+                "Title_3", "Title 3", 0, entry.getFirstEntry().getFirstEntry().getFirstEntry());
     }
 
     private void assertIndexEntry(String id, String title, int numChildren, IndexEntry entry) {
