@@ -34,6 +34,7 @@ import java.util.Properties;
 
 import org.apache.maven.doxia.macro.Macro;
 import org.apache.maven.doxia.macro.MacroExecutionException;
+import org.apache.maven.doxia.macro.MacroExecutor;
 import org.apache.maven.doxia.macro.MacroRequest;
 import org.apache.maven.doxia.macro.manager.MacroManager;
 import org.apache.maven.doxia.macro.manager.MacroNotFoundException;
@@ -49,7 +50,7 @@ import org.apache.maven.doxia.sink.impl.SinkWrapperFactoryComparator;
  * @author Jason van Zyl
  * @since 1.0
  */
-public abstract class AbstractParser implements Parser {
+public abstract class AbstractParser implements Parser, MacroExecutor {
     /** Indicates that a second parsing is required. */
     private boolean secondParsing = false;
 
@@ -67,6 +68,8 @@ public abstract class AbstractParser implements Parser {
     private boolean emitComments = true;
 
     private boolean emitAnchors = false;
+
+    private MacroExecutor macroExecutor = null;
 
     private static final String DOXIA_VERSION;
 
@@ -127,6 +130,10 @@ public abstract class AbstractParser implements Parser {
         this.emitAnchors = emitAnchors;
     }
 
+    @Override
+    public void setMacroExecutor(MacroExecutor macroExecutor) {
+        this.macroExecutor = macroExecutor;
+    }
     /**
      * Execute a macro on the given sink.
      *
@@ -136,13 +143,15 @@ public abstract class AbstractParser implements Parser {
      * @throws org.apache.maven.doxia.macro.MacroExecutionException if an error occurred during execution
      * @throws org.apache.maven.doxia.macro.manager.MacroNotFoundException if the macro could not be found
      */
-    // Made public right now because of the structure of the APT parser and
-    // all its inner classes.
+    @Override
     public void executeMacro(String macroId, MacroRequest request, Sink sink)
             throws MacroExecutionException, MacroNotFoundException {
-        Macro macro = getMacroManager().getMacro(macroId);
-
-        macro.execute(sink, request);
+        if (macroExecutor != null) {
+            macroExecutor.executeMacro(macroId, request, sink);
+        } else {
+            Macro macro = getMacroManager().getMacro(macroId);
+            macro.execute(sink, request);
+        }
     }
 
     /**

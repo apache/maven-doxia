@@ -26,7 +26,7 @@ import java.io.IOException;
 import java.io.Reader;
 import java.io.StringReader;
 import java.io.StringWriter;
-import java.util.HashMap;
+import java.util.LinkedHashMap;
 import java.util.Map;
 
 import org.apache.commons.io.IOUtils;
@@ -194,7 +194,7 @@ public class Xhtml5Parser extends Xhtml5BaseParser implements Xhtml5Markup {
         String[] params = StringUtils.split(s, "|");
         String macroName = params[0];
 
-        Map<String, Object> parameters = new HashMap<>();
+        Map<String, Object> parameters = new LinkedHashMap<>();
         for (int i = 1; i < params.length; i++) {
             String[] param = StringUtils.split(params[i], "=");
             if (param.length == 1) {

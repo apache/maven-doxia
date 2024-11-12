@@ -25,7 +25,7 @@ import java.io.IOException;
 import java.io.Reader;
 import java.io.StringReader;
 import java.io.StringWriter;
-import java.util.HashMap;
+import java.util.LinkedHashMap;
 import java.util.Map;
 import java.util.StringTokenizer;
 
@@ -2405,7 +2405,7 @@ public class AptParser extends AbstractTextParser implements AptMarkup {
 
             String macroId = params[0];
 
-            Map<String, Object> parameters = new HashMap<>();
+            Map<String, Object> parameters = new LinkedHashMap<>();
 
             for (int i = 1; i < params.length; i++) {
                 String[] param = StringUtils.split(params[i], "=");
