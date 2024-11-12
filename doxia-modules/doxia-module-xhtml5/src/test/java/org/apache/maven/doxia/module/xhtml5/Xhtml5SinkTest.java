@@ -95,8 +95,8 @@ public class Xhtml5SinkTest extends AbstractSinkTest {
 
     /** {@inheritDoc} */
     protected String getHeadBlock() {
-        return "<!DOCTYPE html\">"
-                + "<html xmlns=\"http://www.w3.org/1999/xhtml\">\n<head>\n<title></title>\n<meta charset=\"UTF-8\"/></head>";
+        return "<!DOCTYPE html\">" + "<html xmlns=\"http://www.w3.org/1999/xhtml\">" + EOL + "<head>" + EOL
+                + "<title></title>" + EOL + "<meta charset=\"UTF-8\"/></head>";
     }
 
     /** {@inheritDoc} */
@@ -126,32 +126,32 @@ public class Xhtml5SinkTest extends AbstractSinkTest {
 
     /** {@inheritDoc} */
     protected String getSection1Block(String title) {
-        return "<section><header>\n<h1>" + title + "</h1></header></section>";
+        return "<section><header>" + EOL + "<h1>" + title + "</h1></header></section>";
     }
 
     /** {@inheritDoc} */
     protected String getSection2Block(String title) {
-        return "<section><header>\n<h2>" + title + "</h2></header></section>";
+        return "<section><header>" + EOL + "<h2>" + title + "</h2></header></section>";
     }
 
     /** {@inheritDoc} */
     protected String getSection3Block(String title) {
-        return "<section><header>\n<h3>" + title + "</h3></header></section>";
+        return "<section><header>" + EOL + "<h3>" + title + "</h3></header></section>";
     }
 
     /** {@inheritDoc} */
     protected String getSection4Block(String title) {
-        return "<section><header>\n<h4>" + title + "</h4></header></section>";
+        return "<section><header>" + EOL + "<h4>" + title + "</h4></header></section>";
     }
 
     /** {@inheritDoc} */
     protected String getSection5Block(String title) {
-        return "<section><header>\n<h5>" + title + "</h5></header></section>";
+        return "<section><header>" + EOL + "<h5>" + title + "</h5></header></section>";
     }
 
     /** {@inheritDoc} */
     protected String getSection6Block(String title) {
-        return "<section><header>\n<h6>" + title + "</h6></header></section>";
+        return "<section><header>" + EOL + "<h6>" + title + "</h6></header></section>";
     }
 
     /** {@inheritDoc} */
@@ -171,17 +171,17 @@ public class Xhtml5SinkTest extends AbstractSinkTest {
 
     /** {@inheritDoc} */
     protected String getListBlock(String item) {
-        return "<ul>\n<li>" + item + "</li></ul>";
+        return "<ul>" + EOL + "<li>" + item + "</li></ul>";
     }
 
     /** {@inheritDoc} */
     protected String getNumberedListBlock(String item) {
-        return "<ol style=\"list-style-type: lower-roman;\">\n<li>" + item + "</li></ol>";
+        return "<ol style=\"list-style-type: lower-roman;\">" + EOL + "<li>" + item + "</li></ol>";
     }
 
     /** {@inheritDoc} */
     protected String getDefinitionListBlock(String definum, String definition) {
-        return "<dl>\n<dt>" + definum + "</dt>\n<dd>" + definition + "</dd></dl>";
+        return "<dl>" + EOL + "<dt>" + definum + "</dt>" + EOL + "<dd>" + definition + "</dd></dl>";
     }
 
     /** {@inheritDoc} */
@@ -197,24 +197,24 @@ public class Xhtml5SinkTest extends AbstractSinkTest {
     /** {@inheritDoc} */
     protected String getTableBlock(String cell, String caption) {
         return "<table class=\"bodyTable\">"
-                + "<caption>Table caption</caption><tr class=\"a\">\n<td>cell</td></tr>"
+                + "<caption>Table caption</caption><tr class=\"a\">" + EOL + "<td>cell</td></tr>"
                 + "</table>";
     }
 
     @Override
     protected String getTableWithHeaderBlock(String... rowPrefixes) {
-        return "<table class=\"bodyTable\">\n"
-                + "<tr class=\"a\">\n"
-                + "<th>" + rowPrefixes[0] + "0</th>\n"
-                + "<th>" + rowPrefixes[0] + "1</th>\n"
-                + "<th>" + rowPrefixes[0] + "2</th></tr>\n"
-                + "<tr class=\"b\">\n"
-                + "<td style=\"text-align: left;\">" + rowPrefixes[1] + "0</td>\n"
-                + "<td style=\"text-align: right;\">" + rowPrefixes[1] + "1</td>\n"
-                + "<td style=\"text-align: center;\">" + rowPrefixes[1] + "2</td></tr>\n"
-                + "<tr class=\"a\">\n"
-                + "<td style=\"text-align: left;\">" + rowPrefixes[2] + "0</td>\n"
-                + "<td style=\"text-align: right;\">" + rowPrefixes[2] + "1</td>\n"
+        return "<table class=\"bodyTable\">" + EOL
+                + "<tr class=\"a\">" + EOL
+                + "<th>" + rowPrefixes[0] + "0</th>" + EOL
+                + "<th>" + rowPrefixes[0] + "1</th>" + EOL
+                + "<th>" + rowPrefixes[0] + "2</th></tr>" + EOL
+                + "<tr class=\"b\">" + EOL
+                + "<td style=\"text-align: left;\">" + rowPrefixes[1] + "0</td>" + EOL
+                + "<td style=\"text-align: right;\">" + rowPrefixes[1] + "1</td>" + EOL
+                + "<td style=\"text-align: center;\">" + rowPrefixes[1] + "2</td></tr>" + EOL
+                + "<tr class=\"a\">" + EOL
+                + "<td style=\"text-align: left;\">" + rowPrefixes[2] + "0</td>" + EOL
+                + "<td style=\"text-align: right;\">" + rowPrefixes[2] + "1</td>" + EOL
                 + "<td style=\"text-align: center;\">" + rowPrefixes[2] + "2</td></tr>"
                 + "</table>";
     }
@@ -367,7 +367,9 @@ public class Xhtml5SinkTest extends AbstractSinkTest {
             sink.close();
         }
 
-        assertEquals("<section><header>\n<h1>&amp;</h1></header>\n<p>&amp;</p></section>", writer.toString());
+        assertEquals(
+                "<section><header>" + EOL + "<h1>&amp;</h1></header>" + EOL + "<p>&amp;</p></section>",
+                writer.toString());
     }
 
     /**
@@ -398,7 +400,7 @@ public class Xhtml5SinkTest extends AbstractSinkTest {
         }
 
         String expected =
-                "<head>\n<title>Title</title><!--A comment--><meta name=\"author\" content=\"&#x123;&amp;\" />"
+                "<head>" + EOL + "<title>Title</title><!--A comment--><meta name=\"author\" content=\"&#x123;&amp;\" />"
                         + "<base href=\"http://maven.apache.org/\" /></head>";
         String actual = writer.toString();
         assertTrue(actual.contains(expected), actual);
