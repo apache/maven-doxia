@@ -29,6 +29,7 @@ import java.util.List;
 import java.util.Stack;
 
 import org.apache.commons.lang3.StringUtils;
+import org.apache.maven.doxia.sink.Sink;
 import org.apache.maven.doxia.sink.SinkEventAttributes;
 import org.apache.maven.doxia.sink.impl.AbstractTextSink;
 import org.apache.maven.doxia.sink.impl.SinkEventAttributeSet;
@@ -574,15 +575,16 @@ public class AptSink extends AbstractTextSink implements AptMarkup {
         rLine.append(TABLE_ROW_START_MARKUP);
 
         for (int i = 0; i < cellCount; i++) {
-            if (cellJustif != null) {
+            if (cellJustif != null && i < cellJustif.length) {
                 switch (cellJustif[i]) {
-                    case 1:
+                    case Sink.JUSTIFY_LEFT:
                         rLine.append(TABLE_COL_LEFT_ALIGNED_MARKUP);
                         break;
-                    case 2:
+                    case Sink.JUSTIFY_RIGHT:
                         rLine.append(TABLE_COL_RIGHT_ALIGNED_MARKUP);
                         break;
                     default:
+                        // default = centered
                         rLine.append(TABLE_COL_CENTERED_ALIGNED_MARKUP);
                 }
             } else {

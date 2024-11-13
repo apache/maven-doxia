@@ -652,7 +652,7 @@ public class MarkdownSink extends AbstractTextSink implements MarkdownMarkup {
     /** Emit the delimiter row which determines the alignment */
     private void writeTableDelimiterRow() {
         writeUnescaped(TABLE_ROW_PREFIX);
-        int justification = Sink.JUSTIFY_LEFT;
+        int justification = Sink.JUSTIFY_DEFAULT;
         for (int i = 0; i < cellCount; i++) {
             // keep previous column's alignment in case too few are specified
             if (cellJustif != null && cellJustif.size() > i) {
@@ -665,8 +665,11 @@ public class MarkdownSink extends AbstractTextSink implements MarkdownMarkup {
                 case Sink.JUSTIFY_CENTER:
                     writeUnescaped(TABLE_COL_CENTER_ALIGNED_MARKUP);
                     break;
-                default:
+                case Sink.JUSTIFY_LEFT:
                     writeUnescaped(TABLE_COL_LEFT_ALIGNED_MARKUP);
+                    break;
+                default:
+                    writeUnescaped(TABLE_COL_DEFAULT_ALIGNED_MARKUP);
                     break;
             }
             writeUnescaped(TABLE_CELL_SEPARATOR_MARKUP);
@@ -697,7 +700,7 @@ public class MarkdownSink extends AbstractTextSink implements MarkdownMarkup {
                 } else {
                     // create non-existing justifications for preceding columns
                     for (int precedingCol = cellJustif.size(); precedingCol < cellCount; precedingCol++) {
-                        cellJustif.add(Sink.JUSTIFY_LEFT);
+                        cellJustif.add(Sink.JUSTIFY_DEFAULT);
                     }
                     cellJustif.add(cellJustification);
                 }

@@ -197,8 +197,12 @@ public class Xhtml5SinkTest extends AbstractSinkTest {
     /** {@inheritDoc} */
     protected String getTableBlock(String cell, String caption) {
         return "<table class=\"bodyTable\">"
-                + "<caption>Table caption</caption><tr class=\"a\">\n<td>cell</td></tr>"
-                + "</table>";
+                + "<caption>" + caption + "</caption>\n"
+                + "<tr class=\"a\">\n"
+                + "<td style=\"text-align: center;\">cell</td>\n"
+                + "<td>" + cell + "</td>\n"
+                + "<td>" + cell + "</td>"
+                + "</tr></table>";
     }
 
     @Override
@@ -217,14 +221,6 @@ public class Xhtml5SinkTest extends AbstractSinkTest {
                 + "<td style=\"text-align: right;\">" + rowPrefixes[2] + "1</td>\n"
                 + "<td style=\"text-align: center;\">" + rowPrefixes[2] + "2</td></tr>"
                 + "</table>";
-    }
-
-    // Disable testTable until the order of attributes issue is clarified
-    // TODO: remove
-    /** {@inheritDoc} */
-    @Test
-    public void testTable() {
-        assertEquals("", "", "Dummy!");
     }
 
     /** {@inheritDoc} */

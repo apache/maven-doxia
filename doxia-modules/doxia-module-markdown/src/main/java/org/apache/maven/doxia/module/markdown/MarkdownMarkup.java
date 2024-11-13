@@ -108,8 +108,11 @@ public interface MarkdownMarkup extends TextMarkup {
     /** Syntax for the table cell start: "|" */
     String TABLE_CELL_SEPARATOR_MARKUP = String.valueOf(PIPE);
 
-    /** Syntax for the table column, left alignment (default): "---" */
-    String TABLE_COL_LEFT_ALIGNED_MARKUP = StringUtils.repeat(String.valueOf(MINUS), 3);
+    /** Syntax for the table column, default alignment (default): "---" */
+    String TABLE_COL_DEFAULT_ALIGNED_MARKUP = StringUtils.repeat(String.valueOf(MINUS), 3);
+
+    /** Syntax for the table column, left alignment (default): ":---" */
+    String TABLE_COL_LEFT_ALIGNED_MARKUP = COLON + StringUtils.repeat(String.valueOf(MINUS), 3);
 
     /** Syntax for the table column, right alignment: "---:" */
     String TABLE_COL_RIGHT_ALIGNED_MARKUP = StringUtils.repeat(String.valueOf(MINUS), 3) + COLON;

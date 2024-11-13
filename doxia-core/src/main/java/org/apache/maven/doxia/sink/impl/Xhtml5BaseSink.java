@@ -27,10 +27,8 @@ import java.io.Writer;
 import java.util.ArrayList;
 import java.util.EmptyStackException;
 import java.util.Enumeration;
-import java.util.HashMap;
 import java.util.LinkedList;
 import java.util.List;
-import java.util.Map;
 import java.util.Objects;
 import java.util.Stack;
 import java.util.regex.Pattern;
@@ -1086,22 +1084,21 @@ public class Xhtml5BaseSink extends AbstractXmlSink implements HtmlMarkup {
                 && getCellJustif() != null) {
             int cellCount = getCellCount();
             int[] cellJustif = getCellJustif();
+            int currentCellJust =
+                    cellCount < cellJustif.length ? cellJustif[cellCount] : cellJustif[cellJustif.length - 1];
             if (cellCount < cellJustif.length) {
-                if (attributes == null) {
-                    attributes = new SinkEventAttributeSet();
+                String tdStyle = getStyleForTableJustification(currentCellJust);
+                if (tdStyle != null) {
+                    if (attributes == null) {
+                        attributes = new SinkEventAttributeSet();
+                    } else if (attributes.isDefined(SinkEventAttributes.STYLE)) {
+                        tdStyle += " "
+                                + attributes
+                                        .getAttribute(SinkEventAttributes.STYLE)
+                                        .toString();
+                    }
+                    attributes.addAttribute(SinkEventAttributes.STYLE, tdStyle);
                 }
-                Map<Integer, String> hash = new HashMap<>();
-                hash.put(Sink.JUSTIFY_CENTER, "center");
-                hash.put(Sink.JUSTIFY_LEFT, "left");
-                hash.put(Sink.JUSTIFY_RIGHT, "right");
-
-                String tdStyle = "text-align: " + hash.get(cellJustif[cellCount]) + ";";
-                if (attributes.isDefined(SinkEventAttributes.STYLE)) {
-                    tdStyle += " "
-                            + attributes.getAttribute(SinkEventAttributes.STYLE).toString();
-                }
-
-                attributes.addAttribute(SinkEventAttributes.STYLE, tdStyle);
             }
         }
 
@@ -1110,6 +1107,24 @@ public class Xhtml5BaseSink extends AbstractXmlSink implements HtmlMarkup {
         } else {
             writeStartTag(t, SinkUtils.filterAttributes(attributes, SinkUtils.SINK_TD_ATTRIBUTES));
         }
+    }
+
+    private static String getStyleForTableJustification(int justification) {
+        String style = "text-align: ";
+        switch (justification) {
+            case Sink.JUSTIFY_CENTER:
+                style += "center;";
+                break;
+            case Sink.JUSTIFY_LEFT:
+                style += "left;";
+                break;
+            case Sink.JUSTIFY_RIGHT:
+                style += "right;";
+                break;
+            default:
+                style = null;
+        }
+        return style;
     }
 
     /** {@inheritDoc} */
