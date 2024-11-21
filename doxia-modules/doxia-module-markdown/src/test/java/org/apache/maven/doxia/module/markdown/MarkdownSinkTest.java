@@ -179,9 +179,13 @@ public class MarkdownSinkTest extends AbstractSinkTest {
 
     /** {@inheritDoc} */
     protected String getTableBlock(String cell, String caption) {
-        return MarkdownMarkup.TABLE_ROW_PREFIX + "   " + MarkdownMarkup.TABLE_CELL_SEPARATOR_MARKUP + EOL
+        return MarkdownMarkup.TABLE_ROW_PREFIX + "   " + MarkdownMarkup.TABLE_CELL_SEPARATOR_MARKUP + "   "
+                + MarkdownMarkup.TABLE_CELL_SEPARATOR_MARKUP + "   " + MarkdownMarkup.TABLE_CELL_SEPARATOR_MARKUP + EOL
                 + MarkdownMarkup.TABLE_ROW_PREFIX
-                + ":---:" + MarkdownMarkup.TABLE_CELL_SEPARATOR_MARKUP + EOL + MarkdownMarkup.TABLE_ROW_PREFIX
+                + ":---:" + MarkdownMarkup.TABLE_CELL_SEPARATOR_MARKUP + "---"
+                + MarkdownMarkup.TABLE_CELL_SEPARATOR_MARKUP + "---" + MarkdownMarkup.TABLE_CELL_SEPARATOR_MARKUP + EOL
+                + MarkdownMarkup.TABLE_ROW_PREFIX
+                + cell + MarkdownMarkup.TABLE_CELL_SEPARATOR_MARKUP + cell + MarkdownMarkup.TABLE_CELL_SEPARATOR_MARKUP
                 + cell + MarkdownMarkup.TABLE_CELL_SEPARATOR_MARKUP + EOL;
     }
 
@@ -190,7 +194,7 @@ public class MarkdownSinkTest extends AbstractSinkTest {
         StringBuilder expectedMarkup = new StringBuilder();
         expectedMarkup.append(MarkdownMarkup.TABLE_ROW_PREFIX + getEscapedText(rowPrefixes[0]) + "0|"
                 + getEscapedText(rowPrefixes[0]) + "1|" + getEscapedText(rowPrefixes[0]) + "2|" + EOL);
-        expectedMarkup.append(MarkdownMarkup.TABLE_ROW_PREFIX + "---|---:|:---:|" + EOL);
+        expectedMarkup.append(MarkdownMarkup.TABLE_ROW_PREFIX + ":---|---:|:---:|" + EOL);
         for (int n = 1; n < rowPrefixes.length; n++) {
             expectedMarkup.append(MarkdownMarkup.TABLE_ROW_PREFIX + getEscapedText(rowPrefixes[n]) + "0|"
                     + getEscapedText(rowPrefixes[n]) + "1|" + getEscapedText(rowPrefixes[n]) + "2|" + EOL);

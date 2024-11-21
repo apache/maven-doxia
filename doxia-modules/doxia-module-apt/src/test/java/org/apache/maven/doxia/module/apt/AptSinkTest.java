@@ -182,11 +182,19 @@ public class AptSinkTest extends AbstractSinkTest {
         return EOL
                 + AptMarkup.TABLE_ROW_START_MARKUP
                 + AptMarkup.TABLE_COL_CENTERED_ALIGNED_MARKUP
+                + AptMarkup.TABLE_COL_CENTERED_ALIGNED_MARKUP
+                + AptMarkup.TABLE_COL_CENTERED_ALIGNED_MARKUP
                 + EOL
+                + cell
+                + AptMarkup.TABLE_ROW_SEPARATOR_MARKUP
+                + cell
+                + AptMarkup.TABLE_ROW_SEPARATOR_MARKUP
                 + cell
                 + AptMarkup.TABLE_ROW_SEPARATOR_MARKUP
                 + EOL
                 + AptMarkup.TABLE_ROW_START_MARKUP
+                + AptMarkup.TABLE_COL_CENTERED_ALIGNED_MARKUP
+                + AptMarkup.TABLE_COL_CENTERED_ALIGNED_MARKUP
                 + AptMarkup.TABLE_COL_CENTERED_ALIGNED_MARKUP
                 + EOL
                 + caption

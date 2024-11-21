@@ -638,9 +638,11 @@ public abstract class AbstractSinkTest extends AbstractModuleTest {
 
     /**
      * Checks that the sequence <code>[table(),
-     * tableRows(Sink.JUSTIFY_CENTER, false), tableRow(), tableCell(),
-     * text(cell), tableCell_(), tableRow_(), tableRows_(), tableCaption(),
-     * text(caption), tableCaption_(), table_()]</code>,
+     * tableRows({Sink.JUSTIFY_CENTER, JUSTIFY_DEFAULT}, false), tableRow(),
+     * tableCell(), text(cell), tableCell_(),
+     * tableCell(), text(cell), tableCell_(),
+     * tableCell(), text(cell), tableCell_(),
+     * tableRow_(), tableRows_(), tableCaption(), text(caption), tableCaption_(), table_()]</code>,
      * invoked on the current sink, produces the same result as
      * {@link #getTableBlock getTableBlock}(cell, caption).
      */
@@ -648,10 +650,16 @@ public abstract class AbstractSinkTest extends AbstractModuleTest {
     public void testTable() {
         String cell = "cell";
         String caption = "Table_caption";
-        int[] justify = {Sink.JUSTIFY_CENTER};
+        int[] justify = {Sink.JUSTIFY_CENTER, Sink.JUSTIFY_DEFAULT};
         sink.table();
         sink.tableRows(justify, false);
         sink.tableRow();
+        sink.tableCell();
+        sink.text(cell);
+        sink.tableCell_();
+        sink.tableCell();
+        sink.text(cell);
+        sink.tableCell_();
         sink.tableCell();
         sink.text(cell);
         sink.tableCell_();

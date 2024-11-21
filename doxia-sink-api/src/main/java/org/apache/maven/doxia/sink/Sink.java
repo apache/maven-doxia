@@ -122,6 +122,14 @@ public interface Sink extends AutoCloseable {
     int SECTION_LEVEL_6 = 6;
 
     /**
+     * Default alignment for table cells.
+     * Actual value depends on the implementation.
+     * @see #tableRows(int[], boolean)
+     * @since 2.1.0
+     */
+    int JUSTIFY_DEFAULT = -1;
+
+    /**
      * Center alignment for table cells.
      * @see #tableRows(int[], boolean)
      */
@@ -1122,11 +1130,14 @@ public interface Sink extends AutoCloseable {
      * If null a left alignment is assumed by default. If this array
      * has less elements than there are columns in the table then the value of
      * the last array element will be taken as default for the remaining table cells.
-     * @param grid true to provide a grid, false otherwise.
+     * Each element of the array must be one of the following constants:
+     * {@link #JUSTIFY_LEFT}, {@link #JUSTIFY_CENTER}, {@link #JUSTIFY_RIGHT} or {@link #JUSTIFY_DEFAULT}.
+     * @param grid true to render a grid, false otherwise.
      * @see #table(SinkEventAttributes)
      * @see #JUSTIFY_CENTER
      * @see #JUSTIFY_LEFT
      * @see #JUSTIFY_RIGHT
+     * @see #JUSTIFY_DEFAULT
      */
     void tableRows(int[] justification, boolean grid);
 

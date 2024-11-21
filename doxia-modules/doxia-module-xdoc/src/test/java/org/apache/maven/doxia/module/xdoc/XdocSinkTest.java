@@ -209,8 +209,10 @@ public class XdocSinkTest extends AbstractSinkTest {
 
     /** {@inheritDoc} */
     protected String getTableBlock(String cell, String caption) {
-        return "<table border=\"0\"><caption>" + caption + "</caption>\n<tr>\n<td style=\"text-align: center;\">" + cell
-                + "</td></tr></table>";
+        return "<table border=\"0\"><caption>" + caption + "</caption>\n<tr>\n"
+                + "<td style=\"text-align: center;\">" + cell + "</td>\n"
+                + "<td>" + cell + "</td>\n"
+                + "<td>" + cell + "</td></tr></table>";
     }
 
     @Override
