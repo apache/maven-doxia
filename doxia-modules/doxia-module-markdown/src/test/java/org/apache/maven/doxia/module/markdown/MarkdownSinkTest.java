@@ -233,8 +233,14 @@ public class MarkdownSinkTest extends AbstractSinkTest {
     }
 
     /** {@inheritDoc} */
-    protected String getVerbatimSourceBlock(String text) {
+    protected String getVerbatimBlock(String text) {
         return MarkdownMarkup.VERBATIM_START_MARKUP + EOL + text + EOL + MarkdownMarkup.VERBATIM_END_MARKUP + EOL + EOL;
+    }
+
+    /** {@inheritDoc} */
+    protected String getVerbatimSourceBlock(String text) {
+        return MarkdownMarkup.VERBATIM_START_MARKUP + "unknown" + EOL + text + EOL + MarkdownMarkup.VERBATIM_END_MARKUP
+                + EOL + EOL;
     }
 
     /** {@inheritDoc} */
@@ -548,9 +554,10 @@ public class MarkdownSinkTest extends AbstractSinkTest {
             sink.list_();
         }
 
-        String expected = "- Before" + EOL + EOL + MarkdownMarkup.INDENT + MarkdownMarkup.VERBATIM_START_MARKUP + EOL
-                + MarkdownMarkup.INDENT + "codeline1" + EOL + MarkdownMarkup.INDENT + "codeline2" + EOL
-                + MarkdownMarkup.INDENT + MarkdownMarkup.VERBATIM_END_MARKUP + EOL + EOL + "After" + EOL;
+        String expected =
+                "- Before" + EOL + EOL + MarkdownMarkup.INDENT + MarkdownMarkup.VERBATIM_START_MARKUP + "unknown" + EOL
+                        + MarkdownMarkup.INDENT + "codeline1" + EOL + MarkdownMarkup.INDENT + "codeline2" + EOL
+                        + MarkdownMarkup.INDENT + MarkdownMarkup.VERBATIM_END_MARKUP + EOL + EOL + "After" + EOL;
         assertEquals(expected, getSinkContent(), "Wrong verbatim!");
     }
 

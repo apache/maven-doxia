@@ -254,6 +254,11 @@ public class Xhtml5SinkTest extends AbstractSinkTest {
     }
 
     /** {@inheritDoc} */
+    protected String getVerbatimBlock(String text) {
+        return "<pre>" + text + "</pre>";
+    }
+
+    /** {@inheritDoc} */
     protected String getVerbatimSourceBlock(String text) {
         return "<pre><code>" + text + "</code></pre>";
     }
