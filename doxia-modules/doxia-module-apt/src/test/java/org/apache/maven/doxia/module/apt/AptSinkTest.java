@@ -244,6 +244,11 @@ public class AptSinkTest extends AbstractSinkTest {
     }
 
     /** {@inheritDoc} */
+    protected String getVerbatimBlock(String text) {
+        return EOL + EOL + AptMarkup.VERBATIM_START_MARKUP + EOL + text + EOL + AptMarkup.VERBATIM_START_MARKUP + EOL;
+    }
+
+    /** {@inheritDoc} */
     protected String getVerbatimSourceBlock(String text) {
         return EOL
                 + EOL

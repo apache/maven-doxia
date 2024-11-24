@@ -28,6 +28,7 @@ import java.util.Collection;
 import java.util.Collections;
 import java.util.LinkedList;
 import java.util.List;
+import java.util.NoSuchElementException;
 import java.util.Queue;
 import java.util.function.UnaryOperator;
 import java.util.stream.Collectors;
@@ -552,9 +553,13 @@ public class MarkdownSink extends AbstractTextSink implements MarkdownMarkup {
 
     @Override
     public void verbatim(SinkEventAttributes attributes) {
-        // always assume is supposed to be monospaced (i.e. emitted inside a <pre><code>...</code></pre>)
+        // if no source attribute, then don't emit an info string
         startContext(ElementContext.CODE_BLOCK);
-        writeUnescaped(VERBATIM_START_MARKUP + EOL);
+        writeUnescaped(VERBATIM_START_MARKUP);
+        if (attributes != null && attributes.containsAttributes(SinkEventAttributeSet.SOURCE)) {
+            writeUnescaped("unknown"); // unknown language
+        }
+        writeUnescaped(EOL);
         writeUnescaped(getLinePrefix());
     }
 
