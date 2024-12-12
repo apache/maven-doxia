@@ -31,6 +31,7 @@ import java.util.LinkedHashMap;
 import java.util.Map;
 
 import org.apache.commons.io.IOUtils;
+import org.apache.commons.lang3.StringUtils;
 import org.apache.maven.doxia.macro.MacroExecutionException;
 import org.apache.maven.doxia.macro.MacroRequest;
 import org.apache.maven.doxia.macro.manager.MacroNotFoundException;
@@ -79,6 +80,8 @@ public class XdocParser extends Xhtml1BaseParser implements XdocMarkup {
      * Indicates that we're inside &lt;properties&gt; or &lt;head&gt;.
      */
     private boolean inHead;
+
+    private boolean inSource;
 
     /**
      * Indicates that &lt;title&gt; was called from &lt;properties&gt; or &lt;head&gt;.
@@ -159,6 +162,7 @@ public class XdocParser extends Xhtml1BaseParser implements XdocMarkup {
             attribs.addAttributes(SinkEventAttributeSet.SOURCE);
 
             sink.verbatim(attribs);
+            inSource = true;
         } else if (parser.getName().equals(PROPERTIES_TAG.toString())) {
             if (!inHead) // we might be in head from a <head> already
             {
@@ -216,6 +220,7 @@ public class XdocParser extends Xhtml1BaseParser implements XdocMarkup {
             verbatim_();
 
             sink.verbatim_();
+            inSource = false;
         } else if (parser.getName().equals(PROPERTIES_TAG.toString())) {
             // Do nothing, head is closed with BODY start.
         } else if (parser.getName().equals(MACRO_TAG.toString())) {
@@ -239,6 +244,23 @@ public class XdocParser extends Xhtml1BaseParser implements XdocMarkup {
         }
 
         isEmptyElement = false;
+    }
+
+    /** {@inheritDoc} */
+    protected void handleText(XmlPullParser parser, Sink sink) throws XmlPullParserException {
+        // almost a copy of super.handleText(parser, sink), but with the following changes:
+        // trim left the first text inside source tag because it is emitted inside an inline tag
+        String text = parser.getText();
+        if (inSource) {
+            text = parser.getText();
+            if (text != null && text.length() > 0) {
+                text = StringUtils.stripStart(text, null);
+            }
+            inSource = false;
+        }
+        if ((text != null && !text.isEmpty()) && !isScriptBlock()) {
+            sink.text(text);
+        }
     }
 
     protected void consecutiveSections(int newLevel, Sink sink) {
