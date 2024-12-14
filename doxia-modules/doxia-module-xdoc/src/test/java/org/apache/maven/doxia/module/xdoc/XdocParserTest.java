@@ -291,6 +291,15 @@ public class XdocParserTest extends AbstractParserTest {
         it = parseText(text);
 
         assertSinkEquals(it, "verbatim", "text", "verbatim_");
+
+        // the source should be trimmed left (DOXIA-764) because it is becoming the Sink.verbatim() method (which is
+        // inline)
+        text = "<source>\n" + "some.code() </source>";
+        it = parseText(text);
+
+        assertSinkEquals(it.next(), "verbatim", SinkEventAttributeSet.SOURCE);
+        assertSinkEquals(it.next(), "text", "some.code() ", null);
+        assertSinkEquals(it, "verbatim_");
     }
 
     @Test
