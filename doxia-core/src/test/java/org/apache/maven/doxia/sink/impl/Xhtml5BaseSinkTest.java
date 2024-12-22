@@ -686,6 +686,18 @@ public class Xhtml5BaseSinkTest {
         assertEquals(expected, writer.toString());
     }
 
+    @Test
+    public void testVerbatimSourceWithNewline() {
+        try (Xhtml5BaseSink sink = new Xhtml5BaseSink(writer)) {
+            sink.verbatim(SinkEventAttributeSet.SOURCE);
+            sink.text(EOL + "firstLine");
+            sink.text(EOL + "secondLine");
+            sink.verbatim_();
+        }
+        // first newline must be stripped to render the same as with verbatim without source (special <pre> semantics)
+        assertEquals("<pre><code>firstLine" + EOL + "secondLine</code></pre>", writer.toString());
+    }
+
     /**
      * Test of horizontalRule method, of class Xhtml5BaseSink.
      */
