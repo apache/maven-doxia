@@ -38,7 +38,6 @@ import org.apache.maven.doxia.markup.HtmlMarkup;
 import org.apache.maven.doxia.markup.Markup;
 import org.apache.maven.doxia.sink.Sink;
 import org.apache.maven.doxia.sink.SinkEventAttributes;
-import org.apache.maven.doxia.sink.impl.Xhtml5BaseSink.VerbatimMode;
 import org.apache.maven.doxia.util.DoxiaUtils;
 import org.apache.maven.doxia.util.HtmlTools;
 import org.codehaus.plexus.util.xml.PrettyPrintXMLWriter;
@@ -82,7 +81,9 @@ public class Xhtml5BaseSink extends AbstractXmlSink implements HtmlMarkup {
         /** Inside {@code <pre>} */
         ON,
         /** Inside {@code <pre><code>} */
-        ON_WITH_CODE
+        ON_WITH_CODE,
+        /** Same as {@link #ON_WITH_CODE} but after some text has been emitted */
+        ON_WITH_CODE_AFTER_TEXT
     }
     /** An indication on if we're in verbatim mode and if so, surrounded by which tags. */
     private VerbatimMode verbatimMode;
@@ -885,7 +886,7 @@ public class Xhtml5BaseSink extends AbstractXmlSink implements HtmlMarkup {
      */
     @Override
     public void verbatim_() {
-        if (verbatimMode == VerbatimMode.ON_WITH_CODE) {
+        if (verbatimMode == VerbatimMode.ON_WITH_CODE || verbatimMode == VerbatimMode.ON_WITH_CODE_AFTER_TEXT) {
             writeEndTag(HtmlMarkup.CODE);
         }
         writeEndTag(HtmlMarkup.PRE);
@@ -1439,10 +1440,26 @@ public class Xhtml5BaseSink extends AbstractXmlSink implements HtmlMarkup {
         }
         if (headFlag) {
             getTextBuffer().append(text);
-        } else if (isVerbatim()) {
-            verbatimContent(text);
         } else {
-            content(text);
+            switch (getVerbatimMode()) {
+                case ON_WITH_CODE:
+                    // trim the first newline for backwards compatibility
+                    // as used to be emitted inside pre directly
+                    // https://html.spec.whatwg.org/multipage/grouping-content.html#the-pre-element
+                    // "In the HTML syntax, a leading newline character immediately following the pre element start tag
+                    // is stripped."
+                    // as now emitted inside <pre><code> the stripping is no longer performed by the browser and needs
+                    // to be done server-side
+                    text = StringUtils.stripStart(text, "\r\n");
+                    verbatimMode = VerbatimMode.ON_WITH_CODE_AFTER_TEXT;
+                case ON_WITH_CODE_AFTER_TEXT:
+                case ON:
+                    verbatimContent(text);
+                    break;
+                default:
+                    content(text);
+                    break;
+            }
         }
         if (attributes != null) {
             inline_();
