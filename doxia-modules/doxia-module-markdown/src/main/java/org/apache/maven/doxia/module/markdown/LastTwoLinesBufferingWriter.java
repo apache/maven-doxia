@@ -91,4 +91,8 @@ public class LastTwoLinesBufferingWriter extends Writer {
     public void close() throws IOException {
         out.close();
     }
+
+    public boolean isAfterDigit() {
+        return currentLine.length() > 1 && Character.isDigit(currentLine.charAt(currentLine.length() - 1));
+    }
 }

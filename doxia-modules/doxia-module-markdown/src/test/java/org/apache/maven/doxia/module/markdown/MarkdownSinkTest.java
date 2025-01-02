@@ -169,7 +169,7 @@ public class MarkdownSinkTest extends AbstractSinkTest {
 
     /** {@inheritDoc} */
     protected String getFigureBlock(String source, String caption) {
-        return "![" + (caption != null ? getEscapedText(caption) : "") + "](" + getEscapedText(source) + ")";
+        return "![" + (caption != null ? getEscapedText(caption) : "") + "](" + source + ")";
     }
 
     /** {@inheritDoc} */
@@ -314,6 +314,7 @@ public class MarkdownSinkTest extends AbstractSinkTest {
 
     /** {@inheritDoc} */
     protected String getTextBlock(String text) {
+<<<<<<< Upstream, based on master
         if (text.equals("~,_=,_-,_+,_*,_[,_],_<,_>,_{,_},_\\")) {
             // i.e. XML entities for <>&"' and Markdown escape sequences for characters outlined in
             // https://daringfireball.net/projects/markdown/syntax#backslash
@@ -322,6 +323,13 @@ public class MarkdownSinkTest extends AbstractSinkTest {
             // assume BODY context everywhere else
             return MarkdownSink.ElementContext.BODY.escape(text);
         }
+=======
+        // this is only called once, therefore hard-code the expected result
+        // return escaped format of "~,_=,_-,_+,_*,_[,_],_<,_>,_{,_},_\\";
+        // i.e. XML entities for <>&"' and Markdown escape sequences for most characters outlined in
+        // https://daringfireball.net/projects/markdown/syntax#backslash
+        return "~,\\_=,\\_\\-,\\_\\+,\\_\\*,\\_\\[,\\_\\],\\_&lt;,\\_&gt;,\\_{,\\_},\\_\\\\";
+>>>>>>> 8bc8aa0 [DOXIA-770] Only escape when necessary
     }
 
     /** {@inheritDoc} */
