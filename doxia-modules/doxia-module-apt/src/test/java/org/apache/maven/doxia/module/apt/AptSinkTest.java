@@ -97,11 +97,6 @@ public class AptSinkTest extends AbstractSinkTest {
     }
 
     /** {@inheritDoc} */
-    protected String getSectionTitleBlock(String title) {
-        return title;
-    }
-
-    /** {@inheritDoc} */
     protected String getSection1Block(String title) {
         return EOL + title + EOL + EOL + EOL;
     }
@@ -333,37 +328,12 @@ public class AptSinkTest extends AbstractSinkTest {
 
     /** {@inheritDoc} */
     protected String getTextBlock(String text) {
-        // "\\~, \\=, \\-, \\+, \\*, \\[, \\], \\<, \\>, \\{, \\}, \\\\"
-        StringBuilder sb = new StringBuilder();
-        sb.append(getSpecialCharacters(AptMarkup.COMMENT)).append(",_");
-        sb.append(getSpecialCharacters(Markup.EQUAL)).append(",_");
-        sb.append(getSpecialCharacters(Markup.MINUS)).append(",_");
-        sb.append(getSpecialCharacters(Markup.PLUS)).append(",_");
-        sb.append(getSpecialCharacters(Markup.STAR)).append(",_");
-        sb.append(getSpecialCharacters(Markup.LEFT_SQUARE_BRACKET)).append(",_");
-        sb.append(getSpecialCharacters(Markup.RIGHT_SQUARE_BRACKET)).append(",_");
-        sb.append(getSpecialCharacters(Markup.LESS_THAN)).append(",_");
-        sb.append(getSpecialCharacters(Markup.GREATER_THAN)).append(",_");
-        sb.append(getSpecialCharacters(Markup.LEFT_CURLY_BRACKET)).append(",_");
-        sb.append(getSpecialCharacters(Markup.RIGHT_CURLY_BRACKET)).append(",_");
-        sb.append(getSpecialCharacters(AptMarkup.BACKSLASH));
-
-        return sb.toString();
+        return AptSink.escapeAPT(text);
     }
 
     /** {@inheritDoc} */
     protected String getRawTextBlock(String text) {
         return text;
-    }
-
-    /**
-     * Add a backslash for a special markup character
-     *
-     * @param c
-     * @return the character with a backslash before
-     */
-    private static String getSpecialCharacters(char c) {
-        return AptMarkup.BACKSLASH + "" + c;
     }
 
     /** {@inheritDoc} */

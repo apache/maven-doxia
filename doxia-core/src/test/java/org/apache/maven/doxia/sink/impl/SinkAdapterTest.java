@@ -279,18 +279,6 @@ public class SinkAdapterTest {
     }
 
     /**
-     * Test of sectionTitle method, of class SinkAdapter.
-     */
-    @Test
-    public void testSectionTitle() {
-        final int level = SinkAdapter.SECTION_LEVEL_1;
-        instance.sectionTitle();
-        instance.sectionTitle_();
-        instance.sectionTitle(level, null);
-        instance.sectionTitle_(level);
-    }
-
-    /**
      * Test of sectionTitle1 method, of class SinkAdapter.
      */
     @Test

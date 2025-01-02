@@ -918,7 +918,7 @@ public class AptSink extends AbstractTextSink implements AptMarkup {
      * @param text the String to escape, may be null
      * @return the text escaped, "" if null String input
      */
-    private static String escapeAPT(String text) {
+    static String escapeAPT(String text) {
         if (text == null) {
             return "";
         }

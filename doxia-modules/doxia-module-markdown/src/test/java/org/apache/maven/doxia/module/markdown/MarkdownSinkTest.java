@@ -101,11 +101,6 @@ public class MarkdownSinkTest extends AbstractSinkTest {
         return "";
     }
 
-    /** {@inheritDoc} */
-    protected String getSectionTitleBlock(String title) {
-        return title;
-    }
-
     protected String getSectionBlock(String title, int level) {
         return StringUtils.repeat(MarkdownMarkup.SECTION_TITLE_START_MARKUP, level) + SPACE + title + EOL + EOL;
     }
@@ -319,11 +314,14 @@ public class MarkdownSinkTest extends AbstractSinkTest {
 
     /** {@inheritDoc} */
     protected String getTextBlock(String text) {
-        // this is only called once, therefore hard-code the expected result
-        // return escaped format of "~,_=,_-,_+,_*,_[,_],_<,_>,_{,_},_\\";
-        // i.e. XML entities for <>&"' and Markdown escape sequences for characters outlined in
-        // https://daringfireball.net/projects/markdown/syntax#backslash
-        return "~,\\_=,\\_\\-,\\_\\+,\\_\\*,\\_\\[,\\_\\],\\_&lt;,\\_&gt;,\\_\\{,\\_\\},\\_\\\\";
+        if (text.equals("~,_=,_-,_+,_*,_[,_],_<,_>,_{,_},_\\")) {
+            // i.e. XML entities for <>&"' and Markdown escape sequences for characters outlined in
+            // https://daringfireball.net/projects/markdown/syntax#backslash
+            return "~,\\_=,\\_\\-,\\_\\+,\\_\\*,\\_\\[,\\_\\],\\_&lt;,\\_&gt;,\\_\\{,\\_\\},\\_\\\\";
+        } else {
+            // assume BODY context everywhere else
+            return MarkdownSink.ElementContext.BODY.escape(text);
+        }
     }
 
     /** {@inheritDoc} */

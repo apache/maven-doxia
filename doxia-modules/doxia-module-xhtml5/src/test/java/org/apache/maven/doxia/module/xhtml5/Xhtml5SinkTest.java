@@ -25,6 +25,7 @@ import org.apache.maven.doxia.markup.HtmlMarkup;
 import org.apache.maven.doxia.sink.Sink;
 import org.apache.maven.doxia.sink.impl.AbstractSinkTest;
 import org.apache.maven.doxia.sink.impl.SinkEventAttributeSet;
+import org.apache.maven.doxia.util.HtmlTools;
 import org.junit.jupiter.api.Test;
 
 import static org.apache.maven.doxia.util.HtmlTools.escapeHTML;
@@ -117,11 +118,6 @@ public class Xhtml5SinkTest extends AbstractSinkTest {
     /** {@inheritDoc} */
     protected String getSidebarBlock() {
         return "<aside></aside>";
-    }
-
-    /** {@inheritDoc} */
-    protected String getSectionTitleBlock(String title) {
-        return title;
     }
 
     /** {@inheritDoc} */
@@ -335,8 +331,7 @@ public class Xhtml5SinkTest extends AbstractSinkTest {
 
     /** {@inheritDoc} */
     protected String getTextBlock(String text) {
-        // TODO: need to be able to retreive those from outside the sink
-        return "~,_=,_-,_+,_*,_[,_],_&lt;,_&gt;,_{,_},_\\";
+        return HtmlTools.escapeHTML(text, false);
     }
 
     /** {@inheritDoc} */
