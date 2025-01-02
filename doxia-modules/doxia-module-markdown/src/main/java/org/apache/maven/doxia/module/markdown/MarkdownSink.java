@@ -30,7 +30,6 @@ import java.util.LinkedList;
 import java.util.List;
 import java.util.NoSuchElementException;
 import java.util.Queue;
-import java.util.function.UnaryOperator;
 import java.util.stream.Collectors;
 
 import org.apache.commons.lang3.StringUtils;
@@ -101,24 +100,29 @@ public class MarkdownSink extends AbstractTextSink implements MarkdownMarkup {
 
     private String figureSrc;
 
+    @FunctionalInterface
+    interface TextEscapeFunction {
+        String escape(ElementContext context, LastTwoLinesBufferingWriter writer, String text);
+    }
     /** Most important contextual metadata (of elements). This contains information about necessary escaping rules, potential prefixes and newlines */
     enum ElementContext {
         HEAD(Type.GENERIC_CONTAINER, null, true),
-        BODY(Type.GENERIC_CONTAINER, MarkdownSink::escapeMarkdown),
+        BODY(Type.GENERIC_CONTAINER, ElementContext::escapeMarkdown),
         // only the elements, which affect rendering of children and are different from BODY or HEAD are listed here
-        FIGURE(Type.INLINE, MarkdownSink::escapeMarkdown, true),
+        FIGURE(Type.INLINE, ElementContext::escapeMarkdown, true),
+        HEADING(Type.LEAF_BLOCK, ElementContext::escapeMarkdown),
         CODE_BLOCK(Type.LEAF_BLOCK, null),
         CODE_SPAN(Type.INLINE, null, true),
-        TABLE_CAPTION(Type.INLINE, MarkdownSink::escapeMarkdown),
+        TABLE_CAPTION(Type.INLINE, ElementContext::escapeMarkdown),
         TABLE_ROW(Type.CONTAINER_BLOCK, null, true),
         TABLE_CELL(
                 Type.LEAF_BLOCK,
-                MarkdownSink::escapeForTableCell,
+                ElementContext::escapeForTableCell,
                 false), // special type, as allows containing inlines, but not starting on a separate line
         // same parameters as BODY but paragraphs inside list items are handled differently
-        LIST_ITEM(Type.CONTAINER_BLOCK, MarkdownSink::escapeMarkdown, false, INDENT),
-        BLOCKQUOTE(Type.CONTAINER_BLOCK, MarkdownSink::escapeMarkdown, false, BLOCKQUOTE_START_MARKUP),
-        HTML_BLOCK(Type.LEAF_BLOCK, MarkdownSink::escapeHtml, false, "", true);
+        LIST_ITEM(Type.CONTAINER_BLOCK, ElementContext::escapeMarkdown, false, INDENT),
+        BLOCKQUOTE(Type.CONTAINER_BLOCK, ElementContext::escapeMarkdown, false, BLOCKQUOTE_START_MARKUP),
+        HTML_BLOCK(Type.LEAF_BLOCK, ElementContext::escapeHtml, false, "", true);
 
         /**
          * @see <a href="https://spec.commonmark.org/0.30/#blocks-and-inlines">CommonMark, 3 Blocks and inlines</a>
@@ -149,7 +153,7 @@ public class MarkdownSink extends AbstractTextSink implements MarkdownMarkup {
         /**
          * The function to call to escape the given text. The function is supposed to return the escaped text or return just the given text if no escaping is necessary in this context
          */
-        final UnaryOperator<String> escapeFunction;
+        final TextEscapeFunction escapeFunction;
 
         /**
          * if {@code true} requires buffering any text appearing inside this context
@@ -166,21 +170,21 @@ public class MarkdownSink extends AbstractTextSink implements MarkdownMarkup {
          */
         final boolean requiresSurroundingByBlankLines;
 
-        ElementContext(Type type, UnaryOperator<String> escapeFunction) {
+        ElementContext(Type type, TextEscapeFunction escapeFunction) {
             this(type, escapeFunction, false);
         }
 
-        ElementContext(Type type, UnaryOperator<String> escapeFunction, boolean requiresBuffering) {
+        ElementContext(Type type, TextEscapeFunction escapeFunction, boolean requiresBuffering) {
             this(type, escapeFunction, requiresBuffering, "");
         }
 
-        ElementContext(Type type, UnaryOperator<String> escapeFunction, boolean requiresBuffering, String prefix) {
+        ElementContext(Type type, TextEscapeFunction escapeFunction, boolean requiresBuffering, String prefix) {
             this(type, escapeFunction, requiresBuffering, prefix, false);
         }
 
         ElementContext(
                 Type type,
-                UnaryOperator<String> escapeFunction,
+                TextEscapeFunction escapeFunction,
                 boolean requiresBuffering,
                 String prefix,
                 boolean requiresSurroundingByBlankLines) {
@@ -199,12 +203,12 @@ public class MarkdownSink extends AbstractTextSink implements MarkdownMarkup {
          * @param text
          * @return the escaped text (may be same as {@code text} when no escaping is necessary)
          */
-        String escape(String text) {
+        String escape(LastTwoLinesBufferingWriter writer, String text) {
             // is escaping necessary at all?
             if (escapeFunction == null) {
                 return text;
             } else {
-                return escapeFunction.apply(text);
+                return escapeFunction.escape(this, writer, text);
             }
         }
 
@@ -222,6 +226,92 @@ public class MarkdownSink extends AbstractTextSink implements MarkdownMarkup {
          */
         boolean isContainer() {
             return type == Type.CONTAINER_BLOCK || type == Type.GENERIC_CONTAINER;
+        }
+
+        /**
+         * First use XML escaping (leveraging the predefined entities, for browsers)
+         * afterwards escape special characters in a text with a leading backslash (for markdown parsers)
+         *
+         * <pre>
+         * \, `, *, _, {, }, [, ], (, ), #, +, -, ., !
+         * </pre>
+         *
+         * @param text the string to escape, may be null
+         * @return the text escaped, "" if null String input
+         * @see <a href="https://daringfireball.net/projects/markdown/syntax#backslash">Backslash Escapes</a>
+         */
+        private String escapeMarkdown(LastTwoLinesBufferingWriter writer, String text) {
+            if (text == null) {
+                return "";
+            }
+            text = escapeHtml(writer, text); // assume UTF-8 output, i.e. only use the mandatory XML entities
+            int length = text.length();
+            StringBuilder buffer = new StringBuilder(length);
+
+            for (int i = 0; i < length; ++i) {
+                char c = text.charAt(i);
+                switch (c) {
+                    case '\\':
+                    case '_':
+                    case '`':
+                    case '[':
+                    case ']':
+                    case '(':
+                    case ')':
+                    case '!':
+                        // always escape the previous characters as potentially everywhere relevant
+                        buffer.append(escapeMarkdown(c));
+                        break;
+                    case '*':
+                    case '+':
+                    case '-':
+                        // only relevant for unordered lists or horizontal rules
+                        if (writer.isWriterAtStartOfNewLine()) {
+                            buffer.append(escapeMarkdown(c));
+                        } else {
+                            buffer.append(c);
+                        }
+                        break;
+                    case '#':
+                        if (this == HEADING || writer.isWriterAtStartOfNewLine()) {
+                            buffer.append(escapeMarkdown(c));
+                        } else {
+                            buffer.append(c);
+                        }
+                        break;
+                    case '.':
+                        if (writer.isAfterDigit()) {
+                            buffer.append(escapeMarkdown(c));
+                        } else {
+                            buffer.append(c);
+                        }
+                        break;
+                    default:
+                        buffer.append(c);
+                }
+            }
+
+            return buffer.toString();
+        }
+
+        private static String escapeMarkdown(char c) {
+            return "\\" + c;
+        }
+
+        private String escapeHtml(LastTwoLinesBufferingWriter writer, String text) {
+            return HtmlTools.escapeHTML(text, true);
+        }
+
+        /**
+         * Escapes the pipe character according to <a href="https://github.github.com/gfm/#tables-extension-">GFM Table Extension</a> in addition
+         * to the regular markdown escaping.
+         * @param text
+         * @return the escaped text
+         * @see {@link #escapeMarkdown(String)
+         */
+        private String escapeForTableCell(LastTwoLinesBufferingWriter writer, String text) {
+
+            return escapeMarkdown(writer, text).replace("|", "\\|");
         }
     }
     // ----------------------------------------------------------------------
@@ -756,14 +846,14 @@ public class MarkdownSink extends AbstractTextSink implements MarkdownMarkup {
 
     @Override
     public void figureGraphics(String name, SinkEventAttributes attributes) {
-        figureSrc = escapeMarkdown(name);
+        figureSrc = name;
         // is it a standalone image (outside a figure)?
         if (elementContextStack.peek() != ElementContext.FIGURE) {
             Object alt = attributes.getAttribute(SinkEventAttributes.ALT);
             if (alt == null) {
                 alt = "";
             }
-            writeImage(escapeMarkdown(alt.toString()), name);
+            writeImage(elementContextStack.element().escape(bufferingWriter, alt.toString()), name);
         }
     }
 
@@ -962,7 +1052,7 @@ public class MarkdownSink extends AbstractTextSink implements MarkdownMarkup {
             // table caption cannot even be emitted via XHTML in markdown as there is no suitable location
             LOGGER.warn("{}Ignoring unsupported table caption in Markdown", getLocationLogPrefix());
         } else {
-            String unifiedText = currentContext.escape(unifyEOLs(text));
+            String unifiedText = currentContext.escape(bufferingWriter, unifyEOLs(text));
             // ignore newlines only, because those are emitted often coming from linebreaks in HTML with no semantical
             // meaning
             if (!unifiedText.equals(EOL)) {
@@ -1023,74 +1113,5 @@ public class MarkdownSink extends AbstractTextSink implements MarkdownMarkup {
         writer.close();
 
         init();
-    }
-
-    // ----------------------------------------------------------------------
-    // Private methods
-    // ----------------------------------------------------------------------
-
-    /**
-     * First use XML escaping (leveraging the predefined entities, for browsers)
-     * afterwards escape special characters in a text with a leading backslash (for markdown parsers)
-     *
-     * <pre>
-     * \, `, *, _, {, }, [, ], (, ), #, +, -, ., !
-     * </pre>
-     *
-     * @param text the String to escape, may be null
-     * @return the text escaped, "" if null String input
-     * @see <a href="https://daringfireball.net/projects/markdown/syntax#backslash">Backslash Escapes</a>
-     */
-    private static String escapeMarkdown(String text) {
-        if (text == null) {
-            return "";
-        }
-        text = escapeHtml(text); // assume UTF-8 output, i.e. only use the mandatory XML entities
-        int length = text.length();
-        StringBuilder buffer = new StringBuilder(length);
-
-        for (int i = 0; i < length; ++i) {
-            char c = text.charAt(i);
-            switch (c) {
-                case '\\':
-                case '`':
-                case '*':
-                case '_':
-                case '{':
-                case '}':
-                case '[':
-                case ']':
-                case '(':
-                case ')':
-                case '#':
-                case '+':
-                case '-':
-                case '.':
-                case '!':
-                    buffer.append('\\');
-                    buffer.append(c);
-                    break;
-                default:
-                    buffer.append(c);
-            }
-        }
-
-        return buffer.toString();
-    }
-
-    private static String escapeHtml(String text) {
-        return HtmlTools.escapeHTML(text, true);
-    }
-
-    /**
-     * Escapes the pipe character according to <a href="https://github.github.com/gfm/#tables-extension-">GFM Table Extension</a> in addition
-     * to the regular markdown escaping.
-     * @param text
-     * @return the escaped text
-     * @see {@link #escapeMarkdown(String)
-     */
-    private static String escapeForTableCell(String text) {
-
-        return escapeMarkdown(text).replace("|", "\\|");
     }
 }
