@@ -133,11 +133,6 @@ public class XdocSinkTest extends AbstractSinkTest {
     }
 
     /** {@inheritDoc} */
-    protected String getSectionTitleBlock(String title) {
-        return title;
-    }
-
-    /** {@inheritDoc} */
     protected String getSection1Block(String title) {
         return "<section name=\"" + title + "\"></section>";
     }

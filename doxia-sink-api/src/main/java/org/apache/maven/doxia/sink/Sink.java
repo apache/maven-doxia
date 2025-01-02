@@ -392,13 +392,17 @@ public interface Sink extends AutoCloseable {
     void sidebar_();
 
     /**
-     * Starts a title heading element. Shortcut for {@link #sectionTitle(int, SinkEventAttributes)} with first argument being {@code 0} and second argument being {@code null}.
+     * Was never properly evaluated by any Sink implementation because section titles (and sections) always started from 1 (not from 0).
+     * @deprecated Use {@link #sectionTitle1()} instead.
      */
+    @Deprecated
     void sectionTitle();
 
     /**
-     * Ends a title heading element. Shortcut for {@link #sectionTitle_(int)} with argument being {@code 0}.
+     * Was never properly evaluated by any Sink implementation because section titles (and sections) always started from 1 (not from 0).
+     * @deprecated Use {@link #sectionTitle1_()} instead.
      */
+    @Deprecated
     void sectionTitle_();
 
     /**

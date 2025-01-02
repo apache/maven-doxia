@@ -81,7 +81,7 @@ public abstract class AbstractSink implements Sink, Markup {
 
     @Override
     public final void sectionTitle() {
-        sectionTitle(0, null);
+        // noop
     }
 
     @Override
@@ -91,7 +91,7 @@ public abstract class AbstractSink implements Sink, Markup {
 
     @Override
     public final void sectionTitle_() {
-        sectionTitle_(0);
+        // noop
     }
 
     @Override
