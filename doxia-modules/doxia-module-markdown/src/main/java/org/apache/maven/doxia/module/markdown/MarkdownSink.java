@@ -266,21 +266,22 @@ public class MarkdownSink extends AbstractTextSink implements MarkdownMarkup {
                     case '+':
                     case '-':
                         // only relevant for unordered lists or horizontal rules
-                        if (writer.isWriterAtStartOfNewLine()) {
+                        if (isInBlankLine(buffer, writer)) {
                             buffer.append(escapeMarkdown(c));
                         } else {
                             buffer.append(c);
                         }
                         break;
+                    case '=':
                     case '#':
-                        if (this == HEADING || writer.isWriterAtStartOfNewLine()) {
+                        if (this == HEADING || isInBlankLine(buffer, writer)) {
                             buffer.append(escapeMarkdown(c));
                         } else {
                             buffer.append(c);
                         }
                         break;
                     case '.':
-                        if (writer.isAfterDigit()) {
+                        if (isAfterDigit(buffer, writer)) {
                             buffer.append(escapeMarkdown(c));
                         } else {
                             buffer.append(c);
@@ -290,8 +291,22 @@ public class MarkdownSink extends AbstractTextSink implements MarkdownMarkup {
                         buffer.append(c);
                 }
             }
-
             return buffer.toString();
+        }
+
+        private static boolean isAfterDigit(StringBuilder buffer, LastTwoLinesBufferingWriter writer) {
+            if (buffer.length() > 0) {
+                return Character.isDigit(buffer.charAt(buffer.length() - 1));
+            } else {
+                return writer.isAfterDigit();
+            }
+        }
+
+        private static boolean isInBlankLine(StringBuilder buffer, LastTwoLinesBufferingWriter writer) {
+            if (StringUtils.isBlank(buffer.toString())) {
+                return writer.isInBlankLine();
+            }
+            return false;
         }
 
         private static String escapeMarkdown(char c) {
@@ -310,7 +325,6 @@ public class MarkdownSink extends AbstractTextSink implements MarkdownMarkup {
          * @see {@link #escapeMarkdown(String)
          */
         private String escapeForTableCell(LastTwoLinesBufferingWriter writer, String text) {
-
             return escapeMarkdown(writer, text).replace("|", "\\|");
         }
     }
@@ -351,7 +365,7 @@ public class MarkdownSink extends AbstractTextSink implements MarkdownMarkup {
             bufferStack.add(new StringBuilder());
         }
         if (newContext.isBlock()) {
-            // every block element within a list item must
+            // every block element within a list item must be surrounded by blank lines
             startBlock(newContext.requiresSurroundingByBlankLines
                     || (isInListItem() && (newContext == ElementContext.BLOCKQUOTE)
                             || (newContext == ElementContext.CODE_BLOCK)));
@@ -527,14 +541,15 @@ public class MarkdownSink extends AbstractTextSink implements MarkdownMarkup {
 
     @Override
     public void sectionTitle(int level, SinkEventAttributes attributes) {
+        startContext(ElementContext.HEADING);
         if (level > 0) {
-            ensureBeginningOfLine();
             writeUnescaped(StringUtils.repeat(SECTION_TITLE_START_MARKUP, level) + SPACE);
         }
     }
 
     @Override
     public void sectionTitle_(int level) {
+        endContext(ElementContext.HEADING);
         if (level > 0) {
             ensureBlankLine(); // always end headings with blank line to increase compatibility with arbitrary MD
             // editors

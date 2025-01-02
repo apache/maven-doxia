@@ -23,6 +23,7 @@ import javax.inject.Inject;
 import java.io.IOException;
 import java.io.Reader;
 import java.io.StringReader;
+import java.io.StringWriter;
 import java.io.Writer;
 
 import org.apache.commons.lang3.StringUtils;
@@ -314,22 +315,14 @@ public class MarkdownSinkTest extends AbstractSinkTest {
 
     /** {@inheritDoc} */
     protected String getTextBlock(String text) {
-<<<<<<< Upstream, based on master
         if (text.equals("~,_=,_-,_+,_*,_[,_],_<,_>,_{,_},_\\")) {
             // i.e. XML entities for <>&"' and Markdown escape sequences for characters outlined in
             // https://daringfireball.net/projects/markdown/syntax#backslash
-            return "~,\\_=,\\_\\-,\\_\\+,\\_\\*,\\_\\[,\\_\\],\\_&lt;,\\_&gt;,\\_\\{,\\_\\},\\_\\\\";
+            return "~,\\_=,\\_-,\\_+,\\_*,\\_\\[,\\_\\],\\_&lt;,\\_&gt;,\\_{,\\_},\\_\\\\";
         } else {
             // assume BODY context everywhere else
-            return MarkdownSink.ElementContext.BODY.escape(text);
+            return MarkdownSink.ElementContext.BODY.escape(new LastTwoLinesBufferingWriter(new StringWriter()), text);
         }
-=======
-        // this is only called once, therefore hard-code the expected result
-        // return escaped format of "~,_=,_-,_+,_*,_[,_],_<,_>,_{,_},_\\";
-        // i.e. XML entities for <>&"' and Markdown escape sequences for most characters outlined in
-        // https://daringfireball.net/projects/markdown/syntax#backslash
-        return "~,\\_=,\\_\\-,\\_\\+,\\_\\*,\\_\\[,\\_\\],\\_&lt;,\\_&gt;,\\_{,\\_},\\_\\\\";
->>>>>>> 8bc8aa0 [DOXIA-770] Only escape when necessary
     }
 
     /** {@inheritDoc} */
