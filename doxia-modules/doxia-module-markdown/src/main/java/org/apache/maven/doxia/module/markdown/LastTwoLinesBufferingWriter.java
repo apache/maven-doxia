@@ -56,6 +56,10 @@ public class LastTwoLinesBufferingWriter extends Writer {
         return StringUtils.isAllBlank(currentLine) && StringUtils.isAllBlank(previousLine);
     }
 
+    public boolean isInBlankLine() {
+        return StringUtils.isAllBlank(currentLine);
+    }
+
     @Override
     public void write(char[] cbuf, int off, int len) throws IOException {
         int offsetWrittenInLineBuffer = off;
