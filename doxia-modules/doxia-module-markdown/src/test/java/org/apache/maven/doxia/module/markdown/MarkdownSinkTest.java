@@ -34,7 +34,6 @@ import org.apache.maven.doxia.sink.impl.AbstractSinkTest;
 import org.apache.maven.doxia.sink.impl.SinkEventAttributeSet;
 import org.apache.maven.doxia.sink.impl.SinkEventAttributeSet.Semantics;
 import org.apache.maven.doxia.sink.impl.SinkEventTestingSink;
-import org.apache.maven.doxia.util.HtmlTools;
 import org.junit.jupiter.api.Test;
 
 import static org.junit.jupiter.api.Assertions.assertEquals;
@@ -321,7 +320,7 @@ public class MarkdownSinkTest extends AbstractSinkTest {
             return "~,\\_=,\\_-,\\_+,\\_*,\\_\\[,\\_\\],\\_&lt;,\\_&gt;,\\_{,\\_},\\_\\\\";
         } else {
             // assume BODY context everywhere else
-            return MarkdownSink.ElementContext.BODY.escape(new LastTwoLinesBufferingWriter(new StringWriter()), text);
+            return getEscapedText(text);
         }
     }
 
@@ -331,13 +330,12 @@ public class MarkdownSinkTest extends AbstractSinkTest {
     }
 
     /**
-     * Escapes special characters outlined in <a href="https://daringfireball.net/projects/markdown/syntax#backslash">Markdown Spec</a>
+     * Escapes as if in the BODY context and the writer is at the start of a new line.
      * @param text
      * @return the text with all special characters escaped
      */
     private String getEscapedText(String text) {
-        text = HtmlTools.escapeHTML(text, true);
-        return text.replaceAll("\\\\|\\`|\\*|_|\\{|\\}|\\[|\\]|\\(|\\)|#|\\+|\\-|\\.|\\!", "\\\\$0");
+        return MarkdownSink.ElementContext.BODY.escape(new LastTwoLinesBufferingWriter(new StringWriter()), text);
     }
 
     @Override
