@@ -30,7 +30,8 @@ import org.apache.maven.doxia.sink.impl.SinkEventAttributeSet.Semantics;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
 
-import static org.junit.jupiter.api.Assertions.*;
+import static org.junit.jupiter.api.Assertions.assertEquals;
+import static org.junit.jupiter.api.Assertions.assertTrue;
 
 /**
  * Test for Xhtml5BaseSink.
@@ -40,7 +41,7 @@ public class Xhtml5BaseSinkTest {
     private final SinkEventAttributes attributes = SinkEventAttributeSet.BOLD;
     private Writer writer;
 
-    String EOL = System.lineSeparator();
+    private static final String EOL = System.lineSeparator();
 
     @BeforeEach
     public void setUp() {

@@ -116,7 +116,7 @@ public abstract class AbstractParserTest extends AbstractModuleTest {
 
         private final int priority;
 
-        public TestSinkWrapperFactory(int priority) {
+        TestSinkWrapperFactory(int priority) {
             super();
             this.priority = priority;
         }

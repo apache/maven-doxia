@@ -23,7 +23,9 @@ import java.io.StringReader;
 import org.apache.maven.doxia.parser.ParseException;
 import org.junit.jupiter.api.Test;
 
-import static org.junit.jupiter.api.Assertions.*;
+import static org.junit.jupiter.api.Assertions.assertEquals;
+import static org.junit.jupiter.api.Assertions.assertNull;
+import static org.junit.jupiter.api.Assertions.fail;
 
 /**
  * Unit test for {@link org.apache.maven.doxia.util.ByLineReaderSource}.

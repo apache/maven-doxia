@@ -425,9 +425,9 @@ public class XdocParserTest extends AbstractParserTest {
         SinkEventElement cdataElm = it.next();
         assertEquals("unknown", cdataElm.getName());
         assertEquals("CDATA", cdataElm.getArgs()[0]);
-        SinkEventElement styleElm_ = it.next();
-        assertEquals("unknown", styleElm_.getName());
-        assertEquals("style", styleElm_.getArgs()[0]);
+        SinkEventElement styleElm2 = it.next();
+        assertEquals("unknown", styleElm2.getName());
+        assertEquals("style", styleElm2.getArgs()[0]);
         assertFalse(it.hasNext());
     }
 

@@ -25,21 +25,21 @@ import static org.junit.jupiter.api.Assertions.assertEquals;
 public class TestAbstractSink {
     @Test
     public void testUnifiedEOL() {
-        String EOL = AbstractSink.EOL;
-        String EOL_MACOS9 = "\r";
-        String EOL_UNIX = "\n";
-        String EOL_WIN = "\r\n";
+        String eol = AbstractSink.EOL;
+        String eolMacOS = "\r";
+        String eolUnix = "\n";
+        String eolWin = "\r\n";
 
-        assertEquals("Hello " + EOL + " world", AbstractSink.unifyEOLs("Hello " + EOL_MACOS9 + " world"));
-        assertEquals("Hello " + EOL + " world", AbstractSink.unifyEOLs("Hello " + EOL_UNIX + " world"));
-        assertEquals("Hello " + EOL + " world", AbstractSink.unifyEOLs("Hello " + EOL_WIN + " world"));
+        assertEquals("Hello " + eol + " world", AbstractSink.unifyEOLs("Hello " + eolMacOS + " world"));
+        assertEquals("Hello " + eol + " world", AbstractSink.unifyEOLs("Hello " + eolUnix + " world"));
+        assertEquals("Hello " + eol + " world", AbstractSink.unifyEOLs("Hello " + eolWin + " world"));
 
-        assertEquals("Hello world" + EOL, AbstractSink.unifyEOLs("Hello world" + EOL_MACOS9));
-        assertEquals("Hello world" + EOL, AbstractSink.unifyEOLs("Hello world" + EOL_UNIX));
-        assertEquals("Hello world" + EOL, AbstractSink.unifyEOLs("Hello world" + EOL_WIN));
+        assertEquals("Hello world" + eol, AbstractSink.unifyEOLs("Hello world" + eolMacOS));
+        assertEquals("Hello world" + eol, AbstractSink.unifyEOLs("Hello world" + eolUnix));
+        assertEquals("Hello world" + eol, AbstractSink.unifyEOLs("Hello world" + eolWin));
 
-        assertEquals(EOL + "Hello world", AbstractSink.unifyEOLs(EOL_MACOS9 + "Hello world"));
-        assertEquals(EOL + "Hello world", AbstractSink.unifyEOLs(EOL_UNIX + "Hello world"));
-        assertEquals(EOL + "Hello world", AbstractSink.unifyEOLs(EOL_WIN + "Hello world"));
+        assertEquals(eol + "Hello world", AbstractSink.unifyEOLs(eolMacOS + "Hello world"));
+        assertEquals(eol + "Hello world", AbstractSink.unifyEOLs(eolUnix + "Hello world"));
+        assertEquals(eol + "Hello world", AbstractSink.unifyEOLs(eolWin + "Hello world"));
     }
 }

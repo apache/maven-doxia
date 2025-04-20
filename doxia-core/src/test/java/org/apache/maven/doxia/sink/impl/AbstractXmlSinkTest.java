@@ -24,7 +24,9 @@ import org.apache.maven.doxia.markup.Markup;
 import org.apache.maven.doxia.sink.SinkEventAttributes;
 import org.junit.jupiter.api.Test;
 
-import static org.junit.jupiter.api.Assertions.*;
+import static org.junit.jupiter.api.Assertions.assertEquals;
+import static org.junit.jupiter.api.Assertions.assertNotNull;
+import static org.junit.jupiter.api.Assertions.fail;
 
 /**
  *
