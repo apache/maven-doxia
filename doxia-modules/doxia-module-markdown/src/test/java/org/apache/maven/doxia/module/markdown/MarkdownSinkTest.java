@@ -510,7 +510,7 @@ public class MarkdownSinkTest extends AbstractSinkTest {
 
     @Test
     public void testHeadingAfterInlineElement() {
-        try (final Sink sink = getSink()) {
+        try (Sink sink = getSink()) {
             sink.text("Text");
             sink.section1();
             sink.sectionTitle1();
@@ -525,7 +525,7 @@ public class MarkdownSinkTest extends AbstractSinkTest {
 
     @Test
     public void testCodeLink() {
-        try (final Sink sink = getSink()) {
+        try (Sink sink = getSink()) {
             sink.inline(Semantics.CODE);
             sink.link("http://example.com");
             sink.text("label");
@@ -539,7 +539,7 @@ public class MarkdownSinkTest extends AbstractSinkTest {
 
     @Test
     public void testMultilineVerbatimSourceAfterListItem() {
-        try (final Sink sink = getSink()) {
+        try (Sink sink = getSink()) {
             sink.list();
             sink.listItem();
             sink.text("Before");
@@ -560,7 +560,7 @@ public class MarkdownSinkTest extends AbstractSinkTest {
 
     @Test
     public void testDefinitionListWithInlineStyles() {
-        try (final Sink sink = getSink()) {
+        try (Sink sink = getSink()) {
             sink.definitionList();
             sink.definedTerm();
             sink.text("term");
@@ -579,7 +579,7 @@ public class MarkdownSinkTest extends AbstractSinkTest {
 
     @Test
     public void testNestedListBeingTight() {
-        try (final Sink sink = getSink()) {
+        try (Sink sink = getSink()) {
             sink.list();
             sink.listItem();
             sink.text("item 1");
