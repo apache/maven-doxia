@@ -23,7 +23,7 @@ under the License.
   <parent>
     <groupId>org.apache.maven</groupId>
     <artifactId>maven-parent</artifactId>
-    <version>43</version>
+    <version>45</version>
     <relativePath />
   </parent>
 
@@ -233,7 +233,6 @@ under the License.
       <plugin>
         <groupId>org.eclipse.sisu</groupId>
         <artifactId>sisu-maven-plugin</artifactId>
-        <version>0.9.0.M4</version>
       </plugin>
     </plugins>
   </build>
