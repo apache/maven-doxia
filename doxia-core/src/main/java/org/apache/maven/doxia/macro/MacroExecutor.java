@@ -19,6 +19,7 @@
 package org.apache.maven.doxia.macro;
 
 import org.apache.maven.doxia.macro.manager.MacroNotFoundException;
+import org.apache.maven.doxia.parser.Parser;
 import org.apache.maven.doxia.sink.Sink;
 
 /**
@@ -32,8 +33,8 @@ public interface MacroExecutor {
      * @param macroId an id to lookup the macro
      * @param request the corresponding MacroRequest
      * @param sink the sink to receive the events
-     * @throws org.apache.maven.doxia.macro.MacroExecutionException if an error occurred during execution
-     * @throws org.apache.maven.doxia.macro.manager.MacroNotFoundException if the macro could not be found
+     * @throws MacroExecutionException if an error occurred during execution
+     * @throws MacroNotFoundException if the macro could not be found
      */
     void executeMacro(String macroId, MacroRequest request, Sink sink)
             throws MacroExecutionException, MacroNotFoundException;

@@ -267,7 +267,7 @@ public abstract class AbstractSinkTest extends AbstractModuleTest {
      * Checks that the sequence <code>[sectionTitle(), text(title),
      * sectionTitle_()]</code>, invoked on the current sink, produces
      * the same result as
-     * {@link #getTextBlock(title) as the sectionTitle methods should be no-ops.
+     * {@link #getTextBlock getTextBlock}(title) as the sectionTitle methods should be no-ops.
      */
     @Test
     public void testSectionTitle() {
@@ -859,7 +859,7 @@ public abstract class AbstractSinkTest extends AbstractModuleTest {
     /**
      * Checks that the sequence <code>[verbatim(null), text(text),
      * verbatim_()]</code>, invoked on the current sink, produces the
-     * same result as {@link #getVerbatimeBlock getVerbatimBlock}(text).
+     * same result as {@link #getVerbatimBlock getVerbatimeBlock}(text).
      */
     @Test
     public void testVerbatim() {
