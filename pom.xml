@@ -66,8 +66,8 @@ under the License.
     <url>https://github.com/apache/maven-doxia/tree/${project.scm.tag}</url>
   </scm>
   <issueManagement>
-    <system>jira</system>
-    <url>https://issues.apache.org/jira/browse/DOXIA</url>
+    <system>GitHub Issues</system>
+    <url>https://github.com/apache/maven-doxia/issues</url>
   </issueManagement>
   <ciManagement>
     <system>Jenkins</system>
