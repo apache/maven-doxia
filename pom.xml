@@ -86,7 +86,6 @@ under the License.
     <checkstyle.violation.ignore>RedundantThrows,NewlineAtEndOfFile,ParameterNumber,MethodLength,FileLength,MethodName,InnerAssignment,MagicNumber</checkstyle.violation.ignore>
     <project.build.outputTimestamp>2024-10-20T15:01:56Z</project.build.outputTimestamp>
     <slf4jVersion>1.7.36</slf4jVersion>
-    <xmlunitVersion>2.10.3</xmlunitVersion>
   </properties>
 
   <dependencyManagement>
@@ -143,29 +142,6 @@ under the License.
 
       <!-- test -->
       <dependency>
-        <groupId>org.xmlunit</groupId>
-        <artifactId>xmlunit-core</artifactId>
-        <version>${xmlunitVersion}</version>
-        <scope>test</scope>
-        <!-- Exclude due to https://github.com/xmlunit/xmlunit/issues/248 -->
-        <exclusions>
-          <exclusion>
-            <groupId>jakarta.activation</groupId>
-            <artifactId>jakarta.activation-api</artifactId>
-          </exclusion>
-          <exclusion>
-            <groupId>jakarta.xml.bind</groupId>
-            <artifactId>jakarta.xml.bind-api</artifactId>
-          </exclusion>
-        </exclusions>
-      </dependency>
-      <dependency>
-        <groupId>org.xmlunit</groupId>
-        <artifactId>xmlunit-matchers</artifactId>
-        <version>${xmlunitVersion}</version>
-        <scope>test</scope>
-      </dependency>
-      <dependency>
         <groupId>org.codehaus.plexus</groupId>
         <artifactId>plexus-testing</artifactId>
         <version>1.5.0</version>
@@ -178,20 +154,12 @@ under the License.
         <scope>test</scope>
       </dependency>
 
-      <!-- Plexus -->
-      <dependency>
-        <groupId>com.google.inject</groupId>
-        <artifactId>guice</artifactId>
-        <version>6.0.0</version>
-        <scope>test</scope>
-      </dependency>
       <dependency>
         <groupId>javax.inject</groupId>
         <artifactId>javax.inject</artifactId>
         <version>1</version>
       </dependency>
 
-      <!--  SLF4J -->
       <dependency>
         <groupId>org.slf4j</groupId>
         <artifactId>slf4j-api</artifactId>
@@ -201,14 +169,6 @@ under the License.
         <groupId>org.slf4j</groupId>
         <artifactId>slf4j-simple</artifactId>
         <version>${slf4jVersion}</version>
-      </dependency>
-
-      <dependency>
-        <groupId>org.junit</groupId>
-        <artifactId>junit-bom</artifactId>
-        <version>5.13.4</version>
-        <type>pom</type>
-        <scope>import</scope>
       </dependency>
 
       <dependency>
@@ -223,17 +183,6 @@ under the License.
       </dependency>
     </dependencies>
   </dependencyManagement>
-
-  <pluginRepositories>
-    <pluginRepository>
-      <releases>
-        <enabled>false</enabled>
-      </releases>
-      <id>apache.snapshots</id>
-      <name>Apache Snapshot Repository</name>
-      <url>https://repository.apache.org/snapshots</url>
-    </pluginRepository>
-  </pluginRepositories>
 
   <build>
     <resources>
@@ -279,18 +228,12 @@ under the License.
         </plugin>
       </plugins>
     </pluginManagement>
+
     <plugins>
       <plugin>
         <groupId>org.eclipse.sisu</groupId>
         <artifactId>sisu-maven-plugin</artifactId>
-        <executions>
-          <execution>
-            <goals>
-              <goal>main-index</goal>
-              <goal>test-index</goal>
-            </goals>
-          </execution>
-        </executions>
+        <version>0.9.0.M4</version>
       </plugin>
     </plugins>
   </build>
