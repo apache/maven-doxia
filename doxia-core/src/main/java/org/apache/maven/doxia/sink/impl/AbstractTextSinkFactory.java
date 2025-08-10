@@ -23,11 +23,12 @@ import java.io.IOException;
 import java.io.OutputStream;
 import java.io.OutputStreamWriter;
 import java.io.Writer;
+import java.nio.charset.Charset;
+import java.nio.file.Files;
 import java.util.Objects;
 
 import org.apache.maven.doxia.sink.Sink;
 import org.apache.maven.doxia.sink.SinkFactory;
-import org.codehaus.plexus.util.WriterFactory;
 
 /**
  * An abstract <code>SinkFactory</code> for Text markup syntax. <code>UTF-8</code> is used
@@ -49,7 +50,7 @@ public abstract class AbstractTextSinkFactory implements SinkFactory {
 
     /** {@inheritDoc} */
     public Sink createSink(File outputDir, String outputName) throws IOException {
-        return createSink(outputDir, outputName, WriterFactory.UTF_8);
+        return createSink(outputDir, outputName, "UTF-8");
     }
 
     /** {@inheritDoc} */
@@ -64,14 +65,13 @@ public abstract class AbstractTextSinkFactory implements SinkFactory {
             }
         }
 
-        Writer writer = WriterFactory.newWriter(new File(outputDir, outputName), encoding);
-
+        Writer writer = Files.newBufferedWriter(new File(outputDir, outputName).toPath(), Charset.forName(encoding));
         return createSink(writer, encoding);
     }
 
     /** {@inheritDoc} */
     public Sink createSink(OutputStream out) throws IOException {
-        return createSink(out, WriterFactory.UTF_8);
+        return createSink(out, "UTF-8");
     }
 
     /** {@inheritDoc} */

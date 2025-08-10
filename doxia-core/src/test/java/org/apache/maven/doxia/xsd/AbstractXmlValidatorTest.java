@@ -24,6 +24,8 @@ import java.io.InputStream;
 import java.io.Reader;
 import java.net.JarURLConnection;
 import java.net.URL;
+import java.nio.charset.StandardCharsets;
+import java.nio.file.Files;
 import java.util.Collection;
 import java.util.Collections;
 import java.util.Enumeration;
@@ -37,8 +39,8 @@ import org.apache.commons.io.FileUtils;
 import org.apache.commons.io.IOUtils;
 import org.apache.commons.io.filefilter.TrueFileFilter;
 import org.apache.maven.doxia.parser.AbstractXmlParser;
-import org.codehaus.plexus.util.ReaderFactory;
 import org.codehaus.plexus.util.SelectorUtils;
+import org.codehaus.plexus.util.xml.XmlStreamReader;
 import org.codehaus.plexus.util.xml.XmlUtil;
 import org.xml.sax.EntityResolver;
 
@@ -147,7 +149,7 @@ public abstract class AbstractXmlValidatorTest extends AbstractXmlValidator {
                         .getClassLoader()
                         .getResource(entry.getName())
                         .openStream()) {
-                    String content = IOUtils.toString(in, "UTF-8");
+                    String content = IOUtils.toString(in, StandardCharsets.UTF_8);
                     CACHE_DOXIA_TEST_DOCUMENTS.put("jar:" + conn.getJarFileURL() + "!/" + entry.getName(), content);
                 }
             }
@@ -165,9 +167,9 @@ public abstract class AbstractXmlValidatorTest extends AbstractXmlValidator {
 
                 Reader reader;
                 if (XmlUtil.isXml(file)) {
-                    reader = ReaderFactory.newXmlReader(file);
+                    reader = new XmlStreamReader(file);
                 } else {
-                    reader = ReaderFactory.newReader(file, "UTF-8");
+                    reader = Files.newBufferedReader(file.toPath(), StandardCharsets.UTF_8);
                 }
 
                 String content = IOUtils.toString(reader);

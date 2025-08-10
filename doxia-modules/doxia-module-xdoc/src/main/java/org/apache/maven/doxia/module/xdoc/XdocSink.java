@@ -56,7 +56,6 @@ public class XdocSink extends Xhtml5BaseSink implements XdocMarkup {
      * Constructor, initialize the Writer.
      *
      * @param writer not null writer to write the result. <b>Should</b> be an UTF-8 Writer.
-     * You could use <code>newXmlWriter</code> methods from {@link org.codehaus.plexus.util.WriterFactory}.
      */
     protected XdocSink(Writer writer) {
         super(writer);

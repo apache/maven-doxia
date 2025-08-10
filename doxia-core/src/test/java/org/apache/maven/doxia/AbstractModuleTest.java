@@ -25,10 +25,11 @@ import java.io.InputStreamReader;
 import java.io.Reader;
 import java.io.Writer;
 import java.nio.charset.StandardCharsets;
+import java.nio.file.Files;
 
 import org.apache.maven.doxia.markup.Markup;
 import org.codehaus.plexus.testing.PlexusTest;
-import org.codehaus.plexus.util.WriterFactory;
+import org.codehaus.plexus.util.xml.XmlStreamWriter;
 
 import static org.codehaus.plexus.testing.PlexusExtension.getBasedir;
 import static org.junit.jupiter.api.Assertions.assertNotNull;
@@ -65,7 +66,6 @@ public abstract class AbstractModuleTest implements Markup {
      * @param extension The file extension of the file to write.
      * @return A FileWriter.
      * @throws IOException If the FileWriter could not be generated.
-     * @see WriterFactory#newWriter(File, String)
      */
     protected Writer getTestWriter(String baseName, String extension) throws IOException {
         File outputFile = getTestWriterFile(baseName, extension);
@@ -74,7 +74,7 @@ public abstract class AbstractModuleTest implements Markup {
             outputFile.getParentFile().mkdirs();
         }
 
-        return WriterFactory.newWriter(outputFile, "UTF-8");
+        return Files.newBufferedWriter(outputFile.toPath(), StandardCharsets.UTF_8);
     }
 
     protected File getTestWriterFile(String baseName, String extension) {
@@ -111,7 +111,6 @@ public abstract class AbstractModuleTest implements Markup {
      * @param extension The file extension of the file to write.
      * @return An XML FileWriter.
      * @throws IOException If the FileWriter could not be generated.
-     * @see WriterFactory#newXmlWriter(File)
      */
     protected Writer getXmlTestWriter(String baseName, String extension) throws IOException {
         File outputFile = getTestWriterFile(baseName, extension);
@@ -120,7 +119,7 @@ public abstract class AbstractModuleTest implements Markup {
             outputFile.getParentFile().mkdirs();
         }
 
-        return WriterFactory.newXmlWriter(outputFile);
+        return new XmlStreamWriter(outputFile);
     }
 
     /**
