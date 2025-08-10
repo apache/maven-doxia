@@ -123,7 +123,6 @@ public class AptSink extends AbstractTextSink implements AptMarkup {
      * Constructor, initialize the Writer and the variables.
      *
      * @param writer not null writer to write the result. <b>Should</b> be an UTF-8 Writer.
-     * You could use <code>newWriter</code> methods from {@code org.codehaus.plexus.util.WriterFactory}.
      */
     protected AptSink(Writer writer) {
         this.writer = new PrintWriter(writer);
