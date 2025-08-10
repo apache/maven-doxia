@@ -29,9 +29,7 @@ import org.apache.maven.doxia.sink.SinkEventAttributes;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
 
-import static org.hamcrest.MatcherAssert.assertThat;
 import static org.junit.jupiter.api.Assertions.assertEquals;
-import static org.xmlunit.matchers.CompareMatcher.isIdenticalTo;
 
 /**
  * Abstract base class to test sinks.
@@ -592,7 +590,7 @@ public abstract class AbstractSinkTest extends AbstractModuleTest {
         String expected = getFigureBlock(source, caption);
 
         if (isXmlSink()) {
-            assertThat(wrapXml(actual), isIdenticalTo(wrapXml(expected)));
+            assertEquals(wrapXml(actual), wrapXml(expected));
         } else {
             assertEquals(expected, actual);
         }
@@ -611,7 +609,7 @@ public abstract class AbstractSinkTest extends AbstractModuleTest {
         String expected = getFigureBlock(source, null);
 
         if (isXmlSink()) {
-            assertThat(wrapXml(actual), isIdenticalTo(wrapXml(expected)));
+            assertEquals(wrapXml(actual), wrapXml(expected));
         } else {
             assertEquals(expected, actual);
         }
@@ -630,7 +628,7 @@ public abstract class AbstractSinkTest extends AbstractModuleTest {
         String expected = getFigureBlock(source, null);
 
         if (isXmlSink()) {
-            assertThat(wrapXml(actual), isIdenticalTo(wrapXml(expected)));
+            assertEquals(wrapXml(actual), wrapXml(expected));
         } else {
             assertEquals(expected, actual);
         }
@@ -676,7 +674,7 @@ public abstract class AbstractSinkTest extends AbstractModuleTest {
         String expected = getTableBlock(cell, caption);
 
         if (isXmlSink()) {
-            assertThat(wrapXml(actual), isIdenticalTo(wrapXml(expected)));
+            assertEquals(wrapXml(actual), wrapXml(expected));
         } else {
             assertEquals(expected, actual);
         }
@@ -723,7 +721,7 @@ public abstract class AbstractSinkTest extends AbstractModuleTest {
         String expected = getTableWithHeaderBlock("header_", "row1_", "row2_");
 
         if (isXmlSink()) {
-            assertThat(wrapXml(actual), isIdenticalTo(wrapXml(expected)));
+            assertEquals(wrapXml(actual), wrapXml(expected));
         } else {
             assertEquals(expected, actual);
         }

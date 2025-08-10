@@ -24,7 +24,6 @@ under the License.
     <groupId>org.apache.maven.doxia</groupId>
     <artifactId>doxia-modules</artifactId>
     <version>2.1.0-SNAPSHOT</version>
-    <relativePath>../pom.xml</relativePath>
   </parent>
 
   <artifactId>doxia-module-xdoc</artifactId>
@@ -57,23 +56,8 @@ under the License.
 
     <!-- test -->
     <dependency>
-      <groupId>com.google.inject</groupId>
-      <artifactId>guice</artifactId>
-      <scope>test</scope>
-    </dependency>
-    <dependency>
       <groupId>org.apache.maven.doxia</groupId>
       <artifactId>doxia-test-docs</artifactId>
-      <scope>test</scope>
-    </dependency>
-    <dependency>
-      <groupId>org.xmlunit</groupId>
-      <artifactId>xmlunit-core</artifactId>
-      <scope>test</scope>
-    </dependency>
-    <dependency>
-      <groupId>org.xmlunit</groupId>
-      <artifactId>xmlunit-matchers</artifactId>
       <scope>test</scope>
     </dependency>
     <dependency>
