@@ -250,10 +250,6 @@ under the License.
     <pluginManagement>
       <plugins>
         <plugin>
-          <groupId>org.codehaus.mojo</groupId>
-          <artifactId>clirr-maven-plugin</artifactId>
-        </plugin>
-        <plugin>
           <groupId>org.apache.maven.plugins</groupId>
           <artifactId>maven-site-plugin</artifactId>
           <configuration>
@@ -296,44 +292,6 @@ under the License.
           </execution>
         </executions>
       </plugin>
-      <!--
-      <plugin>
-        <groupId>org.codehaus.mojo</groupId>
-        <artifactId>clirr-maven-plugin</artifactId>
-        <executions>
-          <execution>
-            <phase>verify</phase>
-            <goals>
-              <goal>check</goal>
-            </goals>
-            <configuration>
-              <comparisonVersion>1.9.1</comparisonVersion>
-              <excludes>
-                DOXIA-614 expected API changes to 1.9.1
-                <exclude>org/apache/maven/doxia/Doxia</exclude>
-                <exclude>org/apache/maven/doxia/parser/AbstractParser</exclude>
-                <exclude>org/apache/maven/doxia/parser/AbstractXmlParser</exclude>
-                <exclude>org/apache/maven/doxia/parser/FmlParser</exclude>
-                <exclude>org/apache/maven/doxia/parser/XhtmlBaseParser</exclude>
-                <exclude>org/apache/maven/doxia/parser/Xhtml5BaseParser</exclude>
-                <exclude>org/apache/maven/doxia/module/fml/FmlParser</exclude>
-                <exclude>org/apache/maven/doxia/module/markdown/MarkdownParser</exclude>
-                <exclude>org/apache/maven/doxia/module/xdoc/XdocParser</exclude>
-                <exclude>org/apache/maven/doxia/module/xhtml/XhtmlParser</exclude>
-                <exclude>org/apache/maven/doxia/module/xhtml5/Xhtml5Parser</exclude>
-              </excludes>
-              <ignored>
-                DOXIA-616
-                <difference>
-                  <differenceType>8001</differenceType>
-                  <className>org/apache/maven/doxia/module/markdown/FlexmarkDoxiaNodeRenderer$Factory</className>
-                </difference>
-              </ignored>
-            </configuration>
-          </execution>
-        </executions>
-      </plugin>
-      -->
     </plugins>
   </build>
 
