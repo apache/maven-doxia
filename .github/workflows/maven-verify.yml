@@ -25,3 +25,6 @@ jobs:
   build:
     name: Verify
     uses: apache/maven-gh-actions-shared/.github/workflows/maven-verify.yml@v4
+    with:
+      # use Apache Snapshots for site as we have dependencies to test-jar in doxia-modules
+      ff-site-goal: '-DskipTests -P reporting,use-apache-snapshots site site:stage'
