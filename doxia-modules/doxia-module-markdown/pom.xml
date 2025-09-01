@@ -148,7 +148,7 @@ under the License.
     <dependency>
       <groupId>org.jetbrains</groupId>
       <artifactId>annotations</artifactId>
-      <version>26.0.2</version>
+      <version>26.0.2-1</version>
     </dependency>
     <dependency>
       <groupId>org.apache.maven.doxia</groupId>
