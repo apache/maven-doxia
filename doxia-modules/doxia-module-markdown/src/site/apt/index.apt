@@ -40,6 +40,49 @@ doxia-module-markdown
   * {{{http://fletcher.github.io/MultiMarkdown-5/metadata.html}MultiMarkdown Metadata}}
 
   * {{{https://github.com/vsch/flexmark-java/wiki/Extensions#yaml-front-matter}YAML front matter}}
+  
+  Metadata must be placed at the beginning of the document, before any other content.
+  
+  []
+
+  Currently only the following metadata elements are supported:
+  
+  * <<<title>>> - the title of the document, used as the sink's title
+  
+  * <<<author>>> - the author of the document, used as the sink's author
+  
+  * <<<date>>> - the date of the document, used as the sink's date
+  
+  * everything else is just written as meta tags in the output document
+  
+
+* Extensions
+
+  As the original Markdown specification is simple many extensions have been created to add features to the original Markdown format.
+  The following extensions are supported by this module:
+  
+** GFM (GitHub Flavored Markdown) extensions:
+  
+  GitHub specified {{{https://github.github.com/gfm}extensions}} to the original Markdown format, which are now widely used. 
+  Some of these extensions are also supported by this module.
+  
+  * {{{https://github.github.com/gfm/#tables-extension-}tables}}
+  
+  * {{{https://github.github.com/gfm/#strikethrough-extension-}strikethrough text}}
+
+** Others
+
+  * {{{https://github.com/vsch/flexmark-java/wiki/Extensions#wikilinks}wiki links}}
+  
+  * {{{https://github.com/vsch/flexmark-java/wiki/Footnotes-Extension}footnotes}}
+  
+  * {{{https://michelf.ca/projects/php-markdown/extra/#abbr}abbreviations}}
+  
+  * {{{https://michelf.ca/projects/php-markdown/extra/#def-list}definition lists}}
+  
+* Parser
+
+  The parser will first convert Markdown into HTML and then parse the HTML into Doxia Sink API methods calls.
 
 * References
 
