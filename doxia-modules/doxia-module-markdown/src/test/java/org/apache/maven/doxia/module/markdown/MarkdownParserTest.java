@@ -628,6 +628,7 @@ public class MarkdownParserTest extends AbstractParserTest {
                 "table",
                 "tableRows",
                 "text",
+                "unknown", // tbody start
                 "tableRow",
                 "tableHeaderCell",
                 "text",
@@ -640,6 +641,7 @@ public class MarkdownParserTest extends AbstractParserTest {
                 "tableCell_",
                 "tableRow_",
                 "text",
+                "unknown", // tbody end
                 "tableRows_",
                 "table_",
                 "text",
@@ -669,7 +671,7 @@ public class MarkdownParserTest extends AbstractParserTest {
 
     protected String parseFileToHtml(String file) throws ParseException, IOException {
         try (Reader reader = getTestReader(file)) {
-            return parser.toHtml(reader).toString();
+            return parser.toXhtml(reader).toString();
         }
     }
 
@@ -858,6 +860,11 @@ public class MarkdownParserTest extends AbstractParserTest {
                 parseFileToEventTestingSink("comments").getEventList();
 
         assertSinkDoesNotContain(eventList.iterator(), "comment", "comment_");
+    }
+
+    @Test
+    public void testHtmlInMarkdown() throws ParseException, IOException {
+        parseFileToEventTestingSink("html");
     }
 
     protected static void assertComment(ListIterator<SinkEventElement> it, String comment) {
