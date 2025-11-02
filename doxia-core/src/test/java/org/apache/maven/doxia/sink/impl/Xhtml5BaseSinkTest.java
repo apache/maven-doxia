@@ -36,7 +36,7 @@ import static org.junit.jupiter.api.Assertions.assertTrue;
 /**
  * Test for Xhtml5BaseSink.
  */
-public class Xhtml5BaseSinkTest {
+class Xhtml5BaseSinkTest {
     protected static final String LS = Markup.EOL;
     private final SinkEventAttributes attributes = SinkEventAttributeSet.BOLD;
     private Writer writer;
@@ -44,12 +44,12 @@ public class Xhtml5BaseSinkTest {
     private static final String EOL = System.lineSeparator();
 
     @BeforeEach
-    public void setUp() {
+    void setUp() {
         writer = new StringWriter();
     }
 
     @Test
-    public void testSpaceAfterClosingTag() {
+    void spaceAfterClosingTag() {
         // DOXIA-189
         try (Xhtml5BaseSink sink = new Xhtml5BaseSink(writer)) {
             sink.paragraph();
@@ -70,7 +70,7 @@ public class Xhtml5BaseSinkTest {
     /**
      */
     @Test
-    public void testNestedTables() {
+    void nestedTables() {
         // DOXIA-177
         try (Xhtml5BaseSink sink = new Xhtml5BaseSink(writer)) {
 
@@ -163,7 +163,7 @@ public class Xhtml5BaseSinkTest {
      * Test of article method, of class Xhtml5BaseSink.
      */
     @Test
-    public void testArticle() {
+    void article() {
         try (Xhtml5BaseSink sink = new Xhtml5BaseSink(writer)) {
             sink.article();
             sink.article_();
@@ -185,7 +185,7 @@ public class Xhtml5BaseSinkTest {
      * Test of navigation method, of class Xhtml5BaseSink.
      */
     @Test
-    public void testNavigation() {
+    void navigation() {
         try (Xhtml5BaseSink sink = new Xhtml5BaseSink(writer)) {
             sink.navigation();
             sink.navigation_();
@@ -206,7 +206,7 @@ public class Xhtml5BaseSinkTest {
      * Test of sidebar method, of class Xhtml5BaseSink.
      */
     @Test
-    public void testSidebar() {
+    void sidebar() {
         try (Xhtml5BaseSink sink = new Xhtml5BaseSink(writer)) {
             sink.sidebar();
             sink.sidebar_();
@@ -228,7 +228,7 @@ public class Xhtml5BaseSinkTest {
      * Test of section method, of class Xhtml5BaseSink.
      */
     @Test
-    public void testSection() {
+    void section() {
         final int level = Xhtml5BaseSink.SECTION_LEVEL_1;
 
         try (Xhtml5BaseSink sink = new Xhtml5BaseSink(writer)) {
@@ -245,7 +245,7 @@ public class Xhtml5BaseSinkTest {
      * Test of section method, of class Xhtml5BaseSink.
      */
     @Test
-    public void testSectionAttributes() {
+    void sectionAttributes() {
         final int level = Xhtml5BaseSink.SECTION_LEVEL_1;
         final SinkEventAttributeSet set =
                 new SinkEventAttributeSet("name", "section name", "class", "foo", "id", "bar");
@@ -264,7 +264,7 @@ public class Xhtml5BaseSinkTest {
      * Test of section1 method, of class Xhtml5BaseSink.
      */
     @Test
-    public void testSection1() {
+    void section1() {
         try (Xhtml5BaseSink sink = new Xhtml5BaseSink(writer)) {
             sink.section1();
             sink.sectionTitle1();
@@ -279,7 +279,7 @@ public class Xhtml5BaseSinkTest {
      * Test of section2 method, of class Xhtml5BaseSink.
      */
     @Test
-    public void testSection2() {
+    void section2() {
         try (Xhtml5BaseSink sink = new Xhtml5BaseSink(writer)) {
             sink.section2();
             sink.sectionTitle2();
@@ -294,7 +294,7 @@ public class Xhtml5BaseSinkTest {
      * Test of section3 method, of class Xhtml5BaseSink.
      */
     @Test
-    public void testSection3() {
+    void section3() {
         try (Xhtml5BaseSink sink = new Xhtml5BaseSink(writer)) {
             sink.section3();
             sink.sectionTitle3();
@@ -309,7 +309,7 @@ public class Xhtml5BaseSinkTest {
      * Test of section4 method, of class Xhtml5BaseSink.
      */
     @Test
-    public void testSection4() {
+    void section4() {
         try (Xhtml5BaseSink sink = new Xhtml5BaseSink(writer)) {
             sink.section4();
             sink.sectionTitle4();
@@ -324,7 +324,7 @@ public class Xhtml5BaseSinkTest {
      * Test of section5 method, of class Xhtml5BaseSink.
      */
     @Test
-    public void testSection5() {
+    void section5() {
         try (Xhtml5BaseSink sink = new Xhtml5BaseSink(writer)) {
             sink.section5();
             sink.sectionTitle5();
@@ -339,7 +339,7 @@ public class Xhtml5BaseSinkTest {
      * Test of header method, of class Xhtml5BaseSink.
      */
     @Test
-    public void testHeader() {
+    void header() {
         try (Xhtml5BaseSink sink = new Xhtml5BaseSink(writer)) {
             sink.header();
             sink.header_();
@@ -361,7 +361,7 @@ public class Xhtml5BaseSinkTest {
      * Test of content method, of class Xhtml5BaseSink.
      */
     @Test
-    public void testContent() {
+    void content() {
         try (Xhtml5BaseSink sink = new Xhtml5BaseSink(writer)) {
             sink.content();
             sink.content();
@@ -389,7 +389,7 @@ public class Xhtml5BaseSinkTest {
      * Test of footer method, of class Xhtml5BaseSink.
      */
     @Test
-    public void testFooter() {
+    void footer() {
         try (Xhtml5BaseSink sink = new Xhtml5BaseSink(writer)) {
             sink.footer();
             sink.footer_();
@@ -411,7 +411,7 @@ public class Xhtml5BaseSinkTest {
      * Test of list method, of class Xhtml5BaseSink.
      */
     @Test
-    public void testList() {
+    void list() {
         try (Xhtml5BaseSink sink = new Xhtml5BaseSink(writer)) {
             sink.list();
             sink.listItem();
@@ -437,7 +437,7 @@ public class Xhtml5BaseSinkTest {
      * Test of numberedList method, of class Xhtml5BaseSink.
      */
     @Test
-    public void testNumberedList() {
+    void numberedList() {
         final int numbering = Xhtml5BaseSink.NUMBERING_DECIMAL;
 
         try (Xhtml5BaseSink sink = new Xhtml5BaseSink(writer)) {
@@ -467,7 +467,7 @@ public class Xhtml5BaseSinkTest {
      * Test of definitionList method, of class Xhtml5BaseSink.
      */
     @Test
-    public void testDefinitionList() {
+    void definitionList() {
         try (Xhtml5BaseSink sink = new Xhtml5BaseSink(writer)) {
             sink.definitionList();
             sink.definedTerm();
@@ -499,7 +499,7 @@ public class Xhtml5BaseSinkTest {
      * Test of figure method, of class Xhtml5BaseSink.
      */
     @Test
-    public void testFigure() {
+    void figure() {
         final String src = "src.jpg";
 
         try (Xhtml5BaseSink sink = new Xhtml5BaseSink(writer)) {
@@ -520,7 +520,7 @@ public class Xhtml5BaseSinkTest {
      * Test of figureGraphics method, of class Xhtml5BaseSink.
      */
     @Test
-    public void testFigureGraphics() {
+    void figureGraphics() {
         String src = "source.png";
 
         try (Xhtml5BaseSink sink = new Xhtml5BaseSink(writer)) {
@@ -534,7 +534,7 @@ public class Xhtml5BaseSinkTest {
      * Test of paragraph method, of class Xhtml5BaseSink.
      */
     @Test
-    public void testParagraph() {
+    void paragraph() {
         try (Xhtml5BaseSink sink = new Xhtml5BaseSink(writer)) {
             sink.paragraph();
             sink.paragraph_();
@@ -556,7 +556,7 @@ public class Xhtml5BaseSinkTest {
      * Test of data method, of class Xhtml5BaseSink.
      */
     @Test
-    public void testData() {
+    void data() {
         String value = "value";
 
         try (Xhtml5BaseSink sink = new Xhtml5BaseSink(writer)) {
@@ -571,7 +571,7 @@ public class Xhtml5BaseSinkTest {
      * Test of time method, of class Xhtml5BaseSink.
      */
     @Test
-    public void testTime() {
+    void time() {
         String datetime = "datetime";
 
         try (Xhtml5BaseSink sink = new Xhtml5BaseSink(writer)) {
@@ -586,7 +586,7 @@ public class Xhtml5BaseSinkTest {
      * Test of address method, of class Xhtml5BaseSink.
      */
     @Test
-    public void testAddress() {
+    void address() {
         try (Xhtml5BaseSink sink = new Xhtml5BaseSink(writer)) {
             sink.address();
             sink.address_();
@@ -608,7 +608,7 @@ public class Xhtml5BaseSinkTest {
      * Test of blockquote method, of class Xhtml5BaseSink.
      */
     @Test
-    public void testBlockquote() {
+    void blockquote() {
         try (Xhtml5BaseSink sink = new Xhtml5BaseSink(writer)) {
             sink.blockquote();
             sink.blockquote_();
@@ -630,7 +630,7 @@ public class Xhtml5BaseSinkTest {
      * Test of division method, of class Xhtml5BaseSink.
      */
     @Test
-    public void testDivision() {
+    void division() {
         try (Xhtml5BaseSink sink = new Xhtml5BaseSink(writer)) {
             sink.division();
             sink.division_();
@@ -652,7 +652,7 @@ public class Xhtml5BaseSinkTest {
      * Test of verbatim method, of class Xhtml5BaseSink.
      */
     @Test
-    public void testVerbatim() {
+    void verbatim() {
         try (Xhtml5BaseSink sink = new Xhtml5BaseSink(writer)) {
             sink.verbatim(SinkEventAttributeSet.SOURCE);
             sink.verbatim_();
@@ -688,7 +688,7 @@ public class Xhtml5BaseSinkTest {
     }
 
     @Test
-    public void testVerbatimSourceWithNewline() {
+    void verbatimSourceWithNewline() {
         try (Xhtml5BaseSink sink = new Xhtml5BaseSink(writer)) {
             sink.verbatim(SinkEventAttributeSet.SOURCE);
             sink.text(EOL + "firstLine");
@@ -703,7 +703,7 @@ public class Xhtml5BaseSinkTest {
      * Test of horizontalRule method, of class Xhtml5BaseSink.
      */
     @Test
-    public void testHorizontalRule() {
+    void horizontalRule() {
         try (Xhtml5BaseSink sink = new Xhtml5BaseSink(writer)) {
             sink.horizontalRule();
             sink.horizontalRule(attributes);
@@ -716,7 +716,7 @@ public class Xhtml5BaseSinkTest {
      * Test of table method, of class Xhtml5BaseSink.
      */
     @Test
-    public void testTable() {
+    void table() {
         try (Xhtml5BaseSink sink = new Xhtml5BaseSink(writer)) {
             sink.table(attributes);
             sink.table_();
@@ -729,7 +729,7 @@ public class Xhtml5BaseSinkTest {
      * Test of tableRows method, of class Xhtml5BaseSink.
      */
     @Test
-    public void testTableRows() {
+    void tableRows() {
         try (Xhtml5BaseSink sink = new Xhtml5BaseSink(writer)) {
             sink.table();
             sink.tableRows();
@@ -744,7 +744,7 @@ public class Xhtml5BaseSinkTest {
      * Test of tableRow method, of class Xhtml5BaseSink.
      */
     @Test
-    public void testTableRow() {
+    void tableRow() {
         try (Xhtml5BaseSink sink = new Xhtml5BaseSink(writer)) {
             sink.table();
             sink.tableRows();
@@ -766,7 +766,7 @@ public class Xhtml5BaseSinkTest {
      * Test striping for hidden rows in tableRow method.
      */
     @Test
-    public void testHiddenTableRowStriping() {
+    void hiddenTableRowStriping() {
         try (Xhtml5BaseSink sink = new Xhtml5BaseSink(writer)) {
             SinkEventAttributeSet attributes2 = new SinkEventAttributeSet();
             SinkEventAttributeSet attributes3 = new SinkEventAttributeSet();
@@ -824,7 +824,7 @@ public class Xhtml5BaseSinkTest {
      * Test of tableCell method, of class Xhtml5BaseSink.
      */
     @Test
-    public void testTableCell() {
+    void tableCell() {
         try (Xhtml5BaseSink sink = new Xhtml5BaseSink(writer)) {
             sink.tableCell(attributes);
             sink.tableCell_();
@@ -837,7 +837,7 @@ public class Xhtml5BaseSinkTest {
      * Test of tableHeaderCell method, of class Xhtml5BaseSink.
      */
     @Test
-    public void testTableHeaderCell() {
+    void tableHeaderCell() {
         try (Xhtml5BaseSink sink = new Xhtml5BaseSink(writer)) {
             sink.tableHeaderCell(attributes);
             sink.tableHeaderCell_();
@@ -850,7 +850,7 @@ public class Xhtml5BaseSinkTest {
      * Test of tableCaption method, of class Xhtml5BaseSink.
      */
     @Test
-    public void testTableCaption() {
+    void tableCaption() {
         try (Xhtml5BaseSink sink = new Xhtml5BaseSink(writer)) {
             sink.table();
             sink.tableRows();
@@ -869,7 +869,7 @@ public class Xhtml5BaseSinkTest {
      * Test of anchor method, of class Xhtml5BaseSink.
      */
     @Test
-    public void testAnchor() {
+    void anchor() {
         String name = "anchor";
         try (Xhtml5BaseSink sink = new Xhtml5BaseSink(writer)) {
             sink.anchor(name, attributes);
@@ -883,7 +883,7 @@ public class Xhtml5BaseSinkTest {
      * Test of link method, of class Xhtml5BaseSink.
      */
     @Test
-    public void testLink() {
+    void link() {
         final String name = "link.html";
 
         try (Xhtml5BaseSink sink = new Xhtml5BaseSink(writer)) {
@@ -898,7 +898,7 @@ public class Xhtml5BaseSinkTest {
      * Test of link method for an external link.
      */
     @Test
-    public void testLinkExternal() {
+    void linkExternal() {
         final String name = "https://www.apache.org";
 
         try (Xhtml5BaseSink sink = new Xhtml5BaseSink(writer)) {
@@ -914,7 +914,7 @@ public class Xhtml5BaseSinkTest {
      * Test of link method for an external link when a css class is provided.
      */
     @Test
-    public void testLinkExternalClassExtend() {
+    void linkExternalClassExtend() {
         final String name = "https://www.apache.org";
         SinkEventAttributeSet attributes2 = new SinkEventAttributeSet();
         attributes2.addAttributes(attributes);
@@ -934,7 +934,7 @@ public class Xhtml5BaseSinkTest {
      * Test of inline method, of class Xhtml5BaseSink.
      */
     @Test
-    public void testInline() {
+    void inline() {
         String text = "a text & \u00c6";
 
         writer = new StringWriter();
@@ -1008,7 +1008,7 @@ public class Xhtml5BaseSinkTest {
      * Test of italic/bold/code method, of class Xhtml5BaseSink.
      */
     @Test
-    public void testItalic() {
+    void italic() {
         try (Xhtml5BaseSink sink = new Xhtml5BaseSink(writer)) {
             sink.inline(SinkEventAttributeSet.Semantics.ITALIC);
             sink.inline_();
@@ -1025,7 +1025,7 @@ public class Xhtml5BaseSinkTest {
      * Test of lineBreak/lineBreakOpportunity/pageBreak/nonBreakingSpace method, of class Xhtml5BaseSink.
      */
     @Test
-    public void testLineBreak() {
+    void lineBreak() {
         try (Xhtml5BaseSink sink = new Xhtml5BaseSink(writer)) {
             sink.lineBreak(attributes);
             sink.lineBreakOpportunity(attributes);
@@ -1040,7 +1040,7 @@ public class Xhtml5BaseSinkTest {
      * Test of text method, of class Xhtml5BaseSink.
      */
     @Test
-    public void testText() {
+    void text() {
         String text = "a text & \u00c6";
 
         try (Xhtml5BaseSink sink = new Xhtml5BaseSink(writer)) {
@@ -1062,7 +1062,7 @@ public class Xhtml5BaseSinkTest {
      * Test of text method, of class Xhtml5BaseSink.
      */
     @Test
-    public void testTextWithAttributes() {
+    void textWithAttributes() {
         String text = "text";
 
         try (Xhtml5BaseSink sink = new Xhtml5BaseSink(writer)) {
@@ -1076,7 +1076,7 @@ public class Xhtml5BaseSinkTest {
      * Test of rawText method, of class Xhtml5BaseSink.
      */
     @Test
-    public void testRawText() {
+    void rawText() {
         String text = "raw text";
 
         try (Xhtml5BaseSink sink = new Xhtml5BaseSink(writer)) {
@@ -1090,7 +1090,7 @@ public class Xhtml5BaseSinkTest {
      * Test of comment method, of class Xhtml5BaseSink.
      */
     @Test
-    public void testComment() {
+    void comment() {
         try (Xhtml5BaseSink sink = new Xhtml5BaseSink(writer)) {
             sink.comment("a comment");
             sink.comment(" a comment");
@@ -1105,7 +1105,7 @@ public class Xhtml5BaseSinkTest {
      * Test of unknown method, of class Xhtml5BaseSink.
      */
     @Test
-    public void testUnknown() {
+    void unknown() {
         final String name = "unknown";
         final Object[] requiredParams = null;
 
@@ -1120,7 +1120,7 @@ public class Xhtml5BaseSinkTest {
      * Test entities in attribute values.
      */
     @Test
-    public void testAttributeEntities() {
+    void attributeEntities() {
         final Object[] startTag = new Object[] {Xhtml5BaseSink.TAG_TYPE_START};
         final Object[] endTag = new Object[] {Xhtml5BaseSink.TAG_TYPE_END};
         final String script = Xhtml5BaseSink.SCRIPT.toString();
@@ -1144,7 +1144,7 @@ public class Xhtml5BaseSinkTest {
      * Test of entity.
      */
     @Test
-    public void testEntity() {
+    void entity() {
         // DOXIA-314
         String text = "a text '&#x1d7ed;'";
 
@@ -1159,7 +1159,7 @@ public class Xhtml5BaseSinkTest {
      * Test unicode characters in tables. DOXIA-433.
      */
     @Test
-    public void testSpecialCharacters() {
+    void specialCharacters() {
         try (Xhtml5BaseSink sink = new Xhtml5BaseSink(writer)) {
             sink.table();
             sink.tableRows();

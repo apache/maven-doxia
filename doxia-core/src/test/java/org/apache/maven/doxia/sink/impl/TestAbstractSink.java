@@ -22,9 +22,9 @@ import org.junit.jupiter.api.Test;
 
 import static org.junit.jupiter.api.Assertions.assertEquals;
 
-public class TestAbstractSink {
+class TestAbstractSink {
     @Test
-    public void testUnifiedEOL() {
+    void unifiedEOL() {
         String eol = AbstractSink.EOL;
         String eolMacOS = "\r";
         String eolUnix = "\n";

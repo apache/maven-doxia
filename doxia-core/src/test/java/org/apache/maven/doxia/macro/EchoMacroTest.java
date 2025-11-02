@@ -36,12 +36,12 @@ import static org.junit.jupiter.api.Assertions.assertFalse;
  *
  * @author ltheussl
  */
-public class EchoMacroTest {
+class EchoMacroTest {
     /**
      * Test of execute method, of class EchoMacro.
      */
     @Test
-    public void testExecute() {
+    void execute() {
         final Map<String, Object> macroParameters = new HashMap<>();
         macroParameters.put("paramName", "paramValue");
 

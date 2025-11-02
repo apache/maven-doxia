@@ -24,6 +24,7 @@ import java.util.Date;
 import java.util.GregorianCalendar;
 
 import org.codehaus.plexus.testing.PlexusTest;
+import org.junit.jupiter.api.Assertions;
 import org.junit.jupiter.api.Test;
 
 import static org.junit.jupiter.api.Assertions.assertEquals;
@@ -39,12 +40,12 @@ import static org.junit.jupiter.api.Assertions.fail;
  * @author ltheussl
  */
 @PlexusTest
-public class DoxiaUtilsTest {
+class DoxiaUtilsTest {
     /**
      * Verify the expected results.
      */
     @Test
-    public void testIsInternalLink() {
+    void isInternalLink() {
         String link = "#anchor";
         assertTrue(DoxiaUtils.isInternalLink(link), "Should be an internal link: " + link);
 
@@ -59,7 +60,7 @@ public class DoxiaUtilsTest {
      * Verify the expected results.
      */
     @Test
-    public void testIsExternalLink() {
+    void isExternalLink() {
         String link = "http://maven.apache.org/";
         assertTrue(DoxiaUtils.isExternalLink(link), "Should be an external link: " + link);
 
@@ -109,7 +110,7 @@ public class DoxiaUtilsTest {
      * Verify the expected results.
      */
     @Test
-    public void testIsLocalLink() {
+    void isLocalLink() {
         String link = "index.html";
         assertTrue(DoxiaUtils.isLocalLink(link), "Should be a local link: " + link);
 
@@ -130,7 +131,7 @@ public class DoxiaUtilsTest {
      * Verify the expected results.
      */
     @Test
-    public void testEncodeId() {
+    void encodeId() {
         assertNull(DoxiaUtils.encodeId(null));
         assertNull(DoxiaUtils.encodeId(""));
         assertNull(DoxiaUtils.encodeId(" "));
@@ -150,7 +151,7 @@ public class DoxiaUtilsTest {
      * Verify the expected results.
      */
     @Test
-    public void testIsValidId() {
+    void isValidId() {
         assertFalse(DoxiaUtils.isValidId(null));
         assertFalse(DoxiaUtils.isValidId(""));
         assertFalse(DoxiaUtils.isValidId(" "));
@@ -177,12 +178,12 @@ public class DoxiaUtilsTest {
      * Verify the expected results.
      */
     @Test
-    public void testParseDate() {
+    void parseDate() {
         final int year = 1973;
         final int month = Calendar.FEBRUARY;
         final int day = 27;
 
-        try {
+        Assertions.assertDoesNotThrow(() -> {
             final Date feb27 = new GregorianCalendar(year, month, day).getTime();
             assertEquals(feb27, DoxiaUtils.parseDate("27.02.1973"));
             assertEquals(feb27, DoxiaUtils.parseDate("27. 02. 1973"));
@@ -205,9 +206,7 @@ public class DoxiaUtilsTest {
 
             assertNotNull(DoxiaUtils.parseDate("Today"));
             assertNotNull(DoxiaUtils.parseDate("NOW"));
-        } catch (ParseException ex) {
-            fail(ex.getMessage());
-        }
+        });
 
         try {
             DoxiaUtils.parseDate("yesterday").getTime();

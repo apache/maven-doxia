@@ -21,7 +21,6 @@ package org.apache.maven.doxia.module.xdoc;
 import javax.inject.Inject;
 
 import java.io.File;
-import java.io.FileFilter;
 import java.io.FileReader;
 import java.io.Reader;
 import java.io.Writer;
@@ -43,6 +42,7 @@ import static org.codehaus.plexus.testing.PlexusExtension.getBasedir;
 import static org.codehaus.plexus.testing.PlexusExtension.getTestFile;
 import static org.junit.jupiter.api.Assertions.assertEquals;
 import static org.junit.jupiter.api.Assertions.assertFalse;
+import static org.junit.jupiter.api.Assertions.assertNotNull;
 import static org.junit.jupiter.api.Assertions.assertNull;
 import static org.junit.jupiter.api.Assertions.assertThrows;
 import static org.junit.jupiter.api.Assertions.assertTrue;
@@ -52,7 +52,7 @@ import static org.junit.jupiter.api.Assertions.assertTrue;
  * @author <a href="mailto:evenisse@codehaus.org">Emmanuel Venisse</a>
  * @since 1.0
  */
-public class XdocParserTest extends AbstractParserTest {
+class XdocParserTest extends AbstractParserTest {
     @Inject
     private XdocParser parser;
 
@@ -64,40 +64,26 @@ public class XdocParserTest extends AbstractParserTest {
 
         final Pattern xsdFilePattern = Pattern.compile("(xdoc\\-.*|xml)\\.xsd");
 
-        File[] xsdFiles = new File(tmpDir).listFiles(new FileFilter() {
+        File[] xsdFiles = new File(tmpDir)
+                .listFiles(pathname -> pathname.isFile()
+                        && xsdFilePattern.matcher(pathname.getName()).matches());
 
-            public boolean accept(File pathname) {
-                return pathname.isFile()
-                        && xsdFilePattern.matcher(pathname.getName()).matches();
-            }
-        });
-
+        assertNotNull(xsdFiles);
         for (File xsdFile : xsdFiles) {
             xsdFile.delete();
         }
-
-        /* FileUtils 3.0.10 is about 5-8 times slower than File.listFiles() + regexp */
-        //        String includes = "xdoc-*.xsd, xml.xsd";
-        //        List<File> tmpFiles = FileUtils.getFiles(new File(tmpDir), includes, null, true);
-        //        for (File tmpFile  : tmpFiles)
-        //        {
-        //            tmpFile.delete();
-        //        }
     }
 
-    /** {@inheritDoc} */
     protected String outputExtension() {
         return "xml";
     }
 
-    /** {@inheritDoc} */
     protected AbstractParser createParser() {
         return parser;
     }
 
-    /** @throws Exception  */
     @Test
-    public void testSnippetMacro() throws Exception {
+    void snippetMacro() throws Exception {
         try (Writer output = getTestWriter("macro");
                 Reader reader = getTestReader("macro")) {
             Sink sink = new XdocSink(output);
@@ -117,7 +103,7 @@ public class XdocParserTest extends AbstractParserTest {
     }
 
     @Test
-    public void testTocMacro() throws Exception {
+    void tocMacro() throws Exception {
         try (Writer output = getTestWriter("toc");
                 Reader reader = getTestReader("toc")) {
             Sink sink = new XdocSink(output);
@@ -147,7 +133,7 @@ public class XdocParserTest extends AbstractParserTest {
     }
 
     @Test
-    public void testHeadEventsList() throws Exception {
+    void headEventsList() throws Exception {
         String text = "<document>"
                 + "<properties><title>title</title>"
                 + "<!-- Test comment: DOXIA-312 -->"
@@ -190,7 +176,7 @@ public class XdocParserTest extends AbstractParserTest {
     }
 
     @Test
-    public void testDocumentBodyEventsList() throws Exception {
+    void documentBodyEventsList() throws Exception {
         String text = "<document><body></body></document>";
 
         Iterator<SinkEventElement> it = parseText(text);
@@ -199,7 +185,7 @@ public class XdocParserTest extends AbstractParserTest {
     }
 
     @Test
-    public void testSectionEventsList() throws Exception {
+    void sectionEventsList() throws Exception {
         String text = "<section name=\"sec 1\"><subsection name=\"sub 1\"></subsection></section>";
 
         Iterator<SinkEventElement> it = parseText(text);
@@ -219,7 +205,7 @@ public class XdocParserTest extends AbstractParserTest {
     }
 
     @Test
-    public void testSectionAttributes() throws Exception {
+    void sectionAttributes() throws Exception {
         // DOXIA-448
         String text = "<section name=\"section name\" class=\"foo\" id=\"bar\"></section>";
 
@@ -243,7 +229,7 @@ public class XdocParserTest extends AbstractParserTest {
     }
 
     @Test
-    public void testNestedSectionsEventsList() throws Exception {
+    void nestedSectionsEventsList() throws Exception {
         // DOXIA-241
         String text = "<section name=\"section\"><h5>h5</h5><subsection name=\"subsection\"></subsection></section>";
 
@@ -275,7 +261,7 @@ public class XdocParserTest extends AbstractParserTest {
     }
 
     @Test
-    public void testSourceEventsList() throws Exception {
+    void sourceEventsList() throws Exception {
         String text = "<source><a href=\"what.html\">what</a></source>";
 
         Iterator<SinkEventElement> it = parseText(text);
@@ -294,7 +280,7 @@ public class XdocParserTest extends AbstractParserTest {
     }
 
     @Test
-    public void testSourceContainingDTD() throws Exception {
+    void sourceContainingDTD() throws Exception {
         String text = "<source><![CDATA[" + "<!DOCTYPE web-app PUBLIC "
                 + "\"-//Sun Microsystems, Inc.//DTD Web Application 2.2//EN\""
                 + " \"http://java.sun.com/j2ee/dtds/web-app_2.2.dtd\">"
@@ -306,7 +292,7 @@ public class XdocParserTest extends AbstractParserTest {
     }
 
     @Test
-    public void testPreEOL() throws Exception {
+    void preEOL() throws Exception {
         // test EOLs within <source>: the sink MUST receive a text event for the EOL
         String text = "<source><a href=\"what.html\">what</a>" + EOL + "<a href=\"what.html\">what</a></source>";
 
@@ -319,7 +305,7 @@ public class XdocParserTest extends AbstractParserTest {
      * Test section with ids.
      */
     @Test
-    public void testSectionIdAnchor() throws Exception {
+    void sectionIdAnchor() throws Exception {
         String text = "<section name=\"test\" id=\"test-id\">This is a test."
                 + "<subsection name=\"sub-test\" id=\"sub-id\">Sub-section</subsection></section>";
 
@@ -339,7 +325,7 @@ public class XdocParserTest extends AbstractParserTest {
      * Test script block.
      */
     @Test
-    public void testJavaScript() throws Exception {
+    void javaScript() throws Exception {
         String text = "<script type=\"text/javascript\"><![CDATA[alert(\"Hello!\");]]></script>";
 
         Iterator<SinkEventElement> it = parseText(text);
@@ -350,7 +336,7 @@ public class XdocParserTest extends AbstractParserTest {
      * Test unknown tags.
      */
     @Test
-    public void testUnknown() throws Exception {
+    void unknown() throws Exception {
         String text = "<applet><param name=\"name\" value=\"value\"/><unknown/></applet>";
 
         Iterator<SinkEventElement> it = parseText(text);
@@ -361,7 +347,7 @@ public class XdocParserTest extends AbstractParserTest {
      * Test invalid macro tags.
      */
     @Test
-    public void testMacroExceptions() {
+    void macroExceptions() {
         SinkEventTestingSink sink = new SinkEventTestingSink();
         assertParseException(sink, "<macro/>");
         assertParseException(sink, "<macro name=\"\"/>");
@@ -377,7 +363,7 @@ public class XdocParserTest extends AbstractParserTest {
     }
 
     @Test
-    public void testEntities() throws Exception {
+    void entities() throws Exception {
         final String text = "<!DOCTYPE test [<!ENTITY foo \"&#x159;\"><!ENTITY tritPos  \"&#x1d7ed;\">]>"
                 + "<section name=\"&amp;&foo;&tritPos;\"><p>&amp;&foo;&tritPos;</p></section>";
 
@@ -404,7 +390,7 @@ public class XdocParserTest extends AbstractParserTest {
     }
 
     @Test
-    public void testStyleWithCData() throws Exception {
+    void styleWithCData() throws Exception {
         // DOXIA-449
         final String text = "<style type=\"text/css\">\n" + "<![CDATA[\n"
                 + "h2 {\n"
@@ -446,7 +432,7 @@ public class XdocParserTest extends AbstractParserTest {
      * @throws ParseException
      */
     @Test
-    public void testXhtml1AttributesObsoleteInXhtml5() throws ParseException {
+    void xhtml1AttributesObsoleteInXhtml5() throws Exception {
         final String text = "<a name=\"test\"></a>";
 
         SinkEventTestingSink sink = new SinkEventTestingSink();
@@ -473,7 +459,7 @@ public class XdocParserTest extends AbstractParserTest {
      * @throws ParseException
      */
     @Test
-    public void testXhtml1ElementsObsoleteInXhtml5() throws ParseException {
+    void xhtml1ElementsObsoleteInXhtml5() throws Exception {
         final String text = "<tt>test</tt>";
 
         SinkEventTestingSink sink = new SinkEventTestingSink();

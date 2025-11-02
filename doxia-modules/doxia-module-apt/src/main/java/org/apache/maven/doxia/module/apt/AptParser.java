@@ -178,7 +178,6 @@ public class AptParser extends AbstractTextParser implements AptMarkup {
     // Public methods
     // ----------------------------------------------------------------------
 
-    /** {@inheritDoc} */
     @Override
     public void parse(Reader source, Sink sink) throws ParseException {
         parse(source, sink, null);
@@ -203,7 +202,6 @@ public class AptParser extends AbstractTextParser implements AptMarkup {
         }
     }
 
-    /** {@inheritDoc} */
     @Override
     public void parse(Reader source, Sink sink, String reference) throws ParseException {
         init();
@@ -1561,7 +1559,6 @@ public class AptParser extends AbstractTextParser implements AptMarkup {
             super(AptParser.LIST_BREAK, indent, firstLine);
         }
 
-        /** {@inheritDoc} */
         public void traverse() throws AptParseException {
             throw new AptParseException("internal error: traversing list break");
         }
@@ -1580,7 +1577,6 @@ public class AptParser extends AbstractTextParser implements AptMarkup {
             super(TITLE, indent, firstLine);
         }
 
-        /** {@inheritDoc} */
         public void traverse() throws AptParseException {
             StringTokenizer lines = new StringTokenizer(text, EOL);
             int separator = -1;
@@ -1685,7 +1681,6 @@ public class AptParser extends AbstractTextParser implements AptMarkup {
             super(type, indent, firstLine);
         }
 
-        /** {@inheritDoc} */
         public void traverse() throws AptParseException {
             Title();
             traverseText(skipLeadingBullets());
@@ -1712,12 +1707,10 @@ public class AptParser extends AbstractTextParser implements AptMarkup {
             super(SECTION1, indent, firstLine);
         }
 
-        /** {@inheritDoc} */
         public void Title() {
             AptParser.this.sink.sectionTitle1();
         }
 
-        /** {@inheritDoc} */
         public void Title_() {
             AptParser.this.sink.sectionTitle1_();
         }
@@ -1736,12 +1729,10 @@ public class AptParser extends AbstractTextParser implements AptMarkup {
             super(SECTION2, indent, firstLine);
         }
 
-        /** {@inheritDoc} */
         public void Title() {
             AptParser.this.sink.sectionTitle2();
         }
 
-        /** {@inheritDoc} */
         public void Title_() {
             AptParser.this.sink.sectionTitle2_();
         }
@@ -1760,12 +1751,10 @@ public class AptParser extends AbstractTextParser implements AptMarkup {
             super(SECTION3, indent, firstLine);
         }
 
-        /** {@inheritDoc} */
         public void Title() {
             AptParser.this.sink.sectionTitle3();
         }
 
-        /** {@inheritDoc} */
         public void Title_() {
             AptParser.this.sink.sectionTitle3_();
         }
@@ -1784,12 +1773,10 @@ public class AptParser extends AbstractTextParser implements AptMarkup {
             super(SECTION4, indent, firstLine);
         }
 
-        /** {@inheritDoc} */
         public void Title() {
             AptParser.this.sink.sectionTitle4();
         }
 
-        /** {@inheritDoc} */
         public void Title_() {
             AptParser.this.sink.sectionTitle4_();
         }
@@ -1808,12 +1795,10 @@ public class AptParser extends AbstractTextParser implements AptMarkup {
             super(SECTION5, indent, firstLine);
         }
 
-        /** {@inheritDoc} */
         public void Title() {
             AptParser.this.sink.sectionTitle5();
         }
 
-        /** {@inheritDoc} */
         public void Title_() {
             AptParser.this.sink.sectionTitle5_();
         }
@@ -1832,7 +1817,6 @@ public class AptParser extends AbstractTextParser implements AptMarkup {
             super(PARAGRAPH, indent, firstLine);
         }
 
-        /** {@inheritDoc} */
         public void traverse() throws AptParseException {
             AptParser.this.sink.paragraph();
             traverseText(skipSpaceFrom(0));
@@ -1852,7 +1836,6 @@ public class AptParser extends AbstractTextParser implements AptMarkup {
             super(COMMENT_BLOCK, 0, line);
         }
 
-        /** {@inheritDoc} */
         public void traverse() throws AptParseException {
             if (isEmitComments()) {
                 AptParser.this.sink.comment(text, true);
@@ -1931,7 +1914,6 @@ public class AptParser extends AbstractTextParser implements AptMarkup {
             text = buffer.toString();
         }
 
-        /** {@inheritDoc} */
         public void traverse() throws AptParseException {
             AptParser.this.sink.verbatim(source ? SinkEventAttributeSet.SOURCE : null);
             AptParser.this.sink.text(text);
@@ -1952,7 +1934,6 @@ public class AptParser extends AbstractTextParser implements AptMarkup {
             super(FIGURE, indent, firstLine);
         }
 
-        /** {@inheritDoc} */
         public void traverse() throws AptParseException {
             AptParser.this.sink.figure();
 
@@ -1983,7 +1964,6 @@ public class AptParser extends AbstractTextParser implements AptMarkup {
             super(TABLE, indent, firstLine);
         }
 
-        /** {@inheritDoc} */
         public void traverse() throws AptParseException {
             int captionIndex = -1;
             int nextLineIndex = 0;
@@ -2238,7 +2218,6 @@ public class AptParser extends AbstractTextParser implements AptMarkup {
             super(LIST_ITEM, indent, firstLine);
         }
 
-        /** {@inheritDoc} */
         public void traverse() throws AptParseException {
             traverseText(skipLeadingBullets());
         }
@@ -2271,7 +2250,6 @@ public class AptParser extends AbstractTextParser implements AptMarkup {
             return numbering;
         }
 
-        /** {@inheritDoc} */
         public void traverse() throws AptParseException {
             traverseText(skipItemNumber());
         }
@@ -2315,7 +2293,6 @@ public class AptParser extends AbstractTextParser implements AptMarkup {
             super(DEFINITION_LIST_ITEM, indent, firstLine);
         }
 
-        /** {@inheritDoc} */
         public void traverse() throws AptParseException {
             int i = skipSpaceFrom(0);
             int j = skipFromLeftToRightBracket(i);
@@ -2348,7 +2325,6 @@ public class AptParser extends AbstractTextParser implements AptMarkup {
             super(HORIZONTAL_RULE, indent, firstLine);
         }
 
-        /** {@inheritDoc} */
         public void traverse() throws AptParseException {
             AptParser.this.sink.horizontalRule();
         }
@@ -2367,7 +2343,6 @@ public class AptParser extends AbstractTextParser implements AptMarkup {
             super(PG_BREAK, indent, firstLine);
         }
 
-        /** {@inheritDoc} */
         public void traverse() throws AptParseException {
             AptParser.this.sink.pageBreak();
         }
@@ -2388,7 +2363,6 @@ public class AptParser extends AbstractTextParser implements AptMarkup {
             text = firstLine;
         }
 
-        /** {@inheritDoc} */
         public void traverse() throws AptParseException {
             if (isSecondParsing()) {
                 return;

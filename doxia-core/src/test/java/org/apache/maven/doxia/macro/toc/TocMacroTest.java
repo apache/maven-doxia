@@ -30,7 +30,6 @@ import org.apache.maven.doxia.macro.MacroExecutionException;
 import org.apache.maven.doxia.macro.MacroRequest;
 import org.apache.maven.doxia.markup.Markup;
 import org.apache.maven.doxia.parser.AbstractParserTest;
-import org.apache.maven.doxia.parser.ParseException;
 import org.apache.maven.doxia.parser.Xhtml5BaseParser;
 import org.apache.maven.doxia.sink.Sink;
 import org.apache.maven.doxia.sink.impl.CreateAnchorsForIndexEntriesFactory;
@@ -49,14 +48,14 @@ import static org.junit.jupiter.api.Assertions.assertTrue;
  *
  * @author ltheussl
  */
-public class TocMacroTest {
+class TocMacroTest {
     /**
      * Test of execute method, of class TocMacro.
      *
      * @throws MacroExecutionException if a macro fails during testing.
      */
     @Test
-    public void testExecute() throws MacroExecutionException {
+    void execute() throws Exception {
         String sourceContent = "<div><h1>h11</h1><h1>h12</h1><h2>h2</h2><h3>h3</h3><h1>h13</h1></div>";
 
         Xhtml5BaseParser parser = new Xhtml5BaseParser();
@@ -149,7 +148,7 @@ public class TocMacroTest {
      * @throws MacroExecutionException if a macro fails during testing.
      */
     @Test
-    public void testTocStyle() throws MacroExecutionException {
+    void tocStyle() throws Exception {
         String sourceContent =
                 "<div><h1>h<b>11</b></h1><h1>h<i>12</i></h1><h2>h<tt>2</tt></h2><h3>h3</h3><h1>h13</h1></div>";
 
@@ -172,7 +171,7 @@ public class TocMacroTest {
     }
 
     @Test
-    public void testGenerateAnchors() throws ParseException, MacroExecutionException {
+    void generateAnchors() throws Exception {
         String sourceContent = "<h1>1 Headline</h1>";
         File basedir = new File("");
         Xhtml5BaseParser parser = new Xhtml5BaseParser();
@@ -203,7 +202,7 @@ public class TocMacroTest {
     }
 
     @Test
-    void testWriteTocWithEmptyAndNotApplicableIndexEntries() {
+    void writeTocWithEmptyAndNotApplicableIndexEntries() {
         TocMacro macro = new TocMacro();
         SinkEventTestingSink sink = new SinkEventTestingSink();
         final SinkEventAttributeSet atts = new SinkEventAttributeSet();

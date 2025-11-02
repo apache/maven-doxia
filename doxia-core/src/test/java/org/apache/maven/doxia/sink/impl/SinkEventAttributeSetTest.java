@@ -39,11 +39,11 @@ import static org.junit.jupiter.api.Assertions.fail;
  *
  * @author ltheussl
  */
-public class SinkEventAttributeSetTest {
+class SinkEventAttributeSetTest {
     private SinkEventAttributeSet sinkEventAttributeSet;
 
     @BeforeEach
-    public void setUp() {
+    void setUp() {
         this.sinkEventAttributeSet = new SinkEventAttributeSet();
     }
 
@@ -51,7 +51,7 @@ public class SinkEventAttributeSetTest {
      * Test of constructors, of class SinkEventAttributeSet.
      */
     @Test
-    public void testConstructor() {
+    void constructor() {
         try {
             new SinkEventAttributeSet("key");
             fail("missing attribute value!");
@@ -64,7 +64,7 @@ public class SinkEventAttributeSetTest {
      * Test of isEmpty method, of class SinkEventAttributeSet.
      */
     @Test
-    public void testIsEmpty() {
+    void isEmpty() {
         assertTrue(sinkEventAttributeSet.isEmpty());
         sinkEventAttributeSet.addAttributes(SinkEventAttributeSet.BOLD);
         assertFalse(sinkEventAttributeSet.isEmpty());
@@ -74,7 +74,7 @@ public class SinkEventAttributeSetTest {
      * Test of getAttributeCount method, of class SinkEventAttributeSet.
      */
     @Test
-    public void testGetAttributeCount() {
+    void getAttributeCount() {
         assertEquals(0, sinkEventAttributeSet.getAttributeCount());
         sinkEventAttributeSet.addAttribute("name1", "value1");
         assertEquals(1, sinkEventAttributeSet.getAttributeCount());
@@ -95,7 +95,7 @@ public class SinkEventAttributeSetTest {
      * Test of isDefined method, of class SinkEventAttributeSet.
      */
     @Test
-    public void testIsDefined() {
+    void isDefined() {
         assertFalse(sinkEventAttributeSet.isDefined(SinkEventAttributes.DECORATION));
         sinkEventAttributeSet.addAttributes(SinkEventAttributeSet.SOURCE);
         assertTrue(sinkEventAttributeSet.isDefined(SinkEventAttributes.DECORATION));
@@ -105,7 +105,7 @@ public class SinkEventAttributeSetTest {
      * Test of isEqual method, of class SinkEventAttributeSet.
      */
     @Test
-    public void testIsEqual() {
+    void isEqual() {
         SinkEventAttributes instance = new SinkEventAttributeSet(SinkEventAttributeSet.BOLD);
         sinkEventAttributeSet.addAttributes(SinkEventAttributeSet.BOLD);
         assertTrue(instance.isEqual(sinkEventAttributeSet));
@@ -118,23 +118,23 @@ public class SinkEventAttributeSetTest {
      */
     @Test
     @SuppressWarnings("SimplifiableJUnitAssertion")
-    public void testEquals() {
-        assertFalse(sinkEventAttributeSet.equals(null));
+    void equals() {
+        assertNotEquals(null, sinkEventAttributeSet);
         //noinspection EqualsWithItself
-        assertTrue(sinkEventAttributeSet.equals(sinkEventAttributeSet));
+        assertEquals(sinkEventAttributeSet, sinkEventAttributeSet);
 
         SinkEventAttributes instance = new SinkEventAttributeSet(SinkEventAttributeSet.BOLD);
         sinkEventAttributeSet.addAttributes(SinkEventAttributeSet.BOLD);
-        assertTrue(instance.equals(sinkEventAttributeSet));
+        assertEquals(instance, sinkEventAttributeSet);
         instance.addAttributes(SinkEventAttributeSet.SOURCE);
-        assertFalse(instance.equals(sinkEventAttributeSet));
+        assertNotEquals(instance, sinkEventAttributeSet);
     }
 
     /**
      * Test of copyAttributes method, of class SinkEventAttributeSet.
      */
     @Test
-    public void testCopyAttributes() {
+    void copyAttributes() {
         sinkEventAttributeSet.addAttributes(SinkEventAttributeSet.ITALIC);
         AttributeSet instance = sinkEventAttributeSet.copyAttributes();
         assertTrue(instance.isEqual(sinkEventAttributeSet));
@@ -144,7 +144,7 @@ public class SinkEventAttributeSetTest {
      * Test of getAttributeNames method, of class SinkEventAttributeSet.
      */
     @Test
-    public void testGetAttributeNames() {
+    void getAttributeNames() {
         sinkEventAttributeSet.addAttributes(SinkEventAttributeSet.UNDERLINE);
         Enumeration<String> result = sinkEventAttributeSet.getAttributeNames();
         assertEquals("decoration", result.nextElement());
@@ -155,7 +155,7 @@ public class SinkEventAttributeSetTest {
      * Test of getAttribute method, of class SinkEventAttributeSet.
      */
     @Test
-    public void testGetAttribute() {
+    void getAttribute() {
         sinkEventAttributeSet.addAttribute("key", "value");
         assertEquals("value", sinkEventAttributeSet.getAttribute("key"));
         assertNull(sinkEventAttributeSet.getAttribute("bla"));
@@ -165,7 +165,7 @@ public class SinkEventAttributeSetTest {
      * Test of containsAttribute method, of class SinkEventAttributeSet.
      */
     @Test
-    public void testContainsAttribute() {
+    void containsAttribute() {
         sinkEventAttributeSet.addAttribute("key", "value");
         assertTrue(sinkEventAttributeSet.containsAttribute("key", "value"));
         assertFalse(sinkEventAttributeSet.containsAttribute("key", "valu"));
@@ -175,7 +175,7 @@ public class SinkEventAttributeSetTest {
      * Test of containsAttributes method, of class SinkEventAttributeSet.
      */
     @Test
-    public void testContainsAttributes() {
+    void containsAttributes() {
         sinkEventAttributeSet.addAttributes(SinkEventAttributeSet.JUSTIFY);
         assertTrue(sinkEventAttributeSet.containsAttributes(SinkEventAttributeSet.JUSTIFY));
         assertFalse(sinkEventAttributeSet.containsAttributes(SinkEventAttributeSet.SOURCE));
@@ -185,7 +185,7 @@ public class SinkEventAttributeSetTest {
      * Test of addAttribute method, of class SinkEventAttributeSet.
      */
     @Test
-    public void testAddAttribute() {
+    void addAttribute() {
         assertFalse(sinkEventAttributeSet.containsAttribute("key", "value"));
         sinkEventAttributeSet.addAttribute("key", "value");
         assertTrue(sinkEventAttributeSet.containsAttribute("key", "value"));
@@ -197,7 +197,7 @@ public class SinkEventAttributeSetTest {
      * Test of add/removeAttributes methods, of class SinkEventAttributeSet.
      */
     @Test
-    public void testAddAttributes() {
+    void addAttributes() {
         assertFalse(sinkEventAttributeSet.containsAttributes(SinkEventAttributeSet.JUSTIFY));
         sinkEventAttributeSet.addAttributes(SinkEventAttributeSet.JUSTIFY);
         assertTrue(sinkEventAttributeSet.containsAttributes(SinkEventAttributeSet.JUSTIFY));
@@ -219,7 +219,7 @@ public class SinkEventAttributeSetTest {
      * Test of getResolveParent method, of class SinkEventAttributeSet.
      */
     @Test
-    public void testGetResolveParent() {
+    void getResolveParent() {
         assertNull(sinkEventAttributeSet.getResolveParent());
         sinkEventAttributeSet.setResolveParent(SinkEventAttributeSet.CENTER);
         assertNotNull(sinkEventAttributeSet.getResolveParent());
@@ -229,7 +229,7 @@ public class SinkEventAttributeSetTest {
      * Test of clone method, of class SinkEventAttributeSet.
      */
     @Test
-    public void testClone() {
+    void checkClone() {
         Object result = sinkEventAttributeSet.clone();
         assertEquals(sinkEventAttributeSet, result);
 
@@ -251,7 +251,7 @@ public class SinkEventAttributeSetTest {
      * Test of hashCode method, of class SinkEventAttributeSet.
      */
     @Test
-    public void testHashCode() {
+    void checkHashCode() {
         int oldValue = sinkEventAttributeSet.hashCode();
         sinkEventAttributeSet.addAttributes(SinkEventAttributeSet.BOLD);
         int newValue = sinkEventAttributeSet.hashCode();
@@ -267,7 +267,7 @@ public class SinkEventAttributeSetTest {
      * Test of toString method, of class SinkEventAttributeSet.
      */
     @Test
-    public void testToString() {
+    void checkToString() {
         String expected = "";
         assertEquals(expected, sinkEventAttributeSet.toString());
 

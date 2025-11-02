@@ -29,12 +29,12 @@ import static org.junit.jupiter.api.Assertions.assertTrue;
 /**
  * @author <a href="mailto:trygve.laugstol@objectware.no">Trygve Laugst&oslash;l</a>
  */
-public class IndexEntryTest {
+class IndexEntryTest {
     /**
      * Test IndexEntry.
      */
     @Test
-    public void testIndexEntry() {
+    void indexEntry() {
         IndexEntry root = new IndexEntry(null);
 
         assertIndexEntry(root, Type.UNKNOWN, null, 0, null, null);
@@ -83,7 +83,7 @@ public class IndexEntryTest {
     }
 
     @Test
-    public void testTypeFromSectionLevel() {
+    void typeFromSectionLevel() {
         assertThrows(IllegalArgumentException.class, () -> Type.fromSectionLevel(0));
         assertEquals(Type.SECTION_3, Type.fromSectionLevel(Sink.SECTION_LEVEL_3));
         assertThrows(IllegalArgumentException.class, () -> Type.fromSectionLevel(7));

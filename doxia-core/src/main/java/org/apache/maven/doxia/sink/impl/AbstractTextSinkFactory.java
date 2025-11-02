@@ -48,12 +48,10 @@ public abstract class AbstractTextSinkFactory implements SinkFactory {
      */
     protected abstract Sink createSink(Writer writer, String encoding);
 
-    /** {@inheritDoc} */
     public Sink createSink(File outputDir, String outputName) throws IOException {
         return createSink(outputDir, outputName, "UTF-8");
     }
 
-    /** {@inheritDoc} */
     public Sink createSink(File outputDir, String outputName, String encoding) throws IOException {
         Objects.requireNonNull(outputDir, "outputDir cannot be null");
 
@@ -69,12 +67,10 @@ public abstract class AbstractTextSinkFactory implements SinkFactory {
         return createSink(writer, encoding);
     }
 
-    /** {@inheritDoc} */
     public Sink createSink(OutputStream out) throws IOException {
         return createSink(out, "UTF-8");
     }
 
-    /** {@inheritDoc} */
     public Sink createSink(OutputStream out, String encoding) throws IOException {
         return createSink(new OutputStreamWriter(out, encoding), encoding);
     }

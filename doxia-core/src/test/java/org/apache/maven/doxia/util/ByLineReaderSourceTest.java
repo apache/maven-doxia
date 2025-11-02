@@ -33,13 +33,13 @@ import static org.junit.jupiter.api.Assertions.fail;
  * @author Juan F. Codagnone
  * @since Nov 1, 2005
  */
-public class ByLineReaderSourceTest {
+class ByLineReaderSourceTest {
 
     /**
      * @throws ParseException on error
      */
     @Test
-    public final void testUse() throws ParseException {
+    final void use() throws Exception {
         ByLineReaderSource r = new ByLineReaderSource(new StringReader("1 \n2\n3"));
         assertEquals(-1, r.getLineNumber());
         assertEquals("", r.getName());

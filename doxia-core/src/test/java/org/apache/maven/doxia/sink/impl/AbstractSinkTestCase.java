@@ -52,7 +52,7 @@ public abstract class AbstractSinkTestCase {
      * @throws java.lang.Exception if anything goes wrong.
      */
     @Test
-    public void testApt() throws Exception {
+    public void apt() throws Exception {
         Parser parser = createParser();
 
         parser.parse(getTestReader(), createSink());

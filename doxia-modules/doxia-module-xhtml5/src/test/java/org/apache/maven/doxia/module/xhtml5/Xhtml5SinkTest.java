@@ -33,17 +33,15 @@ import static org.junit.jupiter.api.Assertions.assertEquals;
 import static org.junit.jupiter.api.Assertions.assertTrue;
 
 public class Xhtml5SinkTest extends AbstractSinkTest {
-    /** {@inheritDoc} */
+
     protected String outputExtension() {
         return "html";
     }
 
-    /** {@inheritDoc} */
     protected Sink createSink(Writer writer) {
         return new Xhtml5Sink(writer, "UTF-8");
     }
 
-    /** {@inheritDoc} */
     protected boolean isXmlSink() {
         return true;
     }
@@ -53,7 +51,7 @@ public class Xhtml5SinkTest extends AbstractSinkTest {
      *
      */
     @Test
-    public void testLinks() {
+    void links() {
         Xhtml5Sink sink = null;
         Writer writer = new StringWriter();
         try {
@@ -79,108 +77,87 @@ public class Xhtml5SinkTest extends AbstractSinkTest {
         assertTrue(actual.contains("<a href=\"index.html\"></a>"));
     }
 
-    /** {@inheritDoc} */
     protected String getTitleBlock(String title) {
         return "<title>" + title + "</title>";
     }
 
-    /** {@inheritDoc} */
     protected String getAuthorBlock(String author) {
         return author;
     }
 
-    /** {@inheritDoc} */
     protected String getDateBlock(String date) {
         return date;
     }
 
-    /** {@inheritDoc} */
     protected String getHeadBlock() {
         return "<!DOCTYPE html\">"
                 + "<html xmlns=\"http://www.w3.org/1999/xhtml\">\n<head>\n<title></title>\n<meta charset=\"UTF-8\"/></head>";
     }
 
-    /** {@inheritDoc} */
     protected String getBodyBlock() {
         return "<body></body></html>";
     }
 
-    /** {@inheritDoc} */
     protected String getArticleBlock() {
         return "<article></article>";
     }
 
-    /** {@inheritDoc} */
     protected String getNavigationBlock() {
         return "<nav></nav>";
     }
 
-    /** {@inheritDoc} */
     protected String getSidebarBlock() {
         return "<aside></aside>";
     }
 
-    /** {@inheritDoc} */
     protected String getSection1Block(String title) {
         return "<section><header>\n<h1>" + title + "</h1></header></section>";
     }
 
-    /** {@inheritDoc} */
     protected String getSection2Block(String title) {
         return "<section><header>\n<h2>" + title + "</h2></header></section>";
     }
 
-    /** {@inheritDoc} */
     protected String getSection3Block(String title) {
         return "<section><header>\n<h3>" + title + "</h3></header></section>";
     }
 
-    /** {@inheritDoc} */
     protected String getSection4Block(String title) {
         return "<section><header>\n<h4>" + title + "</h4></header></section>";
     }
 
-    /** {@inheritDoc} */
     protected String getSection5Block(String title) {
         return "<section><header>\n<h5>" + title + "</h5></header></section>";
     }
 
-    /** {@inheritDoc} */
     protected String getSection6Block(String title) {
         return "<section><header>\n<h6>" + title + "</h6></header></section>";
     }
 
-    /** {@inheritDoc} */
     protected String getHeaderBlock() {
         return "<header></header>";
     }
 
-    /** {@inheritDoc} */
     protected String getContentBlock() {
         return "<main>" + EOL + "<div class=\"content\"></div></main>";
     }
 
-    /** {@inheritDoc} */
     protected String getFooterBlock() {
         return "<footer></footer>";
     }
 
-    /** {@inheritDoc} */
     protected String getListBlock(String item) {
         return "<ul>\n<li>" + item + "</li></ul>";
     }
 
-    /** {@inheritDoc} */
     protected String getNumberedListBlock(String item) {
         return "<ol style=\"list-style-type: lower-roman;\">\n<li>" + item + "</li></ol>";
     }
 
-    /** {@inheritDoc} */
     protected String getDefinitionListBlock(String definum, String definition) {
         return "<dl>\n<dt>" + definum + "</dt>\n<dd>" + definition + "</dd></dl>";
     }
 
-    /** {@inheritDoc} */
     protected String getFigureBlock(String source, String caption) {
         String figureBlock = "<figure><img src=\"" + escapeHTML(source, true) + "\" />";
         if (caption != null) {
@@ -190,7 +167,6 @@ public class Xhtml5SinkTest extends AbstractSinkTest {
         return figureBlock;
     }
 
-    /** {@inheritDoc} */
     protected String getTableBlock(String cell, String caption) {
         return "<table class=\"bodyTable\">"
                 + "<caption>" + caption + "</caption>\n"
@@ -219,122 +195,98 @@ public class Xhtml5SinkTest extends AbstractSinkTest {
                 + "</table>";
     }
 
-    /** {@inheritDoc} */
     protected String getParagraphBlock(String text) {
         return "<p>" + text + "</p>";
     }
 
-    /** {@inheritDoc} */
     protected String getDataBlock(String value, String text) {
         return "<data value=\"" + value + "\">" + text + "</data>";
     }
 
-    /** {@inheritDoc} */
     protected String getTimeBlock(String datetime, String text) {
         return "<time datetime=\"" + datetime + "\">" + text + "</time>";
     }
 
-    /** {@inheritDoc} */
     protected String getAddressBlock(String text) {
         return "<address>" + text + "</address>";
     }
 
-    /** {@inheritDoc} */
     protected String getBlockquoteBlock(String text) {
         return "<blockquote>" + text + "</blockquote>";
     }
 
-    /** {@inheritDoc} */
     protected String getDivisionBlock(String text) {
         return "<div>" + text + "</div>";
     }
 
-    /** {@inheritDoc} */
     protected String getVerbatimBlock(String text) {
         return "<pre>" + text + "</pre>";
     }
 
-    /** {@inheritDoc} */
     protected String getVerbatimSourceBlock(String text) {
         return "<pre><code>" + text + "</code></pre>";
     }
 
-    /** {@inheritDoc} */
     protected String getHorizontalRuleBlock() {
         return "<hr />";
     }
 
-    /** {@inheritDoc} */
     protected String getPageBreakBlock() {
         return "<!-- PB -->";
     }
 
-    /** {@inheritDoc} */
     protected String getAnchorBlock(String anchor) {
         return "<a id=\"" + anchor + "\">" + anchor + "</a>";
     }
 
-    /** {@inheritDoc} */
     protected String getLinkBlock(String link, String text) {
         return "<a href=\"" + link + "\">" + text + "</a>";
     }
 
-    /** {@inheritDoc} */
     protected String getInlineBlock(String text) {
         return text;
     }
 
-    /** {@inheritDoc} */
     protected String getInlineItalicBlock(String text) {
         return "<i>" + text + "</i>";
     }
 
-    /** {@inheritDoc} */
     protected String getInlineBoldBlock(String text) {
         return "<b>" + text + "</b>";
     }
 
-    /** {@inheritDoc} */
     protected String getInlineCodeBlock(String text) {
         return "<code>" + text + "</code>";
     }
 
-    /** {@inheritDoc} */
     protected String getItalicBlock(String text) {
         return "<i>" + text + "</i>";
     }
 
-    /** {@inheritDoc} */
     protected String getBoldBlock(String text) {
         return "<b>" + text + "</b>";
     }
 
-    /** {@inheritDoc} */
     protected String getMonospacedBlock(String text) {
         return "<code>" + text + "</code>";
     }
 
-    /** {@inheritDoc} */
     protected String getLineBreakBlock() {
         return "<br />";
     }
 
-    /** {@inheritDoc} */
     protected String getLineBreakOpportunityBlock() {
         return "<wbr />";
     }
 
-    /** {@inheritDoc} */
     protected String getNonBreakingSpaceBlock() {
         return "&#160;";
     }
 
-    /** {@inheritDoc} */
     protected String getTextBlock(String text) {
         return HtmlTools.escapeHTML(text, false);
     }
 
-    /** {@inheritDoc} */
     protected String getRawTextBlock(String text) {
         return text;
     }
@@ -343,7 +295,7 @@ public class Xhtml5SinkTest extends AbstractSinkTest {
      * Test entities is section titles and paragraphs.
      */
     @Test
-    public void testEntities() {
+    void entities() {
         Xhtml5Sink sink = null;
         Writer writer = new StringWriter();
 
@@ -370,7 +322,7 @@ public class Xhtml5SinkTest extends AbstractSinkTest {
      * Test head events.
      */
     @Test
-    public void testHead() {
+    public void head() {
         Xhtml5Sink sink = null;
         Writer writer = new StringWriter();
 

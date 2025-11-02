@@ -25,14 +25,14 @@ import org.junit.jupiter.api.Test;
  *
  * @author ltheussl
  */
-public class SinkAdapterTest {
+class SinkAdapterTest {
     private final SinkAdapter instance = new SinkAdapter();
 
     /**
      * Test of head method, of class SinkAdapter.
      */
     @Test
-    public void testHead() {
+    void head() {
         instance.head();
         instance.head(null);
         instance.head_();
@@ -42,7 +42,7 @@ public class SinkAdapterTest {
      * Test of body method, of class SinkAdapter.
      */
     @Test
-    public void testBody() {
+    void body() {
         instance.body();
         instance.body(null);
         instance.body_();
@@ -52,7 +52,7 @@ public class SinkAdapterTest {
      * Test of article method, of class SinkAdapter.
      */
     @Test
-    public void testArticle() {
+    void article() {
         instance.article();
         instance.article(null);
         instance.article_();
@@ -62,7 +62,7 @@ public class SinkAdapterTest {
      * Test of navigation method, of class SinkAdapter.
      */
     @Test
-    public void testNavigation() {
+    void navigation() {
         instance.navigation();
         instance.navigation(null);
         instance.navigation_();
@@ -72,7 +72,7 @@ public class SinkAdapterTest {
      * Test of sidebar method, of class SinkAdapter.
      */
     @Test
-    public void testSidebar() {
+    void sidebar() {
         instance.sidebar();
         instance.sidebar(null);
         instance.sidebar_();
@@ -82,7 +82,7 @@ public class SinkAdapterTest {
      * Test of section1 method, of class SinkAdapter.
      */
     @Test
-    public void testSection1() {
+    void section1() {
         final int level = SinkAdapter.SECTION_LEVEL_1;
         instance.section1();
         instance.section1_();
@@ -94,7 +94,7 @@ public class SinkAdapterTest {
      * Test of section2 method, of class SinkAdapter.
      */
     @Test
-    public void testSection2() {
+    void section2() {
         final int level = SinkAdapter.SECTION_LEVEL_2;
         instance.section2();
         instance.section2_();
@@ -106,7 +106,7 @@ public class SinkAdapterTest {
      * Test of section3 method, of class SinkAdapter.
      */
     @Test
-    public void testSection3() {
+    void section3() {
         final int level = SinkAdapter.SECTION_LEVEL_3;
         instance.section3();
         instance.section3_();
@@ -118,7 +118,7 @@ public class SinkAdapterTest {
      * Test of section4 method, of class SinkAdapter.
      */
     @Test
-    public void testSection4() {
+    void section4() {
         final int level = SinkAdapter.SECTION_LEVEL_4;
         instance.section4();
         instance.section4_();
@@ -130,7 +130,7 @@ public class SinkAdapterTest {
      * Test of section5 method, of class SinkAdapter.
      */
     @Test
-    public void testSection5() {
+    void section5() {
         final int level = SinkAdapter.SECTION_LEVEL_5;
         instance.section5();
         instance.section5_();
@@ -142,7 +142,7 @@ public class SinkAdapterTest {
      * Test of list method, of class SinkAdapter.
      */
     @Test
-    public void testList() {
+    void list() {
         instance.list();
         instance.list(null);
         instance.list_();
@@ -152,7 +152,7 @@ public class SinkAdapterTest {
      * Test of listItem method, of class SinkAdapter.
      */
     @Test
-    public void testListItem() {
+    void listItem() {
         instance.listItem();
         instance.listItem(null);
         instance.listItem_();
@@ -162,7 +162,7 @@ public class SinkAdapterTest {
      * Test of numberedList method, of class SinkAdapter.
      */
     @Test
-    public void testNumberedList() {
+    void numberedList() {
         final int numbering = SinkAdapter.NUMBERING_DECIMAL;
         instance.numberedList(numbering);
         instance.numberedList(numbering, null);
@@ -173,7 +173,7 @@ public class SinkAdapterTest {
      * Test of numberedListItem method, of class SinkAdapter.
      */
     @Test
-    public void testNumberedListItem() {
+    void numberedListItem() {
         instance.numberedListItem();
         instance.numberedListItem(null);
         instance.numberedListItem_();
@@ -183,7 +183,7 @@ public class SinkAdapterTest {
      * Test of definitionList method, of class SinkAdapter.
      */
     @Test
-    public void testDefinitionList() {
+    void definitionList() {
         instance.definitionList();
         instance.definitionList(null);
         instance.definitionList_();
@@ -193,7 +193,7 @@ public class SinkAdapterTest {
      * Test of definitionListItem method, of class SinkAdapter.
      */
     @Test
-    public void testDefinitionListItem() {
+    void definitionListItem() {
         instance.definitionListItem();
         instance.definitionListItem(null);
         instance.definitionListItem_();
@@ -203,7 +203,7 @@ public class SinkAdapterTest {
      * Test of definition method, of class SinkAdapter.
      */
     @Test
-    public void testDefinition() {
+    void definition() {
         instance.definition();
         instance.definition(null);
         instance.definition_();
@@ -213,7 +213,7 @@ public class SinkAdapterTest {
      * Test of figure method, of class SinkAdapter.
      */
     @Test
-    public void testFigure() {
+    void figure() {
         instance.figure();
         instance.figure(null);
         instance.figure_();
@@ -223,7 +223,7 @@ public class SinkAdapterTest {
      * Test of table method, of class SinkAdapter.
      */
     @Test
-    public void testTable() {
+    void table() {
         instance.table();
         instance.table(null);
         instance.table_();
@@ -233,7 +233,7 @@ public class SinkAdapterTest {
      * Test of tableRows method, of class SinkAdapter.
      */
     @Test
-    public void testTableRows() {
+    void tableRows() {
         instance.tableRows();
         instance.tableRows_();
     }
@@ -242,7 +242,7 @@ public class SinkAdapterTest {
      * Test of tableRow method, of class SinkAdapter.
      */
     @Test
-    public void testTableRow() {
+    void tableRow() {
         instance.tableRow();
         instance.tableRow(null);
         instance.tableRow_();
@@ -252,7 +252,7 @@ public class SinkAdapterTest {
      * Test of title method, of class SinkAdapter.
      */
     @Test
-    public void testTitle() {
+    void title() {
         instance.title();
         instance.title(null);
         instance.title_();
@@ -262,7 +262,7 @@ public class SinkAdapterTest {
      * Test of author method, of class SinkAdapter.
      */
     @Test
-    public void testAuthor() {
+    void author() {
         instance.author();
         instance.author(null);
         instance.author_();
@@ -272,7 +272,7 @@ public class SinkAdapterTest {
      * Test of date method, of class SinkAdapter.
      */
     @Test
-    public void testDate() {
+    void date() {
         instance.date();
         instance.date(null);
         instance.date_();
@@ -282,7 +282,7 @@ public class SinkAdapterTest {
      * Test of sectionTitle1 method, of class SinkAdapter.
      */
     @Test
-    public void testSectionTitle1() {
+    void sectionTitle1() {
         final int level = SinkAdapter.SECTION_LEVEL_1;
         instance.sectionTitle1();
         instance.sectionTitle1_();
@@ -294,7 +294,7 @@ public class SinkAdapterTest {
      * Test of sectionTitle2 method, of class SinkAdapter.
      */
     @Test
-    public void testSectionTitle2() {
+    void sectionTitle2() {
         final int level = SinkAdapter.SECTION_LEVEL_2;
         instance.sectionTitle2();
         instance.sectionTitle2_();
@@ -306,7 +306,7 @@ public class SinkAdapterTest {
      * Test of sectionTitle3 method, of class SinkAdapter.
      */
     @Test
-    public void testSectionTitle3() {
+    void sectionTitle3() {
         final int level = SinkAdapter.SECTION_LEVEL_3;
         instance.sectionTitle3();
         instance.sectionTitle3_();
@@ -318,7 +318,7 @@ public class SinkAdapterTest {
      * Test of sectionTitle4 method, of class SinkAdapter.
      */
     @Test
-    public void testSectionTitle4() {
+    void sectionTitle4() {
         final int level = SinkAdapter.SECTION_LEVEL_4;
         instance.sectionTitle4();
         instance.sectionTitle4_();
@@ -330,7 +330,7 @@ public class SinkAdapterTest {
      * Test of sectionTitle5 method, of class SinkAdapter.
      */
     @Test
-    public void testSectionTitle5() {
+    void sectionTitle5() {
         final int level = SinkAdapter.SECTION_LEVEL_5;
         instance.sectionTitle5();
         instance.sectionTitle5_();
@@ -342,7 +342,7 @@ public class SinkAdapterTest {
      * Test of header method, of class SinkAdapter.
      */
     @Test
-    public void testHeader() {
+    void header() {
         instance.header();
         instance.header(null);
         instance.header_();
@@ -352,7 +352,7 @@ public class SinkAdapterTest {
      * Test of content method, of class SinkAdapter.
      */
     @Test
-    public void testContent() {
+    void content() {
         instance.content();
         instance.content(null);
         instance.content_();
@@ -362,7 +362,7 @@ public class SinkAdapterTest {
      * Test of footer method, of class SinkAdapter.
      */
     @Test
-    public void testFooter() {
+    void footer() {
         instance.footer();
         instance.footer(null);
         instance.footer_();
@@ -372,7 +372,7 @@ public class SinkAdapterTest {
      * Test of paragraph method, of class SinkAdapter.
      */
     @Test
-    public void testParagraph() {
+    void paragraph() {
         instance.paragraph();
         instance.paragraph(null);
         instance.paragraph_();
@@ -382,7 +382,7 @@ public class SinkAdapterTest {
      * Test of data method, of class SinkAdapter.
      */
     @Test
-    public void testData() {
+    void data() {
         String value = "";
         instance.data(value);
         instance.data(value, null);
@@ -393,7 +393,7 @@ public class SinkAdapterTest {
      * Test of time method, of class SinkAdapter.
      */
     @Test
-    public void testTime() {
+    void time() {
         String datetime = "";
         instance.time(datetime);
         instance.time(datetime, null);
@@ -404,7 +404,7 @@ public class SinkAdapterTest {
      * Test of address method, of class SinkAdapter.
      */
     @Test
-    public void testAddress() {
+    void address() {
         instance.address();
         instance.address(null);
         instance.address_();
@@ -414,7 +414,7 @@ public class SinkAdapterTest {
      * Test of blockquote method, of class SinkAdapter.
      */
     @Test
-    public void testBlockquote() {
+    void blockquote() {
         instance.blockquote();
         instance.blockquote(null);
         instance.blockquote_();
@@ -424,7 +424,7 @@ public class SinkAdapterTest {
      * Test of division method, of class SinkAdapter.
      */
     @Test
-    public void testDivision() {
+    void division() {
         instance.division();
         instance.division(null);
         instance.division_();
@@ -434,7 +434,7 @@ public class SinkAdapterTest {
      * Test of verbatim method, of class SinkAdapter.
      */
     @Test
-    public void testVerbatim() {
+    void verbatim() {
         instance.verbatim(null);
         instance.verbatim_();
     }
@@ -443,7 +443,7 @@ public class SinkAdapterTest {
      * Test of definedTerm method, of class SinkAdapter.
      */
     @Test
-    public void testDefinedTerm() {
+    void definedTerm() {
         instance.definedTerm();
         instance.definedTerm(null);
         instance.definedTerm_();
@@ -453,7 +453,7 @@ public class SinkAdapterTest {
      * Test of figureCaption method, of class SinkAdapter.
      */
     @Test
-    public void testFigureCaption() {
+    void figureCaption() {
         instance.figureCaption();
         instance.figureCaption(null);
         instance.figureCaption_();
@@ -463,7 +463,7 @@ public class SinkAdapterTest {
      * Test of tableCell method, of class SinkAdapter.
      */
     @Test
-    public void testTableCell() {
+    void tableCell() {
         instance.tableCell();
         instance.tableCell((SinkEventAttributes) null);
         instance.tableCell_();
@@ -473,7 +473,7 @@ public class SinkAdapterTest {
      * Test of tableCaption method, of class SinkAdapter.
      */
     @Test
-    public void testTableCaption() {
+    void tableCaption() {
         instance.tableCaption();
         instance.tableCaption(null);
         instance.tableCaption_();
@@ -483,7 +483,7 @@ public class SinkAdapterTest {
      * Test of figureGraphics method, of class SinkAdapter.
      */
     @Test
-    public void testFigureGraphics() {
+    void figureGraphics() {
         String name = "";
         instance.figureGraphics(name);
         instance.figureGraphics(name, null);
@@ -493,7 +493,7 @@ public class SinkAdapterTest {
      * Test of horizontalRule method, of class SinkAdapter.
      */
     @Test
-    public void testHorizontalRule() {
+    void horizontalRule() {
         instance.horizontalRule();
         instance.horizontalRule(null);
     }
@@ -502,7 +502,7 @@ public class SinkAdapterTest {
      * Test of pageBreak method, of class SinkAdapter.
      */
     @Test
-    public void testPageBreak() {
+    void pageBreak() {
         instance.pageBreak();
     }
 
@@ -510,7 +510,7 @@ public class SinkAdapterTest {
      * Test of anchor method, of class SinkAdapter.
      */
     @Test
-    public void testAnchor() {
+    void anchor() {
         String name = "";
         instance.anchor(name);
         instance.anchor(name, null);
@@ -521,7 +521,7 @@ public class SinkAdapterTest {
      * Test of link method, of class SinkAdapter.
      */
     @Test
-    public void testLink() {
+    void link() {
         String name = "";
         instance.link(name);
         instance.link(name, null);
@@ -532,7 +532,7 @@ public class SinkAdapterTest {
      * Test of inline method, of class SinkAdapter.
      */
     @Test
-    public void testInline() {
+    void inline() {
         instance.inline();
         instance.inline(null);
         instance.inline_();
@@ -542,7 +542,7 @@ public class SinkAdapterTest {
      * Test of italic method, of class SinkAdapter.
      */
     @Test
-    public void testItalic() {
+    void italic() {
         instance.inline(SinkEventAttributeSet.Semantics.ITALIC);
         instance.inline_();
     }
@@ -551,7 +551,7 @@ public class SinkAdapterTest {
      * Test of bold method, of class SinkAdapter.
      */
     @Test
-    public void testBold() {
+    void bold() {
         instance.inline(SinkEventAttributeSet.Semantics.BOLD);
         instance.inline_();
     }
@@ -560,7 +560,7 @@ public class SinkAdapterTest {
      * Test of monospaced method, of class SinkAdapter.
      */
     @Test
-    public void testMonospaced() {
+    void monospaced() {
         instance.inline(SinkEventAttributeSet.Semantics.MONOSPACED);
         instance.inline_();
     }
@@ -569,7 +569,7 @@ public class SinkAdapterTest {
      * Test of lineBreak method, of class SinkAdapter.
      */
     @Test
-    public void testLineBreaks() {
+    void lineBreaks() {
         instance.lineBreak();
         instance.lineBreak(null);
     }
@@ -578,7 +578,7 @@ public class SinkAdapterTest {
      * Test of lineBreakOpportunity method, of class SinkAdapter.
      */
     @Test
-    public void testLineBreakOpportunities() {
+    void lineBreakOpportunities() {
         instance.lineBreakOpportunity();
         instance.lineBreakOpportunity(null);
     }
@@ -587,7 +587,7 @@ public class SinkAdapterTest {
      * Test of nonBreakingSpace method, of class SinkAdapter.
      */
     @Test
-    public void testNonBreakingSpace() {
+    void nonBreakingSpace() {
         instance.nonBreakingSpace();
     }
 
@@ -595,7 +595,7 @@ public class SinkAdapterTest {
      * Test of text method, of class SinkAdapter.
      */
     @Test
-    public void testText() {
+    void text() {
         String text = "";
         instance.text(text);
         instance.text(text, null);
@@ -605,7 +605,7 @@ public class SinkAdapterTest {
      * Test of rawText method, of class SinkAdapter.
      */
     @Test
-    public void testRawText() {
+    void rawText() {
         String text = "";
         instance.rawText(text);
     }
@@ -614,7 +614,7 @@ public class SinkAdapterTest {
      * Test of comment method, of class SinkAdapter.
      */
     @Test
-    public void testComment() {
+    void comment() {
         instance.comment("");
     }
 
@@ -622,7 +622,7 @@ public class SinkAdapterTest {
      * Test of flush method, of class SinkAdapter.
      */
     @Test
-    public void testFlush() {
+    void flush() {
         instance.flush();
     }
 
@@ -630,7 +630,7 @@ public class SinkAdapterTest {
      * Test of close method, of class SinkAdapter.
      */
     @Test
-    public void testClose() {
+    void close() {
         instance.close();
     }
 
@@ -638,7 +638,7 @@ public class SinkAdapterTest {
      * Test of section method, of class SinkAdapter.
      */
     @Test
-    public void testSection() {
+    void section() {
         int level = 0;
         instance.section(level, null);
         instance.section_(level);
@@ -648,7 +648,7 @@ public class SinkAdapterTest {
      * Test of unknown method, of class SinkAdapter.
      */
     @Test
-    public void testUnknown() {
+    void unknown() {
         String name = "";
         Object[] requiredParams = null;
         instance.unknown(name, requiredParams, null);

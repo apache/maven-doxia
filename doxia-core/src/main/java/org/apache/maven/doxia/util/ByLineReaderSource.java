@@ -159,7 +159,6 @@ public class ByLineReaderSource implements ByLineSource {
         ungetted = true;
     }
 
-    /** {@inheritDoc} */
     public final void unget(final String s) {
         Objects.requireNonNull(s, "s cannot be null");
 

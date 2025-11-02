@@ -35,12 +35,11 @@ import org.apache.maven.doxia.sink.impl.AbstractXmlSinkFactory;
 @Singleton
 @Named("xdoc")
 public class XdocSinkFactory extends AbstractXmlSinkFactory {
-    /** {@inheritDoc} */
+
     protected Sink createSink(Writer writer, String encoding) {
         return new XdocSink(writer, encoding);
     }
 
-    /** {@inheritDoc} */
     protected Sink createSink(Writer writer, String encoding, String languageId) {
         return new XdocSink(writer, encoding, languageId);
     }

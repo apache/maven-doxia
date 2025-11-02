@@ -33,38 +33,32 @@ import static org.junit.jupiter.api.Assertions.assertEquals;
  *
  * @see AptSink
  */
-public class AptSinkTest extends AbstractSinkTest {
-    /** {@inheritDoc} */
+class AptSinkTest extends AbstractSinkTest {
+
     protected String outputExtension() {
         return "apt";
     }
 
-    /** {@inheritDoc} */
     protected Sink createSink(Writer writer) {
         return new AptSink(writer);
     }
 
-    /** {@inheritDoc} */
     protected boolean isXmlSink() {
         return false;
     }
 
-    /** {@inheritDoc} */
     protected String getTitleBlock(String title) {
         return title;
     }
 
-    /** {@inheritDoc} */
     protected String getAuthorBlock(String author) {
         return author;
     }
 
-    /** {@inheritDoc} */
     protected String getDateBlock(String date) {
         return date;
     }
 
-    /** {@inheritDoc} */
     protected String getHeadBlock() {
         return AptMarkup.HEADER_START_MARKUP
                 + EOL
@@ -76,79 +70,64 @@ public class AptSinkTest extends AbstractSinkTest {
                 + EOL;
     }
 
-    /** {@inheritDoc} */
     protected String getBodyBlock() {
         return "";
     }
 
-    /** {@inheritDoc} */
     protected String getArticleBlock() {
         return "";
     }
 
-    /** {@inheritDoc} */
     protected String getNavigationBlock() {
         return "";
     }
 
-    /** {@inheritDoc} */
     protected String getSidebarBlock() {
         return "";
     }
 
-    /** {@inheritDoc} */
     protected String getSection1Block(String title) {
         return EOL + title + EOL + EOL + EOL;
     }
 
-    /** {@inheritDoc} */
     protected String getSection2Block(String title) {
         return EOL + AptMarkup.SECTION_TITLE_START_MARKUP + title + EOL + EOL + EOL;
     }
 
-    /** {@inheritDoc} */
     protected String getSection3Block(String title) {
         return EOL + DoxiaStringUtils.repeat(AptMarkup.SECTION_TITLE_START_MARKUP, 2) + title + EOL + EOL + EOL;
     }
 
-    /** {@inheritDoc} */
     protected String getSection4Block(String title) {
         return EOL + DoxiaStringUtils.repeat(AptMarkup.SECTION_TITLE_START_MARKUP, 3) + title + EOL + EOL + EOL;
     }
 
-    /** {@inheritDoc} */
     protected String getSection5Block(String title) {
         return EOL + DoxiaStringUtils.repeat(AptMarkup.SECTION_TITLE_START_MARKUP, 4) + title + EOL + EOL + EOL;
     }
 
-    /** {@inheritDoc} */
     protected String getSection6Block(String title) {
         // Everything above level 5 is automatically converted to level 5 (as APT doesn't support deeper nesting)
         return EOL + DoxiaStringUtils.repeat(AptMarkup.SECTION_TITLE_START_MARKUP, 4) + title + EOL + EOL + EOL;
     }
 
-    /** {@inheritDoc} */
     protected String getHeaderBlock() {
         return "";
     }
 
-    /** {@inheritDoc} */
     protected String getContentBlock() {
         return "";
     }
 
-    /** {@inheritDoc} */
     protected String getFooterBlock() {
         return "";
     }
 
-    /** {@inheritDoc} */
     protected String getListBlock(String item) {
         return EOL + EOL + Markup.SPACE + "" + AptMarkup.LIST_START_MARKUP + "" + Markup.SPACE + item + EOL + EOL
                 + Markup.SPACE + "" + AptMarkup.LIST_END_MARKUP + EOL;
     }
 
-    /** {@inheritDoc} */
     protected String getNumberedListBlock(String item) {
         return EOL + EOL + Markup.SPACE + "" + Markup.LEFT_SQUARE_BRACKET + ""
                 + Markup.LEFT_SQUARE_BRACKET + AptMarkup.NUMBERING_LOWER_ROMAN_CHAR + ""
@@ -156,14 +135,12 @@ public class AptSinkTest extends AbstractSinkTest {
                 + Markup.SPACE + item + EOL + EOL + Markup.SPACE + "" + AptMarkup.LIST_END_MARKUP + EOL;
     }
 
-    /** {@inheritDoc} */
     protected String getDefinitionListBlock(String definum, String definition) {
         return EOL + EOL + Markup.SPACE + "" + Markup.LEFT_SQUARE_BRACKET + definum
                 + Markup.RIGHT_SQUARE_BRACKET + "" + Markup.SPACE + definition + EOL + EOL
                 + Markup.SPACE + "" + AptMarkup.LIST_END_MARKUP + EOL;
     }
 
-    /** {@inheritDoc} */
     protected String getFigureBlock(String source, String caption) {
         String figureBlock = EOL + Markup.LEFT_SQUARE_BRACKET + source + Markup.RIGHT_SQUARE_BRACKET + Markup.SPACE;
         if (caption != null) {
@@ -172,7 +149,6 @@ public class AptSinkTest extends AbstractSinkTest {
         return figureBlock;
     }
 
-    /** {@inheritDoc} */
     protected String getTableBlock(String cell, String caption) {
         return EOL
                 + AptMarkup.TABLE_ROW_START_MARKUP
@@ -208,42 +184,34 @@ public class AptSinkTest extends AbstractSinkTest {
                 + "*----+--:--*\n";
     }
 
-    /** {@inheritDoc} */
     protected String getParagraphBlock(String text) {
         return EOL + Markup.SPACE + text + EOL + EOL;
     }
 
-    /** {@inheritDoc} */
     protected String getDataBlock(String value, String text) {
         return text;
     }
 
-    /** {@inheritDoc} */
     protected String getTimeBlock(String datetime, String text) {
         return text;
     }
 
-    /** {@inheritDoc} */
     protected String getAddressBlock(String text) {
         return text;
     }
 
-    /** {@inheritDoc} */
     protected String getBlockquoteBlock(String text) {
         return text;
     }
 
-    /** {@inheritDoc} */
     protected String getDivisionBlock(String text) {
         return text;
     }
 
-    /** {@inheritDoc} */
     protected String getVerbatimBlock(String text) {
         return EOL + EOL + AptMarkup.VERBATIM_START_MARKUP + EOL + text + EOL + AptMarkup.VERBATIM_START_MARKUP + EOL;
     }
 
-    /** {@inheritDoc} */
     protected String getVerbatimSourceBlock(String text) {
         return EOL
                 + EOL
@@ -255,88 +223,71 @@ public class AptSinkTest extends AbstractSinkTest {
                 + EOL;
     }
 
-    /** {@inheritDoc} */
     protected String getHorizontalRuleBlock() {
         return EOL + AptMarkup.HORIZONTAL_RULE_MARKUP + EOL;
     }
 
-    /** {@inheritDoc} */
     protected String getPageBreakBlock() {
         return EOL + AptMarkup.PAGE_BREAK_MARKUP + EOL;
     }
 
-    /** {@inheritDoc} */
     protected String getAnchorBlock(String anchor) {
         return AptMarkup.ANCHOR_START_MARKUP + anchor + AptMarkup.ANCHOR_END_MARKUP;
     }
 
-    /** {@inheritDoc} */
     protected String getLinkBlock(String link, String text) {
         String lnk = link.startsWith("#") ? link.substring(1) : link;
         return AptMarkup.LINK_START_1_MARKUP + lnk + AptMarkup.LINK_START_2_MARKUP + text + AptMarkup.LINK_END_MARKUP;
     }
 
-    /** {@inheritDoc} */
     protected String getInlineBlock(String text) {
         return text;
     }
 
-    /** {@inheritDoc} */
     protected String getInlineItalicBlock(String text) {
         return AptMarkup.ITALIC_START_MARKUP + text + AptMarkup.ITALIC_END_MARKUP;
     }
 
-    /** {@inheritDoc} */
     protected String getInlineBoldBlock(String text) {
         return AptMarkup.BOLD_START_MARKUP + text + AptMarkup.BOLD_END_MARKUP;
     }
 
-    /** {@inheritDoc} */
     protected String getInlineCodeBlock(String text) {
         return AptMarkup.MONOSPACED_START_MARKUP + text + AptMarkup.MONOSPACED_END_MARKUP;
     }
 
-    /** {@inheritDoc} */
     protected String getItalicBlock(String text) {
         return AptMarkup.ITALIC_START_MARKUP + text + AptMarkup.ITALIC_END_MARKUP;
     }
 
-    /** {@inheritDoc} */
     protected String getBoldBlock(String text) {
         return AptMarkup.BOLD_START_MARKUP + text + AptMarkup.BOLD_END_MARKUP;
     }
 
-    /** {@inheritDoc} */
     protected String getMonospacedBlock(String text) {
         return text;
     }
 
-    /** {@inheritDoc} */
     protected String getLineBreakBlock() {
         return AptMarkup.BACKSLASH + EOL;
     }
 
-    /** {@inheritDoc} */
     protected String getLineBreakOpportunityBlock() {
         return "";
     }
 
-    /** {@inheritDoc} */
     protected String getNonBreakingSpaceBlock() {
         return AptMarkup.NON_BREAKING_SPACE_MARKUP;
     }
 
-    /** {@inheritDoc} */
     protected String getTextBlock(String text) {
         return AptSink.escapeAPT(text);
     }
 
-    /** {@inheritDoc} */
     protected String getRawTextBlock(String text) {
         return text;
     }
 
-    /** {@inheritDoc} */
     protected String getCommentBlock(String text) {
         return "~~" + text + EOL;
     }
@@ -348,7 +299,7 @@ public class AptSinkTest extends AbstractSinkTest {
 
     /* Overwrite the test from AbstractSinkTest as EOLs are part of getCommentBlock(...) */
     @Test
-    public void testTwoConsecutiveBlockComments() {
+    public void twoConsecutiveBlockComments() {
         final Sink sink = getSink();
         String comment = "Simple comment";
         sink.comment(comment, true);
@@ -362,7 +313,7 @@ public class AptSinkTest extends AbstractSinkTest {
      * test for DOXIA-497.
      */
     @Test
-    public void testLinksAndParagraphsInTableCells() {
+    void linksAndParagraphsInTableCells() {
         final String linkTarget = "target";
         final String linkText = "link";
         final String paragraphText = "paragraph text";
@@ -414,7 +365,7 @@ public class AptSinkTest extends AbstractSinkTest {
     }
 
     @Test
-    public void testTableCellsWithJustification() {
+    void tableCellsWithJustification() {
         final String linkTarget = "target";
         final String linkText = "link";
         final String paragraphText = "paragraph text";

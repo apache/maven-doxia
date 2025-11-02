@@ -18,8 +18,6 @@
  */
 package org.apache.maven.doxia.module.markdown;
 
-import java.io.IOException;
-
 import org.apache.commons.io.output.NullWriter;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
@@ -39,27 +37,27 @@ class LastTwoLinesBufferingWriterTest {
     }
 
     @Test
-    void testEmptyWriter() {
+    void emptyWriter() {
         assertTrue(writer.isWriterAfterBlankLine());
         assertTrue(writer.isWriterAtStartOfNewLine());
     }
 
     @Test
-    void testWriterWithOneBlankLine() throws IOException {
+    void writerWithOneBlankLine() throws Exception {
         writer.write("  " + System.lineSeparator());
         assertTrue(writer.isWriterAfterBlankLine());
         assertTrue(writer.isWriterAtStartOfNewLine());
     }
 
     @Test
-    void testWriterWithOneNonBlankLine() throws IOException {
+    void writerWithOneNonBlankLine() throws Exception {
         writer.write("not blank  " + System.lineSeparator());
         assertFalse(writer.isWriterAfterBlankLine());
         assertTrue(writer.isWriterAtStartOfNewLine());
     }
 
     @Test
-    void testWriterWithTwoBlankLines() throws IOException {
+    void writerWithTwoBlankLines() throws Exception {
         writer.write("  " + System.lineSeparator());
         writer.write("  " + System.lineSeparator());
         assertTrue(writer.isWriterAfterBlankLine());
@@ -74,7 +72,7 @@ class LastTwoLinesBufferingWriterTest {
     }
 
     @Test
-    void testWriterWithNonBlankLineFollowingBlankLine() throws IOException {
+    void writerWithNonBlankLineFollowingBlankLine() throws Exception {
         writer.write("\t" + System.lineSeparator());
         writer.write("test");
         assertFalse(writer.isWriterAfterBlankLine());
@@ -82,7 +80,7 @@ class LastTwoLinesBufferingWriterTest {
     }
 
     @Test
-    void testWriterWithBlankLineFollowingNonBlankLine() throws IOException {
+    void writerWithBlankLineFollowingNonBlankLine() throws Exception {
         writer.write("test");
         writer.write(System.lineSeparator());
         writer.write(System.lineSeparator());
@@ -92,7 +90,7 @@ class LastTwoLinesBufferingWriterTest {
 
     @ParameterizedTest()
     @ValueSource(strings = {"\n", "\r\n"})
-    void testDifferentLineSeparators(String lineSeparator) throws IOException {
+    void differentLineSeparators(String lineSeparator) throws Exception {
         writer = new LastTwoLinesBufferingWriter(NullWriter.INSTANCE, lineSeparator);
         writer.write("text" + lineSeparator);
         assertFalse(writer.isWriterAfterBlankLine());

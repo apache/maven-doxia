@@ -32,7 +32,7 @@ import org.apache.maven.doxia.sink.impl.AbstractTextSinkFactory;
 @Singleton
 @Named("markdown")
 public class MarkdownSinkFactory extends AbstractTextSinkFactory {
-    /** {@inheritDoc} */
+
     protected Sink createSink(Writer writer, String encoding) {
         // encoding can safely be ignored since it isn't written into the generated Markdown source
         return new MarkdownSink(writer);

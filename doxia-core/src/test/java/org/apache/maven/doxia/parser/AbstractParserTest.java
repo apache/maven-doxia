@@ -37,12 +37,13 @@ import org.apache.maven.doxia.sink.impl.SinkWrapper;
 import org.apache.maven.doxia.sink.impl.SinkWrapperFactory;
 import org.apache.maven.doxia.sink.impl.TextSink;
 import org.apache.maven.doxia.sink.impl.WellformednessCheckingSink;
-import org.junit.jupiter.api.Assertions;
 import org.junit.jupiter.api.Test;
 
+import static org.junit.jupiter.api.Assertions.assertArrayEquals;
 import static org.junit.jupiter.api.Assertions.assertEquals;
 import static org.junit.jupiter.api.Assertions.assertFalse;
 import static org.junit.jupiter.api.Assertions.assertTrue;
+import static org.junit.jupiter.api.Assertions.fail;
 import static org.junit.jupiter.api.Assumptions.assumeTrue;
 
 /**
@@ -83,7 +84,7 @@ public abstract class AbstractParserTest extends AbstractModuleTest {
      * @throws ParseException if the test document cannot be parsed.
      */
     @Test
-    public final void testParser() throws IOException, ParseException {
+    public final void parser() throws Exception {
         WellformednessCheckingSink sink = new WellformednessCheckingSink();
 
         try (Reader reader = getTestReader("test", outputExtension())) {
@@ -104,7 +105,7 @@ public abstract class AbstractParserTest extends AbstractModuleTest {
      * @throws ParseException if the test document cannot be parsed.
      */
     @Test
-    public final void testDocument() throws IOException, ParseException {
+    public final void document() throws Exception {
         try (Writer writer = getTestWriter("test", "txt");
                 Reader reader = getTestReader("test", outputExtension())) {
             Sink sink = new TextSink(writer);
@@ -139,7 +140,7 @@ public abstract class AbstractParserTest extends AbstractModuleTest {
     }
 
     @Test
-    public final void testSinkWrapper() throws ParseException, IOException {
+    public final void sinkWrapper() throws Exception {
         Parser parser = createParser();
 
         parser.addSinkWrapperFactory(new TestSinkWrapperFactory(1));
@@ -187,7 +188,7 @@ public abstract class AbstractParserTest extends AbstractModuleTest {
      * @throws ParseException
      */
     @Test
-    public void testVerbatim() throws ParseException {
+    public void verbatim() throws Exception {
         String source = getVerbatimSource();
         assumeTrue(source != null, "parser does not support simple verbatim text");
         AbstractParser parser = createParser();
@@ -213,7 +214,7 @@ public abstract class AbstractParserTest extends AbstractModuleTest {
      * @throws ParseException
      */
     @Test
-    public void testVerbatimCode() throws ParseException {
+    public void verbatimCode() throws Exception {
         String source = getVerbatimCodeSource();
         assumeTrue(source != null, "parser does not support verbatim code");
         AbstractParser parser = createParser();
@@ -249,21 +250,21 @@ public abstract class AbstractParserTest extends AbstractModuleTest {
     }
 
     public static void assertSinkEquals(SinkEventElement element, String name, Object... args) {
-        Assertions.assertEquals(name, element.getName(), "Name of element doesn't match");
-        Assertions.assertArrayEquals(args, element.getArgs(), "Arguments don't match");
+        assertEquals(name, element.getName(), "Name of element doesn't match");
+        assertArrayEquals(args, element.getArgs(), "Arguments don't match");
     }
 
     public static void assertSinkAttributeEquals(SinkEventElement element, String name, String attr, String value) {
-        Assertions.assertEquals(name, element.getName());
+        assertEquals(name, element.getName());
         SinkEventAttributeSet atts = (SinkEventAttributeSet) element.getArgs()[0];
-        Assertions.assertEquals(value, atts.getAttribute(attr));
+        assertEquals(value, atts.getAttribute(attr));
     }
 
     public static void assertSinkAttributesEqual(
             SinkEventElement element, String name, SinkEventAttributes expectedAttributes) {
-        Assertions.assertEquals(name, element.getName());
+        assertEquals(name, element.getName());
         SinkEventAttributeSet atts = (SinkEventAttributeSet) element.getArgs()[0];
-        Assertions.assertEquals(expectedAttributes, atts);
+        assertEquals(expectedAttributes, atts);
     }
 
     /**
@@ -302,7 +303,7 @@ public abstract class AbstractParserTest extends AbstractModuleTest {
             actual.append(it.next().getName()).append('\n');
         }
 
-        Assertions.assertEquals(expected.toString(), actual.toString());
+        assertEquals(expected.toString(), actual.toString());
     }
 
     public static void assertSinkDoesNotContain(Iterator<SinkEventElement> it, String... names) {
@@ -310,7 +311,7 @@ public abstract class AbstractParserTest extends AbstractModuleTest {
         while (it.hasNext()) {
             String name = it.next().getName();
             if (forbiddenNames.contains(name)) {
-                Assertions.fail("Found unexpected event: " + name);
+                fail("Found unexpected event: " + name);
             }
         }
     }
@@ -325,6 +326,6 @@ public abstract class AbstractParserTest extends AbstractModuleTest {
                 actual.append(it.next().getName()).append('\n');
             }
         }
-        Assertions.assertEquals(expected.toString(), actual.toString());
+        assertEquals(expected.toString(), actual.toString());
     }
 }

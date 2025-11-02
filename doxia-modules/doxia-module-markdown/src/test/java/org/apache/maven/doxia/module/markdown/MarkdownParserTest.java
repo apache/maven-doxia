@@ -45,7 +45,7 @@ import static org.junit.jupiter.api.Assertions.assertTrue;
  * @author <a href="mailto:julien.nicoulaud@gmail.com">Julien Nicoulaud</a>
  * @since 1.3
  */
-public class MarkdownParserTest extends AbstractParserTest {
+class MarkdownParserTest extends AbstractParserTest {
 
     /**
      * The {@link MarkdownParser} used for the tests.
@@ -75,7 +75,7 @@ public class MarkdownParserTest extends AbstractParserTest {
      * @throws Exception if the event list is not correct when parsing the document
      */
     @Test
-    public void testParagraphSinkEvent() throws Exception {
+    void paragraphSinkEvent() throws Exception {
         Iterator<SinkEventElement> it =
                 parseFileToEventTestingSink("paragraph").getEventList().iterator();
 
@@ -90,7 +90,7 @@ public class MarkdownParserTest extends AbstractParserTest {
      * @throws Exception if the event list is not correct when parsing the document
      */
     @Test
-    public void testFontBoldSinkEvent() throws Exception {
+    void fontBoldSinkEvent() throws Exception {
         // System.out.println(parseFileToHtml("font-bold"));
         List<SinkEventElement> eventList =
                 parseFileToEventTestingSink("font-bold").getEventList();
@@ -112,7 +112,7 @@ public class MarkdownParserTest extends AbstractParserTest {
      * @throws Exception if the event list is not correct when parsing the document
      */
     @Test
-    public void testFontItalicSinkEvent() throws Exception {
+    void fontItalicSinkEvent() throws Exception {
         // System.out.println(parseFileToHtml("font-italic"));
         List<SinkEventElement> eventList =
                 parseFileToEventTestingSink("font-italic").getEventList();
@@ -133,7 +133,7 @@ public class MarkdownParserTest extends AbstractParserTest {
      * @throws Exception if the event list is not correct when parsing the document
      */
     @Test
-    public void testFontMonospacedSinkEvent() throws Exception {
+    void fontMonospacedSinkEvent() throws Exception {
         // System.out.println(parseFileToHtml("font-monospaced"));
         List<SinkEventElement> eventList =
                 parseFileToEventTestingSink("font-monospaced").getEventList();
@@ -154,7 +154,7 @@ public class MarkdownParserTest extends AbstractParserTest {
      * @throws Exception if the event list is not correct when parsing the document
      */
     @Test
-    public void testCodeSinkEvent() throws Exception {
+    void codeSinkEvent() throws Exception {
         Iterator<SinkEventElement> it =
                 parseFileToEventTestingSink("code").getEventList().iterator();
 
@@ -183,7 +183,7 @@ public class MarkdownParserTest extends AbstractParserTest {
      * @throws Exception if the event list is not correct when parsing the document
      */
     @Test
-    public void testFencedCodeBlockSinkEvent() throws Exception {
+    void fencedCodeBlockSinkEvent() throws Exception {
         List<SinkEventElement> eventList =
                 parseFileToEventTestingSink("fenced-code-block").getEventList();
         Iterator<SinkEventElement> it = eventList.iterator();
@@ -228,7 +228,7 @@ public class MarkdownParserTest extends AbstractParserTest {
      * @throws Exception if the event list is not correct when parsing the document
      */
     @Test
-    public void testImageSinkEvent() throws Exception {
+    void imageSinkEvent() throws Exception {
         Iterator<SinkEventElement> it =
                 parseFileToEventTestingSink("image").getEventList().iterator();
 
@@ -244,7 +244,7 @@ public class MarkdownParserTest extends AbstractParserTest {
      * @throws Exception if the event list is not correct when parsing the document
      */
     @Test
-    public void testLinkSinkEvent() throws Exception {
+    void linkSinkEvent() throws Exception {
         Iterator<SinkEventElement> it =
                 parseFileToEventTestingSink("link").getEventList().iterator();
 
@@ -271,7 +271,7 @@ public class MarkdownParserTest extends AbstractParserTest {
      * @throws Exception if the event list is not correct when parsing the document
      */
     @Test
-    public void testLinkRewriteSinkEvent() throws Exception {
+    void linkRewriteSinkEvent() throws Exception {
         List<SinkEventElement> eventList =
                 parseFileToEventTestingSink("link_rewrite").getEventList();
 
@@ -301,7 +301,7 @@ public class MarkdownParserTest extends AbstractParserTest {
     }
 
     @Test
-    public void testLinkWithAnchorAndQuery() throws Exception {
+    void linkWithAnchorAndQuery() throws Exception {
         Iterator<SinkEventElement> it =
                 parseFileToEventTestingSink("link_anchor_query").getEventList().iterator();
 
@@ -316,7 +316,7 @@ public class MarkdownParserTest extends AbstractParserTest {
      * @throws Exception if the event list is not correct when parsing the document
      */
     @Test
-    public void testListSinkEvent() throws Exception {
+    void listSinkEvent() throws Exception {
         Iterator<SinkEventElement> it =
                 parseFileToEventTestingSink("list").getEventList().iterator();
 
@@ -346,7 +346,7 @@ public class MarkdownParserTest extends AbstractParserTest {
      * @throws Exception if the event list is not correct when parsing the document
      */
     @Test
-    public void testNumberedListSinkEvent() throws Exception {
+    void numberedListSinkEvent() throws Exception {
         Iterator<SinkEventElement> it =
                 parseFileToEventTestingSink("numbered-list").getEventList().iterator();
 
@@ -376,7 +376,7 @@ public class MarkdownParserTest extends AbstractParserTest {
      * @throws Exception if the event list is not correct when parsing the document
      */
     @Test
-    public void testMetadataSinkEvent() throws Exception {
+    void metadataSinkEvent() throws Exception {
         List<SinkEventElement> eventList =
                 parseFileToEventTestingSink("metadata").getEventList();
         Iterator<SinkEventElement> it = eventList.iterator();
@@ -448,7 +448,7 @@ public class MarkdownParserTest extends AbstractParserTest {
      * @throws Exception if the event list is not correct when parsing the document
      */
     @Test
-    public void testMetadataYamlSinkEvent() throws Exception {
+    void metadataYamlSinkEvent() throws Exception {
         List<SinkEventElement> eventList =
                 parseFileToEventTestingSink("metadata-yaml").getEventList();
         Iterator<SinkEventElement> it = eventList.iterator();
@@ -525,7 +525,7 @@ public class MarkdownParserTest extends AbstractParserTest {
      * @throws Exception if the event list is not correct when parsing the document
      */
     @Test
-    public void testFirstHeadingSinkEvent() throws Exception {
+    void firstHeadingSinkEvent() throws Exception {
         Iterator<SinkEventElement> it =
                 parseFileToEventTestingSink("first-heading").getEventList().iterator();
 
@@ -558,7 +558,7 @@ public class MarkdownParserTest extends AbstractParserTest {
      * @throws Exception if the event list is not correct when parsing the document
      */
     @Test
-    public void testCommentBeforeHeadingSinkEvent() throws Exception {
+    void commentBeforeHeadingSinkEvent() throws Exception {
         Iterator<SinkEventElement> it = parseFileToEventTestingSink("comment-before-heading")
                 .getEventList()
                 .iterator();
@@ -592,7 +592,7 @@ public class MarkdownParserTest extends AbstractParserTest {
      * @throws Exception if the event list is not correct when parsing the document
      */
     @Test
-    public void testHtmlContent() throws Exception {
+    void htmlContent() throws Exception {
         Iterator<SinkEventElement> it =
                 parseFileToEventTestingSink("html-content").getEventList().iterator();
 
@@ -676,7 +676,7 @@ public class MarkdownParserTest extends AbstractParserTest {
     }
 
     @Test
-    public void testTocMacro() throws Exception {
+    void tocMacro() throws Exception {
         Iterator<SinkEventElement> it =
                 parseFileToEventTestingSink("macro-toc").getEventList().iterator();
 
@@ -718,7 +718,7 @@ public class MarkdownParserTest extends AbstractParserTest {
 
     // TOC macro fails with EmptyStackException when title 2 followed by title 4 then title 2
     @Test
-    public void testTocMacroDoxia559() throws Exception {
+    void tocMacroDoxia559() throws Exception {
         Iterator<SinkEventElement> it = parseFileToEventTestingSink("macro-toc-DOXIA-559")
                 .getEventList()
                 .iterator();
@@ -775,14 +775,14 @@ public class MarkdownParserTest extends AbstractParserTest {
 
     // test fix for https://github.com/vsch/flexmark-java/issues/384
     @Test
-    public void testFlexIssue384() throws Exception {
+    void flexIssue384() throws Exception {
         parseFileToEventTestingSink("flex-384");
     }
 
     // Apostrophe versus single quotes
     // Simple apostrophes (like in Sophie's Choice) must not be replaced with a single quote
     @Test
-    public void testQuoteVsApostrophe() throws Exception {
+    void quoteVsApostrophe() throws Exception {
         List<SinkEventElement> eventList =
                 parseFileToEventTestingSink("quote-vs-apostrophe").getEventList();
 
@@ -799,7 +799,7 @@ public class MarkdownParserTest extends AbstractParserTest {
 
     /** Checks that non consecutive headings are normalized according to Sink API restrictions. */
     @Test
-    public void testNonConsecutiveHeadingSections() throws ParseException, IOException {
+    void nonConsecutiveHeadingSections() throws Exception {
         parser.setEmitAnchorsForIndexableEntries(true);
         List<SinkEventElement> eventList =
                 parseFileToEventTestingSink("headings").getEventList();
@@ -838,7 +838,7 @@ public class MarkdownParserTest extends AbstractParserTest {
     }
 
     @Test
-    public void testCommentsNotRemovedWithEmitCommentsTrue() throws ParseException, IOException {
+    void commentsNotRemovedWithEmitCommentsTrue() throws Exception {
         parser.setEmitComments(true);
         List<SinkEventElement> eventList =
                 parseFileToEventTestingSink("comments").getEventList();
@@ -854,7 +854,7 @@ public class MarkdownParserTest extends AbstractParserTest {
     }
 
     @Test
-    public void testCommentsRemovedWithEmitCommentsFalse() throws ParseException, IOException {
+    void commentsRemovedWithEmitCommentsFalse() throws Exception {
         parser.setEmitComments(false);
         List<SinkEventElement> eventList =
                 parseFileToEventTestingSink("comments").getEventList();
@@ -863,7 +863,7 @@ public class MarkdownParserTest extends AbstractParserTest {
     }
 
     @Test
-    public void testHtmlInMarkdown() throws ParseException, IOException {
+    void htmlInMarkdown() throws Exception {
         parseFileToEventTestingSink("html");
     }
 

@@ -29,12 +29,11 @@ import org.apache.maven.doxia.sink.Sink;
  * leaves the model unchanged. The test is done in AbstractIdentityTest.
  */
 public class AptIdentityTest extends AbstractIdentityTest {
-    /** {@inheritDoc} */
+
     protected Sink createSink(Writer writer) {
         return new AptSink(writer);
     }
 
-    /** {@inheritDoc} */
     protected Parser createParser() {
         return new AptParser();
     }

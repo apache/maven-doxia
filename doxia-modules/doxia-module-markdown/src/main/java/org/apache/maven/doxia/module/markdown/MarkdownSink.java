@@ -889,7 +889,6 @@ public class MarkdownSink extends AbstractTextSink implements MarkdownMarkup {
         writeUnescaped("](" + src + ")");
     }
 
-    /** {@inheritDoc} */
     public void anchor(String name, SinkEventAttributes attributes) {
         // emit html anchor as markdown does not support anchors
         MutableAttributeSet atts = SinkUtils.filterAttributes(attributes, SinkUtils.SINK_BASE_ATTRIBUTES);
@@ -917,7 +916,6 @@ public class MarkdownSink extends AbstractTextSink implements MarkdownMarkup {
         // anchor is always empty html element, i.e. already closed with anchor()
     }
 
-    /** {@inheritDoc} */
     public void link(String name, SinkEventAttributes attributes) {
         if (elementContextStack.element() == ElementContext.CODE_BLOCK) {
             LOGGER.warn("{}Ignoring unsupported link inside code block", getLocationLogPrefix());

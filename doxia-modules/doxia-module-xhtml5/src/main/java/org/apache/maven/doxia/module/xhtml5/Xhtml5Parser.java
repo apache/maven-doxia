@@ -62,7 +62,6 @@ public class Xhtml5Parser extends Xhtml5BaseParser implements Xhtml5Markup {
      */
     private String sourceContent;
 
-    /** {@inheritDoc} */
     protected void handleStartTag(XmlPullParser parser, Sink sink)
             throws XmlPullParserException, MacroExecutionException {
         isEmptyElement = parser.isEmptyElementTag();
@@ -147,7 +146,6 @@ public class Xhtml5Parser extends Xhtml5BaseParser implements Xhtml5Markup {
         }
     }
 
-    /** {@inheritDoc} */
     protected void handleEndTag(XmlPullParser parser, Sink sink)
             throws XmlPullParserException, MacroExecutionException {
         if (parser.getName().equals(HTML.toString())) {
@@ -175,7 +173,6 @@ public class Xhtml5Parser extends Xhtml5BaseParser implements Xhtml5Markup {
         isEmptyElement = false;
     }
 
-    /** {@inheritDoc} */
     @Override
     protected void handleComment(XmlPullParser parser, Sink sink) throws XmlPullParserException {
         String text = getText(parser).trim();
@@ -267,7 +264,6 @@ public class Xhtml5Parser extends Xhtml5BaseParser implements Xhtml5Markup {
         this.isEmptyElement = false;
     }
 
-    /** {@inheritDoc} */
     public void parse(Reader source, Sink sink, String reference) throws ParseException {
         this.sourceContent = null;
 

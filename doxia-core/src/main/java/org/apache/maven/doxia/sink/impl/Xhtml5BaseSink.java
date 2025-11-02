@@ -229,7 +229,6 @@ public class Xhtml5BaseSink extends AbstractXmlSink implements HtmlMarkup {
         return this.cellCountStack.getLast();
     }
 
-    /** {@inheritDoc} */
     @Override
     protected void init() {
         super.init();
@@ -264,7 +263,6 @@ public class Xhtml5BaseSink extends AbstractXmlSink implements HtmlMarkup {
     // Sections
     // ----------------------------------------------------------------------
 
-    /** {@inheritDoc} */
     @Override
     public void article(SinkEventAttributes attributes) {
         MutableAttributeSet atts = SinkUtils.filterAttributes(attributes, SinkUtils.SINK_SECTION_ATTRIBUTES);
@@ -272,13 +270,11 @@ public class Xhtml5BaseSink extends AbstractXmlSink implements HtmlMarkup {
         writeStartTag(HtmlMarkup.ARTICLE, atts);
     }
 
-    /** {@inheritDoc} */
     @Override
     public void article_() {
         writeEndTag(HtmlMarkup.ARTICLE);
     }
 
-    /** {@inheritDoc} */
     @Override
     public void navigation(SinkEventAttributes attributes) {
         MutableAttributeSet atts = SinkUtils.filterAttributes(attributes, SinkUtils.SINK_SECTION_ATTRIBUTES);
@@ -286,13 +282,11 @@ public class Xhtml5BaseSink extends AbstractXmlSink implements HtmlMarkup {
         writeStartTag(HtmlMarkup.NAV, atts);
     }
 
-    /** {@inheritDoc} */
     @Override
     public void navigation_() {
         writeEndTag(HtmlMarkup.NAV);
     }
 
-    /** {@inheritDoc} */
     @Override
     public void sidebar(SinkEventAttributes attributes) {
         MutableAttributeSet atts = SinkUtils.filterAttributes(attributes, SinkUtils.SINK_SECTION_ATTRIBUTES);
@@ -300,31 +294,26 @@ public class Xhtml5BaseSink extends AbstractXmlSink implements HtmlMarkup {
         writeStartTag(HtmlMarkup.ASIDE, atts);
     }
 
-    /** {@inheritDoc} */
     @Override
     public void sidebar_() {
         writeEndTag(HtmlMarkup.ASIDE);
     }
 
-    /** {@inheritDoc} */
     @Override
     public void section(int level, SinkEventAttributes attributes) {
         onSection(level, attributes);
     }
 
-    /** {@inheritDoc} */
     @Override
     public void sectionTitle(int level, SinkEventAttributes attributes) {
         onSectionTitle(level, attributes);
     }
 
-    /** {@inheritDoc} */
     @Override
     public void sectionTitle_(int level) {
         onSectionTitle_(level);
     }
 
-    /** {@inheritDoc} */
     @Override
     public void section_(int level) {
         onSection_(level);
@@ -414,7 +403,6 @@ public class Xhtml5BaseSink extends AbstractXmlSink implements HtmlMarkup {
         }
     }
 
-    /** {@inheritDoc} */
     @Override
     public void header(SinkEventAttributes attributes) {
         MutableAttributeSet atts = SinkUtils.filterAttributes(attributes, SinkUtils.SINK_SECTION_ATTRIBUTES);
@@ -422,13 +410,11 @@ public class Xhtml5BaseSink extends AbstractXmlSink implements HtmlMarkup {
         writeStartTag(HtmlMarkup.HEADER, atts);
     }
 
-    /** {@inheritDoc} */
     @Override
     public void header_() {
         writeEndTag(HtmlMarkup.HEADER);
     }
 
-    /** {@inheritDoc} */
     @Override
     public void content(SinkEventAttributes attributes) {
         MutableAttributeSet atts = SinkUtils.filterAttributes(attributes, SinkUtils.SINK_SECTION_ATTRIBUTES);
@@ -451,7 +437,6 @@ public class Xhtml5BaseSink extends AbstractXmlSink implements HtmlMarkup {
         }
     }
 
-    /** {@inheritDoc} */
     @Override
     public void content_() {
         try {
@@ -461,7 +446,6 @@ public class Xhtml5BaseSink extends AbstractXmlSink implements HtmlMarkup {
         }
     }
 
-    /** {@inheritDoc} */
     @Override
     public void footer(SinkEventAttributes attributes) {
         MutableAttributeSet atts = SinkUtils.filterAttributes(attributes, SinkUtils.SINK_SECTION_ATTRIBUTES);
@@ -469,7 +453,6 @@ public class Xhtml5BaseSink extends AbstractXmlSink implements HtmlMarkup {
         writeStartTag(HtmlMarkup.FOOTER, atts);
     }
 
-    /** {@inheritDoc} */
     @Override
     public void footer_() {
         writeEndTag(HtmlMarkup.FOOTER);
@@ -672,19 +655,16 @@ public class Xhtml5BaseSink extends AbstractXmlSink implements HtmlMarkup {
         writeEndTag(HtmlMarkup.DD);
     }
 
-    /** {@inheritDoc} */
     @Override
     public void figure(SinkEventAttributes attributes) {
         writeStartTag(HtmlMarkup.FIGURE, attributes);
     }
 
-    /** {@inheritDoc} */
     @Override
     public void figure_() {
         writeEndTag(HtmlMarkup.FIGURE);
     }
 
-    /** {@inheritDoc} */
     @Override
     public void figureGraphics(String src, SinkEventAttributes attributes) {
         MutableAttributeSet filtered = SinkUtils.filterAttributes(attributes, SinkUtils.SINK_IMG_ATTRIBUTES);
@@ -702,13 +682,11 @@ public class Xhtml5BaseSink extends AbstractXmlSink implements HtmlMarkup {
         writeStartTag(HtmlMarkup.IMG, atts, true);
     }
 
-    /** {@inheritDoc} */
     @Override
     public void figureCaption(SinkEventAttributes attributes) {
         writeStartTag(HtmlMarkup.FIGCAPTION, attributes);
     }
 
-    /** {@inheritDoc} */
     @Override
     public void figureCaption_() {
         writeEndTag(HtmlMarkup.FIGCAPTION);
@@ -739,7 +717,6 @@ public class Xhtml5BaseSink extends AbstractXmlSink implements HtmlMarkup {
         }
     }
 
-    /** {@inheritDoc} */
     @Override
     public void data(String value, SinkEventAttributes attributes) {
         MutableAttributeSet atts = SinkUtils.filterAttributes(attributes, SinkUtils.SINK_BASE_ATTRIBUTES);
@@ -753,13 +730,11 @@ public class Xhtml5BaseSink extends AbstractXmlSink implements HtmlMarkup {
         writeStartTag(HtmlMarkup.DATA, att);
     }
 
-    /** {@inheritDoc} */
     @Override
     public void data_() {
         writeEndTag(HtmlMarkup.DATA);
     }
 
-    /** {@inheritDoc} */
     @Override
     public void time(String datetime, SinkEventAttributes attributes) {
         MutableAttributeSet atts = SinkUtils.filterAttributes(attributes, SinkUtils.SINK_BASE_ATTRIBUTES);
@@ -773,7 +748,6 @@ public class Xhtml5BaseSink extends AbstractXmlSink implements HtmlMarkup {
         writeStartTag(HtmlMarkup.TIME, att);
     }
 
-    /** {@inheritDoc} */
     @Override
     public void time_() {
         writeEndTag(HtmlMarkup.TIME);
@@ -905,7 +879,6 @@ public class Xhtml5BaseSink extends AbstractXmlSink implements HtmlMarkup {
         writeSimpleTag(HtmlMarkup.HR, atts);
     }
 
-    /** {@inheritDoc} */
     @Override
     public void table(SinkEventAttributes attributes) {
         this.tableContentWriterStack.addLast(new StringWriter());
@@ -994,7 +967,6 @@ public class Xhtml5BaseSink extends AbstractXmlSink implements HtmlMarkup {
         this.cellCountStack.addLast(0);
     }
 
-    /** {@inheritDoc} */
     @Override
     public void tableRows_() {
         if (!this.cellJustifStack.isEmpty()) {
@@ -1056,13 +1028,11 @@ public class Xhtml5BaseSink extends AbstractXmlSink implements HtmlMarkup {
         writeEndTag(HtmlMarkup.TR);
     }
 
-    /** {@inheritDoc} */
     @Override
     public void tableCell(SinkEventAttributes attributes) {
         tableCell(false, attributes);
     }
 
-    /** {@inheritDoc} */
     @Override
     public void tableHeaderCell(SinkEventAttributes attributes) {
         tableCell(true, attributes);
@@ -1128,13 +1098,11 @@ public class Xhtml5BaseSink extends AbstractXmlSink implements HtmlMarkup {
         return style;
     }
 
-    /** {@inheritDoc} */
     @Override
     public void tableCell_() {
         tableCell_(false);
     }
 
-    /** {@inheritDoc} */
     @Override
     public void tableHeaderCell_() {
         tableCell_(true);
@@ -1286,7 +1254,6 @@ public class Xhtml5BaseSink extends AbstractXmlSink implements HtmlMarkup {
         }
     }
 
-    /** {@inheritDoc} */
     @Override
     public void inline(SinkEventAttributes attributes) {
         if (!headFlag) {
@@ -1327,7 +1294,6 @@ public class Xhtml5BaseSink extends AbstractXmlSink implements HtmlMarkup {
         }
     }
 
-    /** {@inheritDoc} */
     @Override
     public void inline_() {
         if (!headFlag) {
@@ -1406,7 +1372,6 @@ public class Xhtml5BaseSink extends AbstractXmlSink implements HtmlMarkup {
         }
     }
 
-    /** {@inheritDoc} */
     @Override
     public void lineBreakOpportunity(SinkEventAttributes attributes) {
         if (!headFlag && !isVerbatim()) {
@@ -1416,13 +1381,11 @@ public class Xhtml5BaseSink extends AbstractXmlSink implements HtmlMarkup {
         }
     }
 
-    /** {@inheritDoc} */
     @Override
     public void pageBreak() {
         comment(" PB ");
     }
 
-    /** {@inheritDoc} */
     @Override
     public void nonBreakingSpace() {
         if (headFlag) {
@@ -1432,7 +1395,6 @@ public class Xhtml5BaseSink extends AbstractXmlSink implements HtmlMarkup {
         }
     }
 
-    /** {@inheritDoc} */
     @Override
     public void text(String text, SinkEventAttributes attributes) {
         if (attributes != null) {
@@ -1466,7 +1428,6 @@ public class Xhtml5BaseSink extends AbstractXmlSink implements HtmlMarkup {
         }
     }
 
-    /** {@inheritDoc} */
     @Override
     public void rawText(String text) {
         if (headFlag) {
@@ -1481,7 +1442,6 @@ public class Xhtml5BaseSink extends AbstractXmlSink implements HtmlMarkup {
         comment(comment, false);
     }
 
-    /** {@inheritDoc} */
     @Override
     public void comment(String comment, boolean endsWithLineBreak) {
         if (comment != null) {
@@ -1610,13 +1570,11 @@ public class Xhtml5BaseSink extends AbstractXmlSink implements HtmlMarkup {
         return set;
     }
 
-    /** {@inheritDoc} */
     @Override
     public void flush() {
         writer.flush();
     }
 
-    /** {@inheritDoc} */
     @Override
     public void close() {
         writer.close();
@@ -1671,7 +1629,6 @@ public class Xhtml5BaseSink extends AbstractXmlSink implements HtmlMarkup {
         return HtmlTools.encodeURL(text);
     }
 
-    /** {@inheritDoc} */
     protected void write(String text) {
         if (!this.tableCaptionXMLWriterStack.isEmpty() && this.tableCaptionXMLWriterStack.getLast() != null) {
             this.tableCaptionXMLWriterStack.getLast().writeMarkup(unifyEOLs(text));
@@ -1682,7 +1639,6 @@ public class Xhtml5BaseSink extends AbstractXmlSink implements HtmlMarkup {
         }
     }
 
-    /** {@inheritDoc} */
     @Override
     protected void writeStartTag(Tag t, MutableAttributeSet att, boolean isSimpleTag) {
         if (this.tableCaptionXMLWriterStack.isEmpty()) {
@@ -1707,7 +1663,6 @@ public class Xhtml5BaseSink extends AbstractXmlSink implements HtmlMarkup {
         }
     }
 
-    /** {@inheritDoc} */
     @Override
     protected void writeEndTag(Tag t) {
         if (this.tableCaptionXMLWriterStack.isEmpty()) {

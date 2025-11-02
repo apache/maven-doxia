@@ -30,26 +30,23 @@ import org.junit.jupiter.api.BeforeEach;
  * Check that piping a full model through an Xhtml5Parser and an Xhtml5Sink
  * leaves the model unchanged.
  */
-public class Xhtml5IdentityTest extends AbstractIdentityTest {
-    /** {@inheritDoc} */
+class Xhtml5IdentityTest extends AbstractIdentityTest {
+
     @BeforeEach
     protected void setUp() {
         assertIdentity(true);
     }
 
-    /** {@inheritDoc} */
     protected Sink createSink(Writer writer) {
         Xhtml5Sink sink = new Xhtml5Sink(writer);
         sink.setInsertNewline(false);
         return sink;
     }
 
-    /** {@inheritDoc} */
     protected Parser createParser() {
         return new Xhtml5Parser();
     }
 
-    /** {@inheritDoc} */
     protected String getExpected() {
         // DOXIA-177
         String expected = super.getExpected();

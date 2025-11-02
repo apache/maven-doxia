@@ -31,12 +31,12 @@ import static org.junit.jupiter.api.Assertions.assertNull;
  *
  * @author ltheussl
  */
-public class SinkUtilsTest {
+class SinkUtilsTest {
     /**
      * Test of getAttributeString method, of class SinkUtils.
      */
     @Test
-    public void testGetAttributeString() {
+    void getAttributeString() {
         assertEquals("", SinkUtils.getAttributeString(null));
 
         AttributeSet att = new SinkEventAttributeSet(SinkEventAttributeSet.SOURCE);
@@ -63,7 +63,7 @@ public class SinkUtilsTest {
      * Test of filterAttributes method, of class SinkUtils.
      */
     @Test
-    public void testFilterAttributes() {
+    void filterAttributes() {
         assertNull(SinkUtils.filterAttributes(null, null));
 
         AttributeSet attributes = new SinkEventAttributeSet(1);

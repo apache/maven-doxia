@@ -30,9 +30,9 @@ import org.junit.jupiter.api.Test;
  * @author Hervé Boutemy
  */
 @PlexusTest
-public class XmlValidatorTest {
+class XmlValidatorTest {
     @Test
-    public void testValidate() throws Exception {
+    void validate() throws Exception {
         String xml = IOUtils.toString(new XmlStreamReader(this.getClass().getResourceAsStream("/test.xml")));
 
         XmlValidator validator = new XmlValidator();

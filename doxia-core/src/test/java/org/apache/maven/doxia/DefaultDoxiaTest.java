@@ -29,20 +29,20 @@ import static org.junit.jupiter.api.Assertions.assertNotNull;
 import static org.junit.jupiter.api.Assertions.assertThrows;
 
 @PlexusTest
-public class DefaultDoxiaTest {
+class DefaultDoxiaTest {
 
     @Inject
     private Doxia doxia;
 
     @Test
-    public void testCreatesDefaultDoxia() {
+    void createsDefaultDoxia() {
         final DefaultDoxia defaultDoxia = new DefaultDoxia();
 
         assertNotNull(defaultDoxia);
     }
 
     @Test
-    public void testFailsWhenParserIdDoesNotExist() throws Exception {
+    void failsWhenParserIdDoesNotExist() throws Exception {
         final String parserId = "a-parser";
         ParserNotFoundException e = assertThrows(ParserNotFoundException.class, () -> doxia.getParser(parserId));
         assertEquals("Cannot find parser with id '" + parserId + "'", e.getMessage());

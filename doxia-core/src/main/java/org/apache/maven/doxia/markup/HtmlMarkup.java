@@ -68,7 +68,6 @@ public interface HtmlMarkup extends XmlMarkup {
 
     /** HTML5 tag for <code>abbr</code>. */
     Tag ABBR = new Tag() {
-        /** {@inheritDoc} */
         @Override
         public String toString() {
             return "abbr";
@@ -83,7 +82,6 @@ public interface HtmlMarkup extends XmlMarkup {
 
     /** HTML5 tag for <code>article</code>. */
     Tag ARTICLE = new Tag() {
-        /** {@inheritDoc} */
         @Override
         public String toString() {
             return "article";
@@ -92,7 +90,6 @@ public interface HtmlMarkup extends XmlMarkup {
 
     /** HTML5 tag for <code>aside</code>. */
     Tag ASIDE = new Tag() {
-        /** {@inheritDoc} */
         @Override
         public String toString() {
             return "aside";
@@ -101,7 +98,6 @@ public interface HtmlMarkup extends XmlMarkup {
 
     /** HTML5 tag for <code>audio</code>. */
     Tag AUDIO = new Tag() {
-        /** {@inheritDoc} */
         @Override
         public String toString() {
             return "audio";
@@ -116,7 +112,6 @@ public interface HtmlMarkup extends XmlMarkup {
 
     /** HTML5 tag for <code>bdi</code>. */
     Tag BDI = new Tag() {
-        /** {@inheritDoc} */
         @Override
         public String toString() {
             return "bdi";
@@ -125,7 +120,6 @@ public interface HtmlMarkup extends XmlMarkup {
 
     /** HTML5 tag for <code>bdo</code>. */
     Tag BDO = new Tag() {
-        /** {@inheritDoc} */
         @Override
         public String toString() {
             return "bdo";
@@ -143,7 +137,6 @@ public interface HtmlMarkup extends XmlMarkup {
 
     /** HTML5 tag for <code>button</code>. */
     Tag BUTTON = new Tag() {
-        /** {@inheritDoc} */
         @Override
         public String toString() {
             return "button";
@@ -152,7 +145,6 @@ public interface HtmlMarkup extends XmlMarkup {
 
     /** HTML5 tag for <code>canvas</code>. */
     Tag CANVAS = new Tag() {
-        /** {@inheritDoc} */
         @Override
         public String toString() {
             return "canvas";
@@ -170,7 +162,6 @@ public interface HtmlMarkup extends XmlMarkup {
 
     /** HTML5 tag for <code>col</code>. */
     Tag COL = new Tag() {
-        /** {@inheritDoc} */
         @Override
         public String toString() {
             return "col";
@@ -179,7 +170,6 @@ public interface HtmlMarkup extends XmlMarkup {
 
     /** HTML5 tag for <code>colgroup</code>. */
     Tag COLGROUP = new Tag() {
-        /** {@inheritDoc} */
         @Override
         public String toString() {
             return "colgroup";
@@ -188,7 +178,6 @@ public interface HtmlMarkup extends XmlMarkup {
 
     /** HTML5 tag for <code>command</code>. */
     Tag COMMAND = new Tag() {
-        /** {@inheritDoc} */
         @Override
         public String toString() {
             return "command";
@@ -197,7 +186,6 @@ public interface HtmlMarkup extends XmlMarkup {
 
     /** HTML5 tag for <code>data</code>. */
     Tag DATA = new Tag() {
-        /** {@inheritDoc} */
         @Override
         public String toString() {
             return "data";
@@ -206,7 +194,6 @@ public interface HtmlMarkup extends XmlMarkup {
 
     /** HTML5 tag for <code>datalist</code>. */
     Tag DATALIST = new Tag() {
-        /** {@inheritDoc} */
         @Override
         public String toString() {
             return "datalist";
@@ -218,7 +205,6 @@ public interface HtmlMarkup extends XmlMarkup {
 
     /** HTML5 tag for <code>del</code>. */
     Tag DEL = new Tag() {
-        /** {@inheritDoc} */
         @Override
         public String toString() {
             return "del";
@@ -227,7 +213,6 @@ public interface HtmlMarkup extends XmlMarkup {
 
     /** HTML5 tag for <code>details</code>. */
     Tag DETAILS = new Tag() {
-        /** {@inheritDoc} */
         @Override
         public String toString() {
             return "details";
@@ -239,7 +224,6 @@ public interface HtmlMarkup extends XmlMarkup {
 
     /** HTML5 tag for <code>dialog</code>. */
     Tag DIALOG = new Tag() {
-        /** {@inheritDoc} */
         @Override
         public String toString() {
             return "dialog";
@@ -260,7 +244,6 @@ public interface HtmlMarkup extends XmlMarkup {
 
     /** HTML5 tag for <code>embed</code>. */
     Tag EMBED = new Tag() {
-        /** {@inheritDoc} */
         @Override
         public String toString() {
             return "embed";
@@ -269,7 +252,6 @@ public interface HtmlMarkup extends XmlMarkup {
 
     /** HTML5 tag for <code>fieldset</code>. */
     Tag FIELDSET = new Tag() {
-        /** {@inheritDoc} */
         @Override
         public String toString() {
             return "fieldset";
@@ -278,7 +260,6 @@ public interface HtmlMarkup extends XmlMarkup {
 
     /** HTML5 tag for <code>figcaption</code>. */
     Tag FIGCAPTION = new Tag() {
-        /** {@inheritDoc} */
         @Override
         public String toString() {
             return "figcaption";
@@ -287,7 +268,6 @@ public interface HtmlMarkup extends XmlMarkup {
 
     /** HTML5 tag for <code>figure</code>. */
     Tag FIGURE = new Tag() {
-        /** {@inheritDoc} */
         @Override
         public String toString() {
             return "figure";
@@ -296,7 +276,6 @@ public interface HtmlMarkup extends XmlMarkup {
 
     /** HTML5 tag for <code>footer</code>. */
     Tag FOOTER = new Tag() {
-        /** {@inheritDoc} */
         @Override
         public String toString() {
             return "footer";
@@ -329,7 +308,7 @@ public interface HtmlMarkup extends XmlMarkup {
 
     /** HTML5 tag for <code>header</code>. */
     Tag HEADER = new Tag() {
-        /** {@inheritDoc} */
+
         @Override
         public String toString() {
             return "header";
@@ -338,7 +317,7 @@ public interface HtmlMarkup extends XmlMarkup {
 
     /** HTML5 tag for <code>hgroup</code>. */
     Tag HGROUP = new Tag() {
-        /** {@inheritDoc} */
+
         @Override
         public String toString() {
             return "hgroup";
@@ -356,7 +335,7 @@ public interface HtmlMarkup extends XmlMarkup {
 
     /** HTML5 tag for <code>iframe</code>. */
     Tag IFRAME = new Tag() {
-        /** {@inheritDoc} */
+
         @Override
         public String toString() {
             return "iframe";
@@ -371,7 +350,7 @@ public interface HtmlMarkup extends XmlMarkup {
 
     /** HTML5 tag for <code>ins</code>. */
     Tag INS = new Tag() {
-        /** {@inheritDoc} */
+
         @Override
         public String toString() {
             return "ins";
@@ -383,7 +362,7 @@ public interface HtmlMarkup extends XmlMarkup {
 
     /** HTML5 tag for <code>keygen</code>. */
     Tag KEYGEN = new Tag() {
-        /** {@inheritDoc} */
+
         @Override
         public String toString() {
             return "keygen";
@@ -392,7 +371,7 @@ public interface HtmlMarkup extends XmlMarkup {
 
     /** HTML5 tag for <code>label</code>. */
     Tag LABEL = new Tag() {
-        /** {@inheritDoc} */
+
         @Override
         public String toString() {
             return "label";
@@ -401,7 +380,7 @@ public interface HtmlMarkup extends XmlMarkup {
 
     /** HTML5 tag for <code>legend</code>. */
     Tag LEGEND = new Tag() {
-        /** {@inheritDoc} */
+
         @Override
         public String toString() {
             return "legend";
@@ -419,7 +398,7 @@ public interface HtmlMarkup extends XmlMarkup {
 
     /** HTML5 tag for <code>main</code>. */
     Tag MAIN = new Tag() {
-        /** {@inheritDoc} */
+
         @Override
         public String toString() {
             return "main";
@@ -428,7 +407,7 @@ public interface HtmlMarkup extends XmlMarkup {
 
     /** HTML5 tag for <code>mark</code>. */
     Tag MARK = new Tag() {
-        /** {@inheritDoc} */
+
         @Override
         public String toString() {
             return "mark";
@@ -440,7 +419,7 @@ public interface HtmlMarkup extends XmlMarkup {
 
     /** HTML5 tag for <code>menuitem</code>. */
     Tag MENUITEM = new Tag() {
-        /** {@inheritDoc} */
+
         @Override
         public String toString() {
             return "menuitem";
@@ -452,7 +431,7 @@ public interface HtmlMarkup extends XmlMarkup {
 
     /** HTML5 tag for <code>meter</code>. */
     Tag METER = new Tag() {
-        /** {@inheritDoc} */
+
         @Override
         public String toString() {
             return "meter";
@@ -461,7 +440,7 @@ public interface HtmlMarkup extends XmlMarkup {
 
     /** HTML5 tag for <code>nav</code>. */
     Tag NAV = new Tag() {
-        /** {@inheritDoc} */
+
         @Override
         public String toString() {
             return "nav";
@@ -470,7 +449,7 @@ public interface HtmlMarkup extends XmlMarkup {
 
     /** HTML5 tag for <code>noscript</code>. */
     Tag NOSCRIPT = new Tag() {
-        /** {@inheritDoc} */
+
         @Override
         public String toString() {
             return "noscript";
@@ -485,7 +464,7 @@ public interface HtmlMarkup extends XmlMarkup {
 
     /** HTML5 tag for <code>optgroup</code>. */
     Tag OPTGROUP = new Tag() {
-        /** {@inheritDoc} */
+
         @Override
         public String toString() {
             return "optgroup";
@@ -497,7 +476,7 @@ public interface HtmlMarkup extends XmlMarkup {
 
     /** HTML5 tag for <code>output</code>. */
     Tag OUTPUT = new Tag() {
-        /** {@inheritDoc} */
+
         @Override
         public String toString() {
             return "output";
@@ -512,7 +491,7 @@ public interface HtmlMarkup extends XmlMarkup {
 
     /** HTML5 tag for <code>picture</code>. */
     Tag PICTURE = new Tag() {
-        /** {@inheritDoc} */
+
         @Override
         public String toString() {
             return "picture";
@@ -524,7 +503,7 @@ public interface HtmlMarkup extends XmlMarkup {
 
     /** HTML5 tag for <code>progress</code>. */
     Tag PROGRESS = new Tag() {
-        /** {@inheritDoc} */
+
         @Override
         public String toString() {
             return "progress";
@@ -533,7 +512,7 @@ public interface HtmlMarkup extends XmlMarkup {
 
     /** HTML5 tag for <code>q</code>. */
     Tag Q = new Tag() {
-        /** {@inheritDoc} */
+
         @Override
         public String toString() {
             return "q";
@@ -542,7 +521,7 @@ public interface HtmlMarkup extends XmlMarkup {
 
     /** HTML5 tag for <code>rb</code>. */
     Tag RB = new Tag() {
-        /** {@inheritDoc} */
+
         @Override
         public String toString() {
             return "rb";
@@ -551,7 +530,7 @@ public interface HtmlMarkup extends XmlMarkup {
 
     /** HTML5 tag for <code>rp</code>. */
     Tag RP = new Tag() {
-        /** {@inheritDoc} */
+
         @Override
         public String toString() {
             return "rp";
@@ -560,7 +539,7 @@ public interface HtmlMarkup extends XmlMarkup {
 
     /** HTML5 tag for <code>rt</code>. */
     Tag RT = new Tag() {
-        /** {@inheritDoc} */
+
         @Override
         public String toString() {
             return "rt";
@@ -569,7 +548,7 @@ public interface HtmlMarkup extends XmlMarkup {
 
     /** HTML5 tag for <code>rtc</code>. */
     Tag RTC = new Tag() {
-        /** {@inheritDoc} */
+
         @Override
         public String toString() {
             return "rtc";
@@ -578,7 +557,7 @@ public interface HtmlMarkup extends XmlMarkup {
 
     /** HTML5 tag for <code>ruby</code>. */
     Tag RUBY = new Tag() {
-        /** {@inheritDoc} */
+
         @Override
         public String toString() {
             return "ruby";
@@ -596,7 +575,7 @@ public interface HtmlMarkup extends XmlMarkup {
 
     /** HTML5 tag for <code>section</code>. */
     Tag SECTION = new Tag() {
-        /** {@inheritDoc} */
+
         @Override
         public String toString() {
             return "section";
@@ -611,7 +590,7 @@ public interface HtmlMarkup extends XmlMarkup {
 
     /** HTML5 tag for <code>source</code>. */
     Tag SOURCE = new Tag() {
-        /** {@inheritDoc} */
+
         @Override
         public String toString() {
             return "source";
@@ -632,7 +611,7 @@ public interface HtmlMarkup extends XmlMarkup {
 
     /** HTML5 tag for <code>summary</code>. */
     Tag SUMMARY = new Tag() {
-        /** {@inheritDoc} */
+
         @Override
         public String toString() {
             return "summary";
@@ -644,7 +623,7 @@ public interface HtmlMarkup extends XmlMarkup {
 
     /** HTML5 tag for <code>svg</code>. */
     Tag SVG = new Tag() {
-        /** {@inheritDoc} */
+
         @Override
         public String toString() {
             return "svg";
@@ -656,7 +635,7 @@ public interface HtmlMarkup extends XmlMarkup {
 
     /** HTML5 tag for <code>tbody</code>. */
     Tag TBODY = new Tag() {
-        /** {@inheritDoc} */
+
         @Override
         public String toString() {
             return "tbody";
@@ -668,7 +647,7 @@ public interface HtmlMarkup extends XmlMarkup {
 
     /** HTML5 tag for <code>template</code>. */
     Tag TEMPLATE = new Tag() {
-        /** {@inheritDoc} */
+
         @Override
         public String toString() {
             return "template";
@@ -680,7 +659,7 @@ public interface HtmlMarkup extends XmlMarkup {
 
     /** HTML5 tag for <code>tfoot</code>. */
     Tag TFOOT = new Tag() {
-        /** {@inheritDoc} */
+
         @Override
         public String toString() {
             return "tfoot";
@@ -692,7 +671,7 @@ public interface HtmlMarkup extends XmlMarkup {
 
     /** HTML5 tag for <code>thead</code>. */
     Tag THEAD = new Tag() {
-        /** {@inheritDoc} */
+
         @Override
         public String toString() {
             return "thead";
@@ -701,7 +680,7 @@ public interface HtmlMarkup extends XmlMarkup {
 
     /** HTML5 tag for <code>time</code>. */
     Tag TIME = new Tag() {
-        /** {@inheritDoc} */
+
         @Override
         public String toString() {
             return "time";
@@ -716,7 +695,7 @@ public interface HtmlMarkup extends XmlMarkup {
 
     /** HTML5 tag for <code>track</code>. */
     Tag TRACK = new Tag() {
-        /** {@inheritDoc} */
+
         @Override
         public String toString() {
             return "track";
@@ -734,7 +713,7 @@ public interface HtmlMarkup extends XmlMarkup {
 
     /** HTML5 tag for <code>video</code>. */
     Tag VIDEO = new Tag() {
-        /** {@inheritDoc} */
+
         @Override
         public String toString() {
             return "video";
@@ -743,7 +722,7 @@ public interface HtmlMarkup extends XmlMarkup {
 
     /** HTML5 tag for <code>wbr</code>. */
     Tag WBR = new Tag() {
-        /** {@inheritDoc} */
+
         @Override
         public String toString() {
             return "wbr";

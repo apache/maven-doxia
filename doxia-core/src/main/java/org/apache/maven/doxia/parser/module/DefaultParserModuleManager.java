@@ -57,7 +57,6 @@ public class DefaultParserModuleManager implements ParserModuleManager {
         return parserModulesValues;
     }
 
-    /** {@inheritDoc} */
     public ParserModule getParserModule(String id) throws ParserModuleNotFoundException {
         ParserModule parserModule = parserModules.get(id);
 

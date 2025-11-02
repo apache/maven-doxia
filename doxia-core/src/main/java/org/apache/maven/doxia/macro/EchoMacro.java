@@ -29,7 +29,6 @@ import org.apache.maven.doxia.sink.Sink;
 @Singleton
 @Named("echo")
 public class EchoMacro extends AbstractMacro {
-    /** {@inheritDoc} */
     public void execute(Sink sink, MacroRequest request) {
         sink.verbatim();
 

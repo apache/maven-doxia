@@ -27,7 +27,7 @@ import org.apache.maven.doxia.markup.TextMarkup;
  * @since 1.0
  */
 public abstract class AbstractTextParser extends AbstractParser implements TextMarkup {
-    /** {@inheritDoc} */
+
     @Override
     public final int getType() {
         return TXT_TYPE;

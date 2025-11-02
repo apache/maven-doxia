@@ -709,7 +709,6 @@ public class AptSink extends AbstractTextSink implements AptMarkup {
         }
     }
 
-    /** {@inheritDoc} */
     public void inline(SinkEventAttributes attributes) {
         if (!headerFlag) {
             List<String> tags = new ArrayList<>();
@@ -830,12 +829,10 @@ public class AptSink extends AbstractTextSink implements AptMarkup {
         }
     }
 
-    /** {@inheritDoc} */
     public void rawText(String text) {
         write(text);
     }
 
-    /** {@inheritDoc} */
     public void comment(String comment) {
         comment(comment, false);
     }

@@ -169,7 +169,6 @@ public class MarkdownParser extends AbstractTextParser implements TextMarkup {
                 .build();
     }
 
-    /** {@inheritDoc} */
     @Override
     public void parse(Reader source, Sink sink, String reference) throws ParseException {
         try {

@@ -85,7 +85,6 @@ public class XdocParser extends Xhtml1BaseParser implements XdocMarkup {
      */
     private boolean hasTitle;
 
-    /** {@inheritDoc} */
     public void parse(Reader source, Sink sink, String reference) throws ParseException {
         this.sourceContent = null;
 
@@ -107,7 +106,6 @@ public class XdocParser extends Xhtml1BaseParser implements XdocMarkup {
         }
     }
 
-    /** {@inheritDoc} */
     protected void handleStartTag(XmlPullParser parser, Sink sink)
             throws XmlPullParserException, MacroExecutionException {
         isEmptyElement = parser.isEmptyElementTag();
@@ -191,7 +189,6 @@ public class XdocParser extends Xhtml1BaseParser implements XdocMarkup {
         }
     }
 
-    /** {@inheritDoc} */
     protected void handleEndTag(XmlPullParser parser, Sink sink)
             throws XmlPullParserException, MacroExecutionException {
         if (parser.getName().equals(DOCUMENT_TAG.toString())) {

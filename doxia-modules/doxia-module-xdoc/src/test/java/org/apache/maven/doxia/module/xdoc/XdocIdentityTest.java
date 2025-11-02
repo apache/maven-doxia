@@ -30,26 +30,23 @@ import org.junit.jupiter.api.BeforeEach;
  * Check that piping a full model through an XdocParser and an XdocSink
  * leaves the model unchanged.
  */
-public class XdocIdentityTest extends AbstractIdentityTest {
-    /** {@inheritDoc} */
+class XdocIdentityTest extends AbstractIdentityTest {
+
     @BeforeEach
     protected void setUp() throws Exception {
         assertIdentity(true);
     }
 
-    /** {@inheritDoc} */
     protected Sink createSink(Writer writer) {
         XdocSink sink = new XdocSink(writer);
         sink.setInsertNewline(false);
         return sink;
     }
 
-    /** {@inheritDoc} */
     protected Parser createParser() {
         return new XdocParser();
     }
 
-    /** {@inheritDoc} */
     protected String getExpected() {
         // DOXIA-177
         String expected = super.getExpected();

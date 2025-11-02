@@ -69,7 +69,6 @@ public class FlexmarkDoxiaLinkResolver implements LinkResolver {
                 + ")(#[^#\\.]*){0,1}$");
     }
 
-    /** {@inheritDoc} */
     @Override
     public @NotNull ResolvedLink resolveLink(
             @NotNull Node node, @NotNull LinkResolverBasicContext context, @NotNull ResolvedLink link) {

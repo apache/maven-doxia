@@ -134,7 +134,6 @@ public class Xhtml5BaseParser extends AbstractXmlParser implements HtmlMarkup {
 
     private LinkedList<String> capturedSinkEventNames;
 
-    /** {@inheritDoc} */
     @Override
     public void parse(Reader source, Sink sink, String reference) throws ParseException {
         init();
@@ -571,7 +570,6 @@ public class Xhtml5BaseParser extends AbstractXmlParser implements HtmlMarkup {
         }
     }
 
-    /** {@inheritDoc} */
     @Override
     protected void handleText(XmlPullParser parser, Sink sink) throws XmlPullParserException {
         String text = getText(parser);
@@ -587,7 +585,6 @@ public class Xhtml5BaseParser extends AbstractXmlParser implements HtmlMarkup {
         }
     }
 
-    /** {@inheritDoc} */
     @Override
     protected void handleComment(XmlPullParser parser, Sink sink) throws XmlPullParserException {
         String text = getText(parser);
@@ -601,7 +598,6 @@ public class Xhtml5BaseParser extends AbstractXmlParser implements HtmlMarkup {
         }
     }
 
-    /** {@inheritDoc} */
     @Override
     protected void handleCdsect(XmlPullParser parser, Sink sink) throws XmlPullParserException {
         String text = getText(parser);
@@ -790,7 +786,6 @@ public class Xhtml5BaseParser extends AbstractXmlParser implements HtmlMarkup {
         return id;
     }
 
-    /** {@inheritDoc} */
     @Override
     protected void init() {
         super.init();
