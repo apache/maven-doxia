@@ -28,15 +28,16 @@ import static org.junit.jupiter.api.Assertions.assertNotNull;
 class IndexingSinkTest {
 
     @Test
-    void testGetUniqueId() {
-        IndexingSink sink = new IndexingSink(new IndexEntry("root"));
-        assertEquals("root_1", sink.getUniqueId("root"));
-        assertEquals("root_2", sink.getUniqueId("root"));
-        assertEquals("newid", sink.getUniqueId("newid"));
+    void getUniqueId() {
+        try (IndexingSink sink = new IndexingSink(new IndexEntry("root"))) {
+            assertEquals("root_1", sink.getUniqueId("root"));
+            assertEquals("root_2", sink.getUniqueId("root"));
+            assertEquals("newid", sink.getUniqueId("newid"));
+        }
     }
 
     @Test
-    void testIndexingSinkWithComplexSink() {
+    void indexingSinkWithComplexSink() {
         SinkEventTestingSink resultSink = new SinkEventTestingSink();
         IndexingSink sink = new IndexingSink(resultSink);
         sink.section1();

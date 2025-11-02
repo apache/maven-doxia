@@ -38,12 +38,10 @@ public class XdocValidatorTest extends AbstractXmlValidatorTest {
     /** The xsd to use */
     private static final File XDOC_XSD = new File(getBasedir(), "/src/main/resources/xdoc-2.0.xsd");
 
-    /** {@inheritDoc} */
     protected String[] getIncludes() {
         return new String[] {"**/*.xml", "**/xdoc/*"};
     }
 
-    /** {@inheritDoc} */
     protected String addNamespaces(String content) {
         Pattern pattern = Pattern.compile(".*<([A-Za-z][A-Za-z0-9:_.-]*)([^>]*)>.*");
         Matcher matcher = pattern.matcher(content);
@@ -64,7 +62,7 @@ public class XdocValidatorTest extends AbstractXmlValidatorTest {
     }
 
     @Override
-    public void testValidateFiles() {
-        // TODO: super.testValidateFiles() only validates files from doxia-test-docs, what's the point?
+    public void validateFiles() {
+        // TODO: super.validateFiles() only validates files from doxia-test-docs, what's the point?
     }
 }

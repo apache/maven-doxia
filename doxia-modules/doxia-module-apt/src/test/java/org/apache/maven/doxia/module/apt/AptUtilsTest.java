@@ -28,12 +28,12 @@ import static org.junit.jupiter.api.Assertions.assertTrue;
  *
  * @author ltheussl
  */
-public class AptUtilsTest {
+class AptUtilsTest {
     /**
      * Test of isExternalLink method, of class AptUtils.
      */
     @Test
-    public void testIsExternalLink() {
+    void isExternalLink() {
         String link = "http://maven.apache.org/";
         assertTrue(AptUtils.isExternalLink(link), "Should be an external link: " + link);
 
@@ -83,7 +83,7 @@ public class AptUtilsTest {
      * Test of isInternalLink method, of class AptUtils.
      */
     @Test
-    public void testIsInternalLink() {
+    void isInternalLink() {
         String link = "index.html";
         assertTrue(AptUtils.isInternalLink(link), "Should be an internal link: " + link);
         link = "file:/index.html";
@@ -96,7 +96,7 @@ public class AptUtilsTest {
      * Test of isLocalLink method, of class AptUtils.
      */
     @Test
-    public void testIsLocalLink() {
+    void isLocalLink() {
         String link = "/index.html";
         assertTrue(AptUtils.isLocalLink(link), "Should be a local link: " + link);
 

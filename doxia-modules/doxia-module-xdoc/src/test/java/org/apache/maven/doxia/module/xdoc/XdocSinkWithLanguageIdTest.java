@@ -27,12 +27,11 @@ import org.apache.maven.doxia.sink.Sink;
  * @author <a href="mailto:vincent.siveton@gmail.com">Vincent Siveton</a>
  */
 public class XdocSinkWithLanguageIdTest extends XdocSinkTest {
-    /** {@inheritDoc} */
+
     protected Sink createSink(Writer writer) {
         return new XdocSink(writer, "UTF-8", Locale.US.getLanguage());
     }
 
-    /** {@inheritDoc} */
     protected String getHeadBlock() {
         return "<?xml version=\"1.0\" encoding=\"UTF-8\"?>"
                 + "<document xmlns=\"http://maven.apache.org/XDOC/2.0\" "

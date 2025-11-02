@@ -84,7 +84,6 @@ public class FmlParser extends AbstractXmlParser implements FmlMarkup {
     /** The macro parameters. */
     private Map<String, Object> macroParameters = new LinkedHashMap<>();
 
-    /** {@inheritDoc} */
     public void parse(Reader source, Sink sink, String reference) throws ParseException {
         this.faqs = null;
         this.sourceContent = null;
@@ -115,7 +114,6 @@ public class FmlParser extends AbstractXmlParser implements FmlMarkup {
         }
     }
 
-    /** {@inheritDoc} */
     protected void handleStartTag(XmlPullParser parser, Sink sink)
             throws XmlPullParserException, MacroExecutionException {
         if (parser.getName().equals(FAQS_TAG.toString())) {
@@ -204,7 +202,6 @@ public class FmlParser extends AbstractXmlParser implements FmlMarkup {
         }
     }
 
-    /** {@inheritDoc} */
     protected void handleEndTag(XmlPullParser parser, Sink sink)
             throws XmlPullParserException, MacroExecutionException {
         if (parser.getName().equals(FAQS_TAG.toString())) {
@@ -277,7 +274,6 @@ public class FmlParser extends AbstractXmlParser implements FmlMarkup {
         }
     }
 
-    /** {@inheritDoc} */
     protected void handleText(XmlPullParser parser, Sink sink) throws XmlPullParserException {
         if (buffer != null) {
             buffer.append(parser.getText());
@@ -285,7 +281,6 @@ public class FmlParser extends AbstractXmlParser implements FmlMarkup {
         // only significant text content in fml files is in <question>, <answer> or <title>
     }
 
-    /** {@inheritDoc} */
     protected void handleCdsect(XmlPullParser parser, Sink sink) throws XmlPullParserException {
         String cdSection = parser.getText();
 
@@ -304,7 +299,6 @@ public class FmlParser extends AbstractXmlParser implements FmlMarkup {
         }
     }
 
-    /** {@inheritDoc} */
     protected void handleComment(XmlPullParser parser, Sink sink) throws XmlPullParserException {
         String comment = parser.getText();
 
@@ -324,7 +318,6 @@ public class FmlParser extends AbstractXmlParser implements FmlMarkup {
         }
     }
 
-    /** {@inheritDoc} */
     protected void handleEntity(XmlPullParser parser, Sink sink) throws XmlPullParserException {
         if (buffer != null) {
             if (parser.getText() != null) {

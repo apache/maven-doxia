@@ -47,7 +47,7 @@ import static org.junit.jupiter.api.Assertions.assertTrue;
 /**
  * @author <a href="mailto:evenisse@codehaus.org">Emmanuel Venisse</a>
  */
-public class FmlParserTest extends AbstractParserTest {
+class FmlParserTest extends AbstractParserTest {
     @Inject
     private FmlParser parser;
 
@@ -72,19 +72,17 @@ public class FmlParserTest extends AbstractParserTest {
         }
     }
 
-    /** {@inheritDoc} */
     protected AbstractParser createParser() {
         return parser;
     }
 
-    /** {@inheritDoc} */
     protected String outputExtension() {
         return "fml";
     }
 
     /** @throws Exception */
     @Test
-    public void testFaqEventsList() throws Exception {
+    void faqEventsList() throws Exception {
         SinkEventTestingSink sink = new SinkEventTestingSink();
 
         try (Reader reader = getTestReader("simpleFaq")) {
@@ -149,7 +147,7 @@ public class FmlParserTest extends AbstractParserTest {
 
     /** @throws Exception */
     @Test
-    public void testEntities() throws Exception {
+    void entities() throws Exception {
         final String text = "<!DOCTYPE test [<!ENTITY Alpha \"&#913;\">]>"
                 + "<faqs title=\"&amp;&Alpha;\"><part id=\"General\"><title>&lt;&Alpha;</title>"
                 + "<faq id=\"id\"><question>&gt;&Alpha;</question>"
@@ -253,7 +251,7 @@ public class FmlParserTest extends AbstractParserTest {
      * @since 1.1.1
      */
     @Test
-    public void testFaqMacro() throws Exception {
+    void faqMacro() throws Exception {
         try (Writer output = getTestWriter("macro");
                 Reader reader = getTestReader("macro")) {
             Sink sink = new Xhtml5BaseSink(output);

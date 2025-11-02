@@ -24,12 +24,11 @@ import java.util.Locale;
 import org.apache.maven.doxia.sink.Sink;
 
 public class Xhtml5SinkWithLanguageIdTest extends Xhtml5SinkTest {
-    /** {@inheritDoc} */
+
     protected Sink createSink(Writer writer) {
         return new Xhtml5Sink(writer, "UTF-8", Locale.ENGLISH.getLanguage());
     }
 
-    /** {@inheritDoc} */
     protected String getHeadBlock() {
         return "<!DOCTYPE html>"
                 + "<html xmlns=\"http://www.w3.org/1999/xhtml\" lang=\"en\" xml:lang=\"en\">"

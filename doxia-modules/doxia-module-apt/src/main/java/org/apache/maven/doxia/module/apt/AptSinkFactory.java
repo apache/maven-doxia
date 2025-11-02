@@ -35,7 +35,7 @@ import org.apache.maven.doxia.sink.impl.AbstractTextSinkFactory;
 @Singleton
 @Named("apt")
 public class AptSinkFactory extends AbstractTextSinkFactory {
-    /** {@inheritDoc} */
+
     protected Sink createSink(Writer writer, String encoding) {
         // encoding can safely be ignored since it isn't written into the generated APT source
         return new AptSink(writer);

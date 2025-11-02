@@ -45,7 +45,7 @@ public interface FmlMarkup extends HtmlMarkup {
 
     /** Fml tag for <code>faqs</code> */
     Tag FAQS_TAG = new Tag() {
-        /** {@inheritDoc} */
+
         public String toString() {
             return "faqs";
         }
@@ -53,7 +53,7 @@ public interface FmlMarkup extends HtmlMarkup {
 
     /** Fml tag for <code>part</code> */
     Tag PART_TAG = new Tag() {
-        /** {@inheritDoc} */
+
         public String toString() {
             return "part";
         }
@@ -61,7 +61,7 @@ public interface FmlMarkup extends HtmlMarkup {
 
     /** Fml tag for <code>faq</code> */
     Tag FAQ_TAG = new Tag() {
-        /** {@inheritDoc} */
+
         public String toString() {
             return "faq";
         }
@@ -69,7 +69,7 @@ public interface FmlMarkup extends HtmlMarkup {
 
     /** Fml tag for <code>question</code> */
     Tag QUESTION_TAG = new Tag() {
-        /** {@inheritDoc} */
+
         public String toString() {
             return "question";
         }
@@ -77,7 +77,7 @@ public interface FmlMarkup extends HtmlMarkup {
 
     /** Fml tag for <code>answer</code> */
     Tag ANSWER_TAG = new Tag() {
-        /** {@inheritDoc} */
+
         public String toString() {
             return "answer";
         }
@@ -85,7 +85,7 @@ public interface FmlMarkup extends HtmlMarkup {
 
     /** Fml tag for <code>source</code> */
     Tag SOURCE_TAG = new Tag() {
-        /** {@inheritDoc} */
+
         public String toString() {
             return "source";
         }
@@ -96,7 +96,7 @@ public interface FmlMarkup extends HtmlMarkup {
      * @since 1.1.1
      */
     Tag MACRO_TAG = new Tag() {
-        /** {@inheritDoc} */
+
         public String toString() {
             return "macro";
         }

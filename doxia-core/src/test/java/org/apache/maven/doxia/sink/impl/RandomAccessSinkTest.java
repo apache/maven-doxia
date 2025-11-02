@@ -30,7 +30,7 @@ import org.junit.jupiter.api.Test;
 
 import static org.junit.jupiter.api.Assertions.assertEquals;
 
-public class RandomAccessSinkTest {
+class RandomAccessSinkTest {
     private SinkFactory factory = new AbstractXmlSinkFactory() {
         protected Sink createSink(Writer writer, String encoding, String languageId) {
             return new TextSink(writer);
@@ -48,7 +48,7 @@ public class RandomAccessSinkTest {
     }
 
     @Test
-    public void testSimple() throws Exception {
+    void simple() throws Exception {
         String encoding = "UTF-8";
         String text = "Hello World";
         ByteArrayOutputStream outFlatSink = new ByteArrayOutputStream();
@@ -58,16 +58,16 @@ public class RandomAccessSinkTest {
         flatSink.close();
 
         ByteArrayOutputStream outRandomAccessSink = new ByteArrayOutputStream();
-        RandomAccessSink randomAccessSink = new RandomAccessSink(factory, outRandomAccessSink, encoding);
-        buildSimple(randomAccessSink, text);
-        randomAccessSink.flush();
-        randomAccessSink.close();
+        try (RandomAccessSink randomAccessSink = new RandomAccessSink(factory, outRandomAccessSink, encoding)) {
+            buildSimple(randomAccessSink, text);
+            randomAccessSink.flush();
+        }
 
         assertEquals(outFlatSink.toString(encoding), outRandomAccessSink.toString(encoding));
     }
 
     @Test
-    public void testComplex() throws Exception {
+    void complex() throws Exception {
         String encoding = "UTF-8";
         String summaryText = "Summary text";
         String detailText = "Detail text";
@@ -80,17 +80,17 @@ public class RandomAccessSinkTest {
         flatSink.close();
 
         ByteArrayOutputStream outRandomAccessSink = new ByteArrayOutputStream();
-        RandomAccessSink randomAccessSink = new RandomAccessSink(factory, outRandomAccessSink, encoding);
-        Sink summarySink = randomAccessSink.addSinkHook();
-        randomAccessSink.horizontalRule();
-        Sink detailSink = randomAccessSink.addSinkHook();
+        try (RandomAccessSink randomAccessSink = new RandomAccessSink(factory, outRandomAccessSink, encoding)) {
+            Sink summarySink = randomAccessSink.addSinkHook();
+            randomAccessSink.horizontalRule();
+            Sink detailSink = randomAccessSink.addSinkHook();
 
-        // here's an example of the strength of randomAccessSink. Summary and detail are built in reverse order
-        buildSimple(detailSink, detailText);
-        buildSimple(summarySink, summaryText);
+            // here's an example of the strength of randomAccessSink. Summary and detail are built in reverse order
+            buildSimple(detailSink, detailText);
+            buildSimple(summarySink, summaryText);
 
-        randomAccessSink.flush();
-        randomAccessSink.close();
+            randomAccessSink.flush();
+        }
 
         assertEquals(outFlatSink.toString(encoding), outRandomAccessSink.toString(encoding));
     }

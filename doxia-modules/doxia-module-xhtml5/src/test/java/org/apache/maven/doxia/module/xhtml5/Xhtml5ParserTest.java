@@ -35,11 +35,10 @@ import org.junit.jupiter.api.Test;
 import static org.junit.jupiter.api.Assertions.assertEquals;
 import static org.junit.jupiter.api.Assertions.assertFalse;
 
-public class Xhtml5ParserTest extends AbstractParserTest {
+class Xhtml5ParserTest extends AbstractParserTest {
     @Inject
     private Xhtml5Parser parser;
 
-    /** {@inheritDoc} */
     @BeforeEach
     protected void setUp() throws Exception {
         // AbstractXmlParser.CachedFileEntityResolver downloads DTD/XSD files in ${java.io.tmpdir}
@@ -62,19 +61,17 @@ public class Xhtml5ParserTest extends AbstractParserTest {
         }
     }
 
-    /** {@inheritDoc} */
     protected AbstractParser createParser() {
         return parser;
     }
 
-    /** {@inheritDoc} */
     protected String outputExtension() {
         return "xhtml";
     }
 
     /** @throws Exception  */
     @Test
-    public void testDocumentBodyEventsList() throws Exception {
+    void documentBodyEventsList() throws Exception {
         String text = "<html><body></body></html>";
 
         SinkEventTestingSink sink = new SinkEventTestingSink();
@@ -90,7 +87,7 @@ public class Xhtml5ParserTest extends AbstractParserTest {
 
     /** @throws Exception  */
     @Test
-    public void testHeadEventsList() throws Exception {
+    void headEventsList() throws Exception {
         String text = "<head><title>Title</title><meta name=\"author\" content=\"Author\" />"
                 + "<meta name=\"date\" content=\"Date\" /><meta name=\"security\" content=\"low\"/></head>";
 
@@ -117,7 +114,7 @@ public class Xhtml5ParserTest extends AbstractParserTest {
 
     /** @throws Exception  */
     @Test
-    public void testPreEventsList() throws Exception {
+    void preEventsList() throws Exception {
         String text = "<pre></pre>";
 
         SinkEventTestingSink sink = new SinkEventTestingSink();
@@ -137,7 +134,7 @@ public class Xhtml5ParserTest extends AbstractParserTest {
      * @throws java.lang.Exception if any.
      */
     @Test
-    public void testUnknown() throws Exception {
+    void unknown() throws Exception {
         String text = "<applet><param name=\"name\" value=\"value\"/><unknown/></applet>";
 
         SinkEventTestingSink sink = new SinkEventTestingSink();
@@ -154,7 +151,7 @@ public class Xhtml5ParserTest extends AbstractParserTest {
 
     /** @throws Exception  */
     @Test
-    public void testTocMacro() throws Exception {
+    void tocMacro() throws Exception {
         String text = "<html><body>" + "<!-- MACRO{toc|fromDepth=1|toDepth=2} -->"
                 + "<h1>heading 1</h1><h2>heading 2</h2><h3>heading 3</h3>"
                 + "</body></html>";

@@ -23,9 +23,9 @@ import org.junit.jupiter.api.Test;
 import static org.junit.jupiter.api.Assertions.assertFalse;
 import static org.junit.jupiter.api.Assertions.assertTrue;
 
-public class SnippetReaderTest {
+class SnippetReaderTest {
     @Test
-    public void testIsDemarcator() {
+    void isDemarcator() {
         String snippetId = "first";
         String what = "START";
         assertTrue(SnippetReader.isDemarcator(snippetId, what, "SNIPPET START first"));

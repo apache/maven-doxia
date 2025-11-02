@@ -29,7 +29,7 @@ import static org.junit.jupiter.api.Assertions.assertThrows;
 class BufferingSinkProxyFactoryTest {
 
     @Test
-    void testCastAsBufferingSink() {
+    void castAsBufferingSink() {
         SinkEventTestingSink testingSink = new SinkEventTestingSink();
         assertThrows(IllegalArgumentException.class, () -> BufferingSinkProxyFactory.castAsBufferingSink(testingSink));
         BufferingSinkProxyFactory factory = new BufferingSinkProxyFactory();
@@ -38,7 +38,7 @@ class BufferingSinkProxyFactoryTest {
     }
 
     @Test
-    void testBufferingSink() {
+    void bufferingSink() {
         SinkEventTestingSink testingSink = new SinkEventTestingSink();
         BufferingSinkProxyFactory factory = new BufferingSinkProxyFactory();
         Sink bufferingSink = factory.createWrapper(testingSink);

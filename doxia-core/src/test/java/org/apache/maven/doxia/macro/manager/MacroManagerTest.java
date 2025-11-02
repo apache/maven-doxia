@@ -29,7 +29,7 @@ import static org.junit.jupiter.api.Assertions.assertThrows;
 
 /** @author Jason van Zyl */
 @PlexusTest
-public class MacroManagerTest {
+class MacroManagerTest {
 
     @Inject
     private MacroManager mm;
@@ -40,7 +40,7 @@ public class MacroManagerTest {
      * @throws java.lang.Exception if any.
      */
     @Test
-    public void testMacroManager() throws Exception {
+    void macroManager() throws Exception {
         assertNotNull(mm);
 
         Macro macro = mm.getMacro("snippet");

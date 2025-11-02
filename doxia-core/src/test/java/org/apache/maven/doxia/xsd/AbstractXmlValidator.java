@@ -95,7 +95,7 @@ public abstract class AbstractXmlValidator {
      * @see #getTestDocuments()
      */
     @Test
-    public void testValidateFiles() throws Exception {
+    public void validateFiles() throws Exception {
         Map<String, String> testDocuments = getTestDocuments();
         assertFalse(testDocuments.isEmpty(), "No test documents found");
         for (Map.Entry<String, String> entry : testDocuments.entrySet()) {
@@ -254,7 +254,6 @@ public abstract class AbstractXmlValidator {
             return message;
         }
 
-        /** {@inheritDoc} */
         @Override
         public String toString() {
             StringBuilder sb = new StringBuilder(512);
@@ -269,7 +268,6 @@ public abstract class AbstractXmlValidator {
             return sb.toString();
         }
 
-        /** {@inheritDoc} */
         @Override
         public int hashCode() {
             final int prime = 31;
@@ -283,7 +281,6 @@ public abstract class AbstractXmlValidator {
             return result;
         }
 
-        /** {@inheritDoc} */
         @Override
         public boolean equals(Object obj) {
             if (this == obj) {
@@ -341,19 +338,16 @@ public abstract class AbstractXmlValidator {
             messages = new ArrayList<>(8);
         }
 
-        /** {@inheritDoc} */
         @Override
         public void warning(SAXParseException e) throws SAXException {
             addMessage("Warning", e);
         }
 
-        /** {@inheritDoc} */
         @Override
         public void error(SAXParseException e) throws SAXException {
             addMessage("Error", e);
         }
 
-        /** {@inheritDoc} */
         @Override
         public void fatalError(SAXParseException e) throws SAXException {
             addMessage("Fatal error", e);

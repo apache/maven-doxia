@@ -106,7 +106,6 @@ public abstract class AbstractParser implements Parser, MacroExecutor {
         return UNKNOWN_TYPE;
     }
 
-    /** {@inheritDoc} */
     public void setEmitComments(boolean emitComments) {
         this.emitComments = emitComments;
     }
@@ -198,7 +197,6 @@ public abstract class AbstractParser implements Parser, MacroExecutor {
         parse(new StringReader(string), sink, reference);
     }
 
-    /** {@inheritDoc} */
     @Override
     public void parse(Reader source, Sink sink) throws ParseException {
         parse(source, sink, null);

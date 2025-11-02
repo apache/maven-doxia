@@ -32,12 +32,11 @@ import org.apache.maven.doxia.sink.impl.AbstractXmlSinkFactory;
 @Singleton
 @Named("xhtml")
 public class Xhtml5SinkFactory extends AbstractXmlSinkFactory {
-    /** {@inheritDoc} */
+
     protected Sink createSink(Writer writer, String encoding) {
         return new Xhtml5Sink(writer, encoding);
     }
 
-    /** {@inheritDoc} */
     protected Sink createSink(Writer writer, String encoding, String languageId) {
         return new Xhtml5Sink(writer, encoding, languageId);
     }

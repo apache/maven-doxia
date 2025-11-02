@@ -29,7 +29,7 @@ import static org.junit.jupiter.api.Assertions.assertEquals;
  * Test MarkdownParserModule.
  */
 @PlexusTest
-public class MarkdownParserModuleTest {
+class MarkdownParserModuleTest {
     /**
      * The {@link MarkdownParser} used for the tests.
      */
@@ -37,7 +37,7 @@ public class MarkdownParserModuleTest {
     protected MarkdownParserModule parserModule;
 
     @Test
-    public void testExtensions() {
+    void extensions() {
         assertEquals(2, parserModule.getExtensions().length);
     }
 }

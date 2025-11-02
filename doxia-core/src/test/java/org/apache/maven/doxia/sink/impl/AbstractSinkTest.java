@@ -100,14 +100,11 @@ public abstract class AbstractSinkTest extends AbstractModuleTest {
      * @see #getXmlTestWriter(String)
      */
     @Test
-    public final void testTestDocument() throws IOException {
+    public final void document() throws Exception {
         Writer writer = (isXmlSink() ? getXmlTestWriter("testDocument") : getTestWriter("testDocument"));
-        Sink testSink = createSink(writer);
 
-        try {
+        try (Sink testSink = createSink(writer)) {
             SinkTestDocument.generate(testSink);
-        } finally {
-            testSink.close();
         }
     }
 
@@ -117,7 +114,7 @@ public abstract class AbstractSinkTest extends AbstractModuleTest {
      * {@link #getTitleBlock getTitleBlock}(title).
      */
     @Test
-    public void testTitle() {
+    public void title() {
         String title = "Grodek";
         sink.title();
         sink.text(title);
@@ -137,7 +134,7 @@ public abstract class AbstractSinkTest extends AbstractModuleTest {
      * {@link #getAuthorBlock getAuthorBlock}(author).
      */
     @Test
-    public void testAuthor() {
+    public void author() {
         String author = "Georg_Trakl";
         sink.author();
         sink.text(author);
@@ -157,7 +154,7 @@ public abstract class AbstractSinkTest extends AbstractModuleTest {
      * {@link #getDateBlock getDateBlock}(date).
      */
     @Test
-    public void testDate() {
+    public void date() {
         String date = "1914";
         sink.date();
         sink.text(date);
@@ -177,7 +174,7 @@ public abstract class AbstractSinkTest extends AbstractModuleTest {
      * {@link #getHeadBlock getHeadBlock()}.
      */
     @Test
-    public void testHead() {
+    public void head() {
         sink.head();
         sink.head_();
         sink.flush();
@@ -195,7 +192,7 @@ public abstract class AbstractSinkTest extends AbstractModuleTest {
      * {@link #getBodyBlock getBodyBlock()}.
      */
     @Test
-    public void testBody() {
+    public void body() {
         sink.body();
         sink.body_();
         sink.flush();
@@ -213,7 +210,7 @@ public abstract class AbstractSinkTest extends AbstractModuleTest {
      * {@link #getArticleBlock getArticleBlock()}.
      */
     @Test
-    public void testArticle() {
+    public void article() {
         sink.article();
         sink.article_();
         sink.flush();
@@ -231,7 +228,7 @@ public abstract class AbstractSinkTest extends AbstractModuleTest {
      * {@link #getNavigationBlock getNavigationBlock()}.
      */
     @Test
-    public void testNavigation() {
+    public void navigation() {
         sink.navigation();
         sink.navigation_();
         sink.flush();
@@ -249,7 +246,7 @@ public abstract class AbstractSinkTest extends AbstractModuleTest {
      * {@link #getSidebarBlock getSidebarBlock()}.
      */
     @Test
-    public void testSidebar() {
+    public void sidebar() {
         sink.sidebar();
         sink.sidebar_();
         sink.flush();
@@ -268,7 +265,7 @@ public abstract class AbstractSinkTest extends AbstractModuleTest {
      * {@link #getTextBlock getTextBlock}(title) as the sectionTitle methods should be no-ops.
      */
     @Test
-    public void testSectionTitle() {
+    public void sectionTitle() {
         String title = "Title";
         sink.sectionTitle();
         sink.text(title);
@@ -289,7 +286,7 @@ public abstract class AbstractSinkTest extends AbstractModuleTest {
      * {@link #getSection1Block getSection1Block}(title).
      */
     @Test
-    public void testSection1() {
+    public void section1() {
         String title = "Title1";
         sink.section1();
         sink.header();
@@ -314,7 +311,7 @@ public abstract class AbstractSinkTest extends AbstractModuleTest {
      * {@link #getSection2Block getSection2Block}(title).
      */
     @Test
-    public void testSection2() {
+    public void section2() {
         String title = "Title2";
         sink.section2();
         sink.header();
@@ -339,7 +336,7 @@ public abstract class AbstractSinkTest extends AbstractModuleTest {
      * {@link #getSection3Block getSection3Block}(title).
      */
     @Test
-    public void testSection3() {
+    public void section3() {
         String title = "Title3";
         sink.section3();
         sink.header();
@@ -365,7 +362,7 @@ public abstract class AbstractSinkTest extends AbstractModuleTest {
      *
      */
     @Test
-    public void testSection4() {
+    public void section4() {
         String title = "Title4";
         sink.section4();
         sink.header();
@@ -390,7 +387,7 @@ public abstract class AbstractSinkTest extends AbstractModuleTest {
      * {@link #getSection5Block getSection5Block}(title).
      */
     @Test
-    public void testSection5() {
+    public void section5() {
         String title = "Title5";
         sink.section5();
         sink.header();
@@ -415,7 +412,7 @@ public abstract class AbstractSinkTest extends AbstractModuleTest {
      * {@link #getSection6Block}.
      */
     @Test
-    public void testSection6() {
+    public void section6() {
         String title = "Title6";
         sink.section6();
         sink.header();
@@ -439,7 +436,7 @@ public abstract class AbstractSinkTest extends AbstractModuleTest {
      * {@link #getHeaderBlock getHeaderBlock()}.
      */
     @Test
-    public void testHeader() {
+    public void header() {
         sink.header();
         sink.header_();
         sink.flush();
@@ -457,7 +454,7 @@ public abstract class AbstractSinkTest extends AbstractModuleTest {
      * {@link #getContentBlock getContentBlock()}.
      */
     @Test
-    public void testContent() {
+    public void content() {
         sink.content();
         sink.content();
         sink.content_();
@@ -477,7 +474,7 @@ public abstract class AbstractSinkTest extends AbstractModuleTest {
      * {@link #getHeaderBlock getHeaderBlock()}.
      */
     @Test
-    public void testFooter() {
+    public void footer() {
         sink.footer();
         sink.footer_();
         sink.flush();
@@ -496,7 +493,7 @@ public abstract class AbstractSinkTest extends AbstractModuleTest {
      *
      */
     @Test
-    public void testList() {
+    public void list() {
         String item = "list_item";
         sink.list();
         sink.listItem();
@@ -520,7 +517,7 @@ public abstract class AbstractSinkTest extends AbstractModuleTest {
      * {@link #getNumberedListBlock getNumberedListBlock}(item).
      */
     @Test
-    public void testNumberedList() {
+    public void numberedList() {
         String item = "numbered_list_item";
         sink.numberedList(Sink.NUMBERING_LOWER_ROMAN);
         sink.numberedListItem();
@@ -545,7 +542,7 @@ public abstract class AbstractSinkTest extends AbstractModuleTest {
      * (definum, definition).
      */
     @Test
-    public void testDefinitionList() {
+    public void definitionList() {
         String definum = "definum";
         String definition = "definition";
         sink.definitionList();
@@ -574,7 +571,7 @@ public abstract class AbstractSinkTest extends AbstractModuleTest {
      * {@link #getFigureBlock getFigureBlock}(source, caption).
      */
     @Test
-    public void testFigure() {
+    public void figure() {
         String source = "figure.jpg";
         String caption = "Figure_caption";
         sink.figure();
@@ -597,7 +594,7 @@ public abstract class AbstractSinkTest extends AbstractModuleTest {
     }
 
     @Test
-    public void testFigureWithoutCaption() {
+    public void figureWithoutCaption() {
         String source = "figure.jpg";
         sink.figure();
         sink.figureGraphics(source);
@@ -616,7 +613,7 @@ public abstract class AbstractSinkTest extends AbstractModuleTest {
     }
 
     @Test
-    public void testFigureFromUrl() {
+    public void figureFromUrl() {
         String source = "http://www.gravatar.com/avatar/cdbe99fe3d6af6a18dd8c35b0687a50b?d=mm&s=60";
         sink.figure();
         sink.figureGraphics(source);
@@ -645,7 +642,7 @@ public abstract class AbstractSinkTest extends AbstractModuleTest {
      * {@link #getTableBlock getTableBlock}(cell, caption).
      */
     @Test
-    public void testTable() {
+    public void table() {
         String cell = "cell";
         String caption = "Table_caption";
         int[] justify = {Sink.JUSTIFY_CENTER, Sink.JUSTIFY_DEFAULT};
@@ -686,7 +683,7 @@ public abstract class AbstractSinkTest extends AbstractModuleTest {
      * {@link #getTableWithHeaderBlock(String...)}.
      */
     @Test
-    public void testTableWithHeader() {
+    public void tableWithHeader() {
         int[] justify = {Sink.JUSTIFY_LEFT, Sink.JUSTIFY_RIGHT, Sink.JUSTIFY_CENTER};
         sink.table();
         sink.tableRows(justify, false);
@@ -738,7 +735,7 @@ public abstract class AbstractSinkTest extends AbstractModuleTest {
      * the same result as {@link #getParagraphBlock getParagraphBlock}(text).
      */
     @Test
-    public void testParagraph() {
+    public void paragraph() {
         String text = "Text";
         sink.paragraph();
         sink.text(text);
@@ -758,7 +755,7 @@ public abstract class AbstractSinkTest extends AbstractModuleTest {
      * the same result as {@link #getDataBlock getDataBlock}(text).
      */
     @Test
-    public void testData() {
+    public void data() {
         String value = "Value";
         String text = "Text";
         sink.data(value);
@@ -779,7 +776,7 @@ public abstract class AbstractSinkTest extends AbstractModuleTest {
      * the same result as {@link #getTimeBlock getTimeBlock}(text).
      */
     @Test
-    public void testTime() {
+    public void time() {
         String datetime = "DateTime";
         String text = "Text";
         sink.time(datetime);
@@ -800,7 +797,7 @@ public abstract class AbstractSinkTest extends AbstractModuleTest {
      * the same result as {@link #getAddressBlock getAddressBlock}(text).
      */
     @Test
-    public void testAddress() {
+    public void address() {
         String text = "Text";
         sink.address();
         sink.text(text);
@@ -820,7 +817,7 @@ public abstract class AbstractSinkTest extends AbstractModuleTest {
      * the same result as {@link #getBlockquoteBlock}(text).
      */
     @Test
-    public void testBlockquote() {
+    public void blockquote() {
         String text = "Text";
         sink.blockquote();
         sink.text(text);
@@ -840,7 +837,7 @@ public abstract class AbstractSinkTest extends AbstractModuleTest {
      * the same result as {@link #getDivisionBlock getDivisionBlock}(text).
      */
     @Test
-    public void testDivider() {
+    public void divider() {
         String text = "Text";
         sink.division();
         sink.text(text);
@@ -860,7 +857,7 @@ public abstract class AbstractSinkTest extends AbstractModuleTest {
      * same result as {@link #getVerbatimBlock getVerbatimeBlock}(text).
      */
     @Test
-    public void testVerbatim() {
+    public void verbatim() {
         String text = "Text";
         sink.verbatim(null);
         sink.text(text);
@@ -880,7 +877,7 @@ public abstract class AbstractSinkTest extends AbstractModuleTest {
      * same result as {@link #getVerbatimSourceBlock getVerbatimSourceBlock}(text).
      */
     @Test
-    public void testVerbatimSource() {
+    public void verbatimSource() {
         String text = "Text";
         sink.verbatim(SinkEventAttributeSet.SOURCE);
         sink.text(text);
@@ -900,7 +897,7 @@ public abstract class AbstractSinkTest extends AbstractModuleTest {
      * {@link #getHorizontalRuleBlock getHorizontalRuleBlock()}.
      */
     @Test
-    public void testHorizontalRule() {
+    public void horizontalRule() {
         sink.horizontalRule();
         sink.flush();
         sink.close();
@@ -917,7 +914,7 @@ public abstract class AbstractSinkTest extends AbstractModuleTest {
      * {@link #getPageBreakBlock getPageBreakBlock()}.
      */
     @Test
-    public void testPageBreak() {
+    public void pageBreak() {
         sink.pageBreak();
         sink.flush();
         sink.close();
@@ -934,7 +931,7 @@ public abstract class AbstractSinkTest extends AbstractModuleTest {
      * result as {@link #getAnchorBlock getAnchorBlock}(anchor).
      */
     @Test
-    public void testAnchor() {
+    public void anchor() {
         String anchor = "Anchor";
         sink.anchor(anchor);
         sink.text(anchor);
@@ -954,7 +951,7 @@ public abstract class AbstractSinkTest extends AbstractModuleTest {
      * result as {@link #getLinkBlock getLinkBlock}(link, text).
      */
     @Test
-    public void testLink() {
+    public void link() {
         String link = "#Link";
         String text = "Text";
         sink.link(link);
@@ -975,7 +972,7 @@ public abstract class AbstractSinkTest extends AbstractModuleTest {
      * {@link #getInlineBlock getInlineBlock}(text).
      */
     @Test
-    public void testInline() {
+    public void inline() {
         String text = "Inline";
         sink.inline();
         sink.text(text);
@@ -995,7 +992,7 @@ public abstract class AbstractSinkTest extends AbstractModuleTest {
      * {@link #getInlineBoldBlock getInlineBoldBlock}(text).
      */
     @Test
-    public void testInlineBold() {
+    public void inlineBold() {
         String text = "InlineBold";
         sink.inline(SinkEventAttributeSet.Semantics.BOLD);
         sink.text(text);
@@ -1015,7 +1012,7 @@ public abstract class AbstractSinkTest extends AbstractModuleTest {
      * {@link #getInlineBoldBlock getInlineBoldBlock}(text).
      */
     @Test
-    public void testInlineItalic() {
+    public void inlineItalic() {
         String text = "InlineItalic";
         sink.inline(SinkEventAttributeSet.Semantics.ITALIC);
         sink.text(text);
@@ -1035,7 +1032,7 @@ public abstract class AbstractSinkTest extends AbstractModuleTest {
      * {@link #getInlineBoldBlock getInlineBoldBlock}(text).
      */
     @Test
-    public void testInlineCode() {
+    public void inlineCode() {
         String text = "InlineCode";
         sink.inline(SinkEventAttributeSet.Semantics.CODE);
         sink.text(text);
@@ -1055,7 +1052,7 @@ public abstract class AbstractSinkTest extends AbstractModuleTest {
      * {@link #getLineBreakBlock getLineBreakBlock()}.
      */
     @Test
-    public void testLineBreak() {
+    public void lineBreak() {
         sink.lineBreak();
         sink.flush();
         sink.close();
@@ -1072,7 +1069,7 @@ public abstract class AbstractSinkTest extends AbstractModuleTest {
      * {@link #getLineBreakOpportunityBlock getLineBreakOpportunityBlock()}.
      */
     @Test
-    public void testLineBreakOpportunity() {
+    public void lineBreakOpportunity() {
         sink.lineBreakOpportunity();
         sink.flush();
         sink.close();
@@ -1089,7 +1086,7 @@ public abstract class AbstractSinkTest extends AbstractModuleTest {
      * {@link #getNonBreakingSpaceBlock getNonBreakingSpaceBlock()}.
      */
     @Test
-    public void testNonBreakingSpace() {
+    public void nonBreakingSpace() {
         sink.nonBreakingSpace();
         sink.flush();
         sink.close();
@@ -1106,7 +1103,7 @@ public abstract class AbstractSinkTest extends AbstractModuleTest {
      * {@link #getTextBlock getTextBlock()}(text).
      */
     @Test
-    public void testText() {
+    public void text() {
         String text = "~,_=,_-,_+,_*,_[,_],_<,_>,_{,_},_\\";
         sink.text(text);
         sink.flush();
@@ -1124,7 +1121,7 @@ public abstract class AbstractSinkTest extends AbstractModuleTest {
      * {@link #getRawTextBlock getRawTextBlock}(text).
      */
     @Test
-    public void testRawText() {
+    public void rawText() {
         String text = "~,_=,_-,_+,_*,_[,_],_<,_>,_{,_},_\\";
         sink.rawText(text);
         sink.flush();
@@ -1143,7 +1140,7 @@ public abstract class AbstractSinkTest extends AbstractModuleTest {
      * @since 1.1.1
      */
     @Test
-    public void testComment() {
+    public void comment() {
         String comment = "Simple comment with ----";
         sink.comment(comment);
         sink.flush();
@@ -1172,7 +1169,7 @@ public abstract class AbstractSinkTest extends AbstractModuleTest {
      * Checks the line separator between two consecutive comments.
      */
     @Test
-    public void testTwoConsecutiveInlineComments() {
+    public void twoConsecutiveInlineComments() {
         String comment = "Simple comment";
         sink.comment(comment);
         sink.comment(comment);
@@ -1185,23 +1182,20 @@ public abstract class AbstractSinkTest extends AbstractModuleTest {
      * Checks the line separator between two consecutive comments.
      */
     @Test
-    public void testTwoConsecutiveBlockComments() {
+    public void twoConsecutiveBlockComments() {
         String comment = "Simple comment";
         sink.comment(comment, true);
         sink.comment(comment, true);
         sink.flush();
         sink.close();
-        assertEquals(
-                getCommentBlock(comment) + EOL + getCommentBlock(comment) + EOL,
-                testWriter.toString(),
-                "Wrong comment!");
+        assertEquals(getCommentBlock(comment) + EOL + getCommentBlock(comment) + EOL, testWriter.toString());
     }
 
     /**
      * Checks the line separator between comment and paragraph (in most markup languages a block element which needs to start in the new line)
      */
     @Test
-    public void testCommentFollowedByParagraph() {
+    public void commentFollowedByParagraph() {
         String comment = "Simple comment";
         sink.comment(comment);
         sink.paragraph();
@@ -1249,10 +1243,10 @@ public abstract class AbstractSinkTest extends AbstractModuleTest {
     // ----------------------------------------------------------------------
 
     /**
-     * This method allows to use the correct Writer in {@link #testTestDocument()}.
+     * This method allows to use the correct Writer in {@link #testDocument()}.
      *
      * @return <code>true</code> if the Sink is an XML one, <code>false</code> otherwise.
-     * @see #testTestDocument()
+     * @see #testDocument()
      */
     protected abstract boolean isXmlSink();
 
@@ -1267,7 +1261,7 @@ public abstract class AbstractSinkTest extends AbstractModuleTest {
      * Returns a title block generated by this sink.
      * @param title The title to use.
      * @return The result of invoking a title block on the current sink.
-     * @see #testTitle()
+     * @see #title()
      */
     protected abstract String getTitleBlock(String title);
 
@@ -1275,7 +1269,7 @@ public abstract class AbstractSinkTest extends AbstractModuleTest {
      * Returns an author block generated by this sink.
      * @param author The author to use.
      * @return The result of invoking an author block on the current sink.
-     * @see #testAuthor()
+     * @see #author()
      */
     protected abstract String getAuthorBlock(String author);
 
@@ -1283,42 +1277,42 @@ public abstract class AbstractSinkTest extends AbstractModuleTest {
      * Returns a date block generated by this sink.
      * @param date The date to use.
      * @return The result of invoking a date block on the current sink.
-     * @see #testDate()
+     * @see #date()
      */
     protected abstract String getDateBlock(String date);
 
     /**
      * Returns a head block generated by this sink.
      * @return The result of invoking a head block on the current sink.
-     * @see #testHead()
+     * @see #head()
      */
     protected abstract String getHeadBlock();
 
     /**
      * Returns a body block generated by this sink.
      * @return The result of invoking a body block on the current sink.
-     * @see #testBody()
+     * @see #body()
      */
     protected abstract String getBodyBlock();
 
     /**
      * Returns an article block generated by this sink.
      * @return The result of invoking an article block on the current sink.
-     * @see #testArticle()
+     * @see #article()
      */
     protected abstract String getArticleBlock();
 
     /**
      * Returns an navigation block generated by this sink.
      * @return The result of invoking an navigation block on the current sink.
-     * @see #testNavigation()
+     * @see #navigation()
      */
     protected abstract String getNavigationBlock();
 
     /**
      * Returns a sidebar block generated by this sink.
      * @return The result of invoking an sidebar block on the current sink.
-     * @see #testSidebar()
+     * @see #sidebar()
      */
     protected abstract String getSidebarBlock();
 
@@ -1326,7 +1320,7 @@ public abstract class AbstractSinkTest extends AbstractModuleTest {
      * Returns a Section1 block generated by this sink.
      * @param title The title to use.
      * @return The result of invoking a Section1 block on the current sink.
-     * @see #testSection1()
+     * @see #section1()
      */
     protected abstract String getSection1Block(String title);
 
@@ -1334,7 +1328,7 @@ public abstract class AbstractSinkTest extends AbstractModuleTest {
      * Returns a Section2 block generated by this sink.
      * @param title The title to use.
      * @return The result of invoking a Section2 block on the current sink.
-     * @see #testSection2()
+     * @see #section2()
      */
     protected abstract String getSection2Block(String title);
 
@@ -1342,7 +1336,7 @@ public abstract class AbstractSinkTest extends AbstractModuleTest {
      * Returns a Section3 block generated by this sink.
      * @param title The title to use.
      * @return The result of invoking a Section3 block on the current sink.
-     * @see #testSection3()
+     * @see #section3()
      */
     protected abstract String getSection3Block(String title);
 
@@ -1350,7 +1344,7 @@ public abstract class AbstractSinkTest extends AbstractModuleTest {
      * Returns a Section4 block generated by this sink.
      * @param title The title to use.
      * @return The result of invoking a Section4 block on the current sink.
-     * @see #testSection4()
+     * @see #section4()
      */
     protected abstract String getSection4Block(String title);
 
@@ -1358,7 +1352,7 @@ public abstract class AbstractSinkTest extends AbstractModuleTest {
      * Returns a Section5 block generated by this sink.
      * @param title The title to use.
      * @return The result of invoking a Section5 block on the current sink.
-     * @see #testSection5()
+     * @see #section5()
      */
     protected abstract String getSection5Block(String title);
 
@@ -1366,28 +1360,28 @@ public abstract class AbstractSinkTest extends AbstractModuleTest {
      * Returns a Section6 block generated by this sink.
      * @param title The title to use.
      * @return The result of invoking a Section6 block on the current sink.
-     * @see #testSection6()
+     * @see #section6()
      */
     protected abstract String getSection6Block(String title);
 
     /**
      * Returns a header block generated by this sink.
      * @return The result of invoking a header block on the current sink.
-     * @see #testHeader()
+     * @see #header()
      */
     protected abstract String getHeaderBlock();
 
     /**
      * Returns a content block generated by this sink.
      * @return The result of invoking a content block on the current sink.
-     * @see #testContent()
+     * @see #content()
      */
     protected abstract String getContentBlock();
 
     /**
      * Returns a footer block generated by this sink.
      * @return The result of invoking a footer block on the current sink.
-     * @see #testFooter()
+     * @see #footer()
      */
     protected abstract String getFooterBlock();
 
@@ -1395,7 +1389,7 @@ public abstract class AbstractSinkTest extends AbstractModuleTest {
      * Returns a list block generated by this sink.
      * @param item The item to use.
      * @return The result of invoking a list block on the current sink.
-     * @see #testList()
+     * @see #list()
      */
     protected abstract String getListBlock(String item);
 
@@ -1403,7 +1397,7 @@ public abstract class AbstractSinkTest extends AbstractModuleTest {
      * Returns a NumberedList block generated by this sink.
      * @param item The item to use.
      * @return The result of invoking a NumberedList block on the current sink.
-     * @see #testNumberedList()
+     * @see #numberedList()
      */
     protected abstract String getNumberedListBlock(String item);
 
@@ -1412,7 +1406,7 @@ public abstract class AbstractSinkTest extends AbstractModuleTest {
      * @param definum The term to define.
      * @param definition The definition.
      * @return The result of invoking a DefinitionList block on the current sink.
-     * @see #testDefinitionList()
+     * @see #definitionList()
      */
     protected abstract String getDefinitionListBlock(String definum, String definition);
 
@@ -1421,7 +1415,7 @@ public abstract class AbstractSinkTest extends AbstractModuleTest {
      * @param source The figure source string.
      * @param caption The caption to use (may be null).
      * @return The result of invoking a Figure block on the current sink.
-     * @see #testFigure()
+     * @see #figure()
      */
     protected abstract String getFigureBlock(String source, String caption);
 
@@ -1430,7 +1424,7 @@ public abstract class AbstractSinkTest extends AbstractModuleTest {
      * @param cell A table cell to use.
      * @param caption The caption to use (may be null).
      * @return The result of invoking a Table block on the current sink.
-     * @see #testTable()
+     * @see #table()
      */
     protected abstract String getTableBlock(String cell, String caption);
 
@@ -1438,7 +1432,7 @@ public abstract class AbstractSinkTest extends AbstractModuleTest {
      * Returns a Table with header block on the current sink.
      * @param rowPrefixes the text prefix used in the individual rows.
      * @return the result of invoking a Table with header block on the current sink.
-     * @see #testTableWithHeader()
+     * @see #tableWithHeader()
      */
     protected abstract String getTableWithHeaderBlock(String... rowPrefixes);
 
@@ -1446,7 +1440,7 @@ public abstract class AbstractSinkTest extends AbstractModuleTest {
      * Returns a Paragraph block generated by this sink.
      * @param text The text to use.
      * @return The result of invoking a Paragraph block on the current sink.
-     * @see #testParagraph()
+     * @see #paragraph()
      */
     protected abstract String getParagraphBlock(String text);
 
@@ -1455,7 +1449,7 @@ public abstract class AbstractSinkTest extends AbstractModuleTest {
      * @param value The value to use.
      * @param text The text to use.
      * @return The result of invoking a Data block on the current sink.
-     * @see #testData()
+     * @see #data()
      */
     protected abstract String getDataBlock(String value, String text);
 
@@ -1464,7 +1458,7 @@ public abstract class AbstractSinkTest extends AbstractModuleTest {
      * @param datetime The datetime to use.
      * @param text The text to use.
      * @return The result of invoking a Time block on the current sink.
-     * @see #testTime()
+     * @see #time()
      */
     protected abstract String getTimeBlock(String datetime, String text);
 
@@ -1472,7 +1466,7 @@ public abstract class AbstractSinkTest extends AbstractModuleTest {
      * Returns an Address block generated by this sink.
      * @param text The text to use.
      * @return The result of invoking an Address block on the current sink.
-     * @see #testAddress()
+     * @see #address()
      */
     protected abstract String getAddressBlock(String text);
 
@@ -1480,7 +1474,7 @@ public abstract class AbstractSinkTest extends AbstractModuleTest {
      * Returns a Blockquote block generated by this sink.
      * @param text The text to use.
      * @return The result of invoking a Blockquote block on the current sink.
-     * @see #testBlockquote()
+     * @see #blockquote()
      */
     protected abstract String getBlockquoteBlock(String text);
 
@@ -1488,7 +1482,7 @@ public abstract class AbstractSinkTest extends AbstractModuleTest {
      * Returns a Division block generated by this sink.
      * @param text The text to use.
      * @return The result of invoking a Division block on the current sink.
-     * @see #testDivider()
+     * @see #divider()
      */
     protected abstract String getDivisionBlock(String text);
 
@@ -1496,7 +1490,7 @@ public abstract class AbstractSinkTest extends AbstractModuleTest {
      * Returns a Verbatim block generated by this sink.
      * @param text The text to use.
      * @return The result of invoking a Verbatim block on the current sink.
-     * @see #testVerbatim()
+     * @see #verbatim()
      */
     protected abstract String getVerbatimBlock(String text);
 
@@ -1504,21 +1498,21 @@ public abstract class AbstractSinkTest extends AbstractModuleTest {
      * Returns a Verbatim source block generated by this sink.
      * @param text The text to use.
      * @return The result of invoking a Verbatim source block on the current sink.
-     * @see #testVerbatimSource()
+     * @see #verbatimSource()
      */
     protected abstract String getVerbatimSourceBlock(String text);
 
     /**
      * Returns a HorizontalRule block generated by this sink.
      * @return The result of invoking a HorizontalRule block on the current sink.
-     * @see #testHorizontalRule()
+     * @see #horizontalRule()
      */
     protected abstract String getHorizontalRuleBlock();
 
     /**
      * Returns a PageBreak block generated by this sink.
      * @return The result of invoking a PageBreak block on the current sink.
-     * @see #testPageBreak()
+     * @see #pageBreak()
      */
     protected abstract String getPageBreakBlock();
 
@@ -1526,7 +1520,7 @@ public abstract class AbstractSinkTest extends AbstractModuleTest {
      * Returns a Anchor block generated by this sink.
      * @param anchor The anchor to use.
      * @return The result of invoking a Anchor block on the current sink.
-     * @see #testAnchor()
+     * @see #anchor()
      */
     protected abstract String getAnchorBlock(String anchor);
 
@@ -1535,7 +1529,7 @@ public abstract class AbstractSinkTest extends AbstractModuleTest {
      * @param link The link to use.
      * @param text The link text.
      * @return The result of invoking a Link block on the current sink.
-     * @see #testLink()
+     * @see #link()
      */
     protected abstract String getLinkBlock(String link, String text);
 
@@ -1543,7 +1537,7 @@ public abstract class AbstractSinkTest extends AbstractModuleTest {
      * Returns an Inline block generated by this sink.
      * @param text The text to use.
      * @return The result of invoking a Inline block on the current sink.
-     * @see #testInline()
+     * @see #inline()
      */
     protected abstract String getInlineBlock(String text);
 
@@ -1551,7 +1545,7 @@ public abstract class AbstractSinkTest extends AbstractModuleTest {
      * Returns an Inline italic block generated by this sink.
      * @param text The text to use.
      * @return The result of invoking a Inline italic block on the current sink.
-     * @see #testInlineItalic()
+     * @see #inlineItalic()
      */
     protected abstract String getInlineItalicBlock(String text);
 
@@ -1559,7 +1553,7 @@ public abstract class AbstractSinkTest extends AbstractModuleTest {
      * Returns an Inline bold block generated by this sink.
      * @param text The text to use.
      * @return The result of invoking a Inline bold block on the current sink.
-     * @see #testInlineBold()
+     * @see #inlineBold()
      */
     protected abstract String getInlineBoldBlock(String text);
 
@@ -1567,14 +1561,14 @@ public abstract class AbstractSinkTest extends AbstractModuleTest {
      * Returns an Inline code block generated by this sink.
      * @param text The text to use.
      * @return The result of invoking a Inline code block on the current sink.
-     * @see #testInlineBold()
+     * @see #inlineBold()
      */
     protected abstract String getInlineCodeBlock(String text);
 
     /**
      * Returns a LineBreak block generated by this sink.
      * @return The result of invoking a LineBreak block on the current sink.
-     * @see #testLineBreak()
+     * @see #lineBreak()
      */
     protected abstract String getLineBreakBlock();
 
@@ -1582,7 +1576,7 @@ public abstract class AbstractSinkTest extends AbstractModuleTest {
      * Returns a LineBreakOpportunity block generated by this sink.
      * @return The result of invoking a LineBreakOpportunity block on the
      * current sink.
-     * @see #testLineBreakOpportunity()
+     * @see #lineBreakOpportunity()
      */
     protected abstract String getLineBreakOpportunityBlock();
 
@@ -1590,7 +1584,7 @@ public abstract class AbstractSinkTest extends AbstractModuleTest {
      * Returns a NonBreakingSpace block generated by this sink.
      * @return The result of invoking a NonBreakingSpace block
      * on the current sink.
-     * @see #testNonBreakingSpace()
+     * @see #nonBreakingSpace()
      */
     protected abstract String getNonBreakingSpaceBlock();
 
@@ -1598,7 +1592,7 @@ public abstract class AbstractSinkTest extends AbstractModuleTest {
      * Returns a Text block generated by this sink.
      * @param text The text to use.
      * @return The result of invoking a Text block on the current sink.
-     * @see #testText()
+     * @see #text()
      */
     protected abstract String getTextBlock(String text);
 
@@ -1606,7 +1600,7 @@ public abstract class AbstractSinkTest extends AbstractModuleTest {
      * Returns a RawText block generated by this sink.
      * @param text The text to use.
      * @return The result of invoking a RawText block on the current sink.
-     * @see #testRawText()
+     * @see #rawText()
      */
     protected abstract String getRawTextBlock(String text);
 
@@ -1614,7 +1608,7 @@ public abstract class AbstractSinkTest extends AbstractModuleTest {
      * Returns a comment block generated by this sink.
      * @param text The text to use.
      * @return The result of invoking a comment block on the current sink.
-     * @see #testComment()
+     * @see #comment()
      * @since 1.1.1
      */
     protected abstract String getCommentBlock(String text);
@@ -1623,7 +1617,7 @@ public abstract class AbstractSinkTest extends AbstractModuleTest {
      * Returns a comment block generated by this sink followed by a paragraph block
      * @param text The text to use.
      * @return The result of invoking a comment block followed by a paragraph block on the current sink.
-     * @see #testCommentFollowedByParagraph()
+     * @see #commentFollowedByParagraph()
      * @since 2.1.0
      */
     protected abstract String getCommentBlockFollowedByParagraph(String comment, String paragraph);

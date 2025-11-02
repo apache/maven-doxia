@@ -196,12 +196,10 @@ public class SinkEventAttributeSet implements SinkEventAttributes, Cloneable {
         return attribs.size();
     }
 
-    /** {@inheritDoc} */
     public boolean isDefined(Object attrName) {
         return attribs.containsKey(attrName);
     }
 
-    /** {@inheritDoc} */
     public boolean isEqual(AttributeSet attr) {
         return ((getAttributeCount() == attr.getAttributeCount()) && containsAttributes(attr));
     }
@@ -224,7 +222,6 @@ public class SinkEventAttributeSet implements SinkEventAttributes, Cloneable {
         return Collections.enumeration(attribs.keySet());
     }
 
-    /** {@inheritDoc} */
     public Object getAttribute(Object key) {
         Object value = attribs.get(key);
 
@@ -239,12 +236,10 @@ public class SinkEventAttributeSet implements SinkEventAttributes, Cloneable {
         return value;
     }
 
-    /** {@inheritDoc} */
     public boolean containsAttribute(Object name, Object value) {
         return value.equals(getAttribute(name));
     }
 
-    /** {@inheritDoc} */
     public boolean containsAttributes(AttributeSet attributes) {
         boolean result = true;
 
@@ -267,7 +262,6 @@ public class SinkEventAttributeSet implements SinkEventAttributes, Cloneable {
         attribs.put(name.toString(), value);
     }
 
-    /** {@inheritDoc} */
     public void addAttributes(AttributeSet attributes) {
         if (attributes == null || attributes.getAttributeCount() == 0) {
             return;
@@ -282,12 +276,10 @@ public class SinkEventAttributeSet implements SinkEventAttributes, Cloneable {
         }
     }
 
-    /** {@inheritDoc} */
     public void removeAttribute(Object name) {
         attribs.remove(name);
     }
 
-    /** {@inheritDoc} */
     public void removeAttributes(Enumeration<?> names) {
         while (names.hasMoreElements()) {
             removeAttribute(names.nextElement());
@@ -327,12 +319,10 @@ public class SinkEventAttributeSet implements SinkEventAttributes, Cloneable {
         return this.resolveParent;
     }
 
-    /** {@inheritDoc} */
     public void setResolveParent(AttributeSet parent) {
         this.resolveParent = parent;
     }
 
-    /** {@inheritDoc} */
     @Override
     public Object clone() {
         SinkEventAttributeSet attr = new SinkEventAttributeSet(attribs.size());
@@ -345,7 +335,6 @@ public class SinkEventAttributeSet implements SinkEventAttributes, Cloneable {
         return attr;
     }
 
-    /** {@inheritDoc} */
     @Override
     public int hashCode() {
         final int parentHash = (resolveParent == null ? 0 : resolveParent.hashCode());
@@ -353,7 +342,6 @@ public class SinkEventAttributeSet implements SinkEventAttributes, Cloneable {
         return attribs.hashCode() + parentHash;
     }
 
-    /** {@inheritDoc} */
     @Override
     public boolean equals(Object obj) {
         if (this == obj) {
@@ -367,7 +355,6 @@ public class SinkEventAttributeSet implements SinkEventAttributes, Cloneable {
         return false;
     }
 
-    /** {@inheritDoc} */
     @Override
     public String toString() {
         StringBuilder s = new StringBuilder();

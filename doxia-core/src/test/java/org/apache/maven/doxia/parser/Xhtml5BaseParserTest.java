@@ -32,7 +32,7 @@ import static org.junit.jupiter.api.Assertions.assertFalse;
 /**
  * Test for Xhtml5BaseParser.
  */
-public class Xhtml5BaseParserTest extends AbstractParserTest {
+class Xhtml5BaseParserTest extends AbstractParserTest {
     private Xhtml5BaseParser parser;
     private final SinkEventTestingSink sink = new SinkEventTestingSink();
 
@@ -54,7 +54,7 @@ public class Xhtml5BaseParserTest extends AbstractParserTest {
     }
 
     @Test
-    public void testHeadingEventsList() throws Exception {
+    void headingEventsList() throws Exception {
         String text = "<p><h1></h1><h2></h2><h3></h3><h4></h4><h5></h5><h1></h1></p>";
 
         parser.parse(text, sink);
@@ -93,7 +93,7 @@ public class Xhtml5BaseParserTest extends AbstractParserTest {
     }
 
     @Test
-    public void testNestedHeadingEventsList() throws Exception {
+    void nestedHeadingEventsList() throws Exception {
         // DOXIA-241
         String text = "<p><h1></h1><h5></h5><h2></h2></p>";
 
@@ -131,7 +131,7 @@ public class Xhtml5BaseParserTest extends AbstractParserTest {
     }
 
     @Test
-    public void testSectionsAndHeadingsOnDifferentLevels() throws ParseException {
+    void sectionsAndHeadingsOnDifferentLevels() throws Exception {
         // section on higher level than heading
         String text = "<body><section><section><h1>Headline1</h1></section></section></body>";
         parser.parse(text, sink);
@@ -153,7 +153,7 @@ public class Xhtml5BaseParserTest extends AbstractParserTest {
     }
 
     @Test
-    public void testSectionsAndHeadingsOnDifferentLevels2() throws ParseException {
+    void sectionsAndHeadingsOnDifferentLevels2() throws Exception {
         // section on lower level than heading
         String text = "<body><section><h3>Headline1</h3></section></body>";
         parser.parse(text, sink);
@@ -173,7 +173,7 @@ public class Xhtml5BaseParserTest extends AbstractParserTest {
     }
 
     @Test
-    public void testSectionsAndHeadingsOnSameLevel() throws ParseException {
+    void sectionsAndHeadingsOnSameLevel() throws Exception {
         // heading directly following same level section doesn't need additional sections, while headings following some
         // other element (still same level)
         // needs an explicit new (same level) section
@@ -202,7 +202,7 @@ public class Xhtml5BaseParserTest extends AbstractParserTest {
     }
 
     @Test
-    public void testFigureEventsList() throws Exception {
+    void figureEventsList() throws Exception {
         String text = "<img src=\"source\" title=\"caption\" />";
 
         parser.parse(text, sink);
@@ -214,7 +214,7 @@ public class Xhtml5BaseParserTest extends AbstractParserTest {
     }
 
     @Test
-    public void testTableEventsList() throws Exception {
+    void tableEventsList() throws Exception {
         // TODO: table caption, see DOXIA-177
 
         String text = "<table><tr><th>Header</th></tr><tr><td>cell</td></tr></table>";
@@ -242,7 +242,7 @@ public class Xhtml5BaseParserTest extends AbstractParserTest {
     }
 
     @Test
-    public void testSignificantWhiteSpace() throws Exception {
+    void significantWhiteSpace() throws Exception {
         // NOTE significant white space
         String text = "<p><b>word</b> <i>word</i></p>";
 
@@ -311,7 +311,7 @@ public class Xhtml5BaseParserTest extends AbstractParserTest {
     }
 
     @Test
-    public void testPreFormattedText() throws Exception {
+    void preFormattedText() throws Exception {
         String text = "<pre><a href=\"what.html\">what</a></pre>";
 
         parser.parse(text, sink);
@@ -346,7 +346,7 @@ public class Xhtml5BaseParserTest extends AbstractParserTest {
     }
 
     @Test
-    public void testPreEOL() throws Exception {
+    void preEOL() throws Exception {
         // test EOLs within <pre>: the sink MUST receive a text event for the EOL
         String text =
                 "<pre><a href=\"what.html\">what</a>" + Xhtml5BaseParser.EOL + "<a href=\"what.html\">what</a></pre>";
@@ -367,7 +367,7 @@ public class Xhtml5BaseParserTest extends AbstractParserTest {
     }
 
     @Test
-    public void testDoxia250() throws Exception {
+    void doxia250() throws Exception {
         StringBuilder sb = new StringBuilder();
         sb.append("<!DOCTYPE test [").append(Xhtml5BaseParser.EOL);
         sb.append("<!ENTITY foo \"&#x159;\">").append(Xhtml5BaseParser.EOL);
@@ -406,7 +406,7 @@ public class Xhtml5BaseParserTest extends AbstractParserTest {
     }
 
     @Test
-    public void testEntities() throws Exception {
+    void entities() throws Exception {
         final String text =
                 "<!DOCTYPE test [<!ENTITY flo \"&#x159;\"><!ENTITY tritPos \"&#x1d7ed;\"><!ENTITY fo \"&#65;\"><!ENTITY myCustom \"&fo;\">]>"
                         + "<body><h1>&amp;&flo;&#x159;&tritPos;&#x1d7ed;</h1><p>&amp;&flo;&#x159;&tritPos;&#x1d7ed;&myCustom;</p></body>";
@@ -474,7 +474,7 @@ public class Xhtml5BaseParserTest extends AbstractParserTest {
     }
 
     @Test
-    public void testXhtmlEntities() throws Exception {
+    void xhtmlEntities() throws Exception {
         final String text = "<body><h1>&quot;&amp;</h1><p>&apos;&lt;&gt;</p></body>";
 
         parser.parse(text, sink);
@@ -513,7 +513,7 @@ public class Xhtml5BaseParserTest extends AbstractParserTest {
     }
 
     @Test
-    public void testLists() throws Exception {
+    void lists() throws Exception {
         String text = "<div><ul><li></li></ul><ol><li></li></ol><dl><dt></dt><dd></dd></dl></div>";
         parser.parse(text, sink);
         Iterator<SinkEventElement> it = sink.getEventList().iterator();
@@ -541,7 +541,7 @@ public class Xhtml5BaseParserTest extends AbstractParserTest {
     }
 
     @Test
-    public void testSimpleTags() throws Exception {
+    void simpleTags() throws Exception {
         String text = "<div><br /><wbr /><hr /><img src=\"img.src\"/></div>";
         parser.parse(text, sink);
         Iterator<SinkEventElement> it = sink.getEventList().iterator();
@@ -555,7 +555,7 @@ public class Xhtml5BaseParserTest extends AbstractParserTest {
     }
 
     @Test
-    public void testSemanticTags() throws Exception {
+    void semanticTags() throws Exception {
         String text =
                 "<em><strong><small><s><cite><q><dfn><abbr><i><b><code><var><samp><kbd><sup><sub><u><mark><ruby><rb><rt><rtc><rp><bdi><bdo><span><ins><del>a text &amp; &#xc6;</del></ins></span></bdo></bdi></rp></rtc></rt></rb></ruby></mark></u></sub></sup></kbd></samp></var></code></b></i></abbr></dfn></q></cite></s></small></strong></em>";
         parser.parse(text, sink);
@@ -713,7 +713,7 @@ public class Xhtml5BaseParserTest extends AbstractParserTest {
     }
 
     @Test
-    public void testSpecial() throws Exception {
+    void special() throws Exception {
         String text = "<p><!-- a pagebreak: --><!-- PB -->&nbsp;&#160;<unknown /></p>";
         parser.parse(text, sink);
         Iterator<SinkEventElement> it = sink.getEventList().iterator();
@@ -728,7 +728,7 @@ public class Xhtml5BaseParserTest extends AbstractParserTest {
     }
 
     @Test
-    public void testTable() throws Exception {
+    void table() throws Exception {
         String text = "<table><caption></caption><tr><th></th></tr><tr><td></td></tr></table>";
         parser.parse(text, sink);
         Iterator<SinkEventElement> it = sink.getEventList().iterator();
@@ -755,7 +755,7 @@ public class Xhtml5BaseParserTest extends AbstractParserTest {
     }
 
     @Test
-    public void testFigure() throws Exception {
+    void figure() throws Exception {
         String text = "<figure><img src=\"src.jpg\"/><figcaption></figcaption></figure>";
         parser.parse(text, sink);
         Iterator<SinkEventElement> it = sink.getEventList().iterator();
@@ -768,7 +768,7 @@ public class Xhtml5BaseParserTest extends AbstractParserTest {
     }
 
     @Test
-    public void testLink() throws Exception {
+    void link() throws Exception {
         // param1 value = "/&ü" URL encoded twice!
         String text = "<div><a href=\"http://www.fo.com/index.html&amp;param1=%252F%2526%25C3%25BC\"></a></div>";
 
@@ -788,7 +788,7 @@ public class Xhtml5BaseParserTest extends AbstractParserTest {
     }
 
     @Test
-    public void testAnchorLink() throws Exception {
+    void anchorLink() throws Exception {
         String text = "<div><a href=\"\"></a>" + "<a href=\"valid\"></a>"
                 + "<a href=\"#1invalid\"></a>"
                 + "<a href=\"http://www.fo.com/index.html#1invalid\"></a>"
@@ -847,7 +847,7 @@ public class Xhtml5BaseParserTest extends AbstractParserTest {
      * @throws java.lang.Exception if any.
      */
     @Test
-    public void testAttributeEntities() throws Exception {
+    void attributeEntities() throws Exception {
         String text = "<script src=\"http://ex.com/ex.js?v=l&amp;l=e\"></script>";
 
         parser.parse(text, sink);
@@ -877,7 +877,7 @@ public class Xhtml5BaseParserTest extends AbstractParserTest {
     }
 
     @Test
-    public void testUnbalancedDefinitionListItem() throws Exception {
+    void unbalancedDefinitionListItem() throws Exception {
         String text = "<body><dl><dt>key</dt><dd>value</dd></dl>" + "<dl><dd>value</dd></dl>"
                 + "<dl><dt>key</dt></dl>"
                 + "<dl></dl>"

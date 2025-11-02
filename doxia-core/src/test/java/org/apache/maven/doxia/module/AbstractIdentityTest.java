@@ -77,7 +77,7 @@ public abstract class AbstractIdentityTest extends AbstractModuleTest {
      * @throws ParseException if a model cannot be parsed.
      */
     @Test
-    public void testIdentity() throws IOException, ParseException {
+    public void identity() throws Exception {
         // generate the expected model
         StringWriter writer = new StringWriter();
         Sink sink = new TextSink(writer);
@@ -126,7 +126,6 @@ public abstract class AbstractIdentityTest extends AbstractModuleTest {
         }
     }
 
-    /** {@inheritDoc} */
     protected String getOutputDir() {
         return "identity/";
     }

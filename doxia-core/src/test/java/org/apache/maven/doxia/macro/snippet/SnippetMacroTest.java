@@ -29,11 +29,9 @@ import org.apache.maven.doxia.parser.Xhtml5BaseParser;
 import org.apache.maven.doxia.sink.impl.SinkEventElement;
 import org.apache.maven.doxia.sink.impl.SinkEventTestingSink;
 import org.codehaus.plexus.testing.PlexusTest;
-import org.hamcrest.CoreMatchers;
 import org.junit.jupiter.api.Test;
 
 import static org.codehaus.plexus.testing.PlexusExtension.getBasedir;
-import static org.hamcrest.MatcherAssert.assertThat;
 import static org.junit.jupiter.api.Assertions.assertEquals;
 import static org.junit.jupiter.api.Assertions.assertFalse;
 import static org.junit.jupiter.api.Assertions.assertThrows;
@@ -45,14 +43,14 @@ import static org.junit.jupiter.api.Assertions.assertTrue;
  * @author ltheussl
  */
 @PlexusTest
-public class SnippetMacroTest {
+class SnippetMacroTest {
     /**
      * Test of execute method, of class SnippetMacro.
      *
      * @throws MacroExecutionException if a macro fails during testing.
      */
     @Test
-    public void testExecute() throws MacroExecutionException {
+    void execute() throws Exception {
         Map<String, Object> macroParameters = new HashMap<>();
         macroParameters.put("file", "src/test/resources/macro/snippet/testSnippet.txt");
         macroParameters.put("encoding", "UTF-8");
@@ -124,7 +122,7 @@ public class SnippetMacroTest {
         assertFalse(it.hasNext());
 
         // no need to verify the absence of the first and second snippets if tests above were successful
-        assertThat(snippet, CoreMatchers.containsString("Этот сниппет в формате Unicode (UTF-8)"));
+        assertTrue(snippet.contains("Этот сниппет в формате Unicode (UTF-8)"));
 
         // again
         // Shouldn't work because no snippet called "first" exists, only "firstId"
@@ -135,7 +133,7 @@ public class SnippetMacroTest {
     }
 
     @Test
-    public void testIgnoreDownloadError() throws Exception {
+    void ignoreDownloadError() throws Exception {
         Map<String, Object> macroParameters = new HashMap<>();
         macroParameters.put("debug", "true");
         macroParameters.put("ignoreDownloadError", "true");
@@ -148,7 +146,7 @@ public class SnippetMacroTest {
         SinkEventElement event = it.next();
         assertEquals("text", event.getName());
         String snippet = (String) event.getArgs()[0];
-        assertThat(snippet, CoreMatchers.containsString("Error during retrieving content"));
+        assertTrue(snippet.contains("Error during retrieving content"));
     }
 
     private SinkEventTestingSink executeSnippetMacro(Map<String, Object> macroParameters)

@@ -33,38 +33,38 @@ import static org.junit.jupiter.api.Assertions.assertNull;
  * @author <a href="mailto:vincent.siveton@gmail.com">Vincent Siveton</a>
  */
 @PlexusTest
-public class HtmlToolsTest {
+class HtmlToolsTest {
     /**
      * Verify the expected results.
      */
     @Test
-    public void testEscapeHTML() {
-        assertEquals(HtmlTools.escapeHTML(null), "");
-        assertEquals(HtmlTools.escapeHTML(""), "");
-        assertEquals(HtmlTools.escapeHTML("\u0009"), "\u0009");
-        assertEquals(HtmlTools.escapeHTML("\u0001"), "\u0001");
+    void escapeHTML() {
+        assertEquals("", HtmlTools.escapeHTML(null));
+        assertEquals("", HtmlTools.escapeHTML(""));
+        assertEquals("\u0009", HtmlTools.escapeHTML("\u0009"));
+        assertEquals("\u0001", HtmlTools.escapeHTML("\u0001"));
 
         // Predefined entities
-        assertEquals(HtmlTools.escapeHTML("<"), "&lt;");
-        assertEquals(HtmlTools.escapeHTML(">"), "&gt;");
-        assertEquals(HtmlTools.escapeHTML("&"), "&amp;");
-        assertEquals(HtmlTools.escapeHTML("\""), "&quot;");
-        assertEquals(HtmlTools.escapeHTML("\'"), "&apos;");
-        assertEquals(HtmlTools.escapeHTML("\'", false), "\'");
+        assertEquals("&lt;", HtmlTools.escapeHTML("<"));
+        assertEquals("&gt;", HtmlTools.escapeHTML(">"));
+        assertEquals("&amp;", HtmlTools.escapeHTML("&"));
+        assertEquals("&quot;", HtmlTools.escapeHTML("\""));
+        assertEquals("&apos;", HtmlTools.escapeHTML("\'"));
+        assertEquals("\'", HtmlTools.escapeHTML("\'", false));
 
         // xml mode
-        assertEquals(HtmlTools.escapeHTML("&amp;"), "&amp;amp;");
-        assertEquals(HtmlTools.escapeHTML("\u00e4", true), "\u00e4");
-        assertEquals(HtmlTools.escapeHTML("\u00e4", false), "&#xe4;");
-        assertEquals(HtmlTools.escapeHTML("\u0159", false), "&#x159;");
-        assertEquals(HtmlTools.escapeHTML("\uD835\uDFED", false), "&#x1d7ed;");
+        assertEquals("&amp;amp;", HtmlTools.escapeHTML("&amp;"));
+        assertEquals("\u00e4", HtmlTools.escapeHTML("\u00e4", true));
+        assertEquals("&#xe4;", HtmlTools.escapeHTML("\u00e4", false));
+        assertEquals("&#x159;", HtmlTools.escapeHTML("\u0159", false));
+        assertEquals("&#x1d7ed;", HtmlTools.escapeHTML("\uD835\uDFED", false));
     }
 
     /**
      * Verify the expected results.
      */
     @Test
-    public void testUnescapeHTML() {
+    void unescapeHTML() {
         assertNull(HtmlTools.unescapeHTML(null));
         assertEquals("", HtmlTools.unescapeHTML(""));
         assertEquals("\u0009", HtmlTools.unescapeHTML("\u0009"));
@@ -95,16 +95,16 @@ public class HtmlToolsTest {
      * @throws Exception should not happen.
      */
     @Test
-    public void testEncodeURL() throws Exception {
+    void encodeURL() throws Exception {
         assertNull(HtmlTools.encodeURL(null));
-        assertEquals(HtmlTools.encodeURL(""), "");
+        assertEquals("", HtmlTools.encodeURL(""));
         assertEquals(
-                HtmlTools.encodeURL("http://www.example.com/?This is a simple test."),
-                "http://www.example.com/?This%20is%20a%20simple%20test.");
+                "http://www.example.com/?This%20is%20a%20simple%20test.",
+                HtmlTools.encodeURL("http://www.example.com/?This is a simple test."));
 
         assertEquals(
-                HtmlTools.encodeURL("http://www.example.com/?This is a simple & short test."),
-                "http://www.example.com/?This%20is%20a%20simple%20&%20short%20test.");
+                "http://www.example.com/?This%20is%20a%20simple%20&%20short%20test.",
+                HtmlTools.encodeURL("http://www.example.com/?This is a simple & short test."));
 
         String url = "\uD808\uDF45";
         assertEquals(HtmlTools.encodeURL(url), URLEncoder.encode(url, "UTF-8"));
@@ -114,7 +114,7 @@ public class HtmlToolsTest {
      * Verify the expected results.
      */
     @Test
-    public void testGetHtmlTag() {
+    void getHtmlTag() {
         assertNull(HtmlTools.getHtmlTag(null));
         assertNull(HtmlTools.getHtmlTag(""));
         assertNull(HtmlTools.getHtmlTag("weirdHtmlTag"));

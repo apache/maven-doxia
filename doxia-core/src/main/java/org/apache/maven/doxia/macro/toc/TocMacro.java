@@ -91,7 +91,6 @@ public class TocMacro extends AbstractMacro {
     /** The default end depth. */
     private static final int DEFAULT_DEPTH = 5;
 
-    /** {@inheritDoc} */
     public void execute(Sink sink, MacroRequest request) throws MacroExecutionException {
         String source = request.getSourceContent();
         Parser parser = request.getParser();

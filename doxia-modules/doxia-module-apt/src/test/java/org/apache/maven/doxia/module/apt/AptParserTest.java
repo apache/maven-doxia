@@ -42,7 +42,7 @@ import static org.junit.jupiter.api.Assertions.assertTrue;
 /**
  * @author <a href="mailto:vincent.siveton@gmail.com">Vincent Siveton</a>
  */
-public class AptParserTest extends AbstractParserTest {
+class AptParserTest extends AbstractParserTest {
 
     @Inject
     private AptParser parser;
@@ -62,21 +62,21 @@ public class AptParserTest extends AbstractParserTest {
     }
 
     @Test
-    public void testLineBreak() throws Exception {
+    void lineBreak() throws Exception {
         String linebreak = parseFileToAptSink("test/linebreak");
 
         assertTrue(linebreak.contains("Line\\" + EOL + "break."));
     }
 
     @Test
-    public void testSnippetMacro() throws Exception {
+    void snippetMacro() throws Exception {
         String macro = parseFileToAptSink("test/macro");
 
         assertTrue(macro.contains("<modelVersion\\>4.0.0\\</modelVersion\\>"));
     }
 
     @Test
-    public void testCommentsBeforeTitle() throws Exception {
+    void commentsBeforeTitle() throws Exception {
         String comments = parseFileToAptSink("test/comments");
 
         assertEquals(
@@ -86,7 +86,7 @@ public class AptParserTest extends AbstractParserTest {
     }
 
     @Test
-    public void testCommentsAfterParagraph() throws Exception {
+    void commentsAfterParagraph() throws Exception {
         SinkEventTestingSink sink = new SinkEventTestingSink();
         try (Reader reader = getTestReader("test/comments2")) {
             createParser().parse(reader, sink);
@@ -112,7 +112,7 @@ public class AptParserTest extends AbstractParserTest {
     }
 
     @Test
-    public void testSnippet() throws Exception {
+    void snippet() throws Exception {
         // DOXIA-259
 
         SinkEventTestingSink sink = new SinkEventTestingSink();
@@ -151,7 +151,7 @@ public class AptParserTest extends AbstractParserTest {
     }
 
     @Test
-    public void testFontStyles() throws Exception {
+    void fontStyles() throws Exception {
         SinkEventTestingSink sink = new SinkEventTestingSink();
         try (Reader reader = getTestReader("test/font")) {
             createParser().parse(reader, sink);
@@ -168,7 +168,7 @@ public class AptParserTest extends AbstractParserTest {
     }
 
     @Test
-    public void testSnippetTrailingSpace() throws Exception {
+    void snippetTrailingSpace() throws Exception {
         // DOXIA-425
         String text = "%{snippet|id=myid|file=pom.xml}  " + EOL;
 
@@ -182,7 +182,7 @@ public class AptParserTest extends AbstractParserTest {
     }
 
     @Test
-    public void testTocMacro() throws Exception {
+    void tocMacro() throws Exception {
         String toc = parseFileToAptSink("test/toc");
 
         // No section, only subsection 1 and 2
@@ -198,7 +198,7 @@ public class AptParserTest extends AbstractParserTest {
      * @throws ParseException if the test file cannot be parsed.
      */
     @Test
-    public void testTestDocument() throws IOException, ParseException {
+    void checkTestDocument() throws Exception {
         try (Writer writer = getTestWriter("test");
                 Reader reader = getTestReader("test")) {
             Sink sink = new AptSink(writer);
@@ -207,7 +207,7 @@ public class AptParserTest extends AbstractParserTest {
     }
 
     @Test
-    public void testVerbatimSource() throws Exception {
+    void verbatimSource() throws Exception {
         String text =
                 "+--" + EOL + "verbatim source" + EOL + "+--" + EOL + "---" + EOL + "verbatim" + EOL + "---" + EOL;
 
@@ -226,7 +226,7 @@ public class AptParserTest extends AbstractParserTest {
     }
 
     @Test
-    public void testMultiLinesInTableCells() throws Exception {
+    void multiLinesInTableCells() throws Exception {
         String text = "*----------*--------------+----------------:" + EOL + " cell 1, | cell 1,2       | cell 1,3"
                 + EOL + " 1       |                | "
                 + EOL + "*----------*--------------+----------------:"
@@ -275,7 +275,7 @@ public class AptParserTest extends AbstractParserTest {
     }
 
     @Test
-    public void testLineBreakInTableCells() throws Exception {
+    void lineBreakInTableCells() throws Exception {
         String text = "*----------*--------------+----------------:" + EOL + " cell 1,\\ | cell 1,2       | cell 1,3"
                 + EOL + " 1       |                | "
                 + EOL + "*----------*--------------+----------------:"
@@ -296,7 +296,7 @@ public class AptParserTest extends AbstractParserTest {
         assertSinkStartsWith(it, "head", "head_", "body", "table", "tableRows", "tableRow", "tableCell");
         assertSinkEquals(it.next(), "text", "cell 1,\u00A0", null);
 
-        assertEquals(it.next().getName(), "lineBreak");
+        assertEquals("lineBreak", it.next().getName());
         assertSinkEquals(it.next(), "text", "1", null);
 
         assertSinkStartsWith(it, "tableCell_", "tableCell");
@@ -311,7 +311,7 @@ public class AptParserTest extends AbstractParserTest {
         assertSinkStartsWith(it, "tableCell_", "tableCell");
         assertSinkEquals(it.next(), "text", "cell 2,\u00A0", null);
 
-        assertEquals(it.next().getName(), "lineBreak");
+        assertEquals("lineBreak", it.next().getName());
         assertSinkEquals(it.next(), "text", "2", null);
 
         assertSinkStartsWith(it, "tableCell_", "tableCell");
@@ -326,14 +326,14 @@ public class AptParserTest extends AbstractParserTest {
         assertSinkStartsWith(it, "tableCell_", "tableCell");
         assertSinkEquals(it.next(), "text", "cell 3,\u00A0", null);
 
-        assertEquals(it.next().getName(), "lineBreak");
+        assertEquals("lineBreak", it.next().getName());
         assertSinkEquals(it.next(), "text", "3", null);
 
         assertSinkEquals(it, "tableCell_", "tableRow_", "tableRows_", "table_", "body_");
     }
 
     @Test
-    public void testDOXIA38() throws Exception {
+    void doxia38() throws Exception {
         String text =
                 "*----------*--------------*---------------*" + EOL + "| Centered |   Centered   |   Centered    |"
                         + EOL + "*----------*--------------+---------------:"
@@ -349,11 +349,11 @@ public class AptParserTest extends AbstractParserTest {
         assertSinkStartsWith(it, "head", "head_", "body", "table", "tableRows", "tableRow");
         assertSinkAttributeEquals(it.next(), "tableCell", SinkEventAttributeSet.ALIGN, "center");
         assertSinkEquals(it.next(), "text", "Centered", null);
-        assertEquals(it.next().getName(), "tableCell_");
+        assertEquals("tableCell_", it.next().getName());
 
         assertSinkAttributeEquals(it.next(), "tableCell", SinkEventAttributeSet.ALIGN, "center");
         assertSinkEquals(it.next(), "text", "Centered", null);
-        assertEquals(it.next().getName(), "tableCell_");
+        assertEquals("tableCell_", it.next().getName());
 
         assertSinkAttributeEquals(it.next(), "tableCell", SinkEventAttributeSet.ALIGN, "center");
         assertSinkEquals(it.next(), "text", "Centered", null);
@@ -361,11 +361,11 @@ public class AptParserTest extends AbstractParserTest {
 
         assertSinkAttributeEquals(it.next(), "tableCell", SinkEventAttributeSet.ALIGN, "center");
         assertSinkEquals(it.next(), "text", "Centered", null);
-        assertEquals(it.next().getName(), "tableCell_");
+        assertEquals("tableCell_", it.next().getName());
 
         assertSinkAttributeEquals(it.next(), "tableCell", SinkEventAttributeSet.ALIGN, "left");
         assertSinkEquals(it.next(), "text", "Left-aligned", null);
-        assertEquals(it.next().getName(), "tableCell_");
+        assertEquals("tableCell_", it.next().getName());
 
         assertSinkAttributeEquals(it.next(), "tableCell", SinkEventAttributeSet.ALIGN, "right");
         assertSinkEquals(it.next(), "text", "Right-aligned", null);
@@ -373,7 +373,7 @@ public class AptParserTest extends AbstractParserTest {
     }
 
     @Test
-    public void testSpecialCharactersInTables() throws Exception {
+    void specialCharactersInTables() throws Exception {
         // DOXIA-323, DOXIA-433
         String text = "  \\~ \\= \\- \\+ \\* \\[ \\] \\< \\> \\{ \\} \\\\ \\u2713" + EOL
                 + EOL
@@ -397,7 +397,7 @@ public class AptParserTest extends AbstractParserTest {
     }
 
     @Test
-    public void testSpacesAndBracketsInAnchors() throws Exception {
+    void spacesAndBracketsInAnchors() throws Exception {
         final String text = "  {Anchor with spaces (and brackets)}" + EOL
                 + "  Link to {{Anchor with spaces (and brackets)}}" + EOL
                 + "  {{{http://fake.api#method(with, args)}method(with, args)}}" + EOL;
@@ -427,7 +427,7 @@ public class AptParserTest extends AbstractParserTest {
     }
 
     @Test
-    public void testSectionTitleAnchors() throws Exception {
+    void sectionTitleAnchors() throws Exception {
         // DOXIA-420
         String text = "Enhancements to the APT format" + EOL + EOL + "{Title with anchor}" + EOL;
 
@@ -458,7 +458,7 @@ public class AptParserTest extends AbstractParserTest {
     }
 
     @Test
-    public void testTableHeaders() throws Exception {
+    void tableHeaders() throws Exception {
         // DOXIA-404
         String text = "*-----------+-----------+" + EOL + "|| Header 1 || Header 2 |"
                 + EOL + "*-----------+-----------+"
@@ -493,7 +493,7 @@ public class AptParserTest extends AbstractParserTest {
     }
 
     @Test
-    public void testEscapedPipeInTableCell() throws Exception {
+    void escapedPipeInTableCell() throws Exception {
         // DOXIA-479
         String text = "*---+---+" + EOL + "| cell \\| pipe | next cell " + EOL + "*---+---+" + EOL;
 
@@ -510,7 +510,7 @@ public class AptParserTest extends AbstractParserTest {
     }
 
     @Test
-    public void testLiteralAnchor() throws Exception {
+    void literalAnchor() throws Exception {
         // DOXIA-397
         String text =
                 "{{{../apidocs/groovyx/net/http/ParserRegistry.html##parseText(org.apache.http.HttpResponse)}ParserRegistry}}";
@@ -531,7 +531,7 @@ public class AptParserTest extends AbstractParserTest {
     }
 
     @Test
-    public void testMultipleAuthors() throws Exception {
+    void multipleAuthors() throws Exception {
         // DOXIA-691
         String head = parseFileToAptSink("test/authors");
 

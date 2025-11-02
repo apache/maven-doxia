@@ -32,12 +32,12 @@ import static org.junit.jupiter.api.Assertions.fail;
  *
  * @author ltheussl
  */
-public class AbstractXmlSinkTest {
+class AbstractXmlSinkTest {
     /**
      * Test of set/getNameSpace method, of class AbstractXmlSink.
      */
     @Test
-    public void testNameSpace() {
+    void nameSpace() {
         final Tag t = Tag.A;
         final String ns = "ns";
         final XmlTestSink instance = new XmlTestSink();
@@ -79,7 +79,7 @@ public class AbstractXmlSinkTest {
      * Test of writeStartTag method, of class AbstractXmlSink.
      */
     @Test
-    public void testWriteStartTag() {
+    void writeStartTag() {
         final Tag t = Tag.A;
         final SinkEventAttributes att = new SinkEventAttributeSet(SinkEventAttributeSet.BOLD);
         final XmlTestSink instance = new XmlTestSink();
@@ -101,7 +101,7 @@ public class AbstractXmlSinkTest {
      * Test of writeEOL method, of class AbstractXmlSink.
      */
     @Test
-    public void testWriteEOL() {
+    void writeEOL() {
         final XmlTestSink instance = new XmlTestSink();
 
         instance.writeEOL();
@@ -112,7 +112,7 @@ public class AbstractXmlSinkTest {
      * Test of writeSimpleTag method, of class AbstractXmlSink.
      */
     @Test
-    public void testWriteSimpleTag() {
+    void writeSimpleTag() {
         final Tag t = Tag.A;
         final SinkEventAttributes att = new SinkEventAttributeSet(SinkEventAttributeSet.BOLD);
         final XmlTestSink instance = new XmlTestSink();

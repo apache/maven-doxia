@@ -39,7 +39,6 @@ public class FmlContentParser extends Xhtml5BaseParser implements FmlMarkup {
     /** Empty elements don't write a closing tag. */
     private boolean isEmptyElement;
 
-    /** {@inheritDoc} */
     protected void handleStartTag(XmlPullParser parser, Sink sink)
             throws XmlPullParserException, MacroExecutionException {
         isEmptyElement = parser.isEmptyElementTag();
@@ -68,7 +67,6 @@ public class FmlContentParser extends Xhtml5BaseParser implements FmlMarkup {
         }
     }
 
-    /** {@inheritDoc} */
     protected void handleEndTag(XmlPullParser parser, Sink sink)
             throws XmlPullParserException, MacroExecutionException {
         if (parser.getName().equals(QUESTION_TAG.toString())

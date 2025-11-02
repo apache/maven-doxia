@@ -136,13 +136,11 @@ public class XmlValidator {
         private static final Pattern ELEMENT_TYPE_PATTERN =
                 Pattern.compile("Element type \".*\" must be declared.", Pattern.DOTALL);
 
-        /** {@inheritDoc} */
         @Override
         public void warning(SAXParseException e) throws SAXException {
             processException(TYPE_WARNING, e);
         }
 
-        /** {@inheritDoc} */
         @Override
         public void error(SAXParseException e) throws SAXException {
             Matcher m = ELEMENT_TYPE_PATTERN.matcher(e.getMessage());
@@ -151,7 +149,6 @@ public class XmlValidator {
             }
         }
 
-        /** {@inheritDoc} */
         @Override
         public void fatalError(SAXParseException e) throws SAXException {
             processException(TYPE_FATAL, e);

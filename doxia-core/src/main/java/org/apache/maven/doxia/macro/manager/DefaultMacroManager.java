@@ -39,7 +39,6 @@ public class DefaultMacroManager implements MacroManager {
     @Inject
     private Map<String, Macro> macros;
 
-    /** {@inheritDoc} */
     public Macro getMacro(String id) throws MacroNotFoundException {
         Macro macro = macros.get(id);
 

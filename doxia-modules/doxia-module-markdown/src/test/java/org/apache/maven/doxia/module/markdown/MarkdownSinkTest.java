@@ -42,61 +42,50 @@ import static org.junit.jupiter.api.Assertions.assertIterableEquals;
 /**
  * Test the <code>MarkdownSink</code> class
  */
-public class MarkdownSinkTest extends AbstractSinkTest {
+class MarkdownSinkTest extends AbstractSinkTest {
     @Inject
     protected MarkdownParser parser;
 
-    /** {@inheritDoc} */
     protected String outputExtension() {
         return "md";
     }
 
-    /** {@inheritDoc} */
     protected Sink createSink(Writer writer) {
         return new MarkdownSink(writer);
     }
 
-    /** {@inheritDoc} */
     protected boolean isXmlSink() {
         return false;
     }
 
-    /** {@inheritDoc} */
     protected String getTitleBlock(String title) {
         return title;
     }
 
-    /** {@inheritDoc} */
     protected String getAuthorBlock(String author) {
         return getEscapedText(author);
     }
 
-    /** {@inheritDoc} */
     protected String getDateBlock(String date) {
         return date;
     }
 
-    /** {@inheritDoc} */
     protected String getHeadBlock() {
         return "";
     }
 
-    /** {@inheritDoc} */
     protected String getBodyBlock() {
         return "";
     }
 
-    /** {@inheritDoc} */
     protected String getArticleBlock() {
         return "";
     }
 
-    /** {@inheritDoc} */
     protected String getNavigationBlock() {
         return "";
     }
 
-    /** {@inheritDoc} */
     protected String getSidebarBlock() {
         return "";
     }
@@ -105,74 +94,60 @@ public class MarkdownSinkTest extends AbstractSinkTest {
         return DoxiaStringUtils.repeat(MarkdownMarkup.SECTION_TITLE_START_MARKUP, level) + SPACE + title + EOL + EOL;
     }
 
-    /** {@inheritDoc} */
     protected String getSection1Block(String title) {
         return getSectionBlock(title, 1);
     }
 
-    /** {@inheritDoc} */
     protected String getSection2Block(String title) {
         return getSectionBlock(title, 2);
     }
 
-    /** {@inheritDoc} */
     protected String getSection3Block(String title) {
         return getSectionBlock(title, 3);
     }
 
-    /** {@inheritDoc} */
     protected String getSection4Block(String title) {
         return getSectionBlock(title, 4);
     }
 
-    /** {@inheritDoc} */
     protected String getSection5Block(String title) {
         return getSectionBlock(title, 5);
     }
 
-    /** {@inheritDoc} */
     protected String getSection6Block(String title) {
         return getSectionBlock(title, 6);
     }
 
-    /** {@inheritDoc} */
     protected String getHeaderBlock() {
         return "";
     }
 
-    /** {@inheritDoc} */
     protected String getContentBlock() {
         return "";
     }
 
-    /** {@inheritDoc} */
     protected String getFooterBlock() {
         return "";
     }
 
-    /** {@inheritDoc} */
     protected String getListBlock(String item) {
         return MarkdownMarkup.LIST_UNORDERED_ITEM_START_MARKUP + getEscapedText(item) + EOL;
     }
 
-    /** {@inheritDoc} */
     protected String getNumberedListBlock(String item) {
         return MarkdownMarkup.LIST_ORDERED_ITEM_START_MARKUP + getEscapedText(item) + EOL;
     }
 
-    /** {@inheritDoc} */
     protected String getDefinitionListBlock(String definum, String definition) {
         // don't reuse constants from compile classes to improve accuracy of tests
         return "<dl>" + EOL + "<dt>" + getEscapedText(definum) + "</dt>" + EOL + "<dd>" + getEscapedText(definition)
                 + "</dd>" + EOL + "</dl>" + EOL + EOL;
     }
 
-    /** {@inheritDoc} */
     protected String getFigureBlock(String source, String caption) {
         return "![" + (caption != null ? getEscapedText(caption) : "") + "](" + source + ")";
     }
 
-    /** {@inheritDoc} */
     protected String getTableBlock(String cell, String caption) {
         return MarkdownMarkup.TABLE_ROW_PREFIX + "   " + MarkdownMarkup.TABLE_CELL_SEPARATOR_MARKUP + "   "
                 + MarkdownMarkup.TABLE_CELL_SEPARATOR_MARKUP + "   " + MarkdownMarkup.TABLE_CELL_SEPARATOR_MARKUP + EOL
@@ -187,73 +162,78 @@ public class MarkdownSinkTest extends AbstractSinkTest {
     @Override
     protected String getTableWithHeaderBlock(String... rowPrefixes) {
         StringBuilder expectedMarkup = new StringBuilder();
-        expectedMarkup.append(MarkdownMarkup.TABLE_ROW_PREFIX + getEscapedText(rowPrefixes[0]) + "0|"
-                + getEscapedText(rowPrefixes[0]) + "1|" + getEscapedText(rowPrefixes[0]) + "2|" + EOL);
-        expectedMarkup.append(MarkdownMarkup.TABLE_ROW_PREFIX + ":---|---:|:---:|" + EOL);
+        expectedMarkup
+                .append(MarkdownMarkup.TABLE_ROW_PREFIX)
+                .append(getEscapedText(rowPrefixes[0]))
+                .append("0|")
+                .append(getEscapedText(rowPrefixes[0]))
+                .append("1|")
+                .append(getEscapedText(rowPrefixes[0]))
+                .append("2|")
+                .append(EOL);
+        expectedMarkup
+                .append(MarkdownMarkup.TABLE_ROW_PREFIX)
+                .append(":---|---:|:---:|")
+                .append(EOL);
         for (int n = 1; n < rowPrefixes.length; n++) {
-            expectedMarkup.append(MarkdownMarkup.TABLE_ROW_PREFIX + getEscapedText(rowPrefixes[n]) + "0|"
-                    + getEscapedText(rowPrefixes[n]) + "1|" + getEscapedText(rowPrefixes[n]) + "2|" + EOL);
+            expectedMarkup
+                    .append(MarkdownMarkup.TABLE_ROW_PREFIX)
+                    .append(getEscapedText(rowPrefixes[n]))
+                    .append("0|")
+                    .append(getEscapedText(rowPrefixes[n]))
+                    .append("1|")
+                    .append(getEscapedText(rowPrefixes[n]))
+                    .append("2|")
+                    .append(EOL);
         }
         return expectedMarkup.toString();
     }
 
-    /** {@inheritDoc} */
     protected String getParagraphBlock(String text) {
         return text + EOL + EOL;
     }
 
-    /** {@inheritDoc} */
     protected String getDataBlock(String value, String text) {
         return text;
     }
 
-    /** {@inheritDoc} */
     protected String getTimeBlock(String datetime, String text) {
         return text;
     }
 
-    /** {@inheritDoc} */
     protected String getAddressBlock(String text) {
         return text;
     }
 
-    /** {@inheritDoc} */
     protected String getBlockquoteBlock(String text) {
         return "> " + text + EOL;
     }
 
-    /** {@inheritDoc} */
     protected String getDivisionBlock(String text) {
         return text;
     }
 
-    /** {@inheritDoc} */
     protected String getVerbatimBlock(String text) {
         return MarkdownMarkup.VERBATIM_START_MARKUP + EOL + text + EOL + MarkdownMarkup.VERBATIM_END_MARKUP + EOL + EOL;
     }
 
-    /** {@inheritDoc} */
     protected String getVerbatimSourceBlock(String text) {
         return MarkdownMarkup.VERBATIM_START_MARKUP + "unknown" + EOL + text + EOL + MarkdownMarkup.VERBATIM_END_MARKUP
                 + EOL + EOL;
     }
 
-    /** {@inheritDoc} */
     protected String getHorizontalRuleBlock() {
         return MarkdownMarkup.HORIZONTAL_RULE_MARKUP + EOL + EOL;
     }
 
-    /** {@inheritDoc} */
     protected String getPageBreakBlock() {
         return "";
     }
 
-    /** {@inheritDoc} */
     protected String getAnchorBlock(String anchor) {
         return "<a id=\"" + anchor + "\"></a>" + anchor;
     }
 
-    /** {@inheritDoc} */
     protected String getLinkBlock(String link, String text) {
         return MarkdownMarkup.LINK_START_1_MARKUP
                 + text
@@ -262,57 +242,46 @@ public class MarkdownSinkTest extends AbstractSinkTest {
                 + MarkdownMarkup.LINK_END_MARKUP;
     }
 
-    /** {@inheritDoc} */
     protected String getInlineBlock(String text) {
         return text;
     }
 
-    /** {@inheritDoc} */
     protected String getInlineItalicBlock(String text) {
         return MarkdownMarkup.ITALIC_START_MARKUP + text + MarkdownMarkup.ITALIC_END_MARKUP;
     }
 
-    /** {@inheritDoc} */
     protected String getInlineBoldBlock(String text) {
         return MarkdownMarkup.BOLD_START_MARKUP + text + MarkdownMarkup.BOLD_END_MARKUP;
     }
 
-    /** {@inheritDoc} */
     protected String getInlineCodeBlock(String text) {
         return MarkdownMarkup.MONOSPACED_START_MARKUP + text + MarkdownMarkup.MONOSPACED_END_MARKUP;
     }
 
-    /** {@inheritDoc} */
     protected String getItalicBlock(String text) {
         return MarkdownMarkup.ITALIC_START_MARKUP + text + MarkdownMarkup.ITALIC_END_MARKUP;
     }
 
-    /** {@inheritDoc} */
     protected String getBoldBlock(String text) {
         return MarkdownMarkup.BOLD_START_MARKUP + text + MarkdownMarkup.BOLD_END_MARKUP;
     }
 
-    /** {@inheritDoc} */
     protected String getMonospacedBlock(String text) {
         return text;
     }
 
-    /** {@inheritDoc} */
     protected String getLineBreakBlock() {
         return "" + SPACE + SPACE + EOL;
     }
 
-    /** {@inheritDoc} */
     protected String getLineBreakOpportunityBlock() {
         return "";
     }
 
-    /** {@inheritDoc} */
     protected String getNonBreakingSpaceBlock() {
         return MarkdownMarkup.NON_BREAKING_SPACE_MARKUP;
     }
 
-    /** {@inheritDoc} */
     protected String getTextBlock(String text) {
         if (text.equals("~,_=,_-,_+,_*,_[,_],_<,_>,_{,_},_\\")) {
             // i.e. XML entities for <>&"' and Markdown escape sequences for characters outlined in
@@ -324,7 +293,6 @@ public class MarkdownSinkTest extends AbstractSinkTest {
         }
     }
 
-    /** {@inheritDoc} */
     protected String getRawTextBlock(String text) {
         return text;
     }
@@ -349,7 +317,7 @@ public class MarkdownSinkTest extends AbstractSinkTest {
     }
 
     @Test
-    public void testMultipleAuthors() {
+    void multipleAuthors() {
         final Sink sink = getSink();
         sink.head();
         sink.author();
@@ -373,7 +341,7 @@ public class MarkdownSinkTest extends AbstractSinkTest {
 
     /** Test MD -> SETSink vs. Test MD -> MDSink -> SETSink */
     @Test
-    public void testRoundtrip() throws IOException, ParseException {
+    void roundtrip() throws Exception {
         parseFile(parser, "test", getSink());
 
         final SinkEventTestingSink regeneratedSink = new SinkEventTestingSink();
@@ -402,7 +370,7 @@ public class MarkdownSinkTest extends AbstractSinkTest {
     }
 
     @Test
-    public void testLinksParagraphsAndStylesInTableCells() {
+    void linksParagraphsAndStylesInTableCells() {
         final String linkTarget = "target";
         final String linkText = "link";
         final String paragraphText = "paragraph text with |";
@@ -436,7 +404,7 @@ public class MarkdownSinkTest extends AbstractSinkTest {
     }
 
     @Test
-    public void testInlineCodeWithSpecialCharacters() {
+    void inlineCodeWithSpecialCharacters() {
         String text = "Test&<>*_";
         final Sink sink = getSink();
         sink.inline(SinkEventAttributeSet.Semantics.CODE);
@@ -451,7 +419,7 @@ public class MarkdownSinkTest extends AbstractSinkTest {
     }
 
     @Test
-    public void testNestedListWithBlockquotesParagraphsAndCode() {
+    void nestedListWithBlockquotesParagraphsAndCode() {
         final Sink sink = getSink();
         sink.list();
 
@@ -509,7 +477,7 @@ public class MarkdownSinkTest extends AbstractSinkTest {
     }
 
     @Test
-    public void testHeadingAfterInlineElement() {
+    void headingAfterInlineElement() {
         try (Sink sink = getSink()) {
             sink.text("Text");
             sink.section1();
@@ -524,7 +492,7 @@ public class MarkdownSinkTest extends AbstractSinkTest {
     }
 
     @Test
-    public void testCodeLink() {
+    void codeLink() {
         try (Sink sink = getSink()) {
             sink.inline(Semantics.CODE);
             sink.link("http://example.com");
@@ -538,7 +506,7 @@ public class MarkdownSinkTest extends AbstractSinkTest {
     }
 
     @Test
-    public void testMultilineVerbatimSourceAfterListItem() {
+    void multilineVerbatimSourceAfterListItem() {
         try (Sink sink = getSink()) {
             sink.list();
             sink.listItem();
@@ -559,7 +527,7 @@ public class MarkdownSinkTest extends AbstractSinkTest {
     }
 
     @Test
-    public void testDefinitionListWithInlineStyles() {
+    void definitionListWithInlineStyles() {
         try (Sink sink = getSink()) {
             sink.definitionList();
             sink.definedTerm();
@@ -578,7 +546,7 @@ public class MarkdownSinkTest extends AbstractSinkTest {
     }
 
     @Test
-    public void testNestedListBeingTight() {
+    void nestedListBeingTight() {
         try (Sink sink = getSink()) {
             sink.list();
             sink.listItem();

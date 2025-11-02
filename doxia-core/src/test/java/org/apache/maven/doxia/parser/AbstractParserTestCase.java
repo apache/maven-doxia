@@ -68,7 +68,7 @@ public abstract class AbstractParserTestCase {
      * @throws Exception if any.
      */
     @Test
-    public void testParser() throws Exception {
+    public void parser() throws Exception {
         Reader reader = new FileReader(getTestFile(getBasedir(), getDocument()));
 
         getParser().parse(reader, getSink());
