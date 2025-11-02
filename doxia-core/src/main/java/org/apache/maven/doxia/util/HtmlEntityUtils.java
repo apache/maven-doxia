@@ -343,11 +343,13 @@ public class HtmlEntityUtils {
                     if (entityContent.length() > 0 && entityContent.charAt(0) == '#') {
                         try {
                             if (entityContent.length() > 1 && entityContent.charAt(1) == 'x') {
-                                // Hexadecimal
-                                int codePoint = Integer.parseInt(entityContent.substring(2), 16);
-                                replacement = new String(Character.toChars(codePoint));
-                            } else {
-                                // Decimal
+                                // Hexadecimal - need at least "x" plus one hex digit
+                                if (entityContent.length() > 2) {
+                                    int codePoint = Integer.parseInt(entityContent.substring(2), 16);
+                                    replacement = new String(Character.toChars(codePoint));
+                                }
+                            } else if (entityContent.length() > 1) {
+                                // Decimal - need at least one decimal digit after '#'
                                 int codePoint = Integer.parseInt(entityContent.substring(1));
                                 replacement = new String(Character.toChars(codePoint));
                             }

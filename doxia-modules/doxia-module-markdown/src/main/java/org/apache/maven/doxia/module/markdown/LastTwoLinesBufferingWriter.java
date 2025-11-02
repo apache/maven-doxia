@@ -53,11 +53,11 @@ public class LastTwoLinesBufferingWriter extends Writer {
     }
 
     public boolean isWriterAfterBlankLine() {
-        return DoxiaStringUtils.isAllBlank(currentLine.toString()) && DoxiaStringUtils.isAllBlank(previousLine);
+        return DoxiaStringUtils.isBlank(currentLine.toString()) && DoxiaStringUtils.isBlank(previousLine);
     }
 
     public boolean isInBlankLine() {
-        return DoxiaStringUtils.isAllBlank(currentLine.toString());
+        return DoxiaStringUtils.isBlank(currentLine.toString());
     }
 
     @Override

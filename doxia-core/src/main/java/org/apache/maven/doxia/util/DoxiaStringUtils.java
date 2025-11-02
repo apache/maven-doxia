@@ -44,7 +44,12 @@ public class DoxiaStringUtils {
         if (repeat <= 0) {
             return "";
         }
-        StringBuilder sb = new StringBuilder(str.length() * repeat);
+        // Check for potential overflow
+        int len = str.length();
+        if (len > 0 && repeat > Integer.MAX_VALUE / len) {
+            throw new IllegalArgumentException("Resulting string would be too long");
+        }
+        StringBuilder sb = new StringBuilder(len * repeat);
         for (int i = 0; i < repeat; i++) {
             sb.append(str);
         }
