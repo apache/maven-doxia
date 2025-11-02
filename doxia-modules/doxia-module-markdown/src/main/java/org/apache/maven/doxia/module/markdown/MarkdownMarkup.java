@@ -18,8 +18,8 @@
  */
 package org.apache.maven.doxia.module.markdown;
 
-import org.apache.commons.lang3.StringUtils;
 import org.apache.maven.doxia.markup.TextMarkup;
+import org.apache.maven.doxia.util.DoxiaStringUtils;
 
 /**
  * This interface defines all markups and syntaxes used by the <b>Markdown</b> format.
@@ -39,7 +39,7 @@ public interface MarkdownMarkup extends TextMarkup {
     String BLANK_LINE = EOL + EOL;
 
     /** indentation e.g. for paragraphs inside lists */
-    String INDENT = StringUtils.repeat(String.valueOf(SPACE), 4);
+    String INDENT = DoxiaStringUtils.repeat(String.valueOf(SPACE), 4);
     // ----------------------------------------------------------------------
     // Markup syntax
     // ----------------------------------------------------------------------
@@ -57,7 +57,7 @@ public interface MarkdownMarkup extends TextMarkup {
     String BOLD_START_MARKUP = "**";
 
     /** Syntax for the header start: "---" */
-    String METADATA_MARKUP = StringUtils.repeat(String.valueOf(MINUS), 3);
+    String METADATA_MARKUP = DoxiaStringUtils.repeat(String.valueOf(MINUS), 3);
 
     /** Syntax for the horizontal rule: "***" */
     String HORIZONTAL_RULE_MARKUP = "***";
@@ -109,16 +109,16 @@ public interface MarkdownMarkup extends TextMarkup {
     String TABLE_CELL_SEPARATOR_MARKUP = String.valueOf(PIPE);
 
     /** Syntax for the table column, default alignment (default): "---" */
-    String TABLE_COL_DEFAULT_ALIGNED_MARKUP = StringUtils.repeat(String.valueOf(MINUS), 3);
+    String TABLE_COL_DEFAULT_ALIGNED_MARKUP = DoxiaStringUtils.repeat(String.valueOf(MINUS), 3);
 
     /** Syntax for the table column, left alignment (default): ":---" */
-    String TABLE_COL_LEFT_ALIGNED_MARKUP = COLON + StringUtils.repeat(String.valueOf(MINUS), 3);
+    String TABLE_COL_LEFT_ALIGNED_MARKUP = COLON + DoxiaStringUtils.repeat(String.valueOf(MINUS), 3);
 
     /** Syntax for the table column, right alignment: "---:" */
-    String TABLE_COL_RIGHT_ALIGNED_MARKUP = StringUtils.repeat(String.valueOf(MINUS), 3) + COLON;
+    String TABLE_COL_RIGHT_ALIGNED_MARKUP = DoxiaStringUtils.repeat(String.valueOf(MINUS), 3) + COLON;
 
     /** Syntax for the table column, center alignment: ":---:" */
-    String TABLE_COL_CENTER_ALIGNED_MARKUP = COLON + StringUtils.repeat(String.valueOf(MINUS), 3) + COLON;
+    String TABLE_COL_CENTER_ALIGNED_MARKUP = COLON + DoxiaStringUtils.repeat(String.valueOf(MINUS), 3) + COLON;
 
     /** Syntax for the table row prefix (the other separators in the same row are regular {@link #TABLE_CELL_SEPARATOR_MARKUP} characters) */
     String TABLE_ROW_PREFIX = String.valueOf(PIPE);

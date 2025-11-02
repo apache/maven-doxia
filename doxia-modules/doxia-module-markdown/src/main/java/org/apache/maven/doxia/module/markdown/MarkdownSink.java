@@ -32,13 +32,13 @@ import java.util.NoSuchElementException;
 import java.util.Queue;
 import java.util.stream.Collectors;
 
-import org.apache.commons.lang3.StringUtils;
 import org.apache.maven.doxia.sink.Sink;
 import org.apache.maven.doxia.sink.SinkEventAttributes;
 import org.apache.maven.doxia.sink.impl.AbstractTextSink;
 import org.apache.maven.doxia.sink.impl.SinkEventAttributeSet;
 import org.apache.maven.doxia.sink.impl.SinkUtils;
 import org.apache.maven.doxia.sink.impl.Xhtml5BaseSink;
+import org.apache.maven.doxia.util.DoxiaStringUtils;
 import org.apache.maven.doxia.util.DoxiaUtils;
 import org.apache.maven.doxia.util.HtmlTools;
 import org.slf4j.Logger;
@@ -303,7 +303,7 @@ public class MarkdownSink extends AbstractTextSink implements MarkdownMarkup {
         }
 
         private static boolean isInBlankLine(StringBuilder buffer, LastTwoLinesBufferingWriter writer) {
-            if (StringUtils.isBlank(buffer.toString())) {
+            if (DoxiaStringUtils.isBlank(buffer.toString())) {
                 return writer.isInBlankLine();
             }
             return false;
@@ -543,7 +543,7 @@ public class MarkdownSink extends AbstractTextSink implements MarkdownMarkup {
     public void sectionTitle(int level, SinkEventAttributes attributes) {
         startContext(ElementContext.HEADING);
         if (level > 0) {
-            writeUnescaped(StringUtils.repeat(SECTION_TITLE_START_MARKUP, level) + SPACE);
+            writeUnescaped(DoxiaStringUtils.repeat(SECTION_TITLE_START_MARKUP, level) + SPACE);
         }
     }
 
@@ -753,7 +753,7 @@ public class MarkdownSink extends AbstractTextSink implements MarkdownMarkup {
     private void writeEmptyTableHeader() {
         writeUnescaped(TABLE_ROW_PREFIX);
         for (int i = 0; i < cellCount; i++) {
-            writeUnescaped(StringUtils.repeat(String.valueOf(SPACE), 3) + TABLE_CELL_SEPARATOR_MARKUP);
+            writeUnescaped(DoxiaStringUtils.repeat(String.valueOf(SPACE), 3) + TABLE_CELL_SEPARATOR_MARKUP);
         }
         writeUnescaped(EOL);
         writeUnescaped(getLinePrefix());

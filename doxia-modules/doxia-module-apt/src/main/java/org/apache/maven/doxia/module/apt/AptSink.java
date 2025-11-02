@@ -28,12 +28,12 @@ import java.util.LinkedList;
 import java.util.List;
 import java.util.Stack;
 
-import org.apache.commons.lang3.StringUtils;
 import org.apache.maven.doxia.sink.Sink;
 import org.apache.maven.doxia.sink.SinkEventAttributes;
 import org.apache.maven.doxia.sink.impl.AbstractTextSink;
 import org.apache.maven.doxia.sink.impl.SinkEventAttributeSet;
 import org.apache.maven.doxia.sink.impl.SinkUtils;
+import org.apache.maven.doxia.util.DoxiaStringUtils;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
@@ -271,7 +271,7 @@ public class AptSink extends AbstractTextSink implements AptMarkup {
         if (level == 1) {
             write(EOL);
         } else if (level > 1) {
-            write(EOL + StringUtils.repeat(SECTION_TITLE_START_MARKUP, level - 1));
+            write(EOL + DoxiaStringUtils.repeat(SECTION_TITLE_START_MARKUP, level - 1));
         }
     }
 
@@ -298,7 +298,7 @@ public class AptSink extends AbstractTextSink implements AptMarkup {
         } else {
             write(EOL);
         }
-        listNestingIndent = StringUtils.removeEnd(listNestingIndent, " ");
+        listNestingIndent = DoxiaStringUtils.removeEnd(listNestingIndent, " ");
         listStyles.pop();
         itemFlag = false;
     }
@@ -356,7 +356,7 @@ public class AptSink extends AbstractTextSink implements AptMarkup {
         } else {
             write(EOL);
         }
-        listNestingIndent = StringUtils.removeEnd(listNestingIndent, " ");
+        listNestingIndent = DoxiaStringUtils.removeEnd(listNestingIndent, " ");
         listStyles.pop();
         itemFlag = false;
     }
@@ -403,7 +403,7 @@ public class AptSink extends AbstractTextSink implements AptMarkup {
         } else {
             write(EOL);
         }
-        listNestingIndent = StringUtils.removeEnd(listNestingIndent, " ");
+        listNestingIndent = DoxiaStringUtils.removeEnd(listNestingIndent, " ");
         listStyles.pop();
         itemFlag = false;
     }

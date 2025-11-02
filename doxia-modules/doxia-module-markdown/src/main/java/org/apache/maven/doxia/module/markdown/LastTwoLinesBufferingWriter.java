@@ -21,7 +21,7 @@ package org.apache.maven.doxia.module.markdown;
 import java.io.IOException;
 import java.io.Writer;
 
-import org.apache.commons.lang3.StringUtils;
+import org.apache.maven.doxia.util.DoxiaStringUtils;
 
 /**
  * Decorates an existing writer to additionally temporarily buffer the last two lines written.
@@ -53,11 +53,11 @@ public class LastTwoLinesBufferingWriter extends Writer {
     }
 
     public boolean isWriterAfterBlankLine() {
-        return StringUtils.isAllBlank(currentLine) && StringUtils.isAllBlank(previousLine);
+        return DoxiaStringUtils.isBlank(currentLine.toString()) && DoxiaStringUtils.isBlank(previousLine);
     }
 
     public boolean isInBlankLine() {
-        return StringUtils.isAllBlank(currentLine);
+        return DoxiaStringUtils.isBlank(currentLine.toString());
     }
 
     @Override

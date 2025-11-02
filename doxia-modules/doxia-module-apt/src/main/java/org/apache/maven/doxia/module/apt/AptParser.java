@@ -30,7 +30,6 @@ import java.util.Map;
 import java.util.StringTokenizer;
 
 import org.apache.commons.io.IOUtils;
-import org.apache.commons.lang3.StringUtils;
 import org.apache.maven.doxia.macro.MacroExecutionException;
 import org.apache.maven.doxia.macro.MacroRequest;
 import org.apache.maven.doxia.macro.manager.MacroNotFoundException;
@@ -41,6 +40,7 @@ import org.apache.maven.doxia.sink.SinkEventAttributes;
 import org.apache.maven.doxia.sink.impl.AbstractLocator;
 import org.apache.maven.doxia.sink.impl.SinkAdapter;
 import org.apache.maven.doxia.sink.impl.SinkEventAttributeSet;
+import org.apache.maven.doxia.util.DoxiaStringUtils;
 import org.apache.maven.doxia.util.DoxiaUtils;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
@@ -2401,14 +2401,14 @@ public class AptParser extends AbstractTextParser implements AptMarkup {
 
             s = escapeForMacro(s);
 
-            String[] params = StringUtils.split(s, "|");
+            String[] params = DoxiaStringUtils.split(s, "|");
 
             String macroId = params[0];
 
             Map<String, Object> parameters = new LinkedHashMap<>();
 
             for (int i = 1; i < params.length; i++) {
-                String[] param = StringUtils.split(params[i], "=");
+                String[] param = DoxiaStringUtils.split(params[i], "=");
 
                 if (param.length == 1) {
                     throw new AptParseException("Missing 'key=value' pair for macro parameter: " + params[i]);
@@ -2447,8 +2447,8 @@ public class AptParser extends AbstractTextParser implements AptMarkup {
 
             // use some outrageously out-of-place chars for text
             // (these are device control one/two in unicode)
-            result = StringUtils.replace(result, "\\=", "\u0011");
-            result = StringUtils.replace(result, "\\|", "\u0012");
+            result = DoxiaStringUtils.replace(result, "\\=", "\u0011");
+            result = DoxiaStringUtils.replace(result, "\\|", "\u0012");
 
             return result;
         }
@@ -2466,8 +2466,8 @@ public class AptParser extends AbstractTextParser implements AptMarkup {
 
             String result = s;
 
-            result = StringUtils.replace(result, "\u0011", "=");
-            result = StringUtils.replace(result, "\u0012", "|");
+            result = DoxiaStringUtils.replace(result, "\u0011", "=");
+            result = DoxiaStringUtils.replace(result, "\u0012", "|");
 
             return result;
         }

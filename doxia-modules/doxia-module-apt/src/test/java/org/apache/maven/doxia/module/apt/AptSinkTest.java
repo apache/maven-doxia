@@ -20,10 +20,10 @@ package org.apache.maven.doxia.module.apt;
 
 import java.io.Writer;
 
-import org.apache.commons.lang3.StringUtils;
 import org.apache.maven.doxia.markup.Markup;
 import org.apache.maven.doxia.sink.Sink;
 import org.apache.maven.doxia.sink.impl.AbstractSinkTest;
+import org.apache.maven.doxia.util.DoxiaStringUtils;
 import org.junit.jupiter.api.Test;
 
 import static org.junit.jupiter.api.Assertions.assertEquals;
@@ -108,23 +108,23 @@ public class AptSinkTest extends AbstractSinkTest {
 
     /** {@inheritDoc} */
     protected String getSection3Block(String title) {
-        return EOL + StringUtils.repeat(AptMarkup.SECTION_TITLE_START_MARKUP, 2) + title + EOL + EOL + EOL;
+        return EOL + DoxiaStringUtils.repeat(AptMarkup.SECTION_TITLE_START_MARKUP, 2) + title + EOL + EOL + EOL;
     }
 
     /** {@inheritDoc} */
     protected String getSection4Block(String title) {
-        return EOL + StringUtils.repeat(AptMarkup.SECTION_TITLE_START_MARKUP, 3) + title + EOL + EOL + EOL;
+        return EOL + DoxiaStringUtils.repeat(AptMarkup.SECTION_TITLE_START_MARKUP, 3) + title + EOL + EOL + EOL;
     }
 
     /** {@inheritDoc} */
     protected String getSection5Block(String title) {
-        return EOL + StringUtils.repeat(AptMarkup.SECTION_TITLE_START_MARKUP, 4) + title + EOL + EOL + EOL;
+        return EOL + DoxiaStringUtils.repeat(AptMarkup.SECTION_TITLE_START_MARKUP, 4) + title + EOL + EOL + EOL;
     }
 
     /** {@inheritDoc} */
     protected String getSection6Block(String title) {
         // Everything above level 5 is automatically converted to level 5 (as APT doesn't support deeper nesting)
-        return EOL + StringUtils.repeat(AptMarkup.SECTION_TITLE_START_MARKUP, 4) + title + EOL + EOL + EOL;
+        return EOL + DoxiaStringUtils.repeat(AptMarkup.SECTION_TITLE_START_MARKUP, 4) + title + EOL + EOL + EOL;
     }
 
     /** {@inheritDoc} */
