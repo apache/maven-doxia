@@ -20,10 +20,10 @@ package org.apache.maven.doxia.module.xhtml5;
 
 import java.io.Writer;
 
-import org.apache.commons.lang3.StringUtils;
 import org.apache.maven.doxia.module.AbstractIdentityTest;
 import org.apache.maven.doxia.parser.Parser;
 import org.apache.maven.doxia.sink.Sink;
+import org.apache.maven.doxia.util.DoxiaStringUtils;
 import org.junit.jupiter.api.BeforeEach;
 
 /**
@@ -61,7 +61,7 @@ public class Xhtml5IdentityTest extends AbstractIdentityTest {
         int iEndCaption = expected.indexOf(endCaption) + endCaption.length();
 
         String captionTag = expected.substring(iStartCaption, iEndCaption) + EOL + EOL + EOL;
-        expected = StringUtils.replace(expected, captionTag, "");
+        expected = DoxiaStringUtils.replace(expected, captionTag, "");
 
         int iStartTableRows =
                 expected.substring(0, iStartCaption).lastIndexOf("begin:tableRows") + "begin:tableRows".length();

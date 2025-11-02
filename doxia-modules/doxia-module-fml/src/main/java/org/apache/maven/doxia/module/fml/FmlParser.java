@@ -32,7 +32,6 @@ import java.util.LinkedHashMap;
 import java.util.Map;
 
 import org.apache.commons.io.IOUtils;
-import org.apache.commons.lang3.StringUtils;
 import org.apache.maven.doxia.macro.MacroExecutionException;
 import org.apache.maven.doxia.macro.MacroRequest;
 import org.apache.maven.doxia.macro.manager.MacroNotFoundException;
@@ -44,6 +43,7 @@ import org.apache.maven.doxia.parser.ParseException;
 import org.apache.maven.doxia.sink.Sink;
 import org.apache.maven.doxia.sink.impl.SinkEventAttributeSet;
 import org.apache.maven.doxia.sink.impl.Xhtml5BaseSink;
+import org.apache.maven.doxia.util.DoxiaStringUtils;
 import org.apache.maven.doxia.util.DoxiaUtils;
 import org.apache.maven.doxia.util.HtmlTools;
 import org.codehaus.plexus.util.xml.pull.XmlPullParser;
@@ -460,7 +460,7 @@ public class FmlParser extends AbstractXmlParser implements FmlMarkup {
         // ----------------------------------------------------------------------
 
         for (Part part : faqs.getParts()) {
-            if (StringUtils.isNotEmpty(part.getTitle())) {
+            if (DoxiaStringUtils.isNotEmpty(part.getTitle())) {
                 sink.paragraph();
                 sink.inline(SinkEventAttributeSet.Semantics.BOLD);
                 xdocParser.parse(part.getTitle(), sink);
@@ -474,7 +474,7 @@ public class FmlParser extends AbstractXmlParser implements FmlMarkup {
                 sink.numberedListItem();
                 sink.link("#" + faq.getId());
 
-                if (StringUtils.isNotEmpty(faq.getQuestion())) {
+                if (DoxiaStringUtils.isNotEmpty(faq.getQuestion())) {
                     xdocParser.parse(faq.getQuestion(), sink);
                 } else {
                     throw new ParseException("Missing <question> for FAQ '" + faq.getId() + "'");
@@ -494,7 +494,7 @@ public class FmlParser extends AbstractXmlParser implements FmlMarkup {
         // ----------------------------------------------------------------------
 
         for (Part part : faqs.getParts()) {
-            if (StringUtils.isNotEmpty(part.getTitle())) {
+            if (DoxiaStringUtils.isNotEmpty(part.getTitle())) {
                 sink.section1();
                 sink.anchor(part.getId());
                 sink.anchor_();
@@ -513,7 +513,7 @@ public class FmlParser extends AbstractXmlParser implements FmlMarkup {
 
                 sink.definedTerm();
 
-                if (StringUtils.isNotEmpty(faq.getQuestion())) {
+                if (DoxiaStringUtils.isNotEmpty(faq.getQuestion())) {
                     xdocParser.parse(faq.getQuestion(), sink);
                 } else {
                     throw new ParseException("Missing <question> for FAQ '" + faq.getId() + "'");
@@ -523,7 +523,7 @@ public class FmlParser extends AbstractXmlParser implements FmlMarkup {
 
                 sink.definition();
 
-                if (StringUtils.isNotEmpty(faq.getAnswer())) {
+                if (DoxiaStringUtils.isNotEmpty(faq.getAnswer())) {
                     xdocParser.parse(faq.getAnswer(), sink);
                 } else {
                     throw new ParseException("Missing <answer> for FAQ '" + faq.getId() + "'");
@@ -542,7 +542,7 @@ public class FmlParser extends AbstractXmlParser implements FmlMarkup {
 
             sink.definitionList_();
 
-            if (StringUtils.isNotEmpty(part.getTitle())) {
+            if (DoxiaStringUtils.isNotEmpty(part.getTitle())) {
                 sink.section1_();
             }
         }

@@ -30,7 +30,6 @@ import java.util.LinkedHashMap;
 import java.util.Map;
 
 import org.apache.commons.io.IOUtils;
-import org.apache.commons.lang3.StringUtils;
 import org.apache.maven.doxia.macro.MacroExecutionException;
 import org.apache.maven.doxia.macro.MacroRequest;
 import org.apache.maven.doxia.macro.manager.MacroNotFoundException;
@@ -38,6 +37,7 @@ import org.apache.maven.doxia.parser.ParseException;
 import org.apache.maven.doxia.parser.Xhtml5BaseParser;
 import org.apache.maven.doxia.sink.Sink;
 import org.apache.maven.doxia.sink.impl.SinkEventAttributeSet;
+import org.apache.maven.doxia.util.DoxiaStringUtils;
 import org.codehaus.plexus.util.xml.pull.XmlPullParser;
 import org.codehaus.plexus.util.xml.pull.XmlPullParserException;
 import org.slf4j.Logger;
@@ -191,12 +191,12 @@ public class Xhtml5Parser extends Xhtml5BaseParser implements Xhtml5Markup {
     private void processMacro(String text, Sink sink) throws XmlPullParserException {
         String s = text.substring(text.indexOf('{') + 1, text.indexOf('}'));
         s = escapeForMacro(s);
-        String[] params = StringUtils.split(s, "|");
+        String[] params = DoxiaStringUtils.split(s, "|");
         String macroName = params[0];
 
         Map<String, Object> parameters = new LinkedHashMap<>();
         for (int i = 1; i < params.length; i++) {
-            String[] param = StringUtils.split(params[i], "=");
+            String[] param = DoxiaStringUtils.split(params[i], "=");
             if (param.length == 1) {
                 throw new XmlPullParserException("Missing 'key=value' pair for macro parameter: " + params[i]);
             }
@@ -232,8 +232,8 @@ public class Xhtml5Parser extends Xhtml5BaseParser implements Xhtml5Markup {
 
         // use some outrageously out-of-place chars for text
         // (these are device control one/two in unicode)
-        result = StringUtils.replace(result, "\\=", "\u0011");
-        result = StringUtils.replace(result, "\\|", "\u0012");
+        result = DoxiaStringUtils.replace(result, "\\=", "\u0011");
+        result = DoxiaStringUtils.replace(result, "\\|", "\u0012");
 
         return result;
     }
@@ -251,8 +251,8 @@ public class Xhtml5Parser extends Xhtml5BaseParser implements Xhtml5Markup {
 
         String result = s;
 
-        result = StringUtils.replace(result, "\u0011", "=");
-        result = StringUtils.replace(result, "\u0012", "|");
+        result = DoxiaStringUtils.replace(result, "\u0011", "=");
+        result = DoxiaStringUtils.replace(result, "\u0012", "|");
 
         return result;
     }

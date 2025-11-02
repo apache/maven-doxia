@@ -23,11 +23,11 @@ import javax.swing.text.html.HTML.Attribute;
 
 import java.io.Writer;
 
-import org.apache.commons.lang3.StringUtils;
 import org.apache.maven.doxia.sink.SinkEventAttributes;
 import org.apache.maven.doxia.sink.impl.SinkEventAttributeSet;
 import org.apache.maven.doxia.sink.impl.SinkUtils;
 import org.apache.maven.doxia.sink.impl.Xhtml5BaseSink;
+import org.apache.maven.doxia.util.DoxiaStringUtils;
 import org.apache.maven.doxia.util.HtmlTools;
 
 /**
@@ -183,7 +183,7 @@ public class XdocSink extends Xhtml5BaseSink implements XdocMarkup {
             String text = HtmlTools.escapeHTML(getTextBuffer().toString());
             // hack: un-escape numerical entities that have been escaped above
             // note that numerical entities should really be written as one unicode character in the first place
-            text = StringUtils.replace(text, "&amp;#", "&#");
+            text = DoxiaStringUtils.replace(text, "&amp;#", "&#");
             write(text);
             writeEndTag(AUTHOR_TAG);
             resetTextBuffer();

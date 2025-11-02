@@ -35,12 +35,12 @@ import java.util.regex.Matcher;
 import java.util.regex.Pattern;
 
 import org.apache.commons.io.IOUtils;
-import org.apache.commons.lang3.StringUtils;
 import org.apache.maven.doxia.macro.MacroExecutionException;
 import org.apache.maven.doxia.markup.XmlMarkup;
 import org.apache.maven.doxia.sink.Sink;
 import org.apache.maven.doxia.sink.impl.AbstractLocator;
 import org.apache.maven.doxia.sink.impl.SinkEventAttributeSet;
+import org.apache.maven.doxia.util.DoxiaStringUtils;
 import org.apache.maven.doxia.util.HtmlTools;
 import org.apache.maven.doxia.util.XmlValidator;
 import org.codehaus.plexus.util.xml.pull.EntityReplacementMap;
@@ -480,7 +480,7 @@ public abstract class AbstractXmlParser extends AbstractParser implements XmlMar
 
         if (isCollapsibleWhitespace()) {
             StringBuilder newText = new StringBuilder();
-            String[] elts = StringUtils.split(text, " \r\n");
+            String[] elts = DoxiaStringUtils.split(text, " \r\n");
             for (int i = 0; i < elts.length; i++) {
                 newText.append(elts[i]);
                 if ((i + 1) < elts.length) {
@@ -590,7 +590,7 @@ public abstract class AbstractXmlParser extends AbstractParser implements XmlMar
      * @throws XmlPullParserException if any
      */
     private void addLocalEntities(XmlPullParser parser, String text) throws XmlPullParserException {
-        int entitiesCount = StringUtils.countMatches(text, ENTITY_START);
+        int entitiesCount = DoxiaStringUtils.countMatches(text, ENTITY_START);
         if (entitiesCount > 0) {
             // text should be foo [...]
             int start = text.indexOf('[');
@@ -617,9 +617,9 @@ public abstract class AbstractXmlParser extends AbstractParser implements XmlMar
      * @throws XmlPullParserException if any
      */
     private void addDTDEntities(XmlPullParser parser, String text) throws XmlPullParserException {
-        int entitiesCount = StringUtils.countMatches(text, ENTITY_START);
+        int entitiesCount = DoxiaStringUtils.countMatches(text, ENTITY_START);
         if (entitiesCount > 0) {
-            final String txt = StringUtils.replace(text, ENTITY_START, "\n" + ENTITY_START);
+            final String txt = DoxiaStringUtils.replace(text, ENTITY_START, "\n" + ENTITY_START);
             try (BufferedReader reader = new BufferedReader(new StringReader(txt))) {
                 String line;
                 String tmpLine = "";

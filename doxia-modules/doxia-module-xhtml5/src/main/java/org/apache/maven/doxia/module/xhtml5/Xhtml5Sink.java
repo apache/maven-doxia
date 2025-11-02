@@ -23,10 +23,10 @@ import javax.swing.text.html.HTML.Attribute;
 
 import java.io.Writer;
 
-import org.apache.commons.lang3.StringUtils;
 import org.apache.maven.doxia.sink.SinkEventAttributes;
 import org.apache.maven.doxia.sink.impl.SinkEventAttributeSet;
 import org.apache.maven.doxia.sink.impl.Xhtml5BaseSink;
+import org.apache.maven.doxia.util.DoxiaStringUtils;
 import org.apache.maven.doxia.util.HtmlTools;
 
 /**
@@ -170,7 +170,7 @@ public class Xhtml5Sink extends Xhtml5BaseSink implements Xhtml5Markup {
             String text = HtmlTools.escapeHTML(getTextBuffer().toString());
             // hack: un-escape numerical entities that have been escaped above
             // note that numerical entities should really be added as one unicode character in the first place
-            text = StringUtils.replace(text, "&amp;#", "&#");
+            text = DoxiaStringUtils.replace(text, "&amp;#", "&#");
             att.addAttribute(Attribute.CONTENT, text);
 
             writeSimpleTag(META, att);

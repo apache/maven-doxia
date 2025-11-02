@@ -26,8 +26,6 @@ import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
 
-import org.apache.commons.lang3.StringUtils;
-import org.apache.commons.text.StringEscapeUtils;
 import org.apache.maven.doxia.markup.HtmlMarkup;
 
 /**
@@ -311,10 +309,10 @@ public class HtmlTools {
 
         String unescaped;
         if (xmlMode) {
-            unescaped = StringEscapeUtils.unescapeXml(text);
+            unescaped = HtmlEntityUtils.unescapeXml(text);
         } else {
-            // StringEscapeUtils.unescapeHtml4 returns entities it doesn't recognize unchanged
-            unescaped = StringEscapeUtils.unescapeHtml4(text);
+            // HtmlEntityUtils.unescapeHtml4 returns entities it doesn't recognize unchanged
+            unescaped = HtmlEntityUtils.unescapeHtml4(text);
         }
 
         String tmp = unescaped;
@@ -339,7 +337,7 @@ public class HtmlTools {
 
         for (String entity : entities) {
             int codePoint = Integer.parseInt(entity, 16);
-            unescaped = StringUtils.replace(unescaped, "&#x" + entity + ";", new String(toChars(codePoint)));
+            unescaped = DoxiaStringUtils.replace(unescaped, "&#x" + entity + ";", new String(toChars(codePoint)));
         }
 
         return unescaped;

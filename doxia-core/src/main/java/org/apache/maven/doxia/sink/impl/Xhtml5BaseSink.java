@@ -33,11 +33,11 @@ import java.util.Objects;
 import java.util.Stack;
 import java.util.regex.Pattern;
 
-import org.apache.commons.lang3.StringUtils;
 import org.apache.maven.doxia.markup.HtmlMarkup;
 import org.apache.maven.doxia.markup.Markup;
 import org.apache.maven.doxia.sink.Sink;
 import org.apache.maven.doxia.sink.SinkEventAttributes;
+import org.apache.maven.doxia.util.DoxiaStringUtils;
 import org.apache.maven.doxia.util.DoxiaUtils;
 import org.apache.maven.doxia.util.HtmlTools;
 import org.codehaus.plexus.util.xml.PrettyPrintXMLWriter;
@@ -1450,7 +1450,7 @@ public class Xhtml5BaseSink extends AbstractXmlSink implements HtmlMarkup {
                     // is stripped."
                     // as now emitted inside <pre><code> the stripping is no longer performed by the browser and needs
                     // to be done server-side
-                    text = StringUtils.stripStart(text, "\r\n");
+                    text = DoxiaStringUtils.stripStart(text, "\r\n");
                     verbatimMode = VerbatimMode.ON_WITH_CODE_AFTER_TEXT;
                 case ON_WITH_CODE_AFTER_TEXT:
                 case ON:
@@ -1636,7 +1636,7 @@ public class Xhtml5BaseSink extends AbstractXmlSink implements HtmlMarkup {
     protected void content(String text) {
         // small hack due to DOXIA-314
         String txt = escapeHTML(text);
-        txt = StringUtils.replace(txt, "&amp;#", "&#");
+        txt = DoxiaStringUtils.replace(txt, "&amp;#", "&#");
         write(txt);
     }
 
