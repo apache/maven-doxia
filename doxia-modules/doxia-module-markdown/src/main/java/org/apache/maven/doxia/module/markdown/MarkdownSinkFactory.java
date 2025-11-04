@@ -35,6 +35,6 @@ public class MarkdownSinkFactory extends AbstractTextSinkFactory {
 
     protected Sink createSink(Writer writer, String encoding) {
         // encoding can safely be ignored since it isn't written into the generated Markdown source
-        return new MarkdownSink(writer);
+        return MarkdownSink.newInstance(writer);
     }
 }

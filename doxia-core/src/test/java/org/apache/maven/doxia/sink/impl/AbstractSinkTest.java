@@ -471,7 +471,7 @@ public abstract class AbstractSinkTest extends AbstractModuleTest {
     /**
      * Checks that the sequence <code>[footer(), footer_()]</code>,
      * invoked on the current sink, produces the same result as
-     * {@link #getHeaderBlock getHeaderBlock()}.
+     * {@link #getFooterBlock()}.
      */
     @Test
     public void footer() {
