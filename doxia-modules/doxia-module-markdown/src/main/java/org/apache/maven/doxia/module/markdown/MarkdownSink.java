@@ -18,8 +18,6 @@
  */
 package org.apache.maven.doxia.module.markdown;
 
-import javax.swing.text.MutableAttributeSet;
-
 import java.io.PrintWriter;
 import java.io.Writer;
 import java.util.ArrayList;
@@ -34,12 +32,9 @@ import java.util.stream.Collectors;
 
 import org.apache.maven.doxia.sink.Sink;
 import org.apache.maven.doxia.sink.SinkEventAttributes;
-import org.apache.maven.doxia.sink.impl.AbstractTextSink;
 import org.apache.maven.doxia.sink.impl.SinkEventAttributeSet;
-import org.apache.maven.doxia.sink.impl.SinkUtils;
 import org.apache.maven.doxia.sink.impl.Xhtml5BaseSink;
 import org.apache.maven.doxia.util.DoxiaStringUtils;
-import org.apache.maven.doxia.util.DoxiaUtils;
 import org.apache.maven.doxia.util.HtmlTools;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
@@ -48,8 +43,9 @@ import org.slf4j.LoggerFactory;
  * Markdown generator implementation.
  * <br>
  * <b>Note</b>: The encoding used is UTF-8.
+ * Extends the Xhtml5 sink as in some context HTML needs to be emitted.
  */
-public class MarkdownSink extends AbstractTextSink implements MarkdownMarkup {
+public class MarkdownSink extends Xhtml5BaseSink implements MarkdownMarkup {
     private static final Logger LOGGER = LoggerFactory.getLogger(MarkdownSink.class);
 
     // ----------------------------------------------------------------------
@@ -93,10 +89,10 @@ public class MarkdownSink extends AbstractTextSink implements MarkdownMarkup {
     private final LastTwoLinesBufferingWriter bufferingWriter;
 
     /** Keep track of end markup for inline events. */
-    protected Queue<Queue<String>> inlineStack = Collections.asLifoQueue(new LinkedList<>());
+    protected Queue<Queue<String>> inlineStack;
 
     /** The context of the surrounding elements as stack (LIFO) */
-    protected Queue<ElementContext> elementContextStack = Collections.asLifoQueue(new LinkedList<>());
+    protected Queue<ElementContext> elementContextStack;
 
     private String figureSrc;
 
@@ -222,6 +218,13 @@ public class MarkdownSink extends AbstractTextSink implements MarkdownMarkup {
 
         /**
          *
+         * @return {@code true} if only HTML is allowed in this context
+         */
+        boolean isHtml() {
+            return this.equals(HTML_BLOCK);
+        }
+        /**
+         *
          * @return {@code true} for all containers (allowing block elements as children), {@code false} otherwise
          */
         boolean isContainer() {
@@ -332,14 +335,20 @@ public class MarkdownSink extends AbstractTextSink implements MarkdownMarkup {
     // Public protected methods
     // ----------------------------------------------------------------------
 
+    protected static MarkdownSink newInstance(Writer writer) {
+        LastTwoLinesBufferingWriter bufferingWriter = new LastTwoLinesBufferingWriter(writer);
+        return new MarkdownSink(bufferingWriter, new PrintWriter(bufferingWriter));
+    }
+
     /**
      * Constructor, initialize the Writer and the variables.
      *
      * @param writer not null writer to write the result. <b>Should</b> be an UTF-8 Writer.
      */
-    protected MarkdownSink(Writer writer) {
-        this.bufferingWriter = new LastTwoLinesBufferingWriter(writer);
-        this.writer = new PrintWriter(bufferingWriter);
+    private MarkdownSink(LastTwoLinesBufferingWriter bufferingWriter, PrintWriter writer) {
+        super(writer);
+        this.bufferingWriter = bufferingWriter;
+        this.writer = writer;
 
         init();
     }
@@ -467,8 +476,8 @@ public class MarkdownSink extends AbstractTextSink implements MarkdownMarkup {
         this.tableHeaderCellFlag = false;
         this.cellCount = 0;
         this.cellJustif = null;
-        this.elementContextStack.clear();
-        this.inlineStack.clear();
+        this.elementContextStack = Collections.asLifoQueue(new LinkedList<>());
+        this.inlineStack = Collections.asLifoQueue(new LinkedList<>());
         // always set a default context (at least for tests not emitting a body)
         elementContextStack.add(ElementContext.BODY);
     }
@@ -540,6 +549,26 @@ public class MarkdownSink extends AbstractTextSink implements MarkdownMarkup {
     }
 
     @Override
+    public void section(int level, SinkEventAttributes attributes) {
+        // not supported as often used around sectionTitles which would otherwise no longer be emitted as markdown
+    }
+
+    @Override
+    public void section_(int level) {
+        // not supported as often used around sectionTitles which would otherwise no longer be emitted as markdown
+    }
+
+    @Override
+    public void header(SinkEventAttributes attributes) {
+        // not supported as often used around sectionTitles which would otherwise no longer be emitted as markdown
+    }
+
+    @Override
+    public void header_() {
+        // not supported as often used around sectionTitles which would otherwise no longer be emitted as markdown
+    }
+
+    @Override
     public void sectionTitle(int level, SinkEventAttributes attributes) {
         startContext(ElementContext.HEADING);
         if (level > 0) {
@@ -553,6 +582,13 @@ public class MarkdownSink extends AbstractTextSink implements MarkdownMarkup {
         if (level > 0) {
             ensureBlankLine(); // always end headings with blank line to increase compatibility with arbitrary MD
             // editors
+        }
+    }
+
+    @Override
+    public void list(SinkEventAttributes attributes) {
+        if (elementContextStack.element().isHtml()) {
+            super.list(attributes);
         }
     }
 
@@ -641,9 +677,9 @@ public class MarkdownSink extends AbstractTextSink implements MarkdownMarkup {
 
     @Override
     public void paragraph(SinkEventAttributes attributes) {
+        ensureBlankLine();
         // ignore paragraphs outside container contexts
         if (elementContextStack.element().isContainer()) {
-            ensureBlankLine();
             writeUnescaped(getLinePrefix());
         }
     }
@@ -658,33 +694,49 @@ public class MarkdownSink extends AbstractTextSink implements MarkdownMarkup {
 
     @Override
     public void verbatim(SinkEventAttributes attributes) {
-        // if no source attribute, then don't emit an info string
-        startContext(ElementContext.CODE_BLOCK);
-        writeUnescaped(VERBATIM_START_MARKUP);
-        if (attributes != null && attributes.containsAttributes(SinkEventAttributeSet.SOURCE)) {
-            writeUnescaped("unknown"); // unknown language
+        if (elementContextStack.element().isHtml()) {
+            super.verbatim(attributes);
+        } else {
+            // if no source attribute, then don't emit an info string
+            startContext(ElementContext.CODE_BLOCK);
+            writeUnescaped(VERBATIM_START_MARKUP);
+            if (attributes != null && attributes.containsAttributes(SinkEventAttributeSet.SOURCE)) {
+                writeUnescaped("unknown"); // unknown language
+            }
+            writeUnescaped(EOL);
+            writeUnescaped(getLinePrefix());
         }
-        writeUnescaped(EOL);
-        writeUnescaped(getLinePrefix());
     }
 
     @Override
     public void verbatim_() {
-        ensureBeginningOfLine();
-        writeUnescaped(getLinePrefix());
-        writeUnescaped(VERBATIM_END_MARKUP + BLANK_LINE);
-        endContext(ElementContext.CODE_BLOCK);
+        if (elementContextStack.element().isHtml()) {
+            super.verbatim_();
+        } else {
+            ensureBeginningOfLine();
+            writeUnescaped(getLinePrefix());
+            writeUnescaped(VERBATIM_END_MARKUP + BLANK_LINE);
+            endContext(ElementContext.CODE_BLOCK);
+        }
     }
 
     @Override
     public void blockquote(SinkEventAttributes attributes) {
-        startContext(ElementContext.BLOCKQUOTE);
-        writeUnescaped(BLOCKQUOTE_START_MARKUP);
+        if (elementContextStack.element().isHtml()) {
+            super.blockquote(attributes);
+        } else {
+            startContext(ElementContext.BLOCKQUOTE);
+            writeUnescaped(BLOCKQUOTE_START_MARKUP);
+        }
     }
 
     @Override
     public void blockquote_() {
-        endContext(ElementContext.BLOCKQUOTE);
+        if (elementContextStack.element().isHtml()) {
+            super.blockquote_();
+        } else {
+            endContext(ElementContext.BLOCKQUOTE);
+        }
     }
 
     @Override
@@ -696,58 +748,82 @@ public class MarkdownSink extends AbstractTextSink implements MarkdownMarkup {
 
     @Override
     public void table(SinkEventAttributes attributes) {
-        ensureBlankLine();
-        writeUnescaped(getLinePrefix());
+        if (elementContextStack.element().isHtml()) {
+            super.table(attributes);
+        } else {
+            ensureBlankLine();
+            writeUnescaped(getLinePrefix());
+        }
+    }
+
+    @Override
+    public void table_() {
+        if (elementContextStack.element().isHtml()) {
+            super.table_();
+        }
     }
 
     @Override
     public void tableRows(int[] justification, boolean grid) {
-        if (justification != null) {
-            cellJustif = Arrays.stream(justification).boxed().collect(Collectors.toCollection(ArrayList::new));
+        if (elementContextStack.element().isHtml()) {
+            super.tableRows(justification, grid);
         } else {
-            cellJustif = new ArrayList<>();
+            if (justification != null) {
+                cellJustif = Arrays.stream(justification).boxed().collect(Collectors.toCollection(ArrayList::new));
+            } else {
+                cellJustif = new ArrayList<>();
+            }
+            // grid flag is not supported
+            isFirstTableRow = true;
         }
-        // grid flag is not supported
-        isFirstTableRow = true;
     }
 
     @Override
     public void tableRows_() {
-        cellJustif = null;
+        if (elementContextStack.element().isHtml()) {
+            super.tableRows_();
+        } else {
+            cellJustif = null;
+        }
     }
 
     @Override
     public void tableRow(SinkEventAttributes attributes) {
-        startContext(ElementContext.TABLE_ROW);
-        cellCount = 0;
+        if (elementContextStack.element().isHtml()) {
+            super.tableRow(attributes);
+        } else {
+            startContext(ElementContext.TABLE_ROW);
+            cellCount = 0;
+        }
     }
 
     @Override
     public void tableRow_() {
-        String buffer = consumeBuffer();
-        endContext(ElementContext.TABLE_ROW);
-        if (isFirstTableRow && !tableHeaderCellFlag) {
-            // emit empty table header as this is mandatory for GFM table extension
-            // (https://stackoverflow.com/a/17543474/5155923)
-            writeEmptyTableHeader();
-            writeTableDelimiterRow();
-            tableHeaderCellFlag = false;
-            isFirstTableRow = false;
-            // afterwards emit the first row
+        if (elementContextStack.element().isHtml()) {
+            super.tableRow_();
+        } else {
+            String buffer = consumeBuffer();
+            endContext(ElementContext.TABLE_ROW);
+            if (isFirstTableRow && !tableHeaderCellFlag) {
+                // emit empty table header as this is mandatory for GFM table extension
+                // (https://stackoverflow.com/a/17543474/5155923)
+                writeEmptyTableHeader();
+                writeTableDelimiterRow();
+                tableHeaderCellFlag = false;
+                isFirstTableRow = false;
+                // afterwards emit the first row
+            }
+            writeUnescaped(TABLE_ROW_PREFIX);
+            writeUnescaped(buffer);
+            writeUnescaped(EOL);
+            if (isFirstTableRow) {
+                // emit delimiter row
+                writeTableDelimiterRow();
+                isFirstTableRow = false;
+            }
+            // only reset cell count if this is the last row
+            cellCount = 0;
         }
-
-        writeUnescaped(TABLE_ROW_PREFIX);
-        writeUnescaped(buffer);
-        writeUnescaped(EOL);
-
-        if (isFirstTableRow) {
-            // emit delimiter row
-            writeTableDelimiterRow();
-            isFirstTableRow = false;
-        }
-
-        // only reset cell count if this is the last row
-        cellCount = 0;
     }
 
     private void writeEmptyTableHeader() {
@@ -789,30 +865,34 @@ public class MarkdownSink extends AbstractTextSink implements MarkdownMarkup {
 
     @Override
     public void tableCell(SinkEventAttributes attributes) {
-        startContext(ElementContext.TABLE_CELL);
-        if (attributes != null) {
-            // evaluate alignment attributes
-            final int cellJustification;
-            if (attributes.containsAttributes(SinkEventAttributeSet.LEFT)) {
-                cellJustification = Sink.JUSTIFY_LEFT;
-            } else if (attributes.containsAttributes(SinkEventAttributeSet.RIGHT)) {
-                cellJustification = Sink.JUSTIFY_RIGHT;
-            } else if (attributes.containsAttributes(SinkEventAttributeSet.CENTER)) {
-                cellJustification = Sink.JUSTIFY_CENTER;
-            } else {
-                cellJustification = -1;
-            }
-            if (cellJustification > -1) {
-                if (cellJustif.size() > cellCount) {
-                    cellJustif.set(cellCount, cellJustification);
-                } else if (cellJustif.size() == cellCount) {
-                    cellJustif.add(cellJustification);
+        if (elementContextStack.element().isHtml()) {
+            super.tableCell(attributes);
+        } else {
+            startContext(ElementContext.TABLE_CELL);
+            if (attributes != null) {
+                // evaluate alignment attributes
+                final int cellJustification;
+                if (attributes.containsAttributes(SinkEventAttributeSet.LEFT)) {
+                    cellJustification = Sink.JUSTIFY_LEFT;
+                } else if (attributes.containsAttributes(SinkEventAttributeSet.RIGHT)) {
+                    cellJustification = Sink.JUSTIFY_RIGHT;
+                } else if (attributes.containsAttributes(SinkEventAttributeSet.CENTER)) {
+                    cellJustification = Sink.JUSTIFY_CENTER;
                 } else {
-                    // create non-existing justifications for preceding columns
-                    for (int precedingCol = cellJustif.size(); precedingCol < cellCount; precedingCol++) {
-                        cellJustif.add(Sink.JUSTIFY_DEFAULT);
+                    cellJustification = -1;
+                }
+                if (cellJustification > -1) {
+                    if (cellJustif.size() > cellCount) {
+                        cellJustif.set(cellCount, cellJustification);
+                    } else if (cellJustif.size() == cellCount) {
+                        cellJustif.add(cellJustification);
+                    } else {
+                        // create non-existing justifications for preceding columns
+                        for (int precedingCol = cellJustif.size(); precedingCol < cellCount; precedingCol++) {
+                            cellJustif.add(Sink.JUSTIFY_DEFAULT);
+                        }
+                        cellJustif.add(cellJustification);
                     }
-                    cellJustif.add(cellJustification);
                 }
             }
         }
@@ -820,18 +900,30 @@ public class MarkdownSink extends AbstractTextSink implements MarkdownMarkup {
 
     @Override
     public void tableHeaderCell(SinkEventAttributes attributes) {
-        tableCell(attributes);
-        tableHeaderCellFlag = true;
+        if (elementContextStack.element().isHtml()) {
+            super.tableHeaderCell(attributes);
+        } else {
+            tableCell(attributes);
+            tableHeaderCellFlag = true;
+        }
     }
 
     @Override
     public void tableCell_() {
-        endTableCell();
+        if (elementContextStack.element().isHtml()) {
+            super.tableCell_();
+        } else {
+            endTableCell();
+        }
     }
 
     @Override
     public void tableHeaderCell_() {
-        endTableCell();
+        if (elementContextStack.element().isHtml()) {
+            super.tableHeaderCell_();
+        } else {
+            endTableCell();
+        }
     }
 
     /**
@@ -845,42 +937,76 @@ public class MarkdownSink extends AbstractTextSink implements MarkdownMarkup {
 
     @Override
     public void tableCaption(SinkEventAttributes attributes) {
-        elementContextStack.add(ElementContext.TABLE_CAPTION);
+        if (elementContextStack.element().isHtml()) {
+            super.tableCaption(attributes);
+        } else {
+            elementContextStack.add(ElementContext.TABLE_CAPTION);
+        }
     }
 
     @Override
     public void tableCaption_() {
-        endContext(ElementContext.TABLE_CAPTION);
+        if (elementContextStack.element().isHtml()) {
+            super.tableCaption_();
+        } else {
+            endContext(ElementContext.TABLE_CAPTION);
+        }
     }
 
     @Override
     public void figure(SinkEventAttributes attributes) {
-        figureSrc = null;
-        startContext(ElementContext.FIGURE);
+        if (elementContextStack.element().isHtml()) {
+            super.figure(attributes);
+        } else {
+            figureSrc = null;
+            startContext(ElementContext.FIGURE);
+        }
+    }
+
+    @Override
+    public void figureCaption(SinkEventAttributes attributes) {
+        if (elementContextStack.element().isHtml()) {
+            super.figureCaption(attributes);
+        }
+    }
+
+    @Override
+    public void figureCaption_() {
+        if (elementContextStack.element().isHtml()) {
+            super.figureCaption_();
+        }
     }
 
     @Override
     public void figureGraphics(String name, SinkEventAttributes attributes) {
-        figureSrc = name;
-        // is it a standalone image (outside a figure)?
-        if (elementContextStack.peek() != ElementContext.FIGURE) {
-            Object alt = attributes.getAttribute(SinkEventAttributes.ALT);
-            if (alt == null) {
-                alt = "";
+        if (elementContextStack.element().isHtml()) {
+            super.figureGraphics(name, attributes);
+        } else {
+            figureSrc = name;
+            // is it a standalone image (outside a figure)?
+            if (elementContextStack.peek() != ElementContext.FIGURE) {
+                Object alt = attributes.getAttribute(SinkEventAttributes.ALT);
+                if (alt == null) {
+                    alt = "";
+                }
+                writeImage(elementContextStack.element().escape(bufferingWriter, alt.toString()), name);
             }
-            writeImage(elementContextStack.element().escape(bufferingWriter, alt.toString()), name);
         }
     }
 
     @Override
     public void figure_() {
-        StringBuilder buffer = getCurrentBuffer();
-        String label = "";
-        if (buffer != null) {
-            label = buffer.toString();
+        if (elementContextStack.element().isHtml()) {
+            super.figure_();
+        } else {
+            StringBuilder buffer = getCurrentBuffer();
+            String label = "";
+            if (buffer != null) {
+                label = buffer.toString();
+            }
+            endContext(ElementContext.FIGURE);
+            writeImage(label, figureSrc);
         }
-        endContext(ElementContext.FIGURE);
-        writeImage(label, figureSrc);
     }
 
     private void writeImage(String alt, String src) {
@@ -890,123 +1016,129 @@ public class MarkdownSink extends AbstractTextSink implements MarkdownMarkup {
     }
 
     public void anchor(String name, SinkEventAttributes attributes) {
-        // emit html anchor as markdown does not support anchors
-        MutableAttributeSet atts = SinkUtils.filterAttributes(attributes, SinkUtils.SINK_BASE_ATTRIBUTES);
-
-        String id = name;
-
-        if (!DoxiaUtils.isValidId(id)) {
-            id = DoxiaUtils.encodeId(name);
-
-            LOGGER.debug("{}Modified invalid anchor name '{}' to '{}'", getLocationLogPrefix(), name, id);
+        super.anchor(name, attributes);
+        if (!elementContextStack.element().isHtml()) {
+            // close anchor tag immediately otherwise markdown would not be allowed afterwards
+            writeUnescaped("</a>");
         }
-
-        MutableAttributeSet att = new SinkEventAttributeSet();
-        att.addAttribute(SinkEventAttributes.ID, id);
-        att.addAttributes(atts);
-        StringBuilder htmlAnchor = new StringBuilder("<a");
-        htmlAnchor.append(SinkUtils.getAttributeString(att));
-        htmlAnchor.append(">");
-        htmlAnchor.append("</a>"); // close anchor tag immediately otherwise markdown would not be allowed afterwards
-        writeUnescaped(htmlAnchor.toString());
     }
 
     @Override
     public void anchor_() {
-        // anchor is always empty html element, i.e. already closed with anchor()
+        if (elementContextStack.element().isHtml()) {
+            super.anchor_();
+        } else {
+            // anchor is always empty html element, i.e. already closed with anchor()
+        }
     }
 
     public void link(String name, SinkEventAttributes attributes) {
-        if (elementContextStack.element() == ElementContext.CODE_BLOCK) {
-            LOGGER.warn("{}Ignoring unsupported link inside code block", getLocationLogPrefix());
-        } else if (elementContextStack.element() == ElementContext.CODE_SPAN) {
-            // emit link outside the code span, i.e. insert at the beginning of the buffer
-            getCurrentBuffer().insert(0, LINK_START_1_MARKUP);
-            linkName = name;
+        if (elementContextStack.element().isHtml()) {
+            super.link(name, attributes);
         } else {
-            writeUnescaped(LINK_START_1_MARKUP);
-            linkName = name;
+            if (elementContextStack.element() == ElementContext.CODE_BLOCK) {
+                LOGGER.warn("{}Ignoring unsupported link inside code block", getLocationLogPrefix());
+            } else if (elementContextStack.element() == ElementContext.CODE_SPAN) {
+                // emit link outside the code span, i.e. insert at the beginning of the buffer
+                getCurrentBuffer().insert(0, LINK_START_1_MARKUP);
+                linkName = name;
+            } else {
+                writeUnescaped(LINK_START_1_MARKUP);
+                linkName = name;
+            }
         }
     }
 
     @Override
     public void link_() {
-        if (elementContextStack.element() == ElementContext.CODE_BLOCK) {
-            return;
-        } else if (elementContextStack.element() == ElementContext.CODE_SPAN) {
-            // defer emitting link end markup until inline_() is called
-            StringBuilder linkEndMarkup = new StringBuilder();
-            linkEndMarkup.append(LINK_START_2_MARKUP);
-            linkEndMarkup.append(linkName);
-            linkEndMarkup.append(LINK_END_MARKUP);
-            Queue<String> endMarkups = new LinkedList<>(inlineStack.poll());
-            endMarkups.add(linkEndMarkup.toString());
-            inlineStack.add(endMarkups);
+        if (elementContextStack.element().isHtml()) {
+            super.link_();
         } else {
-            writeUnescaped(LINK_START_2_MARKUP + linkName + LINK_END_MARKUP);
+            if (elementContextStack.element() == ElementContext.CODE_BLOCK) {
+                return;
+            } else if (elementContextStack.element() == ElementContext.CODE_SPAN) {
+                // defer emitting link end markup until inline_() is called
+                StringBuilder linkEndMarkup = new StringBuilder();
+                linkEndMarkup.append(LINK_START_2_MARKUP);
+                linkEndMarkup.append(linkName);
+                linkEndMarkup.append(LINK_END_MARKUP);
+                Queue<String> endMarkups = new LinkedList<>(inlineStack.poll());
+                endMarkups.add(linkEndMarkup.toString());
+                inlineStack.add(endMarkups);
+            } else {
+                writeUnescaped(LINK_START_2_MARKUP + linkName + LINK_END_MARKUP);
+            }
+            linkName = null;
         }
-        linkName = null;
     }
 
     @Override
     public void inline(SinkEventAttributes attributes) {
-        Queue<String> endMarkups = Collections.asLifoQueue(new LinkedList<>());
+        if (elementContextStack.element().isHtml()) {
+            super.inline(attributes);
+        } else {
+            Queue<String> endMarkups = Collections.asLifoQueue(new LinkedList<>());
 
-        boolean requiresHtml = elementContextStack.element() == ElementContext.HTML_BLOCK;
-        if (attributes != null
-                && elementContextStack.element() != ElementContext.CODE_BLOCK
-                && elementContextStack.element() != ElementContext.CODE_SPAN) {
-            // code excludes other styles in markdown
-            if (attributes.containsAttribute(SinkEventAttributes.SEMANTICS, "code")
-                    || attributes.containsAttribute(SinkEventAttributes.SEMANTICS, "monospaced")
-                    || attributes.containsAttribute(SinkEventAttributes.STYLE, "monospaced")) {
-                if (requiresHtml) {
-                    writeUnescaped("<code>");
-                    endMarkups.add("</code>");
-                } else {
-                    startContext(ElementContext.CODE_SPAN);
-                    writeUnescaped(MONOSPACED_START_MARKUP);
-                    endMarkups.add(MONOSPACED_END_MARKUP);
-                }
-            } else {
-                // in XHTML "<em>" is used, but some tests still rely on the outdated "<italic>"
-                if (attributes.containsAttribute(SinkEventAttributes.SEMANTICS, "emphasis")
-                        || attributes.containsAttribute(SinkEventAttributes.SEMANTICS, "italic")
-                        || attributes.containsAttribute(SinkEventAttributes.STYLE, "italic")) {
+            boolean requiresHtml = elementContextStack.element() == ElementContext.HTML_BLOCK;
+            if (attributes != null
+                    && elementContextStack.element() != ElementContext.CODE_BLOCK
+                    && elementContextStack.element() != ElementContext.CODE_SPAN) {
+                // code excludes other styles in markdown
+                if (attributes.containsAttribute(SinkEventAttributes.SEMANTICS, "code")
+                        || attributes.containsAttribute(SinkEventAttributes.SEMANTICS, "monospaced")
+                        || attributes.containsAttribute(SinkEventAttributes.STYLE, "monospaced")) {
                     if (requiresHtml) {
-                        writeUnescaped("<em>");
-                        endMarkups.add("</em>");
+                        writeUnescaped("<code>");
+                        endMarkups.add("</code>");
                     } else {
-                        writeUnescaped(ITALIC_START_MARKUP);
-                        endMarkups.add(ITALIC_END_MARKUP);
+                        startContext(ElementContext.CODE_SPAN);
+                        writeUnescaped(MONOSPACED_START_MARKUP);
+                        endMarkups.add(MONOSPACED_END_MARKUP);
                     }
-                }
-                // in XHTML "<strong>" is used, but some tests still rely on the outdated "<bold>"
-                if (attributes.containsAttribute(SinkEventAttributes.SEMANTICS, "strong")
-                        || attributes.containsAttribute(SinkEventAttributes.SEMANTICS, "bold")
-                        || attributes.containsAttribute(SinkEventAttributes.STYLE, "bold")) {
-                    if (requiresHtml) {
-                        writeUnescaped("<strong>");
-                        endMarkups.add("</strong>");
-                    } else {
-                        writeUnescaped(BOLD_START_MARKUP);
-                        endMarkups.add(BOLD_END_MARKUP);
+                } else {
+                    // in XHTML "<em>" is used, but some tests still rely on the outdated "<italic>"
+                    if (attributes.containsAttribute(SinkEventAttributes.SEMANTICS, "emphasis")
+                            || attributes.containsAttribute(SinkEventAttributes.SEMANTICS, "italic")
+                            || attributes.containsAttribute(SinkEventAttributes.STYLE, "italic")) {
+                        if (requiresHtml) {
+                            writeUnescaped("<em>");
+                            endMarkups.add("</em>");
+                        } else {
+                            writeUnescaped(ITALIC_START_MARKUP);
+                            endMarkups.add(ITALIC_END_MARKUP);
+                        }
+                    }
+                    // in XHTML "<strong>" is used, but some tests still rely on the outdated "<bold>"
+                    if (attributes.containsAttribute(SinkEventAttributes.SEMANTICS, "strong")
+                            || attributes.containsAttribute(SinkEventAttributes.SEMANTICS, "bold")
+                            || attributes.containsAttribute(SinkEventAttributes.STYLE, "bold")) {
+                        if (requiresHtml) {
+                            writeUnescaped("<strong>");
+                            endMarkups.add("</strong>");
+                        } else {
+                            writeUnescaped(BOLD_START_MARKUP);
+                            endMarkups.add(BOLD_END_MARKUP);
+                        }
                     }
                 }
             }
+            inlineStack.add(endMarkups);
         }
-        inlineStack.add(endMarkups);
     }
 
     @Override
     public void inline_() {
-        for (String endMarkup : inlineStack.remove()) {
-            if (endMarkup.equals(MONOSPACED_END_MARKUP)) {
-                String buffer = getCurrentBuffer().toString();
-                endContext(ElementContext.CODE_SPAN);
-                writeUnescaped(buffer);
+        if (elementContextStack.element().isHtml()) {
+            super.inline_();
+        } else {
+            for (String endMarkup : inlineStack.remove()) {
+                if (endMarkup.equals(MONOSPACED_END_MARKUP)) {
+                    String buffer = getCurrentBuffer().toString();
+                    endContext(ElementContext.CODE_SPAN);
+                    writeUnescaped(buffer);
+                }
+                writeUnescaped(endMarkup);
             }
-            writeUnescaped(endMarkup);
         }
     }
 
@@ -1057,43 +1189,38 @@ public class MarkdownSink extends AbstractTextSink implements MarkdownMarkup {
 
     @Override
     public void text(String text, SinkEventAttributes attributes) {
-        if (attributes != null) {
-            inline(attributes);
-        }
-        ElementContext currentContext = elementContextStack.element();
-        if (currentContext == ElementContext.TABLE_CAPTION) {
-            // table caption cannot even be emitted via XHTML in markdown as there is no suitable location
-            LOGGER.warn("{}Ignoring unsupported table caption in Markdown", getLocationLogPrefix());
+        if (elementContextStack.element().isHtml()) {
+            super.text(text, attributes);
         } else {
-            String unifiedText = currentContext.escape(bufferingWriter, unifyEOLs(text));
-            // ignore newlines only, because those are emitted often coming from linebreaks in HTML with no semantical
-            // meaning
-            if (!unifiedText.equals(EOL)) {
-                String prefix = getLinePrefix();
-                if (prefix.length() > 0) {
-                    unifiedText = unifiedText.replaceAll(EOL, EOL + prefix);
-                }
+            if (attributes != null) {
+                inline(attributes);
             }
-            writeUnescaped(unifiedText);
-        }
-        if (attributes != null) {
-            inline_();
+            ElementContext currentContext = elementContextStack.element();
+            if (currentContext == ElementContext.TABLE_CAPTION) {
+                // table caption cannot even be emitted via XHTML in markdown as there is no suitable location
+                LOGGER.warn("{}Ignoring unsupported table caption in Markdown", getLocationLogPrefix());
+            } else {
+                String unifiedText = currentContext.escape(bufferingWriter, unifyEOLs(text));
+                // ignore newlines only, because those are emitted often coming from linebreaks in HTML with no
+                // semantical
+                // meaning
+                if (!unifiedText.equals(EOL)) {
+                    String prefix = getLinePrefix();
+                    if (prefix.length() > 0) {
+                        unifiedText = unifiedText.replaceAll(EOL, EOL + prefix);
+                    }
+                }
+                writeUnescaped(unifiedText);
+            }
+            if (attributes != null) {
+                inline_();
+            }
         }
     }
 
     @Override
     public void rawText(String text) {
         writeUnescaped(text);
-    }
-
-    @Override
-    public void comment(String comment) {
-        comment(comment, false);
-    }
-
-    @Override
-    public void comment(String comment, boolean endsWithLineBreak) {
-        rawText(Xhtml5BaseSink.encodeAsHtmlComment(comment, endsWithLineBreak, getLocationLogPrefix()));
     }
 
     /**

@@ -51,7 +51,7 @@ class MarkdownSinkTest extends AbstractSinkTest {
     }
 
     protected Sink createSink(Writer writer) {
-        return new MarkdownSink(writer);
+        return MarkdownSink.newInstance(writer);
     }
 
     protected boolean isXmlSink() {
@@ -79,15 +79,15 @@ class MarkdownSinkTest extends AbstractSinkTest {
     }
 
     protected String getArticleBlock() {
-        return "";
+        return "<article></article>";
     }
 
     protected String getNavigationBlock() {
-        return "";
+        return "<nav></nav>";
     }
 
     protected String getSidebarBlock() {
-        return "";
+        return "<aside></aside>";
     }
 
     protected String getSectionBlock(String title, int level) {
@@ -119,15 +119,16 @@ class MarkdownSinkTest extends AbstractSinkTest {
     }
 
     protected String getHeaderBlock() {
+        // never emitted by Markdown sink as otherwise too often markdown could not be used
         return "";
     }
 
     protected String getContentBlock() {
-        return "";
+        return "<main>" + EOL + "<div class=\"content\"></div></main>";
     }
 
     protected String getFooterBlock() {
-        return "";
+        return "<footer></footer>";
     }
 
     protected String getListBlock(String item) {
@@ -194,15 +195,15 @@ class MarkdownSinkTest extends AbstractSinkTest {
     }
 
     protected String getDataBlock(String value, String text) {
-        return text;
+        return "<data value=\"" + value + "\">" + text + "</data>";
     }
 
     protected String getTimeBlock(String datetime, String text) {
-        return text;
+        return "<time datetime=\"" + datetime + "\">" + text + "</time>";
     }
 
     protected String getAddressBlock(String text) {
-        return text;
+        return "<address>" + text + "</address>";
     }
 
     protected String getBlockquoteBlock(String text) {
@@ -210,7 +211,7 @@ class MarkdownSinkTest extends AbstractSinkTest {
     }
 
     protected String getDivisionBlock(String text) {
-        return text;
+        return "<div>" + text + "</div>";
     }
 
     protected String getVerbatimBlock(String text) {
@@ -275,7 +276,7 @@ class MarkdownSinkTest extends AbstractSinkTest {
     }
 
     protected String getLineBreakOpportunityBlock() {
-        return "";
+        return "<wbr />";
     }
 
     protected String getNonBreakingSpaceBlock() {
@@ -574,6 +575,28 @@ class MarkdownSinkTest extends AbstractSinkTest {
                 + "    - item 2 a" + EOL
                 + "    - item 2 b" + EOL
                 + "- item 3" + EOL;
+        assertEquals(expected, getSinkContent());
+    }
+
+    @Test
+    public void testLinkInsideHtmlSection() {
+        try (Sink sink = getSink()) {
+            sink.definitionList();
+            sink.definedTerm();
+            sink.text("question1");
+            sink.definedTerm_();
+            sink.definition();
+            sink.link("#top");
+            sink.text("[top]");
+            sink.link_();
+            sink.definition_();
+            sink.definitionList_();
+        }
+        String expected = "<dl>" + EOL
+                + "<dt>question1</dt>" + EOL
+                + "<dd><a href=\"#top\">[top]</a></dd>" + EOL
+                + "</dl>" + EOL
+                + EOL;
         assertEquals(expected, getSinkContent());
     }
 }
