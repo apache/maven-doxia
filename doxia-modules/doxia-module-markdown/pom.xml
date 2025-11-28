@@ -48,7 +48,7 @@ under the License.
 
   <properties>
     <!-- 0.64.0 requires Java 11 -->
-    <flexmarkVersion>0.62.2</flexmarkVersion>
+    <flexmarkVersion>0.64.8</flexmarkVersion>
   </properties>
 
   <dependencies>
