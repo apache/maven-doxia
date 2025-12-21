@@ -579,7 +579,7 @@ class MarkdownSinkTest extends AbstractSinkTest {
     }
 
     @Test
-    public void testLinkInsideHtmlSection() {
+    void linkInsideHtmlSection() {
         try (Sink sink = getSink()) {
             sink.definitionList();
             sink.definedTerm();
