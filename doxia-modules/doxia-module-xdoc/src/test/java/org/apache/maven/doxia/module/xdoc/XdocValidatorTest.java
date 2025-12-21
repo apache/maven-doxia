@@ -25,6 +25,7 @@ import java.util.regex.Pattern;
 import org.apache.maven.doxia.markup.XmlMarkup;
 import org.apache.maven.doxia.util.DoxiaStringUtils;
 import org.apache.maven.doxia.xsd.AbstractXmlValidatorTest;
+import org.junit.jupiter.api.Test;
 
 import static org.codehaus.plexus.testing.PlexusExtension.getBasedir;
 
@@ -34,7 +35,7 @@ import static org.codehaus.plexus.testing.PlexusExtension.getBasedir;
  * @author <a href="mailto:vincent.siveton@gmail.com">Vincent Siveton</a>
  * @since 1.0
  */
-public class XdocValidatorTest extends AbstractXmlValidatorTest {
+class XdocValidatorTest extends AbstractXmlValidatorTest {
     /** The xsd to use */
     private static final File XDOC_XSD = new File(getBasedir(), "/src/main/resources/xdoc-2.0.xsd");
 
@@ -62,6 +63,7 @@ public class XdocValidatorTest extends AbstractXmlValidatorTest {
     }
 
     @Override
+    @Test
     public void validateFiles() {
         // TODO: super.validateFiles() only validates files from doxia-test-docs, what's the point?
     }

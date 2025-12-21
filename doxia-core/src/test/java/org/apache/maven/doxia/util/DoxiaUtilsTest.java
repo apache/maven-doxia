@@ -24,9 +24,9 @@ import java.util.Date;
 import java.util.GregorianCalendar;
 
 import org.codehaus.plexus.testing.PlexusTest;
-import org.junit.jupiter.api.Assertions;
 import org.junit.jupiter.api.Test;
 
+import static org.junit.jupiter.api.Assertions.assertDoesNotThrow;
 import static org.junit.jupiter.api.Assertions.assertEquals;
 import static org.junit.jupiter.api.Assertions.assertFalse;
 import static org.junit.jupiter.api.Assertions.assertNotNull;
@@ -183,7 +183,7 @@ class DoxiaUtilsTest {
         final int month = Calendar.FEBRUARY;
         final int day = 27;
 
-        Assertions.assertDoesNotThrow(() -> {
+        assertDoesNotThrow(() -> {
             final Date feb27 = new GregorianCalendar(year, month, day).getTime();
             assertEquals(feb27, DoxiaUtils.parseDate("27.02.1973"));
             assertEquals(feb27, DoxiaUtils.parseDate("27. 02. 1973"));
