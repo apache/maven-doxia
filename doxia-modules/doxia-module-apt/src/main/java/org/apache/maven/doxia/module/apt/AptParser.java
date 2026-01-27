@@ -816,7 +816,7 @@ public class AptParser extends AbstractTextParser implements AptMarkup {
                     if (blockIndent < listIndent) {
                         break loop;
                     }
-                    /*FALLTHROUGH*/
+                /*FALLTHROUGH*/
                 case VERBATIM:
                 case MACRO:
                 case FIGURE:
@@ -862,7 +862,7 @@ public class AptParser extends AbstractTextParser implements AptMarkup {
                     if (blockIndent >= listIndent) {
                         nextBlock();
                     }
-                    /*FALLTHROUGH*/
+                /*FALLTHROUGH*/
                 default:
                     // A block which ends the list.
                     break loop;
@@ -899,7 +899,7 @@ public class AptParser extends AbstractTextParser implements AptMarkup {
                     if (blockIndent < listIndent) {
                         break loop;
                     }
-                    /*FALLTHROUGH*/
+                /*FALLTHROUGH*/
                 case VERBATIM:
                 case FIGURE:
                 case TABLE:
@@ -944,7 +944,7 @@ public class AptParser extends AbstractTextParser implements AptMarkup {
                     if (blockIndent >= listIndent) {
                         nextBlock();
                     }
-                    /*FALLTHROUGH*/
+                /*FALLTHROUGH*/
                 default:
                     // A block which ends the list.
                     break loop;
@@ -981,7 +981,7 @@ public class AptParser extends AbstractTextParser implements AptMarkup {
                     if (blockIndent < listIndent) {
                         break loop;
                     }
-                    /*FALLTHROUGH*/
+                /*FALLTHROUGH*/
                 case VERBATIM:
                 case FIGURE:
                 case TABLE:
@@ -1027,7 +1027,7 @@ public class AptParser extends AbstractTextParser implements AptMarkup {
                     if (blockIndent >= listIndent) {
                         nextBlock();
                     }
-                    /*FALLTHROUGH*/
+                /*FALLTHROUGH*/
                 default:
                     // A block which ends the list.
                     break loop;

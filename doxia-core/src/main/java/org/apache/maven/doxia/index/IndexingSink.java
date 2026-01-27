@@ -177,7 +177,7 @@ public class IndexingSink extends org.apache.maven.doxia.sink.impl.SinkWrapper {
 
                     setEntryId(entry, title);
                     break;
-                    // Dunno how to handle others yet
+                // Dunno how to handle others yet
                 default:
                     break;
             }
