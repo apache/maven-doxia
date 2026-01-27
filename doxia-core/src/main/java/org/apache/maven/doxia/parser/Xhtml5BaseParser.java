@@ -914,7 +914,7 @@ public class Xhtml5BaseParser extends AbstractXmlParser implements HtmlMarkup {
                     numbering = Sink.NUMBERING_DECIMAL;
                     break;
                 default:
-                    // ignore all other
+                // ignore all other
             }
         }
 
