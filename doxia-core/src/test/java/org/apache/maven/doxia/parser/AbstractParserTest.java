@@ -249,6 +249,37 @@ public abstract class AbstractParserTest extends AbstractModuleTest {
         assertEventSuffix(it);
     }
 
+    /**
+     * Parse the file and return a {@link SinkEventTestingSink}.
+     *
+     * @param file the file to parse with {@link #parser}
+     * @return a sink to test parsing events
+     * @throws ParseException if the document parsing failed
+     * @throws IOException if an I/O error occurs while closing test reader
+     */
+    protected SinkEventTestingSink parseFileToEventTestingSink(String file) throws ParseException, IOException {
+        SinkEventTestingSink sink;
+        try (Reader reader = getTestReader(file)) {
+            sink = new SinkEventTestingSink();
+            createParser().parse(reader, sink);
+        }
+        return sink;
+    }
+
+    /**
+     * Parse the text and return a {@link SinkEventTestingSink}.
+     *
+     * @param file the file to parse with {@link #parser}
+     * @return a sink to test parsing events
+     * @throws ParseException if the document parsing failed
+     */
+    protected SinkEventTestingSink parseSourceToEventTestingSink(String text) throws ParseException {
+        SinkEventTestingSink sink;
+        sink = new SinkEventTestingSink();
+        createParser().parse(text, sink);
+        return sink;
+    }
+
     public static void assertSinkEquals(SinkEventElement element, String name, Object... args) {
         assertEquals(name, element.getName(), "Name of element doesn't match");
         assertArrayEquals(args, element.getArgs(), "Arguments don't match");
