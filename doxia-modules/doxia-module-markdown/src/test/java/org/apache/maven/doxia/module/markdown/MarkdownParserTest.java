@@ -32,7 +32,6 @@ import org.apache.maven.doxia.parser.ParseException;
 import org.apache.maven.doxia.sink.SinkEventAttributes;
 import org.apache.maven.doxia.sink.impl.SinkEventAttributeSet;
 import org.apache.maven.doxia.sink.impl.SinkEventElement;
-import org.apache.maven.doxia.sink.impl.SinkEventTestingSink;
 import org.junit.jupiter.api.Test;
 
 import static org.junit.jupiter.api.Assertions.assertEquals;
@@ -651,24 +650,6 @@ class MarkdownParserTest extends AbstractParserTest {
         assertFalse(it.hasNext());
     }
 
-    /**
-     * Parse the file and return a {@link SinkEventTestingSink}.
-     *
-     * @param file the file to parse with {@link #parser}
-     * @return a sink to test parsing events
-     * @throws ParseException if the document parsing failed
-     * @throws IOException if an I/O error occurs while closing test reader
-     */
-    protected SinkEventTestingSink parseFileToEventTestingSink(String file) throws ParseException, IOException {
-        SinkEventTestingSink sink;
-        try (Reader reader = getTestReader(file)) {
-            sink = new SinkEventTestingSink();
-            parser.parse(reader, sink);
-        }
-
-        return sink;
-    }
-
     protected String parseFileToHtml(String file) throws ParseException, IOException {
         try (Reader reader = getTestReader(file)) {
             return parser.toXhtml(reader).toString();
@@ -896,5 +877,15 @@ class MarkdownParserTest extends AbstractParserTest {
     @Override
     protected String getVerbatimCodeSource() {
         return "```" + EOL + "<>{}=#*" + EOL + "```";
+    }
+
+    @Test
+    void anchorWithName() throws ParseException {
+        Iterator<SinkEventElement> eventIterator = parseSourceToEventTestingSink("<a name=\"my-anchor\">test</a>")
+                .getEventList()
+                .iterator();
+        assertEventPrefix(eventIterator);
+        assertSinkStartsWith(eventIterator, "paragraph", "anchor", "text", "anchor_", "paragraph_");
+        assertEventSuffix(eventIterator);
     }
 }

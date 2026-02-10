@@ -826,6 +826,11 @@ public class Xhtml5BaseParser extends AbstractXmlParser implements HtmlMarkup {
             isLink = true;
         } else {
             String id = (String) attribs.getAttribute(Attribute.ID.toString());
+            if (id == null) {
+                // although the "name" attribute is obsolete in HTML5, it is still allowed
+                // (https://www.w3.org/TR/html5-diff/#obsolete-attributes)
+                id = (String) attribs.getAttribute(Attribute.NAME.toString());
+            }
             if (id != null) {
                 sink.anchor(validAnchor(id), attribs);
                 isAnchor = true;

@@ -942,4 +942,16 @@ class Xhtml5BaseParserTest extends AbstractParserTest {
     protected String getVerbatimCodeSource() {
         return "<pre><code>&lt;&gt;{}=#*</code></pre>";
     }
+
+    @Test
+    void anchorWithName() throws ParseException {
+        String text = "<a name=\"test\"></a>";
+
+        parser.parse(text, sink);
+
+        Iterator<SinkEventElement> it = sink.getEventList().iterator();
+        // first attribute is the id, second is all given attributes
+        assertSinkEquals(it.next(), "anchor", "test", new SinkEventAttributeSet("name", "test"));
+        assertSinkEquals(it, "anchor_");
+    }
 }

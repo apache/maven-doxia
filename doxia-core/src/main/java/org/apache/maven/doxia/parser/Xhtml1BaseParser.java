@@ -118,6 +118,8 @@ public class Xhtml1BaseParser extends Xhtml5BaseParser {
     private static final Map<String, String> ELEMENT_MAPPING_TABLE = new HashMap<>();
 
     static {
+        // although obsolete attribute "name" is still allowed, however strongly recommended to be replaced by "id"
+        // (https://www.w3.org/TR/html5-diff/#obsolete-attributes)
         ATTRIBUTE_MAPPING_TABLE.put(
                 "a", Collections.singleton(new AttributeMapping("name", "id", AttributeMapping.MergeSemantics.IGNORE)));
 
