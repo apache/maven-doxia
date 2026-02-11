@@ -82,7 +82,8 @@ doxia-module-markdown
   
 * Parser
 
-  The parser will first convert Markdown into HTML and then parse the HTML into Doxia Sink API methods calls.
+  The parser will first convert Markdown into HTML and then parse the HTML into Doxia Sink API methods calls leveraging the 
+  {{{../doxia-module-xhtml5/index.html}XHTML5 parser}}.
 
 * References
 
