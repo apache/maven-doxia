@@ -813,9 +813,7 @@ public class Xhtml5BaseParser extends AbstractXmlParser implements HtmlMarkup {
 
         if (href != null) {
             int hashIndex = href.indexOf('#');
-            if (hashIndex != -1
-                    && !DoxiaUtils.isExternalLink(href)
-                    && !"external".equals(attribs.getAttribute(Attribute.REL.toString()))) {
+            if (hashIndex != -1 && !DoxiaUtils.isExternalLink(href)) {
                 String hash = href.substring(hashIndex + 1);
 
                 if (!DoxiaUtils.isValidId(hash)) {

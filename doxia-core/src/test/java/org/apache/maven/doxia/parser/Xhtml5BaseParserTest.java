@@ -841,35 +841,6 @@ class Xhtml5BaseParserTest extends AbstractParserTest {
         assertEquals("division_", element.getName());
     }
 
-    @Test
-    void anchorLinkWithExternalRel() throws Exception {
-        // although the fragment is not a valid doxia id it should be used as is, because the rel="external" indicates
-        // that this is an external link
-        String text = "<a href=\"index.html#1invalid\" rel=\"external\"></a>";
-
-        parser.parse(text, sink);
-        Iterator<SinkEventElement> it = sink.getEventList().iterator();
-
-        SinkEventElement element = it.next();
-
-        assertEquals("link", element.getName());
-        assertEquals("index.html#1invalid", element.getArgs()[0]);
-        assertEquals("external", ((SinkEventAttributeSet) element.getArgs()[1]).getAttribute("rel"));
-        assertEquals("link_", it.next().getName());
-    }
-
-    @Test
-    void anchorWithName() throws ParseException {
-        String text = "<a name=\"test\"></a>";
-
-        parser.parse(text, sink);
-
-        Iterator<SinkEventElement> it = sink.getEventList().iterator();
-        // first attribute is the id, second is all given attributes
-        assertSinkEquals(it.next(), "anchor", "test", new SinkEventAttributeSet("name", "test"));
-        assertSinkEquals(it, "anchor_");
-    }
-
     /**
      * Test entities in attributes.
      *
@@ -970,5 +941,17 @@ class Xhtml5BaseParserTest extends AbstractParserTest {
     @Override
     protected String getVerbatimCodeSource() {
         return "<pre><code>&lt;&gt;{}=#*</code></pre>";
+    }
+
+    @Test
+    void anchorWithName() throws ParseException {
+        String text = "<a name=\"test\"></a>";
+
+        parser.parse(text, sink);
+
+        Iterator<SinkEventElement> it = sink.getEventList().iterator();
+        // first attribute is the id, second is all given attributes
+        assertSinkEquals(it.next(), "anchor", "test", new SinkEventAttributeSet("name", "test"));
+        assertSinkEquals(it, "anchor_");
     }
 }
