@@ -256,15 +256,9 @@ class AptSinkTest extends AbstractSinkTest {
         return AptMarkup.MONOSPACED_START_MARKUP + text + AptMarkup.MONOSPACED_END_MARKUP;
     }
 
-    protected String getItalicBlock(String text) {
-        return AptMarkup.ITALIC_START_MARKUP + text + AptMarkup.ITALIC_END_MARKUP;
-    }
-
-    protected String getBoldBlock(String text) {
-        return AptMarkup.BOLD_START_MARKUP + text + AptMarkup.BOLD_END_MARKUP;
-    }
-
-    protected String getMonospacedBlock(String text) {
+    @Override
+    protected String getInlineDeleteBlock(String text) {
+        // delete/strikethrough is not supported in APT, so we just return the text without any markup
         return text;
     }
 

@@ -261,6 +261,10 @@ public class XdocSinkTest extends AbstractSinkTest {
         return "<code>" + text + "</code>";
     }
 
+    protected String getInlineDeleteBlock(String text) {
+        return "<del>" + text + "</del>";
+    }
+
     protected String getLineBreakBlock() {
         return "<br />";
     }

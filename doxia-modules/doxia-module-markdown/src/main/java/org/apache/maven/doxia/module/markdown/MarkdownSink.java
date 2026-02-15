@@ -1120,6 +1120,18 @@ public class MarkdownSink extends Xhtml5BaseSink implements MarkdownMarkup {
                             endMarkups.add(BOLD_END_MARKUP);
                         }
                     }
+                    // <del> is supported via GFM strikethrough extension
+                    if (attributes.containsAttributes(SinkEventAttributeSet.Semantics.DELETE)
+                            || attributes.containsAttributes(SinkEventAttributeSet.Semantics.LINE_THROUGH)
+                            || attributes.containsAttributes(SinkEventAttributeSet.LINETHROUGH)) {
+                        if (requiresHtml) {
+                            writeUnescaped("<del>");
+                            endMarkups.add("</del>");
+                        } else {
+                            writeUnescaped(STRIKETHROUGH_START_MARKUP);
+                            endMarkups.add(STRIKETHROUGH_END_MARKUP);
+                        }
+                    }
                 }
             }
             inlineStack.add(endMarkups);
