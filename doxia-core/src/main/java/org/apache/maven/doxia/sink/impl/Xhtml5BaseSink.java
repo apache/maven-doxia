@@ -18,17 +18,19 @@
  */
 package org.apache.maven.doxia.sink.impl;
 
+import javax.swing.text.AttributeSet;
 import javax.swing.text.MutableAttributeSet;
 import javax.swing.text.html.HTML.Tag;
 
 import java.io.PrintWriter;
 import java.io.StringWriter;
 import java.io.Writer;
-import java.util.ArrayList;
+import java.util.Collections;
 import java.util.EmptyStackException;
 import java.util.Enumeration;
 import java.util.LinkedList;
 import java.util.List;
+import java.util.Map;
 import java.util.Objects;
 import java.util.Stack;
 import java.util.regex.Pattern;
@@ -1245,52 +1247,199 @@ public class Xhtml5BaseSink extends AbstractXmlSink implements HtmlMarkup {
         }
     }
 
-    private void inlineSemantics(SinkEventAttributes attributes, String semantic, List<Tag> tags, Tag tag) {
-        if (attributes.containsAttribute(SinkEventAttributes.SEMANTICS, semantic)) {
-            SinkEventAttributes attributesNoSemantics = (SinkEventAttributes) attributes.copyAttributes();
-            attributesNoSemantics.removeAttribute(SinkEventAttributes.SEMANTICS);
-            writeStartTag(tag, attributesNoSemantics);
-            tags.add(0, tag);
-        }
-    }
-
     @Override
     public void inline(SinkEventAttributes attributes) {
         if (!headFlag) {
-            List<Tag> tags = new ArrayList<>();
-
-            if (attributes != null) {
-                inlineSemantics(attributes, "emphasis", tags, HtmlMarkup.EM);
-                inlineSemantics(attributes, "strong", tags, HtmlMarkup.STRONG);
-                inlineSemantics(attributes, "small", tags, HtmlMarkup.SMALL);
-                inlineSemantics(attributes, "line-through", tags, HtmlMarkup.S);
-                inlineSemantics(attributes, "citation", tags, HtmlMarkup.CITE);
-                inlineSemantics(attributes, "quote", tags, HtmlMarkup.Q);
-                inlineSemantics(attributes, "definition", tags, HtmlMarkup.DFN);
-                inlineSemantics(attributes, "abbreviation", tags, HtmlMarkup.ABBR);
-                inlineSemantics(attributes, "italic", tags, HtmlMarkup.I);
-                inlineSemantics(attributes, "bold", tags, HtmlMarkup.B);
-                inlineSemantics(attributes, "code", tags, HtmlMarkup.CODE);
-                inlineSemantics(attributes, "variable", tags, HtmlMarkup.VAR);
-                inlineSemantics(attributes, "sample", tags, HtmlMarkup.SAMP);
-                inlineSemantics(attributes, "keyboard", tags, HtmlMarkup.KBD);
-                inlineSemantics(attributes, "superscript", tags, HtmlMarkup.SUP);
-                inlineSemantics(attributes, "subscript", tags, HtmlMarkup.SUB);
-                inlineSemantics(attributes, "annotation", tags, HtmlMarkup.U);
-                inlineSemantics(attributes, "highlight", tags, HtmlMarkup.MARK);
-                inlineSemantics(attributes, "ruby", tags, HtmlMarkup.RUBY);
-                inlineSemantics(attributes, "rubyBase", tags, HtmlMarkup.RB);
-                inlineSemantics(attributes, "rubyText", tags, HtmlMarkup.RT);
-                inlineSemantics(attributes, "rubyTextContainer", tags, HtmlMarkup.RTC);
-                inlineSemantics(attributes, "rubyParentheses", tags, HtmlMarkup.RP);
-                inlineSemantics(attributes, "bidirectionalIsolation", tags, HtmlMarkup.BDI);
-                inlineSemantics(attributes, "bidirectionalOverride", tags, HtmlMarkup.BDO);
-                inlineSemantics(attributes, "phrase", tags, HtmlMarkup.SPAN);
-                inlineSemantics(attributes, "insert", tags, HtmlMarkup.INS);
-                inlineSemantics(attributes, "delete", tags, HtmlMarkup.DEL);
+            if (attributes != null && !attributes.entrySet().isEmpty()) {
+                SinkEventAttributes compliantAttributes = convertToHtml5CompliantAttributes(attributes);
+                Tag tag = HtmlMarkup.SPAN;
+                // iterates in insertion order
+                for (Map.Entry<String, Object> attribute : compliantAttributes.entrySet()) {
+                    if (SinkEventAttributes.SEMANTICS.equals(attribute.getKey())) {
+                        switch (attribute.getValue().toString()) {
+                            case "emphasis":
+                                tag = HtmlMarkup.EM;
+                                break;
+                            case "strong":
+                                tag = HtmlMarkup.STRONG;
+                                break;
+                            case "small":
+                                tag = HtmlMarkup.SMALL;
+                                break;
+                            case "line-through":
+                                tag = HtmlMarkup.S;
+                                break;
+                            case "citation":
+                                tag = HtmlMarkup.CITE;
+                                break;
+                            case "quote":
+                                tag = HtmlMarkup.Q;
+                                break;
+                            case "definition":
+                                tag = HtmlMarkup.DFN;
+                                break;
+                            case "abbreviation":
+                                tag = HtmlMarkup.ABBR;
+                                break;
+                            case "italic":
+                                tag = HtmlMarkup.I;
+                                break;
+                            case "bold":
+                                tag = HtmlMarkup.B;
+                                break;
+                            case "code":
+                                tag = HtmlMarkup.CODE;
+                                break;
+                            case "variable":
+                                tag = HtmlMarkup.VAR;
+                                break;
+                            case "sample":
+                                tag = HtmlMarkup.SAMP;
+                                break;
+                            case "keyboard":
+                                tag = HtmlMarkup.KBD;
+                                break;
+                            case "superscript":
+                                tag = HtmlMarkup.SUP;
+                                break;
+                            case "subscript":
+                                tag = HtmlMarkup.SUB;
+                                break;
+                            case "annotation":
+                                tag = HtmlMarkup.U;
+                                break;
+                            case "highlight":
+                                tag = HtmlMarkup.MARK;
+                                break;
+                            case "ruby":
+                                tag = HtmlMarkup.RUBY;
+                                break;
+                            case "rubyBase":
+                                tag = HtmlMarkup.RB;
+                                break;
+                            case "rubyText":
+                                tag = HtmlMarkup.RT;
+                                break;
+                            case "rubyTextContainer":
+                                tag = HtmlMarkup.RTC;
+                                break;
+                            case "rubyParentheses":
+                                tag = HtmlMarkup.RP;
+                                break;
+                            case "bidirectionalIsolation":
+                                tag = HtmlMarkup.BDI;
+                                break;
+                            case "bidirectionalOverride":
+                                tag = HtmlMarkup.BDO;
+                                break;
+                            case "phrase":
+                                tag = HtmlMarkup.SPAN;
+                                break;
+                            case "insert":
+                                tag = HtmlMarkup.INS;
+                                break;
+                            case "delete":
+                                tag = HtmlMarkup.DEL;
+                                break;
+                            default:
+                                LOGGER.warn(
+                                        "{}Skipping unsupported semantic attribute '{}'",
+                                        getLocationLogPrefix(),
+                                        attribute.getValue());
+                        }
+                        compliantAttributes.removeAttribute(SinkEventAttributes.SEMANTICS);
+                    }
+                }
+                writeStartTag(tag, compliantAttributes);
+                inlineStack.push(Collections.singletonList(tag));
+            } else {
+                inlineStack.push(Collections.emptyList());
             }
+        }
+    }
 
-            inlineStack.push(tags);
+    /**
+     * Some attributes have generally supported values as defined in {@link SinkEventAttributes}.
+     * This method converts them to their HTML5 compliant equivalent, e.g. the "underline" value of the "decoration" attribute is converted to a style attribute with value "text-decoration-line: underline".
+     *
+     * Other attributes with values outsides of the generally supported ones are passed as is (and may not be supported by all HTML output formats).
+     * @param attributes
+     * @return a new set of attributes with HTML5 compliant values for the generally supported attribute values
+     */
+    SinkEventAttributes convertToHtml5CompliantAttributes(SinkEventAttributes attributes) {
+        SinkEventAttributes compliantAttributes = new SinkEventAttributeSet();
+
+        for (Map.Entry<String, Object> attribute : attributes.entrySet()) {
+            if (attribute.getKey().equals(SinkEventAttributes.DECORATION)) {
+                switch (attribute.getValue().toString()) {
+                    case "underline":
+                        addStyle(compliantAttributes, "text-decoration-line", "underline");
+                        break;
+                    case "overline":
+                        addStyle(compliantAttributes, "text-decoration-line", "overline");
+                        break;
+                    case "line-through":
+                        addStyle(compliantAttributes, "text-decoration-line", "line-through");
+                        break;
+                    case "source":
+                        // potentially overwrites other semantics
+                        compliantAttributes.addAttributes(SinkEventAttributeSet.Semantics.CODE);
+                        break;
+                    default:
+                        LOGGER.warn(
+                                "{}Skipping unsupported decoration attribute '{}'",
+                                getLocationLogPrefix(),
+                                attribute.getValue());
+                }
+            } else if (attribute.getKey().equals(SinkEventAttributes.STYLE)) {
+                switch (attribute.getValue().toString()) {
+                    case "bold":
+                        addStyle(compliantAttributes, "font-weight", "bold");
+                        break;
+                    case "italic":
+                        addStyle(compliantAttributes, "font-style", "italic");
+                        break;
+                    case "monospaced":
+                        addStyle(compliantAttributes, "font-family", "monospace");
+                        break;
+                    default:
+                        // everything else is passed as-is, e.g. "color: red" or "text-decoration: underline"
+                        compliantAttributes.addAttribute(SinkEventAttributes.STYLE, attribute.getValue());
+                }
+            } else {
+                compliantAttributes.addAttribute(attribute.getKey(), attribute.getValue());
+            }
+        }
+        return compliantAttributes;
+    }
+
+    /**
+     * Adds a style to the given attributes. If the attributes already contain a style, the new style value is appended to it.
+     *
+     * @param attributes the attributes to which the style should be added
+     * @param property   the CSS property, e.g. "text-decoration-line"
+     * @param value      the CSS value, e.g. "underline" */
+    static void addStyle(SinkEventAttributes attributes, String property, String value) {
+        Object oldStyleValue = attributes.getAttribute(SinkEventAttributes.STYLE);
+        // styles may be stored as an AttributeSet or a String
+        if (oldStyleValue instanceof AttributeSet) {
+            SinkEventAttributeSet newStyleValue = new SinkEventAttributeSet((AttributeSet) oldStyleValue);
+            newStyleValue.addAttribute(property, value);
+            attributes.addAttribute(SinkEventAttributes.STYLE, newStyleValue);
+        } else {
+            StringBuilder newStyleValue = new StringBuilder();
+            if (oldStyleValue != null) {
+                // if the old style value is not an AttributeSet, we assume it is a String and append the new style to
+                // it
+                newStyleValue.append(oldStyleValue.toString());
+                // normalize the old style value by ensuring it ends with a semicolon followed by a space, so that the
+                // new style can be appended to it
+                if (!newStyleValue.toString().endsWith(Character.toString(Markup.SEMICOLON))) {
+                    newStyleValue.append(Markup.SEMICOLON).append(Markup.SPACE);
+                }
+            }
+            newStyleValue.append(SinkUtils.asCssDeclaration(property, value));
+            attributes.addAttribute(SinkEventAttributes.STYLE, newStyleValue.toString());
         }
     }
 

@@ -24,6 +24,8 @@ import java.util.Collections;
 import java.util.Enumeration;
 import java.util.LinkedHashMap;
 import java.util.Map;
+import java.util.Map.Entry;
+import java.util.Set;
 
 import org.apache.maven.doxia.sink.SinkEventAttributes;
 
@@ -128,6 +130,8 @@ public class SinkEventAttributeSet implements SinkEventAttributes, Cloneable {
     /**
      * Constructs a new SinkEventAttributeSet with the attribute name-value
      * mappings as given by the specified String array.
+     * Each even index of the array is an attribute name, and the following odd index is the corresponding attribute value.
+     * This constructor only supports String attribute values.
      *
      * @param attributes the specified String array. If the length of this array
      * is not an even number, an IllegalArgumentException is thrown.
@@ -321,6 +325,11 @@ public class SinkEventAttributeSet implements SinkEventAttributes, Cloneable {
 
     public void setResolveParent(AttributeSet parent) {
         this.resolveParent = parent;
+    }
+
+    @Override
+    public Set<Entry<String, Object>> entrySet() {
+        return attribs.entrySet();
     }
 
     @Override

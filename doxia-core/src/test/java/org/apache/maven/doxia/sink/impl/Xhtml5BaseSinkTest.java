@@ -18,6 +18,7 @@
  */
 package org.apache.maven.doxia.sink.impl;
 
+import javax.swing.text.AttributeSet;
 import javax.swing.text.html.HTML.Attribute;
 
 import java.io.StringWriter;
@@ -1055,7 +1056,7 @@ class Xhtml5BaseSinkTest {
             sink.text(text, attributes);
         }
 
-        assertEquals("a text &amp; &#xc6;", writer.toString());
+        assertEquals("<span style=\"font-weight: bold\">a text &amp; &#xc6;</span>", writer.toString());
     }
 
     /**
@@ -1175,5 +1176,50 @@ class Xhtml5BaseSinkTest {
         final String result = writer.toString();
 
         assertTrue(result.contains("&#x2713;"));
+    }
+
+    @Test
+    void multipleInlineAttributes() {
+        try (Sink sink = new Xhtml5BaseSink(writer)) {
+            SinkEventAttributeSet attributes = new SinkEventAttributeSet();
+            // set different attributes (semantic, style and decoration)
+            attributes.addAttributes(SinkEventAttributeSet.LINETHROUGH);
+            attributes.addAttributes(SinkEventAttributeSet.BOLD);
+            attributes.addAttributes(SinkEventAttributeSet.Semantics.SUPERSCRIPT);
+            sink.inline(attributes);
+            sink.text("text");
+            sink.inline_();
+        }
+        // the attribute order should be kept
+        String expected = "<sup style=\"text-decoration-line: line-through; font-weight: bold\">text</sup>";
+        assertEquals(expected, writer.toString());
+    }
+
+    @Test
+    void addStyleWithStringValue() {
+        SinkEventAttributes attributes = new SinkEventAttributeSet();
+        Xhtml5BaseSink.addStyle(attributes, "font-weight", "bold");
+        assertEquals("font-weight: bold", attributes.getAttribute(SinkEventAttributes.STYLE));
+        Xhtml5BaseSink.addStyle(attributes, "font-size", "12px");
+        assertEquals(1, attributes.getAttributeCount());
+        assertEquals("font-weight: bold; font-size: 12px", attributes.getAttribute(SinkEventAttributes.STYLE));
+    }
+
+    @Test
+    void addStyleWithAttributeSetValue() {
+        SinkEventAttributes attributes = new SinkEventAttributeSet();
+        SinkEventAttributeSet styleAttributes = new SinkEventAttributeSet();
+        styleAttributes.addAttribute("font-style", "italic");
+        attributes.addAttribute(SinkEventAttributeSet.STYLE, styleAttributes);
+
+        Xhtml5BaseSink.addStyle(attributes, "font-weight", "bold");
+        assertEquals("font-style: italic; font-weight: bold", SinkUtils.asCssString((AttributeSet)
+                attributes.getAttribute(SinkEventAttributes.STYLE)));
+        Xhtml5BaseSink.addStyle(attributes, "font-weight", "lighter");
+        assertEquals("font-style: italic; font-weight: lighter", SinkUtils.asCssString((AttributeSet)
+                attributes.getAttribute(SinkEventAttributes.STYLE)));
+        Xhtml5BaseSink.addStyle(attributes, "font-size", "12px");
+        assertEquals("font-style: italic; font-weight: lighter; font-size: 12px", SinkUtils.asCssString((AttributeSet)
+                attributes.getAttribute(SinkEventAttributes.STYLE)));
     }
 }
