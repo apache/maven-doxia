@@ -20,6 +20,9 @@ package org.apache.maven.doxia.sink;
 
 import javax.swing.text.MutableAttributeSet;
 
+import java.util.Map;
+import java.util.Set;
+
 /**
  * A set of attributes for a sink event.
  * <p>
@@ -388,4 +391,23 @@ public interface SinkEventAttributes extends MutableAttributeSet {
      * Specifies a machine readable date/time for the time element.
      */
     String DATETIME = "datetime";
+
+    /**
+     * Returns a {@link Set} view of the attributes in form  of {@link Map.Entry} items.
+     * The set is backed by the underlying map, so changes to the map are
+     * reflected in the set, and vice-versa.  If the map is modified
+     * while an iteration over the set is in progress (except through
+     * the iterator's own {@code remove} operation, or through the
+     * {@code setValue} operation on a map entry returned by the
+     * iterator) the results of the iteration are undefined.  The set
+     * supports element removal, which removes the corresponding
+     * mapping from the map, via the {@code Iterator.remove},
+     * {@code Set.remove}, {@code removeAll}, {@code retainAll} and
+     * {@code clear} operations.  It does not support the
+     * {@code add} or {@code addAll} operations.
+     *
+     * @return a set view of the attributes
+     * @since 2.1.0
+     */
+    Set<Map.Entry<String, Object>> entrySet();
 }
