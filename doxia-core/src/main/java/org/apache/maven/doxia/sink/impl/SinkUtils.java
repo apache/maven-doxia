@@ -19,7 +19,6 @@
 package org.apache.maven.doxia.sink.impl;
 
 import javax.swing.text.AttributeSet;
-import javax.swing.text.MutableAttributeSet;
 
 import java.util.Arrays;
 import java.util.Enumeration;
@@ -226,10 +225,10 @@ public class SinkUtils {
      * are compared to the elements of the valids array.
      * @param valids a sorted array of attribute names that are to be kept in the resulting AttributeSet.
      *      <b>Note:</b> a binary search is employed, so the array has to be sorted for correct results.
-     * @return A filtered MutableAttributeSet object. Returns null if the input AttributeSet is null.
+     * @return A filtered {@link SinkEventAttributes} object. Returns null if the input AttributeSet is null.
      *      If the array of valids is either null or empty, an empty AttributeSet is returned.
      */
-    public static MutableAttributeSet filterAttributes(AttributeSet attributes, String[] valids) {
+    public static SinkEventAttributes filterAttributes(AttributeSet attributes, String[] valids) {
         if (attributes == null) {
             return null;
         }
@@ -238,7 +237,7 @@ public class SinkUtils {
             return new SinkEventAttributeSet(0);
         }
 
-        MutableAttributeSet atts = new SinkEventAttributeSet(attributes.getAttributeCount());
+        SinkEventAttributes atts = new SinkEventAttributeSet(attributes.getAttributeCount());
 
         Enumeration<?> names = attributes.getAttributeNames();
 
