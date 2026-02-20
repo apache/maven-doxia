@@ -68,6 +68,12 @@ public interface MarkdownMarkup extends TextMarkup {
     /** Syntax for the italic style start: "_" */
     String ITALIC_START_MARKUP = "_";
 
+    /** Syntax for the strikethrough style end: "~~", https://github.github.com/gfm/#strikethrough-extension- */
+    String STRIKETHROUGH_END_MARKUP = "~~";
+
+    /** Syntax for the strikethrough style start: "~~", https://github.github.com/gfm/#strikethrough-extension- */
+    String STRIKETHROUGH_START_MARKUP = "~~";
+
     /** Syntax for the link end: ")" */
     String LINK_END_MARKUP = ")";
 

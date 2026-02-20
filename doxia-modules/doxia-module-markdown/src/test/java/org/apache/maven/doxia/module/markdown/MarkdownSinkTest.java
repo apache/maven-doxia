@@ -259,12 +259,8 @@ class MarkdownSinkTest extends AbstractSinkTest {
         return MarkdownMarkup.MONOSPACED_START_MARKUP + text + MarkdownMarkup.MONOSPACED_END_MARKUP;
     }
 
-    protected String getItalicBlock(String text) {
-        return MarkdownMarkup.ITALIC_START_MARKUP + text + MarkdownMarkup.ITALIC_END_MARKUP;
-    }
-
-    protected String getBoldBlock(String text) {
-        return MarkdownMarkup.BOLD_START_MARKUP + text + MarkdownMarkup.BOLD_END_MARKUP;
+    protected String getInlineDeleteBlock(String text) {
+        return MarkdownMarkup.STRIKETHROUGH_START_MARKUP + text + MarkdownMarkup.STRIKETHROUGH_END_MARKUP;
     }
 
     protected String getMonospacedBlock(String text) {
