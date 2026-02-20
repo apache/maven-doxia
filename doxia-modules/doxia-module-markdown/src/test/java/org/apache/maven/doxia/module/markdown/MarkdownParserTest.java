@@ -888,4 +888,31 @@ class MarkdownParserTest extends AbstractParserTest {
         assertSinkStartsWith(eventIterator, "paragraph", "anchor", "text", "anchor_", "paragraph_");
         assertEventSuffix(eventIterator);
     }
+
+    @Test
+    void relativeLinkWithAnchorInvalidDoxiaId() throws ParseException {
+        Iterator<SinkEventElement> eventIterator = parseSourceToEventTestingSink("[Test URL](test.html#anchor\\(\\))")
+                .getEventList()
+                .iterator();
+        assertEventPrefix(eventIterator);
+        assertSinkStartsWith(eventIterator, "paragraph");
+        SinkEventElement linkEvent = eventIterator.next();
+        assertEquals("link", linkEvent.getName());
+        // converted to valid doxia id (through DoxiaUtils.encodeId)
+        assertEquals("test.html#anchor.28.29", linkEvent.getArgs()[0]);
+    }
+
+    @Test
+    void relativeLinkWithAnchorInvalidDoxiaIdAndRelExternal() throws ParseException {
+        Iterator<SinkEventElement> eventIterator = parseSourceToEventTestingSink(
+                        "<a href=\"test.html#anchor()\" rel=\"external\">Test URL</a>")
+                .getEventList()
+                .iterator();
+        assertEventPrefix(eventIterator);
+        assertSinkStartsWith(eventIterator, "paragraph");
+        SinkEventElement linkEvent = eventIterator.next();
+        assertEquals("link", linkEvent.getName());
+        // left untouched because of rel="external" despite being an invalid doxia id
+        assertEquals("test.html#anchor()", linkEvent.getArgs()[0]);
+    }
 }
