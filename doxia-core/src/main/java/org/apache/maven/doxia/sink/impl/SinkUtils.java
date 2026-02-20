@@ -193,7 +193,7 @@ public class SinkUtils {
         return sb.toString();
     }
 
-    private static String asCssString(AttributeSet att) {
+    public static String asCssString(AttributeSet att) {
         StringBuilder sb = new StringBuilder();
 
         Enumeration<?> names = att.getAttributeNames();
@@ -204,10 +204,7 @@ public class SinkUtils {
 
             // don't go recursive
             if (!(value instanceof AttributeSet)) {
-                sb.append(key.toString())
-                        .append(Markup.COLON)
-                        .append(Markup.SPACE)
-                        .append(value.toString());
+                sb.append(asCssDeclaration(key.toString(), value.toString()));
 
                 if (names.hasMoreElements()) {
                     sb.append(Markup.SEMICOLON).append(Markup.SPACE);
@@ -218,6 +215,9 @@ public class SinkUtils {
         return sb.toString();
     }
 
+    public static String asCssDeclaration(String property, String value) {
+        return property + Markup.COLON + Markup.SPACE + value;
+    }
     /**
      * Filters the given AttributeSet.
      * Removes all attributes whose name (key) is not contained in the sorted array valids.
