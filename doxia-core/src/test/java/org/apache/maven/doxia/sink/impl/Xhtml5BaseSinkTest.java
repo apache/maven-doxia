@@ -179,7 +179,7 @@ class Xhtml5BaseSinkTest {
             sink.article_();
         }
 
-        assertEquals("<article style=\"bold\"></article>", writer.toString());
+        assertEquals("<article style=\"font-weight: bold\"></article>", writer.toString());
     }
 
     /**
@@ -200,7 +200,7 @@ class Xhtml5BaseSinkTest {
             sink.navigation(attributes);
             sink.navigation_();
         }
-        assertEquals("<nav style=\"bold\"></nav>", writer.toString());
+        assertEquals("<nav style=\"font-weight: bold\"></nav>", writer.toString());
     }
 
     /**
@@ -222,7 +222,7 @@ class Xhtml5BaseSinkTest {
             sink.sidebar_();
         }
 
-        assertEquals("<aside style=\"bold\"></aside>", writer.toString());
+        assertEquals("<aside style=\"font-weight: bold\"></aside>", writer.toString());
     }
 
     /**
@@ -239,7 +239,9 @@ class Xhtml5BaseSinkTest {
             sink.section_(level);
         }
 
-        assertEquals("<section style=\"bold\">" + LS + "<h1 style=\"bold\"></h1></section>", writer.toString());
+        assertEquals(
+                "<section style=\"font-weight: bold\">" + LS + "<h1 style=\"font-weight: bold\"></h1></section>",
+                writer.toString());
     }
 
     /**
@@ -355,7 +357,7 @@ class Xhtml5BaseSinkTest {
             sink.header_();
         }
 
-        assertEquals("<header style=\"bold\"></header>", writer.toString());
+        assertEquals("<header style=\"font-weight: bold\"></header>", writer.toString());
     }
 
     /**
@@ -382,7 +384,8 @@ class Xhtml5BaseSinkTest {
         }
 
         assertEquals(
-                "<main style=\"bold\">" + EOL + "<div style=\"bold\" class=\"content\"></div></main>",
+                "<main style=\"font-weight: bold\">" + EOL
+                        + "<div style=\"font-weight: bold\" class=\"content\"></div></main>",
                 writer.toString());
     }
 
@@ -405,7 +408,7 @@ class Xhtml5BaseSinkTest {
             sink.footer_();
         }
 
-        assertEquals("<footer style=\"bold\"></footer>", writer.toString());
+        assertEquals("<footer style=\"font-weight: bold\"></footer>", writer.toString());
     }
 
     /**
@@ -431,7 +434,9 @@ class Xhtml5BaseSinkTest {
             sink.list_();
         }
 
-        assertEquals("<ul style=\"bold\">" + LS + "<li style=\"bold\"></li></ul>", writer.toString());
+        assertEquals(
+                "<ul style=\"font-weight: bold\">" + LS + "<li style=\"font-weight: bold\"></li></ul>",
+                writer.toString());
     }
 
     /**
@@ -460,7 +465,8 @@ class Xhtml5BaseSinkTest {
         }
 
         assertEquals(
-                "<ol style=\"list-style-type: decimal; bold\">" + LS + "<li style=\"bold\"></li></ol>",
+                "<ol style=\"list-style-type: decimal; font-weight: bold\">" + LS
+                        + "<li style=\"font-weight: bold\"></li></ol>",
                 writer.toString());
     }
 
@@ -492,7 +498,8 @@ class Xhtml5BaseSinkTest {
         }
 
         assertEquals(
-                "<dl style=\"bold\">" + LS + "<dt style=\"bold\"></dt>" + LS + "<dd style=\"bold\"></dd></dl>",
+                "<dl style=\"font-weight: bold\">" + LS + "<dt style=\"font-weight: bold\"></dt>" + LS
+                        + "<dd style=\"font-weight: bold\"></dd></dl>",
                 writer.toString());
     }
 
@@ -512,8 +519,8 @@ class Xhtml5BaseSinkTest {
         }
 
         assertEquals(
-                "<figure style=\"bold\">" + "<img src=\"src.jpg\" style=\"bold\" />"
-                        + "<figcaption style=\"bold\"></figcaption></figure>",
+                "<figure style=\"font-weight: bold\">" + "<img src=\"src.jpg\" style=\"font-weight: bold\" />"
+                        + "<figcaption style=\"font-weight: bold\"></figcaption></figure>",
                 writer.toString());
     }
 
@@ -528,7 +535,7 @@ class Xhtml5BaseSinkTest {
             sink.figureGraphics(src, attributes);
         }
 
-        assertEquals("<img src=\"source.png\" style=\"bold\" />", writer.toString());
+        assertEquals("<img src=\"source.png\" style=\"font-weight: bold\" />", writer.toString());
     }
 
     /**
@@ -550,7 +557,7 @@ class Xhtml5BaseSinkTest {
             sink.paragraph_();
         }
 
-        assertEquals("<p style=\"bold\"></p>", writer.toString());
+        assertEquals("<p style=\"font-weight: bold\"></p>", writer.toString());
     }
 
     /**
@@ -565,7 +572,7 @@ class Xhtml5BaseSinkTest {
             sink.data_();
         }
 
-        assertEquals("<data value=\"value\" style=\"bold\"></data>", writer.toString());
+        assertEquals("<data value=\"value\" style=\"font-weight: bold\"></data>", writer.toString());
     }
 
     /**
@@ -580,7 +587,7 @@ class Xhtml5BaseSinkTest {
             sink.time_();
         }
 
-        assertEquals("<time datetime=\"datetime\" style=\"bold\"></time>", writer.toString());
+        assertEquals("<time datetime=\"datetime\" style=\"font-weight: bold\"></time>", writer.toString());
     }
 
     /**
@@ -602,7 +609,7 @@ class Xhtml5BaseSinkTest {
             sink.address_();
         }
 
-        assertEquals("<address style=\"bold\"></address>", writer.toString());
+        assertEquals("<address style=\"font-weight: bold\"></address>", writer.toString());
     }
 
     /**
@@ -624,7 +631,7 @@ class Xhtml5BaseSinkTest {
             sink.blockquote_();
         }
 
-        assertEquals("<blockquote style=\"bold\"></blockquote>", writer.toString());
+        assertEquals("<blockquote style=\"font-weight: bold\"></blockquote>", writer.toString());
     }
 
     /**
@@ -646,7 +653,7 @@ class Xhtml5BaseSinkTest {
             sink.division_();
         }
 
-        assertEquals("<div style=\"bold\"></div>", writer.toString());
+        assertEquals("<div style=\"font-weight: bold\"></div>", writer.toString());
     }
 
     /**
@@ -661,7 +668,7 @@ class Xhtml5BaseSinkTest {
 
         assertEquals("<pre><code></code></pre>", writer.toString());
 
-        checkVerbatimAttributes(attributes, "<pre style=\"bold\"></pre>");
+        checkVerbatimAttributes(attributes, "<pre style=\"font-weight: bold\"></pre>");
 
         final SinkEventAttributes att = new SinkEventAttributeSet(SinkEventAttributes.ID, "id");
         checkVerbatimAttributes(att, "<pre id=\"id\"></pre>");
@@ -710,7 +717,7 @@ class Xhtml5BaseSinkTest {
             sink.horizontalRule(attributes);
         }
 
-        assertEquals("<hr /><hr style=\"bold\" />", writer.toString());
+        assertEquals("<hr /><hr style=\"font-weight: bold\" />", writer.toString());
     }
 
     /**
@@ -757,8 +764,8 @@ class Xhtml5BaseSinkTest {
             sink.table_();
         }
 
-        String xmlExpected = "<table class=\"bodyTable\">" + EOL + "<tr style=\"bold\" class=\"a\"></tr>" + EOL
-                + "<tr class=\"b\"></tr></table>";
+        String xmlExpected = "<table class=\"bodyTable\">" + EOL + "<tr style=\"font-weight: bold\" class=\"a\"></tr>"
+                + EOL + "<tr class=\"b\"></tr></table>";
 
         assertEquals(xmlExpected, writer.toString());
     }
@@ -807,13 +814,14 @@ class Xhtml5BaseSinkTest {
 
         StringBuilder expected = new StringBuilder("<table class=\"bodyTable\">");
         expected.append(EOL).append("<tr class=\"a\"></tr>").append(EOL);
-        expected.append("<tr style=\"bold\" class=\"b\"></tr>").append(EOL);
+        expected.append("<tr style=\"font-weight: bold\" class=\"b\"></tr>").append(EOL);
         expected.append("<tr class=\"a hidden xyz abc\"></tr>").append(EOL);
         expected.append("<tr class=\"a abc hidden xyz\"></tr>").append(EOL);
         expected.append("<tr class=\"a\"></tr>").append(EOL);
         expected.append("<tr class=\"b not-hidden xyz\"></tr>").append(EOL);
         expected.append("<tr class=\"a xyz not-hidden\"></tr>").append(EOL);
-        expected.append("<tr style=\"bold\" class=\"b xyz abc hidden\"></tr>").append(EOL);
+        expected.append("<tr style=\"font-weight: bold\" class=\"b xyz abc hidden\"></tr>")
+                .append(EOL);
         expected.append("<tr class=\"b xyz hidden-not\"></tr>").append(EOL);
         expected.append("<tr class=\"a\"></tr></table>");
 
@@ -831,7 +839,7 @@ class Xhtml5BaseSinkTest {
             sink.tableCell_();
         }
 
-        assertEquals("<td style=\"bold\"></td>", writer.toString());
+        assertEquals("<td style=\"font-weight: bold\"></td>", writer.toString());
     }
 
     /**
@@ -844,7 +852,7 @@ class Xhtml5BaseSinkTest {
             sink.tableHeaderCell_();
         }
 
-        assertEquals("<th style=\"bold\"></th>", writer.toString());
+        assertEquals("<th style=\"font-weight: bold\"></th>", writer.toString());
     }
 
     /**
@@ -863,7 +871,8 @@ class Xhtml5BaseSinkTest {
         }
 
         assertEquals(
-                "<table class=\"bodyTable\">" + "<caption style=\"bold\">caption</caption></table>", writer.toString());
+                "<table class=\"bodyTable\">" + "<caption style=\"font-weight: bold\">caption</caption></table>",
+                writer.toString());
     }
 
     /**
@@ -877,7 +886,7 @@ class Xhtml5BaseSinkTest {
             sink.anchor_();
         }
 
-        assertEquals("<a id=\"anchor\" style=\"bold\"></a>", writer.toString());
+        assertEquals("<a id=\"anchor\" style=\"font-weight: bold\"></a>", writer.toString());
     }
 
     /**
@@ -892,7 +901,7 @@ class Xhtml5BaseSinkTest {
             sink.link_();
         }
 
-        assertEquals("<a style=\"bold\" href=\"link.html\"></a>", writer.toString());
+        assertEquals("<a style=\"font-weight: bold\" href=\"link.html\"></a>", writer.toString());
     }
 
     /**
@@ -908,7 +917,8 @@ class Xhtml5BaseSinkTest {
         }
 
         assertEquals(
-                "<a style=\"bold\" class=\"externalLink\" href=\"https://www.apache.org\"></a>", writer.toString());
+                "<a style=\"font-weight: bold\" class=\"externalLink\" href=\"https://www.apache.org\"></a>",
+                writer.toString());
     }
 
     /**
@@ -927,7 +937,7 @@ class Xhtml5BaseSinkTest {
         }
 
         assertEquals(
-                "<a style=\"bold\" class=\"externalLink cs1 cs2\" href=\"https://www.apache.org\"></a>",
+                "<a style=\"font-weight: bold\" class=\"externalLink cs1 cs2\" href=\"https://www.apache.org\"></a>",
                 writer.toString());
     }
 
@@ -1034,7 +1044,9 @@ class Xhtml5BaseSinkTest {
             sink.nonBreakingSpace();
         }
 
-        assertEquals("<br style=\"bold\" /><wbr style=\"bold\" /><!-- PB -->&#160;", writer.toString());
+        assertEquals(
+                "<br style=\"font-weight: bold\" /><wbr style=\"font-weight: bold\" /><!-- PB -->&#160;",
+                writer.toString());
     }
 
     /**
