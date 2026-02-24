@@ -103,9 +103,9 @@ public abstract class AbstractXmlSink extends SinkAdapter implements XmlMarkup {
      *
      * @param t a non null tag.
      * @param att a set of attributes. May be null.
-     * @param isSimpleTag boolean to write as a simple tag.
+     * @param isEmptyElement boolean to write as tag for an <a href="https://www.w3.org/TR/xml/#d0e2480">empty element</a>.
      */
-    protected void writeStartTag(Tag t, MutableAttributeSet att, boolean isSimpleTag) {
+    protected void writeStartTag(Tag t, MutableAttributeSet att, boolean isEmptyElement) {
         Objects.requireNonNull(t, "t cannot be null");
 
         StringBuilder sb = new StringBuilder();
@@ -125,7 +125,7 @@ public abstract class AbstractXmlSink extends SinkAdapter implements XmlMarkup {
 
         sb.append(SinkUtils.getAttributeString(att));
 
-        if (isSimpleTag) {
+        if (isEmptyElement) {
             sb.append(SPACE).append(SLASH);
         }
 

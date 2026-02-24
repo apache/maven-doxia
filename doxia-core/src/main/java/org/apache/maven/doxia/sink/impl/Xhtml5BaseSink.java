@@ -267,7 +267,7 @@ public class Xhtml5BaseSink extends AbstractXmlSink implements HtmlMarkup {
 
     @Override
     public void article(SinkEventAttributes attributes) {
-        MutableAttributeSet atts = SinkUtils.filterAttributes(attributes, SinkUtils.SINK_SECTION_ATTRIBUTES);
+        MutableAttributeSet atts = convertAndFilterAttributes(attributes, SinkUtils.SINK_SECTION_ATTRIBUTES);
 
         writeStartTag(HtmlMarkup.ARTICLE, atts);
     }
@@ -279,7 +279,7 @@ public class Xhtml5BaseSink extends AbstractXmlSink implements HtmlMarkup {
 
     @Override
     public void navigation(SinkEventAttributes attributes) {
-        MutableAttributeSet atts = SinkUtils.filterAttributes(attributes, SinkUtils.SINK_SECTION_ATTRIBUTES);
+        MutableAttributeSet atts = convertAndFilterAttributes(attributes, SinkUtils.SINK_SECTION_ATTRIBUTES);
 
         writeStartTag(HtmlMarkup.NAV, atts);
     }
@@ -291,7 +291,7 @@ public class Xhtml5BaseSink extends AbstractXmlSink implements HtmlMarkup {
 
     @Override
     public void sidebar(SinkEventAttributes attributes) {
-        MutableAttributeSet atts = SinkUtils.filterAttributes(attributes, SinkUtils.SINK_SECTION_ATTRIBUTES);
+        MutableAttributeSet atts = convertAndFilterAttributes(attributes, SinkUtils.SINK_SECTION_ATTRIBUTES);
 
         writeStartTag(HtmlMarkup.ASIDE, atts);
     }
@@ -330,7 +330,7 @@ public class Xhtml5BaseSink extends AbstractXmlSink implements HtmlMarkup {
     protected void onSection(int depth, SinkEventAttributes attributes) {
         if (depth >= SECTION_LEVEL_1 && depth <= SECTION_LEVEL_6) {
             MutableAttributeSet att = new SinkEventAttributeSet();
-            att.addAttributes(SinkUtils.filterAttributes(attributes, SinkUtils.SINK_BASE_ATTRIBUTES));
+            att.addAttributes(convertAndFilterAttributes(attributes, SinkUtils.SINK_BASE_ATTRIBUTES));
 
             writeStartTag(HtmlMarkup.SECTION, att);
         }
@@ -361,7 +361,7 @@ public class Xhtml5BaseSink extends AbstractXmlSink implements HtmlMarkup {
      * @see #H6
      */
     protected void onSectionTitle(int depth, SinkEventAttributes attributes) {
-        MutableAttributeSet atts = SinkUtils.filterAttributes(attributes, SinkUtils.SINK_SECTION_ATTRIBUTES);
+        MutableAttributeSet atts = convertAndFilterAttributes(attributes, SinkUtils.SINK_SECTION_ATTRIBUTES);
 
         if (depth == SECTION_LEVEL_1) {
             writeStartTag(HtmlMarkup.H1, atts);
@@ -407,7 +407,7 @@ public class Xhtml5BaseSink extends AbstractXmlSink implements HtmlMarkup {
 
     @Override
     public void header(SinkEventAttributes attributes) {
-        MutableAttributeSet atts = SinkUtils.filterAttributes(attributes, SinkUtils.SINK_SECTION_ATTRIBUTES);
+        MutableAttributeSet atts = convertAndFilterAttributes(attributes, SinkUtils.SINK_SECTION_ATTRIBUTES);
 
         writeStartTag(HtmlMarkup.HEADER, atts);
     }
@@ -419,7 +419,7 @@ public class Xhtml5BaseSink extends AbstractXmlSink implements HtmlMarkup {
 
     @Override
     public void content(SinkEventAttributes attributes) {
-        MutableAttributeSet atts = SinkUtils.filterAttributes(attributes, SinkUtils.SINK_SECTION_ATTRIBUTES);
+        MutableAttributeSet atts = convertAndFilterAttributes(attributes, SinkUtils.SINK_SECTION_ATTRIBUTES);
 
         if (contentStack.empty()) {
             writeStartTag(contentStack.push(HtmlMarkup.MAIN), atts);
@@ -450,7 +450,7 @@ public class Xhtml5BaseSink extends AbstractXmlSink implements HtmlMarkup {
 
     @Override
     public void footer(SinkEventAttributes attributes) {
-        MutableAttributeSet atts = SinkUtils.filterAttributes(attributes, SinkUtils.SINK_SECTION_ATTRIBUTES);
+        MutableAttributeSet atts = convertAndFilterAttributes(attributes, SinkUtils.SINK_SECTION_ATTRIBUTES);
 
         writeStartTag(HtmlMarkup.FOOTER, atts);
     }
@@ -477,7 +477,7 @@ public class Xhtml5BaseSink extends AbstractXmlSink implements HtmlMarkup {
             paragraph_();
         }
 
-        MutableAttributeSet atts = SinkUtils.filterAttributes(attributes, SinkUtils.SINK_BASE_ATTRIBUTES);
+        MutableAttributeSet atts = convertAndFilterAttributes(attributes, SinkUtils.SINK_BASE_ATTRIBUTES);
 
         writeStartTag(HtmlMarkup.UL, atts);
     }
@@ -497,7 +497,7 @@ public class Xhtml5BaseSink extends AbstractXmlSink implements HtmlMarkup {
      */
     @Override
     public void listItem(SinkEventAttributes attributes) {
-        MutableAttributeSet atts = SinkUtils.filterAttributes(attributes, SinkUtils.SINK_BASE_ATTRIBUTES);
+        MutableAttributeSet atts = convertAndFilterAttributes(attributes, SinkUtils.SINK_BASE_ATTRIBUTES);
 
         writeStartTag(HtmlMarkup.LI, atts);
     }
@@ -546,7 +546,7 @@ public class Xhtml5BaseSink extends AbstractXmlSink implements HtmlMarkup {
         }
         olStyle += ";";
 
-        MutableAttributeSet atts = SinkUtils.filterAttributes(attributes, SinkUtils.SINK_SECTION_ATTRIBUTES);
+        MutableAttributeSet atts = convertAndFilterAttributes(attributes, SinkUtils.SINK_SECTION_ATTRIBUTES);
 
         if (atts == null) {
             atts = new SinkEventAttributeSet(1);
@@ -576,7 +576,7 @@ public class Xhtml5BaseSink extends AbstractXmlSink implements HtmlMarkup {
      */
     @Override
     public void numberedListItem(SinkEventAttributes attributes) {
-        MutableAttributeSet atts = SinkUtils.filterAttributes(attributes, SinkUtils.SINK_BASE_ATTRIBUTES);
+        MutableAttributeSet atts = convertAndFilterAttributes(attributes, SinkUtils.SINK_BASE_ATTRIBUTES);
 
         writeStartTag(HtmlMarkup.LI, atts);
     }
@@ -603,7 +603,7 @@ public class Xhtml5BaseSink extends AbstractXmlSink implements HtmlMarkup {
             paragraph_();
         }
 
-        MutableAttributeSet atts = SinkUtils.filterAttributes(attributes, SinkUtils.SINK_BASE_ATTRIBUTES);
+        MutableAttributeSet atts = convertAndFilterAttributes(attributes, SinkUtils.SINK_BASE_ATTRIBUTES);
 
         writeStartTag(HtmlMarkup.DL, atts);
     }
@@ -623,7 +623,7 @@ public class Xhtml5BaseSink extends AbstractXmlSink implements HtmlMarkup {
      */
     @Override
     public void definedTerm(SinkEventAttributes attributes) {
-        MutableAttributeSet atts = SinkUtils.filterAttributes(attributes, SinkUtils.SINK_BASE_ATTRIBUTES);
+        MutableAttributeSet atts = convertAndFilterAttributes(attributes, SinkUtils.SINK_BASE_ATTRIBUTES);
 
         writeStartTag(HtmlMarkup.DT, atts);
     }
@@ -643,7 +643,7 @@ public class Xhtml5BaseSink extends AbstractXmlSink implements HtmlMarkup {
      */
     @Override
     public void definition(SinkEventAttributes attributes) {
-        MutableAttributeSet atts = SinkUtils.filterAttributes(attributes, SinkUtils.SINK_BASE_ATTRIBUTES);
+        MutableAttributeSet atts = convertAndFilterAttributes(attributes, SinkUtils.SINK_BASE_ATTRIBUTES);
 
         writeStartTag(HtmlMarkup.DD, atts);
     }
@@ -659,7 +659,8 @@ public class Xhtml5BaseSink extends AbstractXmlSink implements HtmlMarkup {
 
     @Override
     public void figure(SinkEventAttributes attributes) {
-        writeStartTag(HtmlMarkup.FIGURE, attributes);
+        MutableAttributeSet filtered = convertAndFilterAttributes(attributes, SinkUtils.SINK_BASE_ATTRIBUTES);
+        writeStartTag(HtmlMarkup.FIGURE, filtered);
     }
 
     @Override
@@ -669,7 +670,7 @@ public class Xhtml5BaseSink extends AbstractXmlSink implements HtmlMarkup {
 
     @Override
     public void figureGraphics(String src, SinkEventAttributes attributes) {
-        MutableAttributeSet filtered = SinkUtils.filterAttributes(attributes, SinkUtils.SINK_IMG_ATTRIBUTES);
+        MutableAttributeSet filtered = convertAndFilterAttributes(attributes, SinkUtils.SINK_IMG_ATTRIBUTES);
         if (filtered != null) {
             filtered.removeAttribute(SinkEventAttributes.SRC.toString());
         }
@@ -686,7 +687,8 @@ public class Xhtml5BaseSink extends AbstractXmlSink implements HtmlMarkup {
 
     @Override
     public void figureCaption(SinkEventAttributes attributes) {
-        writeStartTag(HtmlMarkup.FIGCAPTION, attributes);
+        MutableAttributeSet filtered = convertAndFilterAttributes(attributes, SinkUtils.SINK_BASE_ATTRIBUTES);
+        writeStartTag(HtmlMarkup.FIGCAPTION, filtered);
     }
 
     @Override
@@ -702,7 +704,7 @@ public class Xhtml5BaseSink extends AbstractXmlSink implements HtmlMarkup {
     public void paragraph(SinkEventAttributes attributes) {
         paragraphFlag = true;
 
-        MutableAttributeSet atts = SinkUtils.filterAttributes(attributes, SinkUtils.SINK_SECTION_ATTRIBUTES);
+        MutableAttributeSet atts = convertAndFilterAttributes(attributes, SinkUtils.SINK_SECTION_ATTRIBUTES);
 
         writeStartTag(HtmlMarkup.P, atts);
     }
@@ -721,7 +723,7 @@ public class Xhtml5BaseSink extends AbstractXmlSink implements HtmlMarkup {
 
     @Override
     public void data(String value, SinkEventAttributes attributes) {
-        MutableAttributeSet atts = SinkUtils.filterAttributes(attributes, SinkUtils.SINK_BASE_ATTRIBUTES);
+        MutableAttributeSet atts = convertAndFilterAttributes(attributes, SinkUtils.SINK_BASE_ATTRIBUTES);
 
         MutableAttributeSet att = new SinkEventAttributeSet();
         if (value != null) {
@@ -739,7 +741,7 @@ public class Xhtml5BaseSink extends AbstractXmlSink implements HtmlMarkup {
 
     @Override
     public void time(String datetime, SinkEventAttributes attributes) {
-        MutableAttributeSet atts = SinkUtils.filterAttributes(attributes, SinkUtils.SINK_BASE_ATTRIBUTES);
+        MutableAttributeSet atts = convertAndFilterAttributes(attributes, SinkUtils.SINK_BASE_ATTRIBUTES);
 
         MutableAttributeSet att = new SinkEventAttributeSet();
         if (datetime != null) {
@@ -761,7 +763,7 @@ public class Xhtml5BaseSink extends AbstractXmlSink implements HtmlMarkup {
      */
     @Override
     public void address(SinkEventAttributes attributes) {
-        MutableAttributeSet atts = SinkUtils.filterAttributes(attributes, SinkUtils.SINK_SECTION_ATTRIBUTES);
+        MutableAttributeSet atts = convertAndFilterAttributes(attributes, SinkUtils.SINK_SECTION_ATTRIBUTES);
 
         writeStartTag(HtmlMarkup.ADDRESS, atts);
     }
@@ -781,7 +783,7 @@ public class Xhtml5BaseSink extends AbstractXmlSink implements HtmlMarkup {
      */
     @Override
     public void blockquote(SinkEventAttributes attributes) {
-        MutableAttributeSet atts = SinkUtils.filterAttributes(attributes, SinkUtils.SINK_SECTION_ATTRIBUTES);
+        MutableAttributeSet atts = convertAndFilterAttributes(attributes, SinkUtils.SINK_SECTION_ATTRIBUTES);
 
         writeStartTag(HtmlMarkup.BLOCKQUOTE, atts);
     }
@@ -801,7 +803,7 @@ public class Xhtml5BaseSink extends AbstractXmlSink implements HtmlMarkup {
      */
     @Override
     public void division(SinkEventAttributes attributes) {
-        MutableAttributeSet atts = SinkUtils.filterAttributes(attributes, SinkUtils.SINK_SECTION_ATTRIBUTES);
+        MutableAttributeSet atts = convertAndFilterAttributes(attributes, SinkUtils.SINK_SECTION_ATTRIBUTES);
 
         writeStartTag(HtmlMarkup.DIV, atts);
     }
@@ -833,10 +835,12 @@ public class Xhtml5BaseSink extends AbstractXmlSink implements HtmlMarkup {
             paragraph_();
         }
 
-        MutableAttributeSet atts = SinkUtils.filterAttributes(attributes, SinkUtils.SINK_VERBATIM_ATTRIBUTES);
+        final MutableAttributeSet atts;
 
-        if (atts == null) {
+        if (attributes == null) {
             atts = new SinkEventAttributeSet();
+        } else {
+            atts = new SinkEventAttributeSet(attributes);
         }
 
         verbatimMode = VerbatimMode.ON;
@@ -848,8 +852,9 @@ public class Xhtml5BaseSink extends AbstractXmlSink implements HtmlMarkup {
         }
 
         atts.removeAttribute(SinkEventAttributes.DECORATION);
+        MutableAttributeSet filtered = convertAndFilterAttributes(attributes, SinkUtils.SINK_VERBATIM_ATTRIBUTES);
 
-        writeStartTag(HtmlMarkup.PRE, atts);
+        writeStartTag(HtmlMarkup.PRE, filtered);
         if (verbatimMode == VerbatimMode.ON_WITH_CODE) {
             writeStartTag(HtmlMarkup.CODE);
         }
@@ -876,7 +881,7 @@ public class Xhtml5BaseSink extends AbstractXmlSink implements HtmlMarkup {
      */
     @Override
     public void horizontalRule(SinkEventAttributes attributes) {
-        MutableAttributeSet atts = SinkUtils.filterAttributes(attributes, SinkUtils.SINK_HR_ATTRIBUTES);
+        MutableAttributeSet atts = convertAndFilterAttributes(attributes, SinkUtils.SINK_HR_ATTRIBUTES);
 
         writeSimpleTag(HtmlMarkup.HR, atts);
     }
@@ -896,7 +901,7 @@ public class Xhtml5BaseSink extends AbstractXmlSink implements HtmlMarkup {
         if (attributes == null) {
             this.tableAttributes = new SinkEventAttributeSet(0);
         } else {
-            this.tableAttributes = SinkUtils.filterAttributes(attributes, SinkUtils.SINK_TABLE_ATTRIBUTES);
+            this.tableAttributes = convertAndFilterAttributes(attributes, SinkUtils.SINK_TABLE_ATTRIBUTES);
         }
     }
 
@@ -991,7 +996,7 @@ public class Xhtml5BaseSink extends AbstractXmlSink implements HtmlMarkup {
      */
     @Override
     public void tableRow(SinkEventAttributes attributes) {
-        MutableAttributeSet attrs = SinkUtils.filterAttributes(attributes, SinkUtils.SINK_TR_ATTRIBUTES);
+        MutableAttributeSet attrs = convertAndFilterAttributes(attributes, SinkUtils.SINK_TR_ATTRIBUTES);
 
         if (attrs == null) {
             attrs = new SinkEventAttributeSet();
@@ -1046,7 +1051,7 @@ public class Xhtml5BaseSink extends AbstractXmlSink implements HtmlMarkup {
      * @see javax.swing.text.html.HTML.Tag#TH
      * @see javax.swing.text.html.HTML.Tag#TD
      */
-    private void tableCell(boolean headerRow, MutableAttributeSet attributes) {
+    private void tableCell(boolean headerRow, SinkEventAttributes attributes) {
         Tag t = (headerRow ? HtmlMarkup.TH : HtmlMarkup.TD);
 
         if (!headerRow
@@ -1078,7 +1083,7 @@ public class Xhtml5BaseSink extends AbstractXmlSink implements HtmlMarkup {
         if (attributes == null) {
             writeStartTag(t, null);
         } else {
-            writeStartTag(t, SinkUtils.filterAttributes(attributes, SinkUtils.SINK_TD_ATTRIBUTES));
+            writeStartTag(t, convertAndFilterAttributes(attributes, SinkUtils.SINK_TD_ATTRIBUTES));
         }
     }
 
@@ -1141,7 +1146,7 @@ public class Xhtml5BaseSink extends AbstractXmlSink implements HtmlMarkup {
         this.tableCaptionXMLWriterStack.addLast(new PrettyPrintXMLWriter(sw));
 
         // TODO: tableCaption should be written before tableRows (DOXIA-177)
-        MutableAttributeSet atts = SinkUtils.filterAttributes(attributes, SinkUtils.SINK_SECTION_ATTRIBUTES);
+        MutableAttributeSet atts = convertAndFilterAttributes(attributes, SinkUtils.SINK_SECTION_ATTRIBUTES);
 
         writeStartTag(HtmlMarkup.CAPTION, atts);
     }
@@ -1173,7 +1178,7 @@ public class Xhtml5BaseSink extends AbstractXmlSink implements HtmlMarkup {
             return;
         }
 
-        MutableAttributeSet atts = SinkUtils.filterAttributes(attributes, SinkUtils.SINK_BASE_ATTRIBUTES);
+        MutableAttributeSet atts = convertAndFilterAttributes(attributes, SinkUtils.SINK_BASE_ATTRIBUTES);
 
         String id = name;
 
@@ -1215,7 +1220,7 @@ public class Xhtml5BaseSink extends AbstractXmlSink implements HtmlMarkup {
             return;
         }
 
-        MutableAttributeSet atts = SinkUtils.filterAttributes(attributes, SinkUtils.SINK_LINK_ATTRIBUTES);
+        MutableAttributeSet atts = convertAndFilterAttributes(attributes, SinkUtils.SINK_LINK_ATTRIBUTES);
 
         if (atts == null) {
             atts = new SinkEventAttributeSet();
@@ -1359,61 +1364,6 @@ public class Xhtml5BaseSink extends AbstractXmlSink implements HtmlMarkup {
     }
 
     /**
-     * Some attributes have generally supported values as defined in {@link SinkEventAttributes}.
-     * This method converts them to their HTML5 compliant equivalent, e.g. the "underline" value of the "decoration" attribute is converted to a style attribute with value "text-decoration-line: underline".
-     *
-     * Other attributes with values outsides of the generally supported ones are passed as is (and may not be supported by all HTML output formats).
-     * @param attributes
-     * @return a new set of attributes with HTML5 compliant values for the generally supported attribute values
-     */
-    SinkEventAttributes convertToHtml5CompliantAttributes(SinkEventAttributes attributes) {
-        SinkEventAttributes compliantAttributes = new SinkEventAttributeSet();
-
-        for (Map.Entry<String, Object> attribute : attributes.entrySet()) {
-            if (attribute.getKey().equals(SinkEventAttributes.DECORATION)) {
-                switch (attribute.getValue().toString()) {
-                    case "underline":
-                        addStyle(compliantAttributes, "text-decoration-line", "underline");
-                        break;
-                    case "overline":
-                        addStyle(compliantAttributes, "text-decoration-line", "overline");
-                        break;
-                    case "line-through":
-                        addStyle(compliantAttributes, "text-decoration-line", "line-through");
-                        break;
-                    case "source":
-                        // potentially overwrites other semantics
-                        compliantAttributes.addAttributes(SinkEventAttributeSet.Semantics.CODE);
-                        break;
-                    default:
-                        LOGGER.warn(
-                                "{}Skipping unsupported decoration attribute '{}'",
-                                getLocationLogPrefix(),
-                                attribute.getValue());
-                }
-            } else if (attribute.getKey().equals(SinkEventAttributes.STYLE)) {
-                switch (attribute.getValue().toString()) {
-                    case "bold":
-                        addStyle(compliantAttributes, "font-weight", "bold");
-                        break;
-                    case "italic":
-                        addStyle(compliantAttributes, "font-style", "italic");
-                        break;
-                    case "monospaced":
-                        addStyle(compliantAttributes, "font-family", "monospace");
-                        break;
-                    default:
-                        // everything else is passed as-is, e.g. "color: red" or "text-decoration: underline"
-                        compliantAttributes.addAttribute(SinkEventAttributes.STYLE, attribute.getValue());
-                }
-            } else {
-                compliantAttributes.addAttribute(attribute.getKey(), attribute.getValue());
-            }
-        }
-        return compliantAttributes;
-    }
-
-    /**
      * Adds a style to the given attributes. If the attributes already contain a style, the new style value is appended to it.
      *
      * @param attributes the attributes to which the style should be added
@@ -1515,7 +1465,7 @@ public class Xhtml5BaseSink extends AbstractXmlSink implements HtmlMarkup {
         if (headFlag || isVerbatim()) {
             getTextBuffer().append(EOL);
         } else {
-            MutableAttributeSet atts = SinkUtils.filterAttributes(attributes, SinkUtils.SINK_BR_ATTRIBUTES);
+            MutableAttributeSet atts = convertAndFilterAttributes(attributes, SinkUtils.SINK_BR_ATTRIBUTES);
 
             writeSimpleTag(HtmlMarkup.BR, atts);
         }
@@ -1524,7 +1474,7 @@ public class Xhtml5BaseSink extends AbstractXmlSink implements HtmlMarkup {
     @Override
     public void lineBreakOpportunity(SinkEventAttributes attributes) {
         if (!headFlag && !isVerbatim()) {
-            MutableAttributeSet atts = SinkUtils.filterAttributes(attributes, SinkUtils.SINK_BR_ATTRIBUTES);
+            MutableAttributeSet atts = convertAndFilterAttributes(attributes, SinkUtils.SINK_BR_ATTRIBUTES);
 
             writeSimpleTag(HtmlMarkup.WBR, atts);
         }
@@ -1776,6 +1726,77 @@ public class Xhtml5BaseSink extends AbstractXmlSink implements HtmlMarkup {
      */
     protected static String encodeURL(String text) {
         return HtmlTools.encodeURL(text);
+    }
+
+    /**
+     * First converts the given attributes to their HTML5 compliant equivalent for the generally supported attribute values,
+     * then filters the attributes to only include those whose keys are in the given list of valid attribute keys.
+     * @param attributes
+     * @param valids
+     * @return the converted and filtered attributes
+     * @see #convertToHtml5CompliantAttributes(SinkEventAttributes)
+     * @see SinkUtils#filterAttributes(SinkEventAttributes, String[])
+     */
+    protected SinkEventAttributes convertAndFilterAttributes(SinkEventAttributes attributes, String[] valids) {
+        return SinkUtils.filterAttributes(convertToHtml5CompliantAttributes(attributes), valids);
+    }
+
+    /**
+     * Some attributes have generally supported values as defined in {@link SinkEventAttributes}.
+     * This method converts them to their HTML5 compliant equivalent, e.g. the "underline" value of the "decoration" attribute is converted to a style attribute with value "text-decoration-line: underline".
+     *
+     * Other attributes with values outsides of the generally supported ones are passed as is (and may not be supported by all HTML output formats).
+     * @param attributes
+     * @return a new set of attributes with HTML5 compliant values for the generally supported attribute values
+     */
+    protected SinkEventAttributes convertToHtml5CompliantAttributes(SinkEventAttributes attributes) {
+        if (attributes == null) {
+            return null;
+        }
+        SinkEventAttributes compliantAttributes = new SinkEventAttributeSet();
+
+        for (Map.Entry<String, Object> attribute : attributes.entrySet()) {
+            if (attribute.getKey().equals(SinkEventAttributes.DECORATION)) {
+                switch (attribute.getValue().toString()) {
+                    case "underline":
+                        addStyle(compliantAttributes, "text-decoration-line", "underline");
+                        break;
+                    case "overline":
+                        addStyle(compliantAttributes, "text-decoration-line", "overline");
+                        break;
+                    case "line-through":
+                        addStyle(compliantAttributes, "text-decoration-line", "line-through");
+                        break;
+                    case "source":
+                        // potentially overwrites other semantics
+                        compliantAttributes.addAttributes(SinkEventAttributeSet.Semantics.CODE);
+                        break;
+                    default:
+                        LOGGER.warn(
+                                "{}Skipping unsupported decoration attribute '{}'",
+                                getLocationLogPrefix(),
+                                attribute.getValue());
+                }
+            } else if (attribute.getKey().equals(SinkEventAttributes.STYLE)) {
+                switch (attribute.getValue().toString()) {
+                    case "bold":
+                        addStyle(compliantAttributes, "font-weight", "bold");
+                        break;
+                    case "italic":
+                        addStyle(compliantAttributes, "font-style", "italic");
+                        break;
+                    case "monospaced":
+                        addStyle(compliantAttributes, "font-family", "monospace");
+                        break;
+                    default:
+                        // everything else is passed as-is, e.g. "color: red" or "text-decoration: underline"
+                        compliantAttributes.addAttribute(SinkEventAttributes.STYLE, attribute.getValue());
+                }
+            } else {
+                compliantAttributes.addAttribute(attribute.getKey(), attribute.getValue());
+            }
+        }
+        return compliantAttributes;
     }
 
     protected void write(String text) {

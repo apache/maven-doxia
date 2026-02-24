@@ -217,6 +217,7 @@ public class SinkUtils {
     public static String asCssDeclaration(String property, String value) {
         return property + Markup.COLON + Markup.SPACE + value;
     }
+
     /**
      * Filters the given AttributeSet.
      * Removes all attributes whose name (key) is not contained in the sorted array valids.
