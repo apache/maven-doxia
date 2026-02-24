@@ -259,16 +259,8 @@ public class Xhtml5SinkTest extends AbstractSinkTest {
         return "<code>" + text + "</code>";
     }
 
-    protected String getItalicBlock(String text) {
-        return "<i>" + text + "</i>";
-    }
-
-    protected String getBoldBlock(String text) {
-        return "<b>" + text + "</b>";
-    }
-
-    protected String getMonospacedBlock(String text) {
-        return "<code>" + text + "</code>";
+    protected String getInlineDeleteBlock(String text) {
+        return "<del>" + text + "</del>";
     }
 
     protected String getLineBreakBlock() {

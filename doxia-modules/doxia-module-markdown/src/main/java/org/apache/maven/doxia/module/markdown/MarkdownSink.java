@@ -18,6 +18,9 @@
  */
 package org.apache.maven.doxia.module.markdown;
 
+import javax.swing.text.AttributeSet;
+import javax.swing.text.MutableAttributeSet;
+
 import java.io.PrintWriter;
 import java.io.Writer;
 import java.util.ArrayList;
@@ -88,7 +91,9 @@ public class MarkdownSink extends Xhtml5BaseSink implements MarkdownMarkup {
     /** A temporary writer used to buffer the last two lines */
     private final LastTwoLinesBufferingWriter bufferingWriter;
 
-    /** Keep track of end markup for inline events. */
+    private static final String USE_XHTML_SINK = "XhtmlSink";
+
+    /** Keep track of end markup for inline events. Special value  {@link #USE_XHTML_SINK} is used to indicate usage of the Xhtml5BaseSink.inline_()*/
     protected Queue<Queue<String>> inlineStack;
 
     /** The context of the surrounding elements as stack (LIFO) */
@@ -1074,19 +1079,19 @@ public class MarkdownSink extends Xhtml5BaseSink implements MarkdownMarkup {
 
     @Override
     public void inline(SinkEventAttributes attributes) {
+        Queue<String> endMarkups = Collections.asLifoQueue(new LinkedList<>());
         if (elementContextStack.element().isHtml()) {
             super.inline(attributes);
+            endMarkups.add(USE_XHTML_SINK);
         } else {
-            Queue<String> endMarkups = Collections.asLifoQueue(new LinkedList<>());
-
             boolean requiresHtml = elementContextStack.element() == ElementContext.HTML_BLOCK;
             if (attributes != null
                     && elementContextStack.element() != ElementContext.CODE_BLOCK
                     && elementContextStack.element() != ElementContext.CODE_SPAN) {
                 // code excludes other styles in markdown
-                if (attributes.containsAttribute(SinkEventAttributes.SEMANTICS, "code")
-                        || attributes.containsAttribute(SinkEventAttributes.SEMANTICS, "monospaced")
-                        || attributes.containsAttribute(SinkEventAttributes.STYLE, "monospaced")) {
+                if (attributes.containsAttributes(SinkEventAttributeSet.Semantics.CODE)
+                        || attributes.containsAttributes(SinkEventAttributeSet.Semantics.MONOSPACED)
+                        || attributes.containsAttributes(SinkEventAttributeSet.MONOSPACED)) {
                     if (requiresHtml) {
                         writeUnescaped("<code>");
                         endMarkups.add("</code>");
@@ -1096,10 +1101,13 @@ public class MarkdownSink extends Xhtml5BaseSink implements MarkdownMarkup {
                         endMarkups.add(MONOSPACED_END_MARKUP);
                     }
                 } else {
+                    SinkEventAttributeSet remainingAttributes = new SinkEventAttributeSet(attributes);
                     // in XHTML "<em>" is used, but some tests still rely on the outdated "<italic>"
-                    if (attributes.containsAttribute(SinkEventAttributes.SEMANTICS, "emphasis")
-                            || attributes.containsAttribute(SinkEventAttributes.SEMANTICS, "italic")
-                            || attributes.containsAttribute(SinkEventAttributes.STYLE, "italic")) {
+                    if (filterAttributes(
+                            remainingAttributes,
+                            SinkEventAttributeSet.Semantics.EMPHASIS,
+                            SinkEventAttributeSet.Semantics.ITALIC,
+                            SinkEventAttributeSet.ITALIC)) {
                         if (requiresHtml) {
                             writeUnescaped("<em>");
                             endMarkups.add("</em>");
@@ -1109,9 +1117,11 @@ public class MarkdownSink extends Xhtml5BaseSink implements MarkdownMarkup {
                         }
                     }
                     // in XHTML "<strong>" is used, but some tests still rely on the outdated "<bold>"
-                    if (attributes.containsAttribute(SinkEventAttributes.SEMANTICS, "strong")
-                            || attributes.containsAttribute(SinkEventAttributes.SEMANTICS, "bold")
-                            || attributes.containsAttribute(SinkEventAttributes.STYLE, "bold")) {
+                    if (filterAttributes(
+                            remainingAttributes,
+                            SinkEventAttributeSet.Semantics.STRONG,
+                            SinkEventAttributeSet.Semantics.BOLD,
+                            SinkEventAttributeSet.BOLD)) {
                         if (requiresHtml) {
                             writeUnescaped("<strong>");
                             endMarkups.add("</strong>");
@@ -1120,18 +1130,45 @@ public class MarkdownSink extends Xhtml5BaseSink implements MarkdownMarkup {
                             endMarkups.add(BOLD_END_MARKUP);
                         }
                     }
+                    // <del> is supported via GFM strikethrough extension
+                    if (filterAttributes(remainingAttributes, SinkEventAttributeSet.Semantics.DELETE)) {
+                        if (requiresHtml) {
+                            writeUnescaped("<del>");
+                            endMarkups.add("</del>");
+                        } else {
+                            writeUnescaped(STRIKETHROUGH_START_MARKUP);
+                            endMarkups.add(STRIKETHROUGH_END_MARKUP);
+                        }
+                    }
+                    if (!remainingAttributes.isEmpty()) {
+                        // use HTML for other inline semantics which are not natively supported in Markdown (e.g.
+                        // subscript, superscript, small, etc.)
+                        super.inline(remainingAttributes);
+                        endMarkups.add(USE_XHTML_SINK);
+                    }
                 }
             }
-            inlineStack.add(endMarkups);
         }
+        inlineStack.add(endMarkups);
+    }
+
+    private static boolean filterAttributes(MutableAttributeSet attributes, AttributeSet... attributesToFilter) {
+        boolean hasAny = false;
+        for (AttributeSet attributeSet : attributesToFilter) {
+            if (attributes.containsAttributes(attributeSet)) {
+                hasAny = true;
+                attributes.removeAttributes(attributeSet);
+            }
+        }
+        return hasAny;
     }
 
     @Override
     public void inline_() {
-        if (elementContextStack.element().isHtml()) {
-            super.inline_();
-        } else {
-            for (String endMarkup : inlineStack.remove()) {
+        for (String endMarkup : inlineStack.remove()) {
+            if (USE_XHTML_SINK.equals(endMarkup)) {
+                super.inline_();
+            } else {
                 if (endMarkup.equals(MONOSPACED_END_MARKUP)) {
                     String buffer = getCurrentBuffer().toString();
                     endContext(ElementContext.CODE_SPAN);

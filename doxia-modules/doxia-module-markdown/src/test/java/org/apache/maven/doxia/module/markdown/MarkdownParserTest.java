@@ -888,4 +888,17 @@ class MarkdownParserTest extends AbstractParserTest {
         assertSinkStartsWith(eventIterator, "paragraph", "anchor", "text", "anchor_", "paragraph_");
         assertEventSuffix(eventIterator);
     }
+
+    @Test
+    void strikeThrough() throws ParseException {
+        Iterator<SinkEventElement> eventIterator = parseSourceToEventTestingSink("~~strikethrough~~")
+                .getEventList()
+                .iterator();
+        assertEventPrefix(eventIterator);
+        assertSinkStartsWith(eventIterator, "paragraph");
+        // https://github.github.com/gfm/#strikethrough-extension- uses "del" element (not "s")
+        assertSinkEquals(eventIterator.next(), "inline", SinkEventAttributeSet.Semantics.DELETE);
+        assertSinkStartsWith(eventIterator, "text", "inline_", "paragraph_");
+        assertEventSuffix(eventIterator);
+    }
 }
