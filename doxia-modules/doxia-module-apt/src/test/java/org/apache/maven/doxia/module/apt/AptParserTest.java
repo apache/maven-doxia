@@ -106,8 +106,10 @@ class AptParserTest extends AbstractParserTest {
                 "paragraph",
                 "text",
                 "paragraph_");
-        assertSinkEquals(it.next(), "comment", "some comment", Boolean.TRUE);
-        assertSinkEquals(it.next(), "comment", "another comment", Boolean.TRUE);
+        assertSinkEquals(it.next(), "comment", "some comment");
+        assertSinkEquals(it.next(), "markupLineBreak", 0);
+        assertSinkEquals(it.next(), "comment", "another comment");
+        assertSinkEquals(it.next(), "markupLineBreak", 0);
         assertSinkEquals(it, "paragraph", "text", "paragraph_", "section1_", "body_");
     }
 

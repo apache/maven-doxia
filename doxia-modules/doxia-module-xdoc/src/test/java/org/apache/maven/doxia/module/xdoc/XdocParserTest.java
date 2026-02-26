@@ -408,6 +408,7 @@ class XdocParserTest extends AbstractParserTest {
         SinkEventElement styleElm = it.next();
         assertEquals("unknown", styleElm.getName());
         assertEquals("style", styleElm.getArgs()[0]);
+        assertEquals("markupLineBreak", it.next().getName());
         SinkEventElement cdataElm = it.next();
         assertEquals("unknown", cdataElm.getName());
         assertEquals("CDATA", cdataElm.getArgs()[0]);
@@ -479,5 +480,28 @@ class XdocParserTest extends AbstractParserTest {
         assertSinkEquals(it.next(), "inline", SinkEventAttributeSet.Semantics.DELETE);
         assertSinkEquals(it.next(), "text", "test", null);
         assertSinkEquals(it, "inline_");
+    }
+
+    @Test
+    void indentedTags() throws Exception {
+        final String text = "<section name=\"test\">\n" + "    <p>test</p>\n" + "</section>";
+
+        SinkEventTestingSink sink = new SinkEventTestingSink();
+
+        parser.setValidate(false);
+        parser.parse(text, sink);
+        Iterator<SinkEventElement> it = sink.getEventList().iterator();
+        assertSinkEquals(
+                it,
+                "section1",
+                "sectionTitle1",
+                "text",
+                "sectionTitle1_",
+                "markupLineBreak",
+                "paragraph",
+                "text",
+                "paragraph_",
+                "markupLineBreak",
+                "section1_");
     }
 }

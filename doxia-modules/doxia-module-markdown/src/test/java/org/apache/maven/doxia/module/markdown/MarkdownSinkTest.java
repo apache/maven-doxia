@@ -26,6 +26,7 @@ import java.io.StringReader;
 import java.io.StringWriter;
 import java.io.Writer;
 
+import org.apache.maven.doxia.module.xhtml5.Xhtml5Parser;
 import org.apache.maven.doxia.parser.ParseException;
 import org.apache.maven.doxia.parser.Parser;
 import org.apache.maven.doxia.sink.Sink;
@@ -45,6 +46,9 @@ import static org.junit.jupiter.api.Assertions.assertIterableEquals;
 class MarkdownSinkTest extends AbstractSinkTest {
     @Inject
     protected MarkdownParser parser;
+
+    @Inject
+    protected Xhtml5Parser htmlParser;
 
     protected String outputExtension() {
         return "md";
@@ -160,7 +164,7 @@ class MarkdownSinkTest extends AbstractSinkTest {
                 + MarkdownMarkup.TABLE_CELL_SEPARATOR_MARKUP + "---" + MarkdownMarkup.TABLE_CELL_SEPARATOR_MARKUP + EOL
                 + MarkdownMarkup.TABLE_ROW_PREFIX
                 + cell + MarkdownMarkup.TABLE_CELL_SEPARATOR_MARKUP + cell + MarkdownMarkup.TABLE_CELL_SEPARATOR_MARKUP
-                + cell + MarkdownMarkup.TABLE_CELL_SEPARATOR_MARKUP + EOL;
+                + cell + MarkdownMarkup.TABLE_CELL_SEPARATOR_MARKUP + EOL + EOL;
     }
 
     @Override
@@ -190,6 +194,7 @@ class MarkdownSinkTest extends AbstractSinkTest {
                     .append("2|")
                     .append(EOL);
         }
+        expectedMarkup.append(EOL);
         return expectedMarkup.toString();
     }
 
@@ -364,7 +369,11 @@ class MarkdownSinkTest extends AbstractSinkTest {
     }
 
     private void parseFile(Parser parser, String file, Sink sink) throws ParseException, IOException {
-        try (Reader reader = getTestReader(file)) {
+        parseFile(parser, file, outputExtension(), sink);
+    }
+
+    private void parseFile(Parser parser, String file, String extension, Sink sink) throws ParseException, IOException {
+        try (Reader reader = getTestReader(file, extension)) {
             parser.parse(reader, sink);
         }
     }
@@ -398,7 +407,7 @@ class MarkdownSinkTest extends AbstractSinkTest {
         sink.close();
 
         String expected =
-                "|   |   |" + EOL + "|---|---|" + EOL + "|[link](target)|paragraph text with \\|**bold**|" + EOL;
+                "|   |   |" + EOL + "|---|---|" + EOL + "|[link](target)|paragraph text with \\|**bold**|" + EOL + EOL;
 
         assertEquals(expected, getSinkContent(), "Wrong link or paragraph markup in table cell");
     }
@@ -600,6 +609,7 @@ class MarkdownSinkTest extends AbstractSinkTest {
     }
 
     @Test
+<<<<<<< Upstream, based on master
     void commentPriorHead() {
         try (Sink sink = getSink()) {
             sink.comment("This is a comment");
@@ -620,5 +630,46 @@ class MarkdownSinkTest extends AbstractSinkTest {
                 + EOL
                 + "<!--This is a comment-->";
         assertEquals(expected, getSinkContent(), "Wrong metadata section");
+=======
+    void listItemsContainingInsignificantWhitespace() {
+        try (Sink sink = getSink()) {
+            sink.list();
+            sink.listItem();
+            sink.markupLineBreak(4);
+            sink.text("item 1");
+            sink.listItem_();
+            sink.listItem();
+            sink.markupLineBreak(4);
+            sink.text("item 2");
+            sink.listItem_();
+            sink.list_();
+        }
+        String expected = "- item 1" + EOL + "- item 2" + EOL;
+        assertEquals(expected, getSinkContent());
+    }
+
+    @Test
+    void tableWithInsignificantNewLines() throws ParseException, IOException {
+        parseFile(htmlParser, "table", "html", getSink());
+        String expected = "|Format<br />Newline|Short description|Doxia Module|" + EOL
+                + "|---|---|---|" + EOL
+                + "|[iText](../modules/index.html#iText)|iText PDF Library|[`doxia-module-itext`](../doxia/doxia-modules/doxia-module-itext/)|"
+                + EOL
+                + "|[FO](../modules/index.html#FO)<sup>\\*</sup>|XSL formatting objects \\(XSL-FO\\)|[`doxia-module-fo`](../doxia/doxia-modules/doxia-module-fo/)|"
+                + EOL
+                + "|[LaTeX](../modules/index.html#LaTeX)|LaTeX typesetting system|[`doxia-module-latex`](../doxia/doxia-modules/doxia-module-latex/)|"
+                + EOL
+                + "|[RTF](../modules/index.html#RTF)|Microsoft Rich Text Format|[`doxia-module-rtf`](../doxia/doxia-modules/doxia-module-rtf/)|"
+                + EOL + EOL;
+        assertEquals(expected, getSinkContent());
+    }
+
+    @Test
+    void linkFromHtml() throws ParseException, IOException {
+        parseFile(htmlParser, "link", "html", getSink());
+        String expected = "[plugin](http://maven.apache.org/maven-1.x/plugins/xdoc/reference/xdocs.html) documentation."
+                + EOL + EOL;
+        assertEquals(expected, getSinkContent());
+>>>>>>> e41ce3e Distinguish between linebreaks for formatting markup and linebreaks in output
     }
 }

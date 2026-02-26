@@ -105,23 +105,24 @@ public class MarkdownSink extends Xhtml5BaseSink implements MarkdownMarkup {
                 true), // only needs buffering until head()_ is called to make sure to emit metadata first
         ROOT_WITHOUT_BUFFERING(
                 Type.GENERIC_CONTAINER, null, false), // used after head()_/body() to prevent unnecessary buffering
-        HEAD(Type.GENERIC_CONTAINER, null, true),
-        BODY(Type.GENERIC_CONTAINER, ElementContext::escapeMarkdown),
+        HEAD(Type.GENERIC_CONTAINER, false, null, true),
+        BODY(Type.GENERIC_CONTAINER, true, ElementContext::escapeMarkdown),
         // only the elements, which affect rendering of children and are different from BODY or HEAD are listed here
-        FIGURE(Type.INLINE, ElementContext::escapeMarkdown, true),
-        HEADING(Type.LEAF_BLOCK, ElementContext::escapeMarkdown),
-        CODE_BLOCK(Type.LEAF_BLOCK, null),
-        CODE_SPAN(Type.INLINE, null, true),
-        TABLE_CAPTION(Type.INLINE, ElementContext::escapeMarkdown),
-        TABLE_ROW(Type.CONTAINER_BLOCK, null, true),
+        FIGURE(Type.INLINE, false, ElementContext::escapeMarkdown, true),
+        HEADING(Type.LEAF_BLOCK, false, ElementContext::escapeMarkdown),
+        CODE_BLOCK(Type.LEAF_BLOCK, false, null),
+        CODE_SPAN(Type.INLINE, false, null, true),
+        TABLE(Type.CONTAINER_BLOCK, false, null, false, "", true),
+        TABLE_CAPTION(Type.INLINE, false, ElementContext::escapeMarkdown),
         TABLE_CELL(
                 Type.INLINE,
+                false,
                 ElementContext::escapeForTableCell,
                 false), // special type, as allows containing inlines, but not starting on a separate line
         // same parameters as BODY but paragraphs inside list items are handled differently
-        LIST_ITEM(Type.CONTAINER_BLOCK, ElementContext::escapeMarkdown, false, INDENT),
-        BLOCKQUOTE(Type.CONTAINER_BLOCK, ElementContext::escapeMarkdown, false, BLOCKQUOTE_START_MARKUP),
-        HTML_BLOCK(Type.LEAF_BLOCK, ElementContext::escapeHtml, false, "", true);
+        LIST_ITEM(Type.CONTAINER_BLOCK, false, ElementContext::escapeMarkdown, false, INDENT),
+        BLOCKQUOTE(Type.CONTAINER_BLOCK, false, ElementContext::escapeMarkdown, false, BLOCKQUOTE_START_MARKUP),
+        HTML_BLOCK(Type.LEAF_BLOCK, true, ElementContext::escapeHtml, false, "", true);
 
         /**
          * @see <a href="https://spec.commonmark.org/0.30/#blocks-and-inlines">CommonMark, 3 Blocks and inlines</a>
@@ -169,25 +170,42 @@ public class MarkdownSink extends Xhtml5BaseSink implements MarkdownMarkup {
          */
         final boolean requiresSurroundingByBlankLines;
 
-        ElementContext(Type type, TextEscapeFunction escapeFunction) {
-            this(type, escapeFunction, false);
-        }
+        /**
+         * If markup linebreaks (i.e. insignificant linebreaks in the source) are allowed in this context.
+         * This is relevant for markdown as in some contexts (e.g. list items) linebreaks are always significant (while for HTML they wouldn't be)
+         */
+        final boolean allowsMarkupLinebreaks;
 
-        ElementContext(Type type, TextEscapeFunction escapeFunction, boolean requiresBuffering) {
-            this(type, escapeFunction, requiresBuffering, "");
-        }
-
-        ElementContext(Type type, TextEscapeFunction escapeFunction, boolean requiresBuffering, String prefix) {
-            this(type, escapeFunction, requiresBuffering, prefix, false);
+        ElementContext(Type type, boolean allowsMarkupLinebreaks, TextEscapeFunction escapeFunction) {
+            this(type, allowsMarkupLinebreaks, escapeFunction, false);
         }
 
         ElementContext(
                 Type type,
+                boolean allowsMarkupLinebreaks,
+                TextEscapeFunction escapeFunction,
+                boolean requiresBuffering) {
+            this(type, allowsMarkupLinebreaks, escapeFunction, requiresBuffering, "");
+        }
+
+        ElementContext(
+                Type type,
+                boolean allowsMarkupLinebreaks,
+                TextEscapeFunction escapeFunction,
+                boolean requiresBuffering,
+                String prefix) {
+            this(type, allowsMarkupLinebreaks, escapeFunction, requiresBuffering, prefix, false);
+        }
+
+        ElementContext(
+                Type type,
+                boolean allowsMarkupLinebreaks,
                 TextEscapeFunction escapeFunction,
                 boolean requiresBuffering,
                 String prefix,
                 boolean requiresSurroundingByBlankLines) {
             this.type = type;
+            this.allowsMarkupLinebreaks = allowsMarkupLinebreaks;
             this.escapeFunction = escapeFunction;
             this.requiresBuffering = requiresBuffering;
             if (type != Type.CONTAINER_BLOCK && prefix.length() != 0) {
@@ -232,6 +250,10 @@ public class MarkdownSink extends Xhtml5BaseSink implements MarkdownMarkup {
          */
         boolean isContainer() {
             return type == Type.CONTAINER_BLOCK || type == Type.GENERIC_CONTAINER;
+        }
+
+        public boolean isAllowsMarkupLinebreaks() {
+            return allowsMarkupLinebreaks;
         }
 
         /**
@@ -753,8 +775,7 @@ public class MarkdownSink extends Xhtml5BaseSink implements MarkdownMarkup {
         if (elementContextStack.element().isHtml()) {
             super.table(attributes);
         } else {
-            ensureBlankLine();
-            write(getLinePrefix());
+            startContext(ElementContext.TABLE);
         }
     }
 
@@ -762,6 +783,8 @@ public class MarkdownSink extends Xhtml5BaseSink implements MarkdownMarkup {
     public void table_() {
         if (elementContextStack.element().isHtml()) {
             super.table_();
+        } else {
+            endContext(ElementContext.TABLE);
         }
     }
 
@@ -1206,10 +1229,17 @@ public class MarkdownSink extends Xhtml5BaseSink implements MarkdownMarkup {
     public void lineBreak(SinkEventAttributes attributes) {
         if (elementContextStack.element() == ElementContext.CODE_BLOCK) {
             write(EOL);
+        if (elementContextStack.element() == ElementContext.TABLE_CELL) {
+            super.lineBreak(attributes);
         } else {
             write("" + SPACE + SPACE + EOL);
+            if (elementContextStack.element() == ElementContext.CODE_BLOCK) {
+                write(EOL);
+            } else {
+                write("" + SPACE + SPACE + EOL);
+            }
+            write(getLinePrefix());
         }
-        write(getLinePrefix());
     }
 
     @Override
@@ -1262,6 +1292,14 @@ public class MarkdownSink extends Xhtml5BaseSink implements MarkdownMarkup {
     @Override
     public void unknown(String name, Object[] requiredParams, SinkEventAttributes attributes) {
         LOGGER.warn("{}Unknown Sink event '" + name + "', ignoring!", getLocationLogPrefix());
+    }
+
+    @Override
+    public void markupLineBreak(int indentLevel) {
+        // not allowed in all contexts
+        if (elementContextStack.element().isAllowsMarkupLinebreaks()) {
+            super.markupLineBreak(indentLevel);
+        }
     }
 
     @Override

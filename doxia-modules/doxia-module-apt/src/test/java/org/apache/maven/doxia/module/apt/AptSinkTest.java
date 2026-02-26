@@ -296,8 +296,8 @@ class AptSinkTest extends AbstractSinkTest {
     public void twoConsecutiveBlockComments() {
         final Sink sink = getSink();
         String comment = "Simple comment";
-        sink.comment(comment, true);
-        sink.comment(comment, true);
+        sink.comment(comment);
+        sink.comment(comment);
         sink.flush();
         sink.close();
         assertEquals(getCommentBlock(comment) + getCommentBlock(comment), getSinkContent(), "Wrong comment!");
