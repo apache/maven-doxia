@@ -1754,11 +1754,9 @@ public interface Sink extends AutoCloseable {
 
     /**
      * Add a comment.
-     * Semantically the same as {@link #comment(String, boolean)} with second argument being {@code false}.
      *
      * @param comment The comment to write.
      * @since 1.1
-     * @see #comment(String, boolean)
      */
     void comment(String comment);
 
