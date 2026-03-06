@@ -21,7 +21,6 @@ package org.apache.maven.doxia.module.markdown;
 import javax.swing.text.AttributeSet;
 import javax.swing.text.MutableAttributeSet;
 
-import java.io.PrintWriter;
 import java.io.Writer;
 import java.util.ArrayList;
 import java.util.Arrays;
@@ -29,7 +28,6 @@ import java.util.Collection;
 import java.util.Collections;
 import java.util.LinkedList;
 import java.util.List;
-import java.util.NoSuchElementException;
 import java.util.Queue;
 import java.util.stream.Collectors;
 
@@ -55,12 +53,6 @@ public class MarkdownSink extends Xhtml5BaseSink implements MarkdownMarkup {
     // Instance fields
     // ----------------------------------------------------------------------
 
-    /**
-     * A buffer that holds the current text when the current context requires buffering.
-     * The content of this buffer is already escaped.
-     */
-    private Queue<StringBuilder> bufferStack = Collections.asLifoQueue(new LinkedList<>());
-
     /** author. */
     private Collection<String> authors;
 
@@ -85,11 +77,11 @@ public class MarkdownSink extends Xhtml5BaseSink implements MarkdownMarkup {
     /** is header row */
     private boolean isFirstTableRow;
 
-    /** The writer to use. */
-    private final PrintWriter writer;
+    /** The inner decorated writer to buffer the text of contexts requiring buffering. Writing to this and {@code bufferingWriter} has the same effect. */
+    private final BufferingStackWriter bufferingStackWriter;
 
-    /** A temporary writer used to buffer the last two lines */
-    private final LastTwoLinesBufferingWriter bufferingWriter;
+    /** The outer decorated writer taking care of remembering the last two written lines. Writing to this and {@code writer} has the same effect. */
+    private final LastTwoLinesAwareWriter lineAwareWriter;
 
     private static final String USE_XHTML_SINK = "XhtmlSink";
 
@@ -103,10 +95,16 @@ public class MarkdownSink extends Xhtml5BaseSink implements MarkdownMarkup {
 
     @FunctionalInterface
     interface TextEscapeFunction {
-        String escape(ElementContext context, LastTwoLinesBufferingWriter writer, String text);
+        String escape(ElementContext context, LastTwoLinesAwareWriter writer, String text);
     }
     /** Most important contextual metadata (of elements). This contains information about necessary escaping rules, potential prefixes and newlines */
     enum ElementContext {
+        ROOT_WITH_BUFFERING(
+                Type.GENERIC_CONTAINER,
+                ElementContext::escapeMarkdown,
+                true), // only needs buffering until head()_ is called to make sure to emit metadata first
+        ROOT_WITHOUT_BUFFERING(
+                Type.GENERIC_CONTAINER, null, false), // used after head()_/body() to prevent unnecessary buffering
         HEAD(Type.GENERIC_CONTAINER, null, true),
         BODY(Type.GENERIC_CONTAINER, ElementContext::escapeMarkdown),
         // only the elements, which affect rendering of children and are different from BODY or HEAD are listed here
@@ -117,7 +115,7 @@ public class MarkdownSink extends Xhtml5BaseSink implements MarkdownMarkup {
         TABLE_CAPTION(Type.INLINE, ElementContext::escapeMarkdown),
         TABLE_ROW(Type.CONTAINER_BLOCK, null, true),
         TABLE_CELL(
-                Type.LEAF_BLOCK,
+                Type.INLINE,
                 ElementContext::escapeForTableCell,
                 false), // special type, as allows containing inlines, but not starting on a separate line
         // same parameters as BODY but paragraphs inside list items are handled differently
@@ -204,7 +202,7 @@ public class MarkdownSink extends Xhtml5BaseSink implements MarkdownMarkup {
          * @param text
          * @return the escaped text (may be same as {@code text} when no escaping is necessary)
          */
-        String escape(LastTwoLinesBufferingWriter writer, String text) {
+        String escape(LastTwoLinesAwareWriter writer, String text) {
             // is escaping necessary at all?
             if (escapeFunction == null) {
                 return text;
@@ -248,7 +246,7 @@ public class MarkdownSink extends Xhtml5BaseSink implements MarkdownMarkup {
          * @return the text escaped, "" if null String input
          * @see <a href="https://daringfireball.net/projects/markdown/syntax#backslash">Backslash Escapes</a>
          */
-        private String escapeMarkdown(LastTwoLinesBufferingWriter writer, String text) {
+        private String escapeMarkdown(LastTwoLinesAwareWriter writer, String text) {
             if (text == null) {
                 return "";
             }
@@ -302,7 +300,7 @@ public class MarkdownSink extends Xhtml5BaseSink implements MarkdownMarkup {
             return buffer.toString();
         }
 
-        private static boolean isAfterDigit(StringBuilder buffer, LastTwoLinesBufferingWriter writer) {
+        private static boolean isAfterDigit(StringBuilder buffer, LastTwoLinesAwareWriter writer) {
             if (buffer.length() > 0) {
                 return Character.isDigit(buffer.charAt(buffer.length() - 1));
             } else {
@@ -310,7 +308,7 @@ public class MarkdownSink extends Xhtml5BaseSink implements MarkdownMarkup {
             }
         }
 
-        private static boolean isInBlankLine(StringBuilder buffer, LastTwoLinesBufferingWriter writer) {
+        private static boolean isInBlankLine(StringBuilder buffer, LastTwoLinesAwareWriter writer) {
             if (DoxiaStringUtils.isBlank(buffer.toString())) {
                 return writer.isInBlankLine();
             }
@@ -321,7 +319,7 @@ public class MarkdownSink extends Xhtml5BaseSink implements MarkdownMarkup {
             return "\\" + c;
         }
 
-        private String escapeHtml(LastTwoLinesBufferingWriter writer, String text) {
+        private String escapeHtml(LastTwoLinesAwareWriter writer, String text) {
             return HtmlTools.escapeHTML(text, true);
         }
 
@@ -332,7 +330,7 @@ public class MarkdownSink extends Xhtml5BaseSink implements MarkdownMarkup {
          * @return the escaped text
          * @see {@link #escapeMarkdown(String)
          */
-        private String escapeForTableCell(LastTwoLinesBufferingWriter writer, String text) {
+        private String escapeForTableCell(LastTwoLinesAwareWriter writer, String text) {
             return escapeMarkdown(writer, text).replace("|", "\\|");
         }
     }
@@ -341,8 +339,9 @@ public class MarkdownSink extends Xhtml5BaseSink implements MarkdownMarkup {
     // ----------------------------------------------------------------------
 
     protected static MarkdownSink newInstance(Writer writer) {
-        LastTwoLinesBufferingWriter bufferingWriter = new LastTwoLinesBufferingWriter(writer);
-        return new MarkdownSink(bufferingWriter, new PrintWriter(bufferingWriter));
+        BufferingStackWriter bufferingStackWriter = new BufferingStackWriter(writer);
+        LastTwoLinesAwareWriter lineAwareWriter = new LastTwoLinesAwareWriter(bufferingStackWriter);
+        return new MarkdownSink(lineAwareWriter, bufferingStackWriter);
     }
 
     /**
@@ -350,12 +349,24 @@ public class MarkdownSink extends Xhtml5BaseSink implements MarkdownMarkup {
      *
      * @param writer not null writer to write the result. <b>Should</b> be an UTF-8 Writer.
      */
-    private MarkdownSink(LastTwoLinesBufferingWriter bufferingWriter, PrintWriter writer) {
-        super(writer);
-        this.bufferingWriter = bufferingWriter;
-        this.writer = writer;
+    private MarkdownSink(LastTwoLinesAwareWriter lineAwareWriter, BufferingStackWriter bufferingStackWriter) {
+        super(lineAwareWriter);
+        this.lineAwareWriter = lineAwareWriter;
+        this.bufferingStackWriter = bufferingStackWriter;
+        doInit();
+    }
 
-        init();
+    private void doInit() {
+        this.authors = new LinkedList<>();
+        this.title = null;
+        this.date = null;
+        this.linkName = null;
+        this.tableHeaderCellFlag = false;
+        this.cellCount = 0;
+        this.cellJustif = null;
+        this.elementContextStack = Collections.asLifoQueue(new LinkedList<>());
+        this.inlineStack = Collections.asLifoQueue(new LinkedList<>());
+        startContext(ElementContext.ROOT_WITH_BUFFERING);
     }
 
     private void endContext(ElementContext expectedContext) {
@@ -370,13 +381,13 @@ public class MarkdownSink extends Xhtml5BaseSink implements MarkdownMarkup {
         }
         if (removedContext.requiresBuffering) {
             // remove buffer from stack (assume it has been evaluated already)
-            bufferStack.remove();
+            bufferingStackWriter.removeBuffer();
         }
     }
 
     private void startContext(ElementContext newContext) {
         if (newContext.requiresBuffering) {
-            bufferStack.add(new StringBuilder());
+            bufferingStackWriter.addBuffer();
         }
         if (newContext.isBlock()) {
             // every block element within a list item must be surrounded by blank lines
@@ -387,14 +398,31 @@ public class MarkdownSink extends Xhtml5BaseSink implements MarkdownMarkup {
         elementContextStack.add(newContext);
     }
 
+    private String toogleToRootContextWithoutBuffering(boolean dumpBuffer) {
+        final String buffer;
+        if (elementContextStack.element() == ElementContext.ROOT_WITH_BUFFERING) {
+            buffer = bufferingStackWriter.getCurrentBuffer().toString();
+            endContext(ElementContext.ROOT_WITH_BUFFERING);
+            if (dumpBuffer) {
+                write(buffer);
+            }
+            startContext(ElementContext.ROOT_WITHOUT_BUFFERING);
+        } else if (elementContextStack.element() != ElementContext.ROOT_WITHOUT_BUFFERING) {
+            throw new IllegalStateException("Unexpected context " + elementContextStack.element()
+                    + ", expected ROOT_WITH_BUFFERING or ROOT_WITHOUT_BUFFERING");
+        } else {
+            buffer = "";
+        }
+        return buffer;
+    }
     /**
      * Ensures that the {@link #writer} is currently at the beginning of a new line.
      * Optionally writes a line separator to ensure that.
      */
     private void ensureBeginningOfLine() {
         // make sure that we are at the start of a line without adding unnecessary blank lines
-        if (!bufferingWriter.isWriterAtStartOfNewLine()) {
-            writeUnescaped(EOL);
+        if (!lineAwareWriter.isWriterAtStartOfNewLine()) {
+            write(EOL);
         }
     }
 
@@ -404,11 +432,11 @@ public class MarkdownSink extends Xhtml5BaseSink implements MarkdownMarkup {
      */
     private void ensureBlankLine() {
         // prevent duplicate blank lines
-        if (!bufferingWriter.isWriterAfterBlankLine()) {
-            if (bufferingWriter.isWriterAtStartOfNewLine()) {
-                writeUnescaped(EOL);
+        if (!lineAwareWriter.isWriterAfterBlankLine()) {
+            if (lineAwareWriter.isWriterAtStartOfNewLine()) {
+                write(EOL);
             } else {
-                writeUnescaped(BLANK_LINE);
+                write(BLANK_LINE);
             }
         }
     }
@@ -419,7 +447,7 @@ public class MarkdownSink extends Xhtml5BaseSink implements MarkdownMarkup {
         } else {
             ensureBeginningOfLine();
         }
-        writeUnescaped(getLinePrefix());
+        write(getLinePrefix());
     }
 
     private void endBlock(boolean requireBlankLine) {
@@ -445,83 +473,47 @@ public class MarkdownSink extends Xhtml5BaseSink implements MarkdownMarkup {
                 .findFirst()
                 .isPresent();
     }
-    /**
-     * Returns the buffer that holds the text of the current context (or the closest container context with a buffer).
-     * @return The StringBuilder representing the current buffer, never {@code null}
-     * @throws NoSuchElementException if no buffer is available
-     */
-    protected StringBuilder getCurrentBuffer() {
-        return bufferStack.element();
-    }
-
-    /**
-     * Returns the content of the buffer of the current context (or the closest container context with a buffer).
-     * The buffer is reset to an empty string in this method.
-     * @return the content of the buffer as a string or {@code null} if no buffer is available
-     */
-    protected String consumeBuffer() {
-        StringBuilder buffer = bufferStack.peek();
-        if (buffer == null) {
-            return null;
-        } else {
-            String content = buffer.toString();
-            buffer.setLength(0);
-            return content;
-        }
-    }
 
     @Override
     protected void init() {
         super.init();
-
-        this.authors = new LinkedList<>();
-        this.title = null;
-        this.date = null;
-        this.linkName = null;
-        this.tableHeaderCellFlag = false;
-        this.cellCount = 0;
-        this.cellJustif = null;
-        this.elementContextStack = Collections.asLifoQueue(new LinkedList<>());
-        this.inlineStack = Collections.asLifoQueue(new LinkedList<>());
-        // always set a default context (at least for tests not emitting a body)
-        elementContextStack.add(ElementContext.BODY);
+        doInit();
     }
 
     @Override
     public void head(SinkEventAttributes attributes) {
-        init();
-        // remove default body context here
-        endContext(ElementContext.BODY);
         startContext(ElementContext.HEAD);
     }
 
     @Override
     public void head_() {
         endContext(ElementContext.HEAD);
+        String priorHeadBuffer = toogleToRootContextWithoutBuffering(false);
         // only write head block if really necessary
         if (title == null && authors.isEmpty() && date == null) {
             return;
         }
-        writeUnescaped(METADATA_MARKUP + EOL);
+        write(METADATA_MARKUP + EOL);
         if (title != null) {
-            writeUnescaped("title: " + title + EOL);
+            write("title: " + title + EOL);
         }
         if (!authors.isEmpty()) {
-            writeUnescaped("author: " + EOL);
+            write("author: " + EOL);
             for (String author : authors) {
-                writeUnescaped("  - " + author + EOL);
+                write("  - " + author + EOL);
             }
         }
         if (date != null) {
-            writeUnescaped("date: " + date + EOL);
+            write("date: " + date + EOL);
         }
-        writeUnescaped(METADATA_MARKUP + BLANK_LINE);
+        write(METADATA_MARKUP + BLANK_LINE);
+        write(priorHeadBuffer);
     }
 
     @Override
     public void body(SinkEventAttributes attributes) {
+        toogleToRootContextWithoutBuffering(true);
         startContext(ElementContext.BODY);
-        elementContextStack.add(ElementContext.BODY);
     }
 
     @Override
@@ -531,25 +523,25 @@ public class MarkdownSink extends Xhtml5BaseSink implements MarkdownMarkup {
 
     @Override
     public void title_() {
-        String buffer = consumeBuffer();
-        if (buffer != null && !buffer.isEmpty()) {
-            this.title = buffer.toString();
+        String buffer = bufferingStackWriter.getAndClearCurrentBuffer();
+        if (!buffer.isEmpty()) {
+            this.title = buffer;
         }
     }
 
     @Override
     public void author_() {
-        String buffer = consumeBuffer();
-        if (buffer != null && !buffer.isEmpty()) {
+        String buffer = bufferingStackWriter.getAndClearCurrentBuffer();
+        if (!buffer.isEmpty()) {
             authors.add(buffer);
         }
     }
 
     @Override
     public void date_() {
-        String buffer = consumeBuffer();
-        if (buffer != null && !buffer.isEmpty()) {
-            date = buffer.toString();
+        String buffer = bufferingStackWriter.getAndClearCurrentBuffer();
+        if (!buffer.isEmpty()) {
+            date = buffer;
         }
     }
 
@@ -577,7 +569,7 @@ public class MarkdownSink extends Xhtml5BaseSink implements MarkdownMarkup {
     public void sectionTitle(int level, SinkEventAttributes attributes) {
         startContext(ElementContext.HEADING);
         if (level > 0) {
-            writeUnescaped(DoxiaStringUtils.repeat(SECTION_TITLE_START_MARKUP, level) + SPACE);
+            write(DoxiaStringUtils.repeat(SECTION_TITLE_START_MARKUP, level) + SPACE);
         }
     }
 
@@ -605,7 +597,7 @@ public class MarkdownSink extends Xhtml5BaseSink implements MarkdownMarkup {
     @Override
     public void listItem(SinkEventAttributes attributes) {
         startContext(ElementContext.LIST_ITEM);
-        writeUnescaped(LIST_UNORDERED_ITEM_START_MARKUP);
+        write(LIST_UNORDERED_ITEM_START_MARKUP);
     }
 
     @Override
@@ -633,7 +625,7 @@ public class MarkdownSink extends Xhtml5BaseSink implements MarkdownMarkup {
     @Override
     public void numberedListItem(SinkEventAttributes attributes) {
         startContext(ElementContext.LIST_ITEM);
-        writeUnescaped(LIST_ORDERED_ITEM_START_MARKUP);
+        write(LIST_ORDERED_ITEM_START_MARKUP);
     }
 
     @Override
@@ -646,46 +638,51 @@ public class MarkdownSink extends Xhtml5BaseSink implements MarkdownMarkup {
         LOGGER.warn(
                 "{}Definition list not natively supported in Markdown, rendering HTML instead", getLocationLogPrefix());
         startContext(ElementContext.HTML_BLOCK);
-        writeUnescaped("<dl>" + EOL);
+        write("<dl>" + EOL);
     }
 
     @Override
     public void definitionList_() {
-        writeUnescaped("</dl>");
+        write("</dl>");
         endContext(ElementContext.HTML_BLOCK);
     }
 
     @Override
     public void definedTerm(SinkEventAttributes attributes) {
-        writeUnescaped("<dt>");
+        write("<dt>");
     }
 
     @Override
     public void definedTerm_() {
-        writeUnescaped("</dt>" + EOL);
+        write("</dt>" + EOL);
     }
 
     @Override
     public void definition(SinkEventAttributes attributes) {
-        writeUnescaped("<dd>");
+        write("<dd>");
     }
 
     @Override
     public void definition_() {
-        writeUnescaped("</dd>" + EOL);
+        write("</dd>" + EOL);
     }
 
     @Override
     public void pageBreak() {
-        LOGGER.warn("Ignoring unsupported page break in Markdown");
+        LOGGER.warn("{}Ignoring unsupported page break in Markdown", getLocationLogPrefix());
     }
 
     @Override
     public void paragraph(SinkEventAttributes attributes) {
-        ensureBlankLine();
         // ignore paragraphs outside container contexts
         if (elementContextStack.element().isContainer()) {
-            writeUnescaped(getLinePrefix());
+            ensureBlankLine();
+            write(getLinePrefix());
+        } else {
+            LOGGER.warn(
+                    "{}Paragraphs outside of container contexts are not supported in Markdown, ignoring paragraph event in context {}",
+                    getLocationLogPrefix(),
+                    elementContextStack.element());
         }
     }
 
@@ -704,12 +701,12 @@ public class MarkdownSink extends Xhtml5BaseSink implements MarkdownMarkup {
         } else {
             // if no source attribute, then don't emit an info string
             startContext(ElementContext.CODE_BLOCK);
-            writeUnescaped(VERBATIM_START_MARKUP);
+            write(VERBATIM_START_MARKUP);
             if (attributes != null && attributes.containsAttributes(SinkEventAttributeSet.SOURCE)) {
-                writeUnescaped("unknown"); // unknown language
+                write("unknown"); // unknown language
             }
-            writeUnescaped(EOL);
-            writeUnescaped(getLinePrefix());
+            write(EOL);
+            write(getLinePrefix());
         }
     }
 
@@ -719,8 +716,8 @@ public class MarkdownSink extends Xhtml5BaseSink implements MarkdownMarkup {
             super.verbatim_();
         } else {
             ensureBeginningOfLine();
-            writeUnescaped(getLinePrefix());
-            writeUnescaped(VERBATIM_END_MARKUP + BLANK_LINE);
+            write(getLinePrefix());
+            write(VERBATIM_END_MARKUP + BLANK_LINE);
             endContext(ElementContext.CODE_BLOCK);
         }
     }
@@ -731,7 +728,7 @@ public class MarkdownSink extends Xhtml5BaseSink implements MarkdownMarkup {
             super.blockquote(attributes);
         } else {
             startContext(ElementContext.BLOCKQUOTE);
-            writeUnescaped(BLOCKQUOTE_START_MARKUP);
+            write(BLOCKQUOTE_START_MARKUP);
         }
     }
 
@@ -747,8 +744,8 @@ public class MarkdownSink extends Xhtml5BaseSink implements MarkdownMarkup {
     @Override
     public void horizontalRule(SinkEventAttributes attributes) {
         ensureBeginningOfLine();
-        writeUnescaped(HORIZONTAL_RULE_MARKUP + BLANK_LINE);
-        writeUnescaped(getLinePrefix());
+        write(HORIZONTAL_RULE_MARKUP + BLANK_LINE);
+        write(getLinePrefix());
     }
 
     @Override
@@ -757,7 +754,7 @@ public class MarkdownSink extends Xhtml5BaseSink implements MarkdownMarkup {
             super.table(attributes);
         } else {
             ensureBlankLine();
-            writeUnescaped(getLinePrefix());
+            write(getLinePrefix());
         }
     }
 
@@ -807,7 +804,7 @@ public class MarkdownSink extends Xhtml5BaseSink implements MarkdownMarkup {
         if (elementContextStack.element().isHtml()) {
             super.tableRow_();
         } else {
-            String buffer = consumeBuffer();
+            String buffer = bufferingStackWriter.getAndClearCurrentBuffer();
             endContext(ElementContext.TABLE_ROW);
             if (isFirstTableRow && !tableHeaderCellFlag) {
                 // emit empty table header as this is mandatory for GFM table extension
@@ -818,9 +815,9 @@ public class MarkdownSink extends Xhtml5BaseSink implements MarkdownMarkup {
                 isFirstTableRow = false;
                 // afterwards emit the first row
             }
-            writeUnescaped(TABLE_ROW_PREFIX);
-            writeUnescaped(buffer);
-            writeUnescaped(EOL);
+            write(TABLE_ROW_PREFIX);
+            write(buffer);
+            write(EOL);
             if (isFirstTableRow) {
                 // emit delimiter row
                 writeTableDelimiterRow();
@@ -832,17 +829,17 @@ public class MarkdownSink extends Xhtml5BaseSink implements MarkdownMarkup {
     }
 
     private void writeEmptyTableHeader() {
-        writeUnescaped(TABLE_ROW_PREFIX);
+        write(TABLE_ROW_PREFIX);
         for (int i = 0; i < cellCount; i++) {
-            writeUnescaped(DoxiaStringUtils.repeat(String.valueOf(SPACE), 3) + TABLE_CELL_SEPARATOR_MARKUP);
+            write(DoxiaStringUtils.repeat(String.valueOf(SPACE), 3) + TABLE_CELL_SEPARATOR_MARKUP);
         }
-        writeUnescaped(EOL);
-        writeUnescaped(getLinePrefix());
+        write(EOL);
+        write(getLinePrefix());
     }
 
     /** Emit the delimiter row which determines the alignment */
     private void writeTableDelimiterRow() {
-        writeUnescaped(TABLE_ROW_PREFIX);
+        write(TABLE_ROW_PREFIX);
         int justification = Sink.JUSTIFY_DEFAULT;
         for (int i = 0; i < cellCount; i++) {
             // keep previous column's alignment in case too few are specified
@@ -851,21 +848,21 @@ public class MarkdownSink extends Xhtml5BaseSink implements MarkdownMarkup {
             }
             switch (justification) {
                 case Sink.JUSTIFY_RIGHT:
-                    writeUnescaped(TABLE_COL_RIGHT_ALIGNED_MARKUP);
+                    write(TABLE_COL_RIGHT_ALIGNED_MARKUP);
                     break;
                 case Sink.JUSTIFY_CENTER:
-                    writeUnescaped(TABLE_COL_CENTER_ALIGNED_MARKUP);
+                    write(TABLE_COL_CENTER_ALIGNED_MARKUP);
                     break;
                 case Sink.JUSTIFY_LEFT:
-                    writeUnescaped(TABLE_COL_LEFT_ALIGNED_MARKUP);
+                    write(TABLE_COL_LEFT_ALIGNED_MARKUP);
                     break;
                 default:
-                    writeUnescaped(TABLE_COL_DEFAULT_ALIGNED_MARKUP);
+                    write(TABLE_COL_DEFAULT_ALIGNED_MARKUP);
                     break;
             }
-            writeUnescaped(TABLE_CELL_SEPARATOR_MARKUP);
+            write(TABLE_CELL_SEPARATOR_MARKUP);
         }
-        writeUnescaped(EOL);
+        write(EOL);
     }
 
     @Override
@@ -936,7 +933,7 @@ public class MarkdownSink extends Xhtml5BaseSink implements MarkdownMarkup {
      */
     private void endTableCell() {
         endContext(ElementContext.TABLE_CELL);
-        writeUnescaped(TABLE_CELL_SEPARATOR_MARKUP);
+        write(TABLE_CELL_SEPARATOR_MARKUP);
         cellCount++;
     }
 
@@ -994,7 +991,7 @@ public class MarkdownSink extends Xhtml5BaseSink implements MarkdownMarkup {
                 if (alt == null) {
                     alt = "";
                 }
-                writeImage(elementContextStack.element().escape(bufferingWriter, alt.toString()), name);
+                writeImage(elementContextStack.element().escape(lineAwareWriter, alt.toString()), name);
             }
         }
     }
@@ -1004,27 +1001,23 @@ public class MarkdownSink extends Xhtml5BaseSink implements MarkdownMarkup {
         if (elementContextStack.element().isHtml()) {
             super.figure_();
         } else {
-            StringBuilder buffer = getCurrentBuffer();
-            String label = "";
-            if (buffer != null) {
-                label = buffer.toString();
-            }
+            String label = bufferingStackWriter.getCurrentBuffer().toString();
             endContext(ElementContext.FIGURE);
             writeImage(label, figureSrc);
         }
     }
 
     private void writeImage(String alt, String src) {
-        writeUnescaped("![");
-        writeUnescaped(alt);
-        writeUnescaped("](" + src + ")");
+        write("![");
+        write(alt);
+        write("](" + src + ")");
     }
 
     public void anchor(String name, SinkEventAttributes attributes) {
         super.anchor(name, attributes);
         if (!elementContextStack.element().isHtml()) {
             // close anchor tag immediately otherwise markdown would not be allowed afterwards
-            writeUnescaped("</a>");
+            write("</a>");
         }
     }
 
@@ -1045,10 +1038,10 @@ public class MarkdownSink extends Xhtml5BaseSink implements MarkdownMarkup {
                 LOGGER.warn("{}Ignoring unsupported link inside code block", getLocationLogPrefix());
             } else if (elementContextStack.element() == ElementContext.CODE_SPAN) {
                 // emit link outside the code span, i.e. insert at the beginning of the buffer
-                getCurrentBuffer().insert(0, LINK_START_1_MARKUP);
+                bufferingStackWriter.getCurrentBuffer().insert(0, LINK_START_1_MARKUP);
                 linkName = name;
             } else {
-                writeUnescaped(LINK_START_1_MARKUP);
+                write(LINK_START_1_MARKUP);
                 linkName = name;
             }
         }
@@ -1071,7 +1064,7 @@ public class MarkdownSink extends Xhtml5BaseSink implements MarkdownMarkup {
                 endMarkups.add(linkEndMarkup.toString());
                 inlineStack.add(endMarkups);
             } else {
-                writeUnescaped(LINK_START_2_MARKUP + linkName + LINK_END_MARKUP);
+                write(LINK_START_2_MARKUP + linkName + LINK_END_MARKUP);
             }
             linkName = null;
         }
@@ -1093,11 +1086,11 @@ public class MarkdownSink extends Xhtml5BaseSink implements MarkdownMarkup {
                         || attributes.containsAttributes(SinkEventAttributeSet.Semantics.MONOSPACED)
                         || attributes.containsAttributes(SinkEventAttributeSet.MONOSPACED)) {
                     if (requiresHtml) {
-                        writeUnescaped("<code>");
+                        write("<code>");
                         endMarkups.add("</code>");
                     } else {
                         startContext(ElementContext.CODE_SPAN);
-                        writeUnescaped(MONOSPACED_START_MARKUP);
+                        write(MONOSPACED_START_MARKUP);
                         endMarkups.add(MONOSPACED_END_MARKUP);
                     }
                 } else {
@@ -1109,10 +1102,10 @@ public class MarkdownSink extends Xhtml5BaseSink implements MarkdownMarkup {
                             SinkEventAttributeSet.Semantics.ITALIC,
                             SinkEventAttributeSet.ITALIC)) {
                         if (requiresHtml) {
-                            writeUnescaped("<em>");
+                            write("<em>");
                             endMarkups.add("</em>");
                         } else {
-                            writeUnescaped(ITALIC_START_MARKUP);
+                            write(ITALIC_START_MARKUP);
                             endMarkups.add(ITALIC_END_MARKUP);
                         }
                     }
@@ -1123,20 +1116,20 @@ public class MarkdownSink extends Xhtml5BaseSink implements MarkdownMarkup {
                             SinkEventAttributeSet.Semantics.BOLD,
                             SinkEventAttributeSet.BOLD)) {
                         if (requiresHtml) {
-                            writeUnescaped("<strong>");
+                            write("<strong>");
                             endMarkups.add("</strong>");
                         } else {
-                            writeUnescaped(BOLD_START_MARKUP);
+                            write(BOLD_START_MARKUP);
                             endMarkups.add(BOLD_END_MARKUP);
                         }
                     }
                     // <del> is supported via GFM strikethrough extension
                     if (filterAttributes(remainingAttributes, SinkEventAttributeSet.Semantics.DELETE)) {
                         if (requiresHtml) {
-                            writeUnescaped("<del>");
+                            write("<del>");
                             endMarkups.add("</del>");
                         } else {
-                            writeUnescaped(STRIKETHROUGH_START_MARKUP);
+                            write(STRIKETHROUGH_START_MARKUP);
                             endMarkups.add(STRIKETHROUGH_END_MARKUP);
                         }
                     }
@@ -1170,11 +1163,11 @@ public class MarkdownSink extends Xhtml5BaseSink implements MarkdownMarkup {
                 super.inline_();
             } else {
                 if (endMarkup.equals(MONOSPACED_END_MARKUP)) {
-                    String buffer = getCurrentBuffer().toString();
+                    String buffer = bufferingStackWriter.getCurrentBuffer().toString();
                     endContext(ElementContext.CODE_SPAN);
-                    writeUnescaped(buffer);
+                    write(buffer);
                 }
-                writeUnescaped(endMarkup);
+                write(endMarkup);
             }
         }
     }
@@ -1212,16 +1205,16 @@ public class MarkdownSink extends Xhtml5BaseSink implements MarkdownMarkup {
     @Override
     public void lineBreak(SinkEventAttributes attributes) {
         if (elementContextStack.element() == ElementContext.CODE_BLOCK) {
-            writeUnescaped(EOL);
+            write(EOL);
         } else {
-            writeUnescaped("" + SPACE + SPACE + EOL);
+            write("" + SPACE + SPACE + EOL);
         }
-        writeUnescaped(getLinePrefix());
+        write(getLinePrefix());
     }
 
     @Override
     public void nonBreakingSpace() {
-        writeUnescaped(NON_BREAKING_SPACE_MARKUP);
+        write(NON_BREAKING_SPACE_MARKUP);
     }
 
     @Override
@@ -1237,7 +1230,7 @@ public class MarkdownSink extends Xhtml5BaseSink implements MarkdownMarkup {
                 // table caption cannot even be emitted via XHTML in markdown as there is no suitable location
                 LOGGER.warn("{}Ignoring unsupported table caption in Markdown", getLocationLogPrefix());
             } else {
-                String unifiedText = currentContext.escape(bufferingWriter, unifyEOLs(text));
+                String unifiedText = currentContext.escape(lineAwareWriter, unifyEOLs(text));
                 // ignore newlines only, because those are emitted often coming from linebreaks in HTML with no
                 // semantical
                 // meaning
@@ -1247,7 +1240,7 @@ public class MarkdownSink extends Xhtml5BaseSink implements MarkdownMarkup {
                         unifiedText = unifiedText.replaceAll(EOL, EOL + prefix);
                     }
                 }
-                writeUnescaped(unifiedText);
+                write(unifiedText);
             }
             if (attributes != null) {
                 inline_();
@@ -1257,7 +1250,7 @@ public class MarkdownSink extends Xhtml5BaseSink implements MarkdownMarkup {
 
     @Override
     public void rawText(String text) {
-        writeUnescaped(text);
+        write(text);
     }
 
     /**
@@ -1271,24 +1264,9 @@ public class MarkdownSink extends Xhtml5BaseSink implements MarkdownMarkup {
         LOGGER.warn("{}Unknown Sink event '" + name + "', ignoring!", getLocationLogPrefix());
     }
 
-    protected void writeUnescaped(String text) {
-        StringBuilder buffer = bufferStack.peek();
-        if (buffer != null) {
-            buffer.append(text);
-        } else {
-            writer.write(text);
-        }
-    }
-
-    @Override
-    public void flush() {
-        writer.flush();
-    }
-
     @Override
     public void close() {
-        writer.close();
-
-        init();
+        toogleToRootContextWithoutBuffering(true);
+        super.close();
     }
 }

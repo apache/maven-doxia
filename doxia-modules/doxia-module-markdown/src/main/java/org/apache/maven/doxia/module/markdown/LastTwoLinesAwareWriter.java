@@ -28,19 +28,19 @@ import org.apache.maven.doxia.util.DoxiaStringUtils;
  * Useful to collapse subsequent new lines or blank lines by evaluating {@link #isWriterAfterBlankLine()} and {@link #isWriterAfterBlankLine()}.
  * The buffering does not affect or defer delegation to the underlying writer, though.
  */
-public class LastTwoLinesBufferingWriter extends Writer {
+public class LastTwoLinesAwareWriter extends Writer {
 
     private final Writer out;
     private String previousLine;
     private StringBuilder currentLine;
     private final String lineSeparator;
 
-    public LastTwoLinesBufferingWriter(Writer out) {
+    public LastTwoLinesAwareWriter(Writer out) {
         // don't use System.lineSeparator, as overwritten in AbstractModuleTest
         this(out, System.getProperty("line.separator"));
     }
 
-    LastTwoLinesBufferingWriter(Writer out, String lineSeparator) {
+    LastTwoLinesAwareWriter(Writer out, String lineSeparator) {
         super();
         this.out = out;
         this.previousLine = "";

@@ -135,9 +135,20 @@ public class Xhtml5BaseSink extends AbstractXmlSink implements HtmlMarkup {
         this.tableCaptionXMLWriterStack = new LinkedList<>();
         this.tableCaptionStack = new LinkedList<>();
 
-        init();
+        doInit();
     }
 
+    /**
+     * Called from constructor and from {@link #init()} to initialize certain instance fields.
+     */
+    private void doInit() {
+        this.headFlag = false;
+        this.paragraphFlag = false;
+        this.verbatimMode = VerbatimMode.OFF;
+
+        this.evenTableRow = true;
+        this.tableAttributes = null;
+    }
     // ----------------------------------------------------------------------
     // Accessor methods
     // ----------------------------------------------------------------------
@@ -246,12 +257,7 @@ public class Xhtml5BaseSink extends AbstractXmlSink implements HtmlMarkup {
         this.tableCaptionStack.clear();
         this.inlineStack.clear();
 
-        this.headFlag = false;
-        this.paragraphFlag = false;
-        this.verbatimMode = VerbatimMode.OFF;
-
-        this.evenTableRow = true;
-        this.tableAttributes = null;
+        doInit();
     }
 
     /**
