@@ -353,10 +353,10 @@ public class MarkdownSink extends Xhtml5BaseSink implements MarkdownMarkup {
         super(lineAwareWriter);
         this.lineAwareWriter = lineAwareWriter;
         this.bufferingStackWriter = bufferingStackWriter;
-        doInit();
+        initInternal();
     }
 
-    private void doInit() {
+    private void initInternal() {
         this.authors = new LinkedList<>();
         this.title = null;
         this.date = null;
@@ -477,7 +477,7 @@ public class MarkdownSink extends Xhtml5BaseSink implements MarkdownMarkup {
     @Override
     protected void init() {
         super.init();
-        doInit();
+        initInternal();
     }
 
     @Override

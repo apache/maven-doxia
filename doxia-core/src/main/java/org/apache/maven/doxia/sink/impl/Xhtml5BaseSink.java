@@ -135,13 +135,13 @@ public class Xhtml5BaseSink extends AbstractXmlSink implements HtmlMarkup {
         this.tableCaptionXMLWriterStack = new LinkedList<>();
         this.tableCaptionStack = new LinkedList<>();
 
-        doInit();
+        initInternal();
     }
 
     /**
      * Called from constructor and from {@link #init()} to initialize certain instance fields.
      */
-    private void doInit() {
+    private void initInternal() {
         this.headFlag = false;
         this.paragraphFlag = false;
         this.verbatimMode = VerbatimMode.OFF;
@@ -257,7 +257,7 @@ public class Xhtml5BaseSink extends AbstractXmlSink implements HtmlMarkup {
         this.tableCaptionStack.clear();
         this.inlineStack.clear();
 
-        doInit();
+        initInternal();
     }
 
     /**
