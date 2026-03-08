@@ -27,13 +27,13 @@ import org.junit.jupiter.params.provider.ValueSource;
 import static org.junit.jupiter.api.Assertions.assertFalse;
 import static org.junit.jupiter.api.Assertions.assertTrue;
 
-class LastTwoLinesBufferingWriterTest {
+class LastTwoLinesAwareWriterTest {
 
-    private LastTwoLinesBufferingWriter writer;
+    private LastTwoLinesAwareWriter writer;
 
     @BeforeEach
     void setup() {
-        writer = new LastTwoLinesBufferingWriter(NullWriter.INSTANCE);
+        writer = new LastTwoLinesAwareWriter(NullWriter.INSTANCE);
     }
 
     @Test
@@ -91,7 +91,7 @@ class LastTwoLinesBufferingWriterTest {
     @ParameterizedTest()
     @ValueSource(strings = {"\n", "\r\n"})
     void differentLineSeparators(String lineSeparator) throws Exception {
-        writer = new LastTwoLinesBufferingWriter(NullWriter.INSTANCE, lineSeparator);
+        writer = new LastTwoLinesAwareWriter(NullWriter.INSTANCE, lineSeparator);
         writer.write("text" + lineSeparator);
         assertFalse(writer.isWriterAfterBlankLine());
         assertTrue(writer.isWriterAtStartOfNewLine());

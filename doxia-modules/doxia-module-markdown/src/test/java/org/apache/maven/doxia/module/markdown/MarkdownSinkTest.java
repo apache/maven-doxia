@@ -59,15 +59,18 @@ class MarkdownSinkTest extends AbstractSinkTest {
     }
 
     protected String getTitleBlock(String title) {
-        return title;
+        // only written inside metadata section once head()_ is called
+        return "";
     }
 
     protected String getAuthorBlock(String author) {
-        return getEscapedText(author);
+        // only written inside metadata section once head()_ is called
+        return "";
     }
 
     protected String getDateBlock(String date) {
-        return date;
+        // only written inside metadata section once head()_ is called
+        return "";
     }
 
     protected String getHeadBlock() {
@@ -300,7 +303,7 @@ class MarkdownSinkTest extends AbstractSinkTest {
      * @return the text with all special characters escaped
      */
     private String getEscapedText(String text) {
-        return MarkdownSink.ElementContext.BODY.escape(new LastTwoLinesBufferingWriter(new StringWriter()), text);
+        return MarkdownSink.ElementContext.BODY.escape(new LastTwoLinesAwareWriter(new StringWriter()), text);
     }
 
     @Override
@@ -594,5 +597,28 @@ class MarkdownSinkTest extends AbstractSinkTest {
                 + "</dl>" + EOL
                 + EOL;
         assertEquals(expected, getSinkContent());
+    }
+
+    @Test
+    void commentPriorHead() {
+        try (Sink sink = getSink()) {
+            sink.comment("This is a comment");
+            sink.head();
+            sink.title();
+            sink.text("Title");
+            sink.title_();
+            sink.author();
+            sink.text("author1");
+            sink.author_();
+            sink.head_();
+        }
+        String expected = "---" + EOL
+                + "title: Title" + EOL
+                + "author: " + EOL
+                + "  - author1" + EOL
+                + "---" + EOL
+                + EOL
+                + "<!--This is a comment-->";
+        assertEquals(expected, getSinkContent(), "Wrong metadata section");
     }
 }
