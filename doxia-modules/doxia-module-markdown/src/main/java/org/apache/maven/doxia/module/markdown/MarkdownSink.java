@@ -93,6 +93,9 @@ public class MarkdownSink extends Xhtml5BaseSink implements MarkdownMarkup {
 
     private String figureSrc;
 
+    /** flag if the current verbatim block added a HTML context or not */
+    private boolean isVerbatimHtmlContext;
+
     @FunctionalInterface
     interface TextEscapeFunction {
         String escape(ElementContext context, LastTwoLinesAwareWriter writer, String text);
@@ -127,7 +130,7 @@ public class MarkdownSink extends Xhtml5BaseSink implements MarkdownMarkup {
         // same parameters as BODY but paragraphs inside list items are handled differently
         LIST_ITEM(Type.CONTAINER_BLOCK, false, ElementContext::escapeMarkdown, false, INDENT),
         BLOCKQUOTE(Type.CONTAINER_BLOCK, false, ElementContext::escapeMarkdown, false, BLOCKQUOTE_START_MARKUP),
-        HTML_BLOCK(Type.LEAF_BLOCK, true, ElementContext::escapeHtml, false, "", true);
+        HTML_BLOCK(Type.GENERIC_CONTAINER, true, ElementContext::escapeHtml, false, "", false);
 
         /**
          * @see <a href="https://spec.commonmark.org/0.30/#blocks-and-inlines">CommonMark, 3 Blocks and inlines</a>
@@ -723,6 +726,14 @@ public class MarkdownSink extends Xhtml5BaseSink implements MarkdownMarkup {
 
     @Override
     public void verbatim(SinkEventAttributes attributes) {
+        if (!elementContextStack.element().isContainer()) {
+            // markdown doesn't allow block elements but one can instead rely on html blocks for this
+            startContext(ElementContext.HTML_BLOCK);
+            isVerbatimHtmlContext = true;
+        } else {
+            isVerbatimHtmlContext = false;
+        }
+
         if (elementContextStack.element().isHtml()) {
             super.verbatim(attributes);
         } else {
@@ -741,6 +752,10 @@ public class MarkdownSink extends Xhtml5BaseSink implements MarkdownMarkup {
     public void verbatim_() {
         if (elementContextStack.element().isHtml()) {
             super.verbatim_();
+            if (isVerbatimHtmlContext) {
+                endContext(ElementContext.HTML_BLOCK);
+                isVerbatimHtmlContext = false;
+            }
         } else {
             ensureBeginningOfLine();
             write(getLinePrefix());
