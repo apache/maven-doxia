@@ -149,7 +149,7 @@ class MarkdownSinkTest extends AbstractSinkTest {
     protected String getDefinitionListBlock(String definum, String definition) {
         // don't reuse constants from compile classes to improve accuracy of tests
         return "<dl>" + EOL + "<dt>" + getEscapedText(definum) + "</dt>" + EOL + "<dd>" + getEscapedText(definition)
-                + "</dd>" + EOL + "</dl>" + EOL + EOL;
+                + "</dd>" + EOL + "</dl>";
     }
 
     protected String getFigureBlock(String source, String caption) {
@@ -550,7 +550,7 @@ class MarkdownSinkTest extends AbstractSinkTest {
             sink.definitionList_();
         }
         String expected = "<dl>" + EOL + "<dt>term</dt>" + EOL
-                + "<dd>prefix <code>code</code><em>suffix&lt;a&gt;test&lt;/a&gt;</em></dd>" + EOL + "</dl>" + EOL + EOL;
+                + "<dd>prefix <code>code</code><em>suffix&lt;a&gt;test&lt;/a&gt;</em></dd>" + EOL + "</dl>";
         assertEquals(expected, getSinkContent(), "Wrong heading after inline element!");
     }
 
@@ -600,11 +600,8 @@ class MarkdownSinkTest extends AbstractSinkTest {
             sink.definition_();
             sink.definitionList_();
         }
-        String expected = "<dl>" + EOL
-                + "<dt>question1</dt>" + EOL
-                + "<dd><a href=\"#top\">[top]</a></dd>" + EOL
-                + "</dl>" + EOL
-                + EOL;
+        String expected =
+                "<dl>" + EOL + "<dt>question1</dt>" + EOL + "<dd><a href=\"#top\">[top]</a></dd>" + EOL + "</dl>";
         assertEquals(expected, getSinkContent());
     }
 
@@ -688,6 +685,26 @@ class MarkdownSinkTest extends AbstractSinkTest {
         }
         String expected = "[plugin](http://maven.apache.org/maven-1.x/plugins/xdoc/reference/xdocs.html) documentation."
                 + EOL + EOL;
+        assertEquals(expected, getSinkContent());
+    }
+
+    @Test
+    void verbatimInTableCell() throws ParseException, IOException {
+        try (Sink sink = getSink()) {
+            sink.table();
+            sink.tableRows();
+            sink.tableRow();
+            sink.tableCell();
+            sink.verbatim(SinkEventAttributeSet.SOURCE);
+            sink.text("code with | and ` inside");
+            sink.verbatim_();
+            sink.tableCell_();
+            sink.tableRow_();
+            sink.tableRows_();
+            sink.table_();
+        }
+        String expected =
+                "|   |" + EOL + "|---|" + EOL + "|<pre><code>code with | and ` inside</code></pre>|" + EOL + EOL;
         assertEquals(expected, getSinkContent());
     }
 }
