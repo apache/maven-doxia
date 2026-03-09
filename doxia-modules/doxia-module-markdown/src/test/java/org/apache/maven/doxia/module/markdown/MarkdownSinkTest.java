@@ -632,6 +632,20 @@ class MarkdownSinkTest extends AbstractSinkTest {
     }
 
     @Test
+    void insignificantWhitespaceAfterBlockElement() {
+        try (Sink sink = getSink()) {
+            sink.paragraph();
+            sink.text("paragraph");
+            sink.paragraph_();
+            sink.markupLineBreak(
+                    4); // this should be ignored as paragraph_() in markdown is already followed by a blank line
+            sink.text("text after insignificant whitespace");
+        }
+        String expected = "paragraph" + EOL + EOL + "text after insignificant whitespace";
+        assertEquals(expected, getSinkContent());
+    }
+
+    @Test
     void listItemsContainingInsignificantWhitespace() {
         try (Sink sink = getSink()) {
             sink.list();
