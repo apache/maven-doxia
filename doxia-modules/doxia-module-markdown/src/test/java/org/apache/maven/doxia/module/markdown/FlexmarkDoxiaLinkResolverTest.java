@@ -28,7 +28,7 @@ import static org.junit.jupiter.api.Assertions.assertEquals;
 class FlexmarkDoxiaLinkResolverTest {
     @Test
     void resolveLink() {
-        FlexmarkDoxiaLinkResolver flexmarkDoxiaLinkResolver = new FlexmarkDoxiaLinkResolver(null);
+        FlexmarkDoxiaLinkResolver flexmarkDoxiaLinkResolver = new FlexmarkDoxiaLinkResolver();
 
         checkLinkRewritten(flexmarkDoxiaLinkResolver, "doc.md", "doc.html");
         checkLinkRewritten(flexmarkDoxiaLinkResolver, "doc.markdown", "doc.html");

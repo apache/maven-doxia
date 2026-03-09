@@ -59,9 +59,8 @@ public class FlexmarkDoxiaLinkResolver implements LinkResolver {
     /**
      * <p>Constructor for FlexmarkDoxiaLinkResolver.</p>
      *
-     * @param context a {@link com.vladsch.flexmark.html.renderer.LinkResolverContext} object.
      */
-    public FlexmarkDoxiaLinkResolver(@NotNull LinkResolverBasicContext context) {
+    public FlexmarkDoxiaLinkResolver() {
         this.pattern = Pattern.compile("^(?![^:]+:)((?:\\./)?(?:\\.\\./)*[^\\.]+).(?:"
                 + MarkdownParserModule.FILE_EXTENSION
                 + "|"
@@ -95,7 +94,7 @@ public class FlexmarkDoxiaLinkResolver implements LinkResolver {
 
         @Override
         public @NotNull LinkResolver apply(@NotNull LinkResolverBasicContext context) {
-            return new FlexmarkDoxiaLinkResolver(context);
+            return new FlexmarkDoxiaLinkResolver();
         }
     }
 }
