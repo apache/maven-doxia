@@ -1838,7 +1838,9 @@ public class AptParser extends AbstractTextParser implements AptMarkup {
 
         public void traverse() throws AptParseException {
             if (isEmitComments()) {
-                AptParser.this.sink.comment(text, true);
+                AptParser.this.sink.comment(text);
+                // APT comments always end with a line break
+                AptParser.this.sink.markupLineBreak(0);
             }
         }
     }

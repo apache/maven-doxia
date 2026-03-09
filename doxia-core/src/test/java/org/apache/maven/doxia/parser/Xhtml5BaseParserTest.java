@@ -280,8 +280,8 @@ class Xhtml5BaseParserTest extends AbstractParserTest {
 
         el = it.next();
         assertEquals("text", el.getName());
-        // according to section 2.11 of the XML spec, parsers must normalize line breaks to "\n"
-        assertEquals("\n", (String) el.getArgs()[0]);
+        // the EOL must be normalized to a single space, as per the HTML spec
+        assertEquals(" ", (String) el.getArgs()[0]);
 
         assertEquals("inline", it.next().getName());
         assertEquals("text", it.next().getName());
@@ -364,6 +364,70 @@ class Xhtml5BaseParserTest extends AbstractParserTest {
         assertEquals("text", it.next().getName());
         assertEquals("link_", it.next().getName());
         assertEquals("verbatim_", it.next().getName());
+    }
+
+    @Test
+    void listWithInsignificantLineBreaks() throws Exception {
+        // test EOLs within lists (those don't have significance and should not be reported as text events, but as
+        // markupLineBreak with the according indent level)
+        String text = "<ul>" + Xhtml5BaseParser.EOL + "  <li>One</li> "
+                + Xhtml5BaseParser.EOL + "  <li>Two</li>   "
+                + Xhtml5BaseParser.EOL + "</ul>";
+
+        parser.parse(text, sink);
+
+        Iterator<SinkEventElement> it = sink.getEventList().iterator();
+
+        assertEquals("list", it.next().getName());
+        assertSinkEquals(it.next(), "markupLineBreak", 2);
+        assertEquals("listItem", it.next().getName());
+        assertEquals("text", it.next().getName());
+        assertEquals("listItem_", it.next().getName());
+        assertSinkEquals(it.next(), "markupLineBreak", 2);
+        assertEquals("listItem", it.next().getName());
+        assertEquals("text", it.next().getName());
+        assertEquals("listItem_", it.next().getName());
+        assertSinkEquals(it.next(), "markupLineBreak", 0);
+        assertEquals("list_", it.next().getName());
+    }
+
+    @Test
+    void whitespaceInBlockAndInlineElements() throws ParseException {
+        String text =
+                "<p>\n  \n<ul>" + Xhtml5BaseParser.EOL + "  <li><a href=\"https://example.com\"> One</a> Another</li>"
+                        + Xhtml5BaseParser.EOL + "  <li> Two   Another </li>   "
+                        + Xhtml5BaseParser.EOL + "<li><img src=\"img.src\"/> Three</li>"
+                        + Xhtml5BaseParser.EOL + "</ul>" + Xhtml5BaseParser.EOL + "   </p>";
+
+        parser.parse(text, sink);
+
+        Iterator<SinkEventElement> it = sink.getEventList().iterator();
+        assertEquals("paragraph", it.next().getName());
+        assertSinkEquals(it.next(), "markupLineBreak", 2);
+        assertSinkEquals(it.next(), "markupLineBreak", 0);
+        assertEquals("list", it.next().getName());
+        assertSinkEquals(it.next(), "markupLineBreak", 2);
+        assertEquals("listItem", it.next().getName());
+        assertSinkEquals(
+                it.next(), "link", "https://example.com", new SinkEventAttributeSet("href", "https://example.com"));
+        assertSinkEquals(it.next(), "text", " One", null);
+        assertEquals("link_", it.next().getName());
+        assertSinkEquals(it.next(), "text", " Another", null);
+        assertEquals("listItem_", it.next().getName());
+        assertSinkEquals(it.next(), "markupLineBreak", 2);
+        assertEquals("listItem", it.next().getName());
+        // test collapsing, currently no trimming at the end
+        assertSinkEquals(it.next(), "text", "Two Another ", null);
+        assertEquals("listItem_", it.next().getName());
+        assertSinkEquals(it.next(), "markupLineBreak", 0);
+        assertEquals("listItem", it.next().getName());
+        assertSinkEquals(it.next(), "figureGraphics", "img.src", new SinkEventAttributeSet("src", "img.src"));
+        assertSinkEquals(it.next(), "text", " Three", null);
+        assertEquals("listItem_", it.next().getName());
+        assertSinkEquals(it.next(), "markupLineBreak", 0);
+        assertEquals("list_", it.next().getName());
+        assertSinkEquals(it.next(), "markupLineBreak", 3);
+        assertSinkEquals(it, "paragraph_");
     }
 
     @Test

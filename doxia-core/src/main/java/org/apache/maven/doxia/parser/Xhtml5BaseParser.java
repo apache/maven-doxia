@@ -21,6 +21,8 @@ package org.apache.maven.doxia.parser;
 import javax.swing.text.html.HTML.Attribute;
 
 import java.io.Reader;
+import java.text.CharacterIterator;
+import java.text.StringCharacterIterator;
 import java.util.HashSet;
 import java.util.LinkedList;
 import java.util.Set;
@@ -109,6 +111,9 @@ public class Xhtml5BaseParser extends AbstractXmlParser implements HtmlMarkup {
     /** Used to distinguish &lt;a href=""&gt; from &lt;a name=""&gt;. */
     private boolean isLink;
 
+    /** If true, the next text event is at the beginning of a line inside a block element, i.e. after a block tag or a line break/end block tag. */
+    protected boolean isBeginningOfLineInsideBlock = true;
+
     /** Used to distinguish &lt;a href=""&gt; from &lt;a name=""&gt;. */
     private boolean isAnchor;
 
@@ -192,181 +197,276 @@ public class Xhtml5BaseParser extends AbstractXmlParser implements HtmlMarkup {
 
     protected boolean baseStartTag(String elementName, SinkEventAttributeSet attribs, Sink sink) {
         boolean visited = true;
-
-        if (elementName.equals(HtmlMarkup.ARTICLE.toString())) {
-            sink.article(attribs);
-        } else if (elementName.equals(HtmlMarkup.NAV.toString())) {
-            sink.navigation(attribs);
-        } else if (elementName.equals(HtmlMarkup.ASIDE.toString())) {
-            sink.sidebar(attribs);
-        } else if (elementName.equals(HtmlMarkup.SECTION.toString())) {
-            handleSectionStart(sink, attribs);
-        } else if (elementName.equals(HtmlMarkup.H1.toString())) {
-            handleHeadingStart(sink, Sink.SECTION_LEVEL_1, attribs);
-        } else if (elementName.equals(HtmlMarkup.H2.toString())) {
-            handleHeadingStart(sink, Sink.SECTION_LEVEL_2, attribs);
-        } else if (elementName.equals(HtmlMarkup.H3.toString())) {
-            handleHeadingStart(sink, Sink.SECTION_LEVEL_3, attribs);
-        } else if (elementName.equals(HtmlMarkup.H4.toString())) {
-            handleHeadingStart(sink, Sink.SECTION_LEVEL_4, attribs);
-        } else if (elementName.equals(HtmlMarkup.H5.toString())) {
-            handleHeadingStart(sink, Sink.SECTION_LEVEL_5, attribs);
-        } else if (elementName.equals(HtmlMarkup.H6.toString())) {
-            handleHeadingStart(sink, Sink.SECTION_LEVEL_6, attribs);
-        } else if (elementName.equals(HtmlMarkup.HEADER.toString())) {
-            sink.header(attribs);
-        } else if (elementName.equals(HtmlMarkup.MAIN.toString())) {
-            sink.content(attribs);
-        } else if (elementName.equals(HtmlMarkup.FOOTER.toString())) {
-            sink.footer(attribs);
-        } else if (elementName.equals(HtmlMarkup.EM.toString())) {
-            attribs.addAttributes(SinkEventAttributeSet.Semantics.EMPHASIS);
-            sink.inline(attribs);
-        } else if (elementName.equals(HtmlMarkup.STRONG.toString())) {
-            attribs.addAttributes(SinkEventAttributeSet.Semantics.STRONG);
-            sink.inline(attribs);
-        } else if (elementName.equals(HtmlMarkup.SMALL.toString())) {
-            attribs.addAttributes(SinkEventAttributeSet.Semantics.SMALL);
-            sink.inline(attribs);
-        } else if (elementName.equals(HtmlMarkup.S.toString())) {
-            attribs.addAttributes(SinkEventAttributeSet.Semantics.LINE_THROUGH);
-            sink.inline(attribs);
-            /* deprecated line-through support */
-        } else if (elementName.equals(HtmlMarkup.CITE.toString())) {
-            attribs.addAttributes(SinkEventAttributeSet.Semantics.CITATION);
-            sink.inline(attribs);
-        } else if (elementName.equals(HtmlMarkup.Q.toString())) {
-            attribs.addAttributes(SinkEventAttributeSet.Semantics.QUOTE);
-            sink.inline(attribs);
-        } else if (elementName.equals(HtmlMarkup.DFN.toString())) {
-            attribs.addAttributes(SinkEventAttributeSet.Semantics.DEFINITION);
-            sink.inline(attribs);
-        } else if (elementName.equals(HtmlMarkup.ABBR.toString())) {
-            attribs.addAttributes(SinkEventAttributeSet.Semantics.ABBREVIATION);
-            sink.inline(attribs);
-        } else if (elementName.equals(HtmlMarkup.I.toString())) {
-            attribs.addAttributes(SinkEventAttributeSet.Semantics.ITALIC);
-            sink.inline(attribs);
-        } else if (elementName.equals(HtmlMarkup.B.toString())) {
-            attribs.addAttributes(SinkEventAttributeSet.Semantics.BOLD);
-            sink.inline(attribs);
-        } else if (elementName.equals(HtmlMarkup.CODE.toString())) {
-            attribs.addAttributes(SinkEventAttributeSet.Semantics.CODE);
-            sink.inline(attribs);
-        } else if (elementName.equals(HtmlMarkup.VAR.toString())) {
-            attribs.addAttributes(SinkEventAttributeSet.Semantics.VARIABLE);
-            sink.inline(attribs);
-        } else if (elementName.equals(HtmlMarkup.SAMP.toString())) {
-            attribs.addAttributes(SinkEventAttributeSet.Semantics.SAMPLE);
-            sink.inline(attribs);
-        } else if (elementName.equals(HtmlMarkup.KBD.toString())) {
-            attribs.addAttributes(SinkEventAttributeSet.Semantics.KEYBOARD);
-            sink.inline(attribs);
-        } else if (elementName.equals(HtmlMarkup.SUP.toString())) {
-            attribs.addAttributes(SinkEventAttributeSet.Semantics.SUPERSCRIPT);
-            sink.inline(attribs);
-        } else if (elementName.equals(HtmlMarkup.SUB.toString())) {
-            attribs.addAttributes(SinkEventAttributeSet.Semantics.SUBSCRIPT);
-            sink.inline(attribs);
-        } else if (elementName.equals(HtmlMarkup.U.toString())) {
-            attribs.addAttributes(SinkEventAttributeSet.Semantics.ANNOTATION);
-            sink.inline(attribs);
-        } else if (elementName.equals(HtmlMarkup.MARK.toString())) {
-            attribs.addAttributes(SinkEventAttributeSet.Semantics.HIGHLIGHT);
-            sink.inline(attribs);
-        } else if (elementName.equals(HtmlMarkup.RUBY.toString())) {
-            attribs.addAttributes(SinkEventAttributeSet.Semantics.RUBY);
-            sink.inline(attribs);
-        } else if (elementName.equals(HtmlMarkup.RB.toString())) {
-            attribs.addAttributes(SinkEventAttributeSet.Semantics.RUBY_BASE);
-            sink.inline(attribs);
-        } else if (elementName.equals(HtmlMarkup.RT.toString())) {
-            attribs.addAttributes(SinkEventAttributeSet.Semantics.RUBY_TEXT);
-            sink.inline(attribs);
-        } else if (elementName.equals(HtmlMarkup.RTC.toString())) {
-            attribs.addAttributes(SinkEventAttributeSet.Semantics.RUBY_TEXT_CONTAINER);
-            sink.inline(attribs);
-        } else if (elementName.equals(HtmlMarkup.RP.toString())) {
-            attribs.addAttributes(SinkEventAttributeSet.Semantics.RUBY_PARANTHESES);
-            sink.inline(attribs);
-        } else if (elementName.equals(HtmlMarkup.BDI.toString())) {
-            attribs.addAttributes(SinkEventAttributeSet.Semantics.BIDIRECTIONAL_ISOLATION);
-            sink.inline(attribs);
-        } else if (elementName.equals(HtmlMarkup.BDO.toString())) {
-            attribs.addAttributes(SinkEventAttributeSet.Semantics.BIDIRECTIONAL_OVERRIDE);
-            sink.inline(attribs);
-        } else if (elementName.equals(HtmlMarkup.SPAN.toString())) {
-            attribs.addAttributes(SinkEventAttributeSet.Semantics.PHRASE);
-            sink.inline(attribs);
-        } else if (elementName.equals(HtmlMarkup.INS.toString())) {
-            attribs.addAttributes(SinkEventAttributeSet.Semantics.INSERT);
-            sink.inline(attribs);
-        } else if (elementName.equals(HtmlMarkup.DEL.toString())) {
-            attribs.addAttributes(SinkEventAttributeSet.Semantics.DELETE);
-            sink.inline(attribs);
-        } else if (elementName.equals(HtmlMarkup.P.toString())) {
-            handlePStart(sink, attribs);
-        } else if (elementName.equals(HtmlMarkup.DIV.toString())) {
-            handleDivStart(attribs, sink);
-        } else if (elementName.equals(HtmlMarkup.PRE.toString())) {
-            handlePreStart(attribs, sink);
-        } else if (elementName.equals(HtmlMarkup.UL.toString())) {
-            sink.list(attribs);
-        } else if (elementName.equals(HtmlMarkup.OL.toString())) {
-            handleOLStart(sink, attribs);
-        } else if (elementName.equals(HtmlMarkup.LI.toString())) {
-            handleLIStart(sink, attribs);
-        } else if (elementName.equals(HtmlMarkup.DL.toString())) {
-            sink.definitionList(attribs);
-        } else if (elementName.equals(HtmlMarkup.DT.toString())) {
-            if (hasDefinitionListItem) {
-                // close previous listItem
-                sink.definitionListItem_();
-            }
-            sink.definitionListItem(attribs);
-            hasDefinitionListItem = true;
-            sink.definedTerm(attribs);
-        } else if (elementName.equals(HtmlMarkup.DD.toString())) {
-            if (!hasDefinitionListItem) {
+        isBeginningOfLineInsideBlock = true;
+        switch (elementName) {
+            case "article":
+                sink.article(attribs);
+                break;
+            case "nav":
+                sink.navigation(attribs);
+                break;
+            case "aside":
+                sink.sidebar(attribs);
+                break;
+            case "section":
+                handleSectionStart(sink, attribs);
+                break;
+            case "h1":
+                handleHeadingStart(sink, Sink.SECTION_LEVEL_1, attribs);
+                break;
+            case "h2":
+                handleHeadingStart(sink, Sink.SECTION_LEVEL_2, attribs);
+                break;
+            case "h3":
+                handleHeadingStart(sink, Sink.SECTION_LEVEL_3, attribs);
+                break;
+            case "h4":
+                handleHeadingStart(sink, Sink.SECTION_LEVEL_4, attribs);
+                break;
+            case "h5":
+                handleHeadingStart(sink, Sink.SECTION_LEVEL_5, attribs);
+                break;
+            case "h6":
+                handleHeadingStart(sink, Sink.SECTION_LEVEL_6, attribs);
+                break;
+            case "header":
+                sink.header(attribs);
+                break;
+            case "main":
+                sink.content(attribs);
+                break;
+            case "footer":
+                sink.footer(attribs);
+                break;
+            case "em":
+                attribs.addAttributes(SinkEventAttributeSet.Semantics.EMPHASIS);
+                sink.inline(attribs);
+                isBeginningOfLineInsideBlock = false;
+                break;
+            case "strong":
+                attribs.addAttributes(SinkEventAttributeSet.Semantics.STRONG);
+                sink.inline(attribs);
+                isBeginningOfLineInsideBlock = false;
+                break;
+            case "small":
+                attribs.addAttributes(SinkEventAttributeSet.Semantics.SMALL);
+                sink.inline(attribs);
+                isBeginningOfLineInsideBlock = false;
+                break;
+            case "s":
+                /* deprecated line-through support */
+                attribs.addAttributes(SinkEventAttributeSet.Semantics.LINE_THROUGH);
+                sink.inline(attribs);
+                isBeginningOfLineInsideBlock = false;
+                break;
+            case "cite":
+                attribs.addAttributes(SinkEventAttributeSet.Semantics.CITATION);
+                sink.inline(attribs);
+                isBeginningOfLineInsideBlock = false;
+                break;
+            case "q":
+                attribs.addAttributes(SinkEventAttributeSet.Semantics.QUOTE);
+                sink.inline(attribs);
+                break;
+            case "dfn":
+                attribs.addAttributes(SinkEventAttributeSet.Semantics.DEFINITION);
+                sink.inline(attribs);
+                isBeginningOfLineInsideBlock = false;
+                break;
+            case "abbr":
+                attribs.addAttributes(SinkEventAttributeSet.Semantics.ABBREVIATION);
+                sink.inline(attribs);
+                isBeginningOfLineInsideBlock = false;
+                break;
+            case "i":
+                attribs.addAttributes(SinkEventAttributeSet.Semantics.ITALIC);
+                sink.inline(attribs);
+                break;
+            case "b":
+                attribs.addAttributes(SinkEventAttributeSet.Semantics.BOLD);
+                sink.inline(attribs);
+                isBeginningOfLineInsideBlock = false;
+                break;
+            case "code":
+                attribs.addAttributes(SinkEventAttributeSet.Semantics.CODE);
+                sink.inline(attribs);
+                isBeginningOfLineInsideBlock = false;
+                break;
+            case "var":
+                attribs.addAttributes(SinkEventAttributeSet.Semantics.VARIABLE);
+                sink.inline(attribs);
+                isBeginningOfLineInsideBlock = false;
+                break;
+            case "samp":
+                attribs.addAttributes(SinkEventAttributeSet.Semantics.SAMPLE);
+                sink.inline(attribs);
+                isBeginningOfLineInsideBlock = false;
+                break;
+            case "kbd":
+                attribs.addAttributes(SinkEventAttributeSet.Semantics.KEYBOARD);
+                sink.inline(attribs);
+                isBeginningOfLineInsideBlock = false;
+                break;
+            case "sup":
+                attribs.addAttributes(SinkEventAttributeSet.Semantics.SUPERSCRIPT);
+                sink.inline(attribs);
+                isBeginningOfLineInsideBlock = false;
+                break;
+            case "sub":
+                attribs.addAttributes(SinkEventAttributeSet.Semantics.SUBSCRIPT);
+                sink.inline(attribs);
+                isBeginningOfLineInsideBlock = false;
+                break;
+            case "u":
+                attribs.addAttributes(SinkEventAttributeSet.Semantics.ANNOTATION);
+                sink.inline(attribs);
+                isBeginningOfLineInsideBlock = false;
+                break;
+            case "mark":
+                attribs.addAttributes(SinkEventAttributeSet.Semantics.HIGHLIGHT);
+                sink.inline(attribs);
+                break;
+            case "ruby":
+                attribs.addAttributes(SinkEventAttributeSet.Semantics.RUBY);
+                sink.inline(attribs);
+                isBeginningOfLineInsideBlock = false;
+                break;
+            case "rb":
+                attribs.addAttributes(SinkEventAttributeSet.Semantics.RUBY_BASE);
+                sink.inline(attribs);
+                isBeginningOfLineInsideBlock = false;
+                break;
+            case "rt":
+                attribs.addAttributes(SinkEventAttributeSet.Semantics.RUBY_TEXT);
+                sink.inline(attribs);
+                isBeginningOfLineInsideBlock = false;
+                break;
+            case "rtc":
+                attribs.addAttributes(SinkEventAttributeSet.Semantics.RUBY_TEXT_CONTAINER);
+                sink.inline(attribs);
+                isBeginningOfLineInsideBlock = false;
+                break;
+            case "rp":
+                attribs.addAttributes(SinkEventAttributeSet.Semantics.RUBY_PARANTHESES);
+                sink.inline(attribs);
+                isBeginningOfLineInsideBlock = false;
+                break;
+            case "bdi":
+                attribs.addAttributes(SinkEventAttributeSet.Semantics.BIDIRECTIONAL_ISOLATION);
+                sink.inline(attribs);
+                isBeginningOfLineInsideBlock = false;
+                break;
+            case "bdo":
+                attribs.addAttributes(SinkEventAttributeSet.Semantics.BIDIRECTIONAL_OVERRIDE);
+                sink.inline(attribs);
+                isBeginningOfLineInsideBlock = false;
+                break;
+            case "span":
+                attribs.addAttributes(SinkEventAttributeSet.Semantics.PHRASE);
+                sink.inline(attribs);
+                isBeginningOfLineInsideBlock = false;
+                break;
+            case "ins":
+                attribs.addAttributes(SinkEventAttributeSet.Semantics.INSERT);
+                sink.inline(attribs);
+                isBeginningOfLineInsideBlock = false;
+                break;
+            case "del":
+                attribs.addAttributes(SinkEventAttributeSet.Semantics.DELETE);
+                sink.inline(attribs);
+                isBeginningOfLineInsideBlock = false;
+                break;
+            case "p":
+                handlePStart(sink, attribs);
+                break;
+            case "div":
+                handleDivStart(attribs, sink);
+                break;
+            case "pre":
+                handlePreStart(attribs, sink);
+                break;
+            case "ul":
+                sink.list(attribs);
+                break;
+            case "ol":
+                handleOLStart(sink, attribs);
+                break;
+            case "li":
+                handleLIStart(sink, attribs);
+                break;
+            case "dl":
+                sink.definitionList(attribs);
+                break;
+            case "dt":
+                if (hasDefinitionListItem) {
+                    // close previous listItem
+                    sink.definitionListItem_();
+                }
                 sink.definitionListItem(attribs);
-            }
-            sink.definition(attribs);
-        } else if (elementName.equals(HtmlMarkup.FIGURE.toString())) {
-            sink.figure(attribs);
-        } else if (elementName.equals(HtmlMarkup.FIGCAPTION.toString())) {
-            sink.figureCaption(attribs);
-        } else if (elementName.equals(HtmlMarkup.A.toString())) {
-            handleAStart(sink, attribs);
-        } else if (elementName.equals(HtmlMarkup.TABLE.toString())) {
-            handleTableStart(sink, attribs);
-        } else if (elementName.equals(HtmlMarkup.TR.toString())) {
-            sink.tableRow(attribs);
-        } else if (elementName.equals(HtmlMarkup.TH.toString())) {
-            sink.tableHeaderCell(attribs);
-        } else if (elementName.equals(HtmlMarkup.TD.toString())) {
-            sink.tableCell(attribs);
-        } else if (elementName.equals(HtmlMarkup.CAPTION.toString())) {
-            sink.tableCaption(attribs);
-        } else if (elementName.equals(HtmlMarkup.BR.toString())) {
-            sink.lineBreak(attribs);
-        } else if (elementName.equals(HtmlMarkup.WBR.toString())) {
-            sink.lineBreakOpportunity(attribs);
-        } else if (elementName.equals(HtmlMarkup.HR.toString())) {
-            sink.horizontalRule(attribs);
-        } else if (elementName.equals(HtmlMarkup.IMG.toString())) {
-            handleImgStart(sink, attribs);
-        } else if (elementName.equals(HtmlMarkup.BLOCKQUOTE.toString())) {
-            sink.blockquote(attribs);
-        } else if (UNMATCHED_XHTML5_ELEMENTS.contains(elementName)) {
-            handleUnknown(elementName, attribs, sink, TAG_TYPE_START);
-        } else if (UNMATCHED_XHTML5_SIMPLE_ELEMENTS.contains(elementName)) {
-            handleUnknown(elementName, attribs, sink, TAG_TYPE_SIMPLE);
-        } else if (elementName.equals(HtmlMarkup.SCRIPT.toString())
-                || elementName.equals(HtmlMarkup.STYLE.toString())) {
-            handleUnknown(elementName, attribs, sink, TAG_TYPE_START);
-            scriptBlock = true;
-        } else {
-            visited = false;
+                hasDefinitionListItem = true;
+                sink.definedTerm(attribs);
+                break;
+            case "dd":
+                if (!hasDefinitionListItem) {
+                    sink.definitionListItem(attribs);
+                }
+                sink.definition(attribs);
+                break;
+            case "figure":
+                sink.figure(attribs);
+                break;
+            case "figcaption":
+                sink.figureCaption(attribs);
+                break;
+            case "a":
+                isBeginningOfLineInsideBlock = false;
+                handleAStart(sink, attribs);
+                break;
+            case "table":
+                handleTableStart(sink, attribs);
+                break;
+            case "tr":
+                sink.tableRow(attribs);
+                break;
+            case "th":
+                sink.tableHeaderCell(attribs);
+                break;
+            case "td":
+                sink.tableCell(attribs);
+                break;
+            case "caption":
+                sink.tableCaption(attribs);
+                break;
+            case "br":
+                sink.lineBreak(attribs);
+                break;
+            case "wbr":
+                sink.lineBreakOpportunity(attribs);
+                break;
+            case "hr":
+                sink.horizontalRule(attribs);
+                break;
+            case "img":
+                isBeginningOfLineInsideBlock = false;
+                handleImgStart(sink, attribs);
+                break;
+            case "blockquote":
+                sink.blockquote(attribs);
+                break;
+            case "script":
+            case "style":
+                handleUnknown(elementName, attribs, sink, TAG_TYPE_START);
+                scriptBlock = true;
+                break;
+            default:
+                if (UNMATCHED_XHTML5_ELEMENTS.contains(elementName)) {
+                    handleUnknown(elementName, attribs, sink, TAG_TYPE_START);
+                } else if (UNMATCHED_XHTML5_SIMPLE_ELEMENTS.contains(elementName)) {
+                    handleUnknown(elementName, attribs, sink, TAG_TYPE_SIMPLE);
+                } else {
+                    visited = false;
+                }
+                break;
         }
 
         return visited;
@@ -391,150 +491,163 @@ public class Xhtml5BaseParser extends AbstractXmlParser implements HtmlMarkup {
 
     protected boolean baseEndTag(String elementName, SinkEventAttributeSet attribs, Sink sink) {
         boolean visited = true;
+        isBeginningOfLineInsideBlock = true;
 
-        if (elementName.equals(HtmlMarkup.P.toString())) {
-            sink.paragraph_();
-        } else if (elementName.equals(HtmlMarkup.DIV.toString())) {
-            handleDivEnd(sink);
-        } else if (elementName.equals(HtmlMarkup.PRE.toString())) {
-            verbatim_();
-
-            sink.verbatim_();
-        } else if (elementName.equals(HtmlMarkup.UL.toString())) {
-            sink.list_();
-        } else if (elementName.equals(HtmlMarkup.OL.toString())) {
-            sink.numberedList_();
-            orderedListDepth--;
-        } else if (elementName.equals(HtmlMarkup.LI.toString())) {
-            handleListItemEnd(sink);
-        } else if (elementName.equals(HtmlMarkup.DL.toString())) {
-            if (hasDefinitionListItem) {
+        switch (elementName) {
+            case "p":
+                sink.paragraph_();
+                break;
+            case "div":
+                handleDivEnd(sink);
+                break;
+            case "pre":
+                verbatim_();
+                sink.verbatim_();
+                break;
+            case "ul":
+                sink.list_();
+                break;
+            case "ol":
+                sink.numberedList_();
+                orderedListDepth--;
+                break;
+            case "li":
+                handleListItemEnd(sink);
+                break;
+            case "dl":
+                if (hasDefinitionListItem) {
+                    sink.definitionListItem_();
+                    hasDefinitionListItem = false;
+                }
+                sink.definitionList_();
+                break;
+            case "dt":
+                sink.definedTerm_();
+                break;
+            case "dd":
+                sink.definition_();
                 sink.definitionListItem_();
                 hasDefinitionListItem = false;
-            }
-            sink.definitionList_();
-        } else if (elementName.equals(HtmlMarkup.DT.toString())) {
-            sink.definedTerm_();
-        } else if (elementName.equals(HtmlMarkup.DD.toString())) {
-            sink.definition_();
-            sink.definitionListItem_();
-            hasDefinitionListItem = false;
-        } else if (elementName.equals(HtmlMarkup.FIGURE.toString())) {
-            sink.figure_();
-        } else if (elementName.equals(HtmlMarkup.FIGCAPTION.toString())) {
-            sink.figureCaption_();
-        } else if (elementName.equals(HtmlMarkup.A.toString())) {
-            handleAEnd(sink);
-        } else if (elementName.equals(HtmlMarkup.EM.toString())) {
-            sink.inline_();
-        } else if (elementName.equals(HtmlMarkup.STRONG.toString())) {
-            sink.inline_();
-        } else if (elementName.equals(HtmlMarkup.SMALL.toString())) {
-            sink.inline_();
-        } else if (elementName.equals(HtmlMarkup.S.toString())) {
-            sink.inline_();
-        } else if (elementName.equals(HtmlMarkup.CITE.toString())) {
-            sink.inline_();
-        } else if (elementName.equals(HtmlMarkup.Q.toString())) {
-            sink.inline_();
-        } else if (elementName.equals(HtmlMarkup.DFN.toString())) {
-            sink.inline_();
-        } else if (elementName.equals(HtmlMarkup.ABBR.toString())) {
-            sink.inline_();
-        } else if (elementName.equals(HtmlMarkup.I.toString())) {
-            sink.inline_();
-        } else if (elementName.equals(HtmlMarkup.B.toString())) {
-            sink.inline_();
-        } else if (elementName.equals(HtmlMarkup.CODE.toString())) {
-            sink.inline_();
-        } else if (elementName.equals(HtmlMarkup.VAR.toString())) {
-            sink.inline_();
-        } else if (elementName.equals(HtmlMarkup.SAMP.toString())) {
-            sink.inline_();
-        } else if (elementName.equals(HtmlMarkup.KBD.toString())) {
-            sink.inline_();
-        } else if (elementName.equals(HtmlMarkup.SUP.toString())) {
-            sink.inline_();
-        } else if (elementName.equals(HtmlMarkup.SUB.toString())) {
-            sink.inline_();
-        } else if (elementName.equals(HtmlMarkup.U.toString())) {
-            sink.inline_();
-        } else if (elementName.equals(HtmlMarkup.MARK.toString())) {
-            sink.inline_();
-        } else if (elementName.equals(HtmlMarkup.RUBY.toString())) {
-            sink.inline_();
-        } else if (elementName.equals(HtmlMarkup.RB.toString())) {
-            sink.inline_();
-        } else if (elementName.equals(HtmlMarkup.RT.toString())) {
-            sink.inline_();
-        } else if (elementName.equals(HtmlMarkup.RTC.toString())) {
-            sink.inline_();
-        } else if (elementName.equals(HtmlMarkup.RP.toString())) {
-            sink.inline_();
-        } else if (elementName.equals(HtmlMarkup.BDI.toString())) {
-            sink.inline_();
-        } else if (elementName.equals(HtmlMarkup.BDO.toString())) {
-            sink.inline_();
-        } else if (elementName.equals(HtmlMarkup.SPAN.toString())) {
-            sink.inline_();
-        } else if (elementName.equals(HtmlMarkup.INS.toString())) {
-            sink.inline_();
-        } else if (elementName.equals(HtmlMarkup.DEL.toString())) {
-            sink.inline_();
-        }
+                break;
+            case "figure":
+                sink.figure_();
+                break;
+            case "figcaption":
+                sink.figureCaption_();
+                break;
+            case "a":
+                isBeginningOfLineInsideBlock = false;
+                handleAEnd(sink);
+                break;
+            case "em":
+            case "strong":
+            case "small":
+            case "s":
+            case "cite":
+            case "q":
+            case "dfn":
+            case "abbr":
+            case "i":
+            case "b":
+            case "code":
+            case "var":
+            case "samp":
+            case "kbd":
+            case "sup":
+            case "sub":
+            case "u":
+            case "mark":
+            case "ruby":
+            case "rb":
+            case "rt":
+            case "rtc":
+            case "rp":
+            case "bdi":
+            case "bdo":
+            case "span":
+            case "ins":
+            case "del":
+                sink.inline_();
+                isBeginningOfLineInsideBlock = false;
+                break;
 
-        // ----------------------------------------------------------------------
-        // Tables
-        // ----------------------------------------------------------------------
+            // ----------------------------------------------------------------------
+            // Tables
+            // ----------------------------------------------------------------------
 
-        else if (elementName.equals(HtmlMarkup.TABLE.toString())) {
-            sink.tableRows_();
-            sink.table_();
-        } else if (elementName.equals(HtmlMarkup.TR.toString())) {
-            sink.tableRow_();
-        } else if (elementName.equals(HtmlMarkup.TH.toString())) {
-            sink.tableHeaderCell_();
-        } else if (elementName.equals(HtmlMarkup.TD.toString())) {
-            sink.tableCell_();
-        } else if (elementName.equals(HtmlMarkup.CAPTION.toString())) {
-            sink.tableCaption_();
-        } else if (elementName.equals(HtmlMarkup.ARTICLE.toString())) {
-            sink.article_();
-        } else if (elementName.equals(HtmlMarkup.NAV.toString())) {
-            sink.navigation_();
-        } else if (elementName.equals(HtmlMarkup.ASIDE.toString())) {
-            sink.sidebar_();
-        } else if (elementName.equals(HtmlMarkup.SECTION.toString())) {
-            handleSectionEnd(sink);
-        } else if (elementName.equals(HtmlMarkup.H1.toString())) {
-            sink.sectionTitle1_();
-        } else if (elementName.equals(HtmlMarkup.H2.toString())) {
-            sink.sectionTitle2_();
-        } else if (elementName.equals(HtmlMarkup.H3.toString())) {
-            sink.sectionTitle3_();
-        } else if (elementName.equals(HtmlMarkup.H4.toString())) {
-            sink.sectionTitle4_();
-        } else if (elementName.equals(HtmlMarkup.H5.toString())) {
-            sink.sectionTitle5_();
-        } else if (elementName.equals(HtmlMarkup.H6.toString())) {
-            sink.sectionTitle6_();
-        } else if (elementName.equals(HtmlMarkup.HEADER.toString())) {
-            sink.header_();
-        } else if (elementName.equals(HtmlMarkup.MAIN.toString())) {
-            sink.content_();
-        } else if (elementName.equals(HtmlMarkup.FOOTER.toString())) {
-            sink.footer_();
-        } else if (elementName.equals(HtmlMarkup.BLOCKQUOTE.toString())) {
-            sink.blockquote_();
-        } else if (UNMATCHED_XHTML5_ELEMENTS.contains(elementName)) {
-            handleUnknown(elementName, attribs, sink, TAG_TYPE_END);
-        } else if (elementName.equals(HtmlMarkup.SCRIPT.toString())
-                || elementName.equals(HtmlMarkup.STYLE.toString())) {
-            handleUnknown(elementName, attribs, sink, TAG_TYPE_END);
-
-            scriptBlock = false;
-        } else {
-            visited = false;
+            case "table":
+                sink.tableRows_();
+                sink.table_();
+                break;
+            case "tr":
+                sink.tableRow_();
+                break;
+            case "th":
+                sink.tableHeaderCell_();
+                break;
+            case "td":
+                sink.tableCell_();
+                break;
+            case "caption":
+                sink.tableCaption_();
+                break;
+            case "article":
+                sink.article_();
+                break;
+            case "nav":
+                sink.navigation_();
+                break;
+            case "aside":
+                sink.sidebar_();
+                break;
+            case "section":
+                handleSectionEnd(sink);
+                break;
+            case "h1":
+                sink.sectionTitle1_();
+                break;
+            case "h2":
+                sink.sectionTitle2_();
+                break;
+            case "h3":
+                sink.sectionTitle3_();
+                break;
+            case "h4":
+                sink.sectionTitle4_();
+                break;
+            case "h5":
+                sink.sectionTitle5_();
+                break;
+            case "h6":
+                sink.sectionTitle6_();
+                break;
+            case "header":
+                sink.header_();
+                break;
+            case "main":
+                sink.content_();
+                break;
+            case "footer":
+                sink.footer_();
+                break;
+            case "img":
+                isBeginningOfLineInsideBlock = false;
+                break;
+            case "blockquote":
+                sink.blockquote_();
+                break;
+            case "script":
+            case "style":
+                handleUnknown(elementName, attribs, sink, TAG_TYPE_END);
+                scriptBlock = false;
+                break;
+            default:
+                if (UNMATCHED_XHTML5_ELEMENTS.contains(elementName)) {
+                    handleUnknown(elementName, attribs, sink, TAG_TYPE_END);
+                } else {
+                    visited = false;
+                }
+                break;
         }
 
         return visited;
@@ -574,19 +687,79 @@ public class Xhtml5BaseParser extends AbstractXmlParser implements HtmlMarkup {
     protected void handleText(XmlPullParser parser, Sink sink) throws XmlPullParserException {
         String text = getText(parser);
 
-        /*
-         * NOTE: Don't do any whitespace trimming here. Whitespace normalization has already been performed by the
-         * parser so any whitespace that makes it here is significant.
-         *
-         * NOTE: text within script tags is ignored, scripting code should be embedded in CDATA.
-         */
+        if (!inVerbatim && text != null) {
+            // do special whitespace processing as outlined in
+            // https://developer.mozilla.org/en-US/docs/Web/CSS/Guides/Text/Whitespace
+            if (isBeginningOfLineInsideBlock) {
+                // normalize linebreaks
+                processInsignificantLineBreaks(sink, text);
+                // trim leading whitespace from text being emitted
+                // https://developer.mozilla.org/en-US/docs/Web/CSS/Guides/Text/Whitespace#trimming_and_positioning
+                String regex = "^\\s+";
+                text = text.replaceAll(regex, "");
+            }
+
+            // assume white-space-collapse: collapse for all non-verbatim text (outside of <pre>)
+            text = collapseWhitespace(text);
+        }
         if ((text != null && !text.isEmpty()) && !isScriptBlock()) {
             sink.text(text);
+            isBeginningOfLineInsideBlock = false;
         }
+    }
+
+    /**
+     * Process all line-breaks in the given text which are not significant for the output, i.e. all line-breaks which are not within a verbatim block and
+     * are at the beginning of the given text.
+     * In addition it emits information about the whitespace characters following the line-breaks as they may be relevant for the output (e.g. for indentation).
+     *
+     * @param sink the sink to receive the events.
+     * @param text the text to process.
+     */
+    protected void processInsignificantLineBreaks(Sink sink, String text) {
+        CharacterIterator it = new StringCharacterIterator(text.replaceAll("\\r\\n?", "\n"));
+
+        boolean wasNewLine = false;
+        int indentLevel = 0;
+        //
+        while (it.current() != CharacterIterator.DONE) {
+            char c = it.current();
+            if (c == '\n') {
+                if (wasNewLine) {
+                    sink.markupLineBreak(indentLevel);
+                }
+                indentLevel = 0;
+                wasNewLine = true;
+            } else if (Character.isWhitespace(c)) {
+                indentLevel++;
+            } else {
+                // once non-whitespace character is reached we assume everything following is relevant and emitted
+                // within the text event
+                break;
+            }
+            it.next();
+        }
+        if (wasNewLine) {
+            // if the text ends with a newline, we need to emit the last line break
+            sink.markupLineBreak(indentLevel);
+        }
+    }
+
+    /**
+     * @see <a href="https://developer.mozilla.org/en-US/docs/Web/CSS/Guides/Text/Whitespace#how_does_css_process_whitespace">How does CSS process whitespace?</a>
+     * @see <a href="https://drafts.csswg.org/css-text-4/#white-space-processing">CSS Text Module Level 4 - White Space Processing</a>
+     *
+     * @param text
+     * @return
+     */
+    private static String collapseWhitespace(String text) {
+        // replace all sequences of whitespace characters with a single space (this includes newlines, tabs, etc.)
+        return text.replaceAll("\\s+", " ");
     }
 
     @Override
     protected void handleComment(XmlPullParser parser, Sink sink) throws XmlPullParserException {
+        isBeginningOfLineInsideBlock = false;
         String text = getText(parser);
 
         if ("PB".equals(text.trim())) {
@@ -600,6 +773,7 @@ public class Xhtml5BaseParser extends AbstractXmlParser implements HtmlMarkup {
 
     @Override
     protected void handleCdsect(XmlPullParser parser, Sink sink) throws XmlPullParserException {
+        isBeginningOfLineInsideBlock = false;
         String text = getText(parser);
 
         if (isScriptBlock()) {

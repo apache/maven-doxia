@@ -216,6 +216,7 @@ under the License.
               <exclude>src/test/resources/**/*.apt</exclude>
               <exclude>src/test/resources/**/*.apt.vm</exclude>
               <exclude>src/test/resources/**/*.md</exclude>
+              <exclude>src/test/resources/**/*.html</exclude>
               <exclude>src/it/**/site/**/*.md</exclude>
               <exclude>src/it/**/site/**/*.markdown</exclude>
             </excludes>

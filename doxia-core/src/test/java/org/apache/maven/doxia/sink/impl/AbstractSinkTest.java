@@ -1204,8 +1204,10 @@ public abstract class AbstractSinkTest extends AbstractModuleTest {
     @Test
     public void twoConsecutiveBlockComments() {
         String comment = "Simple comment";
-        sink.comment(comment, true);
-        sink.comment(comment, true);
+        sink.comment(comment);
+        sink.markupLineBreak(0);
+        sink.comment(comment);
+        sink.markupLineBreak(0);
         sink.flush();
         sink.close();
         assertEquals(getCommentBlock(comment) + EOL + getCommentBlock(comment) + EOL, testWriter.toString());

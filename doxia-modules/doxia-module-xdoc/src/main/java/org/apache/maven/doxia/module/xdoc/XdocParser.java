@@ -109,7 +109,7 @@ public class XdocParser extends Xhtml1BaseParser implements XdocMarkup {
     protected void handleStartTag(XmlPullParser parser, Sink sink)
             throws XmlPullParserException, MacroExecutionException {
         isEmptyElement = parser.isEmptyElementTag();
-
+        isBeginningOfLineInsideBlock = true;
         SinkEventAttributeSet attribs = getAttributesFromParser(parser);
 
         if (parser.getName().equals(DOCUMENT_TAG.toString())) {
@@ -145,7 +145,6 @@ public class XdocParser extends Xhtml1BaseParser implements XdocMarkup {
                 sink.head_();
                 this.inHead = false;
             }
-
             sink.body(attribs);
         } else if (parser.getName().equals(SECTION_TAG.toString())) {
             handleSectionStart(Sink.SECTION_LEVEL_1, sink, attribs, parser);
@@ -191,6 +190,7 @@ public class XdocParser extends Xhtml1BaseParser implements XdocMarkup {
 
     protected void handleEndTag(XmlPullParser parser, Sink sink)
             throws XmlPullParserException, MacroExecutionException {
+        isBeginningOfLineInsideBlock = true;
         if (parser.getName().equals(DOCUMENT_TAG.toString())) {
             // Do nothing
             return;

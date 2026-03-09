@@ -1754,24 +1754,22 @@ public interface Sink extends AutoCloseable {
 
     /**
      * Add a comment.
-     * Semantically the same as {@link #comment(String, boolean)} with second argument being {@code false}.
      *
      * @param comment The comment to write.
      * @since 1.1
-     * @see #comment(String, boolean)
      */
     void comment(String comment);
 
     /**
-     * Add a comment. The default implementation will just call {@link #comment(String)}.
+     * Add a single line break with the specified indentation level. The default implementation does nothing.
+     * This is different from emitting a line break with {@link #lineBreak(SinkEventAttributes)} or {@link #text(String, SinkEventAttributes)} as those line breaks are part of the content (i.e. affect rendering)
+     * while this line break is purely for pretty-printing the Sink's output and should not affect the rendering of the content.
+     * This is useful for Sinks that emit text-based markup languages (e.g. HTML, XML, etc.) to produce more human-readable output.
      *
-     * @param comment The comment to write.
-     * @param endsWithLineBreak If {@code true} comment ends with a line break, i.e. nothing else should follow on the same line
+     * @param indentLevel the indentation level, where 0 means no indentation, 1 means one level of indentation, etc. The sink can decide how many spaces/tabs to use for each level of indentation.
      * @since 2.1.0
      */
-    default void comment(String comment, boolean endsWithLineBreak) {
-        comment(comment);
-    }
+    default void markupLineBreak(int indentLevel) {}
 
     /**
      * Add an unknown event. This may be used by parsers to notify a general Sink about
