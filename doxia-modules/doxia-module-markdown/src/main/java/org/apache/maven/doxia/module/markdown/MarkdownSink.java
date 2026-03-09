@@ -1300,7 +1300,9 @@ public class MarkdownSink extends Xhtml5BaseSink implements MarkdownMarkup {
     public void markupLineBreak(int indentLevel) {
         // not allowed in all contexts
         if (elementContextStack.element().isAllowsMarkupLinebreaks()) {
-            super.markupLineBreak(indentLevel);
+            if (!lineAwareWriter.isWriterAfterBlankLine()) {
+                super.markupLineBreak(indentLevel);
+            }
         }
     }
 
