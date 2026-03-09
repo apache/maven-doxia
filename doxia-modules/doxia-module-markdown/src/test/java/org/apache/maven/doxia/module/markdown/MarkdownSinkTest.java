@@ -609,7 +609,6 @@ class MarkdownSinkTest extends AbstractSinkTest {
     }
 
     @Test
-<<<<<<< Upstream, based on master
     void commentPriorHead() {
         try (Sink sink = getSink()) {
             sink.comment("This is a comment");
@@ -630,7 +629,9 @@ class MarkdownSinkTest extends AbstractSinkTest {
                 + EOL
                 + "<!--This is a comment-->";
         assertEquals(expected, getSinkContent(), "Wrong metadata section");
-=======
+    }
+
+    @Test
     void listItemsContainingInsignificantWhitespace() {
         try (Sink sink = getSink()) {
             sink.list();
@@ -650,12 +651,14 @@ class MarkdownSinkTest extends AbstractSinkTest {
 
     @Test
     void tableWithInsignificantNewLines() throws ParseException, IOException {
-        parseFile(htmlParser, "table", "html", getSink());
+        try (Sink sink = getSink()) {
+            parseFile(htmlParser, "table", "html", sink);
+        }
         String expected = "|Format<br />Newline|Short description|Doxia Module|" + EOL
                 + "|---|---|---|" + EOL
                 + "|[iText](../modules/index.html#iText)|iText PDF Library|[`doxia-module-itext`](../doxia/doxia-modules/doxia-module-itext/)|"
                 + EOL
-                + "|[FO](../modules/index.html#FO)<sup>\\*</sup>|XSL formatting objects \\(XSL-FO\\)|[`doxia-module-fo`](../doxia/doxia-modules/doxia-module-fo/)|"
+                + "|[FO](../modules/index.html#FO)<sup>*</sup>|XSL formatting objects \\(XSL-FO\\)|[`doxia-module-fo`](../doxia/doxia-modules/doxia-module-fo/)|"
                 + EOL
                 + "|[LaTeX](../modules/index.html#LaTeX)|LaTeX typesetting system|[`doxia-module-latex`](../doxia/doxia-modules/doxia-module-latex/)|"
                 + EOL
@@ -666,10 +669,11 @@ class MarkdownSinkTest extends AbstractSinkTest {
 
     @Test
     void linkFromHtml() throws ParseException, IOException {
-        parseFile(htmlParser, "link", "html", getSink());
+        try (Sink sink = getSink()) {
+            parseFile(htmlParser, "link", "html", getSink());
+        }
         String expected = "[plugin](http://maven.apache.org/maven-1.x/plugins/xdoc/reference/xdocs.html) documentation."
                 + EOL + EOL;
         assertEquals(expected, getSinkContent());
->>>>>>> e41ce3e Distinguish between linebreaks for formatting markup and linebreaks in output
     }
 }

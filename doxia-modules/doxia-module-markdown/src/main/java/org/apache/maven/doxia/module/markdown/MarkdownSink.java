@@ -101,10 +101,14 @@ public class MarkdownSink extends Xhtml5BaseSink implements MarkdownMarkup {
     enum ElementContext {
         ROOT_WITH_BUFFERING(
                 Type.GENERIC_CONTAINER,
+                true,
                 ElementContext::escapeMarkdown,
                 true), // only needs buffering until head()_ is called to make sure to emit metadata first
         ROOT_WITHOUT_BUFFERING(
-                Type.GENERIC_CONTAINER, null, false), // used after head()_/body() to prevent unnecessary buffering
+                Type.GENERIC_CONTAINER,
+                true,
+                null,
+                false), // used after head()_/body() to prevent unnecessary buffering
         HEAD(Type.GENERIC_CONTAINER, false, null, true),
         BODY(Type.GENERIC_CONTAINER, true, ElementContext::escapeMarkdown),
         // only the elements, which affect rendering of children and are different from BODY or HEAD are listed here
@@ -114,6 +118,7 @@ public class MarkdownSink extends Xhtml5BaseSink implements MarkdownMarkup {
         CODE_SPAN(Type.INLINE, false, null, true),
         TABLE(Type.CONTAINER_BLOCK, false, null, false, "", true),
         TABLE_CAPTION(Type.INLINE, false, ElementContext::escapeMarkdown),
+        TABLE_ROW(Type.INLINE, false, null, true), // special handling of newlines
         TABLE_CELL(
                 Type.INLINE,
                 false,
@@ -1227,12 +1232,9 @@ public class MarkdownSink extends Xhtml5BaseSink implements MarkdownMarkup {
 
     @Override
     public void lineBreak(SinkEventAttributes attributes) {
-        if (elementContextStack.element() == ElementContext.CODE_BLOCK) {
-            write(EOL);
         if (elementContextStack.element() == ElementContext.TABLE_CELL) {
             super.lineBreak(attributes);
         } else {
-            write("" + SPACE + SPACE + EOL);
             if (elementContextStack.element() == ElementContext.CODE_BLOCK) {
                 write(EOL);
             } else {
