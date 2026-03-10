@@ -384,6 +384,9 @@ public class MarkdownSink extends Xhtml5BaseSink implements MarkdownMarkup {
         this.lineAwareWriter = lineAwareWriter;
         this.bufferingStackWriter = bufferingStackWriter;
         initInternal();
+        setInsertNewline(
+                false); // we want to control newlines on our own to prevent (mostly to not break encapsulating markdown
+        // tables)
     }
 
     private void initInternal() {

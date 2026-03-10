@@ -26,6 +26,7 @@ import java.io.StringReader;
 import java.io.StringWriter;
 import java.io.Writer;
 
+import org.apache.maven.doxia.module.xdoc.XdocParser;
 import org.apache.maven.doxia.module.xhtml5.Xhtml5Parser;
 import org.apache.maven.doxia.parser.ParseException;
 import org.apache.maven.doxia.parser.Parser;
@@ -131,7 +132,7 @@ class MarkdownSinkTest extends AbstractSinkTest {
     }
 
     protected String getContentBlock() {
-        return "<main>" + EOL + "<div class=\"content\"></div></main>";
+        return "<main><div class=\"content\"></div></main>";
     }
 
     protected String getFooterBlock() {
@@ -700,11 +701,20 @@ class MarkdownSinkTest extends AbstractSinkTest {
             sink.verbatim_();
             sink.tableCell_();
             sink.tableRow_();
+            sink.tableRow();
+            sink.tableCell();
+            sink.verbatim(SinkEventAttributeSet.SOURCE);
+            sink.text("code with | and ` inside");
+            sink.verbatim_();
+            sink.tableCell_();
+            sink.tableRow_();
             sink.tableRows_();
             sink.table_();
         }
-        String expected =
-                "|   |" + EOL + "|---|" + EOL + "|<pre><code>code with | and ` inside</code></pre>|" + EOL + EOL;
+        String expected = "|   |" + EOL + "|---|" + EOL
+                + "|<pre><code>code with | and ` inside</code></pre>|" + EOL
+                + "|<pre><code>code with | and ` inside</code></pre>|" + EOL + EOL;
         assertEquals(expected, getSinkContent());
     }
+
 }
