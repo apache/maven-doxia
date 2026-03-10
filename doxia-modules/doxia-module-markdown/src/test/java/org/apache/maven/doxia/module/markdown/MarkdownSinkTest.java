@@ -26,7 +26,6 @@ import java.io.StringReader;
 import java.io.StringWriter;
 import java.io.Writer;
 
-import org.apache.maven.doxia.module.xdoc.XdocParser;
 import org.apache.maven.doxia.module.xhtml5.Xhtml5Parser;
 import org.apache.maven.doxia.parser.ParseException;
 import org.apache.maven.doxia.parser.Parser;
@@ -716,5 +715,4 @@ class MarkdownSinkTest extends AbstractSinkTest {
                 + "|<pre><code>code with | and ` inside</code></pre>|" + EOL + EOL;
         assertEquals(expected, getSinkContent());
     }
-
 }
