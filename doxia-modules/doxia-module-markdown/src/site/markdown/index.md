@@ -61,6 +61,7 @@ GitHub specified [extensions](https://github.github.com/gfm) to the original Mar
 - [footnotes](https://github.com/vsch/flexmark-java/wiki/Footnotes-Extension)
 - [abbreviations](https://michelf.ca/projects/php-markdown/extra/#abbr)
 - [definition lists](https://michelf.ca/projects/php-markdown/extra/#def-list)
+
 ## Parser
 
 The parser will first convert Markdown into HTML and then parse the HTML into Doxia Sink API methods calls leveraging the [XHTML5 parser](../doxia-module-xhtml5/index.html).
@@ -68,7 +69,7 @@ The parser will first convert Markdown into HTML and then parse the HTML into Do
 ## References
 
 - [Markdown project website](http://daringfireball.net/projects/markdown)
+- [CommonMark spec](https://spec.commonmark.org/)
+- [GitHub Flavored Markdown](https://github.github.com/gfm)
 - [Markdown Wikipedia page](http://en.wikipedia.org/wiki/Markdown)
-- [Markdown wiki](http://xbeta.org/wiki/show/Markdown)
-- [flexmark-java](http://github.com/vsch/flexmark-java), the library used by this Doxia module in [Pegdown](http://pegdown.org) compatibility mode
-- [Pegdown](http://pegdown.org) a deprecated Markdown processing library used in previous doxia-module-markdown versions 1\.3 to 1\.7
+- [flexmark-java](http://github.com/vsch/flexmark-java), the library used by this Doxia module in `Pegdown`` compatibility mode
