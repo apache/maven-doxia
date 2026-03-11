@@ -48,9 +48,9 @@ Currently only the following metadata elements are supported:
 
 As the original Markdown specification is simple many extensions have been created to add features to the original Markdown format. The following extensions are supported by this module:
 
-### GFM \(GitHub Flavored Markdown\) extensions:
+### GFM \(GitHub Flavored Markdown\) extensions
 
-GitHub specified [extensions](https://github.github.com/gfm) to the original Markdown format, which are now widely used. Some of these extensions are also supported by this module.
+GitHub specified [extensions](https://github.github.com/gfm) to the original Markdown and CommonMark format, which are now widely used. Some of these extensions are also supported by this module, namely
 
 - [tables](https://github.github.com/gfm/#tables-extension-)
 - [strikethrough text](https://github.github.com/gfm/#strikethrough-extension-)
@@ -64,7 +64,7 @@ GitHub specified [extensions](https://github.github.com/gfm) to the original Mar
 
 ## Parser
 
-The parser will first convert Markdown into HTML and then parse the HTML into Doxia Sink API methods calls leveraging the [XHTML5 parser](../doxia-module-xhtml5/index.html).
+The parser will first convert Markdown into HTML, convert to XHTML via [JSoup](https://jsoup.org/) and then parse the XHTML into Doxia Sink API methods calls leveraging the [XHTML5 parser](../doxia-module-xhtml5/index.html).
 
 ## References
 
@@ -72,4 +72,4 @@ The parser will first convert Markdown into HTML and then parse the HTML into Do
 - [CommonMark spec](https://spec.commonmark.org/)
 - [GitHub Flavored Markdown](https://github.github.com/gfm)
 - [Markdown Wikipedia page](http://en.wikipedia.org/wiki/Markdown)
-- [flexmark-java](http://github.com/vsch/flexmark-java), the library used by this Doxia module in `Pegdown`` compatibility mode
+- [flexmark-java](http://github.com/vsch/flexmark-java), the library used by this Doxia module in [`Pegdown`](https://github.com/sirthias/pegdown) compatibility mode
