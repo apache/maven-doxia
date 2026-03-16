@@ -35,10 +35,6 @@
       <!--item name="FAQ" href="faq.html"/-->
     </menu>
 
-    <menu name="Descriptors Reference">
-      <item name="Document Model Reference" href="document.html"/>
-    </menu>
-
     <menu name="Development">
       <item name="Using RandomAccessSink" href="using-randomaccesssink.html"/>
     </menu>
