@@ -22,10 +22,10 @@
  * Consumers just create a Sink object from the {@link SinkFactory} for the desired format and call its methods.
  *
  * Providers implement the {@link Sink} and {@link SinkFactory} interface to write the desired output.
- * Those need to leverage JSR330 annotations to be discoverable by the Eclipse Sisu container.
+ * Those need to leverage JSR 330 annotations to be discoverable by the Eclipse Sisu container.
  * Consumers can then inject the desired SinkFactory using the {@code @Inject} and {@code @Named} annotation with the name of the format (e.g. "xhtml", "fml", "markdown", etc.).
  *
- * <h2>Using Maven Doxia API</h2>
+ * <h2>Using Maven Doxia Sink API (without a parser)</h2>
  * <pre>
  *
  * File userDir = new File( System.getProperty ( "user.dir" ) );
@@ -65,7 +65,8 @@
  *   sink.body_();
  * }
  * </pre>
- *
+ * 
+ * Alternatively one can populate a Sink through a {@link org.apache.maven.doxia.parser.Parser} and the {@link org.apache.maven.doxia.Doxia} interface, which is a high-level API to ease using a parser.
  *
  * @see <a href="https://eclipse.dev/sisu/org.eclipse.sisu.inject/index.html">Eclipse Sisu (JSR 330 DI container)</a>
  * @see <a href="https://maven.apache.org/doxia/">Maven Doxia Website</a>

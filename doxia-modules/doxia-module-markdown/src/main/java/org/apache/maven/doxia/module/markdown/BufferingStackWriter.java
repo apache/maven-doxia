@@ -76,8 +76,7 @@ public class BufferingStackWriter extends Writer {
     }
 
     /**
-     * Retrieves the content of the current buffer and removes it from the stack. Returns null if the stack is empty.
-     * @return the content of the current buffer, or null if the stack is empty
+     * Remove the current buffer from the stack. The content of the current buffer is discarded. The previous buffer in the stack becomes the current buffer.
      */
     public void removeBuffer() {
         bufferStack.remove();

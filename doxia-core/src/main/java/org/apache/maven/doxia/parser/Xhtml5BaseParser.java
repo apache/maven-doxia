@@ -42,7 +42,9 @@ import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
 /**
- * Common base parser for xhtml5 events.
+ * Common base parser for XHTML5 (now <a href="https://html.spec.whatwg.org/multipage/#toc-the-xhtml-syntax">HTML Living standard, XML syntax</a>) elements and attributes.
+ * 
+ * @see <a href="https://html.spec.whatwg.org/multipage/introduction.html#history-2">HTML Living standard, history</a>
  */
 public class Xhtml5BaseParser extends AbstractXmlParser implements HtmlMarkup {
     private static final Logger LOGGER = LoggerFactory.getLogger(Xhtml5BaseParser.class);
