@@ -65,8 +65,8 @@
  *   sink.body_();
  * }
  * </pre>
- * 
- * Alternatively one can populate a Sink through a {@link org.apache.maven.doxia.parser.Parser} and the {@link org.apache.maven.doxia.Doxia} interface, which is a high-level API to ease using a parser.
+ *
+ * Alternatively one can populate a Sink through a {@code org.apache.maven.doxia.parser.Parser} or the {@code org.apache.maven.doxia.Doxia} interface, which is a high-level API to ease using a parser.
  *
  * @see <a href="https://eclipse.dev/sisu/org.eclipse.sisu.inject/index.html">Eclipse Sisu (JSR 330 DI container)</a>
  * @see <a href="https://maven.apache.org/doxia/">Maven Doxia Website</a>
