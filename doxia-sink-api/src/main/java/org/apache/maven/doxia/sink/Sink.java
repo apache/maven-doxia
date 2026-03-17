@@ -20,7 +20,7 @@ package org.apache.maven.doxia.sink;
 
 /**
  * A <i>Sink</i> consumes Doxia events to produce a resultant output format
- * (eg Docbook, PDF, XHTML...).
+ * (in most cases XHTML).
  * <p>
  *   Doxia allows you to transform any supported input document format (ie for which a Parser exists)
  *   into any supported output document format (ie for which a Sink exists).
@@ -39,12 +39,12 @@ package org.apache.maven.doxia.sink;
  *   Word document. The Sink is fully responsible for the final output.
  * </p>
  * <p>
- *   You can easily integrate any custom (XML, Wiki,...) format by creating a Doxia Parser which
+ *   You can easily integrate any custom markup format by creating a Doxia Parser which
  *   reads your input document and produces a proper sequence of Doxia events.
  *   Those can then be fed into an arbitrary Sink to produce any desired final output.
  * </p>
  * <p>
- * <b>Note</b>: All implemented sink <b>should</b> use UTF-8 as encoding.
+ * <b>Note</b>: All implemented Sinks <b>should</b> use UTF-8 as encoding.
  * </p>
  *
  * @since 1.0-alpha-6
@@ -754,9 +754,9 @@ public interface Sink extends AutoCloseable {
      * </p>
      * Nested lists must have the following Sink method sequence:
      * <ol>
-     * <li>{@link #listItem(int,SinkEventAttributes)} or {@link #listItem(int)}</li>
-     * <li>{@link #list(int,SinkEventAttributes)} or {@link #list(int)}</li>
-     * <li>{@link #listItem(int,SinkEventAttributes)} or {@link #listItem(int)}</li>
+     * <li>{@link #listItem(SinkEventAttributes)} or {@link #listItem()}</li>
+     * <li>{@link #list(SinkEventAttributes)} or {@link #list()}</li>
+     * <li>{@link #listItem(SinkEventAttributes)} or {@link #listItem()}</li>
      * <li>{@code ...}</li>
      * <li>{@link #listItem_()}</li>
      * <li>{@link #list_()}</li>
@@ -819,9 +819,9 @@ public interface Sink extends AutoCloseable {
      * </p>
      * Nested lists must have the following Sink method sequence:
      * <ol>
-     * <li>{@link #numberedListItem(int,SinkEventAttributes)} or {@link #numberedListItem(int)}</li>
+     * <li>{@link #numberedListItem(SinkEventAttributes)} or {@link #numberedListItem()}</li>
      * <li>{@link #numberedList(int,SinkEventAttributes)} or {@link #numberedList(int)}</li>
-     * <li>{@link #numberedListItem(int,SinkEventAttributes)} or {@link #numberedListItem(int)}</li>
+     * <li>{@link #numberedListItem(SinkEventAttributes)} or {@link #numberedListItem()}</li>
      * <li>{@code ...}</li>
      * <li>{@link #numberedListItem_()}</li>
      * <li>{@link #numberedList_()}</li>
@@ -1453,7 +1453,7 @@ public interface Sink extends AutoCloseable {
     void verbatim_();
 
     /**
-     * Adding a separator of sections from a text to each other. Shortcut for {@link #horizontalRule(SinkEventAttributes)} with argument being {@code null}.
+     * Adds a separator of sections from a text to each other. Shortcut for {@link #horizontalRule(SinkEventAttributes)} with argument being {@code null}.
      *
      * @see #horizontalRule(SinkEventAttributes)
      */
@@ -1476,7 +1476,7 @@ public interface Sink extends AutoCloseable {
     void horizontalRule(SinkEventAttributes attributes);
 
     /**
-     * Adding a new page separator.
+     * Adds a new page separator.
      */
     void pageBreak();
 
@@ -1695,12 +1695,12 @@ public interface Sink extends AutoCloseable {
     void lineBreakOpportunity(SinkEventAttributes attributes);
 
     /**
-     * Adding a non breaking space, <i>ie</i> a space without any special formatting operations.
+     * Adds a non breaking space, <i>ie</i> a space without any special formatting operations.
      */
     void nonBreakingSpace();
 
     /**
-     * Adding a text. Shortcut for {@link #text(String, SinkEventAttributes)} with first argument being {@code text} and second argument being {@code null}.
+     * Adds a text. Shortcut for {@link #text(String, SinkEventAttributes)} with first argument being {@code text} and second argument being {@code null}.
      *
      * @param text The text to write.
      * @see #text(String,SinkEventAttributes)
@@ -1746,14 +1746,14 @@ public interface Sink extends AutoCloseable {
     void text(String text, SinkEventAttributes attributes);
 
     /**
-     * Adding a raw text, <i>ie</i> a text without any special formatting operations.
+     * Adds a raw text, <i>ie</i> a text without any special formatting operations.
      *
      * @param text The text to write.
      */
     void rawText(String text);
 
     /**
-     * Add a comment.
+     * Adds a comment (a text that should not be rendered but may be visible in the source of the output document).
      *
      * @param comment The comment to write.
      * @since 1.1
@@ -1761,7 +1761,7 @@ public interface Sink extends AutoCloseable {
     void comment(String comment);
 
     /**
-     * Add a single line break with the specified indentation level. The default implementation does nothing.
+     * Adds a single line break with the specified indentation level. The default implementation does nothing.
      * This is different from emitting a line break with {@link #lineBreak(SinkEventAttributes)} or {@link #text(String, SinkEventAttributes)} as those line breaks are part of the content (i.e. affect rendering)
      * while this line break is purely for pretty-printing the Sink's output and should not affect the rendering of the content.
      * This is useful for Sinks that emit text-based markup languages (e.g. HTML, XML, etc.) to produce more human-readable output.
@@ -1772,7 +1772,7 @@ public interface Sink extends AutoCloseable {
     default void markupLineBreak(int indentLevel) {}
 
     /**
-     * Add an unknown event. This may be used by parsers to notify a general Sink about
+     * Adds an unknown event. This may be used by parsers to notify a general Sink about
      * an event that doesn't fit into any event defined by the Sink API.
      * Depending on the parameters, a Sink may decide whether or not to process the event,
      * emit it as raw text, as a comment, log it, etc.
@@ -1786,13 +1786,13 @@ public interface Sink extends AutoCloseable {
     void unknown(String name, Object[] requiredParams, SinkEventAttributes attributes);
 
     /**
-     * Flush the writer or the stream, if needed.
+     * Flushes the writer or the stream, if needed.
      * Flushing a previously-flushed Sink has no effect.
      */
     void flush();
 
     /**
-     * Close the writer or the stream, if needed.
+     * Closes the writer or the stream, if needed.
      * Closing a previously-closed Sink has no effect.
      */
     void close();

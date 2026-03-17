@@ -18,6 +18,10 @@
  */
 package org.apache.maven.doxia.sink;
 
+/**
+ * A {@link Locator} implementation that does not provide any information.
+ * @since 2.0
+ */
 public final class EmptyLocator implements Locator {
 
     public static final Locator INSTANCE = new EmptyLocator();
