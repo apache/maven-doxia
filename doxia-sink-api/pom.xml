@@ -30,4 +30,12 @@ under the License.
   <name>Doxia :: Sink API</name>
   <description>Doxia Sink API.</description>
 
+  <build>
+    <plugins>
+      <plugin>
+        <groupId>com.github.siom79.japicmp</groupId>
+        <artifactId>japicmp-maven-plugin</artifactId>
+      </plugin>
+    </plugins>
+  </build>
 </project>

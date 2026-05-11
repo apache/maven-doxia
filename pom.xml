@@ -222,6 +222,35 @@ under the License.
             </excludes>
           </configuration>
         </plugin>
+        <plugin>
+          <groupId>com.github.siom79.japicmp</groupId>
+          <artifactId>japicmp-maven-plugin</artifactId>
+          <version>0.25.6</version>
+          <configuration>
+            <parameter>
+              <ignoreNonResolvableArtifacts>false</ignoreNonResolvableArtifacts>
+              <ignoreMissingOldVersion>false</ignoreMissingOldVersion>
+              <breakBuildOnBinaryIncompatibleModifications>true</breakBuildOnBinaryIncompatibleModifications>
+              <onlyBinaryIncompatible>true</onlyBinaryIncompatible>
+            </parameter>
+            <oldVersion>
+              <dependency>
+                <groupId>${project.groupId}</groupId>
+                <artifactId>${project.artifactId}</artifactId>
+                <!-- keep binary compatibility among the major version 2.x-->
+                <version>2.0.0</version>
+              </dependency>
+            </oldVersion>
+          </configuration>
+          <executions>
+            <execution>
+              <goals>
+                <goal>cmp</goal>
+              </goals>
+              <phase>verify</phase>
+            </execution>
+          </executions>
+        </plugin>
       </plugins>
     </pluginManagement>
 
