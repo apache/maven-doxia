@@ -79,6 +79,18 @@ under the License.
   <build>
     <plugins>
       <plugin>
+        <groupId>com.github.siom79.japicmp</groupId>
+        <artifactId>japicmp-maven-plugin</artifactId>
+        <configuration>
+          <parameter>
+            <excludes>
+              <!-- covariant -->
+              <exclude>org.apache.maven.doxia.sink.impl.SinkUtils#filterAttributes(javax.swing.text.AttributeSet,java.lang.String[])</exclude>
+            </excludes>
+          </parameter>
+        </configuration>
+      </plugin>
+      <plugin>
         <groupId>org.apache.maven.plugins</groupId>
         <artifactId>maven-jar-plugin</artifactId>
         <executions>
