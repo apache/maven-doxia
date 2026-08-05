@@ -99,4 +99,30 @@ public class LastTwoLinesAwareWriter extends Writer {
     public boolean isAfterDigit() {
         return currentLine.length() > 1 && Character.isDigit(currentLine.charAt(currentLine.length() - 1));
     }
+
+    /**
+     * @return {@code true} if the current line consists of optional leading whitespace followed by
+     * at least one digit and nothing else, i.e. a subsequent {@code .} would turn it into the
+     * marker of an ordered list item
+     */
+    public boolean isAfterOnlyLeadingDigits() {
+        return isOnlyLeadingDigits(currentLine);
+    }
+
+    /**
+     * @param line the line (fragment) to check
+     * @return {@code true} if {@code line} consists of optional leading whitespace followed by
+     * at least one digit and nothing else
+     */
+    static boolean isOnlyLeadingDigits(CharSequence line) {
+        int index = 0;
+        while (index < line.length() && (line.charAt(index) == ' ' || line.charAt(index) == '\t')) {
+            index++;
+        }
+        final int firstDigit = index;
+        while (index < line.length() && Character.isDigit(line.charAt(index))) {
+            index++;
+        }
+        return index > firstDigit && index == line.length();
+    }
 }
