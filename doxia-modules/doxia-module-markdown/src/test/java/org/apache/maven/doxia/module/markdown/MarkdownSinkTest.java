@@ -321,6 +321,32 @@ class MarkdownSinkTest extends AbstractSinkTest {
         return getCommentBlock(comment) + EOL + EOL + getParagraphBlock(paragraph); // paragraph separated by blank line
     }
 
+    /**
+     * A space ends the destination of a Markdown inline link, so an APT anchor reference such as
+     * {@code {{{#Identity Mapper}Identity Mapper}}} must not be written through unchanged.
+     */
+    @Test
+    void linkDestinationWithSpace() {
+        Writer writer = new StringWriter();
+        try (Sink sink = createSink(writer)) {
+            sink.link("#Identity Mapper");
+            sink.text("Identity Mapper");
+            sink.link_();
+        }
+        assertEquals("[Identity Mapper](#Identity_Mapper)", writer.toString().trim());
+    }
+
+    @Test
+    void externalLinkDestinationWithSpace() {
+        Writer writer = new StringWriter();
+        try (Sink sink = createSink(writer)) {
+            sink.link("https://example.org/a b.html");
+            sink.text("a b");
+            sink.link_();
+        }
+        assertEquals("[a b](https://example.org/a%20b.html)", writer.toString().trim());
+    }
+
     @Test
     void multipleAuthors() {
         final Sink sink = getSink();
