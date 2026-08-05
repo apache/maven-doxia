@@ -36,6 +36,7 @@ import org.apache.maven.doxia.sink.SinkEventAttributes;
 import org.apache.maven.doxia.sink.impl.SinkEventAttributeSet;
 import org.apache.maven.doxia.sink.impl.Xhtml5BaseSink;
 import org.apache.maven.doxia.util.DoxiaStringUtils;
+import org.apache.maven.doxia.util.DoxiaUtils;
 import org.apache.maven.doxia.util.HtmlTools;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
@@ -404,6 +405,25 @@ public class MarkdownSink extends Xhtml5BaseSink implements MarkdownMarkup {
     // ----------------------------------------------------------------------
     // Public protected methods
     // ----------------------------------------------------------------------
+
+    /**
+     * A link destination must not contain a space: everything from the space on is read as the
+     * link title instead, so {@code [text](#My Anchor)} does not resolve. An in-page anchor
+     * therefore gets the same encoding the anchor definition receives, and any other destination
+     * has its spaces percent-encoded.
+     *
+     * @param destination the link destination, may be null
+     * @return the destination, safe to write into a Markdown inline link
+     */
+    private static String encodeLinkDestination(String destination) {
+        if (destination == null || destination.indexOf(' ') < 0) {
+            return destination;
+        }
+        if (destination.charAt(0) == '#') {
+            return "#" + DoxiaUtils.encodeId(destination.substring(1));
+        }
+        return destination.replace(" ", "%20");
+    }
 
     protected static MarkdownSink newInstance(Writer writer) {
         BufferingStackWriter bufferingStackWriter = new BufferingStackWriter(writer);
@@ -1141,13 +1161,13 @@ public class MarkdownSink extends Xhtml5BaseSink implements MarkdownMarkup {
                 // defer emitting link end markup until inline_() is called
                 StringBuilder linkEndMarkup = new StringBuilder();
                 linkEndMarkup.append(LINK_START_2_MARKUP);
-                linkEndMarkup.append(linkName);
+                linkEndMarkup.append(encodeLinkDestination(linkName));
                 linkEndMarkup.append(LINK_END_MARKUP);
                 Queue<String> endMarkups = new LinkedList<>(inlineStack.poll());
                 endMarkups.add(linkEndMarkup.toString());
                 inlineStack.add(endMarkups);
             } else {
-                write(LINK_START_2_MARKUP + linkName + LINK_END_MARKUP);
+                write(LINK_START_2_MARKUP + encodeLinkDestination(linkName) + LINK_END_MARKUP);
             }
             linkName = null;
         }
