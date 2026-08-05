@@ -669,7 +669,7 @@ class MarkdownSinkTest extends AbstractSinkTest {
                 + "|---|---|---|" + EOL
                 + "|[iText](../modules/index.html#iText)|iText PDF Library|[`doxia-module-itext`](../doxia/doxia-modules/doxia-module-itext/)|"
                 + EOL
-                + "|[FO](../modules/index.html#FO)<sup>*</sup>|XSL formatting objects \\(XSL-FO\\)|[`doxia-module-fo`](../doxia/doxia-modules/doxia-module-fo/)|"
+                + "|[FO](../modules/index.html#FO)<sup>*</sup>|XSL formatting objects (XSL-FO)|[`doxia-module-fo`](../doxia/doxia-modules/doxia-module-fo/)|"
                 + EOL
                 + "|[LaTeX](../modules/index.html#LaTeX)|LaTeX typesetting system|[`doxia-module-latex`](../doxia/doxia-modules/doxia-module-latex/)|"
                 + EOL

@@ -280,7 +280,7 @@ public class MarkdownSink extends Xhtml5BaseSink implements MarkdownMarkup {
             if (text == null) {
                 return "";
             }
-            text = escapeHtml(writer, text); // assume UTF-8 output, i.e. only use the mandatory XML entities
+            text = escapeHtmlForMarkdown(text); // assume UTF-8 output, i.e. only use the mandatory XML entities
             int length = text.length();
             StringBuilder buffer = new StringBuilder(length);
 
@@ -292,8 +292,6 @@ public class MarkdownSink extends Xhtml5BaseSink implements MarkdownMarkup {
                     case '`':
                     case '[':
                     case ']':
-                    case '(':
-                    case ')':
                     case '!':
                         // always escape the previous characters as potentially everywhere relevant
                         buffer.append(escapeMarkdown(c));
@@ -317,7 +315,7 @@ public class MarkdownSink extends Xhtml5BaseSink implements MarkdownMarkup {
                         }
                         break;
                     case '.':
-                        if (isAfterDigit(buffer, writer)) {
+                        if (isAfterOnlyLeadingDigits(buffer, writer)) {
                             buffer.append(escapeMarkdown(c));
                         } else {
                             buffer.append(c);
@@ -330,11 +328,16 @@ public class MarkdownSink extends Xhtml5BaseSink implements MarkdownMarkup {
             return buffer.toString();
         }
 
-        private static boolean isAfterDigit(StringBuilder buffer, LastTwoLinesAwareWriter writer) {
+        /**
+         * A {@code .} only needs escaping when it would turn leading digits into the marker of an
+         * ordered list item, i.e. when nothing but whitespace and digits precede it on the line.
+         * Elsewhere (as in version numbers such as {@code 1.6}) it is an ordinary character.
+         */
+        private static boolean isAfterOnlyLeadingDigits(StringBuilder buffer, LastTwoLinesAwareWriter writer) {
             if (buffer.length() > 0) {
-                return Character.isDigit(buffer.charAt(buffer.length() - 1));
+                return writer.isInBlankLine() && LastTwoLinesAwareWriter.isOnlyLeadingDigits(buffer);
             } else {
-                return writer.isAfterDigit();
+                return writer.isAfterOnlyLeadingDigits();
             }
         }
 
@@ -351,6 +354,40 @@ public class MarkdownSink extends Xhtml5BaseSink implements MarkdownMarkup {
 
         private String escapeHtml(LastTwoLinesAwareWriter writer, String text) {
             return HtmlTools.escapeHTML(text, true);
+        }
+
+        /**
+         * Escapes only those characters which would otherwise be interpreted as raw HTML inside a
+         * Markdown document. Unlike {@link HtmlTools#escapeHTML(String, boolean)} this leaves
+         * {@code "} and {@code '} alone: Markdown is not XML, both are ordinary characters there,
+         * and turning them into {@code &quot;}/{@code &apos;} only makes the source unreadable.
+         *
+         * @param text the string to escape, may be null
+         * @return the escaped text, "" if null String input
+         */
+        private static String escapeHtmlForMarkdown(String text) {
+            if (text == null) {
+                return "";
+            }
+            int length = text.length();
+            StringBuilder buffer = new StringBuilder(length);
+            for (int i = 0; i < length; ++i) {
+                char c = text.charAt(i);
+                switch (c) {
+                    case '<':
+                        buffer.append("&lt;");
+                        break;
+                    case '>':
+                        buffer.append("&gt;");
+                        break;
+                    case '&':
+                        buffer.append("&amp;");
+                        break;
+                    default:
+                        buffer.append(c);
+                }
+            }
+            return buffer.toString();
         }
 
         /**
