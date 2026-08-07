@@ -26,7 +26,7 @@ date: 2017-03-04
 
 # doxia-module-markdown
 
-Markdown is a popular lightweight markup language, easy to read and easy to write. It is supported by a large panel of websites, text editors/IDEs and converter tools. Markdown format is supported both as source \(parser\) and destination \(sink\), the latter only since version 1\.12\.0\.
+Markdown is a popular lightweight markup language, easy to read and easy to write. It is supported by a large panel of websites, text editors/IDEs and converter tools. Markdown format is supported both as source (parser) and destination (sink), the latter only since version 1\.12\.0\.
 
 ## Metadata
 
@@ -48,7 +48,7 @@ Currently only the following metadata elements are supported:
 
 As the original Markdown specification is simple many extensions have been created to add features to the original Markdown format. The following extensions are supported by this module:
 
-### GFM \(GitHub Flavored Markdown\) extensions
+### GFM (GitHub Flavored Markdown) extensions
 
 GitHub specified [extensions](https://github.github.com/gfm) to the original Markdown and CommonMark format, which are now widely used. Some of these extensions are also supported by this module, namely
 
