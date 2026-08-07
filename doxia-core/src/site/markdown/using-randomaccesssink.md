@@ -24,7 +24,7 @@ date: 2011-01-07
 
 # Using the RandomAccessSink
 
-The RandomAccessSink is a Sink with the ability to add hooks. To demonstrate its usage we can have a look at a FML \(FAQ Markup Language\)-page. The simple structure of such a page can be like:
+The RandomAccessSink is a Sink with the ability to add hooks. To demonstrate its usage we can have a look at a FML (FAQ Markup Language)-page. The simple structure of such a page can be like:
 
 ```unknown
   <faq id="1">
