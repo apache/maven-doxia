@@ -21,6 +21,7 @@ package org.apache.maven.doxia.sink.impl;
 import javax.swing.text.AttributeSet;
 import javax.swing.text.MutableAttributeSet;
 
+import org.apache.maven.doxia.sink.SinkEventAttributeSet;
 import org.apache.maven.doxia.sink.SinkEventAttributes;
 import org.junit.jupiter.api.Test;
 

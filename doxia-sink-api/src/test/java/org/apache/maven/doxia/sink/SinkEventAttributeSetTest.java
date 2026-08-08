@@ -16,13 +16,12 @@
  * specific language governing permissions and limitations
  * under the License.
  */
-package org.apache.maven.doxia.sink.impl;
+package org.apache.maven.doxia.sink;
 
 import javax.swing.text.AttributeSet;
 
 import java.util.Enumeration;
 
-import org.apache.maven.doxia.sink.SinkEventAttributes;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
 

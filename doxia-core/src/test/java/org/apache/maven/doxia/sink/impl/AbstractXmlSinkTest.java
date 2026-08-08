@@ -21,6 +21,7 @@ package org.apache.maven.doxia.sink.impl;
 import javax.swing.text.html.HTML.Tag;
 
 import org.apache.maven.doxia.markup.Markup;
+import org.apache.maven.doxia.sink.SinkEventAttributeSet;
 import org.apache.maven.doxia.sink.SinkEventAttributes;
 import org.junit.jupiter.api.Test;
 

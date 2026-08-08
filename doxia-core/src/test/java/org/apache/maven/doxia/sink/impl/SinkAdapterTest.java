@@ -18,6 +18,7 @@
  */
 package org.apache.maven.doxia.sink.impl;
 
+import org.apache.maven.doxia.sink.SinkEventAttributeSet;
 import org.apache.maven.doxia.sink.SinkEventAttributes;
 import org.junit.jupiter.api.Test;
 
