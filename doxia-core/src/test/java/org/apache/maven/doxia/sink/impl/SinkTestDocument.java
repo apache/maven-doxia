@@ -19,6 +19,7 @@
 package org.apache.maven.doxia.sink.impl;
 
 import org.apache.maven.doxia.sink.Sink;
+import org.apache.maven.doxia.sink.SinkEventAttributeSet;
 
 /**
  * Static methods to generate standard Doxia sink events.

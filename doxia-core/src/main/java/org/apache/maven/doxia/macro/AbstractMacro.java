@@ -20,8 +20,8 @@ package org.apache.maven.doxia.macro;
 
 import java.util.Map;
 
+import org.apache.maven.doxia.sink.SinkEventAttributeSet;
 import org.apache.maven.doxia.sink.SinkEventAttributes;
-import org.apache.maven.doxia.sink.impl.SinkEventAttributeSet;
 
 /**
  * Abstract base class to execute <code>Macro</code>.
