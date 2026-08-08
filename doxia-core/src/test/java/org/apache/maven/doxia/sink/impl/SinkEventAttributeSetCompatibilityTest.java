@@ -22,12 +22,14 @@ import org.apache.maven.doxia.sink.SinkEventAttributes;
 import org.junit.jupiter.api.Test;
 
 import static org.junit.jupiter.api.Assertions.assertEquals;
+import static org.junit.jupiter.api.Assertions.assertFalse;
 import static org.junit.jupiter.api.Assertions.assertInstanceOf;
 import static org.junit.jupiter.api.Assertions.assertSame;
 
 /**
- * Covers what the deprecated {@link SinkEventAttributeSet} has to keep doing for code written against Doxia
- * 2.1.0 or earlier, beyond what japicmp can express by comparing signatures.
+ * Pins down how the deprecated {@link SinkEventAttributeSet} behaves for code written against Doxia 2.1.0 or
+ * earlier. japicmp covers the signatures; what it cannot see is the runtime type of what these methods and
+ * fields hand back, which is what the move changes and what these tests fix in place.
  */
 @SuppressWarnings("deprecation")
 class SinkEventAttributeSetCompatibilityTest {
@@ -37,6 +39,17 @@ class SinkEventAttributeSetCompatibilityTest {
         assertSame(org.apache.maven.doxia.sink.SinkEventAttributeSet.SOURCE, SinkEventAttributeSet.SOURCE);
         assertSame(
                 org.apache.maven.doxia.sink.SinkEventAttributeSet.Semantics.CODE, SinkEventAttributeSet.Semantics.CODE);
+    }
+
+    /**
+     * The deliberate half of the trade-off: the constants keep their identity across both names, which is
+     * only possible if they are instances of the new class alone. Redeclaring them on this class would keep
+     * the old runtime type at the price of that identity.
+     */
+    @Test
+    void constantsAreNoLongerInstancesOfTheDeprecatedClass() {
+        assertInstanceOf(org.apache.maven.doxia.sink.SinkEventAttributeSet.class, SinkEventAttributeSet.SOURCE);
+        assertFalse(SinkEventAttributeSet.SOURCE instanceof SinkEventAttributeSet);
     }
 
     @Test

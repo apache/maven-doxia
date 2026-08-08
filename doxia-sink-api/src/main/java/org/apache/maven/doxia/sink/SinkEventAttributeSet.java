@@ -29,6 +29,11 @@ import java.util.Set;
 
 /**
  * Implementation of MutableAttributeSet using a LinkedHashMap.
+ * <p>
+ * Moved here from {@code doxia-core} in 2.2.0, so that attributes can be created without depending on
+ * Doxia internals. The deprecated {@code org.apache.maven.doxia.sink.impl.SinkEventAttributeSet} remains
+ * as a subclass of this class for binary compatibility, which means the constants declared here, and every
+ * attribute set Doxia itself creates, are instances of this class and no longer of that one.
  *
  * @author ltheussl
  * @since 1.1

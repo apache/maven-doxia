@@ -25,8 +25,14 @@ import javax.swing.text.AttributeSet;
  * {@code doxia-sink-api}, next to the {@link org.apache.maven.doxia.sink.SinkEventAttributes} interface it
  * implements and the {@link org.apache.maven.doxia.sink.Sink} methods it is passed to, so that attributes can
  * be created without depending on Doxia internals.
+ * <p>
+ * Instances of this class still behave as before, but it is no longer the type of the attribute sets Doxia
+ * hands out. The inherited constants, and every attribute set produced inside Doxia, are instances of
+ * {@link org.apache.maven.doxia.sink.SinkEventAttributeSet} only. Code that tests them with {@code instanceof}
+ * or casts them to this class has to move to the new class; the constants themselves are unchanged, so
+ * reading them through either name yields the very same objects.
  *
- * @deprecated Use {@link org.apache.maven.doxia.sink.SinkEventAttributeSet} instead.
+ * @deprecated since 2.2.0, use {@link org.apache.maven.doxia.sink.SinkEventAttributeSet} instead.
  */
 @Deprecated
 public class SinkEventAttributeSet extends org.apache.maven.doxia.sink.SinkEventAttributeSet {
