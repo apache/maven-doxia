@@ -66,6 +66,18 @@ GitHub specified [extensions](https://github.github.com/gfm) to the original Mar
 
 The parser will first convert Markdown into HTML, convert to XHTML via [JSoup](https://jsoup.org/) and then parse the XHTML into Doxia Sink API methods calls leveraging the [XHTML5 parser](../doxia-module-xhtml5/index.html).
 
+## Code blocks
+
+Both indented and fenced code blocks become a `verbatim` Sink event containing an `inline` event with the `code` semantics, rendered as `<pre><code>`.
+
+The info string of a fenced code block, if there is one, is passed on as a class on that inline event, so
+
+<pre>```java</pre>
+
+produces `<pre><code class="language-java">`, which is the convention syntax highlighters look for. A fenced block without an info string, and an indented block, produce `<pre><code class="nohighlight nocode">` instead, which is how [highlight.js](https://highlightjs.readthedocs.io/en/latest/readme.html#ignoring-a-code-block) and [code-prettify](https://github.com/googlearchive/code-prettify#how-do-i-prevent-a-portion-of-markup-from-being-marked-as-code) are told to leave a block alone.
+
+Note that this differs from the APT and XDoc modules, where `+--` and `<source>` mark a code block by putting the `source` decoration on the `verbatim` event itself. Markdown carries the same information on the nested inline event instead, because it has a language to convey as well.
+
 ## References
 
 - [Markdown project website](http://daringfireball.net/projects/markdown)
