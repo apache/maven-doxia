@@ -332,7 +332,14 @@ public class SinkEventAttributeSet implements SinkEventAttributes, Cloneable {
 
     @Override
     public Object clone() {
-        SinkEventAttributeSet attr = new SinkEventAttributeSet(attribs.size());
+        // deliberately not "new SinkEventAttributeSet(...)": a subclass must clone to its own type
+        SinkEventAttributeSet attr;
+        try {
+            attr = (SinkEventAttributeSet) super.clone();
+        } catch (CloneNotSupportedException e) {
+            throw new AssertionError(e);
+        }
+
         attr.attribs = new LinkedHashMap<>(attribs);
 
         if (resolveParent != null) {
