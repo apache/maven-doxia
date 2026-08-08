@@ -331,10 +331,10 @@ public class MarkdownParser extends AbstractTextParser implements TextMarkup {
      * <ul>
      * <li> DIV elements are translated as Unknown Sink events
      * </ul>
-     * PRE elements need to be "source" because the Xhtml5Sink will surround the
-     * corresponding verbatim() Sink event with a DIV element with class="source",
-     * which is how most Maven Skin (incl. Fluido) recognize a block of code, which
-     * needs to be highlighted accordingly.
+     * A code block does not carry the {@code source} decoration on its {@code verbatim} event, unlike the APT
+     * and XDoc modules. The language of a fenced code block has to be conveyed anyway, and the {@code inline}
+     * event emitted for the nested CODE element carries both that and the code semantics, so the decoration
+     * would add nothing. See {@code fencedCodeBlockSinkEvent} in the module tests for the exact events.
      */
     @Named
     public static class MarkdownHtmlParser extends Xhtml5Parser {
