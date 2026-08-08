@@ -36,6 +36,7 @@ import org.apache.maven.doxia.sink.SinkEventAttributes;
 import org.apache.maven.doxia.sink.impl.SinkEventAttributeSet;
 import org.apache.maven.doxia.sink.impl.Xhtml5BaseSink;
 import org.apache.maven.doxia.util.DoxiaStringUtils;
+import org.apache.maven.doxia.util.DoxiaUtils;
 import org.apache.maven.doxia.util.HtmlTools;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
@@ -280,7 +281,7 @@ public class MarkdownSink extends Xhtml5BaseSink implements MarkdownMarkup {
             if (text == null) {
                 return "";
             }
-            text = escapeHtml(writer, text); // assume UTF-8 output, i.e. only use the mandatory XML entities
+            text = escapeHtmlForMarkdown(text); // assume UTF-8 output, i.e. only use the mandatory XML entities
             int length = text.length();
             StringBuilder buffer = new StringBuilder(length);
 
@@ -292,8 +293,6 @@ public class MarkdownSink extends Xhtml5BaseSink implements MarkdownMarkup {
                     case '`':
                     case '[':
                     case ']':
-                    case '(':
-                    case ')':
                     case '!':
                         // always escape the previous characters as potentially everywhere relevant
                         buffer.append(escapeMarkdown(c));
@@ -317,7 +316,7 @@ public class MarkdownSink extends Xhtml5BaseSink implements MarkdownMarkup {
                         }
                         break;
                     case '.':
-                        if (isAfterDigit(buffer, writer)) {
+                        if (isAfterOnlyLeadingDigits(buffer, writer)) {
                             buffer.append(escapeMarkdown(c));
                         } else {
                             buffer.append(c);
@@ -330,11 +329,16 @@ public class MarkdownSink extends Xhtml5BaseSink implements MarkdownMarkup {
             return buffer.toString();
         }
 
-        private static boolean isAfterDigit(StringBuilder buffer, LastTwoLinesAwareWriter writer) {
+        /**
+         * A {@code .} only needs escaping when it would turn leading digits into the marker of an
+         * ordered list item, i.e. when nothing but whitespace and digits precede it on the line.
+         * Elsewhere (as in version numbers such as {@code 1.6}) it is an ordinary character.
+         */
+        private static boolean isAfterOnlyLeadingDigits(StringBuilder buffer, LastTwoLinesAwareWriter writer) {
             if (buffer.length() > 0) {
-                return Character.isDigit(buffer.charAt(buffer.length() - 1));
+                return writer.isInBlankLine() && LastTwoLinesAwareWriter.isOnlyLeadingDigits(buffer);
             } else {
-                return writer.isAfterDigit();
+                return writer.isAfterOnlyLeadingDigits();
             }
         }
 
@@ -354,6 +358,40 @@ public class MarkdownSink extends Xhtml5BaseSink implements MarkdownMarkup {
         }
 
         /**
+         * Escapes only those characters which would otherwise be interpreted as raw HTML inside a
+         * Markdown document. Unlike {@link HtmlTools#escapeHTML(String, boolean)} this leaves
+         * {@code "} and {@code '} alone: Markdown is not XML, both are ordinary characters there,
+         * and turning them into {@code &quot;}/{@code &apos;} only makes the source unreadable.
+         *
+         * @param text the string to escape, may be null
+         * @return the escaped text, "" if null String input
+         */
+        private static String escapeHtmlForMarkdown(String text) {
+            if (text == null) {
+                return "";
+            }
+            int length = text.length();
+            StringBuilder buffer = new StringBuilder(length);
+            for (int i = 0; i < length; ++i) {
+                char c = text.charAt(i);
+                switch (c) {
+                    case '<':
+                        buffer.append("&lt;");
+                        break;
+                    case '>':
+                        buffer.append("&gt;");
+                        break;
+                    case '&':
+                        buffer.append("&amp;");
+                        break;
+                    default:
+                        buffer.append(c);
+                }
+            }
+            return buffer.toString();
+        }
+
+        /**
          * Escapes the pipe character according to <a href="https://github.github.com/gfm/#tables-extension-">GFM Table Extension</a> in addition
          * to the regular markdown escaping.
          * @param text
@@ -367,6 +405,25 @@ public class MarkdownSink extends Xhtml5BaseSink implements MarkdownMarkup {
     // ----------------------------------------------------------------------
     // Public protected methods
     // ----------------------------------------------------------------------
+
+    /**
+     * A link destination must not contain a space: everything from the space on is read as the
+     * link title instead, so {@code [text](#My Anchor)} does not resolve. An in-page anchor
+     * therefore gets the same encoding the anchor definition receives, and any other destination
+     * has its spaces percent-encoded.
+     *
+     * @param destination the link destination, may be null
+     * @return the destination, safe to write into a Markdown inline link
+     */
+    private static String encodeLinkDestination(String destination) {
+        if (destination == null || destination.indexOf(' ') < 0) {
+            return destination;
+        }
+        if (destination.charAt(0) == '#') {
+            return "#" + DoxiaUtils.encodeId(destination.substring(1));
+        }
+        return destination.replace(" ", "%20");
+    }
 
     protected static MarkdownSink newInstance(Writer writer) {
         BufferingStackWriter bufferingStackWriter = new BufferingStackWriter(writer);
@@ -1104,13 +1161,13 @@ public class MarkdownSink extends Xhtml5BaseSink implements MarkdownMarkup {
                 // defer emitting link end markup until inline_() is called
                 StringBuilder linkEndMarkup = new StringBuilder();
                 linkEndMarkup.append(LINK_START_2_MARKUP);
-                linkEndMarkup.append(linkName);
+                linkEndMarkup.append(encodeLinkDestination(linkName));
                 linkEndMarkup.append(LINK_END_MARKUP);
                 Queue<String> endMarkups = new LinkedList<>(inlineStack.poll());
                 endMarkups.add(linkEndMarkup.toString());
                 inlineStack.add(endMarkups);
             } else {
-                write(LINK_START_2_MARKUP + linkName + LINK_END_MARKUP);
+                write(LINK_START_2_MARKUP + encodeLinkDestination(linkName) + LINK_END_MARKUP);
             }
             linkName = null;
         }
