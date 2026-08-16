@@ -10,7 +10,6 @@ github:
     - doxia
   protected_branches:
     master: { }
-    doxia-1.x: { }
   pull_requests:
     del_branch_on_merge: true
   enabled_merge_buttons:
