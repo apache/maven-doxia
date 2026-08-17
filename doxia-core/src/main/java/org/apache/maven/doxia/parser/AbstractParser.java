@@ -159,6 +159,7 @@ public abstract class AbstractParser implements Parser, MacroExecutor {
      * @return the base directory
      * @deprecated this does not work in multi-module builds, see DOXIA-373
      */
+    @Deprecated
     protected File getBasedir() {
         // TODO: This is baaad, it should come in with the request.
         // (this is only used for macro requests, see AptParser)
