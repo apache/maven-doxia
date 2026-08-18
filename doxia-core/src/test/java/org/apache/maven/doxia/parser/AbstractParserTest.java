@@ -29,8 +29,8 @@ import java.util.ListIterator;
 
 import org.apache.maven.doxia.AbstractModuleTest;
 import org.apache.maven.doxia.sink.Sink;
+import org.apache.maven.doxia.sink.SinkEventAttributeSet;
 import org.apache.maven.doxia.sink.SinkEventAttributes;
-import org.apache.maven.doxia.sink.impl.SinkEventAttributeSet;
 import org.apache.maven.doxia.sink.impl.SinkEventElement;
 import org.apache.maven.doxia.sink.impl.SinkEventTestingSink;
 import org.apache.maven.doxia.sink.impl.SinkWrapper;

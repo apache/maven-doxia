@@ -23,8 +23,8 @@ import javax.swing.text.html.HTML.Attribute;
 
 import java.io.Writer;
 
+import org.apache.maven.doxia.sink.SinkEventAttributeSet;
 import org.apache.maven.doxia.sink.SinkEventAttributes;
-import org.apache.maven.doxia.sink.impl.SinkEventAttributeSet;
 import org.apache.maven.doxia.sink.impl.SinkUtils;
 import org.apache.maven.doxia.sink.impl.Xhtml5BaseSink;
 import org.apache.maven.doxia.util.DoxiaStringUtils;

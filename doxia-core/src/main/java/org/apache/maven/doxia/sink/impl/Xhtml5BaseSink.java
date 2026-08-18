@@ -38,6 +38,7 @@ import java.util.regex.Pattern;
 import org.apache.maven.doxia.markup.HtmlMarkup;
 import org.apache.maven.doxia.markup.Markup;
 import org.apache.maven.doxia.sink.Sink;
+import org.apache.maven.doxia.sink.SinkEventAttributeSet;
 import org.apache.maven.doxia.sink.SinkEventAttributes;
 import org.apache.maven.doxia.util.DoxiaStringUtils;
 import org.apache.maven.doxia.util.DoxiaUtils;

@@ -20,7 +20,7 @@ package org.apache.maven.doxia.parser;
 
 import java.util.Iterator;
 
-import org.apache.maven.doxia.sink.impl.SinkEventAttributeSet;
+import org.apache.maven.doxia.sink.SinkEventAttributeSet;
 import org.apache.maven.doxia.sink.impl.SinkEventElement;
 import org.apache.maven.doxia.sink.impl.SinkEventTestingSink;
 import org.junit.jupiter.api.BeforeEach;
