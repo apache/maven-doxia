@@ -71,7 +71,9 @@ public class SnippetReader {
         int minIndent = minIndent(lines);
         StringBuffer result = new StringBuffer();
         for (String line : lines) {
-            result.append(line.substring(minIndent));
+            if (line.length() > minIndent) {
+                result.append(line.substring(minIndent));
+            }
             result.append(EOL);
         }
         return result;
@@ -86,6 +88,9 @@ public class SnippetReader {
     int minIndent(List<String> lines) {
         int minIndent = Integer.MAX_VALUE;
         for (String line : lines) {
+            if (StringUtils.isBlank(line)) {
+                continue;
+            }
             minIndent = Math.min(minIndent, indent(line));
         }
         return minIndent;
@@ -101,7 +106,7 @@ public class SnippetReader {
         char[] chars = line.toCharArray();
         int indent = 0;
         for (; indent < chars.length; indent++) {
-            if (chars[indent] != ' ') {
+            if (chars[indent] != ' ' && chars[indent] != '\t') {
                 break;
             }
         }
