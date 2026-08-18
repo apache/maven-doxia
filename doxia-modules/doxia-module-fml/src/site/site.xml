@@ -36,7 +36,6 @@
     </menu>
 
     <menu name="FML Schema">
-      <item name="Reference" href="xsddoc/index.html"/>
       <item name="Using FML Schema" href="using-fml-xsd.html"/>
     </menu>
 

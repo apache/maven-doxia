@@ -37,7 +37,6 @@
     </menu>
 
     <menu name="XDOC 2.0 Schema">
-      <item name="Reference" href="xsddoc/index.html"/>
       <item name="Using XDOC Schema" href="using-xdoc-xsd.html"/>
     </menu>
 
