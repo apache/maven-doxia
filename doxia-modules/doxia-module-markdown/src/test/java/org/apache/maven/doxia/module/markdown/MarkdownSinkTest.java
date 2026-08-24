@@ -34,6 +34,7 @@ import org.apache.maven.doxia.sink.SinkEventAttributeSet;
 import org.apache.maven.doxia.sink.SinkEventAttributeSet.Semantics;
 import org.apache.maven.doxia.sink.impl.AbstractSinkTest;
 import org.apache.maven.doxia.sink.impl.SinkEventTestingSink;
+import org.apache.maven.doxia.sink.impl.Xhtml5BaseSink;
 import org.apache.maven.doxia.util.DoxiaStringUtils;
 import org.junit.jupiter.api.Test;
 
@@ -740,5 +741,49 @@ class MarkdownSinkTest extends AbstractSinkTest {
                 + "|<pre><code>code with | and ` inside</code></pre>|" + EOL
                 + "|<pre><code>code with | and ` inside</code></pre>|" + EOL + EOL;
         assertEquals(expected, getSinkContent());
+    }
+
+    /**
+     * A self-closing {@code <object/>} (as xdoc's parser emits it, i.e. a single {@code unknown} event with
+     * {@link Xhtml5BaseSink#TAG_TYPE_SIMPLE}) is not a void HTML element, so it must never be rendered
+     * self-closed: HTML5 ignores the trailing slash on a non-void tag and would otherwise treat everything that
+     * follows as {@code <object>} fallback content. See MDOXIA-159.
+     */
+    @Test
+    void unknownObjectEventIsRenderedAsExplicitlyClosedRawHtml() throws IOException {
+        SinkEventAttributeSet attributes = new SinkEventAttributeSet();
+        attributes.addAttribute("type", "image/svg+xml");
+        attributes.addAttribute("data", "x.svg");
+
+        try (Sink sink = getSink()) {
+            sink.unknown("object", new Object[] {Xhtml5BaseSink.TAG_TYPE_SIMPLE}, attributes);
+        }
+
+        assertEquals("<object type=\"image/svg+xml\" data=\"x.svg\"></object>", getSinkContent());
+    }
+
+    /**
+     * An image map ({@code <map>} wrapping a void {@code <area/>}) must survive conversion instead of being
+     * silently dropped like any other unknown event previously was. Unlike {@code <object>}, {@code <area>} is a
+     * void element, so it is still fine to render it self-closed. See MDOXIA-159.
+     */
+    @Test
+    void unknownMapAndAreaEventsAreRenderedAsRawHtml() throws IOException {
+        SinkEventAttributeSet mapAttributes = new SinkEventAttributeSet();
+        mapAttributes.addAttribute("name", "imgmap");
+        SinkEventAttributeSet areaAttributes = new SinkEventAttributeSet();
+        areaAttributes.addAttribute("shape", "rect");
+        areaAttributes.addAttribute("coords", "0,0,10,10");
+        areaAttributes.addAttribute("href", "a.html");
+
+        try (Sink sink = getSink()) {
+            sink.unknown("map", new Object[] {Xhtml5BaseSink.TAG_TYPE_START}, mapAttributes);
+            sink.unknown("area", new Object[] {Xhtml5BaseSink.TAG_TYPE_SIMPLE}, areaAttributes);
+            sink.unknown("map", new Object[] {Xhtml5BaseSink.TAG_TYPE_END}, null);
+        }
+
+        assertEquals(
+                "<map name=\"imgmap\"><area shape=\"rect\" coords=\"0,0,10,10\" href=\"a.html\" /></map>",
+                getSinkContent());
     }
 }

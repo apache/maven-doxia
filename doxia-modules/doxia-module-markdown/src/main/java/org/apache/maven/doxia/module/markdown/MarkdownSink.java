@@ -38,6 +38,7 @@ import org.apache.maven.doxia.sink.impl.Xhtml5BaseSink;
 import org.apache.maven.doxia.util.DoxiaStringUtils;
 import org.apache.maven.doxia.util.DoxiaUtils;
 import org.apache.maven.doxia.util.HtmlTools;
+import org.jsoup.parser.Tag;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
@@ -1360,15 +1361,49 @@ public class MarkdownSink extends Xhtml5BaseSink implements MarkdownMarkup {
         write(text);
     }
 
+    /** Table row-grouping tags without their own content: {@link #unknown(String, Object[], SinkEventAttributes)}
+     * ignores these rather than rendering them as raw HTML. */
+    private static final Collection<String> IGNORED_TABLE_GROUPING_TAGS =
+            Collections.unmodifiableList(Arrays.asList("thead", "tbody", "tfoot"));
+
     /**
      * {@inheritDoc}
      *
-     * Unknown events just log a warning message but are ignored otherwise.
+     * Delegates tag reconstruction and attribute escaping to
+     * {@link Xhtml5BaseSink#unknown(String, Object[], SinkEventAttributes)}, so any tag recognized by
+     * {@link HtmlTools#getHtmlTag(String)} (e.g. {@code <object>}, {@code <map>}/{@code <area>}) is emitted as raw
+     * HTML instead of being silently dropped.
+     * <p>
+     * Unlike that XHTML sink, a {@link #TAG_TYPE_SIMPLE} event for a non-void element is never self-closed
+     * ({@code <name/>}): HTML5 has no self-closing syntax outside the fixed list of void elements, so a
+     * self-closed non-void tag such as {@code <object/>} would otherwise be re-parsed as an open tag that
+     * swallows all following content as its own (hidden) fallback children. Such events are instead written as
+     * an explicitly closed pair ({@code <name></name>}).
+     * <p>
+     * {@code <thead>}/{@code <tbody>}/{@code <tfoot>} are excluded: they carry no content of their own (Doxia's
+     * table sink API already fully captures the table structure via {@code table()}/{@code tableRows()}/
+     * {@code tableRow()}/{@code tableCell()}), and {@link MarkdownParser} fires these as unknown events for
+     * every table it parses (they have no dedicated sink method). Rendering them as raw HTML would inject a
+     * tag directly before the first cell of a row, which breaks GFM pipe-table syntax since a table row must
+     * start at the beginning of its line.
+     *
      * @see org.apache.maven.doxia.sink.Sink#unknown(String,Object[],SinkEventAttributes)
      */
     @Override
     public void unknown(String name, Object[] requiredParams, SinkEventAttributes attributes) {
-        LOGGER.warn("{}Unknown Sink event '" + name + "', ignoring!", getLocationLogPrefix());
+        if (IGNORED_TABLE_GROUPING_TAGS.contains(name)) {
+            return;
+        }
+        if (requiredParams != null
+                && requiredParams[0] instanceof Integer
+                && (Integer) requiredParams[0] == TAG_TYPE_SIMPLE
+                && HtmlTools.getHtmlTag(name) != null
+                && !Tag.valueOf(name).isSelfClosing()) {
+            super.unknown(name, new Object[] {TAG_TYPE_START}, attributes);
+            super.unknown(name, new Object[] {TAG_TYPE_END}, null);
+            return;
+        }
+        super.unknown(name, requiredParams, attributes);
     }
 
     @Override
