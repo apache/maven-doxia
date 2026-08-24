@@ -928,4 +928,36 @@ class MarkdownParserTest extends AbstractParserTest {
         // left untouched because of rel="external" despite being an invalid doxia id
         assertEquals("test.html#anchor()", linkEvent.getArgs()[0]);
     }
+
+    /**
+     * A self-closing non-void HTML tag (e.g. {@code <object .../>}) embedded in Markdown must not swallow the
+     * content that follows it: HTML5 has no self-closing syntax outside the fixed list of void elements, so an
+     * unclosed {@code <object>} left as-is nests all following content as its fallback children. This is what broke
+     * maven.apache.org/scm.html (apache/maven-site#1645).
+     *
+     * @throws Exception if the event list is not correct when parsing the document
+     */
+    @Test
+    void selfClosingNonVoidHtmlTagIsExplicitlyClosed() throws Exception {
+        Iterator<SinkEventElement> eventIterator = parseSourceToEventTestingSink(
+                        "<p><object type=\"image/svg+xml\" data=\"x.svg\"/></p>\n\nText after the object.")
+                .getEventList()
+                .iterator();
+        assertEventPrefix(eventIterator);
+        assertSinkStartsWith(eventIterator, "paragraph");
+
+        SinkEventElement objectStart = eventIterator.next();
+        assertEquals("unknown", objectStart.getName());
+        assertEquals("object", objectStart.getArgs()[0]);
+
+        SinkEventElement objectEnd = eventIterator.next();
+        assertEquals("unknown", objectEnd.getName());
+        assertEquals("object", objectEnd.getArgs()[0]);
+
+        // the object tag is closed, so this is a sibling paragraph, not content nested inside <object>
+        assertSinkStartsWith(eventIterator, "paragraph_", "markupLineBreak", "paragraph");
+        assertSinkEquals(eventIterator.next(), "text", "Text after the object.", null);
+        assertSinkStartsWith(eventIterator, "paragraph_");
+        assertEventSuffix(eventIterator);
+    }
 }
