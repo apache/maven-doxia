@@ -190,11 +190,25 @@ public class Xhtml5BaseParser extends AbstractXmlParser implements HtmlMarkup {
      * @param sink the sink to receive the events.
      * @return True if the event has been handled by this method, i.e. the tag was recognized, false otherwise.
      */
+    @SuppressWarnings("deprecation")
     protected boolean baseStartTag(XmlPullParser parser, Sink sink) {
         SinkEventAttributeSet attribs = getAttributesFromParser(parser);
         return baseStartTag(parser.getName(), attribs, sink);
     }
 
+    /**
+     * Handles a start tag by element name, so that a subclass can map an element name before the common handling
+     * runs. This is what {@link Xhtml1BaseParser} uses to translate obsolete XHTML 1.0 element names.
+     *
+     * @param elementName the name of the element.
+     * @param attribs the attributes of the element, may be null.
+     * @param sink the sink to receive the events.
+     * @return True if the event has been handled by this method, i.e. the tag was recognized, false otherwise.
+     * @deprecated The {@code attribs} parameter will become {@link SinkEventAttributes} in the next major version.
+     *      An override of this signature will stop being called once the parameter type changes, with no error
+     *      at build or run time, so move the override to the new signature when it lands. See <a href="https://github.com/apache/maven-doxia/issues/1074">issue 1074</a>.
+     */
+    @Deprecated
     protected boolean baseStartTag(String elementName, SinkEventAttributeSet attribs, Sink sink) {
         boolean visited = true;
         isBeginningOfLineInsideBlock = true;
@@ -484,11 +498,25 @@ public class Xhtml5BaseParser extends AbstractXmlParser implements HtmlMarkup {
      * @param sink the sink to receive the events.
      * @return True if the event has been handled by this method, false otherwise.
      */
+    @SuppressWarnings("deprecation")
     protected boolean baseEndTag(XmlPullParser parser, Sink sink) {
         SinkEventAttributeSet attribs = getAttributesFromParser(parser);
         return baseEndTag(parser.getName(), attribs, sink);
     }
 
+    /**
+     * Handles an end tag by element name, so that a subclass can map an element name before the common handling
+     * runs. This is what {@link Xhtml1BaseParser} uses to translate obsolete XHTML 1.0 element names.
+     *
+     * @param elementName the name of the element.
+     * @param attribs the attributes of the element, may be null.
+     * @param sink the sink to receive the events.
+     * @return True if the event has been handled by this method, false otherwise.
+     * @deprecated The {@code attribs} parameter will become {@link SinkEventAttributes} in the next major version.
+     *      An override of this signature will stop being called once the parameter type changes, with no error
+     *      at build or run time, so move the override to the new signature when it lands. See <a href="https://github.com/apache/maven-doxia/issues/1074">issue 1074</a>.
+     */
+    @Deprecated
     protected boolean baseEndTag(String elementName, SinkEventAttributeSet attribs, Sink sink) {
         boolean visited = true;
         isBeginningOfLineInsideBlock = true;

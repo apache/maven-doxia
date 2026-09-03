@@ -61,6 +61,7 @@ public class Xhtml5Parser extends Xhtml5BaseParser implements Xhtml5Markup {
      */
     private String sourceContent;
 
+    @SuppressWarnings("deprecation")
     protected void handleStartTag(XmlPullParser parser, Sink sink)
             throws XmlPullParserException, MacroExecutionException {
         isEmptyElement = parser.isEmptyElementTag();

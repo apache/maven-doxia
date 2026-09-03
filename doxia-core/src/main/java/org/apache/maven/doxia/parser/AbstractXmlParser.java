@@ -174,7 +174,12 @@ public abstract class AbstractXmlParser extends AbstractParser implements XmlMar
      * @param parser A parser, not null.
      * @return a SinkEventAttributeSet or null if the current parser event is not a start tag.
      * @since 1.1
+     * @deprecated The return type will become {@link org.apache.maven.doxia.sink.SinkEventAttributes} in the next
+     *      major version. Callers are unaffected if they declare the result as that interface; every use in Doxia
+     *      itself already needs nothing more than the interface. An override of this method will stop being called
+     *      once the return type changes, with no error at build or run time. See <a href="https://github.com/apache/maven-doxia/issues/1074">issue 1074</a>.
      */
+    @Deprecated
     protected SinkEventAttributeSet getAttributesFromParser(XmlPullParser parser) {
         int count = parser.getAttributeCount();
 
@@ -389,6 +394,22 @@ public abstract class AbstractXmlParser extends AbstractParser implements XmlMar
         handleUnknown(parser.getName(), attribs, sink, type);
     }
 
+    /**
+     * Emits an element that has no dedicated Sink event as
+     * {@link Sink#unknown(String, Object[], org.apache.maven.doxia.sink.SinkEventAttributes)}.
+     *
+     * @param elementName the name of the element.
+     * @param attribs the attributes of the element, may be null.
+     * @param sink the sink to receive the event.
+     * @param type the tag event type, passed as the first required parameter of the Sink event. This should be one
+     *      of HtmlMarkup.TAG_TYPE_SIMPLE, HtmlMarkup.TAG_TYPE_START, HtmlMarkup.TAG_TYPE_END or
+     *      HtmlMarkup.ENTITY_TYPE.
+     * @deprecated The {@code attribs} parameter will become
+     *      {@link org.apache.maven.doxia.sink.SinkEventAttributes} in the next major version.
+     *      An override of this signature will stop being called once the parameter type changes, with no error
+     *      at build or run time, so move the override to the new signature when it lands. See <a href="https://github.com/apache/maven-doxia/issues/1074">issue 1074</a>.
+     */
+    @Deprecated
     protected void handleUnknown(String elementName, SinkEventAttributeSet attribs, Sink sink, int type) {
         Object[] required = new Object[] {type};
         sink.unknown(elementName, required, attribs);
