@@ -356,9 +356,7 @@ public class SinkEventAttributeSet implements SinkEventAttributes, Cloneable {
 
     @Override
     public int hashCode() {
-        final int parentHash = (resolveParent == null ? 0 : resolveParent.hashCode());
-
-        return attribs.hashCode() + parentHash;
+        return attribs.hashCode();
     }
 
     @Override

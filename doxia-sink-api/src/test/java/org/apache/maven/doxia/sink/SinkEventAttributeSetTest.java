@@ -259,7 +259,20 @@ class SinkEventAttributeSetTest {
         oldValue = newValue;
         sinkEventAttributeSet.setResolveParent(SinkEventAttributeSet.CENTER);
         newValue = sinkEventAttributeSet.hashCode();
-        assertNotEquals(oldValue, newValue);
+        assertEquals(oldValue, newValue);
+    }
+
+    /**
+     * Own attributes decide equality; resolveParent must not break the hashCode contract.
+     */
+    @Test
+    void hashCodeAgreesWithEqualsWhenResolveParentDiffers() {
+        SinkEventAttributeSet a = new SinkEventAttributeSet(SinkEventAttributeSet.BOLD);
+        SinkEventAttributeSet b = new SinkEventAttributeSet(SinkEventAttributeSet.BOLD);
+        a.setResolveParent(SinkEventAttributeSet.CENTER);
+        b.setResolveParent(SinkEventAttributeSet.LEFT);
+        assertEquals(a, b);
+        assertEquals(a.hashCode(), b.hashCode());
     }
 
     /**
