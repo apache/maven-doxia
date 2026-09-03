@@ -112,6 +112,13 @@ public interface SinkEventAttributes extends MutableAttributeSet {
      */
     String EMAIL = "email";
 
+    /**
+     * The value of a meta element, used together with {@link #NAME}.
+     *
+     * @since 2.2.0
+     */
+    String CONTENT = "content";
+
     // img
 
     /**

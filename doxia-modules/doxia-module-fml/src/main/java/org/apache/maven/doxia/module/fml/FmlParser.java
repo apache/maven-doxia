@@ -20,7 +20,6 @@ package org.apache.maven.doxia.module.fml;
 
 import javax.inject.Named;
 import javax.inject.Singleton;
-import javax.swing.text.html.HTML.Attribute;
 
 import java.io.IOException;
 import java.io.Reader;
@@ -42,6 +41,7 @@ import org.apache.maven.doxia.parser.AbstractXmlParser;
 import org.apache.maven.doxia.parser.ParseException;
 import org.apache.maven.doxia.sink.Sink;
 import org.apache.maven.doxia.sink.SinkEventAttributeSet;
+import org.apache.maven.doxia.sink.SinkEventAttributes;
 import org.apache.maven.doxia.sink.impl.Xhtml5BaseSink;
 import org.apache.maven.doxia.util.DoxiaStringUtils;
 import org.apache.maven.doxia.util.DoxiaUtils;
@@ -135,7 +135,7 @@ public class FmlParser extends AbstractXmlParser implements FmlMarkup {
         } else if (parser.getName().equals(PART_TAG.toString())) {
             currentPart = new Part();
 
-            currentPart.setId(parser.getAttributeValue(null, Attribute.ID.toString()));
+            currentPart.setId(parser.getAttributeValue(null, SinkEventAttributes.ID));
 
             if (currentPart.getId() == null) {
                 throw new XmlPullParserException("id attribute required for <part> at: (" + parser.getLineNumber() + ":"
@@ -153,7 +153,7 @@ public class FmlParser extends AbstractXmlParser implements FmlMarkup {
         } else if (parser.getName().equals(FAQ_TAG.toString())) {
             currentFaq = new Faq();
 
-            currentFaq.setId(parser.getAttributeValue(null, Attribute.ID.toString()));
+            currentFaq.setId(parser.getAttributeValue(null, SinkEventAttributes.ID));
 
             if (currentFaq.getId() == null) {
                 throw new XmlPullParserException("id attribute required for <faq> at: (" + parser.getLineNumber() + ":"
@@ -357,14 +357,14 @@ public class FmlParser extends AbstractXmlParser implements FmlMarkup {
      */
     private void handleMacroStart(XmlPullParser parser) throws MacroExecutionException {
         if (!isSecondParsing()) {
-            macroName = parser.getAttributeValue(null, Attribute.NAME.toString());
+            macroName = parser.getAttributeValue(null, SinkEventAttributes.NAME);
 
             if (macroParameters == null) {
                 macroParameters = new HashMap<>();
             }
 
             if (macroName == null || macroName.isEmpty()) {
-                throw new MacroExecutionException("The '" + Attribute.NAME.toString() + "' attribute for the '"
+                throw new MacroExecutionException("The '" + SinkEventAttributes.NAME + "' attribute for the '"
                         + MACRO_TAG.toString() + "' tag is required.");
             }
         }
@@ -408,12 +408,12 @@ public class FmlParser extends AbstractXmlParser implements FmlMarkup {
     private void handleParamStart(XmlPullParser parser, Sink sink) throws MacroExecutionException {
         if (!isSecondParsing()) {
             if (macroName != null && !macroName.isEmpty()) {
-                String paramName = parser.getAttributeValue(null, Attribute.NAME.toString());
-                String paramValue = parser.getAttributeValue(null, Attribute.VALUE.toString());
+                String paramName = parser.getAttributeValue(null, SinkEventAttributes.NAME);
+                String paramValue = parser.getAttributeValue(null, SinkEventAttributes.VALUE);
 
                 if ((paramName == null || paramName.isEmpty()) || (paramValue == null || paramValue.isEmpty())) {
-                    throw new MacroExecutionException("'" + Attribute.NAME.toString()
-                            + "' and '" + Attribute.VALUE.toString() + "' attributes for the '" + PARAM.toString()
+                    throw new MacroExecutionException("'" + SinkEventAttributes.NAME
+                            + "' and '" + SinkEventAttributes.VALUE + "' attributes for the '" + PARAM.toString()
                             + "' tag are required inside the '" + MACRO_TAG.toString() + "' tag.");
                 }
 

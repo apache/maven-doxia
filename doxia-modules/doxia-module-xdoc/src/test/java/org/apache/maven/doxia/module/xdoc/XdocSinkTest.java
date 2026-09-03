@@ -18,8 +18,6 @@
  */
 package org.apache.maven.doxia.module.xdoc;
 
-import javax.swing.text.html.HTML.Attribute;
-
 import java.io.StringWriter;
 import java.io.Writer;
 
@@ -311,7 +309,7 @@ public class XdocSinkTest extends AbstractSinkTest {
             sink.link("name");
             sink.link_();
             SinkEventAttributes attrs = new SinkEventAttributeSet();
-            attrs.addAttribute(Attribute.TARGET, "nirvana");
+            attrs.addAttribute(SinkEventAttributes.TARGET, "nirvana");
             sink.link("name", attrs);
             sink.link_();
         }

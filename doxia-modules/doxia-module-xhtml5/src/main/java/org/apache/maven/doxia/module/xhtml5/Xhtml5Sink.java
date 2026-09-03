@@ -19,7 +19,6 @@
 package org.apache.maven.doxia.module.xhtml5;
 
 import javax.swing.text.MutableAttributeSet;
-import javax.swing.text.html.HTML.Attribute;
 
 import java.io.Writer;
 
@@ -101,7 +100,7 @@ public class Xhtml5Sink extends Xhtml5BaseSink implements Xhtml5Markup {
         atts.addAttribute("xmlns", XHTML5_NAMESPACE);
 
         if (languageId != null) {
-            atts.addAttribute(Attribute.LANG.toString(), languageId);
+            atts.addAttribute(SinkEventAttributes.LANG, languageId);
             atts.addAttribute("xml:lang", languageId);
         }
 
@@ -166,12 +165,12 @@ public class Xhtml5Sink extends Xhtml5BaseSink implements Xhtml5Markup {
     public void author_() {
         if (getTextBuffer().length() > 0) {
             MutableAttributeSet att = new SinkEventAttributeSet();
-            att.addAttribute(Attribute.NAME, "author");
+            att.addAttribute(SinkEventAttributes.NAME, "author");
             String text = HtmlTools.escapeHTML(getTextBuffer().toString());
             // hack: un-escape numerical entities that have been escaped above
             // note that numerical entities should really be added as one unicode character in the first place
             text = DoxiaStringUtils.replace(text, "&amp;#", "&#");
-            att.addAttribute(Attribute.CONTENT, text);
+            att.addAttribute(SinkEventAttributes.CONTENT, text);
 
             writeSimpleTag(META, att);
 
@@ -187,8 +186,8 @@ public class Xhtml5Sink extends Xhtml5BaseSink implements Xhtml5Markup {
     public void date_() {
         if (getTextBuffer().length() > 0) {
             MutableAttributeSet att = new SinkEventAttributeSet();
-            att.addAttribute(Attribute.NAME, "date");
-            att.addAttribute(Attribute.CONTENT, getTextBuffer().toString());
+            att.addAttribute(SinkEventAttributes.NAME, "date");
+            att.addAttribute(SinkEventAttributes.CONTENT, getTextBuffer().toString());
 
             writeSimpleTag(META, att);
 
