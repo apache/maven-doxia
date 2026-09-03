@@ -28,7 +28,6 @@ import java.io.StringWriter;
 import java.util.LinkedHashMap;
 import java.util.Map;
 
-import org.apache.commons.io.IOUtils;
 import org.apache.maven.doxia.macro.MacroExecutionException;
 import org.apache.maven.doxia.macro.MacroRequest;
 import org.apache.maven.doxia.macro.manager.MacroNotFoundException;
@@ -269,7 +268,11 @@ public class Xhtml5Parser extends Xhtml5BaseParser implements Xhtml5Markup {
 
         try (Reader reader = source) {
             StringWriter contentWriter = new StringWriter();
-            IOUtils.copy(reader, contentWriter);
+            char[] buffer = new char[8192];
+            int n;
+            while ((n = reader.read(buffer)) != -1) {
+                contentWriter.write(buffer, 0, n);
+            }
             sourceContent = contentWriter.toString();
         } catch (IOException ex) {
             throw new ParseException("Error reading the input source", ex);
