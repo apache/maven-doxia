@@ -24,6 +24,7 @@ import java.util.Arrays;
 import java.util.Enumeration;
 
 import org.apache.maven.doxia.markup.Markup;
+import org.apache.maven.doxia.sink.SinkEventAttributeSet;
 import org.apache.maven.doxia.sink.SinkEventAttributes;
 
 /**

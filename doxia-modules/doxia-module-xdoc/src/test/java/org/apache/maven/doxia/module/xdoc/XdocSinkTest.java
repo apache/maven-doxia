@@ -24,9 +24,9 @@ import java.io.StringWriter;
 import java.io.Writer;
 
 import org.apache.maven.doxia.sink.Sink;
+import org.apache.maven.doxia.sink.SinkEventAttributeSet;
 import org.apache.maven.doxia.sink.SinkEventAttributes;
 import org.apache.maven.doxia.sink.impl.AbstractSinkTest;
-import org.apache.maven.doxia.sink.impl.SinkEventAttributeSet;
 import org.junit.jupiter.api.Test;
 
 import static org.apache.maven.doxia.util.HtmlTools.escapeHTML;
