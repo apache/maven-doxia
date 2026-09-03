@@ -50,7 +50,6 @@ import com.vladsch.flexmark.html.HtmlRenderer;
 import com.vladsch.flexmark.util.ast.Node;
 import com.vladsch.flexmark.util.ast.TextCollectingVisitor;
 import com.vladsch.flexmark.util.data.MutableDataSet;
-import org.apache.commons.io.IOUtils;
 import org.apache.maven.doxia.markup.HtmlMarkup;
 import org.apache.maven.doxia.markup.TextMarkup;
 import org.apache.maven.doxia.module.xhtml5.Xhtml5Parser;
@@ -284,7 +283,12 @@ public class MarkdownParser extends AbstractTextParser implements TextMarkup {
      */
     String toXhtml(Reader source) throws IOException {
         // Read the source
-        StringBuilder markdownText = new StringBuilder(IOUtils.toString(source));
+        StringBuilder markdownText = new StringBuilder();
+        char[] buffer = new char[8192];
+        int n;
+        while ((n = source.read(buffer)) != -1) {
+            markdownText.append(buffer, 0, n);
+        }
 
         // Now, build the HTML document
         StringBuilder html = new StringBuilder(1000);

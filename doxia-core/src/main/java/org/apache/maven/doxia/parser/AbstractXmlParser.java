@@ -20,10 +20,12 @@ package org.apache.maven.doxia.parser;
 
 import java.io.BufferedReader;
 import java.io.ByteArrayInputStream;
+import java.io.ByteArrayOutputStream;
 import java.io.IOException;
 import java.io.InputStream;
 import java.io.Reader;
 import java.io.StringReader;
+import java.io.StringWriter;
 import java.net.URI;
 import java.net.URL;
 import java.nio.file.Paths;
@@ -34,7 +36,6 @@ import java.util.Map;
 import java.util.regex.Matcher;
 import java.util.regex.Pattern;
 
-import org.apache.commons.io.IOUtils;
 import org.apache.maven.doxia.macro.MacroExecutionException;
 import org.apache.maven.doxia.markup.XmlMarkup;
 import org.apache.maven.doxia.sink.Sink;
@@ -109,7 +110,13 @@ public abstract class AbstractXmlParser extends AbstractParser implements XmlMar
         if (isValidate()) {
             String content;
             try {
-                content = IOUtils.toString(new BufferedReader(src));
+                StringWriter contentWriter = new StringWriter();
+                char[] buffer = new char[8192];
+                int n;
+                while ((n = src.read(buffer)) != -1) {
+                    contentWriter.write(buffer, 0, n);
+                }
+                content = contentWriter.toString();
             } catch (IOException e) {
                 throw new ParseException("Error reading the model", e);
             }
@@ -717,7 +724,13 @@ public abstract class AbstractXmlParser extends AbstractParser implements XmlMar
                 if (is == null) {
                     throw new SAXException("Cannot open stream from the url: " + url);
                 }
-                return IOUtils.toByteArray(is);
+                ByteArrayOutputStream out = new ByteArrayOutputStream();
+                byte[] buffer = new byte[8192];
+                int n;
+                while ((n = is.read(buffer)) != -1) {
+                    out.write(buffer, 0, n);
+                }
+                return out.toByteArray();
             } catch (IOException e) {
                 throw new SAXException(e);
             }

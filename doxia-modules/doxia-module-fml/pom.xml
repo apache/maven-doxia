@@ -45,12 +45,13 @@ under the License.
       <groupId>javax.inject</groupId>
       <artifactId>javax.inject</artifactId>
     </dependency>
+
+    <!-- test -->
     <dependency>
       <groupId>commons-io</groupId>
       <artifactId>commons-io</artifactId>
+      <scope>test</scope>
     </dependency>
-
-    <!-- test -->
     <dependency>
       <groupId>org.apache.maven.doxia</groupId>
       <artifactId>doxia-test-docs</artifactId>

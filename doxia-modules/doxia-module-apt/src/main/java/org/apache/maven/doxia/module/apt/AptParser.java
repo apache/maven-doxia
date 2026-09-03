@@ -29,7 +29,6 @@ import java.util.LinkedHashMap;
 import java.util.Map;
 import java.util.StringTokenizer;
 
-import org.apache.commons.io.IOUtils;
 import org.apache.maven.doxia.macro.MacroExecutionException;
 import org.apache.maven.doxia.macro.MacroRequest;
 import org.apache.maven.doxia.macro.manager.MacroNotFoundException;
@@ -208,7 +207,11 @@ public class AptParser extends AbstractTextParser implements AptMarkup {
 
         try {
             StringWriter contentWriter = new StringWriter();
-            IOUtils.copy(source, contentWriter);
+            char[] buffer = new char[8192];
+            int n;
+            while ((n = source.read(buffer)) != -1) {
+                contentWriter.write(buffer, 0, n);
+            }
             sourceContent = contentWriter.toString();
         } catch (IOException e) {
             throw new AptParseException(e);
