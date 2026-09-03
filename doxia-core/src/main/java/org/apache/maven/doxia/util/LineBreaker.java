@@ -24,7 +24,11 @@ import java.io.Writer;
 
 /**
  * Allows to specify the line-length of an output writer.
+ *
+ * @deprecated no longer used by Doxia and scheduled for removal in 2.3.0. It also swallows every
+ * write failure, so a failing writer would produce a silently truncated file.
  */
+@Deprecated
 public class LineBreaker {
     /** The default maximal line length. */
     public static final int DEFAULT_MAX_LINE_LENGTH = 78;
