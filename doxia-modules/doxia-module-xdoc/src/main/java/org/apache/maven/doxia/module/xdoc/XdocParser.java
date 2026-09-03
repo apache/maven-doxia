@@ -20,7 +20,6 @@ package org.apache.maven.doxia.module.xdoc;
 
 import javax.inject.Named;
 import javax.inject.Singleton;
-import javax.swing.text.html.HTML.Attribute;
 
 import java.io.IOException;
 import java.io.Reader;
@@ -38,6 +37,7 @@ import org.apache.maven.doxia.parser.ParseException;
 import org.apache.maven.doxia.parser.Xhtml1BaseParser;
 import org.apache.maven.doxia.sink.Sink;
 import org.apache.maven.doxia.sink.SinkEventAttributeSet;
+import org.apache.maven.doxia.sink.SinkEventAttributes;
 import org.apache.maven.doxia.util.HtmlTools;
 import org.codehaus.plexus.util.xml.pull.XmlPullParser;
 import org.codehaus.plexus.util.xml.pull.XmlPullParserException;
@@ -289,22 +289,22 @@ public class XdocParser extends Xhtml1BaseParser implements XdocMarkup {
 
     private void handleMacroStart(XmlPullParser parser) throws MacroExecutionException {
         if (!isSecondParsing()) {
-            macroName = parser.getAttributeValue(null, Attribute.NAME.toString());
+            macroName = parser.getAttributeValue(null, SinkEventAttributes.NAME);
 
             if (macroParameters == null) {
                 macroParameters = new HashMap<>();
             }
 
             if (macroName == null || macroName.isEmpty()) {
-                throw new MacroExecutionException("The '" + Attribute.NAME.toString() + "' attribute for the '"
+                throw new MacroExecutionException("The '" + SinkEventAttributes.NAME + "' attribute for the '"
                         + MACRO_TAG.toString() + "' tag is required.");
             }
         }
     }
 
     private void handleMetaStart(XmlPullParser parser, Sink sink, SinkEventAttributeSet attribs) {
-        String name = parser.getAttributeValue(null, Attribute.NAME.toString());
-        String content = parser.getAttributeValue(null, Attribute.CONTENT.toString());
+        String name = parser.getAttributeValue(null, SinkEventAttributes.NAME);
+        String content = parser.getAttributeValue(null, SinkEventAttributes.CONTENT);
 
         if ("author".equals(name)) {
             sink.author(null);
@@ -322,12 +322,12 @@ public class XdocParser extends Xhtml1BaseParser implements XdocMarkup {
     private void handleParamStart(XmlPullParser parser, Sink sink) throws MacroExecutionException {
         if (!isSecondParsing()) {
             if (macroName != null && !macroName.isEmpty()) {
-                String paramName = parser.getAttributeValue(null, Attribute.NAME.toString());
-                String paramValue = parser.getAttributeValue(null, Attribute.VALUE.toString());
+                String paramName = parser.getAttributeValue(null, SinkEventAttributes.NAME);
+                String paramValue = parser.getAttributeValue(null, SinkEventAttributes.VALUE);
 
                 if ((paramName == null || paramName.isEmpty()) || (paramValue == null || paramValue.isEmpty())) {
                     throw new MacroExecutionException(
-                            "'" + Attribute.NAME.toString() + "' and '" + Attribute.VALUE.toString()
+                            "'" + SinkEventAttributes.NAME + "' and '" + SinkEventAttributes.VALUE
                                     + "' attributes for the '" + PARAM.toString() + "' tag are required inside the '"
                                     + MACRO_TAG.toString() + "' tag.");
                 }
@@ -343,7 +343,7 @@ public class XdocParser extends Xhtml1BaseParser implements XdocMarkup {
     private void handleSectionStart(int level, Sink sink, SinkEventAttributeSet attribs, XmlPullParser parser) {
         consecutiveSections(level, sink);
 
-        Object id = attribs.getAttribute(Attribute.ID.toString());
+        Object id = attribs.getAttribute(SinkEventAttributes.ID);
 
         if (id != null) {
             sink.anchor(id.toString());
@@ -352,7 +352,7 @@ public class XdocParser extends Xhtml1BaseParser implements XdocMarkup {
 
         sink.section(level, attribs);
         sink.sectionTitle(level, null);
-        sink.text(HtmlTools.unescapeHTML(parser.getAttributeValue(null, Attribute.NAME.toString())));
+        sink.text(HtmlTools.unescapeHTML(parser.getAttributeValue(null, SinkEventAttributes.NAME)));
         sink.sectionTitle_(level);
     }
 

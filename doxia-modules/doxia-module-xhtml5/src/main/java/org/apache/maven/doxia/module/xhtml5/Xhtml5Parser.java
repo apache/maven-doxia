@@ -20,7 +20,6 @@ package org.apache.maven.doxia.module.xhtml5;
 
 import javax.inject.Named;
 import javax.inject.Singleton;
-import javax.swing.text.html.HTML.Attribute;
 
 import java.io.IOException;
 import java.io.Reader;
@@ -37,6 +36,7 @@ import org.apache.maven.doxia.parser.ParseException;
 import org.apache.maven.doxia.parser.Xhtml5BaseParser;
 import org.apache.maven.doxia.sink.Sink;
 import org.apache.maven.doxia.sink.SinkEventAttributeSet;
+import org.apache.maven.doxia.sink.SinkEventAttributes;
 import org.apache.maven.doxia.util.DoxiaStringUtils;
 import org.codehaus.plexus.util.xml.pull.XmlPullParser;
 import org.codehaus.plexus.util.xml.pull.XmlPullParserException;
@@ -76,8 +76,8 @@ public class Xhtml5Parser extends Xhtml5BaseParser implements Xhtml5Markup {
         } else if (parser.getName().equals(TITLE.toString())) {
             sink.title(attribs);
         } else if (parser.getName().equals(META.toString())) {
-            String name = parser.getAttributeValue(null, Attribute.NAME.toString());
-            String content = parser.getAttributeValue(null, Attribute.CONTENT.toString());
+            String name = parser.getAttributeValue(null, SinkEventAttributes.NAME);
+            String content = parser.getAttributeValue(null, SinkEventAttributes.CONTENT);
 
             if ("author".equals(name)) {
                 sink.author(null);
@@ -105,7 +105,7 @@ public class Xhtml5Parser extends Xhtml5BaseParser implements Xhtml5Markup {
         } else if (parser.getName().equals(BODY.toString())) {
             sink.body(attribs);
         } else if (parser.getName().equals(DIV.toString())) {
-            String divClass = parser.getAttributeValue(null, Attribute.CLASS.toString());
+            String divClass = parser.getAttributeValue(null, SinkEventAttributes.CLASS);
 
             if ("verbatim source".equals(divClass)) {
                 this.source = true;

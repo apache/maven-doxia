@@ -18,8 +18,6 @@
  */
 package org.apache.maven.doxia.parser;
 
-import javax.swing.text.html.HTML.Attribute;
-
 import java.io.Reader;
 import java.text.CharacterIterator;
 import java.text.StringCharacterIterator;
@@ -985,13 +983,13 @@ public class Xhtml5BaseParser extends AbstractXmlParser implements HtmlMarkup {
     }
 
     private void handleAStart(Sink sink, SinkEventAttributeSet attribs) {
-        String href = (String) attribs.getAttribute(Attribute.HREF.toString());
+        String href = (String) attribs.getAttribute(SinkEventAttributes.HREF);
 
         if (href != null) {
             int hashIndex = href.indexOf('#');
             if (hashIndex != -1
                     && !DoxiaUtils.isExternalLink(href)
-                    && !"external".equals(attribs.getAttribute(Attribute.REL.toString()))) {
+                    && !"external".equals(attribs.getAttribute(SinkEventAttributes.REL))) {
                 String hash = href.substring(hashIndex + 1);
 
                 if (!DoxiaUtils.isValidId(hash)) {
@@ -1003,11 +1001,11 @@ public class Xhtml5BaseParser extends AbstractXmlParser implements HtmlMarkup {
             sink.link(href, attribs);
             isLink = true;
         } else {
-            String id = (String) attribs.getAttribute(Attribute.ID.toString());
+            String id = (String) attribs.getAttribute(SinkEventAttributes.ID);
             if (id == null) {
                 // although the "name" attribute is obsolete in HTML5, it is still allowed
                 // (https://www.w3.org/TR/html5-diff/#obsolete-attributes)
-                id = (String) attribs.getAttribute(Attribute.NAME.toString());
+                id = (String) attribs.getAttribute(SinkEventAttributes.NAME);
             }
             if (id != null) {
                 sink.anchor(validAnchor(id), attribs);
@@ -1017,7 +1015,7 @@ public class Xhtml5BaseParser extends AbstractXmlParser implements HtmlMarkup {
     }
 
     private boolean handleDivStart(SinkEventAttributeSet attribs, Sink sink) {
-        String divClass = (String) attribs.getAttribute(Attribute.CLASS.toString());
+        String divClass = (String) attribs.getAttribute(SinkEventAttributes.CLASS);
 
         this.divStack.push(divClass);
 
@@ -1051,7 +1049,7 @@ public class Xhtml5BaseParser extends AbstractXmlParser implements HtmlMarkup {
     }
 
     private void handleImgStart(Sink sink, SinkEventAttributeSet attribs) {
-        String src = (String) attribs.getAttribute(Attribute.SRC.toString());
+        String src = (String) attribs.getAttribute(SinkEventAttributes.SRC);
 
         if (src != null) {
             sink.figureGraphics(src, attribs);
@@ -1077,7 +1075,7 @@ public class Xhtml5BaseParser extends AbstractXmlParser implements HtmlMarkup {
     private void handleOLStart(Sink sink, SinkEventAttributeSet attribs) {
         int numbering = Sink.NUMBERING_DECIMAL;
         // this will have to be generalized if we handle styles
-        String style = (String) attribs.getAttribute(Attribute.STYLE.toString());
+        String style = (String) attribs.getAttribute(SinkEventAttributes.STYLE);
 
         if (style != null) {
             switch (style) {
@@ -1143,7 +1141,7 @@ public class Xhtml5BaseParser extends AbstractXmlParser implements HtmlMarkup {
 
     private void handleTableStart(Sink sink, SinkEventAttributeSet attribs) {
         sink.table(attribs);
-        String givenTableClass = (String) attribs.getAttribute(Attribute.CLASS.toString());
+        String givenTableClass = (String) attribs.getAttribute(SinkEventAttributes.CLASS);
         boolean grid = false;
         if (givenTableClass != null
                 && BODYTABLEBORDER_CLASS_PATTERN.matcher(givenTableClass).matches()) {

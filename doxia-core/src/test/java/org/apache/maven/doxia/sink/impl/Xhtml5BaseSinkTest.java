@@ -19,7 +19,6 @@
 package org.apache.maven.doxia.sink.impl;
 
 import javax.swing.text.AttributeSet;
-import javax.swing.text.html.HTML.Attribute;
 
 import java.io.StringWriter;
 import java.io.Writer;
@@ -674,13 +673,13 @@ class Xhtml5BaseSinkTest {
         final SinkEventAttributes att = new SinkEventAttributeSet(SinkEventAttributes.ID, "id");
         checkVerbatimAttributes(att, "<pre id=\"id\"></pre>");
 
-        att.addAttribute(Attribute.CLASS, "class");
+        att.addAttribute(SinkEventAttributes.CLASS, "class");
         checkVerbatimAttributes(att, "<pre id=\"id\" class=\"class\"></pre>");
 
         att.addAttribute(SinkEventAttributes.DECORATION, "source");
         checkVerbatimAttributes(att, "<pre id=\"id\" class=\"class\"><code></code></pre>");
 
-        att.removeAttribute(Attribute.CLASS.toString());
+        att.removeAttribute(SinkEventAttributes.CLASS);
         checkVerbatimAttributes(att, "<pre id=\"id\"><code></code></pre>");
     }
 

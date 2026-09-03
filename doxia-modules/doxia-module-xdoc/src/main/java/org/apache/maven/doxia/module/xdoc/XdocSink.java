@@ -19,7 +19,6 @@
 package org.apache.maven.doxia.module.xdoc;
 
 import javax.swing.text.MutableAttributeSet;
-import javax.swing.text.html.HTML.Attribute;
 
 import java.io.Writer;
 
@@ -124,7 +123,7 @@ public class XdocSink extends Xhtml5BaseSink implements XdocMarkup {
         atts.addAttribute("xsi:schemaLocation", XDOC_NAMESPACE + " " + XDOC_SYSTEM_ID);
 
         if (languageId != null) {
-            atts.addAttribute(Attribute.LANG.toString(), languageId);
+            atts.addAttribute(SinkEventAttributes.LANG, languageId);
             atts.addAttribute("xml:lang", languageId);
         }
 
@@ -246,7 +245,7 @@ public class XdocSink extends Xhtml5BaseSink implements XdocMarkup {
                     + SinkUtils.getAttributeString(
                             SinkUtils.filterAttributes(attributes, SinkUtils.SINK_BASE_ATTRIBUTES))
                     + SPACE
-                    + Attribute.NAME
+                    + SinkEventAttributes.NAME
                     + EQUAL
                     + QUOTE);
         } else if (depth == SECTION_LEVEL_2) {
@@ -255,7 +254,7 @@ public class XdocSink extends Xhtml5BaseSink implements XdocMarkup {
                     + SinkUtils.getAttributeString(
                             SinkUtils.filterAttributes(attributes, SinkUtils.SINK_BASE_ATTRIBUTES))
                     + SPACE
-                    + Attribute.NAME
+                    + SinkEventAttributes.NAME
                     + EQUAL
                     + QUOTE);
         }
@@ -385,8 +384,8 @@ public class XdocSink extends Xhtml5BaseSink implements XdocMarkup {
 
         MutableAttributeSet att = new SinkEventAttributeSet();
 
-        if (!tableAttributes.isDefined(Attribute.BORDER.toString())) {
-            att.addAttribute(Attribute.BORDER, (grid ? "1" : "0"));
+        if (!tableAttributes.isDefined(SinkEventAttributes.BORDER)) {
+            att.addAttribute(SinkEventAttributes.BORDER, (grid ? "1" : "0"));
         }
 
         att.addAttributes(tableAttributes);
