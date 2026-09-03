@@ -25,6 +25,8 @@ import java.io.Reader;
 import java.io.StringWriter;
 import java.io.Writer;
 import java.util.Iterator;
+import java.util.LinkedHashMap;
+import java.util.Map;
 
 import org.apache.maven.doxia.parser.AbstractParser;
 import org.apache.maven.doxia.parser.AbstractParserTest;
@@ -73,6 +75,29 @@ class AptParserTest extends AbstractParserTest {
         String macro = parseFileToAptSink("test/macro");
 
         assertTrue(macro.contains("<modelVersion\\>4.0.0\\</modelVersion\\>"));
+    }
+
+    /**
+     * A macro parameter value may contain braces itself, for example an unresolved Velocity
+     * reference when the raw source of a {@code *.apt.vm} file is parsed. The macro block ends
+     * with the last brace on the line, not the first one.
+     */
+    @Test
+    void macroWithBracesInParameterValue() throws Exception {
+        Map<String, Object> parameters = new LinkedHashMap<>();
+
+        AbstractParser parser = createParser();
+        parser.setMacroExecutor((id, request, sink) -> {
+            assertEquals("snippet", id);
+            parameters.putAll(request.getParameters());
+        });
+
+        try (Reader reader = getTestReader("test/macro-braces-in-parameter")) {
+            parser.parse(reader, new SinkEventTestingSink());
+        }
+
+        assertEquals("superpom", parameters.get("id"));
+        assertEquals("${project.build.directory}/test-classes/pom-4.0.0.xml", parameters.get("file"));
     }
 
     @Test

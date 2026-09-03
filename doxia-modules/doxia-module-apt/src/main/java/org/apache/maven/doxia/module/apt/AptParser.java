@@ -2371,7 +2371,10 @@ public class AptParser extends AbstractTextParser implements AptMarkup {
             }
 
             final int start = text.indexOf('{');
-            final int end = text.indexOf('}');
+            // the macro block always ends with the closing brace, so look for the last one:
+            // parameter values may contain braces themselves (e.g. unresolved Velocity references
+            // such as ${project.build.directory} when the raw source of a *.apt.vm file is parsed)
+            final int end = text.lastIndexOf('}');
 
             String s = text.substring(start + 1, end);
 

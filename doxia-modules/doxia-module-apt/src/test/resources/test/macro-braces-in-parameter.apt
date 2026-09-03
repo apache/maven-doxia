@@ -1,0 +1,7 @@
+ -----
+ Braces in macro parameters
+ -----
+
+Braces in macro parameters
+
+%{snippet|id=superpom|file=${project.build.directory}/test-classes/pom-4.0.0.xml}
