@@ -20,6 +20,8 @@ package org.apache.maven.doxia.sink.impl;
 
 import javax.swing.text.html.HTML.Tag;
 
+import org.apache.maven.doxia.markup.HtmlMarkup;
+import org.apache.maven.doxia.markup.HtmlTag;
 import org.apache.maven.doxia.markup.Markup;
 import org.apache.maven.doxia.sink.SinkEventAttributeSet;
 import org.apache.maven.doxia.sink.SinkEventAttributes;
@@ -27,6 +29,7 @@ import org.junit.jupiter.api.Test;
 
 import static org.junit.jupiter.api.Assertions.assertEquals;
 import static org.junit.jupiter.api.Assertions.assertNotNull;
+import static org.junit.jupiter.api.Assertions.assertNull;
 import static org.junit.jupiter.api.Assertions.fail;
 
 /**
@@ -62,14 +65,14 @@ class AbstractXmlSinkTest {
         assertEquals(ns, instance.getNameSpace());
 
         try {
-            instance.writeStartTag(null);
+            instance.writeStartTag((HtmlTag) null);
             fail("null tag should fail!");
         } catch (NullPointerException e) {
             assertNotNull(e);
         }
 
         try {
-            instance.writeEndTag(null);
+            instance.writeEndTag((HtmlTag) null);
             fail("null tag should fail!");
         } catch (NullPointerException e) {
             assertNotNull(e);
@@ -96,6 +99,43 @@ class AbstractXmlSinkTest {
 
         instance.writeStartTag(t, att, true);
         assertEquals("<a style=\"bold\" />", instance.getText());
+    }
+
+    /**
+     * The HtmlTag overloads must write exactly what the deprecated Tag ones write.
+     */
+    @Test
+    void htmlTagOverloadsMatchTagOverloads() {
+        final Tag t = Tag.A;
+        final HtmlTag htmlTag = HtmlTag.valueOf("a");
+        final SinkEventAttributes att = new SinkEventAttributeSet(SinkEventAttributeSet.BOLD);
+        final XmlTestSink instance = new XmlTestSink();
+
+        instance.writeStartTag(t, att, true);
+        final String fromTag = instance.getText();
+
+        instance.writeStartTag(htmlTag, att, true);
+        assertEquals(fromTag, instance.getText());
+
+        instance.writeSimpleTag(htmlTag);
+        assertEquals("<a />", instance.getText());
+
+        instance.writeEndTag(htmlTag);
+        assertEquals("</a>", instance.getText());
+    }
+
+    /**
+     * A tag Doxia does not declare keeps the block value of the tag it was written with.
+     */
+    @Test
+    void unknownTagKeepsItsOwnBlockValue() {
+        final XmlTestSink instance = new XmlTestSink();
+
+        assertNull(HtmlTag.valueOf("dir"), "dir is expected to be unknown to Doxia");
+
+        instance.writeStartTag(HtmlMarkup.P);
+        instance.writeStartTag(Tag.DIR);
+        assertEquals("<p>" + Markup.EOL + "<dir>", instance.getText());
     }
 
     /**

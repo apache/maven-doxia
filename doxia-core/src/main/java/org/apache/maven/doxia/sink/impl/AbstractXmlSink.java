@@ -23,6 +23,7 @@ import javax.swing.text.html.HTML.Tag;
 
 import java.util.Objects;
 
+import org.apache.maven.doxia.markup.HtmlTag;
 import org.apache.maven.doxia.markup.XmlMarkup;
 
 /**
@@ -75,8 +76,10 @@ public abstract class AbstractXmlSink extends SinkAdapter implements XmlMarkup {
      * </pre>
      *
      * @param t a non null tag
-     * @see #writeStartTag(javax.swing.text.html.HTML.Tag, javax.swing.text.MutableAttributeSet)
+     * @see #writeStartTag(HtmlTag, javax.swing.text.MutableAttributeSet)
+     * @deprecated use {@link #writeStartTag(HtmlTag)}; the {@code javax.swing} tag type goes in 2.3.0.
      */
+    @Deprecated
     protected void writeStartTag(Tag t) {
         writeStartTag(t, null);
     }
@@ -89,8 +92,11 @@ public abstract class AbstractXmlSink extends SinkAdapter implements XmlMarkup {
      *
      * @param t a non null tag.
      * @param att a set of attributes. May be null.
-     * @see #writeStartTag(javax.swing.text.html.HTML.Tag, javax.swing.text.MutableAttributeSet, boolean)
+     * @see #writeStartTag(HtmlTag, javax.swing.text.MutableAttributeSet, boolean)
+     * @deprecated use {@link #writeStartTag(HtmlTag, javax.swing.text.MutableAttributeSet)}; the
+     *      {@code javax.swing} tag type goes in 2.3.0.
      */
+    @Deprecated
     protected void writeStartTag(Tag t, MutableAttributeSet att) {
         writeStartTag(t, att, false);
     }
@@ -104,8 +110,55 @@ public abstract class AbstractXmlSink extends SinkAdapter implements XmlMarkup {
      * @param t a non null tag.
      * @param att a set of attributes. May be null.
      * @param isEmptyElement boolean to write as tag for an <a href="https://www.w3.org/TR/xml/#d0e2480">empty element</a>.
+     * @deprecated use {@link #writeStartTag(HtmlTag, javax.swing.text.MutableAttributeSet, boolean)}; the
+     *      {@code javax.swing} tag type goes in 2.3.0.
      */
+    @Deprecated
     protected void writeStartTag(Tag t, MutableAttributeSet att, boolean isEmptyElement) {
+        writeStartTag(toHtmlTag(t), att, isEmptyElement);
+    }
+
+    /**
+     * Starts a Tag. For instance:
+     * <pre>
+     * &lt;tag&gt;
+     * </pre>
+     *
+     * @param t a non null tag
+     * @see #writeStartTag(HtmlTag, javax.swing.text.MutableAttributeSet)
+     * @since 2.2.0
+     */
+    protected void writeStartTag(HtmlTag t) {
+        writeStartTag(t, null);
+    }
+
+    /**
+     * Starts a Tag with attributes. For instance:
+     * <pre>
+     * &lt;tag attName="attValue"&gt;
+     * </pre>
+     *
+     * @param t a non null tag.
+     * @param att a set of attributes. May be null.
+     * @see #writeStartTag(HtmlTag, javax.swing.text.MutableAttributeSet, boolean)
+     * @since 2.2.0
+     */
+    protected void writeStartTag(HtmlTag t, MutableAttributeSet att) {
+        writeStartTag(t, att, false);
+    }
+
+    /**
+     * Starts a Tag with attributes. For instance:
+     * <pre>
+     * &lt;tag attName="attValue"&gt;
+     * </pre>
+     *
+     * @param t a non null tag.
+     * @param att a set of attributes. May be null.
+     * @param isEmptyElement boolean to write as tag for an <a href="https://www.w3.org/TR/xml/#d0e2480">empty element</a>.
+     * @since 2.2.0
+     */
+    protected void writeStartTag(HtmlTag t, MutableAttributeSet att, boolean isEmptyElement) {
         Objects.requireNonNull(t, "t cannot be null");
 
         StringBuilder sb = new StringBuilder();
@@ -147,8 +200,20 @@ public abstract class AbstractXmlSink extends SinkAdapter implements XmlMarkup {
      * Ends a Tag without writing an EOL. For instance: <pre>&lt;/tag&gt;</pre>.
      *
      * @param t a tag.
+     * @deprecated use {@link #writeEndTag(HtmlTag)}; the {@code javax.swing} tag type goes in 2.3.0.
      */
+    @Deprecated
     protected void writeEndTag(Tag t) {
+        writeEndTag(toHtmlTag(t));
+    }
+
+    /**
+     * Ends a Tag without writing an EOL. For instance: <pre>&lt;/tag&gt;</pre>.
+     *
+     * @param t a tag.
+     * @since 2.2.0
+     */
+    protected void writeEndTag(HtmlTag t) {
         Objects.requireNonNull(t, "t cannot be null");
 
         StringBuilder sb = new StringBuilder();
@@ -172,8 +237,10 @@ public abstract class AbstractXmlSink extends SinkAdapter implements XmlMarkup {
      * </pre>
      *
      * @param t a non null tag
-     * @see #writeSimpleTag(javax.swing.text.html.HTML.Tag, javax.swing.text.MutableAttributeSet)
+     * @see #writeSimpleTag(HtmlTag, javax.swing.text.MutableAttributeSet)
+     * @deprecated use {@link #writeSimpleTag(HtmlTag)}; the {@code javax.swing} tag type goes in 2.3.0.
      */
+    @Deprecated
     protected void writeSimpleTag(Tag t) {
         writeSimpleTag(t, null);
     }
@@ -186,10 +253,54 @@ public abstract class AbstractXmlSink extends SinkAdapter implements XmlMarkup {
      *
      * @param t a non null tag.
      * @param att a set of attributes. May be null.
-     * @see #writeStartTag(javax.swing.text.html.HTML.Tag, javax.swing.text.MutableAttributeSet, boolean)
+     * @see #writeStartTag(HtmlTag, javax.swing.text.MutableAttributeSet, boolean)
+     * @deprecated use {@link #writeSimpleTag(HtmlTag, javax.swing.text.MutableAttributeSet)}; the
+     *      {@code javax.swing} tag type goes in 2.3.0.
      */
+    @Deprecated
     protected void writeSimpleTag(Tag t, MutableAttributeSet att) {
         writeStartTag(t, att, true);
+    }
+
+    /**
+     * Starts a simple Tag. For instance:
+     * <pre>
+     * &lt;tag /&gt;
+     * </pre>
+     *
+     * @param t a non null tag
+     * @see #writeSimpleTag(HtmlTag, javax.swing.text.MutableAttributeSet)
+     * @since 2.2.0
+     */
+    protected void writeSimpleTag(HtmlTag t) {
+        writeSimpleTag(t, null);
+    }
+
+    /**
+     * Starts a simple Tag with attributes. For instance:
+     * <pre>
+     * &lt;tag attName="attValue" /&gt;
+     * </pre>
+     *
+     * @param t a non null tag.
+     * @param att a set of attributes. May be null.
+     * @see #writeStartTag(HtmlTag, javax.swing.text.MutableAttributeSet, boolean)
+     * @since 2.2.0
+     */
+    protected void writeSimpleTag(HtmlTag t, MutableAttributeSet att) {
+        writeStartTag(t, att, true);
+    }
+
+    /**
+     * Returns the Doxia tag of the same name, falling back to a tag that answers exactly as the
+     * given one does, so that a tag Doxia does not declare keeps its own block value.
+     */
+    private static HtmlTag toHtmlTag(Tag t) {
+        Objects.requireNonNull(t, "t cannot be null");
+
+        HtmlTag known = HtmlTag.valueOf(t.toString());
+
+        return known != null ? known : new HtmlTag(t.toString(), t.isBlock());
     }
 
     /**
