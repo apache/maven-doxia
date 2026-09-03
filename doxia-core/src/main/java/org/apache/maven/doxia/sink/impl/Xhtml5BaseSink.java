@@ -1666,12 +1666,8 @@ public class Xhtml5BaseSink extends AbstractXmlSink implements HtmlMarkup {
     private SinkEventAttributes escapeAttributeValues(SinkEventAttributes attributes) {
         SinkEventAttributeSet set = new SinkEventAttributeSet(attributes.getAttributeCount());
 
-        Enumeration<?> names = attributes.getAttributeNames();
-
-        while (names.hasMoreElements()) {
-            Object name = names.nextElement();
-
-            set.addAttribute(name, escapeHTML(attributes.getAttribute(name).toString()));
+        for (Map.Entry<String, Object> attribute : attributes.entrySet()) {
+            set.addAttribute(attribute.getKey(), escapeHTML(attribute.getValue().toString()));
         }
 
         return set;

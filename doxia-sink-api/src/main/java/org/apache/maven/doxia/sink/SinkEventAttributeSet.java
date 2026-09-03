@@ -375,13 +375,12 @@ public class SinkEventAttributeSet implements SinkEventAttributes, Cloneable {
     @Override
     public String toString() {
         StringBuilder s = new StringBuilder();
-        Enumeration<String> names = getAttributeNames();
 
-        while (names.hasMoreElements()) {
-            String key = names.nextElement();
-            String value = getAttribute(key).toString();
-
-            s.append(' ').append(key).append('=').append(value);
+        for (Map.Entry<String, Object> attribute : entrySet()) {
+            s.append(' ')
+                    .append(attribute.getKey())
+                    .append('=')
+                    .append(attribute.getValue().toString());
         }
 
         return s.toString();
