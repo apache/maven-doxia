@@ -204,7 +204,7 @@ public class Xhtml5BaseParser extends AbstractXmlParser implements HtmlMarkup {
      * @param attribs the attributes of the element, may be null.
      * @param sink the sink to receive the events.
      * @return True if the event has been handled by this method, i.e. the tag was recognized, false otherwise.
-     * @deprecated The {@code attribs} parameter will become {@link SinkEventAttributes} in the next major version.
+     * @deprecated The {@code attribs} parameter will become {@link SinkEventAttributes} in 2.3.0.
      *      An override of this signature will stop being called once the parameter type changes, with no error
      *      at build or run time, so move the override to the new signature when it lands. See <a href="https://github.com/apache/maven-doxia/issues/1074">issue 1074</a>.
      */
@@ -512,7 +512,7 @@ public class Xhtml5BaseParser extends AbstractXmlParser implements HtmlMarkup {
      * @param attribs the attributes of the element, may be null.
      * @param sink the sink to receive the events.
      * @return True if the event has been handled by this method, false otherwise.
-     * @deprecated The {@code attribs} parameter will become {@link SinkEventAttributes} in the next major version.
+     * @deprecated The {@code attribs} parameter will become {@link SinkEventAttributes} in 2.3.0.
      *      An override of this signature will stop being called once the parameter type changes, with no error
      *      at build or run time, so move the override to the new signature when it lands. See <a href="https://github.com/apache/maven-doxia/issues/1074">issue 1074</a>.
      */

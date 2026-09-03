@@ -174,8 +174,8 @@ public abstract class AbstractXmlParser extends AbstractParser implements XmlMar
      * @param parser A parser, not null.
      * @return a SinkEventAttributeSet or null if the current parser event is not a start tag.
      * @since 1.1
-     * @deprecated The return type will become {@link org.apache.maven.doxia.sink.SinkEventAttributes} in the next
-     *      major version. Callers are unaffected if they declare the result as that interface; every use in Doxia
+     * @deprecated The return type will become {@link org.apache.maven.doxia.sink.SinkEventAttributes} in 2.3.0.
+     *      Callers are unaffected if they declare the result as that interface; every use in Doxia
      *      itself already needs nothing more than the interface. An override of this method will stop being called
      *      once the return type changes, with no error at build or run time. See <a href="https://github.com/apache/maven-doxia/issues/1074">issue 1074</a>.
      */
@@ -405,7 +405,7 @@ public abstract class AbstractXmlParser extends AbstractParser implements XmlMar
      *      of HtmlMarkup.TAG_TYPE_SIMPLE, HtmlMarkup.TAG_TYPE_START, HtmlMarkup.TAG_TYPE_END or
      *      HtmlMarkup.ENTITY_TYPE.
      * @deprecated The {@code attribs} parameter will become
-     *      {@link org.apache.maven.doxia.sink.SinkEventAttributes} in the next major version.
+     *      {@link org.apache.maven.doxia.sink.SinkEventAttributes} in 2.3.0.
      *      An override of this signature will stop being called once the parameter type changes, with no error
      *      at build or run time, so move the override to the new signature when it lands. See <a href="https://github.com/apache/maven-doxia/issues/1074">issue 1074</a>.
      */
