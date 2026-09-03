@@ -106,6 +106,7 @@ public class XdocParser extends Xhtml1BaseParser implements XdocMarkup {
         }
     }
 
+    @SuppressWarnings("deprecation")
     protected void handleStartTag(XmlPullParser parser, Sink sink)
             throws XmlPullParserException, MacroExecutionException {
         isEmptyElement = parser.isEmptyElementTag();

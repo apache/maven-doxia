@@ -148,6 +148,7 @@ public class Xhtml1BaseParser extends Xhtml5BaseParser {
      * Translates obsolete XHTML 1.0 attributes/elements to valid XHTML5 ones before calling the underlying {@link Xhtml5BaseParser}.
      */
     @Override
+    @SuppressWarnings("deprecation")
     protected boolean baseStartTag(XmlPullParser parser, Sink sink) {
         SinkEventAttributeSet attribs = getAttributesFromParser(parser);
         String elementName = parser.getName();
@@ -173,6 +174,7 @@ public class Xhtml1BaseParser extends Xhtml5BaseParser {
     }
 
     @Override
+    @SuppressWarnings("deprecation")
     protected boolean baseEndTag(XmlPullParser parser, Sink sink) {
         SinkEventAttributeSet attribs = getAttributesFromParser(parser);
         String elementName = parser.getName();
