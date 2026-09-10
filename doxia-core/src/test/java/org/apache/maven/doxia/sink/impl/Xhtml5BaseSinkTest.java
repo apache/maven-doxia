@@ -916,9 +916,7 @@ class Xhtml5BaseSinkTest {
             sink.link_();
         }
 
-        assertEquals(
-                "<a style=\"font-weight: bold\" class=\"externalLink\" href=\"https://www.apache.org\"></a>",
-                writer.toString());
+        assertEquals("<a style=\"font-weight: bold\" href=\"https://www.apache.org\"></a>", writer.toString());
     }
 
     /**
@@ -937,7 +935,7 @@ class Xhtml5BaseSinkTest {
         }
 
         assertEquals(
-                "<a style=\"font-weight: bold\" class=\"externalLink cs1 cs2\" href=\"https://www.apache.org\"></a>",
+                "<a style=\"font-weight: bold\" class=\"cs1 cs2\" href=\"https://www.apache.org\"></a>",
                 writer.toString());
     }
 
