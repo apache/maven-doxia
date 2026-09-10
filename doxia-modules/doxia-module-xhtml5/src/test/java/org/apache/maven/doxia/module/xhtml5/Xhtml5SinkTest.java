@@ -71,7 +71,7 @@ public class Xhtml5SinkTest extends AbstractSinkTest {
         }
 
         String actual = writer.toString();
-        assertTrue(actual.contains("<a class=\"externalLink\" href=\"http:/www.xdoc.com\"></a>"));
+        assertTrue(actual.contains("<a href=\"http:/www.xdoc.com\"></a>"));
         assertTrue(actual.contains("<a href=\"./index.html#anchor\"></a>"));
         assertTrue(actual.contains("<a href=\"../index.html#anchor\"></a>"));
         assertTrue(actual.contains("<a href=\"index.html\"></a>"));

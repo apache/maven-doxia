@@ -1214,8 +1214,6 @@ public class Xhtml5BaseSink extends AbstractXmlSink implements HtmlMarkup {
     }
 
     /**
-     * The default style class for external link is <code>externalLink</code>.
-     *
      * {@inheritDoc}
      * @see javax.swing.text.html.HTML.Tag#A
      **/
@@ -1231,16 +1229,6 @@ public class Xhtml5BaseSink extends AbstractXmlSink implements HtmlMarkup {
 
         if (atts == null) {
             atts = new SinkEventAttributeSet();
-        }
-
-        if (DoxiaUtils.isExternalLink(name)) {
-            String linkClass = "externalLink";
-            if (atts.isDefined(SinkEventAttributes.CLASS.toString())) {
-                String givenLinkClass = (String) atts.getAttribute(SinkEventAttributes.CLASS.toString());
-                linkClass += " " + givenLinkClass;
-            }
-
-            atts.addAttribute(SinkEventAttributes.CLASS, linkClass);
         }
 
         atts.addAttribute(SinkEventAttributes.HREF, HtmlTools.escapeHTML(name));
