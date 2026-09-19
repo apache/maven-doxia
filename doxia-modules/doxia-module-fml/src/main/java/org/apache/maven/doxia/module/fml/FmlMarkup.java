@@ -30,7 +30,11 @@ import org.apache.maven.doxia.markup.HtmlMarkup;
  *
  * @author ltheussl
  * @since 1.0
+ * @deprecated FML is deprecated since 2.2.0 and scheduled for removal in the next major version.
+ *     Convert FAQ pages to Markdown or XDoc, for example with doxia-converter; see
+ *     https://github.com/apache/maven-doxia/issues/1101.
  */
+@Deprecated
 @SuppressWarnings("checkstyle:interfaceistype")
 public interface FmlMarkup extends HtmlMarkup {
     /** FML namespace: "http://maven.apache.org/FML/1.0.1" */

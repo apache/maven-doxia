@@ -27,7 +27,11 @@ import org.apache.maven.doxia.parser.module.AbstractParserModule;
  * <p>FmlParserModule class.</p>
  *
  * @since 1.6
+ * @deprecated FML is deprecated since 2.2.0 and scheduled for removal in the next major version.
+ *     Convert FAQ pages to Markdown or XDoc, for example with doxia-converter; see
+ *     https://github.com/apache/maven-doxia/issues/1101.
  */
+@Deprecated
 @Singleton
 @Named("fml")
 public class FmlParserModule extends AbstractParserModule {
