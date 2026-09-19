@@ -56,7 +56,11 @@ import org.slf4j.LoggerFactory;
  * @author <a href="mailto:evenisse@codehaus.org">Emmanuel Venisse</a>
  * @author ltheussl
  * @since 1.0
+ * @deprecated FML is deprecated since 2.2.0 and scheduled for removal in the next major version.
+ *     Convert FAQ pages to Markdown or XDoc, for example with doxia-converter; see
+ *     https://github.com/apache/maven-doxia/issues/1101.
  */
+@Deprecated
 @Singleton
 @Named("fml")
 public class FmlParser extends AbstractXmlParser implements FmlMarkup {
@@ -84,6 +88,9 @@ public class FmlParser extends AbstractXmlParser implements FmlMarkup {
     private Map<String, Object> macroParameters = new LinkedHashMap<>();
 
     public void parse(Reader source, Sink sink, String reference) throws ParseException {
+        LOGGER.warn(
+                "FML is deprecated and will be removed in the next major Doxia version; convert {} to Markdown or XDoc",
+                reference == null ? "this document" : "'" + reference + "'");
         this.faqs = null;
         this.sourceContent = null;
         init();

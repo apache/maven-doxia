@@ -32,7 +32,11 @@ import org.slf4j.LoggerFactory;
  *
  * @author ltheussl
  * @since 1.0
+ * @deprecated FML is deprecated since 2.2.0 and scheduled for removal in the next major version.
+ *     Convert FAQ pages to Markdown or XDoc, for example with doxia-converter; see
+ *     https://github.com/apache/maven-doxia/issues/1101.
  */
+@Deprecated
 public class FmlContentParser extends Xhtml5BaseParser implements FmlMarkup {
     private static final Logger LOGGER = LoggerFactory.getLogger(FmlContentParser.class);
 
