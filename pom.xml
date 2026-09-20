@@ -331,24 +331,6 @@ under the License.
         <plugins>
           <plugin>
             <groupId>org.apache.maven.plugins</groupId>
-            <artifactId>maven-jxr-plugin</artifactId>
-            <reportSets>
-              <reportSet>
-                <id>non-aggregate</id>
-                <reports>
-                  <report>jxr</report>
-                </reports>
-              </reportSet>
-              <reportSet>
-                <id>aggregate</id>
-                <reports>
-                  <report>aggregate</report>
-                </reports>
-              </reportSet>
-            </reportSets>
-          </plugin>
-          <plugin>
-            <groupId>org.apache.maven.plugins</groupId>
             <artifactId>maven-javadoc-plugin</artifactId>
             <configuration>
               <doclint>none</doclint>
