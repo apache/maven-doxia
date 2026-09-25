@@ -85,7 +85,7 @@ public class Xhtml5Parser extends Xhtml5BaseParser implements Xhtml5Markup {
                 sink.text(content);
 
                 sink.author_();
-            } else if ("date".equals(name)) {
+            } else if ("date".equals(name) || "dcterms.date".equals(name)) {
                 sink.date(null);
 
                 sink.text(content);
