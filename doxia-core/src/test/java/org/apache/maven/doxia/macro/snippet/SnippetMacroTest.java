@@ -26,6 +26,7 @@ import java.util.Map;
 import org.apache.maven.doxia.macro.MacroExecutionException;
 import org.apache.maven.doxia.macro.MacroRequest;
 import org.apache.maven.doxia.parser.Xhtml5BaseParser;
+import org.apache.maven.doxia.sink.SinkEventAttributeSet;
 import org.apache.maven.doxia.sink.impl.SinkEventElement;
 import org.apache.maven.doxia.sink.impl.SinkEventTestingSink;
 import org.codehaus.plexus.testing.PlexusTest;
@@ -147,6 +148,21 @@ class SnippetMacroTest {
         assertEquals("text", event.getName());
         String snippet = (String) event.getArgs()[0];
         assertTrue(snippet.contains("Error during retrieving content"));
+    }
+
+    @Test
+    void classParameter() throws Exception {
+        Map<String, Object> macroParameters = new HashMap<>();
+        macroParameters.put("file", "src/test/resources/macro/snippet/testSnippet.txt");
+        macroParameters.put("class", "language-java");
+
+        SinkEventTestingSink sink = executeSnippetMacro(macroParameters);
+
+        SinkEventElement event = sink.getEventList().get(0);
+        assertEquals("verbatim", event.getName());
+        SinkEventAttributeSet attributes = (SinkEventAttributeSet) event.getArgs()[0];
+        assertEquals("source", attributes.getAttribute("decoration"));
+        assertEquals("language-java", attributes.getAttribute("class"));
     }
 
     private SinkEventTestingSink executeSnippetMacro(Map<String, Object> macroParameters)

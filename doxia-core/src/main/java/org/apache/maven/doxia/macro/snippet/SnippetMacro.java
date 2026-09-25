@@ -33,6 +33,7 @@ import org.apache.maven.doxia.macro.MacroExecutionException;
 import org.apache.maven.doxia.macro.MacroRequest;
 import org.apache.maven.doxia.sink.Sink;
 import org.apache.maven.doxia.sink.SinkEventAttributeSet;
+import org.apache.maven.doxia.sink.SinkEventAttributes;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
@@ -106,6 +107,8 @@ public class SnippetMacro extends AbstractMacro {
             source = Boolean.valueOf(sourceParam);
         }
 
+        String classParam = (String) request.getParameter("class");
+
         String encoding = (String) request.getParameter("encoding");
 
         URL url;
@@ -141,7 +144,14 @@ public class SnippetMacro extends AbstractMacro {
         }
 
         if (verbatim) {
-            sink.verbatim(source ? SinkEventAttributeSet.SOURCE : null);
+            SinkEventAttributeSet attributes = new SinkEventAttributeSet();
+            if (source) {
+                attributes.addAttribute(SinkEventAttributes.DECORATION, "source");
+            }
+            if (classParam != null && !classParam.isEmpty()) {
+                attributes.addAttribute(SinkEventAttributes.CLASS, classParam);
+            }
+            sink.verbatim(attributes.isEmpty() ? null : attributes);
 
             sink.text(snippet.toString());
 
