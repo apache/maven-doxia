@@ -89,7 +89,9 @@ class Xhtml5ParserTest extends AbstractParserTest {
     @Test
     void headEventsList() throws Exception {
         String text = "<head><title>Title</title><meta name=\"author\" content=\"Author\" />"
-                + "<meta name=\"date\" content=\"Date\" /><meta name=\"security\" content=\"low\"/></head>";
+                + "<meta name=\"dcterms.date\" content=\"Date\" />"
+                + "<meta name=\"date\" content=\"Legacy Date\" />"
+                + "<meta name=\"security\" content=\"low\"/></head>";
 
         SinkEventTestingSink sink = new SinkEventTestingSink();
 
@@ -104,6 +106,9 @@ class Xhtml5ParserTest extends AbstractParserTest {
         assertEquals("author", it.next().getName());
         assertEquals("text", it.next().getName());
         assertEquals("author_", it.next().getName());
+        assertEquals("date", it.next().getName());
+        assertEquals("text", it.next().getName());
+        assertEquals("date_", it.next().getName());
         assertEquals("date", it.next().getName());
         assertEquals("text", it.next().getName());
         assertEquals("date_", it.next().getName());
