@@ -188,6 +188,23 @@ under the License.
     <pluginManagement>
       <plugins>
         <plugin>
+          <groupId>org.apache.rat</groupId>
+          <artifactId>apache-rat-plugin</artifactId>
+          <configuration>
+            <inputExcludes combine.children="append">
+
+              <exclude>src/main/resources/xml.xsd</exclude>
+              <exclude>src/test/resources/**/*.apt</exclude>
+              <exclude>src/test/resources/**/*.apt.vm</exclude>
+              <exclude>src/test/resources/**/*.md</exclude>
+              <exclude>src/test/resources/**/*.html</exclude>
+              <exclude>src/it/**/site/**/*.md</exclude>
+              <exclude>src/it/**/site/**/*.markdown</exclude>
+
+            </inputExcludes>
+          </configuration>
+        </plugin>
+        <plugin>
           <groupId>org.apache.maven.plugins</groupId>
           <artifactId>maven-site-plugin</artifactId>
           <configuration>
@@ -201,21 +218,7 @@ under the License.
             <checkoutDirectory>${maven.site.cache}/doxia/${maven.site.path}</checkoutDirectory>
           </configuration>
         </plugin>
-        <plugin>
-          <groupId>org.apache.rat</groupId>
-          <artifactId>apache-rat-plugin</artifactId>
-          <configuration>
-            <excludes combine.children="append">
-              <exclude>src/main/resources/xml.xsd</exclude>
-              <exclude>src/test/resources/**/*.apt</exclude>
-              <exclude>src/test/resources/**/*.apt.vm</exclude>
-              <exclude>src/test/resources/**/*.md</exclude>
-              <exclude>src/test/resources/**/*.html</exclude>
-              <exclude>src/it/**/site/**/*.md</exclude>
-              <exclude>src/it/**/site/**/*.markdown</exclude>
-            </excludes>
-          </configuration>
-        </plugin>
+
         <plugin>
           <groupId>com.github.siom79.japicmp</groupId>
           <artifactId>japicmp-maven-plugin</artifactId>
@@ -257,6 +260,7 @@ under the License.
   </build>
 
   <profiles>
+
     <profile>
       <!-- AbstractXmlParser.CachedFileEntityResolver downloads DTD/XSD files in ${java.io.tmpdir} -->
       <id>remove-temp</id>
