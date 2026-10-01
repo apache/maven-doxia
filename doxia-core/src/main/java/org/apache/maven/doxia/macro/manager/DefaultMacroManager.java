@@ -23,8 +23,10 @@ import javax.inject.Named;
 import javax.inject.Singleton;
 
 import java.util.Map;
+import java.util.Objects;
 
 import org.apache.maven.doxia.macro.Macro;
+import org.apache.maven.doxia.util.ServiceLoaderSupport;
 
 /**
  * Default implementation of <code>MacroManager</code>
@@ -38,6 +40,24 @@ public class DefaultMacroManager implements MacroManager {
     @SuppressWarnings("MismatchedQueryAndUpdateOfCollection")
     @Inject
     private Map<String, Macro> macros;
+
+    /**
+     * Creates a manager holding every {@link Macro} listed in
+     * {@code META-INF/services/org.apache.maven.doxia.macro.Macro} of the given class loader, without a
+     * dependency injection container. Each macro is registered under its {@code javax.inject.Named} value,
+     * the same id the Sisu-based manager uses, and one instance is shared by all lookups, like a Sisu singleton.
+     * A macro that cannot be loaded is skipped with a warning.
+     *
+     * @param classLoader the class loader to look macros up in, not {@code null}
+     * @return a new manager
+     * @throws IllegalStateException if a macro has no {@code @Named} value
+     * @since 2.2.0
+     */
+    public static DefaultMacroManager fromServiceLoader(ClassLoader classLoader) {
+        DefaultMacroManager manager = new DefaultMacroManager();
+        manager.macros = ServiceLoaderSupport.loadNamed(Macro.class, Objects.requireNonNull(classLoader));
+        return manager;
+    }
 
     public Macro getMacro(String id) throws MacroNotFoundException {
         Macro macro = macros.get(id);

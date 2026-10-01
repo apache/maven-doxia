@@ -114,10 +114,11 @@ public class MarkdownParser extends AbstractTextParser implements TextMarkup {
 
     /**
      * The parser of the HTML produced by Flexmark, that we will
-     * use to convert this HTML to Sink events
+     * use to convert this HTML to Sink events. Sisu replaces the default through field injection; the default
+     * lets an instance created without a container (for example through {@link java.util.ServiceLoader}) work.
      */
     @Inject
-    private MarkdownHtmlParser parser;
+    private MarkdownHtmlParser parser = new MarkdownHtmlParser();
 
     /**
      * Flexmark's Markdown parser (one static instance fits all)

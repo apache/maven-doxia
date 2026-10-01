@@ -275,6 +275,17 @@ public abstract class AbstractParser implements Parser, MacroExecutor {
     }
 
     /**
+     * Sets the {@link MacroManager} for a parser that is not created by a dependency injection container,
+     * for example one loaded through {@link java.util.ServiceLoader}. Sisu sets it through field injection.
+     *
+     * @param macroManager the macro manager to use
+     * @since 2.2.0
+     */
+    public void setMacroManager(MacroManager macroManager) {
+        this.macroManager = macroManager;
+    }
+
+    /**
      * Initialize the parser. This is called first by
      * {@link #parse(java.io.Reader, org.apache.maven.doxia.sink.Sink)} and can be used
      * to set the parser into a clear state so it can be re-used.

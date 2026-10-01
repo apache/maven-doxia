@@ -25,6 +25,9 @@ import javax.inject.Singleton;
 import java.util.Collection;
 import java.util.LinkedHashMap;
 import java.util.Map;
+import java.util.Objects;
+
+import org.apache.maven.doxia.util.ServiceLoaderSupport;
 
 /**
  * Simple implementation of the ParserModuleManager interface.
@@ -39,6 +42,24 @@ public class DefaultParserModuleManager implements ParserModuleManager {
     private Map<String, ParserModule> parserModules;
 
     private Collection<ParserModule> parserModulesValues;
+
+    /**
+     * Creates a manager holding every {@link ParserModule} listed in
+     * {@code META-INF/services/org.apache.maven.doxia.parser.module.ParserModule} of the given class loader,
+     * without a dependency injection container. Each module is registered under its {@code javax.inject.Named}
+     * value, the same key the Sisu-based manager uses, and one instance is shared by all lookups, like a Sisu
+     * singleton. A module that cannot be loaded is skipped with a warning.
+     *
+     * @param classLoader the class loader to look modules up in, not {@code null}
+     * @return a new manager
+     * @throws IllegalStateException if a module has no {@code @Named} value
+     * @since 2.2.0
+     */
+    public static DefaultParserModuleManager fromServiceLoader(ClassLoader classLoader) {
+        DefaultParserModuleManager manager = new DefaultParserModuleManager();
+        manager.parserModules = ServiceLoaderSupport.loadNamed(ParserModule.class, Objects.requireNonNull(classLoader));
+        return manager;
+    }
 
     /**
      * {@inheritDoc}
