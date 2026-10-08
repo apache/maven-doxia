@@ -24,3 +24,42 @@ notifications:
   commits: commits@maven.apache.org
   issues: issues@maven.apache.org
   pullrequests: issues@maven.apache.org
+
+# https://releases.apache.org/projects/maven-doxia
+project:
+  metadata:
+    key: maven-doxia
+    committee: maven
+    name: Apache Maven Doxia
+    description: 'Doxia is a content generation framework which aims to provide its
+      users with powerful techniques for generating static and dynamic content: Doxia
+      can be used in web-based publishing context to generate static sites, in addition
+      to being incorporated into dynamic content generation systems like blogs, wikis
+      and content management systems.'
+    short_description: Doxia is a content generation framework, which supports many
+      markup languages.
+    homepage: https://maven.apache.org/doxia/doxia/
+    download_page: https://maven.apache.org/doxia/doxia/download.cgi
+    bug_database: https://maven.apache.org/doxia/doxia/issue-management.html
+    mailing_lists: https://maven.apache.org/doxia/doxia/mailing-lists.html
+    repositories:
+      - https://github.com/apache/maven-doxia
+    categories:
+      - build-management
+    programming_languages:
+      - Java
+  policy:
+    announce_release_template_url: https://maven.apache.org/atr/templates/announce_release_template.txt
+    start_vote_template_url: https://maven.apache.org/atr/templates/start_vote_template.txt
+    finish_vote_template_url: https://maven.apache.org/atr/templates/finish_vote_template.txt
+    github_repository_name: maven-doxia
+    download_path_suffix: doxia
+    vote_recipients:
+      to: dev@maven.apache.org
+    announce_recipients:
+      to: announce@maven.apache.org
+      cc:
+        - dev@maven.apache.org
+        - users@maven.apache.org
+  features:
+    atr_sync: true
