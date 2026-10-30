@@ -186,7 +186,7 @@ public class Xhtml5Sink extends Xhtml5BaseSink implements Xhtml5Markup {
     public void date_() {
         if (getTextBuffer().length() > 0) {
             MutableAttributeSet att = new SinkEventAttributeSet();
-            att.addAttribute(SinkEventAttributes.NAME, "date");
+            att.addAttribute(SinkEventAttributes.NAME, "dcterms.date");
             att.addAttribute(SinkEventAttributes.CONTENT, getTextBuffer().toString());
 
             writeSimpleTag(META, att);
