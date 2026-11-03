@@ -143,15 +143,19 @@ public class SnippetMacro extends AbstractMacro {
             throw new MacroExecutionException("Error reading snippet", e);
         }
 
-        if (verbatim) {
-            SinkEventAttributeSet attributes = new SinkEventAttributeSet();
-            if (source) {
-                attributes.addAttributes(SinkEventAttributeSet.SOURCE);
-            }
-            if (cssClass != null) {
-                attributes.addAttribute(SinkEventAttributes.CLASS, cssClass);
-            }
-            sink.verbatim(attributes.getAttributeCount() > 0 ? attributes : null);
+        if (verbatim && cssClass != null) {
+            // the class goes on a nested code element, as for a Markdown fenced code block: highlight.js reads it
+            // only there, Prism there or on the pre element
+            sink.verbatim(null);
+            sink.inline(new SinkEventAttributeSet(
+                    SinkEventAttributes.CLASS, cssClass, SinkEventAttributes.SEMANTICS, "code"));
+
+            sink.text(snippet.toString());
+
+            sink.inline_();
+            sink.verbatim_();
+        } else if (verbatim) {
+            sink.verbatim(source ? SinkEventAttributeSet.SOURCE : null);
 
             sink.text(snippet.toString());
 

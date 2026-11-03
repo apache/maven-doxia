@@ -19,6 +19,7 @@
 package org.apache.maven.doxia.macro.snippet;
 
 import java.io.File;
+import java.io.StringWriter;
 import java.util.HashMap;
 import java.util.Iterator;
 import java.util.Map;
@@ -26,15 +27,18 @@ import java.util.Map;
 import org.apache.maven.doxia.macro.MacroExecutionException;
 import org.apache.maven.doxia.macro.MacroRequest;
 import org.apache.maven.doxia.parser.Xhtml5BaseParser;
+import org.apache.maven.doxia.sink.Sink;
 import org.apache.maven.doxia.sink.SinkEventAttributes;
 import org.apache.maven.doxia.sink.impl.SinkEventElement;
 import org.apache.maven.doxia.sink.impl.SinkEventTestingSink;
+import org.apache.maven.doxia.sink.impl.Xhtml5BaseSink;
 import org.codehaus.plexus.testing.PlexusTest;
 import org.junit.jupiter.api.Test;
 
 import static org.codehaus.plexus.testing.PlexusExtension.getBasedir;
 import static org.junit.jupiter.api.Assertions.assertEquals;
 import static org.junit.jupiter.api.Assertions.assertFalse;
+import static org.junit.jupiter.api.Assertions.assertNull;
 import static org.junit.jupiter.api.Assertions.assertThrows;
 import static org.junit.jupiter.api.Assertions.assertTrue;
 
@@ -158,24 +162,66 @@ class SnippetMacroTest {
 
         SinkEventTestingSink sink = executeSnippetMacro(macroParameters);
 
-        SinkEventElement event = sink.getEventList().iterator().next();
-        SinkEventAttributes attributes = (SinkEventAttributes) event.getArgs()[0];
+        Iterator<SinkEventElement> it = sink.getEventList().iterator();
+        SinkEventElement verbatim = it.next();
+        assertEquals("verbatim", verbatim.getName());
+        assertNull(verbatim.getArgs()[0]);
+        SinkEventElement inline = it.next();
+        assertEquals("inline", inline.getName());
+        SinkEventAttributes attributes = (SinkEventAttributes) inline.getArgs()[0];
+        assertTrue(attributes.containsAttribute(SinkEventAttributes.SEMANTICS, "code"));
         assertTrue(attributes.containsAttribute(SinkEventAttributes.CLASS, "language-yaml"));
-        assertTrue(attributes.containsAttribute(SinkEventAttributes.DECORATION, "source"));
+        assertEquals("text", it.next().getName());
+        assertEquals("inline_", it.next().getName());
+        assertEquals("verbatim_", it.next().getName());
+        assertFalse(it.hasNext());
+    }
+
+    @Test
+    void cssClassOnCodeElementInXhtml5() throws Exception {
+        Map<String, Object> macroParameters = new HashMap<>();
+        macroParameters.put("file", "src/test/resources/macro/snippet/testSnippet.txt");
+        macroParameters.put("id", "firstId");
+        macroParameters.put("class", "language-yaml");
+
+        StringWriter out = new StringWriter();
+        try (Xhtml5BaseSink sink = new Xhtml5BaseSink(out)) {
+            executeSnippetMacro(sink, macroParameters);
+        }
+
+        String html = out.toString();
+        assertTrue(html.startsWith("<pre><code class=\"language-yaml\">"), html);
+        assertTrue(html.endsWith("</code></pre>"), html);
+    }
+
+    @Test
+    void sourceWithoutCssClassInXhtml5() throws Exception {
+        Map<String, Object> macroParameters = new HashMap<>();
+        macroParameters.put("file", "src/test/resources/macro/snippet/testSnippet.txt");
+        macroParameters.put("id", "firstId");
+
+        StringWriter out = new StringWriter();
+        try (Xhtml5BaseSink sink = new Xhtml5BaseSink(out)) {
+            executeSnippetMacro(sink, macroParameters);
+        }
+
+        assertTrue(out.toString().startsWith("<pre><code>"), out.toString());
     }
 
     private SinkEventTestingSink executeSnippetMacro(Map<String, Object> macroParameters)
             throws MacroExecutionException {
+        SinkEventTestingSink sink = new SinkEventTestingSink();
+        executeSnippetMacro(sink, macroParameters);
+        return sink;
+    }
+
+    private void executeSnippetMacro(Sink sink, Map<String, Object> macroParameters) throws MacroExecutionException {
         File basedir = new File(getBasedir());
 
         Xhtml5BaseParser parser = new Xhtml5BaseParser();
 
-        SinkEventTestingSink sink = new SinkEventTestingSink();
-
         MacroRequest request = new MacroRequest(null, parser, macroParameters, basedir);
         SnippetMacro macro = new SnippetMacro();
         macro.execute(sink, request);
-
-        return sink;
     }
 }
