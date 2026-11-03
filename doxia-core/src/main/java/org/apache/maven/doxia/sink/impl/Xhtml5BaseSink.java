@@ -1347,9 +1347,10 @@ public class Xhtml5BaseSink extends AbstractXmlSink implements HtmlMarkup {
                                         getLocationLogPrefix(),
                                         attribute.getValue());
                         }
-                        compliantAttributes.removeAttribute(SinkEventAttributes.SEMANTICS);
                     }
                 }
+                // removed after the loop: removing it while iterating fails on any attribute that follows it
+                compliantAttributes.removeAttribute(SinkEventAttributes.SEMANTICS);
                 writeStartTag(tag, compliantAttributes);
                 inlineStack.push(Collections.singletonList(tag));
             } else {

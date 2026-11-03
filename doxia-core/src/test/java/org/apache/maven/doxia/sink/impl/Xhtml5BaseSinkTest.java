@@ -1206,6 +1206,17 @@ class Xhtml5BaseSinkTest {
     }
 
     @Test
+    void inlineSemanticsBeforeOtherAttributes() {
+        try (Sink sink = new Xhtml5BaseSink(writer)) {
+            sink.inline(new SinkEventAttributeSet(
+                    SinkEventAttributes.SEMANTICS, "code", SinkEventAttributes.CLASS, "language-java"));
+            sink.text("text");
+            sink.inline_();
+        }
+        assertEquals("<code class=\"language-java\">text</code>", writer.toString());
+    }
+
+    @Test
     void addStyleWithStringValue() {
         SinkEventAttributes attributes = new SinkEventAttributeSet();
         Xhtml5BaseSink.addStyle(attributes, "font-weight", "bold");
