@@ -329,6 +329,9 @@ public class Xhtml5SinkTest extends AbstractSinkTest {
             // note: this is really illegal, there should be no un-resolved entities emitted into text()
             sink.text("&#x123;&");
             sink.author_();
+            sink.date();
+            sink.text("2013-01-02");
+            sink.date_();
             SinkEventAttributeSet atts = new SinkEventAttributeSet(1);
             atts.addAttribute("href", "http://maven.apache.org/");
             sink.unknown("base", new Object[] {HtmlMarkup.TAG_TYPE_SIMPLE}, atts);
@@ -339,6 +342,7 @@ public class Xhtml5SinkTest extends AbstractSinkTest {
 
         String expected =
                 "<head>\n<title>Title</title><!--A comment--><meta name=\"author\" content=\"&#x123;&amp;\" />"
+                        + "<meta name=\"dcterms.date\" content=\"2013-01-02\" />"
                         + "<base href=\"http://maven.apache.org/\" /></head>";
         String actual = writer.toString();
         assertTrue(actual.contains(expected), actual);
