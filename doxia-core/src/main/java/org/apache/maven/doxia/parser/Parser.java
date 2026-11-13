@@ -66,6 +66,27 @@ public interface Parser {
     void parse(Reader source, Sink sink, String reference) throws ParseException;
 
     /**
+     * Parses the given source model and emits Doxia events into the given sink, for a caller that knows more
+     * about the document than its reference: its location, where the result goes, properties and parser options.
+     * <p>
+     * The default implementation only passes on the reference from the context. A parser that needs more
+     * overrides this method and reads the context instead of asking its environment, for example a
+     * dependency injection container, for that information.
+     * <p>
+     * The context is the first parameter, so that existing calls passing {@code null} as reference
+     * to {@link #parse(Reader, Sink, String)} stay unambiguous.
+     *
+     * @param context not null information about the document and its surroundings.
+     * @param source not null reader that provides the source document.
+     * @param sink A sink that consumes the Doxia events.
+     * @throws org.apache.maven.doxia.parser.ParseException if the model could not be parsed.
+     * @since 2.3.0
+     */
+    default void parse(ParserContext context, Reader source, Sink sink) throws ParseException {
+        parse(source, sink, context.getReference());
+    }
+
+    /**
      * The parser type value could be {@link #UNKNOWN_TYPE}, {@link #TXT_TYPE} or
      * {@link #XML_TYPE}.
      *
