@@ -24,8 +24,12 @@ import java.io.File;
 import java.io.FileFilter;
 import java.io.FileReader;
 import java.io.Reader;
+import java.io.StringReader;
 import java.io.Writer;
+import java.util.ArrayList;
+import java.util.Arrays;
 import java.util.Iterator;
+import java.util.List;
 import java.util.regex.Pattern;
 
 import org.apache.commons.io.IOUtils;
@@ -268,6 +272,50 @@ class FmlParserTest extends AbstractParserTest {
         }
 
         assertTrue(content.contains("<a id=\"macro-definition\"></a>" + EOL + "<dt>Macro Question</dt>"));
+    }
+
+    /**
+     * A {@code source} element nested in another one, as in a POM snippet written without CDATA, must not
+     * open a second verbatim block.
+     *
+     * @throws Exception if any
+     */
+    @Test
+    void nestedSourceYieldsSingleVerbatim() throws Exception {
+        String fml = "<faqs title=\"title\"><part id=\"general\"><faq id=\"first\"><question>q</question><answer>"
+                + "<source>a <b><source>1.5</source></b> z</source><p>after</p>"
+                + "</answer></faq></part></faqs>";
+
+        SinkEventTestingSink sink = new SinkEventTestingSink();
+        createParser().parse(new StringReader(fml), sink);
+
+        List<String> names = new ArrayList<>();
+        boolean inAnswer = false;
+        for (SinkEventElement event : sink.getEventList()) {
+            if ("verbatim".equals(event.getName())) {
+                inAnswer = true;
+            }
+            if (inAnswer) {
+                names.add(event.getName());
+            }
+            if ("paragraph_".equals(event.getName()) && inAnswer && names.contains("verbatim_")) {
+                break;
+            }
+        }
+
+        assertEquals(
+                Arrays.asList(
+                        "verbatim",
+                        "text",
+                        "inline",
+                        "text",
+                        "inline_",
+                        "text",
+                        "verbatim_",
+                        "paragraph",
+                        "text",
+                        "paragraph_"),
+                names);
     }
 
     @Override

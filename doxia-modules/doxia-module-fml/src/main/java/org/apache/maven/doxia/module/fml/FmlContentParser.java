@@ -43,6 +43,9 @@ public class FmlContentParser extends Xhtml5BaseParser implements FmlMarkup {
     /** Empty elements don't write a closing tag. */
     private boolean isEmptyElement;
 
+    /** Number of currently open {@code source} elements; verbatim blocks must not be nested. */
+    private int sourceDepth;
+
     protected void handleStartTag(XmlPullParser parser, Sink sink)
             throws XmlPullParserException, MacroExecutionException {
         isEmptyElement = parser.isEmptyElementTag();
@@ -53,9 +56,11 @@ public class FmlContentParser extends Xhtml5BaseParser implements FmlMarkup {
             // ignore
             return;
         } else if (parser.getName().equals(SOURCE_TAG.toString())) {
-            verbatim();
+            if (sourceDepth++ == 0) {
+                verbatim();
 
-            sink.verbatim(SinkEventAttributeSet.SOURCE);
+                sink.verbatim(SinkEventAttributeSet.SOURCE);
+            }
         } else if (!baseStartTag(parser, sink)) {
             if (isEmptyElement) {
                 handleUnknown(parser, sink, TAG_TYPE_SIMPLE);
@@ -79,9 +84,11 @@ public class FmlContentParser extends Xhtml5BaseParser implements FmlMarkup {
             // ignore
             return;
         } else if (parser.getName().equals(SOURCE_TAG.toString())) {
-            verbatim_();
+            if (--sourceDepth == 0) {
+                verbatim_();
 
-            sink.verbatim_();
+                sink.verbatim_();
+            }
         } else if (!baseEndTag(parser, sink)) {
             if (!isEmptyElement) {
                 handleUnknown(parser, sink, TAG_TYPE_END);
@@ -98,5 +105,6 @@ public class FmlContentParser extends Xhtml5BaseParser implements FmlMarkup {
         super.init();
 
         this.isEmptyElement = false;
+        this.sourceDepth = 0;
     }
 }
