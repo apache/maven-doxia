@@ -792,6 +792,57 @@ class Xhtml5BaseParserTest extends AbstractParserTest {
     }
 
     @Test
+    void nestedTableWithCaption() throws Exception {
+        String text = "<table><tr><td><table><caption>inner</caption><tr><td>x</td></tr></table></td></tr></table>";
+        parser.parse(text, sink);
+        Iterator<SinkEventElement> it = sink.getEventList().iterator();
+
+        assertEquals("table", it.next().getName());
+        assertEquals("tableRows", it.next().getName());
+        assertEquals("tableRow", it.next().getName());
+        assertEquals("tableCell", it.next().getName());
+        assertEquals("table", it.next().getName());
+        assertEquals("tableCaption", it.next().getName());
+        assertEquals("text", it.next().getName());
+        assertEquals("tableCaption_", it.next().getName());
+        assertEquals("tableRows", it.next().getName());
+        assertEquals("tableRow", it.next().getName());
+        assertEquals("tableCell", it.next().getName());
+        assertEquals("text", it.next().getName());
+        assertEquals("tableCell_", it.next().getName());
+        assertEquals("tableRow_", it.next().getName());
+        assertEquals("tableRows_", it.next().getName());
+        assertEquals("table_", it.next().getName());
+        assertEquals("tableCell_", it.next().getName());
+        assertEquals("tableRow_", it.next().getName());
+        assertEquals("tableRows_", it.next().getName());
+        assertEquals("table_", it.next().getName());
+    }
+
+    @Test
+    void commentBeforeFirstRowStartsTheRows() throws Exception {
+        parser.setEmitComments(true);
+        String text = "<table>\n  <caption>c</caption>\n  <!-- rows -->\n  <tr><td>x</td></tr>\n</table>";
+        parser.parse(text, sink);
+        Iterator<SinkEventElement> it = sink.getEventList().iterator();
+
+        assertEquals("table", it.next().getName());
+        SinkEventElement next = it.next();
+        while ("markupLineBreak".equals(next.getName())) {
+            next = it.next();
+        }
+        assertEquals("tableCaption", next.getName());
+        assertEquals("text", it.next().getName());
+        assertEquals("tableCaption_", it.next().getName());
+        next = it.next();
+        while ("markupLineBreak".equals(next.getName())) {
+            next = it.next();
+        }
+        assertEquals("tableRows", next.getName());
+        assertEquals("comment", it.next().getName());
+    }
+
+    @Test
     void table() throws Exception {
         String text = "<table><caption></caption><tr><th></th></tr><tr><td></td></tr></table>";
         parser.parse(text, sink);
@@ -799,13 +850,15 @@ class Xhtml5BaseParserTest extends AbstractParserTest {
 
         assertEquals("table", it.next().getName());
 
+        // the caption comes before the rows, as the Sink documents
+        assertEquals("tableCaption", it.next().getName());
+        assertEquals("tableCaption_", it.next().getName());
+
         // DOXIA-374
         SinkEventElement el = it.next();
         assertEquals("tableRows", el.getName());
         assertFalse((Boolean) el.getArgs()[1]);
 
-        assertEquals("tableCaption", it.next().getName());
-        assertEquals("tableCaption_", it.next().getName());
         assertEquals("tableRow", it.next().getName());
         assertEquals("tableHeaderCell", it.next().getName());
         assertEquals("tableHeaderCell_", it.next().getName());
