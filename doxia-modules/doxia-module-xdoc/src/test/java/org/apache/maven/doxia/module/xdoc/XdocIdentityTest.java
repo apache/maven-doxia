@@ -60,13 +60,12 @@ class XdocIdentityTest extends AbstractIdentityTest {
         String captionTag = expected.substring(iStartCaption, iEndCaption) + EOL + EOL + EOL;
         expected = DoxiaStringUtils.replace(expected, captionTag, "");
 
-        int iStartTableRows =
-                expected.substring(0, iStartCaption).lastIndexOf("begin:tableRows") + "begin:tableRows".length();
+        // the parser sends the caption before the rows, as HTML has it
+        int iStartTableRows = expected.substring(0, iStartCaption).lastIndexOf("begin:tableRows");
 
         StringBuilder text = new StringBuilder();
         text.append(expected, 0, iStartTableRows);
-        text.append(EOL).append(EOL).append(EOL);
-        text.append(captionTag.subSequence(0, captionTag.indexOf("end:tableCaption") + "end:tableCaption".length()));
+        text.append(captionTag);
         text.append(expected.substring(iStartTableRows));
 
         return text.toString();
