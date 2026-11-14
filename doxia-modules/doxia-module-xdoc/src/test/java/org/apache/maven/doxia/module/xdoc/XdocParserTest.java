@@ -418,6 +418,56 @@ class XdocParserTest extends AbstractParserTest {
         assertFalse(it.hasNext());
     }
 
+    @Test
+    void listItemsInUnorderedListNestedInOrderedList() throws Exception {
+        assertEventNames(
+                "<ol><li>one<ul><li>a</li></ul></li><li>two</li></ol>",
+                "numberedList",
+                "numberedListItem",
+                "text",
+                "list",
+                "listItem",
+                "text",
+                "listItem_",
+                "list_",
+                "numberedListItem_",
+                "numberedListItem",
+                "text",
+                "numberedListItem_",
+                "numberedList_");
+    }
+
+    @Test
+    void listItemsInOrderedListNestedInUnorderedList() throws Exception {
+        assertEventNames(
+                "<ul><li>x<ol><li>y</li></ol></li><li>z</li></ul>",
+                "list",
+                "listItem",
+                "text",
+                "numberedList",
+                "numberedListItem",
+                "text",
+                "numberedListItem_",
+                "numberedList_",
+                "listItem_",
+                "listItem",
+                "text",
+                "listItem_",
+                "list_");
+    }
+
+    private void assertEventNames(String text, String... expected) throws Exception {
+        SinkEventTestingSink sink = new SinkEventTestingSink();
+
+        parser.parse(text, sink);
+
+        Iterator<SinkEventElement> it = sink.getEventList().iterator();
+        for (String name : expected) {
+            assertEquals(name, it.next().getName());
+        }
+        assertFalse(it.hasNext());
+    }
+
     @Override
     protected String getVerbatimSource() {
         return "<pre><![CDATA[<>{}=#*]]></pre>";
