@@ -988,6 +988,17 @@ public class Xhtml5BaseParser extends AbstractXmlParser implements HtmlMarkup {
         return id;
     }
 
+    /**
+     * {@inheritDoc}
+     *
+     * Closes the sections that were opened implicitly for headings and are still open, for example
+     * in a fragment without a closing {@code <body>} element.
+     */
+    @Override
+    protected void handleEndDocument(Sink sink) {
+        emitHeadingSections(0, sink, false);
+    }
+
     @Override
     protected void init() {
         super.init();
