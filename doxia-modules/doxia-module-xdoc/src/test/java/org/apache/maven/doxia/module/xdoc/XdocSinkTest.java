@@ -316,6 +316,44 @@ public class XdocSinkTest extends AbstractSinkTest {
         assertEquals("<a href=\"name\"></a><a target=\"nirvana\" href=\"name\"></a>", writer.toString());
     }
 
+    /**
+     * Inline markup in a level 1 or level 2 section title cannot go into the name attribute.
+     */
+    @Test
+    void inlineMarkupInSectionTitle() {
+        Writer writer = new StringWriter();
+        try (XdocSink sink = new XdocSink(writer)) {
+            sink.section1();
+            sink.sectionTitle1();
+            sink.text("Use ");
+            sink.bold();
+            sink.text("mvn");
+            sink.bold_();
+            sink.text(" & ");
+            sink.link("http://example.com/");
+            sink.text("more");
+            sink.link_();
+            sink.sectionTitle1_();
+            sink.section2();
+            sink.sectionTitle2();
+            sink.inline(SinkEventAttributeSet.Semantics.CODE);
+            sink.text("code");
+            sink.inline_();
+            sink.lineBreak();
+            sink.sectionTitle2_();
+            sink.paragraph();
+            sink.bold();
+            sink.text("x");
+            sink.bold_();
+            sink.paragraph_();
+            sink.section2_();
+            sink.section1_();
+        }
+        assertEquals(
+                "<section name=\"Use mvn &amp; more\"><subsection name=\"code\"><p><b>x</b></p></subsection></section>",
+                writer.toString());
+    }
+
     @Override
     protected String getCommentBlock(String text) {
         return "<!--" + toXmlComment(text) + "-->";

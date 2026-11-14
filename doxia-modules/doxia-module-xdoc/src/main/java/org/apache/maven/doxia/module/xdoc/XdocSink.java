@@ -22,6 +22,7 @@ import javax.swing.text.MutableAttributeSet;
 
 import java.io.Writer;
 
+import org.apache.maven.doxia.markup.HtmlTag;
 import org.apache.maven.doxia.sink.SinkEventAttributeSet;
 import org.apache.maven.doxia.sink.SinkEventAttributes;
 import org.apache.maven.doxia.sink.impl.SinkUtils;
@@ -46,6 +47,9 @@ public class XdocSink extends Xhtml5BaseSink implements XdocMarkup {
     private String encoding;
 
     private String languageId;
+
+    /** True while the title of a level 1 or level 2 section is written into the name attribute. */
+    private boolean inSectionNameAttribute;
 
     // ----------------------------------------------------------------------
     // Constructors
@@ -99,6 +103,8 @@ public class XdocSink extends Xhtml5BaseSink implements XdocMarkup {
      */
     protected void init() {
         super.init();
+
+        this.inSectionNameAttribute = false;
     }
 
     /**
@@ -287,7 +293,9 @@ public class XdocSink extends Xhtml5BaseSink implements XdocMarkup {
     protected void onSectionTitle(int depth, SinkEventAttributes attributes) {
         MutableAttributeSet atts = SinkUtils.filterAttributes(attributes, SinkUtils.SINK_SECTION_ATTRIBUTES);
 
-        if (depth == SECTION_LEVEL_3) {
+        if (depth == SECTION_LEVEL_1 || depth == SECTION_LEVEL_2) {
+            inSectionNameAttribute = true;
+        } else if (depth == SECTION_LEVEL_3) {
             writeStartTag(H3, atts);
         } else if (depth == SECTION_LEVEL_4) {
             writeStartTag(H4, atts);
@@ -309,6 +317,7 @@ public class XdocSink extends Xhtml5BaseSink implements XdocMarkup {
      */
     protected void onSectionTitle_(int depth) {
         if (depth == SECTION_LEVEL_1 || depth == SECTION_LEVEL_2) {
+            inSectionNameAttribute = false;
             write(String.valueOf(QUOTE) + GREATER_THAN);
         } else if (depth == SECTION_LEVEL_3) {
             writeEndTag(H3);
@@ -318,6 +327,32 @@ public class XdocSink extends Xhtml5BaseSink implements XdocMarkup {
             writeEndTag(H5);
         } else if (depth == SECTION_LEVEL_6) {
             writeEndTag(H6);
+        }
+    }
+
+    /**
+     * {@inheritDoc}
+     *
+     * Inside the title of a level 1 or level 2 section, which is written into the <code>name</code> attribute,
+     * the markup of inline events is dropped and only their text is kept.
+     */
+    @Override
+    protected void writeStartTag(HtmlTag t, MutableAttributeSet att, boolean isEmptyElement) {
+        if (!inSectionNameAttribute) {
+            super.writeStartTag(t, att, isEmptyElement);
+        }
+    }
+
+    /**
+     * {@inheritDoc}
+     *
+     * Inside the title of a level 1 or level 2 section, which is written into the <code>name</code> attribute,
+     * the markup of inline events is dropped and only their text is kept.
+     */
+    @Override
+    protected void writeEndTag(HtmlTag t) {
+        if (!inSectionNameAttribute) {
+            super.writeEndTag(t);
         }
     }
 
