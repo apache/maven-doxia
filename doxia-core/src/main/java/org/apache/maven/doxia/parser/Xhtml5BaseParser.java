@@ -21,6 +21,8 @@ package org.apache.maven.doxia.parser;
 import java.io.Reader;
 import java.text.CharacterIterator;
 import java.text.StringCharacterIterator;
+import java.util.ArrayDeque;
+import java.util.Deque;
 import java.util.HashSet;
 import java.util.LinkedList;
 import java.util.Set;
@@ -117,8 +119,8 @@ public class Xhtml5BaseParser extends AbstractXmlParser implements HtmlMarkup {
     /** Used to distinguish &lt;a href=""&gt; from &lt;a name=""&gt;. */
     private boolean isAnchor;
 
-    /** Used for nested lists. */
-    private int orderedListDepth = 0;
+    /** The currently open lists, innermost first: {@code true} for an ordered list, {@code false} for an unordered one. */
+    private final Deque<Boolean> openLists = new ArrayDeque<>();
 
     /** Counts section nesting level of the sections manually set in the HTML document */
     private int sectionLevel;
@@ -401,6 +403,7 @@ public class Xhtml5BaseParser extends AbstractXmlParser implements HtmlMarkup {
                 break;
             case "ul":
                 sink.list(attribs);
+                openLists.push(Boolean.FALSE);
                 break;
             case "ol":
                 handleOLStart(sink, attribs);
@@ -534,10 +537,11 @@ public class Xhtml5BaseParser extends AbstractXmlParser implements HtmlMarkup {
                 break;
             case "ul":
                 sink.list_();
+                openLists.poll();
                 break;
             case "ol":
                 sink.numberedList_();
-                orderedListDepth--;
+                openLists.poll();
                 break;
             case "li":
                 handleListItemEnd(sink);
@@ -995,7 +999,7 @@ public class Xhtml5BaseParser extends AbstractXmlParser implements HtmlMarkup {
         this.scriptBlock = false;
         this.isLink = false;
         this.isAnchor = false;
-        this.orderedListDepth = 0;
+        this.openLists.clear();
         this.headingLevel = 0;
         this.inVerbatim = false;
     }
@@ -1085,19 +1089,24 @@ public class Xhtml5BaseParser extends AbstractXmlParser implements HtmlMarkup {
     }
 
     private void handleLIStart(Sink sink, SinkEventAttributeSet attribs) {
-        if (orderedListDepth == 0) {
-            sink.listItem(attribs);
-        } else {
+        if (isInOrderedList()) {
             sink.numberedListItem(attribs);
+        } else {
+            sink.listItem(attribs);
         }
     }
 
     private void handleListItemEnd(Sink sink) {
-        if (orderedListDepth == 0) {
-            sink.listItem_();
-        } else {
+        if (isInOrderedList()) {
             sink.numberedListItem_();
+        } else {
+            sink.listItem_();
         }
+    }
+
+    /** Returns whether the innermost open list is an ordered one, which decides the type of list item events. */
+    private boolean isInOrderedList() {
+        return Boolean.TRUE.equals(openLists.peek());
     }
 
     private void handleOLStart(Sink sink, SinkEventAttributeSet attribs) {
@@ -1128,7 +1137,7 @@ public class Xhtml5BaseParser extends AbstractXmlParser implements HtmlMarkup {
         }
 
         sink.numberedList(numbering, attribs);
-        orderedListDepth++;
+        openLists.push(Boolean.TRUE);
     }
 
     private void handlePStart(Sink sink, SinkEventAttributeSet attribs) {
