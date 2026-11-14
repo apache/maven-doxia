@@ -84,6 +84,9 @@ public class XdocParser extends Xhtml1BaseParser implements XdocMarkup {
      */
     private boolean hasTitle;
 
+    /** Number of currently open {@code source} elements; verbatim blocks must not be nested. */
+    private int sourceDepth;
+
     public void parse(Reader source, Sink sink, String reference) throws ParseException {
         this.sourceContent = null;
 
@@ -155,11 +158,13 @@ public class XdocParser extends Xhtml1BaseParser implements XdocMarkup {
         } else if (parser.getName().equals(SUBSECTION_TAG.toString())) {
             handleSectionStart(Sink.SECTION_LEVEL_2, sink, attribs, parser);
         } else if (parser.getName().equals(SOURCE_TAG.toString())) {
-            verbatim();
+            if (sourceDepth++ == 0) {
+                verbatim();
 
-            attribs.addAttributes(SinkEventAttributeSet.SOURCE);
+                attribs.addAttributes(SinkEventAttributeSet.SOURCE);
 
-            sink.verbatim(attribs);
+                sink.verbatim(attribs);
+            }
         } else if (parser.getName().equals(PROPERTIES_TAG.toString())) {
             if (!inHead) // we might be in head from a <head> already
             {
@@ -214,9 +219,11 @@ public class XdocParser extends Xhtml1BaseParser implements XdocMarkup {
         } else if (parser.getName().equals(DATE_TAG.toString())) {
             sink.date_();
         } else if (parser.getName().equals(SOURCE_TAG.toString())) {
-            verbatim_();
+            if (--sourceDepth == 0) {
+                verbatim_();
 
-            sink.verbatim_();
+                sink.verbatim_();
+            }
         } else if (parser.getName().equals(PROPERTIES_TAG.toString())) {
             // Do nothing, head is closed with BODY start.
         } else if (parser.getName().equals(MACRO_TAG.toString())) {
@@ -260,6 +267,7 @@ public class XdocParser extends Xhtml1BaseParser implements XdocMarkup {
         this.macroParameters = null;
         this.inHead = false;
         this.hasTitle = false;
+        this.sourceDepth = 0;
     }
 
     /**

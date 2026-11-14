@@ -280,6 +280,27 @@ class XdocParserTest extends AbstractParserTest {
     }
 
     @Test
+    void nestedSourceYieldsSingleVerbatim() throws Exception {
+        // a POM snippet without CDATA, whose configuration contains a source element
+        String text = "<div><source>a<source>1.5</source>b</source><p>after</p></div>";
+
+        Iterator<SinkEventElement> it = parseText(text);
+
+        assertSinkEquals(
+                it,
+                "division",
+                "verbatim",
+                "text",
+                "text",
+                "text",
+                "verbatim_",
+                "paragraph",
+                "text",
+                "paragraph_",
+                "division_");
+    }
+
+    @Test
     void sourceContainingDTD() throws Exception {
         String text = "<source><![CDATA[" + "<!DOCTYPE web-app PUBLIC "
                 + "\"-//Sun Microsystems, Inc.//DTD Web Application 2.2//EN\""
