@@ -189,7 +189,7 @@ class TocMacroTest {
         String actualLinkTarget = (String) link.getArgs()[0];
         AbstractParserTest.assertSinkEquals(it.next(), "text", "1 Headline", null);
         AbstractParserTest.assertSinkEquals(
-                it, "link_", "listItem_", "list_", "section1", "sectionTitle1", "text", "sectionTitle1_");
+                it, "link_", "listItem_", "list_", "section1", "sectionTitle1", "text", "sectionTitle1_", "section1_");
 
         // check html output as well (without the actual TOC)
         StringWriter out = new StringWriter();
@@ -197,7 +197,8 @@ class TocMacroTest {
         parser.addSinkWrapperFactory(new CreateAnchorsForIndexEntriesFactory());
         parser.parse(sourceContent, sink2);
         assertEquals(
-                "<section><a id=\"" + actualLinkTarget.substring(1) + "\"></a>" + Markup.EOL + "<h1>1 Headline</h1>",
+                "<section><a id=\"" + actualLinkTarget.substring(1) + "\"></a>" + Markup.EOL
+                        + "<h1>1 Headline</h1></section>",
                 out.toString());
     }
 

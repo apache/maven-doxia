@@ -269,6 +269,20 @@ public abstract class AbstractXmlParser extends AbstractParser implements XmlMar
                 throw new XmlPullParserException("Failed to parse next token", parser, io);
             }
         }
+
+        handleEndDocument(sink);
+    }
+
+    /**
+     * Called once when the end of the document has been reached, before the parser state is reset.
+     * Subclasses can use it to emit events that close constructs still open at that point.
+     * The default implementation does nothing.
+     *
+     * @param sink the sink to receive the events.
+     * @since 2.2.1
+     */
+    protected void handleEndDocument(Sink sink) {
+        // nop
     }
 
     /**

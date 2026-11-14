@@ -18,7 +18,10 @@
  */
 package org.apache.maven.doxia.parser;
 
+import java.util.ArrayList;
+import java.util.Arrays;
 import java.util.Iterator;
+import java.util.List;
 
 import org.apache.maven.doxia.sink.SinkEventAttributeSet;
 import org.apache.maven.doxia.sink.impl.SinkEventElement;
@@ -85,10 +88,9 @@ class Xhtml5BaseParserTest extends AbstractParserTest {
         assertEquals("section1", it.next().getName());
         assertEquals("sectionTitle1", it.next().getName());
         assertEquals("sectionTitle1_", it.next().getName());
-        // this one is missing because we enclose everything in <p> which is not valid xhtml,
-        // needs to be tested in overriding parser, eg XhtmlParser, XdocParser.
-        // assertEquals("section1_", it.next().getName());
         assertEquals("paragraph_", it.next().getName());
+        // the section opened for the heading is closed at the end of the document
+        assertEquals("section1_", it.next().getName());
         assertFalse(it.hasNext());
     }
 
@@ -122,12 +124,88 @@ class Xhtml5BaseParserTest extends AbstractParserTest {
         assertEquals("section2", it.next().getName());
         assertEquals("sectionTitle2", it.next().getName());
         assertEquals("sectionTitle2_", it.next().getName());
-        // these two are missing because we enclose everything in <p> which is not valid xhtml,
-        // needs to be tested in overriding parser, eg XhtmlParser, XdocParser.
-        // assertEquals("section2_", it.next().getName());
-        // assertEquals("section1_", it.next().getName());
         assertEquals("paragraph_", it.next().getName());
+        // the sections opened for the headings are closed at the end of the document
+        assertEquals("section2_", it.next().getName());
+        assertEquals("section1_", it.next().getName());
         assertFalse(it.hasNext());
+    }
+
+    @Test
+    void headingSectionsAreClosedAtEndOfFragment() throws Exception {
+        parser.parse("<div><h1>Title</h1><p>text</p></div>", sink);
+
+        assertEquals(
+                Arrays.asList(
+                        "division",
+                        "section1",
+                        "sectionTitle1",
+                        "text",
+                        "sectionTitle1_",
+                        "paragraph",
+                        "text",
+                        "paragraph_",
+                        "division_",
+                        "section1_"),
+                eventNames());
+    }
+
+    @Test
+    void headingSectionsOfLowerLevelsAreClosedAtEndOfFragment() throws Exception {
+        parser.parse("<div><h2>A</h2><h3>B</h3></div>", sink);
+
+        assertEquals(
+                Arrays.asList(
+                        "division",
+                        "section1",
+                        "section2",
+                        "sectionTitle2",
+                        "text",
+                        "sectionTitle2_",
+                        "section3",
+                        "sectionTitle3",
+                        "text",
+                        "sectionTitle3_",
+                        "division_",
+                        "section3_",
+                        "section2_",
+                        "section1_"),
+                eventNames());
+    }
+
+    @Test
+    void explicitSectionIsNotClosedTwice() throws Exception {
+        parser.parse("<section><h1>A</h1><p>x</p></section>", sink);
+
+        assertEquals(
+                Arrays.asList(
+                        "section1",
+                        "sectionTitle1",
+                        "text",
+                        "sectionTitle1_",
+                        "paragraph",
+                        "text",
+                        "paragraph_",
+                        "section1_"),
+                eventNames());
+    }
+
+    @Test
+    void parserCanBeReused() throws Exception {
+        parser.parse("<div><h2>A</h2></div>", sink);
+        sink.reset();
+        parser.parse("<div><h1>B</h1></div>", sink);
+
+        assertEquals(
+                Arrays.asList(
+                        "division", "section1", "sectionTitle1", "text", "sectionTitle1_", "division_", "section1_"),
+                eventNames());
+    }
+
+    private List<String> eventNames() {
+        List<String> names = new ArrayList<>();
+        sink.getEventList().forEach(e -> names.add(e.getName()));
+        return names;
     }
 
     @Test
@@ -531,8 +609,7 @@ class Xhtml5BaseParserTest extends AbstractParserTest {
         assertEquals("A", textEvt.getArgs()[0]);
 
         assertEquals("paragraph_", it.next().getName());
-        // FIXME
-        //        assertEquals("section1_", it.next().getName());
+        assertEquals("section1_", it.next().getName());
 
         assertFalse(it.hasNext());
     }
@@ -572,6 +649,7 @@ class Xhtml5BaseParserTest extends AbstractParserTest {
         assertEquals(">", textEvt.getArgs()[0]);
 
         assertEquals("paragraph_", it.next().getName());
+        assertEquals("section1_", it.next().getName());
 
         assertFalse(it.hasNext());
     }
