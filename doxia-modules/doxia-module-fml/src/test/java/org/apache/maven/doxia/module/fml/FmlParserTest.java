@@ -103,9 +103,9 @@ class FmlParserTest extends AbstractParserTest {
         assertEquals("head_", it.next().getName());
         assertEquals("body", it.next().getName());
         assertEquals("section1", it.next().getName());
+        assertEquals("sectionTitle1", it.next().getName());
         assertEquals("anchor", it.next().getName());
         assertEquals("anchor_", it.next().getName());
-        assertEquals("sectionTitle1", it.next().getName());
         assertEquals("text", it.next().getName());
         assertEquals("sectionTitle1_", it.next().getName());
         assertEquals("paragraph", it.next().getName());
@@ -122,9 +122,9 @@ class FmlParserTest extends AbstractParserTest {
         assertEquals("numberedList_", it.next().getName());
         assertEquals("section1_", it.next().getName());
         assertEquals("section1", it.next().getName());
+        assertEquals("sectionTitle1", it.next().getName());
         assertEquals("anchor", it.next().getName());
         assertEquals("anchor_", it.next().getName());
-        assertEquals("sectionTitle1", it.next().getName());
         assertEquals("text", it.next().getName());
         assertEquals("sectionTitle1_", it.next().getName());
         assertEquals("definitionList", it.next().getName());
@@ -175,9 +175,9 @@ class FmlParserTest extends AbstractParserTest {
         assertEquals("head_", it.next().getName());
         assertEquals("body", it.next().getName());
         assertEquals("section1", it.next().getName());
+        assertEquals("sectionTitle1", it.next().getName());
         assertEquals("anchor", it.next().getName());
         assertEquals("anchor_", it.next().getName());
-        assertEquals("sectionTitle1", it.next().getName());
 
         // faq title TODO: should be two events
         assertTextEvent(it.next(), "&&#913;");
@@ -205,9 +205,9 @@ class FmlParserTest extends AbstractParserTest {
         assertEquals("numberedList_", it.next().getName());
         assertEquals("section1_", it.next().getName());
         assertEquals("section1", it.next().getName());
+        assertEquals("sectionTitle1", it.next().getName());
         assertEquals("anchor", it.next().getName());
         assertEquals("anchor_", it.next().getName());
-        assertEquals("sectionTitle1", it.next().getName());
 
         // part title
         assertTextEvent(it.next(), "<");
@@ -329,9 +329,9 @@ class FmlParserTest extends AbstractParserTest {
                 "head_",
                 "body",
                 "section1",
+                "sectionTitle1",
                 "anchor",
                 "anchor_",
-                "sectionTitle1",
                 "text",
                 "sectionTitle1_",
                 "numberedList",
