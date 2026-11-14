@@ -139,6 +139,16 @@ public class Xhtml5BaseParser extends AbstractXmlParser implements HtmlMarkup {
 
     private LinkedList<String> capturedSinkEventNames;
 
+    /**
+     * For each open table, the grid flag of its {@code tableRows} event while that event is still to be sent,
+     * {@code null} once it has been sent. The event waits for the first child that is not a {@code caption},
+     * so that a caption reaches the sink before the rows, as {@link Sink#table(SinkEventAttributes)} documents.
+     */
+    private final LinkedList<Boolean> pendingTableRows = new LinkedList<>();
+
+    /** True whenever we are inside a &lt;caption&gt; tag. */
+    private boolean inTableCaption;
+
     @Override
     public void parse(Reader source, Sink sink, String reference) throws ParseException {
         init();
@@ -212,6 +222,9 @@ public class Xhtml5BaseParser extends AbstractXmlParser implements HtmlMarkup {
     protected boolean baseStartTag(String elementName, SinkEventAttributeSet attribs, Sink sink) {
         boolean visited = true;
         isBeginningOfLineInsideBlock = true;
+        if (!inTableCaption && !"caption".equals(elementName)) {
+            emitPendingTableRows(sink);
+        }
         switch (elementName) {
             case "article":
                 sink.article(attribs);
@@ -449,6 +462,7 @@ public class Xhtml5BaseParser extends AbstractXmlParser implements HtmlMarkup {
                 sink.tableCell(attribs);
                 break;
             case "caption":
+                inTableCaption = true;
                 sink.tableCaption(attribs);
                 break;
             case "br":
@@ -604,6 +618,10 @@ public class Xhtml5BaseParser extends AbstractXmlParser implements HtmlMarkup {
             // ----------------------------------------------------------------------
 
             case "table":
+                emitPendingTableRows(sink);
+                if (!pendingTableRows.isEmpty()) {
+                    pendingTableRows.removeLast();
+                }
                 sink.tableRows_();
                 sink.table_();
                 break;
@@ -618,6 +636,7 @@ public class Xhtml5BaseParser extends AbstractXmlParser implements HtmlMarkup {
                 break;
             case "caption":
                 sink.tableCaption_();
+                inTableCaption = false;
                 break;
             case "article":
                 sink.article_();
@@ -731,6 +750,9 @@ public class Xhtml5BaseParser extends AbstractXmlParser implements HtmlMarkup {
             text = collapseWhitespace(text);
         }
         if ((text != null && !text.isEmpty()) && !isScriptBlock()) {
+            if (!inTableCaption) {
+                emitPendingTableRows(sink);
+            }
             sink.text(text);
             isBeginningOfLineInsideBlock = false;
         }
@@ -790,6 +812,10 @@ public class Xhtml5BaseParser extends AbstractXmlParser implements HtmlMarkup {
         isBeginningOfLineInsideBlock = false;
         String text = getText(parser);
 
+        if (!inTableCaption) {
+            // a sink may expect anything but whitespace inside a table to come after the start of its rows
+            emitPendingTableRows(sink);
+        }
         if ("PB".equals(text.trim())) {
             sink.pageBreak();
         } else {
@@ -804,6 +830,9 @@ public class Xhtml5BaseParser extends AbstractXmlParser implements HtmlMarkup {
         isBeginningOfLineInsideBlock = false;
         String text = getText(parser);
 
+        if (!inTableCaption) {
+            emitPendingTableRows(sink);
+        }
         if (isScriptBlock()) {
             sink.unknown(CDATA, new Object[] {CDATA_TYPE, text}, null);
         } else {
@@ -998,6 +1027,8 @@ public class Xhtml5BaseParser extends AbstractXmlParser implements HtmlMarkup {
         this.orderedListDepth = 0;
         this.headingLevel = 0;
         this.inVerbatim = false;
+        this.pendingTableRows.clear();
+        this.inTableCaption = false;
     }
 
     private void handleAEnd(Sink sink) {
@@ -1176,6 +1207,13 @@ public class Xhtml5BaseParser extends AbstractXmlParser implements HtmlMarkup {
             grid = true;
         }
 
-        sink.tableRows(null, grid);
+        pendingTableRows.addLast(grid);
+    }
+
+    private void emitPendingTableRows(Sink sink) {
+        if (!pendingTableRows.isEmpty() && pendingTableRows.getLast() != null) {
+            sink.tableRows(null, pendingTableRows.getLast());
+            pendingTableRows.set(pendingTableRows.size() - 1, null);
+        }
     }
 }

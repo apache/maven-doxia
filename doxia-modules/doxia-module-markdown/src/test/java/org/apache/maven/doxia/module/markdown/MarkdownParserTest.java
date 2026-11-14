@@ -625,8 +625,8 @@ class MarkdownParserTest extends AbstractParserTest {
                 "paragraph_",
                 "markupLineBreak",
                 "table",
-                "tableRows",
                 "markupLineBreak",
+                "tableRows",
                 "unknown", // tbody start
                 "tableRow",
                 "tableHeaderCell",
