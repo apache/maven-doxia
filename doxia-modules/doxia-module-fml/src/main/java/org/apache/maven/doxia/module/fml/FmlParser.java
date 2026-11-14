@@ -452,9 +452,9 @@ public class FmlParser extends AbstractXmlParser implements FmlMarkup {
 
         sink.body();
         sink.section1();
+        sink.sectionTitle1();
         sink.anchor("top");
         sink.anchor_();
-        sink.sectionTitle1();
         sink.text(faqs.getTitle());
         sink.sectionTitle1_();
 
@@ -499,9 +499,9 @@ public class FmlParser extends AbstractXmlParser implements FmlMarkup {
         for (Part part : faqs.getParts()) {
             if (DoxiaStringUtils.isNotEmpty(part.getTitle())) {
                 sink.section1();
+                sink.sectionTitle1();
                 sink.anchor(part.getId());
                 sink.anchor_();
-                sink.sectionTitle1();
                 xdocParser.parse(part.getTitle(), sink);
                 sink.sectionTitle1_();
             }
