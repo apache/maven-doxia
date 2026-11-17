@@ -199,14 +199,17 @@ public class SinkEventAttributeSet implements SinkEventAttributes, Cloneable {
      *
      * @return a int.
      */
+    @Override
     public int getAttributeCount() {
         return attribs.size();
     }
 
+    @Override
     public boolean isDefined(Object attrName) {
         return attribs.containsKey(attrName);
     }
 
+    @Override
     public boolean isEqual(AttributeSet attr) {
         return (getAttributeCount() == attr.getAttributeCount()) && containsAttributes(attr);
     }
@@ -216,6 +219,7 @@ public class SinkEventAttributeSet implements SinkEventAttributes, Cloneable {
      *
      * @return a {@link javax.swing.text.AttributeSet} object.
      */
+    @Override
     public AttributeSet copyAttributes() {
         return (AttributeSet) clone();
     }
@@ -225,10 +229,12 @@ public class SinkEventAttributeSet implements SinkEventAttributes, Cloneable {
      *
      * @return a {@link java.util.Enumeration} object.
      */
+    @Override
     public Enumeration<String> getAttributeNames() {
         return Collections.enumeration(attribs.keySet());
     }
 
+    @Override
     public Object getAttribute(Object key) {
         Object value = attribs.get(key);
 
@@ -243,10 +249,12 @@ public class SinkEventAttributeSet implements SinkEventAttributes, Cloneable {
         return value;
     }
 
+    @Override
     public boolean containsAttribute(Object name, Object value) {
         return value.equals(getAttribute(name));
     }
 
+    @Override
     public boolean containsAttributes(AttributeSet attributes) {
         boolean result = true;
 
@@ -265,10 +273,12 @@ public class SinkEventAttributeSet implements SinkEventAttributes, Cloneable {
      *
      * Adds an attribute with the given name and value.
      */
+    @Override
     public void addAttribute(Object name, Object value) {
         attribs.put(name.toString(), value);
     }
 
+    @Override
     public void addAttributes(AttributeSet attributes) {
         if (attributes == null || attributes.getAttributeCount() == 0) {
             return;
@@ -283,10 +293,12 @@ public class SinkEventAttributeSet implements SinkEventAttributes, Cloneable {
         }
     }
 
+    @Override
     public void removeAttribute(Object name) {
         attribs.remove(name);
     }
 
+    @Override
     public void removeAttributes(Enumeration<?> names) {
         while (names.hasMoreElements()) {
             removeAttribute(names.nextElement());
@@ -298,6 +310,7 @@ public class SinkEventAttributeSet implements SinkEventAttributes, Cloneable {
      *
      * @param attributes a {@link javax.swing.text.AttributeSet} object.
      */
+    @Override
     public void removeAttributes(AttributeSet attributes) {
         if (attributes == null) {
             return;
@@ -322,10 +335,12 @@ public class SinkEventAttributeSet implements SinkEventAttributes, Cloneable {
      *
      * @return a {@link javax.swing.text.AttributeSet} object.
      */
+    @Override
     public AttributeSet getResolveParent() {
         return this.resolveParent;
     }
 
+    @Override
     public void setResolveParent(AttributeSet parent) {
         this.resolveParent = parent;
     }

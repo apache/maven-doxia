@@ -1795,6 +1795,7 @@ public interface Sink extends AutoCloseable {
      * Closes the writer or the stream, if needed.
      * Closing a previously-closed Sink has no effect.
      */
+    @Override
     void close();
 
     /**

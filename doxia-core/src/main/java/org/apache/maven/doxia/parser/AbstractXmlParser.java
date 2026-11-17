@@ -101,6 +101,7 @@ public abstract class AbstractXmlParser extends AbstractParser implements XmlMar
      */
     private boolean addDefaultEntities = true;
 
+    @Override
     public void parse(Reader source, Sink sink, String reference) throws ParseException {
         init();
 
@@ -699,6 +700,7 @@ public abstract class AbstractXmlParser extends AbstractParser implements XmlMar
             WELL_KNOWN_SYSTEM_IDS.put("https://www.w3.org/TR/xhtml1/DTD/xhtml-lat1.ent", "xhtml-lat1.ent");
         }
 
+        @Override
         public InputSource resolveEntity(String publicId, String systemId) throws SAXException, IOException {
             byte[] res = ENTITY_CACHE.get(systemId);
             // already cached?

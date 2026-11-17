@@ -102,10 +102,12 @@ public abstract class AbstractParser implements Parser, MacroExecutor {
      *
      * @return a int
      */
+    @Override
     public int getType() {
         return UNKNOWN_TYPE;
     }
 
+    @Override
     public void setEmitComments(boolean emitComments) {
         this.emitComments = emitComments;
     }
@@ -115,6 +117,7 @@ public abstract class AbstractParser implements Parser, MacroExecutor {
      *
      * @return a boolean
      */
+    @Override
     public boolean isEmitComments() {
         return emitComments;
     }

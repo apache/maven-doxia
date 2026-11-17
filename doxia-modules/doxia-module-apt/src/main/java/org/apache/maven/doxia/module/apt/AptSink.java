@@ -206,6 +206,7 @@ public class AptSink extends AbstractTextSink implements AptMarkup {
     /**
      * {@inheritDoc}
      */
+    @Override
     public void head_() {
         headerFlag = false;
 
@@ -227,6 +228,7 @@ public class AptSink extends AbstractTextSink implements AptMarkup {
     /**
      * {@inheritDoc}
      */
+    @Override
     public void title_() {
         if (buffer.length() > 0) {
             title = buffer.toString();
@@ -237,6 +239,7 @@ public class AptSink extends AbstractTextSink implements AptMarkup {
     /**
      * {@inheritDoc}
      */
+    @Override
     public void author_() {
         if (buffer.length() > 0) {
             authors.add(buffer.toString());
@@ -247,6 +250,7 @@ public class AptSink extends AbstractTextSink implements AptMarkup {
     /**
      * {@inheritDoc}
      */
+    @Override
     public void date_() {
         if (buffer.length() > 0) {
             date = buffer.toString();
@@ -292,6 +296,7 @@ public class AptSink extends AbstractTextSink implements AptMarkup {
     /**
      * {@inheritDoc}
      */
+    @Override
     public void list_() {
         if (listNestingIndent.length() <= 1) {
             write(EOL + listNestingIndent + LIST_END_MARKUP + EOL);
@@ -315,6 +320,7 @@ public class AptSink extends AbstractTextSink implements AptMarkup {
     /**
      * {@inheritDoc}
      */
+    @Override
     public void listItem_() {
         write(EOL);
         itemFlag = false;
@@ -350,6 +356,7 @@ public class AptSink extends AbstractTextSink implements AptMarkup {
     /**
      * {@inheritDoc}
      */
+    @Override
     public void numberedList_() {
         if (listNestingIndent.length() <= 1) {
             write(EOL + listNestingIndent + LIST_END_MARKUP + EOL);
@@ -382,6 +389,7 @@ public class AptSink extends AbstractTextSink implements AptMarkup {
     /**
      * {@inheritDoc}
      */
+    @Override
     public void numberedListItem_() {
         write(EOL);
         itemFlag = false;
@@ -397,6 +405,7 @@ public class AptSink extends AbstractTextSink implements AptMarkup {
     /**
      * {@inheritDoc}
      */
+    @Override
     public void definitionList_() {
         if (listNestingIndent.length() <= 1) {
             write(EOL + listNestingIndent + LIST_END_MARKUP + EOL);
@@ -416,6 +425,7 @@ public class AptSink extends AbstractTextSink implements AptMarkup {
     /**
      * {@inheritDoc}
      */
+    @Override
     public void definedTerm_() {
         write("] ");
     }
@@ -428,6 +438,7 @@ public class AptSink extends AbstractTextSink implements AptMarkup {
     /**
      * {@inheritDoc}
      */
+    @Override
     public void definition_() {
         write(EOL);
         itemFlag = false;
@@ -436,6 +447,7 @@ public class AptSink extends AbstractTextSink implements AptMarkup {
     /**
      * {@inheritDoc}
      */
+    @Override
     public void pageBreak() {
         write(EOL + PAGE_BREAK + EOL);
     }
@@ -454,6 +466,7 @@ public class AptSink extends AbstractTextSink implements AptMarkup {
     /**
      * {@inheritDoc}
      */
+    @Override
     public void paragraph_() {
         if (tableCellFlag) {
             // ignore paragraphs in table cells
@@ -486,6 +499,7 @@ public class AptSink extends AbstractTextSink implements AptMarkup {
     /**
      * {@inheritDoc}
      */
+    @Override
     public void verbatim_() {
         if (isSource) {
             write(EOL + VERBATIM_SOURCE_END_MARKUP + EOL);
@@ -509,6 +523,7 @@ public class AptSink extends AbstractTextSink implements AptMarkup {
     /**
      * {@inheritDoc}
      */
+    @Override
     public void table_() {
         if (rowLine != null) {
             write(rowLine);
@@ -531,6 +546,7 @@ public class AptSink extends AbstractTextSink implements AptMarkup {
     /**
      * {@inheritDoc}
      */
+    @Override
     public void tableRows_() {
         cellJustif = null;
         gridFlag = false;
@@ -545,6 +561,7 @@ public class AptSink extends AbstractTextSink implements AptMarkup {
     /**
      * {@inheritDoc}
      */
+    @Override
     public void tableRow_() {
         bufferFlag = false;
 
@@ -620,6 +637,7 @@ public class AptSink extends AbstractTextSink implements AptMarkup {
     /**
      * {@inheritDoc}
      */
+    @Override
     public void tableCell_() {
         endTableCell();
     }
@@ -627,6 +645,7 @@ public class AptSink extends AbstractTextSink implements AptMarkup {
     /**
      * {@inheritDoc}
      */
+    @Override
     public void tableHeaderCell_() {
         endTableCell();
     }
@@ -648,6 +667,7 @@ public class AptSink extends AbstractTextSink implements AptMarkup {
     /**
      * {@inheritDoc}
      */
+    @Override
     public void tableCaption_() {
         tableCaptionFlag = false;
     }
@@ -655,6 +675,7 @@ public class AptSink extends AbstractTextSink implements AptMarkup {
     /**
      * {@inheritDoc}
      */
+    @Override
     public void figureCaption_() {
         write(EOL);
     }
@@ -672,6 +693,7 @@ public class AptSink extends AbstractTextSink implements AptMarkup {
     /**
      * {@inheritDoc}
      */
+    @Override
     public void anchor_() {
         write(ANCHOR_END_MARKUP);
     }
@@ -688,6 +710,7 @@ public class AptSink extends AbstractTextSink implements AptMarkup {
     /**
      * {@inheritDoc}
      */
+    @Override
     public void link_() {
         if (!headerFlag) {
             write(LINK_END_MARKUP);
@@ -709,6 +732,7 @@ public class AptSink extends AbstractTextSink implements AptMarkup {
         }
     }
 
+    @Override
     public void inline(SinkEventAttributes attributes) {
         if (!headerFlag) {
             List<String> tags = new ArrayList<>();
@@ -738,6 +762,7 @@ public class AptSink extends AbstractTextSink implements AptMarkup {
     /**
      * {@inheritDoc}
      */
+    @Override
     public void inline_() {
         if (!headerFlag) {
             for (String tag : inlineStack.pop()) {
@@ -749,6 +774,7 @@ public class AptSink extends AbstractTextSink implements AptMarkup {
     /**
      * {@inheritDoc}
      */
+    @Override
     public void italic() {
         inline(SinkEventAttributeSet.Semantics.ITALIC);
     }
@@ -756,6 +782,7 @@ public class AptSink extends AbstractTextSink implements AptMarkup {
     /**
      * {@inheritDoc}
      */
+    @Override
     public void italic_() {
         inline_();
     }
@@ -763,6 +790,7 @@ public class AptSink extends AbstractTextSink implements AptMarkup {
     /**
      * {@inheritDoc}
      */
+    @Override
     public void bold() {
         inline(SinkEventAttributeSet.Semantics.BOLD);
     }
@@ -770,6 +798,7 @@ public class AptSink extends AbstractTextSink implements AptMarkup {
     /**
      * {@inheritDoc}
      */
+    @Override
     public void bold_() {
         inline_();
     }
@@ -777,6 +806,7 @@ public class AptSink extends AbstractTextSink implements AptMarkup {
     /**
      * {@inheritDoc}
      */
+    @Override
     public void monospaced() {
         inline(SinkEventAttributeSet.Semantics.CODE);
     }
@@ -784,6 +814,7 @@ public class AptSink extends AbstractTextSink implements AptMarkup {
     /**
      * {@inheritDoc}
      */
+    @Override
     public void monospaced_() {
         inline_();
     }
@@ -802,6 +833,7 @@ public class AptSink extends AbstractTextSink implements AptMarkup {
     /**
      * {@inheritDoc}
      */
+    @Override
     public void nonBreakingSpace() {
         if (headerFlag || bufferFlag) {
             buffer.append(NON_BREAKING_SPACE_MARKUP);
@@ -829,10 +861,12 @@ public class AptSink extends AbstractTextSink implements AptMarkup {
         }
     }
 
+    @Override
     public void rawText(String text) {
         write(text);
     }
 
+    @Override
     public void comment(String comment) {
         rawText("" + COMMENT + COMMENT + comment + EOL); // comments always end with a line break in APT
     }
@@ -843,6 +877,7 @@ public class AptSink extends AbstractTextSink implements AptMarkup {
      * Unkown events just log a warning message but are ignored otherwise.
      * @see org.apache.maven.doxia.sink.Sink#unknown(String,Object[],SinkEventAttributes)
      */
+    @Override
     public void unknown(String name, Object[] requiredParams, SinkEventAttributes attributes) {
         LOGGER.warn("{}Unknown Sink event '{}', ignoring!", getLocationLogPrefix(), name);
     }
@@ -882,6 +917,7 @@ public class AptSink extends AbstractTextSink implements AptMarkup {
     /**
      * {@inheritDoc}
      */
+    @Override
     public void flush() {
         writer.flush();
     }
@@ -889,6 +925,7 @@ public class AptSink extends AbstractTextSink implements AptMarkup {
     /**
      * {@inheritDoc}
      */
+    @Override
     public void close() {
         writer.close();
 

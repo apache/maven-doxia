@@ -691,6 +691,7 @@ public class Xhtml5BaseParser extends AbstractXmlParser implements HtmlMarkup {
      * Just calls {@link #baseStartTag(XmlPullParser,Sink)}, this should be
      * overridden by implementing parsers to include additional tags.
      */
+    @Override
     protected void handleStartTag(XmlPullParser parser, Sink sink)
             throws XmlPullParserException, MacroExecutionException {
         if (!baseStartTag(parser, sink)) {
@@ -708,6 +709,7 @@ public class Xhtml5BaseParser extends AbstractXmlParser implements HtmlMarkup {
      * Just calls {@link #baseEndTag(XmlPullParser,Sink)}, this should be
      * overridden by implementing parsers to include additional tags.
      */
+    @Override
     protected void handleEndTag(XmlPullParser parser, Sink sink)
             throws XmlPullParserException, MacroExecutionException {
         if (!baseEndTag(parser, sink)) {

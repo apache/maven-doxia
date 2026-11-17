@@ -180,6 +180,7 @@ class AbstractXmlSinkTest {
             return text;
         }
 
+        @Override
         protected void write(String text) {
             buffer.append(text);
         }

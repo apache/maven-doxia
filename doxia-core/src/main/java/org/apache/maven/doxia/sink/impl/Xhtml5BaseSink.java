@@ -1792,6 +1792,7 @@ public class Xhtml5BaseSink extends AbstractXmlSink implements HtmlMarkup {
         return compliantAttributes;
     }
 
+    @Override
     protected void write(String text) {
         if (!this.tableCaptionXMLWriterStack.isEmpty() && this.tableCaptionXMLWriterStack.getLast() != null) {
             this.tableCaptionXMLWriterStack.getLast().writeMarkup(unifyEOLs(text));

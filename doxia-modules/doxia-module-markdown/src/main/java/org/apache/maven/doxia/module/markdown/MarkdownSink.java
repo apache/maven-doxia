@@ -1118,6 +1118,7 @@ public final class MarkdownSink extends Xhtml5BaseSink implements MarkdownMarkup
         write("](" + src + ")");
     }
 
+    @Override
     public void anchor(String name, SinkEventAttributes attributes) {
         super.anchor(name, attributes);
         if (!elementContextStack.element().isHtml()) {
@@ -1135,6 +1136,7 @@ public final class MarkdownSink extends Xhtml5BaseSink implements MarkdownMarkup
         }
     }
 
+    @Override
     public void link(String name, SinkEventAttributes attributes) {
         if (elementContextStack.element().isHtml()) {
             super.link(name, attributes);

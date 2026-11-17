@@ -39,6 +39,7 @@ public class DefaultParserManager implements ParserManager {
     @Inject
     private Map<String, Parser> parsers;
 
+    @Override
     public Parser getParser(String id) throws ParserNotFoundException {
         Parser parser = parsers.get(id);
 

@@ -159,6 +159,7 @@ public class RandomAccessSink extends SinkWrapper {
     /**
      * Close all sinks
      */
+    @Override
     public void close() {
         for (Sink sink : sinks) {
             // sink is responsible for closing it's stream
@@ -170,6 +171,7 @@ public class RandomAccessSink extends SinkWrapper {
     /**
      * Flush all sinks
      */
+    @Override
     public void flush() {
         for (int i = 0; i < sinks.size(); i++) {
             // first flush to get complete buffer

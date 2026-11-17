@@ -74,6 +74,7 @@ public abstract class AbstractXmlValidatorTest extends AbstractXmlValidator {
      * @see #getIncludes()
      * @see #getAllTestDocuments()
      */
+    @Override
     protected Map<String, String> getTestDocuments() throws IOException {
         if (getIncludes() == null) {
             return Collections.emptyMap();
@@ -101,6 +102,7 @@ public abstract class AbstractXmlValidatorTest extends AbstractXmlValidator {
      *
      * @since 1.2
      */
+    @Override
     protected EntityResolver getEntityResolver() {
         return new AbstractXmlParser.CachedFileEntityResolver();
     }

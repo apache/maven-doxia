@@ -46,6 +46,7 @@ public interface XdocMarkup extends HtmlMarkup {
     /** Xdoc tag for <code>author</code> */
     Tag AUTHOR_TAG = new Tag() {
 
+        @Override
         public String toString() {
             return "author";
         }
@@ -54,6 +55,7 @@ public interface XdocMarkup extends HtmlMarkup {
     /** Xdoc tag for <code>date</code> */
     Tag DATE_TAG = new Tag() {
 
+        @Override
         public String toString() {
             return "date";
         }
@@ -62,6 +64,7 @@ public interface XdocMarkup extends HtmlMarkup {
     /** Xdoc tag for <code>document</code> */
     Tag DOCUMENT_TAG = new Tag() {
 
+        @Override
         public String toString() {
             return "document";
         }
@@ -70,6 +73,7 @@ public interface XdocMarkup extends HtmlMarkup {
     /** Xdoc tag for <code>macro</code> */
     Tag MACRO_TAG = new Tag() {
 
+        @Override
         public String toString() {
             return "macro";
         }
@@ -78,6 +82,7 @@ public interface XdocMarkup extends HtmlMarkup {
     /** Xdoc tag for <code>properties</code> */
     Tag PROPERTIES_TAG = new Tag() {
 
+        @Override
         public String toString() {
             return "properties";
         }
@@ -86,6 +91,7 @@ public interface XdocMarkup extends HtmlMarkup {
     /** Xdoc tag for <code>section</code> */
     Tag SECTION_TAG = new Tag() {
 
+        @Override
         public String toString() {
             return "section";
         }
@@ -94,6 +100,7 @@ public interface XdocMarkup extends HtmlMarkup {
     /** Xdoc tag for <code>source</code> */
     Tag SOURCE_TAG = new Tag() {
 
+        @Override
         public String toString() {
             return "source";
         }
@@ -102,6 +109,7 @@ public interface XdocMarkup extends HtmlMarkup {
     /** Xdoc tag for <code>subsection</code> */
     Tag SUBSECTION_TAG = new Tag() {
 
+        @Override
         public String toString() {
             return "subsection";
         }

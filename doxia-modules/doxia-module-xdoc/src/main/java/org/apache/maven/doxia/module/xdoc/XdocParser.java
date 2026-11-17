@@ -87,6 +87,7 @@ public class XdocParser extends Xhtml1BaseParser implements XdocMarkup {
     /** Number of currently open {@code source} elements; verbatim blocks must not be nested. */
     private int sourceDepth;
 
+    @Override
     public void parse(Reader source, Sink sink, String reference) throws ParseException {
         this.sourceContent = null;
 

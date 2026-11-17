@@ -72,6 +72,7 @@ public class SnippetMacro extends AbstractMacro {
      */
     private boolean ignoreDownloadError = true;
 
+    @Override
     public void execute(Sink sink, MacroRequest request) throws MacroExecutionException {
         String id = (String) request.getParameter("id");
 

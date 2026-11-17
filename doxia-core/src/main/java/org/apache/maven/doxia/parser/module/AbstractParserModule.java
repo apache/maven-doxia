@@ -79,6 +79,7 @@ public abstract class AbstractParserModule implements ParserModule {
      *
      * @return a {@link java.lang.String} object.
      */
+    @Override
     public String getSourceDirectory() {
         return sourceDirectory;
     }
@@ -88,6 +89,7 @@ public abstract class AbstractParserModule implements ParserModule {
      *
      * @return an array of {@link java.lang.String} objects.
      */
+    @Override
     public String[] getExtensions() {
         return extensions;
     }
@@ -97,6 +99,7 @@ public abstract class AbstractParserModule implements ParserModule {
      *
      * @return a {@link java.lang.String} object.
      */
+    @Override
     public String getParserId() {
         return parserId;
     }

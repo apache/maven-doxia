@@ -112,6 +112,7 @@ public class Xhtml5Sink extends Xhtml5BaseSink implements Xhtml5Markup {
     /**
      * {@inheritDoc}
      */
+    @Override
     public void head_() {
         if (!isHeadTitleFlag()) {
             // The content of element type "head" must match
@@ -138,6 +139,7 @@ public class Xhtml5Sink extends Xhtml5BaseSink implements Xhtml5Markup {
      *
      * @see javax.swing.text.html.HTML.Tag#TITLE
      */
+    @Override
     public void title(SinkEventAttributes attributes) {
         setHeadTitleFlag(true);
 
@@ -149,6 +151,7 @@ public class Xhtml5Sink extends Xhtml5BaseSink implements Xhtml5Markup {
      *
      * @see javax.swing.text.html.HTML.Tag#TITLE
      */
+    @Override
     public void title_() {
         content(getTextBuffer().toString());
 
@@ -162,6 +165,7 @@ public class Xhtml5Sink extends Xhtml5BaseSink implements Xhtml5Markup {
      *
      * @see javax.swing.text.html.HTML.Tag#META
      */
+    @Override
     public void author_() {
         if (getTextBuffer().length() > 0) {
             MutableAttributeSet att = new SinkEventAttributeSet();
@@ -183,6 +187,7 @@ public class Xhtml5Sink extends Xhtml5BaseSink implements Xhtml5Markup {
      *
      * @see javax.swing.text.html.HTML.Tag#META
      */
+    @Override
     public void date_() {
         if (getTextBuffer().length() > 0) {
             MutableAttributeSet att = new SinkEventAttributeSet();
@@ -211,6 +216,7 @@ public class Xhtml5Sink extends Xhtml5BaseSink implements Xhtml5Markup {
      * @see javax.swing.text.html.HTML.Tag#BODY
      * @see javax.swing.text.html.HTML.Tag#HTML
      */
+    @Override
     public void body_() {
         writeEndTag(BODY);
 
