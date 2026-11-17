@@ -601,8 +601,7 @@ public class AptParser extends AbstractTextParser implements AptMarkup {
     protected static String replaceAll(String string, String oldSub, String newSub) {
         StringBuilder replaced = new StringBuilder();
         int oldSubLength = oldSub.length();
-        int begin;
-        int end;
+        int begin, end;
 
         begin = 0;
         while ((end = string.indexOf(oldSub, begin)) >= 0) {
@@ -1060,9 +1059,7 @@ public class AptParser extends AbstractTextParser implements AptMarkup {
      */
     private void nextBlock(boolean firstBlock) throws AptParseException {
         // Skip open lines.
-        int length;
-        int indent;
-        int i;
+        int length, indent, i;
 
         skipLoop:
         for (; ; ) {
@@ -1901,8 +1898,7 @@ public class AptParser extends AbstractTextParser implements AptMarkup {
 
                 // Expand tabs ---
 
-                int prevColumn;
-                int column;
+                int prevColumn, column;
 
                 column = 0;
 

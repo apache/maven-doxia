@@ -880,7 +880,7 @@ class MarkdownParserTest extends AbstractParserTest {
     }
 
     @Test
-    void anchorWithName() throws Exception {
+    void anchorWithName() throws ParseException {
         Iterator<SinkEventElement> eventIterator = parseSourceToEventTestingSink("<a name=\"my-anchor\">test</a>")
                 .getEventList()
                 .iterator();
@@ -890,7 +890,7 @@ class MarkdownParserTest extends AbstractParserTest {
     }
 
     @Test
-    void strikeThrough() throws Exception {
+    void strikeThrough() throws ParseException {
         Iterator<SinkEventElement> eventIterator = parseSourceToEventTestingSink("~~strikethrough~~")
                 .getEventList()
                 .iterator();
@@ -903,7 +903,7 @@ class MarkdownParserTest extends AbstractParserTest {
     }
 
     @Test
-    void relativeLinkWithAnchorInvalidDoxiaId() throws Exception {
+    void relativeLinkWithAnchorInvalidDoxiaId() throws ParseException {
         Iterator<SinkEventElement> eventIterator = parseSourceToEventTestingSink("[Test URL](test.html#anchor\\(\\))")
                 .getEventList()
                 .iterator();
@@ -916,7 +916,7 @@ class MarkdownParserTest extends AbstractParserTest {
     }
 
     @Test
-    void relativeLinkWithAnchorInvalidDoxiaIdAndRelExternal() throws Exception {
+    void relativeLinkWithAnchorInvalidDoxiaIdAndRelExternal() throws ParseException {
         Iterator<SinkEventElement> eventIterator = parseSourceToEventTestingSink(
                         "<a href=\"test.html#anchor()\" rel=\"external\">Test URL</a>")
                 .getEventList()
