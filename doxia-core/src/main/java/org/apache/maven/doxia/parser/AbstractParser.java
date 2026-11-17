@@ -260,7 +260,7 @@ public abstract class AbstractParser implements Parser, MacroExecutor {
         if (emitAnchors) {
             effectiveSinkWrapperFactories.add(new CreateAnchorsForIndexEntriesFactory());
         }
-        Collections.sort(effectiveSinkWrapperFactories, Collections.reverseOrder(new SinkWrapperFactoryComparator()));
+        effectiveSinkWrapperFactories.sort(Collections.reverseOrder(new SinkWrapperFactoryComparator()));
         return effectiveSinkWrapperFactories;
     }
 

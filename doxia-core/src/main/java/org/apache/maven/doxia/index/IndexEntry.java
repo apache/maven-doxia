@@ -300,7 +300,7 @@ public class IndexEntry {
     public IndexEntry getFirstEntry() {
         List<IndexEntry> entries = getChildEntries();
 
-        if (entries.size() == 0) {
+        if (entries.isEmpty()) {
             return null;
         }
 
@@ -315,7 +315,7 @@ public class IndexEntry {
     public IndexEntry getLastEntry() {
         List<IndexEntry> entries = getChildEntries();
 
-        if (entries.size() == 0) {
+        if (entries.isEmpty()) {
             return null;
         }
 
@@ -330,7 +330,7 @@ public class IndexEntry {
     public IndexEntry getRootEntry() {
         List<IndexEntry> entries = getChildEntries();
 
-        if (entries.size() == 0) {
+        if (entries.isEmpty()) {
             return null;
         } else if (entries.size() > 1) {
             throw new IllegalStateException("This index has more than one root entry");

@@ -24,7 +24,7 @@ import org.apache.maven.doxia.sink.SinkEventAttributeSet;
 /**
  * Static methods to generate standard Doxia sink events.
  */
-public class SinkTestDocument {
+public final class SinkTestDocument {
 
     /** Private constructor. */
     private SinkTestDocument() {

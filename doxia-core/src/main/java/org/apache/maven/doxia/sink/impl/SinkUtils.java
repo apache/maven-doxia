@@ -33,7 +33,7 @@ import org.apache.maven.doxia.sink.SinkEventAttributes;
  * @author ltheussl
  * @since 1.1
  */
-public class SinkUtils {
+public final class SinkUtils {
 
     /** Do not instantiate. */
     private SinkUtils() {

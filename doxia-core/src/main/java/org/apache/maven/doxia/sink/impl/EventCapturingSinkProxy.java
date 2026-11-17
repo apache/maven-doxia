@@ -28,7 +28,7 @@ import org.apache.maven.doxia.sink.Sink;
 /**
  * A proxy for a Sink which captures all event/method names called on it.
  */
-public class EventCapturingSinkProxy implements InvocationHandler {
+public final class EventCapturingSinkProxy implements InvocationHandler {
 
     private final Sink sink;
     private final List<String> capturedEventNames;

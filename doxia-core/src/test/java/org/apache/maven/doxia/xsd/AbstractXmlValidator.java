@@ -273,11 +273,11 @@ public abstract class AbstractXmlValidator {
             final int prime = 31;
             int result = 1;
             result = prime * result + columnNumber;
-            result = prime * result + ((level == null) ? 0 : level.hashCode());
+            result = prime * result + (level == null ? 0 : level.hashCode());
             result = prime * result + lineNumber;
-            result = prime * result + ((message == null) ? 0 : message.hashCode());
-            result = prime * result + ((publicID == null) ? 0 : publicID.hashCode());
-            result = prime * result + ((systemID == null) ? 0 : systemID.hashCode());
+            result = prime * result + (message == null ? 0 : message.hashCode());
+            result = prime * result + (publicID == null ? 0 : publicID.hashCode());
+            result = prime * result + (systemID == null ? 0 : systemID.hashCode());
             return result;
         }
 

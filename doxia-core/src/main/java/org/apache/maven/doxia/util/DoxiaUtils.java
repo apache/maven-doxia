@@ -41,7 +41,7 @@ import org.apache.maven.doxia.sink.SinkEventAttributeSet;
  * @author ltheussl
  * @since 1.1
  */
-public class DoxiaUtils {
+public final class DoxiaUtils {
     /**
      * Checks if the given string corresponds to an internal link,
      * ie it is a link to an anchor within the same document.
@@ -82,12 +82,12 @@ public class DoxiaUtils {
     public static boolean isExternalLink(final String link) {
         String text = link.toLowerCase(Locale.ENGLISH);
 
-        return (text.startsWith("http:/")
+        return text.startsWith("http:/")
                 || text.startsWith("https:/")
                 || text.startsWith("ftp:/")
                 || text.startsWith("mailto:")
                 || text.startsWith("file:/")
-                || text.contains("://"));
+                || text.contains("://");
     }
 
     /**
@@ -107,7 +107,7 @@ public class DoxiaUtils {
      * @see #isInternalLink(String)
      */
     public static boolean isLocalLink(final String link) {
-        return (!isExternalLink(link) && !isInternalLink(link));
+        return !isExternalLink(link) && !isInternalLink(link);
     }
 
     /**
@@ -289,11 +289,11 @@ public class DoxiaUtils {
     //
 
     private static boolean isAsciiLetter(final char c) {
-        return ((c >= 'a' && c <= 'z') || (c >= 'A' && c <= 'Z'));
+        return (c >= 'a' && c <= 'z') || (c >= 'A' && c <= 'Z');
     }
 
     private static boolean isAsciiDigit(final char c) {
-        return (c >= '0' && c <= '9');
+        return c >= '0' && c <= '9';
     }
 
     /**

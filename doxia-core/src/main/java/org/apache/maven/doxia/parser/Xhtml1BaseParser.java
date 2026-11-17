@@ -96,7 +96,7 @@ public class Xhtml1BaseParser extends Xhtml5BaseParser {
         }
     }
 
-    static final String mapAlignToStyle(String alignValue) {
+    static String mapAlignToStyle(String alignValue) {
         switch (alignValue) {
             case "center":
             case "left":
@@ -127,7 +127,7 @@ public class Xhtml1BaseParser extends Xhtml5BaseParser {
                 new AttributeMapping(
                         "border",
                         "class",
-                        (v) -> (v != null && !v.equals("0")) ? "bodyTableBorder" : null,
+                        v -> v != null && !v.equals("0") ? "bodyTableBorder" : null,
                         AttributeMapping.MergeSemantics.PREPEND),
                 new AttributeMapping(
                         "align", "style", Xhtml1BaseParser::mapAlignToStyle, AttributeMapping.MergeSemantics.PREPEND));

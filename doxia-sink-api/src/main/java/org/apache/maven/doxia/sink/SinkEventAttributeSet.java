@@ -208,7 +208,7 @@ public class SinkEventAttributeSet implements SinkEventAttributes, Cloneable {
     }
 
     public boolean isEqual(AttributeSet attr) {
-        return ((getAttributeCount() == attr.getAttributeCount()) && containsAttributes(attr));
+        return (getAttributeCount() == attr.getAttributeCount()) && containsAttributes(attr);
     }
 
     /**
@@ -217,7 +217,7 @@ public class SinkEventAttributeSet implements SinkEventAttributes, Cloneable {
      * @return a {@link javax.swing.text.AttributeSet} object.
      */
     public AttributeSet copyAttributes() {
-        return ((AttributeSet) clone());
+        return (AttributeSet) clone();
     }
 
     /**

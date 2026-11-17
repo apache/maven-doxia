@@ -26,7 +26,7 @@ import org.apache.maven.doxia.util.DoxiaUtils;
  * @author ltheussl
  * @since 1.1
  */
-public class AptUtils {
+public final class AptUtils {
 
     /**
      * Checks if the given string corresponds to an external URI,
@@ -56,7 +56,7 @@ public class AptUtils {
      * @see #isLocalLink(String)
      */
     public static boolean isInternalLink(String link) {
-        return (!isExternalLink(link) && !isLocalLink(link));
+        return !isExternalLink(link) && !isLocalLink(link);
     }
 
     /**
@@ -70,7 +70,7 @@ public class AptUtils {
      * @see #isInternalLink(String)
      */
     public static boolean isLocalLink(String link) {
-        return (link.startsWith("/") || link.startsWith("./") || link.startsWith("../"));
+        return link.startsWith("/") || link.startsWith("./") || link.startsWith("../");
     }
 
     private AptUtils() {
