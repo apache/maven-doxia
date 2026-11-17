@@ -30,7 +30,7 @@ The _Sink_ interface is a generic markup language interface provided as a Java A
 
 For instance, you could do things like:
 
-```unknown
+```java
 sink.paragraph();
 sink.text("my text");
 sink.paragraph_();
@@ -38,7 +38,7 @@ sink.paragraph_();
 
 similar to this HTML markup:
 
-```unknown
+```html
 <p>my text</p>
 ```
 

@@ -28,7 +28,7 @@ under the License.
 
 The RandomAccessSink is a Sink with the ability to add hooks. To demonstrate its usage we can have a look at a FML (FAQ Markup Language)-page. The simple structure of such a page can be like:
 
-```unknown
+```xml
   <faq id="1">
     <question/>
     <answer/>
@@ -50,7 +50,7 @@ With a Sink you can only append and there&apos;s no option to buffer. This would
 
 When using the RandomAccesSink we can prepare the structure of the page
 
-```unknown
+```java
   RandomAccessSink randomAccessSink = new RandomAccessSink(sinkFactory, outputStream, encoding);
   Sink questions  = randomAccessSink.addSinkHook();
   Sink qAndA      = randomAccessSink.addSinkHook();

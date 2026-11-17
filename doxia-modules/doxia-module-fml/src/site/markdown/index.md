@@ -36,7 +36,7 @@ already parsed as XDoc. The same page can be written in Markdown or XDoc without
 anything, and [doxia-converter](https://maven.apache.org/doxia/doxia-tools/doxia-converter/)
 converts existing `.fml` files:
 
-```
+```bash
 java -jar doxia-converter-<version>-jar-with-dependencies.jar \
     -from fml -in src/site/fml/faq.fml -to markdown -out src/site/markdown/faq.md
 ```

@@ -32,7 +32,7 @@ Markdown is a popular lightweight markup language, easy to read and easy to writ
 
 Although metadata was not part of the original Markdown format it is now widely supported through multiple extensions. This modules supports the following two metadata formats:
 
-- [MultiMarkdown Metadata](http://fletcher.github.io/MultiMarkdown-5/metadata.html)
+- [MultiMarkdown Metadata](https://fletcher.github.io/MultiMarkdown-5/metadata.html)
 - [YAML front matter](https://github.com/vsch/flexmark-java/wiki/Extensions#yaml-front-matter)
 
 *Metadata must be placed at the beginning of the document, before any other content.*
@@ -80,8 +80,8 @@ Note that this differs from the APT and XDoc modules, where `+--` and `<source>`
 
 ## References
 
-- [Markdown project website](http://daringfireball.net/projects/markdown)
+- [Markdown project website](https://daringfireball.net/projects/markdown/)
 - [CommonMark spec](https://spec.commonmark.org/)
 - [GitHub Flavored Markdown](https://github.github.com/gfm)
-- [Markdown Wikipedia page](http://en.wikipedia.org/wiki/Markdown)
-- [flexmark-java](http://github.com/vsch/flexmark-java), the library used by this Doxia module in [`Pegdown`](https://github.com/sirthias/pegdown) compatibility mode
+- [Markdown Wikipedia page](https://en.wikipedia.org/wiki/Markdown)
+- [flexmark-java](https://github.com/vsch/flexmark-java), the library this module uses to parse Markdown

@@ -30,7 +30,7 @@ The XDOC XSD is located [here](https://maven.apache.org/xsd/xdoc-2.0.xsd).
 
 Your favorite IDE probably supports XSD schema&apos;s for .xml/.xdoc files. You need to specify the following:
 
-```unknown
+```xml
 <document xmlns="http://maven.apache.org/XDOC/2.0"
   xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
   xsi:schemaLocation="http://maven.apache.org/XDOC/2.0 https://maven.apache.org/xsd/xdoc-2.0.xsd">
