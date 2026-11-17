@@ -429,8 +429,15 @@ public class AptParser extends AbstractTextParser implements AptMarkup {
                             if (hashIndex != -1 && !AptUtils.isExternalLink(linkAnchor)) {
                                 String hash = linkAnchor.substring(hashIndex + 1);
 
-                                if (hash.endsWith(".html") && !hash.startsWith("./")) {
-                                    LOGGER.debug("Ambiguous link '{}'. If this is a local link, prepend \"./\"!", hash);
+                                if (hash.endsWith(".html")
+                                        && !hash.startsWith("./")
+                                        && !hash.startsWith("#")
+                                        && !isSecondParsing()) {
+                                    LOGGER.warn(
+                                            "{}, line {}: Ambiguous link '{}'. If this is a local link, prepend \"./\"!",
+                                            blockFileName != null ? blockFileName : "Unknown source",
+                                            blockLineNumber,
+                                            hash);
                                 }
 
                                 // link##anchor means literal
