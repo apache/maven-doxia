@@ -693,7 +693,8 @@ public abstract class AbstractXmlParser extends AbstractParser implements XmlMar
 
     /**
      * Implementation of the callback mechanism <code>EntityResolver</code>.
-     * Using a mechanism of cached files in temp dir to improve performance when using the <code>XMLReader</code>.
+     * Well-known schemas are read from the classpath, and every resolved entity is cached in memory
+     * to improve performance when using the <code>XMLReader</code>.
      */
     public static class CachedFileEntityResolver implements EntityResolver {
         private static final Logger LOGGER = LoggerFactory.getLogger(CachedFileEntityResolver.class);
@@ -710,8 +711,6 @@ public abstract class AbstractXmlParser extends AbstractParser implements XmlMar
             WELL_KNOWN_SYSTEM_IDS.put("https://maven.apache.org/xsd/xdoc-2.0.xsd", "xdoc-2.0.xsd");
             WELL_KNOWN_SYSTEM_IDS.put("http://maven.apache.org/xsd/fml-1.0.1.xsd", "fml-1.0.1.xsd");
             WELL_KNOWN_SYSTEM_IDS.put("https://maven.apache.org/xsd/fml-1.0.1.xsd", "fml-1.0.1.xsd");
-            WELL_KNOWN_SYSTEM_IDS.put("http://www.w3.org/TR/xhtml1/DTD/xhtml-lat1.ent", "xhtml-lat1.ent");
-            WELL_KNOWN_SYSTEM_IDS.put("https://www.w3.org/TR/xhtml1/DTD/xhtml-lat1.ent", "xhtml-lat1.ent");
         }
 
         @Override
