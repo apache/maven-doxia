@@ -688,7 +688,7 @@ class MarkdownSinkTest extends AbstractSinkTest {
     }
 
     @Test
-    void tableWithInsignificantNewLines() throws ParseException, IOException {
+    void tableWithInsignificantNewLines() throws Exception {
         try (Sink sink = getSink()) {
             parseFile(htmlParser, "table", "html", sink);
         }
@@ -706,7 +706,7 @@ class MarkdownSinkTest extends AbstractSinkTest {
     }
 
     @Test
-    void linkFromHtml() throws ParseException, IOException {
+    void linkFromHtml() throws Exception {
         try (Sink sink = getSink()) {
             parseFile(htmlParser, "link", "html", getSink());
         }
@@ -716,7 +716,7 @@ class MarkdownSinkTest extends AbstractSinkTest {
     }
 
     @Test
-    void verbatimInTableCell() throws ParseException, IOException {
+    void verbatimInTableCell() throws Exception {
         try (Sink sink = getSink()) {
             sink.table();
             sink.tableRows();
@@ -750,7 +750,7 @@ class MarkdownSinkTest extends AbstractSinkTest {
      * follows as {@code <object>} fallback content. See MDOXIA-159.
      */
     @Test
-    void unknownObjectEventIsRenderedAsExplicitlyClosedRawHtml() throws IOException {
+    void unknownObjectEventIsRenderedAsExplicitlyClosedRawHtml() throws Exception {
         SinkEventAttributeSet attributes = new SinkEventAttributeSet();
         attributes.addAttribute("type", "image/svg+xml");
         attributes.addAttribute("data", "x.svg");
@@ -768,7 +768,7 @@ class MarkdownSinkTest extends AbstractSinkTest {
      * void element, so it is still fine to render it self-closed. See MDOXIA-159.
      */
     @Test
-    void unknownMapAndAreaEventsAreRenderedAsRawHtml() throws IOException {
+    void unknownMapAndAreaEventsAreRenderedAsRawHtml() throws Exception {
         SinkEventAttributeSet mapAttributes = new SinkEventAttributeSet();
         mapAttributes.addAttribute("name", "imgmap");
         SinkEventAttributeSet areaAttributes = new SinkEventAttributeSet();

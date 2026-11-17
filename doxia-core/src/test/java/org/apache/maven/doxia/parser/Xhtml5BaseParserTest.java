@@ -392,7 +392,7 @@ class Xhtml5BaseParserTest extends AbstractParserTest {
     }
 
     @Test
-    void whitespaceInBlockAndInlineElements() throws ParseException {
+    void whitespaceInBlockAndInlineElements() throws Exception {
         String text =
                 "<p>\n  \n<ul>" + Xhtml5BaseParser.EOL + "  <li><a href=\"https://example.com\"> One</a> Another</li>"
                         + Xhtml5BaseParser.EOL + "  <li> Two   Another </li>   "
@@ -923,7 +923,7 @@ class Xhtml5BaseParserTest extends AbstractParserTest {
     }
 
     @Test
-    void anchorWithName() throws ParseException {
+    void anchorWithName() throws Exception {
         String text = "<a name=\"test\"></a>";
 
         parser.parse(text, sink);

@@ -41,7 +41,7 @@ class HtmlTagTest {
      * does today. A tag whose block value moves changes the whitespace of every generated site.
      */
     @Test
-    void knownTagsAnswerAsHtmlMarkupDoes() throws IllegalAccessException {
+    void knownTagsAnswerAsHtmlMarkupDoes() throws Exception {
         List<Field> tagFields = new ArrayList<>();
 
         for (Field field : HtmlMarkup.class.getDeclaredFields()) {
