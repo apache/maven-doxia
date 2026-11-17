@@ -23,15 +23,31 @@ specific language governing permissions and limitations
 under the License.
 -->
 
+
 # Doxia
 
-Doxia is a content generation framework that provides powerful techniques for generating static and dynamic content, supporting [a variety of markup languages](/doxia/references/index.html).
+This is the base component of [Doxia](https://maven.apache.org/doxia/), the document engine behind Maven sites. It
+contains the Sink API, the parsers and sinks for each markup format, and the built-in macros. Most users never call
+it directly: the [Maven Site Plugin](https://maven.apache.org/plugins/maven-site-plugin/) uses it through
+[Doxia Sitetools](https://maven.apache.org/doxia/doxia-sitetools/). For an introduction to the formats and how to use
+them, start at the [Doxia home page](https://maven.apache.org/doxia/).
 
-The actual component is the base component from the whole Doxia suite, with the core parser and sink APIs and their implementation in supported markup languages.
+The component consists of the following modules.
 
-It is used by the [Doxia Sitetools](../doxia-sitetools) extension, that adds site and documents support.
+| Module | Contents |
+|---|---|
+| [doxia-sink-api](./doxia-sink-api/) | The `Sink` interface that all parsers write to and all output formats implement. |
+| [doxia-core](./doxia-core/) | The `Parser` API, base classes for parsers and sinks, and the `toc`, `snippet` and `echo` macros. |
+| [doxia-module-markdown](./doxia-modules/doxia-module-markdown/) | Markdown parser and sink, based on [flexmark-java](https://github.com/vsch/flexmark-java). |
+| [doxia-module-apt](./doxia-modules/doxia-module-apt/) | APT (Almost Plain Text) parser and sink. |
+| [doxia-module-xdoc](./doxia-modules/doxia-module-xdoc/) | Xdoc parser and sink. |
+| [doxia-module-xhtml5](./doxia-modules/doxia-module-xhtml5/) | XHTML5 parser and sink; the sink also writes the pages of a Maven site. |
+| [doxia-module-fml](./doxia-modules/doxia-module-fml/) | FML (FAQ Markup Language) parser, deprecated since 2.2.0. |
+| [doxia-test-docs](./doxia-test-docs/) | Sample documents shared by the module tests. |
 
-<img src="images/doxia-deps.png" border="0" usemap="#Doxia_dependencies" />
+The following diagram shows how the modules depend on each other.
+
+<img src="images/doxia-deps.png" alt="Dependencies between the Doxia modules" usemap="#Doxia_dependencies" />
 <map name="Doxia_dependencies">
   <area shape="rect" coords="0,280,122,308"  href="./doxia-test-docs/" />
   <area shape="rect" coords="135,231,286,261" href="./doxia-sink-api/" />

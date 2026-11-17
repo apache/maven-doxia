@@ -30,7 +30,7 @@ The FML XSD is located [here](https://maven.apache.org/xsd/fml-1.0.1.xsd).
 
 Your favorite IDE probably supports XSD schema&apos;s for .fml files. You need to specify the following:
 
-```unknown
+```xml
 <faqs xmlns="http://maven.apache.org/FML/1.0.1"
   xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
   xsi:schemaLocation="http://maven.apache.org/FML/1.0.1 https://maven.apache.org/xsd/fml-1.0.1.xsd"

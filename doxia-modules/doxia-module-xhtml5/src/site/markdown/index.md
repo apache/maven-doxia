@@ -22,11 +22,11 @@ This parser and sink digests and emits sources compliant with the [XML syntax of
 
 ## Special handling of anchors
 
-Anchor ids/names need to follow a strict syntax in Doxia, therefore both anchor names (`<a name="...">`) as well as internal link targets (`<a href="..."`) are automatically adjusted to comply with that syntax. Further details in [DoxiaUtils.encodeId(...)](../../doxia-core/apidocs/org/apache/maven/doxia/util/DoxiaUtils.html#encodeId-java.lang.String-).
+Anchor ids/names need to follow a strict syntax in Doxia, therefore both anchor names (`<a name="...">`) as well as internal link targets (`<a href="..."`) are automatically adjusted to comply with that syntax. Further details in [DoxiaUtils.encodeId(...)](https://maven.apache.org/doxia/doxia/doxia-core/apidocs/org/apache/maven/doxia/util/DoxiaUtils.html#encodeId(java.lang.String)).
 
 In order to leave internal link targets (i.e. ones not starting with a scheme) unprocessed use attribute `rel` with value `external` like this
 
-```
+```html
 <a href="testpage#specialanchor()" rel="external">...</a>
 ```
 
