@@ -28,10 +28,12 @@ import org.apache.maven.doxia.sink.Sink;
  */
 public class XdocSinkWithLanguageIdTest extends XdocSinkTest {
 
+    @Override
     protected Sink createSink(Writer writer) {
         return new XdocSink(writer, "UTF-8", Locale.US.getLanguage());
     }
 
+    @Override
     protected String getHeadBlock() {
         return "<?xml version=\"1.0\" encoding=\"UTF-8\"?>"
                 + "<document xmlns=\"http://maven.apache.org/XDOC/2.0\" "

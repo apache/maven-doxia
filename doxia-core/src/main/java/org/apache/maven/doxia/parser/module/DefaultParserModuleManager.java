@@ -45,6 +45,7 @@ public class DefaultParserModuleManager implements ParserModuleManager {
      *
      * @return a {@link java.util.Collection} object.
      */
+    @Override
     public Collection<ParserModule> getParserModules() {
         if (parserModulesValues == null) {
             Map<Class<?>, ParserModule> parserModulesTmp = new LinkedHashMap<>();
@@ -57,6 +58,7 @@ public class DefaultParserModuleManager implements ParserModuleManager {
         return parserModulesValues;
     }
 
+    @Override
     public ParserModule getParserModule(String id) throws ParserModuleNotFoundException {
         ParserModule parserModule = parserModules.get(id);
 

@@ -87,6 +87,7 @@ public class FmlParser extends AbstractXmlParser implements FmlMarkup {
     /** The macro parameters. */
     private Map<String, Object> macroParameters = new LinkedHashMap<>();
 
+    @Override
     public void parse(Reader source, Sink sink, String reference) throws ParseException {
         LOGGER.warn(
                 "FML is deprecated and will be removed in the next major Doxia version; convert {} to Markdown or XDoc",

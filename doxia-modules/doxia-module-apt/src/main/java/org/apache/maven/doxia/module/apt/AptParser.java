@@ -1565,6 +1565,7 @@ public class AptParser extends AbstractTextParser implements AptMarkup {
             super(AptParser.LIST_BREAK, indent, firstLine);
         }
 
+        @Override
         public void traverse() throws AptParseException {
             throw new AptParseException("internal error: traversing list break");
         }
@@ -1583,6 +1584,7 @@ public class AptParser extends AbstractTextParser implements AptMarkup {
             super(TITLE, indent, firstLine);
         }
 
+        @Override
         public void traverse() throws AptParseException {
             StringTokenizer lines = new StringTokenizer(text, EOL);
             int separator = -1;
@@ -1687,6 +1689,7 @@ public class AptParser extends AbstractTextParser implements AptMarkup {
             super(type, indent, firstLine);
         }
 
+        @Override
         public void traverse() throws AptParseException {
             Title();
             traverseText(skipLeadingBullets());
@@ -1713,10 +1716,12 @@ public class AptParser extends AbstractTextParser implements AptMarkup {
             super(SECTION1, indent, firstLine);
         }
 
+        @Override
         public void Title() {
             AptParser.this.sink.sectionTitle1();
         }
 
+        @Override
         public void Title_() {
             AptParser.this.sink.sectionTitle1_();
         }
@@ -1735,10 +1740,12 @@ public class AptParser extends AbstractTextParser implements AptMarkup {
             super(SECTION2, indent, firstLine);
         }
 
+        @Override
         public void Title() {
             AptParser.this.sink.sectionTitle2();
         }
 
+        @Override
         public void Title_() {
             AptParser.this.sink.sectionTitle2_();
         }
@@ -1757,10 +1764,12 @@ public class AptParser extends AbstractTextParser implements AptMarkup {
             super(SECTION3, indent, firstLine);
         }
 
+        @Override
         public void Title() {
             AptParser.this.sink.sectionTitle3();
         }
 
+        @Override
         public void Title_() {
             AptParser.this.sink.sectionTitle3_();
         }
@@ -1779,10 +1788,12 @@ public class AptParser extends AbstractTextParser implements AptMarkup {
             super(SECTION4, indent, firstLine);
         }
 
+        @Override
         public void Title() {
             AptParser.this.sink.sectionTitle4();
         }
 
+        @Override
         public void Title_() {
             AptParser.this.sink.sectionTitle4_();
         }
@@ -1801,10 +1812,12 @@ public class AptParser extends AbstractTextParser implements AptMarkup {
             super(SECTION5, indent, firstLine);
         }
 
+        @Override
         public void Title() {
             AptParser.this.sink.sectionTitle5();
         }
 
+        @Override
         public void Title_() {
             AptParser.this.sink.sectionTitle5_();
         }
@@ -1823,6 +1836,7 @@ public class AptParser extends AbstractTextParser implements AptMarkup {
             super(PARAGRAPH, indent, firstLine);
         }
 
+        @Override
         public void traverse() throws AptParseException {
             AptParser.this.sink.paragraph();
             traverseText(skipSpaceFrom(0));
@@ -1842,6 +1856,7 @@ public class AptParser extends AbstractTextParser implements AptMarkup {
             super(COMMENT_BLOCK, 0, line);
         }
 
+        @Override
         public void traverse() throws AptParseException {
             if (isEmitComments()) {
                 AptParser.this.sink.comment(text);
@@ -1923,6 +1938,7 @@ public class AptParser extends AbstractTextParser implements AptMarkup {
             text = buffer.toString();
         }
 
+        @Override
         public void traverse() throws AptParseException {
             AptParser.this.sink.verbatim(source ? SinkEventAttributeSet.SOURCE : null);
             AptParser.this.sink.text(text);
@@ -1943,6 +1959,7 @@ public class AptParser extends AbstractTextParser implements AptMarkup {
             super(FIGURE, indent, firstLine);
         }
 
+        @Override
         public void traverse() throws AptParseException {
             AptParser.this.sink.figure();
 
@@ -1973,6 +1990,7 @@ public class AptParser extends AbstractTextParser implements AptMarkup {
             super(TABLE, indent, firstLine);
         }
 
+        @Override
         public void traverse() throws AptParseException {
             int captionIndex = -1;
             int nextLineIndex = 0;
@@ -2227,6 +2245,7 @@ public class AptParser extends AbstractTextParser implements AptMarkup {
             super(LIST_ITEM, indent, firstLine);
         }
 
+        @Override
         public void traverse() throws AptParseException {
             traverseText(skipLeadingBullets());
         }
@@ -2259,6 +2278,7 @@ public class AptParser extends AbstractTextParser implements AptMarkup {
             return numbering;
         }
 
+        @Override
         public void traverse() throws AptParseException {
             traverseText(skipItemNumber());
         }
@@ -2302,6 +2322,7 @@ public class AptParser extends AbstractTextParser implements AptMarkup {
             super(DEFINITION_LIST_ITEM, indent, firstLine);
         }
 
+        @Override
         public void traverse() throws AptParseException {
             int i = skipSpaceFrom(0);
             int j = skipFromLeftToRightBracket(i);
@@ -2334,6 +2355,7 @@ public class AptParser extends AbstractTextParser implements AptMarkup {
             super(HORIZONTAL_RULE, indent, firstLine);
         }
 
+        @Override
         public void traverse() throws AptParseException {
             AptParser.this.sink.horizontalRule();
         }
@@ -2352,6 +2374,7 @@ public class AptParser extends AbstractTextParser implements AptMarkup {
             super(PG_BREAK, indent, firstLine);
         }
 
+        @Override
         public void traverse() throws AptParseException {
             AptParser.this.sink.pageBreak();
         }
@@ -2372,6 +2395,7 @@ public class AptParser extends AbstractTextParser implements AptMarkup {
             text = firstLine;
         }
 
+        @Override
         public void traverse() throws AptParseException {
             if (isSecondParsing()) {
                 return;

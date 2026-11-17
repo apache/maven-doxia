@@ -36,6 +36,7 @@ import static org.junit.jupiter.api.Assertions.assertEquals;
  */
 public class XdocSinkTest extends AbstractSinkTest {
 
+    @Override
     @Test
     public void section1() {
         String title = "Title1";
@@ -53,6 +54,7 @@ public class XdocSinkTest extends AbstractSinkTest {
         assertEquals(expected, actual, "Wrong section1 block!");
     }
 
+    @Override
     @Test
     public void section2() {
         String title = "Title2";
@@ -287,6 +289,7 @@ public class XdocSinkTest extends AbstractSinkTest {
     /**
      * Test verbatim.
      */
+    @Override
     @Test
     public void verbatimSource() {
         Writer writer = new StringWriter();

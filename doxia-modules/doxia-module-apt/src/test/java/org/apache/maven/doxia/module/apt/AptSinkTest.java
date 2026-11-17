@@ -292,6 +292,7 @@ class AptSinkTest extends AbstractSinkTest {
     }
 
     /* Overwrite the test from AbstractSinkTest as EOLs are part of getCommentBlock(...) */
+    @Override
     @Test
     public void twoConsecutiveBlockComments() {
         final Sink sink = getSink();

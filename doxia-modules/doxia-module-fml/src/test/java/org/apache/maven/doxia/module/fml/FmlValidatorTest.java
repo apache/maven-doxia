@@ -62,6 +62,7 @@ class FmlValidatorTest extends AbstractXmlValidatorTest {
         return content;
     }
 
+    @Override
     @Test
     public void validateFiles() {
         // TODO: super.validateFiles() only validates files from doxia-test-docs, what's the point?

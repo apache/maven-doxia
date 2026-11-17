@@ -348,6 +348,7 @@ public class IndexEntry {
      *
      * @return Returns a string representation of all objects
      */
+    @Override
     public String toString() {
         return toString(0);
     }

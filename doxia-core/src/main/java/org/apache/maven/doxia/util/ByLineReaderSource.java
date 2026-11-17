@@ -86,6 +86,7 @@ public class ByLineReaderSource implements ByLineSource {
      * @return a {@link java.lang.String} object.
      * @throws org.apache.maven.doxia.parser.ParseException if any.
      */
+    @Override
     public final String getNextLine() throws ParseException {
         if (reader == null) {
             return null;
@@ -120,6 +121,7 @@ public class ByLineReaderSource implements ByLineSource {
      *
      * @return a {@link java.lang.String} object.
      */
+    @Override
     public final String getName() {
         return name;
     }
@@ -129,6 +131,7 @@ public class ByLineReaderSource implements ByLineSource {
      *
      * @return a int.
      */
+    @Override
     public final int getLineNumber() {
         return lineNumber;
     }
@@ -136,6 +139,7 @@ public class ByLineReaderSource implements ByLineSource {
     /**
      * {@inheritDoc}
      */
+    @Override
     public final void close() {
         if (reader == null) {
             return;
@@ -152,6 +156,7 @@ public class ByLineReaderSource implements ByLineSource {
     /**
      * {@inheritDoc}
      */
+    @Override
     public final void ungetLine() {
         if (ungetted) {
             throw new IllegalStateException("we support only one level of ungetLine()");
@@ -159,6 +164,7 @@ public class ByLineReaderSource implements ByLineSource {
         ungetted = true;
     }
 
+    @Override
     public final void unget(final String s) {
         Objects.requireNonNull(s, "s cannot be null");
 

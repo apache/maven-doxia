@@ -67,6 +67,7 @@ public class PipelineSink implements InvocationHandler {
      * @param args an array of {@link java.lang.Object} objects.
      * @return a {@link java.lang.Object} object.
      */
+    @Override
     public Object invoke(Object proxy, Method method, Object[] args)
             throws IllegalAccessException, InvocationTargetException {
         for (Sink sink : pipeline) {

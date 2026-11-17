@@ -264,6 +264,7 @@ public class Xhtml5Parser extends Xhtml5BaseParser implements Xhtml5Markup {
         this.isEmptyElement = false;
     }
 
+    @Override
     public void parse(Reader source, Sink sink, String reference) throws ParseException {
         this.sourceContent = null;
 

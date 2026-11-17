@@ -49,6 +49,7 @@ public class DefaultDoxia implements Doxia {
     // which can probably be done away with.
     // ----------------------------------------------------------------------
 
+    @Override
     public void parse(Reader source, String parserId, Sink sink) throws ParserNotFoundException, ParseException {
         this.parse(source, parserId, sink, null);
     }
@@ -61,6 +62,7 @@ public class DefaultDoxia implements Doxia {
         parser.parse(source, sink, reference);
     }
 
+    @Override
     public Parser getParser(String parserId) throws ParserNotFoundException {
         return parserManager.getParser(parserId);
     }

@@ -106,6 +106,7 @@ public class XdocSink extends Xhtml5BaseSink implements XdocMarkup {
      * @see XdocMarkup#DOCUMENT_TAG
      * @see XdocMarkup#PROPERTIES_TAG
      */
+    @Override
     public void head(SinkEventAttributes attributes) {
         init();
 
@@ -142,6 +143,7 @@ public class XdocSink extends Xhtml5BaseSink implements XdocMarkup {
      * @see XdocMarkup#DOCUMENT_TAG
      * @see XdocMarkup#PROPERTIES_TAG
      */
+    @Override
     public void head_() {
         setHeadFlag(false);
 
@@ -163,6 +165,7 @@ public class XdocSink extends Xhtml5BaseSink implements XdocMarkup {
      *
      * @see javax.swing.text.html.HTML.Tag#TITLE
      */
+    @Override
     public void title_() {
         content(getTextBuffer().toString());
 
@@ -176,6 +179,7 @@ public class XdocSink extends Xhtml5BaseSink implements XdocMarkup {
      *
      * @see XdocMarkup#AUTHOR_TAG
      */
+    @Override
     public void author_() {
         if (getTextBuffer().length() > 0) {
             writeStartTag(AUTHOR_TAG);
@@ -194,6 +198,7 @@ public class XdocSink extends Xhtml5BaseSink implements XdocMarkup {
      *
      * @see XdocMarkup#DATE_TAG
      */
+    @Override
     public void date_() {
         if (getTextBuffer().length() > 0) {
             writeStartTag(DATE_TAG);
@@ -207,6 +212,7 @@ public class XdocSink extends Xhtml5BaseSink implements XdocMarkup {
      * {@inheritDoc}
      * @see javax.swing.text.html.HTML.Tag#BODY
      */
+    @Override
     public void body(SinkEventAttributes attributes) {
         writeStartTag(BODY, attributes);
     }
@@ -217,6 +223,7 @@ public class XdocSink extends Xhtml5BaseSink implements XdocMarkup {
      * @see javax.swing.text.html.HTML.Tag#BODY
      * @see XdocMarkup#DOCUMENT_TAG
      */
+    @Override
     public void body_() {
         writeEndTag(BODY);
 
@@ -332,6 +339,7 @@ public class XdocSink extends Xhtml5BaseSink implements XdocMarkup {
      * @see javax.swing.text.html.HTML.Tag#PRE
      * @param attributes a {@link org.apache.maven.doxia.sink.SinkEventAttributes} object.
      */
+    @Override
     public void verbatim(SinkEventAttributes attributes) {
 
         MutableAttributeSet atts = SinkUtils.filterAttributes(attributes, SinkUtils.SINK_VERBATIM_ATTRIBUTES);
@@ -362,6 +370,7 @@ public class XdocSink extends Xhtml5BaseSink implements XdocMarkup {
      * @see XdocMarkup#SOURCE_TAG
      * @see javax.swing.text.html.HTML.Tag#PRE
      */
+    @Override
     public void verbatim_() {
         if (getVerbatimMode() == VerbatimMode.ON_WITH_CODE) {
             writeEndTag(SOURCE_TAG);
@@ -377,6 +386,7 @@ public class XdocSink extends Xhtml5BaseSink implements XdocMarkup {
      *
      * @see javax.swing.text.html.HTML.Tag#TABLE
      */
+    @Override
     public void tableRows(int[] justification, boolean grid) {
         // similar to super.tableRows(justification, grid) but without class.
 
@@ -411,6 +421,7 @@ public class XdocSink extends Xhtml5BaseSink implements XdocMarkup {
     /**
      * <p>close.</p>
      */
+    @Override
     public void close() {
         super.close();
 

@@ -32,10 +32,12 @@ import static org.junit.jupiter.api.Assertions.assertEquals;
 
 class RandomAccessSinkTest {
     private SinkFactory factory = new AbstractXmlSinkFactory() {
+        @Override
         protected Sink createSink(Writer writer, String encoding, String languageId) {
             return new TextSink(writer);
         }
 
+        @Override
         protected Sink createSink(Writer writer, String encoding) {
             return new TextSink(writer);
         }

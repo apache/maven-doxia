@@ -64,6 +64,7 @@ public class AptReaderSource implements AptSource {
      * @return a {@link java.lang.String} object.
      * @throws org.apache.maven.doxia.module.apt.AptParseException if any.
      */
+    @Override
     public String getNextLine() throws AptParseException {
         if (reader == null) {
             return null;
@@ -92,6 +93,7 @@ public class AptReaderSource implements AptSource {
      *
      * @return a {@link java.lang.String} object.
      */
+    @Override
     public String getName() {
         // never return null
         return name != null ? name : "";
@@ -102,6 +104,7 @@ public class AptReaderSource implements AptSource {
      *
      * @return a int.
      */
+    @Override
     public int getLineNumber() {
         return lineNumber;
     }

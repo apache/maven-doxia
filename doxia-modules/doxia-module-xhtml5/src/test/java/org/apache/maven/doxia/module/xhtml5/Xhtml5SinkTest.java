@@ -313,6 +313,7 @@ public class Xhtml5SinkTest extends AbstractSinkTest {
     /**
      * Test head events.
      */
+    @Override
     @Test
     public void head() {
         Xhtml5Sink sink = null;
