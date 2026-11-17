@@ -652,7 +652,7 @@ class MarkdownParserTest extends AbstractParserTest {
 
     protected String parseFileToHtml(String file) throws ParseException, IOException {
         try (Reader reader = getTestReader(file)) {
-            return parser.toXhtml(reader).toString();
+            return parser.toXhtml(reader);
         }
     }
 

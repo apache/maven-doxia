@@ -34,7 +34,7 @@ import org.apache.maven.doxia.markup.HtmlMarkup;
  * @author <a href="mailto:vincent.siveton@gmail.com">Vincent Siveton</a>
  * @since 1.0
  */
-public class HtmlTools {
+public final class HtmlTools {
     private static final Tag[] ALL_TAGS = {
         HtmlMarkup.A,
         HtmlMarkup.ABBR,
@@ -396,10 +396,10 @@ public class HtmlTools {
                         if (isHighSurrogate(c)) {
                             int codePoint = toCodePoint(c, url.charAt(++i));
                             unicode = toChars(codePoint);
-                            bytes = (new String(unicode, 0, unicode.length)).getBytes(StandardCharsets.UTF_8);
+                            bytes = new String(unicode, 0, unicode.length).getBytes(StandardCharsets.UTF_8);
                         } else {
                             unicode[0] = c;
-                            bytes = (new String(unicode, 0, 1)).getBytes(StandardCharsets.UTF_8);
+                            bytes = new String(unicode, 0, 1).getBytes(StandardCharsets.UTF_8);
                         }
 
                         for (byte aByte : bytes) {
@@ -471,7 +471,7 @@ public class HtmlTools {
     private static final char MAX_HIGH_SURROGATE = '\uDBFF';
 
     private static boolean isHighSurrogate(char ch) {
-        return (MIN_HIGH_SURROGATE <= ch && MAX_HIGH_SURROGATE >= ch);
+        return MIN_HIGH_SURROGATE <= ch && MAX_HIGH_SURROGATE >= ch;
     }
 
     private static final int MIN_CODE_POINT = 0x000000;
@@ -479,11 +479,11 @@ public class HtmlTools {
     private static final int MIN_SUPPLEMENTARY_CODE_POINT = 0x10000;
 
     private static boolean isValidCodePoint(int codePoint) {
-        return (MIN_CODE_POINT <= codePoint && MAX_CODE_POINT >= codePoint);
+        return MIN_CODE_POINT <= codePoint && MAX_CODE_POINT >= codePoint;
     }
 
     private static boolean isSupplementaryCodePoint(int codePoint) {
-        return (MIN_SUPPLEMENTARY_CODE_POINT <= codePoint && MAX_CODE_POINT >= codePoint);
+        return MIN_SUPPLEMENTARY_CODE_POINT <= codePoint && MAX_CODE_POINT >= codePoint;
     }
 
     /**

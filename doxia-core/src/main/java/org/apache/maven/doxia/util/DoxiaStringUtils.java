@@ -24,7 +24,7 @@ package org.apache.maven.doxia.util;
  *
  * @since 2.1.0
  */
-public class DoxiaStringUtils {
+public final class DoxiaStringUtils {
 
     private DoxiaStringUtils() {
         // utility class

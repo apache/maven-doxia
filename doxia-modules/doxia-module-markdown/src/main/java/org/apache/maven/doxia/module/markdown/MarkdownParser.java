@@ -306,12 +306,12 @@ public class MarkdownParser extends AbstractTextParser implements TextMarkup {
         if (!haveTitle && documentRoot.hasChildren()) {
             // Skip the comment nodes
             Node firstNode = documentRoot.getFirstChild();
-            while (firstNode != null && firstNode instanceof HtmlCommentBlock) {
+            while (firstNode instanceof HtmlCommentBlock) {
                 firstNode = firstNode.getNext();
             }
 
             // If this first non-comment node is a heading, we use it as the document title
-            if (firstNode != null && firstNode instanceof Heading) {
+            if (firstNode instanceof Heading) {
                 html.append("<title>");
                 TextCollectingVisitor collectingVisitor = new TextCollectingVisitor();
                 String headingText = collectingVisitor.collectAndGetText(firstNode);

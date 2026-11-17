@@ -385,7 +385,7 @@ public class XdocSink extends Xhtml5BaseSink implements XdocMarkup {
         MutableAttributeSet att = new SinkEventAttributeSet();
 
         if (!tableAttributes.isDefined(SinkEventAttributes.BORDER)) {
-            att.addAttribute(SinkEventAttributes.BORDER, (grid ? "1" : "0"));
+            att.addAttribute(SinkEventAttributes.BORDER, grid ? "1" : "0");
         }
 
         att.addAttributes(tableAttributes);

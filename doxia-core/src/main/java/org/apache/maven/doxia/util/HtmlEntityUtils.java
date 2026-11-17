@@ -27,7 +27,7 @@ import java.util.Map;
  *
  * @since 2.1.0
  */
-public class HtmlEntityUtils {
+public final class HtmlEntityUtils {
 
     private static final Map<String, String> HTML4_ENTITIES = new HashMap<>();
     private static final Map<String, String> XML_ENTITIES = new HashMap<>();

@@ -48,7 +48,7 @@ import org.slf4j.LoggerFactory;
  * <b>Note</b>: The encoding used is UTF-8.
  * Extends the Xhtml5 sink as in some context HTML needs to be emitted.
  */
-public class MarkdownSink extends Xhtml5BaseSink implements MarkdownMarkup {
+public final class MarkdownSink extends Xhtml5BaseSink implements MarkdownMarkup {
     private static final Logger LOGGER = LoggerFactory.getLogger(MarkdownSink.class);
 
     // ----------------------------------------------------------------------
@@ -102,6 +102,7 @@ public class MarkdownSink extends Xhtml5BaseSink implements MarkdownMarkup {
     interface TextEscapeFunction {
         String escape(ElementContext context, LastTwoLinesAwareWriter writer, String text);
     }
+
     /** Most important contextual metadata (of elements). This contains information about necessary escaping rules, potential prefixes and newlines */
     enum ElementContext {
         ROOT_WITH_BUFFERING(
