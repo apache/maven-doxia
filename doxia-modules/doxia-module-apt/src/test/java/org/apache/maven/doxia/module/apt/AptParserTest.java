@@ -20,8 +20,11 @@ package org.apache.maven.doxia.module.apt;
 
 import javax.inject.Inject;
 
+import java.io.ByteArrayOutputStream;
 import java.io.IOException;
+import java.io.PrintStream;
 import java.io.Reader;
+import java.io.StringReader;
 import java.io.StringWriter;
 import java.io.Writer;
 import java.util.Iterator;
@@ -598,5 +601,27 @@ class AptParserTest extends AbstractParserTest {
     @Override
     protected String getVerbatimCodeSource() {
         return "+--" + EOL + "<>{}=#*" + EOL + "+--" + EOL;
+    }
+
+    @Test
+    void ambiguousLinkIsReportedWithItsLocation() throws Exception {
+        String source = "Title" + EOL + EOL + " See {{{doxia-apt.html}one}}, {{{./other.html}two}}" + EOL
+                + " and {{{#literal.html}three}}." + EOL + EOL + " Next paragraph." + EOL;
+
+        PrintStream originalErr = System.err;
+        ByteArrayOutputStream err = new ByteArrayOutputStream();
+        System.setErr(new PrintStream(err, true, "UTF-8"));
+        try {
+            createParser().parse(new StringReader(source), new SinkEventTestingSink(), "index.apt");
+        } finally {
+            System.setErr(originalErr);
+        }
+
+        String log = err.toString("UTF-8");
+        assertTrue(
+                log.contains("WARN") && log.contains("index.apt, line 3: Ambiguous link 'doxia-apt.html'"),
+                "expected a warning with the location, got: " + log);
+        assertFalse(log.contains("other.html"), "a link starting with ./ must not be reported: " + log);
+        assertFalse(log.contains("literal.html"), "a literal anchor must not be reported: " + log);
     }
 }
