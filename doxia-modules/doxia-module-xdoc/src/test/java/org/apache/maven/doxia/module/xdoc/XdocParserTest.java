@@ -411,6 +411,25 @@ class XdocParserTest extends AbstractParserTest {
     }
 
     @Test
+    void plainTextEntity() throws Exception {
+        // #1140: a DOCTYPE entity whose value is plain text, not a character reference, was silently dropped
+        final String text = "<!DOCTYPE test [<!ENTITY product \"Acme Widget\">]>" + "<p>&product;</p>";
+
+        SinkEventTestingSink sink = new SinkEventTestingSink();
+
+        parser.setValidate(false);
+        parser.parse(text, sink);
+
+        Iterator<SinkEventElement> it = sink.getEventList().iterator();
+
+        assertSinkStartsWith(it, "paragraph");
+
+        assertSinkEquals(it.next(), "text", "Acme Widget", null);
+
+        assertSinkEquals(it, "paragraph_");
+    }
+
+    @Test
     void styleWithCData() throws Exception {
         // DOXIA-449
         final String text = "<style type=\"text/css\">\n" + "<![CDATA[\n"

@@ -79,6 +79,15 @@ public abstract class AbstractXmlParser extends AbstractParser implements XmlMar
     private static final Pattern PATTERN_ENTITY_2 =
             Pattern.compile(ENTITY_START + "(\\s)+([^>|^\\s]+)(\\s)+\"(\\s)*(&(#x?[0-9a-fA-F]{1,5};)*)(\\s)*\"(\\s)*>");
 
+    /**
+     * Entity pattern for a plain-text replacement value, i.e. a product or version name with no markup.
+     * "<!ENTITY(\\s)+([^>|^\\s]+)(\\s)+\"(\\s)*([^&<"]*)(\\s)*\"(\\s)*>"
+     * <br>
+     * see <a href="https://github.com/apache/maven-doxia/issues/1140">issue 1140</a>.
+     */
+    private static final Pattern PATTERN_ENTITY_3 =
+            Pattern.compile(ENTITY_START + "(\\s)+([^>|^\\s]+)(\\s)+\"(\\s)*([^&<\"]*)(\\s)*\"(\\s)*>");
+
     private boolean ignorableWhitespace;
 
     private boolean collapsibleWhitespace;
@@ -682,6 +691,15 @@ public abstract class AbstractXmlParser extends AbstractParser implements XmlMar
 
                             addEntity(parser, entityName, entityValue);
                             tmpLine = "";
+                        } else {
+                            matcher = PATTERN_ENTITY_3.matcher(tmpLine);
+                            if (matcher.find() && matcher.groupCount() == 7) {
+                                String entityName = matcher.group(2);
+                                String entityValue = matcher.group(5);
+
+                                addEntity(parser, entityName, entityValue);
+                                tmpLine = "";
+                            }
                         }
                     }
                 }
