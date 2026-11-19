@@ -256,16 +256,8 @@ public class SinkEventAttributeSet implements SinkEventAttributes, Cloneable {
 
     @Override
     public boolean containsAttributes(AttributeSet attributes) {
-        boolean result = true;
-
-        Enumeration<?> names = attributes.getAttributeNames();
-
-        while (result && names.hasMoreElements()) {
-            Object name = names.nextElement();
-            result = attributes.getAttribute(name).equals(getAttribute(name));
-        }
-
-        return result;
+        return Collections.list(attributes.getAttributeNames()).stream()
+                .allMatch(name -> attributes.getAttribute(name).equals(getAttribute(name)));
     }
 
     /**
