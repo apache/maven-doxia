@@ -32,7 +32,7 @@ resultFile = new File(basedir, "target/site/metadata.html")
 assert resultFile.isFile() : "metadata.html exists"
 
 // Check the content
-String content = resultFile.text;
+String content = resultFile.text
 
 // <title> must contain the specified title in the metadata, not in the first heading
 assert content =~ '<title>.*Title from Header.*</title>' : "title set from metadata"
@@ -59,7 +59,7 @@ assert !(content =~ '<meta name="description"') : "description is not set in the
 resultFile = new File(basedir, "target/site/quotes.html")
 assert resultFile.isFile() : "quotes.html exists"
 
-content = resultFile.text;
+content = resultFile.text
 assert content =~ /This ain't a quote, but an apostrophe./ : "DOXIA-542: apostrophes remain intact"
 assert content =~ /This &#x2018;quoted text&#x2019; isn't surrounded with apostrophes./ : "surrounding quotes are stylized"
 
@@ -89,7 +89,7 @@ resultFile = new File(basedir, "target/site/DOXIA-616-fenced-code-block.html")
 assert resultFile.isFile() : "DOXIA-616-fenced-code-block.html exists"
 
 // Check the content
-content = resultFile.text;
+content = resultFile.text
 
 // Our first fenced code block is <div class="source"><pre><code class="language-java">...</code></pre></div>
 assert content =~ '<div class="source">.*<pre.*>.*<code.*class=".*language-java.*">.*// Fenced Code Block 1' : "DOXIA-616: Fenced Code Block 1 is pretty"
