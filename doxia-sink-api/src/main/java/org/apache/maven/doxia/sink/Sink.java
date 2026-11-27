@@ -1584,7 +1584,7 @@ public interface Sink extends AutoCloseable {
      * <blockquote>
      *   {@link SinkEventAttributes#SEMANTICS SEMANTICS} (values "emphasis", "strong",
      *   "small", "line-through", "citation", "quote", "definition", "abbreviation",
-     *   "italic", "bold", "monospaced", "variable", "sample", "keyboard", "superscript",
+     *   "italic", "bold", "monospaced", "code", "variable", "sample", "keyboard", "superscript",
      *   "subscript", "annotation", "highlight", "ruby", "rubyBase", "rubyText",
      *   "rubyTextContainer", "rubyParentheses", "bidirectionalIsolation",
      *   "bidirectionalOverride", "phrase", "insert", "delete").
@@ -1725,7 +1725,7 @@ public interface Sink extends AutoCloseable {
      * <blockquote>
      *   {@link SinkEventAttributes#SEMANTICS SEMANTICS} (values "emphasis", "strong",
      *   "small", "line-through", "citation", "quote", "definition", "abbreviation",
-     *   "italic", "bold", "monospaced", "variable", "sample", "keyboard", "superscript",
+     *   "italic", "bold", "monospaced", "code", "variable", "sample", "keyboard", "superscript",
      *   "subscript", "annotation", "highlight", "ruby", "rubyBase", "rubyText",
      *   "rubyTextContainer", "rubyParentheses", "bidirectionalIsolation",
      *   "bidirectionalOverride", "phrase", "insert", "delete").
